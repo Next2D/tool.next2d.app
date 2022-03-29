@@ -1,7 +1,7 @@
 Authoring tools that work on the web
 =============
 
-<img src="https://tool.next2d.app/assets/img/ogp.png" width="600" alt="Next2D NoCode Tool Working Image">
+https://user-images.githubusercontent.com/4123454/160549811-98562bb7-cdff-460c-96b0-c01bcd5e5eab.mp4
 
 [![CodeQL](https://github.com/Next2D/tool.next2d.app/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/Next2D/tool.next2d.app/actions/workflows/codeql-analysis.yml)
 [![Discord](https://img.shields.io/discord/812136803506716713?label=Discord&logo=discord)](https://discord.gg/6c9rv5Uns5)
@@ -12,9 +12,6 @@ Authoring tools that work on the web
 
 ### Operation Document
 [NoCode Tool How to use](https://next2d.app/usage)
-
-## Sample Video
-https://user-images.githubusercontent.com/4123454/160549811-98562bb7-cdff-460c-96b0-c01bcd5e5eab.mp4
 
 ### More Sample Videos
 [Youtube](https://www.youtube.com/channel/UCKWvYSKSa8huzkr9T6GAPUw)
