@@ -1,0 +1,14 @@
+/**
+ * View Area
+ */
+#view
+{
+    width          : calc(100vw - (var(--controller-width) + 45px + 4px + 8px));
+    height         : 100%;
+    margin-right   : auto;
+    display        : flex;
+    flex-direction : column;
+    border-left    : 2px solid #1c1c1c;
+    border-right   : 2px solid #1c1c1c;
+    overflow       : hidden;
+}

@@ -1,3 +1,0 @@
-User-agent: *
-Disallow:
-Sitemap: https://tool.next2d.app/sitemap.xml

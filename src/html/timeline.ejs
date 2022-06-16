@@ -1,0 +1,87 @@
+<div id="timeline">
+
+    <div id="timeline-adjustment"></div>
+
+    <div class="timeline-tools">
+
+        <div id="scene">
+
+            <i id="scene-list"></i>
+            <div id="scene-name"></div>
+
+            <div id="scene-name-menu" class="none">
+                <div id="scene-name-menu-list"></div>
+            </div>
+
+        </div>
+
+        <div class="tools">
+
+            <i id="timeline-script-add" data-detail="{{スクリプトを追加}}"></i>
+            <i id="timeline-key-add" data-detail="{{キーフレームを追加}}"></i>
+            <i id="timeline-empty-add" data-detail="{{空のキーフレームを追加}}"></i>
+            <i id="timeline-frame-add" data-detail="{{フレームを追加}}"></i>
+            <i id="timeline-frame-delete" data-detail="{{フレームを削除}}"></i>
+            <i id="timeline-onion-skin" data-detail="{{オニオンスキン}}"></i>
+            <i id="timeline-preview" class="timeline-preview-disable" data-detail="{{プレビューのON/OFF}}"></i>
+            <div class="timeline-border"></div>
+
+            <input type="text" id="current-frame" value="1">
+            <i id="timeline-play" data-detail="{{再生}}"></i>
+            <i id="timeline-stop" data-detail="{{停止}}"></i>
+            <i id="timeline-repeat" data-detail="{{ループ設定}}"></i>
+            <i id="timeline-no-repeat" data-detail="{{ループ設定}}"></i>
+            <div class="timeline-border"></div>
+            <input type="text" placeholder="Label" id="label-name" value="" data-detail="{{フレームラベル}}">
+            <div class="timeline-border"></div>
+            <div class="screen-zoom-area">zoom&nbsp;<input type="text" id="screen-scale" value="100" data-detail="{{画面の拡大・縮小}}">&nbsp;%</div>
+        </div>
+
+    </div>
+
+    <div class="timeline-controller">
+
+        <div class="timeline-controller-tools">
+            <i id="timeline-layer-add" data-detail="{{レイヤーを追加}}"></i>
+            <i id="timeline-layer-trash" data-detail="{{レイヤーを削除}}"></i>
+            <i id="timeline-layer-light-all" class="timeline-layer-light" data-detail="{{全てのレイヤーをハイライト}}"></i>
+            <i id="timeline-layer-disable-all" class="timeline-layer-disable" data-detail="{{全てのレイヤーを非表示}}"></i>
+            <i id="timeline-layer-lock-all" class="timeline-layer-lock" data-detail="{{全てのレイヤーをロック}}"></i>
+        </div>
+
+        <div id="timeline-controller-base">
+            <div id="timeline-marker"></div>
+            <div id="timeline-frame-marker"></div>
+        </div>
+
+    </div>
+
+    <div id="timeline-content"></div>
+
+    <div id="target-group" data-position-l="0" data-position-r="0" data-layer-id="0" data-frame="0"></div>
+
+    <div id="timeline-menu" class="none">
+        <div class="timeline-menu-list">
+            <div id="context-menu-tween-add"><span class="language" data-text="{{モーショントゥイーンの追加}}">モーショントゥイーンの追加</span></div>
+            <div id="context-menu-tween-delete"><span class="language" data-text="{{モーショントゥイーンの削除}}">モーショントゥイーンの削除</span></div>
+            <!--              <div id="context-menu-morph-add">Added Shape Morphing</div>-->
+            <!--              <div id="context-menu-morph-delete">Deleted Shape Morphing</div>-->
+            <p></p>
+            <div id="context-menu-script-add"><i></i><span class="language" data-text="{{JavaScriptの追加}}">JavaScriptの追加</span></div>
+            <p></p>
+            <div id="context-menu-key-frame-add"><i></i><span class="language" data-text="{{キーフレームを追加}}"><span>Added KeyFrame</span></div>
+            <div id="context-menu-empty-key-frame-add"><i></i><span class="language" data-text="{{空のキーフレームを追加}}">Added Empty KeyFrame</span></div>
+            <div id="context-menu-frame-add"><i></i><span class="language" data-text="{{フレームを追加}}">Added Frame</span></div>
+            <div id="context-menu-frame-delete"><i></i><span class="language" data-text="{{フレームを削除}}">Delete Frame</span></div>
+        </div>
+    </div>
+
+    <div id="timeline-layer-menu" class="none">
+        <div id="timeline-layer-menu-list">
+            <div id="timeline-layer-normal"><i></i><span class="language" data-text="{{通常レイヤー}}">Normal Layer</span></div>
+            <div id="timeline-layer-mask"><i></i><span class="language" data-text="{{マスクレイヤー}}">Mask Layer</span></div>
+        </div>
+    </div>
+
+    <div id="timeline-preview-modal" style="display:none;"></div>
+</div>

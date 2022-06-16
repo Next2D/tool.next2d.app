@@ -1,0 +1,3 @@
+[submodule "src/languages"]
+	path = src/languages
+	url = git@github.com:Next2D/tool-language.git

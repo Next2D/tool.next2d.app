@@ -1,0 +1,4 @@
+
+        global["nt"] = global["fl"] = new ExternalInterface();
+    })(this);
+}

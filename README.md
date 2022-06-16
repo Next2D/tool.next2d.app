@@ -1,28 +1,57 @@
-Authoring tools that work on the web
-=============
-
-https://user-images.githubusercontent.com/4123454/160549811-98562bb7-cdff-460c-96b0-c01bcd5e5eab.mp4
-
-[![CodeQL](https://github.com/Next2D/tool.next2d.app/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/Next2D/tool.next2d.app/actions/workflows/codeql-analysis.yml)
+[![UnitTest](https://github.com/Next2D/tool.next2d.app/actions/workflows/integration.yml/badge.svg?branch=develop)](https://github.com/Next2D/Player/actions/workflows/integration.yml)
+[![CodeQL](https://github.com/Next2D/tool.next2d.app/actions/workflows/codeql-analysis.yml/badge.svg?branch=develop)](https://github.com/Next2D/Player/actions/workflows/codeql-analysis.yml)
+[![Lint](https://github.com/Next2D/tool.next2d.app/actions/workflows/lint.yml/badge.svg?branch=develop)](https://github.com/Next2D/Player/actions/workflows/lint.yml) \
+[![license](https://img.shields.io/github/license/Next2D/tool.next2d.app)](https://github.com/Next2D/tool.next2d.app/blob/main/LICENSE)
+[![Docs](https://img.shields.io/badge/docs-online-blue.svg)](https://next2d.app/ja/usage/index.html)
 [![Discord](https://img.shields.io/discord/812136803506716713?label=Discord&logo=discord)](https://discord.gg/6c9rv5Uns5)
 [![Follow us on Twitter](https://img.shields.io/twitter/follow/Next2D?label=Follow&style=social)](https://twitter.com/intent/user?screen_name=Next2D)
 
-## WebSite
-[Next2D NoCode Tool](https://tool.next2d.app)
+# About
+developブランチは開発専用のブランチです。  
+The develop branch is a development-only branch.
 
-### Operation Document
-[NoCode Tool How to use](https://next2d.app/en/usage)
+## Version
+- Node.js v14.x
+- npm 6.x
 
-### More Sample Videos
-[Youtube](https://www.youtube.com/channel/UCKWvYSKSa8huzkr9T6GAPUw)
+## Initial Settings
+```
+git clone -b develop git@github.com:Next2D/tool.next2d.app.git --recursive
+cd tool.next2d.app
+npm install -g gulp karma
+npm install
+```
 
-## About(Japanese)
-NoCode開発を主体としたWebブラウザ上で動作するオーサリングツールです。\
-コードを書くことなく、思い描いたアニメーションを直感的に作成することができ、書き出したデータはWebにアップロードすることで簡単に公開することができます。
+## Start Development
+```
+gulp
+```
 
-## About(English)
-This is an authoring tool that runs on a web browser, mainly for NoCode development.\
-You can intuitively create the animation you have in mind without writing any code, and the exported data can be easily published by uploading it to the Web.
+## Unit Test
+```
+gulp test
+```
 
-## Logo
-<img src="https://next2d.app/assets/img/tool/logo.svg" width="200" height="200" alt="Next2D NoCode Tool Logo">
+## ESLint
+```
+gulp lint
+```
+
+## Build
+
+```linux
+npm run build
+```
+
+## Language
+
+This is a JavaScript file to support other languages for NoCode Tool. \
+
+```linux
+src/languages/*.js
+```
+
+Japanese is used as the base language.
+
+## License
+This project is licensed under the [MIT License](https://opensource.org/licenses/MIT) - see the [LICENSE](LICENSE) file for details.

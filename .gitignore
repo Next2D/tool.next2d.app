@@ -1,3 +1,9 @@
 .DS_Store
 .idea
+.nvmrc
 Thumbs.db
+coverage
+node_modules
+Util.replaced.js
+*.min.js
+License.build.file

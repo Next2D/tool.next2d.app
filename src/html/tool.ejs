@@ -1,0 +1,120 @@
+<div id="tools">
+
+    <div id="tools-arrow" class="item" data-mode="tool" data-detail="{{選択ツール}}"></div>
+    <div class="tools-border"></div>
+
+    <div id="tools-transform" class="item" data-mode="tool" data-name="transform" data-detail="{{Shape変形ツール}}"></div>
+    <div id="tools-pen" class="item" data-mode="tool" data-name="pen" data-detail="{{ペンツール}}"></div>
+    <div id="tools-bucket" class="item" data-mode="tool" data-name="bucket" data-detail="{{バケツツール}}"></div>
+    <div id="tools-rectangle" class="item" data-mode="tool" data-name="rectangle" data-detail="{{短形ツール}}"></div>
+    <div id="tools-circle" class="item" data-mode="tool" data-name="circle" data-detail="{{楕円ツール}}"></div>
+    <div id="tools-round-rect" class="item" data-mode="tool" data-name="round-rect" data-detail="{{角丸矩形ツール}}"></div>
+
+    <div id="tools-fill-color">
+        <input type="color" id="fill-color" value="#000000" data-detail="{{塗りのカラー}}">
+    </div>
+    <div id="tools-stroke-color">
+        <input type="color" id="stroke-color" value="#000000" data-detail="{{線のカラー}}">
+    </div>
+    <div id="tools-stroke-size">
+        <input type="text" id="stroke-size" value="1" data-detail="{{線の太さ}}">
+    </div>
+    <div class="tools-border"></div>
+
+    <div id="tools-text" class="item" data-mode="tool" data-name="text" data-detail="{{テキストツール}}"></div>
+    <div class="tools-border"></div>
+
+    <div id="tools-load" class="item" data-detail="{{プロジェクトデータの読込}}"></div>
+    <input id="tools-load-file-input" type="file" accept=".n2d">
+    <div id="tools-save" class="item" data-detail="{{プロジェクトデータを保存}}"></div>
+    <div id="tools-export" class="item" data-detail="{{書き出し}}"></div>
+    <div id="tools-save-folder"><a id="save-anchor" href=""></a></div>
+    <div class="tools-border"></div>
+
+    <a href="https://discord.gg/6c9rv5Uns5" target="_blank" rel="noopener noreferrer">
+        <div id="tools-discord" class="item" data-detail="{{Discordへ移動}}"></div>
+    </a>
+    <a href="https://github.com/Next2D/tool.next2d.app/issues" target="_blank" rel="noopener noreferrer">
+        <div id="tools-bug" class="item" data-detail="{{バグ報告}}"></div>
+    </a>
+    <a href="https://next2d.app/en/usage" target="_blank" rel="noopener noreferrer">
+        <div id="tools-usage" class="item" data-detail="{{使い方、リファレンス}}"></div>
+    </a>
+    <div class="tools-border"></div>
+
+    <div id="tools-setting" class="item" data-detail="{{設定}}"></div>
+    <div class="tools-border"></div>
+
+    <div id="plugin-tools"></div>
+
+    <div id="user-setting" class="none">
+        <div class="user-setting-list">
+
+            <div class="user-setting-title">
+                <i></i>
+                <span class="language" data-text="{{設定}}">設定</span>
+            </div>
+            <div class="user-setting-container">
+                <div><span class="language" data-text="{{非表示レイヤー}}">非表示レイヤー</span></div>
+                <div>
+                    <select id="publish-layer-setting">
+                        <option class="language" data-text="{{含めない}}" value="0">含めない</option>
+                        <option class="language" data-text="{{含める}}" value="1">含める</option>
+                    </select>
+                </div>
+
+                <div><span class="language" data-text="{{フォーマット}}">フォーマット</span></div>
+                <div>
+                    <select id="publish-type-setting">
+                        <option value="zlib">JSON(compression)</option>
+                        <option value="json">JSON(uncompressed)</option>
+                        <option value="webm">Video(webm)</option>
+                        <option value="gif-loop">GIF Loop Animation</option>
+                        <option value="gif">GIF Animation</option>
+                        <option value="png">PNG Snapshot</option>
+                        <option value="apng-loop">APNG(Loop)</option>
+                        <option value="apng">APNG</option>
+                        <option value="custom">Custom</option>
+                    </select>
+                </div>
+            </div>
+            <p></p>
+
+            <div class="user-setting-title">
+                <i></i>
+                <span class="language" data-text="{{言語}}">言語</span>
+            </div>
+            <div class="user-setting-container">
+                <div>
+                    <select id="language-setting">
+                        <option value="Japanese">日本語</option>
+                        <option value="English">English</option>
+                        <option value="Korean">한국어</option>
+                        <option value="Chinese">中文</option>
+                        <option value="French">Français</option>
+                        <option value="Russia">Русский</option>
+                        <option value="Italiano">Italiano</option>
+                        <option value="Spanish">Español</option>
+                    </select>
+                </div>
+            </div>
+            <p></p>
+
+            <div class="user-setting-title">
+                <i></i>
+                <span class="language" data-text="{{モーダル表示}}">モーダル表示</span>
+            </div>
+            <div class="user-setting-container">
+                <select id="modal-setting">
+                    <option value="1">On</option>
+                    <option value="0">Off</option>
+                </select>
+            </div>
+
+            <div class="user-setting-container">
+                <div>β version: ###BUILD_VERSION###</div>
+            </div>
+
+        </div>
+    </div>
+</div>
