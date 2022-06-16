@@ -45,13 +45,7 @@ npm run build
 
 ## Language
 
-This is a JavaScript file to support other languages for NoCode Tool. \
-
-```linux
-src/languages/*.js
-```
-
-Japanese is used as the base language.
+[Languages](https://github.com/Next2D/tool-language)
 
 ## License
 This project is licensed under the [MIT License](https://opensource.org/licenses/MIT) - see the [LICENSE](LICENSE) file for details.
