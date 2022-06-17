@@ -572,7 +572,6 @@
     cursor : pointer;
 }
 
-
 #timeline-content .timeline-content-child
 {
     display       : flex;
@@ -592,7 +591,12 @@
 
 #timeline-content .active
 {
-    border-bottom : 1px solid #29628e;
+    background-color : #29628e;
+}
+
+#timeline-content .active div
+{
+    opacity: 0.7;
 }
 
 #timeline-content.timeline-content-child .active
