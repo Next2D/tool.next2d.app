@@ -303,7 +303,7 @@ class ArrowTool extends BaseTool
     clear ()
     {
         // 配列を初期化
-        this._$activeElements.length = 0;
+        this.clearActiveElement();
 
         // スクリーンエリアの変形Elementを非表示に
         Util.$transformController.hide();
@@ -334,6 +334,18 @@ class ArrowTool extends BaseTool
                 .$currentWorkSpace()
                 .temporarilySaved();
         }
+    }
+
+    /**
+     * @description 選択中のDisplayObjectを非アクティブ化
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    clearActiveElement ()
+    {
+        this._$activeElements.length = 0;
     }
 
     /**
@@ -414,7 +426,7 @@ class ArrowTool extends BaseTool
             // }
 
             // 配列も初期化
-            this._$activeElements.length = 0;
+            this.clearActiveElement();
         }
 
         this._$activeElements.push({
@@ -449,8 +461,8 @@ class ArrowTool extends BaseTool
         Util.$timelineLayer.clear();
 
         const result = this.addElement(target,
-            event.pageX - target.offsetLeft,
-            event.pageY - target.offsetTop
+            event.pageX,
+            event.pageY
         );
 
         const workSpace = Util.$currentWorkSpace();
@@ -474,23 +486,9 @@ class ArrowTool extends BaseTool
         // 複数選択時の移動座標の調整
         if (this._$activeElements.length > 1) {
             for (let idx = 0; idx < this._$activeElements.length; ++idx) {
-
-                const object  = this._$activeElements[idx];
-                const target  = object.target;
-                const element = document
-                    .getElementById(target.id);
-
-                object.moveX = event.pageX - element.offsetLeft;
-                object.moveY = event.pageY - element.offsetTop;
-
-                // Layer Elementのアクティブクラスを除去
-                // const layerId = target.dataset.layerId | 0;
-                // const layerElement = document
-                //     .getElementById(`layer-id-${layerId}`);
-                //
-                // layerElement
-                //     .classList
-                //     .remove("active");
+                const object = this._$activeElements[idx];
+                object.moveX = event.pageX;
+                object.moveY = event.pageY;
             }
         }
 
@@ -547,11 +545,12 @@ class ArrowTool extends BaseTool
      */
     activeTimeline ()
     {
+        // 初期化
+        Util.$timelineLayer.clear();
+
         const frame = Util.$timelineFrame.currentFrame;
 
-        let frameElement = null;
-        let layerId = 0;
-
+        // 複数選択可能にするため、擬似的にctrlキーをOnにする
         const cacheValue = Util.$ctrlKey;
         Util.$ctrlKey = this._$activeElements.length > 1;
 
@@ -559,7 +558,7 @@ class ArrowTool extends BaseTool
 
             const element = this._$activeElements[idx].target;
 
-            layerId = element.dataset.layerId | 0;
+            const layerId = element.dataset.layerId | 0;
 
             Util.$timelineLayer.targetLayer = document
                 .getElementById(`layer-id-${layerId}`);
@@ -572,19 +571,6 @@ class ArrowTool extends BaseTool
                 );
         }
         Util.$ctrlKey = cacheValue;
-
-        Util.$timeline._$targetLayer = null;
-        if (this._$activeElements.length === 1) {
-            const layerElement = document
-                .getElementById(`layer-id-${layerId}`);
-
-            layerElement.classList.add("active");
-
-            Util.$timeline._$targetLayer  = layerElement;
-            Util.$timeline._$targetFrame  = frameElement;
-            Util.$timeline._$targetFrames = [frameElement];
-        }
-
     }
 
     /**
@@ -1417,6 +1403,12 @@ class ArrowTool extends BaseTool
 
             const object  = this._$activeElements[idx];
             const element = document.getElementById(object.target.id);
+
+            // ロックしている場合など、スクリーンにElementが存在しない場合はスキップ
+            if (!element) {
+                continue;
+            }
+
             const layerId = element.dataset.layerId | 0;
 
             const layer = scene.getLayer(layerId);
@@ -1433,13 +1425,10 @@ class ArrowTool extends BaseTool
 
             const matrix = character.getPlace(frame).matrix;
 
-            const tx = dx - parseFloat(element.style.left);
-            const ty = dy - parseFloat(element.style.top);
-
-            matrix[4] += tx / Util.$zoomScale;
-            matrix[5] += ty / Util.$zoomScale;
-            character.screenX += tx;
-            character.screenY += ty;
+            matrix[4] += dx / Util.$zoomScale;
+            matrix[5] += dy / Util.$zoomScale;
+            character.screenX += dx;
+            character.screenY += dy;
 
             if (layer.maskId !== null) {
                 const maskLayer = scene.getLayer(layer.maskId);
@@ -1451,8 +1440,12 @@ class ArrowTool extends BaseTool
                 }
             }
 
-            element.style.left = `${dx}px`;
-            element.style.top  = `${dy}px`;
+            element.style.left = `${element.offsetLeft + dx}px`;
+            element.style.top  = `${element.offsetTop  + dy}px`;
+
+            // 移動位置を更新
+            object.moveX = event.pageX;
+            object.moveY = event.pageY;
 
             // move resize rect
             xMin = Math.min(xMin, character.x);

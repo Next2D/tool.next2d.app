@@ -438,10 +438,38 @@ class TimelineTool extends BaseTimeline
     {
         this.save();
 
-        Util
-            .$currentWorkSpace()
-            .scene
-            .addLayer();
+        const layerElement = Util.$timelineLayer.targetLayer
+            || document.getElementById("layer-id-0");
+
+        const scene = Util.$currentWorkSpace().scene;
+
+        // 最終行にレイヤーを追加
+        scene.addLayer();
+
+        // アクティブ中のレイヤーの上部に新規追加したレイヤーを移動
+        if (layerElement) {
+
+            const element = document
+                .getElementById("timeline-content");
+
+            element
+                .insertBefore(element.lastElementChild, layerElement);
+
+            // 保存用のObjectの順番も入れ替える
+            const layers = [];
+            for (let idx = 0; idx < element.children.length; ++idx) {
+                layers.push(
+                    scene.getLayer(element.children[idx].dataset.layerId | 0)
+                );
+            }
+
+            scene.clearLayer();
+            for (let idx = 0; idx < layers.length; ++idx) {
+                const layer = layers[idx];
+                scene.setLayer(layer.id, layer);
+            }
+
+        }
 
         this._$saved = false;
     }

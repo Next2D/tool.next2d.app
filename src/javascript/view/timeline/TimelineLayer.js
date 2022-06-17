@@ -139,7 +139,46 @@ class TimelineLayer extends BaseTimeline
 
             case Util.$shiftKey:
                 if (layer) {
-                    this.targetLayers.set(layer.id, layer);
+                    const baseLayer = this.targetLayer;
+                    if (baseLayer.id === layer.id) {
+                        return ;
+                    }
+
+                    this.clearActiveLayers();
+                    this.clearActiveFrames();
+
+                    const min = Math.min(
+                        layer.dataset.layerId | 0,
+                        baseLayer.dataset.layerId | 0
+                    );
+
+                    const max = Math.max(
+                        layer.dataset.layerId | 0,
+                        baseLayer.dataset.layerId | 0
+                    );
+
+                    this.targetLayers.set(
+                        baseLayer.id,
+                        baseLayer
+                    );
+
+                    for (let idx = min; idx <= max; ++idx) {
+
+                        const targetLayer = document
+                            .getElementById(`layer-id-${idx}`);
+
+                        // アクティブな時は非アクティブにして選択リストから削除
+                        targetLayer
+                            .classList
+                            .add("active");
+
+                        if (this.targetLayers.has(targetLayer.id)) {
+                            continue;
+                        }
+
+                        this.targetLayers.set(targetLayer.id, targetLayer);
+
+                    }
                 }
                 break;
 
@@ -184,8 +223,6 @@ class TimelineLayer extends BaseTimeline
                 break;
 
         }
-
-        this.activeCharacter();
     }
 
     /**
@@ -232,6 +269,10 @@ class TimelineLayer extends BaseTimeline
          * @type {ArrowTool}
          */
         const tool  = Util.$tools.getDefaultTool("arrow");
+
+        // 選択中のDisplayObjectを初期化
+        tool.clearActiveElement();
+
         const frame = Util.$timelineFrame.currentFrame;
         const scene = Util.$currentWorkSpace().scene;
         for (const element of this.targetLayers.values()) {
@@ -1212,14 +1253,8 @@ class TimelineLayer extends BaseTimeline
 
         this.targetLayer = element;
 
-        const frame = Util.$timelineFrame.currentFrame;
-
-        document
-            .getElementById("timeline-marker")
-            .style
-            .left = `${(frame - 1) * 13}px`;
-
         // アクティブ表示
+        const frame = Util.$timelineFrame.currentFrame;
         if (this.targetLayers.size === 1) {
 
             const layerId = element.dataset.layerId | 0;
@@ -1233,6 +1268,12 @@ class TimelineLayer extends BaseTimeline
 
             this.addTargetFrame(layerId, frameElement);
         }
+
+        // マーカーを現在のフレームの位置に移動
+        Util.$timelineMarker.move();
+
+        // スクリーンのDisplayObjectをアクティブ化
+        this.activeCharacter();
     }
 
     /**
@@ -1351,17 +1392,14 @@ class TimelineLayer extends BaseTimeline
             // 初期化
             tool.clear();
 
-            document
-                .getElementById("timeline-marker")
-                .style
-                .left = `${(frame - 1) * 13}px`;
+            const layerId = target.dataset.layerId | 0;
 
             // 編集へセット
             this._$selectFrameElement = target;
-            this._$targetFrames.push(target);
+            this.addTargetFrame(layerId, target);
 
             const layerElement = document
-                .getElementById(`layer-id-${target.dataset.layerId}`);
+                .getElementById(`layer-id-${layerId}`);
 
             this.targetLayer = layerElement;
 
@@ -1428,7 +1466,7 @@ class TimelineLayer extends BaseTimeline
             // フレームを移動したら再描画
             if (currentFrame !== frame) {
                 Util.$timelineFrame.currentFrame = frame;
-
+                Util.$timelineMarker.move();
                 this.reloadScreen();
             }
         }
