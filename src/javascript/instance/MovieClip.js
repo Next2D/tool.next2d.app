@@ -521,9 +521,35 @@ class MovieClip extends Instance
      */
     get layers ()
     {
+        let index = 0;
+        let parentId = null;
         const layers = [];
         for (const value of this._$layers.values()) {
-            layers.push(value.toObject());
+
+            const object = value.toObject();
+            switch (object.mode) {
+
+                case Util.LAYER_MODE_MASK:
+                case Util.LAYER_MODE_GUIDE:
+                    parentId = index;
+                    break;
+
+                case Util.LAYER_MODE_MASK_IN:
+                    object.maskId = parentId;
+                    break;
+
+                case Util.LAYER_MODE_GUIDE_IN:
+                    object.guideId = parentId;
+                    break;
+
+                default:
+                    parentId = null;
+                    break;
+
+            }
+
+            layers.push(object);
+            index++;
         }
         return layers;
     }

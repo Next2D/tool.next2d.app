@@ -301,21 +301,6 @@ class TimelineLayer extends BaseTimeline
     }
 
     /**
-     * @description スクリーンのDisplayObjectを非アクティブ化する
-     *
-     * @return {void}
-     * @method
-     * @public
-     */
-    clearActiveCharacter ()
-    {
-        /**
-         * @type {ArrowTool}
-         */
-        const tool = Util.$tools.getDefaultTool("arrow");
-    }
-
-    /**
      * @description 初期起動関数
      *
      * @return {void}
@@ -809,6 +794,54 @@ class TimelineLayer extends BaseTimeline
             // 複数レイヤーの時は降順に並び替え
             const selectLayers = Array.from(this.targetLayers.values());
             if (selectLayers.length > 1) {
+
+                // マスク対象かガイド対象が含まれているかチェック
+                // 含まれている場合で、親Elementが含まれている場合は移動の対象外にする
+                for (let idx = 0; idx < selectLayers.length; ++idx) {
+
+                    const layerElement = selectLayers[idx];
+                    const layer = scene.getLayer(
+                        layerElement.dataset.layerId | 0
+                    );
+
+                    switch (layer.mode) {
+
+                        case Util.LAYER_MODE_MASK_IN:
+                            {
+                                // 親Element
+                                const element = document
+                                    .getElementById(`layer-id-${layer.maskId}`);
+
+                                const index = selectLayers.indexOf(element);
+                                if (index > -1) {
+                                    selectLayers.splice(idx, 1);
+                                    --idx;
+                                }
+                            }
+                            break;
+
+                        case Util.LAYER_MODE_GUIDE_IN:
+                            {
+                                // 親Element
+                                const element = document
+                                    .getElementById(`layer-id-${layer.guideId}`);
+
+                                const index = selectLayers.indexOf(element);
+                                if (index > -1) {
+                                    selectLayers.splice(idx, 1);
+                                    --idx;
+                                }
+                            }
+                            break;
+
+                        default:
+                            break;
+
+                    }
+
+                }
+
+                // 降順に並び替え
                 const children = Array.from(element.children);
                 selectLayers.sort((a, b) =>
                 {
@@ -831,7 +864,7 @@ class TimelineLayer extends BaseTimeline
             }
 
             // 移動開始
-            const maskInstances = [];
+            const relationLayers = [];
             for (let idx = 0; idx < selectLayers.length; ++idx) {
 
                 const layer = selectLayers[idx];
@@ -894,34 +927,68 @@ class TimelineLayer extends BaseTimeline
 
                 }
 
-                if (maskInstances.length) {
-                    maskInstances.length = 0;
+                if (relationLayers.length) {
+                    relationLayers.length = 0;
                 }
 
                 // 移動するレイヤーが親マスクの場合は
                 // マスク対象のレイヤーも一緒に移動する
-                if (moveLayer.mode === Util.LAYER_MODE_MASK) {
+                switch (moveLayer.mode) {
 
-                    const children = Array.from(element.children);
-                    let index = children.indexOf(layer);
-                    for (;;) {
+                    case Util.LAYER_MODE_MASK:
+                        {
 
-                        const child = children[index++];
-                        if (!child) {
-                            break;
+                            const children = Array.from(element.children);
+                            let index = children.indexOf(layer);
+                            for (;;) {
+
+                                const child = children[++index];
+                                if (!child) {
+                                    break;
+                                }
+
+                                const layer = scene.getLayer(
+                                    child.dataset.layerId | 0
+                                );
+
+                                // マスク対象がなくなったら終了
+                                if (layer.mode !== Util.LAYER_MODE_MASK_IN) {
+                                    break;
+                                }
+
+                                relationLayers.unshift(child);
+                            }
                         }
+                        break;
 
-                        const layer = scene.getLayer(
-                            child.dataset.layerId | 0
-                        );
+                    case Util.LAYER_MODE_GUIDE:
+                        {
+                            const children = Array.from(element.children);
+                            let index = children.indexOf(layer);
+                            for (;;) {
 
-                        // マスク対象がなくなったら終了
-                        if (layer.mode !== Util.LAYER_MODE_MASK_IN) {
-                            break;
+                                const child = children[++index];
+                                if (!child) {
+                                    break;
+                                }
+
+                                const layer = scene.getLayer(
+                                    child.dataset.layerId | 0
+                                );
+
+                                // マスク対象がなくなったら終了
+                                if (layer.mode !== Util.LAYER_MODE_GUIDE_IN) {
+                                    break;
+                                }
+
+                                relationLayers.unshift(child);
+                            }
                         }
+                        break;
 
-                        maskInstances.push(child);
-                    }
+                    default:
+                        break;
+
                 }
 
                 // if (layer === this._$destLayer.nextElementSibling) {
@@ -940,13 +1007,13 @@ class TimelineLayer extends BaseTimeline
 
                 // }
 
-                if (maskInstances.length) {
+                if (relationLayers.length) {
 
-                    for (let idx = 0; idx < maskInstances.length; ++idx) {
+                    for (let idx = 0; idx < relationLayers.length; ++idx) {
 
                         element
                             .insertBefore(
-                                maskInstances[idx],
+                                relationLayers[idx],
                                 layer.nextElementSibling
                             );
 
