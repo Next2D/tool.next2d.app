@@ -64,14 +64,14 @@ class TimelineLayer extends BaseTimeline
          * @default null
          * @private
          */
-        this._$moveLayer = null;
+        this._$activeLayer = null;
 
         /**
          * @type {function}
          * @default null
          * @private
          */
-        this._$endMoveLayer = null;
+        this._$moveLayer = null;
 
         /**
          * @type {function}
@@ -147,15 +147,15 @@ class TimelineLayer extends BaseTimeline
                     this.clearActiveLayers();
                     this.clearActiveFrames();
 
-                    const min = Math.min(
-                        layer.dataset.layerId | 0,
-                        baseLayer.dataset.layerId | 0
+                    const children = Array.from(
+                        document.getElementById("timeline-content").children
                     );
 
-                    const max = Math.max(
-                        layer.dataset.layerId | 0,
-                        baseLayer.dataset.layerId | 0
-                    );
+                    const baseIndex   = children.indexOf(baseLayer);
+                    const targetIndex = children.indexOf(layer);
+
+                    const min = Math.min(baseIndex, targetIndex);
+                    const max = Math.max(baseIndex, targetIndex);
 
                     this.targetLayers.set(
                         baseLayer.id,
@@ -164,8 +164,7 @@ class TimelineLayer extends BaseTimeline
 
                     for (let idx = min; idx <= max; ++idx) {
 
-                        const targetLayer = document
-                            .getElementById(`layer-id-${idx}`);
+                        const targetLayer = children[idx];
 
                         // アクティブな時は非アクティブにして選択リストから削除
                         targetLayer
@@ -367,7 +366,6 @@ class TimelineLayer extends BaseTimeline
 <div class="timeline-content-child" id="layer-id-${layerId}" data-layer-id="${layerId}">
 
     <div class="timeline-layer-controller">
-        <i class="timeline-layer-move-icon" id="move-id-${layerId}" data-layer-id="${layerId}" data-detail="{{上下に移動}}"></i>
         <i class="timeline-layer-icon" id="layer-icon-${layerId}" data-layer-id="${layerId}" data-detail="{{レイヤー変更(ダブルクリック)}}"></i>
         <i class="timeline-mask-icon" id="layer-mask-icon-${layerId}" data-layer-id="${layerId}" data-detail="{{レイヤー変更(ダブルクリック)}}"></i>
         <i class="timeline-mask-in-icon" id="layer-mask-in-icon-${layerId}"></i>
@@ -403,14 +401,6 @@ class TimelineLayer extends BaseTimeline
 
         element.insertAdjacentHTML("beforeend", htmlTag);
 
-        // レイヤー移動イベントを登録
-        document
-            .getElementById(`move-id-${layerId}`)
-            .addEventListener("mousedown", (event) =>
-            {
-                this.startMoveLayer(event);
-            });
-
         // レイヤー名の変更イベントを登録
         document
             .getElementById(`layer-name-${layerId}`)
@@ -441,7 +431,7 @@ class TimelineLayer extends BaseTimeline
         // レイヤー全体のイベント
         layer.addEventListener("mousedown", (event) =>
         {
-            this.activeLayer(event);
+            this.selectLayer(event);
         });
 
         const layerController = layer
@@ -630,18 +620,6 @@ class TimelineLayer extends BaseTimeline
     }
 
     /**
-     * @description タイムラインのレイヤーを削除する
-     *
-     * @return {void}
-     * @method
-     * @public
-     */
-    remove ()
-    {
-        console.log("remove");
-    }
-
-    /**
      * @description レイヤー変更メニューモーダルを表示
      *
      * @param  {Event} event
@@ -748,36 +726,6 @@ class TimelineLayer extends BaseTimeline
     }
 
     /**
-     * @description レイヤーの移動を開始する事前処理
-     *
-     * @param  {MouseEvent} event
-     * @return {void}
-     * @method
-     * @public
-     */
-    startMoveLayer (event)
-    {
-        const layerId = event.target.dataset.layerId | 0;
-        if (!this.targetLayers.has(layerId)) {
-            this.targetLayer = document
-                .getElementById(`layer-id-${layerId}`);
-        }
-        this._$moveLayerId = event.target.dataset.layerId | 0;
-
-        if (!this._$moveLayer) {
-            this._$moveLayer = this.moveLayer.bind(this);
-        }
-
-        if (!this._$endMoveLayer) {
-            this._$endMoveLayer = this.endMoveLayer.bind(this);
-        }
-
-        // イベントを登録
-        window.addEventListener("mousemove", this._$moveLayer);
-        window.addEventListener("mouseup", this._$endMoveLayer);
-    }
-
-    /**
      * @description レイヤーの移動処理
      *
      * @return {void}
@@ -792,20 +740,13 @@ class TimelineLayer extends BaseTimeline
     /**
      * @description レイヤーの移動を終了する
      *
-     * @param  {MouseEvent} event
      * @return {void}
      * @method
      * @public
      */
-    endMoveLayer (event)
+    executeMoveLayer ()
     {
-        // イベントを削除
-        window.removeEventListener("mousemove", this._$moveLayer);
-        window.removeEventListener("mouseup", this._$endMoveLayer);
-
         if (this._$destLayer) {
-
-            event.stopPropagation();
 
             // 非アクティブへ
             this._$destLayer.classList.remove("move-target");
@@ -817,129 +758,208 @@ class TimelineLayer extends BaseTimeline
                 this._$destLayer.dataset.layerId | 0
             );
 
-            // 移動対象
-            const moveLayer = scene.getLayer(this._$moveLayerId);
+            /**
+             * 移動先がマスクかマスク対象かガイドかガイド対象レイヤーで
+             * 移動対象にマスクレイヤーが含まれる場合
+             * もしくは、ガイドレイヤーが含まれる場合は処理を中止する
+             */
+            switch (destLayer.mode) {
 
-            // 移動対象がマスクで移動先がそのマスク対象のレイヤーの時は何もしない
-            if (moveLayer.mode === Util.LAYER_MODE_MASK
-                && (destLayer.mode === Util.LAYER_MODE_MASK
-                    || destLayer.mode === Util.LAYER_MODE_MASK_IN
-                )
-            ) {
-                return ;
-            }
+                case Util.LAYER_MODE_MASK:
+                case Util.LAYER_MODE_MASK_IN:
+                case Util.LAYER_MODE_GUIDE:
+                case Util.LAYER_MODE_GUIDE_IN:
+                    for (const layer of this.targetLayers.values()) {
 
-            // 状態を保存
-            this.save();
-
-            // 移動先がマスクか、マスクの対象の時
-            if (destLayer.mode === Util.LAYER_MODE_MASK
-                || destLayer.mode === Util.LAYER_MODE_MASK_IN
-            ) {
-
-                if (moveLayer.mode !== Util.LAYER_MODE_MASK_IN
-                    && moveLayer.mode === Util.LAYER_MODE_NORMAL
-                ) {
-
-                    moveLayer.maskId = destLayer.maskId === null
-                        ? destLayer.id
-                        : destLayer.maskId;
-
-                    moveLayer.mode   = Util.LAYER_MODE_MASK_IN;
-                    moveLayer.showIcon();
-
-                    const maskLayer = scene.getLayer(moveLayer.maskId);
-                    if (maskLayer.lock) {
-                        this.reloadScreen();
-                    }
-
-                }
-
-            } else {
-
-                // マスクの外に出る場合はマスク表示を無効化する
-                if (moveLayer.mode === Util.LAYER_MODE_MASK_IN) {
-
-                    moveLayer.maskId = null;
-                    moveLayer.mode   = Util.LAYER_MODE_NORMAL;
-                    moveLayer.showIcon();
-
-                }
-
-            }
-
-            let maskInstances = null;
-
-            const element = document.getElementById("timeline-content");
-            if (moveLayer.mode === Util.LAYER_MODE_MASK) {
-
-                const children = element.children;
-                for (let idx = 0; idx < children.length; ++idx) {
-
-                    const child = children[idx];
-                    if (moveLayer.id === (child.dataset.layerId | 0)) {
-                        maskInstances = [];
-                        continue;
-                    }
-
-                    if (!maskInstances) {
-                        continue;
-                    }
-
-                    const layer = scene.getLayer(child.dataset.layerId | 0);
-                    if (layer.mode !== Util.LAYER_MODE_MASK_IN) {
-                        break;
-                    }
-
-                    maskInstances.push(child);
-                }
-
-                if (maskInstances) {
-
-                    for (let idx = 0; idx < maskInstances.length; ++idx) {
-                        element.removeChild(maskInstances[idx]);
-                    }
-
-                }
-
-            }
-
-            const layerElement = document
-                .getElementById(`layer-id-${this._$moveLayerId}`);
-
-            if (layerElement === this._$destLayer.nextElementSibling) {
-
-                if (destLayer.mode === Util.LAYER_MODE_MASK) {
-                    return ;
-                }
-
-                element
-                    .insertBefore(layerElement, this._$destLayer);
-
-            } else {
-
-                element
-                    .insertBefore(layerElement, this._$destLayer.nextElementSibling);
-
-            }
-
-            if (maskInstances) {
-
-                for (let idx = 0; idx < maskInstances.length; ++idx) {
-
-                    element
-                        .insertBefore(
-                            maskInstances[idx],
-                            layerElement.nextElementSibling
+                        const moveLayer = scene.getLayer(
+                            layer.dataset.layerId | 0
                         );
 
-                }
+                        switch (moveLayer.mode) {
+
+                            case Util.LAYER_MODE_MASK:
+                            case Util.LAYER_MODE_GUIDE:
+
+                                // 初期化して処理を中止
+                                this._$moveLayerId = -1;
+                                this._$destLayer   = null;
+                                Util.$setCursor("auto");
+                                return ;
+
+                            default:
+                                break;
+
+                        }
+
+                    }
+                    break;
+
+                default:
+                    break;
+
             }
 
-            layerElement.lastElementChild.scrollLeft
-                = this._$destLayer.lastElementChild.scrollLeft;
+            // 移動前の状態を保存
+            this.save();
 
-            const layers   = [];
+            // 親Element
+            const element = document
+                .getElementById("timeline-content");
+
+            // 複数レイヤーの時は降順に並び替え
+            const selectLayers = Array.from(this.targetLayers.values());
+            if (selectLayers.length > 1) {
+                const children = Array.from(element.children);
+                selectLayers.sort((a, b) =>
+                {
+                    const aIndex = children.indexOf(a);
+                    const bIndex = children.indexOf(b);
+
+                    switch (true) {
+
+                        case aIndex > bIndex:
+                            return -1;
+
+                        case aIndex < bIndex:
+                            return 1;
+
+                        default:
+                            return 0;
+
+                    }
+                });
+            }
+
+            // 移動開始
+            const maskInstances = [];
+            for (let idx = 0; idx < selectLayers.length; ++idx) {
+
+                const layer = selectLayers[idx];
+
+                const moveLayer = scene.getLayer(
+                    layer.dataset.layerId | 0
+                );
+
+                switch (destLayer.mode) {
+
+                    case Util.LAYER_MODE_MASK:
+                    case Util.LAYER_MODE_MASK_IN:
+                        // 移動先がマスクか、マスクの対象の時は
+                        // マスクIDを紐付けて、アイコンを変更
+                        moveLayer.maskId = destLayer.maskId === null
+                            ? destLayer.id
+                            : destLayer.maskId;
+
+                        moveLayer.mode = Util.LAYER_MODE_MASK_IN;
+                        moveLayer.showIcon();
+                        break;
+
+                    // 移動先がガイドか、ガイドの対象の時
+                    case Util.LAYER_MODE_GUIDE:
+                    case Util.LAYER_MODE_GUIDE_IN:
+                        // 移動先がガイドか、ガイドの対象の時は
+                        // ガイドIDを紐付けて、アイコンを変更
+                        moveLayer.guideId = destLayer.guideId === null
+                            ? destLayer.id
+                            : destLayer.guideId;
+
+                        moveLayer.mode = Util.LAYER_MODE_GUIDE_IN;
+                        moveLayer.showIcon();
+                        break;
+
+                    default:
+
+                        switch (moveLayer.mode) {
+
+                            case Util.LAYER_MODE_MASK_IN:
+                                // マスクの外に出る場合はマスク表示を無効化する
+                                moveLayer.maskId = null;
+                                moveLayer.mode = Util.LAYER_MODE_NORMAL;
+                                moveLayer.showIcon();
+                                break;
+
+                            case Util.LAYER_MODE_GUIDE_IN:
+                                // ガイドの外に出る場合はガイド表示を無効化する
+                                moveLayer.guideId = null;
+                                moveLayer.mode = Util.LAYER_MODE_NORMAL;
+                                moveLayer.showIcon();
+                                break;
+
+                            default:
+                                break;
+
+                        }
+
+                        break;
+
+                }
+
+                if (maskInstances.length) {
+                    maskInstances.length = 0;
+                }
+
+                // 移動するレイヤーが親マスクの場合は
+                // マスク対象のレイヤーも一緒に移動する
+                if (moveLayer.mode === Util.LAYER_MODE_MASK) {
+
+                    const children = Array.from(element.children);
+                    let index = children.indexOf(layer);
+                    for (;;) {
+
+                        const child = children[index++];
+                        if (!child) {
+                            break;
+                        }
+
+                        const layer = scene.getLayer(
+                            child.dataset.layerId | 0
+                        );
+
+                        // マスク対象がなくなったら終了
+                        if (layer.mode !== Util.LAYER_MODE_MASK_IN) {
+                            break;
+                        }
+
+                        maskInstances.push(child);
+                    }
+                }
+
+                // if (layer === this._$destLayer.nextElementSibling) {
+                //
+                //     // if (destLayer.mode === Util.LAYER_MODE_MASK) {
+                //     //     return ;
+                //     // }
+                //
+                //     element
+                //         .insertBefore(layer, this._$destLayer);
+                //
+                // } else {
+
+                    element
+                        .insertBefore(layer, this._$destLayer.nextElementSibling);
+
+                // }
+
+                if (maskInstances.length) {
+
+                    for (let idx = 0; idx < maskInstances.length; ++idx) {
+
+                        element
+                            .insertBefore(
+                                maskInstances[idx],
+                                layer.nextElementSibling
+                            );
+
+                    }
+
+                }
+
+                layer.lastElementChild.scrollLeft
+                    = this._$destLayer.lastElementChild.scrollLeft;
+            }
+
+            // 並び替えたElementを下に内部Objectも並び替える
+            const layers = [];
             const children = element.children;
             for (let idx = 0; idx < children.length; ++idx) {
                 layers.push(
@@ -947,6 +967,7 @@ class TimelineLayer extends BaseTimeline
                 );
             }
 
+            // レイヤーオブジェクトを初期化
             scene.clearLayer();
             for (let idx = 0; idx < layers.length; ++idx) {
                 const layer = layers[idx];
@@ -981,15 +1002,17 @@ class TimelineLayer extends BaseTimeline
         // 他のイベントを中止
         event.stopPropagation();
 
+        // 選択中のレイヤーでなければ移動対象として認識させる
         const element = event.currentTarget.parentNode;
-        const layerId = element.dataset.layerId | 0;
-        if (this._$moveLayerId !== layerId) {
+        if (!this.targetLayers.has(element.id)) {
+
             this._$destLayer = element;
             element.classList.add("move-target");
 
             const parent = document
                 .getElementById("timeline-content");
 
+            // TODO レイヤーのスクロール移動処理
             if (element.offsetTop + element.offsetHeight
                 > parent.scrollTop + window.innerHeight
             ) {
@@ -1227,14 +1250,15 @@ class TimelineLayer extends BaseTimeline
     }
 
     /**
-     * @description 選択したレイヤーをアクティブにする
+     * @description 選択したレイヤーの操作、アクティブなら移動を可能に
+     *              非アクティブならアクティブ化する。
      *
      * @param  {MouseEvent} event
      * @return {void}
      * @method
      * @public
      */
-    activeLayer (event)
+    selectLayer (event)
     {
         if (event.button) {
             return ;
@@ -1246,11 +1270,57 @@ class TimelineLayer extends BaseTimeline
         // メニューモーダルを終了
         Util.$endMenu();
 
+        const element = event.currentTarget;
+        if (element.classList.contains("active")) {
+
+            Util.$setCursor("grabbing");
+
+            if (!this._$moveLayer) {
+                this._$moveLayer = this.moveLayer.bind(this);
+            }
+
+            if (!this._$activeLayer) {
+                this._$activeLayer = this.activeLayer.bind(this);
+            }
+
+            this._$moveLayerId = element.dataset.layerId | 0;
+
+            window.addEventListener("mousemove", this._$moveLayer);
+            window.addEventListener("mouseup", this._$activeLayer);
+
+        } else {
+
+            this.activeLayer(element);
+
+        }
+    }
+
+    /**
+     * @description 選択したレイヤーをアクティブにする
+     *
+     * @param  {HTMLDivElement} element
+     * @return {void}
+     * @method
+     * @public
+     */
+    activeLayer (element)
+    {
+        window.removeEventListener("mousemove", this._$moveLayer);
+        window.removeEventListener("mouseup", this._$activeLayer);
+
+        if (this._$destLayer) {
+            return this.executeMoveLayer();
+        }
+
         // 初期化
         this.clearActiveFrames();
 
-        const element = event.currentTarget;
+        if (this._$moveLayerId > -1) {
+            element = document
+                .getElementById(`layer-id-${this._$moveLayerId}`);
+        }
 
+        // 選択したレイヤーをアクティブ化
         this.targetLayer = element;
 
         // アクティブ表示
@@ -1274,6 +1344,10 @@ class TimelineLayer extends BaseTimeline
 
         // スクリーンのDisplayObjectをアクティブ化
         this.activeCharacter();
+
+        // 初期化
+        this._$moveLayerId = -1;
+        Util.$setCursor("auto");
     }
 
     /**
@@ -1626,7 +1700,7 @@ class TimelineLayer extends BaseTimeline
             const element = document
                 .getElementById(`${layerId}-${frame}`);
 
-            this.addTargetFrame(layerId, element)
+            this.addTargetFrame(layerId, element);
         }
 
         // 変数を再セットする

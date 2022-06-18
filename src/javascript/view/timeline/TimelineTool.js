@@ -452,8 +452,46 @@ class TimelineTool extends BaseTimeline
             const element = document
                 .getElementById("timeline-content");
 
+            const targetLayer = scene.getLayer(
+                layerElement.dataset.layerId | 0
+            );
+
+            const lastElement = element.lastElementChild;
+            switch (targetLayer.mode) {
+
+                case Util.LAYER_MODE_MASK_IN:
+                    {
+                        const newLayer = scene.getLayer(
+                            lastElement.dataset.layerId | 0
+                        );
+                        newLayer.maskId = targetLayer.maskId === null
+                            ? targetLayer.id
+                            : targetLayer.maskId;
+                        newLayer.mode = Util.LAYER_MODE_MASK_IN;
+                        newLayer.showIcon();
+                    }
+                    break;
+
+                case Util.LAYER_MODE_GUIDE_IN:
+                    {
+                        const newLayer = scene.getLayer(
+                            lastElement.dataset.layerId | 0
+                        );
+                        newLayer.guideId = targetLayer.guideId === null
+                            ? targetLayer.id
+                            : targetLayer.guideId;
+                        newLayer.mode = Util.LAYER_MODE_GUIDE_IN;
+                        newLayer.showIcon();
+                    }
+                    break;
+
+                default:
+                    break;
+
+            }
+
             element
-                .insertBefore(element.lastElementChild, layerElement);
+                .insertBefore(lastElement, layerElement);
 
             // 保存用のObjectの順番も入れ替える
             const layers = [];

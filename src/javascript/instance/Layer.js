@@ -14,6 +14,7 @@ class Layer
         this._$instances  = new Map();
 
         this._$maskId     = null;
+        this._$guideId    = null;
         this._$name       = null;
         this._$light      = false;
         this._$disable    = false;
@@ -28,6 +29,7 @@ class Layer
             this._$lock      = object.lock;
             this._$mode      = object.mode;
             this._$maskId    = object.maskId;
+            this._$guideId   = object.guideId;
             this.frame       = new Frame(object.frames);
             this.characters  = object.characters;
         }
@@ -651,6 +653,27 @@ class Layer
     }
 
     /**
+     * @return {number|null}
+     * @public
+     */
+    get guideId ()
+    {
+        return this._$guideId;
+    }
+
+    /**
+     * @param  {number|null} guide_id
+     * @return {void}
+     * @public
+     */
+    set guideId (guide_id)
+    {
+        this._$guideId = guide_id === null
+            ? null
+            : guide_id | 0;
+    }
+
+    /**
      * @return {object}
      * @public
      */
@@ -663,6 +686,7 @@ class Layer
             "lock":       this.lock,
             "mode":       this.mode,
             "maskId":     this.maskId,
+            "guideId":    this.guideId,
             "frames":     this.frame,
             "characters": this.characters
         };
