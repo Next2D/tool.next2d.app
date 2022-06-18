@@ -354,6 +354,8 @@ class TimelineLayer extends BaseTimeline
         <i class="timeline-layer-icon" id="layer-icon-${layerId}" data-layer-id="${layerId}" data-detail="{{レイヤー変更(ダブルクリック)}}"></i>
         <i class="timeline-mask-icon" id="layer-mask-icon-${layerId}" data-layer-id="${layerId}" data-detail="{{レイヤー変更(ダブルクリック)}}"></i>
         <i class="timeline-mask-in-icon" id="layer-mask-in-icon-${layerId}"></i>
+        <i class="timeline-guide-icon" id="layer-guide-icon-${layerId}" data-layer-id="${layerId}" data-detail="{{レイヤー変更(ダブルクリック)}}"></i>
+        <i class="timeline-guide-in-icon" id="layer-guide-in-icon-${layerId}" data-layer-id="${layerId}" data-detail="{{レイヤー変更(ダブルクリック)}}"></i>
         <div class="view-text" id="layer-name-${layerId}" data-layer-id="${layerId}">layer_${layerId}</div>
         <input type="text" class="view-text-input" id="layer-name-input-${layerId}" data-layer-id="${layerId}" value="layer_${layerId}" style="display: none;">
         <i class="timeline-layer-light-one icon-disable" id="layer-light-icon-${layerId}" data-click-type="light" data-layer-id="${layerId}" data-detail="{{レイヤーをハイライト}}"></i>
@@ -397,14 +399,21 @@ class TimelineLayer extends BaseTimeline
         // レイヤー切り替えイベントを登録
         document
             .getElementById(`layer-icon-${layerId}`)
-            .addEventListener("mousedown", (event) =>
+            .addEventListener("dblclick", (event) =>
             {
                 this.showLayerMenu(event);
             });
 
         document
             .getElementById(`layer-mask-icon-${layerId}`)
-            .addEventListener("mousedown", (event) =>
+            .addEventListener("dblclick", (event) =>
+            {
+                this.showLayerMenu(event);
+            });
+
+        document
+            .getElementById(`layer-guide-icon-${layerId}`)
+            .addEventListener("dblclick", (event) =>
             {
                 this.showLayerMenu(event);
             });

@@ -18,7 +18,8 @@ class TimelineLayerMenu extends BaseTimeline
 
         const elementIds = [
             "timeline-layer-normal",
-            "timeline-layer-mask"
+            "timeline-layer-mask",
+            "timeline-layer-guide"
         ];
 
         for (let idx = 0; idx < elementIds.length; ++idx) {
@@ -69,41 +70,12 @@ class TimelineLayerMenu extends BaseTimeline
         // 状態を保存
         this.save();
 
-        let changeNormal = false;
-        for (const layer of scene._$layers.values()) {
+        const reload = this.resetLayer(targetLayer);
 
-            if (layer.id === layerId) {
+        layer.mode = Util.LAYER_MODE_NORMAL;
+        layer.showIcon();
 
-                const mode = layer.mode;
-
-                // change
-                layer.mode = Util.LAYER_MODE_NORMAL;
-                layer.showIcon();
-
-                if (mode !== Util.LAYER_MODE_MASK) {
-                    break;
-                }
-
-                changeNormal = true;
-
-                continue;
-            }
-
-            if (changeNormal) {
-
-                if (layer.mode !== Util.LAYER_MODE_MASK_IN) {
-                    break;
-                }
-
-                // マスクの入れ子を解除
-                layer.maskId = null;
-                layer.mode   = Util.LAYER_MODE_NORMAL;
-                layer.showIcon();
-            }
-
-        }
-
-        if (changeNormal) {
+        if (reload) {
             this.reloadScreen();
         }
 
@@ -131,20 +103,131 @@ class TimelineLayerMenu extends BaseTimeline
                 targetLayer.dataset.layerId | 0
             );
 
-        if (layer.mode !== Util.LAYER_MODE_MASK) {
-
-            // 状態を保存
-            this.save();
-
-            layer.mode = Util.LAYER_MODE_MASK;
-            layer.showIcon();
-
-            if (layer.lock) {
-                this.reloadScreen();
-            }
-
-            this._$saved = false;
+        if (layer.mode === Util.LAYER_MODE_MASK) {
+            return ;
         }
+
+        // 状態を保存
+        this.save();
+
+        const reload = this.resetLayer(targetLayer);
+
+        layer.mode = Util.LAYER_MODE_MASK;
+        layer.showIcon();
+
+        if (reload || layer.lock) {
+            this.reloadScreen();
+        }
+
+        this._$saved = false;
+    }
+
+    /**
+     * @description ガイドレイヤーに変更
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    executeTimelineLayerGuide ()
+    {
+        const targetLayer = Util.$timelineLayer.targetLayer;
+        if (!targetLayer) {
+            return ;
+        }
+
+        const layer = Util
+            .$currentWorkSpace()
+            .scene
+            .getLayer(
+                targetLayer.dataset.layerId | 0
+            );
+
+        if (layer.mode === Util.LAYER_MODE_GUIDE) {
+            return ;
+        }
+
+        // 状態を保存
+        this.save();
+
+        const reload = this.resetLayer(targetLayer);
+
+        layer.mode = Util.LAYER_MODE_GUIDE;
+        layer.showIcon();
+
+        if (reload) {
+            this.reloadScreen();
+        }
+
+        this._$saved = false;
+    }
+
+    /**
+     * @description レイヤー切り替え時にマスクとガイドの入れ子を初期化する
+     *
+     * @param  {HTMLDivElement} element
+     * @return {boolean}
+     * @method
+     * @public
+     */
+    resetLayer (element)
+    {
+        const scene = Util.$currentWorkSpace().scene;
+
+        const layer = scene.getLayer(element.dataset.layerId | 0);
+
+        const children = Array.from(
+            document.getElementById("timeline-content").children
+        );
+
+        let reload = false;
+        let index  = children.indexOf(element);
+        switch (layer.mode) {
+
+            case Util.LAYER_MODE_MASK:
+                for (;;) {
+                    const node = children[++index];
+                    if (!node) {
+                        break;
+                    }
+
+                    const layer = scene.getLayer(node.dataset.layerId | 0);
+                    if (layer.mode !== Util.LAYER_MODE_MASK_IN) {
+                        break;
+                    }
+
+                    layer.maskId = null;
+                    layer.mode   = Util.LAYER_MODE_NORMAL;
+                    layer.showIcon();
+
+                    reload = true;
+                }
+                break;
+
+            case Util.LAYER_MODE_GUIDE:
+                for (;;) {
+                    const node = children[++index];
+                    if (!node) {
+                        break;
+                    }
+
+                    const layer = scene.getLayer(node.dataset.layerId | 0);
+                    if (layer.mode !== Util.LAYER_MODE_GUIDE_IN) {
+                        break;
+                    }
+
+                    layer.guideId = null;
+                    layer.mode    = Util.LAYER_MODE_NORMAL;
+                    layer.showIcon();
+                }
+                break;
+
+            default:
+                break;
+
+        }
+
+        return reload;
     }
 
     /**

@@ -947,6 +947,11 @@ class MovieClip extends Instance
                 continue;
             }
 
+            // ガイドレイヤーは描画に含めない
+            if (layer.mode === Util.LAYER_MODE_GUIDE) {
+                continue;
+            }
+
             if (layer.mode === Util.LAYER_MODE_MASK_IN
                 && !clipStart && !clipIndex
             ) {

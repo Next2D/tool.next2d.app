@@ -304,7 +304,7 @@ class Layer
 
         layerNameElement
             .classList
-            .remove("mask-in-view-text");
+            .remove("in-view-text");
 
         layerNameElement
             .classList
@@ -315,7 +315,7 @@ class Layer
 
         inputElement
             .classList
-            .remove("view-text-input-mask-in");
+            .remove("in-view-text-input");
 
         switch (this._$mode) {
 
@@ -329,6 +329,12 @@ class Layer
                     .style.display = "none";
                 document
                     .getElementById(`layer-mask-in-icon-${this.id}`)
+                    .style.display = "none";
+                document
+                    .getElementById(`layer-guide-icon-${this.id}`)
+                    .style.display = "none";
+                document
+                    .getElementById(`layer-guide-in-icon-${this.id}`)
                     .style.display = "none";
 
                 break;
@@ -344,6 +350,12 @@ class Layer
                 document
                     .getElementById(`layer-mask-in-icon-${this.id}`)
                     .style.display = "none";
+                document
+                    .getElementById(`layer-guide-icon-${this.id}`)
+                    .style.display = "none";
+                document
+                    .getElementById(`layer-guide-in-icon-${this.id}`)
+                    .style.display = "none";
 
                 break;
 
@@ -358,6 +370,12 @@ class Layer
                     document
                         .getElementById(`layer-mask-in-icon-${this.id}`)
                         .style.display = "";
+                    document
+                        .getElementById(`layer-guide-icon-${this.id}`)
+                        .style.display = "none";
+                    document
+                        .getElementById(`layer-guide-in-icon-${this.id}`)
+                        .style.display = "none";
 
                     const layerNameElement = document
                         .getElementById(`layer-name-${this.id}`);
@@ -368,16 +386,77 @@ class Layer
 
                     layerNameElement
                         .classList
-                        .add("mask-in-view-text");
+                        .add("in-view-text");
 
                     const inputElement = document
                         .getElementById(`layer-name-input-${this.id}`);
 
                     inputElement
                         .classList
-                        .add("view-text-input-mask-in");
+                        .add("in-view-text-input");
 
                 }
+                break;
+
+            case Util.LAYER_MODE_GUIDE:
+
+                document
+                    .getElementById(`layer-icon-${this.id}`)
+                    .style.display = "none";
+                document
+                    .getElementById(`layer-mask-icon-${this.id}`)
+                    .style.display = "none";
+                document
+                    .getElementById(`layer-mask-in-icon-${this.id}`)
+                    .style.display = "none";
+                document
+                    .getElementById(`layer-guide-icon-${this.id}`)
+                    .style.display = "";
+                document
+                    .getElementById(`layer-guide-in-icon-${this.id}`)
+                    .style.display = "none";
+
+                break;
+
+            case Util.LAYER_MODE_GUIDE_IN:
+                {
+                    document
+                        .getElementById(`layer-icon-${this.id}`)
+                        .style.display = "none";
+                    document
+                        .getElementById(`layer-mask-icon-${this.id}`)
+                        .style.display = "none";
+                    document
+                        .getElementById(`layer-mask-in-icon-${this.id}`)
+                        .style.display = "none";
+                    document
+                        .getElementById(`layer-guide-icon-${this.id}`)
+                        .style.display = "none";
+                    document
+                        .getElementById(`layer-guide-in-icon-${this.id}`)
+                        .style.display = "";
+
+                    const layerNameElement = document
+                        .getElementById(`layer-name-${this.id}`);
+
+                    layerNameElement
+                        .classList
+                        .remove("view-text");
+
+                    layerNameElement
+                        .classList
+                        .add("in-view-text");
+
+                    const inputElement = document
+                        .getElementById(`layer-name-input-${this.id}`);
+
+                    inputElement
+                        .classList
+                        .add("in-view-text-input");
+                }
+                break;
+
+            default:
                 break;
 
         }
