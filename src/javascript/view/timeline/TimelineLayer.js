@@ -722,13 +722,30 @@ class TimelineLayer extends BaseTimeline
     /**
      * @description レイヤーの移動処理
      *
+     * @param  {MouseEvent} event
      * @return {void}
      * @method
      * @public
      */
-    moveLayer ()
+    moveLayer (event)
     {
         Util.$setCursor("grabbing");
+
+        window.requestAnimationFrame(() =>
+        {
+            const parent = document
+                .getElementById("timeline-content");
+
+            if (event.pageY + 20 > window.innerHeight) {
+                parent.scrollTop += event.pageY + 20 - window.innerHeight;
+            }
+
+            if (parent.scrollTop > 0 && parent.offsetTop > event.pageY - 8) {
+                parent.scrollTop += parent.offsetTop - event.pageY;
+            }
+
+        });
+
     }
 
     /**
@@ -1084,20 +1101,6 @@ class TimelineLayer extends BaseTimeline
 
             this._$destLayer = element;
             element.classList.add("move-target");
-
-            const parent = document
-                .getElementById("timeline-content");
-
-            // TODO レイヤーのスクロール移動処理
-            if (element.offsetTop + element.offsetHeight
-                > parent.scrollTop + window.innerHeight
-            ) {
-
-                parent.scrollTop = element.offsetTop
-                    + element.offsetHeight
-                    - window.innerHeight;
-
-            }
 
         }
     }
