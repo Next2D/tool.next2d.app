@@ -13,6 +13,7 @@ class TimelineLayer extends BaseTimeline
         super();
 
         /**
+         * TODO 不要なので削除する
          * @type {HTMLDivElement}
          * @default null
          * @private
@@ -46,6 +47,13 @@ class TimelineLayer extends BaseTimeline
         this._$moveLayerId = -1;
 
         /**
+         * @type {number}
+         * @default -1
+         * @private
+         */
+        this._$selectLayerId = -1;
+
+        /**
          * @type {HTMLDivElement}
          * @default null
          * @private
@@ -60,11 +68,18 @@ class TimelineLayer extends BaseTimeline
         this._$timerId = -1;
 
         /**
+         * @type {HTMLDivElement}
+         * @default null
+         * @private
+         */
+        this._$exitLayer = null;
+
+        /**
          * @type {function}
          * @default null
          * @private
          */
-        this._$activeLayer = null;
+        this._$executeMoveLayer = null;
 
         /**
          * @type {function}
@@ -100,6 +115,30 @@ class TimelineLayer extends BaseTimeline
          * @private
          */
         this._$endMultiSelect = null;
+    }
+
+    /**
+     * @description 選択中の全てのフレームElementを返す
+     *
+     * @return {Map}
+     * @public
+     */
+    get targetFrames ()
+    {
+        return this._$targetFrames;
+    }
+
+    /**
+     * @description 選択中のフレームElementを返す
+     *
+     * @return {HTMLDivElement|null}
+     * @public
+     */
+    get targetFrame ()
+    {
+        return this.targetFrames.size
+            ? this.targetFrames.values().next().value
+            : null;
     }
 
     /**
@@ -351,9 +390,11 @@ class TimelineLayer extends BaseTimeline
 <div class="timeline-content-child" id="layer-id-${layerId}" data-layer-id="${layerId}">
 
     <div class="timeline-layer-controller">
+        <i class="timeline-exit-icon" id="timeline-exit-icon-${layerId}" data-layer-id="${layerId}"></i>
+        <i class="timeline-exit-in-icon" id="timeline-exit-in-icon-${layerId}" data-layer-id="${layerId}"></i>
         <i class="timeline-layer-icon" id="layer-icon-${layerId}" data-layer-id="${layerId}" data-detail="{{レイヤー変更(ダブルクリック)}}"></i>
         <i class="timeline-mask-icon" id="layer-mask-icon-${layerId}" data-layer-id="${layerId}" data-detail="{{レイヤー変更(ダブルクリック)}}"></i>
-        <i class="timeline-mask-in-icon" id="layer-mask-in-icon-${layerId}"></i>
+        <i class="timeline-mask-in-icon" id="layer-mask-in-icon-${layerId}" data-layer-id="${layerId}"></i>
         <i class="timeline-guide-icon" id="layer-guide-icon-${layerId}" data-layer-id="${layerId}" data-detail="{{レイヤー変更(ダブルクリック)}}"></i>
         <i class="timeline-guide-in-icon" id="layer-guide-in-icon-${layerId}" data-layer-id="${layerId}" data-detail="{{レイヤー変更(ダブルクリック)}}"></i>
         <div class="view-text" id="layer-name-${layerId}" data-layer-id="${layerId}">layer_${layerId}</div>
@@ -404,19 +445,77 @@ class TimelineLayer extends BaseTimeline
                 this.showLayerMenu(event);
             });
 
-        document
-            .getElementById(`layer-mask-icon-${layerId}`)
-            .addEventListener("dblclick", (event) =>
-            {
-                this.showLayerMenu(event);
-            });
+        // ガイドアイコン
+        const guideIcon = document
+            .getElementById(`layer-guide-icon-${layerId}`);
 
-        document
-            .getElementById(`layer-guide-icon-${layerId}`)
-            .addEventListener("dblclick", (event) =>
-            {
-                this.showLayerMenu(event);
-            });
+        guideIcon.addEventListener("dblclick", (event) =>
+        {
+            this.showLayerMenu(event);
+        });
+        guideIcon.addEventListener("mouseover", (event) =>
+        {
+            this.exitLayer(event);
+        });
+        guideIcon.addEventListener("mouseout", (event) =>
+        {
+            this.endExitLayer(event);
+        });
+
+        // マスクアイコン
+        const maskIcon = document
+            .getElementById(`layer-mask-icon-${layerId}`);
+
+        maskIcon.addEventListener("dblclick", (event) =>
+        {
+            this.showLayerMenu(event);
+        });
+        maskIcon.addEventListener("mouseover", (event) =>
+        {
+            this.exitLayer(event);
+        });
+        maskIcon.addEventListener("mouseout", (event) =>
+        {
+            this.endExitLayer(event);
+        });
+
+        // // マスク内のアイコン
+        // const maskInIcon = document
+        //     .getElementById(`layer-mask-in-icon-${layerId}`);
+        //
+        // maskInIcon.addEventListener("mouseover", (event) =>
+        // {
+        //     this.exitLayer(event);
+        // });
+        // maskInIcon.addEventListener("mouseout", (event) =>
+        // {
+        //     this.endExitLayer(event);
+        // });
+
+        // グループから外すexitアイコン
+        const exitIcon = document
+            .getElementById(`timeline-exit-icon-${layerId}`);
+
+        exitIcon.addEventListener("mouseover", (event) =>
+        {
+            this.exitLayer(event);
+        });
+        exitIcon.addEventListener("mouseout", (event) =>
+        {
+            this.endExitLayer(event);
+        });
+
+        const exitInIcon = document
+            .getElementById(`timeline-exit-in-icon-${layerId}`);
+
+        exitInIcon.addEventListener("mouseover", (event) =>
+        {
+            this.exitLayer(event);
+        });
+        exitInIcon.addEventListener("mouseout", (event) =>
+        {
+            this.endExitLayer(event);
+        });
 
         // レイヤーの説明モーダルを登録
         const layer = document.getElementById(`layer-id-${layerId}`);
@@ -510,6 +609,83 @@ class TimelineLayer extends BaseTimeline
     }
 
     /**
+     * @description マスクやガイドなどのグルーピングされたレイヤーを抜ける処理
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    exitLayer (event)
+    {
+        if (this._$moveLayerId === -1) {
+            return ;
+        }
+
+        const layerId = event.target.dataset.layerId | 0;
+
+        let element = document
+            .getElementById(`layer-id-${layerId}`);
+
+        const children = Array.from(
+            document.getElementById("timeline-content").children
+        );
+
+        const scene = Util.$currentWorkSpace().scene;
+        const index = children.indexOf(element);
+        const node  = children[index + 1];
+        if (node) {
+            const layer = scene
+                .getLayer(node.dataset.layerId | 0);
+
+            switch (layer.mode) {
+
+                // 最終行じゃない時は何もしない
+                case Util.LAYER_MODE_MASK_IN:
+                case Util.LAYER_MODE_GUIDE_IN:
+                    return ;
+
+                default:
+                    break;
+
+            }
+        }
+
+        // 最終行の場合はフラグをOnにする
+        this._$exitLayer = element;
+
+        document
+            .getElementById(`timeline-exit-icon-${layerId}`)
+            .style.opacity = "1";
+        document
+            .getElementById(`timeline-exit-in-icon-${layerId}`)
+            .style.opacity = "1";
+    }
+
+    /**
+     * @description グルーピングされたレイヤーを抜ける処理を解除
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    endExitLayer (event)
+    {
+        if (this._$moveLayerId === -1) {
+            return ;
+        }
+
+        this._$exitLayer = null;
+
+        const layerId = event.target.dataset.layerId | 0;
+        document
+            .getElementById(`timeline-exit-icon-${layerId}`)
+            .style.opacity = "0";
+        document
+            .getElementById(`timeline-exit-in-icon-${layerId}`)
+            .style.opacity = "0";
+    }
+
+    /**
      * @description タイムラインのハイライトのOn/Off
      *
      * @return {void}
@@ -518,6 +694,10 @@ class TimelineLayer extends BaseTimeline
      */
     clickLight (event)
     {
+        if (event.button) {
+            return ;
+        }
+
         event.stopPropagation();
         this.changeType(event.target, "light");
     }
@@ -531,6 +711,10 @@ class TimelineLayer extends BaseTimeline
      */
     clickLock (event)
     {
+        if (event.button) {
+            return ;
+        }
+
         event.stopPropagation();
         this.changeType(event.target, "lock");
         Util
@@ -548,6 +732,10 @@ class TimelineLayer extends BaseTimeline
      */
     clickDisable (event)
     {
+        if (event.button) {
+            return ;
+        }
+
         event.stopPropagation();
         this.changeType(event.target, "disable");
         Util
@@ -757,12 +945,71 @@ class TimelineLayer extends BaseTimeline
      */
     executeMoveLayer ()
     {
+        window.removeEventListener("mousemove", this._$moveLayer);
+        window.removeEventListener("mouseup", this._$executeMoveLayer);
+
+        let exitLayer = null;
+        const scene = Util.$currentWorkSpace().scene;
+        if (this._$exitLayer) {
+
+            exitLayer = scene.getLayer(
+                this._$exitLayer.dataset.layerId | 0
+            );
+
+            // valid
+            switch (exitLayer.mode) {
+
+                case Util.LAYER_MODE_MASK_IN:
+                    // 選択中のレイヤーに親のマスクがあったら初期化して中止
+                    for (const layer of this.targetLayers.values()) {
+                        if (layer.id !== exitLayer.maskId) {
+                            continue;
+                        }
+
+                        // 初期化して処理を中止
+                        this._$moveLayerId = -1;
+                        this._$destLayer   = null;
+                        this._$exitLayer   = null;
+                        Util.$setCursor("auto");
+                        return ;
+                    }
+                    break;
+
+                case Util.LAYER_MODE_GUIDE_IN:
+                    // 選択中のレイヤーに親のガイドがあったら初期化して中止
+                    for (const layer of this.targetLayers.values()) {
+                        if (layer.id !== exitLayer.guideId) {
+                            continue;
+                        }
+
+                        // 初期化して処理を中止
+                        this._$moveLayerId = -1;
+                        this._$destLayer   = null;
+                        this._$exitLayer   = null;
+                        Util.$setCursor("auto");
+                        return ;
+                    }
+                    break;
+
+                default:
+                    break;
+
+            }
+
+            document
+                .getElementById(`timeline-exit-icon-${exitLayer.id}`)
+                .style.opacity = "0";
+            document
+                .getElementById(`timeline-exit-in-icon-${exitLayer.id}`)
+                .style.opacity = "0";
+
+            this._$destLayer = this._$exitLayer;
+        }
+
         if (this._$destLayer) {
 
             // 非アクティブへ
             this._$destLayer.classList.remove("move-target");
-
-            const scene = Util.$currentWorkSpace().scene;
 
             // 移動先
             const destLayer = scene.getLayer(
@@ -774,40 +1021,43 @@ class TimelineLayer extends BaseTimeline
              * 移動対象にマスクレイヤーが含まれる場合
              * もしくは、ガイドレイヤーが含まれる場合は処理を中止する
              */
-            switch (destLayer.mode) {
+            if (exitLayer === null) {
+                switch (destLayer.mode) {
 
-                case Util.LAYER_MODE_MASK:
-                case Util.LAYER_MODE_MASK_IN:
-                case Util.LAYER_MODE_GUIDE:
-                case Util.LAYER_MODE_GUIDE_IN:
-                    for (const layer of this.targetLayers.values()) {
+                    case Util.LAYER_MODE_MASK:
+                    case Util.LAYER_MODE_MASK_IN:
+                    case Util.LAYER_MODE_GUIDE:
+                    case Util.LAYER_MODE_GUIDE_IN:
+                        for (const layer of this.targetLayers.values()) {
 
-                        const moveLayer = scene.getLayer(
-                            layer.dataset.layerId | 0
-                        );
+                            const moveLayer = scene.getLayer(
+                                layer.dataset.layerId | 0
+                            );
 
-                        switch (moveLayer.mode) {
+                            switch (moveLayer.mode) {
 
-                            case Util.LAYER_MODE_MASK:
-                            case Util.LAYER_MODE_GUIDE:
+                                case Util.LAYER_MODE_MASK:
+                                case Util.LAYER_MODE_GUIDE:
 
-                                // 初期化して処理を中止
-                                this._$moveLayerId = -1;
-                                this._$destLayer   = null;
-                                Util.$setCursor("auto");
-                                return ;
+                                    // 初期化して処理を中止
+                                    this._$moveLayerId = -1;
+                                    this._$destLayer   = null;
+                                    this._$exitLayer   = null;
+                                    Util.$setCursor("auto");
+                                    return ;
 
-                            default:
-                                break;
+                                default:
+                                    break;
+
+                            }
 
                         }
+                        break;
 
-                    }
-                    break;
+                    default:
+                        break;
 
-                default:
-                    break;
-
+                }
             }
 
             // 移動前の状態を保存
@@ -903,27 +1153,64 @@ class TimelineLayer extends BaseTimeline
 
                     case Util.LAYER_MODE_MASK:
                     case Util.LAYER_MODE_MASK_IN:
-                        // 移動先がマスクか、マスクの対象の時は
-                        // マスクIDを紐付けて、アイコンを変更
-                        moveLayer.maskId = destLayer.maskId === null
-                            ? destLayer.id
-                            : destLayer.maskId;
 
-                        moveLayer.mode = Util.LAYER_MODE_MASK_IN;
-                        moveLayer.showIcon();
+                        if (!exitLayer) {
+
+                            // 移動先がマスクか、マスクの対象の時は
+                            // マスクIDを紐付けて、アイコンを変更
+                            moveLayer.maskId = destLayer.maskId === null
+                                ? destLayer.id
+                                : destLayer.maskId;
+
+                            moveLayer.mode = Util.LAYER_MODE_MASK_IN;
+                            moveLayer.showIcon();
+
+                        } else {
+
+                            if (exitLayer.maskId !== null
+                                && exitLayer.maskId === moveLayer.maskId
+                            ) {
+                                console.log(destLayer.maskId,
+                                    destLayer.mode,
+                                    Util.LAYER_MODE_NORMAL);
+
+                                // マスク外に移動するので通常レイヤーに更新
+                                moveLayer.maskId = null;
+                                moveLayer.mode   = Util.LAYER_MODE_NORMAL;
+                                moveLayer.showIcon();
+                            }
+
+                        }
                         break;
 
                     // 移動先がガイドか、ガイドの対象の時
                     case Util.LAYER_MODE_GUIDE:
                     case Util.LAYER_MODE_GUIDE_IN:
-                        // 移動先がガイドか、ガイドの対象の時は
-                        // ガイドIDを紐付けて、アイコンを変更
-                        moveLayer.guideId = destLayer.guideId === null
-                            ? destLayer.id
-                            : destLayer.guideId;
 
-                        moveLayer.mode = Util.LAYER_MODE_GUIDE_IN;
-                        moveLayer.showIcon();
+                        if (!exitLayer) {
+
+                            // 移動先がガイドか、ガイドの対象の時は
+                            // ガイドIDを紐付けて、アイコンを変更
+                            moveLayer.guideId = destLayer.guideId === null
+                                ? destLayer.id
+                                : destLayer.guideId;
+
+                            moveLayer.mode = Util.LAYER_MODE_GUIDE_IN;
+                            moveLayer.showIcon();
+
+                        } else {
+
+                            if (exitLayer.guideId !== null
+                                && exitLayer.guideId === moveLayer.guideId
+                            ) {
+                                // マスク外に移動するので通常レイヤーに更新
+                                moveLayer.guideId = null;
+                                moveLayer.mode    = Util.LAYER_MODE_NORMAL;
+                                moveLayer.showIcon();
+                            }
+
+                        }
+
                         break;
 
                     default:
@@ -1017,22 +1304,11 @@ class TimelineLayer extends BaseTimeline
 
                 }
 
-                // if (layer === this._$destLayer.nextElementSibling) {
-                //
-                //     // if (destLayer.mode === Util.LAYER_MODE_MASK) {
-                //     //     return ;
-                //     // }
-                //
-                //     element
-                //         .insertBefore(layer, this._$destLayer);
-                //
-                // } else {
+                // 指定したレイヤーの下部に移動
+                element
+                    .insertBefore(layer, this._$destLayer.nextElementSibling);
 
-                    element
-                        .insertBefore(layer, this._$destLayer.nextElementSibling);
-
-                // }
-
+                // マスク、ガイドに紐ずくElementも一緒に移動する
                 if (relationLayers.length) {
 
                     for (let idx = 0; idx < relationLayers.length; ++idx) {
@@ -1047,11 +1323,12 @@ class TimelineLayer extends BaseTimeline
 
                 }
 
+                // スクロール位置を調整
                 layer.lastElementChild.scrollLeft
                     = this._$destLayer.lastElementChild.scrollLeft;
             }
 
-            // 並び替えたElementを下に内部Objectも並び替える
+            // 並び替えたElementをもとに内部Objectも並び替える
             const layers = [];
             const children = element.children;
             for (let idx = 0; idx < children.length; ++idx) {
@@ -1069,11 +1346,26 @@ class TimelineLayer extends BaseTimeline
 
             this._$saved = false;
             this.reloadScreen();
+
+        } else {
+
+            // 初回選択出ない時はアクティブ判定を行う
+            if (this._$moveLayerId !== this._$selectLayerId) {
+
+                const element = document
+                    .getElementById(`layer-id-${this._$moveLayerId}`);
+
+                this.activeLayer(element);
+
+            }
+
         }
 
         // 初期化
-        this._$moveLayerId = -1;
-        this._$destLayer   = null;
+        this._$selectLayerId = -1;
+        this._$moveLayerId   = -1;
+        this._$destLayer     = null;
+        this._$exitLayer     = null;
         Util.$setCursor("auto");
     }
 
@@ -1350,28 +1642,22 @@ class TimelineLayer extends BaseTimeline
         Util.$endMenu();
 
         const element = event.currentTarget;
-        if (element.classList.contains("active")) {
-
-            Util.$setCursor("grabbing");
-
-            if (!this._$moveLayer) {
-                this._$moveLayer = this.moveLayer.bind(this);
-            }
-
-            if (!this._$activeLayer) {
-                this._$activeLayer = this.activeLayer.bind(this);
-            }
-
-            this._$moveLayerId = element.dataset.layerId | 0;
-
-            window.addEventListener("mousemove", this._$moveLayer);
-            window.addEventListener("mouseup", this._$activeLayer);
-
-        } else {
-
+        if (!element.classList.contains("active")) {
             this.activeLayer(element);
-
         }
+
+        if (!this._$moveLayer) {
+            this._$moveLayer = this.moveLayer.bind(this);
+        }
+
+        if (!this._$executeMoveLayer) {
+            this._$executeMoveLayer = this.executeMoveLayer.bind(this);
+        }
+
+        this._$moveLayerId = element.dataset.layerId | 0;
+
+        window.addEventListener("mousemove", this._$moveLayer);
+        window.addEventListener("mouseup", this._$executeMoveLayer);
     }
 
     /**
@@ -1384,37 +1670,26 @@ class TimelineLayer extends BaseTimeline
      */
     activeLayer (element)
     {
-        window.removeEventListener("mousemove", this._$moveLayer);
-        window.removeEventListener("mouseup", this._$activeLayer);
-
-        if (this._$destLayer) {
-            return this.executeMoveLayer();
-        }
-
         // 初期化
         this.clearActiveFrames();
 
-        if (this._$moveLayerId > -1) {
-            element = document
-                .getElementById(`layer-id-${this._$moveLayerId}`);
-        }
-
         // 選択したレイヤーをアクティブ化
         this.targetLayer = element;
+
+        // 選択したレイヤーのIDを変数に格納
+        const layerId = element.dataset.layerId | 0;
+        this._$selectLayerId = layerId;
 
         // アクティブ表示
         const frame = Util.$timelineFrame.currentFrame;
         if (this.targetLayers.size === 1) {
 
-            const layerId = element.dataset.layerId | 0;
-
             // 編集へセット
             const frameElement = document
                 .getElementById(`${layerId}-${frame}`);
 
-            // 選択したレイヤーをセット
-            this._$targetFrames.delete(layerId);
-
+            // 選択したレイヤーのフレームを初期化してセット
+            this.targetFrames.delete(layerId);
             this.addTargetFrame(layerId, frameElement);
         }
 
@@ -1423,10 +1698,6 @@ class TimelineLayer extends BaseTimeline
 
         // スクリーンのDisplayObjectをアクティブ化
         this.activeCharacter();
-
-        // 初期化
-        this._$moveLayerId = -1;
-        Util.$setCursor("auto");
     }
 
     /**
@@ -1707,8 +1978,7 @@ class TimelineLayer extends BaseTimeline
         }
 
         // 変数を初期化
-        this._$selectFrameElement = null;
-        this._$targetFrames.clear();
+        this.targetFrames.clear();
 
         // グルーピングElementを非表示にする
         this.hideTargetGroup();

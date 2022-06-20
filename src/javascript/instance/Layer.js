@@ -336,27 +336,42 @@ class Layer
                 document
                     .getElementById(`layer-guide-in-icon-${this.id}`)
                     .style.display = "none";
+                document
+                    .getElementById(`timeline-exit-icon-${this.id}`)
+                    .style.display = "none";
+                document
+                    .getElementById(`timeline-exit-in-icon-${this.id}`)
+                    .style.display = "none";
 
                 break;
 
             case Util.LAYER_MODE_MASK:
+                {
+                    document
+                        .getElementById(`layer-icon-${this.id}`)
+                        .style.display = "none";
+                    document
+                        .getElementById(`layer-mask-icon-${this.id}`)
+                        .style.display = "";
+                    document
+                        .getElementById(`layer-mask-in-icon-${this.id}`)
+                        .style.display = "none";
+                    document
+                        .getElementById(`layer-guide-icon-${this.id}`)
+                        .style.display = "none";
+                    document
+                        .getElementById(`layer-guide-in-icon-${this.id}`)
+                        .style.display = "none";
+                    document
+                        .getElementById(`timeline-exit-in-icon-${this.id}`)
+                        .style.display = "none";
 
-                document
-                    .getElementById(`layer-icon-${this.id}`)
-                    .style.display = "none";
-                document
-                    .getElementById(`layer-mask-icon-${this.id}`)
-                    .style.display = "";
-                document
-                    .getElementById(`layer-mask-in-icon-${this.id}`)
-                    .style.display = "none";
-                document
-                    .getElementById(`layer-guide-icon-${this.id}`)
-                    .style.display = "none";
-                document
-                    .getElementById(`layer-guide-in-icon-${this.id}`)
-                    .style.display = "none";
+                    const exitIcon = document
+                        .getElementById(`timeline-exit-icon-${this.id}`);
 
+                    exitIcon.style.display = "";
+                    exitIcon.style.opacity = "0";
+                }
                 break;
 
             case Util.LAYER_MODE_MASK_IN:
@@ -376,6 +391,15 @@ class Layer
                     document
                         .getElementById(`layer-guide-in-icon-${this.id}`)
                         .style.display = "none";
+                    document
+                        .getElementById(`timeline-exit-icon-${this.id}`)
+                        .style.display = "none";
+
+                    const exitInIcon = document
+                        .getElementById(`timeline-exit-in-icon-${this.id}`);
+
+                    exitInIcon.style.display = "";
+                    exitInIcon.style.opacity = "0";
 
                     const layerNameElement = document
                         .getElementById(`layer-name-${this.id}`);
@@ -399,23 +423,32 @@ class Layer
                 break;
 
             case Util.LAYER_MODE_GUIDE:
+                {
+                    document
+                        .getElementById(`layer-icon-${this.id}`)
+                        .style.display = "none";
+                    document
+                        .getElementById(`layer-mask-icon-${this.id}`)
+                        .style.display = "none";
+                    document
+                        .getElementById(`layer-mask-in-icon-${this.id}`)
+                        .style.display = "none";
+                    document
+                        .getElementById(`layer-guide-icon-${this.id}`)
+                        .style.display = "";
+                    document
+                        .getElementById(`layer-guide-in-icon-${this.id}`)
+                        .style.display = "none";
+                    document
+                        .getElementById(`timeline-exit-in-icon-${this.id}`)
+                        .style.display = "none";
 
-                document
-                    .getElementById(`layer-icon-${this.id}`)
-                    .style.display = "none";
-                document
-                    .getElementById(`layer-mask-icon-${this.id}`)
-                    .style.display = "none";
-                document
-                    .getElementById(`layer-mask-in-icon-${this.id}`)
-                    .style.display = "none";
-                document
-                    .getElementById(`layer-guide-icon-${this.id}`)
-                    .style.display = "";
-                document
-                    .getElementById(`layer-guide-in-icon-${this.id}`)
-                    .style.display = "none";
+                    const exitIcon = document
+                        .getElementById(`timeline-exit-icon-${this.id}`);
 
+                    exitIcon.style.display = "";
+                    exitIcon.style.opacity = "0";
+                }
                 break;
 
             case Util.LAYER_MODE_GUIDE_IN:
@@ -435,6 +468,12 @@ class Layer
                     document
                         .getElementById(`layer-guide-in-icon-${this.id}`)
                         .style.display = "";
+
+                    const exitInIcon = document
+                        .getElementById(`timeline-exit-in-icon-${this.id}`)
+
+                    exitInIcon.style.display = "";
+                    exitInIcon.style.opacity = "0";
 
                     const layerNameElement = document
                         .getElementById(`layer-name-${this.id}`);

@@ -366,8 +366,8 @@ class TimelineTool extends BaseTimeline
      */
     executeTimelineLayerTrash ()
     {
-        const layerElement = Util.$timelineLayer.targetLayer;
-        if (layerElement) {
+        const targetLayers = Util.$timelineLayer.targetLayers;
+        if (targetLayers.size) {
 
             // 変更前の情報を保存
             this.save();
@@ -375,53 +375,100 @@ class TimelineTool extends BaseTimeline
             const scene = Util.$currentWorkSpace().scene;
 
             // setup
-            const element = document.getElementById("timeline-content");
-            const clone   = Array.from(element.children);
-            const index   = clone.indexOf(layerElement);
+            const parentElement = document
+                .getElementById("timeline-content");
 
-            // マスクの対象となっているレイヤーを元に戻す
-            const layerId = layerElement.dataset.layerId | 0;
-            const layer   = scene.getLayer(layerId);
-            if (layer.mode === Util.LAYER_MODE_MASK) {
+            let currentIndex = Array
+                .from(parentElement.children)
+                .indexOf(Util.$timelineLayer.targetLayer);
 
-                const children = element.children;
-                for (let idx = index + 1; idx < children.length; ++idx) {
+            let reload = false;
+            const frame = Util.$timelineFrame.currentFrame;
+            for (const element of targetLayers.values()) {
 
-                    const child = children[idx];
+                const index = Array
+                    .from(parentElement.children)
+                    .indexOf(element);
 
-                    const layer = scene.getLayer(child.dataset.layerId | 0);
-                    if (layer.mode !== Util.LAYER_MODE_MASK_IN) {
+                // マスクの対象となっているレイヤーを元に戻す
+                const layerId = element.dataset.layerId | 0;
+                const layer   = scene.getLayer(layerId);
+
+                const children = parentElement.children;
+                switch (layer.mode) {
+
+                    case Util.LAYER_MODE_MASK:
+                        for (let idx = index + 1; idx < children.length; ++idx) {
+
+                            const child = children[idx];
+
+                            const layer = scene.getLayer(
+                                child.dataset.layerId | 0
+                            );
+
+                            if (layer.mode !== Util.LAYER_MODE_MASK_IN) {
+                                break;
+                            }
+
+                            layer.mode = Util.LAYER_MODE_NORMAL;
+                            layer.showIcon();
+
+                        }
                         break;
-                    }
 
-                    layer.mode = Util.LAYER_MODE_NORMAL;
-                    layer.showIcon();
+                    case Util.LAYER_MODE_GUIDE:
+                        for (let idx = index + 1; idx < children.length; ++idx) {
+
+                            const child = children[idx];
+
+                            const layer = scene.getLayer(
+                                child.dataset.layerId | 0
+                            );
+
+                            if (layer.mode !== Util.LAYER_MODE_GUIDE_IN) {
+                                break;
+                            }
+
+                            layer.mode = Util.LAYER_MODE_NORMAL;
+                            layer.showIcon();
+
+                        }
+                        break;
+
+                    default:
+                        break;
 
                 }
 
+                const characters = layer.getActiveCharacter(frame);
+                if (characters.length) {
+                    reload = true;
+                }
+
+                // 一覧からElementを削除
+                element.remove();
+                scene.deleteLayer(layerId);
             }
 
-            // execute remove
-            layerElement.remove();
+            /**
+             * @type {ArrowTool}
+             */
+            const tool = Util.$tools.getDefaultTool("arrow");
+            tool.clear();
 
-            // reset
-            Util.$timelineLayer.clearActiveFrames();
+            // タイムラインにレイヤーがあれば選択したいた近くのレイヤーをアクティブに
+            if (parentElement.children.length) {
+                let layerElement = null;
+                for (;;) {
+                    layerElement = parentElement.children[currentIndex--];
+                    if (layerElement) {
+                        Util.$timelineLayer.activeLayer(layerElement);
+                        break;
+                    }
+                }
+            }
 
-            // Util.$screen.clearTweenMarker();
-            // Util.$screen.hideTransformTarget();
-            // Util.$screen.hideGridTarget();
-
-            // clear active object
-            // this.clearActiveTimeline();
-            // Util.$screen.clearActiveCharacter();
-            // Util.$controller.clearActiveController();
-
-            const frame = Util.$timelineFrame.currentFrame;
-
-            const characters = layer.getActiveCharacter(frame);
-            scene.deleteLayer(layerId);
-
-            if (characters.length) {
+            if (reload) {
                 this.reloadScreen();
             }
         }

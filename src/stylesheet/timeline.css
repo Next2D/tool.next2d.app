@@ -579,6 +579,26 @@
     margin              : 6px;
 }
 
+#timeline-content .timeline-exit-icon
+{
+    width               : 10px;
+    height              : 30px;
+    background-image    : url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24"><path fill="whitesmoke" d="M0 12l9-8v6h15v4h-15v6z"/></svg>');
+    background-repeat   : no-repeat;
+    background-position : center center;
+    margin-left         : 4px;
+}
+
+#timeline-content .timeline-exit-in-icon
+{
+    width               : 24px;
+    height              : 30px;
+    background-image    : url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24"><path fill="whitesmoke" d="M0 12l9-8v6h15v4h-15v6z"/></svg>');
+    background-repeat   : no-repeat;
+    background-position : 0 center;
+    margin-left         : 4px;
+}
+
 #timeline-content .timeline-layer-icon:hover,
 #timeline-content .timeline-mask-icon:hover,
 #timeline-content .timeline-guide-icon:hover
@@ -639,7 +659,7 @@
 {
     display     : flex;
     align-items : center;
-    width       : 135px;
+    width       : 130px;
     height      : 24px;
     margin      : 3px;
     overflow    : hidden;
@@ -650,7 +670,7 @@
 {
     display     : flex;
     align-items : center;
-    width       : 120px;
+    width       : 115px;
     height      : 24px;
     margin      : 3px;
     overflow    : hidden;
@@ -674,7 +694,7 @@
     outline          : none;
     background-color : transparent;
     color            : #f5f5f5;
-    width            : 135px;
+    width            : 130px;
     height           : 24px;
     margin           : 3px;
     padding          : 0;
@@ -691,7 +711,7 @@
 
 #timeline-content .in-view-text-input
 {
-    width : 120px;
+    width : 115px;
 }
 
 #timeline-controller-base
