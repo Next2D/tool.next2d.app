@@ -1847,44 +1847,44 @@ class Timeline
                 }.bind(this));
         }
 
-        const labelElement = document
-            .getElementById("label-name");
+        // const labelElement = document
+        //     .getElementById("label-name");
+        //
+        // if (labelElement) {
+        //     labelElement.addEventListener("focusin", function ()
+        //     {
+        //         Util.$keyLock = true;
+        //         this._$labelFrame = Util.$timelineFrame.currentFrame;
+        //     }.bind(this));
+        //     labelElement.addEventListener("keypress", this.setLabelMarker.bind(this));
+        //     labelElement.addEventListener("blur", function ()
+        //     {
+        //         Util.$keyLock = false;
+        //     });
+        // }
 
-        if (labelElement) {
-            labelElement.addEventListener("focusin", function ()
-            {
-                Util.$keyLock = true;
-                this._$labelFrame = Util.$timelineFrame.currentFrame;
-            }.bind(this));
-            labelElement.addEventListener("keypress", this.setLabelMarker.bind(this));
-            labelElement.addEventListener("blur", function ()
-            {
-                Util.$keyLock = false;
-            });
-        }
-
-        // レイヤーの追加
-        const timelineLayerAdd = document
-            .getElementById("timeline-layer-add");
-
-        if (timelineLayerAdd) {
-            timelineLayerAdd
-                .addEventListener("mousedown", function ()
-                {
-                    const workSpace = Util.$currentWorkSpace();
-                    workSpace.temporarilySaved();
-                    workSpace.scene.addLayer();
-                });
-        }
-
-        // レイヤーの削除
-        const timelineLayerTrash = document
-            .getElementById("timeline-layer-trash");
-
-        if (timelineLayerTrash) {
-            timelineLayerTrash
-                .addEventListener("click", this.removeLayer.bind(this));
-        }
+        // // レイヤーの追加
+        // const timelineLayerAdd = document
+        //     .getElementById("timeline-layer-add");
+        //
+        // if (timelineLayerAdd) {
+        //     timelineLayerAdd
+        //         .addEventListener("mousedown", function ()
+        //         {
+        //             const workSpace = Util.$currentWorkSpace();
+        //             workSpace.temporarilySaved();
+        //             workSpace.scene.addLayer();
+        //         });
+        // }
+        //
+        // // レイヤーの削除
+        // const timelineLayerTrash = document
+        //     .getElementById("timeline-layer-trash");
+        //
+        // if (timelineLayerTrash) {
+        //     timelineLayerTrash
+        //         .addEventListener("click", this.removeLayer.bind(this));
+        // }
 
         // // 全てのレイヤーをライトアップ
         // const timelineLayerLightAll = document
@@ -2090,36 +2090,36 @@ class Timeline
         //     }.bind(this), { "passive" : false });
         // }
 
-        const marker = document
-            .getElementById("timeline-marker");
-
-        if (marker) {
-            marker.addEventListener("mousedown", function (event)
-            {
-                // class reset
-                for (let idx = 0; idx < this._$targetFrames.length; ++idx) {
-
-                    this
-                        ._$targetFrames[idx]
-                        .classList
-                        .remove("frame-active");
-
-                }
-
-                Util.$tools.reset();
-
-                Util.$controller.setDefaultController();
-
-                // clear
-                this._$targetFrames.length = 0;
-
-                this._$markerMode = true;
-                this._$pointX     = event.pageX;
-
-                Util.$setCursor("ew-resize");
-
-            }.bind(this));
-        }
+        // const marker = document
+        //     .getElementById("timeline-marker");
+        //
+        // if (marker) {
+        //     marker.addEventListener("mousedown", function (event)
+        //     {
+        //         // class reset
+        //         for (let idx = 0; idx < this._$targetFrames.length; ++idx) {
+        //
+        //             this
+        //                 ._$targetFrames[idx]
+        //                 .classList
+        //                 .remove("frame-active");
+        //
+        //         }
+        //
+        //         Util.$tools.reset();
+        //
+        //         Util.$controller.setDefaultController();
+        //
+        //         // clear
+        //         this._$targetFrames.length = 0;
+        //
+        //         this._$markerMode = true;
+        //         this._$pointX     = event.pageX;
+        //
+        //         Util.$setCursor("ew-resize");
+        //
+        //     }.bind(this));
+        // }
 
         // 再生ボタン
         const timelinePlay = document
@@ -5174,9 +5174,11 @@ class Timeline
         let limit = Math.ceil(window.parent.screen.width * 1.5
             + (Util.$currentWorkSpace().scene.totalFrame / 5 | 0) * Util.$frameWidth
         );
+
         while (limit > 0) {
 
             const htmlTag = `
+
 <div class="frame-group">
     <div class="frame-border-sec-group">
         <div class="frame-border" data-frame="${frame    }">${frame       % fps === 0 && fps > 4 ? sec++ + "s" : ""}</div>

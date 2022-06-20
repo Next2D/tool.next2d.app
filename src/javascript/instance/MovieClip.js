@@ -147,8 +147,8 @@ class MovieClip extends Instance
         }
 
         // create timeline marker
-        Util.$timeline.initializeParams();
-        Util.$timeline.buildTimeline();
+        // Util.$timeline.initializeParams();
+        Util.$timelineHeader.build();
 
         // init label
         for (const frame of this._$labels.keys()) {

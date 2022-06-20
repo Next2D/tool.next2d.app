@@ -243,7 +243,7 @@ class StageController extends BaseController
             StageController.MAX_FPS
         );
 
-        Util.$timeline.buildTimeline();
+        Util.$timelineHeader.build();
 
         const workSpace = Util.$currentWorkSpace();
         workSpace.stage.fps = value;

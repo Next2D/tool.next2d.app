@@ -349,6 +349,31 @@ class TimelineLayer extends BaseTimeline
     initialize ()
     {
         super.initialize();
+
+        const element = document
+            .getElementById("timeline-content");
+
+        if (element) {
+            element.addEventListener("wheel", (event) =>
+            {
+                if (!Util.$ctrlKey) {
+                    return ;
+                }
+
+                const deltaY = event.deltaY | 0;
+                if (!deltaY) {
+                    return false;
+                }
+
+                event.preventDefault();
+
+                Util.$timelineTool.timelineWidth = Util.$clamp(
+                    Util.$timelineTool.timelineWidth + deltaY,
+                    5,
+                    240
+                );
+            });
+        }
     }
 
     /**
@@ -377,13 +402,10 @@ class TimelineLayer extends BaseTimeline
         const scene   = Util.$currentWorkSpace().scene;
         const layerId = scene._$layerId;
 
-        const element = document.getElementById("timeline-content");
-        const marker  = document.getElementById("timeline-frame-marker");
+        const element = document
+            .getElementById("timeline-content");
 
-        const lastFrame = marker
-            .lastElementChild
-            .lastElementChild
-            .innerText | 0;
+        const lastFrame = Util.$timelineHeader.lastFrame;
 
         let frame = 1;
         let htmlTag = `
@@ -551,7 +573,13 @@ class TimelineLayer extends BaseTimeline
 
             event.preventDefault();
 
-            this._$scrollX += deltaX;
+            const maxDeltaX = event.currentTarget.scrollWidth
+                - event.currentTarget.offsetWidth;
+
+            this._$scrollX = Util.$clamp(
+                this._$scrollX + deltaX, 0, maxDeltaX
+            );
+
             this.moveTimeLine(this._$scrollX);
 
         }, { "passive" : false });
@@ -1450,9 +1478,9 @@ class TimelineLayer extends BaseTimeline
 
         }
 
+        // タイムラインのscrollXの補正
         element.scrollLeft = x;
-
-        this._$scrollX = x;
+        this._$scrollX = Util.$timelineHeader.scrollX = x;
     }
 
     /**

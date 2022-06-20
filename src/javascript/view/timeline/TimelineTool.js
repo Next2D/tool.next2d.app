@@ -20,6 +20,13 @@ class TimelineTool extends BaseTimeline
         this._$labelFrame = 0;
 
         /**
+         * @type {number}
+         * @default
+         * @private
+         */
+        this._$timelineWidth = 12;
+
+        /**
          * @type {boolean}
          * @default false
          * @private
@@ -126,6 +133,33 @@ class TimelineTool extends BaseTimeline
     }
 
     /**
+     * @description タイムラインの幅を返す
+     *
+     * @return {number}
+     * @public
+     */
+    get timelineWidth ()
+    {
+        return this._$timelineWidth;
+    }
+
+    /**
+     * @description タイムラインの幅を返す
+     *
+     * @param  {number} timeline_width
+     * @return {void}
+     * @public
+     */
+    set timelineWidth (timeline_width)
+    {
+        this._$timelineWidth = timeline_width | 0;
+        document
+            .documentElement
+            .style
+            .setProperty("--timeline-frame-width", `${timeline_width}px`);
+    }
+
+    /**
      * @description ラベル名のInput処理
      *
      * @param  {MouseEvent} event
@@ -139,31 +173,33 @@ class TimelineTool extends BaseTimeline
             return ;
         }
 
-        const value = event.target.value;
-
         const element = document
             .getElementById(`frame-label-marker-${this._$labelFrame}`);
 
-        element.setAttribute("class", value
-            ? "frame-border-box-marker"
-            : "frame-border-box"
-        );
-
-        // ラベル名があれば登録、空なら削除処理を行う
+        const value = event.target.value;
+        const scene = Util.$currentWorkSpace().scene;
         if (value) {
-            Util
-                .$currentWorkSpace()
-                .scene
-                .setLabel(this._$labelFrame, value);
+
+            // ラベル名があれば登録
+            this.save(); // 事前保存
+            scene.setLabel(this._$labelFrame, value);
+            element.setAttribute("class", "frame-border-box-marker");
+
         } else {
-            Util
-                .$currentWorkSpace()
-                .scene
-                .deleteLabel(this._$labelFrame);
+
+            // ラベル名があって、Inputが空ならラベルの削除処理を行う
+            const label = scene.gerLabel(this._$labelFrame);
+            if (label) {
+                this.save(); // 事前保存
+                scene.deleteLabel(this._$labelFrame);
+                element.setAttribute("class", "frame-border-box");
+            }
+
         }
 
         // 初期化
         this._$labelFrame = 0;
+        this._$saved      = false;
         Util.$keyLock     = false;
     }
 

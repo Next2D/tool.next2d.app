@@ -344,11 +344,10 @@ Util.$changeScene = function (event)
     // fixed logic
     Util.$timelineFrame.currentFrame = 1;
 
-    document
-        .getElementById("timeline-marker")
-        .style
-        .left = "0px";
+    // タイムラインのマーカーを移動
+    Util.$timelineMarker.move();
 
+    // 上部のタイムラインの位置を補正
     const base = document
         .getElementById("timeline-controller-base");
 
@@ -651,6 +650,12 @@ Util.$initialize = function ()
 
         }
     });
+
+    // フレームのデフォルト幅をセット
+    document
+        .documentElement
+        .style
+        .setProperty("--timeline-frame-width", "12px");
 
     document
         .documentElement

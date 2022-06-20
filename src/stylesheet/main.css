@@ -2,6 +2,7 @@
     --tool-cursor: auto;
     --controller-width: 0;
     --timeline-height: 0;
+    --timeline-frame-width: 12px;
     --ad: 300;
 }
 
