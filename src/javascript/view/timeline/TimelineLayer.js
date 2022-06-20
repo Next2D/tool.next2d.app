@@ -411,13 +411,11 @@ class TimelineLayer extends BaseTimeline
         while (lastFrame > frame) {
 
             htmlTag += `
-<div class="timeline-frame-group">
     <div class="frame" data-click-type="frame" data-frame-state="empty" data-layer-id="${layerId}" id="${layerId}-${frame}" data-frame="${frame++}"></div>
     <div class="frame" data-click-type="frame" data-frame-state="empty" data-layer-id="${layerId}" id="${layerId}-${frame}" data-frame="${frame++}"></div>
     <div class="frame" data-click-type="frame" data-frame-state="empty" data-layer-id="${layerId}" id="${layerId}-${frame}" data-frame="${frame++}"></div>
     <div class="frame" data-click-type="frame" data-frame-state="empty" data-layer-id="${layerId}" id="${layerId}-${frame}" data-frame="${frame++}"></div>
     <div class="frame frame-pointer" data-click-type="frame-pointer" data-frame-state="empty" data-layer-id="${layerId}" id="${layerId}-${frame}" data-frame="${frame++}"></div>
-</div>
 `;
         }
 
@@ -1170,10 +1168,6 @@ class TimelineLayer extends BaseTimeline
                             if (exitLayer.maskId !== null
                                 && exitLayer.maskId === moveLayer.maskId
                             ) {
-                                console.log(destLayer.maskId,
-                                    destLayer.mode,
-                                    Util.LAYER_MODE_NORMAL);
-
                                 // マスク外に移動するので通常レイヤーに更新
                                 moveLayer.maskId = null;
                                 moveLayer.mode   = Util.LAYER_MODE_NORMAL;

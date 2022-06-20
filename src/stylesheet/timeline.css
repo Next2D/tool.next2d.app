@@ -266,6 +266,7 @@
     background-repeat   : no-repeat;
     background-position : center center;
     margin              : 6px;
+    flex-shrink         : 0;
 }
 
 #scene-name
@@ -294,6 +295,7 @@
     padding          : 0;
     font-family      : inherit;
     white-space      : nowrap;
+    flex-shrink      : 0;
 }
 
 #context-menu-empty-key-frame-add i
@@ -314,6 +316,7 @@
     background-repeat   : no-repeat;
     background-position : center center;
     margin              : 6px;
+    flex-shrink         : 0;
 }
 
 #context-menu-script-add i
@@ -334,6 +337,7 @@
     background-repeat   : no-repeat;
     background-position : center center;
     margin              : 6px;
+    flex-shrink         : 0;
 }
 
 #context-menu-key-frame-add i
@@ -354,6 +358,7 @@
     background-repeat   : no-repeat;
     background-position : center center;
     margin              : 6px;
+    flex-shrink         : 0;
 }
 
 #context-menu-frame-add i
@@ -374,6 +379,7 @@
     background-repeat   : no-repeat;
     background-position : 1px 1px;
     margin              : 6px;
+    flex-shrink         : 0;
 }
 
 #timeline-onion-skin
@@ -384,6 +390,7 @@
     background-repeat   : no-repeat;
     background-position : center center;
     margin              : 6px;
+    flex-shrink         : 0;
 }
 
 #timeline-preview
@@ -394,6 +401,7 @@
     background-repeat   : no-repeat;
     background-position : center center;
     margin              : 6px;
+    flex-shrink         : 0;
 }
 
 #timeline .onion-skin-active
@@ -428,6 +436,7 @@
     background-repeat   : no-repeat;
     background-position : center center;
     margin              : 6px;
+    flex-shrink         : 0;
 }
 
 #timeline-stop
@@ -438,6 +447,7 @@
     background-repeat   : no-repeat;
     background-position : center center;
     margin              : 6px;
+    flex-shrink         : 0;
 }
 
 #timeline-repeat
@@ -448,6 +458,7 @@
     background-repeat   : no-repeat;
     background-position : center 4px;
     margin              : 6px;
+    flex-shrink         : 0;
 }
 
 #timeline-no-repeat
@@ -458,6 +469,7 @@
     background-repeat   : no-repeat;
     background-position : center center;
     margin              : 6px;
+    flex-shrink         : 0;
 }
 
 #scene
@@ -757,19 +769,10 @@
     overflow-y : hidden;
 }
 
-
-
 #timeline-controller-base::-webkit-scrollbar,
 #timeline-content .timeline-frame-controller::-webkit-scrollbar
 {
     display : none;
-}
-
-#timeline-content .timeline-frame-group
-{
-    width   : 65px;
-    height  : 30px;
-    display : flex;
 }
 
 #timeline-frame-marker,
@@ -879,6 +882,7 @@
     height           : 30px;
     border-right     : 1px solid #1c1c1c;
     background-color : #2c2c2c;
+    flex-shrink      : 0;
 }
 
 #timeline-content .frame-pointer
