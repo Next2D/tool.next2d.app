@@ -828,7 +828,7 @@
 
 #timeline .frame-border-box-marker
 {
-    width               : 12px;
+    width               : var(--timeline-frame-width);
     height              : 10px;
     border-right        : 1px solid #1c1c1c;
     background-image    : url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" width="8" height="8" viewBox="0 0 24 24"><path fill="coral" d="M12 0c-4.198 0-8 3.403-8 7.602 0 4.198 3.469 9.21 8 16.398 4.531-7.188 8-12.2 8-16.398 0-4.199-3.801-7.602-8-7.602zm0 11c-1.657 0-3-1.343-3-3s1.343-3 3-3 3 1.343 3 3-1.343 3-3 3z"/></svg>');
@@ -839,7 +839,7 @@
 
 #timeline .frame-border-box-action
 {
-    width               : 12px;
+    width               : var(--timeline-frame-width);
     height              : 10px;
     border-right        : 1px solid #1c1c1c;
     background-image    : url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" width="8" height="8" viewBox="0 0 24 24"><path fill="aliceblue" d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm-1 10.199l-3.64 1.801 3.64 1.796v2.204l-6-2.935v-2.131l6-2.934v2.199zm8 2.866l-6 2.935v-2.204l3.64-1.796-3.64-1.801v-2.199l6 2.935v2.13z"/></svg>');
@@ -850,7 +850,7 @@
 
 #timeline .frame-border-box-sound
 {
-    width               : 12px;
+    width               : var(--timeline-frame-width);
     height              : 10px;
     border-right        : 1px solid #1c1c1c;
     background-image    : url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" width="8" height="8" viewBox="0 0 24 24"><path fill="cadetblue" d="M23 0l-15.996 3.585v13.04c-2.979-.589-6.004 1.671-6.004 4.154 0 2.137 1.671 3.221 3.485 3.221 2.155 0 4.512-1.528 4.515-4.638v-10.9l12-2.459v8.624c-2.975-.587-6 1.664-6 4.141 0 2.143 1.715 3.232 3.521 3.232 2.14 0 4.476-1.526 4.479-4.636v-17.364z"/></svg>');

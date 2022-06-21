@@ -188,6 +188,8 @@ class TimelineTool extends BaseTimeline
         document
             .getElementById("timeline-scale")
             .value = `${timeline_width / TimelineTool.DEFAULT_TIMELINE_WIDTH * 100 | 0}`;
+
+        Util.$timelineMarker.move();
     }
 
     /**
