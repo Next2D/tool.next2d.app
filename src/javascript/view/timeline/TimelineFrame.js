@@ -20,14 +20,6 @@ class TimelineFrame extends BaseTimeline
         this._$pointX = 0;
 
         /**
-         * @description フォーカスされたかの判定変数
-         * @type {boolean}
-         * @default false
-         * @private
-         */
-        this._$focus = false;
-
-        /**
          * @description ロック時のInputの値を管理する変数
          *
          * @type {number}
@@ -135,10 +127,9 @@ class TimelineFrame extends BaseTimeline
      */
     focusIn (event)
     {
-        this._$focus         = true;
+        super.focusIn();
         this._$currentValue  = +event.target.value;
         this._$currentTarget = event.target;
-        Util.$keyLock        = true;
     }
 
     /**
@@ -150,10 +141,9 @@ class TimelineFrame extends BaseTimeline
      */
     focusOut ()
     {
-        this._$focus         = false;
+        super.focusOut();
         this._$currentValue  = null;
         this._$currentTarget = null;
-        Util.$keyLock        = false;
     }
 
     /**
@@ -217,7 +207,6 @@ class TimelineFrame extends BaseTimeline
         event.preventDefault();
 
         // 初期化
-        this._$saved         = false;
         this._$pointX        = event.screenX;
         this._$currentTarget = event.target;
         this._$currentValue  = +event.target.value;

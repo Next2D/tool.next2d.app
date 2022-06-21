@@ -24,7 +24,7 @@ class TimelineTool extends BaseTimeline
          * @default
          * @private
          */
-        this._$timelineWidth = 12;
+        this._$timelineWidth = TimelineTool.DEFAULT_TIMELINE_WIDTH;
 
         /**
          * @type {boolean}
@@ -110,13 +110,21 @@ class TimelineTool extends BaseTimeline
             });
         }
 
-        // ラベル名
-        const element = document.getElementById("label-name");
-        if (element) {
-            element.addEventListener("focusin", () =>
+        const inputIds = [
+            "label-name",
+            "timeline-scale"
+        ];
+
+        for (let idx = 0; idx < inputIds.length; ++idx) {
+
+            const element = document.getElementById(inputIds[idx]);
+            if (!element) {
+                continue;
+            }
+
+            element.addEventListener("focusin", (event) =>
             {
-                Util.$keyLock = true;
-                this._$labelFrame = Util.$timelineFrame.currentFrame;
+                this.focusIn(event);
             });
             element.addEventListener("keypress", (event) =>
             {
@@ -130,6 +138,18 @@ class TimelineTool extends BaseTimeline
                 this.executeFunction(event);
             });
         }
+    }
+
+    /**
+     * @description タイムライン幅の初期値
+     *
+     * @return {number}
+     * @const
+     * @static
+     */
+    static get DEFAULT_TIMELINE_WIDTH ()
+    {
+        return 12;
     }
 
     /**
@@ -153,10 +173,34 @@ class TimelineTool extends BaseTimeline
     set timelineWidth (timeline_width)
     {
         this._$timelineWidth = timeline_width | 0;
+
+        // タイムラインの幅を変更
         document
             .documentElement
             .style
             .setProperty("--timeline-frame-width", `${timeline_width}px`);
+
+        document
+            .documentElement
+            .style
+            .setProperty("--marker-width", `${Util.$clamp(timeline_width, 4, TimelineTool.DEFAULT_TIMELINE_WIDTH)}px`);
+
+        document
+            .getElementById("timeline-scale")
+            .value = `${timeline_width / TimelineTool.DEFAULT_TIMELINE_WIDTH * 100 | 0}`;
+    }
+
+    /**
+     * @description タイムラインツールのInput共通関数
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    focusIn ()
+    {
+        super.focusIn();
+        this._$labelFrame = Util.$timelineFrame.currentFrame;
     }
 
     /**
@@ -198,9 +242,25 @@ class TimelineTool extends BaseTimeline
         }
 
         // 初期化
+        super.focusOut();
         this._$labelFrame = 0;
-        this._$saved      = false;
-        Util.$keyLock     = false;
+    }
+
+    /**
+     * @description タイムラインのスケールのInput処理
+     *
+     * @param  {MouseEvent} event
+     * @return {void}
+     * @method
+     * @public
+     */
+    executeTimelineScale (event)
+    {
+        this.timelineWidth = TimelineTool.DEFAULT_TIMELINE_WIDTH
+            * Util.$clamp(event.target.value | 0, 41, 2000) / 100;
+
+        // 初期化
+        super.focusOut();
     }
 
     /**
@@ -597,7 +657,8 @@ class TimelineTool extends BaseTimeline
 
         }
 
-        this._$saved = false;
+        // 初期化
+        super.focusOut();
     }
 
     /**

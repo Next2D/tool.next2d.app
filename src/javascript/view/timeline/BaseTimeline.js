@@ -15,6 +15,14 @@ class BaseTimeline
         this._$saved = false;
 
         /**
+         * @description フォーカスされたかの判定変数
+         * @type {boolean}
+         * @default false
+         * @private
+         */
+        this._$focus = false;
+
+        /**
          * @type {function}
          * @default null
          * @private
@@ -102,5 +110,32 @@ class BaseTimeline
             .join("");
 
         this[`execute${functionName}`](event);
+    }
+
+    /**
+     * @description タイムタインのフォーカスインのベース処理
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    focusIn ()
+    {
+        this._$focus  = true;
+        Util.$keyLock = true;
+    }
+
+    /**
+     * @description タイムタインのフォーカスアウトのベース処理
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    focusOut ()
+    {
+        this._$focus  = false;
+        this._$saved  = false;
+        Util.$keyLock = false;
     }
 }

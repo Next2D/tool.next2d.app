@@ -929,8 +929,7 @@ class TimelineLayer extends BaseTimeline
         input.removeEventListener("keypress", this._$endInput);
 
         // 初期化
-        Util.$keyLock = false;
-        this._$saved  = false;
+        super.focusOut();
     }
 
     /**
@@ -1366,7 +1365,6 @@ class TimelineLayer extends BaseTimeline
                 scene.setLayer(layer.id, layer);
             }
 
-            this._$saved = false;
             this.reloadScreen();
 
         } else {
@@ -1384,6 +1382,7 @@ class TimelineLayer extends BaseTimeline
         }
 
         // 初期化
+        super.focusOut();
         this._$selectLayerId = -1;
         this._$moveLayerId   = -1;
         this._$destLayer     = null;

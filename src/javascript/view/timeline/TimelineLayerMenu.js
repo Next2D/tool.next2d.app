@@ -79,7 +79,8 @@ class TimelineLayerMenu extends BaseTimeline
             this.reloadScreen();
         }
 
-        this._$saved = false;
+        // 初期化
+        super.focusOut();
     }
 
     /**
@@ -119,7 +120,8 @@ class TimelineLayerMenu extends BaseTimeline
             this.reloadScreen();
         }
 
-        this._$saved = false;
+        // 初期化
+        super.focusOut();
     }
 
     /**
@@ -159,7 +161,8 @@ class TimelineLayerMenu extends BaseTimeline
             this.reloadScreen();
         }
 
-        this._$saved = false;
+        // 初期化
+        super.focusOut();
     }
 
     /**

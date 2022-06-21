@@ -157,7 +157,7 @@ class TimelineHeader extends BaseTimeline
 
         let sec   = 1;
         let frame = 1;
-        let limit = Math.ceil(window.parent.screen.width * 2
+        let limit = Math.ceil(window.parent.screen.width * 2.5
             + Util.$currentWorkSpace().scene.totalFrame * 13
         );
 
