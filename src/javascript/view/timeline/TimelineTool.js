@@ -180,15 +180,18 @@ class TimelineTool extends BaseTimeline
             .style
             .setProperty("--timeline-frame-width", `${timeline_width}px`);
 
+        // マーカーの幅を変更
         document
             .documentElement
             .style
             .setProperty("--marker-width", `${Util.$clamp(timeline_width, 4, TimelineTool.DEFAULT_TIMELINE_WIDTH)}px`);
 
+        // スケールInputに値を反映
         document
             .getElementById("timeline-scale")
             .value = `${timeline_width / TimelineTool.DEFAULT_TIMELINE_WIDTH * 100 | 0}`;
 
+        // フレーム幅に合わせてマーカーを移動
         Util.$timelineMarker.move();
     }
 

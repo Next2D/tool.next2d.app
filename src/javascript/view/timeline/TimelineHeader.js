@@ -25,6 +25,13 @@ class TimelineHeader extends BaseTimeline
          * @private
          */
         this._$scrollX = 0;
+
+        /**
+         * @type {HTMLDivElement}
+         * @default null
+         * @private
+         */
+        this._$targetElement = null;
     }
 
     /**
@@ -158,7 +165,8 @@ class TimelineHeader extends BaseTimeline
         let sec   = 1;
         let frame = 1;
         let limit = Math.ceil(window.parent.screen.width * 2.5
-            + Util.$currentWorkSpace().scene.totalFrame * 13
+            + Util.$currentWorkSpace().scene.totalFrame
+            * (TimelineTool.DEFAULT_TIMELINE_WIDTH + 1) // +1はborder solidの1px
         );
 
         while (limit > 0) {
@@ -166,14 +174,12 @@ class TimelineHeader extends BaseTimeline
             const htmlTag = `
 <div class="frame-header-parent" data-frame="${frame}">
     <div class="${frame % 5 === 0 ? "frame-border-end" : "frame-border"}" data-frame="${frame}">${frame % fps === 0 && fps > 4 ? sec++ + "s" : ""}</div>
-    <div id="frame-label-marker-${frame}" class="frame-border-box" data-frame="${frame}"></div>
-    <div id="frame-label-action-${frame}" class="frame-border-box" data-frame="${frame}"></div>
-    <div id="frame-label-sound-${frame}"  class="frame-border-box" data-frame="${frame}"></div>
+    <div id="frame-label-marker-${frame}" class="frame-border-box" data-type="marker" data-frame="${frame}"></div>
+    <div id="frame-label-action-${frame}" class="frame-border-box" data-type="action" data-frame="${frame}"></div>
+    <div id="frame-label-sound-${frame}" class="frame-border-box" data-type="sound" data-frame="${frame}"></div>
     <div class="frame-number" data-frame="${frame}">${frame % 5 === 0 ? frame : ""}</div>
 </div>
 `;
-            frame++;
-
             // add child
             element.insertAdjacentHTML("beforeend", htmlTag);
 
@@ -184,11 +190,134 @@ class TimelineHeader extends BaseTimeline
                     this.moveMarker(event);
                 });
 
-            limit -= 13;
+            // アイコンにdrag/dropイベントを登録
+            const icons = [
+                "marker",
+                "action",
+                "sound"
+            ];
 
+            for (let idx = 0; idx < icons.length; ++idx) {
+
+                const element = document
+                    .getElementById(`frame-label-${icons[idx]}-${frame}`);
+
+                if (!element) {
+                    continue;
+                }
+
+                element.addEventListener("mousedown", (event) =>
+                {
+                    this.dragIcon(event);
+                });
+
+                element.addEventListener("dragover", (event) =>
+                {
+                    event.preventDefault();
+                });
+
+                element.addEventListener("drop", (event) =>
+                {
+                    this.dropIcon(event);
+                });
+            }
+
+            frame++;
+
+            // +1はborder solidの1px
+            limit -= TimelineTool.DEFAULT_TIMELINE_WIDTH + 1;
         }
 
         this.lastFrame = frame;
+    }
+
+    /**
+     * @description ラベル・スクリプト・サウンドのアイコンを移動開始関数
+     *
+     * @param  {MouseEvent} event
+     * @return {void}
+     * @method
+     * @public
+     */
+    dragIcon (event)
+    {
+        const target = event.target;
+        if (target.classList.contains("frame-border-box")) {
+            return ;
+        }
+
+        // 全てのイベントを中止
+        event.stopPropagation();
+
+        // setup
+        target.draggable     = true;
+        this._$targetElement = target;
+    }
+
+    /**
+     * @description ラベル・スクリプト・サウンドのアイコンを移動処理関数
+     *
+     * @param  {DragEvent} event
+     * @return {void}
+     * @method
+     * @public
+     */
+    dropIcon (event)
+    {
+        if (!this._$targetElement) {
+            return ;
+        }
+
+        event.preventDefault();
+
+        const target = event.target;
+
+        const dragFrame = this._$targetElement.dataset.frame | 0;
+        const dropFrame = target.dataset.frame | 0;
+
+        // フレームが異なれば処理を行う
+        if (dragFrame !== dropFrame) {
+
+            this.save();
+
+            const scene = Util.$currentWorkSpace().scene;
+            const type  = this._$targetElement.dataset.type;
+            switch (type) {
+
+                case "marker":
+                    scene.setLabel(dropFrame, scene.gerLabel(dragFrame));
+                    scene.deleteLabel(dragFrame);
+                    break;
+
+                case "action":
+                    scene.setAction(dropFrame, scene.getAction(dragFrame));
+                    scene.deleteAction(dragFrame);
+                    break;
+
+                case "sound":
+                    scene.setSound(dropFrame, scene.getSound(dragFrame));
+                    scene.deleteSound(dragFrame);
+                    break;
+
+                default:
+                    break;
+
+            }
+
+            document
+                .getElementById(`frame-label-${type}-${dropFrame}`)
+                .setAttribute("class", `frame-border-box-${type}`);
+
+            this
+                ._$targetElement
+                .setAttribute("class", "frame-border-box");
+
+        }
+
+        // 初期化
+        this._$targetElement.draggable = false;
+        this._$targetElement = null;
+        super.focusOut();
     }
 
     /**

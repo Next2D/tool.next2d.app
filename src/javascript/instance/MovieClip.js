@@ -147,7 +147,6 @@ class MovieClip extends Instance
         }
 
         // create timeline marker
-        // Util.$timeline.initializeParams();
         Util.$timelineHeader.build();
 
         // init label
@@ -704,6 +703,37 @@ class MovieClip extends Instance
             const object = actions[idx];
             this._$actions.set(object.frame | 0, object.action);
         }
+    }
+
+    /**
+     * @param  {number} frame
+     * @return {array}
+     * @public
+     */
+    getSound (frame)
+    {
+        return this._$sounds.get(frame);
+    }
+
+    /**
+     * @param  {number} frame
+     * @param  {array} sounds
+     * @return {void}
+     * @public
+     */
+    setSound (frame, sounds)
+    {
+        return this._$sounds.set(frame, sounds);
+    }
+
+    /**
+     * @param  {number} frame
+     * @return {void}
+     * @public
+     */
+    deleteSound (frame)
+    {
+        return this._$sounds.delete(frame);
     }
 
     /**
