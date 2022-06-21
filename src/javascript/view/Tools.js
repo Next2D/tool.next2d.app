@@ -160,7 +160,8 @@ class Tools
             RoundRectTool,
             PenTool,
             BucketTool,
-            TextTool
+            TextTool,
+            ZoomTool
         ];
 
         // デフォルトツールを起動して、Mapに格納

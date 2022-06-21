@@ -1,6 +1,6 @@
 /**
  * @class
- * @extends BaseTool
+ * @extends {BaseTool}
  */
 class ArrowTool extends BaseTool
 {

@@ -451,13 +451,14 @@
 
 #screen-scale
 {
+    font-size        : 11px;
     border           : none;
     border-bottom    : 1px solid darkgray;
     outline          : none;
     background-color : transparent;
     color            : #f5f5f5;
     text-align       : center;
-    width            : 45px;
+    width            : 25px;
     margin           : 3px;
 }
 

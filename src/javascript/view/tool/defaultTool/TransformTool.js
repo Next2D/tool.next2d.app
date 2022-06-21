@@ -1,6 +1,6 @@
 /**
  * @class
- * @extends BaseTool
+ * @extends {BaseTool}
  */
 class TransformTool extends BaseTool
 {

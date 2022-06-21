@@ -1,5 +1,6 @@
 /**
  * @class
+ * @extends {DrawTool}
  */
 class CircleTool extends DrawTool
 {

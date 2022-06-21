@@ -1,5 +1,6 @@
 /**
  * @class
+ * @extends {BaseTool}
  */
 class DrawTool extends BaseTool
 {
