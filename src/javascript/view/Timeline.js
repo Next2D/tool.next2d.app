@@ -2792,8 +2792,7 @@ class Timeline
 
             const element = document.getElementById("current-frame");
 
-            const base = document
-                .getElementById("timeline-controller-base");
+
 
             let frame = (element.textContent | 0) + 1;
             if (frame > this._$totalFrame) {

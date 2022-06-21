@@ -803,7 +803,10 @@
 
 #timeline .frame-border-end
 {
-    border-right : 1px solid #1c1c1c;
+    height        : 12px;
+    border-bottom : 1px solid #1c1c1c;
+    border-right  : 1px solid #1c1c1c;
+    flex-shrink   : 0;
 }
 
 #timeline .frame-number

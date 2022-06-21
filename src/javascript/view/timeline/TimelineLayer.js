@@ -1445,7 +1445,7 @@ class TimelineLayer extends BaseTimeline
      * @description レイヤーのタイムラインの横移動処理
      *
      * @param  {number} [x=0]
-     * @return {number}
+     * @return {void}
      * @method
      * @public
      */

@@ -61,6 +61,29 @@ class TimelineFrame extends BaseTimeline
     }
 
     /**
+     * @description 現在のフレーム番号を返却する
+     *
+     * @return {number}
+     * @public
+     */
+    get currentFrame ()
+    {
+        return document.getElementById("current-frame").value | 0;
+    }
+
+    /**
+     * @description 指定フレームをセット
+     *
+     * @param  {number} frame
+     * @return {void}
+     * @public
+     */
+    set currentFrame (frame)
+    {
+        document.getElementById("current-frame").value = `${frame | 0}`;
+    }
+
+    /**
      * @description 初期起動関数
      *
      * @return {void}
@@ -264,11 +287,19 @@ class TimelineFrame extends BaseTimeline
             }
 
             // clampで補正された値をセット
-            this._$currentTarget.value = Math.max(1, currentValue + diff) | 0;
+            const frame = Util.$clamp(
+                currentValue + diff,
+                1, Util.$timelineHeader.lastFrame - 1
+            );
 
-            this._$currentValue = +this._$currentTarget.value;
-            this._$pointX       = event.screenX;
+            this._$currentTarget.value = `${frame}`;
+            this._$currentValue        = frame;
+            this._$pointX              = event.screenX;
 
+            // タイムラインの座標の補正
+            this.moveTimeline();
+
+            // 再描画
             this.reloadScreen();
         });
     }
@@ -291,34 +322,72 @@ class TimelineFrame extends BaseTimeline
         if (event.type === "focusout") {
 
             // Inputの値を更新
-            event.target.value = Math.max(1, event.target.value | 0);
+            const frame = Util.$clamp(
+                event.target.value | 0,
+                1, Util.$timelineHeader.lastFrame - 1
+            );
 
+            event.target.value = `${frame}`;
+
+            // タイムラインの座標の補正
+            this.moveTimeline();
+
+            // 初期化
             this.focusOut();
+
+            // 再描画
             this.reloadScreen();
         }
     }
 
     /**
-     * @description 現在のフレーム番号を返却する
+     * @description フレームに合わせてタイムラインの座標を移動させる
      *
-     * @return {number}
-     * @public
-     */
-    get currentFrame ()
-    {
-        return document.getElementById("current-frame").value | 0;
-    }
-
-    /**
-     * @description 指定フレームをセット
-     *
-     * @param  {number} frame
      * @return {void}
+     * @method
      * @public
      */
-    set currentFrame (frame)
+    moveTimeline ()
     {
-        document.getElementById("current-frame").value = `${frame | 0}`;
+        // マーカーを移動
+        Util.$timelineMarker.move();
+
+        // タイムラインの座標修正
+        const deltaX =
+            Util.$timelineFrame.currentFrame
+                * (Util.$timelineTool.timelineWidth + 1);
+
+        const element = document
+            .getElementById("timeline-controller-base");
+
+        switch (true) {
+
+            case deltaX > element.scrollLeft + element.offsetWidth:
+                Util
+                    .$timelineLayer
+                    .moveTimeLine(
+                        deltaX - (Util.$timelineTool.timelineWidth + 1)
+                    );
+                break;
+
+            case element.scrollLeft >= deltaX:
+                {
+                    const frame = element.offsetWidth
+                        / (Util.$timelineTool.timelineWidth + 1) | 0;
+
+                    Util
+                        .$timelineLayer
+                        .moveTimeLine(
+                            deltaX - frame
+                                * (Util.$timelineTool.timelineWidth + 1)
+                        );
+                }
+                break;
+
+            default:
+                break;
+
+        }
     }
 }
 

@@ -84,55 +84,50 @@ class TimelineHeader extends BaseTimeline
     {
         super.initialize();
 
-        const timelineHeader = document
-            .getElementById("timeline-header");
-
-        if (timelineHeader) {
-            timelineHeader.addEventListener("wheel", (event) =>
-            {
-                if (!Util.$ctrlKey) {
-                    return ;
-                }
-
-                const deltaY = event.deltaY | 0;
-                if (!deltaY) {
-                    return false;
-                }
-
-                event.preventDefault();
-
-                Util.$timelineTool.timelineWidth = Util.$clamp(
-                    Util.$timelineTool.timelineWidth + deltaY,
-                    5,
-                    240
-                );
-            }, { "passive" : false });
-        }
-
         // 上部のタイムラインの動作イベント
-        const timelineControllerBase = document
+        const element = document
             .getElementById("timeline-controller-base");
 
-        if (timelineControllerBase) {
-            timelineControllerBase.addEventListener("wheel", (event) =>
+        if (element) {
+            element.addEventListener("wheel", (event) =>
             {
-                const deltaX = event.deltaX | 0;
-                if (!deltaX) {
-                    return false;
-                }
-
+                // 全てのイベントを停止
+                event.stopPropagation();
                 event.preventDefault();
 
-                const maxDeltaX = event.currentTarget.scrollWidth
-                    - event.currentTarget.offsetWidth;
+                if (Util.$ctrlKey) {
 
-                this._$scrollX = Util.$clamp(
-                    this._$scrollX + deltaX, 0, maxDeltaX
-                );
+                    const deltaY = event.deltaY | 0;
+                    if (!deltaY) {
+                        return false;
+                    }
 
-                Util
-                    .$timelineLayer
-                    .moveTimeLine(this._$scrollX);
+                    // タイムラインの幅をスケール
+                    Util.$timelineTool.timelineWidth = Util.$clamp(
+                        Util.$timelineTool.timelineWidth + deltaY,
+                        5,
+                        240
+                    );
+
+                } else {
+
+                    const delta = (event.deltaX || event.deltaY) | 0;
+                    if (!delta) {
+                        return false;
+                    }
+
+                    const maxDeltaX = event.currentTarget.scrollWidth
+                        - event.currentTarget.offsetWidth;
+
+                    this._$scrollX = Util.$clamp(
+                        this._$scrollX + delta, 0, maxDeltaX
+                    );
+
+                    Util
+                        .$timelineLayer
+                        .moveTimeLine(this._$scrollX);
+
+                }
 
             }, { "passive" : false });
         }
@@ -156,7 +151,9 @@ class TimelineHeader extends BaseTimeline
             element.children[0].remove();
         }
 
-        const fps = document.getElementById("stage-fps").value | 0;
+        const fps = document
+            .getElementById("stage-fps")
+            .value | 0;
 
         let sec   = 1;
         let frame = 1;
@@ -168,7 +165,7 @@ class TimelineHeader extends BaseTimeline
 
             const htmlTag = `
 <div class="frame-header-parent" data-frame="${frame}">
-    <div class="frame-border ${frame % 5 === 0 ? "frame-border-end" : ""}" data-frame="${frame}">${frame % fps === 0 && fps > 4 ? sec++ + "s" : ""}</div>
+    <div class="${frame % 5 === 0 ? "frame-border-end" : "frame-border"}" data-frame="${frame}">${frame % fps === 0 && fps > 4 ? sec++ + "s" : ""}</div>
     <div id="frame-label-marker-${frame}" class="frame-border-box" data-frame="${frame}"></div>
     <div id="frame-label-action-${frame}" class="frame-border-box" data-frame="${frame}"></div>
     <div id="frame-label-sound-${frame}"  class="frame-border-box" data-frame="${frame}"></div>
@@ -180,7 +177,6 @@ class TimelineHeader extends BaseTimeline
             // add child
             element.insertAdjacentHTML("beforeend", htmlTag);
 
-            console.log([element.lastElementChild]);
             element
                 .lastElementChild
                 .addEventListener("mousedown", (event) =>
