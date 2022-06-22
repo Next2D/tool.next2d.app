@@ -145,7 +145,8 @@ class TimelineHeader extends BaseTimeline
 
             }, { "passive" : false });
 
-            element.addEventListener("mouseleave", this.clearParams.bind(this));
+            element
+                .addEventListener("mouseleave", this.clearParams.bind(this));
         }
 
         window.addEventListener("keydown", this.deleteIcon.bind(this));
@@ -160,7 +161,6 @@ class TimelineHeader extends BaseTimeline
      */
     clearParams ()
     {
-        this._$lastFrame     = 0;
         this._$scrollX       = 0;
         this._$targetElement = null;
     }
