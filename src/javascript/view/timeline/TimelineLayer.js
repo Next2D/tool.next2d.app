@@ -499,19 +499,6 @@ class TimelineLayer extends BaseTimeline
             this.endExitLayer(event);
         });
 
-        // // マスク内のアイコン
-        // const maskInIcon = document
-        //     .getElementById(`layer-mask-in-icon-${layerId}`);
-        //
-        // maskInIcon.addEventListener("mouseover", (event) =>
-        // {
-        //     this.exitLayer(event);
-        // });
-        // maskInIcon.addEventListener("mouseout", (event) =>
-        // {
-        //     this.endExitLayer(event);
-        // });
-
         // グループから外すexitアイコン
         const exitIcon = document
             .getElementById(`timeline-exit-icon-${layerId}`);
@@ -599,6 +586,7 @@ class TimelineLayer extends BaseTimeline
             this.selectFrame(event);
         });
 
+        // ハイライトアイコン
         document
             .getElementById(`layer-light-icon-${layerId}`)
             .addEventListener("mousedown", (event) =>
@@ -606,6 +594,7 @@ class TimelineLayer extends BaseTimeline
                 this.clickLight(event);
             });
 
+        // 表示・非表示アイコン
         document
             .getElementById(`layer-disable-icon-${layerId}`)
             .addEventListener("mousedown", (event) =>
@@ -613,6 +602,7 @@ class TimelineLayer extends BaseTimeline
                 this.clickDisable(event);
             });
 
+        // ロックアイコン
         document
             .getElementById(`layer-lock-icon-${layerId}`)
             .addEventListener("mousedown", (event) =>
@@ -620,6 +610,7 @@ class TimelineLayer extends BaseTimeline
                 this.clickLock(event);
             });
 
+        // スクロールエリア
         const frameElement = document
             .getElementById(`frame-scroll-id-${layerId}`);
 
