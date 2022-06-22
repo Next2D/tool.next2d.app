@@ -32,6 +32,13 @@ class TimelineHeader extends BaseTimeline
          * @private
          */
         this._$targetElement = null;
+
+        /**
+         * @type {function}
+         * @default null
+         * @private
+         */
+        this._$deleteIcon = null;
     }
 
     /**
@@ -137,7 +144,25 @@ class TimelineHeader extends BaseTimeline
                 }
 
             }, { "passive" : false });
+
+            element.addEventListener("mouseleave", this.clearParams.bind(this));
         }
+
+        window.addEventListener("keydown", this.deleteIcon.bind(this));
+    }
+
+    /**
+     * @description クラスで利用する変数を初期化
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    clearParams ()
+    {
+        this._$lastFrame     = 0;
+        this._$scrollX       = 0;
+        this._$targetElement = null;
     }
 
     /**
@@ -149,6 +174,9 @@ class TimelineHeader extends BaseTimeline
      */
     build ()
     {
+        // 変数を初期化
+        this.clearParams();
+
         // 描画エリアのサイズをセット
         const element = document
             .getElementById("timeline-header");
@@ -255,6 +283,61 @@ class TimelineHeader extends BaseTimeline
     }
 
     /**
+     * @description 指定したアイコンを削除する
+     *
+     * @param  {KeyboardEvent} event
+     * @return {void}
+     */
+    deleteIcon (event)
+    {
+        switch (event.code) {
+
+            case "Backspace":
+            case "Delete":
+                break;
+
+            default:
+                return ;
+
+        }
+
+        if (!this._$targetElement) {
+            return ;
+        }
+
+        this.save();
+
+        const frame = this._$targetElement.dataset.frame | 0;
+        const scene = Util.$currentWorkSpace().scene;
+        const type  = this._$targetElement.dataset.type;
+        switch (type) {
+
+            case "marker":
+                scene.deleteLabel(frame);
+                break;
+
+            case "action":
+                scene.deleteAction(frame);
+                break;
+
+            case "sound":
+                scene.deleteSound(frame);
+                break;
+
+            default:
+                break;
+
+        }
+
+        // スタイルの変更して初期化
+        this
+            ._$targetElement
+            .setAttribute("class", "frame-border-box");
+
+        this._$targetElement = null;
+    }
+
+    /**
      * @description ラベル・スクリプト・サウンドのアイコンを移動処理関数
      *
      * @param  {DragEvent} event
@@ -269,6 +352,7 @@ class TimelineHeader extends BaseTimeline
         }
 
         event.preventDefault();
+        this._$targetElement.draggable = false;
 
         const target = event.target;
 
@@ -282,21 +366,24 @@ class TimelineHeader extends BaseTimeline
 
             const scene = Util.$currentWorkSpace().scene;
             const type  = this._$targetElement.dataset.type;
+
+            // 表示を追加
+            document
+                .getElementById(`frame-label-${type}-${dropFrame}`)
+                .setAttribute("class", `frame-border-box-${type}`);
+
             switch (type) {
 
                 case "marker":
                     scene.setLabel(dropFrame, scene.gerLabel(dragFrame));
-                    scene.deleteLabel(dragFrame);
                     break;
 
                 case "action":
                     scene.setAction(dropFrame, scene.getAction(dragFrame));
-                    scene.deleteAction(dragFrame);
                     break;
 
                 case "sound":
                     scene.setSound(dropFrame, scene.getSound(dragFrame));
-                    scene.deleteSound(dragFrame);
                     break;
 
                 default:
@@ -304,18 +391,13 @@ class TimelineHeader extends BaseTimeline
 
             }
 
-            document
-                .getElementById(`frame-label-${type}-${dropFrame}`)
-                .setAttribute("class", `frame-border-box-${type}`);
-
-            this
-                ._$targetElement
-                .setAttribute("class", "frame-border-box");
-
+            // 複製でない時は削除する
+            if (!Util.$shiftKey) {
+                this.deleteIcon({ "code": "Delete" });
+            }
         }
 
         // 初期化
-        this._$targetElement.draggable = false;
         this._$targetElement = null;
         super.focusOut();
     }
@@ -331,6 +413,9 @@ class TimelineHeader extends BaseTimeline
     {
         // 全てのイベント停止
         event.stopPropagation();
+
+        // 変数を初期化
+        this.clearParams();
 
         Util.$timelineFrame.currentFrame = event.target.dataset.frame | 0;
         Util.$timelineMarker.move();
