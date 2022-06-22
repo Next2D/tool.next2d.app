@@ -112,6 +112,18 @@ class Layer
     }
 
     /**
+     * @description レイヤーを複製
+     *
+     * @return {Layer}
+     * @method
+     * @public
+     */
+    clone ()
+    {
+        return new Layer(this.toObject());
+    }
+
+    /**
      * @param  {number} [frame=1]
      * @return {void}
      * @public

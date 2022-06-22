@@ -546,6 +546,10 @@ class TimelineLayer extends BaseTimeline
         {
             this.inactiveMoveLayer(event);
         });
+        layerController.addEventListener("contextmenu", (event) =>
+        {
+            this.showLayerMenu(event);
+        });
 
         // レイヤーの横移動イベント
         const frameController = layer
@@ -829,6 +833,7 @@ class TimelineLayer extends BaseTimeline
     showLayerMenu (event)
     {
         // 他のイベント全て中止
+        event.preventDefault();
         event.stopPropagation();
 
         const layerId = event.target.dataset.layerId | 0;

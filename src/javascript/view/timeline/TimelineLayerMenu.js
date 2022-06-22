@@ -19,7 +19,8 @@ class TimelineLayerMenu extends BaseTimeline
         const elementIds = [
             "timeline-layer-normal",
             "timeline-layer-mask",
-            "timeline-layer-guide"
+            "timeline-layer-guide",
+            "timeline-layer-clone"
         ];
 
         for (let idx = 0; idx < elementIds.length; ++idx) {
@@ -160,6 +161,36 @@ class TimelineLayerMenu extends BaseTimeline
         if (reload) {
             this.reloadScreen();
         }
+
+        // 初期化
+        super.focusOut();
+    }
+
+    /**
+     * @description レイヤーを複製して指定レイヤーの上部に追加
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    executeTimelineLayerClone ()
+    {
+        const targetLayer = Util.$timelineLayer.targetLayer;
+        if (!targetLayer) {
+            return ;
+        }
+
+        const layer = Util
+            .$currentWorkSpace()
+            .scene
+            .getLayer(targetLayer.dataset.layerId | 0);
+
+        Util
+            .$timelineTool
+            .executeTimelineLayerAdd(null, layer);
+
+        // 再描画
+        this.reloadScreen();
 
         // 初期化
         super.focusOut();

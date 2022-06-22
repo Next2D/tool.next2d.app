@@ -62,7 +62,8 @@
     margin         : 12px;
 }
 
-#timeline-menu .timeline-menu-list p
+#timeline-menu .timeline-menu-list p,
+#timeline-layer-menu-list p
 {
     border-bottom : 1px solid #1c1c1c;
     margin        : 5px 0 5px 0;
@@ -127,6 +128,21 @@
     display       : flex;
     height        : 40px;
     border-bottom : 1px solid #1c1c1c;
+}
+
+#timeline-layer-menu
+{
+    display          : flex;
+    flex-direction   : column;
+    justify-content  : center;
+    position         : fixed;
+    min-width        : 200px;
+    border-radius    : 10px;
+    background-color : #363636;
+    color            : whitesmoke;
+    border           : 1px solid #72777D;
+    z-index          : 9999;
+    box-shadow       : 0 0 5px rgba(245, 245, 245, 0.25);
 }
 
 #timeline-adjustment
