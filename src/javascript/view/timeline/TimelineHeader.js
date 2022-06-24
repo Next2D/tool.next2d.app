@@ -172,18 +172,21 @@ class TimelineHeader extends BaseTimeline
      * @method
      * @public
      */
-    build ()
+    build (reload = true)
     {
-        // 変数を初期化
-        this.clearParams();
-
         // 描画エリアのサイズをセット
         const element = document
             .getElementById("timeline-header");
 
-        // remove all
-        while (element.children.length) {
-            element.children[0].remove();
+        // シーン移動や初回起動の時は初期化
+        if (reload) {
+            // 変数を初期化
+            this.clearParams();
+
+            // remove all
+            while (element.children.length) {
+                element.children[0].remove();
+            }
         }
 
         const fps = document
@@ -191,7 +194,7 @@ class TimelineHeader extends BaseTimeline
             .value | 0;
 
         let sec   = 1;
-        let frame = 1;
+        let frame = this.lastFrame + 1;
         let limit = Math.ceil(window.parent.screen.width * 2.5
             + Util.$currentWorkSpace().scene.totalFrame
             * (TimelineTool.DEFAULT_TIMELINE_WIDTH + 1) // +1はborder solidの1px

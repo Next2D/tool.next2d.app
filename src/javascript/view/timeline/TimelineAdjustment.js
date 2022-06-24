@@ -67,7 +67,10 @@ class TimelineAdjustment extends BaseTimeline
         document
             .documentElement
             .style
-            .setProperty("--timeline-height", `${TimelineAdjustment.TIMELINE_DEFAULT_SIZE}px`);
+            .setProperty(
+                "--timeline-height",
+                `${TimelineAdjustment.TIMELINE_DEFAULT_SIZE}px`
+            );
 
         const element = document.getElementById("timeline-adjustment");
         if (element) {

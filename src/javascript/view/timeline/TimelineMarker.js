@@ -138,8 +138,8 @@ class TimelineMarker extends BaseTimeline
             }
 
             // タイムラインエリア外(左側)にマウスが出た時の処理
-            if (base.scrollLeft > 0 && base.offsetLeft > event.pageX
-            ) {
+            if (base.scrollLeft > 0 && base.offsetLeft > event.pageX) {
+
                 const frame =
                     (base.offsetLeft - event.pageX)
                         / Util.$timelineTool.timelineWidth | 0;

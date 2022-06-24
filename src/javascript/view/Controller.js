@@ -708,8 +708,11 @@ class Controller
      * @return {void}
      * @public
      */
-    clearActiveController ()
+    default ()
     {
+        // フィルターを初期化
+        Util.$filterController.clearFilters();
+
         this.hideObjectSetting([
             "object-area",
             "instance-setting"
@@ -1957,87 +1960,6 @@ class Controller
             const t = newtonRaphson($t);
             return t * (cy + t * (by + t * ay));
         };
-    }
-
-    /**
-     * @param  {object} instance
-     * @return {void}
-     * @public
-     */
-    createInstanceSelect (instance)
-    {
-        const workSpace = Util.$currentWorkSpace();
-
-        const element = document
-            .getElementById("instance-type-name");
-
-        while (element.children.length) {
-            element.children[0].remove();
-        }
-
-        const i = document.createElement("i");
-        i.setAttribute("class", `library-type-${instance.type}`);
-        element.appendChild(i);
-
-        const select = document.createElement("select");
-        select.classList.add("instance-select");
-        element.appendChild(select);
-
-        select.addEventListener("mousedown", function (event)
-        {
-
-            this._$selectId = event.target.value | 0;
-
-        }.bind(this));
-
-        select.addEventListener("change", (event) =>
-        {
-            const activeTool = Util.$tools.activeTool;
-            if (activeTool) {
-                event.displayObject = true;
-                activeTool.dispatchEvent(
-                    EventType.CHANGE,
-                    event
-                );
-            }
-        });
-
-        for (const value of workSpace._$libraries.values()) {
-
-            if (!value.id) {
-                continue;
-            }
-
-            switch (value.type) {
-
-                case "folder":
-                case "sound":
-                    continue;
-
-                default:
-                    break;
-
-            }
-
-            const option = document.createElement("option");
-            option.value = value.id;
-
-            let path = value.name;
-            if (value._$folderId) {
-                let parent = value;
-                while (parent._$folderId) {
-                    parent = workSpace.getLibrary(parent._$folderId);
-                    path = `${parent.name}/${path}`;
-                }
-            }
-            option.innerHTML = path;
-
-            if (value.id === instance.id) {
-                option.defaultSelected = true;
-            }
-
-            select.appendChild(option);
-        }
     }
 
     /**
@@ -3499,51 +3421,6 @@ class Controller
             }
         }
     }
-
-    /**
-     * @return {void}
-     * @public
-     */
-    createSoundListArea ()
-    {
-        const element = document
-            .getElementById("sound-list-area");
-
-        if (element) {
-            while (element.children.length) {
-                element.children[0].remove();
-            }
-        }
-
-        const frame = Util.$timelineFrame.currentFrame;
-
-        const scene = Util.$currentWorkSpace().scene;
-        if (scene._$sounds.has(frame)) {
-
-            const sounds = scene._$sounds.get(frame);
-            for (let idx = 0; idx < sounds.length; ++idx) {
-                Util.$soundController.addSound(sounds[idx], idx);
-            }
-
-        }
-    }
-
-    /**
-     * {HTMLInputElement} element
-     * @return {void}
-     * @public
-     */
-    updateSoundVolume (element)
-    {
-        const frame = Util.$timelineFrame.currentFrame;
-
-        const scene  = Util.$currentWorkSpace().scene;
-        const index  = element.dataset.soundId | 0;
-        const object = scene._$sounds.get(frame)[index];
-
-        object.volume = element.value | 0;
-    }
-
 }
 
 Util.$controller = new Controller();

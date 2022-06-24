@@ -186,14 +186,8 @@ class MovieClip extends Instance
             labelElement.value = this._$labels.get(1);
         }
 
-        // reset layer
-        const element = document
-            .getElementById("timeline-content");
-
-        const children = element.children;
-        while (children.length) {
-            children[0].remove();
-        }
+        // タイムラインを初期化
+        Util.$timelineLayer.removeAll();
 
         // insert layer
         this._$layerId = 0;
@@ -201,6 +195,7 @@ class MovieClip extends Instance
             layer.initialize();
         }
 
+        // タイムラインが空の時は初期レイヤーをセットする
         if (!this._$layers.size) {
             this.addLayer();
         }
@@ -728,12 +723,22 @@ class MovieClip extends Instance
 
     /**
      * @param  {number} frame
+     * @return {boolean}
+     * @public
+     */
+    hasSound (frame)
+    {
+        return this._$sounds.has(frame);
+    }
+
+    /**
+     * @param  {number} frame
      * @return {void}
      * @public
      */
     deleteSound (frame)
     {
-        return this._$sounds.delete(frame);
+        this._$sounds.delete(frame);
     }
 
     /**

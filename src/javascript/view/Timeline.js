@@ -2792,8 +2792,6 @@ class Timeline
 
             const element = document.getElementById("current-frame");
 
-
-
             let frame = (element.textContent | 0) + 1;
             if (frame > this._$totalFrame) {
 

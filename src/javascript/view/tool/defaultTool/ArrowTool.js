@@ -311,8 +311,7 @@ class ArrowTool extends BaseTool
         Util.$screen.clearTweenMarker();
 
         // コントローラーエリアを初期化
-        Util.$filterController.clearFilters();
-        Util.$controller.clearActiveController();
+        Util.$controller.default();
 
         // タイムラインエリアを初期化
         Util.$timelineLayer.clear();

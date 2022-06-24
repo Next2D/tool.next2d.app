@@ -13,14 +13,6 @@ class TimelineLayer extends BaseTimeline
         super();
 
         /**
-         * TODO 不要なので削除する
-         * @type {HTMLDivElement}
-         * @default null
-         * @private
-         */
-        this._$selectFrameElement = null;
-
-        /**
          * @type {Map}
          * @private
          */
@@ -38,6 +30,20 @@ class TimelineLayer extends BaseTimeline
          * @private
          */
         this._$scrollX = 0;
+
+        /**
+         * @type {number}
+         * @default 0
+         * @private
+         */
+        this._$clientX = 0;
+
+        /**
+         * @type {number}
+         * @default 0
+         * @private
+         */
+        this._$clientY = 0;
 
         /**
          * @type {number}
@@ -100,7 +106,14 @@ class TimelineLayer extends BaseTimeline
          * @default null
          * @private
          */
-        this._$hideTargetGroup = null;
+        this._$moveTargetGroup = null;
+
+        /**
+         * @type {function}
+         * @default null
+         * @private
+         */
+        this._$endTargetGroup = null;
 
         /**
          * @type {function}
@@ -137,7 +150,7 @@ class TimelineLayer extends BaseTimeline
     get targetFrame ()
     {
         return this.targetFrames.size
-            ? this.targetFrames.values().next().value
+            ? this.targetFrames.values().next().value[0]
             : null;
     }
 
@@ -276,12 +289,12 @@ class TimelineLayer extends BaseTimeline
     {
         layer_id |= 0;
 
-        if (!this._$targetFrames.has(layer_id)) {
-            this._$targetFrames.set(layer_id, []);
+        if (!this.targetFrames.has(layer_id)) {
+            this.targetFrames.set(layer_id, []);
         }
 
         this
-            ._$targetFrames
+            .targetFrames
             .get(layer_id)
             .push(element);
 
@@ -356,7 +369,7 @@ class TimelineLayer extends BaseTimeline
         if (element) {
             element.addEventListener("wheel", (event) =>
             {
-                if (!Util.$ctrlKey) {
+                if (!Util.$altKey) {
                     return ;
                 }
 
@@ -377,7 +390,7 @@ class TimelineLayer extends BaseTimeline
     }
 
     /**
-     * @description タイムラインの全てのアクティブElementを非アクティブか
+     * @description タイムラインの全てのアクティブElementを非アクティブ化
      *              外部クラスからコールされる想定
      *
      * @return {void}
@@ -388,6 +401,23 @@ class TimelineLayer extends BaseTimeline
     {
         this.clearActiveLayers();
         this.clearActiveFrames();
+    }
+
+    /**
+     * @description タイムラインの全てのElementを削除
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    removeAll ()
+    {
+        const element = document
+            .getElementById("timeline-content");
+
+        while (element.firstChild) {
+            element.firstChild.remove();
+        }
     }
 
     /**
@@ -950,11 +980,10 @@ class TimelineLayer extends BaseTimeline
             }
 
             if (parent.scrollTop > 0 && parent.offsetTop > event.pageY - 8) {
-                parent.scrollTop += parent.offsetTop - event.pageY;
+                parent.scrollTop +=  event.pageY - parent.offsetTop - 8;
             }
 
         });
-
     }
 
     /**
@@ -1744,17 +1773,9 @@ class TimelineLayer extends BaseTimeline
             preview.setAttribute("class", "fadeOut");
         }
 
-        const labelInput = document
-            .getElementById("label-name");
-
-        // ラベル情報更新
-        Util.$timelineTool.executeLabelName({
-            "target": {
-                "value": labelInput.value
-            }
-        });
-
-        // reset
+        // ラベル情報更新して初期化
+        const labelInput = document.getElementById("label-name");
+        labelInput.blur();
         labelInput.value = "";
 
         // toolにframeを表示
@@ -1788,45 +1809,83 @@ class TimelineLayer extends BaseTimeline
 
         if (target.classList.contains("frame-active")) {
 
-            if (this._$targetFrames.length > 1) {
-                this._$targetFrames.sort(this.frameSort);
+            const firstFrames  = this.targetFrames.values().next().value;
+            const firstElement = firstFrames[0];
+            if (!firstElement) {
+                return ;
             }
 
-            const firstElement = this._$targetFrames[0];
+            // 一番左上のelementを算出
+            const children = Array.from(
+                document.getElementById("timeline-content").children
+            );
 
-            const element = document
-                .getElementById("target-group");
+            let index = children.indexOf(this.targetLayer);
+            if (this.targetFrames.size > 1) {
+                index = Number.MAX_VALUE;
+                for (const frames of this.targetFrames.values()) {
+                    index = Math.min(index,
+                        children.indexOf(
+                            document.getElementById(
+                                `layer-id-${frames[0].dataset.layerId}`
+                            )
+                        )
+                    );
+                }
+            }
 
-            let offsetLeft = firstElement.offsetLeft - this._$scrollX;
+            let frame = Number.MAX_VALUE;
+            for (let idx = 0; idx < firstFrames.length; ++idx) {
+                frame = Math.min(frame, firstFrames[idx].dataset.frame | 0);
+            }
+
+            // 左上のelementを基準に選択範囲を生成
+            const layerId = children[index].dataset.layerId | 0;
+            const leftElement = document
+                .getElementById(`${layerId}-${frame}`);
 
             const parent = document
                 .getElementById("timeline-content");
 
+            const width = firstFrames.length
+                * (Util.$timelineTool.timelineWidth + 1) - 5;
+
+            this._$clientX = leftElement.offsetLeft - this._$scrollX;
+            this._$clientY = leftElement.offsetTop - parent.scrollTop;
+
+            const element = document
+                .getElementById("target-group");
+
             element.style.display = "";
-            element.style.width   = `${this._$targetFrames.length * 13 - 5}px`;
-            element.style.left    = `${offsetLeft}px`;
-            element.style.top     = `${firstElement.offsetTop - parent.scrollTop}px`;
+            element.style.width   = `${width}px`;
+            element.style.height  = `${this.targetFrames.size * 31 - 5}px`;
+            element.style.left    = `${this._$clientX}px`;
+            element.style.top     = `${this._$clientY}px`;
 
+            const size = Util.$timelineTool.timelineWidth + 1;
             for (;;) {
-
-                if (offsetLeft + 13 > event.clientX) {
+                if (this._$clientX + size > event.clientX) {
                     break;
                 }
-
-                offsetLeft += 13;
+                this._$clientX += size;
+            }
+            for (;;) {
+                if (this._$clientY + 30 > event.clientY) {
+                    break;
+                }
+                this._$clientY += 30;
             }
 
-            element.dataset.positionL = `${offsetLeft}`;
-            element.dataset.positionR = `${offsetLeft + 13}`;
-            element.dataset.layerId   = firstElement.dataset.layerId;
-            element.dataset.frame     = firstElement.dataset.frame;
-
-            if (!this._$hideTargetGroup) {
-                this._$hideTargetGroup = this.hideTargetGroup.bind(this);
+            if (!this._$endTargetGroup) {
+                this._$endTargetGroup = this.endTargetGroup.bind(this);
             }
 
-            window
-                .addEventListener("mouseup", this._$hideTargetGroup);
+            if (!this._$moveTargetGroup) {
+                this._$moveTargetGroup = this.moveTargetGroup.bind(this);
+            }
+
+            window.addEventListener("mousemove", this._$moveTargetGroup);
+            window.addEventListener("mouseup", this._$endTargetGroup);
 
         } else {
 
@@ -1835,14 +1894,12 @@ class TimelineLayer extends BaseTimeline
 
             const layerId = target.dataset.layerId | 0;
 
-            // 編集へセット
-            this._$selectFrameElement = target;
-            this.addTargetFrame(layerId, target);
-
-            const layerElement = document
+            // fixed logic
+            this.targetLayer = document
                 .getElementById(`layer-id-${layerId}`);
 
-            this.targetLayer = layerElement;
+            // 選択したelementをMapに登録
+            this.addTargetFrame(layerId, target);
 
             if (!this._$multiSelect) {
                 this._$multiSelect = this.multiSelect.bind(this);
@@ -1852,16 +1909,13 @@ class TimelineLayer extends BaseTimeline
                 this._$endMultiSelect = this.endMultiSelect.bind(this);
             }
 
-            layerElement.addEventListener("mousemove", this._$multiSelect);
+            window.addEventListener("mousemove", this._$multiSelect);
             window.addEventListener("mouseup", this._$endMultiSelect);
 
             // アクティブ表示
             target
                 .classList
                 .add("frame-active");
-
-            // 選択中のDisplayObjectを解放
-            // tool.clearActiveElement();
 
             const characters = scene
                 .getLayer(event.target.dataset.layerId | 0)
@@ -1908,6 +1962,7 @@ class TimelineLayer extends BaseTimeline
             if (currentFrame !== frame) {
                 Util.$timelineFrame.currentFrame = frame;
                 Util.$timelineMarker.move();
+                Util.$soundController.createSoundElements();
                 this.reloadScreen();
             }
         }
@@ -1932,6 +1987,185 @@ class TimelineLayer extends BaseTimeline
         // // Util.$controller.createSoundListArea();
         // Util.$canCopyLayer     = false;
         // Util.$canCopyCharacter = true;
+    }
+
+    /**
+     * @description 選択したフレームの移動表示
+     *
+     * @param  {MouseEvent} event
+     * @return {void}
+     * @method
+     * @public
+     */
+    moveTargetGroup (event)
+    {
+        window.requestAnimationFrame(() =>
+        {
+            const element = document
+                .getElementById("target-group");
+
+            const targetLayer = this.targetLayer;
+
+            const scrollElement = document
+                .getElementById(`frame-scroll-id-${targetLayer.dataset.layerId}`);
+
+            const size = Util.$timelineTool.timelineWidth + 1;
+
+            // 右に移動
+            if (event.clientX - this._$clientX > size) {
+
+                // 右端まできたらタイムラインを移動
+                if (element.offsetLeft + element.offsetWidth + size >
+                    scrollElement.offsetLeft + scrollElement.offsetWidth
+                ) {
+
+                    const base = document
+                        .getElementById("timeline-controller-base");
+
+                    // 移動可能であれば右にタイムラインを移動
+                    if (event.pageX > base.offsetLeft + base.offsetWidth
+                        && base.scrollWidth - base.offsetWidth > base.scrollLeft
+                    ) {
+                        Util
+                            .$timelineLayer
+                            .moveTimeLine(
+                                base.scrollLeft
+                                + (Util.$timelineTool.timelineWidth + 1)
+                            );
+                    }
+
+                    return ;
+                }
+
+                element.style.left = `${element.offsetLeft + size}px`;
+                this._$clientX += size;
+
+                return ;
+            }
+
+            // 左に移動
+            if (this._$clientX - event.clientX > size) {
+
+                // 左端まできたらタイムラインを移動
+                if (scrollElement.offsetLeft > element.offsetLeft - size) {
+
+                    const base = document
+                        .getElementById("timeline-controller-base");
+
+                    // 移動可能であれば左にタイムラインを移動
+                    if (base.scrollLeft > 0 && base.offsetLeft > event.pageX) {
+
+                        Util
+                            .$timelineLayer
+                            .moveTimeLine(
+                                base.scrollLeft
+                                - (Util.$timelineTool.timelineWidth + 1)
+                            );
+
+                    }
+
+                    return ;
+                }
+
+                element.style.left = `${element.offsetLeft - size}px`;
+                this._$clientX -= size;
+
+                return ;
+            }
+
+            // 下に移動
+            if (event.clientY - this._$clientY > 30) {
+
+                const parent = document
+                    .getElementById("timeline-content");
+
+                const height = Math.min(
+                    parent.children.length * 31,
+                    parent.offsetHeight
+                );
+
+                if (element.offsetTop + element.offsetHeight + 31
+                    > parent.offsetTop + height
+                ) {
+
+                    // 移動可能であれば下にタイムラインを移動
+                    const maxScrollTop = parent.scrollHeight - parent.offsetHeight;
+                    if (parent.scrollTop + 31 > maxScrollTop) {
+
+                        // 移動先がなければ終了
+                        const moveY = maxScrollTop - parent.scrollTop;
+                        if (1 > moveY) {
+                            return ;
+                        }
+
+                        element.style.top = `${element.offsetTop + moveY - 5}px`;
+                        parent.scrollTop = maxScrollTop;
+
+                    } else {
+
+                        parent.scrollTop += 31;
+
+                    }
+
+                    return ;
+                }
+
+                element.style.top = `${element.offsetTop + 31}px`;
+
+                this._$clientY += 30;
+
+                return ;
+            }
+
+            // 上に移動
+            if (this._$clientY - event.clientY > 0) {
+
+                const parent = document
+                    .getElementById("timeline-content");
+
+                if (parent.offsetTop > element.offsetTop - 31) {
+
+                    // 移動可能であれば上にタイムラインを移動
+                    if (0 > parent.scrollTop - 31) {
+
+                        // 移動先がなければ終了
+                        if (!parent.scrollTop) {
+                            return ;
+                        }
+
+                        element.style.top = `${element.offsetTop - parent.scrollTop + 4}px`;
+                        parent.scrollTop = 0;
+
+                    } else {
+
+                        parent.scrollTop -= 31;
+
+                    }
+
+                    return ;
+                }
+
+                element.style.top = `${element.offsetTop - 31}px`;
+
+                this._$clientY -= 30;
+            }
+        });
+    }
+
+    /**
+     * @description 選択したフレームの移動処理
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    endTargetGroup ()
+    {
+        window.removeEventListener("mousemove", this._$moveTargetGroup);
+        window.removeEventListener("mouseup", this._$endTargetGroup);
+
+        // 選択elementを非表示
+        this.hideTargetGroup();
     }
 
     /**
@@ -2010,11 +2244,6 @@ class TimelineLayer extends BaseTimeline
      */
     hideTargetGroup ()
     {
-        if (this._$hideTargetGroup) {
-            window
-                .removeEventListener("mouseup", this._$hideTargetGroup);
-        }
-
         document
             .getElementById("target-group")
             .style.display = "none";
@@ -2030,48 +2259,85 @@ class TimelineLayer extends BaseTimeline
      */
     multiSelect (event)
     {
-        const targetLayer = this.targetLayer;
-        if (!targetLayer) {
-            return ;
-        }
-
         const target = event.target;
         const targetFrame = target.dataset.frame | 0;
         if (!targetFrame) {
             return ;
         }
 
-        // if (target.dataset.layerId !== targetLayer.dataset.layerId) {
-        //     return ;
-        // }
+        const targetLayer = this.targetLayer;
+        if (!targetLayer) {
+            return ;
+        }
 
         // 全てのイベント終了
         event.stopPropagation();
         event.preventDefault();
 
-        const selectFrameElement = this._$selectFrameElement;
-        const selectFrame = selectFrameElement.dataset.frame | 0;
+        const selectFrameElement = this.targetFrame;
+        const selectFrame        = selectFrameElement.dataset.frame | 0;
+        const selectLayerId      = selectFrameElement.dataset.layerId | 0;
 
         const minFrame = Math.min(targetFrame, selectFrame);
         const maxFrame = Math.max(targetFrame, selectFrame) + 1;
 
-        // const diff = maxFrame - minFrame;
-        const layerId = targetLayer.dataset.layerId | 0;
+        // 最初に選択したレイヤーと現在選択中のレイヤーの間を補完
+        const selectIds = [selectLayerId];
 
-        // 初期化するので、最後に変数を再セットする
-        this.clearActiveFrames();
+        // 選択範囲が複数行の時は補完
+        const targetLayerId = target.dataset.layerId | 0;
+        if (selectLayerId !== targetLayerId) {
 
-        for (let frame = minFrame; frame < maxFrame; ++frame) {
+            const children = Array.from(
+                document.getElementById("timeline-content").children
+            );
 
-            const element = document
-                .getElementById(`${layerId}-${frame}`);
+            const startIndex  = children.indexOf(targetLayer);
+            const targetIndex = children.indexOf(
+                document.getElementById(`layer-id-${targetLayerId}`)
+            );
 
-            this.addTargetFrame(layerId, element);
+            if (targetIndex > startIndex) {
+                const length = targetIndex - startIndex + 1;
+                for (let idx = 1; idx < length; ++idx) {
+                    selectIds.push(
+                        children[startIndex + idx].dataset.layerId | 0
+                    );
+                }
+            } else {
+                const length = startIndex - targetIndex + 1;
+                for (let idx = 1; idx < length; ++idx) {
+                    selectIds.push(
+                        children[startIndex - idx].dataset.layerId | 0
+                    );
+                }
+            }
         }
 
-        // 変数を再セットする
-        this._$selectFrameElement = selectFrameElement;
-        this.targetLayer = targetLayer;
+        // フレームのアクティブ表示を初期化
+        this.clearActiveFrames();
+
+        // 再度、選択した範囲でアクティブ計算を行う
+        for (let idx = 0; idx < selectIds.length; ++idx) {
+
+            const layerId = selectIds[idx];
+            for (let frame = minFrame; frame < maxFrame; ++frame) {
+
+                const element = document
+                    .getElementById(`${layerId}-${frame}`);
+
+                if (!element) {
+                    continue;
+                }
+
+                this.addTargetFrame(layerId, element);
+            }
+        }
+
+        // 最初に選択したフレームの順番を補正
+        const frames = this.targetFrames.get(selectLayerId);
+        frames.splice(frames.indexOf(selectFrameElement), 1);
+        frames.unshift(selectFrameElement);
     }
 
     /**
@@ -2083,11 +2349,8 @@ class TimelineLayer extends BaseTimeline
      */
     endMultiSelect ()
     {
-        if (this.targetLayer) {
-            this
-                .targetLayer
-                .removeEventListener("mousemove", this._$multiSelect);
-        }
+        Util.$setCursor("auto");
+        window.removeEventListener("mousemove", this._$multiSelect);
         window.removeEventListener("mouseup", this._$endMultiSelect);
     }
 }

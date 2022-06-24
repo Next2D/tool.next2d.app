@@ -82,6 +82,7 @@ Util.$readStatus                = 0;
 Util.$readEnd                   = 1;
 Util.$shiftKey                  = false;
 Util.$ctrlKey                   = false;
+Util.$altKey                    = false;
 Util.$zoomScale                 = 1;
 Util.$currentFrame              = 1;
 Util.$frameWidth                = 65;
@@ -458,6 +459,7 @@ Util.$keyCommandFunction = function (event)
 {
     Util.$shiftKey = event.shiftKey;
     Util.$ctrlKey  = event.ctrlKey || event.metaKey;
+    Util.$altKey   = event.altKey || event.metaKey;
 
     switch (event.code) {
 
@@ -637,6 +639,7 @@ Util.$initialize = function ()
     {
         Util.$shiftKey = false;
         Util.$ctrlKey  = false;
+        Util.$altKey   = false;
     });
 
     window.addEventListener("beforeunload", (event) =>

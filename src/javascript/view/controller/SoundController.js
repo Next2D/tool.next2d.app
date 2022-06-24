@@ -70,13 +70,13 @@ class SoundController extends BaseController
      * @description タイムラインにサウンドを追加
      *              タイムラインでフレームを指定した際に引数がセットされる
      *
-     * @param  {object} object
-     * @param  {number} id
+     * @param  {object} [object=null]
+     * @param  {number} [id=0]
      * @return {void}
      * @method
      * @public
      */
-    addSound (object = null, id = null)
+    addSound (object = null, id = 0)
     {
         if (!object) {
 
@@ -285,9 +285,9 @@ class SoundController extends BaseController
         const frame = Util.$timelineFrame.currentFrame;
 
         const scene = Util.$currentWorkSpace().scene;
-        if (scene._$sounds.has(frame)) {
+        if (scene.hasSound(frame)) {
 
-            const sounds = scene._$sounds.get(frame);
+            const sounds = scene.getSound(frame);
             for (let idx = 0; idx < sounds.length; ++idx) {
                 this.addSound(sounds[idx], idx);
             }
