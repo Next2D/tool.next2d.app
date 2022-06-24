@@ -423,22 +423,31 @@ class TimelineLayer extends BaseTimeline
     /**
      * @description タイムラインにレイヤーを追加する
      *
+     * @param  {number} [current_frame=1]
+     * @param  {number} [layer_id=-1]
      * @return {void}
      * @method
      * @public
      */
-    create ()
+    create (current_frame = 1, layer_id = -1)
     {
+        let frame = current_frame;
+
         const scene   = Util.$currentWorkSpace().scene;
-        const layerId = scene._$layerId;
+        const layerId = layer_id === -1 ? scene._$layerId : layer_id;
 
         const element = document
             .getElementById("timeline-content");
 
         const lastFrame = Util.$timelineHeader.lastFrame;
 
-        let frame = 1;
-        let htmlTag = `
+        let parent = document
+            .getElementById(`frame-scroll-id-${layerId}`);
+
+        // イベント登録は初回だけ
+        if (!parent) {
+
+            element.insertAdjacentHTML("beforeend", `
 <div class="timeline-content-child" id="layer-id-${layerId}" data-layer-id="${layerId}">
 
     <div class="timeline-layer-controller">
@@ -458,205 +467,215 @@ class TimelineLayer extends BaseTimeline
 
     <div class="timeline-frame-controller" id="frame-scroll-id-${layerId}">
         <div class="timeline-frame">
-`;
-
-        while (lastFrame > frame) {
-
-            htmlTag += `
-    <div class="frame" data-click-type="frame" data-frame-state="empty" data-layer-id="${layerId}" id="${layerId}-${frame}" data-frame="${frame++}"></div>
-    <div class="frame" data-click-type="frame" data-frame-state="empty" data-layer-id="${layerId}" id="${layerId}-${frame}" data-frame="${frame++}"></div>
-    <div class="frame" data-click-type="frame" data-frame-state="empty" data-layer-id="${layerId}" id="${layerId}-${frame}" data-frame="${frame++}"></div>
-    <div class="frame" data-click-type="frame" data-frame-state="empty" data-layer-id="${layerId}" id="${layerId}-${frame}" data-frame="${frame++}"></div>
-    <div class="frame frame-pointer" data-click-type="frame-pointer" data-frame-state="empty" data-layer-id="${layerId}" id="${layerId}-${frame}" data-frame="${frame++}"></div>
-`;
-        }
-
-        htmlTag += `
         </div>
     </div>
 </div>
-`;
+`);
 
-        element.insertAdjacentHTML("beforeend", htmlTag);
+            parent = document
+                .getElementById(`frame-scroll-id-${layerId}`);
 
-        // レイヤー名の変更イベントを登録
-        document
-            .getElementById(`layer-name-${layerId}`)
-            .addEventListener("dblclick", (event) =>
+            // レイヤー名の変更イベントを登録
+            document
+                .getElementById(`layer-name-${layerId}`)
+                .addEventListener("dblclick", (event) =>
+                {
+                    this.showInput(event);
+                });
+
+            // レイヤー切り替えイベントを登録
+            document
+                .getElementById(`layer-icon-${layerId}`)
+                .addEventListener("dblclick", (event) =>
+                {
+                    this.showLayerMenu(event);
+                });
+
+            // ガイドアイコン
+            const guideIcon = document
+                .getElementById(`layer-guide-icon-${layerId}`);
+
+            guideIcon.addEventListener("dblclick", (event) =>
             {
-                this.showInput(event);
+                this.showLayerMenu(event);
+            });
+            guideIcon.addEventListener("mouseover", (event) =>
+            {
+                this.exitLayer(event);
+            });
+            guideIcon.addEventListener("mouseout", (event) =>
+            {
+                this.endExitLayer(event);
             });
 
-        // レイヤー切り替えイベントを登録
-        document
-            .getElementById(`layer-icon-${layerId}`)
-            .addEventListener("dblclick", (event) =>
+            // マスクアイコン
+            const maskIcon = document
+                .getElementById(`layer-mask-icon-${layerId}`);
+
+            maskIcon.addEventListener("dblclick", (event) =>
+            {
+                this.showLayerMenu(event);
+            });
+            maskIcon.addEventListener("mouseover", (event) =>
+            {
+                this.exitLayer(event);
+            });
+            maskIcon.addEventListener("mouseout", (event) =>
+            {
+                this.endExitLayer(event);
+            });
+
+            // グループから外すexitアイコン
+            const exitIcon = document
+                .getElementById(`timeline-exit-icon-${layerId}`);
+
+            exitIcon.addEventListener("mouseover", (event) =>
+            {
+                this.exitLayer(event);
+            });
+            exitIcon.addEventListener("mouseout", (event) =>
+            {
+                this.endExitLayer(event);
+            });
+
+            const exitInIcon = document
+                .getElementById(`timeline-exit-in-icon-${layerId}`);
+
+            exitInIcon.addEventListener("mouseover", (event) =>
+            {
+                this.exitLayer(event);
+            });
+            exitInIcon.addEventListener("mouseout", (event) =>
+            {
+                this.endExitLayer(event);
+            });
+
+            // レイヤーの説明モーダルを登録
+            const layer = document.getElementById(`layer-id-${layerId}`);
+            Util.$addModalEvent(layer);
+
+            // レイヤー全体のイベント
+            layer.addEventListener("mousedown", (event) =>
+            {
+                this.selectLayer(event);
+            });
+
+            const layerController = layer
+                .getElementsByClassName("timeline-layer-controller")[0];
+
+            // レイヤーのコントロール部分へ、レイヤー移動イベントを登録する
+            layerController.addEventListener("mouseover", (event) =>
+            {
+                this.activeMoveLayer(event);
+            });
+            layerController.addEventListener("mouseout", (event) =>
+            {
+                this.inactiveMoveLayer(event);
+            });
+            layerController.addEventListener("contextmenu", (event) =>
             {
                 this.showLayerMenu(event);
             });
 
-        // ガイドアイコン
-        const guideIcon = document
-            .getElementById(`layer-guide-icon-${layerId}`);
+            // レイヤーの横移動イベント
+            const frameController = layer
+                .getElementsByClassName("timeline-frame-controller")[0];
 
-        guideIcon.addEventListener("dblclick", (event) =>
-        {
-            this.showLayerMenu(event);
-        });
-        guideIcon.addEventListener("mouseover", (event) =>
-        {
-            this.exitLayer(event);
-        });
-        guideIcon.addEventListener("mouseout", (event) =>
-        {
-            this.endExitLayer(event);
-        });
+            frameController.addEventListener("wheel", (event) =>
+            {
+                const deltaX = event.deltaX | 0;
+                if (!deltaX) {
+                    return false;
+                }
 
-        // マスクアイコン
-        const maskIcon = document
-            .getElementById(`layer-mask-icon-${layerId}`);
+                event.preventDefault();
 
-        maskIcon.addEventListener("dblclick", (event) =>
-        {
-            this.showLayerMenu(event);
-        });
-        maskIcon.addEventListener("mouseover", (event) =>
-        {
-            this.exitLayer(event);
-        });
-        maskIcon.addEventListener("mouseout", (event) =>
-        {
-            this.endExitLayer(event);
-        });
+                const maxDeltaX = event.currentTarget.scrollWidth
+                    - event.currentTarget.offsetWidth;
 
-        // グループから外すexitアイコン
-        const exitIcon = document
-            .getElementById(`timeline-exit-icon-${layerId}`);
+                this._$scrollX = Util.$clamp(
+                    this._$scrollX + deltaX, 0, maxDeltaX
+                );
 
-        exitIcon.addEventListener("mouseover", (event) =>
-        {
-            this.exitLayer(event);
-        });
-        exitIcon.addEventListener("mouseout", (event) =>
-        {
-            this.endExitLayer(event);
-        });
+                this.moveTimeLine(this._$scrollX);
 
-        const exitInIcon = document
-            .getElementById(`timeline-exit-in-icon-${layerId}`);
+            }, { "passive" : false });
 
-        exitInIcon.addEventListener("mouseover", (event) =>
-        {
-            this.exitLayer(event);
-        });
-        exitInIcon.addEventListener("mouseout", (event) =>
-        {
-            this.endExitLayer(event);
-        });
+            // タイムラインプレビュー機能
+            frameController.addEventListener("mouseover", (event) =>
+            {
+                this.showLayerPreview(event);
+            });
+            frameController.addEventListener("mouseout", () =>
+            {
+                this.hideLayerPreview();
+            });
 
-        // レイヤーの説明モーダルを登録
-        const layer = document.getElementById(`layer-id-${layerId}`);
-        Util.$addModalEvent(layer);
+            frameController.addEventListener("mousedown", (event) =>
+            {
+                this.selectFrame(event);
+            });
 
-        // レイヤー全体のイベント
-        layer.addEventListener("mousedown", (event) =>
-        {
-            this.selectLayer(event);
-        });
+            // ハイライトアイコン
+            document
+                .getElementById(`layer-light-icon-${layerId}`)
+                .addEventListener("mousedown", (event) =>
+                {
+                    this.clickLight(event);
+                });
 
-        const layerController = layer
-            .getElementsByClassName("timeline-layer-controller")[0];
+            // 表示・非表示アイコン
+            document
+                .getElementById(`layer-disable-icon-${layerId}`)
+                .addEventListener("mousedown", (event) =>
+                {
+                    this.clickDisable(event);
+                });
 
-        // レイヤーのコントロール部分へ、レイヤー移動イベントを登録する
-        layerController.addEventListener("mouseover", (event) =>
-        {
-            this.activeMoveLayer(event);
-        });
-        layerController.addEventListener("mouseout", (event) =>
-        {
-            this.inactiveMoveLayer(event);
-        });
-        layerController.addEventListener("contextmenu", (event) =>
-        {
-            this.showLayerMenu(event);
-        });
+            // ロックアイコン
+            document
+                .getElementById(`layer-lock-icon-${layerId}`)
+                .addEventListener("mousedown", (event) =>
+                {
+                    this.clickLock(event);
+                });
 
-        // レイヤーの横移動イベント
-        const frameController = layer
-            .getElementsByClassName("timeline-frame-controller")[0];
+            // スクロールエリア
+            const frameElement = document
+                .getElementById(`frame-scroll-id-${layerId}`);
 
-        frameController.addEventListener("wheel", (event) =>
-        {
-            const deltaX = event.deltaX | 0;
-            if (!deltaX) {
-                return false;
+            frameElement.addEventListener("contextmenu", (event) =>
+            {
+                Util.$timelineMenu.show(event);
+            });
+
+            frameElement.scrollLeft = this._$scrollX;
+
+            // end
+            scene._$layerId++;
+        }
+
+        let htmlTag = "";
+        while (lastFrame > frame) {
+
+            if (frame % 5 !== 0) {
+                htmlTag += `
+    <div class="frame" data-type="frame" data-frame-state="empty" data-layer-id="${layerId}" id="${layerId}-${frame}" data-frame="${frame++}"></div>
+`;
+            } else {
+                htmlTag += `
+    <div class="frame frame-pointer" data-type="frame-pointer" data-frame-state="empty" data-layer-id="${layerId}" id="${layerId}-${frame}" data-frame="${frame++}"></div>
+`;
             }
 
-            event.preventDefault();
+        }
 
-            const maxDeltaX = event.currentTarget.scrollWidth
-                - event.currentTarget.offsetWidth;
+        if (htmlTag) {
+            parent
+                .firstElementChild
+                .insertAdjacentHTML("beforeend", htmlTag);
+        }
 
-            this._$scrollX = Util.$clamp(
-                this._$scrollX + deltaX, 0, maxDeltaX
-            );
-
-            this.moveTimeLine(this._$scrollX);
-
-        }, { "passive" : false });
-
-        // タイムラインプレビュー機能
-        frameController.addEventListener("mouseover", (event) =>
-        {
-            this.showLayerPreview(event);
-        });
-        frameController.addEventListener("mouseout", () =>
-        {
-            this.hideLayerPreview();
-        });
-
-        frameController.addEventListener("mousedown", (event) =>
-        {
-            this.selectFrame(event);
-        });
-
-        // ハイライトアイコン
-        document
-            .getElementById(`layer-light-icon-${layerId}`)
-            .addEventListener("mousedown", (event) =>
-            {
-                this.clickLight(event);
-            });
-
-        // 表示・非表示アイコン
-        document
-            .getElementById(`layer-disable-icon-${layerId}`)
-            .addEventListener("mousedown", (event) =>
-            {
-                this.clickDisable(event);
-            });
-
-        // ロックアイコン
-        document
-            .getElementById(`layer-lock-icon-${layerId}`)
-            .addEventListener("mousedown", (event) =>
-            {
-                this.clickLock(event);
-            });
-
-        // スクロールエリア
-        const frameElement = document
-            .getElementById(`frame-scroll-id-${layerId}`);
-
-        frameElement.addEventListener("contextmenu", (event) =>
-        {
-            Util.$timelineMenu.show(event);
-        });
-
-        frameElement.scrollLeft = this._$scrollX;
-
-        // end
-        scene._$layerId++;
     }
 
     /**
@@ -2166,6 +2185,8 @@ class TimelineLayer extends BaseTimeline
 
         // 選択elementを非表示
         this.hideTargetGroup();
+
+        // TODO 移動処理
     }
 
     /**
@@ -2262,6 +2283,11 @@ class TimelineLayer extends BaseTimeline
         const target = event.target;
         const targetFrame = target.dataset.frame | 0;
         if (!targetFrame) {
+            return ;
+        }
+
+        // ヘッダー領域の場合は処理をスキップ
+        if (!("layerId" in target.dataset)) {
             return ;
         }
 

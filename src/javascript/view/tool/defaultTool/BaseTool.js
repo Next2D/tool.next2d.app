@@ -192,7 +192,6 @@ class BaseTool extends Tool
         layer.addCharacter(character);
     }
 
-
     /**
      * @return {void}
      * @method

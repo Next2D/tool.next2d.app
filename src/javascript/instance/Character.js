@@ -41,6 +41,17 @@ class Character
     }
 
     /**
+     * @description 空フレーム判定
+     *
+     * @return {boolean}
+     * @public
+     */
+    isEmpty ()
+    {
+        return false;
+    }
+
+    /**
      * @return {void}
      * @method
      * @public
@@ -935,7 +946,7 @@ class Character
         }
 
         const places = Array.from(this._$places);
-        places.sort(function (a, b)
+        places.sort((a, b) =>
         {
             switch (true) {
 

@@ -11,6 +11,7 @@ class Layer
     {
         this._$id         = 0;
         this._$characters = [];
+        this._$emptys     = [];
         this._$instances  = new Map();
 
         this._$maskId     = null;
@@ -20,18 +21,22 @@ class Layer
         this._$disable    = false;
         this._$lock       = false;
         this._$mode       = Util.LAYER_MODE_NORMAL;
-        this._$frame      = new Frame();
 
         if (object) {
-            this._$name      = object.name;
-            this._$light     = object.light;
-            this._$disable   = object.disable;
-            this._$lock      = object.lock;
-            this._$mode      = object.mode;
-            this._$maskId    = object.maskId;
-            this._$guideId   = object.guideId;
-            this.frame       = new Frame(object.frames);
-            this.characters  = object.characters;
+            this._$name          = object.name;
+            this._$light         = object.light;
+            this._$disable       = object.disable;
+            this._$lock          = object.lock;
+            this._$mode          = object.mode;
+            this._$maskId        = object.maskId;
+            this._$guideId       = object.guideId;
+            this.characters      = object.characters;
+            this.emptyCharacters = object.emptyCharacters || [];
+
+            // TODO 過去データの補完
+            if (object.frames) {
+
+            }
         }
     }
 
@@ -41,6 +46,7 @@ class Layer
      */
     initialize ()
     {
+        // レイヤに必要なフレームをタイムラインに生成
         Util.$timelineLayer.create();
 
         const element = document
@@ -49,7 +55,6 @@ class Layer
 
         // set id
         this.id = element.dataset.layerId | 0;
-        this._$frame._$layerId = this.id;
 
         const name = document.getElementById(`layer-name-${this.id}`);
         if (this.name) {
@@ -107,8 +112,7 @@ class Layer
 
         // view
         this.showIcon();
-
-        this._$frame.initialize();
+        this.reloadStyle();
     }
 
     /**
@@ -282,6 +286,32 @@ class Layer
             characters.push(character);
         }
         return characters;
+    }
+
+    /**
+     * @description 指定したフレームに空のキャラクターオブジェクトがあれば返す
+     *
+     * @param  {number} [frame=1]
+     * @return {object}
+     * @public
+     */
+    getActiveEmptyCharacter (frame = 1)
+    {
+        for (let idx = 0; idx < this._$emptys.length; ++idx) {
+
+            const character = this._$emptys[idx];
+
+            if (character.startFrame > frame) {
+                continue;
+            }
+
+            if (frame >= character.endFrame) {
+                continue;
+            }
+
+            return character;
+        }
+        return null;
     }
 
     /**
@@ -482,7 +512,7 @@ class Layer
                         .style.display = "";
 
                     const exitInIcon = document
-                        .getElementById(`timeline-exit-in-icon-${this.id}`)
+                        .getElementById(`timeline-exit-in-icon-${this.id}`);
 
                     exitInIcon.style.display = "";
                     exitInIcon.style.opacity = "0";
@@ -510,6 +540,140 @@ class Layer
             default:
                 break;
 
+        }
+    }
+
+    /**
+     * @description タイムラインのCSSを再配置する
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    reloadStyle ()
+    {
+        // 初期化
+        this.resetStyle();
+
+        // 空のフレーム
+        this.setEmptyStyle();
+
+        // DisplayObjectを配置したフレーム
+
+    }
+
+    /**
+     * @description 空フレームのスタイルをセット
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    setEmptyStyle ()
+    {
+        const layerId = this.id;
+        for (let idx = 0; idx < this._$emptys.length; ++idx) {
+
+            const character = this._$emptys[idx];
+
+            // 1フレームの場合
+            if (character.startFrame === character.endFrame - 1) {
+
+                const element = document
+                    .getElementById(`${layerId}-${character.startFrame}`);
+
+                element
+                    .dataset
+                    .frameState = "empty-key-frame";
+
+                element
+                    .classList
+                    .add("empty-key-frame");
+
+                continue;
+
+            }
+
+            // 複数フレームの場合のスタイル
+            let frame = character.startFrame;
+
+            // 開始フレーム
+            const startElement = document
+                .getElementById(`${layerId}-${frame++}`);
+
+            startElement
+                .dataset
+                .frameState = "empty-key-frame";
+
+            startElement
+                .classList
+                .add(
+                    "empty-key-frame",
+                    "empty-key-frame-join"
+                );
+
+            // 間のフレーム
+            const endFrame =  character.endFrame - 1;
+            for (; frame < endFrame; ) {
+
+                const element = document
+                    .getElementById(`${layerId}-${frame++}`);
+
+                element
+                    .dataset
+                    .frameState = "empty-space-frame";
+
+                element
+                    .classList
+                    .add("empty-space-frame");
+
+            }
+
+            // 終了フレーム
+            const endElement = document
+                .getElementById(`${layerId}-${frame++}`);
+
+            endElement
+                .dataset
+                .frameState = "empty-space-frame-end";
+
+            endElement
+                .classList
+                .add("empty-space-frame-end");
+
+        }
+    }
+
+    /**
+     * @description レイヤーのタイムラインのスタイルを初期化
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    resetStyle ()
+    {
+        const layerId = this.id;
+
+        let frame = 1;
+        for (;;) {
+
+            const element = document
+                .getElementById(`${layerId}-${frame++}`);
+
+            // Emptyフレームを見つけたら終了
+            if (element.dataset.frameState === "empty") {
+                return ;
+            }
+
+            // 状態とクラスを初期化
+            element.dataset.frameState = "empty";
+            element.setAttribute("class", "frame");
+
+            // 5の倍数のフレームにはポインター用のスタイルを追加する
+            if (element.dataset.type === "frame-pointer") {
+                element.classList.add("frame-pointer");
+            }
         }
     }
 
@@ -609,22 +773,29 @@ class Layer
     }
 
     /**
-     * @return {object}
+     * @return {array}
      * @public
      */
-    get frame ()
+    get emptyCharacters ()
     {
-        return this._$frame.toObject();
+        const characters = [];
+        for (let idx = 0; idx < this._$emptys.length; ++idx) {
+            characters.push(this._$emptys[idx].toObject());
+        }
+        return characters;
     }
 
     /**
-     * @param  {Frame} frame
+     * @param  {array} characters
      * @return {void}
      * @public
      */
-    set frame (frame)
+    set emptyCharacters (characters)
     {
-        this._$frame = frame;
+        for (let idx = 0; idx < characters.length; ++idx) {
+            const character = new EmptyCharacter(characters[idx]);
+            this._$emptys.push(character);
+        }
     }
 
     /**
@@ -695,32 +866,58 @@ class Layer
     }
 
     /**
+     * @param  {EmptyCharacter} character
+     * @return {void}
+     * @public
+     */
+    addEmptyCharacter (character)
+    {
+        this._$emptys.push(character);
+    }
+
+    /**
+     * TODO
      * @param  {number} frame
      * @return {number}
      */
     getEndFrame (frame)
     {
-        while (this._$frame.hasClasses(frame)) {
+        for (;;) {
 
-            const classes = this._$frame.getClasses(frame);
-
-            switch (true) {
-
-                case classes.indexOf("key-frame") > -1:
-                case classes.indexOf("empty-key-frame") > -1:
-                    return frame;
-
-                case classes.indexOf("key-space-frame-end") > -1:
-                case classes.indexOf("empty-space-frame-end") > -1:
-                    return frame + 1;
-
-                default:
-                    break;
-
+            const characters = this.getActiveCharacter(frame);
+            if (characters.length > 0) {
+                return frame;
             }
 
-            frame++;
+            const character = this.getActiveEmptyCharacter(frame);
+            if (character) {
+                return character.endFrame;
+            }
+
+            return frame;
         }
+
+        // while (this._$frame.hasClasses(frame)) {
+        //
+        //     const classes = this._$frame.getClasses(frame);
+        //
+        //     switch (true) {
+        //
+        //         case classes.indexOf("key-frame") > -1:
+        //         case classes.indexOf("empty-key-frame") > -1:
+        //             return frame;
+        //
+        //         case classes.indexOf("key-space-frame-end") > -1:
+        //         case classes.indexOf("empty-space-frame-end") > -1:
+        //             return frame + 1;
+        //
+        //         default:
+        //             break;
+        //
+        //     }
+        //
+        //     frame++;
+        // }
 
         return frame;
     }
@@ -732,13 +929,21 @@ class Layer
      */
     get totalFrame ()
     {
-        let frame = 1;
+        let frame = 0;
         for (let idx = 0; idx < this._$characters.length; ++idx) {
 
             const character = this._$characters[idx];
             frame = Math.max(frame, character.endFrame);
 
         }
+
+        for (let idx = 0; idx < this._$emptys.length; ++idx) {
+
+            const character = this._$emptys[idx];
+            frame = Math.max(frame, character.endFrame);
+
+        }
+
         return frame;
     }
 
@@ -810,15 +1015,15 @@ class Layer
     toObject ()
     {
         return {
-            "name":       this.name,
-            "light":      this.light,
-            "disable":    this.disable,
-            "lock":       this.lock,
-            "mode":       this.mode,
-            "maskId":     this.maskId,
-            "guideId":    this.guideId,
-            "frames":     this.frame,
-            "characters": this.characters
+            "name":            this.name,
+            "light":           this.light,
+            "disable":         this.disable,
+            "lock":            this.lock,
+            "mode":            this.mode,
+            "maskId":          this.maskId,
+            "guideId":         this.guideId,
+            "characters":      this.characters,
+            "emptyCharacters": this.emptyCharacters
         };
     }
 }

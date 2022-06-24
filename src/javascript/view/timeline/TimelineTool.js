@@ -714,7 +714,129 @@ class TimelineTool extends BaseTimeline
      */
     executeTimelineEmptyAdd ()
     {
-        Util.$timeline.addEmptyFrame();
+        const targetFrames = Util.$timelineLayer.targetFrames;
+        if (!targetFrames.size) {
+            return ;
+        }
+
+        this.save();
+
+        const frame = Util.$timelineFrame.currentFrame;
+        const scene = Util.$currentWorkSpace().scene;
+        for (const layerId of targetFrames.keys()) {
+
+            const layer = scene.getLayer(layerId);
+
+            const characters = layer.getActiveCharacter(frame);
+            if (characters.length) {
+
+                let minFrame = Number.MAX_VALUE;
+                for (let idx = 0; idx < characters.length; ++idx) {
+
+                    const character = characters[idx];
+                    minFrame = Math.min(minFrame, character.startFrame);
+                }
+
+            } else {
+
+                // DisplayObjectが何も設置されてないフレームのケース
+
+                const character = layer.getActiveEmptyCharacter(frame);
+                if (character) {
+
+                    // 空のフレームと重なっている
+                    if (character.startFrame !== frame) {
+
+                        // 空のフレームを分割、後半に新しいオブジェクトを設定
+                        layer.addEmptyCharacter(
+                            new EmptyCharacter({
+                                "startFrame": frame,
+                                "endFrame": character.endFrame
+                            })
+                        );
+
+                        // 前半のオブジェクトは再利用
+                        character.endFrame = frame;
+
+                    }
+
+                } else {
+
+                    // emptyのフレームの場合
+
+                    // 1フレーム目でない時は手前のフレームの確認を行う
+                    if (frame > 1) {
+
+                        // 開始位置を算出
+                        let idx = 1;
+                        for (; frame - idx > 1; ++idx) {
+
+                            const element = document
+                                .getElementById(`${layerId}-${frame - idx}`);
+
+                            if (element.dataset.frameState !== "empty") {
+                                break;
+                            }
+
+                        }
+
+                        const characters = layer
+                            .getActiveCharacter(frame - idx);
+
+                        if (characters.length) {
+
+                            // 手前にDisplayObjectを配置したフレームがあった場合は終了位置を補正
+                            for (let idx = 0; idx < characters.length; ++idx) {
+
+                                const character = characters[idx];
+                                character.endFrame = frame;
+
+                            }
+
+                        } else {
+
+                            const prevEmptyCharacter = layer
+                                .getActiveEmptyCharacter(frame - idx);
+
+                            // 手前のフレームに空フレームがあれば再利用
+                            if (prevEmptyCharacter) {
+
+                                prevEmptyCharacter.startFrame = frame - idx;
+                                prevEmptyCharacter.endFrame   = frame;
+
+                            } else {
+
+                                // なければ新規作成
+                                layer.addEmptyCharacter(
+                                    new EmptyCharacter({
+                                        "startFrame": frame - idx,
+                                        "endFrame": frame
+                                    })
+                                );
+
+                            }
+
+                        }
+                    }
+
+                    const emptyCharacter = new EmptyCharacter();
+                    emptyCharacter.startFrame = frame;
+                    emptyCharacter.endFrame   = frame + 1;
+                    layer.addEmptyCharacter(emptyCharacter);
+                }
+            }
+
+            layer.reloadStyle();
+        }
+
+        // アクティブなフレームを再設定
+        this.setActiveFrame();
+
+        // 追加した分だけタイムラインを増加させる補正
+        this.adjustmentTimeline();
+
+        // 初期化
+        super.focusOut();
     }
 
     /**
@@ -727,6 +849,71 @@ class TimelineTool extends BaseTimeline
     executeTimelineFrameDelete ()
     {
         Util.$timeline.deleteFrame();
+    }
+
+    /**
+     * @description フレーム追加した場合、アクティブも初期化されるので再度設定が必要
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    setActiveFrame ()
+    {
+        for (const values of Util.$timelineLayer.targetFrames.values()) {
+            for (let idx = 0; idx < values.length; ++idx) {
+                values[idx]
+                    .classList
+                    .add("frame-active");
+            }
+        }
+    }
+
+    /**
+     * @description タイムラインのフレームに追加時に不足分をタイムラインを追加する
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    adjustmentTimeline ()
+    {
+        const currentLastFrame = Util.$timelineHeader.lastFrame;
+
+        // ヘッダーを追加して、最終フレーム数を増加させる
+        Util.$timelineHeader.create(false);
+
+        // 表示されてるレイヤー全てにタイムラインを追加
+        const children = document
+            .getElementById("timeline-content").children;
+
+        for (let idx = 0; idx < children.length; ++idx) {
+
+            Util.$timelineLayer.create(
+                currentLastFrame,
+                children[idx].dataset.layerId | 0
+            );
+
+        }
+    }
+
+    /**
+     * @description タイムラインのCSSを再計算
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    reloadStyleAll ()
+    {
+        const scene = Util.$currentWorkSpace().scene;
+        for (const element of Util.$timelineLayer.targetLayers.values()) {
+
+            const layer = scene
+                .getLayer(element.dataset.layerId | 0);
+
+            layer.reloadStyle();
+        }
     }
 }
 

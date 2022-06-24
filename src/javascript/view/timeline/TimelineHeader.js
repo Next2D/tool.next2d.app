@@ -161,26 +161,28 @@ class TimelineHeader extends BaseTimeline
      */
     clearParams ()
     {
-        this._$scrollX       = 0;
         this._$targetElement = null;
     }
 
     /**
      * @description タイムラインのヘッダーを生成
      *
+     * @param  {boolean} [build=true]
      * @return {void}
      * @method
      * @public
      */
-    build (reload = true)
+    create (build = true)
     {
         // 描画エリアのサイズをセット
         const element = document
             .getElementById("timeline-header");
 
         // シーン移動や初回起動の時は初期化
-        if (reload) {
+        if (build) {
             // 変数を初期化
+            this.lastFrame = 0;
+            this._$scrollX = 0;
             this.clearParams();
 
             // remove all
@@ -189,16 +191,22 @@ class TimelineHeader extends BaseTimeline
             }
         }
 
+        const header = document
+            .getElementById("timeline-header");
+
+        // 生成する範囲の補正幅
+        const adjustmentWidth = build ? 0 : header.scrollWidth;
+
         const fps = document
             .getElementById("stage-fps")
             .value | 0;
 
-        let sec   = 1;
         let frame = this.lastFrame + 1;
+        let sec   = Math.max(1, (frame / 24 | 0) + 1);
         let limit = Math.ceil(window.parent.screen.width * 2.5
             + Util.$currentWorkSpace().scene.totalFrame
             * (TimelineTool.DEFAULT_TIMELINE_WIDTH + 1) // +1はborder solidの1px
-        );
+        ) - adjustmentWidth;
 
         while (limit > 0) {
 
@@ -253,10 +261,11 @@ class TimelineHeader extends BaseTimeline
                 });
             }
 
-            frame++;
-
             // +1はborder solidの1px
             limit -= TimelineTool.DEFAULT_TIMELINE_WIDTH + 1;
+            if (limit > 0) {
+                frame++;
+            }
         }
 
         this.lastFrame = frame;

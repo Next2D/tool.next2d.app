@@ -18,7 +18,6 @@ class MovieClip extends Instance
         this._$parent       = null;
         this._$labels       = new Map();
         this._$layers       = new Map();
-        this._$placeMap     = new Map();
         this._$actions      = new Map();
         this._$sounds       = new Map();
 
@@ -147,7 +146,7 @@ class MovieClip extends Instance
         }
 
         // create timeline marker
-        Util.$timelineHeader.build();
+        Util.$timelineHeader.create();
 
         // init label
         for (const frame of this._$labels.keys()) {
@@ -259,9 +258,7 @@ class MovieClip extends Instance
     {
         let frame = 1;
         for (const layer of this._$layers.values()) {
-            for (const layerFrame of layer._$frame._$classes.keys()) {
-                frame = Math.max(frame, layerFrame | 0);
-            }
+            frame = Math.max(frame, layer.totalFrame);
         }
         return frame;
     }
@@ -615,34 +612,6 @@ class MovieClip extends Instance
     }
 
     /**
-     * @return {object[]}
-     * @public
-     */
-    get placeMap ()
-    {
-        const placeMap = [];
-        for (let [frame, values] of this._$placeMap) {
-            placeMap.push({
-                "frame": frame,
-                "values": values
-            });
-        }
-        return placeMap;
-    }
-
-    /**
-     * @param {array} values
-     * @public
-     */
-    set placeMap (values)
-    {
-        for (let idx = 0; idx < values.length; ++idx) {
-            const object = values[idx];
-            this._$placeMap.set(object.frame | 0, object.values);
-        }
-    }
-
-    /**
      * @return {array}
      * @public
      */
@@ -791,25 +760,6 @@ class MovieClip extends Instance
     }
 
     /**
-     * @param  {number} frame
-     * @return {array}
-     * @public
-     */
-    getPlaceMap (frame)
-    {
-        return this._$placeMap.get(frame);
-    }
-
-    /**
-     * @param  {number} frame
-     * @return {boolean}
-     */
-    hasPlaceMap (frame)
-    {
-        return this._$placeMap.has(frame);
-    }
-
-    /**
      * @param  {object} place
      * @param  {boolean} [preview=false]
      * @return {object}
@@ -929,7 +879,6 @@ class MovieClip extends Instance
             "parent":   this.parent,
             "layers":   this.layers,
             "labels":   this.labels,
-            "placeMap": this.placeMap,
             "sounds":   this.sounds,
             "actions":  this.actions
         };
