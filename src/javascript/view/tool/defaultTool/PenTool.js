@@ -185,12 +185,8 @@ class PenTool extends BaseTool
                 (y + thickness / 2) / Util.$zoomScale
             );
 
-            const frame = Util.$timelineFrame.currentFrame;
-
-            Util
-                .$currentWorkSpace()
-                .scene
-                .changeFrame(frame);
+            // 再描画
+            this.reloadScreen();
 
             Util.$tools.reset();
         }

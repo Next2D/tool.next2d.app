@@ -5,6 +5,7 @@ class Screen
 {
     /**
      * @constructor
+     * @public
      */
     constructor()
     {
@@ -16,8 +17,8 @@ class Screen
         this._$handler = null;
 
         // DOMの読込がまだであれば、イベントに登録
+        Util.$readEnd++;
         if (document.readyState === "loading") {
-            Util.$readEnd++;
             this._$handler = this.initialize.bind(this);
             window.addEventListener("DOMContentLoaded", this._$handler);
         } else {
@@ -107,25 +108,6 @@ class Screen
         //
         //         }.bind(this, event));
         //     }
-
-        // window.addEventListener("mouseup", function (event)
-        // {
-        //     const activeTool = Util.$tools.activeTool;
-        //     if (activeTool) {
-        //         activeTool.dispatchEvent(
-        //             EventType.MOUSE_UP,
-        //             event
-        //         );
-        //     }
-        //
-        //     if (this._$tweenMode) {
-        //         this._$tweenMode       = false;
-        //         this._$tweenController = null;
-        //         this._$rectPosition    = null;
-        //         this._$offsetPosition  = null;
-        //     }
-        //
-        // }.bind(this));
 
         window.addEventListener("keydown", this.keyCommandFunction.bind(this));
 
@@ -2202,6 +2184,9 @@ class Screen
     }
 
     /**
+     * TODO 複数ドロップ対応
+     * @description ライブラリからのドロップ処理
+     *
      * @param  {DragEvent} event
      * @return {void}
      * @public
@@ -2209,7 +2194,12 @@ class Screen
     dropObject (event)
     {
         const libraryId = Util.$dragElement.dataset.libraryId | 0;
-        const instance  = Util.$currentWorkSpace().getLibrary(libraryId);
+
+        const instance = Util
+            .$currentWorkSpace()
+            .getLibrary(libraryId);
+
+        // フォルダーかサウンドの場合はスキップ
         switch (instance.type) {
 
             case "folder":
@@ -2244,58 +2234,58 @@ class Screen
         const scene   = Util.$currentWorkSpace().scene;
         const layerId = targetLayer.dataset.layerId | 0;
 
-        const layer = scene.getLayer(layerId | 0);
+        const layer = scene.getLayer(layerId);
         if (layer.lock) {
             return ;
         }
 
         const frame = Util.$timelineFrame.currentFrame;
 
-        const frameElement = document
-            .getElementById(`${layerId}-${frame}`); // fixed
+        // const frameElement = document
+        //     .getElementById(`${layerId}-${frame}`); // fixed
 
-        if (frameElement.classList.contains("tween-frame")) {
-            return ;
-        }
-        if (frameElement.classList.contains("morph-frame")) {
-            return ;
-        }
+        // if (frameElement.classList.contains("tween-frame")) {
+        //     return ;
+        // }
+        // if (frameElement.classList.contains("morph-frame")) {
+        //     return ;
+        // }
 
         // add frame
-        Util
-            .$timeline
-            .dropKeyFrame(frameElement);
+        // Util
+        //     .$timeline
+        //     .dropKeyFrame(frameElement);
 
         const x = event.offsetX - Util.$offsetLeft;
         const y = event.offsetY - Util.$offsetTop;
 
         const endFrame = layer.getEndFrame(frame + 1);
 
-        const join = {
-            "start": null,
-            "end": null
-        };
+        // const join = {
+        //     "start": null,
+        //     "end": null
+        // };
 
-        const characters = layer._$characters;
-        for (let idx = 0; idx < characters.length; ++idx) {
-
-            const character = characters[idx];
-            if (character.libraryId !== libraryId) {
-                continue;
-            }
-
-            switch (true) {
-
-                case frame > 1 && character.endFrame === frame:
-                    join.start = character;
-                    break;
-
-                case character.startFrame === endFrame:
-                    join.end = character;
-                    break;
-
-            }
-        }
+        // const characters = layer._$characters;
+        // for (let idx = 0; idx < characters.length; ++idx) {
+        //
+        //     const character = characters[idx];
+        //     if (character.libraryId !== libraryId) {
+        //         continue;
+        //     }
+        //
+        //     switch (true) {
+        //
+        //         case frame > 1 && character.endFrame === frame:
+        //             join.start = character;
+        //             break;
+        //
+        //         case character.startFrame === endFrame:
+        //             join.end = character;
+        //             break;
+        //
+        //     }
+        // }
 
         const place = {
             "frame": frame,
@@ -2307,30 +2297,30 @@ class Screen
         };
 
         let character = null;
-        if (join.start) {
-            character = join.start;
-            character.endFrame = endFrame;
-        }
-
-        if (join.end) {
-
-            if (character) {
-
-                character.endFrame = join.end.endFrame;
-
-                for (let [frame, place] of join.end._$places) {
-                    character.setPlace(frame, place);
-                }
-
-                layer.deleteCharacter(join.end.id);
-
-            } else {
-
-                character = join.end;
-                character.startFrame = frame;
-
-            }
-        }
+        // if (join.start) {
+        //     character = join.start;
+        //     character.endFrame = endFrame;
+        // }
+        //
+        // if (join.end) {
+        //
+        //     if (character) {
+        //
+        //         character.endFrame = join.end.endFrame;
+        //
+        //         for (let [frame, place] of join.end._$places) {
+        //             character.setPlace(frame, place);
+        //         }
+        //
+        //         layer.deleteCharacter(join.end.id);
+        //
+        //     } else {
+        //
+        //         character = join.end;
+        //         character.startFrame = frame;
+        //
+        //     }
+        // }
 
         // new character
         if (!character) {
@@ -2362,7 +2352,7 @@ class Screen
 
             // added
             layer.addCharacter(character);
-            this.appendCharacter(character, frame, layerId | 0);
+            this.appendCharacter(character, frame, layerId);
 
         } else {
 

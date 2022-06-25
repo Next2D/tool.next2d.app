@@ -95,10 +95,30 @@ class BaseTool extends Tool
      */
     createShape (object, x = 0, y = 0)
     {
-        const scene   = Util.$currentWorkSpace().scene;
-        const target  = Util.$timeline._$targetLayer;
+        const scene = Util.$currentWorkSpace().scene;
+        if (!Util.$timelineLayer.targetLayer) {
+
+            let targetLayer = document
+                .getElementById("timeline-content")
+                .children[0];
+
+            // レイヤーがない時は強制的に追加
+            if (!targetLayer) {
+
+                scene.addLayer();
+
+                targetLayer = document
+                    .getElementById("timeline-content")
+                    .children[0];
+            }
+
+            Util.$timelineLayer.targetLayer = targetLayer;
+        }
+
+        const target  = Util.$timelineLayer.targetLayer;
         const layerId = target.dataset.layerId | 0;
 
+        // ロック中のレイヤーの場合は何もしない
         const layer = scene.getLayer(layerId | 0);
         if (layer.lock) {
             return ;
@@ -113,13 +133,13 @@ class BaseTool extends Tool
 
         const frame = Util.$timelineFrame.currentFrame;
 
-        const frameElement = document
-            .getElementById(`${layerId}-${frame}`); // fixed
+        // const frameElement = document
+        //     .getElementById(`${layerId}-${frame}`); // fixed
 
         // add frame
-        Util
-            .$timeline
-            .dropKeyFrame(frameElement);
+        // Util
+        //     .$timeline
+        //     .dropKeyFrame(frameElement);
 
         // pointer
         const character = new Character();
@@ -135,8 +155,9 @@ class BaseTool extends Tool
             "depth": layer._$characters.length
         });
 
-        // added
+        // Shapeをレイヤーに追加して再描画
         layer.addCharacter(character);
+        layer.reloadStyle();
     }
 
     /**

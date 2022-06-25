@@ -657,17 +657,7 @@ class TimelineLayer extends BaseTimeline
 
         let htmlTag = "";
         while (lastFrame > frame) {
-
-            if (frame % 5 !== 0) {
-                htmlTag += `
-    <div class="frame" data-type="frame" data-frame-state="empty" data-layer-id="${layerId}" id="${layerId}-${frame}" data-frame="${frame++}"></div>
-`;
-            } else {
-                htmlTag += `
-    <div class="frame frame-pointer" data-type="frame-pointer" data-frame-state="empty" data-layer-id="${layerId}" id="${layerId}-${frame}" data-frame="${frame++}"></div>
-`;
-            }
-
+            htmlTag += `<div class="${frame % 5 !== 0 ? "frame" : "frame frame-pointer"}" data-type="${frame % 5 !== 0 ? "frame" : "frame-pointer"}" data-frame-state="empty" data-layer-id="${layerId}" id="${layerId}-${frame}" data-frame="${frame++}"></div>`;
         }
 
         if (htmlTag) {

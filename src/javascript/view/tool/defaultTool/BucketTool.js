@@ -130,9 +130,8 @@ class BucketTool extends BaseTool
 
             instance.cacheClear();
 
-            const frame = Util.$timelineFrame.currentFrame;
-
-            workSpace.scene.changeFrame(frame);
+            // 再描画
+            this.reloadScreen();
         }
     }
 }

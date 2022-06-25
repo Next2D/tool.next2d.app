@@ -127,12 +127,7 @@ class TimelineMarker extends BaseTimeline
                     );
 
                 // 現在のフレームで再描画
-                Util
-                    .$currentWorkSpace()
-                    .scene
-                    .changeFrame(
-                        Util.$timelineFrame.currentFrame
-                    );
+                this.reloadScreen();
 
                 return ;
             }
@@ -160,12 +155,7 @@ class TimelineMarker extends BaseTimeline
                     );
 
                 // 現在のフレームで再描画
-                Util
-                    .$currentWorkSpace()
-                    .scene
-                    .changeFrame(
-                        Util.$timelineFrame.currentFrame
-                    );
+                this.reloadScreen();
 
                 return ;
             }
@@ -188,11 +178,7 @@ class TimelineMarker extends BaseTimeline
             this.moveVisibleLocation();
 
             // 現在のフレームで再描画
-            Util
-                .$currentWorkSpace()
-                .scene
-                .changeFrame(frame);
-
+            this.reloadScreen();
         });
     }
 

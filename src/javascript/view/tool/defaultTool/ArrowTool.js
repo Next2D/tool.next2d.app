@@ -1450,23 +1450,23 @@ class ArrowTool extends BaseTool
             xMin = Math.min(xMin, character.x);
             yMin = Math.min(yMin, character.y);
 
-            if (layer._$frame.hasClasses(frame)) {
-
-                const classes = layer
-                    ._$frame
-                    .getClasses(frame);
-
-                if (classes.indexOf("tween-frame") > -1) {
-                //     this.executeTween(layer);
-                //     this.createTweenMarker();
-                //
-                    const onionElement = document
-                        .getElementById("timeline-onion-skin");
-                    if (onionElement.classList.contains("onion-skin-active")) {
-                        this.reloadScreen();
-                    }
-                }
-            }
+            // if (layer._$frame.hasClasses(frame)) {
+            //
+            //     const classes = layer
+            //         ._$frame
+            //         .getClasses(frame);
+            //
+            //     if (classes.indexOf("tween-frame") > -1) {
+            //     //     this.executeTween(layer);
+            //     //     this.createTweenMarker();
+            //     //
+            //         const onionElement = document
+            //             .getElementById("timeline-onion-skin");
+            //         if (onionElement.classList.contains("onion-skin-active")) {
+            //             this.reloadScreen();
+            //         }
+            //     }
+            // }
         }
 
         document.getElementById("object-x").value = xMin;

@@ -95,8 +95,8 @@ class BaseController
         this._$handler = null;
 
         // DOMの読込がまだであれば、イベントに登録
+        Util.$readEnd++;
         if (document.readyState === "loading") {
-            Util.$readEnd++;
             this._$handler = this.initialize.bind(this);
             window.addEventListener("DOMContentLoaded", this._$handler);
         } else {

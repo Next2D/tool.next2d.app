@@ -180,10 +180,16 @@ class TimelineHeader extends BaseTimeline
 
         // シーン移動や初回起動の時は初期化
         if (build) {
+
             // 変数を初期化
             this.lastFrame = 0;
             this._$scrollX = 0;
             this.clearParams();
+
+            // スクロール位置を初期化
+            Util.$timelineFrame.currentFrame = 1;
+            Util.$timelineMarker.move();
+            Util.$timelineLayer.moveTimeLine(0);
 
             // remove all
             while (element.children.length) {

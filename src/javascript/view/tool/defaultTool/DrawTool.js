@@ -200,9 +200,8 @@ class DrawTool extends BaseTool
 
             }
 
-            const frame = Util.$timelineFrame.currentFrame;
-
-            workSpace.scene.changeFrame(frame);
+            // 再描画
+            this.reloadScreen();
         }
     }
 

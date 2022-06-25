@@ -278,7 +278,7 @@ class TimelineFrame extends BaseTimeline
             // clampで補正された値をセット
             const frame = Util.$clamp(
                 currentValue + diff,
-                1, Util.$timelineHeader.lastFrame - 1
+                1, Util.$timelineHeader.lastFrame
             );
 
             this._$currentTarget.value = `${frame}`;
@@ -313,7 +313,7 @@ class TimelineFrame extends BaseTimeline
             // Inputの値を更新
             const frame = Util.$clamp(
                 event.target.value | 0,
-                1, Util.$timelineHeader.lastFrame - 1
+                1, Util.$timelineHeader.lastFrame
             );
 
             event.target.value = `${frame}`;

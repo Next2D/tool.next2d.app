@@ -559,7 +559,115 @@ class Layer
         this.setEmptyStyle();
 
         // DisplayObjectを配置したフレーム
+        this.setCharacterStyle();
+    }
 
+    /**
+     * @description DisplayObjectを配置したフレームのスタイルをセット
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    setCharacterStyle ()
+    {
+        const layerId = this.id;
+        for (let idx = 0; idx < this._$characters.length; ++idx) {
+
+            const duplication = new Map();
+            const character = this._$characters[idx];
+            const places = Array.from(character._$places.keys());
+            places.sort((a, b) =>
+            {
+                switch (true) {
+
+                    case a > b:
+                        return 1;
+
+                    case a < b:
+                        return -1;
+
+                    default:
+                        return 0;
+
+                }
+            });
+
+            for (let idx = 0; idx < places.length; ++idx) {
+
+                const startFrame = places[idx];
+                if (duplication.has(startFrame)) {
+                    continue;
+                }
+
+                // スタイル処理完了用のフラグ
+                duplication.set(startFrame, true);
+
+                const endFrame = places[idx + 1] || character.endFrame;
+                if (startFrame === endFrame - 1) {
+
+                    const element = document
+                        .getElementById(`${layerId}-${startFrame}`);
+
+                    element
+                        .dataset
+                        .frameState = "key-frame";
+
+                    element
+                        .classList
+                        .add("key-frame");
+
+                    continue;
+                }
+
+                // 複数フレームの場合のスタイル
+                let frame = startFrame;
+
+                // 開始フレーム
+                const startElement = document
+                    .getElementById(`${layerId}-${frame++}`);
+
+                startElement
+                    .dataset
+                    .frameState = "key-frame";
+
+                startElement
+                    .classList
+                    .add(
+                        "key-frame",
+                        "key-frame-join"
+                    );
+
+                // 間のフレーム
+                const spaceTotalFrame = endFrame - 1;
+                for (; frame < spaceTotalFrame; ) {
+
+                    const element = document
+                        .getElementById(`${layerId}-${frame++}`);
+
+                    element
+                        .dataset
+                        .frameState = "key-space-frame";
+
+                    element
+                        .classList
+                        .add("key-space-frame");
+
+                }
+
+                // 終了フレーム
+                const endElement = document
+                    .getElementById(`${layerId}-${frame++}`);
+
+                endElement
+                    .dataset
+                    .frameState = "key-space-frame-end";
+
+                endElement
+                    .classList
+                    .add("key-space-frame-end");
+            }
+        }
     }
 
     /**
