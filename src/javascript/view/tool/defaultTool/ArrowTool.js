@@ -1626,6 +1626,6 @@ class ArrowTool extends BaseTool
      */
     keyboardCommand (event)
     {
-
+        console.log("todo", [event]);
     }
 }

@@ -72,32 +72,14 @@ class TimelineTool extends BaseTimeline
             "timeline-frame-delete",
             "timeline-onion-skin",
             "timeline-preview",
-            "timeline-play",
-            "timeline-stop",
-            "timeline-repeat",
-            "timeline-no-repeat"
+            "scene-list"
         ];
 
         for (let idx = 0; idx < elementIds.length; ++idx) {
 
-            const id = elementIds[idx];
-
-            const element = document.getElementById(id);
+            const element = document.getElementById(elementIds[idx]);
             if (!element) {
                 continue;
-            }
-
-            // ストップとリピートアイコンは初期は非表示
-            switch (id) {
-
-                case "timeline-stop":
-                case "timeline-repeat":
-                    element.style.display = "none";
-                    break;
-
-                default:
-                    break;
-
             }
 
             element.addEventListener("mousedown", (event) =>
@@ -1325,6 +1307,114 @@ class TimelineTool extends BaseTimeline
     }
 
     /**
+     * @description オニオンスキン機能のon/off
+     *
+     * @param  {MouseEvent} event
+     * @return {void}
+     * @method
+     * @public
+     */
+    executeTimelineOnionSkin (event)
+    {
+        const scene = Util.$currentWorkSpace().scene;
+
+        const element = event.target;
+        if (element.classList.contains("onion-skin-active")) {
+
+            element
+                .classList
+                .remove("onion-skin-active");
+
+            // 全てのDisplayObjectのキャッシュを削除
+            const layers = Util
+                .$currentWorkSpace()
+                .scene
+                ._$layers;
+
+            for (const layer of layers.values()) {
+                for (let idx = 0; idx < layer._$characters.length; ++idx) {
+                    layer._$characters[idx]._$image = null;
+                }
+            }
+
+        } else {
+
+            element
+                .classList
+                .add("onion-skin-active");
+
+        }
+
+        // 再描画
+        this.reloadScreen();
+    }
+
+    /**
+     * @description タイムラインのマウスオーバーでのプレビュー機能のon/off
+     *
+     * @param  {MouseEvent} event
+     * @return {void}
+     * @method
+     * @public
+     */
+    executeTimelinePreview (event)
+    {
+        const element = event.target;
+        if (element.classList.contains("timeline-preview-active")) {
+
+            element
+                .classList
+                .remove("timeline-preview-active");
+
+        } else {
+
+            element
+                .classList
+                .add("timeline-preview-active");
+
+        }
+    }
+
+    /**
+     * @description 先祖のMovieClipを一覧で表示
+     *
+     * @param  {MouseEvent} event
+     * @return {void}
+     * @method
+     * @public
+     */
+    executeSceneList (event)
+    {
+
+        // リストがない時は何もしない
+        if (!document
+            .getElementById("scene-name-menu-list")
+            .children.length
+        ) {
+            return ;
+        }
+
+        const element = document
+            .getElementById("scene-name-menu");
+
+        // 表示されていれば非表示
+        if (element.classList.contains("fadeIn")) {
+
+            element.setAttribute("class", "fadeOut");
+
+        } else {
+
+            const target = event.currentTarget;
+            element.style.left = `${target.offsetLeft + target.offsetWidth}px`;
+            element.style.top  = `${target.offsetTop + 10}px`;
+            element.setAttribute("class", "fadeIn");
+
+            // 一覧以外のメニューを非表示
+            Util.$endMenu("scene-name-menu");
+        }
+    }
+
+    /**
      * @description フレーム追加した場合、アクティブも初期化されるので再度設定が必要
      *
      * @return {void}
@@ -1367,25 +1457,6 @@ class TimelineTool extends BaseTimeline
                 children[idx].dataset.layerId | 0
             );
 
-        }
-    }
-
-    /**
-     * @description タイムラインのCSSを再計算
-     *
-     * @return {void}
-     * @method
-     * @public
-     */
-    reloadStyleAll ()
-    {
-        const scene = Util.$currentWorkSpace().scene;
-        for (const element of Util.$timelineLayer.targetLayers.values()) {
-
-            const layer = scene
-                .getLayer(element.dataset.layerId | 0);
-
-            layer.reloadStyle();
         }
     }
 }

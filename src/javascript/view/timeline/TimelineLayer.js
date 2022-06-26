@@ -293,14 +293,70 @@ class TimelineLayer extends BaseTimeline
             this.targetFrames.set(layer_id, []);
         }
 
-        this
-            .targetFrames
-            .get(layer_id)
-            .push(element);
+        const frames = this.targetFrames.get(layer_id);
+
+        // 重複チェック
+        if (frames.indexOf(element) > -1) {
+            return ;
+        }
+
+        frames.push(element);
 
         element
             .classList
             .add("frame-active");
+    }
+
+    /**
+     * @description 初期起動関数
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    initialize ()
+    {
+        super.initialize();
+
+        const timeline = document
+            .getElementById("timeline");
+
+        if (timeline) {
+            timeline.addEventListener("mouseover", () =>
+            {
+                Util.$setCursor("auto");
+            });
+        }
+
+        const element = document
+            .getElementById("timeline-content");
+
+        if (element) {
+            element.addEventListener("wheel", (event) =>
+            {
+                if (!Util.$altKey) {
+                    return ;
+                }
+
+                const deltaY = event.deltaY | 0;
+                if (!deltaY) {
+                    return false;
+                }
+
+                event.preventDefault();
+
+                Util.$timelineTool.timelineWidth = Util.$clamp(
+                    Util.$timelineTool.timelineWidth + deltaY,
+                    5,
+                    240
+                );
+            });
+        }
+
+        // フレーム移動のElementを非表示
+        document
+            .getElementById("target-group")
+            .style.display = "none";
     }
 
     /**
@@ -337,7 +393,7 @@ class TimelineLayer extends BaseTimeline
 
         // 複数選択ようにshiftキーをonにする
         const cacheValue = Util.$shiftKey;
-        Util.$shiftKey = true;
+        Util.$shiftKey   = true;
 
         // アクティブ判定
         for (const layerId of this.targetFrames.keys()) {
@@ -363,53 +419,20 @@ class TimelineLayer extends BaseTimeline
         // shiftキーを元の値に戻す
         Util.$shiftKey = cacheValue;
 
-        // 拡大縮小回転のElementのポイントを表示して再計算
-        Util
-            .$transformController
-            .show()
-            .relocation();
+        if (tool.activeElements.length) {
 
-        // 9sliceのElementのポイントを表示して再計算
-        Util
-            .$gridController
-            .show()
-            .relocation();
-    }
+            // 拡大縮小回転のElementのポイントを表示して再計算
+            Util
+                .$transformController
+                .show()
+                .relocation();
 
-    /**
-     * @description 初期起動関数
-     *
-     * @return {void}
-     * @method
-     * @public
-     */
-    initialize ()
-    {
-        super.initialize();
+            // 9sliceのElementのポイントを表示して再計算
+            Util
+                .$gridController
+                .show()
+                .relocation();
 
-        const element = document
-            .getElementById("timeline-content");
-
-        if (element) {
-            element.addEventListener("wheel", (event) =>
-            {
-                if (!Util.$altKey) {
-                    return ;
-                }
-
-                const deltaY = event.deltaY | 0;
-                if (!deltaY) {
-                    return false;
-                }
-
-                event.preventDefault();
-
-                Util.$timelineTool.timelineWidth = Util.$clamp(
-                    Util.$timelineTool.timelineWidth + deltaY,
-                    5,
-                    240
-                );
-            });
         }
     }
 
@@ -1982,11 +2005,6 @@ class TimelineLayer extends BaseTimeline
             target
                 .classList
                 .add("frame-active");
-
-            // 選択範囲のDisplayObjectを取得
-            const characters = scene
-                .getLayer(event.target.dataset.layerId | 0)
-                .getActiveCharacter(frame);
 
             // set character
             const currentFrame = Util.$timelineFrame.currentFrame;

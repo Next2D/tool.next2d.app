@@ -258,7 +258,7 @@ class MovieClip extends Instance
     {
         let frame = 1;
         for (const layer of this._$layers.values()) {
-            frame = Math.max(frame, layer.totalFrame);
+            frame = Math.max(frame, layer.totalFrame - 1);
         }
         return frame;
     }
