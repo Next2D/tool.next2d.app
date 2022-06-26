@@ -984,26 +984,141 @@ class Layer
     }
 
     /**
+     * @param  {EmptyCharacter} character
+     * @return {void}
+     * @public
+     */
+    deleteEmptyCharacter (character)
+    {
+        const index = this._$emptys.indexOf(character);
+        if (index > -1) {
+            this._$emptys.splice(index, 1);
+        }
+    }
+
+    /**
+     * @description 現在のフレームを起点に追加できるフレームを調整して
+     *              追加できるフレームの幅を返す
+     *
+     * @param  {number} frame
+     * @return {object}
+     * @method
+     * @public
+     */
+    adjustmentLocation (frame)
+    {
+        // 空のフレームがあれば削除して、範囲を返す
+        const emptyCharacter = this.getActiveEmptyCharacter(frame);
+        if (emptyCharacter) {
+
+            this.deleteEmptyCharacter(emptyCharacter);
+
+            return {
+                "startFrame": emptyCharacter.startFrame,
+                "endFrame": emptyCharacter.endFrame
+            };
+        }
+
+        // 既存のDisplayObjectがあればキーフームから幅を算出
+        const characters = this.getActiveCharacter(frame);
+        if (characters.length) {
+
+            let startFrame = 1;
+            let endFrame   = Number.MAX_VALUE;
+            for (let idx = 0; idx < characters.length; ++idx) {
+
+                const character = characters[idx];
+
+                startFrame = Math.max(startFrame, character.startFrame);
+                endFrame   = Math.min(endFrame, character.endFrame);
+                for (const keyFrame of character._$places.keys()) {
+
+                    if (keyFrame > frame) {
+                        endFrame = Math.min(endFrame, keyFrame);
+                    }
+
+                    if (frame >= keyFrame) {
+                        startFrame = Math.max(startFrame, keyFrame);
+                    }
+
+                }
+            }
+
+            return {
+                "startFrame": startFrame,
+                "endFrame": endFrame
+            };
+        }
+
+        // 前方のフレームの補完
+        if (frame > 1) {
+
+            const layerId = this.id;
+            let idx = 1;
+            for (; frame - idx > 1; ++idx) {
+
+                const element = document
+                    .getElementById(`${layerId}-${frame - idx}`);
+
+                // 未設定のフレームでない時は終了
+                if (element.dataset.frameState !== "empty") {
+                    break;
+                }
+
+            }
+
+            // 同じフレームでなければ補正を実行
+            if (frame - idx !== frame) {
+
+                // 終了フラグ
+                let done = false;
+
+                // 空のフレームがあれば、フレームを伸ばす
+                const emptyCharacter = this
+                    .getActiveEmptyCharacter(frame - idx);
+
+                if (emptyCharacter) {
+
+                    emptyCharacter.endFrame = frame;
+
+                    done = true;
+                }
+
+                if (!done) {
+                    // 設定済みのフレームがあれば、フレームを伸ばす
+                    const characters = this.getActiveCharacter(frame);
+                    if (characters.length) {
+                        for (let idx = 0; idx < characters.length; ++idx) {
+                            characters[idx].endFrame = frame;
+                        }
+                    }
+                }
+
+                // 前方のフレームが未設定の場合は空のフレームを追加
+                if (!done) {
+                    this.addEmptyCharacter(new EmptyCharacter({
+                        "startFrame": frame - idx,
+                        "endFrame": frame
+                    }));
+                }
+
+            }
+        }
+
+        return {
+            "startFrame": frame,
+            "endFrame": frame + 1
+        };
+    }
+
+    /**
      * TODO
      * @param  {number} frame
      * @return {number}
      */
     getEndFrame (frame)
     {
-        for (;;) {
-
-            const characters = this.getActiveCharacter(frame);
-            if (characters.length > 0) {
-                return frame;
-            }
-
-            const character = this.getActiveEmptyCharacter(frame);
-            if (character) {
-                return character.endFrame;
-            }
-
-            return frame;
-        }
+        const emptyCharacter = this.getActiveEmptyCharacter(frame);
 
         // while (this._$frame.hasClasses(frame)) {
         //

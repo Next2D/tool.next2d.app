@@ -41,17 +41,6 @@ class Character
     }
 
     /**
-     * @description 空フレーム判定
-     *
-     * @return {boolean}
-     * @public
-     */
-    isEmpty ()
-    {
-        return false;
-    }
-
-    /**
      * @return {void}
      * @method
      * @public
@@ -1044,6 +1033,29 @@ class Character
     }
 
     /**
+     * @description 指定フレームに移動
+     *
+     * @param  {number} frame
+     * @return {void}
+     * @method
+     * @public
+     */
+    move (frame)
+    {
+        const places = new Map();
+        for (const [keyFrame, place] of this._$places) {
+            places.set(keyFrame + frame, place);
+        }
+
+        // キーフレームの情報を上書き
+        this._$places = places;
+
+        // 開始位置と終了位置を移動
+        this.startFrame += frame;
+        this.endFrame   += frame;
+    }
+
+    /**
      * @param  {number} start_frame
      * @param  {number} end_frame
      * @return {Character}
@@ -1056,10 +1068,11 @@ class Character
 
         // params
         character._$libraryId  = this._$libraryId;
-        character._$places     = new Map(Array.from(this._$places));
+        character._$places     = new Map();
         character._$startFrame = start_frame;
         character._$endFrame   = end_frame;
 
+        const removeFrames = [];
         for (let [frame, place] of this._$places) {
 
             if (start_frame > frame) {
@@ -1070,7 +1083,13 @@ class Character
                 continue;
             }
 
+            removeFrames.push(frame);
             character._$places.set(frame, place);
+        }
+
+        // 分割したplace objectは削除
+        for (let idx = 0; idx < removeFrames.length; ++idx) {
+            this._$places.delete(removeFrames[idx]);
         }
 
         return character;

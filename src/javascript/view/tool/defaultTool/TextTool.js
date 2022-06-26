@@ -136,42 +136,39 @@ class TextTool extends BaseTool
      */
     mouseUp ()
     {
-        this.attachLayer();
+        Util.$timelineLayer.attachLayer();
 
         const element = document.getElementById("draw-text");
-        if (Util.$timeline._$targetLayer) {
+        const workSpace = Util.$currentWorkSpace();
+        workSpace.temporarilySaved();
 
-            const workSpace = Util.$currentWorkSpace();
-            workSpace.temporarilySaved();
+        const x      = (this.offsetX - Util.$offsetLeft) / Util.$zoomScale;
+        const y      = (this.offsetY - Util.$offsetTop)  / Util.$zoomScale;
+        const width  = parseFloat(element.style.width)  / Util.$zoomScale;
+        const height = parseFloat(element.style.height) / Util.$zoomScale;
 
-            const x      = (this.offsetX - Util.$offsetLeft) / Util.$zoomScale;
-            const y      = (this.offsetY - Util.$offsetTop)  / Util.$zoomScale;
-            const width  = parseFloat(element.style.width)  / Util.$zoomScale;
-            const height = parseFloat(element.style.height) / Util.$zoomScale;
+        const id = workSpace.nextLibraryId;
+        this.createTextField({
+            "id": id,
+            "type": "text",
+            "name": `Text_${id}`,
+            "symbol": "",
+            "bounds": {
+                "xMin": 0,
+                "xMax": width,
+                "yMin": 0,
+                "yMax": height
+            },
+            "originBounds": {
+                "xMin": 0,
+                "xMax": width,
+                "yMin": 0,
+                "yMax": height
+            }
+        }, x, y);
 
-            const id = workSpace.nextLibraryId;
-            this.createTextField({
-                "id": id,
-                "type": "text",
-                "name": `Text_${id}`,
-                "symbol": "",
-                "bounds": {
-                    "xMin": 0,
-                    "xMax": width,
-                    "yMin": 0,
-                    "yMax": height
-                },
-                "originBounds": {
-                    "xMin": 0,
-                    "xMax": width,
-                    "yMin": 0,
-                    "yMax": height
-                }
-            }, x, y);
-
-            // 再描画
-            this.reloadScreen();
-        }
+        // 再描画
+        this.reloadScreen();
 
         element.style.display = "none";
     }

@@ -669,6 +669,39 @@ class TimelineLayer extends BaseTimeline
     }
 
     /**
+     * @description レイヤー指定がない場合は一番上のレイヤーを強制的に選択
+     *              レイヤーが0の時はレイヤーを強制的に追加する
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    attachLayer ()
+    {
+        if (!Util.$timelineLayer.targetLayer) {
+
+            let targetLayer = document
+                .getElementById("timeline-content")
+                .children[0];
+
+            // レイヤーがない時は強制的に追加
+            if (!targetLayer) {
+
+                Util
+                    .$currentWorkSpace()
+                    .scene
+                    .addLayer();
+
+                targetLayer = document
+                    .getElementById("timeline-content")
+                    .children[0];
+            }
+
+            Util.$timelineLayer.targetLayer = targetLayer;
+        }
+    }
+
+    /**
      * @description マスクやガイドなどのグルーピングされたレイヤーを抜ける処理
      *
      * @return {void}

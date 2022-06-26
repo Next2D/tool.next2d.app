@@ -629,6 +629,11 @@ class TransformController extends BaseController
             const characterElement = document
                 .getElementById(`character-${character.id}`);
 
+            // 非表示などでElementがない時は非表示にして終了
+            if (!characterElement) {
+                return this.hide();
+            }
+
             const xMin   = characterElement.offsetLeft;
             const yMin   = characterElement.offsetTop;
             const width  = characterElement.offsetWidth;

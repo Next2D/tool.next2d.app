@@ -699,32 +699,37 @@ class TimelineTool extends BaseTimeline
 
         this.save();
 
+        let startFrame = -1;
         const scene = Util.$currentWorkSpace().scene;
         for (const [layerId, values] of targetFrames) {
 
             // クローンして、フレーム順に並び替え
-            const frames = values.slice();
-            frames.sort((a, b) =>
-            {
-                const aFrame = a.dataset.frame | 0;
-                const bFrame = b.dataset.frame | 0;
+            if (startFrame === -1) {
 
-                switch (true) {
+                const frames = values.slice();
+                frames.sort((a, b) =>
+                {
+                    const aFrame = a.dataset.frame | 0;
+                    const bFrame = b.dataset.frame | 0;
 
-                    case aFrame > bFrame:
-                        return 1;
+                    switch (true) {
 
-                    case aFrame < bFrame:
-                        return -1;
+                        case aFrame > bFrame:
+                            return 1;
 
-                    default:
-                        return 0;
+                        case aFrame < bFrame:
+                            return -1;
 
-                }
-            });
+                        default:
+                            return 0;
 
-            const startFrame = frames[0].dataset.frame | 0;
-            const endFrame   = startFrame + frames.length;
+                    }
+                });
+
+                startFrame = frames[0].dataset.frame | 0;
+            }
+
+            const endFrame = startFrame + values.length;
 
             const element = document
                 .getElementById(`${layerId}-${startFrame}`);
@@ -783,26 +788,66 @@ class TimelineTool extends BaseTimeline
 
             } else {
 
+                // 後方補正(DisplayObject)
+                for (let idx = 0; idx < layer._$characters.length; ++idx) {
+
+                    const character = layer._$characters[idx];
+                    if (startFrame >= character.startFrame) {
+                        continue;
+                    }
+
+                    character.move(values.length);
+                }
+
+                // 後方補正(空のフレーム)
+                for (let idx = 0; idx < layer._$emptys.length; ++idx) {
+
+                    const character = layer._$emptys[idx];
+                    if (startFrame >= character.startFrame) {
+                        continue;
+                    }
+
+                    character.move(values.length);
+
+                }
+
                 // 定義済みのフレームの場合
                 const characters = layer
                     .getActiveCharacter(startFrame);
 
                 // DisplayObjectが配置されたフレーム
                 if (characters.length) {
+
                     for (let idx = 0; idx < characters.length; ++idx) {
-                        characters[idx].endFrame += frames.length;
+
+                        const character = characters[idx];
+
+                        const places = new Map();
+                        for (const [keyFrame, place] of character._$places) {
+
+                            places.set(startFrame >= keyFrame
+                                ? keyFrame
+                                : keyFrame + values.length,
+                            place);
+
+                        }
+
+                        character._$places  = places;
+                        character.endFrame += values.length;
                     }
+
+                } else {
+
+                    // 空のフレーム
+                    const emptyCharacter = layer
+                        .getActiveEmptyCharacter(startFrame);
+
+                    if (emptyCharacter) {
+                        emptyCharacter.endFrame += values.length;
+                    }
+
                 }
 
-                // 空のフレーム
-                const emptyCharacter = layer
-                    .getActiveEmptyCharacter(startFrame);
-
-                if (emptyCharacter) {
-                    emptyCharacter.endFrame += frames.length;
-                }
-
-                // 後方の補正
             }
 
             layer.reloadStyle();
@@ -814,10 +859,11 @@ class TimelineTool extends BaseTimeline
         // 追加した分だけタイムラインを増加させる補正
         this.adjustmentTimeline();
 
+        // 再描画
+        this.reloadScreen();
+
         // 初期化
         super.focusOut();
-
-        // Util.$timeline.addSpaceFrame();
     }
 
     /**
@@ -846,10 +892,12 @@ class TimelineTool extends BaseTimeline
             const characters = layer.getActiveCharacter(frame);
             if (characters.length) {
 
-                // TODO
                 for (let idx = 0; idx < characters.length; ++idx) {
+
                     const character = characters[idx];
-                    if (!character.hasPlace(frame)) {
+
+                    // キーフレームがあればスキップ
+                    if (character.hasPlace(frame)) {
                         continue;
                     }
 
@@ -857,6 +905,8 @@ class TimelineTool extends BaseTimeline
                         character.clonePlace(frame, frame)
                     );
                 }
+
+                layer.reloadStyle();
 
             } else {
 
@@ -870,6 +920,9 @@ class TimelineTool extends BaseTimeline
 
         // 追加した分だけタイムラインを増加させる補正
         this.adjustmentTimeline();
+
+        // 再描画(DisplayObjectの再配置で必須)
+        this.reloadScreen();
 
         // 初期化
         super.focusOut();
@@ -888,6 +941,14 @@ class TimelineTool extends BaseTimeline
         if (!targetFrames.size) {
             return ;
         }
+
+        /**
+         * @type {ArrowTool}
+         */
+        const tool = Util.$tools.getDefaultTool("arrow");
+
+        // スクリーンエリアで選択中のDisplayObjectを未選択に
+        tool.clearActiveElement();
 
         this.save();
 
@@ -936,12 +997,31 @@ class TimelineTool extends BaseTimeline
                     }
                 }
 
-                console.log(splitFrame);
+                // 分割処理、分割すると長さが変わるので、クローンを利用する
+                const clone = characters.slice();
+                for (let idx = 0; idx < clone.length; ++idx) {
+
+                    const character = clone[idx];
+
+                    // 終了するフレームが後方にある場合は分割
+                    if (character.endFrame > splitFrame) {
+                        layer.addCharacter(
+                            character.split(splitFrame, character.endFrame)
+                        );
+                    }
+
+                    character.endFrame = frame;
+                }
+
+                // 空のフレームを追加
+                const emptyCharacter = new EmptyCharacter();
+                emptyCharacter.startFrame = frame;
+                emptyCharacter.endFrame   = splitFrame;
+                layer.addEmptyCharacter(emptyCharacter);
 
             } else {
 
                 // DisplayObjectが何も設置されてないフレームのケース
-
                 const character = layer.getActiveEmptyCharacter(frame);
                 if (character) {
 
@@ -1044,6 +1124,9 @@ class TimelineTool extends BaseTimeline
         // 追加した分だけタイムラインを増加させる補正
         this.adjustmentTimeline();
 
+        // 再描画
+        this.reloadScreen();
+
         // 初期化
         super.focusOut();
     }
@@ -1064,9 +1147,169 @@ class TimelineTool extends BaseTimeline
 
         this.save();
 
-        const frame = Util.$timelineFrame.currentFrame;
+        let frame = -1;
         const scene = Util.$currentWorkSpace().scene;
+        for (const [layerId, values] of targetFrames) {
 
+            // クローンして、フレーム順に並び替え
+            if (frame === -1) {
+
+                const frames = values.slice();
+                frames.sort((a, b) =>
+                {
+                    const aFrame = a.dataset.frame | 0;
+                    const bFrame = b.dataset.frame | 0;
+
+                    switch (true) {
+
+                        case aFrame > bFrame:
+                            return 1;
+
+                        case aFrame < bFrame:
+                            return -1;
+
+                        default:
+                            return 0;
+
+                    }
+                });
+
+                frame = frames[0].dataset.frame | 0;
+            }
+
+            // 未設定のフレームの場合は処理をスキップ
+            if (document
+                .getElementById(`${layerId}-${frame}`)
+                .dataset.frameState === "empty"
+            ) {
+                continue;
+            }
+
+            const layer = scene.getLayer(layerId);
+
+            // 定義済みのフレームの場合
+            const characters = layer
+                .getActiveCharacter(frame);
+
+            let moveFrame = 0;
+
+            // DisplayObjectが配置されたフレーム
+            if (characters.length) {
+
+                for (let idx = 0; idx < characters.length; ++idx) {
+
+                    const character = characters[idx];
+
+                    // 削除対象範囲を計算
+                    let startFrame = character.startFrame;
+                    let endFrame   = character.endFrame;
+                    for (const keyFrame of character._$places.keys()) {
+
+                        if (keyFrame > frame) {
+                            endFrame = Math.min(endFrame, keyFrame);
+                        }
+
+                        if (frame >= keyFrame) {
+                            startFrame = Math.max(startFrame, keyFrame);
+                        }
+
+                    }
+
+                    // 削除開始位置にキーフレームの場合
+                    if (character.hasPlace(frame)) {
+
+                        // 削除範囲がキーフレーム外の場合はキーフレームを削除
+                        if (values.length >= endFrame - startFrame) {
+                            character.deletePlace(frame);
+                        }
+
+                    }
+
+                    // 削除範囲のフレーム数
+                    moveFrame = Math.min(
+                        endFrame, frame + values.length
+                    ) - frame;
+
+                    // キーフレームが存在しなけれなDisplayObjectを削除
+                    if (!character._$places.size) {
+
+                        layer.deleteCharacter(character.id);
+
+                    } else {
+
+                        const places = new Map();
+                        for (const [keyFrame, place] of character._$places) {
+
+                            places.set(frame >= keyFrame
+                                ? keyFrame
+                                : keyFrame - moveFrame,
+                            place);
+
+                        }
+
+                        character._$places  = places;
+                        character.endFrame -= moveFrame;
+
+                    }
+
+                }
+
+            } else {
+
+                // 空のフレーム
+                const emptyCharacter = layer
+                    .getActiveEmptyCharacter(frame);
+
+                if (emptyCharacter) {
+
+                    const totalFrame = emptyCharacter.endFrame
+                        - emptyCharacter.startFrame;
+
+                    const endFrame = Math.min(
+                        emptyCharacter.endFrame, frame + values.length
+                    );
+
+                    moveFrame = endFrame - frame;
+                    if (moveFrame >= totalFrame) {
+
+                        // 削除するフレーム数が超えていれば削除
+                        layer.deleteEmptyCharacter(emptyCharacter);
+
+                    } else {
+
+                        // フレームを削除
+                        emptyCharacter.endFrame -= moveFrame;
+
+                    }
+
+                }
+            }
+
+            // 後方補正(DisplayObject)
+            for (let idx = 0; idx < layer._$characters.length; ++idx) {
+
+                const character = layer._$characters[idx];
+                if (frame >= character.startFrame) {
+                    continue;
+                }
+
+                character.move(-moveFrame);
+            }
+
+            // 後方補正(空のフレーム)
+            for (let idx = 0; idx < layer._$emptys.length; ++idx) {
+
+                const character = layer._$emptys[idx];
+                if (frame >= character.startFrame) {
+                    continue;
+                }
+
+                character.move(-moveFrame);
+
+            }
+
+            layer.reloadStyle();
+        }
 
         // アクティブなフレームを再設定
         this.setActiveFrame();
@@ -1074,10 +1317,11 @@ class TimelineTool extends BaseTimeline
         // 追加した分だけタイムラインを増加させる補正
         this.adjustmentTimeline();
 
+        // 再描画
+        this.reloadScreen();
+
         // 初期化
         super.focusOut();
-
-        // Util.$timeline.deleteFrame();
     }
 
     /**

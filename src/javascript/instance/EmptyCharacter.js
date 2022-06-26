@@ -21,14 +21,17 @@ class EmptyCharacter
     }
 
     /**
-     * @description 空フレーム判定
+     * @description 指定フレームに移動
      *
-     * @return {boolean}
+     * @param  {number} frame
+     * @return {void}
+     * @method
      * @public
      */
-    isEmpty ()
+    move (frame)
     {
-        return true;
+        this._$startFrame += frame;
+        this._$endFrame   += frame;
     }
 
     /**

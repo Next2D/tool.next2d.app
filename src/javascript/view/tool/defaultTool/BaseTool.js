@@ -21,7 +21,7 @@ class BaseTool extends Tool
      *
      * @return {void}
      * @method
-     * @instance
+     * @interface
      */
     initialize () {}
 
@@ -57,35 +57,6 @@ class BaseTool extends Tool
     }
 
     /**
-     * @return {void}
-     * @method
-     * @public
-     */
-    attachLayer ()
-    {
-        if (Util.$timeline._$targetLayer) {
-            return ;
-        }
-
-        const parent = document
-            .getElementById("timeline-content");
-
-        if (!parent.children.length) {
-            return ;
-        }
-
-        const node = parent.children[0];
-        const layerElement = document
-            .getElementById(`${node.dataset.layerId}-1`);
-
-        if (!layerElement) {
-            return ;
-        }
-
-        Util.$timeline._$targetLayer = layerElement;
-    }
-
-    /**
      * @param  {object} object
      * @param  {number} x
      * @param  {number} y
@@ -95,26 +66,7 @@ class BaseTool extends Tool
      */
     createShape (object, x = 0, y = 0)
     {
-        const scene = Util.$currentWorkSpace().scene;
-        if (!Util.$timelineLayer.targetLayer) {
-
-            let targetLayer = document
-                .getElementById("timeline-content")
-                .children[0];
-
-            // レイヤーがない時は強制的に追加
-            if (!targetLayer) {
-
-                scene.addLayer();
-
-                targetLayer = document
-                    .getElementById("timeline-content")
-                    .children[0];
-            }
-
-            Util.$timelineLayer.targetLayer = targetLayer;
-        }
-
+        const scene   = Util.$currentWorkSpace().scene;
         const target  = Util.$timelineLayer.targetLayer;
         const layerId = target.dataset.layerId | 0;
 
@@ -133,21 +85,16 @@ class BaseTool extends Tool
 
         const frame = Util.$timelineFrame.currentFrame;
 
-        // const frameElement = document
-        //     .getElementById(`${layerId}-${frame}`); // fixed
-
-        // add frame
-        // Util
-        //     .$timeline
-        //     .dropKeyFrame(frameElement);
-
         // pointer
         const character = new Character();
         character.libraryId  = shape.id;
-        character.startFrame = frame;
-        character.endFrame   = layer.getEndFrame(frame + 1);
-        character.setPlace(frame, {
-            "frame": frame,
+
+        const location = layer.adjustmentLocation(frame);
+        character.startFrame = location.startFrame;
+        character.endFrame   = location.endFrame;
+
+        character.setPlace(location.startFrame, {
+            "frame": location.startFrame,
             "matrix": [1, 0, 0, 1, x, y],
             "colorTransform": [1, 1, 1, 1, 0, 0, 0, 0],
             "blendMode": "normal",
@@ -170,7 +117,7 @@ class BaseTool extends Tool
     createTextField (object, x = 0, y = 0)
     {
         const scene   = Util.$currentWorkSpace().scene;
-        const target  = Util.$timeline._$targetLayer;
+        const target  = Util.$timelineLayer.targetLayer;
         const layerId = target.dataset.layerId | 0;
 
         const layer = scene.getLayer(layerId | 0);

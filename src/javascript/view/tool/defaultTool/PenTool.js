@@ -131,65 +131,61 @@ class PenTool extends BaseTool
      */
     mouseUp ()
     {
-        this.attachLayer();
-        if (Util.$timeline._$targetLayer) {
+        Util.$timelineLayer.attachLayer();
+        const { Shape } = window.next2d.display;
 
-            const { Shape } = window.next2d.display;
+        const thickness = document
+            .getElementById("stroke-size").value | 0;
 
-            const thickness = document
-                .getElementById("stroke-size").value | 0;
+        const shape = new Shape();
+        shape.graphics.lineStyle(
+            thickness,
+            document.getElementById("stroke-color").value
+        );
 
-            const shape = new Shape();
-            shape.graphics.lineStyle(
-                thickness,
-                document.getElementById("stroke-color").value
-            );
+        const x = this.offsetX - Util.$offsetLeft;
+        const y = this.offsetY - Util.$offsetTop;
+        shape.graphics.moveTo(0, 0);
 
-            const x = this.offsetX - Util.$offsetLeft;
-            const y = this.offsetY - Util.$offsetTop;
-            shape.graphics.moveTo(0, 0);
+        const element  = document.getElementById("stage-area");
+        const children = element.children;
+        for (let idx = 0; children.length > idx; ++idx) {
 
-            const element  = document.getElementById("stage-area");
-            const children = element.children;
-            for (let idx = 0; children.length > idx; ++idx) {
-
-                const node = children[idx];
-                if (!node.dataset.penPointer) {
-                    continue;
-                }
-
-                shape.graphics.lineTo(
-                    (node.offsetLeft - Util.$offsetLeft - x) / Util.$zoomScale,
-                    (node.offsetTop  - Util.$offsetTop  - y) / Util.$zoomScale
-                );
-
-                node.remove();
-                --idx;
+            const node = children[idx];
+            if (!node.dataset.penPointer) {
+                continue;
             }
-            shape.graphics.endLine();
 
-            const id = Util.$currentWorkSpace().nextLibraryId;
-            this.createShape({
-                "id": id,
-                "type": "shape",
-                "name": `Shape_${id}`,
-                "symbol": "",
-                "recodes": shape.graphics._$recode.slice(0),
-                "bounds": {
-                    "xMin": shape.graphics._$xMin,
-                    "xMax": shape.graphics._$xMax,
-                    "yMin": shape.graphics._$yMin,
-                    "yMax": shape.graphics._$yMax
-                }},
-                (x + thickness / 2) / Util.$zoomScale,
-                (y + thickness / 2) / Util.$zoomScale
+            shape.graphics.lineTo(
+                (node.offsetLeft - Util.$offsetLeft - x) / Util.$zoomScale,
+                (node.offsetTop  - Util.$offsetTop  - y) / Util.$zoomScale
             );
 
-            // 再描画
-            this.reloadScreen();
-
-            Util.$tools.reset();
+            node.remove();
+            --idx;
         }
+        shape.graphics.endLine();
 
+        const id = Util.$currentWorkSpace().nextLibraryId;
+        const dx = (x + thickness) / 2 / Util.$zoomScale;
+        const dy = (y + thickness) / 2 / Util.$zoomScale;
+        this.createShape({
+            "id": id,
+            "type": "shape",
+            "name": `Shape_${id}`,
+            "symbol": "",
+            "recodes": shape.graphics._$recode.slice(0),
+            "bounds": {
+                "xMin": shape.graphics._$xMin,
+                "xMax": shape.graphics._$xMax,
+                "yMin": shape.graphics._$yMin,
+                "yMax": shape.graphics._$yMax
+            }
+        }, dx, dy);
+
+        // 再描画
+        this.reloadScreen();
+
+        Util.$tools.reset();
     }
 }

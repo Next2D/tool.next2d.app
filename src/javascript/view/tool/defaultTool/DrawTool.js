@@ -63,17 +63,15 @@ class DrawTool extends BaseTool
             event.stopPropagation();
 
             if (event.screen) {
-                this.attachLayer();
-                if (Util.$timeline._$targetLayer) {
 
-                    this.createCharacter();
+                Util.$timelineLayer.attachLayer();
+                this.createCharacter();
 
-                    document
-                        .getElementById("draw-rect")
-                        .style.display = "none";
+                document
+                    .getElementById("draw-rect")
+                    .style.display = "none";
 
-                    Util.$tools.reset();
-                }
+                Util.$tools.reset();
             }
         });
     }
