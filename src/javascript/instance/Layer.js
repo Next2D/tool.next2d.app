@@ -1085,12 +1085,15 @@ class Layer
                 }
 
                 if (!done) {
+
                     // 設定済みのフレームがあれば、フレームを伸ばす
-                    const characters = this.getActiveCharacter(frame);
+                    const characters = this.getActiveCharacter(frame - idx);
                     if (characters.length) {
                         for (let idx = 0; idx < characters.length; ++idx) {
                             characters[idx].endFrame = frame;
                         }
+
+                        done = true;
                     }
                 }
 
@@ -1109,40 +1112,6 @@ class Layer
             "startFrame": frame,
             "endFrame": frame + 1
         };
-    }
-
-    /**
-     * TODO
-     * @param  {number} frame
-     * @return {number}
-     */
-    getEndFrame (frame)
-    {
-        const emptyCharacter = this.getActiveEmptyCharacter(frame);
-
-        // while (this._$frame.hasClasses(frame)) {
-        //
-        //     const classes = this._$frame.getClasses(frame);
-        //
-        //     switch (true) {
-        //
-        //         case classes.indexOf("key-frame") > -1:
-        //         case classes.indexOf("empty-key-frame") > -1:
-        //             return frame;
-        //
-        //         case classes.indexOf("key-space-frame-end") > -1:
-        //         case classes.indexOf("empty-space-frame-end") > -1:
-        //             return frame + 1;
-        //
-        //         default:
-        //             break;
-        //
-        //     }
-        //
-        //     frame++;
-        // }
-
-        return frame;
     }
 
     /**

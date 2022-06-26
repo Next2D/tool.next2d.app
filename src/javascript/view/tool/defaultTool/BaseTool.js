@@ -134,14 +134,6 @@ class BaseTool extends Tool
 
         const frame = Util.$timelineFrame.currentFrame;
 
-        const frameElement = document
-            .getElementById(`${layerId}-${frame}`); // fixed
-
-        // add frame
-        Util
-            .$timeline
-            .dropKeyFrame(frameElement);
-
         // pointer
         const character = new Character();
         character.libraryId  = textField.id;

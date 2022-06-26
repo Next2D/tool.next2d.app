@@ -215,7 +215,16 @@ class ArrowTool extends BaseTool
         // ツール終了時に初期化
         this.addEventListener(EventType.END, () =>
         {
-            this.clear();
+            // 配列を初期化
+            this.clearActiveElement();
+
+            // スクリーンエリアの変形Elementを非表示に
+            Util.$transformController.hide();
+            Util.$gridController.hide();
+            Util.$screen.clearTweenMarker();
+
+            // コントローラーエリアを初期化
+            Util.$controller.default();
         });
 
         // シーン移動
@@ -348,38 +357,6 @@ class ArrowTool extends BaseTool
     }
 
     /**
-     * @description タイムラインのアクティブなレイヤーとフレームのエレメントを指定して初期化
-     *
-     * @return {void}
-     * @method
-     * @public
-     */
-    clearActiveLayerAndFrame (element)
-    {
-        const layerId = element.dataset.layerId | 0;
-
-        const layerElement = document
-            .getElementById(`layer-id-${layerId}`);
-
-        if (!layerElement) {
-            return ;
-        }
-
-        layerElement
-            .classList
-            .remove("active");
-
-        const frame = Util.$timelineFrame.currentFrame;
-
-        const frameElement = document
-            .getElementById(`${layerId}-${frame}`);
-
-        frameElement
-            .classList
-            .remove("frame-active");
-    }
-
-    /**
      * @description 選択したDisplayObjectを配列に格納
      *              もし配列内に指定済みのDisplayObjectがあれば何もしない
      *
@@ -401,14 +378,18 @@ class ArrowTool extends BaseTool
             if (target.dataset.characterId === element.dataset.characterId) {
 
                 if (Util.$shiftKey) {
-                    const object = this._$activeElements.splice(idx, 1)[0];
-                    // this.clearActiveLayerAndFrame(object.target);
+
+                    // 服選択時は二度目の押下は対象外にする
+                    this._$activeElements.splice(idx, 1);
+
                 } else {
+
                     this._$activeElements.splice(idx, 1, {
                         "target": element,
                         "moveX": x,
                         "moveY": y
                     });
+
                 }
 
                 return false;
@@ -417,14 +398,7 @@ class ArrowTool extends BaseTool
 
         // 複数選択でなければ配列は初期化する
         if (!hit && !Util.$shiftKey) {
-            // タイムラインを初期化
-            // for (let idx = 0; idx < this._$activeElements.length; ++idx) {
-            //     this.clearActiveLayerAndFrame(
-            //         this._$activeElements[idx].target
-            //     );
-            // }
-
-            // 配列も初期化
+            // 配列を初期化
             this.clearActiveElement();
         }
 

@@ -189,6 +189,29 @@ class TimelineLayer extends BaseTimeline
     {
         switch (true) {
 
+            case Util.$ctrlKey:
+                if (layer) {
+                    if (this.targetLayers.has(layer.id)) {
+
+                        // アクティブな時は非アクティブにして選択リストから削除
+                        layer
+                            .classList
+                            .remove("active");
+
+                        this.targetLayers.delete(layer.id);
+                    } else {
+
+                        // アクティブ表示
+                        layer
+                            .classList
+                            .add("active");
+
+                        this.targetLayers.set(layer.id, layer);
+                    }
+
+                }
+                break;
+
             case Util.$shiftKey:
                 if (layer) {
                     const baseLayer = this.targetLayer;
@@ -230,29 +253,6 @@ class TimelineLayer extends BaseTimeline
                         this.targetLayers.set(targetLayer.id, targetLayer);
 
                     }
-                }
-                break;
-
-            case Util.$ctrlKey:
-                if (layer) {
-                    if (this.targetLayers.has(layer.id)) {
-
-                        // アクティブな時は非アクティブにして選択リストから削除
-                        layer
-                            .classList
-                            .remove("active");
-
-                        this.targetLayers.delete(layer.id);
-                    } else {
-
-                        // アクティブ表示
-                        layer
-                            .classList
-                            .add("active");
-
-                        this.targetLayers.set(layer.id, layer);
-                    }
-
                 }
                 break;
 
@@ -319,16 +319,30 @@ class TimelineLayer extends BaseTimeline
         /**
          * @type {ArrowTool}
          */
-        const tool  = Util.$tools.getDefaultTool("arrow");
+        const tool = Util.$tools.getDefaultTool("arrow");
 
         // 選択中のDisplayObjectを初期化
         tool.clearActiveElement();
 
+        Util
+            .$transformController
+            .hide();
+
+        Util
+            .$gridController
+            .hide();
+
         const frame = Util.$timelineFrame.currentFrame;
         const scene = Util.$currentWorkSpace().scene;
-        for (const element of this.targetLayers.values()) {
 
-            const layer = scene.getLayer(element.dataset.layerId | 0);
+        // 複数選択ようにshiftキーをonにする
+        const cacheValue = Util.$shiftKey;
+        Util.$shiftKey = true;
+
+        // アクティブ判定
+        for (const layerId of this.targetFrames.keys()) {
+
+            const layer = scene.getLayer(layerId);
             const characters = layer.getActiveCharacter(frame);
 
             for (let idx = 0; idx < characters.length; ++idx) {
@@ -346,8 +360,18 @@ class TimelineLayer extends BaseTimeline
             }
         }
 
+        // shiftキーを元の値に戻す
+        Util.$shiftKey = cacheValue;
+
+        // 拡大縮小回転のElementのポイントを表示して再計算
         Util
             .$transformController
+            .show()
+            .relocation();
+
+        // 9sliceのElementのポイントを表示して再計算
+        Util
+            .$gridController
             .show()
             .relocation();
     }
@@ -1940,7 +1964,7 @@ class TimelineLayer extends BaseTimeline
             this.targetLayer = document
                 .getElementById(`layer-id-${layerId}`);
 
-            // 選択したelementをMapに登録
+            // 選択したフレームElementをMapに登録
             this.addTargetFrame(layerId, target);
 
             if (!this._$multiSelect) {
@@ -1959,54 +1983,31 @@ class TimelineLayer extends BaseTimeline
                 .classList
                 .add("frame-active");
 
+            // 選択範囲のDisplayObjectを取得
             const characters = scene
                 .getLayer(event.target.dataset.layerId | 0)
                 .getActiveCharacter(frame);
-
-            for (let idx = 0; idx < characters.length; ++idx) {
-
-                const element = document
-                    .getElementById(`character-${characters[idx].id}`);
-
-                if (!element) {
-                    continue;
-                }
-
-                tool.addElement(element, 0, 0, true);
-            }
-
-            Util
-                .$transformController
-                .hide();
-
-            Util
-                .$gridController
-                .hide();
-
-            if (characters.length) {
-                // 拡大縮小回転のElementのポイントを表示して再計算
-                Util
-                    .$transformController
-                    .show()
-                    .relocation();
-
-                // 9sliceのElementのポイントを表示して再計算
-                Util
-                    .$gridController
-                    .show()
-                    .relocation();
-            }
 
             // set character
             const currentFrame = Util.$timelineFrame.currentFrame;
 
             // フレームを移動したら再描画
             if (currentFrame !== frame) {
+                // フレームを移動
                 Util.$timelineFrame.currentFrame = frame;
+
+                // マーカーを移動
                 Util.$timelineMarker.move();
+
+                // 移動先の音声設定を生成
                 Util.$soundController.createSoundElements();
+
+                // 再描画
                 this.reloadScreen();
             }
+
+            // 再描画後にアクティブ判定を行う
+            this.activeCharacter();
         }
 
         // // エディター更新
@@ -2016,17 +2017,6 @@ class TimelineLayer extends BaseTimeline
         //         this.showScriptArea();
         //     }
         // }
-        //
-        // if (characters.length) {
-        //     // コントローラー表示
-        //     tool.updateControllerProperty();
-        //
-        //     // 拡大縮小回転のElementのポイントを表示して再計算
-        //     // tool.showTransformElement();
-        //     // tool.placeTransformTarget();
-        // }
-        // // Util.$controller.setDefaultController();
-        // // Util.$controller.createSoundListArea();
         // Util.$canCopyLayer     = false;
         // Util.$canCopyCharacter = true;
     }
@@ -2387,6 +2377,9 @@ class TimelineLayer extends BaseTimeline
         const frames = this.targetFrames.get(selectLayerId);
         frames.splice(frames.indexOf(selectFrameElement), 1);
         frames.unshift(selectFrameElement);
+
+        // 再描画後にアクティブ判定を行う
+        this.activeCharacter();
     }
 
     /**
