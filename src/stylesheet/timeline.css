@@ -659,7 +659,7 @@
 
 #timeline-content .active div
 {
-    opacity: 0.7;
+    opacity: 0.85;
 }
 
 #timeline-content.timeline-content-child .active

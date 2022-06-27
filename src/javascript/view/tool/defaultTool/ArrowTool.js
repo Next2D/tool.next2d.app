@@ -422,11 +422,13 @@ class ArrowTool extends BaseTool
         const target  = this.target;
         const layerId = target.dataset.layerId | 0;
 
-        // タイムラインでロック中のDisplayObjectは何もしない
-        const lockElement = document
-            .getElementById(`layer-lock-icon-${layerId}`);
+        const workSpace = Util.$currentWorkSpace();
 
-        if (lockElement.classList.contains("icon-active")) {
+        const scene = workSpace.scene;
+        const layer = scene.getLayer(layerId);
+
+        // タイムラインでロック中のDisplayObjectは何もしない
+        if (layer.lock) {
             return ;
         }
 
@@ -437,11 +439,6 @@ class ArrowTool extends BaseTool
             event.pageX,
             event.pageY
         );
-
-        const workSpace = Util.$currentWorkSpace();
-
-        const scene = workSpace.scene;
-        const layer = scene.getLayer(layerId);
 
         const character = layer.getCharacter(
             target.dataset.characterId | 0

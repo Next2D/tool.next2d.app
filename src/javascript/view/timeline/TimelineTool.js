@@ -907,6 +907,11 @@ class TimelineTool extends BaseTimeline
 
             const layer = scene.getLayer(layerId);
 
+            // 何も設定がないのでスキップ
+            if (!layer._$characters.length && !layer._$emptys.length) {
+                continue;
+            }
+
             const totalFrame = layer.totalFrame;
 
             const characters = layer
@@ -984,120 +989,6 @@ class TimelineTool extends BaseTimeline
 
         // 初期化
         super.focusOut();
-    }
-
-    /**
-     * @description キーフレームを削除した時のタイムラインの補正
-     *
-     * @param  {Layer}  layer
-     * @param  {number} key_frame
-     * @param  {number} total_frame
-     * @return {void}
-     * @method
-     * @public
-     */
-    adjustmentKeyFrame (layer, key_frame, total_frame)
-    {
-
-        if (key_frame > 1) {
-
-            // 終了位置を計算
-            let endFrame = total_frame;
-            for (let idx = 1; total_frame > key_frame + idx; ++idx) {
-
-                const frame = key_frame + idx;
-
-                const characters = layer
-                    .getActiveCharacter(frame);
-
-                if (characters.length) {
-                    endFrame = frame;
-                    break;
-                }
-
-                const emptyCharacter = layer
-                    .getActiveEmptyCharacter(frame);
-
-                if (emptyCharacter) {
-                    endFrame = frame;
-                    break;
-                }
-            }
-
-            // フレームが2以上なら前方確認
-            for (let idx = 1; key_frame - idx > 0; ++idx) {
-
-                const frame = key_frame - idx;
-
-                const characters = layer
-                    .getActiveCharacter(frame);
-
-                if (characters.length) {
-
-                    for (let idx = 0; idx < characters.length; ++idx) {
-                        // 終了位置の補正
-                        characters[idx].endFrame = endFrame;
-                    }
-
-                    break;
-                }
-
-                const emptyCharacter = layer
-                    .getActiveEmptyCharacter(frame);
-
-                if (emptyCharacter) {
-                    emptyCharacter.endFrame = endFrame;
-                    break;
-                }
-
-            }
-
-        } else {
-
-            // 1フレーム以降に何かの配置があれば実行
-            if (layer._$characters.length || layer._$emptys.length) {
-
-                // フレームが1なら後方確認
-                for (let idx = 1; ; ++idx) {
-
-                    const frame = 1 + idx;
-
-                    const characters = layer
-                        .getActiveCharacter(frame);
-
-                    if (characters.length) {
-
-                        for (let idx = 0; idx < characters.length; ++idx) {
-
-                            const character = characters[idx];
-
-                            let moveFrame = character.endFrame;
-                            for (let keyFrame of character._$places.keys()) {
-                                moveFrame = Math.min(moveFrame, keyFrame);
-                            }
-
-                            // キーフレームを補正
-                            const place = character.getPlace(moveFrame);
-                            character.deletePlace(moveFrame);
-                            character.setPlace(1, place);
-
-                            // 開始位置の補正
-                            character.startFrame = 1;
-                        }
-
-                        break;
-                    }
-
-                    const emptyCharacter = layer
-                        .getActiveEmptyCharacter(frame);
-
-                    if (emptyCharacter) {
-                        emptyCharacter.startFrame = 1;
-                        break;
-                    }
-                }
-            }
-        }
     }
 
     /**
@@ -1618,6 +1509,119 @@ class TimelineTool extends BaseTimeline
                 children[idx].dataset.layerId | 0
             );
 
+        }
+    }
+
+    /**
+     * @description キーフレームを削除した時のタイムラインの補正
+     *
+     * @param  {Layer}  layer
+     * @param  {number} key_frame
+     * @param  {number} total_frame
+     * @return {void}
+     * @method
+     * @public
+     */
+    adjustmentKeyFrame (layer, key_frame, total_frame)
+    {
+        if (key_frame > 1) {
+
+            // 終了位置を計算
+            let endFrame = total_frame;
+            for (let idx = 1; total_frame > key_frame + idx; ++idx) {
+
+                const frame = key_frame + idx;
+
+                const characters = layer
+                    .getActiveCharacter(frame);
+
+                if (characters.length) {
+                    endFrame = frame;
+                    break;
+                }
+
+                const emptyCharacter = layer
+                    .getActiveEmptyCharacter(frame);
+
+                if (emptyCharacter) {
+                    endFrame = frame;
+                    break;
+                }
+            }
+
+            // フレームが2以上なら前方確認
+            for (let idx = 1; key_frame - idx > 0; ++idx) {
+
+                const frame = key_frame - idx;
+
+                const characters = layer
+                    .getActiveCharacter(frame);
+
+                if (characters.length) {
+
+                    for (let idx = 0; idx < characters.length; ++idx) {
+                        // 終了位置の補正
+                        characters[idx].endFrame = endFrame;
+                    }
+
+                    break;
+                }
+
+                const emptyCharacter = layer
+                    .getActiveEmptyCharacter(frame);
+
+                if (emptyCharacter) {
+                    emptyCharacter.endFrame = endFrame;
+                    break;
+                }
+
+            }
+
+        } else {
+
+            // 1フレーム以降に何かの配置があれば実行
+            if (layer._$characters.length || layer._$emptys.length) {
+
+                // フレームが1なら後方確認
+                for (let idx = 1; ; ++idx) {
+
+                    const frame = 1 + idx;
+
+                    const characters = layer
+                        .getActiveCharacter(frame);
+
+                    if (characters.length) {
+
+                        for (let idx = 0; idx < characters.length; ++idx) {
+
+                            const character = characters[idx];
+
+                            let moveFrame = character.endFrame;
+                            for (let keyFrame of character._$places.keys()) {
+                                moveFrame = Math.min(moveFrame, keyFrame);
+                            }
+
+                            // キーフレームを補正
+                            const place = character.getPlace(moveFrame);
+                            character.deletePlace(moveFrame);
+                            character.setPlace(1, place);
+
+                            // 開始位置の補正
+                            character.startFrame = 1;
+                        }
+
+                        break;
+                    }
+
+                    const emptyCharacter = layer
+                        .getActiveEmptyCharacter(frame);
+
+                    if (emptyCharacter) {
+                        emptyCharacter.startFrame = 1;
+                        break;
+                    }
+                }
+            }
         }
     }
 

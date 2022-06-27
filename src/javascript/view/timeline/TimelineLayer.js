@@ -215,7 +215,7 @@ class TimelineLayer extends BaseTimeline
             case Util.$shiftKey:
                 if (layer) {
                     const baseLayer = this.targetLayer;
-                    if (baseLayer.id === layer.id) {
+                    if (!baseLayer || baseLayer.id === layer.id) {
                         return ;
                     }
 
@@ -417,7 +417,12 @@ class TimelineLayer extends BaseTimeline
         // shiftキーを元の値に戻す
         Util.$shiftKey = cacheValue;
 
+        // コントローラーエリアを初期化
+        Util.$controller.default();
         if (tool.activeElements.length) {
+
+            // コントローラーエリアの表示を更新
+            tool.updateControllerProperty();
 
             // 拡大縮小回転のElementのポイントを表示して再計算
             Util
@@ -1810,12 +1815,13 @@ class TimelineLayer extends BaseTimeline
         this.targetLayer = element;
 
         // 選択したレイヤーのIDを変数に格納
-        const layerId = element.dataset.layerId | 0;
-        this._$selectLayerId = layerId;
+        this._$selectLayerId = element.dataset.layerId | 0;
 
         // アクティブ表示
         const frame = Util.$timelineFrame.currentFrame;
-        if (this.targetLayers.size === 1) {
+        for (const layerElement of this.targetLayers.values()) {
+
+            const layerId = layerElement.dataset.layerId | 0
 
             // 編集へセット
             const frameElement = document
@@ -1824,6 +1830,7 @@ class TimelineLayer extends BaseTimeline
             // 選択したレイヤーのフレームを初期化してセット
             this.targetFrames.delete(layerId);
             this.addTargetFrame(layerId, frameElement);
+
         }
 
         // マーカーを現在のフレームの位置に移動
@@ -1977,7 +1984,9 @@ class TimelineLayer extends BaseTimeline
         } else {
 
             // 初期化
-            tool.clear();
+            if (!Util.$ctrlKey) {
+                tool.clear();
+            }
 
             const layerId = target.dataset.layerId | 0;
 
