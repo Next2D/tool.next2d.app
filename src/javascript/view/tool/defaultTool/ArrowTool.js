@@ -692,10 +692,6 @@ class ArrowTool extends BaseTool
         }
 
         this.clear();
-
-        // Util.$screen.clearActiveCharacter();
-        // Util.$controller.setDefaultController();
-        // scene.changeFrame(frame);
     }
 
     /**
@@ -1536,8 +1532,14 @@ class ArrowTool extends BaseTool
         document.getElementById("object-y").value = ty;
 
         // オブジェクト設定を表示して、Stage情報は非表示にする
-        Util.$controller.showObjectArea();
-        Util.$controller.hideStageSetting();
+        Util.$controller.showObjectSetting([
+            "object-area"
+        ]);
+        Util.$controller.hideObjectSetting([
+            "stage-setting",
+            "fill-color-setting"
+        ]);
+
         if (this._$activeElements.length > 1) {
 
             // 複数選択時は変形以外のコントローラーを非表示にする
@@ -1550,7 +1552,6 @@ class ArrowTool extends BaseTool
                 "video-setting",
                 "instance-setting",
                 "text-setting",
-                "fill-color-setting",
                 "nine-slice-setting",
                 "sound-setting"
             ]);

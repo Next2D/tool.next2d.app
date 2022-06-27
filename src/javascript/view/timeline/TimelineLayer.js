@@ -1883,15 +1883,6 @@ class TimelineLayer extends BaseTimeline
             labelInput.value = label;
         }
 
-        // if (target.classList.contains("key-frame")
-        //     || target.classList.contains("key-space-frame")
-        //     || target.classList.contains("key-space-frame-end")
-        // ) {
-        //     Util.$controller.showObjectArea();
-        // } else {
-        //     Util.$controller.hideObjectArea();
-        // }
-        //
         // if (!target.classList.contains("tween-frame")) {
         //     Util.$screen.clearTweenMarker();
         // }

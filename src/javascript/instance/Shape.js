@@ -69,7 +69,6 @@ class Shape extends Instance
 
         // Shapeに必要なコントローラーを表示する
         Util.$controller.showObjectSetting([
-            "fill-color-setting",
             "nine-slice-setting"
         ]);
 
@@ -77,7 +76,8 @@ class Shape extends Instance
         Util.$controller.hideObjectSetting([
             "text-setting",
             "loop-setting",
-            "video-setting"
+            "video-setting",
+            "fill-color-setting"
         ]);
     }
 
