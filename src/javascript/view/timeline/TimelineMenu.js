@@ -21,9 +21,11 @@ class TimelineMenu extends BaseTimeline
             "context-menu-key-frame-add",
             "context-menu-empty-key-frame-add",
             "context-menu-frame-delete",
-            "context-menu-frame-key-frame-delete",
+            "context-menu-key-frame-delete",
             "context-menu-tween-add",
-            "context-menu-tween-delete"
+            "context-menu-tween-delete",
+            "context-menu-frame-copy",
+            "context-menu-frame-paste"
         ];
 
         for (let idx = 0; idx < elementIds.length; ++idx) {
@@ -84,6 +86,18 @@ class TimelineMenu extends BaseTimeline
     executeContextMenuKeyFrameAdd ()
     {
         Util.$timelineTool.executeTimelineKeyAdd();
+    }
+
+    /**
+     * @description タイムラインにキーフレームを追加する
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    executeContextMenuKeyFrameDelete ()
+    {
+        Util.$timelineTool.executeTimelineKeyDelete();
     }
 
     /**

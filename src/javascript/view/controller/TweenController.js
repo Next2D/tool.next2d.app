@@ -1,5 +1,6 @@
 /**
  * @class
+ * @extends {BaseController}
  */
 class TweenController extends BaseController
 {
@@ -10,6 +11,18 @@ class TweenController extends BaseController
     constructor()
     {
         super("ease");
+    }
+
+    /**
+     * @description 初期起動関数
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    initialize ()
+    {
+        super.initialize();
     }
 
     /**

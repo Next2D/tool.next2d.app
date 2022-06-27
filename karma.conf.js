@@ -24,7 +24,6 @@ module.exports = function(config)
             "src/javascript/filter/Filter.js",
             "src/javascript/filter/*.js",
             "src/javascript/parser/*.js",
-            "src/javascript/Setting.js",
             "src/javascript/WorkSpace.js",
             "src/javascript/event/*.js",
             "src/javascript/view/tool/ToolEvent.js",

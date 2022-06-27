@@ -6,8 +6,6 @@ Util.VERSION                    = 1;
 Util.PREFIX                     = "__next2d-tools__";
 Util.DATABASE_NAME              = "save-data";
 Util.STORE_KEY                  = "local";
-Util.STAGE_MIN_SIZE             = 1;
-Util.STAGE_MAX_SIZE             = 3000;
 Util.FONT_DEFAULT_SIZE          = 200;
 Util.FONT_MIN_SIZE              = 10;
 Util.FONT_MAX_SIZE              = 255;
@@ -54,8 +52,6 @@ Util.GRADIENT_CANVAS_HEIGHT     = 30;
 Util.SCRIPT_MODAL_WIDTH         = 620;
 Util.SCRIPT_MODAL_HEIGHT        = 450;
 Util.SCRIPT_MODAL_BAR_HEIGHT    = 25;
-Util.MIN_VOLUME                 = 0;
-Util.MAX_VOLUME                 = 100;
 Util.FOLDER_OPEN                = "open";
 Util.FOLDER_CLOSE               = "close";
 Util.EASE_CANVAS_WIDTH          = 300;
@@ -72,10 +68,6 @@ Util.EASE_OFFSET_X              = 50;
 Util.EASE_OFFSET_Y              = 100;
 Util.EASE_RANGE                 = 100;
 Util.DEFAULT_LOOP               = 5;
-Util.MIN_ZOOM_LEVEL             = 0.25;
-Util.MAX_ZOOM_LEVEL             = 5;
-Util.PLUGIN_DEFAULT_WIDTH       = 200;
-Util.PLUGIN_DEFAULT_HEIGHT      = 200;
 Util.$activeWorkSpaceId         = 0;
 Util.$workSpaces                = [];
 Util.$readStatus                = 0;
@@ -85,7 +77,6 @@ Util.$ctrlKey                   = false;
 Util.$altKey                    = false;
 Util.$zoomScale                 = 1;
 Util.$currentFrame              = 1;
-Util.$frameWidth                = 65;
 Util.$root                      = null;
 Util.$Rad2Deg                   = 180 / Math.PI;
 Util.$Deg2Rad                   = Math.PI / 180;
@@ -706,7 +697,7 @@ window.addEventListener("DOMContentLoaded", Util.$initialize);
  */
 Util.$showPreview = function ()
 {
-    Util.$timeline.saveActionScript();
+    Util.$javaScriptEditor.save();
 
     Util.$previewMode = true;
     Util.$keyLock     = true;
@@ -882,7 +873,7 @@ Util.$toJSON = function ()
  */
 Util.$autoSave = function ()
 {
-    Util.$timeline.saveActionScript();
+    Util.$javaScriptEditor.save();
 
     const postData = {
         "object": Util.$toJSON(),

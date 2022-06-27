@@ -928,7 +928,7 @@
     background-color    : #9c9c9c;
     background-image    : url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg"><rect width="2" height="9" style="fill:rgb(30,30,30)" /></svg>');
     background-repeat   : no-repeat;
-    background-position : 8px 18px;
+    background-position : calc(var(--timeline-frame-width) - 4px) 18px;
 }
 
 #timeline-content .empty-space-frame-end

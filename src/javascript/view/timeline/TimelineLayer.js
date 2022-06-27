@@ -354,9 +354,7 @@ class TimelineLayer extends BaseTimeline
         }
 
         // フレーム移動のElementを非表示
-        document
-            .getElementById("target-group")
-            .style.display = "none";
+        this.hideTargetGroup();
     }
 
     /**
@@ -2211,41 +2209,26 @@ class TimelineLayer extends BaseTimeline
      */
     endTargetGroup ()
     {
+        // イベントを削除
         window.removeEventListener("mousemove", this._$moveTargetGroup);
         window.removeEventListener("mouseup", this._$endTargetGroup);
 
+        const children = Array.from(
+            document.getElementById("timeline-content").children
+        );
+
+        const selectFrame = Util.$timelineTool.getFirstFrame();
+        for (const [layerId, values] of this.targetFrames) {
+
+            const index = children.indexOf(
+                document.getElementById(`layer-id-${layerId}`)
+            );
+
+            console.log(layerId, selectFrame, index);
+        }
+
         // 選択elementを非表示
         this.hideTargetGroup();
-
-        // TODO 移動処理
-    }
-
-    /**
-     * @description 選択したフレームをフレーム順にソートする
-     *
-     * @param  {HTMLElement} a
-     * @param  {HTMLElement} b
-     * @return {number}
-     * @method
-     * @public
-     */
-    frameSort (a, b)
-    {
-        const aFrame = a.dataset.frame | 0;
-        const bFrame = b.dataset.frame | 0;
-
-        switch (true) {
-
-            case aFrame > bFrame:
-                return 1;
-
-            case aFrame < bFrame:
-                return -1;
-
-            default:
-                return 0;
-
-        }
     }
 
     /**

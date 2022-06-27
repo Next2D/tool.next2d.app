@@ -4,8 +4,10 @@
 class WorkSpace
 {
     /**
-     * @param {string} json
+     * @param {string} [json=""]
+     *
      * @constructor
+     * @public
      */
     constructor (json = "")
     {
@@ -40,20 +42,96 @@ class WorkSpace
 
     }
 
+
     /**
-     * @return {void}
+     * @return {MovieClip}
+     * @readonly
      * @public
      */
-    run ()
+    get root ()
     {
-        // ステージをセット
-        this.stage.initialize();
-
-        // 初期化
-        this.initialize(this.root);
+        return this._$libraries.get(0);
     }
 
     /**
+     * @return {Stage}
+     * @readonly
+     * @public
+     */
+    get stage ()
+    {
+        return this._$stage;
+    }
+
+    /**
+     * @return {string}
+     * @public
+     */
+    get name ()
+    {
+        return this._$name;
+    }
+
+    /**
+     * @param  {string} name
+     * @return {void}
+     * @public
+     */
+    set name (name)
+    {
+        this._$name = `${name}`;
+    }
+
+    /**
+     * @return {MovieClip}
+     * @public
+     */
+    get scene ()
+    {
+        return this._$scene;
+    }
+
+    /**
+     * @param  {MovieClip} scene
+     * @return {void}
+     * @public
+     */
+    set scene (scene)
+    {
+        if (this._$scene) {
+            this._$scene.stop();
+        }
+
+        this._$scene = scene;
+        scene.initialize();
+    }
+
+    /**
+     * @return {number}
+     * @readonly
+     * @public
+     */
+    get nextLibraryId ()
+    {
+        const keys = Array.from(this._$libraries.keys());
+        keys.sort(function (a, b)
+        {
+            if (a > b) {
+                return 1;
+            }
+
+            if (a < b) {
+                return -1;
+            }
+
+            return 0;
+        });
+        return (this._$libraries.get((keys.pop()|0)).id|0) + 1;
+    }
+
+    /**
+     * @description 初期起動関数
+     *
      * @param  {MovieClip} scene
      * @return {void}
      * @public
@@ -71,6 +149,22 @@ class WorkSpace
 
         // プラグインを初期化
         this.initializePlugin();
+    }
+
+    /**
+     * @description 起動関数
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    run ()
+    {
+        // ステージをセット
+        this.stage.initialize();
+
+        // 初期化
+        this.initialize(this.root);
     }
 
     /**
@@ -202,30 +296,6 @@ class WorkSpace
             this._$scene.stop();
             this._$scene = null;
         }
-    }
-
-    /**
-     * @return {MovieClip}
-     * @public
-     */
-    get scene ()
-    {
-        return this._$scene;
-    }
-
-    /**
-     * @param  {MovieClip} scene
-     * @return {void}
-     * @public
-     */
-    set scene (scene)
-    {
-        if (this._$scene) {
-            this._$scene.stop();
-        }
-
-        this._$scene = scene;
-        scene.initialize();
     }
 
     /**
@@ -381,45 +451,6 @@ class WorkSpace
     }
 
     /**
-     * @return {MovieClip}
-     * @readonly
-     * @public
-     */
-    get root ()
-    {
-        return this._$libraries.get(0);
-    }
-
-    /**
-     * @return {Stage}
-     * @readonly
-     * @public
-     */
-    get stage ()
-    {
-        return this._$stage;
-    }
-
-    /**
-     * @return {string}
-     * @public
-     */
-    get name ()
-    {
-        return this._$name;
-    }
-
-    /**
-     * @param  {string} name
-     * @return {void}
-     * @public
-     */
-    set name (name)
-    {
-        this._$name = `${name}`;
-    }
-
-    /**
      * @param  {object} library
      * @return {object}
      * @public
@@ -524,28 +555,5 @@ class WorkSpace
 
         Util.$controller.deleteInstanceSelectOption(id | 0);
         Util.$javascriptController.reload();
-    }
-
-    /**
-     * @return {number}
-     * @readonly
-     * @public
-     */
-    get nextLibraryId ()
-    {
-        const keys = Array.from(this._$libraries.keys());
-        keys.sort(function (a, b)
-        {
-            if (a > b) {
-                return 1;
-            }
-
-            if (a < b) {
-                return -1;
-            }
-
-            return 0;
-        });
-        return (this._$libraries.get((keys.pop()|0)).id|0) + 1;
     }
 }

@@ -681,35 +681,9 @@ class TimelineTool extends BaseTimeline
 
         this.save();
 
-        let startFrame = -1;
+        const startFrame = this.getFirstFrame();
         const scene = Util.$currentWorkSpace().scene;
         for (const [layerId, values] of targetFrames) {
-
-            // クローンして、フレーム順に並び替え
-            if (startFrame === -1) {
-
-                const frames = values.slice();
-                frames.sort((a, b) =>
-                {
-                    const aFrame = a.dataset.frame | 0;
-                    const bFrame = b.dataset.frame | 0;
-
-                    switch (true) {
-
-                        case aFrame > bFrame:
-                            return 1;
-
-                        case aFrame < bFrame:
-                            return -1;
-
-                        default:
-                            return 0;
-
-                    }
-                });
-
-                startFrame = frames[0].dataset.frame | 0;
-            }
 
             const endFrame = startFrame + values.length;
 
@@ -724,7 +698,7 @@ class TimelineTool extends BaseTimeline
                 let done = false;
 
                 // 前方のフレームを補正
-                let idx = 1;
+                let idx = 0;
                 for ( ; startFrame - idx > 1; ++idx) {
 
                     const element = document
@@ -911,6 +885,222 @@ class TimelineTool extends BaseTimeline
     }
 
     /**
+     * @description タイムラインのキーフレームを削除する
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    executeTimelineKeyDelete ()
+    {
+        const targetFrames = Util.$timelineLayer.targetFrames;
+        if (!targetFrames.size) {
+            return ;
+        }
+
+        this.save();
+
+        const scene = Util.$currentWorkSpace().scene;
+
+        const startFrame = this.getFirstFrame();
+        for (const layerId of targetFrames.keys()) {
+
+            const layer = scene.getLayer(layerId);
+
+            const totalFrame = layer.totalFrame;
+
+            const characters = layer
+                .getActiveCharacter(startFrame);
+
+            if (characters.length) {
+
+                // キーフレームを削除
+                for (let idx = 0; idx < characters.length; ++idx) {
+
+                    const character = characters[idx];
+
+                    if (!character.hasPlace(startFrame)) {
+                        continue;
+                    }
+
+                    // キーフレームを削除
+                    character.deletePlace(startFrame);
+
+                    // キーフレームがなければタイムラインから削除
+                    if (!character._$places.size) {
+                        layer.deleteCharacter(character.id);
+                        continue;
+                    }
+
+                    // 削除したキーフレームが開始フレームなら開始位置を変更
+                    if (startFrame === character.startFrame) {
+                        let frame = character.endFrame;
+                        for (const keyFrame of character._$places.keys()) {
+                            frame = Math.min(frame, keyFrame);
+                        }
+                        character.startFrame = frame;
+                    }
+                }
+
+                // 対象フレームが空になった場合はタイムラインの補正
+                if (!layer.getActiveCharacter(startFrame).length) {
+                    this.adjustmentKeyFrame(layer, startFrame, totalFrame);
+                }
+
+                // 再配置
+                layer.reloadStyle();
+
+                continue;
+            }
+
+            // 空のフレームの場合
+            const emptyCharacter = layer
+                .getActiveEmptyCharacter(startFrame);
+
+            // キーフレームがなければスキップ
+            if (emptyCharacter.startFrame !== startFrame) {
+                continue;
+            }
+
+            // 空白のフレームを削除
+            layer.deleteEmptyCharacter(emptyCharacter);
+
+            // タイムラインの補正
+            this.adjustmentKeyFrame(layer, startFrame, totalFrame);
+
+            // 再配置
+            layer.reloadStyle();
+        }
+
+        // アクティブなフレームを再設定
+        this.setActiveFrame();
+
+        // 追加した分だけタイムラインを増加させる補正
+        this.adjustmentTimeline();
+
+        // 削除するものがあるので、選択範囲を再計算して再描画
+        Util.$timelineLayer.activeCharacter();
+        this.reloadScreen();
+
+        // 初期化
+        super.focusOut();
+    }
+
+    /**
+     * @description キーフレームを削除した時のタイムラインの補正
+     *
+     * @param  {Layer}  layer
+     * @param  {number} key_frame
+     * @param  {number} total_frame
+     * @return {void}
+     * @method
+     * @public
+     */
+    adjustmentKeyFrame (layer, key_frame, total_frame)
+    {
+
+        if (key_frame > 1) {
+
+            // 終了位置を計算
+            let endFrame = total_frame;
+            for (let idx = 1; total_frame > key_frame + idx; ++idx) {
+
+                const frame = key_frame + idx;
+
+                const characters = layer
+                    .getActiveCharacter(frame);
+
+                if (characters.length) {
+                    endFrame = frame;
+                    break;
+                }
+
+                const emptyCharacter = layer
+                    .getActiveEmptyCharacter(frame);
+
+                if (emptyCharacter) {
+                    endFrame = frame;
+                    break;
+                }
+            }
+
+            // フレームが2以上なら前方確認
+            for (let idx = 1; key_frame - idx > 0; ++idx) {
+
+                const frame = key_frame - idx;
+
+                const characters = layer
+                    .getActiveCharacter(frame);
+
+                if (characters.length) {
+
+                    for (let idx = 0; idx < characters.length; ++idx) {
+                        // 終了位置の補正
+                        characters[idx].endFrame = endFrame;
+                    }
+
+                    break;
+                }
+
+                const emptyCharacter = layer
+                    .getActiveEmptyCharacter(frame);
+
+                if (emptyCharacter) {
+                    emptyCharacter.endFrame = endFrame;
+                    break;
+                }
+
+            }
+
+        } else {
+
+            // 1フレーム以降に何かの配置があれば実行
+            if (layer._$characters.length || layer._$emptys.length) {
+
+                // フレームが1なら後方確認
+                for (let idx = 1; ; ++idx) {
+
+                    const frame = 1 + idx;
+
+                    const characters = layer
+                        .getActiveCharacter(frame);
+
+                    if (characters.length) {
+
+                        for (let idx = 0; idx < characters.length; ++idx) {
+
+                            const character = characters[idx];
+
+                            let moveFrame = character.endFrame;
+                            for (let keyFrame of character._$places.keys()) {
+                                moveFrame = Math.min(moveFrame, keyFrame);
+                            }
+
+                            // キーフレームを補正
+                            const place = character.getPlace(moveFrame);
+                            character.deletePlace(moveFrame);
+                            character.setPlace(1, place);
+
+                            // 開始位置の補正
+                            character.startFrame = 1;
+                        }
+
+                        break;
+                    }
+
+                    const emptyCharacter = layer
+                        .getActiveEmptyCharacter(frame);
+
+                    if (emptyCharacter) {
+                        emptyCharacter.startFrame = 1;
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
+    /**
      * @description タイムラインに空のキーフレームを追加する
      *
      * @return {void}
@@ -1069,11 +1259,10 @@ class TimelineTool extends BaseTimeline
                             const prevEmptyCharacter = layer
                                 .getActiveEmptyCharacter(frame - idx);
 
-                            // 手前のフレームに空フレームがあれば再利用
+                            // 手前のフレームに空フレームがあれば最終位置を伸ばす
                             if (prevEmptyCharacter) {
 
-                                prevEmptyCharacter.startFrame = frame - idx;
-                                prevEmptyCharacter.endFrame   = frame;
+                                prevEmptyCharacter.endFrame = frame;
 
                             } else {
 
@@ -1129,35 +1318,9 @@ class TimelineTool extends BaseTimeline
 
         this.save();
 
-        let frame = -1;
+        const frame = this.getFirstFrame();
         const scene = Util.$currentWorkSpace().scene;
         for (const [layerId, values] of targetFrames) {
-
-            // クローンして、フレーム順に並び替え
-            if (frame === -1) {
-
-                const frames = values.slice();
-                frames.sort((a, b) =>
-                {
-                    const aFrame = a.dataset.frame | 0;
-                    const bFrame = b.dataset.frame | 0;
-
-                    switch (true) {
-
-                        case aFrame > bFrame:
-                            return 1;
-
-                        case aFrame < bFrame:
-                            return -1;
-
-                        default:
-                            return 0;
-
-                    }
-                });
-
-                frame = frames[0].dataset.frame | 0;
-            }
 
             // 未設定のフレームの場合は処理をスキップ
             if (document
@@ -1316,8 +1479,6 @@ class TimelineTool extends BaseTimeline
      */
     executeTimelineOnionSkin (event)
     {
-        const scene = Util.$currentWorkSpace().scene;
-
         const element = event.target;
         if (element.classList.contains("onion-skin-active")) {
 
@@ -1458,6 +1619,34 @@ class TimelineTool extends BaseTimeline
             );
 
         }
+    }
+
+    /**
+     * @description 複数のフレームを選択した時の一番若いフレーム番号を返す
+     *
+     * @return {number}
+     * @method
+     * @public
+     */
+    getFirstFrame ()
+    {
+        if (!Util.$timelineLayer.targetFrame) {
+            return 1;
+        }
+
+        const frames = Util
+            .$timelineLayer
+            .targetFrames
+            .values()
+            .next()
+            .value;
+
+        let minFrame = Number.MAX_VALUE;
+        for (let idx = 0; idx < frames.length; ++idx) {
+            minFrame = Math.min(minFrame, frames[idx].dataset.frame | 0);
+        }
+
+        return minFrame;
     }
 }
 

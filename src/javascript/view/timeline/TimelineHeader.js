@@ -98,6 +98,10 @@ class TimelineHeader extends BaseTimeline
     {
         super.initialize();
 
+        if (!this._$deleteIcon) {
+            this._$deleteIcon = this.deleteIcon.bind(this);
+        }
+
         // 上部のタイムラインの動作イベント
         const element = document
             .getElementById("timeline-controller-base");
@@ -146,10 +150,18 @@ class TimelineHeader extends BaseTimeline
             }, { "passive" : false });
 
             element
-                .addEventListener("mouseleave", this.clearParams.bind(this));
-        }
+                .addEventListener("mouseleave", () =>
+                {
+                    this.clearParams();
+                    window.removeEventListener("keydown", this._$deleteIcon);
+                });
 
-        window.addEventListener("keydown", this.deleteIcon.bind(this));
+            element
+                .addEventListener("mouseover", () =>
+                {
+                    window.addEventListener("keydown", this._$deleteIcon);
+                });
+        }
     }
 
     /**
@@ -386,8 +398,10 @@ class TimelineHeader extends BaseTimeline
             const type  = this._$targetElement.dataset.type;
 
             // 表示を追加
-            document
-                .getElementById(`frame-label-${type}-${dropFrame}`)
+            const element = document
+                .getElementById(`frame-label-${type}-${dropFrame}`);
+
+            element
                 .setAttribute("class", `frame-border-box-${type}`);
 
             switch (type) {
@@ -413,10 +427,12 @@ class TimelineHeader extends BaseTimeline
             if (!Util.$shiftKey) {
                 this.deleteIcon({ "code": "Delete" });
             }
+
+            // 新しいアイコンのelementをセット
+            this._$targetElement = element;
         }
 
         // 初期化
-        this._$targetElement = null;
         super.focusOut();
     }
 
