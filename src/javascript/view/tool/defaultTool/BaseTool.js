@@ -137,10 +137,12 @@ class BaseTool extends Tool
         // pointer
         const character = new Character();
         character.libraryId  = textField.id;
-        character.startFrame = frame;
-        character.endFrame   = layer.getEndFrame(frame + 1);
-        character.setPlace(frame, {
-            "frame": frame,
+
+        const location = layer.adjustmentLocation(frame);
+        character.startFrame = location.startFrame;
+        character.endFrame   = location.endFrame;
+        character.setPlace(location.startFrame, {
+            "frame": location.startFrame,
             "matrix": [1, 0, 0, 1, x, y],
             "colorTransform": [1, 1, 1, 1, 0, 0, 0, 0],
             "blendMode": "normal",
@@ -150,6 +152,7 @@ class BaseTool extends Tool
 
         // added
         layer.addCharacter(character);
+        layer.reloadStyle();
     }
 
     /**

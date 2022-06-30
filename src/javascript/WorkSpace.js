@@ -14,7 +14,7 @@ class WorkSpace
         this._$name        = "";
         this._$stage       = null;
         this._$libraries   = new Map();
-        this._$plugins     = [];
+        this._$plugins     = new Map();
         this._$position    = 0;
         this._$characterId = 0;
         this._$revision    = [];
@@ -148,7 +148,11 @@ class WorkSpace
         Util.$javascriptController.reload();
 
         // プラグインを初期化
-        this.initializePlugin();
+        if (this._$plugins.size) {
+            Util.$pluginController.reload(
+                Array.from(this._$plugins.values())
+            );
+        }
     }
 
     /**
@@ -270,26 +274,6 @@ class WorkSpace
      * @return {void}
      * @public
      */
-    initializePlugin ()
-    {
-        const element = document
-            .getElementById("plugin-list-box");
-
-        while (element.children.length) {
-            element.children[0].remove();
-        }
-
-        for (let idx = 0; idx < this._$plugins.length; ++idx) {
-            const plugin = this._$plugins[idx];
-            Util.$controller.appendNode(plugin.name, idx);
-            Util.$controller.appendScript(plugin.src);
-        }
-    }
-
-    /**
-     * @return {void}
-     * @public
-     */
     stop ()
     {
         if (this._$scene) {
@@ -311,7 +295,17 @@ class WorkSpace
         this._$characterId = object.characterId|0;
         this._$name        = object.name;
         this._$stage       = new Stage(object.stage);
-        this._$plugins     = object.plugins || [];
+
+        if (this._$plugins.size) {
+            this._$plugins.clear();
+        }
+
+        if (object.plugins) {
+            for (let idx = 0; idx < object.plugins.length; ++idx) {
+                const plugin = object.plugins[idx];
+                this._$plugins.set(plugin.name, plugin);
+            }
+        }
 
         if (this._$libraries.size) {
             this._$libraries.clear();
@@ -341,7 +335,7 @@ class WorkSpace
             "characterId": this._$characterId,
             "stage": this.stage.toObject(),
             "libraries": libraries,
-            "plugins": this._$plugins.slice()
+            "plugins": Array.from(this._$plugins.values())
         });
     }
 

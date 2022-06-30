@@ -116,7 +116,6 @@ class ExternalInterface
      */
     hidePanel ()
     {
-        Util.$timeline._$movePanelModal = null;
         Util.$endMenu();
 
         const children = document

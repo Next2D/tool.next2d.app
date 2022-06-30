@@ -43,7 +43,7 @@
     border         : 1px solid #3a3a3a;
     position       : absolute;
     background     : transparent;
-    z-index        : 9999;
+    z-index        : 9000;
     pointer-events : none;
 }
 
@@ -52,7 +52,7 @@
     width            : 10px;
     height           : 10px;
     position         : absolute;
-    z-index          : 9999;
+    z-index          : 9000;
     border-radius    : 10px;
     border           : 1px solid #f4f1f0;
     background-color : #e14f5f;
@@ -101,7 +101,7 @@
     border         : 1px solid #e0e0e0;
     background     : #1c1c1c;
     position       : absolute;
-    z-index        : 9999;
+    z-index        : 9000;
 }
 
 #scale-top-left:hover,

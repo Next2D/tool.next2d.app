@@ -100,6 +100,7 @@ class TabController
      */
     mouseDown (event)
     {
+        event.stopPropagation();
         Util.$endMenu();
 
         // アクティブになっているタブのcssを初期化

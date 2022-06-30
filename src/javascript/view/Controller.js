@@ -83,41 +83,6 @@ class Controller
             });
         }
 
-        // window.addEventListener("mouseup", function ()
-        // {
-        //     if (this._$resizeMode) {
-        //         this._$resizeMode = false;
-        //         Util.$setCursor("auto");
-        //     }
-        //
-        //     if (this._$easeMode) {
-        //         this._$easeMode   = false;
-        //         this._$easeTarget = null;
-        //     }
-        //
-        //     if (this._$filterGradientPointer) {
-        //
-        //         const index = this._$filterGradientPointer.dataset.index | 0;
-        //         if (index) {
-        //             const filterId = this._$filterGradientPointer.dataset.filterId | 0;
-        //             const filter   = this._$filters.get(filterId).filter;
-        //
-        //             filter.ratios[index] = parseFloat(this._$filterGradientPointer.style.left) + 4;
-        //
-        //             this.disposeCharacterImage();
-        //             this.updateFilterGradientCanvas(filterId, filter);
-        //         }
-        //
-        //         this._$filterGradientPointer = null;
-        //     }
-        //
-        //     if (this._$gradientPointer) {
-        //
-        //         this._$gradientPointer = null;
-        //     }
-        //
-        // }.bind(this));
-        //
         // window.addEventListener("mousemove", function (event)
         // {
         //     // if (this._$easeMode) {
@@ -205,10 +170,10 @@ class Controller
         this.initializeArea();
 
         // ライブラリ初期設定
-        this.initializeLibrary();
+        // this.initializeLibrary();
 
         // プラグイン初期設定
-        this.initializePlugin();
+        // this.initializePlugin();
 
         // end
         Util.$initializeEnd();
@@ -222,10 +187,10 @@ class Controller
     initializeArea ()
     {
         // ループの初期化
-        this.initializeLoopSetting();
+        // this.initializeLoopSetting();
 
         // イージングの初期化
-        this.initializeEaseSetting();
+        // this.initializeEaseSetting();
     }
 
     /**
@@ -571,31 +536,6 @@ class Controller
      */
     initializeLoopSetting ()
     {
-        const loopSettingTitle = document
-            .getElementById("loop-setting-title");
-
-        if (loopSettingTitle) {
-            loopSettingTitle
-                .addEventListener("mousedown", function (event)
-                {
-                    const element = document
-                        .getElementById("loop-setting-view-area");
-
-                    const i = event.target.children.length
-                        ? event.target.children[0]
-                        : event.target;
-
-                    if (element.style.display === "none") {
-                        element.style.display = "";
-                        i.setAttribute("class", "active");
-                    } else {
-                        element.style.display = "none";
-                        i.setAttribute("class", "disable");
-                    }
-
-                });
-        }
-
         const noUseLoop = document
             .getElementById("no-use-loop");
         if (noUseLoop) {
@@ -892,31 +832,6 @@ class Controller
      */
     initializeEaseSetting ()
     {
-        const easeSettingTitle = document
-            .getElementById("ease-setting-title");
-
-        if (easeSettingTitle) {
-            easeSettingTitle
-                .addEventListener("mousedown", function (event)
-                {
-                    const element = document
-                        .getElementById("ease-setting-view-area");
-
-                    const i = event.target.children.length
-                        ? event.target.children[0]
-                        : event.target;
-
-                    if (element.style.display === "none") {
-                        element.style.display = "";
-                        i.setAttribute("class", "active");
-                    } else {
-                        element.style.display = "none";
-                        i.setAttribute("class", "disable");
-                    }
-
-                });
-        }
-
         const easeSelect = document
             .getElementById("ease-select");
 

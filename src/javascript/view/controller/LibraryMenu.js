@@ -1,7 +1,7 @@
 /**
  * @class
  */
-class LibraryController
+class LibraryMenu
 {
     /**
      * @constructor
@@ -37,9 +37,14 @@ class LibraryController
             this._$handler = null;
         }
 
+        const element = document.getElementById("library-list-box");
+        if (element) {
+
+        }
+
         // 終了コール
         Util.$initializeEnd();
     }
 }
 
-Util.$libraryController = new LibraryController();
+Util.$libraryMenu = new LibraryMenu();
