@@ -496,9 +496,9 @@ class Instance
         this._$symbol = `${symbol}`;
 
         if (this.id) {
-            const libraryElement = document
-                .getElementById(`library-symbol-name-${this.id}`);
-            libraryElement.textContent = this._$symbol;
+            document
+                .getElementById(`library-symbol-name-${this.id}`)
+                .textContent = `${symbol}`;
         }
     }
 }

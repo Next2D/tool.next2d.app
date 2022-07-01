@@ -115,8 +115,7 @@ class PluginController
                 .then((src) =>
                 {
                     // 上書き
-                    workSpace._$plugins.set(file.name,
-                    {
+                    workSpace._$plugins.set(file.name, {
                         "name": file.name,
                         "src": src
                     });

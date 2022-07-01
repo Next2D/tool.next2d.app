@@ -76,10 +76,6 @@ class BaseTool extends Tool
             return ;
         }
 
-        Util
-            .$controller
-            .createContainer("shape", object.name, object.id);
-
         const workSpace = Util.$currentWorkSpace();
         const shape = workSpace.addLibrary(object);
 
@@ -104,7 +100,12 @@ class BaseTool extends Tool
 
         // Shapeをレイヤーに追加して再描画
         layer.addCharacter(character);
+
+        // タイムラインを再描画
         layer.reloadStyle();
+
+        // ライブラリを再描画
+        Util.$libraryController.reload();
     }
 
     /**
@@ -150,9 +151,14 @@ class BaseTool extends Tool
             "depth": layer._$characters.length
         });
 
-        // added
+        // レイヤーに追加
         layer.addCharacter(character);
+
+        // タイムラインを再描画
         layer.reloadStyle();
+
+        // ライブラリを再描画
+        Util.$libraryController.reload();
     }
 
     /**

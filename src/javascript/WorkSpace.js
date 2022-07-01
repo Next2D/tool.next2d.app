@@ -142,17 +142,17 @@ class WorkSpace
         this.scene = scene;
 
         // ライブラリを初期化
-        this.initializeLibrary();
+        Util.$libraryController.reload(
+            Array.from(this._$libraries.values())
+        );
 
         // 内部スクリプトを初期化
         Util.$javascriptController.reload();
 
         // プラグインを初期化
-        if (this._$plugins.size) {
-            Util.$pluginController.reload(
-                Array.from(this._$plugins.values())
-            );
-        }
+        Util.$pluginController.reload(
+            Array.from(this._$plugins.values())
+        );
     }
 
     /**
