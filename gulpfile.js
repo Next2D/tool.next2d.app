@@ -18,7 +18,7 @@ const options = minimist(process.argv.slice(2), {
     "string": ["distPath", "version"],
     "default": {
         "prodBuild": false,
-        "version": "0.24.0",
+        "version": "0.25.0",
         "distPath": "."
     }
 });
@@ -125,6 +125,7 @@ const buildJavaScript = () =>
             "src/javascript/parser/*.js",
             "src/javascript/WorkSpace.js",
             "src/javascript/event/*.js",
+            "src/javascript/view/KeyboardCommand.js",
             "src/javascript/view/tool/ToolEvent.js",
             "src/javascript/view/tool/*.js",
             "src/javascript/view/tool/defaultTool/BaseTool.js",

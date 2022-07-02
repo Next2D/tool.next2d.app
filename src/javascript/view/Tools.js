@@ -161,7 +161,8 @@ class Tools
             PenTool,
             BucketTool,
             TextTool,
-            ZoomTool
+            ZoomTool,
+            HandTool
         ];
 
         // デフォルトツールを起動して、Mapに格納

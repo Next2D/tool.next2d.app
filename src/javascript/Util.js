@@ -454,6 +454,13 @@ Util.$keyCommandFunction = function (event)
 
     switch (event.code) {
 
+        case "Space":
+            if (!Util.$keyLock) {
+                event.preventDefault();
+                return false;
+            }
+            break;
+
         case "ArrowRight":
         case "ArrowLeft":
         case "ArrowDown":
@@ -503,44 +510,44 @@ Util.$keyCommandFunction = function (event)
                 return false;
             }
             break;
-
-        case "Enter":
-            if (event.ctrlKey && !event.metaKey // windows
-                || !event.ctrlKey && event.metaKey // mac
-            ) {
-
-                if (Util.$previewMode) {
-                    return false;
-                }
-
-                if (!Util.$keyLock || Util.$keyLock && Util.$activeScript) {
-                    event.preventDefault();
-                    Util.$showPreview();
-                    return false;
-                }
-
-            }
-
-            if (!Util.$keyLock && !Util.$activeScript) {
-
-                event.preventDefault();
-
-                if (Util.$timeline._$stopFlag) {
-                    Util.$timeline.play();
-                } else {
-                    Util.$timeline.stop();
-                }
-
-            }
-            break;
-
-        case "Escape":
-            if (Util.$previewMode) {
-                event.preventDefault();
-                Util.$hidePreview();
-                return false;
-            }
-            break;
+        //
+        // case "Enter":
+        //     if (event.ctrlKey && !event.metaKey // windows
+        //         || !event.ctrlKey && event.metaKey // mac
+        //     ) {
+        //
+        //         if (Util.$previewMode) {
+        //             return false;
+        //         }
+        //
+        //         if (!Util.$keyLock || Util.$keyLock && Util.$activeScript) {
+        //             event.preventDefault();
+        //             Util.$showPreview();
+        //             return false;
+        //         }
+        //
+        //     }
+        //
+        //     if (!Util.$keyLock && !Util.$activeScript) {
+        //
+        //         event.preventDefault();
+        //
+        //         if (Util.$timeline._$stopFlag) {
+        //             Util.$timeline.play();
+        //         } else {
+        //             Util.$timeline.stop();
+        //         }
+        //
+        //     }
+        //     break;
+        //
+        // case "Escape":
+        //     if (Util.$previewMode) {
+        //         event.preventDefault();
+        //         Util.$hidePreview();
+        //         return false;
+        //     }
+        //     break;
 
     }
 };

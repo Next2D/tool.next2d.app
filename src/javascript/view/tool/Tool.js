@@ -69,47 +69,50 @@ class Tool extends ToolEvent
         this._$target = null;
 
         // toolsに登録
-        Util
-            .$tools
-            .setTool(name, this);
+        if (name) {
 
-        // 初期ElementになければPluginとして登録
-        let element = document.getElementById(`tools-${name}`);
-        if (!element) {
+            Util
+                .$tools
+                .setTool(name, this);
 
-            const pluginTools = document
-                .getElementById("plugin-tools");
+            // 初期ElementになければPluginとして登録
+            let element = document.getElementById(`tools-${name}`);
+            if (!element) {
 
-            if (pluginTools) {
+                const pluginTools = document
+                    .getElementById("plugin-tools");
 
-                const div = document.createElement("div");
-                div.id = `tools-${name}`;
-                div.classList.add("item");
-                div.dataset.mode = "tool";
-                div.dataset.name = name;
+                if (pluginTools) {
 
-                pluginTools.appendChild(div);
+                    const div = document.createElement("div");
+                    div.id = `tools-${name}`;
+                    div.classList.add("item");
+                    div.dataset.mode = "tool";
+                    div.dataset.name = name;
 
-                element = div;
+                    pluginTools.appendChild(div);
+
+                    element = div;
+                }
+
             }
 
-        }
+            // Elementにイベントを追加
+            if (element) {
+                element
+                    .addEventListener(EventType.MOUSE_DOWN, () =>
+                    {
+                        if (Util.$tools.activeTool) {
+                            Util
+                                .$tools
+                                .activeTool
+                                .dispatchEvent(EventType.END);
+                        }
 
-        // Elementにイベントを追加
-        if (element) {
-            element
-                .addEventListener(EventType.MOUSE_DOWN, () =>
-                {
-                    if (Util.$tools.activeTool) {
-                        Util
-                            .$tools
-                            .activeTool
-                            .dispatchEvent(EventType.END);
-                    }
-
-                    this.dispatchEvent(EventType.START);
-                    Util.$tools.activeTool = this;
-                });
+                        this.dispatchEvent(EventType.START);
+                        Util.$tools.activeTool = this;
+                    });
+            }
         }
     }
 
@@ -137,7 +140,8 @@ class Tool extends ToolEvent
      * @return {void}
      * @public
      */
-    set pageX (page_x) {
+    set pageX (page_x)
+    {
         this._$pageX = page_x;
     }
 
@@ -155,7 +159,8 @@ class Tool extends ToolEvent
      * @return {void}
      * @public
      */
-    set pageY (page_y) {
+    set pageY (page_y)
+    {
         this._$pageY = page_y;
     }
 
@@ -173,7 +178,8 @@ class Tool extends ToolEvent
      * @return {void}
      * @public
      */
-    set offsetX (offset_x) {
+    set offsetX (offset_x)
+    {
         this._$offsetX = offset_x;
     }
 
@@ -191,7 +197,8 @@ class Tool extends ToolEvent
      * @return {void}
      * @public
      */
-    set offsetY (offset_y) {
+    set offsetY (offset_y)
+    {
         this._$offsetY = offset_y;
     }
 
@@ -209,7 +216,8 @@ class Tool extends ToolEvent
      * @return {void}
      * @public
      */
-    set active (active) {
+    set active (active)
+    {
         this._$active = !!active;
     }
 
@@ -227,7 +235,8 @@ class Tool extends ToolEvent
      * @return {void}
      * @public
      */
-    set target (target) {
+    set target (target)
+    {
         this._$target = target;
     }
 

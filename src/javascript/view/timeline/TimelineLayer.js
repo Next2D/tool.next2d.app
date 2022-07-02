@@ -19,6 +19,13 @@ class TimelineLayer extends BaseTimeline
         this._$targetFrames = new Map();
 
         /**
+         * @type {boolean}
+         * @default false
+         * @private
+         */
+        this._$activeKeyEvent = false;
+
+        /**
          * @type {Map}
          * @private
          */

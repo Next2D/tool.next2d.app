@@ -1479,11 +1479,13 @@ class Screen
 
             const libraryId = instanceIds[idx];
 
+            // 前か後ろに同じDisplayObjectがあれば統合する
             const join = {
                 "start": null,
                 "end": null
             };
 
+            // レイヤー内のDisplayObjectをチェック
             const characters = layer._$characters;
             for (let idx = 0; idx < characters.length; ++idx) {
 
@@ -1551,10 +1553,10 @@ class Screen
 
                 character = new Character();
                 character.libraryId  = libraryId;
-                character.startFrame = frame;
+                character.startFrame = location.startFrame;
                 character.endFrame   = endFrame;
 
-                character.setPlace(frame, place);
+                character.setPlace(location.startFrame, place);
 
                 let width = character.width;
                 if (!width) {
@@ -1572,7 +1574,6 @@ class Screen
 
                 // added
                 layer.addCharacter(character);
-                layer.reloadStyle();
 
             } else {
 
@@ -1595,6 +1596,9 @@ class Screen
 
             }
         }
+
+        // タイムラインの表示を再計算
+        layer.reloadStyle();
 
         // 描画リセット
         if (instanceIds.length) {

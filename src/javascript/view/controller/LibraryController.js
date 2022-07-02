@@ -23,20 +23,6 @@ class LibraryController
         this._$activeInstances = new Map();
 
         /**
-         * @type {boolean}
-         * @default false
-         * @private
-         */
-        this._$activeDeleteEvent = false;
-
-        /**
-         * @type {function}
-         * @default null
-         * @private
-         */
-        this._$deleteCommand = null;
-
-        /**
          * @type {function}
          * @default null
          * @private
@@ -206,17 +192,10 @@ class LibraryController
             this._$handler = null;
         }
 
-        this._$deleteCommand = this.deleteCommand.bind(this);
-
         const element = document
             .getElementById("library-list-box");
 
         if (element) {
-
-            element.addEventListener("mouseleave", () =>
-            {
-                this.removeDeleteEvent();
-            });
 
             element.addEventListener("dragover", function (event)
             {
@@ -248,14 +227,6 @@ class LibraryController
                 }
 
                 this.clearActive();
-            });
-
-            element.addEventListener("mouseover", () =>
-            {
-                if (!this._$activeDeleteEvent) {
-                    this._$activeDeleteEvent = true;
-                    window.addEventListener("keydown", this._$deleteCommand);
-                }
             });
         }
 
@@ -450,48 +421,6 @@ class LibraryController
             folderMap.clear();
             childrenMap.clear();
         }
-    }
-
-    /**
-     * @description 削除イベントを無効化
-     *
-     * @return {void}
-     * @method
-     * @public
-     */
-    removeDeleteEvent ()
-    {
-        this._$activeDeleteEvent = false;
-        window.removeEventListener("keydown", this._$deleteCommand);
-    }
-
-    /**
-     * @description 削除を実行
-     *
-     * @param  {KeyboardEvent} event
-     * @return {void}
-     * @method
-     * @public
-     */
-    deleteCommand (event)
-    {
-        if (Util.$keyLock) {
-            return ;
-        }
-
-        // 削除キー以外はスキップ
-        switch (event.code) {
-
-            case "Delete":
-            case "Backspace":
-                break;
-
-            default:
-                return ;
-
-        }
-
-        Util.$libraryMenu.executeLibraryMenuDelete();
     }
 
     /**
