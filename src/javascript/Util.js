@@ -486,7 +486,6 @@ Util.$keyCommandFunction = function (event)
                  */
                 const tool = Util.$tools.getDefaultTool("arrow");
                 tool.clear();
-                Util.$screen.clearTweenMarker();
                 Util.$tools.reset();
 
                 if (Util.$currentWorkSpace()) {

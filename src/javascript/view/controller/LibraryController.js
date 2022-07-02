@@ -23,10 +23,11 @@ class LibraryController
         this._$activeInstances = new Map();
 
         /**
-         * @type {Map}
+         * @type {boolean}
+         * @default false
          * @private
          */
-        this._$mapping = new Map();
+        this._$activeDeleteEvent = false;
 
         /**
          * @type {function}
@@ -70,21 +71,90 @@ class LibraryController
     {
         switch (true) {
 
-            case Util.$ctrlKey:
+            case Util.$ctrlKey && this.activeInstances.size > 0:
+                {
+                    const libraryId = element.dataset.libraryId | 0;
+
+                    // 選択中であれば非アクティブに
+                    if (this.activeInstances.has(libraryId)) {
+
+                        this.activeInstances.delete(libraryId);
+
+                        element
+                            .classList
+                            .remove("active");
+
+                    } else {
+
+                        // アクティブ化
+                        this.activeInstances.set(libraryId, element);
+
+                        element
+                            .classList
+                            .add("active");
+
+                    }
+                }
                 break;
 
-            case Util.$shiftKey:
+            case Util.$shiftKey && this.activeInstances.size > 0:
+                {
+                    const children = Array.from(document
+                        .getElementById("library-list-box")
+                        .children);
+
+                    const startIndex = children.indexOf(
+                        this.activeInstances.values().next().value
+                    );
+
+                    const selectIndex = children.indexOf(element);
+                    if (selectIndex === -1 || selectIndex === startIndex) {
+                        break;
+                    }
+
+                    // 初期化
+                    this.clearActive();
+                    if (selectIndex > startIndex) {
+
+                        const length = selectIndex - startIndex + 1;
+                        for (let idx = 0; length > idx; ++idx) {
+
+                            const element = children[startIndex + idx];
+
+                            this.activeInstances.set(
+                                element.dataset.libraryId | 0, element
+                            );
+
+                            element
+                                .classList
+                                .add("active");
+                        }
+
+                    } else {
+
+                        const length = startIndex - selectIndex + 1;
+                        for (let idx = 0; length > idx; ++idx) {
+
+                            const element = children[startIndex - idx];
+
+                            this.activeInstances.set(
+                                element.dataset.libraryId | 0, element
+                            );
+
+                            element
+                                .classList
+                                .add("active");
+                        }
+
+                    }
+
+                }
                 break;
 
             default:
 
                 // 初期化
-                for (const element of this.activeInstances.values()) {
-                    element
-                        .classList
-                        .remove("active");
-                }
-                this.activeInstances.clear();
+                this.clearActive();
 
                 if (element) {
                     this.activeInstances.set(
@@ -99,6 +169,26 @@ class LibraryController
 
         }
 
+    }
+
+    /**
+     * @description 選択中のアイテムを非アクティブ化
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    clearActive ()
+    {
+        for (const element of this.activeInstances.values()) {
+            element
+                .classList
+                .remove("active");
+        }
+        this.activeInstances.clear();
+
+        // プレビューを初期化
+        Util.$libraryPreview.dispose();
     }
 
     /**
@@ -120,7 +210,9 @@ class LibraryController
 
         const element = document
             .getElementById("library-list-box");
+
         if (element) {
+
             element.addEventListener("mouseleave", () =>
             {
                 this.removeDeleteEvent();
@@ -135,10 +227,74 @@ class LibraryController
             {
                 this.drop(event);
             });
+
+            element.addEventListener("dragstart", () =>
+            {
+                this.dragstart();
+            });
+
+            element.addEventListener("dragend", () =>
+            {
+                this.dragend();
+            });
+
+            element.addEventListener("mousedown", (event) =>
+            {
+                // 全てのイベントを中止
+                event.stopPropagation();
+
+                if (event.button) {
+                    return ;
+                }
+
+                this.clearActive();
+            });
+
+            element.addEventListener("mouseover", () =>
+            {
+                if (!this._$activeDeleteEvent) {
+                    this._$activeDeleteEvent = true;
+                    window.addEventListener("keydown", this._$deleteCommand);
+                }
+            });
         }
 
         // 終了コール
         Util.$initializeEnd();
+    }
+
+    /**
+     * @description サウンドのselectを初期化
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    clearSoundSelect ()
+    {
+        const element = document
+            .getElementById("sound-select");
+
+        while (element.children.length) {
+            element.children[0].remove();
+        }
+    }
+
+    /**
+     * @description ライブラリのリストを初期化
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    clearLibrary ()
+    {
+        const element = document
+            .getElementById("library-list-box");
+
+        while (element.children.length) {
+            element.children[0].remove();
+        }
     }
 
     /**
@@ -159,20 +315,10 @@ class LibraryController
         }
 
         // ライブラリ一覧を初期化
-        const library = document
-            .getElementById("library-list-box");
-
-        while (library.children.length) {
-            library.children[0].remove();
-        }
+        this.clearLibrary();
 
         // サウンド情報を初期化
-        const select = document
-            .getElementById("sound-select");
-
-        while (select.children.length) {
-            select.children[0].remove();
-        }
+        this.clearSoundSelect();
 
         // 名前順に並び替え
         libraries.sort((a, b) =>
@@ -193,9 +339,6 @@ class LibraryController
             }
         });
 
-        // 名前のマッピングを初期化
-        this._$mapping.clear();
-
         const folderMap   = new Map();
         const childrenMap = new Map();
 
@@ -203,8 +346,6 @@ class LibraryController
         for (let idx = 0; idx < libraries.length; ++idx) {
 
             const value = libraries[idx];
-
-            this._$mapping.set(value.name, value.id);
 
             if (!value.id) {
                 continue;
@@ -320,6 +461,7 @@ class LibraryController
      */
     removeDeleteEvent ()
     {
+        this._$activeDeleteEvent = false;
         window.removeEventListener("keydown", this._$deleteCommand);
     }
 
@@ -333,6 +475,10 @@ class LibraryController
      */
     deleteCommand (event)
     {
+        if (Util.$keyLock) {
+            return ;
+        }
+
         // 削除キー以外はスキップ
         switch (event.code) {
 
@@ -345,9 +491,7 @@ class LibraryController
 
         }
 
-        this.save();
-
-        this._$saved = false;
+        Util.$libraryMenu.executeLibraryMenuDelete();
     }
 
     /**
@@ -395,23 +539,20 @@ class LibraryController
         const child = document
             .getElementById(`library-child-id-${id}`);
 
+        // 選択中のアイテムであれば上書きしてアクティブ化
+        if (this.activeInstances.has(id)) {
+
+            this.activeInstances.set(id, child);
+
+            child
+                .classList
+                .add("active");
+        }
+
         // elementの選択処理
         child.addEventListener("mousedown", (event) =>
         {
-            if (Util.$keyLock) {
-                return ;
-            }
-
-            const target = event.currentTarget;
-
-            this.activeInstance = target;
-
-            // プレビューに表示
-            Util
-                .$libraryPreview
-                .loadImage(
-                    target.dataset.libraryId | 0
-                );
+            this.selectInstance(event);
         });
 
         if (type === "folder") {
@@ -513,6 +654,48 @@ class LibraryController
     }
 
     /**
+     * @description ライブラリアイテムの選択処理
+     *
+     * @param  {MouseEvent} event
+     * @return {void}
+     * @method
+     * @public
+     */
+    selectInstance (event)
+    {
+        if (event.button) {
+            return ;
+        }
+
+        // モーダルを非表示に
+        Util.$endMenu();
+
+        // 全てのイベントw中止
+        event.stopPropagation();
+
+        if (Util.$keyLock) {
+            return ;
+        }
+
+        const target = event.currentTarget;
+
+        if (!Util.$ctrlKey && !Util.$shiftKey
+            && target.classList.contains("active")
+        ) {
+            return ;
+        }
+
+        this.activeInstance = target;
+
+        // プレビューに表示
+        Util
+            .$libraryPreview
+            .loadImage(
+                target.dataset.libraryId | 0
+            );
+    }
+
+    /**
      * @description inputタグを有効にする、移動を無効化
      *
      * @param  {MouseEvent} event
@@ -524,6 +707,9 @@ class LibraryController
     {
         // キーロック
         Util.$keyLock = true;
+
+        // 全てのイベントを中止
+        event.stopPropagation();
 
         const target = event.target;
         const libraryId = target.dataset.libraryId | 0;
@@ -579,16 +765,22 @@ class LibraryController
                 ? `library-name-${libraryId}`
                 : `library-symbol-name-${libraryId}`;
 
-            const nameElement = document
+            const element = document
                 .getElementById(viewId);
 
             // データを更新
             library[target.dataset.type] = target.value;
-            nameElement.textContent      = target.value;
-            nameElement.style.display    = "";
+            element.textContent   = target.value;
+            element.style.display = "";
 
             const parent = document
                 .getElementById(`library-child-id-${libraryId}`);
+
+            if (this.activeInstances.has(libraryId)) {
+                parent
+                    .classList
+                    .add("active");
+            }
 
             target.style.display = "none";
             parent.draggable     = true;
@@ -770,6 +962,48 @@ class LibraryController
     }
 
     /**
+     * @description ドラッグ時はスクリーンのイベントを無効にする
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    dragstart ()
+    {
+        const children = document
+            .getElementById("stage-area")
+            .children;
+
+        for (let idx = 1; idx < children.length; ++idx) {
+            children[idx].style.pointerEvents = "none";
+        }
+    }
+
+    /**
+     * @description ドラッグ終了時はスクリーンのイベントを有効にする
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    dragend ()
+    {
+        const children = document
+            .getElementById("stage-area")
+            .children;
+
+        for (let idx = 1; idx < children.length; ++idx) {
+
+            const node = children[idx];
+            if (node.dataset.preview) {
+                continue;
+            }
+
+            node.style.pointerEvents = "";
+        }
+    }
+
+    /**
      * @description ライブラリエリアにコンテンツのドロップ処理
      *
      * @param  {DragEvent} event
@@ -781,6 +1015,8 @@ class LibraryController
     {
         event.preventDefault();
         event.stopPropagation();
+
+        this.save();
 
         const items = event.dataTransfer.items;
         if (items.length) {
@@ -794,15 +1030,20 @@ class LibraryController
 
         } else {
 
-            this.folderOut(event);
+            this.folderOut();
 
         }
+
+        // 再読み込み
+        this.reload();
+
+        this._$saved = false;
     }
 
     /**
      * @description 読み込んだファイルのチェック
      *
-     * @param  {DirectoryEntry} entry
+     * @param  {FileSystemDirectoryEntry} entry
      * @param  {number} [folder_id=0 ]
      * @return {Promise<void>}
      * @method
@@ -810,18 +1051,260 @@ class LibraryController
      */
     scanFiles (entry, folder_id)
     {
-        // TODO
+        switch (true) {
+
+            case entry.isDirectory:
+                {
+                    const instance = Util
+                        .$currentWorkSpace()
+                        .addLibrary({
+                            "id": Util.$currentWorkSpace().nextLibraryId,
+                            "type": "folder",
+                            "name": entry.name,
+                            "symbol": ""
+                        });
+
+                    if (folder_id) {
+                        instance.folderId = folder_id;
+                    }
+
+                    entry
+                        .createReader()
+                        .readEntries((entries) =>
+                        {
+                            for (let idx = 0; idx < entries.length; ++idx) {
+                                this.scanFiles(entries[idx], instance.id);
+                            }
+                        });
+
+                    this.updateFolderStyle(instance, instance.mode);
+                }
+                break;
+
+            case entry.isFile:
+                entry.file((file) =>
+                {
+                    this.loadFile(file, folder_id);
+                });
+                break;
+
+        }
+    }
+
+    /**
+     * @description 読み込み処理
+     *
+     * @param  {File} file
+     * @param  {number} [folder_id=0]
+     * @return {void}
+     * @method
+     * @public
+     */
+    loadFile (file, folder_id = 0)
+    {
+        switch (file.type) {
+
+            case "image/svg+xml":
+                file
+                    .text()
+                    .then((value) =>
+                    {
+                        const movieClip = Util
+                            .$currentWorkSpace()
+                            .addLibrary(this.createInstance(
+                                "container",
+                                file.name,
+                                Util.$currentWorkSpace().nextLibraryId
+                            ));
+
+                        if (folder_id) {
+                            movieClip.folderId = folder_id;
+
+                            const folder = Util
+                                .$currentWorkSpace()
+                                .getLibrary(folder_id);
+
+                            this.updateFolderStyle(folder, folder.mode);
+                        }
+
+                        SVGToShape.parse(value, movieClip);
+
+                        Util
+                            .$instanceSelectController
+                            .createInstanceSelect(movieClip);
+                    });
+                break;
+
+            case "image/png":
+            case "image/jpeg":
+            case "image/gif":
+                file
+                    .arrayBuffer()
+                    .then((buffer) =>
+                    {
+
+                        const blob = new Blob([buffer], {
+                            "type": file.type
+                        });
+
+                        const image = new Image();
+                        image.src = URL.createObjectURL(blob);
+                        image
+                            .decode()
+                            .then(() =>
+                            {
+                                const width   = image.width;
+                                const height  = image.height;
+
+                                const canvas  = document.createElement("canvas");
+                                canvas.width  = width;
+                                canvas.height = height;
+                                const context = canvas.getContext("2d");
+
+                                context.drawImage(image, 0, 0, width, height);
+                                const buffer = new Uint8Array(
+                                    context.getImageData(0, 0, width, height).data
+                                );
+
+                                const bitmap = this.createInstance(
+                                    "bitmap",
+                                    file.name,
+                                    Util.$currentWorkSpace().nextLibraryId
+                                );
+
+                                bitmap.width     = image.width;
+                                bitmap.height    = image.height;
+                                bitmap.imageType = file.type;
+                                bitmap.buffer    = new Uint8Array(buffer);
+
+                                const instance = Util
+                                    .$currentWorkSpace()
+                                    .addLibrary(bitmap);
+
+                                if (folder_id) {
+
+                                    instance.folderId = folder_id;
+
+                                    const folder = Util
+                                        .$currentWorkSpace()
+                                        .getLibrary(folder_id);
+
+                                    this.updateFolderStyle(folder, folder.mode);
+                                }
+
+                                Util
+                                    .$instanceSelectController
+                                    .createInstanceSelect(instance);
+                            });
+
+                    });
+                break;
+
+            case "video/mp4":
+                file
+                    .arrayBuffer()
+                    .then((buffer) =>
+                    {
+                        const blob = new Blob([buffer], {
+                            "type": file.type
+                        });
+
+                        const video = document.createElement("video");
+                        video.onloadedmetadata = () =>
+                        {
+                            const object = this.createInstance(
+                                "video",
+                                file.name,
+                                Util.$currentWorkSpace().nextLibraryId
+                            );
+
+                            object.width  = video.videoWidth;
+                            object.height = video.videoHeight;
+                            object.buffer = new Uint8Array(buffer);
+
+                            const instance = Util
+                                .$currentWorkSpace()
+                                .addLibrary(object);
+
+                            if (folder_id) {
+
+                                instance.folderId = folder_id;
+
+                                const folder = Util
+                                    .$currentWorkSpace()
+                                    .getLibrary(folder_id);
+
+                                this.updateFolderStyle(folder, folder.mode);
+                            }
+
+                            Util
+                                .$instanceSelectController
+                                .createInstanceSelect(instance);
+                        };
+
+                        video.src = URL.createObjectURL(blob);
+                        video.load();
+
+                    });
+                break;
+
+            case "audio/mpeg":
+                file
+                    .arrayBuffer()
+                    .then((buffer) =>
+                    {
+                        const object = this.createInstance(
+                            "sound",
+                            file.name,
+                            Util.$currentWorkSpace().nextLibraryId
+                        );
+
+                        object.buffer = new Uint8Array(buffer);
+
+                        const instance = Util
+                            .$currentWorkSpace()
+                            .addLibrary(object);
+
+                        if (folder_id) {
+
+                            instance.folderId = folder_id;
+
+                            const folder = Util
+                                .$currentWorkSpace()
+                                .getLibrary(folder_id);
+
+                            this.updateFolderStyle(folder, folder.mode);
+
+                        }
+
+                    });
+                break;
+
+            case "application/x-shockwave-flash":
+                file
+                    .arrayBuffer()
+                    .then((buffer) =>
+                    {
+                        new ReComposition()
+                            .setData(new Uint8Array(buffer))
+                            .run(file.name, folder_id);
+                    });
+                break;
+
+            default:
+                break;
+
+        }
     }
 
     /**
      * @description フォルダ外に移動
      *
-     * @param  {DragEvent} event
      * @return {void}
      * @method
      * @public
      */
-    folderOut (event)
+    folderOut ()
     {
         if (!this.activeInstances.size) {
             return ;
@@ -850,9 +1333,6 @@ class LibraryController
             }
 
         }
-
-        // 再読み込み
-        this.reload();
     }
 
     /**

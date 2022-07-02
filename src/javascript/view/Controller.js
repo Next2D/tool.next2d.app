@@ -166,25 +166,9 @@ class Controller
         //
         // }.bind(this));
 
-        // ライブラリ初期設定
-        // this.initializeLibrary();
-
         // end
         Util.$initializeEnd();
         this._$handler = null;
-    }
-
-    /**
-     * @return {void}
-     * @public
-     */
-    initializeArea ()
-    {
-        // ループの初期化
-        // this.initializeLoopSetting();
-
-        // イージングの初期化
-        // this.initializeEaseSetting();
     }
 
     /**
@@ -384,8 +368,11 @@ class Controller
     }
 
     /**
+     * @description 指定したIDを表示にする
+     *
      * @param  {array} names
      * @return {void}
+     * @method
      * @public
      */
     showObjectSetting (names)
@@ -396,8 +383,11 @@ class Controller
     }
 
     /**
+     * @description 指定したIDを非表示にする
+     *
      * @param  {array} names
      * @return {void}
+     * @method
      * @public
      */
     hideObjectSetting (names)
@@ -408,7 +398,10 @@ class Controller
     }
 
     /**
+     * @description 初期表示に戻す
+     *
      * @return {void}
+     * @method
      * @public
      */
     default ()
@@ -1373,316 +1366,11 @@ class Controller
     }
 
     /**
-     * @param  {number} id
-     * @param  {string} name
-     * @return {void}
-     * @public
-     */
-    addInstanceSelectOption (id, name)
-    {
-        const element = document
-            .getElementById("instance-type-name");
-
-        const select = element.getElementsByTagName("select")[0];
-        if (select) {
-            const option     = document.createElement("option");
-            option.value     = `${id}`;
-            option.innerHTML = name;
-            select.appendChild(option);
-        }
-    }
-
-    /**
-     * @param  {number} id
-     * @return {void}
-     * @public
-     */
-    deleteInstanceSelectOption (id)
-    {
-        const element = document
-            .getElementById("instance-type-name");
-
-        const select = element.getElementsByTagName("select")[0];
-        if (select) {
-            const children = select.children;
-            for (let idx = 0; idx < children.length; ++idx) {
-
-                const option = children[idx];
-
-                const optionId = option.value | 0;
-                if  (optionId !== id) {
-                    continue;
-                }
-
-                option.remove();
-                break;
-
-            }
-        }
-
-    }
-
-    /**
      * @return {void}
      * @public
      */
     initializeLibrary ()
     {
-        // 右クリック
-        const element = document.getElementById("library-list-box");
-        if (element) {
-            element.addEventListener("mouseleave", function ()
-            {
-                if (this._$menuMode) {
-                    return ;
-                }
-
-                if (this._$libraryTarget) {
-
-                    this._$libraryTarget
-                        .classList
-                        .remove("active");
-
-                    this._$libraryTarget = null;
-
-                }
-            }.bind(this));
-
-            element.addEventListener("contextmenu", function (event)
-            {
-                this._$menuMode = true;
-
-                const element = document.getElementById("library-menu");
-
-                element.style.left = element.clientWidth + event.pageX + 5 > window.innerWidth
-                    ? `${event.pageX - (element.clientWidth + event.pageX + 10 - window.innerWidth)}px`
-                    : `${event.pageX + 5}px`;
-
-                element.style.top  = `${event.pageY - element.clientHeight / 2}px`;
-                element.setAttribute("class", "fadeIn");
-
-                Util.$endMenu("library-menu");
-
-            }.bind(this));
-
-            element.addEventListener("mousedown", function ()
-            {
-                if (this._$menuMode) {
-                    return ;
-                }
-
-                if (!this._$libraryHit && this._$libraryTarget) {
-
-                    this._$libraryTarget
-                        .classList
-                        .remove("active");
-
-                    this._$libraryTarget = null;
-
-                }
-
-                this._$libraryHit = false;
-
-            }.bind(this));
-
-            element.addEventListener("drop", function (event)
-            {
-                if (this._$libraryTarget) {
-
-                    event.preventDefault();
-
-                    const target = this._$libraryTarget;
-
-                    const workSpace = Util.$currentWorkSpace();
-                    const instance  = workSpace
-                        .getLibrary(target.dataset.libraryId | 0);
-
-                    // reset
-                    if (instance.folderId) {
-
-                        instance.folderId = 0;
-
-                        target.style.display     = "";
-                        target.style.paddingLeft = "";
-
-                        this.reAppendFolderChildren(null, target);
-
-                    }
-
-                    this._$libraryTarget = null;
-                }
-
-            }.bind(this));
-
-            // ファイルドロップ
-            element.addEventListener("dragstart", function (event)
-            {
-                const element = event.target;
-                const scene   = Util.$currentWorkSpace().scene;
-
-                Util.$dragElement = scene.id !== (element.dataset.libraryId | 0)
-                    ? element
-                    : null;
-
-                const children = document.getElementById("stage-area").children;
-                for (let idx = 1; idx < children.length; ++idx) {
-                    children[idx].style.pointerEvents = "none";
-                }
-            });
-
-            element.addEventListener("dragend", function ()
-            {
-                Util.$dragElement = null;
-
-                const children = document.getElementById("stage-area").children;
-                for (let idx = 1; idx < children.length; ++idx) {
-                    children[idx].style.pointerEvents = "";
-                }
-            });
-
-            element.addEventListener("dragover", function (event)
-            {
-                event.preventDefault();
-            });
-
-            element.addEventListener("drop", (event) =>
-            {
-                Util.$currentWorkSpace().temporarilySaved();
-
-                event.preventDefault();
-
-                const items = event.dataTransfer.items;
-                for (let idx = 0; idx < items.length; ++idx) {
-                    this.scanFiles(
-                        items[idx].webkitGetAsEntry()
-                    )
-                }
-            });
-        }
-
-        // 右クリック解除
-        document.body.addEventListener("click", function ()
-        {
-            if (!this._$menuMode) {
-                return ;
-            }
-
-            this._$menuMode = false;
-            const element = document.getElementById("library-menu");
-            element.setAttribute("class", "fadeOut");
-
-        }.bind(this));
-
-        // メニューイベント
-
-        // add MovieClip
-        const libraryMenuContainerAdd = document
-            .getElementById("library-menu-container-add");
-
-        if (libraryMenuContainerAdd) {
-            libraryMenuContainerAdd
-                .addEventListener("click", function (event)
-                {
-
-                    Util
-                        .$currentWorkSpace()
-                        .temporarilySaved();
-
-                    this.newContainer(event);
-
-                }.bind(this));
-        }
-
-        // add MovieClip
-        const libraryMenuFolderAdd = document
-            .getElementById("library-menu-folder-add");
-
-        if (libraryMenuFolderAdd) {
-            libraryMenuFolderAdd
-                .addEventListener("click", function (event)
-                {
-
-                    Util
-                        .$currentWorkSpace()
-                        .temporarilySaved();
-
-                    this.newContainer(event);
-
-                }.bind(this));
-        }
-
-        // クローン
-        const libraryMenuContentShapeClone = document
-            .getElementById("library-menu-content-shape-clone");
-
-        if (libraryMenuContentShapeClone) {
-            libraryMenuContentShapeClone
-                .addEventListener("click", function ()
-                {
-                    if (this._$libraryTarget) {
-
-                        const workSpace = Util.$currentWorkSpace();
-
-                        const instance = workSpace.getLibrary(
-                            this._$libraryTarget.dataset.libraryId | 0
-                        );
-
-                        if (instance.type === "shape") {
-
-                            workSpace.temporarilySaved();
-
-                            const id = workSpace.nextLibraryId;
-
-                            const shape = workSpace.addLibrary(
-                                this.createContainer(instance.type, `Shape_${id}`, id)
-                            );
-
-                            instance.copyFrom(shape);
-                        }
-                    }
-
-                }.bind(this));
-        }
-
-        const searchElement = document
-            .getElementById("library-search");
-
-        if (searchElement) {
-            searchElement.addEventListener("focusin", () =>
-            {
-                Util.$keyLock = true;
-            });
-            searchElement.addEventListener("focusout", () =>
-            {
-                Util.$keyLock = false;
-            });
-            searchElement.addEventListener("input", function (event)
-            {
-                const searchText = event.target.value;
-
-                const children = document
-                    .getElementById("library-list-box")
-                    .children;
-
-                const length = children.length;
-                for (let idx = 0; idx < length; ++idx) {
-
-                    const node = children[idx];
-
-                    if (!searchText
-                        || node.children[0].innerText.indexOf(searchText) > -1
-                        || node.children[1].innerText.indexOf(searchText) > -1
-                    ) {
-                        node.style.display = "";
-                        continue;
-                    }
-
-                    node.style.display = "none";
-                }
-
-            }.bind(this));
-        }
-
         // Delete
         const deleteElement = document
             .getElementById("library-menu-delete");
@@ -1845,431 +1533,99 @@ class Controller
 
         window.addEventListener("keydown", deleteFunction);
 
-        /**
-         * コピー/ペースト処理
-         * @param {Event|KeyboardEvent} event
-         */
-        const commandFunction = function (event)
-        {
-            switch (event.code) {
-
-                case "KeyC": // copy
-
-                    if (!this._$libraryTarget) {
-                        return false;
-                    }
-
-                    if (event.ctrlKey && !event.metaKey
-                        || !event.ctrlKey && event.metaKey
-                    ) {
-                        Util.$copyLibrary   = null;
-                        Util.$copyLayer     = null;
-                        Util.$copyCharacter = null;
-                        if (!Util.$keyLock && !Util.$activeScript) {
-
-                            event.preventDefault();
-
-                            Util.$copyWorkSpaceId = Util.$activeWorkSpaceId;
-
-                            const libraryId = this._$libraryTarget.dataset.libraryId | 0;
-                            Util.$copyLibrary = Util
-                                .$currentWorkSpace()
-                                .getLibrary(libraryId);
-
-                            const element = document.getElementById("detail-modal");
-                            element.textContent = "copy";
-                            element.style.left  = `${this._$libraryTarget.offsetLeft + 5}px`;
-                            element.style.top   = `${this._$libraryTarget.offsetTop  + 9}px`;
-                            element.setAttribute("class", "fadeIn");
-
-                            element.dataset.timerId = setTimeout(function ()
-                            {
-                                if (!this.classList.contains("fadeOut")) {
-                                    this.setAttribute("class", "fadeOut");
-                                }
-                            }.bind(element), 1500);
-
-                            return false;
-                        }
-                    }
-                    break;
-
-                case "KeyV": // paste
-                    if (event.ctrlKey && !event.metaKey // windows
-                        || !event.ctrlKey && event.metaKey // mac
-                    ) {
-
-                        if (!Util.$keyLock && !Util.$activeScript) {
-
-                            if (Util.$copyWorkSpaceId !== Util.$activeWorkSpaceId
-                                && Util.$copyLibrary
-                            ) {
-
-                                event.preventDefault();
-
-                                const workSpace = Util.$currentWorkSpace();
-                                const object    = Util.$copyLibrary.toObject();
-                                if (object.type === "container") {
-
-                                    const dup = new Map();
-                                    Util.$copyContainer(object, dup);
-
-                                } else {
-                                    object.id = workSpace.nextLibraryId;
-                                    workSpace.addLibrary(object);
-                                }
-
-                                workSpace.initializeLibrary();
-
-                                Util.$copyWorkSpaceId = -1;
-                                Util.$copyLibrary     = null;
-                            }
-                            return false;
-                        }
-                    }
-                    break;
-
-                default:
-                    break;
-
-            }
-
-        }.bind(this);
-        window.addEventListener("keydown", commandFunction);
-
-        // ファイル読み込み
-        const fileElement = document
-            .getElementById("library-menu-file");
-
-        if (fileElement) {
-            fileElement.addEventListener("click", function (event)
-            {
-                const input = document.getElementById("library-menu-file-input");
-                input.click();
-
-                event.preventDefault();
-            });
-        }
-
-        const fileInput = document
-            .getElementById("library-menu-file-input");
-
-        if (fileInput) {
-            fileInput.addEventListener("change", function (event)
-            {
-                Util.$currentWorkSpace().temporarilySaved();
-
-                const files = event.target.files;
-                for (let idx = 0; idx < files.length; ++idx) {
-                    this.loadFile(files[idx]);
-                }
-
-                event.target.value = "";
-            }.bind(this));
-        }
+        // /**
+        //  * コピー/ペースト処理
+        //  * @param {Event|KeyboardEvent} event
+        //  */
+        // const commandFunction = function (event)
+        // {
+        //     switch (event.code) {
+        //
+        //         case "KeyC": // copy
+        //
+        //             if (!this._$libraryTarget) {
+        //                 return false;
+        //             }
+        //
+        //             if (event.ctrlKey && !event.metaKey
+        //                 || !event.ctrlKey && event.metaKey
+        //             ) {
+        //                 Util.$copyLibrary   = null;
+        //                 Util.$copyLayer     = null;
+        //                 Util.$copyCharacter = null;
+        //                 if (!Util.$keyLock && !Util.$activeScript) {
+        //
+        //                     event.preventDefault();
+        //
+        //                     Util.$copyWorkSpaceId = Util.$activeWorkSpaceId;
+        //
+        //                     const libraryId = this._$libraryTarget.dataset.libraryId | 0;
+        //                     Util.$copyLibrary = Util
+        //                         .$currentWorkSpace()
+        //                         .getLibrary(libraryId);
+        //
+        //                     const element = document.getElementById("detail-modal");
+        //                     element.textContent = "copy";
+        //                     element.style.left  = `${this._$libraryTarget.offsetLeft + 5}px`;
+        //                     element.style.top   = `${this._$libraryTarget.offsetTop  + 9}px`;
+        //                     element.setAttribute("class", "fadeIn");
+        //
+        //                     element.dataset.timerId = setTimeout(function ()
+        //                     {
+        //                         if (!this.classList.contains("fadeOut")) {
+        //                             this.setAttribute("class", "fadeOut");
+        //                         }
+        //                     }.bind(element), 1500);
+        //
+        //                     return false;
+        //                 }
+        //             }
+        //             break;
+        //
+        //         case "KeyV": // paste
+        //             if (event.ctrlKey && !event.metaKey // windows
+        //                 || !event.ctrlKey && event.metaKey // mac
+        //             ) {
+        //
+        //                 if (!Util.$keyLock && !Util.$activeScript) {
+        //
+        //                     if (Util.$copyWorkSpaceId !== Util.$activeWorkSpaceId
+        //                         && Util.$copyLibrary
+        //                     ) {
+        //
+        //                         event.preventDefault();
+        //
+        //                         const workSpace = Util.$currentWorkSpace();
+        //                         const object    = Util.$copyLibrary.toObject();
+        //                         if (object.type === "container") {
+        //
+        //                             const dup = new Map();
+        //                             Util.$copyContainer(object, dup);
+        //
+        //                         } else {
+        //                             object.id = workSpace.nextLibraryId;
+        //                             workSpace.addLibrary(object);
+        //                         }
+        //
+        //                         workSpace.initializeLibrary();
+        //
+        //                         Util.$copyWorkSpaceId = -1;
+        //                         Util.$copyLibrary     = null;
+        //                     }
+        //                     return false;
+        //                 }
+        //             }
+        //             break;
+        //
+        //         default:
+        //             break;
+        //
+        //     }
+        //
+        // }.bind(this);
+        // window.addEventListener("keydown", commandFunction);
     }
 
-    /**
-     * @param  {DirectoryEntry} entry
-     * @param  {number} [folder_id=0 ]
-     * @return {Promise<void>}
-     * @method
-     * @public
-     */
-    async scanFiles (entry, folder_id = 0)
-    {
-        switch (true) {
-
-            case entry.isDirectory:
-                {
-                    const instance = Util
-                        .$currentWorkSpace()
-                        .addLibrary(this.createContainer(
-                            "folder",
-                            entry.name,
-                            Util.$currentWorkSpace().nextLibraryId
-                        ));
-
-                    if (folder_id) {
-                        instance.folderId = folder_id;
-                    }
-
-                    const reader  = entry.createReader();
-                    const entries = await new Promise((resolve) =>
-                    {
-                        reader.readEntries((entries) =>
-                        {
-                            resolve(entries);
-                        });
-                    });
-                    await Promise.all(entries.map((entry) =>
-                    {
-                        this.scanFiles(entry, instance.id);
-                    }));
-
-                    this.updateFolderStyle(instance, instance.mode);
-                }
-                break;
-
-            case entry.isFile:
-                entry.file((file) =>
-                {
-                    this.loadFile(file, folder_id);
-                });
-                break;
-
-        }
-    }
-
-    /**
-     * @param  {Event} event
-     * @return {void}
-     * @public
-     */
-    newContainer (event)
-    {
-        const type = event.currentTarget.dataset.containerType;
-        const name = type === "container" ? "MovieClip" : "Folder";
-
-        const workSpace = Util.$currentWorkSpace();
-
-        const id = workSpace.nextLibraryId;
-        workSpace.addLibrary(
-            this.createContainer(type, `${name}_${id}`, id)
-        );
-    }
-
-    /**
-     * @param  {File} file
-     * @param  {number} [folder_id=0]
-     * @return {void}
-     * @public
-     */
-    loadFile (file, folder_id = 0)
-    {
-        switch (file.type) {
-
-            case "image/svg+xml":
-                file
-                    .text()
-                    .then((value) =>
-                    {
-                        const movieClip = Util
-                            .$currentWorkSpace()
-                            .addLibrary(this.createContainer(
-                                "container",
-                                file.name,
-                                Util.$currentWorkSpace().nextLibraryId
-                            ));
-
-                        if (folder_id) {
-                            movieClip.folderId = folder_id;
-                            const folder = Util
-                                .$currentWorkSpace()
-                                .getLibrary(folder_id);
-                            Util
-                                .$controller
-                                .updateFolderStyle(folder, folder.mode);
-                        }
-
-                        SVGToShape.parse(value, movieClip);
-
-                        this.addInstanceSelectOption(
-                            movieClip.id, movieClip.name
-                        );
-                    });
-                break;
-
-            case "image/png":
-            case "image/jpeg":
-            case "image/gif":
-                {
-                    const object = {
-                        "name": file.name,
-                        "type": file.type,
-                        "image": new Image(),
-                        "callback": this.createContainer.bind(this),
-                        "addSelect": this.addInstanceSelectOption.bind(this)
-                    };
-
-                    file
-                        .arrayBuffer()
-                        .then(function (buffer)
-                        {
-
-                            const blob = new Blob([buffer], {
-                                "type": this.type
-                            });
-
-                            this.image.src = URL.createObjectURL(blob);
-                            this
-                                .image
-                                .decode()
-                                .then(function ()
-                                {
-                                    const width   = this.image.width;
-                                    const height  = this.image.height;
-
-                                    const canvas  = document.createElement("canvas");
-                                    canvas.width  = width;
-                                    canvas.height = height;
-                                    const context = canvas.getContext("2d");
-
-                                    context.drawImage(this.image, 0, 0, width, height);
-                                    const buffer = new Uint8Array(
-                                        context.getImageData(0, 0, width, height).data
-                                    );
-
-                                    const bitmap = this.callback(
-                                        "bitmap",
-                                        this.name,
-                                        Util.$currentWorkSpace().nextLibraryId
-                                    );
-
-                                    bitmap.width     = this.image.width;
-                                    bitmap.height    = this.image.height;
-                                    bitmap.imageType = this.type;
-                                    bitmap.buffer    = new Uint8Array(buffer);
-
-                                   const instance = Util
-                                        .$currentWorkSpace()
-                                        .addLibrary(bitmap);
-
-                                    if (folder_id) {
-                                        instance.folderId = folder_id;
-                                        const folder = Util
-                                            .$currentWorkSpace()
-                                            .getLibrary(folder_id);
-                                        Util
-                                            .$controller
-                                            .updateFolderStyle(folder, folder.mode);
-                                    }
-
-                                    this.addSelect(
-                                        bitmap.id, bitmap.name
-                                    );
-
-                                    this.addSelect = null;
-                                    this.callback  = null;
-                                    this.image     = null;
-
-                                }.bind(this));
-
-                        }.bind(object));
-
-                }
-                break;
-
-            case "video/mp4":
-                {
-                    const object = {
-                        "name": file.name,
-                        "type": file.type,
-                        "video": document.createElement("video"),
-                        "callback": this.createContainer.bind(this),
-                        "addSelect": this.addInstanceSelectOption.bind(this)
-                    };
-
-                    file
-                        .arrayBuffer()
-                        .then(function (buffer)
-                        {
-                            const blob = new Blob([buffer], {
-                                "type": this.type
-                            });
-
-                            this.video.onloadedmetadata = function ()
-                            {
-                                const video = this.callback(
-                                    "video",
-                                    this.name,
-                                    Util.$currentWorkSpace().nextLibraryId
-                                );
-
-                                video.width  = this.video.videoWidth;
-                                video.height = this.video.videoHeight;
-                                video.buffer = new Uint8Array(buffer);
-
-                                const instance = Util
-                                    .$currentWorkSpace()
-                                    .addLibrary(video);
-
-                                if (folder_id) {
-                                    instance.folderId = folder_id;
-                                    const folder = Util
-                                        .$currentWorkSpace()
-                                        .getLibrary(folder_id);
-                                    Util
-                                        .$controller
-                                        .updateFolderStyle(folder, folder.mode);
-                                }
-
-                                this.addSelect(
-                                    video.id, video.name
-                                );
-
-                                this.addSelect = null;
-                                this.callback  = null;
-                                this.video     = null;
-
-                            }.bind(this);
-
-                            this.video.src = URL.createObjectURL(blob);
-                            this.video.load();
-
-                        }.bind(object));
-
-                }
-                break;
-
-            case "audio/mpeg":
-                file
-                    .arrayBuffer()
-                    .then(function (buffer)
-                    {
-                        const object = this
-                            .createContainer(
-                                "sound",
-                                file.name,
-                                Util.$currentWorkSpace().nextLibraryId
-                            );
-
-
-                        object.buffer = new Uint8Array(buffer);
-
-                        const instance = Util
-                            .$currentWorkSpace()
-                            .addLibrary(object);
-
-                        if (folder_id) {
-                            instance.folderId = folder_id;
-                            const folder = Util
-                                .$currentWorkSpace()
-                                .getLibrary(folder_id);
-                            Util
-                                .$controller
-                                .updateFolderStyle(folder, folder.mode);
-                        }
-
-                    }.bind(this));
-                break;
-
-            case "application/x-shockwave-flash":
-                file
-                    .arrayBuffer()
-                    .then((buffer) =>
-                    {
-                        new ReComposition()
-                            .setData(new Uint8Array(buffer))
-                            .run(file.name, folder_id);
-                    });
-                break;
-
-            default:
-                break;
-
-        }
-    }
 }
 
 Util.$controller = new Controller();

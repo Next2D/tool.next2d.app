@@ -102,11 +102,13 @@ class SoundController extends BaseController
 
             sounds.push(object);
 
-            document
-                .getElementById(`frame-label-sound-${frame}`)
-                .classList
-                .add("frame-border-box-sound");
+            const iconElement = document
+                .getElementById(`frame-label-sound-${frame}`);
 
+            if (!iconElement.classList.contains("frame-border-box-sound")) {
+                iconElement
+                    .setAttribute("class", "frame-border-box-sound");
+            }
         }
 
         const htmlTag = `

@@ -73,7 +73,7 @@ class LibraryMenu
             "library-menu-content-shape-clone",
             "library-menu-file",
             "library-menu-delete",
-            "library-menu-no-use-deleted"
+            "library-menu-no-use-delete"
         ];
 
         for (let idx = 0; idx < elementIds.length; ++idx) {
@@ -108,6 +108,25 @@ class LibraryMenu
                 Util.$endMenu();
             });
 
+        }
+
+        const fileInput = document
+            .getElementById("library-menu-file-input");
+
+        if (fileInput) {
+
+            fileInput.addEventListener("change", (event) =>
+            {
+                this.save();
+
+                const files = event.target.files;
+                for (let idx = 0; idx < files.length; ++idx) {
+                    Util.$libraryController.loadFile(files[idx]);
+                }
+
+                event.target.value = "";
+                this._$saved = false;
+            });
         }
 
         // 終了コール
@@ -155,17 +174,247 @@ class LibraryMenu
         const workSpace = Util.$currentWorkSpace();
 
         const id = workSpace.nextLibraryId;
-        workSpace.addLibrary({
+        const folder = workSpace.addLibrary({
             "id": id,
             "type": "folder",
             "name": `Folder_${id}`,
             "symbol": ""
         });
 
-        this._$saved = false;
+        // 選択中のアイテムがあればフォルダーの中に格納
+        const activeInstances = Util
+            .$libraryController
+            .activeInstances;
+
+        if (activeInstances.size) {
+            for (let libraryId of activeInstances.keys()) {
+
+                const instance = workSpace.getLibrary(libraryId);
+
+                instance.folderId = id;
+            }
+
+            folder.mode = Util.FOLDER_OPEN;
+        }
 
         // 再読み込み
         Util.$libraryController.reload();
+
+        this._$saved = false;
+    }
+
+    /**
+     * @description 指定したShapeを複製する
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    executeLibraryMenuContentShapeClone ()
+    {
+        const activeInstances = Util
+            .$libraryController
+            .activeInstances;
+
+        if (!activeInstances.size) {
+            return ;
+        }
+
+        let reload = false;
+        const workSpace = Util.$currentWorkSpace();
+        for (const libraryId of activeInstances.keys()) {
+
+            const instance = workSpace.getLibrary(libraryId);
+            if (instance.type !== "shape") {
+                continue;
+            }
+
+            reload = true;
+            this.save();
+
+            const id = workSpace.nextLibraryId;
+            const shape = workSpace.addLibrary(
+                Util
+                    .$libraryController
+                    .createInstance(instance.type, `${instance.name}_Clone`, id)
+            );
+
+            instance.copyFrom(shape);
+        }
+
+        if (reload) {
+            Util.$libraryController.reload();
+        }
+
+        this._$saved = false;
+    }
+
+    /**
+     * @description 外部ファイルの読み込み処理
+     *
+     * @param  {Event} event
+     * @return {void}
+     * @method
+     * @public
+     */
+    executeLibraryMenuFile (event)
+    {
+        event.preventDefault();
+
+        document
+            .getElementById("library-menu-file-input")
+            .click();
+    }
+
+    /**
+     * @description 選択中のアイテムを削除
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    executeLibraryMenuDelete ()
+    {
+        const activeInstances = Util
+            .$libraryController
+            .activeInstances;
+
+        if (!activeInstances.size) {
+            return ;
+        }
+
+        this.save();
+
+        const workSpace = Util.$currentWorkSpace();
+        for (const element of activeInstances.values()) {
+
+            const libraryId = element.dataset.libraryId | 0;
+            const instance = workSpace.getLibrary(libraryId);
+            if (!instance) {
+                continue;
+            }
+
+            // 削除関数を実行
+            instance.remove();
+
+            // elementを削除
+            element.remove();
+
+            // 内部データからも削除
+            workSpace.removeLibrary(libraryId);
+        }
+
+        // 選択中のアイテムを解放
+        activeInstances.clear();
+
+        /**
+         * @type {ArrowTool}
+         */
+        const tool = Util.$tools.getDefaultTool("arrow");
+        tool.clear();
+
+        // JavaScriptのリストを再読み込み
+        Util.$javascriptController.reload();
+
+        // シーンを再読み込み
+        const scene = workSpace.scene;
+        workSpace.scene = scene;
+
+        // ライブラリを再読み込み
+        Util.$libraryController.reload();
+
+        // プレビューを初期化
+        Util.$libraryPreview.dispose();
+        
+        this._$saved = false;
+    }
+
+    /**
+     * @description スクリーンに配置されていないアイテムを全て削除
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    executeLibraryMenuNoUseDelete ()
+    {
+        let reload = false;
+        const workSpace = Util.$currentWorkSpace();
+
+        // 使用中のidを検索
+        const useIds = new Map();
+        for (let instance of workSpace._$libraries.values()) {
+
+            if (instance.type !== "container") {
+                continue;
+            }
+
+            for (let layer of instance._$layers.values()) {
+
+                const characters = layer._$characters;
+                for (let idx = 0; idx < characters.length; ++idx) {
+
+                    const libraryId = characters[idx].libraryId;
+                    if (useIds.has(libraryId)) {
+                        continue;
+                    }
+
+                    useIds.set(libraryId, true);
+                }
+            }
+
+            if (instance._$sounds.size) {
+                for (const sounds of instance._$sounds.values()) {
+                    for (let idx = 0; idx < sounds.length; ++idx) {
+
+                        const sound = sounds[idx];
+                        useIds.set(sound.characterId, true);
+
+                    }
+                }
+            }
+        }
+
+        // 削除処理
+        for (let instance of workSpace._$libraries.values()) {
+
+            if (useIds.has(instance.id)
+                || instance.type === "folder"
+                || instance.type === "container"
+            ) {
+                continue;
+            }
+
+            this.save();
+            reload = true;
+
+            workSpace.removeLibrary(instance.id);
+        }
+
+        if (reload) {
+
+            Util
+                .$libraryController
+                .clearActive();
+
+            /**
+             * @type {ArrowTool}
+             */
+            const tool = Util.$tools.getDefaultTool("arrow");
+            tool.clear();
+
+            // JavaScriptのリストを再読み込み
+            Util.$javascriptController.reload();
+
+            // ライブラリを再読み込み
+            Util.$libraryController.reload();
+
+            // シーンを再読み込み
+            const scene = workSpace.scene;
+            workSpace.scene = scene;
+        }
+
+        this._$saved = false;
     }
 
     /**

@@ -199,7 +199,6 @@ class TimelineHeader extends BaseTimeline
             this.clearParams();
 
             // スクロール位置を初期化
-            Util.$timelineFrame.currentFrame = 1;
             Util.$timelineMarker.move();
             Util.$timelineLayer.moveTimeLine(0);
 
@@ -320,6 +319,10 @@ class TimelineHeader extends BaseTimeline
      */
     deleteIcon (event)
     {
+        if (Util.$keyLock) {
+            return ;
+        }
+
         switch (event.code) {
 
             case "Backspace":
@@ -365,6 +368,9 @@ class TimelineHeader extends BaseTimeline
             .setAttribute("class", "frame-border-box");
 
         this._$targetElement = null;
+
+        // 初期化
+        super.focusOut();
     }
 
     /**
@@ -451,8 +457,16 @@ class TimelineHeader extends BaseTimeline
         // 変数を初期化
         this.clearParams();
 
+        // フレームを更新
         Util.$timelineFrame.currentFrame = event.target.dataset.frame | 0;
+
+        // マーカーを移動
         Util.$timelineMarker.move();
+
+        // 移動先の音声設定を生成
+        Util.$soundController.createSoundElements();
+
+        // マーカーの移動を有効化
         Util.$timelineMarker.startMarker();
     }
 }

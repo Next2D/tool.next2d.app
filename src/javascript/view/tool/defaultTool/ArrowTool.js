@@ -544,6 +544,7 @@ class ArrowTool extends BaseTool
     }
 
     /**
+     * TODO
      * @description スクリーンで選択したDisplayObjectを削除する
      *
      * @return {void}
@@ -723,13 +724,13 @@ class ArrowTool extends BaseTool
         character._$libraryId = event.target.value | 0;
         character._$image     = null;
 
-        Util.$screen.clearTweenMarker();
-        if (character._$tween
-            && character.hasTween()
-        ) {
-            Util.$screen.executeTween(layer);
-            Util.$screen.createTweenMarker(false);
-        }
+        // Util.$screen.clearTweenMarker();
+        // if (character._$tween
+        //     && character.hasTween()
+        // ) {
+        //     Util.$screen.executeTween(layer);
+        //     Util.$screen.createTweenMarker(false);
+        // }
 
         const icon = document
             .getElementById("instance-type-name")

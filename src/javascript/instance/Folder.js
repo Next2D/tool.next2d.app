@@ -19,7 +19,53 @@ class Folder extends Instance
     }
 
     /**
+     * @return {string}
+     * @public
+     */
+    get mode ()
+    {
+        return this._$mode;
+    }
+
+    /**
+     * @param  {string} mode
+     * @return {void}
+     * @public
+     */
+    set mode (mode)
+    {
+        this._$mode = mode;
+    }
+
+    /**
+     * @description フォルダーの中身の削除処理
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    remove ()
+    {
+        const workSpace = Util.$currentWorkSpace();
+        for (let instance of workSpace._$libraries.values()) {
+
+            // フォルダの中にないか、IDが一致ない時はスキップ
+            if (!instance.folderId || instance.folderId !== this.id) {
+                continue;
+            }
+
+            instance.remove();
+
+            // 内部データからも削除
+            workSpace.removeLibrary(instance.id);
+        }
+    }
+
+    /**
+     * @description セーブデータに変換
+     *
      * @return {object}
+     * @method
      * @public
      */
     toObject ()
@@ -35,22 +81,27 @@ class Folder extends Instance
     }
 
     /**
-     * @return {string}
-     * @public
-     */
-    get mode ()
-    {
-        return this._$mode;
-    }
-
-    /**
-     * @param  {string} mode
-     * @return {void}
-     * @public
+     * @description フォルダ内のアイテムIDを配列に格納
      *
+     * @return {void}
+     * @method
+     * @public
      */
-    set mode (mode)
+    getInstanceIds (instance_ids)
     {
-        this._$mode = mode;
+        const workSpace = Util.$currentWorkSpace();
+        for (const instance of workSpace._$libraries.values()) {
+
+            if (!instance.folderId || instance.folderId !== this.id) {
+                continue;
+            }
+
+            if (instance.type === "folder") {
+                instance.getInstanceIds(instance_ids);
+                continue;
+            }
+
+            instance_ids.push(instance.id);
+        }
     }
 }

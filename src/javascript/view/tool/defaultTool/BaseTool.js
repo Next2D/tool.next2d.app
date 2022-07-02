@@ -81,14 +81,14 @@ class BaseTool extends Tool
 
         const frame = Util.$timelineFrame.currentFrame;
 
+        // 挿入位置を取得
+        const location = layer.adjustmentLocation(frame);
+
         // pointer
         const character = new Character();
         character.libraryId  = shape.id;
-
-        const location = layer.adjustmentLocation(frame);
         character.startFrame = location.startFrame;
         character.endFrame   = location.endFrame;
-
         character.setPlace(location.startFrame, {
             "frame": location.startFrame,
             "matrix": [1, 0, 0, 1, x, y],
@@ -126,20 +126,17 @@ class BaseTool extends Tool
             return ;
         }
 
-        Util
-            .$controller
-            .createContainer("text", object.name, object.id);
-
         const workSpace = Util.$currentWorkSpace();
         const textField = workSpace.addLibrary(object);
 
         const frame = Util.$timelineFrame.currentFrame;
 
+        // 挿入位置を取得
+        const location = layer.adjustmentLocation(frame);
+
         // pointer
         const character = new Character();
         character.libraryId  = textField.id;
-
-        const location = layer.adjustmentLocation(frame);
         character.startFrame = location.startFrame;
         character.endFrame   = location.endFrame;
         character.setPlace(location.startFrame, {

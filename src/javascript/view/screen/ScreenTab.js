@@ -15,6 +15,13 @@ class ScreenTab
          * @private
          */
         this._$dropTab = null;
+
+        /**
+         * @type {boolean}
+         * @default false
+         * @private
+         */
+        this._$saved = false;
     }
 
     /**
@@ -202,6 +209,8 @@ class ScreenTab
         // 親のイベントを中止
         event.preventDefault();
 
+        this.save();
+
         // スタイルを削除
         event
             .currentTarget
@@ -223,6 +232,7 @@ class ScreenTab
 
         // 初期化
         this._$dropTab = null;
+        this._$saved   = false;
     }
 
     /**
@@ -403,18 +413,19 @@ class ScreenTab
             const element = parent.children[0];
             element.setAttribute("class", "tab active");
 
-            return ;
-        }
+        } else {
 
-        // アクティブなタブを削除する場合は、左端のタブをアクティブにする
-        if (Util.$activeWorkSpaceId === tabId) {
+            // アクティブなタブを削除する場合は、左端のタブをアクティブにする
+            if (Util.$activeWorkSpaceId === tabId) {
 
-            const element = parent.children[0];
-            element.setAttribute("class", "tab active");
+                const element = parent.children[0];
+                element.setAttribute("class", "tab active");
 
-            Util.$activeWorkSpaceId = element.dataset.tabId | 0;
+                Util.$activeWorkSpaceId = element.dataset.tabId | 0;
 
-            Util.$currentWorkSpace().run();
+                Util.$currentWorkSpace().run();
+            }
+
         }
     }
 
@@ -460,7 +471,14 @@ class ScreenTab
      */
     editEnd (event)
     {
-        if (event.type === "focusout" || event.code === "Enter") {
+        if (event.code === "Enter") {
+            event.target.blur();
+            return ;
+        }
+
+        if (event.type === "focusout") {
+
+            this.save();
 
             const element = event.currentTarget;
             element.style.display = "none";
@@ -482,6 +500,8 @@ class ScreenTab
                 .getElementById(`tab-id-${tabId}`);
 
             parent.draggable = true;
+
+            this._$saved = false;
         }
     }
 
@@ -500,13 +520,33 @@ class ScreenTab
         // 親のイベントを中止
         event.stopPropagation();
 
+        this.save();
+
         const id = Util.$workSpaces.length;
         const workSpace = new WorkSpace();
 
         Util.$workSpaces.push(workSpace);
         this.createElement(workSpace, id);
 
-        Util.$updated = true;
+        this._$saved = false;
+    }
+
+    /**
+     * @description undo用にデータを内部保管する
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    save ()
+    {
+        if (!this._$saved) {
+            this._$saved = true;
+
+            Util
+                .$currentWorkSpace()
+                .temporarilySaved();
+        }
     }
 }
 

@@ -48,8 +48,99 @@ class LibraryPreview
             this._$handler = null;
         }
 
+        const element = document
+            .getElementById("library-preview-area");
+
+        if (element) {
+
+            element.addEventListener("mousedown", (event) =>
+            {
+                this.mousedown(event);
+            });
+
+            element.addEventListener("mouseout", (event) =>
+            {
+
+            });
+
+            element.addEventListener("dragstart", () =>
+            {
+                Util.$libraryController.dragstart();
+            });
+
+            element.addEventListener("dragend", () =>
+            {
+                Util.$libraryController.dragend();
+            });
+        }
+
         // 終了コール
         Util.$initializeEnd();
+    }
+
+    /**
+     * @description プレビューエリアのドラッグを無効化
+     *
+     * @param  {MouseEvent} event
+     * @return {void}
+     * @method
+     * @public
+     */
+    mouseout (event)
+    {
+        if (this._$currentId === -1) {
+            return ;
+        }
+
+        // 全てのイベントを中止
+        event.stopPropagation();
+
+        document
+            .getElementById("library-preview-area")
+            .draggable = false;
+    }
+
+    /**
+     * @description プレビューエリアをタップした時の処理関数
+     *
+     * @param  {MouseEvent} event
+     * @return {void}
+     * @method
+     * @public
+     */
+    mousedown (event)
+    {
+        if (this._$currentId === -1) {
+            return ;
+        }
+
+        // 全てのイベントを中止
+        event.stopPropagation();
+
+        const target = document
+            .getElementById(`library-child-id-${this._$currentId}`);
+
+        if (target) {
+
+            // 現在のプレビューをキャッシュ
+            const preview = document
+                .getElementById("library-preview-area");
+
+            const children = Array.from(document
+                .getElementById("library-preview-area")
+                .children);
+
+            Util
+                .$libraryController
+                .activeInstance = target;
+
+            // プレビューを再描画
+            for (let idx = 0; idx < children.length; ++idx) {
+                preview.appendChild(children[idx]);
+            }
+
+            preview.draggable = true;
+        }
     }
 
     /**
@@ -70,6 +161,8 @@ class LibraryPreview
         while (element.firstChild) {
             element.firstChild.remove();
         }
+
+        element.draggable = false;
     }
 
     /**

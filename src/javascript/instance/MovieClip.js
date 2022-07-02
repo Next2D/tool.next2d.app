@@ -13,7 +13,7 @@ class MovieClip extends Instance
         super(object);
 
         // default
-        this._$currentFrame = 0;
+        this._$currentFrame = 1;
         this._$layerId      = 0;
         this._$parent       = null;
         this._$labels       = new Map();
@@ -116,11 +116,21 @@ class MovieClip extends Instance
      */
     initialize ()
     {
-        // screen clear
-        Util.$clearShapePointer();
-        this.clearStageArea();
+        /**
+         * @type {ArrowTool}
+         */
+        const tool = Util.$tools.getDefaultTool("arrow");
+
+        // 選択中のアクティブ表示を初期化
+        tool.clear();
+
+        // ツールを初期化
         Util.$tools.reset();
-        Util.$screen.clearTweenMarker();
+
+        // スクリーンを初期化
+        this.clearStageArea();
+        Util.$clearShapePointer();
+        // Util.$screen.clearTweenMarker();
 
         // object setting
         document
@@ -145,7 +155,8 @@ class MovieClip extends Instance
             }
         }
 
-        // create timeline marker
+        // フレームを登録してヘッダーを再編成
+        Util.$timelineFrame.currentFrame = this.currentFrame;
         Util.$timelineHeader.create();
 
         // init label
@@ -199,34 +210,13 @@ class MovieClip extends Instance
             this.addLayer();
         }
 
+        Util.$controller.default();
         if (this.id) {
 
-            const libraryElement = document
-                .getElementById(`library-child-id-${this.id}`);
-
-            libraryElement.draggable = false;
-
+            // スクリーンに表示されてるシーンはドラッグできないようロック
             document
-                .getElementById("stage-setting")
-                .style
-                .display = "none";
-
-            document
-                .getElementById("object-area")
-                .style
-                .display = "none";
-
-        } else {
-
-            document
-                .getElementById("stage-setting")
-                .style
-                .display = "";
-
-            document
-                .getElementById("object-area")
-                .style
-                .display = "none";
+                .getElementById(`library-child-id-${this.id}`)
+                .draggable = false;
 
         }
 
@@ -783,7 +773,7 @@ class MovieClip extends Instance
 
         const currentFrame = Util.$currentFrame;
 
-        let frame = 1;
+        let frame = this.currentFrame;
         if (!preview && this.totalFrame > 1) {
             frame = Util.$getFrame(place, this.totalFrame);
         }
@@ -1194,11 +1184,12 @@ class MovieClip extends Instance
         Util.$useIds.clear();
         const object = this.toPublish();
 
-        let frame = 1;
+        let frame = this.currentFrame;
         if (!preview && this.totalFrame > 1) {
             frame = Util.$getFrame(place, this.totalFrame);
         }
         Util.$currentFrame = frame;
+        movieClip._$currentFrame = frame;
 
         const controller = object.controller[frame];
         if (!controller) {

@@ -144,19 +144,8 @@ class TabController
             node.style.display = "";
         }
 
-        switch (event.target.dataset.tabType) {
-
-            case "controller-area-property":
-                this.showController();
-                break;
-
-            case "controller-area-library":
-                this.resetLibraryPreviewArea();
-                break;
-
-            default:
-                break;
-
+        if (event.target.dataset.tabType === "controller-area-property") {
+            this.showController();
         }
     }
 
@@ -189,22 +178,6 @@ class TabController
         );
 
         character.showController();
-    }
-
-    /**
-     * @description ライブラリのプレビュー表示を初期化
-     * @return {void}
-     * @method
-     * @public
-     */
-    resetLibraryPreviewArea ()
-    {
-        const element = document
-            .getElementById("library-preview-area");
-
-        while (element.children.length) {
-            element.children[0].remove();
-        }
     }
 }
 

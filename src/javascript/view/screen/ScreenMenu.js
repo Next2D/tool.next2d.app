@@ -45,7 +45,10 @@ class ScreenMenu extends BaseScreen
             "screen-distribute-to-layers",
             "screen-distribute-to-keyframes",
             "screen-integrating-paths",
-            "screen-tween-curve-pointer"
+            "screen-tween-curve-pointer",
+            "screen-copy",
+            "screen-paste",
+            "screen-delete"
         ];
 
         for (let idx = 0; idx < elementIds.length; ++idx) {
@@ -258,6 +261,133 @@ class ScreenMenu extends BaseScreen
      */
     executeScreenDistributeToKeyframes ()
     {
+        const layerElement = Util.$timeline._$targetLayer;
+        if (!layerElement) {
+            return ;
+        }
+
+        const scene = Util.$currentWorkSpace().scene;
+        const layer = scene.getLayer(
+            layerElement.dataset.layerId | 0
+        );
+
+        const currentFrame = Util.$timelineFrame.currentFrame;
+
+        let keyFrame = currentFrame;
+        for (;;) {
+
+            const frameElement = document
+                .getElementById(`${layer.id}-${keyFrame}`);
+
+            if (frameElement.dataset.frameState === "key-frame") {
+                break;
+            }
+
+            --keyFrame;
+        }
+
+
+        const characters = [];
+        const length = this._$moveTargets.length;
+        for (let idx = 0; idx < length; ++idx) {
+
+            const element = this._$moveTargets[idx].target;
+
+            const character = layer.getCharacter(
+                element.dataset.characterId | 0
+            );
+
+            const cloneCharacter = character.clone();
+
+            const place = cloneCharacter.getPlace(keyFrame);
+            cloneCharacter._$places.clear();
+            cloneCharacter.setPlace(keyFrame + idx, place);
+
+            characters.push(cloneCharacter);
+        }
+
+        this.keyCommandFunction({
+            "code": "Delete"
+        });
+
+        this._$moveTargets.length = 0;
+        this.hideTransformTarget();
+        this.hideGridTarget();
+
+        let endFrame = keyFrame + 1;
+        for (;;) {
+
+            const frameElement = document
+                .getElementById(`${layer.id}-${endFrame}`);
+
+            if (frameElement.dataset.frameState === "key-frame"
+                || frameElement.dataset.frameState === "empty-key-frame"
+                || frameElement.dataset.frameState === "empty"
+            ) {
+                break;
+            }
+
+            ++endFrame;
+        }
+
+        const totalFrame = endFrame - keyFrame;
+        switch (true) {
+
+            case totalFrame > characters.length:
+            {
+                const length = totalFrame - characters.length;
+                const targetFrames = [];
+                for (let idx = 0; idx < length; ++idx) {
+                    targetFrames.push(
+                        document.getElementById(`${layer.id}-${keyFrame + 1 + idx}`)
+                    );
+                }
+                Util.$timeline._$targetFrames = targetFrames;
+
+                Util.$timeline.deleteFrame(false);
+                for (let idx = 0; idx < targetFrames.length; ++idx) {
+                    const element = targetFrames[idx];
+                    element.classList.remove("frame-active");
+                }
+
+                Util.$timeline._$targetFrames.length = 0;
+            }
+                break;
+
+            case characters.length > totalFrame:
+                Util.$timeline._$targetFrames = [
+                    document.getElementById(`${layer.id}-${characters.length - totalFrame}`)
+                ];
+
+                Util.$timeline.addSpaceFrame(false);
+                Util.$timeline._$targetFrames.length = 0;
+                break;
+
+            default:
+                break;
+
+        }
+
+        for (let idx = 0; idx < characters.length; ++idx) {
+
+            const character = characters[idx];
+
+            const element = document
+                .getElementById(`${layer.id}-${keyFrame}`);
+
+            // update
+            Util.$timeline.removeFrameClass(element);
+            element.classList.add("key-frame");
+            element.dataset.frameState = "key-frame";
+            layer._$frame.setClasses(keyFrame, ["key-frame"]);
+
+            character.startFrame = keyFrame++;
+            character.endFrame   = keyFrame;
+
+            layer.addCharacter(character);
+        }
+
+        scene.changeFrame(currentFrame);
 
     }
 
@@ -270,6 +400,212 @@ class ScreenMenu extends BaseScreen
      */
     executeScreenIntegratingPaths ()
     {
+        if (2 > this._$moveTargets.length) {
+            return ;
+        }
+
+        const frame = Util.$timelineFrame.currentFrame;
+
+        const workSpace = Util.$currentWorkSpace();
+        workSpace
+            .temporarilySaved();
+
+        const scene = workSpace.scene;
+
+        let baseShape     = null;
+        let baseCharacter = null;
+        let index = 0;
+        for (let idx = 0; idx < this._$moveTargets.length; ++idx) {
+
+            const element = this._$moveTargets[idx].target;
+            if (element.dataset.instanceType !== "shape") {
+                continue;
+            }
+
+            const instance = workSpace.getLibrary(
+                element.dataset.libraryId | 0
+            );
+
+            const layer = scene.getLayer(
+                element.dataset.layerId | 0
+            );
+
+            const character = layer.getCharacter(
+                element.dataset.characterId | 0
+            );
+
+            const { Graphics } = window.next2d.display;
+            if (!baseShape) {
+
+                baseCharacter = character;
+
+                baseShape = instance;
+                for (let idx = 0; baseShape._$recodes.length > idx;) {
+
+                    switch (baseShape._$recodes[idx++]) {
+
+                        case Graphics.BEGIN_PATH:
+                            break;
+
+                        case Graphics.MOVE_TO:
+                            idx += 2;
+                            break;
+
+                        case Graphics.LINE_TO:
+                            idx += 2;
+                            break;
+
+                        case Graphics.CURVE_TO:
+                            idx += 4;
+                            break;
+
+                        case Graphics.CUBIC:
+                            idx += 6;
+                            break;
+
+                        case Graphics.FILL_STYLE:
+                        case Graphics.GRADIENT_FILL:
+                        case Graphics.STROKE_STYLE:
+                        case Graphics.GRADIENT_STROKE:
+                            index = idx - 1;
+                            break;
+
+                        case Graphics.CLOSE_PATH:
+                        case Graphics.END_STROKE:
+                        case Graphics.END_FILL:
+                            break;
+
+                        default:
+                            break;
+
+                    }
+
+                    if (index) {
+                        break;
+                    }
+                }
+
+                continue;
+            }
+
+            const tx = baseCharacter.screenX - baseShape._$bounds.xMin - character.screenX;
+            const ty = baseCharacter.screenY - baseShape._$bounds.yMin - character.screenY;
+
+            const matrix  = character.getPlace(frame).matrix;
+            const recodes = [];
+
+            let done = false;
+            for (let idx = 0; instance._$recodes.length > idx;) {
+
+                switch (instance._$recodes[idx++]) {
+
+                    case Graphics.BEGIN_PATH:
+                        break;
+
+                    case Graphics.MOVE_TO:
+                    {
+                        const x = instance._$recodes[idx++];
+                        const y = instance._$recodes[idx++];
+                        recodes.push(
+                            Graphics.MOVE_TO,
+                            x * matrix[0] + y * matrix[2] - tx,
+                            x * matrix[1] + y * matrix[3] - ty
+                        );
+                    }
+                        break;
+
+                    case Graphics.LINE_TO:
+                    {
+                        const x = instance._$recodes[idx++];
+                        const y = instance._$recodes[idx++];
+                        recodes.push(
+                            Graphics.LINE_TO,
+                            x * matrix[0] + y * matrix[2] - tx,
+                            x * matrix[1] + y * matrix[3] - ty
+                        );
+                    }
+                        break;
+
+                    case Graphics.CURVE_TO:
+                    {
+                        const cx = instance._$recodes[idx++];
+                        const cy = instance._$recodes[idx++];
+                        const x  = instance._$recodes[idx++];
+                        const y  = instance._$recodes[idx++];
+                        recodes.push(
+                            Graphics.CURVE_TO,
+                            cx * matrix[0] + cy * matrix[2] - tx,
+                            cx * matrix[1] + cy * matrix[3] - ty,
+                            x  * matrix[0] + y  * matrix[2] - tx,
+                            x  * matrix[1] + y  * matrix[3] - ty
+                        );
+                    }
+                        break;
+
+                    case Graphics.CUBIC:
+                    {
+                        const ctx1 = instance._$recodes[idx++];
+                        const cty1 = instance._$recodes[idx++];
+                        const ctx2 = instance._$recodes[idx++];
+                        const cty2 = instance._$recodes[idx++];
+                        const x    = instance._$recodes[idx++];
+                        const y    = instance._$recodes[idx++];
+                        recodes.push(
+                            Graphics.CUBIC,
+                            ctx1 * matrix[0] + cty1 * matrix[2] - tx,
+                            ctx1 * matrix[1] + cty1 * matrix[3] - ty,
+                            ctx2 * matrix[0] + cty2 * matrix[2] - tx,
+                            ctx2 * matrix[1] + cty2 * matrix[3] - ty,
+                            x * matrix[0] + y * matrix[2] - tx,
+                            x * matrix[1] + y * matrix[3] - ty
+                        );
+                    }
+                        break;
+
+                    case Graphics.FILL_STYLE:
+                    case Graphics.GRADIENT_FILL:
+                    case Graphics.STROKE_STYLE:
+                    case Graphics.GRADIENT_STROKE:
+                        done = true;
+
+                        Array
+                            .prototype
+                            .splice
+                            .apply(
+                                baseShape._$recodes,
+                                [index, 0].concat(recodes)
+                            );
+
+                        index += recodes.length;
+                        break;
+
+                    case Graphics.CLOSE_PATH:
+                    case Graphics.END_STROKE:
+                    case Graphics.END_FILL:
+                        break;
+
+                    default:
+                        break;
+
+                }
+
+                if (done) {
+                    break;
+                }
+            }
+        }
+
+        if (baseShape) {
+
+            const bounds = baseShape.reloadBounds();
+            baseShape._$bounds.xMin = bounds.xMin;
+            baseShape._$bounds.xMax = bounds.xMax;
+            baseShape._$bounds.yMin = bounds.yMin;
+            baseShape._$bounds.yMax = bounds.yMax;
+            baseShape.cacheClear();
+
+            scene.changeFrame(frame);
+        }
 
     }
 
@@ -282,6 +618,49 @@ class ScreenMenu extends BaseScreen
      */
     executeScreenTweenCurvePinter ()
     {
+        const layerElement = Util.$timeline._$targetLayer;
+        if (!layerElement) {
+            return ;
+        }
+        const layerId = layerElement.dataset.layerId | 0;
+
+        const frame = Util.$timelineFrame.currentFrame;
+
+        const scene = Util.$currentWorkSpace().scene;
+        const layer = scene.getLayer(layerId);
+
+        const characters = layer.getActiveCharacter(frame);
+        if (characters.length > 1) {
+            return ;
+        }
+
+        const character = characters[0];
+        if (!character.hasTween()) {
+            return ;
+        }
+
+        const tween      = character.getTween();
+        const index      = tween.curve.length;
+        const matrix     = character.getPlace(character.startFrame).matrix;
+        const baseBounds = character.getBounds();
+        const bounds     = Util.$boundsMatrix(baseBounds, matrix);
+
+        const pointer = {
+            "usePoint": true,
+            "x": bounds.xMin - baseBounds.xMin - 5,
+            "y": bounds.yMin - baseBounds.yMin - 5
+        };
+        tween.curve.push(pointer);
+
+        const div = this.createTweenCurveElement(pointer, index);
+        if (div) {
+            document
+                .getElementById("stage-area")
+                .appendChild(div);
+        }
+
+        this.executeTween(layer);
+        this.createTweenMarker();
 
     }
 

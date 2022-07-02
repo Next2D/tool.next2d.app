@@ -39,9 +39,7 @@ class WorkSpace
         if (!this._$stage) {
             this._$stage = new Stage();
         }
-
     }
-
 
     /**
      * @return {MovieClip}
@@ -126,7 +124,9 @@ class WorkSpace
 
             return 0;
         });
-        return (this._$libraries.get((keys.pop()|0)).id|0) + 1;
+
+        const lastLibraryId = this._$libraries.get(keys.pop() | 0).id | 0;
+        return lastLibraryId + 1;
     }
 
     /**
@@ -175,105 +175,6 @@ class WorkSpace
      * @return {void}
      * @public
      */
-    initializeLibrary ()
-    {
-        const library = document.getElementById("library-list-box");
-
-        while (library.children.length) {
-            library.children[0].remove();
-        }
-
-        const select = document
-            .getElementById("sound-select");
-
-        while (select.children.length) {
-            select.children[0].remove();
-        }
-
-        const folderMap   = new Map();
-        const childrenMap = new Map();
-
-        // ライブラリにセット
-        for (const value of this._$libraries.values()) {
-
-            if (!value.id) {
-                continue;
-            }
-
-            Util.$controller.createContainer(
-                value.type, value.name, value.id, value.symbol
-            );
-
-            // fixed logic
-            if (value.type === "folder" && value.mode === Util.FOLDER_OPEN) {
-                const element = document
-                    .getElementById(`folder-${value.id}`);
-
-                element.classList.remove("library-type-folder-close");
-                element.classList.add("library-type-folder-open");
-            }
-
-            if (value.folderId) {
-
-                const element = document
-                    .getElementById(`library-child-id-${value.id}`);
-
-                element.remove();
-
-                if (!childrenMap.has(value.folderId)) {
-                    childrenMap.set(value.folderId, []);
-                }
-
-                childrenMap.get(value.folderId).unshift(element);
-            }
-
-            if (value.type === "folder") {
-                folderMap.set(value.id, value);
-            }
-        }
-
-        if (folderMap.size) {
-
-            for (const [folderId, folder] of folderMap) {
-
-                if (!childrenMap.has(folderId)) {
-                    continue;
-                }
-
-                const element = document
-                    .getElementById(`library-child-id-${folder.id}`);
-
-                const children = childrenMap.get(folderId);
-                for (let idx = 0; idx < children.length; ++idx) {
-
-                    const child = children[idx];
-
-                    element.parentNode.insertBefore(
-                        child, element.nextElementSibling
-                    );
-
-                }
-
-            }
-
-            for (const folder of folderMap.values()) {
-
-                if (folder.folderId) {
-                    continue;
-                }
-
-                Util.$controller.updateFolderStyle(folder, folder.mode);
-            }
-
-            folderMap.clear();
-            childrenMap.clear();
-        }
-    }
-
-    /**
-     * @return {void}
-     * @public
-     */
     stop ()
     {
         if (this._$scene) {
@@ -292,7 +193,7 @@ class WorkSpace
         const object = JSON.parse(json);
 
         // copy
-        this._$characterId = object.characterId|0;
+        this._$characterId = object.characterId | 0;
         this._$name        = object.name;
         this._$stage       = new Stage(object.stage);
 
@@ -343,7 +244,7 @@ class WorkSpace
      * @return {void}
      * @public
      */
-    async temporarilySaved ()
+    temporarilySaved ()
     {
         Util.$updated = true;
         if (this._$currentData) {
@@ -370,7 +271,7 @@ class WorkSpace
      * @return {void}
      * @public
      */
-    async undo ()
+    undo ()
     {
         if (!this._$position) {
             return ;
@@ -388,18 +289,13 @@ class WorkSpace
 
         // loadしたデータで初期化
         this.initialize(this.getLibrary(currentSceneId));
-
-        // 再描画
-        this.scene.changeFrame(
-            Util.$timelineFrame.currentFrame
-        );
     }
 
     /**
      * @return {void}
      * @public
      */
-    async redo ()
+    redo ()
     {
         if (!this._$revision.length
             || this._$position === this._$revision.length
@@ -408,7 +304,7 @@ class WorkSpace
         }
 
         let data = null;
-        if ((this._$position + 1) === this._$revision.length) {
+        if (this._$position + 1 === this._$revision.length) {
 
             if (!this._$currentData) {
                 return ;
@@ -437,11 +333,6 @@ class WorkSpace
 
         // loadしたデータで初期化
         this.initialize(this.getLibrary(currentSceneId));
-
-        // 再描画
-        this.scene.changeFrame(
-            Util.$timelineFrame.currentFrame
-        );
     }
 
     /**
@@ -502,52 +393,50 @@ class WorkSpace
     /**
      * @param  {uint} id
      * @return {void}
+     * @method
      * @public
      */
     removeLibrary (id)
     {
         this._$libraries.delete(id | 0);
 
-        for (let instance of this._$libraries.values()) {
-
-            if (instance.type !== "container") {
-                continue;
-            }
-
-            for (let layer of instance._$layers.values()) {
-
-                const characters = layer._$characters.slice(0);
-                const length = characters.length;
-                for (let idx = 0; idx < length; ++idx) {
-
-                    const character = characters[idx];
-                    if (character.libraryId !== id) {
-                        continue;
-                    }
-
-                    layer.deleteCharacter(character.id);
-
-                    for (let frame = character.startFrame;
-                         character.endFrame > frame;
-                         ++frame
-                    ) {
-
-                        if (layer.getActiveCharacter(frame).length) {
-                            continue;
-                        }
-
-                        Util.$screen.clearFrames(layer, frame, frame + 1);
-                    }
-                }
-            }
-        }
-
-        document
-            .getElementById("object-area")
-            .style
-            .display = "none";
-
-        Util.$controller.deleteInstanceSelectOption(id | 0);
-        Util.$javascriptController.reload();
+        // for (let instance of this._$libraries.values()) {
+        //
+        //     if (instance.type !== "container") {
+        //         continue;
+        //     }
+        //
+        //     for (let layer of instance._$layers.values()) {
+        //
+        //         const characters = layer._$characters.slice(0);
+        //         const length = characters.length;
+        //         for (let idx = 0; idx < length; ++idx) {
+        //
+        //             const character = characters[idx];
+        //             if (character.libraryId !== id) {
+        //                 continue;
+        //             }
+        //
+        //             layer.deleteCharacter(character.id);
+        //
+        //             for (let frame = character.startFrame; character.endFrame > frame; ++frame) {
+        //
+        //                 if (layer.getActiveCharacter(frame).length) {
+        //                     continue;
+        //                 }
+        //
+        //                 Util.$screen.clearFrames(layer, frame, frame + 1);
+        //             }
+        //         }
+        //     }
+        // }
+        //
+        // document
+        //     .getElementById("object-area")
+        //     .style
+        //     .display = "none";
+        //
+        // Util.$controller.deleteInstanceSelectOption(id | 0);
+        // Util.$javascriptController.reload();
     }
 }

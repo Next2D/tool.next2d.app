@@ -5,6 +5,12 @@
     margin         : 12px;
 }
 
+#library-menu .library-menu-list i,
+#library-menu .library-menu-list span
+{
+    pointer-events : none;
+}
+
 #library-menu .library-menu-list div
 {
     display       : flex;
@@ -63,6 +69,7 @@
     width       : 50vw;
     height      : 30px;
     font-weight : bold;
+    flex-shrink : 1;
 }
 
 #library-list-title p

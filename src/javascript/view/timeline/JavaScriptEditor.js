@@ -566,7 +566,9 @@ class JavaScriptEditor extends BaseTimeline
         const scene = this._$scene || Util.$currentWorkSpace().scene;
         if (script) {
             scene.setAction(this._$frame, script.trim());
-            if (!this._$scene  && !element.classList.contains("frame-border-box-action")) {
+            if (!this._$scene
+                && !element.classList.contains("frame-border-box-action")
+            ) {
                 element.setAttribute("class", "frame-border-box-action");
             }
         } else {

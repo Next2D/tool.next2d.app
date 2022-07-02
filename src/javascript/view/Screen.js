@@ -10,6 +10,19 @@ class Screen
     constructor()
     {
         /**
+         * @type {boolean}
+         * @default false
+         * @private
+         */
+        this._$saved = false;
+
+        /**
+         * @type {Map}
+         * @private
+         */
+        this._$activeInstances = new Map();
+
+        /**
          * @type {function}
          * @default null
          * @private
@@ -24,26 +37,6 @@ class Screen
         } else {
             this.initialize();
         }
-
-        // params
-        this.clear();
-    }
-
-    /**
-     * @return {void}
-     * @public
-     */
-    clear ()
-    {
-        if (Util.$tools) {
-            Util.$tools.reset();
-        }
-
-        this._$rectPosition       = null;
-        this._$offsetPosition     = null;
-        this._$tweenMode          = false;
-        this._$tweenController    = null;
-        this._$tweenDelete        = null;
     }
 
     /**
@@ -109,117 +102,93 @@ class Screen
         //         }.bind(this, event));
         //     }
 
-        window.addEventListener("keydown", this.keyCommandFunction.bind(this));
+        // window.addEventListener("keydown", this.keyCommandFunction.bind(this));
 
-        const copyElement = document.getElementById("screen-copy");
-        if (copyElement) {
-            copyElement
-                .children[1]
-                .classList
-                .add(Util.$isMac ? "mac-icon" : "win-icon");
+        // const copyElement = document.getElementById("screen-copy");
+        // if (copyElement) {
+        //     copyElement
+        //         .children[1]
+        //         .classList
+        //         .add(Util.$isMac ? "mac-icon" : "win-icon");
+        //
+        //     copyElement.addEventListener("mousedown", function (event)
+        //     {
+        //         this.keyCommandFunction({
+        //             "code": "KeyC",
+        //             "ctrlKey": true,
+        //             "metaKey": false,
+        //             "preventDefault": function () { return this.preventDefault() }.bind(event)
+        //         });
+        //     }.bind(this));
+        // }
+        //
+        // const pasteElement = document.getElementById("screen-paste");
+        // if (pasteElement) {
+        //     pasteElement
+        //         .children[1]
+        //         .classList
+        //         .add(Util.$isMac ? "mac-icon" : "win-icon");
+        //
+        //     pasteElement.addEventListener("mousedown", function (event)
+        //     {
+        //         this.keyCommandFunction({
+        //             "code": "KeyV",
+        //             "ctrlKey": true,
+        //             "metaKey": false,
+        //             "preventDefault": function () { return this.preventDefault() }.bind(event)
+        //         });
+        //     }.bind(this));
+        // }
+        //
+        // const screenDelete = document.getElementById("screen-delete");
+        // if (screenDelete) {
+        //     screenDelete
+        //         .addEventListener("mousedown", function ()
+        //         {
+        //             this.keyCommandFunction({
+        //                 "code": "Delete"
+        //             });
+        //         }.bind(this));
+        // }
+        //
+        // const previewElement = document.getElementById("screen-preview");
+        // if (previewElement) {
+        //     previewElement
+        //         .children[1]
+        //         .classList
+        //         .add(Util.$isMac ? "mac-icon" : "win-icon");
+        //
+        //     previewElement.addEventListener("mousedown", function (event)
+        //     {
+        //         Util.$keyCommandFunction({
+        //             "code": "Enter",
+        //             "ctrlKey": true,
+        //             "metaKey": false,
+        //             "preventDefault": function () { return this.preventDefault() }.bind(event)
+        //         });
+        //     }.bind(this));
+        // }
 
-            copyElement.addEventListener("mousedown", function (event)
-            {
-                this.keyCommandFunction({
-                    "code": "KeyC",
-                    "ctrlKey": true,
-                    "metaKey": false,
-                    "preventDefault": function () { return this.preventDefault() }.bind(event)
-                });
-            }.bind(this));
-        }
+        const element = document.getElementById("screen");
+        if (element) {
 
-        const pasteElement = document.getElementById("screen-paste");
-        if (pasteElement) {
-            pasteElement
-                .children[1]
-                .classList
-                .add(Util.$isMac ? "mac-icon" : "win-icon");
-
-            pasteElement.addEventListener("mousedown", function (event)
-            {
-                this.keyCommandFunction({
-                    "code": "KeyV",
-                    "ctrlKey": true,
-                    "metaKey": false,
-                    "preventDefault": function () { return this.preventDefault() }.bind(event)
-                });
-            }.bind(this));
-        }
-
-        const screenDelete = document.getElementById("screen-delete");
-        if (screenDelete) {
-            screenDelete
-                .addEventListener("mousedown", function ()
-                {
-                    this.keyCommandFunction({
-                        "code": "Delete"
-                    });
-                }.bind(this));
-        }
-
-        const previewElement = document.getElementById("screen-preview");
-        if (previewElement) {
-            previewElement
-                .children[1]
-                .classList
-                .add(Util.$isMac ? "mac-icon" : "win-icon");
-
-            previewElement.addEventListener("mousedown", function (event)
-            {
-                Util.$keyCommandFunction({
-                    "code": "Enter",
-                    "ctrlKey": true,
-                    "metaKey": false,
-                    "preventDefault": function () { return this.preventDefault() }.bind(event)
-                });
-            }.bind(this));
-        }
-
-        // screenの初期化
-        this.initializeScreen();
-
-        // zoom event
-        // this.initializeZoom();
-
-        // context menu event
-        // this.initializeContextMenu();
-
-        // end
-        Util.$initializeEnd();
-        this._$handler = null;
-    }
-
-    /**
-     * @return {void}
-     * @method
-     * @public
-     */
-    initializeScreen ()
-    {
-        const screen = document.getElementById("screen");
-        if (screen) {
-            screen.addEventListener("dragover", (event) =>
-            {
-                event.preventDefault();
-            });
-
-            screen.addEventListener("contextmenu", (event) =>
+            element.addEventListener("contextmenu", (event) =>
             {
                 Util.$screenMenu.show(event);
             });
 
-            screen.addEventListener("drop", (event) =>
+            element.addEventListener("dragover", (event) =>
             {
                 event.preventDefault();
-
-                if (Util.$dragElement) {
-                    this.dropObject(event);
-                }
-
             });
 
-            screen.addEventListener("mousedown", (event) =>
+            element.addEventListener("drop", (event) =>
+            {
+                event.preventDefault();
+                this.drop(event);
+            });
+
+            element.addEventListener("mousedown", (event) =>
             {
                 if (event.button) {
                     return ;
@@ -237,19 +206,9 @@ class Screen
                         event
                     );
                 }
-
-                // if (this._$tweenMode) {
-                //
-                //     this._$offsetPosition = {
-                //         "x": event.offsetX,
-                //         "y": event.offsetY
-                //     };
-                //
-                //     return ;
-                // }
             });
 
-            screen.addEventListener("dblclick", (event) =>
+            element.addEventListener("dblclick", (event) =>
             {
                 const activeTool = Util.$tools.activeTool;
                 if (activeTool) {
@@ -261,7 +220,7 @@ class Screen
                 }
             });
 
-            screen.addEventListener("mouseleave", (event) =>
+            element.addEventListener("mouseleave", (event) =>
             {
                 const activeTool = Util.$tools.activeTool;
                 if (activeTool) {
@@ -277,7 +236,7 @@ class Screen
                 Util.$setCursor("auto");
             });
 
-            screen.addEventListener("mousewheel", (event) =>
+            element.addEventListener("mousewheel", (event) =>
             {
                 if (event.ctrlKey && !event.metaKey // windows
                     || !event.ctrlKey && event.metaKey // mac
@@ -298,7 +257,7 @@ class Screen
 
             }, { "passive" : false });
 
-            screen.addEventListener("mousemove", (event) =>
+            element.addEventListener("mousemove", (event) =>
             {
                 const activeTool = Util.$tools.activeTool;
                 if (activeTool) {
@@ -313,7 +272,7 @@ class Screen
                 }
             });
 
-            screen.addEventListener("mouseup", (event) =>
+            element.addEventListener("mouseup", (event) =>
             {
                 const activeTool = Util.$tools.activeTool;
                 if (activeTool) {
@@ -325,6 +284,10 @@ class Screen
                 }
             });
         }
+
+        // end
+        Util.$initializeEnd();
+        this._$handler = null;
     }
 
     /**
@@ -653,643 +616,6 @@ class Screen
                 break;
 
         }
-    }
-
-    /**
-     * @return {void}
-     * @public
-     */
-    initializeContextMenu ()
-    {
-        const screenDistributeToLayers = document
-            .getElementById("screen-distribute-to-layers");
-
-        if (screenDistributeToLayers) {
-            screenDistributeToLayers
-                .addEventListener("mousedown", function ()
-                {
-                    const layerElement = Util.$timeline._$targetLayer;
-                    if (!layerElement) {
-                        return ;
-                    }
-
-                    Util
-                        .$currentWorkSpace()
-                        .temporarilySaved();
-
-                    const scene = Util.$currentWorkSpace().scene;
-                    const layer = scene.getLayer(
-                        layerElement.dataset.layerId | 0
-                    );
-
-                    const currentFrame = Util.$timelineFrame.currentFrame;
-
-                    const classes  = [];
-                    const states   = [];
-                    let totalFrame = 1;
-                    for (;;) {
-
-                        const frameElement = document
-                            .getElementById(`${layer.id}-${totalFrame}`);
-
-                        const frameState = frameElement.dataset.frameState;
-                        if (totalFrame > currentFrame && frameState === "empty") {
-                            break;
-                        }
-
-                        // pool
-                        states.push(frameState);
-
-                        classes.push(frameElement
-                            .classList
-                            .toString()
-                            .replace("frame-active", "")
-                            .replace("frame", "")
-                            .trim()
-                        );
-
-                        totalFrame++;
-                    }
-
-                    let keyFrame = currentFrame;
-                    for (;;) {
-
-                        const frameElement = document
-                            .getElementById(`${layer.id}-${keyFrame}`);
-
-                        if (frameElement.dataset.frameState === "key-frame") {
-                            break;
-                        }
-
-                        --keyFrame;
-                    }
-
-                    const length = this._$moveTargets.length;
-                    for (let idx = 0; idx < length; ++idx) {
-
-                        const newLayer = new Layer();
-                        scene.addLayer(newLayer);
-
-                        const element = this._$moveTargets[idx].target;
-
-                        const character = layer.getCharacter(
-                            element.dataset.characterId | 0
-                        );
-
-                        const cloneCharacter = character.clone();
-                        if (cloneCharacter._$places.size > 1) {
-                            const place = cloneCharacter.getPlace(keyFrame);
-                            cloneCharacter._$places.clear();
-                            cloneCharacter.setPlace(keyFrame, place);
-                        }
-
-                        if (keyFrame - 1 > 0) {
-
-                            Util.$timeline._$targetFrames = [
-                                document.getElementById(`${newLayer.id}-${keyFrame - 1}`)
-                            ];
-
-                            Util.$timeline.addSpaceFrame(false);
-                            Util.$timeline._$targetFrames.length = 0;
-
-                        }
-
-                        // update
-                        cloneCharacter.startFrame = keyFrame;
-                        cloneCharacter.endFrame   = totalFrame;
-                        newLayer.addCharacter(cloneCharacter);
-
-                        for (let frame = keyFrame; frame <= totalFrame; ++frame) {
-
-                            const index = frame - 1;
-                            if (!(index in classes)) {
-                                break;
-                            }
-
-                            if (states[index] === "key-frame" && frame !== keyFrame) {
-                                cloneCharacter.endFrame = frame;
-                                Util.$timeline._$targetFrames = [
-                                    document.getElementById(`${newLayer.id}-${totalFrame - 1}`)
-                                ];
-
-                                Util.$timeline.addSpaceFrame(false);
-                                Util.$timeline._$targetFrames.length = 0;
-                                break;
-                            }
-
-                            const frameElement = document
-                                .getElementById(`${newLayer.id}-${frame}`);
-
-                            frameElement.setAttribute("class", `frame ${classes[index]}`);
-                            frameElement.dataset.frameState = states[index];
-                            newLayer._$frame.setClasses(frame, classes[index].split(" "));
-                        }
-                    }
-
-                    this.keyCommandFunction({
-                        "code": "Delete"
-                    });
-
-                    this._$moveTargets.length = 0;
-                    this.hideTransformTarget();
-                    this.hideGridTarget();
-
-                    document
-                        .getElementById(`${layer.id}-${currentFrame}`)
-                        .classList.remove("frame-active");
-
-                }.bind(this));
-        }
-
-        const screenDistributeToKeyframes = document
-            .getElementById("screen-distribute-to-keyframes");
-
-        if (screenDistributeToKeyframes) {
-            screenDistributeToKeyframes
-                .addEventListener("mousedown", function ()
-                {
-                    const layerElement = Util.$timeline._$targetLayer;
-                    if (!layerElement) {
-                        return ;
-                    }
-
-                    const scene = Util.$currentWorkSpace().scene;
-                    const layer = scene.getLayer(
-                        layerElement.dataset.layerId | 0
-                    );
-
-                    const currentFrame = Util.$timelineFrame.currentFrame;
-
-                    let keyFrame = currentFrame;
-                    for (;;) {
-
-                        const frameElement = document
-                            .getElementById(`${layer.id}-${keyFrame}`);
-
-                        if (frameElement.dataset.frameState === "key-frame") {
-                            break;
-                        }
-
-                        --keyFrame;
-                    }
-
-
-                    const characters = [];
-                    const length = this._$moveTargets.length;
-                    for (let idx = 0; idx < length; ++idx) {
-
-                        const element = this._$moveTargets[idx].target;
-
-                        const character = layer.getCharacter(
-                            element.dataset.characterId | 0
-                        );
-
-                        const cloneCharacter = character.clone();
-
-                        const place = cloneCharacter.getPlace(keyFrame);
-                        cloneCharacter._$places.clear();
-                        cloneCharacter.setPlace(keyFrame + idx, place);
-
-                        characters.push(cloneCharacter);
-                    }
-
-                    this.keyCommandFunction({
-                        "code": "Delete"
-                    });
-
-                    this._$moveTargets.length = 0;
-                    this.hideTransformTarget();
-                    this.hideGridTarget();
-
-                    let endFrame = keyFrame + 1;
-                    for (;;) {
-
-                        const frameElement = document
-                            .getElementById(`${layer.id}-${endFrame}`);
-
-                        if (frameElement.dataset.frameState === "key-frame"
-                            || frameElement.dataset.frameState === "empty-key-frame"
-                            || frameElement.dataset.frameState === "empty"
-                        ) {
-                            break;
-                        }
-
-                        ++endFrame;
-                    }
-
-                    const totalFrame = endFrame - keyFrame;
-                    switch (true) {
-
-                        case totalFrame > characters.length:
-                            {
-                                const length = totalFrame - characters.length;
-                                const targetFrames = [];
-                                for (let idx = 0; idx < length; ++idx) {
-                                    targetFrames.push(
-                                        document.getElementById(`${layer.id}-${keyFrame + 1 + idx}`)
-                                    );
-                                }
-                                Util.$timeline._$targetFrames = targetFrames;
-
-                                Util.$timeline.deleteFrame(false);
-                                for (let idx = 0; idx < targetFrames.length; ++idx) {
-                                    const element = targetFrames[idx];
-                                    element.classList.remove("frame-active");
-                                }
-
-                                Util.$timeline._$targetFrames.length = 0;
-                            }
-                            break;
-
-                        case characters.length > totalFrame:
-                            Util.$timeline._$targetFrames = [
-                                document.getElementById(`${layer.id}-${characters.length - totalFrame}`)
-                            ];
-
-                            Util.$timeline.addSpaceFrame(false);
-                            Util.$timeline._$targetFrames.length = 0;
-                            break;
-
-                        default:
-                            break;
-
-                    }
-
-                    for (let idx = 0; idx < characters.length; ++idx) {
-
-                        const character = characters[idx];
-
-                        const element = document
-                            .getElementById(`${layer.id}-${keyFrame}`);
-
-                        // update
-                        Util.$timeline.removeFrameClass(element);
-                        element.classList.add("key-frame");
-                        element.dataset.frameState = "key-frame";
-                        layer._$frame.setClasses(keyFrame, ["key-frame"]);
-
-                        character.startFrame = keyFrame++;
-                        character.endFrame   = keyFrame;
-
-                        layer.addCharacter(character);
-                    }
-
-                    scene.changeFrame(currentFrame);
-
-                }.bind(this));
-        }
-
-        const screenIntegratingPaths = document
-            .getElementById("screen-integrating-paths");
-
-        if (screenIntegratingPaths) {
-            screenIntegratingPaths
-                .addEventListener("mousedown", function ()
-                {
-                    if (2 > this._$moveTargets.length) {
-                        return ;
-                    }
-
-                    const frame = Util.$timelineFrame.currentFrame;
-
-                    const workSpace = Util.$currentWorkSpace();
-                    workSpace
-                        .temporarilySaved();
-
-                    const scene = workSpace.scene;
-
-                    let baseShape     = null;
-                    let baseCharacter = null;
-                    let index = 0;
-                    for (let idx = 0; idx < this._$moveTargets.length; ++idx) {
-
-                        const element = this._$moveTargets[idx].target;
-                        if (element.dataset.instanceType !== "shape") {
-                            continue;
-                        }
-
-                        const instance = workSpace.getLibrary(
-                            element.dataset.libraryId | 0
-                        );
-
-                        const layer = scene.getLayer(
-                            element.dataset.layerId | 0
-                        );
-
-                        const character = layer.getCharacter(
-                            element.dataset.characterId | 0
-                        );
-
-                        const { Graphics } = window.next2d.display;
-                        if (!baseShape) {
-
-                            baseCharacter = character;
-
-                            baseShape = instance;
-                            for (let idx = 0; baseShape._$recodes.length > idx;) {
-
-                                switch (baseShape._$recodes[idx++]) {
-
-                                    case Graphics.BEGIN_PATH:
-                                        break;
-
-                                    case Graphics.MOVE_TO:
-                                        idx += 2;
-                                        break;
-
-                                    case Graphics.LINE_TO:
-                                        idx += 2;
-                                        break;
-
-                                    case Graphics.CURVE_TO:
-                                        idx += 4;
-                                        break;
-
-                                    case Graphics.CUBIC:
-                                        idx += 6;
-                                        break;
-
-                                    case Graphics.FILL_STYLE:
-                                    case Graphics.GRADIENT_FILL:
-                                    case Graphics.STROKE_STYLE:
-                                    case Graphics.GRADIENT_STROKE:
-                                        index = idx - 1;
-                                        break;
-
-                                    case Graphics.CLOSE_PATH:
-                                    case Graphics.END_STROKE:
-                                    case Graphics.END_FILL:
-                                        break;
-
-                                    default:
-                                        break;
-
-                                }
-
-                                if (index) {
-                                    break;
-                                }
-                            }
-
-                            continue;
-                        }
-
-                        const tx = baseCharacter.screenX - baseShape._$bounds.xMin - character.screenX;
-                        const ty = baseCharacter.screenY - baseShape._$bounds.yMin - character.screenY;
-
-                        const matrix  = character.getPlace(frame).matrix;
-                        const recodes = [];
-
-                        let done = false;
-                        for (let idx = 0; instance._$recodes.length > idx;) {
-
-                            switch (instance._$recodes[idx++]) {
-
-                                case Graphics.BEGIN_PATH:
-                                    break;
-
-                                case Graphics.MOVE_TO:
-                                {
-                                    const x = instance._$recodes[idx++];
-                                    const y = instance._$recodes[idx++];
-                                    recodes.push(
-                                        Graphics.MOVE_TO,
-                                        x * matrix[0] + y * matrix[2] - tx,
-                                        x * matrix[1] + y * matrix[3] - ty
-                                    );
-                                }
-                                    break;
-
-                                case Graphics.LINE_TO:
-                                {
-                                    const x = instance._$recodes[idx++];
-                                    const y = instance._$recodes[idx++];
-                                    recodes.push(
-                                        Graphics.LINE_TO,
-                                        x * matrix[0] + y * matrix[2] - tx,
-                                        x * matrix[1] + y * matrix[3] - ty
-                                    );
-                                }
-                                    break;
-
-                                case Graphics.CURVE_TO:
-                                {
-                                    const cx = instance._$recodes[idx++];
-                                    const cy = instance._$recodes[idx++];
-                                    const x  = instance._$recodes[idx++];
-                                    const y  = instance._$recodes[idx++];
-                                    recodes.push(
-                                        Graphics.CURVE_TO,
-                                        cx * matrix[0] + cy * matrix[2] - tx,
-                                        cx * matrix[1] + cy * matrix[3] - ty,
-                                        x  * matrix[0] + y  * matrix[2] - tx,
-                                        x  * matrix[1] + y  * matrix[3] - ty
-                                    );
-                                }
-                                    break;
-
-                                case Graphics.CUBIC:
-                                {
-                                    const ctx1 = instance._$recodes[idx++];
-                                    const cty1 = instance._$recodes[idx++];
-                                    const ctx2 = instance._$recodes[idx++];
-                                    const cty2 = instance._$recodes[idx++];
-                                    const x    = instance._$recodes[idx++];
-                                    const y    = instance._$recodes[idx++];
-                                    recodes.push(
-                                        Graphics.CUBIC,
-                                        ctx1 * matrix[0] + cty1 * matrix[2] - tx,
-                                        ctx1 * matrix[1] + cty1 * matrix[3] - ty,
-                                        ctx2 * matrix[0] + cty2 * matrix[2] - tx,
-                                        ctx2 * matrix[1] + cty2 * matrix[3] - ty,
-                                        x * matrix[0] + y * matrix[2] - tx,
-                                        x * matrix[1] + y * matrix[3] - ty
-                                    );
-                                }
-                                    break;
-
-                                case Graphics.FILL_STYLE:
-                                case Graphics.GRADIENT_FILL:
-                                case Graphics.STROKE_STYLE:
-                                case Graphics.GRADIENT_STROKE:
-                                    done = true;
-
-                                    Array
-                                        .prototype
-                                        .splice
-                                        .apply(
-                                            baseShape._$recodes,
-                                            [index, 0].concat(recodes)
-                                        );
-
-                                    index += recodes.length;
-                                    break;
-
-                                case Graphics.CLOSE_PATH:
-                                case Graphics.END_STROKE:
-                                case Graphics.END_FILL:
-                                    break;
-
-                                default:
-                                    break;
-
-                            }
-
-                            if (done) {
-                                break;
-                            }
-                        }
-                    }
-
-                    if (baseShape) {
-
-                        const bounds = baseShape.reloadBounds();
-                        baseShape._$bounds.xMin = bounds.xMin;
-                        baseShape._$bounds.xMax = bounds.xMax;
-                        baseShape._$bounds.yMin = bounds.yMin;
-                        baseShape._$bounds.yMax = bounds.yMax;
-                        baseShape.cacheClear();
-
-                        scene.changeFrame(frame);
-                    }
-
-                }.bind(this));
-        }
-
-        const screenTweenCurvePointer = document
-            .getElementById("screen-tween-curve-pointer");
-
-        if (screenTweenCurvePointer) {
-            screenTweenCurvePointer
-                .addEventListener("mousedown", function ()
-                {
-                    this.addTweenPointer();
-                }.bind(this));
-        }
-    }
-
-    /**
-     * @param  {Layer} layer
-     * @param  {number} start_frame
-     * @param  {number} end_frame
-     * @return {void}
-     * @public
-     */
-    clearFrames (layer, start_frame, end_frame)
-    {
-        const layerId = layer.id;
-        for (let frame = start_frame; end_frame > frame; ++frame) {
-
-            const element = document
-                .getElementById(`${layerId}-${frame}`);
-
-            switch (element.dataset.frameState) {
-
-                case "key-frame":
-                    {
-                        const classes = ["empty-key-frame"];
-
-                        element
-                            .classList
-                            .remove(
-                                "key-frame",
-                                "tween-frame",
-                                "tween-key-frame",
-                                "morph-frame",
-                                "morph-key-frame"
-                            );
-
-                        element
-                            .classList
-                            .add("empty-key-frame");
-
-                        if (element
-                            .classList
-                            .contains("key-frame-join")
-                        ) {
-
-                            element
-                                .classList
-                                .remove("key-frame-join");
-
-                            element
-                                .classList
-                                .add("empty-key-frame-join");
-
-                            classes.push("empty-key-frame-join");
-                        }
-
-                        element
-                            .dataset
-                            .frameState = "empty-key-frame";
-
-                        layer
-                            ._$frame
-                            .setClasses(frame, classes);
-                    }
-                    break;
-
-                case "key-space-frame":
-
-                    element
-                        .classList
-                        .remove("key-space-frame");
-
-                    element
-                        .classList
-                        .remove("tween-frame", "morph-frame");
-
-                    element
-                        .classList
-                        .add("empty-space-frame");
-
-                    element
-                        .dataset
-                        .frameState = "empty-space-frame";
-
-                    layer
-                        ._$frame
-                        .setClasses(frame, [
-                            "empty-space-frame"
-                        ]);
-
-                    break;
-
-                case "key-space-frame-end":
-
-                    element
-                        .classList
-                        .remove(
-                            "key-space-frame-end",
-                            "tween-frame",
-                            "tween-frame-end",
-                            "morph-frame",
-                            "morph-frame-end"
-                        );
-
-                    element
-                        .classList
-                        .add("empty-space-frame-end");
-
-                    element
-                        .dataset
-                        .frameState = "empty-space-frame-end";
-
-                    layer
-                        ._$frame
-                        .setClasses(frame, [
-                            "empty-space-frame-end"
-                        ]);
-
-                    break;
-
-                default:
-                    break;
-
-            }
-        }
-
-        this.clearTweenMarker();
     }
 
     /**
@@ -1742,44 +1068,6 @@ class Screen
     }
 
     /**
-     * @param  {HTMLElement} element
-     * @return {void}
-     * @public
-     */
-    activeFrame (element)
-    {
-        const layerId = element.dataset.layerId | 0;
-        const layerElement = document
-            .getElementById(`layer-id-${layerId}`);
-
-        const timeline = Util.$timeline;
-        if (timeline._$targetLayer) {
-            timeline
-                ._$targetLayer
-                .classList
-                .remove("active");
-        }
-
-        if (!layerElement.classList.contains("active")) {
-            layerElement.classList.add("active");
-        }
-        timeline._$targetLayer = layerElement;
-
-        const frame = Util.$timelineFrame.currentFrame;
-
-        const frameElement = document
-            .getElementById(`${layerId}-${frame}`);
-
-        if (!frameElement.classList.contains("frame-active")) {
-
-            frameElement.classList.add("frame-active");
-
-            timeline._$targetFrame = frameElement;
-            timeline._$targetFrames.push(frameElement);
-        }
-    }
-
-    /**
      * @param  {boolean} [recycle=false]
      * @return {void}
      * @public
@@ -2075,58 +1363,6 @@ class Screen
      * @return {void}
      * @public
      */
-    addTweenPointer ()
-    {
-        const layerElement = Util.$timeline._$targetLayer;
-        if (!layerElement) {
-            return ;
-        }
-        const layerId = layerElement.dataset.layerId | 0;
-
-        const frame = Util.$timelineFrame.currentFrame;
-
-        const scene = Util.$currentWorkSpace().scene;
-        const layer = scene.getLayer(layerId);
-
-        const characters = layer.getActiveCharacter(frame);
-        if (characters.length > 1) {
-            return ;
-        }
-
-        const character = characters[0];
-        if (!character.hasTween()) {
-            return ;
-        }
-
-        const tween      = character.getTween();
-        const index      = tween.curve.length;
-        const matrix     = character.getPlace(character.startFrame).matrix;
-        const baseBounds = character.getBounds();
-        const bounds     = Util.$boundsMatrix(baseBounds, matrix);
-
-        const pointer = {
-            "usePoint": true,
-            "x": bounds.xMin - baseBounds.xMin - 5,
-            "y": bounds.yMin - baseBounds.yMin - 5
-        };
-        tween.curve.push(pointer);
-
-        const div = this.createTweenCurveElement(pointer, index);
-        if (div) {
-            document
-                .getElementById("stage-area")
-                .appendChild(div);
-        }
-
-        this.executeTween(layer);
-        this.createTweenMarker();
-
-    }
-
-    /**
-     * @return {void}
-     * @public
-     */
     clearTweenMarker ()
     {
         const stageArea = document.getElementById("stage-area");
@@ -2151,39 +1387,6 @@ class Screen
     }
 
     /**
-     * @param  {HTMLElement} element
-     * @return {void}
-     * @public
-     */
-    clearActiveFrame (element)
-    {
-        const layerId = element.dataset.layerId | 0;
-
-        const layerElement = document
-            .getElementById(`layer-id-${layerId}`);
-
-        if (!layerElement) {
-            return ;
-        }
-
-        if (layerElement.classList.contains("active")) {
-            layerElement.classList.remove("active");
-        }
-        Util.$timeline._$targetLayer = null;
-
-        const frame = Util.$timelineFrame.currentFrame;
-
-        const frameElement = document
-            .getElementById(`${layerId}-${frame}`);
-
-        if (Util.$timeline._$targetFrames.indexOf(frameElement) > -1) {
-            if (frameElement.classList.contains("frame-active")) {
-                frameElement.classList.remove("frame-active");
-            }
-        }
-    }
-
-    /**
      * TODO 複数ドロップ対応
      * @description ライブラリからのドロップ処理
      *
@@ -2191,210 +1394,211 @@ class Screen
      * @return {void}
      * @public
      */
-    dropObject (event)
+    drop (event)
     {
-        const libraryId = Util.$dragElement.dataset.libraryId | 0;
+        const activeInstances = Util
+            .$libraryController
+            .activeInstances;
 
-        const instance = Util
-            .$currentWorkSpace()
-            .getLibrary(libraryId);
-
-        // フォルダーかサウンドの場合はスキップ
-        switch (instance.type) {
-
-            case "folder":
-            case "sound":
-                return ;
-
-            default:
-                break;
-
+        if (!activeInstances.size) {
+            return ;
         }
 
+        const workSpace = Util.$currentWorkSpace();
+        const scene = workSpace.scene;
+
+        // レイヤーをアタッチ
+        Util.$timelineLayer.attachLayer();
         const targetLayer = Util.$timelineLayer.targetLayer;
-        if (!targetLayer) {
 
-            const parent = document
-                .getElementById("timeline-content");
-
-            if (!parent.children.length) {
-                return ;
-            }
-
-            const layerElement = document
-                .getElementById("layer-id-1");
-
-            if (!layerElement) {
-                return ;
-            }
-
-            Util.$timelineLayer.targetLayer = layerElement;
-        }
-
-        const scene   = Util.$currentWorkSpace().scene;
+        // ロックレイヤーならスキップ
         const layerId = targetLayer.dataset.layerId | 0;
-
         const layer = scene.getLayer(layerId);
         if (layer.lock) {
             return ;
         }
 
-        const frame = Util.$timelineFrame.currentFrame;
+        // 選択したアイテムを指定レイヤーに登録
+        const soundIds    = [];
+        const instanceIds = [];
+        for (const libraryId of activeInstances.keys()) {
 
-        // const frameElement = document
-        //     .getElementById(`${layerId}-${frame}`); // fixed
-
-        // if (frameElement.classList.contains("tween-frame")) {
-        //     return ;
-        // }
-        // if (frameElement.classList.contains("morph-frame")) {
-        //     return ;
-        // }
-
-        // add frame
-        // Util
-        //     .$timeline
-        //     .dropKeyFrame(frameElement);
-
-        const x = event.offsetX - Util.$offsetLeft;
-        const y = event.offsetY - Util.$offsetTop;
-
-        const endFrame = layer.getEndFrame(frame + 1);
-
-        // const join = {
-        //     "start": null,
-        //     "end": null
-        // };
-
-        // const characters = layer._$characters;
-        // for (let idx = 0; idx < characters.length; ++idx) {
-        //
-        //     const character = characters[idx];
-        //     if (character.libraryId !== libraryId) {
-        //         continue;
-        //     }
-        //
-        //     switch (true) {
-        //
-        //         case frame > 1 && character.endFrame === frame:
-        //             join.start = character;
-        //             break;
-        //
-        //         case character.startFrame === endFrame:
-        //             join.end = character;
-        //             break;
-        //
-        //     }
-        // }
-
-        const place = {
-            "frame": frame,
-            "matrix": [1, 0, 0, 1, x / Util.$zoomScale, y / Util.$zoomScale],
-            "colorTransform": [1, 1, 1, 1, 0, 0, 0, 0],
-            "blendMode": "normal",
-            "filter": [],
-            "depth": layer._$characters.length
-        };
-
-        let character = null;
-        // if (join.start) {
-        //     character = join.start;
-        //     character.endFrame = endFrame;
-        // }
-        //
-        // if (join.end) {
-        //
-        //     if (character) {
-        //
-        //         character.endFrame = join.end.endFrame;
-        //
-        //         for (let [frame, place] of join.end._$places) {
-        //             character.setPlace(frame, place);
-        //         }
-        //
-        //         layer.deleteCharacter(join.end.id);
-        //
-        //     } else {
-        //
-        //         character = join.end;
-        //         character.startFrame = frame;
-        //
-        //     }
-        // }
-
-        // new character
-        if (!character) {
-
-            character = new Character();
-            character.libraryId  = libraryId;
-            character.startFrame = frame;
-            character.endFrame   = endFrame;
-
-            if (instance.type === "container") {
-                place.loop = Util.$getDefaultLoopConfig();
+            const instance = workSpace.getLibrary(libraryId);
+            if (!instance || instance.id === scene.id) {
+                continue;
             }
 
-            character.setPlace(frame, place);
+            switch (instance.type) {
 
-            let width = character.width;
-            if (!width) {
-                width = 10;
+                case "sound":
+                    soundIds.push(libraryId);
+                    break;
+
+                case "folder":
+                    instance.getInstanceIds(instanceIds);
+                    break;
+
+                default:
+                    instanceIds.push(libraryId);
+                    break;
+
             }
-
-            let height = character.height;
-            if (!height) {
-                height = 10;
-            }
-
-            const bounds = character.getBounds();
-            place.matrix[4] -= bounds.xMin + width  / 2;
-            place.matrix[5] -= bounds.yMin + height / 2;
-
-            // added
-            layer.addCharacter(character);
-            this.appendCharacter(character, frame, layerId);
-
-        } else {
-
-            if (instance.type === "container") {
-                place.loop = Util.$getDefaultLoopConfig();
-            }
-
-            // add place
-            character.setPlace(frame, place);
-
-            let width = character.width;
-            if (!width) {
-                width = 10;
-            }
-
-            let height = character.height;
-            if (!height) {
-                height = 10;
-            }
-
-            const bounds = character.getBounds();
-            place.matrix[4] -= bounds.xMin + width  / 2;
-            place.matrix[5] -= bounds.yMin + height / 2;
 
         }
 
+        const frame = Util.$timelineFrame.currentFrame;
+
+        // サウンドを登録
+        const sounds = scene.getSound(frame);
+        for (let idx = 0; idx < soundIds.length; ++idx) {
+
+            const instance = workSpace.getLibrary(soundIds[idx]);
+
+            sounds.push({
+                "characterId": instance.id,
+                "name":        instance.name,
+                "volume":      100,
+                "autoPlay":    false
+            });
+
+        }
+
+        // 表示を更新
+        if (soundIds.length) {
+            Util.$soundController.createSoundElements();
+        }
+
+        // 座標
+        const x = event.offsetX - Util.$offsetLeft;
+        const y = event.offsetY - Util.$offsetTop;
+
+        // スクリーンにアイテムを配置
+        const location = layer.adjustmentLocation(frame);
+        const endFrame = location.endFrame;
+        for (let idx = 0; idx < instanceIds.length; ++idx) {
+
+            const libraryId = instanceIds[idx];
+
+            const join = {
+                "start": null,
+                "end": null
+            };
+
+            const characters = layer._$characters;
+            for (let idx = 0; idx < characters.length; ++idx) {
+
+                const character = characters[idx];
+                if (character.libraryId !== libraryId) {
+                    continue;
+                }
+
+                switch (true) {
+
+                    case frame > 1 && character.endFrame === frame:
+                        join.start = character;
+                        break;
+
+                    case character.startFrame === endFrame:
+                        join.end = character;
+                        break;
+
+                }
+            }
+
+            const instance = workSpace.getLibrary(libraryId);
+            const place = {
+                "frame": frame,
+                "matrix": [1, 0, 0, 1, x / Util.$zoomScale, y / Util.$zoomScale],
+                "colorTransform": [1, 1, 1, 1, 0, 0, 0, 0],
+                "blendMode": "normal",
+                "filter": [],
+                "depth": layer._$characters.length
+            };
+
+            // MovieClipの場合はループ設定
+            if (instance.type === "container") {
+                place.loop = Util.$getDefaultLoopConfig();
+            }
+
+            let character = null;
+            if (join.start) {
+                character = join.start;
+                character.endFrame = endFrame;
+            }
+
+            if (join.end) {
+
+                if (character) {
+
+                    character.endFrame = join.end.endFrame;
+
+                    for (let [frame, place] of join.end._$places) {
+                        character.setPlace(frame, place);
+                    }
+
+                    layer.deleteCharacter(join.end.id);
+
+                } else {
+
+                    character = join.end;
+                    character.startFrame = frame;
+
+                }
+            }
+
+            // new character
+            if (!character) {
+
+                character = new Character();
+                character.libraryId  = libraryId;
+                character.startFrame = frame;
+                character.endFrame   = endFrame;
+
+                character.setPlace(frame, place);
+
+                let width = character.width;
+                if (!width) {
+                    width = 10;
+                }
+
+                let height = character.height;
+                if (!height) {
+                    height = 10;
+                }
+
+                const bounds = character.getBounds();
+                place.matrix[4] -= bounds.xMin + width  / 2;
+                place.matrix[5] -= bounds.yMin + height / 2;
+
+                // added
+                layer.addCharacter(character);
+                layer.reloadStyle();
+
+            } else {
+
+                // add place
+                character.setPlace(frame, place);
+
+                let width = character.width;
+                if (!width) {
+                    width = 10;
+                }
+
+                let height = character.height;
+                if (!height) {
+                    height = 10;
+                }
+
+                const bounds = character.getBounds();
+                place.matrix[4] -= bounds.xMin + width  / 2;
+                place.matrix[5] -= bounds.yMin + height / 2;
+
+            }
+        }
+
         // 描画リセット
-        scene.changeFrame(frame);
-
-        // param clear
-        if (Util.$controller._$libraryTarget) {
-
-            Util
-                .$controller
-                ._$libraryTarget
-                .classList
-                .remove("active");
-
-            Util
-                .$controller
-                ._$libraryTarget = null;
-
+        if (instanceIds.length) {
+            scene.changeFrame(frame);
         }
     }
 

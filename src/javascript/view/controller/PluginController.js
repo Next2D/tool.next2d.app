@@ -297,6 +297,10 @@ class PluginController
      */
     deleteCommand (event)
     {
+        if (Util.$keyLock) {
+            return ;
+        }
+
         // 削除キー以外はスキップ
         switch (event.code) {
 

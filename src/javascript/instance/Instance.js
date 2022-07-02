@@ -310,6 +310,56 @@ class Instance
     getBounds () {}
 
     /**
+     * @description ライブラリからの削除処理、配置先からも削除を行う
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    remove ()
+    {
+        const workSpace = Util.$currentWorkSpace();
+        for (let instance of workSpace._$libraries.values()) {
+
+            if (instance.type !== "container") {
+                continue;
+            }
+
+            for (let layer of instance._$layers.values()) {
+
+                const characters = layer._$characters;
+                for (let idx = 0; idx < characters.length; ++idx) {
+
+                    const character = characters[idx];
+                    if (this.id === character.libraryId) {
+                        // 登録先のレイヤーから削除
+                        layer.deleteCharacter(character.id);
+                    }
+                }
+            }
+
+            if (instance._$sounds.size) {
+                for (const [frame, sounds] of instance._$sounds) {
+
+                    const pool = [];
+                    for (let idx = 0; idx < sounds.length; ++idx) {
+
+                        const sound = sounds[idx];
+                        if (this.id === sound.characterId) {
+                            continue;
+                        }
+
+                        pool.push(sound);
+                    }
+
+                    // 削除対象以外を再登録
+                    instance._$sounds.set(frame, pool);
+                }
+            }
+        }
+    }
+
+    /**
      * @return {HTMLImageElement}
      */
     get preview ()
@@ -354,7 +404,7 @@ class Instance
         );
 
         if (image.height !== height) {
-            const height = Math.min(150, image.height);
+            const height  = Math.min(150, image.height);
             image.width  *= height / image.height;
             image.height  = height;
         }

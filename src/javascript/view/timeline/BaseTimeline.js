@@ -75,7 +75,7 @@ class BaseTimeline
     }
 
     /**
-     * @description 現在の状態をundo用に保存
+     * @description undo用にデータを内部保管する
      *
      * @return {void}
      * @method
@@ -83,10 +83,13 @@ class BaseTimeline
      */
     save ()
     {
-        // セーブ
-        Util
-            .$currentWorkSpace()
-            .temporarilySaved();
+        if (!this._$saved) {
+            this._$saved = true;
+
+            Util
+                .$currentWorkSpace()
+                .temporarilySaved();
+        }
     }
 
     /**
