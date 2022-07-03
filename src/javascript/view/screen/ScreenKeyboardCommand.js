@@ -76,13 +76,6 @@ class ScreenKeyboardCommand extends KeyboardCommand
             return ;
         }
 
-        if (Util.$tools.activeTool) {
-            Util
-                .$tools
-                .activeTool
-                .dispatchEvent(EventType.END);
-        }
-
         // 直前のツールをキャッシュ
         this._$prevTool = Util.$tools.activeTool;
 

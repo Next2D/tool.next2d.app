@@ -284,7 +284,13 @@
     margin-right        : 4px;
 }
 
-#user-setting .user-setting-container
+#user-setting .user-setting-container-row
+{
+    display : flex;
+    margin  : 5px;
+}
+
+#user-setting .user-setting-container-column
 {
     display          : flex;
     flex-direction   : column;

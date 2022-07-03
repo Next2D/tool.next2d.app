@@ -33,19 +33,119 @@ class ZoomTool extends BaseTool
             this.changeNodeEvent(false);
         });
 
-        this.addEventListener(EventType.MOUSE_DOWN, () =>
+        this.addEventListener(EventType.MOUSE_DOWN, (event) =>
         {
-            Util.$setCursor(this._$cursor);
+            this.startRect(event);
         });
 
-        this.addEventListener(EventType.MOUSE_MOVE, () =>
+        this.addEventListener(EventType.MOUSE_MOVE, (event) =>
         {
-            Util.$setCursor(this._$cursor);
+            this.moveRect(event);
         });
 
-        this.addEventListener(EventType.MOUSE_UP, () =>
+        this.addEventListener(EventType.MOUSE_UP, (event) =>
         {
-            Util.$setCursor(this._$cursor);
+            this.executeZoom(event);
         });
+    }
+
+    /**
+     * @description ズーム範囲設定を起動
+     *
+     * @param  {MouseEvent} event
+     * @return {void}
+     * @method
+     * @public
+     */
+    startRect (event)
+    {
+        this.active = true;
+        Util.$setCursor(this._$cursor);
+
+        this.pageX = event.pageX;
+        this.pageY = event.pageY;
+
+        const element = document.getElementById("stage-rect");
+        element.style.left    = `${event.pageX}px`;
+        element.style.top     = `${event.pageY}px`;
+        element.style.width   = "0px";
+        element.style.height  = "0px";
+        element.style.display = "";
+    }
+
+    /**
+     * @description ズーム範囲設定の矩形を描画
+     *
+     * @param  {MouseEvent} event
+     * @return {void}
+     * @method
+     * @public
+     */
+    moveRect (event)
+    {
+        Util.$setCursor(this._$cursor);
+        if (!this.active) {
+            return ;
+        }
+
+        const x = event.pageX;
+        const y = event.pageY;
+
+        const element = document.getElementById("stage-rect");
+
+        if (this.pageX > x) {
+            element.style.left = `${x}px`;
+        }
+
+        if (this.pageY > y) {
+            element.style.top = `${y}px`;
+        }
+
+        element.style.width  = `${Math.abs(x - this.pageX)}px`;
+        element.style.height = `${Math.abs(y - this.pageY)}px`;
+    }
+
+    /**
+     * @description ズーム範囲でズームを実行
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    executeZoom ()
+    {
+        this.active = false;
+        Util.$setCursor(this._$cursor);
+
+        const element = document.getElementById("stage-rect");
+        element.style.display = "none";
+
+        const width   = parseFloat(element.style.width);
+        const height  = parseFloat(element.style.height);
+        if (!width || !height) {
+            return ;
+        }
+
+        const workSpace = Util.$currentWorkSpace();
+
+        const scale = Math.max(
+            workSpace.stage.width / width,
+            workSpace.stage.height / height
+        );
+
+        Util.$zoomScale = 0;
+        Util.$zoom.execute(scale);
+
+        // ハンドツールを起動
+        if (Util.$tools.activeTool) {
+            Util
+                .$tools
+                .activeTool
+                .dispatchEvent(EventType.END);
+        }
+
+        const tool = Util.$tools.getDefaultTool("zoom");
+        tool.dispatchEvent(EventType.START);
+        Util.$tools.activeTool = tool;
     }
 }

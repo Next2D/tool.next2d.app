@@ -11,20 +11,6 @@ class HandTool extends BaseTool
     constructor ()
     {
         super("hand");
-
-        /**
-         * @type {number}
-         * @default 0
-         * @private
-         */
-        this._$pageX = 0;
-
-        /**
-         * @type {number}
-         * @default 0
-         * @private
-         */
-        this._$pageY = 0;
     }
 
     /**
@@ -36,10 +22,11 @@ class HandTool extends BaseTool
      */
     initialize ()
     {
+        this.setCursor("grab");
+
         // 開始イベント
         this.addEventListener(EventType.START, () =>
         {
-            this.setCursor("grab");
             Util.$setCursor(this._$cursor);
             this.changeNodeEvent(false);
         });
@@ -54,12 +41,12 @@ class HandTool extends BaseTool
 
             // 画面をスクロール
             const element = document.getElementById("screen");
-            element.scrollLeft += this._$pageX - event.pageX;
-            element.scrollTop  += this._$pageY - event.pageY;
+            element.scrollLeft += this.pageX - event.pageX;
+            element.scrollTop  += this.pageY - event.pageY;
 
             // 値を更新
-            this._$pageX = event.pageX;
-            this._$pageY = event.pageY;
+            this.pageX = event.pageX;
+            this.pageY = event.pageY;
         });
 
         this.addEventListener(EventType.MOUSE_UP, () =>
@@ -76,8 +63,8 @@ class HandTool extends BaseTool
             this.setCursor("grabbing");
             Util.$setCursor(this._$cursor);
 
-            this._$pageX = event.pageX;
-            this._$pageY = event.pageY;
+            this.pageX = event.pageX;
+            this.pageY = event.pageY;
         });
     }
 }
