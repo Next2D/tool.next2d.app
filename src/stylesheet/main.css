@@ -42,6 +42,19 @@ main
     pointer-events : none;
 }
 
+#main input[type="number"]::-webkit-outer-spin-button,
+#main input[type="number"]::-webkit-inner-spin-button
+{
+    -webkit-appearance: none;
+    appearance: none;
+    margin: 0;
+}
+
+#main input[type="number"]
+{
+    -moz-appearance:textfield;
+}
+
 #main input:focus,
 #main select:focus,
 #main textarea:focus

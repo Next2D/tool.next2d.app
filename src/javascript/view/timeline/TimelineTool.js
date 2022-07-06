@@ -1496,7 +1496,7 @@ class TimelineTool extends BaseTimeline
         const currentLastFrame = Util.$timelineHeader.lastFrame;
 
         // ヘッダーを追加して、最終フレーム数を増加させる
-        Util.$timelineHeader.create(false);
+        Util.$timelineHeader.create();
 
         // 表示されてるレイヤー全てにタイムラインを追加
         const children = document

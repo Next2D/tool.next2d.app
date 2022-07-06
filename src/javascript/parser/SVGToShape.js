@@ -111,25 +111,25 @@ class SVGToShape
             const id = workSpace.nextLibraryId;
 
             const shape = workSpace.addLibrary(
-                Util.$controller.createContainer("shape", `Shape_${id}`, id)
+                Util
+                    .$libraryController
+                    .createInstance("shape", `Shape_${id}`, id)
             );
 
             const layer = new Layer();
             layer.name  = `Layer_${movie_clip._$layers.size}`;
-            layer
-                ._$frame
-                .setClasses(1, [
-                    "key-frame"
-                ]);
 
             movie_clip.setLayer(movie_clip._$layers.size, layer);
 
             const character = new Character();
             character.libraryId  = shape.id;
-            character.startFrame = 1;
-            character.endFrame   = layer.getEndFrame(2);
-            character.setPlace(1, {
-                "frame": 1,
+
+            const location = layer.adjustmentLocation(1);
+            character.startFrame = location.startFrame;
+            character.endFrame   = location.endFrame;
+
+            character.setPlace(location.startFrame, {
+                "frame": location.startFrame,
                 "matrix": [1, 0, 0, 1, 0, 0],
                 "colorTransform": [1, 1, 1, 1, 0, 0, 0, 0],
                 "blendMode": "normal",

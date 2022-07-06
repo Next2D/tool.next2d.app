@@ -101,6 +101,7 @@ Util.$currentLanguage           = null;
 Util.$shapePointerColor         = "#009900";
 Util.$shapeLinkedPointerColor   = "#ffa500";
 Util.$isMac                     = window.navigator.userAgent.indexOf("Mac") > -1;
+Util.$shortcut                  = new Map();
 
 const canvas     = document.createElement("canvas");
 canvas.width     = 1;
@@ -141,7 +142,7 @@ Util.$emptyImage.draggable = false;
  * @return {number}
  * @static
  */
-Util.$clamp = function (value, min, max)
+Util.$clamp = (value, min, max) =>
 {
     const number = +value;
     return Math.min(Math.max(min, isNaN(number) ? 0 : number), max);
@@ -152,7 +153,7 @@ Util.$clamp = function (value, min, max)
  * @return {boolean}
  * @static
  */
-Util.$isArray = function (source)
+Util.$isArray = (source) =>
 {
     return Array.isArray(source);
 };
@@ -162,7 +163,7 @@ Util.$isArray = function (source)
  * @return {void}
  * @static
  */
-Util.$setCursor = function (value = "auto")
+Util.$setCursor = (value = "auto") =>
 {
     if (Util.$currentCursor !== value) {
         Util.$currentCursor = value;
@@ -248,12 +249,12 @@ Util.$fadeIn = (event) =>
     element.setAttribute("class", "fadeIn");
 
     // 1.5秒で自動的に消えるようタイマーをセット
-    element.dataset.timerId = setTimeout(function ()
+    element.dataset.timerId = setTimeout(() =>
     {
-        if (!this.classList.contains("fadeOut")) {
-            this.setAttribute("class", "fadeOut");
+        if (!element.classList.contains("fadeOut")) {
+            element.setAttribute("class", "fadeOut");
         }
-    }.bind(element), 1500);
+    }, 1500);
 };
 
 /**
@@ -279,7 +280,7 @@ Util.$fadeOut = () =>
  * @return {void}
  * @static
  */
-Util.$endMenu = function (ignore)
+Util.$endMenu = (ignore) =>
 {
     const names = [
         "timeline-menu",
@@ -319,7 +320,7 @@ Util.$endMenu = function (ignore)
  * @return {void}
  * @static
  */
-Util.$changeScene = function (event)
+Util.$changeScene = (event) =>
 {
     const scenes = document
         .getElementById("scene-name-menu-list");
@@ -357,7 +358,7 @@ Util.$changeScene = function (event)
  * @return {void}
  * @static
  */
-Util.$loadSaveData = function ()
+Util.$loadSaveData = () =>
 {
     const binary = localStorage
         .getItem(`${Util.PREFIX}@${Util.DATABASE_NAME}`);
@@ -430,7 +431,7 @@ Util.$loadSaveData = function ()
  * @returns {Float32Array}
  * @static
  */
-Util.$multiplicationMatrix = function(a, b)
+Util.$multiplicationMatrix = (a, b) =>
 {
     return new Float32Array([
         a[0] * b[0] + a[2] * b[1],
@@ -443,120 +444,173 @@ Util.$multiplicationMatrix = function(a, b)
 };
 
 /**
+ * @description 初期のショートカットを登録
+ *
+ * @return {void}
+ * @method
+ * @static
+ */
+Util.$createShortcut = () =>
+{
+    // スペースキーを無効化(キーボード入力時は有効にする)
+    Util.$shortcut.set("Space", (event) =>
+    {
+        if (!Util.$keyLock) {
+            event.preventDefault();
+            return false;
+        }
+    });
+
+    // 移動キーを無効化(キーボード入力時は有効にする)
+    const moveKeys = [
+        "ArrowRight",
+        "ArrowLeft",
+        "ArrowDown",
+        "ArrowUp"
+    ];
+
+    for (let idx = 0; idx < moveKeys.length; ++idx) {
+        Util.$shortcut.set(moveKeys[idx], (event) =>
+        {
+            if (!Util.$keyLock) {
+                event.preventDefault();
+                return false;
+            }
+        });
+    }
+
+    // 保存コマンド
+    Util.$shortcut.set("KeyS", (event) =>
+    {
+        if (!Util.$ctrlKey) {
+            return ;
+        }
+
+        event.preventDefault();
+        Util.$autoSave();
+        return false;
+    });
+
+    // undoコマンド
+    Util.$shortcut.set("KeyZ", (event) =>
+    {
+        if (!Util.$ctrlKey) {
+            return ;
+        }
+
+        event.preventDefault();
+
+        // reset
+        /**
+         * @type {ArrowTool}
+         */
+        const tool = Util.$tools.getDefaultTool("arrow");
+        tool.clear();
+        Util.$tools.reset();
+
+        if (Util.$currentWorkSpace()) {
+            if (event.shiftKey) {
+                Util
+                    .$currentWorkSpace()
+                    .redo();
+            } else {
+                Util
+                    .$currentWorkSpace()
+                    .undo();
+            }
+        }
+
+        return false;
+    });
+};
+
+/**
+ * @description 画面全体のショートカットを登録
+ *
+ * @param  {string} code
+ * @param  {function} callback
+ * @return {void}
+ * @method
+ * @static
+ */
+Util.$setShortcut = (code, callback) =>
+{
+    Util.$shortcut.set(code, callback);
+};
+
+/**
+ * @description ショートカットを削除
+ *
+ * @param {string} code
+ * @return {void}
+ * @method
+ * @static
+ */
+Util.$deleteShortcut = (code) =>
+{
+    if (!Util.$shortcut.has(code)) {
+        return ;
+    }
+    Util.$shortcut.delete(code);
+};
+
+/**
  * @param  {KeyboardEvent} event
  * @return {boolean}
  */
-Util.$keyCommandFunction = function (event)
+Util.$executeKeyCommand = (event) =>
 {
     Util.$shiftKey = event.shiftKey;
     Util.$ctrlKey  = event.ctrlKey || event.metaKey;
     Util.$altKey   = event.altKey || event.metaKey;
 
-    switch (event.code) {
-
-        case "Space":
-            if (!Util.$keyLock) {
-                event.preventDefault();
-                return false;
-            }
-            break;
-
-        case "ArrowRight":
-        case "ArrowLeft":
-        case "ArrowDown":
-        case "ArrowUp":
-            if (!Util.$keyLock) {
-                event.preventDefault();
-                return false;
-            }
-            break;
-
-        case "KeyS": // save
-            if (event.ctrlKey && !event.metaKey
-                || !event.ctrlKey && event.metaKey
-            ) {
-                event.preventDefault();
-                Util.$autoSave();
-                return false;
-            }
-            break;
-
-        case "KeyZ": // undo
-            if (event.ctrlKey && !event.metaKey
-                || !event.ctrlKey && event.metaKey
-            ) {
-                event.preventDefault();
-
-                // reset
-                /**
-                 * @type {ArrowTool}
-                 */
-                const tool = Util.$tools.getDefaultTool("arrow");
-                tool.clear();
-                Util.$tools.reset();
-
-                if (Util.$currentWorkSpace()) {
-                    if (event.shiftKey) {
-                        Util
-                            .$currentWorkSpace()
-                            .redo();
-                    } else {
-                        Util
-                            .$currentWorkSpace()
-                            .undo();
-                    }
-                }
-
-                return false;
-            }
-            break;
-        //
-        // case "Enter":
-        //     if (event.ctrlKey && !event.metaKey // windows
-        //         || !event.ctrlKey && event.metaKey // mac
-        //     ) {
-        //
-        //         if (Util.$previewMode) {
-        //             return false;
-        //         }
-        //
-        //         if (!Util.$keyLock || Util.$keyLock && Util.$activeScript) {
-        //             event.preventDefault();
-        //             Util.$showPreview();
-        //             return false;
-        //         }
-        //
-        //     }
-        //
-        //     if (!Util.$keyLock && !Util.$activeScript) {
-        //
-        //         event.preventDefault();
-        //
-        //         if (Util.$timeline._$stopFlag) {
-        //             Util.$timeline.play();
-        //         } else {
-        //             Util.$timeline.stop();
-        //         }
-        //
-        //     }
-        //     break;
-        //
-        // case "Escape":
-        //     if (Util.$previewMode) {
-        //         event.preventDefault();
-        //         Util.$hidePreview();
-        //         return false;
-        //     }
-        //     break;
-
+    if (Util.$shortcut.has(event.code)) {
+        Util.$shortcut.get(event.code)(event);
     }
+    // case "Enter":
+    //     if (event.ctrlKey && !event.metaKey // windows
+    //         || !event.ctrlKey && event.metaKey // mac
+    //     ) {
+    //
+    //         if (Util.$previewMode) {
+    //             return false;
+    //         }
+    //
+    //         if (!Util.$keyLock || Util.$keyLock && Util.$activeScript) {
+    //             event.preventDefault();
+    //             Util.$showPreview();
+    //             return false;
+    //         }
+    //
+    //     }
+    //
+    //     if (!Util.$keyLock && !Util.$activeScript) {
+    //
+    //         event.preventDefault();
+    //
+    //         if (Util.$timeline._$stopFlag) {
+    //             Util.$timeline.play();
+    //         } else {
+    //             Util.$timeline.stop();
+    //         }
+    //
+    //     }
+    //     break;
+    //
+    // case "Escape":
+    //     if (Util.$previewMode) {
+    //         event.preventDefault();
+    //         Util.$hidePreview();
+    //         return false;
+    //     }
+    //     break;
 };
 
 /**
  * @return {void}
  * @static
  */
-Util.$initialize = function ()
+Util.$initialize = () =>
 {
     // end event
     window.removeEventListener("DOMContentLoaded", Util.$initialize);
@@ -629,7 +683,8 @@ Util.$initialize = function ()
     Util.$loadSaveData();
 
     // added event
-    window.addEventListener("keydown", Util.$keyCommandFunction);
+    Util.$createShortcut();
+    window.addEventListener("keydown", Util.$executeKeyCommand);
 
     // key reset
     window.addEventListener("keyup", () =>
@@ -701,7 +756,7 @@ window.addEventListener("DOMContentLoaded", Util.$initialize);
  * @return {void}
  * @static
  */
-Util.$showPreview = function ()
+Util.$showPreview = () =>
 {
     Util.$javaScriptEditor.save();
 
@@ -747,7 +802,7 @@ Util.$showPreview = function ()
 
     loader
         .contentLoaderInfo
-        .addEventListener(Event.COMPLETE, function (event)
+        .addEventListener(Event.COMPLETE, (event) =>
         {
             const loaderInfo = event.currentTarget;
 
@@ -818,7 +873,7 @@ Util.$showPreview = function ()
  * @return {void}
  * @static
  */
-Util.$hidePreview = function ()
+Util.$hidePreview = () =>
 {
     const stopElement = document.getElementById("preview-stop");
     stopElement.removeEventListener("click", Util.$hidePreview);
@@ -842,7 +897,7 @@ Util.$hidePreview = function ()
  * @return {string}
  * @static
  */
-Util.$toJSON = function ()
+Util.$toJSON = () =>
 {
     // cache WorkSpaceId
     const activeWorkSpaceId = Util.$activeWorkSpaceId;
@@ -877,7 +932,7 @@ Util.$toJSON = function ()
  * @return {void}
  * @static
  */
-Util.$autoSave = function ()
+Util.$autoSave = () =>
 {
     Util.$javaScriptEditor.save();
 
@@ -903,7 +958,7 @@ Util.$autoSave = function ()
  * @return {WorkSpace}
  * @static
  */
-Util.$currentWorkSpace = function ()
+Util.$currentWorkSpace = () =>
 {
     return Util.$workSpaces[Util.$activeWorkSpaceId];
 };
@@ -912,7 +967,7 @@ Util.$currentWorkSpace = function ()
  * @return {void}
  * @static
  */
-Util.$initializeEnd = function ()
+Util.$initializeEnd = () =>
 {
     Util.$readStatus++;
     if (Util.$readStatus === Util.$readEnd) {
@@ -929,7 +984,7 @@ Util.$initializeEnd = function ()
  * @param {number} id
  * @static
  */
-Util.$changeWorkSpace = function (id)
+Util.$changeWorkSpace = (id) =>
 {
     // reset
     Util.$useIds.clear();
@@ -951,7 +1006,7 @@ Util.$unZlibWorker = new Worker(URL.createObjectURL(
  * @param {MessageEvent} event
  * @public
  */
-Util.$unZlibWorker.onmessage = function (event)
+Util.$unZlibWorker.onmessage = (event) =>
 {
     if (event.data.type === "n2d") {
 
@@ -993,7 +1048,7 @@ Util.$zlibWorker = new Worker(URL.createObjectURL(
  * @param {MessageEvent} event
  * @public
  */
-Util.$zlibWorker.onmessage = function (event)
+Util.$zlibWorker.onmessage = (event) =>
 {
     const type = event.data.type;
     switch (type) {
@@ -1079,7 +1134,7 @@ Util.$unzipWorkerActive = false;
  * @return {IDBOpenDBRequest}
  * @static
  */
-Util.$launchDB = function ()
+Util.$launchDB = () =>
 {
     const request = indexedDB.open(
         `${Util.PREFIX}@${Util.DATABASE_NAME}`
@@ -1101,7 +1156,7 @@ Util.$launchDB = function ()
  * @return void
  * @static
  */
-Util.$unzipHandler = function (event)
+Util.$unzipHandler = (event) =>
 {
     const worker = event.target;
 
@@ -1200,7 +1255,7 @@ Util.$parserWorkerWait = false;
  * @return void
  * @static
  */
-Util.$unlzmaHandler = function (event)
+Util.$unlzmaHandler = (event) =>
 {
     // event end
     event.target.onmessage = null;
@@ -1237,7 +1292,7 @@ Util.$unlzmaHandler = function (event)
  * @return {string|null}
  * @static
  */
-Util.$getImageType = function (data)
+Util.$getImageType = (data) =>
 {
     switch (true) {
 
@@ -1270,7 +1325,7 @@ Util.$getImageType = function (data)
  * @return {void}
  * @static
  */
-Util.$jpegDecodeHandler = function ()
+Util.$jpegDecodeHandler = () =>
 {
     const image  = this.image;
     const width  = image.width;
@@ -1339,9 +1394,8 @@ Util.$texts      = new Map();
  * @return void
  * @static
  */
-Util.$parserHandler = function (event)
+Util.$parserHandler = (event) =>
 {
-
     const worker = event.target;
     switch (event.data.infoKey) {
 
@@ -1417,7 +1471,7 @@ Util.$parserHandler = function (event)
 
                             }
 
-                            layerArray.sort(function(a, b)
+                            layerArray.sort((a, b) =>
                             {
                                 switch (true) {
 
@@ -2129,7 +2183,7 @@ Util.$parserHandler = function (event)
  * @method
  * @static
  */
-Util.$boundsMatrix = function (bounds, matrix)
+Util.$boundsMatrix = (bounds, matrix) =>
 {
     const x0 = bounds.xMax * matrix[0] + bounds.yMax * matrix[2] + matrix[4];
     const x1 = bounds.xMax * matrix[0] + bounds.yMin * matrix[2] + matrix[4];
@@ -2154,7 +2208,7 @@ Util.$boundsMatrix = function (bounds, matrix)
  * @method
  * @static
  */
-Util.$intToRGB = function (color)
+Util.$intToRGB = (color) =>
 {
     return {
         "R": (color & 0xff0000) >> 16,
@@ -2172,7 +2226,7 @@ Util.$intToRGB = function (color)
  * @param  {array}  curves
  * @return {object}
  */
-Util.$getCurvePoint = function (d, sx, sy, ex, ey, curves)
+Util.$getCurvePoint = (d, sx, sy, ex, ey, curves) =>
 {
     const targets = [];
     for (let idx = 0; idx < curves.length; ++idx) {
@@ -2235,7 +2289,7 @@ Util.$getCurvePoint = function (d, sx, sy, ex, ey, curves)
  * @method
  * @static
  */
-Util.$copyContainer = function (object, dup)
+Util.$copyContainer = (object, dup) =>
 {
     const workSpace       = Util.$currentWorkSpace();
     const targetWorkSpace = Util.$workSpaces[Util.$copyWorkSpaceId];
@@ -2284,7 +2338,7 @@ Util.$copyContainer = function (object, dup)
  * @return {void}
  * @static
  */
-Util.$clearShapePointer = function ()
+Util.$clearShapePointer = () =>
 {
     const element  = document.getElementById("stage-area");
     const children = element.children;
@@ -2304,7 +2358,7 @@ Util.$clearShapePointer = function ()
  * @return {void}
  * @static
  */
-Util.$clearPenPointer = function ()
+Util.$clearPenPointer = () =>
 {
     const element  = document.getElementById("stage-area");
     const children = element.children;
@@ -2324,7 +2378,7 @@ Util.$clearPenPointer = function ()
  * @return {object}
  * @static
  */
-Util.$getDefaultLoopConfig = function ()
+Util.$getDefaultLoopConfig = () =>
 {
     return {
         "type": Util.DEFAULT_LOOP,
@@ -2339,9 +2393,8 @@ Util.$getDefaultLoopConfig = function ()
  * @return {number}
  * @static
  */
-Util.$getFrame = function (place, total_frame)
+Util.$getFrame = (place, total_frame) =>
 {
-
     const startFrame     = place.startFrame ? place.startFrame : 1;
     const referenceFrame = place.loop ? place.loop.referenceFrame : 0;
 

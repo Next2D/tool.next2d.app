@@ -184,7 +184,7 @@ class TimelineHeader extends BaseTimeline
      * @method
      * @public
      */
-    create (build = true)
+    create (build = false)
     {
         // 描画エリアのサイズをセット
         const element = document
@@ -222,14 +222,14 @@ class TimelineHeader extends BaseTimeline
         let sec   = Math.max(1, (frame / 24 | 0) + 1);
         let limit = Math.ceil(window.parent.screen.width * 2.5
             + Util.$currentWorkSpace().scene.totalFrame
-            * (TimelineTool.DEFAULT_TIMELINE_WIDTH + 1) // +1はborder solidの1px
+            * (TimelineTool.DEFAULT_TIMELINE_WIDTH + 1)// +1はborder solidの1px
         ) - adjustmentWidth;
 
-        while (limit > 0) {
+        for (;;) {
 
             const htmlTag = `
 <div class="frame-header-parent" data-frame="${frame}">
-    <div class="${frame % 5 === 0 ? "frame-border-end" : "frame-border"}" data-frame="${frame}">${frame % fps === 0 && fps > 4 ? sec++ + "s" : ""}</div>
+    <div class="frame-sec ${frame % 5 === 0 ? "frame-border-end" : "frame-border"}" data-frame="${frame}">${frame % fps === 0 && fps > 4 ? sec++ + "s" : ""}</div>
     <div id="frame-label-marker-${frame}" class="frame-border-box" data-type="marker" data-frame="${frame}"></div>
     <div id="frame-label-action-${frame}" class="frame-border-box" data-type="action" data-frame="${frame}"></div>
     <div id="frame-label-sound-${frame}" class="frame-border-box" data-type="sound" data-frame="${frame}"></div>
@@ -280,6 +280,10 @@ class TimelineHeader extends BaseTimeline
 
             // +1はborder solidの1px
             limit -= TimelineTool.DEFAULT_TIMELINE_WIDTH + 1;
+            if (0 >= limit) {
+                break;
+            }
+
             if (limit > 0) {
                 frame++;
             }

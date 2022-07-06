@@ -486,9 +486,9 @@ class TimelineLayer extends BaseTimeline
      * @method
      * @public
      */
-    create (current_frame = 1, layer_id = -1)
+    create (current_frame = 0, layer_id = -1)
     {
-        let frame = current_frame;
+        let frame = current_frame + 1;
 
         const scene   = Util.$currentWorkSpace().scene;
         const layerId = layer_id === -1 ? scene._$layerId : layer_id;
@@ -713,7 +713,7 @@ class TimelineLayer extends BaseTimeline
         }
 
         let htmlTag = "";
-        while (lastFrame > frame) {
+        while (lastFrame >= frame) {
             htmlTag += `<div class="${frame % 5 !== 0 ? "frame" : "frame frame-pointer"}" data-type="${frame % 5 !== 0 ? "frame" : "frame-pointer"}" data-frame-state="empty" data-layer-id="${layerId}" id="${layerId}-${frame}" data-frame="${frame++}"></div>`;
         }
 

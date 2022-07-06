@@ -238,8 +238,8 @@ class TransformController extends BaseController
     {
         value = Util.$clamp(
             +value,
-            TransformController.MIN_SIZE,
-            TransformController.MAX_SIZE
+            TransformController.MIN_SCALE,
+            TransformController.MAX_SCALE
         );
 
         this.updateX(value);
@@ -259,8 +259,8 @@ class TransformController extends BaseController
     {
         value = Util.$clamp(
             +value,
-            TransformController.MIN_SIZE,
-            TransformController.MAX_SIZE
+            TransformController.MIN_SCALE,
+            TransformController.MAX_SCALE
         );
 
         this.updateY(value);

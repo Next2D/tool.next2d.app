@@ -25,7 +25,7 @@ class Zoom extends BaseScreen
      * @const
      * @static
      */
-    static get MIN_ZOOM_LEVEL ()
+    static get MIN_LEVEL ()
     {
         return 0.25;
     }
@@ -35,7 +35,7 @@ class Zoom extends BaseScreen
      * @const
      * @static
      */
-    static get MAX_ZOOM_LEVEL ()
+    static get MAX_LEVEL ()
     {
         return 5;
     }
@@ -129,13 +129,13 @@ class Zoom extends BaseScreen
     {
         Util.$zoomScale += delta;
         Util.$zoomScale = Math.min(
-            Zoom.MAX_ZOOM_LEVEL,
-            Math.max(Zoom.MIN_ZOOM_LEVEL, Util.$zoomScale)
+            Zoom.MAX_LEVEL,
+            Math.max(Zoom.MIN_LEVEL, Util.$zoomScale)
         );
 
         document
             .getElementById("screen-scale")
-            .value = `${(Util.$zoomScale * 100) | 0}`;
+            .value = `${Util.$zoomScale * 100 | 0}`;
 
         const workSpace = Util.$currentWorkSpace();
 
@@ -145,8 +145,8 @@ class Zoom extends BaseScreen
 
         const stage = document.getElementById("stage");
 
-        const diffW = (width  - parseFloat(stage.style.width))  / 2;
-        const diffH = (height - parseFloat(stage.style.height)) / 2;
+        const moveLeft = (width  - stage.offsetWidth)  / 2;
+        const moveTop  = (height - stage.offsetHeight) / 2;
 
         stage.style.width  = `${width}px`;
         stage.style.height = `${height}px`;
@@ -156,14 +156,29 @@ class Zoom extends BaseScreen
         stageArea.style.height = `${height + window.screen.height}px`;
 
         const screen = document.getElementById("screen");
-        screen.scrollLeft += diffW;
-        screen.scrollTop  += diffH;
+        console.log(
+            screen.scrollLeft,
+            screen.clientWidth,
+            window.screen.width,
+            workSpace.stage.width
+        );
+        screen.scrollLeft += moveLeft;
+        screen.scrollTop  += moveTop;
 
-        Util.$offsetLeft = stage.offsetLeft;
-        Util.$offsetTop  = stage.offsetTop;
-
+        // DisplayObjectのキャッシュを全て削除
+        const frame = Util.$timelineFrame.currentFrame;
         const scene = workSpace.scene;
-        workSpace.scene = scene;
+        for (const layer of scene._$layers.values()) {
+
+            const characters = layer.getActiveCharacter(frame);
+            for (let idx = 0; idx < characters.length; ++idx) {
+                characters[idx]._$image = null;
+            }
+
+        }
+
+        // 再描画
+        scene.changeFrame(frame);
     }
 }
 

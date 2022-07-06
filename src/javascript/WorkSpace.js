@@ -96,12 +96,13 @@ class WorkSpace
      */
     set scene (scene)
     {
+        const init = !this._$scene;
         if (this._$scene) {
             this._$scene.stop();
         }
 
         this._$scene = scene;
-        scene.initialize();
+        scene.initialize(init);
     }
 
     /**

@@ -316,16 +316,17 @@ class LibraryMenu
         // JavaScriptのリストを再読み込み
         Util.$javascriptController.reload();
 
-        // シーンを再読み込み
-        const scene = workSpace.scene;
-        workSpace.scene = scene;
-
         // ライブラリを再読み込み
         Util.$libraryController.reload();
 
         // プレビューを初期化
         Util.$libraryPreview.dispose();
-        
+
+        // シーンを再読み込み
+        workSpace.scene.changeFrame(
+            Util.$timelineFrame.currentFrame
+        );
+
         this._$saved = false;
     }
 
@@ -397,21 +398,11 @@ class LibraryMenu
                 .$libraryController
                 .clearActive();
 
-            /**
-             * @type {ArrowTool}
-             */
-            const tool = Util.$tools.getDefaultTool("arrow");
-            tool.clear();
-
             // JavaScriptのリストを再読み込み
             Util.$javascriptController.reload();
 
             // ライブラリを再読み込み
             Util.$libraryController.reload();
-
-            // シーンを再読み込み
-            const scene = workSpace.scene;
-            workSpace.scene = scene;
         }
 
         this._$saved = false;

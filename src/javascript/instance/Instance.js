@@ -319,6 +319,7 @@ class Instance
     remove ()
     {
         const workSpace = Util.$currentWorkSpace();
+        const scene = workSpace.scene;
         for (let instance of workSpace._$libraries.values()) {
 
             if (instance.type !== "container") {
@@ -327,6 +328,7 @@ class Instance
 
             for (let layer of instance._$layers.values()) {
 
+                let reload = false;
                 const characters = layer._$characters;
                 for (let idx = 0; idx < characters.length; ++idx) {
 
@@ -334,7 +336,13 @@ class Instance
                     if (this.id === character.libraryId) {
                         // 登録先のレイヤーから削除
                         layer.deleteCharacter(character.id);
+                        reload = true;
                     }
+                }
+
+                // 表示中のレイヤーならスタイルを更新
+                if (reload && scene.id === instance.id) {
+                    layer.reloadStyle();
                 }
             }
 

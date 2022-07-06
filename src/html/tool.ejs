@@ -17,7 +17,7 @@
         <input type="color" id="stroke-color" value="#000000" data-detail="{{線のカラー}}">
     </div>
     <div id="tools-stroke-size">
-        <input type="text" id="stroke-size" value="1" data-detail="{{線の太さ}}">
+        <input type="number" id="stroke-size" value="1" data-detail="{{線の太さ}}">
     </div>
     <div class="tools-border"></div>
 
@@ -25,11 +25,11 @@
     <div class="tools-border"></div>
 
     <div id="tools-zoom" class="item" data-mode="tool" data-detail="{{ズームツール}}"></div>
-    <input type="text" id="screen-scale" value="100" data-detail="{{画面の拡大・縮小}}">
+    <input type="number" id="screen-scale" value="100" data-detail="{{画面の拡大・縮小}}">
     <div class="tools-border"></div>
 
     <div id="tools-load" class="item" data-detail="{{プロジェクトデータの読込}}"></div>
-    <input id="tools-load-file-input" type="file" accept=".n2d">
+    <input type="file" id="tools-load-file-input" accept=".n2d">
     <div id="tools-save" class="item" data-detail="{{プロジェクトデータを保存}}"></div>
     <div id="tools-export" class="item" data-detail="{{書き出し}}"></div>
     <div id="tools-save-folder"><a id="save-anchor" href=""></a></div>
@@ -103,6 +103,7 @@
                     <option value="0">Off</option>
                 </select>
             </div>
+            <p></p>
 
             <div class="user-setting-title">
                 <i></i>
@@ -125,6 +126,7 @@
                     <div id="tools-patreon" class="item" data-detail="{{Next2Dを支援する}}"></div>
                 </a>
             </div>
+            <p></p>
 
             <div class="user-setting-container-column">
                 <div>β version: ###BUILD_VERSION###</div>

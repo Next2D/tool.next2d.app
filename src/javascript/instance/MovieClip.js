@@ -111,10 +111,11 @@ class MovieClip extends Instance
     }
 
     /**
+     * @param  {boolean} [init=false]
      * @return {void}
      * @public
      */
-    initialize ()
+    initialize (init = false)
     {
         /**
          * @type {ArrowTool}
@@ -157,7 +158,7 @@ class MovieClip extends Instance
 
         // フレームを登録してヘッダーを再編成
         Util.$timelineFrame.currentFrame = this.currentFrame;
-        Util.$timelineHeader.create();
+        Util.$timelineHeader.create(init);
 
         // init label
         for (const frame of this._$labels.keys()) {
