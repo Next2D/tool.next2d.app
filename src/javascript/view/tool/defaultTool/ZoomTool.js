@@ -133,24 +133,9 @@ class ZoomTool extends BaseTool
             workSpace.stage.height / height,
             Util.$zoomScale
         );
-        console.log(scale);
-
-        // const screen = document.getElementById("screen");
-        //
-        // const w = workSpace.stage.width  * scale;
-        // const h = workSpace.stage.height * scale;
-        // const stage = document.getElementById("stage");
-        //
-        // const diffW  = (w - parseFloat(stage.style.width))  / 2;
-        // const diffH  = (h - parseFloat(stage.style.height)) / 2;
-        // const left = screen.scrollLeft + diffW;
-        // const top  = screen.scrollTop  + diffH;
 
         Util.$zoomScale = 0;
         Util.$zoom.execute(scale);
-
-        // screen.scrollLeft = left;
-        // screen.scrollTop  = top;
 
         // ハンドツールを起動
         if (Util.$tools.activeTool) {

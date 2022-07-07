@@ -205,7 +205,7 @@ Util.$addModalEvent = (element) =>
  */
 Util.$fadeIn = (event) =>
 {
-    const object = Util.$tools.getUserPublishSetting();
+    const object = Util.$userSetting.getPublishSetting();
     if ("modal" in object && !object.modal) {
         return ;
     }
@@ -265,7 +265,7 @@ Util.$fadeIn = (event) =>
  */
 Util.$fadeOut = () =>
 {
-    const object = Util.$tools.getUserPublishSetting();
+    const object = Util.$userSetting.getPublishSetting();
     if ("modal" in object && !object.modal) {
         return ;
     }
@@ -444,87 +444,6 @@ Util.$multiplicationMatrix = (a, b) =>
 };
 
 /**
- * @description 初期のショートカットを登録
- *
- * @return {void}
- * @method
- * @static
- */
-Util.$createShortcut = () =>
-{
-    // スペースキーを無効化(キーボード入力時は有効にする)
-    Util.$shortcut.set("Space", (event) =>
-    {
-        if (!Util.$keyLock) {
-            event.preventDefault();
-            return false;
-        }
-    });
-
-    // 移動キーを無効化(キーボード入力時は有効にする)
-    const moveKeys = [
-        "ArrowRight",
-        "ArrowLeft",
-        "ArrowDown",
-        "ArrowUp"
-    ];
-
-    for (let idx = 0; idx < moveKeys.length; ++idx) {
-        Util.$shortcut.set(moveKeys[idx], (event) =>
-        {
-            if (!Util.$keyLock) {
-                event.preventDefault();
-                return false;
-            }
-        });
-    }
-
-    // 保存コマンド
-    Util.$shortcut.set("KeyS", (event) =>
-    {
-        if (!Util.$ctrlKey) {
-            return ;
-        }
-
-        event.preventDefault();
-        Util.$autoSave();
-        return false;
-    });
-
-    // undoコマンド
-    Util.$shortcut.set("KeyZ", (event) =>
-    {
-        if (!Util.$ctrlKey) {
-            return ;
-        }
-
-        event.preventDefault();
-
-        // reset
-        /**
-         * @type {ArrowTool}
-         */
-        const tool = Util.$tools.getDefaultTool("arrow");
-        tool.clear();
-        Util.$tools.reset();
-
-        if (Util.$currentWorkSpace()) {
-            if (event.shiftKey) {
-                Util
-                    .$currentWorkSpace()
-                    .redo();
-            } else {
-                Util
-                    .$currentWorkSpace()
-                    .undo();
-            }
-        }
-
-        return false;
-    });
-};
-
-/**
  * @description 画面全体のショートカットを登録
  *
  * @param  {string} code
@@ -567,6 +486,7 @@ Util.$executeKeyCommand = (event) =>
     if (Util.$shortcut.has(event.code)) {
         Util.$shortcut.get(event.code)(event);
     }
+
     // case "Enter":
     //     if (event.ctrlKey && !event.metaKey // windows
     //         || !event.ctrlKey && event.metaKey // mac
@@ -683,7 +603,6 @@ Util.$initialize = () =>
     Util.$loadSaveData();
 
     // added event
-    Util.$createShortcut();
     window.addEventListener("keydown", Util.$executeKeyCommand);
 
     // key reset

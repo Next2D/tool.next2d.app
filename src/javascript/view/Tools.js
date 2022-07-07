@@ -49,76 +49,6 @@ class Tools
     }
 
     /**
-     * @description 初回起動設定
-     *
-     * @return {void}
-     * @public
-     */
-    initialize ()
-    {
-        // コントラクターでセットしたイベントを削除
-        if (this._$handler) {
-            window.removeEventListener("DOMContentLoaded", this._$handler);
-            this._$handler = null;
-        }
-
-        // ツールの初期起動
-        this.initializeTools();
-
-        // データの読込・保存
-        this.initializeData();
-
-        // ユーザー設定系の初期化
-        this.initializeUserSetting();
-
-        // end
-        Util.$initializeEnd();
-        this._$handler = null;
-    }
-
-    /**
-     * @description 拡張ツールのクラスを登録する関数
-     *
-     * @param  {string} name
-     * @param  {object} tool
-     * @return {void}
-     * @method
-     * @public
-     */
-    setTool (name, tool)
-    {
-        this._$externalTools.set(name, tool);
-    }
-
-    /**
-     * @description 拡張ツールの名前から取得
-     *
-     * @param  {string} name
-     * @return {Tool|null}
-     * @method
-     * @public
-     */
-    getTool (name)
-    {
-        return this._$externalTools.has(name)
-            ? this._$externalTools.get(name)
-            : null;
-    }
-
-    /**
-     * @description 名前からデフォルトToolクラスを取得
-     *
-     * @param  {string} name
-     * @return {Tool}
-     * @method
-     * @public
-     */
-    getDefaultTool (name)
-    {
-        return this._$tools.get(name);
-    }
-
-    /**
      * @description 現在選択されているToolクラスを返します。
      *
      * @return {Tool}
@@ -142,15 +72,20 @@ class Tools
     }
 
     /**
-     * @description ツールの初期起動関数。
-     *              イベント登録・ユーザー保存データをセット
+     * @description 初回起動設定
      *
      * @return {void}
-     * @method
      * @public
      */
-    initializeTools ()
+    initialize ()
     {
+        // コントラクターでセットしたイベントを削除
+        if (this._$handler) {
+            window.removeEventListener("DOMContentLoaded", this._$handler);
+            this._$handler = null;
+        }
+
+        // ツールの初期起動
         // デフォルトツールクラス
         const defaultTools = [
             ArrowTool,
@@ -259,321 +194,58 @@ class Tools
                     event.stopPropagation();
                 });
         }
+
+        // プロジェクトデータ関数の初期起動
+        Util.$project.initialize();
+
+        // ユーザー設定系の初期化
+        Util.$userSetting.initialize();
+
+        // end
+        Util.$initializeEnd();
+        this._$handler = null;
     }
 
     /**
-     * @return {object}
-     * @public
-     */
-    getUserPublishSetting ()
-    {
-        const object = localStorage
-            .getItem(`${Util.PREFIX}@user-publish-setting`);
-
-        if (object) {
-            return JSON.parse(object);
-        }
-
-        return {
-            "layer": false,
-            "type": "zlib"
-        };
-    }
-
-    /**
-     * @return {void}
-     * @public
-     */
-    initializeUserSetting ()
-    {
-        const toolsSetting = document
-            .getElementById("tools-setting");
-
-        if (toolsSetting) {
-            toolsSetting
-                .addEventListener("click", (event) =>
-                {
-                    const element = document.getElementById("user-setting");
-
-                    element.style.display = "";
-                    element.style.left = `${event.pageX + 30}px`;
-                    element.style.top  = `${event.pageY - element.clientHeight}px`;
-
-                    element.setAttribute("class", "fadeIn");
-
-                    Util.$endMenu("user-setting");
-                });
-        }
-
-        const object = this.getUserPublishSetting();
-
-        const layerElement = document
-            .getElementById("publish-layer-setting");
-
-        if (layerElement) {
-            layerElement
-                .children[object.layer ? 1 : 0]
-                .selected = true;
-
-            layerElement
-                .addEventListener("change", (event) =>
-                {
-                    const object = this.getUserPublishSetting();
-                    object.layer = event.target.value === "1";
-
-                    localStorage
-                        .setItem(
-                            `${Util.PREFIX}@user-publish-setting`,
-                            JSON.stringify(object)
-                        );
-
-                });
-        }
-
-        const typeElement = document
-            .getElementById("publish-type-setting");
-
-        if (typeElement) {
-            for (let idx = 0; idx < typeElement.children.length; ++idx) {
-
-                const node = typeElement.children[idx];
-                if (object.type !== node.value) {
-                    continue;
-                }
-
-                node.selected = true;
-                break;
-            }
-
-            typeElement
-                .addEventListener("change", (event) =>
-                {
-                    const object = this.getUserPublishSetting();
-                    object.type  = event.target.value;
-
-                    localStorage
-                        .setItem(
-                            `${Util.PREFIX}@user-publish-setting`,
-                            JSON.stringify(object)
-                        );
-
-                });
-        }
-
-        const modalElement = document
-            .getElementById("modal-setting");
-
-        if (modalElement) {
-
-            if ("modal" in object) {
-                modalElement.children[object.modal ? 0 : 1].selected = true;
-            }
-
-            modalElement
-                .addEventListener("change", (event) =>
-                {
-                    const object = this.getUserPublishSetting();
-                    object.modal = event.target.value === "1";
-
-                    localStorage
-                        .setItem(
-                            `${Util.PREFIX}@user-publish-setting`,
-                            JSON.stringify(object)
-                        );
-
-                });
-        }
-    }
-
-    /**
-     * @return {void}
-     * @public
-     */
-    initializeData ()
-    {
-        // ファイル読み込み
-        const loadElement = document
-            .getElementById("tools-load");
-
-        if (loadElement) {
-            loadElement
-                .addEventListener("click", (event) =>
-                {
-                    const input = document
-                        .getElementById("tools-load-file-input");
-                    input.click();
-
-                    event.preventDefault();
-                });
-        }
-
-        const fileInput = document
-            .getElementById("tools-load-file-input");
-
-        if (fileInput) {
-            fileInput
-                .addEventListener("change", (event) =>
-                {
-                    const files = event.target.files;
-                    for (let idx = 0; idx < files.length; ++idx) {
-                        this.loadSaveFile(files[idx]);
-                    }
-
-                    // reset
-                    event.target.value = "";
-                });
-        }
-
-        const saveElement = document
-            .getElementById("tools-save");
-
-        if (saveElement) {
-            saveElement
-                .addEventListener("click", () =>
-                {
-                    const postData = {
-                        "object": Util.$currentWorkSpace().toJSON(),
-                        "type": "n2d"
-                    };
-
-                    if (Util.$zlibWorkerActive) {
-
-                        Util.$zlibQueues.push(postData);
-
-                    } else {
-
-                        Util.$zlibWorkerActive = true;
-                        Util.$zlibWorker.postMessage(postData);
-
-                    }
-
-                });
-        }
-
-        const exportElement = document
-            .getElementById("tools-export");
-
-        if (exportElement) {
-            exportElement
-                .addEventListener("click", () =>
-                {
-                    // ダウンロードリンクを生成
-                    const anchor = document.getElementById("save-anchor");
-
-                    if (anchor.href) {
-                        URL.revokeObjectURL(anchor.href);
-                    }
-
-                    const type = document
-                        .getElementById("publish-type-setting")
-                        .value;
-
-                    switch (type) {
-
-                        case "json":
-                            anchor.download = `${Util.$currentWorkSpace().name}.json`;
-                            anchor.href     = URL.createObjectURL(new Blob(
-                                [Publish.toJSON()],
-                                { "type" : "application/json" }
-                            ));
-                            anchor.click();
-                            break;
-
-                        case "zlib":
-                            Publish.toZlib();
-                            break;
-
-                        case "webm":
-                            Publish.toWebM();
-                            break;
-
-                        case "gif-loop":
-                            Publish.toGIF();
-                            break;
-
-                        case "gif":
-                            Publish.toGIF(-1);
-                            break;
-
-                        case "png":
-                            Publish.toPng();
-                            break;
-
-                        case "apng-loop":
-                            Publish.toApng(true);
-                            break;
-
-                        case "apng":
-                            Publish.toApng(false);
-                            break;
-
-                        case "custom":
-                            if ("CustomPublish" in window) {
-                                window
-                                    .CustomPublish
-                                    .execute(Publish.toObject());
-                            }
-                            break;
-
-                    }
-
-                });
-        }
-
-        const languageElement = document
-            .getElementById("language-setting");
-
-        if (languageElement) {
-
-            const language = localStorage
-                .getItem(`${Util.PREFIX}@language-setting`);
-
-            if (language) {
-                const children = languageElement.children;
-                for (let idx = 0; idx < children.length; ++idx) {
-                    const node = children[idx];
-                    if (node.value === language) {
-                        node.selected = true;
-                        break;
-                    }
-                }
-            }
-
-            languageElement
-                .addEventListener("change", (event) =>
-                {
-                    const language = event.target.value;
-
-                    const LanguageClass = Util.$languages.get(language);
-                    Util.$currentLanguage = new LanguageClass();
-
-                    localStorage
-                        .setItem(`${Util.PREFIX}@language-setting`, language);
-
-                    Util.$addModalEvent(document);
-                });
-        }
-    }
-
-    /**
-     * @description n2dファイルの読み込み処理、zipデータ解凍
+     * @description 拡張ツールのクラスを登録する関数
      *
-     * @param  {File} file
+     * @param  {string} name
+     * @param  {object} tool
      * @return {void}
+     * @method
      * @public
      */
-    loadSaveFile (file)
+    setTool (name, tool)
     {
-        file
-            .arrayBuffer()
-            .then((buffer) =>
-            {
-                const uint8Array = new Uint8Array(buffer);
-                Util.$unZlibWorker.postMessage({
-                    "buffer": uint8Array,
-                    "type": "n2d"
-                }, [uint8Array.buffer]);
-            });
+        this._$externalTools.set(name, tool);
+    }
+
+    /**
+     * @description 拡張ツールの名前から取得
+     *
+     * @param  {string} name
+     * @return {Tool|null}
+     * @method
+     * @public
+     */
+    getTool (name)
+    {
+        return this._$externalTools.has(name)
+            ? this._$externalTools.get(name)
+            : null;
+    }
+
+    /**
+     * @description 名前からデフォルトToolクラスを取得
+     *
+     * @param  {string} name
+     * @return {Tool}
+     * @method
+     * @public
+     */
+    getDefaultTool (name)
+    {
+        return this._$tools.get(name);
     }
 
     /**
