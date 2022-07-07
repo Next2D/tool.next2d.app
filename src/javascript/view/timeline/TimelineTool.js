@@ -406,6 +406,9 @@ class TimelineTool extends BaseTimeline
             const element = document
                 .getElementById(`layer-light-icon-${layerId}`);
 
+            const parent = document
+                .getElementById(`layer-id-${layerId}`);
+
             const layer = scene.getLayer(layerId);
             if (this._$lightAll) {
 
@@ -415,9 +418,11 @@ class TimelineTool extends BaseTimeline
 
                 element
                     .classList
-                    .add("icon-active");
+                    .add("light-icon-active");
 
-                child.classList.add("light-active");
+                parent
+                    .style
+                    .borderBottom = `1px solid ${layer.color}`;
 
                 layer.light = true;
 
@@ -425,13 +430,15 @@ class TimelineTool extends BaseTimeline
 
                 element
                     .classList
-                    .remove("icon-active");
+                    .remove("light-icon-active");
 
                 element
                     .classList
                     .add("icon-disable");
 
-                child.classList.remove("light-active");
+                parent
+                    .style
+                    .borderBottom = "";
 
                 layer.light = false;
 

@@ -19,7 +19,8 @@ class TimelineLayerMenu extends BaseTimeline
         const elementIds = [
             "timeline-layer-normal",
             "timeline-layer-mask",
-            "timeline-layer-guide"
+            "timeline-layer-guide",
+            "timeline-layer-color"
         ];
 
         for (let idx = 0; idx < elementIds.length; ++idx) {
@@ -38,11 +39,20 @@ class TimelineLayerMenu extends BaseTimeline
 
                 // id名で関数を実行
                 this.executeFunction(event);
-
-                // 表示モーダルを全て終了
-                Util.$endMenu();
             });
         }
+
+        // レイヤーカラー変更のイベント登録
+        document
+            .getElementById("timeline-layer-color")
+            .addEventListener("change", (event) =>
+            {
+                // 親のイベント中止
+                event.stopPropagation();
+
+                // id名で関数を実行
+                this.changeLayerHighlightColor(event);
+            });
     }
 
     /**
@@ -54,6 +64,9 @@ class TimelineLayerMenu extends BaseTimeline
      */
     executeTimelineLayerNormal ()
     {
+        // 表示モーダルを全て終了
+        Util.$endMenu();
+
         const targetLayer = Util.$timelineLayer.targetLayer;
         if (!targetLayer) {
             return ;
@@ -92,6 +105,9 @@ class TimelineLayerMenu extends BaseTimeline
      */
     executeTimelineLayerMask ()
     {
+        // 表示モーダルを全て終了
+        Util.$endMenu();
+
         const targetLayer = Util.$timelineLayer.targetLayer;
         if (!targetLayer) {
             return ;
@@ -133,6 +149,9 @@ class TimelineLayerMenu extends BaseTimeline
      */
     executeTimelineLayerGuide ()
     {
+        // 表示モーダルを全て終了
+        Util.$endMenu();
+
         const targetLayer = Util.$timelineLayer.targetLayer;
         if (!targetLayer) {
             return ;
@@ -163,6 +182,63 @@ class TimelineLayerMenu extends BaseTimeline
 
         // 初期化
         super.focusOut();
+    }
+
+    /**
+     * @description レイヤーのカラー設定
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    executeTimelineLayerColor ()
+    {
+        const targetLayer = Util.$timelineLayer.targetLayer;
+        if (!targetLayer) {
+            return ;
+        }
+    }
+
+    /**
+     * @description レイヤーのハイライトカラーの変更処理
+     *
+     * @param  {MouseEvent} event
+     * @return {void}
+     * @method
+     * @public
+     */
+    changeLayerHighlightColor (event)
+    {
+        this.save();
+
+        const layerId = event.target.dataset.layerId | 0;
+        const layer = Util
+            .$currentWorkSpace()
+            .scene
+            .getLayer(layerId);
+
+        // レイヤーオブジェクトを更新
+        layer.color = event.target.value;
+
+        const lightIcon = document
+            .getElementById(`layer-light-icon-${layerId}`);
+
+        lightIcon
+            .style
+            .backgroundImage = `url('${layer.getHighlightURL()}')`;
+
+        if (layer.light) {
+            document
+                .getElementById(`layer-id-${layerId}`)
+                .style
+                .borderBottom = `1px solid ${layer.color}`;
+        }
+
+        // 初期化
+        super.focusOut();
+
+        // モーダルも終了
+        Util.$endMenu();
     }
 
     /**
@@ -247,6 +323,18 @@ class TimelineLayerMenu extends BaseTimeline
         event.stopPropagation();
 
         Util.$endMenu("timeline-layer-menu");
+
+        const layerId = event.target.dataset.layerId | 0;
+        const layer = Util
+            .$currentWorkSpace()
+            .scene
+            .getLayer(layerId);
+
+        const input = document
+            .getElementById("timeline-layer-color");
+
+        input.dataset.layerId = `${layerId}`;
+        input.value = layer.color;
 
         const element = document
             .getElementById("timeline-layer-menu");

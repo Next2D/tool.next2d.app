@@ -922,27 +922,53 @@ class TimelineLayer extends BaseTimeline
                 .classList
                 .remove("icon-disable");
 
-            element
-                .classList
-                .add("icon-active");
+            if (type === "light") {
 
-            layerElement
-                .classList
-                .add(`${type}-active`);
+                element
+                    .classList
+                    .add("light-icon-active");
+
+                layerElement
+                    .style
+                    .borderBottom = `1px solid ${layer.color}`;
+
+            } else {
+
+                element
+                    .classList
+                    .add("icon-active");
+
+                layerElement
+                    .classList
+                    .add(`${type}-active`);
+
+            }
 
         } else {
 
             element
                 .classList
-                .remove("icon-active");
-
-            element
-                .classList
                 .add("icon-disable");
 
-            layerElement
-                .classList
-                .remove(`${type}-active`);
+            if (type === "light") {
+
+                element
+                    .classList
+                    .remove("light-icon-active");
+
+                layerElement.style.borderBottom = "";
+
+            } else {
+
+                element
+                    .classList
+                    .remove("icon-active");
+
+                layerElement
+                    .classList
+                    .remove(`${type}-active`);
+
+            }
 
         }
 

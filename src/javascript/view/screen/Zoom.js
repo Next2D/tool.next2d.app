@@ -144,7 +144,6 @@ class Zoom extends BaseScreen
         const height = workSpace.stage.height * Util.$zoomScale;
 
         const stage = document.getElementById("stage");
-
         const moveLeft = (width  - stage.offsetWidth)  / 2;
         const moveTop  = (height - stage.offsetHeight) / 2;
 
@@ -156,12 +155,6 @@ class Zoom extends BaseScreen
         stageArea.style.height = `${height + window.screen.height}px`;
 
         const screen = document.getElementById("screen");
-        console.log(
-            screen.scrollLeft,
-            screen.clientWidth,
-            window.screen.width,
-            workSpace.stage.width
-        );
         screen.scrollLeft += moveLeft;
         screen.scrollTop  += moveTop;
 
