@@ -486,44 +486,6 @@ Util.$executeKeyCommand = (event) =>
     if (Util.$shortcut.has(event.code)) {
         Util.$shortcut.get(event.code)(event);
     }
-
-    // case "Enter":
-    //     if (event.ctrlKey && !event.metaKey // windows
-    //         || !event.ctrlKey && event.metaKey // mac
-    //     ) {
-    //
-    //         if (Util.$previewMode) {
-    //             return false;
-    //         }
-    //
-    //         if (!Util.$keyLock || Util.$keyLock && Util.$activeScript) {
-    //             event.preventDefault();
-    //             Util.$showPreview();
-    //             return false;
-    //         }
-    //
-    //     }
-    //
-    //     if (!Util.$keyLock && !Util.$activeScript) {
-    //
-    //         event.preventDefault();
-    //
-    //         if (Util.$timeline._$stopFlag) {
-    //             Util.$timeline.play();
-    //         } else {
-    //             Util.$timeline.stop();
-    //         }
-    //
-    //     }
-    //     break;
-    //
-    // case "Escape":
-    //     if (Util.$previewMode) {
-    //         event.preventDefault();
-    //         Util.$hidePreview();
-    //         return false;
-    //     }
-    //     break;
 };
 
 /**

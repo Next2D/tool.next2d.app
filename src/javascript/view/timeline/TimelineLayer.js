@@ -1854,7 +1854,7 @@ class TimelineLayer extends BaseTimeline
         const frame = Util.$timelineFrame.currentFrame;
         for (const layerElement of this.targetLayers.values()) {
 
-            const layerId = layerElement.dataset.layerId | 0
+            const layerId = layerElement.dataset.layerId | 0;
 
             // 編集へセット
             const frameElement = document
@@ -1900,21 +1900,11 @@ class TimelineLayer extends BaseTimeline
             preview.setAttribute("class", "fadeOut");
         }
 
-        // ラベル情報更新して初期化
-        const labelInput = document.getElementById("label-name");
-        labelInput.blur();
-        labelInput.value = "";
-
         // toolにframeを表示
         const target = event.target;
         const frame  = target.dataset.frame | 0;
 
-        // labelがあればセット
-        const scene = Util.$currentWorkSpace().scene;
-        const label = scene.gerLabel(frame);
-        if (label) {
-            labelInput.value = label;
-        }
+        this.changeLabel(frame);
 
         // if (!target.classList.contains("tween-frame")) {
         //     Util.$screen.clearTweenMarker();
@@ -2037,26 +2027,8 @@ class TimelineLayer extends BaseTimeline
                 .classList
                 .add("frame-active");
 
-            // set character
-            const currentFrame = Util.$timelineFrame.currentFrame;
-
-            // フレームを移動したら再描画
-            if (currentFrame !== frame) {
-                // フレームを移動
-                Util.$timelineFrame.currentFrame = frame;
-
-                // マーカーを移動
-                Util.$timelineMarker.move();
-
-                // 移動先の音声設定を生成
-                Util.$soundController.createSoundElements();
-
-                // 再描画
-                this.reloadScreen();
-            }
-
-            // 再描画後にアクティブ判定を行う
-            this.activeCharacter();
+            // フレームを移動
+            this.moveFrame(frame);
         }
 
         // // エディター更新
@@ -2068,6 +2040,57 @@ class TimelineLayer extends BaseTimeline
         // }
         // Util.$canCopyLayer     = false;
         // Util.$canCopyCharacter = true;
+    }
+
+    /**
+     * @description フレームを移動に合わせてラベルの値を表示・更新する
+     *
+     * @param  {number} frame
+     * @return {void}
+     * @method
+     * @public
+     */
+    changeLabel (frame)
+    {
+        // ラベル情報更新して初期化
+        const labelInput = document.getElementById("label-name");
+        labelInput.blur();
+        labelInput.value = "";
+
+        // labelがあればセット
+        const scene = Util.$currentWorkSpace().scene;
+        const label = scene.gerLabel(frame);
+        if (label) {
+            labelInput.value = label;
+        }
+    }
+
+    /**
+     * @description フレームを移動
+     *
+     * @param  {number} frame
+     * @return {void}
+     * @method
+     * @public
+     */
+    moveFrame (frame)
+    {
+        if (Util.$timelineFrame.currentFrame !== frame) {
+            // フレームを移動
+            Util.$timelineFrame.currentFrame = frame;
+
+            // マーカーを移動
+            Util.$timelineMarker.move();
+
+            // 移動先の音声設定を生成
+            Util.$soundController.createSoundElements();
+
+            // 再描画
+            this.reloadScreen();
+        }
+
+        // 再描画後にアクティブ判定を行う
+        this.activeCharacter();
     }
 
     /**
@@ -2321,13 +2344,17 @@ class TimelineLayer extends BaseTimeline
      * @description フレームの複数選択
      *
      * @param  {MouseEvent} event
+     * @param  {HTMLDivElement} [select_element=null]
      * @return {void}
      * @method
      * @public
      */
-    multiSelect (event)
+    multiSelect (event, select_element = null)
     {
-        const target = event.target;
+        const target = event
+            ? event.target
+            : select_element;
+
         const targetFrame = target.dataset.frame | 0;
         if (!targetFrame) {
             return ;
@@ -2344,8 +2371,10 @@ class TimelineLayer extends BaseTimeline
         }
 
         // 全てのイベント終了
-        event.stopPropagation();
-        event.preventDefault();
+        if (event) {
+            event.stopPropagation();
+            event.preventDefault();
+        }
 
         const selectFrameElement = this.targetFrame;
         const selectFrame        = selectFrameElement.dataset.frame | 0;

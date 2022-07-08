@@ -27,6 +27,13 @@ class KeyboardCommand
          * @default null
          * @private
          */
+        this._$execute = null;
+
+        /**
+         * @type {function}
+         * @default null
+         * @private
+         */
         this._$handler = null;
 
         // DOMの読込がまだであれば、イベントに登録
@@ -56,6 +63,11 @@ class KeyboardCommand
     set active (active)
     {
         this._$active = !!active;
+        if (this._$active) {
+            window.addEventListener("keydown", this._$execute);
+        } else {
+            window.removeEventListener("keydown", this._$execute);
+        }
     }
 
     /**
@@ -73,7 +85,7 @@ class KeyboardCommand
             this._$handler = null;
         }
 
-        window.addEventListener("keydown", this.execute.bind(this));
+        this._$execute = this.execute.bind(this);
 
         Util.$initializeEnd();
     }
@@ -106,15 +118,16 @@ class KeyboardCommand
     }
 
     /**
-     * @param {KeyboardEvent} event
+     * @description 登録されているcallbackをコール
      *
+     * @param  {KeyboardEvent} event
      * @return {boolean}
      * @method
      * @public
      */
     execute (event)
     {
-        if (!this._$active || Util.$keyLock || Util.$activeScript) {
+        if (!this._$active || Util.$keyLock) {
             return false;
         }
 
@@ -122,163 +135,15 @@ class KeyboardCommand
             return false;
         }
 
+        Util.$endMenu();
+
+        event.stopPropagation();
         event.preventDefault();
 
         this
             ._$mapping
             .get(event.code)(event);
     }
-
-    //
-    //     // if (Util.$shiftKey) {
-    //     //     event.preventDefault();
-    //     //     return false;
-    //     // }
-    //
-    //     switch (event.code) {
-    //
-    //         case "Semicolon":
-    //             if (event.ctrlKey && !event.metaKey
-    //                 || !event.ctrlKey && event.metaKey
-    //             ) {
-    //                 event.preventDefault();
-    //
-    //                 Util
-    //                     .$currentWorkSpace()
-    //                     .scene
-    //                     .addLayer();
-    //
-    //                 return false;
-    //             }
-    //             break;
-    //
-    //         case "Minus":
-    //             if (event.ctrlKey && !event.metaKey
-    //                 || !event.ctrlKey && event.metaKey
-    //             ) {
-    //                 event.preventDefault();
-    //                 this.removeLayer();
-    //                 return false;
-    //             }
-    //             break;
-    //
-    //         case "KeyC": // copy
-    //
-    //             if (!Util.$canCopyLayer || !this._$targetLayer) {
-    //                 return false;
-    //             }
-    //
-    //             if (event.ctrlKey && !event.metaKey
-    //                 || !event.ctrlKey && event.metaKey
-    //             ) {
-    //                 Util.$copyLibrary   = null;
-    //                 Util.$copyLayer     = null;
-    //                 Util.$copyCharacter = null;
-    //                 if (!Util.$keyLock && !Util.$activeScript) {
-    //
-    //                     event.preventDefault();
-    //
-    //                     Util.$copyWorkSpaceId = Util.$activeWorkSpaceId;
-    //
-    //                     const layerId = this._$targetLayer.dataset.layerId | 0;
-    //                     Util.$copyLayer = Util
-    //                         .$currentWorkSpace()
-    //                         .scene
-    //                         .getLayer(layerId);
-    //
-    //                     const element = document.getElementById("detail-modal");
-    //                     element.textContent = "copy";
-    //                     element.style.left  = `${this._$targetLayer.offsetLeft + 5}px`;
-    //                     element.style.top   = `${this._$targetLayer.offsetTop  + 5}px`;
-    //                     element.setAttribute("class", "fadeIn");
-    //
-    //                     element.dataset.timerId = setTimeout(function ()
-    //                     {
-    //                         if (!this.classList.contains("fadeOut")) {
-    //                             this.setAttribute("class", "fadeOut");
-    //                         }
-    //                     }.bind(element), 1500);
-    //
-    //                     return false;
-    //                 }
-    //             }
-    //             break;
-    //
-    //         case "KeyV": // paste
-    //             if (event.ctrlKey && !event.metaKey // windows
-    //                 || !event.ctrlKey && event.metaKey // mac
-    //             ) {
-    //
-    //                 if (!Util.$keyLock && !Util.$activeScript && Util.$copyLayer) {
-    //
-    //                     event.preventDefault();
-    //
-    //                     const frame = Util.$timelineFrame.currentFrame;
-    //
-    //                     const workSpace = Util.$currentWorkSpace();
-    //
-    //                     const scene = workSpace.scene;
-    //                     if (Util.$copyWorkSpaceId === Util.$activeWorkSpaceId) {
-    //
-    //                         const object = Util.$copyLayer.toObject();
-    //                         for (let idx = 0; idx < object.characters.length; ++idx) {
-    //                             const character = object.characters[idx];
-    //                             character.id    = workSpace._$characterId++;
-    //                         }
-    //
-    //                         scene.addLayer(new Layer(object));
-    //
-    //                     } else {
-    //
-    //                         const targetWorkSpace = Util.$workSpaces[Util.$copyWorkSpaceId];
-    //
-    //                         const dup    = new Map();
-    //                         const object = Util.$copyLayer.toObject();
-    //                         for (let idx = 0; idx < object.characters.length; ++idx) {
-    //
-    //                             const character = object.characters[idx];
-    //                             character.id    = workSpace._$characterId++;
-    //
-    //                             const instance = targetWorkSpace
-    //                                 .getLibrary(character.libraryId)
-    //                                 .toObject();
-    //
-    //                             if (instance.type === "container") {
-    //
-    //                                 Util.$copyContainer(instance, dup);
-    //
-    //                             } else {
-    //
-    //                                 if (!dup.has(character.libraryId)) {
-    //                                     dup.set(character.libraryId, workSpace.nextLibraryId);
-    //                                     instance.id = dup.get(character.libraryId);
-    //                                     targetWorkSpace.addLibrary(instance);
-    //                                 }
-    //
-    //                             }
-    //
-    //                             character.libraryId = dup.get(character.libraryId);
-    //                         }
-    //
-    //                         scene.addLayer(new Layer(object));
-    //                         workSpace.initializeLibrary();
-    //                     }
-    //
-    //                     Util.$copyWorkSpaceId = -1;
-    //                     Util.$copyLayer       = null;
-    //
-    //                     scene.changeFrame(frame);
-    //
-    //                     return false;
-    //                 }
-    //             }
-    //             break;
-    //
-    //         default:
-    //             break;
-    //
-    //     }
-    // }
 }
 
 Util.$keyboardCommand = new KeyboardCommand();

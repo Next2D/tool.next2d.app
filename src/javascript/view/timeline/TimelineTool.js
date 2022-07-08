@@ -1357,6 +1357,9 @@ class TimelineTool extends BaseTimeline
         // アクティブなフレームを再設定
         this.setActiveFrame();
 
+        // 指定フレームの有効なDisplayObjectを確認
+        Util.$timelineLayer.activeCharacter();
+
         // 追加した分だけタイムラインを増加させる補正
         this.adjustmentTimeline();
 

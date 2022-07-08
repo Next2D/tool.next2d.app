@@ -9,8 +9,22 @@ class ExternalInterface
      */
     constructor ()
     {
-        this._$dom   = new ExternalDocument();
+        /**
+         * @type {ExternalDocument}
+         * @private
+         */
+        this._$dom = new ExternalDocument();
+
+        /**
+         * @type {Map}
+         * @private
+         */
         this._$panel = new Map();
+
+        /**
+         * @type {DrawingLayer}
+         * @private
+         */
         this._$drawingLayer = new DrawingLayer();
     }
 
@@ -71,8 +85,6 @@ class ExternalInterface
         if (!this._$panel.has(name)) {
             return ;
         }
-
-        Util.$screen._$objectClicked = true;
 
         document
             .getElementById("plugin-title")
@@ -138,11 +150,84 @@ class ExternalInterface
     }
 
     /**
+     * @description 新規ツールを追加
+     *
      * @param  {string} name
      * @return {ExternalTool}
      */
     addTool (name)
     {
         return new ExternalTool(name);
+    }
+
+    /**
+     * @description オリジナルのショートカットコマンドを登録
+     *
+     * @param  {string} area
+     * @param  {string} key
+     * @param  {function} callback
+     * @return {void}
+     * @method
+     * @public
+     */
+    setShortcut (area, key, callback)
+    {
+        switch (area) {
+
+            case "global":
+                Util.$setShortcut(key, callback);
+                break;
+
+            case "screen":
+                Util.$screenKeyboardCommand.add(key, callback);
+                break;
+
+            case "timeline":
+                Util.Util.$timelineKeyboardCommand.add(key, callback);
+                break;
+
+            case "library":
+                Util.Util.$libraryKeyboardCommand.add(key, callback);
+                break;
+
+            default:
+                break;
+
+        }
+    }
+
+    /**
+     * @description 登録済みのショートカットコマンドを削除
+     *
+     * @param  {string} area
+     * @param  {string} key
+     * @return {void}
+     * @method
+     * @public
+     */
+    deleteShortcut (area, key)
+    {
+        switch (area) {
+
+            case "global":
+                Util.$deleteShortcut(key);
+                break;
+
+            case "screen":
+                Util.$screenKeyboardCommand.delete(key);
+                break;
+
+            case "timeline":
+                Util.Util.$timelineKeyboardCommand.delete(key);
+                break;
+
+            case "library":
+                Util.Util.$libraryKeyboardCommand.delete(key);
+                break;
+
+            default:
+                break;
+
+        }
     }
 }

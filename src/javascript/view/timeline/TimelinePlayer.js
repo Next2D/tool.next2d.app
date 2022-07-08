@@ -63,6 +63,16 @@ class TimelinePlayer extends BaseTimeline
     }
 
     /**
+     * @description リピート設定を返す
+     * @return {boolean}
+     * @public
+     */
+    get repeat ()
+    {
+        return this._$repeat;
+    }
+
+    /**
      * @description 初期起動関数
      *
      * @return {void}
@@ -219,16 +229,17 @@ class TimelinePlayer extends BaseTimeline
     }
 
     /**
-     * @description タイムラインのプレイヤーの再生をリピートする
+     * @description タイムラインのプレイヤーの再生が最終フレームにいくと自動的に終了する
      *
-     * @param  {MouseEvent} event
      * @return {void}
      * @method
      * @public
      */
-    executeTimelineRepeat (event)
+    executeTimelineRepeat ()
     {
-        event.target.style.display = "none";
+        document
+            .getElementById("timeline-repeat")
+            .style.display = "none";
 
         document
             .getElementById("timeline-no-repeat")
@@ -238,20 +249,21 @@ class TimelinePlayer extends BaseTimeline
     }
 
     /**
-     * @description タイムラインのプレイヤーの再生が最終フレームにいくと自動的に終了する
+     * @description タイムラインのプレイヤーの再生をリピートする
      *
-     * @param  {MouseEvent} event
      * @return {void}
      * @method
      * @public
      */
-    executeTimelineNoRepeat (event)
+    executeTimelineNoRepeat ()
     {
-        event.target.style.display = "none";
-
         document
             .getElementById("timeline-repeat")
             .style.display = "";
+
+        document
+            .getElementById("timeline-no-repeat")
+            .style.display = "none";
 
         this._$repeat = true;
     }

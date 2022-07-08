@@ -11,8 +11,17 @@ class ExternalElement
      */
     constructor (character, parent)
     {
+        /**
+         * @type {Character}
+         * @private
+         */
         this._$character = character;
-        this._$parent    = parent;
+
+        /**
+         * @type {ExternalLayer}
+         * @private
+         */
+        this._$parent = parent;
     }
 
     /**
@@ -34,7 +43,8 @@ class ExternalElement
         this._$character.x = x;
 
         const workSpace = Util.$currentWorkSpace();
-        const instance  = workSpace.getLibrary(this._$character.libraryId);
+        const instance  = workSpace
+            .getLibrary(this._$character.libraryId);
 
         let frame = Util.$timelineFrame.currentFrame;
 
@@ -84,7 +94,8 @@ class ExternalElement
         this._$character.y = y;
 
         const workSpace = Util.$currentWorkSpace();
-        const instance  = workSpace.getLibrary(this._$character.libraryId);
+        const instance  = workSpace
+            .getLibrary(this._$character.libraryId);
 
         let frame = Util.$timelineFrame.currentFrame;
 

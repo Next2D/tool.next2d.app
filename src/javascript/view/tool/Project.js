@@ -50,7 +50,7 @@ class Project
                 .addEventListener("click", (event) =>
                 {
                     event.preventDefault();
-                    this.saveProject();
+                    this.save();
                 });
         }
 

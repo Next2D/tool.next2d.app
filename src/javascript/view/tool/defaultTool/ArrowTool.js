@@ -252,7 +252,8 @@ class ArrowTool extends BaseTool
     }
 
     /**
-     * @description スクリーンで選択したElemnetの配列
+     * @description スクリーンで選択したElementの配列
+     *
      * @return {array}
      * @readonly
      * @public

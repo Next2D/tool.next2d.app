@@ -18,7 +18,7 @@ const options = minimist(process.argv.slice(2), {
     "string": ["distPath", "version"],
     "default": {
         "prodBuild": false,
-        "version": "0.26.0",
+        "version": "0.27.0",
         "distPath": "."
     }
 });
@@ -117,6 +117,7 @@ const buildJavaScript = () =>
             "src/languages/src/Language.js",
             "src/languages/src/*.js",
             "src/javascript/Util.replaced.js",
+            "src/javascript/GlobalKeyboardCommand.js",
             "src/javascript/encoder/*.js",
             "src/javascript/instance/Instance.js",
             "src/javascript/instance/*.js",
@@ -136,7 +137,6 @@ const buildJavaScript = () =>
             "src/javascript/view/**/*.js",
             "src/javascript/view/*.js",
             "src/javascript/external/*.js",
-            "src/javascript/GlobalKeyboardCommand.js",
             "src/javascript/Footer.file"
         ])
         .pipe(concat("next2d-tool.min.js"))

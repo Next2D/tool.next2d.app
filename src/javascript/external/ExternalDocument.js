@@ -9,8 +9,17 @@ class ExternalDocument
      */
     constructor()
     {
+        /**
+         * @type {ExternalTimeline}
+         * @private
+         */
         this._$timeline = new ExternalTimeline();
-        this._$library  = new ExternalLibrary();
+
+        /**
+         * @type {ExternalLibrary}
+         * @private
+         */
+        this._$library = new ExternalLibrary();
     }
 
     /**

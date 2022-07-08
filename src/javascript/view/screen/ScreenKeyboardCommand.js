@@ -60,7 +60,7 @@ class ScreenKeyboardCommand extends KeyboardCommand
 
         // 初期イベント登録
         this.add("Space", this.startHandTool.bind(this));
-        this.add("ArrowRight", this.executeArrowRight);
+        this.add("ArrowRight", this.executeArrowRight.bind(this));
     }
 
     /**
@@ -133,7 +133,23 @@ class ScreenKeyboardCommand extends KeyboardCommand
      */
     executeArrowRight (event)
     {
+        if (!this.active || Util.$keyLock) {
+            return ;
+        }
+
+        /**
+         * @type {ArrowTool}
+         */
+        const tool = Util.$tools.getDefaultTool("arrow");
+        if (!tool.activeElements.length) {
+            return ;
+        }
+
+        event.stopPropagation();
+        event.preventDefault();
+
         console.log([event]);
+
     }
 }
 

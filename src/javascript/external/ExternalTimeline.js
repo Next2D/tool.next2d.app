@@ -19,7 +19,7 @@ class ExternalTimeline
      */
     get currentLayer ()
     {
-        const layerElement = Util.$timeline._$targetLayer;
+        const layerElement = Util.$timelineLayer.targetLayer;
         if (!layerElement) {
             return 0;
         }
