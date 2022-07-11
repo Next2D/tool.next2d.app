@@ -726,6 +726,72 @@ class TimelineLayer extends BaseTimeline
     }
 
     /**
+     * @description 指定しているフレームのDisplayObjectを削除
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    removeFrame ()
+    {
+        const targetLayer = this.targetLayer;
+        if (!targetLayer) {
+            return ;
+        }
+
+        this.save();
+
+        let reload = false;
+        const frame = Util.$timelineFrame.currentFrame;
+        const scene = Util.$currentWorkSpace().scene;
+        const targetFrames = this.targetFrames;
+        for (const layerId of targetFrames.keys()) {
+
+            const layer = scene.getLayer(layerId);
+
+            const characters = layer.getActiveCharacter(frame);
+            if (!characters.length) {
+                continue;
+            }
+
+            reload = true;
+            let range = null;
+            for (let idx = 0; idx < characters.length; ++idx) {
+
+                const character = characters[idx];
+
+                if (!range) {
+                    range = character.getRange(frame);
+                }
+
+                character.remove(layer);
+            }
+
+            layer.addEmptyCharacter(
+                new EmptyCharacter({
+                    "startFrame": range.startFrame,
+                    "endFrame": range.endFrame
+                })
+            );
+
+            layer.reloadStyle();
+        }
+
+        // 選択中にフレームを解放
+        this.clearActiveFrames();
+
+        // スクリーンのDisplayObjectをアクティブ化
+        this.activeCharacter();
+
+        if (reload) {
+            this.reloadScreen();
+        }
+
+        // 初期化
+        super.focusOut();
+    }
+
+    /**
      * @description レイヤー指定がない場合は一番上のレイヤーを強制的に選択
      *              レイヤーが0の時はレイヤーを強制的に追加する
      *
@@ -735,7 +801,7 @@ class TimelineLayer extends BaseTimeline
      */
     attachLayer ()
     {
-        if (!Util.$timelineLayer.targetLayer) {
+        if (!this.targetLayer) {
 
             let targetLayer = document
                 .getElementById("timeline-content")
@@ -754,7 +820,7 @@ class TimelineLayer extends BaseTimeline
                     .children[0];
             }
 
-            Util.$timelineLayer.targetLayer = targetLayer;
+            this.targetLayer = targetLayer;
         }
     }
 
@@ -2130,8 +2196,7 @@ class TimelineLayer extends BaseTimeline
                     if (event.pageX > base.offsetLeft + base.offsetWidth
                         && base.scrollWidth - base.offsetWidth > base.scrollLeft
                     ) {
-                        Util
-                            .$timelineLayer
+                        this
                             .moveTimeLine(
                                 base.scrollLeft
                                 + (Util.$timelineTool.timelineWidth + 1)
@@ -2159,8 +2224,7 @@ class TimelineLayer extends BaseTimeline
                     // 移動可能であれば左にタイムラインを移動
                     if (base.scrollLeft > 0 && base.offsetLeft > event.pageX) {
 
-                        Util
-                            .$timelineLayer
+                        this
                             .moveTimeLine(
                                 base.scrollLeft
                                 - (Util.$timelineTool.timelineWidth + 1)

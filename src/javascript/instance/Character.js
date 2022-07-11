@@ -90,6 +90,109 @@ class Character
     }
 
     /**
+     * @description タイムラインからDisplayObjectを削除
+     *
+     * @param  {Layer} layer
+     * @return {void}
+     * @method
+     * @public
+     */
+    remove (layer)
+    {
+        if (this._$places.size === 1) {
+
+            layer.deleteCharacter(this.id);
+
+        } else {
+
+            const object = this
+                .getRange(
+                    Util.$timelineFrame.currentFrame
+                );
+
+            switch (true) {
+
+                case object.startFrame === this.startFrame:
+                    this._$places.delete(this.startFrame);
+                    this.startFrame = object.endFrame;
+                    break;
+
+                case object.endFrame === this.endFrame:
+                    this._$places.delete(object.startFrame);
+                    this.endFrame = object.startFrame;
+                    break;
+
+                default:
+                    layer
+                        .addCharacter(
+                            this.split(
+                                object.endFrame,
+                                this.endFrame
+                            )
+                        );
+                    break;
+
+            }
+        }
+    }
+
+    /**
+     * @description 指定したフレームをキーフレームの開始・終了のフレームを返す
+     *
+     * @param  {number} frame
+     * @return {object}
+     * @method
+     * @public
+     */
+    getRange (frame)
+    {
+        if (this._$places.size === 1) {
+            return {
+                "startFrame": this.startFrame,
+                "endFrame": this.endFrame
+            };
+        }
+
+        const places = Array.from(this._$places.keys());
+        places.sort((a, b) =>
+        {
+            switch (true) {
+
+                case a > b:
+                    return 1;
+
+                case a < b:
+                    return -1;
+
+                default:
+                    return 0;
+
+            }
+        });
+
+        let prevFrame = 0;
+        while (places.length) {
+
+            const placeFrame = places.pop() | 0;
+
+            if (frame > placeFrame) {
+                return {
+                    "startFrame": placeFrame,
+                    "endFrame": prevFrame ? prevFrame : this.endFrame
+                };
+            }
+
+            prevFrame = placeFrame;
+        }
+
+        return {
+            "startFrame": this.startFrame,
+            "endFrame": this.endFrame
+        };
+    }
+
+
+    /**
      * @param  {number} frame
      * @return {Character}
      * @public
@@ -930,19 +1033,38 @@ class Character
      */
     getPlace (frame)
     {
+        return this._$places.get(
+            this.getNearPlaceFrame(frame | 0)
+        );
+    }
+
+    /**
+     * @description 指定したフレームより若く一番近いキーフレーム番号を返す
+     *
+     * @param  {number} frame
+     * @return {number}
+     * @method
+     * @public
+     */
+    getNearPlaceFrame (frame)
+    {
         if (this.hasPlace(frame)) {
-            return this._$places.get(frame | 0);
+            return frame;
         }
 
-        const places = Array.from(this._$places);
+        const places = Array.from(this._$places.keys());
+        if (this._$places.size === 1) {
+            return places[0];
+        }
+
         places.sort((a, b) =>
         {
             switch (true) {
 
-                case a[0] > b[0]:
+                case a > b:
                     return 1;
 
-                case a[0] < b[0]:
+                case a < b:
                     return -1;
 
                 default:
@@ -953,13 +1075,15 @@ class Character
 
         while (places.length) {
 
-            const placeFrame = places.pop()[0] | 0;
+            const placeFrame = places.pop() | 0;
 
             if (frame > placeFrame) {
-                return this._$places.get(placeFrame);
+                return placeFrame;
             }
 
         }
+
+        return 1;
     }
 
     /**

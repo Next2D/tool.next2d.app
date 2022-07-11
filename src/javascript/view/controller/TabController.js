@@ -63,7 +63,7 @@ class TabController
                     this._$active = tab;
                 }
 
-                tab.addEventListener("mousedown", (event) =>
+                tab.addEventListener("click", (event) =>
                 {
                     this.mouseDown(event);
                 });

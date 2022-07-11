@@ -55,22 +55,6 @@ class GlobalKeyboardCommand
             this._$handler = null;
         }
 
-        // 初期のショートカット
-        const keys = [
-            "KeyV", // arrow
-            "KeyA", // Shape Transform
-            "KeyP", // Pen
-            "KeyT", // Text
-            "KeyK", // Bucket
-            "KeyO", // Circle
-            "Space" // Hand
-        ];
-
-        this._$activeTool = this.activeTool.bind(this);
-        for (let idx = 0; idx < keys.length; ++idx) {
-            Util.$setShortcut(keys[idx], this._$activeTool);
-        }
-
         this._$executeMulti = this.executeMulti.bind(this);
         const multiKeys = [
             "KeyP", // preview repeat
@@ -80,7 +64,7 @@ class GlobalKeyboardCommand
             "ArrowRight", // MoveTab Right
             "ArrowLeft"   // MoveTab Left
         ];
-        for (let idx = 0; idx < keys.length; ++idx) {
+        for (let idx = 0; idx < multiKeys.length; ++idx) {
             Util.$setShortcut(multiKeys[idx], this._$executeMulti);
         }
 
@@ -196,7 +180,7 @@ class GlobalKeyboardCommand
 
                 } else {
 
-                    this.activeTool(event);
+                    Util.$screenKeyboardCommand.activeTool(event);
 
                 }
                 break;
@@ -245,79 +229,12 @@ class GlobalKeyboardCommand
 
                 } else {
 
-                    this.activeTool(event);
+                    Util.$screenKeyboardCommand.activeTool(event);
 
                 }
                 break;
 
         }
-    }
-
-    /**
-     * @description アローツールをアクティブに
-     *
-     * @param  {KeyboardEvent} event
-     * @return {void}
-     * @method
-     * @public
-     */
-    activeTool (event)
-    {
-        if (Util.$keyLock || Util.$shiftKey || Util.$ctrlKey || Util.$altKey) {
-            return ;
-        }
-
-        let name = "";
-        switch (event.code) {
-
-            case "KeyV":
-                name = "arrow";
-                break;
-
-            case "KeyA":
-                name = "transform";
-                break;
-
-            case "KeyP":
-                name = "pen";
-                break;
-
-            case "KeyT":
-                name = "text";
-                break;
-
-            case "KeyZ":
-                name = "zoom";
-                break;
-
-            case "KeyK":
-                name = "bucket";
-                break;
-
-            case "KeyR":
-                name = "rectangle";
-                break;
-
-            case "KeyO":
-                name = "circle";
-                break;
-
-            default:
-                break;
-
-        }
-
-        if (name) {
-            const activeTool = Util.$tools.activeTool;
-            if (activeTool) {
-                activeTool.dispatchEvent(EventType.END);
-            }
-
-            const tool = Util.$tools.getDefaultTool(name);
-            tool.dispatchEvent(EventType.START);
-            Util.$tools.activeTool = tool;
-        }
-
     }
 }
 

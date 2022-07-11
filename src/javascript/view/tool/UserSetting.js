@@ -101,6 +101,17 @@ class UserSetting
 
                 });
         }
+
+        const shortcutSetting = document
+            .getElementById("shortcut-setting");
+
+        if (shortcutSetting) {
+            shortcutSetting
+                .addEventListener("click", (event) =>
+                {
+                    Util.$shortcutSetting.show(event);
+                });
+        }
     }
 
     /**
@@ -149,7 +160,7 @@ class UserSetting
 
             element.style.display = "";
             element.style.left = `${toolsSetting.offsetLeft + 30}px`;
-            element.style.top  = `${toolsSetting.offsetTop - element.clientHeight}px`;
+            element.style.top  = `${toolsSetting.offsetTop - element.clientHeight + 80}px`;
 
             element.setAttribute("class", "fadeIn");
         }

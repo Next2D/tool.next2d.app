@@ -869,13 +869,13 @@ class TimelineTool extends BaseTimeline
                     );
                 }
 
-                layer.reloadStyle();
-
             } else {
 
-                this.executeTimelineEmptyAdd();
+                this.addEmptyCharacter(layer);
 
             }
+
+            layer.reloadStyle();
         }
 
         // アクティブなフレームを再設定
@@ -970,7 +970,7 @@ class TimelineTool extends BaseTimeline
                 .getActiveEmptyCharacter(startFrame);
 
             // キーフレームがなければスキップ
-            if (emptyCharacter.startFrame !== startFrame) {
+            if (!emptyCharacter || emptyCharacter.startFrame !== startFrame) {
                 continue;
             }
 
@@ -1091,97 +1091,8 @@ class TimelineTool extends BaseTimeline
 
             } else {
 
-                // DisplayObjectが何も設置されてないフレームのケース
-                const character = layer.getActiveEmptyCharacter(frame);
-                if (character) {
+                this.addEmptyCharacter(layer);
 
-                    // キーフレームが設定されている場合は何もしない
-                    const frameElement = document
-                        .getElementById(`${layerId}-${frame}`);
-
-                    if (frameElement.dataset.frameState === "empty-key-frame") {
-                        continue;
-                    }
-
-                    // 空のフレームと重なっている
-                    if (character.startFrame !== frame) {
-
-                        // 空のフレームを分割、後半に新しいオブジェクトを設定
-                        layer.addEmptyCharacter(
-                            new EmptyCharacter({
-                                "startFrame": frame,
-                                "endFrame": character.endFrame
-                            })
-                        );
-
-                        // 前半のオブジェクトは再利用
-                        character.endFrame = frame;
-
-                    }
-
-                } else {
-
-                    // emptyのフレームの場合
-
-                    // 1フレーム目でない時は手前のフレームの確認を行う
-                    if (frame > 1) {
-
-                        // 開始位置を算出
-                        let idx = 1;
-                        for (; frame - idx > 1; ++idx) {
-
-                            const element = document
-                                .getElementById(`${layerId}-${frame - idx}`);
-
-                            if (element.dataset.frameState !== "empty") {
-                                break;
-                            }
-
-                        }
-
-                        const characters = layer
-                            .getActiveCharacter(frame - idx);
-
-                        if (characters.length) {
-
-                            // 手前にDisplayObjectを配置したフレームがあった場合は終了位置を補正
-                            for (let idx = 0; idx < characters.length; ++idx) {
-
-                                const character = characters[idx];
-                                character.endFrame = frame;
-
-                            }
-
-                        } else {
-
-                            const prevEmptyCharacter = layer
-                                .getActiveEmptyCharacter(frame - idx);
-
-                            // 手前のフレームに空フレームがあれば最終位置を伸ばす
-                            if (prevEmptyCharacter) {
-
-                                prevEmptyCharacter.endFrame = frame;
-
-                            } else {
-
-                                // なければ新規作成
-                                layer.addEmptyCharacter(
-                                    new EmptyCharacter({
-                                        "startFrame": frame - idx,
-                                        "endFrame": frame
-                                    })
-                                );
-
-                            }
-
-                        }
-                    }
-
-                    const emptyCharacter = new EmptyCharacter();
-                    emptyCharacter.startFrame = frame;
-                    emptyCharacter.endFrame   = frame + 1;
-                    layer.addEmptyCharacter(emptyCharacter);
-                }
             }
 
             layer.reloadStyle();
@@ -1198,6 +1109,111 @@ class TimelineTool extends BaseTimeline
 
         // 初期化
         super.focusOut();
+    }
+
+    /**
+     * @description 空のキーフレームを登録
+     *
+     * @param  {Layer} layer
+     * @return {void}
+     * @method
+     * @public
+     */
+    addEmptyCharacter (layer)
+    {
+        const frame = Util.$timelineFrame.currentFrame;
+
+        // DisplayObjectが何も設置されてないフレームのケース
+        const character = layer.getActiveEmptyCharacter(frame);
+        if (character) {
+
+            // キーフレームが設定されている場合は何もしない
+            const frameElement = document
+                .getElementById(`${layer.id}-${frame}`);
+
+            if (frameElement.dataset.frameState === "empty-key-frame") {
+                return ;
+            }
+
+            // 空のフレームと重なっている
+            if (character.startFrame !== frame) {
+
+                // 空のフレームを分割、後半に新しいオブジェクトを設定
+                layer.addEmptyCharacter(
+                    new EmptyCharacter({
+                        "startFrame": frame,
+                        "endFrame": character.endFrame
+                    })
+                );
+
+                // 前半のオブジェクトは再利用
+                character.endFrame = frame;
+
+            }
+
+        } else {
+
+            // emptyのフレームの場合
+
+            // 1フレーム目でない時は手前のフレームの確認を行う
+            if (frame > 1) {
+
+                // 開始位置を算出
+                let idx = 1;
+                for (; frame - idx > 1; ++idx) {
+
+                    const element = document
+                        .getElementById(`${layerId}-${frame - idx}`);
+
+                    if (element.dataset.frameState !== "empty") {
+                        break;
+                    }
+
+                }
+
+                const characters = layer
+                    .getActiveCharacter(frame - idx);
+
+                if (characters.length) {
+
+                    // 手前にDisplayObjectを配置したフレームがあった場合は終了位置を補正
+                    for (let idx = 0; idx < characters.length; ++idx) {
+
+                        const character = characters[idx];
+                        character.endFrame = frame;
+
+                    }
+
+                } else {
+
+                    const prevEmptyCharacter = layer
+                        .getActiveEmptyCharacter(frame - idx);
+
+                    // 手前のフレームに空フレームがあれば最終位置を伸ばす
+                    if (prevEmptyCharacter) {
+
+                        prevEmptyCharacter.endFrame = frame;
+
+                    } else {
+
+                        // なければ新規作成
+                        layer.addEmptyCharacter(
+                            new EmptyCharacter({
+                                "startFrame": frame - idx,
+                                "endFrame": frame
+                            })
+                        );
+
+                    }
+
+                }
+            }
+
+            const emptyCharacter = new EmptyCharacter();
+            emptyCharacter.startFrame = frame;
+            emptyCharacter.endFrame   = frame + 1;
+            layer.addEmptyCharacter(emptyCharacter);
+        }
     }
 
     /**

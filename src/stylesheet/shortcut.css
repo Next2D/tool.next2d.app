@@ -1,0 +1,80 @@
+#shortcut-setting
+{
+    display       : flex;
+    align-items   : center;
+    min-width     : 200px;
+    height        : 20px;
+    border-radius : 5px;
+    padding       : 5px;
+}
+
+#shortcut-setting:hover
+{
+    background-color : #1c1c1c;
+    cursor           : pointer;
+}
+
+#shortcut-setting-menu
+{
+    display          : flex;
+    flex-direction   : column;
+    justify-content  : center;
+    position         : fixed;
+    width            : 320px;
+    border-radius    : 5px;
+    background-color : #363636;
+    color            : whitesmoke;
+    border           : 1px solid #72777D;
+    box-shadow       : 0 0 5px rgba(245, 245, 245, 0.25);
+}
+
+#shortcut-setting-tab,
+#shortcut-setting-footer
+{
+    display     : flex;
+    align-items : center;
+}
+
+#shortcut-setting-screen,
+#shortcut-setting-timeline,
+#shortcut-setting-library,
+#shortcut-setting-restore,
+#shortcut-setting-save,
+#shortcut-setting-close
+{
+    display         : flex;
+    align-items     : center;
+    justify-content : center;
+    width           : 100px;
+    height          : 25px;
+    padding         : 5px;
+    border-radius   : 5px;
+}
+
+#shortcut-setting-screen .active,
+#shortcut-setting-timeline .active,
+#shortcut-setting-library .active
+{
+    background-color : #1c1c1c;
+}
+
+#shortcut-setting-screen:hover,
+#shortcut-setting-timeline:hover,
+#shortcut-setting-library:hover,
+#shortcut-setting-restore:hover,
+#shortcut-setting-save:hover,
+#shortcut-setting-close:hover
+{
+    background-color : #1c1c1c;
+    cursor           : pointer;
+}
+
+#shortcut-list-screen,
+#shortcut-list-timeline,
+#shortcut-list-library
+{
+    display          : flex;
+    flex-direction   : column;
+    justify-content  : center;
+    margin           : 5px;
+}

@@ -291,7 +291,8 @@ Util.$endMenu = (ignore) =>
         "user-setting",
         "screen-menu",
         "editor-modal",
-        "plugin-modal"
+        "plugin-modal",
+        "shortcut-setting-menu"
     ];
 
     for (let idx = 0; idx < names.length; ++idx) {
@@ -480,12 +481,31 @@ Util.$deleteShortcut = (code) =>
 Util.$executeKeyCommand = (event) =>
 {
     Util.$shiftKey = event.shiftKey;
-    Util.$ctrlKey  = event.ctrlKey || event.metaKey;
-    Util.$altKey   = event.altKey || event.metaKey;
+    Util.$ctrlKey  = event.ctrlKey || event.metaKey; // command
+    Util.$altKey   = event.altKey;
 
     if (Util.$shortcut.has(event.code)) {
         Util.$shortcut.get(event.code)(event);
     }
+
+    if (Util.$ctrlKey) {
+
+        switch (event.code) {
+
+            case "Semicolon":
+            case "Minus":
+            case "Plus":
+                event.stopPropagation();
+                event.preventDefault();
+                break;
+
+            default:
+                break;
+
+        }
+
+    }
+
 };
 
 /**

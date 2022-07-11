@@ -87,7 +87,7 @@ class ScreenMenu extends BaseScreen
             }
 
             element
-                .children[1]
+                .getElementsByTagName("i")[0]
                 .classList
                 .add(Util.$isMac ? "mac-icon" : "win-icon");
 

@@ -24,6 +24,13 @@ class ScreenKeyboardCommand extends KeyboardCommand
          * @default null
          * @private
          */
+        this._$activeTool = null;
+
+        /**
+         * @type {function}
+         * @default null
+         * @private
+         */
         this._$endHandTool = null;
     }
 
@@ -58,9 +65,92 @@ class ScreenKeyboardCommand extends KeyboardCommand
 
         this._$endHandTool = this.endHandTool.bind(this);
 
-        // 初期イベント登録
+        // ハンドツール
         this.add("Space", this.startHandTool.bind(this));
+
+        // 初期のショートカット
+        const keys = [
+            "KeyV", // arrow
+            "KeyA", // Shape Transform
+            "KeyP", // Pen
+            "KeyT", // Text
+            "KeyK", // Bucket
+            "KeyO" // Circle
+        ];
+        this._$activeTool = this.activeTool.bind(this);
+        for (let idx = 0; idx < keys.length; ++idx) {
+            this.add(keys[idx], this._$activeTool);
+        }
+
+        // 指定したDisplayObjectを移動
         this.add("ArrowRight", this.executeArrowRight.bind(this));
+    }
+
+    /**
+     * @description アローツールをアクティブに
+     *
+     * @param  {KeyboardEvent} event
+     * @return {void}
+     * @method
+     * @public
+     */
+    activeTool (event)
+    {
+        if (Util.$keyLock || Util.$shiftKey || Util.$ctrlKey || Util.$altKey) {
+            return ;
+        }
+
+        let name = "";
+        switch (event.code) {
+
+            case "KeyV":
+                name = "arrow";
+                break;
+
+            case "KeyA":
+                name = "transform";
+                break;
+
+            case "KeyP":
+                name = "pen";
+                break;
+
+            case "KeyT":
+                name = "text";
+                break;
+
+            case "KeyZ":
+                name = "zoom";
+                break;
+
+            case "KeyK":
+                name = "bucket";
+                break;
+
+            case "KeyR":
+                name = "rectangle";
+                break;
+
+            case "KeyO":
+                name = "circle";
+                break;
+
+            default:
+                break;
+
+        }
+
+        if (name) {
+            const activeTool = Util.$tools.activeTool;
+            if (activeTool) {
+                activeTool.dispatchEvent(EventType.END);
+            }
+
+            const tool = Util.$tools.getDefaultTool(name);
+            tool.dispatchEvent(EventType.START);
+            Util.$tools.activeTool = tool;
+        }
+
     }
 
     /**
