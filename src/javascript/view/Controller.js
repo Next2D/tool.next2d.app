@@ -443,7 +443,7 @@ class Controller
      */
     frameSizeOut (type, event)
     {
-        if (event.code === "Enter") {
+        if (event.key === "Enter") {
             event.currentTarget.blur();
             return ;
         }
@@ -1389,9 +1389,7 @@ class Controller
                 return false;
             }
 
-            if (this._$targetPlugin
-                && (event.code === "Backspace" || event.code === "Delete")
-            ) {
+            if (this._$targetPlugin && event.key === "Backspace") {
 
                 const workSpace = Util.$currentWorkSpace();
                 workSpace.temporarilySaved();
@@ -1461,9 +1459,7 @@ class Controller
                 let deleteFlag = false;
                 if (event.type === "keydown") {
 
-                    if (!this._$menuMode
-                        && (event.code === "Backspace" || event.code === "Delete")
-                    ) {
+                    if (!this._$menuMode && event.key === "Backspace") {
                         deleteFlag = true;
                     }
 

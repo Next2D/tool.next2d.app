@@ -70,12 +70,13 @@ class ScreenKeyboardCommand extends KeyboardCommand
 
         // 初期のショートカット
         const keys = [
-            "KeyV", // arrow
-            "KeyA", // Shape Transform
-            "KeyP", // Pen
-            "KeyT", // Text
-            "KeyK", // Bucket
-            "KeyO" // Circle
+            "v", // arrow
+            "a", // Shape Transform
+            "p", // Pen
+            "t", // Text
+            "k", // Bucket
+            "o", // Circle
+            "r"  // Rectangle
         ];
         this._$activeTool = this.activeTool.bind(this);
         for (let idx = 0; idx < keys.length; ++idx) {
@@ -101,37 +102,37 @@ class ScreenKeyboardCommand extends KeyboardCommand
         }
 
         let name = "";
-        switch (event.code) {
+        switch (event.key) {
 
-            case "KeyV":
+            case "v":
                 name = "arrow";
                 break;
 
-            case "KeyA":
+            case "a":
                 name = "transform";
                 break;
 
-            case "KeyP":
+            case "p":
                 name = "pen";
                 break;
 
-            case "KeyT":
+            case "t":
                 name = "text";
                 break;
 
-            case "KeyZ":
+            case "z":
                 name = "zoom";
                 break;
 
-            case "KeyK":
+            case "k":
                 name = "bucket";
                 break;
 
-            case "KeyR":
+            case "r":
                 name = "rectangle";
                 break;
 
-            case "KeyO":
+            case "o":
                 name = "circle";
                 break;
 
@@ -188,7 +189,7 @@ class ScreenKeyboardCommand extends KeyboardCommand
      */
     endHandTool (event)
     {
-        if (event.code !== "Space") {
+        if (event.key !== "Space") {
             return ;
         }
 

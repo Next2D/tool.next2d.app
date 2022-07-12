@@ -102,6 +102,7 @@ Util.$shapePointerColor         = "#009900";
 Util.$shapeLinkedPointerColor   = "#ffa500";
 Util.$isMac                     = window.navigator.userAgent.indexOf("Mac") > -1;
 Util.$shortcut                  = new Map();
+Util.$useShortcutSetting        = false;
 
 const canvas     = document.createElement("canvas");
 canvas.width     = 1;
@@ -461,7 +462,7 @@ Util.$setShortcut = (code, callback) =>
 /**
  * @description ショートカットを削除
  *
- * @param {string} code
+ * @param  {string} code
  * @return {void}
  * @method
  * @static
@@ -476,7 +477,9 @@ Util.$deleteShortcut = (code) =>
 
 /**
  * @param  {KeyboardEvent} event
- * @return {boolean}
+ * @return {void}
+ * @method
+ * @static
  */
 Util.$executeKeyCommand = (event) =>
 {
@@ -484,17 +487,26 @@ Util.$executeKeyCommand = (event) =>
     Util.$ctrlKey  = event.ctrlKey || event.metaKey; // command
     Util.$altKey   = event.altKey;
 
-    if (Util.$shortcut.has(event.code)) {
-        Util.$shortcut.get(event.code)(event);
+    if (Util.$keyLock) {
+        return ;
+    }
+
+    if (Util.$useShortcutSetting) {
+        event.stopPropagation();
+        event.preventDefault();
+        return ;
+    }
+
+    if (Util.$shortcut.has(event.key)) {
+        Util.$shortcut.get(event.key)(event);
     }
 
     if (Util.$ctrlKey) {
 
-        switch (event.code) {
+        switch (event.key) {
 
-            case "Semicolon":
-            case "Minus":
-            case "Plus":
+            case "-":
+            case "+":
                 event.stopPropagation();
                 event.preventDefault();
                 break;

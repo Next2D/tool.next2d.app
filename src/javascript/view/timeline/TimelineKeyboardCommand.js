@@ -45,10 +45,9 @@ class TimelineKeyboardCommand extends KeyboardCommand
         }
 
         // レイヤー追加コマンド
-        this.add("Semicolon", this.addLayer);
+        this.add("+", this.addLayer);
 
         // レイヤの削除コマンド
-        this.add("Delete", this.removeController);
         this.add("Backspace", this.removeController);
 
         // レイヤーの上下移動
@@ -60,22 +59,22 @@ class TimelineKeyboardCommand extends KeyboardCommand
         this.add("ArrowRight", this.moveFrame);
 
         // フレーム追加コマンド
-        this.add("KeyF", this.frameController);
+        this.add("f", this.frameController);
 
         // ラベルへのフォーカス
-        this.add("KeyL", this.focusLabel);
+        this.add("l", this.focusLabel);
 
         // 空のキーフレームを追加
-        this.add("KeyE", this.addEmptyKey);
+        this.add("e", this.addEmptyKey);
 
         // キーフレームの追加・削除
-        this.add("KeyK", this.keyFrameController);
+        this.add("k", this.keyFrameController);
 
         // JavaScriptのモーダルを起動
-        this.add("KeyS", this.openScriptModal);
+        this.add("s", this.openScriptModal);
 
         // 選択肢たフレームのDisplayObjectのプロパティーに切り替え
-        this.add("KeyV", this.activePropertyTab);
+        this.add("v", this.activePropertyTab);
     }
 
     /**
@@ -168,7 +167,7 @@ class TimelineKeyboardCommand extends KeyboardCommand
             return ;
         }
 
-        const index = event.code === "ArrowRight" ? 1 : -1;
+        const index = event.key === "ArrowRight" ? 1 : -1;
 
         const frame = Math.max(1, Math.min(
             Util.$timelineFrame.currentFrame + index,
@@ -212,7 +211,7 @@ class TimelineKeyboardCommand extends KeyboardCommand
         const targetLayer = Util.$timelineLayer.targetLayer;
         if (!targetLayer) {
 
-            if (event.code === "ArrowDown") {
+            if (event.key === "ArrowDown") {
 
                 element = parent.firstElementChild;
                 parent.scrollTop = 0;
@@ -226,7 +225,7 @@ class TimelineKeyboardCommand extends KeyboardCommand
 
         } else {
 
-            if (event.code === "ArrowDown") {
+            if (event.key === "ArrowDown") {
 
                 element = targetLayer.nextElementSibling;
                 if (!element) {

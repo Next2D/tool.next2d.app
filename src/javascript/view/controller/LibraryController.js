@@ -674,7 +674,7 @@ class LibraryController
      */
     inputEnd (event)
     {
-        if (event.code === "Enter") {
+        if (event.key === "Enter") {
             event.target.blur();
             return ;
         }

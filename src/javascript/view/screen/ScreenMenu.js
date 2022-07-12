@@ -242,7 +242,7 @@ class ScreenMenu extends BaseScreen
         }
 
         this.keyCommandFunction({
-            "code": "Delete"
+            "ket": "Backspace"
         });
         tool.clear();
 
@@ -286,7 +286,6 @@ class ScreenMenu extends BaseScreen
             --keyFrame;
         }
 
-
         const characters = [];
         const length = this._$moveTargets.length;
         for (let idx = 0; idx < length; ++idx) {
@@ -307,7 +306,7 @@ class ScreenMenu extends BaseScreen
         }
 
         this.keyCommandFunction({
-            "code": "Delete"
+            "key": "Backspace"
         });
 
         this._$moveTargets.length = 0;

@@ -327,15 +327,8 @@ class TimelineHeader extends BaseTimeline
             return ;
         }
 
-        switch (event.code) {
-
-            case "Backspace":
-            case "Delete":
-                break;
-
-            default:
-                return ;
-
+        if (event.key !== "Backspace") {
+            return ;
         }
 
         if (!this._$targetElement) {
@@ -435,7 +428,7 @@ class TimelineHeader extends BaseTimeline
 
             // 複製でない時は削除する
             if (!Util.$shiftKey) {
-                this.deleteIcon({ "code": "Delete" });
+                this.deleteIcon({ "key": "Backspace" });
             }
 
             // 新しいアイコンのelementをセット

@@ -302,15 +302,8 @@ class PluginController
         }
 
         // 削除キー以外はスキップ
-        switch (event.code) {
-
-            case "Delete":
-            case "Backspace":
-                break;
-
-            default:
-                return ;
-
+        if (event.key !== "Backspace") {
+            return ;
         }
 
         this.save();

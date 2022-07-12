@@ -308,7 +308,7 @@ class Screen
             return false;
         }
 
-        switch (event.code) {
+        switch (event.key) {
 
             case "ArrowRight":
                 if (this._$moveTargets.length) {
@@ -2051,7 +2051,7 @@ class Screen
                         if (!instance._$multiline) {
                             textarea.addEventListener("keydown", (event) =>
                             {
-                                if (event.code === "Enter") {
+                                if (event.key === "Enter") {
                                     event.preventDefault();
                                     return false;
                                 }

@@ -150,19 +150,36 @@
     <div id="shortcut-setting-menu" class="none">
 
         <div id="shortcut-setting-tab">
-            <div id="shortcut-setting-screen" class="active">
-                <span class="language" data-text="{{スクリーン}}">スクリーン</span>
+            <div id="shortcut-setting-screen" class="shortcut-active">
+                <span class="language" data-tab="screen" data-text="{{スクリーン}}">スクリーン</span>
             </div>
             <div id="shortcut-setting-timeline">
-                <span class="language" data-text="{{タイムライン}}">タイムライン</span>
+                <span class="language" data-tab="timeline" data-text="{{タイムライン}}">タイムライン</span>
             </div>
             <div id="shortcut-setting-library">
-                <span class="language" data-text="{{ライブラリ}}">ライブラリ</span>
+                <span class="language" data-tab="library" data-text="{{ライブラリ}}">ライブラリ</span>
             </div>
         </div>
 
         <div id="shortcut-setting-list">
             <div id="shortcut-list-screen">
+
+                <div class="shortcut-item">
+                    <i class="tools-arrow"></i>
+                    <div class="description">
+                        <span class="language" data-text="{{選択ツール}}">選択ツール</span>
+                    </div>
+                    <div class="command" data-key="v">V</div>
+                </div>
+
+                <div class="shortcut-item">
+                    <i class="tools-transform"></i>
+                    <div class="description">
+                        <span class="language" data-text="{{Shape変形ツール}}">Shape変形ツール</span>
+                    </div>
+                    <div class="command" data-key="a">A</div>
+                </div>
+
             </div>
 
             <div id="shortcut-list-timeline">
@@ -173,7 +190,7 @@
         </div>
 
         <div id="shortcut-setting-footer">
-            <div id="shortcut-setting-restore">
+            <div id="shortcut-setting-reset">
                 <span class="language" data-text="{{リセット}}">リセット</span>
             </div>
             <div id="shortcut-setting-save">

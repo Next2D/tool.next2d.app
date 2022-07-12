@@ -110,7 +110,7 @@ class TimelineTool extends BaseTimeline
             });
             element.addEventListener("keypress", (event) =>
             {
-                if (event.code !== "Enter") {
+                if (event.key !== "Enter") {
                     return ;
                 }
                 event.target.blur();

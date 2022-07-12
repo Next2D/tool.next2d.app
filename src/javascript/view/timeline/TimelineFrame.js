@@ -302,7 +302,7 @@ class TimelineFrame extends BaseTimeline
     finishInput (event)
     {
         // Enterを押下したら、focusoutイベントを発火させる
-        if (event.code === "Enter") {
+        if (event.key === "Enter") {
             event.currentTarget.blur();
             return ;
         }

@@ -57,10 +57,10 @@ class GlobalKeyboardCommand
 
         this._$executeMulti = this.executeMulti.bind(this);
         const multiKeys = [
-            "KeyP", // preview repeat
-            "KeyZ", // undo, redo or zoom
-            "KeyS", // save
-            "KeyR", // load project or Rectangle
+            "p", // preview repeat
+            "z", // undo, redo or zoom
+            "s", // save
+            "r", // load project or Rectangle
             "ArrowRight", // MoveTab Right
             "ArrowLeft"   // MoveTab Left
         ];
@@ -81,11 +81,12 @@ class GlobalKeyboardCommand
      */
     executeMulti (event)
     {
+        console.log(event.key);
         if (Util.$keyLock) {
             return ;
         }
 
-        switch (event.code) {
+        switch (event.key) {
 
             case "Escape":
                 if (Util.$previewMode) {
@@ -98,7 +99,7 @@ class GlobalKeyboardCommand
                 }
                 break;
 
-            case "KeyP":
+            case "p":
                 if (Util.$timelinePlayer.repeat) {
                     Util.$timelinePlayer.executeTimelineRepeat();
                 } else {
@@ -141,7 +142,7 @@ class GlobalKeyboardCommand
                     }
 
                     let node = null;
-                    if (event.code === "ArrowLeft") {
+                    if (event.key === "ArrowLeft") {
 
                         node = children[index - 1];
                         if (!node) {
@@ -172,20 +173,14 @@ class GlobalKeyboardCommand
                 }
                 break;
 
-            case "KeyR":
+            case "r":
                 if (Util.$ctrlKey) {
-
                     event.preventDefault();
                     Util.$project.open();
-
-                } else {
-
-                    Util.$screenKeyboardCommand.activeTool(event);
-
                 }
                 break;
 
-            case "KeyS":
+            case "s":
                 if (Util.$ctrlKey) {
 
                     event.preventDefault();
@@ -203,7 +198,7 @@ class GlobalKeyboardCommand
                 }
                 break;
 
-            case "KeyZ":
+            case "z":
                 if (Util.$ctrlKey) {
 
                     event.preventDefault();

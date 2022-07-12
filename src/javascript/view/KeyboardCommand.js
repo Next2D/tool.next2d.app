@@ -127,11 +127,7 @@ class KeyboardCommand
      */
     execute (event)
     {
-        if (!this._$active || Util.$keyLock) {
-            return false;
-        }
-
-        if (!this._$mapping.has(event.code)) {
+        if (Util.$keyLock || !this._$active || !this._$mapping.has(event.key)) {
             return false;
         }
 
@@ -142,7 +138,7 @@ class KeyboardCommand
 
         this
             ._$mapping
-            .get(event.code)(event);
+            .get(event.key)(event);
     }
 }
 

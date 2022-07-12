@@ -43,7 +43,6 @@ class LibraryKeyboardCommand extends KeyboardCommand
         }
 
         // 初期イベント登録
-        this.add("Delete", this.executeInstanceDelete);
         this.add("Backspace", this.executeInstanceDelete);
     }
 

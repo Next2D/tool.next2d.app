@@ -1113,7 +1113,12 @@ class TimelineLayer extends BaseTimeline
      */
     endInput (event)
     {
-        if (event.type !== "focusout" && event.code !== "Enter") {
+        if (event.key === "Enter") {
+            event.target.blur();
+            return ;
+        }
+
+        if (event.type !== "focusout") {
             return ;
         }
 
