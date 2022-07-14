@@ -185,7 +185,7 @@ class ScreenMenu extends BaseScreen
             const newLayer = new Layer();
             scene.addLayer(newLayer);
 
-            const element = activeElements[idx].target;
+            const element = activeElements[idx];
 
             const character = layer.getCharacter(
                 element.dataset.characterId | 0
@@ -290,7 +290,7 @@ class ScreenMenu extends BaseScreen
         const length = this._$moveTargets.length;
         for (let idx = 0; idx < length; ++idx) {
 
-            const element = this._$moveTargets[idx].target;
+            const element = this._$moveTargets[idx];
 
             const character = layer.getCharacter(
                 element.dataset.characterId | 0
@@ -416,7 +416,7 @@ class ScreenMenu extends BaseScreen
         let index = 0;
         for (let idx = 0; idx < this._$moveTargets.length; ++idx) {
 
-            const element = this._$moveTargets[idx].target;
+            const element = this._$moveTargets[idx];
             if (element.dataset.instanceType !== "shape") {
                 continue;
             }
@@ -809,7 +809,7 @@ class ScreenMenu extends BaseScreen
         const characters = [];
         for (let idx = 0; idx < activeElements.length; ++idx) {
 
-            const element = activeElements[idx].target;
+            const element = activeElements[idx];
 
             const layer = scene.getLayer(element.dataset.layerId | 0);
 
@@ -861,7 +861,7 @@ class ScreenMenu extends BaseScreen
             const matrix = character.getPlace(frame).matrix;
             const bounds = Util.$boundsMatrix(character.getBounds(), matrix);
 
-            const target = activeElements[idx].target;
+            const target = activeElements[idx];
 
             const characterId = target.dataset.characterId | 0;
 
@@ -930,7 +930,7 @@ class ScreenMenu extends BaseScreen
         const poolPlaces = new Map();
         for (let idx = 0; idx < activeElements.length; ++idx) {
 
-            const element = activeElements[idx].target;
+            const element = activeElements[idx];
 
             const layer = scene.getLayer(element.dataset.layerId | 0);
 
@@ -1046,7 +1046,7 @@ class ScreenMenu extends BaseScreen
         const layers = new Map();
         for (let idx = 0; idx < activeElements.length; ++idx) {
 
-            const element = activeElements[idx].target;
+            const element = activeElements[idx];
 
             const layer = scene.getLayer(element.dataset.layerId | 0);
             if (!layers.has(layer.id)) {

@@ -489,7 +489,7 @@ class TextController extends BaseController
 
         const workSpace = Util.$currentWorkSpace();
         const scene     = workSpace.scene;
-        const element   = activeElements[0].target;
+        const element   = activeElements[0];
 
         // 対象レイヤーオブジェクト
         const layer = scene.getLayer(

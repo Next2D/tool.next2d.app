@@ -180,20 +180,6 @@ class Sound extends Instance
      * @return {object}
      * @public
      */
-    getBounds ()
-    {
-        return {
-            "xMin": 0,
-            "xMax": Util.CONTROLLER_DEFAULT_SIZE,
-            "yMin": 0,
-            "yMax": 150
-        };
-    }
-
-    /**
-     * @return {object}
-     * @public
-     */
     toObject ()
     {
         return {

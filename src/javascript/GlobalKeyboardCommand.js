@@ -55,180 +55,169 @@ class GlobalKeyboardCommand
             this._$handler = null;
         }
 
-        this._$executeMulti = this.executeMulti.bind(this);
-        const multiKeys = [
-            "p", // preview repeat
-            "z", // undo, redo or zoom
-            "s", // save
-            "r", // load project or Rectangle
-            "ArrowRight", // MoveTab Right
-            "ArrowLeft"   // MoveTab Left
-        ];
-        for (let idx = 0; idx < multiKeys.length; ++idx) {
-            Util.$setShortcut(multiKeys[idx], this._$executeMulti);
-        }
+        // 元に戻す
+        Util.$setShortcut(
+            Util.$generateShortcutKey("z", { "ctrl": true }),
+            this.undo
+        );
+
+        // 戻したデータを進める
+        Util.$setShortcut(
+            Util.$generateShortcutKey("z", { "ctrl": true, "shift": true }),
+            this.redo
+        );
+
+        // データをローカルに保存
+        Util.$setShortcut(
+            Util.$generateShortcutKey("s", { "ctrl": true }),
+            Util.$autoSave
+        );
+
+        Util.$setShortcut("Enter", () =>
+        {
+            Util.$timelinePlayer.executeTimelinePlay();
+        });
+
+        // プレビュー画面を起動
+        Util.$setShortcut(
+            Util.$generateShortcutKey("Enter", { "ctrl": true }),
+            Util.$showPreview
+        );
+
+        // プレビューを終了
+        Util.$setShortcut("Escape", Util.$hidePreview);
+
+        // プロジェクトファイルを読み込む
+        Util.$setShortcut(
+            Util.$generateShortcutKey("r", { "ctrl": true }),
+            Util.$project.open
+        );
+
+        // プロジェクトデータを書き出し
+        Util.$setShortcut(
+            Util.$generateShortcutKey("s", { "ctrl": true, "shift": true }),
+            Util.$project.save
+        );
+
+        // リピートモードの切り替え
+        Util.$setShortcut(
+            Util.$generateShortcutKey("p", { "ctrl": true }),
+            this.changeRepeatMode
+        );
+
+        // プロジェクト移動(タブ移動)
+        Util.$setShortcut(
+            Util.$generateShortcutKey("ArrowRight", { "ctrl": true }),
+            this.changeProject
+        );
+        Util.$setShortcut(
+            Util.$generateShortcutKey("ArrowLeft", { "ctrl": true }),
+            this.changeProject
+        );
 
         Util.$initializeEnd();
     }
 
     /**
-     * @description キーに複数のショートカットがある場合
+     * @description redoを実行
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    redo ()
+    {
+        const workSpace = Util.$currentWorkSpace();
+        if (workSpace) {
+            workSpace.redo();
+        }
+    }
+
+    /**
+     * @description undoを実行
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    undo ()
+    {
+        const workSpace = Util.$currentWorkSpace();
+        if (workSpace) {
+            workSpace.undo();
+        }
+    }
+
+    /**
+     * @description リピートモードの切り替え
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    changeRepeatMode ()
+    {
+        if (Util.$timelinePlayer.repeat) {
+            Util.$timelinePlayer.executeTimelineRepeat();
+        } else {
+            Util.$timelinePlayer.executeTimelineNoRepeat();
+        }
+    }
+
+    /**
+     * @description プロジェクトの切り替え
      *
      * @param  {KeyboardEvent} event
      * @return {void}
      * @method
      * @public
      */
-    executeMulti (event)
+    changeProject (event)
     {
-        console.log(event.key);
-        if (Util.$keyLock) {
-            return ;
+        const children = Array.from(document
+            .getElementById("view-tab-area")
+            .children);
+
+        let index = 0;
+        for (let idx = 0; idx < children.length; ++idx) {
+
+            const node = children[idx];
+
+            const tabId = node.dataset.tabId | 0;
+            if (tabId === Util.$activeWorkSpaceId) {
+                index = idx;
+                break;
+            }
         }
 
-        switch (event.key) {
+        let node = null;
+        if (event.key === "ArrowLeft") {
 
-            case "Escape":
-                if (Util.$previewMode) {
+            node = children[index - 1];
+            if (!node) {
+                node = children[children.length - 1];
+            }
 
-                    event.stopPropagation();
-                    event.preventDefault();
+        } else {
 
-                    // プレビューを非表示
-                    Util.$hidePreview();
-                }
-                break;
+            node = children[index + 1];
+            if (!node) {
+                node = children[0];
+            }
 
-            case "p":
-                if (Util.$timelinePlayer.repeat) {
-                    Util.$timelinePlayer.executeTimelineRepeat();
-                } else {
-                    Util.$timelinePlayer.executeTimelineNoRepeat();
-                }
-                break;
+        }
 
-            case "Enter":
-                if (Util.$ctrlKey && !Util.$previewMode) {
-
-                    event.stopPropagation();
-                    event.preventDefault();
-
-                    // プレビューを表示
-                    Util.$showPreview();
-                }
-                break;
-
-            case "ArrowRight":
-            case "ArrowLeft":
-                if (Util.$ctrlKey) {
-
-                    event.stopPropagation();
-                    event.preventDefault();
-
-                    const children = Array.from(document
-                        .getElementById("view-tab-area")
-                        .children);
-
-                    let index = 0;
-                    for (let idx = 0; idx < children.length; ++idx) {
-
-                        const node = children[idx];
-
-                        const tabId = node.dataset.tabId | 0;
-                        if (tabId === Util.$activeWorkSpaceId) {
-                            index = idx;
-                            break;
+        if (node) {
+            const tabId = node.dataset.tabId | 0;
+            if (Util.$activeWorkSpaceId !== tabId) {
+                Util.$screenTab.activeTab({
+                    "currentTarget": {
+                        "dataset": {
+                            "tabId": tabId
                         }
                     }
-
-                    let node = null;
-                    if (event.key === "ArrowLeft") {
-
-                        node = children[index - 1];
-                        if (!node) {
-                            node = children[children.length - 1];
-                        }
-
-                    } else {
-
-                        node = children[index + 1];
-                        if (!node) {
-                            node = children[0];
-                        }
-
-                    }
-
-                    if (node) {
-                        const tabId = node.dataset.tabId | 0;
-                        if (Util.$activeWorkSpaceId !== tabId) {
-                            Util.$screenTab.activeTab({
-                                "currentTarget": {
-                                    "dataset": {
-                                        "tabId": tabId
-                                    }
-                                }
-                            });
-                        }
-                    }
-                }
-                break;
-
-            case "r":
-                if (Util.$ctrlKey) {
-                    event.preventDefault();
-                    Util.$project.open();
-                }
-                break;
-
-            case "s":
-                if (Util.$ctrlKey) {
-
-                    event.preventDefault();
-
-                    if (Util.$shiftKey) {
-                        Util.$project.save();
-                    } else {
-                        Util.$autoSave();
-                    }
-
-                } else {
-
-                    Util.$userSetting.show(event);
-
-                }
-                break;
-
-            case "z":
-                if (Util.$ctrlKey) {
-
-                    event.preventDefault();
-
-                    /**
-                     * @type {ArrowTool}
-                     */
-                    const tool = Util.$tools.getDefaultTool("arrow");
-                    tool.clear();
-                    Util.$tools.reset();
-
-                    if (Util.$currentWorkSpace()) {
-                        if (event.shiftKey) {
-                            Util
-                                .$currentWorkSpace()
-                                .redo();
-                        } else {
-                            Util
-                                .$currentWorkSpace()
-                                .undo();
-                        }
-                    }
-
-                } else {
-
-                    Util.$screenKeyboardCommand.activeTool(event);
-
-                }
-                break;
-
+                });
+            }
         }
     }
 }

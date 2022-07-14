@@ -10,7 +10,7 @@ class LibraryKeyboardCommand extends KeyboardCommand
      */
     constructor ()
     {
-        super();
+        super("library");
     }
 
     /**

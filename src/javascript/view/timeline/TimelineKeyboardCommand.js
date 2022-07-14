@@ -10,9 +10,7 @@ class TimelineKeyboardCommand extends KeyboardCommand
      */
     constructor ()
     {
-        super();
-
-        this._$defaultCommand = null;
+        super("timeline");
     }
 
     /**
@@ -45,10 +43,23 @@ class TimelineKeyboardCommand extends KeyboardCommand
         }
 
         // レイヤー追加コマンド
-        this.add("+", this.addLayer);
+        this.add(
+            Util.$generateShortcutKey("+", { "ctrl": true }),
+            this.addLayer
+        );
+        this.add(
+            Util.$generateShortcutKey(";", { "ctrl": true }),
+            this.addLayer
+        );
 
         // レイヤの削除コマンド
-        this.add("Backspace", this.removeController);
+        this.add(
+            Util.$generateShortcutKey("Backspace", { "ctrl": true }),
+            this.deleteLayer
+        );
+
+        // フレームに設定されてるDisplayObjectを削除
+        this.add("Backspace", this.removeFrameCharacter);
 
         // レイヤーの上下移動
         this.add("ArrowDown", this.selectLayer);
@@ -59,16 +70,24 @@ class TimelineKeyboardCommand extends KeyboardCommand
         this.add("ArrowRight", this.moveFrame);
 
         // フレーム追加コマンド
-        this.add("f", this.frameController);
+        this.add("f", this.addFrame);
+        this.add(
+            Util.$generateShortcutKey("f", { "ctrl": true }),
+            this.deleteFrame
+        );
+
+        // キーフレーム追加コマンド
+        this.add("k", this.addKeyFrame);
+        this.add(
+            Util.$generateShortcutKey("k", { "ctrl": true }),
+            this.deleteKeyFrame
+        );
 
         // ラベルへのフォーカス
         this.add("l", this.focusLabel);
 
         // 空のキーフレームを追加
         this.add("e", this.addEmptyKey);
-
-        // キーフレームの追加・削除
-        this.add("k", this.keyFrameController);
 
         // JavaScriptのモーダルを起動
         this.add("s", this.openScriptModal);
@@ -86,10 +105,6 @@ class TimelineKeyboardCommand extends KeyboardCommand
      */
     activePropertyTab ()
     {
-        if (Util.$shiftKey || Util.$ctrlKey || Util.$altKey) {
-            return ;
-        }
-
         // タブの切り替え
         document
             .getElementById("controller-tab-area")
@@ -105,10 +120,6 @@ class TimelineKeyboardCommand extends KeyboardCommand
      */
     openScriptModal ()
     {
-        if (Util.$shiftKey || Util.$ctrlKey || Util.$altKey) {
-            return ;
-        }
-
         Util.$javaScriptEditor.show();
     }
 
@@ -121,53 +132,51 @@ class TimelineKeyboardCommand extends KeyboardCommand
      */
     focusLabel ()
     {
-        if (Util.$shiftKey || Util.$ctrlKey || Util.$altKey) {
-            return ;
-        }
-
         document.getElementById("label-name").focus();
     }
 
     /**
-     * @description 指定フレームにフレームを追加、Ctrlキー押下中はフレームを削除
+     * @description 指定フレームにフレームを削除
      *
      * @return {void}
      * @method
      * @public
      */
-    frameController ()
+    deleteFrame ()
     {
-        if (Util.$ctrlKey) {
+        Util.$timelineTool.executeTimelineFrameDelete();
+    }
 
-            Util.$timelineTool.executeTimelineFrameDelete();
-
-        } else {
-
-            Util.$timelineTool.executeTimelineFrameAdd();
-
-        }
+    /**
+     * @description 指定フレームにフレームを追加
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    addFrame ()
+    {
+        Util.$timelineTool.executeTimelineFrameAdd();
     }
 
     /**
      * @description 左右キーでフレームを移動
      *
-     * @param  {KeyboardEvent} event
+     * @param  {string} code
      * @return {void}
      * @method
      * @public
      */
-    moveFrame (event)
+    moveFrame (code)
     {
-        if (Util.$shiftKey || Util.$ctrlKey || Util.$altKey) {
-            return ;
-        }
-
         const targetLayer = Util.$timelineLayer.targetLayer;
         if (!targetLayer) {
             return ;
         }
 
-        const index = event.key === "ArrowRight" ? 1 : -1;
+        const index = code
+            ? code === "ArrowRight" ? 1 : -1
+            : 0;
 
         const frame = Math.max(1, Math.min(
             Util.$timelineFrame.currentFrame + index,
@@ -192,17 +201,13 @@ class TimelineKeyboardCommand extends KeyboardCommand
     /**
      * @description 上下キーで選択レイヤーを操作
      *
-     * @param  {KeyboardEvent} event
+     * @param  {string} code
      * @return {void}
      * @method
      * @public
      */
-    selectLayer (event)
+    selectLayer (code)
     {
-        if (Util.$shiftKey || Util.$ctrlKey || Util.$altKey) {
-            return ;
-        }
-
         let element = null;
 
         const parent = document
@@ -211,7 +216,7 @@ class TimelineKeyboardCommand extends KeyboardCommand
         const targetLayer = Util.$timelineLayer.targetLayer;
         if (!targetLayer) {
 
-            if (event.key === "ArrowDown") {
+            if (code === "ArrowDown") {
 
                 element = parent.firstElementChild;
                 parent.scrollTop = 0;
@@ -225,7 +230,7 @@ class TimelineKeyboardCommand extends KeyboardCommand
 
         } else {
 
-            if (event.key === "ArrowDown") {
+            if (code === "ArrowDown") {
 
                 element = targetLayer.nextElementSibling;
                 if (!element) {
@@ -261,19 +266,23 @@ class TimelineKeyboardCommand extends KeyboardCommand
     /**
      * @description 選択中のレイヤーを削除
      *
+     * @return {void}
      * @method
      * @public
      */
-    removeController ()
+    deleteLayer ()
     {
-        if (Util.$ctrlKey) {
-
-            Util.$timelineTool.executeTimelineLayerTrash();
-
-        } else {
-
-            Util.$timelineLayer.removeFrame();
-        }
+        Util.$timelineTool.executeTimelineLayerTrash();
+    }
+    /**
+     * @description 選択中のフレームに設定されてるDisplayObjectを削除
+     *
+     * @method
+     * @public
+     */
+    removeFrameCharacter ()
+    {
+        Util.$timelineLayer.removeFrame();
     }
 
     /**
@@ -284,10 +293,6 @@ class TimelineKeyboardCommand extends KeyboardCommand
      */
     addLayer ()
     {
-        if (!Util.$ctrlKey) {
-            return ;
-        }
-
         Util.$timelineTool.executeTimelineLayerAdd();
     }
 
@@ -299,30 +304,31 @@ class TimelineKeyboardCommand extends KeyboardCommand
      */
     addEmptyKey ()
     {
-        if (Util.$shiftKey || Util.$ctrlKey || Util.$altKey) {
-            return ;
-        }
-
         Util.$timelineTool.executeTimelineEmptyAdd();
     }
 
     /**
-     * @description 空のキーフレームを追加
+     * @description キーフレームを追加
      *
+     * @return {void}
      * @method
      * @public
      */
-    keyFrameController ()
+    addKeyFrame ()
     {
-        if (Util.$ctrlKey) {
+        Util.$timelineTool.executeTimelineKeyAdd();
+    }
 
-            Util.$timelineTool.executeTimelineKeyDelete();
-
-        } else {
-
-            Util.$timelineTool.executeTimelineKeyAdd();
-
-        }
+    /**
+     * @description キーフレームを削除
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    deleteKeyFrame ()
+    {
+        Util.$timelineTool.executeTimelineKeyDelete();
     }
 }
 

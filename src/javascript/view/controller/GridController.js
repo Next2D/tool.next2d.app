@@ -211,7 +211,7 @@ class GridController extends BaseController
         const instance = Util
             .$currentWorkSpace()
             .getLibrary(
-                activeElements[0].target.dataset.libraryId | 0
+                activeElements[0].dataset.libraryId | 0
             );
 
         switch (0) {
@@ -313,7 +313,7 @@ class GridController extends BaseController
             return this.hide();
         }
 
-        const target      = activeElements[0].target;
+        const target      = activeElements[0];
         const characterId = target.dataset.characterId | 0;
 
         const element = document

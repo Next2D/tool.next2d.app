@@ -81,7 +81,7 @@ class ObjectController extends BaseController
 
             case 1:
                 {
-                    const element = tool.activeElements[0].target;
+                    const element = tool.activeElements[0];
                     Util
                         .$currentWorkSpace()
                         .getLibrary(
@@ -124,7 +124,7 @@ class ObjectController extends BaseController
 
             case 1:
                 {
-                    const element = tool.activeElements[0].target;
+                    const element = tool.activeElements[0];
 
                     const layer = Util
                         .$currentWorkSpace()

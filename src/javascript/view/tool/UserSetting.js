@@ -107,9 +107,9 @@ class UserSetting
 
         if (shortcutSetting) {
             shortcutSetting
-                .addEventListener("click", (event) =>
+                .addEventListener("click", () =>
                 {
-                    Util.$shortcutSetting.show(event);
+                    Util.$shortcutSetting.show();
                 });
         }
     }

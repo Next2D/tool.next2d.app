@@ -11,14 +11,16 @@ class WorkSpace
      */
     constructor (json = "")
     {
-        this._$name        = "";
-        this._$stage       = null;
-        this._$libraries   = new Map();
-        this._$plugins     = new Map();
-        this._$position    = 0;
-        this._$characterId = 0;
-        this._$revision    = [];
-        this._$currentData = null;
+        this._$name            = "";
+        this._$stage           = null;
+        this._$libraries       = new Map();
+        this._$plugins         = new Map();
+        this._$position        = 0;
+        this._$characterId     = 0;
+        this._$revision        = [];
+        this._$currentData     = null;
+        this._$timelineHeight  = TimelineAdjustment.TIMELINE_DEFAULT_SIZE;
+        this._$controllerWidth = ControllerAdjustment.CONTROLLER_DEFAULT_SIZE;
 
         if (json) {
             this.load(json);
@@ -170,6 +172,22 @@ class WorkSpace
 
         // 初期化
         this.initialize(this.root);
+
+        document
+            .documentElement
+            .style
+            .setProperty(
+                "--timeline-height",
+                `${this._$timelineHeight}px`
+            );
+
+        document
+            .documentElement
+            .style
+            .setProperty(
+                "--controller-width",
+                `${this._$controllerWidth}px`
+            );
     }
 
     /**
@@ -217,6 +235,12 @@ class WorkSpace
         for (let idx = 0; idx < libraries.length; ++idx) {
             this.addLibrary(libraries[idx]);
         }
+
+        // settings
+        if (object.setting) {
+            this._$timelineHeight  = object.setting.timelineHeight;
+            this._$controllerWidth = object.setting.controllerWidth;
+        }
     }
 
     /**
@@ -237,7 +261,11 @@ class WorkSpace
             "characterId": this._$characterId,
             "stage": this.stage.toObject(),
             "libraries": libraries,
-            "plugins": Array.from(this._$plugins.values())
+            "plugins": Array.from(this._$plugins.values()),
+            "setting": {
+                "timelineHeight": this._$timelineHeight,
+                "controllerWidth": this._$controllerWidth
+            }
         });
     }
 
@@ -282,14 +310,7 @@ class WorkSpace
             this._$currentData = this.toJSON();
         }
 
-        const currentSceneId = this._$scene.id;
-        this._$scene.stop();
-        this._$scene = null;
-
-        this.load(this._$revision[--this._$position]);
-
-        // loadしたデータで初期化
-        this.initialize(this.getLibrary(currentSceneId));
+        this.reloadData(this._$revision[--this._$position]);
     }
 
     /**
@@ -326,14 +347,67 @@ class WorkSpace
             return ;
         }
 
+        this.reloadData(data);
+    }
+
+    /**
+     * @description undo/redoのデータの再読み込み
+     *
+     * @param  {string} data
+     * @return {void}
+     * @method
+     * @public
+     */
+    reloadData (data)
+    {
+        const layerIds = [];
+        const targetLayers = Util.$timelineLayer.targetLayers;
+        for (const layerId of targetLayers.keys()) {
+            layerIds.push(layerId);
+        }
+
+        /**
+         * @type {ArrowTool}
+         */
+        const tool = Util.$tools.getDefaultTool("arrow");
+        tool.clear();
+        Util.$tools.reset();
+
+        // 値をキャッシュ
+        const currentFrame   = this._$scene.currentFrame;
         const currentSceneId = this._$scene.id;
+
+        // シーンを初期化
         this._$scene.stop();
         this._$scene = null;
 
+        // 再読み込み
         this.load(data);
 
-        // loadしたデータで初期化
-        this.initialize(this.getLibrary(currentSceneId));
+        // loadしたデータでレイヤーを再構築
+        const scene = this.getLibrary(currentSceneId);
+        scene._$currentFrame = currentFrame;
+        this.initialize(scene);
+
+        // 再読み込み
+        if (layerIds.length) {
+
+            const ctrlKey = Util.$ctrlKey;
+            Util.$ctrlKey = true;
+            for (let idx = 0; idx < layerIds.length; ++idx) {
+
+                const element = document
+                    .getElementById(`${layerIds[idx]}`);
+
+                if (!element) {
+                    continue;
+                }
+
+                Util.$timelineLayer.activeLayer(element);
+            }
+
+            Util.$ctrlKey = ctrlKey;
+        }
     }
 
     /**
@@ -400,44 +474,5 @@ class WorkSpace
     removeLibrary (id)
     {
         this._$libraries.delete(id | 0);
-
-        // for (let instance of this._$libraries.values()) {
-        //
-        //     if (instance.type !== "container") {
-        //         continue;
-        //     }
-        //
-        //     for (let layer of instance._$layers.values()) {
-        //
-        //         const characters = layer._$characters.slice(0);
-        //         const length = characters.length;
-        //         for (let idx = 0; idx < length; ++idx) {
-        //
-        //             const character = characters[idx];
-        //             if (character.libraryId !== id) {
-        //                 continue;
-        //             }
-        //
-        //             layer.deleteCharacter(character.id);
-        //
-        //             for (let frame = character.startFrame; character.endFrame > frame; ++frame) {
-        //
-        //                 if (layer.getActiveCharacter(frame).length) {
-        //                     continue;
-        //                 }
-        //
-        //                 Util.$screen.clearFrames(layer, frame, frame + 1);
-        //             }
-        //         }
-        //     }
-        // }
-        //
-        // document
-        //     .getElementById("object-area")
-        //     .style
-        //     .display = "none";
-        //
-        // Util.$controller.deleteInstanceSelectOption(id | 0);
-        // Util.$javascriptController.reload();
     }
 }

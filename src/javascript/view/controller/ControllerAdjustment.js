@@ -69,7 +69,10 @@ class ControllerAdjustment
         document
             .documentElement
             .style
-            .setProperty("--controller-width", `${ControllerAdjustment.CONTROLLER_DEFAULT_SIZE}px`);
+            .setProperty(
+                "--controller-width",
+                `${ControllerAdjustment.CONTROLLER_DEFAULT_SIZE}px`
+            );
 
         const element = document
             .getElementById("controller-adjustment");
@@ -133,13 +136,20 @@ class ControllerAdjustment
                 .getPropertyValue("--controller-width")
                 .split("px")[0] | 0;
 
+            const width = Math.max(
+                ControllerAdjustment.CONTROLLER_DEFAULT_SIZE,
+                value + diff
+            );
+
             document
                 .documentElement
                 .style
                 .setProperty(
                     "--controller-width",
-                    `${Math.max(ControllerAdjustment.CONTROLLER_DEFAULT_SIZE, value + diff)}px`
+                    `${width}px`
                 );
+
+            Util.$currentWorkSpace()._$controllerWidth = width;
 
             this._$pointX = event.screenX;
         });

@@ -130,13 +130,20 @@ class TimelineAdjustment extends BaseTimeline
                 .getPropertyValue("--timeline-height")
                 .split("px")[0] | 0;
 
+            const height = Math.max(
+                TimelineAdjustment.TIMELINE_MIN_SIZE,
+                value + diff
+            );
+
             document
                 .documentElement
                 .style
                 .setProperty(
                     "--timeline-height",
-                    `${Math.max(TimelineAdjustment.TIMELINE_MIN_SIZE, value + diff)}px`
+                    `${height}px`
                 );
+
+            Util.$currentWorkSpace()._$timelineHeight = height;
 
             this._$pointY = event.screenY;
         });

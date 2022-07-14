@@ -82,7 +82,11 @@ class GlowFilter extends Filter
      */
     set strength (strength)
     {
-        this._$strength = Util.$clamp(+strength, Util.MIN_STRENGTH, Util.MAX_STRENGTH);
+        this._$strength = Util.$clamp(
+            +strength,
+            FilterController.MIN_STRENGTH,
+            FilterController.MAX_STRENGTH
+        );
     }
 
     /**

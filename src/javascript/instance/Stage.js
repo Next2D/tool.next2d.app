@@ -16,12 +16,42 @@ class Stage
             this._$bgColor = object.bgColor;
             this._$lock    = object.lock;
         } else {
-            this._$width   = Util.STAGE_DEFAULT_WIDTH;
-            this._$height  = Util.STAGE_DEFAULT_HEIGHT;
-            this._$fps     = Util.STAGE_DEFAULT_FPS;
+            this._$width   = Stage.STAGE_DEFAULT_WIDTH;
+            this._$height  = Stage.STAGE_DEFAULT_HEIGHT;
+            this._$fps     = Stage.STAGE_DEFAULT_FPS;
             this._$bgColor = "#ffffff";
             this._$lock    = false;
         }
+    }
+
+    /**
+     * @return {number}
+     * @const
+     * @static
+     */
+    static get STAGE_DEFAULT_WIDTH ()
+    {
+        return 550;
+    }
+
+    /**
+     * @return {number}
+     * @const
+     * @static
+     */
+    static get STAGE_DEFAULT_HEIGHT ()
+    {
+        return 400;
+    }
+
+    /**
+     * @return {number}
+     * @const
+     * @static
+     */
+    static get STAGE_DEFAULT_FPS ()
+    {
+        return 24;
     }
 
     /**

@@ -11,6 +11,65 @@ class ShortcutSetting
     constructor ()
     {
         /**
+         * @type {array}
+         * @private
+         */
+        this._$names = [
+            "screen",
+            "timeline",
+            "library"
+        ];
+
+        /**
+         * @type {object}
+         * @private
+         */
+        this._$default = {
+            "screen": [
+                {
+                    "key": "v",
+                    "text": "V",
+                    "css": "tools-arrow",
+                    "description": "{{選択ツール}}"
+                },
+                {
+                    "key": "a",
+                    "text": "A",
+                    "css": "tools-transform",
+                    "description": "{{Shape変形ツール}}"
+                },
+                {
+                    "key": "p",
+                    "text": "P",
+                    "css": "tools-pen",
+                    "description": "{{ペンツール}}"
+                }
+            ],
+            "timeline": [],
+            "library": []
+        };
+
+        /**
+         * @type {Map}
+         * @private
+         */
+        this._$commandMapping = new Map([
+            ["screen", new Map()],
+            ["timeline", new Map()],
+            ["library", new Map()]
+        ]);
+
+        /**
+         * @type {Map}
+         * @private
+         */
+        this._$viewMapping = new Map([
+            ["screen", new Map()],
+            ["timeline", new Map()],
+            ["library", new Map()]
+        ]);
+
+        /**
          * @type {boolean}
          * @default false
          * @private
@@ -56,6 +115,22 @@ class ShortcutSetting
     }
 
     /**
+     * @return {Map}
+     */
+    get commandMapping ()
+    {
+        return this._$commandMapping;
+    }
+
+    /**
+     * @return {Map}
+     */
+    get viewMapping ()
+    {
+        return this._$viewMapping;
+    }
+
+    /**
      * @description 初期起動関数
      *
      * @return {void}
@@ -92,30 +167,95 @@ class ShortcutSetting
                 });
         }
 
-        const parentIds = [
-            "shortcut-list-screen",
-            "shortcut-list-timeline",
-            "shortcut-list-library"
-        ];
+        // オリジナルのショートカットのマッピングを生成
+        this.createShortcutMap();
 
-        for (let idx = 0; idx < parentIds.length; ++idx) {
+        // イベント登録して、表示を更新
+        for (let idx = 0; idx < this._$names.length; ++idx) {
 
-            const children = document
-                .getElementById(parentIds[idx])
-                .children;
+            const name = this._$names[idx];
 
-            for (let idx = 0; idx < children.length; ++idx) {
-                const node = children[idx];
+            const parent = document
+                .getElementById(`shortcut-list-${name}`);
+
+            const mapping = this.viewMapping.get(name);
+
+            const values = this._$default[name];
+            for (let idx = 0; idx < values.length; ++idx) {
+
+                const data = values[idx];
+
+                const htmlTag = `
+<div class="shortcut-item">
+    <i class="${data.css}"></i>
+    <div class="description">
+        <span class="language" data-text="${data.description}">${Util.$currentLanguage.replace(data.description)}</span>
+    </div>
+    <div class="command" data-key="${data.key}" data-default-text="${data.text}">${data.text}</div>
+</div>`;
+
+                parent.insertAdjacentHTML("beforeend", htmlTag);
+
+                const node = parent.lastElementChild;
                 node.addEventListener("mousedown", (event) =>
                 {
                     this.selectNode(event);
                 });
+
+                const cmdElement = node.lastElementChild;
+                if (!mapping.has(cmdElement.dataset.key)) {
+                    continue;
+                }
+
+                const object = mapping.get(cmdElement.dataset.key);
+                cmdElement.dataset.map = object.map;
+                cmdElement.textContent = object.text;
             }
         }
 
+        // 登録用関数
         this._$keydownEvent = this.keydownEvent.bind(this);
 
         Util.$initializeEnd();
+    }
+
+    /**
+     * @description 個別のショートカットをマッピング
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    createShortcutMap ()
+    {
+        const data = localStorage.getItem(`${Util.PREFIX}@shortcut`);
+        if (!data) {
+           return ;
+        }
+
+        const object = JSON.parse(data);
+        const keys = Object.keys(object);
+        for (let idx = 0; idx < keys.length; ++idx) {
+
+            const name = keys[idx];
+
+            // リセット
+            this.viewMapping.get(name).clear();
+            this.commandMapping.get(name).clear();
+
+            const values = object[name];
+            for (let idx = 0; idx < values.length; ++idx) {
+
+                const data = values[idx];
+
+                this.viewMapping.get(name).set(data.key, {
+                    "map": data.map,
+                    "text": data.text
+                });
+
+                this.commandMapping.get(name).set(data.map, data.key);
+            }
+        }
     }
 
     /**
@@ -162,21 +302,35 @@ class ShortcutSetting
                 texts.push(event.key);
                 break;
 
+            case event.key === " ":
+                texts.push(event.code);
+                break;
+
             case event.key.length === 1:
                 texts.push(event.key.toUpperCase());
                 break;
 
             default:
-                break;
+                return ;
 
         }
 
-        this
-            ._$selectNode
-            .lastElementChild
-            .textContent = `${texts.join(" + ")}`;
+        const cmdElement = this._$selectNode.lastElementChild;
+        cmdElement.textContent = `${texts.join(" + ")}`;
 
-        console.log(this._$selectArea);
+        const key = Util.$generateShortcutKey(event.key, {
+            "alt": Util.$altKey,
+            "shift": Util.$shiftKey,
+            "ctrl": Util.$ctrlKey
+        });
+
+        if (key !== cmdElement.dataset.key) {
+            cmdElement.dataset.map  = key;
+            cmdElement.dataset.text = cmdElement.textContent;
+        } else {
+            delete cmdElement.dataset.map;
+            delete cmdElement.dataset.text;
+        }
     }
 
     /**
@@ -265,28 +419,6 @@ class ShortcutSetting
                 .remove("shortcut-active");
             this._$selectNode = null;
         }
-
-        // 初期値
-        // const defaults = new Map([
-        //     ["keyV", {
-        //         "css": "tools-arrow",
-        //         "text": "{{選択ツール}}",
-        //         "command": "keyV"
-        //     }]
-        // ]);
-
-        // リセット
-        const children = document
-            .getElementById("shortcut-list-screen")
-            .children;
-
-        for (let idx = 0; idx < children.length; ++idx) {
-
-            const node = children[idx].lastElementChild;
-            console.log(node.dataset.key);
-
-        }
-
     }
 
     /**
@@ -378,7 +510,33 @@ class ShortcutSetting
      */
     executeShortcutSettingReset ()
     {
-        // TODO 保存処理
+        // 初期化
+        localStorage.removeItem(`${Util.PREFIX}@shortcut`);
+
+        for (let idx = 0; idx < this._$names.length; ++idx) {
+
+            const name = this._$names[idx];
+
+            const children = document
+                .getElementById(`shortcut-list-${name}`)
+                .children;
+
+            for (let idx = 0; idx < children.length; ++idx) {
+
+                const node = children[idx];
+
+                const cmdElement = node.lastElementChild;
+                cmdElement.textContent = cmdElement.dataset.defaultText;
+                if (!cmdElement.dataset.map) {
+                    continue;
+                }
+
+                delete cmdElement.dataset.map;
+                delete cmdElement.dataset.text;
+            }
+        }
+
+        this.createShortcutMap();
     }
 
     /**
@@ -390,7 +548,44 @@ class ShortcutSetting
      */
     executeShortcutSettingSave ()
     {
-        // TODO 保存処理
+        // 初期化
+        localStorage.removeItem(`${Util.PREFIX}@shortcut`);
+
+        const object = {};
+        for (let idx = 0; idx < this._$names.length; ++idx) {
+
+            const name = this._$names[idx];
+
+            const children = document
+                .getElementById(`shortcut-list-${name}`)
+                .children;
+
+            for (let idx = 0; idx < children.length; ++idx) {
+
+                const node = children[idx].lastElementChild;
+                if (!node.dataset.map) {
+                    continue;
+                }
+
+                if (!object[name]) {
+                    object[name] = [];
+                }
+
+                object[name].push({
+                    "key": node.dataset.key,
+                    "map": node.dataset.map,
+                    "text": node.textContent
+                });
+            }
+        }
+
+        localStorage
+            .setItem(
+                `${Util.PREFIX}@shortcut`,
+                JSON.stringify(object)
+            );
+
+        this.createShortcutMap();
     }
 
     /**
@@ -467,3 +662,10 @@ class ShortcutSetting
 }
 
 Util.$shortcutSetting = new ShortcutSetting();
+
+Util.$defaultShortcut = new Map([
+    ["screen", new Map()],
+    ["timeline", new Map()],
+    ["library", new Map()],
+    ["global", new Map()]
+]);

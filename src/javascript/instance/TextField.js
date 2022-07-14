@@ -35,16 +35,16 @@ class TextField extends Instance
 
         this._$bounds = {
             "xMin": 0,
-            "xMax": Util.FONT_DEFAULT_SIZE,
+            "xMax": TextField.FONT_DEFAULT_SIZE,
             "yMin": 0,
-            "yMax": Util.FONT_DEFAULT_SIZE
+            "yMax": TextField.FONT_DEFAULT_SIZE
         };
 
         this._$originBounds = {
             "xMin": 0,
-            "xMax": Util.FONT_DEFAULT_SIZE,
+            "xMax": TextField.FONT_DEFAULT_SIZE,
             "yMin": 0,
-            "yMax": Util.FONT_DEFAULT_SIZE
+            "yMax": TextField.FONT_DEFAULT_SIZE
         };
 
         if (object.text) {
@@ -130,6 +130,16 @@ class TextField extends Instance
         if (object.thicknessColor) {
             this.thicknessColor = object.thicknessColor;
         }
+    }
+
+    /**
+     * @return {number}
+     * @const
+     * @static
+     */
+    static get FONT_DEFAULT_SIZE ()
+    {
+        return 200;
     }
 
     /**

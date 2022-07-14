@@ -195,6 +195,8 @@ class TimelinePlayer extends BaseTimeline
                 this._$fps       = 1000 / (document.getElementById("stage-fps").value | 0);
                 this._$timerId   = window.requestAnimationFrame(this._$run);
             }
+        } else {
+            this.executeTimelineStop();
         }
     }
 

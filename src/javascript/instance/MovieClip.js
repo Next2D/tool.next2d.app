@@ -898,7 +898,7 @@ class MovieClip extends Instance
         let currentPlaceId = 0;
         let clipStart      = false;
         let clipIndex      = 0;
-        const setting      = Util.$tools.getUserPublishSetting();
+        const setting      = Util.$userSetting.getPublishSetting();
 
         const layers = Array.from(this._$layers);
 

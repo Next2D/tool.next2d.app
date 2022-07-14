@@ -362,20 +362,16 @@ class ArrowTool extends BaseTool
      *              もし配列内に指定済みのDisplayObjectがあれば何もしない
      *
      * @param  {HTMLDivElement} element
-     * @param  {number}  [x=0]
-     * @param  {number}  [y=0]
      * @param  {boolean} [hit=false]
      * @return {boolean}
      * @method
      * @public
      */
-    addElement (element, x = 0, y = 0, hit = false)
+    addElement (element, hit = false)
     {
         for (let idx = 0; idx < this._$activeElements.length; ++idx) {
 
-            const object = this._$activeElements[idx];
-            const target = object.target;
-
+            const target = this._$activeElements[idx];
             if (target.dataset.characterId === element.dataset.characterId) {
 
                 if (Util.$shiftKey) {
@@ -385,11 +381,7 @@ class ArrowTool extends BaseTool
 
                 } else {
 
-                    this._$activeElements.splice(idx, 1, {
-                        "target": element,
-                        "moveX": x,
-                        "moveY": y
-                    });
+                    this._$activeElements.splice(idx, 1, element);
 
                 }
 
@@ -403,11 +395,7 @@ class ArrowTool extends BaseTool
             this.clearActiveElement();
         }
 
-        this._$activeElements.push({
-            "target": element,
-            "moveX": x,
-            "moveY": y
-        });
+        this._$activeElements.push(element);
 
         return true;
     }
@@ -433,13 +421,14 @@ class ArrowTool extends BaseTool
             return ;
         }
 
+        // 現在の座標をセット
+        this.pageX = event.pageX;
+        this.pageY = event.pageY;
+
         // タイムラインのアクティブなElementを初期化
         Util.$timelineLayer.clear();
 
-        const result = this.addElement(target,
-            event.pageX,
-            event.pageY
-        );
+        const result = this.addElement(target);
 
         const character = layer.getCharacter(
             target.dataset.characterId | 0
@@ -455,13 +444,13 @@ class ArrowTool extends BaseTool
         }
 
         // 複数選択時の移動座標の調整
-        if (this._$activeElements.length > 1) {
-            for (let idx = 0; idx < this._$activeElements.length; ++idx) {
-                const object = this._$activeElements[idx];
-                object.moveX = event.pageX;
-                object.moveY = event.pageY;
-            }
-        }
+        // if (this._$activeElements.length > 1) {
+        //     for (let idx = 0; idx < this._$activeElements.length; ++idx) {
+        //         const object = this._$activeElements[idx];
+        //         object.moveX = event.pageX;
+        //         object.moveY = event.pageY;
+        //     }
+        // }
 
         // 拡大縮小回転のElementのポイントを表示して再計算
         Util
@@ -527,7 +516,7 @@ class ArrowTool extends BaseTool
 
         for (let idx = 0; idx < this._$activeElements.length; ++idx) {
 
-            const element = this._$activeElements[idx].target;
+            const element = this._$activeElements[idx];
 
             const layerId = element.dataset.layerId | 0;
 
@@ -564,9 +553,7 @@ class ArrowTool extends BaseTool
         const moveTargets = this._$activeElements;
         for (let idx = 0; idx < moveTargets.length; ++idx) {
 
-            const object = moveTargets[idx];
-
-            const element = object.target;
+            const element = moveTargets[idx];
 
             const layerId = element.dataset.layerId | 0;
             const layer   = scene.getLayer(layerId);
@@ -713,7 +700,7 @@ class ArrowTool extends BaseTool
         const workSpace = Util.$currentWorkSpace();
         const scene     = workSpace.scene;
 
-        const target = this._$activeElements[0].target;
+        const target = this._$activeElements[0];
 
         const layerId = target.dataset.layerId | 0;
         const layer   = scene.getLayer(layerId);
@@ -863,7 +850,7 @@ class ArrowTool extends BaseTool
                 continue;
             }
 
-            this.addElement(node, 0, 0, true);
+            this.addElement(node, true);
         }
 
         if (this._$activeElements.length) {
@@ -1219,7 +1206,7 @@ class ArrowTool extends BaseTool
 
         } else {
 
-            const target  = activeElements[0].target;
+            const target  = activeElements[0];
             const layerId = target.dataset.layerId | 0;
             const scene   = Util.$currentWorkSpace().scene;
             const layer   = scene.getLayer(layerId);
@@ -1353,24 +1340,27 @@ class ArrowTool extends BaseTool
     /**
      * @description DisplayObjectのマウス移動処理関数
      *
-     * @param  {MouseEvent} event
+     * @param  {MouseEvent} [event=null]
      * @return {void}
      * @method
      * @public
      */
-    moveDisplayObject (event)
+    moveDisplayObject (event = null)
     {
         this.save();
 
         const scene = Util.$currentWorkSpace().scene;
         const frame = Util.$timelineFrame.currentFrame;
 
+        const dx = event ? event.pageX - this.pageX : this.pageX;
+        const dy = event ? event.pageY - this.pageY : this.pageY;
+
         let xMin = Number.MAX_VALUE;
         let yMin = Number.MAX_VALUE;
         for (let idx = 0; idx < this._$activeElements.length; ++idx) {
 
             const object  = this._$activeElements[idx];
-            const element = document.getElementById(object.target.id);
+            const element = document.getElementById(object.id);
 
             // ロックしている場合など、スクリーンにElementが存在しない場合はスキップ
             if (!element) {
@@ -1387,12 +1377,7 @@ class ArrowTool extends BaseTool
             // fixed logic
             this.initPlace(character, layerId, frame);
 
-            // calc
-            const dx = event.pageX - object.moveX;
-            const dy = event.pageY - object.moveY;
-
             const matrix = character.getPlace(frame).matrix;
-
             matrix[4] += dx / Util.$zoomScale;
             matrix[5] += dy / Util.$zoomScale;
             character.screenX += dx;
@@ -1410,10 +1395,6 @@ class ArrowTool extends BaseTool
 
             element.style.left = `${element.offsetLeft + dx}px`;
             element.style.top  = `${element.offsetTop  + dy}px`;
-
-            // 移動位置を更新
-            object.moveX = event.pageX;
-            object.moveY = event.pageY;
 
             // move resize rect
             xMin = Math.min(xMin, character.x);
@@ -1436,6 +1417,12 @@ class ArrowTool extends BaseTool
             //         }
             //     }
             // }
+        }
+
+        // 移動位置を更新
+        if (event) {
+            this.pageX = event.pageX;
+            this.pageY = event.pageY;
         }
 
         document.getElementById("object-x").value = xMin;
@@ -1508,7 +1495,7 @@ class ArrowTool extends BaseTool
         let yMax = -Number.MAX_VALUE;
         for (let idx = 0; idx < this._$activeElements.length; ++idx) {
 
-            const moveTarget = this._$activeElements[idx].target;
+            const moveTarget = this._$activeElements[idx];
 
             const layerId = moveTarget.dataset.layerId | 0;
             const layer   = scene.getLayer(layerId);

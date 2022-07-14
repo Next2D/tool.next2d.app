@@ -405,7 +405,6 @@ class TimelineLayer extends BaseTimeline
 
             const layer = scene.getLayer(layerId);
             const characters = layer.getActiveCharacter(frame);
-
             for (let idx = 0; idx < characters.length; ++idx) {
 
                 const character = characters[idx];
@@ -417,7 +416,7 @@ class TimelineLayer extends BaseTimeline
                     continue;
                 }
 
-                tool.addElement(characterElement, 0, 0, true);
+                tool.addElement(characterElement, true);
             }
         }
 
@@ -1985,7 +1984,6 @@ class TimelineLayer extends BaseTimeline
          * @type {ArrowTool}
          */
         const tool = Util.$tools.getDefaultTool("arrow");
-
         if (target.classList.contains("frame-active")) {
 
             const firstFrames  = this.targetFrames.values().next().value;

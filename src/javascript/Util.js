@@ -6,52 +6,17 @@ Util.VERSION                    = 1;
 Util.PREFIX                     = "__next2d-tools__";
 Util.DATABASE_NAME              = "save-data";
 Util.STORE_KEY                  = "local";
-Util.FONT_DEFAULT_SIZE          = 200;
-Util.FONT_MIN_SIZE              = 10;
-Util.FONT_MAX_SIZE              = 255;
-Util.FONT_PARAM_MIN_SIZE        = 0;
-Util.FONT_PARAM_MAX_SIZE        = 255;
-Util.STAGE_DEFAULT_WIDTH        = 550;
-Util.STAGE_DEFAULT_HEIGHT       = 400;
-Util.STAGE_DEFAULT_FPS          = 24;
-Util.STAGE_MIN_FPS              = 1;
-Util.STAGE_MAX_FPS              = 60;
 Util.STROKE_MIN_SIZE            = 0;
 Util.STROKE_MAX_SIZE            = 200;
 Util.STAGE_DEFAULT_COLOR        = "#ffffff";
 Util.TOOLS_FILL_DEFAULT_COLOR   = "#000000";
 Util.TOOLS_STROKE_DEFAULT_COLOR = "#000000";
-Util.COLOR_MIN_OFFSET           = -255;
-Util.COLOR_MAX_OFFSET           = 255;
-Util.COLOR_MIN_MULTIPLIER       = 0;
-Util.COLOR_MAX_MULTIPLIER       = 100;
-Util.MIN_INT                    = -32768;
-Util.MAX_INT                    = 32767;
-Util.MIN_ROTATE                 = -360;
-Util.MAX_ROTATE                 = 360;
-Util.MIN_COLOR                  = 0;
-Util.MAX_COLOR                  = 255;
-Util.MIN_BLUR                   = 0;
-Util.MAX_BLUR                   = 255;
-Util.MIN_STRENGTH               = 0;
-Util.MAX_STRENGTH               = 255;
-Util.MIN_DISTANCE               = -255;
-Util.MAX_DISTANCE               = 255;
 Util.LAYER_MODE_NORMAL          = 0;
 Util.LAYER_MODE_MASK            = 1;
 Util.LAYER_MODE_MASK_IN         = 2;
 Util.LAYER_MODE_GUIDE           = 3;
 Util.LAYER_MODE_GUIDE_IN        = 4;
-Util.TIMELINE_DEFAULT_SIZE      = 280;
-Util.TIMELINE_MIN_SIZE          = 150;
-Util.CONTROLLER_DEFAULT_SIZE    = 360;
 Util.REVISION_LIMIT             = 100;
-Util.STAGE_SKIP_TARGETA         = 10;
-Util.GRADIENT_CANVAS_WIDTH      = 255;
-Util.GRADIENT_CANVAS_HEIGHT     = 30;
-Util.SCRIPT_MODAL_WIDTH         = 620;
-Util.SCRIPT_MODAL_HEIGHT        = 450;
-Util.SCRIPT_MODAL_BAR_HEIGHT    = 25;
 Util.FOLDER_OPEN                = "open";
 Util.FOLDER_CLOSE               = "close";
 Util.EASE_CANVAS_WIDTH          = 300;
@@ -100,9 +65,20 @@ Util.$languages                 = new Map();
 Util.$currentLanguage           = null;
 Util.$shapePointerColor         = "#009900";
 Util.$shapeLinkedPointerColor   = "#ffa500";
-Util.$isMac                     = window.navigator.userAgent.indexOf("Mac") > -1;
 Util.$shortcut                  = new Map();
 Util.$useShortcutSetting        = false;
+
+const userAgentData = window.navigator.userAgentData;
+if (userAgentData) {
+    userAgentData
+        .getHighEntropyValues(["platform"])
+        .then((object) =>
+        {
+            Util.$isMac = object.platform.indexOf("mac") > -1;
+        });
+} else {
+    Util.$isMac = window.navigator.userAgent.indexOf("Mac") > -1;
+}
 
 const canvas     = document.createElement("canvas");
 canvas.width     = 1;
@@ -147,6 +123,29 @@ Util.$clamp = (value, min, max) =>
 {
     const number = +value;
     return Math.min(Math.max(min, isNaN(number) ? 0 : number), max);
+};
+
+/**
+ * @param  {string} key
+ * @param  {object} [options=null]
+ * @return {string}
+ * @static
+ */
+Util.$generateShortcutKey = (key, options = null) =>
+{
+    let value = key.toLowerCase();
+    if (options) {
+        if (options.shift) {
+            value += "Shift";
+        }
+        if (options.alt) {
+            value += "Alt";
+        }
+        if (options.ctrl) {
+            value += "Ctrl";
+        }
+    }
+    return value;
 };
 
 /**
@@ -487,26 +486,13 @@ Util.$executeKeyCommand = (event) =>
     Util.$ctrlKey  = event.ctrlKey || event.metaKey; // command
     Util.$altKey   = event.altKey;
 
-    if (Util.$keyLock) {
-        return ;
-    }
-
-    if (Util.$useShortcutSetting) {
-        event.stopPropagation();
-        event.preventDefault();
-        return ;
-    }
-
-    if (Util.$shortcut.has(event.key)) {
-        Util.$shortcut.get(event.key)(event);
-    }
-
     if (Util.$ctrlKey) {
 
         switch (event.key) {
 
             case "-":
             case "+":
+            case ";":
                 event.stopPropagation();
                 event.preventDefault();
                 break;
@@ -518,6 +504,29 @@ Util.$executeKeyCommand = (event) =>
 
     }
 
+    if (Util.$keyLock) {
+        return ;
+    }
+
+    if (Util.$useShortcutSetting) {
+        event.stopPropagation();
+        event.preventDefault();
+        return ;
+    }
+
+    const code = Util.$generateShortcutKey(event.key, {
+        "alt": Util.$altKey,
+        "shift": Util.$shiftKey,
+        "ctrl": Util.$ctrlKey
+    });
+
+    if (!Util.$shortcut.has(code)) {
+        return ;
+    }
+
+    event.stopPropagation();
+    event.preventDefault();
+    Util.$shortcut.get(code)(event);
 };
 
 /**
@@ -630,9 +639,9 @@ Util.$initialize = () =>
         .style
         .setProperty("--screen-height", `${window.innerHeight - 50}px`);
 
-    const width  = Util.STAGE_DEFAULT_WIDTH;
-    const height = Util.STAGE_DEFAULT_HEIGHT;
-    const fps    = Util.STAGE_DEFAULT_FPS;
+    const width  = Stage.STAGE_DEFAULT_WIDTH;
+    const height = Stage.STAGE_DEFAULT_HEIGHT;
+    const fps    = Stage.STAGE_DEFAULT_FPS;
 
     const previewDisplay = document.getElementById("preview-display");
     if (previewDisplay) {

@@ -167,7 +167,7 @@ class TabController
 
         const workSpace = Util.$currentWorkSpace();
         const scene     = workSpace.scene;
-        const target    = activeElements[0].target;
+        const target    = activeElements[0];
 
         const layer = scene.getLayer(
             target.dataset.layerId | 0

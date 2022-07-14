@@ -306,7 +306,7 @@ class FilterController extends GradientFilterController
 
         const filterId = event.target.dataset.filterId | 0;
 
-        const target  = activeElements[0].target;
+        const target  = activeElements[0];
 
         const layer = Util
             .$currentWorkSpace()
@@ -804,7 +804,7 @@ class FilterController extends GradientFilterController
             return ;
         }
 
-        const element = activeElements[0].target;
+        const element = activeElements[0];
 
         const layer = Util
             .$currentWorkSpace()
@@ -1012,7 +1012,7 @@ class FilterController extends GradientFilterController
                 return ;
             }
 
-            const target = activeElements[0].target;
+            const target = activeElements[0];
             const scene  = Util.$currentWorkSpace().scene;
             const layer  = scene.getLayer(
                 target.dataset.layerId | 0

@@ -10,7 +10,14 @@ class ScreenKeyboardCommand extends KeyboardCommand
      */
     constructor ()
     {
-        super();
+        super("screen");
+
+        /**
+         * @type {string}
+         * @default "close"
+         * @private
+         */
+        this._$state = "close";
 
         /**
          * @type {Tool}
@@ -66,7 +73,7 @@ class ScreenKeyboardCommand extends KeyboardCommand
         this._$endHandTool = this.endHandTool.bind(this);
 
         // ハンドツール
-        this.add("Space", this.startHandTool.bind(this));
+        this.add(" ", this.startHandTool.bind(this));
 
         // 初期のショートカット
         const keys = [
@@ -76,33 +83,76 @@ class ScreenKeyboardCommand extends KeyboardCommand
             "t", // Text
             "k", // Bucket
             "o", // Circle
-            "r"  // Rectangle
+            "r", // Rectangle
+            "z"  // Zoom
         ];
         this._$activeTool = this.activeTool.bind(this);
         for (let idx = 0; idx < keys.length; ++idx) {
             this.add(keys[idx], this._$activeTool);
         }
 
+        this.add(
+            Util.$generateShortcutKey("r", { "shift": true }),
+            this._$activeTool
+        );
+
+        // ユーザー設定
+        this.add("s", this.userSetting.bind(this));
+
         // 指定したDisplayObjectを移動
-        this.add("ArrowRight", this.executeArrowRight.bind(this));
+        const arrows = [
+            "ArrowRight",
+            "ArrowLeft",
+            "ArrowUp",
+            "ArrowDown"
+        ];
+
+        for (let idx = 0; idx < arrows.length; ++idx) {
+            const key = arrows[idx];
+            this.add(key, this.executeMoveDisplayObject);
+            this.add(
+                Util.$generateShortcutKey(key, { "shift": true }),
+                this.executeMoveDisplayObject
+            );
+        }
+
+    }
+
+    /**
+     * @description ユーザー設定画面を表示
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    userSetting ()
+    {
+        if (this._$state === "close") {
+
+            this._$state = "show";
+            Util.$userSetting.show();
+
+        } else {
+
+            this._$state = "close";
+            Util.$endMenu();
+
+        }
+
     }
 
     /**
      * @description アローツールをアクティブに
      *
-     * @param  {KeyboardEvent} event
+     * @param  {string} code
      * @return {void}
      * @method
      * @public
      */
-    activeTool (event)
+    activeTool (code)
     {
-        if (Util.$keyLock || Util.$shiftKey || Util.$ctrlKey || Util.$altKey) {
-            return ;
-        }
-
         let name = "";
-        switch (event.key) {
+        switch (code) {
 
             case "v":
                 name = "arrow";
@@ -134,6 +184,10 @@ class ScreenKeyboardCommand extends KeyboardCommand
 
             case "o":
                 name = "circle";
+                break;
+
+            case "rShift":
+                name = "round-rect";
                 break;
 
             default:
@@ -175,6 +229,9 @@ class ScreenKeyboardCommand extends KeyboardCommand
         tool.dispatchEvent(EventType.START);
         Util.$tools.activeTool = tool;
 
+        // 選択ツールを中止
+        Util.$tools.getDefaultTool("arrow").endRect();
+
         // 終了イベントを設定
         window.addEventListener("keyup", this._$endHandTool);
     }
@@ -182,14 +239,14 @@ class ScreenKeyboardCommand extends KeyboardCommand
     /**
      * @description ハンドツールを終了
      *
-     * @param  {KeyboardEvent} event
+     * @param  {string} code
      * @return {void}
      * @method
      * @public
      */
-    endHandTool (event)
+    endHandTool (code)
     {
-        if (event.key !== "Space") {
+        if (code !== " ") {
             return ;
         }
 
@@ -217,17 +274,13 @@ class ScreenKeyboardCommand extends KeyboardCommand
     /**
      * @description 右に移動
      *
-     * @param  {KeyboardEvent} event
+     * @param  {string} code
      * @return {void}
      * @method
      * @public
      */
-    executeArrowRight (event)
+    executeMoveDisplayObject (code)
     {
-        if (!this.active || Util.$keyLock) {
-            return ;
-        }
-
         /**
          * @type {ArrowTool}
          */
@@ -236,11 +289,57 @@ class ScreenKeyboardCommand extends KeyboardCommand
             return ;
         }
 
-        event.stopPropagation();
-        event.preventDefault();
+        switch (code) {
 
-        console.log([event]);
+            case "ArrowRight":
+                tool.pageX = Util.$shiftKey ? 10 : 1;
+                tool.pageY = 0;
+                break;
 
+            case "ArrowLeft":
+                tool.pageX = Util.$shiftKey ? -10 : -1;
+                tool.pageY = 0;
+                break;
+
+            case "ArrowUp":
+                tool.pageX = 0;
+                tool.pageY = Util.$shiftKey ? -10 : -1;
+                break;
+
+            case "ArrowDown":
+                tool.pageX = 0;
+                tool.pageY = Util.$shiftKey ? 10 : 1;
+                break;
+
+            default:
+                return;
+
+        }
+
+        tool.moveDisplayObject();
+        tool._$saved = false;
+    }
+
+    /**
+     * @description 左に移動
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    executeArrowLeft ()
+    {
+        /**
+         * @type {ArrowTool}
+         */
+        const tool = Util.$tools.getDefaultTool("arrow");
+        if (!tool.activeElements.length) {
+            return ;
+        }
+
+        tool.pageX = Util.$shiftKey ? -10 : -1;
+        tool.pageY = 0;
+        tool.moveDisplayObject();
     }
 }
 

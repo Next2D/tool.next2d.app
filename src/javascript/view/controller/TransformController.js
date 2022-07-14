@@ -570,7 +570,7 @@ class TransformController extends BaseController
         let yMax = -Number.MAX_VALUE;
         for (let idx = 0; idx < activeElements.length; ++idx) {
 
-            const target = activeElements[idx].target;
+            const target = activeElements[idx];
 
             const layer = scene.getLayer(target.dataset.layerId | 0);
             if (!layer || layer.lock || layer.disable) {
@@ -608,7 +608,7 @@ class TransformController extends BaseController
 
         if (activeElements.length === 1) {
 
-            const target = activeElements[0].target;
+            const target = activeElements[0];
             const layer = scene.getLayer(target.dataset.layerId | 0);
 
             const character = layer
@@ -737,7 +737,7 @@ class TransformController extends BaseController
         const activeElements = tool.activeElements;
         for (let idx = 0; idx < activeElements.length; ++idx) {
 
-            const target  = activeElements[idx].target;
+            const target  = activeElements[idx];
             const layerId = target.dataset.layerId | 0;
             const layer   = scene.getLayer(layerId);
 
@@ -787,7 +787,7 @@ class TransformController extends BaseController
         const activeElements = tool.activeElements;
         for (let idx = 0; idx < activeElements.length; ++idx) {
 
-            const target  = activeElements[idx].target;
+            const target  = activeElements[idx];
             const layerId = target.dataset.layerId | 0;
             const layer   = scene.getLayer(layerId);
 
@@ -849,7 +849,7 @@ class TransformController extends BaseController
 
             for (let idx = 0; idx < activeElements.length; ++idx) {
 
-                const target  = activeElements[idx].target;
+                const target  = activeElements[idx];
                 const layerId = target.dataset.layerId | 0;
                 const layer   = scene.getLayer(layerId);
 
@@ -872,7 +872,7 @@ class TransformController extends BaseController
 
         } else {
 
-            const target  = activeElements[0].target;
+            const target  = activeElements[0];
             const layerId = target.dataset.layerId | 0;
             const layer   = scene.getLayer(layerId);
 
@@ -934,7 +934,7 @@ class TransformController extends BaseController
             let baseYMax = -Number.MAX_VALUE;
             for (let idx = 0; idx < activeElements.length; ++idx) {
 
-                const target  = activeElements[idx].target;
+                const target  = activeElements[idx];
                 const layerId = target.dataset.layerId | 0;
                 const layer   = scene.getLayer(layerId);
 
@@ -967,7 +967,7 @@ class TransformController extends BaseController
 
             for (let idx = 0; idx < activeElements.length; ++idx) {
 
-                const target  = activeElements[idx].target;
+                const target  = activeElements[idx];
                 const layerId = target.dataset.layerId | 0;
                 const layer   = scene.getLayer(layerId);
 
@@ -1012,7 +1012,7 @@ class TransformController extends BaseController
 
             for (let idx = 0; idx < activeElements.length; ++idx) {
 
-                const target  = activeElements[idx].target;
+                const target  = activeElements[idx];
                 const layerId = target.dataset.layerId | 0;
                 const layer   = scene.getLayer(layerId);
 
@@ -1141,7 +1141,7 @@ class TransformController extends BaseController
 
             for (let idx = 0; idx < activeElements.length; ++idx) {
 
-                const target  = activeElements[idx].target;
+                const target  = activeElements[idx];
                 const layerId = target.dataset.layerId | 0;
                 const layer   = scene.getLayer(layerId);
 
@@ -1164,7 +1164,7 @@ class TransformController extends BaseController
 
         } else {
 
-            const target  = activeElements[0].target;
+            const target  = activeElements[0];
             const layerId = target.dataset.layerId | 0;
             const layer   = scene.getLayer(layerId);
 
@@ -1226,7 +1226,7 @@ class TransformController extends BaseController
             let baseYMax = -Number.MAX_VALUE;
             for (let idx = 0; idx < activeElements.length; ++idx) {
 
-                const target  = activeElements[idx].target;
+                const target  = activeElements[idx];
                 const layerId = target.dataset.layerId | 0;
                 const layer   = scene.getLayer(layerId);
 
@@ -1259,7 +1259,7 @@ class TransformController extends BaseController
 
             for (let idx = 0; idx < activeElements.length; ++idx) {
 
-                const target  = activeElements[idx].target;
+                const target  = activeElements[idx];
                 const layerId = target.dataset.layerId | 0;
                 const layer   = scene.getLayer(layerId);
 
@@ -1304,7 +1304,7 @@ class TransformController extends BaseController
 
             for (let idx = 0; idx < activeElements.length; ++idx) {
 
-                const target  = activeElements[idx].target;
+                const target  = activeElements[idx];
                 const layerId = target.dataset.layerId | 0;
                 const layer   = scene.getLayer(layerId);
 
@@ -1437,7 +1437,7 @@ class TransformController extends BaseController
             let baseYMax = -Number.MAX_VALUE;
             for (let idx = 0; idx < activeElements.length; ++idx) {
 
-                const target  = activeElements[idx].target;
+                const target  = activeElements[idx];
                 const layerId = target.dataset.layerId | 0;
                 const layer   = scene.getLayer(layerId);
 
@@ -1471,7 +1471,7 @@ class TransformController extends BaseController
 
             for (let idx = 0; idx < activeElements.length; ++idx) {
 
-                const target  = activeElements[idx].target;
+                const target  = activeElements[idx];
                 const layerId = target.dataset.layerId | 0;
                 const layer   = scene.getLayer(layerId);
 
@@ -1516,7 +1516,7 @@ class TransformController extends BaseController
 
             for (let idx = 0; idx < activeElements.length; ++idx) {
 
-                const target = activeElements[idx].target;
+                const target = activeElements[idx];
 
                 const layerId = target.dataset.layerId | 0;
                 const layer   = scene.getLayer(layerId);

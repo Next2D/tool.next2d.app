@@ -19,6 +19,7 @@ class Instance
     /**
      * @abstract
      */
+    // eslint-disable-next-line no-empty-function
     initialize () {}
 
     /**
@@ -148,6 +149,7 @@ class Instance
     /**
      * @abstract
      */
+    // eslint-disable-next-line no-empty-function
     toObject () {}
 
     /**

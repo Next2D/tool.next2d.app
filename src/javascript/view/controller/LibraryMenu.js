@@ -311,7 +311,15 @@ class LibraryMenu
          * @type {ArrowTool}
          */
         const tool = Util.$tools.getDefaultTool("arrow");
-        tool.clear();
+        tool.clearActiveElement();
+
+        // スクリーンエリアの変形Elementを非表示に
+        Util.$transformController.hide();
+        Util.$gridController.hide();
+        Util.$screen.clearTweenMarker();
+
+        // コントローラーエリアを初期化
+        Util.$controller.default();
 
         // JavaScriptのリストを再読み込み
         Util.$javascriptController.reload();

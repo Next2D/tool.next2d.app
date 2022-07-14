@@ -125,7 +125,7 @@ class VideoController extends BaseController
             return ;
         }
 
-        const element  = activeElements[0].target;
+        const element  = activeElements[0];
         const instance = Util.$currentWorkSpace().getLibrary(
             element.dataset.libraryId | 0
         );

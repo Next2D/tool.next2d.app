@@ -203,7 +203,6 @@ class Tools
 
         // end
         Util.$initializeEnd();
-        this._$handler = null;
     }
 
     /**

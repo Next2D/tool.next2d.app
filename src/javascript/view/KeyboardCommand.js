@@ -7,8 +7,15 @@ class KeyboardCommand
      * @constructor
      * @public
      */
-    constructor ()
+    constructor (name)
     {
+        /**
+         * @type {boolean}
+         * @default false
+         * @private
+         */
+        this._$areaName = name;
+
         /**
          * @type {boolean}
          * @default false
@@ -44,6 +51,14 @@ class KeyboardCommand
         } else {
             this.initialize();
         }
+    }
+
+    /**
+     * @return {string}
+     */
+    get areaName ()
+    {
+        return this._$areaName;
     }
 
     /**
@@ -121,14 +136,47 @@ class KeyboardCommand
      * @description 登録されているcallbackをコール
      *
      * @param  {KeyboardEvent} event
-     * @return {boolean}
+     * @return {void}
      * @method
      * @public
      */
     execute (event)
     {
-        if (Util.$keyLock || !this._$active || !this._$mapping.has(event.key)) {
-            return false;
+        if (Util.$keyLock || !this._$active) {
+            return ;
+        }
+
+        let code = Util.$generateShortcutKey(event.key, {
+            "alt": Util.$altKey,
+            "shift": Util.$shiftKey,
+            "ctrl": Util.$ctrlKey
+        });
+
+        // オリジナル設定があれば上書き
+        const originMapping = Util
+            .$shortcutSetting
+            .commandMapping
+            .get(this.areaName);
+
+        if (originMapping.has(code)) {
+
+            code = originMapping.get(code);
+
+        } else {
+
+            const viewMapping = Util
+                .$shortcutSetting
+                .viewMapping
+                .get(this.areaName);
+
+            if (viewMapping.has(code)) {
+                return ;
+            }
+
+        }
+
+        if (!this._$mapping.has(code)) {
+            return ;
         }
 
         Util.$endMenu();
@@ -136,9 +184,10 @@ class KeyboardCommand
         event.stopPropagation();
         event.preventDefault();
 
+        // 条件が一致したら実行
         this
             ._$mapping
-            .get(event.key)(event);
+            .get(code)(code);
     }
 }
 

@@ -70,7 +70,11 @@ class Filter
      */
     set blurX (blur_x)
     {
-        this._$blurX = Util.$clamp(+blur_x, Util.MIN_BLUR, Util.MAX_BLUR);
+        this._$blurX = Util.$clamp(
+            +blur_x,
+            FilterController.MIN_BLUR,
+            FilterController.MAX_BLUR
+        );
     }
 
     /**
@@ -89,7 +93,11 @@ class Filter
      */
     set blurY (blur_y)
     {
-        this._$blurY = Util.$clamp(+blur_y, Util.MIN_BLUR, Util.MAX_BLUR);
+        this._$blurY = Util.$clamp(
+            +blur_y,
+            FilterController.MIN_BLUR,
+            FilterController.MAX_BLUR
+        );
     }
 
     /**

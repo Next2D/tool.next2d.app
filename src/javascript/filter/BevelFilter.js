@@ -52,7 +52,11 @@ class BevelFilter extends Filter
      */
     set distance (distance)
     {
-        this._$distance = Util.$clamp(+distance, Util.MIN_DISTANCE, Util.MAX_DISTANCE);
+        this._$distance = Util.$clamp(
+            +distance,
+            FilterController.MIN_DISTANCE,
+            FilterController.MAX_DISTANCE
+        );
     }
 
     /**
@@ -166,7 +170,11 @@ class BevelFilter extends Filter
      */
     set strength (strength)
     {
-        this._$strength = Util.$clamp(+strength, Util.MIN_STRENGTH, Util.MAX_STRENGTH);
+        this._$strength = Util.$clamp(
+            +strength,
+            FilterController.MIN_STRENGTH,
+            FilterController.MAX_STRENGTH
+        );
     }
 
     /**
