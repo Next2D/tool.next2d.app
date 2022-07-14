@@ -622,42 +622,35 @@ class ShortcutSetting
         const element = document
             .getElementById("shortcut-setting-menu");
 
-        if (element.classList.contains("fadeIn")) {
+        // 初期化
+        if (this._$selectNode) {
+            this
+                ._$selectNode
+                .classList
+                .remove("shortcut-active");
 
-            Util.$endMenu();
-
-        } else {
-
-            // 初期化
-            if (this._$selectNode) {
-                this
-                    ._$selectNode
-                    .classList
-                    .remove("shortcut-active");
-
-                this._$selectNode = null;
-                this._$selectArea = "";
-            }
-
-            this.executeShortcutSettingScreen();
-
-            if (!this._$active) {
-                Util.$useShortcutSetting = true;
-                this._$active = true;
-                window.addEventListener("keydown", this._$keydownEvent);
-            }
-
-            Util.$endMenu("shortcut-setting-menu");
-
-            const userSetting = document
-                .getElementById("user-setting");
-
-            element.style.display = "";
-            element.style.left    = `${userSetting.offsetLeft}px`;
-            element.style.top     = `${userSetting.offsetTop}px`;
-
-            element.setAttribute("class", "fadeIn");
+            this._$selectNode = null;
+            this._$selectArea = "";
         }
+
+        this.executeShortcutSettingScreen();
+
+        if (!this._$active) {
+            Util.$useShortcutSetting = true;
+            this._$active = true;
+            window.addEventListener("keydown", this._$keydownEvent);
+        }
+
+        Util.$endMenu("shortcut-setting-menu");
+
+        const userSetting = document
+            .getElementById("user-setting");
+
+        element.style.display = "";
+        element.style.left    = `${userSetting.offsetLeft}px`;
+        element.style.top     = `${userSetting.offsetTop}px`;
+
+        element.setAttribute("class", "fadeIn");
     }
 }
 

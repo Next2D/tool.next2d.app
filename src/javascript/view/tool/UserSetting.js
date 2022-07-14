@@ -148,22 +148,15 @@ class UserSetting
         const element = document
             .getElementById("user-setting");
 
-        if (element.classList.contains("fadeIn")) {
+        Util.$endMenu("user-setting");
+        const toolsSetting = document
+            .getElementById("tools-setting");
 
-            Util.$endMenu();
+        element.style.display = "";
+        element.style.left = `${toolsSetting.offsetLeft + 30}px`;
+        element.style.top  = `${toolsSetting.offsetTop - element.clientHeight + 80}px`;
 
-        } else {
-
-            Util.$endMenu("user-setting");
-            const toolsSetting = document
-                .getElementById("tools-setting");
-
-            element.style.display = "";
-            element.style.left = `${toolsSetting.offsetLeft + 30}px`;
-            element.style.top  = `${toolsSetting.offsetTop - element.clientHeight + 80}px`;
-
-            element.setAttribute("class", "fadeIn");
-        }
+        element.setAttribute("class", "fadeIn");
     }
 }
 

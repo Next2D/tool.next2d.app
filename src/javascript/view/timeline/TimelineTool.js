@@ -1163,7 +1163,7 @@ class TimelineTool extends BaseTimeline
                 for (; frame - idx > 1; ++idx) {
 
                     const element = document
-                        .getElementById(`${layerId}-${frame - idx}`);
+                        .getElementById(`${layer.id}-${frame - idx}`);
 
                     if (element.dataset.frameState !== "empty") {
                         break;

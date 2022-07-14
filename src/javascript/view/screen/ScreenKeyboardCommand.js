@@ -127,15 +127,20 @@ class ScreenKeyboardCommand extends KeyboardCommand
      */
     userSetting ()
     {
-        if (this._$state === "close") {
+        const element = document
+            .getElementById("user-setting");
 
-            this._$state = "show";
-            Util.$userSetting.show();
-
-        } else {
+        if (this._$state === "show"
+            || element.classList.contains("fadeIn")
+        ) {
 
             this._$state = "close";
             Util.$endMenu();
+
+        } else {
+
+            this._$state = "show";
+            Util.$userSetting.show();
 
         }
 
@@ -292,21 +297,25 @@ class ScreenKeyboardCommand extends KeyboardCommand
         switch (code) {
 
             case "ArrowRight":
+            case "ArrowRightShift":
                 tool.pageX = Util.$shiftKey ? 10 : 1;
                 tool.pageY = 0;
                 break;
 
             case "ArrowLeft":
+            case "ArrowLeftShift":
                 tool.pageX = Util.$shiftKey ? -10 : -1;
                 tool.pageY = 0;
                 break;
 
             case "ArrowUp":
+            case "ArrowUpShift":
                 tool.pageX = 0;
                 tool.pageY = Util.$shiftKey ? -10 : -1;
                 break;
 
             case "ArrowDown":
+            case "ArrowDownShift":
                 tool.pageX = 0;
                 tool.pageY = Util.$shiftKey ? 10 : 1;
                 break;
@@ -318,28 +327,6 @@ class ScreenKeyboardCommand extends KeyboardCommand
 
         tool.moveDisplayObject();
         tool._$saved = false;
-    }
-
-    /**
-     * @description 左に移動
-     *
-     * @return {void}
-     * @method
-     * @public
-     */
-    executeArrowLeft ()
-    {
-        /**
-         * @type {ArrowTool}
-         */
-        const tool = Util.$tools.getDefaultTool("arrow");
-        if (!tool.activeElements.length) {
-            return ;
-        }
-
-        tool.pageX = Util.$shiftKey ? -10 : -1;
-        tool.pageY = 0;
-        tool.moveDisplayObject();
     }
 }
 

@@ -133,7 +133,7 @@ Util.$clamp = (value, min, max) =>
  */
 Util.$generateShortcutKey = (key, options = null) =>
 {
-    let value = key.toLowerCase();
+    let value = key.length === 1 ? key.toLowerCase() : key;
     if (options) {
         if (options.shift) {
             value += "Shift";
