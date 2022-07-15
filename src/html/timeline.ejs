@@ -17,25 +17,25 @@
 
         <div class="tools">
 
-            <i id="timeline-script-add" data-detail="{{スクリプトを追加}}"></i>
-            <i id="timeline-key-add" data-detail="{{キーフレームを追加}}"></i>
-            <i id="timeline-empty-add" data-detail="{{空のキーフレームを追加}}"></i>
-            <i id="timeline-frame-add" data-detail="{{フレームを追加}}"></i>
-            <i id="timeline-frame-delete" data-detail="{{フレームを削除}}"></i>
+            <i id="timeline-script-add" data-detail="{{スクリプトを追加}}" data-shortcut-key="s" data-shortcut-text="S" data-area="timeline"></i>
+            <i id="timeline-key-add" data-detail="{{キーフレームを追加}}" data-shortcut-key="k" data-shortcut-text="K" data-area="timeline"></i>
+            <i id="timeline-empty-add" data-detail="{{空のキーフレームを追加}}" data-shortcut-key="e" data-shortcut-text="E" data-area="timeline"></i>
+            <i id="timeline-frame-add" data-detail="{{フレームを追加}}" data-shortcut-key="f" data-shortcut-text="F" data-area="timeline"></i>
+            <i id="timeline-frame-delete" data-detail="{{フレームを削除}}" data-shortcut-key="fCtrl" data-shortcut-text="Ctrl + F" data-area="timeline"></i>
             <i id="timeline-onion-skin" data-detail="{{オニオンスキン}}"></i>
             <i id="timeline-preview" class="timeline-preview-disable" data-detail="{{プレビューのON/OFF}}"></i>
             <div class="timeline-border"></div>
 
             <input type="text" id="current-frame" value="1">
-            <i id="timeline-play" data-detail="{{再生}}"></i>
-            <i id="timeline-stop" data-detail="{{停止}}"></i>
-            <i id="timeline-repeat" data-detail="{{ループ設定}}"></i>
-            <i id="timeline-no-repeat" data-detail="{{ループ設定}}"></i>
+            <i id="timeline-play" data-detail="{{再生}}" data-shortcut-key="Enter" data-shortcut-text="Enter" data-area="timeline"></i>
+            <i id="timeline-stop" data-detail="{{停止}}" data-shortcut-key="Enter" data-shortcut-text="Enter" data-area="timeline"></i>
+            <i id="timeline-repeat" data-detail="{{ループ設定}}" data-shortcut-key="pCtrl" data-shortcut-text="Ctrl + P" data-area="timeline"></i>
+            <i id="timeline-no-repeat" data-detail="{{ループ設定}}" data-shortcut-key="pCtrl" data-shortcut-text="Ctrl + P" data-area="timeline"></i>
             <div class="timeline-border"></div>
-            <input type="text" placeholder="Label" id="label-name" value="" data-detail="{{フレームラベル}}">
+            <input type="text" placeholder="Label" id="label-name" value="" data-detail="{{フレームラベル}}" data-shortcut-key="l" data-shortcut-text="L" data-area="timeline">
             <div class="timeline-border"></div>
             <div class="screen-zoom-area">
-                <input type="text" id="timeline-scale" value="100" data-detail="{{タイムライン幅の拡大・縮小}}">%
+                <input type="text" id="timeline-scale" value="100" data-detail="{{タイムライン幅の拡大・縮小}}" data-shortcut-key="z" data-shortcut-text="Z" data-area="timeline">%
             </div>
         </div>
 
@@ -44,11 +44,11 @@
     <div class="timeline-controller">
 
         <div class="timeline-controller-tools">
-            <i id="timeline-layer-add" data-detail="{{レイヤーを追加}}"></i>
-            <i id="timeline-layer-trash" data-detail="{{レイヤーを削除}}"></i>
-            <i id="timeline-layer-light-all" class="timeline-layer-light" data-detail="{{全てのレイヤーをハイライト}}"></i>
-            <i id="timeline-layer-disable-all" class="timeline-layer-disable" data-detail="{{全てのレイヤーを非表示}}"></i>
-            <i id="timeline-layer-lock-all" class="timeline-layer-lock" data-detail="{{全てのレイヤーをロック}}"></i>
+            <i id="timeline-layer-add" data-detail="{{レイヤーを追加}}" data-shortcut-key=";Ctrl" data-shortcut-text="Ctrl + +" data-area="timeline"></i>
+            <i id="timeline-layer-trash" data-detail="{{レイヤーを削除}}" data-shortcut-key="BackspaceCtrl" data-shortcut-text="Ctrl + Delete" data-area="timeline"></i>
+            <i id="timeline-layer-light-all" class="timeline-layer-light" data-detail="{{全てのレイヤーをハイライト}}" data-shortcut-key="hShift" data-shortcut-text="Shift + H" data-area="timeline"></i>
+            <i id="timeline-layer-disable-all" class="timeline-layer-disable" data-detail="{{全てのレイヤーを非表示}}" data-shortcut-key="dShift" data-shortcut-text="Shift + D" data-area="timeline"></i>
+            <i id="timeline-layer-lock-all" class="timeline-layer-lock" data-detail="{{全てのレイヤーをロック}}" data-shortcut-key="lShift" data-shortcut-text="Shift + L" data-area="timeline"></i>
         </div>
 
         <div id="timeline-controller-base">
@@ -87,9 +87,9 @@
 
     <div id="timeline-layer-menu" class="none">
         <div id="timeline-layer-menu-list">
-            <div id="timeline-layer-normal"><i></i><span class="language" data-text="{{通常レイヤー}}">通常レイヤー</span></div>
-            <div id="timeline-layer-mask"><i></i><span class="language" data-text="{{マスクレイヤー}}">マスクレイヤー</span></div>
-            <div id="timeline-layer-guide"><i></i><span class="language" data-text="{{ガイドレイヤー}}">ガイドレイヤー</span></div>
+            <div id="timeline-layer-normal"><i></i><span class="language" data-text="{{通常レイヤー}}" data-shortcut-key="nShift" data-shortcut-text="Shift + N" data-area="timeline">通常レイヤー</span></div>
+            <div id="timeline-layer-mask"><i></i><span class="language" data-text="{{マスクレイヤー}}" data-shortcut-key="mShift" data-shortcut-text="Shift + M" data-area="timeline">マスクレイヤー</span></div>
+            <div id="timeline-layer-guide"><i></i><span class="language" data-text="{{ガイドレイヤー}}" data-shortcut-key="gShift" data-shortcut-text="Shift + G" data-area="timeline">ガイドレイヤー</span></div>
             <p></p>
             <div>
                 <span class="language" data-text="{{レイヤーカラー}}">レイヤーカラー</span>

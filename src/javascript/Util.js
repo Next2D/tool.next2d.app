@@ -212,9 +212,29 @@ Util.$fadeIn = (event) =>
 
     const element = document.getElementById("detail-modal");
 
-    element.textContent = Util.$currentLanguage.replace(
+    let value = Util.$currentLanguage.replace(
         event.currentTarget.dataset.detail
     );
+
+    let shortcutKey = event
+        .currentTarget
+        .dataset
+        .shortcutKey;
+
+    if (shortcutKey) {
+
+        const mapping = Util.$shortcutSetting.viewMapping.get(
+            event.currentTarget.dataset.area
+        );
+
+        const shortcutText = mapping.has(shortcutKey)
+            ? mapping.get(shortcutKey).text
+            : event.currentTarget.dataset.shortcutText;
+
+        value += `(${shortcutText})`;
+    }
+
+    element.textContent = value;
 
     // 表示領域に収まるようx座標を調整
     switch (true) {

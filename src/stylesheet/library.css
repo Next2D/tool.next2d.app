@@ -298,7 +298,7 @@
 {
     display     : flex;
     align-items : center;
-    width       : calc((var(--controller-width) - 10px) / 2 - 54px);
+    width       : calc((var(--controller-width) - 10px) / 2 - 42px);
     height      : 35px;
     margin      : 0;
     overflow-x  : hidden;
@@ -310,13 +310,13 @@
     align-items : center;
     width       : calc((var(--controller-width) - 10px) / 2 - 20px);
     height      : 35px;
-    margin-left : 8px;
+    margin      : 0;
     overflow-x  : hidden;
 }
 
 #library-list-box .library-list-box-child .library-list-box-name input[type="text"]
 {
-    width : calc((var(--controller-width) - 10px) / 2 - 30px);
+    width : calc((var(--controller-width) - 10px) / 2 - 42px);
 }
 
 #library-list-box .library-list-box-child .library-list-box-symbol input[type="text"]
@@ -337,6 +337,7 @@
     font-size        : 12px;
     font-family      : inherit;
     white-space      : nowrap;
+    overflow         : hidden;
 }
 
 #library-menu .library-type-folder

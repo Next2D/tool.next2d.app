@@ -56,7 +56,8 @@ class ShortcutSetting
         this._$commandMapping = new Map([
             ["screen", new Map()],
             ["timeline", new Map()],
-            ["library", new Map()]
+            ["library", new Map()],
+            ["global", new Map()]
         ]);
 
         /**
@@ -66,7 +67,8 @@ class ShortcutSetting
         this._$viewMapping = new Map([
             ["screen", new Map()],
             ["timeline", new Map()],
-            ["library", new Map()]
+            ["library", new Map()],
+            ["global", new Map()]
         ]);
 
         /**
@@ -230,7 +232,7 @@ class ShortcutSetting
     {
         const data = localStorage.getItem(`${Util.PREFIX}@shortcut`);
         if (!data) {
-           return ;
+            return ;
         }
 
         const object = JSON.parse(data);
@@ -534,6 +536,9 @@ class ShortcutSetting
                 delete cmdElement.dataset.map;
                 delete cmdElement.dataset.text;
             }
+
+            this.viewMapping.get(name).clear();
+            this.commandMapping.get(name).clear();
         }
 
         this.createShortcutMap();

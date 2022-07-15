@@ -94,6 +94,52 @@ class TimelineKeyboardCommand extends KeyboardCommand
 
         // 選択肢たフレームのDisplayObjectのプロパティーに切り替え
         this.add("v", this.activePropertyTab);
+
+        // ズームへのフォーカス
+        this.add("z", this.focusZoom);
+
+        // レイヤの削除コマンド
+        this.add(Util.$generateShortcutKey("h", { "shift": true }), () =>
+        {
+            Util
+                .$timelineTool
+                .executeTimelineLayerLightAll();
+        });
+
+        this.add(Util.$generateShortcutKey("l", { "shift": true }), () =>
+        {
+            Util
+                .$timelineTool
+                .executeTimelineLayerLockAll();
+        });
+
+        this.add(Util.$generateShortcutKey("d", { "shift": true }), () =>
+        {
+            Util
+                .$timelineTool
+                .executeTimelineLayerDisableAll();
+        });
+
+        this.add(Util.$generateShortcutKey("n", { "shift": true }), () =>
+        {
+            Util
+                .$timelineLayerMenu
+                .executeTimelineLayerNormal();
+        });
+
+        this.add(Util.$generateShortcutKey("m", { "shift": true }), () =>
+        {
+            Util
+                .$timelineLayerMenu
+                .executeTimelineLayerMask();
+        });
+
+        this.add(Util.$generateShortcutKey("g", { "shift": true }), () =>
+        {
+            Util
+                .$timelineLayerMenu
+                .executeTimelineLayerGuide();
+        });
     }
 
     /**
@@ -121,6 +167,18 @@ class TimelineKeyboardCommand extends KeyboardCommand
     openScriptModal ()
     {
         Util.$javaScriptEditor.show();
+    }
+
+    /**
+     * @description ズームへフォーカス
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    focusZoom ()
+    {
+        document.getElementById("timeline-scale").focus();
     }
 
     /**

@@ -19,8 +19,7 @@ class TimelineLayerMenu extends BaseTimeline
         const elementIds = [
             "timeline-layer-normal",
             "timeline-layer-mask",
-            "timeline-layer-guide",
-            "timeline-layer-color"
+            "timeline-layer-guide"
         ];
 
         for (let idx = 0; idx < elementIds.length; ++idx) {
@@ -182,21 +181,6 @@ class TimelineLayerMenu extends BaseTimeline
 
         // 初期化
         super.focusOut();
-    }
-
-    /**
-     * @description レイヤーのカラー設定
-     *
-     * @return {void}
-     * @method
-     * @public
-     */
-    executeTimelineLayerColor ()
-    {
-        const targetLayer = Util.$timelineLayer.targetLayer;
-        if (!targetLayer) {
-            return ;
-        }
     }
 
     /**

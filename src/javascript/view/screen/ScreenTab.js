@@ -105,7 +105,7 @@ class ScreenTab
             .getElementById("view-tab-area")
             .insertAdjacentHTML("beforeend", `
 <div draggable="true" id="tab-id-${id}" data-tab-id="${id}" class="tab">
-    <p id="tab-text-id-${id}" data-tab-id="${id}" data-detail="{{タブの移動・名前を変更}}">${work_space.name}</p>
+    <p id="tab-text-id-${id}" data-tab-id="${id}" data-detail="{{タブの移動・名前を変更}}" data-shortcut-key="ArrowLeftCtrl" data-shortcut-text="Ctrl + ← or →" data-area="global">${work_space.name}</p>
     <input type="text" id="tab-input-id-${id}" data-tab-id="${id}" value="${work_space.name}">
     <i id="tab-delete-id-${id}" data-tab-id="${id}" data-detail="{{プロジェクトを閉じる}}"></i>
 </div>`);
