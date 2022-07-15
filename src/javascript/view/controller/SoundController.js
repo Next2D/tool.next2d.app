@@ -102,13 +102,8 @@ class SoundController extends BaseController
 
             sounds.push(object);
 
-            const iconElement = document
-                .getElementById(`frame-label-sound-${frame}`);
-
-            if (!iconElement.classList.contains("frame-border-box-sound")) {
-                iconElement
-                    .setAttribute("class", "frame-border-box-sound");
-            }
+            // アイコンをセット
+            this.setIcon(frame);
         }
 
         const htmlTag = `
@@ -240,6 +235,43 @@ class SoundController extends BaseController
     }
 
     /**
+     * @description タイムラインのヘッダーに音符アイコンを追加
+     *
+     * @param  {number} frame
+     * @return {void}
+     * @method
+     * @public
+     */
+    setIcon (frame)
+    {
+        const element = document
+            .getElementById(`frame-label-sound-${frame}`);
+
+        if (!element.classList.contains("frame-border-box-sound")) {
+            element
+                .setAttribute("class", "frame-border-box-sound");
+        }
+    }
+
+    /**
+     * @description タイムラインヘッダーの音符アイコンを削除
+     *
+     * @param  {number} frame
+     * @return {void}
+     * @method
+     * @public
+     */
+    deleteIcon (frame)
+    {
+        const element = document
+            .getElementById(`frame-label-sound-${frame}`);
+
+        if (element) {
+            element.setAttribute("class", "frame-border-box");
+        }
+    }
+
+    /**
      * @description 指定のサウンドを削除
      *
      * @param {number} index
@@ -258,11 +290,8 @@ class SoundController extends BaseController
 
             scene._$sounds.delete(frame);
 
-            document
-                .getElementById(`frame-label-sound-${frame}`)
-                .classList
-                .add("frame-border-box");
-
+            // 音符アイコンを削除
+            this.deleteIcon(frame);
         }
     }
 

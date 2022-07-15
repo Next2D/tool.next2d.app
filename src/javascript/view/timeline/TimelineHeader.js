@@ -427,7 +427,7 @@ class TimelineHeader extends BaseTimeline
             }
 
             // 複製でない時は削除する
-            if (!Util.$shiftKey) {
+            if (!Util.$altKey) {
                 this.deleteIcon({ "key": "Backspace" });
             }
 

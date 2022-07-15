@@ -87,18 +87,6 @@ class GlobalKeyboardCommand
         // プレビューを終了
         Util.$setShortcut("Escape", Util.$hidePreview);
 
-        // プロジェクトファイルを読み込む
-        Util.$setShortcut(
-            Util.$generateShortcutKey("r", { "ctrl": true }),
-            Util.$project.open
-        );
-
-        // プロジェクトデータを書き出し
-        Util.$setShortcut(
-            Util.$generateShortcutKey("s", { "ctrl": true, "shift": true }),
-            Util.$project.save
-        );
-
         // リピートモードの切り替え
         Util.$setShortcut(
             Util.$generateShortcutKey("p", { "ctrl": true }),

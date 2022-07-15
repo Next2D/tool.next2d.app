@@ -116,6 +116,20 @@ class ScreenKeyboardCommand extends KeyboardCommand
             );
         }
 
+        // プロジェクトファイルを読み込む
+        this.add(Util.$generateShortcutKey("r", { "ctrl": true }), () =>
+        {
+            Util.$shiftKey = false;
+            Util.$ctrlKey  = false;
+            Util.$altKey   = false;
+            Util.$project.open();
+        });
+
+        // プロジェクトデータを書き出し
+        this.add(
+            Util.$generateShortcutKey("s", { "ctrl": true, "shift": true }),
+            Util.$project.save
+        );
     }
 
     /**

@@ -522,7 +522,6 @@ class JavaScriptEditor extends BaseTimeline
         element.setAttribute("class", "fadeIn");
         Util.$endMenu("editor-modal");
 
-        console.log("aaaa");
         this._$editor.focus();
     }
 

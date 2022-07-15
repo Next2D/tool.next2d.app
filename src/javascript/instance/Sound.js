@@ -8,7 +8,7 @@ class Sound extends Instance
      * @param {object} object
      * @constructor
      */
-    constructor(object)
+    constructor (object)
     {
         super(object);
         this.buffer = object.buffer;
@@ -44,34 +44,6 @@ class Sound extends Instance
      */
     get preview ()
     {
-        const bounds = this.getBounds();
-
-        // size
-        let width  = Math.abs(bounds.xMax - bounds.xMin);
-        let height = Math.abs(bounds.yMax - bounds.yMin);
-
-        let scaleX   = 1;
-        const scaleY = 150 / height;
-
-        width  = width  * scaleY | 0;
-        height = height * scaleY | 0;
-
-        const controllerWidth = (document
-            .documentElement
-            .style
-            .getPropertyValue("--controller-width")
-            .split("px")[0] | 0) - 10;
-
-        if (width > controllerWidth) {
-            scaleX = controllerWidth / width;
-            width  = width  * scaleX | 0;
-            height = height * scaleX | 0;
-        }
-
-        this._$audio.style.width  = `${width}px`;
-        this._$audio.style.height = `${height}px`;
-
-        this._$audio.controls = true;
         return this._$audio;
     }
 

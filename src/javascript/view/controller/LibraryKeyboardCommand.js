@@ -42,12 +42,82 @@ class LibraryKeyboardCommand extends KeyboardCommand
             });
         }
 
-        // 初期イベント登録
+        // 選択したアイテムを削除
         this.add("Backspace", this.executeInstanceDelete);
+
+        // スクリーンで使用してないアイテムを全て削除
+        this.add(
+            Util.$generateShortcutKey("Backspace", { "ctrl": true, "shift": true }),
+            this.executeNoUseInstanceDelete
+        );
+
+        // MovieClipを追加
+        this.add(
+            Util.$generateShortcutKey("m", { "ctrl": true }),
+            this.addMovieClip
+        );
+
+        // フォルダーを追加
+        this.add(
+            Util.$generateShortcutKey("f", { "ctrl": true }),
+            this.addFolder
+        );
+
+        // 外部ファイル読み込み
+        this.add(
+            Util.$generateShortcutKey("r", { "ctrl": true }),
+            this.loadFile
+        );
     }
 
     /**
-     * @description 削除を実行
+     * @description 外部ファイルの読み込み
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    loadFile ()
+    {
+        Util.$shiftKey = false;
+        Util.$ctrlKey  = false;
+        Util.$altKey   = false;
+
+        document
+            .getElementById("library-menu-file-input")
+            .click();
+    }
+
+    /**
+     * @description フォルダーを追加
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    addFolder ()
+    {
+        Util
+            .$libraryMenu
+            .executeLibraryMenuFolderAdd();
+    }
+
+    /**
+     * @description 空のMovieClipを追加
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    addMovieClip ()
+    {
+        Util
+            .$libraryMenu
+            .executeLibraryMenuContainerAdd();
+    }
+
+    /**
+     * @description 選択したアイテムを削除
      *
      * @return {void}
      * @method
@@ -55,7 +125,21 @@ class LibraryKeyboardCommand extends KeyboardCommand
      */
     executeInstanceDelete ()
     {
-        Util.$libraryMenu.executeLibraryMenuDelete();
+        Util
+            .$libraryMenu
+            .executeLibraryMenuDelete();
+    }
+
+    /**
+     * @description 選択したアイテムを削除
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    executeNoUseInstanceDelete ()
+    {
+        Util.$libraryMenu.executeLibraryMenuNoUseDelete();
     }
 }
 

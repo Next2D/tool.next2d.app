@@ -1449,22 +1449,28 @@ class Screen
         const frame = Util.$timelineFrame.currentFrame;
 
         // サウンドを登録
-        const sounds = scene.getSound(frame);
-        for (let idx = 0; idx < soundIds.length; ++idx) {
-
-            const instance = workSpace.getLibrary(soundIds[idx]);
-
-            sounds.push({
-                "characterId": instance.id,
-                "name":        instance.name,
-                "volume":      100,
-                "autoPlay":    false
-            });
-
-        }
-
-        // 表示を更新
         if (soundIds.length) {
+
+            if (!scene.hasSound(frame)) {
+                scene.setSound(frame, []);
+            }
+
+            const sounds = scene.getSound(frame);
+            for (let idx = 0; idx < soundIds.length; ++idx) {
+
+                const instance = workSpace.getLibrary(soundIds[idx]);
+
+                sounds.push({
+                    "characterId": instance.id,
+                    "name":        instance.name,
+                    "volume":      100,
+                    "autoPlay":    false
+                });
+
+            }
+
+            // 表示を更新
+            Util.$soundController.setIcon(frame);
             Util.$soundController.createSoundElements();
         }
 
