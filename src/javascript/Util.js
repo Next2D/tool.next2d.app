@@ -231,7 +231,7 @@ Util.$fadeIn = (event) =>
             ? mapping.get(shortcutKey).text
             : event.currentTarget.dataset.shortcutText;
 
-        value += `(${shortcutText})`;
+        value += ` (${shortcutText})`;
     }
 
     element.textContent = value;

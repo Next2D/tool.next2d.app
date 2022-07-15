@@ -37,16 +37,17 @@ class TimelineMenu extends BaseTimeline
                 continue;
             }
 
+            // eslint-disable-next-line no-loop-func
             element.addEventListener("mousedown", (event) =>
             {
                 // 親のイベント中止
                 event.stopPropagation();
 
-                // id名で関数を実行
-                this.executeFunction(event);
-
                 // メニューを非表示
                 Util.$endMenu();
+
+                // id名で関数を実行
+                this.executeFunction(event);
             });
         }
     }
@@ -54,14 +55,13 @@ class TimelineMenu extends BaseTimeline
     /**
      * @description JavaScript編集モーダルを起動
      *
-     * @param  {MouseEvent} event
      * @return {void}
      * @method
      * @public
      */
-    executeContextMenuScriptAdd (event)
+    executeContextMenuScriptAdd ()
     {
-        Util.$javaScriptEditor.show(event);
+        Util.$javaScriptEditor.show();
     }
 
     /**
@@ -154,7 +154,6 @@ class TimelineMenu extends BaseTimeline
         if (!characters.length) {
             return ;
         }
-
 
         if (characters.length > 1) {
             alert(
