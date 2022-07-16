@@ -48,7 +48,8 @@ class ScreenMenu extends BaseScreen
             "screen-tween-curve-pointer",
             "screen-copy",
             "screen-paste",
-            "screen-delete"
+            "screen-delete",
+            "screen-preview"
         ];
 
         for (let idx = 0; idx < elementIds.length; ++idx) {
@@ -69,46 +70,105 @@ class ScreenMenu extends BaseScreen
                 this.executeFunction(event.target.id);
             });
         }
-
-        const shortcutIds = [
-            "screen-copy",
-            "screen-paste",
-            "screen-delete",
-            "screen-preview"
-        ];
-
-        for (let idx = 0; idx < shortcutIds.length; ++idx) {
-
-            const element = document
-                .getElementById(shortcutIds[idx]);
-
-            if (!element) {
-                continue;
-            }
-
-            element
-                .getElementsByTagName("i")[0]
-                .classList
-                .add(Util.$isMac ? "mac-icon" : "win-icon");
-
-            element.addEventListener("mousedown", (event) =>
-            {
-                // 親のイベント中止
-                event.stopPropagation();
-
-                // id名で関数を実行
-                this.keyCommandFunction({
-                    "code": event.target.dataset.key,
-                    "ctrlKey": true,
-                    "metaKey": false,
-                    "preventDefault": event.preventDefault
-                });
-            });
-        }
     }
 
     /**
-     * @description
+     * @description 選択してるDisplayObjectをスクリーンから削除
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    executeScreenDelete ()
+    {
+        /**
+         * @type {ArrowTool}
+         */
+        const tool = Util.$tools.getDefaultTool("arrow");
+
+        // 選択してるDisplayObjectがなければ終了
+        const activeElements = tool.activeElements;
+        if (!activeElements.length) {
+            return ;
+        }
+
+        this.save();
+
+        const frame  = Util.$timelineFrame.currentFrame;
+        const layers = new Map();
+        const scene  = Util.$currentWorkSpace().scene;
+        for (let idx = 0; idx < activeElements.length; ++idx) {
+
+            const element = activeElements[idx];
+
+            const layer = scene.getLayer(
+                element.dataset.layerId | 0
+            );
+
+            if (!layer) {
+                continue;
+            }
+
+            const character = layer.getCharacter(
+                element.dataset.characterId | 0
+            );
+
+            if (!character) {
+                continue;
+            }
+
+            if (!layers.has(layer.id)) {
+                layers.set(layer.id, {
+                    "layer": layer,
+                    "range": character.getRange(frame)
+                });
+            }
+
+            character.remove(layer);
+        }
+
+        // 選択していたDisplayObjectをリセット
+        tool.clearActiveElement();
+
+        // タイムラインを再構成
+        for (const object of layers.values()) {
+
+            const layer = object.layer;
+            const range = object.range;
+
+            const characters = layer.getActiveCharacter(range.startFrame);
+            if (characters.length) {
+
+                // 深度順に並び替え
+                layer.sort(characters, frame);
+
+                for (let idx = 0; idx < characters.length; ++idx) {
+                    characters[idx].getPlace(frame).depth = idx;
+                }
+
+            } else {
+
+                layer.addEmptyCharacter(
+                    new EmptyCharacter({
+                        "startFrame": range.startFrame,
+                        "endFrame": range.endFrame
+                    })
+                );
+
+            }
+
+            layer.reloadStyle();
+        }
+
+        // 再描画
+        this.reloadScreen();
+
+        // 初期化
+        this._$saved = false;
+    }
+
+    /**
+     * @description 選択したDisplayObjectをレイヤーに分割
      *
      * @return {void}
      * @method
@@ -253,7 +313,7 @@ class ScreenMenu extends BaseScreen
     }
 
     /**
-     * @description
+     * @description 選択したDisplayObjectをキーフレームに分割
      *
      * @return {void}
      * @method
@@ -391,7 +451,7 @@ class ScreenMenu extends BaseScreen
     }
 
     /**
-     * @description
+     * @description 選択したShapeのパスを統合
      *
      * @return {void}
      * @method
@@ -609,7 +669,7 @@ class ScreenMenu extends BaseScreen
     }
 
     /**
-     * @description
+     * @description tweenのカーブポイントを追加
      *
      * @return {void}
      * @method
@@ -799,6 +859,8 @@ class ScreenMenu extends BaseScreen
             return ;
         }
 
+        this.save();
+
         const scene = Util.$currentWorkSpace().scene;
 
         let xMin =  Number.MAX_VALUE;
@@ -871,6 +933,9 @@ class ScreenMenu extends BaseScreen
             element.style.left = `${Util.$offsetLeft + bounds.xMin}px`;
             element.style.top  = `${Util.$offsetTop  + bounds.yMin}px`;
         }
+
+        // 初期化
+        this._$saved = false;
     }
 
     /**
@@ -888,6 +953,8 @@ class ScreenMenu extends BaseScreen
         if (!activeElements.length) {
             return ;
         }
+
+        this.save();
 
         if (mode === "up") {
             activeElements.sort((a, b) =>
@@ -1021,6 +1088,12 @@ class ScreenMenu extends BaseScreen
         }
 
         poolPlaces.clear();
+
+        // 再描画
+        this.reloadScreen();
+
+        // 初期化
+        this._$saved = false;
     }
 
     /**
@@ -1038,6 +1111,8 @@ class ScreenMenu extends BaseScreen
         if (!activeElements.length) {
             return ;
         }
+
+        this.save();
 
         const scene = Util.$currentWorkSpace().scene;
 
@@ -1163,11 +1238,12 @@ class ScreenMenu extends BaseScreen
             places.length = 0;
             ignoreCharacterMap.clear();
         }
-    }
 
-    keyCommandFunction ()
-    {
+        // 再描画
+        this.reloadScreen();
 
+        // 初期化
+        this._$saved = false;
     }
 
     /**

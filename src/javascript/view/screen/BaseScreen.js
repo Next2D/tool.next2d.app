@@ -95,8 +95,6 @@ class BaseScreen
      */
     executeFunction (name)
     {
-        this.save();
-
         // メニューを終了
         Util.$endMenu();
 
@@ -110,8 +108,5 @@ class BaseScreen
             .join("");
 
         this[`execute${functionName}`]();
-
-        // 再描画
-        this.reloadScreen();
     }
 }

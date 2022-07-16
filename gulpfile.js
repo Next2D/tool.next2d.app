@@ -18,7 +18,7 @@ const options = minimist(process.argv.slice(2), {
     "string": ["distPath", "version"],
     "default": {
         "prodBuild": false,
-        "version": "0.30.0",
+        "version": "0.35.0",
         "distPath": "."
     }
 });
@@ -49,7 +49,16 @@ const buildHTML = () =>
         "src/html/controller-google-tag.ejs",
         "src/html/controller-ad-end.ejs",
         "src/html/controller-end.ejs",
-        "src/html/modal.ejs",
+        "src/html/screen-menu.ejs",
+        "src/html/plugin-modal.ejs",
+        "src/html/editor-modal.ejs",
+        "src/html/timeline-menu.ejs",
+        "src/html/timeline-layer-menu.ejs",
+        "src/html/library-menu.ejs",
+        "src/html/user-setting.ejs",
+        "src/html/shortcut-setting-menu.ejs",
+        "src/html/detail-modal.ejs",
+        "src/html/player-preview.ejs",
         "src/html/body-end.ejs",
         "src/html/html-end.ejs"
     ];

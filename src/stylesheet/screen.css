@@ -298,7 +298,8 @@
     margin              : 2px 4px 2px 2px;
 }
 
-#screen-position-right i
+#screen-position-right i,
+#stage-position-right i
 {
     width               : 18px;
     height              : 18px;
@@ -309,7 +310,8 @@
     pointer-events      : none;
 }
 
-#screen-position-center i
+#screen-position-center i,
+#stage-position-center i
 {
     width               : 18px;
     height              : 18px;
@@ -320,7 +322,8 @@
     pointer-events      : none;
 }
 
-#screen-position-middle i
+#screen-position-middle i,
+#stage-position-middle i
 {
     width               : 18px;
     height              : 18px;
@@ -331,7 +334,8 @@
     pointer-events      : none;
 }
 
-#screen-position-left i
+#screen-position-left i,
+#stage-position-left i
 {
     width               : 18px;
     height              : 18px;
@@ -342,7 +346,8 @@
     pointer-events      : none;
 }
 
-#screen-position-top i
+#screen-position-top i,
+#stage-position-top i
 {
     width               : 18px;
     height              : 18px;
@@ -353,7 +358,8 @@
     pointer-events      : none;
 }
 
-#screen-position-bottom i
+#screen-position-bottom i,
+#stage-position-bottom i
 {
     width               : 18px;
     height              : 18px;
@@ -372,66 +378,6 @@
     background-repeat   : no-repeat;
     background-position : 1px center;
     margin              : 2px 4px 2px 2px;
-}
-
-#screen-copy .mac-icon
-{
-    width               : 100px;
-    height              : 18px;
-    background-image    : url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="12" viewBox="0 0 48 24" fill="whitesmoke" style="fill-opacity: 0.25;"><path d="M10.49,16v2.5A4.5,4.5,0,1,1,6,14h2.5V10H6a4.5,4.5,0,1,1,4.5-4.5V8h4V5.51A4.5,4.5,0,1,1,19,10h-2.5v4H19a4.5,4.5,0,1,1-4.5,4.5V16Zm-2,0H6a2.5,2.5,0,1,0,2.5,2.5ZM19,16h-2.5v2.5A2.5,2.5,0,1,0,19,16Zm-4.5-6h-4v4.13h4Zm-6-2V5.51A2.5,2.5,0,1,0,6,8ZM19,8a2.5,2.5,0,1,0-2.5-2.5V8Z"/><text font-size="24" transform="translate(25.96 20.93)">C</text></svg>');
-    background-repeat   : no-repeat;
-    background-position : right center;
-    margin              : 0 6px 0 auto;
-}
-
-#screen-copy .win-icon
-{
-    width               : 100px;
-    height              : 18px;
-    background-image    : url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" width="48" height="12" viewBox="0 0 96 24" fill="whitesmoke" style="fill-opacity: 0.25;"><text font-size="24" transform="translate(10 20)">Ctrl+C</text></svg>');
-    background-repeat   : no-repeat;
-    background-position : right center;
-    margin              : 0 6px 0 auto;
-}
-
-#screen-paste .mac-icon
-{
-    width               : 100px;
-    height              : 18px;
-    background-image    : url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="12" viewBox="0 0 48 24" fill="whitesmoke" style="fill-opacity: 0.25;"><path d="M10.49,16v2.5A4.5,4.5,0,1,1,6,14h2.5V10H6a4.5,4.5,0,1,1,4.5-4.5V8h4V5.51A4.5,4.5,0,1,1,19,10h-2.5v4H19a4.5,4.5,0,1,1-4.5,4.5V16Zm-2,0H6a2.5,2.5,0,1,0,2.5,2.5ZM19,16h-2.5v2.5A2.5,2.5,0,1,0,19,16Zm-4.5-6h-4v4.13h4Zm-6-2V5.51A2.5,2.5,0,1,0,6,8ZM19,8a2.5,2.5,0,1,0-2.5-2.5V8Z"/><text font-size="24" transform="translate(25.96 20.93)">V</text></svg>');
-    background-repeat   : no-repeat;
-    background-position : right center;
-    margin              : 0 6px 0 auto;
-}
-
-#screen-paste .win-icon
-{
-    width               : 100px;
-    height              : 18px;
-    background-image    : url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" width="48" height="12" viewBox="0 0 96 24" fill="whitesmoke" style="fill-opacity: 0.25;"><text font-size="24" transform="translate(10 20)">Ctrl+V</text></svg>');
-    background-repeat   : no-repeat;
-    background-position : right center;
-    margin              : 0 6px 0 auto;
-}
-
-#screen-preview .mac-icon
-{
-    width               : 120px;
-    height              : 18px;
-    background-image    : url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" width="48" height="12" viewBox="0 0 96 24" fill="whitesmoke" style="fill-opacity: 0.25;"><path d="M10.49,16v2.5A4.5,4.5,0,1,1,6,14h2.5V10H6a4.5,4.5,0,1,1,4.5-4.5V8h4V5.51A4.5,4.5,0,1,1,19,10h-2.5v4H19a4.5,4.5,0,1,1-4.5,4.5V16Zm-2,0H6a2.5,2.5,0,1,0,2.5,2.5ZM19,16h-2.5v2.5A2.5,2.5,0,1,0,19,16Zm-4.5-6h-4v4.13h4Zm-6-2V5.51A2.5,2.5,0,1,0,6,8ZM19,8a2.5,2.5,0,1,0-2.5-2.5V8Z"/><text font-size="24" transform="translate(25.96 20.93)">Enter</text></svg>');
-    background-repeat   : no-repeat;
-    background-position : right center;
-    margin              : 0 6px 0 auto;
-}
-
-#screen-delete i
-{
-    width               : 120px;
-    height              : 18px;
-    background-image    : url('data:image/svg+xml;charset=UTF-8,<svg width="12" height="12" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd" style="fill-opacity: 0.25;"><path fill="whitesmoke" d="M7 5h17v16h-17l-7-7.972 7-8.028zm7 6.586l-2.586-2.586-1.414 1.414 2.586 2.586-2.586 2.586 1.414 1.414 2.586-2.586 2.586 2.586 1.414-1.414-2.586-2.586 2.586-2.586-1.414-1.414-2.586 2.586z"/></svg>');
-    background-repeat   : no-repeat;
-    background-position : right center;
-    margin              : 0 6px 0 auto;
 }
 
 #screen-scale

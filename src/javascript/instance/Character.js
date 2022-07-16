@@ -105,10 +105,9 @@ class Character
 
         } else {
 
-            const object = this
-                .getRange(
-                    Util.$timelineFrame.currentFrame
-                );
+            const object = this.getRange(
+                Util.$timelineFrame.currentFrame
+            );
 
             switch (true) {
 

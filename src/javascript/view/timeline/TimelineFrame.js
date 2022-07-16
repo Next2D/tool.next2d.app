@@ -221,6 +221,9 @@ class TimelineFrame extends BaseTimeline
             this._$mouseUp = this.mouseUp.bind(this);
         }
 
+        // 選択中のレイヤーを初期化
+        Util.$timelineLayer.clear();
+
         // イベントを登録
         window.addEventListener("mousemove", this._$mouseMove);
         window.addEventListener("mouseup", this._$mouseUp);
@@ -287,6 +290,8 @@ class TimelineFrame extends BaseTimeline
 
             // タイムラインの座標の補正
             this.moveTimeline();
+
+            //
 
             // 再描画
             this.reloadScreen();

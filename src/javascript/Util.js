@@ -210,30 +210,27 @@ Util.$fadeIn = (event) =>
         return ;
     }
 
-    const element = document.getElementById("detail-modal");
+    const target = event.currentTarget;
 
     let value = Util.$currentLanguage.replace(
-        event.currentTarget.dataset.detail
+        target.dataset.detail
     );
 
-    let shortcutKey = event
-        .currentTarget
-        .dataset
-        .shortcutKey;
-
+    let shortcutKey = target.dataset.shortcutKey;
     if (shortcutKey) {
 
         const mapping = Util.$shortcutSetting.viewMapping.get(
-            event.currentTarget.dataset.area
+            target.dataset.area
         );
 
         const shortcutText = mapping.has(shortcutKey)
             ? mapping.get(shortcutKey).text
-            : event.currentTarget.dataset.shortcutText;
+            : target.dataset.shortcutText;
 
         value += ` (${shortcutText})`;
     }
 
+    const element = document.getElementById("detail-modal");
     element.textContent = value;
 
     // 表示領域に収まるようx座標を調整

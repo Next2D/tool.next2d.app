@@ -2,7 +2,7 @@
  * @class
  * @extends {BaseScreen}
  */
-class Zoom extends BaseScreen
+class ScreenZoom extends BaseScreen
 {
     /**
      * @constructor
@@ -129,8 +129,8 @@ class Zoom extends BaseScreen
     {
         Util.$zoomScale += delta;
         Util.$zoomScale = Math.min(
-            Zoom.MAX_LEVEL,
-            Math.max(Zoom.MIN_LEVEL, Util.$zoomScale)
+            ScreenZoom.MAX_LEVEL,
+            Math.max(ScreenZoom.MIN_LEVEL, Util.$zoomScale)
         );
 
         document
@@ -175,4 +175,4 @@ class Zoom extends BaseScreen
     }
 }
 
-Util.$zoom = new Zoom();
+Util.$screenZoom = new ScreenZoom();

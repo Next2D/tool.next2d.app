@@ -135,7 +135,7 @@ class ZoomTool extends BaseTool
         );
 
         Util.$zoomScale = 0;
-        Util.$zoom.execute(scale);
+        Util.$screenZoom.execute(scale);
 
         // ハンドツールを起動
         if (Util.$tools.activeTool) {

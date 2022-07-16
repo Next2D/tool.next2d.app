@@ -1,7 +1,7 @@
 /**
  * @class
  */
-class Screen
+class Screen extends BaseScreen
 {
     /**
      * @constructor
@@ -9,47 +9,25 @@ class Screen
      */
     constructor()
     {
-        /**
-         * @type {boolean}
-         * @default false
-         * @private
-         */
-        this._$saved = false;
+        super();
 
         /**
          * @type {Map}
          * @private
          */
         this._$activeInstances = new Map();
-
-        /**
-         * @type {function}
-         * @default null
-         * @private
-         */
-        this._$handler = null;
-
-        // DOMの読込がまだであれば、イベントに登録
-        Util.$readEnd++;
-        if (document.readyState === "loading") {
-            this._$handler = this.initialize.bind(this);
-            window.addEventListener("DOMContentLoaded", this._$handler);
-        } else {
-            this.initialize();
-        }
     }
 
     /**
+     * @description 初期起動関数
+     *
      * @return {void}
+     * @method
      * @public
      */
     initialize ()
     {
-        // end event
-        if (this._$handler) {
-            window.removeEventListener("DOMContentLoaded", this._$handler);
-            this._$handler = null;
-        }
+        super.initialize();
 
         //     if (this._$tweenController) {
         //         window.requestAnimationFrame(function (event)
@@ -101,8 +79,6 @@ class Screen
         //
         //         }.bind(this, event));
         //     }
-
-        // window.addEventListener("keydown", this.keyCommandFunction.bind(this));
 
         // const copyElement = document.getElementById("screen-copy");
         // if (copyElement) {
@@ -247,7 +223,7 @@ class Screen
                     const delta = event.deltaX || event.deltaY;
                     if (delta) {
                         window.requestAnimationFrame(() => {
-                            Util.$zoom.execute(delta / 100 * -1);
+                            Util.$screenZoom.execute(delta / 100 * -1);
                         });
                     }
 
@@ -284,10 +260,6 @@ class Screen
                 }
             });
         }
-
-        // end
-        Util.$initializeEnd();
-        this._$handler = null;
     }
 
     /**
@@ -309,218 +281,6 @@ class Screen
         }
 
         switch (event.key) {
-
-            case "ArrowRight":
-                if (this._$moveTargets.length) {
-
-                    const scene = Util.$currentWorkSpace().scene;
-                    const frame = Util.$timelineFrame.currentFrame;
-
-                    let xMin =  Number.MAX_VALUE;
-                    let xMax = -Number.MAX_VALUE;
-                    let yMin = Number.MAX_VALUE;
-                    let yMax = -Number.MAX_VALUE;
-                    for (let idx = 0; idx < this._$moveTargets.length; ++idx) {
-
-                        const object = this._$moveTargets[idx].target;
-
-                        const left = parseFloat(object.style.left);
-                        object.style.left = `${left + 1}px`;
-
-                        const layerId = object.dataset.layerId | 0;
-                        const layer   = scene.getLayer(layerId);
-
-                        const characterId = object.dataset.characterId | 0;
-                        const character   = layer.getCharacter(characterId);
-
-                        // fixed logic
-                        this.initPlace(character, layerId, frame);
-
-                        const place = character.getPlace(frame);
-
-                        place.matrix[4] += 1 / Util.$zoomScale;
-
-                        xMin = Math.min(xMin, character.x);
-                        xMax = Math.max(xMax, character.x + character.width);
-                        yMin = Math.min(yMin, character.y);
-                        yMax = Math.max(yMax, character.y + character.height);
-
-                        character._$image = null;
-                    }
-
-                    this.placeTransformTarget();
-                    this.updatePropertyArea(false);
-                }
-                break;
-
-            case "ArrowLeft":
-                if (this._$moveTargets.length) {
-
-                    const scene = Util.$currentWorkSpace().scene;
-                    const frame = Util.$timelineFrame.currentFrame;
-
-                    let xMin =  Number.MAX_VALUE;
-                    let xMax = -Number.MAX_VALUE;
-                    let yMin = Number.MAX_VALUE;
-                    let yMax = -Number.MAX_VALUE;
-                    for (let idx = 0; idx < this._$moveTargets.length; ++idx) {
-
-                        const object = this._$moveTargets[idx].target;
-
-                        const left = parseFloat(object.style.left);
-                        object.style.left = `${left - 1}px`;
-
-                        const layerId = object.dataset.layerId | 0;
-                        const layer   = scene.getLayer(layerId);
-
-                        const characterId = object.dataset.characterId | 0;
-                        const character   = layer.getCharacter(characterId);
-
-                        // fixed logic
-                        this.initPlace(character, layerId, frame);
-
-                        const place = character.getPlace(frame);
-
-                        place.matrix[4] -= 1 / Util.$zoomScale;
-
-                        xMin = Math.min(xMin, character.x);
-                        xMax = Math.max(xMax, character.x + character.width);
-                        yMin = Math.min(yMin, character.y);
-                        yMax = Math.max(yMax, character.y + character.height);
-
-                        character._$image = null;
-                    }
-
-                    this.placeTransformTarget();
-                    this.updatePropertyArea(false);
-                }
-                break;
-
-            case "ArrowDown":
-                if (this._$moveTargets.length) {
-
-                    const scene = Util.$currentWorkSpace().scene;
-                    const frame = Util.$timelineFrame.currentFrame;
-
-                    let xMin =  Number.MAX_VALUE;
-                    let xMax = -Number.MAX_VALUE;
-                    let yMin = Number.MAX_VALUE;
-                    let yMax = -Number.MAX_VALUE;
-                    for (let idx = 0; idx < this._$moveTargets.length; ++idx) {
-
-                        const object = this._$moveTargets[idx].target;
-
-                        const top = parseFloat(object.style.top);
-                        object.style.top = `${top + 1}px`;
-
-                        const layerId = object.dataset.layerId | 0;
-                        const layer   = scene.getLayer(layerId);
-
-                        const characterId = object.dataset.characterId | 0;
-                        const character   = layer.getCharacter(characterId);
-
-                        this.initPlace(character, layerId, frame);
-
-                        const place = character.getPlace(frame);
-
-                        place.matrix[5] += 1 / Util.$zoomScale;
-
-                        xMin = Math.min(xMin, character.x);
-                        xMax = Math.max(xMax, character.x + character.width);
-                        yMin = Math.min(yMin, character.y);
-                        yMax = Math.max(yMax, character.y + character.height);
-
-                        character._$image = null;
-                    }
-
-                    this.placeTransformTarget();
-                    this.updatePropertyArea(false);
-                }
-                break;
-
-            case "ArrowUp":
-                if (this._$moveTargets.length) {
-
-                    const scene = Util.$currentWorkSpace().scene;
-                    const frame = Util.$timelineFrame.currentFrame;
-
-                    let xMin =  Number.MAX_VALUE;
-                    let xMax = -Number.MAX_VALUE;
-                    let yMin = Number.MAX_VALUE;
-                    let yMax = -Number.MAX_VALUE;
-                    for (let idx = 0; idx < this._$moveTargets.length; ++idx) {
-
-                        const object = this._$moveTargets[idx].target;
-
-                        const top = parseFloat(object.style.top);
-                        object.style.top = `${top - 1}px`;
-
-                        const layerId = object.dataset.layerId | 0;
-                        const layer   = scene.getLayer(layerId);
-
-                        const characterId = object.dataset.characterId | 0;
-                        const character   = layer.getCharacter(characterId);
-
-                        this.initPlace(character, layerId, frame);
-
-                        const place = character.getPlace(frame);
-
-                        place.matrix[5] -= 1 / Util.$zoomScale;
-
-                        xMin = Math.min(xMin, character.x);
-                        xMax = Math.max(xMax, character.x + character.width);
-                        yMin = Math.min(yMin, character.y);
-                        yMax = Math.max(yMax, character.y + character.height);
-
-                        character._$image = null;
-                    }
-
-                    this.placeTransformTarget();
-                    this.updatePropertyArea(false);
-                }
-                break;
-
-            case "Backspace":
-            case "Delete":
-                {
-                    const scene = Util.$currentWorkSpace().scene;
-
-                    const frame = Util.$timelineFrame.currentFrame;
-
-                    if (this._$tweenDelete) {
-
-                        const element = this._$tweenDelete;
-
-                        const layer = scene.getLayer(
-                            element.dataset.layerId | 0
-                        );
-
-                        const character = layer.getActiveCharacter(frame)[0];
-
-                        // set select
-                        const tween = character.getTween();
-                        tween.curve.splice(element.dataset.index | 0, 1);
-
-                        element.remove();
-                        this.clearTweenMarker();
-                        if (tween.method === "custom") {
-                            Util.$controller.showEaseCanvasArea();
-                        }
-                        this.executeTween(layer);
-                        this.createTweenMarker(false);
-
-                        scene.changeFrame(frame);
-
-                        return ;
-                    }
-
-                    const activeTool = Util.$tools.activeTool;
-                    activeTool.dispatchEvent(
-                        EventType.DELETE,
-                        event
-                    );
-                }
-                break;
 
             case "KeyC": // copy
 
@@ -1418,6 +1178,8 @@ class Screen
             return ;
         }
 
+        this.save();
+
         // 選択したアイテムを指定レイヤーに登録
         const soundIds    = [];
         const instanceIds = [];
@@ -1608,8 +1370,11 @@ class Screen
 
         // 描画リセット
         if (instanceIds.length) {
-            scene.changeFrame(frame);
+            this.reloadScreen();
         }
+
+        // 初期化
+        this._$saved = false;
     }
 
     /**

@@ -130,6 +130,111 @@ class ScreenKeyboardCommand extends KeyboardCommand
             Util.$generateShortcutKey("s", { "ctrl": true, "shift": true }),
             Util.$project.save
         );
+
+        // 選択中のDisplayObjectを削除
+        this.add("Backspace", this.deleteDisplayObject);
+
+        // 最前面
+        this.add(
+            Util.$generateShortcutKey("ArrowUp", { "ctrl": true, "shift": true }),
+            this.screenFront
+        );
+
+        // ひとつ前面へ
+        this.add(
+            Util.$generateShortcutKey("ArrowUp", { "ctrl": true }),
+            this.screenFrontOne
+        );
+
+        // 最背面
+        this.add(
+            Util.$generateShortcutKey("ArrowDown", { "ctrl": true, "shift": true }),
+            this.screenBack
+        );
+
+        // ひとつ背面へ
+        this.add(
+            Util.$generateShortcutKey("ArrowDown", { "ctrl": true }),
+            this.screenBackOne
+        );
+
+        // ひとつ背面へ
+        this.add(
+            Util.$generateShortcutKey("1", { "ctrl": true }),
+            this.screenPositionLeft
+        );
+    }
+
+    /**
+     * @description 選択中のDisplayObjectの矩形内の左側に揃える
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    screenPositionLeft ()
+    {
+        Util.$screenMenu.alignment("left");
+    }
+
+    /**
+     * @description 選択中のDisplayObjectを最背面へ移動
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    screenBack ()
+    {
+        Util.$screenMenu.changeDepth("down");
+    }
+
+    /**
+     * @description 選択中のDisplayObjectをひとつ背面へ移動
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    screenBackOne ()
+    {
+        Util.$screenMenu.changeDepthOne("down");
+    }
+
+    /**
+     * @description 選択中のDisplayObjectを最前面へ移動
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    screenFront ()
+    {
+        Util.$screenMenu.changeDepth("up");
+    }
+
+    /**
+     * @description 選択中のDisplayObjectをひとつ前面へ移動
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    screenFrontOne ()
+    {
+        Util.$screenMenu.changeDepthOne("up");
+    }
+
+    /**
+     * @description 選択中のDisplayObjectを削除
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    deleteDisplayObject ()
+    {
+        Util.$screenMenu.executeScreenDelete();
     }
 
     /**
@@ -242,6 +347,9 @@ class ScreenKeyboardCommand extends KeyboardCommand
 
         // 直前のツールをキャッシュ
         this._$prevTool = Util.$tools.activeTool;
+        if (this._$prevTool) {
+            this._$prevTool.dispatchEvent(EventType.END);
+        }
 
         // ハンドツールを起動
         const tool = Util.$tools.getDefaultTool("hand");
@@ -258,16 +366,19 @@ class ScreenKeyboardCommand extends KeyboardCommand
     /**
      * @description ハンドツールを終了
      *
-     * @param  {string} code
+     * @param  {KeyboardEvent} event
      * @return {void}
      * @method
      * @public
      */
-    endHandTool (code)
+    endHandTool (event)
     {
-        if (code !== " ") {
+        if (event.key !== " ") {
             return ;
         }
+
+        // イベントを削除
+        window.removeEventListener("keyup", this._$endHandTool);
 
         const tool = Util.$tools.getDefaultTool("hand");
         tool.dispatchEvent(EventType.END);
@@ -286,8 +397,6 @@ class ScreenKeyboardCommand extends KeyboardCommand
             Util.$tools.reset();
 
         }
-
-        window.removeEventListener("keyup", this._$endHandTool);
     }
 
     /**

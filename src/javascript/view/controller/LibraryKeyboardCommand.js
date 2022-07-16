@@ -68,6 +68,26 @@ class LibraryKeyboardCommand extends KeyboardCommand
             Util.$generateShortcutKey("r", { "ctrl": true }),
             this.loadFile
         );
+
+        // Shapeを複製
+        this.add(
+            Util.$generateShortcutKey("s", { "ctrl": true }),
+            this.cloneShape
+        );
+    }
+
+    /**
+     * @description 指定したShapeを複製
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    cloneShape ()
+    {
+        Util
+            .$libraryMenu
+            .executeLibraryMenuContentShapeClone();
     }
 
     /**
