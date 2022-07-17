@@ -263,122 +263,6 @@ class Screen extends BaseScreen
     }
 
     /**
-     * @param {Event|KeyboardEvent} event
-     * @return {boolean}
-     * @public
-     */
-    keyCommandFunction (event)
-    {
-        if (event.shiftKey) {
-
-            this._$multiMode = true;
-
-            return false;
-        }
-
-        if (Util.$keyLock) {
-            return false;
-        }
-
-        switch (event.key) {
-
-            case "KeyC": // copy
-
-                if (!Util.$canCopyCharacter || !this._$moveTargets) {
-                    return false;
-                }
-
-                if (event.ctrlKey && !event.metaKey
-                    || !event.ctrlKey && event.metaKey
-                ) {
-                    Util.$copyLibrary   = null;
-                    Util.$copyLayer     = null;
-                    Util.$copyCharacter = null;
-                    if (!Util.$keyLock && !Util.$activeScript) {
-
-                        event.preventDefault();
-
-                        // reset
-                        Util.$copyCharacter = [];
-
-                        const scene = Util.$currentWorkSpace().scene;
-
-                        Util.$copyWorkSpaceId = Util.$activeWorkSpaceId;
-                        for (let idx = 0; idx < this._$moveTargets.length; ++idx) {
-
-                            const element = this._$moveTargets[idx].target;
-
-                            const layer = scene.getLayer(
-                                element.dataset.layerId | 0
-                            );
-
-                            const character = layer.getCharacter(
-                                element.dataset.characterId | 0
-                            );
-
-                            const dx = character.x + character.width  / 2;
-                            const dy = character.y + character.height / 2;
-                            Util.$copyCharacter.push({
-                                "offsetX": dx + Util.$offsetLeft,
-                                "offsetY": dy + Util.$offsetTop,
-                                "target" : element
-                            });
-                        }
-
-                        return false;
-                    }
-                }
-                break;
-
-            case "KeyV": // paste
-                if (event.ctrlKey && !event.metaKey // windows
-                    || !event.ctrlKey && event.metaKey // mac
-                ) {
-
-                    if (!Util.$keyLock
-                        && !Util.$activeScript
-                        && Util.$copyCharacter
-                    ) {
-
-                        event.preventDefault();
-
-                        const frame = Util.$timelineFrame.currentFrame;
-
-                        const workSpace = Util.$currentWorkSpace();
-                        const scene = workSpace.scene;
-
-                        if (Util.$copyWorkSpaceId === Util.$activeWorkSpaceId) {
-
-                            for (let idx = 0; idx < Util.$copyCharacter.length; ++idx) {
-
-                                const object = Util.$copyCharacter[idx];
-
-                                Util.$dragElement = object.target;
-
-                                this.dropObject({
-                                    "offsetX": object.offsetX,
-                                    "offsetY": object.offsetY
-                                });
-
-                            }
-
-                        }
-                        Util.$dragElement = null;
-
-                        scene.changeFrame(frame);
-
-                        return false;
-                    }
-                }
-                break;
-
-            default:
-                break;
-
-        }
-    }
-
-    /**
      * @param  {Layer}   layer
      * @param  {boolean} [change=false]
      * @return {void}
@@ -1241,8 +1125,9 @@ class Screen extends BaseScreen
         const y = event.offsetY - Util.$offsetTop;
 
         // スクリーンにアイテムを配置
-        const location = layer.adjustmentLocation(frame);
-        const endFrame = location.endFrame;
+        const location   = layer.adjustmentLocation(frame);
+        const endFrame   = location.endFrame;
+        const startFrame = location.startFrame;
         for (let idx = 0; idx < instanceIds.length; ++idx) {
 
             const libraryId = instanceIds[idx];
@@ -1264,7 +1149,7 @@ class Screen extends BaseScreen
 
                 switch (true) {
 
-                    case frame > 1 && character.endFrame === frame:
+                    case startFrame > 1 && character.endFrame === startFrame:
                         join.start = character;
                         break;
 
@@ -1277,7 +1162,7 @@ class Screen extends BaseScreen
 
             const instance = workSpace.getLibrary(libraryId);
             const place = {
-                "frame": frame,
+                "frame": location.startFrame,
                 "matrix": [1, 0, 0, 1, x / Util.$zoomScale, y / Util.$zoomScale],
                 "colorTransform": [1, 1, 1, 1, 0, 0, 0, 0],
                 "blendMode": "normal",
@@ -1311,7 +1196,7 @@ class Screen extends BaseScreen
                 } else {
 
                     character = join.end;
-                    character.startFrame = frame;
+                    character.startFrame = startFrame;
 
                 }
             }
@@ -1321,10 +1206,10 @@ class Screen extends BaseScreen
 
                 character = new Character();
                 character.libraryId  = libraryId;
-                character.startFrame = location.startFrame;
+                character.startFrame = startFrame;
                 character.endFrame   = endFrame;
 
-                character.setPlace(location.startFrame, place);
+                character.setPlace(startFrame, place);
 
                 let width = character.width;
                 if (!width) {
@@ -1346,7 +1231,7 @@ class Screen extends BaseScreen
             } else {
 
                 // add place
-                character.setPlace(frame, place);
+                character.setPlace(startFrame, place);
 
                 let width = character.width;
                 if (!width) {
@@ -1453,10 +1338,8 @@ class Screen extends BaseScreen
      * @return {void}
      * @public
      */
-    appendCharacter (
-        character, frame, layer_id, event = "auto"
-    ) {
-
+    appendCharacter (character, frame, layer_id, event = "auto")
+    {
         const workSpace = Util.$currentWorkSpace();
         const scene     = workSpace.scene;
 

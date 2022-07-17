@@ -726,10 +726,6 @@ class TransformController extends BaseController
         const workSpace = Util.$currentWorkSpace();
         const scene     = workSpace.scene;
 
-        // const frame = document
-        //     .getElementById("current-frame")
-        //     .textContent | 0;
-
         /**
          * @type {ArrowTool}
          */
@@ -745,12 +741,6 @@ class TransformController extends BaseController
             const character   = layer.getCharacter(characterId);
 
             character.x = x;
-            character.screenX = x;
-
-            document
-                .getElementById(`character-${characterId}`)
-                .style
-                .left = `${Util.$offsetLeft + character.screenX}px`;
 
             // if (document
             //     .getElementById(`${layerId}-${frame}`)
@@ -776,10 +766,6 @@ class TransformController extends BaseController
         const workSpace = Util.$currentWorkSpace();
         const scene     = workSpace.scene;
 
-        // const frame = document
-        //     .getElementById("current-frame")
-        //     .textContent | 0;
-
         /**
          * @type {ArrowTool}
          */
@@ -795,12 +781,6 @@ class TransformController extends BaseController
             const character   = layer.getCharacter(characterId);
 
             character.y = y;
-            character.screenY = y;
-
-            document
-                .getElementById(`character-${characterId}`)
-                .style
-                .top = `${Util.$offsetTop + character.screenY}px`;
 
             // if (document
             //     .getElementById(`${layerId}-${frame}`)

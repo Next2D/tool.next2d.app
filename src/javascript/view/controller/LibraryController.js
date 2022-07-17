@@ -959,12 +959,12 @@ class LibraryController
 
         } else {
 
+            // フォルダーの外に移動
             this.folderOut();
 
+            // 再読み込み
+            this.reload();
         }
-
-        // 再読み込み
-        this.reload();
 
         this._$saved = false;
     }
@@ -973,12 +973,12 @@ class LibraryController
      * @description 読み込んだファイルのチェック
      *
      * @param  {FileSystemDirectoryEntry} entry
-     * @param  {number} [folder_id=0 ]
+     * @param  {number} [folder_id=0]
      * @return {Promise<void>}
      * @method
      * @public
      */
-    scanFiles (entry, folder_id)
+    scanFiles (entry, folder_id = 0)
     {
         switch (true) {
 
@@ -1061,6 +1061,8 @@ class LibraryController
                         Util
                             .$instanceSelectController
                             .createInstanceSelect(movieClip);
+
+                        Util.$libraryController.reload();
                     });
                 break;
 
@@ -1124,6 +1126,8 @@ class LibraryController
                                 Util
                                     .$instanceSelectController
                                     .createInstanceSelect(instance);
+
+                                Util.$libraryController.reload();
                             });
 
                     });
@@ -1169,6 +1173,8 @@ class LibraryController
                             Util
                                 .$instanceSelectController
                                 .createInstanceSelect(instance);
+
+                            Util.$libraryController.reload();
                         };
 
                         video.src = URL.createObjectURL(blob);
@@ -1206,6 +1212,7 @@ class LibraryController
 
                         }
 
+                        Util.$libraryController.reload();
                     });
                 break;
 

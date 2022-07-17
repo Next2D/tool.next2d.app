@@ -174,7 +174,7 @@ class Character
 
             const placeFrame = places.pop() | 0;
 
-            if (frame > placeFrame) {
+            if (frame >= placeFrame) {
                 return {
                     "startFrame": placeFrame,
                     "endFrame": prevFrame ? prevFrame : this.endFrame
@@ -189,7 +189,6 @@ class Character
             "endFrame": this.endFrame
         };
     }
-
 
     /**
      * @param  {number} frame
@@ -558,6 +557,20 @@ class Character
         const frame = Util.$timelineFrame.currentFrame;
         const place = this.getPlace(frame);
         place.matrix[4] = x;
+
+        const bounds = Util.$boundsMatrix(
+            this.getBounds(frame),
+            place.matrix
+        );
+
+        this.screenX = bounds.xMin;
+
+        const element = document
+            .getElementById(`character-${this.id}`);
+
+        if (element) {
+            element.style.left = `${Util.$offsetLeft + bounds.xMin}px`;
+        }
     }
 
     /**
@@ -581,6 +594,20 @@ class Character
         const frame = Util.$timelineFrame.currentFrame;
         const place = this.getPlace(frame);
         place.matrix[5] = y;
+
+        const bounds = Util.$boundsMatrix(
+            this.getBounds(frame),
+            place.matrix
+        );
+
+        this.screenY = bounds.yMin;
+
+        const element = document
+            .getElementById(`character-${this.id}`);
+
+        if (element) {
+            element.style.top = `${Util.$offsetTop + bounds.yMin}px`;
+        }
     }
 
     /**

@@ -42,6 +42,12 @@ class ScreenMenu extends BaseScreen
             "screen-position-top",
             "screen-position-middle",
             "screen-position-bottom",
+            "stage-position-left",
+            "stage-position-right",
+            "stage-position-center",
+            "stage-position-top",
+            "stage-position-middle",
+            "stage-position-bottom",
             "screen-distribute-to-layers",
             "screen-distribute-to-keyframes",
             "screen-integrating-paths",
@@ -176,11 +182,6 @@ class ScreenMenu extends BaseScreen
      */
     executeScreenDistributeToLayers ()
     {
-        const layerElement = Util.$timeline._$targetLayer;
-        if (!layerElement) {
-            return ;
-        }
-
         /**
          * @type {ArrowTool}
          */
@@ -192,124 +193,130 @@ class ScreenMenu extends BaseScreen
 
         this.save();
 
-        const scene = Util.$currentWorkSpace().scene;
-        const layer = scene.getLayer(
-            layerElement.dataset.layerId | 0
-        );
+        const characters = [];
 
-        const currentFrame = Util.$timelineFrame.currentFrame;
-
-        const classes  = [];
-        const states   = [];
-        let totalFrame = 1;
-        for (;;) {
-
-            const frameElement = document
-                .getElementById(`${layer.id}-${totalFrame}`);
-
-            const frameState = frameElement.dataset.frameState;
-            if (totalFrame > currentFrame && frameState === "empty") {
-                break;
-            }
-
-            // pool
-            states.push(frameState);
-
-            classes.push(frameElement
-                .classList
-                .toString()
-                .replace("frame-active", "")
-                .replace("frame", "")
-                .trim()
-            );
-
-            totalFrame++;
-        }
-
-        let keyFrame = currentFrame;
-        for (;;) {
-
-            const frameElement = document
-                .getElementById(`${layer.id}-${keyFrame}`);
-
-            if (frameElement.dataset.frameState === "key-frame") {
-                break;
-            }
-
-            --keyFrame;
-        }
-
-        const length = activeElements.length;
-        for (let idx = 0; idx < length; ++idx) {
-
-            const newLayer = new Layer();
-            scene.addLayer(newLayer);
+        const frame  = Util.$timelineFrame.currentFrame;
+        const layers = new Map();
+        const scene  = Util.$currentWorkSpace().scene;
+        for (let idx = 0; idx < activeElements.length; ++idx) {
 
             const element = activeElements[idx];
+
+            const layer = scene.getLayer(
+                element.dataset.layerId | 0
+            );
+
+            if (!layer) {
+                continue;
+            }
 
             const character = layer.getCharacter(
                 element.dataset.characterId | 0
             );
 
-            const cloneCharacter = character.clone();
-            if (cloneCharacter._$places.size > 1) {
-                const place = cloneCharacter.getPlace(keyFrame);
-                cloneCharacter._$places.clear();
-                cloneCharacter.setPlace(keyFrame, place);
+            if (!character) {
+                continue;
             }
 
-            if (keyFrame - 1 > 0) {
-
-                Util.$timeline._$targetFrames = [
-                    document.getElementById(`${newLayer.id}-${keyFrame - 1}`)
-                ];
-
-                Util.$timeline.addSpaceFrame(false);
-                Util.$timeline._$targetFrames.length = 0;
-
+            const range = character.getRange(frame);
+            if (!layers.has(layer.id)) {
+                layers.set(layer.id, {
+                    "layer": layer,
+                    "range": range
+                });
             }
 
-            // update
-            cloneCharacter.startFrame = keyFrame;
-            cloneCharacter.endFrame   = totalFrame;
-            newLayer.addCharacter(cloneCharacter);
+            // キーフレーム情報をキャッシュ
+            const place = character.getPlace(range.startFrame);
+            place.depth = 0;
 
-            for (let frame = keyFrame; frame <= totalFrame; ++frame) {
+            characters.push({
+                "libraryId": character.libraryId,
+                "place": place,
+                "startFrame": range.startFrame,
+                "endFrame": range.endFrame
+            });
 
-                const index = frame - 1;
-                if (!(index in classes)) {
-                    break;
-                }
-
-                if (states[index] === "key-frame" && frame !== keyFrame) {
-                    cloneCharacter.endFrame = frame;
-                    Util.$timeline._$targetFrames = [
-                        document.getElementById(`${newLayer.id}-${totalFrame - 1}`)
-                    ];
-
-                    Util.$timeline.addSpaceFrame(false);
-                    Util.$timeline._$targetFrames.length = 0;
-                    break;
-                }
-
-                const frameElement = document
-                    .getElementById(`${newLayer.id}-${frame}`);
-
-                frameElement.setAttribute("class", `frame ${classes[index]}`);
-                frameElement.dataset.frameState = states[index];
-                newLayer._$frame.setClasses(frame, classes[index].split(" "));
-            }
+            // 現在のレイヤーから削除
+            character.remove(layer);
         }
 
-        this.keyCommandFunction({
-            "ket": "Backspace"
-        });
-        tool.clear();
+        // タイムラインを再構成
+        for (const object of layers.values()) {
 
-        document
-            .getElementById(`${layer.id}-${currentFrame}`)
-            .classList.remove("frame-active");
+            const layer = object.layer;
+            const range = object.range;
 
+            const characters = layer.getActiveCharacter(range.startFrame);
+            if (characters.length) {
+
+                // 深度順に並び替え
+                layer.sort(characters, frame);
+
+                for (let idx = 0; idx < characters.length; ++idx) {
+                    characters[idx].getPlace(frame).depth = idx;
+                }
+
+            } else {
+
+                layer.addEmptyCharacter(
+                    new EmptyCharacter({
+                        "startFrame": range.startFrame,
+                        "endFrame": range.endFrame
+                    })
+                );
+
+            }
+
+            layer.reloadStyle();
+        }
+
+        // 選択をクリア
+        Util.$timelineLayer.clear();
+
+        // 複数選択準備
+        const ctrlKey = Util.$ctrlKey;
+        Util.$ctrlKey = true;
+
+        // レイヤーを追加して配置
+        for (let idx = 0; idx < characters.length; ++idx) {
+
+            const object = characters[idx];
+
+            const character = new Character();
+            character.libraryId  = object.libraryId;
+            character.startFrame = object.startFrame;
+            character.endFrame   = object.endFrame;
+            character.setPlace(object.startFrame, object.place);
+
+            const layer = new Layer();
+            layer.addCharacter(character);
+
+            if (object.startFrame > 1) {
+                layer.addEmptyCharacter(new EmptyCharacter({
+                    "startFrame": 1,
+                    "endFrame": object.startFrame
+                }));
+            }
+
+            // シーンに追加
+            scene.addLayer(layer);
+
+            // アクティブ設定
+            Util.$timelineLayer.activeLayer(
+                document.getElementById(`layer-id-${layer.id}`)
+            );
+        }
+
+        // 再描画
+        this.reloadScreen();
+
+        // 選択の再計算
+        Util.$timelineLayer.activeCharacter();
+
+        // 初期化
+        Util.$ctrlKey = ctrlKey;
+        this._$saved  = false;
     }
 
     /**
@@ -321,6 +328,21 @@ class ScreenMenu extends BaseScreen
      */
     executeScreenDistributeToKeyframes ()
     {
+        /**
+         * @type {ArrowTool}
+         */
+        const tool = Util.$tools.getDefaultTool("arrow");
+        const activeElements = tool.activeElements;
+        if (!activeElements.length) {
+            return ;
+        }
+
+        this.save();
+
+
+
+
+
         const layerElement = Util.$timeline._$targetLayer;
         if (!layerElement) {
             return ;
@@ -772,6 +794,18 @@ class ScreenMenu extends BaseScreen
     }
 
     /**
+     * @description 指定したDisplayObjectをステージ基準で左揃え
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    executeStagePositionLeft ()
+    {
+        this.alignment("left", "stage");
+    }
+
+    /**
      * @description 指定したDisplayObjectを左揃え
      *
      * @return {void}
@@ -781,6 +815,18 @@ class ScreenMenu extends BaseScreen
     executeScreenPositionLeft ()
     {
         this.alignment("left");
+    }
+
+    /**
+     * @description 指定したDisplayObjectをステージ基準で中央揃え(水平方向)
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    executeStagePositionCenter ()
+    {
+        this.alignment("center", "stage");
     }
 
     /**
@@ -796,6 +842,18 @@ class ScreenMenu extends BaseScreen
     }
 
     /**
+     * @description 指定したDisplayObjectをステージ基準で右揃え
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    executeStagePositionRight ()
+    {
+        this.alignment("right", "stage");
+    }
+
+    /**
      * @description 指定したDisplayObjectを右揃え
      *
      * @return {void}
@@ -805,6 +863,18 @@ class ScreenMenu extends BaseScreen
     executeScreenPositionRight ()
     {
         this.alignment("right");
+    }
+
+    /**
+     * @description 指定したDisplayObjectをステージ基準で上揃え
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    executeStagePositionTop ()
+    {
+        this.alignment("top", "stage");
     }
 
     /**
@@ -820,6 +890,18 @@ class ScreenMenu extends BaseScreen
     }
 
     /**
+     * @description 指定したDisplayObjectをステージ基準で中央揃え(垂直方向)
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    executeStagePositionMiddle ()
+    {
+        this.alignment("middle", "stage");
+    }
+
+    /**
      * @description 指定したDisplayObjectを中央揃え(垂直方向)
      *
      * @return {void}
@@ -829,6 +911,18 @@ class ScreenMenu extends BaseScreen
     executeScreenPositionMiddle ()
     {
         this.alignment("middle");
+    }
+
+    /**
+     * @description 指定したDisplayObjectをステージ基準で下揃え
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    executeStagePositionBottom ()
+    {
+        this.alignment("bottom", "stage");
     }
 
     /**
@@ -844,11 +938,15 @@ class ScreenMenu extends BaseScreen
     }
 
     /**
-     * @param  {string} mode
+     * @description 選択したDisplayObjectを選択した矩形で整列
+     *
+     * @param  {string} align
+     * @param  {string} [mode="rect"]
      * @return {void}
+     * @method
      * @public
      */
-    alignment (mode)
+    alignment (align, mode = "rect")
     {
         /**
          * @type {ArrowTool}
@@ -861,78 +959,99 @@ class ScreenMenu extends BaseScreen
 
         this.save();
 
-        const scene = Util.$currentWorkSpace().scene;
+        const workSpace = Util.$currentWorkSpace();
+        const stage = workSpace.stage;
 
-        let xMin =  Number.MAX_VALUE;
-        let xMax = -Number.MAX_VALUE;
-        let yMin =  Number.MAX_VALUE;
-        let yMax = -Number.MAX_VALUE;
+        let x = 0;
+        let y = 0;
+        let w = 0;
+        let h = 0;
+        if (mode === "rect") {
 
-        const characters = [];
+            const element = document
+                .getElementById("target-rect");
+
+            x = element.offsetLeft - Util.$offsetLeft;
+            y = element.offsetTop  - Util.$offsetTop;
+            w = element.offsetWidth;
+            h = element.offsetHeight;
+
+        } else {
+
+            w = stage.width;
+            h = stage.height;
+
+        }
+
+        const scene = workSpace.scene;
         for (let idx = 0; idx < activeElements.length; ++idx) {
 
             const element = activeElements[idx];
 
             const layer = scene.getLayer(element.dataset.layerId | 0);
+            if (!layer || layer.lock || layer.disable) {
+                continue;
+            }
 
             const character = layer.getCharacter(
                 element.dataset.characterId | 0
             );
 
-            xMin = Math.min(xMin, character.x);
-            xMax = Math.max(xMax, character.x + character.width);
-            yMin = Math.min(yMin, character.y);
-            yMax = Math.max(yMax, character.y + character.height);
-
-            characters.push(character);
-        }
-
-        const frame = Util.$timelineFrame.currentFrame;
-
-        for (let idx = 0; idx < characters.length; ++idx) {
-
-            const character = characters[idx];
-            switch (mode) {
+            switch (align) {
 
                 case "left":
-                    character.x = character.screenX = xMin;
+                    if (character.x === character.screenX) {
+                        character.x = x;
+                    } else {
+                        character.x = x - character.screenX + character.x;
+                    }
                     break;
 
                 case "right":
-                    character.x = character.screenX = xMax - character.width;
+                    if (character.x === character.screenX) {
+                        character.x = x + w - character.width;
+                    } else {
+                        character.x = x + w - character.width - character.screenX + character.x;
+                    }
                     break;
 
                 case "center":
-                    character.x = character.screenX = xMin + (xMax - xMin) / 2 - character.width / 2;
+                    if (character.x === character.screenX) {
+                        character.x = x + w / 2 - character.width / 2;
+                    } else {
+                        character.x = x + w / 2 - character.width / 2 - character.screenX + character.x;
+                    }
                     break;
 
                 case "top":
-                    character.y = character.screenY = yMin;
+                    if (character.y === character.screenY) {
+                        character.y = y;
+                    } else {
+                        character.y = y - character.screenY + character.y;
+                    }
                     break;
 
                 case "bottom":
-                    character.y = character.screenY = yMax - character.height;
+                    if (character.y === character.screenY) {
+                        character.y = y + h - character.height;
+                    } else {
+                        character.y = y + h - character.height - character.screenY + character.y;
+                    }
                     break;
 
                 case "middle":
-                    character.y = character.screenY = yMin + (yMax - yMin) / 2 - character.height / 2;
+                    if (character.y === character.screenY) {
+                        character.y = y + h / 2 - character.height / 2;
+                    } else {
+                        character.y = y + h / 2 - character.height / 2 - character.screenY + character.y;
+                    }
                     break;
 
             }
-
-            const matrix = character.getPlace(frame).matrix;
-            const bounds = Util.$boundsMatrix(character.getBounds(), matrix);
-
-            const target = activeElements[idx];
-
-            const characterId = target.dataset.characterId | 0;
-
-            const element = document
-                .getElementById(`character-${characterId}`);
-
-            element.style.left = `${Util.$offsetLeft + bounds.xMin}px`;
-            element.style.top  = `${Util.$offsetTop  + bounds.yMin}px`;
         }
+
+        // 選択範囲を再計算
+        Util.$transformController.relocation();
 
         // 初期化
         this._$saved = false;
@@ -956,138 +1075,156 @@ class ScreenMenu extends BaseScreen
 
         this.save();
 
-        if (mode === "up") {
-            activeElements.sort((a, b) =>
-            {
-                switch (true) {
-
-                    case a.depth > b.depth:
-                        return -1;
-
-                    case a.depth < b.depth:
-                        return 1;
-
-                    default:
-                        return 0;
-
-                }
-            });
-        } else {
-            activeElements.sort((a, b) =>
-            {
-                switch (true) {
-
-                    case a.depth > b.depth:
-                        return 1;
-
-                    case a.depth < b.depth:
-                        return -1;
-
-                    default:
-                        return 0;
-
-                }
-            });
-        }
-
         const scene = Util.$currentWorkSpace().scene;
 
         const frame = Util.$timelineFrame.currentFrame;
 
-        const poolPlaces = new Map();
+        const layers = new Map();
         for (let idx = 0; idx < activeElements.length; ++idx) {
 
             const element = activeElements[idx];
 
             const layer = scene.getLayer(element.dataset.layerId | 0);
 
-            if (!poolPlaces.has(layer.id)) {
-
-                const places = [];
-
-                const characters = layer._$characters;
-                for (let idx = 0; idx < characters.length; ++idx) {
-
-                    const character = characters[idx];
-
-                    places.push(character.getPlace(frame));
-                }
-
-                poolPlaces.set(layer.id, places);
+            if (!layers.has(layer.id)) {
+                layers.set(layer.id, []);
             }
 
-            const places = poolPlaces.get(layer.id);
-            if (places.length === 1) {
+            layers.get(layer.id).push(
+                layer.getCharacter(element.dataset.characterId | 0)
+            );
+        }
+
+        for (const [layerId, values] of layers) {
+
+            const layer = scene.getLayer(layerId);
+            const characters = layer.getActiveCharacter(frame);
+            if (1 >= characters.length) {
                 continue;
             }
 
-            if (mode === "up") {
+            // 降順
+            characters.sort((a, b) =>
+            {
+                const aDepth = a.getPlace(frame).depth;
+                const bDepth = b.getPlace(frame).depth;
+                switch (true) {
 
-                places.sort((a, b) =>
-                {
-                    switch (true) {
+                    case aDepth > bDepth:
+                        return -1;
 
-                        case a.depth > b.depth:
-                            return -1;
+                    case aDepth < bDepth:
+                        return 1;
 
-                        case a.depth < b.depth:
-                            return 1;
+                    default:
+                        return 0;
 
-                        default:
-                            return 0;
+                }
+            });
 
-                    }
-                });
+            if (values.length > 1) {
 
-            } else {
+                if (mode === "up") {
 
-                places.sort((a, b) =>
-                {
-                    switch (true) {
+                    // 降順
+                    values.sort((a, b) =>
+                    {
+                        const aDepth = a.getPlace(frame).depth;
+                        const bDepth = b.getPlace(frame).depth;
+                        switch (true) {
 
-                        case a.depth > b.depth:
-                            return 1;
+                            case aDepth > bDepth:
+                                return -1;
 
-                        case a.depth < b.depth:
-                            return -1;
+                            case aDepth < bDepth:
+                                return 1;
 
-                        default:
-                            return 0;
+                            default:
+                                return 0;
 
-                    }
-                });
-
-            }
-
-            const character = layer.getCharacter(
-                element.dataset.characterId | 0
-            );
-
-            const targetPlace = character.getPlace(frame);
-            for (let idx = 0; idx < places.length; ++idx) {
-
-                const place = places[idx];
-
-                if (place.depth === targetPlace.depth) {
-                    if (mode === "up") {
-                        if (place.depth !== places.length - 1) {
-                            place.depth++;
-                            places[idx - 1].depth--;
                         }
-                    } else {
-                        if (place.depth) {
-                            place.depth--;
-                            if (idx) {
-                                places[idx - 1].depth++;
-                            }
+                    });
+
+                } else {
+
+                    // 昇順
+                    values.sort((a, b) =>
+                    {
+                        const aDepth = a.getPlace(frame).depth;
+                        const bDepth = b.getPlace(frame).depth;
+                        switch (true) {
+
+                            case aDepth > bDepth:
+                                return 1;
+
+                            case aDepth < bDepth:
+                                return -1;
+
+                            default:
+                                return 0;
+
                         }
-                    }
+                    });
+
                 }
 
             }
-        }
 
-        poolPlaces.clear();
+            let minDepth = 0;
+            let maxDepth = characters.length - 1;
+            for (let idx = 0; idx < values.length; ++idx) {
+
+                const character = values[idx];
+
+                const place = character.getPlace(frame);
+
+                if (mode === "up") {
+
+                    if (place.depth >= maxDepth) {
+                        --maxDepth;
+                        continue;
+                    }
+
+                    place.depth++;
+
+                    const index = characters.indexOf(character);
+                    characters[index - 1].getPlace(frame).depth--;
+
+                } else {
+
+                    if (minDepth >= place.depth) {
+                        ++minDepth;
+                        continue;
+                    }
+
+                    place.depth--;
+
+                    const index = characters.indexOf(character);
+                    characters[index + 1].getPlace(frame).depth++;
+
+                }
+
+                // 降順
+                characters.sort((a, b) =>
+                {
+                    const aDepth = a.getPlace(frame).depth;
+                    const bDepth = b.getPlace(frame).depth;
+                    switch (true) {
+
+                        case aDepth > bDepth:
+                            return -1;
+
+                        case aDepth < bDepth:
+                            return 1;
+
+                        default:
+                            return 0;
+
+                    }
+                });
+
+            }
+        }
 
         // 再描画
         this.reloadScreen();
@@ -1124,119 +1261,153 @@ class ScreenMenu extends BaseScreen
             const element = activeElements[idx];
 
             const layer = scene.getLayer(element.dataset.layerId | 0);
+
             if (!layers.has(layer.id)) {
                 layers.set(layer.id, []);
             }
 
-            layers.get(layer.id).push(element);
+            layers.get(layer.id).push(
+                layer.getCharacter(element.dataset.characterId | 0)
+            );
         }
 
-        const places = [];
-        const ignoreCharacterMap = new Map();
-        for (let [id, values] of layers) {
+        for (const [layerId, values] of layers) {
 
-            const layer = scene.getLayer(id);
-            const characters = layer._$characters;
-            if (characters.length === 1) {
+            const layer = scene.getLayer(layerId);
+
+            const characters = layer.getActiveCharacter(frame);
+            if (1 >= characters.length) {
                 continue;
             }
 
-            let index = mode === "up" ? characters.length - 1 : 0;
+            // 降順
+            characters.sort((a, b) =>
+            {
+                const aDepth = a.getPlace(frame).depth;
+                const bDepth = b.getPlace(frame).depth;
+                switch (true) {
+
+                    case aDepth > bDepth:
+                        return -1;
+
+                    case aDepth < bDepth:
+                        return 1;
+
+                    default:
+                        return 0;
+
+                }
+            });
+
+            // 降順
+            if (values.length > 1) {
+
+                if (mode === "up") {
+
+                    // 降順
+                    values.sort((a, b) =>
+                    {
+                        const aDepth = a.getPlace(frame).depth;
+                        const bDepth = b.getPlace(frame).depth;
+                        switch (true) {
+
+                            case aDepth > bDepth:
+                                return -1;
+
+                            case aDepth < bDepth:
+                                return 1;
+
+                            default:
+                                return 0;
+
+                        }
+                    });
+
+                } else {
+
+                    // 昇順
+                    values.sort((a, b) =>
+                    {
+                        const aDepth = a.getPlace(frame).depth;
+                        const bDepth = b.getPlace(frame).depth;
+                        switch (true) {
+
+                            case aDepth > bDepth:
+                                return 1;
+
+                            case aDepth < bDepth:
+                                return -1;
+
+                            default:
+                                return 0;
+
+                        }
+                    });
+                }
+
+            }
+
+            const ignoreMap = new Map();
+
+            let minDepth = 0;
+            let maxDepth = characters.length - 1;
             for (let idx = 0; idx < values.length; ++idx) {
 
-                const element = values[idx];
+                const value = values[idx];
 
-                const character = layer
-                    .getCharacter(element.dataset.characterId | 0);
-
-                ignoreCharacterMap.set(character.id, true);
-
-                const place = character.getPlace(frame);
-                if (mode === "up") {
-
-                    if (place.depth === characters.length - 1) {
-                        index--;
-                        continue;
-                    }
-
-                    place.depth = index--;
-
-                } else {
-
-                    if (place.depth === index) {
-                        index++;
-                        continue;
-                    }
-
-                    place.depth = index++;
-
-                }
-
-            }
-
-            for (let idx = 0; idx < characters.length; ++idx) {
-
-                const character = characters[idx];
-                if (ignoreCharacterMap.has(character.id)) {
-                    continue;
-                }
-
-                places.push(character.getPlace(frame));
-            }
-
-            if (places.length) {
+                const place = value.getPlace(frame);
 
                 if (mode === "up") {
 
-                    places.sort((a, b) =>
-                    {
-                        switch (true) {
+                    if (place.depth >= maxDepth) {
+                        --maxDepth;
+                        continue;
+                    }
 
-                            case a.depth > b.depth:
-                                return -1;
+                    place.depth = maxDepth--;
 
-                            case a.depth < b.depth:
-                                return 1;
+                    ignoreMap.set(value.id, true);
 
-                            default:
-                                return 0;
+                    let depth = maxDepth;
+                    for (let idx = 0; characters.length > idx; ++idx) {
 
+                        const character = characters[idx];
+                        if (ignoreMap.has(character.id)) {
+                            continue;
                         }
-                    });
+
+                        character.getPlace(frame).depth = depth--;
+                        if (depth === -1) {
+                            break;
+                        }
+                    }
 
                 } else {
 
-                    places.sort((a, b) =>
-                    {
-                        switch (true) {
+                    if (minDepth >= place.depth) {
+                        ++minDepth;
+                        continue;
+                    }
 
-                            case a.depth > b.depth:
-                                return 1;
+                    place.depth = minDepth++;
 
-                            case a.depth < b.depth:
-                                return -1;
+                    ignoreMap.set(value.id, true);
 
-                            default:
-                                return 0;
+                    let depth = minDepth;
+                    for (let idx = characters.length - 1; idx > -1; --idx) {
 
+                        const character = characters[idx];
+                        if (ignoreMap.has(character.id)) {
+                            continue;
                         }
-                    });
 
-                }
-
-                for (let idx = 0; idx < places.length; ++idx) {
-
-                    const place = places[idx];
-                    if (mode === "up") {
-                        place.depth = index--;
-                    } else {
-                        place.depth = index++;
+                        character.getPlace(frame).depth = depth++;
+                        if (depth === characters.length) {
+                            break;
+                        }
                     }
                 }
             }
-
-            places.length = 0;
-            ignoreCharacterMap.clear();
         }
 
         // 再描画

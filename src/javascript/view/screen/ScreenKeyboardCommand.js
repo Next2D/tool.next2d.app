@@ -158,11 +158,208 @@ class ScreenKeyboardCommand extends KeyboardCommand
             this.screenBackOne
         );
 
-        // ひとつ背面へ
+        // 左揃え
+        this.add("1", this.screenPositionLeft);
+
+        // ステージ基準の左揃え
         this.add(
-            Util.$generateShortcutKey("1", { "ctrl": true }),
-            this.screenPositionLeft
+            Util.$generateShortcutKey("!", { "shift": true }),
+            this.stagePositionLeft
         );
+
+        // 中央揃え(水平方向)
+        this.add("2", this.screenPositionCenter);
+
+        // ステージ基準の中央揃え(水平方向)
+        this.add(
+            Util.$generateShortcutKey("\"", { "shift": true }),
+            this.stagePositionCenter
+        );
+
+        // 右揃え
+        this.add("3", this.screenPositionRight);
+
+        // ステージ基準の右揃え
+        this.add(
+            Util.$generateShortcutKey("#", { "shift": true }),
+            this.stagePositionRight
+        );
+
+        // 上揃え
+        this.add("4", this.screenPositionTop);
+
+        // ステージ基準の上揃え
+        this.add(
+            Util.$generateShortcutKey("$", { "shift": true }),
+            this.stagePositionTop
+        );
+
+        // 中央揃え(垂直方向)
+        this.add("5", this.screenPositionMiddle);
+
+        // ステージ基準の中央揃え(垂直方向)
+        this.add(
+            Util.$generateShortcutKey("%", { "shift": true }),
+            this.stagePositionMiddle
+        );
+
+        // 下揃え
+        this.add("6", this.screenPositionBottom);
+
+        // ステージ基準の下揃え
+        this.add(
+            Util.$generateShortcutKey("&", { "shift": true }),
+            this.stagePositionBottom
+        );
+
+        // ステージ基準の下揃え
+        this.add("d", this.distributeToLayers);
+    }
+
+    /**
+     * @description 選択したDisplayObjectをレイヤーに配分
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    distributeToLayers ()
+    {
+        Util
+            .$screenMenu
+            .executeScreenDistributeToLayers();
+    }
+
+    /**
+     * @description 選択中のDisplayObjectの矩形内で下揃え
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    screenPositionBottom ()
+    {
+        Util.$screenMenu.alignment("bottom");
+    }
+
+    /**
+     * @description 選択中のDisplayObjectのステージ基準で下揃え
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    stagePositionBottom ()
+    {
+        Util.$screenMenu.alignment("bottom", "stage");
+    }
+
+    /**
+     * @description 選択中のDisplayObjectの矩形内で中央揃え(垂直方向)
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    screenPositionMiddle ()
+    {
+        Util.$screenMenu.alignment("middle");
+    }
+
+    /**
+     * @description 選択中のDisplayObjectのステージ基準で中央揃え(垂直方向)
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    stagePositionMiddle ()
+    {
+        Util.$screenMenu.alignment("middle", "stage");
+    }
+
+    /**
+     * @description 選択中のDisplayObjectの矩形内で上揃え
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    screenPositionTop ()
+    {
+        Util.$screenMenu.alignment("top");
+    }
+
+    /**
+     * @description 選択中のDisplayObjectのステージ基準で上揃え
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    stagePositionTop ()
+    {
+        Util.$screenMenu.alignment("top", "stage");
+    }
+
+    /**
+     * @description 選択中のDisplayObjectの矩形内の左側に揃える
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    screenPositionCenter ()
+    {
+        Util.$screenMenu.alignment("center");
+    }
+
+    /**
+     * @description 選択中のDisplayObjectのステージ基準で左側に揃える
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    stagePositionCenter ()
+    {
+        Util.$screenMenu.alignment("center", "stage");
+    }
+
+    /**
+     * @description 選択中のDisplayObjectのステージ基準で左側に揃える
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    stagePositionRight ()
+    {
+        Util.$screenMenu.alignment("right", "stage");
+    }
+
+    /**
+     * @description 選択中のDisplayObjectの矩形内の左側に揃える
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    screenPositionRight ()
+    {
+        Util.$screenMenu.alignment("right");
+    }
+
+    /**
+     * @description 選択中のDisplayObjectのステージ基準で左側に揃える
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    stagePositionLeft ()
+    {
+        Util.$screenMenu.alignment("left", "stage");
     }
 
     /**

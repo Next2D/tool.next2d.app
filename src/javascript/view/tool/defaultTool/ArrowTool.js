@@ -556,6 +556,15 @@ class ArrowTool extends BaseTool
         character._$libraryId = event.target.value | 0;
         character._$image     = null;
 
+        const instance = workSpace
+            .getLibrary(character._$libraryId);
+
+        if (instance.type === "container") {
+            for (const place of character._$places.values()) {
+                place.loop = Util.$getDefaultLoopConfig();
+            }
+        }
+
         // Util.$screen.clearTweenMarker();
         // if (character._$tween
         //     && character.hasTween()
@@ -568,7 +577,6 @@ class ArrowTool extends BaseTool
             .getElementById("instance-type-name")
             .getElementsByTagName("i")[0];
 
-        const instance = workSpace.getLibrary(character._$libraryId);
         icon.setAttribute("class", `library-type-${instance.type}`);
 
         // スクリーンエリアのDisplayObjectを再描画
@@ -1224,8 +1232,8 @@ class ArrowTool extends BaseTool
             const matrix = character.getPlace(frame).matrix;
             matrix[4] += dx / Util.$zoomScale;
             matrix[5] += dy / Util.$zoomScale;
-            character.screenX += dx;
-            character.screenY += dy;
+            character.screenX += dx / Util.$zoomScale;
+            character.screenY += dy / Util.$zoomScale;
 
             if (layer.maskId !== null) {
                 const maskLayer = scene.getLayer(layer.maskId);
