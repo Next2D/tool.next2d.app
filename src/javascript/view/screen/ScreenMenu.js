@@ -388,6 +388,7 @@ class ScreenMenu extends BaseScreen
                     {
                         const indexes = new Map();
 
+                        // 指定フレームに配置されたDisplayObjectを分割
                         const splits = [];
                         for (let idx = 0; idx < activeCharacters.length; ++idx) {
 
@@ -406,6 +407,7 @@ class ScreenMenu extends BaseScreen
                             splits.push(splitCharacter);
                         }
 
+                        // 後方のDisplayObjectを後方に移動
                         for (let idx = 0; idx < layer._$characters.length; ++idx) {
 
                             const character = layer._$characters[idx];
@@ -453,6 +455,7 @@ class ScreenMenu extends BaseScreen
                         range.startFrame = range.endFrame;
                         range.endFrame  += characters.length;
 
+                        // 分割したDisplayObjectを分割対象か配置を判定
                         const newCharacters = [];
                         for (let idx = 0; idx < splits.length; ++idx) {
 
@@ -475,27 +478,30 @@ class ScreenMenu extends BaseScreen
                                 // レイヤーに登録して配列へ格納
                                 layer.addCharacter(character);
                                 newCharacters.push(character);
-                            }
 
-                            // 分割対象外ないら前方のDisplayObjectと結合
-                            for (let idx = 0; idx < layer._$characters.length; ++idx) {
+                            } else {
 
-                                const child = layer._$characters[idx];
+                                // 分割対象外であれば、前方のDisplayObjectを結合
+                                for (let idx = 0; idx < layer._$characters.length; ++idx) {
 
-                                if (child.libraryId !== character.libraryId) {
-                                    continue;
+                                    const child = layer._$characters[idx];
+
+                                    if (child.libraryId !== character.libraryId) {
+                                        continue;
+                                    }
+
+                                    if (child.endFrame !== character.startFrame) {
+                                        continue;
+                                    }
+
+                                    for (const [keyFrame, place] of character._$places) {
+                                        child.setPlace(keyFrame, place);
+                                    }
+
+                                    child.endFrame = character.endFrame;
+                                    break;
                                 }
 
-                                if (child.endFrame !== character.startFrame) {
-                                    continue;
-                                }
-
-                                for (const [keyFrame, place] of character._$places) {
-                                    child.setPlace(keyFrame, place);
-                                }
-
-                                child.endFrame = character.endFrame;
-                                break;
                             }
                         }
 
