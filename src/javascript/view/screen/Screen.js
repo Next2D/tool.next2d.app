@@ -259,6 +259,18 @@ class Screen extends BaseScreen
                     );
                 }
             });
+
+            window.addEventListener("keydown", (event) =>
+            {
+                const activeTool = Util.$tools.activeTool;
+                if (activeTool) {
+                    event.screen = true;
+                    activeTool.dispatchEvent(
+                        EventType.DELETE,
+                        event
+                    );
+                }
+            });
         }
     }
 

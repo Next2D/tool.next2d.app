@@ -223,6 +223,26 @@ class ScreenKeyboardCommand extends KeyboardCommand
             Util.$generateShortcutKey("k", { "ctrl": true }),
             this.distributeToKeyframes
         );
+
+        // Shapeの結合
+        this.add(
+            Util.$generateShortcutKey("i", { "ctrl": true }),
+            this.integratingPaths
+        );
+    }
+
+    /**
+     * @description 選択したShapeのパスを結合
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    integratingPaths ()
+    {
+        Util
+            .$screenMenu
+            .executeScreenIntegratingPaths();
     }
 
     /**

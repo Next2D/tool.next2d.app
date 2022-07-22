@@ -79,6 +79,18 @@ class ScreenMenu extends BaseScreen
     }
 
     /**
+     * @description Playerでのプレビュー
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    executeScreenPreview ()
+    {
+        Util.$showPreview();
+    }
+
+    /**
      * @description 選択してるDisplayObjectをスクリーンから削除
      *
      * @return {void}
@@ -753,24 +765,29 @@ class ScreenMenu extends BaseScreen
      */
     executeScreenIntegratingPaths ()
     {
-        if (2 > this._$moveTargets.length) {
+        /**
+         * @type {ArrowTool}
+         */
+        const tool = Util.$tools.getDefaultTool("arrow");
+        const activeElements = tool.activeElements;
+        if (!activeElements.length) {
             return ;
         }
 
-        const frame = Util.$timelineFrame.currentFrame;
+        this.save();
 
         const workSpace = Util.$currentWorkSpace();
-        workSpace
-            .temporarilySaved();
 
         const scene = workSpace.scene;
+        const frame = Util.$timelineFrame.currentFrame;
 
         let baseShape     = null;
         let baseCharacter = null;
-        let index = 0;
-        for (let idx = 0; idx < this._$moveTargets.length; ++idx) {
 
-            const element = this._$moveTargets[idx];
+        let index = 0;
+        for (let idx = 0; idx < activeElements.length; ++idx) {
+
+            const element = activeElements[idx];
             if (element.dataset.instanceType !== "shape") {
                 continue;
             }
@@ -841,8 +858,13 @@ class ScreenMenu extends BaseScreen
                 continue;
             }
 
-            const tx = baseCharacter.screenX - baseShape._$bounds.xMin - character.screenX;
-            const ty = baseCharacter.screenY - baseShape._$bounds.yMin - character.screenY;
+            const tx = baseCharacter.screenX
+                - baseShape._$bounds.xMin
+                - character.screenX;
+
+            const ty = baseCharacter.screenY
+                - baseShape._$bounds.yMin
+                - character.screenY;
 
             const matrix  = character.getPlace(frame).matrix;
             const recodes = [];
@@ -957,9 +979,10 @@ class ScreenMenu extends BaseScreen
             baseShape._$bounds.yMax = bounds.yMax;
             baseShape.cacheClear();
 
-            scene.changeFrame(frame);
+            this.reloadScreen();
         }
 
+        this._$saved = false;
     }
 
     /**

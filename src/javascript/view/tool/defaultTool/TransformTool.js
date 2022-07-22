@@ -41,9 +41,16 @@ class TransformTool extends BaseTool
         });
 
         // ポインターの削除イベント
-        this.addEventListener(EventType.DELETE, () =>
+        this.addEventListener(EventType.DELETE, (event) =>
         {
             Util.$setCursor(this._$cursor);
+
+            if (Util.$keyLock || event.key !== "Backspace" || !event.screen) {
+                return ;
+            }
+
+            // 親のイベントを中止する
+            event.stopPropagation();
             this.deletePointer();
         });
 
