@@ -56,7 +56,9 @@ class ApngEncoder
      */
     _$crc (buffer, offset, length)
     {
-        return this._$crcUpdate(0xffffffff, buffer, offset, length) ^ 0xffffffff;
+        return this._$crcUpdate(
+            0xffffffff, buffer, offset, length
+        ) ^ 0xffffffff;
     }
 
     /**
@@ -80,7 +82,7 @@ class ApngEncoder
     {
         return new Promise((resolve) =>
         {
-            let sequence_number = 0;
+            let sequenceNumber = 0;
             let frame = 0;
 
             const chunks = [];
@@ -92,29 +94,28 @@ class ApngEncoder
             ]);
             chunks.push(header.buffer);
 
-            // add IHDR chunk (25 bytes)
-            const IHDR = new Uint8Array(25);
-            const IHDR_view = new DataView(IHDR.buffer);
-            IHDR_view.setUint32(0, 13);
+            const IHDR     = new Uint8Array(25);
+            const IHDRView = new DataView(IHDR.buffer);
+            IHDRView.setUint32(0, 13);
             this._$writeString(IHDR, 4, "IHDR");
-            IHDR_view.setUint32(8, this._$width);
-            IHDR_view.setUint32(12, this._$height);
-            IHDR_view.setUint8(16, 8); // bit depth
-            IHDR_view.setUint8(17, 6); // color_type, 2 = RGB, 6 = RGBA
-            IHDR_view.setUint8(18, 0); // compression method
-            IHDR_view.setUint8(19, 0); // filter method
-            IHDR_view.setUint8(20, 0); // interlace method
-            IHDR_view.setUint32(21, this._$crc(IHDR, 4, 4 + 13));
+            IHDRView.setUint32(8, this._$width);
+            IHDRView.setUint32(12, this._$height);
+            IHDRView.setUint8(16, 8); // bit depth
+            IHDRView.setUint8(17, 6); // color_type, 2 = RGB, 6 = RGBA
+            IHDRView.setUint8(18, 0); // compression method
+            IHDRView.setUint8(19, 0); // filter method
+            IHDRView.setUint8(20, 0); // interlace method
+            IHDRView.setUint32(21, this._$crc(IHDR, 4, 4 + 13));
             chunks.push(IHDR.buffer);
 
-            // add acTL (animation control chunk 20 bytes)
-            const acTL = new Uint8Array(20);
-            const acTL_view = new DataView(acTL.buffer);
-            acTL_view.setUint32(0, 8);
+            // animation control
+            const acTL   = new Uint8Array(20);
+            const acView = new DataView(acTL.buffer);
+            acView.setUint32(0, 8);
             this._$writeString(acTL, 4, "acTL");
-            acTL_view.setUint32(8, this._$pngs.length);
-            acTL_view.setUint32(12, this._$loop); // num_plays, 0 = loop forever
-            acTL_view.setUint32(16, this._$crc(acTL, 4, 4 + 8));
+            acView.setUint32(8, this._$pngs.length);
+            acView.setUint32(12, this._$loop);
+            acView.setUint32(16, this._$crc(acTL, 4, 4 + 8));
             chunks.push(acTL.buffer);
 
             reader.onload = () =>
@@ -123,66 +124,58 @@ class ApngEncoder
 
                 let pos = 8;
 
-                //######################################
-                // add fcTL (frame control chunk 38 bytes)
-                //######################################
-                const fcTL = new Uint8Array(38);
-                const fcTL_view = new DataView(fcTL.buffer);
-                fcTL_view.setUint32(0, 26);
+                // frame control
+                const fcTL   = new Uint8Array(38);
+                const fcView = new DataView(fcTL.buffer);
+                fcView.setUint32(0, 26);
                 this._$writeString(fcTL, 4, "fcTL");
-                fcTL_view.setUint32(8, sequence_number++);
-                fcTL_view.setUint32(12, this._$width);
-                fcTL_view.setUint32(16, this._$height);
-                fcTL_view.setUint32(20, 0);
-                fcTL_view.setUint32(24, 0);
-                // The delay_num and delay_den parameters together specify a fraction
-                // indicating the time to display the current frame, in seconds. If the denominator
-                // is 0, it is to be treated as if it were 100 (that is, `delay_num` then specifies
-                // 1/100ths of a second). If the the value of the numerator is 0 the decoder should
-                // render the next frame as quickly as possible, though viewers may impose a
-                // reasonable lower bound.
-                fcTL_view.setUint16(28, 1000 / this._$fps); // delay_num
-                fcTL_view.setUint16(30, 1000); // delay_den
-                fcTL_view.setUint8(32, 0); // dispose_op
-                fcTL_view.setUint8(33, 0); // blend_op
-                fcTL_view.setUint32(34, this._$crc(fcTL, 4, 4 + 26));
+                fcView.setUint32(8, sequenceNumber++);
+                fcView.setUint32(12, this._$width);
+                fcView.setUint32(16, this._$height);
+                fcView.setUint32(20, 0);
+                fcView.setUint32(24, 0);
+                fcView.setUint16(28, 1000 / this._$fps); // delay_num
+                fcView.setUint16(30, 1000); // delay_den
+                fcView.setUint8(32, 0); // dispose_op
+                fcView.setUint8(33, 0); // blend_op
+                fcView.setUint32(34, this._$crc(fcTL, 4, 4 + 26));
                 chunks.push(fcTL.buffer);
 
-                // parse PNG chunks
                 const length = reader.result.byteLength;
                 for (;;) {
 
                     const chunkLen = view.getUint32(pos);
-                    if (view.getUint32(pos + 4) === 0x49444154) { // 'IDAT'
+                    if (view.getUint32(pos + 4) === 0x49444154) {
 
-                        //add either as IDAT or fdAT chunk
                         if (!frame) {
 
-                            //######################################
-                            // add IDAT chunk
-                            //######################################
-                            chunks.push(reader.result.slice(pos, pos + chunkLen + 8 + 4));
+                            chunks.push(
+                                reader.result.slice(pos, pos + chunkLen + 8 + 4)
+                            );
 
                         } else {
 
-                            //######################################
-                            // add fdAT chunk
-                            //######################################
-                            let fdAT = new Uint8Array(4);
-                            let fdAT_view = new DataView(fdAT.buffer);
-                            fdAT_view.setUint32(0, chunkLen + 4);
+                            let fdAT   = new Uint8Array(4);
+                            let fdView = new DataView(fdAT.buffer);
+
+                            fdView.setUint32(0, chunkLen + 4);
                             chunks.push(fdAT.buffer);
 
-                            fdAT = new Uint8Array(reader.result.slice(pos, pos + chunkLen + 8 + 4));
-                            fdAT_view = new DataView(fdAT.buffer);
+                            fdAT = new Uint8Array(
+                                reader.result.slice(pos, pos + chunkLen + 8 + 4)
+                            );
+
+                            fdView = new DataView(fdAT.buffer);
                             this._$writeString(fdAT, 0, "fdAT");
-                            fdAT_view.setUint32(4, sequence_number++);
-                            fdAT_view.setUint32(chunkLen + 8, this._$crc(fdAT, 0, chunkLen + 8)); // update crc32
+                            fdView.setUint32(4, sequenceNumber++);
+                            fdView.setUint32(
+                                chunkLen + 8,
+                                this._$crc(fdAT, 0, chunkLen + 8)
+                            );
                             chunks.push(fdAT.buffer);
                         }
                     }
 
-                    // size (4 bytes) + name (4 bytes) + data + crc (4 bytes)
                     pos += chunkLen + 12;
                     if (pos >= length) {
                         break;
@@ -192,14 +185,10 @@ class ApngEncoder
                 frame++;
                 if (this._$pngs.length > frame) {
 
-                    // handle next frame
                     reader.readAsArrayBuffer(this._$pngs[frame]);
 
                 } else {
 
-                    //######################################
-                    // add IEND chunk 12 bytes
-                    //######################################
                     chunks.push(new Uint8Array([
                         0, 0, 0, 0,
                         0x49, 0x45, 0x4E, 0x44,

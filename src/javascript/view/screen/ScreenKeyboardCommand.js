@@ -212,8 +212,31 @@ class ScreenKeyboardCommand extends KeyboardCommand
             this.stagePositionBottom
         );
 
-        // ステージ基準の下揃え
-        this.add("d", this.distributeToLayers);
+        // レイヤーに配分
+        this.add(
+            Util.$generateShortcutKey("d", { "ctrl": true }),
+            this.distributeToLayers
+        );
+
+        // キーフレームに配分
+        this.add(
+            Util.$generateShortcutKey("k", { "ctrl": true }),
+            this.distributeToKeyframes
+        );
+    }
+
+    /**
+     * @description 選択したDisplayObjectをキーフレームに配分
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    distributeToKeyframes ()
+    {
+        Util
+            .$screenMenu
+            .executeScreenDistributeToKeyframes();
     }
 
     /**

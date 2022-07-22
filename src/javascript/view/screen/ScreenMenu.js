@@ -339,137 +339,403 @@ class ScreenMenu extends BaseScreen
 
         this.save();
 
-
-
-
-
-        const layerElement = Util.$timeline._$targetLayer;
-        if (!layerElement) {
-            return ;
-        }
-
         const scene = Util.$currentWorkSpace().scene;
-        const layer = scene.getLayer(
-            layerElement.dataset.layerId | 0
-        );
 
-        const currentFrame = Util.$timelineFrame.currentFrame;
+        let frame = Util.$timelineFrame.currentFrame;
 
-        let keyFrame = currentFrame;
-        for (;;) {
+        const layers = new Map();
+        for (const element of activeElements.values()) {
 
-            const frameElement = document
-                .getElementById(`${layer.id}-${keyFrame}`);
-
-            if (frameElement.dataset.frameState === "key-frame") {
-                break;
-            }
-
-            --keyFrame;
-        }
-
-        const characters = [];
-        const length = this._$moveTargets.length;
-        for (let idx = 0; idx < length; ++idx) {
-
-            const element = this._$moveTargets[idx];
+            const layer = scene.getLayer(
+                element.dataset.layerId | 0
+            );
 
             const character = layer.getCharacter(
                 element.dataset.characterId | 0
             );
 
-            const cloneCharacter = character.clone();
-
-            const place = cloneCharacter.getPlace(keyFrame);
-            cloneCharacter._$places.clear();
-            cloneCharacter.setPlace(keyFrame + idx, place);
-
-            characters.push(cloneCharacter);
-        }
-
-        this.keyCommandFunction({
-            "key": "Backspace"
-        });
-
-        this._$moveTargets.length = 0;
-        this.hideTransformTarget();
-        this.hideGridTarget();
-
-        let endFrame = keyFrame + 1;
-        for (;;) {
-
-            const frameElement = document
-                .getElementById(`${layer.id}-${endFrame}`);
-
-            if (frameElement.dataset.frameState === "key-frame"
-                || frameElement.dataset.frameState === "empty-key-frame"
-                || frameElement.dataset.frameState === "empty"
-            ) {
-                break;
+            if (!layers.has(layer.id)) {
+                layers.set(layer.id, {
+                    "range": character.getRange(frame),
+                    "characters": []
+                });
             }
 
-            ++endFrame;
+            layers
+                .get(layer.id)
+                .characters
+                .push(character);
         }
 
-        const totalFrame = endFrame - keyFrame;
-        switch (true) {
+        for (const [layerId, object] of layers) {
 
-            case totalFrame > characters.length:
+            let characters = object.characters;
+            if (characters.length === 1) {
+                continue;
+            }
+
+            const layer = scene.getLayer(layerId);
+            const range = object.range;
+
+            // フレームで配置されてるDisplayObject
+            const activeCharacters = layer.getActiveCharacter(frame);
+
+            const rangeFrame = range.endFrame - range.startFrame;
+            switch (true) {
+
+                // レイヤーに配置されたDisplayObjectの数と選択した数が一致しない場合は補正
+                case characters.length !== activeCharacters.length:
+                    {
+                        const indexes = new Map();
+
+                        const splits = [];
+                        for (let idx = 0; idx < activeCharacters.length; ++idx) {
+
+                            const character = activeCharacters[idx];
+
+                            const index = characters.indexOf(character);
+
+                            const splitCharacter = character.split(layer,
+                                range.startFrame, range.endFrame
+                            );
+
+                            if (index > -1) {
+                                indexes.set(splitCharacter.id, index);
+                            }
+
+                            splits.push(splitCharacter);
+                        }
+
+                        for (let idx = 0; idx < layer._$characters.length; ++idx) {
+
+                            const character = layer._$characters[idx];
+
+                            if (range.endFrame > character.endFrame) {
+                                continue;
+                            }
+
+                            if (character.startFrame > range.startFrame) {
+
+                                character.move(characters.length);
+
+                            } else {
+
+                                const places = new Map();
+                                for (const [keyFrame, place] of character._$places) {
+
+                                    if (keyFrame > range.startFrame) {
+                                        place.frame = keyFrame + characters.length;
+                                    }
+
+                                    places.set(place.frame, place);
+
+                                }
+
+                                character._$places  = places;
+                                character.endFrame += characters.length;
+                            }
+                        }
+
+                        // 空のフレームも移動
+                        for (let idx = 0; layer._$emptys.length > idx; ++idx) {
+
+                            const emptyCharacter = layer._$emptys[idx];
+
+                            if (range.startFrame > emptyCharacter.startFrame) {
+                                continue;
+                            }
+
+                            emptyCharacter.move(characters.length);
+                        }
+
+                        // レンジ幅を後方に移動
+                        frame = range.endFrame;
+                        range.startFrame = range.endFrame;
+                        range.endFrame  += characters.length;
+
+                        const newCharacters = [];
+                        for (let idx = 0; idx < splits.length; ++idx) {
+
+                            const character = splits[idx];
+
+                            // 分割対象なら移動して終了
+                            if (indexes.has(character.id)) {
+
+                                // キーフレームを移動
+                                character.setPlace(
+                                    range.startFrame,
+                                    character.getPlace(character.startFrame)
+                                );
+                                character.deletePlace(character.startFrame);
+
+                                // フレーム情報を更新
+                                character.startFrame = range.startFrame;
+                                character.endFrame   = range.endFrame;
+
+                                // レイヤーに登録して配列へ格納
+                                layer.addCharacter(character);
+                                newCharacters.push(character);
+                            }
+
+                            // 分割対象外ないら前方のDisplayObjectと結合
+                            for (let idx = 0; idx < layer._$characters.length; ++idx) {
+
+                                const child = layer._$characters[idx];
+
+                                if (child.libraryId !== character.libraryId) {
+                                    continue;
+                                }
+
+                                if (child.endFrame !== character.startFrame) {
+                                    continue;
+                                }
+
+                                for (const [keyFrame, place] of character._$places) {
+                                    child.setPlace(keyFrame, place);
+                                }
+
+                                child.endFrame = character.endFrame;
+                                break;
+                            }
+                        }
+
+                        // 対象配列を上書き
+                        characters = newCharacters;
+                    }
+                    break;
+
+                // フレーム数がレンジ幅以上の場合は、後方のフレームを後方へ移動
+                case characters.length > rangeFrame:
+                    {
+                        const moveFrame  = characters.length - rangeFrame;
+
+                        for (let idx = 0; layer._$characters.length > idx; ++idx) {
+
+                            const character = layer._$characters[idx];
+                            if (range.endFrame > character.endFrame) {
+                                continue;
+                            }
+
+                            if (character.startFrame > range.endFrame) {
+
+                                // レンジ幅より先で開始する単独DisplayObjectは単純な横移動
+                                character.move(moveFrame);
+
+                            } else {
+
+                                const places = new Map();
+                                for (const [keyFrame, place] of character._$places) {
+
+                                    if (keyFrame >= range.endFrame) {
+                                        place.frame = keyFrame + moveFrame;
+                                    }
+
+                                    places.set(place.frame, place);
+
+                                }
+
+                                character._$places  = places;
+                                character.endFrame += moveFrame;
+                            }
+                        }
+
+                        // 空のフレームも移動
+                        for (let idx = 0; layer._$emptys.length > idx; ++idx) {
+
+                            const emptyCharacter = layer._$emptys[idx];
+                            if (range.endFrame > emptyCharacter.endFrame) {
+                                continue;
+                            }
+
+                            emptyCharacter.move(moveFrame);
+                        }
+
+                        // レンジ幅も更新
+                        range.endFrame += moveFrame;
+                    }
+                    break;
+
+                // 分割するフレーム数がレンジ以下の場合は、後方のフレームを前方へ移動
+                case rangeFrame > characters.length:
+                    {
+                        const moveFrame = rangeFrame - characters.length;
+
+                        for (let idx = 0; layer._$characters.length > idx; ++idx) {
+
+                            const character = layer._$characters[idx];
+                            if (range.endFrame > character.endFrame) {
+                                continue;
+                            }
+
+                            if (character.startFrame > range.endFrame) {
+
+                                // レンジ幅より先で開始する単独DisplayObjectは単純な横移動
+                                character.move(-moveFrame);
+
+                            } else {
+
+                                const places = new Map();
+                                for (const [keyFrame, place] of character._$places) {
+
+                                    if (keyFrame >= range.endFrame) {
+                                        place.frame = keyFrame - moveFrame;
+                                    }
+
+                                    places.set(place.frame, place);
+
+                                }
+
+                                character._$places  = places;
+                                character.endFrame -= moveFrame;
+                            }
+
+                        }
+
+                        // 空のフレームも移動
+                        for (let idx = 0; layer._$emptys.length > idx; ++idx) {
+
+                            const emptyCharacter = layer._$emptys[idx];
+                            if (range.startFrame > emptyCharacter.startFrame) {
+                                continue;
+                            }
+
+                            emptyCharacter.move(-moveFrame);
+                        }
+
+                        // レンジ幅も更新
+                        range.endFrame -= moveFrame;
+                    }
+                    break;
+
+                default:
+                    break;
+
+            }
+
+            // 昇順
+            characters.sort((a, b) =>
             {
-                const length = totalFrame - characters.length;
-                const targetFrames = [];
-                for (let idx = 0; idx < length; ++idx) {
-                    targetFrames.push(
-                        document.getElementById(`${layer.id}-${keyFrame + 1 + idx}`)
+                const aDepth = a.getPlace(frame).depth;
+                const bDepth = b.getPlace(frame).depth;
+                switch (true) {
+
+                    case aDepth > bDepth:
+                        return 1;
+
+                    case aDepth < bDepth:
+                        return -1;
+
+                    default:
+                        return 0;
+
+                }
+            });
+
+            let keyFrame = range.startFrame;
+            for (let idx = 0; idx < characters.length; ++idx) {
+
+                let character = characters[idx];
+
+                // キーフレームが複数ある場合は分割
+                if (character._$places.size !== 1) {
+                    character = character.split(
+                        layer,
+                        range.startFrame,
+                        range.endFrame
                     );
-                }
-                Util.$timeline._$targetFrames = targetFrames;
-
-                Util.$timeline.deleteFrame(false);
-                for (let idx = 0; idx < targetFrames.length; ++idx) {
-                    const element = targetFrames[idx];
-                    element.classList.remove("frame-active");
+                    layer.addCharacter(character);
                 }
 
-                Util.$timeline._$targetFrames.length = 0;
+                const place = character.getPlace(frame);
+
+                let end = false;
+                for (let idx = 0; idx < layer._$characters.length; ++idx) {
+
+                    const child = layer._$characters[idx];
+
+                    // 同一のobjectならスキップ
+                    if (child.id === character.id) {
+                        continue;
+                    }
+
+                    // 同一のアイテムでないならスキップ
+                    if (child.libraryId !== character.libraryId) {
+                        continue;
+                    }
+
+                    if (child.endFrame !== keyFrame) {
+                        continue;
+                    }
+
+                    // 分割したDisplayObjectをレイヤーから削除
+                    layer.deleteCharacter(character.id);
+
+                    // 既存のDisplayObjectと連結
+                    child.endFrame = keyFrame + 1;
+                    child.setPlace(keyFrame, place);
+
+                    end = true;
+                    break;
+                }
+
+                // 前方に同一のDisplayObjectがあれば結合して終了
+                if (end) {
+                    keyFrame++;
+                    continue;
+                }
+
+                for (let idx = 0; idx < layer._$characters.length; ++idx) {
+
+                    const child = layer._$characters[idx];
+
+                    // 同一のobjectならスキップ
+                    if (child.id === character.id) {
+                        continue;
+                    }
+
+                    // 同一のアイテムでないならスキップ
+                    if (child.libraryId !== character.libraryId) {
+                        continue;
+                    }
+
+                    if (child.startFrame !== keyFrame) {
+                        continue;
+                    }
+
+                    // 分割したDisplayObjectをレイヤーから削除
+                    layer.deleteCharacter(character.id);
+
+                    // 既存のDisplayObjectと連結
+                    child.startFrame = keyFrame;
+                    child.setPlace(keyFrame, place);
+
+                    end = true;
+                    break;
+                }
+
+                // 後方に同一のDisplayObjectがあれば結合して終了
+                if (end) {
+                    keyFrame++;
+                    continue;
+                }
+
+                // 前後方に同一のDisplayObjectがなければ自身の情報を上書き
+                character.startFrame = keyFrame;
+                character.endFrame   = keyFrame + 1;
+                character.deletePlace(place.frame);
+                character.setPlace(keyFrame, place);
+
+                keyFrame++;
             }
-                break;
 
-            case characters.length > totalFrame:
-                Util.$timeline._$targetFrames = [
-                    document.getElementById(`${layer.id}-${characters.length - totalFrame}`)
-                ];
-
-                Util.$timeline.addSpaceFrame(false);
-                Util.$timeline._$targetFrames.length = 0;
-                break;
-
-            default:
-                break;
-
+            // タイムラインを再構成
+            layer.reloadStyle();
         }
 
-        for (let idx = 0; idx < characters.length; ++idx) {
+        // 再描画
+        this.reloadScreen();
 
-            const character = characters[idx];
-
-            const element = document
-                .getElementById(`${layer.id}-${keyFrame}`);
-
-            // update
-            Util.$timeline.removeFrameClass(element);
-            element.classList.add("key-frame");
-            element.dataset.frameState = "key-frame";
-            layer._$frame.setClasses(keyFrame, ["key-frame"]);
-
-            character.startFrame = keyFrame++;
-            character.endFrame   = keyFrame;
-
-            layer.addCharacter(character);
-        }
-
-        scene.changeFrame(currentFrame);
-
+        this._$saved = false;
     }
 
     /**
@@ -584,63 +850,63 @@ class ScreenMenu extends BaseScreen
                         break;
 
                     case Graphics.MOVE_TO:
-                    {
-                        const x = instance._$recodes[idx++];
-                        const y = instance._$recodes[idx++];
-                        recodes.push(
-                            Graphics.MOVE_TO,
-                            x * matrix[0] + y * matrix[2] - tx,
-                            x * matrix[1] + y * matrix[3] - ty
-                        );
-                    }
+                        {
+                            const x = instance._$recodes[idx++];
+                            const y = instance._$recodes[idx++];
+                            recodes.push(
+                                Graphics.MOVE_TO,
+                                x * matrix[0] + y * matrix[2] - tx,
+                                x * matrix[1] + y * matrix[3] - ty
+                            );
+                        }
                         break;
 
                     case Graphics.LINE_TO:
-                    {
-                        const x = instance._$recodes[idx++];
-                        const y = instance._$recodes[idx++];
-                        recodes.push(
-                            Graphics.LINE_TO,
-                            x * matrix[0] + y * matrix[2] - tx,
-                            x * matrix[1] + y * matrix[3] - ty
-                        );
-                    }
+                        {
+                            const x = instance._$recodes[idx++];
+                            const y = instance._$recodes[idx++];
+                            recodes.push(
+                                Graphics.LINE_TO,
+                                x * matrix[0] + y * matrix[2] - tx,
+                                x * matrix[1] + y * matrix[3] - ty
+                            );
+                        }
                         break;
 
                     case Graphics.CURVE_TO:
-                    {
-                        const cx = instance._$recodes[idx++];
-                        const cy = instance._$recodes[idx++];
-                        const x  = instance._$recodes[idx++];
-                        const y  = instance._$recodes[idx++];
-                        recodes.push(
-                            Graphics.CURVE_TO,
-                            cx * matrix[0] + cy * matrix[2] - tx,
-                            cx * matrix[1] + cy * matrix[3] - ty,
-                            x  * matrix[0] + y  * matrix[2] - tx,
-                            x  * matrix[1] + y  * matrix[3] - ty
-                        );
-                    }
+                        {
+                            const cx = instance._$recodes[idx++];
+                            const cy = instance._$recodes[idx++];
+                            const x  = instance._$recodes[idx++];
+                            const y  = instance._$recodes[idx++];
+                            recodes.push(
+                                Graphics.CURVE_TO,
+                                cx * matrix[0] + cy * matrix[2] - tx,
+                                cx * matrix[1] + cy * matrix[3] - ty,
+                                x  * matrix[0] + y  * matrix[2] - tx,
+                                x  * matrix[1] + y  * matrix[3] - ty
+                            );
+                        }
                         break;
 
                     case Graphics.CUBIC:
-                    {
-                        const ctx1 = instance._$recodes[idx++];
-                        const cty1 = instance._$recodes[idx++];
-                        const ctx2 = instance._$recodes[idx++];
-                        const cty2 = instance._$recodes[idx++];
-                        const x    = instance._$recodes[idx++];
-                        const y    = instance._$recodes[idx++];
-                        recodes.push(
-                            Graphics.CUBIC,
-                            ctx1 * matrix[0] + cty1 * matrix[2] - tx,
-                            ctx1 * matrix[1] + cty1 * matrix[3] - ty,
-                            ctx2 * matrix[0] + cty2 * matrix[2] - tx,
-                            ctx2 * matrix[1] + cty2 * matrix[3] - ty,
-                            x * matrix[0] + y * matrix[2] - tx,
-                            x * matrix[1] + y * matrix[3] - ty
-                        );
-                    }
+                        {
+                            const ctx1 = instance._$recodes[idx++];
+                            const cty1 = instance._$recodes[idx++];
+                            const ctx2 = instance._$recodes[idx++];
+                            const cty2 = instance._$recodes[idx++];
+                            const x    = instance._$recodes[idx++];
+                            const y    = instance._$recodes[idx++];
+                            recodes.push(
+                                Graphics.CUBIC,
+                                ctx1 * matrix[0] + cty1 * matrix[2] - tx,
+                                ctx1 * matrix[1] + cty1 * matrix[3] - ty,
+                                ctx2 * matrix[0] + cty2 * matrix[2] - tx,
+                                ctx2 * matrix[1] + cty2 * matrix[3] - ty,
+                                x * matrix[0] + y * matrix[2] - tx,
+                                x * matrix[1] + y * matrix[3] - ty
+                            );
+                        }
                         break;
 
                     case Graphics.FILL_STYLE:

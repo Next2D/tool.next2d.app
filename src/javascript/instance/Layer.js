@@ -952,6 +952,7 @@ class Layer
         for (let idx = 0; idx < characters.length; ++idx) {
 
             const character = new Character(characters[idx]);
+            character._$layerId = this.id;
 
             this._$instances.set(character.id, character);
             this._$characters.push(character);
@@ -975,6 +976,7 @@ class Layer
      */
     addCharacter (character)
     {
+        character._$layerId = this.id;
         this._$characters.push(character);
         this._$instances.set(character.id, character);
     }
@@ -989,6 +991,7 @@ class Layer
         if (this._$instances.has(character_id | 0)) {
 
             const character = this._$instances.get(character_id | 0);
+            character._$layerId = -1;
 
             this._$characters.splice(this._$characters.indexOf(character), 1);
 

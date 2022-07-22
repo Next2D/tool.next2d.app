@@ -332,6 +332,7 @@ class TimelineKeyboardCommand extends KeyboardCommand
     {
         Util.$timelineTool.executeTimelineLayerTrash();
     }
+
     /**
      * @description 選択中のフレームに設定されてるDisplayObjectを削除
      *

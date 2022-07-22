@@ -12,6 +12,7 @@ class Character
     constructor (object = null)
     {
         this._$libraryId      = -1;
+        this._$layerId        = -1;
         this._$places         = new Map();
         this._$image          = null;
         this._$currentFrame   = 0;
@@ -122,13 +123,7 @@ class Character
                     break;
 
                 default:
-                    layer
-                        .addCharacter(
-                            this.split(
-                                object.endFrame,
-                                this.endFrame
-                            )
-                        );
+                    this.split(layer, object.startFrame, object.endFrame);
                     break;
 
             }
@@ -1194,7 +1189,8 @@ class Character
     {
         const places = new Map();
         for (const [keyFrame, place] of this._$places) {
-            places.set(keyFrame + frame, place);
+            place.frame = keyFrame + frame;
+            places.set(place.frame, place);
         }
 
         // キーフレームの情報を上書き
@@ -1206,13 +1202,60 @@ class Character
     }
 
     /**
+     * @description DisplayObjectを指定フレームで分割
+     *
+     * @param  {Layer} layer
      * @param  {number} start_frame
      * @param  {number} end_frame
      * @return {Character}
      * @public
      */
-    split (start_frame, end_frame)
+    split (layer, start_frame, end_frame)
     {
+        // 開始と終了位置が一致したらLayerから削除
+        if (start_frame === this.startFrame
+            && end_frame === this.endFrame
+        ) {
+            layer.deleteCharacter(this.id);
+            return this;
+        }
+
+        // 開始位置より先のフレームを指定した場合は分割
+        if (start_frame > this.startFrame) {
+
+            const character = new Character();
+            character._$id  = Util.$currentWorkSpace()._$characterId++;
+
+            // params
+            character._$libraryId  = this._$libraryId;
+            character._$places     = new Map();
+            character._$startFrame = this.startFrame;
+            character._$endFrame   = start_frame;
+
+            // object placeを分割して再登録
+            const places = new Map();
+            for (const [keyFrame, place] of this._$places) {
+
+                if (start_frame > keyFrame) {
+
+                    character.setPlace(keyFrame, place);
+
+                } else {
+
+                    places.set(keyFrame, place);
+
+                }
+            }
+
+            // レイヤーに設置
+            layer.addCharacter(character);
+
+            // 分割したDisplayObjectの情報を更新
+            this._$places     = places;
+            this._$startFrame = start_frame;
+        }
+
+        // 返却用のDisplayObject
         const character = new Character();
         character._$id  = Util.$currentWorkSpace()._$characterId++;
 
@@ -1223,23 +1266,55 @@ class Character
         character._$endFrame   = end_frame;
 
         const removeFrames = [];
-        for (let [frame, place] of this._$places) {
+        for (const [keyFrame, place] of this._$places) {
 
-            if (start_frame > frame) {
+            if (start_frame > keyFrame) {
                 continue;
             }
 
-            if (frame > end_frame) {
+            if (keyFrame >= end_frame) {
                 continue;
             }
 
-            removeFrames.push(frame);
-            character._$places.set(frame, place);
+            removeFrames.push(keyFrame);
+            character._$places.set(keyFrame, place);
         }
 
         // 分割したplace objectは削除
         for (let idx = 0; idx < removeFrames.length; ++idx) {
             this._$places.delete(removeFrames[idx]);
+        }
+
+        // キーフレームがなければ削除
+        if (!this._$places.size) {
+
+            layer.deleteCharacter(this.id);
+
+        } else {
+
+            // キーフレームを配列変換
+            const keys = Array.from(this._$places.keys());
+
+            // 昇順に並び替え
+            if (this._$places.size > 1) {
+                keys.sort((a, b) =>
+                {
+                    switch (true) {
+
+                        case a > b:
+                            return 1;
+
+                        case a < b:
+                            return -1;
+
+                        default:
+                            return 0;
+
+                    }
+                });
+            }
+
+            this._$startFrame = keys[0] | 0;
         }
 
         return character;

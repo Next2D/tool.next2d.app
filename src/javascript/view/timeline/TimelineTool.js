@@ -1067,20 +1067,21 @@ class TimelineTool extends BaseTimeline
                     }
                 }
 
-                // 分割処理、分割すると長さが変わるので、クローンを利用する
-                const clone = characters.slice();
-                for (let idx = 0; idx < clone.length; ++idx) {
+                // 分割処理
+                for (let idx = 0; idx < characters.length; ++idx) {
 
-                    const character = clone[idx];
+                    const character = characters[idx];
+
+                    // fixed logic 先に分割
+                    character.split(layer, frame, splitFrame);
 
                     // 終了するフレームが後方にある場合は分割
                     if (character.endFrame > splitFrame) {
-                        layer.addCharacter(
-                            character.split(splitFrame, character.endFrame)
-                        );
+                        layer.addCharacter(character.split(layer,
+                            splitFrame,
+                            character.endFrame
+                        ));
                     }
-
-                    character.endFrame = frame;
                 }
 
                 // 空のフレームを追加

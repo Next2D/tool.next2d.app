@@ -68,11 +68,6 @@ class ArrowTool extends BaseTool
             Util.$setCursor("move");
         });
 
-        this.addEventListener(EventType.KEY_DOWN, (event) =>
-        {
-            this.keyboardCommand(event);
-        });
-
         this.addEventListener(EventType.MOUSE_OUT, () =>
         {
             Util.$setCursor("auto");
@@ -514,8 +509,12 @@ class ArrowTool extends BaseTool
 
             const layerId = element.dataset.layerId | 0;
 
-            Util.$timelineLayer.targetLayer = document
+            const layerElement = document
                 .getElementById(`layer-id-${layerId}`);
+
+            if (!Util.$timelineLayer.targetLayers.has(layerElement.id)) {
+                Util.$timelineLayer.targetLayer = layerElement;
+            }
 
             Util
                 .$timelineLayer
@@ -1455,16 +1454,5 @@ class ArrowTool extends BaseTool
 
             node.remove();
         }
-    }
-
-    /**
-     * @param  {MouseEvent} event
-     * @return {void}
-     * @method
-     * @public
-     */
-    keyboardCommand (event)
-    {
-        console.log("todo", [event]);
     }
 }
