@@ -13,7 +13,8 @@
     overflow         : hidden;
 }
 
-#tools .item
+#tools .item,
+#user-setting .item
 {
     width           : 30px;
     height          : 30px;

@@ -129,15 +129,274 @@ class ShortcutSetting
                     "description": "{{最背面}}"
                 },
                 {
-                    "key": "ArrowDownShiftCtrl",
-                    "text": "Ctrl + Shift + ArrowDown",
-                    "css": "screen-back",
-                    "description": "{{最背面}}"
+                    "key": "1",
+                    "text": "1",
+                    "css": "screen-position-left",
+                    "description": "{{左揃え}}"
                 },
-
+                {
+                    "key": "2",
+                    "text": "2",
+                    "css": "screen-position-center",
+                    "description": "{{中央揃え(水平方向)}}"
+                },
+                {
+                    "key": "3",
+                    "text": "3",
+                    "css": "screen-position-right",
+                    "description": "{{右揃え}}"
+                },
+                {
+                    "key": "4",
+                    "text": "4",
+                    "css": "screen-position-top",
+                    "description": "{{上揃え}}"
+                },
+                {
+                    "key": "5",
+                    "text": "5",
+                    "css": "screen-position-middle",
+                    "description": "{{中央揃え(垂直方向)}}"
+                },
+                {
+                    "key": "6",
+                    "text": "6",
+                    "css": "screen-position-bottom",
+                    "description": "{{下揃え}}"
+                },
+                {
+                    "key": "!Shift",
+                    "text": "Shift + 1",
+                    "css": "stage-position-left",
+                    "description": "{{ステージ左揃え}}"
+                },
+                {
+                    "key": "\"Shift",
+                    "text": "Shift + 2",
+                    "css": "stage-position-center",
+                    "description": "{{ステージ中央揃え(水平方向)}}"
+                },
+                {
+                    "key": "#Shift",
+                    "text": "Shift + 3",
+                    "css": "stage-position-right",
+                    "description": "{{ステージ右揃え}}"
+                },
+                {
+                    "key": "$Shift",
+                    "text": "Shift + 4",
+                    "css": "stage-position-top",
+                    "description": "{{ステージ上揃え}}"
+                },
+                {
+                    "key": "%Shift",
+                    "text": "Shift + 5",
+                    "css": "stage-position-middle",
+                    "description": "{{ステージ中央揃え(垂直方向)}}"
+                },
+                {
+                    "key": "&Shift",
+                    "text": "Shift + 6",
+                    "css": "stage-position-bottom",
+                    "description": "{{ステージ下揃え}}"
+                },
+                {
+                    "key": "dCtrl",
+                    "text": "Ctrl + D",
+                    "css": "screen-distribute-to-layers",
+                    "description": "{{レイヤーに配分}}"
+                },
+                {
+                    "key": "kCtrl",
+                    "text": "Ctrl + K",
+                    "css": "screen-distribute-to-keyframes",
+                    "description": "{{キーフレームに配分}}"
+                },
+                {
+                    "key": "iCtrl",
+                    "text": "Ctrl + I",
+                    "css": "screen-integrating-paths",
+                    "description": "{{パスの結合}}"
+                },
+                {
+                    "key": "pCtrl",
+                    "text": "Ctrl + P",
+                    "css": "screen-tween-curve-pointer",
+                    "description": "{{カーブポインターの追加}}"
+                }
             ],
-            "timeline": [],
-            "library": []
+            "timeline": [
+                {
+                    "key": "nShift",
+                    "text": "Shift + N",
+                    "css": "timeline-layer-normal",
+                    "description": "{{通常レイヤー}}"
+                },
+                {
+                    "key": "mShift",
+                    "text": "Shift + M",
+                    "css": "timeline-layer-mask",
+                    "description": "{{マスクレイヤー}}"
+                },
+                {
+                    "key": "gShift",
+                    "text": "Shift + G",
+                    "css": "timeline-layer-guide",
+                    "description": "{{ガイドレイヤー}}"
+                },
+                {
+                    "key": ";Ctrl",
+                    "text": "Ctrl + +",
+                    "css": "timeline-layer-add",
+                    "description": "{{レイヤーを追加}}"
+                },
+                {
+                    "key": "BackspaceCtrl",
+                    "text": "Ctrl + Delete",
+                    "css": "timeline-layer-trash",
+                    "description": "{{レイヤーを削除}}"
+                },
+                {
+                    "key": "hShift",
+                    "text": "Shift + H",
+                    "css": "timeline-layer-light-all",
+                    "description": "{{全てのレイヤーをハイライト}}"
+                },
+                {
+                    "key": "dShift",
+                    "text": "Shift + D",
+                    "css": "timeline-layer-disable-all",
+                    "description": "{{全てのレイヤーを非表示}}"
+                },
+                {
+                    "key": "lShift",
+                    "text": "Shift + L",
+                    "css": "timeline-layer-lock-all",
+                    "description": "{{全てのレイヤーをロック}}"
+                },
+                {
+                    "key": "m",
+                    "text": "M",
+                    "css": "context-menu-tween-add",
+                    "description": "{{モーショントゥイーンの追加}}"
+                },
+                {
+                    "key": "mCtrl",
+                    "text": "Ctrl + M",
+                    "css": "context-menu-tween-delete",
+                    "description": "{{モーショントゥイーンの削除}}"
+                },
+                {
+                    "key": "s",
+                    "text": "S",
+                    "css": "timeline-script-add",
+                    "description": "{{スクリプトを追加}}"
+                },
+                {
+                    "key": "k",
+                    "text": "K",
+                    "css": "timeline-key-add",
+                    "description": "{{キーフレームを追加}}"
+                },
+                {
+                    "key": "kCtrl",
+                    "text": "Ctrl + K",
+                    "css": "timeline-key-delete",
+                    "description": "{{キーフレームを削除}}"
+                },
+                {
+                    "key": "e",
+                    "text": "E",
+                    "css": "timeline-empty-add",
+                    "description": "{{空のキーフレームを追加}}"
+                },
+                {
+                    "key": "f",
+                    "text": "F",
+                    "css": "timeline-frame-add",
+                    "description": "{{フレームを追加}}"
+                },
+                {
+                    "key": "fCtrl",
+                    "text": "Ctrl + F",
+                    "css": "timeline-frame-delete",
+                    "description": "{{フレームを削除}}"
+                },
+                {
+                    "key": "oCtrl",
+                    "text": "Ctrl + O",
+                    "css": "timeline-onion-skin",
+                    "description": "{{オニオンスキン}}"
+                },
+                {
+                    "key": "p",
+                    "text": "P",
+                    "css": "timeline-preview",
+                    "description": "{{プレビューのON/OFF}}"
+                },
+                {
+                    "key": "pCtrl",
+                    "text": "Ctrl + P",
+                    "css": "timeline-repeat",
+                    "description": "{{ループ設定}}"
+                },
+                {
+                    "key": "l",
+                    "text": "L",
+                    "css": "label-name",
+                    "description": "{{フレームラベル}}"
+                },
+                {
+                    "key": "z",
+                    "text": "Z",
+                    "css": "timeline-scale",
+                    "description": "{{タイムライン幅の拡大・縮小}}"
+                }
+            ],
+            "library": [
+                {
+                    "key": "mCtrl",
+                    "text": "Ctrl + M",
+                    "css": "library-menu-container-add",
+                    "description": "{{新規MovieClip}}"
+                },
+                {
+                    "key": "fCtrl",
+                    "text": "Ctrl + F",
+                    "css": "library-menu-folder-add",
+                    "description": "{{新規フォルダー}}"
+                },
+                {
+                    "key": "sAlt",
+                    "text": "Alt + S",
+                    "css": "library-menu-content-shape-clone",
+                    "description": "{{Shapeを複製}}"
+                },
+                {
+                    "key": "rCtrl",
+                    "text": "Ctrl + R",
+                    "css": "library-menu-file",
+                    "description": "{{読み込み}}"
+                },
+                {
+                    "key": "rCtrl",
+                    "text": "Ctrl + R",
+                    "css": "library-menu-export",
+                    "description": "{{書き出し}}"
+                },
+                {
+                    "key": "Backspace",
+                    "text": "Delete",
+                    "css": "library-menu-delete",
+                    "description": "{{削除}}"
+                },
+                {
+                    "key": "BackspaceShiftCtrl",
+                    "text": "Shift + Ctrl + Delete",
+                    "css": "library-menu-no-use-delete",
+                    "description": "{{未使用のアイテムを削除}}"
+                }
+            ]
         };
 
         /**
@@ -749,9 +1008,3 @@ class ShortcutSetting
 }
 
 Util.$shortcutSetting = new ShortcutSetting();
-
-Util.$defaultShortcut = new Map([
-    ["screen", new Map()],
-    ["timeline", new Map()],
-    ["library", new Map()]
-]);
