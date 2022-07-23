@@ -56,6 +56,85 @@ class ShortcutSetting
                     "css": "tools-rectangle",
                     "description": "{{矩形ツール}}"
                 },
+                {
+                    "key": "o",
+                    "text": "O",
+                    "css": "tools-circle",
+                    "description": "{{楕円ツール}}"
+                },
+                {
+                    "key": "rShift",
+                    "text": "Shift + R",
+                    "css": "tools-round-rect",
+                    "description": "{{角丸矩形ツール}}"
+                },
+                {
+                    "key": "t",
+                    "text": "T",
+                    "css": "tools-text",
+                    "description": "{{テキストツール}}"
+                },
+                {
+                    "key": "z",
+                    "text": "Z",
+                    "css": "tools-zoom",
+                    "description": "{{ズームツール}}"
+                },
+                {
+                    "key": "rCtrl",
+                    "text": "Ctrl + R",
+                    "css": "tools-load",
+                    "description": "{{プロジェクトデータの読込}}"
+                },
+                {
+                    "key": "sShiftCtrl",
+                    "text": "Ctrl + Shift + S",
+                    "css": "tools-save",
+                    "description": "{{プロジェクトデータを保存}}"
+                },
+                {
+                    "key": "EnterShiftCtrl",
+                    "text": "Ctrl + Shift + Enter",
+                    "css": "tools-export",
+                    "description": "{{書き出し}}"
+                },
+                {
+                    "key": "s",
+                    "text": "S",
+                    "css": "tools-setting",
+                    "description": "{{設定}}"
+                },
+                {
+                    "key": "ArrowUpShiftCtrl",
+                    "text": "Ctrl + Shift + ArrowUp",
+                    "css": "screen-front",
+                    "description": "{{最前面}}"
+                },
+                {
+                    "key": "ArrowUpCtrl",
+                    "text": "Ctrl + ArrowUp",
+                    "css": "screen-front-one",
+                    "description": "{{ひとつ前面へ}}"
+                },
+                {
+                    "key": "ArrowDownCtrl",
+                    "text": "Ctrl + ArrowDown",
+                    "css": "screen-menu-bottom",
+                    "description": "{{ひとつ背面へ}}"
+                },
+                {
+                    "key": "ArrowDownShiftCtrl",
+                    "text": "Ctrl + Shift + ArrowDown",
+                    "css": "screen-back",
+                    "description": "{{最背面}}"
+                },
+                {
+                    "key": "ArrowDownShiftCtrl",
+                    "text": "Ctrl + Shift + ArrowDown",
+                    "css": "screen-back",
+                    "description": "{{最背面}}"
+                },
+
             ],
             "timeline": [],
             "library": []
