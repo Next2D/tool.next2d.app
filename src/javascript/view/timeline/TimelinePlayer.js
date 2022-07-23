@@ -64,12 +64,26 @@ class TimelinePlayer extends BaseTimeline
 
     /**
      * @description リピート設定を返す
+     *
      * @return {boolean}
+     * @readonly
      * @public
      */
     get repeat ()
     {
         return this._$repeat;
+    }
+
+    /**
+     * @description 再生フラグを返す
+     *
+     * @return {boolean}
+     * @readonly
+     * @public
+     */
+    get stopFlag ()
+    {
+        return this._$stopFlag;
     }
 
     /**

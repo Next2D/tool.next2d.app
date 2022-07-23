@@ -819,7 +819,17 @@ class TimelineLayer extends BaseTimeline
                     .children[0];
             }
 
+            const shift = Util.$shiftKey;
+            const ctrl  = Util.$ctrlKey;
+
+            Util.$shiftKey = false;
+            Util.$ctrlKey  = false;
+
+            // セット
             this.targetLayer = targetLayer;
+
+            Util.$shiftKey = shift;
+            Util.$ctrlKey  = ctrl;
         }
     }
 

@@ -55,6 +55,8 @@ class JavascriptController
 
                 childElement.addEventListener("mousedown", (event) =>
                 {
+                    Util.$javaScriptEditor.hide();
+
                     const target = event.currentTarget;
 
                     const scene = Util
@@ -62,6 +64,7 @@ class JavascriptController
                         .getLibrary(target.dataset.libraryId | 0);
 
                     const frame = target.dataset.frame | 0;
+
 
                     Util.$javaScriptEditor.show(null, frame, scene);
                 });

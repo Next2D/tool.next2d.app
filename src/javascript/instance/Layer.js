@@ -161,55 +161,46 @@ class Layer
             return ;
         }
 
-        const element = document.getElementById("timeline-onion-skin");
+        const element = document
+            .getElementById("timeline-onion-skin");
+
         if (element.classList.contains("onion-skin-active")
-            && Util.$timeline._$stopFlag
+            && Util.$timelinePlayer.stopFlag
         ) {
-
-            const classes = this._$frame._$classes;
-
-            let mainFrame = frame;
-            if (classes.has(frame)) {
-                while (mainFrame > 1) {
-
-                    if (classes.get(mainFrame).indexOf("key-frame") > -1 ||
-                        classes.get(mainFrame).indexOf("empty-key-frame") > -1 ||
-                        classes.get(mainFrame).indexOf("tween-frame") > -1
-                    ) {
-                        break;
-                    }
-
-                    --mainFrame;
-                }
-            }
 
             const cacheFrame = Util.$timelineFrame.currentFrame;
 
-            const size = classes.size + 1;
-            for (let currentFrame = 1; currentFrame < size; ++currentFrame) {
+            // レイヤーのキーフレームをセット
+            const keyMap = new Map();
+            for (let idx = 0; idx < this._$characters.length; ++idx) {
 
-                if (mainFrame === currentFrame) {
-                    continue;
+                const character = this._$characters[idx];
+
+                for (let keyFrame of character._$places.keys()) {
+                    keyMap.set(keyFrame, true);
                 }
 
-                if (!classes.has(currentFrame)) {
-                    continue;
-                }
+            }
 
-                if (classes.get(currentFrame).indexOf("key-frame") === -1
-                    && classes.get(currentFrame).indexOf("tween-frame") === -1
-                ) {
-                    continue;
-                }
+            // 選択中のキーフレームは排除
+            const activeCharacters = this.getActiveCharacter(cacheFrame);
+            if (activeCharacters.length) {
+                const range = activeCharacters[0].getRange(cacheFrame);
+                keyMap.delete(range.startFrame);
+            }
 
-                Util.$timelineFrame.currentFrame = currentFrame;
+            for (const frame of keyMap.keys()) {
 
-                const characters = this.getActiveCharacter(currentFrame);
+                Util.$timelineFrame.currentFrame = frame;
+
+                const characters = this.getActiveCharacter(frame);
                 if (!characters.length) {
                     continue;
                 }
 
-                this.sort(characters, currentFrame);
+                if (characters.length > 1) {
+                    this.sort(characters, frame);
+                }
 
                 for (let idx = 0; idx < characters.length; ++idx) {
 
@@ -225,7 +216,9 @@ class Layer
             const characters = this.getActiveCharacter(cacheFrame);
             if (characters.length) {
 
-                this.sort(characters, cacheFrame);
+                if (characters.length > 1) {
+                    this.sort(characters, cacheFrame);
+                }
 
                 const event = this.lock ? "none" : "auto";
                 for (let idx = 0; idx < characters.length; ++idx) {

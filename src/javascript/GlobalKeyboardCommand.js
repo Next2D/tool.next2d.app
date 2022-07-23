@@ -84,6 +84,12 @@ class GlobalKeyboardCommand
             Util.$showPreview
         );
 
+        // データの書き出し
+        Util.$setShortcut(
+            Util.$generateShortcutKey("Enter", { "ctrl": true, "shift": true }),
+            Util.$project.publish
+        );
+
         // プレビューを終了
         Util.$setShortcut("Escape", Util.$hidePreview);
 

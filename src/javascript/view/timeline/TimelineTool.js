@@ -1390,14 +1390,15 @@ class TimelineTool extends BaseTimeline
     /**
      * @description オニオンスキン機能のon/off
      *
-     * @param  {MouseEvent} event
      * @return {void}
      * @method
      * @public
      */
-    executeTimelineOnionSkin (event)
+    executeTimelineOnionSkin ()
     {
-        const element = event.target;
+        const element = document
+            .getElementById("timeline-onion-skin");
+
         if (element.classList.contains("onion-skin-active")) {
 
             element
@@ -1431,14 +1432,15 @@ class TimelineTool extends BaseTimeline
     /**
      * @description タイムラインのマウスオーバーでのプレビュー機能のon/off
      *
-     * @param  {MouseEvent} event
      * @return {void}
      * @method
      * @public
      */
-    executeTimelinePreview (event)
+    executeTimelinePreview ()
     {
-        const element = event.target;
+        const element = document
+            .getElementById("timeline-preview");
+
         if (element.classList.contains("timeline-preview-active")) {
 
             element

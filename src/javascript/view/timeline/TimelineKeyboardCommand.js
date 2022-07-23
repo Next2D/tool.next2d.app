@@ -98,6 +98,16 @@ class TimelineKeyboardCommand extends KeyboardCommand
         // ズームへのフォーカス
         this.add("z", this.focusZoom);
 
+        // プレビュー機能のOn/Off
+        this.add("p", Util.$timelineTool.executeTimelinePreview);
+
+        // オニオンスキンを起動
+        this.add("o", () => {
+            Util
+                .$timelineTool
+                .executeTimelineOnionSkin();
+        });
+
         // レイヤの削除コマンド
         this.add(Util.$generateShortcutKey("h", { "shift": true }), () =>
         {

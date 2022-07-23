@@ -1316,17 +1316,21 @@ class Screen extends BaseScreen
                 const x = maskCharacter.screenX - character.screenX;
                 const y = maskCharacter.screenY - character.screenY;
 
-                div.style.webkitMask         = `url(${maskImage.src}), none`;
-                div.style.webkitMaskSize     = `${maskImage.width}px ${maskImage.height}px`;
-                div.style.webkitMaskRepeat   = "no-repeat";
-                div.style.webkitMaskPosition = `${x}px ${y}px`;
+                div.style.mask         = `url(${maskImage.src}), none`;
+                div.style.maskSize     = `${maskImage.width}px ${maskImage.height}px`;
+                div.style.maskRepeat   = "no-repeat";
+                div.style.maskPosition = `${x}px ${y}px`;
+                div.style.mixBlendMode = image.style.mixBlendMode;
+                div.style.filter       = image.style.filter;
 
             } else {
 
-                div.style.webkitMask         = "";
-                div.style.webkitMaskSize     = "";
-                div.style.webkitMaskRepeat   = "";
-                div.style.webkitMaskPosition = "";
+                div.style.mask         = "";
+                div.style.maskSize     = "";
+                div.style.maskRepeat   = "";
+                div.style.maskPosition = "";
+                div.style.mixBlendMode = "";
+                div.style.filter       = "";
 
             }
         }
@@ -1347,10 +1351,11 @@ class Screen extends BaseScreen
      * @param  {number}    frame
      * @param  {number}    layer_id
      * @param  {string}    [event="auto"]
+     * @param  {boolean}   [onion=false]
      * @return {void}
      * @public
      */
-    appendCharacter (character, frame, layer_id, event = "auto")
+    appendCharacter (character, frame, layer_id, event = "auto", onion = false)
     {
         const workSpace = Util.$currentWorkSpace();
         const scene     = workSpace.scene;
@@ -1504,21 +1509,21 @@ class Screen extends BaseScreen
                 const x = maskCharacter.screenX - character.screenX;
                 const y = maskCharacter.screenY - character.screenY;
 
-                div.style.webkitMask         = `url(${maskImage.src}), none`;
-                div.style.webkitMaskSize     = `${maskImage.width}px ${maskImage.height}px`;
-                div.style.webkitMaskRepeat   = "no-repeat";
-                div.style.webkitMaskPosition = `${x}px ${y}px`;
-                div.style.mixBlendMode       = image.style.mixBlendMode;
-                div.style.filter             = image.style.filter;
+                div.style.mask         = `url(${maskImage.src}), none`;
+                div.style.maskSize     = `${maskImage.width}px ${maskImage.height}px`;
+                div.style.maskRepeat   = "no-repeat";
+                div.style.maskPosition = `${x}px ${y}px`;
+                div.style.mixBlendMode = image.style.mixBlendMode;
+                div.style.filter       = image.style.filter;
 
             } else {
 
-                div.style.webkitMask         = "";
-                div.style.webkitMaskSize     = "";
-                div.style.webkitMaskRepeat   = "";
-                div.style.webkitMaskPosition = "";
-                div.style.mixBlendMode       = "";
-                div.style.filter             = "";
+                div.style.mask         = "";
+                div.style.maskSize     = "";
+                div.style.maskRepeat   = "";
+                div.style.maskPosition = "";
+                div.style.mixBlendMode = "";
+                div.style.filter       = "";
 
             }
         }
