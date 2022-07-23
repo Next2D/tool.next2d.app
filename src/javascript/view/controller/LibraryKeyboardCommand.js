@@ -71,9 +71,27 @@ class LibraryKeyboardCommand extends KeyboardCommand
 
         // Shapeを複製
         this.add(
-            Util.$generateShortcutKey("s", { "ctrl": true }),
+            Util.$generateShortcutKey("s", { "alt": true }),
             this.cloneShape
         );
+
+        // 指定したアイテムの書き出し
+        this.add(
+            Util.$generateShortcutKey("s", { "ctrl": true, "shift": true }),
+            this.showOutputModal
+        );
+    }
+
+    /**
+     * @description 指定したアイテムを書き出し
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    showOutputModal ()
+    {
+        console.log("TODO");
     }
 
     /**

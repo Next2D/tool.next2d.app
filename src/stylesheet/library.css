@@ -384,6 +384,16 @@
 {
     width               : 18px;
     height              : 18px;
+    background-image    : url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24"><path fill="whitesmoke" d="M8 10h-5l9-10 9 10h-5v10h-8v-10zm11 9v3h-14v-3h-2v5h18v-5h-2z"/></svg>');
+    background-repeat   : no-repeat;
+    background-position : center center;
+    margin-right        : 8px;
+}
+
+#library-menu .library-type-download
+{
+    width               : 18px;
+    height              : 18px;
     background-image    : url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24"><path fill="whitesmoke" d="M16 11h5l-9 10-9-10h5v-11h8v11zm3 8v3h-14v-3h-2v5h18v-5h-2z"/></svg>');
     background-repeat   : no-repeat;
     background-position : center center;

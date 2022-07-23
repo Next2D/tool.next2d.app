@@ -43,7 +43,19 @@ class ShortcutSetting
                     "text": "P",
                     "css": "tools-pen",
                     "description": "{{ペンツール}}"
-                }
+                },
+                {
+                    "key": "k",
+                    "text": "K",
+                    "css": "tools-bucket",
+                    "description": "{{バケツツール}}"
+                },
+                {
+                    "key": "r",
+                    "text": "R",
+                    "css": "tools-rectangle",
+                    "description": "{{矩形ツール}}"
+                },
             ],
             "timeline": [],
             "library": []
@@ -56,8 +68,7 @@ class ShortcutSetting
         this._$commandMapping = new Map([
             ["screen", new Map()],
             ["timeline", new Map()],
-            ["library", new Map()],
-            ["global", new Map()]
+            ["library", new Map()]
         ]);
 
         /**
@@ -67,8 +78,7 @@ class ShortcutSetting
         this._$viewMapping = new Map([
             ["screen", new Map()],
             ["timeline", new Map()],
-            ["library", new Map()],
-            ["global", new Map()]
+            ["library", new Map()]
         ]);
 
         /**
@@ -664,6 +674,5 @@ Util.$shortcutSetting = new ShortcutSetting();
 Util.$defaultShortcut = new Map([
     ["screen", new Map()],
     ["timeline", new Map()],
-    ["library", new Map()],
-    ["global", new Map()]
+    ["library", new Map()]
 ]);

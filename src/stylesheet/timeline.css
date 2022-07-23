@@ -560,11 +560,12 @@
 
 #timeline-content
 {
-    height         : calc(var(--timeline-height) - 102px);
-    display        : flex;
-    flex-direction : column;
-    overflow-x     : hidden;
-    overflow-y     : auto;
+    height          : calc(var(--timeline-height) - 102px);
+    display         : flex;
+    flex-direction  : column;
+    overflow-x      : hidden;
+    overflow-y      : auto;
+    scrollbar-width : none;
 }
 
 #timeline-content .timeline-layer-icon
@@ -650,6 +651,7 @@
     display       : flex;
     height        : 30px;
     border-bottom : 1px solid #1c1c1c;
+    scrollbar-width: none;
 }
 
 #timeline-content .move-target
@@ -754,11 +756,12 @@
 
 #timeline-controller-base
 {
-    position   : relative;
-    width      : calc(100vw - (var(--controller-width) + 45px + 8px + 8px + 270px));
-    height     : 61px;
-    overflow-x : auto;
-    overflow-y : hidden;
+    position        : relative;
+    width           : calc(100vw - (var(--controller-width) + 45px + 8px + 8px + 270px));
+    height          : 61px;
+    overflow-x      : auto;
+    overflow-y      : hidden;
+    scrollbar-width : none;
 }
 
 #timeline-marker
@@ -790,9 +793,10 @@
 
 #timeline-content .timeline-frame-controller
 {
-    width      : calc(100vw - (var(--controller-width) + 45px + 8px + 8px + 270px));
-    overflow-x : auto;
-    overflow-y : hidden;
+    width           : calc(100vw - (var(--controller-width) + 45px + 8px + 8px + 270px));
+    overflow-x      : auto;
+    overflow-y      : hidden;
+    scrollbar-width : none;
 }
 
 #timeline-controller-base::-webkit-scrollbar,

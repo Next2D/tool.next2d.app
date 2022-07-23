@@ -23,7 +23,6 @@ class TweenController extends BaseController
     initialize ()
     {
         super.initialize();
-
     }
 
     /**
