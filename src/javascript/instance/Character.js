@@ -55,6 +55,45 @@ class Character
         const frame = Util.$timelineFrame.currentFrame;
 
         instance.showController(this.getPlace(frame), this.name);
+
+        // tweenの設定があれば表示
+        const range = this.getRange(frame);
+        if (this.hasTween(range.startFrame)) {
+
+            // コントローラーエリアを表示
+            Util.$controller.showObjectSetting([
+                "ease-setting"
+            ]);
+
+            // 選択中の関数をselectにセット
+            const tweenObject = this.getTween(range.startFrame);
+
+            const children = document
+                .getElementById("ease-select")
+                .children;
+
+            for (let idx = 0; idx < children.length; ++idx) {
+
+                const node = children[idx];
+                if (node.value !== tweenObject.method) {
+                    continue;
+                }
+
+                node.selected = true;
+                break;
+            }
+
+            // カスタム設定であればcanvasを表示
+            if (tweenObject.method === "custom") {
+
+                Util.$tweenController.showCustomArea();
+
+            } else {
+
+                Util.$tweenController.hideCustomArea();
+
+            }
+        }
     }
 
     /**
@@ -148,6 +187,8 @@ class Character
         }
 
         const places = Array.from(this._$places.keys());
+
+        // 降順
         places.sort((a, b) =>
         {
             switch (true) {
@@ -170,6 +211,14 @@ class Character
             const placeFrame = places.pop() | 0;
 
             if (frame >= placeFrame) {
+                const place = this.getPlace(placeFrame);
+                if (place.tweenRange) {
+                    return {
+                        "startFrame": place.tweenRange.startFrame,
+                        "endFrame": place.tweenRange.endFrame
+                    };
+                }
+
                 return {
                     "startFrame": placeFrame,
                     "endFrame": prevFrame ? prevFrame : this.endFrame
@@ -244,62 +293,50 @@ class Character
     }
 
     /**
-     * @return {number}
-     * @public
-     */
-    getTweenFrame ()
-    {
-        const layerElement = Util.$timeline._$targetLayer;
-        if (!layerElement) {
-            return 0;
-        }
-
-        const layerId = layerElement.dataset.layerId | 0;
-
-        let frame = Util.$timelineFrame.currentFrame;
-        while (frame > 1) {
-
-            const element = document
-                .getElementById(`${layerId}-${frame}`);
-
-            if (element.classList.contains("key-frame")) {
-                break;
-            }
-
-            --frame;
-        }
-
-        return frame;
-    }
-
-    /**
+     * @param  {number} frame
      * @return {object}
+     * @method
      * @public
      */
-    getTween ()
+    getTween (frame)
     {
-        return this.hasTween()
-            ? this._$tween.get(this.getTweenFrame())
+        return this.hasTween(frame)
+            ? this._$tween.get(frame)
             : null;
     }
 
     /**
+     * @param  {number} frame
      * @param  {object} object
      * @return {void}
+     * @method
      * @public
      */
-    setTween (object)
+    setTween (frame, object)
     {
-        this._$tween.set(this.getTweenFrame(), object);
+        this._$tween.set(frame, object);
     }
 
     /**
+     * @param  {number} frame
      * @return {boolean}
+     * @method
      * @public
      */
-    hasTween ()
+    hasTween (frame)
     {
-        return this._$tween.has(this.getTweenFrame());
+        return this._$tween.has(frame);
+    }
+
+    /**
+     * @param  {number} frame
+     * @return {boolean}
+     * @method
+     * @public
+     */
+    deleteTween (frame)
+    {
+        return this._$tween.delete(frame);
     }
 
     /**
@@ -922,7 +959,9 @@ class Character
         for (let idx = 0; idx < values.length; ++idx) {
             const object = values[idx];
             if (!object.value.custom) {
-                object.value.custom = Util.$controller.createEasingObject();
+                object.value.custom = Util
+                    .$tweenController
+                    .createEasingObject();
             }
             this._$tween.set(object.frame | 0, object.value);
         }
@@ -958,6 +997,13 @@ class Character
                 "colorTransform": place.colorTransform.slice(0)
             };
 
+            if (place.tweenRange) {
+                object.tweenRange = {
+                    "startFrame": place.tweenRange.startFrame,
+                    "endFrame": place.tweenRange.endFrame
+                };
+            }
+
             if (instance.type === "container") {
 
                 object.loop = Util.$getDefaultLoopConfig();
@@ -971,10 +1017,6 @@ class Character
 
                     if (place.loop.referenceFrame) {
                         object.loop.referenceFrame = place.loop.referenceFrame;
-                    }
-
-                    if (place.loop.tweenFrame) {
-                        object.loop.tweenFrame = place.loop.tweenFrame;
                     }
                 }
             }
@@ -1178,6 +1220,32 @@ class Character
     }
 
     /**
+     * @description tweenのplace objectを構築
+     *
+     * @param  {number} start_frame
+     * @param  {number} end_frame
+     * @return {void}
+     * @method
+     * @public
+     */
+    updateTweenPlace (start_frame, end_frame)
+    {
+        for (let frame = start_frame; frame < end_frame; ++frame) {
+
+            const place = this.hasPlace(frame)
+                ? this.getPlace(frame)
+                : this.clonePlace(end_frame, frame);
+
+            place.tweenRange = {
+                "startFrame": start_frame,
+                "endFrame": end_frame
+            };
+
+            this.setPlace(frame, place);
+        }
+    }
+
+    /**
      * @description 指定フレームに移動
      *
      * @param  {number} frame
@@ -1189,7 +1257,15 @@ class Character
     {
         const places = new Map();
         for (const [keyFrame, place] of this._$places) {
+
             place.frame = keyFrame + frame;
+
+            // tweenの情報があればtweenも移動
+            if (place.tweenRange) {
+                place.tweenRange.startFrame += frame;
+                place.tweenRange.endFrame   += frame;
+            }
+
             places.set(place.frame, place);
         }
 

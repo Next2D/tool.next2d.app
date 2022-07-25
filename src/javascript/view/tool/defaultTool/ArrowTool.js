@@ -210,7 +210,7 @@ class ArrowTool extends BaseTool
             // スクリーンエリアの変形Elementを非表示に
             Util.$transformController.hide();
             Util.$gridController.hide();
-            Util.$screen.clearTweenMarker();
+            Util.$tweenController.clearPointer();
 
             // コントローラーエリアを初期化
             Util.$controller.default();
@@ -307,7 +307,7 @@ class ArrowTool extends BaseTool
         // スクリーンエリアの変形Elementを非表示に
         Util.$transformController.hide();
         Util.$gridController.hide();
-        Util.$screen.clearTweenMarker();
+        Util.$tweenController.clearPointer();
 
         // コントローラーエリアを初期化
         Util.$controller.default();
@@ -365,6 +365,10 @@ class ArrowTool extends BaseTool
 
                 if (Util.$shiftKey) {
 
+                    Util
+                        .$tweenController
+                        .clearPointer();
+
                     // 服選択時は二度目の押下は対象外にする
                     this._$activeElements.splice(idx, 1);
 
@@ -385,6 +389,27 @@ class ArrowTool extends BaseTool
         }
 
         this._$activeElements.push(element);
+
+        // tweenの設定があればポインターを配置
+        const scene = Util.$currentWorkSpace().scene;
+        const layer = scene.getLayer(
+            element.dataset.layerId | 0
+        );
+
+        const character = layer.getCharacter(
+            element.dataset.characterId | 0
+        );
+
+        const range = character.getRange(
+            Util.$timelineFrame.currentFrame
+        );
+
+        if (character.hasTween(range.startFrame)) {
+            Util
+                .$tweenController
+                .clearPointer()
+                .relocationPointer();
+        }
 
         return true;
     }
@@ -417,29 +442,19 @@ class ArrowTool extends BaseTool
         // タイムラインのアクティブなElementを初期化
         Util.$timelineLayer.clear();
 
-        const result = this.addElement(target);
+        this.addElement(target);
 
         const character = layer.getCharacter(
             target.dataset.characterId | 0
         );
 
-        if (result) {
-            this.updateControllerProperty();
-        }
+        // コントローラーエリアの情報を更新
+        this.updateControllerProperty();
 
         // Shapeは描画反映の判定で毎回ヒット判定を行う
         if (this._$activeElements.length === 1) {
             character.showShapeColor(event);
         }
-
-        // 複数選択時の移動座標の調整
-        // if (this._$activeElements.length > 1) {
-        //     for (let idx = 0; idx < this._$activeElements.length; ++idx) {
-        //         const object = this._$activeElements[idx];
-        //         object.moveX = event.pageX;
-        //         object.moveY = event.pageY;
-        //     }
-        // }
 
         // 拡大縮小回転のElementのポイントを表示して再計算
         Util
@@ -455,36 +470,6 @@ class ArrowTool extends BaseTool
 
         // 選択されたDisplayObjectが配置されてるタイムラインをアクティブに
         this.activeTimeline();
-
-        // if (Util.$screen._$multiMode) {
-        //
-        //     if (frameElement.classList.contains("tween-frame")) {
-        //         Util.$screen.clearTweenMarker();
-        //     }
-        //
-        // } else {
-        //
-        //     const workSpace = Util.$currentWorkSpace();
-        //
-        //     const scene = workSpace.scene;
-        //     const layer = scene.getLayer(layerId);
-        //
-        //     const character = layer.getCharacter(
-        //         target.dataset.characterId | 0
-        //     );
-        //
-        //     if (frameElement.classList.contains("tween-frame")) {
-        //         Util.$screen.clearTweenMarker();
-        //
-        //         const tween = character.getTween();
-        //         if (tween && tween.method === "custom") {
-        //             Util.$controller.showEaseCanvasArea();
-        //         }
-        //
-        //         Util.$screen.executeTween(layer);
-        //         Util.$screen.createTweenMarker(false);
-        //     }
-        // }
     }
 
     /**
@@ -564,13 +549,13 @@ class ArrowTool extends BaseTool
             }
         }
 
-        // Util.$screen.clearTweenMarker();
-        // if (character._$tween
-        //     && character.hasTween()
-        // ) {
-        //     Util.$screen.executeTween(layer);
-        //     Util.$screen.createTweenMarker(false);
-        // }
+        const range = character.getRange(Util.$timelineFrame.currentFrame);
+        if (character.hasTween(range.startFrame)) {
+            Util
+                .$tweenController
+                .clearPointer()
+                .relocationPointer();
+        }
 
         const icon = document
             .getElementById("instance-type-name")
@@ -1240,7 +1225,9 @@ class ArrowTool extends BaseTool
                     const maskCharacter = maskLayer._$characters[0];
                     const x = maskCharacter.screenX - character.screenX;
                     const y = maskCharacter.screenY - character.screenY;
-                    element.style.webkitMaskPosition = `${x}px ${y}px`;
+                    element.style.webkitMaskPosition
+                        = element.style.maskPosition
+                            = `${x}px ${y}px`;
                 }
             }
 
@@ -1251,23 +1238,12 @@ class ArrowTool extends BaseTool
             xMin = Math.min(xMin, character.x);
             yMin = Math.min(yMin, character.y);
 
-            // if (layer._$frame.hasClasses(frame)) {
-            //
-            //     const classes = layer
-            //         ._$frame
-            //         .getClasses(frame);
-            //
-            //     if (classes.indexOf("tween-frame") > -1) {
-            //     //     this.executeTween(layer);
-            //     //     this.createTweenMarker();
-            //     //
-            //         const onionElement = document
-            //             .getElementById("timeline-onion-skin");
-            //         if (onionElement.classList.contains("onion-skin-active")) {
-            //             this.reloadScreen();
-            //         }
-            //     }
-            // }
+            const range = character.getRange(frame);
+            if (character.hasTween(range.startFrame)) {
+                Util
+                    .$tweenController
+                    .relocationPlace(character);
+            }
         }
 
         // 移動位置を更新
@@ -1393,7 +1369,8 @@ class ArrowTool extends BaseTool
                 "instance-setting",
                 "text-setting",
                 "nine-slice-setting",
-                "sound-setting"
+                "sound-setting",
+                "ease-setting"
             ]);
 
             document

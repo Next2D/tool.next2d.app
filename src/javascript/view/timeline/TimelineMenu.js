@@ -125,7 +125,6 @@ class TimelineMenu extends BaseTimeline
     }
 
     /**
-     * TODO
      * @description 指定のレイヤーにtweenを追加
      *
      * @return {void}
@@ -134,21 +133,19 @@ class TimelineMenu extends BaseTimeline
      */
     executeContextMenuTweenAdd ()
     {
-        Util.$endMenu();
-
         const targetLayer = Util.$timelineLayer.targetLayer;
         if (!targetLayer) {
             return ;
         }
 
-        const scene = Util.$currentWorkSpace().scene;
-
-        const layerElement = this._$targetLayer;
-        const layerId = layerElement.dataset.layerId | 0;
-
-        const layer = scene.getLayer(layerId);
-
         const frame = Util.$timelineFrame.currentFrame;
+
+        const layer = Util
+            .$currentWorkSpace()
+            .scene
+            .getLayer(
+                targetLayer.dataset.layerId | 0
+            );
 
         const characters = layer.getActiveCharacter(frame);
         if (!characters.length) {
@@ -162,122 +159,48 @@ class TimelineMenu extends BaseTimeline
             return ;
         }
 
-        let endFrame = frame;
-        for (;;) {
+        /**
+         * @param {Character}
+         */
+        const character = characters[0];
+        const range = character.getRange(frame);
 
-            ++endFrame;
-
-            const element = document
-                .getElementById(`${layerId}-${endFrame}`);
-
-            if (element.dataset.frameState === "empty") {
-                --endFrame;
-                break;
-            }
-
-            if (element.classList.contains("key-frame")
-                || element.classList.contains("empty-key-frame")
-            ) {
-                --endFrame;
-                break;
-            }
-
-            if (element.classList.contains("key-space-frame-end")) {
-                break;
-            }
-        }
-
-        let startFrame = frame;
-        while (startFrame > 0) {
-
-            const element = document
-                .getElementById(`${layerId}-${startFrame}`);
-
-            if (element.classList.contains("key-frame")) {
-                break;
-            }
-
-            --startFrame;
-        }
-
-        const startElement = document
-            .getElementById(`${layerId}-${startFrame}`);
-
-        if (startElement.classList.contains("tween-key-frame")) {
+        // すでに、tweenの設定があればスキップ
+        if (character.hasTween(range.startFrame)) {
             return ;
         }
 
+        this.save();
+
+        character.setTween(range.startFrame, {
+            "method": "linear",
+            "curve": [],
+            "custom": Util.$tweenController.createEasingObject()
+        });
+
+        const place = character.getPlace(range.startFrame);
+        place.tweenRange = {
+            "startFrame": range.startFrame,
+            "endFrame": range.endFrame
+        };
+
+        // tweenのポインターを配置
         Util
-            .$currentWorkSpace()
-            .temporarilySaved();
+            .$tweenController
+            .clearPointer()
+            .relocationPointer();
 
-        startElement.classList.add("tween-key-frame");
+        // タイムラインを再描画
+        layer.reloadStyle();
 
-        let tweenEndFrame = startFrame;
-        const character = characters[0];
-        for (; endFrame >= tweenEndFrame; ++tweenEndFrame) {
-
-            const element = document
-                .getElementById(`${layerId}-${tweenEndFrame}`);
-
-            if (element.classList.contains("frame-active")) {
-                element.classList.remove("frame-active");
-            }
-
-            if (!element.classList.contains("tween-frame")) {
-                element.classList.add("tween-frame");
-
-                layer
-                    ._$frame
-                    .getClasses(tweenEndFrame)
-                    .push("tween-frame");
-
-            }
-
-            if (tweenEndFrame > startFrame) {
-                const clone = character.clonePlace(startFrame, tweenEndFrame);
-                if (clone.loop) {
-                    clone.loop.referenceFrame = startFrame;
-                    clone.loop.tweenFrame     = tweenEndFrame + 1;
-                }
-                character.setPlace(tweenEndFrame, clone);
-            }
-
-            if (element.classList.contains("key-space-frame-end")) {
-                break;
-            }
-        }
-
-        const startPlace = character.getPlace(startFrame);
-        if (startPlace.loop) {
-            startPlace.loop.tweenFrame = startFrame + 1;
-        }
-
-        const endPlace = character.getPlace(tweenEndFrame);
-        if (endPlace.loop) {
-            endPlace.loop.tweenFrame = startFrame;
-        }
-
-        layer
-            ._$frame
-            .getClasses(startFrame)
-            .push("tween-key-frame");
-
-        const endElement = document
-            .getElementById(`${layerId}-${endFrame}`);
-
-        endElement.classList.add("tween-frame-end");
-
-        layer
-            ._$frame
-            .getClasses(endFrame)
-            .push("tween-frame-end");
-
+        // 再描画
         character._$image = null;
+        this.reloadScreen();
+
+        this._$saved = false;
     }
 
     /**
-     * TODO
      * @description 指定のレイヤーのtweenを削除
      *
      * @return {void}
@@ -286,120 +209,65 @@ class TimelineMenu extends BaseTimeline
      */
     executeContextMenuTweenDelete ()
     {
-        Util.$endMenu();
-
         const targetLayer = Util.$timelineLayer.targetLayer;
         if (!targetLayer) {
             return ;
         }
 
-        const scene = Util.$currentWorkSpace().scene;
-
-        const layerElement = this._$targetLayer;
-        const layerId = layerElement.dataset.layerId | 0;
-
-        const layer = scene.getLayer(layerId);
-
         const frame = Util.$timelineFrame.currentFrame;
 
+        const layer = Util
+            .$currentWorkSpace()
+            .scene
+            .getLayer(
+                targetLayer.dataset.layerId | 0
+            );
+
         const characters = layer.getActiveCharacter(frame);
-        if (!characters.length) {
+        if (!characters.length || characters.length > 1) {
             return ;
         }
 
-        Util
-            .$currentWorkSpace()
-            .temporarilySaved();
+        /**
+         * @param {Character}
+         */
+        const character = characters[0];
+        const range = character.getRange(frame);
 
-        let startFrame = Util.$timelineFrame.currentFrame;
-
-        while (startFrame > 0) {
-
-            const element = document
-                .getElementById(`${layerId}-${startFrame}`);
-
-            if (element.classList.contains("key-frame")) {
-                break;
-            }
-
-            --startFrame;
+        // tweenの設定がなければスキップ
+        if (!character.hasTween(range.startFrame)) {
+            return ;
         }
 
-        const character = characters[0];
-        const endFrame  = character.endFrame - 1;
-        for (let frame = startFrame; endFrame >= frame; ++frame) {
+        this.save();
 
-            const element = document
-                .getElementById(`${layerId}-${frame}`);
-
-            if (element.classList.contains("frame-active")) {
-                element.classList.remove("frame-active");
-            }
-
-            if (!element.classList.contains("tween-frame")) {
+        // tweenで作成したplace objectを削除
+        for (let frame = range.startFrame + 1; range.endFrame > frame; ++frame) {
+            if (!character.hasPlace(frame)) {
                 continue;
             }
-            if (frame !== startFrame
-                && element.classList.contains("ket-frame")
-            ) {
-                break;
-            }
-
-            element
-                .classList
-                .remove(
-                    "tween-frame",
-                    "tween-key-frame",
-                    "tween-frame-end"
-                );
-
-            let classes = layer
-                ._$frame
-                .getClasses(frame);
-
-            const names = [
-                "tween-frame",
-                "tween-key-frame",
-                "tween-frame-end"
-            ];
-            for (let idx = 0; names.length > idx; ++idx) {
-                const index = classes.indexOf(names[idx]);
-                if (index === -1) {
-                    continue;
-                }
-                classes.splice(index, 1);
-            }
-
-            layer
-                ._$frame
-                .setClasses(frame, classes);
-
-            if (frame > startFrame) {
-                character.deletePlace(frame);
-            }
-
-            if (element.classList.contains("key-space-frame-end")) {
-                break;
-            }
+            character.deletePlace(frame);
         }
 
-        const startPlace = character.getPlace(startFrame);
-        if (startPlace.loop) {
-            delete startPlace.loop.tweenFrame;
-        }
+        // tweenのマスタを削除
+        character.deleteTween(range.startFrame);
 
+        const place = character.getPlace(range.startFrame);
+        delete place.tweenRange;
+
+        // tweenのポインターを削除
+        Util
+            .$tweenController
+            .clearPointer();
+
+        // タイムラインを再描画
+        layer.reloadStyle();
+
+        // 再描画
         character._$image = null;
+        this.reloadScreen();
 
-        character._$tween.delete(startFrame);
-
-        document
-            .getElementById("ease-select")[0]
-            .selected = true;
-
-        Util.$controller.hideEaseCanvasArea();
-        Util.$screen.clearTweenMarker();
-
-        scene.changeFrame(frame);
+        this._$saved = false;
     }
 
     /**

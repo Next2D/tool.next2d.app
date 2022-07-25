@@ -30,7 +30,8 @@ class Instance
     showController (place, name = "")
     {
         Util.$controller.hideObjectSetting([
-            "sound-setting"
+            "sound-setting",
+            "ease-setting"
         ]);
 
         Util.$controller.showObjectSetting([
@@ -142,7 +143,7 @@ class Instance
             Util
                 .$filterController[`add${filter.name}`](
                     filterElement, filter, false
-            );
+                );
         }
     }
 

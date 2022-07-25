@@ -108,6 +108,22 @@ class TimelineKeyboardCommand extends KeyboardCommand
                 .executeTimelineOnionSkin();
         });
 
+        // tweenを起動
+        this.add("m", () =>
+        {
+            Util
+                .$timelineMenu
+                .executeContextMenuTweenAdd();
+        });
+
+        // tweenを削除
+        this.add(Util.$generateShortcutKey("m", { "ctrl": true }), () =>
+        {
+            Util
+                .$timelineMenu
+                .executeContextMenuTweenDelete();
+        });
+
         // レイヤの削除コマンド
         this.add(Util.$generateShortcutKey("h", { "shift": true }), () =>
         {

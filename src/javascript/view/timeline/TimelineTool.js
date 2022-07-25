@@ -724,7 +724,31 @@ class TimelineTool extends BaseTimeline
                 if (characters.length) {
 
                     for (let idx = 0; idx < characters.length; ++idx) {
-                        characters[idx].endFrame = endFrame;
+
+                        const character = characters[idx];
+
+                        const range = character.getRange(frame);
+                        if (character.hasTween(range.startFrame)) {
+
+                            character
+                                .updateTweenPlace(
+                                    range.startFrame, endFrame
+                                );
+
+                            // tweenの座標を再計算
+                            Util
+                                .$tweenController
+                                .relocationPlace(character);
+
+                            // tweenのポインターを再配置
+                            Util
+                                .$tweenController
+                                .clearPointer()
+                                .relocationPointer();
+                        }
+
+                        // fixed logic 終了するフレーム番号を更新
+                        character.endFrame = endFrame;
                     }
 
                     done = true;
@@ -788,14 +812,42 @@ class TimelineTool extends BaseTimeline
                         const places = new Map();
                         for (const [keyFrame, place] of character._$places) {
 
-                            places.set(startFrame >= keyFrame
-                                ? keyFrame
-                                : keyFrame + values.length,
-                            place);
+                            if (startFrame >= keyFrame) {
+
+                                places.set(keyFrame, place);
+
+                            } else {
+
+                                place.frame = keyFrame + values.length;
+                                places.set(place.frame, place);
+
+                            }
 
                         }
 
                         character._$places  = places;
+
+                        const range = character.getRange(startFrame);
+                        if (character.hasTween(range.startFrame)) {
+                            character.updateTweenPlace(
+                                range.startFrame,
+                                range.endFrame + values.length
+                            );
+
+                            // tweenの座標を再計算
+                            Util
+                                .$tweenController
+                                .relocationPlace(character);
+
+                            // tweenのポインターを再配置
+                            Util
+                                .$tweenController
+                                .clearPointer()
+                                .relocationPointer();
+
+                        }
+
+                        // fixed logic 終了するフレーム番号を更新
                         character.endFrame += values.length;
                     }
 

@@ -407,7 +407,7 @@
     left             : 0;
     border           : 1px solid #f4f1f0;
     background-color : #e14f5f;
-    z-index          : 9998;
+    z-index          : 8999;
     pointer-events   : none;
     border-radius    : 4px;
 }

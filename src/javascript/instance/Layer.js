@@ -593,6 +593,8 @@ class Layer
             const duplication = new Map();
             const character = this._$characters[idx];
             const places = Array.from(character._$places.keys());
+
+            // 昇順
             places.sort((a, b) =>
             {
                 switch (true) {
@@ -629,9 +631,46 @@ class Layer
                         .dataset
                         .frameState = "key-frame";
 
-                    element
-                        .classList
-                        .add("key-frame");
+                    if (character.hasTween(startFrame)) {
+
+                        element
+                            .classList
+                            .add("tween-key-frame");
+
+                        const place = character.getPlace(endFrame);
+                        if (place.tweenRange) {
+                            element
+                                .classList
+                                .add("tween-key-frame-join");
+                        }
+
+                    } else {
+
+                        const place = character.getPlace(startFrame);
+                        if (place.tweenRange) {
+
+                            if (place.tweenRange.endFrame - 1 === startFrame) {
+
+                                element
+                                    .classList
+                                    .add("tween-frame-end");
+
+                            } else {
+
+                                element
+                                    .classList
+                                    .add("tween-space-frame");
+
+                            }
+
+                        } else {
+
+                            element
+                                .classList
+                                .add("key-frame");
+
+                        }
+                    }
 
                     continue;
                 }
@@ -647,12 +686,25 @@ class Layer
                     .dataset
                     .frameState = "key-frame";
 
-                startElement
-                    .classList
-                    .add(
-                        "key-frame",
-                        "key-frame-join"
-                    );
+                if (character.hasTween(startFrame)) {
+
+                    startElement
+                        .classList
+                        .add(
+                            "tween-key-frame",
+                            "tween-key-frame-join"
+                        );
+
+                } else {
+
+                    startElement
+                        .classList
+                        .add(
+                            "key-frame",
+                            "key-frame-join"
+                        );
+
+                }
 
                 // 間のフレーム
                 const spaceTotalFrame = endFrame - 1;
@@ -665,9 +717,19 @@ class Layer
                         .dataset
                         .frameState = "key-space-frame";
 
-                    element
-                        .classList
-                        .add("key-space-frame");
+                    if (character.hasTween(startFrame)) {
+
+                        element
+                            .classList
+                            .add("tween-space-frame");
+
+                    } else {
+
+                        element
+                            .classList
+                            .add("key-space-frame");
+
+                    }
 
                 }
 
@@ -679,9 +741,19 @@ class Layer
                     .dataset
                     .frameState = "key-space-frame-end";
 
-                endElement
-                    .classList
-                    .add("key-space-frame-end");
+                if (character.hasTween(startFrame)) {
+
+                    endElement
+                        .classList
+                        .add("tween-frame-end");
+
+                } else {
+
+                    endElement
+                        .classList
+                        .add("key-space-frame-end");
+
+                }
             }
         }
     }
