@@ -638,7 +638,7 @@ class Layer
                             .add("tween-key-frame");
 
                         const place = character.getPlace(endFrame);
-                        if (place.tweenRange) {
+                        if (place.tweenFrame) {
                             element
                                 .classList
                                 .add("tween-key-frame-join");
@@ -647,9 +647,10 @@ class Layer
                     } else {
 
                         const place = character.getPlace(startFrame);
-                        if (place.tweenRange) {
+                        if (place.tweenFrame) {
 
-                            if (place.tweenRange.endFrame - 1 === startFrame) {
+                            const tweenObject = character.getTween(place.tweenFrame);
+                            if (tweenObject.endFrame - 1 === startFrame) {
 
                                 element
                                     .classList

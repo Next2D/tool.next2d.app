@@ -175,14 +175,12 @@ class TimelineMenu extends BaseTimeline
         character.setTween(range.startFrame, {
             "method": "linear",
             "curve": [],
-            "custom": Util.$tweenController.createEasingObject()
-        });
-
-        const place = character.getPlace(range.startFrame);
-        place.tweenRange = {
+            "custom": Util.$tweenController.createEasingObject(),
             "startFrame": range.startFrame,
             "endFrame": range.endFrame
-        };
+        });
+
+        character.updateTweenPlace(range.startFrame, range.endFrame);
 
         // tweenのポインターを配置
         Util
@@ -253,7 +251,7 @@ class TimelineMenu extends BaseTimeline
         character.deleteTween(range.startFrame);
 
         const place = character.getPlace(range.startFrame);
-        delete place.tweenRange;
+        delete place.tweenFrame;
 
         // tweenのポインターを削除
         Util

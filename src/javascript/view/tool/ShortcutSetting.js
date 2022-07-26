@@ -406,7 +406,8 @@ class ShortcutSetting
         this._$commandMapping = new Map([
             ["screen", new Map()],
             ["timeline", new Map()],
-            ["library", new Map()]
+            ["library", new Map()],
+            ["global", new Map()]
         ]);
 
         /**
@@ -416,7 +417,8 @@ class ShortcutSetting
         this._$viewMapping = new Map([
             ["screen", new Map()],
             ["timeline", new Map()],
-            ["library", new Map()]
+            ["library", new Map()],
+            ["global", new Map()]
         ]);
 
         /**

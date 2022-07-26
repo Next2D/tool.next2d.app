@@ -212,10 +212,11 @@ class Character
 
             if (frame >= placeFrame) {
                 const place = this.getPlace(placeFrame);
-                if (place.tweenRange) {
+                if (place.tweenFrame) {
+                    const tweenObject = this.getTween(place.tweenFrame);
                     return {
-                        "startFrame": place.tweenRange.startFrame,
-                        "endFrame": place.tweenRange.endFrame
+                        "startFrame": tweenObject.startFrame,
+                        "endFrame": tweenObject.endFrame
                     };
                 }
 
@@ -997,11 +998,8 @@ class Character
                 "colorTransform": place.colorTransform.slice(0)
             };
 
-            if (place.tweenRange) {
-                object.tweenRange = {
-                    "startFrame": place.tweenRange.startFrame,
-                    "endFrame": place.tweenRange.endFrame
-                };
+            if (place.tweenFrame) {
+                object.tweenFrame = place.tweenFrame;
             }
 
             if (instance.type === "container") {
@@ -1236,10 +1234,7 @@ class Character
                 ? this.getPlace(frame)
                 : this.clonePlace(end_frame, frame);
 
-            place.tweenRange = {
-                "startFrame": start_frame,
-                "endFrame": end_frame
-            };
+            place.tweenFrame = start_frame;
 
             this.setPlace(frame, place);
         }
@@ -1261,12 +1256,16 @@ class Character
             place.frame = keyFrame + frame;
 
             // tweenの情報があればtweenも移動
-            if (place.tweenRange) {
-                place.tweenRange.startFrame += frame;
-                place.tweenRange.endFrame   += frame;
+            if (place.tweenFrame) {
+                place.tweenFrame += frame;
             }
 
             places.set(place.frame, place);
+        }
+
+        for (const tweenObject of this._$tween.values()) {
+            tweenObject.startFrame += frame;
+            tweenObject.endFrame   += frame;
         }
 
         // キーフレームの情報を上書き

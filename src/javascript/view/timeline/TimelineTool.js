@@ -730,6 +730,12 @@ class TimelineTool extends BaseTimeline
                         const range = character.getRange(frame);
                         if (character.hasTween(range.startFrame)) {
 
+                            // tweenの幅情報を更新して各place objectを更新
+                            const tweenObject = character
+                                .getTween(range.startFrame);
+
+                            tweenObject.endFrame = endFrame;
+
                             character
                                 .updateTweenPlace(
                                     range.startFrame, endFrame
@@ -812,16 +818,11 @@ class TimelineTool extends BaseTimeline
                         const places = new Map();
                         for (const [keyFrame, place] of character._$places) {
 
-                            if (startFrame >= keyFrame) {
+                            place.frame = startFrame >= keyFrame
+                                ? keyFrame
+                                : keyFrame + values.length;
 
-                                places.set(keyFrame, place);
-
-                            } else {
-
-                                place.frame = keyFrame + values.length;
-                                places.set(place.frame, place);
-
-                            }
+                            places.set(place.frame, place);
 
                         }
 
@@ -829,6 +830,13 @@ class TimelineTool extends BaseTimeline
 
                         const range = character.getRange(startFrame);
                         if (character.hasTween(range.startFrame)) {
+
+                            // tweenの幅情報を更新して各place objectを更新
+                            const tweenObject = character
+                                .getTween(range.startFrame);
+
+                            tweenObject.endFrame += values.length;
+
                             character.updateTweenPlace(
                                 range.startFrame,
                                 range.endFrame + values.length
@@ -1313,25 +1321,28 @@ class TimelineTool extends BaseTimeline
                     const character = characters[idx];
 
                     // 削除対象範囲を計算
-                    let startFrame = character.startFrame;
-                    let endFrame   = character.endFrame;
-                    for (const keyFrame of character._$places.keys()) {
+                    const range = character.getRange(frame);
 
-                        if (keyFrame > frame) {
-                            endFrame = Math.min(endFrame, keyFrame);
-                        }
-
-                        if (frame >= keyFrame) {
-                            startFrame = Math.max(startFrame, keyFrame);
-                        }
-
-                    }
-
-                    // 削除開始位置にキーフレームの場合
+                    // 削除開始位置がキーフレームの場合
                     if (character.hasPlace(frame)) {
 
-                        // 削除範囲がキーフレーム外の場合はキーフレームを削除
-                        if (values.length >= endFrame - startFrame) {
+                        // 削除範囲がキーフレームの幅を超えてる場合はキーフレームを削除
+                        if (values.length >= range.endFrame - range.startFrame) {
+
+                            // tweenがあれば情報を削除
+                            if (character.hasTween(frame)) {
+                                for (let keyFrame = range.startFrame; keyFrame < range.endFrame; ++keyFrame) {
+                                    character.deletePlace(keyFrame);
+                                }
+                                character.deleteTween(frame);
+
+                                // tweenのポインターを削除
+                                Util
+                                    .$tweenController
+                                    .clearPointer();
+                            }
+
+                            // キーフレームを削除
                             character.deletePlace(frame);
                         }
 
@@ -1339,7 +1350,7 @@ class TimelineTool extends BaseTimeline
 
                     // 削除範囲のフレーム数
                     moveFrame = Math.min(
-                        endFrame, frame + values.length
+                        range.endFrame, frame + values.length
                     ) - frame;
 
                     // キーフレームが存在しなけれなDisplayObjectを削除
@@ -1352,11 +1363,32 @@ class TimelineTool extends BaseTimeline
                         const places = new Map();
                         for (const [keyFrame, place] of character._$places) {
 
-                            places.set(frame >= keyFrame
+                            place.frame = frame >= keyFrame
                                 ? keyFrame
-                                : keyFrame - moveFrame,
-                            place);
+                                : keyFrame - moveFrame;
 
+                            places.set(place.frame, place);
+
+                        }
+
+                        // tweenの情報があれば更新して再計算
+                        if (character.hasTween(range.startFrame)) {
+
+                            const tweenObject = character
+                                .getTween(range.startFrame);
+
+                            tweenObject.endFrame -= moveFrame;
+
+                            // tweenの座標を再計算
+                            Util
+                                .$tweenController
+                                .relocationPlace(character);
+
+                            // tweenのポインターを再配置
+                            Util
+                                .$tweenController
+                                .clearPointer()
+                                .relocationPointer();
                         }
 
                         character._$places  = places;
