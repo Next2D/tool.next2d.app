@@ -744,7 +744,7 @@ class TimelineTool extends BaseTimeline
                             // tweenの座標を再計算
                             Util
                                 .$tweenController
-                                .relocationPlace(character);
+                                .relocationPlace(character, range.startFrame);
 
                             // tweenのポインターを再配置
                             Util
@@ -815,44 +815,77 @@ class TimelineTool extends BaseTimeline
 
                         const character = characters[idx];
 
+                        const range = character.getRange(startFrame);
+
                         const places = new Map();
                         for (const [keyFrame, place] of character._$places) {
 
-                            place.frame = startFrame >= keyFrame
-                                ? keyFrame
-                                : keyFrame + values.length;
+                            // レンジ内か、前方のキーフレームは現状維持
+                            if (range.startFrame > keyFrame) {
+                                places.set(keyFrame, place);
+                                continue;
+                            }
 
+                            if (keyFrame >= range.startFrame && range.endFrame > keyFrame) {
+                                places.set(keyFrame, place);
+                                continue;
+                            }
+
+                            place.frame = keyFrame + values.length;
+                            if (place.tweenFrame) {
+                                place.tweenFrame += values.length;
+                            }
                             places.set(place.frame, place);
 
                         }
 
-                        character._$places  = places;
+                        // キーフレームの情報を上書き
+                        character._$places = places;
 
-                        const range = character.getRange(startFrame);
-                        if (character.hasTween(range.startFrame)) {
+                        if (character._$tween.size) {
 
-                            // tweenの幅情報を更新して各place objectを更新
-                            const tweenObject = character
-                                .getTween(range.startFrame);
+                            // tween情報を更新
+                            const tween = new Map();
+                            for (const [keyFrame, tweenObject] of character._$tween) {
 
-                            tweenObject.endFrame += values.length;
+                                if (range.startFrame >= keyFrame) {
+                                    tween.set(keyFrame, tweenObject);
+                                    continue;
+                                }
 
-                            character.updateTweenPlace(
-                                range.startFrame,
-                                range.endFrame + values.length
-                            );
+                                // 後方のtweenは開始終了位置を追加フレーム分後方に移動
+                                // このplace objectを先行処理でキーフレーム情報を更新済み
+                                tweenObject.startFrame += values.length;
+                                tweenObject.endFrame   += values.length;
+                                tween.set(tweenObject.startFrame, tweenObject);
+                            }
+                            character._$tween = tween;
 
-                            // tweenの座標を再計算
-                            Util
-                                .$tweenController
-                                .relocationPlace(character);
+                            if (character.hasTween(range.startFrame)) {
 
-                            // tweenのポインターを再配置
-                            Util
-                                .$tweenController
-                                .clearPointer()
-                                .relocationPointer();
+                                // tweenの幅情報を更新して各place objectを更新
+                                const tweenObject = character
+                                    .getTween(range.startFrame);
 
+                                tweenObject.endFrame += values.length;
+
+                                character.updateTweenPlace(
+                                    range.startFrame,
+                                    range.endFrame + values.length
+                                );
+
+                                // tweenの座標を再計算
+                                Util
+                                    .$tweenController
+                                    .relocationPlace(character, range.startFrame);
+
+                                // tweenのポインターを再配置
+                                Util
+                                    .$tweenController
+                                    .clearPointer()
+                                    .relocationPointer();
+
+                            }
                         }
 
                         // fixed logic 終了するフレーム番号を更新
@@ -921,6 +954,25 @@ class TimelineTool extends BaseTimeline
 
                     // キーフレームがあればスキップ
                     if (character.hasPlace(frame)) {
+                        const place = character.getPlace(frame);
+                        if (place.tweenFrame) {
+
+                            const range = character.getRange(frame);
+
+                            const tweenObject    = character.getTween(place.tweenFrame);
+                            tweenObject.endFrame = frame;
+
+                            character.setTween(frame, {
+                                "method": tweenObject.method,
+                                "curve": [],
+                                "custom": Util.$tweenController.createEasingObject(),
+                                "startFrame": frame,
+                                "endFrame": range.endFrame
+                            });
+
+                            character.updateTweenPlace(frame, range.endFrame);
+                        }
+
                         continue;
                     }
 
@@ -1363,37 +1415,80 @@ class TimelineTool extends BaseTimeline
                         const places = new Map();
                         for (const [keyFrame, place] of character._$places) {
 
-                            place.frame = frame >= keyFrame
-                                ? keyFrame
-                                : keyFrame - moveFrame;
+                            // レンジ内か、前方のキーフレームは現状維持
+                            if (range.startFrame > keyFrame) {
+                                places.set(keyFrame, place);
+                                continue;
+                            }
+
+                            if (keyFrame >= range.startFrame && range.endFrame > keyFrame) {
+
+                                // 削除した範囲外だけ登録
+                                if (range.endFrame - moveFrame > keyFrame) {
+                                    places.set(keyFrame, place);
+                                }
+
+                                // 最後のフレームはキーフレームとしてレンジの最後のフレームに挿入
+                                if (range.endFrame - 1 === keyFrame) {
+                                    places.set(range.endFrame - moveFrame - 1, place);
+                                }
+
+                                continue;
+                            }
+
+                            place.frame = keyFrame - moveFrame;
+                            if (place.tweenFrame) {
+                                place.tweenFrame -= moveFrame;
+                            }
 
                             places.set(place.frame, place);
 
                         }
+                        character._$places = places;
 
                         // tweenの情報があれば更新して再計算
-                        if (character.hasTween(range.startFrame)) {
+                        if (character._$tween.size) {
 
-                            const tweenObject = character
-                                .getTween(range.startFrame);
+                            const tween = new Map();
+                            for (const [keyFrame, tweenObject] of character._$tween) {
 
-                            tweenObject.endFrame -= moveFrame;
+                                if (range.startFrame >= keyFrame) {
 
-                            // tweenの座標を再計算
-                            Util
-                                .$tweenController
-                                .relocationPlace(character);
+                                    if (range.startFrame === keyFrame) {
+                                        tweenObject.endFrame -= moveFrame;
+                                    }
 
-                            // tweenのポインターを再配置
-                            Util
-                                .$tweenController
-                                .clearPointer()
-                                .relocationPointer();
+                                    tween.set(keyFrame, tweenObject);
+
+                                } else {
+
+                                    // 削除したフレーム数分、前方へ移動
+                                    // レンジ内のplace objectは別処理で移動済み
+                                    tweenObject.startFrame -= moveFrame;
+                                    tweenObject.endFrame   -= moveFrame;
+                                    tween.set(tweenObject.startFrame, tweenObject);
+
+                                }
+
+                            }
+                            character._$tween = tween;
+
+                            if (character.hasTween(range.startFrame)) {
+
+                                // tweenの座標を再計算
+                                Util
+                                    .$tweenController
+                                    .relocationPlace(character, range.startFrame);
+
+                                // tweenのポインターを再配置
+                                Util
+                                    .$tweenController
+                                    .clearPointer()
+                                    .relocationPointer();
+                            }
                         }
 
-                        character._$places  = places;
                         character.endFrame -= moveFrame;
-
                     }
 
                 }

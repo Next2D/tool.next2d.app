@@ -1242,7 +1242,7 @@ class ArrowTool extends BaseTool
             if (character.hasTween(range.startFrame)) {
                 Util
                     .$tweenController
-                    .relocationPlace(character);
+                    .relocationPlace(character, frame);
             }
         }
 

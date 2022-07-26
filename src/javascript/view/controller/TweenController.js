@@ -396,14 +396,23 @@ class TweenController extends BaseController
      * @description tweenの座標位置を再計算
      *
      * @param  {Character} character
+     * @param  {number} frame
+     * @param  {string} [mode="none"]
      * @return {void}
      * @method
      * @public
      */
-    relocationPlace (character)
+    relocationPlace (character, frame, mode = "none")
     {
-        const frame = Util.$timelineFrame.currentFrame;
         const range = character.getRange(frame);
+
+        // 指定レンジ以前のtweenがあれば再計算
+        if (mode === "none" && range.startFrame - 1) {
+            const prevRange = character.getRange(range.startFrame - 1);
+            if (character.hasTween(prevRange.startFrame)) {
+                this.relocationPlace(character, prevRange.startFrame, "prev");
+            }
+        }
 
         // tweenのplaceを再構築
         character.updateTweenPlace(range.startFrame, range.endFrame);
@@ -466,8 +475,13 @@ class TweenController extends BaseController
         }
 
         // end params
-        const endFrame  = range.endFrame - 1;
-        const endPlace  = character.getPlace(endFrame);
+        let endFrame = range.endFrame - 1;
+        let endPlace = character.getPlace(endFrame);
+        if (character.hasTween(range.endFrame)) {
+            endFrame = range.endFrame;
+            endPlace = character.getPlace(range.endFrame);
+        }
+
         const endMatrix = endPlace.matrix;
         const endScaleX = Math.sqrt(
             endMatrix[0] * endMatrix[0]
@@ -858,11 +872,24 @@ class TweenController extends BaseController
                 continue;
             }
 
-            const tweenObject = character.getTween(range.startFrame);
+            let startFrame = range.startFrame;
+            while (startFrame > 1) {
+                const range = character.getRange(startFrame - 1);
+                if (!character.hasTween(range.startFrame)) {
+                    break;
+                }
+
+                startFrame = range.startFrame;
+            }
+
+            let endFrame = range.endFrame;
+            while (character.hasTween(endFrame)) {
+                endFrame = character.getTween(endFrame).endFrame;
+            }
 
             const baseBounds = character.getBounds();
             const parentElement = document.getElementById("stage-area");
-            for (let frame = range.startFrame; frame < range.endFrame; ++frame) {
+            for (let frame = startFrame; frame < endFrame; ++frame) {
 
                 const div = document.createElement("div");
 
@@ -883,6 +910,7 @@ class TweenController extends BaseController
             }
 
             // TODO
+            const tweenObject = character.getTween(range.startFrame);
             for (let idx = 0; idx < tweenObject.curve.length; ++idx) {
 
                 const pointer = tweenObject.curve[idx];

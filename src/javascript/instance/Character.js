@@ -1232,7 +1232,7 @@ class Character
 
             const place = this.hasPlace(frame)
                 ? this.getPlace(frame)
-                : this.clonePlace(end_frame, frame);
+                : this.clonePlace(end_frame - 1, frame);
 
             place.tweenFrame = start_frame;
 
@@ -1263,13 +1263,19 @@ class Character
             places.set(place.frame, place);
         }
 
-        for (const tweenObject of this._$tween.values()) {
-            tweenObject.startFrame += frame;
-            tweenObject.endFrame   += frame;
-        }
-
         // キーフレームの情報を上書き
         this._$places = places;
+
+        if (this._$tween.size) {
+            const tween = new Map();
+            for (const [keyFrame, tweenObject] of this._$tween) {
+                tweenObject.startFrame += frame;
+                tweenObject.endFrame   += frame;
+                tween.set(keyFrame + frame, tweenObject);
+            }
+            // tweenの情報を上書き
+            this._$tween = tween;
+        }
 
         // 開始位置と終了位置を移動
         this.startFrame += frame;
