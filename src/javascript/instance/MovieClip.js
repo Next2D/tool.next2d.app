@@ -131,7 +131,6 @@ class MovieClip extends Instance
         // スクリーンを初期化
         this.clearStageArea();
         Util.$clearShapePointer();
-        // Util.$screen.clearTweenMarker();
 
         // object setting
         document

@@ -337,6 +337,22 @@ class Instance
 
                     const character = characters[idx];
                     if (this.id === character.libraryId) {
+
+                        for (const keyFrame of character._$places.keys()) {
+
+                            // 空のキーフレームがあればスキップ
+                            if (layer.getActiveEmptyCharacter(keyFrame)) {
+                                continue;
+                            }
+
+                            // 削除するレンジに空のキーフレームを登録
+                            const range = character.getRange(keyFrame);
+                            layer.addEmptyCharacter(new EmptyCharacter({
+                                "startFrame": range.startFrame,
+                                "endFrame": range.endFrame
+                            }));
+                        }
+
                         // 登録先のレイヤーから削除
                         layer.deleteCharacter(character.id);
                         reload = true;

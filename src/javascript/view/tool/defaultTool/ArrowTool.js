@@ -1240,6 +1240,14 @@ class ArrowTool extends BaseTool
 
             const range = character.getRange(frame);
             if (character.hasTween(range.startFrame)) {
+
+                // tweenのキーがない場所でDisplayObjectを移動したらキーフレームを追加
+                if (character.endFrame - 1 > frame && !character.hasTween(frame)) {
+                    Util
+                        .$timelineTool
+                        .executeTimelineKeyAdd();
+                }
+
                 Util
                     .$tweenController
                     .relocationPlace(character, frame);

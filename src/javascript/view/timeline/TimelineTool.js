@@ -1047,8 +1047,74 @@ class TimelineTool extends BaseTimeline
                         continue;
                     }
 
-                    // キーフレームを削除
-                    character.deletePlace(startFrame);
+                    // tween内のplace objectであればスキップ
+                    const place = character.getPlace(startFrame);
+                    if (place.tweenFrame && place.tweenFrame !== startFrame) {
+                        continue;
+                    }
+
+                    if (character.hasTween(startFrame)) {
+
+                        const tweenObject = character.getTween(startFrame);
+                        switch (true) {
+
+                            // tweenのレンジ幅がDisplayObjectのフレーム数であれば全て削除
+                            case character.startFrame === tweenObject.startFrame && character.endFrame === tweenObject.endFrame:
+                                character._$places.clear();
+                                break;
+
+                            // 削除するキーフレームが開始位置ならレンジ幅のplace objectを初期
+                            case character.startFrame === tweenObject.startFrame:
+                                for (let keyFrame = tweenObject.startFrame; keyFrame < tweenObject.endFrame; ++keyFrame) {
+                                    character.deletePlace(keyFrame);
+                                }
+                                break;
+
+                            default:
+                                {
+                                    const prevRange = character
+                                        .getRange(tweenObject.startFrame - 1);
+
+                                    if (character.hasTween(prevRange.startFrame)) {
+
+                                        // 直前にtweenがあれば結合
+                                        for (let keyFrame = tweenObject.startFrame; keyFrame < tweenObject.endFrame; ++keyFrame) {
+                                            const place = character.getPlace(keyFrame);
+                                            place.tweenFrame = prevRange.startFrame;
+                                        }
+
+                                        const prevTweenObject = character.getTween(prevRange.startFrame);
+                                        prevTweenObject.endFrame = tweenObject.endFrame;
+
+                                        Util
+                                            .$tweenController
+                                            .relocationPlace(character, prevRange.startFrame);
+
+                                        Util
+                                            .$tweenController
+                                            .clearPointer()
+                                            .relocationPointer();
+
+                                    } else {
+
+                                        // 単独のtweenであればレンジ幅のplace objectを削除
+                                        for (let keyFrame = tweenObject.startFrame; keyFrame < tweenObject.endFrame; ++keyFrame) {
+                                            character.deletePlace(keyFrame);
+                                        }
+                                    }
+                                }
+                                break;
+
+                        }
+
+                        character.deleteTween(startFrame);
+
+                    } else {
+
+                        // キーフレームを削除
+                        character.deletePlace(startFrame);
+
+                    }
 
                     // キーフレームがなければタイムラインから削除
                     if (!character._$places.size) {
@@ -1767,8 +1833,8 @@ class TimelineTool extends BaseTimeline
 
                 if (characters.length) {
 
+                    // 終了位置の補正
                     for (let idx = 0; idx < characters.length; ++idx) {
-                        // 終了位置の補正
                         characters[idx].endFrame = endFrame;
                     }
 

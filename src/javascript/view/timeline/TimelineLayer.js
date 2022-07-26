@@ -1986,10 +1986,6 @@ class TimelineLayer extends BaseTimeline
 
         this.changeLabel(frame);
 
-        // if (!target.classList.contains("tween-frame")) {
-        //     Util.$screen.clearTweenMarker();
-        // }
-
         /**
          * @type {ArrowTool}
          */
@@ -2155,6 +2151,7 @@ class TimelineLayer extends BaseTimeline
     moveFrame (frame)
     {
         if (Util.$timelineFrame.currentFrame !== frame) {
+
             // フレームを移動
             Util.$timelineFrame.currentFrame = frame;
 

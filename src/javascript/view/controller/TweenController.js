@@ -873,7 +873,8 @@ class TweenController extends BaseController
             }
 
             let startFrame = range.startFrame;
-            while (startFrame > 1) {
+            while (character.startFrame !== startFrame && startFrame > 1) {
+
                 const range = character.getRange(startFrame - 1);
                 if (!character.hasTween(range.startFrame)) {
                     break;

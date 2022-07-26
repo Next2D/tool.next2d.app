@@ -316,7 +316,7 @@ class LibraryMenu
         // スクリーンエリアの変形Elementを非表示に
         Util.$transformController.hide();
         Util.$gridController.hide();
-        // Util.$screen.clearTweenMarker();
+        Util.$tweenController.clearPointer();
 
         // コントローラーエリアを初期化
         Util.$controller.default();
@@ -329,6 +329,9 @@ class LibraryMenu
 
         // プレビューを初期化
         Util.$libraryPreview.dispose();
+
+        // 現在の配置での再計算
+        Util.$timelineLayer.activeCharacter();
 
         // シーンを再読み込み
         workSpace.scene.changeFrame(
