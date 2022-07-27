@@ -65,8 +65,24 @@ class BlendController extends BaseController
         const frame = Util.$timelineFrame.currentFrame;
 
         // 対象のカラーを更新
-        const place = character.getPlace(frame);
+        let place = character.getPlace(frame);
+        if (place.tweenFrame) {
+
+            if (character.endFrame - 1 > frame && !character.hasTween(frame)) {
+
+                Util
+                    .$timelineTool
+                    .executeTimelineKeyAdd();
+
+                place = character.getPlace(frame);
+            }
+
+            place = character.getPlace(place.tweenFrame);
+        }
         place.blendMode = `${value}`;
+
+        // tween情報があれば更新
+        character.updateTweenBlend(frame);
 
         // 再描画ように、キャッシュを削除
         character._$image = null;

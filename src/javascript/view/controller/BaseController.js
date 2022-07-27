@@ -367,7 +367,7 @@ class BaseController
      *              例) sound-volume-1 => changeSoundVolumeがコールされる
      *
      * @param  {string} name
-     * @param  {string|number} value
+     * @param  {string|number|Event} value
      * @return {*}
      * @method
      * @public

@@ -170,6 +170,41 @@ class Character
     }
 
     /**
+     * @description tweenの座標を再計算してポインターを再配置
+     *
+     * @param {number} frame
+     * @method
+     * @public
+     */
+    relocationTween (frame)
+    {
+        if (!this._$tween.size) {
+            return ;
+        }
+
+        const range = this.getRange(frame);
+        if (this.hasTween(range.startFrame)) {
+
+            // 変更したフレームにキーフレームがなければ自動的に追加
+            // 最後のフレームは対象外
+            if (this.endFrame - 1 > frame && !this.hasTween(frame)) {
+                Util
+                    .$timelineTool
+                    .executeTimelineKeyAdd();
+            }
+
+            Util
+                .$tweenController
+                .relocationPlace(this, range.startFrame);
+
+            Util
+                .$tweenController
+                .clearPointer()
+                .relocationPointer();
+        }
+    }
+
+    /**
      * @description 指定したフレームをキーフレームの開始・終了のフレームを返す
      *
      * @param  {number} frame
@@ -1237,6 +1272,83 @@ class Character
             place.tweenFrame = start_frame;
 
             this.setPlace(frame, place);
+        }
+    }
+
+    /**
+     * @description ブレンドモード追加時にレンジ内のplace objectを更新
+     *
+     * @param  {number} frame
+     * @return {void}
+     * @method
+     * @public
+     */
+    updateTweenBlend (frame)
+    {
+        if (!this._$tween.size) {
+            return ;
+        }
+
+        const range    = this.getRange(frame);
+        const keyPlace = this.getPlace(range.startFrame);
+
+        for (let frame = range.startFrame; frame < range.endFrame; ++frame) {
+
+            if (!this.hasPlace(frame)) {
+
+                const clonePlace = this.clonePlace(range.startFrame, frame);
+                clonePlace.blendMode = keyPlace.blendMode;
+                this.setPlace(frame, clonePlace);
+
+            } else {
+
+                this
+                    .getPlace(frame)
+                    .blendMode = keyPlace.blendMode;
+
+            }
+        }
+    }
+
+    /**
+     * @description filter追加時にレンジ内のplace objectにfilterを追加
+     *
+     * @param  {number} frame
+     * @return {void}
+     * @method
+     * @public
+     */
+    updateTweenFilter (frame)
+    {
+        if (!this._$tween.size) {
+            return ;
+        }
+
+        const range    = this.getRange(frame);
+        const keyPlace = this.getPlace(range.startFrame);
+
+        for (let frame = range.startFrame; frame < range.endFrame; ++frame) {
+
+            const filters = [];
+            const length = keyPlace.filter.length;
+            for (let idx = 0; idx < length; ++idx) {
+                filters.push(keyPlace.filter[idx].clone());
+            }
+
+            if (!this.hasPlace(frame)) {
+
+                const clonePlace  = this.clonePlace(range.startFrame, frame);
+                clonePlace.filter = filters;
+                this.setPlace(frame, clonePlace);
+
+            } else {
+
+                this
+                    .getPlace(frame)
+                    .filter = filters;
+
+            }
+
         }
     }
 

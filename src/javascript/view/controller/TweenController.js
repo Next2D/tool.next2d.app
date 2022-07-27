@@ -167,6 +167,186 @@ class TweenController extends BaseController
     initialize ()
     {
         super.initialize();
+
+        const ratio = window.devicePixelRatio;
+
+        const drawCanvas   = document.createElement("canvas");
+        drawCanvas.width   = TweenController.EASE_CANVAS_WIDTH  * ratio;
+        drawCanvas.height  = TweenController.EASE_CANVAS_HEIGHT * ratio;
+        this._$drawContext = drawCanvas.getContext("2d");
+
+        const viewCanvas = document.getElementById("ease-custom-canvas");
+        if (viewCanvas) {
+            viewCanvas.width  = TweenController.EASE_CANVAS_WIDTH  * ratio;
+            viewCanvas.height = TweenController.EASE_CANVAS_HEIGHT * ratio;
+
+            viewCanvas.style.transform          = `scale(${1 / ratio}, ${1 / ratio})`;
+            viewCanvas.style.backfaceVisibility = "hidden";
+
+            this._$viewContext = viewCanvas.getContext("2d");
+
+            viewCanvas.addEventListener("dblclick", function (event)
+            {
+                const layerElement = Util.$timeline._$targetLayer;
+                if (!layerElement) {
+                    return ;
+                }
+
+                const layerId = layerElement.dataset.layerId | 0;
+
+                const layer = Util
+                    .$currentWorkSpace()
+                    .scene
+                    .getLayer(layerId);
+
+                const character = layer.getActiveCharacter(
+                    Util.$timelineFrame.currentFrame
+                )[0];
+
+                const parent = document
+                    .getElementById("ease-cubic-pointer-area");
+
+                const children = parent.children;
+
+                const tween  = character.getTween();
+                const types  = ["curve", "pointer", "curve"];
+                const points = [-20, 0, 20];
+
+                const scale = Util.EASE_BASE_CANVAS_SIZE / Util.EASE_RANGE;
+
+                const x = (event.layerX - Util.EASE_BASE_CANVAS_SIZE) / scale;
+                const y = (Util.EASE_BASE_CANVAS_SIZE - (event.layerY - 300)) / scale;
+
+                // new pointer
+                for (let idx = 0; idx < types.length; ++idx) {
+
+                    const type = types[idx];
+
+                    const dx = x + points[idx];
+                    const dy = y + points[idx];
+
+                    const div = this.createEasingPointerDiv(dx, dy, type);
+
+                    parent.insertBefore(
+                        div, children[children.length - 1]
+                    );
+
+                    tween.custom.splice(-2, 0, {
+                        "type": type,
+                        "x": dx,
+                        "y": dy
+                    });
+                }
+
+                for (let idx = 0; idx < children.length; ++idx) {
+                    const child = children[idx];
+                    child.dataset.index = `${idx + 1}`;
+                }
+
+                this._$easeMode   = false;
+                this._$easeTarget = null;
+
+                this.createEasingGraph();
+                Util.$screen.executeTween(layer);
+                Util.$screen.createTweenMarker();
+
+            }.bind(this));
+        }
+
+        const changeIds = [
+            "ease-select",
+            "ease-custom-file-input"
+        ];
+
+        for (let idx = 0; idx < changeIds.length; ++idx) {
+
+            const element = document.getElementById(changeIds[idx]);
+            if (!element) {
+                continue;
+            }
+
+            element.addEventListener("change", (event) =>
+            {
+                // 他のイベントを中止
+                event.stopPropagation();
+
+                // id名で関数を実行
+                this.executeFunction(event.target.id, event);
+            });
+
+        }
+
+        const elementIds = [
+            "ease-custom-data-export",
+            "ease-custom-data-load"
+        ];
+
+        for (let idx = 0; idx < elementIds.length; ++idx) {
+
+            const element = document.getElementById(changeIds[idx]);
+            if (!element) {
+                continue;
+            }
+
+            element.addEventListener("click", (event) =>
+            {
+                // 他のイベントを中止
+                event.stopPropagation();
+
+                // id名で関数を実行
+                this.executeFunction(event.target.id, event);
+            });
+        }
+
+
+    }
+
+    /**
+     * @description イージング関数の変更
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    changeEaseSelect ()
+    {
+        const targetFrame = Util.$timelineLayer.targetFrame;
+        if (!targetFrame) {
+            return ;
+        }
+
+        const element = document.getElementById("ease-select");
+        if (element.value === "custom") {
+            this.showCustomArea();
+        } else {
+            this.hideCustomArea();
+        }
+
+        const scene = Util.$currentWorkSpace().scene;
+        const layer = scene.getLayer(
+            targetFrame.dataset.layerId | 0
+        );
+
+        const frame = targetFrame.dataset.frame | 0;
+        const characters = layer.getActiveCharacter(frame);
+
+        if (!characters.length && characters.length > 1) {
+            return ;
+        }
+
+        const character = characters[0];
+
+        const range = character.getRange(frame);
+        if (!character.hasTween(range.startFrame)) {
+            return ;
+        }
+
+        character
+            .getTween(range.startFrame)
+            .method = element.value;
+
+        //  tweenの座標を再計算してポインターを再配置
+        character.relocationTween(range.startFrame);
     }
 
     /**
@@ -175,39 +355,6 @@ class TweenController extends BaseController
      */
     initializeEaseSetting ()
     {
-        const easeSelect = document
-            .getElementById("ease-select");
-
-        if (easeSelect) {
-            easeSelect
-                .addEventListener("change", function (event)
-                {
-                    if (event.target.value === "custom") {
-                        this.showEaseCanvasArea();
-                    } else {
-                        this.hideEaseCanvasArea();
-                    }
-
-                    const scene = Util.$currentWorkSpace().scene;
-
-                    const layerElement = Util.$timeline._$targetLayer;
-
-                    Util.$screen.executeTween(scene.getLayer(
-                        layerElement.dataset.layerId | 0
-                    ), true);
-
-                    Util.$screen.createTweenMarker();
-
-                    const onionElement = document
-                        .getElementById("timeline-onion-skin");
-                    if (onionElement.classList.contains("onion-skin-active")) {
-                        scene.changeFrame(
-                            Util.$timelineFrame.currentFrame
-                        );
-                    }
-                }.bind(this));
-        }
-
         const easeCustomDataExport = document
             .getElementById("ease-custom-data-export");
 
@@ -389,7 +536,6 @@ class TweenController extends BaseController
 
         this._$drawEaseContext = drawCanvas.getContext("2d");
 
-        this.hideEaseCanvasArea();
     }
 
     /**

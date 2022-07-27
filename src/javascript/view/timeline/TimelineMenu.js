@@ -182,15 +182,8 @@ class TimelineMenu extends BaseTimeline
 
         character.updateTweenPlace(range.startFrame, range.endFrame);
 
-        Util
-            .$tweenController
-            .relocationPlace(character, range.startFrame);
-
-        // tweenのポインターを配置
-        Util
-            .$tweenController
-            .clearPointer()
-            .relocationPointer();
+        //  tweenの座標を再計算してポインターを再配置
+        character.relocationTween(range.startFrame);
 
         // タイムラインを再描画
         layer.reloadStyle();

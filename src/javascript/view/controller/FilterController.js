@@ -321,52 +321,27 @@ class FilterController extends GradientFilterController
 
         const frame = Util.$timelineFrame.currentFrame;
 
-        const place  = character.getPlace(frame);
+        let place = character.getPlace(frame);
+        if (place.tweenFrame) {
+
+            if (character.endFrame - 1 > frame && !character.hasTween(frame)) {
+
+                Util
+                    .$timelineTool
+                    .executeTimelineKeyAdd();
+
+                place = character.getPlace(frame);
+            }
+
+            place = character.getPlace(place.tweenFrame);
+        }
+
         const object = this._$filters.get(filterId);
         const index  = place.filter.indexOf(object.filter);
+        place.filter.splice(index, 1);
 
-        // if (document
-        //     .getElementById(`${layerId}-${frame}`)
-        //     .classList
-        //     .contains("tween-frame")
-        // ) {
-        //
-        //     let startFrame = frame;
-        //     while (startFrame > 1) {
-        //
-        //         const element = document
-        //             .getElementById(`${layerId}-${startFrame}`);
-        //
-        //         if (element.classList.contains("key-frame")) {
-        //             break;
-        //         }
-        //
-        //         --startFrame;
-        //     }
-        //
-        //     let endFrame = frame;
-        //     for (;;) {
-        //
-        //         ++endFrame;
-        //
-        //         const element = document
-        //             .getElementById(`${layerId}-${endFrame}`);
-        //
-        //         if (!element.classList.contains("tween-frame")) {
-        //             break;
-        //         }
-        //     }
-        //
-        //     for (let frame = startFrame; frame < endFrame; ++frame) {
-        //         const place = character.getPlace(frame);
-        //         place.filter.splice(index, 1);
-        //     }
-        //
-        // } else {
-        //
-            place.filter.splice(index, 1);
-        //
-        // }
+        // tween情報があれば更新
+        character.updateTweenFilter(frame);
 
         // remove
         this._$filters.delete(filterId);
@@ -817,6 +792,11 @@ class FilterController extends GradientFilterController
             element.dataset.characterId | 0
         );
 
+        // tween情報があれば更新
+        character.relocationTween(
+            Util.$timelineFrame.currentFrame
+        );
+
         // 再描画用にキャッシュを削除
         character._$image = null;
     }
@@ -1024,52 +1004,25 @@ class FilterController extends GradientFilterController
 
             const frame = Util.$timelineFrame.currentFrame;
 
-            const place = character.getPlace(frame);
+            let place = character.getPlace(frame);
+            if (place.tweenFrame) {
+
+                if (character.endFrame - 1 > frame && !character.hasTween(frame)) {
+
+                    Util
+                        .$timelineTool
+                        .executeTimelineKeyAdd();
+
+                    place = character.getPlace(frame);
+                }
+
+                place = character.getPlace(place.tweenFrame);
+            }
+
             place.filter.push(filter);
 
-            // if (document
-            //     .getElementById(`${layerId}-${frame}`)
-            //     .classList
-            //     .contains("tween-frame")
-            // ) {
-            //
-            //     let startFrame = frame;
-            //     while (startFrame > 1) {
-            //
-            //         const element = document
-            //             .getElementById(`${layerId}-${startFrame}`);
-            //
-            //         if (element.classList.contains("key-frame")) {
-            //             break;
-            //         }
-            //
-            //         --startFrame;
-            //     }
-            //
-            //     let endFrame = frame;
-            //     for (;;) {
-            //
-            //         ++endFrame;
-            //
-            //         const element = document
-            //             .getElementById(`${layerId}-${endFrame}`);
-            //
-            //         if (!element.classList.contains("tween-frame")) {
-            //             break;
-            //         }
-            //     }
-            //
-            //     for (let frame = startFrame; frame < endFrame; ++frame) {
-            //
-            //         const place = character.getPlace(frame);
-            //         if (place.filter.indexOf(filter) > -1) {
-            //             continue;
-            //         }
-            //
-            //         place.filter.push(new filterClass());
-            //
-            //     }
-            // }
+            // tweenの情報を更新
+            character.updateTweenFilter(frame);
         }
 
         // 複数のフィルターを管理するので、Mapで状態管理を行う

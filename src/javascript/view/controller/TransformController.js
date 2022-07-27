@@ -726,6 +726,8 @@ class TransformController extends BaseController
         const workSpace = Util.$currentWorkSpace();
         const scene     = workSpace.scene;
 
+        const frame = Util.$timelineFrame.currentFrame;
+
         /**
          * @type {ArrowTool}
          */
@@ -742,14 +744,8 @@ class TransformController extends BaseController
 
             character.x = x;
 
-            // if (document
-            //     .getElementById(`${layerId}-${frame}`)
-            //     .classList
-            //     .contains("tween-frame")
-            // ) {
-            //     this.executeTween(layer);
-            //     this.createTweenMarker();
-            // }
+            //  tweenの座標を再計算してポインターを再配置
+            character.relocationTween(frame);
         }
 
         this.relocation();
@@ -765,6 +761,8 @@ class TransformController extends BaseController
     {
         const workSpace = Util.$currentWorkSpace();
         const scene     = workSpace.scene;
+
+        const frame = Util.$timelineFrame.currentFrame;
 
         /**
          * @type {ArrowTool}
@@ -782,14 +780,8 @@ class TransformController extends BaseController
 
             character.y = y;
 
-            // if (document
-            //     .getElementById(`${layerId}-${frame}`)
-            //     .classList
-            //     .contains("tween-frame")
-            // ) {
-            //     this.executeTween(layer);
-            //     this.createTweenMarker();
-            // }
+            //  tweenの座標を再計算してポインターを再配置
+            character.relocationTween(frame);
         }
 
         this.relocation();
@@ -978,6 +970,9 @@ class TransformController extends BaseController
                 yMax = Math.max(yMax, bounds.yMax);
 
                 character._$image = null;
+
+                //  tweenの座標を再計算してポインターを再配置
+                character.relocationTween(frame);
             }
 
             document
@@ -1058,17 +1053,9 @@ class TransformController extends BaseController
                     .getElementById("transform-scale-x")
                     .value = `${scale_x * 100}`;
 
-                // if (document
-                //     .getElementById(`${layerId}-${frame}`)
-                //     .classList
-                //     .contains("tween-frame")
-                // ) {
-                //     this.executeTween(layer);
-                //     this.createTweenMarker();
-                // }
-
+                //  tweenの座標を再計算してポインターを再配置
+                character.relocationTween(frame);
             }
-
         }
 
         document
@@ -1270,6 +1257,9 @@ class TransformController extends BaseController
                 yMax = Math.max(yMax, bounds.yMax);
 
                 character._$image = null;
+
+                //  tweenの座標を再計算してポインターを再配置
+                character.relocationTween(frame);
             }
 
             document
@@ -1351,14 +1341,8 @@ class TransformController extends BaseController
                     .getElementById("transform-scale-y")
                     .value = `${scale_y * 100}`;
 
-                // if (document
-                //     .getElementById(`${layerId}-${frame}`)
-                //     .classList
-                //     .contains("tween-frame")
-                // ) {
-                //     this.executeTween(layer);
-                //     this.createTweenMarker();
-                // }
+                //  tweenの座標を再計算してポインターを再配置
+                character.relocationTween(frame);
             }
 
         }
@@ -1482,6 +1466,9 @@ class TransformController extends BaseController
                 yMax = Math.max(yMax, bounds.yMax);
 
                 character._$image = null;
+
+                //  tweenの座標を再計算してポインターを再配置
+                character.relocationTween(frame);
             }
 
             document
@@ -1583,17 +1570,9 @@ class TransformController extends BaseController
                 yMin = Math.min(yMin, afterBounds.yMin);
                 yMax = Math.max(yMax, afterBounds.yMax);
 
-                // if (document
-                //     .getElementById(`${layerId}-${frame}`)
-                //     .classList
-                //     .contains("tween-frame")
-                // ) {
-                //     this.executeTween(layer);
-                //     this.createTweenMarker();
-                // }
-
+                //  tweenの座標を再計算してポインターを再配置
+                character.relocationTween(frame);
             }
-
         }
 
         document

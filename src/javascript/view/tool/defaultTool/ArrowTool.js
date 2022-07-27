@@ -1079,16 +1079,6 @@ class ArrowTool extends BaseTool
 
             element.style.left = `${dx + xMin + width  / 2 - 5}px`;
             element.style.top  = `${dy + yMin + height / 2 - 5}px`;
-
-            // if (document
-            //     .getElementById(`${layerId}-${frame}`)
-            //     .classList
-            //     .contains("tween-frame")
-            // ) {
-            //     this.executeTween(layer);
-            //     this.createTweenMarker();
-            // }
-
         }
     }
 
@@ -1238,20 +1228,8 @@ class ArrowTool extends BaseTool
             xMin = Math.min(xMin, character.x);
             yMin = Math.min(yMin, character.y);
 
-            const range = character.getRange(frame);
-            if (character.hasTween(range.startFrame)) {
-
-                // tweenのキーがない場所でDisplayObjectを移動したらキーフレームを追加
-                if (character.endFrame - 1 > frame && !character.hasTween(frame)) {
-                    Util
-                        .$timelineTool
-                        .executeTimelineKeyAdd();
-                }
-
-                Util
-                    .$tweenController
-                    .relocationPlace(character, frame);
-            }
+            // tweenの座標を再計算してポインターを再配置
+            character.relocationTween(frame);
         }
 
         // 移動位置を更新

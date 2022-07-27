@@ -741,16 +741,8 @@ class TimelineTool extends BaseTimeline
                                     range.startFrame, endFrame
                                 );
 
-                            // tweenの座標を再計算
-                            Util
-                                .$tweenController
-                                .relocationPlace(character, range.startFrame);
-
-                            // tweenのポインターを再配置
-                            Util
-                                .$tweenController
-                                .clearPointer()
-                                .relocationPointer();
+                            //  tweenの座標を再計算してポインターを再配置
+                            character.relocationTween(range.startFrame);
                         }
 
                         // fixed logic 終了するフレーム番号を更新
@@ -874,17 +866,8 @@ class TimelineTool extends BaseTimeline
                                     range.endFrame + values.length
                                 );
 
-                                // tweenの座標を再計算
-                                Util
-                                    .$tweenController
-                                    .relocationPlace(character, range.startFrame);
-
-                                // tweenのポインターを再配置
-                                Util
-                                    .$tweenController
-                                    .clearPointer()
-                                    .relocationPointer();
-
+                                //  tweenの座標を再計算してポインターを再配置
+                                character.relocationTween(range.startFrame);
                             }
                         }
 
@@ -1086,14 +1069,10 @@ class TimelineTool extends BaseTimeline
                                         const prevTweenObject = character.getTween(prevRange.startFrame);
                                         prevTweenObject.endFrame = tweenObject.endFrame;
 
-                                        Util
-                                            .$tweenController
-                                            .relocationPlace(character, prevRange.startFrame);
-
-                                        Util
-                                            .$tweenController
-                                            .clearPointer()
-                                            .relocationPointer();
+                                        //  tweenの座標を再計算してポインターを再配置
+                                        character.updateTweenFilter(prevRange.startFrame);
+                                        character.updateTweenBlend(prevRange.startFrame);
+                                        character.relocationTween(prevRange.startFrame);
 
                                     } else {
 
@@ -1539,19 +1518,8 @@ class TimelineTool extends BaseTimeline
                             }
                             character._$tween = tween;
 
-                            if (character.hasTween(range.startFrame)) {
-
-                                // tweenの座標を再計算
-                                Util
-                                    .$tweenController
-                                    .relocationPlace(character, range.startFrame);
-
-                                // tweenのポインターを再配置
-                                Util
-                                    .$tweenController
-                                    .clearPointer()
-                                    .relocationPointer();
-                            }
+                            // tweenの座標を再計算してポインターを再配置
+                            character.relocationTween(range.startFrame);
                         }
 
                         character.endFrame -= moveFrame;

@@ -684,6 +684,11 @@ window.addEventListener("DOMContentLoaded", Util.$initialize);
  */
 Util.$showPreview = () =>
 {
+    // タイムライン側を停止
+    Util
+        .$timelinePlayer
+        .executeTimelineStop();
+
     Util.$javaScriptEditor.save();
 
     Util.$previewMode = true;
