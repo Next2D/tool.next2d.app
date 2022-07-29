@@ -221,8 +221,14 @@ class ShortcutSetting
                 {
                     "key": "pCtrl",
                     "text": "Ctrl + P",
-                    "css": "screen-tween-curve-pointer",
+                    "css": "screen-add-tween-curve-pointer",
                     "description": "{{カーブポインターの追加}}"
+                },
+                {
+                    "key": "pShiftCtrl",
+                    "text": "Ctrl + Shift + P",
+                    "css": "screen-delete-tween-curve-pointer",
+                    "description": "{{カーブポインターの削除}}"
                 }
             ],
             "timeline": [
