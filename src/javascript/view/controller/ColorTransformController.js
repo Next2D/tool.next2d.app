@@ -297,11 +297,11 @@ class ColorTransformController extends BaseController
         const place = character.getPlace(frame);
         place.colorTransform[index] = value;
 
-        // 再描画ように、キャッシュを削除
-        character._$image = null;
-
         // tweenの座標を再計算してポインターを再配置
         character.relocationTween(frame);
+
+        // 再描画ように、キャッシュを削除
+        character._$image = null;
     }
 }
 

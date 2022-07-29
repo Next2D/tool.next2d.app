@@ -304,6 +304,9 @@ class ArrowTool extends BaseTool
         // 配列を初期化
         this.clearActiveElement();
 
+        // Shapeのポインターを初期化
+        Util.$clearShapePointer();
+
         // スクリーンエリアの変形Elementを非表示に
         Util.$transformController.hide();
         Util.$gridController.hide();

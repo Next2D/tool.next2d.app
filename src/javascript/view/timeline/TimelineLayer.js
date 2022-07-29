@@ -442,7 +442,14 @@ class TimelineLayer extends BaseTimeline
                 .show()
                 .relocation();
 
+        } else {
+
+            Util
+                .$tweenController
+                .clearPointer();
+
         }
+
     }
 
     /**
@@ -963,9 +970,16 @@ class TimelineLayer extends BaseTimeline
 
         event.stopPropagation();
         this.changeType(event.target, "disable");
+
+        // スクリーンエリアの変形Elementを表示
         Util
             .$transformController
             .show();
+
+        // Shapeのポインターを初期化
+        Util.$clearShapePointer();
+
+        // 再描画
         this.reloadScreen();
     }
 

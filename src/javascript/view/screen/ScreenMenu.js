@@ -992,52 +992,9 @@ class ScreenMenu extends BaseScreen
      * @method
      * @public
      */
-    executeScreenTweenCurvePinter ()
+    executeScreenTweenCurvePointer ()
     {
-        const layerElement = Util.$timeline._$targetLayer;
-        if (!layerElement) {
-            return ;
-        }
-        const layerId = layerElement.dataset.layerId | 0;
-
-        const frame = Util.$timelineFrame.currentFrame;
-
-        const scene = Util.$currentWorkSpace().scene;
-        const layer = scene.getLayer(layerId);
-
-        const characters = layer.getActiveCharacter(frame);
-        if (characters.length > 1) {
-            return ;
-        }
-
-        const character = characters[0];
-        if (!character.hasTween()) {
-            return ;
-        }
-
-        const tween      = character.getTween();
-        const index      = tween.curve.length;
-        const matrix     = character.getPlace(character.startFrame).matrix;
-        const baseBounds = character.getBounds();
-        const bounds     = Util.$boundsMatrix(baseBounds, matrix);
-
-        const pointer = {
-            "usePoint": true,
-            "x": bounds.xMin - baseBounds.xMin - 5,
-            "y": bounds.yMin - baseBounds.yMin - 5
-        };
-        tween.curve.push(pointer);
-
-        const div = this.createTweenCurveElement(pointer, index);
-        if (div) {
-            document
-                .getElementById("stage-area")
-                .appendChild(div);
-        }
-
-        this.executeTween(layer);
-        this.createTweenMarker();
-
+        Util.$tweenController.addCurvePinter();
     }
 
     /**

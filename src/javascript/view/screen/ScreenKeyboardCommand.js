@@ -229,6 +229,12 @@ class ScreenKeyboardCommand extends KeyboardCommand
             Util.$generateShortcutKey("i", { "ctrl": true }),
             this.integratingPaths
         );
+
+        // カーブポインターを追加
+        this.add(Util.$generateShortcutKey("p", { "ctrl": true }), () =>
+        {
+            Util.$tweenController.addCurvePinter();
+        });
     }
 
     /**

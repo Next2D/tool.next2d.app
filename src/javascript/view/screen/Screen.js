@@ -4,21 +4,6 @@
 class Screen extends BaseScreen
 {
     /**
-     * @constructor
-     * @public
-     */
-    constructor()
-    {
-        super();
-
-        /**
-         * @type {Map}
-         * @private
-         */
-        this._$activeInstances = new Map();
-    }
-
-    /**
      * @description 初期起動関数
      *
      * @return {void}
@@ -28,57 +13,6 @@ class Screen extends BaseScreen
     initialize ()
     {
         super.initialize();
-
-        //     if (this._$tweenController) {
-        //         window.requestAnimationFrame(function (event)
-        //         {
-        //             if (!this._$rectPosition) {
-        //                 return ;
-        //             }
-        //
-        //             event.preventDefault();
-        //
-        //             const element = this._$tweenController;
-        //
-        //             const x = event.pageX - this._$rectPosition.x;
-        //             const y = event.pageY - this._$rectPosition.y;
-        //
-        //             const layer = Util.$currentWorkSpace().scene.getLayer(
-        //                 element.dataset.layerId | 0
-        //             );
-        //
-        //             const frame = element.dataset.tweenIndex | 0;
-        //             const character = layer.getActiveCharacter(frame)[0];
-        //
-        //             // set select
-        //             const matrix     = character.getPlace(frame).matrix;
-        //             const baseBounds = character.getBounds();
-        //             const bounds     = Util.$boundsMatrix(baseBounds, matrix);
-        //             const width      = Math.abs(Math.ceil(bounds.xMax - bounds.xMin) / 2);
-        //             const height     = Math.abs(Math.ceil(bounds.yMax - bounds.yMin) / 2);
-        //
-        //             const tween = character.getTween();
-        //             const point = tween.curve[element.dataset.index];
-        //
-        //             const tx = x - Util.$offsetLeft - width  - baseBounds.xMin;
-        //             const ty = y - Util.$offsetTop  - height - baseBounds.yMin;
-        //             point.x = tx / Util.$zoomScale;
-        //             point.y = ty / Util.$zoomScale;
-        //
-        //             element.style.left = `${Util.$offsetLeft + tx + baseBounds.xMin + width}px`;
-        //             element.style.top  = `${Util.$offsetTop  + ty + baseBounds.yMin + height}px`;
-        //
-        //             this.executeTween(layer);
-        //             this.createTweenMarker();
-        //
-        //             Util.$currentWorkSpace().scene.changeFrame(
-        //                 document
-        //                     .getElementById("current-frame")
-        //                     .textContent | 0
-        //             );
-        //
-        //         }.bind(this, event));
-        //     }
 
         const element = document.getElementById("screen");
         if (element) {
@@ -194,182 +128,7 @@ class Screen extends BaseScreen
                     );
                 }
             });
-
-            window.addEventListener("keydown", (event) =>
-            {
-                const activeTool = Util.$tools.activeTool;
-                if (activeTool) {
-                    event.screen = true;
-                    activeTool.dispatchEvent(
-                        EventType.DELETE,
-                        event
-                    );
-                }
-            });
         }
-    }
-
-    /**
-     * @param  {object} pointer
-     * @param  {number} index
-     * @return {HTMLDivElement|null}
-     */
-    createTweenCurveElement (pointer, index)
-    {
-        const layerElement = Util.$timeline._$targetLayer;
-        if (!layerElement) {
-            return null;
-        }
-        const layerId = layerElement.dataset.layerId | 0;
-
-        const div = document.createElement("div");
-
-        div.classList.add(
-            "tween-pointer-marker",
-            "tween-pointer-disabled"
-        );
-
-        const frame = Util.$timelineFrame.currentFrame;
-
-        div.textContent        = `${index + 1}`;
-        div.dataset.child      = "tween";
-        div.dataset.curve      = "true";
-        div.dataset.layerId    = `${layerId}`;
-        div.dataset.tweenIndex = `${frame}`;
-        div.dataset.index      = `${index}`;
-        div.dataset.detail     = "{{カーブポインター(ダブルクリックでON/OFF)}}";
-
-        const scene = Util.$currentWorkSpace().scene;
-        const layer = scene.getLayer(layerId);
-
-        const character = layer.getActiveCharacter(frame)[0];
-        if (!character) {
-            return null;
-        }
-
-        const matrix     = character.getPlace(frame).matrix;
-        const baseBounds = character.getBounds();
-        const bounds     = Util.$boundsMatrix(baseBounds, matrix);
-
-        const width  = Math.abs(Math.ceil(bounds.xMax - bounds.xMin) / 2 * Util.$zoomScale);
-        const height = Math.abs(Math.ceil(bounds.yMax - bounds.yMin) / 2 * Util.$zoomScale);
-
-        div.style.left = `${Util.$offsetLeft + pointer.x * Util.$zoomScale + baseBounds.xMin * Util.$zoomScale + width}px`;
-        div.style.top  = `${Util.$offsetTop  + pointer.y * Util.$zoomScale + baseBounds.yMin * Util.$zoomScale + height}px`;
-
-        if (pointer.usePoint) {
-            div.classList.remove("tween-pointer-disabled");
-            div.classList.add("tween-pointer-active");
-        } else {
-            div.classList.add("tween-pointer-disabled");
-            div.classList.remove("tween-pointer-active");
-        }
-
-        div.addEventListener("mousedown", function (event)
-        {
-            this._$tweenMode       = true;
-            this._$tweenController = event.target;
-            this._$tweenDelete     = event.target;
-
-            this._$rectPosition = {
-                "x": event.pageX - event.target.offsetLeft,
-                "y": event.pageY - event.target.offsetTop
-            };
-
-            if (!Util.$timeline._$targetLayer) {
-                Util.$timeline._$targetLayer = document
-                    .getElementById(`layer-id-${event.target.dataset.layerId}`);
-            }
-
-            this._$moveTargets.length = 0;
-            this.hideTransformTarget();
-            this.hideGridTarget();
-
-        }.bind(this));
-
-        div.addEventListener("dblclick", function (event)
-        {
-            const element = event.target;
-
-            const scene = Util.$currentWorkSpace().scene;
-            const layer = scene.getLayer(element.dataset.layerId | 0);
-
-            const frame = element.dataset.tweenIndex | 0;
-            const character = layer.getActiveCharacter(frame)[0];
-
-            const tween = character.getTween();
-            const pointer = tween.curve[element.dataset.index];
-
-            pointer.usePoint = !pointer.usePoint;
-
-            if (pointer.usePoint) {
-
-                element.classList.remove("tween-pointer-disabled");
-                element.classList.add("tween-pointer-active");
-
-            } else {
-
-                element.classList.add("tween-pointer-disabled");
-                element.classList.remove("tween-pointer-active");
-
-            }
-
-            if (!Util.$timeline._$targetLayer) {
-                Util.$timeline._$targetLayer = document
-                    .getElementById(`layer-id-${event.target.dataset.layerId}`);
-            }
-
-            this.executeTween(layer);
-            this.createTweenMarker();
-
-            const onionElement = document
-                .getElementById("timeline-onion-skin");
-            if (onionElement.classList.contains("onion-skin-active")) {
-                Util.$currentWorkSpace().scene.changeFrame(frame);
-            }
-
-        }.bind(this));
-
-        div.addEventListener("mouseover", function (event)
-        {
-            const object = Util.$tools.getUserPublishSetting();
-            if ("modal" in object && !object.modal) {
-                return ;
-            }
-
-            const element = document.getElementById("detail-modal");
-
-            element.textContent = Util.$currentLanguage.replace(
-                event.currentTarget.dataset.detail
-            );
-            element.style.left  = `${event.pageX - 20}px`;
-            element.style.top   = `${event.pageY + 20}px`;
-            element.setAttribute("class", "fadeIn");
-
-            element.dataset.timerId = setTimeout(function ()
-            {
-                if (!this.classList.contains("fadeOut")) {
-                    this.setAttribute("class", "fadeOut");
-                }
-            }.bind(element), 1500);
-        });
-
-        div.addEventListener("mouseout", function ()
-        {
-            this._$tweenDelete = null;
-            Util.$setCursor("auto");
-
-            const object = Util.$tools.getUserPublishSetting();
-            if ("modal" in object && !object.modal) {
-                return ;
-            }
-
-            const element = document.getElementById("detail-modal");
-            clearTimeout(element.dataset.timerId | 0);
-            element.setAttribute("class", "fadeOut");
-        }.bind(this));
-
-        return div;
     }
 
     /**
@@ -377,6 +136,7 @@ class Screen extends BaseScreen
      *
      * @param  {DragEvent} event
      * @return {void}
+     * @method
      * @public
      */
     drop (event)
@@ -542,6 +302,10 @@ class Screen extends BaseScreen
                         character.setPlace(frame, place);
                     }
 
+                    for (let [frame, tween] of join.end._$tween) {
+                        character.setTween(frame, tween);
+                    }
+
                     layer.deleteCharacter(join.end.id);
 
                 } else {
@@ -614,9 +378,12 @@ class Screen extends BaseScreen
     }
 
     /**
+     * @description オニオンスライス起動時に前後のフレームのDisplayObjectを半透明で配置
+     *
      * @param  {Character} character
      * @param  {number} layer_id
      * @return {void}
+     * @method
      * @public
      */
     appendOnionCharacter (character, layer_id)
@@ -686,11 +453,14 @@ class Screen extends BaseScreen
     }
 
     /**
+     * @description 現在のフレームに配置されたDisplayObjectを配置
+     *
      * @param  {Character} character
      * @param  {number}    frame
      * @param  {number}    layer_id
      * @param  {string}    [event="auto"]
      * @return {void}
+     * @method
      * @public
      */
     appendCharacter (character, frame, layer_id, event = "auto")

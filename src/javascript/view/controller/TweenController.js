@@ -25,6 +25,20 @@ class TweenController extends BaseController
          * @private
          */
         this._$drawContext = null;
+
+        /**
+         * @type {function}
+         * @default null
+         * @private
+         */
+        this._$moveCurvePointer = null;
+
+        /**
+         * @type {function}
+         * @default null
+         * @private
+         */
+        this._$endMoveCurvePointer = null;
     }
 
     /**
@@ -167,6 +181,12 @@ class TweenController extends BaseController
     initialize ()
     {
         super.initialize();
+
+        // カーブポインター削除イベント
+        window.addEventListener("keydown", (event) =>
+        {
+            this.deleteCurvePointer(event);
+        });
 
         const ratio = window.devicePixelRatio;
 
@@ -820,85 +840,86 @@ class TweenController extends BaseController
 
             // ColorTransform
             const colorTransform = place.colorTransform;
-            if (ct0) {
-                colorTransform[0] = Util.$clamp(
+
+            colorTransform[0] = !ct0
+                ? startColorTransform[0]
+                : Util.$clamp(
                     functionName === "custom"
                         ? ct0 * customValue + startColorTransform[0]
                         : Easing[functionName](time, startColorTransform[0], ct0, totalFrame),
                     ColorTransformController.MIN_MULTIPLIER,
                     ColorTransformController.MAX_MULTIPLIER
                 );
-            }
 
-            if (ct1) {
-                colorTransform[1] = Util.$clamp(
+            colorTransform[1] = !ct1
+                ? startColorTransform[1]
+                : Util.$clamp(
                     functionName === "custom"
                         ? ct1 * customValue + startColorTransform[1]
                         : Easing[functionName](time, startColorTransform[1], ct1, totalFrame),
                     ColorTransformController.MIN_MULTIPLIER,
                     ColorTransformController.MAX_MULTIPLIER
                 );
-            }
 
-            if (ct2) {
-                colorTransform[2] = Util.$clamp(
+            colorTransform[2] = !ct2
+                ? startColorTransform[2]
+                : Util.$clamp(
                     functionName === "custom"
                         ? ct2 * customValue + startColorTransform[2]
                         : Easing[functionName](time, startColorTransform[2], ct2, totalFrame),
                     ColorTransformController.MIN_MULTIPLIER,
                     ColorTransformController.MAX_MULTIPLIER
                 );
-            }
 
-            if (ct3) {
-                colorTransform[3] = Util.$clamp(
+            colorTransform[3] = !ct3
+                ? startColorTransform[3]
+                : Util.$clamp(
                     functionName === "custom"
                         ? ct3 * customValue + startColorTransform[3]
                         : Easing[functionName](time, startColorTransform[3], ct3, totalFrame),
                     ColorTransformController.MIN_MULTIPLIER,
                     ColorTransformController.MAX_MULTIPLIER
                 );
-            }
 
-            if (ct4) {
-                colorTransform[4] = Util.$clamp(
+            colorTransform[4] = !ct4
+                ? startColorTransform[4]
+                : Util.$clamp(
                     functionName === "custom"
                         ? ct4 * customValue + startColorTransform[4]
                         : Easing[functionName](time, startColorTransform[4], ct4, totalFrame),
                     ColorTransformController.MIN_OFFSET,
                     ColorTransformController.MAX_OFFSET
                 );
-            }
 
-            if (ct5) {
-                colorTransform[5] = Util.$clamp(
+            colorTransform[5] = !ct5
+                ? startColorTransform[5]
+                : Util.$clamp(
                     functionName === "custom"
                         ? ct5 * customValue + startColorTransform[5]
                         : Easing[functionName](time, startColorTransform[5], ct5, totalFrame),
                     ColorTransformController.MIN_OFFSET,
                     ColorTransformController.MAX_OFFSET
                 );
-            }
 
-            if (ct6) {
-                colorTransform[6] = Util.$clamp(
+            colorTransform[6] = !ct6
+                ? startColorTransform[6]
+                : Util.$clamp(
                     functionName === "custom"
                         ? ct6 * customValue + startColorTransform[6]
                         : Easing[functionName](time, startColorTransform[6], ct6, totalFrame),
                     ColorTransformController.MIN_OFFSET,
                     ColorTransformController.MAX_OFFSET
                 );
-            }
 
-            if (ct7) {
-                colorTransform[7] = Util.$clamp(
+            colorTransform[7] = !ct7
+                ? startColorTransform[7]
+                : Util.$clamp(
                     functionName === "custom"
                         ? ct7 * customValue + startColorTransform[7]
                         : Easing[functionName](time, startColorTransform[7], ct7, totalFrame),
                     ColorTransformController.MIN_OFFSET,
                     ColorTransformController.MAX_OFFSET
                 );
-            }
 
             const div = document
                 .getElementById(`tween-marker-${character.id}-${frame}`);
@@ -1056,14 +1077,13 @@ class TweenController extends BaseController
                 parentElement.appendChild(div);
             }
 
-            // TODO
             const tweenObject = character.getTween(range.startFrame);
             for (let idx = 0; idx < tweenObject.curve.length; ++idx) {
 
                 const pointer = tweenObject.curve[idx];
 
                 parentElement.appendChild(
-                    this.createTweenCurveElement(pointer, idx)
+                    this.createTweenCurveElement(pointer, idx, layer.id)
                 );
 
             }
@@ -1095,6 +1115,296 @@ class TweenController extends BaseController
         }
 
         return this;
+    }
+
+    /**
+     * @description カーブポインターの移動開始関数
+     *
+     * @param  {MouseEvent} event
+     * @return {void}
+     * @method
+     * @public
+     */
+    startMoveCurvePointer (event)
+    {
+        if (event.button) {
+            return ;
+        }
+
+        Util.$endMenu();
+
+        // 他のイベントを中止
+        event.stopPropagation();
+
+        this._$currentTarget = event.target;
+
+        this._$pointX = event.pageX - event.target.offsetLeft;
+        this._$pointY = event.pageY - event.target.offsetTop;
+
+        if (!this._$moveCurvePointer) {
+            this._$moveCurvePointer = this.moveCurvePointer.bind(this);
+        }
+
+        if (!this._$endMoveCurvePointer) {
+            this._$endMoveCurvePointer = this.endMoveCurvePointer.bind(this);
+        }
+
+        // 保存開始
+        this.save();
+
+        window.addEventListener("mousemove", this._$moveCurvePointer);
+        window.addEventListener("mouseup", this._$endMoveCurvePointer);
+    }
+
+    /**
+     * @description カーブポインターを削除
+     *
+     * @param  {KeyboardEvent} event
+     * @return {void}
+     * @method
+     * @public
+     */
+    deleteCurvePointer (event)
+    {
+        if (event.key !== "Backspace") {
+            return ;
+        }
+
+        const element = this._$currentTarget;
+        if (!element) {
+            return ;
+        }
+
+        // 全てのイベントを中止
+        event.stopPropagation();
+
+        this.save();
+
+        // 初期化
+        this._$saved = false;
+    }
+
+    /**
+     * @description カーブポインターの移動関数
+     *
+     * @param  {MouseEvent} event
+     * @return {void}
+     * @method
+     * @public
+     */
+    moveCurvePointer (event)
+    {
+        // 全てのイベントを中止
+        event.preventDefault();
+
+        window.requestAnimationFrame(() =>
+        {
+            const element = this._$currentTarget;
+            if (!element) {
+                return ;
+            }
+
+            const x = event.pageX - this._$pointX;
+            const y = event.pageY - this._$pointY;
+
+            const layer = Util
+                .$currentWorkSpace()
+                .scene
+                .getLayer(
+                    element.dataset.layerId | 0
+                );
+
+            const frame = Util.$timelineFrame.currentFrame;
+
+            const characters = layer.getActiveCharacter(frame);
+            if (!characters.length && characters.length > 1) {
+                return ;
+            }
+
+            // set select
+            const character = characters[0];
+
+            // tweenがなければ終了
+            const range = character.getRange(frame);
+            if (!character.hasTween(range.startFrame)) {
+                return ;
+            }
+
+            const matrix     = character.getPlace(frame).matrix;
+            const baseBounds = character.getBounds();
+            const bounds     = Util.$boundsMatrix(baseBounds, matrix);
+            const width      = Math.abs(Math.ceil(bounds.xMax - bounds.xMin) / 2);
+            const height     = Math.abs(Math.ceil(bounds.yMax - bounds.yMin) / 2);
+
+            const point = character
+                .getTween(range.startFrame)
+                .curve[element.dataset.index];
+
+            const tx = x - Util.$offsetLeft - width  - baseBounds.xMin;
+            const ty = y - Util.$offsetTop  - height - baseBounds.yMin;
+            point.x = tx / Util.$zoomScale;
+            point.y = ty / Util.$zoomScale;
+
+            element.style.left = `${Util.$offsetLeft + tx + baseBounds.xMin + width}px`;
+            element.style.top  = `${Util.$offsetTop  + ty + baseBounds.yMin + height}px`;
+
+            // 再計算
+            this.relocationPlace(character, range.startFrame);
+
+            // 再配置
+            this
+                .clearPointer()
+                .relocationPointer();
+
+            // 再描画
+            this.reloadScreen();
+        });
+    }
+
+    /**
+     * @description カーブポインターの移動終了
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    endMoveCurvePointer ()
+    {
+        // イベントを終了
+        window.removeEventListener("mousemove", this._$moveCurvePointer);
+        window.removeEventListener("mouseup", this._$endMoveCurvePointer);
+
+        // 初期化
+        this._$saved = false;
+    }
+
+    /**
+     * @description カーブポインターのアクティブon/off
+     *
+     * @param  {MouseEvent} event
+     * @return {void}
+     * @method
+     * @public
+     */
+    switchingCurvePointer (event)
+    {
+        const element = event.target;
+
+        const scene = Util.$currentWorkSpace().scene;
+        const layer = scene.getLayer(element.dataset.layerId | 0);
+
+        const frame = Util.$timelineFrame.currentFrame;
+
+        const characters = layer.getActiveCharacter(frame);
+        if (!characters.length && characters.length > 1) {
+            return ;
+        }
+
+        // set select
+        const character = characters[0];
+
+        // tweenがなければ終了
+        const range = character.getRange(frame);
+        if (!character.hasTween(range.startFrame)) {
+            return ;
+        }
+
+        const pointer = character
+            .getTween(range.startFrame)
+            .curve[element.dataset.index];
+
+        pointer.usePoint = !pointer.usePoint;
+
+        if (pointer.usePoint) {
+
+            element.classList.remove("tween-pointer-disabled");
+            element.classList.add("tween-pointer-active");
+
+        } else {
+
+            element.classList.add("tween-pointer-disabled");
+            element.classList.remove("tween-pointer-active");
+
+        }
+
+        // 再計算
+        this.relocationPlace(character, range.startFrame);
+
+        // ポインターを再配置
+        this
+            .clearPointer()
+            .relocationPointer();
+
+        // 再描画
+        this.reloadScreen();
+    }
+
+    /**
+     * @param  {object} pointer
+     * @param  {number} index
+     * @param  {number} layerId
+     * @return {HTMLDivElement|null}
+     * @method
+     * @public
+     */
+    createTweenCurveElement (pointer, index, layerId)
+    {
+        const div = document.createElement("div");
+        div.classList.add(
+            "tween-pointer-marker",
+            "tween-pointer-disabled"
+        );
+
+        const frame = Util.$timelineFrame.currentFrame;
+
+        div.textContent     = `${index + 1}`;
+        div.dataset.child   = "tween";
+        div.dataset.curve   = "true";
+        div.dataset.layerId = `${layerId}`;
+        div.dataset.index   = `${index}`;
+        div.dataset.detail  = "{{カーブポインター(ダブルクリックでON/OFF)}}";
+
+        const scene = Util.$currentWorkSpace().scene;
+        const layer = scene.getLayer(layerId);
+
+        const characters = layer.getActiveCharacter(frame);
+        if (!characters.length || characters.length > 1) {
+            return null;
+        }
+
+        const character  = characters[0];
+        const matrix     = character.getPlace(frame).matrix;
+        const baseBounds = character.getBounds();
+        const bounds     = Util.$boundsMatrix(baseBounds, matrix);
+
+        const width  = Math.abs(Math.ceil(bounds.xMax - bounds.xMin) / 2 * Util.$zoomScale);
+        const height = Math.abs(Math.ceil(bounds.yMax - bounds.yMin) / 2 * Util.$zoomScale);
+
+        div.style.left = `${Util.$offsetLeft + pointer.x * Util.$zoomScale + baseBounds.xMin * Util.$zoomScale + width}px`;
+        div.style.top  = `${Util.$offsetTop  + pointer.y * Util.$zoomScale + baseBounds.yMin * Util.$zoomScale + height}px`;
+
+        if (pointer.usePoint) {
+            div.classList.remove("tween-pointer-disabled");
+            div.classList.add("tween-pointer-active");
+        } else {
+            div.classList.add("tween-pointer-disabled");
+            div.classList.remove("tween-pointer-active");
+        }
+
+        div.addEventListener("mousedown", (event) =>
+        {
+            this.startMoveCurvePointer(event);
+        });
+
+        div.addEventListener("dblclick", (event) =>
+        {
+            this.switchingCurvePointer(event);
+        });
+
+        div.addEventListener("mouseover", Util.$fadeIn);
+        div.addEventListener("mouseout",  Util.$fadeOut);
+
+        return div;
     }
 
     /**
@@ -1473,6 +1783,68 @@ class TweenController extends BaseController
                 children[0].remove();
             }
         }
+    }
+
+    /**
+     * @description tweenのカーブポイントを追加
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    addCurvePinter ()
+    {
+        const targetLayer = Util.$timelineLayer.targetLayer;
+        if (!targetLayer) {
+            return ;
+        }
+
+        const frame = Util.$timelineFrame.currentFrame;
+
+        const scene = Util.$currentWorkSpace().scene;
+        const layer = scene.getLayer(
+            targetLayer.dataset.layerId | 0
+        );
+
+        const characters = layer.getActiveCharacter(frame);
+        if (!characters.length || characters.length > 1) {
+            return ;
+        }
+
+        const character = characters[0];
+
+        const range = character.getRange(frame);
+        if (!character.hasTween(range.startFrame)) {
+            return ;
+        }
+
+        const tweenObject = character.getTween(range.startFrame);
+        const index       = tweenObject.curve.length;
+        const matrix      = character.getPlace(range.startFrame).matrix;
+        const baseBounds  = character.getBounds();
+        const bounds      = Util.$boundsMatrix(baseBounds, matrix);
+
+        const pointer = {
+            "usePoint": true,
+            "x": bounds.xMin - baseBounds.xMin - 5,
+            "y": bounds.yMin - baseBounds.yMin - 5
+        };
+        tweenObject.curve.push(pointer);
+
+        const div = this.createTweenCurveElement(pointer, index, layer.id);
+        if (div) {
+            document
+                .getElementById("stage-area")
+                .appendChild(div);
+        }
+
+        // 再計算
+        this.relocationPlace(character, range.startFrame);
+
+        // ポインターを再配置
+        this
+            .clearPointer()
+            .relocationPointer();
     }
 }
 

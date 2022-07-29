@@ -17,6 +17,13 @@ class TransformTool extends BaseTool
          * @private
          */
         this._$element = null;
+
+        /**
+         * @type {function}
+         * @default null
+         * @private
+         */
+        this._$deletePointer = null;
     }
 
     /**
@@ -38,20 +45,15 @@ class TransformTool extends BaseTool
         {
             Util.$setCursor(this._$cursor);
             this.changeNodeEvent();
+
+            this._$deletePointer = this.deletePointer.bind(this);
+            window.addEventListener("keydown", this._$deletePointer);
         });
 
-        // ポインターの削除イベント
-        this.addEventListener(EventType.DELETE, (event) =>
+        // 終了イベント
+        this.addEventListener(EventType.END, () =>
         {
-            Util.$setCursor(this._$cursor);
-
-            if (Util.$keyLock || event.key !== "Backspace" || !event.screen) {
-                return ;
-            }
-
-            // 親のイベントを中止する
-            event.stopPropagation();
-            this.deletePointer();
+            window.removeEventListener("keydown", this._$deletePointer);
         });
 
         // スクリーン上でのマウスダウンイベント
@@ -530,10 +532,12 @@ class TransformTool extends BaseTool
             case Graphics.CUBIC:
                 if (curve) {
                     for (let idx = 1; idx < 3; ++idx) {
+
                         const element = stageArea.children[position + idx];
                         element
                             .style
                             .backgroundColor = Util.$shapeLinkedPointerColor;
+
                         if (element.dataset.curve !== "true") {
                             if (idx === 1) {
                                 stageArea
@@ -675,12 +679,24 @@ class TransformTool extends BaseTool
     }
 
     /**
+     * @description ポインターを削除
+     *
+     * @param  {KeyboardEvent} event
      * @return {void}
      * @method
      * @public
      */
-    deletePointer ()
+    deletePointer (event)
     {
+        Util.$setCursor(this._$cursor);
+
+        if (Util.$keyLock || event.key !== "Backspace") {
+            return ;
+        }
+
+        // 親のイベントを中止する
+        event.stopPropagation();
+
         const stageArea = document.getElementById("stage-area");
 
         let count = 0;

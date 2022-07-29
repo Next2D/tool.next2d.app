@@ -60,15 +60,6 @@ class EventType
      * @return {string}
      * @static
      */
-    static get DELETE ()
-    {
-        return "delete";
-    }
-
-    /**
-     * @return {string}
-     * @static
-     */
     static get CHANGE ()
     {
         return "change";

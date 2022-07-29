@@ -145,27 +145,55 @@ class Character
 
         } else {
 
-            const object = this.getRange(
+            const range = this.getRange(
                 Util.$timelineFrame.currentFrame
             );
 
             switch (true) {
 
-                case object.startFrame === this.startFrame:
+                case range.startFrame === this.startFrame:
                     this._$places.delete(this.startFrame);
-                    this.startFrame = object.endFrame;
+                    this.startFrame = range.endFrame;
                     break;
 
-                case object.endFrame === this.endFrame:
-                    this._$places.delete(object.startFrame);
-                    this.endFrame = object.startFrame;
+                case range.endFrame === this.endFrame:
+                    this._$places.delete(range.startFrame);
+                    this.endFrame = range.startFrame;
                     break;
 
                 default:
-                    this.split(layer, object.startFrame, object.endFrame);
+                    {
+                        const character = this.split(
+                            layer, range.startFrame, range.endFrame
+                        );
+
+                        if (character._$tween.size) {
+                            Util
+                                .$tweenController
+                                .clearPointer();
+                        }
+                    }
                     break;
 
             }
+
+            // tween情報を削除
+            if (this._$tween.has(range.startFrame)) {
+
+                this._$tween.delete(range.startFrame);
+
+                for (let keyFrame = range.startFrame; keyFrame < range.endFrame; ++keyFrame) {
+                    if (!this._$places.has(keyFrame)) {
+                        continue;
+                    }
+                    this._$places.delete(keyFrame);
+                }
+
+                Util
+                    .$tweenController
+                    .clearPointer();
+            }
+
         }
     }
 
@@ -1416,12 +1444,9 @@ class Character
         // 開始位置より先のフレームを指定した場合は分割
         if (start_frame > this.startFrame) {
 
+            // 分離用のobject
             const character = new Character();
-            character._$id  = Util.$currentWorkSpace()._$characterId++;
-
-            // params
             character._$libraryId  = this._$libraryId;
-            character._$places     = new Map();
             character._$startFrame = this.startFrame;
             character._$endFrame   = start_frame;
 
@@ -1440,21 +1465,33 @@ class Character
                 }
             }
 
+            const tweenMap = new Map();
+            for (const [keyFrame, tween] of this._$tween) {
+
+                if (start_frame > keyFrame) {
+
+                    character.setTween(keyFrame, tween);
+
+                } else {
+
+                    tweenMap.set(keyFrame, tween);
+
+                }
+
+            }
+
             // レイヤーに設置
             layer.addCharacter(character);
 
             // 分割したDisplayObjectの情報を更新
+            this._$tween      = tweenMap;
             this._$places     = places;
             this._$startFrame = start_frame;
         }
 
         // 返却用のDisplayObject
         const character = new Character();
-        character._$id  = Util.$currentWorkSpace()._$characterId++;
-
-        // params
         character._$libraryId  = this._$libraryId;
-        character._$places     = new Map();
         character._$startFrame = start_frame;
         character._$endFrame   = end_frame;
 
@@ -1476,6 +1513,27 @@ class Character
         // 分割したplace objectは削除
         for (let idx = 0; idx < removeFrames.length; ++idx) {
             this._$places.delete(removeFrames[idx]);
+        }
+
+        // 初期化
+        removeFrames.length = 0;
+        for (const [keyFrame, tween] of this._$tween) {
+
+            if (start_frame > keyFrame) {
+                continue;
+            }
+
+            if (keyFrame >= end_frame) {
+                continue;
+            }
+
+            removeFrames.push(keyFrame);
+            character._$tween.set(keyFrame, tween);
+        }
+
+        // 分割したtween objectは削除
+        for (let idx = 0; idx < removeFrames.length; ++idx) {
+            this._$tween.delete(removeFrames[idx]);
         }
 
         // キーフレームがなければ削除

@@ -937,6 +937,8 @@ class TimelineTool extends BaseTimeline
 
                     // キーフレームがあればスキップ
                     if (character.hasPlace(frame)) {
+
+                        // tweenでキーフレームを追加
                         const place = character.getPlace(frame);
                         if (place.tweenFrame) {
 
@@ -953,7 +955,19 @@ class TimelineTool extends BaseTimeline
                                 "endFrame": range.endFrame
                             });
 
-                            character.updateTweenPlace(frame, range.endFrame);
+                            character
+                                .updateTweenPlace(frame, range.endFrame);
+
+                            // 再計算
+                            Util
+                                .$tweenController
+                                .relocationPlace(character, frame);
+
+                            // ポインターを再配置
+                            Util
+                                .$tweenController
+                                .clearPointer()
+                                .relocationPointer();
                         }
 
                         continue;
