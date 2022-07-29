@@ -51,10 +51,8 @@ class ScreenMenu extends BaseScreen
             "screen-distribute-to-layers",
             "screen-distribute-to-keyframes",
             "screen-integrating-paths",
-            "screen-tween-curve-pointer",
-            "screen-copy",
-            "screen-paste",
-            "screen-delete",
+            "screen-add-tween-curve-pointer",
+            "screen-delete-tween-curve-pointer",
             "screen-preview"
         ];
 
@@ -88,101 +86,6 @@ class ScreenMenu extends BaseScreen
     executeScreenPreview ()
     {
         Util.$showPreview();
-    }
-
-    /**
-     * @description 選択してるDisplayObjectをスクリーンから削除
-     *
-     * @return {void}
-     * @method
-     * @public
-     */
-    executeScreenDelete ()
-    {
-        /**
-         * @type {ArrowTool}
-         */
-        const tool = Util.$tools.getDefaultTool("arrow");
-
-        // 選択してるDisplayObjectがなければ終了
-        const activeElements = tool.activeElements;
-        if (!activeElements.length) {
-            return ;
-        }
-
-        this.save();
-
-        const frame  = Util.$timelineFrame.currentFrame;
-        const layers = new Map();
-        const scene  = Util.$currentWorkSpace().scene;
-        for (let idx = 0; idx < activeElements.length; ++idx) {
-
-            const element = activeElements[idx];
-
-            const layer = scene.getLayer(
-                element.dataset.layerId | 0
-            );
-
-            if (!layer) {
-                continue;
-            }
-
-            const character = layer.getCharacter(
-                element.dataset.characterId | 0
-            );
-
-            if (!character) {
-                continue;
-            }
-
-            if (!layers.has(layer.id)) {
-                layers.set(layer.id, {
-                    "layer": layer,
-                    "range": character.getRange(frame)
-                });
-            }
-
-            character.remove(layer);
-        }
-
-        // 選択していたDisplayObjectをリセット
-        tool.clearActiveElement();
-
-        // タイムラインを再構成
-        for (const object of layers.values()) {
-
-            const layer = object.layer;
-            const range = object.range;
-
-            const characters = layer.getActiveCharacter(range.startFrame);
-            if (characters.length) {
-
-                // 深度順に並び替え
-                layer.sort(characters, frame);
-
-                for (let idx = 0; idx < characters.length; ++idx) {
-                    characters[idx].getPlace(frame).depth = idx;
-                }
-
-            } else {
-
-                layer.addEmptyCharacter(
-                    new EmptyCharacter({
-                        "startFrame": range.startFrame,
-                        "endFrame": range.endFrame
-                    })
-                );
-
-            }
-
-            layer.reloadStyle();
-        }
-
-        // 再描画
-        this.reloadScreen();
-
-        // 初期化
-        this._$saved = false;
     }
 
     /**
@@ -992,9 +895,21 @@ class ScreenMenu extends BaseScreen
      * @method
      * @public
      */
-    executeScreenTweenCurvePointer ()
+    executeScreenAddTweenCurvePointer ()
     {
         Util.$tweenController.addCurvePinter();
+    }
+
+    /**
+     * @description tweenのカーブポイントを削除
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    executeScreenDeleteTweenCurvePointer ()
+    {
+        Util.$tweenController.deleteCurvePointer();
     }
 
     /**
@@ -1205,7 +1120,9 @@ class ScreenMenu extends BaseScreen
          */
         const tool = Util.$tools.getDefaultTool("arrow");
         const activeElements = tool.activeElements;
-        if (2 > activeElements.length) {
+        if (!activeElements.length
+            || mode === "rect" && 2 > activeElements.length
+        ) {
             return ;
         }
 

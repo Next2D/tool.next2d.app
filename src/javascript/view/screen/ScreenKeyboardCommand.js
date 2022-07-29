@@ -134,6 +134,12 @@ class ScreenKeyboardCommand extends KeyboardCommand
         // 選択中のDisplayObjectを削除
         this.add("Backspace", this.deleteDisplayObject);
 
+        // 選択中のtweenのカーブポインターを削除
+        this.add(
+            Util.$generateShortcutKey("p", { "ctrl": true, "shift": true }),
+            this.deleteTweenCurvePointer
+        );
+
         // 最前面
         this.add(
             Util.$generateShortcutKey("ArrowUp", { "ctrl": true, "shift": true }),
@@ -478,9 +484,25 @@ class ScreenKeyboardCommand extends KeyboardCommand
      * @method
      * @public
      */
+    deleteTweenCurvePointer ()
+    {
+        Util.$tweenController.deleteCurvePointer();
+    }
+
+    /**
+     * @description 選択中のDisplayObjectを削除
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
     deleteDisplayObject ()
     {
-        Util.$screenMenu.executeScreenDelete();
+        /**
+         * @type {ArrowTool}
+         */
+        const tool = Util.$tools.getDefaultTool("arrow");
+        tool.deleteDisplayObject();
     }
 
     /**

@@ -182,12 +182,6 @@ class TweenController extends BaseController
     {
         super.initialize();
 
-        // カーブポインター削除イベント
-        window.addEventListener("keydown", (event) =>
-        {
-            this.deleteCurvePointer(event);
-        });
-
         const ratio = window.devicePixelRatio;
 
         const drawCanvas   = document.createElement("canvas");
@@ -1159,29 +1153,57 @@ class TweenController extends BaseController
     /**
      * @description カーブポインターを削除
      *
-     * @param  {KeyboardEvent} event
      * @return {void}
      * @method
      * @public
      */
-    deleteCurvePointer (event)
+    deleteCurvePointer ()
     {
-        if (event.key !== "Backspace") {
-            return ;
-        }
-
         const element = this._$currentTarget;
         if (!element) {
             return ;
         }
 
-        // 全てのイベントを中止
-        event.stopPropagation();
+        const layer = Util
+            .$currentWorkSpace()
+            .scene
+            .getLayer(
+                element.dataset.layerId | 0
+            );
+
+        const frame = Util.$timelineFrame.currentFrame;
+        const characters = layer.getActiveCharacter(frame);
+
+        if (!characters.length || characters.length > 1) {
+            return ;
+        }
+
+        // set select
+        const character = characters[0];
+        const range = character.getRange(frame);
+
+        // カーブポインターを削除
+        character
+            .getTween(range.startFrame)
+            .curve
+            .splice(element.dataset.index | 0, 1);
+
+        // カーブElementを削除
+        element.remove();
+
+        // 再計算
+        this.relocationPlace(character, range.startFrame);
+
+        // 再配置
+        this
+            .clearPointer()
+            .relocationPointer();
 
         this.save();
 
         // 初期化
         this._$saved = false;
+        this._$currentTarget = null;
     }
 
     /**

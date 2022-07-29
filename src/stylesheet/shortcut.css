@@ -304,11 +304,18 @@
     background-position : center center;
 }
 
-#shortcut-list-screen .screen-tween-curve-pointer
+#shortcut-list-screen .screen-add-tween-curve-pointer
 {
     background-repeat   : no-repeat;
     background-position : center center;
 }
+
+#shortcut-list-screen .screen-delete-tween-curve-pointer
+{
+    background-repeat   : no-repeat;
+    background-position : center center;
+}
+
 
 #shortcut-list-timeline .timeline-layer-normal
 {
