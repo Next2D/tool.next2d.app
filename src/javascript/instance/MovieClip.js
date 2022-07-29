@@ -1104,7 +1104,7 @@ class MovieClip extends Instance
                     "characterId": characterId,
                     "volume":      sound.volume / 100,
                     "autoPlay":    sound.autoPlay,
-                    "loop":        sound.loop
+                    "loopCount":   sound.loopCount
                 });
 
                 if (!Util.$useIds.has(characterId)) {

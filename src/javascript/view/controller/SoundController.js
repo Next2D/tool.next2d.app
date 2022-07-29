@@ -33,6 +33,27 @@ class SoundController extends BaseController
         return 100;
     }
 
+
+    /**
+     * @return {number}
+     * @const
+     * @static
+     */
+    static get MIN_LOOP_COUNT ()
+    {
+        return 0;
+    }
+
+    /**
+     * @return {number}
+     * @const
+     * @static
+     */
+    static get MAX_LOOP_COUNT ()
+    {
+        return 0xffff;
+    }
+
     /**
      * @description 初期起動関数
      *
@@ -97,6 +118,7 @@ class SoundController extends BaseController
                 "characterId": element.value | 0,
                 "name":        option.textContent,
                 "volume":      100,
+                "loopCount":   0,
                 "autoPlay":    false
             };
 
@@ -118,11 +140,8 @@ class SoundController extends BaseController
             <div class="sound-text">Volume</div>
             <div><input type="text" id="sound-volume-${id}" data-sound-id="${id}" data-name="volume" value="100" data-detail="{{音量設定}}"></div>
         
-            <div class="sound-text">Loop</div>
-            <select id="sound-loop-select-${id}" data-sound-id="${id}" data-detail="{{ループ}}">
-                <option value="0">Off</option>
-                <option value="1">On</option>
-            </select>
+            <div class="sound-text">Loop<br>Count</div>
+            <div><input type="text" id="sound-loop-count-${id}" data-sound-id="${id}" data-name="loop-count" value="-1" data-detail="{{ループ回数}}"></div>
         </div>
     </div>
 </div>
@@ -131,9 +150,15 @@ class SoundController extends BaseController
             .getElementById("sound-list-area")
             .insertAdjacentHTML("beforeend", htmlTag);
 
-        const soundVolume = document.getElementById(`sound-volume-${id}`);
+        const soundVolume = document
+            .getElementById(`sound-volume-${id}`);
         soundVolume.value = `${object.volume}`;
         this.setInputEvent(soundVolume);
+
+        const soundLoopCount = document
+            .getElementById(`sound-loop-count-${id}`);
+        soundLoopCount.value = `${object.loopCount}`;
+        this.setInputEvent(soundLoopCount);
 
         document
             .getElementById(`sound-trash-${id}`)
@@ -152,26 +177,6 @@ class SoundController extends BaseController
                 // saveフラグを初期化
                 this._$saved = false;
             });
-
-        const loop = document
-            .getElementById(`sound-loop-select-${id}`);
-
-        loop.addEventListener("change", (event) =>
-        {
-            // undo用にセーブ
-            this.save();
-
-            this._$currentTarget = event.target;
-            this.executeFunction(
-                event.target.id,
-                event.target.value
-            );
-
-            // フラグを初期化
-            this._$saved         = false;
-            this._$currentTarget = null;
-        });
-        loop.children[object.loop ? 1 : 0].selected = true;
 
         Util.$addModalEvent(
             document.getElementById(`sound-id-${id}`)
@@ -200,16 +205,24 @@ class SoundController extends BaseController
     }
 
     /**
-     * @description ループ設定
+     * @description ボリュームをコントロール
      *
      * @param  {string} value
      * @return {number}
      * @method
      * @public
      */
-    changeSoundLoopSelect (value)
+    changeSoundLoopCount (value)
     {
-        this.updateSoundProperty("loop", !!(value | 0));
+        value = Util.$clamp(
+            value | 0,
+            SoundController.MIN_LOOP_COUNT,
+            SoundController.MAX_LOOP_COUNT
+        );
+
+        this.updateSoundProperty("loopCount", value);
+
+        return value;
     }
 
     /**

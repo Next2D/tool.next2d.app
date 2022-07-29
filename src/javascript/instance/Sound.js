@@ -13,16 +13,16 @@ class Sound extends Instance
         super(object);
         this.buffer = object.buffer;
 
-        this._$binary   = "";
-        this._$volume   = 100;
-        this._$loop     = false;
+        this._$binary    = "";
+        this._$volume    = 100;
+        this._$loopCount = 0;
 
         if ("volume" in object) {
             this.volume = object.volume;
         }
 
-        if ("loop" in object) {
-            this.loop = object.loop;
+        if ("loopCount" in object) {
+            this.loopCount = object.loopCount;
         }
 
         this._$audio = document.createElement("audio");
@@ -130,22 +130,22 @@ class Sound extends Instance
     }
 
     /**
-     * @return {boolean}
+     * @return {number}
      * @public
      */
-    get loop ()
+    get loopCount ()
     {
-        return this._$loop;
+        return this._$loopCount;
     }
 
     /**
-     * @param  {boolean} loop
+     * @param  {number} loop_count
      * @return {void}
      * @public
      */
-    set loop (loop)
+    set loopCount (loop_count)
     {
-        this._$loop = loop;
+        this._$loopCount = loop_count;
     }
 
     /**
@@ -155,14 +155,14 @@ class Sound extends Instance
     toObject ()
     {
         return {
-            "id":       this.id,
-            "name":     this.name,
-            "type":     this.type,
-            "symbol":   this.symbol,
-            "folderId": this.folderId,
-            "buffer":   this.buffer,
-            "volume":   this.volume,
-            "loop":     this.loop
+            "id":        this.id,
+            "name":      this.name,
+            "type":      this.type,
+            "symbol":    this.symbol,
+            "folderId":  this.folderId,
+            "buffer":    this.buffer,
+            "volume":    this.volume,
+            "loopCount": this.loopCount
         };
     }
 

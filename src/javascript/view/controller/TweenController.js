@@ -366,7 +366,7 @@ class TweenController extends BaseController
         }
 
         const anchor    = document.createElement("a");
-        anchor.download = `${instance.name}.json`;
+        anchor.download = `${instance.name}_${range.startFrame}.json`;
         anchor.href     = URL.createObjectURL(new Blob(
             [JSON.stringify(character.getTween(range.startFrame).custom)],
             { "type" : "application/json" }
