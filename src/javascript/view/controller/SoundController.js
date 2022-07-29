@@ -33,7 +33,6 @@ class SoundController extends BaseController
         return 100;
     }
 
-
     /**
      * @return {number}
      * @const
@@ -141,7 +140,7 @@ class SoundController extends BaseController
             <div><input type="text" id="sound-volume-${id}" data-sound-id="${id}" data-name="volume" value="100" data-detail="{{音量設定}}"></div>
         
             <div class="sound-text">Loop<br>Count</div>
-            <div><input type="text" id="sound-loop-count-${id}" data-sound-id="${id}" data-name="loop-count" value="-1" data-detail="{{ループ回数}}"></div>
+            <div><input type="text" id="sound-loop-count-${id}" data-sound-id="${id}" data-name="loop-count" value="0" data-detail="{{ループ回数}}"></div>
         </div>
     </div>
 </div>
