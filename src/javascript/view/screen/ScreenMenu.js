@@ -53,6 +53,7 @@ class ScreenMenu extends BaseScreen
             "screen-integrating-paths",
             "screen-add-tween-curve-pointer",
             "screen-delete-tween-curve-pointer",
+            "screen-change-movie-clip",
             "screen-preview"
         ];
 
@@ -588,6 +589,8 @@ class ScreenMenu extends BaseScreen
                         continue;
                     }
 
+                    console.log("koko", keyFrame);
+
                     // 分割したDisplayObjectをレイヤーから削除
                     layer.deleteCharacter(character.id);
 
@@ -651,6 +654,8 @@ class ScreenMenu extends BaseScreen
 
             // タイムラインを再構成
             layer.reloadStyle();
+
+            console.log(layer);
         }
 
         // 再描画
@@ -886,6 +891,28 @@ class ScreenMenu extends BaseScreen
         }
 
         this._$saved = false;
+    }
+
+    /**
+     * @description 選択中のDisplayObjectをMovieClipに格納
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    executeScreenChangeMovieClip ()
+    {
+        /**
+         * @type {ArrowTool}
+         */
+        const tool = Util.$tools.getDefaultTool("arrow");
+        const activeElements = tool.activeElements;
+        if (!activeElements.length) {
+            return ;
+        }
+
+        
+
     }
 
     /**

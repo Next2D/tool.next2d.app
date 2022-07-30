@@ -125,7 +125,8 @@ class Character
     clone ()
     {
         const character = new Character(this.toObject());
-        character._$id  = Util.$currentWorkSpace()._$characterId++;
+        character._$layerId = -1;
+        character._$id      = Util.$currentWorkSpace()._$characterId++;
         return character;
     }
 

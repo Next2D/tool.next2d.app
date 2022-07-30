@@ -515,7 +515,8 @@ class ArrowTool extends BaseTool
      */
     activateElement (event)
     {
-        const target  = this.target;
+        let target = this.target;
+
         const layerId = target.dataset.layerId | 0;
 
         const workSpace = Util.$currentWorkSpace();
@@ -535,11 +536,44 @@ class ArrowTool extends BaseTool
         // タイムラインのアクティブなElementを初期化
         Util.$timelineLayer.clear();
 
-        this.addElement(target);
-
         const character = layer.getCharacter(
             target.dataset.characterId | 0
         );
+
+        // 指定のDisplayObjectをクローンしてスクリーンに配置
+        if (Util.$altKey) {
+
+            const clone = character.clone();
+
+            // クローンしたDisplayObjectを最前面にセット
+            for (const [keyFrame, place] of clone._$places) {
+
+                let depth = 0;
+                const characters = layer.getActiveCharacter(keyFrame);
+                for (let idx = 0; idx < characters.length; ++idx) {
+                    depth = Math.max(characters[idx].getPlace(keyFrame).depth, depth);
+                }
+
+                place.depth = depth + 1;
+            }
+
+            // レイヤーにセット
+            layer.addCharacter(clone);
+
+            const frame = Util.$timelineFrame.currentFrame;
+
+            // スクリーンに配置
+            Util
+                .$screen
+                .appendCharacter(clone, frame, layer.id);
+
+            target = document
+                .getElementById(`character-${clone.id}`);
+
+        }
+
+        // アクティブ登録
+        this.addElement(target);
 
         // コントローラーエリアの情報を更新
         this.updateControllerProperty();
