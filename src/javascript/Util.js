@@ -1943,135 +1943,135 @@ Util.$parserHandler = (event) =>
 
     }
 
-    if (Util.$texts.size) {
-
-        const { Graphics } = window.next2d.display;
-
-        const workSpace = Util.$currentWorkSpace();
-
-        for (const character of Util.$texts.values()) {
-
-            const shape = workSpace.getLibrary(character.libraryId);
-
-            // build shape data
-            let offsetX     = 0;
-            let offsetY     = 0;
-            let color       = null;
-            let codeTables  = null;
-            let shapeTables = null;
-            let textHeight  = 0;
-            let isZoneTable = false;
-
-            const baseMatrix = character._$baseMatrix;
-
-            // build shape data
-            const records = character._$textRecords;
-            for (let idx = 0; idx < records.length; ++idx) {
-
-                const record = records[idx];
-
-                if ("FontId" in record) {
-                    const font  = Util.$fonts.get(record.FontId);
-                    codeTables  = font._$codeTable;
-                    shapeTables = font._$glyphShapeTable;
-                    isZoneTable = font._$zoneTable !== null;
-                }
-
-                if ("XOffset" in record) {
-                    offsetX = record.XOffset;
-                }
-
-                if ("YOffset" in record) {
-                    offsetY = record.YOffset;
-                }
-
-                if ("TextColor" in record) {
-                    color = record.TextColor;
-                }
-
-                if ("TextHeight" in record) {
-                    textHeight = record.TextHeight;
-                    if (isZoneTable) {
-                        textHeight /= 20;
-                    }
-                }
-
-                const entries = record.GlyphEntries;
-                const count   = record.GlyphCount;
-                const scale   = textHeight / 1024;
-                for (let idx = 0; idx < count; ++idx) {
-
-                    const entry = entries[idx];
-                    const index = entry.GlyphIndex | 0;
-
-                    // add records
-                    const shapeRecodes = Util.$vtc.convert({
-                        "ShapeData": shapeTables[index],
-                        "lineStyles": [],
-                        "fillStyles": [{
-                            "Color": color,
-                            "fillStyleType": 0
-                        }]
-                    });
-
-                    const matrix = [
-                        scale, baseMatrix[1], baseMatrix[2], scale,
-                        baseMatrix[4] + offsetX,
-                        baseMatrix[5] + offsetY
-                    ];
-
-                    for (let idx = 0; idx < shapeRecodes.length;) {
-
-                        const code = shapeRecodes[idx++];
-                        shape._$recodes.push(code);
-                        switch (code) {
-
-                            case Graphics.MOVE_TO:
-                            case Graphics.LINE_TO:
-                                {
-                                    const x  = shapeRecodes[idx++];
-                                    const y  = shapeRecodes[idx++];
-                                    const tx = x * matrix[0] + y * matrix[2] + matrix[4];
-                                    const ty = x * matrix[1] + y * matrix[3] + matrix[5];
-                                    shape._$recodes.push(tx, ty);
-                                }
-                                break;
-
-                            case Graphics.CURVE_TO:
-                                {
-                                    const cx  = shapeRecodes[idx++];
-                                    const cy  = shapeRecodes[idx++];
-                                    const ctx = cx * matrix[0] + cy * matrix[2] + matrix[4];
-                                    const cty = cx * matrix[1] + cy * matrix[3] + matrix[5];
-                                    shape._$recodes.push(ctx, cty);
-
-                                    const x  = shapeRecodes[idx++];
-                                    const y  = shapeRecodes[idx++];
-                                    const tx = x * matrix[0] + y * matrix[2] + matrix[4];
-                                    const ty = x * matrix[1] + y * matrix[3] + matrix[5];
-                                    shape._$recodes.push(tx, ty);
-                                }
-                                break;
-
-                            case Graphics.FILL_STYLE:
-                                shape._$recodes.push(
-                                    shapeRecodes[idx++], shapeRecodes[idx++],
-                                    shapeRecodes[idx++], shapeRecodes[idx++]
-                                );
-                                break;
-
-                            case Graphics.BEGIN_PATH:
-                            case Graphics.END_FILL:
-                                break;
-
-                        }
-                    }
-
-                    offsetX += entry.GlyphAdvance;
-                }
-            }
-        }
-    }
+    // if (Util.$texts.size) {
+    //
+    //     const { Graphics } = window.next2d.display;
+    //
+    //     const workSpace = Util.$currentWorkSpace();
+    //
+    //     for (const character of Util.$texts.values()) {
+    //
+    //         const shape = workSpace.getLibrary(character.libraryId);
+    //
+    //         // build shape data
+    //         let offsetX     = 0;
+    //         let offsetY     = 0;
+    //         let color       = null;
+    //         let codeTables  = null;
+    //         let shapeTables = null;
+    //         let textHeight  = 0;
+    //         let isZoneTable = false;
+    //
+    //         const baseMatrix = character._$baseMatrix;
+    //
+    //         // build shape data
+    //         const records = character._$textRecords;
+    //         for (let idx = 0; idx < records.length; ++idx) {
+    //
+    //             const record = records[idx];
+    //
+    //             if ("FontId" in record) {
+    //                 const font  = Util.$fonts.get(record.FontId);
+    //                 codeTables  = font._$codeTable;
+    //                 shapeTables = font._$glyphShapeTable;
+    //                 isZoneTable = font._$zoneTable !== null;
+    //             }
+    //
+    //             if ("XOffset" in record) {
+    //                 offsetX = record.XOffset;
+    //             }
+    //
+    //             if ("YOffset" in record) {
+    //                 offsetY = record.YOffset;
+    //             }
+    //
+    //             if ("TextColor" in record) {
+    //                 color = record.TextColor;
+    //             }
+    //
+    //             if ("TextHeight" in record) {
+    //                 textHeight = record.TextHeight;
+    //                 if (isZoneTable) {
+    //                     textHeight /= 20;
+    //                 }
+    //             }
+    //
+    //             const entries = record.GlyphEntries;
+    //             const count   = record.GlyphCount;
+    //             const scale   = textHeight / 1024;
+    //             for (let idx = 0; idx < count; ++idx) {
+    //
+    //                 const entry = entries[idx];
+    //                 const index = entry.GlyphIndex | 0;
+    //
+    //                 // add records
+    //                 const shapeRecodes = Util.$vtc.convert({
+    //                     "ShapeData": shapeTables[index],
+    //                     "lineStyles": [],
+    //                     "fillStyles": [{
+    //                         "Color": color,
+    //                         "fillStyleType": 0
+    //                     }]
+    //                 });
+    //
+    //                 const matrix = [
+    //                     scale, baseMatrix[1], baseMatrix[2], scale,
+    //                     baseMatrix[4] + offsetX,
+    //                     baseMatrix[5] + offsetY
+    //                 ];
+    //
+    //                 for (let idx = 0; idx < shapeRecodes.length;) {
+    //
+    //                     const code = shapeRecodes[idx++];
+    //                     shape._$recodes.push(code);
+    //                     switch (code) {
+    //
+    //                         case Graphics.MOVE_TO:
+    //                         case Graphics.LINE_TO:
+    //                             {
+    //                                 const x  = shapeRecodes[idx++];
+    //                                 const y  = shapeRecodes[idx++];
+    //                                 const tx = x * matrix[0] + y * matrix[2] + matrix[4];
+    //                                 const ty = x * matrix[1] + y * matrix[3] + matrix[5];
+    //                                 shape._$recodes.push(tx, ty);
+    //                             }
+    //                             break;
+    //
+    //                         case Graphics.CURVE_TO:
+    //                             {
+    //                                 const cx  = shapeRecodes[idx++];
+    //                                 const cy  = shapeRecodes[idx++];
+    //                                 const ctx = cx * matrix[0] + cy * matrix[2] + matrix[4];
+    //                                 const cty = cx * matrix[1] + cy * matrix[3] + matrix[5];
+    //                                 shape._$recodes.push(ctx, cty);
+    //
+    //                                 const x  = shapeRecodes[idx++];
+    //                                 const y  = shapeRecodes[idx++];
+    //                                 const tx = x * matrix[0] + y * matrix[2] + matrix[4];
+    //                                 const ty = x * matrix[1] + y * matrix[3] + matrix[5];
+    //                                 shape._$recodes.push(tx, ty);
+    //                             }
+    //                             break;
+    //
+    //                         case Graphics.FILL_STYLE:
+    //                             shape._$recodes.push(
+    //                                 shapeRecodes[idx++], shapeRecodes[idx++],
+    //                                 shapeRecodes[idx++], shapeRecodes[idx++]
+    //                             );
+    //                             break;
+    //
+    //                         case Graphics.BEGIN_PATH:
+    //                         case Graphics.END_FILL:
+    //                             break;
+    //
+    //                     }
+    //                 }
+    //
+    //                 offsetX += entry.GlyphAdvance;
+    //             }
+    //         }
+    //     }
+    // }
 
     // map clear
     Util.$characters.clear();

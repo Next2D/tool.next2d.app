@@ -2368,7 +2368,7 @@ class TimelineLayer extends BaseTimeline
                 document.getElementById(`layer-id-${layerId}`)
             );
 
-            console.log(layerId, selectFrame, index);
+            console.log(layerId, selectFrame, index, values);
         }
 
         // 選択elementを非表示

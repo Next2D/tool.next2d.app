@@ -67,7 +67,7 @@ class ReComposition
         const signature = this._$byteStream.getHeaderSignature();
 
         // version
-        const version = this._$byteStream.getVersion();
+        this._$byteStream.getVersion();
 
         // file size
         this._$fileSize = this._$byteStream.getUI32();

@@ -26,7 +26,6 @@ class LibrarySearch
         }
     }
 
-
     /**
      * @description 初期起動関数
      *

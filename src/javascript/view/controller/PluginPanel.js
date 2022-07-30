@@ -81,6 +81,7 @@ class PluginPanel
                 continue;
             }
 
+            // eslint-disable-next-line no-loop-func
             element.addEventListener("mousedown", (event) =>
             {
                 // 親のイベント中止

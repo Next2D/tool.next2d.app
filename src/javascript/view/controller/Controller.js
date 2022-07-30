@@ -12,11 +12,11 @@ class Controller extends BaseController
     {
         super.initialize();
 
-        const controller = document
+        const element = document
             .getElementById("controller");
 
-        if (controller) {
-            controller.addEventListener("mouseover", () =>
+        if (element) {
+            element.addEventListener("mouseover", () =>
             {
                 Util.$setCursor("auto");
             });

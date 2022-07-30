@@ -353,6 +353,10 @@ class Video extends Instance
      */
     createInstance (place, preview = false)
     {
+        if (!place) {
+            console.log(place);
+        }
+
         const { Video } = window.next2d.media;
 
         const video = this._$loaded

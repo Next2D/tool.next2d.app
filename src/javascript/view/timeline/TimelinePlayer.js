@@ -126,6 +126,7 @@ class TimelinePlayer extends BaseTimeline
 
             }
 
+            // eslint-disable-next-line no-loop-func
             element.addEventListener("mousedown", (event) =>
             {
                 // 親のイベント中止

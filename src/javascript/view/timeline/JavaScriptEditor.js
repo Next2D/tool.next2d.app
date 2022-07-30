@@ -1,5 +1,6 @@
 /**
  * @class
+ * @extends {BaseTimeline}
  */
 class JavaScriptEditor extends BaseTimeline
 {
@@ -138,6 +139,7 @@ class JavaScriptEditor extends BaseTimeline
                 continue;
             }
 
+            // eslint-disable-next-line no-loop-func
             element.addEventListener("mousedown", (event) =>
             {
                 // 親のイベント中止
@@ -317,6 +319,7 @@ class JavaScriptEditor extends BaseTimeline
         ace
             .require("ace/ext/language_tools")
             .addCompleter({
+                // eslint-disable-next-line no-unused-vars
                 "getCompletions": (editor, session, pos, prefix, callback) =>
                 {
                     callback(null, words.map((object) =>

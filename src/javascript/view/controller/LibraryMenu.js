@@ -83,6 +83,7 @@ class LibraryMenu
                 continue;
             }
 
+            // eslint-disable-next-line no-loop-func
             element.addEventListener("mousedown", (event) =>
             {
                 if (event.button) {

@@ -205,12 +205,10 @@ class ShapeController extends BaseController
             .getElementById("color-pointer-list");
 
         if (element) {
-
-            element
-                .addEventListener("mousedown", (event) =>
-                {
-                   this.setGradientColorPointerEvent(event);
-                });
+            element.addEventListener("mousedown", (event) =>
+            {
+                this.setGradientColorPointerEvent(event);
+            });
         }
     }
 

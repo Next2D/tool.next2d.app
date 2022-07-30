@@ -152,7 +152,6 @@ class ColorTransformController extends BaseController
         return value;
     }
 
-
     /**
      * @description 青の値を更新
      *

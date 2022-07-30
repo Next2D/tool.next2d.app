@@ -65,6 +65,7 @@ class LoopController extends BaseController
         const endFrame = instance.totalFrame;
         for (let frame = 1; endFrame >= frame; ++frame) {
 
+            // eslint-disable-next-line no-loop-func
             promises.push(new Promise((resolve) =>
             {
                 window.requestAnimationFrame(function (frame, resolve)
@@ -162,6 +163,7 @@ class LoopController extends BaseController
                     div.appendChild(p);
                     div.appendChild(span);
 
+                    // eslint-disable-next-line no-loop-func
                     div.addEventListener("click", (event) =>
                     {
                         const input = document
@@ -410,12 +412,11 @@ class LoopController extends BaseController
 
             startFrame.addEventListener("focusout", this.frameSizeOut.bind(this, "start"));
             startFrame.addEventListener("keypress", this.frameSizeOut.bind(this, "start"));
-        }
 
+        }
 
         const endFrame = document
             .getElementById("loop-end-frame");
-
         if (endFrame) {
             endFrame.addEventListener("mouseover", this.mouseOver.bind(this));
             endFrame.addEventListener("mouseout",  this.mouseOut.bind(this));

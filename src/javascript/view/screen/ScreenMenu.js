@@ -434,7 +434,7 @@ class ScreenMenu extends BaseScreen
                         for (let idx = 0; layer._$characters.length > idx; ++idx) {
 
                             const character = layer._$characters[idx];
-                            if (range.endFrame > character.endFrame) {
+                            if (range.endFrame >= character.endFrame) {
                                 continue;
                             }
 
@@ -445,6 +445,7 @@ class ScreenMenu extends BaseScreen
 
                             } else {
 
+                                // 開始位置が前方で、終了位置が後方のDisplayObjectはレンジ幅の対象だけ移動
                                 const places = new Map();
                                 for (const [keyFrame, place] of character._$places) {
 
@@ -465,7 +466,7 @@ class ScreenMenu extends BaseScreen
                         for (let idx = 0; layer._$emptys.length > idx; ++idx) {
 
                             const emptyCharacter = layer._$emptys[idx];
-                            if (range.endFrame > emptyCharacter.endFrame) {
+                            if (range.endFrame >= emptyCharacter.endFrame) {
                                 continue;
                             }
 
@@ -535,6 +536,7 @@ class ScreenMenu extends BaseScreen
             }
 
             // 昇順
+            // eslint-disable-next-line no-loop-func
             characters.sort((a, b) =>
             {
                 const aDepth = a.getPlace(frame).depth;
@@ -589,8 +591,6 @@ class ScreenMenu extends BaseScreen
                         continue;
                     }
 
-                    console.log("koko", keyFrame);
-
                     // 分割したDisplayObjectをレイヤーから削除
                     layer.deleteCharacter(character.id);
 
@@ -622,7 +622,7 @@ class ScreenMenu extends BaseScreen
                         continue;
                     }
 
-                    if (child.startFrame !== keyFrame) {
+                    if (child.startFrame !== keyFrame + 1) {
                         continue;
                     }
 

@@ -58,11 +58,6 @@ class LibraryPreview
                 this.mousedown(event);
             });
 
-            element.addEventListener("mouseout", (event) =>
-            {
-
-            });
-
             element.addEventListener("dragstart", () =>
             {
                 Util.$libraryController.dragstart();

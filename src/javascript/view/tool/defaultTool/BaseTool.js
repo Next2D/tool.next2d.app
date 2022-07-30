@@ -23,6 +23,7 @@ class BaseTool extends Tool
      * @method
      * @interface
      */
+    // eslint-disable-next-line no-empty-function
     initialize () {}
 
     /**

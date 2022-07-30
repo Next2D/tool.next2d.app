@@ -1,2 +1,3 @@
 **/node_modules/*
-src/javascript/worker/ZlibDeflateWorker.*
+src/javascript/worker/*
+src/javascript/parser/SVGToShape.js

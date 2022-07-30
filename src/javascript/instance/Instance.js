@@ -169,6 +169,10 @@ class Instance
             return Util.$emptyImage;
         }
 
+        if (point) {
+            console.log("TODO toImage: ", point);
+        }
+
         const { Sprite, BitmapData } = window.next2d.display;
         const { Matrix, ColorTransform, Rectangle } = window.next2d.geom;
 
@@ -295,21 +299,25 @@ class Instance
     /**
      * @abstract
      */
+    // eslint-disable-next-line no-empty-function
     toPublish () {}
 
     /**
      * @abstract
      */
+    // eslint-disable-next-line no-empty-function,getter-return
     get defaultSymbol () {}
 
     /**
      * @abstract
      */
+    // eslint-disable-next-line no-empty-function
     createInstance () {}
 
     /**
      * @interface
      */
+    // eslint-disable-next-line no-empty-function
     getBounds () {}
 
     /**

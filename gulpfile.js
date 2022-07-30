@@ -18,7 +18,7 @@ const options = minimist(process.argv.slice(2), {
     "string": ["distPath", "version"],
     "default": {
         "prodBuild": false,
-        "version": "0.41.0",
+        "version": "0.42.0",
         "distPath": "."
     }
 });
@@ -284,7 +284,7 @@ const lint = () =>
             "src/javascript/**/*.js"
         ])
         .pipe(eslint({ "useEslintrc": true }))
-        .pipe(eslint.format())
+        // .pipe(eslint.format())
         .pipe(eslint.failOnError());
 };
 

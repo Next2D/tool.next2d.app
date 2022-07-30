@@ -44,6 +44,8 @@ class WorkSpace
     }
 
     /**
+     * @description rootのMovieClipを戻す
+     *
      * @return {MovieClip}
      * @readonly
      * @public
@@ -54,6 +56,8 @@ class WorkSpace
     }
 
     /**
+     * @description プロジェクトのStageオブジェクトを返す
+     *
      * @return {Stage}
      * @readonly
      * @public
@@ -64,6 +68,8 @@ class WorkSpace
     }
 
     /**
+     * @description プロジェクト名を返す
+     *
      * @return {string}
      * @public
      */
@@ -73,6 +79,8 @@ class WorkSpace
     }
 
     /**
+     * @description プロジェクト名をセット
+     *
      * @param  {string} name
      * @return {void}
      * @public
@@ -83,6 +91,8 @@ class WorkSpace
     }
 
     /**
+     * @description 現在表示中のシーン(MovieClip)を返す
+     *
      * @return {MovieClip}
      * @public
      */
@@ -92,6 +102,8 @@ class WorkSpace
     }
 
     /**
+     * @description 指定のシーン(MovieClip)を起動する
+     *
      * @param  {MovieClip} scene
      * @return {void}
      * @public
@@ -108,6 +120,8 @@ class WorkSpace
     }
 
     /**
+     * @description ライブラリのユニークIDを生成
+     *
      * @return {number}
      * @readonly
      * @public
@@ -191,7 +205,10 @@ class WorkSpace
     }
 
     /**
+     * @description プロジェクトを停止
+     *
      * @return {void}
+     * @method
      * @public
      */
     stop ()
@@ -203,8 +220,11 @@ class WorkSpace
     }
 
     /**
+     * @description 指定のプロジェクトJSONを読み込む
+     *
      * @param  {string} json
      * @return {void}
+     * @method
      * @public
      */
     load (json)
@@ -244,7 +264,10 @@ class WorkSpace
     }
 
     /**
+     * @description プロジェクトのJSONを生成
+     *
      * @return {string}
+     * @method
      * @public
      */
     toJSON ()
@@ -270,7 +293,10 @@ class WorkSpace
     }
 
     /**
+     * @description メモリに現在のプロジェクトデータを保存
+     *
      * @return {void}
+     * @method
      * @public
      */
     temporarilySaved ()
@@ -297,7 +323,10 @@ class WorkSpace
     }
 
     /**
+     * @description 保存した一個前のプロジェクトデータを読み込む
+     *
      * @return {void}
+     * @method
      * @public
      */
     undo ()
@@ -314,7 +343,10 @@ class WorkSpace
     }
 
     /**
+     * @description 保存した一個先のプロジェクトデータを読み込む
+     *
      * @return {void}
+     * @method
      * @public
      */
     redo ()
@@ -411,8 +443,11 @@ class WorkSpace
     }
 
     /**
+     * @description ライブラリに追加されたObjectをプロジェクト内部に格納
+     *
      * @param  {object} library
      * @return {object}
+     * @method
      * @public
      */
     addLibrary (library)
@@ -456,8 +491,11 @@ class WorkSpace
     }
 
     /**
+     * @description 指定のライブラリのアイテムを返す
+     *
      * @param  {uint} id
      * @return {object}
+     * @method
      * @public
      */
     getLibrary (id)
@@ -466,6 +504,8 @@ class WorkSpace
     }
 
     /**
+     * @description 指定のライブラリのアイテムを削除
+     *
      * @param  {uint} id
      * @return {void}
      * @method

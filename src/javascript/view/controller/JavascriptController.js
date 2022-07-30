@@ -53,6 +53,7 @@ class JavascriptController
                 const childElement = document
                     .getElementById(`script-${id}-${frame}`);
 
+                // eslint-disable-next-line no-loop-func
                 childElement.addEventListener("mousedown", (event) =>
                 {
                     Util.$javaScriptEditor.hide();
@@ -64,8 +65,6 @@ class JavascriptController
                         .getLibrary(target.dataset.libraryId | 0);
 
                     const frame = target.dataset.frame | 0;
-
-
                     Util.$javaScriptEditor.show(null, frame, scene);
                 });
             }
