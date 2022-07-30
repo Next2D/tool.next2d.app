@@ -37,7 +37,7 @@ class Character
         } else {
             this._$id         = Util.$currentWorkSpace()._$characterId++;
             this._$startFrame = 1;
-            this._$endFrame   = 0;
+            this._$endFrame   = 2;
         }
     }
 

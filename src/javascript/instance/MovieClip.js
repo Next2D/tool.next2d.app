@@ -49,7 +49,7 @@ class MovieClip extends Instance
      * @method
      * @public
      */
-    showController(place)
+    showController(place, name = "")
     {
         super.showController(place, name);
 
