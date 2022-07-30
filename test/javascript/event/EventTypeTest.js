@@ -30,11 +30,6 @@ describe("EventType.js property test", () =>
         expect(EventType.DBL_CLICK).toBe("dblclick");
     });
 
-    it("DELETE test", () =>
-    {
-        expect(EventType.DELETE).toBe("delete");
-    });
-
     it("CHANGE test", () =>
     {
         expect(EventType.CHANGE).toBe("change");

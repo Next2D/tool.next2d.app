@@ -42,9 +42,9 @@ class TimelineLayerMenu extends BaseTimeline
         }
 
         // レイヤーカラー変更のイベント登録
-        document
-            .getElementById("timeline-layer-color")
-            .addEventListener("change", (event) =>
+        const element = document.getElementById("timeline-layer-color");
+        if (element) {
+            element.addEventListener("change", (event) =>
             {
                 // 親のイベント中止
                 event.stopPropagation();
@@ -52,6 +52,7 @@ class TimelineLayerMenu extends BaseTimeline
                 // id名で関数を実行
                 this.changeLayerHighlightColor(event);
             });
+        }
     }
 
     /**

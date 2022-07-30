@@ -24,6 +24,88 @@ class LoopController extends BaseController
     {
         super.initialize();
 
+        const elementIds = [
+            "no-use-loop",
+            "loop-repeat",
+            "loop-no-repeat",
+            "fixed-one",
+            "loop-no-repeat-reversal",
+            "loop-repeat-reversal",
+            "frame-picker-button",
+            "target-start-button",
+            "target-end-button"
+        ];
+
+        for (let idx = 0; idx < elementIds.length; ++idx) {
+
+            const element = document.getElementById(elementIds[idx]);
+            if (!element) {
+                continue;
+            }
+
+            element.addEventListener("mousedown", (event) =>
+            {
+                // 他のイベントを中止
+                event.stopPropagation();
+
+                // id名で関数を実行
+                this.executeFunction(event.target.id, event);
+            });
+        }
+
+        const inputIds = [
+            "loop-start-frame",
+            "loop-end-frame"
+        ];
+
+        for (let idx = 0; idx < inputIds.length; ++idx) {
+
+            const element = document.getElementById(inputIds[idx]);
+            if (!element) {
+                continue;
+            }
+
+            this.setInputEvent(element);
+        }
+
+    }
+
+    /**
+     * @description ループ機能をOffに
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    changeNoUseLoop ()
+    {
+        const element = document.getElementById("no-use-loop");
+
+        // 全てのボタンを非アクティブに
+        this.clearLoopButton(element);
+
+        element.classList.add("active");
+
+        this.updateLoopType(5);
+    }
+
+    /**
+     * @description 全てのボタンを非アクティブに
+     *
+     * @param  {HTMLDivElement} element
+     * @return {void}
+     * @method
+     * @public
+     */
+    clearLoopButton (element)
+    {
+        // 全てのボタンを非アクティブに
+        const children = element.parentNode.children;
+        for (let idx = 0; idx < children.length; ++idx) {
+            children[idx]
+                .classList
+                .remove("active");
+        }
     }
 
     /**
@@ -500,23 +582,43 @@ class LoopController extends BaseController
     }
 
     /**
+     * @description ループタイプの更新
+     *
      * @param  {number} [type=0]
      * @return {void}
+     * @method
      * @public
      */
     updateLoopType (type = 0)
     {
+        /**
+         * @type {ArrowTool}
+         */
+        const tool = Util.$tools.getDefaultTool("arrow");
+        const activeElements = tool.activeElements;
+        if (!activeElements.length || activeElements.length > 1) {
+            return ;
+        }
+
+        const element = activeElements[0];
+
+        const scene = Util.$currentWorkSpace().scene;
+        const layer = scene.getLayer(
+            element.dataset.layerId | 0
+        );
+
+        const character = layer.getCharacter(
+            element.dataset.characterId | 0
+        );
+
+        if (!character) {
+            return ;
+        }
+
         const frame = Util.$timelineFrame.currentFrame;
+        const range = character.getRange(frame);
 
-        const scene   = Util.$currentWorkSpace().scene;
-        const element = Util.$screen._$moveTargets[0].target;
-        const layerId = element.dataset.layerId | 0;
-        const layer   = scene.getLayer(layerId);
-
-        const character = layer
-            .getCharacter(element.dataset.characterId | 0);
-
-        let place = character.getPlace(frame);
+        let place = character.getPlace(range.startFrame);
         if (!place.loop.referenceFrame) {
 
             if (place.loop.type === type) {
@@ -557,8 +659,9 @@ class LoopController extends BaseController
 
         // cache clear
         character._$image = null;
-        scene.changeFrame(frame);
-        Util.$screen.updatePropertyArea(false);
+
+        // 再描画
+        this.reloadScreen();
     }
 }
 

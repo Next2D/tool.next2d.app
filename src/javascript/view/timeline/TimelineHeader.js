@@ -190,6 +190,10 @@ class TimelineHeader extends BaseTimeline
         const element = document
             .getElementById("timeline-header");
 
+        if (!element) {
+            return ;
+        }
+
         // シーン移動や初回起動の時は初期化
         if (build) {
 

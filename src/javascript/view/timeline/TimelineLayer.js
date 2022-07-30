@@ -2423,9 +2423,10 @@ class TimelineLayer extends BaseTimeline
      */
     hideTargetGroup ()
     {
-        document
-            .getElementById("target-group")
-            .style.display = "none";
+        const element = document.getElementById("target-group");
+        if (element) {
+            element.style.display = "none";
+        }
     }
 
     /**

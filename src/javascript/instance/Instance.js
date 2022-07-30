@@ -169,7 +169,7 @@ class Instance
             return Util.$emptyImage;
         }
 
-        if (point) {
+        if (!point) {
             console.log("TODO toImage: ", point);
         }
 

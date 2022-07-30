@@ -520,15 +520,18 @@ class ShortcutSetting
 
         for (let idx = 0; idx < elementIds.length; ++idx) {
 
-            document
-                .getElementById(elementIds[idx])
-                .addEventListener("click", (event) =>
-                {
-                    event.stopPropagation();
-                    event.preventDefault();
+            const element = document.getElementById(elementIds[idx]);
+            if (!element) {
+                continue;
+            }
 
-                    this.executeFunction(event);
-                });
+            element.addEventListener("click", (event) =>
+            {
+                event.stopPropagation();
+                event.preventDefault();
+
+                this.executeFunction(event);
+            });
         }
 
         // オリジナルのショートカットのマッピングを生成
@@ -541,6 +544,10 @@ class ShortcutSetting
 
             const parent = document
                 .getElementById(`shortcut-list-${name}`);
+
+            if (!parent) {
+                continue;
+            }
 
             const mapping = this.viewMapping.get(name);
 

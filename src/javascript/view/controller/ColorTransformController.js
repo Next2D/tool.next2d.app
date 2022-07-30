@@ -76,9 +76,13 @@ class ColorTransformController extends BaseController
         ];
 
         for (let idx = 0; idx < elementIds.length; ++idx) {
-            this.setInputEvent(
-                document.getElementById(elementIds[idx])
-            );
+
+            const element = document.getElementById(elementIds[idx]);
+            if (!element) {
+                continue;
+            }
+
+            this.setInputEvent(element);
         }
     }
 

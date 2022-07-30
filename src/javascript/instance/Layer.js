@@ -873,7 +873,7 @@ class Layer
                 .getElementById(`${layerId}-${frame++}`);
 
             // Emptyフレームを見つけたら終了
-            if (element.dataset.frameState === "empty") {
+            if (!element || element.dataset.frameState === "empty") {
                 return ;
             }
 
