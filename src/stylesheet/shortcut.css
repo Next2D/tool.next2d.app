@@ -316,6 +316,12 @@
     background-position : center center;
 }
 
+#shortcut-list-screen .screen-change-movie-clip
+{
+    background-image    : url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24"><path fill="gainsboro" d="M18.546 3h-13.069l-5.477 8.986v9.014h24v-9.014l-5.454-8.986zm-11.946 2h10.82l4.249 7h-19.335l4.266-7zm-4.6 14v-5h20v5h-20zm3-8l.607-1h12.787l.606 1h-14zm12.787-2h-11.573l.607-1h10.359l.607 1zm-1.214-2h-9.145l.607-1h7.931l.607 1z"/></svg>');
+    background-repeat   : no-repeat;
+    background-position : center center;
+}
 
 #shortcut-list-timeline .timeline-layer-normal
 {

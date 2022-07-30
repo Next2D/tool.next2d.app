@@ -241,6 +241,12 @@ class ScreenKeyboardCommand extends KeyboardCommand
         {
             Util.$tweenController.addCurvePinter();
         });
+
+        // MovieClipに変換
+        this.add(Util.$generateShortcutKey("m", { "shift": true }), () =>
+        {
+            Util.$screenMenu.executeScreenChangeMovieClip();
+        });
     }
 
     /**

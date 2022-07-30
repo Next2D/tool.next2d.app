@@ -229,6 +229,12 @@ class ShortcutSetting
                     "text": "Ctrl + Shift + P",
                     "css": "screen-delete-tween-curve-pointer",
                     "description": "{{カーブポインターの削除}}"
+                },
+                {
+                    "key": "mShift",
+                    "text": "Shift + M",
+                    "css": "screen-change-movie-clip",
+                    "description": "{{MovieClipに変換}}"
                 }
             ],
             "timeline": [
