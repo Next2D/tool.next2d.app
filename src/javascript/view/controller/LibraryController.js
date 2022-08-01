@@ -1038,13 +1038,27 @@ class LibraryController
                     .text()
                     .then((value) =>
                     {
+                        const object = this.createInstance(
+                            "container",
+                            file.name,
+                            Util.$currentWorkSpace().nextLibraryId
+                        );
+
                         const movieClip = Util
                             .$currentWorkSpace()
-                            .addLibrary(this.createInstance(
-                                "container",
-                                file.name,
-                                Util.$currentWorkSpace().nextLibraryId
-                            ));
+                            .addLibrary(object);
+
+                        // ドロップしたアイテムをアクティブ化
+                        const element = document
+                            .getElementById(`library-child-id-${object.id}`);
+
+                        if (element) {
+                            this.activeInstances.set(object.id, element);
+
+                            element
+                                .classList
+                                .add("active");
+                        }
 
                         if (folder_id) {
                             movieClip.folderId = folder_id;
@@ -1097,20 +1111,32 @@ class LibraryController
                                     context.getImageData(0, 0, width, height).data
                                 );
 
-                                const bitmap = this.createInstance(
+                                const object = this.createInstance(
                                     "bitmap",
                                     file.name,
                                     Util.$currentWorkSpace().nextLibraryId
                                 );
 
-                                bitmap.width     = image.width;
-                                bitmap.height    = image.height;
-                                bitmap.imageType = file.type;
-                                bitmap.buffer    = new Uint8Array(buffer);
+                                // ドロップしたアイテムをアクティブ化
+                                const element = document
+                                    .getElementById(`library-child-id-${object.id}`);
+
+                                if (element) {
+                                    this.activeInstances.set(object.id, element);
+
+                                    element
+                                        .classList
+                                        .add("active");
+                                }
+
+                                object.width     = image.width;
+                                object.height    = image.height;
+                                object.imageType = file.type;
+                                object.buffer    = new Uint8Array(buffer);
 
                                 const instance = Util
                                     .$currentWorkSpace()
-                                    .addLibrary(bitmap);
+                                    .addLibrary(object);
 
                                 if (folder_id) {
 
@@ -1150,6 +1176,18 @@ class LibraryController
                                 file.name,
                                 Util.$currentWorkSpace().nextLibraryId
                             );
+
+                            // ドロップしたアイテムをアクティブ化
+                            const element = document
+                                .getElementById(`library-child-id-${object.id}`);
+
+                            if (element) {
+                                this.activeInstances.set(object.id, element);
+
+                                element
+                                    .classList
+                                    .add("active");
+                            }
 
                             object.width  = video.videoWidth;
                             object.height = video.videoHeight;
@@ -1193,6 +1231,18 @@ class LibraryController
                             file.name,
                             Util.$currentWorkSpace().nextLibraryId
                         );
+
+                        // ドロップしたアイテムをアクティブ化
+                        const element = document
+                            .getElementById(`library-child-id-${object.id}`);
+
+                        if (element) {
+                            this.activeInstances.set(object.id, element);
+
+                            element
+                                .classList
+                                .add("active");
+                        }
 
                         object.buffer = new Uint8Array(buffer);
 

@@ -40,6 +40,10 @@ class MovieClip extends Instance
         if (object.actions) {
             this.actions = object.actions;
         }
+
+        if (object.currentFrame) {
+            this._$currentFrame = Math.max(1, object.currentFrame | 0);
+        }
     }
 
     /**
@@ -342,11 +346,9 @@ class MovieClip extends Instance
             .$currentWorkSpace()
             .getLibrary(this.id | 0);
 
-        const frame = Util.$timelineFrame.currentFrame;
-
         // add menu
         const htmlTag = `
-<div id="scene-instance-id-${instance.id}" data-library-id="${instance.id}" data-frame="${frame}">${instance.name}</div>
+<div id="scene-instance-id-${instance.id}" data-library-id="${instance.id}">${instance.name}</div>
 `;
 
         document
@@ -356,32 +358,26 @@ class MovieClip extends Instance
         const element = document
             .getElementById(`scene-instance-id-${instance.id}`);
 
+        element.addEventListener("mousedown", (event) =>
+        {
+            // 全てのイベントを中止
+            event.stopPropagation();
+            event.preventDefault();
+        });
+
         element.addEventListener("click", (event) =>
         {
+            // モーダル終了
+            Util.$endMenu();
+
             const element = event.currentTarget;
 
-            const frame = element.dataset.frame | 0;
-            Util.$timelineFrame.currentFrame = frame;
-
-            const workSpace = Util.$currentWorkSpace();
-            workSpace.scene = workSpace.getLibrary(
+            // シーン移動
+            Util.$sceneChange.execute(
                 element.dataset.libraryId | 0
             );
 
-            const moveX = (frame - 1) * 13;
-            document
-                .getElementById("timeline-marker")
-                .style
-                .left = `${moveX}px`;
-
-            const base = document
-                .getElementById("timeline-controller-base");
-
-            const x = moveX > base.offsetWidth / 2
-                ? moveX - base.offsetWidth / 2
-                : 0;
-            Util.$timelineLayer.moveTimeLine(x);
-
+            // リストから削除
             element.remove();
         });
 
@@ -750,12 +746,13 @@ class MovieClip extends Instance
     }
 
     /**
-     * @param  {object} place
-     * @param  {boolean} [preview=false]
+     * @param  {object} [place=null]
+     * @param  {object} [range=null]
      * @return {object}
+     * @method
      * @public
      */
-    getBounds (place, preview = false)
+    getBounds (place = null, range = null)
     {
         if (!this._$layers.size) {
             return {
@@ -773,9 +770,11 @@ class MovieClip extends Instance
 
         const currentFrame = Util.$currentFrame;
 
-        let frame = this.currentFrame;
-        if (!preview && this.totalFrame > 1) {
-            frame = Util.$getFrame(place, this.totalFrame);
+        let frame = 1;
+        if (place && range) {
+            frame = Util.$getFrame(
+                place, range, currentFrame, this.totalFrame
+            );
         }
 
         Util.$currentFrame = frame;
@@ -794,36 +793,15 @@ class MovieClip extends Instance
             const length = characters.length;
             for (let idx = 0; idx < length; ++idx) {
 
-                const character  = characters[idx];
-                const childPlace = character.getPlace(frame);
-                const matrix     = childPlace.matrix;
+                const character = characters[idx];
+                const range     = character.getRange(frame);
+                const place     = character.getPlace(frame);
+                const matrix    = place.matrix;
 
-                const placeObject = {};
-                const keys = Object.keys(childPlace);
-                for (let idx = 0; idx < keys.length; ++idx) {
-                    const name = keys[idx];
-                    placeObject[name] = childPlace[name];
-                }
+                const instance = workSpace
+                    .getLibrary(character.libraryId | 0);
 
-                const instance = workSpace.getLibrary(character.libraryId | 0);
-                if (instance.type === "container") {
-
-                    placeObject.loop = Util.$getDefaultLoopConfig();
-
-                    if (childPlace.loop) {
-                        const keys = Object.keys(childPlace.loop);
-                        for (let idx = 0; idx < keys.length; ++idx) {
-                            const name = keys[idx];
-                            placeObject.loop[name] = childPlace.loop[name];
-                        }
-                    }
-
-                    placeObject.placeFrame = childPlace.frame;
-                    placeObject.startFrame = character.startFrame;
-                    placeObject.endFrame   = character.endFrame;
-                }
-
-                const childBounds = instance.getBounds(placeObject, preview);
+                const childBounds = instance.getBounds(place, range);
 
                 const width  = childBounds.xMax - childBounds.xMin;
                 const height = childBounds.yMax - childBounds.yMin;
@@ -861,16 +839,17 @@ class MovieClip extends Instance
     toObject ()
     {
         return {
-            "id":       this.id,
-            "name":     this.name,
-            "type":     this.type,
-            "symbol":   this.symbol,
-            "folderId": this.folderId,
-            "parent":   this.parent,
-            "layers":   this.layers,
-            "labels":   this.labels,
-            "sounds":   this.sounds,
-            "actions":  this.actions
+            "id":           this.id,
+            "name":         this.name,
+            "type":         this.type,
+            "symbol":       this.symbol,
+            "folderId":     this.folderId,
+            "currentFrame": this.currentFrame,
+            "parent":       this.parent,
+            "layers":       this.layers,
+            "labels":       this.labels,
+            "sounds":       this.sounds,
+            "actions":      this.actions
         };
     }
 
@@ -1165,12 +1144,12 @@ class MovieClip extends Instance
     }
 
     /**
-     * @param  {object}  place
-     * @param  {boolean} [preview=false]
+     * @param  {object} place
+     * @param  {object} range
      * @return {next2d.display.Sprite}
      * @public
      */
-    createInstance (place, preview = false)
+    createInstance (place, range)
     {
         const { MovieClip } = window.next2d.display;
         const { Matrix, ColorTransform } = window.next2d.geom;
@@ -1184,10 +1163,13 @@ class MovieClip extends Instance
         Util.$useIds.clear();
         const object = this.toPublish();
 
-        let frame = this.currentFrame;
-        if (!preview && this.totalFrame > 1) {
-            frame = Util.$getFrame(place, this.totalFrame);
+        let frame = 1;
+        if (place && range) {
+            frame = Util.$getFrame(
+                place, range, currentFrame, this.totalFrame
+            );
         }
+
         Util.$currentFrame = frame;
         movieClip._$currentFrame = frame;
 
@@ -1199,42 +1181,61 @@ class MovieClip extends Instance
         const placeMap = object.placeMap[frame];
         for (let idx = 0; controller.length > idx; ++idx) {
 
-            const tag         = object.dictionary[controller[idx]];
-            const instance    = workSpace.getLibrary(tag.characterId);
-            const childPlace  = object.placeObjects[placeMap[idx]];
-            const placeObject = {};
-
-            const keys = Object.keys(childPlace);
-            for (let idx = 0; idx < keys.length; ++idx) {
-                const name = keys[idx];
-                placeObject[name] = childPlace[name];
-            }
+            const tag      = object.dictionary[controller[idx]];
+            const instance = workSpace.getLibrary(tag.characterId);
+            const place    = object.placeObjects[placeMap[idx]];
 
             let displayObject = null;
             switch (instance.type) {
 
                 case "container":
+                    displayObject = new MovieClip();
+                    if (instance._$layers.size) {
 
-                    placeObject.loop = Util.$getDefaultLoopConfig();
-                    if (childPlace.loop) {
+                        let range = {};
+                        let depth = -1;
+                        for (const layer of instance._$layers.values()) {
 
-                        const keys = Object.keys(childPlace.loop);
-                        for (let idx = 0; idx < keys.length; ++idx) {
-                            const name = keys[idx];
-                            placeObject.loop[name] = childPlace.loop[name];
+                            depth++;
+
+                            if (depth !== idx) {
+                                continue;
+                            }
+
+                            const activeCharacters = layer.getActiveCharacter(frame);
+                            if (activeCharacters.length > 1) {
+                                // 昇順
+                                activeCharacters.sort((a, b) =>
+                                {
+                                    const aDepth = a.getPlace(frame).depth;
+                                    const bDepth = b.getPlace(frame).depth;
+                                    switch (true) {
+
+                                        case aDepth > bDepth:
+                                            return 1;
+
+                                        case aDepth < bDepth:
+                                            return -1;
+
+                                        default:
+                                            return 0;
+
+                                    }
+                                });
+                            }
+
+                            if (activeCharacters.length) {
+                                range = activeCharacters[0].getRange(frame);
+                            }
+
+                            break;
                         }
 
-                        placeObject.loop.placeFrame = frame;
+                        if (range) {
+                            place.frame   = frame;
+                            displayObject = instance.createInstance(place, range);
+                        }
                     }
-
-                    // setup
-                    placeObject.frame      = frame;
-                    placeObject.startFrame = tag.startFrame;
-                    placeObject.endFrame   = tag.endFrame;
-
-                    displayObject = instance._$layers.size
-                        ? instance.createInstance(placeObject, preview)
-                        : new MovieClip();
                     break;
 
                 case "shape":
@@ -1250,27 +1251,27 @@ class MovieClip extends Instance
 
             // matrix
             displayObject.transform.matrix = new Matrix(
-                placeObject.matrix[0], placeObject.matrix[1],
-                placeObject.matrix[2], placeObject.matrix[3],
-                placeObject.matrix[4], placeObject.matrix[5]
+                place.matrix[0], place.matrix[1],
+                place.matrix[2], place.matrix[3],
+                place.matrix[4], place.matrix[5]
             );
 
             // colorTransform
             displayObject.transform.colorTransform = new ColorTransform(
-                placeObject.colorTransform[0], placeObject.colorTransform[1],
-                placeObject.colorTransform[2], placeObject.colorTransform[3],
-                placeObject.colorTransform[4], placeObject.colorTransform[5],
-                placeObject.colorTransform[6], placeObject.colorTransform[7]
+                place.colorTransform[0], place.colorTransform[1],
+                place.colorTransform[2], place.colorTransform[3],
+                place.colorTransform[4], place.colorTransform[5],
+                place.colorTransform[6], place.colorTransform[7]
             );
 
             // blendMode
-            displayObject.blendMode = placeObject.blendMode;
+            displayObject.blendMode = place.blendMode;
 
             // filters
             const filters = [];
-            for (let idx = 0; idx < placeObject.surfaceFilterList.length; ++idx) {
+            for (let idx = 0; idx < place.surfaceFilterList.length; ++idx) {
 
-                const filterTag = placeObject.surfaceFilterList[idx];
+                const filterTag = place.surfaceFilterList[idx];
                 const filterClass = window.next2d.filters[filterTag.class];
 
                 filters.push(

@@ -334,27 +334,11 @@ Util.$changeScene = (event) =>
         scenes.children[0].remove();
     }
 
-    const workSpace = Util.$currentWorkSpace();
+    // シーン名をリストに追加
+    Util.$currentWorkSpace().root.addSceneName();
 
-    // add scene
-    workSpace.root.addSceneName();
-
-    // fixed logic
-    Util.$timelineFrame.currentFrame = 1;
-
-    // タイムラインのマーカーを移動
-    Util.$timelineMarker.move();
-
-    // 上部のタイムラインの位置を補正
-    const base = document
-        .getElementById("timeline-controller-base");
-
-    if (base.scrollLeft) {
-        Util.$timelineLayer.moveTimeLine(0);
-    }
-
-    // update
-    workSpace.scene = workSpace.getLibrary(
+    // シーン移動
+    Util.$sceneChange.execute(
         event.currentTarget.dataset.libraryId | 0
     );
 };
@@ -2320,41 +2304,27 @@ Util.$getDefaultLoopConfig = () =>
 
 /**
  * @param  {object} place
+ * @param  {object} range
+ * @param  {number} parent_frame
  * @param  {number} total_frame
  * @return {number}
  * @static
  */
-Util.$getFrame = (place, total_frame) =>
+Util.$getFrame = (place, range, parent_frame, total_frame) =>
 {
-    const startFrame     = place.startFrame ? place.startFrame : 1;
-    const referenceFrame = place.loop ? place.loop.referenceFrame : 0;
-
-    const length = Util.$currentFrame - (referenceFrame || startFrame);
+    // レンジ幅での移動数
+    const length = parent_frame - range.startFrame;
 
     let frame = 1;
     switch (place.loop.type) {
-
-        case 5:
-            frame = 1;
-            for (let idx = 0; idx < length; ++idx) {
-
-                ++frame;
-
-                if (frame > total_frame) {
-                    frame = 1;
-                }
-
-            }
-            break;
 
         case 0:
             {
                 const totalFrame = place.loop.end
                     ? place.loop.end
-                    : total_frame;
+                    : range.endFrame - range.startFrame;
 
                 frame = place.loop.start;
-
                 for (let idx = 0; idx < length; ++idx) {
 
                     ++frame;
@@ -2371,9 +2341,20 @@ Util.$getFrame = (place, total_frame) =>
             {
                 const totalFrame = place.loop.end
                     ? place.loop.end
-                    : total_frame;
+                    : range.endFrame - range.startFrame;
 
-                frame = Math.min(totalFrame, length + 1);
+                frame = place.loop.start;
+                for (let idx = 0; idx < length; ++idx) {
+
+                    ++frame;
+
+                    // ループは一回だけなので最後のフレームで終了
+                    if (frame > totalFrame) {
+                        frame = totalFrame;
+                        break;
+                    }
+
+                }
             }
             break;
 
@@ -2385,16 +2366,19 @@ Util.$getFrame = (place, total_frame) =>
             {
                 const totalFrame = place.loop.end
                     ? place.loop.end
-                    : total_frame;
+                    : range.endFrame - range.startFrame;
 
                 frame = totalFrame;
                 for (let idx = 0; idx < length; ++idx) {
+
                     --frame;
-                    if (!frame) {
+
+                    // ループは一回だけなので最初のフレームで終了
+                    if (place.loop.start > frame) {
+                        frame = place.loop.start;
                         break;
                     }
                 }
-                frame = Math.max(place.loop.start, frame);
             }
             break;
 
@@ -2402,7 +2386,7 @@ Util.$getFrame = (place, total_frame) =>
             {
                 const totalFrame = place.loop.end
                     ? place.loop.end
-                    : total_frame;
+                    : range.endFrame - range.startFrame;
 
                 frame = totalFrame;
                 for (let idx = 0; idx < length; ++idx) {
@@ -2411,9 +2395,22 @@ Util.$getFrame = (place, total_frame) =>
 
                     if (place.loop.start > frame) {
                         frame = totalFrame;
+                        break;
                     }
-
                 }
+            }
+            break;
+
+        case 5:
+            frame = 1;
+            for (let idx = 1; idx < parent_frame; ++idx) {
+
+                ++frame;
+
+                if (frame > total_frame) {
+                    frame = 1;
+                }
+
             }
             break;
 

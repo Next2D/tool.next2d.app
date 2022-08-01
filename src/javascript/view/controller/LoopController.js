@@ -619,45 +619,47 @@ class LoopController extends BaseController
         const range = character.getRange(frame);
 
         let place = character.getPlace(range.startFrame);
-        if (!place.loop.referenceFrame) {
-
-            if (place.loop.type === type) {
-                return ;
-            }
-
-            const frameElement = document
-                .getElementById(`${layer.id}-${frame}`);
-
-            if (frameElement.dataset.frameState !== "key-frame") {
-
-                const object = character.clonePlace(frame, frame);
-                if (!object.loop) {
-                    object.loop = Util.$getDefaultLoopConfig();
-                }
-
-                character.setPlace(frame, object);
-
-                Util.$timeline._$targetFrames = [frameElement];
-                Util.$timeline.addKeyFrame();
-                Util.$timeline._$targetFrames.length = 0;
-                frameElement.classList.remove("frame-active");
-
-            }
-
-            place = character.getPlace(frame);
-
-        } else {
-
-            place = character.getPlace(place.loop.referenceFrame);
-            if (place.loop.type === type) {
-                return ;
-            }
+        if (place.loop.type === type) {
+            return ;
         }
 
-        // update
-        place.loop.type = type;
+        // if (!place.loop.referenceFrame) {
+        //
+        //     if (place.loop.type === type) {
+        //         return ;
+        //     }
+        //
+        //     const frameElement = document
+        //         .getElementById(`${layer.id}-${frame}`);
+        //
+        //     if (frameElement.dataset.frameState !== "key-frame") {
+        //
+        //         const object = character.clonePlace(frame, frame);
+        //         if (!object.loop) {
+        //             object.loop = Util.$getDefaultLoopConfig();
+        //         }
+        //
+        //         character.setPlace(frame, object);
+        //
+        //         Util.$timeline._$targetFrames = [frameElement];
+        //         Util.$timeline.addKeyFrame();
+        //         Util.$timeline._$targetFrames.length = 0;
+        //         frameElement.classList.remove("frame-active");
+        //
+        //     }
+        //
+        //     place = character.getPlace(frame);
+        //
+        // } else {
+        //
+        //     place = character.getPlace(place.loop.referenceFrame);
+        //     if (place.loop.type === type) {
+        //         return ;
+        //     }
+        // }
 
-        // cache clear
+        // ループタイプを更新してキャッシュを削除
+        place.loop.type   = type;
         character._$image = null;
 
         // 再描画

@@ -1518,30 +1518,12 @@ class ArrowTool extends BaseTool
 
         if (node) {
 
-            const frame = node.dataset.frame | 0;
-
-            Util.$timelineFrame.currentFrame = frame;
-
-            const workSpace = Util.$currentWorkSpace();
-            workSpace.scene = workSpace.getLibrary(
+            // シーン移動
+            Util.$sceneChange.execute(
                 node.dataset.libraryId | 0
             );
 
-            const moveX = (frame - 1) * 13;
-            document
-                .getElementById("timeline-marker")
-                .style
-                .left = `${moveX}px`;
-
-            const base = document
-                .getElementById("timeline-controller-base");
-
-            const x = moveX > base.offsetWidth / 2
-                ? moveX - base.offsetWidth / 2
-                : 0;
-
-            Util.$timelineLayer.moveTimeLine(x);
-
+            // リストから削除
             node.remove();
         }
     }

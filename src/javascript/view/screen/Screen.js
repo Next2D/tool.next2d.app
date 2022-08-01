@@ -723,28 +723,11 @@ class Screen extends BaseScreen
                     // 親のイベントを中止する
                     event.stopPropagation();
 
-                    const workSpace = Util.$currentWorkSpace();
+                    // シーン名をリストに追加
+                    Util.$currentWorkSpace().scene.addSceneName();
 
-                    // add scene
-                    workSpace.scene.addSceneName();
-
-                    // fixed logic
-                    Util.$timelineFrame.currentFrame = 1;
-
-                    document
-                        .getElementById("timeline-marker")
-                        .style
-                        .left = "0px";
-
-                    const base = document
-                        .getElementById("timeline-controller-base");
-
-                    if (base.scrollLeft) {
-                        Util.$timelineLayer.moveTimeLine(0);
-                    }
-
-                    // update
-                    workSpace.scene = workSpace.getLibrary(
+                    // シーン移動
+                    Util.$sceneChange.execute(
                         event.currentTarget.dataset.libraryId | 0
                     );
                 });

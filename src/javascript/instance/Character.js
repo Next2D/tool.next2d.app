@@ -720,72 +720,73 @@ class Character
 
             const frame = Util.$timelineFrame.currentFrame;
 
+            const range = this.getRange(frame);
             const place = this.getPlace(frame);
 
             // reset
             Util.$currentFrame = frame;
 
-            let keys = Object.keys(place);
-            const placeObject = {};
-            for (let idx = 0; idx < keys.length; ++idx) {
-                const name = keys[idx];
-                placeObject[name] = place[name];
-            }
-
-            // reset
-            if (instance.type === "container") {
-
-                // init
-                placeObject.loop = Util.$getDefaultLoopConfig();
-                placeObject.loop.placeFrame = place.frame;
-
-                // setup
-                placeObject.startFrame = this.startFrame;
-                placeObject.endFrame   = this.endFrame;
-
-                let loopConfig = place.loop;
-                if (loopConfig) {
-
-                    if (loopConfig.referenceFrame) {
-
-                        loopConfig = this.getPlace(loopConfig.referenceFrame).loop;
-                        placeObject.loop.placeFrame = loopConfig.referenceFrame;
-
-                    } else {
-
-                        if (loopConfig.type === Util.DEFAULT_LOOP) {
-
-                            let prevPlace = place;
-                            while (prevPlace.frame - 1 > 0) {
-
-                                const prevFrame = prevPlace.frame - 1;
-                                if (!this.hasPlace(prevFrame)) {
-                                    break;
-                                }
-
-                                prevPlace = this.getPlace(prevFrame);
-
-                                loopConfig = prevPlace.loop;
-                                placeObject.loop.placeFrame = prevPlace.frame;
-                                if (loopConfig.type !== Util.DEFAULT_LOOP) {
-                                    break;
-                                }
-                            }
-                        }
-
-                    }
-
-                    // clone
-                    keys = Object.keys(loopConfig);
-                    for (let idx = 0; idx < keys.length; ++idx) {
-                        const name = keys[idx];
-                        placeObject.loop[name] = loopConfig[name];
-                    }
-                }
-            }
+            // let keys = Object.keys(place);
+            // const placeObject = {};
+            // for (let idx = 0; idx < keys.length; ++idx) {
+            //     const name = keys[idx];
+            //     placeObject[name] = place[name];
+            // }
+            //
+            // // reset
+            // if (instance.type === "container") {
+            //
+            //     // init
+            //     placeObject.loop = Util.$getDefaultLoopConfig();
+            //     placeObject.loop.placeFrame = place.frame;
+            //
+            //     // setup
+            //     placeObject.startFrame = this.startFrame;
+            //     placeObject.endFrame   = this.endFrame;
+            //
+            //     let loopConfig = place.loop;
+            //     if (loopConfig) {
+            //
+            //         if (loopConfig.referenceFrame) {
+            //
+            //             loopConfig = this.getPlace(loopConfig.referenceFrame).loop;
+            //             placeObject.loop.placeFrame = loopConfig.referenceFrame;
+            //
+            //         } else {
+            //
+            //             if (loopConfig.type === Util.DEFAULT_LOOP) {
+            //
+            //                 let prevPlace = place;
+            //                 while (prevPlace.frame - 1 > 0) {
+            //
+            //                     const prevFrame = prevPlace.frame - 1;
+            //                     if (!this.hasPlace(prevFrame)) {
+            //                         break;
+            //                     }
+            //
+            //                     prevPlace = this.getPlace(prevFrame);
+            //
+            //                     loopConfig = prevPlace.loop;
+            //                     placeObject.loop.placeFrame = prevPlace.frame;
+            //                     if (loopConfig.type !== Util.DEFAULT_LOOP) {
+            //                         break;
+            //                     }
+            //                 }
+            //             }
+            //
+            //         }
+            //
+            //         // clone
+            //         keys = Object.keys(loopConfig);
+            //         for (let idx = 0; idx < keys.length; ++idx) {
+            //             const name = keys[idx];
+            //             placeObject.loop[name] = loopConfig[name];
+            //         }
+            //     }
+            // }
 
             const bounds = Util.$boundsMatrix(
-                instance.getBounds(placeObject),
+                instance.getBounds(place),
                 place.matrix
             );
 
@@ -794,7 +795,7 @@ class Character
 
             const width  = +Math.ceil(Math.abs(bounds.xMax - bounds.xMin));
             const height = +Math.ceil(Math.abs(bounds.yMax - bounds.yMin));
-            switch (placeObject.blendMode) {
+            switch (place.blendMode) {
 
                 case "alpha":
                 case "erase":
@@ -804,28 +805,28 @@ class Character
                     this._$image = instance.toImage(width, height,
                         {
                             "frame": frame,
-                            "matrix": placeObject.matrix,
+                            "matrix": place.matrix,
                             "colorTransform": [
-                                0, 0, 0, placeObject.colorTransform[3],
-                                0, 0, 0, placeObject.colorTransform[7]
+                                0, 0, 0, place.colorTransform[3],
+                                0, 0, 0, place.colorTransform[7]
                             ],
-                            "blendMode": placeObject.blendMode,
-                            "filter": placeObject.filter,
-                            "loop": placeObject.loop
+                            "blendMode": place.blendMode,
+                            "filter": place.filter,
+                            "loop": place.loop
                         },
-                        this.referencePoint
+                        range
                     );
                     break;
 
                 default:
                     this._$image = instance
-                        .toImage(width, height, placeObject, this.referencePoint);
+                        .toImage(width, height, place, range);
                     break;
 
             }
 
             // set blend mode
-            switch (placeObject.blendMode) {
+            switch (place.blendMode) {
 
                 case "add":
                     this._$image.style.mixBlendMode = "color-dodge";
@@ -851,7 +852,7 @@ class Character
                     break;
 
                 default:
-                    this._$image.style.mixBlendMode = placeObject.blendMode;
+                    this._$image.style.mixBlendMode = place.blendMode;
                     break;
 
             }

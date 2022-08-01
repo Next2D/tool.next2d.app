@@ -157,26 +157,22 @@ class Instance
      * @param  {number} width
      * @param  {number} height
      * @param  {object} place
-     * @param  {object} point
-     * @param  {boolean} [preview=false]
+     * @param  {object} range
      * @return {HTMLImageElement}
+     * @method
      * @public
      */
-    toImage (width, height, place, point, preview = false)
+    toImage (width, height, place, range)
     {
         // empty image
         if (!width || !height) {
             return Util.$emptyImage;
         }
 
-        if (!point) {
-            console.log("TODO toImage: ", point);
-        }
-
         const { Sprite, BitmapData } = window.next2d.display;
         const { Matrix, ColorTransform, Rectangle } = window.next2d.geom;
 
-        const instance  = this.createInstance(place, preview);
+        const instance  = this.createInstance(place, range);
         const rectangle = instance.getBounds();
 
         const ratio = window.devicePixelRatio * Util.$zoomScale;
@@ -283,7 +279,7 @@ class Instance
         image.draggable = false;
 
         const bounds = Util.$boundsMatrix(
-            this.getBounds(place, preview),
+            this.getBounds(place, range),
             place.matrix
         );
 
@@ -435,7 +431,7 @@ class Instance
                 "colorTransform": [1, 1, 1, 1, 0, 0, 0, 0],
                 "blendMode": "normal",
                 "filter": []
-            }, { "x": 0, "y": 0 }, true
+            }
         );
 
         if (image.height !== height) {
