@@ -419,37 +419,16 @@ class Character
             frame = Util.$timelineFrame.currentFrame;
         }
 
+        const range = this.getRange(frame);
         const place = this.getPlace(frame);
-        const placeObject = {};
-
-        const keys = Object.keys(place);
-        for (let idx = 0; idx < keys.length; ++idx) {
-            const name = keys[idx];
-            placeObject[name] = place[name];
-        }
-
-        if (instance.type === "container") {
-
-            placeObject.loop = Util.$getDefaultLoopConfig();
-
-            if (place.loop) {
-                const keys = Object.keys(place.loop);
-                for (let idx = 0; idx < keys.length; ++idx) {
-                    const name = keys[idx];
-                    placeObject.loop[name] = place.loop[name];
-                }
-            }
-
-            placeObject.placeFrame = place.frame;
-            placeObject.startFrame = this.startFrame;
-            placeObject.endFrame   = this.endFrame;
-        }
 
         // cache
         const currentFrame = Util.$currentFrame;
 
         Util.$currentFrame = frame;
-        const bounds = instance.getBounds(placeObject, preview);
+        const bounds = preview
+            ? instance.getBounds()
+            : instance.getBounds(place, range);
 
         // reset
         Util.$currentFrame = currentFrame;
@@ -720,73 +699,16 @@ class Character
 
             const frame = Util.$timelineFrame.currentFrame;
 
-            const range = this.getRange(frame);
             const place = this.getPlace(frame);
+            const range = place.loop && place.loop.type === 5
+                ? { "startFrame": this.startFrame, "endFrame": this.endFrame }
+                : this.getRange(frame);
 
             // reset
             Util.$currentFrame = frame;
 
-            // let keys = Object.keys(place);
-            // const placeObject = {};
-            // for (let idx = 0; idx < keys.length; ++idx) {
-            //     const name = keys[idx];
-            //     placeObject[name] = place[name];
-            // }
-            //
-            // // reset
-            // if (instance.type === "container") {
-            //
-            //     // init
-            //     placeObject.loop = Util.$getDefaultLoopConfig();
-            //     placeObject.loop.placeFrame = place.frame;
-            //
-            //     // setup
-            //     placeObject.startFrame = this.startFrame;
-            //     placeObject.endFrame   = this.endFrame;
-            //
-            //     let loopConfig = place.loop;
-            //     if (loopConfig) {
-            //
-            //         if (loopConfig.referenceFrame) {
-            //
-            //             loopConfig = this.getPlace(loopConfig.referenceFrame).loop;
-            //             placeObject.loop.placeFrame = loopConfig.referenceFrame;
-            //
-            //         } else {
-            //
-            //             if (loopConfig.type === Util.DEFAULT_LOOP) {
-            //
-            //                 let prevPlace = place;
-            //                 while (prevPlace.frame - 1 > 0) {
-            //
-            //                     const prevFrame = prevPlace.frame - 1;
-            //                     if (!this.hasPlace(prevFrame)) {
-            //                         break;
-            //                     }
-            //
-            //                     prevPlace = this.getPlace(prevFrame);
-            //
-            //                     loopConfig = prevPlace.loop;
-            //                     placeObject.loop.placeFrame = prevPlace.frame;
-            //                     if (loopConfig.type !== Util.DEFAULT_LOOP) {
-            //                         break;
-            //                     }
-            //                 }
-            //             }
-            //
-            //         }
-            //
-            //         // clone
-            //         keys = Object.keys(loopConfig);
-            //         for (let idx = 0; idx < keys.length; ++idx) {
-            //             const name = keys[idx];
-            //             placeObject.loop[name] = loopConfig[name];
-            //         }
-            //     }
-            // }
-
             const bounds = Util.$boundsMatrix(
-                instance.getBounds(place),
+                instance.getBounds(place, range),
                 place.matrix
             );
 
@@ -1055,7 +977,6 @@ class Character
 
             const object = {
                 "frame": frame,
-                "fixed": !!place.fixed,
                 "depth": place.depth,
                 "blendMode": place.blendMode,
                 "filter": filters,
@@ -1069,18 +990,18 @@ class Character
 
             if (instance.type === "container") {
 
-                object.loop = Util.$getDefaultLoopConfig();
-
                 if (place.loop) {
+
                     object.loop = {
                         "type": place.loop.type,
                         "start": place.loop.start,
                         "end": place.loop.end
                     };
 
-                    if (place.loop.referenceFrame) {
-                        object.loop.referenceFrame = place.loop.referenceFrame;
-                    }
+                } else {
+
+                    object.loop = Util.$getDefaultLoopConfig();
+
                 }
             }
 

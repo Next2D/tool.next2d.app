@@ -995,13 +995,10 @@ class TransformController extends BaseController
                 const character      = layer.getCharacter(characterId);
                 const referencePoint = character.referencePoint;
 
-                const place    = character.getClonePlace(frame);
+                const range    = character.getRange(frame);
+                const place    = character.getPlace(frame);
                 const library  = workSpace.getLibrary(character.libraryId);
-                const instance = library.createInstance(place);
-
-                if (library.type === "container") {
-                    instance._$currentFrame = Util.$getFrame(place, instance.totalFrame);
-                }
+                const instance = library.createInstance(place, range);
 
                 const rectangle = instance.getBounds();
                 const w = rectangle.width  / 2;
@@ -1282,13 +1279,10 @@ class TransformController extends BaseController
                 const character      = layer.getCharacter(characterId);
                 const referencePoint = character.referencePoint;
 
-                const place    = character.getClonePlace(frame);
+                const range    = character.getRange(frame);
+                const place    = character.getPlace(frame);
                 const library  = workSpace.getLibrary(character.libraryId);
-                const instance = library.createInstance(place);
-
-                if (library.type === "container") {
-                    instance._$currentFrame = Util.$getFrame(place, instance.totalFrame);
-                }
+                const instance = library.createInstance(place, range);
 
                 const rectangle = instance.getBounds();
                 const w = rectangle.width  / 2;
@@ -1496,13 +1490,10 @@ class TransformController extends BaseController
                     return ;
                 }
 
-                const place    = character.getClonePlace(frame);
+                const range    = character.getRange(frame);
+                const place    = character.getPlace(frame);
                 const library  = workSpace.getLibrary(character.libraryId);
-                const instance = library.createInstance(place);
-
-                if (library.type === "container") {
-                    instance._$currentFrame = Util.$getFrame(place, instance.totalFrame);
-                }
+                const instance = library.createInstance(place, range);
 
                 const rectangle = instance.getBounds();
                 const w = rectangle.width  / 2;

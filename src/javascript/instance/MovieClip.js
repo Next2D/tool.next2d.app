@@ -68,50 +68,13 @@ class MovieClip extends Instance
             "loop-setting"
         ]);
 
-        const types = [
-            "loop-repeat",
-            "loop-no-repeat",
-            "fixed-one",
-            "loop-no-repeat-reversal",
-            "loop-repeat-reversal",
-            "no-use-loop"
-        ];
+        // カスタムループコントローラーを初期化
+        Util.$loopController.reload(place.loop);
 
-        const children = document
-            .getElementById("loop-setting-view-area")
-            .firstElementChild.children;
-
-        for (let idx = 0; idx < children.length; ++idx) {
-            children[idx].classList.remove("active");
-        }
-
-        // TODO
-        // if (place.loop.referenceFrame) {
-        //     place = character.getPlace(
-        //         place.loop.referenceFrame
-        //     );
-        // }
-
+        // フレームピッカーの画像表示を非表示に
         document
-            .getElementById(types[place.loop.type])
-            .classList.add("active");
-
-        document
-            .getElementById("loop-start-frame")
-            .value = `${place.loop.start}`;
-
-        document
-            .getElementById("loop-end-frame")
-            .value = `${place.loop.end ? place.loop.end : "-"}`;
-
-        const element = document
-            .getElementById("loop-image-list");
-
-        while (element.children.length) {
-            element.children[0].remove();
-        }
-
-        element.style.display = "none";
+            .getElementById("loop-image-list")
+            .style.display = "none";
     }
 
     /**
@@ -794,9 +757,14 @@ class MovieClip extends Instance
             for (let idx = 0; idx < length; ++idx) {
 
                 const character = characters[idx];
-                const range     = character.getRange(frame);
                 const place     = character.getPlace(frame);
                 const matrix    = place.matrix;
+                const range     = place.loop && place.loop.type === 5
+                    ? {
+                        "startFrame": character.startFrame,
+                        "endFrame": character.endFrame
+                    }
+                    : character.getPlace(frame);
 
                 const instance = workSpace
                     .getLibrary(character.libraryId | 0);
@@ -1183,7 +1151,11 @@ class MovieClip extends Instance
 
             const tag      = object.dictionary[controller[idx]];
             const instance = workSpace.getLibrary(tag.characterId);
-            const place    = object.placeObjects[placeMap[idx]];
+
+            const place = object.placeObjects[placeMap[idx]];
+            if (!place.loop) {
+                place.loop = Util.$getDefaultLoopConfig();
+            }
 
             let displayObject = null;
             switch (instance.type) {
@@ -1192,9 +1164,13 @@ class MovieClip extends Instance
                     displayObject = new MovieClip();
                     if (instance._$layers.size) {
 
-                        let range = {};
+                        const layers = Array.from(
+                            instance._$layers.values()
+                        ).reverse();
+
+                        let childRange = null;
                         let depth = -1;
-                        for (const layer of instance._$layers.values()) {
+                        for (let i = 0; i < layers.length; ++i) {
 
                             depth++;
 
@@ -1202,6 +1178,7 @@ class MovieClip extends Instance
                                 continue;
                             }
 
+                            const layer = layers[i];
                             const activeCharacters = layer.getActiveCharacter(frame);
                             if (activeCharacters.length > 1) {
                                 // 昇順
@@ -1225,16 +1202,19 @@ class MovieClip extends Instance
                             }
 
                             if (activeCharacters.length) {
-                                range = activeCharacters[0].getRange(frame);
+                                childRange = activeCharacters[0].getRange(frame);
                             }
-
-                            break;
                         }
 
-                        if (range) {
-                            place.frame   = frame;
-                            displayObject = instance.createInstance(place, range);
+                        if (place) {
+                            place.frame = frame;
+
+                            if (place.loop.type === 5) {
+                                childRange = range;
+                            }
                         }
+
+                        displayObject = instance.createInstance(place, childRange);
                     }
                     break;
 

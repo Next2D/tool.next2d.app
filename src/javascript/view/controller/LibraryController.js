@@ -462,7 +462,12 @@ class LibraryController
         if (type === "container") {
             document
                 .getElementById(`${type}-${id}`)
-                .addEventListener("dblclick", Util.$changeScene);
+                .addEventListener("dblclick", (event) =>
+                {
+                    Util.$sceneChange.reload(
+                        event.currentTarget.dataset.libraryId | 0
+                    );
+                });
         }
 
         const child = document

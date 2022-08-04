@@ -11,6 +11,13 @@ class LoopController extends BaseController
     constructor()
     {
         super("loop");
+
+        /**
+         * @type {string}
+         * @default "start"
+         * @private
+         */
+        this._$frameTarget = "start";
     }
 
     /**
@@ -67,11 +74,280 @@ class LoopController extends BaseController
 
             this.setInputEvent(element);
         }
-
     }
 
     /**
-     * @description ループ機能をOffに
+     * @description ループの開始フレームを設定
+     *
+     * @param  {string} value
+     * @return {number}
+     * @method
+     * @public
+     */
+    changeLoopStartFrame (value)
+    {
+        /**
+         * @type {ArrowTool}
+         */
+        const tool = Util.$tools.getDefaultTool("arrow");
+        const activeElements = tool.activeElements;
+        if (!activeElements.length || activeElements.length > 1) {
+            return value;
+        }
+
+        const element = activeElements[0];
+
+        const scene = Util.$currentWorkSpace().scene;
+        const layer = scene.getLayer(
+            element.dataset.layerId | 0
+        );
+
+        const character = layer.getCharacter(
+            element.dataset.characterId | 0
+        );
+
+        if (!character) {
+            return value;
+        }
+
+        value = Util.$clamp(value | 0, 1, character.endFrame - 1);
+
+        const frame = Util.$timelineFrame.currentFrame;
+        const range = character.getRange(frame);
+
+        let place = character.getPlace(range.startFrame);
+        if (!place.loop) {
+            return value;
+        }
+
+        // ループタイプを更新してキャッシュを削除
+        place.loop.start  = value;
+        character._$image = null;
+
+        // 再描画
+        this.reloadScreen();
+
+        return value;
+    }
+
+    /**
+     * @description ループの終了フレームを設定
+     *
+     * @param  {string} value
+     * @return {number}
+     * @method
+     * @public
+     */
+    changeLoopEndFrame (value)
+    {
+        /**
+         * @type {ArrowTool}
+         */
+        const tool = Util.$tools.getDefaultTool("arrow");
+        const activeElements = tool.activeElements;
+        if (!activeElements.length || activeElements.length > 1) {
+            return value;
+        }
+
+        const element = activeElements[0];
+
+        const scene = Util.$currentWorkSpace().scene;
+        const layer = scene.getLayer(
+            element.dataset.layerId | 0
+        );
+
+        const character = layer.getCharacter(
+            element.dataset.characterId | 0
+        );
+
+        if (!character) {
+            return value;
+        }
+
+        value = Util.$clamp(value | 0, 0, character.endFrame - 1);
+
+        const frame = Util.$timelineFrame.currentFrame;
+        const range = character.getRange(frame);
+
+        let place = character.getPlace(range.startFrame);
+        if (!place.loop) {
+            return value;
+        }
+
+        // ループタイプを更新してキャッシュを削除
+        place.loop.end    = value;
+        character._$image = null;
+
+        // 再描画
+        this.reloadScreen();
+
+        return value ? value : "-";
+    }
+
+    /**
+     * @description フレーム毎のイメージを生成
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    changeFramePickerButton ()
+    {
+        document
+            .getElementById("loop-image-list")
+            .style.display = "none";
+
+        this.loadLoopFrameList();
+    }
+
+    /**
+     * @description
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    changeTargetStartButton ()
+    {
+        const element = document
+            .getElementById("target-start-button");
+
+        if (!element.classList.contains("active")) {
+            element.classList.add("active");
+        }
+
+        document
+            .getElementById("target-end-button")
+            .classList.remove("active");
+
+        this._$frameTarget = "start";
+    }
+
+    /**
+     * @description
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    changeTargetEndButton ()
+    {
+        const element = document
+            .getElementById("target-end-button");
+
+        if (!element.classList.contains("active")) {
+            element.classList.add("active");
+        }
+
+        document
+            .getElementById("target-start-button")
+            .classList.remove("active");
+
+        this._$frameTarget = "end";
+    }
+
+    /**
+     * @description カスタムループ機能をOnに
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    changeLoopRepeat ()
+    {
+        const element = document
+            .getElementById("loop-repeat");
+
+        // 全てのボタンを非アクティブに
+        this.clearLoopButton(element);
+
+        element.classList.add("active");
+
+        this.updateLoopType(0);
+    }
+
+    /**
+     * @description カスタムループの1回終了機能をOnに
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    changeLoopNoRepeat ()
+    {
+        const element = document
+            .getElementById("loop-no-repeat");
+
+        // 全てのボタンを非アクティブに
+        this.clearLoopButton(element);
+
+        element.classList.add("active");
+
+        this.updateLoopType(1);
+    }
+
+    /**
+     * @description 指定フレームに固定
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    changeFixedOne ()
+    {
+        const element = document
+            .getElementById("fixed-one");
+
+        // 全てのボタンを非アクティブに
+        this.clearLoopButton(element);
+
+        element.classList.add("active");
+
+        this.updateLoopType(2);
+    }
+
+    /**
+     * @description カスタムループの逆再生の1回終了機能をOnに
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    changeLoopNoRepeatReversal ()
+    {
+        const element = document
+            .getElementById("loop-no-repeat-reversal");
+
+        // 全てのボタンを非アクティブに
+        this.clearLoopButton(element);
+
+        element.classList.add("active");
+
+        this.updateLoopType(3);
+    }
+
+    /**
+     * @description カスタムループ機能の逆再生をOnに
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    changeLoopRepeatReversal ()
+    {
+        const element = document
+            .getElementById("loop-repeat-reversal");
+
+        // 全てのボタンを非アクティブに
+        this.clearLoopButton(element);
+
+        element.classList.add("active");
+
+        this.updateLoopType(4);
+    }
+
+    /**
+     * @description Playerのループ機能をOn
      *
      * @return {void}
      * @method
@@ -79,7 +355,8 @@ class LoopController extends BaseController
      */
     changeNoUseLoop ()
     {
-        const element = document.getElementById("no-use-loop");
+        const element = document
+            .getElementById("no-use-loop");
 
         // 全てのボタンを非アクティブに
         this.clearLoopButton(element);
@@ -109,16 +386,70 @@ class LoopController extends BaseController
     }
 
     /**
+     * @description 初期化
+     *
+     * @param  {object} loop_setting
+     * @return {void}
+     * @method
+     * @public
+     */
+    reload (loop_setting)
+    {
+        const children = document
+            .getElementById("loop-setting-view-area")
+            .firstElementChild.children;
+
+        for (let idx = 0; idx < children.length; ++idx) {
+            children[idx].classList.remove("active");
+        }
+
+        const element = document
+            .getElementById("loop-image-list");
+
+        while (element.children.length) {
+            element.children[0].remove();
+        }
+
+        const types = [
+            "loop-repeat",
+            "loop-no-repeat",
+            "fixed-one",
+            "loop-no-repeat-reversal",
+            "loop-repeat-reversal",
+            "no-use-loop"
+        ];
+
+        document
+            .getElementById(types[loop_setting.type])
+            .classList.add("active");
+
+        document
+            .getElementById("loop-start-frame")
+            .value = `${loop_setting.start}`;
+
+        document
+            .getElementById("loop-end-frame")
+            .value = `${loop_setting.end ? loop_setting.end : "-"}`;
+    }
+
+    /**
      * @return {void}
      * @public
      */
     loadLoopFrameList ()
     {
-        if (Util.$screen._$moveTargets.length > 1) {
+        /**
+         * @type {ArrowTool}
+         */
+        const tool = Util.$tools.getDefaultTool("arrow");
+        const activeElements = tool.activeElements;
+        if (!activeElements.length || activeElements.length > 1) {
             return ;
         }
 
-        const element = document.getElementById("loop-image-list");
+        // イメージ表示を初期化
+        const element = document
+            .getElementById("loop-image-list");
 
         const children = element.children;
         while (children.length) {
@@ -128,7 +459,7 @@ class LoopController extends BaseController
         const workSpace = Util.$currentWorkSpace();
         const scene = workSpace.scene;
 
-        const target = Util.$screen._$moveTargets[0].target;
+        const target = activeElements[0];
 
         const layerId = target.dataset.layerId | 0;
         const layer   = scene.getLayer(layerId);
@@ -136,12 +467,14 @@ class LoopController extends BaseController
         const characterId = target.dataset.characterId | 0;
         const character   = layer.getCharacter(characterId);
 
+        const range = {
+            "startFrame": character.startFrame,
+            "endFrame": character.endFrame
+        };
+
         const instance = workSpace.getLibrary(character.libraryId);
 
         const currentFrame = Util.$timelineFrame.currentFrame;
-
-        const { Sprite, BitmapData } = window.next2d.display;
-        const { Matrix, ColorTransform } = window.next2d.geom;
 
         const promises = [];
         const endFrame = instance.totalFrame;
@@ -150,8 +483,11 @@ class LoopController extends BaseController
             // eslint-disable-next-line no-loop-func
             promises.push(new Promise((resolve) =>
             {
-                window.requestAnimationFrame(function (frame, resolve)
+                window.requestAnimationFrame(() =>
                 {
+                    const { Sprite, BitmapData } = window.next2d.display;
+                    const { Matrix, ColorTransform } = window.next2d.geom;
+
                     Util.$currentFrame = frame;
 
                     const sprite = new Sprite();
@@ -167,7 +503,7 @@ class LoopController extends BaseController
 
                     const displayObject = sprite
                         .addChild(
-                            instance.createInstance(placeObject)
+                            instance.createInstance(placeObject, range)
                         );
 
                     displayObject
@@ -179,7 +515,7 @@ class LoopController extends BaseController
                         .colorTransform = new ColorTransform();
 
                     const bounds = Util.$boundsMatrix(
-                        instance.getBounds(placeObject),
+                        instance.getBounds(placeObject, range),
                         placeObject.matrix
                     );
 
@@ -213,7 +549,7 @@ class LoopController extends BaseController
                         "index": frame - 1,
                         "image": image
                     });
-                }.bind(this, frame, resolve));
+                });
             }));
         }
 
@@ -248,15 +584,7 @@ class LoopController extends BaseController
                     // eslint-disable-next-line no-loop-func
                     div.addEventListener("click", (event) =>
                     {
-                        const input = document
-                            .getElementById("loop-start-frame");
-
-                        input.value = event.currentTarget.dataset.frame;
-
-                        this.frameSizeOut(this._$frameTarget, {
-                            "type": "focusout",
-                            "target": input
-                        });
+                        this.clickImage(event);
                     });
 
                     element.appendChild(div);
@@ -267,318 +595,30 @@ class LoopController extends BaseController
     }
 
     /**
-     * @param  {string} type
-     * @param  {Event|KeyboardEvent} event
+     * @description フレームのイメージを押下してフレーム番号を適用
+     *
+     * @param  {MouseEvent} event
      * @return {void}
+     * @method
      * @public
      */
-    frameSizeOut (type, event)
+    clickImage (event)
     {
-        if (event.key === "Enter") {
-            event.currentTarget.blur();
-            return ;
-        }
+        // 他のイベントを中止
+        event.stopPropagation();
 
-        if (event.type === "focusout") {
-
-            if (!Util.$screen._$moveTargets.length) {
-                return ;
-            }
-
-            const workSpace = Util.$currentWorkSpace();
-            const scene     = workSpace.scene;
-            const element   = Util.$screen._$moveTargets[0].target;
-            const instance  = workSpace.getLibrary(
-                element.dataset.libraryId | 0
+        const element = document
+            .getElementById(
+                `loop-${this._$frameTarget}-frame`
             );
 
-            const frame = Util.$timelineFrame.currentFrame;
+        this.save();
 
-            const layer = scene.getLayer(
-                element.dataset.layerId | 0
-            );
+        element.focus();
+        element.value = event.currentTarget.dataset.frame;
+        element.blur();
 
-            const character = layer.getCharacter(
-                element.dataset.characterId | 0
-            );
-
-            let place = character.getPlace(frame);
-            if (!place.loop.referenceFrame) {
-
-                const frameElement = document
-                    .getElementById(`${layer.id}-${frame}`);
-
-                if (frameElement.dataset.frameState !== "key-frame") {
-
-                    character.setPlace(frame,
-                        character.clonePlace(frame, frame)
-                    );
-
-                    Util.$timeline._$targetFrames = [frameElement];
-                    Util.$timeline.addKeyFrame();
-                    Util.$timeline._$targetFrames.length = 0;
-                    frameElement.classList.remove("frame-active");
-
-                }
-
-            } else {
-                place = character.getPlace(place.loop.referenceFrame);
-            }
-
-            const value = Util.$clamp(
-                event.target.value | 0,
-                type === "start" ? 1 : 0,
-                instance.totalFrame
-            );
-
-            event.target.value = type === "start"
-                ? `${value}`
-                : value === 0 ? "-" : `${value}`;
-
-            // update
-            place.loop[type] = value;
-            character._$image = null;
-
-            scene.changeFrame(frame);
-            Util.$screen.updatePropertyArea(false);
-
-            this._$focus        = false;
-            this._$currentValue = null;
-            Util.$keyLock       = false;
-        }
-    }
-
-    /**
-     * @return {void}
-     * @public
-     */
-    initializeLoopSetting ()
-    {
-        const noUseLoop = document
-            .getElementById("no-use-loop");
-        if (noUseLoop) {
-            noUseLoop
-                .addEventListener("mousedown", function (event)
-                {
-                    const element = event.target;
-
-                    const children = element.parentNode.children;
-                    for (let idx = 0; idx < children.length; ++idx) {
-                        children[idx].classList.remove("active");
-                    }
-
-                    element.classList.add("active");
-
-                    this.updateLoopType(5);
-
-                }.bind(this));
-        }
-
-        const loopRepeat = document
-            .getElementById("loop-repeat");
-        if (loopRepeat) {
-            loopRepeat
-                .addEventListener("mousedown", function (event)
-                {
-                    const element = event.target;
-
-                    const children = element.parentNode.children;
-                    for (let idx = 0; idx < children.length; ++idx) {
-                        children[idx].classList.remove("active");
-                    }
-
-                    element.classList.add("active");
-
-                    this.updateLoopType(0);
-
-                }.bind(this));
-        }
-
-        const loopNoRepeat = document
-            .getElementById("loop-no-repeat");
-
-        if (loopNoRepeat) {
-            loopNoRepeat
-                .addEventListener("mousedown", function (event)
-                {
-                    const element = event.target;
-
-                    const children = element.parentNode.children;
-                    for (let idx = 0; idx < children.length; ++idx) {
-                        children[idx].classList.remove("active");
-                    }
-
-                    element.classList.add("active");
-
-                    this.updateLoopType(1);
-
-                }.bind(this));
-        }
-
-        const fixedOne = document
-            .getElementById("fixed-one");
-
-        if (fixedOne) {
-            fixedOne
-                .addEventListener("mousedown", function (event)
-                {
-                    const element = event.target;
-
-                    const children = element.parentNode.children;
-                    for (let idx = 0; idx < children.length; ++idx) {
-                        children[idx].classList.remove("active");
-                    }
-
-                    element.classList.add("active");
-
-                    this.updateLoopType(2);
-
-                }.bind(this));
-        }
-
-        const loopNoRepeatReversal = document
-            .getElementById("loop-no-repeat-reversal");
-
-        if (loopNoRepeatReversal) {
-            loopNoRepeatReversal
-                .addEventListener("mousedown", function (event)
-                {
-                    const element = event.target;
-
-                    const children = element.parentNode.children;
-                    for (let idx = 0; idx < children.length; ++idx) {
-                        children[idx].classList.remove("active");
-                    }
-
-                    element.classList.add("active");
-
-                    this.updateLoopType(3);
-
-                }.bind(this));
-        }
-
-        const loopRepeatReversal = document
-            .getElementById("loop-repeat-reversal");
-
-        if (loopRepeatReversal) {
-            loopRepeatReversal
-                .addEventListener("mousedown", function (event)
-                {
-                    const element = event.target;
-
-                    const children = element.parentNode.children;
-                    for (let idx = 0; idx < children.length; ++idx) {
-                        children[idx].classList.remove("active");
-                    }
-
-                    element.classList.add("active");
-
-                    this.updateLoopType(4);
-
-                }.bind(this));
-        }
-
-        const startFrame = document
-            .getElementById("loop-start-frame");
-
-        if (startFrame) {
-            startFrame.addEventListener("mouseover", this.mouseOver.bind(this));
-            startFrame.addEventListener("mouseout",  this.mouseOut.bind(this));
-            startFrame.addEventListener("mousedown", this.mouseDown.bind(this));
-            startFrame.addEventListener("focusin", function (event)
-            {
-                this._$focus        = true;
-                this._$currentValue = event.target.value | 0;
-                Util.$keyLock       = true;
-            }.bind(this));
-
-            startFrame.addEventListener("focusout", this.frameSizeOut.bind(this, "start"));
-            startFrame.addEventListener("keypress", this.frameSizeOut.bind(this, "start"));
-
-        }
-
-        const endFrame = document
-            .getElementById("loop-end-frame");
-        if (endFrame) {
-            endFrame.addEventListener("mouseover", this.mouseOver.bind(this));
-            endFrame.addEventListener("mouseout",  this.mouseOut.bind(this));
-            endFrame.addEventListener("mousedown", this.mouseDown.bind(this));
-            endFrame.addEventListener("focusin", function (event)
-            {
-                this._$focus        = true;
-                this._$currentValue = event.target.value | 0;
-                Util.$keyLock       = true;
-            }.bind(this));
-
-            endFrame.addEventListener("focusout", this.frameSizeOut.bind(this, "end"));
-            endFrame.addEventListener("keypress", this.frameSizeOut.bind(this, "end"));
-
-        }
-
-        const loopImageList = document
-            .getElementById("loop-image-list");
-        if (loopImageList) {
-            loopImageList.style.display = "none";
-        }
-
-        const framePickerButton = document
-            .getElementById("frame-picker-button");
-
-        if (framePickerButton) {
-            framePickerButton
-                .addEventListener("mousedown", function ()
-                {
-
-                    document
-                        .getElementById("loop-image-list")
-                        .style.display = "none";
-
-                    this.loadLoopFrameList();
-
-                }.bind(this));
-        }
-
-        const targetStartButton = document
-            .getElementById("target-start-button");
-
-        if (targetStartButton) {
-            targetStartButton
-                .addEventListener("mousedown", function (event)
-                {
-                    const element = event.currentTarget;
-                    if (!element.classList.contains("active")) {
-                        element.classList.add("active");
-                    }
-
-                    document
-                        .getElementById("target-end-button")
-                        .classList.remove("active");
-
-                    this._$frameTarget = "start";
-
-                }.bind(this));
-        }
-
-        const targetEndButton = document
-            .getElementById("target-end-button");
-
-        if (targetEndButton) {
-            targetEndButton
-                .addEventListener("mousedown", function (event)
-                {
-                    const element = event.currentTarget;
-                    if (!element.classList.contains("active")) {
-                        element.classList.add("active");
-                    }
-
-                    document
-                        .getElementById("target-start-button")
-                        .classList.remove("active");
-
-                    this._$frameTarget = "end";
-
-                }.bind(this));
-        }
+        this._$saved = false;
     }
 
     /**
@@ -622,41 +662,6 @@ class LoopController extends BaseController
         if (place.loop.type === type) {
             return ;
         }
-
-        // if (!place.loop.referenceFrame) {
-        //
-        //     if (place.loop.type === type) {
-        //         return ;
-        //     }
-        //
-        //     const frameElement = document
-        //         .getElementById(`${layer.id}-${frame}`);
-        //
-        //     if (frameElement.dataset.frameState !== "key-frame") {
-        //
-        //         const object = character.clonePlace(frame, frame);
-        //         if (!object.loop) {
-        //             object.loop = Util.$getDefaultLoopConfig();
-        //         }
-        //
-        //         character.setPlace(frame, object);
-        //
-        //         Util.$timeline._$targetFrames = [frameElement];
-        //         Util.$timeline.addKeyFrame();
-        //         Util.$timeline._$targetFrames.length = 0;
-        //         frameElement.classList.remove("frame-active");
-        //
-        //     }
-        //
-        //     place = character.getPlace(frame);
-        //
-        // } else {
-        //
-        //     place = character.getPlace(place.loop.referenceFrame);
-        //     if (place.loop.type === type) {
-        //         return ;
-        //     }
-        // }
 
         // ループタイプを更新してキャッシュを削除
         place.loop.type   = type;

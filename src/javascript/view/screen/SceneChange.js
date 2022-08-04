@@ -17,6 +17,30 @@ class SceneChange extends BaseScreen
     }
 
     /**
+     * @description リスト表示の再読み込み
+     *
+     * @param  {number} library_id
+     * @return {void}
+     * @method
+     * @public
+     */
+    reload (library_id)
+    {
+        const scenes = document
+            .getElementById("scene-name-menu-list");
+
+        while (scenes.children.length) {
+            scenes.children[0].remove();
+        }
+
+        // シーン名をリストに追加
+        Util.$currentWorkSpace().root.addSceneName();
+
+        // シーン移動
+        Util.$sceneChange.execute(library_id);
+    }
+
+    /**
      * @description 指定のMovieClipを表示
      *
      * @param  {number} library_id

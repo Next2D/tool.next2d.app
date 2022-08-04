@@ -1258,12 +1258,16 @@ class SwfParser
                 });
                 break;
 
+            case 76: // SymbolClass
+                this.parseSymbolClass();
+                break;
+
             case 0: // End
                 break;
 
             // Skip tags
             case 86: // DefineSceneAndFrameLabelData
-            case 76: // SymbolClass
+
             case 56: // ExportAssets
             case 9:  // BackgroundColor
             case 40: // NameCharacter
@@ -1323,6 +1327,50 @@ class SwfParser
             default: // null
                 break;
 
+        }
+    }
+
+    /**
+     * @return void
+     * @public
+     */
+    parseSymbolClass ()
+    {
+        const count = this.byteStream.getUI16();
+        if (count) {
+
+            const symbols = [];
+            for (let idx = 0; idx < count; ++idx) {
+
+                const tagId = this.byteStream.getUI16();
+                const ns    = this.byteStream.getDataUntil();
+                // const path  = (ns) ? ns.split((/::|:|\./g)) : null;
+                symbols[symbols.length] = {
+                    "tagId": tagId,
+                    "ns":  ns
+                };
+
+                // post data
+                if (symbols.length === 128) {
+
+                    globalThis.postMessage({
+                        "infoKey": "_$symbols",
+                        "pieces": symbols
+                    });
+
+                    symbols.length = 0;
+                }
+            }
+
+            // post data
+            if (symbols.length) {
+
+                globalThis.postMessage({
+                    "infoKey": "_$symbols",
+                    "pieces": symbols
+                });
+
+            }
         }
     }
 

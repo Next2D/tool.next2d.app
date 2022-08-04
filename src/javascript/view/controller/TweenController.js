@@ -754,9 +754,6 @@ class TweenController extends BaseController
         for (let frame = range.startFrame + 1; frame < endFrame; ++frame) {
 
             const place = character.getPlace(frame);
-            if (place.fixed) {
-                continue;
-            }
 
             const t = time / totalFrame;
             let customValue = 0;
@@ -853,7 +850,7 @@ class TweenController extends BaseController
 
                 if (distance && baseDistance) {
 
-                    const curvePoint = Util.$getCurvePoint(
+                    const curvePoint = this.getCurvePoint(
                         distance / baseDistance,
                         startX, startY, endX, endY,
                         tween.curve
@@ -2049,6 +2046,76 @@ class TweenController extends BaseController
         viewContext.scale(1, -1);
         viewContext.translate(0, -ctx.canvas.height);
         viewContext.drawImage(ctx.canvas, 0, 0);
+    }
+
+    /**
+     * @description カーブポインターのxy座標計算
+     *
+     * @param  {number} d
+     * @param  {number} sx
+     * @param  {number} sy
+     * @param  {number} ex
+     * @param  {number} ey
+     * @param  {array} curves
+     * @return {object}
+     * @method
+     * @public
+     */
+    getCurvePoint (d, sx, sy, ex, ey, curves)
+    {
+        const targets = [];
+        for (let idx = 0; idx < curves.length; ++idx) {
+
+            const pointer = curves[idx];
+
+            if (!pointer.usePoint) {
+                continue;
+            }
+
+            targets.push(pointer);
+        }
+
+        if (!targets.length) {
+            return null;
+        }
+
+        const t = 1 - d;
+        const l = targets.length + 1;
+        for (let idx = 0; idx < l; ++idx) {
+            sx *= t;
+            sy *= t;
+            ex *= d;
+            ey *= d;
+        }
+
+        let x = sx + ex;
+        let y = sy + ey;
+        for (let idx = 0; idx < targets.length; ++idx) {
+
+            const curve = targets[idx];
+
+            const p = idx + 1;
+
+            let cx = curve.x * l;
+            let cy = curve.y * l;
+            for (let jdx = 0; jdx < p; ++jdx) {
+                cx *= d;
+                cy *= d;
+            }
+
+            for (let jdx = 0; jdx < l - p; ++jdx) {
+                cx *= t;
+                cy *= t;
+            }
+
+            x += cx;
+            y += cy;
+        }
+
+        return {
+            "x": x,
+            "y": y
+        };
     }
 
     /**

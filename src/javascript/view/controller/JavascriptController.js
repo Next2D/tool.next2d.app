@@ -42,7 +42,14 @@ class JavascriptController
 
             const parentElement = document
                 .getElementById(`script-${id}`);
-            parentElement.addEventListener("dblclick", Util.$changeScene);
+
+            // eslint-disable-next-line no-loop-func
+            parentElement.addEventListener("dblclick", (event) =>
+            {
+                Util.$sceneChange.reload(
+                    event.currentTarget.dataset.libraryId | 0
+                );
+            });
 
             for (const frame of instance._$actions.keys()) {
 

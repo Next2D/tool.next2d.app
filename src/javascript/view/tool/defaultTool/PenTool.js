@@ -37,7 +37,7 @@ class PenTool extends BaseTool
             event.stopPropagation();
 
             // ペンで追加したElementを削除
-            Util.$clearPenPointer();
+            this.clearPenPointer();
 
             // 初期座標をセット
             let offsetX = event.offsetX;
@@ -72,6 +72,30 @@ class PenTool extends BaseTool
 
             this.mouseUp();
         });
+    }
+
+    /**
+     * @description ペンで使用してるポインターelementを初期化
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    clearPenPointer ()
+    {
+        const element  = document
+            .getElementById("stage-area");
+
+        for (let idx = 0; element.children.length > idx; ++idx) {
+
+            const node = element.children[idx];
+            if (!node.dataset.penPointer) {
+                continue;
+            }
+
+            node.remove();
+            --idx;
+        }
     }
 
     /**

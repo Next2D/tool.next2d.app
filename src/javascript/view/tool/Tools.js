@@ -49,6 +49,36 @@ class Tools
     }
 
     /**
+     * @return {string}
+     * @const
+     * @static
+     */
+    static get FILL_DEFAULT_COLOR ()
+    {
+        return "#000000";
+    }
+
+    /**
+     * @return {string}
+     * @const
+     * @static
+     */
+    static get STROKE_DEFAULT_COLOR ()
+    {
+        return "#000000";
+    }
+
+    /**
+     * @return {number}
+     * @const
+     * @static
+     */
+    static get STROKE_DEFAULT_SIZE ()
+    {
+        return 0;
+    }
+
+    /**
      * @description 現在選択されているToolクラスを返します。
      *
      * @return {Tool}
@@ -112,7 +142,7 @@ class Tools
         if (fillColor) {
 
             fillColor.value = localStorage
-                .getItem(`${Util.PREFIX}@${fillColor.id}`) || Util.TOOLS_FILL_DEFAULT_COLOR;
+                .getItem(`${Util.PREFIX}@${fillColor.id}`) || Tools.FILL_DEFAULT_COLOR;
 
             fillColor
                 .addEventListener("change", (event) =>
@@ -132,7 +162,7 @@ class Tools
         if (strokeColor) {
 
             strokeColor.value = localStorage
-                .getItem(`${Util.PREFIX}@${strokeColor.id}`) || Util.TOOLS_STROKE_DEFAULT_COLOR;
+                .getItem(`${Util.PREFIX}@${strokeColor.id}`) || Tools.STROKE_DEFAULT_COLOR;
 
             strokeColor
                 .addEventListener("change", (event) =>
@@ -152,7 +182,7 @@ class Tools
         if (strokeSize) {
 
             strokeSize.value = localStorage
-                .getItem(`${Util.PREFIX}@${strokeSize.id}`) || Util.STROKE_MIN_SIZE;
+                .getItem(`${Util.PREFIX}@${strokeSize.id}`) || Tools.STROKE_DEFAULT_SIZE;
 
             strokeSize
                 .addEventListener("focusout", (event) =>

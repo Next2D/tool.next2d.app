@@ -2,58 +2,53 @@ let characterId = 0;
 
 const Util = {};
 
-Util.VERSION                    = 1;
-Util.PREFIX                     = "__next2d-tools__";
-Util.DATABASE_NAME              = "save-data";
-Util.STORE_KEY                  = "local";
-Util.STROKE_MIN_SIZE            = 0;
-Util.STROKE_MAX_SIZE            = 200;
-Util.STAGE_DEFAULT_COLOR        = "#ffffff";
-Util.TOOLS_FILL_DEFAULT_COLOR   = "#000000";
-Util.TOOLS_STROKE_DEFAULT_COLOR = "#000000";
-Util.LAYER_MODE_NORMAL          = 0;
-Util.LAYER_MODE_MASK            = 1;
-Util.LAYER_MODE_MASK_IN         = 2;
-Util.LAYER_MODE_GUIDE           = 3;
-Util.LAYER_MODE_GUIDE_IN        = 4;
-Util.REVISION_LIMIT             = 100;
-Util.FOLDER_OPEN                = "open";
-Util.FOLDER_CLOSE               = "close";
-Util.DEFAULT_LOOP               = 5;
-Util.$activeWorkSpaceId         = 0;
-Util.$workSpaces                = [];
-Util.$readStatus                = 0;
-Util.$readEnd                   = 1;
-Util.$shiftKey                  = false;
-Util.$ctrlKey                   = false;
-Util.$altKey                    = false;
-Util.$zoomScale                 = 1;
-Util.$currentFrame              = 1;
-Util.$root                      = null;
-Util.$Rad2Deg                   = 180 / Math.PI;
-Util.$Deg2Rad                   = Math.PI / 180;
-Util.$keyLock                   = false;
-Util.$activeScript              = false;
-Util.$previewMode               = false;
-Util.$offsetLeft                = 0;
-Util.$offsetTop                 = 0;
-Util.$currentCursor             = "auto";
-Util.$useIds                    = new Map();
-Util.$symbols                   = new Map();
-Util.$copyWorkSpaceId           = -1;
-Util.$copyLibrary               = null;
-Util.$copyLayer                 = null;
-Util.$copyCharacter             = null;
-Util.$canCopyLayer              = false;
-Util.$canCopyCharacter          = false;
-Util.$hitColor                  = null;
-Util.$updated                   = false;
-Util.$languages                 = new Map();
-Util.$currentLanguage           = null;
-Util.$shapePointerColor         = "#009900";
-Util.$shapeLinkedPointerColor   = "#ffa500";
-Util.$shortcut                  = new Map();
-Util.$useShortcutSetting        = false;
+Util.VERSION                  = 1;
+Util.PREFIX                   = "__next2d-tools__";
+Util.DATABASE_NAME            = "save-data";
+Util.STORE_KEY                = "local";
+Util.LAYER_MODE_NORMAL        = 0;
+Util.LAYER_MODE_MASK          = 1;
+Util.LAYER_MODE_MASK_IN       = 2;
+Util.LAYER_MODE_GUIDE         = 3;
+Util.LAYER_MODE_GUIDE_IN      = 4;
+Util.REVISION_LIMIT           = 100;
+Util.FOLDER_OPEN              = "open";
+Util.FOLDER_CLOSE             = "close";
+Util.DEFAULT_LOOP             = 5;
+Util.$activeWorkSpaceId       = 0;
+Util.$workSpaces              = [];
+Util.$readStatus              = 0;
+Util.$readEnd                 = 1;
+Util.$shiftKey                = false;
+Util.$ctrlKey                 = false;
+Util.$altKey                  = false;
+Util.$zoomScale               = 1;
+Util.$currentFrame            = 1;
+Util.$root                    = null;
+Util.$Rad2Deg                 = 180 / Math.PI;
+Util.$Deg2Rad                 = Math.PI / 180;
+Util.$keyLock                 = false;
+Util.$activeScript            = false;
+Util.$previewMode             = false;
+Util.$offsetLeft              = 0;
+Util.$offsetTop               = 0;
+Util.$currentCursor           = "auto";
+Util.$useIds                  = new Map();
+Util.$symbols                 = new Map();
+Util.$copyWorkSpaceId         = -1;
+Util.$copyLibrary             = null;
+Util.$copyLayer               = null;
+Util.$copyCharacter           = null;
+Util.$canCopyLayer            = false;
+Util.$canCopyCharacter        = false;
+Util.$hitColor                = null;
+Util.$updated                 = false;
+Util.$languages               = new Map();
+Util.$currentLanguage         = null;
+Util.$shapePointerColor       = "#009900";
+Util.$shapeLinkedPointerColor = "#ffa500";
+Util.$shortcut                = new Map();
+Util.$useShortcutSetting      = false;
 
 const userAgentData = window.navigator.userAgentData;
 if (userAgentData) {
@@ -318,29 +313,6 @@ Util.$endMenu = (ignore) =>
         }
         menu.setAttribute("class", "fadeOut");
     }
-};
-
-/**
- * @param  {MouseEvent} event
- * @return {void}
- * @static
- */
-Util.$changeScene = (event) =>
-{
-    const scenes = document
-        .getElementById("scene-name-menu-list");
-
-    while (scenes.children.length) {
-        scenes.children[0].remove();
-    }
-
-    // シーン名をリストに追加
-    Util.$currentWorkSpace().root.addSceneName();
-
-    // シーン移動
-    Util.$sceneChange.execute(
-        event.currentTarget.dataset.libraryId | 0
-    );
 };
 
 /**
@@ -1071,7 +1043,7 @@ Util.$launchDB = () =>
  * @return void
  * @static
  */
-Util.$unzipHandler = (event) =>
+Util.$unzipHandler = function (event)
 {
     const worker = event.target;
 
@@ -1170,7 +1142,7 @@ Util.$parserWorkerWait = false;
  * @return void
  * @static
  */
-Util.$unlzmaHandler = (event) =>
+Util.$unlzmaHandler = function (event)
 {
     // event end
     event.target.onmessage = null;
@@ -1301,6 +1273,7 @@ Util.$jpegDecodeHandler = () =>
  * @type {Map}
  */
 Util.$characters = new Map();
+Util.$symbols    = new Map();
 Util.$fonts      = new Map();
 Util.$texts      = new Map();
 
@@ -1309,7 +1282,7 @@ Util.$texts      = new Map();
  * @return void
  * @static
  */
-Util.$parserHandler = (event) =>
+Util.$parserHandler = function (event)
 {
     const worker = event.target;
     switch (event.data.infoKey) {
@@ -1327,8 +1300,8 @@ Util.$parserHandler = (event) =>
                     case "Shape":
                         {
                             const object = Util
-                                .$controller
-                                .createContainer("shape", `Shape_${id}`, id);
+                                .$libraryController
+                                .createInstance("shape", `Shape_${id}`, id);
 
                             object.recodes  = Util.$vtc.convert(character._$records);
                             object.inBitmap = object.recodes.pop();
@@ -1360,8 +1333,8 @@ Util.$parserHandler = (event) =>
                                 : this._$fileName;
 
                             const object = Util
-                                .$controller
-                                .createContainer("container", name, id);
+                                .$libraryController
+                                .createInstance("container", name, id);
 
                             // create MovieClip
                             const movieClip = workSpace.addLibrary(object);
@@ -1529,193 +1502,35 @@ Util.$parserHandler = (event) =>
 
                             for (let idx = 0; idx < layers.length; ++idx) {
 
+                                const empty = {
+                                    "startFrame": -1
+                                };
+
                                 const layer = layers[idx];
                                 for (let frame = 1; frame <= totalFrame; ++frame) {
 
-                                    const instance = layer.getActiveCharacter(frame)[0];
-                                    if (instance) {
+                                    const characters = layer.getActiveCharacter(frame);
 
-                                        if (!(frame - 1)) {
+                                    // 空白のフレーム処理
+                                    if (!characters.length) {
 
-                                            layer
-                                                ._$frame
-                                                .setClasses(frame, ["key-frame"]);
-
-                                        } else {
-
-                                            const classes = layer._$frame.getClasses(frame - 1);
-                                            switch (true) {
-
-                                                case classes.indexOf("key-frame") !== -1:
-
-                                                    if (frame === totalFrame) {
-
-                                                        if (instance.hasPlace(frame)) {
-
-                                                            layer._$frame.setClasses(frame, [
-                                                                "key-frame"
-                                                            ]);
-
-                                                        } else {
-
-                                                            classes.push("key-frame-join");
-                                                            layer._$frame.setClasses(frame - 1, classes);
-
-                                                            layer._$frame.setClasses(frame, [
-                                                                "key-space-frame-end"
-                                                            ]);
-
-                                                        }
-
-                                                    } else {
-
-                                                        if (instance.hasPlace(frame)) {
-
-                                                            layer._$frame.setClasses(frame, [
-                                                                "key-frame"
-                                                            ]);
-
-                                                        } else {
-
-                                                            classes.push("key-frame-join");
-                                                            layer._$frame.setClasses(frame - 1, classes);
-
-                                                            layer._$frame.setClasses(frame, [
-                                                                "key-space-frame"
-                                                            ]);
-
-                                                        }
-
-                                                    }
-
-                                                    break;
-
-                                                case classes.indexOf("empty-space-frame") !== -1:
-
-                                                    layer._$frame.setClasses(frame - 1, [
-                                                        "empty-space-frame-end"
-                                                    ]);
-
-                                                    layer._$frame.setClasses(frame, [
-                                                        "key-frame"
-                                                    ]);
-
-                                                    break;
-
-                                                case classes.indexOf("empty-key-frame") !== -1:
-                                                    layer._$frame.setClasses(frame, [
-                                                        "key-frame"
-                                                    ]);
-                                                    break;
-
-                                                default:
-
-                                                    if (frame === totalFrame) {
-
-                                                        layer._$frame.setClasses(frame, [
-                                                            "key-space-frame-end"
-                                                        ]);
-
-                                                    } else {
-
-                                                        if (instance.hasPlace(frame)) {
-
-                                                            layer._$frame.setClasses(frame - 1, [
-                                                                "key-space-frame-end"
-                                                            ]);
-
-                                                            layer._$frame.setClasses(frame, [
-                                                                "key-frame"
-                                                            ]);
-
-                                                        } else {
-
-                                                            layer._$frame.setClasses(frame, [
-                                                                "key-space-frame"
-                                                            ]);
-
-                                                        }
-
-                                                    }
-                                                    break;
-
-                                            }
+                                        if (empty.startFrame === -1) {
+                                            empty.startFrame = frame;
                                         }
 
                                     } else {
 
-                                        if (!(frame - 1)) {
+                                        // 空白のフレームがあれば登録して初期化
+                                        if (empty.startFrame > 0) {
+                                            layer.addEmptyCharacter(new EmptyCharacter({
+                                                "startFrame": empty.startFrame,
+                                                "endFrame": frame
+                                            }));
 
-                                            layer
-                                                ._$frame
-                                                .setClasses(frame, ["empty-key-frame"]);
-
-                                        } else {
-
-                                            const classes = layer._$frame.getClasses(frame - 1);
-                                            switch (true) {
-
-                                                case classes.indexOf("empty-key-frame") !== -1:
-
-                                                    classes.push("empty-key-frame-join");
-                                                    layer._$frame.setClasses(frame - 1, classes);
-
-                                                    if (frame === totalFrame) {
-
-                                                        layer._$frame.setClasses(frame, [
-                                                            "empty-space-frame-end"
-                                                        ]);
-
-                                                    } else {
-
-                                                        layer._$frame.setClasses(frame, [
-                                                            "empty-space-frame"
-                                                        ]);
-
-                                                    }
-
-                                                    break;
-
-                                                case classes.indexOf("key-space-frame") !== -1:
-
-                                                    layer._$frame.setClasses(frame - 1, [
-                                                        "key-space-frame-end"
-                                                    ]);
-
-                                                    layer._$frame.setClasses(frame, [
-                                                        "empty-key-frame"
-                                                    ]);
-
-                                                    break;
-
-                                                case classes.indexOf("key-frame") !== -1:
-
-                                                    layer._$frame.setClasses(frame, [
-                                                        "empty-key-frame"
-                                                    ]);
-
-                                                    break;
-
-                                                default:
-
-                                                    if (frame === totalFrame) {
-
-                                                        layer._$frame.setClasses(frame, [
-                                                            "empty-space-frame-end"
-                                                        ]);
-
-                                                    } else {
-
-                                                        layer._$frame.setClasses(frame, [
-                                                            "empty-space-frame"
-                                                        ]);
-
-                                                    }
-
-                                                    break;
-
-                                            }
+                                            // 初期化
+                                            empty.startFrame = -1;
                                         }
+
                                     }
                                 }
                             }
@@ -1728,8 +1543,8 @@ Util.$parserHandler = (event) =>
                         {
 
                             const object = Util
-                                .$controller
-                                .createContainer("bitmap", `Bitmap_${id}`, id);
+                                .$libraryController
+                                .createInstance("bitmap", `Bitmap_${id}`, id);
 
                             character.mode   = "lossless";
                             object.imageType = "image/png";
@@ -1764,8 +1579,8 @@ Util.$parserHandler = (event) =>
                     case "imageData": // JPEG,GIF,PNG,etc...
                         {
                             const object = Util
-                                .$controller
-                                .createContainer("bitmap", `Bitmap_${id}`, id);
+                                .$libraryController
+                                .createInstance("bitmap", `Bitmap_${id}`, id);
 
                             const imageType     = `image/${Util.$getImageType(character.jpegData)}`;
                             character.mode      = "jpegAlpha";
@@ -1799,8 +1614,8 @@ Util.$parserHandler = (event) =>
                     case "StaticText":
                         {
                             const object = Util
-                                .$controller
-                                .createContainer("shape", `ShapeText_${id}`, id);
+                                .$libraryController
+                                .createInstance("shape", `ShapeText_${id}`, id);
 
                             object.bounds  = {
                                 "xMin": character._$bounds.xMin,
@@ -1825,8 +1640,8 @@ Util.$parserHandler = (event) =>
                             console.log("TODO SimpleButton: ", character);
 
                             const object = Util
-                                .$controller
-                                .createContainer("button", `Button_${id}`, id);
+                                .$libraryController
+                                .createInstance("button", `Button_${id}`, id);
 
                             object.bounds  = {
                                 "xMin": character._$bounds.xMin,
@@ -1844,8 +1659,8 @@ Util.$parserHandler = (event) =>
                     case "TextField":
                         {
                             const object = Util
-                                .$controller
-                                .createContainer("text", `Text_${id}`, id);
+                                .$libraryController
+                                .createInstance("text", `Text_${id}`, id);
 
                             object.bounds  = {
                                 "xMin": character._$bounds.xMin,
@@ -1901,6 +1716,13 @@ Util.$parserHandler = (event) =>
                 }
             }
             break;
+
+        case "_$symbols":
+            for (let idx = 0; idx < event.data.pieces.length; ++idx) {
+                const piece = event.data.pieces[idx];
+                Util.$symbols.set(piece.tagId, piece.ns);
+            }
+            return;
 
         case "font":
             Util.$fonts.set(event.data.index, event.data.piece);
@@ -2057,14 +1879,21 @@ Util.$parserHandler = (event) =>
     //     }
     // }
 
+    const workSpace = Util.$currentWorkSpace();
+    for (const [id, name] of Util.$symbols) {
+        const instance = workSpace.getLibrary(id);
+        instance._$symbol = `${name}`;
+    }
+
     // map clear
     Util.$characters.clear();
+    Util.$symbols.clear();
     Util.$fonts.clear();
     Util.$texts.clear();
 
-    Util
-        .$currentWorkSpace()
-        .initializeLibrary();
+    Util.$libraryController.reload(
+        Array.from(workSpace._$libraries.values())
+    );
 
     // parser end
     worker.onmessage = null;
@@ -2119,7 +1948,7 @@ Util.$boundsMatrix = (bounds, matrix) =>
 
 /**
  * @param   {number} color
- * @returns {{R: number, G: number, B: number, A: number}}
+ * @returns {object}
  * @method
  * @static
  */
@@ -2129,72 +1958,6 @@ Util.$intToRGB = (color) =>
         "R": (color & 0xff0000) >> 16,
         "G": (color & 0x00ff00) >> 8,
         "B": color & 0x0000ff
-    };
-};
-
-/**
- * @param  {number} d
- * @param  {number} sx
- * @param  {number} sy
- * @param  {number} ex
- * @param  {number} ey
- * @param  {array}  curves
- * @return {object}
- */
-Util.$getCurvePoint = (d, sx, sy, ex, ey, curves) =>
-{
-    const targets = [];
-    for (let idx = 0; idx < curves.length; ++idx) {
-
-        const pointer = curves[idx];
-
-        if (!pointer.usePoint) {
-            continue;
-        }
-
-        targets.push(pointer);
-    }
-
-    if (!targets.length) {
-        return null;
-    }
-
-    const t = 1 - d;
-    const l = targets.length + 1;
-    for (let idx = 0; idx < l; ++idx) {
-        sx *= t;
-        sy *= t;
-        ex *= d;
-        ey *= d;
-    }
-
-    let x = sx + ex;
-    let y = sy + ey;
-    for (let idx = 0; idx < targets.length; ++idx) {
-
-        const curve = targets[idx];
-
-        const p = idx + 1;
-
-        let cx = curve.x * l;
-        let cy = curve.y * l;
-        for (let jdx = 0; jdx < p; ++jdx) {
-            cx *= d;
-            cy *= d;
-        }
-
-        for (let jdx = 0; jdx < l - p; ++jdx) {
-            cx *= t;
-            cy *= t;
-        }
-
-        x += cx;
-        y += cy;
-    }
-
-    return {
-        "x": x,
-        "y": y
     };
 };
 
@@ -2270,26 +2033,6 @@ Util.$clearShapePointer = () =>
 };
 
 /**
- * @return {void}
- * @static
- */
-Util.$clearPenPointer = () =>
-{
-    const element  = document.getElementById("stage-area");
-    const children = element.children;
-    for (let idx = 0; children.length > idx; ++idx) {
-
-        const node = children[idx];
-        if (!node.dataset.penPointer) {
-            continue;
-        }
-
-        node.remove();
-        --idx;
-    }
-};
-
-/**
  * @return {object}
  * @static
  */
@@ -2322,7 +2065,7 @@ Util.$getFrame = (place, range, parent_frame, total_frame) =>
             {
                 const totalFrame = place.loop.end
                     ? place.loop.end
-                    : range.endFrame - range.startFrame;
+                    : total_frame;
 
                 frame = place.loop.start;
                 for (let idx = 0; idx < length; ++idx) {
@@ -2341,7 +2084,7 @@ Util.$getFrame = (place, range, parent_frame, total_frame) =>
             {
                 const totalFrame = place.loop.end
                     ? place.loop.end
-                    : range.endFrame - range.startFrame;
+                    : total_frame;
 
                 frame = place.loop.start;
                 for (let idx = 0; idx < length; ++idx) {
@@ -2363,21 +2106,18 @@ Util.$getFrame = (place, range, parent_frame, total_frame) =>
             break;
 
         case 3:
-            {
-                const totalFrame = place.loop.end
-                    ? place.loop.end
-                    : range.endFrame - range.startFrame;
+            frame = place.loop.end
+                ? place.loop.end
+                : total_frame;
 
-                frame = totalFrame;
-                for (let idx = 0; idx < length; ++idx) {
+            for (let idx = 0; idx < length; ++idx) {
 
-                    --frame;
+                --frame;
 
-                    // ループは一回だけなので最初のフレームで終了
-                    if (place.loop.start > frame) {
-                        frame = place.loop.start;
-                        break;
-                    }
+                // ループは一回だけなので最初のフレームにセットして終了
+                if (place.loop.start > frame) {
+                    frame = place.loop.start;
+                    break;
                 }
             }
             break;
@@ -2386,7 +2126,7 @@ Util.$getFrame = (place, range, parent_frame, total_frame) =>
             {
                 const totalFrame = place.loop.end
                     ? place.loop.end
-                    : range.endFrame - range.startFrame;
+                    : total_frame;
 
                 frame = totalFrame;
                 for (let idx = 0; idx < length; ++idx) {
@@ -2395,7 +2135,6 @@ Util.$getFrame = (place, range, parent_frame, total_frame) =>
 
                     if (place.loop.start > frame) {
                         frame = totalFrame;
-                        break;
                     }
                 }
             }
@@ -2403,7 +2142,7 @@ Util.$getFrame = (place, range, parent_frame, total_frame) =>
 
         case 5:
             frame = 1;
-            for (let idx = 1; idx < parent_frame; ++idx) {
+            for (let idx = 0; idx < length; ++idx) {
 
                 ++frame;
 

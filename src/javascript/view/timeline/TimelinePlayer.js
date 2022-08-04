@@ -188,6 +188,8 @@ class TimelinePlayer extends BaseTimeline
                         Util.$timelineLayer.moveTimeLine(0);
                     }
 
+                    // 再描画
+                    this.reloadScreen();
                 }
 
                 /**
