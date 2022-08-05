@@ -405,30 +405,27 @@ class Character
     }
 
     /**
-     * @param  {number} [frame=0]
-     * @param  {boolean} [preview=false]
      * @return {object}
+     * @method
      * @public
      */
-    getBounds (frame = 0, preview = false)
+    getBounds ()
     {
-        const workSpace = Util.$currentWorkSpace();
-        const instance  = workSpace.getLibrary(this.libraryId);
+        const instance = Util
+            .$currentWorkSpace()
+            .getLibrary(this.libraryId);
 
-        if (!frame) {
-            frame = Util.$timelineFrame.currentFrame;
-        }
-
-        const range = this.getRange(frame);
+        const frame = Util.$timelineFrame.currentFrame;
         const place = this.getPlace(frame);
+        const range = place.loop && place.loop.type === 5
+            ? { "startFrame": this.startFrame, "endFrame": this.endFrame }
+            : this.getRange(frame);
 
         // cache
         const currentFrame = Util.$currentFrame;
-
         Util.$currentFrame = frame;
-        const bounds = preview
-            ? instance.getBounds()
-            : instance.getBounds(place, range);
+
+        const bounds = instance.getBounds(place.matrix, place, range);
 
         // reset
         Util.$currentFrame = currentFrame;
@@ -480,14 +477,8 @@ class Character
      */
     get width ()
     {
-        let frame = Util.$timelineFrame.currentFrame;
-
-        const bounds = Util.$boundsMatrix(
-            this.getBounds(),
-            this.getPlace(frame).matrix
-        );
-
-        const width = +Math.abs(bounds.xMax - bounds.xMin);
+        const bounds = this.getBounds();
+        const width  = +Math.abs(bounds.xMax - bounds.xMin);
         return width !== Infinity ? width : 0;
     }
 
@@ -550,13 +541,7 @@ class Character
      */
     get height ()
     {
-        const frame  = Util.$timelineFrame.currentFrame;
-
-        const bounds = Util.$boundsMatrix(
-            this.getBounds(),
-            this.getPlace(frame).matrix
-        );
-
+        const bounds = this.getBounds();
         const height = +Math.abs(bounds.yMax - bounds.yMin);
         return height !== Infinity ? height : 0;
     }
@@ -634,11 +619,7 @@ class Character
         const place = this.getPlace(frame);
         place.matrix[4] = x;
 
-        const bounds = Util.$boundsMatrix(
-            this.getBounds(frame),
-            place.matrix
-        );
-
+        const bounds = this.getBounds();
         this.screenX = bounds.xMin;
 
         const element = document
@@ -671,11 +652,7 @@ class Character
         const place = this.getPlace(frame);
         place.matrix[5] = y;
 
-        const bounds = Util.$boundsMatrix(
-            this.getBounds(frame),
-            place.matrix
-        );
-
+        const bounds = this.getBounds();
         this.screenY = bounds.yMin;
 
         const element = document
@@ -707,16 +684,10 @@ class Character
             // reset
             Util.$currentFrame = frame;
 
-            const bounds = Util.$boundsMatrix(
-                instance.getBounds(place, range),
-                place.matrix
-            );
-
-            // reset
-            Util.$currentFrame = frame;
-
+            const bounds = instance.getBounds(place.matrix, place, range);
             const width  = +Math.ceil(Math.abs(bounds.xMax - bounds.xMin));
             const height = +Math.ceil(Math.abs(bounds.yMax - bounds.yMin));
+
             switch (place.blendMode) {
 
                 case "alpha":
@@ -726,7 +697,7 @@ class Character
                 case "invert":
                     this._$image = instance.toImage(width, height,
                         {
-                            "frame": frame,
+                            "frame": place.frame,
                             "matrix": place.matrix,
                             "colorTransform": [
                                 0, 0, 0, place.colorTransform[3],
@@ -734,6 +705,7 @@ class Character
                             ],
                             "blendMode": place.blendMode,
                             "filter": place.filter,
+                            "tweenFrame": place.tweenFrame,
                             "loop": place.loop
                         },
                         range
@@ -1104,6 +1076,7 @@ class Character
             return places[0];
         }
 
+        // 降順
         places.sort((a, b) =>
         {
             switch (true) {

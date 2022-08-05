@@ -1447,8 +1447,7 @@ class ArrowTool extends BaseTool
             tx = Math.min(tx, character.x);
             ty = Math.min(ty, character.y);
 
-            const matrix = character.getPlace(frame).matrix;
-            const bounds = Util.$boundsMatrix(character.getBounds(), matrix);
+            const bounds = character.getBounds();
             xMin = Math.min(xMin, bounds.xMin);
             xMax = Math.max(xMax, bounds.xMax);
             yMin = Math.min(yMin, bounds.yMin);

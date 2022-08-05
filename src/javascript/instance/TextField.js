@@ -288,17 +288,22 @@ class TextField extends Instance
     }
 
     /**
+     * @param  {array} [matrix=null]
      * @return {object}
      * @public
      */
-    getBounds ()
+    getBounds (matrix = null)
     {
-        return {
+        const bounds = {
             "xMin": -this._$thickness,
             "xMax": this._$bounds.xMax + this._$thickness,
             "yMin": -this._$thickness,
             "yMax": this._$bounds.yMax + 4 + this._$thickness
         };
+
+        return matrix
+            ? Util.$boundsMatrix(bounds, matrix)
+            : bounds;
     }
 
     /**

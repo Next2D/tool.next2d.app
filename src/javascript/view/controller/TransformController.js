@@ -795,6 +795,14 @@ class TransformController extends BaseController
      */
     updateWidth (width)
     {
+        /**
+         * @type {ArrowTool}
+         */
+        const tool = Util.$tools.getDefaultTool("arrow");
+        const activeElements = tool.activeElements;
+        if (!activeElements.length) {
+            return ;
+        }
 
         width = Util.$clamp(
             width,
@@ -804,14 +812,6 @@ class TransformController extends BaseController
 
         const workSpace = Util.$currentWorkSpace();
         const scene     = workSpace.scene;
-
-        const frame = Util.$timelineFrame.currentFrame;
-
-        /**
-         * @type {ArrowTool}
-         */
-        const tool = Util.$tools.getDefaultTool("arrow");
-        const activeElements = tool.activeElements;
         if (activeElements.length > 1) {
 
             let xMin =  Number.MAX_VALUE;
@@ -828,11 +828,10 @@ class TransformController extends BaseController
                 const characterId = target.dataset.characterId | 0;
                 const character   = layer.getCharacter(characterId);
 
-                const place  = character.getPlace(frame);
-                const bounds = Util.$boundsMatrix(
-                    character.getBounds(frame),
-                    place.matrix
-                );
+                const instance = workSpace
+                    .getLibrary(character.libraryId);
+
+                const bounds = instance.getBounds([1, 0, 0, 1, 0, 0]);
 
                 xMin = Math.min(xMin, bounds.xMin);
                 xMax = Math.max(xMax, bounds.xMax);
@@ -851,7 +850,11 @@ class TransformController extends BaseController
             const characterId = target.dataset.characterId | 0;
             const character   = layer.getCharacter(characterId);
 
-            const bounds = character.getBounds(frame);
+            const instance = workSpace
+                .getLibrary(character.libraryId);
+
+            const bounds = instance.getBounds([1, 0, 0, 1, 0, 0]);
+
             this.updateScaleX(
                 width / Math.abs(bounds.xMax - bounds.xMin)
             );
@@ -872,6 +875,15 @@ class TransformController extends BaseController
      */
     updateScaleX (scale_x)
     {
+        /**
+         * @type {ArrowTool}
+         */
+        const tool = Util.$tools.getDefaultTool("arrow");
+        const activeElements = tool.activeElements;
+        if (!activeElements.length) {
+            return ;
+        }
+
         scale_x = Util.$clamp(
             scale_x,
             TransformController.MIN_SCALE,
@@ -891,13 +903,7 @@ class TransformController extends BaseController
         let yMin =  Number.MAX_VALUE;
         let yMax = -Number.MAX_VALUE;
 
-        /**
-         * @type {ArrowTool}
-         */
-        const tool = Util.$tools.getDefaultTool("arrow");
-
         const referencePoint = tool.referencePoint;
-        const activeElements = tool.activeElements;
         if (activeElements.length > 1)  {
 
             let baseXMin =  Number.MAX_VALUE;
@@ -913,10 +919,7 @@ class TransformController extends BaseController
                 const characterId = target.dataset.characterId | 0;
                 const character   = layer.getCharacter(characterId);
 
-                const bounds = Util.$boundsMatrix(
-                    character.getBounds(frame),
-                    character.getPlace(frame).matrix
-                );
+                const bounds = character.getBounds();
 
                 baseXMin = Math.min(baseXMin, bounds.xMin);
                 baseXMax = Math.max(baseXMax, bounds.xMax);
@@ -959,11 +962,7 @@ class TransformController extends BaseController
                 place.matrix[4] = multiMatrix[4] + w + baseXMin + referencePoint.x;
                 place.matrix[5] = multiMatrix[5] + h + baseYMin + referencePoint.y;
 
-                const bounds = Util.$boundsMatrix(
-                    character.getBounds(frame),
-                    place.matrix
-                );
-
+                const bounds = character.getBounds();
                 xMin = Math.min(xMin, bounds.xMin);
                 xMax = Math.max(xMax, bounds.xMax);
                 yMin = Math.min(yMin, bounds.yMin);
@@ -1036,11 +1035,7 @@ class TransformController extends BaseController
                 tx = Math.min(tx, character.x);
                 ty = Math.min(ty, character.y);
 
-                const afterBounds = Util.$boundsMatrix(
-                    character.getBounds(),
-                    place.matrix
-                );
-
+                const afterBounds = character.getBounds();
                 xMin = Math.min(xMin, afterBounds.xMin);
                 xMax = Math.max(xMax, afterBounds.xMax);
                 yMin = Math.min(yMin, afterBounds.yMin);
@@ -1080,6 +1075,15 @@ class TransformController extends BaseController
      */
     updateHeight (height)
     {
+        /**
+         * @type {ArrowTool}
+         */
+        const tool = Util.$tools.getDefaultTool("arrow");
+        const activeElements = tool.activeElements;
+        if (!activeElements.length) {
+            return ;
+        }
+
         height = Util.$clamp(
             height,
             TransformController.MIN_SIZE,
@@ -1088,14 +1092,6 @@ class TransformController extends BaseController
 
         const workSpace = Util.$currentWorkSpace();
         const scene     = workSpace.scene;
-
-        const frame = Util.$timelineFrame.currentFrame;
-
-        /**
-         * @type {ArrowTool}
-         */
-        const tool = Util.$tools.getDefaultTool("arrow");
-        const activeElements = tool.activeElements;
         if (activeElements.length > 1) {
 
             let xMin =  Number.MAX_VALUE;
@@ -1112,11 +1108,10 @@ class TransformController extends BaseController
                 const characterId = target.dataset.characterId | 0;
                 const character   = layer.getCharacter(characterId);
 
-                const place  = character.getPlace(frame);
-                const bounds = Util.$boundsMatrix(
-                    character.getBounds(frame),
-                    place.matrix
-                );
+                const instance = workSpace
+                    .getLibrary(character.libraryId);
+
+                const bounds = instance.getBounds([1, 0, 0, 1, 0, 0]);
 
                 xMin = Math.min(xMin, bounds.xMin);
                 xMax = Math.max(xMax, bounds.xMax);
@@ -1135,7 +1130,11 @@ class TransformController extends BaseController
             const characterId = target.dataset.characterId | 0;
             const character   = layer.getCharacter(characterId);
 
-            const bounds = character.getBounds(frame);
+            const instance = workSpace
+                .getLibrary(character.libraryId);
+
+            const bounds = instance.getBounds([1, 0, 0, 1, 0, 0]);
+
             this.updateScaleY(
                 height / Math.abs(bounds.yMax - bounds.yMin)
             );
@@ -1155,6 +1154,15 @@ class TransformController extends BaseController
      */
     updateScaleY (scale_y)
     {
+        /**
+         * @type {ArrowTool}
+         */
+        const tool = Util.$tools.getDefaultTool("arrow");
+        const activeElements = tool.activeElements;
+        if (!activeElements.length) {
+            return ;
+        }
+
         scale_y = Util.$clamp(
             scale_y,
             TransformController.MIN_SCALE,
@@ -1174,11 +1182,6 @@ class TransformController extends BaseController
         let yMin =  Number.MAX_VALUE;
         let yMax = -Number.MAX_VALUE;
 
-        /**
-         * @type {ArrowTool}
-         */
-        const tool = Util.$tools.getDefaultTool("arrow");
-        const activeElements = tool.activeElements;
         if (activeElements.length > 1) {
 
             // 中心点の座標情報
@@ -1197,11 +1200,7 @@ class TransformController extends BaseController
                 const characterId = target.dataset.characterId | 0;
                 const character   = layer.getCharacter(characterId);
 
-                const bounds = Util.$boundsMatrix(
-                    character.getBounds(frame),
-                    character.getPlace(frame).matrix
-                );
-
+                const bounds = character.getBounds();
                 baseXMin = Math.min(baseXMin, bounds.xMin);
                 baseXMax = Math.max(baseXMax, bounds.xMax);
                 baseYMin = Math.min(baseYMin, bounds.yMin);
@@ -1243,10 +1242,7 @@ class TransformController extends BaseController
                 place.matrix[4] = multiMatrix[4] + w + baseXMin + referencePoint.x;
                 place.matrix[5] = multiMatrix[5] + h + baseYMin + referencePoint.y;
 
-                const bounds = Util.$boundsMatrix(
-                    character.getBounds(frame),
-                    place.matrix
-                );
+                const bounds = character.getBounds();
 
                 xMin = Math.min(xMin, bounds.xMin);
                 xMax = Math.max(xMax, bounds.xMax);
@@ -1321,10 +1317,7 @@ class TransformController extends BaseController
                 tx = Math.min(tx, character.x);
                 ty = Math.min(ty, character.y);
 
-                const afterBounds = Util.$boundsMatrix(
-                    character.getBounds(),
-                    place.matrix
-                );
+                const afterBounds = character.getBounds();
 
                 xMin = Math.min(xMin, afterBounds.xMin);
                 xMax = Math.max(xMax, afterBounds.xMax);
@@ -1367,6 +1360,15 @@ class TransformController extends BaseController
      */
     updateRotate (rotate)
     {
+        /**
+         * @type {ArrowTool}
+         */
+        const tool = Util.$tools.getDefaultTool("arrow");
+        const activeElements = tool.activeElements;
+        if (!activeElements.length) {
+            return ;
+        }
+
         const workSpace = Util.$currentWorkSpace();
         const scene = workSpace.scene;
 
@@ -1380,13 +1382,7 @@ class TransformController extends BaseController
         let yMin =  Number.MAX_VALUE;
         let yMax = -Number.MAX_VALUE;
 
-        /**
-         * @type {ArrowTool}
-         */
-        const tool = Util.$tools.getDefaultTool("arrow");
-
         const referencePoint = tool.referencePoint;
-        const activeElements = tool.activeElements;
         if (activeElements.length > 1) {
 
             let baseXMin =  Number.MAX_VALUE;
@@ -1402,10 +1398,7 @@ class TransformController extends BaseController
                 const characterId = target.dataset.characterId | 0;
                 const character   = layer.getCharacter(characterId);
 
-                const bounds = Util.$boundsMatrix(
-                    character.getBounds(frame),
-                    character.getPlace(frame).matrix
-                );
+                const bounds = character.getBounds();
 
                 baseXMin = Math.min(baseXMin, bounds.xMin);
                 baseXMax = Math.max(baseXMax, bounds.xMax);
@@ -1449,10 +1442,7 @@ class TransformController extends BaseController
                 place.matrix[4] = multiMatrix[4] + w + baseXMin + referencePoint.x;
                 place.matrix[5] = multiMatrix[5] + h + baseYMin + referencePoint.y;
 
-                const bounds = Util.$boundsMatrix(
-                    character.getBounds(frame),
-                    place.matrix
-                );
+                const bounds = character.getBounds();
 
                 xMin = Math.min(xMin, bounds.xMin);
                 xMax = Math.max(xMax, bounds.xMax);
@@ -1551,10 +1541,7 @@ class TransformController extends BaseController
                 tx = Math.min(tx, character.x);
                 ty = Math.min(ty, character.y);
 
-                const afterBounds = Util.$boundsMatrix(
-                    character.getBounds(),
-                    place.matrix
-                );
+                const afterBounds = character.getBounds();
 
                 xMin = Math.min(xMin, afterBounds.xMin);
                 xMax = Math.max(xMax, afterBounds.xMax);

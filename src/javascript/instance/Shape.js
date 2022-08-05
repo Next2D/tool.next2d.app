@@ -128,12 +128,15 @@ class Shape extends Instance
     }
 
     /**
+     * @param  {array} [matrix=null]
      * @return {object}
      * @public
      */
-    getBounds ()
+    getBounds (matrix = null)
     {
-        return this._$bounds;
+        return matrix
+            ? Util.$boundsMatrix(this._$bounds, matrix)
+            : this._$bounds;
     }
 
     /**

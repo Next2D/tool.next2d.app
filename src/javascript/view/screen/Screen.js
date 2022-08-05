@@ -662,8 +662,8 @@ class Screen extends BaseScreen
             height = 10;
         }
 
-        div.style.width  = `${width}px`;
-        div.style.height = `${height}px`;
+        div.style.width  = `${Math.ceil(width)}px`;
+        div.style.height = `${Math.ceil(height)}px`;
         div.style.pointerEvents = event;
 
         div.addEventListener("mouseover", (event) =>

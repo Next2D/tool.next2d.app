@@ -278,10 +278,7 @@ class Instance
         image._$height  = height;
         image.draggable = false;
 
-        const bounds = Util.$boundsMatrix(
-            this.getBounds(place, range),
-            place.matrix
-        );
+        const bounds = this.getBounds(place.matrix, place, range);
 
         image._$tx = bounds.xMin;
         image._$ty = bounds.yMin;
@@ -289,6 +286,7 @@ class Instance
         image._$offsetX = 0 > offsetX ? offsetX : 0;
         image._$offsetY = 0 > offsetY ? offsetY : 0;
 
+        image.style.border = "1px solid #990000";
         return image;
     }
 
@@ -395,7 +393,7 @@ class Instance
      */
     get preview ()
     {
-        const bounds = this.getBounds(null, true);
+        const bounds = this.getBounds([1, 0, 0, 1, 0, 0]);
 
         // size
         let width  = Math.abs(bounds.xMax - bounds.xMin);

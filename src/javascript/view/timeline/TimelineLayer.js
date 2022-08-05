@@ -1780,11 +1780,9 @@ class TimelineLayer extends BaseTimeline
 
                     const character = characters[idx];
 
-                    const place  = character.getClonePlace(frame);
-                    const bounds = Util.$boundsMatrix(
-                        character.getBounds(frame),
-                        place.matrix
-                    );
+                    const range  = character.getRange(frame);
+                    const place  = character.getPlace(frame);
+                    const bounds = character.getBounds();
 
                     xMin = Math.min(xMin, bounds.xMin);
                     xMax = Math.max(xMax, bounds.xMax);
@@ -1793,7 +1791,7 @@ class TimelineLayer extends BaseTimeline
 
                     const instance = workSpace
                         .getLibrary(character.libraryId)
-                        .createInstance(place);
+                        .createInstance(place, range);
 
                     instance.transform.matrix = new Matrix(
                         place.matrix[0], place.matrix[1],

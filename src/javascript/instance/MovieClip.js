@@ -709,13 +709,14 @@ class MovieClip extends Instance
     }
 
     /**
+     * @param  {array}  [matrix=null]
      * @param  {object} [place=null]
      * @param  {object} [range=null]
      * @return {object}
      * @method
      * @public
      */
-    getBounds (place = null, range = null)
+    getBounds (matrix, place = null, range = null)
     {
         if (!this._$layers.size) {
             return {
@@ -740,6 +741,8 @@ class MovieClip extends Instance
             );
         }
 
+        const parentMatrix = matrix;
+
         Util.$currentFrame = frame;
 
         const workSpace = Util.$currentWorkSpace();
@@ -758,34 +761,32 @@ class MovieClip extends Instance
 
                 const character = characters[idx];
                 const place     = character.getPlace(frame);
-                const matrix    = place.matrix;
                 const range     = place.loop && place.loop.type === 5
                     ? {
                         "startFrame": character.startFrame,
                         "endFrame": character.endFrame
                     }
-                    : character.getPlace(frame);
+                    : character.getRange(frame);
 
                 const instance = workSpace
                     .getLibrary(character.libraryId | 0);
 
-                const childBounds = instance.getBounds(place, range);
+                const matrix = Util.$multiplicationMatrix(parentMatrix, place.matrix);
+                const bounds = instance.getBounds(matrix, place, range);
 
-                const width  = childBounds.xMax - childBounds.xMin;
-                const height = childBounds.yMax - childBounds.yMin;
-
-                const bounds = !width || !height
-                    ? {
-                        "xMin": matrix[4], "xMax": matrix[4],
-                        "yMin": matrix[5], "yMax": matrix[5]
-                    }
-                    : Util.$boundsMatrix(childBounds, matrix);
+                const width  = bounds.xMax - bounds.xMin;
+                const height = bounds.yMax - bounds.yMin;
+                if (!width || !height) {
+                    bounds.xMin = matrix[4];
+                    bounds.xMax = matrix[4];
+                    bounds.yMin = matrix[5];
+                    bounds.yMax = matrix[5];
+                }
 
                 xMin = Math.min(bounds.xMin, xMin);
                 xMax = Math.max(bounds.xMax, xMax);
                 yMin = Math.min(bounds.yMin, yMin);
                 yMax = Math.max(bounds.yMax, yMax);
-
             }
         }
 

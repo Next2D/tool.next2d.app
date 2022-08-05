@@ -136,17 +136,22 @@ class Video extends Instance
     }
 
     /**
+     * @param  {array} [matrix=null]
      * @return {object}
      * @public
      */
-    getBounds ()
+    getBounds (matrix = null)
     {
-        return {
+        const bounds = {
             "xMin": 0,
             "xMax": this.width,
             "yMin": 0,
             "yMax": this.height
         };
+
+        return matrix
+            ? Util.$boundsMatrix(bounds, matrix)
+            : bounds;
     }
 
     /**
