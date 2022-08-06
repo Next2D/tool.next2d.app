@@ -45,7 +45,7 @@ class ZoomTool extends BaseTool
 
         this.addEventListener(EventType.MOUSE_UP, (event) =>
         {
-            this.executeZoom(event);
+            this.execute(event);
         });
     }
 
@@ -112,7 +112,7 @@ class ZoomTool extends BaseTool
      * @method
      * @public
      */
-    executeZoom ()
+    execute ()
     {
         this.active = false;
         Util.$setCursor(this._$cursor);
@@ -137,7 +137,7 @@ class ZoomTool extends BaseTool
         Util.$zoomScale = 0;
         Util.$screenZoom.execute(scale);
 
-        // ハンドツールを起動
+        // アクティブなツールがあれば終了
         if (Util.$tools.activeTool) {
             Util
                 .$tools

@@ -87,10 +87,11 @@ class Screen extends BaseScreen
                     || !event.ctrlKey && event.metaKey // mac
                 ) {
 
-                    event.preventDefault();
-
                     const delta = event.deltaX || event.deltaY;
                     if (delta) {
+
+                        event.preventDefault();
+
                         window.requestAnimationFrame(() => {
                             Util.$screenZoom.execute(delta / 100 * -1);
                         });

@@ -626,7 +626,7 @@ class Character
             .getElementById(`character-${this.id}`);
 
         if (element) {
-            element.style.left = `${Util.$offsetLeft + bounds.xMin}px`;
+            element.style.left = `${Util.$offsetLeft + bounds.xMin * Util.$zoomScale}px`;
         }
     }
 
@@ -659,7 +659,7 @@ class Character
             .getElementById(`character-${this.id}`);
 
         if (element) {
-            element.style.top = `${Util.$offsetTop + bounds.yMin}px`;
+            element.style.top = `${Util.$offsetTop + bounds.yMin * Util.$zoomScale}px`;
         }
     }
 

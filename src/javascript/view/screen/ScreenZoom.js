@@ -139,24 +139,32 @@ class ScreenZoom extends BaseScreen
 
         const workSpace = Util.$currentWorkSpace();
 
-        // update
+        // ズームした幅と高さを算出
         const width  = workSpace.stage.width  * Util.$zoomScale;
         const height = workSpace.stage.height * Util.$zoomScale;
 
-        const stage = document.getElementById("stage");
-        const moveLeft = (width  - stage.offsetWidth)  / 2;
-        const moveTop  = (height - stage.offsetHeight) / 2;
-
-        stage.style.width  = `${width}px`;
-        stage.style.height = `${height}px`;
-
+        // 対象Element
+        const screen    = document.getElementById("screen");
         const stageArea = document.getElementById("stage-area");
+        const stage     = document.getElementById("stage");
+
+        const beforeWidth  = screen.clientWidth  / (stageArea.clientWidth  / screen.clientWidth);
+        const beforeHeight = screen.clientHeight / (stageArea.clientHeight / screen.clientHeight);
+
+        const positionX = screen.scrollLeft / screen.scrollWidth;
+        const positionY = screen.scrollTop  / screen.scrollHeight;
+
+        // 値を更新
+        stage.style.width      = `${width}px`;
+        stage.style.height     = `${height}px`;
         stageArea.style.width  = `${width  + window.screen.width}px`;
         stageArea.style.height = `${height + window.screen.height}px`;
 
-        const screen = document.getElementById("screen");
-        screen.scrollLeft += moveLeft;
-        screen.scrollTop  += moveTop;
+        const afterWidth  = screen.clientWidth  / (stageArea.clientWidth  / screen.clientWidth);
+        const afterHeight = screen.clientHeight / (stageArea.clientHeight / screen.clientHeight);
+
+        screen.scrollLeft = screen.scrollWidth  * positionX + (beforeWidth  - afterWidth);
+        screen.scrollTop  = screen.scrollHeight * positionY + (beforeHeight - afterHeight);
 
         // DisplayObjectのキャッシュを全て削除
         const frame = Util.$timelineFrame.currentFrame;

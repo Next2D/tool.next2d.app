@@ -1423,9 +1423,6 @@ class ArrowTool extends BaseTool
         const scene     = workSpace.scene;
         let character   = null;
 
-        // 現在のフレーム
-        const frame = Util.$timelineFrame.currentFrame;
-
         // 拡大縮小回転の範囲とポインターの情報を再取得
         let tx   = Number.MAX_VALUE;
         let ty   = Number.MAX_VALUE;
