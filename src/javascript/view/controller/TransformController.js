@@ -609,14 +609,14 @@ class TransformController extends BaseController
         if (activeElements.length === 1) {
 
             const target = activeElements[0];
-            const layer = scene.getLayer(target.dataset.layerId | 0);
+            const layer  = scene.getLayer(target.dataset.layerId | 0);
 
             const character = layer
                 .getCharacter(target.dataset.characterId | 0);
 
             const frame = Util.$timelineFrame.currentFrame;
 
-            const matrix = character.getClonePlace(frame).matrix;
+            const matrix = character.getPlace(frame).matrix;
             const point  = character.referencePoint;
 
             // 画面の拡大縮小対応
