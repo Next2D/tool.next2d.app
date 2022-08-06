@@ -36,6 +36,7 @@ class Instance
 
         Util.$controller.showObjectSetting([
             "object-setting",
+            "reference-setting",
             "transform-setting",
             "color-setting",
             "blend-setting",
@@ -286,7 +287,6 @@ class Instance
         image._$offsetX = 0 > offsetX ? offsetX : 0;
         image._$offsetY = 0 > offsetY ? offsetY : 0;
 
-        image.style.border = "1px solid #990000";
         return image;
     }
 

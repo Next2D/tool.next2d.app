@@ -162,6 +162,7 @@
 #text-setting,
 #text-setting .text-border,
 #color-setting,
+#reference-setting,
 #blend-setting,
 #loop-setting,
 #video-setting,
@@ -203,6 +204,8 @@
 #color-blue-offset:focus,
 #transform-scale-x:focus,
 #transform-scale-y:focus,
+#transform-reference-x:focus,
+#transform-reference-y:focus,
 #transform-rotate:focus
 {
     border-bottom : 1px solid #f5f5f5;
@@ -290,6 +293,7 @@
 #object-setting-title,
 #sound-setting-title,
 #color-setting-title,
+#reference-setting-title,
 #blend-setting-title,
 #loop-setting-title,
 #filter-setting-title,
@@ -332,6 +336,7 @@
 #object-setting-title i,
 #sound-setting-title i,
 #color-setting-title i,
+#reference-setting-title i,
 #blend-setting-title i,
 #loop-setting-title i,
 #filter-setting-title i,
@@ -353,6 +358,7 @@
 #object-setting-title .disable,
 #sound-setting-title .disable,
 #color-setting-title .disable,
+#reference-setting-title .disable,
 #blend-setting-title .disable,
 #loop-setting-title .disable,
 #filter-setting-title .disable,
@@ -372,6 +378,7 @@
 #object-setting-title .active,
 #sound-setting-title .active,
 #color-setting-title .active,
+#reference-setting-title .active,
 #blend-setting-title .active,
 #loop-setting-title .active,
 #filter-setting-title .active,
@@ -391,6 +398,7 @@
 #object-setting-title:hover,
 #sound-setting-title:hover,
 #color-setting-title:hover,
+#reference-setting-title:hover,
 #blend-setting-title:hover,
 #loop-setting-title:hover,
 #filter-setting-title:hover,
@@ -414,6 +422,7 @@
 #blend-setting .blend-setting-container,
 #loop-setting .loop-setting-container,
 #color-setting .color-setting-container,
+#reference-setting .reference-setting-container,
 #text-setting .text-setting-container,
 #video-setting .video-setting-container,
 #transform-setting .transform-setting-container,
@@ -428,6 +437,7 @@
 #stage-setting-view-area .stage-setting-text,
 #object-setting .object-setting-text,
 #color-setting .color-setting-text,
+#reference-setting .reference-setting-text,
 #transform-setting .transform-setting-text,
 #text-setting .text-setting-text,
 #nine-slice-setting .nine-slice-setting-text
@@ -804,6 +814,8 @@
 
 #transform-scale-x,
 #transform-scale-y,
+#transform-reference-x,
+#transform-reference-y,
 #transform-rotate
 {
     border           : none;
