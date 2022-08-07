@@ -436,7 +436,7 @@
 
 #reference-setting-box
 {
-    width          : 70px;
+    width          : 60px;
     display        : flex;
     flex-direction : column;
     align-items    : center;
@@ -445,7 +445,7 @@
 
 #reference-setting-box .reference-setting-box-list
 {
-    width       : 70px;
+    width       : 60px;
     display     : flex;
     align-items : center;
 }
@@ -454,7 +454,7 @@
 {
     width            : 10px;
     height           : 10px;
-    margin           : 4px;
+    margin           : 2px;
     background-color : #f5f5f5;
 }
 
