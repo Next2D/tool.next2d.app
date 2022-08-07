@@ -27,15 +27,6 @@ class ArrowTool extends BaseTool
         this._$activeElement = "";
 
         /**
-         * @type {object}
-         * @private
-         */
-        this._$referencePoint = {
-            "x": 0,
-            "y": 0
-        };
-
-        /**
          * @type {array}
          * @private
          */
@@ -230,17 +221,6 @@ class ArrowTool extends BaseTool
     }
 
     /**
-     * @description 複数選択時の中心点の
-     * @return {object}
-     * @readonly
-     * @public
-     */
-    get referencePoint ()
-    {
-        return this._$referencePoint;
-    }
-
-    /**
      * @description スクリーンで選択したElementの配列
      *
      * @return {array}
@@ -317,6 +297,9 @@ class ArrowTool extends BaseTool
 
         // タイムラインエリアを初期化
         Util.$timelineLayer.clear();
+
+        // 中心点を初期化
+        Util.$referenceController.resetPointer();
     }
 
     /**
@@ -1159,10 +1142,16 @@ class ArrowTool extends BaseTool
         const element = document.getElementById("reference-point");
         if (activeElements.length > 1) {
 
-            const element = event.target;
+            const point = Util
+                .$referenceController
+                .pointer;
 
-            this._$referencePoint.x += mouseX;
-            this._$referencePoint.y += mouseY;
+            point.x += mouseX;
+            point.y += mouseY;
+
+            Util
+                .$referenceController
+                .setInputValue(point.x, point.y);
 
             element.style.left = `${element.offsetLeft + mouseX}px`;
             element.style.top  = `${element.offsetTop  + mouseY}px`;
@@ -1174,27 +1163,22 @@ class ArrowTool extends BaseTool
             const scene   = Util.$currentWorkSpace().scene;
             const layer   = scene.getLayer(layerId);
 
+            // 座標を更新
             const character = layer
                 .getCharacter(target.dataset.characterId | 0);
 
-            const frame = Util.$timelineFrame.currentFrame;
-
-            const matrix = character.getClonePlace(frame).matrix;
-            const x = mouseX * matrix[0] + mouseY * matrix[2];
-            const y = mouseX * matrix[1] + mouseY * matrix[3];
-
-            // 座標を更新
-            character._$referencePoint.x += x;
-            character._$referencePoint.y += y;
+            character._$referencePoint.x += mouseX;
+            character._$referencePoint.y += mouseY;
 
             const point = character.referencePoint;
+
+            Util
+                .$referenceController
+                .setInputValue(point.x, point.y);
 
             // 画面の拡大縮小対応
             const pointX = point.x * Util.$zoomScale;
             const pointY = point.y * Util.$zoomScale;
-
-            const dx = pointX * matrix[0] + pointY * matrix[2];
-            const dy = pointX * matrix[1] + pointY * matrix[3];
 
             const characterElement = document
                 .getElementById(`character-${character.id}`);
@@ -1204,8 +1188,8 @@ class ArrowTool extends BaseTool
             const width  = characterElement.offsetWidth;
             const height = characterElement.offsetHeight;
 
-            element.style.left = `${dx + xMin + width  / 2 - 5}px`;
-            element.style.top  = `${dy + yMin + height / 2 - 5}px`;
+            element.style.left = `${pointX + xMin + width  / 2 - 5}px`;
+            element.style.top  = `${pointY + yMin + height / 2 - 5}px`;
         }
     }
 

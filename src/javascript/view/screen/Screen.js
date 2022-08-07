@@ -324,22 +324,7 @@ class Screen extends BaseScreen
                 character.libraryId  = libraryId;
                 character.startFrame = startFrame;
                 character.endFrame   = endFrame;
-
                 character.setPlace(startFrame, place);
-
-                let width = character.width;
-                if (!width) {
-                    width = 10;
-                }
-
-                let height = character.height;
-                if (!height) {
-                    height = 10;
-                }
-
-                const bounds = character.getBounds();
-                place.matrix[4] -= bounds.xMin + width  / 2;
-                place.matrix[5] -= bounds.yMin + height / 2;
 
                 // added
                 layer.addCharacter(character);
@@ -349,21 +334,32 @@ class Screen extends BaseScreen
                 // add place
                 character.setPlace(startFrame, place);
 
-                let width = character.width;
-                if (!width) {
-                    width = 10;
-                }
-
-                let height = character.height;
-                if (!height) {
-                    height = 10;
-                }
-
-                const bounds = character.getBounds();
-                place.matrix[4] -= bounds.xMin + width  / 2;
-                place.matrix[5] -= bounds.yMin + height / 2;
-
             }
+
+            // ドロップ位置補正
+            let dx = 0;
+            let dy = 0;
+            if (instance.type === "container") {
+                const bounds = instance.getBounds([1, 0, 0, 1, 0, 0]);
+                dx = bounds.xMin;
+                dy = bounds.yMin;
+            }
+
+            let width = character.width;
+            if (!width) {
+                width = 10;
+            }
+
+            let height = character.height;
+            if (!height) {
+                height = 10;
+            }
+
+            dx += width  / 2;
+            dy += height / 2;
+
+            place.matrix[4] -= dx;
+            place.matrix[5] -= dy;
         }
 
         // タイムラインの表示を再計算

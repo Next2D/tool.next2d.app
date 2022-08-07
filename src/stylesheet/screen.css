@@ -49,8 +49,8 @@
 
 #reference-point
 {
-    width            : 10px;
-    height           : 10px;
+    width            : 15px;
+    height           : 15px;
     position         : absolute;
     z-index          : 9000;
     border-radius    : 10px;
