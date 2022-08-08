@@ -928,17 +928,25 @@ class TransformController extends BaseController
 
             }
 
-            const w = Math.abs(baseXMax - baseXMin) / 2;
-            const h = Math.abs(baseYMax - baseYMin) / 2;
+            // 基準となる幅と高さを算出
+            const baseWidth  = Math.abs(baseXMax - baseXMin);
+            const baseHeight = Math.abs(baseYMax - baseYMin);
+            const halfWidth  = baseWidth  / 2;
+            const halfHeight = baseHeight / 2;
 
+            // 中心点の座標情報
             const referencePoint = Util.$referenceController.pointer;
+
+            // 中止点から座標を取得
+            const percentX = (halfWidth  + referencePoint.x) / baseWidth;
+            const percentY = (halfHeight + referencePoint.y) / baseHeight;
 
             const parentMatrix = Util.$multiplicationMatrix(
                 [scale_x, 0, 0, 1, 0, 0],
                 [
                     1, 0, 0, 1,
-                    -w - baseXMin - referencePoint.x,
-                    -h - baseYMin - referencePoint.y
+                    -halfWidth  - baseXMin - referencePoint.x,
+                    -halfHeight - baseYMin - referencePoint.y
                 ]
             );
 
@@ -961,8 +969,8 @@ class TransformController extends BaseController
                 place.matrix[1] = multiMatrix[1];
                 place.matrix[2] = multiMatrix[2];
                 place.matrix[3] = multiMatrix[3];
-                place.matrix[4] = multiMatrix[4] + w + baseXMin + referencePoint.x;
-                place.matrix[5] = multiMatrix[5] + h + baseYMin + referencePoint.y;
+                place.matrix[4] = multiMatrix[4] + halfWidth  + baseXMin + referencePoint.x;
+                place.matrix[5] = multiMatrix[5] + halfHeight + baseYMin + referencePoint.y;
 
                 const bounds = character.getBounds();
                 xMin = Math.min(xMin, bounds.xMin);
@@ -983,6 +991,12 @@ class TransformController extends BaseController
             document
                 .getElementById("transform-scale-x")
                 .value = "100";
+
+            // 中心点を移動
+            const afterWidth  = Math.abs(xMax - xMin);
+            const afterHeight = Math.abs(yMax - yMin);
+            referencePoint.x = afterWidth  * percentX - afterWidth  / 2;
+            referencePoint.y = afterHeight * percentY - afterHeight / 2;
 
         } else {
 
@@ -1203,9 +1217,6 @@ class TransformController extends BaseController
 
         if (activeElements.length > 1) {
 
-            // 中心点の座標情報
-            const referencePoint = tool.referencePoint;
-
             let baseXMin =  Number.MAX_VALUE;
             let baseXMax = -Number.MAX_VALUE;
             let baseYMin =  Number.MAX_VALUE;
@@ -1227,15 +1238,25 @@ class TransformController extends BaseController
 
             }
 
-            const w = Math.abs(baseXMax - baseXMin) / 2;
-            const h = Math.abs(baseYMax - baseYMin) / 2;
+            // 基準となる幅と高さを算出
+            const baseWidth  = Math.abs(baseXMax - baseXMin);
+            const baseHeight = Math.abs(baseYMax - baseYMin);
+            const halfWidth  = baseWidth  / 2;
+            const halfHeight = baseHeight / 2;
+
+            // 中心点の座標情報
+            const referencePoint = Util.$referenceController.pointer;
+
+            // 中止点から座標を取得
+            const percentX = (halfWidth  + referencePoint.x) / baseWidth;
+            const percentY = (halfHeight + referencePoint.y) / baseHeight;
 
             const parentMatrix = Util.$multiplicationMatrix(
                 [1, 0, 0, scale_y, 0, 0],
                 [
                     1, 0, 0, 1,
-                    -w - baseXMin - referencePoint.x,
-                    -h - baseYMin - referencePoint.y
+                    -halfWidth  - baseXMin - referencePoint.x,
+                    -halfHeight - baseYMin - referencePoint.y
                 ]
             );
 
@@ -1258,8 +1279,8 @@ class TransformController extends BaseController
                 place.matrix[1] = multiMatrix[1];
                 place.matrix[2] = multiMatrix[2];
                 place.matrix[3] = multiMatrix[3];
-                place.matrix[4] = multiMatrix[4] + w + baseXMin + referencePoint.x;
-                place.matrix[5] = multiMatrix[5] + h + baseYMin + referencePoint.y;
+                place.matrix[4] = multiMatrix[4] + halfWidth  + baseXMin + referencePoint.x;
+                place.matrix[5] = multiMatrix[5] + halfHeight + baseYMin + referencePoint.y;
 
                 const bounds = character.getBounds();
 
@@ -1281,6 +1302,12 @@ class TransformController extends BaseController
             document
                 .getElementById("transform-scale-x")
                 .value = "100";
+
+            // 中心点を移動
+            const afterWidth  = Math.abs(xMax - xMin);
+            const afterHeight = Math.abs(yMax - yMin);
+            referencePoint.x = afterWidth  * percentX - afterWidth  / 2;
+            referencePoint.y = afterHeight * percentY - afterHeight / 2;
 
         } else {
 
@@ -1418,7 +1445,6 @@ class TransformController extends BaseController
         let yMin =  Number.MAX_VALUE;
         let yMax = -Number.MAX_VALUE;
 
-        const referencePoint = tool.referencePoint;
         if (activeElements.length > 1) {
 
             let baseXMin =  Number.MAX_VALUE;
@@ -1443,16 +1469,26 @@ class TransformController extends BaseController
 
             }
 
-            const w = Math.abs(baseXMax - baseXMin) / 2;
-            const h = Math.abs(baseYMax - baseYMin) / 2;
+            // 基準となる幅と高さを算出
+            const baseWidth  = Math.abs(baseXMax - baseXMin);
+            const baseHeight = Math.abs(baseYMax - baseYMin);
+            const halfWidth  = baseWidth  / 2;
+            const halfHeight = baseHeight / 2;
+
+            // 中心点の座標情報
+            const referencePoint = Util.$referenceController.pointer;
+
+            // 中止点から座標を取得
+            const percentX = (halfWidth  + referencePoint.x) / baseWidth;
+            const percentY = (halfHeight + referencePoint.y) / baseHeight;
 
             const radian = rotate * Util.$Deg2Rad;
             const parentMatrix = Util.$multiplicationMatrix(
                 [Math.cos(radian), Math.sin(radian), -Math.sin(radian), Math.cos(radian), 0, 0],
                 [
                     1, 0, 0, 1,
-                    -w - baseXMin - referencePoint.x,
-                    -h - baseYMin - referencePoint.y
+                    -halfWidth  - baseXMin - referencePoint.x,
+                    -halfHeight - baseYMin - referencePoint.y
                 ]
             );
 
@@ -1475,8 +1511,8 @@ class TransformController extends BaseController
                 place.matrix[1] = multiMatrix[1];
                 place.matrix[2] = multiMatrix[2];
                 place.matrix[3] = multiMatrix[3];
-                place.matrix[4] = multiMatrix[4] + w + baseXMin + referencePoint.x;
-                place.matrix[5] = multiMatrix[5] + h + baseYMin + referencePoint.y;
+                place.matrix[4] = multiMatrix[4] + halfWidth  + baseXMin + referencePoint.x;
+                place.matrix[5] = multiMatrix[5] + halfHeight + baseYMin + referencePoint.y;
 
                 const bounds = character.getBounds();
 
@@ -1498,6 +1534,12 @@ class TransformController extends BaseController
             document
                 .getElementById("transform-scale-x")
                 .value = "100";
+
+            // 中心点を移動
+            const afterWidth  = Math.abs(xMax - xMin);
+            const afterHeight = Math.abs(yMax - yMin);
+            referencePoint.x = afterWidth  * percentX - afterWidth  / 2;
+            referencePoint.y = afterHeight * percentY - afterHeight / 2;
 
         } else {
 
@@ -1521,21 +1563,29 @@ class TransformController extends BaseController
                 const library  = workSpace.getLibrary(character.libraryId);
                 const instance = library.createInstance(place, range);
 
-                const rectangle = instance.getBounds();
-                const w = rectangle.width  / 2;
-                const h = rectangle.height / 2;
+                // 中止点から座標を取得
+                const beforeBounds = character.getBounds();
+                const beforeWidth  = Math.abs(beforeBounds.xMax - beforeBounds.xMin);
+                const beforeHeight = Math.abs(beforeBounds.yMax - beforeBounds.yMin);
+                const percentX = (beforeWidth  / 2 + referencePoint.x) / beforeWidth;
+                const percentY = (beforeHeight / 2 + referencePoint.y) / beforeHeight;
+
+                // 中心点を算出
+                const rectangle  = instance.getBounds();
+                const referenceX = rectangle.x + rectangle.width  * percentX;
+                const referenceY = rectangle.y + rectangle.height * percentY;
 
                 const baseMatrix = [
                     1, 0, 0, 1,
-                    -w - rectangle.x - referencePoint.x,
-                    -h - rectangle.y - referencePoint.y
+                    -referenceX,
+                    -referenceY
                 ];
 
                 const beforeMatrix  = Util.$multiplicationMatrix([
                     place.matrix[0], place.matrix[1],
                     place.matrix[2], place.matrix[3],
-                    w + rectangle.x + referencePoint.x,
-                    h + rectangle.y + referencePoint.y
+                    referenceX,
+                    referenceY
                 ], baseMatrix);
 
                 character.x -= beforeMatrix[4];
@@ -1547,8 +1597,8 @@ class TransformController extends BaseController
                 const afterMatrix = Util.$multiplicationMatrix([
                     place.matrix[0], place.matrix[1],
                     place.matrix[2], place.matrix[3],
-                    w + rectangle.x + referencePoint.x,
-                    h + rectangle.y + referencePoint.y
+                    referenceX,
+                    referenceY
                 ], baseMatrix);
 
                 character.x += afterMatrix[4];
@@ -1578,11 +1628,19 @@ class TransformController extends BaseController
                 ty = Math.min(ty, character.y);
 
                 const afterBounds = character.getBounds();
-
                 xMin = Math.min(xMin, afterBounds.xMin);
                 xMax = Math.max(xMax, afterBounds.xMax);
                 yMin = Math.min(yMin, afterBounds.yMin);
                 yMax = Math.max(yMax, afterBounds.yMax);
+
+                // 中心点を移動
+                const afterWidth  = Math.abs(xMax - xMin);
+                const afterHeight = Math.abs(yMax - yMin);
+
+                character.referencePoint = {
+                    "x": afterWidth  * percentX - afterWidth  / 2,
+                    "y": afterHeight * percentY - afterHeight / 2
+                };
 
                 //  tweenの座標を再計算してポインターを再配置
                 character.relocationTween(frame);

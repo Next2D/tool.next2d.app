@@ -1188,8 +1188,8 @@ class ArrowTool extends BaseTool
             const width  = characterElement.offsetWidth;
             const height = characterElement.offsetHeight;
 
-            element.style.left = `${pointX + xMin + width  / 2 - 5}px`;
-            element.style.top  = `${pointY + yMin + height / 2 - 5}px`;
+            element.style.left = `${pointX + xMin + width  / 2 - 8}px`;
+            element.style.top  = `${pointY + yMin + height / 2 - 8}px`;
         }
     }
 
