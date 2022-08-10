@@ -619,18 +619,19 @@ class TweenController extends BaseController
         // tweenのplaceを再構築
         character.updateTweenPlace(range.startFrame, range.endFrame);
 
-        // translate
-        const instance = Util
+        const library = Util
             .$currentWorkSpace()
-            .getLibrary(character.libraryId)
-            .createInstance(character.getPlace(frame));
+            .getLibrary(character.libraryId);
+
+        // translate
+        const instance = library.createInstance(character.getPlace(frame));
 
         const point = character.referencePoint;
 
         const w = instance.width  / 2;
         const h = instance.height / 2;
 
-        const baseBounds = character.getBounds();
+        const baseBounds = library.getBounds();
         const rectangle  = instance.getBounds();
         const baseMatrix = [
             1, 0, 0, 1,
@@ -1088,7 +1089,11 @@ class TweenController extends BaseController
                 endFrame = character.getTween(endFrame).endFrame;
             }
 
-            const baseBounds = character.getBounds();
+            const instance = Util
+                .$currentWorkSpace()
+                .getLibrary(character.libraryId);
+
+            const baseBounds = instance.getBounds();
             const parentElement = document.getElementById("stage-area");
             for (let frame = startFrame; frame < endFrame; ++frame) {
 
@@ -1171,8 +1176,8 @@ class TweenController extends BaseController
 
         this._$currentTarget = event.target;
 
-        this._$pointX = event.pageX - event.target.offsetLeft;
-        this._$pointY = event.pageY - event.target.offsetTop;
+        this._$pointX = event.pageX;
+        this._$pointY = event.pageY;
 
         if (!this._$moveCurvePointer) {
             this._$moveCurvePointer = this.moveCurvePointer.bind(this);
@@ -1265,8 +1270,8 @@ class TweenController extends BaseController
                 return ;
             }
 
-            const x = event.pageX - this._$pointX;
-            const y = event.pageY - this._$pointY;
+            const x = (event.pageX - this._$pointX) / Util.$zoomScale;
+            const y = (event.pageY - this._$pointY) / Util.$zoomScale;
 
             const layer = Util
                 .$currentWorkSpace()
@@ -1291,23 +1296,12 @@ class TweenController extends BaseController
                 return ;
             }
 
-            const matrix     = character.getPlace(frame).matrix;
-            const baseBounds = character.getBounds();
-            const bounds     = Util.$boundsMatrix(baseBounds, matrix);
-            const width      = Math.abs(Math.ceil(bounds.xMax - bounds.xMin) / 2);
-            const height     = Math.abs(Math.ceil(bounds.yMax - bounds.yMin) / 2);
-
             const point = character
                 .getTween(range.startFrame)
                 .curve[element.dataset.index];
 
-            const tx = x - Util.$offsetLeft - width  - baseBounds.xMin;
-            const ty = y - Util.$offsetTop  - height - baseBounds.yMin;
-            point.x = tx / Util.$zoomScale;
-            point.y = ty / Util.$zoomScale;
-
-            element.style.left = `${Util.$offsetLeft + tx + baseBounds.xMin + width}px`;
-            element.style.top  = `${Util.$offsetTop  + ty + baseBounds.yMin + height}px`;
+            point.x += x;
+            point.y += y;
 
             // 再計算
             this.relocationPlace(character, range.startFrame);
@@ -1319,6 +1313,9 @@ class TweenController extends BaseController
 
             // 再描画
             this.reloadScreen();
+
+            this._$pointX = event.pageX;
+            this._$pointY = event.pageY;
         });
     }
 
@@ -1433,16 +1430,18 @@ class TweenController extends BaseController
             return null;
         }
 
-        const character  = characters[0];
-        const matrix     = character.getPlace(frame).matrix;
-        const baseBounds = character.getBounds();
-        const bounds     = Util.$boundsMatrix(baseBounds, matrix);
+        const character = characters[0];
+
+        const bounds = Util
+            .$currentWorkSpace()
+            .getLibrary(character.libraryId)
+            .getBounds();
 
         const width  = Math.abs(Math.ceil(bounds.xMax - bounds.xMin) / 2 * Util.$zoomScale);
         const height = Math.abs(Math.ceil(bounds.yMax - bounds.yMin) / 2 * Util.$zoomScale);
 
-        div.style.left = `${Util.$offsetLeft + pointer.x * Util.$zoomScale + baseBounds.xMin * Util.$zoomScale + width}px`;
-        div.style.top  = `${Util.$offsetTop  + pointer.y * Util.$zoomScale + baseBounds.yMin * Util.$zoomScale + height}px`;
+        div.style.left = `${Util.$offsetLeft + pointer.x * Util.$zoomScale + width  - 7}px`;
+        div.style.top  = `${Util.$offsetTop  + pointer.y * Util.$zoomScale + height - 7}px`;
 
         if (pointer.usePoint) {
             div.classList.remove("tween-pointer-disabled");
@@ -2274,15 +2273,14 @@ class TweenController extends BaseController
         }
 
         const tweenObject = character.getTween(range.startFrame);
-        const index       = tweenObject.curve.length;
-        const matrix      = character.getPlace(range.startFrame).matrix;
-        const baseBounds  = character.getBounds();
-        const bounds      = Util.$boundsMatrix(baseBounds, matrix);
+
+        const index  = tweenObject.curve.length;
+        const bounds = character.getBounds();
 
         const pointer = {
             "usePoint": true,
-            "x": bounds.xMin - baseBounds.xMin - 5,
-            "y": bounds.yMin - baseBounds.yMin - 5
+            "x": bounds.xMin,
+            "y": bounds.yMin
         };
         tweenObject.curve.push(pointer);
 

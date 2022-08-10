@@ -1550,10 +1550,8 @@ class TransformController extends BaseController
                 const layerId = target.dataset.layerId | 0;
                 const layer   = scene.getLayer(layerId);
 
-                const characterId    = target.dataset.characterId | 0;
-                const character      = layer.getCharacter(characterId);
-                const referencePoint = character.referencePoint;
-
+                const characterId = target.dataset.characterId | 0;
+                const character   = layer.getCharacter(characterId);
                 if (character.rotation === rotate) {
                     return ;
                 }
@@ -1562,6 +1560,9 @@ class TransformController extends BaseController
                 const place    = character.getPlace(frame);
                 const library  = workSpace.getLibrary(character.libraryId);
                 const instance = library.createInstance(place, range);
+
+                // 中止点
+                const referencePoint = character.referencePoint;
 
                 // 中止点から座標を取得
                 const beforeBounds = character.getBounds();
@@ -1575,8 +1576,7 @@ class TransformController extends BaseController
                 const referenceX = rectangle.x + rectangle.width  * percentX;
                 const referenceY = rectangle.y + rectangle.height * percentY;
 
-                const baseMatrix = [
-                    1, 0, 0, 1,
+                const baseMatrix = [1, 0, 0, 1,
                     -referenceX,
                     -referenceY
                 ];

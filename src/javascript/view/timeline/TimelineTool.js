@@ -1877,6 +1877,13 @@ class TimelineTool extends BaseTimeline
                         break;
                     }
                 }
+            } else {
+
+                layer.addEmptyCharacter(new EmptyCharacter({
+                    "startFrame": key_frame,
+                    "endFrame": total_frame
+                }));
+
             }
         }
     }

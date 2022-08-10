@@ -1113,11 +1113,21 @@ class ArrowTool extends BaseTool
             .getElementById("transform-rotate")
             .value;
 
+        let value = rotate + updateRotate;
+        value = Util.$clamp(
+            (value | 0) % 360,
+            TransformController.MIN_ROTATE,
+            TransformController.MAX_ROTATE
+        );
+        if (0 > value) {
+            value += 360;
+        }
+
         Util
             .$transformController
-            .updateRotate(rotate + updateRotate);
+            .updateRotate(value);
 
-        return updateRotate;
+        return 1;
     }
 
     /**

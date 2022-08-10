@@ -286,6 +286,12 @@ class MovieClip extends Instance
         for (let idx = 0; pointers.length > idx; ++idx) {
             element.appendChild(pointers[idx]);
         }
+
+        // tweenのポインターを再配置
+        Util
+            .$tweenController
+            .clearPointer()
+            .relocationPointer();
     }
 
     /**
@@ -716,7 +722,7 @@ class MovieClip extends Instance
      * @method
      * @public
      */
-    getBounds (matrix, place = null, range = null)
+    getBounds (matrix = [1, 0, 0, 1, 0, 0], place = null, range = null)
     {
         if (!this._$layers.size) {
             return {

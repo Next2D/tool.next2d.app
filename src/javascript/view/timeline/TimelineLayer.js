@@ -2057,6 +2057,9 @@ class TimelineLayer extends BaseTimeline
             element.style.left    = `${this._$clientX}px`;
             element.style.top     = `${this._$clientY}px`;
 
+            element.dataset.frame = `${frame}`;
+            element.dataset.index = `${index}`;
+
             const size = Util.$timelineTool.timelineWidth + 1;
             for (;;) {
                 if (this._$clientX + size > event.clientX) {
@@ -2117,16 +2120,6 @@ class TimelineLayer extends BaseTimeline
             // フレームを移動
             this.moveFrame(frame);
         }
-
-        // // エディター更新
-        // if (Util.$activeScript) {
-        //     if (scene.hasAction(this._$actionFrame)) {
-        //         this.saveActionScript();
-        //         this.showScriptArea();
-        //     }
-        // }
-        // Util.$canCopyLayer     = false;
-        // Util.$canCopyCharacter = true;
     }
 
     /**
@@ -2203,6 +2196,9 @@ class TimelineLayer extends BaseTimeline
 
             const size = Util.$timelineTool.timelineWidth + 1;
 
+            const frame = element.dataset.frame | 0;
+            const index = element.dataset.index | 0;
+
             // 右に移動
             if (event.clientX - this._$clientX > size) {
 
@@ -2229,6 +2225,9 @@ class TimelineLayer extends BaseTimeline
                 }
 
                 element.style.left = `${element.offsetLeft + size}px`;
+
+                element.dataset.frame = `${frame + 1}`;
+
                 this._$clientX += size;
 
                 return ;
@@ -2258,6 +2257,9 @@ class TimelineLayer extends BaseTimeline
                 }
 
                 element.style.left = `${element.offsetLeft - size}px`;
+
+                element.dataset.frame = `${frame - 1}`;
+
                 this._$clientX -= size;
 
                 return ;
@@ -2302,6 +2304,8 @@ class TimelineLayer extends BaseTimeline
 
                 element.style.top = `${element.offsetTop + 31}px`;
 
+                element.dataset.index = `${index + 1}`;
+
                 this._$clientY += 30;
 
                 return ;
@@ -2337,6 +2341,8 @@ class TimelineLayer extends BaseTimeline
 
                 element.style.top = `${element.offsetTop - 31}px`;
 
+                element.dataset.index = `${index - 1}`;
+
                 this._$clientY -= 30;
             }
         });
@@ -2355,22 +2361,99 @@ class TimelineLayer extends BaseTimeline
         window.removeEventListener("mousemove", this._$moveTargetGroup);
         window.removeEventListener("mouseup", this._$endTargetGroup);
 
+        const targetGroup = document
+            .getElementById("target-group");
+
+        const distFrame = targetGroup.dataset.frame | 0;
+        let index       = targetGroup.dataset.index | 0;
+
         const children = Array.from(
             document.getElementById("timeline-content").children
         );
 
-        const selectFrame = Util.$timelineTool.getFirstFrame();
-        for (const [layerId, values] of this.targetFrames) {
-
-            const index = children.indexOf(
-                document.getElementById(`layer-id-${layerId}`)
-            );
-
-            console.log(layerId, selectFrame, index, values);
-        }
-
         // 選択elementを非表示
         this.hideTargetGroup();
+
+        // 移動をしてなければ中止
+        const selectLayerId = children[index].dataset.layerId | 0;
+        const targetLayerId = this.targetLayer.dataset.layerId | 0;
+
+        const frame = Util.$timelineTool.getFirstFrame();
+        if (selectLayerId === targetLayerId) {
+            const targetFrame = this.targetFrame.dataset.frame | 0;
+            if (targetFrame === frame) {
+                return ;
+            }
+        }
+
+        this.save();
+
+        const scene = Util.$currentWorkSpace().scene;
+        for (const [layerId, values] of this.targetFrames) {
+
+            const elements = values.slice();
+            if (elements.length > 1) {
+                elements.sort((a, b) =>
+                {
+                    const aFrame = a.dataset.frame | 0;
+                    const bFrame = b.dataset.frame | 0;
+
+                    // 昇順
+                    switch (true) {
+
+                        case aFrame > bFrame:
+                            return 1;
+
+                        case aFrame < bFrame:
+                            return -1;
+
+                        default:
+                            return 0;
+
+                    }
+                });
+            }
+
+            // 移動先のレイヤー
+            const targetLayerElement = children[index++];
+            const targetLayerId      = targetLayerElement.dataset.layerId | 0;
+            const targetLayer        = scene.getLayer(targetLayerId);
+
+            // 移動元のレイヤーからDisplayObjectを抽出
+            const layer = scene.getLayer(layerId);
+
+            const startFrame = frame;
+            const endFrame   = frame + values.length;
+            const characters = layer._$characters.slice();
+            for (let idx = 0; idx < characters.length; ++idx) {
+
+                const character = characters[idx];
+
+                // 指定した範囲より前方にあればスキップ
+                if (startFrame > character.endFrame) {
+                    continue;
+                }
+
+                // 指定した範囲より後方にあればスキップ
+                if (character.startFrame > endFrame) {
+                    continue;
+                }
+
+                const cloneCharacter = character.clone();
+                const range = character.getRange(frame);
+                if (range.startFrame === frame) {
+
+                } else {
+
+                }
+
+                targetLayer.addCharacter(cloneCharacter);
+            }
+
+            targetLayer.reloadStyle();
+        }
+
+        this._$saved = false;
     }
 
     /**
