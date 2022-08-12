@@ -974,7 +974,7 @@ class TimelineTool extends BaseTimeline
                     }
 
                     character.setPlace(frame,
-                        character.clonePlace(frame, frame)
+                        character.getClonePlace(frame)
                     );
                 }
 
@@ -1817,6 +1817,32 @@ class TimelineTool extends BaseTimeline
 
                     // 終了位置の補正
                     for (let idx = 0; idx < characters.length; ++idx) {
+
+                        const character = characters[idx];
+
+                        // tweenの補正
+                        const keyFrame = character.endFrame - 1;
+                        if (character.hasPlace(keyFrame)) {
+                            const place = character.getPlace(keyFrame);
+                            if (place.tweenFrame) {
+
+                                character
+                                    .getTween(place.tweenFrame)
+                                    .endFrame = endFrame;
+
+                                for (let frame = keyFrame + 1; endFrame > frame; ++frame) {
+                                    character.setPlace(frame,
+                                        character.getClonePlace(keyFrame)
+                                    );
+                                }
+
+                                // 再計算
+                                Util
+                                    .$tweenController
+                                    .relocationPlace(character, keyFrame);
+                            }
+                        }
+
                         characters[idx].endFrame = endFrame;
                     }
 

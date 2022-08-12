@@ -300,61 +300,16 @@ class Character
     }
 
     /**
+     * @description tweenオブジェクトを複製
+     *
      * @param  {number} frame
-     * @return {Character}
-     * @public
-     */
-    copy (frame)
-    {
-        // clone
-        const character      = this.clone();
-        character.startFrame = frame;
-
-        // clone place data
-        character.setPlace(frame, this.clonePlace(this.startFrame, frame));
-
-        return character;
-    }
-
-    /**
-     * @param  {number} from_frame
-     * @param  {number} to_frame
      * @return {object}
+     * @method
      * @public
      */
-    clonePlace (from_frame, to_frame)
+    getCloneTween (frame)
     {
-        const place = this.getPlace(from_frame);
-
-        const filters = [];
-        const length = place.filter.length;
-        for (let idx = 0; idx < length; ++idx) {
-            filters.push(place.filter[idx].clone());
-        }
-
-        const clone = {
-            "frame": to_frame,
-            "matrix": place.matrix.slice(0),
-            "colorTransform": place.colorTransform.slice(0),
-            "blendMode": place.blendMode,
-            "filter": filters,
-            "depth": place.depth
-        };
-
-        if (place.loop) {
-
-            // init
-            clone.loop = {};
-
-            // clone
-            const keys = Object.keys(place.loop);
-            for (let idx = 0; idx < keys.length; ++idx) {
-                const name = keys[idx];
-                clone.loop[name] = place.loop[name];
-            }
-        }
-
-        return clone;
+        return JSON.parse(JSON.stringify(this.getTween(frame)));
     }
 
     /**
@@ -1017,32 +972,7 @@ class Character
      */
     getClonePlace (frame)
     {
-        const place = this.getPlace(frame);
-
-        const placeObject = {};
-
-        const keys = Object.keys(place);
-        for (let idx = 0; idx < keys.length; ++idx) {
-            const name = keys[idx];
-            placeObject[name] = place[name];
-        }
-
-        if (place.loop) {
-
-            placeObject.loop = Util.$getDefaultLoopConfig();
-
-            const keys = Object.keys(place.loop);
-            for (let idx = 0; idx < keys.length; ++idx) {
-                const name = keys[idx];
-                placeObject.loop[name] = place.loop[name];
-            }
-
-            placeObject.placeFrame = place.frame;
-            placeObject.startFrame = this.startFrame;
-            placeObject.endFrame   = this.endFrame;
-        }
-
-        return placeObject;
+        return JSON.parse(JSON.stringify(this.getPlace(frame)));
     }
 
     /**
@@ -1191,7 +1121,7 @@ class Character
 
             const place = this.hasPlace(frame)
                 ? this.getPlace(frame)
-                : this.clonePlace(end_frame - 1, frame);
+                : this.getClonePlace(end_frame);
 
             place.tweenFrame = start_frame;
 
@@ -1220,7 +1150,7 @@ class Character
 
             if (!this.hasPlace(frame)) {
 
-                const clonePlace = this.clonePlace(range.startFrame, frame);
+                const clonePlace = this.getClonePlace(range.startFrame);
                 clonePlace.blendMode = keyPlace.blendMode;
                 this.setPlace(frame, clonePlace);
 
@@ -1261,7 +1191,7 @@ class Character
 
             if (!this.hasPlace(frame)) {
 
-                const clonePlace  = this.clonePlace(range.startFrame, frame);
+                const clonePlace  = this.getClonePlace(range.startFrame);
                 clonePlace.filter = filters;
                 this.setPlace(frame, clonePlace);
 
@@ -1303,12 +1233,14 @@ class Character
         this._$places = places;
 
         if (this._$tween.size) {
+
             const tween = new Map();
             for (const [keyFrame, tweenObject] of this._$tween) {
                 tweenObject.startFrame += frame;
                 tweenObject.endFrame   += frame;
                 tween.set(keyFrame + frame, tweenObject);
             }
+
             // tweenの情報を上書き
             this._$tween = tween;
         }

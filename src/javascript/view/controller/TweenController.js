@@ -1068,6 +1068,10 @@ class TweenController extends BaseController
                 element.dataset.characterId | 0
             );
 
+            if (!character) {
+                continue;
+            }
+
             const range = character.getRange(frame);
             if (!character.hasTween(range.startFrame)) {
                 continue;

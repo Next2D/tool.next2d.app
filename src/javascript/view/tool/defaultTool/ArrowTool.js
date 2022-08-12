@@ -1394,7 +1394,7 @@ class ArrowTool extends BaseTool
 
                 if (!character._$places.has(prevFrame)) {
                     character.setPlace(prevFrame,
-                        character.clonePlace(prevFrame, prevFrame)
+                        character.getClonePlace(prevFrame)
                     );
                 }
 
