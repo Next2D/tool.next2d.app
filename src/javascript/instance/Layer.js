@@ -34,11 +34,6 @@ class Layer
             this._$color         = object.color || this._$color;
             this.characters      = object.characters;
             this.emptyCharacters = object.emptyCharacters || [];
-
-            // TODO 過去データの補完
-            if (object.frames) {
-                console.log("TODO frames", object.frames);
-            }
         }
     }
 

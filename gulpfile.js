@@ -92,7 +92,7 @@ const buildHTML = () =>
  * @return {*}
  * @public
  */
-const prodBuild = () =>
+const setup = () =>
 {
     options.prodBuild = true;
 };
@@ -311,7 +311,6 @@ exports.default = gulp.series(
     watchFiles
 );
 exports.build = gulp.series(
-    prodBuild,
     buildVersion,
     buildWorker,
     buildUtil,

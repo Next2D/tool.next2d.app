@@ -212,7 +212,8 @@ class Screen extends BaseScreen
                     "characterId": instance.id,
                     "name":        instance.name,
                     "volume":      100,
-                    "autoPlay":    false
+                    "autoPlay":    false,
+                    "loopCount":   0
                 });
 
             }
