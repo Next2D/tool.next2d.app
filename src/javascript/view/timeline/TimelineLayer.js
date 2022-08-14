@@ -2822,7 +2822,18 @@ class TimelineLayer extends BaseTimeline
                             const prevEmptyCharacter = layer
                                 .getActiveEmptyCharacter(prevFrame);
 
-                            prevEmptyCharacter.endFrame = emptyCharacter.endFrame;
+                            if (prevEmptyCharacter) {
+
+                                prevEmptyCharacter.endFrame = emptyCharacter.endFrame;
+
+                            } else {
+
+                                layer.addEmptyCharacter(new EmptyCharacter({
+                                    "startFrame": 1,
+                                    "endFrame": emptyCharacter.endFrame
+                                }));
+
+                            }
                         }
 
                         break;
@@ -3201,9 +3212,6 @@ class TimelineLayer extends BaseTimeline
                 }
             }
 
-            // 前後の補正、同一のアイテムなら統合
-
-            console.log(layer, targetLayer);
             if (targetLayerId === layerId) {
 
                 layer.reloadStyle();

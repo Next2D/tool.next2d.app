@@ -224,7 +224,7 @@ class SVGToShape
             const lastControl  = [0, 0];
             const actionReg = /([a-z])([^a-z]*)/gi;
 
-            const d = /d=\"(.+?)\"/gi.exec(value)[1];
+            const d = / d=\"(.+?)\"/gi.exec(value)[1];
             for (let reg = "1"; reg;) {
 
                 // TODO transform
