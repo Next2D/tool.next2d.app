@@ -1,0 +1,73 @@
+<div id="ease-setting">
+    <div id="ease-setting-title">
+        <i class="active"></i>
+        <span class="language" data-text="{{イージング}}">イージング</span>
+    </div>
+
+    <div id="ease-setting-view-area">
+
+        <div class="ease-setting-container">
+            <select id="ease-select" data-detail="{{イージング設定}}">
+                <option value="linear">linear</option>
+                <option value="inQuad">quad-in</option>
+                <option value="outQuad">quad-out</option>
+                <option value="inOutQuad">quad-in-out</option>
+                <option value="inCubic">cubic-in</option>
+                <option value="outCubic">cubic-out</option>
+                <option value="inOutCubic">cubic-in-out</option>
+                <option value="inQuart">quart-in</option>
+                <option value="outQuart">quart-out</option>
+                <option value="inOutQuart">quart-in-out</option>
+                <option value="inQuint">quint-in</option>
+                <option value="outQuint">quint-out</option>
+                <option value="inOutQuint">quint-in-out</option>
+                <option value="inSine">sine-in</option>
+                <option value="outSine">sine-out</option>
+                <option value="inOutSine">sine-in-out</option>
+                <option value="inExpo">expo-in</option>
+                <option value="outExpo">expo-out</option>
+                <option value="inOutExpo">expo-in-out</option>
+                <option value="inCirc">circ-in</option>
+                <option value="outCirc">circ-out</option>
+                <option value="inOutCirc">circ-in-out</option>
+                <option value="inBack">back-in</option>
+                <option value="outBack">back-out</option>
+                <option value="inOutBack">back-in-out</option>
+                <option value="inElastic">elastic-in</option>
+                <option value="outElastic">elastic-out</option>
+                <option value="inOutElastic">elastic-in-out</option>
+                <option value="inBounce">bounce-in</option>
+                <option value="outBounce">bounce-out</option>
+                <option value="inOutBounce">bounce-in-out</option>
+                <option value="custom">custom</option>
+            </select>
+        </div>
+
+        <div id="ease-canvas-view-area" class="ease-setting-container">
+
+            <div class="ease-canvas-area">
+                <canvas id="ease-custom-canvas" data-detail="{{ダブルクリックでカーブポイントが追加されます}}"></canvas>
+                <div id="ease-cubic-pointer-area"></div>
+                <div class="ease-cubic-time-text">time
+                    <span id="ease-cubic-current-text">(100)</span>
+                </div>
+                <div class="ease-cubic-tween-text">tween
+                    <span id="ease-cubic-current-tween">(100)</span>
+                </div>
+            </div>
+
+            <div class="ease-canvas-data-area">
+                <div id="ease-custom-data-load">
+                    <i data-detail="{{カスタムイージングデータの読込}}"></i>
+                </div>
+                <input id="ease-custom-file-input" type="file" accept=".json">
+
+                <div id="ease-custom-data-export">
+                    <i data-detail="{{カスタムイージングデータを保存}}"></i>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div><!-- END ease-setting -->

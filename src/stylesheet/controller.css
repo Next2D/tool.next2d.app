@@ -194,6 +194,12 @@
 #object-height:focus,
 #object-x:focus,
 #object-y:focus,
+#export-width:focus,
+#export-height:focus,
+#export-x:focus,
+#export-y:focus,
+#export-start-frame:focus,
+#export-end-frame:focus,
 #color-alpha-multiplier:focus,
 #color-alpha-offset:focus,
 #color-red-multiplier:focus,
@@ -267,6 +273,7 @@
 
 #stage-lock .active,
 #transform-size-lock .active,
+#library-export-size-lock .active,
 #transform-scale-lock .active
 {
     width               : 18px;
@@ -279,6 +286,7 @@
 
 #stage-lock .disable,
 #transform-size-lock .disable,
+#library-export-size-lock .disable,
 #transform-scale-lock .disable
 {
     width               : 18px;
@@ -830,7 +838,13 @@
 #object-width,
 #object-height,
 #object-x,
-#object-y
+#object-y,
+#export-width,
+#export-height,
+#export-x,
+#export-y,
+#export-start-frame,
+#export-end-frame
 {
     border           : none;
     border-bottom    : 1px solid darkgray;

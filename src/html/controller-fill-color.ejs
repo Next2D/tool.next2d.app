@@ -1,0 +1,55 @@
+<div id="fill-color-setting">
+    <div id="fill-color-setting-title">
+        <i class="active"></i>
+        <span class="language" data-text="{{Shapeの色設定}}">Shapeの色設定</span>
+    </div>
+
+    <div id="fill-color-setting-view-area">
+
+        <div class="fill-color-setting-container">
+            <div class="fill-color-setting-title-text">
+                <span class="language" data-text="{{種別}}">種別</span>
+            </div>
+            <div>
+                <select id="fill-color-type-select" data-detail="{{カラー種別の選択}}">
+                    <option value="rgba">RGBA</option>
+                    <option value="bitmap" class="language" data-text="{{画像}}">画像</option>
+                    <option value="linear" class="language" data-text="{{線形グラデーション}}">線形グラデーション</option>
+                    <option value="radial" class="language" data-text="{{放射状グラデーション}}">Radial Gradient</option>
+                </select>
+            </div>
+        </div>
+
+        <div id="fill-color-bitmap-container">
+            <div class="fill-color-setting-title-text">
+                <span class="language" data-text="{{画像選択}}">Image Selection</span>
+            </div>
+            <div>
+                <select id="fill-bitmap-select" data-detail="{{背景画像の選択}}"></select>
+            </div>
+        </div>
+
+        <div id="fill-color-gradient-container">
+            <div id="gradient-color-palette" class="gradient-color-palette">
+                <div id="color-palette" class="color-palette">
+                    <canvas id="gradient-canvas"></canvas>
+                </div>
+                <div id="color-pointer-list" class="color-pointer-list" data-detail="{{カラーポインターを追加}}"></div>
+            </div>
+        </div>
+
+        <div id="fill-color-rgba-container" class="fill-color-setting-container">
+            <div class="fill-color-setting-title-text">Color</div>
+            <div><input type="color" id="fill-color-value" value="#000000" data-detail="{{カラー値}}"></div>
+
+            <div class="fill-color-setting-title-text">Alpha</div>
+            <div><input type="text" id="fill-alpha-value" value="100" data-detail="{{アルファ値}}"></div>
+        </div>
+
+        <div id="fill-stroke-color-rgba-container" class="fill-color-setting-container">
+            <div class="fill-color-setting-title-text">Width</div>
+            <div><input type="text" id="fill-stroke-width-value" value="10" data-detail="{{線の太さ}}"></div>
+        </div>
+
+    </div>
+</div>

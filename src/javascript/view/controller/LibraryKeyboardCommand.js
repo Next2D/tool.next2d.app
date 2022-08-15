@@ -91,7 +91,9 @@ class LibraryKeyboardCommand extends KeyboardCommand
      */
     showOutputModal ()
     {
-        console.log("TODO");
+        Util
+            .$libraryExport
+            .executeLibraryMenuExport();
     }
 
     /**

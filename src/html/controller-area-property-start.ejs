@@ -1,0 +1,98 @@
+<div id="controller-area-property">
+
+    <div id="stage-setting">
+
+        <div id="stage-setting-title">
+            <i class="active"></i>
+            <span class="language" data-text="{{ステージ設定}}">ステージ設定</span>
+        </div>
+
+        <div id="stage-setting-view-area">
+
+            <div class="stage-setting-view-left">
+                <div id="stage-lock">
+                    ┌
+                    <div class="disable" data-detail="{{比率を固定}}"></div>
+                    └
+                </div>
+            </div>
+
+            <div class="stage-setting-view-right">
+
+                <div class="stage-setting-container">
+
+                    <div class="stage-setting-text">W</div>
+                    <div class="stage-setting-input">
+                        <input type="number" maxlength="4" id="stage-width" data-detail="{{ステージの幅}}">
+                    </div>
+
+                    <div class="stage-setting-text">BG</div>
+                    <div class="stage-setting-input">
+                        <input type="color" id="stage-bgColor" value="#ffffff" data-detail="{{背景色}}">
+                    </div>
+                </div>
+
+                <div class="stage-setting-container">
+
+                    <div class="stage-setting-text">H</div>
+                    <div class="stage-setting-input">
+                        <input type="number" maxlength="4" id="stage-height" data-detail="{{ステージの高さ}}">
+                    </div>
+
+                    <div class="stage-setting-text">FPS</div>
+                    <div class="stage-setting-input">
+                        <input type="number" maxlength="2" id="stage-fps" data-detail="{{フレームレート}}">
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div><!-- END stage-setting -->
+
+    <div id="instance-setting">
+        <div id="instance-type-name"></div>
+    </div>
+
+    <div id="object-setting">
+        <div id="object-setting-title">
+            <i class="active"></i>
+            <span class="language" data-text="{{オブジェクト}}">オブジェクト</span>
+        </div>
+
+        <div id="object-setting-view-area">
+
+            <div class="object-setting-container">
+                <div class="object-setting-name-text">
+                    <span class="language" data-text="{{名前}}">名前</span>
+                </div>
+                <div><input type="text" placeholder="instance name" id="object-name" data-detail="{{インスタンス名}}"></div>
+            </div>
+
+            <div class="object-setting-container" id="object-symbol-area">
+                <div class="object-setting-name-text">
+                    <span class="language" data-text="{{シンボル}}">シンボル</span>
+                </div>
+                <div><input type="text" placeholder="symbol name" id="object-symbol" data-detail="{{シンボル名}}"></div>
+            </div>
+
+        </div>
+
+    </div><!-- END object-setting -->
+
+    <div id="sound-setting">
+        <div id="sound-setting-title">
+            <i class="active"></i>
+            <span class="language" data-text="{{サウンド}}">サウンド</span>
+        </div>
+
+        <div id="sound-setting-view-area">
+            <div class="sound-select-area">
+                <select id="sound-select"></select>
+                <div id="sound-add" data-detail="{{サウンドを追加}}"></div>
+            </div>
+
+            <div id="sound-list-area"></div>
+        </div>
+
+    </div><!-- END sound-setting -->

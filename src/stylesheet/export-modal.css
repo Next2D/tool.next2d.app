@@ -7,7 +7,7 @@
     position         : fixed;
     top              : 50%;
     left             : 50%;
-    width            : 850px;
+    width            : 770px;
     height           : 500px;
     transform        : translate(-50%,-50%);
     background-color : #363636;
@@ -21,7 +21,7 @@
 
 #library-export-bar
 {
-    width            : 850px;
+    width            : 770px;
     height           : 30px;
     background-color : #2c2c2c;
     display          : flex;
@@ -30,7 +30,7 @@
 
 #library-export-title
 {
-    width           : 830px;
+    width           : 750px;
     height          : 30px;
     text-align      : center;
     color           : whitesmoke;
@@ -63,7 +63,7 @@
     display         : flex;
     justify-content : center;
     align-items     : center;
-    width           : 850px;
+    width           : 770px;
     height          : 470px;
 }
 
@@ -76,7 +76,7 @@
     height          : 470px;
 }
 
-#library-export-canvas
+#library-export-image
 {
     display         : flex;
     justify-content : center;
@@ -88,9 +88,98 @@
 
 #library-export-setting
 {
+    display        : flex;
+    flex-direction : column;
+    width          : 270px;
+    height         : 470px;
+}
+
+#library-export-setting .library-export-setting-block
+{
+    display       : flex;
+    margin-bottom : 5px;
+}
+
+#library-export-setting .library-export-setting-block-left
+{
+    width           : 20px;
     display         : flex;
-    justify-content : center;
     align-items     : center;
-    width           : 350px;
-    height          : 470px;
+    justify-content : center;
+}
+
+#library-export-size-lock
+{
+    width      : 18px;
+    text-align : right;
+    color      : darkgray;
+}
+
+#library-export-size-lock:hover
+{
+    filter : brightness(200%);
+    cursor : pointer;
+}
+
+#library-export-setting .library-export-setting-container
+{
+    display     : flex;
+    align-items : center;
+    margin      : 12px;
+}
+
+#library-export-setting .library-export-setting-button
+{
+    display         : flex;
+    align-items     : center;
+    justify-content : center;
+    margin          : 20px 26px 12px 12px;
+}
+
+#library-export-setting .library-export-setting-text
+{
+    width       : 25px;
+    font-size   : 10px;
+    color       : darkgray;
+    text-align  : center;
+}
+
+#library-export-setting-title
+{
+    display     : flex;
+    font-size   : 15px;
+    font-weight : bold;
+    margin      : 12px 12px 12px 0;
+    color       : #a9a9a9;
+}
+
+#library-export-file-type
+{
+    width            : 150px;
+    height           : 30px;
+    border           : 1px solid darkgray;
+    border-radius    : 5px;
+    background-color : #2c2c2c;
+    color            : #f5f5f5;
+    padding-left     : 6px;
+    padding-right    : 6px;
+    font-size        : 12px;
+}
+
+#execute-library-export
+{
+    display         : flex;
+    align-items     : center;
+    justify-content : center;
+    width           : 120px;
+    height          : 25px;
+    padding         : 5px;
+    border-radius   : 5px;
+    border          : 1px solid #72777D;
+}
+
+#execute-library-export:hover
+{
+    background-color : #1c1c1c;
+    cursor           : pointer;
 }
