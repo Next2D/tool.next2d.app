@@ -158,7 +158,7 @@ class TimelineTool extends BaseTimeline
      */
     set timelineWidth (timeline_width)
     {
-        this._$timelineWidth = timeline_width | 0;
+        this._$timelineWidth = timeline_width;
 
         // タイムラインの幅を変更
         document
