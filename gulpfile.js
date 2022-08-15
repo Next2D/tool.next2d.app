@@ -18,7 +18,7 @@ const options = minimist(process.argv.slice(2), {
     "string": ["distPath", "version"],
     "default": {
         "prodBuild": false,
-        "version": "0.46.0",
+        "version": "0.48.0",
         "distPath": "."
     }
 });
@@ -92,9 +92,10 @@ const buildHTML = () =>
  * @return {*}
  * @public
  */
-const setup = () =>
+const prodBuild = (done) =>
 {
     options.prodBuild = true;
+    done();
 };
 
 /**
@@ -136,7 +137,6 @@ const buildJavaScript = () =>
             "src/javascript/WorkSpace.js",
             "src/javascript/event/*.js",
             "src/javascript/view/KeyboardCommand.js",
-            "src/javascript/view/tool/ToolEvent.js",
             "src/javascript/view/tool/*.js",
             "src/javascript/view/tool/defaultTool/BaseTool.js",
             "src/javascript/view/tool/defaultTool/DrawTool.js",
@@ -311,6 +311,7 @@ exports.default = gulp.series(
     watchFiles
 );
 exports.build = gulp.series(
+    prodBuild,
     buildVersion,
     buildWorker,
     buildUtil,

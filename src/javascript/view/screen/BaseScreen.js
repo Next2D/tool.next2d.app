@@ -1,7 +1,8 @@
 /**
  * @class
+ * @extends {InputEvent}
  */
-class BaseScreen
+class BaseScreen extends InputEvent
 {
     /**
      * @constructor
@@ -9,13 +10,7 @@ class BaseScreen
      */
     constructor ()
     {
-        /**
-         * @description 自動セーブの判定フラグ
-         * @type {boolean}
-         * @default false
-         * @private
-         */
-        this._$saved = false;
+        super ();
 
         /**
          * @type {function}
@@ -50,38 +45,6 @@ class BaseScreen
         }
 
         Util.$initializeEnd();
-    }
-
-    /**
-     * @description スクリーンエリアで変更があったElementを再描画
-     *
-     * @return {void}
-     * @method
-     * @public
-     */
-    reloadScreen ()
-    {
-        const frame = Util.$timelineFrame.currentFrame;
-
-        Util
-            .$currentWorkSpace()
-            .scene
-            .changeFrame(frame);
-    }
-
-    /**
-     * @description 現在の状態をundo用に保存
-     *
-     * @return {void}
-     * @method
-     * @public
-     */
-    save ()
-    {
-        // セーブ
-        Util
-            .$currentWorkSpace()
-            .temporarilySaved();
     }
 
     /**

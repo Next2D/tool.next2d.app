@@ -93,8 +93,7 @@ class TimelineTool extends BaseTimeline
         }
 
         const inputIds = [
-            "label-name",
-            "timeline-scale"
+            "label-name"
         ];
 
         for (let idx = 0; idx < inputIds.length; ++idx) {
@@ -119,6 +118,11 @@ class TimelineTool extends BaseTimeline
             {
                 this.executeFunction(event);
             });
+        }
+
+        const element = document.getElementById("timeline-scale");
+        if (element) {
+            this.setInputEvent(element);
         }
     }
 
@@ -236,18 +240,18 @@ class TimelineTool extends BaseTimeline
     /**
      * @description タイムラインのスケールのInput処理
      *
-     * @param  {MouseEvent} event
-     * @return {void}
+     * @param  {string} value
+     * @return {number}
      * @method
      * @public
      */
-    executeTimelineScale (event)
+    changeTimelineScale (value)
     {
-        this.timelineWidth = TimelineTool.DEFAULT_TIMELINE_WIDTH
-            * Util.$clamp(event.target.value | 0, 41, 2000) / 100;
+        value = Util.$clamp(value | 0, 41, 2000);
 
-        // 初期化
-        super.focusOut();
+        this.timelineWidth = TimelineTool.DEFAULT_TIMELINE_WIDTH * value / 100;
+
+        return value;
     }
 
     /**

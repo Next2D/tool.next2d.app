@@ -26,7 +26,6 @@ module.exports = function(config)
             "src/javascript/parser/*.js",
             "src/javascript/WorkSpace.js",
             "src/javascript/event/*.js",
-            "src/javascript/view/tool/ToolEvent.js",
             "src/javascript/view/tool/*.js",
             "src/javascript/view/tool/defaultTool/BaseTool.js",
             "src/javascript/view/tool/defaultTool/DrawTool.js",

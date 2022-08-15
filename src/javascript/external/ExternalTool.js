@@ -1,7 +1,7 @@
 /**
  * @class
  */
-class ExternalTool extends Tool
+class ExternalTool extends CommonTool
 {
     /**
      * @param {string} name

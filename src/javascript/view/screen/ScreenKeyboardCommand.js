@@ -20,7 +20,7 @@ class ScreenKeyboardCommand extends KeyboardCommand
         this._$state = "close";
 
         /**
-         * @type {Tool}
+         * @type {CommonTool}
          * @default null
          * @private
          */

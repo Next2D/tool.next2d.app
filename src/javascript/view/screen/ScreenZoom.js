@@ -55,69 +55,29 @@ class ScreenZoom extends BaseScreen
             .getElementById("screen-scale");
 
         if (element) {
-            element.addEventListener("focusin", (event) =>
-            {
-                this.focusIn(event);
-            });
-
-            element.addEventListener("keypress", (event) =>
-            {
-                this.keypress(event);
-            });
-
-            element.addEventListener("focusout", (event) =>
-            {
-                this.focusOut(event);
-            });
+            this.setInputEvent(element);
         }
     }
 
     /**
-     * @description ズームInputへのfocusinイベント
+     * @description ズームのスケールのInput処理
      *
-     * @param  {KeyboardEvent} event
-     * @return {void}
+     * @param  {string} value
+     * @return {number}
      * @method
      * @public
      */
-    keypress (event)
+    changeScreenScale (value)
     {
-        if (event.key === "Enter") {
-            event.currentTarget.blur();
-        }
-    }
+        value = value | 0;
 
-    /**
-     * @description ズームInputへのfocusinイベント
-     *
-     * @param  {Event} event
-     * @return {void}
-     * @method
-     * @public
-     */
-    focusIn (event)
-    {
-        Util.$keyLock       = true;
-        this._$currentValue = event.target.value | 0;
-    }
-
-    /**
-     * @description ズームInputへのfocusoutイベント
-     *
-     * @param  {Event} event
-     * @return {void}
-     * @method
-     * @public
-     */
-    focusOut (event)
-    {
         this.execute(
-            (this._$currentValue - (event.target.value | 0)) / 100 * -1
+            (this._$currentValue - value) / 100 * -1
         );
 
-        // update
-        Util.$keyLock       = false;
-        this._$currentValue = event.target.value | 0;
+        this._$currentValue = value;
+
+        return value;
     }
 
     /**

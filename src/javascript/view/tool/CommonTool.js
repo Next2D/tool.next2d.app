@@ -1,7 +1,7 @@
 /**
  * @class
  */
-class Tool extends ToolEvent
+class CommonTool extends ToolEvent
 {
     /**
      * @description ツールのElementを管理するクラス

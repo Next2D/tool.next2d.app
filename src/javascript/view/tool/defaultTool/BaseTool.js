@@ -1,7 +1,7 @@
 /**
  * @class
  */
-class BaseTool extends Tool
+class BaseTool extends CommonTool
 {
     /**
      * @description ツールのElementを管理するクラス

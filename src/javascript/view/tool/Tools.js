@@ -27,7 +27,7 @@ class Tools
 
         /**
          * @description 選択中のツールオブジェクト
-         * @type {Tool}
+         * @type {CommonTool}
          * @default null
          * @private
          */
@@ -49,39 +49,9 @@ class Tools
     }
 
     /**
-     * @return {string}
-     * @const
-     * @static
-     */
-    static get FILL_DEFAULT_COLOR ()
-    {
-        return "#000000";
-    }
-
-    /**
-     * @return {string}
-     * @const
-     * @static
-     */
-    static get STROKE_DEFAULT_COLOR ()
-    {
-        return "#000000";
-    }
-
-    /**
-     * @return {number}
-     * @const
-     * @static
-     */
-    static get STROKE_DEFAULT_SIZE ()
-    {
-        return 0;
-    }
-
-    /**
      * @description 現在選択されているToolクラスを返します。
      *
-     * @return {Tool}
+     * @return {CommonTool}
      * @public
      */
     get activeTool ()
@@ -92,7 +62,7 @@ class Tools
     /**
      * @description 選択したToolクラスをセットします。
      *
-     * @param  {Tool} tool
+     * @param  {CommonTool} tool
      * @return {void}
      * @public
      */
@@ -137,74 +107,11 @@ class Tools
             this._$tools.set(tool.name, tool);
         }
 
-        // 塗りのカラーElementのイベントと初期値をセット
-        const fillColor = document.getElementById("fill-color");
-        if (fillColor) {
-
-            fillColor.value = localStorage
-                .getItem(`${Util.PREFIX}@${fillColor.id}`) || Tools.FILL_DEFAULT_COLOR;
-
-            fillColor
-                .addEventListener("change", (event) =>
-                {
-                    const element = event.target;
-
-                    localStorage
-                        .setItem(
-                            `${Util.PREFIX}@${element.id}`,
-                            event.target.value
-                        );
-                });
-        }
-
-        // 線のカラーElementのイベントと初期値をセット
-        const strokeColor = document.getElementById("stroke-color");
-        if (strokeColor) {
-
-            strokeColor.value = localStorage
-                .getItem(`${Util.PREFIX}@${strokeColor.id}`) || Tools.STROKE_DEFAULT_COLOR;
-
-            strokeColor
-                .addEventListener("change", (event) =>
-                {
-                    const element = event.target;
-
-                    localStorage
-                        .setItem(
-                            `${Util.PREFIX}@${element.id}`,
-                            element.value
-                        );
-                });
-        }
-
-        // 線の太さのElementのイベントと初期値をセット
-        const strokeSize = document.getElementById("stroke-size");
-        if (strokeSize) {
-
-            strokeSize.value = localStorage
-                .getItem(`${Util.PREFIX}@${strokeSize.id}`) || Tools.STROKE_DEFAULT_SIZE;
-
-            strokeSize
-                .addEventListener("focusout", (event) =>
-                {
-                    const element = event.target;
-
-                    localStorage
-                        .setItem(
-                            `${Util.PREFIX}@${element.id}`,
-                            element.value
-                        );
-                });
-        }
-
         const element = document.getElementById("tools");
         if (element) {
             element
                 .addEventListener("mousemove", (event) =>
                 {
-                    // 親のイベントを中止する
-                    event.stopPropagation();
-
                     const activeTool = this.activeTool;
                     if (activeTool) {
                         event.tools = true;
@@ -268,7 +175,7 @@ class Tools
      * @description 名前からデフォルトToolクラスを取得
      *
      * @param  {string} name
-     * @return {Tool}
+     * @return {CommonTool}
      * @method
      * @public
      */

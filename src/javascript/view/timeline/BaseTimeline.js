@@ -1,4 +1,8 @@
-class BaseTimeline
+/**
+ * @class
+ * @extends {InputEvent}
+ */
+class BaseTimeline extends InputEvent
 {
     /**
      * @constructor
@@ -6,21 +10,7 @@ class BaseTimeline
      */
     constructor ()
     {
-        /**
-         * @description 自動セーブの判定フラグ
-         * @type {boolean}
-         * @default false
-         * @private
-         */
-        this._$saved = false;
-
-        /**
-         * @description フォーカスされたかの判定変数
-         * @type {boolean}
-         * @default false
-         * @private
-         */
-        this._$focus = false;
+        super();
 
         /**
          * @type {function}
@@ -75,24 +65,6 @@ class BaseTimeline
     }
 
     /**
-     * @description undo用にデータを内部保管する
-     *
-     * @return {void}
-     * @method
-     * @public
-     */
-    save ()
-    {
-        if (!this._$saved) {
-            this._$saved = true;
-
-            Util
-                .$currentWorkSpace()
-                .temporarilySaved();
-        }
-    }
-
-    /**
      * @description Elementのid名をキャメルケースに変換して関数を実行
      *              例) font-select => executeFontSelectがコールされる
      *
@@ -113,32 +85,5 @@ class BaseTimeline
             .join("");
 
         this[`execute${functionName}`](event);
-    }
-
-    /**
-     * @description タイムタインのフォーカスインのベース処理
-     *
-     * @return {void}
-     * @method
-     * @public
-     */
-    focusIn ()
-    {
-        this._$focus  = true;
-        Util.$keyLock = true;
-    }
-
-    /**
-     * @description タイムタインのフォーカスアウトのベース処理
-     *
-     * @return {void}
-     * @method
-     * @public
-     */
-    focusOut ()
-    {
-        this._$focus  = false;
-        this._$saved  = false;
-        Util.$keyLock = false;
     }
 }
