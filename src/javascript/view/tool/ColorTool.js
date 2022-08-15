@@ -137,7 +137,7 @@ class ColorTool extends InputEvent
      */
     changeStrokeSize (value)
     {
-        value = value | 0;
+        value = Util.$clamp(value | 0, 0, 255);
 
         localStorage.setItem(`${Util.PREFIX}@stroke-size`, value);
 

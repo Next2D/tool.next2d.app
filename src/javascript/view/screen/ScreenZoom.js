@@ -69,7 +69,10 @@ class ScreenZoom extends BaseScreen
      */
     changeScreenScale (value)
     {
-        value = value | 0;
+        value = Util.$clamp(value | 0,
+            ScreenZoom.MIN_LEVEL * 100,
+            ScreenZoom.MAX_LEVEL * 100
+        );
 
         this.execute(
             (this._$currentValue - value) / 100 * -1
