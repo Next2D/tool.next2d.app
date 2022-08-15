@@ -90,6 +90,9 @@ class LibraryMenu
                     return ;
                 }
 
+                // 表示モーダルを全て終了
+                Util.$endMenu();
+
                 // 親のイベント中止
                 event.stopPropagation();
 
@@ -104,9 +107,6 @@ class LibraryMenu
                     .join("");
 
                 this[`execute${functionName}`](event);
-
-                // 表示モーダルを全て終了
-                Util.$endMenu();
             });
 
         }

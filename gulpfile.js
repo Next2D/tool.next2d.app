@@ -18,7 +18,7 @@ const options = minimist(process.argv.slice(2), {
     "string": ["distPath", "version"],
     "default": {
         "prodBuild": false,
-        "version": "0.51.0",
+        "version": "0.53.0",
         "distPath": "."
     }
 });
@@ -55,6 +55,7 @@ const buildHTML = () =>
         "src/html/timeline-menu.ejs",
         "src/html/timeline-layer-menu.ejs",
         "src/html/library-menu.ejs",
+        "src/html/library-export-modal.ejs",
         "src/html/user-setting.ejs",
         "src/html/shortcut-setting-menu.ejs",
         "src/html/detail-modal.ejs",

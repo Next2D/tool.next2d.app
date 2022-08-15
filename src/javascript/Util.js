@@ -291,7 +291,8 @@ Util.$endMenu = (ignore) =>
         "screen-menu",
         "editor-modal",
         "plugin-modal",
-        "shortcut-setting-menu"
+        "shortcut-setting-menu",
+        "library-export-modal"
     ];
 
     for (let idx = 0; idx < names.length; ++idx) {

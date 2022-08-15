@@ -1,0 +1,117 @@
+#plugin-list-box
+{
+    border         : 1px solid darkgray;
+    border-radius  : 3px;
+    height         : calc(100vh - 21px - var(--ad) - 12px);
+    overflow-x     : hidden;
+    overflow-y     : auto;
+    display        : flex;
+    flex-direction : column;
+}
+
+#plugin-list-box .plugin-list
+{
+    display     : flex;
+    align-items : center;
+    padding     : 10px;
+    height      : 18px;
+}
+
+#plugin-list-box .plugin-list:hover
+{
+    cursor : pointer;
+}
+
+#plugin-list-box .active
+{
+    opacity          : 0.85;
+    background-color : slategray;
+}
+
+#plugin-list-box .plugin-list i
+{
+    width               : 18px;
+    height              : 18px;
+    background-image    : url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"><path fill="darkgray" d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm-1 10.199l-3.64 1.801 3.64 1.796v2.204l-6-2.935v-2.131l6-2.934v2.199zm8 2.866l-6 2.935v-2.204l3.64-1.796-3.64-1.801v-2.199l6 2.935v2.13z"/></svg>');
+    background-repeat   : no-repeat;
+    background-position : center center;
+    margin-right        : 6px;
+    pointer-events      : none;
+}
+
+#plugin-modal
+{
+    display          : flex;
+    flex-direction   : column;
+    justify-content  : center;
+    align-items      : center;
+    position         : fixed;
+    width            : var(--plugin-panel-width);
+    height           : var(--plugin-panel-height);
+    background-color : #363636;
+    color            : whitesmoke;
+    border           : 1px solid #72777D;
+    z-index          : 9999;
+    overflow         : hidden;
+    border-radius    : 4px;
+    box-shadow       : 0 0 5px rgba(245, 245, 245, 0.25);
+}
+
+#plugin-bar
+{
+    width            : var(--plugin-panel-width);
+    height           : 25px;
+    background-color : #2c2c2c;
+    display          : flex;
+    justify-content  : flex-end;
+    align-items      : center;
+}
+
+#plugin-bar:hover
+{
+    cursor : move;
+}
+
+#plugin-title
+{
+    width           : calc(var(--plugin-panel-width) - 17px);
+    height          : 25px;
+    text-align      : center;
+    color           : whitesmoke;
+    font-size       : 12px;
+    display         : flex;
+    justify-content : center;
+    align-items     : center;
+    pointer-events  : none;
+}
+
+#plugin-hide-icon
+{
+    width               : 12px;
+    height              : 12px;
+    background-image    : url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" width="6" height="6" viewBox="0 0 24 24"><path fill="whitesmoke" d="M23 20.168l-8.185-8.187 8.185-8.174-2.832-2.807-8.182 8.179-8.176-8.179-2.81 2.81 8.186 8.196-8.186 8.184 2.81 2.81 8.203-8.192 8.18 8.192z"/></svg>');
+    background-repeat   : no-repeat;
+    background-position : center center;
+    margin-right        : 5px;
+}
+
+#plugin-hide-icon:hover
+{
+    cursor           : pointer;
+    border-radius    : 2px;
+    background-color : #7c7c7c;
+}
+
+#plugin-modal-element
+{
+    width            : var(--plugin-panel-width);
+    height           : calc(var(--plugin-panel-height) - 25px);
+    border           : none;
+    overflow         : auto;
+    outline          : none;
+    padding          : 0;
+    margin           : 0;
+    display          : flex;
+    justify-content  : center;
+    align-items      : center;
+}

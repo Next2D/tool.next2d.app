@@ -342,13 +342,31 @@ class Instance
 
                         for (const keyFrame of character._$places.keys()) {
 
+                            const range = character.getRange(keyFrame);
+
                             // 空のキーフレームがあればスキップ
                             if (layer.getActiveEmptyCharacter(keyFrame)) {
                                 continue;
                             }
 
+                            // DisplayObjectが配置されていればスキップ
+                            const activeCharacters = layer.getActiveCharacter(keyFrame);
+                            let done = false;
+                            for (let idx = 0; idx < activeCharacters.length; ++idx) {
+
+                                const activeCharacter = activeCharacters[idx];
+                                if (activeCharacter.id === character.id) {
+                                    continue;
+                                }
+
+                                done = true;
+                            }
+
+                            if (done) {
+                                continue;
+                            }
+
                             // 削除するレンジに空のキーフレームを登録
-                            const range = character.getRange(keyFrame);
                             layer.addEmptyCharacter(new EmptyCharacter({
                                 "startFrame": range.startFrame,
                                 "endFrame": range.endFrame

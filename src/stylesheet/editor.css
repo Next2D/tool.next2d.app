@@ -1,0 +1,82 @@
+/**
+ * Editor
+ */
+#editor-modal
+{
+    display          : flex;
+    flex-direction   : column;
+    justify-content  : center;
+    align-items      : center;
+    position         : fixed;
+    width            : var(--script-modal-width);
+    height           : var(--script-modal-height);
+    background-color : #363636;
+    color            : whitesmoke;
+    border           : 1px solid #72777D;
+    z-index          : 9999;
+    resize           : both;
+    overflow         : hidden;
+    border-radius    : 4px;
+    box-shadow       : 0 0 5px rgba(245, 245, 245, 0.25);
+}
+
+#editor-bar
+{
+    width            : var(--script-modal-width);
+    height           : var(--script-modal-bar-height);
+    background-color : #2c2c2c;
+    display          : flex;
+    align-items      : center;
+}
+
+#editor-bar:hover
+{
+    cursor : move;
+}
+
+#editor-hide-icon
+{
+    width               : 12px;
+    height              : 12px;
+    background-image    : url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" width="6" height="6" viewBox="0 0 24 24"><path fill="whitesmoke" d="M23 20.168l-8.185-8.187 8.185-8.174-2.832-2.807-8.182 8.179-8.176-8.179-2.81 2.81 8.186 8.196-8.186 8.184 2.81 2.81 8.203-8.192 8.18 8.192z"/></svg>');
+    background-repeat   : no-repeat;
+    background-position : center center;
+    margin-right        : 5px;
+}
+
+#editor-hide-icon:hover
+{
+    cursor           : pointer;
+    border-radius    : 2px;
+    background-color : #7c7c7c;
+}
+
+#editor-title
+{
+    width           : calc(var(--script-modal-width) - 17px);
+    height          : var(--script-modal-bar-height);
+    text-align      : center;
+    color           : whitesmoke;
+    font-size       : 12px;
+    display         : flex;
+    justify-content : center;
+    align-items     : center;
+    pointer-events  : none;
+}
+
+#editor
+{
+    width            : var(--script-modal-width);
+    height           : calc(var(--script-modal-height) - var(--script-modal-bar-height));
+    border           : none;
+    overflow         : auto;
+    outline          : none;
+    padding          : 0;
+    margin           : 0;
+}
+
+.ace_editor.ace_autocomplete
+{
+    width : 50% !important;
+}
+
