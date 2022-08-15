@@ -37,19 +37,11 @@ class ExternalTimeline
     set currentLayer (index)
     {
         const scene = Util.$currentWorkSpace().scene;
-        const ids   = Array.from(scene._$layers.keys());
-        const id    = ids[index];
-
-        const currentElement = Util.$timeline._$targetLayer;
-        currentElement.classList.remove("active");
-        Util.$screen.clearActiveCharacter();
+        const id    = Array.from(scene._$layers.keys())[index];
 
         // target layer
-        const layerElement = document
+        Util.$timelineLayer.targetLayer = document
             .getElementById(`layer-id-${id}`);
-        layerElement.classList.add("active");
-
-        Util.$timeline._$targetLayer = layerElement;
     }
 
     /**
@@ -59,11 +51,21 @@ class ExternalTimeline
      */
     get layers ()
     {
+        const children = Array.from(
+            document.getElementById("timeline-content").children
+        );
+
         const scene  = Util.$currentWorkSpace().scene;
         const layers = [];
         for (const layer of scene._$layers.values()) {
-            layers.push(new ExternalLayer(layer));
+
+            const index = children.indexOf(
+                document.getElementById(`layer-id-${layer.id}`)
+            );
+
+            layers[index] = new ExternalLayer(layer);
         }
+
         return layers;
     }
 
@@ -74,11 +76,44 @@ class ExternalTimeline
      */
     getSelectedLayers ()
     {
-        const layerElement = Util.$timeline._$targetLayer;
-        if (!layerElement) {
-            return [];
+        const indexes = [];
+
+        const children = Array.from(
+            document.getElementById("timeline-content").children
+        );
+
+        const targetLayers = Util.$timelineLayer.targetLayers;
+        for (const layerElement of targetLayers.values()) {
+
+            const layerId = layerElement.dataset.layerId | 0;
+
+            const index = children.indexOf(
+                document.getElementById(`layer-id-${layerId}`)
+            );
+
+            indexes.push(index);
         }
-        return [this.currentLayer];
+
+        if (indexes.length > 1) {
+            indexes.sort((a, b) =>
+            {
+                // 昇順
+                switch (true) {
+
+                    case a > b:
+                        return 1;
+
+                    case a < b:
+                        return -1;
+
+                    default:
+                        return 0;
+
+                }
+            });
+        }
+
+        return indexes;
     }
 
     /**
@@ -115,11 +150,6 @@ class ExternalTimeline
         // cache(fixed logic)
         const targetIndex = this.currentLayer;
 
-        // selected
-        const currentElement = Util.$timeline._$targetLayer;
-        currentElement.classList.remove("active");
-        Util.$screen.clearActiveCharacter();
-
         let index = 0;
         const layers = new Map();
         for (const value of scene._$layers.values()) {
@@ -139,23 +169,18 @@ class ExternalTimeline
         scene.initialize();
 
         // target layer
-        const layerElement = document
+        Util.$timelineLayer.targetLayer = document
             .getElementById(`layer-id-${layer.id}`);
-        layerElement.classList.add("active");
-
-        Util.$timeline._$targetLayer = layerElement;
 
         // target frame
-        Util.$timeline.resetFrames();
-        const frameElement = document
-            .getElementById(`${layer.id}-${this.currentFrame}`);
+        Util.$timelineLayer.clearActiveFrames();
 
-        frameElement
-            .classList
-            .add("frame-active");
-
-        Util.$timeline._$targetFrame  = frameElement;
-        Util.$timeline._$targetFrames = [frameElement];
+        Util
+            .$timelineLayer
+            .addTargetFrame(
+                layer.id,
+                document.getElementById(`${layer.id}-${this.currentFrame}`)
+            );
 
         return new ExternalLayer(layer);
     }
@@ -169,31 +194,28 @@ class ExternalTimeline
      */
     setSelectedFrames (start_frame, end_frame)
     {
-        const layerElement = Util.$timeline._$targetLayer;
+        const layerElement = Util.$timelineLayer.targetLayer;
         if (!layerElement) {
             return ;
         }
 
-        Util.$timeline.resetFrames();
+        Util.$timelineLayer.clearActiveFrames();
 
         end_frame = Math.max(start_frame, end_frame);
 
-        const targetFrames = [];
         const layerId = layerElement.dataset.layerId | 0;
         for (let frame = start_frame; end_frame >= frame; ++frame) {
 
-            const frameElement = document
-                .getElementById(`${layerId}-${frame}`);
+            Util
+                .$timelineLayer
+                .addTargetFrame(
+                    layerId,
+                    document.getElementById(`${layerId}-${frame}`)
+                );
 
-            frameElement
-                .classList
-                .add("frame-active");
-
-            targetFrames.push(frameElement);
         }
 
-        Util.$timeline._$targetFrame  = targetFrames[0];
-        Util.$timeline._$targetFrames = targetFrames;
+        Util.$timelineFrame.currentFrame = start_frame;
     }
 
     /**
@@ -204,8 +226,41 @@ class ExternalTimeline
      */
     clearKeyframes (start_frame = -1, end_frame = -1)
     {
-        const targetFrames = Util.$timeline._$targetFrames;
-        if (targetFrames.length) {
+        const targetLayer = Util.$timelineLayer.targetLayer;
+        if (!targetLayer) {
+            return ;
+        }
+
+        const layerId = targetLayer.dataset.layerId | 0;
+        if (Util.$timelineLayer.targetFrames.has(layerId)) {
+
+            const targetFrames = Util
+                .$timelineLayer
+                .targetFrames
+                .get(layerId)
+                .slice();
+
+            if (targetFrames.length > 1) {
+                targetFrames.sort((a, b) =>
+                {
+                    const aFrame = a.dataset.frame | 0;
+                    const bFrame = b.dataset.frame | 0;
+
+                    // 昇順
+                    switch (true) {
+
+                        case aFrame > bFrame:
+                            return 1;
+
+                        case aFrame < bFrame:
+                            return -1;
+
+                        default:
+                            return 0;
+
+                    }
+                });
+            }
 
             if (start_frame === -1) {
                 start_frame = targetFrames[0].dataset.frame | 0;
@@ -226,8 +281,6 @@ class ExternalTimeline
         }
 
         this.setSelectedFrames(start_frame, end_frame);
-        Util.$timeline.deleteFrame();
-        Util.$timeline.resetFrames();
     }
 
     /**
@@ -238,8 +291,41 @@ class ExternalTimeline
      */
     convertToBlankKeyframes (start_frame = -1, end_frame = -1)
     {
-        const targetFrames = Util.$timeline._$targetFrames;
-        if (targetFrames.length) {
+        const targetLayer = Util.$timelineLayer.targetLayer;
+        if (!targetLayer) {
+            return ;
+        }
+
+        const layerId = targetLayer.dataset.layerId | 0;
+        if (Util.$timelineLayer.targetFrames.has(layerId)) {
+
+            const targetFrames = Util
+                .$timelineLayer
+                .targetFrames
+                .get(layerId)
+                .slice();
+
+            if (targetFrames.length > 1) {
+                targetFrames.sort((a, b) =>
+                {
+                    const aFrame = a.dataset.frame | 0;
+                    const bFrame = b.dataset.frame | 0;
+
+                    // 昇順
+                    switch (true) {
+
+                        case aFrame > bFrame:
+                            return 1;
+
+                        case aFrame < bFrame:
+                            return -1;
+
+                        default:
+                            return 0;
+
+                    }
+                });
+            }
 
             if (start_frame === -1) {
                 start_frame = targetFrames[0].dataset.frame | 0;
@@ -261,14 +347,8 @@ class ExternalTimeline
 
         this.setSelectedFrames(start_frame, end_frame);
 
-        Util.$timeline.addEmptyFrame();
-
-        const element = Util.$timeline._$targetFrames.pop();
-        if (Util.$timeline._$targetFrames.length) {
-            Util.$timeline.addSpaceFrame();
-        }
-
-        Util.$timeline._$targetFrames.push(element);
+        Util.$timelineTool.executeTimelineFrameAdd();
+        Util.$timelineTool.executeTimelineEmptyAdd();
     }
 
 }

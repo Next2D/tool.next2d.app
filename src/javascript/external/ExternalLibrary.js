@@ -98,7 +98,7 @@ class ExternalLibrary
             return new Image(width, height);
         }
 
-        const bounds = this._$instance.getBounds(null, true);
+        const bounds = this._$instance.getBounds();
         if (!width) {
             width  = Math.abs(bounds.xMax - bounds.xMin);
         }
@@ -177,13 +177,20 @@ class ExternalLibrary
                 }
             }
 
+            // ライブラリを選択状態に
+            Util
+                .$libraryController
+                .activeInstance = document.getElementById(
+                    `library-child-id-${instance.id}`
+                );
+
             Util.$dragElement = {
                 "dataset": {
                     "libraryId": instance.id
                 }
             };
 
-            Util.$screen.dropObject({
+            Util.$screen.drop({
                 "offsetX": point.x + Util.$offsetLeft,
                 "offsetY": point.y + Util.$offsetTop
             });
