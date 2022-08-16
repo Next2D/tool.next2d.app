@@ -12,7 +12,7 @@
 
         <div id="library-export-setting">
 
-            <div id="library-export-setting-title">
+            <div class="library-export-setting-title">
                 <span class="language" data-text="{{サイズ設定}}">サイズ設定</span>
             </div>
 
@@ -32,23 +32,19 @@
                     <div class="library-export-setting-container">
                         <div class="library-export-setting-text">W</div>
                         <div><input type="number" id="export-width" value="0" data-detail="{{選択対象の幅}}"></div>
-
-                        <div class="library-export-setting-text">X</div>
-                        <div><input type="text" id="export-x" value="0" data-detail="{{選択対象のX座標}}"></div>
+                        <div class="library-export-setting-text">px</div>
                     </div>
 
                     <div class="library-export-setting-container">
                         <div class="library-export-setting-text">H</div>
                         <div><input type="number" id="export-height" value="0" data-detail="{{選択対象の高さ}}"></div>
-
-                        <div class="library-export-setting-text">Y</div>
-                        <div><input type="text" id="export-y" value="0" data-detail="{{選択対象のY座標}}"></div>
+                        <div class="library-export-setting-text">px</div>
                     </div>
                 </div>
 
             </div>
 
-            <div id="library-export-setting-title">
+            <div class="library-export-setting-title">
                 <span class="language" data-text="{{ファイル形式}}">ファイル形式</span>
             </div>
 
@@ -64,16 +60,26 @@
                 </div>
             </div>
 
-            <div id="library-export-setting-title">
-                <span class="language" data-text="{{フレーム設定}}">フレーム設定</span>
+            <div id="library-export-container-area">
+                <div class="library-export-setting-title">
+                    <span class="language" data-text="{{フレーム設定}}">フレーム設定</span>
+                </div>
+
+                <div class="library-export-setting-container">
+                    <div class="library-export-setting-text">Start</div>
+                    <div><input type="number" id="export-start-frame" value="1" data-detail="{{開始フレームを指定}}"></div>
+
+                    <div class="library-export-setting-text">End</div>
+                    <div><input type="number" id="export-end-frame" value="1" data-detail="{{終了フレームを指定}}"></div>
+                </div>
+            </div>
+
+            <div class="library-export-setting-title">
+                <span class="language" data-text="{{ファイル名}}">ファイル名</span>
             </div>
 
             <div class="library-export-setting-container">
-                <div class="library-export-setting-text">Start</div>
-                <div><input type="number" id="export-start-frame" value="0" data-detail="{{開始フレームを指定}}"></div>
-
-                <div class="library-export-setting-text">End</div>
-                <div><input type="number" id="export-end-frame" value="0" data-detail="{{終了フレームを指定}}"></div>
+                <div><input type="text" id="export-name" value="" data-detail="{{ファイル名を指定}}"></div>
             </div>
 
             <div class="library-export-setting-button">
