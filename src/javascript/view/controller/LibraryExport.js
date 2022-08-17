@@ -108,7 +108,8 @@ class LibraryExport extends BaseController
         const elementIds = [
             "library-menu-export",
             "library-export-hide-icon",
-            "library-export-size-lock"
+            "library-export-size-lock",
+            "library-export-execution"
         ];
 
         for (let idx = 0; idx < elementIds.length; ++idx) {
@@ -159,6 +160,89 @@ class LibraryExport extends BaseController
             }
 
             this.setInputEvent(element);
+        }
+    }
+
+    /**
+     * @description 書き出しの実行
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    executeLibraryExportExecution ()
+    {
+        // モーダルを終了
+        Util.$endMenu();
+
+        const ext = document
+            .getElementById("library-export-file-type")
+            .value;
+
+        const name = document
+            .getElementById("export-name")
+            .value;
+
+        const ratio = window.devicePixelRatio;
+        if (this._$instance.type === "container") {
+
+            const currentFrame = this._$currentFrame;
+
+            const zip = new JSZip();
+            for (let frame = this._$startFrame; this._$endFrame >= frame; ++frame) {
+
+                this._$currentFrame = frame;
+
+                const image   = this.getImage();
+
+                const canvas  = document.createElement("canvas");
+                canvas.width  = image.width;
+                canvas.height = image.height;
+
+                const context = canvas.getContext("2d");
+                context.setTransform(1 / ratio, 0, 0, 1 / ratio, 0, 0);
+                context.drawImage(image, 0, 0);
+
+                zip.file(
+                    `${name}_frame_${frame}.${ext}`,
+                    canvas.toDataURL(`image/${ext}`, 1).replace(/^.*,/, ""),
+                    { "base64" : true }
+                );
+            }
+
+            zip
+                .generateAsync({ "type" : "blob" })
+                .then((content) =>
+                {
+                    const url = URL.createObjectURL(content);
+
+                    const anchor    = document.createElement("a");
+                    anchor.download = `${name}.zip`;
+                    anchor.href     = url;
+                    anchor.click();
+
+                    URL.revokeObjectURL(url);
+                });
+
+            // reset
+            this._$currentFrame = currentFrame;
+
+        } else {
+
+            const image   = this.getImage();
+            const canvas  = document.createElement("canvas");
+            canvas.width  = image.width;
+            canvas.height = image.height;
+
+            const context = canvas.getContext("2d");
+            context.setTransform(1 / ratio, 0, 0, 1 / ratio, 0, 0);
+            context.drawImage(image, 0, 0);
+
+            const anchor    = document.createElement("a");
+            anchor.download = `${name}.${ext}`;
+            anchor.href     = canvas.toDataURL(`image/${ext}`, 1);
+            anchor.click();
+
         }
     }
 
@@ -436,11 +520,11 @@ class LibraryExport extends BaseController
 
         document
             .getElementById("export-width")
-            .value = `${this._$width}`;
+            .value = `${Math.ceil(this._$width)}`;
 
         document
             .getElementById("export-height")
-            .value = `${this._$height}`;
+            .value = `${Math.ceil(this._$height)}`;
     }
 
     /**
@@ -502,11 +586,11 @@ class LibraryExport extends BaseController
             // サイズをセット
             document
                 .getElementById("export-width")
-                .value = `${this._$width}`;
+                .value = `${Math.ceil(this._$width)}`;
 
             document
                 .getElementById("export-height")
-                .value = `${this._$height}`;
+                .value = `${Math.ceil(this._$height)}`;
         }
 
         document
@@ -610,6 +694,20 @@ class LibraryExport extends BaseController
      */
     appendImage ()
     {
+        document
+            .getElementById("library-export-image")
+            .appendChild(this.getImage());
+    }
+
+    /**
+     * @description ImageElementを生成
+     *
+     * @return {HTMLImageElement}
+     * @method
+     * @public
+     */
+    getImage ()
+    {
         const currentFrame = Util.$currentFrame;
         const zoomScale    = Util.$zoomScale;
 
@@ -661,13 +759,11 @@ class LibraryExport extends BaseController
             -bounds.yMin + instanceBounds.yMin
         );
 
-        document
-            .getElementById("library-export-image")
-            .appendChild(image);
-
         // reset
         Util.$zoomScale    = zoomScale;
         Util.$currentFrame = currentFrame;
+
+        return image;
     }
 }
 

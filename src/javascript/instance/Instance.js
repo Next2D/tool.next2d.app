@@ -169,6 +169,7 @@ class Instance
     {
         // empty image
         if (!width || !height) {
+            console.log("TODO emptyImage.");
             return Util.$emptyImage;
         }
 
