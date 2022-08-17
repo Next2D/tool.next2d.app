@@ -178,6 +178,10 @@ class LibraryExport extends BaseController
         // 初期化
         this._$currentValue = null;
 
+        if (!this._$lock) {
+            this._$lockTarget = null;
+        }
+
         event
             .currentTarget
             .childNodes[1]
