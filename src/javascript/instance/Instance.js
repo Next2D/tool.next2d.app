@@ -159,11 +159,13 @@ class Instance
      * @param  {number} height
      * @param  {object} place
      * @param  {object} range
+     * @param  {number} [dx = 0]
+     * @param  {number} [dy = 0]
      * @return {HTMLImageElement}
      * @method
      * @public
      */
-    toImage (width, height, place, range)
+    toImage (width, height, place, range, dx = 0, dy = 0)
     {
         // empty image
         if (!width || !height) {
@@ -195,8 +197,8 @@ class Instance
 
         const matrix = new Matrix(ratio, 0, 0, ratio);
         matrix.translate(
-            multiMatrix[4] + width  * ratio / 2,
-            multiMatrix[5] + height * ratio / 2
+            multiMatrix[4] + width  * ratio / 2 + dx,
+            multiMatrix[5] + height * ratio / 2 + dy
         );
 
         let xScale = Math.sqrt(

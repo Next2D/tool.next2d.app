@@ -423,6 +423,10 @@ class TransformController extends BaseController
         // 初期化
         this._$currentValue = null;
 
+        if (!this._$scaleLock) {
+            this._$lockTarget = null;
+        }
+
         event
             .currentTarget
             .childNodes[1]
@@ -449,6 +453,10 @@ class TransformController extends BaseController
 
         // 初期化
         this._$currentValue = null;
+
+        if (!this._$sizeLock) {
+            this._$lockTarget = null;
+        }
 
         event
             .currentTarget

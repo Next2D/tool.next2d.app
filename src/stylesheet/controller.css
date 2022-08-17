@@ -200,6 +200,7 @@
 #export-y:focus,
 #export-start-frame:focus,
 #export-end-frame:focus,
+#export-current-frame:focus,
 #color-alpha-multiplier:focus,
 #color-alpha-offset:focus,
 #color-red-multiplier:focus,
@@ -844,7 +845,8 @@
 #export-x,
 #export-y,
 #export-start-frame,
-#export-end-frame
+#export-end-frame,
+#export-current-frame
 {
     border           : none;
     border-bottom    : 1px solid darkgray;

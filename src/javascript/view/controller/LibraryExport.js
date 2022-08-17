@@ -13,6 +13,13 @@ class LibraryExport extends BaseController
         super();
 
         /**
+         * @type {boolean}
+         * @default false
+         * @private
+         */
+        this._$lock = false;
+
+        /**
          * @type {Instance}
          * @default null
          * @private
@@ -38,7 +45,35 @@ class LibraryExport extends BaseController
          * @default 1
          * @private
          */
-        this._$frame = 1;
+        this._$currentFrame = 1;
+
+        /**
+         * @type {number}
+         * @default 1
+         * @private
+         */
+        this._$startFrame = 1;
+
+        /**
+         * @type {number}
+         * @default 1
+         * @private
+         */
+        this._$endFrame = 1;
+
+        /**
+         * @type {number}
+         * @default 0
+         * @private
+         */
+        this._$width = 0;
+
+        /**
+         * @type {number}
+         * @default 0
+         * @private
+         */
+        this._$height = 0;
     }
 
     /**
@@ -72,7 +107,8 @@ class LibraryExport extends BaseController
 
         const elementIds = [
             "library-menu-export",
-            "library-export-hide-icon"
+            "library-export-hide-icon",
+            "library-export-size-lock"
         ];
 
         for (let idx = 0; idx < elementIds.length; ++idx) {
@@ -89,14 +125,11 @@ class LibraryExport extends BaseController
                     return ;
                 }
 
-                // 表示モーダルを全て終了
-                Util.$endMenu();
-
                 // 親のイベント中止
                 event.stopPropagation();
 
                 // id名で関数を実行
-                const names = event.target.id.split("-");
+                const names = event.currentTarget.id.split("-");
 
                 let functionName = names
                     .map((value) =>
@@ -114,7 +147,8 @@ class LibraryExport extends BaseController
             "export-width",
             "export-height",
             "export-start-frame",
-            "export-end-frame"
+            "export-end-frame",
+            "export-current-frame"
         ];
 
         for (let idx = 0; idx < inputIds.length; ++idx) {
@@ -126,7 +160,81 @@ class LibraryExport extends BaseController
 
             this.setInputEvent(element);
         }
+    }
 
+    /**
+     * @description ロックのOn/Off関数
+     *
+     * @param  {MouseEvent} event
+     * @return {void}
+     * @method
+     * @public
+     */
+    executeLibraryExportSizeLock (event)
+    {
+        // ロックのOn/Off
+        this._$lock = !this._$lock;
+
+        // 初期化
+        this._$currentValue = null;
+
+        event
+            .currentTarget
+            .childNodes[1]
+            .setAttribute("class", this._$lock
+                ? "active"
+                : "disable"
+            );
+    }
+
+    /**
+     * @description InputElementにフォーカスした際の処理関数
+     *
+     * @param  {Event} event
+     * @return {void}
+     * @method
+     * @public
+     */
+    focusIn (event)
+    {
+        super.focusIn(event);
+        this.setLockElement(event);
+    }
+
+    /**
+     * @description InputElement上でマウスを押下した際の処理関数
+     *
+     * @param  {MouseEvent} event
+     * @return {void}
+     * @method
+     * @public
+     */
+    mouseDown (event)
+    {
+        super.mouseDown(event);
+        this.setLockElement(event);
+    }
+
+    /**
+     * @description ロックが有効の際に対象となるElementを変数にセット
+     *
+     * @param  {Event} event
+     * @return {void}
+     * @method
+     * @public
+     */
+    setLockElement (event)
+    {
+        if (this._$focus || !this._$lock) {
+            return ;
+        }
+
+        this._$lockTarget = document
+            .getElementById(
+                event.target.id === "export-width"
+                    ? "export-height"
+                    : "export-width"
+            );
     }
 
     /**
@@ -139,15 +247,13 @@ class LibraryExport extends BaseController
      */
     changeExportWidth (value)
     {
-        value = Util.$clamp(value | 0,
+        value = Util.$clamp(+value,
             LibraryExport.MIN_SIZE,
             LibraryExport.MAX_SIZE
         );
 
         // xスケールの更新
-        const bounds  = this._$instance.getBounds();
-        const width   = Math.ceil(Math.abs(bounds.xMax - bounds.xMin));
-        this._$xScale = value / width;
+        this._$xScale = value / this._$width;
 
         this
             .removeImage()
@@ -166,15 +272,13 @@ class LibraryExport extends BaseController
      */
     changeExportHeight (value)
     {
-        value = Util.$clamp(value | 0,
+        value = Util.$clamp(+value,
             LibraryExport.MIN_SIZE,
             LibraryExport.MAX_SIZE
         );
 
-        // xスケールの更新
-        const bounds  = this._$instance.getBounds();
-        const height  = Math.ceil(Math.abs(bounds.yMax - bounds.yMin));
-        this._$yScale = value / height;
+        // yスケールの更新
+        this._$yScale = value / this._$height;
 
         this
             .removeImage()
@@ -198,7 +302,7 @@ class LibraryExport extends BaseController
             this._$instance.totalFrame
         );
 
-        this._$frame = value;
+        this._$startFrame = value;
 
         // 開始フレームが最終フレーム設定を上回った補正
         const element = document
@@ -206,8 +310,19 @@ class LibraryExport extends BaseController
 
         const endFrame = element.value | 0;
         if (value > endFrame) {
-            element.value = `${value}`;
+            element.value   = `${value}`;
+            this._$endFrame = value;
         }
+
+        if (value > this._$currentFrame) {
+            document
+                .getElementById("export-current-frame")
+                .value = `${value}`;
+            this._$currentFrame = value;
+        }
+
+        // 再計算
+        this.reloadMovieClip();
 
         this
             .removeImage()
@@ -237,13 +352,47 @@ class LibraryExport extends BaseController
 
         const startFrame = element.value | 0;
         if (startFrame > value) {
-            element.value = `${value}`;
-            this._$frame  = value;
-
-            this
-                .removeImage()
-                .appendImage();
+            element.value     = `${value}`;
+            this._$startFrame = value;
         }
+
+        if (this._$currentFrame > value) {
+            document
+                .getElementById("export-current-frame")
+                .value = `${value}`;
+            this._$currentFrame = value;
+        }
+
+        // 再計算
+        this.reloadMovieClip();
+
+        this
+            .removeImage()
+            .appendImage();
+
+        return value;
+    }
+
+    /**
+     * @description MovieClipの表示したいフレームの設定
+     *
+     * @param  {string} value
+     * @return {number}
+     * @method
+     * @public
+     */
+    changeExportCurrentFrame (value)
+    {
+        value = Util.$clamp(value | 0,
+            this._$startFrame,
+            this._$endFrame
+        );
+
+        this._$currentFrame = value;
+
+        this
+            .removeImage()
+            .appendImage();
 
         return value;
     }
@@ -258,6 +407,36 @@ class LibraryExport extends BaseController
     executeLibraryExportHideIcon ()
     {
         Util.$endMenu();
+    }
+
+    /**
+     * @description 指定範囲のMovieClipの表示幅を再計算
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    reloadMovieClip ()
+    {
+        const bounds  = this.getBounds();
+        this._$width  = Math.abs(bounds.xMax - bounds.xMin);
+        this._$height = Math.abs(bounds.yMax - bounds.yMin);
+
+        document
+            .getElementById("export-start-frame")
+            .value = `${this._$startFrame}`;
+
+        document
+            .getElementById("export-end-frame")
+            .value = `${this._$endFrame}`;
+
+        document
+            .getElementById("export-width")
+            .value = `${this._$width}`;
+
+        document
+            .getElementById("export-height")
+            .value = `${this._$height}`;
     }
 
     /**
@@ -277,11 +456,6 @@ class LibraryExport extends BaseController
             return ;
         }
 
-        // 初期化
-        this._$xScale = 1;
-        this._$yScale = 1;
-        this._$frame  = 1;
-
         // 書き出すアイテムの情報をセット
         const LibraryElement = activeInstances.values().next().value;
 
@@ -289,39 +463,47 @@ class LibraryExport extends BaseController
             LibraryElement.dataset.libraryId | 0
         );
 
+        // 初期化
+        this._$lock   = false;
+        this._$xScale = 1;
+        this._$yScale = 1;
+
+        document
+            .getElementById("library-export-size-lock")
+            .childNodes[1]
+            .setAttribute("class", "disable");
+
         const containerArea = document
             .getElementById("library-export-container-area");
 
         if (this._$instance.type === "container") {
 
+            this._$currentFrame = 1;
+            this._$startFrame   = 1;
+            this._$endFrame     = this._$instance.totalFrame;
+
+            this.reloadMovieClip();
+
+            // 書き出し項目を表示
             containerArea.style.display = "";
-
-            document
-                .getElementById("export-start-frame")
-                .value = "1";
-
-            document
-                .getElementById("export-end-frame")
-                .value = `${this._$instance.totalFrame}`;
 
         } else {
 
             containerArea.style.display = "none";
 
+            const bounds = this._$instance.getBounds();
+            this._$width  = Math.abs(bounds.xMax - bounds.xMin);
+            this._$height = Math.abs(bounds.yMax - bounds.yMin);
+
+            // サイズをセット
+            document
+                .getElementById("export-width")
+                .value = `${this._$width}`;
+
+            document
+                .getElementById("export-height")
+                .value = `${this._$height}`;
         }
-
-        // サイズをセット
-        const bounds = this._$instance.getBounds();
-        const width  = Math.ceil(Math.abs(bounds.xMax - bounds.xMin));
-        const height = Math.ceil(Math.abs(bounds.yMax - bounds.yMin));
-
-        document
-            .getElementById("export-width")
-            .value = `${width}`;
-
-        document
-            .getElementById("export-height")
-            .value = `${height}`;
 
         document
             .getElementById("export-name")
@@ -341,6 +523,60 @@ class LibraryExport extends BaseController
 
         element.style.display = "";
         element.setAttribute("class", "fadeIn");
+    }
+
+    /**
+     * @description 表示領域を返す
+     *
+     * @return {object}
+     * @method
+     * @public
+     */
+    getBounds ()
+    {
+        const matrix = [1, 0, 0, 1, 0, 0];
+
+        const place = {
+            "frame": 1,
+            "matrix": matrix,
+            "colorTransform": [1, 1, 1, 1, 0, 0, 0, 0],
+            "blendMode": "normal",
+            "filter": [],
+            "loop": Util.$getDefaultLoopConfig()
+        };
+
+        const range = {
+            "startFrame": 1,
+            "endFrame": this._$instance.totalFrame + 1
+        };
+
+        const currentFrame = Util.$currentFrame;
+
+        let xMin =  Number.MAX_VALUE;
+        let xMax = -Number.MAX_VALUE;
+        let yMin =  Number.MAX_VALUE;
+        let yMax = -Number.MAX_VALUE;
+        for (let frame = this._$startFrame; this._$endFrame >= frame; ++frame) {
+
+            place.frame = Util.$currentFrame = frame;
+
+            const bounds = this._$instance.getBounds(matrix, place, range);
+
+            xMin = Math.min(bounds.xMin, xMin);
+            xMax = Math.max(bounds.xMax, xMax);
+            yMin = Math.min(bounds.yMin, yMin);
+            yMax = Math.max(bounds.yMax, yMax);
+        }
+
+        // reset
+        Util.$currentFrame = currentFrame;
+
+        return {
+            "xMin": xMin,
+            "xMax": xMax,
+            "yMin": yMin,
+            "yMax": yMax
+        };
     }
 
     /**
@@ -370,28 +606,63 @@ class LibraryExport extends BaseController
      */
     appendImage ()
     {
-        const bounds = this._$instance.getBounds([
-            this._$xScale, 0, 0, this._$yScale, 0, 0
-        ]);
-
-        const width  = Math.ceil(Math.abs(bounds.xMax - bounds.xMin));
-        const height = Math.ceil(Math.abs(bounds.yMax - bounds.yMin));
-
         const currentFrame = Util.$currentFrame;
-        Util.$currentFrame = this._$frame;
+        const zoomScale    = Util.$zoomScale;
+
+        let xScale = 1;
+        if (this._$width * this._$xScale > 450) {
+            xScale = 450 / (this._$width * this._$xScale);
+        }
+
+        let yScale = 1;
+        if (this._$height * this._$yScale > 450) {
+            yScale = 450 / (this._$height * this._$yScale);
+        }
+
+        const scale = Math.min(xScale, yScale);
+
+        Util.$currentFrame = this._$currentFrame;
+        Util.$zoomScale    = 1;
+
+        const range = this._$instance.type === "container"
+            ? {
+                "startFrame": 1,
+                "endFrame": this._$instance.totalFrame + 1
+            }
+            : null;
+
+        const place = {
+            "frame": this._$currentFrame,
+            "matrix": [1, 0, 0, 1, 0, 0],
+            "colorTransform": [1, 1, 1, 1, 0, 0, 0, 0],
+            "blendMode": "normal",
+            "filter": [],
+            "loop": Util.$getDefaultLoopConfig()
+        };
+
+        const bounds = this.getBounds();
+
+        const instanceBounds = this
+            ._$instance
+            .getBounds([1, 0, 0, 1, 0, 0], place, range);
+
+        place.matrix[0] = this._$xScale * scale;
+        place.matrix[3] = this._$yScale * scale;
+
+        const image = this._$instance.toImage(
+            Math.ceil(this._$width  * this._$xScale * scale),
+            Math.ceil(this._$height * this._$yScale * scale),
+            place, range,
+            -bounds.xMin + instanceBounds.xMin,
+            -bounds.yMin + instanceBounds.yMin
+        );
 
         document
             .getElementById("library-export-image")
-            .appendChild(
-                this._$instance.toImage(width, height, {
-                    "frame": this._$frame,
-                    "matrix": [this._$xScale, 0, 0, this._$yScale, 0, 0],
-                    "colorTransform": [1, 1, 1, 1, 0, 0, 0, 0],
-                    "blendMode": "normal",
-                    "filter": []
-                }));
+            .appendChild(image);
 
         // reset
+        Util.$zoomScale    = zoomScale;
         Util.$currentFrame = currentFrame;
     }
 }
