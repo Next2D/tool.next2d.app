@@ -262,66 +262,12 @@ class LibraryExport extends BaseController
         // 初期化
         this._$currentValue = null;
 
-        if (!this._$lock) {
-            this._$lockTarget = null;
-        }
-
         event
             .currentTarget
             .childNodes[1]
             .setAttribute("class", this._$lock
                 ? "active"
                 : "disable"
-            );
-    }
-
-    /**
-     * @description InputElementにフォーカスした際の処理関数
-     *
-     * @param  {Event} event
-     * @return {void}
-     * @method
-     * @public
-     */
-    focusIn (event)
-    {
-        super.focusIn(event);
-        this.setLockElement(event);
-    }
-
-    /**
-     * @description InputElement上でマウスを押下した際の処理関数
-     *
-     * @param  {MouseEvent} event
-     * @return {void}
-     * @method
-     * @public
-     */
-    mouseDown (event)
-    {
-        super.mouseDown(event);
-        this.setLockElement(event);
-    }
-
-    /**
-     * @description ロックが有効の際に対象となるElementを変数にセット
-     *
-     * @param  {Event} event
-     * @return {void}
-     * @method
-     * @public
-     */
-    setLockElement (event)
-    {
-        if (this._$focus || !this._$lock) {
-            return ;
-        }
-
-        this._$lockTarget = document
-            .getElementById(
-                event.target.id === "export-width"
-                    ? "export-height"
-                    : "export-width"
             );
     }
 
@@ -342,6 +288,14 @@ class LibraryExport extends BaseController
 
         // xスケールの更新
         this._$xScale = value / this._$width;
+
+        if (this._$lock) {
+            this._$yScale = this._$xScale;
+
+            document
+                .getElementById("export-height")
+                .value = `${Math.ceil(this._$height * this._$yScale)}`;
+        }
 
         this
             .removeImage()
@@ -367,6 +321,14 @@ class LibraryExport extends BaseController
 
         // yスケールの更新
         this._$yScale = value / this._$height;
+
+        if (this._$lock) {
+            this._$xScale = this._$yScale;
+
+            document
+                .getElementById("export-width")
+                .value = `${Math.ceil(this._$width * this._$xScale)}`;
+        }
 
         this
             .removeImage()
