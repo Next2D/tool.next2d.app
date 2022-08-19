@@ -728,7 +728,6 @@ class TimelineLayer extends BaseTimeline
                 .firstElementChild
                 .insertAdjacentHTML("beforeend", htmlTag);
         }
-
     }
 
     /**
@@ -1832,21 +1831,26 @@ class TimelineLayer extends BaseTimeline
                     preview.children[0].remove();
                 }
 
-                const image = bitmapData.toImage();
+                const image = new Image();
+                image.onload = () =>
+                {
+                    preview.appendChild(image);
+
+                    preview.style.display = "";
+                    preview.style.left    = `${event.pageX + 10}px`;
+                    preview.style.top     = `${event.pageY - preview.offsetHeight - 10}px`;
+                    preview.style.backgroundColor = document.getElementById("stage-bgColor").value;
+
+                    if (!preview.classList.contains("fadeIn")) {
+                        preview.setAttribute("class", "fadeIn");
+                    }
+                };
+
+                image.src    = bitmapData.toDataURL();
+                image.width  = bitmapData.width  / ratio;
+                image.height = bitmapData.height / ratio;
+
                 bitmapData.dispose();
-
-                image.width  = image.width  / ratio;
-                image.height = image.height / ratio;
-                preview.appendChild(image);
-
-                preview.style.display = "";
-                preview.style.left    = `${event.pageX + 10}px`;
-                preview.style.top     = `${event.pageY - preview.offsetHeight - 10}px`;
-                preview.style.backgroundColor = document.getElementById("stage-bgColor").value;
-
-                if (!preview.classList.contains("fadeIn")) {
-                    preview.setAttribute("class", "fadeIn");
-                }
             }
 
             Util.$currentFrame = currentFrame;

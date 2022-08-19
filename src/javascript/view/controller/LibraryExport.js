@@ -186,26 +186,16 @@ class LibraryExport extends BaseController
         const ratio = window.devicePixelRatio;
         if (this._$instance.type === "container") {
 
-            const currentFrame = this._$currentFrame;
-
             const zip = new JSZip();
+
             for (let frame = this._$startFrame; this._$endFrame >= frame; ++frame) {
 
-                this._$currentFrame = frame;
-
-                const image   = this.getImage();
-
-                const canvas  = document.createElement("canvas");
-                canvas.width  = image.width;
-                canvas.height = image.height;
-
-                const context = canvas.getContext("2d");
-                context.setTransform(1 / ratio, 0, 0, 1 / ratio, 0, 0);
-                context.drawImage(image, 0, 0);
+                const bitmapData = this.getBitmapData(frame);
+                const context    = bitmapData.getContext2D();
 
                 zip.file(
                     `${name}_frame_${frame}.${ext}`,
-                    canvas.toDataURL(`image/${ext}`, 1).replace(/^.*,/, ""),
+                    context.canvas.toDataURL(`image/${ext}`, 1).replace(/^.*,/, ""),
                     { "base64" : true }
                 );
             }
@@ -224,25 +214,16 @@ class LibraryExport extends BaseController
                     URL.revokeObjectURL(url);
                 });
 
-            // reset
-            this._$currentFrame = currentFrame;
-
         } else {
 
-            const image   = this.getImage();
-            const canvas  = document.createElement("canvas");
-            canvas.width  = image.width;
-            canvas.height = image.height;
-
-            const context = canvas.getContext("2d");
-            context.setTransform(1 / ratio, 0, 0, 1 / ratio, 0, 0);
-            context.drawImage(image, 0, 0);
+            const bitmapData = this.getBitmapData();
+            const context    = bitmapData.getContext2D();
 
             const anchor    = document.createElement("a");
             anchor.download = `${name}.${ext}`;
-            anchor.href     = canvas.toDataURL(`image/${ext}`, 1);
+            anchor.href     = context.canvas.toDataURL(`image/${ext}`, 1);
             anchor.click();
-
+            
         }
     }
 
@@ -297,9 +278,7 @@ class LibraryExport extends BaseController
                 .value = `${Math.ceil(this._$height * this._$yScale)}`;
         }
 
-        this
-            .removeImage()
-            .appendImage();
+        this.appendImage();
 
         return value;
     }
@@ -330,9 +309,7 @@ class LibraryExport extends BaseController
                 .value = `${Math.ceil(this._$width * this._$xScale)}`;
         }
 
-        this
-            .removeImage()
-            .appendImage();
+        this.appendImage();
 
         return value;
     }
@@ -374,9 +351,7 @@ class LibraryExport extends BaseController
         // 再計算
         this.reloadMovieClip();
 
-        this
-            .removeImage()
-            .appendImage();
+        this.appendImage();
 
         return value;
     }
@@ -416,9 +391,7 @@ class LibraryExport extends BaseController
         // 再計算
         this.reloadMovieClip();
 
-        this
-            .removeImage()
-            .appendImage();
+        this.appendImage();
 
         return value;
     }
@@ -440,9 +413,7 @@ class LibraryExport extends BaseController
 
         this._$currentFrame = value;
 
-        this
-            .removeImage()
-            .appendImage();
+        this.appendImage();
 
         return value;
     }
@@ -560,9 +531,7 @@ class LibraryExport extends BaseController
             .value = `${this._$instance.name}`;
 
         // プレビュー画面を初期化して画像をセット
-        this
-            .removeImage()
-            .appendImage();
+        this.appendImage();
 
         // 書き出しモーダル以外を終了
         Util.$endMenu("library-export-modal");
@@ -644,7 +613,6 @@ class LibraryExport extends BaseController
                 element.firstChild.remove();
             }
         }
-        return this;
     }
 
     /**
@@ -656,19 +624,88 @@ class LibraryExport extends BaseController
      */
     appendImage ()
     {
+        this.removeImage();
+
+        const bitmapData = this.getBitmapData(this._$currentFrame);
+
+        const ratio  = window.devicePixelRatio;
+
+        const element  = new Image();
+        element.src    = bitmapData.toDataURL();
+        element.width  = bitmapData.width  / ratio;
+        element.height = bitmapData.height / ratio;
+
+        // BitmapDataを解放
+        bitmapData.dispose();
+
         document
             .getElementById("library-export-image")
-            .appendChild(this.getImage());
+            .appendChild(element);
     }
 
     /**
-     * @description ImageElementを生成
-     *
-     * @return {HTMLImageElement}
+     * @param  {number} width
+     * @param  {number} height
+     * @param  {object} place
+     * @param  {object} [range=null]
+     * @param  {number} [dx=0]
+     * @param  {number} [dy=0]
+     * @return {next2d.display.BitmapData}
      * @method
      * @public
      */
-    getImage ()
+    createBitmapData (width, height, place, range, dx = 0, dy = 0)
+    {
+        const { Matrix } = window.next2d.geom;
+
+        const instance = this
+            ._$instance
+            .createInstance(place, range);
+
+        const matrix = this._$instance.calcMatrix(
+            instance, width, height, place, dx, dy
+        );
+
+        instance
+            .transform
+            .matrix = new Matrix(
+                place.matrix[0], place.matrix[1],
+                place.matrix[2], place.matrix[3],
+                0, 0
+            );
+
+        instance
+            .transform
+            .colorTransform = this._$instance.calcColorTransform(place);
+
+        const object = this
+            ._$instance
+            .calcFilter(width, height, place, matrix);
+
+        instance.filters = object.filters;
+
+        const container = this
+            ._$instance
+            .createContainer(instance);
+
+        const bitmapData = this
+            ._$instance
+            .createBitmapData(width, height);
+
+        bitmapData.draw(container, matrix);
+
+        return bitmapData;
+    }
+
+    /**
+     * @description Elementを生成
+     *
+     * @param  {number} frame
+     * @return {next2d.display.BitmapData}
+     * @method
+     * @public
+     */
+    getBitmapData (frame = 1)
     {
         const currentFrame = Util.$currentFrame;
         const zoomScale    = Util.$zoomScale;
@@ -685,7 +722,7 @@ class LibraryExport extends BaseController
 
         const scale = Math.min(xScale, yScale);
 
-        Util.$currentFrame = this._$currentFrame;
+        Util.$currentFrame = frame;
         Util.$zoomScale    = 1;
 
         const range = this._$instance.type === "container"
@@ -696,7 +733,7 @@ class LibraryExport extends BaseController
             : null;
 
         const place = {
-            "frame": this._$currentFrame,
+            "frame": frame,
             "matrix": [1, 0, 0, 1, 0, 0],
             "colorTransform": [1, 1, 1, 1, 0, 0, 0, 0],
             "blendMode": "normal",
@@ -713,7 +750,7 @@ class LibraryExport extends BaseController
         place.matrix[0] = this._$xScale * scale;
         place.matrix[3] = this._$yScale * scale;
 
-        const image = this._$instance.toImage(
+        const bitmapData = this.createBitmapData(
             Math.ceil(this._$width  * this._$xScale * scale),
             Math.ceil(this._$height * this._$yScale * scale),
             place, range,
@@ -725,7 +762,7 @@ class LibraryExport extends BaseController
         Util.$zoomScale    = zoomScale;
         Util.$currentFrame = currentFrame;
 
-        return image;
+        return bitmapData;
     }
 }
 

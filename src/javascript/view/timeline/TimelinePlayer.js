@@ -327,9 +327,6 @@ class TimelinePlayer extends BaseTimeline
             // マーカーを移動
             Util.$timelineMarker.move();
 
-            // 描画した時間を更新
-            this._$startTime = timestamp - delta % this._$fps;
-
             const moveX = (frame - 1) * (Util.$timelineTool.timelineWidth + 1);
             if (moveX > base.offsetWidth / 2) {
                 Util
@@ -337,8 +334,12 @@ class TimelinePlayer extends BaseTimeline
                     .moveTimeLine(moveX - base.offsetWidth / 2);
             }
 
+            // 描画した時間を更新
+            this._$startTime = timestamp - delta % this._$fps;
+
             // 再描画
             this.reloadScreen();
+
         }
 
         // 描画のタイマーをセット

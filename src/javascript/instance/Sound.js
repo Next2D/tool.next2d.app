@@ -40,9 +40,11 @@ class Sound extends Instance
     }
 
     /**
-     * @return {HTMLVideoElement}
+     * @return {HTMLAudioElement}
+     * @method
+     * @public
      */
-    get preview ()
+    getPreview ()
     {
         return this._$audio;
     }

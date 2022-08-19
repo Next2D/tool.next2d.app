@@ -158,28 +158,106 @@ class Instance
      * @param  {number} width
      * @param  {number} height
      * @param  {object} place
-     * @param  {object} range
+     * @param  {object} [range = null]
      * @param  {number} [dx = 0]
      * @param  {number} [dy = 0]
      * @return {HTMLImageElement}
      * @method
      * @public
      */
-    toImage (width, height, place, range, dx = 0, dy = 0)
+    toImage (width, height, place, range = null, dx = 0, dy = 0)
     {
         // empty image
         if (!width || !height) {
-            console.log("TODO emptyImage.");
             return Util.$emptyImage;
         }
 
-        const { Sprite, BitmapData } = window.next2d.display;
-        const { Matrix, ColorTransform, Rectangle } = window.next2d.geom;
+        const { Matrix } = window.next2d.geom;
 
-        const instance  = this.createInstance(place, range);
-        const rectangle = instance.getBounds();
+        const instance = this.createInstance(place, range);
+
+        const matrix = this.calcMatrix(
+            instance, width, height, place, dx, dy
+        );
+
+        instance
+            .transform
+            .matrix = new Matrix(
+                place.matrix[0], place.matrix[1],
+                place.matrix[2], place.matrix[3],
+                0, 0
+            );
+
+        instance
+            .transform
+            .colorTransform = this.calcColorTransform(place);
+
+        const object = this.calcFilter(width, height, place, matrix);
+        instance.filters = object.filters;
+
+        const container = this.createContainer(instance);
+
+        const bitmapData = this.createBitmapData(width, height);
+        bitmapData.draw(container, matrix);
+
+        const image = new Image();
+        image.src = bitmapData.toDataURL();
+        bitmapData.dispose();
+
+        image.width     = object.width;
+        image.height    = object.height;
+        image._$width   = object.width;
+        image._$height  = object.height;
+        image.draggable = false;
+
+        const bounds = this.getBounds(place.matrix, place, range);
+
+        image._$tx = bounds.xMin;
+        image._$ty = bounds.yMin;
+
+        image._$offsetX = 0 > object.offsetX ? object.offsetX : 0;
+        image._$offsetY = 0 > object.offsetY ? object.offsetY : 0;
+
+        return image;
+    }
+
+    /**
+     * @param  {object} place
+     * @return {next2d.geom.ColorTransform}
+     * @method
+     * @public
+     */
+    calcColorTransform (place)
+    {
+        const { ColorTransform } = window.next2d.geom;
+
+        return new ColorTransform(
+            place.colorTransform[0], place.colorTransform[1],
+            place.colorTransform[2], place.colorTransform[3],
+            place.colorTransform[4], place.colorTransform[5],
+            place.colorTransform[6], place.colorTransform[7]
+        );
+    }
+
+    /**
+     * @param  {DisplayObject} instance
+     * @param  {number} width
+     * @param  {number} height
+     * @param  {object} place
+     * @param  {number} [dx = 0]
+     * @param  {number} [dy = 0]
+     * @return {next2d.geom.Matrix}
+     * @method
+     * @public
+     */
+    calcMatrix (instance, width, height, place, dx = 0, dy = 0)
+    {
+        const { Matrix } = window.next2d.geom;
 
         const ratio = window.devicePixelRatio * Util.$zoomScale;
+
+        const rectangle = instance.getBounds();
+
         const multiMatrix = Util.$multiplicationMatrix(
             Util.$multiplicationMatrix(
                 [ratio, 0, 0, ratio, 0, 0],
@@ -197,10 +275,27 @@ class Instance
         );
 
         const matrix = new Matrix(ratio, 0, 0, ratio);
+
         matrix.translate(
             multiMatrix[4] + width  * ratio / 2 + dx,
             multiMatrix[5] + height * ratio / 2 + dy
         );
+
+        return matrix;
+    }
+
+    /**
+     * @param  {number} width
+     * @param  {number} height
+     * @param  {object} place
+     * @param  {next2d.geom.Matrix} matrix
+     * @return {object}
+     * @method
+     * @public
+     */
+    calcFilter (width, height, place, matrix)
+    {
+        const { Rectangle } = window.next2d.geom;
 
         let xScale = Math.sqrt(
             place.matrix[0] * place.matrix[0]
@@ -212,13 +307,18 @@ class Instance
             + place.matrix[3] * place.matrix[3]
         );
 
-        let offsetX = 0;
-        let offsetY = 0;
+        const object = {
+            "width":   width,
+            "height":  height,
+            "offsetX": 0,
+            "offsetY": 0,
+            "filters": []
+        };
+
         if (place.filter.length) {
 
             let rect = new Rectangle(0, 0, width, height);
 
-            const filters = [];
             for (let idx = 0; idx < place.filter.length; ++idx) {
 
                 const filter = place.filter[idx];
@@ -230,67 +330,63 @@ class Instance
 
                 rect = instance._$generateFilterRect(rect, xScale, yScale);
 
-                filters.push(instance);
+                object.filters.push(instance);
 
             }
-            instance.filters = filters;
 
-            width  = Math.ceil(rect.width);
-            height = Math.ceil(rect.height);
+            object.width  = Math.ceil(rect.width);
+            object.height = Math.ceil(rect.height);
 
-            offsetX = rect.x;
-            offsetY = rect.y;
+            object.offsetX = rect.x;
+            object.offsetY = rect.y;
+
+            if (0 > object.offsetX) {
+                matrix.translate(-object.offsetX * ratio, 0);
+            }
+
+            if (0 > object.offsetY) {
+                matrix.translate(0, -object.offsetY * ratio);
+            }
         }
+
+        return object;
+    }
+
+    /**
+     * @param  {DisplayObject} instance
+     * @return {next2d.display.Sprite}
+     * @method
+     * @public
+     */
+    createContainer (instance)
+    {
+        const { Sprite } = window.next2d.display;
 
         const container = new Sprite();
         const sprite = container.addChild(new Sprite());
         sprite.addChild(instance);
 
-        instance.transform.matrix = new Matrix(
-            place.matrix[0], place.matrix[1],
-            place.matrix[2], place.matrix[3],
-            0, 0
-        );
-        instance.transform.colorTransform = new ColorTransform(
-            place.colorTransform[0], place.colorTransform[1],
-            place.colorTransform[2], place.colorTransform[3],
-            place.colorTransform[4], place.colorTransform[5],
-            place.colorTransform[6], place.colorTransform[7]
-        );
+        return container;
+    }
 
-        if (0 > offsetX) {
-            matrix.translate(-offsetX * ratio, 0);
-        }
+    /**
+     * @param  {number} width
+     * @param  {number} height
+     * @return {next2d.display.BitmapData}
+     * @method
+     * @public
+     */
+    createBitmapData (width, height)
+    {
+        const { BitmapData } = window.next2d.display;
 
-        if (0 > offsetY) {
-            matrix.translate(0, -offsetY * ratio);
-        }
+        const ratio = window.devicePixelRatio * Util.$zoomScale;
 
-        const bitmapData = new BitmapData(
+        return new BitmapData(
             Math.ceil(width  * ratio),
             Math.ceil(height * ratio),
             true, 0
         );
-        bitmapData.draw(container, matrix);
-
-        const image = bitmapData.toImage();
-        bitmapData.dispose();
-
-        image.width     = width;
-        image.height    = height;
-        image._$width   = width;
-        image._$height  = height;
-        image.draggable = false;
-
-        const bounds = this.getBounds(place.matrix, place, range);
-
-        image._$tx = bounds.xMin;
-        image._$ty = bounds.yMin;
-
-        image._$offsetX = 0 > offsetX ? offsetX : 0;
-        image._$offsetY = 0 > offsetY ? offsetY : 0;
-
-        return image;
     }
 
     /**
@@ -410,9 +506,13 @@ class Instance
     }
 
     /**
+     * @description プレビュー画像を生成
+     *
      * @return {HTMLImageElement}
+     * @method
+     * @public
      */
-    get preview ()
+    getPreview ()
     {
         const bounds = this.getBounds([1, 0, 0, 1, 0, 0]);
 
@@ -454,7 +554,7 @@ class Instance
         );
 
         if (image.height !== height) {
-            const height  = Math.min(150, image.height);
+            const height = Math.min(150, image.height);
             image.width  *= height / image.height;
             image.height  = height;
         }

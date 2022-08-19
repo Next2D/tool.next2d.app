@@ -110,7 +110,17 @@ class LoopController extends BaseController
             return value;
         }
 
-        value = Util.$clamp(value | 0, 1, character.endFrame - 1);
+        const instance = Util
+            .$currentWorkSpace()
+            .getLibrary(
+                character.libraryId
+            );
+
+        if (!instance) {
+            return value;
+        }
+
+        value = Util.$clamp(value | 0, 1, instance.totalFrame);
 
         const frame = Util.$timelineFrame.currentFrame;
         const range = character.getRange(frame);
@@ -164,7 +174,17 @@ class LoopController extends BaseController
             return value;
         }
 
-        value = Util.$clamp(value | 0, 0, character.endFrame - 1);
+        const instance = Util
+            .$currentWorkSpace()
+            .getLibrary(
+                character.libraryId
+            );
+
+        if (!instance) {
+            return value;
+        }
+
+        value = Util.$clamp(value | 0, 0, instance.totalFrame);
 
         const frame = Util.$timelineFrame.currentFrame;
         const range = character.getRange(frame);
@@ -514,9 +534,8 @@ class LoopController extends BaseController
                         .transform
                         .colorTransform = new ColorTransform();
 
-                    const bounds = Util.$boundsMatrix(
-                        instance.getBounds(placeObject, range),
-                        placeObject.matrix
+                    const bounds = instance.getBounds(
+                        [1, 0, 0, 1, 0, 0], placeObject, range
                     );
 
                     const width  = Math.ceil(Math.abs(bounds.xMax - bounds.xMin));
@@ -539,16 +558,20 @@ class LoopController extends BaseController
                     matrix.scale(scale, scale);
                     bitmapData.draw(sprite, matrix);
 
-                    const image = bitmapData.toImage();
+                    const image = new Image();
+                    image.onload = () =>
+                    {
+                        return resolve({
+                            "index": frame - 1,
+                            "image": image
+                        });
+                    };
+
+                    image.src    = bitmapData.toDataURL();
+                    image.width  = bitmapData.width  / ratio;
+                    image.height = bitmapData.height / ratio;
+
                     bitmapData.dispose();
-
-                    image.width  = image.width  / ratio;
-                    image.height = image.height / ratio;
-
-                    return resolve({
-                        "index": frame - 1,
-                        "image": image
-                    });
                 });
             }));
         }

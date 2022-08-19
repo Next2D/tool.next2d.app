@@ -152,98 +152,97 @@ class Layer
      */
     appendCharacter (frame = 1)
     {
-        if (this.disable) {
-            return ;
-        }
+        if (!this.disable) {
 
-        const element = document
-            .getElementById("timeline-onion-skin");
+            const element = document
+                .getElementById("timeline-onion-skin");
 
-        if (element.classList.contains("onion-skin-active")
-            && Util.$timelinePlayer.stopFlag
-        ) {
+            if (element.classList.contains("onion-skin-active")
+                && Util.$timelinePlayer.stopFlag
+            ) {
 
-            const cacheFrame = Util.$timelineFrame.currentFrame;
+                const cacheFrame = Util.$timelineFrame.currentFrame;
 
-            // レイヤーのキーフレームをセット
-            const keyMap = new Map();
-            for (let idx = 0; idx < this._$characters.length; ++idx) {
+                // レイヤーのキーフレームをセット
+                const keyMap = new Map();
+                for (let idx = 0; idx < this._$characters.length; ++idx) {
 
-                const character = this._$characters[idx];
+                    const character = this._$characters[idx];
 
-                for (let keyFrame of character._$places.keys()) {
-                    keyMap.set(keyFrame, true);
+                    for (let keyFrame of character._$places.keys()) {
+                        keyMap.set(keyFrame, true);
+                    }
+
                 }
 
-            }
+                // 選択中のキーフレームは排除
+                const activeCharacters = this.getActiveCharacter(cacheFrame);
+                if (activeCharacters.length) {
+                    const range = activeCharacters[0].getRange(cacheFrame);
+                    keyMap.delete(range.startFrame);
+                }
 
-            // 選択中のキーフレームは排除
-            const activeCharacters = this.getActiveCharacter(cacheFrame);
-            if (activeCharacters.length) {
-                const range = activeCharacters[0].getRange(cacheFrame);
-                keyMap.delete(range.startFrame);
-            }
+                for (const frame of keyMap.keys()) {
 
-            for (const frame of keyMap.keys()) {
+                    Util.$timelineFrame.currentFrame = frame;
 
-                Util.$timelineFrame.currentFrame = frame;
+                    const characters = this.getActiveCharacter(frame);
+                    if (!characters.length) {
+                        continue;
+                    }
+
+                    if (characters.length > 1) {
+                        this.sort(characters, frame);
+                    }
+
+                    for (let idx = 0; idx < characters.length; ++idx) {
+
+                        const character = characters[idx];
+                        character._$image = null;
+
+                        Util.$screen.appendOnionCharacter(character, this.id);
+                    }
+                }
+
+                Util.$timelineFrame.currentFrame = cacheFrame;
+
+                const characters = this.getActiveCharacter(cacheFrame);
+                if (characters.length) {
+
+                    if (characters.length > 1) {
+                        this.sort(characters, cacheFrame);
+                    }
+
+                    const event = this.lock ? "none" : "auto";
+                    for (let idx = 0; idx < characters.length; ++idx) {
+
+                        const character = characters[idx];
+                        character._$image = null;
+
+                        Util.$screen.appendCharacter(
+                            character, cacheFrame, this.id, event
+                        );
+                    }
+
+                }
+
+            } else {
 
                 const characters = this.getActiveCharacter(frame);
-                if (!characters.length) {
-                    continue;
+                if (characters.length) {
+
+                    if (characters.length > 1) {
+                        this.sort(characters, frame);
+                    }
+
+                    const event = this.lock ? "none" : "auto";
+                    for (let idx = 0; idx < characters.length; ++idx) {
+                        Util.$screen.appendCharacter(
+                            characters[idx], frame, this.id, event
+                        );
+                    }
+
                 }
-
-                if (characters.length > 1) {
-                    this.sort(characters, frame);
-                }
-
-                for (let idx = 0; idx < characters.length; ++idx) {
-
-                    const character = characters[idx];
-                    character._$image = null;
-
-                    Util.$screen.appendOnionCharacter(character, this.id);
-                }
-            }
-
-            Util.$timelineFrame.currentFrame = cacheFrame;
-
-            const characters = this.getActiveCharacter(cacheFrame);
-            if (characters.length) {
-
-                if (characters.length > 1) {
-                    this.sort(characters, cacheFrame);
-                }
-
-                const event = this.lock ? "none" : "auto";
-                for (let idx = 0; idx < characters.length; ++idx) {
-
-                    const character = characters[idx];
-                    character._$image = null;
-
-                    Util.$screen.appendCharacter(
-                        character, cacheFrame, this.id, event
-                    );
-                }
-
-            }
-
-        } else {
-
-            const characters = this.getActiveCharacter(frame);
-            if (characters.length) {
-
-                if (characters.length > 1) {
-                    this.sort(characters, frame);
-                }
-
-                const event = this.lock ? "none" : "auto";
-                for (let idx = 0; idx < characters.length; ++idx) {
-                    Util.$screen.appendCharacter(
-                        characters[idx], frame, this.id, event
-                    );
-                }
-
             }
         }
     }

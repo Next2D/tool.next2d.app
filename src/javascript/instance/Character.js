@@ -619,10 +619,13 @@ class Character
     }
 
     /**
+     * @description 表示画像を生成
+     *
      * @return {HTMLImageElement}
+     * @method
      * @public
      */
-    get image ()
+    getImage ()
     {
         if (!this._$image) {
 
@@ -643,14 +646,11 @@ class Character
             const width  = +Math.ceil(Math.abs(bounds.xMax - bounds.xMin));
             const height = +Math.ceil(Math.abs(bounds.yMax - bounds.yMin));
 
+            let image = null;
             switch (place.blendMode) {
 
-                case "alpha":
-                case "erase":
-                    return Util.$emptyImage;
-
                 case "invert":
-                    this._$image = instance.toImage(width, height,
+                    image = instance.toImage(width, height,
                         {
                             "frame": place.frame,
                             "matrix": place.matrix,
@@ -667,12 +667,19 @@ class Character
                     );
                     break;
 
+                case "alpha":
+                case "erase":
+                    image = new Image();
+                    break;
+
                 default:
-                    this._$image = instance
+                    image = instance
                         .toImage(width, height, place, range);
                     break;
 
             }
+
+            this._$image = image;
 
             // set blend mode
             switch (place.blendMode) {
@@ -712,6 +719,8 @@ class Character
             this._$offsetY = this._$image._$offsetY;
 
             this._$image.style.position = "relative";
+
+            return this._$image;
         }
 
         return this._$image;

@@ -183,7 +183,8 @@ class LibraryPreview
 
             document
                 .getElementById("library-preview-area")
-                .appendChild(instance.preview);
+                .appendChild(instance.getPreview());
+
         }
     }
 }

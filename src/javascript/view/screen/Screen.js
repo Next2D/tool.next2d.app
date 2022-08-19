@@ -457,7 +457,7 @@ class Screen extends BaseScreen
      * @param  {number}    frame
      * @param  {number}    layer_id
      * @param  {string}    [event="auto"]
-     * @return {void}
+     * @return {Promise}
      * @method
      * @public
      */
@@ -586,55 +586,15 @@ class Screen extends BaseScreen
             character._$image = null;
         }
 
-        // create image
-        const image      = character.image;
-        image.width      = image._$width  * Util.$zoomScale;
-        image.height     = image._$height * Util.$zoomScale;
-        image.style.left = `${character.offsetX * Util.$zoomScale}px`;
-        image.style.top  = `${character.offsetY * Util.$zoomScale}px`;
-
-        // create div
         const div = document.createElement("div");
-        div.classList.add("display-object");
+
+        // Imageを取得してdivに追加
+        const image = character.getImage();
         div.appendChild(image);
 
-        // mask attach
-        const layer = scene.getLayer(layer_id);
-        if (layer.maskId !== null) {
-
-            const maskLayer = scene.getLayer(layer.maskId);
-            if (!maskLayer) {
-                layer.maskId = null;
-            }
-
-            if (maskLayer && maskLayer.lock && maskLayer._$characters.length) {
-
-                const maskCharacter = maskLayer._$characters[0];
-                const maskImage     = maskCharacter.image;
-
-                const x = maskCharacter.screenX - character.screenX;
-                const y = maskCharacter.screenY - character.screenY;
-
-                div.style.webkitMask = div.style.mask = `url(${maskImage.src}), none`;
-                div.style.webkitMaskSize = div.style.maskSize = `${maskImage.width}px ${maskImage.height}px`;
-                div.style.webkitMaskRepeat = div.style.maskRepeat = "no-repeat";
-                div.style.webkitMaskPosition = div.style.maskPosition = `${x}px ${y}px`;
-
-                div.style.mixBlendMode = image.style.mixBlendMode;
-                div.style.filter       = image.style.filter;
-
-            } else {
-
-                div.style.webkitMask = div.style.mask = "";
-                div.style.webkitMaskSize = div.style.maskSize = "";
-                div.style.webkitMaskRepeat = div.style.maskRepeat = "";
-                div.style.webkitMaskPosition = div.style.maskPosition = "";
-
-                div.style.mixBlendMode = "";
-                div.style.filter       = "";
-
-            }
-        }
+        document
+            .getElementById("stage-area")
+            .appendChild(div);
 
         div.id = `character-${character.id}`;
         div.dataset.characterId  = `${character.id}`;
@@ -643,25 +603,8 @@ class Screen extends BaseScreen
         div.dataset.libraryId    = `${character.libraryId}`;
         div.dataset.child        = "true";
 
-        let tx = Util.$offsetLeft + character.screenX * Util.$zoomScale;
-        let ty = Util.$offsetTop  + character.screenY * Util.$zoomScale;
-
+        div.classList.add("display-object");
         div.style.position = "absolute";
-        div.style.left     = `${tx}px`;
-        div.style.top      = `${ty}px`;
-
-        let width = character.width * Util.$zoomScale;
-        if (!width) {
-            width = 10;
-        }
-
-        let height = character.height * Util.$zoomScale;
-        if (!height) {
-            height = 10;
-        }
-
-        div.style.width  = `${Math.ceil(width)}px`;
-        div.style.height = `${Math.ceil(height)}px`;
         div.style.pointerEvents = event;
 
         div.addEventListener("mouseover", (event) =>
@@ -712,6 +655,70 @@ class Screen extends BaseScreen
                 );
             }
         });
+
+        let width = character.width * Util.$zoomScale;
+        if (!width) {
+            width = 10;
+        }
+
+        let height = character.height * Util.$zoomScale;
+        if (!height) {
+            height = 10;
+        }
+
+        div.style.width  = `${Math.ceil(width)}px`;
+        div.style.height = `${Math.ceil(height)}px`;
+
+        const range  = character.getRange(frame);
+        const bounds = character.getBounds(place.matrix, place, range);
+
+        let tx = Util.$offsetLeft + bounds.xMin * Util.$zoomScale;
+        let ty = Util.$offsetTop  + bounds.yMin * Util.$zoomScale;
+        div.style.left = `${tx}px`;
+        div.style.top  = `${ty}px`;
+
+        image.width      = image._$width  * Util.$zoomScale;
+        image.height     = image._$height * Util.$zoomScale;
+        image.style.left = `${character.offsetX * Util.$zoomScale}px`;
+        image.style.top  = `${character.offsetY * Util.$zoomScale}px`;
+
+        // mask attach
+        const layer = scene.getLayer(layer_id);
+        if (layer.maskId !== null) {
+
+            const maskLayer = scene.getLayer(layer.maskId);
+            if (!maskLayer) {
+                layer.maskId = null;
+            }
+
+            if (maskLayer && maskLayer.lock && maskLayer._$characters.length) {
+
+                const maskCharacter = maskLayer._$characters[0];
+                const maskImage     = maskCharacter.image;
+
+                const x = maskCharacter.screenX - character.screenX;
+                const y = maskCharacter.screenY - character.screenY;
+
+                div.style.webkitMask = div.style.mask = `url(${maskImage.src}), none`;
+                div.style.webkitMaskSize = div.style.maskSize = `${maskImage.width}px ${maskImage.height}px`;
+                div.style.webkitMaskRepeat = div.style.maskRepeat = "no-repeat";
+                div.style.webkitMaskPosition = div.style.maskPosition = `${x}px ${y}px`;
+
+                div.style.mixBlendMode = image.style.mixBlendMode;
+                div.style.filter       = image.style.filter;
+
+            } else {
+
+                div.style.webkitMask = div.style.mask = "";
+                div.style.webkitMaskSize = div.style.maskSize = "";
+                div.style.webkitMaskRepeat = div.style.maskRepeat = "";
+                div.style.webkitMaskPosition = div.style.maskPosition = "";
+
+                div.style.mixBlendMode = "";
+                div.style.filter       = "";
+
+            }
+        }
 
         switch (instance._$type) {
 
@@ -863,11 +870,6 @@ class Screen extends BaseScreen
                 break;
 
         }
-
-        document
-            .getElementById("stage-area")
-            .appendChild(div);
-
     }
 }
 

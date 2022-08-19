@@ -849,52 +849,55 @@ class TextField extends Instance
      * @param  {number} width
      * @param  {number} height
      * @param  {object} place
-     * @return {HTMLTextAreaElement}
+     * @return {Promise}
      * @public
      */
     toImage (width, height, place)
     {
-        const image = super.toImage(width, height, place);
+        return super
+            .toImage(width, height, place)
+            .then((image) =>
+            {
+                image._$tx -= this._$thickness;
+                image._$ty -= this._$thickness;
 
-        image._$tx -= this._$thickness;
-        image._$ty -= this._$thickness;
+                let resizeX = 0;
+                switch (this._$autoSize) {
 
-        let resizeX = 0;
-        switch (this._$autoSize) {
-
-            case 0:
-                if (this._$align === "right") {
-                    resizeX = -4;
-                }
-                break;
-
-            case 1:
-                switch (this._$align) {
-
-                    case "center":
-                        resizeX = (this._$bounds.xMax - this._$originBounds.xMax) / 2;
-                        if (resizeX) {
-                            resizeX -= 2;
+                    case 0:
+                        if (this._$align === "right") {
+                            resizeX = -4;
                         }
                         break;
 
-                    case "right":
-                        resizeX = this._$originBounds.xMax - this._$bounds.xMax;
-                        if (resizeX) {
-                            resizeX += 2;
-                            resizeX *= -1;
+                    case 1:
+                        switch (this._$align) {
+
+                            case "center":
+                                resizeX = (this._$bounds.xMax - this._$originBounds.xMax) / 2;
+                                if (resizeX) {
+                                    resizeX -= 2;
+                                }
+                                break;
+
+                            case "right":
+                                resizeX = this._$originBounds.xMax - this._$bounds.xMax;
+                                if (resizeX) {
+                                    resizeX += 2;
+                                    resizeX *= -1;
+                                }
+                                break;
+
                         }
                         break;
 
                 }
-                break;
 
-        }
+                if (this._$autoSize === 1) {
+                    image._$tx -= resizeX;
+                }
 
-        if (this._$autoSize === 1) {
-            image._$tx -= resizeX;
-        }
-
-        return image;
+                return image;
+            });
     }
 }

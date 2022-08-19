@@ -101,8 +101,10 @@ class Video extends Instance
 
     /**
      * @return {HTMLVideoElement}
+     * @method
+     * @public
      */
-    get preview ()
+    getPreview ()
     {
         const bounds = this.getBounds();
 
