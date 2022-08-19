@@ -29109,687 +29109,6 @@ class TextFormatVerticalAlign
 }
 
 /**
- * URLLoaderDataFormat クラスは、ダウンロードされるデータの受信方法を指定する値を提供します。
- *
- * The URLLoaderDataFormat class provides values that specify how downloaded data is received.
- *
- * @class
- * @memberOf next2d.net
- */
-class URLLoaderDataFormat
-{
-    /**
-     * @description 指定されたクラスのストリングを返します。
-     *              Returns the string representation of the specified class.
-     *
-     * @return  {string}
-     * @default [class URLLoaderDataFormat]
-     * @method
-     * @static
-     */
-    static toString ()
-    {
-        return "[class URLLoaderDataFormat]";
-    }
-
-    /**
-     * @description 指定されたクラスの空間名を返します。
-     *              Returns the space name of the specified class.
-     *
-     * @return  {string}
-     * @default next2d.net.URLLoaderDataFormat
-     * @const
-     * @static
-     */
-    static get namespace ()
-    {
-        return "next2d.net.URLLoaderDataFormat";
-    }
-
-    /**
-     * @description 指定されたオブジェクトのストリングを返します。
-     *              Returns the string representation of the specified object.
-     *
-     * @return  {string}
-     * @default [object URLLoaderDataFormat]
-     * @method
-     * @public
-     */
-    toString ()
-    {
-        return "[object URLLoaderDataFormat]";
-    }
-
-    /**
-     * @description 指定されたオブジェクトの空間名を返します。
-     *              Returns the space name of the specified object.
-     *
-     * @return  {string}
-     * @default next2d.net.URLLoaderDataFormat
-     * @const
-     * @public
-     */
-    get namespace ()
-    {
-        return "next2d.net.URLLoaderDataFormat";
-    }
-
-    /**
-     * @description ダウンロードされるデータを生のバイナリデータとして受信することを指定します。
-     *              Specifies that downloaded data is received as raw binary data.
-     *
-     * @return  {string}
-     * @default arraybuffer
-     * @const
-     * @static
-     */
-    static get ARRAY_BUFFER ()
-    {
-        return "arraybuffer";
-    }
-
-    /**
-     * @description ダウンロードされるデータをJSONとして受信することを指定します。
-     *              Specifies that downloaded data is received as string.
-     *
-     * @return  {string}
-     * @default json
-     * @const
-     * @static
-     */
-    static get JSON ()
-    {
-        return "json";
-    }
-}
-
-/**
- * URLRequest クラスは、すべての情報を 1 つの HTTP 要求にキャプチャします
- *
- * The URLRequest class captures all of the information in a single HTTP request.
- *
- * @class
- * @memberOf next2d.net
- */
-class URLRequest
-{
-    /**
-     * @param {string} [url=""]
-     *
-     * @constructor
-     * @public
-     */
-    constructor (url = "")
-    {
-        /**
-         * @type {string}
-         * @default ""
-         * @private
-         */
-        this._$url = url;
-
-        /**
-         * @type {string}
-         * @default application/json
-         * @private
-         */
-        this._$contentType = "application/json";
-
-        /**
-         * @type {object}
-         * @default null
-         * @private
-         */
-        this._$data = null;
-
-        /**
-         * @type {string}
-         * @default URLRequestMethod.GET
-         * @private
-         */
-        this._$method = URLRequestMethod.GET;
-
-        /**
-         * @type {array}
-         * @private
-         */
-        this._$requestHeaders  = Util.$getArray();
-
-        /**
-         * @type {string}
-         * @default navigator.userAgent
-         * @private
-         */
-        this._$userAgent = Util.$navigator.userAgent;
-
-        /**
-         * @type {string}
-         * @default URLLoaderDataFormat.JSON
-         * @private
-         */
-        this._$responseDataFormat = URLLoaderDataFormat.JSON;
-
-        /**
-         * @type {boolean}
-         * @default false
-         * @private
-         */
-        this._$withCredentials = false;
-    }
-
-    /**
-     * @description 指定されたクラスのストリングを返します。
-     *              Returns the string representation of the specified class.
-     *
-     * @return  {string}
-     * @default [class URLRequest]
-     * @method
-     * @static
-     */
-    static toString ()
-    {
-        return "[class URLRequest]";
-    }
-
-    /**
-     * @description 指定されたクラスの空間名を返します。
-     *              Returns the space name of the specified class.
-     *
-     * @return  {string}
-     * @default next2d.net.URLRequest
-     * @const
-     * @static
-     */
-    static get namespace ()
-    {
-        return "next2d.net.URLRequest";
-    }
-
-    /**
-     * @description 指定されたオブジェクトのストリングを返します。
-     *              Returns the string representation of the specified object.
-     *
-     * @return  {string}
-     * @default [object URLRequest]
-     * @method
-     * @public
-     */
-    toString ()
-    {
-        return "[object URLRequest]";
-    }
-
-    /**
-     * @description 指定されたオブジェクトの空間名を返します。
-     *              Returns the space name of the specified object.
-     *
-     * @return  {string}
-     * @default next2d.net.URLRequest
-     * @const
-     * @public
-     */
-    get namespace ()
-    {
-        return "next2d.net.URLRequest";
-    }
-
-    /**
-     * @description data プロパティのコンテンツの MIME コンテンツタイプです。
-     *              The MIME content type of the content in the the data property.
-     *
-     * @member {string}
-     * @default application/json
-     * @public
-     */
-    get contentType ()
-    {
-        return this._$contentType;
-    }
-    set contentType (content_type)
-    {
-        this._$contentType = `${content_type}`;
-    }
-
-    /**
-     * @description URL リクエストで送信されるデータを含むオブジェクトです。
-     *              An object containing data to be transmitted with the URL request.
-     *
-     * @member {string|object}
-     * @public
-     */
-    get data ()
-    {
-        return this._$data;
-    }
-    set data (data)
-    {
-        this._$data = data;
-    }
-
-    /**
-     * @description HTTP フォーム送信メソッドを制御します。
-     *              Controls the HTTP form submission method.
-     *
-     * @member  {string}
-     * @default URLRequestMethod.GET
-     * @public
-     */
-    get method ()
-    {
-        return this._$method;
-    }
-    set method (method)
-    {
-        method += "";
-        switch (method.toUpperCase()) {
-
-            case URLRequestMethod.DELETE:
-            case URLRequestMethod.HEAD:
-            case URLRequestMethod.OPTIONS:
-            case URLRequestMethod.POST:
-            case URLRequestMethod.PUT:
-                this._$method = method;
-                break;
-
-            default:
-                this._$method = URLRequestMethod.GET;
-                break;
-        }
-    }
-
-    /**
-     * @description HTTP リクエストヘッダーの配列が HTTP リクエストに追加されます。
-     *              The array of HTTP request headers to be appended to the HTTP request.
-     *
-     * @member {URLRequestHeader[]}
-     * @public
-     */
-    get requestHeaders ()
-    {
-        return this._$requestHeaders;
-    }
-    set requestHeaders (request_headers)
-    {
-        if (Util.$isArray(request_headers)) {
-            this._$requestHeaders = request_headers;
-        }
-    }
-
-    /**
-     * @description リクエストされる URL です。
-     *              The URL to be requested.
-     *
-     * @member {string}
-     * @public
-     */
-    get url ()
-    {
-        if (this._$url && this._$url.indexOf("//") === -1) {
-
-            const urls = this._$url.split("/");
-            if (urls[0] === "" || urls[0] === ".") {
-                urls.shift();
-            }
-
-            const player = Util.$currentPlayer();
-            if (player) {
-                return `${player.base}${urls.join("/")}`;
-            }
-        }
-
-        return this._$url;
-    }
-    set url (url)
-    {
-        this._$url = `${url}`;
-    }
-
-    /**
-     * @description HTTP 要求で使用されるユーザーエージェントストリングを指定します。
-     *              Specifies the user-agent string to be used in the HTTP request.
-     *
-     * @member {string}
-     * @readonly
-     * @public
-     */
-    get userAgent ()
-    {
-        return this._$userAgent;
-    }
-
-    /**
-     * @description レスポンスのデータフォーマットを指定します。
-     *              Specifies the data format of the response.
-     *
-     * @member {string}
-     * @default URLLoaderDataFormat.JSON
-     * @public
-     */
-    get responseDataFormat ()
-    {
-        return this._$responseDataFormat;
-    }
-    set responseDataFormat (format)
-    {
-        this._$responseDataFormat = `${format}`;
-    }
-
-    /**
-     * @description HTTP 要求で使用されるユーザーエージェントストリングを指定します。
-     *              Specifies the user-agent string to be used in the HTTP request.
-     *
-     * @member {boolean}
-     * @default false
-     * @readonly
-     * @public
-     */
-    get withCredentials ()
-    {
-        return this._$withCredentials;
-    }
-
-    /**
-     * @description リクエストされる Header Object
-     *              Header Object to be requested.
-     *
-     * @member {Map}
-     * @readonly
-     * @public
-     */
-    get headers ()
-    {
-        const headers = Util.$getMap();
-        headers.set("Content-Type", `${this._$contentType}`);
-
-        const length = this._$requestHeaders.length;
-        for (let idx = 0; idx < length; ++idx) {
-
-            const urlRequestHeader = this._$requestHeaders[idx];
-
-            if (urlRequestHeader instanceof URLRequestHeader) {
-                headers.set(urlRequestHeader.name, urlRequestHeader.value);
-            }
-        }
-
-        return headers;
-    }
-}
-
-/**
- * URLRequestHeader オブジェクトは 1 つの HTTP のリクエストヘッダーをカプセル化し、名前と値のペアを構成します。
- * URLRequestHeader オブジェクトは URLRequest クラスの requestHeaders プロパティで使用されます。
- *
- * A URLRequestHeader object encapsulates a single HTTP request header and consists of a name/value pair.
- * URLRequestHeader objects are used in the requestHeaders property of the URLRequest class.
- *
- * @class
- * @memberOf next2d.net
- */
-class URLRequestHeader
-{
-    /**
-     * @param {string} [name=""]
-     * @param {string} [value=""]
-     *
-     * @constructor
-     * @public
-     */
-    constructor (name = "", value = "")
-    {
-        /**
-         * @type {string}
-         * @default ""
-         * @private
-         */
-        this._$name = `${name}`;
-
-        /**
-         * @type {string}
-         * @default ""
-         * @private
-         */
-        this._$value = `${value}`;
-    }
-
-    /**
-     * @description 指定されたクラスのストリングを返します。
-     *              Returns the string representation of the specified class.
-     *
-     * @return  {string}
-     * @default [class URLRequestHeader]
-     * @method
-     * @static
-     */
-    static toString ()
-    {
-        return "[class URLRequestHeader]";
-    }
-
-    /**
-     * @description 指定されたクラスの空間名を返します。
-     *              Returns the space name of the specified class.
-     *
-     * @return  {string}
-     * @default next2d.net.URLRequestHeader
-     * @const
-     * @static
-     */
-    static get namespace ()
-    {
-        return "next2d.net.URLRequestHeader";
-    }
-
-    /**
-     * @description 指定されたオブジェクトのストリングを返します。
-     *              Returns the string representation of the specified object.
-     *
-     * @return  {string}
-     * @default [object URLRequestHeader]
-     * @method
-     * @public
-     */
-    toString ()
-    {
-        return "[object URLRequestHeader]";
-    }
-
-    /**
-     * @description 指定されたオブジェクトの空間名を返します。
-     *              Returns the space name of the specified object.
-     *
-     * @return  {string}
-     * @default next2d.net.URLRequestHeader
-     * @const
-     * @public
-     */
-    get namespace ()
-    {
-        return "next2d.net.URLRequestHeader";
-    }
-
-    /**
-     * @description HTTP リクエストヘッダー名（Content-Type や SOAPAction など）です。
-     *              An HTTP request header name (such as Content-Type or SOAPAction).
-     *
-     * @member {string}
-     * @default ""
-     * @readonly
-     * @public
-     */
-    get name ()
-    {
-        return this._$name;
-    }
-
-    /**
-     * @description name プロパティに関連付けられた値（text/plain など）です。
-     *              The value associated with the name property (such as text/plain).
-     *
-     * @member {string}
-     * @default ""
-     * @readonly
-     * @public
-     */
-    get value ()
-    {
-        return this._$value;
-    }
-}
-
-/**
- * URLRequestMethod クラスは、URLRequest オブジェクトがデータをサーバーに送信するときに
- * POST または GET のどちらのメソッドを使用するかを指定する値を提供します。
- *
- * The URLRequestMethod class provides values that specify whether the URLRequest object should use the
- * POST method or the GET method when sending data to a server.
- *
- * @class
- * @memberOf next2d.net
- */
-class URLRequestMethod
-{
-    /**
-     * @description 指定されたクラスのストリングを返します。
-     *              Returns the string representation of the specified class.
-     *
-     * @return  {string}
-     * @default [class URLRequestMethod]
-     * @method
-     * @static
-     */
-    static toString ()
-    {
-        return "[class URLRequestMethod]";
-    }
-
-    /**
-     * @description 指定されたクラスの空間名を返します。
-     *              Returns the space name of the specified class.
-     *
-     * @return  {string}
-     * @default next2d.net.URLRequestMethod
-     * @const
-     * @static
-     */
-    static get namespace ()
-    {
-        return "next2d.net.URLRequestMethod";
-    }
-
-    /**
-     * @description 指定されたオブジェクトのストリングを返します。
-     *              Returns the string representation of the specified object.
-     *
-     * @return  {string}
-     * @default [object URLRequestMethod]
-     * @method
-     * @public
-     */
-    toString ()
-    {
-        return "[object URLRequestMethod]";
-    }
-
-    /**
-     * @description 指定されたオブジェクトの空間名を返します。
-     *              Returns the space name of the specified object.
-     *
-     * @return  {string}
-     * @default next2d.net.URLRequestMethod
-     * @const
-     * @public
-     */
-    get namespace ()
-    {
-        return "next2d.net.URLRequestMethod";
-    }
-
-    /**
-     * @description URLRequest オブジェクトが DELETE であることを指定します。
-     *              Specifies that the URLRequest object is a DELETE.
-     *
-     * @return  {string}
-     * @default DELETE
-     * @const
-     * @static
-     */
-    static get DELETE ()
-    {
-        return "DELETE";
-    }
-
-    /**
-     * @description URLRequest オブジェクトが GET であることを指定します。
-     *              Specifies that the URLRequest object is a GET.
-     *
-     * @return  {string}
-     * @default GET
-     * @const
-     * @static
-     */
-    static get GET ()
-    {
-        return "GET";
-    }
-
-    /**
-     * @description URLRequest オブジェクトが HEAD であることを指定します。
-     *              Specifies that the URLRequest object is a HEAD.
-     *
-     * @return  {string}
-     * @default HEAD
-     * @const
-     * @static
-     */
-    static get HEAD ()
-    {
-        return "HEAD";
-    }
-
-    /**
-     * @description URLRequest オブジェクトが OPTIONS であることを指定します。
-     *              Specifies that the URLRequest object is OPTIONS.
-     *
-     * @return  {string}
-     * @default OPTIONS
-     * @const
-     * @static
-     */
-    static get OPTIONS ()
-    {
-        return "OPTIONS";
-    }
-
-    /**
-     * @description URLRequest オブジェクトが POST であることを指定します。
-     *              Specifies that the URLRequest object is a POST.
-     *
-     * @return  {string}
-     * @default POST
-     * @const
-     * @static
-     */
-    static get POST ()
-    {
-        return "POST";
-    }
-
-    /**
-     * @description URLRequest オブジェクトが PUT であることを指定します。
-     *              Specifies that the URLRequest object is a PUT.
-     *
-     * @return  {string}
-     * @default PUT
-     * @const
-     * @static
-     */
-    static get PUT ()
-    {
-        return "PUT";
-    }
-}
-
-/**
  * Sound クラスを使用すると、アプリケーション内のサウンドを処理することができます。
  * Sound クラスを使用すると、Sound オブジェクトの作成や、外部 MP3 ファイルのオブジェクトへのロードと再生ができます。
  *
@@ -31625,6 +30944,687 @@ class Video extends DisplayObject
 }
 
 /**
+ * URLLoaderDataFormat クラスは、ダウンロードされるデータの受信方法を指定する値を提供します。
+ *
+ * The URLLoaderDataFormat class provides values that specify how downloaded data is received.
+ *
+ * @class
+ * @memberOf next2d.net
+ */
+class URLLoaderDataFormat
+{
+    /**
+     * @description 指定されたクラスのストリングを返します。
+     *              Returns the string representation of the specified class.
+     *
+     * @return  {string}
+     * @default [class URLLoaderDataFormat]
+     * @method
+     * @static
+     */
+    static toString ()
+    {
+        return "[class URLLoaderDataFormat]";
+    }
+
+    /**
+     * @description 指定されたクラスの空間名を返します。
+     *              Returns the space name of the specified class.
+     *
+     * @return  {string}
+     * @default next2d.net.URLLoaderDataFormat
+     * @const
+     * @static
+     */
+    static get namespace ()
+    {
+        return "next2d.net.URLLoaderDataFormat";
+    }
+
+    /**
+     * @description 指定されたオブジェクトのストリングを返します。
+     *              Returns the string representation of the specified object.
+     *
+     * @return  {string}
+     * @default [object URLLoaderDataFormat]
+     * @method
+     * @public
+     */
+    toString ()
+    {
+        return "[object URLLoaderDataFormat]";
+    }
+
+    /**
+     * @description 指定されたオブジェクトの空間名を返します。
+     *              Returns the space name of the specified object.
+     *
+     * @return  {string}
+     * @default next2d.net.URLLoaderDataFormat
+     * @const
+     * @public
+     */
+    get namespace ()
+    {
+        return "next2d.net.URLLoaderDataFormat";
+    }
+
+    /**
+     * @description ダウンロードされるデータを生のバイナリデータとして受信することを指定します。
+     *              Specifies that downloaded data is received as raw binary data.
+     *
+     * @return  {string}
+     * @default arraybuffer
+     * @const
+     * @static
+     */
+    static get ARRAY_BUFFER ()
+    {
+        return "arraybuffer";
+    }
+
+    /**
+     * @description ダウンロードされるデータをJSONとして受信することを指定します。
+     *              Specifies that downloaded data is received as string.
+     *
+     * @return  {string}
+     * @default json
+     * @const
+     * @static
+     */
+    static get JSON ()
+    {
+        return "json";
+    }
+}
+
+/**
+ * URLRequest クラスは、すべての情報を 1 つの HTTP 要求にキャプチャします
+ *
+ * The URLRequest class captures all of the information in a single HTTP request.
+ *
+ * @class
+ * @memberOf next2d.net
+ */
+class URLRequest
+{
+    /**
+     * @param {string} [url=""]
+     *
+     * @constructor
+     * @public
+     */
+    constructor (url = "")
+    {
+        /**
+         * @type {string}
+         * @default ""
+         * @private
+         */
+        this._$url = url;
+
+        /**
+         * @type {string}
+         * @default application/json
+         * @private
+         */
+        this._$contentType = "application/json";
+
+        /**
+         * @type {object}
+         * @default null
+         * @private
+         */
+        this._$data = null;
+
+        /**
+         * @type {string}
+         * @default URLRequestMethod.GET
+         * @private
+         */
+        this._$method = URLRequestMethod.GET;
+
+        /**
+         * @type {array}
+         * @private
+         */
+        this._$requestHeaders  = Util.$getArray();
+
+        /**
+         * @type {string}
+         * @default navigator.userAgent
+         * @private
+         */
+        this._$userAgent = Util.$navigator.userAgent;
+
+        /**
+         * @type {string}
+         * @default URLLoaderDataFormat.JSON
+         * @private
+         */
+        this._$responseDataFormat = URLLoaderDataFormat.JSON;
+
+        /**
+         * @type {boolean}
+         * @default false
+         * @private
+         */
+        this._$withCredentials = false;
+    }
+
+    /**
+     * @description 指定されたクラスのストリングを返します。
+     *              Returns the string representation of the specified class.
+     *
+     * @return  {string}
+     * @default [class URLRequest]
+     * @method
+     * @static
+     */
+    static toString ()
+    {
+        return "[class URLRequest]";
+    }
+
+    /**
+     * @description 指定されたクラスの空間名を返します。
+     *              Returns the space name of the specified class.
+     *
+     * @return  {string}
+     * @default next2d.net.URLRequest
+     * @const
+     * @static
+     */
+    static get namespace ()
+    {
+        return "next2d.net.URLRequest";
+    }
+
+    /**
+     * @description 指定されたオブジェクトのストリングを返します。
+     *              Returns the string representation of the specified object.
+     *
+     * @return  {string}
+     * @default [object URLRequest]
+     * @method
+     * @public
+     */
+    toString ()
+    {
+        return "[object URLRequest]";
+    }
+
+    /**
+     * @description 指定されたオブジェクトの空間名を返します。
+     *              Returns the space name of the specified object.
+     *
+     * @return  {string}
+     * @default next2d.net.URLRequest
+     * @const
+     * @public
+     */
+    get namespace ()
+    {
+        return "next2d.net.URLRequest";
+    }
+
+    /**
+     * @description data プロパティのコンテンツの MIME コンテンツタイプです。
+     *              The MIME content type of the content in the the data property.
+     *
+     * @member {string}
+     * @default application/json
+     * @public
+     */
+    get contentType ()
+    {
+        return this._$contentType;
+    }
+    set contentType (content_type)
+    {
+        this._$contentType = `${content_type}`;
+    }
+
+    /**
+     * @description URL リクエストで送信されるデータを含むオブジェクトです。
+     *              An object containing data to be transmitted with the URL request.
+     *
+     * @member {string|object}
+     * @public
+     */
+    get data ()
+    {
+        return this._$data;
+    }
+    set data (data)
+    {
+        this._$data = data;
+    }
+
+    /**
+     * @description HTTP フォーム送信メソッドを制御します。
+     *              Controls the HTTP form submission method.
+     *
+     * @member  {string}
+     * @default URLRequestMethod.GET
+     * @public
+     */
+    get method ()
+    {
+        return this._$method;
+    }
+    set method (method)
+    {
+        method += "";
+        switch (method.toUpperCase()) {
+
+            case URLRequestMethod.DELETE:
+            case URLRequestMethod.HEAD:
+            case URLRequestMethod.OPTIONS:
+            case URLRequestMethod.POST:
+            case URLRequestMethod.PUT:
+                this._$method = method;
+                break;
+
+            default:
+                this._$method = URLRequestMethod.GET;
+                break;
+        }
+    }
+
+    /**
+     * @description HTTP リクエストヘッダーの配列が HTTP リクエストに追加されます。
+     *              The array of HTTP request headers to be appended to the HTTP request.
+     *
+     * @member {URLRequestHeader[]}
+     * @public
+     */
+    get requestHeaders ()
+    {
+        return this._$requestHeaders;
+    }
+    set requestHeaders (request_headers)
+    {
+        if (Util.$isArray(request_headers)) {
+            this._$requestHeaders = request_headers;
+        }
+    }
+
+    /**
+     * @description リクエストされる URL です。
+     *              The URL to be requested.
+     *
+     * @member {string}
+     * @public
+     */
+    get url ()
+    {
+        if (this._$url && this._$url.indexOf("//") === -1) {
+
+            const urls = this._$url.split("/");
+            if (urls[0] === "" || urls[0] === ".") {
+                urls.shift();
+            }
+
+            const player = Util.$currentPlayer();
+            if (player) {
+                return `${player.base}${urls.join("/")}`;
+            }
+        }
+
+        return this._$url;
+    }
+    set url (url)
+    {
+        this._$url = `${url}`;
+    }
+
+    /**
+     * @description HTTP 要求で使用されるユーザーエージェントストリングを指定します。
+     *              Specifies the user-agent string to be used in the HTTP request.
+     *
+     * @member {string}
+     * @readonly
+     * @public
+     */
+    get userAgent ()
+    {
+        return this._$userAgent;
+    }
+
+    /**
+     * @description レスポンスのデータフォーマットを指定します。
+     *              Specifies the data format of the response.
+     *
+     * @member {string}
+     * @default URLLoaderDataFormat.JSON
+     * @public
+     */
+    get responseDataFormat ()
+    {
+        return this._$responseDataFormat;
+    }
+    set responseDataFormat (format)
+    {
+        this._$responseDataFormat = `${format}`;
+    }
+
+    /**
+     * @description HTTP 要求で使用されるユーザーエージェントストリングを指定します。
+     *              Specifies the user-agent string to be used in the HTTP request.
+     *
+     * @member {boolean}
+     * @default false
+     * @readonly
+     * @public
+     */
+    get withCredentials ()
+    {
+        return this._$withCredentials;
+    }
+
+    /**
+     * @description リクエストされる Header Object
+     *              Header Object to be requested.
+     *
+     * @member {Map}
+     * @readonly
+     * @public
+     */
+    get headers ()
+    {
+        const headers = Util.$getMap();
+        headers.set("Content-Type", `${this._$contentType}`);
+
+        const length = this._$requestHeaders.length;
+        for (let idx = 0; idx < length; ++idx) {
+
+            const urlRequestHeader = this._$requestHeaders[idx];
+
+            if (urlRequestHeader instanceof URLRequestHeader) {
+                headers.set(urlRequestHeader.name, urlRequestHeader.value);
+            }
+        }
+
+        return headers;
+    }
+}
+
+/**
+ * URLRequestHeader オブジェクトは 1 つの HTTP のリクエストヘッダーをカプセル化し、名前と値のペアを構成します。
+ * URLRequestHeader オブジェクトは URLRequest クラスの requestHeaders プロパティで使用されます。
+ *
+ * A URLRequestHeader object encapsulates a single HTTP request header and consists of a name/value pair.
+ * URLRequestHeader objects are used in the requestHeaders property of the URLRequest class.
+ *
+ * @class
+ * @memberOf next2d.net
+ */
+class URLRequestHeader
+{
+    /**
+     * @param {string} [name=""]
+     * @param {string} [value=""]
+     *
+     * @constructor
+     * @public
+     */
+    constructor (name = "", value = "")
+    {
+        /**
+         * @type {string}
+         * @default ""
+         * @private
+         */
+        this._$name = `${name}`;
+
+        /**
+         * @type {string}
+         * @default ""
+         * @private
+         */
+        this._$value = `${value}`;
+    }
+
+    /**
+     * @description 指定されたクラスのストリングを返します。
+     *              Returns the string representation of the specified class.
+     *
+     * @return  {string}
+     * @default [class URLRequestHeader]
+     * @method
+     * @static
+     */
+    static toString ()
+    {
+        return "[class URLRequestHeader]";
+    }
+
+    /**
+     * @description 指定されたクラスの空間名を返します。
+     *              Returns the space name of the specified class.
+     *
+     * @return  {string}
+     * @default next2d.net.URLRequestHeader
+     * @const
+     * @static
+     */
+    static get namespace ()
+    {
+        return "next2d.net.URLRequestHeader";
+    }
+
+    /**
+     * @description 指定されたオブジェクトのストリングを返します。
+     *              Returns the string representation of the specified object.
+     *
+     * @return  {string}
+     * @default [object URLRequestHeader]
+     * @method
+     * @public
+     */
+    toString ()
+    {
+        return "[object URLRequestHeader]";
+    }
+
+    /**
+     * @description 指定されたオブジェクトの空間名を返します。
+     *              Returns the space name of the specified object.
+     *
+     * @return  {string}
+     * @default next2d.net.URLRequestHeader
+     * @const
+     * @public
+     */
+    get namespace ()
+    {
+        return "next2d.net.URLRequestHeader";
+    }
+
+    /**
+     * @description HTTP リクエストヘッダー名（Content-Type や SOAPAction など）です。
+     *              An HTTP request header name (such as Content-Type or SOAPAction).
+     *
+     * @member {string}
+     * @default ""
+     * @readonly
+     * @public
+     */
+    get name ()
+    {
+        return this._$name;
+    }
+
+    /**
+     * @description name プロパティに関連付けられた値（text/plain など）です。
+     *              The value associated with the name property (such as text/plain).
+     *
+     * @member {string}
+     * @default ""
+     * @readonly
+     * @public
+     */
+    get value ()
+    {
+        return this._$value;
+    }
+}
+
+/**
+ * URLRequestMethod クラスは、URLRequest オブジェクトがデータをサーバーに送信するときに
+ * POST または GET のどちらのメソッドを使用するかを指定する値を提供します。
+ *
+ * The URLRequestMethod class provides values that specify whether the URLRequest object should use the
+ * POST method or the GET method when sending data to a server.
+ *
+ * @class
+ * @memberOf next2d.net
+ */
+class URLRequestMethod
+{
+    /**
+     * @description 指定されたクラスのストリングを返します。
+     *              Returns the string representation of the specified class.
+     *
+     * @return  {string}
+     * @default [class URLRequestMethod]
+     * @method
+     * @static
+     */
+    static toString ()
+    {
+        return "[class URLRequestMethod]";
+    }
+
+    /**
+     * @description 指定されたクラスの空間名を返します。
+     *              Returns the space name of the specified class.
+     *
+     * @return  {string}
+     * @default next2d.net.URLRequestMethod
+     * @const
+     * @static
+     */
+    static get namespace ()
+    {
+        return "next2d.net.URLRequestMethod";
+    }
+
+    /**
+     * @description 指定されたオブジェクトのストリングを返します。
+     *              Returns the string representation of the specified object.
+     *
+     * @return  {string}
+     * @default [object URLRequestMethod]
+     * @method
+     * @public
+     */
+    toString ()
+    {
+        return "[object URLRequestMethod]";
+    }
+
+    /**
+     * @description 指定されたオブジェクトの空間名を返します。
+     *              Returns the space name of the specified object.
+     *
+     * @return  {string}
+     * @default next2d.net.URLRequestMethod
+     * @const
+     * @public
+     */
+    get namespace ()
+    {
+        return "next2d.net.URLRequestMethod";
+    }
+
+    /**
+     * @description URLRequest オブジェクトが DELETE であることを指定します。
+     *              Specifies that the URLRequest object is a DELETE.
+     *
+     * @return  {string}
+     * @default DELETE
+     * @const
+     * @static
+     */
+    static get DELETE ()
+    {
+        return "DELETE";
+    }
+
+    /**
+     * @description URLRequest オブジェクトが GET であることを指定します。
+     *              Specifies that the URLRequest object is a GET.
+     *
+     * @return  {string}
+     * @default GET
+     * @const
+     * @static
+     */
+    static get GET ()
+    {
+        return "GET";
+    }
+
+    /**
+     * @description URLRequest オブジェクトが HEAD であることを指定します。
+     *              Specifies that the URLRequest object is a HEAD.
+     *
+     * @return  {string}
+     * @default HEAD
+     * @const
+     * @static
+     */
+    static get HEAD ()
+    {
+        return "HEAD";
+    }
+
+    /**
+     * @description URLRequest オブジェクトが OPTIONS であることを指定します。
+     *              Specifies that the URLRequest object is OPTIONS.
+     *
+     * @return  {string}
+     * @default OPTIONS
+     * @const
+     * @static
+     */
+    static get OPTIONS ()
+    {
+        return "OPTIONS";
+    }
+
+    /**
+     * @description URLRequest オブジェクトが POST であることを指定します。
+     *              Specifies that the URLRequest object is a POST.
+     *
+     * @return  {string}
+     * @default POST
+     * @const
+     * @static
+     */
+    static get POST ()
+    {
+        return "POST";
+    }
+
+    /**
+     * @description URLRequest オブジェクトが PUT であることを指定します。
+     *              Specifies that the URLRequest object is a PUT.
+     *
+     * @return  {string}
+     * @default PUT
+     * @const
+     * @static
+     */
+    static get PUT ()
+    {
+        return "PUT";
+    }
+}
+
+/**
  * Easeクラスは、イージング機能の関数を提供します。
  * The Ease class provides a collection of easing functions
  *
@@ -33016,6 +33016,695 @@ class CacheStore
     }
 }
 
+/**
+ * @class
+ */
+class VertexShaderLibrary
+{
+    /**
+     * @return {string}
+     * @method
+     * @static
+     */
+    static FUNCTION_GRID_OFF ()
+    {
+        return `
+
+vec2 applyMatrix(in vec2 vertex) {
+    mat3 matrix = mat3(
+        u_highp[0].xyz,
+        u_highp[1].xyz,
+        u_highp[2].xyz
+    );
+
+    vec2 position = (matrix * vec3(vertex, 1.0)).xy;
+
+    return position;
+}
+
+`;
+    }
+
+    /**
+     * @param  {number} index
+     * @return {string}
+     * @method
+     * @static
+     */
+    static FUNCTION_GRID_ON (index)
+    {
+        return `
+
+vec2 applyMatrix(in vec2 vertex) {
+    mat3 parent_matrix = mat3(
+        u_highp[${index    }].xyz,
+        u_highp[${index + 1}].xyz,
+        u_highp[${index + 2}].xyz
+    );
+    mat3 ancestor_matrix = mat3(
+        u_highp[${index + 3}].xyz,
+        u_highp[${index + 4}].xyz,
+        u_highp[${index + 5}].xyz
+    );
+    vec2 parent_offset = vec2(u_highp[${index + 2}].w, u_highp[${index + 3}].w);
+    vec2 parent_size   = vec2(u_highp[${index + 4}].w, u_highp[${index + 5}].w);
+    vec4 grid_min = u_highp[${index + 6}];
+    vec4 grid_max = u_highp[${index + 7}];
+
+    vec2 position = (parent_matrix * vec3(vertex, 1.0)).xy;
+    position = (position - parent_offset) / parent_size;
+
+    vec4 ga = grid_min;
+    vec4 gb = grid_max  - grid_min;
+    vec4 gc = vec4(1.0) - grid_max;
+
+    vec2 pa = position;
+    vec2 pb = position - grid_min.st;
+    vec2 pc = position - grid_max.st;
+
+    position = (ga.pq / ga.st) * min(pa, ga.st)
+             + (gb.pq / gb.st) * clamp(pb, vec2(0.0), gb.st)
+             + (gc.pq / gc.st) * max(vec2(0.0), pc);
+
+    position = position * parent_size + parent_offset;
+    position = (ancestor_matrix * vec3(position, 1.0)).xy;
+
+    return position;
+}
+
+`;
+    }
+}
+/**
+ * @class
+ */
+class VertexShaderSource
+{
+    /**
+     * @param  {WebGLShaderKeyword} k
+     * @return {string}
+     * @method
+     * @static
+     */
+    static TEXTURE (k)
+    {
+        return `${k.version()}
+
+${k.attribute(0)} vec2 a_vertex;
+
+${k.varyingOut()} vec2 v_coord;
+
+void main() {
+    v_coord = a_vertex;
+
+    vec2 position = a_vertex * 2.0 - 1.0;
+    gl_Position = vec4(position, 0.0, 1.0);
+}
+
+`;
+    }
+
+    /**
+     * @param  {WebGLShaderKeyword} k
+     * @return {string}
+     * @method
+     * @static
+     */
+    static BLEND (k)
+    {
+        return `${k.version()}
+
+${k.attribute(0)} vec2 a_vertex;
+
+uniform vec4 u_highp[4];
+
+${k.varyingOut()} vec2 v_coord;
+
+void main() {
+    v_coord = a_vertex;
+
+    vec2 offset   = u_highp[0].xy;
+    vec2 size     = u_highp[0].zw;
+    mat3 matrix   = mat3(u_highp[1].xyz, u_highp[2].xyz, u_highp[3].xyz);
+    vec2 viewport = vec2(u_highp[1].w, u_highp[2].w);
+
+    vec2 position = vec2(a_vertex.x, 1.0 - a_vertex.y);
+    position = position * size + offset;
+    position = (matrix * vec3(position, 1.0)).xy;
+    position /= viewport;
+
+    position = position * 2.0 - 1.0;
+    gl_Position = vec4(position.x, -position.y, 0.0, 1.0);
+}
+
+`;
+    }
+
+    /**
+     * @param  {WebGLShaderKeyword} k
+     * @return {string}
+     * @method
+     * @static
+     */
+    static BLEND_CLIP (k)
+    {
+        return `${k.version()}
+
+${k.attribute(0)} vec2 a_vertex;
+
+uniform vec4 u_highp[4];
+
+${k.varyingOut()} vec2 v_coord;
+
+void main() {
+    v_coord = a_vertex;
+
+    vec2 offset     = u_highp[0].xy;
+    vec2 size       = u_highp[0].zw;
+    mat3 inv_matrix = mat3(u_highp[1].xyz, u_highp[2].xyz, u_highp[3].xyz);
+    vec2 viewport   = vec2(u_highp[1].w, u_highp[2].w);
+
+    vec2 position = vec2(a_vertex.x, 1.0 - a_vertex.y);
+    position *= viewport;
+    position = (inv_matrix * vec3(position, 1.0)).xy;
+    position = (position - offset) / size;
+
+    position = position * 2.0 - 1.0;
+    gl_Position = vec4(position.x, -position.y, 0.0, 1.0);
+}
+
+`;
+    }
+}
+/**
+ * @class
+ */
+class VertexShaderSourceBitmapData
+{
+    /**
+     * @param  {WebGLShaderKeyword} k
+     * @return {string}
+     * @method
+     * @static
+     */
+    static POSITION_ONLY (k)
+    {
+        return `${k.version()}
+
+${k.attribute(0)} vec2 a_vertex;
+
+uniform vec4 u_highp[3];
+
+void main() {
+    mat3 matrix = mat3(u_highp[0].xyz, u_highp[1].xyz, u_highp[2].xyz);
+
+    vec2 position = (matrix * vec3(a_vertex, 1.0)).xy * 2.0 - 1.0;
+    gl_Position = vec4(position, 0.0, 1.0);
+}
+
+`;
+    }
+
+    /**
+     * @param  {WebGLShaderKeyword} k
+     * @return {string}
+     * @method
+     * @static
+     */
+    static SRC_AND_DST_TEX_COORD (k)
+    {
+        return `${k.version()}
+
+${k.attribute(0)} vec2 a_vertex;
+
+uniform vec4 u_highp[5];
+
+${k.varyingOut()} vec2 v_src_tex_coord;
+${k.varyingOut()} vec2 v_dst_tex_coord;
+
+void main() {
+    mat3 matrix = mat3(u_highp[0].xyz, u_highp[1].xyz, u_highp[2].xyz);
+    mat3 src_tex_matrix = mat3(
+        u_highp[3].xyz,
+        u_highp[4].xyz,
+        vec3(u_highp[0].w, u_highp[1].w, u_highp[2].w)
+    );
+
+    v_src_tex_coord = (src_tex_matrix * vec3(a_vertex, 1.0)).xy;
+    v_dst_tex_coord = vec2(a_vertex.x, 1.0 - a_vertex.y);
+
+    vec2 position = (matrix * vec3(a_vertex, 1.0)).xy * 2.0 - 1.0;
+    gl_Position = vec4(position, 0.0, 1.0);
+}
+
+`;
+    }
+
+    /**
+     * @param  {WebGLShaderKeyword} k
+     * @return {string}
+     * @method
+     * @static
+     */
+    static SRC_TEX_COORD (k)
+    {
+        return `${k.version()}
+
+${k.attribute(0)} vec2 a_vertex;
+
+uniform vec4 u_highp[5];
+
+${k.varyingOut()} vec2 v_src_tex_coord;
+
+void main() {
+    mat3 matrix = mat3(u_highp[0].xyz, u_highp[1].xyz, u_highp[2].xyz);
+    mat3 src_tex_matrix = mat3(
+        u_highp[3].xyz,
+        u_highp[4].xyz,
+        vec3(u_highp[0].w, u_highp[1].w, u_highp[2].w)
+    );
+
+    v_src_tex_coord = (src_tex_matrix * vec3(a_vertex, 1.0)).xy;
+
+    vec2 position = (matrix * vec3(a_vertex, 1.0)).xy * 2.0 - 1.0;
+    gl_Position = vec4(position, 0.0, 1.0);
+}
+
+`;
+    }
+
+    /**
+     * @param  {WebGLShaderKeyword} k
+     * @return {string}
+     * @method
+     * @static
+     */
+    static SRC_AND_ALPHA_TEX_COORD (k)
+    {
+        return `${k.version()}
+
+${k.attribute(0)} vec2 a_vertex;
+
+uniform vec4 u_highp[7];
+
+${k.varyingOut()} vec2 v_src_tex_coord;
+${k.varyingOut()} vec2 v_alpha_tex_coord;
+
+void main() {
+    mat3 matrix = mat3(u_highp[0].xyz, u_highp[1].xyz, u_highp[2].xyz);
+    mat3 src_tex_matrix = mat3(u_highp[3].xyz, u_highp[4].xyz, u_highp[5].xyz);
+    mat3 alpha_tex_matrix = mat3(
+        u_highp[6].xyz,
+        vec3(u_highp[0].w, u_highp[1].w, u_highp[2].w),
+        vec3(u_highp[3].w, u_highp[4].w, u_highp[5].w)
+    );
+
+    v_src_tex_coord = (src_tex_matrix * vec3(a_vertex, 1.0)).xy;
+    v_alpha_tex_coord = (alpha_tex_matrix * vec3(a_vertex, 1.0)).xy;
+
+    vec2 position = (matrix * vec3(a_vertex, 1.0)).xy * 2.0 - 1.0;
+    gl_Position = vec4(position, 0.0, 1.0);
+}
+
+`;
+    }
+
+    /**
+     * @param  {WebGLShaderKeyword} k
+     * @return {string}
+     * @method
+     * @static
+     */
+    static PIXEL_DISSOLVE_COLOR (k)
+    {
+        return `${k.version()}
+
+${k.attribute(0)} vec2 a_vertex;
+
+uniform mat3 u_highp[3];
+
+void main() {
+    mat3 matrix = mat3(u_highp[0].xyz, u_highp[1].xyz, u_highp[2].xyz);
+
+    vec2 position = (matrix * vec3(a_vertex, 1.0)).xy * 2.0 - 1.0;
+    gl_Position = vec4(position, 0.0, 1.0);
+
+    gl_PointSize = 1.0;
+}
+
+`;
+    }
+
+    /**
+     * @param  {WebGLShaderKeyword} k
+     * @return {string}
+     * @method
+     * @static
+     */
+    static PIXEL_DISSOLVE_TEXTURE (k)
+    {
+        return `${k.version()}
+
+${k.attribute(0)} vec2 a_vertex;
+
+uniform mat3 u_highp[5];
+
+${k.varyingOut()} vec2 v_src_tex_coord;
+
+void main() {
+    mat3 matrix = mat3(u_highp[0].xyz, u_highp[1].xyz, u_highp[2].xyz);
+    mat3 src_tex_matrix = mat3(
+        u_highp[3].xyz,
+        u_highp[4].xyz,
+        vec3(u_highp[0].w, u_highp[1].w, u_highp[2].w)
+    );
+
+    v_src_tex_coord = (u_src_tex_matrix * vec3(a_vertex, 1.0)).xy;
+
+    vec2 position = (u_matrix * vec3(a_vertex, 1.0)).xy * 2.0 - 1.0;
+    gl_Position = vec4(position, 0.0, 1.0);
+
+    gl_PointSize = 1.0;
+}
+
+`;
+    }
+
+    /**
+     * @param  {WebGLShaderKeyword} k
+     * @return {string}
+     * @method
+     * @static
+     */
+    static SET_PIXEL_QUEUE (k)
+    {
+        return `${k.version()}
+
+${k.attribute(0)} vec2 a_vertex;
+${k.attribute(1)} vec4 a_color;
+
+uniform mat3 u_highp[3];
+
+${k.varyingOut()} vec2 v_dst_tex_coord;
+${k.varyingOut()} vec4 v_color;
+
+void main() {
+    mat3 matrix = mat3(u_highp[0].xyz, u_highp[1].xyz, u_highp[2].xyz);
+
+    v_dst_tex_coord = vec2(a_vertex.x, 1.0 - a_vertex.y);
+    v_color = a_color;
+
+    vec2 position = (matrix * vec3(a_vertex, 1.0)).xy * 2.0 - 1.0;
+    gl_Position = vec4(position, 0.0, 1.0);
+}
+
+`;
+    }
+}
+/**
+ * @class
+ */
+class VertexShaderSourceFill
+{
+    /**
+     * @param  {WebGLShaderKeyword} k
+     * @param  {number}  highp_length
+     * @param  {boolean} with_uv
+     * @param  {boolean} for_mask
+     * @param  {boolean} has_grid
+     * @return {string}
+     * @method
+     * @static
+     */
+    static TEMPLATE (k, highp_length, with_uv, for_mask, has_grid)
+    {
+        const bezierAttribute = for_mask
+            ? this.ATTRIBUTE_BEZIER_ON(k)
+            : "";
+        const uvVarying =
+              for_mask ? this.VARYING_BEZIER_ON(k)
+                  : with_uv  ? this.VARYING_UV_ON(k)
+                      : "";
+        const uvStatement =
+              for_mask ? this.STATEMENT_BEZIER_ON()
+                  : with_uv  ? this.STATEMENT_UV_ON()
+                      : "";
+        const gridFunction = has_grid
+            ? VertexShaderLibrary.FUNCTION_GRID_ON(with_uv ? 5 : 0)
+            : VertexShaderLibrary.FUNCTION_GRID_OFF();
+
+        return `${k.version()}
+
+${k.attribute(0)} vec2 a_vertex;
+${bezierAttribute}
+
+uniform vec4 u_highp[${highp_length}];
+
+${uvVarying}
+
+${gridFunction}
+
+void main() {
+    vec2 viewport = vec2(u_highp[0].w, u_highp[1].w);
+
+    ${uvStatement}
+
+    vec2 pos = applyMatrix(a_vertex) / viewport;
+    pos = pos * 2.0 - 1.0;
+    gl_Position = vec4(pos.x, -pos.y, 0.0, 1.0);
+}
+
+`;
+    }
+
+    /**
+     * @param  {WebGLShaderKeyword} k
+     * @return {string}
+     */
+    static ATTRIBUTE_BEZIER_ON (k)
+    {
+        return `
+${k.attribute(1)} vec2 a_bezier;
+`;
+    }
+
+    /**
+     * @param  {WebGLShaderKeyword} k
+     * @return {string}
+     * @method
+     * @static
+     */
+    static VARYING_UV_ON (k)
+    {
+        return `
+${k.varyingOut()} vec2 v_uv;
+`;
+    }
+
+    /**
+     * @param  {WebGLShaderKeyword} k
+     * @return {string}
+     * @method
+     * @static
+     */
+    static VARYING_BEZIER_ON (k)
+    {
+        return `
+${k.varyingOut()} vec2 v_bezier;
+`;
+    }
+
+    /**
+     * @return {string}
+     * @method
+     * @static
+     */
+    static STATEMENT_UV_ON ()
+    {
+        return `
+    mat3 uv_matrix = mat3(
+        u_highp[0].xyz,
+        u_highp[1].xyz,
+        u_highp[2].xyz
+    );
+    mat3 inverse_matrix = mat3(
+        u_highp[3].xyz,
+        u_highp[4].xyz,
+        vec3(u_highp[2].w, u_highp[3].w, u_highp[4].w)
+    );
+
+    v_uv = (inverse_matrix * uv_matrix * vec3(a_vertex, 1.0)).xy;
+`;
+    }
+
+    /**
+     * @return {string}
+     * @method
+     * @static
+     */
+    static STATEMENT_BEZIER_ON ()
+    {
+        return `
+    v_bezier = a_bezier;
+`;
+    }
+}
+/**
+ * @class
+ */
+class VertexShaderSourceStroke
+{
+    /**
+     * @param  {WebGLShaderKeyword} k
+     * @param  {number}  highp_length
+     * @param  {number}  fragment_index
+     * @param  {boolean} with_uv
+     * @param  {boolean} has_grid
+     * @return {string}
+     * @method
+     * @static
+     */
+    static TEMPLATE (k, highp_length, fragment_index, with_uv, has_grid)
+    {
+        const strokeIndex = fragment_index - 1;
+
+        const uvVarying = with_uv
+            ? this.VARYING_UV_ON(k)
+            : "";
+        const uvStatement = with_uv
+            ? this.STATEMENT_UV_ON()
+            : "";
+        const gridFunction = has_grid
+            ? VertexShaderLibrary.FUNCTION_GRID_ON(with_uv ? 5 : 0)
+            : VertexShaderLibrary.FUNCTION_GRID_OFF();
+
+        return `${k.version()}
+
+${k.attribute(0)} vec2 a_vertex;
+${k.attribute(1)} vec2 a_option1;
+${k.attribute(2)} vec2 a_option2;
+${k.attribute(3)} float a_type;
+
+uniform vec4 u_highp[${highp_length}];
+
+${uvVarying}
+
+${gridFunction}
+
+float crossVec2(in vec2 v1, in vec2 v2) {
+    return v1.x * v2.y - v2.x * v1.y;
+}
+
+vec2 perpendicularVec2(in vec2 v1) {
+    float face = u_highp[${strokeIndex}][1];
+
+    return face * vec2(v1.y, -v1.x);
+}
+
+vec2 calculateNormal(in vec2 direction) {
+    vec2 normalized = normalize(direction);
+    return perpendicularVec2(normalized);
+}
+
+vec2 calculateIntersection(in vec2 v1, in vec2 v2, in vec2 o1, in vec2 o2) {
+    float t = crossVec2(o2 - o1, v2) / crossVec2(v1, v2);
+    return (o1 + t * v1);
+}
+
+vec2 calculateAnchor(in vec2 position, in float convex, out vec2 v1, out vec2 v2, out vec2 o1, out vec2 o2) {
+    float miter_limit = u_highp[${strokeIndex}][2];
+
+    vec2 a = applyMatrix(a_option1);
+    vec2 b = applyMatrix(a_option2);
+
+    v1 = convex * (position - a);
+    v2 = convex * (b - position);
+    o1 = calculateNormal(v1) + a;
+    o2 = calculateNormal(v2) + position;
+
+    vec2 anchor = calculateIntersection(v1, v2, o1, o2) - position;
+    return normalize(anchor) * min(length(anchor), miter_limit);
+}
+
+void main() {
+    vec2 viewport = vec2(u_highp[0].w, u_highp[1].w);
+    float half_width = u_highp[${strokeIndex}][0];
+
+    vec2 position = applyMatrix(a_vertex);
+    vec2 offset = vec2(0.0);
+    vec2 v1, v2, o1, o2;
+
+    if (a_type == 1.0 || a_type == 2.0) { // 線分
+        offset = calculateNormal(a_option2 * (applyMatrix(a_option1) - position));
+    } else if (a_type == 10.0) { // スクエア線端
+        offset = normalize(position - applyMatrix(a_option1));
+        offset += a_option2 * perpendicularVec2(offset);
+    } else if (a_type == 21.0) { // マイター結合（線分Bの凸側）
+        offset = calculateAnchor(position, 1.0, v1, v2, o1, o2);
+        offset = calculateIntersection(v2, perpendicularVec2(offset), o2, position + offset) - position;
+    } else if (a_type == 22.0) { // マイター結合（線分Aの凸側）
+        offset = calculateAnchor(position, 1.0, v1, v2, o1, o2);
+        offset = calculateIntersection(v1, perpendicularVec2(offset), o1, position + offset) - position;
+    } else if (a_type == 23.0) { // マイター結合（線分Aの凹側）
+        offset = calculateAnchor(position, -1.0, v1, v2, o1, o2);
+        offset = calculateIntersection(v1, perpendicularVec2(offset), o1, position + offset) - position;
+    } else if (a_type == 24.0) { // マイター結合（線分Bの凹側）
+        offset = calculateAnchor(position, -1.0, v1, v2, o1, o2);
+        offset = calculateIntersection(v2, perpendicularVec2(offset), o2, position + offset) - position;
+    } else if (a_type >= 30.0) { // ラウンド結合
+        float face = u_highp[${strokeIndex}][1];
+        float rad = face * (a_type - 30.0) * 0.3488888889; /* 0.3488888889 = PI / 9.0 */
+        offset = mat2(cos(rad), sin(rad), -sin(rad), cos(rad)) * vec2(1.0, 0.0);
+    }
+    
+    offset *= half_width;
+    position += offset;
+    ${uvStatement}
+
+    position /= viewport;
+    position = position * 2.0 - 1.0;
+    gl_Position = vec4(position.x, -position.y, 0.0, 1.0);
+}
+
+`;
+    }
+
+    /**
+     * @param  {WebGLShaderKeyword} k
+     * @return {string}
+     * @method
+     * @static
+     */
+    static VARYING_UV_ON (k)
+    {
+        return `
+${k.varyingOut()} vec2 v_uv;
+`;
+    }
+
+    /**
+     * @return {string}
+     */
+    static STATEMENT_UV_ON ()
+    {
+        return `
+    mat3 uv_matrix = mat3(
+        u_highp[0].xyz,
+        u_highp[1].xyz,
+        u_highp[2].xyz
+    );
+    mat3 inverse_matrix = mat3(
+        u_highp[3].xyz,
+        u_highp[4].xyz,
+        vec3(u_highp[2].w, u_highp[3].w, u_highp[4].w)
+    );
+
+    v_uv = (uv_matrix * vec3(a_vertex, 1.0)).xy;
+    v_uv += offset;
+    v_uv = (inverse_matrix * vec3(v_uv, 1.0)).xy;
+`;
+    }
+}
 /**
  * @class
  */
@@ -34417,695 +35106,6 @@ void main() {
     ${k.fragColor()} = src;
 }
 
-`;
-    }
-}
-/**
- * @class
- */
-class VertexShaderLibrary
-{
-    /**
-     * @return {string}
-     * @method
-     * @static
-     */
-    static FUNCTION_GRID_OFF ()
-    {
-        return `
-
-vec2 applyMatrix(in vec2 vertex) {
-    mat3 matrix = mat3(
-        u_highp[0].xyz,
-        u_highp[1].xyz,
-        u_highp[2].xyz
-    );
-
-    vec2 position = (matrix * vec3(vertex, 1.0)).xy;
-
-    return position;
-}
-
-`;
-    }
-
-    /**
-     * @param  {number} index
-     * @return {string}
-     * @method
-     * @static
-     */
-    static FUNCTION_GRID_ON (index)
-    {
-        return `
-
-vec2 applyMatrix(in vec2 vertex) {
-    mat3 parent_matrix = mat3(
-        u_highp[${index    }].xyz,
-        u_highp[${index + 1}].xyz,
-        u_highp[${index + 2}].xyz
-    );
-    mat3 ancestor_matrix = mat3(
-        u_highp[${index + 3}].xyz,
-        u_highp[${index + 4}].xyz,
-        u_highp[${index + 5}].xyz
-    );
-    vec2 parent_offset = vec2(u_highp[${index + 2}].w, u_highp[${index + 3}].w);
-    vec2 parent_size   = vec2(u_highp[${index + 4}].w, u_highp[${index + 5}].w);
-    vec4 grid_min = u_highp[${index + 6}];
-    vec4 grid_max = u_highp[${index + 7}];
-
-    vec2 position = (parent_matrix * vec3(vertex, 1.0)).xy;
-    position = (position - parent_offset) / parent_size;
-
-    vec4 ga = grid_min;
-    vec4 gb = grid_max  - grid_min;
-    vec4 gc = vec4(1.0) - grid_max;
-
-    vec2 pa = position;
-    vec2 pb = position - grid_min.st;
-    vec2 pc = position - grid_max.st;
-
-    position = (ga.pq / ga.st) * min(pa, ga.st)
-             + (gb.pq / gb.st) * clamp(pb, vec2(0.0), gb.st)
-             + (gc.pq / gc.st) * max(vec2(0.0), pc);
-
-    position = position * parent_size + parent_offset;
-    position = (ancestor_matrix * vec3(position, 1.0)).xy;
-
-    return position;
-}
-
-`;
-    }
-}
-/**
- * @class
- */
-class VertexShaderSource
-{
-    /**
-     * @param  {WebGLShaderKeyword} k
-     * @return {string}
-     * @method
-     * @static
-     */
-    static TEXTURE (k)
-    {
-        return `${k.version()}
-
-${k.attribute(0)} vec2 a_vertex;
-
-${k.varyingOut()} vec2 v_coord;
-
-void main() {
-    v_coord = a_vertex;
-
-    vec2 position = a_vertex * 2.0 - 1.0;
-    gl_Position = vec4(position, 0.0, 1.0);
-}
-
-`;
-    }
-
-    /**
-     * @param  {WebGLShaderKeyword} k
-     * @return {string}
-     * @method
-     * @static
-     */
-    static BLEND (k)
-    {
-        return `${k.version()}
-
-${k.attribute(0)} vec2 a_vertex;
-
-uniform vec4 u_highp[4];
-
-${k.varyingOut()} vec2 v_coord;
-
-void main() {
-    v_coord = a_vertex;
-
-    vec2 offset   = u_highp[0].xy;
-    vec2 size     = u_highp[0].zw;
-    mat3 matrix   = mat3(u_highp[1].xyz, u_highp[2].xyz, u_highp[3].xyz);
-    vec2 viewport = vec2(u_highp[1].w, u_highp[2].w);
-
-    vec2 position = vec2(a_vertex.x, 1.0 - a_vertex.y);
-    position = position * size + offset;
-    position = (matrix * vec3(position, 1.0)).xy;
-    position /= viewport;
-
-    position = position * 2.0 - 1.0;
-    gl_Position = vec4(position.x, -position.y, 0.0, 1.0);
-}
-
-`;
-    }
-
-    /**
-     * @param  {WebGLShaderKeyword} k
-     * @return {string}
-     * @method
-     * @static
-     */
-    static BLEND_CLIP (k)
-    {
-        return `${k.version()}
-
-${k.attribute(0)} vec2 a_vertex;
-
-uniform vec4 u_highp[4];
-
-${k.varyingOut()} vec2 v_coord;
-
-void main() {
-    v_coord = a_vertex;
-
-    vec2 offset     = u_highp[0].xy;
-    vec2 size       = u_highp[0].zw;
-    mat3 inv_matrix = mat3(u_highp[1].xyz, u_highp[2].xyz, u_highp[3].xyz);
-    vec2 viewport   = vec2(u_highp[1].w, u_highp[2].w);
-
-    vec2 position = vec2(a_vertex.x, 1.0 - a_vertex.y);
-    position *= viewport;
-    position = (inv_matrix * vec3(position, 1.0)).xy;
-    position = (position - offset) / size;
-
-    position = position * 2.0 - 1.0;
-    gl_Position = vec4(position.x, -position.y, 0.0, 1.0);
-}
-
-`;
-    }
-}
-/**
- * @class
- */
-class VertexShaderSourceBitmapData
-{
-    /**
-     * @param  {WebGLShaderKeyword} k
-     * @return {string}
-     * @method
-     * @static
-     */
-    static POSITION_ONLY (k)
-    {
-        return `${k.version()}
-
-${k.attribute(0)} vec2 a_vertex;
-
-uniform vec4 u_highp[3];
-
-void main() {
-    mat3 matrix = mat3(u_highp[0].xyz, u_highp[1].xyz, u_highp[2].xyz);
-
-    vec2 position = (matrix * vec3(a_vertex, 1.0)).xy * 2.0 - 1.0;
-    gl_Position = vec4(position, 0.0, 1.0);
-}
-
-`;
-    }
-
-    /**
-     * @param  {WebGLShaderKeyword} k
-     * @return {string}
-     * @method
-     * @static
-     */
-    static SRC_AND_DST_TEX_COORD (k)
-    {
-        return `${k.version()}
-
-${k.attribute(0)} vec2 a_vertex;
-
-uniform vec4 u_highp[5];
-
-${k.varyingOut()} vec2 v_src_tex_coord;
-${k.varyingOut()} vec2 v_dst_tex_coord;
-
-void main() {
-    mat3 matrix = mat3(u_highp[0].xyz, u_highp[1].xyz, u_highp[2].xyz);
-    mat3 src_tex_matrix = mat3(
-        u_highp[3].xyz,
-        u_highp[4].xyz,
-        vec3(u_highp[0].w, u_highp[1].w, u_highp[2].w)
-    );
-
-    v_src_tex_coord = (src_tex_matrix * vec3(a_vertex, 1.0)).xy;
-    v_dst_tex_coord = vec2(a_vertex.x, 1.0 - a_vertex.y);
-
-    vec2 position = (matrix * vec3(a_vertex, 1.0)).xy * 2.0 - 1.0;
-    gl_Position = vec4(position, 0.0, 1.0);
-}
-
-`;
-    }
-
-    /**
-     * @param  {WebGLShaderKeyword} k
-     * @return {string}
-     * @method
-     * @static
-     */
-    static SRC_TEX_COORD (k)
-    {
-        return `${k.version()}
-
-${k.attribute(0)} vec2 a_vertex;
-
-uniform vec4 u_highp[5];
-
-${k.varyingOut()} vec2 v_src_tex_coord;
-
-void main() {
-    mat3 matrix = mat3(u_highp[0].xyz, u_highp[1].xyz, u_highp[2].xyz);
-    mat3 src_tex_matrix = mat3(
-        u_highp[3].xyz,
-        u_highp[4].xyz,
-        vec3(u_highp[0].w, u_highp[1].w, u_highp[2].w)
-    );
-
-    v_src_tex_coord = (src_tex_matrix * vec3(a_vertex, 1.0)).xy;
-
-    vec2 position = (matrix * vec3(a_vertex, 1.0)).xy * 2.0 - 1.0;
-    gl_Position = vec4(position, 0.0, 1.0);
-}
-
-`;
-    }
-
-    /**
-     * @param  {WebGLShaderKeyword} k
-     * @return {string}
-     * @method
-     * @static
-     */
-    static SRC_AND_ALPHA_TEX_COORD (k)
-    {
-        return `${k.version()}
-
-${k.attribute(0)} vec2 a_vertex;
-
-uniform vec4 u_highp[7];
-
-${k.varyingOut()} vec2 v_src_tex_coord;
-${k.varyingOut()} vec2 v_alpha_tex_coord;
-
-void main() {
-    mat3 matrix = mat3(u_highp[0].xyz, u_highp[1].xyz, u_highp[2].xyz);
-    mat3 src_tex_matrix = mat3(u_highp[3].xyz, u_highp[4].xyz, u_highp[5].xyz);
-    mat3 alpha_tex_matrix = mat3(
-        u_highp[6].xyz,
-        vec3(u_highp[0].w, u_highp[1].w, u_highp[2].w),
-        vec3(u_highp[3].w, u_highp[4].w, u_highp[5].w)
-    );
-
-    v_src_tex_coord = (src_tex_matrix * vec3(a_vertex, 1.0)).xy;
-    v_alpha_tex_coord = (alpha_tex_matrix * vec3(a_vertex, 1.0)).xy;
-
-    vec2 position = (matrix * vec3(a_vertex, 1.0)).xy * 2.0 - 1.0;
-    gl_Position = vec4(position, 0.0, 1.0);
-}
-
-`;
-    }
-
-    /**
-     * @param  {WebGLShaderKeyword} k
-     * @return {string}
-     * @method
-     * @static
-     */
-    static PIXEL_DISSOLVE_COLOR (k)
-    {
-        return `${k.version()}
-
-${k.attribute(0)} vec2 a_vertex;
-
-uniform mat3 u_highp[3];
-
-void main() {
-    mat3 matrix = mat3(u_highp[0].xyz, u_highp[1].xyz, u_highp[2].xyz);
-
-    vec2 position = (matrix * vec3(a_vertex, 1.0)).xy * 2.0 - 1.0;
-    gl_Position = vec4(position, 0.0, 1.0);
-
-    gl_PointSize = 1.0;
-}
-
-`;
-    }
-
-    /**
-     * @param  {WebGLShaderKeyword} k
-     * @return {string}
-     * @method
-     * @static
-     */
-    static PIXEL_DISSOLVE_TEXTURE (k)
-    {
-        return `${k.version()}
-
-${k.attribute(0)} vec2 a_vertex;
-
-uniform mat3 u_highp[5];
-
-${k.varyingOut()} vec2 v_src_tex_coord;
-
-void main() {
-    mat3 matrix = mat3(u_highp[0].xyz, u_highp[1].xyz, u_highp[2].xyz);
-    mat3 src_tex_matrix = mat3(
-        u_highp[3].xyz,
-        u_highp[4].xyz,
-        vec3(u_highp[0].w, u_highp[1].w, u_highp[2].w)
-    );
-
-    v_src_tex_coord = (u_src_tex_matrix * vec3(a_vertex, 1.0)).xy;
-
-    vec2 position = (u_matrix * vec3(a_vertex, 1.0)).xy * 2.0 - 1.0;
-    gl_Position = vec4(position, 0.0, 1.0);
-
-    gl_PointSize = 1.0;
-}
-
-`;
-    }
-
-    /**
-     * @param  {WebGLShaderKeyword} k
-     * @return {string}
-     * @method
-     * @static
-     */
-    static SET_PIXEL_QUEUE (k)
-    {
-        return `${k.version()}
-
-${k.attribute(0)} vec2 a_vertex;
-${k.attribute(1)} vec4 a_color;
-
-uniform mat3 u_highp[3];
-
-${k.varyingOut()} vec2 v_dst_tex_coord;
-${k.varyingOut()} vec4 v_color;
-
-void main() {
-    mat3 matrix = mat3(u_highp[0].xyz, u_highp[1].xyz, u_highp[2].xyz);
-
-    v_dst_tex_coord = vec2(a_vertex.x, 1.0 - a_vertex.y);
-    v_color = a_color;
-
-    vec2 position = (matrix * vec3(a_vertex, 1.0)).xy * 2.0 - 1.0;
-    gl_Position = vec4(position, 0.0, 1.0);
-}
-
-`;
-    }
-}
-/**
- * @class
- */
-class VertexShaderSourceFill
-{
-    /**
-     * @param  {WebGLShaderKeyword} k
-     * @param  {number}  highp_length
-     * @param  {boolean} with_uv
-     * @param  {boolean} for_mask
-     * @param  {boolean} has_grid
-     * @return {string}
-     * @method
-     * @static
-     */
-    static TEMPLATE (k, highp_length, with_uv, for_mask, has_grid)
-    {
-        const bezierAttribute = for_mask
-            ? this.ATTRIBUTE_BEZIER_ON(k)
-            : "";
-        const uvVarying =
-              for_mask ? this.VARYING_BEZIER_ON(k)
-                  : with_uv  ? this.VARYING_UV_ON(k)
-                      : "";
-        const uvStatement =
-              for_mask ? this.STATEMENT_BEZIER_ON()
-                  : with_uv  ? this.STATEMENT_UV_ON()
-                      : "";
-        const gridFunction = has_grid
-            ? VertexShaderLibrary.FUNCTION_GRID_ON(with_uv ? 5 : 0)
-            : VertexShaderLibrary.FUNCTION_GRID_OFF();
-
-        return `${k.version()}
-
-${k.attribute(0)} vec2 a_vertex;
-${bezierAttribute}
-
-uniform vec4 u_highp[${highp_length}];
-
-${uvVarying}
-
-${gridFunction}
-
-void main() {
-    vec2 viewport = vec2(u_highp[0].w, u_highp[1].w);
-
-    ${uvStatement}
-
-    vec2 pos = applyMatrix(a_vertex) / viewport;
-    pos = pos * 2.0 - 1.0;
-    gl_Position = vec4(pos.x, -pos.y, 0.0, 1.0);
-}
-
-`;
-    }
-
-    /**
-     * @param  {WebGLShaderKeyword} k
-     * @return {string}
-     */
-    static ATTRIBUTE_BEZIER_ON (k)
-    {
-        return `
-${k.attribute(1)} vec2 a_bezier;
-`;
-    }
-
-    /**
-     * @param  {WebGLShaderKeyword} k
-     * @return {string}
-     * @method
-     * @static
-     */
-    static VARYING_UV_ON (k)
-    {
-        return `
-${k.varyingOut()} vec2 v_uv;
-`;
-    }
-
-    /**
-     * @param  {WebGLShaderKeyword} k
-     * @return {string}
-     * @method
-     * @static
-     */
-    static VARYING_BEZIER_ON (k)
-    {
-        return `
-${k.varyingOut()} vec2 v_bezier;
-`;
-    }
-
-    /**
-     * @return {string}
-     * @method
-     * @static
-     */
-    static STATEMENT_UV_ON ()
-    {
-        return `
-    mat3 uv_matrix = mat3(
-        u_highp[0].xyz,
-        u_highp[1].xyz,
-        u_highp[2].xyz
-    );
-    mat3 inverse_matrix = mat3(
-        u_highp[3].xyz,
-        u_highp[4].xyz,
-        vec3(u_highp[2].w, u_highp[3].w, u_highp[4].w)
-    );
-
-    v_uv = (inverse_matrix * uv_matrix * vec3(a_vertex, 1.0)).xy;
-`;
-    }
-
-    /**
-     * @return {string}
-     * @method
-     * @static
-     */
-    static STATEMENT_BEZIER_ON ()
-    {
-        return `
-    v_bezier = a_bezier;
-`;
-    }
-}
-/**
- * @class
- */
-class VertexShaderSourceStroke
-{
-    /**
-     * @param  {WebGLShaderKeyword} k
-     * @param  {number}  highp_length
-     * @param  {number}  fragment_index
-     * @param  {boolean} with_uv
-     * @param  {boolean} has_grid
-     * @return {string}
-     * @method
-     * @static
-     */
-    static TEMPLATE (k, highp_length, fragment_index, with_uv, has_grid)
-    {
-        const strokeIndex = fragment_index - 1;
-
-        const uvVarying = with_uv
-            ? this.VARYING_UV_ON(k)
-            : "";
-        const uvStatement = with_uv
-            ? this.STATEMENT_UV_ON()
-            : "";
-        const gridFunction = has_grid
-            ? VertexShaderLibrary.FUNCTION_GRID_ON(with_uv ? 5 : 0)
-            : VertexShaderLibrary.FUNCTION_GRID_OFF();
-
-        return `${k.version()}
-
-${k.attribute(0)} vec2 a_vertex;
-${k.attribute(1)} vec2 a_option1;
-${k.attribute(2)} vec2 a_option2;
-${k.attribute(3)} float a_type;
-
-uniform vec4 u_highp[${highp_length}];
-
-${uvVarying}
-
-${gridFunction}
-
-float crossVec2(in vec2 v1, in vec2 v2) {
-    return v1.x * v2.y - v2.x * v1.y;
-}
-
-vec2 perpendicularVec2(in vec2 v1) {
-    float face = u_highp[${strokeIndex}][1];
-
-    return face * vec2(v1.y, -v1.x);
-}
-
-vec2 calculateNormal(in vec2 direction) {
-    vec2 normalized = normalize(direction);
-    return perpendicularVec2(normalized);
-}
-
-vec2 calculateIntersection(in vec2 v1, in vec2 v2, in vec2 o1, in vec2 o2) {
-    float t = crossVec2(o2 - o1, v2) / crossVec2(v1, v2);
-    return (o1 + t * v1);
-}
-
-vec2 calculateAnchor(in vec2 position, in float convex, out vec2 v1, out vec2 v2, out vec2 o1, out vec2 o2) {
-    float miter_limit = u_highp[${strokeIndex}][2];
-
-    vec2 a = applyMatrix(a_option1);
-    vec2 b = applyMatrix(a_option2);
-
-    v1 = convex * (position - a);
-    v2 = convex * (b - position);
-    o1 = calculateNormal(v1) + a;
-    o2 = calculateNormal(v2) + position;
-
-    vec2 anchor = calculateIntersection(v1, v2, o1, o2) - position;
-    return normalize(anchor) * min(length(anchor), miter_limit);
-}
-
-void main() {
-    vec2 viewport = vec2(u_highp[0].w, u_highp[1].w);
-    float half_width = u_highp[${strokeIndex}][0];
-
-    vec2 position = applyMatrix(a_vertex);
-    vec2 offset = vec2(0.0);
-    vec2 v1, v2, o1, o2;
-
-    if (a_type == 1.0 || a_type == 2.0) { // 線分
-        offset = calculateNormal(a_option2 * (applyMatrix(a_option1) - position));
-    } else if (a_type == 10.0) { // スクエア線端
-        offset = normalize(position - applyMatrix(a_option1));
-        offset += a_option2 * perpendicularVec2(offset);
-    } else if (a_type == 21.0) { // マイター結合（線分Bの凸側）
-        offset = calculateAnchor(position, 1.0, v1, v2, o1, o2);
-        offset = calculateIntersection(v2, perpendicularVec2(offset), o2, position + offset) - position;
-    } else if (a_type == 22.0) { // マイター結合（線分Aの凸側）
-        offset = calculateAnchor(position, 1.0, v1, v2, o1, o2);
-        offset = calculateIntersection(v1, perpendicularVec2(offset), o1, position + offset) - position;
-    } else if (a_type == 23.0) { // マイター結合（線分Aの凹側）
-        offset = calculateAnchor(position, -1.0, v1, v2, o1, o2);
-        offset = calculateIntersection(v1, perpendicularVec2(offset), o1, position + offset) - position;
-    } else if (a_type == 24.0) { // マイター結合（線分Bの凹側）
-        offset = calculateAnchor(position, -1.0, v1, v2, o1, o2);
-        offset = calculateIntersection(v2, perpendicularVec2(offset), o2, position + offset) - position;
-    } else if (a_type >= 30.0) { // ラウンド結合
-        float face = u_highp[${strokeIndex}][1];
-        float rad = face * (a_type - 30.0) * 0.3488888889; /* 0.3488888889 = PI / 9.0 */
-        offset = mat2(cos(rad), sin(rad), -sin(rad), cos(rad)) * vec2(1.0, 0.0);
-    }
-    
-    offset *= half_width;
-    position += offset;
-    ${uvStatement}
-
-    position /= viewport;
-    position = position * 2.0 - 1.0;
-    gl_Position = vec4(position.x, -position.y, 0.0, 1.0);
-}
-
-`;
-    }
-
-    /**
-     * @param  {WebGLShaderKeyword} k
-     * @return {string}
-     * @method
-     * @static
-     */
-    static VARYING_UV_ON (k)
-    {
-        return `
-${k.varyingOut()} vec2 v_uv;
-`;
-    }
-
-    /**
-     * @return {string}
-     */
-    static STATEMENT_UV_ON ()
-    {
-        return `
-    mat3 uv_matrix = mat3(
-        u_highp[0].xyz,
-        u_highp[1].xyz,
-        u_highp[2].xyz
-    );
-    mat3 inverse_matrix = mat3(
-        u_highp[3].xyz,
-        u_highp[4].xyz,
-        vec3(u_highp[2].w, u_highp[3].w, u_highp[4].w)
-    );
-
-    v_uv = (uv_matrix * vec3(a_vertex, 1.0)).xy;
-    v_uv += offset;
-    v_uv = (inverse_matrix * vec3(v_uv, 1.0)).xy;
 `;
     }
 }
