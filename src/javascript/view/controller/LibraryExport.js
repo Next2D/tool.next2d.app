@@ -183,7 +183,6 @@ class LibraryExport extends BaseController
             .getElementById("export-name")
             .value;
 
-        const ratio = window.devicePixelRatio;
         if (this._$instance.type === "container") {
 
             const zip = new JSZip();
@@ -223,7 +222,6 @@ class LibraryExport extends BaseController
             anchor.download = `${name}.${ext}`;
             anchor.href     = context.canvas.toDataURL(`image/${ext}`, 1);
             anchor.click();
-            
         }
     }
 
