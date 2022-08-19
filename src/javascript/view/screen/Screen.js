@@ -390,18 +390,19 @@ class Screen extends BaseScreen
         const scene     = workSpace.scene;
 
         // create image
-        const image      = character.image.cloneNode(true);
-        image.width      = character.image._$width  * Util.$zoomScale;
-        image.height     = character.image._$height * Util.$zoomScale;
-        image.style.left = `${character.offsetX}px`;
-        image.style.top  = `${character.offsetY}px`;
+        const image           = character.getImage();
+        const cloneImage      = image.cloneNode(true);
+        cloneImage.width      = image._$width  * Util.$zoomScale;
+        cloneImage.height     = image._$height * Util.$zoomScale;
+        cloneImage.style.left = `${character.offsetX}px`;
+        cloneImage.style.top  = `${character.offsetY}px`;
 
         // create div
         const div = document.createElement("div");
 
         div.dataset.child   = "true";
         div.dataset.preview = "true";
-        div.appendChild(image);
+        div.appendChild(cloneImage);
 
         // mask attach
         const layer = scene.getLayer(layer_id);

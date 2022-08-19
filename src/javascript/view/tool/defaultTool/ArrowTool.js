@@ -1371,6 +1371,13 @@ class ArrowTool extends BaseTool
             .$gridController
             .show()
             .relocation();
+
+        const element = document
+            .getElementById("timeline-onion-skin");
+
+        if (element && element.classList.contains("onion-skin-active")) {
+            this.reloadScreen();
+        }
     }
 
     /**
