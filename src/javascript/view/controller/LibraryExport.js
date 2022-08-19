@@ -183,45 +183,88 @@ class LibraryExport extends BaseController
             .getElementById("export-name")
             .value;
 
-        if (this._$instance.type === "container") {
+        switch (this._$instance.type) {
 
-            const zip = new JSZip();
-
-            for (let frame = this._$startFrame; this._$endFrame >= frame; ++frame) {
-
-                const bitmapData = this.getBitmapData(frame);
-                const context    = bitmapData.getContext2D();
-
-                zip.file(
-                    `${name}_frame_${frame}.${ext}`,
-                    context.canvas.toDataURL(`image/${ext}`, 1).replace(/^.*,/, ""),
-                    { "base64" : true }
-                );
-            }
-
-            zip
-                .generateAsync({ "type" : "blob" })
-                .then((content) =>
+            case "container":
                 {
-                    const url = URL.createObjectURL(content);
+                    const zip = new JSZip();
+                    for (let frame = this._$startFrame; this._$endFrame >= frame; ++frame) {
+
+                        const bitmapData = this.getBitmapData(frame);
+                        const context    = bitmapData.getContext2D();
+
+                        zip.file(
+                            `${name}_frame_${frame}.${ext}`,
+                            context.canvas.toDataURL(`image/${ext}`, 1).replace(/^.*,/, ""),
+                            { "base64" : true }
+                        );
+                    }
+
+                    zip
+                        .generateAsync({ "type" : "blob" })
+                        .then((content) =>
+                        {
+                            const url = URL.createObjectURL(content);
+
+                            const anchor    = document.createElement("a");
+                            anchor.download = `${name}.zip`;
+                            anchor.href     = url;
+                            anchor.click();
+
+                            URL.revokeObjectURL(url);
+                        });
+                }
+                break;
+
+            case "video":
+                {
+                    const names = name.split(".");
+                    if (names[names.length - 1] === "mp4") {
+                        names.pop();
+                    }
+
+                    const anchor = document.createElement("a");
+
+                    anchor.download = `${names.join(".")}.mp4`;
+                    anchor.href = URL.createObjectURL(new Blob(
+                        [new Uint8Array(this._$instance._$buffer)],
+                        { "type": "video/mp4" }
+                    ));
+
+                    anchor.click();
+                }
+                break;
+
+            case "sound":
+                {
+                    const names = name.split(".");
+                    if (names[names.length - 1] === "mp3") {
+                        names.pop();
+                    }
+
+                    const anchor = document.createElement("a");
+
+                    anchor.download = `${names.join(".")}.mp3`;
+                    anchor.href = URL.createObjectURL(new Blob(
+                        [new Uint8Array(this._$instance._$buffer)],
+                        { "type": "audio/mp3" }
+                    ));
+
+                    anchor.click();
+                }
+                break;
+
+            default:
+                {
+                    const bitmapData = this.getBitmapData();
+                    const context    = bitmapData.getContext2D();
 
                     const anchor    = document.createElement("a");
-                    anchor.download = `${name}.zip`;
-                    anchor.href     = url;
+                    anchor.download = `${name}.${ext}`;
+                    anchor.href     = context.canvas.toDataURL(`image/${ext}`, 1);
                     anchor.click();
-
-                    URL.revokeObjectURL(url);
-                });
-
-        } else {
-
-            const bitmapData = this.getBitmapData();
-            const context    = bitmapData.getContext2D();
-
-            const anchor    = document.createElement("a");
-            anchor.download = `${name}.${ext}`;
-            anchor.href     = context.canvas.toDataURL(`image/${ext}`, 1);
-            anchor.click();
+                }
+                break;
         }
     }
 
@@ -495,33 +538,57 @@ class LibraryExport extends BaseController
         const containerArea = document
             .getElementById("library-export-container-area");
 
-        if (this._$instance.type === "container") {
+        const sizeArea = document
+            .getElementById("library-export-size-area");
 
-            this._$currentFrame = 1;
-            this._$startFrame   = 1;
-            this._$endFrame     = this._$instance.totalFrame;
+        const fileArea = document
+            .getElementById("library-export-file-area");
 
-            this.reloadMovieClip();
+        switch (this._$instance.type) {
 
-            // 書き出し項目を表示
-            containerArea.style.display = "";
+            case "container":
+                this._$currentFrame = 1;
+                this._$startFrame   = 1;
+                this._$endFrame     = this._$instance.totalFrame;
 
-        } else {
+                // 書き出し項目のを表示設定
+                containerArea.style.display = "";
+                sizeArea.style.display      = "";
+                fileArea.style.display      = "";
 
-            containerArea.style.display = "none";
+                this.reloadMovieClip();
+                break;
 
-            const bounds = this._$instance.getBounds();
-            this._$width  = Math.abs(bounds.xMax - bounds.xMin);
-            this._$height = Math.abs(bounds.yMax - bounds.yMin);
+            case "video":
+            case "sound":
+                // 書き出し項目のを表示設定
+                containerArea.style.display = "none";
+                sizeArea.style.display      = "none";
+                fileArea.style.display      = "none";
+                break;
 
-            // サイズをセット
-            document
-                .getElementById("export-width")
-                .value = `${Math.ceil(this._$width)}`;
+            default:
+                {
+                    // 書き出し項目のを表示設定
+                    containerArea.style.display = "none";
+                    sizeArea.style.display      = "";
+                    fileArea.style.display      = "";
 
-            document
-                .getElementById("export-height")
-                .value = `${Math.ceil(this._$height)}`;
+                    const bounds = this._$instance.getBounds();
+                    this._$width  = Math.abs(bounds.xMax - bounds.xMin);
+                    this._$height = Math.abs(bounds.yMax - bounds.yMin);
+
+                    // サイズをセット
+                    document
+                        .getElementById("export-width")
+                        .value  = `${Math.ceil(this._$width)}`;
+
+                    document
+                        .getElementById("export-height")
+                        .value = `${Math.ceil(this._$height)}`;
+                }
+                break;
+
         }
 
         document
@@ -624,21 +691,36 @@ class LibraryExport extends BaseController
     {
         this.removeImage();
 
-        const bitmapData = this.getBitmapData(this._$currentFrame);
+        switch (this._$instance.type) {
 
-        const ratio  = window.devicePixelRatio;
+            case "video":
+            case "sound":
+                document
+                    .getElementById("library-export-image")
+                    .appendChild(this._$instance.getPreview());
+                break;
 
-        const element  = new Image();
-        element.src    = bitmapData.toDataURL();
-        element.width  = bitmapData.width  / ratio;
-        element.height = bitmapData.height / ratio;
+            default:
+                {
+                    const bitmapData = this.getBitmapData(this._$currentFrame);
 
-        // BitmapDataを解放
-        bitmapData.dispose();
+                    const ratio  = window.devicePixelRatio;
 
-        document
-            .getElementById("library-export-image")
-            .appendChild(element);
+                    const element  = new Image();
+                    element.src    = bitmapData.toDataURL();
+                    element.width  = bitmapData.width  / ratio;
+                    element.height = bitmapData.height / ratio;
+
+                    // BitmapDataを解放
+                    bitmapData.dispose();
+
+                    document
+                        .getElementById("library-export-image")
+                        .appendChild(element);
+                }
+                break;
+
+        }
     }
 
     /**
