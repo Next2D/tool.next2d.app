@@ -352,11 +352,14 @@ class TimelineLayer extends BaseTimeline
 
                 event.preventDefault();
 
-                Util.$timelineTool.timelineWidth = Util.$clamp(
-                    Util.$timelineTool.timelineWidth + deltaY,
-                    5,
-                    240
-                );
+                window.requestAnimationFrame(() =>
+                {
+                    Util.$timelineTool.timelineWidth = Util.$clamp(
+                        Util.$timelineTool.timelineWidth + deltaY,
+                        5,
+                        240
+                    );
+                });
             });
         }
 
@@ -653,14 +656,18 @@ class TimelineLayer extends BaseTimeline
 
                 event.preventDefault();
 
-                const maxDeltaX = event.currentTarget.scrollWidth
-                    - event.currentTarget.offsetWidth;
+                const target = event.currentTarget;
 
-                this._$scrollX = Util.$clamp(
-                    this._$scrollX + deltaX, 0, maxDeltaX
-                );
+                window.requestAnimationFrame(() =>
+                {
+                    const maxDeltaX = target.scrollWidth - target.offsetWidth;
 
-                this.moveTimeLine(this._$scrollX);
+                    this._$scrollX = Util.$clamp(
+                        this._$scrollX + deltaX, 0, maxDeltaX
+                    );
+
+                    this.moveTimeLine(this._$scrollX);
+                });
 
             }, { "passive" : false });
 

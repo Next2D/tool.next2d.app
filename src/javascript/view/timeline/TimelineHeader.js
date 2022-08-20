@@ -113,7 +113,7 @@ class TimelineHeader extends BaseTimeline
                 event.stopPropagation();
                 event.preventDefault();
 
-                if (Util.$ctrlKey) {
+                if (Util.$altKey) {
 
                     const deltaY = event.deltaY | 0;
                     if (!deltaY) {
@@ -121,11 +121,14 @@ class TimelineHeader extends BaseTimeline
                     }
 
                     // タイムラインの幅をスケール
-                    Util.$timelineTool.timelineWidth = Util.$clamp(
-                        Util.$timelineTool.timelineWidth + deltaY,
-                        5,
-                        240
-                    );
+                    window.requestAnimationFrame(() =>
+                    {
+                        Util.$timelineTool.timelineWidth = Util.$clamp(
+                            Util.$timelineTool.timelineWidth + deltaY,
+                            5,
+                            240
+                        );
+                    });
 
                 } else {
 
@@ -134,17 +137,20 @@ class TimelineHeader extends BaseTimeline
                         return false;
                     }
 
-                    const maxDeltaX = event.currentTarget.scrollWidth
-                        - event.currentTarget.offsetWidth;
+                    const target = event.currentTarget;
 
-                    this._$scrollX = Util.$clamp(
-                        this._$scrollX + delta, 0, maxDeltaX
-                    );
+                    window.requestAnimationFrame(() =>
+                    {
+                        const maxDeltaX = target.scrollWidth - target.offsetWidth;
 
-                    Util
-                        .$timelineLayer
-                        .moveTimeLine(this._$scrollX);
+                        this._$scrollX = Util.$clamp(
+                            this._$scrollX + delta, 0, maxDeltaX
+                        );
 
+                        Util
+                            .$timelineLayer
+                            .moveTimeLine(this._$scrollX);
+                    });
                 }
 
             }, { "passive" : false });
