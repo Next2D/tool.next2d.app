@@ -180,6 +180,10 @@ class Instance
             instance, width, height, place, dx, dy
         );
 
+        const object = this.calcFilter(width, height, place, matrix);
+        instance.filters = object.filters;
+
+        // fixed logic
         instance
             .transform
             .matrix = new Matrix(
@@ -188,16 +192,13 @@ class Instance
                 0, 0
             );
 
+        // fixed logic
         instance
             .transform
             .colorTransform = this.calcColorTransform(place);
 
-        const object = this.calcFilter(width, height, place, matrix);
-        instance.filters = object.filters;
-
-        const container = this.createContainer(instance);
-
-        const bitmapData = this.createBitmapData(width, height);
+        const container  = this.createContainer(instance);
+        const bitmapData = this.createBitmapData(object.width, object.height);
         bitmapData.draw(container, matrix);
 
         const image = new Image();
@@ -254,10 +255,9 @@ class Instance
     {
         const { Matrix } = window.next2d.geom;
 
-        const ratio = window.devicePixelRatio * Util.$zoomScale;
-
         const rectangle = instance.getBounds();
 
+        const ratio = window.devicePixelRatio * Util.$zoomScale;
         const multiMatrix = Util.$multiplicationMatrix(
             Util.$multiplicationMatrix(
                 [ratio, 0, 0, ratio, 0, 0],
@@ -316,6 +316,8 @@ class Instance
         };
 
         if (place.filter.length) {
+
+            const ratio = window.devicePixelRatio * Util.$zoomScale;
 
             let rect = new Rectangle(0, 0, width, height);
 

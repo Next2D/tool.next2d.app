@@ -421,6 +421,8 @@ class LibraryController
             folderMap.clear();
             childrenMap.clear();
         }
+
+        // 重複登録防止のnameMapを生成
     }
 
     /**

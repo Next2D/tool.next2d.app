@@ -605,7 +605,7 @@ class Screen extends BaseScreen
         div.dataset.child        = "true";
 
         div.classList.add("display-object");
-        div.style.position = "absolute";
+        div.style.position      = "absolute";
         div.style.pointerEvents = event;
 
         div.addEventListener("mouseover", (event) =>

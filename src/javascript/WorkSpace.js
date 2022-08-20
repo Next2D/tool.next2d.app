@@ -14,6 +14,7 @@ class WorkSpace
         this._$name            = "";
         this._$stage           = null;
         this._$libraries       = new Map();
+        this._$nameMap         = new Map();
         this._$plugins         = new Map();
         this._$position        = 0;
         this._$characterId     = 0;
