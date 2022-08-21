@@ -1074,6 +1074,10 @@ class LibraryController
         const workSpace = Util.$currentWorkSpace();
 
         const instance = workSpace.getLibrary(library_id);
+        if (!instance) {
+            return ;
+        }
+
         if (instance.type === "container") {
 
             for (const layer of instance._$layers.values()) {
@@ -1107,6 +1111,12 @@ class LibraryController
         const workSpace = Util.$currentWorkSpace();
 
         let path = name || file.name;
+
+        // swfの場合は拡張子を削除
+        if (path.indexOf(".swf") > -1) {
+            path = path.replace(".swf", "");
+        }
+
         if (folder_id) {
             let parent = workSpace.getLibrary(folder_id);
             path = `${parent.name}/${path}`;
