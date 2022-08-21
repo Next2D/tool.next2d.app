@@ -18,7 +18,7 @@ const options = minimist(process.argv.slice(2), {
     "string": ["distPath", "version"],
     "default": {
         "prodBuild": false,
-        "version": "0.58.0",
+        "version": "0.59.0",
         "distPath": "."
     }
 });
@@ -69,6 +69,7 @@ const buildHTML = () =>
         "src/html/controller-google-tag.ejs",
         "src/html/controller-ad-end.ejs",
         "src/html/controller-end.ejs",
+        "src/html/confirm-modal.ejs",
         "src/html/screen-menu.ejs",
         "src/html/plugin-modal.ejs",
         "src/html/editor-modal.ejs",

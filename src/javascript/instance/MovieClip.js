@@ -243,7 +243,7 @@ class MovieClip extends Instance
 
     /**
      * @param  {number} [frame=1]
-     * @return {Promise}
+     * @return {void}
      * @public
      */
     changeFrame (frame = 1)

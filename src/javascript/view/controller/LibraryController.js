@@ -266,6 +266,14 @@ class LibraryController
         while (element.children.length) {
             element.children[0].remove();
         }
+
+        // 上書き管理のマップも初期化
+        Util
+            .$currentWorkSpace()
+            ._$nameMap
+            .clear();
+
+        Util.$confirmModal.clear();
     }
 
     /**
@@ -278,10 +286,12 @@ class LibraryController
      */
     reload (libraries = null)
     {
+        const workSpace = Util.$currentWorkSpace();
+
         // 指定がなければ現在のタブのライブラリを使用する
         if (!libraries) {
             libraries = Array.from(
-                Util.$currentWorkSpace()._$libraries.values()
+                workSpace._$libraries.values()
             );
         }
 
@@ -327,6 +337,20 @@ class LibraryController
                 .createInstance(
                     value.type, value.name, value.id, value.symbol
                 );
+
+            let path = value.name;
+            if (value._$folderId) {
+                let parent = workSpace.getLibrary(value._$folderId);
+                path = `${parent.name}/${path}`;
+                while (parent._$folderId) {
+                    parent = workSpace.getLibrary(parent._$folderId);
+                    path = `${parent.name}/${path}`;
+                }
+            }
+
+            workSpace
+                ._$nameMap
+                .set(path, value.id);
 
             // fixed logic
             if (value.type === "folder" && value.mode === Util.FOLDER_OPEN) {
@@ -957,6 +981,9 @@ class LibraryController
         const items = event.dataTransfer.items;
         if (items.length) {
 
+            // 選択中のコンテンツを非アクティブに
+            this.clearActive();
+
             const items = event.dataTransfer.items;
             for (let idx = 0; idx < items.length; ++idx) {
                 this.scanFiles(
@@ -981,7 +1008,7 @@ class LibraryController
      *
      * @param  {FileSystemDirectoryEntry} entry
      * @param  {number} [folder_id=0]
-     * @return {Promise<void>}
+     * @return {void}
      * @method
      * @public
      */
@@ -1028,16 +1055,86 @@ class LibraryController
     }
 
     /**
-     * @description 読み込み処理
+     * @description 関連するコンテンツを表示と内部データから削除
      *
-     * @param  {File} file
-     * @param  {number} [folder_id=0]
+     * @param  {number} library_id
      * @return {void}
      * @method
      * @public
      */
-    loadFile (file, folder_id = 0)
+    removeLibrary (library_id)
     {
+        const element = document
+            .getElementById(`library-child-id-${library_id}`);
+
+        if (element) {
+            element.remove();
+        }
+
+        const workSpace = Util.$currentWorkSpace();
+
+        const instance = workSpace.getLibrary(library_id);
+        if (instance.type === "container") {
+
+            for (const layer of instance._$layers.values()) {
+
+                for (let idx = 0; idx < layer._$characters.length; ++idx) {
+
+                    const character = layer._$characters[idx];
+
+                    this.removeLibrary(character.libraryId);
+
+                }
+            }
+        }
+
+        workSpace.removeLibrary(library_id);
+    }
+
+    /**
+     * @description 読み込み処理
+     *
+     * @param  {File} file
+     * @param  {number} [folder_id=0]
+     * @param  {string} [name=""]
+     * @param  {number} [library_id=0]
+     * @return {void}
+     * @method
+     * @public
+     */
+    loadFile (file, folder_id = 0, name = "", library_id = 0)
+    {
+        const workSpace = Util.$currentWorkSpace();
+
+        let path = name || file.name;
+        if (folder_id) {
+            let parent = workSpace.getLibrary(folder_id);
+            path = `${parent.name}/${path}`;
+            while (parent._$folderId) {
+                parent = workSpace.getLibrary(parent._$folderId);
+                path = `${parent.name}/${path}`;
+            }
+        }
+
+        // 上書き確認
+        if (!library_id && workSpace._$nameMap.has(path)) {
+
+            Util.$confirmModal.files.push({
+                "file": file,
+                "folderId": folder_id,
+                "path": path
+            });
+
+            Util.$confirmModal.show();
+
+            return ;
+        }
+
+        // 上書きの場合はElementと内部データを削除
+        if (library_id) {
+            this.removeLibrary(library_id);
+        }
+
         switch (file.type) {
 
             case "image/svg+xml":
@@ -1047,13 +1144,15 @@ class LibraryController
                     {
                         const object = this.createInstance(
                             "container",
-                            file.name,
-                            Util.$currentWorkSpace().nextLibraryId
+                            name || file.name,
+                            library_id || workSpace.nextLibraryId
                         );
 
-                        const movieClip = Util
-                            .$currentWorkSpace()
-                            .addLibrary(object);
+                        const movieClip = workSpace.addLibrary(object);
+
+                        workSpace
+                            ._$nameMap
+                            .set(path, object.id);
 
                         // ドロップしたアイテムをアクティブ化
                         const element = document
@@ -1070,20 +1169,28 @@ class LibraryController
                         if (folder_id) {
                             movieClip.folderId = folder_id;
 
-                            const folder = Util
-                                .$currentWorkSpace()
-                                .getLibrary(folder_id);
+                            const folder = workSpace.getLibrary(folder_id);
 
                             this.updateFolderStyle(folder, folder.mode);
                         }
 
                         SVGToShape.parse(value, movieClip);
 
+                        // ライブラリ選択のselectを更新
                         Util
                             .$instanceSelectController
                             .createInstanceSelect(movieClip);
 
+                        // ライブラリ一覧を再構成
                         Util.$libraryController.reload();
+
+                        // プレビューを表示
+                        Util.$libraryPreview.loadImage(movieClip.id);
+
+                        // 上書きならスクリーンを再描画
+                        if (library_id) {
+                            this.reloadScreen(library_id);
+                        }
                     });
                 break;
 
@@ -1120,9 +1227,13 @@ class LibraryController
 
                                 const object = this.createInstance(
                                     "bitmap",
-                                    file.name,
-                                    Util.$currentWorkSpace().nextLibraryId
+                                    name || file.name,
+                                    library_id || workSpace.nextLibraryId
                                 );
+
+                                workSpace
+                                    ._$nameMap
+                                    .set(path, object.id);
 
                                 // ドロップしたアイテムをアクティブ化
                                 const element = document
@@ -1141,26 +1252,32 @@ class LibraryController
                                 object.imageType = file.type;
                                 object.buffer    = new Uint8Array(buffer);
 
-                                const instance = Util
-                                    .$currentWorkSpace()
-                                    .addLibrary(object);
+                                const instance = workSpace.addLibrary(object);
 
                                 if (folder_id) {
 
                                     instance.folderId = folder_id;
 
-                                    const folder = Util
-                                        .$currentWorkSpace()
-                                        .getLibrary(folder_id);
+                                    const folder = workSpace.getLibrary(folder_id);
 
                                     this.updateFolderStyle(folder, folder.mode);
                                 }
 
+                                // ライブラリ選択のselectを更新
                                 Util
                                     .$instanceSelectController
                                     .createInstanceSelect(instance);
 
+                                // ライブラリ一覧を再構成
                                 Util.$libraryController.reload();
+
+                                // プレビューを表示
+                                Util.$libraryPreview.loadImage(instance.id);
+
+                                // 上書きならスクリーンを再描画
+                                if (library_id) {
+                                    this.reloadScreen(library_id);
+                                }
                             });
 
                     });
@@ -1180,9 +1297,13 @@ class LibraryController
                         {
                             const object = this.createInstance(
                                 "video",
-                                file.name,
-                                Util.$currentWorkSpace().nextLibraryId
+                                name || file.name,
+                                library_id || workSpace.nextLibraryId
                             );
+
+                            workSpace
+                                ._$nameMap
+                                .set(path, object.id);
 
                             // ドロップしたアイテムをアクティブ化
                             const element = document
@@ -1200,31 +1321,35 @@ class LibraryController
                             object.height = video.videoHeight;
                             object.buffer = new Uint8Array(buffer);
 
-                            const instance = Util
-                                .$currentWorkSpace()
-                                .addLibrary(object);
-
+                            const instance = workSpace.addLibrary(object);
                             if (folder_id) {
 
                                 instance.folderId = folder_id;
 
-                                const folder = Util
-                                    .$currentWorkSpace()
-                                    .getLibrary(folder_id);
+                                const folder = workSpace.getLibrary(folder_id);
 
                                 this.updateFolderStyle(folder, folder.mode);
                             }
 
+                            // ライブラリ選択のselectを更新
                             Util
                                 .$instanceSelectController
                                 .createInstanceSelect(instance);
 
+                            // ライブラリ一覧を再構成
                             Util.$libraryController.reload();
+
+                            // プレビューを表示
+                            Util.$libraryPreview.loadImage(instance.id);
+
+                            // 上書きならスクリーンを再描画
+                            if (library_id) {
+                                this.reloadScreen(library_id);
+                            }
                         };
 
                         video.src = URL.createObjectURL(blob);
                         video.load();
-
                     });
                 break;
 
@@ -1235,9 +1360,13 @@ class LibraryController
                     {
                         const object = this.createInstance(
                             "sound",
-                            file.name,
-                            Util.$currentWorkSpace().nextLibraryId
+                            name || file.name,
+                            library_id || workSpace.nextLibraryId
                         );
+
+                        workSpace
+                            ._$nameMap
+                            .set(path, object.id);
 
                         // ドロップしたアイテムをアクティブ化
                         const element = document
@@ -1253,23 +1382,28 @@ class LibraryController
 
                         object.buffer = new Uint8Array(buffer);
 
-                        const instance = Util
-                            .$currentWorkSpace()
-                            .addLibrary(object);
+                        const instance = workSpace.addLibrary(object);
 
                         if (folder_id) {
 
                             instance.folderId = folder_id;
 
-                            const folder = Util
-                                .$currentWorkSpace()
-                                .getLibrary(folder_id);
+                            const folder = workSpace.getLibrary(folder_id);
 
                             this.updateFolderStyle(folder, folder.mode);
 
                         }
 
+                        // ライブラリ一覧を再構成
                         Util.$libraryController.reload();
+
+                        // プレビューを表示
+                        Util.$libraryPreview.loadImage(instance.id);
+
+                        // 上書きならスクリーンを再描画
+                        if (library_id) {
+                            this.reloadScreen(library_id);
+                        }
                     });
                 break;
 
@@ -1280,7 +1414,7 @@ class LibraryController
                     {
                         new ReComposition()
                             .setData(new Uint8Array(buffer))
-                            .run(file.name, folder_id);
+                            .run(name || file.name, folder_id, library_id);
                     });
                 break;
 
@@ -1384,6 +1518,27 @@ class LibraryController
                 .$currentWorkSpace()
                 .temporarilySaved();
         }
+    }
+
+    /**
+     * @description スクリーンエリアで変更があったElementを再描画
+     *
+     * @param  {number} library_id
+     * @return {void}
+     * @method
+     * @public
+     */
+    reloadScreen (library_id)
+    {
+        Util.$changeLibraryId = library_id;
+        const frame = Util.$timelineFrame.currentFrame;
+
+        Util
+            .$currentWorkSpace()
+            .scene
+            .changeFrame(frame);
+
+        Util.$changeLibraryId = 0;
     }
 }
 

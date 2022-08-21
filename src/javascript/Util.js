@@ -49,6 +49,7 @@ Util.$shapePointerColor       = "#009900";
 Util.$shapeLinkedPointerColor = "#ffa500";
 Util.$shortcut                = new Map();
 Util.$useShortcutSetting      = false;
+Util.$changeLibraryId         = 0;
 
 const userAgentData = window.navigator.userAgentData;
 if (userAgentData) {
@@ -292,7 +293,8 @@ Util.$endMenu = (ignore) =>
         "editor-modal",
         "plugin-modal",
         "shortcut-setting-menu",
-        "library-export-modal"
+        "library-export-modal",
+        "confirm-modal"
     ];
 
     for (let idx = 0; idx < names.length; ++idx) {
@@ -1333,9 +1335,13 @@ Util.$parserHandler = function (event)
                                 ? `MovieClip_${id}`
                                 : this._$fileName;
 
+                            let libraryId = !character._$characterId && this._$libraryId
+                                ? this._$libraryId
+                                : id;
+
                             const object = Util
                                 .$libraryController
-                                .createInstance("container", name, id);
+                                .createInstance("container", name, libraryId);
 
                             // create MovieClip
                             const movieClip = workSpace.addLibrary(object);
@@ -1713,6 +1719,18 @@ Util.$parserHandler = function (event)
                 }
 
                 if (character._$characterId) {
+                    if (this._$libraryId) {
+
+                        Util.$changeLibraryId = this._$libraryId;
+
+                        workSpace
+                            .scene
+                            .changeFrame(
+                                Util.$timelineFrame.currentFrame
+                            );
+
+                        Util.$changeLibraryId = 0;
+                    }
                     return ;
                 }
             }

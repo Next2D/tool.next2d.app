@@ -9,18 +9,85 @@ class ReComposition
      */
     constructor ()
     {
+        /**
+         * @type {number}
+         * @default 0
+         * @private
+         */
         this._$folderId = 0;
+
+        /**
+         * @type {number}
+         * @default 0
+         * @private
+         */
+        this._$libraryId = 0;
+
+        /**
+         * @type {string}
+         * @default ""
+         * @private
+         */
         this._$fileName = "";
+
+        /**
+         * @type {ByteStream}
+         * @private
+         */
         this._$byteStream = new ByteStream();
 
-        // reset
-        this._$bounds     = { "xMin": 0, "xMax": 0, "yMin": 0, "yMax": 0 };
+        /**
+         * @type {object}
+         * @private
+         */
+        this._$bounds = {
+            "xMin": 0,
+            "xMax": 0,
+            "yMin": 0,
+            "yMax": 0
+        };
+
+        /**
+         * @type {number}
+         * @default 0
+         * @private
+         */
         this._$swfVersion = 0;
-        this._$info       = null;
-        this._$buildData  = null;
-        this._$fileSize   = 0;
-        this._$mode       = "swf";
-        this._$offset     = 0;
+
+        /**
+         * @type {object}
+         * @default null
+         * @private
+         */
+        this._$info = null;
+
+        /**
+         * @type {object}
+         * @default null
+         * @private
+         */
+        this._$buildData = null;
+
+        /**
+         * @type {number}
+         * @default 0
+         * @private
+         */
+        this._$fileSize = 0;
+
+        /**
+         * @type {string}
+         * @default "swf"
+         * @private
+         */
+        this._$mode = "swf";
+
+        /**
+         * @type {number}
+         * @default 0
+         * @private
+         */
+        this._$offset = 0;
     }
 
     /**
@@ -55,13 +122,15 @@ class ReComposition
     /**
      * @param  {string} file_name
      * @param  {number} [folder_id=0]
+     * @param  {number} [library_id=0]
      * @return {void}
      * @public
      */
-    run (file_name, folder_id = 0)
+    run (file_name, folder_id = 0, library_id = 0)
     {
-        this._$fileName = file_name.split(".")[0];
-        this._$folderId = folder_id;
+        this._$fileName  = file_name.split(".")[0];
+        this._$folderId  = folder_id;
+        this._$libraryId = library_id;
 
         // signature
         const signature = this._$byteStream.getHeaderSignature();

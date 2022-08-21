@@ -458,7 +458,7 @@ class Screen extends BaseScreen
      * @param  {number}    frame
      * @param  {number}    layer_id
      * @param  {string}    [event="auto"]
-     * @return {Promise}
+     * @return {void}
      * @method
      * @public
      */
@@ -472,6 +472,8 @@ class Screen extends BaseScreen
         const instance = workSpace.getLibrary(character.libraryId);
 
         let doUpdate = !character._$currentPlace;
+
+        doUpdate = character.libraryId === Util.$changeLibraryId;
         switch (instance.type) {
 
             case "container":
