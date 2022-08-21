@@ -128,7 +128,7 @@ class ReComposition
      */
     run (file_name, folder_id = 0, library_id = 0)
     {
-        this._$fileName  = file_name.split(".")[0];
+        this._$fileName  = file_name.replace(".swf", "");
         this._$folderId  = folder_id;
         this._$libraryId = library_id;
 

@@ -293,8 +293,7 @@ Util.$endMenu = (ignore) =>
         "editor-modal",
         "plugin-modal",
         "shortcut-setting-menu",
-        "library-export-modal",
-        "confirm-modal"
+        "library-export-modal"
     ];
 
     for (let idx = 0; idx < names.length; ++idx) {

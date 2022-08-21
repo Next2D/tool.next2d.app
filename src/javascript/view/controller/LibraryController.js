@@ -273,7 +273,7 @@ class LibraryController
             ._$nameMap
             .clear();
 
-        Util.$confirmModal.clear();
+        Util.$confirmModal.hide();
     }
 
     /**

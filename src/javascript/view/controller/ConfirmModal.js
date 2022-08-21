@@ -62,11 +62,11 @@ class ConfirmModal extends BaseController
     {
         super.initialize();
 
-        // confirm-file-name
-
         const elements = [
             "confirm-overwriting",
-            "confirm-skip"
+            "confirm-skip",
+            "confirm-all-overwriting",
+            "confirm-all-skip"
         ];
 
         for (let idx = 0; idx < elements.length; ++idx) {
@@ -97,6 +97,74 @@ class ConfirmModal extends BaseController
     }
 
     /**
+     * @description 全て上書き
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    executeConfirmAllOverwriting ()
+    {
+        // 上書きするIDを指定
+        const libraryId = Util
+            .$currentWorkSpace()
+            ._$nameMap
+            .get(this._$currentObject.path);
+
+        Util
+            .$libraryController
+            .loadFile(
+                this._$currentObject.file,
+                this._$currentObject.folderId,
+                this._$currentObject.file.name,
+                libraryId
+            );
+
+        for (let idx = 0; idx < this._$files.length; ++idx) {
+
+            const object = this._$files[idx];
+
+            // 上書きするIDを指定
+            const libraryId = Util
+                .$currentWorkSpace()
+                ._$nameMap
+                .get(object.path);
+
+            Util
+                .$libraryController
+                .loadFile(
+                    object.file,
+                    object.folderId,
+                    object.file.name,
+                    libraryId
+                );
+        }
+
+        this._$files.length  = 0;
+
+        // モーダルを非表示
+        this.hide();
+    }
+
+    /**
+     * @description 全ての上書きをスキップ
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    executeConfirmAllSkip ()
+    {
+        this._$state         = "hide";
+        this._$currentObject = null;
+        this._$files.length  = 0;
+
+        document
+            .getElementById("confirm-modal")
+            .setAttribute("class", "fadeOut");
+    }
+
+    /**
      * @description 上書きを実行
      *
      * @return {void}
@@ -109,8 +177,13 @@ class ConfirmModal extends BaseController
             .getElementById("confirm-file-name")
             .value;
 
+        let name = this._$currentObject.file.name;
+        if (name.indexOf(".swf") > -1) {
+            name = name.replace(".swf", "");
+        }
+
         let libraryId = 0;
-        if (inputValue === this._$currentObject.file.name) {
+        if (inputValue === name) {
 
             // 上書きならIDを指定
             libraryId = Util
@@ -151,9 +224,14 @@ class ConfirmModal extends BaseController
      * @method
      * @public
      */
-    clear ()
+    hide ()
     {
-        this._$state = "hide";
+        this._$state         = "hide";
+        this._$currentObject = null;
+
+        document
+            .getElementById("confirm-modal")
+            .setAttribute("class", "fadeOut");
     }
 
     /**
@@ -173,7 +251,7 @@ class ConfirmModal extends BaseController
         this._$state = "show";
 
         // 全てのモーダルを非表示に
-        Util.$endMenu("confirm-modal");
+        Util.$endMenu();
 
         document
             .getElementById("confirm-modal")
@@ -195,8 +273,7 @@ class ConfirmModal extends BaseController
 
         // 表示項目がなければモーダル表示を終了
         if (!this._$currentObject) {
-            this._$state = "hide";
-            Util.$endMenu();
+            this.hide();
             return ;
         }
 
@@ -216,8 +293,15 @@ class ConfirmModal extends BaseController
             afterElement.firstChild.remove();
         }
 
-        const input = document.getElementById("confirm-file-name");
-        input.value = this._$currentObject.file.name;
+        const input = document
+            .getElementById("confirm-file-name");
+
+        let name = this._$currentObject.file.name;
+        if (name.indexOf(".swf") > -1) {
+            name = name.replace(".swf", "");
+        }
+
+        input.value = name;
         input.focus();
 
         const workSpace = Util.$currentWorkSpace();
@@ -279,6 +363,7 @@ class ConfirmModal extends BaseController
                     afterElement.appendChild(audio);
                 }
                 break;
+
         }
     }
 }
