@@ -1078,16 +1078,49 @@ class LibraryController
             return ;
         }
 
+        // SWFとSVGの場合はコンテナを基準に削除処理を行う
         if (instance.type === "container") {
 
+            const libraryIds = new Map();
             for (const layer of instance._$layers.values()) {
 
                 for (let idx = 0; idx < layer._$characters.length; ++idx) {
 
                     const character = layer._$characters[idx];
 
-                    this.removeLibrary(character.libraryId);
+                    if (!libraryIds.has(character.libraryId)) {
+                        libraryIds.set(character.libraryId, true);
+                    }
 
+                    const instance = workSpace
+                        .getLibrary(character.libraryId);
+
+                    if (instance && instance.type === "container") {
+                        this.removeLibrary(character.libraryId);
+                    }
+                }
+            }
+
+            if (libraryIds.size) {
+
+                // 削除対象でないMovieClipで利用されていれば削除
+                for (const libraryId of libraryIds.keys()) {
+
+                    const instance = workSpace.getLibrary(libraryId);
+                    if (!instance) {
+                        continue;
+                    }
+
+                    const element = document
+                        .getElementById(`library-child-id-${libraryId}`);
+
+                    if (element) {
+                        element.remove();
+                    }
+
+                    instance.remove();
+
+                    workSpace.removeLibrary(libraryId);
                 }
             }
         }

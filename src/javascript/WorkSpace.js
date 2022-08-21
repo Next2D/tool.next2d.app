@@ -159,6 +159,9 @@ class WorkSpace
         // シーンをセット
         this.scene = scene;
 
+        // 選択中のライブラリを非アクティブに
+        Util.$libraryController.clearActive();
+
         // ライブラリを初期化
         Util.$libraryController.reload(
             Array.from(this._$libraries.values())

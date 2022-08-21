@@ -1719,19 +1719,20 @@ Util.$parserHandler = function (event)
                 }
 
                 if (character._$characterId) {
-                    if (this._$libraryId) {
-
-                        Util.$changeLibraryId = this._$libraryId;
-
-                        workSpace
-                            .scene
-                            .changeFrame(
-                                Util.$timelineFrame.currentFrame
-                            );
-
-                        Util.$changeLibraryId = 0;
-                    }
                     return ;
+                }
+
+                if (this._$libraryId) {
+
+                    Util.$changeLibraryId = this._$libraryId;
+
+                    workSpace
+                        .scene
+                        .changeFrame(
+                            Util.$timelineFrame.currentFrame
+                        );
+
+                    Util.$changeLibraryId = 0;
                 }
             }
             break;
