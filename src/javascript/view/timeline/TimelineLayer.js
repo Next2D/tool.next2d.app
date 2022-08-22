@@ -2611,7 +2611,7 @@ class TimelineLayer extends BaseTimeline
 
                 const character = targetCharacters[idx];
 
-                if (distFrame > character.endFrame) {
+                if (distFrame > character.endFrame - 1) {
                     continue;
                 }
 
@@ -2626,6 +2626,7 @@ class TimelineLayer extends BaseTimeline
                     targetLayer.deleteCharacter(character.id);
 
                 } else {
+
 
                     // 移動先の幅の最大値をセット
                     const range = character.getRange(endFrame);
@@ -2753,7 +2754,7 @@ class TimelineLayer extends BaseTimeline
 
                 const emptyCharacter = targetEmptys[idx];
 
-                if (distFrame > emptyCharacter.endFrame) {
+                if (distFrame > emptyCharacter.endFrame - 1) {
                     continue;
                 }
 
@@ -2989,6 +2990,7 @@ class TimelineLayer extends BaseTimeline
                         const prevFrame = emptyCharacter.startFrame - 1;
                         if (prevFrame) {
 
+                            distLastFrame = Math.max(emptyCharacter.endFrame, distLastFrame);
                             layer.deleteEmptyCharacter(emptyCharacter);
 
                             const activeCharacters = layer
@@ -3036,10 +3038,13 @@ class TimelineLayer extends BaseTimeline
 
                             } else {
 
-                                layer.addEmptyCharacter(new EmptyCharacter({
-                                    "startFrame": 1,
-                                    "endFrame": emptyCharacter.endFrame
-                                }));
+                                // 移動元と移動先が異なるレイヤーの時は空のキーフレームを追加
+                                if (selectLayerId !== targetLayerId) {
+                                    layer.addEmptyCharacter(new EmptyCharacter({
+                                        "startFrame": 1,
+                                        "endFrame": emptyCharacter.endFrame
+                                    }));
+                                }
 
                             }
                         }
@@ -3049,7 +3054,6 @@ class TimelineLayer extends BaseTimeline
                 }
             }
 
-            console.log(distLastFrame);
             // 移動先に選択したDisplayObjectをセット
             for (const character of characters.values()) {
 
@@ -3106,7 +3110,9 @@ class TimelineLayer extends BaseTimeline
                 }
 
                 // 最終位置の補正
-                if (emptyCharacter.endFrame === endFrame && distLastFrame > endFrame) {
+                if (emptyCharacter.endFrame === endFrame
+                    && distLastFrame > endFrame
+                ) {
                     emptyCharacter.endFrame = distLastFrame;
                 }
 
