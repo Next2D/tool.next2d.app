@@ -2762,7 +2762,7 @@ class TimelineLayer extends BaseTimeline
                 }
 
                 // 終了位置を補正
-                distLastFrame = Math.max(emptyCharacter.endFrame, distLastFrame);
+                distLastFrame = emptyCharacter.endFrame;
 
                 if (distFrame > emptyCharacter.startFrame) {
 
@@ -2790,7 +2790,9 @@ class TimelineLayer extends BaseTimeline
                         && character.hasPlace(frame)
                     ) {
                         const range = character.getRange(frame);
-                        if (range.startFrame === character.startFrame) {
+                        if (range.startFrame === character.startFrame
+                            && range.startFrame === distLastFrame
+                        ) {
                             distLastFrame = Math.max(range.endFrame, distLastFrame);
                         }
                     }
@@ -3047,6 +3049,7 @@ class TimelineLayer extends BaseTimeline
                 }
             }
 
+            console.log(distLastFrame);
             // 移動先に選択したDisplayObjectをセット
             for (const character of characters.values()) {
 
@@ -3208,6 +3211,7 @@ class TimelineLayer extends BaseTimeline
                 const prevFrame = character.startFrame - 1;
 
                 if (prevFrame) {
+
                     const prevActiveCharacters = targetLayer
                         .getActiveCharacter(prevFrame);
 
@@ -3275,7 +3279,6 @@ class TimelineLayer extends BaseTimeline
                 }
             }
 
-            console.log(layer);
             if (targetLayerId === layerId) {
 
                 layer.reloadStyle();
