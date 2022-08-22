@@ -583,9 +583,9 @@ class Layer
     setCharacterStyle ()
     {
         const layerId = this.id;
+        const duplication = new Map();
         for (let idx = 0; idx < this._$characters.length; ++idx) {
 
-            const duplication = new Map();
             const character = this._$characters[idx];
             const places = Array.from(character._$places.keys());
 

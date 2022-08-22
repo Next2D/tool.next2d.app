@@ -2520,7 +2520,7 @@ class TimelineLayer extends BaseTimeline
                             if (!characters.has(character.id)) {
 
                                 // 新規のDisplayObjectを生成
-                                const newCharacter = new Character();
+                                const newCharacter      = new Character();
                                 newCharacter.libraryId  = character.libraryId;
                                 newCharacter.startFrame = frame;
                                 newCharacter.endFrame   = frame + 1;
@@ -2604,6 +2604,177 @@ class TimelineLayer extends BaseTimeline
                 emptys.push(currentEmpty);
             }
 
+            // 移動先のDisplayObjectにキーフレームがあれば削除
+            let distLastFrame = endFrame;
+            const targetCharacters = targetLayer._$characters.slice();
+            for (let idx = 0; idx < targetCharacters.length; ++idx) {
+
+                const character = targetCharacters[idx];
+
+                if (distFrame > character.endFrame) {
+                    continue;
+                }
+
+                if (character.startFrame >= endFrame) {
+                    continue;
+                }
+
+                if (character.startFrame >= distFrame
+                    && endFrame >= character.endFrame
+                ) {
+
+                    targetLayer.deleteCharacter(character.id);
+
+                } else {
+
+                    // 移動先の幅の最大値をセット
+                    const range = character.getRange(endFrame);
+                    distLastFrame = Math.max(range.endFrame, distLastFrame);
+
+                    // 選択幅のキーフレームを削除
+                    for (let frame = distFrame; endFrame > frame; ++frame) {
+
+                        if (!character.hasPlace(frame)) {
+                            continue;
+                        }
+
+                        // tween補正
+                        const place = character.getPlace(frame);
+                        if (place.tweenFrame) {
+
+                            const range = character.getRange(frame);
+                            if (character.hasTween(frame)) {
+
+                                // tweenの開始位置なら全て削除
+                                for (let frame = range.startFrame; range.endFrame > frame; ++frame) {
+                                    character.deletePlace(frame);
+                                }
+                                character.deleteTween(frame);
+
+                            } else {
+
+                                for (let frame = distFrame; range.endFrame > frame; ++frame) {
+                                    character.deletePlace(frame);
+                                }
+
+                                character
+                                    .getTween(place.tweenFrame)
+                                    .endFrame = distFrame;
+
+                                // 再計算
+                                Util
+                                    .$tweenController
+                                    .relocationPlace(character, place.tweenFrame);
+
+                            }
+                        }
+
+                        character.deletePlace(frame);
+                    }
+
+                    if (!character._$places.size) {
+
+                        // 全てのキーフレームが削除された場合はレイヤーからも削除
+                        targetLayer.deleteCharacter(character.id);
+
+                    } else {
+
+                        // 後続にキーフレームがあれば分割
+                        if (character.hasPlace(range.endFrame)) {
+
+                            // 移動元と移動先が同じレイヤーならチェック
+                            if (selectLayerId === targetLayerId
+                                && characters.has(character.id)
+                            ) {
+                                const newCharacter = characters.get(character.id);
+                                for (const keyFrame of newCharacter._$places.keys()) {
+                                    character.deletePlace(keyFrame);
+                                }
+
+                                distLastFrame = Math.max(newCharacter.endFrame, distLastFrame);
+
+                            }
+
+                            // 複製して分割
+                            const cloneCharacter = character.clone();
+                            cloneCharacter.startFrame = range.endFrame;
+
+                            // placeオブジェクトを分割
+                            const places = new Map();
+                            for (const [keyFrame, place] of cloneCharacter._$places) {
+
+                                if (range.endFrame > keyFrame) {
+                                    continue;
+                                }
+
+                                character.deletePlace(keyFrame);
+                                places.set(keyFrame, place);
+                            }
+
+                            // キーフレームがあれば分割したDisplayObjectを登録
+                            if (places.size) {
+
+                                // tweenを分割
+                                const tweenObjects = new Map();
+                                for (const [keyFrame, tweenObject] of cloneCharacter._$tween) {
+
+                                    if (range.endFrame > keyFrame) {
+                                        continue;
+                                    }
+
+                                    character.deleteTween(keyFrame);
+                                    tweenObjects.set(keyFrame, tweenObject);
+                                }
+
+                                cloneCharacter._$places = places;
+                                cloneCharacter._$tween  = tweenObjects;
+
+                                targetLayer.addCharacter(cloneCharacter);
+                            }
+                        }
+
+                        // 終了位置を補正
+                        character.endFrame = distFrame;
+                        if (character.hasTween(range.startFrame)) {
+
+                            character
+                                .getTween(range.startFrame)
+                                .endFrame = distFrame;
+
+                        }
+
+                    }
+                }
+            }
+
+            // 移動先に空のキーフレームがあれば削除
+            const targetEmptys = targetLayer._$emptys.slice();
+            for (let idx = 0; idx < targetEmptys.length; ++idx) {
+
+                const emptyCharacter = targetEmptys[idx];
+
+                if (distFrame > emptyCharacter.endFrame) {
+                    continue;
+                }
+
+                if (emptyCharacter.startFrame >= endFrame) {
+                    continue;
+                }
+
+                // 終了位置を補正
+                distLastFrame = Math.max(emptyCharacter.endFrame, distLastFrame);
+
+                if (distFrame > emptyCharacter.startFrame) {
+
+                    emptyCharacter.endFrame = distFrame;
+
+                } else {
+
+                    targetLayer.deleteEmptyCharacter(emptyCharacter);
+
+                }
+            }
+
             // Altキーが押下されていない時は、選択元を削除
             if (!Util.$altKey) {
 
@@ -2613,6 +2784,16 @@ class TimelineLayer extends BaseTimeline
                 for (const characterId of characters.keys()) {
 
                     const character = layer.getCharacter(characterId);
+
+                    // 同一のレイヤー移動であれば最終フレームを確認
+                    if (selectLayerId === targetLayerId
+                        && character.hasPlace(frame)
+                    ) {
+                        const range = character.getRange(frame);
+                        if (range.startFrame === character.startFrame) {
+                            distLastFrame = Math.max(range.endFrame, distLastFrame);
+                        }
+                    }
 
                     // 選択範囲のキーフレームを削除
                     for (let keyFrame = frame; endFrame > keyFrame; ++keyFrame) {
@@ -2670,7 +2851,7 @@ class TimelineLayer extends BaseTimeline
                         // キーフレームを削除
                         character.deletePlace(keyFrame);
 
-                        // キーフレームがなくなったらレイヤーから削除して終了
+                        // キーフレームがなくなったらレイヤーから削除
                         if (!character._$places.size) {
 
                             layer.deleteCharacter(characterId);
@@ -2765,6 +2946,20 @@ class TimelineLayer extends BaseTimeline
                                     }
 
                                 }
+
+                            } else {
+
+                                const emptyCharacter = layer
+                                    .getActiveEmptyCharacter(prevFrame);
+
+                                if (!emptyCharacter) {
+
+                                    layer.addEmptyCharacter(new EmptyCharacter({
+                                        "startFrame": range.startFrame,
+                                        "endFrame": range.endFrame
+                                    }));
+
+                                }
                             }
                         }
                     }
@@ -2852,159 +3047,6 @@ class TimelineLayer extends BaseTimeline
                 }
             }
 
-            // 移動先のDisplayObjectを整理
-            let distLastFrame = endFrame;
-            const targetCharacters = targetLayer._$characters.slice();
-            for (let idx = 0; idx < targetCharacters.length; ++idx) {
-
-                const character = targetCharacters[idx];
-
-                if (distFrame > character.endFrame) {
-                    continue;
-                }
-
-                if (character.startFrame >= endFrame) {
-                    continue;
-                }
-
-                if (character.startFrame >= distFrame
-                    && endFrame >= character.endFrame
-                ) {
-
-                    targetLayer.deleteCharacter(character.id);
-
-                } else {
-
-                    // 移動先の幅の最大値をセット
-                    const range = character.getRange(endFrame);
-                    distLastFrame = Math.max(range.endFrame, distLastFrame);
-
-                    // 選択幅のキーフレームを削除
-                    for (let frame = distFrame; endFrame > frame; ++frame) {
-
-                        if (!character.hasPlace(frame)) {
-                            continue;
-                        }
-
-                        // tween補正
-                        const place = character.getPlace(frame);
-                        if (place.tweenFrame) {
-
-                            const range = character.getRange(frame);
-                            if (character.hasTween(frame)) {
-
-                                // tweenの開始位置なら全て削除
-                                for (let frame = range.startFrame; range.endFrame > frame; ++frame) {
-                                    character.deletePlace(frame);
-                                }
-                                character.deleteTween(frame);
-
-                            } else {
-
-                                for (let frame = distFrame; range.endFrame > frame; ++frame) {
-                                    character.deletePlace(frame);
-                                }
-
-                                character
-                                    .getTween(place.tweenFrame)
-                                    .endFrame = distFrame;
-
-                                // 再計算
-                                Util
-                                    .$tweenController
-                                    .relocationPlace(character, place.tweenFrame);
-
-                            }
-                        }
-
-                        character.deletePlace(frame);
-                    }
-
-                    if (!character._$places.size) {
-
-                        // 全てのキーフレームが削除された場合はレイヤーからも削除
-                        targetLayer.deleteCharacter(character.id);
-
-                    } else {
-
-                        // 後続にキーフレームがあれば分割
-                        if (character.hasPlace(range.endFrame)) {
-
-                            // 複製して分割
-                            const cloneCharacter = character.clone();
-                            cloneCharacter.startFrame = range.endFrame;
-                            targetLayer.addCharacter(cloneCharacter);
-
-                            // placeオブジェクトを分割
-                            const places = new Map();
-                            for (const [keyFrame, place] of cloneCharacter._$places) {
-
-                                if (range.endFrame > keyFrame) {
-                                    continue;
-                                }
-
-                                character.deletePlace(keyFrame);
-                                places.set(keyFrame, place);
-                            }
-
-                            // tweenを分割
-                            const tweenObjects = new Map();
-                            for (const [keyFrame, tweenObject] of cloneCharacter._$tween) {
-
-                                if (range.endFrame > keyFrame) {
-                                    continue;
-                                }
-
-                                character.deleteTween(keyFrame);
-                                tweenObjects.set(keyFrame, tweenObject);
-                            }
-
-                            cloneCharacter._$places = places;
-                            cloneCharacter._$tween  = tweenObjects;
-                        }
-
-                        // 終了位置を補正
-                        character.endFrame = distFrame;
-                        if (character.hasTween(range.startFrame)) {
-
-                            character
-                                .getTween(range.startFrame)
-                                .endFrame = distFrame;
-
-                        }
-
-                    }
-                }
-            }
-
-            // 移動先に空のキーフレームがあれば削除
-            const targetEmptys = targetLayer._$emptys.slice();
-            for (let idx = 0; idx < targetEmptys.length; ++idx) {
-
-                const emptyCharacter = targetEmptys[idx];
-
-                if (distFrame > emptyCharacter.endFrame) {
-                    continue;
-                }
-
-                if (emptyCharacter.startFrame >= endFrame) {
-                    continue;
-                }
-
-                // 終了位置を補正
-                distLastFrame = Math.max(emptyCharacter.endFrame, distLastFrame);
-
-                if (distFrame > emptyCharacter.startFrame) {
-
-                    emptyCharacter.endFrame = distFrame;
-
-                } else {
-
-                    targetLayer.deleteEmptyCharacter(emptyCharacter);
-
-                }
-            }
-
             // 移動先に選択したDisplayObjectをセット
             for (const character of characters.values()) {
 
@@ -3041,6 +3083,14 @@ class TimelineLayer extends BaseTimeline
                 }
 
                 targetLayer.addCharacter(character);
+
+                // 移動先に空のキーフレームがあれば削除
+                const emptyCharacter = targetLayer
+                    .getActiveEmptyCharacter(character.startFrame);
+
+                if (emptyCharacter) {
+                    targetLayer.deleteEmptyCharacter(emptyCharacter);
+                }
             }
 
             // 移動先に選択した空のキーフレームをセット
@@ -3157,36 +3207,38 @@ class TimelineLayer extends BaseTimeline
                 // 前続のフレームを確認
                 const prevFrame = character.startFrame - 1;
 
-                const prevActiveCharacters = targetLayer
-                    .getActiveCharacter(prevFrame);
+                if (prevFrame) {
+                    const prevActiveCharacters = targetLayer
+                        .getActiveCharacter(prevFrame);
 
-                for (let idx = 0; idx < prevActiveCharacters.length; ++idx) {
+                    for (let idx = 0; idx < prevActiveCharacters.length; ++idx) {
 
-                    const prevCharacter = prevActiveCharacters[idx];
+                        const prevCharacter = prevActiveCharacters[idx];
 
-                    if (prevCharacter.libraryId !== character.libraryId) {
-                        continue;
+                        if (prevCharacter.libraryId !== character.libraryId) {
+                            continue;
+                        }
+
+                        if (prevCharacter.endFrame !== character.startFrame) {
+                            continue;
+                        }
+
+                        unionCharacter = prevCharacter;
+
+                        for (const [keyFrame, place] of character._$places) {
+                            unionCharacter.setPlace(keyFrame, place);
+                        }
+
+                        for (const [keyFrame, tweenObject] of character._$tween) {
+                            unionCharacter.setTween(keyFrame, tweenObject);
+                        }
+
+                        unionCharacter.endFrame = character.endFrame;
+
+                        // 統合元のDisplayObjectは削除
+                        targetLayer.deleteCharacter(character.id);
+                        break;
                     }
-
-                    if (prevCharacter.endFrame !== character.startFrame) {
-                        continue;
-                    }
-
-                    unionCharacter = prevCharacter;
-
-                    for (const [keyFrame, place] of character._$places) {
-                        unionCharacter.setPlace(keyFrame, place);
-                    }
-
-                    for (const [keyFrame, tweenObject] of character._$tween) {
-                        unionCharacter.setTween(keyFrame, tweenObject);
-                    }
-
-                    unionCharacter.endFrame = character.endFrame;
-
-                    // 統合元のDisplayObjectは削除
-                    targetLayer.deleteCharacter(character.id);
-                    break;
                 }
 
                 // 後続のフレームを確認
@@ -3223,6 +3275,7 @@ class TimelineLayer extends BaseTimeline
                 }
             }
 
+            console.log(layer);
             if (targetLayerId === layerId) {
 
                 layer.reloadStyle();

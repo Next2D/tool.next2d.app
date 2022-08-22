@@ -105,6 +105,8 @@ class ConfirmModal extends BaseController
      */
     executeConfirmAllOverwriting ()
     {
+        this.save();
+
         // 上書きするIDを指定
         const libraryId = Util
             .$currentWorkSpace()
@@ -144,6 +146,8 @@ class ConfirmModal extends BaseController
 
         // モーダルを非表示
         this.hide();
+
+        this._$saved = false;
     }
 
     /**
@@ -173,6 +177,8 @@ class ConfirmModal extends BaseController
      */
     executeConfirmOverwriting ()
     {
+        this.save();
+
         const inputValue = document
             .getElementById("confirm-file-name")
             .value;
@@ -203,6 +209,8 @@ class ConfirmModal extends BaseController
             );
 
         this.setup();
+
+        this._$saved = false;
     }
 
     /**
