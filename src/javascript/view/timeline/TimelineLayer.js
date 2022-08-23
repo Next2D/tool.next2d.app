@@ -1788,12 +1788,6 @@ class TimelineLayer extends BaseTimeline
 
                     const range  = character.getRange(frame);
                     const place  = character.getPlace(frame);
-                    const bounds = character.getBounds();
-
-                    xMin = Math.min(xMin, bounds.xMin);
-                    xMax = Math.max(xMax, bounds.xMax);
-                    yMin = Math.min(yMin, bounds.yMin);
-                    yMax = Math.max(yMax, bounds.yMax);
 
                     const instance = workSpace
                         .getLibrary(character.libraryId)
@@ -1810,6 +1804,15 @@ class TimelineLayer extends BaseTimeline
                         place.colorTransform[4], place.colorTransform[5],
                         place.colorTransform[6], place.colorTransform[7]
                     );
+
+                    const bounds = workSpace
+                        .getLibrary(character.libraryId)
+                        .getBounds(place.matrix, place, range);
+
+                    xMin = Math.min(xMin, bounds.xMin);
+                    xMax = Math.max(xMax, bounds.xMax);
+                    yMin = Math.min(yMin, bounds.yMin);
+                    yMax = Math.max(yMax, bounds.yMax);
 
                     sprite.addChild(instance);
                 }
@@ -2627,7 +2630,6 @@ class TimelineLayer extends BaseTimeline
 
                 } else {
 
-
                     // 移動先の幅の最大値をセット
                     const range = character.getRange(endFrame);
                     distLastFrame = Math.max(range.endFrame, distLastFrame);
@@ -3119,6 +3121,7 @@ class TimelineLayer extends BaseTimeline
                 targetLayer.addEmptyCharacter(emptyCharacter);
             }
 
+            console.log(targetLayer.getActiveCharacter(14).length);
             // 前方のキーフレームが未設定の場合は空のキーフレームを設定
             if (distFrame > 1) {
 
@@ -3213,7 +3216,7 @@ class TimelineLayer extends BaseTimeline
                 // 結合用の変数に格納
                 let unionCharacter = character;
 
-                // 前続のフレームを確認
+                // 前のフレームを確認
                 const prevFrame = character.startFrame - 1;
 
                 if (prevFrame) {
@@ -3285,6 +3288,7 @@ class TimelineLayer extends BaseTimeline
                 }
             }
 
+            console.log(layer);
             if (targetLayerId === layerId) {
 
                 layer.reloadStyle();
