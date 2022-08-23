@@ -2204,6 +2204,9 @@ class TimelineLayer extends BaseTimeline
                 .getElementById("target-group");
 
             const targetLayer = this.targetLayer;
+            if (!targetLayer) {
+                return ;
+            }
 
             const scrollElement = document
                 .getElementById(`frame-scroll-id-${targetLayer.dataset.layerId}`);
@@ -2691,11 +2694,19 @@ class TimelineLayer extends BaseTimeline
                             ) {
                                 const newCharacter = characters.get(character.id);
                                 for (const keyFrame of newCharacter._$places.keys()) {
+
+                                    // 移動元の範囲内にキーフレームがあれば、削除してレンジの最大フレームを更新
+                                    if (!character.hasPlace(keyFrame)) {
+                                        continue;
+                                    }
+
+                                    distLastFrame = Math.max(
+                                        character.getRange(keyFrame).endFrame,
+                                        distLastFrame
+                                    );
+
                                     character.deletePlace(keyFrame);
                                 }
-
-                                distLastFrame = Math.max(newCharacter.endFrame, distLastFrame);
-
                             }
 
                             // 複製して分割
@@ -3121,7 +3132,6 @@ class TimelineLayer extends BaseTimeline
                 targetLayer.addEmptyCharacter(emptyCharacter);
             }
 
-            console.log(targetLayer.getActiveCharacter(14).length);
             // 前方のキーフレームが未設定の場合は空のキーフレームを設定
             if (distFrame > 1) {
 
@@ -3171,8 +3181,11 @@ class TimelineLayer extends BaseTimeline
                                 const character = activeCharacters[idx];
 
                                 // tweenがあれば補正
+                                let endFrame = distFrame;
+
                                 const keyFrame = character.endFrame - 1;
                                 if (character.hasPlace(keyFrame)) {
+
                                     const place = character.getPlace(keyFrame);
                                     if (place.tweenFrame) {
 
@@ -3182,14 +3195,41 @@ class TimelineLayer extends BaseTimeline
                                             );
                                         }
 
-                                        character
-                                            .getTween(place.tweenFrame)
-                                            .endFrame = distFrame;
+                                        if (characters.has(character.id)) {
 
+                                            const newCharacter = characters.get(character.id);
+
+                                            for (let frame = newCharacter.startFrame; newCharacter.endFrame > frame; ++frame) {
+                                                const clonePlace = newCharacter.getClonePlace(frame);
+                                                clonePlace.tweenFrame = place.tweenFrame;
+                                                character.setPlace(frame, clonePlace);
+                                            }
+
+                                            character
+                                                .getTween(place.tweenFrame)
+                                                .endFrame = newCharacter.endFrame;
+
+                                            endFrame = newCharacter.endFrame;
+
+                                            characters.delete(character.id);
+                                            targetLayer.deleteCharacter(newCharacter.id);
+
+                                        } else {
+
+                                            character
+                                                .getTween(place.tweenFrame)
+                                                .endFrame = endFrame;
+
+                                        }
+
+                                        // 再計算
+                                        Util
+                                            .$tweenController
+                                            .relocationPlace(character, place.tweenFrame);
                                     }
                                 }
 
-                                character.endFrame = distFrame;
+                                character.endFrame = endFrame;
                             }
                             break;
 
@@ -3288,7 +3328,6 @@ class TimelineLayer extends BaseTimeline
                 }
             }
 
-            console.log(layer);
             if (targetLayerId === layerId) {
 
                 layer.reloadStyle();
