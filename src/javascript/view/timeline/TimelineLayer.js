@@ -2776,7 +2776,9 @@ class TimelineLayer extends BaseTimeline
                 }
 
                 // 終了位置を補正
-                distLastFrame = emptyCharacter.endFrame;
+                if (targetLayer.getActiveCharacter(emptyCharacter.endFrame).length) {
+                    distLastFrame = emptyCharacter.endFrame;
+                }
 
                 if (distFrame > emptyCharacter.startFrame) {
 
@@ -2798,6 +2800,9 @@ class TimelineLayer extends BaseTimeline
                 for (const characterId of characters.keys()) {
 
                     const character = layer.getCharacter(characterId);
+                    if (!character) {
+                        continue;
+                    }
 
                     // 同一のレイヤー移動であれば最終フレームを確認
                     if (selectLayerId === targetLayerId
@@ -3077,6 +3082,7 @@ class TimelineLayer extends BaseTimeline
 
                 // 最終位置の補正
                 if (character.endFrame === endFrame && distLastFrame > endFrame) {
+
                     // tweenがあれば、tweenの最終フレームを補正
                     const keyFrame = character.endFrame - 1;
                     if (character.hasPlace(keyFrame)) {
@@ -3099,6 +3105,7 @@ class TimelineLayer extends BaseTimeline
                                 .relocationPlace(character, keyFrame);
                         }
                     }
+
                     character.endFrame = distLastFrame;
                 }
 
@@ -3328,6 +3335,7 @@ class TimelineLayer extends BaseTimeline
                 }
             }
 
+            console.log(layer);
             if (targetLayerId === layerId) {
 
                 layer.reloadStyle();
