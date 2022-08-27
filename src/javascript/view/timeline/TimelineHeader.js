@@ -218,11 +218,8 @@ class TimelineHeader extends BaseTimeline
             }
         }
 
-        const header = document
-            .getElementById("timeline-header");
-
         // 生成する範囲の補正幅
-        const adjustmentWidth = build ? 0 : header.scrollWidth;
+        const adjustmentWidth = build ? 0 : element.scrollWidth;
 
         const fps = document
             .getElementById("stage-fps")

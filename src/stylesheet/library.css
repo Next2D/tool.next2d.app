@@ -124,6 +124,7 @@
     overflow       : auto;
     display        : flex;
     flex-direction : column;
+    will-change    : scroll-position;
 }
 
 .library-type-space

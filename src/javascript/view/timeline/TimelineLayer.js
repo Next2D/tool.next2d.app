@@ -2637,6 +2637,8 @@ class TimelineLayer extends BaseTimeline
                     const range = character.getRange(endFrame);
                     distLastFrame = Math.max(range.endFrame, distLastFrame);
 
+                    console.log("koko: ", range, distLastFrame);
+
                     // 選択幅のキーフレームを削除
                     for (let frame = distFrame; endFrame > frame; ++frame) {
 
@@ -3081,7 +3083,9 @@ class TimelineLayer extends BaseTimeline
                 }
 
                 // 最終位置の補正
-                if (character.endFrame === endFrame && distLastFrame > endFrame) {
+                if (character.endFrame === endFrame
+                    && distLastFrame > endFrame
+                ) {
 
                     // tweenがあれば、tweenの最終フレームを補正
                     const keyFrame = character.endFrame - 1;
