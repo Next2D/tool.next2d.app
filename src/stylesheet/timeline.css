@@ -566,7 +566,7 @@
     overflow-x      : hidden;
     overflow-y      : auto;
     scrollbar-width : none;
-    /*will-change     : scroll-position;*/
+    will-change     : scroll-position;
 }
 
 #timeline-content .timeline-layer-icon

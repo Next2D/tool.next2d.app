@@ -14,6 +14,7 @@ class Character
         this._$libraryId      = -1;
         this._$layerId        = -1;
         this._$places         = new Map();
+        this._$tween          = new Map();
         this._$image          = null;
         this._$currentFrame   = 0;
         this._$currentPlace   = null;
@@ -22,18 +23,16 @@ class Character
         this._$offsetX        = 0;
         this._$offsetY        = 0;
         this._$name           = "";
-        this._$tween          = new Map();
         this._$referencePoint = { "x": 0, "y": 0 };
 
         if (object) {
-            this._$id           = object.id;
-            this._$libraryId    = object.libraryId;
-            this.places         = object.places;
-            this._$name         = object.name || "";
-            this._$startFrame   = object.startFrame;
-            this._$endFrame     = object.endFrame;
-            this.tween          = object.tween;
-            this.referencePoint = object.referencePoint;
+            this._$id         = object.id;
+            this._$libraryId  = object.libraryId;
+            this._$name       = object.name || "";
+            this._$startFrame = object.startFrame;
+            this._$endFrame   = object.endFrame;
+            this.places       = object.places || [];
+            this.tween        = object.tween || [];
         } else {
             this._$id         = Util.$currentWorkSpace()._$characterId++;
             this._$startFrame = 1;
@@ -1416,14 +1415,13 @@ class Character
     toObject ()
     {
         return {
-            "id":             this.id,
-            "name":           this.name,
-            "libraryId":      this.libraryId,
-            "places":         this.places,
-            "startFrame":     this.startFrame,
-            "endFrame":       this.endFrame,
-            "tween":          this.tween,
-            "referencePoint": this.referencePoint
+            "id":         this.id,
+            "name":       this.name,
+            "libraryId":  this.libraryId,
+            "places":     this.places,
+            "startFrame": this.startFrame,
+            "endFrame":   this.endFrame,
+            "tween":      this.tween
         };
     }
 }

@@ -159,13 +159,13 @@
 {
     display     : grid;
     place-items : center;
-    /*will-change : contents;*/
+    will-change : contents;
 }
 
 #stage-area .display-object
 {
     position    : absolute;
-    /*will-change : left, top;*/
+    will-change : left, top;
 }
 
 #stage

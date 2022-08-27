@@ -280,7 +280,11 @@ class Screen extends BaseScreen
                 "colorTransform": [1, 1, 1, 1, 0, 0, 0, 0],
                 "blendMode": "normal",
                 "filter": [],
-                "depth": layer._$characters.length
+                "depth": layer._$characters.length,
+                "point": {
+                    "x": x / Util.$zoomScale,
+                    "y": y / Util.$zoomScale
+                }
             };
 
             // MovieClipの場合はループ設定
@@ -361,6 +365,8 @@ class Screen extends BaseScreen
 
             place.matrix[4] -= dx;
             place.matrix[5] -= dy;
+            place.point.x   += dx;
+            place.point.y   += dy;
         }
 
         // タイムラインの表示を再計算
@@ -397,12 +403,7 @@ class Screen extends BaseScreen
         cloneImage.style.left = `${character.offsetX}px`;
         cloneImage.style.top  = `${character.offsetY}px`;
 
-        // create div
-        const div = document.createElement("div");
-
-        div.dataset.child   = "true";
-        div.dataset.preview = "true";
-        div.appendChild(cloneImage);
+        let divStyle = "";
 
         // mask attach
         const layer = scene.getLayer(layer_id);
@@ -413,38 +414,50 @@ class Screen extends BaseScreen
                 layer.maskId = null;
             }
 
-            if (maskLayer && maskLayer.lock && maskLayer._$characters.length) {
+            if (maskLayer && maskLayer.lock
+                && maskLayer._$characters.length
+            ) {
 
                 const maskCharacter = maskLayer._$characters[0];
-                const maskImage     = maskCharacter.image;
+                const maskImage     = maskCharacter.getImage();
 
                 const x = maskCharacter.screenX - character.screenX;
                 const y = maskCharacter.screenY - character.screenY;
 
-                div.style.mask         = `url(${maskImage.src}), none`;
-                div.style.maskSize     = `${maskImage.width}px ${maskImage.height}px`;
-                div.style.maskRepeat   = "no-repeat";
-                div.style.maskPosition = `${x}px ${y}px`;
-                div.style.mixBlendMode = image.style.mixBlendMode;
-                div.style.filter       = image.style.filter;
+                const maskSrc    = maskImage.src;
+                const maskWidth  = maskImage.width;
+                const maskHeight = maskImage.height;
 
-            } else {
-
-                div.style.mask         = "";
-                div.style.maskSize     = "";
-                div.style.maskRepeat   = "";
-                div.style.maskPosition = "";
-                div.style.mixBlendMode = "";
-                div.style.filter       = "";
+                divStyle += `mask: url(${maskSrc}), none;`;
+                divStyle += `-webkit-mask: url(${maskSrc}), none;`;
+                divStyle += `mask-size: ${maskWidth}px ${maskHeight}px;`;
+                divStyle += `-webkit-mask-size: ${maskWidth}px ${maskHeight}px;`;
+                divStyle += "mask-repeat: no-repeat;";
+                divStyle += "-webkit-mask-repeat: no-repeat;";
+                divStyle += `mask-position: ${x}px ${y}px;`;
+                divStyle += `-webkit-mask-position: ${x}px ${y}px;`;
+                divStyle += `mix-blend-mode: ${image.style.mixBlendMode};`;
+                divStyle += `filter: ${image.style.filter};`;
 
             }
         }
 
-        div.style.position      = "absolute";
-        div.style.left          = `${Util.$offsetLeft + character.screenX * Util.$zoomScale}px`;
-        div.style.top           = `${Util.$offsetTop  + character.screenY * Util.$zoomScale}px`;
-        div.style.pointerEvents = "none";
-        div.style.opacity       = "0.25";
+        divStyle += "position: absolute;";
+        divStyle += "pointer-events: none;";
+        divStyle += "opacity: 0.25;";
+
+        const left = Util.$offsetLeft + character.screenX * Util.$zoomScale;
+        const top  = Util.$offsetTop  + character.screenY * Util.$zoomScale;
+        divStyle += `left: ${left}px;`;
+        divStyle += `top: ${top}px;`;
+
+        // create div
+        const div = document.createElement("div");
+
+        div.dataset.child   = "true";
+        div.dataset.preview = "true";
+        div.appendChild(cloneImage);
+        div.setAttribute("style", divStyle);
 
         document
             .getElementById("stage-area")
@@ -592,10 +605,6 @@ class Screen extends BaseScreen
         // Imageを取得してdivに追加
         const image = character.getImage();
         div.appendChild(image);
-
-        document
-            .getElementById("stage-area")
-            .appendChild(div);
 
         div.id = `character-${character.id}`;
         div.dataset.characterId  = `${character.id}`;
@@ -871,6 +880,10 @@ class Screen extends BaseScreen
                 break;
 
         }
+
+        document
+            .getElementById("stage-area")
+            .appendChild(div);
     }
 }
 
