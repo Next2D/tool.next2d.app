@@ -538,7 +538,7 @@ class TransformController extends BaseController
                 continue;
             }
 
-            element.style.display = "none";
+            element.setAttribute("style", "display:none;");
         }
 
         this._$state = "hide";
@@ -571,6 +571,8 @@ class TransformController extends BaseController
         const workSpace = Util.$currentWorkSpace();
         const scene = workSpace.scene;
 
+        const frame = Util.$timelineFrame.currentFrame;
+
         let skipCount = 0;
         let xMin =  Number.MAX_VALUE;
         let xMax = -Number.MAX_VALUE;
@@ -595,13 +597,21 @@ class TransformController extends BaseController
                 continue;
             }
 
-            const x = element.offsetLeft;
-            const y = element.offsetTop;
+            const character = layer.getCharacter(characterId);
 
-            xMin = Math.min(xMin, x);
-            xMax = Math.max(xMax, x + element.offsetWidth);
-            yMin = Math.min(yMin, y);
-            yMax = Math.max(yMax, y + element.offsetHeight);
+            // const x = element.offsetLeft;
+            // const y = element.offsetTop;
+            const place  = character.getPlace(frame);
+            const range  = character.getRange(frame);
+            const bounds = character.getBounds(place.matrix, place, range);
+
+            let tx = Util.$offsetLeft + bounds.xMin * Util.$zoomScale;
+            let ty = Util.$offsetTop  + bounds.yMin * Util.$zoomScale;
+
+            xMin = Math.min(xMin, tx);
+            xMax = Math.max(xMax, tx + Math.ceil(Math.abs(bounds.xMax - bounds.xMin)) * Util.$zoomScale);
+            yMin = Math.min(yMin, ty);
+            yMax = Math.max(yMax, ty + Math.ceil(Math.abs(bounds.yMax - bounds.yMin)) * Util.$zoomScale);
         }
 
         if (activeElements.length - skipCount === 0) {
@@ -640,11 +650,6 @@ class TransformController extends BaseController
                 return this.hide();
             }
 
-            const xMin   = characterElement.offsetLeft;
-            const yMin   = characterElement.offsetTop;
-            const width  = characterElement.offsetWidth;
-            const height = characterElement.offsetHeight;
-
             referencePoint.style.left = `${pointX + xMin + width  / 2 - 8}px`;
             referencePoint.style.top  = `${pointY + yMin + height / 2 - 8}px`;
 
@@ -661,67 +666,76 @@ class TransformController extends BaseController
 
         }
 
-        const targetRect = document
-            .getElementById("target-rect");
+        document
+            .getElementById("target-rect")
+            .setAttribute(
+                "style",
+                `width: ${width - 2}px; height: ${height - 2}px; left: ${xMin}px; top: ${yMin}px;`
+            );
 
-        targetRect.style.width  = `${width  - 2}px`;
-        targetRect.style.height = `${height - 2}px`;
-        targetRect.style.left   = `${xMin}px`;
-        targetRect.style.top    = `${yMin}px`;
+        document
+            .getElementById("scale-top-left")
+            .setAttribute(
+                "style",
+                `left: ${xMin - 5}px; top: ${yMin - 5}px;`
+            );
 
-        const topLeft = document
-            .getElementById("scale-top-left");
+        document
+            .getElementById("scale-top-right")
+            .setAttribute(
+                "style",
+                `left: ${xMax - 5}px; top: ${yMin - 5}px;`
+            );
 
-        topLeft.style.left = `${xMin - 5}px`;
-        topLeft.style.top  = `${yMin - 5}px`;
+        document
+            .getElementById("scale-bottom-left")
+            .setAttribute(
+                "style",
+                `left: ${xMin - 5}px; top: ${yMax - 5}px;`
+            );
 
-        const topRight = document
-            .getElementById("scale-top-right");
+        document
+            .getElementById("scale-bottom-right")
+            .setAttribute(
+                "style",
+                `left: ${xMax - 5}px; top: ${yMax - 5}px;`
+            );
 
-        topRight.style.left = `${xMax - 5}px`;
-        topRight.style.top  = `${yMin - 5}px`;
+        document
+            .getElementById("target-rotation")
+            .setAttribute(
+                "style",
+                `left: ${xMax + 5}px; top: ${yMax + 5}px;`
+            );
 
-        const bottomLeft = document
-            .getElementById("scale-bottom-left");
+        document
+            .getElementById("scale-center-left")
+            .setAttribute(
+                "style",
+                `left: ${xMin - 5}px; top: ${yMin + height / 2 - 5}px;`
+            );
 
-        bottomLeft.style.left = `${xMin - 5}px`;
-        bottomLeft.style.top  = `${yMax - 5}px`;
+        document
+            .getElementById("scale-center-top")
+            .setAttribute(
+                "style",
+                `left: ${xMin + width / 2 - 5}px; top: ${yMin - 5}px;`
+            );
 
-        const bottomRight = document
-            .getElementById("scale-bottom-right");
+        document
+            .getElementById("scale-center-right")
+            .setAttribute(
+                "style",
+                `left: ${xMax - 5}px; top: ${yMin + height / 2 - 5}px;`
+            );
 
-        bottomRight.style.left = `${xMax - 5}px`;
-        bottomRight.style.top  = `${yMax - 5}px`;
+        document
+            .getElementById("scale-center-bottom")
+            .setAttribute(
+                "style",
+                `left: ${xMin + width / 2 - 5}px; top: ${yMax - 5}px;`
+            );
 
-        const targetRotation = document
-            .getElementById("target-rotation");
-
-        targetRotation.style.left = `${xMax + 5}px`;
-        targetRotation.style.top  = `${yMax + 5}px`;
-
-        const centerLeft = document
-            .getElementById("scale-center-left");
-
-        centerLeft.style.left = `${xMin - 5}px`;
-        centerLeft.style.top  = `${yMin + height / 2 - 5}px`;
-
-        const centerTop = document
-            .getElementById("scale-center-top");
-
-        centerTop.style.left = `${xMin + width / 2 - 5}px`;
-        centerTop.style.top  = `${yMin - 5}px`;
-
-        const centerRight = document
-            .getElementById("scale-center-right");
-
-        centerRight.style.left = `${xMax - 5}px`;
-        centerRight.style.top  = `${yMin + height / 2 - 5}px`;
-
-        const centerBottom = document
-            .getElementById("scale-center-bottom");
-
-        centerBottom.style.left = `${xMin + width / 2 - 5}px`;
-        centerBottom.style.top  = `${yMax - 5}px`;
     }
 
     /**

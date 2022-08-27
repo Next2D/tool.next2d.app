@@ -471,9 +471,7 @@ class Screen extends BaseScreen
         const place    = character.getPlace(frame);
         const instance = workSpace.getLibrary(character.libraryId);
 
-        let doUpdate = !character._$currentPlace;
-
-        doUpdate = character.libraryId === Util.$changeLibraryId;
+        let doUpdate = character.libraryId === Util.$changeLibraryId;
         switch (instance.type) {
 
             case "container":
@@ -605,10 +603,12 @@ class Screen extends BaseScreen
         div.dataset.instanceType = instance.type;
         div.dataset.libraryId    = `${character.libraryId}`;
         div.dataset.child        = "true";
+        div.dataset.pointer      = `${event}`;
 
         div.classList.add("display-object");
-        div.style.position      = "absolute";
-        div.style.pointerEvents = event;
+
+        let divStyle = "";
+        divStyle += `pointer-events: ${event};`;
 
         div.addEventListener("mouseover", (event) =>
         {
@@ -669,16 +669,16 @@ class Screen extends BaseScreen
             height = 10;
         }
 
-        div.style.width  = `${Math.ceil(width)}px`;
-        div.style.height = `${Math.ceil(height)}px`;
+        divStyle += `width: ${Math.ceil(width)}px;`;
+        divStyle += `height: ${Math.ceil(height)}px;`;
 
         const range  = character.getRange(frame);
         const bounds = character.getBounds(place.matrix, place, range);
 
         let tx = Util.$offsetLeft + bounds.xMin * Util.$zoomScale;
         let ty = Util.$offsetTop  + bounds.yMin * Util.$zoomScale;
-        div.style.left = `${tx}px`;
-        div.style.top  = `${ty}px`;
+        divStyle += `left: ${tx}px;`;
+        divStyle += `top: ${ty}px;`;
 
         image.width      = image._$width  * Util.$zoomScale;
         image.height     = image._$height * Util.$zoomScale;
@@ -697,32 +697,30 @@ class Screen extends BaseScreen
             if (maskLayer && maskLayer.lock && maskLayer._$characters.length) {
 
                 const maskCharacter = maskLayer._$characters[0];
-                const maskImage     = maskCharacter.image;
+                const maskImage     = maskCharacter.getImage();
 
                 const x = maskCharacter.screenX - character.screenX;
                 const y = maskCharacter.screenY - character.screenY;
 
-                div.style.webkitMask = div.style.mask = `url(${maskImage.src}), none`;
-                div.style.webkitMaskSize = div.style.maskSize = `${maskImage.width}px ${maskImage.height}px`;
-                div.style.webkitMaskRepeat = div.style.maskRepeat = "no-repeat";
-                div.style.webkitMaskPosition = div.style.maskPosition = `${x}px ${y}px`;
+                const maskSrc    = maskImage.src;
+                const maskWidth  = maskImage.width;
+                const maskHeight = maskImage.height;
 
-                div.style.mixBlendMode = image.style.mixBlendMode;
-                div.style.filter       = image.style.filter;
-
-            } else {
-
-                div.style.webkitMask = div.style.mask = "";
-                div.style.webkitMaskSize = div.style.maskSize = "";
-                div.style.webkitMaskRepeat = div.style.maskRepeat = "";
-                div.style.webkitMaskPosition = div.style.maskPosition = "";
-
-                div.style.mixBlendMode = "";
-                div.style.filter       = "";
+                divStyle += `mask: url(${maskSrc}), none;`;
+                divStyle += `-webkit-mask: url(${maskSrc}), none;`;
+                divStyle += `mask-size: ${maskWidth}px ${maskHeight}px;`;
+                divStyle += `-webkit-mask-size: ${maskWidth}px ${maskHeight}px;`;
+                divStyle += "mask-repeat: no-repeat;";
+                divStyle += "-webkit-mask-repeat: no-repeat;";
+                divStyle += `mask-position: ${x}px ${y}px;`;
+                divStyle += `-webkit-mask-position: ${x}px ${y}px;`;
+                divStyle += `mix-blend-mode: ${image.style.mixBlendMode};`;
+                divStyle += `filter: ${image.style.filter};`;
 
             }
         }
 
+        div.setAttribute("style", divStyle);
         switch (instance._$type) {
 
             case "container":

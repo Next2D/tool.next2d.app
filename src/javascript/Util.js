@@ -214,7 +214,9 @@ Util.$fadeIn = (event) =>
     }
 
     const element = document.getElementById("detail-modal");
-    element.textContent = value;
+    if (element.textContent !== value) {
+        element.textContent = value;
+    }
 
     // 表示領域に収まるようx座標を調整
     switch (true) {

@@ -1324,26 +1324,55 @@ class ArrowTool extends BaseTool
             // fixed logic
             this.initPlace(character, layerId, frame);
 
-            const matrix = character.getPlace(frame).matrix;
+            const place  = character.getPlace(frame);
+            const matrix = place.matrix;
             matrix[4] += dx / Util.$zoomScale;
             matrix[5] += dy / Util.$zoomScale;
-            character.screenX += dx / Util.$zoomScale;
-            character.screenY += dy / Util.$zoomScale;
+
+            const range  = character.getRange(frame);
+            const bounds = character.getBounds(place.matrix, place, range);
+            character.screenX = bounds.xMin;
+            character.screenY = bounds.yMin;
+
+            let divStyle = "";
+            divStyle += `pointer-events: ${element.dataset.pointer};`;
 
             if (layer.maskId !== null) {
                 const maskLayer = scene.getLayer(layer.maskId);
                 if (maskLayer.lock && maskLayer._$characters.length) {
+
                     const maskCharacter = maskLayer._$characters[0];
+                    const maskImage     = maskCharacter.getImage();
+
+                    const maskSrc    = maskImage.src;
+                    const maskWidth  = maskImage.width;
+                    const maskHeight = maskImage.height;
+
                     const x = maskCharacter.screenX - character.screenX;
                     const y = maskCharacter.screenY - character.screenY;
-                    element.style.webkitMaskPosition
-                        = element.style.maskPosition
-                            = `${x}px ${y}px`;
+
+                    divStyle += `mask: url(${maskSrc}), none;`;
+                    divStyle += `-webkit-mask: url(${maskSrc}), none;`;
+                    divStyle += `mask-size: ${maskWidth}px ${maskHeight}px;`;
+                    divStyle += `-webkit-mask-size: ${maskWidth}px ${maskHeight}px;`;
+                    divStyle += "mask-repeat: no-repeat;";
+                    divStyle += "-webkit-mask-repeat: no-repeat;";
+                    divStyle += `mask-position: ${x}px ${y}px;`;
+                    divStyle += `-webkit-mask-position: ${x}px ${y}px;`;
+
+                    const image = character.getImage();
+                    divStyle += `mix-blend-mode: ${image.style.mixBlendMode};`;
+                    divStyle += `filter: ${image.style.filter};`;
+
                 }
             }
 
-            element.style.left = `${element.offsetLeft + dx}px`;
-            element.style.top  = `${element.offsetTop  + dy}px`;
+            const left = Util.$offsetLeft + bounds.xMin * Util.$zoomScale;
+            const top  = Util.$offsetTop  + bounds.yMin * Util.$zoomScale;
+
+            divStyle += `left: ${left}px;`;
+            divStyle += `top: ${top}px;`;
+            element.setAttribute("style", divStyle);
 
             // move resize rect
             xMin = Math.min(xMin, character.x);
