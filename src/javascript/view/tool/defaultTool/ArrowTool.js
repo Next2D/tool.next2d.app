@@ -1340,8 +1340,8 @@ class ArrowTool extends BaseTool
             // 中心点を更新
             if (!place.point) {
                 place.point = {
-                    "x": matrix[4] + Math.abs(bounds.xMax - bounds.xMin) / 2,
-                    "y": matrix[5] + Math.abs(bounds.yMax - bounds.yMin) / 2
+                    "x": bounds.xMin + Math.abs(bounds.xMax - bounds.xMin) / 2,
+                    "y": bounds.yMin + Math.abs(bounds.yMax - bounds.yMin) / 2
                 };
             } else {
                 place.point.x +=  dx / Util.$zoomScale;
@@ -1541,8 +1541,8 @@ class ArrowTool extends BaseTool
             // 複数選択時には選択中心位置に移動
             if (!Util.$referenceController.pointer) {
                 Util.$referenceController.pointer = {
-                    "x": tx + width  / 2,
-                    "y": ty + height / 2
+                    "x": xMin + width  / 2,
+                    "y": yMin + height / 2
                 };
             }
 

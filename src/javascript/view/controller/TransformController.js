@@ -242,8 +242,7 @@ class TransformController extends BaseController
             TransformController.MAX_SCALE
         );
 
-        const x = +document.getElementById("object-x").value;
-        this.updateX(value - x);
+        this.updateX(value - this._$currentValue);
 
         return value;
     }
@@ -264,8 +263,7 @@ class TransformController extends BaseController
             TransformController.MAX_SCALE
         );
 
-        const y = +document.getElementById("object-y").value;
-        this.updateY(value - y);
+        this.updateY(value - this._$currentValue);
 
         return value;
     }
@@ -602,8 +600,8 @@ class TransformController extends BaseController
             const character = layer.getCharacter(characterId);
             const bounds    = character.getBounds();
 
-            let tx = Util.$offsetLeft + bounds.xMin * Util.$zoomScale;
-            let ty = Util.$offsetTop  + bounds.yMin * Util.$zoomScale;
+            const tx = Util.$offsetLeft + bounds.xMin * Util.$zoomScale;
+            const ty = Util.$offsetTop  + bounds.yMin * Util.$zoomScale;
 
             xMin = Math.min(xMin, tx);
             xMax = Math.max(xMax, tx + Math.ceil(Math.abs(bounds.xMax - bounds.xMin)) * Util.$zoomScale);
@@ -895,10 +893,7 @@ class TransformController extends BaseController
                 const characterId = target.dataset.characterId | 0;
                 const character   = layer.getCharacter(characterId);
 
-                const instance = workSpace
-                    .getLibrary(character.libraryId);
-
-                const bounds = instance.getBounds([1, 0, 0, 1, 0, 0]);
+                const bounds = character.getBounds();
 
                 xMin = Math.min(xMin, bounds.xMin);
                 xMax = Math.max(xMax, bounds.xMax);
@@ -957,6 +952,8 @@ class TransformController extends BaseController
             TransformController.MAX_SCALE
         );
 
+        const { Matrix } = window.next2d.geom;
+
         const workSpace = Util.$currentWorkSpace();
         const scene     = workSpace.scene;
 
@@ -972,47 +969,18 @@ class TransformController extends BaseController
 
         if (activeElements.length > 1)  {
 
-            let baseXMin =  Number.MAX_VALUE;
-            let baseXMax = -Number.MAX_VALUE;
-            let baseYMin =  Number.MAX_VALUE;
-            let baseYMax = -Number.MAX_VALUE;
-            for (let idx = 0; idx < activeElements.length; ++idx) {
-
-                const target  = activeElements[idx];
-                const layerId = target.dataset.layerId | 0;
-                const layer   = scene.getLayer(layerId);
-
-                const characterId = target.dataset.characterId | 0;
-                const character   = layer.getCharacter(characterId);
-
-                const bounds = character.getBounds();
-
-                baseXMin = Math.min(baseXMin, bounds.xMin);
-                baseXMax = Math.max(baseXMax, bounds.xMax);
-                baseYMin = Math.min(baseYMin, bounds.yMin);
-                baseYMax = Math.max(baseYMax, bounds.yMax);
-
-            }
-
-            // 基準となる幅と高さを算出
-            const baseWidth  = Math.abs(baseXMax - baseXMin);
-            const baseHeight = Math.abs(baseYMax - baseYMin);
-            const halfWidth  = baseWidth  / 2;
-            const halfHeight = baseHeight / 2;
-
             // 中心点の座標情報
-            const referencePoint = Util.$referenceController.pointer;
+            const point = Util.$referenceController.pointer;
 
-            // 中止点から座標を取得
-            const percentX = (halfWidth  + referencePoint.x) / baseWidth;
-            const percentY = (halfHeight + referencePoint.y) / baseHeight;
+            const referenceX = point.x;
+            const referenceY = point.y;
 
             const parentMatrix = Util.$multiplicationMatrix(
                 [scale_x, 0, 0, 1, 0, 0],
                 [
                     1, 0, 0, 1,
-                    -halfWidth  - baseXMin - referencePoint.x,
-                    -halfHeight - baseYMin - referencePoint.y
+                    -referenceX,
+                    -referenceY
                 ]
             );
 
@@ -1025,8 +993,23 @@ class TransformController extends BaseController
                 const characterId = target.dataset.characterId | 0;
                 const character   = layer.getCharacter(characterId);
 
+                // 中心点の移動
                 const place = character.getPlace(frame);
+                const matrix = new Matrix(
+                    place.matrix[0], place.matrix[1], place.matrix[2],
+                    place.matrix[3], place.matrix[4], place.matrix[5]
+                );
+                matrix.invert();
 
+                const point = place.point;
+                const localMatrix = Util.$multiplicationMatrix(
+                    parentMatrix, [1, 0, 0, 1, point.x, point.y]
+                );
+
+                point.x = localMatrix[4] + referenceX;
+                point.y = localMatrix[5] + referenceY;
+
+                // 実行
                 const multiMatrix = Util.$multiplicationMatrix(
                     parentMatrix, place.matrix
                 );
@@ -1035,8 +1018,8 @@ class TransformController extends BaseController
                 place.matrix[1] = multiMatrix[1];
                 place.matrix[2] = multiMatrix[2];
                 place.matrix[3] = multiMatrix[3];
-                place.matrix[4] = multiMatrix[4] + halfWidth  + baseXMin + referencePoint.x;
-                place.matrix[5] = multiMatrix[5] + halfHeight + baseYMin + referencePoint.y;
+                place.matrix[4] = multiMatrix[4] + referenceX;
+                place.matrix[5] = multiMatrix[5] + referenceY;
 
                 const bounds = character.getBounds();
                 xMin = Math.min(xMin, bounds.xMin);
@@ -1046,7 +1029,7 @@ class TransformController extends BaseController
 
                 character._$image = null;
 
-                //  tweenの座標を再計算してポインターを再配置
+                // tweenの座標を再計算してポインターを再配置
                 character.relocationTween(frame);
             }
 
@@ -1058,12 +1041,6 @@ class TransformController extends BaseController
                 .getElementById("transform-scale-x")
                 .value = "100";
 
-            // 中心点を移動
-            const afterWidth  = Math.abs(xMax - xMin);
-            const afterHeight = Math.abs(yMax - yMin);
-            referencePoint.x = afterWidth  * percentX - afterWidth  / 2;
-            referencePoint.y = afterHeight * percentY - afterHeight / 2;
-
         } else {
 
             for (let idx = 0; idx < activeElements.length; ++idx) {
@@ -1072,26 +1049,21 @@ class TransformController extends BaseController
                 const layerId = target.dataset.layerId | 0;
                 const layer   = scene.getLayer(layerId);
 
-                const characterId    = target.dataset.characterId | 0;
-                const character      = layer.getCharacter(characterId);
-                const referencePoint = character.referencePoint;
+                const character = layer.getCharacter(
+                    target.dataset.characterId | 0
+                );
 
-                const range    = character.getRange(frame);
-                const place    = character.getPlace(frame);
-                const library  = workSpace.getLibrary(character.libraryId);
-                const instance = library.createInstance(place, range);
+                const place  = character.getPlace(frame);
+                const matrix = new Matrix(
+                    place.matrix[0], place.matrix[1], place.matrix[2],
+                    place.matrix[3], place.matrix[4], place.matrix[5]
+                );
+                matrix.invert();
 
-                // 中止点から座標を取得
-                const beforeBounds = character.getBounds();
-                const beforeWidth  = Math.abs(beforeBounds.xMax - beforeBounds.xMin);
-                const beforeHeight = Math.abs(beforeBounds.yMax - beforeBounds.yMin);
-                const percentX = (beforeWidth  / 2 + referencePoint.x) / beforeWidth;
-                const percentY = (beforeHeight / 2 + referencePoint.y) / beforeHeight;
+                const point = place.point;
 
-                // 中心点を算出
-                const rectangle  = instance.getBounds();
-                const referenceX = rectangle.x + rectangle.width  * percentX;
-                const referenceY = rectangle.y + rectangle.height * percentY;
+                const referenceX = point.x * matrix.a + point.y * matrix.c + matrix.tx;
+                const referenceY = point.x * matrix.b + point.y * matrix.d + matrix.ty;
 
                 const baseMatrix = [1, 0, 0, 1,
                     -referenceX,
@@ -1131,15 +1103,6 @@ class TransformController extends BaseController
                 yMin = Math.min(yMin, afterBounds.yMin);
                 yMax = Math.max(yMax, afterBounds.yMax);
 
-                // 中心点を移動
-                const afterWidth  = Math.abs(xMax - xMin);
-                const afterHeight = Math.abs(yMax - yMin);
-
-                character.referencePoint = {
-                    "x": afterWidth  * percentX - afterWidth  / 2,
-                    "y": afterHeight * percentY - afterHeight / 2
-                };
-
                 document
                     .getElementById("transform-scale-x")
                     .value = `${scale_x * 100}`;
@@ -1164,6 +1127,7 @@ class TransformController extends BaseController
         document
             .getElementById("object-height")
             .value = `${Math.abs(yMax - yMin)}`;
+
     }
 
     /**
@@ -1207,10 +1171,7 @@ class TransformController extends BaseController
                 const characterId = target.dataset.characterId | 0;
                 const character   = layer.getCharacter(characterId);
 
-                const instance = workSpace
-                    .getLibrary(character.libraryId);
-
-                const bounds = instance.getBounds([1, 0, 0, 1, 0, 0]);
+                const bounds = character.getBounds([1, 0, 0, 1, 0, 0]);
 
                 xMin = Math.min(xMin, bounds.xMin);
                 xMax = Math.max(xMax, bounds.xMax);
@@ -1268,6 +1229,8 @@ class TransformController extends BaseController
             TransformController.MAX_SCALE
         );
 
+        const { Matrix } = window.next2d.geom;
+
         const workSpace = Util.$currentWorkSpace();
         const scene     = workSpace.scene;
 
@@ -1283,46 +1246,18 @@ class TransformController extends BaseController
 
         if (activeElements.length > 1) {
 
-            let baseXMin =  Number.MAX_VALUE;
-            let baseXMax = -Number.MAX_VALUE;
-            let baseYMin =  Number.MAX_VALUE;
-            let baseYMax = -Number.MAX_VALUE;
-            for (let idx = 0; idx < activeElements.length; ++idx) {
-
-                const target  = activeElements[idx];
-                const layerId = target.dataset.layerId | 0;
-                const layer   = scene.getLayer(layerId);
-
-                const characterId = target.dataset.characterId | 0;
-                const character   = layer.getCharacter(characterId);
-
-                const bounds = character.getBounds();
-                baseXMin = Math.min(baseXMin, bounds.xMin);
-                baseXMax = Math.max(baseXMax, bounds.xMax);
-                baseYMin = Math.min(baseYMin, bounds.yMin);
-                baseYMax = Math.max(baseYMax, bounds.yMax);
-
-            }
-
-            // 基準となる幅と高さを算出
-            const baseWidth  = Math.abs(baseXMax - baseXMin);
-            const baseHeight = Math.abs(baseYMax - baseYMin);
-            const halfWidth  = baseWidth  / 2;
-            const halfHeight = baseHeight / 2;
-
             // 中心点の座標情報
-            const referencePoint = Util.$referenceController.pointer;
+            const point = Util.$referenceController.pointer;
 
-            // 中止点から座標を取得
-            const percentX = (halfWidth  + referencePoint.x) / baseWidth;
-            const percentY = (halfHeight + referencePoint.y) / baseHeight;
+            const referenceX = point.x;
+            const referenceY = point.y;
 
             const parentMatrix = Util.$multiplicationMatrix(
                 [1, 0, 0, scale_y, 0, 0],
                 [
                     1, 0, 0, 1,
-                    -halfWidth  - baseXMin - referencePoint.x,
-                    -halfHeight - baseYMin - referencePoint.y
+                    -referenceX,
+                    -referenceY
                 ]
             );
 
@@ -1335,7 +1270,21 @@ class TransformController extends BaseController
                 const characterId = target.dataset.characterId | 0;
                 const character   = layer.getCharacter(characterId);
 
+                // 中心点の移動
                 const place = character.getPlace(frame);
+                const matrix = new Matrix(
+                    place.matrix[0], place.matrix[1], place.matrix[2],
+                    place.matrix[3], place.matrix[4], place.matrix[5]
+                );
+                matrix.invert();
+
+                const point = place.point;
+                const localMatrix = Util.$multiplicationMatrix(
+                    parentMatrix, [1, 0, 0, 1, point.x, point.y]
+                );
+
+                point.x = localMatrix[4] + referenceX;
+                point.y = localMatrix[5] + referenceY;
 
                 const multiMatrix = Util.$multiplicationMatrix(
                     parentMatrix, place.matrix
@@ -1345,8 +1294,8 @@ class TransformController extends BaseController
                 place.matrix[1] = multiMatrix[1];
                 place.matrix[2] = multiMatrix[2];
                 place.matrix[3] = multiMatrix[3];
-                place.matrix[4] = multiMatrix[4] + halfWidth  + baseXMin + referencePoint.x;
-                place.matrix[5] = multiMatrix[5] + halfHeight + baseYMin + referencePoint.y;
+                place.matrix[4] = multiMatrix[4] + referenceX;
+                place.matrix[5] = multiMatrix[5] + referenceY;
 
                 const bounds = character.getBounds();
 
@@ -1369,12 +1318,6 @@ class TransformController extends BaseController
                 .getElementById("transform-scale-x")
                 .value = "100";
 
-            // 中心点を移動
-            const afterWidth  = Math.abs(xMax - xMin);
-            const afterHeight = Math.abs(yMax - yMin);
-            referencePoint.x = afterWidth  * percentX - afterWidth  / 2;
-            referencePoint.y = afterHeight * percentY - afterHeight / 2;
-
         } else {
 
             for (let idx = 0; idx < activeElements.length; ++idx) {
@@ -1383,26 +1326,20 @@ class TransformController extends BaseController
                 const layerId = target.dataset.layerId | 0;
                 const layer   = scene.getLayer(layerId);
 
-                const characterId    = target.dataset.characterId | 0;
-                const character      = layer.getCharacter(characterId);
-                const referencePoint = character.referencePoint;
+                const character = layer.getCharacter(
+                    target.dataset.characterId | 0
+                );
 
-                const range    = character.getRange(frame);
-                const place    = character.getPlace(frame);
-                const library  = workSpace.getLibrary(character.libraryId);
-                const instance = library.createInstance(place, range);
+                const place  = character.getPlace(frame);
+                const matrix = new Matrix(
+                    place.matrix[0], place.matrix[1], place.matrix[2],
+                    place.matrix[3], place.matrix[4], place.matrix[5]
+                );
+                matrix.invert();
 
-                // 中止点から座標を取得
-                const beforeBounds = character.getBounds();
-                const beforeWidth  = Math.abs(beforeBounds.xMax - beforeBounds.xMin);
-                const beforeHeight = Math.abs(beforeBounds.yMax - beforeBounds.yMin);
-                const percentX = (beforeWidth  / 2 + referencePoint.x) / beforeWidth;
-                const percentY = (beforeHeight / 2 + referencePoint.y) / beforeHeight;
-
-                // 中心点を算出
-                const rectangle = instance.getBounds();
-                const referenceX = rectangle.width  * percentX;
-                const referenceY = rectangle.height * percentY;
+                const point = place.point;
+                const referenceX = point.x * matrix.a + point.y * matrix.c + matrix.tx;
+                const referenceY = point.x * matrix.b + point.y * matrix.d + matrix.ty;
 
                 const baseMatrix = [
                     1, 0, 0, 1,
@@ -1443,15 +1380,6 @@ class TransformController extends BaseController
                 xMax = Math.max(xMax, afterBounds.xMax);
                 yMin = Math.min(yMin, afterBounds.yMin);
                 yMax = Math.max(yMax, afterBounds.yMax);
-
-                // 中心点を移動
-                const afterWidth  = Math.abs(xMax - xMin);
-                const afterHeight = Math.abs(yMax - yMin);
-
-                character.referencePoint = {
-                    "x": afterWidth  * percentX - afterWidth  / 2,
-                    "y": afterHeight * percentY - afterHeight / 2
-                };
 
                 document
                     .getElementById("transform-scale-y")
@@ -1498,6 +1426,8 @@ class TransformController extends BaseController
             return ;
         }
 
+        const { Matrix } = window.next2d.geom;
+
         const workSpace = Util.$currentWorkSpace();
         const scene = workSpace.scene;
 
@@ -1513,48 +1443,19 @@ class TransformController extends BaseController
 
         if (activeElements.length > 1) {
 
-            let baseXMin =  Number.MAX_VALUE;
-            let baseXMax = -Number.MAX_VALUE;
-            let baseYMin =  Number.MAX_VALUE;
-            let baseYMax = -Number.MAX_VALUE;
-            for (let idx = 0; idx < activeElements.length; ++idx) {
-
-                const target  = activeElements[idx];
-                const layerId = target.dataset.layerId | 0;
-                const layer   = scene.getLayer(layerId);
-
-                const characterId = target.dataset.characterId | 0;
-                const character   = layer.getCharacter(characterId);
-
-                const bounds = character.getBounds();
-
-                baseXMin = Math.min(baseXMin, bounds.xMin);
-                baseXMax = Math.max(baseXMax, bounds.xMax);
-                baseYMin = Math.min(baseYMin, bounds.yMin);
-                baseYMax = Math.max(baseYMax, bounds.yMax);
-
-            }
-
-            // 基準となる幅と高さを算出
-            const baseWidth  = Math.abs(baseXMax - baseXMin);
-            const baseHeight = Math.abs(baseYMax - baseYMin);
-            const halfWidth  = baseWidth  / 2;
-            const halfHeight = baseHeight / 2;
-
             // 中心点の座標情報
-            const referencePoint = Util.$referenceController.pointer;
+            const point = Util.$referenceController.pointer;
 
-            // 中止点から座標を取得
-            const percentX = (halfWidth  + referencePoint.x) / baseWidth;
-            const percentY = (halfHeight + referencePoint.y) / baseHeight;
+            const referenceX = point.x;
+            const referenceY = point.y;
 
             const radian = rotate * Util.$Deg2Rad;
             const parentMatrix = Util.$multiplicationMatrix(
                 [Math.cos(radian), Math.sin(radian), -Math.sin(radian), Math.cos(radian), 0, 0],
                 [
                     1, 0, 0, 1,
-                    -halfWidth  - baseXMin - referencePoint.x,
-                    -halfHeight - baseYMin - referencePoint.y
+                    -referenceX,
+                    -referenceY
                 ]
             );
 
@@ -1567,7 +1468,21 @@ class TransformController extends BaseController
                 const characterId = target.dataset.characterId | 0;
                 const character   = layer.getCharacter(characterId);
 
+                // 中心点の移動
                 const place = character.getPlace(frame);
+                const matrix = new Matrix(
+                    place.matrix[0], place.matrix[1], place.matrix[2],
+                    place.matrix[3], place.matrix[4], place.matrix[5]
+                );
+                matrix.invert();
+
+                const point = place.point;
+                const localMatrix = Util.$multiplicationMatrix(
+                    parentMatrix, [1, 0, 0, 1, point.x, point.y]
+                );
+
+                point.x = localMatrix[4] + referenceX;
+                point.y = localMatrix[5] + referenceY;
 
                 const multiMatrix = Util.$multiplicationMatrix(
                     parentMatrix, place.matrix
@@ -1577,8 +1492,8 @@ class TransformController extends BaseController
                 place.matrix[1] = multiMatrix[1];
                 place.matrix[2] = multiMatrix[2];
                 place.matrix[3] = multiMatrix[3];
-                place.matrix[4] = multiMatrix[4] + halfWidth  + baseXMin + referencePoint.x;
-                place.matrix[5] = multiMatrix[5] + halfHeight + baseYMin + referencePoint.y;
+                place.matrix[4] = multiMatrix[4] + referenceX;
+                place.matrix[5] = multiMatrix[5] + referenceY;
 
                 const bounds = character.getBounds();
 
@@ -1601,12 +1516,6 @@ class TransformController extends BaseController
                 .getElementById("transform-scale-x")
                 .value = "100";
 
-            // 中心点を移動
-            const afterWidth  = Math.abs(xMax - xMin);
-            const afterHeight = Math.abs(yMax - yMin);
-            referencePoint.x = afterWidth  * percentX - afterWidth  / 2;
-            referencePoint.y = afterHeight * percentY - afterHeight / 2;
-
         } else {
 
             for (let idx = 0; idx < activeElements.length; ++idx) {
@@ -1616,31 +1525,23 @@ class TransformController extends BaseController
                 const layerId = target.dataset.layerId | 0;
                 const layer   = scene.getLayer(layerId);
 
-                const characterId = target.dataset.characterId | 0;
-                const character   = layer.getCharacter(characterId);
+                const character = layer.getCharacter(
+                    target.dataset.characterId | 0
+                );
                 if (character.rotation === rotate) {
                     return ;
                 }
 
-                const range    = character.getRange(frame);
-                const place    = character.getPlace(frame);
-                const library  = workSpace.getLibrary(character.libraryId);
-                const instance = library.createInstance(place, range);
+                const place  = character.getPlace(frame);
+                const matrix = new Matrix(
+                    place.matrix[0], place.matrix[1], place.matrix[2],
+                    place.matrix[3], place.matrix[4], place.matrix[5]
+                );
+                matrix.invert();
 
-                // 中止点
-                const referencePoint = character.referencePoint;
-
-                // 中止点から座標を取得
-                const beforeBounds = character.getBounds();
-                const beforeWidth  = Math.abs(beforeBounds.xMax - beforeBounds.xMin);
-                const beforeHeight = Math.abs(beforeBounds.yMax - beforeBounds.yMin);
-                const percentX = (beforeWidth  / 2 + referencePoint.x) / beforeWidth;
-                const percentY = (beforeHeight / 2 + referencePoint.y) / beforeHeight;
-
-                // 中心点を算出
-                const rectangle  = instance.getBounds();
-                const referenceX = rectangle.x + rectangle.width  * percentX;
-                const referenceY = rectangle.y + rectangle.height * percentY;
+                const point = place.point;
+                const referenceX = point.x * matrix.a + point.y * matrix.c + matrix.tx;
+                const referenceY = point.x * matrix.b + point.y * matrix.d + matrix.ty;
 
                 const baseMatrix = [1, 0, 0, 1,
                     -referenceX,
@@ -1698,15 +1599,6 @@ class TransformController extends BaseController
                 xMax = Math.max(xMax, afterBounds.xMax);
                 yMin = Math.min(yMin, afterBounds.yMin);
                 yMax = Math.max(yMax, afterBounds.yMax);
-
-                // 中心点を移動
-                const afterWidth  = Math.abs(xMax - xMin);
-                const afterHeight = Math.abs(yMax - yMin);
-
-                character.referencePoint = {
-                    "x": afterWidth  * percentX - afterWidth  / 2,
-                    "y": afterHeight * percentY - afterHeight / 2
-                };
 
                 //  tweenの座標を再計算してポインターを再配置
                 character.relocationTween(frame);

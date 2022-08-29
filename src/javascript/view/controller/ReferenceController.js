@@ -116,10 +116,43 @@ class ReferenceController extends BaseController
             return ;
         }
 
-        const x  = +document.getElementById("object-x").value;
-        const y  = +document.getElementById("object-y").value;
-        const width  = +document.getElementById("object-width").value;
-        const height = +document.getElementById("object-height").value;
+        const workSpace = Util.$currentWorkSpace();
+        const scene = workSpace.scene;
+
+        let xMin =  Number.MAX_VALUE;
+        let xMax = -Number.MAX_VALUE;
+        let yMin =  Number.MAX_VALUE;
+        let yMax = -Number.MAX_VALUE;
+        for (let idx = 0; activeElements.length > idx; ++idx) {
+            const target = activeElements[idx];
+
+            const layer = scene.getLayer(target.dataset.layerId | 0);
+            if (!layer || layer.lock || layer.disable) {
+                continue;
+            }
+
+            const characterId = target.dataset.characterId | 0;
+
+            const element = document
+                .getElementById(`character-${characterId}`);
+
+            if (!element) {
+                continue;
+            }
+
+            const character = layer.getCharacter(characterId);
+            const bounds    = character.getBounds();
+
+            xMin = Math.min(xMin, bounds.xMin);
+            xMax = Math.max(xMax, bounds.xMin + Math.abs(bounds.xMax - bounds.xMin));
+            yMin = Math.min(yMin, bounds.yMin);
+            yMax = Math.max(yMax, bounds.yMin + Math.abs(bounds.yMax - bounds.yMin));
+        }
+
+        const x = xMin;
+        const y = yMin;
+        const width  = xMax - xMin;
+        const height = yMax - yMin;
 
         // 中央にセット
         let dx = x + width  / 2;
@@ -332,8 +365,7 @@ class ReferenceController extends BaseController
     resetPointer ()
     {
         // 初期化
-        this._$pointer.x = 0;
-        this._$pointer.y = 0;
+        this._$pointer = null;
 
         /**
          * @type {ArrowTool}
@@ -369,8 +401,8 @@ class ReferenceController extends BaseController
             const bounds = character.getBounds();
 
             place.point = {
-                "x": place.matrix[4] + Math.abs(bounds.xMax - bounds.xMin) / 2,
-                "y": place.matrix[5] + Math.abs(bounds.yMax - bounds.yMin) / 2
+                "x": bounds.xMin + Math.abs(bounds.xMax - bounds.xMin) / 2,
+                "y": bounds.yMin + Math.abs(bounds.yMax - bounds.yMin) / 2
             };
         }
 
