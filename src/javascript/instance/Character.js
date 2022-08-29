@@ -916,7 +916,8 @@ class Character
                 "blendMode": place.blendMode,
                 "filter": filters,
                 "matrix": place.matrix.slice(0),
-                "colorTransform": place.colorTransform.slice(0)
+                "colorTransform": place.colorTransform.slice(0),
+                "point": place.point
             };
 
             if (place.tweenFrame) {

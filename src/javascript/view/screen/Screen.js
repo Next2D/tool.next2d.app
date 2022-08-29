@@ -365,8 +365,6 @@ class Screen extends BaseScreen
 
             place.matrix[4] -= dx;
             place.matrix[5] -= dy;
-            place.point.x   += dx;
-            place.point.y   += dy;
         }
 
         // タイムラインの表示を再計算
@@ -681,9 +679,7 @@ class Screen extends BaseScreen
         divStyle += `width: ${Math.ceil(width)}px;`;
         divStyle += `height: ${Math.ceil(height)}px;`;
 
-        const range  = character.getRange(frame);
-        const bounds = character.getBounds(place.matrix, place, range);
-
+        const bounds = character.getBounds();
         let tx = Util.$offsetLeft + bounds.xMin * Util.$zoomScale;
         let ty = Util.$offsetTop  + bounds.yMin * Util.$zoomScale;
         divStyle += `left: ${tx}px;`;

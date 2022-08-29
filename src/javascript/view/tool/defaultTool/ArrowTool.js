@@ -448,6 +448,9 @@ class ArrowTool extends BaseTool
                     // 服選択時は二度目の押下は対象外にする
                     this._$activeElements.splice(idx, 1);
 
+                    // 複数選択ポインターを初期化
+                    Util.$referenceController.pointer = null;
+
                 } else {
 
                     this._$activeElements.splice(idx, 1, element);
@@ -462,6 +465,9 @@ class ArrowTool extends BaseTool
         if (!hit && !Util.$shiftKey) {
             // 配列を初期化
             this.clearActiveElement();
+        } else {
+            // 複数選択ポインターを初期化
+            Util.$referenceController.pointer = null;
         }
 
         this._$activeElements.push(element);
@@ -1177,29 +1183,29 @@ class ArrowTool extends BaseTool
             const character = layer
                 .getCharacter(target.dataset.characterId | 0);
 
-            character._$referencePoint.x += mouseX;
-            character._$referencePoint.y += mouseY;
+            const frame = Util.$timelineFrame.currentFrame;
+            const place = character.getPlace(frame);
+            if (!place.point) {
+                const bounds = character.getBounds();
 
-            const point = character.referencePoint;
+                place.point = {
+                    "x": place.matrix[4] + Math.abs(bounds.xMax - bounds.xMin) / 2,
+                    "y": place.matrix[5] + Math.abs(bounds.yMax - bounds.yMin) / 2
+                };
+            }
+
+            place.point.x += mouseX;
+            place.point.y += mouseY;
 
             Util
                 .$referenceController
-                .setInputValue(point.x, point.y);
+                .setInputValue(place.point.x, place.point.y);
 
-            // 画面の拡大縮小対応
-            const pointX = point.x * Util.$zoomScale;
-            const pointY = point.y * Util.$zoomScale;
+            const left = Util.$offsetLeft + place.point.x * Util.$zoomScale - 8;
+            const top  = Util.$offsetTop  + place.point.y * Util.$zoomScale - 8;
 
-            const characterElement = document
-                .getElementById(`character-${character.id}`);
-
-            const xMin   = characterElement.offsetLeft;
-            const yMin   = characterElement.offsetTop;
-            const width  = characterElement.offsetWidth;
-            const height = characterElement.offsetHeight;
-
-            element.style.left = `${pointX + xMin + width  / 2 - 8}px`;
-            element.style.top  = `${pointY + yMin + height / 2 - 8}px`;
+            element
+                .setAttribute("style", `left: ${left}px; top: ${top}px;`);
         }
     }
 
@@ -1329,8 +1335,19 @@ class ArrowTool extends BaseTool
             matrix[4] += dx / Util.$zoomScale;
             matrix[5] += dy / Util.$zoomScale;
 
-            const range  = character.getRange(frame);
-            const bounds = character.getBounds(place.matrix, place, range);
+            const bounds = character.getBounds();
+
+            // 中心点を更新
+            if (!place.point) {
+                place.point = {
+                    "x": matrix[4] + Math.abs(bounds.xMax - bounds.xMin) / 2,
+                    "y": matrix[5] + Math.abs(bounds.yMax - bounds.yMin) / 2
+                };
+            } else {
+                place.point.x +=  dx / Util.$zoomScale;
+                place.point.y +=  dy / Util.$zoomScale;
+            }
+
             character.screenX = bounds.xMin;
             character.screenY = bounds.yMin;
 
@@ -1390,6 +1407,13 @@ class ArrowTool extends BaseTool
 
         document.getElementById("object-x").value = xMin;
         document.getElementById("object-y").value = yMin;
+
+        // 複数選択している場合のポインターを更新
+        if (this._$activeElements.length > 1) {
+            const pointer = Util.$referenceController.pointer;
+            pointer.x += dx;
+            pointer.y += dy;
+        }
 
         Util
             .$transformController
@@ -1481,10 +1505,12 @@ class ArrowTool extends BaseTool
             yMax = Math.max(yMax, bounds.yMax);
         }
 
-        document.getElementById("object-width").value  = Math.abs(xMax - xMin);
-        document.getElementById("object-height").value = Math.abs(yMax - yMin);
-        document.getElementById("object-x").value = tx;
-        document.getElementById("object-y").value = ty;
+        const width  = Math.abs(xMax - xMin);
+        const height = Math.abs(yMax - yMin);
+        document.getElementById("object-width").value  = `${width}`;
+        document.getElementById("object-height").value = `${height}`;
+        document.getElementById("object-x").value = `${tx}`;
+        document.getElementById("object-y").value = `${ty}`;
 
         // オブジェクト設定を表示して、Stage情報は非表示にする
         Util.$controller.showObjectSetting([
@@ -1511,6 +1537,14 @@ class ArrowTool extends BaseTool
                 "sound-setting",
                 "ease-setting"
             ]);
+
+            // 複数選択時には選択中心位置に移動
+            if (!Util.$referenceController.pointer) {
+                Util.$referenceController.pointer = {
+                    "x": tx + width  / 2,
+                    "y": ty + height / 2
+                };
+            }
 
             document
                 .getElementById("transform-scale-x")

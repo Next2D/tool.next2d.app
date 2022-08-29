@@ -242,7 +242,8 @@ class TransformController extends BaseController
             TransformController.MAX_SCALE
         );
 
-        this.updateX(value);
+        const x = +document.getElementById("object-x").value;
+        this.updateX(value - x);
 
         return value;
     }
@@ -263,7 +264,8 @@ class TransformController extends BaseController
             TransformController.MAX_SCALE
         );
 
-        this.updateY(value);
+        const y = +document.getElementById("object-y").value;
+        this.updateY(value - y);
 
         return value;
     }
@@ -598,12 +600,7 @@ class TransformController extends BaseController
             }
 
             const character = layer.getCharacter(characterId);
-
-            // const x = element.offsetLeft;
-            // const y = element.offsetTop;
-            const place  = character.getPlace(frame);
-            const range  = character.getRange(frame);
-            const bounds = character.getBounds(place.matrix, place, range);
+            const bounds    = character.getBounds();
 
             let tx = Util.$offsetLeft + bounds.xMin * Util.$zoomScale;
             let ty = Util.$offsetTop  + bounds.yMin * Util.$zoomScale;
@@ -621,9 +618,8 @@ class TransformController extends BaseController
         const width  = xMax - xMin;
         const height = yMax - yMin;
 
-        const referencePoint = document
-            .getElementById("reference-point");
-
+        // 中心点をセット
+        let point = null;
         if (activeElements.length === 1) {
 
             const target = activeElements[0];
@@ -633,14 +629,19 @@ class TransformController extends BaseController
                 .getCharacter(target.dataset.characterId | 0);
 
             // 画面の拡大縮小対応
-            const point = character.referencePoint;
+            const place = character.getPlace(frame);
+            if (!place.point) {
+                place.point = {
+                    "x": place.matrix[4] + width  / 2,
+                    "y": place.matrix[5] + height / 2
+                };
+            }
+
+            point = place.point;
 
             Util
                 .$referenceController
                 .setInputValue(point.x, point.y);
-
-            const pointX = point.x * Util.$zoomScale;
-            const pointY = point.y * Util.$zoomScale;
 
             const characterElement = document
                 .getElementById(`character-${character.id}`);
@@ -650,20 +651,31 @@ class TransformController extends BaseController
                 return this.hide();
             }
 
-            referencePoint.style.left = `${pointX + xMin + width  / 2 - 8}px`;
-            referencePoint.style.top  = `${pointY + yMin + height / 2 - 8}px`;
-
         } else {
 
-            const point = Util.$referenceController.pointer;
+            if (!Util.$referenceController.pointer) {
+                Util.$referenceController.pointer = {
+                    "x": xMin + width  / 2,
+                    "y": yMin + height / 2
+                };
+            }
 
-            // 画面の拡大縮小対応
-            const pointX = point.x * Util.$zoomScale;
-            const pointY = point.y * Util.$zoomScale;
+            point = Util.$referenceController.pointer;
 
-            referencePoint.style.left = `${pointX + xMin + width  / 2 - 8}px`;
-            referencePoint.style.top  = `${pointY + yMin + height / 2 - 8}px`;
+        }
 
+        // 中心点をセット
+        if (point) {
+
+            const pointX = Util.$offsetLeft + point.x * Util.$zoomScale;
+            const pointY = Util.$offsetTop  + point.y * Util.$zoomScale;
+
+            document
+                .getElementById("reference-point")
+                .setAttribute(
+                    "style",
+                    `left: ${pointX - 8}px; top: ${pointY - 8}px;`
+                );
         }
 
         document
@@ -765,10 +777,26 @@ class TransformController extends BaseController
             const characterId = target.dataset.characterId | 0;
             const character   = layer.getCharacter(characterId);
 
-            character.x = x;
+            character.x += x;
+
+            const place = character.getPlace(frame);
+            if (!place.point) {
+                const bounds = character.getBounds();
+
+                place.point = {
+                    "x": place.matrix[4] + (bounds.xMax - bounds.xMin) / 2,
+                    "y": place.matrix[5] + (bounds.yMax - bounds.yMin) / 2
+                };
+            }
+            place.point.x += x;
 
             //  tweenの座標を再計算してポインターを再配置
             character.relocationTween(frame);
+        }
+
+        if (activeElements.length > 1) {
+            const pointer = Util.$referenceController.pointer;
+            pointer.x += x;
         }
 
         this.relocation();
@@ -801,10 +829,26 @@ class TransformController extends BaseController
             const characterId = target.dataset.characterId | 0;
             const character   = layer.getCharacter(characterId);
 
-            character.y = y;
+            character.y += y;
+
+            const place = character.getPlace(frame);
+            if (!place.point) {
+                const bounds = character.getBounds();
+
+                place.point = {
+                    "x": place.matrix[4] + (bounds.xMax - bounds.xMin) / 2,
+                    "y": place.matrix[5] + (bounds.yMax - bounds.yMin) / 2
+                };
+            }
+            place.point.y += y;
 
             //  tweenの座標を再計算してポインターを再配置
             character.relocationTween(frame);
+        }
+
+        if (activeElements.length > 1) {
+            const pointer = Util.$referenceController.pointer;
+            pointer.y += y;
         }
 
         this.relocation();

@@ -79,12 +79,21 @@ class ReferenceController extends BaseController
 
     /**
      * @return {object}
-     * @readonly
      * @public
      */
     get pointer ()
     {
         return this._$pointer;
+    }
+
+    /**
+     * @param  {object} pointer
+     * @return {void}
+     * @public
+     */
+    set pointer (pointer)
+    {
+        this._$pointer = pointer;
     }
 
     /**
@@ -107,51 +116,59 @@ class ReferenceController extends BaseController
             return ;
         }
 
+        const x  = +document.getElementById("object-x").value;
+        const y  = +document.getElementById("object-y").value;
         const width  = +document.getElementById("object-width").value;
         const height = +document.getElementById("object-height").value;
 
-        let dx = 0;
-        let dy = 0;
+        // 中央にセット
+        let dx = x + width  / 2;
+        let dy = y + height / 2;
         switch (event.target.dataset.position) {
 
             case "top-left":
-                dx = -width / 2;
-                dy = -height / 2;
+                dx = x;
+                dy = y;
                 break;
 
             case "top-center":
-                dy = -height / 2;
+                dx = x + width / 2;
+                dy = y;
                 break;
 
             case "top-right":
-                dx = width / 2;
-                dy = -height / 2;
+                dx = x + width;
+                dy = y;
                 break;
 
             case "center-left":
-                dx = -width / 2;
+                dx = x;
+                dy = y + height / 2;
                 break;
 
             case "center-right":
-                dx = width / 2;
+                dx = x + width;
+                dy = y + height / 2;
                 break;
 
             case "bottom-left":
-                dx = -width / 2;
-                dy = height / 2;
+                dx = x;
+                dy = y + height;
                 break;
 
             case "bottom-center":
-                dy = height / 2;
+                dx = x + width / 2;
+                dy = y + height;
                 break;
 
             case "bottom-right":
-                dx = width / 2;
-                dy = height / 2;
+                dx = x + width;
+                dy = y + height;
                 break;
 
         }
 
+        this.save();
         if (activeElements.length > 1) {
 
             this._$pointer.x = dx;
@@ -175,9 +192,17 @@ class ReferenceController extends BaseController
                 return ;
             }
 
-            character._$referencePoint.x = dx;
-            character._$referencePoint.y = dy;
+            const frame = Util.$timelineFrame.currentFrame;
+            const place = character.getPlace(frame);
+            if (!place.point) {
+                place.point = {
+                    "x": 0,
+                    "y": 0
+                };
+            }
 
+            place.point.x = dx;
+            place.point.y = dy;
         }
 
         // コントローラーの値を更新
@@ -187,6 +212,8 @@ class ReferenceController extends BaseController
         Util
             .$transformController
             .relocation();
+
+        this._$saved = false;
     }
 
     /**
@@ -230,7 +257,9 @@ class ReferenceController extends BaseController
                 return value;
             }
 
-            character._$referencePoint.x = value;
+            const frame = Util.$timelineFrame.currentFrame;
+            const place = character.getPlace(frame);
+            place.point.x = value;
 
         } else {
 
@@ -282,7 +311,9 @@ class ReferenceController extends BaseController
                 return value;
             }
 
-            character._$referencePoint.y = value;
+            const frame = Util.$timelineFrame.currentFrame;
+            const place = character.getPlace(frame);
+            place.point.y = value;
 
         } else {
 
@@ -333,8 +364,14 @@ class ReferenceController extends BaseController
                 return ;
             }
 
-            character._$referencePoint.x = 0;
-            character._$referencePoint.y = 0;
+            const frame  = Util.$timelineFrame.currentFrame;
+            const place  = character.getPlace(frame);
+            const bounds = character.getBounds();
+
+            place.point = {
+                "x": place.matrix[4] + Math.abs(bounds.xMax - bounds.xMin) / 2,
+                "y": place.matrix[5] + Math.abs(bounds.yMax - bounds.yMin) / 2
+            };
         }
 
         // 再計算
