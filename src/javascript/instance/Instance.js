@@ -187,15 +187,16 @@ class Instance
         instance
             .transform
             .matrix = new Matrix(
-                place.matrix[0], place.matrix[1],
-                place.matrix[2], place.matrix[3],
-                0, 0
-            );
+            place.matrix[0], place.matrix[1],
+            place.matrix[2], place.matrix[3],
+            0, 0
+        );
 
         // fixed logic
         instance
             .transform
             .colorTransform = this.calcColorTransform(place);
+
 
         const container  = this.createContainer(instance);
         const bitmapData = this.createBitmapData(object.width, object.height);
@@ -258,6 +259,7 @@ class Instance
         const rectangle = instance.getBounds();
 
         const ratio = window.devicePixelRatio * Util.$zoomScale;
+
         const multiMatrix = Util.$multiplicationMatrix(
             Util.$multiplicationMatrix(
                 [ratio, 0, 0, ratio, 0, 0],

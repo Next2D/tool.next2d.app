@@ -1325,6 +1325,7 @@ class ScreenMenu extends BaseScreen
 
         }
 
+        const frame = Util.$timelineFrame.currentFrame;
         const scene = workSpace.scene;
         for (let idx = 0; idx < activeElements.length; ++idx) {
 
@@ -1339,52 +1340,75 @@ class ScreenMenu extends BaseScreen
                 element.dataset.characterId | 0
             );
 
+            const point = character.getPlace(frame).point;
             switch (align) {
 
                 case "left":
                     if (character.x === character.screenX) {
+                        point.x += x - character.x;
                         character.x = x;
                     } else {
-                        character.x = x - character.screenX + character.x;
+                        const dx = x - character.screenX + character.x;
+                        point.x += dx - character.x;
+                        character.x = dx;
                     }
                     break;
 
                 case "right":
                     if (character.x === character.screenX) {
-                        character.x = x + w - character.width;
+                        const dx = x + w - character.width;
+                        point.x += dx - character.x;
+                        character.x = dx;
                     } else {
-                        character.x = x + w - character.width - character.screenX + character.x;
+                        const dx = x + w - character.width - character.screenX + character.x;
+                        point.x += dx - character.x;
+                        character.x = dx;
                     }
                     break;
 
                 case "center":
                     if (character.x === character.screenX) {
-                        character.x = x + w / 2 - character.width / 2;
+                        const dx = x + w / 2 - character.width / 2;
+                        point.x += dx - character.x;
+                        character.x = dx;
                     } else {
-                        character.x = x + w / 2 - character.width / 2 - character.screenX + character.x;
+                        const dx = x + w / 2 - character.width / 2 - character.screenX + character.x;
+                        point.x += dx - character.x;
+                        character.x = dx;
                     }
                     break;
 
                 case "top":
                     if (character.y === character.screenY) {
+                        point.y += y - character.y;
                         character.y = y;
                     } else {
-                        character.y = y - character.screenY + character.y;
+                        const dy = y - character.screenY + character.y;
+                        point.y += dy - character.y;
+                        character.y = dy;
                     }
                     break;
 
                 case "bottom":
                     if (character.y === character.screenY) {
+                        const dy = y + h - character.height;
+                        point.y += dy - character.y;
                         character.y = y + h - character.height;
                     } else {
+                        const dy = y + h - character.height - character.screenY + character.y;
+                        point.y += dy - character.y;
                         character.y = y + h - character.height - character.screenY + character.y;
                     }
                     break;
 
                 case "middle":
                     if (character.y === character.screenY) {
+                        const dy = y + h / 2 - character.height / 2;
+                        point.y += dy - character.y;
                         character.y = y + h / 2 - character.height / 2;
                     } else {
+                        const dy = y + h / 2 - character.height / 2 - character.screenY + character.y;
+                        point.y += dy - character.y;
                         character.y = y + h / 2 - character.height / 2 - character.screenY + character.y;
                     }
                     break;
