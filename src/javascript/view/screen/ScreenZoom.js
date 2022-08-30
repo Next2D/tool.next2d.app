@@ -75,7 +75,7 @@ class ScreenZoom extends BaseScreen
         );
 
         this.execute(
-            (this._$currentValue - value) / 100 * -1
+            (value - this._$currentValue) / 100
         );
 
         this._$currentValue = value;
@@ -95,6 +95,7 @@ class ScreenZoom extends BaseScreen
             ScreenZoom.MAX_LEVEL,
             Math.max(ScreenZoom.MIN_LEVEL, Util.$zoomScale)
         );
+        console.log(Util.$zoomScale)
 
         document
             .getElementById("screen-scale")

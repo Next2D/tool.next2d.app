@@ -18,7 +18,7 @@ const options = minimist(process.argv.slice(2), {
     "string": ["distPath", "version"],
     "default": {
         "prodBuild": false,
-        "version": "0.73.0",
+        "version": "0.74.0",
         "distPath": "."
     }
 });
@@ -177,9 +177,9 @@ const buildJavaScript = () =>
             }
         }));
 
-    // if (options.prodBuild) {
-    //     build.pipe(uglify({ "output": { "comments": /^!/ } }));
-    // }
+    if (options.prodBuild) {
+        build.pipe(uglify({ "output": { "comments": /^!/ } }));
+    }
 
     return build.pipe(gulp.dest(`${options.distPath}/assets/js/`));
 };

@@ -143,6 +143,8 @@ class InputEvent
                 break;
 
         }
+
+        this._$currentValue = +event.target.value;
     }
 
     /**
