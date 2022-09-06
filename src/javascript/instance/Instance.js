@@ -159,13 +159,11 @@ class Instance
      * @param  {number} height
      * @param  {object} place
      * @param  {object} [range = null]
-     * @param  {number} [dx = 0]
-     * @param  {number} [dy = 0]
      * @return {HTMLImageElement}
      * @method
      * @public
      */
-    toImage (width, height, place, range = null, dx = 0, dy = 0)
+    toImage (width, height, place, range = null)
     {
         // empty image
         if (!width || !height) {
@@ -176,31 +174,25 @@ class Instance
 
         const instance = this.createInstance(place, range);
 
-        const matrix = this.calcMatrix(
-            instance, width, height, place, dx, dy
-        );
-
-        const object = this.calcFilter(width, height, place, matrix);
+        const object = this.calcFilter(width, height, place);
         instance.filters = object.filters;
 
-        // fixed logic
-        instance
-            .transform
-            .matrix = new Matrix(
-            place.matrix[0], place.matrix[1],
-            place.matrix[2], place.matrix[3],
-            0, 0
-        );
-
-        // fixed logic
-        instance
-            .transform
-            .colorTransform = this.calcColorTransform(place);
-
-
-        const container  = this.createContainer(instance);
+        const container  = this.createContainer(instance, place);
         const bitmapData = this.createBitmapData(object.width, object.height);
-        bitmapData.draw(container, matrix);
+
+        const ratio = window.devicePixelRatio * Util.$zoomScale;
+        const drawBounds = container.getBounds(container);
+        let tx = -drawBounds.x;
+        if (0 > object.offsetX) {
+            tx -= object.offsetX * ratio;
+        }
+
+        let ty = -drawBounds.y;
+        if (0 > object.offsetY) {
+            ty -= object.offsetY * ratio;
+        }
+
+        bitmapData.draw(container, new Matrix(1, 0, 0, 1, tx, ty));
 
         const image = new Image();
         image.src = bitmapData.toDataURL();
@@ -242,60 +234,14 @@ class Instance
     }
 
     /**
-     * @param  {DisplayObject} instance
      * @param  {number} width
      * @param  {number} height
      * @param  {object} place
-     * @param  {number} [dx = 0]
-     * @param  {number} [dy = 0]
-     * @return {next2d.geom.Matrix}
-     * @method
-     * @public
-     */
-    calcMatrix (instance, width, height, place, dx = 0, dy = 0)
-    {
-        const { Matrix } = window.next2d.geom;
-
-        const rectangle = instance.getBounds();
-
-        const ratio = window.devicePixelRatio * Util.$zoomScale;
-
-        const multiMatrix = Util.$multiplicationMatrix(
-            Util.$multiplicationMatrix(
-                [ratio, 0, 0, ratio, 0, 0],
-                [
-                    place.matrix[0], place.matrix[1],
-                    place.matrix[2], place.matrix[3],
-                    0, 0
-                ]
-            ),
-            [
-                1, 0, 0, 1,
-                -(rectangle.width  / 2) - rectangle.x,
-                -(rectangle.height / 2) - rectangle.y
-            ]
-        );
-
-        const matrix = new Matrix(ratio, 0, 0, ratio);
-
-        matrix.translate(
-            multiMatrix[4] + width  * ratio / 2 + dx,
-            multiMatrix[5] + height * ratio / 2 + dy
-        );
-
-        return matrix;
-    }
-
-    /**
-     * @param  {number} width
-     * @param  {number} height
-     * @param  {object} place
-     * @param  {next2d.geom.Matrix} matrix
      * @return {object}
      * @method
      * @public
      */
-    calcFilter (width, height, place, matrix)
+    calcFilter (width, height, place)
     {
         const { Rectangle } = window.next2d.geom;
 
@@ -319,8 +265,6 @@ class Instance
 
         if (place.filter.length) {
 
-            const ratio = window.devicePixelRatio * Util.$zoomScale;
-
             let rect = new Rectangle(0, 0, width, height);
 
             for (let idx = 0; idx < place.filter.length; ++idx) {
@@ -343,14 +287,6 @@ class Instance
 
             object.offsetX = rect.x;
             object.offsetY = rect.y;
-
-            if (0 > object.offsetX) {
-                matrix.translate(-object.offsetX * ratio, 0);
-            }
-
-            if (0 > object.offsetY) {
-                matrix.translate(0, -object.offsetY * ratio);
-            }
         }
 
         return object;
@@ -358,19 +294,40 @@ class Instance
 
     /**
      * @param  {DisplayObject} instance
+     * @param  {object} place
      * @return {next2d.display.Sprite}
      * @method
      * @public
      */
-    createContainer (instance)
+    createContainer (instance, place)
     {
         const { Sprite } = window.next2d.display;
+        const { Matrix } = window.next2d.geom;
+
+        instance
+            .transform
+            .matrix = new Matrix(
+                place.matrix[0], place.matrix[1],
+                place.matrix[2], place.matrix[3],
+                place.matrix[4], place.matrix[5]
+            );
+
+        // fixed logic
+        instance
+            .transform
+            .colorTransform = this.calcColorTransform(place);
 
         const container = new Sprite();
-        const sprite = container.addChild(new Sprite());
-        sprite.addChild(instance);
+        container.addChild(instance);
 
-        return container;
+        const ratio = window.devicePixelRatio * Util.$zoomScale;
+        container.scaleX = ratio;
+        container.scaleY = ratio;
+
+        const parent = new Sprite();
+        parent.addChild(container);
+
+        return parent;
     }
 
     /**

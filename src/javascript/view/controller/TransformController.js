@@ -1433,9 +1433,6 @@ class TransformController extends BaseController
 
         const frame = Util.$timelineFrame.currentFrame;
 
-        let tx = Number.MAX_VALUE;
-        let ty = Number.MAX_VALUE;
-
         let xMin =  Number.MAX_VALUE;
         let xMax = -Number.MAX_VALUE;
         let yMin =  Number.MAX_VALUE;
@@ -1591,14 +1588,11 @@ class TransformController extends BaseController
                     .getElementById("transform-scale-y")
                     .value = `${character.scaleY * 100}`;
 
-                tx = Math.min(tx, character.x);
-                ty = Math.min(ty, character.y);
-
-                const afterBounds = character.getBounds();
-                xMin = Math.min(xMin, afterBounds.xMin);
-                xMax = Math.max(xMax, afterBounds.xMax);
-                yMin = Math.min(yMin, afterBounds.yMin);
-                yMax = Math.max(yMax, afterBounds.yMax);
+                const bounds = character.getBounds();
+                xMin = Math.min(xMin, bounds.xMin);
+                xMax = Math.max(xMax, bounds.xMax);
+                yMin = Math.min(yMin, bounds.yMin);
+                yMax = Math.max(yMax, bounds.yMax);
 
                 //  tweenの座標を再計算してポインターを再配置
                 character.relocationTween(frame);
@@ -1607,11 +1601,11 @@ class TransformController extends BaseController
 
         document
             .getElementById("object-x")
-            .value = `${tx}`;
+            .value = `${xMin}`;
 
         document
             .getElementById("object-y")
-            .value = `${ty}`;
+            .value = `${yMin}`;
 
         document
             .getElementById("object-width")

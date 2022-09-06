@@ -95,7 +95,6 @@ class ScreenZoom extends BaseScreen
             ScreenZoom.MAX_LEVEL,
             Math.max(ScreenZoom.MIN_LEVEL, Util.$zoomScale)
         );
-        console.log(Util.$zoomScale)
 
         document
             .getElementById("screen-scale")
