@@ -377,7 +377,41 @@ class ReferenceController extends BaseController
             return ;
         }
 
-        // 中心点を0,0にリセット
+        const workSpace = Util.$currentWorkSpace();
+        const scene = workSpace.scene;
+
+        let xMin =  Number.MAX_VALUE;
+        let xMax = -Number.MAX_VALUE;
+        let yMin =  Number.MAX_VALUE;
+        let yMax = -Number.MAX_VALUE;
+        for (let idx = 0; activeElements.length > idx; ++idx) {
+
+            const target = activeElements[idx];
+
+            const layer = scene.getLayer(target.dataset.layerId | 0);
+            if (!layer || layer.lock || layer.disable) {
+                continue;
+            }
+
+            const characterId = target.dataset.characterId | 0;
+
+            const element = document
+                .getElementById(`character-${characterId}`);
+
+            if (!element) {
+                continue;
+            }
+
+            const character = layer.getCharacter(characterId);
+            const bounds    = character.getBounds();
+
+            xMin = Math.min(xMin, bounds.xMin);
+            xMax = Math.max(xMax, bounds.xMin + Math.abs(bounds.xMax - bounds.xMin));
+            yMin = Math.min(yMin, bounds.yMin);
+            yMax = Math.max(yMax, bounds.yMin + Math.abs(bounds.yMax - bounds.yMin));
+
+        }
+
         if (activeElements.length === 1) {
 
             const target = activeElements[0];
@@ -392,18 +426,21 @@ class ReferenceController extends BaseController
                 target.dataset.characterId | 0
             );
 
-            if (!character) {
-                return ;
-            }
-
-            const frame  = Util.$timelineFrame.currentFrame;
-            const place  = character.getPlace(frame);
-            const bounds = character.getBounds();
+            const frame = Util.$timelineFrame.currentFrame;
+            const place = character.getPlace(frame);
 
             place.point = {
-                "x": bounds.xMin + Math.abs(bounds.xMax - bounds.xMin) / 2,
-                "y": bounds.yMin + Math.abs(bounds.yMax - bounds.yMin) / 2
+                "x": xMin + Math.abs(xMax - xMin) / 2,
+                "y": yMin + Math.abs(yMax - yMin) / 2
             };
+
+        } else {
+
+            this._$pointer = {
+                "x": xMin + Math.abs(xMax - xMin) / 2,
+                "y": yMin + Math.abs(yMax - yMin) / 2
+            };
+
         }
 
         // 再計算

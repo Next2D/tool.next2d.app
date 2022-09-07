@@ -629,9 +629,10 @@ class TransformController extends BaseController
             // 画面の拡大縮小対応
             const place = character.getPlace(frame);
             if (!place.point) {
+                const bounds = character.getBounds();
                 place.point = {
-                    "x": place.matrix[4] + width  / 2,
-                    "y": place.matrix[5] + height / 2
+                    "x": bounds.xMin + character.width  / 2,
+                    "y": bounds.yMin + character.height / 2
                 };
             }
 

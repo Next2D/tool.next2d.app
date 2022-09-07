@@ -182,6 +182,7 @@ class Instance
 
         const ratio = window.devicePixelRatio * Util.$zoomScale;
         const drawBounds = container.getBounds(container);
+
         let tx = -drawBounds.x;
         if (0 > object.offsetX) {
             tx -= object.offsetX * ratio;
@@ -317,17 +318,17 @@ class Instance
             .transform
             .colorTransform = this.calcColorTransform(place);
 
-        const container = new Sprite();
-        container.addChild(instance);
+        const sprite = new Sprite();
+        sprite.addChild(instance);
 
         const ratio = window.devicePixelRatio * Util.$zoomScale;
-        container.scaleX = ratio;
-        container.scaleY = ratio;
+        sprite.scaleX = ratio;
+        sprite.scaleY = ratio;
 
-        const parent = new Sprite();
-        parent.addChild(container);
+        const container = new Sprite();
+        container.addChild(sprite);
 
-        return parent;
+        return container;
     }
 
     /**
