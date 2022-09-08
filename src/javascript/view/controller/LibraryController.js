@@ -410,7 +410,7 @@ class LibraryController
                     }
 
                     const children = childrenMap.get(folderId);
-                    for (let idx = 0; idx < children.length; ++idx) {
+                    for (let idx = children.length - 1; idx > -1; --idx) {
 
                         const child = children[idx];
 
