@@ -1121,10 +1121,11 @@ class MovieClip extends Instance
     /**
      * @param  {object} place
      * @param  {object} range
+     * @param  {number} [parent_frame = 1]
      * @return {next2d.display.Sprite}
      * @public
      */
-    createInstance (place, range)
+    createInstance (place, range, parent_frame = 1)
     {
         const { MovieClip } = window.next2d.display;
         const { Matrix, ColorTransform } = window.next2d.geom;
@@ -1138,8 +1139,8 @@ class MovieClip extends Instance
         Util.$useIds.clear();
         const object = this.toPublish();
 
-        let frame = 1;
-        if (place && range) {
+        let frame = parent_frame;
+        if (place && range && parent_frame === 1) {
             frame = Util.$getFrame(
                 place, range, currentFrame, this.totalFrame
             );
@@ -1221,7 +1222,7 @@ class MovieClip extends Instance
                             }
                         }
 
-                        displayObject = instance.createInstance(place, childRange);
+                        displayObject = instance.createInstance(place, childRange, frame);
                     }
                     break;
 
