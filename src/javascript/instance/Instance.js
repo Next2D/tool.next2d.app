@@ -159,11 +159,12 @@ class Instance
      * @param  {number} height
      * @param  {object} place
      * @param  {object} [range = null]
+     * @param  {number} [static_frame = 0]
      * @return {HTMLImageElement}
      * @method
      * @public
      */
-    toImage (width, height, place, range = null)
+    toImage (width, height, place, range = null, static_frame = 0)
     {
         // empty image
         if (!width || !height) {
@@ -172,7 +173,7 @@ class Instance
 
         const { Matrix } = window.next2d.geom;
 
-        const instance = this.createInstance(place, range);
+        const instance = this.createInstance(place, range, static_frame);
 
         const object = this.calcFilter(width, height, place);
         instance.filters = object.filters;

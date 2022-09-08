@@ -718,12 +718,16 @@ class MovieClip extends Instance
      * @param  {array}  [matrix=null]
      * @param  {object} [place=null]
      * @param  {object} [range=null]
+     * @param  {number} [parent_frame=0]
      * @return {object}
      * @method
      * @public
      */
-    getBounds (matrix = [1, 0, 0, 1, 0, 0], place = null, range = null)
-    {
+    getBounds (
+        matrix = [1, 0, 0, 1, 0, 0],
+        place = null, range = null, parent_frame = 0
+    ) {
+
         if (!this._$layers.size) {
             return {
                 "xMin": 0,
@@ -740,8 +744,8 @@ class MovieClip extends Instance
 
         const currentFrame = Util.$currentFrame;
 
-        let frame = 1;
-        if (place && range) {
+        let frame = parent_frame > 0 ? parent_frame : 1;
+        if (place && range && parent_frame === 0) {
             frame = Util.$getFrame(
                 place, range, currentFrame, this.totalFrame
             );
@@ -778,7 +782,7 @@ class MovieClip extends Instance
                     .getLibrary(character.libraryId | 0);
 
                 const matrix = Util.$multiplicationMatrix(parentMatrix, place.matrix);
-                const bounds = instance.getBounds(matrix, place, range);
+                const bounds = instance.getBounds(matrix, place, range, frame);
 
                 const width  = bounds.xMax - bounds.xMin;
                 const height = bounds.yMax - bounds.yMin;
@@ -1121,11 +1125,11 @@ class MovieClip extends Instance
     /**
      * @param  {object} place
      * @param  {object} range
-     * @param  {number} [parent_frame = 1]
+     * @param  {number} [parent_frame = 0]
      * @return {next2d.display.Sprite}
      * @public
      */
-    createInstance (place, range, parent_frame = 1)
+    createInstance (place, range, parent_frame = 0)
     {
         const { MovieClip } = window.next2d.display;
         const { Matrix, ColorTransform } = window.next2d.geom;
@@ -1139,8 +1143,8 @@ class MovieClip extends Instance
         Util.$useIds.clear();
         const object = this.toPublish();
 
-        let frame = parent_frame;
-        if (place && range && parent_frame === 1) {
+        let frame = parent_frame > 0 ? parent_frame : 1;
+        if (place && range && parent_frame === 0) {
             frame = Util.$getFrame(
                 place, range, currentFrame, this.totalFrame
             );

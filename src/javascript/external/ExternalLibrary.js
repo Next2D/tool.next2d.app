@@ -85,26 +85,23 @@ class ExternalLibrary
     }
 
     /**
-     * @param  {number} [width=0]
-     * @param  {number} [height=0]
      * @param  {number} [frame=1]
      * @return {HTMLImageElement}
      * @method
      * @public
      */
-    toImage (width = 0, height = 0, frame = 1)
+    toImage (frame = 1)
     {
         if (!this._$instance) {
-            return new Image(width, height);
+            return new Image();
         }
 
-        const bounds = this._$instance.getBounds();
-        if (!width) {
-            width  = Math.abs(bounds.xMax - bounds.xMin);
-        }
-        if (!height) {
-            height = Math.abs(bounds.yMax - bounds.yMin);
-        }
+        const bounds = this._$instance.getBounds(
+            [1, 0, 0, 1, 0, 0], null, null, frame
+        );
+
+        const width  = Math.abs(bounds.xMax - bounds.xMin);
+        const height = Math.abs(bounds.yMax - bounds.yMin);
 
         const currentFrame = Util.$currentFrame;
 
@@ -113,13 +110,15 @@ class ExternalLibrary
             Math.ceil(width),
             Math.ceil(height),
             {
-                "frame": 1,
+                "frame": frame,
                 "matrix": [1, 0, 0, 1, 0, 0],
                 "colorTransform": [1, 1, 1, 1, 0, 0, 0, 0],
                 "blendMode": "normal",
                 "filter": [],
                 "loop": Util.$getDefaultLoopConfig()
-            }
+            },
+            null,
+            frame
         );
 
         Util.$currentFrame = currentFrame;
