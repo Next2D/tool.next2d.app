@@ -744,10 +744,10 @@ class MovieClip extends Instance
 
         const currentFrame = Util.$currentFrame;
 
-        let frame = parent_frame > 0 ? parent_frame : 1;
-        if (place && range && parent_frame === 0) {
+        let frame = parent_frame || 1;
+        if (place && range) {
             frame = Util.$getFrame(
-                place, range, currentFrame, this.totalFrame
+                place, range, currentFrame, this.totalFrame, parent_frame
             );
         }
 
@@ -1147,10 +1147,10 @@ class MovieClip extends Instance
         Util.$useIds.clear();
         const object = this.toPublish();
 
-        let frame = parent_frame > 0 ? parent_frame : 1;
-        if (place && range && parent_frame === 0) {
+        let frame = parent_frame || 1;
+        if (place && range) {
             frame = Util.$getFrame(
-                place, range, currentFrame, this.totalFrame
+                place, range, currentFrame, this.totalFrame, parent_frame
             );
         }
 

@@ -2071,10 +2071,11 @@ Util.$getDefaultLoopConfig = () =>
  * @param  {object} range
  * @param  {number} parent_frame
  * @param  {number} total_frame
+ * @param  {number} static_frame
  * @return {number}
  * @static
  */
-Util.$getFrame = (place, range, parent_frame, total_frame) =>
+Util.$getFrame = (place, range, parent_frame, total_frame, static_frame = 0) =>
 {
     // レンジ幅での移動数
     const length = parent_frame - range.startFrame;
@@ -2162,16 +2163,25 @@ Util.$getFrame = (place, range, parent_frame, total_frame) =>
             break;
 
         case 5:
-            frame = 1;
-            for (let idx = 0; idx < length; ++idx) {
 
-                ++frame;
+            if (static_frame === 0) {
+                frame = 1;
+                for (let idx = 0; idx < length; ++idx) {
 
+                    ++frame;
+
+                    if (frame > total_frame) {
+                        frame = 1;
+                    }
+
+                }
+            } else {
+                frame = static_frame;
                 if (frame > total_frame) {
                     frame = 1;
                 }
-
             }
+
             break;
 
     }
