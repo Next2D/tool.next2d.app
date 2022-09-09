@@ -751,6 +751,10 @@ class MovieClip extends Instance
             );
         }
 
+        if (frame > this.totalFrame) {
+            frame = 1;
+        }
+
         const parentMatrix = matrix;
 
         Util.$currentFrame = frame;
@@ -1148,6 +1152,10 @@ class MovieClip extends Instance
             frame = Util.$getFrame(
                 place, range, currentFrame, this.totalFrame
             );
+        }
+
+        if (frame > this.totalFrame) {
+            frame = 1;
         }
 
         Util.$currentFrame = frame;
