@@ -25,7 +25,9 @@ class TimelineMenu extends BaseTimeline
             "context-menu-tween-add",
             "context-menu-tween-delete",
             "context-menu-frame-copy",
-            "context-menu-frame-paste"
+            "context-menu-frame-paste",
+            "context-menu-layer-copy",
+            "context-menu-layer-paste"
         ];
 
         for (let idx = 0; idx < elementIds.length; ++idx) {
@@ -50,6 +52,54 @@ class TimelineMenu extends BaseTimeline
                 this.executeFunction(event);
             });
         }
+    }
+
+    /**
+     * @description 指定したフレームをコピー
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    executeContextMenuFrameCopy ()
+    {
+        console.log("TODO executeContextMenuFrameCopy");
+    }
+
+    /**
+     * @description 指定したフレームにコピーした情報を貼り付け
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    executeContextMenuFramePaste ()
+    {
+        console.log("TODO executeContextMenuFramePaste");
+    }
+
+    /**
+     * @description 指定したレイヤーをコピー
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    executeContextMenuLayerCopy ()
+    {
+        console.log("TODO executeContextMenuLayerCopy");
+    }
+
+    /**
+     * @description 指定したレイヤーの上部にコピーした情報を貼り付け
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    executeContextMenuLayerPaste ()
+    {
+        console.log("TODO executeContextMenuLayerPaste");
     }
 
     /**
