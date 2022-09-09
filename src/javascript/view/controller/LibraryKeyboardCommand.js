@@ -80,6 +80,77 @@ class LibraryKeyboardCommand extends KeyboardCommand
             Util.$generateShortcutKey("s", { "ctrl": true, "shift": true }),
             this.showOutputModal
         );
+
+        // カーソルでのアイテム移動
+        this.add("ArrowDown", this.moveItem);
+        this.add("ArrowUp", this.moveItem);
+        this.add(
+            Util.$generateShortcutKey("ArrowDown", { "shift": true }),
+            this.moveItem
+        );
+        this.add(
+            Util.$generateShortcutKey("ArrowUp", { "shift": true }),
+            this.moveItem
+        );
+    }
+
+    /**
+     * @description カーソルでのアイテム移動
+     *
+     * @param  {string} code
+     * @return {void}
+     * @method
+     * @public
+     */
+    moveItem (code)
+    {
+        const element = document
+            .getElementById("library-list-box");
+
+        if (!element) {
+            return ;
+        }
+
+        const children = Array.from(element.children);
+
+        let index = 0;
+        const activeInstances = Util.$libraryController.activeInstances;
+        if (activeInstances.size) {
+
+            let activeInstance = null;
+            const iterator = activeInstances.values();
+            for (let idx = 0; activeInstances.size > idx; ++idx) {
+                activeInstance = iterator.next().value;
+            }
+
+            index = children.indexOf(activeInstance);
+        }
+
+        switch (code) {
+
+            case "ArrowDown":
+            case "ArrowDownShift":
+                index++;
+                break;
+
+            case "ArrowUp":
+            case "ArrowUpShift":
+                index--;
+                break;
+
+        }
+
+        const node = children[index];
+        if (node) {
+            Util.$libraryController.activeInstance = node;
+
+            // プレビューに表示
+            Util
+                .$libraryPreview
+                .loadImage(
+                    node.dataset.libraryId | 0
+                );
+        }
     }
 
     /**

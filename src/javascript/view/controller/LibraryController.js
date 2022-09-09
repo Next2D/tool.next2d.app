@@ -94,12 +94,27 @@ class LibraryController
                     );
 
                     const selectIndex = children.indexOf(element);
-                    if (selectIndex === -1 || selectIndex === startIndex) {
-                        break;
+                    if (selectIndex === -1) {
+                        return ;
                     }
 
                     // 初期化
                     this.clearActive();
+
+                    // 同一のアイテムなら初期化して、選択したアイテムだけをアクティブにする
+                    if (selectIndex === startIndex) {
+
+                        this.activeInstances.set(
+                            element.dataset.libraryId | 0, element
+                        );
+
+                        element
+                            .classList
+                            .add("active");
+
+                        break;
+                    }
+
                     if (selectIndex > startIndex) {
 
                         const length = selectIndex - startIndex + 1;
@@ -623,7 +638,7 @@ class LibraryController
      */
     selectInstance (event)
     {
-        if (event.button) {
+        if (event.button || Util.$keyLock) {
             return ;
         }
 
@@ -632,10 +647,6 @@ class LibraryController
 
         // 全てのイベントw中止
         event.stopPropagation();
-
-        if (Util.$keyLock) {
-            return ;
-        }
 
         const target = event.currentTarget;
 
