@@ -974,7 +974,7 @@ class MovieClip extends Instance
                             "surfaceFilterList": filters
                         };
 
-                        if (instance.type === "container"
+                        if (instance.type === InstanceType.MOVIE_CLIP
                             && Util.DEFAULT_LOOP > place.loop.type
                         ) {
 

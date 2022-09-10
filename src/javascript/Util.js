@@ -1305,7 +1305,7 @@ Util.$parserHandler = function (event)
                         {
                             const object = Util
                                 .$libraryController
-                                .createInstance("shape", `Shape_${id}`, id);
+                                .createInstance(InstanceType.SHAPE, `Shape_${id}`, id);
 
                             object.recodes  = Util.$vtc.convert(character._$records);
                             object.inBitmap = object.recodes.pop();
@@ -1342,7 +1342,7 @@ Util.$parserHandler = function (event)
 
                             const object = Util
                                 .$libraryController
-                                .createInstance("container", name, libraryId);
+                                .createInstance(InstanceType.MOVIE_CLIP, name, libraryId);
 
                             // create MovieClip
                             const movieClip = workSpace.addLibrary(object);
@@ -1552,7 +1552,7 @@ Util.$parserHandler = function (event)
 
                             const object = Util
                                 .$libraryController
-                                .createInstance("bitmap", `Bitmap_${id}`, id);
+                                .createInstance(InstanceType.BITMAP, `Bitmap_${id}`, id);
 
                             character.mode   = "lossless";
                             object.imageType = "image/png";
@@ -1588,7 +1588,7 @@ Util.$parserHandler = function (event)
                         {
                             const object = Util
                                 .$libraryController
-                                .createInstance("bitmap", `Bitmap_${id}`, id);
+                                .createInstance(InstanceType.BITMAP, `Bitmap_${id}`, id);
 
                             const imageType     = `image/${Util.$getImageType(character.jpegData)}`;
                             character.mode      = "jpegAlpha";
@@ -1623,7 +1623,7 @@ Util.$parserHandler = function (event)
                         {
                             const object = Util
                                 .$libraryController
-                                .createInstance("shape", `ShapeText_${id}`, id);
+                                .createInstance(InstanceType.SHAPE, `ShapeText_${id}`, id);
 
                             object.bounds  = {
                                 "xMin": character._$bounds.xMin,
@@ -1649,7 +1649,7 @@ Util.$parserHandler = function (event)
 
                             const object = Util
                                 .$libraryController
-                                .createInstance("button", `Button_${id}`, id);
+                                .createInstance(InstanceType.BUTTON, `Button_${id}`, id);
 
                             object.bounds  = {
                                 "xMin": character._$bounds.xMin,
@@ -1668,7 +1668,7 @@ Util.$parserHandler = function (event)
                         {
                             const object = Util
                                 .$libraryController
-                                .createInstance("text", `Text_${id}`, id);
+                                .createInstance(InstanceType.TEXT, `Text_${id}`, id);
 
                             object.bounds  = {
                                 "xMin": character._$bounds.xMin,

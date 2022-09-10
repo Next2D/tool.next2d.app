@@ -288,7 +288,7 @@ class Screen extends BaseScreen
             };
 
             // MovieClipの場合はループ設定
-            if (instance.type === "container") {
+            if (instance.type === InstanceType.MOVIE_CLIP) {
                 place.loop = Util.$getDefaultLoopConfig();
             }
 
@@ -344,7 +344,7 @@ class Screen extends BaseScreen
             // ドロップ位置補正
             let dx = 0;
             let dy = 0;
-            if (instance.type === "container") {
+            if (instance.type === InstanceType.MOVIE_CLIP) {
                 const bounds = instance.getBounds([1, 0, 0, 1, 0, 0]);
                 dx = bounds.xMin;
                 dy = bounds.yMin;

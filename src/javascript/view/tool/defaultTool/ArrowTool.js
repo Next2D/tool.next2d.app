@@ -659,7 +659,7 @@ class ArrowTool extends BaseTool
         const instance = workSpace
             .getLibrary(character._$libraryId);
 
-        if (instance.type === "container") {
+        if (instance.type === InstanceType.MOVIE_CLIP) {
             for (const place of character._$places.values()) {
                 place.loop = Util.$getDefaultLoopConfig();
             }

@@ -96,7 +96,7 @@ class Folder extends Instance
                 continue;
             }
 
-            if (instance.type === "folder") {
+            if (instance.type === InstanceType.FOLDER) {
                 instance.getInstanceIds(instance_ids);
                 continue;
             }

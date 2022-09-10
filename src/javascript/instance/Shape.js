@@ -40,6 +40,18 @@ class Shape extends Instance
     }
 
     /**
+     * @description Shapeクラスを複製
+     *
+     * @return {Shape}
+     * @method
+     * @public
+     */
+    clone ()
+    {
+        return new Shape(JSON.parse(JSON.stringify(this.toObject())));
+    }
+
+    /**
      * @param  {object} place
      * @param  {string} [name=""]
      * @return {void}

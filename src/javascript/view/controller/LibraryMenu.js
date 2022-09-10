@@ -392,8 +392,8 @@ class LibraryMenu
         for (let instance of workSpace._$libraries.values()) {
 
             if (useIds.has(instance.id)
-                || instance.type === "folder"
-                || instance.type === "container"
+                || instance.type === InstanceType.FOLDER
+                || instance.type === InstanceType.MOVIE_CLIP
             ) {
                 continue;
             }

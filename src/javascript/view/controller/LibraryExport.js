@@ -805,7 +805,7 @@ class LibraryExport extends BaseController
         Util.$currentFrame = frame;
         Util.$zoomScale    = 1;
 
-        const range = this._$instance.type === "container"
+        const range = this._$instance.type === InstanceType.MOVIE_CLIP
             ? {
                 "startFrame": 1,
                 "endFrame": this._$instance.totalFrame + 1

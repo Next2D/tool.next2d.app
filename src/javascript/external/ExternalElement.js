@@ -230,7 +230,7 @@ class ExternalElement
                 this._$character.libraryId
             );
 
-        return instance.type === "container" ? "movie clip" : "";
+        return instance.type === InstanceType.MOVIE_CLIP ? "movie clip" : "";
     }
 
     /**

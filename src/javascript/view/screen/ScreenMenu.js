@@ -928,7 +928,9 @@ class ScreenMenu extends BaseScreen
         const instance = workSpace.addLibrary(
             Util
                 .$libraryController
-                .createInstance("container", `MovieClip_${id}`, id)
+                .createInstance(
+                    InstanceType.MOVIE_CLIP, `MovieClip_${id}`, id
+                )
         );
 
         // MovieClipに指定したDisplayObjectを登録

@@ -480,7 +480,7 @@ class LibraryController
         const htmlTag = `
 <div draggable="true" class="library-list-box-child" id="library-child-id-${id}" data-library-id="${id}">
     <div class="library-list-box-name">
-        <i class="library-type-${type === "folder" ? "arrow close" : "space"}" id="arrow-${id}" data-library-id="${id}"></i>
+        <i class="library-type-${type === InstanceType.FOLDER ? "arrow close" : "space"}" id="arrow-${id}" data-library-id="${id}"></i>
         <i class="library-type-${type} " id="${type}-${id}" data-library-id="${id}"></i>
         <p>
             <span id="library-name-${id}" class="view-text" data-type="name" data-library-id="${id}">${name}</span>
@@ -853,7 +853,7 @@ class LibraryController
                 ? ""
                 : "none";
 
-            if (instance.type === "folder") {
+            if (instance.type === InstanceType.FOLDER) {
                 this.updateFolderStyle(
                     instance,
                     mode === Util.FOLDER_OPEN ? instance.mode : mode
@@ -990,6 +990,7 @@ class LibraryController
         this.save();
 
         const items = event.dataTransfer.items;
+        console.log(items);
         if (items.length) {
 
             // 選択中のコンテンツを非アクティブに
@@ -1090,7 +1091,7 @@ class LibraryController
         }
 
         // SWFとSVGの場合はコンテナを基準に削除処理を行う
-        if (instance.type === "container") {
+        if (instance.type === InstanceType.MOVIE_CLIP) {
 
             const libraryIds = new Map();
             for (const layer of instance._$layers.values()) {
@@ -1106,7 +1107,7 @@ class LibraryController
                     const instance = workSpace
                         .getLibrary(character.libraryId);
 
-                    if (instance && instance.type === "container") {
+                    if (instance && instance.type === InstanceType.MOVIE_CLIP) {
                         this.removeLibrary(character.libraryId);
                     }
                 }
@@ -1152,6 +1153,8 @@ class LibraryController
      */
     loadFile (file, folder_id = 0, name = "", library_id = 0)
     {
+        console.log(file, folder_id);
+
         const workSpace = Util.$currentWorkSpace();
 
         let path = name || file.name;
@@ -1197,7 +1200,7 @@ class LibraryController
                     .then((value) =>
                     {
                         const object = this.createInstance(
-                            "container",
+                            InstanceType.MOVIE_CLIP,
                             name || file.name,
                             library_id || workSpace.nextLibraryId
                         );
@@ -1280,7 +1283,7 @@ class LibraryController
                                 );
 
                                 const object = this.createInstance(
-                                    "bitmap",
+                                    InstanceType.BITMAP,
                                     name || file.name,
                                     library_id || workSpace.nextLibraryId
                                 );
@@ -1350,7 +1353,7 @@ class LibraryController
                         video.onloadedmetadata = () =>
                         {
                             const object = this.createInstance(
-                                "video",
+                                InstanceType.VIDEO,
                                 name || file.name,
                                 library_id || workSpace.nextLibraryId
                             );
@@ -1413,7 +1416,7 @@ class LibraryController
                     .then((buffer) =>
                     {
                         const object = this.createInstance(
-                            "sound",
+                            InstanceType.SOUND,
                             name || file.name,
                             library_id || workSpace.nextLibraryId
                         );
@@ -1530,18 +1533,70 @@ class LibraryController
             return ;
         }
 
-        this.save();
-
-        event.stopPropagation();
-        event.preventDefault();
-
         const workSpace = Util.$currentWorkSpace();
 
         const folderElement = event.currentTarget;
         const folder = workSpace
             .getLibrary(folderElement.dataset.libraryId | 0);
 
+        // 移動元にフォルダーがある場合、移動先が同一のフォルダかチェックする
+        const elements = [];
         for (const element of this.activeInstances.values()) {
+
+            const instance = workSpace
+                .getLibrary(element.dataset.libraryId | 0);
+
+            if (instance.type !== InstanceType.FOLDER) {
+                elements.push(element);
+                continue;
+            }
+
+            // 自分自身への移動をブロック
+            if (instance.id === folder.id) {
+                continue;
+            }
+
+            // 移動元が子のフォルダーに移動してないかチェック
+            if (folder.folderId) {
+
+                let folderId = folder.folderId;
+                while (folderId) {
+                    const library = workSpace.getLibrary(folderId);
+                    if (!library) {
+                        break;
+                    }
+
+                    if (folderId === instance.id) {
+                        break;
+                    }
+
+                    folderId = library.folderId;
+                    if (!folderId) {
+                        elements.push(element);
+                        break;
+                    }
+                }
+
+            } else {
+
+                elements.push(element);
+
+            }
+        }
+
+        // 移動対象がなければ終了
+        if (!elements.length) {
+            return ;
+        }
+
+        this.save();
+
+        event.stopPropagation();
+        event.preventDefault();
+
+        for (let idx = 0; idx < elements.length; ++idx) {
+
+            const element = elements[idx];
 
             const instance = workSpace
                 .getLibrary(element.dataset.libraryId | 0);
@@ -1550,6 +1605,7 @@ class LibraryController
             instance.folderId = folder.id;
         }
 
+        // ライブラリを再構成
         this.reload();
 
         // 初期化

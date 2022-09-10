@@ -113,7 +113,7 @@ class SVGToShape
             const shape = workSpace.addLibrary(
                 Util
                     .$libraryController
-                    .createInstance("shape", `Shape_${id}`, id)
+                    .createInstance(InstanceType.SHAPE, `Shape_${id}`, id)
             );
 
             const layer = new Layer();

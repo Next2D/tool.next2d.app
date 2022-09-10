@@ -924,7 +924,7 @@ class Character
                 object.tweenFrame = place.tweenFrame;
             }
 
-            if (instance.type === "container") {
+            if (instance.type === InstanceType.MOVIE_CLIP) {
 
                 if (place.loop) {
 

@@ -160,6 +160,8 @@ class TimelineMenu extends BaseTimeline
             targetLayer = Util.$timelineLayer.targetLayer;
         }
 
+        const workSpace = Util.$currentWorkSpace();
+
         // ワークスペースが異なる場合は依存するライブラリを移動する
         if (this._$copyWorkSpaceId !== Util.$activeWorkSpaceId) {
 
@@ -168,11 +170,24 @@ class TimelineMenu extends BaseTimeline
                 return ;
             }
 
-            // const scene = targetWorkSpace.scene;
+            for (let idx = 0; idx < this._$copyLayers.length; ++idx) {
 
+                const layer = this._$copyLayers[idx];
+                for (let idx = 0; idx < layer._$characters.length; ++idx) {
+
+                    const character = layer._$characters[idx];
+
+                    const instance = targetWorkSpace.getLibrary(
+                        character.libraryId
+                    );
+
+                    console.log(workSpace, instance.clone());
+                }
+            }
+
+            return ;
         }
 
-        const workSpace = Util.$currentWorkSpace();
         const scene = workSpace.scene;
 
         // コピーしたLayerを複製して、DisplayObjectのIDを再発行
