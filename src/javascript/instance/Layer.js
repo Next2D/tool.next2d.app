@@ -142,7 +142,7 @@ class Layer
      */
     clone ()
     {
-        return new Layer(this.toObject());
+        return new Layer(JSON.parse(JSON.stringify(this.toObject())));
     }
 
     /**

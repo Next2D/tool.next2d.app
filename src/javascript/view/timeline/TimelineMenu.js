@@ -5,6 +5,34 @@
 class TimelineMenu extends BaseTimeline
 {
     /**
+     * @constructor
+     * @public
+     */
+    constructor ()
+    {
+        super();
+
+        /**
+         * @type {number}
+         * @default -1
+         * @private
+         */
+        this._$copyWorkSpaceId = -1;
+
+        /**
+         * @type {array}
+         * @private
+         */
+        this._$copyLayers = [];
+
+        /**
+         * @type {array}
+         * @private
+         */
+        this._$copyFrames = [];
+    }
+
+    /**
      * @description 初期起動関数
      *
      * @return {void}
@@ -63,7 +91,11 @@ class TimelineMenu extends BaseTimeline
      */
     executeContextMenuFrameCopy ()
     {
-        console.log("TODO executeContextMenuFrameCopy");
+        // コピー元のワークスペースのIDをセット
+        this._$copyWorkSpaceId = Util.$activeWorkSpaceId;
+
+        // コピーレイヤーの配列を初期化
+        this._$copyFrames.length = 0;
     }
 
     /**
@@ -87,7 +119,22 @@ class TimelineMenu extends BaseTimeline
      */
     executeContextMenuLayerCopy ()
     {
-        console.log("TODO executeContextMenuLayerCopy");
+        // コピー元のワークスペースのIDをセット
+        this._$copyWorkSpaceId = Util.$activeWorkSpaceId;
+
+        // コピーレイヤーの配列を初期化
+        this._$copyLayers.length = 0;
+
+        const targetLayers = Util.$timelineLayer.targetLayers;
+
+        const scene = Util.$currentWorkSpace().scene;
+        for (const layerElement of targetLayers.values()) {
+            const layer = scene.getLayer(
+                layerElement.dataset.layerId | 0
+            );
+
+            this._$copyLayers.push(layer.clone());
+        }
     }
 
     /**
@@ -99,7 +146,91 @@ class TimelineMenu extends BaseTimeline
      */
     executeContextMenuLayerPaste ()
     {
-        console.log("TODO executeContextMenuLayerPaste");
+        const element = document.getElementById("timeline-content");
+        if (!element) {
+            return ;
+        }
+
+        // 状態保存
+        this.save();
+
+        let targetLayer = Util.$timelineLayer.targetLayer;
+        if (!targetLayer) {
+            Util.$timelineLayer.attachLayer();
+            targetLayer = Util.$timelineLayer.targetLayer;
+        }
+
+        // ワークスペースが異なる場合は依存するライブラリを移動する
+        if (this._$copyWorkSpaceId !== Util.$activeWorkSpaceId) {
+
+            const targetWorkSpace = Util.$workSpaces[this._$copyWorkSpaceId];
+            if (!targetWorkSpace) {
+                return ;
+            }
+
+            // const scene = targetWorkSpace.scene;
+
+        }
+
+        const workSpace = Util.$currentWorkSpace();
+        const scene = workSpace.scene;
+
+        // コピーしたLayerを複製して、DisplayObjectのIDを再発行
+        const copyLayers = [];
+        for (let idx = 0; idx < this._$copyLayers.length; ++idx) {
+
+            const layer = this._$copyLayers[idx];
+
+            const cloneLayer = layer.clone();
+            cloneLayer.id = scene._$layerId++;
+            copyLayers.push(cloneLayer);
+
+            for (let idx = 0; idx < cloneLayer._$characters.length; ++idx) {
+
+                const character = cloneLayer._$characters[idx];
+                cloneLayer._$instances.delete(character.id);
+
+                character._$id = workSpace._$characterId++;
+                character._$layerId = cloneLayer.id;
+                cloneLayer._$instances.set(character.id, character);
+            }
+        }
+
+        const scrollLeft = targetLayer.lastElementChild.scrollLeft;
+        for (let idx = 0; idx < copyLayers.length; ++idx) {
+
+            const layer = copyLayers[idx];
+            scene.addLayer(layer);
+
+            const addElement = element.lastElementChild;
+            element
+                .insertBefore(addElement, targetLayer);
+
+            // 新規レイヤーのスクロール位置を調整
+            if (scrollLeft) {
+                addElement.lastElementChild.scrollLeft = scrollLeft;
+            }
+        }
+
+        // 保存用のObjectの順番も入れ替える
+        const layers = [];
+        for (let idx = 0; idx < element.children.length; ++idx) {
+            layers.push(
+                scene.getLayer(element.children[idx].dataset.layerId | 0)
+            );
+        }
+
+        scene.clearLayer();
+        for (let idx = 0; idx < layers.length; ++idx) {
+            const layer = layers[idx];
+            scene.setLayer(layer.id, layer);
+        }
+
+        // 再描画
+        this.reloadScreen();
+
+        // リセット
+        super.focusOut();
     }
 
     /**

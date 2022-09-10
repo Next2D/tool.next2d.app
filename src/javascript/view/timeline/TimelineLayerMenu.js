@@ -19,7 +19,9 @@ class TimelineLayerMenu extends BaseTimeline
         const elementIds = [
             "timeline-layer-normal",
             "timeline-layer-mask",
-            "timeline-layer-guide"
+            "timeline-layer-guide",
+            "timeline-layer-copy",
+            "timeline-layer-paste"
         ];
 
         for (let idx = 0; idx < elementIds.length; ++idx) {
@@ -138,6 +140,36 @@ class TimelineLayerMenu extends BaseTimeline
 
         // 初期化
         super.focusOut();
+    }
+
+    /**
+     * @description 指定したレイヤーをコピー
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    executeTimelineLayerCopy ()
+    {
+        // 表示モーダルを全て終了
+        Util.$endMenu();
+
+        Util.$timelineMenu.executeContextMenuLayerCopy();
+    }
+
+    /**
+     * @description 指定したレイヤーの上部にコピーした情報を貼り付け
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    executeTimelineLayerPaste ()
+    {
+        // 表示モーダルを全て終了
+        Util.$endMenu();
+
+        Util.$timelineMenu.executeContextMenuLayerPaste();
     }
 
     /**
