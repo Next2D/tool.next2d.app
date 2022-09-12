@@ -477,6 +477,10 @@ class Instance
      */
     getPreview ()
     {
+        if (this.type === InstanceType.FOLDER) {
+            return new Image();
+        }
+
         const bounds = this.getBounds([1, 0, 0, 1, 0, 0]);
 
         // size

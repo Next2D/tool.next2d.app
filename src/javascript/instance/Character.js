@@ -672,8 +672,7 @@ class Character
                     break;
 
                 default:
-                    image = instance
-                        .toImage(width, height, place, range);
+                    image = instance.toImage(width, height, place, range);
                     break;
 
             }

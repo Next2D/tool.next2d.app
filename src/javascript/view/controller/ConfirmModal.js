@@ -176,6 +176,7 @@ class ConfirmModal extends BaseController
      *
      * @param  {number} libraryId
      * @return {void}
+     * @method
      * @public
      */
     moveOverwriting (libraryId)
@@ -209,12 +210,13 @@ class ConfirmModal extends BaseController
                 for (let idx = 0; idx < layer._$characters.length; ++idx) {
 
                     const character = layer._$characters[idx];
-
                     if (character.libraryId !== instance.id) {
                         continue;
                     }
 
+                    // 情報を更新してキャッシュをクリア
                     character.libraryId = libraryId;
+                    character._$image   = null;
                 }
             }
         }
@@ -235,18 +237,11 @@ class ConfirmModal extends BaseController
         // 内部データに追加
         workSpace._$libraries.set(instance.id, instance);
 
-        // 画像のキャッシュをクリア
-        const scene = workSpace.scene;
+        // 再描画前に、現在のシーンのキャッシュをクリア
+        const scene = Util.$currentWorkSpace().scene;
         for (const layer of scene._$layers.values()) {
             for (let idx = 0; idx < layer._$characters.length; ++idx) {
-
-                const character = layer._$characters[idx];
-
-                if (character.libraryId !== instance.id) {
-                    continue;
-                }
-
-                character._$image = null;
+                layer._$characters[idx]._$image = null;
             }
         }
     }

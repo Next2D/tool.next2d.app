@@ -1543,6 +1543,11 @@ class LibraryController
             const instance = workSpace
                 .getLibrary(element.dataset.libraryId | 0);
 
+            // 同じ階層の移動ならスキップ
+            if (folder.id === instance.folderId) {
+                continue;
+            }
+
             if (instance.type !== InstanceType.FOLDER) {
                 elements.push(element);
                 continue;
