@@ -150,7 +150,7 @@ class TextTool extends BaseTool
         const id = workSpace.nextLibraryId;
         this.createTextField({
             "id": id,
-            "type": "text",
+            "type": InstanceType.TEXT,
             "name": `Text_${id}`,
             "symbol": "",
             "bounds": {

@@ -68,8 +68,8 @@ class InstanceSelectController extends BaseController
 
             switch (value.type) {
 
-                case "folder":
-                case "sound":
+                case InstanceType.FOLDER:
+                case InstanceType.SOUND:
                     continue;
 
                 default:

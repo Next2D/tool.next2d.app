@@ -500,7 +500,7 @@ class LibraryController
 
         element.insertAdjacentHTML("beforeend", htmlTag);
 
-        if (type === "container") {
+        if (type === InstanceType.MOVIE_CLIP) {
             document
                 .getElementById(`${type}-${id}`)
                 .addEventListener("dblclick", (event) =>
@@ -564,7 +564,7 @@ class LibraryController
 
         }
 
-        if (type === "sound") {
+        if (type === InstanceType.SOUND) {
 
             const option = document.createElement("option");
             option.value     = `${id}`;
@@ -990,7 +990,6 @@ class LibraryController
         this.save();
 
         const items = event.dataTransfer.items;
-        console.log(items);
         if (items.length) {
 
             // 選択中のコンテンツを非アクティブに
@@ -1153,8 +1152,6 @@ class LibraryController
      */
     loadFile (file, folder_id = 0, name = "", library_id = 0)
     {
-        console.log(file, folder_id);
-
         const workSpace = Util.$currentWorkSpace();
 
         let path = name || file.name;
@@ -1594,6 +1591,7 @@ class LibraryController
         event.stopPropagation();
         event.preventDefault();
 
+        let useConfirmModal = false;
         for (let idx = 0; idx < elements.length; ++idx) {
 
             const element = elements[idx];
@@ -1601,12 +1599,39 @@ class LibraryController
             const instance = workSpace
                 .getLibrary(element.dataset.libraryId | 0);
 
+            // 同一のファイルがないかチェック
+            let parent = workSpace.getLibrary(folder.id);
+            let path = `${parent.name}/${instance.name}`;
+            while (parent._$folderId) {
+                parent = workSpace.getLibrary(parent._$folderId);
+                path = `${parent.name}/${path}`;
+            }
+
+            // 上書き確認
+            if (workSpace._$nameMap.has(path)) {
+
+                useConfirmModal = true;
+
+                Util.$confirmModal.files.push({
+                    "file": instance,
+                    "folderId": folder.id,
+                    "path": path,
+                    "type": "move"
+                });
+
+                Util.$confirmModal.show();
+
+                continue;
+            }
+
             // 格納するフォルダのIDをセット
             instance.folderId = folder.id;
         }
 
         // ライブラリを再構成
-        this.reload();
+        if (!useConfirmModal) {
+            this.reload();
+        }
 
         // 初期化
         this._$saved = false;

@@ -150,7 +150,7 @@ class LibraryMenu
         const id = workSpace.nextLibraryId;
         workSpace.addLibrary({
             "id": id,
-            "type": "container",
+            "type": InstanceType.MOVIE_CLIP,
             "name": `MovieClip_${id}`,
             "symbol": ""
         });
@@ -226,7 +226,7 @@ class LibraryMenu
         for (const libraryId of activeInstances.keys()) {
 
             const instance = workSpace.getLibrary(libraryId);
-            if (instance.type !== "shape") {
+            if (instance.type !== InstanceType.SHAPE) {
                 continue;
             }
 
@@ -358,7 +358,7 @@ class LibraryMenu
         const useIds = new Map();
         for (let instance of workSpace._$libraries.values()) {
 
-            if (instance.type !== "container") {
+            if (instance.type !== InstanceType.MOVIE_CLIP) {
                 continue;
             }
 

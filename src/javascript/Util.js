@@ -2014,7 +2014,7 @@ Util.$copyContainer = (object, dup) =>
                     .getLibrary(character.libraryId);
 
                 const object = instance.toObject();
-                if (object.type === "container") {
+                if (object.type === InstanceType.MOVIE_CLIP) {
 
                     Util.$copyContainer(object, dup);
 

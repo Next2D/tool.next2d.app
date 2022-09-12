@@ -543,7 +543,7 @@ class ShapeController extends BaseController
         const workSpace = Util.$currentWorkSpace();
         for (const instance of workSpace._$libraries.values()) {
 
-            if (instance.type !== "bitmap") {
+            if (instance.type !== InstanceType.BITMAP) {
                 continue;
             }
 

@@ -185,7 +185,7 @@ class LibraryExport extends BaseController
 
         switch (this._$instance.type) {
 
-            case "container":
+            case InstanceType.MOVIE_CLIP:
                 {
                     const zip = new JSZip();
                     for (let frame = this._$startFrame; this._$endFrame >= frame; ++frame) {
@@ -216,7 +216,7 @@ class LibraryExport extends BaseController
                 }
                 break;
 
-            case "video":
+            case InstanceType.VIDEO:
                 {
                     const names = name.split(".");
                     if (names[names.length - 1] === "mp4") {
@@ -235,7 +235,7 @@ class LibraryExport extends BaseController
                 }
                 break;
 
-            case "sound":
+            case InstanceType.SOUND:
                 {
                     const names = name.split(".");
                     if (names[names.length - 1] === "mp3") {
@@ -546,7 +546,7 @@ class LibraryExport extends BaseController
 
         switch (this._$instance.type) {
 
-            case "container":
+            case InstanceType.MOVIE_CLIP:
                 this._$currentFrame = 1;
                 this._$startFrame   = 1;
                 this._$endFrame     = this._$instance.totalFrame;
@@ -559,8 +559,8 @@ class LibraryExport extends BaseController
                 this.reloadMovieClip();
                 break;
 
-            case "video":
-            case "sound":
+            case InstanceType.VIDEO:
+            case InstanceType.SOUND:
                 // 書き出し項目のを表示設定
                 containerArea.style.display = "none";
                 sizeArea.style.display      = "none";
@@ -693,8 +693,8 @@ class LibraryExport extends BaseController
 
         switch (this._$instance.type) {
 
-            case "video":
-            case "sound":
+            case InstanceType.VIDEO:
+            case InstanceType.SOUND:
                 document
                     .getElementById("library-export-image")
                     .appendChild(this._$instance.getPreview());

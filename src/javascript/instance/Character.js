@@ -108,7 +108,7 @@ class Character
             .$currentWorkSpace()
             .getLibrary(this.libraryId);
 
-        if (instance.type !== "shape") {
+        if (instance.type !== InstanceType.SHAPE) {
             return ;
         }
 

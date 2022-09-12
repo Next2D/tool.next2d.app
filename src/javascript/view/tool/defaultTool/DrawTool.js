@@ -131,7 +131,7 @@ class DrawTool extends BaseTool
 
             this.createShape({
                 "id": id,
-                "type": "shape",
+                "type": InstanceType.SHAPE,
                 "name": `Shape_${id}`,
                 "symbol": "",
                 "recodes": graphics._$recode ? graphics._$recode.slice(0) : [],
@@ -182,7 +182,7 @@ class DrawTool extends BaseTool
 
                 this.createShape({
                     "id": id,
-                    "type": "shape",
+                    "type": InstanceType.SHAPE,
                     "name": `Shape_${id}`,
                     "symbol": "",
                     "recodes": graphics._$recode ? graphics._$recode.slice(0) : [],

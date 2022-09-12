@@ -195,7 +195,7 @@ class PenTool extends BaseTool
         const dy = (y + thickness) / 2 / Util.$zoomScale;
         this.createShape({
             "id": id,
-            "type": "shape",
+            "type": InstanceType.SHAPE,
             "name": `Shape_${id}`,
             "symbol": "",
             "recodes": shape.graphics._$recode.slice(0),

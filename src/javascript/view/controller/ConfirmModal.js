@@ -142,7 +142,7 @@ class ConfirmModal extends BaseController
                 );
         }
 
-        this._$files.length  = 0;
+        this._$files.length = 0;
 
         // モーダルを非表示
         this.hide();
@@ -199,14 +199,116 @@ class ConfirmModal extends BaseController
 
         }
 
-        Util
-            .$libraryController
-            .loadFile(
-                this._$currentObject.file,
-                this._$currentObject.folderId,
-                inputValue,
-                libraryId
-            );
+        // 移動による上書き
+        if (this._$currentObject.type === "move") {
+
+            const workSpace = Util.$currentWorkSpace();
+            const instance  = this._$currentObject.file;
+
+            if (libraryId) {
+
+                // Elementを削除
+                const element = document
+                    .getElementById(`library-child-id-${libraryId}`);
+
+                if (element) {
+                    element.remove();
+                }
+
+                // 移動元になっElementを削除
+                document
+                    .getElementById(`library-child-id-${instance.id}`)
+                    .remove();
+
+                workSpace.removeLibrary(instance.id);
+
+                // 移動元を配置しているDisplayObjectの情報を書き換え
+                for (const library of workSpace._$libraries.values()) {
+
+                    if (library.type !== InstanceType.MOVIE_CLIP) {
+                        continue;
+                    }
+
+                    for (const layer of library._$layers.values()) {
+                        for (let idx = 0; idx < layer._$characters.length; ++idx) {
+
+                            const character = layer._$characters[idx];
+
+                            if (character.libraryId !== instance.id) {
+                                continue;
+                            }
+
+                            character.libraryId = libraryId;
+                        }
+                    }
+                }
+
+                // Elementを追加
+                instance._$id = libraryId;
+                instance.folderId = this._$currentObject.folderId;
+
+                Util
+                    .$libraryController
+                    .createInstance(
+                        instance.type,
+                        instance.name,
+                        libraryId,
+                        instance.symbol
+                    );
+
+                // 内部データに追加
+                workSpace._$libraries.set(instance.id, instance);
+
+                // 画像のキャッシュをクリア
+                const scene = workSpace.scene;
+                for (const layer of scene._$layers.values()) {
+                    for (let idx = 0; idx < layer._$characters.length; ++idx) {
+
+                        const character = layer._$characters[idx];
+
+                        if (character.libraryId !== instance.id) {
+                            continue;
+                        }
+
+                        character._$image = null;
+                    }
+                }
+
+            } else {
+
+                // 名前を変更
+                instance.name     = inputValue;
+                instance.folderId = this._$currentObject.folderId;
+
+                // 一度削除
+                document
+                    .getElementById(`library-child-id-${instance.id}`)
+                    .remove();
+
+                // 再登録
+                Util
+                    .$libraryController
+                    .createInstance(
+                        instance.type,
+                        instance.name,
+                        instance.id,
+                        instance.symbol
+                    );
+
+            }
+
+        } else {
+
+            Util
+                .$libraryController
+                .loadFile(
+                    this._$currentObject.file,
+                    this._$currentObject.folderId,
+                    inputValue,
+                    libraryId
+                );
+
+        }
 
         this.setup();
 
@@ -281,7 +383,15 @@ class ConfirmModal extends BaseController
 
         // 表示項目がなければモーダル表示を終了
         if (!this._$currentObject) {
+            // 非表示
             this.hide();
+
+            //ライブラリを再構築
+            Util.$libraryController.reload();
+
+            // 再描画
+            this.reloadScreen();
+
             return ;
         }
 
@@ -369,6 +479,13 @@ class ConfirmModal extends BaseController
                     audio.src = URL.createObjectURL(file);
                     audio.load();
                     afterElement.appendChild(audio);
+                }
+                break;
+
+            default:
+                if (this._$currentObject.type === "move") {
+                    const instance = this._$currentObject.file;
+                    afterElement.appendChild(instance.getPreview());
                 }
                 break;
 

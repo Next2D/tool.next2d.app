@@ -151,7 +151,7 @@ class ExternalElement
                 this._$character.libraryId
             );
 
-        if (instance.type !== "container") {
+        if (instance.type !== InstanceType.MOVIE_CLIP) {
             return "";
         }
 
@@ -189,7 +189,7 @@ class ExternalElement
                 this._$character.libraryId
             );
 
-        if (instance.type !== "container") {
+        if (instance.type !== InstanceType.MOVIE_CLIP) {
             return ;
         }
 
@@ -251,13 +251,15 @@ class ExternalElement
                     const beforeInstance = workSpace.getLibrary(
                         this._$character.libraryId
                     );
-                    if (beforeInstance.type === "container") {
+                    if (beforeInstance.type === InstanceType.MOVIE_CLIP) {
                         return ;
                     }
 
                     const id = workSpace.nextLibraryId;
                     const instance = workSpace.addLibrary(
-                        Util.$controller.createContainer("container", `MovieClip_${id}`, id)
+                        Util.$controller.createContainer(
+                            InstanceType.MOVIE_CLIP, `MovieClip_${id}`, id
+                        )
                     );
 
                     const character  = this._$character.clone();

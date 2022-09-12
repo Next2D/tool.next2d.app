@@ -180,11 +180,11 @@ class Screen extends BaseScreen
 
             switch (instance.type) {
 
-                case "sound":
+                case InstanceType.SOUND:
                     soundIds.push(libraryId);
                     break;
 
-                case "folder":
+                case InstanceType.FOLDER:
                     instance.getInstanceIds(instanceIds);
                     break;
 
@@ -485,14 +485,14 @@ class Screen extends BaseScreen
         let doUpdate = character.libraryId === Util.$changeLibraryId;
         switch (instance.type) {
 
-            case "container":
+            case InstanceType.MOVIE_CLIP:
                 if (instance.totalFrame > 1 && character._$currentFrame !== frame) {
                     doUpdate = true;
                     character._$currentFrame = frame;
                 }
                 break;
 
-            case "video":
+            case InstanceType.VIDEO:
                 if (character._$currentFrame !== frame) {
                     doUpdate = true;
                     character._$currentFrame = frame;
@@ -728,7 +728,7 @@ class Screen extends BaseScreen
         div.setAttribute("style", divStyle);
         switch (instance._$type) {
 
-            case "container":
+            case InstanceType.MOVIE_CLIP:
                 div.addEventListener("dblclick", (event) =>
                 {
                     // 親のイベントを中止する
@@ -744,7 +744,7 @@ class Screen extends BaseScreen
                 });
                 break;
 
-            case "text":
+            case InstanceType.TEXT:
                 {
                     const borderDiv = document.createElement("div");
 

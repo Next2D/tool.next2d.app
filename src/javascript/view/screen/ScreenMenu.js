@@ -696,7 +696,7 @@ class ScreenMenu extends BaseScreen
         for (let idx = 0; idx < activeElements.length; ++idx) {
 
             const element = activeElements[idx];
-            if (element.dataset.instanceType !== "shape") {
+            if (element.dataset.instanceType !== InstanceType.SHAPE) {
                 continue;
             }
 

@@ -573,7 +573,7 @@ class TransformTool extends BaseTool
     mouseDownForDisplayObject (event)
     {
         const target = this.target;
-        if (target.dataset.instanceType !== "shape") {
+        if (target.dataset.instanceType !== InstanceType.SHAPE) {
             return ;
         }
 

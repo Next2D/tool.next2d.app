@@ -328,7 +328,7 @@ class GridController extends BaseController
             target.dataset.libraryId | 0
         );
 
-        if (!instance || instance.type !== "shape") {
+        if (!instance || instance.type !== InstanceType.SHAPE) {
             return this.hide();
         }
 

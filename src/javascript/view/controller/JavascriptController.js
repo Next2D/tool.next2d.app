@@ -27,7 +27,7 @@ class JavascriptController
 
         for (const instance of workSpaces._$libraries.values()) {
 
-            if (instance._$type !== "container") {
+            if (instance._$type !== InstanceType.MOVIE_CLIP) {
                 continue;
             }
 

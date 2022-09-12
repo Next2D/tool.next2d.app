@@ -389,7 +389,7 @@ class Instance
         const scene = workSpace.scene;
         for (let instance of workSpace._$libraries.values()) {
 
-            if (instance.type !== "container") {
+            if (instance.type !== InstanceType.MOVIE_CLIP) {
                 continue;
             }
 

@@ -31,7 +31,7 @@ class WorkSpace
 
             const root = new MovieClip({
                 "id": 0,
-                "type": "container",
+                "type": InstanceType.MOVIE_CLIP,
                 "name": "main",
                 "symbol": ""
             });
@@ -459,31 +459,31 @@ class WorkSpace
         let instance;
         switch (library.type) {
 
-            case "container":
+            case InstanceType.MOVIE_CLIP:
                 instance = new MovieClip(library);
                 break;
 
-            case "bitmap":
+            case InstanceType.BITMAP:
                 instance = new Bitmap(library);
                 break;
 
-            case "text":
+            case InstanceType.TEXT:
                 instance = new TextField(library);
                 break;
 
-            case "sound":
+            case InstanceType.SOUND:
                 instance = new Sound(library);
                 break;
 
-            case "video":
+            case InstanceType.VIDEO:
                 instance = new Video(library);
                 break;
 
-            case "shape":
+            case InstanceType.SHAPE:
                 instance = new Shape(library);
                 break;
 
-            case "folder":
+            case InstanceType.FOLDER:
                 instance = new Folder(library);
                 break;
 

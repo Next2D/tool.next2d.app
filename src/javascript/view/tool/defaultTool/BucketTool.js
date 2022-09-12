@@ -82,7 +82,7 @@ class BucketTool extends BaseTool
     mouseDown (event)
     {
         const element = event.target;
-        if (element.dataset.instanceType === "shape") {
+        if (element.dataset.instanceType === InstanceType.SHAPE) {
 
             const { Graphics } = window.next2d.display;
 

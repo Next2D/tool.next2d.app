@@ -1180,7 +1180,7 @@ class MovieClip extends Instance
             let displayObject = null;
             switch (instance.type) {
 
-                case "container":
+                case InstanceType.MOVIE_CLIP:
                     displayObject = new MovieClip();
                     if (instance._$layers.size) {
 
@@ -1238,7 +1238,7 @@ class MovieClip extends Instance
                     }
                     break;
 
-                case "shape":
+                case InstanceType.SHAPE:
                     displayObject = instance.createInstance();
                     displayObject._$bitmapId = instance._$bitmapId;
                     break;
