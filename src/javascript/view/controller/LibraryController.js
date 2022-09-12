@@ -1536,7 +1536,7 @@ class LibraryController
         const folder = workSpace
             .getLibrary(folderElement.dataset.libraryId | 0);
 
-        // 移動元にフォルダーがある場合、移動先が同一のフォルダかチェックする
+        // 移動元と移動先が同一のフォルダかチェックする
         const elements = [];
         for (const element of this.activeInstances.values()) {
 

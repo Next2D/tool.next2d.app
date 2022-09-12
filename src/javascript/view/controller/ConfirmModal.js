@@ -107,21 +107,7 @@ class ConfirmModal extends BaseController
     {
         this.save();
 
-        // 上書きするIDを指定
-        const libraryId = Util
-            .$currentWorkSpace()
-            ._$nameMap
-            .get(this._$currentObject.path);
-
-        Util
-            .$libraryController
-            .loadFile(
-                this._$currentObject.file,
-                this._$currentObject.folderId,
-                this._$currentObject.file.name,
-                libraryId
-            );
-
+        this._$files.unshift(this._$currentObject);
         for (let idx = 0; idx < this._$files.length; ++idx) {
 
             const object = this._$files[idx];
@@ -132,20 +118,37 @@ class ConfirmModal extends BaseController
                 ._$nameMap
                 .get(object.path);
 
-            Util
-                .$libraryController
-                .loadFile(
-                    object.file,
-                    object.folderId,
-                    object.file.name,
-                    libraryId
-                );
-        }
+            if (object.type === "move") {
 
-        this._$files.length = 0;
+                this._$currentObject = object;
+                this.moveOverwriting(libraryId);
+
+            } else {
+
+                Util
+                    .$libraryController
+                    .loadFile(
+                        object.file,
+                        object.folderId,
+                        object.file.name,
+                        libraryId
+                    );
+
+            }
+        }
 
         // モーダルを非表示
         this.hide();
+
+        // 値を初期化
+        this._$currentObject = null;
+        this._$files.length  = 0;
+
+        //ライブラリを再構築
+        Util.$libraryController.reload();
+
+        // 再描画
+        this.reloadScreen();
 
         this._$saved = false;
     }
@@ -166,6 +169,86 @@ class ConfirmModal extends BaseController
         document
             .getElementById("confirm-modal")
             .setAttribute("class", "fadeOut");
+    }
+
+    /**
+     * @description 登録されてるライブラリ移動時の重複アイテムの上書き処理
+     *
+     * @param  {number} libraryId
+     * @return {void}
+     * @public
+     */
+    moveOverwriting (libraryId)
+    {
+        const workSpace = Util.$currentWorkSpace();
+        const instance  = this._$currentObject.file;
+
+        // Elementを削除
+        const element = document
+            .getElementById(`library-child-id-${libraryId}`);
+
+        if (element) {
+            element.remove();
+        }
+
+        // 移動元になっElementを削除
+        document
+            .getElementById(`library-child-id-${instance.id}`)
+            .remove();
+
+        workSpace.removeLibrary(instance.id);
+
+        // 移動元を配置しているDisplayObjectの情報を書き換え
+        for (const library of workSpace._$libraries.values()) {
+
+            if (library.type !== InstanceType.MOVIE_CLIP) {
+                continue;
+            }
+
+            for (const layer of library._$layers.values()) {
+                for (let idx = 0; idx < layer._$characters.length; ++idx) {
+
+                    const character = layer._$characters[idx];
+
+                    if (character.libraryId !== instance.id) {
+                        continue;
+                    }
+
+                    character.libraryId = libraryId;
+                }
+            }
+        }
+
+        // Elementを追加
+        instance._$id = libraryId;
+        instance.folderId = this._$currentObject.folderId;
+
+        Util
+            .$libraryController
+            .createInstance(
+                instance.type,
+                instance.name,
+                libraryId,
+                instance.symbol
+            );
+
+        // 内部データに追加
+        workSpace._$libraries.set(instance.id, instance);
+
+        // 画像のキャッシュをクリア
+        const scene = workSpace.scene;
+        for (const layer of scene._$layers.values()) {
+            for (let idx = 0; idx < layer._$characters.length; ++idx) {
+
+                const character = layer._$characters[idx];
+
+                if (character.libraryId !== instance.id) {
+                    continue;
+                }
+
+                character._$image = null;
+            }
+        }
     }
 
     /**
@@ -202,79 +285,13 @@ class ConfirmModal extends BaseController
         // 移動による上書き
         if (this._$currentObject.type === "move") {
 
-            const workSpace = Util.$currentWorkSpace();
-            const instance  = this._$currentObject.file;
-
             if (libraryId) {
 
-                // Elementを削除
-                const element = document
-                    .getElementById(`library-child-id-${libraryId}`);
-
-                if (element) {
-                    element.remove();
-                }
-
-                // 移動元になっElementを削除
-                document
-                    .getElementById(`library-child-id-${instance.id}`)
-                    .remove();
-
-                workSpace.removeLibrary(instance.id);
-
-                // 移動元を配置しているDisplayObjectの情報を書き換え
-                for (const library of workSpace._$libraries.values()) {
-
-                    if (library.type !== InstanceType.MOVIE_CLIP) {
-                        continue;
-                    }
-
-                    for (const layer of library._$layers.values()) {
-                        for (let idx = 0; idx < layer._$characters.length; ++idx) {
-
-                            const character = layer._$characters[idx];
-
-                            if (character.libraryId !== instance.id) {
-                                continue;
-                            }
-
-                            character.libraryId = libraryId;
-                        }
-                    }
-                }
-
-                // Elementを追加
-                instance._$id = libraryId;
-                instance.folderId = this._$currentObject.folderId;
-
-                Util
-                    .$libraryController
-                    .createInstance(
-                        instance.type,
-                        instance.name,
-                        libraryId,
-                        instance.symbol
-                    );
-
-                // 内部データに追加
-                workSpace._$libraries.set(instance.id, instance);
-
-                // 画像のキャッシュをクリア
-                const scene = workSpace.scene;
-                for (const layer of scene._$layers.values()) {
-                    for (let idx = 0; idx < layer._$characters.length; ++idx) {
-
-                        const character = layer._$characters[idx];
-
-                        if (character.libraryId !== instance.id) {
-                            continue;
-                        }
-
-                        character._$image = null;
-                    }
-                }
+                this.moveOverwriting(libraryId);
 
             } else {
+
+                const instance = this._$currentObject.file;
 
                 // 名前を変更
                 instance.name     = inputValue;
@@ -336,8 +353,8 @@ class ConfirmModal extends BaseController
      */
     hide ()
     {
-        this._$state         = "hide";
-        this._$currentObject = null;
+        // 初期化
+        this._$state = "hide";
 
         document
             .getElementById("confirm-modal")
