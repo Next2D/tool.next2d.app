@@ -7,7 +7,8 @@ class Bitmap extends Instance {
      * @param {object} object
      * @constructor
      */
-    constructor(object) {
+    constructor (object)
+    {
         super(object);
 
         this.imageType = object.imageType;
@@ -20,6 +21,18 @@ class Bitmap extends Instance {
         }
         this._$command = null;
         this._$binary = "";
+    }
+
+    /**
+     * @description Bitmapクラスを複製
+     *
+     * @return {Bitmap}
+     * @method
+     * @public
+     */
+    clone ()
+    {
+        return new Bitmap(JSON.parse(JSON.stringify(this.toObject())));
     }
 
     /**

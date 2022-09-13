@@ -1626,6 +1626,64 @@ class LibraryController
 
                 Util.$confirmModal.show();
 
+                // 移動元がフォルダなら中身も一緒にチェック
+                if (instance.type === InstanceType.FOLDER) {
+
+                    const children = Array.from(document
+                        .getElementById("library-list-box")
+                        .children);
+
+                    const element = document
+                        .getElementById(`library-child-id-${instance.id}`);
+
+                    let index = children.indexOf(element) + 1;
+
+                    // 移動先のフォルダパスをセット
+                    let parent = workSpace.getLibrary(folder.id);
+                    let parentPath = `${parent.name}`;
+                    while (parent._$folderId) {
+                        parent = workSpace.getLibrary(parent._$folderId);
+                        parentPath = `${parent.name}/${parentPath}`;
+                    }
+
+                    // フォルダ内のアイテムが移動先で重複しないかチェック
+                    const paddingLeft = element.style.paddingLeft;
+                    for ( ; index < children.length; ++index) {
+
+                        const node = children[index];
+
+                        // 同階層なら終了
+                        if (node.style.paddingLeft === paddingLeft) {
+                            break;
+                        }
+
+                        const library = workSpace
+                            .getLibrary(node.dataset.libraryId | 0);
+
+                        let path = `${library.name}`;
+
+                        let parent = library;
+                        while (parent._$folderId) {
+                            parent = workSpace.getLibrary(parent._$folderId);
+                            path = `${parent.name}/${path}`;
+                        }
+
+                        path = `${parentPath}/${path}`;
+
+                        // 移動先で重複しないかチェック
+                        if (!workSpace._$nameMap.has(path)) {
+                            continue;
+                        }
+
+                        Util.$confirmModal.files.push({
+                            "file": library,
+                            "folderId": folder.id,
+                            "path": path,
+                            "type": "move"
+                        });
+                    }
+                }
+
                 continue;
             }
 

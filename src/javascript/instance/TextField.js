@@ -143,6 +143,18 @@ class TextField extends Instance
     }
 
     /**
+     * @description TextFieldクラスを複製
+     *
+     * @return {TextField}
+     * @method
+     * @public
+     */
+    clone ()
+    {
+        return new TextField(JSON.parse(JSON.stringify(this.toObject())));
+    }
+
+    /**
      * @param  {object} place
      * @param  {string} [name=""]
      * @return {void}

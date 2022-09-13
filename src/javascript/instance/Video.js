@@ -63,6 +63,18 @@ class Video extends Instance
     }
 
     /**
+     * @description Videoクラスを複製
+     *
+     * @return {Video}
+     * @method
+     * @public
+     */
+    clone ()
+    {
+        return new Video(JSON.parse(JSON.stringify(this.toObject())));
+    }
+
+    /**
      * @param  {object} place
      * @param  {string} [name=""]
      * @return {void}

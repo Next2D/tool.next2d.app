@@ -221,9 +221,20 @@ class ConfirmModal extends BaseController
             }
         }
 
+        // フォルダーの場合は内部データも情報を更新する
+        if (instance.type === InstanceType.FOLDER) {
+            for (const library of workSpace._$libraries.values()) {
+                if (library.folderId !== instance.id) {
+                    continue;
+                }
+                library.folderId = libraryId;
+            }
+        }
+
         // Elementを追加
         instance._$id = libraryId;
-        instance.folderId = this._$currentObject.folderId;
+        const library = workSpace.getLibrary(libraryId);
+        instance.folderId = library.folderId;
 
         Util
             .$libraryController
@@ -282,15 +293,22 @@ class ConfirmModal extends BaseController
 
             if (libraryId) {
 
+                // 上書き
                 this.moveOverwriting(libraryId);
 
             } else {
 
+                // 名前を変えて上書き
                 const instance = this._$currentObject.file;
 
                 // 名前を変更
                 instance.name     = inputValue;
                 instance.folderId = this._$currentObject.folderId;
+
+                // 名前を変えたのがフォルダの場合は後続の処理を中止
+                if (instance.type === InstanceType.FOLDER) {
+                    this._$files.length = 0;
+                }
 
                 // 一度削除
                 document

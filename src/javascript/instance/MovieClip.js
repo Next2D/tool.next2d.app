@@ -47,6 +47,18 @@ class MovieClip extends Instance
     }
 
     /**
+     * @description MovieClipクラスを複製
+     *
+     * @return {MovieClip}
+     * @method
+     * @public
+     */
+    clone ()
+    {
+        return new MovieClip(JSON.parse(JSON.stringify(this.toObject())));
+    }
+
+    /**
      * @param  {object} place
      * @param  {string} [name=""]
      * @return {void}
