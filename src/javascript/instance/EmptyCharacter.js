@@ -59,6 +59,16 @@ class EmptyCharacter
     }
 
     /**
+     * @return {EmptyCharacter}
+     * @method
+     * @public
+     */
+    clone ()
+    {
+        return new EmptyCharacter(JSON.parse(JSON.stringify(this.toObject())));
+    }
+
+    /**
      * @return {object}
      * @method
      * @public

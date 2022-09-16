@@ -250,6 +250,9 @@ class TimelineHeader extends BaseTimeline
                 .lastElementChild
                 .addEventListener("mousedown", (event) =>
                 {
+                    if (event.button) {
+                        return ;
+                    }
                     this.moveMarker(event);
                 });
 

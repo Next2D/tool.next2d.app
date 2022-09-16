@@ -21,18 +21,7 @@ class ExternalLibrary
             return "";
         }
 
-        const workSpace = Util.$currentWorkSpace();
-
-        let name = this._$instance.name;
-        if (this._$instance._$folderId) {
-            let parent = this._$instance;
-            while (parent._$folderId) {
-                parent = workSpace.getLibrary(parent._$folderId);
-                name = `${parent.name}/${name}`;
-            }
-        }
-
-        return name;
+        return this._$instance.path;
     }
 
     /**
@@ -43,39 +32,11 @@ class ExternalLibrary
     {
         path = `${path}`;
 
-        const paths = path.split("/");
-        const name  = paths.pop();
-
         const workSpace = Util.$currentWorkSpace();
         for (let instance of workSpace._$libraries.values()) {
 
-            if (instance.name !== name) {
+            if (instance.path !== path) {
                 continue;
-            }
-
-            if (paths.length) {
-
-                if (!instance._$folderId) {
-                    continue;
-                }
-
-                let match  = true;
-
-                let length = paths.length - 1;
-                let parent = instance;
-                while (parent._$folderId) {
-
-                    parent = workSpace.getLibrary(parent._$folderId);
-                    if (parent.name !== paths[length--]) {
-                        match = false;
-                        break;
-                    }
-
-                }
-
-                if (!match) {
-                    continue;
-                }
             }
 
             return new ExternalLibrary(instance);
@@ -141,39 +102,11 @@ class ExternalLibrary
 
         path = `${path}`;
 
-        const paths = path.split("/");
-        const name  = paths.pop();
-
         const workSpace = Util.$currentWorkSpace();
         for (let instance of workSpace._$libraries.values()) {
 
-            if (instance.name !== name) {
+            if (instance.path !== path) {
                 continue;
-            }
-
-            if (paths.length) {
-
-                if (!instance._$folderId) {
-                    continue;
-                }
-
-                let match  = true;
-
-                let length = paths.length - 1;
-                let parent = instance;
-                while (parent._$folderId) {
-
-                    parent = workSpace.getLibrary(parent._$folderId);
-                    if (parent.name !== paths[length--]) {
-                        match = false;
-                        break;
-                    }
-
-                }
-
-                if (!match) {
-                    continue;
-                }
             }
 
             // ライブラリを選択状態に

@@ -1088,8 +1088,13 @@ class TimelineLayer extends BaseTimeline
 
         const layerId = event.target.dataset.layerId | 0;
 
-        this.targetLayer = document
-            .getElementById(`layer-id-${layerId}`);
+        // 選択してないレイヤーメニュー上の場合は再選択
+        const targetLayers = Util.$timelineLayer.targetLayers;
+        if (!targetLayers.has(`layer-id-${layerId}`)) {
+            this.targetLayer = document
+                .getElementById(`layer-id-${layerId}`);
+
+        }
 
         Util.$timelineLayerMenu.show(event);
     }

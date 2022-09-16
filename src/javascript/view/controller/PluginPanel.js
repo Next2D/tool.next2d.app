@@ -98,9 +98,6 @@ class PluginPanel
                     .join("");
 
                 this[`execute${functionName}`](event);
-
-                // 表示モーダルを全て終了
-                Util.$endMenu();
             });
 
         }

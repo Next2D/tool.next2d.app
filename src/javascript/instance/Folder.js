@@ -19,6 +19,18 @@ class Folder extends Instance
     }
 
     /**
+     * @description Folderクラスを複製
+     *
+     * @return {Folder}
+     * @method
+     * @public
+     */
+    clone ()
+    {
+        return new Folder(JSON.parse(JSON.stringify(this.toObject())));
+    }
+
+    /**
      * @return {string}
      * @public
      */

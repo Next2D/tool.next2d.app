@@ -161,6 +161,7 @@ class TimelineMenu extends BaseTimeline
         }
 
         const workSpace = Util.$currentWorkSpace();
+        const scene = workSpace.scene;
 
         // ワークスペースが異なる場合は依存するライブラリを移動する
         if (this._$copyWorkSpaceId !== Util.$activeWorkSpaceId) {
@@ -170,60 +171,175 @@ class TimelineMenu extends BaseTimeline
                 return ;
             }
 
+            const scrollLeft = targetLayer.lastElementChild.scrollLeft;
+
+            const mapping = new Map();
+            const activeWorkSpaceId = Util.$activeWorkSpaceId;
             for (let idx = 0; idx < this._$copyLayers.length; ++idx) {
 
                 const layer = this._$copyLayers[idx];
+                const newLayer = new Layer();
+                const characters = [];
                 for (let idx = 0; idx < layer._$characters.length; ++idx) {
 
-                    const character = layer._$characters[idx];
+                    Util.$activeWorkSpaceId = this._$copyWorkSpaceId;
+                    const character = layer._$characters[idx].clone();
+                    Util.$activeWorkSpaceId = activeWorkSpaceId;
 
                     const instance = targetWorkSpace.getLibrary(
                         character.libraryId
                     );
 
-                    console.log(workSpace, instance.clone());
+                    newLayer.addCharacter(character);
+                    if (mapping.has(instance.id)) {
+                        character.libraryId = mapping.get(instance.id);
+                        continue;
+                    }
+
+                    // コピー元のワークスペースからpathを算出
+                    const path = instance
+                        .getPathWithWorkSpace(targetWorkSpace);
+
+                    if (workSpace._$nameMap.has(path)) {
+
+                        characters.push(character);
+
+                        Util.$confirmModal.files.push({
+                            "file": instance,
+                            "folderId": 0,
+                            "path": path,
+                            "type": "copy"
+                        });
+
+                        Util.$confirmModal.show();
+
+                        // character.libraryId = workSpace._$nameMap.get(path);
+                        continue;
+                    }
+
+                    // let parent = instance;
+                    // while (parent._$folderId) {
+                    //
+                    //     parent = targetWorkSpace.getLibrary(
+                    //         parent._$folderId
+                    //     );
+                    //
+                    //     if (mapping.has(parent.id)) {
+                    //         break;
+                    //     }
+                    //
+                    //     const path = parent
+                    //         .getPathWithWorkSpace(targetWorkSpace);
+                    //
+                    //     if (workSpace._$nameMap.has(path)) {
+                    //         continue;
+                    //     }
+                    //
+                    //     const id = workSpace.nextLibraryId;
+                    //     mapping.set(parent.id, id);
+                    //
+                    //     parent._$id = id;
+                    //     workSpace._$libraries.set(parent.id, parent);
+                    //
+                    //     Util
+                    //         .$libraryController
+                    //         .createInstance(
+                    //             parent.type,
+                    //             parent.name,
+                    //             parent.id,
+                    //             parent.symbol
+                    //         );
+                    // }
+
+                    // ライブラリにアイテムを追加
+                    const id = workSpace.nextLibraryId;
+                    mapping.set(instance.id, id);
+
+                    const clone = instance.clone();
+
+                    character.libraryId = id;
+                    clone._$id = id;
+                    workSpace._$libraries.set(clone.id, clone);
+
+                    Util
+                        .$libraryController
+                        .createInstance(
+                            clone.type,
+                            clone.name,
+                            clone.id,
+                            clone.symbol
+                        );
+
+                    workSpace
+                        ._$nameMap
+                        .set(path, clone.id);
+                }
+
+                // 空のキーフレームをコピー
+                for (let idx = 0; idx < layer._$emptys.length; ++idx) {
+                    newLayer.addEmptyCharacter(
+                        layer._$emptys[idx].clone()
+                    );
+                }
+
+                scene.addLayer(newLayer);
+
+                const addElement = element.lastElementChild;
+                element.insertBefore(addElement, targetLayer);
+
+                // 新規レイヤーのスクロール位置を調整
+                if (scrollLeft) {
+                    addElement.lastElementChild.scrollLeft = scrollLeft;
                 }
             }
 
-            return ;
-        }
+            // 追加したライブラリを再構成
+            Util.$libraryController.reload();
 
-        const scene = workSpace.scene;
+        } else {
 
-        // コピーしたLayerを複製して、DisplayObjectのIDを再発行
-        const copyLayers = [];
-        for (let idx = 0; idx < this._$copyLayers.length; ++idx) {
+            // コピーしたLayerを複製して、DisplayObjectのIDを再発行
+            const copyLayers = [];
+            for (let idx = 0; idx < this._$copyLayers.length; ++idx) {
 
-            const layer = this._$copyLayers[idx];
+                const layer = this._$copyLayers[idx];
 
-            const cloneLayer = layer.clone();
-            cloneLayer.id = scene._$layerId++;
-            copyLayers.push(cloneLayer);
+                const cloneLayer = layer.clone();
+                cloneLayer.id = scene._$layerId++;
+                copyLayers.push(cloneLayer);
 
-            for (let idx = 0; idx < cloneLayer._$characters.length; ++idx) {
+                for (let idx = 0; idx < cloneLayer._$characters.length; ++idx) {
 
-                const character = cloneLayer._$characters[idx];
-                cloneLayer._$instances.delete(character.id);
+                    const character = cloneLayer._$characters[idx];
+                    cloneLayer._$instances.delete(character.id);
 
-                character._$id = workSpace._$characterId++;
-                character._$layerId = cloneLayer.id;
-                cloneLayer._$instances.set(character.id, character);
+                    character._$id = workSpace._$characterId++;
+                    character._$layerId = cloneLayer.id;
+                    cloneLayer._$instances.set(character.id, character);
+                }
+
+                // 空のキーフレームをコピー
+                for (let idx = 0; idx < layer._$emptys.length; ++idx) {
+                    cloneLayer.addEmptyCharacter(
+                        layer._$emptys[idx].clone()
+                    );
+                }
             }
-        }
 
-        const scrollLeft = targetLayer.lastElementChild.scrollLeft;
-        for (let idx = 0; idx < copyLayers.length; ++idx) {
+            const scrollLeft = targetLayer.lastElementChild.scrollLeft;
+            for (let idx = 0; idx < copyLayers.length; ++idx) {
 
-            const layer = copyLayers[idx];
-            scene.addLayer(layer);
+                const layer = copyLayers[idx];
+                scene.addLayer(layer);
 
-            const addElement = element.lastElementChild;
-            element
-                .insertBefore(addElement, targetLayer);
+                const addElement = element.lastElementChild;
+                element
+                    .insertBefore(addElement, targetLayer);
 
-            // 新規レイヤーのスクロール位置を調整
-            if (scrollLeft) {
-                addElement.lastElementChild.scrollLeft = scrollLeft;
+                // 新規レイヤーのスクロール位置を調整
+                if (scrollLeft) {
+                    addElement.lastElementChild.scrollLeft = scrollLeft;
+                }
             }
         }
 

@@ -353,19 +353,10 @@ class LibraryController
                     value.type, value.name, value.id, value.symbol
                 );
 
-            let path = value.name;
-            if (value._$folderId) {
-                let parent = workSpace.getLibrary(value._$folderId);
-                path = `${parent.name}/${path}`;
-                while (parent._$folderId) {
-                    parent = workSpace.getLibrary(parent._$folderId);
-                    path = `${parent.name}/${path}`;
-                }
-            }
-
+            // 階層のパスでマッピング
             workSpace
                 ._$nameMap
-                .set(path, value.id);
+                .set(value.path, value.id);
 
             // fixed logic
             if (value.type === "folder" && value.mode === Util.FOLDER_OPEN) {
@@ -728,9 +719,8 @@ class LibraryController
             const target    = event.target;
             const libraryId = target.dataset.libraryId | 0;
 
-            const library = Util
-                .$currentWorkSpace()
-                .getLibrary(libraryId);
+            const workSpace = Util.$currentWorkSpace();
+            const library = workSpace.getLibrary(libraryId);
 
             const viewId = target.dataset.type === "name"
                 ? `library-name-${libraryId}`
@@ -739,9 +729,44 @@ class LibraryController
             const element = document
                 .getElementById(viewId);
 
+            let value = target.value;
+            if (target.dataset.type === "name") {
+
+                const cache = library.name;
+                library.name = value;
+
+                // 重複してないかチェック
+                if (workSpace._$nameMap.has(library.path)) {
+                    library.name = cache;
+                    value = cache;
+
+                    const modal = document
+                        .getElementById("detail-modal");
+
+                    modal.textContent = Util.$currentLanguage.replace(
+                        "{{同名のアイテムが存在します}}"
+                    );
+
+                    modal.style.left = `${target.offsetLeft}px`;
+                    modal.style.top  = `${target.offsetTop}px`;
+                    modal.setAttribute("class", "fadeIn");
+
+                    modal.dataset.timerId = setTimeout(() =>
+                    {
+                        if (!modal.classList.contains("fadeOut")) {
+                            modal.setAttribute("class", "fadeOut");
+                        }
+                    }, 1500);
+                }
+
+            } else {
+
+                library.symbol = value;
+
+            }
+
             // データを更新
-            library[target.dataset.type] = target.value;
-            element.textContent   = target.value;
+            element.textContent   = value;
             element.style.display = "";
 
             const parent = document
@@ -1606,11 +1631,7 @@ class LibraryController
 
             // 同一のファイルがないかチェック
             let parent = workSpace.getLibrary(folder.id);
-            let path = `${parent.name}/${instance.name}`;
-            while (parent._$folderId) {
-                parent = workSpace.getLibrary(parent._$folderId);
-                path = `${parent.name}/${path}`;
-            }
+            const path = `${parent.name}/${instance.path}`;
 
             // 上書き確認
             if (workSpace._$nameMap.has(path)) {
@@ -1640,11 +1661,7 @@ class LibraryController
 
                     // 移動先のフォルダパスをセット
                     let parent = workSpace.getLibrary(folder.id);
-                    let parentPath = `${parent.name}`;
-                    while (parent._$folderId) {
-                        parent = workSpace.getLibrary(parent._$folderId);
-                        parentPath = `${parent.name}/${parentPath}`;
-                    }
+                    let parentPath = `${parent.path}`;
 
                     // フォルダ内のアイテムが移動先で重複しないかチェック
                     const paddingLeft = element.style.paddingLeft;
@@ -1660,15 +1677,7 @@ class LibraryController
                         const library = workSpace
                             .getLibrary(node.dataset.libraryId | 0);
 
-                        let path = `${library.name}`;
-
-                        let parent = library;
-                        while (parent._$folderId) {
-                            parent = workSpace.getLibrary(parent._$folderId);
-                            path = `${parent.name}/${path}`;
-                        }
-
-                        path = `${parentPath}/${path}`;
+                        const path = `${parentPath}/${library.path}`;
 
                         // 移動先で重複しないかチェック
                         if (!workSpace._$nameMap.has(path)) {

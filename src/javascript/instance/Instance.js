@@ -589,6 +589,26 @@ class Instance
     }
 
     /**
+     * @description 指定したワークスペースからPathを取得
+     *
+     * @param  {WorkSpace} work_space
+     * @return {string}
+     */
+    getPathWithWorkSpace (work_space)
+    {
+        let path = this.name;
+        if (this._$folderId) {
+            let parent = this;
+            while (parent._$folderId) {
+                parent = work_space.getLibrary(parent._$folderId);
+                path = `${parent.name}/${path}`;
+            }
+        }
+
+        return path;
+    }
+
+    /**
      * @return {string}
      * @public
      */

@@ -119,11 +119,14 @@ class Character
 
     /**
      * @return {Character}
+     * @method
      * @public
      */
     clone ()
     {
-        const character = new Character(this.toObject());
+        const character = new Character(
+            JSON.parse(JSON.stringify(this.toObject()))
+        );
         character._$layerId = -1;
         character._$id      = Util.$currentWorkSpace()._$characterId++;
         return character;

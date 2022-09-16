@@ -42,6 +42,9 @@ class TimelineMarker extends BaseTimeline
         if (element) {
             element.addEventListener("mousedown", (event) =>
             {
+                if (event.button) {
+                    return ;
+                }
                 this.startMarker(event);
             });
         }
