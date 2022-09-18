@@ -30,6 +30,18 @@ class ConfirmModal extends BaseController
          * @private
          */
         this._$currentObject = null;
+
+        /**
+         * @type {Map}
+         * @private
+         */
+        this._$mapping = new Map();
+
+        /**
+         * @type {Map}
+         * @private
+         */
+        this._$layers = new Map();
     }
 
     /**
@@ -277,72 +289,155 @@ class ConfirmModal extends BaseController
             name = name.replace(".swf", "");
         }
 
+        const workSpace = Util.$currentWorkSpace();
+
         let libraryId = 0;
         if (inputValue === name) {
 
             // 上書きならIDを指定
-            libraryId = Util
-                .$currentWorkSpace()
+            libraryId = workSpace
                 ._$nameMap
                 .get(this._$currentObject.path);
 
         }
 
         // 移動による上書き
-        if (this._$currentObject.type === "move") {
+        switch (this._$currentObject.type) {
 
-            if (libraryId) {
+            case "move":
+                if (libraryId) {
 
-                // 上書き
-                this.moveOverwriting(libraryId);
+                    // 上書き
+                    this.moveOverwriting(libraryId);
 
-            } else {
+                } else {
 
-                // 名前を変えて上書き
-                const instance = this._$currentObject.file;
+                    // 名前を変えて上書き
+                    const instance = this._$currentObject.file;
 
-                // 名前を変更
-                instance.name     = inputValue;
-                instance.folderId = this._$currentObject.folderId;
+                    // 名前を変更
+                    instance.name     = inputValue;
+                    instance.folderId = this._$currentObject.folderId;
 
-                // 名前を変えたのがフォルダの場合は後続の処理を中止
-                if (instance.type === InstanceType.FOLDER) {
-                    this._$files.length = 0;
+                    // 名前を変えたのがフォルダの場合は後続の処理を中止
+                    if (instance.type === InstanceType.FOLDER) {
+                        this._$files.length = 0;
+                    }
+
+                    // 一度削除
+                    document
+                        .getElementById(`library-child-id-${instance.id}`)
+                        .remove();
+
+                    // 再登録
+                    Util
+                        .$libraryController
+                        .createInstance(
+                            instance.type,
+                            instance.name,
+                            instance.id,
+                            instance.symbol
+                        );
+
                 }
 
-                // 一度削除
-                document
-                    .getElementById(`library-child-id-${instance.id}`)
-                    .remove();
+                this.setup();
+                break;
 
-                // 再登録
+            case "copy":
+                {
+                    // 名前を変えて上書き
+                    const instance = this._$currentObject.file;
+
+                    // 上書きなら元のElementを削除
+                    if (libraryId) {
+
+                        // Elementを削除
+                        const element = document
+                            .getElementById(`library-child-id-${libraryId}`);
+
+                        if (element) {
+                            element.remove();
+                        }
+
+                        workSpace.removeLibrary(libraryId);
+                    }
+
+                    if (!this._$mapping.has(instance.id)) {
+                        this
+                            ._$mapping
+                            .set(instance.id, libraryId || workSpace.nextLibraryId);
+                    }
+
+                    const id = this._$mapping.get(instance.id);
+                    this.addLayer(id);
+
+                    // ライブラリに登録がなけれな登録
+                    if (!workSpace._$libraries.has(id)) {
+
+                        const clone = instance.clone();
+
+                        clone._$id   = id;
+                        clone._$name = inputValue;
+                        workSpace._$libraries.set(clone.id, clone);
+
+                        // 登録
+                        Util
+                            .$libraryController
+                            .createInstance(
+                                clone.type,
+                                clone.name,
+                                clone.id,
+                                clone.symbol
+                            );
+
+                    }
+
+                    this.setup();
+                }
+                break;
+
+            default:
+
                 Util
                     .$libraryController
-                    .createInstance(
-                        instance.type,
-                        instance.name,
-                        instance.id,
-                        instance.symbol
-                    );
+                    .loadFile(
+                        this._$currentObject.file,
+                        this._$currentObject.folderId,
+                        inputValue,
+                        libraryId
+                    )
+                    .then(() =>
+                    {
+                        this.setup();
+                    });
 
-            }
-
-        } else {
-
-            Util
-                .$libraryController
-                .loadFile(
-                    this._$currentObject.file,
-                    this._$currentObject.folderId,
-                    inputValue,
-                    libraryId
-                );
+                break;
 
         }
 
-        this.setup();
-
         this._$saved = false;
+    }
+
+    /**
+     * @description レイヤーにDisplayObjectを追加
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    addLayer (id)
+    {
+        // 複製
+        const character = this._$currentObject.character;
+        character.libraryId = id;
+
+        const layer = this._$currentObject.layer;
+        layer.addCharacter(character);
+
+        if (!this._$layers.has(layer.id)) {
+            this._$layers.set(layer.id, layer);
+        }
     }
 
     /**
@@ -411,6 +506,20 @@ class ConfirmModal extends BaseController
     {
         this._$currentObject = this._$files.shift();
 
+        // 重複したDisplayObjectはここで処理を行う
+        if (this._$currentObject && this._$mapping.size) {
+            while (this._$mapping.has(this._$currentObject.file.id)) {
+
+                const id = this._$mapping.get(this._$currentObject.file.id);
+                this.addLayer(id);
+
+                this._$currentObject = this._$files.shift();
+                if (!this._$currentObject) {
+                    break;
+                }
+            }
+        }
+
         // 表示項目がなければモーダル表示を終了
         if (!this._$currentObject) {
             // 非表示
@@ -418,6 +527,17 @@ class ConfirmModal extends BaseController
 
             //ライブラリを再構築
             Util.$libraryController.reload();
+
+            // マッピングを初期化
+            this._$mapping.clear();
+
+            // レイヤーを再描画
+            if (this._$layers.size) {
+                for (const layer of this._$layers.values()) {
+                    layer.setCharacterStyle();
+                }
+            }
+            this._$layers.clear();
 
             // 再描画
             this.reloadScreen();
@@ -454,10 +574,10 @@ class ConfirmModal extends BaseController
 
         const workSpace = Util.$currentWorkSpace();
 
-        const libraryId = workSpace
-            ._$nameMap.get(this._$currentObject.path);
+        const instance = workSpace.getLibrary(
+            workSpace._$nameMap.get(this._$currentObject.path)
+        );
 
-        const instance = workSpace.getLibrary(libraryId);
         if (instance) {
             beforeElement.appendChild(instance.getPreview());
         }
@@ -513,10 +633,12 @@ class ConfirmModal extends BaseController
                 break;
 
             default:
-                if (this._$currentObject.type === "move") {
-                    const instance = this._$currentObject.file;
-                    afterElement.appendChild(instance.getPreview());
-                }
+
+                afterElement
+                    .appendChild(
+                        this._$currentObject.file.getPreview()
+                    );
+
                 break;
 
         }

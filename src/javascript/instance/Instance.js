@@ -386,6 +386,7 @@ class Instance
     remove ()
     {
         const workSpace = Util.$currentWorkSpace();
+
         const scene = workSpace.scene;
         for (let instance of workSpace._$libraries.values()) {
 
@@ -396,7 +397,10 @@ class Instance
             for (let layer of instance._$layers.values()) {
 
                 let reload = false;
-                const characters = layer._$characters;
+
+                // 削除してもいいようにクローンして利用する
+                const characters = layer._$characters.slice();
+
                 for (let idx = 0; idx < characters.length; ++idx) {
 
                     const character = characters[idx];

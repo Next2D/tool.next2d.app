@@ -1171,7 +1171,7 @@ class LibraryController
      * @param  {number} [folder_id=0]
      * @param  {string} [name=""]
      * @param  {number} [library_id=0]
-     * @return {void}
+     * @return {Promise}
      * @method
      * @public
      */
@@ -1217,7 +1217,7 @@ class LibraryController
         switch (file.type) {
 
             case "image/svg+xml":
-                file
+                return file
                     .text()
                     .then((value) =>
                     {
@@ -1271,23 +1271,21 @@ class LibraryController
                             this.reloadScreen(library_id);
                         }
                     });
-                break;
 
             case "image/png":
             case "image/jpeg":
             case "image/gif":
-                file
+                return file
                     .arrayBuffer()
                     .then((buffer) =>
                     {
-
                         const blob = new Blob([buffer], {
                             "type": file.type
                         });
 
                         const image = new Image();
                         image.src = URL.createObjectURL(blob);
-                        image
+                        return image
                             .decode()
                             .then(() =>
                             {
@@ -1358,12 +1356,10 @@ class LibraryController
                                     this.reloadScreen(library_id);
                                 }
                             });
-
                     });
-                break;
 
             case "video/mp4":
-                file
+                return file
                     .arrayBuffer()
                     .then((buffer) =>
                     {
@@ -1430,10 +1426,9 @@ class LibraryController
                         video.src = URL.createObjectURL(blob);
                         video.load();
                     });
-                break;
 
             case "audio/mpeg":
-                file
+                return file
                     .arrayBuffer()
                     .then((buffer) =>
                     {
@@ -1484,10 +1479,9 @@ class LibraryController
                             this.reloadScreen(library_id);
                         }
                     });
-                break;
 
             case "application/x-shockwave-flash":
-                file
+                return file
                     .arrayBuffer()
                     .then((buffer) =>
                     {
@@ -1495,7 +1489,6 @@ class LibraryController
                             .setData(new Uint8Array(buffer))
                             .run(name || file.name, folder_id, library_id);
                     });
-                break;
 
             default:
                 break;

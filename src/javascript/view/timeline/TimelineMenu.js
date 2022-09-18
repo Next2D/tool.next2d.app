@@ -162,6 +162,7 @@ class TimelineMenu extends BaseTimeline
 
         const workSpace = Util.$currentWorkSpace();
         const scene = workSpace.scene;
+        const instanceMap = new Map();
 
         // ワークスペースが異なる場合は依存するライブラリを移動する
         if (this._$copyWorkSpaceId !== Util.$activeWorkSpaceId) {
@@ -179,20 +180,26 @@ class TimelineMenu extends BaseTimeline
 
                 const layer = this._$copyLayers[idx];
                 const newLayer = new Layer();
-                const characters = [];
                 for (let idx = 0; idx < layer._$characters.length; ++idx) {
 
                     Util.$activeWorkSpaceId = this._$copyWorkSpaceId;
-                    const character = layer._$characters[idx].clone();
+                    const character = new Character(
+                        JSON.parse(JSON.stringify(layer._$characters[idx].toObject()))
+                    );
+
+                    // 初期化
+                    character._$layerId = -1;
+                    character._$id      = workSpace._$characterId++;
+
                     Util.$activeWorkSpaceId = activeWorkSpaceId;
 
                     const instance = targetWorkSpace.getLibrary(
                         character.libraryId
                     );
 
-                    newLayer.addCharacter(character);
                     if (mapping.has(instance.id)) {
                         character.libraryId = mapping.get(instance.id);
+                        newLayer.addCharacter(character);
                         continue;
                     }
 
@@ -202,18 +209,18 @@ class TimelineMenu extends BaseTimeline
 
                     if (workSpace._$nameMap.has(path)) {
 
-                        characters.push(character);
+                        if (!instanceMap.has(instance.id)) {
+                            instanceMap.set(instance.id, []);
+                        }
 
-                        Util.$confirmModal.files.push({
-                            "file": instance,
-                            "folderId": 0,
-                            "path": path,
-                            "type": "copy"
-                        });
+                        instanceMap
+                            .get(instance.id)
+                            .push({
+                                "layer": newLayer,
+                                "path": path,
+                                "character": character
+                            });
 
-                        Util.$confirmModal.show();
-
-                        // character.libraryId = workSpace._$nameMap.get(path);
                         continue;
                     }
 
@@ -273,6 +280,8 @@ class TimelineMenu extends BaseTimeline
                     workSpace
                         ._$nameMap
                         .set(path, clone.id);
+
+                    newLayer.addCharacter(character);
                 }
 
                 // 空のキーフレームをコピー
@@ -358,7 +367,33 @@ class TimelineMenu extends BaseTimeline
         }
 
         // 再描画
-        this.reloadScreen();
+        if (!instanceMap.size) {
+
+            this.reloadScreen();
+
+        } else {
+
+            for (const [instanceId, values] of instanceMap) {
+
+                const targetWorkSpace = Util.$workSpaces[this._$copyWorkSpaceId];
+                for (let idx = 0; idx < values.length; ++idx) {
+
+                    const object = values[idx];
+
+                    Util.$confirmModal.files.push({
+                        "file": targetWorkSpace.getLibrary(instanceId),
+                        "character": object.character,
+                        "layer": object.layer,
+                        "path": object.path,
+                        "workSpaceId": this._$copyWorkSpaceId,
+                        "type": "copy"
+                    });
+                }
+
+            }
+
+            Util.$confirmModal.show();
+        }
 
         // リセット
         super.focusOut();
