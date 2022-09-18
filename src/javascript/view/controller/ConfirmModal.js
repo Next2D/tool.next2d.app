@@ -119,6 +119,8 @@ class ConfirmModal extends BaseController
     {
         this.save();
 
+        const promises = [];
+
         this._$files.unshift(this._$currentObject);
         for (let idx = 0; idx < this._$files.length; ++idx) {
 
@@ -130,39 +132,62 @@ class ConfirmModal extends BaseController
                 ._$nameMap
                 .get(object.path);
 
-            if (object.type === "move") {
+            switch (object.type) {
 
-                this._$currentObject = object;
-                this.moveOverwriting(libraryId);
+                case "move":
+                    this._$currentObject = object;
+                    this.moveOverwriting(libraryId);
+                    break;
 
-            } else {
+                case "copy":
+                    this._$currentObject = object;
+                    this.copyOverwriting(libraryId);
+                    break;
 
-                Util
-                    .$libraryController
-                    .loadFile(
-                        object.file,
-                        object.folderId,
-                        object.file.name,
-                        libraryId
-                    );
+                default:
+                    promises.push(Util
+                        .$libraryController
+                        .loadFile(
+                            object.file,
+                            object.folderId,
+                            object.file.name,
+                            libraryId
+                        ));
+                    break;
 
             }
         }
-
-        // モーダルを非表示
-        this.hide();
 
         // 値を初期化
         this._$currentObject = null;
         this._$files.length  = 0;
 
-        //ライブラリを再構築
-        Util.$libraryController.reload();
-
         // 再描画
-        this.reloadScreen();
+        if (promises.length) {
 
-        this._$saved = false;
+            Promise
+                .all(promises)
+                .then(() =>
+                {
+                    // モーダルを非表示
+                    this.hide();
+
+                    //ライブラリを再構築
+                    Util.$libraryController.reload();
+
+                    // 再描画
+                    this.reloadScreen();
+
+                    this._$saved = false;
+                });
+
+        } else {
+
+            this.setup();
+            this._$saved = false;
+
+        }
+
     }
 
     /**
@@ -181,6 +206,84 @@ class ConfirmModal extends BaseController
         document
             .getElementById("confirm-modal")
             .setAttribute("class", "fadeOut");
+    }
+
+    /**
+     * @description コピー＆ペースト時の上書き処理
+     *
+     * @param  {number} [libraryId = 0]
+     * @param  {string} [value = ""]
+     * @return {void}
+     * @method
+     * @public
+     */
+    copyOverwriting (libraryId = 0, value = "")
+    {
+        const workSpace = Util.$currentWorkSpace();
+
+        // 名前を変えて上書き
+        const instance = this._$currentObject.file;
+
+        if (!this._$mapping.has(instance.id)) {
+            this
+                ._$mapping
+                .set(instance.id, libraryId || workSpace.nextLibraryId);
+
+            // 上書きなら元のElementを削除
+            if (libraryId) {
+
+                // Elementを削除
+                const element = document
+                    .getElementById(`library-child-id-${libraryId}`);
+
+                if (element) {
+                    element.remove();
+                }
+
+                // 移動元を配置しているDisplayObjectの情報を書き換え
+                for (const library of workSpace._$libraries.values()) {
+
+                    if (library.type !== InstanceType.MOVIE_CLIP) {
+                        continue;
+                    }
+
+                    for (const layer of library._$layers.values()) {
+                        for (let idx = 0; idx < layer._$characters.length; ++idx) {
+                            layer._$characters[idx]._$image = null;
+                        }
+                    }
+                }
+
+                workSpace.removeLibrary(libraryId);
+
+            }
+        }
+
+        const id = this._$mapping.get(instance.id);
+        this.addLayer(id);
+
+        // ライブラリに登録がなけれな登録
+        if (!workSpace._$libraries.has(id)) {
+
+            const clone = instance.clone();
+
+            clone._$id = id;
+            if (value) {
+                clone._$name = value;
+            }
+
+            workSpace._$libraries.set(clone.id, clone);
+
+            // 登録
+            Util
+                .$libraryController
+                .createInstance(
+                    clone.type,
+                    clone.name,
+                    clone.id,
+                    clone.symbol
+                );
+        }
     }
 
     /**
@@ -345,56 +448,8 @@ class ConfirmModal extends BaseController
                 break;
 
             case "copy":
-                {
-                    // 名前を変えて上書き
-                    const instance = this._$currentObject.file;
-
-                    // 上書きなら元のElementを削除
-                    if (libraryId) {
-
-                        // Elementを削除
-                        const element = document
-                            .getElementById(`library-child-id-${libraryId}`);
-
-                        if (element) {
-                            element.remove();
-                        }
-
-                        workSpace.removeLibrary(libraryId);
-                    }
-
-                    if (!this._$mapping.has(instance.id)) {
-                        this
-                            ._$mapping
-                            .set(instance.id, libraryId || workSpace.nextLibraryId);
-                    }
-
-                    const id = this._$mapping.get(instance.id);
-                    this.addLayer(id);
-
-                    // ライブラリに登録がなけれな登録
-                    if (!workSpace._$libraries.has(id)) {
-
-                        const clone = instance.clone();
-
-                        clone._$id   = id;
-                        clone._$name = inputValue;
-                        workSpace._$libraries.set(clone.id, clone);
-
-                        // 登録
-                        Util
-                            .$libraryController
-                            .createInstance(
-                                clone.type,
-                                clone.name,
-                                clone.id,
-                                clone.symbol
-                            );
-
-                    }
-
-                    this.setup();
-                }
+                this.copyOverwriting(libraryId, inputValue);
+                this.setup();
                 break;
 
             default:

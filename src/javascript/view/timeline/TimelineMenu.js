@@ -203,27 +203,6 @@ class TimelineMenu extends BaseTimeline
                         continue;
                     }
 
-                    // コピー元のワークスペースからpathを算出
-                    const path = instance
-                        .getPathWithWorkSpace(targetWorkSpace);
-
-                    if (workSpace._$nameMap.has(path)) {
-
-                        if (!instanceMap.has(instance.id)) {
-                            instanceMap.set(instance.id, []);
-                        }
-
-                        instanceMap
-                            .get(instance.id)
-                            .push({
-                                "layer": newLayer,
-                                "path": path,
-                                "character": character
-                            });
-
-                        continue;
-                    }
-
                     // let parent = instance;
                     // while (parent._$folderId) {
                     //
@@ -257,6 +236,27 @@ class TimelineMenu extends BaseTimeline
                     //             parent.symbol
                     //         );
                     // }
+
+                    // コピー元のワークスペースからpathを算出
+                    const path = instance
+                        .getPathWithWorkSpace(targetWorkSpace);
+
+                    if (workSpace._$nameMap.has(path)) {
+
+                        if (!instanceMap.has(instance.id)) {
+                            instanceMap.set(instance.id, []);
+                        }
+
+                        instanceMap
+                            .get(instance.id)
+                            .push({
+                                "layer": newLayer,
+                                "path": path,
+                                "character": character
+                            });
+
+                        continue;
+                    }
 
                     // ライブラリにアイテムを追加
                     const id = workSpace.nextLibraryId;
