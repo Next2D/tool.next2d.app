@@ -255,7 +255,6 @@ class ConfirmModal extends BaseController
                 }
 
                 workSpace.removeLibrary(libraryId);
-
             }
         }
 
@@ -270,6 +269,10 @@ class ConfirmModal extends BaseController
             clone._$id = id;
             if (value) {
                 clone._$name = value;
+            }
+
+            if (clone.folderId && this._$mapping.has(clone.folderId)) {
+                clone.folderId = this._$mapping.get(clone.folderId);
             }
 
             workSpace._$libraries.set(clone.id, clone);
@@ -488,10 +491,12 @@ class ConfirmModal extends BaseController
         character.libraryId = id;
 
         const layer = this._$currentObject.layer;
-        layer.addCharacter(character);
+        if (layer) {
+            layer.addCharacter(character);
 
-        if (!this._$layers.has(layer.id)) {
-            this._$layers.set(layer.id, layer);
+            if (!this._$layers.has(layer.id)) {
+                this._$layers.set(layer.id, layer);
+            }
         }
     }
 

@@ -203,39 +203,66 @@ class TimelineMenu extends BaseTimeline
                         continue;
                     }
 
-                    // let parent = instance;
-                    // while (parent._$folderId) {
-                    //
-                    //     parent = targetWorkSpace.getLibrary(
-                    //         parent._$folderId
-                    //     );
-                    //
-                    //     if (mapping.has(parent.id)) {
-                    //         break;
-                    //     }
-                    //
-                    //     const path = parent
-                    //         .getPathWithWorkSpace(targetWorkSpace);
-                    //
-                    //     if (workSpace._$nameMap.has(path)) {
-                    //         continue;
-                    //     }
-                    //
-                    //     const id = workSpace.nextLibraryId;
-                    //     mapping.set(parent.id, id);
-                    //
-                    //     parent._$id = id;
-                    //     workSpace._$libraries.set(parent.id, parent);
-                    //
-                    //     Util
-                    //         .$libraryController
-                    //         .createInstance(
-                    //             parent.type,
-                    //             parent.name,
-                    //             parent.id,
-                    //             parent.symbol
-                    //         );
-                    // }
+                    const folders = [];
+
+                    let parent = instance;
+                    while (parent._$folderId) {
+                        parent = targetWorkSpace.getLibrary(
+                            parent._$folderId
+                        );
+                        folders.unshift(parent);
+                    }
+
+                    for (let idx = 0; folders.length > idx; ++idx) {
+
+                        const folder = folders[idx];
+
+                        if (mapping.has(folder.id)) {
+                            continue;
+                        }
+
+                        const path = folder
+                            .getPathWithWorkSpace(targetWorkSpace);
+
+                        if (workSpace._$nameMap.has(path)) {
+
+                            if (!instanceMap.has(folder.id)) {
+                                instanceMap.set(folder.id, []);
+                            }
+
+                            instanceMap
+                                .get(folder.id)
+                                .push({
+                                    "layer": null,
+                                    "path": path,
+                                    "character": folder
+                                });
+
+                            continue;
+                        }
+
+                        const clone = folder.clone();
+
+                        const id = workSpace.nextLibraryId;
+                        mapping.set(clone.id, id);
+
+                        clone._$id = id;
+                        if (clone.folderId && mapping.has(clone.folderId)) {
+                            clone.folderId = mapping.get(clone.folderId);
+                        }
+
+                        workSpace._$libraries.set(clone.id, clone);
+
+                        Util
+                            .$libraryController
+                            .createInstance(
+                                clone.type,
+                                clone.name,
+                                clone.id,
+                                clone.symbol
+                            );
+
+                    }
 
                     // コピー元のワークスペースからpathを算出
                     const path = instance
@@ -267,6 +294,10 @@ class TimelineMenu extends BaseTimeline
                     character.libraryId = id;
                     clone._$id = id;
                     workSpace._$libraries.set(clone.id, clone);
+
+                    if (clone.folderId && mapping.has(clone.folderId)) {
+                        clone.folderId = mapping.get(clone.folderId);
+                    }
 
                     Util
                         .$libraryController
