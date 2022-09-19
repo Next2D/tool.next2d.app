@@ -957,6 +957,10 @@ class FilterController extends GradientFilterController
         const element = document
             .getElementById("filter-setting-list");
 
+        if (!element) {
+            return ;
+        }
+
         // テキストのElementは消えてもいいようにここで変数に格納しておく
         const textElement = document
             .querySelectorAll(".filter-none")[0];
