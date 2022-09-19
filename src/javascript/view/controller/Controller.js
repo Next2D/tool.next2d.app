@@ -34,7 +34,11 @@ class Controller extends BaseController
     showObjectSetting (names)
     {
         for (let idx = 0; idx < names.length; ++idx) {
-            document.getElementById(names[idx]).style.display = "";
+            const element = document.getElementById(names[idx]);
+            if (!element) {
+                continue;
+            }
+            element.style.display = "";
         }
     }
 
@@ -49,7 +53,11 @@ class Controller extends BaseController
     hideObjectSetting (names)
     {
         for (let idx = 0; idx < names.length; ++idx) {
-            document.getElementById(names[idx]).style.display = "none";
+            const element = document.getElementById(names[idx]);
+            if (!element) {
+                continue;
+            }
+            element.style.display = "none";
         }
     }
 
