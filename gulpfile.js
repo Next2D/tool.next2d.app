@@ -319,11 +319,13 @@ const test = (done) =>
     return new TestServer({
         "configFile": `${__dirname}/karma.conf.js`,
         "singleRun": true
-    }, (error) =>
+    }, (error_count) =>
     {
-        console.log(error);
-        done();
-        throw new Error("error");
+        if (error_count) {
+            throw new Error("unit test error");
+        } else {
+            done();
+        }
     }).start();
 };
 

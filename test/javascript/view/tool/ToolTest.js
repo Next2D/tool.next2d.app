@@ -7,7 +7,7 @@ describe("Tool.js property test", () =>
 
     it("constructor test", () =>
     {
-        const tool = new Tool("test");
+        const tool = new BaseTool("test");
 
         const children = document
             .getElementById("plugin-tools")

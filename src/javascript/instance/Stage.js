@@ -62,63 +62,96 @@ class Stage
     {
         // reset
         Util.$zoomScale = 1;
-        document
-            .getElementById("screen-scale")
-            .value = "100";
+
+        const screenScale = document
+            .getElementById("screen-scale");
+
+        if (screenScale) {
+            screenScale.value = "100";
+        }
 
         // canvas
         const stage = document.getElementById("stage");
-        stage.style.width           = `${this.width}px`;
-        stage.style.height          = `${this.height}px`;
-        stage.style.backgroundColor = this.bgColor;
+        if (stage) {
+            stage.style.width           = `${this.width}px`;
+            stage.style.height          = `${this.height}px`;
+            stage.style.backgroundColor = this.bgColor;
+        }
 
-        document
-            .getElementById("library-preview-area")
-            .style.backgroundColor = this.bgColor;
+        const libraryPreviewArea = document
+            .getElementById("library-preview-area");
+
+        if (libraryPreviewArea) {
+            libraryPreviewArea.style.backgroundColor = this.bgColor;
+        }
 
         // stage area
         const area = document.getElementById("stage-area");
-        area.style.transformOrigin = "50% 50%";
-        area.style.width  = `${this.width  + window.screen.width}px`;
-        area.style.height = `${this.height + window.screen.height}px`;
+        if (area) {
+            area.style.transformOrigin = "50% 50%";
+            area.style.width  = `${this.width  + window.screen.width}px`;
+            area.style.height = `${this.height + window.screen.height}px`;
+        }
 
         // DOM
-        document
-            .getElementById("label-name")
-            .value = "";
+        const labelName = document
+            .getElementById("label-name");
 
-        document
-            .getElementById("stage-width")
-            .value = this.width;
+        if (labelName) {
+            labelName.value = "";
+        }
 
-        document
-            .getElementById("stage-height")
-            .value = this.height;
+        const stageWidth = document
+            .getElementById("stage-width");
 
-        document
-            .getElementById("stage-fps")
-            .value = this.fps;
+        if (stageWidth) {
+            stageWidth.value = this.width;
+        }
 
-        document
-            .getElementById("stage-bgColor")
-            .value = this.bgColor;
+        const stageHeight = document
+            .getElementById("stage-height");
 
-        const element = document
-            .getElementById("stage-lock")
-            .childNodes[1];
+        if (stageHeight) {
+            stageHeight.value = this.height;
+        }
 
-        element
-            .setAttribute("class", this.lock ? "active" : "disable");
+        const stageFps = document
+            .getElementById("stage-fps");
+
+        if (stageFps) {
+            stageFps.value = this.fps;
+        }
+
+        const stageBgColor = document
+            .getElementById("stage-bgColor");
+
+        if (stageBgColor) {
+            stageBgColor.value = this.bgColor;
+        }
+
+        const stageLlock = document
+            .getElementById("stage-lock");
+
+        if (stageLlock) {
+            const element = stageLlock.childNodes[1];
+
+            element
+                .setAttribute("class", this.lock ? "active" : "disable");
+        }
 
         Util.$controller._$stageLock = this.lock;
 
         // set xy
         const screen = document.getElementById("screen");
-        screen.scrollLeft = window.screen.width  / 2 - (screen.clientWidth  - this.width)  / 2;
-        screen.scrollTop  = window.screen.height / 2 - (screen.clientHeight - this.height) / 2;
+        if (screen) {
+            screen.scrollLeft = window.screen.width  / 2 - (screen.clientWidth  - this.width)  / 2;
+            screen.scrollTop  = window.screen.height / 2 - (screen.clientHeight - this.height) / 2;
+        }
 
-        Util.$offsetLeft = stage.offsetLeft;
-        Util.$offsetTop  = stage.offsetTop;
+        if (stage) {
+            Util.$offsetLeft = stage.offsetLeft;
+            Util.$offsetTop  = stage.offsetTop;
+        }
     }
 
     /**
