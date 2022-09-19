@@ -322,7 +322,7 @@ const test = (done) =>
     }, (error_count) =>
     {
         if (error_count) {
-            throw new Error("unit test error");
+            process.exit(1);
         } else {
             done();
         }

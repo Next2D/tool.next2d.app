@@ -12,7 +12,7 @@ jobs:
   macos-browser-test:
     strategy:
       matrix:
-        node-version: ["14.x"]
+        node-version: ["14.x", "15.x", "16.x", "17.x", "18.x"]
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v2
@@ -25,12 +25,12 @@ jobs:
       - uses: browser-actions/setup-firefox@latest
       - run: git submodule update --remote --recursive
       - run: npm install
-      - run: npm run test -- --no-watch --no-progress
+      - run: npm run test
 
   windows-browser-test:
     strategy:
       matrix:
-        node-version: ["14.x"]
+        node-version: ["14.x", "15.x", "16.x", "17.x", "18.x"]
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v2
@@ -45,4 +45,4 @@ jobs:
           firefox-version: "84.0"
       - run: git submodule update --remote --recursive
       - run: npm install
-      - run: npm run test -- --no-watch --no-progress
+      - run: npm run test
