@@ -225,6 +225,7 @@ class ConfirmModal extends BaseController
         const instance = this._$currentObject.file;
 
         if (!this._$mapping.has(instance.id)) {
+
             this
                 ._$mapping
                 .set(instance.id, libraryId || workSpace.nextLibraryId);
@@ -264,7 +265,14 @@ class ConfirmModal extends BaseController
         // ライブラリに登録がなけれな登録
         if (!workSpace._$libraries.has(id)) {
 
-            const clone = instance.clone();
+            const clone = instance.type === InstanceType.MOVIE_CLIP
+                ? Util.$timelineMenu.cloneMovieClip(instance)
+                : instance.clone();
+
+            // 重複したデータがあれば、確認用にデータを転送
+            if (instance.type === InstanceType.MOVIE_CLIP) {
+                Util.$timelineMenu.setConfirmModalFiles();
+            }
 
             clone._$id = id;
             if (value) {
@@ -693,12 +701,27 @@ class ConfirmModal extends BaseController
                 break;
 
             default:
+                if (this._$currentObject.type === "copy") {
 
-                afterElement
-                    .appendChild(
-                        this._$currentObject.file.getPreview()
-                    );
+                    // ワークスペースを切り替え
+                    const activeWorkSpaceId = Util.$activeWorkSpaceId;
+                    Util.$activeWorkSpaceId = this._$currentObject.workSpaceId;
 
+                    // プレビューを生成して、ワークスペースを切り替え
+                    afterElement
+                        .appendChild(
+                            this._$currentObject.file.getPreview()
+                        );
+                    Util.$activeWorkSpaceId = activeWorkSpaceId;
+
+                } else {
+
+                    afterElement
+                        .appendChild(
+                            this._$currentObject.file.getPreview()
+                        );
+
+                }
                 break;
 
         }

@@ -30,6 +30,18 @@ class TimelineMenu extends BaseTimeline
          * @private
          */
         this._$copyFrames = [];
+
+        /**
+         * @type {Map}
+         * @private
+         */
+        this._$copyMapping = new Map();
+
+        /**
+         * @type {Map}
+         * @private
+         */
+        this._$instanceMap = new Map();
     }
 
     /**
@@ -138,6 +150,187 @@ class TimelineMenu extends BaseTimeline
     }
 
     /**
+     * @description 別ワークスペースのライブラリをクローンする
+     *
+     * @param  {MovieClip} movie_clip
+     * @return {MovieClip}
+     * @method
+     * @public
+     */
+    cloneMovieClip (movie_clip)
+    {
+        const workSpace = Util.$currentWorkSpace();
+
+        const targetWorkSpace   = Util.$workSpaces[this._$copyWorkSpaceId];
+        const activeWorkSpaceId = Util.$activeWorkSpaceId;
+
+        Util.$activeWorkSpaceId = this._$copyWorkSpaceId;
+        const movieClip = movie_clip.clone();
+        Util.$activeWorkSpaceId = activeWorkSpaceId;
+
+        for (const layer of movieClip._$layers.values()) {
+
+            const newLayer = new Layer();
+            for (let idx = 0; idx < layer._$characters.length; ++idx) {
+
+                Util.$activeWorkSpaceId = this._$copyWorkSpaceId;
+                const character = new Character(
+                    JSON.parse(JSON.stringify(layer._$characters[idx].toObject()))
+                );
+
+                // 初期化
+                character._$layerId = -1;
+                character._$id      = workSpace._$characterId++;
+
+                Util.$activeWorkSpaceId = activeWorkSpaceId;
+
+                const instance = targetWorkSpace
+                    .getLibrary(character.libraryId);
+
+                if (this._$copyMapping.has(instance.id)) {
+                    character.libraryId = this._$copyMapping.get(instance.id);
+                    newLayer.addCharacter(character);
+                    continue;
+                }
+
+                const folders = [];
+
+                let parent = instance;
+                while (parent._$folderId) {
+                    parent = targetWorkSpace.getLibrary(
+                        parent._$folderId
+                    );
+                    folders.unshift(parent);
+                }
+
+                for (let idx = 0; folders.length > idx; ++idx) {
+
+                    const folder = folders[idx];
+
+                    if (this._$copyMapping.has(folder.id)) {
+                        continue;
+                    }
+
+                    const path = folder
+                        .getPathWithWorkSpace(targetWorkSpace);
+
+                    if (workSpace._$nameMap.has(path)) {
+
+                        if (!this._$instanceMap.has(folder.id)) {
+                            this._$instanceMap.set(folder.id, []);
+                        }
+
+                        this._$instanceMap
+                            .get(folder.id)
+                            .push({
+                                "layer": null,
+                                "path": path,
+                                "character": folder
+                            });
+
+                        continue;
+                    }
+
+                    const clone = folder.clone();
+
+                    const id = workSpace.nextLibraryId;
+                    this._$copyMapping.set(clone.id, id);
+
+                    clone._$id = id;
+                    if (clone.folderId
+                        && this._$copyMapping.has(clone.folderId)
+                    ) {
+                        clone.folderId = this
+                            ._$copyMapping
+                            .get(clone.folderId);
+                    }
+
+                    workSpace._$libraries.set(clone.id, clone);
+
+                    Util
+                        .$libraryController
+                        .createInstance(
+                            clone.type,
+                            clone.name,
+                            clone.id,
+                            clone.symbol
+                        );
+
+                }
+
+                // コピー元のワークスペースからpathを算出
+                const path = instance
+                    .getPathWithWorkSpace(targetWorkSpace);
+
+                if (workSpace._$nameMap.has(path)) {
+
+                    if (!this._$instanceMap.has(instance.id)) {
+                        this._$instanceMap.set(instance.id, []);
+                    }
+
+                    this._$instanceMap
+                        .get(instance.id)
+                        .push({
+                            "layer": newLayer,
+                            "path": path,
+                            "character": character
+                        });
+
+                    continue;
+                }
+
+                // fixed logic 複製を生成
+                const clone = instance.type === InstanceType.MOVIE_CLIP
+                    ? this.cloneMovieClip(instance)
+                    : instance.clone();
+
+                // ライブラリにアイテムを追加
+                const id = workSpace.nextLibraryId;
+                this._$copyMapping.set(instance.id, id);
+
+                character.libraryId = id;
+                clone._$id = id;
+                workSpace._$libraries.set(clone.id, clone);
+
+                if (clone.folderId
+                    && this._$copyMapping.has(clone.folderId)
+                ) {
+                    clone.folderId = this
+                        ._$copyMapping
+                        .get(clone.folderId);
+                }
+
+                Util
+                    .$libraryController
+                    .createInstance(
+                        clone.type,
+                        clone.name,
+                        clone.id,
+                        clone.symbol
+                    );
+
+                workSpace
+                    ._$nameMap
+                    .set(path, clone.id);
+
+                newLayer.addCharacter(character);
+            }
+
+            // 空のキーフレームをコピー
+            for (let idx = 0; idx < layer._$emptys.length; ++idx) {
+                newLayer.addEmptyCharacter(
+                    layer._$emptys[idx].clone()
+                );
+            }
+
+            newLayer.id = layer.id;
+            movieClip.setLayer(newLayer.id, newLayer);
+        }
+
+        return movieClip;
+    }
+
+    /**
      * @description 指定したレイヤーの上部にコピーした情報を貼り付け
      *
      * @return {void}
@@ -162,7 +355,9 @@ class TimelineMenu extends BaseTimeline
 
         const workSpace = Util.$currentWorkSpace();
         const scene = workSpace.scene;
-        const instanceMap = new Map();
+
+        // コピー情報を初期化
+        this._$instanceMap.clear();
 
         // ワークスペースが異なる場合は依存するライブラリを移動する
         if (this._$copyWorkSpaceId !== Util.$activeWorkSpaceId) {
@@ -174,11 +369,14 @@ class TimelineMenu extends BaseTimeline
 
             const scrollLeft = targetLayer.lastElementChild.scrollLeft;
 
-            const mapping = new Map();
+            // マッピングを初期化
+            this._$copyMapping.clear();
+
             const activeWorkSpaceId = Util.$activeWorkSpaceId;
             for (let idx = 0; idx < this._$copyLayers.length; ++idx) {
 
                 const layer = this._$copyLayers[idx];
+
                 const newLayer = new Layer();
                 for (let idx = 0; idx < layer._$characters.length; ++idx) {
 
@@ -197,8 +395,8 @@ class TimelineMenu extends BaseTimeline
                         character.libraryId
                     );
 
-                    if (mapping.has(instance.id)) {
-                        character.libraryId = mapping.get(instance.id);
+                    if (this._$copyMapping.has(instance.id)) {
+                        character.libraryId = this._$copyMapping.get(instance.id);
                         newLayer.addCharacter(character);
                         continue;
                     }
@@ -217,7 +415,7 @@ class TimelineMenu extends BaseTimeline
 
                         const folder = folders[idx];
 
-                        if (mapping.has(folder.id)) {
+                        if (this._$copyMapping.has(folder.id)) {
                             continue;
                         }
 
@@ -226,11 +424,11 @@ class TimelineMenu extends BaseTimeline
 
                         if (workSpace._$nameMap.has(path)) {
 
-                            if (!instanceMap.has(folder.id)) {
-                                instanceMap.set(folder.id, []);
+                            if (!this._$instanceMap.has(folder.id)) {
+                                this._$instanceMap.set(folder.id, []);
                             }
 
-                            instanceMap
+                            this._$instanceMap
                                 .get(folder.id)
                                 .push({
                                     "layer": null,
@@ -244,11 +442,15 @@ class TimelineMenu extends BaseTimeline
                         const clone = folder.clone();
 
                         const id = workSpace.nextLibraryId;
-                        mapping.set(clone.id, id);
+                        this._$copyMapping.set(clone.id, id);
 
                         clone._$id = id;
-                        if (clone.folderId && mapping.has(clone.folderId)) {
-                            clone.folderId = mapping.get(clone.folderId);
+                        if (clone.folderId
+                            && this._$copyMapping.has(clone.folderId)
+                        ) {
+                            clone.folderId = this
+                                ._$copyMapping
+                                .get(clone.folderId);
                         }
 
                         workSpace._$libraries.set(clone.id, clone);
@@ -270,11 +472,11 @@ class TimelineMenu extends BaseTimeline
 
                     if (workSpace._$nameMap.has(path)) {
 
-                        if (!instanceMap.has(instance.id)) {
-                            instanceMap.set(instance.id, []);
+                        if (!this._$instanceMap.has(instance.id)) {
+                            this._$instanceMap.set(instance.id, []);
                         }
 
-                        instanceMap
+                        this._$instanceMap
                             .get(instance.id)
                             .push({
                                 "layer": newLayer,
@@ -285,18 +487,25 @@ class TimelineMenu extends BaseTimeline
                         continue;
                     }
 
+                    // fixed logic 複製を生成
+                    const clone = instance.type === InstanceType.MOVIE_CLIP
+                        ? this.cloneMovieClip(instance)
+                        : instance.clone();
+
                     // ライブラリにアイテムを追加
                     const id = workSpace.nextLibraryId;
-                    mapping.set(instance.id, id);
-
-                    const clone = instance.clone();
+                    this._$copyMapping.set(instance.id, id);
 
                     character.libraryId = id;
                     clone._$id = id;
                     workSpace._$libraries.set(clone.id, clone);
 
-                    if (clone.folderId && mapping.has(clone.folderId)) {
-                        clone.folderId = mapping.get(clone.folderId);
+                    if (clone.folderId
+                        && this._$copyMapping.has(clone.folderId)
+                    ) {
+                        clone.folderId = this
+                            ._$copyMapping
+                            .get(clone.folderId);
                     }
 
                     Util
@@ -398,36 +607,49 @@ class TimelineMenu extends BaseTimeline
         }
 
         // 再描画
-        if (!instanceMap.size) {
+        if (!this._$instanceMap.size) {
 
             this.reloadScreen();
 
         } else {
-
-            for (const [instanceId, values] of instanceMap) {
-
-                const targetWorkSpace = Util.$workSpaces[this._$copyWorkSpaceId];
-                for (let idx = 0; idx < values.length; ++idx) {
-
-                    const object = values[idx];
-
-                    Util.$confirmModal.files.push({
-                        "file": targetWorkSpace.getLibrary(instanceId),
-                        "character": object.character,
-                        "layer": object.layer,
-                        "path": object.path,
-                        "workSpaceId": this._$copyWorkSpaceId,
-                        "type": "copy"
-                    });
-                }
-
-            }
-
+            this.setConfirmModalFiles();
             Util.$confirmModal.show();
         }
 
         // リセット
         super.focusOut();
+    }
+
+    /**
+     * @description 重複したアイテムの確認モーダルにデータを転送
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    setConfirmModalFiles ()
+    {
+        for (const [instanceId, values] of this._$instanceMap) {
+
+            const targetWorkSpace = Util.$workSpaces[this._$copyWorkSpaceId];
+            for (let idx = 0; idx < values.length; ++idx) {
+
+                const object = values[idx];
+
+                Util.$confirmModal.files.push({
+                    "file": targetWorkSpace.getLibrary(instanceId),
+                    "character": object.character,
+                    "layer": object.layer,
+                    "path": object.path,
+                    "workSpaceId": this._$copyWorkSpaceId,
+                    "type": "copy"
+                });
+            }
+
+        }
+
+        // 初期化
+        this._$instanceMap.clear();
     }
 
     /**
