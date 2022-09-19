@@ -50,7 +50,7 @@ module.exports = function(config)
             "test/test.html": "html2js"
         },
 
-        "reporters": ["progress", "coverage"],
+        "reporters": ["progress"],
 
         // web server port
         "port": 9876,
