@@ -4,6 +4,21 @@
 class EventDispatcher
 {
     /**
+     * @description イベントを管理するクラス
+     *
+     * @constructor
+     * @public
+     */
+    constructor ()
+    {
+        /**
+         * @type {Map}
+         * @private
+         */
+        this._$events = new Map();
+    }
+
+    /**
      * @description イベント登録関数
      *
      * @param {string} type

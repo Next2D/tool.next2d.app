@@ -45,4 +45,13 @@ describe("EventType.js property test", () =>
         expect(EventType.MOUSE_OUT).toBe("mouseout");
     });
 
+    it("MOUSE_OUT test", () =>
+    {
+        expect(EventType.KEY_DOWN).toBe("keydown");
+    });
+
+    it("MOUSE_OUT test", () =>
+    {
+        expect(EventType.MOUSE_LEAVE).toBe("mouseleave");
+    });
 });

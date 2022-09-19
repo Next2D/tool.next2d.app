@@ -532,9 +532,12 @@ class ConfirmModal extends BaseController
         // 初期化
         this._$state = "hide";
 
-        document
-            .getElementById("confirm-modal")
-            .setAttribute("class", "fadeOut");
+        const element = document
+            .getElementById("confirm-modal");
+
+        if (element) {
+            element.setAttribute("class", "fadeOut");
+        }
     }
 
     /**
@@ -556,9 +559,12 @@ class ConfirmModal extends BaseController
         // 全てのモーダルを非表示に
         Util.$endMenu();
 
-        document
-            .getElementById("confirm-modal")
-            .setAttribute("class", "fadeIn");
+        const element = document
+            .getElementById("confirm-modal");
+
+        if (element) {
+            element.setAttribute("class", "fadeIn");
+        }
 
         this.setup();
     }

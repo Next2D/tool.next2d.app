@@ -13,45 +13,43 @@ class ToolEvent extends EventDispatcher
     {
         super();
 
-        /**
-         * @description クラスのマウスイベントMap
-         *              startは起動時に、endは終了時に発火するよう
-         *
-         * @type {Map}
-         * @private
-         */
-        this._$events = new Map([
-            [EventType.MOUSE_DOWN, [(event) =>
-            {
-                this.active = true;
-                this.target = event.currentTarget;
-            }]],
-            [EventType.MOUSE_UP, [() =>
-            {
-                this.active = false;
-                this.target = null;
-            }]],
-            [EventType.START, [() =>
-            {
-                // カーソルをリセット
-                Util.$setCursor("auto");
+        // マウスダウン時にアクティブ化
+        this._$events.set(EventType.MOUSE_DOWN, [(event) =>
+        {
+            this.active = true;
+            this.target = event.currentTarget;
+        }]);
 
-                const element = document
-                    .getElementById(`tools-${this._$name}`);
+        // マウスダウン時に非アクティブ化
+        this._$events.set(EventType.MOUSE_UP, [() =>
+        {
+            this.active = false;
+            this.target = null;
+        }]);
 
-                if (element) {
-                    element.classList.add("active");
-                }
-            }]],
-            [EventType.END, [() =>
-            {
-                const element = document
-                    .getElementById(`tools-${this._$name}`);
+        // ツールの開始時の起動イベント
+        this._$events.set(EventType.START, [() =>
+        {
+            // カーソルをリセット
+            Util.$setCursor("auto");
 
-                if (element) {
-                    element.classList.remove("active");
-                }
-            }]]
-        ]);
+            const element = document
+                .getElementById(`tools-${this._$name}`);
+
+            if (element) {
+                element.classList.add("active");
+            }
+        }]);
+
+        // ツールの終了時の起動イベント
+        this._$events.set(EventType.END, [() =>
+        {
+            const element = document
+                .getElementById(`tools-${this._$name}`);
+
+            if (element) {
+                element.classList.remove("active");
+            }
+        }]);
     }
 }
