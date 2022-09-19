@@ -1144,6 +1144,10 @@ class TweenController extends BaseController
         const element = document
             .getElementById("stage-area");
 
+        if (!element) {
+            return this;
+        }
+
         let idx = 0;
         while (element.children.length > idx) {
 

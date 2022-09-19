@@ -2043,7 +2043,7 @@ Util.$clearShapePointer = () =>
     if (!element) {
         return ;
     }
-    
+
     const children = element.children;
     for (let idx = 0; children.length > idx; ++idx) {
 
