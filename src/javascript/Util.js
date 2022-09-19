@@ -2040,6 +2040,10 @@ Util.$copyContainer = (object, dup) =>
 Util.$clearShapePointer = () =>
 {
     const element  = document.getElementById("stage-area");
+    if (!element) {
+        return ;
+    }
+    
     const children = element.children;
     for (let idx = 0; children.length > idx; ++idx) {
 
