@@ -101,8 +101,14 @@ class ScreenTab
         }
 
         // スクリーンエリアにタブのElementを追加
-        document
-            .getElementById("view-tab-area")
+        const element = document
+            .getElementById("view-tab-area");
+
+        if (!element) {
+            return ;
+        }
+
+        element
             .insertAdjacentHTML("beforeend", `
 <div draggable="true" id="tab-id-${id}" data-tab-id="${id}" class="tab">
     <p id="tab-text-id-${id}" data-tab-id="${id}" data-detail="{{タブの移動・名前を変更}}" data-shortcut-key="ArrowLeftCtrl" data-shortcut-text="Ctrl + ◀︎ or ▶" data-area="global">${work_space.name}</p>
