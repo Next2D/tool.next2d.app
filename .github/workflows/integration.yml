@@ -25,8 +25,7 @@ jobs:
       - uses: browser-actions/setup-firefox@latest
       - run: git submodule update --remote --recursive
       - run: npm install
-      - run: npm run test -- --no-watch --no-progress --browsers=ChromeHeadlessCI
-      - run: npm run test -- --no-watch --no-progress --browsers=FirefoxHeadlessCI
+      - run: npm run test -- --no-watch --no-progress
 
   windows-browser-test:
     strategy:
@@ -46,5 +45,4 @@ jobs:
           firefox-version: "84.0"
       - run: git submodule update --remote --recursive
       - run: npm install
-      - run: npm run test -- --no-watch --no-progress --browsers=ChromeHeadlessCI
-      - run: npm run test -- --no-watch --no-progress --browsers=FirefoxHeadlessCI
+      - run: npm run test -- --no-watch --no-progress
