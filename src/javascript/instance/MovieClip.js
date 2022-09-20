@@ -239,6 +239,9 @@ class MovieClip extends Instance
     clearStageArea ()
     {
         const stageArea = document.getElementById("stage-area");
+        if (!stageArea) {
+            return ;
+        }
 
         let idx = 0;
         while (stageArea.children.length > idx) {
