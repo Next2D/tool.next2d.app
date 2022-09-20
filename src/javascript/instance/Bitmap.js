@@ -2,7 +2,8 @@
  * @class
  * @extends {Instance}
  */
-class Bitmap extends Instance {
+class Bitmap extends Instance
+{
     /**
      * @param {object} object
      * @constructor

@@ -1,11 +1,11 @@
 /**
+ * イベントを管理するクラス
+ *
  * @class
  */
 class EventDispatcher
 {
     /**
-     * @description イベントを管理するクラス
-     *
      * @constructor
      * @public
      */
