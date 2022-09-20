@@ -46,9 +46,14 @@ class Layer
         // レイヤに必要なフレームをタイムラインに生成
         Util.$timelineLayer.create();
 
-        const element = document
-            .getElementById("timeline-content")
-            .lastElementChild;
+        const parent = document
+            .getElementById("timeline-content");
+
+        if (!parent) {
+            return ;
+        }
+
+        const element = parent.lastElementChild;
 
         // set id
         this.id = element.dataset.layerId | 0;

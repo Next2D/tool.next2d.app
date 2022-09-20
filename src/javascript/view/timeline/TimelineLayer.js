@@ -507,6 +507,10 @@ class TimelineLayer extends BaseTimeline
         const element = document
             .getElementById("timeline-content");
 
+        if (!element) {
+            return ;
+        }
+
         const lastFrame = Util.$timelineHeader.lastFrame;
 
         let parent = document
