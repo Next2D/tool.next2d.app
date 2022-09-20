@@ -179,7 +179,19 @@ class GradientBevelFilter extends Filter
      */
     set type (type)
     {
-        this._$type = type;
+        type = `${type}`.toLowerCase();
+        switch (type) {
+
+            case "outer":
+            case "full":
+                this._$type = type;
+                break;
+
+            default:
+                this._$type = "inner";
+                break;
+
+        }
     }
 
     /**
@@ -198,7 +210,7 @@ class GradientBevelFilter extends Filter
      */
     set knockout (knockout)
     {
-        this._$knockout = knockout;
+        this._$knockout = !!knockout;
     }
 
     /**
