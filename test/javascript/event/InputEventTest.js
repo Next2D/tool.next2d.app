@@ -160,3 +160,46 @@ describe("InputEvent.js focus test", () =>
         expect(Util.$keyLock).toBe(false);
     });
 });
+
+describe("InputEvent.js input test", () =>
+{
+    it("finishInput test", () =>
+    {
+        const inputEvent = new InputEvent();
+
+        let result = "";
+        const eventMock = {
+            "key": "Enter",
+            "type": "focusout",
+            "currentTarget": {
+                "blur": () =>
+                {
+                    result = "blur";
+                }
+            },
+            "target": {
+                "value": 200,
+                "id": "test-function"
+            }
+        };
+
+        inputEvent.finishInput(eventMock);
+        expect(result).toBe("blur");
+
+        // 初期値
+        expect(eventMock.target.value).toBe(200);
+
+        // マウス移動
+        inputEvent.changeTestFunction = (value) =>
+        {
+            expect(value).toBe(200);
+            return 50;
+        };
+
+        eventMock.key = null;
+        inputEvent.finishInput(eventMock);
+
+        expect(eventMock.target.value).toBe(50);
+    });
+});
+
