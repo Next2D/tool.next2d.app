@@ -278,8 +278,10 @@ class LibraryController
         const element = document
             .getElementById("library-list-box");
 
-        while (element.children.length) {
-            element.children[0].remove();
+        if (element) {
+            while (element.children.length) {
+                element.children[0].remove();
+            }
         }
 
         // 上書き管理のマップも初期化
