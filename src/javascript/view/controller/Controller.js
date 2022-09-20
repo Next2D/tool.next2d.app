@@ -90,13 +90,19 @@ class Controller extends BaseController
 
         const scene = Util.$currentWorkSpace().scene;
 
-        document
-            .getElementById("object-name")
-            .value = scene.name;
+        const objectName = document
+            .getElementById("object-name");
 
-        document
-            .getElementById("object-symbol")
-            .value = scene.symbol;
+        if (objectName) {
+            objectName.value = scene.name;
+        }
+
+        const objectSymbol = document
+            .getElementById("object-symbol");
+
+        if (objectSymbol) {
+            objectSymbol.value = scene.symbol;
+        }
     }
 }
 
