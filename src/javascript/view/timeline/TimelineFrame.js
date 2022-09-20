@@ -72,7 +72,10 @@ class TimelineFrame extends BaseTimeline
      */
     set currentFrame (frame)
     {
-        document.getElementById("current-frame").value = `${frame | 0}`;
+        const element = document.getElementById("current-frame");
+        if (element) {
+            element.value = `${frame | 0}`;
+        }
     }
 
     /**

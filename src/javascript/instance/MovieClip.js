@@ -112,32 +112,24 @@ class MovieClip extends Instance
         Util.$clearShapePointer();
 
         // object setting
-        const sceneName = document
-            .getElementById("scene-name");
-
+        const sceneName = document.getElementById("scene-name");
         if (sceneName) {
             sceneName.textContent = this.name;
         }
 
-        const objectName = document
-            .getElementById("object-name");
-
+        const objectName = document.getElementById("object-name");
         if (objectName) {
             objectName.value = this.name;
         }
 
-        const objectSymbol = document
-            .getElementById("object-symbol");
-
+        const objectSymbol = document.getElementById("object-symbol");
         if (objectSymbol) {
             objectSymbol.value = this.symbol;
         }
-        
+
         // シーンの初期化
         if (this.id === 0) {
-            const scenes = document
-                .getElementById("scene-name-menu-list");
-
+            const scenes = document.getElementById("scene-name-menu-list");
             if (scenes) {
                 while (scenes.children.length) {
                     scenes.children[0].remove();
