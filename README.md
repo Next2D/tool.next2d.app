@@ -3,7 +3,11 @@ Authoring tools that work on the web
 
 https://user-images.githubusercontent.com/4123454/160549811-98562bb7-cdff-460c-96b0-c01bcd5e5eab.mp4
 
+[![UnitTest](https://github.com/Next2D/tool.next2d.app/actions/workflows/integration.yml/badge.svg?branch=develop)](https://github.com/Next2D/Player/actions/workflows/integration.yml)
 [![CodeQL](https://github.com/Next2D/tool.next2d.app/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/Next2D/tool.next2d.app/actions/workflows/codeql-analysis.yml)
+[![Lint](https://github.com/Next2D/tool.next2d.app/actions/workflows/lint.yml/badge.svg?branch=develop)](https://github.com/Next2D/Player/actions/workflows/lint.yml) \
+[![license](https://img.shields.io/github/license/Next2D/tool.next2d.app)](https://github.com/Next2D/tool.next2d.app/blob/master/LICENSE)
+[![Docs](https://img.shields.io/badge/docs-online-blue.svg)](https://next2d.app/ja/usage/index.html)
 [![Discord](https://img.shields.io/discord/812136803506716713?label=Discord&logo=discord)](https://discord.gg/6c9rv5Uns5)
 [![Follow us on Twitter](https://img.shields.io/twitter/follow/Next2D?label=Follow&style=social)](https://twitter.com/intent/user?screen_name=Next2D)
 
