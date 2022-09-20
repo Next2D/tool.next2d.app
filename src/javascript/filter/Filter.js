@@ -120,6 +120,8 @@ class Filter
     }
 
     /**
+     * @description 表示のアクティブフラグ
+     *
      * @return {boolean}
      * @public
      */
@@ -129,6 +131,8 @@ class Filter
     }
 
     /**
+     * @description 表示のアクティブフラグ
+     *
      * @param  {boolean} state
      * @return {void}
      * @public

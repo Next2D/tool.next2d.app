@@ -121,7 +121,7 @@ describe("DropShadowFilter.js property test", () =>
     });
 });
 
-describe("BevelFilter.js function test", () =>
+describe("DropShadowFilter.js function test", () =>
 {
     it("toParamArray test", () =>
     {

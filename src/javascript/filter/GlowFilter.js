@@ -44,7 +44,7 @@ class GlowFilter extends Filter
      */
     set color (color)
     {
-        this._$color = +color;
+        this._$color = Util.$clamp(color | 0, 0, 0xffffff);
     }
 
     /**
@@ -105,7 +105,7 @@ class GlowFilter extends Filter
      */
     set inner (inner)
     {
-        this._$inner = inner;
+        this._$inner = !!inner;
     }
 
     /**
@@ -124,7 +124,7 @@ class GlowFilter extends Filter
      */
     set knockout (knockout)
     {
-        this._$knockout = knockout;
+        this._$knockout = !!knockout;
     }
 
     /**

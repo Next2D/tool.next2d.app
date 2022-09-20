@@ -12,6 +12,7 @@ const replace     = require("gulp-replace");
 const htmlMin     = require("gulp-htmlmin");
 const ejs         = require("gulp-ejs");
 const eslint      = require("gulp-eslint");
+const jsdoc       = require("gulp-jsdoc3");
 
 const options = minimist(process.argv.slice(2), {
     "boolean": [ "prodBuild" ],
@@ -329,6 +330,59 @@ const test = (done) =>
     }).start();
 };
 
+
+/**
+ * @public
+ */
+const createHTML = (done) =>
+{
+    return gulp
+        .src([
+            "src/javascript/**/*.js",
+            "!src/javascript/Util.replaced.js",
+            "!src/javascript/worker/**/*.js",
+            "DOCS.md"
+        ], { "read": false })
+        .pipe(jsdoc({
+            "plugins": [
+                "plugins/markdown"
+            ],
+            "markdown": {
+                "hardwrap": true
+            },
+            "templates": {
+                "cleverLinks"   : false,
+                "monospaceLinks": false,
+                "applicationName": "Next2D NoCode Tool",
+                "path": "../../../",
+                "openGraph": {
+                    "title": "NoCode Tool API Documentation",
+                    "description": "NoCode Tool API Documentation.",
+                    "type": "website",
+                    "image": "https://next2d.app/assets/img/ogp.png",
+                    "url": "https://next2d.app/"
+                },
+                "meta": {
+                    "title": "NoCode Tool API Documentation",
+                    "description": "Next2D NoCode Tool API Documentation.",
+                    "keyword": "Next2D, WebGL, WebGL2, JavaScript, HTML5"
+                },
+                "linenums": true,
+                "default" : {
+                    "outputSourceFiles" : true
+                }
+            },
+            "opts": {
+                "encoding": "utf8",
+                "recurse": true,
+                "private": false,
+                "lenient": true,
+                "destination": "../next2d/dist/docs/tool/",
+                "template": "node_modules/@next2d/jsdoc-template"
+            }
+        }, done));
+};
+
 exports.default = gulp.series(
     buildVersion,
     buildWorker,
@@ -355,4 +409,6 @@ exports.test = gulp.series(
     buildJavaScript,
     test
 );
+
+exports.jsdoc = gulp.series(createHTML);
 exports.lint  = gulp.series(lint);
