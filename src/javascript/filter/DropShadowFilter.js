@@ -153,7 +153,7 @@ class DropShadowFilter extends Filter
      */
     set inner (inner)
     {
-        this._$inner = inner;
+        this._$inner = !!inner;
     }
 
     /**
@@ -172,7 +172,7 @@ class DropShadowFilter extends Filter
      */
     set knockout (knockout)
     {
-        this._$knockout = knockout;
+        this._$knockout = !!knockout;
     }
 
     /**
@@ -191,7 +191,7 @@ class DropShadowFilter extends Filter
      */
     set hideObject (hideObject)
     {
-        this._$hideObject = hideObject;
+        this._$hideObject = !!hideObject;
     }
 
     /**
