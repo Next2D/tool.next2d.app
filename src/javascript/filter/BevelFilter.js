@@ -193,7 +193,19 @@ class BevelFilter extends Filter
      */
     set type (type)
     {
-        this._$type = type;
+        type = `${type}`.toLowerCase();
+        switch (type) {
+
+            case "outer":
+            case "inner":
+                this._$type = type;
+                break;
+
+            default:
+                this._$type = "full";
+                break;
+
+        }
     }
 
     /**
@@ -212,7 +224,7 @@ class BevelFilter extends Filter
      */
     set knockout (knockout)
     {
-        this._$knockout = knockout;
+        this._$knockout = !!knockout;
     }
 
     /**
