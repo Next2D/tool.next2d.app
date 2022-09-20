@@ -80,4 +80,40 @@ describe("InputEvent.js mouse test", () =>
         expect(eventMock.target.style.cursor).toBe("");
     });
 
+    it("mouseDown test", () =>
+    {
+        const inputEvent = new InputEvent();
+
+        const eventMock = {
+            "preventDefault": () =>
+            {
+                return 0;
+            },
+            "target": {
+                "style": {
+                    "cursor": "auto"
+                },
+                "focus": () =>
+                {
+                    return 0;
+                }
+            },
+            "screenX": 100
+        };
+
+        expect(inputEvent._$mouseMove).toBe(null);
+        expect(inputEvent._$mouseUp).toBe(null);
+        expect(eventMock.screenX).toBe(100);
+
+        inputEvent.mouseDown(eventMock);
+        expect(inputEvent._$pointX).toBe(eventMock.screenX);
+        expect(inputEvent._$currentTarget).toBe(eventMock.target);
+        expect(typeof inputEvent._$mouseMove).toBe("function");
+        expect(typeof inputEvent._$mouseUp).toBe("function");
+        expect(eventMock.target.style.cursor).toBe("auto");
+
+        inputEvent.mouseUp();
+        expect(eventMock.target.style.cursor).toBe("");
+    });
+
 });

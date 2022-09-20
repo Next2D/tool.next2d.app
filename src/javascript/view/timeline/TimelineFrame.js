@@ -60,7 +60,8 @@ class TimelineFrame extends BaseTimeline
      */
     get currentFrame ()
     {
-        return document.getElementById("current-frame").value | 0;
+        const element = document.getElementById("current-frame");
+        return element ? element.value | 0 : 1;
     }
 
     /**
