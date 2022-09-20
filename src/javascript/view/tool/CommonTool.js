@@ -54,20 +54,6 @@ class CommonTool extends ToolEvent
          */
         this._$offsetY = 0;
 
-        /**
-         * @type {boolean}
-         * @default false
-         * @private
-         */
-        this._$active = false;
-
-        /**
-         * @type {HTMLDivElement}
-         * @default null
-         * @private
-         */
-        this._$target = null;
-
         // toolsに登録
         if (name) {
 
@@ -200,44 +186,6 @@ class CommonTool extends ToolEvent
     set offsetY (offset_y)
     {
         this._$offsetY = offset_y;
-    }
-
-    /**
-     * @return {boolean}
-     * @public
-     */
-    get active ()
-    {
-        return this._$active;
-    }
-
-    /**
-     * @param  {boolean} active
-     * @return {void}
-     * @public
-     */
-    set active (active)
-    {
-        this._$active = !!active;
-    }
-
-    /**
-     * @return {HTMLDivElement}
-     * @public
-     */
-    get target ()
-    {
-        return this._$target;
-    }
-
-    /**
-     * @param  {HTMLDivElement} target
-     * @return {void}
-     * @public
-     */
-    set target (target)
-    {
-        this._$target = target;
     }
 
     /**
