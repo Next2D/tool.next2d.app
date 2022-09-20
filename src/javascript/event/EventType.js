@@ -1,11 +1,18 @@
 /**
+ * イベントの型の固定値
+ * Fixed value of event type
+ *
  * @class
  */
 class EventType
 {
     /**
+     * @description マウスダウンのイベント名
+     *              Mouse down event name
+     *
      * @return {string}
      * @static
+     * @const
      */
     static get MOUSE_DOWN ()
     {
@@ -13,8 +20,12 @@ class EventType
     }
 
     /**
+     * @description マウスアップのイベント名
+     *              Mouse-up event name
+     *
      * @return {string}
      * @static
+     * @const
      */
     static get MOUSE_UP ()
     {
@@ -22,8 +33,12 @@ class EventType
     }
 
     /**
+     * @description マウスムーブのイベント名
+     *              Mouse move event name
+     *
      * @return {string}
      * @static
+     * @const
      */
     static get MOUSE_MOVE ()
     {
@@ -31,16 +46,25 @@ class EventType
     }
 
     /**
+     * @description ツール起動時のイベント名
+     *              Event name at tool startup
+     *
      * @return {string}
      * @static
+     * @const
      */
     static get START ()
     {
         return "start";
     }
+
     /**
+     * @description ツール終了時のイベント名
+     *              Event name at end of tool
+     *
      * @return {string}
      * @static
+     * @const
      */
     static get END ()
     {
@@ -48,8 +72,12 @@ class EventType
     }
 
     /**
+     * @description ダブルクリック時のイベント名
+     *              Event name on double-click
+     *
      * @return {string}
      * @static
+     * @const
      */
     static get DBL_CLICK ()
     {
@@ -57,8 +85,12 @@ class EventType
     }
 
     /**
+     * @description Input、Selectの変更時のイベント名
+     *              Event name when Input or Select is changed
+     *
      * @return {string}
      * @static
+     * @const
      */
     static get CHANGE ()
     {
@@ -66,8 +98,12 @@ class EventType
     }
 
     /**
+     * @description マウスオーバのイベント名
+     *              Mouse over event name
+     *
      * @return {string}
      * @static
+     * @const
      */
     static get MOUSE_OVER ()
     {
@@ -75,8 +111,12 @@ class EventType
     }
 
     /**
+     * @description マウスアウトのイベント名
+     *              Mouse-out event name
+     *
      * @return {string}
      * @static
+     * @const
      */
     static get MOUSE_OUT ()
     {
@@ -84,8 +124,12 @@ class EventType
     }
 
     /**
+     * @description キーボード押下のイベント名
+     *              Event name for keyboard presses
+     *
      * @return {string}
      * @static
+     * @const
      */
     static get KEY_DOWN ()
     {
@@ -93,8 +137,12 @@ class EventType
     }
 
     /**
+     * @description マウスが指定領域から出た際のイベント名
+     *              Event name when the mouse leaves the specified area
+     *
      * @return {string}
      * @static
+     * @const
      */
     static get MOUSE_LEAVE ()
     {

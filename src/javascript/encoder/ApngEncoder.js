@@ -1,4 +1,7 @@
 /**
+ * Animation PNG エンコーダー
+ * Animation PNG Encoder
+ *
  * @class
  */
 class ApngEncoder
@@ -32,19 +35,20 @@ class ApngEncoder
     }
 
     /**
-     * @param  {number} c
+     * @param  {number} crc
      * @param  {Uint8Array} buffer
      * @param  {number} offset
      * @param  {number} length
      * @return {number}
+     * @method
      * @private
      */
-    _$crcUpdate (c, buffer, offset, length)
+    _$crcUpdate (crc, buffer, offset, length)
     {
         for (let idx = 0; idx < length; idx++) {
-            c = this._$crcTable[(c ^ buffer[offset + idx]) & 0xff] ^ c >>> 8;
+            crc = this._$crcTable[(crc ^ buffer[offset + idx]) & 0xff] ^ crc >>> 8;
         }
-        return c;
+        return crc;
     }
 
     /**
@@ -52,6 +56,7 @@ class ApngEncoder
      * @param  {number} offset
      * @param  {number} length
      * @return {number}
+     * @method
      * @private
      */
     _$crc (buffer, offset, length)
@@ -65,6 +70,7 @@ class ApngEncoder
      * @param {Uint8Array} buffer
      * @param {number} pos
      * @param {string} value
+     * @method
      * @private
      */
     _$writeString (buffer, pos, value)
@@ -76,6 +82,7 @@ class ApngEncoder
 
     /**
      * @return {Promise}
+     * @method
      * @public
      */
     encode ()

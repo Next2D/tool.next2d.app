@@ -1,11 +1,12 @@
 /**
+ * ツールの共通イベントの管理を行うクラス
+ * Class to manage common events of the tool
+ *
  * @class
  */
 class ToolEvent extends EventDispatcher
 {
     /**
-     * @description ツールのマウスイベントを管理するクラス
-     *
      * @constructor
      * @public
      */
@@ -53,38 +54,34 @@ class ToolEvent extends EventDispatcher
     }
 
     /**
-     * @return {boolean}
+     * @description ツールが選択されていれば、true。選択が終了したらfalseになります。
+     *              True if the tool is selected; false if the selection is finished.
+     *
+     * @default false
+     * @member {boolean}
      * @public
      */
     get active ()
     {
         return this._$active;
     }
-
-    /**
-     * @param  {boolean} active
-     * @return {void}
-     * @public
-     */
     set active (active)
     {
         this._$active = !!active;
     }
 
     /**
-     * @return {HTMLDivElement}
+     * @description 選択されたツールで利用するElement
+     *              Element to be used with the selected tool
+     *
+     * @default null
+     * @member {HTMLDivElement}
      * @public
      */
     get target ()
     {
         return this._$target;
     }
-
-    /**
-     * @param  {HTMLDivElement} target
-     * @return {void}
-     * @public
-     */
     set target (target)
     {
         this._$target = target;
@@ -92,6 +89,7 @@ class ToolEvent extends EventDispatcher
 
     /**
      * @description ツール選択時は変数をアクティブ化
+     *              Variables are activated when the tool is selected
      *
      * @param  {MouseEvent} event
      * @return {void}
@@ -106,6 +104,7 @@ class ToolEvent extends EventDispatcher
 
     /**
      * @description ツール選択終了したら変数を非アクティブ化
+     *              Deactivate variables when tool selection is finished
      *
      * @return {void}
      * @method
@@ -119,6 +118,7 @@ class ToolEvent extends EventDispatcher
 
     /**
      * @description ツール切り替え、開始時のイベント関数
+     *              Tool switching, event function at start
      *
      * @return {void}
      * @method
@@ -140,6 +140,7 @@ class ToolEvent extends EventDispatcher
 
     /**
      * @description ツール切り替え、終了時のイベント関数
+     *              Event functions for tool switching and exit
      *
      * @return {void}
      * @method

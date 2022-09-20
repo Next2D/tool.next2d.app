@@ -1,4 +1,7 @@
 /**
+ * Next2Dのフィルターと連動したBevelFilterクラス
+ * BevelFilter class in conjunction with Next2D filters
+ *
  * @class
  * @extends {Filter}
  */
@@ -7,6 +10,7 @@ class BevelFilter extends Filter
     /**
      * @param {object} [object=null]
      * @constructor
+     * @public
      */
     constructor (object = null)
     {
@@ -37,19 +41,17 @@ class BevelFilter extends Filter
     }
 
     /**
-     * @return {number}
+     * @description シャドウのオフセット距離です。
+     *              The offset distance for the shadow, in pixels.
+     *
+     * @member  {number}
+     * @default 4
      * @public
      */
     get distance ()
     {
         return this._$distance;
     }
-
-    /**
-     * @param  {number} distance
-     * @return {void}
-     * @public
-     */
     set distance (distance)
     {
         this._$distance = Util.$clamp(
@@ -60,114 +62,102 @@ class BevelFilter extends Filter
     }
 
     /**
-     * @return {number}
+     * @description シャドウの角度
+     *              The angle of the shadow.
+     *
+     * @member  {number}
+     * @default 45
      * @public
      */
     get angle ()
     {
         return this._$angle;
     }
-
-    /**
-     * @param  {number} angle
-     * @return {void}
-     * @public
-     */
     set angle (angle)
     {
         this._$angle = +angle % 360;
     }
 
     /**
-     * @return {number}
+     * @description グローのカラー
+     *              The color of the glow.
+     *
+     * @member  {number}
+     * @default 0xffffff
      * @public
      */
     get highlightColor ()
     {
         return this._$highlightColor;
     }
-
-    /**
-     * @param  {number} highlight_color
-     * @return {void}
-     * @public
-     */
     set highlightColor (highlight_color)
     {
         this._$highlightColor = Util.$clamp(highlight_color | 0, 0, 0xffffff);
     }
 
     /**
-     * @return {number}
+     * @description アルファ透明度の値です。
+     *              The alpha transparency value for the color.
+     *
+     * @member  {number}
+     * @default 1
      * @public
      */
     get highlightAlpha ()
     {
         return this._$highlightAlpha;
     }
-
-    /**
-     * @param  {number} highlight_alpha
-     * @return {void}
-     * @public
-     */
     set highlightAlpha (highlight_alpha)
     {
         this._$highlightAlpha = Util.$clamp(+highlight_alpha, 0, 100);
     }
 
     /**
-     * @return {number}
+     * @description グローのカラー
+     *              The color of the glow.
+     *
+     * @member  {number}
+     * @default 0
      * @public
      */
     get shadowColor ()
     {
         return this._$shadowColor;
     }
-
-    /**
-     * @param  {number} shadow_color
-     * @return {void}
-     * @public
-     */
     set shadowColor (shadow_color)
     {
         this._$shadowColor = Util.$clamp(shadow_color | 0, 0, 0xffffff);
     }
 
     /**
-     * @return {number}
+     * @description アルファ透明度の値です。
+     *              The alpha transparency value for the color.
+     *
+     * @member  {number}
+     * @default 1
      * @public
      */
     get shadowAlpha ()
     {
         return this._$shadowAlpha;
     }
-
-    /**
-     * @param  {number} shadow_alpha
-     * @return {void}
-     * @public
-     */
     set shadowAlpha (shadow_alpha)
     {
         this._$shadowAlpha = Util.$clamp(+shadow_alpha, 0, 100);
     }
 
     /**
-     * @return {number}
+     * @description インプリントの強さまたは広がりです。
+     *              The strength of the imprint or spread.
+     *
+     * @member  {number}
+     * @default 1
      * @public
      */
     get strength ()
     {
         return this._$strength;
     }
-
-    /**
-     * @param  {number} strength
-     * @return {void}
-     * @public
-     */
     set strength (strength)
     {
         this._$strength = Util.$clamp(
@@ -178,19 +168,17 @@ class BevelFilter extends Filter
     }
 
     /**
-     * @return {string}
+     * @description オブジェクトでのベベルの配置
+     *              The placement of the bevel on the object.
+     *
+     * @member  {string}
+     * @default BitmapFilterType.INNER
      * @public
      */
     get type ()
     {
         return this._$type;
     }
-
-    /**
-     * @param  {string} type
-     * @return {void}
-     * @public
-     */
     set type (type)
     {
         type = `${type}`.toLowerCase();
@@ -209,25 +197,26 @@ class BevelFilter extends Filter
     }
 
     /**
-     * @return {boolean}
+     * @description オブジェクトにノックアウト効果を適用するかどうか
+     *              Specifies whether the object has a knockout effect.
+     *
+     * @member  {boolean}
+     * @default false
      * @public
      */
     get knockout ()
     {
         return this._$knockout;
     }
-
-    /**
-     * @param  {boolean} knockout
-     * @return {void}
-     * @public
-     */
     set knockout (knockout)
     {
         this._$knockout = !!knockout;
     }
 
     /**
+     * @description 指定されたフィルターと同一の設定がないか判定
+     *              Determine if there are any settings identical to the specified filter
+     *
      * @param  {BevelFilter} filter
      * @return {boolean}
      * @method
@@ -275,7 +264,11 @@ class BevelFilter extends Filter
     }
 
     /**
+     * @description Next2DのBevelFilterを生成
+     *              Generate Next2D BevelFilter
+     *
      * @return {window.next2d.filters.BevelFilter}
+     * @method
      * @public
      */
     createInstance ()
@@ -288,7 +281,12 @@ class BevelFilter extends Filter
     }
 
     /**
+     * @description クラス内の変数を配列にして返す
+     *              Returns an array of variables in the class
+     *
      * @return {array}
+     * @method
+     * @public
      */
     toParamArray ()
     {
@@ -300,7 +298,11 @@ class BevelFilter extends Filter
     }
 
     /**
+     * @description クラス内の変数をObjectにして返す
+     *              Return variables in a class as Objects
+     *
      * @return {object}
+     * @method
      * @public
      */
     toObject ()

@@ -1,5 +1,6 @@
 /**
- * イベントを管理するクラス
+ * ツールのイベントを管理するクラス
+ * Class to manage tool events
  *
  * @class
  */
@@ -12,6 +13,7 @@ class EventDispatcher
     constructor ()
     {
         /**
+         * @description イベント関数のマッピング変数
          * @type {Map}
          * @private
          */
@@ -20,6 +22,7 @@ class EventDispatcher
 
     /**
      * @description イベント登録関数
+     *              event registration function
      *
      * @param {string} type
      * @param {function} callback
@@ -39,7 +42,8 @@ class EventDispatcher
     }
 
     /**
-     * @description イベント発火関数
+     * @description 登録したイベントの起動関数
+     *              Launch function for registered events
      *
      * @param  {string} type
      * @param  {MouseEvent|Event} [event=null]
