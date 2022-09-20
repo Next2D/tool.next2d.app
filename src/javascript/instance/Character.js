@@ -1,10 +1,13 @@
 /**
+ * スクリーンに配置されたDisplayObjectクラス
+ * DisplayObject class placed on the screen
+ *
  * @class
  */
 class Character
 {
     /**
-     * @param {object} object
+     * @param {object} [object=null]
      *
      * @constructor
      * @public
@@ -41,6 +44,9 @@ class Character
     }
 
     /**
+     * @description 選択したDisplayObjectの情報をコントローラーに表示する
+     *              Display information on the selected DisplayObject in the controller
+     *
      * @return {void}
      * @method
      * @public
@@ -96,7 +102,13 @@ class Character
     }
 
     /**
-     * @param {MouseEvent} event
+     * @description 選択時にコントローラーの不要な値は非表示に、変更可能な値は表示する
+     *              Hides unwanted values of the controller when selected and shows values that can be changed
+     *
+     * @param  {MouseEvent} event
+     * @return {void}
+     * @method
+     * @public
      */
     showShapeColor (event)
     {
@@ -118,6 +130,9 @@ class Character
     }
 
     /**
+     * @description Characterクラスを複製
+     *              Duplicate Character class
+     *
      * @return {Character}
      * @method
      * @public
@@ -134,6 +149,7 @@ class Character
 
     /**
      * @description タイムラインからDisplayObjectを削除
+     *              Remove DisplayObject from Timeline
      *
      * @param  {Layer} layer
      * @return {void}
@@ -202,6 +218,7 @@ class Character
 
     /**
      * @description tweenの座標を再計算してポインターを再配置
+     *              Recalculate tween coordinates and reposition pointer
      *
      * @param {number} frame
      * @method
@@ -237,6 +254,7 @@ class Character
 
     /**
      * @description 指定したフレームをキーフレームの開始・終了のフレームを返す
+     *              Returns the specified frame as the start and end frame of the keyframe
      *
      * @param  {number} frame
      * @return {object}
@@ -303,6 +321,7 @@ class Character
 
     /**
      * @description tweenオブジェクトを複製
+     *              Duplicate tween object
      *
      * @param  {number} frame
      * @return {object}
@@ -315,6 +334,9 @@ class Character
     }
 
     /**
+     * @description キーフレームに設定したtweenの設定objectを返す
+     *              Returns the tween setting object set to the keyframe
+     *
      * @param  {number} frame
      * @return {object}
      * @method
@@ -328,6 +350,9 @@ class Character
     }
 
     /**
+     * @description 指定のキーフレームにtweenの設定objectを設定する
+     *              Set tween setting object to specified keyframe
+     *
      * @param  {number} frame
      * @param  {object} object
      * @return {void}
@@ -340,6 +365,9 @@ class Character
     }
 
     /**
+     * @description 指定のキーフレームにtweenの設定objectが設定されているかを判定
+     *              Determines if a tween setting object is set for a given keyframe
+     *
      * @param  {number} frame
      * @return {boolean}
      * @method
@@ -351,6 +379,9 @@ class Character
     }
 
     /**
+     * @description 指定のキーフレームのtweenの設定objectを削除
+     *              Delete tween setting object for specified keyframe
+     *
      * @param  {number} frame
      * @return {boolean}
      * @method
@@ -362,6 +393,9 @@ class Character
     }
 
     /**
+     * @description 表示領域(バウンディングボックス)のObjectを返す
+     *              Returns the Object of the display area (bounding box)
+     *
      * @return {object}
      * @method
      * @public
@@ -391,7 +425,11 @@ class Character
     }
 
     /**
-     * @return {number}
+     * @description DisplayObject インスタンスの元の位置からの回転角を度単位で示します。
+     *              Indicates the rotation of the DisplayObject instance,
+     *              in degrees, from its original orientation.
+     *
+     * @member {number}
      * @public
      */
     get rotation ()
@@ -401,12 +439,6 @@ class Character
         const matrix = this.getPlace(frame).matrix;
         return Math.atan2(matrix[1], matrix[0]) * Util.$Rad2Deg;
     }
-
-    /**
-     * @param  {number} rotate
-     * @return {void}
-     * @public
-     */
     set rotation (rotate)
     {
         const frame = Util.$timelineFrame.currentFrame;
@@ -429,7 +461,10 @@ class Character
     }
 
     /**
-     * @return {number}
+     * @description 表示オブジェクトの幅を示します（ピクセル単位）。
+     *              Indicates the width of the display object, in pixels.
+     *
+     * @member {number}
      * @public
      */
     get width ()
@@ -438,12 +473,6 @@ class Character
         const width  = +Math.abs(bounds.xMax - bounds.xMin);
         return width !== Infinity ? width : 0;
     }
-
-    /**
-     * @param  {number} width
-     * @return {void}
-     * @public
-     */
     set width (width)
     {
         const bounds  = this.getBounds();
@@ -452,7 +481,11 @@ class Character
     }
 
     /**
-     * @return {number}
+     * @description 基準点から適用されるオブジェクトの水平スケール（パーセンテージ）を示します。
+     *              Indicates the horizontal scale (percentage)
+     *              of the object as applied from the registration point.
+     *
+     * @member {number}
      * @public
      */
     get scaleX ()
@@ -462,12 +495,6 @@ class Character
         const matrix = this.getPlace(frame).matrix;
         return Math.sqrt(matrix[0] * matrix[0] + matrix[1] * matrix[1]);
     }
-
-    /**
-     * @param  {number} scale_x
-     * @return {void}
-     * @public
-     */
     set scaleX (scale_x)
     {
         const frame = Util.$timelineFrame.currentFrame;
@@ -493,7 +520,10 @@ class Character
     }
 
     /**
-     * @return {number}
+     * @description 表示オブジェクトの高さを示します（ピクセル単位）。
+     *              Indicates the height of the display object, in pixels.
+     *
+     * @member {number}
      * @public
      */
     get height ()
@@ -502,12 +532,6 @@ class Character
         const height = +Math.abs(bounds.yMax - bounds.yMin);
         return height !== Infinity ? height : 0;
     }
-
-    /**
-     * @param  {number} height
-     * @return {void}
-     * @public
-     */
     set height (height)
     {
         const bounds   = this.getBounds();
@@ -516,7 +540,11 @@ class Character
     }
 
     /**
-     * @return {number}
+     * @description 基準点から適用されるオブジェクトの垂直スケール（パーセンテージ）を示します。
+     *              IIndicates the vertical scale (percentage)
+     *              of an object as applied from the registration point.
+     *
+     * @member {number}
      * @public
      */
     get scaleY ()
@@ -526,12 +554,6 @@ class Character
         const matrix = this.getPlace(frame).matrix;
         return Math.sqrt(matrix[2] * matrix[2] + matrix[3] * matrix[3]);
     }
-
-    /**
-     * @param  {number} scale_y
-     * @return {void}
-     * @public
-     */
     set scaleY (scale_y)
     {
         const frame = Util.$timelineFrame.currentFrame;
@@ -555,7 +577,13 @@ class Character
     }
 
     /**
-     * @return {number}
+     * @description 親 DisplayObjectContainer のローカル座標を基準にした
+     *              DisplayObject インスタンスの x 座標を示します。
+     *              Indicates the x coordinate
+     *              of the DisplayObject instance relative to the local coordinates
+     *              of the parent DisplayObjectContainer.
+     *
+     * @member {number}
      * @public
      */
     get x ()
@@ -564,12 +592,6 @@ class Character
         const place = this.getPlace(frame);
         return place.matrix[4];
     }
-
-    /**
-     * @param  {number} x
-     * @return {void}
-     * @public
-     */
     set x (x)
     {
         const frame = Util.$timelineFrame.currentFrame;
@@ -588,7 +610,13 @@ class Character
     }
 
     /**
-     * @return {number}
+     * @description 親 DisplayObjectContainer のローカル座標を基準にした
+     *              DisplayObject インスタンスの y 座標を示します。
+     *              Indicates the y coordinate
+     *              of the DisplayObject instance relative to the local coordinates
+     *              of the parent DisplayObjectContainer.
+     *
+     * @member {number}
      * @public
      */
     get y ()
@@ -597,12 +625,6 @@ class Character
         const place = this.getPlace(frame);
         return place.matrix[5];
     }
-
-    /**
-     * @param  {number} y
-     * @return {void}
-     * @public
-     */
     set y (y)
     {
         const frame = Util.$timelineFrame.currentFrame;
@@ -621,7 +643,8 @@ class Character
     }
 
     /**
-     * @description 表示画像を生成
+     * @description 表示用のHTMLImageElementクラスを生成
+     *              Generate HTMLImageElement class for display
      *
      * @return {HTMLImageElement}
      * @method
@@ -728,7 +751,11 @@ class Character
     }
 
     /**
-     * @return {number}
+     * @description フィルター適用で移動したx座標の値
+     *              Value of x-coordinate moved by applying filter
+     *
+     * @member {number}
+     * @readonly
      * @public
      */
     get offsetX ()
@@ -737,7 +764,11 @@ class Character
     }
 
     /**
-     * @return {number}
+     * @description フィルター適用で移動したy座標の値
+     *              Value of y-coordinate moved by applying filter
+     *
+     * @member {number}
+     * @readonly
      * @public
      */
     get offsetY ()
@@ -746,46 +777,42 @@ class Character
     }
 
     /**
-     * @return {number}
+     * @description インスタンス内で移動したx座標の値
+     *              Value of x-coordinate moved within the instance
+     *
+     * @member {number}
      * @public
      */
     get screenX ()
     {
         return this._$screenX;
     }
-
-    /**
-     * @param  {number} screen_x
-     * @return {void}
-     * @public
-     */
     set screenX (screen_x)
     {
         this._$screenX = screen_x;
     }
 
     /**
-     * @return {number}
-     * @readonly
+     * @description インスタンス内で移動したy座標の値
+     *              Value of x-coordinate moved within the instance
+     *
+     * @member {number}
      * @public
      */
     get screenY ()
     {
         return this._$screenY;
     }
-
-    /**
-     * @param  {number} screen_y
-     * @return {void}
-     * @public
-     */
     set screenY (screen_y)
     {
         this._$screenY = screen_y;
     }
 
     /**
-     * @return {number}
+     * @description DisplayObjectのid、ワークスペース内ではユニークの値
+     *              DisplayObject id, unique value in the workspace
+     *
+     * @member {number}
      * @readonly
      * @public
      */
@@ -795,38 +822,32 @@ class Character
     }
 
     /**
-     * @return {number}
+     * @description コントローラーに読み込まれたアイテムID
+     *              Item ID loaded in controller
+     *
+     * @member {number}
      * @public
      */
     get libraryId ()
     {
         return this._$libraryId;
     }
-
-    /**
-     * @param  {number} library_id
-     * @return {void}
-     * @public
-     */
     set libraryId (library_id)
     {
         this._$libraryId = library_id | 0;
     }
 
     /**
-     * @return {string}
+     * @description MovieClip内で有効なアクセス名
+     *              Valid access name in MovieClip
+     *
+     * @member {string}
      * @public
      */
     get name ()
     {
         return this._$name;
     }
-
-    /**
-     * @param  {string} name
-     * @return {void}
-     * @public
-     */
     set name (name)
     {
         name += "";
@@ -835,7 +856,10 @@ class Character
     }
 
     /**
-     * @return {object}
+     * @description 中心点の座標
+     *              Coordinates of the center point
+     *
+     * @member {object}
      * @public
      */
     get referencePoint ()
@@ -845,11 +869,6 @@ class Character
             "y": this._$referencePoint.y
         };
     }
-
-    /**
-     * @param {object} point
-     * @public
-     */
     set referencePoint (point)
     {
         if (point) {
@@ -979,6 +998,7 @@ class Character
     /**
      * @param  {number} frame
      * @return {object}
+     * @method
      * @public
      */
     getClonePlace (frame)
@@ -989,6 +1009,7 @@ class Character
     /**
      * @param  {number} frame
      * @return {object}
+     * @method
      * @public
      */
     getPlace (frame)
@@ -1268,6 +1289,7 @@ class Character
      * @param  {number} start_frame
      * @param  {number} end_frame
      * @return {Character}
+     * @method
      * @public
      */
     split (layer, start_frame, end_frame)
@@ -1413,6 +1435,7 @@ class Character
 
     /**
      * @return {object}
+     * @method
      * @public
      */
     toObject ()

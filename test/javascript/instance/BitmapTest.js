@@ -1,6 +1,6 @@
 describe("Bitmap.js property test", () =>
 {
-    it("getBounds test", () =>
+    it("property test", () =>
     {
         const bitmap = new Bitmap({
             "imageType": "image/png",

@@ -1,64 +1,70 @@
 /**
+ * 空のキーフレーム用クラス
+ * Class for empty keyframes
+ *
  * @class
  */
 class EmptyCharacter
 {
     /**
-     * @param {object} object
+     * @param {object} [object=null]
      *
      * @constructor
      * @public
      */
     constructor (object = null)
     {
-        if (object) {
-            this._$startFrame = object.startFrame;
-            this._$endFrame   = object.endFrame;
-        } else {
-            this._$startFrame = 1;
-            this._$endFrame   = 2;
-        }
+        /**
+         * @type {number}
+         * @default 1
+         * @private
+         */
+        this._$startFrame = object ? object.startFrame : 1;
+
+        /**
+         * @type {number}
+         * @default 2
+         * @private
+         */
+        this._$endFrame = object ? object.endFrame : 2;
     }
 
     /**
-     * @return {number}
+     * @description 開始フレーム番号
+     *              start frame number
+     *
+     * @member {number}
      * @public
      */
     get startFrame ()
     {
         return this._$startFrame;
     }
-
-    /**
-     * @param  {number} start_frame
-     * @return {void}
-     * @public
-     */
     set startFrame (start_frame)
     {
         this._$startFrame = start_frame | 0;
     }
 
     /**
-     * @return {number}
+     * @description 終了フレーム番号
+     *              end frame number
+     *
+     * @member {number}
      * @public
      */
     get endFrame ()
     {
         return this._$endFrame;
     }
-
-    /**
-     * @param  {number} end_frame
-     * @return {void}
-     * @public
-     */
     set endFrame (end_frame)
     {
         this._$endFrame = end_frame | 0;
     }
 
     /**
+     * @description EmptyCharacterクラスを複製
+     *              Duplicate EmptyCharacter class
+     *
      * @return {EmptyCharacter}
      * @method
      * @public
@@ -69,6 +75,9 @@ class EmptyCharacter
     }
 
     /**
+     * @description クラス内の変数をObjectにして返す
+     *              Return variables in a class as Objects
+     *
      * @return {object}
      * @method
      * @public
@@ -83,6 +92,7 @@ class EmptyCharacter
 
     /**
      * @description 指定フレームに移動
+     *              Move to the specified frame
      *
      * @param  {number} frame
      * @return {void}
@@ -97,6 +107,7 @@ class EmptyCharacter
 
     /**
      * @description 指定フレームの幅を削除して分割
+     *              Deletes the width of the specified frame and splits it
      *
      * @param  {Layer} layer
      * @param  {number} start_frame
