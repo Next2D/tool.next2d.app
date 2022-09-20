@@ -124,7 +124,7 @@ describe("GradientBevelFilter.js property test", () =>
     });
 });
 
-describe("BevelFilter.js function test", () =>
+describe("GradientBevelFilter.js function test", () =>
 {
     it("toParamArray test", () =>
     {

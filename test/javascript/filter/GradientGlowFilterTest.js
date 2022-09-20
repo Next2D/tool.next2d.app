@@ -35,7 +35,7 @@ describe("GradientGlowFilter.js property test", () =>
         const gradientGlowFilter = new GradientGlowFilter();
 
         // 初期値
-        expect(gradientGlowFilter.colors.length).toBe(3);
+        expect(gradientGlowFilter.colors.length).toBe(2);
 
         const colors = [0xff00ff, 0x00ffff, 0xffff00];
         gradientGlowFilter.colors = colors;
@@ -49,7 +49,7 @@ describe("GradientGlowFilter.js property test", () =>
         const gradientGlowFilter = new GradientGlowFilter();
 
         // 初期値
-        expect(gradientGlowFilter.alphas.length).toBe(3);
+        expect(gradientGlowFilter.alphas.length).toBe(2);
 
         const alphas = [0.2, 0.5, 0.8];
         gradientGlowFilter.alphas = alphas;
@@ -63,7 +63,7 @@ describe("GradientGlowFilter.js property test", () =>
         const gradientGlowFilter = new GradientGlowFilter();
 
         // 初期値
-        expect(gradientGlowFilter.ratios.length).toBe(3);
+        expect(gradientGlowFilter.ratios.length).toBe(2);
 
         const ratios = [50 / 255, 100 / 255, 200 / 255];
         gradientGlowFilter.ratios = ratios;
@@ -92,17 +92,17 @@ describe("GradientGlowFilter.js property test", () =>
         const gradientGlowFilter = new GradientGlowFilter();
 
         // 初期値
-        expect(gradientGlowFilter.type).toBe("inner");
+        expect(gradientGlowFilter.type).toBe("outer");
 
         // バリデーション
         gradientGlowFilter.type = "FULL";
         expect(gradientGlowFilter.type).toBe("full");
 
-        gradientGlowFilter.type = "inNER";
-        expect(gradientGlowFilter.type).toBe("inner");
-
         gradientGlowFilter.type = "oUTer";
         expect(gradientGlowFilter.type).toBe("outer");
+
+        gradientGlowFilter.type = "inNER";
+        expect(gradientGlowFilter.type).toBe("inner");
 
         gradientGlowFilter.type = "aaaa";
         expect(gradientGlowFilter.type).toBe("inner");
@@ -124,7 +124,7 @@ describe("GradientGlowFilter.js property test", () =>
     });
 });
 
-describe("BevelFilter.js function test", () =>
+describe("GradientBevelFilter.js function test", () =>
 {
     it("toParamArray test", () =>
     {
@@ -134,14 +134,14 @@ describe("BevelFilter.js function test", () =>
         expect(params[0]).toBe(null);
         expect(params[1]).toBe(4);
         expect(params[2]).toBe(45);
-        expect(params[3].length).toBe(3);
-        expect(params[4].length).toBe(3);
-        expect(params[5].length).toBe(3);
+        expect(params[3].length).toBe(2);
+        expect(params[4].length).toBe(2);
+        expect(params[5].length).toBe(2);
         expect(params[6]).toBe(4);
         expect(params[7]).toBe(4);
         expect(params[8]).toBe(1);
         expect(params[9]).toBe(1);
-        expect(params[10]).toBe("inner");
+        expect(params[10]).toBe("outer");
         expect(params[11]).toBe(false);
     });
 
@@ -158,10 +158,10 @@ describe("BevelFilter.js function test", () =>
         expect(object.distance).toBe(4);
         expect(object.angle).toBe(45);
         expect(object.strength).toBe(1);
-        expect(object.colors.length).toBe(3);
-        expect(object.alphas.length).toBe(3);
-        expect(object.ratios.length).toBe(3);
-        expect(object.type).toBe("inner");
+        expect(object.colors.length).toBe(2);
+        expect(object.alphas.length).toBe(2);
+        expect(object.ratios.length).toBe(2);
+        expect(object.type).toBe("outer");
         expect(object.knockout).toBe(false);
     });
 
