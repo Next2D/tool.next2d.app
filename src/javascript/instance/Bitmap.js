@@ -1,4 +1,7 @@
 /**
+ * 画像データを管理するクラス、Next2DのShapeクラスとして出力されます。
+ * The output is as a Next2D Shape class, a class that manages image data.
+ *
  * @class
  * @extends {Instance}
  */
@@ -7,25 +10,27 @@ class Bitmap extends Instance
     /**
      * @param {object} object
      * @constructor
+     * @public
      */
     constructor (object)
     {
         super(object);
 
         this.imageType = object.imageType;
-        this.width = object.width;
-        this.height = object.height;
+        this.width     = object.width;
+        this.height    = object.height;
 
         this._$buffer = null;
         if (object.buffer) {
             this.buffer = object.buffer;
         }
         this._$command = null;
-        this._$binary = "";
+        this._$binary  = "";
     }
 
     /**
      * @description Bitmapクラスを複製
+     *              Duplicate Bitmap class
      *
      * @return {Bitmap}
      * @method
@@ -37,6 +42,11 @@ class Bitmap extends Instance
     }
 
     /**
+     * @description このアイテムが設定されたDisplayObjectが選択された時
+     *              内部情報をコントローラーに表示する
+     *              When a DisplayObject with this item set is selected,
+     *              internal information is displayed on the controller.
+     *
      * @param  {object} place
      * @param  {string} [name=""]
      * @return {void}
@@ -57,8 +67,12 @@ class Bitmap extends Instance
     }
 
     /**
+     * @description 表示領域(バウンディングボックス)のObjectを返す
+     *              Returns the Object of the display area (bounding box)
+     *
      * @param  {array} [matrix=null]
      * @return {object}
+     * @method
      * @public
      */
     getBounds (matrix = null)
@@ -76,8 +90,12 @@ class Bitmap extends Instance
     }
 
     /**
+     * @description シンボルを指定した時の継承先を返す
+     *              Returns the inheritance destination when a symbol is specified.
+     *
      * @return {string}
      * @public
+     * @readonly
      */
     get defaultSymbol ()
     {
@@ -85,7 +103,11 @@ class Bitmap extends Instance
     }
 
     /**
-     * @return {string}
+     * @description 画像のカラー配列のバイナリデータ
+     *              Binary data of the color array of the image
+     *
+     * @default ""
+     * @member {Uint8Array|string}
      * @public
      */
     get buffer ()
@@ -102,12 +124,6 @@ class Bitmap extends Instance
 
         return this._$binary;
     }
-
-    /**
-     * @param  {string|Uint8Array} binary
-     * @return {void}
-     * @public
-     */
     set buffer (binary)
     {
 
@@ -139,64 +155,59 @@ class Bitmap extends Instance
     }
 
     /**
-     * @return {string}
+     * @description 画像種別を返す(image/png, image/jpeg, image/gif, etc...)
+     *              return image type (image/png, image/jpeg, image/gif, etc...)
+     *
+     * @member {string}
      * @public
      */
     get imageType ()
     {
         return this._$imageType;
     }
-
-    /**
-     * @param  {string} image_type
-     * @return {void}
-     * @public
-     */
     set imageType (image_type)
     {
         this._$imageType = image_type;
     }
 
     /**
-     * @return {uint}
+     * @description 画像の幅を返す
+     *              Return image width
+     *
+     * @member {number}
      * @public
      */
     get width ()
     {
         return this._$width;
     }
-
-    /**
-     * @param  {uint} width
-     * @return {void}
-     * @public
-     */
     set width (width)
     {
         this._$width = width;
     }
 
     /**
-     * @return {uint}
+     * @description 画像の高さを返す
+     *              Returns the height of the image
+     *
+     * @return {number}
      * @public
      */
     get height ()
     {
         return this._$height;
     }
-
-    /**
-     * @param  {uint} height
-     * @return {void}
-     * @public
-     */
     set height (height)
     {
         this._$height = height;
     }
 
     /**
+     * @description クラス内の変数をObjectにして返す
+     *              Return variables in a class as Objects
+     *
      * @return {object}
+     * @method
      * @public
      */
     toObject ()
@@ -215,7 +226,11 @@ class Bitmap extends Instance
     }
 
     /**
+     * @description 書き出し用のObjectを返す
+     *              Returns an Object for export
+     *
      * @return {object}
+     * @method
      * @public
      */
     toPublish ()
@@ -229,7 +244,11 @@ class Bitmap extends Instance
     }
 
     /**
+     * @description Next2DのShapeを生成
+     *              Generate Next2D Shape
+     *
      * @return {next2d.display.Shape}
+     * @method
      * @public
      */
     createInstance ()
