@@ -1,4 +1,7 @@
 /**
+ * 各種Filterの親クラスで、共通処理が定義されてます。
+ * Common processes are defined in the parent classes of various Filters.
+ *
  * @class
  */
 class Filter
@@ -6,8 +9,9 @@ class Filter
     /**
      * @param {object} [object=null]
      * @constructor
+     * @public
      */
-    constructor(object = null)
+    constructor (object = null)
     {
         this._$blurX   = 4;
         this._$blurY   = 4;
@@ -24,17 +28,25 @@ class Filter
     }
 
     /**
+     * @description 子のクラスのクローンを生成
+     *              Generate a clone of the child class
+     *
      * @return {Filter}
+     * @method
      * @public
      */
     clone ()
     {
-        return new this.constructor(this.toObject());
+        return new this.constructor(JSON.parse(JSON.stringify(this.toObject())));
     }
 
     /**
+     * @description 指定されたフィルターと同一の設定がないか判定
+     *              Determine if there are any settings identical to the specified filter
+     *
      * @param  {Filter} filter
      * @return {boolean}
+     * @method
      * @public
      */
     isSame (filter)
@@ -55,19 +67,17 @@ class Filter
     }
 
     /**
-     * @return {number}
+     * @description 水平方向のぼかし量。
+     *              The amount of horizontal blur.
+     *
+     * @member  {number}
+     * @default 4
      * @public
      */
     get blurX ()
     {
         return this._$blurX;
     }
-
-    /**
-     * @param  {number} blur_x
-     * @return {void}
-     * @public
-     */
     set blurX (blur_x)
     {
         this._$blurX = Util.$clamp(
@@ -78,19 +88,17 @@ class Filter
     }
 
     /**
-     * @return {number}
+     * @description 垂直方向のぼかし量。
+     *              The amount of vertical blur.
+     *
+     * @member  {number}
+     * @default 4
      * @public
      */
     get blurY ()
     {
         return this._$blurY;
     }
-
-    /**
-     * @param  {number} blur_y
-     * @return {void}
-     * @public
-     */
     set blurY (blur_y)
     {
         this._$blurY = Util.$clamp(
@@ -101,61 +109,51 @@ class Filter
     }
 
     /**
-     * @return {number}
+     * @description ぼかしの実行回数です。
+     *              The number of times to perform the blur.
+     *
+     * @member  {number}
+     * @default 1
      * @public
      */
     get quality ()
     {
         return this._$quality;
     }
-
-    /**
-     * @param  {number} quality
-     * @return {void}
-     * @public
-     */
     set quality (quality)
     {
         this._$quality = Util.$clamp(quality | 0, 1, 3);
     }
 
     /**
-     * @description 表示のアクティブフラグ
+     * @description コントローラーの表示/非表示のフラグ
+     *              Flag to show/hide controllers
      *
-     * @return {boolean}
+     * @member {boolean}
+     * @default true
      * @public
      */
     get state ()
     {
         return this._$state;
     }
-
-    /**
-     * @description 表示のアクティブフラグ
-     *
-     * @param  {boolean} state
-     * @return {void}
-     * @public
-     */
     set state (state)
     {
         this._$state = state;
     }
 
     /**
-     * @return {string}
+     * @description 子のFilterクラスのクラス名
+     *              Class name of the child Filter class
+     *
+     * @member {string}
+     * @default ""
      * @public
      */
     get name ()
     {
         return this._$name;
     }
-
-    /**
-     * @param  {string} name
-     * @return {void}
-     * @public
-     */
     set name (name)
     {
         this._$name = name;

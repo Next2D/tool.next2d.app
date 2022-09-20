@@ -1,4 +1,7 @@
 /**
+ * Next2Dのフィルターと連動したGradientBevelFilterクラス
+ * GradientBevelFilter class in conjunction with Next2D filters
+ *
  * @class
  * @extends {Filter}
  */
@@ -7,6 +10,7 @@ class GradientBevelFilter extends Filter
     /**
      * @param {object} [object=null]
      * @constructor
+     * @public
      */
     constructor (object = null)
     {
@@ -35,19 +39,17 @@ class GradientBevelFilter extends Filter
     }
 
     /**
-     * @return {number}
+     * @description シャドウのオフセット距離です。
+     *              The offset distance for the shadow, in pixels.
+     *
+     * @member  {number}
+     * @default 4
      * @public
      */
     get distance ()
     {
         return this._$distance;
     }
-
-    /**
-     * @param  {number} distance
-     * @return {void}
-     * @public
-     */
     set distance (distance)
     {
         this._$distance = Util.$clamp(
@@ -58,38 +60,34 @@ class GradientBevelFilter extends Filter
     }
 
     /**
-     * @return {number}
+     * @description シャドウの角度
+     *              The angle of the shadow.
+     *
+     * @member  {number}
+     * @default 45
      * @public
      */
     get angle ()
     {
         return this._$angle;
     }
-
-    /**
-     * @param  {number} angle
-     * @return {void}
-     * @public
-     */
     set angle (angle)
     {
         this._$angle = +angle % 360;
     }
 
     /**
-     * @return {array}
+     * @description グラデーションで使用する RGB 16 進数カラー値の配列です。
+     *              An array of RGB hexadecimal color values to use in the gradient.
+     *
+     * @member  {array}
+     * @default null
      * @public
      */
     get colors ()
     {
         return this._$colors;
     }
-
-    /**
-     * @param  {array} colors
-     * @return {void}
-     * @public
-     */
     set colors (colors)
     {
         this._$colors.length = 0;
@@ -97,19 +95,18 @@ class GradientBevelFilter extends Filter
     }
 
     /**
-     * @return {array}
+     * @description カラー配列内の各色に対応するアルファ透明度の値の配列です。
+     *              An array of alpha transparency values
+     *              for the corresponding colors in the colors array.
+     *
+     * @member  {array}
+     * @default null
      * @public
      */
     get alphas ()
     {
         return this._$alphas;
     }
-
-    /**
-     * @param  {array} alphas
-     * @return {void}
-     * @public
-     */
     set alphas (alphas)
     {
         this._$alphas.length = 0;
@@ -119,19 +116,18 @@ class GradientBevelFilter extends Filter
     }
 
     /**
-     * @return {array}
+     * @description カラー配列内の対応するカラーの色分布比率の配列です。
+     *              An array of color distribution ratios
+     *              for the corresponding colors in the colors array.
+     *
+     * @member  {array}
+     * @default null
      * @public
      */
     get ratios ()
     {
         return this._$ratios;
     }
-
-    /**
-     * @param  {array} ratios
-     * @return {void}
-     * @public
-     */
     set ratios (ratios)
     {
         this._$ratios.length = 0;
@@ -141,19 +137,17 @@ class GradientBevelFilter extends Filter
     }
 
     /**
-     * @return {number}
+     * @description インプリントの強さまたは広がりです。
+     *              The strength of the imprint or spread.
+     *
+     * @member  {number}
+     * @default 1
      * @public
      */
     get strength ()
     {
         return this._$strength;
     }
-
-    /**
-     * @param  {number} strength
-     * @return {void}
-     * @public
-     */
     set strength (strength)
     {
         this._$strength = Util.$clamp(
@@ -164,19 +158,17 @@ class GradientBevelFilter extends Filter
     }
 
     /**
-     * @return {string}
+     * @description オブジェクトでのベベルの配置
+     *              The placement of the bevel on the object.
+     *
+     * @member  {string}
+     * @default BitmapFilterType.INNER
      * @public
      */
     get type ()
     {
         return this._$type;
     }
-
-    /**
-     * @param  {string} type
-     * @return {void}
-     * @public
-     */
     set type (type)
     {
         type = `${type}`.toLowerCase();
@@ -195,26 +187,28 @@ class GradientBevelFilter extends Filter
     }
 
     /**
-     * @return {boolean}
+     * @description オブジェクトにノックアウト効果を適用するかどうか
+     *              Specifies whether the object has a knockout effect.
+     *
+     * @member  {boolean}
+     * @default false
      * @public
      */
     get knockout ()
     {
         return this._$knockout;
     }
-
-    /**
-     * @param  {boolean} knockout
-     * @return {void}
-     * @public
-     */
     set knockout (knockout)
     {
         this._$knockout = !!knockout;
     }
 
     /**
+     * @description カラー、アルファー、分布比率の配列の値をバリデーションを行い算出
+     *              Validated and calculated values for color, alpha, and distribution ratio arrays
+     *
      * @return {object}
+     * @method
      * @public
      */
     adjustment ()
@@ -264,6 +258,9 @@ class GradientBevelFilter extends Filter
     }
 
     /**
+     * @description 指定されたフィルターと同一の設定がないか判定
+     *              Determine if there are any settings identical to the specified filter
+     *
      * @param  {GradientBevelFilter} filter
      * @return {boolean}
      * @method
@@ -313,7 +310,11 @@ class GradientBevelFilter extends Filter
     }
 
     /**
+     * @description Next2DのGradientBevelFilterを生成
+     *              Generate Next2D GradientBevelFilter
+     *
      * @return {window.next2d.filters.GradientBevelFilter}
+     * @method
      * @public
      */
     createInstance ()
@@ -327,7 +328,12 @@ class GradientBevelFilter extends Filter
     }
 
     /**
+     * @description クラス内の変数を配列にして返す
+     *              Returns an array of variables in the class
+     *
      * @return {array}
+     * @method
+     * @public
      */
     toParamArray ()
     {
@@ -340,7 +346,11 @@ class GradientBevelFilter extends Filter
     }
 
     /**
+     * @description クラス内の変数をObjectにして返す
+     *              Return variables in a class as Objects
+     *
      * @return {object}
+     * @method
      * @public
      */
     toObject ()

@@ -1,4 +1,7 @@
 /**
+ * Next2Dのフィルターと連動したGlowFilterクラス
+ * GlowFilter class in conjunction with Next2D filters
+ *
  * @class
  * @extends {Filter}
  */
@@ -7,6 +10,7 @@ class GlowFilter extends Filter
     /**
      * @param {object} [object=null]
      * @constructor
+     * @public
      */
     constructor (object = null)
     {
@@ -29,57 +33,51 @@ class GlowFilter extends Filter
     }
 
     /**
-     * @return {number}
+     * @description グローのカラー
+     *              The color of the glow.
+     *
+     * @member  {number}
+     * @default 4
      * @public
      */
     get color ()
     {
         return this._$color;
     }
-
-    /**
-     * @param  {number} color
-     * @return {void}
-     * @public
-     */
     set color (color)
     {
         this._$color = Util.$clamp(color | 0, 0, 0xffffff);
     }
 
     /**
-     * @return {number}
+     * @description アルファ透明度の値です。
+     *              The alpha transparency value for the color.
+     *
+     * @member  {number}
+     * @default 1
      * @public
      */
     get alpha ()
     {
         return this._$alpha;
     }
-
-    /**
-     * @param  {number} alpha
-     * @return {void}
-     * @public
-     */
     set alpha (alpha)
     {
         this._$alpha = Util.$clamp(+alpha, 0, 100);
     }
 
     /**
-     * @return {number}
+     * @description インプリントの強さまたは広がりです。
+     *              The strength of the imprint or spread.
+     *
+     * @member  {number}
+     * @default 1
      * @public
      */
     get strength ()
     {
         return this._$strength;
     }
-
-    /**
-     * @param  {number} strength
-     * @return {void}
-     * @public
-     */
     set strength (strength)
     {
         this._$strength = Util.$clamp(
@@ -90,44 +88,43 @@ class GlowFilter extends Filter
     }
 
     /**
-     * @return {boolean}
+     * @description グローが内側グローであるかどうか
+     *              Specifies whether the glow is an inner glow.
+     *
+     * @member  {boolean}
+     * @default true
      * @public
      */
     get inner ()
     {
         return this._$inner;
     }
-
-    /**
-     * @param  {boolean} inner
-     * @return {void}
-     * @public
-     */
     set inner (inner)
     {
         this._$inner = !!inner;
     }
 
     /**
-     * @return {boolean}
+     * @description オブジェクトにノックアウト効果を適用するかどうか
+     *              Specifies whether the object has a knockout effect.
+     *
+     * @member  {boolean}
+     * @default true
      * @public
      */
     get knockout ()
     {
         return this._$knockout;
     }
-
-    /**
-     * @param  {boolean} knockout
-     * @return {void}
-     * @public
-     */
     set knockout (knockout)
     {
         this._$knockout = !!knockout;
     }
 
     /**
+     * @description 指定されたフィルターと同一の設定がないか判定
+     *              Determine if there are any settings identical to the specified filter
+     *
      * @param  {GlowFilter} filter
      * @return {boolean}
      * @method
@@ -159,7 +156,11 @@ class GlowFilter extends Filter
     }
 
     /**
+     * @description Next2DのGlowFilterを生成
+     *              Generate Next2D GlowFilter
+     *
      * @return {window.next2d.filters.GlowFilter}
+     * @method
      * @public
      */
     createInstance ()
@@ -171,7 +172,12 @@ class GlowFilter extends Filter
     }
 
     /**
+     * @description クラス内の変数を配列にして返す
+     *              Returns an array of variables in the class
+     *
      * @return {array}
+     * @method
+     * @public
      */
     toParamArray ()
     {
@@ -182,7 +188,11 @@ class GlowFilter extends Filter
     }
 
     /**
+     * @description クラス内の変数をObjectにして返す
+     *              Return variables in a class as Objects
+     *
      * @return {object}
+     * @method
      * @public
      */
     toObject ()

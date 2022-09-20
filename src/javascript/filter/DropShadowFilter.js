@@ -1,4 +1,7 @@
 /**
+ * Next2Dのフィルターと連動したDropShadowFilterクラス
+ * DropShadowFilter class in conjunction with Next2D filters
+ *
  * @class
  * @extends {Filter}
  */
@@ -7,6 +10,7 @@ class DropShadowFilter extends Filter
     /**
      * @param {object} [object=null]
      * @constructor
+     * @public
      */
     constructor (object = null)
     {
@@ -35,19 +39,17 @@ class DropShadowFilter extends Filter
     }
 
     /**
-     * @return {number}
+     * @description シャドウのオフセット距離です。
+     *              The offset distance for the shadow, in pixels.
+     *
+     * @member  {number}
+     * @default 4
      * @public
      */
     get distance ()
     {
         return this._$distance;
     }
-
-    /**
-     * @param  {number} distance
-     * @return {void}
-     * @public
-     */
     set distance (distance)
     {
         this._$distance = Util.$clamp(
@@ -58,76 +60,68 @@ class DropShadowFilter extends Filter
     }
 
     /**
-     * @return {number}
+     * @description シャドウの角度
+     *              The angle of the shadow.
+     *
+     * @member  {number}
+     * @default 45
      * @public
      */
     get angle ()
     {
         return this._$angle;
     }
-
-    /**
-     * @param  {number} angle
-     * @return {void}
-     * @public
-     */
     set angle (angle)
     {
         this._$angle = +angle % 360;
     }
 
     /**
-     * @return {number}
+     * @description グローのカラー
+     *              The color of the glow.
+     *
+     * @member  {number}
+     * @default 4
      * @public
      */
     get color ()
     {
         return this._$color;
     }
-
-    /**
-     * @param  {number} color
-     * @return {void}
-     * @public
-     */
     set color (color)
     {
         this._$color = Util.$clamp(color | 0, 0, 0xffffff);
     }
 
     /**
-     * @return {number}
+     * @description アルファ透明度の値です。
+     *              The alpha transparency value for the color.
+     *
+     * @member  {number}
+     * @default 1
      * @public
      */
     get alpha ()
     {
         return this._$alpha;
     }
-
-    /**
-     * @param  {number} alpha
-     * @return {void}
-     * @public
-     */
     set alpha (alpha)
     {
         this._$alpha = Util.$clamp(+alpha, 0, 100);
     }
 
     /**
-     * @return {number}
+     * @description インプリントの強さまたは広がりです。
+     *              The strength of the imprint or spread.
+     *
+     * @member  {number}
+     * @default 1
      * @public
      */
     get strength ()
     {
         return this._$strength;
     }
-
-    /**
-     * @param  {number} strength
-     * @return {void}
-     * @public
-     */
     set strength (strength)
     {
         this._$strength = Util.$clamp(
@@ -138,63 +132,60 @@ class DropShadowFilter extends Filter
     }
 
     /**
-     * @return {boolean}
+     * @description グローが内側グローであるかどうか
+     *              Specifies whether the glow is an inner glow.
+     *
+     * @member  {boolean}
+     * @default true
      * @public
      */
     get inner ()
     {
         return this._$inner;
     }
-
-    /**
-     * @param  {boolean} inner
-     * @return {void}
-     * @public
-     */
     set inner (inner)
     {
         this._$inner = !!inner;
     }
 
     /**
-     * @return {boolean}
+     * @description オブジェクトにノックアウト効果を適用するかどうか
+     *              Specifies whether the object has a knockout effect.
+     *
+     * @member  {boolean}
+     * @default true
      * @public
      */
     get knockout ()
     {
         return this._$knockout;
     }
-
-    /**
-     * @param  {boolean} knockout
-     * @return {void}
-     * @public
-     */
     set knockout (knockout)
     {
         this._$knockout = !!knockout;
     }
 
     /**
-     * @return {boolean}
+     * @description オブジェクトが非表示であるかどうかを示します。
+     *              Indicates whether or not the object is hidden.
+     *
+     * @member  {boolean}
+     * @default true
      * @public
      */
     get hideObject ()
     {
         return this._$hideObject;
     }
-
-    /**
-     * @param  {boolean} hideObject
-     * @return {void}
-     * @public
-     */
     set hideObject (hideObject)
     {
         this._$hideObject = !!hideObject;
     }
 
     /**
+     * @description 指定されたフィルターと同一の設定がないか判定
+     *              Determine if there are any settings identical to the specified filter
+     *
      * @param  {DropShadowFilter} filter
      * @return {boolean}
      * @method
@@ -238,7 +229,11 @@ class DropShadowFilter extends Filter
     }
 
     /**
+     * @description Next2DのDropShadowFilterを生成
+     *              Generate Next2D DropShadowFilter
+     *
      * @return {window.next2d.filters.DropShadowFilter}
+     * @method
      * @public
      */
     createInstance ()
@@ -251,7 +246,12 @@ class DropShadowFilter extends Filter
     }
 
     /**
+     * @description クラス内の変数を配列にして返す
+     *              Returns an array of variables in the class
+     *
      * @return {array}
+     * @method
+     * @public
      */
     toParamArray ()
     {
@@ -263,7 +263,11 @@ class DropShadowFilter extends Filter
     }
 
     /**
+     * @description クラス内の変数をObjectにして返す
+     *              Return variables in a class as Objects
+     *
      * @return {object}
+     * @method
      * @public
      */
     toObject ()
