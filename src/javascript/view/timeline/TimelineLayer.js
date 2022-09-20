@@ -481,6 +481,10 @@ class TimelineLayer extends BaseTimeline
         const element = document
             .getElementById("timeline-content");
 
+        if (!element) {
+            return ;
+        }
+        
         while (element.firstChild) {
             element.firstChild.remove();
         }
