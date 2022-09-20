@@ -153,6 +153,10 @@ class LibraryPreview
         const element = document
             .getElementById("library-preview-area");
 
+        if (!element) {
+            return ;
+        }
+
         while (element.firstChild) {
             element.firstChild.remove();
         }

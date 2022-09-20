@@ -284,6 +284,9 @@ class MovieClip extends Instance
         this.clearStageArea();
 
         const element = document.getElementById("stage-area");
+        if (!element) {
+            return ;
+        }
 
         const pointers = [];
         const children = element.children;
