@@ -40,19 +40,36 @@ describe("ToolEvent.js element test", () =>
     it("toolStart and toolEnd test", () =>
     {
         const toolEvent = new ToolEvent();
-        toolEvent._$name = "arrow";
 
-        const element = document
-            .getElementById(`tools-${toolEvent._$name}`);
+        const names = [
+            "arrow",
+            "bucket",
+            "circle",
+            "pen",
+            "rectangle",
+            "round-rect",
+            "text",
+            "transform",
+            "zoom"
+        ];
 
-        // 初期値
-        expect(element.classList.contains("active")).toBe(false);
+        for (let idx = 0; idx < names.length; ++idx) {
 
-        // 関数コール後の変数値
-        toolEvent.toolStart();
-        expect(element.classList.contains("active")).toBe(true);
+            toolEvent._$name = names[idx];
 
-        toolEvent.toolEnd();
-        expect(element.classList.contains("active")).toBe(false);
+            const element = document
+                .getElementById(`tools-${toolEvent._$name}`);
+
+            // 初期値
+            expect(element.classList.contains("active")).toBe(false);
+
+            // 関数コール後の変数値
+            toolEvent.toolStart();
+            expect(element.classList.contains("active")).toBe(true);
+
+            toolEvent.toolEnd();
+            expect(element.classList.contains("active")).toBe(false);
+        }
+
     });
 });

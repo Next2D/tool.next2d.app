@@ -112,25 +112,36 @@ class MovieClip extends Instance
         Util.$clearShapePointer();
 
         // object setting
-        document
-            .getElementById("scene-name")
-            .textContent = this.name;
+        const sceneName = document
+            .getElementById("scene-name");
 
-        document
-            .getElementById("object-name")
-            .value = this.name;
+        if (sceneName) {
+            sceneName.textContent = this.name;
+        }
 
-        document
-            .getElementById("object-symbol")
-            .value = this.symbol;
+        const objectName = document
+            .getElementById("object-name");
 
+        if (objectName) {
+            objectName.value = this.name;
+        }
+
+        const objectSymbol = document
+            .getElementById("object-symbol");
+
+        if (objectSymbol) {
+            objectSymbol.value = this.symbol;
+        }
+        
         // シーンの初期化
         if (this.id === 0) {
             const scenes = document
                 .getElementById("scene-name-menu-list");
 
-            while (scenes.children.length) {
-                scenes.children[0].remove();
+            if (scenes) {
+                while (scenes.children.length) {
+                    scenes.children[0].remove();
+                }
             }
         }
 
@@ -144,6 +155,10 @@ class MovieClip extends Instance
             const element = document
                 .getElementById(`frame-label-marker-${frame}`);
 
+            if (!element) {
+                continue;
+            }
+
             element.setAttribute("class", "frame-border-box-marker");
 
         }
@@ -153,6 +168,10 @@ class MovieClip extends Instance
 
             const element = document
                 .getElementById(`frame-label-action-${frame}`);
+
+            if (!element) {
+                continue;
+            }
 
             element.setAttribute("class", "frame-border-box-action");
 
@@ -164,15 +183,21 @@ class MovieClip extends Instance
             const element = document
                 .getElementById(`frame-label-sound-${frame}`);
 
+            if (!element) {
+                continue;
+            }
+
             element.setAttribute("class", "frame-border-box-sound");
 
         }
 
         // frame1 label
         const labelElement = document.getElementById("label-name");
-        labelElement.value = "";
-        if (this._$labels.has(1)) {
-            labelElement.value = this._$labels.get(1);
+        if (labelElement) {
+            labelElement.value = "";
+            if (this._$labels.has(1)) {
+                labelElement.value = this._$labels.get(1);
+            }
         }
 
         // タイムラインを初期化
