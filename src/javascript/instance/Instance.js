@@ -102,12 +102,17 @@ class Instance
         this._$name = `${name}`;
 
         if (this.id) {
-            const libraryElement = document
+            // ライブラリのelementのテキストも更新
+            const element = document
                 .getElementById(`library-name-${this.id}`);
-            libraryElement.textContent = this._$name;
+            if (element) {
+                element.textContent = `${this._$name}`;
+            }
         }
 
-        if (Util.$currentWorkSpace().scene.id === this.id) {
+        // コントローラーに表示中のシーンの場合は、コントローラー表示も更新
+        const workSpace = Util.$currentWorkSpace();
+        if (workSpace && workSpace.scene.id === this.id) {
 
             const objectName = document.getElementById("object-name");
             if (objectName) {
@@ -136,7 +141,23 @@ class Instance
     }
     set type (type)
     {
-        this._$type = `${type}`;
+        type = `${type}`.toLowerCase();
+        switch (type) {
+
+            case InstanceType.SHAPE:
+            case InstanceType.BITMAP:
+            case InstanceType.VIDEO:
+            case InstanceType.FOLDER:
+            case InstanceType.SOUND:
+            case InstanceType.MOVIE_CLIP:
+            case InstanceType.TEXT:
+                this._$type = type;
+                break;
+
+            default:
+                break;
+
+        }
     }
 
     /**
@@ -155,9 +176,12 @@ class Instance
         this._$symbol = `${symbol}`;
 
         if (this.id) {
-            document
-                .getElementById(`library-symbol-name-${this.id}`)
-                .textContent = `${symbol}`;
+            // ライブラリ内のelementのテキストデータも更新
+            const element = document
+                .getElementById(`library-symbol-name-${this.id}`);
+            if (element) {
+                element.textContent = `${symbol}`;
+            }
         }
     }
 
@@ -301,12 +325,11 @@ class Instance
      * @param  {object}  place
      * @param  {object}  [range = null]
      * @param  {number}  [static_frame = 0]
-     * @param  {boolean} [preview = false]
      * @return {HTMLImageElement}
      * @method
      * @public
      */
-    toImage (width, height, place, range = null, static_frame = 0, preview = false)
+    toImage (width, height, place, range = null, static_frame = 0)
     {
         // empty image
         if (!width || !height) {

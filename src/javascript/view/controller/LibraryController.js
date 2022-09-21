@@ -736,43 +736,47 @@ class LibraryController
                 .getElementById(viewId);
 
             let value = target.value;
-            if (target.dataset.type === "name") {
+            if (element.textContent !== value) {
 
-                const cache = library.name;
-                library.name = value;
+                if (target.dataset.type === "name") {
 
-                // 重複してないかチェック
-                if (workSpace._$nameMap.has(library.path)) {
-                    library.name = cache;
-                    value = cache;
+                    const cache = library.name;
+                    library.name = value;
 
-                    const modal = document
-                        .getElementById("detail-modal");
+                    // 重複してないかチェック
+                    if (workSpace._$nameMap.has(library.path)) {
+                        library.name = cache;
+                        value = cache;
 
-                    modal.textContent = Util.$currentLanguage.replace(
-                        "{{同名のアイテムが存在します}}"
-                    );
+                        const modal = document
+                            .getElementById("detail-modal");
 
-                    modal.style.left = `${target.offsetLeft}px`;
-                    modal.style.top  = `${target.offsetTop}px`;
-                    modal.setAttribute("class", "fadeIn");
+                        modal.textContent = Util.$currentLanguage.replace(
+                            "{{同名のアイテムが存在します}}"
+                        );
 
-                    modal.dataset.timerId = setTimeout(() =>
-                    {
-                        if (!modal.classList.contains("fadeOut")) {
-                            modal.setAttribute("class", "fadeOut");
-                        }
-                    }, 1500);
+                        modal.style.left = `${target.offsetLeft}px`;
+                        modal.style.top  = `${target.offsetTop}px`;
+                        modal.setAttribute("class", "fadeIn");
+
+                        modal.dataset.timerId = setTimeout(() =>
+                        {
+                            if (!modal.classList.contains("fadeOut")) {
+                                modal.setAttribute("class", "fadeOut");
+                            }
+                        }, 1500);
+                    }
+
+                } else {
+
+                    library.symbol = value;
+
                 }
 
-            } else {
-
-                library.symbol = value;
-
+                // データを更新
+                element.textContent = value;
             }
 
-            // データを更新
-            element.textContent   = value;
             element.style.display = "";
 
             const parent = document

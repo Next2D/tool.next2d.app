@@ -820,11 +820,13 @@ Util.$toJSON = () =>
 };
 
 /**
+ * @param  {Event} event
  * @return {void}
  * @static
  */
 Util.$autoSave = () =>
 {
+
     Util.$javaScriptEditor.save();
 
     const postData = {
