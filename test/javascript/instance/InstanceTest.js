@@ -90,10 +90,12 @@ describe("Instance.js property test", () =>
             instance.type, instance.name, instance.id
         );
 
+        // 変更前
         expect(instance.name).toBe("test_movie_clip");
 
         workSpaces.scene = instance;
 
+        // 変更後
         instance.name = "update_movie_clip";
         expect(instance.name).toBe("update_movie_clip");
 
@@ -108,7 +110,9 @@ describe("Instance.js property test", () =>
         expect(sceneName.textContent).toBe("update_movie_clip");
 
         // reset
-        element.remove();
+        document
+            .getElementById(`library-child-id-${instance.id}`)
+            .remove();
         Util.$workSpaces.length = 0;
     });
 
@@ -250,4 +254,212 @@ describe("Instance.js path test", () =>
         // reset
         Util.$workSpaces.length = 0;
     });
-})
+});
+
+describe("Instance.js function test", () =>
+{
+    beforeEach(() =>
+    {
+        document.body.innerHTML = window.__html__["test/test.html"];
+    });
+
+    it("property remove test case1", () =>
+    {
+        const workSpaces = new WorkSpace();
+        Util.$activeWorkSpaceId = Util.$workSpaces.length;
+        Util.$workSpaces.push(workSpaces);
+
+        const movieClip = new MovieClip({
+            "id": 1,
+            "name": "test_movie_clip",
+            "type": InstanceType.MOVIE_CLIP
+        });
+        workSpaces._$libraries.set(movieClip.id, movieClip);
+
+        const bitmap = new Instance({
+            "id": 2,
+            "name": "test_bitmap",
+            "type": InstanceType.BITMAP
+        });
+        workSpaces._$libraries.set(bitmap.id, bitmap);
+
+        // シーンをセット
+        const parent = workSpaces._$libraries.get(0);
+        workSpaces.scene = parent;
+
+        // 削除するMovieClipにBitmapを設置
+        const character = new Character();
+        character.libraryId = bitmap.id;
+        // キーフレームを登録
+        character.setPlace(1, {
+            "frame": 1,
+            "matrix": [1, 0, 0, 1, 0, 0],
+            "colorTransform": [1, 1, 1, 1, 0, 0, 0, 0],
+            "blendMode": "normal",
+            "filter": [],
+            "depth": 0
+        });
+
+        expect(movieClip._$layers.size).toBe(0);
+        const layer = new Layer();
+        movieClip.addLayer(layer);
+        expect(movieClip._$layers.size).toBe(1);
+
+        expect(layer._$characters.length).toBe(0);
+        layer.addCharacter(character);
+        expect(layer._$characters.length).toBe(1);
+
+        // rootのMovieClipに設置
+        const parentCharacter1 = new Character();
+        parentCharacter1.libraryId = movieClip.id;
+
+        // キーフレームを登録
+        parentCharacter1.setPlace(1, {
+            "frame": 1,
+            "matrix": [1, 0, 0, 1, 0, 0],
+            "colorTransform": [1, 1, 1, 1, 0, 0, 0, 0],
+            "blendMode": "normal",
+            "filter": [],
+            "depth": 0
+        });
+
+        const parentCharacter2 = new Character();
+        parentCharacter2.libraryId = movieClip.id;
+
+        // キーフレームを登録
+        parentCharacter2.setPlace(1, {
+            "frame": 1,
+            "matrix": [1, 0, 0, 1, 0, 0],
+            "colorTransform": [1, 1, 1, 1, 0, 0, 0, 0],
+            "blendMode": "normal",
+            "filter": [],
+            "depth": 0
+        });
+
+        expect(parent._$layers.size).toBe(1);
+        const parentLayer = new Layer();
+        parent.addLayer(parentLayer);
+        expect(parent._$layers.size).toBe(2);
+
+        expect(parentLayer._$characters.length).toBe(0);
+        parentLayer.addCharacter(parentCharacter1);
+        parentLayer.addCharacter(parentCharacter2);
+        expect(parentLayer._$characters.length).toBe(2);
+        expect(parentLayer._$emptys.length).toBe(0);
+
+        // ライブラリの設置数
+        expect(workSpaces._$libraries.size).toBe(3);
+
+        // 空のキーフレーム数を確認
+        expect(layer._$emptys.length).toBe(0);
+
+        // 関数を実行
+        movieClip.remove();
+        expect(parentLayer._$characters.length).toBe(0);
+        expect(parentLayer._$emptys.length).toBe(1);
+        expect(workSpaces._$libraries.size).toBe(3);
+
+        // reset
+        Util.$workSpaces.length = 0;
+    });
+
+    it("property remove test case2", () =>
+    {
+        const workSpaces = new WorkSpace();
+        Util.$activeWorkSpaceId = Util.$workSpaces.length;
+        Util.$workSpaces.push(workSpaces);
+
+        const movieClip = new MovieClip({
+            "id": 1,
+            "name": "test_movie_clip",
+            "type": InstanceType.MOVIE_CLIP
+        });
+        workSpaces._$libraries.set(movieClip.id, movieClip);
+
+        const bitmap = new Instance({
+            "id": 2,
+            "name": "test_bitmap",
+            "type": InstanceType.BITMAP
+        });
+        workSpaces._$libraries.set(bitmap.id, bitmap);
+
+        // シーンをセット
+        const parent = workSpaces._$libraries.get(0);
+        workSpaces.scene = parent;
+
+        // 削除するMovieClipにBitmapを設置
+        const character = new Character();
+        character.libraryId = bitmap.id;
+        // キーフレームを登録
+        character.setPlace(1, {
+            "frame": 1,
+            "matrix": [1, 0, 0, 1, 0, 0],
+            "colorTransform": [1, 1, 1, 1, 0, 0, 0, 0],
+            "blendMode": "normal",
+            "filter": [],
+            "depth": 0
+        });
+
+        expect(movieClip._$layers.size).toBe(0);
+        const layer = new Layer();
+        movieClip.addLayer(layer);
+        expect(movieClip._$layers.size).toBe(1);
+
+        expect(layer._$characters.length).toBe(0);
+        layer.addCharacter(character);
+        expect(layer._$characters.length).toBe(1);
+
+        // rootのMovieClipに設置
+        const parentCharacter1 = new Character();
+        parentCharacter1.libraryId = movieClip.id;
+
+        // キーフレームを登録
+        parentCharacter1.setPlace(1, {
+            "frame": 1,
+            "matrix": [1, 0, 0, 1, 0, 0],
+            "colorTransform": [1, 1, 1, 1, 0, 0, 0, 0],
+            "blendMode": "normal",
+            "filter": [],
+            "depth": 0
+        });
+
+        const parentCharacter2 = new Character();
+        parentCharacter2.libraryId = bitmap.id;
+
+        // キーフレームを登録
+        parentCharacter2.setPlace(1, {
+            "frame": 1,
+            "matrix": [1, 0, 0, 1, 0, 0],
+            "colorTransform": [1, 1, 1, 1, 0, 0, 0, 0],
+            "blendMode": "normal",
+            "filter": [],
+            "depth": 0
+        });
+
+        expect(parent._$layers.size).toBe(1);
+        const parentLayer = new Layer();
+        parent.addLayer(parentLayer);
+        expect(parent._$layers.size).toBe(2);
+
+        expect(parentLayer._$characters.length).toBe(0);
+        parentLayer.addCharacter(parentCharacter1);
+        parentLayer.addCharacter(parentCharacter2);
+        expect(parentLayer._$characters.length).toBe(2);
+        expect(parentLayer._$emptys.length).toBe(0);
+
+        // ライブラリの設置数
+        expect(workSpaces._$libraries.size).toBe(3);
+
+        // 空のキーフレーム数を確認
+        expect(layer._$emptys.length).toBe(0);
+
+        // 関数を実行
+        movieClip.remove();
+        expect(parentLayer._$characters.length).toBe(1);
+        expect(parentLayer._$emptys.length).toBe(0);
+        expect(workSpaces._$libraries.size).toBe(3);
+
+        // reset
+        Util.$workSpaces.length = 0;
+    });
+});

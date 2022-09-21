@@ -365,7 +365,7 @@ class LibraryController
                 .set(value.path, value.id);
 
             // fixed logic
-            if (value.type === "folder" && value.mode === Util.FOLDER_OPEN) {
+            if (value.type === "folder" && value.mode === FolderType.OPEN) {
 
                 this.openFolder(value);
 
@@ -430,7 +430,7 @@ class LibraryController
                             child, element.nextElementSibling
                         );
 
-                        if (folder.mode === Util.FOLDER_CLOSE) {
+                        if (folder.mode === FolderType.CLOSE) {
                             child.style.display = "none";
                         }
 
@@ -817,7 +817,7 @@ class LibraryController
                 event.target.dataset.libraryId | 0
             );
 
-        if (folder.mode === Util.FOLDER_OPEN) {
+        if (folder.mode === FolderType.OPEN) {
 
             // 閉じる処理
             this.closeFolder(folder);
@@ -884,14 +884,14 @@ class LibraryController
             }
 
             node.style.paddingLeft = `${depth}px`;
-            node.style.display = mode === Util.FOLDER_OPEN
+            node.style.display = mode === FolderType.OPEN
                 ? ""
                 : "none";
 
             if (instance.type === InstanceType.FOLDER) {
                 this.updateFolderStyle(
                     instance,
-                    mode === Util.FOLDER_OPEN ? instance.mode : mode
+                    mode === FolderType.OPEN ? instance.mode : mode
                 );
             }
         }
@@ -907,7 +907,7 @@ class LibraryController
      */
     openFolder (folder)
     {
-        folder.mode = Util.FOLDER_OPEN;
+        folder.mode = FolderType.OPEN;
 
         const iconElement = document
             .getElementById(`folder-${folder.id}`);
@@ -942,7 +942,7 @@ class LibraryController
      */
     closeFolder (folder)
     {
-        folder.mode = Util.FOLDER_CLOSE;
+        folder.mode = FolderType.CLOSE;
 
         const iconElement = document
             .getElementById(`folder-${folder.id}`);

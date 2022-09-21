@@ -195,7 +195,7 @@ class LibraryMenu
                 instance.folderId = id;
             }
 
-            folder.mode = Util.FOLDER_OPEN;
+            folder.mode = FolderType.OPEN;
         }
 
         // 再読み込み

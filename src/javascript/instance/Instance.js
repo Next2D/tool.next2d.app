@@ -87,6 +87,86 @@ class Instance
     getBounds (matrix = null) {}
 
     /**
+     * @description ライブラリ内のユニークな値
+     *              Unique value in the library
+     *
+     * @member {number}
+     * @public
+     */
+    get id ()
+    {
+        return this._$id;
+    }
+    set id (id)
+    {
+        this._$id = id | 0;
+    }
+
+    /**
+     * @description 格納先のフォルダID
+     *              Destination folder ID
+     *
+     * @default 0
+     * @member {number}
+     * @public
+     */
+    get folderId ()
+    {
+        return this._$folderId;
+    }
+    set folderId (folder_id)
+    {
+        this._$folderId = folder_id | 0;
+    }
+
+    /**
+     * @description フォルダを含めたライブラリのパスを返す
+     *              Returns the path to the library, including folders
+     *
+     * @member {string}
+     * @readonly
+     * @public
+     */
+    get path ()
+    {
+        const workSpace = Util.$currentWorkSpace();
+
+        let path = this._$name;
+        if (this._$folderId) {
+            let parent = this;
+            while (parent._$folderId) {
+                parent = workSpace.getLibrary(parent._$folderId);
+                path = `${parent._$name}/${path}`;
+            }
+        }
+
+        return path;
+    }
+
+    /**
+     * @description 指定したワークスペースからPathを取得
+     *              Get Path from the specified workspace
+     *
+     * @param  {WorkSpace} work_space
+     * @return {string}
+     * @method
+     * @public
+     */
+    getPathWithWorkSpace (work_space)
+    {
+        let path = this._$name;
+        if (this._$folderId) {
+            let parent = this;
+            while (parent._$folderId) {
+                parent = work_space.getLibrary(parent._$folderId);
+                path = `${parent._$name}/${path}`;
+            }
+        }
+
+        return path;
+    }
+
+    /**
      * @description ライブラリ名、フォルダのパスを含めた名前をユニークとして利用する
      *              Use the name including the library name and folder path as unique
      *
@@ -514,6 +594,70 @@ class Instance
     }
 
     /**
+     * @description プレビュー用のImageクラスを生成
+     *              Generate Image class for preview
+     *
+     * @return {HTMLImageElement}
+     * @method
+     * @public
+     */
+    getPreview ()
+    {
+        if (this.type === InstanceType.FOLDER) {
+            return new Image();
+        }
+
+        const bounds = this.getBounds([1, 0, 0, 1, 0, 0]);
+
+        // size
+        let width  = Math.abs(bounds.xMax - bounds.xMin);
+        let height = Math.abs(bounds.yMax - bounds.yMin);
+        if (!width || !height) {
+            return Util.$emptyImage;
+        }
+
+        let scaleX   = 1;
+        const scaleY = 150 / height;
+
+        width  = width  * scaleY | 0;
+        height = height * scaleY | 0;
+
+        const controllerWidth = (document
+            .documentElement
+            .style
+            .getPropertyValue("--controller-width")
+            .split("px")[0] | 0) - 10;
+
+        if (width > controllerWidth) {
+            scaleX = controllerWidth / width;
+            width  = width  * scaleX | 0;
+            height = height * scaleX | 0;
+        }
+
+        const image = this.toImage(
+            Math.ceil(width),
+            Math.ceil(height),
+            {
+                "frame": 1,
+                "matrix": [scaleY * scaleX, 0, 0, scaleY * scaleX, 0, 0],
+                "colorTransform": [1, 1, 1, 1, 0, 0, 0, 0],
+                "blendMode": "normal",
+                "filter": []
+            },
+            null, 0, true
+        );
+
+        if (image.height !== height) {
+            const height = Math.min(150, image.height);
+            image.width  *= height / image.height;
+            image.height  = height;
+        }
+
+        return image;
+    }
+
+
+    /**
      * @description ライブラリからの削除処理、配置先からも削除を行う
      *              Process deletion from the library and also from the placement site.
      *
@@ -529,6 +673,11 @@ class Instance
         for (let instance of workSpace._$libraries.values()) {
 
             if (instance.type !== InstanceType.MOVIE_CLIP) {
+                continue;
+            }
+
+            // 削除するインスタンスならスキップ
+            if (instance.id === this.id) {
                 continue;
             }
 
@@ -608,148 +757,5 @@ class Instance
                 }
             }
         }
-    }
-
-    /**
-     * @description プレビュー用のImageクラスを生成
-     *              Generate Image class for preview
-     *
-     * @return {HTMLImageElement}
-     * @method
-     * @public
-     */
-    getPreview ()
-    {
-        if (this.type === InstanceType.FOLDER) {
-            return new Image();
-        }
-
-        const bounds = this.getBounds([1, 0, 0, 1, 0, 0]);
-
-        // size
-        let width  = Math.abs(bounds.xMax - bounds.xMin);
-        let height = Math.abs(bounds.yMax - bounds.yMin);
-        if (!width || !height) {
-            return Util.$emptyImage;
-        }
-
-        let scaleX   = 1;
-        const scaleY = 150 / height;
-
-        width  = width  * scaleY | 0;
-        height = height * scaleY | 0;
-
-        const controllerWidth = (document
-            .documentElement
-            .style
-            .getPropertyValue("--controller-width")
-            .split("px")[0] | 0) - 10;
-
-        if (width > controllerWidth) {
-            scaleX = controllerWidth / width;
-            width  = width  * scaleX | 0;
-            height = height * scaleX | 0;
-        }
-
-        const image = this.toImage(
-            Math.ceil(width),
-            Math.ceil(height),
-            {
-                "frame": 1,
-                "matrix": [scaleY * scaleX, 0, 0, scaleY * scaleX, 0, 0],
-                "colorTransform": [1, 1, 1, 1, 0, 0, 0, 0],
-                "blendMode": "normal",
-                "filter": []
-            },
-            null, 0, true
-        );
-
-        if (image.height !== height) {
-            const height = Math.min(150, image.height);
-            image.width  *= height / image.height;
-            image.height  = height;
-        }
-
-        return image;
-    }
-
-    /**
-     * @description ライブラリ内のユニークな値
-     *              Unique value in the library
-     *
-     * @member {number}
-     * @public
-     */
-    get id ()
-    {
-        return this._$id;
-    }
-    set id (id)
-    {
-        this._$id = id | 0;
-    }
-
-    /**
-     * @description 格納先のフォルダID
-     *              Destination folder ID
-     *
-     * @default 0
-     * @member {number}
-     * @public
-     */
-    get folderId ()
-    {
-        return this._$folderId;
-    }
-    set folderId (folder_id)
-    {
-        this._$folderId = folder_id | 0;
-    }
-
-    /**
-     * @description フォルダを含めたライブラリのパスを返す
-     *              Returns the path to the library, including folders
-     *
-     * @member {string}
-     * @readonly
-     * @public
-     */
-    get path ()
-    {
-        const workSpace = Util.$currentWorkSpace();
-
-        let path = this._$name;
-        if (this._$folderId) {
-            let parent = this;
-            while (parent._$folderId) {
-                parent = workSpace.getLibrary(parent._$folderId);
-                path = `${parent._$name}/${path}`;
-            }
-        }
-
-        return path;
-    }
-
-    /**
-     * @description 指定したワークスペースからPathを取得
-     *              Get Path from the specified workspace
-     *
-     * @param  {WorkSpace} work_space
-     * @return {string}
-     * @method
-     * @public
-     */
-    getPathWithWorkSpace (work_space)
-    {
-        let path = this._$name;
-        if (this._$folderId) {
-            let parent = this;
-            while (parent._$folderId) {
-                parent = work_space.getLibrary(parent._$folderId);
-                path = `${parent._$name}/${path}`;
-            }
-        }
-
-        return path;
     }
 }
