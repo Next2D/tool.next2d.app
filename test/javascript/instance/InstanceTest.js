@@ -263,7 +263,7 @@ describe("Instance.js function test", () =>
         document.body.innerHTML = window.__html__["test/test.html"];
     });
 
-    it("property remove test case1", () =>
+    it("function remove test case1", () =>
     {
         const workSpaces = new WorkSpace();
         Util.$activeWorkSpaceId = Util.$workSpaces.length;
@@ -363,7 +363,7 @@ describe("Instance.js function test", () =>
         Util.$workSpaces.length = 0;
     });
 
-    it("property remove test case2", () =>
+    it("function remove test case2", () =>
     {
         const workSpaces = new WorkSpace();
         Util.$activeWorkSpaceId = Util.$workSpaces.length;

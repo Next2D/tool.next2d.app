@@ -26,7 +26,7 @@ describe("Bitmap.js property test", () =>
 
 describe("Bitmap.js function test", () =>
 {
-    it("getBounds test", () =>
+    it("function getBounds test", () =>
     {
         const bitmap = new Bitmap({
             "width": 200,
@@ -42,7 +42,7 @@ describe("Bitmap.js function test", () =>
         expect(bounds2.yMax).toBe(150);
     });
 
-    it("toObject test", () =>
+    it("function toObject test", () =>
     {
         const bitmap = new Bitmap({
             "id": 1,
@@ -68,7 +68,7 @@ describe("Bitmap.js function test", () =>
         expect(object.buffer).toBe("\x01\x02\x03\x04\x05\x06\x07\b\t\b\x07\x06\x05\x04\x03\x02\x01");
     });
 
-    it("toPublish test", () =>
+    it("function toPublish test", () =>
     {
         const bitmap = new Bitmap({
             "id": 1,

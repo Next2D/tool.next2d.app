@@ -425,31 +425,9 @@ class Layer
     }
 
     /**
-     * @description 全てのレイヤーを非アクティブな状態に更新
-     *              Update all layers to inactive status
+     * @description レイヤーのモードによってアイコンを出し分ける
+     *              Separate icons for each layer mode
      *
-     * @return {void}
-     * @method
-     * @public
-     */
-    clearActiveCharacter ()
-    {
-        for (let idx = 0; idx < this._$characters.length; ++idx) {
-
-            const character = this._$characters[idx];
-
-            const element = document
-                .getElementById(`character-${character.id}`);
-
-            if (!element) {
-                continue;
-            }
-
-            element.style.border = "";
-        }
-    }
-
-    /**
      * @return {void}
      * @method
      * @public
@@ -627,6 +605,9 @@ class Layer
                     document
                         .getElementById(`layer-guide-in-icon-${this.id}`)
                         .style.display = "";
+                    document
+                        .getElementById(`timeline-exit-icon-${this.id}`)
+                        .style.display = "none";
 
                     const exitInIcon = document
                         .getElementById(`timeline-exit-in-icon-${this.id}`);
@@ -662,6 +643,7 @@ class Layer
 
     /**
      * @description タイムラインのCSSを再配置する
+     *              Rearranging the CSS in the Timeline
      *
      * @return {void}
      * @method
@@ -681,6 +663,7 @@ class Layer
 
     /**
      * @description DisplayObjectを配置したフレームのスタイルをセット
+     *              Set the style of the frame in which the DisplayObject is placed
      *
      * @return {void}
      * @method
@@ -876,6 +859,7 @@ class Layer
 
     /**
      * @description 空フレームのスタイルをセット
+     *              Set empty frame style
      *
      * @return {void}
      * @method
@@ -958,6 +942,7 @@ class Layer
 
     /**
      * @description レイヤーのタイムラインのスタイルを初期化
+     *              Initialize layer timeline style
      *
      * @return {void}
      * @method
@@ -990,7 +975,8 @@ class Layer
     }
 
     /**
-     * @description
+     * @description レイヤーID、MovieClip内でユニークなID
+     *              Layer ID, unique ID in MovieClip
      *
      * @default 0
      * @member {number}
@@ -1002,11 +988,12 @@ class Layer
     }
     set id (id)
     {
-        this._$id = id | 0;
+        this._$id = Util.$clamp(id | 0, 0, 0xffff);
     }
 
     /**
-     * @description
+     * @description レイヤー名
+     *              Layer Name
      *
      * @default ""
      * @member {string}
@@ -1022,7 +1009,8 @@ class Layer
     }
 
     /**
-     * @description
+     * @description ハイライトのon/off設定
+     *              Highlight on/off setting
      *
      * @default false
      * @member {boolean}
@@ -1038,7 +1026,8 @@ class Layer
     }
 
     /**
-     * @description
+     * @description 表示/非表示の設定
+     *              Show/Hide settings
      *
      * @default false
      * @member {boolean}
@@ -1054,7 +1043,8 @@ class Layer
     }
 
     /**
-     * @description
+     * @description レイヤーロックのon/off設定
+     *              Layer lock on/off setting
      *
      * @default false
      * @member {boolean}
@@ -1070,7 +1060,8 @@ class Layer
     }
 
     /**
-     * @description
+     * @description レイヤー内の空のキーフレーム配列
+     *              Empty keyframe array in layer
      *
      * @member {array}
      * @public
@@ -1092,7 +1083,8 @@ class Layer
     }
 
     /**
-     * @description
+     * @description レイヤー内のDisplayObject配列
+     *              DisplayObject array in layer
      *
      * @member {array}
      * @public
@@ -1118,7 +1110,8 @@ class Layer
     }
 
     /**
-     * @description
+     * @description 指定したIDのDisplayObjectを返す
+     *              Returns the DisplayObject with the specified ID
      *
      * @param  {number} character_id
      * @return {Character}
@@ -1131,7 +1124,8 @@ class Layer
     }
 
     /**
-     * @description
+     * @description レイヤーにDisplayObjectを追加
+     *              Add DisplayObject to layer
      *
      * @param  {Character} character
      * @return {void}
@@ -1146,7 +1140,8 @@ class Layer
     }
 
     /**
-     * @description
+     * @description 指定したIDのDisplayObjectをレイヤーから削除
+     *              Delete the DisplayObject with the specified ID from the layer
      *
      * @param  {number} character_id
      * @return {void}
@@ -1167,7 +1162,8 @@ class Layer
     }
 
     /**
-     * @description
+     * @description 空のキーフレームを追加
+     *              Add empty keyframes
      *
      * @param  {EmptyCharacter} character
      * @return {void}
@@ -1180,7 +1176,8 @@ class Layer
     }
 
     /**
-     * @description
+     * @description 空のキーフレームを削除
+     *              Delete empty keyframes
      *
      * @param  {EmptyCharacter} character
      * @return {void}
@@ -1196,8 +1193,8 @@ class Layer
     }
 
     /**
-     * @description 現在のフレームを起点に追加できるフレームを調整して
-     *              追加できるフレームの幅を返す
+     * @description 現在のフレームを起点に追加できるフレームを調整して、追加できるフレームの幅を返す
+     *              Adjusts the frames that can be added starting from the current frame and returns the width of the frames that can be added
      *
      * @param  {number} frame
      * @return {object}
@@ -1314,6 +1311,9 @@ class Layer
     }
 
     /**
+     * @description レイヤーのアクティブなトータルフレーム数
+     *              Number of active total frames in the layer
+     *
      * @return {number}
      * @readonly
      * @public
@@ -1339,7 +1339,8 @@ class Layer
     }
 
     /**
-     * @description
+     * @description レイヤーのモードの値
+     *              Layer mode value
      *
      * @default 0
      * @member {number}
@@ -1351,11 +1352,27 @@ class Layer
     }
     set mode (mode)
     {
-        this._$mode = mode;
+        mode = mode | 0;
+        switch (mode) {
+
+            case LayerMode.NORMAL:
+            case LayerMode.MASK:
+            case LayerMode.MASK_IN:
+            case LayerMode.GUIDE:
+            case LayerMode.GUIDE_IN:
+                this._$mode = mode;
+                break;
+
+            default:
+                this._$mode = LayerMode.NORMAL;
+                break;
+
+        }
     }
 
     /**
-     * @description
+     * @description マスクレイヤーのID
+     *              Mask Layer ID
      *
      * @default null
      * @member {number|null}
@@ -1367,13 +1384,14 @@ class Layer
     }
     set maskId (mask_id)
     {
-        this._$maskId = mask_id === null
-            ? null
-            : mask_id | 0;
+        this._$maskId = typeof mask_id === "number"
+            ? Util.$clamp(mask_id | 0, 0, 0xffff)
+            : null;
     }
 
     /**
-     * @description
+     * @description ガイドレイヤーのID
+     *              Guide Layer ID
      *
      * @default null
      * @member {number|null}
@@ -1385,13 +1403,14 @@ class Layer
     }
     set guideId (guide_id)
     {
-        this._$guideId = guide_id === null
-            ? null
-            : guide_id | 0;
+        this._$guideId = typeof guide_id === "number"
+            ? Util.$clamp(guide_id | 0, 0, 0xffff)
+            : null;
     }
 
     /**
-     * @description
+     * @description ハイライトカラーの値
+     *              Highlight Color Value
      *
      * @member {string}
      * @public
@@ -1402,7 +1421,7 @@ class Layer
     }
     set color (color)
     {
-        this._$color = color;
+        this._$color = `${color}`;
     }
 
     /**

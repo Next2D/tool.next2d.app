@@ -566,7 +566,6 @@
     overflow-x      : hidden;
     overflow-y      : auto;
     scrollbar-width : none;
-    will-change     : scroll-position;
 }
 
 #timeline-content .timeline-layer-icon
@@ -763,7 +762,6 @@
     overflow-x      : auto;
     overflow-y      : hidden;
     scrollbar-width : none;
-    /*will-change     : scroll-position;*/
 }
 
 #timeline-marker
@@ -775,7 +773,6 @@
     height           : 53px;
     background-color : #3692f0;
     opacity          : 0.7;
-    /*will-change      : left;*/
 }
 
 #timeline-marker:before
@@ -791,7 +788,6 @@
     border-left-color   : transparent;
     border-right-color  : transparent;
     border-bottom-color : transparent;
-    /*will-change         : left;*/
 }
 
 #timeline-content .timeline-frame-controller
@@ -800,7 +796,6 @@
     overflow-x      : auto;
     overflow-y      : hidden;
     scrollbar-width : none;
-    /*will-change     : scroll-position;*/
 }
 
 #timeline-controller-base::-webkit-scrollbar,

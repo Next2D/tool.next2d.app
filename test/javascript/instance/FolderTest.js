@@ -19,7 +19,7 @@ describe("Folder.js property test", () =>
 
 describe("Folder.js function test", () =>
 {
-    it("remove test", () =>
+    it("function remove test", () =>
     {
         const workSpaces = new WorkSpace();
         Util.$activeWorkSpaceId = Util.$workSpaces.length;
@@ -70,7 +70,7 @@ describe("Folder.js function test", () =>
         Util.$workSpaces.length = 0;
     });
 
-    it("toObject test", () =>
+    it("function toObject test", () =>
     {
         const folder = new Folder({
             "id": 1,
@@ -85,7 +85,7 @@ describe("Folder.js function test", () =>
         expect(object.mode).toBe(FolderType.CLOSE);
     });
 
-    it("getInstanceIds test", () =>
+    it("function getInstanceIds test", () =>
     {
         const workSpaces = new WorkSpace();
         Util.$activeWorkSpaceId = Util.$workSpaces.length;

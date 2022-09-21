@@ -12,7 +12,7 @@ describe("EmptyCharacter.js property test", () =>
 
 describe("EmptyCharacter.js function test", () =>
 {
-    it("clone test", () =>
+    it("function clone test", () =>
     {
         const emptyCharacter = new EmptyCharacter();
 
@@ -26,7 +26,7 @@ describe("EmptyCharacter.js function test", () =>
         expect(clone.endFrame).toBe(19);
     });
 
-    it("toObject test", () =>
+    it("function toObject test", () =>
     {
         const emptyCharacter = new EmptyCharacter({
             "startFrame": 5,
@@ -38,7 +38,7 @@ describe("EmptyCharacter.js function test", () =>
         expect(object.endFrame).toBe(10);
     });
 
-    it("move test", () =>
+    it("function move test", () =>
     {
         const emptyCharacter = new EmptyCharacter({
             "startFrame": 5,
@@ -50,7 +50,7 @@ describe("EmptyCharacter.js function test", () =>
         expect(emptyCharacter.endFrame).toBe(20);
     });
 
-    it("split test", () =>
+    it("function split test", () =>
     {
         const emptyCharacter = new EmptyCharacter({
             "startFrame": 5,

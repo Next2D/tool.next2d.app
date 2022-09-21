@@ -333,17 +333,6 @@ class MovieClip extends Instance
      * @return {void}
      * @public
      */
-    clearActiveCharacter ()
-    {
-        for (const layer of this._$layers.values()) {
-            layer.clearActiveCharacter();
-        }
-    }
-
-    /**
-     * @return {void}
-     * @public
-     */
     addSceneName ()
     {
         const instance = Util
