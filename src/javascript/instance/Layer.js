@@ -9,6 +9,7 @@ class Layer
     /**
      * @param {object} [object=null]
      * @constructor
+     * @public
      */
     constructor (object = null)
     {
@@ -53,10 +54,10 @@ class Layer
 
         /**
          * @type {string}
-         * @default null
+         * @default ""
          * @private
          */
-        this._$name = null;
+        this._$name = "";
 
         /**
          * @type {boolean}
@@ -109,7 +110,11 @@ class Layer
     }
 
     /**
+     * @description シーン移動時の初期起動関数
+     *              Initial startup function when moving scenes
+     *
      * @return {void}
+     * @method
      * @public
      */
     initialize ()
@@ -196,6 +201,7 @@ class Layer
 
     /**
      * @description ハイライトカラーをセットしたsvgのパスを返す
+     *              Returns the path to the svg with highlight color set
      *
      * @return {string}
      * @method
@@ -211,6 +217,7 @@ class Layer
 
     /**
      * @description レイヤーを複製
+     *              Duplicate Layer
      *
      * @return {Layer}
      * @method
@@ -222,12 +229,17 @@ class Layer
     }
 
     /**
+     * @description 指定フレームに設置したDisplayObjectをスクリーンに配置
+     *              DisplayObject placed in the specified frame on the screen
+     *
      * @param  {number} [frame=1]
      * @return {void}
+     * @method
      * @public
      */
     appendCharacter (frame = 1)
     {
+        // 非表示のレイヤーはスキップ
         if (this.disable) {
             return ;
         }
@@ -325,8 +337,13 @@ class Layer
     }
 
     /**
-     * @param {array}  characters
-     * @param {number} frame
+     * @description 深度順に並び替え(昇順)
+     *              Sort by depth (ascending order)
+     *
+     * @param  {array}  characters
+     * @param  {number} frame
+     * @return {void}
+     * @method
      * @public
      */
     sort (characters, frame)
@@ -351,8 +368,12 @@ class Layer
     }
 
     /**
+     * @description 指定フレームに配置されているDisplayObjectを配列で返す
+     *              Returns an array of DisplayObjects placed in the specified frame.
+     *
      * @param  {number} [frame=1]
      * @return {array}
+     * @method
      * @public
      */
     getActiveCharacter (frame = 1)
@@ -377,9 +398,11 @@ class Layer
 
     /**
      * @description 指定したフレームに空のキャラクターオブジェクトがあれば返す
+     *              Returns an empty character object if one exists in the specified frame.
      *
      * @param  {number} [frame=1]
      * @return {object}
+     * @method
      * @public
      */
     getActiveEmptyCharacter (frame = 1)
@@ -402,7 +425,11 @@ class Layer
     }
 
     /**
+     * @description 全てのレイヤーを非アクティブな状態に更新
+     *              Update all layers to inactive status
+     *
      * @return {void}
+     * @method
      * @public
      */
     clearActiveCharacter ()
@@ -414,14 +441,17 @@ class Layer
             const element = document
                 .getElementById(`character-${character.id}`);
 
-            if (element) {
-                element.style.border = "";
+            if (!element) {
+                continue;
             }
+
+            element.style.border = "";
         }
     }
 
     /**
      * @return {void}
+     * @method
      * @public
      */
     showIcon ()
@@ -960,102 +990,89 @@ class Layer
     }
 
     /**
-     * @return {number}
+     * @description
+     *
+     * @default 0
+     * @member {number}
      * @public
      */
     get id ()
     {
         return this._$id;
     }
-
-    /**
-     * @param  {number} id
-     * @return {void}
-     * @public
-     */
     set id (id)
     {
         this._$id = id | 0;
     }
 
     /**
-     * @return {string}
+     * @description
+     *
+     * @default ""
+     * @member {string}
      * @public
      */
     get name ()
     {
         return this._$name;
     }
-
-    /**
-     * @param  {string} name
-     * @return {void}
-     * @public
-     */
     set name (name)
     {
-        this._$name = name;
+        this._$name = `${name}`;
     }
 
     /**
-     * @return {boolean}
+     * @description
+     *
+     * @default false
+     * @member {boolean}
      * @public
      */
     get light ()
     {
         return this._$light;
     }
-
-    /**
-     * @param  {boolean} light
-     * @return {void}
-     * @public
-     */
     set light (light)
     {
-        this._$light = light;
+        this._$light = !!light;
     }
 
     /**
-     * @return {boolean}
+     * @description
+     *
+     * @default false
+     * @member {boolean}
      * @public
      */
     get disable ()
     {
         return this._$disable;
     }
-
-    /**
-     * @param  {boolean} disable
-     * @return {void}
-     * @public
-     */
     set disable (disable)
     {
-        this._$disable = disable;
+        this._$disable = !!disable;
     }
 
     /**
-     * @return {boolean}
+     * @description
+     *
+     * @default false
+     * @member {boolean}
      * @public
      */
     get lock ()
     {
         return this._$lock;
     }
-
-    /**
-     * @param  {boolean} lock
-     * @return {void}
-     * @public
-     */
     set lock (lock)
     {
-        this._$lock = lock;
+        this._$lock = !!lock;
     }
 
     /**
-     * @return {array}
+     * @description
+     *
+     * @member {array}
      * @public
      */
     get emptyCharacters ()
@@ -1066,12 +1083,6 @@ class Layer
         }
         return characters;
     }
-
-    /**
-     * @param  {array} characters
-     * @return {void}
-     * @public
-     */
     set emptyCharacters (characters)
     {
         for (let idx = 0; idx < characters.length; ++idx) {
@@ -1081,7 +1092,9 @@ class Layer
     }
 
     /**
-     * @return {array}
+     * @description
+     *
+     * @member {array}
      * @public
      */
     get characters ()
@@ -1092,12 +1105,6 @@ class Layer
         }
         return characters;
     }
-
-    /**
-     * @param  {array} characters
-     * @return {void}
-     * @public
-     */
     set characters (characters)
     {
         for (let idx = 0; idx < characters.length; ++idx) {
@@ -1111,8 +1118,11 @@ class Layer
     }
 
     /**
+     * @description
+     *
      * @param  {number} character_id
      * @return {Character}
+     * @method
      * @public
      */
     getCharacter (character_id)
@@ -1121,8 +1131,11 @@ class Layer
     }
 
     /**
+     * @description
+     *
      * @param  {Character} character
      * @return {void}
+     * @method
      * @public
      */
     addCharacter (character)
@@ -1133,8 +1146,11 @@ class Layer
     }
 
     /**
+     * @description
+     *
      * @param  {number} character_id
      * @return {void}
+     * @method
      * @public
      */
     deleteCharacter (character_id)
@@ -1151,8 +1167,11 @@ class Layer
     }
 
     /**
+     * @description
+     *
      * @param  {EmptyCharacter} character
      * @return {void}
+     * @method
      * @public
      */
     addEmptyCharacter (character)
@@ -1161,8 +1180,11 @@ class Layer
     }
 
     /**
+     * @description
+     *
      * @param  {EmptyCharacter} character
      * @return {void}
+     * @method
      * @public
      */
     deleteEmptyCharacter (character)
@@ -1317,38 +1339,32 @@ class Layer
     }
 
     /**
-     * @return {number}
+     * @description
+     *
+     * @default 0
+     * @member {number}
      * @public
      */
     get mode ()
     {
         return this._$mode;
     }
-
-    /**
-     * @param  {number} mode
-     * @return {void}
-     * @public
-     */
     set mode (mode)
     {
         this._$mode = mode;
     }
 
     /**
-     * @return {number|null}
+     * @description
+     *
+     * @default null
+     * @member {number|null}
      * @public
      */
     get maskId ()
     {
         return this._$maskId;
     }
-
-    /**
-     * @param  {number|null} mask_id
-     * @return {void}
-     * @public
-     */
     set maskId (mask_id)
     {
         this._$maskId = mask_id === null
@@ -1357,19 +1373,16 @@ class Layer
     }
 
     /**
-     * @return {number|null}
+     * @description
+     *
+     * @default null
+     * @member {number|null}
      * @public
      */
     get guideId ()
     {
         return this._$guideId;
     }
-
-    /**
-     * @param  {number|null} guide_id
-     * @return {void}
-     * @public
-     */
     set guideId (guide_id)
     {
         this._$guideId = guide_id === null
@@ -1378,26 +1391,26 @@ class Layer
     }
 
     /**
-     * @return {string}
+     * @description
+     *
+     * @member {string}
      * @public
      */
     get color ()
     {
         return this._$color;
     }
-
-    /**
-     * @param  {string} color
-     * @return {void}
-     * @public
-     */
     set color (color)
     {
         this._$color = color;
     }
 
     /**
+     * @description クラス内の変数をObjectにして返す
+     *              Return variables in a class as Objects
+     *
      * @return {object}
+     * @method
      * @public
      */
     toObject ()
