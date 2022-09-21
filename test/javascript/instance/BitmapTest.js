@@ -47,7 +47,7 @@ describe("Bitmap.js function test", () =>
         const bitmap = new Bitmap({
             "id": 1,
             "name": "image",
-            "type": "bitmap",
+            "type": InstanceType.BITMAP,
             "symbol": "app.bitmap",
             "imageType": "image/png",
             "width": 200,
@@ -60,7 +60,7 @@ describe("Bitmap.js function test", () =>
         const object = bitmap.toObject();
         expect(object.id).toBe(1);
         expect(object.name).toBe("image");
-        expect(object.type).toBe("bitmap");
+        expect(object.type).toBe(InstanceType.BITMAP);
         expect(object.symbol).toBe("app.bitmap");
         expect(object.imageType).toBe("image/png");
         expect(object.width).toBe(200);
@@ -73,7 +73,7 @@ describe("Bitmap.js function test", () =>
         const bitmap = new Bitmap({
             "id": 1,
             "name": "image",
-            "type": "bitmap",
+            "type": InstanceType.BITMAP,
             "symbol": "app.bitmap",
             "imageType": "image/png",
             "width": 200,

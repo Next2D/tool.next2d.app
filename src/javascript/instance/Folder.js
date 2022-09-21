@@ -1,4 +1,7 @@
 /**
+ * ライブラリ内のフォルダ階層管理クラス
+ * Folder hierarchy management class in the library
+ *
  * @class
  * @extends {Instance}
  */
@@ -7,12 +10,19 @@ class Folder extends Instance
     /**
      * @param {object} object
      * @constructor
+     * @public
      */
     constructor (object)
     {
         super(object);
 
-        this._$mode = "clone";
+        /**
+         * @type {string}
+         * @default FolderType.CLOSE
+         * @private
+         */
+        this._$mode = FolderType.CLOSE;
+
         if (object.mode) {
             this._$mode = object.mode;
         }
@@ -20,6 +30,7 @@ class Folder extends Instance
 
     /**
      * @description Folderクラスを複製
+     *              Duplicate Folder class
      *
      * @return {Folder}
      * @method
@@ -31,26 +42,27 @@ class Folder extends Instance
     }
 
     /**
-     * @return {string}
+     * @description 開閉状態の値を返す
+     *              Returns the value of the open/closed state
+     *
+     * @default "close"
+     * @member {string}
      * @public
      */
     get mode ()
     {
         return this._$mode;
     }
-
-    /**
-     * @param  {string} mode
-     * @return {void}
-     * @public
-     */
     set mode (mode)
     {
-        this._$mode = mode;
+        this._$mode = FolderType.OPEN === `${mode}`.toLowerCase()
+            ? FolderType.OPEN
+            : FolderType.CLOSE;
     }
 
     /**
      * @description フォルダーの中身の削除処理
+     *              Deletion process of folder contents
      *
      * @return {void}
      * @method
@@ -74,7 +86,8 @@ class Folder extends Instance
     }
 
     /**
-     * @description セーブデータに変換
+     * @description クラス内の変数をObjectにして返す
+     *              Return variables in a class as Objects
      *
      * @return {object}
      * @method
@@ -93,7 +106,8 @@ class Folder extends Instance
     }
 
     /**
-     * @description フォルダ内のアイテムIDを配列に格納
+     * @description フォルダ内のアイテムIDを変数の配列に格納
+     *              Stores the item IDs in the folder in an array of variables
      *
      * @return {void}
      * @method

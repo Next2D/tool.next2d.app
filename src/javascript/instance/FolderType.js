@@ -1,9 +1,15 @@
 /**
+ * フォルダーの開閉状態の固定値
+ * Fixed value for folder open/closed status
+ *
  * @class
  */
 class FolderType
 {
     /**
+     * @description フォルダーを開いた状態
+     *              Folder open state
+     *
      * @return {string}
      * @static
      * @const
@@ -14,6 +20,9 @@ class FolderType
     }
 
     /**
+     * @description フォルダを閉じた状態
+     *              Folder close state
+     *
      * @return {string}
      * @static
      * @const

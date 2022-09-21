@@ -63,7 +63,6 @@ describe("EmptyCharacter.js function test", () =>
         emptyCharacter.split(layer, 10, 15);
         expect(layer._$emptys.length).toBe(2);
 
-
         const emptyCharacterA = layer._$emptys[0];
         expect(emptyCharacterA.startFrame).toBe(5);
         expect(emptyCharacterA.endFrame).toBe(10);

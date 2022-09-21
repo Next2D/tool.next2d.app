@@ -1,4 +1,5 @@
 /**
+ * インスタンスの
  * @class
  */
 class InstanceType

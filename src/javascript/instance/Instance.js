@@ -12,7 +12,7 @@ class Instance
         this._$id       = object.id;
         this._$name     = object.name;
         this._$type     = object.type;
-        this._$symbol   = object.symbol;
+        this._$symbol   = object.symbol || "";
         this._$folderId = object.folderId | 0;
     }
 
