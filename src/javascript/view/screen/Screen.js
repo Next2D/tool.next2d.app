@@ -419,8 +419,8 @@ class Screen extends BaseScreen
                 const maskCharacter = maskLayer._$characters[0];
                 const maskImage     = maskCharacter.getImage();
 
-                const x = maskCharacter.screenX - character.screenX;
-                const y = maskCharacter.screenY - character.screenY;
+                const x = (maskCharacter.screenX - character.screenX) * Util.$zoomScale;
+                const y = (maskCharacter.screenY - character.screenY) * Util.$zoomScale;
 
                 const maskSrc    = maskImage.src;
                 const maskWidth  = maskImage._$width  * Util.$zoomScale;
@@ -704,8 +704,8 @@ class Screen extends BaseScreen
                 const maskCharacter = maskLayer._$characters[0];
                 const maskImage     = maskCharacter.getImage();
 
-                const x = maskCharacter.screenX - character.screenX;
-                const y = maskCharacter.screenY - character.screenY;
+                const x = (maskCharacter.screenX - character.screenX) * Util.$zoomScale;
+                const y = (maskCharacter.screenY - character.screenY) * Util.$zoomScale;
 
                 const maskSrc    = maskImage.src;
                 const maskWidth  = maskImage._$width  * Util.$zoomScale;

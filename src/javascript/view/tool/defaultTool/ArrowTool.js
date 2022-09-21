@@ -1362,11 +1362,11 @@ class ArrowTool extends BaseTool
                     const maskImage     = maskCharacter.getImage();
 
                     const maskSrc    = maskImage.src;
-                    const maskWidth  = maskImage.width;
-                    const maskHeight = maskImage.height;
+                    const maskWidth  = maskImage._$width  * Util.$zoomScale;
+                    const maskHeight = maskImage._$height * Util.$zoomScale;
 
-                    const x = maskCharacter.screenX - character.screenX;
-                    const y = maskCharacter.screenY - character.screenY;
+                    const x = (maskCharacter.screenX - character.screenX) * Util.$zoomScale;
+                    const y = (maskCharacter.screenY - character.screenY) * Util.$zoomScale;
 
                     divStyle += `mask: url(${maskSrc}), none;`;
                     divStyle += `-webkit-mask: url(${maskSrc}), none;`;
