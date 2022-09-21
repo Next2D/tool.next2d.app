@@ -884,8 +884,8 @@ class TimelineLayer extends BaseTimeline
             switch (layer.mode) {
 
                 // 最終行じゃない時は何もしない
-                case Util.LAYER_MODE_MASK_IN:
-                case Util.LAYER_MODE_GUIDE_IN:
+                case LayerMode.MASK_IN:
+                case LayerMode.GUIDE_IN:
                     return ;
 
                 default:
@@ -1245,7 +1245,7 @@ class TimelineLayer extends BaseTimeline
             // valid
             switch (exitLayer.mode) {
 
-                case Util.LAYER_MODE_MASK_IN:
+                case LayerMode.MASK_IN:
                     // 選択中のレイヤーに親のマスクがあったら初期化して中止
                     for (const layer of this.targetLayers.values()) {
                         if (layer.id !== exitLayer.maskId) {
@@ -1261,7 +1261,7 @@ class TimelineLayer extends BaseTimeline
                     }
                     break;
 
-                case Util.LAYER_MODE_GUIDE_IN:
+                case LayerMode.GUIDE_IN:
                     // 選択中のレイヤーに親のガイドがあったら初期化して中止
                     for (const layer of this.targetLayers.values()) {
                         if (layer.id !== exitLayer.guideId) {
@@ -1310,10 +1310,10 @@ class TimelineLayer extends BaseTimeline
             if (exitLayer === null) {
                 switch (destLayer.mode) {
 
-                    case Util.LAYER_MODE_MASK:
-                    case Util.LAYER_MODE_MASK_IN:
-                    case Util.LAYER_MODE_GUIDE:
-                    case Util.LAYER_MODE_GUIDE_IN:
+                    case LayerMode.MASK:
+                    case LayerMode.MASK_IN:
+                    case LayerMode.GUIDE:
+                    case LayerMode.GUIDE_IN:
                         for (const layer of this.targetLayers.values()) {
 
                             const moveLayer = scene.getLayer(
@@ -1322,8 +1322,8 @@ class TimelineLayer extends BaseTimeline
 
                             switch (moveLayer.mode) {
 
-                                case Util.LAYER_MODE_MASK:
-                                case Util.LAYER_MODE_GUIDE:
+                                case LayerMode.MASK:
+                                case LayerMode.GUIDE:
 
                                     // 初期化して処理を中止
                                     this._$moveLayerId = -1;
@@ -1368,7 +1368,7 @@ class TimelineLayer extends BaseTimeline
 
                     switch (layer.mode) {
 
-                        case Util.LAYER_MODE_MASK_IN:
+                        case LayerMode.MASK_IN:
                             {
                                 // 親Element
                                 const element = document
@@ -1382,7 +1382,7 @@ class TimelineLayer extends BaseTimeline
                             }
                             break;
 
-                        case Util.LAYER_MODE_GUIDE_IN:
+                        case LayerMode.GUIDE_IN:
                             {
                                 // 親Element
                                 const element = document
@@ -1437,8 +1437,8 @@ class TimelineLayer extends BaseTimeline
 
                 switch (destLayer.mode) {
 
-                    case Util.LAYER_MODE_MASK:
-                    case Util.LAYER_MODE_MASK_IN:
+                    case LayerMode.MASK:
+                    case LayerMode.MASK_IN:
 
                         if (!exitLayer) {
 
@@ -1448,7 +1448,7 @@ class TimelineLayer extends BaseTimeline
                                 ? destLayer.id
                                 : destLayer.maskId;
 
-                            moveLayer.mode = Util.LAYER_MODE_MASK_IN;
+                            moveLayer.mode = LayerMode.MASK_IN;
                             moveLayer.showIcon();
 
                         } else {
@@ -1458,7 +1458,7 @@ class TimelineLayer extends BaseTimeline
                             ) {
                                 // マスク外に移動するので通常レイヤーに更新
                                 moveLayer.maskId = null;
-                                moveLayer.mode   = Util.LAYER_MODE_NORMAL;
+                                moveLayer.mode   = LayerMode.NORMAL;
                                 moveLayer.showIcon();
                             }
 
@@ -1466,8 +1466,8 @@ class TimelineLayer extends BaseTimeline
                         break;
 
                     // 移動先がガイドか、ガイドの対象の時
-                    case Util.LAYER_MODE_GUIDE:
-                    case Util.LAYER_MODE_GUIDE_IN:
+                    case LayerMode.GUIDE:
+                    case LayerMode.GUIDE_IN:
 
                         if (!exitLayer) {
 
@@ -1477,7 +1477,7 @@ class TimelineLayer extends BaseTimeline
                                 ? destLayer.id
                                 : destLayer.guideId;
 
-                            moveLayer.mode = Util.LAYER_MODE_GUIDE_IN;
+                            moveLayer.mode = LayerMode.GUIDE_IN;
                             moveLayer.showIcon();
 
                         } else {
@@ -1487,7 +1487,7 @@ class TimelineLayer extends BaseTimeline
                             ) {
                                 // マスク外に移動するので通常レイヤーに更新
                                 moveLayer.guideId = null;
-                                moveLayer.mode    = Util.LAYER_MODE_NORMAL;
+                                moveLayer.mode    = LayerMode.NORMAL;
                                 moveLayer.showIcon();
                             }
 
@@ -1499,17 +1499,17 @@ class TimelineLayer extends BaseTimeline
 
                         switch (moveLayer.mode) {
 
-                            case Util.LAYER_MODE_MASK_IN:
+                            case LayerMode.MASK_IN:
                                 // マスクの外に出る場合はマスク表示を無効化する
                                 moveLayer.maskId = null;
-                                moveLayer.mode = Util.LAYER_MODE_NORMAL;
+                                moveLayer.mode = LayerMode.NORMAL;
                                 moveLayer.showIcon();
                                 break;
 
-                            case Util.LAYER_MODE_GUIDE_IN:
+                            case LayerMode.GUIDE_IN:
                                 // ガイドの外に出る場合はガイド表示を無効化する
                                 moveLayer.guideId = null;
-                                moveLayer.mode = Util.LAYER_MODE_NORMAL;
+                                moveLayer.mode = LayerMode.NORMAL;
                                 moveLayer.showIcon();
                                 break;
 
@@ -1530,7 +1530,7 @@ class TimelineLayer extends BaseTimeline
                 // マスク対象のレイヤーも一緒に移動する
                 switch (moveLayer.mode) {
 
-                    case Util.LAYER_MODE_MASK:
+                    case LayerMode.MASK:
                         {
 
                             const children = Array.from(element.children);
@@ -1547,7 +1547,7 @@ class TimelineLayer extends BaseTimeline
                                 );
 
                                 // マスク対象がなくなったら終了
-                                if (layer.mode !== Util.LAYER_MODE_MASK_IN) {
+                                if (layer.mode !== LayerMode.MASK_IN) {
                                     break;
                                 }
 
@@ -1556,7 +1556,7 @@ class TimelineLayer extends BaseTimeline
                         }
                         break;
 
-                    case Util.LAYER_MODE_GUIDE:
+                    case LayerMode.GUIDE:
                         {
                             const children = Array.from(element.children);
                             let index = children.indexOf(layer);
@@ -1572,7 +1572,7 @@ class TimelineLayer extends BaseTimeline
                                 );
 
                                 // マスク対象がなくなったら終了
-                                if (layer.mode !== Util.LAYER_MODE_GUIDE_IN) {
+                                if (layer.mode !== LayerMode.GUIDE_IN) {
                                     break;
                                 }
 

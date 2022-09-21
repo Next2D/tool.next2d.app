@@ -423,8 +423,8 @@ class Screen extends BaseScreen
                 const y = maskCharacter.screenY - character.screenY;
 
                 const maskSrc    = maskImage.src;
-                const maskWidth  = maskImage.width;
-                const maskHeight = maskImage.height;
+                const maskWidth  = maskImage._$width  * Util.$zoomScale;
+                const maskHeight = maskImage._$height * Util.$zoomScale;
 
                 divStyle += `mask: url(${maskSrc}), none;`;
                 divStyle += `-webkit-mask: url(${maskSrc}), none;`;
@@ -708,8 +708,8 @@ class Screen extends BaseScreen
                 const y = maskCharacter.screenY - character.screenY;
 
                 const maskSrc    = maskImage.src;
-                const maskWidth  = maskImage.width;
-                const maskHeight = maskImage.height;
+                const maskWidth  = maskImage._$width  * Util.$zoomScale;
+                const maskHeight = maskImage._$height * Util.$zoomScale;
 
                 divStyle += `mask: url(${maskSrc}), none;`;
                 divStyle += `-webkit-mask: url(${maskSrc}), none;`;

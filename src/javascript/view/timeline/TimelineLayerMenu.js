@@ -78,7 +78,7 @@ class TimelineLayerMenu extends BaseTimeline
         const layerId = targetLayer.dataset.layerId | 0;
 
         const layer = scene.getLayer(layerId);
-        if (layer.mode === Util.LAYER_MODE_NORMAL) {
+        if (layer.mode === LayerMode.NORMAL) {
             return ;
         }
 
@@ -87,7 +87,7 @@ class TimelineLayerMenu extends BaseTimeline
 
         const reload = this.resetLayer(targetLayer);
 
-        layer.mode = Util.LAYER_MODE_NORMAL;
+        layer.mode = LayerMode.NORMAL;
         layer.showIcon();
 
         if (reload) {
@@ -122,7 +122,7 @@ class TimelineLayerMenu extends BaseTimeline
                 targetLayer.dataset.layerId | 0
             );
 
-        if (layer.mode === Util.LAYER_MODE_MASK) {
+        if (layer.mode === LayerMode.MASK) {
             return ;
         }
 
@@ -131,7 +131,7 @@ class TimelineLayerMenu extends BaseTimeline
 
         const reload = this.resetLayer(targetLayer);
 
-        layer.mode = Util.LAYER_MODE_MASK;
+        layer.mode = LayerMode.MASK;
         layer.showIcon();
 
         if (reload || layer.lock) {
@@ -196,7 +196,7 @@ class TimelineLayerMenu extends BaseTimeline
                 targetLayer.dataset.layerId | 0
             );
 
-        if (layer.mode === Util.LAYER_MODE_GUIDE) {
+        if (layer.mode === LayerMode.GUIDE) {
             return ;
         }
 
@@ -205,7 +205,7 @@ class TimelineLayerMenu extends BaseTimeline
 
         const reload = this.resetLayer(targetLayer);
 
-        layer.mode = Util.LAYER_MODE_GUIDE;
+        layer.mode = LayerMode.GUIDE;
         layer.showIcon();
 
         if (reload) {
@@ -280,7 +280,7 @@ class TimelineLayerMenu extends BaseTimeline
         let index  = children.indexOf(element);
         switch (layer.mode) {
 
-            case Util.LAYER_MODE_MASK:
+            case LayerMode.MASK:
                 for (;;) {
                     const node = children[++index];
                     if (!node) {
@@ -288,19 +288,19 @@ class TimelineLayerMenu extends BaseTimeline
                     }
 
                     const layer = scene.getLayer(node.dataset.layerId | 0);
-                    if (layer.mode !== Util.LAYER_MODE_MASK_IN) {
+                    if (layer.mode !== LayerMode.MASK_IN) {
                         break;
                     }
 
                     layer.maskId = null;
-                    layer.mode   = Util.LAYER_MODE_NORMAL;
+                    layer.mode   = LayerMode.NORMAL;
                     layer.showIcon();
 
                     reload = true;
                 }
                 break;
 
-            case Util.LAYER_MODE_GUIDE:
+            case LayerMode.GUIDE:
                 for (;;) {
                     const node = children[++index];
                     if (!node) {
@@ -308,12 +308,12 @@ class TimelineLayerMenu extends BaseTimeline
                     }
 
                     const layer = scene.getLayer(node.dataset.layerId | 0);
-                    if (layer.mode !== Util.LAYER_MODE_GUIDE_IN) {
+                    if (layer.mode !== LayerMode.GUIDE_IN) {
                         break;
                     }
 
                     layer.guideId = null;
-                    layer.mode    = Util.LAYER_MODE_NORMAL;
+                    layer.mode    = LayerMode.NORMAL;
                     layer.showIcon();
                 }
                 break;

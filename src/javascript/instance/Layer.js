@@ -1,4 +1,7 @@
 /**
+ * タイムラインのレイヤーを管理するクラス
+ * Class that manages layers in the timeline
+ *
  * @class
  */
 class Layer
@@ -9,20 +12,88 @@ class Layer
      */
     constructor (object = null)
     {
-        this._$id         = 0;
+        /**
+         * @type {number}
+         * @default 0
+         * @private
+         */
+        this._$id = 0;
+
+        /**
+         * @type {array}
+         * @private
+         */
         this._$characters = [];
-        this._$emptys     = [];
-        this._$instances  = new Map();
 
-        this._$maskId     = null;
-        this._$guideId    = null;
-        this._$name       = null;
-        this._$light      = false;
-        this._$disable    = false;
-        this._$lock       = false;
-        this._$mode       = Util.LAYER_MODE_NORMAL;
-        this._$color      = TimelineHighlight.color;
+        /**
+         * @type {array}
+         * @private
+         */
+        this._$emptys = [];
 
+        /**
+         * @type {Map}
+         * @private
+         */
+        this._$instances = new Map();
+
+        /**
+         * @type {number}
+         * @default null
+         * @private
+         */
+        this._$maskId = null;
+
+        /**
+         * @type {number}
+         * @default null
+         * @private
+         */
+        this._$guideId = null;
+
+        /**
+         * @type {string}
+         * @default null
+         * @private
+         */
+        this._$name = null;
+
+        /**
+         * @type {boolean}
+         * @default false
+         * @private
+         */
+        this._$light = false;
+
+        /**
+         * @type {boolean}
+         * @default false
+         * @private
+         */
+        this._$disable = false;
+
+        /**
+         * @type {boolean}
+         * @default false
+         * @private
+         */
+        this._$lock = false;
+
+        /**
+         * @type {number}
+         * @default LayerMode.NORMAL
+         * @private
+         */
+        this._$mode = LayerMode.NORMAL;
+
+        /**
+         * @type {string}
+         * @default TimelineHighlight.color
+         * @private
+         */
+        this._$color = TimelineHighlight.color;
+
+        // 設定値があれば初期値を上書き
         if (object) {
             this._$name          = object.name;
             this._$light         = object.light;
@@ -377,7 +448,7 @@ class Layer
 
         switch (this._$mode) {
 
-            case Util.LAYER_MODE_NORMAL:
+            case LayerMode.NORMAL:
 
                 document
                     .getElementById(`layer-icon-${this.id}`)
@@ -403,7 +474,7 @@ class Layer
 
                 break;
 
-            case Util.LAYER_MODE_MASK:
+            case LayerMode.MASK:
                 {
                     document
                         .getElementById(`layer-icon-${this.id}`)
@@ -432,7 +503,7 @@ class Layer
                 }
                 break;
 
-            case Util.LAYER_MODE_MASK_IN:
+            case LayerMode.MASK_IN:
                 {
                     document
                         .getElementById(`layer-icon-${this.id}`)
@@ -480,7 +551,7 @@ class Layer
                 }
                 break;
 
-            case Util.LAYER_MODE_GUIDE:
+            case LayerMode.GUIDE:
                 {
                     document
                         .getElementById(`layer-icon-${this.id}`)
@@ -509,7 +580,7 @@ class Layer
                 }
                 break;
 
-            case Util.LAYER_MODE_GUIDE_IN:
+            case LayerMode.GUIDE_IN:
                 {
                     document
                         .getElementById(`layer-icon-${this.id}`)

@@ -135,11 +135,11 @@ class ExternalTimeline
         switch (type) {
 
             case "mask":
-                layer.mode = Util.LAYER_MODE_MASK;
+                layer.mode = LayerMode.MASK;
                 break;
 
             case "masked":
-                layer.mode = Util.LAYER_MODE_MASK_IN;
+                layer.mode = LayerMode.MASK_IN;
                 break;
 
             default:

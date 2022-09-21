@@ -413,7 +413,7 @@ class Instance
     {
         // empty image
         if (!width || !height) {
-            return Util.$emptyImage;
+            return new Image();
         }
 
         const { Matrix } = window.next2d.geom;
@@ -613,7 +613,7 @@ class Instance
         let width  = Math.abs(bounds.xMax - bounds.xMin);
         let height = Math.abs(bounds.yMax - bounds.yMin);
         if (!width || !height) {
-            return Util.$emptyImage;
+            return new Image();
         }
 
         let scaleX   = 1;
@@ -655,7 +655,6 @@ class Instance
 
         return image;
     }
-
 
     /**
      * @description ライブラリからの削除処理、配置先からも削除を行う

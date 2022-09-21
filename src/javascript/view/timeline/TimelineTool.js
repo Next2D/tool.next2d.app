@@ -281,7 +281,7 @@ class TimelineTool extends BaseTimeline
                 .getElementById(`layer-lock-icon-${layerId}`);
 
             const layer = scene.getLayer(layerId);
-            if (layer.mode === Util.LAYER_MODE_MASK) {
+            if (layer.mode === LayerMode.MASK) {
                 useMask = true;
             }
 
@@ -491,7 +491,7 @@ class TimelineTool extends BaseTimeline
                 const children = parentElement.children;
                 switch (layer.mode) {
 
-                    case Util.LAYER_MODE_MASK:
+                    case LayerMode.MASK:
                         for (let idx = index + 1; idx < children.length; ++idx) {
 
                             const child = children[idx];
@@ -500,17 +500,17 @@ class TimelineTool extends BaseTimeline
                                 child.dataset.layerId | 0
                             );
 
-                            if (layer.mode !== Util.LAYER_MODE_MASK_IN) {
+                            if (layer.mode !== LayerMode.MASK_IN) {
                                 break;
                             }
 
-                            layer.mode = Util.LAYER_MODE_NORMAL;
+                            layer.mode = LayerMode.NORMAL;
                             layer.showIcon();
 
                         }
                         break;
 
-                    case Util.LAYER_MODE_GUIDE:
+                    case LayerMode.GUIDE:
                         for (let idx = index + 1; idx < children.length; ++idx) {
 
                             const child = children[idx];
@@ -519,11 +519,11 @@ class TimelineTool extends BaseTimeline
                                 child.dataset.layerId | 0
                             );
 
-                            if (layer.mode !== Util.LAYER_MODE_GUIDE_IN) {
+                            if (layer.mode !== LayerMode.GUIDE_IN) {
                                 break;
                             }
 
-                            layer.mode = Util.LAYER_MODE_NORMAL;
+                            layer.mode = LayerMode.NORMAL;
                             layer.showIcon();
 
                         }
@@ -604,7 +604,7 @@ class TimelineTool extends BaseTimeline
             const lastElement = element.lastElementChild;
             switch (targetLayer.mode) {
 
-                case Util.LAYER_MODE_MASK_IN:
+                case LayerMode.MASK_IN:
                     {
                         const newLayer = scene.getLayer(
                             lastElement.dataset.layerId | 0
@@ -612,12 +612,12 @@ class TimelineTool extends BaseTimeline
                         newLayer.maskId = targetLayer.maskId === null
                             ? targetLayer.id
                             : targetLayer.maskId;
-                        newLayer.mode = Util.LAYER_MODE_MASK_IN;
+                        newLayer.mode = LayerMode.MASK_IN;
                         newLayer.showIcon();
                     }
                     break;
 
-                case Util.LAYER_MODE_GUIDE_IN:
+                case LayerMode.GUIDE_IN:
                     {
                         const newLayer = scene.getLayer(
                             lastElement.dataset.layerId | 0
@@ -625,7 +625,7 @@ class TimelineTool extends BaseTimeline
                         newLayer.guideId = targetLayer.guideId === null
                             ? targetLayer.id
                             : targetLayer.guideId;
-                        newLayer.mode = Util.LAYER_MODE_GUIDE_IN;
+                        newLayer.mode = LayerMode.GUIDE_IN;
                         newLayer.showIcon();
                     }
                     break;

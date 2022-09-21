@@ -305,7 +305,7 @@ class MovieClip extends Instance
         const layers = Array.from(this._$layers.values());
         while (layers.length) {
             const layer = layers.pop();
-            if (layer.mode === Util.LAYER_MODE_MASK && layer.lock) {
+            if (layer.mode === LayerMode.MASK && layer.lock) {
                 continue;
             }
             layer.appendCharacter(frame);
@@ -510,16 +510,16 @@ class MovieClip extends Instance
             const object = value.toObject();
             switch (object.mode) {
 
-                case Util.LAYER_MODE_MASK:
-                case Util.LAYER_MODE_GUIDE:
+                case LayerMode.MASK:
+                case LayerMode.GUIDE:
                     parentId = index;
                     break;
 
-                case Util.LAYER_MODE_MASK_IN:
+                case LayerMode.MASK_IN:
                     object.maskId = parentId;
                     break;
 
-                case Util.LAYER_MODE_GUIDE_IN:
+                case LayerMode.GUIDE_IN:
                     object.guideId = parentId;
                     break;
 
@@ -919,18 +919,18 @@ class MovieClip extends Instance
             }
 
             // ガイドレイヤーは描画に含めない
-            if (layer.mode === Util.LAYER_MODE_GUIDE) {
+            if (layer.mode === LayerMode.GUIDE) {
                 continue;
             }
 
-            if (layer.mode === Util.LAYER_MODE_MASK_IN
+            if (layer.mode === LayerMode.MASK_IN
                 && !clipStart && !clipIndex
             ) {
                 clipStart = true;
                 clipIndex = idx;
             }
 
-            if (clipStart && layer.mode === Util.LAYER_MODE_MASK_IN) {
+            if (clipStart && layer.mode === LayerMode.MASK_IN) {
                 clipCount += layer._$characters.length;
                 clipLayers.push(layer);
                 continue;
@@ -938,11 +938,11 @@ class MovieClip extends Instance
 
             const characters = layer._$characters;
 
-            const length = layer.mode === Util.LAYER_MODE_MASK
+            const length = layer.mode === LayerMode.MASK
                 ? Math.min(1, characters.length)
                 : characters.length;
 
-            let index = layer.mode === Util.LAYER_MODE_MASK
+            let index = layer.mode === LayerMode.MASK
                 ? length - 1
                 : 0;
 
@@ -968,7 +968,7 @@ class MovieClip extends Instance
                     "characterId": instance.id,
                     "endFrame": endFrame,
                     "startFrame": startFrame,
-                    "clipDepth": layer.mode === Util.LAYER_MODE_MASK
+                    "clipDepth": layer.mode === LayerMode.MASK
                         ? index + clipCount + currentPlaceId
                         : 0
                 });
@@ -1048,7 +1048,7 @@ class MovieClip extends Instance
                     placeMap[frame][depth   + place.depth] = placeIndex;
                 }
 
-                if (layer.mode === Util.LAYER_MODE_MASK) {
+                if (layer.mode === LayerMode.MASK) {
                     --index;
                     if (-1 === index) {
                         break;

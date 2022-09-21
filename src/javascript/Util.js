@@ -6,11 +6,6 @@ Util.VERSION                  = 1;
 Util.PREFIX                   = "__next2d-tools__";
 Util.DATABASE_NAME            = "save-data";
 Util.STORE_KEY                = "local";
-Util.LAYER_MODE_NORMAL        = 0;
-Util.LAYER_MODE_MASK          = 1;
-Util.LAYER_MODE_MASK_IN       = 2;
-Util.LAYER_MODE_GUIDE         = 3;
-Util.LAYER_MODE_GUIDE_IN      = 4;
 Util.REVISION_LIMIT           = 100;
 Util.DEFAULT_LOOP             = 5;
 Util.$activeWorkSpaceId       = 0;
@@ -65,33 +60,6 @@ const canvas     = document.createElement("canvas");
 canvas.width     = 1;
 canvas.height    = 1;
 Util.$hitContext = canvas.getContext("2d");
-
-Util.$transformTargets = [
-    "scale-top-left",
-    "scale-top-right",
-    "scale-bottom-left",
-    "scale-bottom-right",
-    "scale-center-left",
-    "scale-center-top",
-    "scale-center-right",
-    "scale-center-bottom",
-    "target-rect",
-    "target-rotation",
-    "reference-point"
-];
-
-Util.$gridTargets = [
-    "grid-top-left",
-    "grid-top-right",
-    "grid-bottom-left",
-    "grid-bottom-right"
-];
-
-/**
- * @type {HTMLImageElement}
- */
-Util.$emptyImage = new Image();
-Util.$emptyImage.draggable = false;
 
 /**
  * @param  {*}   value
@@ -1432,7 +1400,7 @@ Util.$parserHandler = function (event)
 
                                     if (clipDepth > -1) {
                                         if (depth > clipDepth) {
-                                            layer.mode   = Util.LAYER_MODE_MASK_IN;
+                                            layer.mode   = LayerMode.MASK_IN;
                                             layer.maskId = maskId;
                                         } else {
                                             maskId    = -1;
@@ -1443,7 +1411,7 @@ Util.$parserHandler = function (event)
                                     if (clipMap.has(depth)) {
                                         clipDepth  = depth;
                                         maskId     = index - idx;
-                                        layer.mode = Util.LAYER_MODE_MASK;
+                                        layer.mode = LayerMode.MASK;
                                     }
                                 }
 
