@@ -427,13 +427,21 @@ class Video extends Instance
      * @param  {number}  width
      * @param  {number}  height
      * @param  {object}  place
-     * @param  {boolean} [preview=false]
+     * @param  {object}  [range = null]
+     * @param  {number}  [static_frame = 0]
+     * @param  {boolean} [preview = false]
      * @return {HTMLImageElement}
+     * @method
      * @public
      */
-    toImage (width, height, place, preview = false)
-    {
-        const image = super.toImage(width, height, place, preview);
+    toImage (
+        width, height, place, range = null, static_frame = 0, preview = false
+    ) {
+
+        const image = super.toImage(
+            width, height, place, range, static_frame, preview
+        );
+
         if (this._$loaded) {
             return image;
         }

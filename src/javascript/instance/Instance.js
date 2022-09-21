@@ -1,4 +1,7 @@
 /**
+ * 全てのライブラリの親クラス
+ * Parent class for all libraries
+ *
  * @class
  */
 class Instance
@@ -6,6 +9,7 @@ class Instance
     /**
      * @param {object} object
      * @constructor
+     * @public
      */
     constructor (object)
     {
@@ -17,12 +21,152 @@ class Instance
     }
 
     /**
+     * @description 初期起動関数
+     *              initial invoking function
+     *
+     * @return {void}
+     * @method
      * @abstract
      */
     // eslint-disable-next-line no-empty-function
     initialize () {}
 
     /**
+     * @description クラス内の変数をObjectにして返す
+     *              Return variables in a class as Objects
+     *
+     * @return {void}
+     * @method
+     * @abstract
+     */
+    // eslint-disable-next-line no-empty-function
+    toObject () {}
+
+    /**
+     * @description 書き出し用のObjectを返す
+     *              Returns an Object for export
+     *
+     * @return {object}
+     * @method
+     * @abstract
+     */
+    // eslint-disable-next-line no-empty-function
+    toPublish () {}
+
+    /**
+     * @description シンボルを指定した時の継承先を返す
+     *              Returns the inheritance destination when a symbol is specified.
+     *
+     * @readonly
+     * @abstract
+     */
+    // eslint-disable-next-line no-empty-function,getter-return
+    get defaultSymbol () {}
+
+    /**
+     * @description Next2DのDisplayObjectを生成
+     *              Generate Next2D DisplayObject
+     *
+     * @return {*}
+     * @method
+     * @abstract
+     */
+    // eslint-disable-next-line no-empty-function
+    createInstance () {}
+
+    /**
+     * @description 表示領域(バウンディングボックス)のObjectを返す
+     *              Returns the Object of the display area (bounding box)
+     *
+     * @param  {array} [matrix=null]
+     * @return {object}
+     * @method
+     * @abstract
+     */
+    // eslint-disable-next-line no-empty-function,no-unused-vars
+    getBounds (matrix = null) {}
+
+    /**
+     * @description ライブラリ名、フォルダのパスを含めた名前をユニークとして利用する
+     *              Use the name including the library name and folder path as unique
+     *
+     * @member {string}
+     * @public
+     */
+    get name ()
+    {
+        return this._$name;
+    }
+    set name (name)
+    {
+        this._$name = `${name}`;
+
+        if (this.id) {
+            const libraryElement = document
+                .getElementById(`library-name-${this.id}`);
+            libraryElement.textContent = this._$name;
+        }
+
+        if (Util.$currentWorkSpace().scene.id === this.id) {
+
+            const objectName = document.getElementById("object-name");
+            if (objectName) {
+                objectName.value = `${this._$name}`;
+            }
+
+            const sceneName = document.getElementById("scene-name");
+            if (sceneName) {
+                sceneName.textContent = `${this._$name}`;
+            }
+
+        }
+
+    }
+
+    /**
+     * @description ライブラリの方の値、InstanceTypeクラスの固定値を参照
+     *              See the value toward the library, fixed value in the InstanceType class.
+     *
+     * @member {string}
+     * @public
+     */
+    get type ()
+    {
+        return this._$type;
+    }
+    set type (type)
+    {
+        this._$type = `${type}`;
+    }
+
+    /**
+     * @description Next2D Playerでのシンボルアクセス用の値
+     *              Value for symbol access in Next2D Player
+     *
+     * @member {string}
+     * @public
+     */
+    get symbol ()
+    {
+        return this._$symbol;
+    }
+    set symbol (symbol)
+    {
+        this._$symbol = `${symbol}`;
+
+        if (this.id) {
+            document
+                .getElementById(`library-symbol-name-${this.id}`)
+                .textContent = `${symbol}`;
+        }
+    }
+
+    /**
+     * @description このアイテムが設定されたDisplayObjectが選択された時
+     *              内部情報をコントローラーに表示する
+     *              When a DisplayObject with this item set is selected,
+     *              internal information is displayed on the controller.
+     *
      * @param {object} place
      * @param {string} [name=""]
      * @public
@@ -149,22 +293,20 @@ class Instance
     }
 
     /**
-     * @abstract
-     */
-    // eslint-disable-next-line no-empty-function
-    toObject () {}
-
-    /**
-     * @param  {number} width
-     * @param  {number} height
-     * @param  {object} place
-     * @param  {object} [range = null]
-     * @param  {number} [static_frame = 0]
+     * @description Next2DのBitmapDataクラスを経由してImageクラスを生成
+     *              Generate Image class via Next2D BitmapData class
+     *
+     * @param  {number}  width
+     * @param  {number}  height
+     * @param  {object}  place
+     * @param  {object}  [range = null]
+     * @param  {number}  [static_frame = 0]
+     * @param  {boolean} [preview = false]
      * @return {HTMLImageElement}
      * @method
      * @public
      */
-    toImage (width, height, place, range = null, static_frame = 0)
+    toImage (width, height, place, range = null, static_frame = 0, preview = false)
     {
         // empty image
         if (!width || !height) {
@@ -218,24 +360,9 @@ class Instance
     }
 
     /**
-     * @param  {object} place
-     * @return {next2d.geom.ColorTransform}
-     * @method
-     * @public
-     */
-    calcColorTransform (place)
-    {
-        const { ColorTransform } = window.next2d.geom;
-
-        return new ColorTransform(
-            place.colorTransform[0], place.colorTransform[1],
-            place.colorTransform[2], place.colorTransform[3],
-            place.colorTransform[4], place.colorTransform[5],
-            place.colorTransform[6], place.colorTransform[7]
-        );
-    }
-
-    /**
+     * @description 指定されたFilterの描画範囲を計算
+     *              Calculates the drawing range of the specified Filter
+     *
      * @param  {number} width
      * @param  {number} height
      * @param  {object} place
@@ -295,6 +422,9 @@ class Instance
     }
 
     /**
+     * @description BitmapDataに渡すSpriteを生成
+     *              Generate Sprite to be passed to BitmapData
+     *
      * @param  {DisplayObject} instance
      * @param  {object} place
      * @return {next2d.display.Sprite}
@@ -304,7 +434,7 @@ class Instance
     createContainer (instance, place)
     {
         const { Sprite } = window.next2d.display;
-        const { Matrix } = window.next2d.geom;
+        const { Matrix, ColorTransform } = window.next2d.geom;
 
         instance
             .transform
@@ -317,7 +447,12 @@ class Instance
         // fixed logic
         instance
             .transform
-            .colorTransform = this.calcColorTransform(place);
+            .colorTransform = new ColorTransform(
+                place.colorTransform[0], place.colorTransform[1],
+                place.colorTransform[2], place.colorTransform[3],
+                place.colorTransform[4], place.colorTransform[5],
+                place.colorTransform[6], place.colorTransform[7]
+            );
 
         const sprite = new Sprite();
         sprite.addChild(instance);
@@ -333,6 +468,9 @@ class Instance
     }
 
     /**
+     * @description 幅と高さを指定して、BitmapDataクラスを生成
+     *              Generate BitmapData class by specifying width and height
+     *
      * @param  {number} width
      * @param  {number} height
      * @return {next2d.display.BitmapData}
@@ -353,31 +491,8 @@ class Instance
     }
 
     /**
-     * @abstract
-     */
-    // eslint-disable-next-line no-empty-function
-    toPublish () {}
-
-    /**
-     * @abstract
-     */
-    // eslint-disable-next-line no-empty-function,getter-return
-    get defaultSymbol () {}
-
-    /**
-     * @abstract
-     */
-    // eslint-disable-next-line no-empty-function
-    createInstance () {}
-
-    /**
-     * @interface
-     */
-    // eslint-disable-next-line no-empty-function
-    getBounds () {}
-
-    /**
      * @description ライブラリからの削除処理、配置先からも削除を行う
+     *              Process deletion from the library and also from the placement site.
      *
      * @return {void}
      * @method
@@ -473,7 +588,8 @@ class Instance
     }
 
     /**
-     * @description プレビュー画像を生成
+     * @description プレビュー用のImageクラスを生成
+     *              Generate Image class for preview
      *
      * @return {HTMLImageElement}
      * @method
@@ -521,7 +637,8 @@ class Instance
                 "colorTransform": [1, 1, 1, 1, 0, 0, 0, 0],
                 "blendMode": "normal",
                 "filter": []
-            }
+            },
+            null, 0, true
         );
 
         if (image.height !== height) {
@@ -534,45 +651,43 @@ class Instance
     }
 
     /**
-     * @return {number}
+     * @description ライブラリ内のユニークな値
+     *              Unique value in the library
+     *
+     * @member {number}
      * @public
      */
     get id ()
     {
         return this._$id;
     }
-
-    /**
-     * @param  {number} id
-     * @return {void}
-     * @public
-     */
     set id (id)
     {
         this._$id = id | 0;
     }
 
     /**
-     * @return {number}
+     * @description 格納先のフォルダID
+     *              Destination folder ID
+     *
+     * @default 0
+     * @member {number}
      * @public
      */
     get folderId ()
     {
         return this._$folderId;
     }
-
-    /**
-     * @param  {number} id
-     * @return {void}
-     * @public
-     */
-    set folderId (id)
+    set folderId (folder_id)
     {
-        this._$folderId = id | 0;
+        this._$folderId = folder_id | 0;
     }
 
     /**
-     * @return {string}
+     * @description フォルダを含めたライブラリのパスを返す
+     *              Returns the path to the library, including folders
+     *
+     * @member {string}
      * @readonly
      * @public
      */
@@ -580,12 +695,12 @@ class Instance
     {
         const workSpace = Util.$currentWorkSpace();
 
-        let path = this.name;
+        let path = this._$name;
         if (this._$folderId) {
             let parent = this;
             while (parent._$folderId) {
                 parent = workSpace.getLibrary(parent._$folderId);
-                path = `${parent.name}/${path}`;
+                path = `${parent._$name}/${path}`;
             }
         }
 
@@ -594,102 +709,24 @@ class Instance
 
     /**
      * @description 指定したワークスペースからPathを取得
+     *              Get Path from the specified workspace
      *
      * @param  {WorkSpace} work_space
      * @return {string}
+     * @method
+     * @public
      */
     getPathWithWorkSpace (work_space)
     {
-        let path = this.name;
+        let path = this._$name;
         if (this._$folderId) {
             let parent = this;
             while (parent._$folderId) {
                 parent = work_space.getLibrary(parent._$folderId);
-                path = `${parent.name}/${path}`;
+                path = `${parent._$name}/${path}`;
             }
         }
 
         return path;
-    }
-
-    /**
-     * @return {string}
-     * @public
-     */
-    get name ()
-    {
-        return this._$name;
-    }
-
-    /**
-     * @param  {string} name
-     * @return {void}
-     * @public
-     */
-    set name (name)
-    {
-        this._$name = `${name}`;
-
-        if (this.id) {
-            const libraryElement = document
-                .getElementById(`library-name-${this.id}`);
-            libraryElement.textContent = this._$name;
-        }
-
-        if (Util.$currentWorkSpace().scene.id === this.id) {
-            document
-                .getElementById("object-name")
-                .value = this._$name;
-
-            document
-                .getElementById("scene-name")
-                .textContent = this._$name;
-
-        }
-
-    }
-
-    /**
-     * @return {string}
-     * @public
-     */
-    get type ()
-    {
-        return this._$type;
-    }
-
-    /**
-     * @param  {string} type
-     * @return {void}
-     * @public
-     */
-    set type (type)
-    {
-        this._$type = `${type}`;
-    }
-
-    /**
-     * @return {string}
-     * @public
-     */
-    get symbol ()
-    {
-        return this._$symbol;
-    }
-
-    /**
-     * @param  {string} symbol
-     * @return {void}
-     * @public
-     */
-    set symbol (symbol)
-    {
-        this._$symbol = `${symbol}`;
-
-        if (this.id) {
-            document
-                .getElementById(`library-symbol-name-${this.id}`)
-                .textContent = `${symbol}`;
-        }
     }
 }
