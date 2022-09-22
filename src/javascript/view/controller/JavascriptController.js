@@ -24,6 +24,9 @@ class JavascriptController
         }
 
         const workSpaces = Util.$currentWorkSpace();
+        if (!workSpaces) {
+            return;
+        }
 
         for (const instance of workSpaces._$libraries.values()) {
 

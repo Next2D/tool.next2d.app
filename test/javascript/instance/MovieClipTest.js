@@ -306,6 +306,167 @@ describe("MovieClip.js common function test", () =>
     });
 });
 
+describe("MovieClip.js label test", () =>
+{
+    it("label test", () =>
+    {
+        const movieClip = new MovieClip({
+            "id": 1,
+            "name": "MovieClip_01",
+            "type": InstanceType.MOVIE_CLIP
+        });
+
+        // 初期値
+        expect(movieClip._$labels.size).toBe(0);
+
+        movieClip.setLabel(2, "LABEL");
+        expect(movieClip._$labels.size).toBe(1);
+        expect(movieClip.getLabel(2)).toBe("LABEL");
+
+        const labels = movieClip.labels;
+        expect(labels.length).toBe(1);
+        expect(labels[0].frame).toBe(2);
+        expect(labels[0].name).toBe("LABEL");
+
+        movieClip.deleteLabel(2);
+        expect(movieClip._$labels.size).toBe(0);
+
+        movieClip.labels = labels;
+        expect(movieClip._$labels.size).toBe(1);
+        expect(movieClip.getLabel(2)).toBe("LABEL");
+    });
+});
+
+describe("MovieClip.js layer test", () =>
+{
+    beforeEach(() =>
+    {
+        document.body.innerHTML = window.__html__["test/test.html"];
+    });
+
+    it("layer test", () =>
+    {
+        const movieClip = new MovieClip({
+            "id": 1,
+            "name": "MovieClip_01",
+            "type": InstanceType.MOVIE_CLIP
+        });
+
+        // 初期値
+        expect(movieClip._$layers.size).toBe(0);
+
+        const layer = new Layer();
+        movieClip.addLayer(layer);
+        expect(movieClip._$layers.size).toBe(1);
+        expect(layer.id).toBe(0);
+        expect(movieClip.getLayer(layer.id)).toBe(layer);
+
+        movieClip.deleteLayer(layer.id);
+        expect(movieClip._$layers.size).toBe(0);
+
+        movieClip.setLayer(layer.id, layer);
+        expect(movieClip._$layers.size).toBe(1);
+        expect(movieClip.getLayer(layer.id)).toBe(layer);
+
+        const layers = movieClip.layers;
+
+        movieClip.clearLayer();
+        expect(movieClip._$layers.size).toBe(0);
+
+        movieClip.layers = layers;
+        const newLayer = movieClip.getLayer(0);
+        expect(layer.name).toBe(newLayer.name);
+        expect(layer.color).toBe(newLayer.color);
+    });
+});
+
+describe("MovieClip.js sounds test", () =>
+{
+    it("sound test", () =>
+    {
+        const movieClip = new MovieClip({
+            "id": 1,
+            "name": "MovieClip_01",
+            "type": InstanceType.MOVIE_CLIP
+        });
+
+        // 初期値
+        expect(movieClip._$sounds.size).toBe(0);
+        expect(movieClip.hasSound(3)).toBe(false);
+
+        const mockSounds = [{
+            "characterId": 2,
+            "name":        "test_sound.mp3",
+            "volume":      100,
+            "autoPlay":    false,
+            "loopCount":   0
+        }];
+
+        movieClip.setSound(3, mockSounds);
+        expect(movieClip.hasSound(3)).toBe(true);
+        expect(movieClip.getSound(3)).toBe(mockSounds);
+
+        const sounds = movieClip.sounds;
+        expect(sounds[0].frame).toBe(3);
+        expect(sounds[0].sound[0].characterId).toBe(2);
+        expect(sounds[0].sound[0].name).toBe("test_sound.mp3");
+        expect(sounds[0].sound[0].volume).toBe(100);
+        expect(sounds[0].sound[0].autoPlay).toBe(false);
+        expect(sounds[0].sound[0].loopCount).toBe(0);
+
+        // 削除
+        movieClip.deleteSound(3);
+        expect(movieClip._$sounds.size).toBe(0);
+        expect(movieClip.hasSound(3)).toBe(false);
+
+        // 再登録
+        movieClip.sounds = sounds;
+        const newSounds = movieClip.getSound(3);
+        expect(newSounds.length).toBe(1);
+        expect(newSounds[0].characterId).toBe(2);
+        expect(newSounds[0].name).toBe("test_sound.mp3");
+        expect(newSounds[0].volume).toBe(100);
+        expect(newSounds[0].autoPlay).toBe(false);
+        expect(newSounds[0].loopCount).toBe(0);
+    });
+});
+
+describe("MovieClip.js actions test", () =>
+{
+    it("action test", () =>
+    {
+        const movieClip = new MovieClip({
+            "id": 1,
+            "name": "MovieClip_01",
+            "type": InstanceType.MOVIE_CLIP
+        });
+
+        // 初期値
+        expect(movieClip._$actions.size).toBe(0);
+        expect(movieClip.hasAction(4)).toBe(false);
+
+        const script = "this.stop();";
+
+        movieClip.setAction(4, script);
+        expect(movieClip.hasAction(4)).toBe(true);
+        expect(movieClip.getAction(4)).toBe(script);
+
+        const actions = movieClip.actions;
+        expect(actions[0].frame).toBe(4);
+        expect(actions[0].action).toBe("this.stop();");
+
+        // 削除
+        movieClip.deleteAction(4);
+        expect(movieClip._$actions.size).toBe(0);
+        expect(movieClip.hasAction(4)).toBe(false);
+
+        // 再登録
+        movieClip.actions = actions;
+        expect(movieClip.hasAction(4)).toBe(true);
+        expect(movieClip.getAction(4)).toBe(script);
+    });
+});
+
 describe("MovieClip.js function test", () =>
 {
     beforeEach(() =>
@@ -384,79 +545,5 @@ describe("MovieClip.js function test", () =>
         expect(element.draggable).toBe(true);
 
         Util.$workSpaces.length = 0;
-    });
-});
-
-describe("MovieClip.js label test", () =>
-{
-    it("label test", () =>
-    {
-        const movieClip = new MovieClip({
-            "id": 1,
-            "name": "MovieClip_01",
-            "type": InstanceType.MOVIE_CLIP
-        });
-
-        // 初期値
-        expect(movieClip._$labels.size).toBe(0);
-
-        movieClip.setLabel(2, "LABEL");
-        expect(movieClip._$labels.size).toBe(1);
-        expect(movieClip.getLabel(2)).toBe("LABEL");
-
-        const labels = movieClip.labels;
-        expect(labels.length).toBe(1);
-        expect(labels[0].frame).toBe(2);
-        expect(labels[0].name).toBe("LABEL");
-
-        movieClip.deleteLabel(2);
-        expect(movieClip._$labels.size).toBe(0);
-
-        movieClip.labels = labels;
-        expect(movieClip._$labels.size).toBe(1);
-        expect(movieClip.getLabel(2)).toBe("LABEL");
-    });
-});
-
-describe("MovieClip.js layer test", () =>
-{
-    beforeEach(() =>
-    {
-        document.body.innerHTML = window.__html__["test/test.html"];
-    });
-
-    it("layer test", () =>
-    {
-        const movieClip = new MovieClip({
-            "id": 1,
-            "name": "MovieClip_01",
-            "type": InstanceType.MOVIE_CLIP
-        });
-
-        // 初期値
-        expect(movieClip._$layers.size).toBe(0);
-
-        const layer = new Layer();
-        movieClip.addLayer(layer);
-        expect(movieClip._$layers.size).toBe(1);
-        expect(layer.id).toBe(0);
-        expect(movieClip.getLayer(layer.id)).toBe(layer);
-
-        movieClip.deleteLayer(layer.id);
-        expect(movieClip._$layers.size).toBe(0);
-
-        movieClip.setLayer(layer.id, layer);
-        expect(movieClip._$layers.size).toBe(1);
-        expect(movieClip.getLayer(layer.id)).toBe(layer);
-
-        const layers = movieClip.layers;
-
-        movieClip.deleteLayer(layer.id);
-        expect(movieClip._$layers.size).toBe(0);
-
-        movieClip.layers = layers;
-        const newLayer = movieClip.getLayer(0);
-        expect(layer.name).toBe(newLayer.name);
-        expect(layer.color).toBe(newLayer.color);
     });
 });
