@@ -855,6 +855,121 @@ describe("Layer.js function test", () =>
         layer.deleteEmptyCharacter(emptyCharacter);
         expect(layer._$emptys.length).toBe(0);
     });
+
+    it("function adjustmentLocation test case1", () =>
+    {
+        const layer = new Layer();
+
+        layer.addEmptyCharacter(new EmptyCharacter({
+            "startFrame": 1,
+            "endFrame": 4
+        }));
+        layer.addEmptyCharacter(new EmptyCharacter({
+            "startFrame": 4,
+            "endFrame": 10
+        }));
+        expect(layer._$emptys.length).toBe(2);
+
+        const location1 = layer.adjustmentLocation(6);
+        expect(location1.startFrame).toBe(4);
+        expect(location1.endFrame).toBe(10);
+        expect(layer._$emptys.length).toBe(1);
+
+        const location2 = layer.adjustmentLocation(3);
+        expect(location2.startFrame).toBe(1);
+        expect(location2.endFrame).toBe(4);
+        expect(layer._$emptys.length).toBe(0);
+
+        layer.addEmptyCharacter(new EmptyCharacter({
+            "startFrame": 1,
+            "endFrame": 4
+        }));
+        layer.addEmptyCharacter(new EmptyCharacter({
+            "startFrame": 4,
+            "endFrame": 10
+        }));
+        expect(layer._$emptys.length).toBe(2);
+
+        const location3 = layer.adjustmentLocation(20);
+        expect(location3.startFrame).toBe(20);
+        expect(location3.endFrame).toBe(21);
+        expect(layer._$emptys.length).toBe(2);
+
+        const emptyCharacter = layer.getActiveEmptyCharacter(4);
+        expect(emptyCharacter.startFrame).toBe(4);
+        expect(emptyCharacter.endFrame).toBe(20);
+    });
+
+    it("function adjustmentLocation test case2", () =>
+    {
+        const workSpaces = new WorkSpace();
+        Util.$activeWorkSpaceId = Util.$workSpaces.length;
+        Util.$workSpaces.push(workSpaces);
+
+        const layer = new Layer();
+
+        const character1 = new Character();
+        character1.startFrame = 4;
+        character1.endFrame   = 10;
+        character1.setPlace(4, {
+            "frame": 4,
+            "matrix": [1, 0, 0, 1, 0, 0],
+            "colorTransform": [1, 1, 1, 1, 0, 0, 0, 0],
+            "blendMode": "normal",
+            "filter": [],
+            "depth": 0
+        });
+        layer.addCharacter(character1);
+
+        const character2 = new Character();
+        character2.startFrame = 4;
+        character2.endFrame   = 10;
+        character2.setPlace(4, {
+            "frame": 4,
+            "matrix": [1, 0, 0, 1, 0, 0],
+            "colorTransform": [1, 1, 1, 1, 0, 0, 0, 0],
+            "blendMode": "normal",
+            "filter": [],
+            "depth": 0
+        });
+        layer.addCharacter(character2);
+
+        const character3 = new Character();
+        character3.startFrame = 1;
+        character3.endFrame   = 4;
+        character3.setPlace(1, {
+            "frame": 1,
+            "matrix": [1, 0, 0, 1, 0, 0],
+            "colorTransform": [1, 1, 1, 1, 0, 0, 0, 0],
+            "blendMode": "normal",
+            "filter": [],
+            "depth": 0
+        });
+        layer.addCharacter(character3);
+        expect(layer._$characters.length).toBe(3);
+
+        const location1 = layer.adjustmentLocation(2);
+        expect(location1.startFrame).toBe(1);
+        expect(location1.endFrame).toBe(4);
+
+        const location2 = layer.adjustmentLocation(4);
+        expect(location2.startFrame).toBe(4);
+        expect(location2.endFrame).toBe(10);
+
+        const location3 = layer.adjustmentLocation(20);
+        expect(location3.startFrame).toBe(20);
+        expect(location3.endFrame).toBe(21);
+
+        const characters = layer.getActiveCharacter(4);
+        expect(characters.length).toBe(2);
+        for (let idx = 0; idx < characters.length; ++idx) {
+            const character = characters[idx];
+            expect(character.startFrame).toBe(4);
+            expect(character.endFrame).toBe(20);
+        }
+
+        Util.$workSpaces.length = 0;
+    });
 });
 
 describe("Layer.js toObject test", () =>

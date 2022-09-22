@@ -1249,58 +1249,34 @@ class Layer
         // 前方のフレームの補完
         if (frame > 1) {
 
-            const layerId = this.id;
             let idx = 1;
-            for (; frame - idx > 1; ++idx) {
-
-                const element = document
-                    .getElementById(`${layerId}-${frame - idx}`);
-
-                // 未設定のフレームでない時は終了
-                if (element.dataset.frameState !== "empty") {
-                    break;
-                }
-
-            }
-
-            // 同じフレームでなければ補正を実行
-            if (frame - idx !== frame) {
-
-                // 終了フラグ
-                let done = false;
+            for (; frame - idx >= 0; ++idx) {
 
                 // 空のフレームがあれば、フレームを伸ばす
                 const emptyCharacter = this
                     .getActiveEmptyCharacter(frame - idx);
 
                 if (emptyCharacter) {
-
                     emptyCharacter.endFrame = frame;
-
-                    done = true;
+                    break;
                 }
 
-                if (!done) {
-
-                    // 設定済みのフレームがあれば、フレームを伸ばす
-                    const characters = this.getActiveCharacter(frame - idx);
-                    if (characters.length) {
-                        for (let idx = 0; idx < characters.length; ++idx) {
-                            characters[idx].endFrame = frame;
-                        }
-
-                        done = true;
+                // DisplayObjectがあれば、フレームを伸ばす
+                const characters = this.getActiveCharacter(frame - idx);
+                if (characters.length) {
+                    for (let idx = 0; idx < characters.length; ++idx) {
+                        characters[idx].endFrame = frame;
                     }
+                    break;
                 }
+            }
 
-                // 前方のフレームが未設定の場合は空のフレームを追加
-                if (!done) {
-                    this.addEmptyCharacter(new EmptyCharacter({
-                        "startFrame": frame - idx,
-                        "endFrame": frame
-                    }));
-                }
-
+            // 前方に何も配置されてない場合は空のキーフレームを登録
+            if (!(frame - idx)) {
+                this.addEmptyCharacter(new EmptyCharacter({
+                    "startFrame": 1,
+                    "endFrame": frame
+                }));
             }
         }
 
