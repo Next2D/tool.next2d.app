@@ -254,7 +254,7 @@ class TimelineMarker extends BaseTimeline
         const label = Util
             .$currentWorkSpace()
             .scene
-            .gerLabel(
+            .getLabel(
                 Util.$timelineFrame.currentFrame
             );
 

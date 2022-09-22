@@ -885,6 +885,36 @@ class Screen extends BaseScreen
             .getElementById("stage-area")
             .appendChild(div);
     }
+
+    /**
+     * @description ステージに配置したelementを削除
+     *              Delete elements placed on stage
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    clearStageArea ()
+    {
+        const stageArea = document.getElementById("stage-area");
+        if (!stageArea) {
+            return ;
+        }
+
+        let idx = 0;
+        while (stageArea.children.length > idx) {
+
+            const node = stageArea.children[idx];
+
+            // 中心点や回転などのelementは削除しない
+            if (!node.dataset.child) {
+                idx++;
+                continue;
+            }
+
+            node.remove();
+        }
+    }
 }
 
 Util.$screen = new Screen();

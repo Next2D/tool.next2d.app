@@ -223,7 +223,7 @@ class TimelineTool extends BaseTimeline
         } else {
 
             // ラベル名があって、Inputが空ならラベルの削除処理を行う
-            const label = scene.gerLabel(this._$labelFrame);
+            const label = scene.getLabel(this._$labelFrame);
             if (label) {
                 this.save(); // 事前保存
                 scene.deleteLabel(this._$labelFrame);

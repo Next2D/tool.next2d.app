@@ -654,8 +654,6 @@ class ScreenMenu extends BaseScreen
 
             // タイムラインを再構成
             layer.reloadStyle();
-
-            console.log(layer);
         }
 
         // 再描画

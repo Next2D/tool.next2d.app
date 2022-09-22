@@ -420,7 +420,7 @@ class TimelineHeader extends BaseTimeline
             switch (type) {
 
                 case "marker":
-                    scene.setLabel(dropFrame, scene.gerLabel(dragFrame));
+                    scene.setLabel(dropFrame, scene.getLabel(dragFrame));
                     break;
 
                 case "action":

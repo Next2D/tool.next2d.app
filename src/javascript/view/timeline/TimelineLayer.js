@@ -499,9 +499,14 @@ class TimelineLayer extends BaseTimeline
      */
     create (current_frame = 0, layer_id = -1)
     {
+        const workSpace = Util.$currentWorkSpace();
+        if (!workSpace) {
+            return ;
+        }
+
         let frame = current_frame + 1;
 
-        const scene   = Util.$currentWorkSpace().scene;
+        const scene   = workSpace.scene;
         const layerId = layer_id === -1 ? scene._$layerId : layer_id;
 
         const element = document
@@ -2164,7 +2169,7 @@ class TimelineLayer extends BaseTimeline
 
         // labelがあればセット
         const scene = Util.$currentWorkSpace().scene;
-        const label = scene.gerLabel(frame);
+        const label = scene.getLabel(frame);
         if (label) {
             labelInput.value = label;
         }
@@ -2647,8 +2652,6 @@ class TimelineLayer extends BaseTimeline
                     // 移動先の幅の最大値をセット
                     const range = character.getRange(endFrame);
                     distLastFrame = Math.max(range.endFrame, distLastFrame);
-
-                    console.log("koko: ", range, distLastFrame);
 
                     // 選択幅のキーフレームを削除
                     for (let frame = distFrame; endFrame > frame; ++frame) {
@@ -3350,7 +3353,6 @@ class TimelineLayer extends BaseTimeline
                 }
             }
 
-            console.log(layer);
             if (targetLayerId === layerId) {
 
                 layer.reloadStyle();

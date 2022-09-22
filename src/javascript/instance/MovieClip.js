@@ -120,7 +120,7 @@ class MovieClip extends Instance
         Util.$tools.reset();
 
         // スクリーンを初期化
-        this.clearStageArea();
+        Util.$screen.clearStageArea();
         Util.$clearShapePointer();
 
         // object setting
@@ -222,9 +222,12 @@ class MovieClip extends Instance
         if (this.id) {
 
             // スクリーンに表示されてるシーンはドラッグできないようロック
-            document
-                .getElementById(`library-child-id-${this.id}`)
-                .draggable = false;
+            const element = document
+                .getElementById(`library-child-id-${this.id}`);
+
+            if (element) {
+                element.draggable = false;
+            }
 
         }
 
@@ -268,36 +271,6 @@ class MovieClip extends Instance
     }
 
     /**
-     * @description ステージに配置したelementを削除
-     *              Delete elements placed on stage
-     *
-     * @return {void}
-     * @method
-     * @public
-     */
-    clearStageArea ()
-    {
-        const stageArea = document.getElementById("stage-area");
-        if (!stageArea) {
-            return ;
-        }
-
-        let idx = 0;
-        while (stageArea.children.length > idx) {
-
-            const node = stageArea.children[idx];
-
-            // 中心点や回転などのelementは削除しない
-            if (!node.dataset.child) {
-                idx++;
-                continue;
-            }
-
-            node.remove();
-        }
-    }
-
-    /**
      * @description 指定フレームに配置されたDisplayObjectを設置
      *              DisplayObject placed in the specified frame
      *
@@ -308,8 +281,8 @@ class MovieClip extends Instance
      */
     changeFrame (frame = 1)
     {
-        // clear
-        this.clearStageArea();
+        // ステージのelementを全て削除
+        Util.$screen.clearStageArea();
 
         const element = document.getElementById("stage-area");
         if (!element) {
@@ -392,20 +365,39 @@ class MovieClip extends Instance
 
         element.addEventListener("click", (event) =>
         {
-            // モーダル終了
-            Util.$endMenu();
-
-            const element = event.currentTarget;
+            // 全てのイベントを中止
+            event.stopPropagation();
+            event.preventDefault();
 
             // シーン移動
-            Util.$sceneChange.execute(
-                element.dataset.libraryId | 0
-            );
-
-            // リストから削除
-            element.remove();
+            this.sceneChange(event);
         });
 
+    }
+
+    /**
+     * @description 指定したシーンへ移動
+     *              Go to the specified scene
+     *
+     * @param  {Event} event
+     * @return {void}
+     * @method
+     * @public
+     */
+    sceneChange (event)
+    {
+        // モーダル終了
+        Util.$endMenu();
+
+        const element = event.currentTarget;
+
+        // シーン移動
+        Util.$sceneChange.execute(
+            element.dataset.libraryId | 0
+        );
+
+        // リストから削除
+        element.remove();
     }
 
     /**
@@ -418,22 +410,7 @@ class MovieClip extends Instance
      */
     stop ()
     {
-        const layers = [];
-        for (const layer of this._$layers.values()) {
-            layers.push(layer);
-
-            const characters =  layer._$characters;
-            for (let idx = 0; idx < characters.length; ++idx) {
-                characters[idx]._$image = null;
-            }
-
-        }
-
-        this._$layers.clear();
-        for (let idx = 0; idx < layers.length; ++idx) {
-            this._$layers.set(idx, layers[idx]);
-        }
-
+        // rootでなければ、ライブラリの選択を可能に変更
         if (this.id) {
 
             const element = document
@@ -502,7 +479,7 @@ class MovieClip extends Instance
      * @method
      * @public
      */
-    gerLabel (frame)
+    getLabel (frame)
     {
         return this._$labels.has(frame)
             ? this._$labels.get(frame | 0)

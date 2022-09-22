@@ -122,14 +122,15 @@ class Layer
         // レイヤに必要なフレームをタイムラインに生成
         Util.$timelineLayer.create();
 
-        const parent = document
-            .getElementById("timeline-content");
-
+        const parent = document.getElementById("timeline-content");
         if (!parent) {
             return ;
         }
 
         const element = parent.lastElementChild;
+        if (!element) {
+            return ;
+        }
 
         // set id
         this.id = element.dataset.layerId | 0;
