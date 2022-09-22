@@ -35,7 +35,7 @@ class Instance
      * @description クラス内の変数をObjectにして返す
      *              Return variables in a class as Objects
      *
-     * @return {void}
+     * @return {object}
      * @method
      * @abstract
      */

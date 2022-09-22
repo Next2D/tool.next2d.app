@@ -88,20 +88,23 @@ class Controller extends BaseController
             "filter-setting"
         ]);
 
-        const scene = Util.$currentWorkSpace().scene;
+        const workSpace = Util.$currentWorkSpace();
+        if (workSpace) {
+            const scene = workSpace.scene;
 
-        const objectName = document
-            .getElementById("object-name");
+            const objectName = document
+                .getElementById("object-name");
 
-        if (objectName) {
-            objectName.value = scene.name;
-        }
+            if (objectName) {
+                objectName.value = scene.name;
+            }
 
-        const objectSymbol = document
-            .getElementById("object-symbol");
+            const objectSymbol = document
+                .getElementById("object-symbol");
 
-        if (objectSymbol) {
-            objectSymbol.value = scene.symbol;
+            if (objectSymbol) {
+                objectSymbol.value = scene.symbol;
+            }
         }
     }
 }

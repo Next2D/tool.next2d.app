@@ -1,4 +1,7 @@
 /**
+ * コンテナとしてレイヤーやタイムラインを管理するクラス、Next2DのMovieClipクラスとして出力されます。
+ * The output is a class that manages layers and timelines as containers and Next2D's MovieClip class.
+ *
  * @class
  * @extends {Instance}
  */
@@ -7,6 +10,7 @@ class MovieClip extends Instance
     /**
      * @param {object} object
      * @constructor
+     * @public
      */
     constructor (object)
     {
@@ -15,7 +19,6 @@ class MovieClip extends Instance
         // default
         this._$currentFrame = 1;
         this._$layerId      = 0;
-        this._$parent       = null;
         this._$labels       = new Map();
         this._$layers       = new Map();
         this._$actions      = new Map();
@@ -48,6 +51,7 @@ class MovieClip extends Instance
 
     /**
      * @description MovieClipクラスを複製
+     *              Duplicate MovieClip class
      *
      * @return {MovieClip}
      * @method
@@ -59,6 +63,11 @@ class MovieClip extends Instance
     }
 
     /**
+     * @description このアイテムが設定されたDisplayObjectが選択された時
+     *              内部情報をコントローラーに表示する
+     *              When a DisplayObject with this item set is selected,
+     *              internal information is displayed on the controller.
+     *
      * @param  {object} place
      * @param  {string} [name=""]
      * @return {void}
@@ -90,6 +99,9 @@ class MovieClip extends Instance
     }
 
     /**
+     * @description 初期起動関数
+     *              initial invoking function
+     *
      * @param  {boolean} [init=false]
      * @return {void}
      * @public
@@ -219,14 +231,17 @@ class MovieClip extends Instance
         // サウンド設定を反映
         Util.$soundController.createSoundElements();
 
+        // スクリーンに描画
         this.changeFrame(
             Util.$timelineFrame.currentFrame
         );
-
     }
 
     /**
-     * @return {number}
+     * @description タイムライン内の再生ヘッドが置かれているフレームの番号を示します。
+     *              Indicates the number of the frame in the timeline at which the playback head is placed.
+     *
+     * @member {number}
      * @readonly
      * @public
      */
@@ -236,7 +251,10 @@ class MovieClip extends Instance
     }
 
     /**
-     * @return {number}
+     * @description MovieClip インスタンス内のフレーム総数です。
+     *              The total number of frames in the MovieClip instance.
+     *
+     * @member {number}
      * @readonly
      * @public
      */
@@ -250,7 +268,11 @@ class MovieClip extends Instance
     }
 
     /**
+     * @description ステージに配置したelementを削除
+     *              Delete elements placed on stage
+     *
      * @return {void}
+     * @method
      * @public
      */
     clearStageArea ()
@@ -264,7 +286,9 @@ class MovieClip extends Instance
         while (stageArea.children.length > idx) {
 
             const node = stageArea.children[idx];
-            if (!node.dataset.child || node.dataset.child === "tween") {
+
+            // 中心点や回転などのelementは削除しない
+            if (!node.dataset.child) {
                 idx++;
                 continue;
             }
@@ -274,8 +298,12 @@ class MovieClip extends Instance
     }
 
     /**
+     * @description 指定フレームに配置されたDisplayObjectを設置
+     *              DisplayObject placed in the specified frame
+     *
      * @param  {number} [frame=1]
      * @return {void}
+     * @method
      * @public
      */
     changeFrame (frame = 1)
@@ -330,7 +358,11 @@ class MovieClip extends Instance
     }
 
     /**
+     * @description シーン移動時に、直前に表示していたシーンをリストに追加する
+     *              When moving scenes, add the scene that was displayed immediately before to the list.
+     *
      * @return {void}
+     * @method
      * @public
      */
     addSceneName ()
@@ -377,7 +409,11 @@ class MovieClip extends Instance
     }
 
     /**
+     * @description シーン終了関数
+     *              end-of-scene function
+     *
      * @return {void}
+     * @method
      * @public
      */
     stop ()
@@ -403,13 +439,18 @@ class MovieClip extends Instance
             const element = document
                 .getElementById(`library-child-id-${this.id}`);
 
-            element.draggable = true;
+            if (element) {
+                element.draggable = true;
+            }
 
         }
     }
 
     /**
-     * @return {array}
+     * @description タイムラインに設置した全てのラベルを配列で返す
+     *              Returns an array of all labels placed on the timeline
+     *
+     * @member {array}
      * @public
      */
     get labels ()
@@ -423,12 +464,6 @@ class MovieClip extends Instance
         }
         return labels;
     }
-
-    /**
-     * @param  {array} labels
-     * @return {void}
-     * @public
-     */
     set labels (labels)
     {
         for (let idx = 0; idx < labels.length; ++idx) {
@@ -444,9 +479,13 @@ class MovieClip extends Instance
     }
 
     /**
+     * @description 指定フレームにラベルをセットする
+     *              Sets a label on the specified frame
+     *
      * @param  {number} frame
      * @param  {string} value
      * @return {void}
+     * @method
      * @public
      */
     setLabel (frame, value)
@@ -455,8 +494,12 @@ class MovieClip extends Instance
     }
 
     /**
+     * @description 指定フレームのラベルを返す
+     *              Returns the label of the specified frame
+     *
      * @param  {number} frame
      * @return {object}
+     * @method
      * @public
      */
     gerLabel (frame)
@@ -467,8 +510,12 @@ class MovieClip extends Instance
     }
 
     /**
+     * @description 指定フレームに設置したラベル情報を削除
+     *              Delete label information placed in the specified frame
+     *
      * @param  {number} frame
      * @return {void}
+     * @method
      * @public
      */
     deleteLabel (frame)
@@ -477,16 +524,10 @@ class MovieClip extends Instance
     }
 
     /**
-     * @return {object}
-     * @public
-     */
-    get parent ()
-    {
-        return this._$parent;
-    }
-
-    /**
-     * @return {array}
+     * @description 設置された全てのレイヤーを配列で返す
+     *              Returns all installed layers as an array
+     *
+     * @member {array}
      * @public
      */
     get layers ()
@@ -523,12 +564,6 @@ class MovieClip extends Instance
         }
         return layers;
     }
-
-    /**
-     * @param  {array} layers
-     * @return {void}
-     * @public
-     */
     set layers (layers)
     {
         for (let idx = 0; idx < layers.length; ++idx) {
@@ -537,8 +572,12 @@ class MovieClip extends Instance
     }
 
     /**
+     * @description シーンにレイヤーを追加
+     *              Adding Layers to a Scene
+     *
      * @param  {Layer} [layer=null]
      * @return {void}
+     * @method
      * @public
      */
     addLayer (layer = null)
@@ -551,8 +590,12 @@ class MovieClip extends Instance
     }
 
     /**
+     * @description 指定したIDのLayerオブジェクトを返す
+     *              Returns a Layer object with the specified ID
+     *
      * @param  {number} layer_id
      * @return {Layer}
+     * @method
      * @public
      */
     getLayer (layer_id)
@@ -561,9 +604,13 @@ class MovieClip extends Instance
     }
 
     /**
+     * @description IDを指定してLayerオブジェクトを登録
+     *              Register a Layer object by specifying its ID
+     *
      * @param  {number} layer_id
      * @param  {Layer}  layer
      * @return {void}
+     * @method
      * @public
      */
     setLayer (layer_id, layer)
@@ -572,8 +619,12 @@ class MovieClip extends Instance
     }
 
     /**
+     * @description 指定したIDのLayerオブジェクトを削除
+     *              Delete Layer object with specified ID
+     *
      * @param  {number} layer_id
      * @return {void}
+     * @method
      * @public
      */
     deleteLayer (layer_id)
@@ -582,7 +633,11 @@ class MovieClip extends Instance
     }
 
     /**
+     * @description 全てのLayerオブジェクトを削除
+     *              Delete all Layer objects
+     *
      * @return {void}
+     * @method
      * @public
      */
     clearLayer ()
@@ -591,7 +646,10 @@ class MovieClip extends Instance
     }
 
     /**
-     * @return {array}
+     * @description シーン内に設置されたサウンド情報を配列で返す
+     *              Returns an array of sound information placed in the scene
+     *
+     * @member {array}
      * @public
      */
     get sounds ()
@@ -605,12 +663,6 @@ class MovieClip extends Instance
         }
         return sounds;
     }
-
-    /**
-     * @param  {array} sounds
-     * @return {void}
-     * @public
-     */
     set sounds (sounds)
     {
         for (let idx = 0; idx < sounds.length; ++idx) {
@@ -620,7 +672,10 @@ class MovieClip extends Instance
     }
 
     /**
-     * @return {array}
+     * @description シーン内に設置されたJavaScript情報を配列で返す
+     *              Returns an array of JavaScript information placed in the scene
+     *
+     * @member {array}
      * @public
      */
     get actions ()
@@ -634,12 +689,6 @@ class MovieClip extends Instance
         }
         return actions;
     }
-
-    /**
-     * @param  {array} actions
-     * @return {void}
-     * @public
-     */
     set actions (actions)
     {
         for (let idx = 0; idx < actions.length; ++idx) {
@@ -649,8 +698,12 @@ class MovieClip extends Instance
     }
 
     /**
+     * @description 指定したフレームのサウンド情報を配列で返す
+     *              Returns an array of sound information for a given frame
+     *
      * @param  {number} frame
      * @return {array}
+     * @method
      * @public
      */
     getSound (frame)
@@ -659,9 +712,13 @@ class MovieClip extends Instance
     }
 
     /**
+     * @description 指定したフレームにサウンド情報を登録
+     *              Register sound information to the specified frame
+     *
      * @param  {number} frame
      * @param  {array} sounds
      * @return {void}
+     * @method
      * @public
      */
     setSound (frame, sounds)
@@ -670,8 +727,12 @@ class MovieClip extends Instance
     }
 
     /**
+     * @description 指定したフレームにサウンド情報が設置されているか判定
+     *              Determines if sound information is installed in the specified frame
+     *
      * @param  {number} frame
      * @return {boolean}
+     * @method
      * @public
      */
     hasSound (frame)
@@ -680,8 +741,12 @@ class MovieClip extends Instance
     }
 
     /**
+     * @description 指定したフレームのサウンド情報を削除
+     *              Delete sound information for the specified frame
+     *
      * @param  {number} frame
      * @return {void}
+     * @method
      * @public
      */
     deleteSound (frame)
@@ -690,8 +755,12 @@ class MovieClip extends Instance
     }
 
     /**
+     * @description 指定したフレームのJavaScript情報を返す
+     *              Returns JavaScript information for the specified frame
+     *
      * @param  {number} frame
      * @return {string}
+     * @method
      * @public
      */
     getAction (frame)
@@ -700,23 +769,32 @@ class MovieClip extends Instance
     }
 
     /**
+     * @description 指定したフレームにJavaScript情報を登録する
+     *              Register JavaScript information in the specified frame
+     *
      * @param  {number} frame
      * @param  {string} script
      * @return {void}
+     * @method
      * @public
      */
     setAction (frame, script)
     {
         this._$actions.set(frame, script);
 
+        // コントローラーのelementを再構築
         Util
             .$javascriptController
             .reload();
     }
 
     /**
+     * @description 指定フレームにJavaScript情報の設定の有無を判定
+     *              Judges whether JavaScript information is set in the specified frame.
+     *
      * @param  {number} frame
      * @return {boolean}
+     * @method
      * @public
      */
     hasAction (frame)
@@ -725,8 +803,12 @@ class MovieClip extends Instance
     }
 
     /**
+     * @description 指定フレームのJavaScript情報を削除
+     *              Delete JavaScript information for specified frames
+     *
      * @param  {number} frame
      * @return {void}
+     * @method
      * @public
      */
     deleteAction (frame)
@@ -739,6 +821,9 @@ class MovieClip extends Instance
     }
 
     /**
+     * @description 表示領域(バウンディングボックス)のObjectを返す
+     *              Returns the Object of the display area (bounding box)
+     *
      * @param  {array}  [matrix=null]
      * @param  {object} [place=null]
      * @param  {object} [range=null]
@@ -840,7 +925,11 @@ class MovieClip extends Instance
     }
 
     /**
+     * @description クラス内の変数をObjectにして返す
+     *              Return variables in a class as Objects
+     *
      * @return {object}
+     * @method
      * @public
      */
     toObject ()
@@ -852,7 +941,6 @@ class MovieClip extends Instance
             "symbol":       this.symbol,
             "folderId":     this.folderId,
             "currentFrame": this.currentFrame,
-            "parent":       this.parent,
             "layers":       this.layers,
             "labels":       this.labels,
             "sounds":       this.sounds,
@@ -861,7 +949,11 @@ class MovieClip extends Instance
     }
 
     /**
+     * @description 書き出し用のObjectを返す
+     *              Returns an Object for export
+     *
      * @return {object}
+     * @method
      * @public
      */
     toPublish ()
@@ -1142,7 +1234,11 @@ class MovieClip extends Instance
     }
 
     /**
-     * @return {string}
+     * @description シンボルを指定した時の継承先を返す
+     *              Returns the inheritance destination when a symbol is specified.
+     *
+     * @member   {string}
+     * @readonly
      * @public
      */
     get defaultSymbol ()
@@ -1151,10 +1247,14 @@ class MovieClip extends Instance
     }
 
     /**
+     * @description Next2DのDisplayObjectを生成
+     *              Generate Next2D DisplayObject
+     *
      * @param  {object} place
      * @param  {object} range
      * @param  {number} [parent_frame = 0]
      * @return {next2d.display.Sprite}
+     * @method
      * @public
      */
     createInstance (place, range, parent_frame = 0)
