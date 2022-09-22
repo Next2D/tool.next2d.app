@@ -963,14 +963,14 @@ class Layer
                 return ;
             }
 
+            // 5の倍数のフレームにはポインター用のスタイルを追加する
+            element.setAttribute("class", element.dataset.type === "frame-pointer"
+                ? "frame frame-pointer"
+                : "frame"
+            );
+
             // 状態とクラスを初期化
             element.dataset.frameState = "empty";
-            element.setAttribute("class", "frame");
-
-            // 5の倍数のフレームにはポインター用のスタイルを追加する
-            if (element.dataset.type === "frame-pointer") {
-                element.classList.add("frame-pointer");
-            }
         }
     }
 

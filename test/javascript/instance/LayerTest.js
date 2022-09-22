@@ -462,4 +462,421 @@ describe("Layer.js function test", () =>
 
         Util.$workSpaces.length = 0;
     });
+
+    it("function reloadStyle test case1", () =>
+    {
+        const workSpaces = new WorkSpace();
+        Util.$activeWorkSpaceId = Util.$workSpaces.length;
+        Util.$workSpaces.push(workSpaces);
+
+        const root = workSpaces._$libraries.get(0);
+        workSpaces.scene = root;
+
+        const layer = new Layer();
+        root.addLayer(layer);
+
+        const character = new Character();
+        character.startFrame = 2;
+        character.endFrame   = 3;
+        character.setPlace(2, {
+            "frame": 2,
+            "matrix": [1, 0, 0, 1, 0, 0],
+            "colorTransform": [1, 1, 1, 1, 0, 0, 0, 0],
+            "blendMode": "normal",
+            "filter": [],
+            "depth": 0
+        });
+        layer.addCharacter(character);
+
+        const emptyCharacter = new EmptyCharacter();
+        layer.addEmptyCharacter(emptyCharacter);
+
+        layer.resetStyle();
+
+        const layerId = layer.id;
+        for (let frame = 1; character.endFrame > frame; ++frame) {
+
+            const element = document
+                .getElementById(`${layerId}-${frame}`);
+
+            expect(element.dataset.frameState).toBe("empty");
+            expect(element.classList.contains("frame")).toBe(true);
+            expect(element.classList.contains("empty-key-frame")).toBe(false);
+            expect(element.classList.contains("empty-key-frame-join")).toBe(false);
+            expect(element.classList.contains("empty-space-frame")).toBe(false);
+            expect(element.classList.contains("empty-space-frame-end")).toBe(false);
+            expect(element.classList.contains("key-frame")).toBe(false);
+            expect(element.classList.contains("key-frame-join")).toBe(false);
+            expect(element.classList.contains("key-space-frame")).toBe(false);
+            expect(element.classList.contains("key-space-frame-end")).toBe(false);
+        }
+
+        layer.setEmptyStyle();
+        layer.setCharacterStyle();
+        for (let frame = 1; character.endFrame > frame; ++frame) {
+
+            const element = document
+                .getElementById(`${layerId}-${frame}`);
+
+            switch (frame) {
+
+                case 1:
+                    expect(element.dataset.frameState).toBe("empty-key-frame");
+                    expect(element.classList.contains("empty-key-frame")).toBe(true);
+                    expect(element.classList.contains("empty-key-frame-join")).toBe(false);
+                    expect(element.classList.contains("empty-space-frame")).toBe(false);
+                    expect(element.classList.contains("empty-space-frame-end")).toBe(false);
+                    break;
+
+                case 2:
+                    expect(element.dataset.frameState).toBe("key-frame");
+                    expect(element.classList.contains("key-frame")).toBe(true);
+                    expect(element.classList.contains("key-frame-join")).toBe(false);
+                    expect(element.classList.contains("key-space-frame")).toBe(false);
+                    expect(element.classList.contains("key-space-frame-end")).toBe(false);
+                    break;
+
+                default:
+                    break;
+            }
+
+        }
+
+        Util.$workSpaces.length = 0;
+    });
+
+    it("function reloadStyle test case2", () =>
+    {
+        const workSpaces = new WorkSpace();
+        Util.$activeWorkSpaceId = Util.$workSpaces.length;
+        Util.$workSpaces.push(workSpaces);
+
+        const root = workSpaces._$libraries.get(0);
+        workSpaces.scene = root;
+
+        const layer = new Layer();
+        root.addLayer(layer);
+
+        const character = new Character();
+        character.startFrame = 4;
+        character.endFrame   = 7;
+        character.setPlace(4, {
+            "frame": 4,
+            "matrix": [1, 0, 0, 1, 0, 0],
+            "colorTransform": [1, 1, 1, 1, 0, 0, 0, 0],
+            "blendMode": "normal",
+            "filter": [],
+            "depth": 0
+        });
+        layer.addCharacter(character);
+
+        const emptyCharacter = new EmptyCharacter({
+            "startFrame": 1,
+            "endFrame": 4
+        });
+        layer.addEmptyCharacter(emptyCharacter);
+
+        layer.resetStyle();
+
+        const layerId = layer.id;
+        for (let frame = 1; character.endFrame > frame; ++frame) {
+
+            const element = document
+                .getElementById(`${layerId}-${frame}`);
+
+            expect(element.dataset.frameState).toBe("empty");
+            expect(element.classList.contains("frame")).toBe(true);
+            expect(element.classList.contains("empty-key-frame")).toBe(false);
+            expect(element.classList.contains("empty-key-frame-join")).toBe(false);
+            expect(element.classList.contains("empty-space-frame")).toBe(false);
+            expect(element.classList.contains("empty-space-frame-end")).toBe(false);
+            expect(element.classList.contains("key-frame")).toBe(false);
+            expect(element.classList.contains("key-frame-join")).toBe(false);
+            expect(element.classList.contains("key-space-frame")).toBe(false);
+            expect(element.classList.contains("key-space-frame-end")).toBe(false);
+        }
+
+        layer.setEmptyStyle();
+        layer.setCharacterStyle();
+        for (let frame = 1; character.endFrame > frame; ++frame) {
+
+            const element = document
+                .getElementById(`${layerId}-${frame}`);
+
+            switch (frame) {
+
+                case 1:
+                    expect(element.dataset.frameState).toBe("empty-key-frame");
+                    expect(element.classList.contains("empty-key-frame")).toBe(true);
+                    expect(element.classList.contains("empty-key-frame-join")).toBe(true);
+                    expect(element.classList.contains("empty-space-frame")).toBe(false);
+                    expect(element.classList.contains("empty-space-frame-end")).toBe(false);
+                    break;
+
+                case 2:
+                    expect(element.dataset.frameState).toBe("empty-space-frame");
+                    expect(element.classList.contains("empty-key-frame")).toBe(false);
+                    expect(element.classList.contains("empty-key-frame-join")).toBe(false);
+                    expect(element.classList.contains("empty-space-frame")).toBe(true);
+                    expect(element.classList.contains("empty-space-frame-end")).toBe(false);
+                    break;
+
+                case 3:
+                    expect(element.dataset.frameState).toBe("empty-space-frame-end");
+                    expect(element.classList.contains("empty-key-frame")).toBe(false);
+                    expect(element.classList.contains("empty-key-frame-join")).toBe(false);
+                    expect(element.classList.contains("empty-space-frame")).toBe(false);
+                    expect(element.classList.contains("empty-space-frame-end")).toBe(true);
+                    break;
+
+                case 4:
+                    expect(element.dataset.frameState).toBe("key-frame");
+                    expect(element.classList.contains("key-frame")).toBe(true);
+                    expect(element.classList.contains("key-frame-join")).toBe(true);
+                    expect(element.classList.contains("key-space-frame")).toBe(false);
+                    expect(element.classList.contains("key-space-frame-end")).toBe(false);
+                    break;
+
+                case 5:
+                    expect(element.dataset.frameState).toBe("key-space-frame");
+                    expect(element.classList.contains("key-frame")).toBe(false);
+                    expect(element.classList.contains("key-frame-join")).toBe(false);
+                    expect(element.classList.contains("key-space-frame")).toBe(true);
+                    expect(element.classList.contains("key-space-frame-end")).toBe(false);
+                    break;
+
+                case 6:
+                    expect(element.dataset.frameState).toBe("key-space-frame-end");
+                    expect(element.classList.contains("key-frame")).toBe(false);
+                    expect(element.classList.contains("key-frame-join")).toBe(false);
+                    expect(element.classList.contains("key-space-frame")).toBe(false);
+                    expect(element.classList.contains("key-space-frame-end")).toBe(true);
+                    break;
+
+                default:
+                    break;
+            }
+
+        }
+
+        Util.$workSpaces.length = 0;
+    });
+
+    it("function reloadStyle test case3 tween", () =>
+    {
+        const workSpaces = new WorkSpace();
+        Util.$activeWorkSpaceId = Util.$workSpaces.length;
+        Util.$workSpaces.push(workSpaces);
+
+        const root = workSpaces._$libraries.get(0);
+        workSpaces.scene = root;
+
+        const layer = new Layer();
+        root.addLayer(layer);
+
+        const character = new Character();
+        character.startFrame = 4;
+        character.endFrame   = 7;
+        character.setPlace(4, {
+            "frame": 4,
+            "matrix": [1, 0, 0, 1, 0, 0],
+            "colorTransform": [1, 1, 1, 1, 0, 0, 0, 0],
+            "blendMode": "normal",
+            "filter": [],
+            "depth": 0
+        });
+        character.setTween(4, {
+            "method": "linear",
+            "curve": [],
+            "custom": Util.$tweenController.createEasingObject(),
+            "startFrame": 4,
+            "endFrame": 7
+        });
+
+        layer.addCharacter(character);
+
+        const emptyCharacter = new EmptyCharacter({
+            "startFrame": 1,
+            "endFrame": 4
+        });
+        layer.addEmptyCharacter(emptyCharacter);
+
+        layer.resetStyle();
+
+        const layerId = layer.id;
+        for (let frame = 1; character.endFrame > frame; ++frame) {
+
+            const element = document
+                .getElementById(`${layerId}-${frame}`);
+
+            expect(element.dataset.frameState).toBe("empty");
+            expect(element.classList.contains("frame")).toBe(true);
+            expect(element.classList.contains("empty-key-frame")).toBe(false);
+            expect(element.classList.contains("empty-key-frame-join")).toBe(false);
+            expect(element.classList.contains("empty-space-frame")).toBe(false);
+            expect(element.classList.contains("empty-space-frame-end")).toBe(false);
+            expect(element.classList.contains("key-frame")).toBe(false);
+            expect(element.classList.contains("key-frame-join")).toBe(false);
+            expect(element.classList.contains("key-space-frame")).toBe(false);
+            expect(element.classList.contains("key-space-frame-end")).toBe(false);
+        }
+
+        layer.setEmptyStyle();
+        layer.setCharacterStyle();
+        for (let frame = 1; character.endFrame > frame; ++frame) {
+
+            const element = document
+                .getElementById(`${layerId}-${frame}`);
+
+            switch (frame) {
+
+                case 1:
+                    expect(element.dataset.frameState).toBe("empty-key-frame");
+                    expect(element.classList.contains("empty-key-frame")).toBe(true);
+                    expect(element.classList.contains("empty-key-frame-join")).toBe(true);
+                    expect(element.classList.contains("empty-space-frame")).toBe(false);
+                    expect(element.classList.contains("empty-space-frame-end")).toBe(false);
+                    break;
+
+                case 2:
+                    expect(element.dataset.frameState).toBe("empty-space-frame");
+                    expect(element.classList.contains("empty-key-frame")).toBe(false);
+                    expect(element.classList.contains("empty-key-frame-join")).toBe(false);
+                    expect(element.classList.contains("empty-space-frame")).toBe(true);
+                    expect(element.classList.contains("empty-space-frame-end")).toBe(false);
+                    break;
+
+                case 3:
+                    expect(element.dataset.frameState).toBe("empty-space-frame-end");
+                    expect(element.classList.contains("empty-key-frame")).toBe(false);
+                    expect(element.classList.contains("empty-key-frame-join")).toBe(false);
+                    expect(element.classList.contains("empty-space-frame")).toBe(false);
+                    expect(element.classList.contains("empty-space-frame-end")).toBe(true);
+                    break;
+
+                case 4:
+                    expect(element.dataset.frameState).toBe("key-frame");
+                    expect(element.classList.contains("key-frame")).toBe(false);
+                    expect(element.classList.contains("key-frame-join")).toBe(false);
+                    expect(element.classList.contains("key-space-frame")).toBe(false);
+                    expect(element.classList.contains("key-space-frame-end")).toBe(false);
+                    expect(element.classList.contains("key-space-frame-end")).toBe(false);
+                    expect(element.classList.contains("tween-key-frame")).toBe(true);
+                    expect(element.classList.contains("tween-key-frame-join")).toBe(true);
+                    break;
+
+                case 5:
+                    expect(element.dataset.frameState).toBe("key-space-frame");
+                    expect(element.classList.contains("key-frame")).toBe(false);
+                    expect(element.classList.contains("key-frame-join")).toBe(false);
+                    expect(element.classList.contains("key-space-frame")).toBe(false);
+                    expect(element.classList.contains("key-space-frame-end")).toBe(false);
+                    expect(element.classList.contains("tween-space-frame")).toBe(true);
+                    break;
+
+                case 6:
+                    expect(element.dataset.frameState).toBe("key-space-frame-end");
+                    expect(element.classList.contains("key-frame")).toBe(false);
+                    expect(element.classList.contains("key-frame-join")).toBe(false);
+                    expect(element.classList.contains("key-space-frame")).toBe(false);
+                    expect(element.classList.contains("key-space-frame-end")).toBe(false);
+                    expect(element.classList.contains("tween-frame-end")).toBe(true);
+                    break;
+
+                default:
+                    break;
+            }
+
+        }
+
+        Util.$workSpaces.length = 0;
+    });
+
+    it("function getCharacter and addCharacter and deleteCharacter test", () =>
+    {
+        const workSpaces = new WorkSpace();
+        Util.$activeWorkSpaceId = Util.$workSpaces.length;
+        Util.$workSpaces.push(workSpaces);
+
+        const root = workSpaces._$libraries.get(0);
+        workSpaces.scene = root;
+
+        const layer = new Layer();
+        root.addLayer(layer);
+
+        const character = new Character();
+        character.startFrame = 4;
+        character.endFrame   = 7;
+        character.setPlace(4, {
+            "frame": 4,
+            "matrix": [1, 0, 0, 1, 0, 0],
+            "colorTransform": [1, 1, 1, 1, 0, 0, 0, 0],
+            "blendMode": "normal",
+            "filter": [],
+            "depth": 0
+        });
+
+        // 初期値
+        expect(layer._$characters.length).toBe(0);
+        expect(layer._$instances.size).toBe(0);
+        expect(character._$layerId).toBe(-1);
+        expect(layer.getCharacter(character.id)).toBe(undefined);
+
+        layer.addCharacter(character);
+        expect(layer._$characters.length).toBe(1);
+        expect(layer._$instances.size).toBe(1);
+        expect(character._$layerId).toBe(layer.id);
+        expect(layer.getCharacter(character.id)).toBe(character);
+
+        layer.deleteCharacter(character.id);
+        expect(layer._$characters.length).toBe(0);
+        expect(layer._$instances.size).toBe(0);
+        expect(character._$layerId).toBe(-1);
+        expect(layer.getCharacter(character.id)).toBe(undefined);
+
+        Util.$workSpaces.length = 0;
+    });
+
+    it("function addEmptyCharacter and deleteEmptyCharacter test", () =>
+    {
+        const layer = new Layer();
+
+        const emptyCharacter = new EmptyCharacter({
+            "startFrame": 1,
+            "endFrame": 4
+        });
+
+        // 初期値
+        expect(layer._$emptys.length).toBe(0);
+
+        layer.addEmptyCharacter(emptyCharacter);
+        expect(layer._$emptys.length).toBe(1);
+
+        layer.deleteEmptyCharacter(emptyCharacter);
+        expect(layer._$emptys.length).toBe(0);
+    });
+});
+
+describe("Layer.js toObject test", () =>
+{
+    beforeEach(() =>
+    {
+        document.body.innerHTML = window.__html__["test/test.html"];
+    });
+
+    it("toObject test", () =>
+    {
+        const layer  = new Layer();
+        const object = layer.toObject();
+
+        expect(object.name).toBe("");
+        expect(object.light).toBe(false);
+        expect(object.disable).toBe(false);
+        expect(object.lock).toBe(false);
+        expect(object.emptyCharacters.length).toBe(0);
+        expect(object.characters.length).toBe(0);
+        expect(object.maskId).toBe(null);
+        expect(object.guideId).toBe(null);
+        expect(object.mode).toBe(LayerMode.NORMAL);
+    });
 });
