@@ -1,6 +1,7 @@
 /**
  * @class
  * @extends {BaseScreen}
+ * @memberOf view.screen
  */
 class SceneChange extends BaseScreen
 {

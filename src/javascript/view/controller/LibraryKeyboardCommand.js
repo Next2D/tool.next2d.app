@@ -1,6 +1,7 @@
 /**
  * @class
  * @extends {KeyboardCommand}
+ * @memberOf view.controller
  */
 class LibraryKeyboardCommand extends KeyboardCommand
 {

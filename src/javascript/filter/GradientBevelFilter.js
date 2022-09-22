@@ -4,6 +4,7 @@
  *
  * @class
  * @extends {Filter}
+ * @memberOf filter
  */
 class GradientBevelFilter extends Filter
 {

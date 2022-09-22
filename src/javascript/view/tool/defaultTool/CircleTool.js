@@ -1,6 +1,7 @@
 /**
  * @class
  * @extends {DrawTool}
+ * @memberOf view.tool.default
  */
 class CircleTool extends DrawTool
 {

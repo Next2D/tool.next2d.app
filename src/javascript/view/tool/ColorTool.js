@@ -1,6 +1,7 @@
 /**
  * @class
  * @extends {InputEvent}
+ * @memberOf view.tool
  */
 class ColorTool extends InputEvent
 {

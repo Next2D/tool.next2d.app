@@ -3,6 +3,7 @@
  * Fixed value of instance type
  *
  * @class
+ * @memberOf instance
  */
 class InstanceType
 {

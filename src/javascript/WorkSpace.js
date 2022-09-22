@@ -1,5 +1,6 @@
 /**
  * @class
+ * @memberOf global
  */
 class WorkSpace
 {

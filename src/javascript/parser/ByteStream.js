@@ -1,5 +1,6 @@
 /**
  * @class
+ * @memberOf parser
  */
 class ByteStream
 {

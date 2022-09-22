@@ -3,6 +3,7 @@
  * Shared event class for Input tag, numerical value change with mouse and focus state management
  *
  * @class
+ * @memberOf event
  */
 class InputEvent
 {

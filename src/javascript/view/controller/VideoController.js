@@ -1,6 +1,7 @@
 /**
  * @class
  * @extends {BaseController}
+ * @memberOf view.controller
  */
 class VideoController extends BaseController
 {

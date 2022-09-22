@@ -1,6 +1,7 @@
 /**
  * @class
  * @extends {KeyboardCommand}
+ * @memberOf view.timeline
  */
 class TimelineKeyboardCommand extends KeyboardCommand
 {

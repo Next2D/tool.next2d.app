@@ -1,6 +1,7 @@
 /**
  * @class
  * @extends {BaseTool}
+ * @memberOf view.tool.default
  */
 class TextTool extends BaseTool
 {

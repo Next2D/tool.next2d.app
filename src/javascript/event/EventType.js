@@ -3,6 +3,7 @@
  * Fixed value of event type
  *
  * @class
+ * @memberOf event
  */
 class EventType
 {

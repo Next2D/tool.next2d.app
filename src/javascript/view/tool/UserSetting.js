@@ -1,5 +1,6 @@
 /**
  * @class
+ * @memberOf view.tool
  */
 class UserSetting
 {

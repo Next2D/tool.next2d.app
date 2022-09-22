@@ -3,6 +3,7 @@
  * Animation PNG Encoder
  *
  * @class
+ * @memberOf encoder
  */
 class ApngEncoder
 {

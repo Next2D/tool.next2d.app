@@ -3,6 +3,7 @@
  * Class that manages layers in the timeline
  *
  * @class
+ * @memberOf instance
  */
 class Layer
 {

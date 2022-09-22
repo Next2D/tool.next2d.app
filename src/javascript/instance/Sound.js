@@ -1,6 +1,7 @@
 /**
  * @class
  * @extends {Instance}
+ * @memberOf instance
  */
 class Sound extends Instance
 {

@@ -1,12 +1,17 @@
 /**
+ * ベクターデータを管理するクラス、Next2DのShapeクラスとして出力されます。
+ * The output is as a Next2D Shape class, a class that manages vector data.
+ *
  * @class
  * @extends {Instance}
+ * @memberOf instance
  */
 class Shape extends Instance
 {
     /**
      * @param {object} object
      * @constructor
+     * @public
      */
     constructor (object = null)
     {
@@ -41,8 +46,9 @@ class Shape extends Instance
 
     /**
      * @description Shapeクラスを複製
+     *              Duplicate Shape class
      *
-     * @return {Shape}
+     * @return {MovieClip}
      * @method
      * @public
      */
@@ -52,6 +58,11 @@ class Shape extends Instance
     }
 
     /**
+     * @description このアイテムが設定されたDisplayObjectが選択された時
+     *              内部情報をコントローラーに表示する
+     *              When a DisplayObject with this item set is selected,
+     *              internal information is displayed on the controller.
+     *
      * @param  {object} place
      * @param  {string} [name=""]
      * @return {void}

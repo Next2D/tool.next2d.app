@@ -1,6 +1,7 @@
 /**
  * @class
  * @extends {InputEvent}
+ * @memberOf view.timeline
  */
 class BaseTimeline extends InputEvent
 {

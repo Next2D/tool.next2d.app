@@ -1,6 +1,7 @@
 /**
  * @class
  * @extends {KeyboardCommand}
+ * @memberOf view.screen
  */
 class ScreenKeyboardCommand extends KeyboardCommand
 {

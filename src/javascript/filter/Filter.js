@@ -3,6 +3,7 @@
  * Common processes are defined in the parent classes of various Filters.
  *
  * @class
+ * @memberOf filter
  */
 class Filter
 {

@@ -3,6 +3,7 @@
  * Class to manage common events of the tool
  *
  * @class
+ * @memberOf event
  */
 class ToolEvent extends EventDispatcher
 {

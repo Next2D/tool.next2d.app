@@ -1,5 +1,6 @@
 /**
  * @class
+ * @memberOf view.controller
  */
 class ControllerAdjustment
 {

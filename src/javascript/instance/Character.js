@@ -3,6 +3,7 @@
  * DisplayObject class placed on the screen
  *
  * @class
+ * @memberOf instance
  */
 class Character
 {

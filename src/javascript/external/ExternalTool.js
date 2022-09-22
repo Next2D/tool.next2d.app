@@ -1,5 +1,6 @@
 /**
  * @class
+ * @memberOf external
  */
 class ExternalTool extends CommonTool
 {

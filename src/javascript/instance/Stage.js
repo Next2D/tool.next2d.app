@@ -1,5 +1,6 @@
 /**
  * @class
+ * @memberOf instance
  */
 class Stage
 {

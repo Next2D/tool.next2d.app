@@ -1,6 +1,7 @@
 /**
  * @class
  * @extends {BaseController}
+ * @memberOf view.controller
  */
 class LoopController extends BaseController
 {
@@ -221,8 +222,6 @@ class LoopController extends BaseController
     }
 
     /**
-     * @description
-     *
      * @return {void}
      * @method
      * @public
@@ -244,8 +243,6 @@ class LoopController extends BaseController
     }
 
     /**
-     * @description
-     *
      * @return {void}
      * @method
      * @public

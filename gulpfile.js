@@ -339,8 +339,10 @@ const createHTML = (done) =>
     return gulp
         .src([
             "src/javascript/**/*.js",
+            "!src/javascript/Util.js",
             "!src/javascript/Util.replaced.js",
             "!src/javascript/worker/**/*.js",
+            "!src/javascript/parser/**/*.js",
             "DOCS.md"
         ], { "read": false })
         .pipe(jsdoc({

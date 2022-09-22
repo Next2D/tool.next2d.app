@@ -3,6 +3,7 @@
  * Class to manage tool events
  *
  * @class
+ * @memberOf event
  */
 class EventDispatcher
 {

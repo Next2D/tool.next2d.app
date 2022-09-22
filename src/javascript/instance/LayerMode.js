@@ -3,6 +3,7 @@
  * Fixed value of the layer type
  *
  * @class
+ * @memberOf instance
  */
 class LayerMode
 {

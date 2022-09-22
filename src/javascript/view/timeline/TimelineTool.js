@@ -1,6 +1,7 @@
 /**
  * @class
  * @extends {BaseTimeline}
+ * @memberOf view.timeline
  */
 class TimelineTool extends BaseTimeline
 {

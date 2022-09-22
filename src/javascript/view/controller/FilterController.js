@@ -1,6 +1,7 @@
 /**
  * @class
  * @extends {GradientFilterController}
+ * @memberOf view.controller
  */
 class FilterController extends GradientFilterController
 {

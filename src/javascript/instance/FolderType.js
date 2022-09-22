@@ -3,6 +3,7 @@
  * Fixed value for folder open/closed status
  *
  * @class
+ * @memberOf instance
  */
 class FolderType
 {

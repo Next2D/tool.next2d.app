@@ -3,6 +3,7 @@
  * Parent class for all libraries
  *
  * @class
+ * @memberOf instance
  */
 class Instance
 {

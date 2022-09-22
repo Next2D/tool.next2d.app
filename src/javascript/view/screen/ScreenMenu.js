@@ -1,5 +1,6 @@
 /**
  * @class
+ * @memberOf view.screen
  */
 class ScreenMenu extends BaseScreen
 {

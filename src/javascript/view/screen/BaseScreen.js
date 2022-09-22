@@ -1,6 +1,7 @@
 /**
  * @class
  * @extends {InputEvent}
+ * @memberOf view.screen
  */
 class BaseScreen extends InputEvent
 {

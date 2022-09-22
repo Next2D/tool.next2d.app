@@ -4,6 +4,7 @@
  *
  * @class
  * @extends {Instance}
+ * @memberOf instance
  */
 class Bitmap extends Instance
 {

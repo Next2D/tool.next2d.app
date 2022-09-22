@@ -3,6 +3,7 @@
  * Class for empty keyframes
  *
  * @class
+ * @memberOf instance
  */
 class EmptyCharacter
 {
