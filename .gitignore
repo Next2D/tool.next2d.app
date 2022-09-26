@@ -7,3 +7,4 @@ node_modules
 Util.replaced.js
 *.min.js
 License.build.file
+package-lock.json

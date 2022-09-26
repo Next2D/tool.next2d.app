@@ -970,6 +970,21 @@ describe("Layer.js function test", () =>
 
         Util.$workSpaces.length = 0;
     });
+
+    it("function adjustmentLocation test case3", () =>
+    {
+        const layer = new Layer();
+        expect(layer._$characters.length).toBe(0);
+        expect(layer._$emptys.length).toBe(0);
+
+        const location1 = layer.adjustmentLocation(10);
+        expect(location1.startFrame).toBe(10);
+        expect(location1.endFrame).toBe(11);
+
+        expect(layer._$emptys.length).toBe(1);
+        expect(layer._$emptys[0].startFrame).toBe(1);
+        expect(layer._$emptys[0].endFrame).toBe(10);
+    });
 });
 
 describe("Layer.js toObject test", () =>

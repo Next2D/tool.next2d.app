@@ -105,8 +105,12 @@ class Shape extends Instance
     }
 
     /**
+     * @description タップした範囲のShapeのカラーをコントローラーに表示
+     *              Display the color of the shape in the tapped area on the controller
+     *
      * @param {object} place
-     * @param {MouseEvent} [event=null]
+     * @param {MouseEvent} event
+     * @method
      * @public
      */
     showShapeColor (place, event)
@@ -151,8 +155,12 @@ class Shape extends Instance
     }
 
     /**
+     * @description 表示領域(バウンディングボックス)のObjectを返す
+     *              Returns the Object of the display area (bounding box)
+     *
      * @param  {array} [matrix=null]
      * @return {object}
+     * @method
      * @public
      */
     getBounds (matrix = null)
@@ -163,26 +171,28 @@ class Shape extends Instance
     }
 
     /**
-     * @return {boolean}
+     * @description カラーに画像を選択した際はtrue、それ以外はfalse
+     *              true when image is selected for color, false otherwise
+     *
+     * @member {boolean}
+     * @method
      * @public
      */
     get inBitmap ()
     {
         return this._$inBitmap;
     }
-
-    /**
-     * @param  {boolean} in_bitmap
-     * @return {void}
-     * @public
-     */
     set inBitmap (in_bitmap)
     {
         this._$inBitmap = !!in_bitmap;
     }
 
     /**
-     * @return {number}
+     * @description Shapeの幅を返す
+     *              Return image width
+     *
+     * @member {number}
+     * @readonly
      * @public
      */
     get width ()
@@ -191,7 +201,11 @@ class Shape extends Instance
     }
 
     /**
-     * @return {number}
+     * @description Shapeの高さを返す
+     *              Return image width
+     *
+     * @member {number}
+     * @readonly
      * @public
      */
     get height ()
@@ -200,7 +214,11 @@ class Shape extends Instance
     }
 
     /**
-     * @return {string}
+     * @description シンボルを指定した時の継承先を返す
+     *              Returns the inheritance destination when a symbol is specified.
+     *
+     * @member   {string}
+     * @readonly
      * @public
      */
     get defaultSymbol ()
@@ -209,7 +227,10 @@ class Shape extends Instance
     }
 
     /**
-     * @return {array}
+     * @description Shapeの描画のポイント情報を配列で返す
+     *              Returns an array of shape drawing point information
+     *
+     * @member {array}
      * @public
      */
     get recodes ()
@@ -242,11 +263,6 @@ class Shape extends Instance
 
         return recodes;
     }
-
-    /**
-     * @param {array} recodes
-     * @public
-     */
     set recodes (recodes)
     {
         this._$recodes = recodes;
@@ -280,40 +296,19 @@ class Shape extends Instance
     }
 
     /**
-     * @return {object|null}
+     * @description 表示領域(バウンディングボックス)のObjectを返す
+     *              Returns the Object of the display area (bounding box)
+     *
+     * @member {object|null}
      * @public
      */
     get bounds ()
     {
         return this._$bounds;
     }
-
-    /**
-     * @param {object} [bounds=null]
-     * @public
-     */
     set bounds (bounds)
     {
         this._$bounds = bounds;
-    }
-
-    /**
-     * @return {object}
-     * @public
-     */
-    get offset ()
-    {
-        return this._$offset;
-    }
-
-    /**
-     * @param  {object} offset
-     * @return {void}
-     * @public
-     */
-    set offset (offset)
-    {
-        this._$offset = offset;
     }
 
     /**

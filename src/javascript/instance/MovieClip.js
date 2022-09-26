@@ -802,7 +802,7 @@ class MovieClip extends Instance
      * @description 表示領域(バウンディングボックス)のObjectを返す
      *              Returns the Object of the display area (bounding box)
      *
-     * @param  {array}  [matrix=null]
+     * @param  {array}  [matrix=[1, 0, 0, 1, 0, 0]]
      * @param  {object} [place=null]
      * @param  {object} [range=null]
      * @param  {number} [parent_frame=0]

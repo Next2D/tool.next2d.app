@@ -1252,7 +1252,7 @@ class Layer
         if (frame > 1) {
 
             let idx = 1;
-            for (; frame - idx >= 0; ++idx) {
+            for (; frame - idx > 0; ++idx) {
 
                 // 空のフレームがあれば、フレームを伸ばす
                 const emptyCharacter = this
