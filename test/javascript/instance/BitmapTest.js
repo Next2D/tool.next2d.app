@@ -24,6 +24,51 @@ describe("Bitmap.js property test", () =>
     });
 });
 
+describe("Bitmap.js showController test", () =>
+{
+    beforeEach(() =>
+    {
+        document.body.innerHTML = window.__html__["test/test.html"];
+    });
+
+    it("function showController test", () =>
+    {
+        const workSpaces = new WorkSpace();
+        Util.$activeWorkSpaceId = Util.$workSpaces.length;
+        Util.$workSpaces.push(workSpaces);
+
+        const bitmap = new Bitmap({
+            "width": 200,
+            "height": 100
+        });
+
+        bitmap.showController({
+            "frame": 1,
+            "matrix": [1, 0, 0, 1, 0, 0],
+            "colorTransform": [1, 1, 1, 1, 0, 0, 0, 0],
+            "blendMode": "normal",
+            "filter": [],
+            "depth": 0
+        });
+        expect(document.getElementById("sound-setting").style.display).toBe("none");
+        expect(document.getElementById("ease-setting").style.display).toBe("none");
+        expect(document.getElementById("text-setting").style.display).toBe("none");
+        expect(document.getElementById("loop-setting").style.display).toBe("none");
+        expect(document.getElementById("video-setting").style.display).toBe("none");
+        expect(document.getElementById("fill-color-setting").style.display).toBe("none");
+        expect(document.getElementById("nine-slice-setting").style.display).toBe("none");
+        expect(document.getElementById("object-setting").style.display).toBe("");
+        expect(document.getElementById("reference-setting").style.display).toBe("");
+        expect(document.getElementById("transform-setting").style.display).toBe("");
+        expect(document.getElementById("color-setting").style.display).toBe("");
+        expect(document.getElementById("blend-setting").style.display).toBe("");
+        expect(document.getElementById("filter-setting").style.display).toBe("");
+        expect(document.getElementById("instance-setting").style.display).toBe("");
+
+        Util.$workSpaces.length = 0;
+    });
+});
+
 describe("Bitmap.js function test", () =>
 {
     it("function getBounds test", () =>
