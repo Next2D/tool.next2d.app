@@ -171,11 +171,11 @@ class Shape extends Instance
     }
 
     /**
-     * @description カラーに画像を選択した際はtrue、それ以外はfalse
-     *              true when image is selected for color, false otherwise
+     * @description SWFのShapeで画像が使われているかの判定
+     *              Determining if an image is used in a SWF Shape
      *
      * @member {boolean}
-     * @method
+     * @default false
      * @public
      */
     get inBitmap ()
@@ -299,7 +299,8 @@ class Shape extends Instance
      * @description 表示領域(バウンディングボックス)のObjectを返す
      *              Returns the Object of the display area (bounding box)
      *
-     * @member {object|null}
+     * @member {object}
+     * @default null
      * @public
      */
     get bounds ()
@@ -312,47 +313,48 @@ class Shape extends Instance
     }
 
     /**
-     * @return {number}
+     * @description 画像の色設定で画像がセットされた際の画像ID
+     *              Image ID when the image is set in the image color settings
+     *
+     * @member {number}
+     * @default 0
      * @public
      */
     get bitmapId ()
     {
         return this._$bitmapId;
     }
-
-    /**
-     * @param  {number} bitmap_id
-     * @return {void}
-     * @public
-     */
     set bitmapId (bitmap_id)
     {
         this._$bitmapId = bitmap_id | 0;
     }
 
     /**
-     * @return {object|null}
+     * @description 9sliceの4点の座標情報
+     *              Coordinate information for 4 points of 9slice
+     *
+     * @member {object}
+     * @default null
      * @public
      */
     get grid ()
     {
         return this._$grid;
     }
-
-    /**
-     * @param {object} [grid=null]
-     * @public
-     */
     set grid (grid)
     {
         this._$grid = grid;
     }
 
     /**
+     * @description 描画パスのxyポインターを生成
+     *              Generate xy pointer for drawing path
+     *
      * @param  {array}  matrix
      * @param  {number} layer_id
      * @param  {number} character_id
      * @return {void}
+     * @method
      * @public
      */
     createPointer (matrix, layer_id, character_id)
@@ -384,7 +386,7 @@ class Shape extends Instance
                         Graphics.LINE_TO
                     );
 
-                    this.adjustmentPointer(idx, matrix, layer_id, character_id, syncId);
+                    this._$adjustmentPointer(idx, matrix, layer_id, character_id, syncId);
 
                     break;
 
@@ -414,7 +416,7 @@ class Shape extends Instance
                         false
                     );
 
-                    this.adjustmentPointer(idx, matrix, layer_id, character_id, syncId);
+                    this._$adjustmentPointer(idx, matrix, layer_id, character_id, syncId);
 
                     break;
 
@@ -441,7 +443,7 @@ class Shape extends Instance
                         Graphics.CURVE_TO
                     );
 
-                    this.adjustmentPointer(idx, matrix, layer_id, character_id, syncId);
+                    this._$adjustmentPointer(idx, matrix, layer_id, character_id, syncId);
 
                     break;
 
@@ -477,15 +479,19 @@ class Shape extends Instance
     }
 
     /**
+     * @description 始点と終点が重なるポインターは調整
+     *              Pointers where the start and end points overlap are adjusted
+     *
      * @param  {number} index
      * @param  {array}  matrix
      * @param  {number} layer_id
      * @param  {number} character_id
      * @param  {number} sync_id
      * @return {void}
-     * @public
+     * @method
+     * @private
      */
-    adjustmentPointer (index, matrix, layer_id, character_id, sync_id)
+    _$adjustmentPointer (index, matrix, layer_id, character_id, sync_id)
     {
         const { Graphics } = window.next2d.display;
         switch (this._$recodes[index]) {
@@ -523,6 +529,9 @@ class Shape extends Instance
     }
 
     /**
+     * @description 指定のxy座標にパスのelementを追加
+     *              Add a path element at the specified xy-coordinates
+     *
      * @param  {number}  layer_id
      * @param  {number}  character_id
      * @param  {number}  index
@@ -532,6 +541,7 @@ class Shape extends Instance
      * @param  {number}  type
      * @param  {boolean} [curve=false]
      * @return {void}
+     * @method
      * @public
      */
     addPointer (
@@ -607,7 +617,12 @@ class Shape extends Instance
     }
 
     /**
+     * @description リサイズやパスの座標変更時にバウンディングボックスの座標を再計算
+     *              Recalculate bounding box coordinates when resizing or changing path coordinates
+     *
+     * @param  {number} [stroke=0]
      * @return {object}
+     * @method
      * @public
      */
     reloadBounds (stroke = 0)
@@ -734,7 +749,12 @@ class Shape extends Instance
     }
 
     /**
+     * @description 引数のShapeオブジェクトにこのオブジェクトのパス情報をコピーする
+     *              Copy the path information of this object to the argument Shape object
+     *
+     * @param  {Shape} shape
      * @return {Shape}
+     * @method
      * @public
      */
     copyFrom (shape)
@@ -752,7 +772,11 @@ class Shape extends Instance
     }
 
     /**
+     * @description クラス内の変数をObjectにして返す
+     *              Return variables in a class as Objects
+     *
      * @return {object}
+     * @method
      * @public
      */
     toObject ()
@@ -772,7 +796,11 @@ class Shape extends Instance
     }
 
     /**
+     * @description 書き出し用のObjectを返す
+     *              Returns an Object for export
+     *
      * @return {object}
+     * @method
      * @public
      */
     toPublish ()
@@ -798,8 +826,12 @@ class Shape extends Instance
     }
 
     /**
-     * @param {string} style
+     * @description Shapeの色設定の変更関数
+     *              Function to change the color settings of a Shape
+     *
+     * @param  {string} style
      * @return {void}
+     * @method
      * @public
      */
     changeStyle (style)
@@ -972,6 +1004,9 @@ class Shape extends Instance
     }
 
     /**
+     * @description 色設定をグラデーションへ変更
+     *              Change color setting to gradient
+     *
      * @param  {number} index
      * @param  {string} style
      * @param  {number} graphics_type
@@ -979,6 +1014,7 @@ class Shape extends Instance
      * @param  {object} color
      * @param  {number} alpha
      * @return {void}
+     * @method
      * @public
      */
     changeGradient (index, style, graphics_type, delete_number, color, alpha)
@@ -1050,6 +1086,9 @@ class Shape extends Instance
     }
 
     /**
+     * @description 色情報を更新
+     *              Update color information
+     *
      * @param  {number} [color_index=-1]
      * @return {void}
      * @method
@@ -1223,7 +1262,11 @@ class Shape extends Instance
     }
 
     /**
+     * @description このオブジェクトが設置されてる全てのDisplayObjectのキャッシュを削除
+     *              Delete the cache of all DisplayObjects where this object is located
+     *
      * @return {void}
+     * @method
      * @public
      */
     cacheClear ()
@@ -1246,10 +1289,14 @@ class Shape extends Instance
     }
 
     /**
+     * @description マウスダウンしたxy座標にShapeの色があれば、ヒットした色をコントローラーに表示する
+     *              If there is a Shape color at the xy-coordinates of the mouse down, display the hit color on the controller.
+     *
      * @param  {number} x
      * @param  {number} y
      * @param  {array} place_matrix
      * @return {void}
+     * @method
      * @public
      */
     setHitColor (x, y, place_matrix)
@@ -1498,7 +1545,11 @@ class Shape extends Instance
     }
 
     /**
+     * @description Next2DのDisplayObjectを生成
+     *              Generate Next2D DisplayObject
+     *
      * @return {next2d.display.Shape}
+     * @method
      * @public
      */
     createInstance ()
