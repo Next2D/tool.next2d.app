@@ -1,4 +1,7 @@
 /**
+ * サウンドを管理するクラス、Next2DのSoundクラスとして出力されます。
+ * The output is as Next2D's Sound class, a class that manages sound.
+ *
  * @class
  * @extends {Instance}
  * @memberOf instance
@@ -8,6 +11,7 @@ class Sound extends Instance
     /**
      * @param {object} object
      * @constructor
+     * @public
      */
     constructor (object)
     {
@@ -41,6 +45,9 @@ class Sound extends Instance
     }
 
     /**
+     * @description プレビュー画面に表示する、HTMLAudioElementを返す
+     *              Returns an HTMLAudioElement to be displayed on the preview screen.
+     *
      * @return {HTMLAudioElement}
      * @method
      * @public
@@ -51,8 +58,12 @@ class Sound extends Instance
     }
 
     /**
+     * @description シンボルを指定した時の継承先を返す
+     *              Returns the inheritance destination when a symbol is specified.
+     *
      * @return {string}
      * @public
+     * @readonly
      */
     get defaultSymbol ()
     {
@@ -60,7 +71,11 @@ class Sound extends Instance
     }
 
     /**
-     * @return {string}
+     * @description サウンドデータ(buffer)をバイナリデータとして利用
+     *              Sound data (buffer) is used as binary data
+     *
+     * @member {string}
+     * @default ""
      * @public
      */
     get buffer ()
@@ -77,12 +92,6 @@ class Sound extends Instance
 
         return this._$binary;
     }
-
-    /**
-     * @param  {string|Uint8Array} binary
-     * @return {void}
-     * @public
-     */
     set buffer (binary)
     {
 
@@ -114,45 +123,45 @@ class Sound extends Instance
     }
 
     /**
-     * @return {number}
+     * @description サウンドのボリューム設定
+     *              Sound volume setting
+     *
+     * @member {number}
+     * @default 100
      * @public
      */
     get volume ()
     {
         return this._$volume;
     }
-
-    /**
-     * @param  {number} volume
-     * @return {void}
-     * @public
-     */
     set volume (volume)
     {
         this._$volume = volume;
     }
 
     /**
-     * @return {number}
+     * @description サウンドのループ設定
+     *              Sound loop settings
+     *
+     * @member {number}
+     * @default 0
      * @public
      */
     get loopCount ()
     {
         return this._$loopCount;
     }
-
-    /**
-     * @param  {number} loop_count
-     * @return {void}
-     * @public
-     */
     set loopCount (loop_count)
     {
         this._$loopCount = loop_count;
     }
 
     /**
+     * @description クラス内の変数をObjectにして返す
+     *              Return variables in a class as Objects
+     *
      * @return {object}
+     * @method
      * @public
      */
     toObject ()
@@ -170,7 +179,11 @@ class Sound extends Instance
     }
 
     /**
+     * @description 書き出し用のObjectを返す
+     *              Returns an Object for export
+     *
      * @return {object}
+     * @method
      * @public
      */
     toPublish ()
