@@ -1,12 +1,16 @@
 /**
+ * ステージを管理するクラス、Next2DのStage情報として出力されます。
+ * This information is output as Stage information in Next2D, the class that manages stages.
+ *
  * @class
- * @memberOf instance
+ * @memberOf {instance}
  */
 class Stage
 {
     /**
      * @param {object} [object=null]
      * @constructor
+     * @public
      */
     constructor (object = null)
     {
@@ -130,11 +134,11 @@ class Stage
             stageBgColor.value = this.bgColor;
         }
 
-        const stageLlock = document
+        const stageLock = document
             .getElementById("stage-lock");
 
-        if (stageLlock) {
-            const element = stageLlock.childNodes[1];
+        if (stageLock) {
+            const element = stageLock.childNodes[1];
 
             element
                 .setAttribute("class", this.lock ? "active" : "disable");
@@ -156,7 +160,96 @@ class Stage
     }
 
     /**
+     * @description ステージの表示の幅
+     *              Stage display width
+     *
+     * @member {number}
+     * @default Stage.STAGE_DEFAULT_WIDTH
+     * @public
+     */
+    get width ()
+    {
+        return this._$width;
+    }
+    set width (width)
+    {
+        this._$width = Util.$clamp(+width, 1, 1024 * 4);
+    }
+
+    /**
+     * @description ステージの表示の高さ
+     *              Stage display height
+     *
+     * @member {number}
+     * @default Stage.STAGE_DEFAULT_HEIGHT
+     * @public
+     */
+    get height ()
+    {
+        return this._$height;
+    }
+    set height (height)
+    {
+        this._$height = Util.$clamp(+height, 1, 1024 * 4);
+    }
+
+    /**
+     * @description ステージの描画速度の設定
+     *              Set the stage drawing speed.
+     *
+     * @member {number}
+     * @default Stage.STAGE_DEFAULT_FPS
+     * @public
+     */
+    get fps ()
+    {
+        return this._$fps;
+    }
+    set fps (fps)
+    {
+        this._$fps = Util.$clamp(fps | 0, 1, 60);
+    }
+
+    /**
+     * @description ステージの背景色の設定
+     *              Setting the background color of the stage
+     *
+     * @return {string}
+     * @default "#ffffff"
+     * @public
+     */
+    get bgColor ()
+    {
+        return this._$bgColor;
+    }
+    set bgColor (color)
+    {
+        this._$bgColor = `${color}`.toLowerCase();
+    }
+
+    /**
+     * @description 幅と高さのサイズ変更を同時に行う設定
+     *              Set to resize width and height at the same time
+     *
+     * @member {boolean}
+     * @default false
+     * @public
+     */
+    get lock ()
+    {
+        return this._$lock;
+    }
+    set lock (lock)
+    {
+        this._$lock = !!lock;
+    }
+
+    /**
+     * @description クラス内の変数をObjectにして返す
+     *              Return variables in a class as Objects
+     *
      * @return {object}
+     * @method
      * @public
      */
     toObject ()
@@ -168,100 +261,5 @@ class Stage
             "bgColor": this.bgColor,
             "lock": this.lock
         };
-    }
-
-    /**
-     * @return {number}
-     * @public
-     */
-    get width ()
-    {
-        return this._$width;
-    }
-
-    /**
-     * @param  {number} width
-     * @return {void}
-     * @public
-     */
-    set width (width)
-    {
-        this._$width = width;
-    }
-
-    /**
-     * @return {number}
-     * @public
-     */
-    get height ()
-    {
-        return this._$height;
-    }
-
-    /**
-     * @param  {number} height
-     * @return {void}
-     * @public
-     */
-    set height (height)
-    {
-        this._$height = height;
-    }
-
-    /**
-     * @return {number}
-     * @public
-     */
-    get fps ()
-    {
-        return this._$fps;
-    }
-
-    /**
-     * @param  {number} fps
-     * @return {void}
-     * @public
-     */
-    set fps (fps)
-    {
-        this._$fps = fps;
-    }
-
-    /**
-     * @return {string}
-     * @public
-     */
-    get bgColor ()
-    {
-        return this._$bgColor;
-    }
-
-    /**
-     * @param  {string} color
-     * @return {void}
-     * @public
-     */
-    set bgColor (color)
-    {
-        this._$bgColor = color;
-    }
-
-    /**
-     * @return {boolean}
-     * @public
-     */
-    get lock ()
-    {
-        return this._$lock;
-    }
-
-    /**
-     * @param  {boolean} lock
-     * @return {void}
-     * @public
-     */
-    set lock (lock)
-    {
-        this._$lock = lock;
     }
 }
