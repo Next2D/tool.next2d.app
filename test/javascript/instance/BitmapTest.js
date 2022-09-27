@@ -108,6 +108,7 @@ describe("Bitmap.js function test", () =>
         expect(object.type).toBe(InstanceType.BITMAP);
         expect(object.symbol).toBe("app.bitmap");
         expect(object.imageType).toBe("image/png");
+        expect(object.folderId).toBe(0);
         expect(object.width).toBe(200);
         expect(object.height).toBe(100);
         expect(object.buffer).toBe("\x01\x02\x03\x04\x05\x06\x07\b\t\b\x07\x06\x05\x04\x03\x02\x01");
