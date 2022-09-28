@@ -70,6 +70,7 @@ class Video extends Instance
     /**
      * @description Videoクラスを複製
      *              Duplicate Video class
+     *
      * @return {Video}
      * @method
      * @public
@@ -122,10 +123,10 @@ class Video extends Instance
     }
 
     /**
-     * @description プレビュー画面に表示する、HTMLAudioElementを返す
-     *              Returns an HTMLAudioElement to be displayed on the preview screen.
+     * @description プレビュー画面に表示する、HTMLVideoElementを返す
+     *              Returns an HTMLVideoElement to be displayed on the preview screen.
      *
-     * @return {HTMLAudioElement}
+     * @return {HTMLVideoElement}
      * @method
      * @public
      */
