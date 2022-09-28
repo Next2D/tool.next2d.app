@@ -30,6 +30,9 @@ class Stage
     }
 
     /**
+     * @description ステージのデフォルトの幅
+     *              Default stage width
+     *
      * @return {number}
      * @const
      * @static
@@ -40,6 +43,9 @@ class Stage
     }
 
     /**
+     * @description ステージのデフォルトの高さ
+     *              Default stage height
+     *
      * @return {number}
      * @const
      * @static
@@ -50,6 +56,9 @@ class Stage
     }
 
     /**
+     * @description ステージのデフォルトのフレームレート
+     *              Default frame rate of the stage
+     *
      * @return {number}
      * @const
      * @static
@@ -60,7 +69,11 @@ class Stage
     }
 
     /**
+     * @description 初期起動関数
+     *              initial invoking function.
+     *
      * @return {void}
+     * @method
      * @public
      */
     initialize ()

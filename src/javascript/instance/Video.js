@@ -427,7 +427,11 @@ class Video extends Instance
     }
 
     /**
+     * @description 動画データの読み込み後にキャプチャー画像を生成
+     *              Generate captured images after loading video data
+     *
      * @return {void}
+     * @method
      * @public
      */
     delayImage ()
@@ -442,6 +446,9 @@ class Video extends Instance
     }
 
     /**
+     * @description Next2DのBitmapDataクラスを経由してImageクラスを生成
+     *              Generate Image class via Next2D BitmapData class
+     *
      * @param  {number}  width
      * @param  {number}  height
      * @param  {object}  place

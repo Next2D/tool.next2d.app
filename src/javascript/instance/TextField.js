@@ -1,4 +1,7 @@
 /**
+ * テキストを管理するクラス、Next2DのTextFieldクラスとして出力されます。
+ * The output is as a Next2D TextField class, a class that manages text.
+ *
  * @class
  * @extends {Instance}
  * @memberOf instance
@@ -6,7 +9,7 @@
 class TextField extends Instance
 {
     /**
-     * @param {object} object
+     * @param {object} [object=null]
      * @constructor
      * @public
      */
@@ -135,6 +138,9 @@ class TextField extends Instance
     }
 
     /**
+     * @description テキストエリアのデフォルトの幅と高さのサイズ
+     *              Default width and height size of text area
+     *
      * @return {number}
      * @const
      * @static
@@ -146,8 +152,9 @@ class TextField extends Instance
 
     /**
      * @description TextFieldクラスを複製
+     *              Duplicate TextField class
      *
-     * @return {TextField}
+     * @return {Video}
      * @method
      * @public
      */
@@ -157,6 +164,11 @@ class TextField extends Instance
     }
 
     /**
+     * @description このアイテムが設定されたDisplayObjectが選択された時
+     *              内部情報をコントローラーに表示する
+     *              When a DisplayObject with this item set is selected,
+     *              internal information is displayed on the controller.
+     *
      * @param  {object} place
      * @param  {string} [name=""]
      * @return {void}
@@ -302,8 +314,12 @@ class TextField extends Instance
     }
 
     /**
+     * @description 表示領域(バウンディングボックス)のObjectを返す
+     *              Returns the Object of the display area (bounding box)
+     *
      * @param  {array} [matrix=null]
      * @return {object}
+     * @method
      * @public
      */
     getBounds (matrix = null)
@@ -321,37 +337,35 @@ class TextField extends Instance
     }
 
     /**
-     * @return {string}
+     * @description テキストエリアに登録した文字情報
+     *              Text information registered in the text area
+     *
+     * @member {string}
+     * @default ""
      * @public
      */
     get text ()
     {
         return this._$text;
     }
-
-    /**
-     * @param {string} text
-     * @public
-     */
     set text (text)
     {
-        this._$text = text;
+        this._$text = `${text}`;
         this.resize();
     }
 
     /**
-     * @return {number}
+     * @description テキストのフォントサイズ設定
+     *              Font size setting for text
+     *
+     * @member {number}
+     * @default 12
      * @public
      */
     get size ()
     {
         return this._$size;
     }
-
-    /**
-     * @param {number} size
-     * @public
-     */
     set size (size)
     {
         this._$size = size | 0;
@@ -359,37 +373,35 @@ class TextField extends Instance
     }
 
     /**
-     * @return {string}
+     * @description テキストのフォント設定
+     *              Text font settings
+     *
+     * @member {string}
+     * @default "sans-serif"
      * @public
      */
     get font ()
     {
         return this._$font;
     }
-
-    /**
-     * @param {string} font
-     * @public
-     */
     set font (font)
     {
-        this._$font = font;
+        this._$font = `${font}`;
         this.resize();
     }
 
     /**
-     * @return {number}
+     * @description テキストのフォントスタイルの設定
+     *              Set font style for text
+     *
+     * @member {number}
+     * @default 0
      * @public
      */
     get fontType ()
     {
         return this._$fontType;
     }
-
-    /**
-     * @param {number} font_type
-     * @public
-     */
     set fontType (font_type)
     {
         this._$fontType = font_type | 0;
@@ -397,72 +409,83 @@ class TextField extends Instance
     }
 
     /**
-     * @return {string}
+     * @description 入力モードの設定、入力不可(static)、入力可能(input)
+     *              Input mode setting, input disabled (static), input enabled (input)
+     *
+     * @member {string}
+     * @default "static"
      * @public
      */
     get inputType ()
     {
         return this._$inputType;
     }
-
-    /**
-     * @param {string} input_type
-     * @public
-     */
     set inputType (input_type)
     {
-        this._$inputType = input_type;
+        input_type = `${input_type}`.toLowerCase();
+        this._$inputType = input_type === "static" ? input_type : "input";
     }
 
     /**
-     * @return {string}
+     * @description 段落の行揃えの設定を示します。
+     *              Indicates the alignment of the paragraph.
+     *
+     * @member {string}
+     * @default "left"
      * @public
      */
     get align ()
     {
         return this._$align;
     }
-
-    /**
-     * @param {string} align
-     * @public
-     */
     set align (align)
     {
+        align = `${align}`.toLowerCase();
+        switch (align) {
+
+            case "right":
+            case "center":
+                this._$align = align;
+                break;
+
+            default:
+                this._$align = "left";
+                break;
+
+        }
         this._$align = align;
     }
 
     /**
-     * @return {number}
+     * @description フォントの塗り色の設定
+     *              Font fill color setting
+     *
+     * @member {number}
+     * @default 0
      * @public
      */
     get color ()
     {
         return this._$color;
     }
-
-    /**
-     * @param {number} color
-     * @public
-     */
     set color (color)
     {
         this._$color = color | 0;
     }
 
     /**
-     * @return {number}
+     * @description 行間の垂直の行送りを示す整数です。
+     *              An integer representing the amount
+     *              of vertical space (called leading) between lines.
+     *
+     * @member {number}
+     * @default 0
      * @public
      */
     get leading ()
     {
         return this._$leading;
     }
-
-    /**
-     * @param {number} leading
-     * @public
-     */
     set leading (leading)
     {
         this._$leading = leading | 0;
@@ -470,18 +493,18 @@ class TextField extends Instance
     }
 
     /**
-     * @return {number}
+     * @description すべての文字の間に均等に配分されるスペースの量を表す数値です。
+     *              A object representing the amount
+     *              of space that is uniformly distributed between all characters.
+     *
+     * @member {number}
+     * @default 0
      * @public
      */
     get letterSpacing ()
     {
         return this._$letterSpacing;
     }
-
-    /**
-     * @param {number} letter_spacing
-     * @public
-     */
     set letterSpacing (letter_spacing)
     {
         this._$letterSpacing = letter_spacing | 0;
@@ -489,18 +512,17 @@ class TextField extends Instance
     }
 
     /**
-     * @return {number}
+     * @description 段落の左インデントをピクセル単位で示します。
+     *              The left margin of the paragraph, in pixels.
+     *
+     * @member {number}
+     * @default 0
      * @public
      */
     get leftMargin ()
     {
         return this._$leftMargin;
     }
-
-    /**
-     * @param {number} left_margin
-     * @public
-     */
     set leftMargin (left_margin)
     {
         this._$leftMargin = left_margin | 0;
@@ -508,18 +530,17 @@ class TextField extends Instance
     }
 
     /**
-     * @return {number}
+     * @description 段落の右インデントをピクセル単位で示します。
+     *              The right margin of the paragraph, in pixels.
+     *
+     * @member {number}
+     * @default 0
      * @public
      */
     get rightMargin ()
     {
         return this._$rightMargin;
     }
-
-    /**
-     * @param {number} right_margin
-     * @public
-     */
     set rightMargin (right_margin)
     {
         this._$rightMargin = right_margin | 0;
@@ -527,18 +548,17 @@ class TextField extends Instance
     }
 
     /**
-     * @return {boolean}
+     * @description フィールドが複数行テキストフィールドであるかどうかを示します。
+     *              Indicates whether field is a multiline text field.
+     *
+     * @member {boolean}
+     * @default true
      * @public
      */
     get multiline ()
     {
         return this._$multiline;
     }
-
-    /**
-     * @param {boolean} multiline
-     * @public
-     */
     set multiline (multiline)
     {
         this._$multiline = !!multiline;
@@ -546,54 +566,51 @@ class TextField extends Instance
     }
 
     /**
-     * @return {boolean}
+     * @description テキストフィールドに境界線があるかどうかを指定します。
+     *              Specifies whether the text field has a border.
+     *
+     * @member {boolean}
+     * @default false
      * @public
      */
     get border ()
     {
         return this._$border;
     }
-
-    /**
-     * @param {boolean} border
-     * @public
-     */
     set border (border)
     {
         this._$border = !!border;
     }
 
     /**
-     * @return {boolean}
+     * @description スクロール機能のon/off
+     *              Scroll function on/off
+     *
+     * @member {boolean}
+     * @default true
      * @public
      */
     get scroll ()
     {
         return this._$scroll;
     }
-
-    /**
-     * @param {boolean} scroll
-     * @public
-     */
     set scroll (scroll)
     {
         this._$scroll = !!scroll;
     }
 
     /**
-     * @return {boolean}
+     * @description テキストフィールドのテキストを折り返すかどうかを示すブール値です。
+     *              A Boolean value that indicates whether the text field has word wrap.
+     *
+     * @member {boolean}
+     * @default true
      * @public
      */
     get wordWrap ()
     {
         return this._$wordWrap;
     }
-
-    /**
-     * @param {boolean} word_wrap
-     * @public
-     */
     set wordWrap (word_wrap)
     {
         this._$wordWrap = !!word_wrap;
@@ -601,54 +618,49 @@ class TextField extends Instance
     }
 
     /**
-     * @return {object}
+     * @description 表示領域(バウンディングボックス)のObjectを返す
+     *              Returns the Object of the display area (bounding box)
+     *
+     * @member {object}
      * @public
      */
     get bounds ()
     {
         return this._$bounds;
     }
-
-    /**
-     * @param {object} [bounds=null]
-     * @public
-     */
     set bounds (bounds)
     {
         this._$bounds = bounds;
     }
 
     /**
-     * @return {object}
+     * @description 登録時の表示領域(バウンディングボックス)のObjectを返す
+     *              Returns the Object of the display area (bounding box) at registration
+     *
+     * @member {object}
      * @public
      */
     get originBounds ()
     {
         return this._$originBounds;
     }
-
-    /**
-     * @param {object} origin_bounds
-     * @public
-     */
     set originBounds (origin_bounds)
     {
         this._$originBounds = origin_bounds;
     }
 
     /**
-     * @return {number}
+     * @description テキストエリア内のスケール設定
+     *              Scale settings within text area
+     *
+     * @member {number}
+     * @default 0
      * @public
      */
     get autoSize ()
     {
         return this._$autoSize;
     }
-
-    /**
-     * @param {number} auto_size
-     * @public
-     */
     set autoSize (auto_size)
     {
         this._$autoSize = auto_size | 0;
@@ -660,18 +672,17 @@ class TextField extends Instance
     }
 
     /**
-     * @return {number}
+     * @description テキスト外枠の幅
+     *              Width of text border
+     *
+     * @member {number}
+     * @default 0
      * @public
      */
     get thickness ()
     {
         return this._$thickness;
     }
-
-    /**
-     * @param {number} thickness
-     * @public
-     */
     set thickness (thickness)
     {
         this._$thickness = thickness | 0;
@@ -679,25 +690,28 @@ class TextField extends Instance
     }
 
     /**
-     * @return {number}
+     * @description テキスト外枠の色設定
+     *              Color setting of text outer frame
+     *
+     * @member {number}
+     * @default 0
      * @public
      */
     get thicknessColor ()
     {
         return this._$thicknessColor;
     }
-
-    /**
-     * @param {number} thickness_color
-     * @public
-     */
     set thicknessColor (thickness_color)
     {
         this._$thicknessColor = thickness_color | 0;
     }
 
     /**
+     * @description クラス内の変数をObjectにして返す
+     *              Return variables in a class as Objects
+     *
      * @return {object}
+     * @method
      * @public
      */
     toObject ()
@@ -741,7 +755,11 @@ class TextField extends Instance
     }
 
     /**
+     * @description 書き出し用のObjectを返す
+     *              Returns an Object for export
+     *
      * @return {object}
+     * @method
      * @public
      */
     toPublish ()
@@ -773,7 +791,11 @@ class TextField extends Instance
     }
 
     /**
+     * @description テキストエリアの状態変化による、表示領域を再取得
+     *              Re-acquisition of display area due to change of text area status
+     *
      * @return {void}
+     * @method
      * @public
      */
     resize ()
@@ -788,7 +810,11 @@ class TextField extends Instance
     }
 
     /**
-     * @return {next2d.text.TextField}
+     * @description Next2DのDisplayObjectを生成
+     *              Generate Next2D DisplayObject
+     *
+     * @return {next2d.display.Shape}
+     * @method
      * @public
      */
     createInstance ()
@@ -860,24 +886,23 @@ class TextField extends Instance
     }
 
     /**
+     * @description Next2DのBitmapDataクラスを経由してImageクラスを生成
+     *              Generate Image class via Next2D BitmapData class
+     *
      * @param  {number}  width
      * @param  {number}  height
      * @param  {object}  place
      * @param  {object}  [range = null]
      * @param  {number}  [static_frame = 0]
-     * @param  {boolean} [preview = false]
      * @return {HTMLImageElement}
      * @method
      * @public
      */
     toImage (
-        width, height, place, range = null, static_frame = 0, preview = false
+        width, height, place, range = null, static_frame = 0
     ) {
 
-        const image = super.toImage(
-            width, height, place, range, static_frame, preview
-        );
-
+        const image = super.toImage(width, height, place, range, static_frame);
         image._$tx -= this._$thickness;
         image._$ty -= this._$thickness;
 
