@@ -28,6 +28,22 @@ describe("TextField.js property test", () =>
         });
 
         expect(textField.text).toBe("test");
+        expect(textField.font).toBe("sans-serif");
+        expect(textField.fontType).toBe(0);
+        expect(textField.inputType).toBe("static");
+        expect(textField.align).toBe("left");
+        expect(textField.color).toBe(0);
+        expect(textField.leading).toBe(0);
+        expect(textField.letterSpacing).toBe(0);
+        expect(textField.leftMargin).toBe(0);
+        expect(textField.rightMargin).toBe(0);
+        expect(textField.multiline).toBe(true);
+        expect(textField.border).toBe(false);
+        expect(textField.scroll).toBe(true);
+        expect(textField.wordWrap).toBe(true);
+        expect(textField.autoSize).toBe(0);
+        expect(textField.thickness).toBe(0);
+        expect(textField.thicknessColor).toBe(0);
         expect(textField.defaultSymbol).toBe("next2d.text.TextField");
     });
 });
@@ -75,5 +91,101 @@ describe("TextField.js showController test", () =>
         expect(document.getElementById("instance-setting").style.display).toBe("");
 
         Util.$workSpaces.length = 0;
+    });
+});
+
+describe("Video.js function test", () =>
+{
+    it("function toObject test", () =>
+    {
+        // mock
+        const TextFieldClass = function ()
+        {
+            this.defaultTextFormat = {};
+        };
+        TextFieldClass.namespace = "next2d.text.TextField";
+
+        window.next2d = {
+            "text": {
+                "TextField": TextFieldClass
+            }
+        };
+
+        const textField = new TextField({
+            "id": 12,
+            "name": "TextField_01",
+            "type": InstanceType.TEXT,
+            "symbol": "app.text",
+            "text": "test"
+        });
+
+        const object = textField.toObject();
+        expect(object.id).toBe(12);
+        expect(object.name).toBe("TextField_01");
+        expect(object.type).toBe(InstanceType.TEXT);
+        expect(object.symbol).toBe("app.text");
+        expect(object.folderId).toBe(0);
+        expect(object.text).toBe("test");
+        expect(object.font).toBe("sans-serif");
+        expect(object.fontType).toBe(0);
+        expect(object.inputType).toBe("static");
+        expect(object.align).toBe("left");
+        expect(object.color).toBe(0);
+        expect(object.leading).toBe(0);
+        expect(object.letterSpacing).toBe(0);
+        expect(object.leftMargin).toBe(0);
+        expect(object.rightMargin).toBe(0);
+        expect(object.multiline).toBe(true);
+        expect(object.border).toBe(false);
+        expect(object.scroll).toBe(true);
+        expect(object.wordWrap).toBe(true);
+        expect(object.autoSize).toBe(0);
+        expect(object.thickness).toBe(0);
+        expect(object.thicknessColor).toBe(0);
+    });
+
+    it("function toPublish test", () =>
+    {
+        // mock
+        const TextFieldClass = function ()
+        {
+            this.defaultTextFormat = {};
+        };
+        TextFieldClass.namespace = "next2d.text.TextField";
+
+        window.next2d = {
+            "text": {
+                "TextField": TextFieldClass
+            }
+        };
+
+        const textField = new TextField({
+            "id": 12,
+            "name": "TextField_01",
+            "type": InstanceType.TEXT,
+            "symbol": "app.text",
+            "text": "test"
+        });
+
+        const object = textField.toPublish();
+        expect(object.symbol).toBe("app.text");
+        expect(object.extends).toBe("next2d.text.TextField");
+        expect(object.text).toBe("test");
+        expect(object.font).toBe("sans-serif");
+        expect(object.fontType).toBe(0);
+        expect(object.inputType).toBe("static");
+        expect(object.align).toBe("left");
+        expect(object.color).toBe(0);
+        expect(object.leading).toBe(0);
+        expect(object.letterSpacing).toBe(0);
+        expect(object.leftMargin).toBe(0);
+        expect(object.rightMargin).toBe(0);
+        expect(object.multiline).toBe(true);
+        expect(object.border).toBe(false);
+        expect(object.scroll).toBe(true);
+        expect(object.wordWrap).toBe(true);
+        expect(object.autoSize).toBe(0);
+        expect(object.thickness).toBe(0);
+        expect(object.thicknessColor).toBe(0);
     });
 });
