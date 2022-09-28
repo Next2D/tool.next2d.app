@@ -1,4 +1,7 @@
 /**
+ * 動画を管理するクラス、Next2DのVideoクラスとして出力されます。
+ * The output is as the Video class of Next2D, a class that manages video.
+ *
  * @class
  * @extends {Instance}
  * @memberOf instance
@@ -8,6 +11,7 @@ class Video extends Instance
     /**
      * @param {object} object
      * @constructor
+     * @public
      */
     constructor (object)
     {
@@ -21,8 +25,8 @@ class Video extends Instance
         this._$loaded   = false;
 
         this.buffer   = object.buffer;
-        this.width    = object.width;
-        this.height   = object.height;
+        this.width    = object.width | 0;
+        this.height   = object.height | 0;
 
         if ("volume" in object) {
             this.volume = object.volume;
@@ -65,7 +69,7 @@ class Video extends Instance
 
     /**
      * @description Videoクラスを複製
-     *
+     *              Duplicate Video class
      * @return {Video}
      * @method
      * @public
@@ -76,6 +80,11 @@ class Video extends Instance
     }
 
     /**
+     * @description このアイテムが設定されたDisplayObjectが選択された時
+     *              内部情報をコントローラーに表示する
+     *              When a DisplayObject with this item set is selected,
+     *              internal information is displayed on the controller.
+     *
      * @param  {object} place
      * @param  {string} [name=""]
      * @return {void}
@@ -113,7 +122,10 @@ class Video extends Instance
     }
 
     /**
-     * @return {HTMLVideoElement}
+     * @description プレビュー画面に表示する、HTMLAudioElementを返す
+     *              Returns an HTMLAudioElement to be displayed on the preview screen.
+     *
+     * @return {HTMLAudioElement}
      * @method
      * @public
      */
@@ -151,8 +163,12 @@ class Video extends Instance
     }
 
     /**
+     * @description 表示領域(バウンディングボックス)のObjectを返す
+     *              Returns the Object of the display area (bounding box)
+     *
      * @param  {array} [matrix=null]
      * @return {object}
+     * @method
      * @public
      */
     getBounds (matrix = null)
@@ -170,8 +186,12 @@ class Video extends Instance
     }
 
     /**
+     * @description シンボルを指定した時の継承先を返す
+     *              Returns the inheritance destination when a symbol is specified.
+     *
      * @return {string}
      * @public
+     * @readonly
      */
     get defaultSymbol ()
     {
@@ -179,7 +199,11 @@ class Video extends Instance
     }
 
     /**
-     * @return {string}
+     * @description 動画データ(buffer)をバイナリデータとして利用
+     *              Video data (buffer) is used as binary data
+     *
+     * @member {string}
+     * @default ""
      * @public
      */
     get buffer ()
@@ -196,12 +220,6 @@ class Video extends Instance
 
         return this._$binary;
     }
-
-    /**
-     * @param  {string|Uint8Array} binary
-     * @return {void}
-     * @public
-     */
     set buffer (binary)
     {
 
@@ -233,102 +251,94 @@ class Video extends Instance
     }
 
     /**
-     * @return {number}
+     * @description 動画音声の設定
+     *              Video audio settings.
+     *
+     * @member {number}
+     * @default 100
      * @public
      */
     get volume ()
     {
         return this._$volume;
     }
-
-    /**
-     * @param  {number} volume
-     * @return {void}
-     * @public
-     */
     set volume (volume)
     {
-        this._$volume = volume;
+        this._$volume = Util.$clamp(volume | 0, 0, 100);
     }
 
     /**
-     * @return {boolean}
+     * @description 動画再生のループのon/off設定
+     *              Video playback loop on/off setting
+     *
+     * @member {boolean}
+     * @default false
      * @public
      */
     get loop ()
     {
         return this._$loop;
     }
-
-    /**
-     * @param  {boolean} loop
-     * @return {void}
-     * @public
-     */
     set loop (loop)
     {
-        this._$loop = loop;
+        this._$loop = !!loop;
     }
 
     /**
-     * @return {boolean}
+     * @description 動画の自動再生のon/off設定
+     *              Video autoplay on/off setting.
+     *
+     * @member {boolean}
+     * @default true
      * @public
      */
     get autoPlay ()
     {
         return this._$autoPlay;
     }
-
-    /**
-     * @param  {boolean} auto_play
-     * @return {void}
-     * @public
-     */
     set autoPlay (auto_play)
     {
-        this._$autoPlay = auto_play;
+        this._$autoPlay = !!auto_play;
     }
 
     /**
-     * @return {uint}
+     * @description 動画の幅
+     *              Video width
+     *
+     * @member {number}
      * @public
      */
     get width ()
     {
         return this._$width;
     }
-
-    /**
-     * @param  {uint} width
-     * @return {void}
-     * @public
-     */
     set width (width)
     {
-        this._$width = width;
+        this._$width = width | 0;
     }
 
     /**
-     * @return {uint}
+     * @description 動画の高さ
+     *              Video height
+     *
+     * @member {number}
      * @public
      */
     get height ()
     {
         return this._$height;
     }
-
-    /**
-     * @param  {uint} height
-     * @return {void}
-     * @public
-     */
     set height (height)
     {
-        this._$height = height;
+        this._$height = height | 0;
     }
 
     /**
+     * @description クラス内の変数をObjectにして返す
+     *              Return variables in a class as Objects
+     *
      * @return {object}
+     * @method
      * @public
      */
     toObject ()
@@ -349,7 +359,11 @@ class Video extends Instance
     }
 
     /**
+     * @description 書き出し用のObjectを返す
+     *              Returns an Object for export
+     *
      * @return {object}
+     * @method
      * @public
      */
     toPublish ()
@@ -366,9 +380,11 @@ class Video extends Instance
     }
 
     /**
-     * @param  {object}  place
-     * @param  {boolean} [preview=false]
+     * @description Next2DのDisplayObjectを生成
+     *              Generate Next2D DisplayObject
+     *
      * @return {next2d.display.Shape}
+     * @method
      * @public
      */
     createInstance (place, preview = false)

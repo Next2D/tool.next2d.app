@@ -303,28 +303,33 @@ class Publish
             cloneCanvas.width  = canvas.width;
             cloneCanvas.height = canvas.height;
 
-            const context = cloneCanvas.getContext("2d");
-            context.drawImage(canvas, 0, 0, canvas.width, canvas.height);
-            canvas.toBlob((blob) => { buffer.push(blob) });
+            canvas.toBlob((blob) =>
+            {
+                buffer.push(blob);
 
-            if (buffer.length + 1 === Util.$root.totalFrames) {
+                if (buffer.length === Util.$root.totalFrames) {
 
-                Util.$hidePreview();
+                    Util.$hidePreview();
 
-                return new ApngEncoder(
-                    buffer, canvas.width, canvas.height,
-                    document.getElementById("stage-fps").value | 0,
-                    loop
-                )
-                    .encode()
-                    .then((blob) =>
-                    {
-                        const anchor    = document.getElementById("save-anchor");
-                        anchor.download = `${Util.$currentWorkSpace().name}.apng`;
-                        anchor.href     = URL.createObjectURL(blob);
-                        anchor.click();
-                    });
+                    return new ApngEncoder(
+                        buffer, canvas.width, canvas.height,
+                        document.getElementById("stage-fps").value | 0,
+                        loop
+                    )
+                        .encode()
+                        .then((blob) =>
+                        {
+                            const anchor    = document.getElementById("save-anchor");
+                            anchor.download = `${Util.$currentWorkSpace().name}.apng`;
+                            anchor.href     = URL.createObjectURL(blob);
+                            anchor.click();
+                        });
 
+                }
+            });
+
+            if (Util.$root.currentFrame >= Util.$root.totalFrames) {
+                return ;
             }
 
             requestAnimationFrame(watch);

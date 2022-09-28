@@ -58,7 +58,6 @@ describe("Stage.js initialize test", () =>
         expect(element.style.height).toBe(`${stage.height}px`);
         expect(element.style.backgroundColor).toBe("rgb(255, 255, 255)");
         expect(document.getElementById("library-preview-area").style.backgroundColor).toBe("rgb(255, 255, 255)");
-
         expect(document.getElementById("screen-scale").value).toBe("100");
         expect(document.getElementById("label-name").value).toBe("");
         expect(document.getElementById("stage-width").value).toBe(`${stage.width}`);
@@ -67,7 +66,6 @@ describe("Stage.js initialize test", () =>
         expect(document.getElementById("stage-bgColor").value).toBe(stage.bgColor);
         expect(document.getElementById("stage-lock").childNodes[1].classList.contains("disable")).toBe(true);
         expect(document.getElementById("stage-lock").childNodes[1].classList.contains("active")).toBe(false);
-        
         expect(Util.$offsetLeft).toBe(element.offsetLeft);
         expect(Util.$offsetTop).toBe(element.offsetTop);
     });

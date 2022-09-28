@@ -8,6 +8,7 @@ class TextField extends Instance
     /**
      * @param {object} object
      * @constructor
+     * @public
      */
     constructor (object = null)
     {
