@@ -948,11 +948,11 @@ class TransformController extends BaseController
             return ;
         }
 
-        scale_x = Util.$clamp(
+        scale_x = Util.$toFixed4(Util.$clamp(
             scale_x,
             TransformController.MIN_SCALE,
             TransformController.MAX_SCALE
-        );
+        ));
 
         const { Matrix } = window.next2d.geom;
 
@@ -1225,11 +1225,12 @@ class TransformController extends BaseController
             return ;
         }
 
-        scale_y = Util.$clamp(
+        console.log("updateScaleY: ", scale_y);
+        scale_y = Util.$toFixed4(Util.$clamp(
             scale_y,
             TransformController.MIN_SCALE,
             TransformController.MAX_SCALE
-        );
+        ));
 
         const { Matrix } = window.next2d.geom;
 
@@ -1333,16 +1334,19 @@ class TransformController extends BaseController
                 );
 
                 const place  = character.getPlace(frame);
-                const matrix = new Matrix(
-                    place.matrix[0], place.matrix[1], place.matrix[2],
-                    place.matrix[3], place.matrix[4], place.matrix[5]
-                );
-                matrix.invert();
+                // const matrix = new Matrix(
+                //     place.matrix[0], place.matrix[1], place.matrix[2],
+                //     place.matrix[3], place.matrix[4], place.matrix[5]
+                // );
+                const matrix = Util.$inverseMatrix(place.matrix);
+                // matrix.invert();
 
                 const point = place.point;
-                const referenceX = point.x * matrix.a + point.y * matrix.c + matrix.tx;
-                const referenceY = point.x * matrix.b + point.y * matrix.d + matrix.ty;
+                const referenceX = point.x * matrix[0] + point.y * matrix[2] + matrix[4];
+                const referenceY = point.x * matrix[1] + point.y * matrix[3] + matrix[5];
 
+                console.log(scale_y,
+                    matrix);
                 const baseMatrix = [
                     1, 0, 0, 1,
                     -referenceX,

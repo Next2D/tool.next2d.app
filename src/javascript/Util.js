@@ -814,6 +814,42 @@ Util.$autoSave = () =>
 };
 
 /**
+ * @param   {array} matrix
+ * @returns {array}
+ * @method
+ * @static
+ */
+Util.$inverseMatrix = (matrix) =>
+{
+    const rdet = 1 / (matrix[0] * matrix[3] - matrix[2] * matrix[1]);
+    const tx  = matrix[2] * matrix[5] - matrix[3] * matrix[4];
+    const ty  = matrix[1] * matrix[4] - matrix[0] * matrix[5];
+
+    return [
+        matrix[3] * rdet,
+        -matrix[1] * rdet,
+        -matrix[2] * rdet,
+        matrix[0] * rdet,
+        tx * rdet,
+        ty * rdet
+    ];
+};
+
+/**
+ * @param  {number} num
+ * @return {number}
+ */
+Util.$toFixed4 = (num) =>
+{
+    const value = num.toString();
+    const index = value.indexOf("e");
+    if (index > -1) {
+        num = +value.slice(0, index);
+    }
+    return +num.toFixed(4);
+};
+
+/**
  * @return {WorkSpace}
  * @static
  */

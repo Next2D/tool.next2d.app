@@ -1,4 +1,7 @@
 /**
+ * コントローラーの各項目の共有クラス
+ * Shared class for each item in the controller
+ *
  * @class
  * @memberOf view.controller
  */
@@ -106,7 +109,8 @@ class BaseController
     }
 
     /**
-     * @description コントローラーの共通初期イベント登録関数
+     * @description コントローラーの共通の初期起動関数
+     *              Common initial startup functions for controllers.
      *
      * @return {void}
      * @method
@@ -139,6 +143,7 @@ class BaseController
 
     /**
      * @description Inputにフォーカスされた時に変数を初期化する
+     *              Initialize variables when Input is focused
      *
      * @param  {Event} event
      * @return {void}
@@ -154,6 +159,7 @@ class BaseController
 
     /**
      * @description Inputにフォーカス終了した時にロックを解放する
+     *              Release lock when focus ends on Input
      *
      * @return {void}
      * @method
@@ -170,9 +176,11 @@ class BaseController
 
     /**
      * @description Inputが数値の場合マウス動作終了関数
+     *              Mouse operation end function if Input is numeric
      *
      * @param  {MouseEvent} event
      * @return {void}
+     * @method
      * @public
      */
     mouseOut (event)
@@ -188,9 +196,12 @@ class BaseController
     /**
      * @description 数値のInputElementの場合はマウスで値を変更可能
      *              状態に合わせてカーソルや変数を初期化する
+     *              For numeric InputElement, values can be changed with the mouse
+     *              Initialize cursors and variables according to state
      *
      * @param  {MouseEvent} event
      * @return {void}
+     * @method
      * @public
      */
     mouseDown (event)
@@ -224,6 +235,9 @@ class BaseController
     }
 
     /**
+     * @description マウスアップ処理、移動イベントなどを削除して初期化
+     *              Delete and initialize mouse-up process, move events, etc.
+     *
      * @return {void}
      * @method
      * @public
@@ -244,9 +258,11 @@ class BaseController
 
     /**
      * @description マウスで数値の加算減算を行う
+     *              Add and subtract numbers with the mouse
      *
      * @param  {MouseEvent} event
      * @return {void}
+     * @method
      * @public
      */
     mouseMove (event)
@@ -295,6 +311,7 @@ class BaseController
 
     /**
      * @description スクリーンエリアで変更があったElementを再描画
+     *              Redraw Element with changes in screen area
      *
      * @return {void}
      * @method
@@ -312,9 +329,11 @@ class BaseController
 
     /**
      * @description Inputが数値の場合マウス動作で加算減算できればカーソルを変化させる
+     *              If Input is a number, the cursor is changed if it can be added and subtracted by mouse movement.
      *
      * @param  {MouseEvent} event
      * @return {void}
+     * @method
      * @public
      */
     mouseOver (event)
@@ -337,6 +356,9 @@ class BaseController
     }
 
     /**
+     * @description 各項目の表示/非表示の処理
+     *              Show/Hide each item
+     *
      * @return {void}
      * @method
      * @public
@@ -366,6 +388,13 @@ class BaseController
      *
      *              DOMの場合は最後の文字列にIDが付与されるので、関数が存在しない時は最後の文字列を外す
      *              例) sound-volume-1 => changeSoundVolumeがコールされる
+     *
+     *              Convert Element's id name to CamelCase and execute function
+     *              e.g.) font-select => changeFontSelect is called
+     *              Since value is passed as a string, conversion and validation must be performed in the calling function
+     *
+     *              In the case of DOM, the ID is assigned to the last string, so if the function does not exist, remove the last string.
+     *              e.g.) sound-volume-1 => changeSoundVolume is called
      *
      * @param  {string} name
      * @param  {string|number|Event} value
@@ -402,6 +431,9 @@ class BaseController
     }
 
     /**
+     * @description Input入力終了時の処理関数
+     *              Processing function at the end of Input input
+     *
      * @param  {Event|KeyboardEvent} event
      * @param  {boolean} [reload=true]
      * @return {void}
@@ -449,6 +481,7 @@ class BaseController
 
     /**
      * @description プロパティーの更新がある時はundo用にデータを内部保管する
+     *              Store data internally for undo when there are property updates
      *
      * @return {void}
      * @method
@@ -466,6 +499,9 @@ class BaseController
     }
 
     /**
+     * @description 指定のelementにchangeイベントを登録する
+     *              Register a change event to the specified element.
+     *
      * @param  {HTMLDivElement} element
      * @return {void}
      * @method
@@ -495,6 +531,9 @@ class BaseController
     }
 
     /**
+     * @description Inputのelementに各種コントローラーで利用するイベントを登録
+     *              Register events used by various controllers in the element of Input
+     *
      * @param  {HTMLDivElement} element
      * @return {void}
      * @method
@@ -533,6 +572,9 @@ class BaseController
     }
 
     /**
+     * @description 指定のelementにclickイベントを登録する
+     *              Register a click event to the specified element.
+     *
      * @param  {HTMLDivElement} element
      * @return {void}
      * @method
@@ -562,7 +604,11 @@ class BaseController
     }
 
     /**
-     * @return {string}
+     * @description タイトル表示用の変数
+     *              Variables for title display
+     *
+     * @member {string}
+     * @default ""
      * @readonly
      * @public
      */

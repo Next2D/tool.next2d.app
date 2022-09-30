@@ -498,6 +498,8 @@ class Character
     }
     set scaleX (scale_x)
     {
+        scale_x = Util.$toFixed4(scale_x);
+
         const frame = Util.$timelineFrame.currentFrame;
 
         const matrix = this.getPlace(frame).matrix;
@@ -557,6 +559,8 @@ class Character
     }
     set scaleY (scale_y)
     {
+        scale_y = Util.$toFixed4(scale_y);
+
         const frame = Util.$timelineFrame.currentFrame;
 
         const matrix = this.getPlace(frame).matrix;
