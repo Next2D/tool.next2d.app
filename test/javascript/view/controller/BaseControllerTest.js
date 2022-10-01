@@ -164,12 +164,106 @@ describe("BaseController.js function test", () =>
             "id": "test"
         };
 
-        baseController.changeTest = () =>
+        baseController.changeTest = (value) =>
         {
+            expect(value).toBe(433);
             expect(baseController._$currentTarget.value).toBe("333");
+            expect(baseController._$currentValue).toBe(null);
             Util.$workSpaces.length = 0;
         };
         baseController.mouseMove(event);
+
+        Util.$workSpaces.length = 0;
+    });
+
+    it("executeFunction test", () =>
+    {
+        const workSpaces = new WorkSpace();
+        Util.$activeWorkSpaceId = Util.$workSpaces.length;
+        Util.$workSpaces.push(workSpaces);
+
+        const baseController = new BaseController("test");
+        baseController.changeFontSelect = (value) =>
+        {
+            expect(value).toBe(100);
+        };
+        baseController.changeSoundVolume = (value) =>
+        {
+            expect(value).toBe("200");
+        };
+
+        baseController.executeFunction("font-select", 100);
+        baseController.executeFunction("sound-volume-1", "200");
+
+        Util.$workSpaces.length = 0;
+    });
+
+    it("clickTitle test", () =>
+    {
+        const workSpaces = new WorkSpace();
+        Util.$activeWorkSpaceId = Util.$workSpaces.length;
+        Util.$workSpaces.push(workSpaces);
+
+        const baseController = new BaseController("color");
+
+        const element = document
+            .getElementById("color-setting-view-area");
+
+        element.style.display = "";
+
+        const icon = document
+            .getElementById("color-setting-title")
+            .getElementsByTagName("i")[0];
+
+        baseController.clickTitle();
+        expect(element.style.display).toBe("none");
+        expect(icon.classList.contains("active")).toBe(false);
+        expect(icon.classList.contains("disable")).toBe(true);
+
+        baseController.clickTitle();
+        expect(element.style.display).toBe("");
+        expect(icon.classList.contains("active")).toBe(true);
+        expect(icon.classList.contains("disable")).toBe(false);
+
+        Util.$workSpaces.length = 0;
+    });
+
+    it("finishInput test", () =>
+    {
+        const workSpaces = new WorkSpace();
+        Util.$activeWorkSpaceId = Util.$workSpaces.length;
+        Util.$workSpaces.push(workSpaces);
+
+        const baseController = new BaseController("color");
+
+        let blur = false;
+        const event1 = {
+            "key": "Enter",
+            "currentTarget": {
+                "blur" : () => { blur = true }
+            }
+        };
+
+        expect(blur).toBe(false);
+        baseController.finishInput(event1);
+        expect(blur).toBe(true);
+
+        const event2 = {
+            "type": "focusout",
+            "target": {
+                "id" : "test",
+                "value": "555"
+            }
+        };
+
+        baseController.changeTest = () =>
+        {
+            return 9999;
+        };
+
+        expect(event2.target.value).toBe("555");
+        baseController.finishInput(event2);
+        expect(event2.target.value).toBe(9999);
 
         Util.$workSpaces.length = 0;
     });
