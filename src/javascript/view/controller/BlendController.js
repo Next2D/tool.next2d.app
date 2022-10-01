@@ -19,6 +19,7 @@ class BlendController extends BaseController
 
     /**
      * @description 初期起動関数
+     *              initial invoking function
      *
      * @return {void}
      * @method

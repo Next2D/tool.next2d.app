@@ -1,4 +1,7 @@
 /**
+ * カラートランスフォーム機能のコントローラークラス
+ * Controller class for color transform function
+ *
  * @class
  * @extends {BaseController}
  * @memberOf view.controller
@@ -15,6 +18,9 @@ class ColorTransformController extends BaseController
     }
 
     /**
+     * @description カラーオフセットの最小数値
+     *              Minimum color offset value
+     *
      * @return {number}
      * @const
      * @static
@@ -25,6 +31,9 @@ class ColorTransformController extends BaseController
     }
 
     /**
+     * @description カラーオフセットの最大数値
+     *              Maximum color offset value
+     *
      * @return {number}
      * @const
      * @static
@@ -35,6 +44,9 @@ class ColorTransformController extends BaseController
     }
 
     /**
+     * @description カラーマルチプライヤの最小数値
+     *              Minimum value for color multiplier
+     *
      * @return {number}
      * @const
      * @static
@@ -45,6 +57,9 @@ class ColorTransformController extends BaseController
     }
 
     /**
+     * @description カラーマルチプライヤの最大数値
+     *              Maximum number of color multipliers
+     *
      * @return {number}
      * @const
      * @static
@@ -56,6 +71,7 @@ class ColorTransformController extends BaseController
 
     /**
      * @description 初期起動関数
+     *              initial invoking function
      *
      * @return {void}
      * @method
@@ -88,41 +104,8 @@ class ColorTransformController extends BaseController
     }
 
     /**
-     * @description Offsetの値を補正
-     *
-     * @param  {string} value
-     * @return {number}
-     * @method
-     * @public
-     */
-    offsetClamp (value)
-    {
-        return Util.$clamp(
-            value | 0,
-            ColorTransformController.MIN_OFFSET,
-            ColorTransformController.MAX_OFFSET
-        );
-    }
-
-    /**
-     * @description 値を補正
-     *
-     * @param  {string} value
-     * @return {number}
-     * @method
-     * @public
-     */
-    multiplierClamp (value)
-    {
-        return Util.$clamp(
-            +value,
-            ColorTransformController.MIN_MULTIPLIER,
-            ColorTransformController.MAX_MULTIPLIER
-        );
-    }
-
-    /**
      * @description 赤の値を更新
+     *              Update red value
      *
      * @param  {string} value
      * @return {number}
@@ -132,7 +115,11 @@ class ColorTransformController extends BaseController
     changeColorRedMultiplier (value)
     {
         // 補正
-        value = this.multiplierClamp(value);
+        value = Util.$clamp(
+            +value,
+            ColorTransformController.MIN_MULTIPLIER,
+            ColorTransformController.MAX_MULTIPLIER
+        );
 
         this.updateColor(0, value / 100);
 
@@ -141,6 +128,7 @@ class ColorTransformController extends BaseController
 
     /**
      * @description 緑の値を更新
+     *              Update green value
      *
      * @param  {string} value
      * @return {number}
@@ -150,7 +138,11 @@ class ColorTransformController extends BaseController
     changeColorGreenMultiplier (value)
     {
         // 補正
-        value = this.multiplierClamp(value);
+        value = Util.$clamp(
+            +value,
+            ColorTransformController.MIN_MULTIPLIER,
+            ColorTransformController.MAX_MULTIPLIER
+        );
 
         this.updateColor(1, value / 100);
 
@@ -159,6 +151,7 @@ class ColorTransformController extends BaseController
 
     /**
      * @description 青の値を更新
+     *              Update blue value
      *
      * @param  {string} value
      * @return {number}
@@ -168,7 +161,11 @@ class ColorTransformController extends BaseController
     changeColorBlueMultiplier (value)
     {
         // 補正
-        value = this.multiplierClamp(value);
+        value = Util.$clamp(
+            +value,
+            ColorTransformController.MIN_MULTIPLIER,
+            ColorTransformController.MAX_MULTIPLIER
+        );
 
         this.updateColor(2, value / 100);
 
@@ -177,6 +174,7 @@ class ColorTransformController extends BaseController
 
     /**
      * @description 透明度の値を更新
+     *              Update transparency value
      *
      * @param  {string} value
      * @return {number}
@@ -186,7 +184,11 @@ class ColorTransformController extends BaseController
     changeColorAlphaMultiplier (value)
     {
         // 補正
-        value = this.multiplierClamp(value);
+        value = Util.$clamp(
+            +value,
+            ColorTransformController.MIN_MULTIPLIER,
+            ColorTransformController.MAX_MULTIPLIER
+        );
 
         this.updateColor(3, value / 100);
 
@@ -195,6 +197,7 @@ class ColorTransformController extends BaseController
 
     /**
      * @description Offsetの赤の値を更新
+     *              Update red value of Offset
      *
      * @param {string} value
      * @method
@@ -203,7 +206,11 @@ class ColorTransformController extends BaseController
     changeColorRedOffset (value)
     {
         // 補正
-        value = this.offsetClamp(value);
+        value = Util.$clamp(
+            value | 0,
+            ColorTransformController.MIN_OFFSET,
+            ColorTransformController.MAX_OFFSET
+        );
 
         this.updateColor(4, value);
 
@@ -212,6 +219,7 @@ class ColorTransformController extends BaseController
 
     /**
      * @description Offsetの緑の値を更新
+     *              Update green value of Offset
      *
      * @param {string} value
      * @method
@@ -220,7 +228,11 @@ class ColorTransformController extends BaseController
     changeColorGreenOffset (value)
     {
         // 補正
-        value = this.offsetClamp(value);
+        value = Util.$clamp(
+            value | 0,
+            ColorTransformController.MIN_OFFSET,
+            ColorTransformController.MAX_OFFSET
+        );
 
         this.updateColor(5, value);
 
@@ -229,6 +241,7 @@ class ColorTransformController extends BaseController
 
     /**
      * @description Offsetの青の値を更新
+     *              Update the blue value of Offset
      *
      * @param {string} value
      * @method
@@ -237,7 +250,11 @@ class ColorTransformController extends BaseController
     changeColorBlueOffset (value)
     {
         // 補正
-        value = this.offsetClamp(value);
+        value = Util.$clamp(
+            value | 0,
+            ColorTransformController.MIN_OFFSET,
+            ColorTransformController.MAX_OFFSET
+        );
 
         this.updateColor(6, value);
 
@@ -246,6 +263,7 @@ class ColorTransformController extends BaseController
 
     /**
      * @description Offsetの透明度の値を更新
+     *              Update Offset transparency value
      *
      * @param {string} value
      * @method
@@ -254,7 +272,11 @@ class ColorTransformController extends BaseController
     changeColorAlphaOffset (value)
     {
         // 補正
-        value = this.offsetClamp(value);
+        value = Util.$clamp(
+            value | 0,
+            ColorTransformController.MIN_OFFSET,
+            ColorTransformController.MAX_OFFSET
+        );
 
         this.updateColor(7, value);
 
@@ -262,7 +284,8 @@ class ColorTransformController extends BaseController
     }
 
     /**
-     * @description 値更新の分岐関数
+     * @description カラーの値の更新、indexで分岐処理を行う
+     *              Update color values, branch processing with index
      *
      * @param  {number} index
      * @param  {number} value
