@@ -150,7 +150,11 @@ describe("BaseController.js function test", () =>
         const baseController = new BaseController("test");
 
         const event = {
-            "preventDefault": () => { return 0 },
+            "preventDefault": () => {
+                const workSpaces = new WorkSpace();
+                Util.$activeWorkSpaceId = Util.$workSpaces.length;
+                Util.$workSpaces.push(workSpaces);
+            },
             "screenX": 100
         };
 
@@ -162,10 +166,11 @@ describe("BaseController.js function test", () =>
 
         baseController.changeTest = () =>
         {
-            expect(baseController._$pointX).toBe(100);
+            expect(baseController._$currentTarget.value).toBe("333");
             Util.$workSpaces.length = 0;
         };
-
         baseController.mouseMove(event);
+
+        Util.$workSpaces.length = 0;
     });
 });

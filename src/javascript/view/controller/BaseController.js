@@ -319,12 +319,17 @@ class BaseController
      */
     reloadScreen ()
     {
-        const frame = Util.$timelineFrame.currentFrame;
+        const workSpace = Util.$currentWorkSpace();
+        if (!workSpace) {
+            return ;
+        }
 
-        Util
-            .$currentWorkSpace()
-            .scene
-            .changeFrame(frame);
+        const scene = workSpace.scene;
+        if (!scene) {
+            return ;
+        }
+
+        scene.changeFrame(Util.$timelineFrame.currentFrame);
     }
 
     /**
@@ -489,13 +494,19 @@ class BaseController
      */
     save ()
     {
-        if (!this._$saved) {
-            this._$saved = true;
-
-            Util
-                .$currentWorkSpace()
-                .temporarilySaved();
+        // 保存中ならスキップ
+        if (this._$saved) {
+            return ;
         }
+
+        this._$saved = true;
+
+        const workSpace = Util.$currentWorkSpace();
+        if (!workSpace) {
+            return ;
+        }
+
+        workSpace.temporarilySaved();
     }
 
     /**

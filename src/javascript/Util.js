@@ -71,7 +71,7 @@ Util.$hitContext = canvas.getContext("2d");
 Util.$clamp = (value, min, max) =>
 {
     const number = +value;
-    return Math.min(Math.max(min, isNaN(number) ? 0 : number), max);
+    return Math.min(Math.max(min, isNaN(number) || !isFinite(number) ? 0 : number), max);
 };
 
 /**
@@ -821,10 +821,22 @@ Util.$autoSave = () =>
  */
 Util.$inverseMatrix = (matrix) =>
 {
-    const rdet = 1 / (matrix[0] * matrix[3] - matrix[2] * matrix[1]);
-    const tx  = matrix[2] * matrix[5] - matrix[3] * matrix[4];
-    const ty  = matrix[1] * matrix[4] - matrix[0] * matrix[5];
+    const tx = matrix[2] * matrix[5] - matrix[3] * matrix[4];
+    const ty = matrix[1] * matrix[4] - matrix[0] * matrix[5];
 
+    let det = matrix[0] * matrix[3] - matrix[2] * matrix[1];
+    if (!det || !isFinite(det)) {
+        return [
+            matrix[3],
+            -matrix[1],
+            -matrix[2],
+            matrix[0] ,
+            tx,
+            ty
+        ];
+    }
+
+    const rdet = 1 / det;
     return [
         matrix[3] * rdet,
         -matrix[1] * rdet,
