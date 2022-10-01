@@ -198,36 +198,6 @@ describe("BaseController.js function test", () =>
         Util.$workSpaces.length = 0;
     });
 
-    it("clickTitle test", () =>
-    {
-        const workSpaces = new WorkSpace();
-        Util.$activeWorkSpaceId = Util.$workSpaces.length;
-        Util.$workSpaces.push(workSpaces);
-
-        const baseController = new BaseController("color");
-
-        const element = document
-            .getElementById("color-setting-view-area");
-
-        element.style.display = "";
-
-        const icon = document
-            .getElementById("color-setting-title")
-            .getElementsByTagName("i")[0];
-
-        baseController.clickTitle();
-        expect(element.style.display).toBe("none");
-        expect(icon.classList.contains("active")).toBe(false);
-        expect(icon.classList.contains("disable")).toBe(true);
-
-        baseController.clickTitle();
-        expect(element.style.display).toBe("");
-        expect(icon.classList.contains("active")).toBe(true);
-        expect(icon.classList.contains("disable")).toBe(false);
-
-        Util.$workSpaces.length = 0;
-    });
-
     it("finishInput test", () =>
     {
         const workSpaces = new WorkSpace();
@@ -264,6 +234,44 @@ describe("BaseController.js function test", () =>
         expect(event2.target.value).toBe("555");
         baseController.finishInput(event2);
         expect(event2.target.value).toBe(9999);
+
+        Util.$workSpaces.length = 0;
+    });
+});
+
+describe("BaseController.js function test", () =>
+{
+    beforeEach(() =>
+    {
+        document.body.innerHTML = window.__html__["test/test.html"];
+    });
+
+    it("clickTitle test", () =>
+    {
+        const workSpaces = new WorkSpace();
+        Util.$activeWorkSpaceId = Util.$workSpaces.length;
+        Util.$workSpaces.push(workSpaces);
+
+        const baseController = new BaseController("color");
+
+        const element = document
+            .getElementById("color-setting-view-area");
+
+        element.style.display = "";
+
+        const icon = document
+            .getElementById("color-setting-title")
+            .getElementsByTagName("i")[0];
+
+        baseController.clickTitle();
+        expect(element.style.display).toBe("none");
+        expect(icon.classList.contains("active")).toBe(false);
+        expect(icon.classList.contains("disable")).toBe(true);
+
+        baseController.clickTitle();
+        expect(element.style.display).toBe("");
+        expect(icon.classList.contains("active")).toBe(true);
+        expect(icon.classList.contains("disable")).toBe(false);
 
         Util.$workSpaces.length = 0;
     });
