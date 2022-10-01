@@ -624,6 +624,10 @@ class TweenController extends BaseController
             .$currentWorkSpace()
             .getLibrary(character.libraryId);
 
+        if (!library) {
+            return ;
+        }
+
         // translate
         const instance = library.createInstance(character.getPlace(frame));
 
@@ -1097,6 +1101,10 @@ class TweenController extends BaseController
             const instance = Util
                 .$currentWorkSpace()
                 .getLibrary(character.libraryId);
+
+            if (!instance) {
+                continue;
+            }
 
             const baseBounds = instance.getBounds();
             const parentElement = document.getElementById("stage-area");

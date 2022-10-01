@@ -926,6 +926,10 @@ class Character
             .$currentWorkSpace()
             .getLibrary(this.libraryId);
 
+        if (!instance) {
+            return [];
+        }
+
         const places = [];
         for (let [frame, place] of this._$places) {
 

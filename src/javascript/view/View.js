@@ -46,15 +46,28 @@ class View
         if (element) {
             element.addEventListener("mousedown", (event) =>
             {
-                if (event.button) {
-                    return ;
-                }
-
-                Util.$endMenu();
+                this.mouseDown(event);
             });
         }
 
         Util.$initializeEnd();
+    }
+
+    /**
+     * @description Viewエリアを
+     *
+     * @param {MouseEvent} event
+     * @method
+     * @public
+     */
+    mouseDown (event)
+    {
+        // 左クリック以外はスキップ
+        if (event.button) {
+            return ;
+        }
+
+        Util.$endMenu();
     }
 }
 

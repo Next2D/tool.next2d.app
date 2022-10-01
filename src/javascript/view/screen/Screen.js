@@ -484,6 +484,9 @@ class Screen extends BaseScreen
         // setup
         const place    = character.getPlace(frame);
         const instance = workSpace.getLibrary(character.libraryId);
+        if (!instance) {
+            return ;
+        }
 
         let doUpdate = character.libraryId === Util.$changeLibraryId;
         switch (instance.type) {

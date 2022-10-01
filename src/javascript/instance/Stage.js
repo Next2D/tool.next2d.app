@@ -3,7 +3,7 @@
  * This information is output as Stage information in Next2D, the class that manages stages.
  *
  * @class
- * @memberOf {instance}
+ * @memberOf instance
  */
 class Stage
 {
