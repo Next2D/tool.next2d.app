@@ -443,6 +443,7 @@ class Instance
         bitmapData.draw(container, new Matrix(1, 0, 0, 1, tx, ty));
 
         const image = new Image();
+        image.loading = "lazy";
         image.src = bitmapData.toDataURL();
         bitmapData.dispose();
 

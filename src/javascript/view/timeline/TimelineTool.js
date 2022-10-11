@@ -1331,6 +1331,10 @@ class TimelineTool extends BaseTimeline
                 for (; frame - idx > 1; ++idx) {
 
                     const element = layer.getChildren(frame - idx);
+                    if (!element) {
+                        continue;
+                    }
+
                     if (element.dataset.frameState !== "empty") {
                         break;
                     }

@@ -178,16 +178,15 @@ class TimelinePlayer extends BaseTimeline
 
                     Util.$timelineFrame.currentFrame = 1;
 
+                    // スクロールしていれば左端にセット
+                    Util.$timelineHeader.scrollX = 0;
+
+                    // タイムラインを再構成
+                    Util.$timelineHeader.rebuild();
+                    Util.$timelineLayer.moveTimeLine();
+
                     // マーカーを移動
                     Util.$timelineMarker.move();
-
-                    // スクロールしていれば左端にセット
-                    if (document
-                        .getElementById("timeline-controller-base")
-                        .scrollLeft
-                    ) {
-                        Util.$timelineLayer.moveTimeLine(0);
-                    }
 
                     // 再描画
                     this.reloadScreen();
@@ -213,8 +212,11 @@ class TimelinePlayer extends BaseTimeline
                 this._$fps       = 1000 / (document.getElementById("stage-fps").value | 0);
                 this._$timerId   = window.requestAnimationFrame(this._$run);
             }
+
         } else {
+
             this.executeTimelineStop();
+
         }
     }
 
@@ -324,6 +326,21 @@ class TimelinePlayer extends BaseTimeline
 
             // フレームを移動
             Util.$timelineFrame.currentFrame = frame;
+
+            const timelineWidth = Util.$timelineTool.timelineWidth;
+            const moveFrame     = Util.$timelineHeader.scrollX / timelineWidth | 0;
+
+            // タイムラインの座標修正
+            const element = document
+                .getElementById("timeline-controller-base");
+            
+            const deltaX = (frame - moveFrame) * (timelineWidth + 1);
+            if (0 >= deltaX || deltaX > element.clientWidth) {
+                Util.$timelineHeader.scrollX = (frame - 1) * timelineWidth;
+            }
+
+            // ヘッダーを再構成
+            Util.$timelineHeader.rebuild();
 
             // マーカーを移動
             Util.$timelineMarker.move();
