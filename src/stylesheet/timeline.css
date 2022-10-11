@@ -759,9 +759,7 @@
     position        : relative;
     width           : calc(100vw - (var(--controller-width) + 45px + 8px + 8px + 270px));
     height          : 61px;
-    overflow-x      : auto;
-    overflow-y      : hidden;
-    scrollbar-width : none;
+    overflow        : hidden;
 }
 
 #timeline-marker
@@ -792,22 +790,14 @@
 
 #timeline-content .timeline-frame-controller
 {
-    width           : calc(100vw - (var(--controller-width) + 45px + 8px + 8px + 270px));
-    overflow-x      : auto;
-    overflow-y      : hidden;
-    scrollbar-width : none;
+    width       : calc(100vw - (var(--controller-width) + 45px + 8px + 8px + 270px));
+    overflow    : hidden;
+    display     : flex;
+    align-items : center;
 }
 
-#timeline-controller-base::-webkit-scrollbar,
-#timeline-content .timeline-frame-controller::-webkit-scrollbar
+#timeline-header
 {
-    display : none;
-}
-
-#timeline-header,
-#timeline-content .timeline-frame
-{
-    width       : 100vw;
     display     : flex;
     align-items : center;
 }

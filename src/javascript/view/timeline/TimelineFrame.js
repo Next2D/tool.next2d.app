@@ -76,7 +76,7 @@ class TimelineFrame extends BaseTimeline
     {
         const element = document.getElementById("current-frame");
         if (element) {
-            element.value = `${frame | 0}`;
+            element.value = `${Math.max(1, frame) | 0}`;
         }
     }
 
@@ -284,10 +284,7 @@ class TimelineFrame extends BaseTimeline
             }
 
             // clampで補正された値をセット
-            const frame = Util.$clamp(
-                currentValue + diff,
-                1, Util.$timelineHeader.lastFrame
-            );
+            const frame = Math.max(1, currentValue + diff);
 
             this._$currentTarget.value = `${frame}`;
             this._$currentValue        = frame;
@@ -295,8 +292,6 @@ class TimelineFrame extends BaseTimeline
 
             // タイムラインの座標の補正
             this.moveTimeline();
-
-            //
 
             // 再描画
             this.reloadScreen();
@@ -321,12 +316,7 @@ class TimelineFrame extends BaseTimeline
         if (event.type === "focusout") {
 
             // Inputの値を更新
-            const frame = Util.$clamp(
-                event.target.value | 0,
-                1, Util.$timelineHeader.lastFrame
-            );
-
-            event.target.value = `${frame}`;
+            event.target.value = `${Math.max(1, event.target.value | 0)}`;
 
             // タイムラインの座標の補正
             this.moveTimeline();
@@ -348,45 +338,28 @@ class TimelineFrame extends BaseTimeline
      */
     moveTimeline ()
     {
-        // マーカーを移動
-        Util.$timelineMarker.move();
-
-        // タイムラインの座標修正
-        const deltaX =
-            Util.$timelineFrame.currentFrame
-                * (Util.$timelineTool.timelineWidth + 1);
-
         const element = document
             .getElementById("timeline-controller-base");
 
-        switch (true) {
-
-            case deltaX > element.scrollLeft + element.offsetWidth:
-                Util
-                    .$timelineLayer
-                    .moveTimeLine(
-                        deltaX - (Util.$timelineTool.timelineWidth + 1)
-                    );
-                break;
-
-            case element.scrollLeft >= deltaX:
-                {
-                    const frame = element.offsetWidth
-                        / (Util.$timelineTool.timelineWidth + 1) | 0;
-
-                    Util
-                        .$timelineLayer
-                        .moveTimeLine(
-                            deltaX - frame
-                                * (Util.$timelineTool.timelineWidth + 1)
-                        );
-                }
-                break;
-
-            default:
-                break;
-
+        if (!element) {
+            return ;
         }
+
+        const timelineWidth = Util.$timelineTool.timelineWidth;
+        const currentFrame  = Util.$timelineFrame.currentFrame;
+        const moveFrame     = Util.$timelineHeader.scrollX / timelineWidth | 0;
+
+        // タイムラインの座標修正
+        const deltaX = (currentFrame - moveFrame) * (timelineWidth + 1);
+        if (0 >= deltaX || deltaX > element.clientWidth) {
+            Util.$timelineHeader.scrollX = (currentFrame - 1) * timelineWidth;
+        }
+
+        // ヘッダーを再構成
+        Util.$timelineHeader.rebuild();
+
+        // マーカーを移動
+        Util.$timelineMarker.move();
     }
 }
 

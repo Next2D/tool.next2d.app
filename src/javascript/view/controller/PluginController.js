@@ -40,7 +40,7 @@ class PluginController
 
         // DOMの読込がまだであれば、イベントに登録
         Util.$readEnd++;
-        if (document.readyState === "loading") {
+        if (document.readyState !== "complete") {
             this._$handler = this.initialize.bind(this);
             window.addEventListener("DOMContentLoaded", this._$handler);
         } else {

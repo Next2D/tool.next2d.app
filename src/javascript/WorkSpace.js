@@ -186,12 +186,6 @@ class WorkSpace
      */
     run ()
     {
-        // ステージをセット
-        this.stage.initialize();
-
-        // 初期化
-        this.initialize(this.root);
-
         document
             .documentElement
             .style
@@ -207,6 +201,12 @@ class WorkSpace
                 "--controller-width",
                 `${this._$controllerWidth}px`
             );
+
+        // ステージをセット
+        this.stage.initialize();
+
+        // 初期化
+        this.initialize(this.root);
     }
 
     /**

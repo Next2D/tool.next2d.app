@@ -37,13 +37,6 @@ class TimelineLayer extends BaseTimeline
          * @default 0
          * @private
          */
-        this._$scrollX = 0;
-
-        /**
-         * @type {number}
-         * @default 0
-         * @private
-         */
         this._$clientX = 0;
 
         /**
@@ -505,11 +498,6 @@ class TimelineLayer extends BaseTimeline
             return ;
         }
 
-        let frame = current_frame + 1;
-
-        const scene   = workSpace.scene;
-        const layerId = layer_id === -1 ? scene._$layerId : layer_id;
-
         const element = document
             .getElementById("timeline-content");
 
@@ -517,13 +505,18 @@ class TimelineLayer extends BaseTimeline
             return ;
         }
 
-        const lastFrame = Util.$timelineHeader.lastFrame;
+        // let frame = current_frame + 1;
+
+        const scene   = workSpace.scene;
+        const layerId = layer_id === -1 ? scene._$layerId : layer_id;
 
         let parent = document
             .getElementById(`frame-scroll-id-${layerId}`);
 
         // イベント登録は初回だけ
         if (!parent) {
+
+            scene.getLayer(layerId)._$id = layerId;
 
             element.insertAdjacentHTML("beforeend", `
 <div class="timeline-content-child" id="layer-id-${layerId}" data-layer-id="${layerId}">
@@ -543,15 +536,9 @@ class TimelineLayer extends BaseTimeline
         <i class="timeline-layer-lock-one icon-disable" id="layer-lock-icon-${layerId}" data-click-type="lock" data-layer-id="${layerId}" data-detail="{{レイヤーをロック}}"></i>
     </div>
 
-    <div class="timeline-frame-controller" id="frame-scroll-id-${layerId}">
-        <div class="timeline-frame">
-        </div>
-    </div>
+    <div class="timeline-frame-controller" id="frame-scroll-id-${layerId}"></div>
 </div>
 `);
-
-            parent = document
-                .getElementById(`frame-scroll-id-${layerId}`);
 
             // レイヤー名の変更イベントを登録
             document
@@ -666,19 +653,31 @@ class TimelineLayer extends BaseTimeline
                     return false;
                 }
 
+                // 全てのイベントを停止
+                event.stopPropagation();
                 event.preventDefault();
 
-                const target = event.currentTarget;
+                const scrollX = Util.$timelineHeader.scrollX;
+
+                // 1フレーム目より以前には移動しない
+                if (!scrollX && 0 > deltaX) {
+                    return false;
+                }
 
                 window.requestAnimationFrame(() =>
                 {
-                    const maxDeltaX = target.scrollWidth - target.offsetWidth;
-
-                    this._$scrollX = Util.$clamp(
-                        this._$scrollX + deltaX, 0, maxDeltaX
+                    Util.$timelineHeader.scrollX = Util.$clamp(
+                        scrollX + deltaX, 0, Number.MAX_VALUE
                     );
 
-                    this.moveTimeLine(this._$scrollX);
+                    // ヘッダーを再構築
+                    Util.$timelineHeader.rebuild();
+
+                    // マーカーを移動
+                    Util.$timelineMarker.move();
+
+                    // レイヤーのタイムラインを再描画
+                    Util.$timelineLayer.moveTimeLine();
                 });
 
             }, { "passive" : false });
@@ -731,22 +730,97 @@ class TimelineLayer extends BaseTimeline
                 Util.$timelineMenu.show(event);
             });
 
-            frameElement.scrollLeft = this._$scrollX;
-
             // end
             scene._$layerId++;
         }
 
-        let htmlTag = "";
-        while (lastFrame >= frame) {
-            htmlTag += `<div class="${frame % 5 !== 0 ? "frame" : "frame frame-pointer"}" data-type="${frame % 5 !== 0 ? "frame" : "frame-pointer"}" data-frame-state="empty" data-layer-id="${layerId}" id="${layerId}-${frame}" data-frame="${frame++}"></div>`;
+        this.rebuild(layerId);
+    }
+
+    /**
+     * @description 現在の画面サイズに合わせてヘッダーのDOMを再構成
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    rebuild (layerId)
+    {
+        const element = document
+            .getElementById(`frame-scroll-id-${layerId}`);
+
+        if (!element) {
+            return ;
         }
 
-        if (htmlTag) {
-            parent
-                .firstElementChild
-                .insertAdjacentHTML("beforeend", htmlTag);
+        const layer = Util
+            .$currentWorkSpace()
+            .scene
+            .getLayer(layerId);
+
+        const timelineWidth = Util.$timelineTool.timelineWidth;
+        const elementCount  = Util.$timelineHeader.width / (timelineWidth + 1) | 0;
+
+        // elementが空なら初期処理を実行
+        if (!element.children.length) {
+            for (let idx = 0; elementCount >= idx; ++idx) {
+                this.createElement(element, layerId, idx + 1);
+            }
+            layer._$children = [];
         }
+
+        // 画面幅のelement数が多ければ再登録
+        if (elementCount > element.children.length) {
+
+            let frame = element
+                .lastElementChild
+                .dataset
+                .frame | 0;
+
+            const length = elementCount - element.children.length;
+            for (let idx = 1; length >= idx; ++idx) {
+                this.createElement(element, frame++);
+            }
+
+            layer._$children = [];
+        }
+
+        if (!layer._$children.length) {
+            layer._$children = Array.from(element.children);
+        }
+
+        let frame = Util.$timelineHeader.leftFrame;
+        for (let idx = 0; elementCount > idx; ++idx) {
+
+            const currentFrame = frame + idx;
+
+            const node = layer._$children[idx];
+            node.setAttribute("data-frame", `${currentFrame}`);
+            node.setAttribute("data-frame-state", "empty");
+            node.setAttribute("class", currentFrame % 5 !== 0
+                ? "frame"
+                : "frame frame-pointer"
+            );
+        }
+
+        // 再配置
+        layer.reloadStyle();
+    }
+
+    /**
+     * @description レイヤーのelementを生成
+     *
+     * @param  {HTMLDivElement} parent
+     * @param  {number} layerId
+     * @param  {number} [frame=1]
+     * @return {void}
+     * @method
+     * @public
+     */
+    createElement (parent, layerId, frame = 1)
+    {
+        parent
+            .insertAdjacentHTML("beforeend", `<div class="${frame % 5 !== 0 ? "frame" : "frame frame-pointer"}" data-frame-state="empty" data-layer-id="${layerId}" data-frame="${frame}"></div>`);
     }
 
     /**
@@ -1710,25 +1784,12 @@ class TimelineLayer extends BaseTimeline
     /**
      * @description レイヤーのタイムラインの横移動処理
      *
-     * @param  {number} [x=0]
      * @return {void}
      * @method
      * @public
      */
-    moveTimeLine (x = 0)
+    moveTimeLine ()
     {
-        if (0 > x) {
-            x = 0;
-        }
-
-        const element = document
-            .getElementById("timeline-controller-base");
-
-        const limitX = element.scrollWidth - element.offsetWidth;
-        if (x > limitX) {
-            x = limitX;
-        }
-
         const children = document
             .getElementById("timeline-content")
             .children;
@@ -1736,17 +1797,10 @@ class TimelineLayer extends BaseTimeline
         // 全てのElementの位置を揃える
         const length = children.length;
         for (let idx = 0; idx < length; ++idx) {
-
-            document
-                .getElementById(
-                    `frame-scroll-id-${children[idx].dataset.layerId}`
-                ).scrollLeft = x;
-
+            this.rebuild(
+                children[idx].dataset.layerId | 0
+            );
         }
-
-        // タイムラインのscrollXの補正
-        element.scrollLeft = x;
-        this._$scrollX = Util.$timelineHeader.scrollX = x;
     }
 
     /**
@@ -1974,14 +2028,15 @@ class TimelineLayer extends BaseTimeline
         this._$selectLayerId = element.dataset.layerId | 0;
 
         // アクティブ表示
+        const scene = Util.$currentWorkSpace().scene;
         const frame = Util.$timelineFrame.currentFrame;
         for (const layerElement of this.targetLayers.values()) {
 
             const layerId = layerElement.dataset.layerId | 0;
 
             // 編集へセット
-            const frameElement = document
-                .getElementById(`${layerId}-${frame}`);
+            const layer = scene.getLayer(layerId);
+            const frameElement = layer.getChildren(frame);
 
             // 選択したレイヤーのフレームを初期化してセット
             this.targetFrames.delete(layerId);
@@ -2032,7 +2087,7 @@ class TimelineLayer extends BaseTimeline
         /**
          * @type {ArrowTool}
          */
-        const tool = Util.$tools.getDefaultTool("arrow");
+        const tool  = Util.$tools.getDefaultTool("arrow");
         if (target.classList.contains("frame-active")) {
 
             const firstFrames  = this.targetFrames.values().next().value;
@@ -2066,9 +2121,14 @@ class TimelineLayer extends BaseTimeline
             }
 
             // 左上のelementを基準に選択範囲を生成
-            const layerId = children[index].dataset.layerId | 0;
-            const leftElement = document
-                .getElementById(`${layerId}-${frame}`);
+            const layer = Util
+                .$currentWorkSpace()
+                .scene
+                .getLayer(
+                    children[index].dataset.layerId | 0
+                );
+
+            const leftElement = layer.getChildren(frame);
 
             const parent = document
                 .getElementById("timeline-content");
@@ -2076,7 +2136,7 @@ class TimelineLayer extends BaseTimeline
             const width = firstFrames.length
                 * (Util.$timelineTool.timelineWidth + 1) - 5;
 
-            this._$clientX = leftElement.offsetLeft - this._$scrollX;
+            this._$clientX = leftElement.offsetLeft;
             this._$clientY = leftElement.offsetTop - parent.scrollTop;
 
             const element = document
@@ -3512,14 +3572,14 @@ class TimelineLayer extends BaseTimeline
         this.clearActiveFrames();
 
         // 再度、選択した範囲でアクティブ計算を行う
+        const scene = Util.$currentWorkSpace().scene;
         for (let idx = 0; idx < selectIds.length; ++idx) {
 
-            const layerId = selectIds[idx];
+            const layerId = selectIds[idx] | 0;
+            const layer = scene.getLayer(layerId);
             for (let frame = minFrame; frame < maxFrame; ++frame) {
 
-                const element = document
-                    .getElementById(`${layerId}-${frame}`);
-
+                const element = layer.getChildren(frame);
                 if (!element) {
                     continue;
                 }

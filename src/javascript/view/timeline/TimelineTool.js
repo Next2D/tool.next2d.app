@@ -179,6 +179,7 @@ class TimelineTool extends BaseTimeline
             .value = `${timeline_width / TimelineTool.DEFAULT_TIMELINE_WIDTH * 100 | 0}`;
 
         // フレーム幅に合わせてマーカーを移動
+        Util.$timelineHeader.rebuild();
         Util.$timelineMarker.move();
     }
 
@@ -701,10 +702,12 @@ class TimelineTool extends BaseTimeline
 
             const endFrame = startFrame + values.length;
 
-            const element = document
-                .getElementById(`${layerId}-${startFrame}`);
-
             const layer = scene.getLayer(layerId);
+
+            const element = layer.getChildren(startFrame);
+            if (!element) {
+                continue;
+            }
 
             // 未設定フレームに追加
             if (element.dataset.frameState === "empty") {
@@ -715,8 +718,10 @@ class TimelineTool extends BaseTimeline
                 let idx = 0;
                 for ( ; startFrame - idx > 1; ++idx) {
 
-                    const element = document
-                        .getElementById(`${layerId}-${startFrame - idx}`);
+                    const element = layer.getChildren(startFrame - idx);
+                    if (!element) {
+                        continue;
+                    }
 
                     if (element.dataset.frameState !== "empty") {
                         break;
@@ -902,9 +907,6 @@ class TimelineTool extends BaseTimeline
         // アクティブなフレームを再設定
         this.setActiveFrame();
 
-        // 追加した分だけタイムラインを増加させる補正
-        this.adjustmentTimeline();
-
         // 再描画
         this.reloadScreen();
 
@@ -996,9 +998,6 @@ class TimelineTool extends BaseTimeline
 
         // アクティブなフレームを再設定
         this.setActiveFrame();
-
-        // 追加した分だけタイムラインを増加させる補正
-        this.adjustmentTimeline();
 
         // 再描画(DisplayObjectの再配置で必須)
         this.reloadScreen();
@@ -1165,9 +1164,6 @@ class TimelineTool extends BaseTimeline
         // アクティブなフレームを再設定
         this.setActiveFrame();
 
-        // 追加した分だけタイムラインを増加させる補正
-        this.adjustmentTimeline();
-
         // 削除するものがあるので、選択範囲を再計算して再描画
         Util.$timelineLayer.activeCharacter();
         this.reloadScreen();
@@ -1210,9 +1206,7 @@ class TimelineTool extends BaseTimeline
             if (characters.length) {
 
                 // キーフレームが設定されている場合は何もしない
-                const frameElement = document
-                    .getElementById(`${layerId}-${frame}`);
-
+                const frameElement = layer.getChildren(frame);
                 if (frameElement.dataset.frameState === "key-frame") {
 
                     Util.$fadeIn({
@@ -1280,9 +1274,6 @@ class TimelineTool extends BaseTimeline
         // アクティブなフレームを再設定
         this.setActiveFrame();
 
-        // 追加した分だけタイムラインを増加させる補正
-        this.adjustmentTimeline();
-
         // 再描画
         this.reloadScreen();
 
@@ -1307,9 +1298,7 @@ class TimelineTool extends BaseTimeline
         if (character) {
 
             // キーフレームが設定されている場合は何もしない
-            const frameElement = document
-                .getElementById(`${layer.id}-${frame}`);
-
+            const frameElement = layer.getChildren(frame);
             if (frameElement.dataset.frameState === "empty-key-frame") {
                 return ;
             }
@@ -1341,9 +1330,7 @@ class TimelineTool extends BaseTimeline
                 let idx = 1;
                 for (; frame - idx > 1; ++idx) {
 
-                    const element = document
-                        .getElementById(`${layer.id}-${frame - idx}`);
-
+                    const element = layer.getChildren(frame - idx);
                     if (element.dataset.frameState !== "empty") {
                         break;
                     }
@@ -1416,14 +1403,12 @@ class TimelineTool extends BaseTimeline
         for (const [layerId, values] of targetFrames) {
 
             // 未設定のフレームの場合は処理をスキップ
-            if (document
-                .getElementById(`${layerId}-${frame}`)
-                .dataset.frameState === "empty"
-            ) {
+            const layer = scene.getLayer(layerId);
+
+            const element = layer.getChildren(frame);
+            if (!element || element.dataset.frameState === "empty") {
                 continue;
             }
-
-            const layer = scene.getLayer(layerId);
 
             // 定義済みのフレームの場合
             const characters = layer
@@ -1611,9 +1596,6 @@ class TimelineTool extends BaseTimeline
         // 指定フレームの有効なDisplayObjectを確認
         Util.$timelineLayer.activeCharacter();
 
-        // 追加した分だけタイムラインを増加させる補正
-        this.adjustmentTimeline();
-
         // 再描画
         this.reloadScreen();
 
@@ -1744,34 +1726,6 @@ class TimelineTool extends BaseTimeline
                     .classList
                     .add("frame-active");
             }
-        }
-    }
-
-    /**
-     * @description タイムラインのフレームに追加時に不足分をタイムラインを追加する
-     *
-     * @return {void}
-     * @method
-     * @public
-     */
-    adjustmentTimeline ()
-    {
-        const currentLastFrame = Util.$timelineHeader.lastFrame;
-
-        // ヘッダーを追加して、最終フレーム数を増加させる
-        Util.$timelineHeader.create();
-
-        // 表示されてるレイヤー全てにタイムラインを追加
-        const children = document
-            .getElementById("timeline-content").children;
-
-        for (let idx = 0; idx < children.length; ++idx) {
-
-            Util.$timelineLayer.create(
-                currentLastFrame,
-                children[idx].dataset.layerId | 0
-            );
-
         }
     }
 

@@ -605,6 +605,7 @@ class ArrowTool extends BaseTool
         const cacheValue = Util.$ctrlKey;
         Util.$ctrlKey = this._$activeElements.length > 1;
 
+        const scene = Util.$currentWorkSpace().scene;
         for (let idx = 0; idx < this._$activeElements.length; ++idx) {
 
             const element = this._$activeElements[idx];
@@ -618,11 +619,13 @@ class ArrowTool extends BaseTool
                 Util.$timelineLayer.targetLayer = layerElement;
             }
 
+            const layer = scene.getLayer(layerId);
+
             Util
                 .$timelineLayer
                 .addTargetFrame(
                     layerId,
-                    document.getElementById(`${layerId}-${frame}`)
+                    layer.getChildren(frame)
                 );
         }
         Util.$ctrlKey = cacheValue;
@@ -1445,13 +1448,18 @@ class ArrowTool extends BaseTool
      */
     initPlace (character, layer_id, frame)
     {
+        const layer = Util
+            .$currentWorkSpace()
+            .scene
+            .getLayer(layer_id);
+
         let prevFrame = frame;
         while (prevFrame > 0) {
 
-            const frameElement = document
-                .getElementById(`${layer_id}-${prevFrame}`);
-
-            if (frameElement.dataset.frameState === "key-frame") {
+            const frameElement = layer.getChildren(prevFrame);
+            if (frameElement
+                && frameElement.dataset.frameState === "key-frame"
+            ) {
 
                 if (!character._$places.has(prevFrame)) {
                     character.setPlace(prevFrame,

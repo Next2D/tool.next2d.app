@@ -603,6 +603,13 @@ Util.$initialize = () =>
     Util.$initialize = null;
 };
 window.addEventListener("DOMContentLoaded", Util.$initialize);
+window.addEventListener("resize", () =>
+{
+    Util.$timelineHeader._$currentFrame = -1;
+    Util.$timelineHeader.setWidth();
+    Util.$timelineHeader.rebuild();
+    Util.$timelineLayer.moveTimeLine();
+});
 
 /**
  * @return {void}

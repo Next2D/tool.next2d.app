@@ -1,5 +1,9 @@
 /**
+ * ライブラリのアイテムの上書きを確認するモーダルクラス
+ * Modal class to confirm overwriting of items in the library
+ *
  * @class
+ * @extends {BaseController}
  * @memberOf view.controller
  */
 class ConfirmModal extends BaseController
@@ -46,19 +50,17 @@ class ConfirmModal extends BaseController
     }
 
     /**
-     * @return {array}
+     * @description 上書き確認のアイテムを格納した配列
+     *              Array containing overwrite confirmation items
+     *
+     * @member {array}
+     * @default []
      * @public
      */
     get files ()
     {
         return this._$files;
     }
-
-    /**
-     * @param  {array} files
-     * @return {void}
-     * @public
-     */
     set files (files)
     {
         this._$files = files;
@@ -66,6 +68,7 @@ class ConfirmModal extends BaseController
 
     /**
      * @description 初期起動関数
+     *              initial invoking function
      *
      * @return {void}
      * @method
@@ -110,9 +113,10 @@ class ConfirmModal extends BaseController
     }
 
     /**
-     * @description 全て上書き
+     * @description 追加したファイルを全て上書き
+     *              Overwrite all added files
      *
-     * @return {void}
+     * @return {Promise}
      * @method
      * @public
      */
@@ -122,29 +126,33 @@ class ConfirmModal extends BaseController
 
         const promises = [];
 
+        const workSpace = Util.$currentWorkSpace();
+
         this._$files.unshift(this._$currentObject);
         for (let idx = 0; idx < this._$files.length; ++idx) {
 
             const object = this._$files[idx];
+            if (!object) {
+                continue;
+            }
 
             // 上書きするIDを指定
-            const libraryId = Util
-                .$currentWorkSpace()
-                ._$nameMap
-                .get(object.path);
-
+            const libraryId = workSpace._$nameMap.get(object.path);
             switch (object.type) {
 
+                // ライブラリ内での移動処理
                 case "move":
                     this._$currentObject = object;
                     this.moveOverwriting(libraryId);
                     break;
 
+                // コピー、ペースト処理
                 case "copy":
                     this._$currentObject = object;
                     this.copyOverwriting(libraryId);
                     break;
 
+                // ファイル追加処理
                 default:
                     promises.push(Util
                         .$libraryController
@@ -164,35 +172,26 @@ class ConfirmModal extends BaseController
         this._$files.length  = 0;
 
         // 再描画
-        if (promises.length) {
+        return Promise
+            .all(promises)
+            .then(() =>
+            {
+                // モーダルを非表示
+                this.hide();
 
-            Promise
-                .all(promises)
-                .then(() =>
-                {
-                    // モーダルを非表示
-                    this.hide();
+                //ライブラリを再構築
+                Util.$libraryController.reload();
 
-                    //ライブラリを再構築
-                    Util.$libraryController.reload();
+                // 再描画
+                this.reloadScreen();
 
-                    // 再描画
-                    this.reloadScreen();
-
-                    this._$saved = false;
-                });
-
-        } else {
-
-            this.setup();
-            this._$saved = false;
-
-        }
-
+                this._$saved = false;
+            });
     }
 
     /**
      * @description 全ての上書きをスキップ
+     *              Skip all overwrites
      *
      * @return {void}
      * @method
@@ -200,17 +199,17 @@ class ConfirmModal extends BaseController
      */
     executeConfirmAllSkip ()
     {
-        this._$state         = "hide";
+        // 初期化
         this._$currentObject = null;
         this._$files.length  = 0;
 
-        document
-            .getElementById("confirm-modal")
-            .setAttribute("class", "fadeOut");
+        // 非表示に
+        this.hide();
     }
 
     /**
-     * @description コピー＆ペースト時の上書き処理
+     * @description コピー、ペースト時の上書き処理
+     *              Overwrite processing when copying and pasting
      *
      * @param  {number} [libraryId = 0]
      * @param  {string} [value = ""]
@@ -300,6 +299,7 @@ class ConfirmModal extends BaseController
 
     /**
      * @description 登録されてるライブラリ移動時の重複アイテムの上書き処理
+     *              Overwrite duplicate items when moving registered libraries
      *
      * @param  {number} libraryId
      * @return {void}
@@ -385,7 +385,8 @@ class ConfirmModal extends BaseController
     }
 
     /**
-     * @description 上書きを実行
+     * @description 単体の上書きを実行
+     *              Perform a single overwrite
      *
      * @return {void}
      * @method
@@ -488,6 +489,7 @@ class ConfirmModal extends BaseController
 
     /**
      * @description レイヤーにDisplayObjectを追加
+     *              Add DisplayObject to layer
      *
      * @return {void}
      * @method
@@ -510,7 +512,8 @@ class ConfirmModal extends BaseController
     }
 
     /**
-     * @description スキップ
+     * @description 単体アイテムのスキップ処理
+     *              Skip processing of single items
      *
      * @return {void}
      * @method
@@ -522,7 +525,8 @@ class ConfirmModal extends BaseController
     }
 
     /**
-     * @description 設定を初期化
+     * @description 上書き確認モーダルを非表示にする
+     *              Hide overwrite confirmation modal
      *
      * @return {void}
      * @method
@@ -543,6 +547,7 @@ class ConfirmModal extends BaseController
 
     /**
      * @description 上書き確認モーダルを表示
+     *              Display overwrite confirmation modal
      *
      * @return {void}
      * @method
@@ -571,7 +576,8 @@ class ConfirmModal extends BaseController
     }
 
     /**
-     * @description プールしたオブジェクトから表示を更新
+     * @description 配列にアイテムがあれば表示、なければモーダル表示を終了
+     *              If there are items in the array, display them; if not, exit modal display
      *
      * @return {void}
      * @method

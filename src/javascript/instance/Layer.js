@@ -40,6 +40,12 @@ class Layer
         this._$instances = new Map();
 
         /**
+         * @type {array}
+         * @private
+         */
+        this._$children = [];
+
+        /**
          * @type {number}
          * @default null
          * @private
@@ -120,13 +126,16 @@ class Layer
      */
     initialize ()
     {
-        // レイヤに必要なフレームをタイムラインに生成
-        Util.$timelineLayer.create();
-
         const parent = document.getElementById("timeline-content");
         if (!parent) {
             return ;
         }
+
+        // 初期化
+        this._$children = [];
+
+        // レイヤに必要なフレームをタイムラインに生成
+        Util.$timelineLayer.create();
 
         const element = parent.lastElementChild;
         if (!element) {
@@ -134,7 +143,7 @@ class Layer
         }
 
         // set id
-        this.id = element.dataset.layerId | 0;
+        // this.id = element.dataset.layerId | 0;
 
         const name = document.getElementById(`layer-name-${this.id}`);
         if (this.name) {
@@ -198,7 +207,7 @@ class Layer
 
         // view
         this.showIcon();
-        this.reloadStyle();
+        // this.reloadStyle();
     }
 
     /**
@@ -396,6 +405,20 @@ class Layer
             characters.push(character);
         }
         return characters;
+    }
+
+    /**
+     * @description 内部キャッシュしたDivのelementを返す
+     *
+     * @param  {number} frame
+     * @return {HTMLDivElement|null}
+     * @method
+     * @public
+     */
+    getChildren (frame = 1)
+    {
+        const leftFrame = Util.$timelineHeader.leftFrame;
+        return leftFrame > frame ? null : this._$children[frame - leftFrame];
     }
 
     /**
@@ -673,11 +696,21 @@ class Layer
      */
     setCharacterStyle ()
     {
-        const layerId = this.id;
+        const leftFrame = Util.$timelineHeader.leftFrame;
+        const lastFrame = leftFrame + this._$children.length;
+
         const duplication = new Map();
         for (let idx = 0; idx < this._$characters.length; ++idx) {
 
             const character = this._$characters[idx];
+            if (character.startFrame > lastFrame) {
+                continue;
+            }
+
+            if (leftFrame >= character.endFrame) {
+                continue;
+            }
+
             const places = Array.from(character._$places.keys());
 
             // 昇順
@@ -710,8 +743,14 @@ class Layer
                 const endFrame = places[idx + 1] || character.endFrame;
                 if (startFrame === endFrame - 1) {
 
-                    const element = document
-                        .getElementById(`${layerId}-${startFrame}`);
+                    if (leftFrame > startFrame) {
+                        continue;
+                    }
+
+                    const element = this._$children[startFrame - leftFrame];
+                    if (!element) {
+                        return ;
+                    }
 
                     element
                         .dataset
@@ -778,41 +817,60 @@ class Layer
 
                 // 複数フレームの場合のスタイル
                 let frame = startFrame;
+                if (leftFrame > frame) {
 
-                // 開始フレーム
-                const startElement = document
-                    .getElementById(`${layerId}-${frame++}`);
-
-                startElement
-                    .dataset
-                    .frameState = "key-frame";
-
-                if (character.hasTween(startFrame)) {
-
-                    startElement
-                        .classList
-                        .add(
-                            "tween-key-frame",
-                            "tween-key-frame-join"
-                        );
+                    frame++;
 
                 } else {
 
-                    startElement
-                        .classList
-                        .add(
-                            "key-frame",
-                            "key-frame-join"
-                        );
+                    // 開始フレーム
+                    const index   = frame - leftFrame;
+                    const element = this._$children[index];
+                    frame++;
 
+                    if (element) {
+                        element
+                            .dataset
+                            .frameState = "key-frame";
+
+                        if (character.hasTween(startFrame)) {
+
+                            element
+                                .classList
+                                .add(
+                                    "tween-key-frame",
+                                    "tween-key-frame-join"
+                                );
+
+                        } else {
+
+                            element
+                                .classList
+                                .add(
+                                    "key-frame",
+                                    "key-frame-join"
+                                );
+
+                        }
+                    }
                 }
 
                 // 間のフレーム
                 const spaceTotalFrame = endFrame - 1;
                 for (; frame < spaceTotalFrame; ) {
 
-                    const element = document
-                        .getElementById(`${layerId}-${frame++}`);
+                    if (leftFrame > frame) {
+                        frame++;
+                        continue;
+                    }
+
+                    const index   = frame - leftFrame;
+                    const element = this._$children[index];
+                    frame++;
+
+                    if (!element) {
+                        continue;
+                    }
 
                     element
                         .dataset
@@ -834,26 +892,30 @@ class Layer
 
                 }
 
+                if (leftFrame > frame) {
+                    continue;
+                }
+
                 // 終了フレーム
-                const endElement = document
-                    .getElementById(`${layerId}-${frame++}`);
-
-                endElement
-                    .dataset
-                    .frameState = "key-space-frame-end";
-
-                if (character.hasTween(startFrame)) {
-
+                const endElement = this._$children[frame - leftFrame];
+                if (endElement) {
                     endElement
-                        .classList
-                        .add("tween-frame-end");
+                        .dataset
+                        .frameState = "key-space-frame-end";
 
-                } else {
+                    if (character.hasTween(startFrame)) {
 
-                    endElement
-                        .classList
-                        .add("key-space-frame-end");
+                        endElement
+                            .classList
+                            .add("tween-frame-end");
 
+                    } else {
+
+                        endElement
+                            .classList
+                            .add("key-space-frame-end");
+
+                    }
                 }
             }
         }
@@ -869,53 +931,86 @@ class Layer
      */
     setEmptyStyle ()
     {
-        const layerId = this.id;
+        const leftFrame = Util.$timelineHeader.leftFrame;
+        const lastFrame = leftFrame + this._$children.length;
         for (let idx = 0; idx < this._$emptys.length; ++idx) {
 
             const character = this._$emptys[idx];
+            if (character.startFrame > lastFrame) {
+                continue;
+            }
 
-            // 1フレームの場合
+            if (leftFrame >= character.endFrame) {
+                continue;
+            }
+
+            // 1フレームだけの場合
             if (character.startFrame === character.endFrame - 1) {
 
-                const element = document
-                    .getElementById(`${layerId}-${character.startFrame}`);
+                if (leftFrame > character.startFrame) {
+                    continue;
+                }
 
-                element
-                    .dataset
-                    .frameState = "empty-key-frame";
+                const index   = character.startFrame - leftFrame;
+                const element = this._$children[index];
 
-                element
-                    .classList
-                    .add("empty-key-frame");
+                if (element) {
+                    element
+                        .dataset
+                        .frameState = "empty-key-frame";
+
+                    element
+                        .classList
+                        .add("empty-key-frame");
+                }
 
                 continue;
-
             }
 
             // 複数フレームの場合のスタイル
             let frame = character.startFrame;
+            if (leftFrame > frame) {
 
-            // 開始フレーム
-            const startElement = document
-                .getElementById(`${layerId}-${frame++}`);
+                frame++;
 
-            startElement
-                .dataset
-                .frameState = "empty-key-frame";
+            } else {
 
-            startElement
-                .classList
-                .add(
-                    "empty-key-frame",
-                    "empty-key-frame-join"
-                );
+                const index   = frame - leftFrame;
+                const element = this._$children[index];
+
+                // 開始フレーム
+                if (element) {
+                    element
+                        .dataset
+                        .frameState = "empty-key-frame";
+
+                    element
+                        .classList
+                        .add(
+                            "empty-key-frame",
+                            "empty-key-frame-join"
+                        );
+                }
+
+                frame++;
+            }
 
             // 間のフレーム
-            const endFrame =  character.endFrame - 1;
+            const endFrame = character.endFrame - 1;
             for (; frame < endFrame; ) {
 
-                const element = document
-                    .getElementById(`${layerId}-${frame++}`);
+                if (leftFrame > frame) {
+                    frame++;
+                    continue;
+                }
+
+                const index   = frame - leftFrame;
+                const element = this._$children[index];
+                frame++;
+
+                if (!element) {
+                    continue;
+                }
 
                 element
                     .dataset
@@ -928,17 +1023,21 @@ class Layer
             }
 
             // 終了フレーム
-            const endElement = document
-                .getElementById(`${layerId}-${frame++}`);
+            if (leftFrame > frame) {
+                continue;
+            }
 
-            endElement
-                .dataset
-                .frameState = "empty-space-frame-end";
+            const index   = frame - leftFrame;
+            const element = this._$children[index];
+            if (element) {
+                element
+                    .dataset
+                    .frameState = "empty-space-frame-end";
 
-            endElement
-                .classList
-                .add("empty-space-frame-end");
-
+                element
+                    .classList
+                    .add("empty-space-frame-end");
+            }
         }
     }
 
@@ -952,13 +1051,13 @@ class Layer
      */
     resetStyle ()
     {
-        const layerId = this.id;
+        const leftFrame = Util.$timelineHeader.leftFrame;
 
-        let frame = 1;
+        let frame = Util.$timelineHeader.leftFrame;
         for (;;) {
 
-            const element = document
-                .getElementById(`${layerId}-${frame++}`);
+            const index   = frame - leftFrame;
+            const element = this._$children[index];
 
             // Emptyフレームを見つけたら終了
             if (!element || element.dataset.frameState === "empty") {
@@ -966,13 +1065,15 @@ class Layer
             }
 
             // 5の倍数のフレームにはポインター用のスタイルを追加する
-            element.setAttribute("class", element.dataset.type === "frame-pointer"
-                ? "frame frame-pointer"
-                : "frame"
+            element.setAttribute("class", frame % 5 !== 0
+                ? "frame"
+                : "frame frame-pointer"
             );
 
-            // 状態とクラスを初期化
-            element.dataset.frameState = "empty";
+            // 状態を初期化
+            element.setAttribute("data-frame-state", "empty");
+
+            frame++;
         }
     }
 

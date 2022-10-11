@@ -1,4 +1,4 @@
-describe("BaseController.js property test", () =>
+describe("ColorTransformController.js property test", () =>
 {
     it("property test", () =>
     {
@@ -45,7 +45,7 @@ describe("BaseController.js property test", () =>
     });
 });
 
-describe("BaseController.js function test", () =>
+describe("ColorTransformController.js function test", () =>
 {
     beforeEach(() =>
     {

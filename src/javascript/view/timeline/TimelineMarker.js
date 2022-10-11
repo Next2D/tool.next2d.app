@@ -46,7 +46,7 @@ class TimelineMarker extends BaseTimeline
                 if (event.button) {
                     return ;
                 }
-                this.startMarker(event);
+                this.startMarker();
             });
         }
     }
@@ -106,29 +106,24 @@ class TimelineMarker extends BaseTimeline
             const base = document
                 .getElementById("timeline-controller-base");
 
-            // タイムラインエリア外(右側)にマウスが出た時の処理
-            if (event.pageX > base.offsetLeft + base.offsetWidth
-                && base.scrollWidth - base.offsetWidth > base.scrollLeft
-            ) {
+            const timelineWidth = Util.$timelineTool.timelineWidth;
 
-                const frame =
-                    (event.pageX - (base.offsetLeft + base.offsetWidth))
-                        / Util.$timelineTool.timelineWidth | 0;
+            // タイムラインエリア外(右側)にマウスが出た時の処理
+            if (event.pageX + timelineWidth > base.offsetLeft + base.offsetWidth) {
+
+                const frame = (event.pageX + timelineWidth * 2
+                    - (base.offsetLeft + base.offsetWidth)) / timelineWidth | 0;
+
+                if (!frame) {
+                    return ;
+                }
 
                 // フレーム更新してマーカーを移動
-                Util.$timelineFrame.currentFrame = Util.$clamp(
-                    Util.$timelineFrame.currentFrame + frame,
-                    1, Util.$timelineHeader.lastFrame - 1
-                );
+                Util.$timelineFrame.currentFrame += frame;
+                Util.$timelineHeader.scrollX += frame * timelineWidth;
+                Util.$timelineHeader.rebuild();
+                Util.$timelineLayer.moveTimeLine();
                 this.move();
-
-                // マーカーに合わせてタイムラインを移動
-                Util
-                    .$timelineLayer
-                    .moveTimeLine(
-                        base.scrollLeft + frame
-                            * (Util.$timelineTool.timelineWidth + 1)
-                    );
 
                 // 現在のフレームで再描画
                 this.reloadScreen();
@@ -137,26 +132,23 @@ class TimelineMarker extends BaseTimeline
             }
 
             // タイムラインエリア外(左側)にマウスが出た時の処理
-            if (base.scrollLeft > 0 && base.offsetLeft > event.pageX) {
+            if (base.offsetLeft > event.pageX - timelineWidth) {
 
-                const frame =
-                    (base.offsetLeft - event.pageX)
-                        / Util.$timelineTool.timelineWidth | 0;
+                let frame = (base.offsetLeft - event.pageX - timelineWidth) / timelineWidth | 0;
+                if (!frame || Util.$timelineFrame.currentFrame === 1) {
+                    return ;
+                }
+
+                if (frame > 0) {
+                    frame *= -1;
+                }
 
                 // フレーム更新してマーカーを移動
-                Util.$timelineFrame.currentFrame = Util.$clamp(
-                    Util.$timelineFrame.currentFrame - frame,
-                    1, Util.$timelineHeader.lastFrame - 1
-                );
+                Util.$timelineFrame.currentFrame += frame;
+                Util.$timelineHeader.scrollX += frame * timelineWidth;
+                Util.$timelineHeader.rebuild();
+                Util.$timelineLayer.moveTimeLine();
                 this.move();
-
-                // マーカーに合わせてタイムラインを移動
-                Util
-                    .$timelineLayer
-                    .moveTimeLine(
-                        base.scrollLeft - frame
-                            * (Util.$timelineTool.timelineWidth + 1)
-                    );
 
                 // 現在のフレームで再描画
                 this.reloadScreen();
@@ -179,7 +171,7 @@ class TimelineMarker extends BaseTimeline
             this.move();
 
             // 見える位置にタイムラインを補正
-            this.moveVisibleLocation();
+            // this.moveVisibleLocation();
 
             // 現在のフレームで再描画
             this.reloadScreen();
@@ -273,13 +265,22 @@ class TimelineMarker extends BaseTimeline
      */
     move ()
     {
-        // +1はborder solidの1pxを加算
-        const width = Util.$timelineTool.timelineWidth + 1;
+        const element = document.getElementById("timeline-marker");
+        if (!element) {
+            return ;
+        }
 
-        document
-            .getElementById("timeline-marker")
-            .style
-            .left = `${(Util.$timelineFrame.currentFrame - 1) * width}px`;
+        const timelineWidth = Util.$timelineTool.timelineWidth;
+        const scrollX = Util.$timelineHeader.scrollX;
+
+        // +1はborder solidの1pxを加算
+        const width = timelineWidth + 1;
+        const frame = 1 + scrollX / timelineWidth | 0;
+
+        const left = (Util.$timelineFrame.currentFrame - frame) * width;
+        if (element.offsetLeft !== left) {
+            element.style.left = `${left}px`;
+        }
     }
 }
 

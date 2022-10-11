@@ -15,10 +15,10 @@ class TimelineHeader extends BaseTimeline
 
         /**
          * @type {number}
-         * @description 1
+         * @default 0
          * @private
          */
-        this._$lastFrame = 0;
+        this._$width = 0;
 
         /**
          * @type {number}
@@ -26,6 +26,20 @@ class TimelineHeader extends BaseTimeline
          * @private
          */
         this._$scrollX = 0;
+
+        /**
+         * @type {number}
+         * @default 0
+         * @private
+         */
+        this._$currentFrame = 0;
+
+        /**
+         * @type {number}
+         * @default 0
+         * @private
+         */
+        this._$currentFps = 0;
 
         /**
          * @type {HTMLDivElement}
@@ -43,14 +57,44 @@ class TimelineHeader extends BaseTimeline
     }
 
     /**
+     * @description ヘッダーのclientWidthを格納
+     *
+     * @member {number}
+     * @readonly
+     * @public
+     */
+    get width ()
+    {
+        return this._$width;
+    }
+
+    /**
      * @description ヘッダータイムラインのスクロールx座標
      *
      * @return {number}
+     * @readonly
      * @public
      */
     get scrollX ()
     {
         return this._$scrollX;
+    }
+
+    /**
+     * @description 画面左端のフレーム番号を返す
+     *
+     * @return {number}
+     * @readonly
+     * @public
+     */
+    get leftFrame ()
+    {
+        if (!Util.$timelineTool.timelineWidth) {
+            Util.$timelineTool.timelineWidth =
+                Util.$timelineTool.DEFAULT_TIMELINE_WIDTH;
+        }
+
+        return 1 + this._$scrollX / Util.$timelineTool.timelineWidth | 0;
     }
 
     /**
@@ -62,30 +106,7 @@ class TimelineHeader extends BaseTimeline
      */
     set scrollX (scroll_x)
     {
-        this._$scrollX = scroll_x | 0;
-    }
-
-    /**
-     * @description 現在のタイムラインの最後のフレーム番号を返す
-     *
-     * @return {number}
-     * @public
-     */
-    get lastFrame ()
-    {
-        return this._$lastFrame;
-    }
-
-    /**
-     * @description 現在のタイムラインの最後のフレーム番号を返す
-     *
-     * @param  {number} last_frame
-     * @return {void}
-     * @public
-     */
-    set lastFrame (last_frame)
-    {
-        this._$lastFrame = last_frame | 0;
+        this._$scrollX = Math.max(scroll_x, 0) | 0;
     }
 
     /**
@@ -138,19 +159,30 @@ class TimelineHeader extends BaseTimeline
                         return false;
                     }
 
-                    const target = event.currentTarget;
+                    // 1フレーム目より以前には移動しない
+                    if (!this._$scrollX && 0 > delta) {
+                        return false;
+                    }
+
+                    // 最大値より右側には移動しない
+                    if (this._$scrollX >= Number.MAX_VALUE) {
+                        return false;
+                    }
 
                     window.requestAnimationFrame(() =>
                     {
-                        const maxDeltaX = target.scrollWidth - target.offsetWidth;
-
                         this._$scrollX = Util.$clamp(
-                            this._$scrollX + delta, 0, maxDeltaX
+                            this._$scrollX + delta, 0, Number.MAX_VALUE
                         );
 
-                        Util
-                            .$timelineLayer
-                            .moveTimeLine(this._$scrollX);
+                        // ヘッダーを再構築
+                        this.rebuild();
+
+                        // マーカーを移動
+                        Util.$timelineMarker.move();
+
+                        // レイヤーのタイムラインを再描画
+                        Util.$timelineLayer.moveTimeLine();
                     });
                 }
 
@@ -172,26 +204,28 @@ class TimelineHeader extends BaseTimeline
     }
 
     /**
-     * @description クラスで利用する変数を初期化
+     * @description ヘッダーの表示幅の値をセット
      *
      * @return {void}
      * @method
      * @public
      */
-    clearParams ()
+    setWidth ()
     {
-        this._$targetElement = null;
+        const element = document.getElementById("timeline-controller-base");
+        if (element) {
+            this._$width = element.clientWidth | 0;
+        }
     }
 
     /**
-     * @description タイムラインのヘッダーを生成
+     * @description 現在の画面サイズに合わせてヘッダーのDOMを再構成
      *
-     * @param  {boolean} [build=true]
      * @return {void}
      * @method
      * @public
      */
-    create (build = false)
+    rebuild ()
     {
         // 描画エリアのサイズをセット
         const element = document
@@ -201,106 +235,200 @@ class TimelineHeader extends BaseTimeline
             return ;
         }
 
-        // シーン移動や初回起動の時は初期化
-        if (build) {
+        // 初期値をセット
+        if (!Util.$timelineTool.timelineWidth) {
+            Util.$timelineTool.timelineWidth =
+                Util.$timelineTool.DEFAULT_TIMELINE_WIDTH;
+        }
 
-            // 変数を初期化
-            this.lastFrame = 0;
-            this._$scrollX = 0;
-            this.clearParams();
+        const timelineWidth = Util.$timelineTool.timelineWidth;
+        const elementCount  = this.width / (timelineWidth + 1) | 0;
 
-            // スクロール位置を初期化
-            Util.$timelineMarker.move();
-            Util.$timelineLayer.moveTimeLine(0);
-
-            // remove all
-            while (element.children.length) {
-                element.children[0].remove();
+        // elementが空なら初期処理を実行
+        if (!element.children.length) {
+            for (let idx = 0; elementCount >= idx; ++idx) {
+                this.createElement(element, idx + 1);
             }
         }
 
-        // 生成する範囲の補正幅
-        const adjustmentWidth = build ? 0 : element.scrollWidth;
+        // 画面幅のelement数が多ければ再登録
+        if (elementCount > element.children.length) {
+
+            let frame = element
+                .lastElementChild
+                .dataset
+                .frame | 0;
+
+            const length = elementCount - element.children.length;
+            for (let idx = 1; length >= idx; ++idx) {
+                this.createElement(element, frame++);
+            }
+        }
 
         const fps = document
             .getElementById("stage-fps")
             .value | 0;
 
-        let frame = this.lastFrame + 1;
-        let sec   = Math.max(1, (frame / 24 | 0) + 1);
-        let limit = Math.ceil(window.parent.screen.width * 2.5
-            + Util.$currentWorkSpace().scene.totalFrame
-            * (TimelineTool.DEFAULT_TIMELINE_WIDTH + 1)// +1はborder solidの1px
-        ) - adjustmentWidth;
+        let frame = this.leftFrame;
+        if (this._$currentFrame === frame && this._$currentFps === fps) {
+            return ;
+        }
+        this._$currentFrame = frame;
+        this._$currentFps   = fps;
 
-        for (;;) {
+        let sec     = Math.max(1, (frame / 24 | 0) + 1);
+        const scene = Util.$currentWorkSpace().scene;
+        for (let idx = 0; elementCount > idx; ++idx) {
 
-            const htmlTag = `
+            const currentFrame = frame + idx;
+
+            const node = element.children[idx];
+            node.dataset.frame = `${currentFrame}`;
+
+            const nodeLength = node.children.length;
+            for (let idx = 0; nodeLength > idx; ++idx) {
+
+                const child = node.children[idx];
+                child.dataset.frame = `${currentFrame}`;
+
+                switch (idx) {
+
+                    case 0:
+                        child.setAttribute("class",  currentFrame % 5 === 0
+                            ? "frame-border-end"
+                            : "frame-border"
+                        );
+
+                        child.textContent = currentFrame % fps === 0 && fps > 4
+                            ? sec++ + "s"
+                            : "";
+                        break;
+
+                    // label
+                    case 1:
+                        if (scene.getLabel(currentFrame)) {
+                            if (!child.classList.contains("frame-border-box-marker")) {
+                                child.setAttribute("class", "frame-border-box-marker");
+                            }
+                        } else {
+                            if (!child.classList.contains("frame-border-box")) {
+                                child.setAttribute("class", "frame-border-box");
+                            }
+                        }
+                        break;
+
+                    // script
+                    case 2:
+                        if (scene.hasAction(currentFrame)) {
+                            if (!child.classList.contains("frame-border-box-action")) {
+                                child.setAttribute("class", "frame-border-box-action");
+                            }
+                        } else {
+                            if (!child.classList.contains("frame-border-box")) {
+                                child.setAttribute("class", "frame-border-box");
+                            }
+                        }
+                        break;
+
+                    // sound
+                    case 3:
+                        if (scene.hasSound(currentFrame)) {
+                            if (!child.classList.contains("frame-border-box-sound")) {
+                                child.setAttribute("class", "frame-border-box-sound");
+                            }
+                        } else {
+                            if (!child.classList.contains("frame-border-box")) {
+                                child.setAttribute("class", "frame-border-box");
+                            }
+                        }
+                        break;
+
+                    case 4:
+                        if (currentFrame % 5 === 0) {
+
+                            child.textContent = `${currentFrame}`;
+
+                        } else {
+                            if (child.textContent) {
+                                child.textContent = "";
+                            }
+                        }
+                        break;
+
+                    default:
+                        break;
+
+                }
+            }
+        }
+    }
+
+    /**
+     * @description ヘッダーelementを生成
+     *
+     * @param  {HTMLDivElement} parent
+     * @param  {number} [frame=1]
+     * @return {void}
+     * @method
+     * @public
+     */
+    createElement (parent, frame = 1)
+    {
+        const htmlTag = `
 <div class="frame-header-parent" data-frame="${frame}">
-    <div class="frame-sec ${frame % 5 === 0 ? "frame-border-end" : "frame-border"}" data-frame="${frame}">${frame % fps === 0 && fps > 4 ? sec++ + "s" : ""}</div>
-    <div id="frame-label-marker-${frame}" class="frame-border-box" data-type="marker" data-frame="${frame}"></div>
-    <div id="frame-label-action-${frame}" class="frame-border-box" data-type="action" data-frame="${frame}"></div>
-    <div id="frame-label-sound-${frame}" class="frame-border-box" data-type="sound" data-frame="${frame}"></div>
+    <div class="frame-sec ${frame % 5 === 0 ? "frame-border-end" : "frame-border"}" data-frame="${frame}"></div>
+    <div class="frame-border-box" data-type="marker" data-frame="${frame}"></div>
+    <div class="frame-border-box" data-type="action" data-frame="${frame}"></div>
+    <div class="frame-border-box" data-type="sound" data-frame="${frame}"></div>
     <div class="frame-number" data-frame="${frame}">${frame % 5 === 0 ? frame : ""}</div>
 </div>
 `;
-            // add child
-            element.insertAdjacentHTML("beforeend", htmlTag);
+        parent.insertAdjacentHTML("beforeend", htmlTag);
 
-            element
-                .lastElementChild
-                .addEventListener("mousedown", (event) =>
-                {
-                    if (event.button) {
-                        return ;
-                    }
-                    this.moveMarker(event);
-                });
+        const element = parent.lastElementChild;
+        element.addEventListener("mousedown", (event) =>
+        {
+            if (event.button) {
+                return ;
+            }
+            this.moveMarker(event);
+        });
 
-            // アイコンにdrag/dropイベントを登録
-            const icons = [
-                "marker",
-                "action",
-                "sound"
-            ];
+        // アイコンにdrag/dropイベントを登録
+        for (let idx = 0; idx < 3; ++idx) {
 
-            for (let idx = 0; idx < icons.length; ++idx) {
-
-                const element = document
-                    .getElementById(`frame-label-${icons[idx]}-${frame}`);
-
-                if (!element) {
-                    continue;
-                }
-
-                element.addEventListener("mousedown", (event) =>
-                {
-                    this.dragIcon(event);
-                });
-
-                element.addEventListener("dragover", (event) =>
-                {
-                    event.preventDefault();
-                });
-
-                element.addEventListener("drop", (event) =>
-                {
-                    this.dropIcon(event);
-                });
+            const child = element.children[1 + idx];
+            if (!child) {
+                continue;
             }
 
-            // +1はborder solidの1px
-            limit -= TimelineTool.DEFAULT_TIMELINE_WIDTH + 1;
-            if (0 >= limit) {
-                break;
-            }
+            child.addEventListener("mousedown", (event) =>
+            {
+                this.dragIcon(event);
+            });
 
-            if (limit > 0) {
-                frame++;
-            }
+            child.addEventListener("dragover", (event) =>
+            {
+                event.preventDefault();
+            });
+
+            child.addEventListener("drop", (event) =>
+            {
+                this.dropIcon(event);
+            });
         }
+    }
 
-        this.lastFrame = frame;
+    /**
+     * @description クラスで利用する変数を初期化
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    clearParams ()
+    {
+        this._$targetElement = null;
     }
 
     /**
@@ -412,23 +540,22 @@ class TimelineHeader extends BaseTimeline
             const type  = this._$targetElement.dataset.type;
 
             // 表示を追加
-            const element = document
-                .getElementById(`frame-label-${type}-${dropFrame}`);
-
-            element
-                .setAttribute("class", `frame-border-box-${type}`);
-
+            let targetElement = null;
+            const parent = target.parentElement;
             switch (type) {
 
                 case "marker":
+                    targetElement = parent.children[1];
                     scene.setLabel(dropFrame, scene.getLabel(dragFrame));
                     break;
 
                 case "action":
+                    targetElement = parent.children[2];
                     scene.setAction(dropFrame, scene.getAction(dragFrame));
                     break;
 
                 case "sound":
+                    targetElement = parent.children[3];
                     scene.setSound(dropFrame, scene.getSound(dragFrame));
                     break;
 
@@ -442,8 +569,11 @@ class TimelineHeader extends BaseTimeline
                 this.deleteIcon({ "key": "Backspace" });
             }
 
-            // 新しいアイコンのelementをセット
-            this._$targetElement = element;
+            if (targetElement) {
+                this._$targetElement = targetElement;
+                targetElement
+                    .setAttribute("class", `frame-border-box-${type}`);
+            }
         }
 
         // 初期化
@@ -453,7 +583,7 @@ class TimelineHeader extends BaseTimeline
     /**
      * @description ヘッダーのフレーム枠をマウスダウンした時の処置
      *
-     * @param  {MouseEvent} event
+     * @param  {Event} event
      * @return {void}
      * @public
      */
@@ -476,6 +606,9 @@ class TimelineHeader extends BaseTimeline
 
         // マーカーの移動を有効化
         Util.$timelineMarker.startMarker();
+
+        // 再描画
+        this.reloadScreen();
     }
 }
 

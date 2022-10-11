@@ -103,11 +103,10 @@ class MovieClip extends Instance
      * @description 初期起動関数
      *              initial invoking function
      *
-     * @param  {boolean} [init=false]
      * @return {void}
      * @public
      */
-    initialize (init = false)
+    initialize ()
     {
         /**
          * @type {ArrowTool}
@@ -150,9 +149,19 @@ class MovieClip extends Instance
             }
         }
 
+        // タイムラインを初期化
+        Util.$timelineLayer.removeAll();
+
         // フレームを登録してヘッダーを再編成
         Util.$timelineFrame.currentFrame = this.currentFrame;
-        Util.$timelineHeader.create(init);
+
+        // ヘッダーを生成
+        Util.$timelineHeader.setWidth();
+        Util.$timelineHeader.scrollX = (this.currentFrame - 1) * Util.$timelineTool.timelineWidth;
+        Util.$timelineHeader.rebuild();
+
+        // マーカーを移動
+        Util.$timelineMarker.move(); // fixed logic
 
         // init label
         for (const frame of this._$labels.keys()) {
@@ -204,9 +213,6 @@ class MovieClip extends Instance
                 labelElement.value = this._$labels.get(1);
             }
         }
-
-        // タイムラインを初期化
-        Util.$timelineLayer.removeAll();
 
         // insert layer
         this._$layerId = 0;
@@ -419,6 +425,11 @@ class MovieClip extends Instance
 
             if (element) {
                 element.draggable = true;
+            }
+
+            // 内部キャッシュを初期化
+            for (let layer of this._$layers.values()) {
+                layer._$children.length = 0;
             }
 
         }
