@@ -287,6 +287,14 @@ class TimelineHeader extends BaseTimeline
             }
         }
 
+        // 画面幅以上にelement数があれば削除
+        if (element.children.length + 1 > elementCount) {
+            const index = elementCount + 1;
+            while (element.children.length > index) {
+                element.children[index].remove();
+            }
+        }
+
         // 画面幅のelement数が多ければ再登録
         if (elementCount > element.children.length) {
 
@@ -294,7 +302,7 @@ class TimelineHeader extends BaseTimeline
                 .lastElementChild
                 .dataset
                 .frame | 0;
-
+            
             const length = elementCount - element.children.length;
             for (let idx = 1; length >= idx; ++idx) {
                 this.createElement(element, frame++);
@@ -314,7 +322,7 @@ class TimelineHeader extends BaseTimeline
 
         let sec     = Math.max(1, (frame / 24 | 0) + 1);
         const scene = Util.$currentWorkSpace().scene;
-        for (let idx = 0; elementCount > idx; ++idx) {
+        for (let idx = 0; element.children.length > idx; ++idx) {
 
             const currentFrame = frame + idx;
 

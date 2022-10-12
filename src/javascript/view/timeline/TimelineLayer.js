@@ -763,6 +763,17 @@ class TimelineLayer extends BaseTimeline
             layer._$children = [];
         }
 
+        // 画面幅以上にelement数があれば削除
+        if (element.children.length + 1 > elementCount) {
+            const index = elementCount + 1;
+            while (element.children.length > index) {
+                element.children[index].remove();
+            }
+
+            // 初期化
+            layer._$children = [];
+        }
+
         // 画面幅のelement数が多ければ再登録
         if (elementCount > element.children.length) {
 
@@ -772,8 +783,8 @@ class TimelineLayer extends BaseTimeline
                 .frame | 0;
 
             const length = elementCount - element.children.length;
-            for (let idx = 1; length >= idx; ++idx) {
-                this.createElement(element, frame++);
+            for (let idx = 0; length >= idx; ++idx) {
+                this.createElement(element, ++frame);
             }
 
             // 初期化
@@ -785,7 +796,7 @@ class TimelineLayer extends BaseTimeline
         }
 
         let frame = Util.$timelineHeader.leftFrame;
-        for (let idx = 0; elementCount >= idx; ++idx) {
+        for (let idx = 0; layer._$children.length > idx; ++idx) {
 
             const currentFrame = frame + idx;
 

@@ -262,6 +262,16 @@ class TimelineTool extends BaseTimeline
 
         this.timelineWidth = TimelineTool.DEFAULT_TIMELINE_WIDTH * value / 100;
 
+        // ヘッダーを再構成
+        Util.$timelineHeader._$currentFrame = -1;
+        Util.$timelineHeader.rebuild();
+
+        // マーカーを移動
+        Util.$timelineMarker.move();
+
+        // 各レイヤーを再描画
+        Util.$timelineLayer.moveTimeLine();
+
         return value;
     }
 
