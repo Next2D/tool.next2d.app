@@ -360,6 +360,9 @@ class TimelineFrame extends BaseTimeline
 
         // マーカーを移動
         Util.$timelineMarker.move();
+
+        // 各レイヤーを再描画
+        Util.$timelineLayer.moveTimeLine();
     }
 }
 

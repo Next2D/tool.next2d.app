@@ -210,8 +210,17 @@ class TimelineTool extends BaseTimeline
             return ;
         }
 
-        const element = document
-            .getElementById(`frame-label-marker-${this._$labelFrame}`);
+        const leftFrame = Util.$timelineHeader.leftFrame;
+        if (leftFrame > this._$labelFrame) {
+            return ;
+        }
+
+        const index = this._$labelFrame - leftFrame;
+        const parent = document
+            .getElementById("timeline-header")
+            .children[index];
+
+        const element = parent.children[TimelineHeader.MARKER_INDEX];
 
         const value = event.target.value;
         const scene = Util.$currentWorkSpace().scene;

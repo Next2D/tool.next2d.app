@@ -333,7 +333,7 @@ class TimelinePlayer extends BaseTimeline
             // タイムラインの座標修正
             const element = document
                 .getElementById("timeline-controller-base");
-            
+
             const deltaX = (frame - moveFrame) * (timelineWidth + 1);
             if (0 >= deltaX || deltaX > element.clientWidth) {
                 Util.$timelineHeader.scrollX = (frame - 1) * timelineWidth;
@@ -366,4 +366,3 @@ class TimelinePlayer extends BaseTimeline
 }
 
 Util.$timelinePlayer = new TimelinePlayer();
-

@@ -57,6 +57,42 @@ class TimelineHeader extends BaseTimeline
     }
 
     /**
+     * @description ヘッダーフレームのマーカーアイコンのindex番号
+     *
+     * @member {number}
+     * @static
+     * @const
+     */
+    static get MARKER_INDEX ()
+    {
+        return 1;
+    }
+
+    /**
+     * @description ヘッダーフレームのスクリプトアイコンのindex番号
+     *
+     * @member {number}
+     * @static
+     * @const
+     */
+    static get ACTION_INDEX ()
+    {
+        return 2;
+    }
+
+    /**
+     * @description ヘッダーフレームのサウンドアイコンのindex番号
+     *
+     * @member {number}
+     * @static
+     * @const
+     */
+    static get SOUND_INDEX ()
+    {
+        return 3;
+    }
+
+    /**
      * @description ヘッダーのclientWidthを格納
      *
      * @member {number}
@@ -305,8 +341,8 @@ class TimelineHeader extends BaseTimeline
                         break;
 
                     // label
-                    case 1:
-                        if (scene.getLabel(currentFrame)) {
+                    case TimelineHeader.MARKER_INDEX:
+                        if (scene.hasLabel(currentFrame)) {
                             if (!child.classList.contains("frame-border-box-marker")) {
                                 child.setAttribute("class", "frame-border-box-marker");
                             }
@@ -318,7 +354,7 @@ class TimelineHeader extends BaseTimeline
                         break;
 
                     // script
-                    case 2:
+                    case TimelineHeader.ACTION_INDEX:
                         if (scene.hasAction(currentFrame)) {
                             if (!child.classList.contains("frame-border-box-action")) {
                                 child.setAttribute("class", "frame-border-box-action");
@@ -331,7 +367,7 @@ class TimelineHeader extends BaseTimeline
                         break;
 
                     // sound
-                    case 3:
+                    case TimelineHeader.SOUND_INDEX:
                         if (scene.hasSound(currentFrame)) {
                             if (!child.classList.contains("frame-border-box-sound")) {
                                 child.setAttribute("class", "frame-border-box-sound");

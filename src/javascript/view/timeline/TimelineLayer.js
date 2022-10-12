@@ -288,6 +288,10 @@ class TimelineLayer extends BaseTimeline
      */
     addTargetFrame (layer_id, element)
     {
+        if (!element) {
+            return;
+        }
+
         layer_id |= 0;
 
         if (!this.targetFrames.has(layer_id)) {
@@ -485,13 +489,12 @@ class TimelineLayer extends BaseTimeline
     /**
      * @description タイムラインにレイヤーを追加する
      *
-     * @param  {number} [current_frame=1]
-     * @param  {number} [layer_id=-1]
+     * @param  {number} layer_id
      * @return {void}
      * @method
      * @public
      */
-    create (current_frame = 0, layer_id = -1)
+    create (layer_id)
     {
         const workSpace = Util.$currentWorkSpace();
         if (!workSpace) {
@@ -505,44 +508,37 @@ class TimelineLayer extends BaseTimeline
             return ;
         }
 
-        // let frame = current_frame + 1;
-
-        const scene   = workSpace.scene;
-        const layerId = layer_id === -1 ? scene._$layerId : layer_id;
-
         let parent = document
-            .getElementById(`frame-scroll-id-${layerId}`);
+            .getElementById(`frame-scroll-id-${layer_id}`);
 
         // イベント登録は初回だけ
         if (!parent) {
 
-            scene.getLayer(layerId)._$id = layerId;
-
             element.insertAdjacentHTML("beforeend", `
-<div class="timeline-content-child" id="layer-id-${layerId}" data-layer-id="${layerId}">
+<div class="timeline-content-child" id="layer-id-${layer_id}" data-layer-id="${layer_id}">
 
     <div class="timeline-layer-controller">
-        <i class="timeline-exit-icon" id="timeline-exit-icon-${layerId}" data-layer-id="${layerId}"></i>
-        <i class="timeline-exit-in-icon" id="timeline-exit-in-icon-${layerId}" data-layer-id="${layerId}"></i>
-        <i class="timeline-layer-icon" id="layer-icon-${layerId}" data-layer-id="${layerId}" data-detail="{{レイヤー変更(ダブルクリック)}}"></i>
-        <i class="timeline-mask-icon" id="layer-mask-icon-${layerId}" data-layer-id="${layerId}" data-detail="{{レイヤー変更(ダブルクリック)}}"></i>
-        <i class="timeline-mask-in-icon" id="layer-mask-in-icon-${layerId}" data-layer-id="${layerId}"></i>
-        <i class="timeline-guide-icon" id="layer-guide-icon-${layerId}" data-layer-id="${layerId}" data-detail="{{レイヤー変更(ダブルクリック)}}"></i>
-        <i class="timeline-guide-in-icon" id="layer-guide-in-icon-${layerId}" data-layer-id="${layerId}" data-detail="{{レイヤー変更(ダブルクリック)}}"></i>
-        <div class="view-text" id="layer-name-${layerId}" data-layer-id="${layerId}">layer_${layerId}</div>
-        <input type="text" class="view-text-input" id="layer-name-input-${layerId}" data-layer-id="${layerId}" value="layer_${layerId}" style="display: none;">
-        <i class="timeline-layer-light-one icon-disable" id="layer-light-icon-${layerId}" data-click-type="light" data-layer-id="${layerId}" data-detail="{{レイヤーをハイライト}}"></i>
-        <i class="timeline-layer-disable-one icon-disable" id="layer-disable-icon-${layerId}" data-click-type="disable" data-layer-id="${layerId}" data-detail="{{レイヤーを非表示}}"></i>
-        <i class="timeline-layer-lock-one icon-disable" id="layer-lock-icon-${layerId}" data-click-type="lock" data-layer-id="${layerId}" data-detail="{{レイヤーをロック}}"></i>
+        <i class="timeline-exit-icon" id="timeline-exit-icon-${layer_id}" data-layer-id="${layer_id}"></i>
+        <i class="timeline-exit-in-icon" id="timeline-exit-in-icon-${layer_id}" data-layer-id="${layer_id}"></i>
+        <i class="timeline-layer-icon" id="layer-icon-${layer_id}" data-layer-id="${layer_id}" data-detail="{{レイヤー変更(ダブルクリック)}}"></i>
+        <i class="timeline-mask-icon" id="layer-mask-icon-${layer_id}" data-layer-id="${layer_id}" data-detail="{{レイヤー変更(ダブルクリック)}}"></i>
+        <i class="timeline-mask-in-icon" id="layer-mask-in-icon-${layer_id}" data-layer-id="${layer_id}"></i>
+        <i class="timeline-guide-icon" id="layer-guide-icon-${layer_id}" data-layer-id="${layer_id}" data-detail="{{レイヤー変更(ダブルクリック)}}"></i>
+        <i class="timeline-guide-in-icon" id="layer-guide-in-icon-${layer_id}" data-layer-id="${layer_id}" data-detail="{{レイヤー変更(ダブルクリック)}}"></i>
+        <div class="view-text" id="layer-name-${layer_id}" data-layer-id="${layer_id}">layer_${layer_id}</div>
+        <input type="text" class="view-text-input" id="layer-name-input-${layer_id}" data-layer-id="${layer_id}" value="layer_${layer_id}" style="display: none;">
+        <i class="timeline-layer-light-one icon-disable" id="layer-light-icon-${layer_id}" data-click-type="light" data-layer-id="${layer_id}" data-detail="{{レイヤーをハイライト}}"></i>
+        <i class="timeline-layer-disable-one icon-disable" id="layer-disable-icon-${layer_id}" data-click-type="disable" data-layer-id="${layer_id}" data-detail="{{レイヤーを非表示}}"></i>
+        <i class="timeline-layer-lock-one icon-disable" id="layer-lock-icon-${layer_id}" data-click-type="lock" data-layer-id="${layer_id}" data-detail="{{レイヤーをロック}}"></i>
     </div>
 
-    <div class="timeline-frame-controller" id="frame-scroll-id-${layerId}"></div>
+    <div class="timeline-frame-controller" id="frame-scroll-id-${layer_id}"></div>
 </div>
 `);
 
             // レイヤー名の変更イベントを登録
             document
-                .getElementById(`layer-name-${layerId}`)
+                .getElementById(`layer-name-${layer_id}`)
                 .addEventListener("dblclick", (event) =>
                 {
                     this.showInput(event);
@@ -550,7 +546,7 @@ class TimelineLayer extends BaseTimeline
 
             // レイヤー切り替えイベントを登録
             document
-                .getElementById(`layer-icon-${layerId}`)
+                .getElementById(`layer-icon-${layer_id}`)
                 .addEventListener("dblclick", (event) =>
                 {
                     this.showLayerMenu(event);
@@ -558,7 +554,7 @@ class TimelineLayer extends BaseTimeline
 
             // ガイドアイコン
             const guideIcon = document
-                .getElementById(`layer-guide-icon-${layerId}`);
+                .getElementById(`layer-guide-icon-${layer_id}`);
 
             guideIcon.addEventListener("dblclick", (event) =>
             {
@@ -575,7 +571,7 @@ class TimelineLayer extends BaseTimeline
 
             // マスクアイコン
             const maskIcon = document
-                .getElementById(`layer-mask-icon-${layerId}`);
+                .getElementById(`layer-mask-icon-${layer_id}`);
 
             maskIcon.addEventListener("dblclick", (event) =>
             {
@@ -592,7 +588,7 @@ class TimelineLayer extends BaseTimeline
 
             // グループから外すexitアイコン
             const exitIcon = document
-                .getElementById(`timeline-exit-icon-${layerId}`);
+                .getElementById(`timeline-exit-icon-${layer_id}`);
 
             exitIcon.addEventListener("mouseover", (event) =>
             {
@@ -604,7 +600,7 @@ class TimelineLayer extends BaseTimeline
             });
 
             const exitInIcon = document
-                .getElementById(`timeline-exit-in-icon-${layerId}`);
+                .getElementById(`timeline-exit-in-icon-${layer_id}`);
 
             exitInIcon.addEventListener("mouseover", (event) =>
             {
@@ -616,7 +612,7 @@ class TimelineLayer extends BaseTimeline
             });
 
             // レイヤーの説明モーダルを登録
-            const layer = document.getElementById(`layer-id-${layerId}`);
+            const layer = document.getElementById(`layer-id-${layer_id}`);
             Util.$addModalEvent(layer);
 
             // レイヤー全体のイベント
@@ -699,7 +695,7 @@ class TimelineLayer extends BaseTimeline
 
             // ハイライトアイコン
             document
-                .getElementById(`layer-light-icon-${layerId}`)
+                .getElementById(`layer-light-icon-${layer_id}`)
                 .addEventListener("mousedown", (event) =>
                 {
                     this.clickLight(event);
@@ -707,7 +703,7 @@ class TimelineLayer extends BaseTimeline
 
             // 表示・非表示アイコン
             document
-                .getElementById(`layer-disable-icon-${layerId}`)
+                .getElementById(`layer-disable-icon-${layer_id}`)
                 .addEventListener("mousedown", (event) =>
                 {
                     this.clickDisable(event);
@@ -715,7 +711,7 @@ class TimelineLayer extends BaseTimeline
 
             // ロックアイコン
             document
-                .getElementById(`layer-lock-icon-${layerId}`)
+                .getElementById(`layer-lock-icon-${layer_id}`)
                 .addEventListener("mousedown", (event) =>
                 {
                     this.clickLock(event);
@@ -723,18 +719,15 @@ class TimelineLayer extends BaseTimeline
 
             // スクロールエリア
             const frameElement = document
-                .getElementById(`frame-scroll-id-${layerId}`);
+                .getElementById(`frame-scroll-id-${layer_id}`);
 
             frameElement.addEventListener("contextmenu", (event) =>
             {
                 Util.$timelineMenu.show(event);
             });
-
-            // end
-            scene._$layerId++;
         }
 
-        this.rebuild(layerId);
+        this.rebuild(layer_id);
     }
 
     /**
@@ -744,10 +737,10 @@ class TimelineLayer extends BaseTimeline
      * @method
      * @public
      */
-    rebuild (layerId)
+    rebuild (layer_id)
     {
         const element = document
-            .getElementById(`frame-scroll-id-${layerId}`);
+            .getElementById(`frame-scroll-id-${layer_id}`);
 
         if (!element) {
             return ;
@@ -756,7 +749,7 @@ class TimelineLayer extends BaseTimeline
         const layer = Util
             .$currentWorkSpace()
             .scene
-            .getLayer(layerId);
+            .getLayer(layer_id);
 
         const timelineWidth = Util.$timelineTool.timelineWidth;
         const elementCount  = Util.$timelineHeader.width / (timelineWidth + 1) | 0;
@@ -764,8 +757,9 @@ class TimelineLayer extends BaseTimeline
         // elementが空なら初期処理を実行
         if (!element.children.length) {
             for (let idx = 0; elementCount >= idx; ++idx) {
-                this.createElement(element, layerId, idx + 1);
+                this.createElement(element, layer_id, idx + 1);
             }
+            // 初期化
             layer._$children = [];
         }
 
@@ -782,6 +776,7 @@ class TimelineLayer extends BaseTimeline
                 this.createElement(element, frame++);
             }
 
+            // 初期化
             layer._$children = [];
         }
 
@@ -790,7 +785,7 @@ class TimelineLayer extends BaseTimeline
         }
 
         let frame = Util.$timelineHeader.leftFrame;
-        for (let idx = 0; elementCount > idx; ++idx) {
+        for (let idx = 0; elementCount >= idx; ++idx) {
 
             const currentFrame = frame + idx;
 
@@ -811,16 +806,16 @@ class TimelineLayer extends BaseTimeline
      * @description レイヤーのelementを生成
      *
      * @param  {HTMLDivElement} parent
-     * @param  {number} layerId
+     * @param  {number} layer_id
      * @param  {number} [frame=1]
      * @return {void}
      * @method
      * @public
      */
-    createElement (parent, layerId, frame = 1)
+    createElement (parent, layer_id, frame = 1)
     {
         parent
-            .insertAdjacentHTML("beforeend", `<div class="${frame % 5 !== 0 ? "frame" : "frame frame-pointer"}" data-frame-state="empty" data-layer-id="${layerId}" data-frame="${frame}"></div>`);
+            .insertAdjacentHTML("beforeend", `<div class="${frame % 5 !== 0 ? "frame" : "frame frame-pointer"}" data-frame-state="empty" data-layer-id="${layer_id}" data-frame="${frame}"></div>`);
     }
 
     /**
@@ -2040,8 +2035,12 @@ class TimelineLayer extends BaseTimeline
 
             // 選択したレイヤーのフレームを初期化してセット
             this.targetFrames.delete(layerId);
-            this.addTargetFrame(layerId, frameElement);
 
+            if (!frameElement) {
+                continue;
+            }
+
+            this.addTargetFrame(layerId, frameElement);
         }
 
         // マーカーを現在のフレームの位置に移動

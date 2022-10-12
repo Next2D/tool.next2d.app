@@ -1307,7 +1307,6 @@ class Character
         if (start_frame === this.startFrame
             && end_frame === this.endFrame
         ) {
-            console.log("delete");
             layer.deleteCharacter(this.id);
             return this;
         }

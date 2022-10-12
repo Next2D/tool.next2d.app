@@ -492,12 +492,9 @@ describe("Layer.js function test", () =>
         layer.addEmptyCharacter(emptyCharacter);
 
         layer.resetStyle();
-
-        const layerId = layer.id;
         for (let frame = 1; character.endFrame > frame; ++frame) {
 
-            const element = document
-                .getElementById(`${layerId}-${frame}`);
+            const element = layer.getChildren(frame);
 
             expect(element.dataset.frameState).toBe("empty");
             expect(element.classList.contains("frame")).toBe(true);
@@ -515,9 +512,7 @@ describe("Layer.js function test", () =>
         layer.setCharacterStyle();
         for (let frame = 1; character.endFrame > frame; ++frame) {
 
-            const element = document
-                .getElementById(`${layerId}-${frame}`);
-
+            const element = layer.getChildren(frame);
             switch (frame) {
 
                 case 1:
@@ -578,12 +573,9 @@ describe("Layer.js function test", () =>
 
         layer.resetStyle();
 
-        const layerId = layer.id;
         for (let frame = 1; character.endFrame > frame; ++frame) {
 
-            const element = document
-                .getElementById(`${layerId}-${frame}`);
-
+            const element = layer.getChildren(frame);
             expect(element.dataset.frameState).toBe("empty");
             expect(element.classList.contains("frame")).toBe(true);
             expect(element.classList.contains("empty-key-frame")).toBe(false);
@@ -600,9 +592,7 @@ describe("Layer.js function test", () =>
         layer.setCharacterStyle();
         for (let frame = 1; character.endFrame > frame; ++frame) {
 
-            const element = document
-                .getElementById(`${layerId}-${frame}`);
-
+            const element = layer.getChildren(frame);
             switch (frame) {
 
                 case 1:
@@ -702,12 +692,9 @@ describe("Layer.js function test", () =>
         layer.addEmptyCharacter(emptyCharacter);
 
         layer.resetStyle();
-
-        const layerId = layer.id;
         for (let frame = 1; character.endFrame > frame; ++frame) {
 
-            const element = document
-                .getElementById(`${layerId}-${frame}`);
+            const element = layer.getChildren(frame);
 
             expect(element.dataset.frameState).toBe("empty");
             expect(element.classList.contains("frame")).toBe(true);
@@ -725,9 +712,7 @@ describe("Layer.js function test", () =>
         layer.setCharacterStyle();
         for (let frame = 1; character.endFrame > frame; ++frame) {
 
-            const element = document
-                .getElementById(`${layerId}-${frame}`);
-
+            const element = layer.getChildren(frame);
             switch (frame) {
 
                 case 1:

@@ -135,15 +135,12 @@ class Layer
         this._$children = [];
 
         // レイヤに必要なフレームをタイムラインに生成
-        Util.$timelineLayer.create();
+        Util.$timelineLayer.create(this._$id);
 
         const element = parent.lastElementChild;
         if (!element) {
             return ;
         }
-
-        // set id
-        // this.id = element.dataset.layerId | 0;
 
         const name = document.getElementById(`layer-name-${this.id}`);
         if (this.name) {
@@ -207,7 +204,6 @@ class Layer
 
         // view
         this.showIcon();
-        // this.reloadStyle();
     }
 
     /**
@@ -1051,13 +1047,10 @@ class Layer
      */
     resetStyle ()
     {
-        const leftFrame = Util.$timelineHeader.leftFrame;
-
         let frame = Util.$timelineHeader.leftFrame;
-        for (;;) {
+        for (let idx = 0; idx < this._$children.length; ++idx) {
 
-            const index   = frame - leftFrame;
-            const element = this._$children[index];
+            const element = this._$children[idx];
 
             // Emptyフレームを見つけたら終了
             if (!element || element.dataset.frameState === "empty") {

@@ -562,10 +562,18 @@ class JavaScriptEditor extends BaseTimeline
             return ;
         }
 
-        const script = this._$editor.getValue(0);
+        const leftFrame = Util.$timelineHeader.leftFrame;
+        if (leftFrame > this._$frame) {
+            return ;
+        }
 
-        const element = document
-            .getElementById(`frame-label-action-${this._$frame}`);
+        const index  = this._$frame - leftFrame;
+        const parent = document
+            .getElementById("timeline-header")
+            .children[index];
+
+        const element = parent.children[TimelineHeader.ACTION_INDEX];
+        const script  = this._$editor.getValue(0);
 
         const scene = this._$scene || Util.$currentWorkSpace().scene;
         if (script) {

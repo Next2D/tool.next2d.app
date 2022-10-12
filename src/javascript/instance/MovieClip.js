@@ -153,7 +153,8 @@ class MovieClip extends Instance
         Util.$timelineLayer.removeAll();
 
         // フレームを登録してヘッダーを再編成
-        Util.$timelineFrame.currentFrame = this.currentFrame;
+        const currentFrame = this.currentFrame;
+        Util.$timelineFrame.currentFrame = currentFrame;
 
         // ヘッダーを生成
         Util.$timelineHeader.setWidth();
@@ -163,60 +164,19 @@ class MovieClip extends Instance
         // マーカーを移動
         Util.$timelineMarker.move(); // fixed logic
 
-        // init label
-        for (const frame of this._$labels.keys()) {
-
-            const element = document
-                .getElementById(`frame-label-marker-${frame}`);
-
-            if (!element) {
-                continue;
-            }
-
-            element.setAttribute("class", "frame-border-box-marker");
-
-        }
-
-        // init action
-        for (const frame of this._$actions.keys()) {
-
-            const element = document
-                .getElementById(`frame-label-action-${frame}`);
-
-            if (!element) {
-                continue;
-            }
-
-            element.setAttribute("class", "frame-border-box-action");
-
-        }
-
-        // init sound
-        for (const frame of this._$sounds.keys()) {
-
-            const element = document
-                .getElementById(`frame-label-sound-${frame}`);
-
-            if (!element) {
-                continue;
-            }
-
-            element.setAttribute("class", "frame-border-box-sound");
-
-        }
-
         // frame1 label
         const labelElement = document.getElementById("label-name");
         if (labelElement) {
             labelElement.value = "";
-            if (this._$labels.has(1)) {
-                labelElement.value = this._$labels.get(1);
+            if (this.hasLabel(currentFrame)) {
+                labelElement.value = `${this.getLabel(currentFrame)}`;
             }
         }
 
         // insert layer
         this._$layerId = 0;
         for (const layer of this._$layers.values()) {
+            layer._$id = this._$layerId++;
             layer.initialize();
         }
 
@@ -493,9 +453,23 @@ class MovieClip extends Instance
      */
     getLabel (frame)
     {
-        return this._$labels.has(frame)
+        return this.hasLabel(frame)
             ? this._$labels.get(frame | 0)
             : null;
+    }
+
+    /**
+     * @description 指定フレームにラベル情報が設置されているか判定
+     *              Judges whether label information is installed in the specified frame.
+     *
+     * @param  {number} frame
+     * @return {boolean}
+     * @method
+     * @public
+     */
+    hasLabel (frame)
+    {
+        return this._$labels.has(frame);
     }
 
     /**
@@ -574,7 +548,9 @@ class MovieClip extends Instance
         if (!layer) {
             layer = new Layer();
         }
-        this._$layers.set(this._$layerId, layer);
+
+        layer._$id = this._$layerId++;
+        this._$layers.set(layer._$id, layer);
         layer.initialize();
     }
 

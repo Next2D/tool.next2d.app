@@ -257,8 +257,19 @@ class SoundController extends BaseController
      */
     setIcon (frame)
     {
-        const element = document
-            .getElementById(`frame-label-sound-${frame}`);
+        const leftFrame = Util.$timelineHeader.leftFrame;
+        if (leftFrame > frame) {
+            return ;
+        }
+
+        const index  = frame - leftFrame;
+        const parent = document
+            .getElementById("timeline-header")
+            .children[index];
+
+        const element = parent.children[TimelineHeader.SOUND_INDEX];
+        // const element = document
+        //     .getElementById(`frame-label-sound-${frame}`);
 
         if (!element.classList.contains("frame-border-box-sound")) {
             element

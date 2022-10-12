@@ -153,8 +153,7 @@ describe("BaseController.js function test", () =>
         const frame = 5;
         Util.$timelineFrame.currentFrame = frame;
 
-        const frameElement = document
-            .getElementById(`${layer.id}-${frame}`);
+        const frameElement = layer.getChildren(frame);
         Util.$timelineLayer.targetFrames.clear();
         Util.$timelineLayer.targetFrames.set(
             layer.id, [frameElement]
