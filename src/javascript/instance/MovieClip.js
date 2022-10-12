@@ -165,13 +165,7 @@ class MovieClip extends Instance
         Util.$timelineMarker.move(); // fixed logic
 
         // frame1 label
-        const labelElement = document.getElementById("label-name");
-        if (labelElement) {
-            labelElement.value = "";
-            if (this.hasLabel(currentFrame)) {
-                labelElement.value = `${this.getLabel(currentFrame)}`;
-            }
-        }
+        Util.$timelineLayer.changeLabel(currentFrame);
 
         // insert layer
         this._$layerId = 0;

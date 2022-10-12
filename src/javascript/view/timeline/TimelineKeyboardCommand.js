@@ -263,10 +263,7 @@ class TimelineKeyboardCommand extends KeyboardCommand
             ? code === "ArrowRight" ? 1 : -1
             : 0;
 
-        const frame = Math.max(1, Math.min(
-            Util.$timelineFrame.currentFrame + index,
-            Util.$timelineHeader.lastFrame
-        ));
+        const frame = Math.max(1, Util.$timelineFrame.currentFrame + index);
 
         /**
          * @type {ArrowTool}
@@ -280,7 +277,7 @@ class TimelineKeyboardCommand extends KeyboardCommand
         // フレーム移動
         Util.$timelineLayer.moveFrame(frame);
         Util.$timelineLayer.activeLayer(targetLayer);
-        Util.$timelineMarker.moveVisibleLocation();
+        // Util.$timelineMarker.moveVisibleLocation();
     }
 
     /**

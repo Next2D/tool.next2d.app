@@ -180,7 +180,7 @@ class ExternalTimeline
             .$timelineLayer
             .addTargetFrame(
                 layer.id,
-                document.getElementById(`${layer.id}-${this.currentFrame}`)
+                layer.getChildren(this.currentFrame)
             );
 
         return new ExternalLayer(layer);
@@ -204,14 +204,20 @@ class ExternalTimeline
 
         end_frame = Math.max(start_frame, end_frame);
 
-        const layerId = layerElement.dataset.layerId | 0;
+        const layer = Util
+            .$currentWorkSpace()
+            .scene
+            .getLayer(
+                layerElement.dataset.layerId | 0
+            );
+
         for (let frame = start_frame; end_frame >= frame; ++frame) {
 
             Util
                 .$timelineLayer
                 .addTargetFrame(
-                    layerId,
-                    document.getElementById(`${layerId}-${frame}`)
+                    layer.id,
+                    layer.getChildren(frame)
                 );
 
         }

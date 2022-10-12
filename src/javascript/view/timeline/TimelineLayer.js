@@ -2229,9 +2229,8 @@ class TimelineLayer extends BaseTimeline
 
         // labelがあればセット
         const scene = Util.$currentWorkSpace().scene;
-        const label = scene.getLabel(frame);
-        if (label) {
-            labelInput.value = label;
+        if (scene.hasLabel(frame)) {
+            labelInput.value = scene.getLabel(frame);
         }
     }
 
@@ -2249,6 +2248,23 @@ class TimelineLayer extends BaseTimeline
 
             // フレームを移動
             Util.$timelineFrame.currentFrame = frame;
+
+            const timelineWidth = Util.$timelineTool.timelineWidth;
+            const leftFrame     = Util.$timelineHeader.leftFrame;
+            const elementCount  = Util.$timelineHeader.width / (timelineWidth + 1) | 0;
+            switch (true) {
+
+                case leftFrame > frame:
+                case frame > leftFrame + elementCount - 1:
+                    Util.$timelineHeader.scrollX = (frame - 1) * timelineWidth;
+                    Util.$timelineHeader.rebuild();
+                    this.moveTimeLine();
+                    break;
+
+                default:
+                    break;
+
+            }
 
             // マーカーを移動
             Util.$timelineMarker.move();

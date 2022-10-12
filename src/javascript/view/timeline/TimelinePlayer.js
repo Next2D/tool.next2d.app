@@ -319,9 +319,8 @@ class TimelinePlayer extends BaseTimeline
                 frame = 1;
 
                 // スクロールしていれば左端にセット
-                if (base.scrollLeft) {
-                    Util.$timelineLayer.moveTimeLine(0);
-                }
+                Util.$timelineHeader.scrollX = 0;
+                Util.$timelineLayer.moveTimeLine();
             }
 
             // フレームを移動
@@ -347,9 +346,7 @@ class TimelinePlayer extends BaseTimeline
 
             const moveX = (frame - 1) * (Util.$timelineTool.timelineWidth + 1);
             if (moveX > base.offsetWidth / 2) {
-                Util
-                    .$timelineLayer
-                    .moveTimeLine(moveX - base.offsetWidth / 2);
+                Util.$timelineLayer.moveTimeLine();
             }
 
             // 描画した時間を更新
