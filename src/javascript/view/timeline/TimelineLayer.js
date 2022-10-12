@@ -784,7 +784,7 @@ class TimelineLayer extends BaseTimeline
 
             const length = elementCount - element.children.length;
             for (let idx = 0; length >= idx; ++idx) {
-                this.createElement(element, ++frame);
+                this.createElement(element, layer_id, ++frame);
             }
 
             // 初期化
@@ -2234,14 +2234,18 @@ class TimelineLayer extends BaseTimeline
     changeLabel (frame)
     {
         // ラベル情報更新して初期化
-        const labelInput = document.getElementById("label-name");
-        labelInput.blur();
-        labelInput.value = "";
+        const element = document.getElementById("label-name");
+        if (!element) {
+            return ;
+        }
+
+        element.blur();
+        element.value = "";
 
         // labelがあればセット
         const scene = Util.$currentWorkSpace().scene;
         if (scene.hasLabel(frame)) {
-            labelInput.value = scene.getLabel(frame);
+            element.value = scene.getLabel(frame);
         }
     }
 

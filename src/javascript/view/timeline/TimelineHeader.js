@@ -302,7 +302,7 @@ class TimelineHeader extends BaseTimeline
                 .lastElementChild
                 .dataset
                 .frame | 0;
-            
+
             const length = elementCount - element.children.length;
             for (let idx = 1; length >= idx; ++idx) {
                 this.createElement(element, frame++);
