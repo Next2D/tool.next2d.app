@@ -28,20 +28,6 @@ class TimelineHeader extends BaseTimeline
         this._$scrollX = 0;
 
         /**
-         * @type {number}
-         * @default 0
-         * @private
-         */
-        this._$currentFrame = 0;
-
-        /**
-         * @type {number}
-         * @default 0
-         * @private
-         */
-        this._$currentFps = 0;
-
-        /**
          * @type {HTMLDivElement}
          * @default null
          * @private
@@ -314,38 +300,56 @@ class TimelineHeader extends BaseTimeline
             .value | 0;
 
         let frame = this.leftFrame;
-        if (this._$currentFrame === frame && this._$currentFps === fps) {
-            return ;
-        }
-        this._$currentFrame = frame;
-        this._$currentFps   = fps;
+        let sec   = Math.max(1, (frame / 24 | 0) + 1);
 
-        let sec     = Math.max(1, (frame / 24 | 0) + 1);
         const scene = Util.$currentWorkSpace().scene;
-        for (let idx = 0; element.children.length > idx; ++idx) {
+
+        const children = element.children;
+        const length   = children.length;
+        for (let idx = 0; length > idx; ++idx) {
 
             const currentFrame = frame + idx;
 
-            const node = element.children[idx];
-            node.dataset.frame = `${currentFrame}`;
+            const node = children[idx];
+            const nodeFrame = node.dataset.frame | 0;
+            if (nodeFrame !== currentFrame) {
+                node.setAttribute("data-frame", `${currentFrame}`);
+            }
 
-            const nodeLength = node.children.length;
+            const nodeChildren = node.children;
+            const nodeLength   = nodeChildren.length;
             for (let idx = 0; nodeLength > idx; ++idx) {
 
-                const child = node.children[idx];
-                child.dataset.frame = `${currentFrame}`;
+                const child = nodeChildren[idx];
+
+                const childFrame = child.dataset.frame | 0;
+                if (childFrame !== currentFrame) {
+                    child.setAttribute("data-frame", `${currentFrame}`);
+                }
 
                 switch (idx) {
 
                     case 0:
-                        child.setAttribute("class",  currentFrame % 5 === 0
-                            ? "frame-border-end"
-                            : "frame-border"
-                        );
+                        if (currentFrame % 5 === 0) {
+                            if (!child.classList.contains("frame-border-end")) {
+                                child.setAttribute("class", "frame-border-end");
+                            }
+                        } else {
+                            if (!child.classList.contains("frame-border")) {
+                                child.setAttribute("class", "frame-border");
+                            }
+                        }
 
-                        child.textContent = currentFrame % fps === 0 && fps > 4
-                            ? sec++ + "s"
-                            : "";
+                        if (currentFrame % fps === 0 && fps > 4) {
+                            const value = sec++ + "s";
+                            if (!child.innerHTML || child.innerHTML !== value) {
+                                child.innerHTML = value;
+                            }
+                        } else {
+                            if (child.innerHTML) {
+                                child.innerHTML = "";
+                            }
+                        }
                         break;
 
                     // label
@@ -389,12 +393,13 @@ class TimelineHeader extends BaseTimeline
 
                     case 4:
                         if (currentFrame % 5 === 0) {
-
-                            child.textContent = `${currentFrame}`;
-
+                            const value = `${currentFrame}`;
+                            if (!child.innerHTML || child.innerHTML !== value) {
+                                child.innerHTML = value;
+                            }
                         } else {
-                            if (child.textContent) {
-                                child.textContent = "";
+                            if (child.innerHTML) {
+                                child.innerHTML = "";
                             }
                         }
                         break;

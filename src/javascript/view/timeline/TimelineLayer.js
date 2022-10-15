@@ -757,6 +757,7 @@ class TimelineLayer extends BaseTimeline
 
         // elementが空なら初期処理を実行
         if (!element.children.length) {
+
             for (let idx = 0; elementCount >= idx; ++idx) {
                 this.createElement(element, layer_id, idx + 1);
             }
@@ -765,7 +766,8 @@ class TimelineLayer extends BaseTimeline
         }
 
         // 画面幅以上にelement数があれば削除
-        if (element.children.length + 1 > elementCount) {
+        if (element.children.length > elementCount + 1) {
+
             const index = elementCount + 1;
             while (element.children.length > index) {
                 element.children[index].remove();
@@ -3544,7 +3546,16 @@ class TimelineLayer extends BaseTimeline
      */
     clearActiveFrames ()
     {
-        const scene = Util.$currentWorkSpace().scene;
+        const workSpace = Util.$currentWorkSpace();
+        if (!workSpace) {
+            return ;
+        }
+
+        const scene = workSpace.scene;
+        if (!scene) {
+            return ;
+        }
+
         for (const [layerId, values] of this._$targetFrames) {
 
             const layer = scene.getLayer(layerId);

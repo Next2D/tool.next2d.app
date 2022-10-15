@@ -108,14 +108,6 @@ class MovieClip extends Instance
      */
     initialize ()
     {
-        /**
-         * @type {ArrowTool}
-         */
-        const tool = Util.$tools.getDefaultTool("arrow");
-
-        // 選択中のアクティブ表示を初期化
-        tool.clear();
-
         // ツールを初期化
         Util.$tools.reset();
 

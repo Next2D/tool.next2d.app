@@ -1069,6 +1069,10 @@ class TweenController extends BaseController
                 element.dataset.layerId | 0
             );
 
+            if (!layer) {
+                continue;
+            }
+
             const character = layer.getCharacter(
                 element.dataset.characterId | 0
             );
