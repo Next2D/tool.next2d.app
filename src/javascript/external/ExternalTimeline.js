@@ -178,10 +178,7 @@ class ExternalTimeline
 
         Util
             .$timelineLayer
-            .addTargetFrame(
-                layer.id,
-                layer.getChildren(this.currentFrame)
-            );
+            .addTargetFrame(layer, this.currentFrame);
 
         return new ExternalLayer(layer);
     }
@@ -215,10 +212,7 @@ class ExternalTimeline
 
             Util
                 .$timelineLayer
-                .addTargetFrame(
-                    layer.id,
-                    layer.getChildren(frame)
-                );
+                .addTargetFrame(layer, frame);
 
         }
 
@@ -250,8 +244,8 @@ class ExternalTimeline
             if (targetFrames.length > 1) {
                 targetFrames.sort((a, b) =>
                 {
-                    const aFrame = a.dataset.frame | 0;
-                    const bFrame = b.dataset.frame | 0;
+                    const aFrame = a | 0;
+                    const bFrame = b | 0;
 
                     // 昇順
                     switch (true) {
@@ -270,11 +264,11 @@ class ExternalTimeline
             }
 
             if (start_frame === -1) {
-                start_frame = targetFrames[0].dataset.frame | 0;
+                start_frame = targetFrames[0];
             }
 
             if (end_frame === -1) {
-                end_frame = targetFrames[targetFrames.length - 1].dataset.frame | 0;
+                end_frame = targetFrames[targetFrames.length - 1];
             }
 
         }
@@ -315,8 +309,8 @@ class ExternalTimeline
             if (targetFrames.length > 1) {
                 targetFrames.sort((a, b) =>
                 {
-                    const aFrame = a.dataset.frame | 0;
-                    const bFrame = b.dataset.frame | 0;
+                    const aFrame = a | 0;
+                    const bFrame = b | 0;
 
                     // 昇順
                     switch (true) {
@@ -335,11 +329,11 @@ class ExternalTimeline
             }
 
             if (start_frame === -1) {
-                start_frame = targetFrames[0].dataset.frame | 0;
+                start_frame = targetFrames[0];
             }
 
             if (end_frame === -1) {
-                end_frame = targetFrames[targetFrames.length - 1].dataset.frame | 0;
+                end_frame = targetFrames[targetFrames.length - 1];
             }
 
         }
@@ -352,9 +346,10 @@ class ExternalTimeline
             return ;
         }
 
+        // 指定レイヤーの指定フレームを選択
         this.setSelectedFrames(start_frame, end_frame);
 
-        Util.$timelineTool.executeTimelineFrameAdd();
+        // 空のキーフレームを追加
         Util.$timelineTool.executeTimelineEmptyAdd();
     }
 

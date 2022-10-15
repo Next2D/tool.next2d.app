@@ -234,145 +234,145 @@ class Screen extends BaseScreen
             }
         }
 
-        // 座標
-        const x = event.offsetX - Util.$offsetLeft;
-        const y = event.offsetY - Util.$offsetTop;
+        if (instanceIds.length) {
+            // 座標
+            const x = event.offsetX - Util.$offsetLeft;
+            const y = event.offsetY - Util.$offsetTop;
 
-        // スクリーンにアイテムを配置
-        const location   = layer.adjustmentLocation(frame);
-        const endFrame   = location.endFrame;
-        const startFrame = location.startFrame;
-        for (let idx = 0; idx < instanceIds.length; ++idx) {
+            // スクリーンにアイテムを配置
+            const location   = layer.adjustmentLocation(frame);
+            const endFrame   = location.endFrame;
+            const startFrame = location.startFrame;
+            for (let idx = 0; idx < instanceIds.length; ++idx) {
 
-            const libraryId = instanceIds[idx];
+                const libraryId = instanceIds[idx];
 
-            // 前か後ろに同じDisplayObjectがあれば統合する
-            const join = {
-                "start": null,
-                "end": null
-            };
+                // 前か後ろに同じDisplayObjectがあれば統合する
+                const join = {
+                    "start": null,
+                    "end": null
+                };
 
-            // レイヤー内のDisplayObjectをチェック
-            const characters = layer._$characters;
-            for (let idx = 0; idx < characters.length; ++idx) {
+                // レイヤー内のDisplayObjectをチェック
+                const characters = layer._$characters;
+                for (let idx = 0; idx < characters.length; ++idx) {
 
-                const character = characters[idx];
-                if (character.libraryId !== libraryId) {
-                    continue;
-                }
-
-                switch (true) {
-
-                    case startFrame > 1 && character.endFrame === startFrame:
-                        join.start = character;
-                        break;
-
-                    case character.startFrame === endFrame:
-                        join.end = character;
-                        break;
-
-                }
-            }
-
-            const instance = workSpace.getLibrary(libraryId);
-            const place = {
-                "frame": location.startFrame,
-                "matrix": [1, 0, 0, 1, x / Util.$zoomScale, y / Util.$zoomScale],
-                "colorTransform": [1, 1, 1, 1, 0, 0, 0, 0],
-                "blendMode": "normal",
-                "filter": [],
-                "depth": layer._$characters.length,
-                "point": {
-                    "x": x / Util.$zoomScale,
-                    "y": y / Util.$zoomScale
-                }
-            };
-
-            // MovieClipの場合はループ設定
-            if (instance.type === InstanceType.MOVIE_CLIP) {
-                place.loop = Util.$getDefaultLoopConfig();
-            }
-
-            let character = null;
-            if (join.start) {
-                character = join.start;
-                character.endFrame = endFrame;
-            }
-
-            if (join.end) {
-
-                if (character) {
-
-                    character.endFrame = join.end.endFrame;
-
-                    for (let [frame, place] of join.end._$places) {
-                        character.setPlace(frame, place);
+                    const character = characters[idx];
+                    if (character.libraryId !== libraryId) {
+                        continue;
                     }
 
-                    for (let [frame, tween] of join.end._$tween) {
-                        character.setTween(frame, tween);
-                    }
+                    switch (true) {
 
-                    layer.deleteCharacter(join.end.id);
+                        case startFrame > 1 && character.endFrame === startFrame:
+                            join.start = character;
+                            break;
+
+                        case character.startFrame === endFrame:
+                            join.end = character;
+                            break;
+
+                    }
+                }
+
+                const instance = workSpace.getLibrary(libraryId);
+                const place = {
+                    "frame": location.startFrame,
+                    "matrix": [1, 0, 0, 1, x / Util.$zoomScale, y / Util.$zoomScale],
+                    "colorTransform": [1, 1, 1, 1, 0, 0, 0, 0],
+                    "blendMode": "normal",
+                    "filter": [],
+                    "depth": layer._$characters.length,
+                    "point": {
+                        "x": x / Util.$zoomScale,
+                        "y": y / Util.$zoomScale
+                    }
+                };
+
+                // MovieClipの場合はループ設定
+                if (instance.type === InstanceType.MOVIE_CLIP) {
+                    place.loop = Util.$getDefaultLoopConfig();
+                }
+
+                let character = null;
+                if (join.start) {
+                    character = join.start;
+                    character.endFrame = endFrame;
+                }
+
+                if (join.end) {
+
+                    if (character) {
+
+                        character.endFrame = join.end.endFrame;
+
+                        for (let [frame, place] of join.end._$places) {
+                            character.setPlace(frame, place);
+                        }
+
+                        for (let [frame, tween] of join.end._$tween) {
+                            character.setTween(frame, tween);
+                        }
+
+                        layer.deleteCharacter(join.end.id);
+
+                    } else {
+
+                        character = join.end;
+                        character.startFrame = startFrame;
+
+                    }
+                }
+
+                // new character
+                if (!character) {
+
+                    character = new Character();
+                    character.libraryId  = libraryId;
+                    character.startFrame = startFrame;
+                    character.endFrame   = endFrame;
+                    character.setPlace(startFrame, place);
+
+                    // added
+                    layer.addCharacter(character);
 
                 } else {
 
-                    character = join.end;
-                    character.startFrame = startFrame;
+                    // add place
+                    character.setPlace(startFrame, place);
 
                 }
+
+                // ドロップ位置補正
+                let dx = 0;
+                let dy = 0;
+                if (instance.type === InstanceType.MOVIE_CLIP) {
+                    const bounds = instance.getBounds([1, 0, 0, 1, 0, 0]);
+                    dx = bounds.xMin;
+                    dy = bounds.yMin;
+                }
+
+                let width = character.width;
+                if (!width) {
+                    width = 10;
+                }
+
+                let height = character.height;
+                if (!height) {
+                    height = 10;
+                }
+
+                dx += width  / 2;
+                dy += height / 2;
+
+                place.matrix[4] -= dx;
+                place.matrix[5] -= dy;
             }
 
-            // new character
-            if (!character) {
+            // タイムラインの表示を再計算
+            layer.reloadStyle();
 
-                character = new Character();
-                character.libraryId  = libraryId;
-                character.startFrame = startFrame;
-                character.endFrame   = endFrame;
-                character.setPlace(startFrame, place);
-
-                // added
-                layer.addCharacter(character);
-
-            } else {
-
-                // add place
-                character.setPlace(startFrame, place);
-
-            }
-
-            // ドロップ位置補正
-            let dx = 0;
-            let dy = 0;
-            if (instance.type === InstanceType.MOVIE_CLIP) {
-                const bounds = instance.getBounds([1, 0, 0, 1, 0, 0]);
-                dx = bounds.xMin;
-                dy = bounds.yMin;
-            }
-
-            let width = character.width;
-            if (!width) {
-                width = 10;
-            }
-
-            let height = character.height;
-            if (!height) {
-                height = 10;
-            }
-
-            dx += width  / 2;
-            dy += height / 2;
-
-            place.matrix[4] -= dx;
-            place.matrix[5] -= dy;
-        }
-
-        // タイムラインの表示を再計算
-        layer.reloadStyle();
-
-        // 描画リセット
-        if (instanceIds.length) {
+            // 描画リセット
             this.reloadScreen();
         }
 

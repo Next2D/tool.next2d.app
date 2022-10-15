@@ -1310,7 +1310,9 @@ class TimelineTool extends BaseTimeline
 
             // キーフレームが設定されている場合は何もしない
             const frameElement = layer.getChildren(frame);
-            if (frameElement.dataset.frameState === "empty-key-frame") {
+            if (frameElement
+                && frameElement.dataset.frameState === "empty-key-frame"
+            ) {
                 return ;
             }
 

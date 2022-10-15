@@ -623,10 +623,7 @@ class ArrowTool extends BaseTool
 
             Util
                 .$timelineLayer
-                .addTargetFrame(
-                    layerId,
-                    layer.getChildren(frame)
-                );
+                .addTargetFrame(layer, frame);
         }
         Util.$ctrlKey = cacheValue;
     }

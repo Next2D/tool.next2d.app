@@ -280,37 +280,30 @@ class TimelineLayer extends BaseTimeline
     /**
      * @description 指定したレイヤーのフレームElementをアクティブ化
      *
-     * @param  {number} layer_id
-     * @param  {HTMLDivElement} element
+     * @param  {Layer} layer
+     * @param  {number} frame
      * @return {void}
      * @method
      * @public
      */
-    addTargetFrame (layer_id, element)
+    addTargetFrame (layer, frame)
     {
-        if (!element) {
-            return;
+
+        if (!this.targetFrames.has(layer.id)) {
+            this.targetFrames.set(layer.id, []);
         }
 
-        layer_id |= 0;
+        const frames = this.targetFrames.get(layer.id);
 
-        if (!this.targetFrames.has(layer_id)) {
-            this.targetFrames.set(layer_id, []);
-        }
-
-        const frames = this.targetFrames.get(layer_id);
-
-        // 重複チェック
-        if (frames.indexOf(element) > -1) {
-            return ;
-        }
-
-        frames.push(element.dataset.frame | 0);
+        frames.push(frame);
 
         // アクティブ表示
-        element
-            .classList
-            .add("frame-active");
+        const element = layer.getChildren(frame);
+        if (element) {
+            element
+                .classList
+                .add("frame-active");
+        }
     }
 
     /**
@@ -2048,16 +2041,10 @@ class TimelineLayer extends BaseTimeline
 
             // 編集へセット
             const layer = scene.getLayer(layerId);
-            const frameElement = layer.getChildren(frame);
 
             // 選択したレイヤーのフレームを初期化してセット
             this.targetFrames.delete(layerId);
-
-            if (!frameElement) {
-                continue;
-            }
-
-            this.addTargetFrame(layerId, frameElement);
+            this.addTargetFrame(layer, frame);
         }
 
         // マーカーを現在のフレームの位置に移動
@@ -2207,7 +2194,12 @@ class TimelineLayer extends BaseTimeline
                 .getElementById(`layer-id-${layerId}`);
 
             // 選択したフレームElementをMapに登録
-            this.addTargetFrame(layerId, target);
+            const layer = Util
+                .$currentWorkSpace()
+                .scene
+                .getLayer(layerId);
+
+            this.addTargetFrame(layer, frame);
 
             if (!this._$multiSelect) {
                 this._$multiSelect = this.multiSelect.bind(this);
@@ -3681,13 +3673,7 @@ class TimelineLayer extends BaseTimeline
             const layerId = selectIds[idx] | 0;
             const layer = scene.getLayer(layerId);
             for (let frame = minFrame; frame < maxFrame; ++frame) {
-
-                const element = layer.getChildren(frame);
-                if (!element) {
-                    continue;
-                }
-
-                this.addTargetFrame(layerId, element);
+                this.addTargetFrame(layer, frame);
             }
         }
 
