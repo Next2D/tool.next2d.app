@@ -387,6 +387,12 @@ class MovieClip extends Instance
             }
 
         }
+
+        /**
+         * @type {ArrowTool}
+         */
+        const tool = Util.$tools.getDefaultTool("arrow");
+        tool.clear();
     }
 
     /**

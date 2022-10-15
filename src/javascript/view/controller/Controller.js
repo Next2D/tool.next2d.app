@@ -90,22 +90,27 @@ class Controller extends BaseController
         ]);
 
         const workSpace = Util.$currentWorkSpace();
-        if (workSpace) {
-            const scene = workSpace.scene;
+        if (!workSpace) {
+            return ;
+        }
 
-            const objectName = document
-                .getElementById("object-name");
+        const scene = workSpace.scene;
+        if (!scene) {
+            return ;
+        }
 
-            if (objectName) {
-                objectName.value = scene.name;
-            }
+        const objectName = document
+            .getElementById("object-name");
 
-            const objectSymbol = document
-                .getElementById("object-symbol");
+        if (objectName) {
+            objectName.value = scene.name;
+        }
 
-            if (objectSymbol) {
-                objectSymbol.value = scene.symbol;
-            }
+        const objectSymbol = document
+            .getElementById("object-symbol");
+
+        if (objectSymbol) {
+            objectSymbol.value = scene.symbol;
         }
     }
 }

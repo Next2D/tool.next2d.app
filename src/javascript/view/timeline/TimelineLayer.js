@@ -3548,6 +3548,10 @@ class TimelineLayer extends BaseTimeline
         for (const [layerId, values] of this._$targetFrames) {
 
             const layer = scene.getLayer(layerId);
+            if (!layer) {
+                continue;
+            }
+
             for (let idx = 0; idx < values.length; ++idx) {
 
                 const element = layer.getChildren(values[idx]);
@@ -3560,7 +3564,7 @@ class TimelineLayer extends BaseTimeline
         }
 
         // 変数を初期化
-        this.targetFrames.clear();
+        this._$targetFrames.clear();
 
         // グルーピングElementを非表示にする
         this.hideTargetGroup();

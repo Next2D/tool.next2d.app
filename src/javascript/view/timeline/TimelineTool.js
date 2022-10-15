@@ -1407,7 +1407,7 @@ class TimelineTool extends BaseTimeline
 
         const frame = this.getFirstFrame();
         const scene = Util.$currentWorkSpace().scene;
-        for (const [layerId, values] of targetFrames) {
+        for (const [layerId, frames] of targetFrames) {
 
             // 未設定のフレームの場合は処理をスキップ
             const layer = scene.getLayer(layerId);
@@ -1437,7 +1437,7 @@ class TimelineTool extends BaseTimeline
                     if (character.hasPlace(frame)) {
 
                         // 削除範囲がキーフレームの幅を超えてる場合はキーフレームを削除
-                        if (values.length >= range.endFrame - range.startFrame) {
+                        if (frames.length >= range.endFrame - range.startFrame) {
 
                             // tweenがあれば情報を削除
                             if (character.hasTween(frame)) {
@@ -1460,7 +1460,7 @@ class TimelineTool extends BaseTimeline
 
                     // 削除範囲のフレーム数
                     moveFrame = Math.min(
-                        range.endFrame, frame + values.length
+                        range.endFrame, frame + frames.length
                     ) - frame;
 
                     // キーフレームが存在しなけれなDisplayObjectを削除
@@ -1552,7 +1552,7 @@ class TimelineTool extends BaseTimeline
                         - emptyCharacter.startFrame;
 
                     const endFrame = Math.min(
-                        emptyCharacter.endFrame, frame + values.length
+                        emptyCharacter.endFrame, frame + frames.length
                     );
 
                     moveFrame = endFrame - frame;
@@ -1727,9 +1727,35 @@ class TimelineTool extends BaseTimeline
      */
     setActiveFrame ()
     {
-        for (const values of Util.$timelineLayer.targetFrames.values()) {
-            for (let idx = 0; idx < values.length; ++idx) {
-                values[idx]
+        // 表示領域の変数
+        const timelineWidth = this.timelineWidth;
+        const elementCount  = Util.$timelineHeader.width / (timelineWidth + 1) | 0;
+        const leftFrame     = Util.$timelineHeader.leftFrame;
+        const rightFrame    = leftFrame + elementCount;
+
+        const scene = Util.$currentWorkSpace().scene;
+        for (const [layerId, frames] of Util.$timelineLayer.targetFrames) {
+
+            const layer = scene.getLayer(layerId);
+            for (let idx = 0; idx < frames.length; ++idx) {
+
+                const frame = frames[idx];
+                // 表示領域より前のフレームならスキップ
+                if (leftFrame > frame) {
+                    continue;
+                }
+
+                // 表示領域より後ろのフレームならスキップ
+                if (frame > rightFrame) {
+                    continue;
+                }
+
+                const element = layer.getChildren(frame);
+                if (!element) {
+                    continue;
+                }
+
+                element
                     .classList
                     .add("frame-active");
             }
