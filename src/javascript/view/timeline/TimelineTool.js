@@ -733,22 +733,14 @@ class TimelineTool extends BaseTimeline
 
                 let done = false;
 
-                // 前方のフレームを補正
-                let idx = 0;
-                for ( ; startFrame - idx > 1; ++idx) {
-
-                    const element = layer.getChildren(startFrame - idx);
-                    if (!element) {
-                        continue;
-                    }
-
-                    if (element.dataset.frameState !== "empty") {
-                        break;
-                    }
-
+                // 前方の最終フレームを取得
+                let frame = 1;
+                for (let idx = 0; idx < layer._$characters.length; ++idx) {
+                    frame = Math.max(layer._$characters[idx].endFrame - 1, frame);
                 }
-
-                const frame = startFrame - idx;
+                for (let idx = 0; idx < layer._$emptys.length; ++idx) {
+                    frame = Math.max(layer._$emptys[idx].endFrame - 1, frame);
+                }
 
                 // DisplayObjectが配置されたレイヤーでれば終了位置を補正
                 const characters = layer.getActiveCharacter(frame);
@@ -1345,24 +1337,16 @@ class TimelineTool extends BaseTimeline
             // 1フレーム目でない時は手前のフレームの確認を行う
             if (frame > 1) {
 
-                // 開始位置を算出
-                let idx = 1;
-                for (; frame - idx > 1; ++idx) {
-
-                    const element = layer.getChildren(frame - idx);
-                    if (!element) {
-                        continue;
-                    }
-
-                    if (element.dataset.frameState !== "empty") {
-                        break;
-                    }
-
+                // 前方の最終フレームを取得
+                let startFrame = 1;
+                for (let idx = 0; idx < layer._$characters.length; ++idx) {
+                    startFrame = Math.max(layer._$characters[idx].endFrame - 1, startFrame);
+                }
+                for (let idx = 0; idx < layer._$emptys.length; ++idx) {
+                    startFrame = Math.max(layer._$emptys[idx].endFrame - 1, startFrame);
                 }
 
-                const characters = layer
-                    .getActiveCharacter(frame - idx);
-
+                const characters = layer.getActiveCharacter(startFrame);
                 if (characters.length) {
 
                     // 手前にDisplayObjectを配置したフレームがあった場合は終了位置を補正
@@ -1376,7 +1360,7 @@ class TimelineTool extends BaseTimeline
                 } else {
 
                     const prevEmptyCharacter = layer
-                        .getActiveEmptyCharacter(frame - idx);
+                        .getActiveEmptyCharacter(startFrame);
 
                     // 手前のフレームに空フレームがあれば最終位置を伸ばす
                     if (prevEmptyCharacter) {
@@ -1388,7 +1372,7 @@ class TimelineTool extends BaseTimeline
                         // なければ新規作成
                         layer.addEmptyCharacter(
                             new EmptyCharacter({
-                                "startFrame": frame - idx,
+                                "startFrame": startFrame,
                                 "endFrame": frame
                             })
                         );
@@ -1920,7 +1904,7 @@ class TimelineTool extends BaseTimeline
 
         let minFrame = Number.MAX_VALUE;
         for (let idx = 0; idx < frames.length; ++idx) {
-            minFrame = Math.min(minFrame, frames[idx].dataset.frame | 0);
+            minFrame = Math.min(minFrame, frames[idx]);
         }
 
         return minFrame;

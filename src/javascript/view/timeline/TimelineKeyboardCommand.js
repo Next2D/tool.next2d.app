@@ -277,7 +277,6 @@ class TimelineKeyboardCommand extends KeyboardCommand
         // フレーム移動
         Util.$timelineLayer.moveFrame(frame);
         Util.$timelineLayer.activeLayer(targetLayer);
-        // Util.$timelineMarker.moveVisibleLocation();
     }
 
     /**

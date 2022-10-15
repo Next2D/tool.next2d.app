@@ -305,8 +305,9 @@ class TimelineLayer extends BaseTimeline
             return ;
         }
 
-        frames.push(element);
+        frames.push(element.dataset.frame | 0);
 
+        // アクティブ表示
         element
             .classList
             .add("frame-active");
@@ -1807,6 +1808,9 @@ class TimelineLayer extends BaseTimeline
                 children[idx].dataset.layerId | 0
             );
         }
+
+        // 選択中のフレームをアクティブ表示に
+        this.moveActiveFrame();
     }
 
     /**
@@ -2097,37 +2101,38 @@ class TimelineLayer extends BaseTimeline
         /**
          * @type {ArrowTool}
          */
-        const tool  = Util.$tools.getDefaultTool("arrow");
+        const tool = Util.$tools.getDefaultTool("arrow");
         if (target.classList.contains("frame-active")) {
 
-            const firstFrames  = this.targetFrames.values().next().value;
-            const firstElement = firstFrames[0];
-            if (!firstElement) {
+            // 最初に選択したレイヤーのフレーム番号の配列
+            const firstFrames = this.targetFrames.values().next().value;
+            if (!firstFrames.length) {
                 return ;
             }
 
-            // 一番左上のelementを算出
+            // レイヤーを配列化
             const children = Array.from(
                 document.getElementById("timeline-content").children
             );
 
+            // 一番左上のelementを算出
             let index = children.indexOf(this.targetLayer);
             if (this.targetFrames.size > 1) {
-                index = Number.MAX_VALUE;
-                for (const frames of this.targetFrames.values()) {
-                    index = Math.min(index,
-                        children.indexOf(
-                            document.getElementById(
-                                `layer-id-${frames[0].dataset.layerId}`
-                            )
-                        )
-                    );
+                for (const layerId of this.targetFrames.keys()) {
+                    const layerElement =  document
+                        .getElementById(`layer-id-${layerId}`);
+
+                    if (!layerElement) {
+                        continue;
+                    }
+
+                    index = Math.min(index, children.indexOf(layerElement));
                 }
             }
 
             let frame = Number.MAX_VALUE;
             for (let idx = 0; idx < firstFrames.length; ++idx) {
-                frame = Math.min(frame, firstFrames[idx].dataset.frame | 0);
+                frame = Math.min(frame, firstFrames[idx]);
             }
 
             // 左上のelementを基準に選択範囲を生成
@@ -2212,11 +2217,6 @@ class TimelineLayer extends BaseTimeline
 
             window.addEventListener("mousemove", this._$multiSelect);
             window.addEventListener("mouseup", this._$endMultiSelect);
-
-            // アクティブ表示
-            target
-                .classList
-                .add("frame-active");
 
             // フレームを移動
             this.moveFrame(frame);
@@ -2518,12 +2518,12 @@ class TimelineLayer extends BaseTimeline
             // 移動先の終了フレーム
             const endFrame = distFrame + values.length;
 
-            const elements = values.slice();
-            if (elements.length > 1) {
-                elements.sort((a, b) =>
+            const frames = values.slice();
+            if (frames.length > 1) {
+                frames.sort((a, b) =>
                 {
-                    const aFrame = a.dataset.frame | 0;
-                    const bFrame = b.dataset.frame | 0;
+                    const aFrame = a | 0;
+                    const bFrame = b | 0;
 
                     // 昇順
                     switch (true) {
@@ -2553,11 +2553,14 @@ class TimelineLayer extends BaseTimeline
             const emptys      = [];
             let currentEmpty  = null;
             let rangeEndFrame = 1;
-            for (let idx = 0; idx < elements.length; ++idx) {
+            for (let idx = 0; idx < frames.length; ++idx) {
 
-                const element = elements[idx];
+                const frame = frames[idx];
 
-                const frame = element.dataset.frame | 0;
+                const element = layer.getChildren(frame);
+                if (!element) {
+                    continue;
+                }
 
                 if (element.dataset.frameState === "empty") {
 
@@ -3486,6 +3489,53 @@ class TimelineLayer extends BaseTimeline
     }
 
     /**
+     * @description 選択中のフレームをアクティブ表示に
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    moveActiveFrame ()
+    {
+        // 表示領域の変数
+        const timelineWidth = Util.$timelineTool.timelineWidth;
+        const elementCount  = Util.$timelineHeader.width / (timelineWidth + 1) | 0;
+        const leftFrame     = Util.$timelineHeader.leftFrame;
+        const rightFrame    = leftFrame + elementCount;
+
+        const frame = Util.$timelineFrame.currentFrame;
+        const scene = Util.$currentWorkSpace().scene;
+        for (const [layerId, values] of this._$targetFrames) {
+
+            const layer = scene.getLayer(layerId);
+            for (let idx = 0; idx < values.length; ++idx) {
+
+                const targetFrame = frame + idx;
+
+                // 表示領域より前のフレームならスキップ
+                if (leftFrame > targetFrame) {
+                    continue;
+                }
+
+                // 表示領域より後ろのフレームならスキップ
+                if (targetFrame > rightFrame) {
+                    continue;
+                }
+
+                const element = layer.getChildren(targetFrame);
+                if (!element) {
+                    continue;
+                }
+
+                // アクティブ表示
+                element
+                    .classList
+                    .add("frame-active");
+            }
+        }
+    }
+
+    /**
      * @description 選択中のフレームを全て非選択
      *
      * @return {void}
@@ -3494,9 +3544,18 @@ class TimelineLayer extends BaseTimeline
      */
     clearActiveFrames ()
     {
-        for (const values of this._$targetFrames.values()) {
+        const scene = Util.$currentWorkSpace().scene;
+        for (const [layerId, values] of this._$targetFrames) {
+
+            const layer = scene.getLayer(layerId);
             for (let idx = 0; idx < values.length; ++idx) {
-                values[idx].classList.remove("frame-active");
+
+                const element = layer.getChildren(values[idx]);
+                if (!element) {
+                    continue;
+                }
+
+                element.classList.remove("frame-active");
             }
         }
 
@@ -3558,9 +3617,8 @@ class TimelineLayer extends BaseTimeline
             event.preventDefault();
         }
 
-        const selectFrameElement = this.targetFrame;
-        const selectFrame        = selectFrameElement.dataset.frame | 0;
-        const selectLayerId      = selectFrameElement.dataset.layerId | 0;
+        const selectLayerId = this.targetFrames.keys().next().value | 0;
+        const selectFrame   = this.targetFrames.values().next().value[0];
 
         const minFrame = Math.min(targetFrame, selectFrame);
         const maxFrame = Math.max(targetFrame, selectFrame) + 1;
@@ -3620,8 +3678,8 @@ class TimelineLayer extends BaseTimeline
 
         // 最初に選択したフレームの順番を補正
         const frames = this.targetFrames.get(selectLayerId);
-        frames.splice(frames.indexOf(selectFrameElement), 1);
-        frames.unshift(selectFrameElement);
+        frames.splice(frames.indexOf(selectFrame), 1);
+        frames.unshift(selectFrame);
 
         // 再描画後にアクティブ判定を行う
         this.activeCharacter();

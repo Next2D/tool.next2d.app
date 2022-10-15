@@ -170,57 +170,9 @@ class TimelineMarker extends BaseTimeline
             Util.$timelineFrame.currentFrame = frame;
             this.move();
 
-            // 見える位置にタイムラインを補正
-            // this.moveVisibleLocation();
-
             // 現在のフレームで再描画
             this.reloadScreen();
         });
-    }
-
-    /**
-     * @description タイムラインを見えるところに移動する
-     *
-     * @return {void}
-     * @method
-     * @public
-     */
-    moveVisibleLocation ()
-    {
-        const base = document
-            .getElementById("timeline-controller-base");
-
-        const marker = document
-            .getElementById("timeline-marker");
-
-        // 移動するフレームポイント
-        const moveWidth = Util.$timelineTool.timelineWidth * 2;
-
-        // タイムラインの右端になったらタイムラインを右に少しずらす
-        if (base.scrollWidth - base.offsetWidth > base.scrollLeft
-            && marker.offsetLeft + moveWidth > base.scrollLeft + base.offsetWidth
-        ) {
-
-            Util
-                .$timelineLayer
-                .moveTimeLine(
-                    base.scrollLeft + Util.$timelineTool.timelineWidth + 1
-                );
-
-        }
-
-        // タイムラインの左端になったらタイムラインを左に少しずらす
-        if (base.scrollLeft > 0
-            && base.scrollLeft > marker.offsetLeft - moveWidth
-        ) {
-
-            Util
-                .$timelineLayer
-                .moveTimeLine(
-                    base.scrollLeft - (Util.$timelineTool.timelineWidth + 1)
-                );
-
-        }
     }
 
     /**
