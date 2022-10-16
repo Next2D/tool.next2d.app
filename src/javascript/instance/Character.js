@@ -28,6 +28,7 @@ class Character
         this._$offsetX        = 0;
         this._$offsetY        = 0;
         this._$name           = "";
+        this._$cachePlaces    = [];
         this._$referencePoint = { "x": 0, "y": 0 };
 
         if (object) {
@@ -1040,6 +1041,14 @@ class Character
      */
     getPlace (frame)
     {
+        if (this._$places.size === 1) {
+            return this._$places.get(this.startFrame);
+        }
+
+        if (this.hasPlace(frame)) {
+            return this._$places.get(frame | 0);
+        }
+
         return this._$places.get(
             this.getNearPlaceFrame(frame | 0)
         );
@@ -1055,16 +1064,51 @@ class Character
      */
     getNearPlaceFrame (frame)
     {
-        if (this.hasPlace(frame)) {
-            return frame;
+        // 再生中は内部キャッシュを利用して高速化
+        if (!Util.$timelinePlayer._$stopFlag) {
+
+            // キャッシュがなければキャッシュ
+            if (!this._$cachePlaces.length) {
+                // 降順
+                this._$cachePlaces = Array.from(this._$places.keys());
+                this._$cachePlaces.sort((a, b) =>
+                {
+                    switch (true) {
+
+                        case a > b:
+                            return -1;
+
+                        case a < b:
+                            return 1;
+
+                        default:
+                            return 0;
+
+                    }
+                });
+            }
+
+            let idx = 0;
+            while (this._$cachePlaces.length > idx) {
+
+                const placeFrame = this._$cachePlaces[idx++] | 0;
+
+                if (frame > placeFrame) {
+                    return placeFrame;
+                }
+
+            }
+
+            return 1;
         }
 
+        // 再生が終了してキャッシュがあれば削除
+        if (this._$cachePlaces.length) {
+            this._$cachePlaces.length = 0;
+        }
+
+        // 昇順
         const places = Array.from(this._$places.keys());
-        if (this._$places.size === 1) {
-            return places[0];
-        }
-
-        // 降順
         places.sort((a, b) =>
         {
             switch (true) {

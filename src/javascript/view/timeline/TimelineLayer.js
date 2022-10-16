@@ -667,7 +667,7 @@ class TimelineLayer extends BaseTimeline
                     Util.$timelineMarker.move();
 
                     // レイヤーのタイムラインを再描画
-                    Util.$timelineLayer.moveTimeLine();
+                    this.moveTimeLine();
                 });
 
             }, { "passive" : false });
@@ -1792,13 +1792,18 @@ class TimelineLayer extends BaseTimeline
      */
     moveTimeLine ()
     {
-        const children = document
-            .getElementById("timeline-content")
-            .children;
+        const element  = document.getElementById("timeline-content");
+        const children = element.children;
+        const height   = element.offsetHeight;
 
         // 全てのElementの位置を揃える
         const length = children.length;
         for (let idx = 0; idx < length; ++idx) {
+
+            if (31 * (idx + 1) > height) {
+                break;
+            }
+
             this.rebuild(
                 children[idx].dataset.layerId | 0
             );

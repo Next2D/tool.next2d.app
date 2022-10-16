@@ -18,12 +18,13 @@ class MovieClip extends Instance
         super(object);
 
         // default
-        this._$currentFrame = 1;
-        this._$layerId      = 0;
-        this._$labels       = new Map();
-        this._$layers       = new Map();
-        this._$actions      = new Map();
-        this._$sounds       = new Map();
+        this._$currentFrame  = 1;
+        this._$layerId       = 0;
+        this._$labels        = new Map();
+        this._$layers        = new Map();
+        this._$actions       = new Map();
+        this._$sounds        = new Map();
+        this._$publishObject = null;
 
         if (object.layers) {
             this.layers = object.layers;
@@ -1226,7 +1227,27 @@ class MovieClip extends Instance
         const currentFrame = Util.$currentFrame;
 
         Util.$useIds.clear();
-        const object = this.toPublish();
+
+        let object = null;
+
+        // 再生中は内部キャッシュを利用して高速化
+        if (!Util.$timelinePlayer._$stopFlag) {
+
+            // キャッシュがなけれなキャッシュ
+            if (!this._$publishObject) {
+                this._$publishObject = this.toPublish();
+            }
+
+            object = this._$publishObject;
+
+        } else {
+
+            if (this._$publishObject) {
+                this._$publishObject = null;
+            }
+
+            object = this.toPublish();
+        }
 
         let frame = parent_frame || 1;
         if (place && range) {
