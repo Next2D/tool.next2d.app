@@ -68,7 +68,7 @@ class ExternalLibrary
         const currentFrame = Util.$currentFrame;
 
         Util.$currentFrame = frame;
-        const context = this._$instance.toImage(
+        const context = this._$instance.draw(
             Util.$getCanvas(),
             Math.ceil(width),
             Math.ceil(height),

@@ -402,16 +402,16 @@ class Instance
      *              Generate Image class via Next2D BitmapData class
      *
      * @param  {HTMLCanvasElement} canvas
-     * @param  {number}  width
-     * @param  {number}  height
-     * @param  {object}  place
-     * @param  {object}  [range = null]
-     * @param  {number}  [static_frame = 0]
+     * @param  {number} width
+     * @param  {number} height
+     * @param  {object} place
+     * @param  {object} [range = null]
+     * @param  {number} [static_frame = 0]
      * @return {CanvasRenderingContext2D}
      * @method
      * @public
      */
-    toImage (canvas, width, height, place, range = null, static_frame = 0)
+    draw (canvas, width, height, place, range = null, static_frame = 0)
     {
         // empty image
         if (!width || !height) {
@@ -640,7 +640,7 @@ class Instance
         }
 
         const canvas = Util.$getCanvas();
-        this.toImage(
+        this.draw(
             canvas,
             Math.ceil(width),
             Math.ceil(height),

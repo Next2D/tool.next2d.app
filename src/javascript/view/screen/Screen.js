@@ -802,8 +802,8 @@ class Screen extends BaseScreen
                         const element = event.currentTarget;
                         element.style.pointerEvents = "";
 
-                        const image = element.firstChild;
-                        image.remove();
+                        const canvas = element.firstChild;
+                        canvas.remove();
 
                         const textarea = window.document.createElement("textarea");
                         element.style.display = "none";
@@ -824,8 +824,8 @@ class Screen extends BaseScreen
 
                         textarea.style.fontSize      = `${instance._$size}px`;
                         textarea.style.fontFamily    = instance._$font;
-                        textarea.style.width         = `${image.width - 4}px`;
-                        textarea.style.height        = `${image.height}px`;
+                        textarea.style.width         = `${parseFloat(canvas.style.width) - 4}px`;
+                        textarea.style.height        = `${parseFloat(canvas.style.height)}px`;
                         textarea.style.position      = "absolute";
                         textarea.style.left          = element.style.left;
                         textarea.style.top           = element.style.top;

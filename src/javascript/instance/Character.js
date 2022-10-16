@@ -687,7 +687,7 @@ class Character
         switch (place.blendMode) {
 
             case "invert":
-                context = instance.toImage(canvas, width, height,
+                context = instance.draw(canvas, width, height,
                     {
                         "frame": place.frame,
                         "matrix": place.matrix,
@@ -706,11 +706,23 @@ class Character
 
             case "alpha":
             case "erase":
-                context = new Image();
+                {
+                    const bounds = this.getBounds(place.matrix, place, range);
+                    canvas._$tx      = bounds.xMin;
+                    canvas._$ty      = bounds.yMin;
+                    canvas._$offsetX = 0;
+                    canvas._$offsetY = 0;
+                    canvas._$width   = 0;
+                    canvas._$height  = 0;
+                    canvas.draggable = false;
+
+                    canvas.width = canvas.height = 0;
+                    context = canvas.getContext("2d");
+                }
                 break;
 
             default:
-                context = instance.toImage(canvas, width, height, place, range);
+                context = instance.draw(canvas, width, height, place, range);
                 break;
 
         }

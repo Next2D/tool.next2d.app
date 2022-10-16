@@ -890,22 +890,22 @@ class TextField extends Instance
      *              Generate Image class via Next2D BitmapData class
      *
      * @param  {HTMLCanvasElement} canvas
-     * @param  {number}  width
-     * @param  {number}  height
-     * @param  {object}  place
-     * @param  {object}  [range = null]
-     * @param  {number}  [static_frame = 0]
-     * @return {HTMLImageElement}
+     * @param  {number} width
+     * @param  {number} height
+     * @param  {object} place
+     * @param  {object} [range = null]
+     * @param  {number} [static_frame = 0]
+     * @return {CanvasRenderingContext2D}
      * @method
      * @public
      */
-    toImage (
+    draw (
         canvas, width, height, place, range = null, static_frame = 0
     ) {
 
-        const image = super.toImage(canvas, width, height, place, range, static_frame);
-        image._$tx -= this._$thickness;
-        image._$ty -= this._$thickness;
+        const context = super.draw(canvas, width, height, place, range, static_frame);
+        context.canvas._$tx -= this._$thickness;
+        context.canvas._$ty -= this._$thickness;
 
         let resizeX = 0;
         switch (this._$autoSize) {
@@ -940,9 +940,9 @@ class TextField extends Instance
         }
 
         if (this._$autoSize === 1) {
-            image._$tx -= resizeX;
+            context.canvas._$tx -= resizeX;
         }
 
-        return image;
+        return context;
     }
 }

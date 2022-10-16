@@ -384,11 +384,12 @@ class Video extends Instance
      * @description Next2DのDisplayObjectを生成
      *              Generate Next2D DisplayObject
      *
-     * @return {next2d.display.Shape}
+     * @param  {object} place
+     * @return {next2d.display.Video}
      * @method
      * @public
      */
-    createInstance (place, preview = false)
+    createInstance (place)
     {
         if (!place) {
             console.log(place);
@@ -406,17 +407,9 @@ class Video extends Instance
         if (this._$loaded) {
             const context = Util.$root.stage._$player._$context;
 
-            if (!preview) {
+            const currentFrame = Util.$timelineFrame.currentFrame;
 
-                const currentFrame = Util.$timelineFrame.currentFrame;
-
-                video._$video.currentTime = currentFrame / 60;
-
-            } else {
-
-                video._$video.currentTime = 1;
-
-            }
+            video._$video.currentTime = currentFrame / 60;
 
             video._$texture = context
                 .frameBuffer
@@ -438,9 +431,10 @@ class Video extends Instance
     {
         for (let idx = 0; idx < this._$queue.length; ++idx) {
             const object = this._$queue[idx];
-            object.image.src = this.toImage(
-                object.width, object.height, object.place, object.preview
-            ).src;
+            this.draw(
+                object.canvas, object.width, object.height,
+                object.place, object.range, object.staticFrame
+            );
         }
         this._$queue.length = 0;
     }
@@ -450,36 +444,35 @@ class Video extends Instance
      *              Generate Image class via Next2D BitmapData class
      *
      * @param  {HTMLCanvasElement} canvas
-     * @param  {number}  width
-     * @param  {number}  height
-     * @param  {object}  place
-     * @param  {object}  [range = null]
-     * @param  {number}  [static_frame = 0]
-     * @param  {boolean} [preview = false]
-     * @return {HTMLImageElement}
+     * @param  {number} width
+     * @param  {number} height
+     * @param  {object} place
+     * @param  {object} [range = null]
+     * @param  {number} [static_frame = 0]
+     * @return {CanvasRenderingContext2D}
      * @method
      * @public
      */
-    toImage (
-        canvas, width, height, place, range = null, static_frame = 0, preview = false
-    ) {
+    draw (canvas, width, height, place, range = null, static_frame = 0)
+    {
 
-        const image = super.toImage(
-            canvas, width, height, place, range, static_frame, preview
+        const context = super.draw(
+            canvas, width, height, place, range, static_frame
         );
 
         if (this._$loaded) {
-            return image;
+            return context;
         }
 
         this._$queue.push({
-            "image": image,
+            "canvas": canvas,
             "width": width,
             "height": height,
-            "preview": preview,
-            "place": place
+            "place": place,
+            "range": range,
+            "staticFrame": static_frame
         });
 
-        return image;
+        return context;
     }
 }
