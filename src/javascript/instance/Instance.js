@@ -407,7 +407,7 @@ class Instance
      * @param  {object}  place
      * @param  {object}  [range = null]
      * @param  {number}  [static_frame = 0]
-     * @return {HTMLImageElement}
+     * @return {CanvasRenderingContext2D}
      * @method
      * @public
      */

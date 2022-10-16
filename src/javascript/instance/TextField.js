@@ -889,6 +889,7 @@ class TextField extends Instance
      * @description Next2DのBitmapDataクラスを経由してImageクラスを生成
      *              Generate Image class via Next2D BitmapData class
      *
+     * @param  {HTMLCanvasElement} canvas
      * @param  {number}  width
      * @param  {number}  height
      * @param  {object}  place
@@ -899,10 +900,10 @@ class TextField extends Instance
      * @public
      */
     toImage (
-        width, height, place, range = null, static_frame = 0
+        canvas, width, height, place, range = null, static_frame = 0
     ) {
 
-        const image = super.toImage(width, height, place, range, static_frame);
+        const image = super.toImage(canvas, width, height, place, range, static_frame);
         image._$tx -= this._$thickness;
         image._$ty -= this._$thickness;
 

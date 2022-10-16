@@ -657,7 +657,7 @@ class Character
      * @method
      * @public
      */
-    getImage (canvas)
+    draw (canvas)
     {
         if (this._$context) {
             if (canvas instanceof HTMLCanvasElement) {

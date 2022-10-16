@@ -1362,7 +1362,7 @@ class ArrowTool extends BaseTool
                     const maskCanvas = Util.$getCanvas();
 
                     const maskCharacter = maskLayer._$characters[0];
-                    const maskImage     = maskCharacter.getImage(maskCanvas);
+                    const maskImage     = maskCharacter.draw(maskCanvas);
 
                     const maskSrc    = maskImage.toDataURL();
                     const maskWidth  = maskImage._$width  * Util.$zoomScale;
@@ -1381,7 +1381,7 @@ class ArrowTool extends BaseTool
                     divStyle += `-webkit-mask-position: ${x}px ${y}px;`;
 
                     const canvas = Util.$getCanvas();
-                    const image = character.getImage(canvas);
+                    const image = character.draw(canvas);
                     divStyle += `mix-blend-mode: ${image.style.mixBlendMode};`;
                     divStyle += `filter: ${image.style.filter};`;
 

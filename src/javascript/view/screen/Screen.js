@@ -404,7 +404,7 @@ class Screen extends BaseScreen
 
         const context = character._$context;
         character._$context = null;
-        const image = character.getImage(canvas);
+        const image = character.draw(canvas);
         div.appendChild(image);
         character._$context = context;
 
@@ -432,7 +432,7 @@ class Screen extends BaseScreen
                 maskCharacter.dispose();
 
                 const canvas = Util.$getCanvas();
-                const maskImage = maskCharacter.getImage(canvas);
+                const maskImage = maskCharacter.draw(canvas);
 
                 const x = (maskCharacter.screenX - character.screenX) * Util.$zoomScale;
                 const y = (maskCharacter.screenY - character.screenY) * Util.$zoomScale;
@@ -613,7 +613,7 @@ class Screen extends BaseScreen
         const div = document.createElement("div");
 
         const canvas = Util.$getCanvas();
-        const image  = character.getImage(canvas);
+        const image  = character.draw(canvas);
         div.appendChild(image);
 
         div.id = `character-${character.id}`;
@@ -720,7 +720,7 @@ class Screen extends BaseScreen
                 maskCharacter.dispose();
 
                 const canvas = Util.$getCanvas();
-                const maskImage = maskCharacter.getImage(canvas);
+                const maskImage = maskCharacter.draw(canvas);
 
                 const x = (maskCharacter.screenX - character.screenX) * Util.$zoomScale;
                 const y = (maskCharacter.screenY - character.screenY) * Util.$zoomScale;
