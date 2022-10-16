@@ -5,7 +5,6 @@
     display     : grid;
     place-items : center;
     position    : relative;
-    will-change : scroll-position;
 }
 
 #screen .transform
@@ -156,10 +155,12 @@
     place-items : center;
 }
 
-#stage-area .display-object
+#stage-area img,
+#stage-area canvas
 {
-    position    : absolute;
-    will-change : left, top;
+    position : relative;
+    left     : 0;
+    top      : 0;
 }
 
 #stage

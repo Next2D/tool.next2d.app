@@ -1283,7 +1283,7 @@ class Shape extends Instance
                     continue;
                 }
 
-                character._$image = null;
+                character.dispose();
             }
         }
     }

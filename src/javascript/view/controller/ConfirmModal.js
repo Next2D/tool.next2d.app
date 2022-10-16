@@ -250,7 +250,7 @@ class ConfirmModal extends BaseController
 
                     for (const layer of library._$layers.values()) {
                         for (let idx = 0; idx < layer._$characters.length; ++idx) {
-                            layer._$characters[idx]._$image = null;
+                            layer._$characters[idx].dispose();
                         }
                     }
                 }
@@ -343,7 +343,7 @@ class ConfirmModal extends BaseController
 
                     // 情報を更新してキャッシュをクリア
                     character.libraryId = libraryId;
-                    character._$image   = null;
+                    character.dispose();
                 }
             }
         }
@@ -379,7 +379,7 @@ class ConfirmModal extends BaseController
         const scene = Util.$currentWorkSpace().scene;
         for (const layer of scene._$layers.values()) {
             for (let idx = 0; idx < layer._$characters.length; ++idx) {
-                layer._$characters[idx]._$image = null;
+                layer._$characters[idx].dispose();
             }
         }
     }

@@ -295,7 +295,7 @@ class Layer
                 for (let idx = 0; idx < characters.length; ++idx) {
 
                     const character = characters[idx];
-                    character._$image = null;
+                    character.dispose();
 
                     Util.$screen.appendOnionCharacter(character, this.id);
                 }
@@ -314,7 +314,7 @@ class Layer
                 for (let idx = 0; idx < characters.length; ++idx) {
 
                     const character = characters[idx];
-                    character._$image = null;
+                    character.dispose();
 
                     Util.$screen.appendCharacter(
                         character, cacheFrame, this.id, event

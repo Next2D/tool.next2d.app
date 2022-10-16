@@ -790,7 +790,7 @@ class TimelineMenu extends BaseTimeline
         layer.reloadStyle();
 
         // 再描画
-        character._$image = null;
+        character.dispose();
         this.reloadScreen();
 
         this._$saved = false;
@@ -860,7 +860,7 @@ class TimelineMenu extends BaseTimeline
         layer.reloadStyle();
 
         // 再描画
-        character._$image = null;
+        character.dispose();
         this.reloadScreen();
 
         this._$saved = false;

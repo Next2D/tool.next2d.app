@@ -1638,7 +1638,7 @@ class TimelineTool extends BaseTimeline
 
             for (const layer of layers.values()) {
                 for (let idx = 0; idx < layer._$characters.length; ++idx) {
-                    layer._$characters[idx]._$image = null;
+                    layer._$characters[idx].dispose();
                 }
             }
 

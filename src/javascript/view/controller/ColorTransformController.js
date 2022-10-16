@@ -328,7 +328,7 @@ class ColorTransformController extends BaseController
         character.relocationTween(frame);
 
         // 再描画ように、キャッシュを削除
-        character._$image = null;
+        character.dispose();
     }
 }
 

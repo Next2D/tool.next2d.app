@@ -794,7 +794,6 @@
     overflow    : hidden;
     display     : flex;
     align-items : center;
-    will-change : contents;
 }
 
 #timeline-header
@@ -812,7 +811,6 @@
     flex-shrink    : 0;
     font-size      : 10px;
     color          : darkgray;
-    will-change    : contents;
 }
 
 #timeline .frame-border

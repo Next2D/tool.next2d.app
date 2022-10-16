@@ -97,7 +97,7 @@ class BlendController extends BaseController
         }
 
         // 再描画ように、キャッシュを削除
-        character._$image = null;
+        character.dispose();
     }
 }
 

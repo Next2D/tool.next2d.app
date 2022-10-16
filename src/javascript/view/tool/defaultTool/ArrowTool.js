@@ -655,7 +655,7 @@ class ArrowTool extends BaseTool
 
         // update
         character._$libraryId = event.target.value | 0;
-        character._$image     = null;
+        character.dispose();
 
         const instance = workSpace
             .getLibrary(character._$libraryId);
@@ -1352,17 +1352,19 @@ class ArrowTool extends BaseTool
             character.screenX = bounds.xMin;
             character.screenY = bounds.yMin;
 
-            let divStyle = "";
+            let divStyle = "position: absolute;";
             divStyle += `pointer-events: ${element.dataset.pointer};`;
 
             if (layer.maskId !== null) {
                 const maskLayer = scene.getLayer(layer.maskId);
                 if (maskLayer.lock && maskLayer._$characters.length) {
 
-                    const maskCharacter = maskLayer._$characters[0];
-                    const maskImage     = maskCharacter.getImage();
+                    const maskCanvas = Util.$getCanvas();
 
-                    const maskSrc    = maskImage.src;
+                    const maskCharacter = maskLayer._$characters[0];
+                    const maskImage     = maskCharacter.getImage(maskCanvas);
+
+                    const maskSrc    = maskImage.toDataURL();
                     const maskWidth  = maskImage._$width  * Util.$zoomScale;
                     const maskHeight = maskImage._$height * Util.$zoomScale;
 
@@ -1378,7 +1380,8 @@ class ArrowTool extends BaseTool
                     divStyle += `mask-position: ${x}px ${y}px;`;
                     divStyle += `-webkit-mask-position: ${x}px ${y}px;`;
 
-                    const image = character.getImage();
+                    const canvas = Util.$getCanvas();
+                    const image = character.getImage(canvas);
                     divStyle += `mix-blend-mode: ${image.style.mixBlendMode};`;
                     divStyle += `filter: ${image.style.filter};`;
 

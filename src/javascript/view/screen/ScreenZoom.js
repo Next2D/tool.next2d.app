@@ -137,7 +137,7 @@ class ScreenZoom extends BaseScreen
 
             const characters = layer.getActiveCharacter(frame);
             for (let idx = 0; idx < characters.length; ++idx) {
-                characters[idx]._$image = null;
+                characters[idx].dispose();
             }
 
         }

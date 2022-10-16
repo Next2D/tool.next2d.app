@@ -133,7 +133,7 @@ class LoopController extends BaseController
 
         // ループタイプを更新してキャッシュを削除
         place.loop.start  = value;
-        character._$image = null;
+        character.dispose();
 
         // 再描画
         this.reloadScreen();
@@ -197,7 +197,7 @@ class LoopController extends BaseController
 
         // ループタイプを更新してキャッシュを削除
         place.loop.end    = value;
-        character._$image = null;
+        character.dispose();
 
         // 再描画
         this.reloadScreen();
@@ -685,7 +685,7 @@ class LoopController extends BaseController
 
         // ループタイプを更新してキャッシュを削除
         place.loop.type   = type;
-        character._$image = null;
+        character.dispose();
 
         // 再描画
         this.reloadScreen();

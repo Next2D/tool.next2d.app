@@ -293,7 +293,7 @@ class ExternalElement
                     // cache clear
                     this._$character._$currentFrame = 0;
                     this._$character._$currentPlace = null;
-                    this._$character._$image        = null;
+                    this._$character.dispose();
 
                     // update
                     this._$character._$libraryId = id;

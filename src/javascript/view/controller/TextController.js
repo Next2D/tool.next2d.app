@@ -509,7 +509,7 @@ class TextController extends BaseController
         instance[object.name] = object.value;
 
         // 再描画ように、キャッシュを削除
-        character._$image = null;
+        character.dispose();
     }
 }
 

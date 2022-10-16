@@ -19,6 +19,7 @@ class Character
         this._$layerId        = -1;
         this._$places         = new Map();
         this._$tween          = new Map();
+        this._$context        = null;
         this._$image          = null;
         this._$currentFrame   = 0;
         this._$currentPlace   = null;
@@ -648,111 +649,115 @@ class Character
     }
 
     /**
-     * @description 表示用のHTMLImageElementクラスを生成
-     *              Generate HTMLImageElement class for display
+     * @description 表示用のHTMLCanvasElementクラスを生成
+     *              Generate HTMLCanvasElement class for display
      *
-     * @return {HTMLImageElement}
+     * @param  {HTMLCanvasElement} canvas
+     * @return {HTMLCanvasElement}
      * @method
      * @public
      */
-    getImage ()
+    getImage (canvas)
     {
-        if (!this._$image) {
-
-            const workSpace = Util.$currentWorkSpace();
-            const instance  = workSpace.getLibrary(this.libraryId);
-
-            const frame = Util.$timelineFrame.currentFrame;
-
-            const place = this.getPlace(frame);
-            const range = place.loop && place.loop.type === 5
-                ? { "startFrame": this.startFrame, "endFrame": this.endFrame }
-                : this.getRange(frame);
-
-            // reset
-            Util.$currentFrame = frame;
-
-            const bounds = instance.getBounds(place.matrix, place, range);
-            const width  = +Math.ceil(Math.abs(bounds.xMax - bounds.xMin));
-            const height = +Math.ceil(Math.abs(bounds.yMax - bounds.yMin));
-
-            let image = null;
-            switch (place.blendMode) {
-
-                case "invert":
-                    image = instance.toImage(width, height,
-                        {
-                            "frame": place.frame,
-                            "matrix": place.matrix,
-                            "colorTransform": [
-                                0, 0, 0, place.colorTransform[3],
-                                0, 0, 0, place.colorTransform[7]
-                            ],
-                            "blendMode": place.blendMode,
-                            "filter": place.filter,
-                            "tweenFrame": place.tweenFrame,
-                            "loop": place.loop
-                        },
-                        range
-                    );
-                    break;
-
-                case "alpha":
-                case "erase":
-                    image = new Image();
-                    break;
-
-                default:
-                    image = instance.toImage(width, height, place, range);
-                    break;
-
+        if (this._$context) {
+            if (canvas instanceof HTMLCanvasElement) {
+                Util.$canvases.push(canvas);
             }
-
-            this._$image = image;
-
-            // set blend mode
-            switch (place.blendMode) {
-
-                case "add":
-                    this._$image.style.mixBlendMode = "color-dodge";
-                    break;
-
-                case "subtract":
-                    this._$image.style.filter = "invert(100%)";
-                    this._$image.style.mixBlendMode = "multiply";
-                    break;
-
-                case "invert":
-                    this._$image.style.filter = "invert(100%)";
-                    this._$image.style.mixBlendMode = "difference";
-                    break;
-
-                case "hardlight":
-                    this._$image.style.mixBlendMode = "hard-light";
-                    break;
-
-                case "alpha":
-                case "erase":
-                case "layer":
-                    break;
-
-                default:
-                    this._$image.style.mixBlendMode = place.blendMode;
-                    break;
-
-            }
-
-            this._$screenX = this._$image._$tx;
-            this._$screenY = this._$image._$ty;
-            this._$offsetX = this._$image._$offsetX;
-            this._$offsetY = this._$image._$offsetY;
-
-            this._$image.style.position = "relative";
-
-            return this._$image;
+            return this._$context.canvas;
         }
 
-        return this._$image;
+        const workSpace = Util.$currentWorkSpace();
+        const instance  = workSpace.getLibrary(this.libraryId);
+
+        const frame = Util.$timelineFrame.currentFrame;
+
+        const place = this.getPlace(frame);
+        const range = place.loop && place.loop.type === 5
+            ? { "startFrame": this.startFrame, "endFrame": this.endFrame }
+            : this.getRange(frame);
+
+        // reset
+        Util.$currentFrame = frame;
+
+        const bounds = instance.getBounds(place.matrix, place, range);
+        const width  = +Math.ceil(Math.abs(bounds.xMax - bounds.xMin));
+        const height = +Math.ceil(Math.abs(bounds.yMax - bounds.yMin));
+
+        let context = null;
+        switch (place.blendMode) {
+
+            case "invert":
+                context = instance.toImage(canvas, width, height,
+                    {
+                        "frame": place.frame,
+                        "matrix": place.matrix,
+                        "colorTransform": [
+                            0, 0, 0, place.colorTransform[3],
+                            0, 0, 0, place.colorTransform[7]
+                        ],
+                        "blendMode": place.blendMode,
+                        "filter": place.filter,
+                        "tweenFrame": place.tweenFrame,
+                        "loop": place.loop
+                    },
+                    range
+                );
+                break;
+
+            case "alpha":
+            case "erase":
+                context = new Image();
+                break;
+
+            default:
+                context = instance.toImage(canvas, width, height, place, range);
+                break;
+
+        }
+
+        this._$context = context;
+
+        // set blend mode
+        switch (place.blendMode) {
+
+            case "normal":
+                break;
+
+            case "add":
+                canvas.style.mixBlendMode = "color-dodge";
+                break;
+
+            case "subtract":
+                canvas.style.filter = "invert(100%)";
+                canvas.style.mixBlendMode = "multiply";
+                break;
+
+            case "invert":
+                canvas.style.filter = "invert(100%)";
+                canvas.style.mixBlendMode = "difference";
+                break;
+
+            case "hardlight":
+                canvas.style.mixBlendMode = "hard-light";
+                break;
+
+            case "alpha":
+            case "erase":
+            case "layer":
+                break;
+
+            default:
+                canvas.style.mixBlendMode = place.blendMode;
+                break;
+
+        }
+
+        this._$screenX = canvas._$tx;
+        this._$screenY = canvas._$ty;
+        this._$offsetX = canvas._$offsetX;
+        this._$offsetY = canvas._$offsetY;
+
+        return canvas;
     }
 
     /**
@@ -1457,5 +1462,20 @@ class Character
             "endFrame":   this.endFrame,
             "tween":      this.tween
         };
+    }
+
+    /**
+     * @return {void}
+     * @method
+     * @public
+     */
+    dispose ()
+    {
+        if (!this._$context) {
+            return ;
+        }
+
+        Util.$poolCanvas(this._$context);
+        this._$context = null;
     }
 }

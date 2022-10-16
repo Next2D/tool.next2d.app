@@ -1037,8 +1037,6 @@ class TweenController extends BaseController
                 }
             }
         }
-
-        character._$image = null;
     }
 
     /**

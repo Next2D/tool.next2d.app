@@ -394,13 +394,24 @@ class Screen extends BaseScreen
         const workSpace = Util.$currentWorkSpace();
         const scene     = workSpace.scene;
 
+        // create div
+        const div = document.createElement("div");
+        div.dataset.child   = "true";
+        div.dataset.preview = "true";
+
         // create image
-        const image           = character.getImage();
-        const cloneImage      = image.cloneNode(true);
-        cloneImage.width      = image._$width  * Util.$zoomScale;
-        cloneImage.height     = image._$height * Util.$zoomScale;
-        cloneImage.style.left = `${character.offsetX}px`;
-        cloneImage.style.top  = `${character.offsetY}px`;
+        const canvas = Util.$getCanvas();
+
+        const context = character._$context;
+        character._$context = null;
+        const image = character.getImage(canvas);
+        div.appendChild(image);
+        character._$context = context;
+
+        image.style.width  = `${image._$width  * Util.$zoomScale}px`;
+        image.style.height = `${image._$height * Util.$zoomScale}px`;
+        image.style.left   = `${character.offsetX}px`;
+        image.style.top    = `${character.offsetY}px`;
 
         let divStyle = "";
 
@@ -418,14 +429,15 @@ class Screen extends BaseScreen
             ) {
 
                 const maskCharacter = maskLayer._$characters[0];
-                maskCharacter._$image = null;
+                maskCharacter.dispose();
 
-                const maskImage = maskCharacter.getImage();
+                const canvas = Util.$getCanvas();
+                const maskImage = maskCharacter.getImage(canvas);
 
                 const x = (maskCharacter.screenX - character.screenX) * Util.$zoomScale;
                 const y = (maskCharacter.screenY - character.screenY) * Util.$zoomScale;
 
-                const maskSrc    = maskImage.src;
+                const maskSrc    = maskImage.toDataURL();
                 const maskWidth  = maskImage._$width  * Util.$zoomScale;
                 const maskHeight = maskImage._$height * Util.$zoomScale;
 
@@ -452,12 +464,6 @@ class Screen extends BaseScreen
         divStyle += `left: ${left}px;`;
         divStyle += `top: ${top}px;`;
 
-        // create div
-        const div = document.createElement("div");
-
-        div.dataset.child   = "true";
-        div.dataset.preview = "true";
-        div.appendChild(cloneImage);
         div.setAttribute("style", divStyle);
 
         document
@@ -601,13 +607,13 @@ class Screen extends BaseScreen
 
         // cache delete
         if (doUpdate) {
-            character._$image = null;
+            character.dispose();
         }
 
         const div = document.createElement("div");
 
-        // Imageを取得してdivに追加
-        const image = character.getImage();
+        const canvas = Util.$getCanvas();
+        const image  = character.getImage(canvas);
         div.appendChild(image);
 
         div.id = `character-${character.id}`;
@@ -618,9 +624,7 @@ class Screen extends BaseScreen
         div.dataset.child        = "true";
         div.dataset.pointer      = `${event}`;
 
-        div.classList.add("display-object");
-
-        let divStyle = "";
+        let divStyle = "position: absolute;";
         divStyle += `pointer-events: ${event};`;
 
         div.addEventListener("mouseover", (event) =>
@@ -691,10 +695,15 @@ class Screen extends BaseScreen
         divStyle += `left: ${tx}px;`;
         divStyle += `top: ${ty}px;`;
 
-        image.width      = image._$width  * Util.$zoomScale;
-        image.height     = image._$height * Util.$zoomScale;
-        image.style.left = `${character.offsetX * Util.$zoomScale}px`;
-        image.style.top  = `${character.offsetY * Util.$zoomScale}px`;
+        image.style.width  = `${image._$width  * Util.$zoomScale}px`;
+        image.style.height = `${image._$height * Util.$zoomScale}px`;
+        if (image.offsetX) {
+            image.style.left = `${character.offsetX * Util.$zoomScale}px`;
+        }
+
+        if (image.offsetY) {
+            image.style.top = `${character.offsetY * Util.$zoomScale}px`;
+        }
 
         // mask attach
         const layer = scene.getLayer(layer_id);
@@ -708,14 +717,15 @@ class Screen extends BaseScreen
             if (maskLayer && maskLayer.lock && maskLayer._$characters.length) {
 
                 const maskCharacter = maskLayer._$characters[0];
-                maskCharacter._$image = null;
+                maskCharacter.dispose();
 
-                const maskImage = maskCharacter.getImage();
+                const canvas = Util.$getCanvas();
+                const maskImage = maskCharacter.getImage(canvas);
 
                 const x = (maskCharacter.screenX - character.screenX) * Util.$zoomScale;
                 const y = (maskCharacter.screenY - character.screenY) * Util.$zoomScale;
 
-                const maskSrc    = maskImage.src;
+                const maskSrc    = maskImage.toDataURL();
                 const maskWidth  = maskImage._$width  * Util.$zoomScale;
                 const maskHeight = maskImage._$height * Util.$zoomScale;
 
@@ -860,7 +870,7 @@ class Screen extends BaseScreen
                             instance._$text = element.value;
 
                             // clear
-                            character._$image = null;
+                            character.dispose();
                             Util.$keyLock     = false;
 
                             const children = document

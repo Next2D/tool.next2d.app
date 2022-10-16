@@ -359,7 +359,7 @@ class FilterController extends GradientFilterController
         super.focusOut();
 
         // 再描画用にキャッシュを削除
-        character._$image = null;
+        character.dispose();
     }
 
     /**
@@ -799,7 +799,7 @@ class FilterController extends GradientFilterController
         );
 
         // 再描画用にキャッシュを削除
-        character._$image = null;
+        character.dispose();
     }
 
     /**

@@ -1021,7 +1021,7 @@ class TransformController extends BaseController
                 yMin = Math.min(yMin, bounds.yMin);
                 yMax = Math.max(yMax, bounds.yMax);
 
-                character._$image = null;
+                character.dispose();
 
                 // tweenの座標を再計算してポインターを再配置
                 character.relocationTween(frame);
@@ -1082,7 +1082,7 @@ class TransformController extends BaseController
                 character.x += afterMatrix[4];
                 character.y += afterMatrix[5];
 
-                character._$image = null;
+                character.dispose();
 
                 tx = Math.min(tx, character.x);
                 ty = Math.min(ty, character.y);
@@ -1286,7 +1286,7 @@ class TransformController extends BaseController
                 yMin = Math.min(yMin, bounds.yMin);
                 yMax = Math.max(yMax, bounds.yMax);
 
-                character._$image = null;
+                character.dispose();
 
                 //  tweenの座標を再計算してポインターを再配置
                 character.relocationTween(frame);
@@ -1347,7 +1347,7 @@ class TransformController extends BaseController
                 character.x += afterMatrix[4];
                 character.y += afterMatrix[5];
 
-                character._$image = null;
+                character.dispose();
 
                 tx = Math.min(tx, character.x);
                 ty = Math.min(ty, character.y);
@@ -1477,7 +1477,7 @@ class TransformController extends BaseController
                 yMin = Math.min(yMin, bounds.yMin);
                 yMax = Math.max(yMax, bounds.yMax);
 
-                character._$image = null;
+                character.dispose();
 
                 //  tweenの座標を再計算してポインターを再配置
                 character.relocationTween(frame);
@@ -1547,7 +1547,7 @@ class TransformController extends BaseController
                 character.y += afterMatrix[5];
 
                 // clear
-                character._$image = null;
+                character.dispose();
 
                 let xScale = character.scaleX;
                 if (Math.atan2(place.matrix[1], place.matrix[0]) >= Math.PI) {

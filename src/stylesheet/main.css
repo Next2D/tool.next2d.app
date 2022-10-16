@@ -63,7 +63,8 @@ main
     outline : none;
 }
 
-#main img
+#main img,
+#main canvas
 {
     border          : none;
     pointer-events  : none;

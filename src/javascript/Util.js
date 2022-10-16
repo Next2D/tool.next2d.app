@@ -43,6 +43,7 @@ Util.$shapeLinkedPointerColor = "#ffa500";
 Util.$shortcut                = new Map();
 Util.$useShortcutSetting      = false;
 Util.$changeLibraryId         = 0;
+Util.$canvases                = [];
 
 const userAgentData = window.navigator.userAgentData;
 if (userAgentData) {
@@ -60,6 +61,40 @@ const canvas     = document.createElement("canvas");
 canvas.width     = 1;
 canvas.height    = 1;
 Util.$hitContext = canvas.getContext("2d");
+
+/**
+ * @return {HTMLCanvasElement}
+ * @static
+ */
+Util.$getCanvas = () =>
+{
+    return Util.$canvases.length
+        ? Util.$canvases.pop()
+        : document.createElement("canvas");
+};
+
+/**
+ * @param {CanvasRenderingContext2D} context
+ * @static
+ */
+Util.$poolCanvas = (context) =>
+{
+    if (!(context instanceof CanvasRenderingContext2D)) {
+        return ;
+    }
+
+    const canvas = context.canvas;
+    const width  = canvas.width;
+    const height = canvas.height;
+
+    context.clearRect(0, 0, width + 1, height + 1);
+
+    // canvas reset
+    canvas.width = canvas.height = 1;
+
+    // pool
+    Util.$canvases.push(canvas);
+};
 
 /**
  * @param  {*}   value

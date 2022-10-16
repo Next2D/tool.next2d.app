@@ -401,6 +401,7 @@ class Instance
      * @description Next2DのBitmapDataクラスを経由してImageクラスを生成
      *              Generate Image class via Next2D BitmapData class
      *
+     * @param  {HTMLCanvasElement} canvas
      * @param  {number}  width
      * @param  {number}  height
      * @param  {object}  place
@@ -410,11 +411,13 @@ class Instance
      * @method
      * @public
      */
-    toImage (width, height, place, range = null, static_frame = 0)
+    toImage (canvas, width, height, place, range = null, static_frame = 0)
     {
         // empty image
         if (!width || !height) {
-            return new Image();
+            canvas.width  = 0;
+            canvas.height = 0;
+            return canvas.getContext("2d");
         }
 
         const { Matrix } = window.next2d.geom;
@@ -440,28 +443,28 @@ class Instance
             ty -= object.offsetY * ratio;
         }
 
+        // playerで描画を実行
         bitmapData.draw(container, new Matrix(1, 0, 0, 1, tx, ty));
 
-        const image = new Image();
-        image.loading = "lazy";
-        image.src = bitmapData.toDataURL();
+        // 指定のcanvasに描画
+        const context = bitmapData.drawFromCanvas(canvas);
+
+        // player側のメモリを解放
         bitmapData.dispose();
 
-        image.width     = object.width;
-        image.height    = object.height;
-        image._$width   = object.width;
-        image._$height  = object.height;
-        image.draggable = false;
+        canvas._$width   = object.width;
+        canvas._$height  = object.height;
+        canvas.draggable = false;
 
         const bounds = this.getBounds(place.matrix, place, range);
 
-        image._$tx = bounds.xMin;
-        image._$ty = bounds.yMin;
+        canvas._$tx = bounds.xMin;
+        canvas._$ty = bounds.yMin;
 
-        image._$offsetX = 0 > object.offsetX ? object.offsetX : 0;
-        image._$offsetY = 0 > object.offsetY ? object.offsetY : 0;
+        canvas._$offsetX = 0 > object.offsetX ? object.offsetX : 0;
+        canvas._$offsetY = 0 > object.offsetY ? object.offsetY : 0;
 
-        return image;
+        return context;
     }
 
     /**
@@ -636,7 +639,9 @@ class Instance
             height = height * scaleX | 0;
         }
 
-        const image = this.toImage(
+        const canvas = Util.$getCanvas();
+        this.toImage(
+            canvas,
             Math.ceil(width),
             Math.ceil(height),
             {
@@ -649,13 +654,13 @@ class Instance
             null, 0, true
         );
 
-        if (image.height !== height) {
-            const height = Math.min(150, image.height);
-            image.width  *= height / image.height;
-            image.height  = height;
+        if (canvas.height !== height) {
+            const height = Math.min(150, canvas.height);
+            canvas.style.width  = `${canvas.width * height / canvas.height}px`;
+            canvas.style.height = `${height}px`;
         }
 
-        return image;
+        return canvas;
     }
 
     /**
