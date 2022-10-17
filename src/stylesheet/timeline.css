@@ -563,9 +563,7 @@
     height          : calc(var(--timeline-height) - 102px);
     display         : flex;
     flex-direction  : column;
-    overflow-x      : hidden;
-    overflow-y      : auto;
-    scrollbar-width : none;
+    overflow        : hidden;
 }
 
 #timeline-content .timeline-layer-icon

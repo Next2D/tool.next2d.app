@@ -15,6 +15,7 @@ describe("Layer.js property test", () =>
         expect(layer.lock).toBe(false);
         expect(layer.emptyCharacters.length).toBe(0);
         expect(layer.characters.length).toBe(0);
+        expect(layer.display).toBe("");
         expect(layer.totalFrame).toBe(0);
         expect(layer.maskId).toBe(null);
         expect(layer.guideId).toBe(null);
@@ -34,6 +35,18 @@ describe("Layer.js property test", () =>
 
         layer.id = 0xffffff;
         expect(layer.id).toBe(0xffff);
+    });
+
+    it("property display test", () =>
+    {
+        const layer = new Layer();
+        expect(layer.display).toBe("");
+
+        layer.display = "none";
+        expect(layer.display).toBe("none");
+
+        layer.display = "abc";
+        expect(layer.display).toBe("");
     });
 
     it("property name test", () =>

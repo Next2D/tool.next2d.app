@@ -67,6 +67,13 @@ class Layer
         this._$name = "";
 
         /**
+         * @type {string}
+         * @default ""
+         * @private
+         */
+        this._$display = "";
+
+        /**
          * @type {boolean}
          * @default false
          * @private
@@ -133,6 +140,7 @@ class Layer
 
         // 初期化
         this._$children = [];
+        this._$display  = "";
 
         // レイヤに必要なフレームをタイムラインに生成
         Util.$timelineLayer.create(this._$id);
@@ -204,6 +212,24 @@ class Layer
 
         // view
         this.showIcon();
+    }
+
+    /**
+     * @description 擬似スクロールでの表示領域に対してのレイヤー表示・非表示の状態管理
+     *              Management of the state of display and non-display
+     *              of layers for the displayed area in pseudo-scrolling
+     *
+     * @member {string}
+     * @method
+     * @public
+     */
+    get display ()
+    {
+        return this._$display;
+    }
+    set display (state)
+    {
+        this._$display = state === "none" ? state : "";
     }
 
     /**

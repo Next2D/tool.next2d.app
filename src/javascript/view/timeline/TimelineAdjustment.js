@@ -163,6 +163,17 @@ class TimelineAdjustment extends BaseTimeline
         window.removeEventListener("mousemove", this._$mouseMove);
         window.removeEventListener("mouseup", this._$mouseUp);
 
+        const element = document
+            .getElementById("timeline-content");
+
+        // 表示枠の高さを更新
+        if (element) {
+            Util.$timelineLayer.clientHeight = element.clientHeight;
+        }
+
+        // 高さを更新後のレイヤーを再構成
+        Util.$timelineLayer.pseudoScroll();
+
         Util.$setCursor("auto");
     }
 }

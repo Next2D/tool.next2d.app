@@ -583,6 +583,9 @@ class TimelineTool extends BaseTimeline
                 }
             }
 
+            // 追加後のレイヤーを再構成
+            Util.$timelineLayer.pseudoScroll();
+
             if (reload) {
                 this.reloadScreen();
             }
@@ -680,6 +683,8 @@ class TimelineTool extends BaseTimeline
                 scene.setLayer(layer.id, layer);
             }
 
+            // 追加後のレイヤーを再構成
+            Util.$timelineLayer.pseudoScroll();
         }
 
         // 初期化
