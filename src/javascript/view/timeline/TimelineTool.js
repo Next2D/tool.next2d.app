@@ -584,7 +584,7 @@ class TimelineTool extends BaseTimeline
             }
 
             // 追加後のレイヤーを再構成
-            Util.$timelineLayer.pseudoScroll();
+            Util.$timelineLayer.moveTimeLine();
 
             if (reload) {
                 this.reloadScreen();
@@ -684,7 +684,7 @@ class TimelineTool extends BaseTimeline
             }
 
             // 追加後のレイヤーを再構成
-            Util.$timelineLayer.pseudoScroll();
+            Util.$timelineLayer.moveTimeLine();
         }
 
         // 初期化

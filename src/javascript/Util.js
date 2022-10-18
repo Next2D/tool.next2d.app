@@ -643,6 +643,8 @@ window.addEventListener("resize", () =>
     Util.$timelineHeader._$currentFrame = -1;
     Util.$timelineHeader.setWidth();
     Util.$timelineHeader.rebuild();
+
+    // タイムラインを再構成
     Util.$timelineLayer.moveTimeLine();
 });
 

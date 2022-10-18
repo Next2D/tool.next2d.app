@@ -19,7 +19,7 @@ const options = minimist(process.argv.slice(2), {
     "string": ["distPath", "version"],
     "default": {
         "prodBuild": false,
-        "version": "0.106.0",
+        "version": "0.107.0",
         "distPath": "."
     }
 });
@@ -329,7 +329,6 @@ const test = (done) =>
         }
     }).start();
 };
-
 
 /**
  * @public
