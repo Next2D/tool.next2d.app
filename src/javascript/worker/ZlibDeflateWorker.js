@@ -29,10 +29,11 @@
  */
 this.addEventListener("message", function (event)
 {
-    const buffer = Uint8Array.from(
-        encodeURIComponent(event.data.object).split(""),
-        c => c.charCodeAt(0)
-    );
+    const value  = encodeURIComponent(event.data.object);
+    const buffer = new Uint8Array(value.length);
+    for (let idx = 0; idx < value.length; ++idx) {
+        buffer[idx] = value[idx].charCodeAt(0);
+    }
 
     const type = event.data.type;
     if (type === "json") {
