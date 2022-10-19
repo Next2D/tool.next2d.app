@@ -51,13 +51,6 @@ class TimelineLayer extends BaseTimeline
          * @default 0
          * @private
          */
-        this._$scrollY = 0;
-
-        /**
-         * @type {number}
-         * @default 0
-         * @private
-         */
         this._$clientHeight = 0;
 
         /**
@@ -177,6 +170,7 @@ class TimelineLayer extends BaseTimeline
     set clientHeight (client_height)
     {
         this._$clientHeight = client_height | 0;
+        Util.$timelineScroll.updateHeight();
     }
 
     /**
@@ -379,10 +373,6 @@ class TimelineLayer extends BaseTimeline
             .getElementById("timeline-content");
 
         if (element) {
-
-            // 表示枠の高さをセット
-            this.updateClientHeight();
-
             element.addEventListener("wheel", (event) =>
             {
                 const deltaY = event.deltaY | 0;
@@ -397,7 +387,7 @@ class TimelineLayer extends BaseTimeline
 
                     window.requestAnimationFrame(() =>
                     {
-                        this.updateScrollY(deltaY);
+                        Util.$timelineScroll.execute(deltaY);
                     });
 
                 } else {
@@ -436,7 +426,7 @@ class TimelineLayer extends BaseTimeline
             // 変化があれば更新
             if (this.clientHeight !== element.clientHeight) {
                 this.clientHeight = element.clientHeight;
-                this.updateScrollY();
+                Util.$timelineScroll.execute();
             }
         }
     }
@@ -462,24 +452,24 @@ class TimelineLayer extends BaseTimeline
 
         const maxHeight = scene._$layers.size * TimelineLayer.LAYER_HEIGHT;
 
-        const before = this._$scrollY;
+        const before = this.scrollY;
         if (this.clientHeight > maxHeight) {
 
-            this._$scrollY = 0;
+            this.scrollY = 0;
 
         } else {
 
             // 移動範囲があれば実行
             const stopCount = this.clientHeight / TimelineLayer.LAYER_HEIGHT | 0;
-            this._$scrollY = Math.max(0, Math.min(
-                this._$scrollY + delta_y,
+            this.scrollY = Math.max(0, Math.min(
+                this.scrollY + delta_y,
                 (scene._$layers.size - stopCount) * TimelineLayer.LAYER_HEIGHT
             ));
 
         }
 
         // 変化があれば再描画
-        if (before !== this._$scrollY) {
+        if (before !== this.scrollY) {
             this.moveTimeLine();
         }
     }
@@ -1919,9 +1909,11 @@ class TimelineLayer extends BaseTimeline
     moveTimeLine ()
     {
         const scene  = Util.$currentWorkSpace().scene;
-        const height = scene._$layers.size * TimelineLayer.LAYER_HEIGHT;
 
-        const startIndex = this._$scrollY / TimelineLayer.LAYER_HEIGHT | 0;
+        const clientHeight = this.clientHeight;
+
+        const scrollY = Util.$timelineScroll.y;
+        const startIndex = scrollY / TimelineLayer.LAYER_HEIGHT | 0;
 
         // 全てのElementの位置を揃える
         let idx   = 0;
@@ -1955,9 +1947,10 @@ class TimelineLayer extends BaseTimeline
                 }
             }
 
+            // レイヤー個別のタイムラインを再描画
             this.rebuild(layer.id);
 
-            if (TimelineLayer.LAYER_HEIGHT * ++count > height) {
+            if (TimelineLayer.LAYER_HEIGHT * ++count > clientHeight) {
                 break;
             }
 
@@ -2472,7 +2465,8 @@ class TimelineLayer extends BaseTimeline
             const scrollElement = document
                 .getElementById(`frame-scroll-id-${targetLayer.dataset.layerId}`);
 
-            const size = Util.$timelineTool.timelineWidth + 1;
+            const timelineWidth = Util.$timelineTool.timelineWidth;
+            const size = timelineWidth + 1;
 
             const frame = element.dataset.frame | 0;
             const index = element.dataset.index | 0;
@@ -2489,14 +2483,13 @@ class TimelineLayer extends BaseTimeline
                         .getElementById("timeline-controller-base");
 
                     // 移動可能であれば右にタイムラインを移動
-                    if (event.pageX > base.offsetLeft + base.offsetWidth
-                        && base.scrollWidth - base.offsetWidth > base.scrollLeft
-                    ) {
-                        this
-                            .moveTimeLine(
-                                base.scrollLeft
-                                + (Util.$timelineTool.timelineWidth + 1)
-                            );
+                    if (event.pageX > base.offsetLeft + base.offsetWidth) {
+
+                        Util.$timelineHeader.scrollX += timelineWidth;
+                        Util.$timelineHeader.rebuild();
+                        Util.$timelineLayer.moveTimeLine();
+
+                        element.dataset.frame = `${frame + 1}`;
                     }
 
                     return ;
@@ -2521,13 +2514,13 @@ class TimelineLayer extends BaseTimeline
                         .getElementById("timeline-controller-base");
 
                     // 移動可能であれば左にタイムラインを移動
-                    if (base.scrollLeft > 0 && base.offsetLeft > event.pageX) {
+                    if (Util.$timelineHeader.scrollX > 0 && base.offsetLeft > event.pageX) {
 
-                        this
-                            .moveTimeLine(
-                                base.scrollLeft
-                                - (Util.$timelineTool.timelineWidth + 1)
-                            );
+                        Util.$timelineHeader.scrollX -= timelineWidth;
+                        Util.$timelineHeader.rebuild();
+                        Util.$timelineLayer.moveTimeLine();
+
+                        element.dataset.frame = `${frame - 1}`;
 
                     }
 
@@ -2544,7 +2537,7 @@ class TimelineLayer extends BaseTimeline
             }
 
             // 下に移動
-            if (event.clientY - this._$clientY > 30) {
+            if (event.clientY - this._$clientY > TimelineLayer.LAYER_HEIGHT - 1) {
 
                 const parent = document
                     .getElementById("timeline-content");
@@ -2559,21 +2552,10 @@ class TimelineLayer extends BaseTimeline
                 ) {
 
                     // 移動可能であれば下にタイムラインを移動
-                    const maxScrollTop = parent.scrollHeight - parent.offsetHeight;
-                    if (parent.scrollTop + TimelineLayer.LAYER_HEIGHT > maxScrollTop) {
+                    if (Util.$timelineScroll.maxY >= Util.$timelineScroll.y + TimelineLayer.LAYER_HEIGHT) {
 
-                        // 移動先がなければ終了
-                        const moveY = maxScrollTop - parent.scrollTop;
-                        if (1 > moveY) {
-                            return ;
-                        }
-
-                        element.style.top = `${element.offsetTop + moveY - 5}px`;
-                        parent.scrollTop = maxScrollTop;
-
-                    } else {
-
-                        parent.scrollTop += TimelineLayer.LAYER_HEIGHT;
+                        element.dataset.index = `${index + 1}`;
+                        Util.$timelineScroll.execute(TimelineLayer.LAYER_HEIGHT);
 
                     }
 
@@ -2584,7 +2566,7 @@ class TimelineLayer extends BaseTimeline
 
                 element.dataset.index = `${index + 1}`;
 
-                this._$clientY += 30;
+                this._$clientY += TimelineLayer.LAYER_HEIGHT - 1;
 
                 return ;
             }
@@ -2598,19 +2580,10 @@ class TimelineLayer extends BaseTimeline
                 if (parent.offsetTop > element.offsetTop - TimelineLayer.LAYER_HEIGHT) {
 
                     // 移動可能であれば上にタイムラインを移動
-                    if (0 > parent.scrollTop - TimelineLayer.LAYER_HEIGHT) {
+                    if (Util.$timelineScroll.y > 0) {
 
-                        // 移動先がなければ終了
-                        if (!parent.scrollTop) {
-                            return ;
-                        }
-
-                        element.style.top = `${element.offsetTop - parent.scrollTop + 4}px`;
-                        parent.scrollTop = 0;
-
-                    } else {
-
-                        parent.scrollTop -= TimelineLayer.LAYER_HEIGHT;
+                        element.dataset.index = `${index - 1}`;
+                        Util.$timelineScroll.execute(-TimelineLayer.LAYER_HEIGHT);
 
                     }
 
@@ -2621,7 +2594,7 @@ class TimelineLayer extends BaseTimeline
 
                 element.dataset.index = `${index - 1}`;
 
-                this._$clientY -= 30;
+                this._$clientY -= TimelineLayer.LAYER_HEIGHT - 1;
             }
         });
     }
@@ -2711,12 +2684,10 @@ class TimelineLayer extends BaseTimeline
 
                 const frame = frames[idx];
 
-                const element = layer.getChildren(frame);
-                if (!element) {
-                    continue;
-                }
-
-                if (element.dataset.frameState === "empty") {
+                // 移動元が未定義の場合
+                if (!layer.getActiveEmptyCharacter(frame)
+                    && !layer.getActiveCharacter(frame).length
+                ) {
 
                     if (currentEmpty) {
                         currentEmpty.endFrame = frame + 1;
@@ -3700,11 +3671,15 @@ class TimelineLayer extends BaseTimeline
     {
         const workSpace = Util.$currentWorkSpace();
         if (!workSpace) {
+            this._$targetFrames.clear();
+            this.hideTargetGroup();
             return ;
         }
 
         const scene = workSpace.scene;
         if (!scene) {
+            this._$targetFrames.clear();
+            this.hideTargetGroup();
             return ;
         }
 

@@ -646,6 +646,7 @@ window.addEventListener("resize", () =>
 
     // タイムラインを再構成
     Util.$timelineLayer.moveTimeLine();
+    Util.$timelineScroll.setX();
 });
 
 /**
@@ -961,13 +962,19 @@ Util.$unZlibWorker.onmessage = (event) =>
 {
     if (event.data.type === "n2d") {
 
-        const workSpaces = new WorkSpace(decodeURIComponent(event.data.json));
+        const workSpaces = new WorkSpace(
+            decodeURIComponent(event.data.json)
+        );
+
+        workSpaces.name = event.data.name;
 
         Util
             .$workSpaces
             .push(workSpaces);
 
-        Util.$screenTab.createElement(workSpaces, Util.$workSpaces.length - 1);
+        Util
+            .$screenTab
+            .createElement(workSpaces, Util.$workSpaces.length - 1);
 
     } else {
 

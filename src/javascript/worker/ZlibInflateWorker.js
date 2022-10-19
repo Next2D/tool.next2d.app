@@ -28,6 +28,7 @@ this.addEventListener("message", function (event)
 
     this.postMessage({
         "json": json,
+        "name": event.data.name,
         "type": event.data.type
     });
 });

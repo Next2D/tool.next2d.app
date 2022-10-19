@@ -160,6 +160,15 @@ class MovieClip extends Instance
         // frame1 label
         Util.$timelineLayer.changeLabel(currentFrame);
 
+        // レイヤーの擬似スクロールをセット
+        Util.$timelineLayer.updateClientHeight();
+
+        // スクロールの座標をセット
+        Util.$timelineScroll._$y = 1;
+        Util.$timelineScroll.execute(
+            -Util.$timelineScroll.y
+        );
+
         // insert layer
         this._$layerId = 0;
         for (const layer of this._$layers.values()) {

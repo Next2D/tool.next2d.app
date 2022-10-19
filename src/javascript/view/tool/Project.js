@@ -188,7 +188,8 @@ class Project
                 const uint8Array = new Uint8Array(buffer);
                 Util.$unZlibWorker.postMessage({
                     "buffer": uint8Array,
-                    "type": "n2d"
+                    "name"  : file.name.replace(".n2d", ""),
+                    "type"  : "n2d"
                 }, [uint8Array.buffer]);
             });
     }

@@ -174,6 +174,9 @@ class WorkSpace
         Util.$pluginController.reload(
             Array.from(this._$plugins.values())
         );
+
+        // タイムラインの擬似スクロールの座標をセット
+        Util.$timelineScroll.setX();
     }
 
     /**

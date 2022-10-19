@@ -566,6 +566,18 @@
     overflow        : hidden;
 }
 
+#timeline-scroll-bar
+{
+    position         : fixed;
+    width            : 5px;
+    height           : var(--timeline-scroll-bar-height);
+    background-color : #363636;
+    color            : whitesmoke;
+    border-radius    : 5px;
+    border           : 1px solid #72777D;
+    box-shadow       : 0 0 1px rgba(245, 245, 245, 0.25);
+}
+
 #timeline-content .timeline-layer-icon
 {
     width               : 18px;

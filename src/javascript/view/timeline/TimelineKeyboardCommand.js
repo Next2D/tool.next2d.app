@@ -299,13 +299,19 @@ class TimelineKeyboardCommand extends KeyboardCommand
 
             if (code === "ArrowDown") {
 
+                // 一番上のレイヤーを選択
                 element = parent.firstElementChild;
-                parent.scrollTop = 0;
+                Util.$timelineScroll.execute(
+                    -Util.$timelineScroll.y
+                );
 
             } else {
 
+                // 一番下のレイヤーを選択
                 element = parent.lastElementChild;
-                parent.scrollTop = parent.scrollHeight;
+                Util.$timelineScroll.execute(
+                    Util.$timelineLayer.clientHeight
+                );
 
             }
 
@@ -321,7 +327,9 @@ class TimelineKeyboardCommand extends KeyboardCommand
                 if (element.offsetTop + element.offsetHeight
                     > window.innerHeight
                 ) {
-                    parent.scrollTop += element.offsetHeight;
+                    Util.$timelineScroll.execute(
+                        TimelineLayer.LAYER_HEIGHT
+                    );
                 }
 
             } else {
@@ -331,8 +339,10 @@ class TimelineKeyboardCommand extends KeyboardCommand
                     return ;
                 }
 
-                if (parent.offsetTop + parent.scrollTop >= element.offsetTop) {
-                    parent.scrollTop -= element.offsetHeight;
+                if (parent.offsetTop > element.offsetTop) {
+                    Util.$timelineScroll.execute(
+                        -TimelineLayer.LAYER_HEIGHT
+                    );
                 }
 
             }

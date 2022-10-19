@@ -586,6 +586,9 @@ class TimelineTool extends BaseTimeline
             // 追加後のレイヤーを再構成
             Util.$timelineLayer.moveTimeLine();
 
+            // 追加後の擬似スクロールの高さを更新
+            Util.$timelineScroll.updateHeight();
+
             if (reload) {
                 this.reloadScreen();
             }
@@ -685,6 +688,9 @@ class TimelineTool extends BaseTimeline
 
             // 追加後のレイヤーを再構成
             Util.$timelineLayer.moveTimeLine();
+
+            // 追加後の擬似スクロールの高さを更新
+            Util.$timelineScroll.updateHeight();
         }
 
         // 初期化

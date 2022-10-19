@@ -399,6 +399,12 @@ class ScreenTab
             previewElement.children[0].remove();
         }
 
+        /**
+         * @type {ArrowTool}
+         */
+        const tool = Util.$tools.getDefaultTool("arrow");
+        tool.clear();
+
         // タブが0になった場合は空のタブを追加する
         const parent = document.getElementById("view-tab-area");
         if (!parent.children.length) {
