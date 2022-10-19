@@ -3633,6 +3633,10 @@ class TimelineLayer extends BaseTimeline
         for (const [layerId, values] of this._$targetFrames) {
 
             const layer = scene.getLayer(layerId);
+            if (!layer) {
+                continue;
+            }
+            
             for (let idx = 0; idx < values.length; ++idx) {
 
                 const targetFrame = frame + idx;
