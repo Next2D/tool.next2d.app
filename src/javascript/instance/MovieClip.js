@@ -851,7 +851,7 @@ class MovieClip extends Instance
 
                 const character = characters[idx];
                 const place     = character.getPlace(frame);
-                const range     = place.loop && place.loop.type === 5
+                const range     = place.loop && place.loop.type === LoopController.DEFAULT
                     ? {
                         "startFrame": character.startFrame,
                         "endFrame": character.endFrame
@@ -1058,7 +1058,7 @@ class MovieClip extends Instance
                         };
 
                         if (instance.type === InstanceType.MOVIE_CLIP
-                            && Util.DEFAULT_LOOP > place.loop.type
+                            && LoopController.DEFAULT > place.loop.type
                         ) {
 
                             if (place.loop.referenceFrame) {
@@ -1340,7 +1340,7 @@ class MovieClip extends Instance
                         if (place) {
                             place.frame = frame;
 
-                            if (place.loop.type === 5) {
+                            if (place.loop.type === LoopController.DEFAULT) {
                                 childRange = range;
                             }
                         }

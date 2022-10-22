@@ -9,7 +9,7 @@ class LoopController extends BaseController
      * @constructor
      * @public
      */
-    constructor()
+    constructor ()
     {
         super("loop");
 
@@ -75,6 +75,78 @@ class LoopController extends BaseController
 
             this.setInputEvent(element);
         }
+    }
+
+    /**
+     * @description デフォルトのループ設定値
+     *
+     * @return {number}
+     * @const
+     * @static
+     */
+    static get DEFAULT ()
+    {
+        return 5;
+    }
+
+    /**
+     * @description カスタム設定したフレーム範囲でループを行う
+     *
+     * @return {number}
+     * @const
+     * @static
+     */
+    static get REPEAT ()
+    {
+        return 0;
+    }
+
+    /**
+     * @description カスタム設定したフレーム範囲で再生して終了。ループしない
+     *
+     * @return {number}
+     * @const
+     * @static
+     */
+    static get NO_REPEAT ()
+    {
+        return 1;
+    }
+
+    /**
+     * @description 指定フレームに固定してフレーム移動させない
+     *
+     * @return {number}
+     * @const
+     * @static
+     */
+    static get FIXED_ONE ()
+    {
+        return 2;
+    }
+
+    /**
+     * @description カスタム設定したフレーム範囲で逆再生して終了。ループはしない
+     *
+     * @return {number}
+     * @const
+     * @static
+     */
+    static get NO_REPEAT_REVERSAL ()
+    {
+        return 3;
+    }
+
+    /**
+     * @description カスタム設定したフレーム範囲を逆再生し、ループを行う
+     *
+     * @return {number}
+     * @const
+     * @static
+     */
+    static get REPEAT_REVERSAL ()
+    {
+        return 4;
     }
 
     /**

@@ -1301,6 +1301,10 @@ class Shape extends Instance
      */
     setHitColor (x, y, place_matrix)
     {
+        if (!this._$recodes.length) {
+            return ;
+        }
+
         const { Graphics, GradientType } = window.next2d.display;
         const { Point, Matrix } = window.next2d.geom;
 

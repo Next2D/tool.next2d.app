@@ -7,7 +7,6 @@ Util.PREFIX                   = "__next2d-tools__";
 Util.DATABASE_NAME            = "save-data";
 Util.STORE_KEY                = "local";
 Util.REVISION_LIMIT           = 100;
-Util.DEFAULT_LOOP             = 5;
 Util.$activeWorkSpaceId       = 0;
 Util.$workSpaces              = [];
 Util.$readStatus              = 0;
@@ -2131,7 +2130,7 @@ Util.$clearShapePointer = () =>
 Util.$getDefaultLoopConfig = () =>
 {
     return {
-        "type": Util.DEFAULT_LOOP,
+        "type": LoopController.DEFAULT,
         "start": 1,
         "end": 0
     };
@@ -2154,7 +2153,7 @@ Util.$getFrame = (place, range, parent_frame, total_frame, static_frame = 0) =>
     let frame = 1;
     switch (place.loop.type) {
 
-        case 0:
+        case LoopController.REPEAT:
             {
                 const totalFrame = place.loop.end
                     ? place.loop.end
@@ -2173,7 +2172,7 @@ Util.$getFrame = (place, range, parent_frame, total_frame, static_frame = 0) =>
             }
             break;
 
-        case 1:
+        case LoopController.NO_REPEAT:
             {
                 const totalFrame = place.loop.end
                     ? place.loop.end
@@ -2194,11 +2193,11 @@ Util.$getFrame = (place, range, parent_frame, total_frame, static_frame = 0) =>
             }
             break;
 
-        case 2:
+        case LoopController.FIXED_ONE:
             frame = place.loop.start;
             break;
 
-        case 3:
+        case LoopController.NO_REPEAT_REVERSAL:
             frame = place.loop.end
                 ? place.loop.end
                 : total_frame;
@@ -2215,7 +2214,7 @@ Util.$getFrame = (place, range, parent_frame, total_frame, static_frame = 0) =>
             }
             break;
 
-        case 4:
+        case LoopController.REPEAT_REVERSAL:
             {
                 const totalFrame = place.loop.end
                     ? place.loop.end
@@ -2233,7 +2232,7 @@ Util.$getFrame = (place, range, parent_frame, total_frame, static_frame = 0) =>
             }
             break;
 
-        case 5:
+        case LoopController.DEFAULT:
 
             if (static_frame === 0) {
                 frame = 1;

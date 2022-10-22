@@ -9,7 +9,6 @@ class Character
 {
     /**
      * @param {object} [object=null]
-     *
      * @constructor
      * @public
      */
@@ -20,7 +19,6 @@ class Character
         this._$places         = new Map();
         this._$tween          = new Map();
         this._$context        = null;
-        this._$image          = null;
         this._$currentFrame   = 0;
         this._$currentPlace   = null;
         this._$screenX        = 0;
@@ -392,7 +390,7 @@ class Character
      */
     deleteTween (frame)
     {
-        return this._$tween.delete(frame);
+        return this._$tween.delete(frame | 0);
     }
 
     /**
@@ -411,7 +409,7 @@ class Character
 
         const frame = Util.$timelineFrame.currentFrame;
         const place = this.getPlace(frame);
-        const range = place.loop && place.loop.type === 5
+        const range = place.loop && place.loop.type === LoopController.DEFAULT
             ? { "startFrame": this.startFrame, "endFrame": this.endFrame }
             : this.getRange(frame);
 
@@ -673,7 +671,7 @@ class Character
         const frame = Util.$timelineFrame.currentFrame;
 
         const place = this.getPlace(frame);
-        const range = place.loop && place.loop.type === 5
+        const range = place.loop && place.loop.type === LoopController.DEFAULT
             ? { "startFrame": this.startFrame, "endFrame": this.endFrame }
             : this.getRange(frame);
 
@@ -765,8 +763,8 @@ class Character
 
         }
 
-        this._$screenX = canvas._$tx;
-        this._$screenY = canvas._$ty;
+        this.screenX = canvas._$tx;
+        this.screenY = canvas._$ty;
         this._$offsetX = canvas._$offsetX;
         this._$offsetY = canvas._$offsetY;
 
@@ -812,7 +810,12 @@ class Character
     }
     set screenX (screen_x)
     {
-        this._$screenX = screen_x;
+        this._$screenX = Util.$clamp(
+            +screen_x,
+            -Number.MAX_VALUE,
+            Number.MAX_VALUE,
+            0
+        );
     }
 
     /**
@@ -828,7 +831,12 @@ class Character
     }
     set screenY (screen_y)
     {
-        this._$screenY = screen_y;
+        this._$screenY = Util.$clamp(
+            +screen_y,
+            -Number.MAX_VALUE,
+            Number.MAX_VALUE,
+            0
+        );
     }
 
     /**
@@ -873,9 +881,7 @@ class Character
     }
     set name (name)
     {
-        name += "";
-        name.replace(" ", "");
-        this._$name = name.trim();
+        this._$name = `${name}`.replace(/ /g, "").trim();
     }
 
     /**
@@ -895,13 +901,26 @@ class Character
     set referencePoint (point)
     {
         if (point) {
-            this._$referencePoint.x = point.x;
-            this._$referencePoint.y = point.y;
+            this._$referencePoint.x = Util.$clamp(
+                +point.x,
+                -Number.MAX_VALUE,
+                Number.MAX_VALUE,
+                0
+            );
+            this._$referencePoint.y = Util.$clamp(
+                +point.y,
+                -Number.MAX_VALUE,
+                Number.MAX_VALUE,
+                0
+            );
         }
     }
 
     /**
-     * @return {array}
+     * @description フレームに設定したtween情報
+     *              Tween information set for the frame
+     *
+     * @member {array}
      * @public
      */
     get tween ()
@@ -915,12 +934,6 @@ class Character
         }
         return values;
     }
-
-    /**
-     * @param  {array} values
-     * @return {void}
-     * @public
-     */
     set tween (values)
     {
         for (let idx = 0; idx < values.length; ++idx) {
@@ -935,7 +948,10 @@ class Character
     }
 
     /**
-     * @return {array}
+     * @description フレームに設定した座標、フィルター、ブレンド、カラー、カスタムループ設定の情報
+     *              Information on coordinates, filters, blends, colors, and custom loop settings for the frame.
+     *
+     * @member {array}
      * @public
      */
     get places ()
@@ -993,12 +1009,6 @@ class Character
         }
         return places;
     }
-
-    /**
-     * @param  {array} places
-     * @return {void}
-     * @public
-     */
     set places (places)
     {
         for (let idx = 0; idx < places.length; ++idx) {
@@ -1023,6 +1033,9 @@ class Character
     }
 
     /**
+     * @description PlaceObjectを複製
+     *              Duplicate PlaceObject.
+     *
      * @param  {number} frame
      * @return {object}
      * @method
@@ -1034,6 +1047,9 @@ class Character
     }
 
     /**
+     * @description 指定フレームのPlaceObjectを返す
+     *              Returns the PlaceObject of the specified frame
+     *
      * @param  {number} frame
      * @return {object}
      * @method
@@ -1056,6 +1072,7 @@ class Character
 
     /**
      * @description 指定したフレームより若く一番近いキーフレーム番号を返す
+     *              Returns the nearest keyframe number younger than the specified frame
      *
      * @param  {number} frame
      * @return {number}
@@ -1139,9 +1156,13 @@ class Character
     }
 
     /**
+     * @description 指定フレームにPlaceObjectをセット
+     *              Set PlaceObject to the specified frame.
+     *
      * @param  {number} frame
      * @param  {object} place
      * @return {void}
+     * @method
      * @public
      */
     setPlace (frame, place)
@@ -1151,8 +1172,12 @@ class Character
     }
 
     /**
+     * @description 指定フレームにPlaceObjectがあるかの判定
+     *              Determines if there is a PlaceObject in the specified frame.
+     *
      * @param  {number} frame
      * @return {boolean}
+     * @method
      * @public
      */
     hasPlace (frame)
@@ -1161,8 +1186,12 @@ class Character
     }
 
     /**
+     * @description 指定フレームのPlaceObjectを削除
+     *              Delete PlaceObject in specified frame.
+     *
      * @param  {number} frame
      * @return {void}
+     * @method
      * @public
      */
     deletePlace (frame)
@@ -1171,45 +1200,40 @@ class Character
     }
 
     /**
-     * @return {number}
+     * @description このDisplayObjectの開始フレーム
+     *              Start frame of this DisplayObject.
+     *
+     * @member {number}
      * @public
      */
     get startFrame ()
     {
         return this._$startFrame;
     }
-
-    /**
-     * @param  {number} start_frame
-     * @return {void}
-     * @public
-     */
     set startFrame (start_frame)
     {
-        this._$startFrame = start_frame | 0;
+        this._$startFrame = Util.$clamp(start_frame | 0, 1, Number.MAX_VALUE, 1);
     }
 
     /**
-     * @return {number}
+     * @description このDisplayObjectの終了フレーム
+     *              End frame of this DisplayObject.
+     *
+     * @member {number}
      * @public
      */
     get endFrame ()
     {
         return this._$endFrame;
     }
-
-    /**
-     * @param  {number} end_frame
-     * @return {void}
-     * @public
-     */
     set endFrame (end_frame)
     {
-        this._$endFrame = end_frame | 0;
+        this._$endFrame = Util.$clamp(end_frame | 0, 2, Number.MAX_VALUE, 2);
     }
 
     /**
-     * @description tweenのplace objectを構築
+     * @description tween設定を元に座標、カラー、ブレンド、フィルターの値を再計算して更新
+     *              Recalculate and update coordinate, color, blend, and filter values based on tween settings.
      *
      * @param  {number} start_frame
      * @param  {number} end_frame
@@ -1232,7 +1256,8 @@ class Character
     }
 
     /**
-     * @description ブレンドモード追加時にレンジ内のplace objectを更新
+     * @description ブレンドモード追加時にレンジ内のPlaceObjectを更新
+     *              Update PlaceObject in range when blend mode is added.
      *
      * @param  {number} frame
      * @return {void}
@@ -1267,7 +1292,8 @@ class Character
     }
 
     /**
-     * @description filter追加時にレンジ内のplace objectにfilterを追加
+     * @description filter追加時にレンジ内のPlaceObjectを更新
+     *              Update PlaceObject in range when filter is added.
      *
      * @param  {number} frame
      * @return {void}
@@ -1310,6 +1336,7 @@ class Character
 
     /**
      * @description 指定フレームに移動
+     *              Move to the specified frame.
      *
      * @param  {number} frame
      * @return {void}
@@ -1354,6 +1381,7 @@ class Character
 
     /**
      * @description DisplayObjectを指定フレームで分割
+     *              Split DisplayObject at specified frame.
      *
      * @param  {Layer} layer
      * @param  {number} start_frame
@@ -1503,6 +1531,9 @@ class Character
     }
 
     /**
+     * @description クラス内の変数をObjectにして返す
+     *              Return variables in a class as Objects
+     *
      * @return {object}
      * @method
      * @public
@@ -1521,6 +1552,9 @@ class Character
     }
 
     /**
+     * @description キャッシュしているcanvasのcontextを初期化
+     *              Initialize cached canvas context.
+     *
      * @return {void}
      * @method
      * @public

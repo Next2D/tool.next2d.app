@@ -9,7 +9,7 @@ class TweenController extends BaseController
      * @constructor
      * @public
      */
-    constructor()
+    constructor ()
     {
         super("ease");
 

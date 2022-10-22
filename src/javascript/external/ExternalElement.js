@@ -201,19 +201,19 @@ class ExternalElement
         switch (loop_type) {
 
             case "loop":
-                place.loop.type = 0;
+                place.loop.type = LoopController.REPEAT;
                 break;
 
             case "play once":
-                place.loop.type = 1;
+                place.loop.type = LoopController.NO_REPEAT;
                 break;
 
             case "single frame":
-                place.loop.type = 2;
+                place.loop.type = LoopController.FIXED_ONE;
                 break;
 
             default:
-                place.loop.type = Util.DEFAULT_LOOP;
+                place.loop.type = LoopController.DEFAULT;
                 break;
 
         }

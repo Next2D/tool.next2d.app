@@ -11,8 +11,8 @@ developブランチは開発専用のブランチです。
 The develop branch is a development-only branch.
 
 ## Version
-- Node.js >=v14.x
-- npm >=6.x
+- Node.js >= v14.x
+- npm >= 6.x
 
 ## Initial Settings
 ```
