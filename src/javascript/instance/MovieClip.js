@@ -1292,8 +1292,10 @@ class MovieClip extends Instance
             switch (instance.type) {
 
                 case InstanceType.MOVIE_CLIP:
-                    displayObject = new MovieClip();
-                    if (instance._$layers.size) {
+                    {
+                        if (!instance._$layers.size) {
+                            continue;
+                        }
 
                         const layers = Array.from(
                             instance._$layers.values()

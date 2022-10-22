@@ -56,6 +56,20 @@ class TimelinePlayer extends BaseTimeline
         this._$timerId = -1;
 
         /**
+         * @type {number}
+         * @default 0
+         * @private
+         */
+        this._$baseOffsetHalfWidth = 0;
+
+        /**
+         * @type {number}
+         * @default 0
+         * @private
+         */
+        this._$clientWidth = 0;
+
+        /**
          * @type {function}
          * @description null
          * @private
@@ -208,6 +222,13 @@ class TimelinePlayer extends BaseTimeline
                     .getElementById("timeline-stop")
                     .style.display = "";
 
+                // 現在のタイムラインの幅をキャッシュ
+                const element = document
+                    .getElementById("timeline-controller-base");
+
+                this._$baseOffsetHalfWidth = element.offsetWidth / 2;
+                this._$clientWidth = element.clientWidth;
+
                 this._$startTime = window.performance.now();
                 this._$fps       = 1000 / (document.getElementById("stage-fps").value | 0);
                 this._$timerId   = window.requestAnimationFrame(this._$run);
@@ -306,9 +327,6 @@ class TimelinePlayer extends BaseTimeline
         let delta = timestamp - this._$startTime;
         if (delta > this._$fps) {
 
-            const base = document
-                .getElementById("timeline-controller-base");
-
             let frame = Util.$timelineFrame.currentFrame + 1;
             if (frame > this._$totalFrame) {
 
@@ -330,11 +348,8 @@ class TimelinePlayer extends BaseTimeline
             const moveFrame     = Util.$timelineHeader.scrollX / timelineWidth | 0;
 
             // タイムラインの座標修正
-            const element = document
-                .getElementById("timeline-controller-base");
-
             const deltaX = (frame - moveFrame) * (timelineWidth + 1);
-            if (0 >= deltaX || deltaX > element.clientWidth) {
+            if (0 >= deltaX || deltaX > this._$clientWidth) {
                 Util.$timelineHeader.scrollX = (frame - 1) * timelineWidth;
             }
 
@@ -345,7 +360,7 @@ class TimelinePlayer extends BaseTimeline
             Util.$timelineMarker.move();
 
             const moveX = (frame - 1) * (Util.$timelineTool.timelineWidth + 1);
-            if (moveX > base.offsetWidth / 2) {
+            if (moveX > this._$baseOffsetHalfWidth) {
                 Util.$timelineLayer.moveTimeLine();
             }
 

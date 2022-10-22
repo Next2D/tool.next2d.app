@@ -14,6 +14,20 @@ class TimelineMarker extends BaseTimeline
         super();
 
         /**
+         * @type {number}
+         * @default 0
+         * @private
+         */
+        this._$left = 0;
+
+        /**
+         * @type {string}
+         * @default ""
+         * @private
+         */
+        this._$pointerEvents = "";
+
+        /**
          * @type {function}
          * @default null
          * @private
@@ -69,9 +83,13 @@ class TimelineMarker extends BaseTimeline
         tool.clear();
 
         // マーカーElementをイベント管理外に設定
+        this._$pointerEvents = "none";
         document
             .getElementById("timeline-marker")
-            .style.pointerEvents = "none";
+            .setAttribute(
+                "style",
+                `left: ${this._$left}px; pointer-events: none;`
+            );
 
         if (!this._$moveMarker) {
             this._$moveMarker = this.moveMarker.bind(this);
@@ -191,9 +209,13 @@ class TimelineMarker extends BaseTimeline
         window.removeEventListener("mouseup", this._$endMarker);
 
         // マウスダウン用にイベント対象に変更
+        this._$pointerEvents = "";
         document
             .getElementById("timeline-marker")
-            .style.pointerEvents = "";
+            .setAttribute(
+                "style",
+                `left: ${this._$left}px;`
+            );
 
         // ラベルがあればInputElementに挿入
         const label = Util
@@ -229,10 +251,13 @@ class TimelineMarker extends BaseTimeline
         const width = timelineWidth + 1;
         const frame = 1 + scrollX / timelineWidth | 0;
 
-        const left = (Util.$timelineFrame.currentFrame - frame) * width;
-        if (element.offsetLeft !== left) {
-            element.style.left = `${left}px`;
+        this._$left = (Util.$timelineFrame.currentFrame - frame) * width;
+
+        let style = `left: ${this._$left}px;`;
+        if (this._$pointerEvents) {
+            style += "pointer-events: none;";
         }
+        element.setAttribute("style", style);
     }
 }
 
