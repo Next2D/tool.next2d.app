@@ -9,7 +9,7 @@ class ScreenZoom extends BaseScreen
      * @constructor
      * @public
      */
-    constructor()
+    constructor ()
     {
         super();
 

@@ -1,4 +1,7 @@
 /**
+ * コントローラー表示の管理クラス
+ * Management class for controller display
+ *
  * @class
  * @extends {BaseController}
  * @memberOf view.controller
@@ -6,7 +9,11 @@
 class Controller extends BaseController
 {
     /**
+     * @description 初期起動関数
+     *              initial invoking function
+     *
      * @return {void}
+     * @method
      * @public
      */
     initialize ()
@@ -25,7 +32,8 @@ class Controller extends BaseController
     }
 
     /**
-     * @description 指定したIDを表示にする
+     * @description 指定したIDを表示する
+     *              Display the specified ID
      *
      * @param  {array} names
      * @return {void}
@@ -39,12 +47,13 @@ class Controller extends BaseController
             if (!element) {
                 continue;
             }
-            element.style.display = "";
+            element.setAttribute("style", "");
         }
     }
 
     /**
      * @description 指定したIDを非表示にする
+     *              Hide the specified ID
      *
      * @param  {array} names
      * @return {void}
@@ -58,12 +67,13 @@ class Controller extends BaseController
             if (!element) {
                 continue;
             }
-            element.style.display = "none";
+            element.setAttribute("style", "display: none;");
         }
     }
 
     /**
-     * @description 初期表示に戻す
+     * @description コントローラーの表示項目を初期表示に戻す
+     *              Reset controller display items to initial display.
      *
      * @return {void}
      * @method

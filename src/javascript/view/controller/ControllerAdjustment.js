@@ -1,4 +1,7 @@
 /**
+ * コントローラー表示幅の操作クラス
+ * Controller Display Width Operation Class
+ *
  * @class
  * @memberOf view.controller
  */
@@ -49,17 +52,21 @@ class ControllerAdjustment
     }
 
     /**
+     * @description デフォルトのコントローラー表示幅
+     *              Default controller display width.
+     *
      * @return {number}
      * @const
      * @static
      */
-    static get CONTROLLER_DEFAULT_SIZE ()
+    static get DEFAULT_SIZE ()
     {
         return 360;
     }
 
     /**
-     * @description 初期起動関数
+     * @description コントローラーの共通の初期起動関数
+     *              Common initial startup functions for controllers.
      *
      * @return {void}
      * @method
@@ -72,7 +79,7 @@ class ControllerAdjustment
             .style
             .setProperty(
                 "--controller-width",
-                `${ControllerAdjustment.CONTROLLER_DEFAULT_SIZE}px`
+                `${ControllerAdjustment.DEFAULT_SIZE}px`
             );
 
         const element = document
@@ -90,6 +97,7 @@ class ControllerAdjustment
 
     /**
      * @description コントローラーのサイズ変更イベントを起動
+     *              Controller resizing event triggered
      *
      * @param  {MouseEvent} event
      * @return {void}
@@ -98,7 +106,9 @@ class ControllerAdjustment
      */
     mouseDown (event)
     {
+        // 全てのイベントを中止
         event.preventDefault();
+        event.stopPropagation();
 
         this._$pointX = event.screenX;
 
@@ -116,7 +126,8 @@ class ControllerAdjustment
     }
 
     /**
-     * @description コントローラーのサイズ変更処理
+     * @description コントローラーのサイズ変更実行処理
+     *              Controller resizing execution process
      *
      * @param  {MouseEvent} event
      * @return {void}
@@ -129,17 +140,17 @@ class ControllerAdjustment
 
         window.requestAnimationFrame(() =>
         {
+            // 全てのイベントを中止
+            event.preventDefault();
+            event.stopPropagation();
+
+            const workSpace = Util.$currentWorkSpace();
+
             const diff = this._$pointX - event.screenX;
 
-            const value = document
-                .documentElement
-                .style
-                .getPropertyValue("--controller-width")
-                .split("px")[0] | 0;
-
             const width = Math.max(
-                ControllerAdjustment.CONTROLLER_DEFAULT_SIZE,
-                value + diff
+                ControllerAdjustment.DEFAULT_SIZE,
+                workSpace._$controllerWidth + diff
             );
 
             document
@@ -150,14 +161,18 @@ class ControllerAdjustment
                     `${width}px`
                 );
 
-            Util.$currentWorkSpace()._$controllerWidth = width;
+            workSpace._$controllerWidth = width;
 
             this._$pointX = event.screenX;
+
+            // タイムラインを再構成
+            Util.$rebuildTimeline();
         });
     }
 
     /**
      * @description コントローラーのサイズ変更イベントを終了
+     *              Terminate controller resizing event
      *
      * @return {void}
      * @method
@@ -169,6 +184,7 @@ class ControllerAdjustment
         window.removeEventListener("mousemove", this._$mouseMove);
         window.removeEventListener("mouseup", this._$mouseUp);
 
+        // カーソルを初期値に戻す
         Util.$setCursor("auto");
     }
 }

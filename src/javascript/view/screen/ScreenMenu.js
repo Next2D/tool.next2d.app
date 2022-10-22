@@ -8,7 +8,7 @@ class ScreenMenu extends BaseScreen
      * @constructor
      * @public
      */
-    constructor()
+    constructor ()
     {
         super();
 

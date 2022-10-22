@@ -13,6 +13,7 @@ class WorkSpace
     constructor (json = "")
     {
         this._$name            = "";
+        this._$scene           = null;
         this._$stage           = null;
         this._$libraries       = new Map();
         this._$nameMap         = new Map();
@@ -22,7 +23,7 @@ class WorkSpace
         this._$revision        = [];
         this._$currentData     = null;
         this._$timelineHeight  = TimelineAdjustment.TIMELINE_DEFAULT_SIZE;
-        this._$controllerWidth = ControllerAdjustment.CONTROLLER_DEFAULT_SIZE;
+        this._$controllerWidth = ControllerAdjustment.DEFAULT_SIZE;
 
         if (json) {
             this.load(json);

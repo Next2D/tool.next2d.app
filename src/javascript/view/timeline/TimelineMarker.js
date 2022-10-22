@@ -9,7 +9,7 @@ class TimelineMarker extends BaseTimeline
      * @constructor
      * @public
      */
-    constructor()
+    constructor ()
     {
         super();
 

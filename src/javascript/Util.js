@@ -639,6 +639,18 @@ Util.$initialize = () =>
 window.addEventListener("DOMContentLoaded", Util.$initialize);
 window.addEventListener("resize", () =>
 {
+    Util.$rebuildTimeline();
+});
+
+/**
+ * @description タイムラインを現在の幅で再構成
+ *
+ * @method
+ * @static
+ */
+Util.$rebuildTimeline = () =>
+{
+    // ヘッダーを再構成
     Util.$timelineHeader._$currentFrame = -1;
     Util.$timelineHeader.setWidth();
     Util.$timelineHeader.rebuild();
@@ -646,7 +658,7 @@ window.addEventListener("resize", () =>
     // タイムラインを再構成
     Util.$timelineLayer.moveTimeLine();
     Util.$timelineScroll.setX();
-});
+};
 
 /**
  * @return {void}

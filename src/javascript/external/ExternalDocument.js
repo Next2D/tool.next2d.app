@@ -8,7 +8,7 @@ class ExternalDocument
      * @constructor
      * @public
      */
-    constructor()
+    constructor ()
     {
         /**
          * @type {ExternalTimeline}
