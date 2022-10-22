@@ -285,6 +285,206 @@ describe("Character.js function test", () =>
         Util.$workSpaces.length = 0;
     });
 
+    it("function getClonePlace test", () =>
+    {
+        const workSpaces = new WorkSpace();
+        Util.$activeWorkSpaceId = Util.$workSpaces.length;
+        Util.$workSpaces.push(workSpaces);
+
+        const character = new Character();
+
+        const place = {
+            "frame": 1,
+            "loop": {
+                "type": LoopController.DEFAULT,
+                "start": 1,
+                "end": 12
+            }
+        };
+
+        expect(place.loop.type).toBe(LoopController.DEFAULT);
+        character.setPlace(1, place);
+
+        const clone = character.getClonePlace(1);
+        expect(clone.frame).toBe(1);
+        expect(clone.loop.type).toBe(LoopController.DEFAULT);
+
+        clone.frame = 10;
+        clone.loop.type = LoopController.REPEAT;
+        expect(place.loop.type).toBe(LoopController.DEFAULT);
+        expect(clone.loop.type).toBe(LoopController.REPEAT);
+        expect(clone.frame).toBe(10);
+
+        Util.$workSpaces.length = 0;
+    });
+
+    it("function getCloneTween test", () =>
+    {
+        const workSpaces = new WorkSpace();
+        Util.$activeWorkSpaceId = Util.$workSpaces.length;
+        Util.$workSpaces.push(workSpaces);
+
+        const character = new Character();
+
+        const tween = {
+            "method": "linear",
+            "curve": [],
+            "custom": Util.$tweenController.createEasingObject(),
+            "startFrame": 1,
+            "endFrame": 2
+
+        };
+        character.setTween(1, tween);
+
+        expect(tween.custom[0].type).toBe("pointer");
+        character.setPlace(1, tween);
+
+        const clone = character.getCloneTween(1);
+        expect(clone.custom[0].type).toBe("pointer");
+
+        clone.custom[0].type = "curve";
+        expect(tween.custom[0].type).toBe("pointer");
+        expect(clone.custom[0].type).toBe("curve");
+
+        Util.$workSpaces.length = 0;
+    });
+
+    it("function getNearPlaceFrame test", () =>
+    {
+        const workSpaces = new WorkSpace();
+        Util.$activeWorkSpaceId = Util.$workSpaces.length;
+        Util.$workSpaces.push(workSpaces);
+
+        const character = new Character();
+        character.endFrame = 10;
+
+        character.setPlace(1, {});
+        character.setPlace(5, {});
+
+        // 範囲検索
+        expect(character.getNearPlaceFrame(2)).toBe(1);
+        expect(character.getNearPlaceFrame(3)).toBe(1);
+        expect(character.getNearPlaceFrame(4)).toBe(1);
+        expect(character.getNearPlaceFrame(6)).toBe(5);
+        expect(character.getNearPlaceFrame(7)).toBe(5);
+        expect(character.getNearPlaceFrame(8)).toBe(5);
+        expect(character.getNearPlaceFrame(9)).toBe(5);
+
+        Util.$workSpaces.length = 0;
+    });
+
+    it("function getRange test case1", () =>
+    {
+        const workSpaces = new WorkSpace();
+        Util.$activeWorkSpaceId = Util.$workSpaces.length;
+        Util.$workSpaces.push(workSpaces);
+
+        const character = new Character();
+        character.endFrame = 10;
+
+        character.setPlace(3, {});
+        character.setPlace(8, {});
+        character.setPlace(5, {});
+        character.setPlace(1, {});
+
+        const range1 = character.getRange(2);
+        expect(range1.startFrame).toBe(1);
+        expect(range1.endFrame).toBe(3);
+
+        const range2 = character.getRange(4);
+        expect(range2.startFrame).toBe(3);
+        expect(range2.endFrame).toBe(5);
+
+        const range3 = character.getRange(6);
+        expect(range3.startFrame).toBe(5);
+        expect(range3.endFrame).toBe(8);
+
+        const range4 = character.getRange(9);
+        expect(range4.startFrame).toBe(8);
+        expect(range4.endFrame).toBe(10);
+
+        Util.$workSpaces.length = 0;
+    });
+
+    it("function getRange test case tween", () =>
+    {
+        const workSpaces = new WorkSpace();
+        Util.$activeWorkSpaceId = Util.$workSpaces.length;
+        Util.$workSpaces.push(workSpaces);
+
+        const character = new Character();
+        character.endFrame = 10;
+
+        const tween = {
+            "startFrame": 1,
+            "endFrame": 10
+        };
+        character.setTween(1, tween);
+
+        const place = {
+            "tweenFrame": 1
+        };
+        character.setPlace(1, place);
+        character.setPlace(2, place);
+        character.setPlace(3, place);
+        character.setPlace(4, place);
+
+        const range1 = character.getRange(1);
+        expect(range1.startFrame).toBe(1);
+        expect(range1.endFrame).toBe(10);
+
+        const range2 = character.getRange(2);
+        expect(range2.startFrame).toBe(1);
+        expect(range2.endFrame).toBe(10);
+
+        const range3 = character.getRange(3);
+        expect(range3.startFrame).toBe(1);
+        expect(range3.endFrame).toBe(10);
+
+        const range4 = character.getRange(4);
+        expect(range4.startFrame).toBe(1);
+        expect(range4.endFrame).toBe(10);
+
+        Util.$workSpaces.length = 0;
+    });
+
+    it("function move test", () =>
+    {
+        const workSpaces = new WorkSpace();
+        Util.$activeWorkSpaceId = Util.$workSpaces.length;
+        Util.$workSpaces.push(workSpaces);
+
+        const character = new Character();
+        character.endFrame = 10;
+
+        const tween = {
+            "startFrame": 1,
+            "endFrame": 10
+        };
+        character.setTween(1, tween);
+
+        const place = {
+            "tweenFrame": 1
+        };
+        character.setPlace(1, place);
+
+        expect(character.startFrame).toBe(1);
+        expect(character.endFrame).toBe(10);
+        expect(place.frame).toBe(1);
+        expect(place.tweenFrame).toBe(1);
+        expect(tween.startFrame).toBe(1);
+        expect(tween.endFrame).toBe(10);
+
+        character.move(3);
+        expect(character.startFrame).toBe(4);
+        expect(character.endFrame).toBe(13);
+        expect(place.frame).toBe(4);
+        expect(place.tweenFrame).toBe(4);
+        expect(tween.startFrame).toBe(4);
+        expect(tween.endFrame).toBe(13);
+
+        Util.$workSpaces.length = 0;
+    });
 });
 
 describe("Character.js showController test", () =>

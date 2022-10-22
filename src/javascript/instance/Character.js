@@ -271,30 +271,31 @@ class Character
             };
         }
 
-        const places = Array.from(this._$places.keys());
+        let places = this._$cachePlaces;
+        if (!places.length) {
+            // 降順
+            places = Array.from(this._$places.keys());
+            places.sort((a, b) =>
+            {
+                switch (true) {
 
-        // 降順
-        places.sort((a, b) =>
-        {
-            switch (true) {
+                    case a > b:
+                        return -1;
 
-                case a > b:
-                    return 1;
+                    case a < b:
+                        return 1;
 
-                case a < b:
-                    return -1;
+                    default:
+                        return 0;
 
-                default:
-                    return 0;
-
-            }
-        });
+                }
+            });
+        }
 
         let prevFrame = 0;
-        while (places.length) {
+        for (let idx = 0; idx < places.length; ++idx) {
 
-            const placeFrame = places.pop() | 0;
-
+            const placeFrame = places[idx];
             if (frame >= placeFrame) {
                 const place = this.getPlace(placeFrame);
                 if (place.tweenFrame) {
@@ -313,11 +314,6 @@ class Character
 
             prevFrame = placeFrame;
         }
-
-        return {
-            "startFrame": this.startFrame,
-            "endFrame": this.endFrame
-        };
     }
 
     /**
@@ -1081,7 +1077,7 @@ class Character
      */
     getNearPlaceFrame (frame)
     {
-        // 再生中は内部キャッシュを利用して高速化
+        // 再生中は変更がないので、内部キャッシュを利用して高速化
         if (!Util.$timelinePlayer._$stopFlag) {
 
             // キャッシュがなければキャッシュ
@@ -1124,17 +1120,17 @@ class Character
             this._$cachePlaces.length = 0;
         }
 
-        // 昇順
+        // 降順
         const places = Array.from(this._$places.keys());
         places.sort((a, b) =>
         {
             switch (true) {
 
                 case a > b:
-                    return 1;
+                    return -1;
 
                 case a < b:
-                    return -1;
+                    return 1;
 
                 default:
                     return 0;
@@ -1142,9 +1138,9 @@ class Character
             }
         });
 
-        while (places.length) {
+        for (let idx = 0; idx < places.length; ++idx) {
 
-            const placeFrame = places.pop() | 0;
+            const placeFrame = places[idx];
 
             if (frame > placeFrame) {
                 return placeFrame;
