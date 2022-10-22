@@ -487,6 +487,301 @@ describe("Character.js function test", () =>
     });
 });
 
+describe("Character.js split test", () =>
+{
+    beforeEach(() =>
+    {
+        document.body.innerHTML = window.__html__["test/test.html"];
+    });
+
+    it("function split test case1", () =>
+    {
+        const workSpaces = new WorkSpace();
+        Util.$activeWorkSpaceId = Util.$workSpaces.length;
+        Util.$workSpaces.push(workSpaces);
+
+        const layer = new Layer();
+
+        const character = new Character();
+        character.endFrame = 10;
+        expect(layer._$characters.length).toBe(0);
+        expect(layer._$instances.size).toBe(0);
+
+        layer.addCharacter(character);
+        expect(layer._$characters.length).toBe(1);
+        expect(layer._$instances.size).toBe(1);
+
+        character.split(layer, 1, 10);
+        expect(layer._$characters.length).toBe(0);
+        expect(layer._$instances.size).toBe(0);
+
+        Util.$workSpaces.length = 0;
+    });
+
+    it("function split test case2", () =>
+    {
+        const workSpaces = new WorkSpace();
+        Util.$activeWorkSpaceId = Util.$workSpaces.length;
+        Util.$workSpaces.push(workSpaces);
+
+        const layer = new Layer();
+
+        const character = new Character();
+        character.endFrame = 10;
+        expect(layer._$characters.length).toBe(0);
+        expect(layer._$instances.size).toBe(0);
+
+        layer.addCharacter(character);
+        expect(layer._$characters.length).toBe(1);
+        expect(layer._$instances.size).toBe(1);
+
+        character.split(layer, 5, 10);
+        expect(layer._$characters.length).toBe(1);
+        expect(layer._$instances.size).toBe(1);
+        expect(layer._$characters[0].startFrame).toBe(1);
+        expect(layer._$characters[0].endFrame).toBe(5);
+
+        Util.$workSpaces.length = 0;
+    });
+
+    it("function split test case3", () =>
+    {
+        const workSpaces = new WorkSpace();
+        Util.$activeWorkSpaceId = Util.$workSpaces.length;
+        Util.$workSpaces.push(workSpaces);
+
+        const layer = new Layer();
+
+        const character = new Character();
+        character.endFrame = 10;
+        expect(layer._$characters.length).toBe(0);
+        expect(layer._$instances.size).toBe(0);
+
+        layer.addCharacter(character);
+        expect(layer._$characters.length).toBe(1);
+        expect(layer._$instances.size).toBe(1);
+
+        const result = character.split(layer, 1, 5);
+        expect(layer._$characters.length).toBe(0);
+        expect(layer._$instances.size).toBe(0);
+        expect(character._$places.size).toBe(0);
+        expect(result._$places.size).toBe(0);
+        expect(result.startFrame).toBe(1);
+        expect(result.endFrame).toBe(5);
+
+        Util.$workSpaces.length = 0;
+    });
+
+    it("function split test case4", () =>
+    {
+        const workSpaces = new WorkSpace();
+        Util.$activeWorkSpaceId = Util.$workSpaces.length;
+        Util.$workSpaces.push(workSpaces);
+
+        const layer = new Layer();
+
+        const character = new Character();
+        character.setPlace(1, {});
+        character.setPlace(5, {});
+        character.setTween(1, {});
+        character.setTween(5, {});
+        character.endFrame = 10;
+        expect(layer._$characters.length).toBe(0);
+        expect(layer._$instances.size).toBe(0);
+        expect(character._$places.size).toBe(2);
+        expect(character._$tween.size).toBe(2);
+
+        layer.addCharacter(character);
+        expect(layer._$characters.length).toBe(1);
+        expect(layer._$instances.size).toBe(1);
+
+        const result = character.split(layer, 1, 5);
+        expect(character.startFrame).toBe(5);
+        expect(character.endFrame).toBe(10);
+        expect(character._$places.size).toBe(1);
+        expect(character._$tween.size).toBe(1);
+
+        expect(result.startFrame).toBe(1);
+        expect(result.endFrame).toBe(5);
+        expect(result._$places.size).toBe(1);
+        expect(result._$tween.size).toBe(1);
+
+        Util.$workSpaces.length = 0;
+    });
+});
+
+describe("Character.js remove test", () =>
+{
+    beforeEach(() =>
+    {
+        document.body.innerHTML = window.__html__["test/test.html"];
+    });
+
+    it("function remove test case1", () =>
+    {
+        const workSpaces = new WorkSpace();
+        Util.$activeWorkSpaceId = Util.$workSpaces.length;
+        Util.$workSpaces.push(workSpaces);
+
+        const layer = new Layer();
+        expect(layer._$characters.length).toBe(0);
+        expect(layer._$instances.size).toBe(0);
+
+        const character = new Character();
+        layer.addCharacter(character);
+        expect(layer._$characters.length).toBe(1);
+        expect(layer._$instances.size).toBe(1);
+
+        character.setPlace(1, {});
+        character.remove(layer);
+        expect(layer._$characters.length).toBe(0);
+        expect(layer._$instances.size).toBe(0);
+
+        Util.$workSpaces.length = 0;
+    });
+
+    it("function remove test case2", () =>
+    {
+        const workSpaces = new WorkSpace();
+        Util.$activeWorkSpaceId = Util.$workSpaces.length;
+        Util.$workSpaces.push(workSpaces);
+
+        const layer = new Layer();
+        expect(layer._$characters.length).toBe(0);
+        expect(layer._$instances.size).toBe(0);
+
+        const character = new Character();
+        character.endFrame = 10;
+        layer.addCharacter(character);
+        expect(layer._$characters.length).toBe(1);
+        expect(layer._$instances.size).toBe(1);
+
+        character.setPlace(1, {});
+        character.setPlace(3, {});
+        Util.$timelineFrame.currentFrame = 2;
+
+        expect(character.startFrame).toBe(1);
+        expect(character.endFrame).toBe(10);
+
+        character.remove(layer);
+        expect(character.startFrame).toBe(3);
+        expect(character.endFrame).toBe(10);
+
+        Util.$workSpaces.length = 0;
+    });
+
+    it("function remove test case3", () =>
+    {
+        const workSpaces = new WorkSpace();
+        Util.$activeWorkSpaceId = Util.$workSpaces.length;
+        Util.$workSpaces.push(workSpaces);
+
+        const layer = new Layer();
+        expect(layer._$characters.length).toBe(0);
+        expect(layer._$instances.size).toBe(0);
+
+        const character = new Character();
+        character.endFrame = 10;
+        layer.addCharacter(character);
+        expect(layer._$characters.length).toBe(1);
+        expect(layer._$instances.size).toBe(1);
+
+        character.setPlace(1, {});
+        character.setPlace(3, {});
+        Util.$timelineFrame.currentFrame = 5;
+
+        expect(character.startFrame).toBe(1);
+        expect(character.endFrame).toBe(10);
+
+        character.remove(layer);
+        expect(character.startFrame).toBe(1);
+        expect(character.endFrame).toBe(3);
+
+        Util.$workSpaces.length = 0;
+    });
+
+    it("function remove test case4", () =>
+    {
+        const workSpaces = new WorkSpace();
+        Util.$activeWorkSpaceId = Util.$workSpaces.length;
+        Util.$workSpaces.push(workSpaces);
+
+        const layer = new Layer();
+        expect(layer._$characters.length).toBe(0);
+        expect(layer._$instances.size).toBe(0);
+
+        const character = new Character();
+        character.endFrame = 10;
+        layer.addCharacter(character);
+        expect(layer._$characters.length).toBe(1);
+        expect(layer._$instances.size).toBe(1);
+
+        character.setPlace(1, {});
+        character.setPlace(3, {});
+        character.setPlace(8, {});
+        Util.$timelineFrame.currentFrame = 5;
+
+        expect(character.startFrame).toBe(1);
+        expect(character.endFrame).toBe(10);
+
+        character.remove(layer);
+        expect(character.startFrame).toBe(8);
+        expect(character.endFrame).toBe(10);
+
+        expect(character._$places.size).toBe(1);
+        expect(layer._$characters.length).toBe(2);
+        expect(layer._$instances.size).toBe(2);
+
+        expect(layer._$characters[1]._$places.size).toBe(1);
+        expect(layer._$characters[1].startFrame).toBe(1);
+        expect(layer._$characters[1].endFrame).toBe(3);
+
+        Util.$workSpaces.length = 0;
+    });
+
+    it("function remove test case5", () =>
+    {
+        const workSpaces = new WorkSpace();
+        Util.$activeWorkSpaceId = Util.$workSpaces.length;
+        Util.$workSpaces.push(workSpaces);
+
+        const layer = new Layer();
+        expect(layer._$characters.length).toBe(0);
+        expect(layer._$instances.size).toBe(0);
+
+        const character = new Character();
+        character.endFrame = 10;
+        layer.addCharacter(character);
+        expect(layer._$characters.length).toBe(1);
+        expect(layer._$instances.size).toBe(1);
+
+        character.setPlace(1, {
+            "tweenFrame": 1
+        });
+        character.setPlace(2, {
+            "tweenFrame": 1
+        });
+        character.setPlace(3, {
+            "tweenFrame": 1
+        });
+        character.setPlace(4, {});
+        character.setTween(1, {
+            "startFrame": 1,
+            "endFrame": 4
+        });
+        Util.$timelineFrame.currentFrame = 2;
+
+        expect(character._$places.size).toBe(4);
+        character.remove(layer);
+
+        expect(character._$places.size).toBe(1);
+        expect(character.startFrame).toBe(4);
+        expect(character.endFrame).toBe(10);
+
+        Util.$workSpaces.length = 0;
+    });
+});
+
 describe("Character.js showController test", () =>
 {
     beforeEach(() =>

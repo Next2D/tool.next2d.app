@@ -160,60 +160,57 @@ class Character
     remove (layer)
     {
         if (this._$places.size === 1) {
-
             layer.deleteCharacter(this.id);
+            return ;
+        }
 
-        } else {
+        const range = this.getRange(
+            Util.$timelineFrame.currentFrame
+        );
 
-            const range = this.getRange(
-                Util.$timelineFrame.currentFrame
-            );
+        switch (true) {
 
-            switch (true) {
+            case range.startFrame === this.startFrame:
+                this._$places.delete(range.startFrame);
+                this.startFrame = range.endFrame;
+                break;
 
-                case range.startFrame === this.startFrame:
-                    this._$places.delete(this.startFrame);
-                    this.startFrame = range.endFrame;
-                    break;
+            case range.endFrame === this.endFrame:
+                this._$places.delete(range.startFrame);
+                this.endFrame = range.startFrame;
+                break;
 
-                case range.endFrame === this.endFrame:
-                    this._$places.delete(range.startFrame);
-                    this.endFrame = range.startFrame;
-                    break;
+            default:
+                {
+                    const character = this.split(
+                        layer, range.startFrame, range.endFrame
+                    );
 
-                default:
-                    {
-                        const character = this.split(
-                            layer, range.startFrame, range.endFrame
-                        );
-
-                        if (character._$tween.size) {
-                            Util
-                                .$tweenController
-                                .clearPointer();
-                        }
+                    if (character._$tween.size) {
+                        Util
+                            .$tweenController
+                            .clearPointer();
                     }
-                    break;
-
-            }
-
-            // tween情報を削除
-            if (this._$tween.has(range.startFrame)) {
-
-                this._$tween.delete(range.startFrame);
-
-                for (let keyFrame = range.startFrame; keyFrame < range.endFrame; ++keyFrame) {
-                    if (!this._$places.has(keyFrame)) {
-                        continue;
-                    }
-                    this._$places.delete(keyFrame);
                 }
+                break;
 
-                Util
-                    .$tweenController
-                    .clearPointer();
+        }
+
+        // tween情報を削除
+        if (this._$tween.has(range.startFrame)) {
+
+            this._$tween.delete(range.startFrame);
+
+            for (let keyFrame = range.startFrame; keyFrame < range.endFrame; ++keyFrame) {
+                if (!this._$places.has(keyFrame)) {
+                    continue;
+                }
+                this._$places.delete(keyFrame);
             }
 
+            Util
+                .$tweenController
+                .clearPointer();
         }
     }
 

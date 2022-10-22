@@ -1256,6 +1256,11 @@ class Layer
      */
     addCharacter (character)
     {
+        // 同一のDisplayObjectなら登録せずにスキップ
+        if (this._$instances.has(character.id)) {
+            return ;
+        }
+
         character._$layerId = this.id;
         this._$characters.push(character);
         this._$instances.set(character.id, character);
@@ -1272,15 +1277,16 @@ class Layer
      */
     deleteCharacter (character_id)
     {
-        if (this._$instances.has(character_id | 0)) {
-
-            const character = this._$instances.get(character_id | 0);
-            character._$layerId = -1;
-
-            this._$characters.splice(this._$characters.indexOf(character), 1);
-
-            this._$instances.delete(character_id | 0);
+        if (!this._$instances.has(character_id | 0)) {
+            return ;
         }
+
+        const character = this._$instances.get(character_id | 0);
+        character._$layerId = -1;
+
+        this._$characters.splice(this._$characters.indexOf(character), 1);
+
+        this._$instances.delete(character_id | 0);
     }
 
     /**
