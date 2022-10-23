@@ -697,11 +697,11 @@ class Screen extends BaseScreen
 
         image.style.width  = `${image._$width  * Util.$zoomScale}px`;
         image.style.height = `${image._$height * Util.$zoomScale}px`;
-        if (image.offsetX) {
+        if (character.offsetX) {
             image.style.left = `${character.offsetX * Util.$zoomScale}px`;
         }
 
-        if (image.offsetY) {
+        if (character.offsetY) {
             image.style.top = `${character.offsetY * Util.$zoomScale}px`;
         }
 

@@ -200,6 +200,8 @@ class FilterController extends GradientFilterController
      */
     lock (event)
     {
+        // 全てのイベントを中止
+        event.preventDefault();
         event.stopPropagation();
 
         // ロックのOn/Off
