@@ -675,6 +675,9 @@ class Character
         const width  = +Math.ceil(Math.abs(bounds.xMax - bounds.xMin));
         const height = +Math.ceil(Math.abs(bounds.yMax - bounds.yMin));
 
+        // styleを初期化
+        canvas.setAttribute("style", "");
+
         let context = null;
         switch (place.blendMode) {
 
