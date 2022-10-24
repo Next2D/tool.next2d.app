@@ -357,7 +357,7 @@ class FilterHTML
     {
         return `
 <div class="filter-text">Color</div>
-<div><input type="color" id="gradientColor-${id}" value="#000000" data-detail="{{グラデーションカラー}}"></div>
+<div><input type="color" id="gradientColor-${id}" value="#000000" data-filter-id="${id}" data-name="gradientColor" data-detail="{{グラデーションカラー}}"></div>
 `;
     }
 
@@ -374,7 +374,7 @@ class FilterHTML
     {
         return `
 <div class="filter-text">Alpha</div>
-<div><input type="text" id="gradientAlpha-${id}" value="100" data-name="gradientAlpha" data-detail="{{グラデーションのアルファ}}"></div>
+<div><input type="text" id="gradientAlpha-${id}" value="100" data-filter-id="${id}" data-name="gradientAlpha" data-detail="{{グラデーションのアルファ}}"></div>
         `;
     }
 

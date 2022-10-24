@@ -112,10 +112,11 @@ class GradientFilterController extends BaseController
     {
         const filterId = this._$currentTarget.dataset.filterId | 0;
         if (!this._$filters.has(filterId)) {
-            return ;
+            return value;
         }
 
         if (this._$currentPointer) {
+
             const filter = this._$filters.get(filterId).filter;
             const index  = this._$currentPointer.dataset.index | 0;
             filter._$colors[index] = `0x${value.slice(1)}` | 0;
@@ -146,16 +147,16 @@ class GradientFilterController extends BaseController
      */
     changeGradientAlpha (value)
     {
-        const filterId = this._$currentTarget.dataset.filterId | 0;
-        if (!this._$filters.has(filterId)) {
-            return ;
-        }
-
         value = Util.$clamp(
             +value,
             FilterController.MIN_ALPHA,
             FilterController.MAX_ALPHA
         );
+
+        const filterId = this._$currentTarget.dataset.filterId | 0;
+        if (!this._$filters.has(filterId)) {
+            return value;
+        }
 
         if (this._$currentPointer) {
             const filter = this._$filters.get(filterId).filter;
