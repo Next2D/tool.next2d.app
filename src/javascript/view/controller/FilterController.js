@@ -821,6 +821,10 @@ class FilterController extends GradientFilterController
      */
     updateProperty (name, value)
     {
+        if (!this._$currentTarget) {
+            return ;
+        }
+
         const filterId = this._$currentTarget.dataset.filterId | 0;
 
         if (!this._$filters.has(filterId)) {
@@ -1071,8 +1075,6 @@ class FilterController extends GradientFilterController
      */
     createFilter (filterClass, filter = null)
     {
-        const id = this._$filterId++;
-
         if (!filter) {
 
             /**
@@ -1081,7 +1083,7 @@ class FilterController extends GradientFilterController
             const tool = Util.$tools.getDefaultTool("arrow");
             const activeElements = tool.activeElements;
             if (!activeElements.length) {
-                return ;
+                return -1;
             }
 
             filter = new filterClass();
@@ -1118,6 +1120,8 @@ class FilterController extends GradientFilterController
             // tweenの情報を更新
             character.updateTweenFilter(frame);
         }
+
+        const id = this._$filterId++;
 
         // 複数のフィルターを管理するので、Mapで状態管理を行う
         this._$filters.set(id, {
@@ -1489,6 +1493,10 @@ ${FilterHTML.createHeaderHTML(id, "Glow")}
         }
 
         const id = this.createFilter(BevelFilter, filter);
+        if (0 > id) {
+            return ;
+        }
+
         if (!filter) {
             filter = this._$filters.get(id).filter;
         }
