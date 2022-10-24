@@ -1,4 +1,7 @@
 /**
+ * フィルター機能のコントローラークラス、グラデーションは親クラスで管理
+ * Controller class for filter functions, gradients managed by parent class
+ *
  * @class
  * @extends {GradientFilterController}
  * @memberOf view.controller
@@ -28,6 +31,9 @@ class FilterController extends GradientFilterController
     }
 
     /**
+     * @description ブラーの最小値
+     *              Minimum value of blur
+     *
      * @return {number}
      * @const
      * @static
@@ -38,6 +44,9 @@ class FilterController extends GradientFilterController
     }
 
     /**
+     * @description ブラーの最大値
+     *              Maximum value of blur
+     *
      * @return {number}
      * @const
      * @static
@@ -48,6 +57,9 @@ class FilterController extends GradientFilterController
     }
 
     /**
+     * @description 透明度の最小値
+     *              Minimum value of alpha
+     *
      * @return {number}
      * @const
      * @static
@@ -58,6 +70,9 @@ class FilterController extends GradientFilterController
     }
 
     /**
+     * @description 透明度の最大値
+     *              Maximum value of alpha
+     *
      * @return {number}
      * @const
      * @static
@@ -68,6 +83,9 @@ class FilterController extends GradientFilterController
     }
 
     /**
+     * @description 塗りの強さの最小値
+     *              Minimum value of strength
+     *
      * @return {number}
      * @const
      * @static
@@ -78,6 +96,9 @@ class FilterController extends GradientFilterController
     }
 
     /**
+     * @description 塗りの強さの最大値
+     *              Maximum value of strength
+     *
      * @return {number}
      * @const
      * @static
@@ -88,6 +109,9 @@ class FilterController extends GradientFilterController
     }
 
     /**
+     * @description 回転の最小値
+     *              Minimum value of rotate
+     *
      * @return {number}
      * @const
      * @static
@@ -98,6 +122,9 @@ class FilterController extends GradientFilterController
     }
 
     /**
+     * @description 回転の最大値
+     *              Maximum value of rotate
+     *
      * @return {number}
      * @const
      * @static
@@ -108,6 +135,9 @@ class FilterController extends GradientFilterController
     }
 
     /**
+     * @description 距離の最小値
+     *              Minimum value of distance
+     *
      * @return {number}
      * @const
      * @static
@@ -118,6 +148,9 @@ class FilterController extends GradientFilterController
     }
 
     /**
+     * @description 距離の最大値
+     *              Maximum value of distance
+     *
      * @return {number}
      * @const
      * @static
@@ -128,6 +161,9 @@ class FilterController extends GradientFilterController
     }
 
     /**
+     * @description カラーの最小値
+     *              Minimum value of color
+     *
      * @return {number}
      * @const
      * @static
@@ -138,6 +174,9 @@ class FilterController extends GradientFilterController
     }
 
     /**
+     * @description カラーの最大値
+     *              Maximum value of color
+     *
      * @return {number}
      * @const
      * @static
@@ -148,6 +187,9 @@ class FilterController extends GradientFilterController
     }
 
     /**
+     * @description クオリティーの最小値
+     *              Minimum value of quality
+     *
      * @return {number}
      * @const
      * @static
@@ -158,6 +200,9 @@ class FilterController extends GradientFilterController
     }
 
     /**
+     * @description クオリティーの最大値
+     *              Maximum value of quality
+     *
      * @return {number}
      * @const
      * @static
@@ -169,6 +214,7 @@ class FilterController extends GradientFilterController
 
     /**
      * @description 初期起動関数
+     *              initial invoking function
      *
      * @return {void}
      * @method
@@ -192,6 +238,7 @@ class FilterController extends GradientFilterController
 
     /**
      * @description 幅高さの変更のロックのOn/Off関数
+     *              On/Off function for locking width-height changes.
      *
      * @param  {MouseEvent} event
      * @return {void}
@@ -226,7 +273,8 @@ class FilterController extends GradientFilterController
     }
 
     /**
-     * @description フィルターの表示・非表示の処理
+     * @description フィルターのコントローラー枠を表示・非表示にする
+     *              Show/hide the controller frame of the filter
      *
      * @param  {MouseEvent} event
      * @return {void}
@@ -259,6 +307,7 @@ class FilterController extends GradientFilterController
 
     /**
      * @description フィルターの有効・無効の処理
+     *              Enabling and disabling filters
      *
      * @param  {MouseEvent} event
      * @return {void}
@@ -289,7 +338,8 @@ class FilterController extends GradientFilterController
     }
 
     /**
-     * @description フィルターの削除の処理
+     * @description フィルターのコントローラーブロックの削除
+     *              Delete the controller block of the filter
      *
      * @param  {MouseEvent} event
      * @return {void}
@@ -366,6 +416,7 @@ class FilterController extends GradientFilterController
 
     /**
      * @description InputElementにフォーカスした際の処理関数
+     *              Processing function when InputElement is focused
      *
      * @param  {Event} event
      * @return {void}
@@ -380,6 +431,7 @@ class FilterController extends GradientFilterController
 
     /**
      * @description InputElement上でマウスを押下した際の処理関数
+     *              Processing function when the mouse is pressed on an InputElement
      *
      * @param  {MouseEvent} event
      * @return {void}
@@ -394,6 +446,7 @@ class FilterController extends GradientFilterController
 
     /**
      * @description ロックが有効の際に対象となるElementを変数にセット
+     *              Set a variable to the target Element when locking is enabled
      *
      * @param  {Event} event
      * @return {void}
@@ -402,6 +455,9 @@ class FilterController extends GradientFilterController
      */
     setLockElement (event)
     {
+        // 初期化
+        this._$lockTarget = null;
+
         if (this._$focus) {
             return ;
         }
@@ -419,23 +475,23 @@ class FilterController extends GradientFilterController
         switch (this._$currentTarget.dataset.name) {
 
             case "blurX":
-                this._$lockTarget = document
-                    .getElementById(`blurY-${filterId}`);
+                this._$lockTarget = document.getElementById(`blurY-${filterId}`);
                 break;
 
             case "blurY":
-                this._$lockTarget = document
-                    .getElementById(`blurX-${filterId}`);
+                this._$lockTarget = document.getElementById(`blurX-${filterId}`);
                 break;
 
             default:
+                // 他のInput変更時もこの処理が行われるので、対象以外はスキップ
                 break;
 
         }
     }
 
     /**
-     * @description blueXの変更値を更新
+     * @description blurXの値を更新
+     *              Update blurX values
      *
      * @param  {string} value
      * @return {number}
@@ -456,7 +512,8 @@ class FilterController extends GradientFilterController
     }
 
     /**
-     * @description blueYの変更値を更新
+     * @description blurYの値を更新
+     *              Update blurY values
      *
      * @param  {string} value
      * @return {number}
@@ -477,7 +534,8 @@ class FilterController extends GradientFilterController
     }
 
     /**
-     * @description strengthの変更値を更新
+     * @description strengthの値を更新
+     *              Update strength values
      *
      * @param  {string} value
      * @return {number}
@@ -498,7 +556,8 @@ class FilterController extends GradientFilterController
     }
 
     /**
-     * @description filterの透明度を更新
+     * @description 透明度の値を更新
+     *              Update alpha values
      *
      * @param  {string} value
      * @return {number}
@@ -519,7 +578,8 @@ class FilterController extends GradientFilterController
     }
 
     /**
-     * @description filterのシャドーの透明度を更新
+     * @description 影の透明度を更新
+     *              Update shadow transparency
      *
      * @param  {string} value
      * @return {number}
@@ -540,7 +600,8 @@ class FilterController extends GradientFilterController
     }
 
     /**
-     * @description filterのハイライトの透明度を更新
+     * @description ハイライトの透明度を更新
+     *              Update highlight transparency
      *
      * @param  {string} value
      * @return {number}
@@ -561,7 +622,8 @@ class FilterController extends GradientFilterController
     }
 
     /**
-     * @description filterの回転の値を更新
+     * @description 回転の値を更新
+     *              Update rotation values
      *
      * @param  {string} value
      * @return {number}
@@ -585,7 +647,8 @@ class FilterController extends GradientFilterController
     }
 
     /**
-     * @description filterのdistanceの値を更新
+     * @description 距離の値を更新
+     *              Update distance values
      *
      * @param  {string} value
      * @return {number}
@@ -606,7 +669,8 @@ class FilterController extends GradientFilterController
     }
 
     /**
-     * @description filterの指定カラーの値を更新
+     * @description カラーの値を更新
+     *              Update color values
      *
      * @param  {string} value
      * @return {string}
@@ -625,7 +689,8 @@ class FilterController extends GradientFilterController
     }
 
     /**
-     * @description filterの指定シャドーカラーの値を更新
+     * @description 影の色の値を更新
+     *              Update shadow color values
      *
      * @param  {string} value
      * @return {string}
@@ -643,7 +708,8 @@ class FilterController extends GradientFilterController
     }
 
     /**
-     * @description filterの指定ハイライトカラーの値を更新
+     * @description ハイライトカラーの値を更新
+     *              Update highlight color values
      *
      * @param  {string} value
      * @return {string}
@@ -661,7 +727,8 @@ class FilterController extends GradientFilterController
     }
 
     /**
-     * @description filterの指定カラーの値を更新
+     * @description 品質の値を更新
+     *              Update quality values
      *
      * @param  {string} value
      * @return {void}
@@ -679,7 +746,8 @@ class FilterController extends GradientFilterController
     }
 
     /**
-     * @description filterのタイプの値を更新
+     * @description タイプの値を更新
+     *              Update type values
      *
      * @param  {string} value
      * @return {void}
@@ -703,7 +771,8 @@ class FilterController extends GradientFilterController
     }
 
     /**
-     * @description Knockoutの変更値を更新
+     * @description Knockoutの値を更新
+     *              Update knockout values
      *
      * @return {void}
      * @method
@@ -715,7 +784,8 @@ class FilterController extends GradientFilterController
     }
 
     /**
-     * @description innerの変更値を更新
+     * @description innerの値を更新
+     *              Update INNER value
      *
      * @return {void}
      * @method
@@ -728,6 +798,7 @@ class FilterController extends GradientFilterController
 
     /**
      * @description hideObjectの変更値を更新
+     *              Update HideObject value
      *
      * @return {void}
      * @method
@@ -739,7 +810,8 @@ class FilterController extends GradientFilterController
     }
 
     /**
-     * @description filterのプロパティーを更新
+     * @description 指定プロパティーの値を更新
+     *              Update the value of the specified property
      *
      * @param  {string} name
      * @param  {*} value
@@ -766,6 +838,7 @@ class FilterController extends GradientFilterController
 
     /**
      * @description 更新したDisplayObjectを再描画する為、内部キャッシュを削除する
+     *              Delete internal cache to redraw updated DisplayObjects
      *
      * @return {void}
      * @method
@@ -805,8 +878,8 @@ class FilterController extends GradientFilterController
     }
 
     /**
-     * @description フィルターの共有イベント処理
-     *              (ロック・表示/非表示・有効/無効・削除)
+     * @description フィルターの共有イベント処理(ロック・表示/非表示・有効/無効・削除)
+     *              Filter share event handling (lock, show/hide, enable/disable, delete)
      *
      * @param  {number} id
      * @return {void}
@@ -831,6 +904,7 @@ class FilterController extends GradientFilterController
 
     /**
      * @description blurのロックイベントを登録
+     *              Register blur lock event
      *
      * @param  {HTMLDivElement} element
      * @return {void}
@@ -850,7 +924,8 @@ class FilterController extends GradientFilterController
     }
 
     /**
-     * @description フィルターの表示・非表示イベント
+     * @description フィルターのコントローラーブロックの表示・非表示イベント
+     *              Show/Hide events for the controller block of the filter
      *
      * @param  {HTMLDivElement} element
      * @return {void}
@@ -871,6 +946,7 @@ class FilterController extends GradientFilterController
 
     /**
      * @description フィルターの有効・無効イベント
+     *              Filter enable/disable events
      *
      * @param  {HTMLDivElement} element
      * @return {void}
@@ -907,6 +983,7 @@ class FilterController extends GradientFilterController
 
     /**
      * @description フィルターの削除イベント
+     *              Delete Filter Event
      *
      * @param  {HTMLDivElement} element
      * @return {void}
@@ -928,6 +1005,7 @@ class FilterController extends GradientFilterController
 
     /**
      * @description フィルターの追加処理関数
+     *              Additional processing functions for filters
      *
      * @return {void}
      * @method
@@ -935,24 +1013,28 @@ class FilterController extends GradientFilterController
      */
     addFilter ()
     {
-        document
-            .querySelectorAll(".filter-none")[0]
-            .style.display = "none";
+        const element = document
+            .querySelectorAll(".filter-none")[0];
+
+        if (element) {
+            element.setAttribute("style", "display: none;");
+        }
 
         const select = document.getElementById("filter-select");
-        this[`add${select.value}`](
-            document.getElementById("filter-setting-list")
-        );
+        if (select) {
+            this[`add${select.value}`]();
+        }
     }
 
     /**
      * @description フィルター表示を初期化
+     *              Initialize filter display
      *
      * @return {void}
-     * @methodq
+     * @method
      * @public
      */
-    clearFilters ()
+    clear ()
     {
         this._$filterId = 0;
         this._$filters.clear();
@@ -978,17 +1060,20 @@ class FilterController extends GradientFilterController
     }
 
     /**
+     * @description フィルターのオブジェクトを生成してマッピングに登録
+     *              Generate filter objects and register them in the mapping
+     *
      * @param  {function} filterClass
      * @param  {DropShadowFilter|BlurFilter|GlowFilter|BevelFilter|GradientGlowFilter|GradientBevelFilter} [filter=null]
      * @return {number}
+     * @method
+     * @public
      */
     createFilter (filterClass, filter = null)
     {
         const id = this._$filterId++;
 
         if (!filter) {
-
-            filter = new filterClass();
 
             /**
              * @type {ArrowTool}
@@ -998,6 +1083,8 @@ class FilterController extends GradientFilterController
             if (!activeElements.length) {
                 return ;
             }
+
+            filter = new filterClass();
 
             const target = activeElements[0];
             const scene  = Util.$currentWorkSpace().scene;
@@ -1044,121 +1131,65 @@ class FilterController extends GradientFilterController
     }
 
     /**
-     * @description フィルター表示で共有化しているマークアップを返す
+     * @description DropShadowFilterの設定項目をコントローラーに追加
+     *              Added DropShadowFilter configuration item to controller
      *
-     * @param  {number} id
-     * @param  {string} name
-     * @return {string}
-     * @method
-     * @public
-     */
-    getFilterHeaderHTML (id, name)
-    {
-        return `
-<div id="filter-id-${id}" class="filter-border">
-
-    <div class="filter-title">
-        <i id="filter-title-arrow-${id}" class="arrow active"></i>
-        <span id="filter-name-${id}" data-filter-id="${id}">${name}</span>
-        <i class="filter-active" id="filter-state-${id}" data-filter-id="${id}" data-detail="{{フィルターを表示・非表示する}}"></i>
-        <i class="trash" id="trash-${id}" data-filter-id="${id}" data-detail="{{フィルターを削除}}"></i>
-    </div>
-    
-    <div id="filter-view-area-${id}" class="filter-view-area">
-    
-        <div class="filter-view-area-left">
-        
-            <div id="filter-${id}-lock" data-filter-id="${id}" class="filter-lock">
-                ┌
-                <div class="disable" data-detail="{{比率を固定}}"></div>
-                └
-            </div>
-        
-        </div>
-`;
-    }
-
-    /**
-     * @description DropShadowFilterを追加
-     *
-     * @param  {HTMLDivElement} element
      * @param  {DropShadowFilter} [filter=null]
      * @param  {boolean} [reload=true]
      * @return {void}
      * @method
      * @public
      */
-    addDropShadowFilter (element, filter = null, reload = true)
+    addDropShadowFilter (filter = null, reload = true)
     {
+        const element = document.getElementById("filter-setting-list");
+        if (!element) {
+            return ;
+        }
 
         const id = this.createFilter(DropShadowFilter, filter);
         if (!filter) {
             filter = this._$filters.get(id).filter;
         }
 
-        const htmlTag = this.getFilterHeaderHTML(id, "DropShadow") + `
+        const htmlTag = `
+${FilterHTML.createHeaderHTML(id, "DropShadow")}
 
         <div class="filter-view-area-right">
         
             <div class="filter-container">
-                <div class="filter-text">BlurX</div>
-                <div><input type="text" id="blurX-${id}" value="${filter.blurX}" data-name="blurX" data-filter-id="${id}" data-detail="{{水平方向にぼかす}}"></div>
-                
-                <div class="filter-text">Strength</div>
-                <div><input type="text" id="strength-${id}" value="${filter.strength}" data-filter-id="${id}" data-name="strength" data-detail="{{フィルター強度}}"></div>
+                ${FilterHTML.createBlurX(id, filter.blurX)}
+                ${FilterHTML.createStrength(id, filter.strength)}
             </div>
     
             <div class="filter-container">
-                <div class="filter-text">BlurY</div>
-                <div><input type="text" id="blurY-${id}" value="${filter.blurY}" data-name="blurY" data-filter-id="${id}" data-detail="{{垂直方向にぼかす}}"></div>
-                
-                <div class="filter-text">Angle</div>
-                <div><input type="text" id="angle-${id}" value="${filter.angle}" data-filter-id="${id}" data-name="angle" data-detail="{{フィルター角度}}"></div>
+                ${FilterHTML.createBlurY(id, filter.blurY)}
+                ${FilterHTML.createAngle(id, filter.angle)}
             </div>
 
             <div class="filter-container">
-                <div class="filter-text">Distance</div>
-                <div><input type="text" id="distance-${id}" value="${filter.distance}" data-filter-id="${id}" data-name="distance" data-detail="{{フィルター距離}}"></div>
+                ${FilterHTML.createDistance(id, filter.distance)}
             </div>
     
             <div class="filter-container">
-                <div class="filter-text">Shadow</div>
-                <div><input type="color" id="color-${id}" value="#${filter.color.toString(16).padStart(6, "0")}" data-filter-id="${id}" data-name="color" data-detail="{{シャドウのカラー}}"></div>
-                
-                <div class="filter-text">Alpha</div>
-                <div><input type="text" id="alpha-${id}" value="${filter.alpha}" data-filter-id="${id}" data-name="alpha" data-detail="{{シャドウのアルファ}}"></div>
+                ${FilterHTML.createShadowColor(id, filter.color)}
+                ${FilterHTML.createShadowAlpha(id, filter.alpha)}
             </div>
             
             <div class="filter-container">
-                <div><input type="checkbox" id="knockout-${id}" data-name="knockout" data-filter-id="${id}"></div>
-                <div class="filter-text-long">
-                    <label for="knockout-${id}">Knockout</label>
-                </div>
+                ${FilterHTML.createKnockout(id)}
             </div>
 
             <div class="filter-container">
-                <div><input type="checkbox" id="inner-${id}" data-name="inner" data-filter-id="${id}"></div>
-                <div class="filter-text-long">
-                    <label for="inner-${id}">Inner Shadow</label>
-                </div>
+                ${FilterHTML.createInnerShadow(id)}
             </div>
     
             <div class="filter-container">
-                <div><input type="checkbox" id="hideObject-${id}" data-name="hideObject" data-filter-id="${id}"></div>
-                <div class="filter-text-long">
-                    <label for="hideObject-${id}">Hide Object</label>
-                </div>
+                ${FilterHTML.createHideObject(id)}
             </div>
 
             <div class="filter-container">
-                <div class="filter-text-long">Quality</div>
-                <div>
-                    <select id="quality-${id}" data-name="quality" data-filter-id="${id}">
-                        <option value="1">Low</option>
-                        <option value="2">Middle</option>
-                        <option value="3">High</option>
-                    </select>
-                </div>
+                ${FilterHTML.createQuality(id)}
             </div> 
             
         </div>
@@ -1238,44 +1269,42 @@ class FilterController extends GradientFilterController
     }
 
     /**
-     * @param  {HTMLDivElement} element
+     * @description BlurFilterの設定項目をコントローラーに追加
+     *              Added BlurFilter configuration item to controller
+     *
      * @param  {BlurFilter} [filter=null]
      * @param  {boolean} [reload=true]
      * @return {void}
      * @method
      * @public
      */
-    addBlurFilter (element, filter = null, reload = true)
+    addBlurFilter (filter = null, reload = true)
     {
+        const element = document.getElementById("filter-setting-list");
+        if (!element) {
+            return ;
+        }
 
         const id = this.createFilter(BlurFilter, filter);
         if (!filter) {
             filter = this._$filters.get(id).filter;
         }
 
-        const htmlTag = this.getFilterHeaderHTML(id, "Blur") + `
-    
+        const htmlTag = `
+${FilterHTML.createHeaderHTML(id, "Blur")}
+        
         <div class="filter-view-area-right">
         
             <div class="filter-container">
-                <div class="filter-text">BlurX</div>
-                <div><input type="text" id="blurX-${id}" value="${filter.blurX}" data-name="blurX" data-filter-id="${id}" data-detail="{{水平方向にぼかす}}"></div>
+                ${FilterHTML.createBlurX(id, filter.blurX)}
             </div>
         
             <div class="filter-container">
-                <div class="filter-text">BlurY</div>
-                <div><input type="text" id="blurY-${id}" value="${filter.blurY}" data-name="blurY" data-filter-id="${id}" data-detail="{{垂直方向にぼかす}}"></div>
+                ${FilterHTML.createBlurY(id, filter.blurY)}
             </div>
         
             <div class="filter-container">
-                <div class="filter-text-long">Quality</div>
-                <div>
-                    <select id="quality-${id}" data-name="quality" data-filter-id="${id}">
-                        <option value="1">Low</option>
-                        <option value="2">Middle</option>
-                        <option value="3">High</option>
-                    </select>
-                </div>
+                ${FilterHTML.createQuality(id)}
             </div> 
         
         </div>
@@ -1321,69 +1350,56 @@ class FilterController extends GradientFilterController
     }
 
     /**
-     * @param  {HTMLDivElement} element
+     * @description GlowFilterの設定項目をコントローラーに追加
+     *              Added GlowFilter configuration item to controller
+     *
      * @param  {GlowFilter} [filter=null]
      * @param  {boolean} [reload=true]
      * @return {void}
      * @method
      * @public
      */
-    addGlowFilter (element, filter = null, reload = true)
+    addGlowFilter (filter = null, reload = true)
     {
+        const element = document.getElementById("filter-setting-list");
+        if (!element) {
+            return ;
+        }
 
         const id = this.createFilter(GlowFilter, filter);
         if (!filter) {
             filter = this._$filters.get(id).filter;
         }
 
-        const htmlTag = this.getFilterHeaderHTML(id, "Glow") + `
+        const htmlTag = `
+${FilterHTML.createHeaderHTML(id, "Glow")}
 
         <div class="filter-view-area-right">
 
             <div class="filter-container">
-                <div class="filter-text">BlurX</div>
-                <div><input type="text" id="blurX-${id}" value="${filter.blurX}" data-name="blurX" data-filter-id="${id}" data-detail="{{水平方向にぼかす}}"></div>
-                
-                <div class="filter-text">Strength</div>
-                <div><input type="text" id="strength-${id}" value="${filter.strength}" data-filter-id="${id}" data-name="strength" data-detail="{{フィルター強度}}"></div>
+                ${FilterHTML.createBlurX(id, filter.blurX)}
+                ${FilterHTML.createStrength(id, filter.strength)}
             </div>
             
             <div class="filter-container">
-                <div class="filter-text">BlurY</div>
-                <div><input type="text" id="blurY-${id}" value="${filter.blurY}" data-name="blurY" data-filter-id="${id}" data-detail="{{垂直方向にぼかす}}"></div>
+                ${FilterHTML.createBlurY(id, filter.blurY)}
             </div>
 
             <div class="filter-container">
-                <div class="filter-text">Color</div>
-                <div><input type="color" id="color-${id}" value="#${filter.color.toString(16).padStart(6, "0")}" data-filter-id="${id}" data-name="color" data-detail="{{シャドウのカラー}}"></div>
-                
-                <div class="filter-text">Alpha</div>
-                <div><input type="text" id="alpha-${id}" value="${filter.alpha}" data-filter-id="${id}" data-name="alpha" data-detail="{{シャドウのアルファ}}"></div>
+                ${FilterHTML.createColor(id, filter.color)}
+                ${FilterHTML.createAlpha(id, filter.alpha)}
             </div>
             
             <div class="filter-container">
-                <div><input type="checkbox" id="inner-${id}" data-name="inner" data-filter-id="${id}"></div>
-                <div class="filter-text-long">
-                    <label for="inner-${id}">Inner Glow</label>
-                </div>
+                ${FilterHTML.createInnerShadow(id)}
             </div>
             
             <div class="filter-container">
-                <div><input type="checkbox" id="knockout-${id}" data-name="knockout" data-filter-id="${id}"></div>
-                <div class="filter-text-long">
-                    <label for="knockout-${id}">Knockout</label>
-                </div>
+                ${FilterHTML.createKnockout(id)}
             </div>
 
             <div class="filter-container">
-                <div class="filter-text-long">Quality</div>
-                <div>
-                    <select id="quality-${id}" data-name="quality" data-filter-id="${id}">
-                        <option value="1">Low</option>
-                        <option value="2">Middle</option>
-                        <option value="3">High</option>
-                    </select>
-                </div>
+                ${FilterHTML.createQuality(id)}
             </div> 
             
         </div>
@@ -1456,87 +1472,63 @@ class FilterController extends GradientFilterController
     }
 
     /**
-     * @param  {HTMLDivElement} element
+     * @description BevelFilterの設定項目をコントローラーに追加
+     *              Added BevelFilter configuration item to controller
+     *
      * @param  {BevelFilter} [filter=null]
      * @param  {boolean} [reload=true]
      * @return {void}
      * @method
      * @public
      */
-    addBevelFilter (element, filter = null, reload = true)
+    addBevelFilter (filter = null, reload = true)
     {
+        const element = document.getElementById("filter-setting-list");
+        if (!element) {
+            return ;
+        }
 
         const id = this.createFilter(BevelFilter, filter);
         if (!filter) {
             filter = this._$filters.get(id).filter;
         }
 
-        const htmlTag = this.getFilterHeaderHTML(id, "Bevel") + `
-
+        const htmlTag = `
+${FilterHTML.createHeaderHTML(id, "Bevel")}
+        
         <div class="filter-view-area-right">
 
             <div class="filter-container">
-                <div class="filter-text">BlurX</div>
-                <div><input type="text" id="blurX-${id}" value="${filter.blurX}" data-name="blurX" data-filter-id="${id}" data-detail="{{水平方向にぼかす}}"></div>
-                 
-                <div class="filter-text">Strength</div>
-                <div><input type="text" id="strength-${id}" value="${filter.strength}" data-filter-id="${id}" data-name="strength" data-detail="{{フィルター強度}}"></div>
+                ${FilterHTML.createBlurX(id, filter.blurX)}
+                ${FilterHTML.createStrength(id, filter.strength)}
             </div>
 
             <div class="filter-container">
-                <div class="filter-text">BlurY</div>
-                <div><input type="text" id="blurY-${id}" value="${filter.blurY}" data-name="blurY" data-filter-id="${id}" data-detail="{{垂直方向にぼかす}}"></div>
-                               
-                <div class="filter-text">Angle</div>
-                <div><input type="text" id="angle-${id}" value="${filter.angle}" data-filter-id="${id}" data-name="angle" data-detail="{{フィルター角度}}"></div>
+                ${FilterHTML.createBlurY(id, filter.blurY)}
+                ${FilterHTML.createAngle(id, filter.angle)}
             </div>
 
             <div class="filter-container">
-                <div class="filter-text">Distance</div>
-                <div><input type="text" id="distance-${id}" value="${filter.distance}" data-filter-id="${id}" data-name="distance" data-detail="{{フィルター距離}}"></div>
+                ${FilterHTML.createDistance(id, filter.distance)}
             </div>
 
             <div class="filter-container">
-                <div class="filter-text">Shadow<br>Color</div>
-                <div><input type="color" id="shadowColor-${id}" value="#${filter.shadowColor.toString(16).padStart(6, "0")}" data-filter-id="${id}" data-name="shadowColor" data-detail="{{シャドウのカラー}}"></div>
-                
-                <div class="filter-text">Shadow<br>Alpha</div>
-                <div><input type="text" id="shadowAlpha-${id}" value="${filter.shadowAlpha}" data-filter-id="${id}" data-name="shadowAlpha" data-detail="{{シャドウのアルファ}}"></div>
+                ${FilterHTML.createShadowColor(id, filter.shadowColor)}
+                ${FilterHTML.createShadowAlpha(id, filter.shadowAlpha)}
             </div>
             
             <div class="filter-container">
-                <div class="filter-text">Highlight<br>Color</div>
-                <div><input type="color" id="highlightColor-${id}" value="#${filter.highlightColor.toString(16).padStart(6, "0")}" data-filter-id="${id}" data-name="highlightColor" data-detail="{{ハイライトのカラー}}"></div>
-                
-                <div class="filter-text">Highlight<br>Alpha</div>
-                <div><input type="text" id="highlightAlpha-${id}" value="${filter.highlightAlpha}" data-filter-id="${id}" data-name="highlightAlpha" data-detail="{{ハイライトのアルファ}}"></div>
+                ${FilterHTML.createHighlightColor(id, filter.highlightColor)}
+                ${FilterHTML.createHighlightAlpha(id, filter.highlightAlpha)}
             </div>
             
             <div class="filter-container">
-                <div><input type="checkbox" id="knockout-${id}" data-name="knockout" data-filter-id="${id}"></div>
-                <div class="filter-text-long">
-                    <label for="knockout-${id}">Knockout</label>
-                </div>
+                ${FilterHTML.createKnockout(id)}
             </div>
 
             <div class="filter-container">
-                <div class="filter-text-long">Type</div>
-                <div>
-                    <select id="type-${id}" data-name="type" data-filter-id="${id}">
-                        <option value="inner">Inner</option>
-                        <option value="outer">Outer</option>
-                        <option value="full">Full</option>
-                    </select>
-                </div>
-    
-                <div class="filter-text-long">Quality</div>
-                <div>
-                    <select id="quality-${id}" data-name="quality" data-filter-id="${id}">
-                        <option value="1">Low</option>
-                        <option value="2">Middle</option>
-                        <option value="3">High</option>
-                    </select>
-                </div>
+                ${FilterHTML.createBevelType(id)}
+                ${FilterHTML.createQuality(id)}
             </div>
             
         </div>
@@ -1567,6 +1559,7 @@ class FilterController extends GradientFilterController
             `distance-${id}`
         ];
 
+        // 各inputのelementにイベントを登録
         for (let idx = 0; idx < inputIds.length; ++idx) {
             this.setInputEvent(
                 document.getElementById(inputIds[idx])
@@ -1595,184 +1588,6 @@ class FilterController extends GradientFilterController
                 document.getElementById(changeIds[idx])
             );
         }
-
-        // 内部キャッシュを削除
-        if (reload) {
-            this.disposeCharacterImage();
-        }
-
-        Util.$addModalEvent(
-            document.getElementById(`filter-id-${id}`)
-        );
-    }
-
-    /**
-     * @param  {HTMLDivElement} element
-     * @param  {GradientGlowFilter} [filter=null]
-     * @param  {boolean} [reload=true]
-     * @return {void}
-     * @method
-     * @public
-     */
-    addGradientGlowFilter (element, filter = null, reload = true)
-    {
-
-        const id = this.createFilter(GradientGlowFilter, filter);
-        if (!filter) {
-            filter = this._$filters.get(id).filter;
-        }
-
-        const htmlTag = this.getFilterHeaderHTML(id, "GradientGlow") + `
-
-        <div class="filter-view-area-right">
-
-            <div class="filter-container">
-                <div class="filter-text">BlurX</div>
-                <div><input type="text" id="blurX-${id}" value="${filter.blurX}" data-name="blurX" data-filter-id="${id}" data-detail="{{水平方向にぼかす}}"></div>
-                          
-                <div class="filter-text">Strength</div>
-                <div><input type="text" id="strength-${id}" value="${filter.strength}" data-filter-id="${id}" data-name="strength" data-detail="{{フィルター強度}}"></div>
-            </div>
-
-            <div class="filter-container">
-                <div class="filter-text">BlurY</div>
-                <div><input type="text" id="blurY-${id}" value="${filter.blurY}" data-name="blurY" data-filter-id="${id}" data-detail="{{垂直方向にぼかす}}"></div>
-            
-                <div class="filter-text">Angle</div>
-                <div><input type="text" id="angle-${id}" value="${filter.angle}" data-filter-id="${id}" data-name="angle" data-detail="{{フィルター角度}}"></div>
-            </div>
-
-            <div class="filter-container">
-                <div class="filter-text">Distance</div>
-                <div><input type="text" id="distance-${id}" value="${filter.distance}" data-filter-id="${id}" data-name="distance" data-detail="{{フィルター距離}}"></div>
-            </div>
-
-            <div class="filter-container">
-                <div id="gradient-color-palette-${id}" class="gradient-color-palette">
-                    <div id="color-palette-${id}" class="color-palette">
-                        <canvas id="gradient-canvas-${id}"></canvas>
-                    </div>
-                    <div id="color-pointer-list-${id}" data-filter-id="${id}" class="color-pointer-list" data-detail="{{カラーポインターを追加}}"></div>
-                </div>
-            </div>
-            
-            <div class="filter-container">
-                <div class="filter-text">Color</div>
-                <div><input type="color" id="gradientColor-${id}" value="#000000" data-detail="{{グラデーションカラー}}"></div>
-                
-                <div class="filter-text">Alpha</div>
-                <div><input type="text" id="gradientAlpha-${id}" value="100" data-detail="{{グラデーションのアルファ}}"></div>
-            </div>
-            
-            <div class="filter-container">
-                <div><input type="checkbox" id="knockout-${id}" data-name="knockout" data-filter-id="${id}"></div>
-                <div class="filter-text-long">
-                    <label for="knockout-${id}">Knockout</label>
-                </div>
-            </div>
-
-            <div class="filter-container">
-                <div class="filter-text-long">Type</div>
-                <div>
-                    <select id="type-${id}" data-name="type" data-filter-id="${id}">
-                        <option value="inner">Inner</option>
-                        <option value="outer">Outer</option>
-                        <option value="full">Full</option>
-                    </select>
-                </div>
-    
-                <div class="filter-text-long">Quality</div>
-                <div>
-                    <select id="quality-${id}" data-name="quality" data-filter-id="${id}">
-                        <option value="1">Low</option>
-                        <option value="2">Middle</option>
-                        <option value="3">High</option>
-                    </select>
-                </div>
-            </div>
-            
-        </div>
-    </div>
-</div>
-`;
-
-        // added element
-        element.insertAdjacentHTML("beforeend", htmlTag);
-
-        // グラデーションコントロール用のcanvas
-        const canvas  = document.getElementById(`gradient-canvas-${id}`);
-        canvas.width  = FilterController.GRADIENT_CANVAS_WIDTH  * window.devicePixelRatio;
-        canvas.height = FilterController.GRADIENT_CANVAS_HEIGHT * window.devicePixelRatio;
-
-        canvas.style.transform          = `scale(${1 / window.devicePixelRatio}, ${1 / window.devicePixelRatio})`;
-        canvas.style.backfaceVisibility = "hidden";
-        canvas.style.transformOrigin    = "0 0";
-
-        filter.context = canvas.getContext("2d");
-
-        // 共有イベント処理
-        this.setCommonEvent(id);
-
-        // 保存データの場合はcheckboxの値を更新
-        if (filter.knockout) {
-            document
-                .getElementById(`knockout-${id}`)
-                .checked = true;
-        }
-
-        const inputIds = [
-            `blurX-${id}`,
-            `blurY-${id}`,
-            `strength-${id}`,
-            `angle-${id}`,
-            `gradientAlpha-${id}`,
-            `distance-${id}`
-        ];
-
-        for (let idx = 0; idx < inputIds.length; ++idx) {
-            this.setInputEvent(
-                document.getElementById(inputIds[idx])
-            );
-        }
-
-        const clickIds = [
-            `knockout-${id}`
-        ];
-
-        for (let idx = 0; idx < clickIds.length; ++idx) {
-            this.setClickEvent(
-                document.getElementById(clickIds[idx])
-            );
-        }
-
-        const changeIds = [
-            `gradientColor-${id}`,
-            `type-${id}`,
-            `quality-${id}`
-        ];
-
-        for (let idx = 0; idx < changeIds.length; ++idx) {
-            this.setChangeEvent(
-                document.getElementById(changeIds[idx])
-            );
-        }
-
-        // ポインターを追加
-        for (let idx = 0; idx < filter.ratios.length; ++idx) {
-
-            const ratio = filter.ratios[idx];
-            const color = `#${filter.colors[idx].toString(16).padStart(6, "0")}`;
-            const alpha = filter.alphas[idx];
-
-            this.addFilterGradientColorPointer(id, idx, ratio, color, alpha);
-
-        }
-
-        // ポインター追加イベント
-        this.setCreateGradientColorPointerEvent(id);
-
-        // canvasを更新
-        this.updateFilterGradientCanvas(filter);
 
         // 内部キャッシュを削除
         if (reload) {

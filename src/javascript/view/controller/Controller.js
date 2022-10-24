@@ -82,7 +82,7 @@ class Controller extends BaseController
     default ()
     {
         // フィルターを初期化
-        Util.$filterController.clearFilters();
+        Util.$filterController.clear();
 
         this.hideObjectSetting([
             "object-area",

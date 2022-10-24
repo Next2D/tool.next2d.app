@@ -375,12 +375,9 @@ class Instance
         }
 
         // フィルター情報を初期化
-        Util.$filterController.clearFilters();
+        Util.$filterController.clear();
 
         // フィルターがあれば対象のElementを追加
-        const filterElement = document
-            .getElementById("filter-setting-list");
-
         const length = place.filter.length;
         if (length) {
             document
@@ -390,10 +387,7 @@ class Instance
 
         for (let idx = 0; idx < length; ++idx) {
             const filter = place.filter[idx];
-            Util
-                .$filterController[`add${filter.name}`](
-                    filterElement, filter, false
-                );
+            Util.$filterController[`add${filter.name}`](filter, false);
         }
     }
 

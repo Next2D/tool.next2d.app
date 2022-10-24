@@ -1,4 +1,4 @@
-describe("ControllerAdjustment.js property test", () =>
+describe("FilterController.js property test", () =>
 {
     it("default test", () =>
     {
@@ -81,5 +81,13 @@ describe("ControllerAdjustment.js property test", () =>
     it("MAX_QUALITY test", () =>
     {
         expect(FilterController.MAX_QUALITY).toBe(16);
+    });
+});
+
+describe("FilterController.js function test", () =>
+{
+    it("default test", () =>
+    {
+
     });
 });

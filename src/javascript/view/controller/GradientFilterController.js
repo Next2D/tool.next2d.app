@@ -175,88 +175,213 @@ class GradientFilterController extends BaseController
     }
 
     /**
-     * @param  {HTMLDivElement} element
+     * @description GradientGlowFilterの設定項目をコントローラーに追加
+     *              Added GradientGlowFilter configuration item to controller
+     *
+     * @param  {GradientGlowFilter} [filter=null]
+     * @param  {boolean} [reload=true]
+     * @return {void}
+     * @method
+     * @public
+     */
+    addGradientGlowFilter (filter = null, reload = true)
+    {
+        const element = document.getElementById("filter-setting-list");
+        if (!element) {
+            return ;
+        }
+
+        const id = this.createFilter(GradientGlowFilter, filter);
+        if (!filter) {
+            filter = this._$filters.get(id).filter;
+        }
+
+        const htmlTag = `
+${FilterHTML.createHeaderHTML(id, "GradientGlow")}
+
+        <div class="filter-view-area-right">
+
+            <div class="filter-container">
+                ${FilterHTML.createBlurX(id, filter.blurX)}
+                ${FilterHTML.createStrength(id, filter.strength)}
+            </div>
+
+            <div class="filter-container">
+                ${FilterHTML.createBlurY(id, filter.blurY)}
+                ${FilterHTML.createAngle(id, filter.angle)}
+            </div>
+
+            <div class="filter-container">
+                ${FilterHTML.createDistance(id, filter.distance)}
+            </div>
+
+            <div class="filter-container">
+                ${FilterHTML.createGradientColorPalette(id)}
+            </div>
+            
+            <div class="filter-container">
+                ${FilterHTML.createGradientColor(id)}
+                ${FilterHTML.createGradientAlpha(id)}
+            </div>
+            
+            <div class="filter-container">
+                ${FilterHTML.createKnockout(id)}
+            </div>
+
+            <div class="filter-container">
+                ${FilterHTML.createBevelType(id)}
+                ${FilterHTML.createQuality(id)}
+            </div>
+            
+        </div>
+    </div>
+</div>
+`;
+
+        // added element
+        element.insertAdjacentHTML("beforeend", htmlTag);
+
+        // グラデーションコントロール用のcanvas
+        const canvas  = document.getElementById(`gradient-canvas-${id}`);
+        canvas.width  = FilterController.GRADIENT_CANVAS_WIDTH  * window.devicePixelRatio;
+        canvas.height = FilterController.GRADIENT_CANVAS_HEIGHT * window.devicePixelRatio;
+
+        canvas.style.width  = `${FilterController.GRADIENT_CANVAS_WIDTH}px`;
+        canvas.style.height = `${FilterController.GRADIENT_CANVAS_HEIGHT}px`;
+
+        filter.context = canvas.getContext("2d");
+
+        // 共有イベント処理
+        this.setCommonEvent(id);
+
+        // 保存データの場合はcheckboxの値を更新
+        if (filter.knockout) {
+            document
+                .getElementById(`knockout-${id}`)
+                .checked = true;
+        }
+
+        const inputIds = [
+            `blurX-${id}`,
+            `blurY-${id}`,
+            `strength-${id}`,
+            `angle-${id}`,
+            `gradientAlpha-${id}`,
+            `distance-${id}`
+        ];
+
+        for (let idx = 0; idx < inputIds.length; ++idx) {
+            this.setInputEvent(
+                document.getElementById(inputIds[idx])
+            );
+        }
+
+        const clickIds = [
+            `knockout-${id}`
+        ];
+
+        for (let idx = 0; idx < clickIds.length; ++idx) {
+            this.setClickEvent(
+                document.getElementById(clickIds[idx])
+            );
+        }
+
+        const changeIds = [
+            `gradientColor-${id}`,
+            `type-${id}`,
+            `quality-${id}`
+        ];
+
+        for (let idx = 0; idx < changeIds.length; ++idx) {
+            this.setChangeEvent(
+                document.getElementById(changeIds[idx])
+            );
+        }
+
+        // ポインターを追加
+        for (let idx = 0; idx < filter.ratios.length; ++idx) {
+
+            const ratio = filter.ratios[idx];
+            const color = `#${filter.colors[idx].toString(16).padStart(6, "0")}`;
+            const alpha = filter.alphas[idx];
+
+            this.addFilterGradientColorPointer(id, idx, ratio, color, alpha);
+
+        }
+
+        // ポインター追加イベント
+        this.setCreateGradientColorPointerEvent(id);
+
+        // canvasを更新
+        this.updateFilterGradientCanvas(filter);
+
+        // 内部キャッシュを削除
+        if (reload) {
+            this.disposeCharacterImage();
+        }
+
+        Util.$addModalEvent(
+            document.getElementById(`filter-id-${id}`)
+        );
+    }
+
+    /**
+     * @description GradientBevelFilterの設定項目をコントローラーに追加
+     *              Added GradientBevelFilter configuration item to controller
+     *
      * @param  {GradientBevelFilter} [filter=null]
      * @param  {boolean} [reload=true]
      * @return {void}
      * @method
      * @public
      */
-    addGradientBevelFilter (element, filter = null, reload = true)
+    addGradientBevelFilter (filter = null, reload = true)
     {
+        const element = document.getElementById("filter-setting-list");
+        if (!element) {
+            return ;
+        }
 
         const id = this.createFilter(GradientBevelFilter, filter);
         if (!filter) {
             filter = this._$filters.get(id).filter;
         }
 
-        const htmlTag = this.getFilterHeaderHTML(id, "GradientBevel") + `
+        const htmlTag = `
+${FilterHTML.createHeaderHTML(id, "GradientBevel")}
 
         <div class="filter-view-area-right">
 
             <div class="filter-container">
-                <div class="filter-text">BlurX</div>
-                <div><input type="text" id="blurX-${id}" value="${filter.blurX}" data-name="blurX" data-filter-id="${id}" data-detail="水平方向にぼかす"></div>
-                                
-                <div class="filter-text">Strength</div>
-                <div><input type="text" id="strength-${id}" value="${filter.strength}" data-filter-id="${id}" data-name="strength" data-detail="フィルター強度"></div>
+                ${FilterHTML.createBlurX(id, filter.blurX)}
+                ${FilterHTML.createStrength(id, filter.strength)}
             </div>
 
             <div class="filter-container">
-                <div class="filter-text">BlurY</div>
-                <div><input type="text" id="blurY-${id}" value="${filter.blurY}" data-name="blurY" data-filter-id="${id}" data-detail="{{垂直方向にぼかす}}"></div>
-                
-                <div class="filter-text">Angle</div>
-                <div><input type="text" id="angle-${id}" value="${filter.angle}" data-filter-id="${id}" data-name="angle" data-detail="{{フィルター角度}}"></div>
+                ${FilterHTML.createBlurY(id, filter.blurY)}
+                ${FilterHTML.createAngle(id, filter.angle)}
             </div>
             
             <div class="filter-container">
-                <div class="filter-text">Distance</div>
-                <div><input type="text" id="distance-${id}" value="${filter.distance}" data-filter-id="${id}" data-name="distance" data-detail="{{フィルター距離}}"></div>
+                ${FilterHTML.createDistance(id, filter.distance)}
             </div>
             
             <div class="filter-container">
-                <div id="gradient-color-palette-${id}" class="gradient-color-palette">
-                    <div id="color-palette-${id}" class="color-palette">
-                        <canvas id="gradient-canvas-${id}"></canvas>
-                    </div>
-                    <div id="color-pointer-list-${id}" data-filter-id="${id}" class="color-pointer-list" data-detail="{{カラーポインターを追加}}"></div>
-                </div>
+                ${FilterHTML.createGradientColorPalette(id)}
             </div>
             
             <div class="filter-container">
-                <div class="filter-text">Color</div>
-                <div><input type="color" id="gradientColor-${id}" value="#000000" data-detail="{{グラデーションカラー}}"></div>
-                
-                <div class="filter-text">Alpha</div>
-                <div><input type="text" id="gradientAlpha-${id}" value="100" data-name="gradientAlpha" data-detail="{{グラデーションのアルファ}}"></div>
+                ${FilterHTML.createGradientColor(id)}
+                ${FilterHTML.createGradientAlpha(id)}
             </div>
             
             <div class="filter-container">
-                <div><input type="checkbox" id="knockout-${id}" data-name="knockout" data-filter-id="${id}"></div>
-                <div class="filter-text-long">
-                    <label for="knockout-${id}">Knockout</label>
-                </div>
+                ${FilterHTML.createKnockout(id)}
             </div>
 
-            <div class="filter-container">
-                <div class="filter-text-long">Type</div>
-                <div>
-                    <select id="type-${id}" data-name="type" data-filter-id="${id}">
-                        <option value="inner">Inner</option>
-                        <option value="outer">Outer</option>
-                        <option value="full">Full</option>
-                    </select>
-                </div>
-    
-                <div class="filter-text-long">Quality</div>
-                <div>
-                    <select id="quality-${id}" data-name="quality" data-filter-id="${id}">
-                        <option value="1">Low</option>
-                        <option value="2">Middel</option>
-                        <option value="3">High</option>
-                    </select>
-                </div>
+            <div class="filter-container">                
+                ${FilterHTML.createBevelType(id)}
+                ${FilterHTML.createQuality(id)}
             </div>
             
         </div>
@@ -271,9 +396,8 @@ class GradientFilterController extends BaseController
         canvas.width  = GradientFilterController.GRADIENT_CANVAS_WIDTH  * window.devicePixelRatio;
         canvas.height = GradientFilterController.GRADIENT_CANVAS_HEIGHT * window.devicePixelRatio;
 
-        canvas.style.transform          = `scale(${1 / window.devicePixelRatio}, ${1 / window.devicePixelRatio})`;
-        canvas.style.backfaceVisibility = "hidden";
-        canvas.style.transformOrigin    = "0 0";
+        canvas.style.width  = `${GradientFilterController.GRADIENT_CANVAS_WIDTH}px`;
+        canvas.style.height = `${GradientFilterController.GRADIENT_CANVAS_HEIGHT}px`;
 
         filter.context = canvas.getContext("2d");
 
