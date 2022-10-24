@@ -110,6 +110,10 @@ class GradientFilterController extends BaseController
      */
     changeGradientColor (value)
     {
+        if (!this._$currentTarget) {
+            return value;
+        }
+
         const filterId = this._$currentTarget.dataset.filterId | 0;
         if (!this._$filters.has(filterId)) {
             return value;
@@ -152,6 +156,10 @@ class GradientFilterController extends BaseController
             FilterController.MIN_ALPHA,
             FilterController.MAX_ALPHA
         );
+
+        if (!this._$currentTarget) {
+            return value;
+        }
 
         const filterId = this._$currentTarget.dataset.filterId | 0;
         if (!this._$filters.has(filterId)) {

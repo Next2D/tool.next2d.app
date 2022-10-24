@@ -332,8 +332,186 @@ describe("FilterController.js function test", () =>
         Util.$workSpaces.push(workSpaces);
 
         const filterController = new FilterController();
+
+        const object = {
+            "filter": {
+                "alpha": 0
+            }
+        };
+        filterController._$filters.set(1, object);
+
+        filterController._$currentTarget = {
+            "dataset": {
+                "filterId": 1
+            }
+        };
+
+        expect(object.filter.alpha).toBe(0);
         expect(filterController.changeAlpha(10)).toBe(10);
+        expect(object.filter.alpha).toBe(10);
         expect(filterController.changeAlpha(-10)).toBe(FilterController.MIN_ALPHA);
+        expect(object.filter.alpha).toBe(FilterController.MIN_ALPHA);
         expect(filterController.changeAlpha(255)).toBe(FilterController.MAX_ALPHA);
+        expect(object.filter.alpha).toBe(FilterController.MAX_ALPHA);
+
+        Util.$workSpaces.length = 0;
+    });
+
+    it("changeAngle test", () =>
+    {
+        const workSpaces = new WorkSpace();
+        Util.$activeWorkSpaceId = Util.$workSpaces.length;
+        Util.$workSpaces.push(workSpaces);
+
+        const filterController = new FilterController();
+
+        const object = {
+            "filter": {
+                "angle": 0
+            }
+        };
+        filterController._$filters.set(1, object);
+
+        filterController._$currentTarget = {
+            "dataset": {
+                "filterId": 1
+            }
+        };
+
+        expect(object.filter.angle).toBe(0);
+        expect(filterController.changeAngle(45)).toBe(45);
+        expect(object.filter.angle).toBe(45);
+        expect(filterController.changeAngle(-999)).toBe(81);
+        expect(object.filter.angle).toBe(81);
+        expect(filterController.changeAngle(999)).toBe(279);
+        expect(object.filter.angle).toBe(279);
+
+        Util.$workSpaces.length = 0;
+    });
+
+    it("changeBlurX test", () =>
+    {
+        const workSpaces = new WorkSpace();
+        Util.$activeWorkSpaceId = Util.$workSpaces.length;
+        Util.$workSpaces.push(workSpaces);
+
+        const filterController = new FilterController();
+
+        const object = {
+            "filter": {
+                "blurX": 0
+            }
+        };
+        filterController._$filters.set(1, object);
+
+        filterController._$currentTarget = {
+            "dataset": {
+                "filterId": 1
+            }
+        };
+
+        expect(object.filter.blurX).toBe(0);
+        expect(filterController.changeBlurX(10)).toBe(10);
+        expect(object.filter.blurX).toBe(10);
+        expect(filterController.changeBlurX(-999)).toBe(FilterController.MIN_BLUR);
+        expect(object.filter.blurX).toBe(FilterController.MIN_BLUR);
+        expect(filterController.changeBlurX(999)).toBe(FilterController.MAX_BLUR);
+        expect(object.filter.blurX).toBe(FilterController.MAX_BLUR);
+
+        Util.$workSpaces.length = 0;
+    });
+
+    it("changeBlurY test", () =>
+    {
+        const workSpaces = new WorkSpace();
+        Util.$activeWorkSpaceId = Util.$workSpaces.length;
+        Util.$workSpaces.push(workSpaces);
+
+        const filterController = new FilterController();
+
+        const object = {
+            "filter": {
+                "blurY": 0
+            }
+        };
+        filterController._$filters.set(1, object);
+
+        filterController._$currentTarget = {
+            "dataset": {
+                "filterId": 1
+            }
+        };
+
+        expect(object.filter.blurY).toBe(0);
+        expect(filterController.changeBlurY(10)).toBe(10);
+        expect(object.filter.blurY).toBe(10);
+        expect(filterController.changeBlurY(-999)).toBe(FilterController.MIN_BLUR);
+        expect(object.filter.blurY).toBe(FilterController.MIN_BLUR);
+        expect(filterController.changeBlurY(999)).toBe(FilterController.MAX_BLUR);
+        expect(object.filter.blurY).toBe(FilterController.MAX_BLUR);
+
+        Util.$workSpaces.length = 0;
+    });
+
+    it("changeColor test", () =>
+    {
+        const workSpaces = new WorkSpace();
+        Util.$activeWorkSpaceId = Util.$workSpaces.length;
+        Util.$workSpaces.push(workSpaces);
+
+        const filterController = new FilterController();
+
+        const object = {
+            "filter": {
+                "color": 0
+            }
+        };
+        filterController._$filters.set(1, object);
+
+        filterController._$currentTarget = {
+            "dataset": {
+                "filterId": 1
+            }
+        };
+
+        expect(object.filter.color).toBe(0);
+        expect(filterController.changeColor("#ffffff")).toBe("#ffffff");
+        expect(object.filter.color).toBe(0xffffff);
+        expect(filterController.changeColor("#ff00ff")).toBe("#ff00ff");
+        expect(object.filter.color).toBe(0xff00ff);
+
+        Util.$workSpaces.length = 0;
+    });
+
+    it("changeDistance test", () =>
+    {
+        const workSpaces = new WorkSpace();
+        Util.$activeWorkSpaceId = Util.$workSpaces.length;
+        Util.$workSpaces.push(workSpaces);
+
+        const filterController = new FilterController();
+
+        const object = {
+            "filter": {
+                "distance": 0
+            }
+        };
+        filterController._$filters.set(1, object);
+
+        filterController._$currentTarget = {
+            "dataset": {
+                "filterId": 1
+            }
+        };
+
+        expect(object.filter.distance).toBe(0);
+        expect(filterController.changeDistance(10)).toBe(10);
+        expect(object.filter.distance).toBe(10);
+        expect(filterController.changeDistance(-999)).toBe(FilterController.MIN_DISTANCE);
+        expect(object.filter.distance).toBe(FilterController.MIN_DISTANCE);
+        expect(filterController.changeDistance(999)).toBe(FilterController.MAX_DISTANCE);
+        expect(object.filter.distance).toBe(FilterController.MAX_DISTANCE);
+
+        Util.$workSpaces.length = 0;
     });
 });

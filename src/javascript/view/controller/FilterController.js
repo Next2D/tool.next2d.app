@@ -826,7 +826,6 @@ class FilterController extends GradientFilterController
         }
 
         const filterId = this._$currentTarget.dataset.filterId | 0;
-
         if (!this._$filters.has(filterId)) {
             return ;
         }
