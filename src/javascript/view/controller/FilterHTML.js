@@ -398,5 +398,4 @@ class FilterHTML
 </div>
 `;
     }
-
 }

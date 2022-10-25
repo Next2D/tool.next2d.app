@@ -288,16 +288,20 @@ class FilterController extends GradientFilterController
         const element = document
             .getElementById(`filter-view-area-${filterId}`);
 
+        if (!element) {
+            return ;
+        }
+
         if (element.style.display === "none") {
 
-            element.style.display = "";
+            element.setAttribute("style", "");
             document
                 .getElementById(`filter-title-arrow-${filterId}`)
                 .setAttribute("class", "arrow active");
 
         } else {
 
-            element.style.display = "none";
+            element.setAttribute("style", "display: none;");
             document
                 .getElementById(`filter-title-arrow-${filterId}`)
                 .setAttribute("class", "arrow disable");
@@ -327,12 +331,15 @@ class FilterController extends GradientFilterController
         // 値を更新
         object.filter.state = !object.filter.state;
 
-        document
-            .getElementById(`filter-state-${filterId}`)
-            .setAttribute("class", object.filter.state
+        const element = document
+            .getElementById(`filter-state-${filterId}`);
+
+        if (element) {
+            element.setAttribute("class", object.filter.state
                 ? "filter-active"
                 : "filter-disable"
             );
+        }
 
         this.disposeCharacterImage();
     }
@@ -780,7 +787,7 @@ class FilterController extends GradientFilterController
      */
     changeKnockout ()
     {
-        this.updateProperty("knockout", this._$currentTarget.checked);
+        this.updateProperty("knockout", !!this._$currentTarget.checked);
     }
 
     /**
@@ -793,7 +800,7 @@ class FilterController extends GradientFilterController
      */
     changeInner ()
     {
-        this.updateProperty("inner", this._$currentTarget.checked);
+        this.updateProperty("inner", !!this._$currentTarget.checked);
     }
 
     /**
@@ -806,7 +813,7 @@ class FilterController extends GradientFilterController
      */
     changeHideObject ()
     {
-        this.updateProperty("hideObject", this._$currentTarget.checked);
+        this.updateProperty("hideObject", !!this._$currentTarget.checked);
     }
 
     /**
@@ -1049,16 +1056,17 @@ class FilterController extends GradientFilterController
             return ;
         }
 
+        // fixed logic
         // テキストのElementは消えてもいいようにここで変数に格納しておく
         const textElement = document
             .querySelectorAll(".filter-none")[0];
 
-        while (element.children.length) {
-            element.children[0].remove();
+        while (element.firstChild) {
+            element.firstChild.remove();
         }
 
         // 表示してDOMに追加
-        textElement.style.display = "";
+        textElement.setAttribute("style", "");
         element.appendChild(textElement);
     }
 

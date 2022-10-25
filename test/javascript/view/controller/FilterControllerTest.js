@@ -133,6 +133,7 @@ describe("FilterController.js function with html test", () =>
         expect(element.children.length).toBe(2);
         expect(document.getElementById("filter-name-0").textContent).toBe("Bevel");
 
+        filterController.clear();
         tool.activeElements.length = 0;
         Util.$workSpaces.length = 0;
     });
@@ -179,6 +180,7 @@ describe("FilterController.js function with html test", () =>
         expect(element.children.length).toBe(2);
         expect(document.getElementById("filter-name-0").textContent).toBe("Blur");
 
+        filterController.clear();
         tool.activeElements.length = 0;
         Util.$workSpaces.length = 0;
     });
@@ -225,6 +227,7 @@ describe("FilterController.js function with html test", () =>
         expect(element.children.length).toBe(2);
         expect(document.getElementById("filter-name-0").textContent).toBe("DropShadow");
 
+        filterController.clear();
         tool.activeElements.length = 0;
         Util.$workSpaces.length = 0;
     });
@@ -271,6 +274,7 @@ describe("FilterController.js function with html test", () =>
         expect(element.children.length).toBe(2);
         expect(document.getElementById("filter-name-0").textContent).toBe("Glow");
 
+        filterController.clear();
         tool.activeElements.length = 0;
         Util.$workSpaces.length = 0;
     });
@@ -318,6 +322,209 @@ describe("FilterController.js function with html test", () =>
         expect(document.querySelectorAll(".filter-none")[0].style.display).toBe("none");
         expect(document.getElementById("filter-name-0").textContent).toBe("DropShadow");
 
+        filterController.clear();
+        tool.activeElements.length = 0;
+        Util.$workSpaces.length = 0;
+    });
+
+    it("changeState test", () =>
+    {
+        const workSpaces = new WorkSpace();
+        Util.$activeWorkSpaceId = Util.$workSpaces.length;
+        Util.$workSpaces.push(workSpaces);
+
+        const movieClip = workSpaces._$libraries.get(0);
+        workSpaces.scene = movieClip;
+
+        const layer = movieClip._$layers.values().next().value;
+
+        const character = new Character();
+        character.setPlace(1, {
+            "filter": []
+        });
+        layer.addCharacter(character);
+
+        const element = document.getElementById("filter-setting-list");
+
+        const filterController = new FilterController();
+        expect(filterController._$filterId).toBe(0);
+        expect(filterController._$filters.size).toBe(0);
+        expect(element.children.length).toBe(1);
+
+        /**
+         * @type {ArrowTool}
+         */
+        const tool = Util.$tools.getDefaultTool("arrow");
+        tool.activeElements.push({
+            "dataset": {
+                "layerId": layer.id,
+                "characterId": character.id
+            }
+        });
+
+        Util.$timelineFrame.currentFrame = 1;
+        filterController.addFilter();
+
+        const object = filterController._$filters.get(0);
+        expect(object.filter.state).toBe(true);
+
+        const stateElement = document.getElementById("filter-state-0");
+        expect(stateElement.classList.contains("filter-active")).toBe(true);
+        expect(stateElement.classList.contains("filter-disable")).toBe(false);
+
+        filterController.changeState({
+            "target": {
+                "dataset": {
+                    "filterId": 0
+                }
+            }
+        });
+
+        expect(object.filter.state).toBe(false);
+        expect(stateElement.classList.contains("filter-active")).toBe(false);
+        expect(stateElement.classList.contains("filter-disable")).toBe(true);
+
+        filterController.clear();
+        tool.activeElements.length = 0;
+        Util.$workSpaces.length = 0;
+    });
+
+    it("clear test", () =>
+    {
+        const workSpaces = new WorkSpace();
+        Util.$activeWorkSpaceId = Util.$workSpaces.length;
+        Util.$workSpaces.push(workSpaces);
+
+        const movieClip = workSpaces._$libraries.get(0);
+        workSpaces.scene = movieClip;
+
+        const layer = movieClip._$layers.values().next().value;
+
+        const character = new Character();
+        character.setPlace(1, {
+            "filter": []
+        });
+        layer.addCharacter(character);
+
+        const element = document.getElementById("filter-setting-list");
+
+        const filterController = new FilterController();
+        expect(filterController._$filterId).toBe(0);
+        expect(filterController._$filters.size).toBe(0);
+        expect(element.children.length).toBe(1);
+
+        /**
+         * @type {ArrowTool}
+         */
+        const tool = Util.$tools.getDefaultTool("arrow");
+        tool.activeElements.push({
+            "dataset": {
+                "layerId": layer.id,
+                "characterId": character.id
+            }
+        });
+
+        Util.$timelineFrame.currentFrame = 1;
+        filterController.addFilter();
+        expect(filterController._$filterId).toBe(1);
+        expect(filterController._$filters.size).toBe(1);
+        expect(element.children.length).toBe(2);
+        expect(document.querySelectorAll(".filter-none")[0].style.display).toBe("none");
+        expect(document.getElementById("filter-name-0").textContent).toBe("DropShadow");
+
+        filterController.clear();
+        expect(filterController._$filterId).toBe(0);
+        expect(filterController._$filters.size).toBe(0);
+        expect(element.children.length).toBe(1);
+        expect(document.querySelectorAll(".filter-none")[0].style.display).toBe("");
+
+        filterController.clear();
+        tool.activeElements.length = 0;
+        Util.$workSpaces.length = 0;
+    });
+
+    it("clickNodeTitle test", () =>
+    {
+        const workSpaces = new WorkSpace();
+        Util.$activeWorkSpaceId = Util.$workSpaces.length;
+        Util.$workSpaces.push(workSpaces);
+
+        const movieClip = workSpaces._$libraries.get(0);
+        workSpaces.scene = movieClip;
+
+        const layer = movieClip._$layers.values().next().value;
+
+        const character = new Character();
+        character.setPlace(1, {
+            "filter": []
+        });
+        layer.addCharacter(character);
+
+        const element = document.getElementById("filter-setting-list");
+
+        const filterController = new FilterController();
+        expect(filterController._$filterId).toBe(0);
+        expect(filterController._$filters.size).toBe(0);
+        expect(element.children.length).toBe(1);
+
+        /**
+         * @type {ArrowTool}
+         */
+        const tool = Util.$tools.getDefaultTool("arrow");
+        tool.activeElements.push({
+            "dataset": {
+                "layerId": layer.id,
+                "characterId": character.id
+            }
+        });
+
+        Util.$timelineFrame.currentFrame = 1;
+        filterController.addFilter();
+
+        expect(filterController._$filterId).toBe(1);
+        expect(filterController._$filters.size).toBe(1);
+        expect(element.children.length).toBe(2);
+        expect(document.querySelectorAll(".filter-none")[0].style.display).toBe("none");
+        expect(document.getElementById("filter-name-0").textContent).toBe("DropShadow");
+
+        const viewElement = document
+            .getElementById("filter-view-area-0");
+
+        const titleElement = document
+            .getElementById("filter-title-arrow-0");
+
+        expect(viewElement.style.display).toBe("");
+        expect(titleElement.classList.contains("arrow")).toBe(true);
+        expect(titleElement.classList.contains("active")).toBe(true);
+        expect(titleElement.classList.contains("disable")).toBe(false);
+
+        filterController.clickNodeTitle({
+            "target": {
+                "dataset": {
+                    "filterId": 0
+                }
+            }
+        });
+
+        expect(viewElement.style.display).toBe("none");
+        expect(titleElement.classList.contains("arrow")).toBe(true);
+        expect(titleElement.classList.contains("active")).toBe(false);
+        expect(titleElement.classList.contains("disable")).toBe(true);
+
+        filterController.clickNodeTitle({
+            "target": {
+                "dataset": {
+                    "filterId": 0
+                }
+            }
+        });
+
+        expect(viewElement.style.display).toBe("");
+        expect(titleElement.classList.contains("arrow")).toBe(true);
+        expect(titleElement.classList.contains("active")).toBe(true);
+        expect(titleElement.classList.contains("disable")).toBe(false);
+
+        filterController.clear();
         tool.activeElements.length = 0;
         Util.$workSpaces.length = 0;
     });
@@ -511,6 +718,385 @@ describe("FilterController.js function test", () =>
         expect(object.filter.distance).toBe(FilterController.MIN_DISTANCE);
         expect(filterController.changeDistance(999)).toBe(FilterController.MAX_DISTANCE);
         expect(object.filter.distance).toBe(FilterController.MAX_DISTANCE);
+
+        Util.$workSpaces.length = 0;
+    });
+
+    it("changeHideObject test", () =>
+    {
+        const workSpaces = new WorkSpace();
+        Util.$activeWorkSpaceId = Util.$workSpaces.length;
+        Util.$workSpaces.push(workSpaces);
+
+        const filterController = new FilterController();
+
+        const object = {
+            "filter": {
+                "hideObject": false
+            }
+        };
+        filterController._$filters.set(1, object);
+
+        filterController._$currentTarget = {
+            "dataset": {
+                "filterId": 1
+            }
+        };
+
+        expect(object.filter.hideObject).toBe(false);
+
+        filterController._$currentTarget = {
+            "dataset": {
+                "filterId": 1
+            },
+            "checked": true
+        };
+        filterController.changeHideObject();
+        expect(object.filter.hideObject).toBe(true);
+
+        filterController._$currentTarget = {
+            "dataset": {
+                "filterId": 1
+            },
+            "checked": ""
+        };
+        filterController.changeHideObject();
+        expect(object.filter.hideObject).toBe(false);
+
+        filterController._$currentTarget = {
+            "dataset": {
+                "filterId": 1
+            },
+            "checked": "abc"
+        };
+        filterController.changeHideObject();
+        expect(object.filter.hideObject).toBe(true);
+
+        Util.$workSpaces.length = 0;
+    });
+
+    it("changeHighlightAlpha test", () =>
+    {
+        const workSpaces = new WorkSpace();
+        Util.$activeWorkSpaceId = Util.$workSpaces.length;
+        Util.$workSpaces.push(workSpaces);
+
+        const filterController = new FilterController();
+
+        const object = {
+            "filter": {
+                "highlightAlpha": 100
+            }
+        };
+        filterController._$filters.set(1, object);
+
+        filterController._$currentTarget = {
+            "dataset": {
+                "filterId": 1
+            }
+        };
+
+        expect(object.filter.highlightAlpha).toBe(100);
+        expect(filterController.changeHighlightAlpha(10)).toBe(10);
+        expect(object.filter.highlightAlpha).toBe(10);
+        expect(filterController.changeHighlightAlpha(-999)).toBe(FilterController.MIN_ALPHA);
+        expect(object.filter.highlightAlpha).toBe(FilterController.MIN_ALPHA);
+        expect(filterController.changeHighlightAlpha(999)).toBe(FilterController.MAX_ALPHA);
+        expect(object.filter.highlightAlpha).toBe(FilterController.MAX_ALPHA);
+
+        Util.$workSpaces.length = 0;
+    });
+
+    it("changeHighlightColor test", () =>
+    {
+        const workSpaces = new WorkSpace();
+        Util.$activeWorkSpaceId = Util.$workSpaces.length;
+        Util.$workSpaces.push(workSpaces);
+
+        const filterController = new FilterController();
+
+        const object = {
+            "filter": {
+                "highlightColor": 0
+            }
+        };
+        filterController._$filters.set(1, object);
+
+        filterController._$currentTarget = {
+            "dataset": {
+                "filterId": 1
+            }
+        };
+
+        expect(object.filter.highlightColor).toBe(0);
+        expect(filterController.changeHighlightColor("#ffffff")).toBe("#ffffff");
+        expect(object.filter.highlightColor).toBe(0xffffff);
+        expect(filterController.changeHighlightColor("#ff00ff")).toBe("#ff00ff");
+        expect(object.filter.highlightColor).toBe(0xff00ff);
+
+        Util.$workSpaces.length = 0;
+    });
+
+    it("changeInner test", () =>
+    {
+        const workSpaces = new WorkSpace();
+        Util.$activeWorkSpaceId = Util.$workSpaces.length;
+        Util.$workSpaces.push(workSpaces);
+
+        const filterController = new FilterController();
+
+        const object = {
+            "filter": {
+                "inner": false
+            }
+        };
+        filterController._$filters.set(1, object);
+
+        filterController._$currentTarget = {
+            "dataset": {
+                "filterId": 1
+            }
+        };
+
+        expect(object.filter.inner).toBe(false);
+
+        filterController._$currentTarget = {
+            "dataset": {
+                "filterId": 1
+            },
+            "checked": true
+        };
+        filterController.changeInner();
+        expect(object.filter.inner).toBe(true);
+
+        filterController._$currentTarget = {
+            "dataset": {
+                "filterId": 1
+            },
+            "checked": ""
+        };
+        filterController.changeInner();
+        expect(object.filter.inner).toBe(false);
+
+        filterController._$currentTarget = {
+            "dataset": {
+                "filterId": 1
+            },
+            "checked": "abc"
+        };
+        filterController.changeInner();
+        expect(object.filter.inner).toBe(true);
+
+        Util.$workSpaces.length = 0;
+    });
+
+    it("changeKnockout test", () =>
+    {
+        const workSpaces = new WorkSpace();
+        Util.$activeWorkSpaceId = Util.$workSpaces.length;
+        Util.$workSpaces.push(workSpaces);
+
+        const filterController = new FilterController();
+
+        const object = {
+            "filter": {
+                "knockout": false
+            }
+        };
+        filterController._$filters.set(1, object);
+
+        filterController._$currentTarget = {
+            "dataset": {
+                "filterId": 1
+            }
+        };
+
+        expect(object.filter.knockout).toBe(false);
+
+        filterController._$currentTarget = {
+            "dataset": {
+                "filterId": 1
+            },
+            "checked": true
+        };
+        filterController.changeKnockout();
+        expect(object.filter.knockout).toBe(true);
+
+        filterController._$currentTarget = {
+            "dataset": {
+                "filterId": 1
+            },
+            "checked": ""
+        };
+        filterController.changeKnockout();
+        expect(object.filter.knockout).toBe(false);
+
+        filterController._$currentTarget = {
+            "dataset": {
+                "filterId": 1
+            },
+            "checked": "abc"
+        };
+        filterController.changeKnockout();
+        expect(object.filter.knockout).toBe(true);
+
+        Util.$workSpaces.length = 0;
+    });
+
+    it("changeQuality test", () =>
+    {
+        const workSpaces = new WorkSpace();
+        Util.$activeWorkSpaceId = Util.$workSpaces.length;
+        Util.$workSpaces.push(workSpaces);
+
+        const filterController = new FilterController();
+
+        const object = {
+            "filter": {
+                "quality": 1
+            }
+        };
+        filterController._$filters.set(1, object);
+
+        filterController._$currentTarget = {
+            "dataset": {
+                "filterId": 1
+            }
+        };
+
+        expect(object.filter.quality).toBe(1);
+        filterController.changeQuality(10);
+        expect(object.filter.quality).toBe(10);
+        filterController.changeQuality(-999);
+        expect(object.filter.quality).toBe(FilterController.MIN_QUALITY);
+        filterController.changeQuality(999);
+        expect(object.filter.quality).toBe(FilterController.MAX_QUALITY);
+
+        Util.$workSpaces.length = 0;
+    });
+
+    it("changeShadowAlpha test", () =>
+    {
+        const workSpaces = new WorkSpace();
+        Util.$activeWorkSpaceId = Util.$workSpaces.length;
+        Util.$workSpaces.push(workSpaces);
+
+        const filterController = new FilterController();
+
+        const object = {
+            "filter": {
+                "shadowAlpha": 100
+            }
+        };
+        filterController._$filters.set(1, object);
+
+        filterController._$currentTarget = {
+            "dataset": {
+                "filterId": 1
+            }
+        };
+
+        expect(object.filter.shadowAlpha).toBe(100);
+        expect(filterController.changeShadowAlpha(10)).toBe(10);
+        expect(object.filter.shadowAlpha).toBe(10);
+        expect(filterController.changeShadowAlpha(-999)).toBe(FilterController.MIN_ALPHA);
+        expect(object.filter.shadowAlpha).toBe(FilterController.MIN_ALPHA);
+        expect(filterController.changeShadowAlpha(999)).toBe(FilterController.MAX_ALPHA);
+        expect(object.filter.shadowAlpha).toBe(FilterController.MAX_ALPHA);
+
+        Util.$workSpaces.length = 0;
+    });
+
+    it("changeShadowColor test", () =>
+    {
+        const workSpaces = new WorkSpace();
+        Util.$activeWorkSpaceId = Util.$workSpaces.length;
+        Util.$workSpaces.push(workSpaces);
+
+        const filterController = new FilterController();
+
+        const object = {
+            "filter": {
+                "shadowColor": 0
+            }
+        };
+        filterController._$filters.set(1, object);
+
+        filterController._$currentTarget = {
+            "dataset": {
+                "filterId": 1
+            }
+        };
+
+        expect(object.filter.shadowColor).toBe(0);
+        expect(filterController.changeShadowColor("#ffffff")).toBe("#ffffff");
+        expect(object.filter.shadowColor).toBe(0xffffff);
+        expect(filterController.changeShadowColor("#ff00ff")).toBe("#ff00ff");
+        expect(object.filter.shadowColor).toBe(0xff00ff);
+
+        Util.$workSpaces.length = 0;
+    });
+
+    it("changeStrength test", () =>
+    {
+        const workSpaces = new WorkSpace();
+        Util.$activeWorkSpaceId = Util.$workSpaces.length;
+        Util.$workSpaces.push(workSpaces);
+
+        const filterController = new FilterController();
+
+        const object = {
+            "filter": {
+                "strength": 1
+            }
+        };
+        filterController._$filters.set(1, object);
+
+        filterController._$currentTarget = {
+            "dataset": {
+                "filterId": 1
+            }
+        };
+
+        expect(object.filter.strength).toBe(1);
+        expect(filterController.changeStrength(10)).toBe(10);
+        expect(object.filter.strength).toBe(10);
+        expect(filterController.changeStrength(-999)).toBe(FilterController.MIN_STRENGTH);
+        expect(object.filter.strength).toBe(FilterController.MIN_STRENGTH);
+        expect(filterController.changeStrength(999)).toBe(FilterController.MAX_STRENGTH);
+        expect(object.filter.strength).toBe(FilterController.MAX_STRENGTH);
+
+        Util.$workSpaces.length = 0;
+    });
+
+    it("changeType test", () =>
+    {
+        const workSpaces = new WorkSpace();
+        Util.$activeWorkSpaceId = Util.$workSpaces.length;
+        Util.$workSpaces.push(workSpaces);
+
+        const filterController = new FilterController();
+
+        const object = {
+            "filter": {
+                "type": "inner"
+            }
+        };
+        filterController._$filters.set(1, object);
+
+        filterController._$currentTarget = {
+            "dataset": {
+                "filterId": 1
+            }
+        };
+
+        expect(object.filter.type).toBe("inner");
+        filterController.changeType("outer");
+        expect(object.filter.type).toBe("outer");
+        filterController.changeType("full");
+        expect(object.filter.type).toBe("full");
+        filterController.changeType("abc");
+        expect(object.filter.type).toBe("full");
 
         Util.$workSpaces.length = 0;
     });
