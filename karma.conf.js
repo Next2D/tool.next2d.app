@@ -47,10 +47,11 @@ module.exports = function(config)
         // preprocess matching files before serving them to the browser
         // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
         "preprocessors": {
-            "test/test.html": "html2js"
+            "test/test.html": "html2js",
+            "src/javascript/**/*.js": "coverage"
         },
 
-        "reporters": ["progress"],
+        "reporters": ["progress", "coverage"],
 
         // web server port
         "port": 9876,
