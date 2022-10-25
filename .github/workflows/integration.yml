@@ -26,8 +26,8 @@ jobs:
       - run: git submodule update --remote --recursive
       - run: npm install
       - run: npm run test
-      - name: Coveralls
-        uses: coverallsapp/github-action@master
+      - name: Coverage
+        uses: coverage/github-action@master
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
