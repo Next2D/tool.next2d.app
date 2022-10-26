@@ -366,7 +366,7 @@ class FilterController extends GradientFilterController
 
         const filterId = event.target.dataset.filterId | 0;
 
-        const target  = activeElements[0];
+        const target = activeElements[0];
 
         const layer = Util
             .$currentWorkSpace()
@@ -411,9 +411,12 @@ class FilterController extends GradientFilterController
                 .style.display = "";
         }
 
-        document
-            .getElementById(`filter-id-${filterId}`)
-            .remove();
+        const element = document
+            .getElementById(`filter-id-${filterId}`);
+
+        if (element) {
+            element.remove();
+        }
 
         super.focusOut();
 
@@ -1120,12 +1123,12 @@ class FilterController extends GradientFilterController
                 }
 
                 place = character.getPlace(place.tweenFrame);
+
+                // tweenの情報を更新
+                character.updateTweenFilter(frame);
             }
 
             place.filter.push(filter);
-
-            // tweenの情報を更新
-            character.updateTweenFilter(frame);
         }
 
         const id = this._$filterId++;

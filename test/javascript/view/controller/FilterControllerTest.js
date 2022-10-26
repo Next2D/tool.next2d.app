@@ -528,6 +528,219 @@ describe("FilterController.js function with html test", () =>
         tool.activeElements.length = 0;
         Util.$workSpaces.length = 0;
     });
+
+    it("lock test", () =>
+    {
+        const workSpaces = new WorkSpace();
+        Util.$activeWorkSpaceId = Util.$workSpaces.length;
+        Util.$workSpaces.push(workSpaces);
+
+        const movieClip = workSpaces._$libraries.get(0);
+        workSpaces.scene = movieClip;
+
+        const layer = movieClip._$layers.values().next().value;
+
+        const character = new Character();
+        character.setPlace(1, {
+            "filter": []
+        });
+        layer.addCharacter(character);
+
+        const element = document.getElementById("filter-setting-list");
+
+        const filterController = new FilterController();
+        expect(filterController._$filterId).toBe(0);
+        expect(filterController._$filters.size).toBe(0);
+        expect(element.children.length).toBe(1);
+
+        /**
+         * @type {ArrowTool}
+         */
+        const tool = Util.$tools.getDefaultTool("arrow");
+        tool.activeElements.push({
+            "dataset": {
+                "layerId": layer.id,
+                "characterId": character.id
+            }
+        });
+
+        filterController.addFilter();
+        expect(filterController._$filterId).toBe(1);
+        expect(filterController._$filters.size).toBe(1);
+        expect(element.children.length).toBe(2);
+        expect(document.querySelectorAll(".filter-none")[0].style.display).toBe("none");
+
+        const parentElement = document.getElementById("filter-0-lock");
+        const iconElement = parentElement.childNodes[1];
+        expect(iconElement.classList.contains("active")).toBe(false);
+        expect(iconElement.classList.contains("disable")).toBe(true);
+
+        filterController.lock({
+            "preventDefault": () => { return true },
+            "stopPropagation": () => { return true },
+            "currentTarget": parentElement
+        });
+        expect(iconElement.classList.contains("active")).toBe(true);
+        expect(iconElement.classList.contains("disable")).toBe(false);
+
+        filterController.clear();
+        tool.activeElements.length = 0;
+        Util.$workSpaces.length = 0;
+    });
+
+    it("removeFilter test", () =>
+    {
+        const workSpaces = new WorkSpace();
+        Util.$activeWorkSpaceId = Util.$workSpaces.length;
+        Util.$workSpaces.push(workSpaces);
+
+        const movieClip = workSpaces._$libraries.get(0);
+        workSpaces.scene = movieClip;
+
+        const layer = movieClip._$layers.values().next().value;
+
+        const character = new Character();
+        character.setPlace(1, {
+            "filter": []
+        });
+        layer.addCharacter(character);
+
+        const element = document.getElementById("filter-setting-list");
+
+        const filterController = new FilterController();
+        expect(filterController._$filterId).toBe(0);
+        expect(filterController._$filters.size).toBe(0);
+        expect(element.children.length).toBe(1);
+
+        /**
+         * @type {ArrowTool}
+         */
+        const tool = Util.$tools.getDefaultTool("arrow");
+        tool.activeElements.push({
+            "dataset": {
+                "layerId": layer.id,
+                "characterId": character.id
+            }
+        });
+
+        Util.$timelineFrame.currentFrame = 1;
+        filterController.addFilter();
+        expect(filterController._$filterId).toBe(1);
+        expect(filterController._$filters.size).toBe(1);
+        expect(element.children.length).toBe(2);
+        expect(document.querySelectorAll(".filter-none")[0].style.display).toBe("none");
+        expect(document.getElementById("filter-name-0").textContent).toBe("DropShadow");
+
+        filterController.removeFilter({
+            "target": {
+                "dataset": {
+                    "filterId": 0
+                }
+            }
+        });
+        expect(filterController._$filters.size).toBe(0);
+        expect(element.children.length).toBe(1);
+        expect(document.querySelectorAll(".filter-none")[0].style.display).toBe("");
+
+        filterController.clear();
+        tool.activeElements.length = 0;
+        Util.$workSpaces.length = 0;
+    });
+
+    it("setLockElement test", () =>
+    {
+        const workSpaces = new WorkSpace();
+        Util.$activeWorkSpaceId = Util.$workSpaces.length;
+        Util.$workSpaces.push(workSpaces);
+
+        const movieClip = workSpaces._$libraries.get(0);
+        workSpaces.scene = movieClip;
+
+        const layer = movieClip._$layers.values().next().value;
+
+        const character = new Character();
+        character.setPlace(1, {
+            "filter": []
+        });
+        layer.addCharacter(character);
+
+        const element = document.getElementById("filter-setting-list");
+
+        const filterController = new FilterController();
+        expect(filterController._$filterId).toBe(0);
+        expect(filterController._$filters.size).toBe(0);
+        expect(element.children.length).toBe(1);
+
+        /**
+         * @type {ArrowTool}
+         */
+        const tool = Util.$tools.getDefaultTool("arrow");
+        tool.activeElements.push({
+            "dataset": {
+                "layerId": layer.id,
+                "characterId": character.id
+            }
+        });
+
+        Util.$timelineFrame.currentFrame = 1;
+        filterController.addFilter();
+        expect(filterController._$filterId).toBe(1);
+        expect(filterController._$filters.size).toBe(1);
+        expect(element.children.length).toBe(2);
+        expect(document.querySelectorAll(".filter-none")[0].style.display).toBe("none");
+        expect(document.getElementById("filter-name-0").textContent).toBe("DropShadow");
+
+        filterController._$filters.get(0).lock = true;
+
+        filterController._$currentTarget = {
+            "dataset": {
+                "name": "blurX"
+            }
+        };
+        expect(filterController._$lockTarget).toBe(null);
+        filterController.setLockElement({
+            "target": {
+                "dataset": {
+                    "filterId": 0
+                }
+            }
+        });
+        expect(filterController._$lockTarget)
+            .toBe(document.getElementById("blurY-0"));
+
+        filterController._$currentTarget = {
+            "dataset": {
+                "name": "blurY"
+            }
+        };
+        filterController.setLockElement({
+            "target": {
+                "dataset": {
+                    "filterId": 0
+                }
+            }
+        });
+        expect(filterController._$lockTarget)
+            .toBe(document.getElementById("blurX-0"));
+
+        filterController._$currentTarget = {
+            "dataset": {
+                "name": "color"
+            }
+        };
+        filterController.setLockElement({
+            "target": {
+                "dataset": {
+                    "filterId": 0
+                }
+            }
+        });
+        expect(filterController._$lockTarget).toBe(null);
+
+        filterController.clear();
+        tool.activeElements.length = 0;
+        Util.$workSpaces.length = 0;
+    });
 });
 
 describe("FilterController.js function test", () =>
@@ -1100,4 +1313,54 @@ describe("FilterController.js function test", () =>
 
         Util.$workSpaces.length = 0;
     });
+
+    it("createFilter test", () =>
+    {
+        const workSpaces = new WorkSpace();
+        Util.$activeWorkSpaceId = Util.$workSpaces.length;
+        Util.$workSpaces.push(workSpaces);
+
+        const movieClip = workSpaces._$libraries.get(0);
+        workSpaces.scene = movieClip;
+
+        const layer = movieClip._$layers.values().next().value;
+
+        const character = new Character();
+        character.setPlace(1, {
+            "filter": []
+        });
+        layer.addCharacter(character);
+
+        const filterController = new FilterController();
+        expect(filterController._$filters.size).toBe(0);
+
+        /**
+         * @type {ArrowTool}
+         */
+        const tool = Util.$tools.getDefaultTool("arrow");
+        tool.activeElements.push({
+            "dataset": {
+                "layerId": layer.id,
+                "characterId": character.id
+            }
+        });
+
+        const object1 = filterController._$filters.get(filterController.createFilter(BevelFilter));
+        expect(object1.filter.constructor).toBe(BevelFilter);
+        const object2 = filterController._$filters.get(filterController.createFilter(BlurFilter));
+        expect(object2.filter.constructor).toBe(BlurFilter);
+        const object3 = filterController._$filters.get(filterController.createFilter(DropShadowFilter));
+        expect(object3.filter.constructor).toBe(DropShadowFilter);
+        const object4 = filterController._$filters.get(filterController.createFilter(GlowFilter));
+        expect(object4.filter.constructor).toBe(GlowFilter);
+        const object5 = filterController._$filters.get(filterController.createFilter(GradientBevelFilter));
+        expect(object5.filter.constructor).toBe(GradientBevelFilter);
+        const object6 = filterController._$filters.get(filterController.createFilter(GradientGlowFilter));
+        expect(object6.filter.constructor).toBe(GradientGlowFilter);
+
+        filterController.clear();
+        tool.activeElements.length = 0;
+        Util.$workSpaces.length = 0;
+    });
+
 });

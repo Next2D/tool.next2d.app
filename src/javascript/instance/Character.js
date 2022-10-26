@@ -1039,7 +1039,16 @@ class Character
      */
     getClonePlace (frame)
     {
-        return JSON.parse(JSON.stringify(this.getPlace(frame)));
+        const place = this.getPlace(frame);
+        const clone = JSON.parse(JSON.stringify(place));
+
+        const filters = [];
+        for (let idx = 0; idx < place.filter.length; ++idx) {
+            filters.push(place.filter[idx].clone());
+        }
+        clone.filter = filters;
+
+        return clone;
     }
 
     /**
@@ -1243,7 +1252,7 @@ class Character
 
             const place = this.hasPlace(frame)
                 ? this.getPlace(frame)
-                : this.getClonePlace(end_frame);
+                : this.getClonePlace(start_frame);
 
             place.tweenFrame = start_frame;
 
