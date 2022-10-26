@@ -299,7 +299,8 @@ describe("Character.js function test", () =>
                 "type": LoopController.DEFAULT,
                 "start": 1,
                 "end": 12
-            }
+            },
+            "filter": []
         };
 
         expect(place.loop.type).toBe(LoopController.DEFAULT);
