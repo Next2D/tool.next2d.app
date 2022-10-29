@@ -626,21 +626,17 @@ class LoopController extends BaseController
 
                     matrix.scale(scale, scale);
                     bitmapData.draw(sprite, matrix);
-
-                    const image = new Image();
-                    image.onload = () =>
-                    {
-                        return resolve({
-                            "index": frame - 1,
-                            "image": image
-                        });
-                    };
-
-                    image.src    = bitmapData.toDataURL();
-                    image.width  = bitmapData.width  / ratio;
-                    image.height = bitmapData.height / ratio;
-
+                    const context = bitmapData.drawFromCanvas(Util.$getCanvas());
                     bitmapData.dispose();
+
+                    const canvas = context.canvas;
+                    canvas.style.width  = `${bitmapData.width  / ratio}px`;
+                    canvas.style.height = `${bitmapData.height / ratio}px`;
+
+                    return resolve({
+                        "index": frame - 1,
+                        "image": canvas
+                    });
                 });
             }));
         }
