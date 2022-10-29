@@ -644,8 +644,7 @@ class Instance
                 "colorTransform": [1, 1, 1, 1, 0, 0, 0, 0],
                 "blendMode": "normal",
                 "filter": []
-            },
-            null, 0, true
+            }
         );
 
         if (canvas.height !== height) {

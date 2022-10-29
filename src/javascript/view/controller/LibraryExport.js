@@ -92,7 +92,17 @@ class LibraryExport extends BaseController
      */
     static get MIN_SIZE ()
     {
+
         return 1;
+    }
+
+    /**
+     * @return {number}
+     * @static
+     */
+    static get DEFAULT_SIZE ()
+    {
+        return 450;
     }
 
     /**
@@ -191,14 +201,15 @@ class LibraryExport extends BaseController
                     const zip = new JSZip();
                     for (let frame = this._$startFrame; this._$endFrame >= frame; ++frame) {
 
-                        const bitmapData = this.getBitmapData(frame);
-                        const context    = bitmapData.getContext2D();
+                        const context = this.getContext(frame);
 
                         zip.file(
                             `${name}_frame_${frame}.${ext}`,
                             context.canvas.toDataURL(`image/${ext}`, 1).replace(/^.*,/, ""),
                             { "base64" : true }
                         );
+
+                        Util.$poolCanvas(context.canvas);
                     }
 
                     zip
@@ -257,9 +268,7 @@ class LibraryExport extends BaseController
 
             default:
                 {
-                    const bitmapData = this.getBitmapData();
-                    const context    = bitmapData.getContext2D();
-
+                    const context   = this.getContext();
                     const anchor    = document.createElement("a");
                     anchor.download = `${name}.${ext}`;
                     anchor.href     = context.canvas.toDataURL(`image/${ext}`, 1);
@@ -667,7 +676,7 @@ class LibraryExport extends BaseController
     /**
      * @description プレビューのイメージを初期化
      *
-     * @return {LibraryExport}
+     * @return {void}
      * @method
      * @public
      */
@@ -676,7 +685,9 @@ class LibraryExport extends BaseController
         const element = document.getElementById("library-export-image");
         if (element) {
             while (element.firstChild) {
-                element.firstChild.remove();
+                const node = element.firstChild;
+                Util.$poolCanvas(node);
+                node.remove();
             }
         }
     }
@@ -703,21 +714,16 @@ class LibraryExport extends BaseController
 
             default:
                 {
-                    const bitmapData = this.getBitmapData(this._$currentFrame);
+                    const context = this.getContext(this._$currentFrame, true);
+                    const canvas  = context.canvas;
 
-                    const ratio  = window.devicePixelRatio;
-
-                    const element  = new Image();
-                    element.src    = bitmapData.toDataURL();
-                    element.width  = bitmapData.width  / ratio;
-                    element.height = bitmapData.height / ratio;
-
-                    // BitmapDataを解放
-                    bitmapData.dispose();
+                    const ratio = window.devicePixelRatio;
+                    canvas.style.width  = `${canvas.width  / ratio}px`;
+                    canvas.style.height = `${canvas.height / ratio}px`;
 
                     document
                         .getElementById("library-export-image")
-                        .appendChild(element);
+                        .appendChild(canvas);
                 }
                 break;
 
@@ -725,125 +731,71 @@ class LibraryExport extends BaseController
     }
 
     /**
-     * @param  {number} width
-     * @param  {number} height
-     * @param  {object} place
-     * @param  {object} [range=null]
-     * @param  {number} [dx=0]
-     * @param  {number} [dy=0]
-     * @return {next2d.display.BitmapData}
-     * @method
-     * @public
-     */
-    createBitmapData (width, height, place, range, dx = 0, dy = 0)
-    {
-        const { Matrix } = window.next2d.geom;
-
-        const instance = this
-            ._$instance
-            .createInstance(place, range);
-
-        const matrix = this._$instance.calcMatrix(
-            instance, width, height, place, dx, dy
-        );
-
-        instance
-            .transform
-            .matrix = new Matrix(
-                place.matrix[0], place.matrix[1],
-                place.matrix[2], place.matrix[3],
-                0, 0
-            );
-
-        instance
-            .transform
-            .colorTransform = this._$instance.calcColorTransform(place);
-
-        const object = this
-            ._$instance
-            .calcFilter(width, height, place, matrix);
-
-        instance.filters = object.filters;
-
-        const container = this
-            ._$instance
-            .createContainer(instance);
-
-        const bitmapData = this
-            ._$instance
-            .createBitmapData(width, height);
-
-        bitmapData.draw(container, matrix);
-
-        return bitmapData;
-    }
-
-    /**
      * @description Elementを生成
      *
      * @param  {number} frame
-     * @return {next2d.display.BitmapData}
+     * @param  {boolean} [preview=false]
+     * @return {CanvasRenderingContext2D}
      * @method
      * @public
      */
-    getBitmapData (frame = 1)
+    getContext (frame = 1, preview = false)
     {
         const currentFrame = Util.$currentFrame;
         const zoomScale    = Util.$zoomScale;
-
-        let xScale = 1;
-        if (this._$width * this._$xScale > 450) {
-            xScale = 450 / (this._$width * this._$xScale);
-        }
-
-        let yScale = 1;
-        if (this._$height * this._$yScale > 450) {
-            yScale = 450 / (this._$height * this._$yScale);
-        }
-
-        const scale = Math.min(xScale, yScale);
-
         Util.$currentFrame = frame;
         Util.$zoomScale    = 1;
 
-        const range = this._$instance.type === InstanceType.MOVIE_CLIP
-            ? {
-                "startFrame": 1,
-                "endFrame": this._$instance.totalFrame + 1
-            }
-            : null;
-
-        const place = {
-            "frame": frame,
-            "matrix": [1, 0, 0, 1, 0, 0],
-            "colorTransform": [1, 1, 1, 1, 0, 0, 0, 0],
-            "blendMode": "normal",
-            "filter": [],
-            "loop": Util.$getDefaultLoopConfig()
-        };
-
         const bounds = this.getBounds();
 
-        const instanceBounds = this
-            ._$instance
-            .getBounds([1, 0, 0, 1, 0, 0], place, range);
+        // size
+        let width  = Math.abs(bounds.xMax - bounds.xMin);
+        let height = Math.abs(bounds.yMax - bounds.yMin);
+        if (!width || !height) {
+            return new Image();
+        }
 
-        place.matrix[0] = this._$xScale * scale;
-        place.matrix[3] = this._$yScale * scale;
+        let xScale = this._$xScale;
+        let adjScaleX = 0;
+        if (preview && this._$width * this._$xScale > LibraryExport.DEFAULT_SIZE) {
+            adjScaleX = LibraryExport.DEFAULT_SIZE / (this._$width * this._$xScale);
+        }
 
-        const bitmapData = this.createBitmapData(
-            Math.ceil(this._$width  * this._$xScale * scale),
-            Math.ceil(this._$height * this._$yScale * scale),
-            place, range,
-            -bounds.xMin + instanceBounds.xMin,
-            -bounds.yMin + instanceBounds.yMin
+        let yScale = this._$yScale;
+        let adjScaleY = 0;
+        if (preview && this._$height * this._$yScale > LibraryExport.DEFAULT_SIZE) {
+            adjScaleY = LibraryExport.DEFAULT_SIZE / (this._$height * this._$yScale);
+        }
+
+        if (adjScaleX) {
+            xScale *= adjScaleX;
+            yScale *= adjScaleX;
+        }
+
+        if (adjScaleY) {
+            xScale *= adjScaleY;
+            yScale *= adjScaleY;
+        }
+
+        const context = this._$instance.draw(
+            Util.$getCanvas(),
+            Math.ceil(width * xScale),
+            Math.ceil(height * yScale),
+            {
+                "frame": 1,
+                "matrix": [xScale, 0, 0, yScale, 0, 0],
+                "colorTransform": [1, 1, 1, 1, 0, 0, 0, 0],
+                "blendMode": "normal",
+                "filter": []
+            },
+            null, frame
         );
 
         // reset
         Util.$zoomScale    = zoomScale;
         Util.$currentFrame = currentFrame;
 
-        return bitmapData;
+        return context;
     }
 }
 

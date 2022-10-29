@@ -899,9 +899,7 @@ class TextField extends Instance
      * @method
      * @public
      */
-    draw (
-        canvas, width, height, place, range = null, static_frame = 0
-    ) {
+    draw (canvas, width, height, place, range = null, static_frame = 0) {
 
         const context = super.draw(canvas, width, height, place, range, static_frame);
         context.canvas._$tx -= this._$thickness;

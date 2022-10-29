@@ -495,6 +495,11 @@ class LoopController extends BaseController
         const element = document
             .getElementById("loop-image-list");
 
+        const elements = element.getElementsByTagName("canvas");
+        for (let idx = 0; idx < elements.length; ++idx) {
+            Util.$poolCanvas(elements[idx]);
+        }
+
         while (element.children.length) {
             element.children[0].remove();
         }
@@ -540,9 +545,13 @@ class LoopController extends BaseController
         const element = document
             .getElementById("loop-image-list");
 
-        const children = element.children;
-        while (children.length) {
-            children[0].remove();
+        const elements = element.getElementsByTagName("canvas");
+        for (let idx = 0; idx < elements.length; ++idx) {
+            Util.$poolCanvas(elements[idx]);
+        }
+
+        while (element.children.length) {
+            element.children[0].remove();
         }
 
         const workSpace = Util.$currentWorkSpace();

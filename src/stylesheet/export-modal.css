@@ -85,7 +85,7 @@
     height          : 450px;
 }
 
-#library-export-image img
+#library-export-image canvas
 {
     background-color : #fcfcfc;
 }
