@@ -861,6 +861,10 @@ class TimelineLayer extends BaseTimeline
             .scene
             .getLayer(layer_id);
 
+        if (!layer) {
+            return ;
+        }
+
         const timelineWidth = Util.$timelineTool.timelineWidth;
         const elementCount  = Util.$timelineHeader.width / (timelineWidth + 1) | 0;
 

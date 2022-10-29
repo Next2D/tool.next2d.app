@@ -234,8 +234,7 @@ class ScreenMenu extends BaseScreen
                 }
             }
 
-            const libraryMap     = new Map();
-            const duplicationMap = new Map();
+            const libraryMap = new Map();
 
             // 前のフレームがあれば結合する可能性があるのでmapに登録
             const prevCharacters = layer.getActiveCharacter(
@@ -249,7 +248,7 @@ class ScreenMenu extends BaseScreen
                     continue;
                 }
 
-                const libraryId = character.libraryId
+                const libraryId = character.libraryId;
                 if (!libraryMap.has(libraryId)) {
                     libraryMap.set(libraryId, []);
                 }
@@ -257,7 +256,7 @@ class ScreenMenu extends BaseScreen
             }
 
             // コピーを実行
-            for (let idx = 0; idx < length; ++idx) {
+            for (let idx = length - 1; idx > -1; --idx) {
 
                 const character = this._$copyDisplayObjects[idx];
                 const libraryId = character.libraryId;
@@ -265,13 +264,11 @@ class ScreenMenu extends BaseScreen
                 const clone = character.clone();
                 const place = clone.getPlace(this._$copyFrame);
 
-                // 最前面に
+                // 最前面に配置
                 place.depth = layer.getActiveCharacter(currentFrame).length;
 
-                if (!libraryMap.size
-                    || duplicationMap.has(libraryId) // 結合処理が完了しているアイテム
-                    || !libraryMap.has(libraryId) // 前のフレームに同一のアイテムのDisplayObjectがない
-                ) {
+                // 結合先がなければレイヤーに追加
+                if (!libraryMap.size || !libraryMap.has(libraryId)) {
 
                     // コピー元のキーフレームの幅で作成
                     clone.startFrame = range.startFrame;
@@ -289,9 +286,7 @@ class ScreenMenu extends BaseScreen
 
                 } else {
 
-                    // 重複登録
-                    duplicationMap.set(libraryId, true);
-
+                    // 結合先があれば結合
                     const characters = libraryMap.get(libraryId);
 
                     const character = characters.pop();
