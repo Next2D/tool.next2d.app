@@ -133,6 +133,7 @@ class TimelineKeyboardCommand extends KeyboardCommand
                 .executeTimelineLayerLightAll();
         });
 
+        // レイヤー全てをロック
         this.add(Util.$generateShortcutKey("l", { "shift": true }), () =>
         {
             Util
@@ -140,6 +141,7 @@ class TimelineKeyboardCommand extends KeyboardCommand
                 .executeTimelineLayerLockAll();
         });
 
+        // レイヤー全てを非表示に
         this.add(Util.$generateShortcutKey("d", { "shift": true }), () =>
         {
             Util
@@ -147,6 +149,7 @@ class TimelineKeyboardCommand extends KeyboardCommand
                 .executeTimelineLayerDisableAll();
         });
 
+        // レイヤーをノーマルモードに
         this.add(Util.$generateShortcutKey("n", { "shift": true }), () =>
         {
             Util
@@ -154,6 +157,7 @@ class TimelineKeyboardCommand extends KeyboardCommand
                 .executeTimelineLayerNormal();
         });
 
+        // レイヤーをマスクモードに
         this.add(Util.$generateShortcutKey("m", { "shift": true }), () =>
         {
             Util
@@ -161,11 +165,26 @@ class TimelineKeyboardCommand extends KeyboardCommand
                 .executeTimelineLayerMask();
         });
 
+        // レイヤーをガイドモードに
         this.add(Util.$generateShortcutKey("g", { "shift": true }), () =>
         {
             Util
                 .$timelineLayerMenu
                 .executeTimelineLayerGuide();
+        });
+
+        // 選択中のDisplayObjectをコピー
+        this.add(Util.$generateShortcutKey("c", { "ctrl": true }), () =>
+        {
+            Util.$screenMenu.copyDisplayObject();
+            return false;
+        });
+
+        // コピーしたDisplayObjectをペースト
+        this.add(Util.$generateShortcutKey("v", { "ctrl": true }), () =>
+        {
+            Util.$screenMenu.pasteDisplayObject();
+            return false;
         });
     }
 

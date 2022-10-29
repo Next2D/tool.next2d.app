@@ -19,7 +19,7 @@ const options = minimist(process.argv.slice(2), {
     "string": ["distPath", "version"],
     "default": {
         "prodBuild": false,
-        "version": "0.113.0",
+        "version": "0.114.0",
         "distPath": "."
     }
 });
@@ -53,8 +53,8 @@ const buildHTML = () =>
         "src/html/controller-video.ejs",
         "src/html/controller-text.ejs",
         "src/html/controller-transform.ejs",
-        "src/html/controller-reference.ejs",
         "src/html/controller-color.ejs",
+        "src/html/controller-reference.ejs",
         "src/html/controller-nine-slice.ejs",
         "src/html/controller-fill-color.ejs",
         "src/html/controller-loop.ejs",

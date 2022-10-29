@@ -19,6 +19,26 @@ class ScreenMenu extends BaseScreen
          * @private
          */
         this._$state = "hide";
+
+        /**
+         * @type {array}
+         * @private
+         */
+        this._$copyDisplayObjects = [];
+
+        /**
+         * @type {number}
+         * @default -1
+         * @private
+         */
+        this._$copyWorkSpaceId = -1;
+
+        /**
+         * @type {number}
+         * @default -1
+         * @private
+         */
+        this._$copyFrame = -1;
     }
 
     /**
@@ -76,6 +96,232 @@ class ScreenMenu extends BaseScreen
                 this.executeFunction(event.target.id);
             });
         }
+    }
+
+    /**
+     * @description コピーしたDisplayObjectをペースト
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    copyDisplayObject ()
+    {
+        /**
+         * @type {ArrowTool}
+         */
+        const tool = Util.$tools.getDefaultTool("arrow");
+
+        // 選択中のDisplayObject
+        const activeElements = tool.activeElements;
+        if (!activeElements.length) {
+            return ;
+        }
+
+        // コピーレイヤーの配列を初期化
+        this._$copyDisplayObjects.length = 0;
+
+        // コピー元のワークスペースのIDをセット
+        this._$copyWorkSpaceId = Util.$activeWorkSpaceId;
+        this._$copyFrame       = Util.$timelineFrame.currentFrame;
+
+        // DisplayObjectをクローンして配列に格納
+        const scene = Util.$currentWorkSpace().scene;
+        const length = tool.activeElements.length;
+        for (let idx = 0; idx < length; ++idx) {
+            const element = activeElements[idx];
+            const layer = scene.getLayer(
+                element.dataset.layerId | 0
+            );
+
+            const character = layer.getCharacter(
+                element.dataset.characterId | 0
+            );
+
+            this._$copyDisplayObjects.push(
+                character.clone()
+            );
+        }
+    }
+
+    /**
+     * @description 選択したDisplayObjectをコピー
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    pasteDisplayObject ()
+    {
+        if (this._$copyWorkSpaceId === -1) {
+            return;
+        }
+
+        // コピーしてるものがなければ終了
+        const length = this._$copyDisplayObjects.length;
+        if (!length) {
+            return;
+        }
+
+        // レイヤーを選択してなければ終了
+        const targetLayer = Util.$timelineLayer.targetLayer;
+        if (!targetLayer) {
+            return;
+        }
+
+        // 状態保存
+        this.save();
+
+        const instanceMap = new Map();
+
+        const scene = Util.$currentWorkSpace().scene;
+        const layer = scene.getLayer(
+            targetLayer.dataset.layerId | 0
+        );
+
+        // ワークスペースが異なる場合は依存するライブラリを移動する
+        if (this._$copyWorkSpaceId !== Util.$activeWorkSpaceId) {
+
+            console.log("pasteDisplayObject");
+
+        } else {
+
+            //  コピー先にキーフレームがなければ登録
+            const currentFrame = Util.$timelineFrame.currentFrame;
+
+            let range = null;
+            const characters = layer.getActiveCharacter(currentFrame);
+            if (characters.length) {
+                range = characters[0].getRange(currentFrame);
+            }
+
+            if (!range) {
+                const emptyCharacter = layer.getActiveEmptyCharacter(currentFrame);
+                if (emptyCharacter) {
+                    range = {
+                        "startFrame": emptyCharacter.startFrame,
+                        "endFrame": emptyCharacter.endFrame
+                    };
+
+                    // 不要になるので空のキーフレームは削除
+                    layer.deleteEmptyCharacter(emptyCharacter);
+                }
+            }
+
+            if (!range) {
+
+                // 空のキーフレームを登録
+                Util
+                    .$timelineTool
+                    .executeTimelineFrameAdd();
+
+                const characters = layer.getActiveCharacter(currentFrame);
+                if (characters.length) {
+                    range = characters[0].getRange(currentFrame);
+                }
+
+                if (!range) {
+                    const emptyCharacter = layer.getActiveEmptyCharacter(currentFrame);
+                    if (emptyCharacter) {
+                        range = {
+                            "startFrame": emptyCharacter.startFrame,
+                            "endFrame": emptyCharacter.endFrame
+                        };
+
+                        // 不要になるので空のキーフレームは削除
+                        layer.deleteEmptyCharacter(emptyCharacter);
+                    }
+                }
+            }
+
+            const libraryMap     = new Map();
+            const duplicationMap = new Map();
+
+            // 前のフレームがあれば結合する可能性があるのでmapに登録
+            const prevCharacters = layer.getActiveCharacter(
+                Math.min(1, range.startFrame - 1)
+            );
+
+            for (let idx = 0; idx < prevCharacters.length; ++idx) {
+
+                const character = prevCharacters[idx];
+                if (character.endFrame > currentFrame) {
+                    continue;
+                }
+
+                const libraryId = character.libraryId
+                if (!libraryMap.has(libraryId)) {
+                    libraryMap.set(libraryId, []);
+                }
+                libraryMap.get(libraryId).push(character);
+            }
+
+            // コピーを実行
+            for (let idx = 0; idx < length; ++idx) {
+
+                const character = this._$copyDisplayObjects[idx];
+                const libraryId = character.libraryId;
+
+                const clone = character.clone();
+                const place = clone.getPlace(this._$copyFrame);
+
+                // 最前面に
+                place.depth = layer.getActiveCharacter(currentFrame).length;
+
+                if (!libraryMap.size
+                    || duplicationMap.has(libraryId) // 結合処理が完了しているアイテム
+                    || !libraryMap.has(libraryId) // 前のフレームに同一のアイテムのDisplayObjectがない
+                ) {
+
+                    // コピー元のキーフレームの幅で作成
+                    clone.startFrame = range.startFrame;
+                    clone.endFrame   = range.endFrame;
+
+                    // キーフレームとtweenを初期化
+                    clone._$places.clear();
+                    clone._$tween.clear();
+
+                    // 再登録
+                    clone.setPlace(range.startFrame, place);
+
+                    // レイヤーに登録
+                    layer.addCharacter(clone);
+
+                } else {
+
+                    // 重複登録
+                    duplicationMap.set(libraryId, true);
+
+                    const characters = libraryMap.get(libraryId);
+
+                    const character = characters.pop();
+                    if (characters.length) {
+                        libraryMap.delete(libraryId);
+                    }
+
+                    character.startFrame = Math.min(character.startFrame, range.startFrame);
+                    character.endFrame   = Math.max(character.endFrame, range.endFrame);
+                    character.setPlace(range.startFrame, place);
+
+                }
+            }
+        }
+
+        // レイヤーを再構成
+        layer.reloadStyle();
+
+        // 再描画
+        if (!instanceMap.size) {
+
+            this.reloadScreen();
+
+        } else {
+            Util.$timelineMenu.setConfirmModalFiles();
+            Util.$confirmModal.show();
+        }
+
+        // リセット
+        super.focusOut();
     }
 
     /**
