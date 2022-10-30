@@ -368,8 +368,6 @@ class TimelineMenu extends BaseTimeline
                 return ;
             }
 
-            const scrollLeft = targetLayer.lastElementChild.scrollLeft;
-
             // マッピングを初期化
             this._$copyMapping.clear();
 
@@ -536,11 +534,6 @@ class TimelineMenu extends BaseTimeline
 
                 const addElement = element.lastElementChild;
                 element.insertBefore(addElement, targetLayer);
-
-                // 新規レイヤーのスクロール位置を調整
-                if (scrollLeft) {
-                    addElement.lastElementChild.scrollLeft = scrollLeft;
-                }
             }
 
             // 追加したライブラリを再構成
@@ -576,7 +569,6 @@ class TimelineMenu extends BaseTimeline
                 }
             }
 
-            const scrollLeft = targetLayer.lastElementChild.scrollLeft;
             for (let idx = 0; idx < copyLayers.length; ++idx) {
 
                 const layer = copyLayers[idx];
@@ -586,10 +578,6 @@ class TimelineMenu extends BaseTimeline
                 element
                     .insertBefore(addElement, targetLayer);
 
-                // 新規レイヤーのスクロール位置を調整
-                if (scrollLeft) {
-                    addElement.lastElementChild.scrollLeft = scrollLeft;
-                }
             }
         }
 

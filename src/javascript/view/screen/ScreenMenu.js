@@ -164,13 +164,11 @@ class ScreenMenu extends BaseScreen
         }
 
         // レイヤーを選択してなければ終了
-        const targetLayer = Util.$timelineLayer.targetLayer;
+        let targetLayer = Util.$timelineLayer.targetLayer;
         if (!targetLayer) {
-            return;
+            Util.$timelineLayer.attachLayer();
+            targetLayer = Util.$timelineLayer.targetLayer;
         }
-
-        // 状態保存
-        this.save();
 
         const instanceMap = new Map();
 
@@ -182,9 +180,64 @@ class ScreenMenu extends BaseScreen
         // ワークスペースが異なる場合は依存するライブラリを移動する
         if (this._$copyWorkSpaceId !== Util.$activeWorkSpaceId) {
 
+            const targetWorkSpace = Util.$workSpaces[this._$copyWorkSpaceId];
+            if (!targetWorkSpace) {
+                return ;
+            }
+
+            // コピー元が存在するかチェック
+            let noHit = true;
+            for (let idx = length - 1; idx > -1; --idx) {
+
+                const character = this._$copyDisplayObjects[idx];
+                const libraryId = character.libraryId;
+                if (!targetWorkSpace.getLibrary(libraryId)) {
+                    continue;
+                }
+
+                noHit = false;
+                break;
+            }
+
+            if (noHit) {
+                // 初期化
+                this._$copyWorkSpaceId = -1;
+                this._$copyDisplayObjects.length = 0;
+                return ;
+            }
+
+            // 状態保存
+            this.save();
+
             console.log("pasteDisplayObject");
 
         } else {
+
+            const workSpace = Util.$currentWorkSpace();
+
+            // コピー元が存在するかチェック
+            let noHit = true;
+            for (let idx = length - 1; idx > -1; --idx) {
+
+                const character = this._$copyDisplayObjects[idx];
+                const libraryId = character.libraryId;
+                if (!workSpace.getLibrary(libraryId)) {
+                    continue;
+                }
+
+                noHit = false;
+                break;
+            }
+
+            if (noHit) {
+                // 初期化
+                this._$copyWorkSpaceId = -1;
+                this._$copyDisplayObjects.length = 0;
+                return ;
+            }
+
+            // 状態保存
+            this.save();
 
             //  コピー先にキーフレームがなければ登録
             const currentFrame = Util.$timelineFrame.currentFrame;
@@ -196,7 +249,8 @@ class ScreenMenu extends BaseScreen
             }
 
             if (!range) {
-                const emptyCharacter = layer.getActiveEmptyCharacter(currentFrame);
+                const emptyCharacter = layer
+                    .getActiveEmptyCharacter(currentFrame);
                 if (emptyCharacter) {
                     range = {
                         "startFrame": emptyCharacter.startFrame,
@@ -221,7 +275,8 @@ class ScreenMenu extends BaseScreen
                 }
 
                 if (!range) {
-                    const emptyCharacter = layer.getActiveEmptyCharacter(currentFrame);
+                    const emptyCharacter = layer
+                        .getActiveEmptyCharacter(currentFrame);
                     if (emptyCharacter) {
                         range = {
                             "startFrame": emptyCharacter.startFrame,

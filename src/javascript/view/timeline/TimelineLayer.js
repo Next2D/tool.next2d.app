@@ -1806,10 +1806,6 @@ class TimelineLayer extends BaseTimeline
                     }
 
                 }
-
-                // スクロール位置を調整
-                layer.lastElementChild.scrollLeft
-                    = this._$destLayer.lastElementChild.scrollLeft;
             }
 
             // 並び替えたElementをもとに内部Objectも並び替える

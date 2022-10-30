@@ -666,12 +666,6 @@ class TimelineTool extends BaseTimeline
             element
                 .insertBefore(lastElement, layerElement);
 
-            // 新規レイヤーのスクロール位置を調整
-            const scrollLeft = layerElement.lastElementChild.scrollLeft;
-            if (scrollLeft) {
-                lastElement.lastElementChild.scrollLeft = scrollLeft;
-            }
-
             // 保存用のObjectの順番も入れ替える
             const layers = [];
             for (let idx = 0; idx < element.children.length; ++idx) {
