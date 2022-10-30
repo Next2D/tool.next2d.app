@@ -315,20 +315,24 @@ class LibraryExport extends BaseController
     {
         value = Util.$clamp(+value,
             LibraryExport.MIN_SIZE,
-            LibraryExport.MAX_SIZE
+            LibraryExport.MAX_SIZE,
+            1
         );
 
         // xスケールの更新
-        this._$xScale = value / this._$width;
+        const xScale = value / this._$width;
 
+        // ロック中であれば高さも更新
         if (this._$lock) {
-            this._$yScale = this._$xScale;
+
+            this._$yScale += xScale - this._$xScale;
 
             document
                 .getElementById("export-height")
                 .value = `${Math.ceil(this._$height * this._$yScale)}`;
         }
 
+        this._$xScale = xScale;
         this.appendImage();
 
         return value;
@@ -346,20 +350,22 @@ class LibraryExport extends BaseController
     {
         value = Util.$clamp(+value,
             LibraryExport.MIN_SIZE,
-            LibraryExport.MAX_SIZE
+            LibraryExport.MAX_SIZE,
+            1
         );
 
         // yスケールの更新
-        this._$yScale = value / this._$height;
+        const yScale = value / this._$height;
 
         if (this._$lock) {
-            this._$xScale = this._$yScale;
+            this._$xScale += yScale - this._$yScale;
 
             document
                 .getElementById("export-width")
                 .value = `${Math.ceil(this._$width * this._$xScale)}`;
         }
 
+        this._$yScale = yScale;
         this.appendImage();
 
         return value;

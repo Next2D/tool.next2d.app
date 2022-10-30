@@ -175,7 +175,14 @@ class TimelineMenu extends BaseTimeline
             for (let idx = 0; idx < layer._$characters.length; ++idx) {
 
                 Util.$activeWorkSpaceId = this._$copyWorkSpaceId;
-                const character = layer._$characters[idx].clone();
+                const character = new Character(
+                    JSON.parse(JSON.stringify(layer._$characters[idx].toObject()))
+                );
+
+                // 初期化
+                character._$layerId = -1;
+                character._$id      = workSpace._$characterId++;
+
                 Util.$activeWorkSpaceId = activeWorkSpaceId;
 
                 const instance = targetWorkSpace
