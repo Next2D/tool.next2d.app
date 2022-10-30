@@ -369,11 +369,12 @@ class LibraryMenu
                 for (let idx = 0; idx < characters.length; ++idx) {
 
                     const libraryId = characters[idx].libraryId;
-                    if (useIds.has(libraryId)) {
-                        continue;
+                    if (!useIds.has(libraryId)) {
+                        useIds.set(libraryId, 0);
                     }
 
-                    useIds.set(libraryId, true);
+                    const addCount = useIds.get(libraryId) + 1;
+                    useIds.set(libraryId, addCount);
                 }
             }
 
@@ -390,19 +391,97 @@ class LibraryMenu
         }
 
         // 削除処理
+        this.save();
         for (let instance of workSpace._$libraries.values()) {
+
+            if (!instance.id) {
+                continue;
+            }
 
             if (useIds.has(instance.id)
                 || instance.type === InstanceType.FOLDER
-                || instance.type === InstanceType.MOVIE_CLIP
+                || instance.symbol
             ) {
                 continue;
             }
 
-            this.save();
             reload = true;
+            if (instance.type === InstanceType.MOVIE_CLIP) {
+
+                for (let layer of instance._$layers.values()) {
+
+                    const characters = layer._$characters;
+                    for (let idx = 0; idx < characters.length; ++idx) {
+
+                        const libraryId = characters[idx].libraryId;
+                        if (!useIds.has(libraryId)) {
+                            continue;
+                        }
+
+                        const instance = workSpace.getLibrary(libraryId);
+                        if (!instance || instance.symbol) {
+                            continue;
+                        }
+
+                        const count = useIds.get(libraryId) - 1;
+                        useIds.set(libraryId, count);
+                    }
+                }
+            }
 
             workSpace.removeLibrary(instance.id);
+        }
+
+        for (;;) {
+
+            let idEnd = true;
+            for (const [libraryId, currentCount] of useIds) {
+
+                if (currentCount > 0) {
+                    continue;
+                }
+
+                // 指定のアイテムを取得
+                const instance = workSpace.getLibrary(libraryId);
+                if (instance.symbol) {
+                    continue;
+                }
+
+                idEnd = false;
+                if (!instance) {
+                    continue;
+                }
+
+                if (instance.type === InstanceType.MOVIE_CLIP) {
+
+                    for (let layer of instance._$layers.values()) {
+
+                        const characters = layer._$characters;
+                        for (let idx = 0; idx < characters.length; ++idx) {
+
+                            const libraryId = characters[idx].libraryId;
+                            if (!useIds.has(libraryId)) {
+                                continue;
+                            }
+
+                            const instance = workSpace.getLibrary(libraryId);
+                            if (!instance || instance.symbol) {
+                                continue;
+                            }
+
+                            const count = useIds.get(libraryId) - 1;
+                            useIds.set(libraryId, count);
+                        }
+                    }
+                }
+
+                workSpace.removeLibrary(libraryId);
+                useIds.delete(libraryId);
+            }
+
+            if (idEnd || !useIds.size) {
+                break;
+            }
         }
 
         if (reload) {

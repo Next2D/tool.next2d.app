@@ -174,38 +174,6 @@ class LibraryController
     }
 
     /**
-     * @description 指定元のプロジェクトIDのライブラリアイテムを指定先のプロジェクトへクローン
-     *
-     * @return {void}
-     * @method
-     * @public
-     */
-    cloneFromTo (library_id, from_work_space_id, to_work_space_id)
-    {
-        const fromWorkSpace = Util.$workSpaces[from_work_space_id];
-        if (!fromWorkSpace) {
-            return ;
-        }
-
-        const toWorkSpace = Util.$workSpaces[to_work_space_id];
-        if (!toWorkSpace) {
-            return ;
-        }
-
-        const instance = fromWorkSpace.getLibrary(library_id);
-        if (!instance) {
-            return ;
-        }
-
-        // fixed logic 複製を生成
-        const clone = instance.type === InstanceType.MOVIE_CLIP
-            ? this.cloneMovieClip(instance)
-            : instance.clone();
-
-        console.log(clone);
-    }
-
-    /**
      * @description 選択中のアイテムを非アクティブ化
      *
      * @return {void}
