@@ -265,7 +265,7 @@ class ShortcutSetting
                 },
                 {
                     "key": "BackspaceCtrl",
-                    "text": "Ctrl + Delete",
+                    "text": "Ctrl + Backspace",
                     "css": "timeline-layer-trash",
                     "description": "{{レイヤーを削除}}"
                 },
@@ -399,15 +399,9 @@ class ShortcutSetting
                 },
                 {
                     "key": "Backspace",
-                    "text": "Delete",
+                    "text": "Backspace",
                     "css": "library-menu-delete",
                     "description": "{{削除}}"
-                },
-                {
-                    "key": "BackspaceShiftCtrl",
-                    "text": "Shift + Ctrl + Delete",
-                    "css": "library-menu-no-use-delete",
-                    "description": "{{未使用のアイテムを削除}}"
                 }
             ]
         };

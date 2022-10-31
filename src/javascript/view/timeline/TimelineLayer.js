@@ -1804,7 +1804,6 @@ class TimelineLayer extends BaseTimeline
                             );
 
                     }
-
                 }
             }
 

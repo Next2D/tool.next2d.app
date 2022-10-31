@@ -209,7 +209,26 @@ class ScreenMenu extends BaseScreen
             // 状態保存
             this.save();
 
-            console.log("pasteDisplayObject");
+            // 同一名のアイテムがライブラリにあるか確認
+            let isModal = false;
+            const currentWorkSpace = Util.$currentWorkSpace();
+            for (let idx = length - 1; idx > -1; --idx) {
+                const character = this._$copyDisplayObjects[idx];
+                const libraryId = character.libraryId;
+                if (!currentWorkSpace.getLibrary(libraryId)) {
+                    continue;
+                }
+
+                isModal = true;
+                break;
+            }
+
+            // あればモーダル表示
+            if (isModal) {
+                console.log("modal");
+                return ;
+            }
+            console.log("pasteDisplayObject", isModal);
 
         } else {
 
