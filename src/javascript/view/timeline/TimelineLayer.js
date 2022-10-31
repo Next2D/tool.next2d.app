@@ -1023,6 +1023,10 @@ class TimelineLayer extends BaseTimeline
     {
         if (!this.targetLayer) {
 
+            const scene = Util
+                .$currentWorkSpace()
+                .scene;
+
             let targetLayer = document
                 .getElementById("timeline-content")
                 .children[0];
@@ -1030,10 +1034,7 @@ class TimelineLayer extends BaseTimeline
             // レイヤーがない時は強制的に追加
             if (!targetLayer) {
 
-                Util
-                    .$currentWorkSpace()
-                    .scene
-                    .addLayer();
+                scene.addLayer();
 
                 targetLayer = document
                     .getElementById("timeline-content")
@@ -1048,6 +1049,15 @@ class TimelineLayer extends BaseTimeline
 
             // セット
             this.targetLayer = targetLayer;
+
+            // マーカーのあるフレームを選択
+            const layer = scene.getLayer(
+                targetLayer.dataset.layerId | 0
+            );
+
+            this.addTargetFrame(
+                layer, Util.$timelineFrame.currentFrame
+            );
 
             Util.$shiftKey = shift;
             Util.$ctrlKey  = ctrl;
