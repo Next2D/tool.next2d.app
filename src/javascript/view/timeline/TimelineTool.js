@@ -598,12 +598,11 @@ class TimelineTool extends BaseTimeline
     /**
      * @description タイムラインに新規レイヤーを追加
      *
-     * @param  {Layer} [new_layer=null]
      * @return {void}
      * @method
      * @public
      */
-    executeTimelineLayerAdd (new_layer = null)
+    executeTimelineLayerAdd ()
     {
         this.save();
 
@@ -615,7 +614,7 @@ class TimelineTool extends BaseTimeline
         const scene = Util.$currentWorkSpace().scene;
 
         // 最終行にレイヤーを追加
-        scene.addLayer(new_layer);
+        scene.addLayer();
 
         // アクティブ中のレイヤーの上部に新規追加したレイヤーを移動
         if (layerElement) {

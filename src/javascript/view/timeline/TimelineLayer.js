@@ -2146,7 +2146,7 @@ class TimelineLayer extends BaseTimeline
      */
     selectLayer (event)
     {
-        if (event.button) {
+        if (event.button || Util.$keyLock) {
             return ;
         }
 
@@ -2253,7 +2253,18 @@ class TimelineLayer extends BaseTimeline
          * @type {ArrowTool}
          */
         const tool = Util.$tools.getDefaultTool("arrow");
-        if (target.classList.contains("frame-active")) {
+
+        // 選択中のレイヤーID
+        const layerId = target.dataset.layerId | 0;
+
+        // フレームを選択中か判定
+        let isActive = false;
+        if (this.targetFrames.has(layerId)) {
+            const frames = this.targetFrames.get(layerId);
+            isActive = frames.indexOf(frame) > -1;
+        }
+
+        if (isActive) {
 
             // 最初に選択したレイヤーのフレーム番号の配列
             const firstFrames = this.targetFrames.values().next().value;
@@ -2308,11 +2319,11 @@ class TimelineLayer extends BaseTimeline
             const element = document
                 .getElementById("target-group");
 
-            element.style.display = "";
-            element.style.width   = `${width}px`;
-            element.style.height  = `${this.targetFrames.size * TimelineLayer.LAYER_HEIGHT - 5}px`;
-            element.style.left    = `${this._$clientX}px`;
-            element.style.top     = `${this._$clientY}px`;
+            let style = `width: ${width}px;`;
+            style += `height: ${this.targetFrames.size * TimelineLayer.LAYER_HEIGHT - 5}px;`;
+            style += `left: ${this._$clientX}px;`;
+            style += `top: ${this._$clientY}px;`;
+            element.setAttribute("style", style);
 
             element.dataset.frame = `${frame}`;
             element.dataset.index = `${index}`;
@@ -2348,8 +2359,6 @@ class TimelineLayer extends BaseTimeline
             if (!Util.$ctrlKey) {
                 tool.clear();
             }
-
-            const layerId = target.dataset.layerId | 0;
 
             // fixed logic
             this.targetLayer = document
@@ -3686,19 +3695,19 @@ class TimelineLayer extends BaseTimeline
     {
         const workSpace = Util.$currentWorkSpace();
         if (!workSpace) {
-            this._$targetFrames.clear();
+            this.targetFrames.clear();
             this.hideTargetGroup();
             return ;
         }
 
         const scene = workSpace.scene;
         if (!scene) {
-            this._$targetFrames.clear();
+            this.targetFrames.clear();
             this.hideTargetGroup();
             return ;
         }
 
-        for (const [layerId, values] of this._$targetFrames) {
+        for (const [layerId, values] of this.targetFrames) {
 
             const layer = scene.getLayer(layerId);
             if (!layer) {
@@ -3717,7 +3726,7 @@ class TimelineLayer extends BaseTimeline
         }
 
         // 変数を初期化
-        this._$targetFrames.clear();
+        this.targetFrames.clear();
 
         // グルーピングElementを非表示にする
         this.hideTargetGroup();

@@ -31,6 +31,13 @@ class LibraryMenu
         this._$copyLibraries = [];
 
         /**
+         * @type {boolean}
+         * @default false
+         * @private
+         */
+        this._$adjusted = false;
+
+        /**
          * @type {function}
          * @default null
          * @private
@@ -553,6 +560,7 @@ class LibraryMenu
      */
     clearCopy ()
     {
+        this._$adjusted = false;
         this._$copyWorkSpaceId = -1;
         this._$copyLibraries.length = 0;
     }
@@ -584,7 +592,7 @@ class LibraryMenu
                 continue;
             }
 
-            this._$copyLibraries.push(instance);
+            this._$copyLibraries.push(instance.clone());
         }
     }
 
@@ -601,41 +609,90 @@ class LibraryMenu
             return ;
         }
 
-        // 同じプロジェクト内であれば複製を生成
-        if (this._$copyWorkSpaceId === Util.$activeWorkSpaceId) {
-            this.cloneLibrary();
+        // コピーしたアイテムに自身のフォルダーが含まれているかチェック
+        if (!this._$adjusted) {
+            this._$adjusted = true;
+
+            // マッピング
+            const idMap = new Map();
+            const folderMap = new Map();
+            for (let idx = 0; this._$copyLibraries.length > idx; ++idx) {
+
+                const instance = this._$copyLibraries[idx];
+                idMap.set(instance.id, true);
+
+                if (!instance.folderId) {
+                    continue;
+                }
+
+                if (!folderMap.has(instance.folderId)) {
+                    folderMap.set(instance.folderId, []);
+                }
+
+                folderMap.get(instance.folderId).push(instance);
+            }
+
+            // コピー配列の中にフォルダがあるかチェック
+            for (const folderId of folderMap.keys()) {
+
+                if (idMap.has(folderId)) {
+                    continue;
+                }
+
+                const items = folderMap.get(folderId);
+                for (let idx = 0; idx < items.length; ++idx) {
+                    items[idx].folderId = 0;
+                }
+            }
         }
 
-        Util.$libraryController.reload();
-    }
+        // 状態保存
+        this.save();
 
-    /**
-     * @description アイテムを複製
-     *
-     * @return {void}
-     * @method
-     * @public
-     */
-    cloneLibrary ()
-    {
-        const workSpace = Util.$currentWorkSpace();
+        const fromWorkSpace = Util.$workSpaces[this._$copyWorkSpaceId];
+        const toWorkSpace   = Util.$currentWorkSpace();
+
         for (let idx = 0; this._$copyLibraries.length > idx; ++idx) {
 
             const instance = this._$copyLibraries[idx];
 
+            const activeWorkSpaceId = Util.$activeWorkSpaceId;
+            Util.$activeWorkSpaceId = this._$copyWorkSpaceId;
             const clone = instance.clone();
-            clone._$id = workSpace.nextLibraryId;
+            Util.$activeWorkSpaceId = activeWorkSpaceId;
 
-            // 名前が重複しない
-            for (;;) {
+            // IDを再発行
+            clone._$id = toWorkSpace.nextLibraryId;
 
-                const path = clone.path;
+            if (this._$copyWorkSpaceId === Util.$activeWorkSpaceId) {
 
-                if (!workSpace._$nameMap.has(path)) {
-                    break;
+                // 名前が重複しなくなるまでprefixを追加する
+                for (;;) {
+
+                    const path = clone.path;
+
+                    if (!toWorkSpace._$nameMap.has(path)) {
+                        break;
+                    }
+
+                    clone.name += "_copy";
                 }
 
-                clone.name += "_copy";
+            } else {
+
+                // 別プロジェクトへのコピーなら確認モーダルを表示する
+                const path = clone.getPathWithWorkSpace(fromWorkSpace);
+
+                if (toWorkSpace._$nameMap.has(path)) {
+                    Util.$confirmModal.files.push({
+                        "file": instance,
+                        "folderId": 0,
+                        "path": path,
+                        "type": "move"
+                    });
+                    continue;
+                }
+
             }
 
             // Elementを追加
@@ -649,7 +706,74 @@ class LibraryMenu
                 );
 
             // 内部データに追加
-            workSpace._$libraries.set(clone.id, clone);
+            toWorkSpace._$libraries.set(clone.id, clone);
+
+            // フォルダの中にあるアイテムを複製
+            this.cloneFolderItem(
+                this._$copyWorkSpaceId, instance.id, clone
+            );
+        }
+
+        // ライブラリを再構成
+        Util.$libraryController.reload();
+
+        // 確認モーダルを表示
+        if (Util.$confirmModal.files.length) {
+            Util.$confirmModal.show();
+        }
+
+        // 初期化
+        this._$saved = false;
+    }
+
+    /**
+     * @description フォルダの中にあるアイテムを複製
+     *
+     * @param  {number} from_work_space_id
+     * @param  {number} instance_id
+     * @param  {Folder} folder
+     * @return {void}
+     * @method
+     * @public
+     */
+    cloneFolderItem (from_work_space_id, instance_id, folder)
+    {
+        const fromWorkSpace = Util.$workSpaces[from_work_space_id];
+        const toWorkSpace   = Util.$currentWorkSpace();
+
+        for (const instance of fromWorkSpace._$libraries.values()) {
+
+            if (instance.folderId !== instance_id) {
+                continue;
+            }
+
+            const activeWorkSpaceId = Util.$activeWorkSpaceId;
+            Util.$activeWorkSpaceId = this._$copyWorkSpaceId;
+            const clone = instance.clone();
+            Util.$activeWorkSpaceId = activeWorkSpaceId;
+
+            clone._$id = toWorkSpace.nextLibraryId;
+            clone.folderId = folder.id;
+
+            // Elementを追加
+            Util
+                .$libraryController
+                .createInstance(
+                    clone.type,
+                    clone.name,
+                    clone.id,
+                    clone.symbol
+                );
+
+            // 内部データに追加
+            toWorkSpace._$libraries.set(clone.id, clone);
+
+            // フォルダなら中身を複製
+            if (clone.type === InstanceType.FOLDER) {
+                this.cloneFolderItem(
+                    from_work_space_id, instance.id, clone
+                );
+            }
         }
     }
 

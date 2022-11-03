@@ -383,11 +383,29 @@ class MovieClip extends Instance
                 element.draggable = true;
             }
 
-            // 内部キャッシュを初期化
-            for (let layer of this._$layers.values()) {
+            const children = document
+                .getElementById("timeline-content")
+                .children;
+
+            const layers = [];
+            const length = children.length;
+            for (let idx = 0; idx < length; ++idx) {
+
+                const layer = this.getLayer(
+                    children[idx].dataset.layerId | 0
+                );
+
+                // 内部キャッシュを初期化
                 layer._$children.length = 0;
+
+                layers.push(layer);
             }
 
+            // レイヤー順に並び替え
+            this._$layers.clear();
+            for (let idx = 0; idx < layers.length; ++idx) {
+                this.setLayer(idx, layers[idx]);
+            }
         }
 
         /**
