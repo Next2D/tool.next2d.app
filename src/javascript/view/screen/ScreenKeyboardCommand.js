@@ -136,106 +136,130 @@ class ScreenKeyboardCommand extends KeyboardCommand
         this.add("Backspace", this.deleteDisplayObject);
 
         // 選択中のtweenのカーブポインターを削除
-        this.add(
-            Util.$generateShortcutKey("p", { "ctrl": true, "shift": true }),
-            this.deleteTweenCurvePointer
-        );
+        this.add(Util.$generateShortcutKey("p", { "ctrl": true, "shift": true }), () =>
+        {
+            Util.$tweenController.deleteCurvePointer();
+        });
 
         // 最前面
-        this.add(
-            Util.$generateShortcutKey("ArrowUp", { "ctrl": true, "shift": true }),
-            this.screenFront
-        );
+        this.add(Util.$generateShortcutKey("ArrowUp", { "ctrl": true, "shift": true }), () =>
+        {
+            Util.$screenMenu.changeDepth("up");
+        });
 
         // ひとつ前面へ
-        this.add(
-            Util.$generateShortcutKey("ArrowUp", { "ctrl": true }),
-            this.screenFrontOne
-        );
+        this.add(Util.$generateShortcutKey("ArrowUp", { "ctrl": true }), () =>
+        {
+            Util.$screenMenu.changeDepthOne("up");
+        });
 
         // 最背面
-        this.add(
-            Util.$generateShortcutKey("ArrowDown", { "ctrl": true, "shift": true }),
-            this.screenBack
-        );
+        this.add(Util.$generateShortcutKey("ArrowDown", { "ctrl": true, "shift": true }), () =>
+        {
+            Util.$screenMenu.changeDepth("down");
+        });
 
         // ひとつ背面へ
-        this.add(
-            Util.$generateShortcutKey("ArrowDown", { "ctrl": true }),
-            this.screenBackOne
-        );
+        this.add(Util.$generateShortcutKey("ArrowDown", { "ctrl": true }), () =>
+        {
+            Util.$screenMenu.changeDepthOne("down");
+        });
 
         // 左揃え
-        this.add("1", this.screenPositionLeft);
+        this.add("1", () =>
+        {
+            Util.$screenMenu.alignment("left");
+        });
 
         // ステージ基準の左揃え
-        this.add(
-            Util.$generateShortcutKey("!", { "shift": true }),
-            this.stagePositionLeft
-        );
+        this.add(Util.$generateShortcutKey("!", { "shift": true }), () =>
+        {
+            Util.$screenMenu.alignment("left", "stage");
+        });
 
         // 中央揃え(水平方向)
-        this.add("2", this.screenPositionCenter);
+        this.add("2", () =>
+        {
+            Util.$screenMenu.alignment("center");
+        });
 
         // ステージ基準の中央揃え(水平方向)
-        this.add(
-            Util.$generateShortcutKey("\"", { "shift": true }),
-            this.stagePositionCenter
-        );
+        this.add(Util.$generateShortcutKey("\"", { "shift": true }), () =>
+        {
+            Util.$screenMenu.alignment("center", "stage");
+        });
 
         // 右揃え
-        this.add("3", this.screenPositionRight);
+        this.add("3", () =>
+        {
+            Util.$screenMenu.alignment("right");
+        });
 
         // ステージ基準の右揃え
-        this.add(
-            Util.$generateShortcutKey("#", { "shift": true }),
-            this.stagePositionRight
-        );
+        this.add(Util.$generateShortcutKey("#", { "shift": true }), () =>
+        {
+            Util.$screenMenu.alignment("right", "stage");
+        });
 
         // 上揃え
-        this.add("4", this.screenPositionTop);
+        this.add("4", () =>
+        {
+            Util.$screenMenu.alignment("top");
+        });
 
         // ステージ基準の上揃え
-        this.add(
-            Util.$generateShortcutKey("$", { "shift": true }),
-            this.stagePositionTop
-        );
+        this.add(Util.$generateShortcutKey("$", { "shift": true }), () =>
+        {
+            Util.$screenMenu.alignment("top", "stage");
+        });
 
         // 中央揃え(垂直方向)
-        this.add("5", this.screenPositionMiddle);
+        this.add("5", () =>
+        {
+            Util.$screenMenu.alignment("middle");
+        });
 
         // ステージ基準の中央揃え(垂直方向)
-        this.add(
-            Util.$generateShortcutKey("%", { "shift": true }),
-            this.stagePositionMiddle
-        );
+        this.add(Util.$generateShortcutKey("%", { "shift": true }), () =>
+        {
+            Util.$screenMenu.alignment("middle", "stage");
+        });
 
         // 下揃え
-        this.add("6", this.screenPositionBottom);
+        this.add("6", () =>
+        {
+            Util.$screenMenu.alignment("bottom");
+        });
 
         // ステージ基準の下揃え
-        this.add(
-            Util.$generateShortcutKey("&", { "shift": true }),
-            this.stagePositionBottom
-        );
+        this.add(Util.$generateShortcutKey("&", { "shift": true }), () =>
+        {
+            Util.$screenMenu.alignment("bottom", "stage");
+        });
 
         // レイヤーに配分
-        this.add(
-            Util.$generateShortcutKey("d", { "ctrl": true }),
-            this.distributeToLayers
-        );
+        this.add(Util.$generateShortcutKey("d", { "ctrl": true }), () =>
+        {
+            Util
+                .$screenMenu
+                .executeScreenDistributeToLayers();
+        });
 
         // キーフレームに配分
-        this.add(
-            Util.$generateShortcutKey("k", { "ctrl": true }),
-            this.distributeToKeyframes
-        );
+        this.add(Util.$generateShortcutKey("k", { "ctrl": true }), () =>
+        {
+            Util
+                .$screenMenu
+                .executeScreenDistributeToKeyframes();
+        });
 
         // Shapeの結合
-        this.add(
-            Util.$generateShortcutKey("i", { "ctrl": true }),
-            this.integratingPaths
-        );
+        this.add(Util.$generateShortcutKey("i", { "ctrl": true }), () =>
+        {
+            Util
+                .$screenMenu
+                .executeScreenIntegratingPaths();
+        });
 
         // カーブポインターを追加
         this.add(Util.$generateShortcutKey("p", { "ctrl": true }), () =>
@@ -253,261 +277,13 @@ class ScreenKeyboardCommand extends KeyboardCommand
         this.add(Util.$generateShortcutKey("c", { "ctrl": true }), () =>
         {
             Util.$screenMenu.copyDisplayObject();
-            return false;
         });
 
         // コピーしたDisplayObjectをペースト
         this.add(Util.$generateShortcutKey("v", { "ctrl": true }), () =>
         {
             Util.$screenMenu.pasteDisplayObject();
-            return false;
         });
-    }
-
-    /**
-     * @description 選択したShapeのパスを結合
-     *
-     * @return {void}
-     * @method
-     * @public
-     */
-    integratingPaths ()
-    {
-        Util
-            .$screenMenu
-            .executeScreenIntegratingPaths();
-    }
-
-    /**
-     * @description 選択したDisplayObjectをキーフレームに配分
-     *
-     * @return {void}
-     * @method
-     * @public
-     */
-    distributeToKeyframes ()
-    {
-        Util
-            .$screenMenu
-            .executeScreenDistributeToKeyframes();
-    }
-
-    /**
-     * @description 選択したDisplayObjectをレイヤーに配分
-     *
-     * @return {void}
-     * @method
-     * @public
-     */
-    distributeToLayers ()
-    {
-        Util
-            .$screenMenu
-            .executeScreenDistributeToLayers();
-    }
-
-    /**
-     * @description 選択中のDisplayObjectの矩形内で下揃え
-     *
-     * @return {void}
-     * @method
-     * @public
-     */
-    screenPositionBottom ()
-    {
-        Util.$screenMenu.alignment("bottom");
-    }
-
-    /**
-     * @description 選択中のDisplayObjectのステージ基準で下揃え
-     *
-     * @return {void}
-     * @method
-     * @public
-     */
-    stagePositionBottom ()
-    {
-        Util.$screenMenu.alignment("bottom", "stage");
-    }
-
-    /**
-     * @description 選択中のDisplayObjectの矩形内で中央揃え(垂直方向)
-     *
-     * @return {void}
-     * @method
-     * @public
-     */
-    screenPositionMiddle ()
-    {
-        Util.$screenMenu.alignment("middle");
-    }
-
-    /**
-     * @description 選択中のDisplayObjectのステージ基準で中央揃え(垂直方向)
-     *
-     * @return {void}
-     * @method
-     * @public
-     */
-    stagePositionMiddle ()
-    {
-        Util.$screenMenu.alignment("middle", "stage");
-    }
-
-    /**
-     * @description 選択中のDisplayObjectの矩形内で上揃え
-     *
-     * @return {void}
-     * @method
-     * @public
-     */
-    screenPositionTop ()
-    {
-        Util.$screenMenu.alignment("top");
-    }
-
-    /**
-     * @description 選択中のDisplayObjectのステージ基準で上揃え
-     *
-     * @return {void}
-     * @method
-     * @public
-     */
-    stagePositionTop ()
-    {
-        Util.$screenMenu.alignment("top", "stage");
-    }
-
-    /**
-     * @description 選択中のDisplayObjectの矩形内の左側に揃える
-     *
-     * @return {void}
-     * @method
-     * @public
-     */
-    screenPositionCenter ()
-    {
-        Util.$screenMenu.alignment("center");
-    }
-
-    /**
-     * @description 選択中のDisplayObjectのステージ基準で左側に揃える
-     *
-     * @return {void}
-     * @method
-     * @public
-     */
-    stagePositionCenter ()
-    {
-        Util.$screenMenu.alignment("center", "stage");
-    }
-
-    /**
-     * @description 選択中のDisplayObjectのステージ基準で左側に揃える
-     *
-     * @return {void}
-     * @method
-     * @public
-     */
-    stagePositionRight ()
-    {
-        Util.$screenMenu.alignment("right", "stage");
-    }
-
-    /**
-     * @description 選択中のDisplayObjectの矩形内の左側に揃える
-     *
-     * @return {void}
-     * @method
-     * @public
-     */
-    screenPositionRight ()
-    {
-        Util.$screenMenu.alignment("right");
-    }
-
-    /**
-     * @description 選択中のDisplayObjectのステージ基準で左側に揃える
-     *
-     * @return {void}
-     * @method
-     * @public
-     */
-    stagePositionLeft ()
-    {
-        Util.$screenMenu.alignment("left", "stage");
-    }
-
-    /**
-     * @description 選択中のDisplayObjectの矩形内の左側に揃える
-     *
-     * @return {void}
-     * @method
-     * @public
-     */
-    screenPositionLeft ()
-    {
-        Util.$screenMenu.alignment("left");
-    }
-
-    /**
-     * @description 選択中のDisplayObjectを最背面へ移動
-     *
-     * @return {void}
-     * @method
-     * @public
-     */
-    screenBack ()
-    {
-        Util.$screenMenu.changeDepth("down");
-    }
-
-    /**
-     * @description 選択中のDisplayObjectをひとつ背面へ移動
-     *
-     * @return {void}
-     * @method
-     * @public
-     */
-    screenBackOne ()
-    {
-        Util.$screenMenu.changeDepthOne("down");
-    }
-
-    /**
-     * @description 選択中のDisplayObjectを最前面へ移動
-     *
-     * @return {void}
-     * @method
-     * @public
-     */
-    screenFront ()
-    {
-        Util.$screenMenu.changeDepth("up");
-    }
-
-    /**
-     * @description 選択中のDisplayObjectをひとつ前面へ移動
-     *
-     * @return {void}
-     * @method
-     * @public
-     */
-    screenFrontOne ()
-    {
-        Util.$screenMenu.changeDepthOne("up");
-    }
-
-    /**
-     * @description 選択中のDisplayObjectを削除
-     *
-     * @return {void}
-     * @method
-     * @public
-     */
-    deleteTweenCurvePointer ()
-    {
-        Util.$tweenController.deleteCurvePointer();
     }
 
     /**

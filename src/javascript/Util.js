@@ -1257,6 +1257,18 @@ Util.$unlzmaHandler = function (event)
 };
 
 /**
+ * @description 全てのエリアのコピーを初期化
+ * @return {void}
+ * @static
+ */
+Util.$allClearCopy = () =>
+{
+    Util.$timelineMenu.clearCopy();
+    Util.$screenMenu.clearCopy();
+    Util.$libraryMenu.clearCopy();
+};
+
+/**
  * @param  {Uint8Array} data
  * @return {string|null}
  * @static

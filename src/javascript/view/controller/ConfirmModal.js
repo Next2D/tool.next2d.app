@@ -298,22 +298,135 @@ class ConfirmModal extends BaseController
     }
 
     /**
-     * @description 登録されてるライブラリ移動時の重複アイテムの上書き処理
-     *              Overwrite duplicate items when moving registered libraries
+     * @description フォルダの移動時に重複しているアイテムがないかチェック
      *
-     * @param  {number} libraryId
+     * @param  {Folder} folder
+     * @param  {string} [parent_path=""]
      * @return {void}
      * @method
      * @public
      */
-    moveOverwriting (libraryId)
+    checkFolder (folder, parent_path = "")
+    {
+        const workSpace = Util.$currentWorkSpace();
+        for (const instance of workSpace._$libraries.values()) {
+
+            if (instance.folderId !== folder.id) {
+                continue;
+            }
+
+            if (instance.type === InstanceType.FOLDER) {
+
+                const parentPath = parent_path
+                    ? instance.name
+                    : `${parent_path}/${instance.name}`;
+
+                this.checkFolder(instance, parentPath);
+            }
+
+            instance.folderId = 0;
+            const path = parent_path
+                ? instance.path
+                : `${parent_path}/${instance.path}`;
+            instance.folderId = folder.id;
+
+            // 重複チェック
+            if (!workSpace._$nameMap.has(path)) {
+                continue;
+            }
+
+            // 確認モーダルを表示
+            Util.$confirmModal.files.push({
+                "file": instance,
+                "folderId": folder.id,
+                "path": path,
+                "type": "move"
+            });
+            Util.$confirmModal.show();
+        }
+    }
+
+    /**
+     * @description 指定フォルダ内にあるアイテムを全て削除する
+     *
+     * @param  {Folder} folder
+     * @return {void}
+     * @method
+     * @public
+     */
+    deleteFolderItem (folder)
+    {
+        const workSpace = Util.$currentWorkSpace();
+        for (const instance of workSpace._$libraries.values()) {
+
+            if (instance.folderId !== folder.id) {
+                continue;
+            }
+
+            if (instance.type === InstanceType.FOLDER) {
+                // フォルダなら中身を削除する
+                this.deleteFolderItem(instance);
+            } else {
+                // 削除するアイテムがMovieClipに配置されていれば削除する
+                this.removeCharacter(instance.id);
+            }
+
+            document
+                .getElementById(`library-child-id-${instance.id}`)
+                .remove();
+
+            workSpace.removeLibrary(instance.id);
+        }
+    }
+
+    /**
+     * @description 指定のアイテムが配置されていれば削除を行う
+     *
+     * @param  {number} library_id
+     * @return {void}
+     * @method
+     * @public
+     */
+    removeCharacter (library_id)
+    {
+        const workSpace = Util.$currentWorkSpace();
+        for (const instance of workSpace._$libraries.values()) {
+
+            if (instance.type !== InstanceType.MOVIE_CLIP) {
+                continue;
+            }
+
+            for (const layer of instance._$layers.values()) {
+                for (let idx = 0; idx < layer._$characters.length; ++idx) {
+
+                    const character = layer._$characters[idx];
+                    if (character.libraryId !== library_id) {
+                        continue;
+                    }
+
+                    layer.deleteCharacter(character.id);
+                }
+            }
+        }
+    }
+
+    /**
+     * @description 登録されてるライブラリ移動時の重複アイテムの上書き処理
+     *              Overwrite duplicate items when moving registered libraries
+     *
+     * @param  {number} library_id
+     * @return {void}
+     * @method
+     * @public
+     */
+    moveOverwriting (library_id)
     {
         const workSpace = Util.$currentWorkSpace();
         const instance  = this._$currentObject.file;
 
         // Elementを削除
         const element = document
-            .getElementById(`library-child-id-${libraryId}`);
+            .getElementById(`library-child-id-${library_id}`);
 
         if (element) {
             element.remove();
@@ -324,51 +437,61 @@ class ConfirmModal extends BaseController
             .getElementById(`library-child-id-${instance.id}`)
             .remove();
 
-        workSpace.removeLibrary(instance.id);
+        const library = workSpace.getLibrary(library_id);
+        instance.folderId = library.folderId;
 
         // 移動元を配置しているDisplayObjectの情報を書き換え
-        for (const library of workSpace._$libraries.values()) {
+        if (instance.type !== InstanceType.FOLDER) {
 
-            if (library.type !== InstanceType.MOVIE_CLIP) {
-                continue;
-            }
+            for (const library of workSpace._$libraries.values()) {
 
-            for (const layer of library._$layers.values()) {
-                for (let idx = 0; idx < layer._$characters.length; ++idx) {
+                if (library.type !== InstanceType.MOVIE_CLIP) {
+                    continue;
+                }
 
-                    const character = layer._$characters[idx];
-                    if (character.libraryId !== instance.id) {
-                        continue;
+                for (const layer of library._$layers.values()) {
+                    for (let idx = 0; idx < layer._$characters.length; ++idx) {
+
+                        const character = layer._$characters[idx];
+                        if (character.libraryId !== instance.id) {
+                            continue;
+                        }
+
+                        // 情報を更新してキャッシュをクリア
+                        character.libraryId = library_id;
+                        character.dispose();
                     }
-
-                    // 情報を更新してキャッシュをクリア
-                    character.libraryId = libraryId;
-                    character.dispose();
                 }
             }
-        }
 
-        // フォルダーの場合は内部データも情報を更新する
-        if (instance.type === InstanceType.FOLDER) {
+        } else {
+
+            // フォルダーの場合は内部データも情報を更新する
+            this.deleteFolderItem(library);
+
+            // 移動するフォルダに合わせてアイテムも移動
             for (const library of workSpace._$libraries.values()) {
+
                 if (library.folderId !== instance.id) {
                     continue;
                 }
-                library.folderId = libraryId;
+
+                library.folderId = library_id;
             }
+
         }
 
-        // Elementを追加
-        instance._$id = libraryId;
-        const library = workSpace.getLibrary(libraryId);
-        instance.folderId = library.folderId;
+        // 元を削除してIDを差し替え
+        workSpace.removeLibrary(instance.id);
+        instance._$id = library_id;
 
+        // Elementを追加
         Util
             .$libraryController
             .createInstance(
                 instance.type,
                 instance.name,
-                libraryId,
+                instance.id,
                 instance.symbol
             );
 
@@ -499,6 +622,10 @@ class ConfirmModal extends BaseController
     {
         // 複製
         const character = this._$currentObject.character;
+        if (!character) {
+            return ;
+        }
+
         character.libraryId = id;
 
         const layer = this._$currentObject.layer;
@@ -603,14 +730,12 @@ class ConfirmModal extends BaseController
 
         // 表示項目がなければモーダル表示を終了
         if (!this._$currentObject) {
+
             // 非表示
             this.hide();
 
             //ライブラリを再構築
             Util.$libraryController.reload();
-
-            // マッピングを初期化
-            this._$mapping.clear();
 
             // レイヤーを再描画
             if (this._$layers.size) {
@@ -618,7 +743,10 @@ class ConfirmModal extends BaseController
                     layer.setCharacterStyle();
                 }
             }
+
+            // reset
             this._$layers.clear();
+            this._$mapping.clear();
 
             // 再描画
             this.reloadScreen();

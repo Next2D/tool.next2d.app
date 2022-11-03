@@ -18,6 +18,19 @@ class LibraryMenu
         this._$saved = false;
 
         /**
+         * @type {number}
+         * @default -1
+         * @private
+         */
+        this._$copyWorkSpaceId = -1;
+
+        /**
+         * @type {*[]}
+         * @private
+         */
+        this._$copyLibraries = [];
+
+        /**
          * @type {function}
          * @default null
          * @private
@@ -71,10 +84,12 @@ class LibraryMenu
         const elementIds = [
             "library-menu-container-add",
             "library-menu-folder-add",
-            "library-menu-content-shape-clone",
             "library-menu-file",
             "library-menu-delete",
-            "library-menu-no-use-delete"
+            "library-menu-no-use-delete",
+            "library-menu-empty-folder-delete",
+            "library-menu-copy",
+            "library-menu-paste"
         ];
 
         for (let idx = 0; idx < elementIds.length; ++idx) {
@@ -206,52 +221,6 @@ class LibraryMenu
     }
 
     /**
-     * @description 指定したShapeを複製する
-     *
-     * @return {void}
-     * @method
-     * @public
-     */
-    executeLibraryMenuContentShapeClone ()
-    {
-        const activeInstances = Util
-            .$libraryController
-            .activeInstances;
-
-        if (!activeInstances.size) {
-            return ;
-        }
-
-        let reload = false;
-        const workSpace = Util.$currentWorkSpace();
-        for (const libraryId of activeInstances.keys()) {
-
-            const instance = workSpace.getLibrary(libraryId);
-            if (instance.type !== InstanceType.SHAPE) {
-                continue;
-            }
-
-            reload = true;
-            this.save();
-
-            const id = workSpace.nextLibraryId;
-            const shape = workSpace.addLibrary(
-                Util
-                    .$libraryController
-                    .createInstance(instance.type, `${instance.name}_Clone`, id)
-            );
-
-            instance.copyFrom(shape);
-        }
-
-        if (reload) {
-            Util.$libraryController.reload();
-        }
-
-        this._$saved = false;
-    }
-
-    /**
      * @description 外部ファイルの読み込み処理
      *
      * @param  {Event} event
@@ -341,6 +310,81 @@ class LibraryMenu
         );
 
         this._$saved = false;
+    }
+
+    /**
+     * @description 空のフォルダを全て削除
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    executeLibraryMenuEmptyFolderDelete ()
+    {
+        const workSpace = Util.$currentWorkSpace();
+
+        // 全てのフォルダを配列に格納
+        const folders = [];
+        for (let instance of workSpace._$libraries.values()) {
+            if (instance.type !== InstanceType.FOLDER) {
+                continue;
+            }
+            folders.push(instance);
+        }
+
+        if (folders.length) {
+
+            let reload = false;
+            for (;;) {
+
+                const deleted = [];
+                for (let idx = 0; idx < folders.length; ++idx) {
+
+                    let use = false;
+                    const folder = folders[idx];
+                    for (let instance of workSpace._$libraries.values()) {
+
+                        if (instance.folderId !== folder.id) {
+                            continue;
+                        }
+
+                        use = true;
+                        break;
+                    }
+
+                    if (use) {
+                        continue;
+                    }
+
+                    reload = true;
+
+                    // 利用していないフォルダを削除
+                    document
+                        .getElementById(`library-child-id-${folder.id}`)
+                        .remove();
+
+                    workSpace.removeLibrary(folder.id);
+
+                    deleted.push(folder);
+                }
+
+                // 削除するものがなければ終了
+                if (!deleted.length) {
+                    break;
+                }
+
+                for (let idx = 0; idx < deleted.length; ++idx) {
+                    const index = folders.indexOf(deleted[idx]);
+                    folders.splice(index, 1);
+                }
+
+            }
+
+            // ライブラリを再構成
+            if (reload) {
+                Util.$libraryController.reload();
+            }
+        }
     }
 
     /**
@@ -498,6 +542,115 @@ class LibraryMenu
         }
 
         this._$saved = false;
+    }
+
+    /**
+     * @description コピー情報を初期化
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    clearCopy ()
+    {
+        this._$copyWorkSpaceId = -1;
+        this._$copyLibraries.length = 0;
+    }
+
+    /**
+     * @description 選択したアイテムをコピー
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    executeLibraryMenuCopy ()
+    {
+        // 初期化
+        this.clearCopy();
+
+        // コピー元のワークスペースのIDをセット
+        this._$copyWorkSpaceId = Util.$activeWorkSpaceId;
+
+        const workSpace = Util.$currentWorkSpace();
+        const activeInstances = Util.$libraryController.activeInstances;
+        for (const element of activeInstances.values()) {
+
+            const instance = workSpace.getLibrary(
+                element.dataset.libraryId | 0
+            );
+
+            if (!instance) {
+                continue;
+            }
+
+            this._$copyLibraries.push(instance);
+        }
+    }
+
+    /**
+     * @description コピーしたアイテムを現在のプロジェクトに複製
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    executeLibraryMenuPaste ()
+    {
+        if (!this._$copyLibraries.length) {
+            return ;
+        }
+
+        // 同じプロジェクト内であれば複製を生成
+        if (this._$copyWorkSpaceId === Util.$activeWorkSpaceId) {
+            this.cloneLibrary();
+        }
+
+        Util.$libraryController.reload();
+    }
+
+    /**
+     * @description アイテムを複製
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    cloneLibrary ()
+    {
+        const workSpace = Util.$currentWorkSpace();
+        for (let idx = 0; this._$copyLibraries.length > idx; ++idx) {
+
+            const instance = this._$copyLibraries[idx];
+
+            const clone = instance.clone();
+            clone._$id = workSpace.nextLibraryId;
+
+            // 名前が重複しない
+            for (;;) {
+
+                const path = clone.path;
+
+                if (!workSpace._$nameMap.has(path)) {
+                    break;
+                }
+
+                clone.name += "_copy";
+            }
+
+            // Elementを追加
+            Util
+                .$libraryController
+                .createInstance(
+                    clone.type,
+                    clone.name,
+                    clone.id,
+                    clone.symbol
+                );
+
+            // 内部データに追加
+            workSpace._$libraries.set(clone.id, clone);
+        }
     }
 
     /**

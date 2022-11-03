@@ -45,6 +45,19 @@ class Sound extends Instance
     }
 
     /**
+     * @description Soundクラスを複製
+     *              Duplicate Video class
+     *
+     * @return {Sound}
+     * @method
+     * @public
+     */
+    clone ()
+    {
+        return new Sound(JSON.parse(JSON.stringify(this.toObject())));
+    }
+
+    /**
      * @description プレビュー画面に表示する、HTMLAudioElementを返す
      *              Returns an HTMLAudioElement to be displayed on the preview screen.
      *

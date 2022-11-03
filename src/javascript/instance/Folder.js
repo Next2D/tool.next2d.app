@@ -87,6 +87,23 @@ class Folder extends Instance
     }
 
     /**
+     * @description プレビュー用のImageクラスを生成
+     *              Generate Image class for preview
+     *
+     * @return {HTMLImageElement}
+     * @method
+     * @public
+     */
+    getPreview ()
+    {
+        const image = new Image();
+        image.src = "data:image/svg+xml;charset=UTF-8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"12\" height=\"12\" viewBox=\"0 0 24 24\"><path fill=\"gainsboro\" d=\"M11 5c-1.629 0-2.305-1.058-4-3h-7v20h24v-17h-13z\"/></svg>";
+        image.style.width  = "100px";
+        image.style.height = "100px";
+        return image;
+    }
+
+    /**
      * @description クラス内の変数をObjectにして返す
      *              Return variables in a class as Objects
      *

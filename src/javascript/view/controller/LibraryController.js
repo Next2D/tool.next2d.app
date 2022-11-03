@@ -24,6 +24,12 @@ class LibraryController
         this._$activeInstances = new Map();
 
         /**
+         * @type {Map}
+         * @private
+         */
+        this._$copyMapping = new Map();
+
+        /**
          * @type {function}
          * @default null
          * @private
@@ -171,6 +177,299 @@ class LibraryController
 
         }
 
+    }
+
+    /**
+     * @description 別ワークスペースにMovieClipを複製する
+     *
+     * @param  {number} from_work_space_id
+     * @param  {MovieClip} movie_clip
+     * @return {MovieClip}
+     * @method
+     * @public
+     */
+    cloneMovieClip (from_work_space_id, movie_clip)
+    {
+        const fromWorkSpace = Util.$workSpaces[from_work_space_id];
+        const toWorkSpace   = Util.$currentWorkSpace();
+
+        const activeWorkSpaceId = Util.$activeWorkSpaceId;
+        Util.$activeWorkSpaceId = from_work_space_id;
+        const movieClip = movie_clip.clone();
+        Util.$activeWorkSpaceId = activeWorkSpaceId;
+
+        for (const layer of movieClip._$layers.values()) {
+
+            const newLayer = new Layer();
+            for (let idx = 0; idx < layer._$characters.length; ++idx) {
+
+                // コピー先のcharacterIdがインクリメントされないようtoObjectで複製
+                Util.$activeWorkSpaceId = from_work_space_id;
+                const character = new Character(
+                    JSON.parse(JSON.stringify(layer._$characters[idx].toObject()))
+                );
+
+                // 初期化
+                character._$layerId = -1;
+                character._$id      = toWorkSpace._$characterId++;
+
+                Util.$activeWorkSpaceId = activeWorkSpaceId;
+
+                const instance = fromWorkSpace
+                    .getLibrary(character.libraryId);
+
+                if (this._$copyMapping.has(instance.id)) {
+                    character.libraryId = this._$copyMapping.get(instance.id);
+                    newLayer.addCharacter(character);
+                    continue;
+                }
+
+                // フォルダ内にあればコピー元のフォルダを複製
+                if (instance.folderId) {
+                    this.cloneFolder(from_work_space_id, instance.id);
+                }
+
+                // コピー元のワークスペースからpathを算出
+                const path = instance
+                    .getPathWithWorkSpace(fromWorkSpace);
+
+                // 重複したアイテムなら確認モーダルを表示
+                if (toWorkSpace._$nameMap.has(path)) {
+
+                    Util.$confirmModal.files.push({
+                        "file": instance,
+                        "character": character,
+                        "layer": newLayer,
+                        "path": path,
+                        "workSpaceId": from_work_space_id,
+                        "type": "copy"
+                    });
+
+                    continue;
+                }
+
+                // fixed logic 複製を生成
+                const clone = instance.type === InstanceType.MOVIE_CLIP
+                    ? this.cloneMovieClip(instance)
+                    : instance.clone();
+
+                // 新しいフォルダIDをセット
+                if (clone.folderId) {
+                    const folder = fromWorkSpace.getLibrary(
+                        clone.folderId
+                    );
+
+                    clone.folderId = 0;
+                    if (folder) {
+                        clone.folderId = toWorkSpace._$libraries.get(
+                            folder.getPathWithWorkSpace(fromWorkSpace)
+                        );
+                    }
+                }
+
+                // ライブラリにアイテムを追加
+                const id = toWorkSpace.nextLibraryId;
+                this._$copyMapping.set(instance.id, id);
+
+                clone._$id = character.libraryId = id;
+                toWorkSpace._$libraries.set(clone.id, clone);
+
+                // ライブラリに登録
+                Util
+                    .$libraryController
+                    .createInstance(
+                        clone.type,
+                        clone.name,
+                        clone.id,
+                        clone.symbol
+                    );
+
+                toWorkSpace
+                    ._$nameMap
+                    .set(path, clone.id);
+
+                newLayer.addCharacter(character);
+            }
+
+            // 空のキーフレームをコピー
+            for (let idx = 0; idx < layer._$emptys.length; ++idx) {
+                newLayer.addEmptyCharacter(
+                    layer._$emptys[idx].clone()
+                );
+            }
+
+            newLayer.id = layer.id;
+            movieClip.setLayer(newLayer.id, newLayer);
+        }
+
+        return movieClip;
+    }
+
+    /**
+     * @description 複製するアイテムがフォルダー内にある場合はコピー先に同じ階層でフォルダを生成
+     *
+     * @param  {number} from_work_space_id
+     * @param  {number} from_library_id
+     * @return {void}
+     * @method
+     * @public
+     */
+    cloneFolder (from_work_space_id, from_library_id)
+    {
+        const fromWorkSpace = Util.$workSpaces[from_work_space_id];
+        const toWorkSpace   = Util.$currentWorkSpace();
+
+        const instance = fromWorkSpace
+            .getLibrary(from_library_id);
+
+        if (!instance) {
+            return ;
+        }
+
+        const folders = [];
+
+        let parent = instance;
+        while (parent.folderId) {
+            parent = fromWorkSpace.getLibrary(
+                parent.folderId
+            );
+            folders.unshift(parent);
+        }
+
+        const folderMap = new Map();
+        for (let idx = 0; folders.length > idx; ++idx) {
+
+            const folder = folders[idx];
+
+            const path = folder
+                .getPathWithWorkSpace(fromWorkSpace);
+
+            if (toWorkSpace._$nameMap.has(path)) {
+                folderMap.set(
+                    folder.id, toWorkSpace._$nameMap.get(path)
+                );
+                continue;
+            }
+
+            // フォルダがなければ複製してコピー先のプロジェクトに登録
+            const cloneFolder = folder.clone();
+            cloneFolder._$id  = toWorkSpace.nextLibraryId;
+            toWorkSpace._$libraries.set(cloneFolder.id, cloneFolder);
+
+            folderMap.set(folder.id, cloneFolder.id);
+            if (cloneFolder.folderId) {
+                cloneFolder.folderId = folderMap.get(cloneFolder.folderId);
+            }
+
+            // elementを追加
+            Util
+                .$libraryController
+                .createInstance(
+                    cloneFolder.type,
+                    cloneFolder.name,
+                    cloneFolder.id,
+                    cloneFolder.symbol
+                );
+
+            toWorkSpace
+                ._$nameMap
+                .set(path, cloneFolder.id);
+        }
+    }
+
+    /**
+     * @description 別プロジェクトへ指定のアイテムを複製
+     *
+     * @param  {number} from_work_space_id
+     * @param  {number} from_library_id
+     * @param  {Layer} layer
+     * @param  {Character} character
+     * @return {void}
+     * @method
+     * @public
+     */
+    clone (from_work_space_id, from_library_id, layer = null, character = null)
+    {
+        const fromWorkSpace = Util.$workSpaces[from_work_space_id];
+        const toWorkSpace   = Util.$currentWorkSpace();
+
+        const instance = fromWorkSpace
+            .getLibrary(from_library_id);
+
+        if (!instance) {
+            return ;
+        }
+
+        // フォルダ内にあればコピー元のフォルダを複製
+        if (instance.folderId) {
+            this.cloneFolder(from_work_space_id, instance.id);
+        }
+
+        // コピー元のワークスペースからpathを算出
+        const path = instance
+            .getPathWithWorkSpace(fromWorkSpace);
+
+        // 重複したアイテムなら確認モーダルを表示
+        if (toWorkSpace._$nameMap.has(path)) {
+
+            Util.$confirmModal.files.push({
+                "file": instance,
+                "character": character,
+                "layer": layer,
+                "path": path,
+                "workSpaceId": from_work_space_id,
+                "type": "copy"
+            });
+
+            return ;
+        }
+
+        const activeWorkSpaceId = Util.$activeWorkSpaceId;
+        Util.$activeWorkSpaceId = from_work_space_id;
+
+        const clone = instance.type === InstanceType.MOVIE_CLIP
+            ? this.cloneMovieClip(instance)
+            : instance.clone();
+
+        Util.$activeWorkSpaceId = activeWorkSpaceId;
+
+        // 新しいフォルダIDをセット
+        if (clone.folderId) {
+            const folder = fromWorkSpace.getLibrary(
+                clone.folderId
+            );
+
+            clone.folderId = 0;
+            if (folder) {
+                clone.folderId = toWorkSpace._$libraries.get(
+                    folder.getPathWithWorkSpace(fromWorkSpace)
+                );
+            }
+        }
+
+        // 複製先のプロジェクトからIDを付与してもらう
+        clone._$id = toWorkSpace.nextLibraryId;
+
+        // プロジェクトに登録
+        toWorkSpace._$libraries.set(clone.id, clone);
+
+        // ライブラリに登録
+        Util
+            .$libraryController
+            .createInstance(
+                clone.type,
+                clone.name,
+                clone.id,
+                clone.symbol
+            );
+
+        // 登録
+        toWorkSpace
+            ._$nameMap
+            .set(path, clone.id);
+
+        // 再構成
+        this.reload();
     }
 
     /**
@@ -884,10 +1183,11 @@ class LibraryController
                 continue;
             }
 
-            node.style.paddingLeft = `${depth}px`;
-            node.style.display = mode === FolderType.OPEN
-                ? ""
-                : "none";
+            let style = `padding-left: ${depth}px;`;
+            if (mode !== FolderType.OPEN ) {
+                style += "display: none;";
+            }
+            node.setAttribute("style", style);
 
             if (instance.type === InstanceType.FOLDER) {
                 this.updateFolderStyle(
@@ -1039,12 +1339,8 @@ class LibraryController
             }
 
         } else {
-
             // フォルダーの外に移動
             this.folderOut();
-
-            // 再読み込み
-            this.reload();
         }
 
         this._$saved = false;
@@ -1217,7 +1513,7 @@ class LibraryController
 
             Util.$confirmModal.show();
 
-            return ;
+            return Promise.resolve();
         }
 
         // 上書きの場合はElementと内部データを削除
@@ -1517,18 +1813,45 @@ class LibraryController
     folderOut ()
     {
         if (!this.activeInstances.size) {
+            this.reload();
             return ;
         }
 
+        this.save();
+
+        const workSpace = Util.$currentWorkSpace();
+
+        let useConfirmModal = false;
         for (const element of this.activeInstances.values()) {
 
-            const instance = Util
-                .$currentWorkSpace()
-                .getLibrary(
-                    element.dataset.libraryId | 0
-                );
+            const instance = workSpace
+                .getLibrary(element.dataset.libraryId | 0);
 
-            if (!instance) {
+            if (!instance || !instance.folderId) {
+                continue;
+            }
+
+            // フォルダから一時的に出す
+            const folderId = instance.folderId;
+
+            instance.folderId = 0;
+            const path = instance.path;
+            instance.folderId = folderId;
+
+            // 同一のファイルがないかチェック
+            if (workSpace._$nameMap.has(path)) {
+
+                useConfirmModal = true;
+
+                Util.$confirmModal.files.push({
+                    "file": instance,
+                    "folderId": 0,
+                    "path": path,
+                    "type": "move"
+                });
+
+                Util.$confirmModal.show();
+
                 continue;
             }
 
@@ -1537,12 +1860,18 @@ class LibraryController
 
                 instance.folderId = 0;
 
-                element.style.display     = "";
-                element.style.paddingLeft = "";
-
+                element.setAttribute("style", "");
             }
 
         }
+
+        // ライブラリを再構成
+        if (!useConfirmModal) {
+            this.reload();
+        }
+
+        // 初期化
+        this._$saved = false;
     }
 
     /**
@@ -1559,26 +1888,24 @@ class LibraryController
             return ;
         }
 
+        event.stopPropagation();
+        event.preventDefault();
+
         const workSpace = Util.$currentWorkSpace();
 
         const folderElement = event.currentTarget;
         const folder = workSpace
             .getLibrary(folderElement.dataset.libraryId | 0);
 
-        // 移動元と移動先が同一のフォルダかチェックする
-        const elements = [];
+        this.save();
+
+        let useConfirmModal = false;
         for (const element of this.activeInstances.values()) {
 
             const instance = workSpace
                 .getLibrary(element.dataset.libraryId | 0);
 
-            // 同じ階層の移動ならスキップ
-            if (folder.id === instance.folderId) {
-                continue;
-            }
-
-            if (instance.type !== InstanceType.FOLDER) {
-                elements.push(element);
+            if (!instance) {
                 continue;
             }
 
@@ -1587,115 +1914,22 @@ class LibraryController
                 continue;
             }
 
-            // 移動元が子のフォルダーに移動してないかチェック
-            if (folder.folderId) {
-
-                let folderId = folder.folderId;
-                while (folderId) {
-                    const library = workSpace.getLibrary(folderId);
-                    if (!library) {
-                        break;
-                    }
-
-                    if (folderId === instance.id) {
-                        break;
-                    }
-
-                    folderId = library.folderId;
-                    if (!folderId) {
-                        elements.push(element);
-                        break;
-                    }
-                }
-
-            } else {
-
-                elements.push(element);
-
-            }
-        }
-
-        // 移動対象がなければ終了
-        if (!elements.length) {
-            return ;
-        }
-
-        this.save();
-
-        event.stopPropagation();
-        event.preventDefault();
-
-        let useConfirmModal = false;
-        for (let idx = 0; idx < elements.length; ++idx) {
-
-            const element = elements[idx];
-
-            const instance = workSpace
-                .getLibrary(element.dataset.libraryId | 0);
-
-            // 同一のファイルがないかチェック
             let parent = workSpace.getLibrary(folder.id);
             const path = `${parent.name}/${instance.path}`;
 
-            // 上書き確認
+            // 同一のファイルがないかチェック
             if (workSpace._$nameMap.has(path)) {
 
                 useConfirmModal = true;
 
                 Util.$confirmModal.files.push({
                     "file": instance,
-                    "folderId": folder.id,
+                    "folderId": 0,
                     "path": path,
                     "type": "move"
                 });
 
                 Util.$confirmModal.show();
-
-                // 移動元がフォルダなら中身も一緒にチェック
-                if (instance.type === InstanceType.FOLDER) {
-
-                    const children = Array.from(document
-                        .getElementById("library-list-box")
-                        .children);
-
-                    const element = document
-                        .getElementById(`library-child-id-${instance.id}`);
-
-                    let index = children.indexOf(element) + 1;
-
-                    // 移動先のフォルダパスをセット
-                    let parent = workSpace.getLibrary(folder.id);
-                    let parentPath = `${parent.path}`;
-
-                    // フォルダ内のアイテムが移動先で重複しないかチェック
-                    const paddingLeft = element.style.paddingLeft;
-                    for ( ; index < children.length; ++index) {
-
-                        const node = children[index];
-
-                        // 同階層なら終了
-                        if (node.style.paddingLeft === paddingLeft) {
-                            break;
-                        }
-
-                        const library = workSpace
-                            .getLibrary(node.dataset.libraryId | 0);
-
-                        const path = `${parentPath}/${library.path}`;
-
-                        // 移動先で重複しないかチェック
-                        if (!workSpace._$nameMap.has(path)) {
-                            continue;
-                        }
-
-                        Util.$confirmModal.files.push({
-                            "file": library,
-                            "folderId": folder.id,
-                            "path": path,
-                            "type": "move"
-                        });
-                    }
-                }
 
                 continue;
             }

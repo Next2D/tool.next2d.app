@@ -124,6 +124,19 @@ class TimelineMenu extends BaseTimeline
     }
 
     /**
+     * @description コピー情報を初期化
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    clearCopy ()
+    {
+        this._$copyWorkSpaceId   = -1;
+        this._$copyLayers.length = 0;
+    }
+
+    /**
      * @description 指定したレイヤーをコピー
      *
      * @return {void}
@@ -132,11 +145,11 @@ class TimelineMenu extends BaseTimeline
      */
     executeContextMenuLayerCopy ()
     {
+        // 初期化
+        this.clearCopy();
+
         // コピー元のワークスペースのIDをセット
         this._$copyWorkSpaceId = Util.$activeWorkSpaceId;
-
-        // コピーレイヤーの配列を初期化
-        this._$copyLayers.length = 0;
 
         const targetLayers = Util.$timelineLayer.targetLayers;
 

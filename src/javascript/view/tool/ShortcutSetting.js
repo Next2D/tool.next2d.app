@@ -380,12 +380,6 @@ class ShortcutSetting
                     "description": "{{新規フォルダー}}"
                 },
                 {
-                    "key": "sAlt",
-                    "text": "Alt + S",
-                    "css": "library-menu-content-shape-clone",
-                    "description": "{{Shapeを複製}}"
-                },
-                {
                     "key": "rCtrl",
                     "text": "Ctrl + R",
                     "css": "library-menu-file",
@@ -402,6 +396,18 @@ class ShortcutSetting
                     "text": "Backspace",
                     "css": "library-menu-delete",
                     "description": "{{削除}}"
+                },
+                {
+                    "key": "cCtrl",
+                    "text": "Ctrl + C",
+                    "css": "library-menu-copy",
+                    "description": "{{コピー}}"
+                },
+                {
+                    "key": "vCtrl",
+                    "text": "Ctrl + V",
+                    "css": "library-menu-paste",
+                    "description": "{{ペースト}}"
                 }
             ]
         };

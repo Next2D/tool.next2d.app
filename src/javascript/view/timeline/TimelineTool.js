@@ -598,13 +598,12 @@ class TimelineTool extends BaseTimeline
     /**
      * @description タイムラインに新規レイヤーを追加
      *
-     * @param  {MouseEvent} event
      * @param  {Layer} [new_layer=null]
      * @return {void}
      * @method
      * @public
      */
-    executeTimelineLayerAdd (event, new_layer = null)
+    executeTimelineLayerAdd (new_layer = null)
     {
         this.save();
 
@@ -688,7 +687,7 @@ class TimelineTool extends BaseTimeline
         }
 
         // 初期化
-        super.focusOut(event);
+        super.focusOut();
     }
 
     /**

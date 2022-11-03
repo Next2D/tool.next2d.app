@@ -44,25 +44,34 @@ class LibraryKeyboardCommand extends KeyboardCommand
         }
 
         // 選択したアイテムを削除
-        this.add("Backspace", this.executeInstanceDelete);
+        this.add("Backspace", () =>
+        {
+            Util
+                .$libraryMenu
+                .executeLibraryMenuDelete();
+        });
 
         // スクリーンで使用してないアイテムを全て削除
-        this.add(
-            Util.$generateShortcutKey("Backspace", { "ctrl": true, "shift": true }),
-            this.executeNoUseInstanceDelete
-        );
+        this.add(Util.$generateShortcutKey("Backspace", { "ctrl": true, "shift": true }), () =>
+        {
+            Util.$libraryMenu.executeLibraryMenuNoUseDelete();
+        });
 
         // MovieClipを追加
-        this.add(
-            Util.$generateShortcutKey("m", { "ctrl": true }),
-            this.addMovieClip
-        );
+        this.add(Util.$generateShortcutKey("m", { "ctrl": true }), () =>
+        {
+            Util
+                .$libraryMenu
+                .executeLibraryMenuContainerAdd();
+        });
 
         // フォルダーを追加
-        this.add(
-            Util.$generateShortcutKey("f", { "ctrl": true }),
-            this.addFolder
-        );
+        this.add(Util.$generateShortcutKey("f", { "ctrl": true }), () =>
+        {
+            Util
+                .$libraryMenu
+                .executeLibraryMenuFolderAdd();
+        });
 
         // 外部ファイル読み込み
         this.add(
@@ -70,17 +79,31 @@ class LibraryKeyboardCommand extends KeyboardCommand
             this.loadFile
         );
 
-        // Shapeを複製
-        this.add(
-            Util.$generateShortcutKey("s", { "alt": true }),
-            this.cloneShape
-        );
+        // コピー
+        this.add(Util.$generateShortcutKey("c", { "ctrl": true }), () =>
+        {
+            Util.$libraryMenu.executeLibraryMenuCopy();
+        });
+
+        // 貼り付け
+        this.add(Util.$generateShortcutKey("v", { "ctrl": true }), () =>
+        {
+            Util.$libraryMenu.executeLibraryMenuPaste();
+        });
+
+        // 書き出し
+        this.add(Util.$generateShortcutKey("s", { "ctrl": true, "shift": true }), () =>
+        {
+            Util
+                .$libraryExport
+                .executeLibraryMenuExport();
+        });
 
         // 指定したアイテムの書き出し
-        this.add(
-            Util.$generateShortcutKey("s", { "ctrl": true, "shift": true }),
-            this.showOutputModal
-        );
+        this.add(Util.$generateShortcutKey("s", { "ctrl": true, "shift": true }), () =>
+        {
+            Util.$libraryExport.executeLibraryMenuExport();
+        });
 
         // カーソルでのアイテム移動
         this.add("ArrowDown", this.moveItem);
@@ -155,34 +178,6 @@ class LibraryKeyboardCommand extends KeyboardCommand
     }
 
     /**
-     * @description 指定したアイテムを書き出し
-     *
-     * @return {void}
-     * @method
-     * @public
-     */
-    showOutputModal ()
-    {
-        Util
-            .$libraryExport
-            .executeLibraryMenuExport();
-    }
-
-    /**
-     * @description 指定したShapeを複製
-     *
-     * @return {void}
-     * @method
-     * @public
-     */
-    cloneShape ()
-    {
-        Util
-            .$libraryMenu
-            .executeLibraryMenuContentShapeClone();
-    }
-
-    /**
      * @description 外部ファイルの読み込み
      *
      * @return {void}
@@ -198,60 +193,6 @@ class LibraryKeyboardCommand extends KeyboardCommand
         document
             .getElementById("library-menu-file-input")
             .click();
-    }
-
-    /**
-     * @description フォルダーを追加
-     *
-     * @return {void}
-     * @method
-     * @public
-     */
-    addFolder ()
-    {
-        Util
-            .$libraryMenu
-            .executeLibraryMenuFolderAdd();
-    }
-
-    /**
-     * @description 空のMovieClipを追加
-     *
-     * @return {void}
-     * @method
-     * @public
-     */
-    addMovieClip ()
-    {
-        Util
-            .$libraryMenu
-            .executeLibraryMenuContainerAdd();
-    }
-
-    /**
-     * @description 選択したアイテムを削除
-     *
-     * @return {void}
-     * @method
-     * @public
-     */
-    executeInstanceDelete ()
-    {
-        Util
-            .$libraryMenu
-            .executeLibraryMenuDelete();
-    }
-
-    /**
-     * @description 選択したアイテムを削除
-     *
-     * @return {void}
-     * @method
-     * @public
-     */
-    executeNoUseInstanceDelete ()
-    {
-        Util.$libraryMenu.executeLibraryMenuNoUseDelete();
     }
 }
 
