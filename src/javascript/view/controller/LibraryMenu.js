@@ -609,13 +609,18 @@ class LibraryMenu
             return ;
         }
 
-        // コピーしたアイテムに自身のフォルダーが含まれているかチェック
+        const fromWorkSpace = Util.$workSpaces[this._$copyWorkSpaceId];
+        const toWorkSpace   = Util.$currentWorkSpace();
+
+        // コピーしたアイテムがフォルダーの中にある場合
+        // そのフォルダーがコピーに含まれているかチェック
+        // コピーにフォルダーが含まれない場合は一階層上にコピーする
         if (!this._$adjusted) {
             this._$adjusted = true;
 
-            // マッピング
-            const idMap = new Map();
-            const folderMap = new Map();
+            // コピーしたアイテムがフォルダ内部にあるかチェック
+            const idMap   = new Map();
+            const inItems = [];
             for (let idx = 0; this._$copyLibraries.length > idx; ++idx) {
 
                 const instance = this._$copyLibraries[idx];
@@ -625,46 +630,42 @@ class LibraryMenu
                     continue;
                 }
 
-                if (!folderMap.has(instance.folderId)) {
-                    folderMap.set(instance.folderId, []);
-                }
-
-                folderMap.get(instance.folderId).push(instance);
+                inItems.push(instance);
             }
 
-            // コピー配列の中にフォルダがあるかチェック
-            for (const folderId of folderMap.keys()) {
+            // フォルダ内部にある場合、コピーデータにフォルダが含まれてるかチェック
+            for (let idx = 0; idx < inItems.length; ++idx) {
 
-                if (idMap.has(folderId)) {
-                    continue;
+                let instance = inItems[idx];
+                while (instance.folderId) {
+
+                    const folder = fromWorkSpace.getLibrary(instance.folderId);
+                    if (idMap.has(folder.id)) {
+                        // コピーの配列にフォルダが含まれていれば
+                        // 全てコピーとなるので、単体のアイテムを配列から削除する
+                        const index = this._$copyLibraries.indexOf(inItems[idx]);
+                        if (index > -1) {
+                            this._$copyLibraries.splice(index, 1);
+                        }
+                        break;
+                    }
+
+                    instance = folder;
                 }
 
-                const items = folderMap.get(folderId);
-                for (let idx = 0; idx < items.length; ++idx) {
-                    items[idx].folderId = 0;
-                }
             }
         }
 
         // 状態保存
         this.save();
-
-        const fromWorkSpace = Util.$workSpaces[this._$copyWorkSpaceId];
-        const toWorkSpace   = Util.$currentWorkSpace();
-
         for (let idx = 0; this._$copyLibraries.length > idx; ++idx) {
 
             const instance = this._$copyLibraries[idx];
 
-            const activeWorkSpaceId = Util.$activeWorkSpaceId;
-            Util.$activeWorkSpaceId = this._$copyWorkSpaceId;
-            const clone = instance.clone();
-            Util.$activeWorkSpaceId = activeWorkSpaceId;
-
-            // IDを再発行
-            clone._$id = toWorkSpace.nextLibraryId;
-
+            let clone = null;
             if (this._$copyWorkSpaceId === Util.$activeWorkSpaceId) {
+
+                clone = instance.clone();
 
                 // 名前が重複しなくなるまでprefixを追加する
                 for (;;) {
@@ -681,19 +682,59 @@ class LibraryMenu
             } else {
 
                 // 別プロジェクトへのコピーなら確認モーダルを表示する
-                const path = clone.getPathWithWorkSpace(fromWorkSpace);
+                const path = instance.getPathWithWorkSpace(fromWorkSpace);
 
                 if (toWorkSpace._$nameMap.has(path)) {
                     Util.$confirmModal.files.push({
                         "file": instance,
-                        "folderId": 0,
+                        "character": null,
+                        "layer": null,
                         "path": path,
-                        "type": "move"
+                        "workSpaceId": this._$copyWorkSpaceId,
+                        "type": "copy"
                     });
                     continue;
                 }
 
+                if (instance.type === InstanceType.MOVIE_CLIP) {
+
+                    clone = Util
+                        .$confirmModal
+                        .cloneMovieClip(this._$copyWorkSpaceId, instance);
+
+                } else {
+
+                    // プロジェクトを切り替えて複製
+                    const activeWorkSpaceId = Util.$activeWorkSpaceId;
+                    Util.$activeWorkSpaceId = this._$copyWorkSpaceId;
+
+                    clone = instance.clone();
+                    Util.$activeWorkSpaceId = activeWorkSpaceId;
+
+                }
+
+                if (!clone) {
+                    continue;
+                }
+
+                // コピーするアイテムがフォルダ内にあれば階層を維持する
+                if (clone.folderId) {
+
+                    Util
+                        .$confirmModal
+                        .createFolder(this._$copyWorkSpaceId, clone);
+
+                }
+
+                // 重複したデータがあれば、確認用にデータを転送
+                if (instance.type === InstanceType.MOVIE_CLIP) {
+                    Util.$timelineMenu.setConfirmModalFiles();
+                }
+
             }
+
+            // IDを再発行
+            clone._$id = toWorkSpace.nextLibraryId;
 
             // Elementを追加
             Util
@@ -709,9 +750,11 @@ class LibraryMenu
             toWorkSpace._$libraries.set(clone.id, clone);
 
             // フォルダの中にあるアイテムを複製
-            this.cloneFolderItem(
-                this._$copyWorkSpaceId, instance.id, clone
-            );
+            if (clone.type === InstanceType.FOLDER) {
+                Util.$confirmModal.cloneFolderItem(
+                    this._$copyWorkSpaceId, instance.id, clone
+                );
+            }
         }
 
         // ライブラリを再構成
@@ -724,57 +767,6 @@ class LibraryMenu
 
         // 初期化
         this._$saved = false;
-    }
-
-    /**
-     * @description フォルダの中にあるアイテムを複製
-     *
-     * @param  {number} from_work_space_id
-     * @param  {number} instance_id
-     * @param  {Folder} folder
-     * @return {void}
-     * @method
-     * @public
-     */
-    cloneFolderItem (from_work_space_id, instance_id, folder)
-    {
-        const fromWorkSpace = Util.$workSpaces[from_work_space_id];
-        const toWorkSpace   = Util.$currentWorkSpace();
-
-        for (const instance of fromWorkSpace._$libraries.values()) {
-
-            if (instance.folderId !== instance_id) {
-                continue;
-            }
-
-            const activeWorkSpaceId = Util.$activeWorkSpaceId;
-            Util.$activeWorkSpaceId = this._$copyWorkSpaceId;
-            const clone = instance.clone();
-            Util.$activeWorkSpaceId = activeWorkSpaceId;
-
-            clone._$id = toWorkSpace.nextLibraryId;
-            clone.folderId = folder.id;
-
-            // Elementを追加
-            Util
-                .$libraryController
-                .createInstance(
-                    clone.type,
-                    clone.name,
-                    clone.id,
-                    clone.symbol
-                );
-
-            // 内部データに追加
-            toWorkSpace._$libraries.set(clone.id, clone);
-
-            // フォルダなら中身を複製
-            if (clone.type === InstanceType.FOLDER) {
-                this.cloneFolderItem(
-                    from_work_space_id, instance.id, clone
-                );
-            }
-        }
     }
 
     /**
