@@ -330,7 +330,6 @@ class TimelineMenu extends BaseTimeline
                         Util.$activeWorkSpaceId = activeWorkSpaceId;
                     }
 
-
                     // ライブラリにアイテムを追加
                     const id = workSpace.nextLibraryId;
                     this._$copyMapping.set(instance.id, id);
