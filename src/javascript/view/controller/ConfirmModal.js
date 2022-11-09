@@ -971,6 +971,19 @@ class ConfirmModal extends BaseController
     }
 
     /**
+     * @description 処理確認用のMapを初期化
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    clear ()
+    {
+        this._$layers.clear();
+        this._$mapping.clear();
+    }
+
+    /**
      * @description 配列にアイテムがあれば表示、なければモーダル表示を終了
      *              If there are items in the array, display them; if not, exit modal display
      *
@@ -1013,8 +1026,7 @@ class ConfirmModal extends BaseController
             }
 
             // reset
-            this._$layers.clear();
-            this._$mapping.clear();
+            this.clear();
 
             // 再描画
             this.reloadScreen();

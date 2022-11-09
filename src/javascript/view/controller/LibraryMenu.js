@@ -763,6 +763,8 @@ class LibraryMenu
         // 確認モーダルを表示
         if (Util.$confirmModal.files.length) {
             Util.$confirmModal.show();
+        } else {
+            Util.$confirmModal.clear();
         }
 
         // 初期化
