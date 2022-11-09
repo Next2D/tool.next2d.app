@@ -262,16 +262,19 @@ class ConfirmModal extends BaseController
                 continue;
             }
 
-            const activeWorkSpaceId = Util.$activeWorkSpaceId;
-            Util.$activeWorkSpaceId = from_work_space_id;
-
             let clone = null;
-            if (instance === InstanceType.MOVIE_CLIP) {
-                Util.$activeWorkSpaceId = activeWorkSpaceId;
+            if (instance.type === InstanceType.MOVIE_CLIP) {
+
                 clone = this.cloneMovieClip(from_work_space_id, instance);
+
             } else {
+
+                const activeWorkSpaceId = Util.$activeWorkSpaceId;
+                Util.$activeWorkSpaceId = from_work_space_id;
+
                 clone = instance.clone();
                 Util.$activeWorkSpaceId = activeWorkSpaceId;
+
             }
 
             clone._$id = toWorkSpace.nextLibraryId;
@@ -460,20 +463,25 @@ class ConfirmModal extends BaseController
         // ライブラリに登録がなけれな登録
         if (!workSpace._$libraries.has(id)) {
 
-            // ワークスペースを切り替え
-            const activeWorkSpaceId = Util.$activeWorkSpaceId;
-            Util.$activeWorkSpaceId = this._$currentObject.workSpaceId;
+
 
             let clone = null;
             if (instance.type === InstanceType.MOVIE_CLIP) {
-                Util.$activeWorkSpaceId = activeWorkSpaceId;
+
                 clone = this.cloneMovieClip(
                     this._$currentObject.workSpaceId,
                     instance
                 );
+
             } else {
+
+                // ワークスペースを切り替え
+                const activeWorkSpaceId = Util.$activeWorkSpaceId;
+                Util.$activeWorkSpaceId = this._$currentObject.workSpaceId;
+
                 clone = instance.clone();
                 Util.$activeWorkSpaceId = activeWorkSpaceId;
+
             }
 
             clone._$id = id;
