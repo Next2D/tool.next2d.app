@@ -463,8 +463,6 @@ class ConfirmModal extends BaseController
         // ライブラリに登録がなけれな登録
         if (!workSpace._$libraries.has(id)) {
 
-
-
             let clone = null;
             if (instance.type === InstanceType.MOVIE_CLIP) {
 
@@ -504,6 +502,132 @@ class ConfirmModal extends BaseController
                 );
 
             workSpace._$libraries.set(clone.id, clone);
+        }
+    }
+
+    /**
+     * @description コピー先のレイヤーに同一のDisplayObjectがあれば統合、なければ追加
+     *
+     * @param {Layer} layer
+     * @param {Character} character
+     * @param {number} copy_frame
+     * @method
+     * @public
+     */
+    pasteDisplayObject (layer, character, copy_frame)
+    {
+        //  コピー先にキーフレームがなければ登録
+        const currentFrame = Util.$timelineFrame.currentFrame;
+
+        let range = null;
+        const characters = layer.getActiveCharacter(currentFrame);
+        if (characters.length) {
+            range = characters[0].getRange(currentFrame);
+        }
+
+        if (!range) {
+
+            const emptyCharacter = layer
+                .getActiveEmptyCharacter(currentFrame);
+
+            if (emptyCharacter) {
+                range = {
+                    "startFrame": emptyCharacter.startFrame,
+                    "endFrame": emptyCharacter.endFrame
+                };
+
+                // 不要になるので空のキーフレームは削除
+                layer.deleteEmptyCharacter(emptyCharacter);
+            }
+        }
+
+        if (!range) {
+
+            // 空のキーフレームを登録
+            Util
+                .$timelineTool
+                .executeTimelineFrameAdd();
+
+            const characters = layer.getActiveCharacter(currentFrame);
+            if (characters.length) {
+                range = characters[0].getRange(currentFrame);
+            }
+
+            if (!range) {
+                const emptyCharacter = layer
+                    .getActiveEmptyCharacter(currentFrame);
+                if (emptyCharacter) {
+                    range = {
+                        "startFrame": emptyCharacter.startFrame,
+                        "endFrame": emptyCharacter.endFrame
+                    };
+
+                    // 不要になるので空のキーフレームは削除
+                    layer.deleteEmptyCharacter(emptyCharacter);
+                }
+            }
+        }
+
+        const libraryMap = new Map();
+
+        // 前のフレームがあれば結合する可能性があるのでmapに登録
+        const prevCharacters = layer.getActiveCharacter(
+            Math.min(1, range.startFrame - 1)
+        );
+
+        for (let idx = 0; idx < prevCharacters.length; ++idx) {
+
+            const character = prevCharacters[idx];
+            if (character.endFrame > currentFrame) {
+                continue;
+            }
+
+            const libraryId = character.libraryId;
+            if (!libraryMap.has(libraryId)) {
+                libraryMap.set(libraryId, []);
+            }
+            libraryMap.get(libraryId).push(character);
+        }
+
+        const libraryId = character.libraryId;
+
+        // コピー元のplace objectを取得
+        const place = character.getPlace(copy_frame);
+
+        // 最前面に配置
+        place.depth = layer.getActiveCharacter(currentFrame).length;
+
+        // 結合先がなければレイヤーに追加
+        if (!libraryMap.size || !libraryMap.has(libraryId)) {
+
+            // コピー元のキーフレームの幅で作成
+            character.startFrame = range.startFrame;
+            character.endFrame   = range.endFrame;
+
+            // キーフレームとtweenを初期化
+            character._$places.clear();
+            character._$tween.clear();
+
+            // 再登録
+            character.setPlace(range.startFrame, place);
+
+            // レイヤーに登録
+            layer.addCharacter(character);
+
+        } else {
+
+            // 結合先があれば結合
+            const characters = libraryMap.get(libraryId);
+
+            const character = characters.pop();
+            if (characters.length) {
+                libraryMap.delete(libraryId);
+            }
+
+            character.startFrame = Math.min(character.startFrame, range.startFrame);
+            character.endFrame   = Math.max(character.endFrame, range.endFrame);
+            character.setPlace(range.startFrame, place);
+
         }
     }
 
@@ -896,12 +1020,24 @@ class ConfirmModal extends BaseController
         character.libraryId = id;
 
         const layer = this._$currentObject.layer;
-        if (layer) {
-            layer.addCharacter(character);
+        const copyFrame = this._$currentObject.copyFrame;
+        if (copyFrame) {
 
-            if (!this._$layers.has(layer.id)) {
-                this._$layers.set(layer.id, layer);
+            this.pasteDisplayObject(layer, character, copyFrame);
+
+        } else {
+
+            if (layer) {
+                layer.addCharacter(character);
+
+                if (!this._$layers.has(layer.id)) {
+                    this._$layers.set(layer.id, layer);
+                }
             }
+        }
+
+        if (layer) {
+            layer.reloadStyle();
         }
     }
 

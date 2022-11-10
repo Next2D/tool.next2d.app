@@ -145,7 +145,9 @@ class ScreenMenu extends BaseScreen
             );
 
             this._$copyDisplayObjects.push(
-                character.clone()
+                new Character(JSON.parse(JSON.stringify(
+                    character.toObject()
+                )))
             );
         }
     }
@@ -165,281 +167,6 @@ class ScreenMenu extends BaseScreen
     }
 
     /**
-     * @description 選択したDisplayObjectを別のプロジェクトにペースト
-     *
-     * @param  {Layer} layer
-     * @param  {Character} character
-     * @return {void}
-     * @method
-     * @public
-     */
-    pasteFromTo (layer, character)
-    {
-        const fromWorkSpace = Util.$workSpaces[this._$copyWorkSpaceId];
-        const toWorkSpace   = Util.$currentWorkSpace();
-
-        const instance = fromWorkSpace
-            .getLibrary(character.libraryId);
-
-        if (!instance) {
-            return ;
-        }
-
-        //  コピー先にキーフレームがなければ登録
-        const currentFrame = Util.$timelineFrame.currentFrame;
-
-        let range = null;
-        const characters = layer.getActiveCharacter(currentFrame);
-        if (characters.length) {
-            range = characters[0].getRange(currentFrame);
-        }
-
-        if (!range) {
-
-            const emptyCharacter = layer
-                .getActiveEmptyCharacter(currentFrame);
-
-            if (emptyCharacter) {
-                range = {
-                    "startFrame": emptyCharacter.startFrame,
-                    "endFrame": emptyCharacter.endFrame
-                };
-
-                // 不要になるので空のキーフレームは削除
-                layer.deleteEmptyCharacter(emptyCharacter);
-            }
-        }
-
-        if (!range) {
-
-            // 空のキーフレームを登録
-            Util
-                .$timelineTool
-                .executeTimelineFrameAdd();
-
-            const characters = layer.getActiveCharacter(currentFrame);
-            if (characters.length) {
-                range = characters[0].getRange(currentFrame);
-            }
-
-            if (!range) {
-                const emptyCharacter = layer
-                    .getActiveEmptyCharacter(currentFrame);
-                if (emptyCharacter) {
-                    range = {
-                        "startFrame": emptyCharacter.startFrame,
-                        "endFrame": emptyCharacter.endFrame
-                    };
-
-                    // 不要になるので空のキーフレームは削除
-                    layer.deleteEmptyCharacter(emptyCharacter);
-                }
-            }
-        }
-
-        const libraryMap = new Map();
-
-        // 前のフレームがあれば結合する可能性があるのでmapに登録
-        const prevCharacters = layer.getActiveCharacter(
-            Math.min(1, range.startFrame - 1)
-        );
-
-        for (let idx = 0; idx < prevCharacters.length; ++idx) {
-
-            const character = prevCharacters[idx];
-            if (character.endFrame > currentFrame) {
-                continue;
-            }
-
-            const libraryId = character.libraryId;
-            if (!libraryMap.has(libraryId)) {
-                libraryMap.set(libraryId, []);
-            }
-            libraryMap.get(libraryId).push(character);
-        }
-
-        const libraryId = character.libraryId;
-
-        // プロジェクトが異なっていればidを更新
-        if (this._$copyWorkSpaceId !== Util.$activeWorkSpaceId) {
-
-            if (!this._$copyMapping.has(character.libraryId)) {
-
-                const clone = instance.type === InstanceType.MOVIE_CLIP
-                    ? this.cloneMovieClip(instance)
-                    : instance.clone();
-
-                // 新しいIDを発行
-                clone._$id = toWorkSpace.nextLibraryId;
-                this._$copyMapping.set(character.libraryId, clone.id);
-
-                // プロジェクトに登録
-                toWorkSpace._$libraries.set(clone.id, clone);
-
-                // フォルダー内部のアイテムならフォルダをライブラリに生成
-                if (clone.folderId) {
-
-                    const folders = [];
-
-                    let parent = instance;
-                    while (parent._$folderId) {
-                        parent = fromWorkSpace.getLibrary(
-                            parent._$folderId
-                        );
-                        folders.unshift(parent);
-                    }
-
-                    const folderMap = new Map();
-                    for (let idx = 0; folders.length > idx; ++idx) {
-
-                        const folder = folders[idx];
-
-                        const path = folder
-                            .getPathWithWorkSpace(fromWorkSpace);
-
-                        if (toWorkSpace._$nameMap.has(path)) {
-                            folderMap.set(
-                                folder.id, toWorkSpace._$nameMap.get(path)
-                            );
-                            continue;
-                        }
-
-                        // フォルダを複製
-                        const cloneFolder = folder.clone();
-                        cloneFolder._$id  = toWorkSpace.nextLibraryId;
-                        toWorkSpace._$libraries.set(cloneFolder.id, cloneFolder);
-
-                        folderMap.set(folder.id, cloneFolder.id);
-                        if (cloneFolder.folderId) {
-                            cloneFolder.folderId = folderMap.get(cloneFolder.folderId);
-                        }
-
-                        Util
-                            .$libraryController
-                            .createInstance(
-                                cloneFolder.type,
-                                cloneFolder.name,
-                                cloneFolder.id,
-                                cloneFolder.symbol
-                            );
-
-                        toWorkSpace
-                            ._$nameMap
-                            .set(path, cloneFolder.id);
-                    }
-
-                    // 新しいフォルダIDをセット
-                    clone.folderId = folderMap.get(clone.folderId);
-                }
-
-                // ライブラリに登録
-                Util
-                    .$libraryController
-                    .createInstance(
-                        clone.type,
-                        clone.name,
-                        clone.id,
-                        clone.symbol
-                    );
-
-                // コピー元のワークスペースからpathを算出
-                const path = instance
-                    .getPathWithWorkSpace(fromWorkSpace);
-
-                toWorkSpace
-                    ._$nameMap
-                    .set(path, clone.id);
-
-            }
-
-            // 新しいIDをセット
-            character.libraryId = this._$copyMapping.get(character.libraryId);
-        }
-
-        // コピー元のplace objectを取得
-        const place = character.getPlace(this._$copyFrame);
-
-        // 最前面に配置
-        place.depth = layer.getActiveCharacter(currentFrame).length;
-
-        // 結合先がなければレイヤーに追加
-        if (!libraryMap.size || !libraryMap.has(libraryId)) {
-
-            // コピー元のキーフレームの幅で作成
-            character.startFrame = range.startFrame;
-            character.endFrame   = range.endFrame;
-
-            // キーフレームとtweenを初期化
-            character._$places.clear();
-            character._$tween.clear();
-
-            // 再登録
-            character.setPlace(range.startFrame, place);
-
-            // レイヤーに登録
-            layer.addCharacter(character);
-
-        } else {
-
-            // 結合先があれば結合
-            const characters = libraryMap.get(libraryId);
-
-            const character = characters.pop();
-            if (characters.length) {
-                libraryMap.delete(libraryId);
-            }
-
-            character.startFrame = Math.min(character.startFrame, range.startFrame);
-            character.endFrame   = Math.max(character.endFrame, range.endFrame);
-            character.setPlace(range.startFrame, place);
-
-        }
-    }
-
-    /**
-     * @description MovieClipの子孫にペースト先と同名のアイテムがあるか確認
-     *
-     * @param  {MovieClip} movie_clip
-     * @return {boolean}
-     * @method
-     * @public
-     */
-    checkMovieClip (movie_clip)
-    {
-        const targetWorkSpace  = Util.$workSpaces[this._$copyWorkSpaceId];
-        const currentWorkSpace = Util.$currentWorkSpace();
-        for (const layer of movie_clip._$layers.values()) {
-
-            const characters = layer._$characters;
-            for (let idx = 0; idx < characters.length; ++idx) {
-
-                const character = characters[idx];
-
-                const instance = targetWorkSpace
-                    .getLibrary(character.libraryId);
-
-                if (!instance) {
-                    continue;
-                }
-
-                const path = instance
-                    .getPathWithWorkSpace(targetWorkSpace);
-
-                if (currentWorkSpace._$nameMap.has(path)) {
-                    return true;
-                }
-
-                if (instance.type === InstanceType.MOVIE_CLIP
-                    && this.checkMovieClip(instance)
-                ) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-    /**
      * @description 選択したDisplayObjectをコピー
      *
      * @return {void}
@@ -453,9 +180,14 @@ class ScreenMenu extends BaseScreen
         }
 
         // コピーしてるものがなければ終了
-        const length = this._$copyDisplayObjects.length;
-        if (!length) {
+        if (!this._$copyDisplayObjects.length) {
             return;
+        }
+
+        const fromWorkSpace = Util.$workSpaces[this._$copyWorkSpaceId];
+        const toWorkSpace   = Util.$currentWorkSpace();
+        if (!fromWorkSpace) {
+            return ;
         }
 
         // レイヤーを選択してなければ終了
@@ -465,37 +197,28 @@ class ScreenMenu extends BaseScreen
             targetLayer = Util.$timelineLayer.targetLayer;
         }
 
-        const scene = Util.$currentWorkSpace().scene;
-        const layer = scene.getLayer(
-            targetLayer.dataset.layerId | 0
-        );
+        const layer = toWorkSpace
+            .scene
+            .getLayer(
+                targetLayer.dataset.layerId | 0
+            );
 
         // ワークスペースが異なる場合は依存するライブラリを移動する
         if (this._$copyWorkSpaceId !== Util.$activeWorkSpaceId) {
 
-            const targetWorkSpace = Util.$workSpaces[this._$copyWorkSpaceId];
-            if (!targetWorkSpace) {
-                return ;
-            }
-
             // コピー元が存在するかチェック
-            let noHit = true;
-            for (let idx = length - 1; idx > -1; --idx) {
+            for (let idx = 0; this._$copyDisplayObjects.length > idx; ++idx) {
 
                 const character = this._$copyDisplayObjects[idx];
-                const libraryId = character.libraryId;
-                if (!targetWorkSpace.getLibrary(libraryId)) {
+
+                // コピー元がなければ初期化して終了
+                if (fromWorkSpace.getLibrary(character.libraryId)) {
                     continue;
                 }
 
-                noHit = false;
-                break;
-            }
-
-            // 初期化して終了
-            if (noHit) {
                 this._$copyWorkSpaceId = -1;
                 this._$copyDisplayObjects.length = 0;
+
                 return ;
             }
 
@@ -504,84 +227,145 @@ class ScreenMenu extends BaseScreen
 
             // 初期化
             this._$copyMapping.clear();
+            Util.$confirmModal.clear();
 
             // 同一名のアイテムがライブラリにあるか確認
-            let isModal = false;
-            const currentWorkSpace = Util.$currentWorkSpace();
-            for (let idx = length - 1; idx > -1; --idx) {
+            const mapping = Util.$confirmModal._$mapping;
+            for (let idx = this._$copyDisplayObjects.length - 1; idx > -1; --idx) {
 
                 const character = this._$copyDisplayObjects[idx];
 
                 const libraryId = character.libraryId;
-                const instance  = targetWorkSpace.getLibrary(libraryId);
+
+                // 既に複製したアイテムなら処理を短縮
+                if (mapping.has(libraryId)) {
+
+                    // コピー元のidのインクリメント防止でobjectから複製を生成
+                    const activeWorkSpaceId = Util.$activeWorkSpaceId;
+                    Util.$activeWorkSpaceId = this._$copyWorkSpaceId;
+
+                    const cloneCharacter = new Character(JSON.parse(JSON.stringify(
+                        character.toObject()
+                    )));
+                    Util.$activeWorkSpaceId = activeWorkSpaceId;
+
+                    // コピー先の情報をセット
+                    cloneCharacter.libraryId = mapping.get(libraryId);
+                    cloneCharacter._$layerId = layer.id;
+                    cloneCharacter._$id      = toWorkSpace._$characterId++;
+
+                    Util
+                        .$confirmModal
+                        .pasteDisplayObject(
+                            layer, cloneCharacter, this._$copyFrame
+                        );
+
+                    continue;
+                }
+
+                const instance  = fromWorkSpace.getLibrary(libraryId);
                 if (!instance) {
                     continue;
                 }
 
                 const path = instance
-                    .getPathWithWorkSpace(targetWorkSpace);
+                    .getPathWithWorkSpace(fromWorkSpace);
 
-                if (currentWorkSpace._$nameMap.has(path)) {
-                    isModal = true;
-                    break;
+                if (toWorkSpace._$nameMap.has(path)) {
+                    Util.$confirmModal.files.push({
+                        "file": instance,
+                        "character": character,
+                        "layer": layer,
+                        "path": path,
+                        "copyFrame": this._$copyFrame,
+                        "workSpaceId": this._$copyWorkSpaceId,
+                        "type": "copy"
+                    });
+                    continue;
                 }
 
-                // MovieClipなら子孫を確認
-                if (instance.type === InstanceType.MOVIE_CLIP
-                    && this.checkMovieClip(instance)
-                ) {
-                    isModal = true;
-                    break;
+                // ライブラリへアイテムを複製
+                let clone = null;
+                if (instance.type === InstanceType.MOVIE_CLIP) {
+
+                    clone = Util
+                        .$confirmModal
+                        .cloneMovieClip(this._$copyWorkSpaceId, instance);
+
+                } else {
+
+                    const activeWorkSpaceId = Util.$activeWorkSpaceId;
+                    Util.$activeWorkSpaceId = this._$copyWorkSpaceId;
+
+                    clone = instance.clone();
+                    Util.$activeWorkSpaceId = activeWorkSpaceId;
+
                 }
-            }
 
-            // 同名があれば確認モーダル表示
-            if (isModal) {
-                // TODO
-                Util.$timelineMenu.setConfirmModalFiles();
-                Util.$confirmModal.show();
-                return ;
-            }
+                // 新しいIDを付与
+                clone._$id = toWorkSpace.nextLibraryId;
 
-            const activeWorkSpaceId = Util.$activeWorkSpaceId;
-            for (let idx = length - 1; idx > -1; --idx) {
+                // 重複管理
+                mapping.set(instance.id, clone.id);
+
+                // Elementを追加
+                Util
+                    .$libraryController
+                    .createInstance(
+                        clone.type,
+                        clone.name,
+                        clone.id,
+                        clone.symbol
+                    );
+
+                // 内部データに追加
+                toWorkSpace._$libraries.set(clone.id, clone);
+
+                // フォルダ内にあればフォルダを生成
+                if (clone.folderId) {
+                    Util
+                        .$confirmModal
+                        .createFolder(
+                            this._$copyWorkSpaceId, clone
+                        );
+                }
 
                 // コピー元のidのインクリメント防止でobjectから複製を生成
+                const activeWorkSpaceId = Util.$activeWorkSpaceId;
                 Util.$activeWorkSpaceId = this._$copyWorkSpaceId;
-                const character = new Character(JSON.parse(JSON.stringify(
-                    this._$copyDisplayObjects[idx].toObject()
+
+                const cloneCharacter = new Character(JSON.parse(JSON.stringify(
+                    character.toObject()
                 )));
                 Util.$activeWorkSpaceId = activeWorkSpaceId;
 
                 // コピー先の情報をセット
-                character._$layerId = layer.id;
-                character._$id      = currentWorkSpace._$characterId++;
+                cloneCharacter.libraryId = clone.id;
+                cloneCharacter._$layerId = layer.id;
+                cloneCharacter._$id      = toWorkSpace._$characterId++;
 
-                this.pasteFromTo(layer, character);
+                Util
+                    .$confirmModal
+                    .pasteDisplayObject(
+                        layer, cloneCharacter, this._$copyFrame
+                    );
             }
 
         } else {
 
-            const workSpace = Util.$currentWorkSpace();
-
             // コピー元が存在するかチェック
-            let noHit = true;
-            for (let idx = length - 1; idx > -1; --idx) {
+            for (let idx = 0; this._$copyDisplayObjects.length > idx; ++idx) {
 
                 const character = this._$copyDisplayObjects[idx];
-                const libraryId = character.libraryId;
-                if (!workSpace.getLibrary(libraryId)) {
+
+                // コピー元がなければ初期化して終了
+                if (toWorkSpace.getLibrary(character.libraryId)) {
                     continue;
                 }
 
-                noHit = false;
-                break;
-            }
-
-            // コピー元のアイテムがない時は初期化して終了
-            if (noHit) {
                 this._$copyWorkSpaceId = -1;
                 this._$copyDisplayObjects.length = 0;
+
                 return ;
             }
 
@@ -589,10 +373,15 @@ class ScreenMenu extends BaseScreen
             this.save();
 
             // コピーを実行
-            for (let idx = length - 1; idx > -1; --idx) {
+            for (let idx = this._$copyDisplayObjects.length - 1; idx > -1; --idx) {
                 // コピー元を複製して指定レイヤーに追加
                 const character = this._$copyDisplayObjects[idx];
-                this.pasteFromTo(layer, character.clone());
+
+                Util
+                    .$confirmModal
+                    .pasteDisplayObject(
+                        layer, character.clone(), this._$copyFrame
+                    );
             }
         }
 
@@ -602,8 +391,18 @@ class ScreenMenu extends BaseScreen
         // ライブラリの再読み込み
         Util.$libraryController.reload();
 
+        // 確認モーダルを表示
+        if (Util.$confirmModal.files.length) {
+            Util.$confirmModal.show();
+        } else {
+            Util.$confirmModal.clear();
+        }
+
         // 再描画
         this.reloadScreen();
+
+        // 初期化
+        this._$saved = false;
 
         // リセット
         super.focusOut();

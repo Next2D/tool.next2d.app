@@ -386,8 +386,8 @@ class ShortcutSetting
                     "description": "{{読み込み}}"
                 },
                 {
-                    "key": "rCtrl",
-                    "text": "Ctrl + R",
+                    "key": "sShiftCtrl",
+                    "text": "Ctrl + Shift + S",
                     "css": "library-menu-export",
                     "description": "{{書き出し}}"
                 },
