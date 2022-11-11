@@ -56,7 +56,8 @@ class TimelineMenu extends BaseTimeline
             "context-menu-frame-copy",
             "context-menu-frame-paste",
             "context-menu-layer-copy",
-            "context-menu-layer-paste"
+            "context-menu-layer-paste",
+            "context-menu-layer-clone"
         ];
 
         for (let idx = 0; idx < elementIds.length; ++idx) {
@@ -378,6 +379,19 @@ class TimelineMenu extends BaseTimeline
 
         // リセット
         super.focusOut();
+    }
+
+    /**
+     * @description 指定したレイヤーの上部にコピーした情報を複製
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    executeContextMenuLayerClone ()
+    {
+        this.executeContextMenuLayerCopy();
+        this.executeContextMenuLayerPaste();
     }
 
     /**

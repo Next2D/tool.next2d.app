@@ -288,20 +288,19 @@ class TimelineMarker extends BaseTimeline
         const top    = content.offsetTop - 1;
         const height = window.screen.height;
 
-        const scrollElement = document
-            .getElementById("frame-scroll-id-0");
-
         const border = document
             .getElementById("timeline-marker-border");
 
-        if (scrollElement) {
+        const children = content.children;
+        if (children.length) {
             const timelineWidth = Util.$timelineTool.timelineWidth;
             const scrollX = Util.$timelineHeader.scrollX;
 
             const frame = 1 + scrollX / timelineWidth | 0;
             const index = Util.$timelineFrame.currentFrame - frame;
 
-            const node = scrollElement.children[index];
+            const element = children[0].lastElementChild;
+            const node = element.children[index];
 
             // elementがなければ非表示にして終了
             if (!node) {

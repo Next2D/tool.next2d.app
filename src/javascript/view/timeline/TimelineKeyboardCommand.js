@@ -207,6 +207,13 @@ class TimelineKeyboardCommand extends KeyboardCommand
             Util.$screenMenu.pasteDisplayObject();
             return false;
         });
+
+        // コピーしたDisplayObjectをペースト
+        this.add(Util.$generateShortcutKey("l", { "ctrl": true }), () =>
+        {
+            Util.$timelineMenu.executeContextMenuLayerCopy();
+            Util.$timelineMenu.executeContextMenuLayerPaste();
+        });
     }
 
     /**

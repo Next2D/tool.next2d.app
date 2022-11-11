@@ -440,6 +440,9 @@ class TimelineHeader extends BaseTimeline
             if (event.button) {
                 return ;
             }
+
+            Util.$endMenu();
+
             this.moveMarker(event);
         });
 
