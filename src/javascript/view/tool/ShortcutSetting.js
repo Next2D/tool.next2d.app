@@ -667,13 +667,6 @@ class ShortcutSetting
 
         switch (true) {
 
-            case event.key === "ArrowRight":
-            case event.key === "ArrowLeft":
-            case event.key === "ArrowUp":
-            case event.key === "ArrowDown":
-                texts.push(event.key);
-                break;
-
             case event.key === " ":
                 texts.push(event.code);
                 break;
@@ -683,7 +676,8 @@ class ShortcutSetting
                 break;
 
             default:
-                return ;
+                texts.push(event.key);
+                break;
 
         }
 
