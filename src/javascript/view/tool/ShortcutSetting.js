@@ -364,6 +364,12 @@ class ShortcutSetting
                     "text": "Z",
                     "css": "timeline-scale",
                     "description": "{{タイムライン幅の拡大・縮小}}"
+                },
+                {
+                    "key": "lCtrl",
+                    "text": "Ctrl + L",
+                    "css": "context-menu-layer-clone",
+                    "description": "{{レイヤーを複製}}"
                 }
             ],
             "library": [
