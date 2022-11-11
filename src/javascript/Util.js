@@ -119,8 +119,7 @@ Util.$cloneMovieClip = (from_work_space_id, movie_clip) =>
             );
 
             // 初期化
-            character._$layerId = -1;
-            character._$id      = toWorkSpace._$characterId++;
+            character._$id = toWorkSpace._$characterId++;
 
             Util.$activeWorkSpaceId = activeWorkSpaceId;
 

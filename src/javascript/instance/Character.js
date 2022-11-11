@@ -15,7 +15,6 @@ class Character
     constructor (object = null)
     {
         this._$libraryId      = -1;
-        this._$layerId        = -1;
         this._$places         = new Map();
         this._$tween          = new Map();
         this._$context        = null;
@@ -143,8 +142,8 @@ class Character
         const character = new Character(
             JSON.parse(JSON.stringify(this.toObject()))
         );
-        character._$layerId = -1;
-        character._$id      = Util.$currentWorkSpace()._$characterId++;
+
+        character._$id = Util.$currentWorkSpace()._$characterId++;
         return character;
     }
 

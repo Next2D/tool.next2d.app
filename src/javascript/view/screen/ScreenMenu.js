@@ -39,12 +39,6 @@ class ScreenMenu extends BaseScreen
          * @private
          */
         this._$copyFrame = -1;
-
-        /**
-         * @type {Map}
-         * @private
-         */
-        this._$copyMapping = new Map();
     }
 
     /**
@@ -226,7 +220,6 @@ class ScreenMenu extends BaseScreen
             this.save();
 
             // 初期化
-            this._$copyMapping.clear();
             Util.$confirmModal.clear();
 
             // 同一名のアイテムがライブラリにあるか確認
@@ -251,7 +244,6 @@ class ScreenMenu extends BaseScreen
 
                     // コピー先の情報をセット
                     cloneCharacter.libraryId = mapping.get(libraryId);
-                    cloneCharacter._$layerId = layer.id;
                     cloneCharacter._$id      = toWorkSpace._$characterId++;
 
                     Util
@@ -263,6 +255,7 @@ class ScreenMenu extends BaseScreen
                     continue;
                 }
 
+                // コピー元のアイテムがなければスキップ
                 const instance  = fromWorkSpace.getLibrary(libraryId);
                 if (!instance) {
                     continue;
@@ -341,7 +334,6 @@ class ScreenMenu extends BaseScreen
 
                 // コピー先の情報をセット
                 cloneCharacter.libraryId = clone.id;
-                cloneCharacter._$layerId = layer.id;
                 cloneCharacter._$id      = toWorkSpace._$characterId++;
 
                 Util
@@ -350,6 +342,9 @@ class ScreenMenu extends BaseScreen
                         layer, cloneCharacter, this._$copyFrame
                     );
             }
+
+            // ライブラリの再読み込み
+            Util.$libraryController.reload();
 
         } else {
 
@@ -387,9 +382,6 @@ class ScreenMenu extends BaseScreen
 
         // レイヤーを再構成
         layer.reloadStyle();
-
-        // ライブラリの再読み込み
-        Util.$libraryController.reload();
 
         // 確認モーダルを表示
         if (Util.$confirmModal.files.length) {

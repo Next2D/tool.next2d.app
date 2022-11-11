@@ -1222,9 +1222,7 @@ class Layer
     set characters (characters)
     {
         for (let idx = 0; idx < characters.length; ++idx) {
-
             const character = new Character(characters[idx]);
-            character._$layerId = this.id;
 
             this._$instances.set(character.id, character);
             this._$characters.push(character);
@@ -1261,7 +1259,6 @@ class Layer
             return ;
         }
 
-        character._$layerId = this.id;
         this._$characters.push(character);
         this._$instances.set(character.id, character);
     }
@@ -1282,7 +1279,6 @@ class Layer
         }
 
         const character = this._$instances.get(character_id | 0);
-        character._$layerId = -1;
 
         this._$characters.splice(this._$characters.indexOf(character), 1);
 

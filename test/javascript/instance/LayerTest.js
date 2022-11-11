@@ -817,19 +817,16 @@ describe("Layer.js function test", () =>
         // 初期値
         expect(layer._$characters.length).toBe(0);
         expect(layer._$instances.size).toBe(0);
-        expect(character._$layerId).toBe(-1);
         expect(layer.getCharacter(character.id)).toBe(undefined);
 
         layer.addCharacter(character);
         expect(layer._$characters.length).toBe(1);
         expect(layer._$instances.size).toBe(1);
-        expect(character._$layerId).toBe(layer.id);
         expect(layer.getCharacter(character.id)).toBe(character);
 
         layer.deleteCharacter(character.id);
         expect(layer._$characters.length).toBe(0);
         expect(layer._$instances.size).toBe(0);
-        expect(character._$layerId).toBe(-1);
         expect(layer.getCharacter(character.id)).toBe(undefined);
 
         Util.$workSpaces.length = 0;

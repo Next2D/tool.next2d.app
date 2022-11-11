@@ -417,11 +417,12 @@ class ConfirmModal extends BaseController
         // 名前を変えて上書き
         const instance = this._$currentObject.file;
 
+        const id = libraryId || workSpace.nextLibraryId;
         if (!this._$mapping.has(instance.id)) {
 
             this
                 ._$mapping
-                .set(instance.id, libraryId || workSpace.nextLibraryId);
+                .set(instance.id, id);
 
             // 上書きなら元のElementを削除
             if (libraryId) {
@@ -445,7 +446,13 @@ class ConfirmModal extends BaseController
 
                         for (const layer of library._$layers.values()) {
                             for (let idx = 0; idx < layer._$characters.length; ++idx) {
-                                layer._$characters[idx].dispose();
+                                const character = layer._$characters[idx];
+                                character.dispose();
+
+                                // 対象のDisplayObjectならIDを入れ替える
+                                if (character.libraryId === libraryId) {
+                                    character.libraryId = id;
+                                }
                             }
                         }
                     }
@@ -453,16 +460,8 @@ class ConfirmModal extends BaseController
 
                 workSpace.removeLibrary(libraryId);
             }
-        }
 
-        const id = this._$mapping.get(instance.id);
-
-        // レイヤーコピーの場合のみ動く関数
-        this.addLayer(id);
-
-        // ライブラリに登録がなけれな登録
-        if (!workSpace._$libraries.has(id)) {
-
+            // ライブラリに登録がなけれな登録
             let clone = null;
             if (instance.type === InstanceType.MOVIE_CLIP) {
 
@@ -487,10 +486,6 @@ class ConfirmModal extends BaseController
                 clone._$name = value;
             }
 
-            if (clone.folderId && this._$mapping.has(clone.folderId)) {
-                clone.folderId = this._$mapping.get(clone.folderId);
-            }
-
             // 登録
             Util
                 .$libraryController
@@ -502,7 +497,18 @@ class ConfirmModal extends BaseController
                 );
 
             workSpace._$libraries.set(clone.id, clone);
+
+            // フォルダ内にあればフォルダを生成
+            if (clone.folderId) {
+                this.createFolder(
+                    this._$currentObject.workSpaceId,
+                    clone
+                );
+            }
         }
+
+        // レイヤーコピーの場合のみ動く関数
+        this.addLayer(id);
     }
 
     /**
@@ -1020,23 +1026,22 @@ class ConfirmModal extends BaseController
         character.libraryId = id;
 
         const layer = this._$currentObject.layer;
-        const copyFrame = this._$currentObject.copyFrame;
-        if (copyFrame) {
+        if (layer) {
+            const copyFrame = this._$currentObject.copyFrame;
+            if (copyFrame) {
 
-            this.pasteDisplayObject(layer, character, copyFrame);
+                this.pasteDisplayObject(layer, character, copyFrame);
 
-        } else {
+            } else {
 
-            if (layer) {
                 layer.addCharacter(character);
 
                 if (!this._$layers.has(layer.id)) {
                     this._$layers.set(layer.id, layer);
                 }
-            }
-        }
 
-        if (layer) {
+            }
+
             layer.reloadStyle();
         }
     }
