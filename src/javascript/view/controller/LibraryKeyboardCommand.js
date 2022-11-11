@@ -116,6 +116,46 @@ class LibraryKeyboardCommand extends KeyboardCommand
             Util.$generateShortcutKey("ArrowUp", { "shift": true }),
             this.moveItem
         );
+
+        // 全てを選択
+        this.add(Util.$generateShortcutKey("a", { "ctrl": true }), () =>
+        {
+            this.allItemSelect();
+        });
+    }
+
+    /**
+     * @description 全てのライブラリのアイテムをアクティブにする
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    allItemSelect ()
+    {
+        const children = document
+            .getElementById("library-list-box")
+            .children;
+
+        const activeInstances = Util
+            .$libraryController
+            .activeInstances;
+
+        // 初期化
+        activeInstances.clear();
+
+        // 全てを選択
+        for (let idx = 0; children.length > idx; ++idx) {
+
+            const element = children[idx];
+            element
+                .classList
+                .add("active");
+
+            const libraryId = element.dataset.libraryId | 0;
+
+            activeInstances.set(libraryId, element);
+        }
     }
 
     /**

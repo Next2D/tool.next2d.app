@@ -284,6 +284,73 @@ class ScreenKeyboardCommand extends KeyboardCommand
         {
             Util.$screenMenu.pasteDisplayObject();
         });
+
+        // ロックされていないDisplayObjectを全て選択
+        this.add(Util.$generateShortcutKey("a", { "ctrl": true }), () =>
+        {
+            this.allDisplayObjectSelect();
+        });
+    }
+
+    /**
+     * @description ロックされていないDisplayObjectを全て選択
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    allDisplayObjectSelect ()
+    {
+        /**
+         * @type {ArrowTool}
+         */
+        const tool = Util.$tools.getDefaultTool("arrow");
+
+        // 選択中のDisplayObjectを全て解放
+        tool.activeElements.length = 0;
+
+        const scene = Util.$currentWorkSpace().scene;
+        const frame = Util.$timelineFrame.currentFrame;
+
+        for (const layer of scene._$layers.values()) {
+            if (layer.lock) {
+                continue;
+            }
+
+            const characters = layer.getActiveCharacter(frame);
+            for (let idx = 0; idx < characters.length; ++idx) {
+
+                const character = characters[idx];
+
+                const element = document
+                    .getElementById(`character-${character.id}`);
+
+                if (!element) {
+                    continue;
+                }
+
+                tool.activeElements.push(element);
+            }
+
+        }
+
+        // コントローラーエリアの表示を更新
+        tool.updateControllerProperty();
+
+        // 拡大縮小回転のElementのポイントを表示して再計算
+        Util
+            .$transformController
+            .show()
+            .relocation();
+
+        // 9sliceのElementのポイントを表示して再計算
+        Util
+            .$gridController
+            .show()
+            .relocation();
+
+        // 選択されたDisplayObjectが配置されてるタイムラインをアクティブに
+        tool.activeTimeline();
     }
 
     /**
