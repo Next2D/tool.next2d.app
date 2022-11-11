@@ -136,7 +136,7 @@ class TimelineTool extends BaseTimeline
      */
     static get DEFAULT_TIMELINE_WIDTH ()
     {
-        return 12;
+        return 13;
     }
 
     /**

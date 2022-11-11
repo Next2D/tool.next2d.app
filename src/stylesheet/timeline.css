@@ -798,6 +798,15 @@
     border-bottom-color : transparent;
 }
 
+#timeline-marker-border
+{
+    position         : fixed;
+    width            : 1px;
+    background-color : #3692f0;
+    opacity          : 0.7;
+    pointer-events   : none;
+}
+
 #timeline-content .timeline-frame-controller
 {
     width       : calc(100vw - (var(--controller-width) + 45px + 8px + 8px + 270px));

@@ -150,6 +150,9 @@ class TimelineAdjustment extends BaseTimeline
 
             // タイムラインを再構成
             Util.$timelineLayer.updateClientHeight();
+
+            // マーカーのボーダーの座標をセット
+            Util.$timelineMarker.setMarkerPosition();
         });
     }
 

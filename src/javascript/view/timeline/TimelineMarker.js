@@ -251,13 +251,70 @@ class TimelineMarker extends BaseTimeline
         const width = timelineWidth + 1;
         const frame = 1 + scrollX / timelineWidth | 0;
 
-        this._$left = (Util.$timelineFrame.currentFrame - frame) * width;
+        const index = Util.$timelineFrame.currentFrame - frame;
+        this._$left = index * width;
 
         let style = `left: ${this._$left}px;`;
         if (this._$pointerEvents) {
             style += "pointer-events: none;";
         }
         element.setAttribute("style", style);
+
+        // マーカーのボーダーの座標をセット
+        this.setMarkerPosition();
+    }
+
+    /**
+     * @description マーカーのボーダーの座標をセット
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    setMarkerPosition ()
+    {
+        const element = document.getElementById("timeline-marker");
+        if (!element) {
+            return ;
+        }
+
+        let halfWidth = element.clientWidth / 2;
+        halfWidth |= 0;
+
+        const content = document
+            .getElementById("timeline-content");
+
+        let left     = 318 + halfWidth;
+        const top    = content.offsetTop - 1;
+        const height = window.screen.height;
+
+        const scrollElement = document
+            .getElementById("frame-scroll-id-0");
+
+        const border = document
+            .getElementById("timeline-marker-border");
+
+        if (scrollElement) {
+            const timelineWidth = Util.$timelineTool.timelineWidth;
+            const scrollX = Util.$timelineHeader.scrollX;
+
+            const frame = 1 + scrollX / timelineWidth | 0;
+            const index = Util.$timelineFrame.currentFrame - frame;
+
+            const node = scrollElement.children[index];
+
+            // elementがなければ非表示にして終了
+            if (!node) {
+                border.setAttribute("style", "display: none;");
+                return ;
+            }
+
+            left = node.offsetLeft + halfWidth;
+        }
+
+        border.setAttribute(
+            "style", `height: ${height}px; top: ${top}px; left: ${left}px;`
+        );
     }
 }
 

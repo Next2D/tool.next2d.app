@@ -769,7 +769,7 @@ Util.$initialize = () =>
     document
         .documentElement
         .style
-        .setProperty("--timeline-frame-width", "12px");
+        .setProperty("--timeline-frame-width", "13px");
 
     document
         .documentElement
