@@ -278,8 +278,7 @@ class TimelineMarker extends BaseTimeline
             return ;
         }
 
-        let halfWidth = element.clientWidth / 2;
-        halfWidth |= 0;
+        const halfWidth = element.clientWidth / 2;
 
         const content = document
             .getElementById("timeline-content");

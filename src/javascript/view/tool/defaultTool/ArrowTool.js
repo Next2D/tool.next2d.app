@@ -1587,10 +1587,21 @@ class ArrowTool extends BaseTool
 
         if (node) {
 
+            const libraryId = node.dataset.libraryId | 0;
+
+            const scene = Util
+                .$currentWorkSpace()
+                .getLibrary(libraryId);
+
+            const x = +node.dataset.x;
+            const y = +node.dataset.y;
+
+            // screenのelementを移動する
+            scene.moveScene(-x, -y);
+            scene.cacheClear();
+
             // シーン移動
-            Util.$sceneChange.execute(
-                node.dataset.libraryId | 0
-            );
+            Util.$sceneChange.execute(libraryId);
 
             // リストから削除
             node.remove();

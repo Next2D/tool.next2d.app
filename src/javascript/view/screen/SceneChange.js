@@ -44,7 +44,7 @@ class SceneChange extends BaseScreen
     /**
      * @description 指定のMovieClipを表示
      *
-     * @param  {number} library_id
+     * @param  {number}  library_id
      * @return {void}
      * @method
      * @public

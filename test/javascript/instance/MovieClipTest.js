@@ -521,44 +521,6 @@ describe("MovieClip.js function test", () =>
         document.body.innerHTML = window.__html__["test/test.html"];
     });
 
-    it("function addSceneName and sceneChange test", () =>
-    {
-        const workSpaces = new WorkSpace();
-        Util.$activeWorkSpaceId = Util.$workSpaces.length;
-        Util.$workSpaces.push(workSpaces);
-
-        const movieClip = new MovieClip({
-            "id": 1,
-            "name": "MovieClip_01",
-            "type": InstanceType.MOVIE_CLIP
-        });
-        workSpaces._$libraries.set(movieClip.id, movieClip);
-
-        const layer = new Layer();
-        movieClip.setLayer(layer.id, layer);
-
-        const list = document
-            .getElementById("scene-name-menu-list");
-
-        expect(list.children.length).toBe(0);
-        movieClip.addSceneName();
-        expect(list.children.length).toBe(1);
-
-        const scene = document
-            .getElementById(`scene-instance-id-${movieClip.id}`);
-
-        expect(scene.dataset.libraryId | 0).toBe(movieClip.id);
-        expect(scene.textContent).toBe(movieClip.name);
-
-        // 移動
-        movieClip.sceneChange({
-            "currentTarget": scene
-        });
-        expect(list.children.length).toBe(0);
-
-        Util.$workSpaces.length = 0;
-    });
-
     it("function stop test", () =>
     {
         const workSpaces = new WorkSpace();

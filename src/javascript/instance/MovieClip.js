@@ -297,11 +297,13 @@ class MovieClip extends Instance
      * @description シーン移動時に、直前に表示していたシーンをリストに追加する
      *              When moving scenes, add the scene that was displayed immediately before to the list.
      *
+     * @param  {number} [x=0]
+     * @param  {number} [y=0]
      * @return {void}
      * @method
      * @public
      */
-    addSceneName ()
+    addSceneName (x = 0, y = 0)
     {
         const instance = Util
             .$currentWorkSpace()
@@ -309,7 +311,7 @@ class MovieClip extends Instance
 
         // add menu
         const htmlTag = `
-<div id="scene-instance-id-${instance.id}" data-library-id="${instance.id}">${instance.name}</div>
+<div id="scene-instance-id-${instance.id}" data-library-id="${instance.id}" data-x="${x}" data-y="${y}">${instance.name}</div>
 `;
 
         document
@@ -332,35 +334,60 @@ class MovieClip extends Instance
             event.stopPropagation();
             event.preventDefault();
 
+            // モーダルを全て閉じる
+            Util.$endMenu();
+
+            const x = +event.target.dataset.x;
+            const y = +event.target.dataset.y;
+
+            // screenのelementを移動する
+            this.moveScene(-x, -y);
+            this.cacheClear();
+
             // シーン移動
-            this.sceneChange(event);
+            Util.$sceneChange.execute(
+                event.target.dataset.libraryId | 0
+            );
         });
 
+        // screenのelementを移動する
+        this.moveScene(x, y);
     }
 
     /**
-     * @description 指定したシーンへ移動
-     *              Go to the specified scene
+     * @description MovieClip内の全てのDisplayObjectにキャッシュをクリア
      *
-     * @param  {Event} event
      * @return {void}
      * @method
      * @public
      */
-    sceneChange (event)
+    cacheClear ()
     {
-        // モーダル終了
-        Util.$endMenu();
+        for (const layer of this._$layers.values()) {
+            for (let idx = 0; idx < layer._$characters.length; ++idx) {
+                layer._$characters[idx].dispose();
+            }
+        }
+    }
 
-        const element = event.currentTarget;
-
-        // シーン移動
-        Util.$sceneChange.execute(
-            element.dataset.libraryId | 0
-        );
-
-        // リストから削除
-        element.remove();
+    /**
+     * @description xyの値、screenのelementを移動する
+     *
+     * @param  {number} [x=0]
+     * @param  {number} [y=0]
+     * @return {void}
+     * @method
+     * @public
+     */
+    moveScene (x = 0, y = 0)
+    {
+        if (x || y) {
+            const screen = document.getElementById("screen");
+            if (screen) {
+                screen.scrollLeft -= x;
+                screen.scrollTop  -= y;
+            }
+        }
     }
 
     /**

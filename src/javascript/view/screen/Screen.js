@@ -751,8 +751,16 @@ class Screen extends BaseScreen
                     // 親のイベントを中止する
                     event.stopPropagation();
 
+                    const scene = Util.$currentWorkSpace().scene;
+
+                    const characterId = event.target.dataset.characterId;
+                    const layerId = event.target.dataset.layerId;
+
+                    const layer = scene.getLayer(layerId);
+                    const character = layer.getCharacter(characterId);
+
                     // シーン名をリストに追加
-                    Util.$currentWorkSpace().scene.addSceneName();
+                    scene.addSceneName(character.x, character.y, true);
 
                     // シーン移動
                     Util.$sceneChange.execute(
