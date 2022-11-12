@@ -37,6 +37,10 @@ class SceneChange extends BaseScreen
         // シーン名をリストに追加
         Util.$currentWorkSpace().root.addSceneName();
 
+        const stage = document.getElementById("stage");
+        Util.$offsetLeft = stage.offsetLeft;
+        Util.$offsetTop  = stage.offsetTop;
+
         // シーン移動
         Util.$sceneChange.execute(library_id);
     }

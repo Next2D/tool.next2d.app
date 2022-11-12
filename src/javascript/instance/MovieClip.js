@@ -286,6 +286,17 @@ class MovieClip extends Instance
             element.appendChild(pointers[idx]);
         }
 
+        // root以外の時は基準点を挿入
+        if (this.id) {
+            const div = document.createElement("div");
+            div.setAttribute("class", "standard-point");
+            div.setAttribute(
+                "style", `left: ${Util.$offsetLeft - 6}px; top: ${Util.$offsetTop - 6}px`
+            );
+            div.dataset.child = "true";
+            element.appendChild(div);
+        }
+
         // tweenのポインターを再配置
         Util
             .$tweenController

@@ -664,9 +664,12 @@ class TransformController extends BaseController
                 const standardPoint = document
                     .getElementById("standard-point");
 
+                standardPoint
+                    .setAttribute("style", "");
+
                 const baseBounds = instance.getBounds();
-                const left = xMin - baseBounds.xMin * Util.$zoomScale - 6;
-                const top  = yMin - baseBounds.yMin * Util.$zoomScale - 6;
+                const left = xMin - baseBounds.xMin * Util.$zoomScale - standardPoint.clientWidth  / 2;
+                const top  = yMin - baseBounds.yMin * Util.$zoomScale - standardPoint.clientHeight / 2;
 
                 standardPoint
                     .setAttribute("style", `left: ${left}px; top: ${top}px;`);
