@@ -11,7 +11,7 @@ class BaseScreen extends InputEvent
      */
     constructor ()
     {
-        super ();
+        super();
 
         /**
          * @type {function}

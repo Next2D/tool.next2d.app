@@ -385,14 +385,15 @@ class Screen extends BaseScreen
      *
      * @param  {Character} character
      * @param  {number} layer_id
+     * @param  {MovieClip} [parent=null]
      * @return {void}
      * @method
      * @public
      */
-    appendOnionCharacter (character, layer_id)
+    appendOnionCharacter (character, layer_id, parent = null)
     {
         const workSpace = Util.$currentWorkSpace();
-        const scene     = workSpace.scene;
+        const scene     = parent || workSpace.scene;
 
         // create div
         const div = document.createElement("div");
@@ -478,14 +479,19 @@ class Screen extends BaseScreen
      * @param  {number}    frame
      * @param  {number}    layer_id
      * @param  {string}    [event="auto"]
+     * @param  {MovieClip} [parent_scene=null]
+     * @param  {number}    [alpha=1]
      * @return {void}
      * @method
      * @public
      */
-    appendCharacter (character, frame, layer_id, event = "auto")
-    {
+    appendCharacter (
+        character, frame, layer_id,
+        event = "auto", parent_scene = null, alpha = 1
+    ) {
+
         const workSpace = Util.$currentWorkSpace();
-        const scene     = workSpace.scene;
+        const scene     = parent_scene || workSpace.scene;
 
         // setup
         const place    = character.getPlace(frame);
@@ -625,6 +631,9 @@ class Screen extends BaseScreen
 
         let divStyle = "position: absolute;";
         divStyle += `pointer-events: ${event};`;
+        if (1 > alpha) {
+            divStyle += `opacity: ${alpha};`;
+        }
 
         div.addEventListener("mouseover", (event) =>
         {
@@ -751,11 +760,16 @@ class Screen extends BaseScreen
                     // 親のイベントを中止する
                     event.stopPropagation();
 
+                    // アクティブなDisplayObjectのIDを格納
+                    Util.$activeCharacterIds.push(
+                        event.currentTarget.dataset.characterId | 0
+                    );
+
                     // シーン名をリストに追加
                     Util
                         .$currentWorkSpace()
                         .scene
-                        .addSceneName();
+                        .addSceneName(true);
 
                     const element = document
                         .getElementById("standard-point");

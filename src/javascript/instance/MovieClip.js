@@ -116,6 +116,9 @@ class MovieClip extends Instance
         Util.$screen.clearStageArea();
         Util.$clearShapePointer();
 
+        // DisplayObjectを初期化
+        this.cacheClear();
+
         // object setting
         const sceneName = document.getElementById("scene-name");
         if (sceneName) {
@@ -146,12 +149,12 @@ class MovieClip extends Instance
         Util.$timelineLayer.removeAll();
 
         // フレームを登録してヘッダーを再編成
-        const currentFrame = this.currentFrame;
+        const currentFrame = 1;//this.currentFrame;
         Util.$timelineFrame.currentFrame = currentFrame;
 
         // ヘッダーを生成
         Util.$timelineHeader.setWidth();
-        Util.$timelineHeader.scrollX = (this.currentFrame - 1) * Util.$timelineTool.timelineWidth;
+        Util.$timelineHeader.scrollX = (currentFrame - 1) * Util.$timelineTool.timelineWidth;
         Util.$timelineHeader.rebuild();
 
         // マーカーを移動
@@ -266,6 +269,72 @@ class MovieClip extends Instance
             --idx;
         }
 
+        // 親のシーン情報を描画
+        if (Util.$sceneChange.length) {
+
+            const children = document
+                .getElementById("scene-name-menu-list")
+                .children;
+
+            const characterId = Util.$activeCharacterIds.length
+                ? Util.$activeCharacterIds[Util.$activeCharacterIds.length - 1]
+                : -1;
+
+            const workSpace  = Util.$currentWorkSpace();
+            const offsetLeft = Util.$offsetLeft;
+            const offsetTop  = Util.$offsetTop;
+            for (let idx = 0; children.length > idx; ++idx) {
+
+                const node = children[idx];
+
+                // 親子関係でない場合は終了
+                if (node.dataset.parent === "false") {
+                    continue;
+                }
+
+                const instance = workSpace.getLibrary(
+                    node.dataset.libraryId | 0
+                );
+
+                Util.$offsetLeft = +node.dataset.offsetLeft;
+                Util.$offsetTop  = +node.dataset.offsetTop;
+
+                const parentFrame = instance.currentFrame;
+                for (const layer of instance._$layers.values()) {
+
+                    const characters = layer
+                        .getActiveCharacter(parentFrame);
+
+                    if (!characters.length) {
+                        continue;
+                    }
+
+                    if (characters.length > 1) {
+                        layer.sort(characters, parentFrame);
+                    }
+
+                    for (let idx = 0; idx < characters.length; ++idx) {
+                        const character = characters[idx];
+
+                        if (character.id === characterId) {
+                            continue;
+                        }
+                        character.dispose();
+
+                        Util.$screen.appendCharacter(
+                            character, parentFrame, layer.id,
+                            "none", instance, 0.25
+                        );
+                    }
+                }
+
+                break;
+            }
+
+            Util.$offsetLeft = offsetLeft;
+            Util.$offsetTop  = offsetTop;
+        }
+
         const layers = Array.from(this._$layers.values());
         while (layers.length) {
             const layer = layers.pop();
@@ -286,33 +355,38 @@ class MovieClip extends Instance
             element.appendChild(pointers[idx]);
         }
 
-        // root以外の時は基準点を挿入
-        if (this.id) {
+        // tweenのポインターを再配置
+        Util
+            .$tweenController
+            .clearPointer()
+            .relocationPointer();
+
+        if (Util.$sceneChange.length) {
+
             const div = document.createElement("div");
             div.setAttribute("class", "standard-point");
             div.setAttribute(
                 "style", `left: ${Util.$offsetLeft - 6}px; top: ${Util.$offsetTop - 6}px`
             );
             div.dataset.child = "true";
-            element.appendChild(div);
-        }
 
-        // tweenのポインターを再配置
-        Util
-            .$tweenController
-            .clearPointer()
-            .relocationPointer();
+            document
+                .getElementById("stage-area")
+                .appendChild(div);
+
+        }
     }
 
     /**
      * @description シーン移動時に、直前に表示していたシーンをリストに追加する
      *              When moving scenes, add the scene that was displayed immediately before to the list.
      *
+     * @param  {boolean} [parent = false]
      * @return {void}
      * @method
      * @public
      */
-    addSceneName ()
+    addSceneName (parent = false)
     {
         const instance = Util
             .$currentWorkSpace()
@@ -320,7 +394,7 @@ class MovieClip extends Instance
 
         // add menu
         const htmlTag = `
-<div id="scene-instance-id-${instance.id}" data-library-id="${instance.id}" data-offset-left="${Util.$offsetLeft}" data-offset-top="${Util.$offsetTop}">${instance.name}</div>
+<div id="scene-instance-id-${instance.id}" data-library-id="${instance.id}" data-offset-left="${Util.$offsetLeft}" data-offset-top="${Util.$offsetTop}" data-parent="${parent}">${instance.name}</div>
 `;
 
         document
@@ -346,8 +420,9 @@ class MovieClip extends Instance
             // モーダルを全て閉じる
             Util.$endMenu();
 
-            // screenのelementを移動する
-            this.cacheClear();
+            // アクティブな情報を削除
+            Util.$activeCharacterIds.pop();
+            Util.$sceneChange.length--;
 
             const element = event.target;
 
@@ -359,6 +434,9 @@ class MovieClip extends Instance
                 element.dataset.libraryId | 0
             );
         });
+
+        // 配列数を加算
+        Util.$sceneChange.length++;
     }
 
     /**
@@ -371,8 +449,9 @@ class MovieClip extends Instance
     cacheClear ()
     {
         for (const layer of this._$layers.values()) {
-            for (let idx = 0; idx < layer._$characters.length; ++idx) {
-                layer._$characters[idx].dispose();
+            const characters = layer._$characters;
+            for (let idx = 0; idx < characters.length; ++idx) {
+                characters[idx].dispose();
             }
         }
     }
@@ -435,6 +514,9 @@ class MovieClip extends Instance
          */
         const tool = Util.$tools.getDefaultTool("arrow");
         tool.clear();
+
+        // キャッシュを削除
+        this.cacheClear();
     }
 
     /**
@@ -1052,6 +1134,7 @@ class MovieClip extends Instance
                 }
 
                 dictionary.push({
+                    "id": character.id,
                     "name": character.name,
                     "characterId": instance.id,
                     "endFrame": endFrame,
@@ -1317,10 +1400,18 @@ class MovieClip extends Instance
             return movieClip;
         }
 
+        const characterId = Util.$activeCharacterIds.length
+            ? Util.$activeCharacterIds[Util.$activeCharacterIds.length - 1]
+            : -1;
+
         const placeMap = object.placeMap[frame];
         for (let idx = 0; controller.length > idx; ++idx) {
 
-            const tag      = object.dictionary[controller[idx]];
+            const tag = object.dictionary[controller[idx]];
+            if (tag.id === characterId) {
+                continue;
+            }
+
             const instance = workSpace.getLibrary(tag.characterId);
 
             const place = object.placeObjects[placeMap[idx]];
@@ -1387,7 +1478,8 @@ class MovieClip extends Instance
                             }
                         }
 
-                        displayObject = instance.createInstance(place, childRange, frame);
+                        displayObject = instance
+                            .createInstance(place, childRange, frame);
                     }
                     break;
 

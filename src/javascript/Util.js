@@ -8,6 +8,7 @@ Util.DATABASE_NAME            = "save-data";
 Util.STORE_KEY                = "local";
 Util.REVISION_LIMIT           = 100;
 Util.$activeWorkSpaceId       = 0;
+Util.$activeCharacterIds      = [];
 Util.$workSpaces              = [];
 Util.$readStatus              = 0;
 Util.$readEnd                 = 1;

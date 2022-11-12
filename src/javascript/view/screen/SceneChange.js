@@ -6,6 +6,38 @@
 class SceneChange extends BaseScreen
 {
     /**
+     * @constructor
+     * @public
+     */
+    constructor ()
+    {
+        super();
+
+        /**
+         * @type {number}
+         * @default 0
+         * @private
+         */
+        this._$length = 0;
+    }
+
+    /**
+     * @description メニューの配列数を返す
+     *
+     * @member   {number}
+     * @method
+     * @public
+     */
+    get length ()
+    {
+        return this._$length;
+    }
+    set length (length)
+    {
+        this._$length = length;
+    }
+
+    /**
      * @description 初期起動関数
      *
      * @return {void}
@@ -48,7 +80,7 @@ class SceneChange extends BaseScreen
     /**
      * @description 指定のMovieClipを表示
      *
-     * @param  {number}  library_id
+     * @param  {number} library_id
      * @return {void}
      * @method
      * @public
@@ -80,6 +112,7 @@ class SceneChange extends BaseScreen
                 .moveTimeLine(moveX - base.offsetWidth / 2);
         }
 
+        // シーンの入れ替え
         workSpace.scene = scene;
     }
 }
