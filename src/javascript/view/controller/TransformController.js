@@ -542,6 +542,13 @@ class TransformController extends BaseController
             element.setAttribute("style", "display:none;");
         }
 
+        const standardPoint = document
+            .getElementById("standard-point");
+
+        if (standardPoint) {
+            standardPoint.setAttribute("style", "display:none;");
+        }
+
         this._$state = "hide";
     }
 
@@ -628,9 +635,9 @@ class TransformController extends BaseController
                 .getCharacter(target.dataset.characterId | 0);
 
             // 画面の拡大縮小対応
-            const place = character.getPlace(frame);
+            const place  = character.getPlace(frame);
+            const bounds = character.getBounds();
             if (!place.point) {
-                const bounds = character.getBounds();
                 place.point = {
                     "x": bounds.xMin + character.width  / 2,
                     "y": bounds.yMin + character.height / 2
@@ -649,6 +656,20 @@ class TransformController extends BaseController
             // 非表示などでElementがない時は非表示にして終了
             if (!characterElement) {
                 return this.hide();
+            }
+
+            const instance = workSpace.getLibrary(character.libraryId);
+            if (instance.type === InstanceType.MOVIE_CLIP) {
+
+                const standardPoint = document
+                    .getElementById("standard-point");
+
+                const baseBounds = instance.getBounds();
+                const left = xMin - baseBounds.xMin * Util.$zoomScale - 6;
+                const top  = yMin - baseBounds.yMin * Util.$zoomScale - 6;
+
+                standardPoint
+                    .setAttribute("style", `left: ${left}px; top: ${top}px;`);
             }
 
         } else {
@@ -670,12 +691,15 @@ class TransformController extends BaseController
             const pointX = Util.$offsetLeft + point.x * Util.$zoomScale;
             const pointY = Util.$offsetTop  + point.y * Util.$zoomScale;
 
-            document
-                .getElementById("reference-point")
-                .setAttribute(
-                    "style",
-                    `left: ${pointX - 8}px; top: ${pointY - 8}px;`
-                );
+            const referenceElement = document
+                .getElementById("reference-point");
+
+            const left = pointX - referenceElement.clientWidth  / 2;
+            const top  = pointY - referenceElement.clientHeight / 2;
+            referenceElement.setAttribute(
+                "style",
+                `left: ${left}px; top: ${top}px;`
+            );
         }
 
         document

@@ -1593,11 +1593,10 @@ class ArrowTool extends BaseTool
                 .$currentWorkSpace()
                 .getLibrary(libraryId);
 
-            const x = +node.dataset.x;
-            const y = +node.dataset.y;
+            Util.$offsetLeft = +node.dataset.offsetLeft;
+            Util.$offsetTop  = +node.dataset.offsetTop;
 
             // screenのelementを移動する
-            scene.moveScene(-x, -y);
             scene.cacheClear();
 
             // シーン移動

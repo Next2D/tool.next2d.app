@@ -297,13 +297,11 @@ class MovieClip extends Instance
      * @description シーン移動時に、直前に表示していたシーンをリストに追加する
      *              When moving scenes, add the scene that was displayed immediately before to the list.
      *
-     * @param  {number} [x=0]
-     * @param  {number} [y=0]
      * @return {void}
      * @method
      * @public
      */
-    addSceneName (x = 0, y = 0)
+    addSceneName ()
     {
         const instance = Util
             .$currentWorkSpace()
@@ -311,7 +309,7 @@ class MovieClip extends Instance
 
         // add menu
         const htmlTag = `
-<div id="scene-instance-id-${instance.id}" data-library-id="${instance.id}" data-x="${x}" data-y="${y}">${instance.name}</div>
+<div id="scene-instance-id-${instance.id}" data-library-id="${instance.id}" data-offset-left="${Util.$offsetLeft}" data-offset-top="${Util.$offsetTop}">${instance.name}</div>
 `;
 
         document
@@ -337,21 +335,19 @@ class MovieClip extends Instance
             // モーダルを全て閉じる
             Util.$endMenu();
 
-            const x = +event.target.dataset.x;
-            const y = +event.target.dataset.y;
-
             // screenのelementを移動する
-            this.moveScene(-x, -y);
             this.cacheClear();
+
+            const element = event.target;
+
+            Util.$offsetLeft = +element.dataset.offsetLeft;
+            Util.$offsetTop  = +element.dataset.offsetTop;
 
             // シーン移動
             Util.$sceneChange.execute(
-                event.target.dataset.libraryId | 0
+                element.dataset.libraryId | 0
             );
         });
-
-        // screenのelementを移動する
-        this.moveScene(x, y);
     }
 
     /**
@@ -366,26 +362,6 @@ class MovieClip extends Instance
         for (const layer of this._$layers.values()) {
             for (let idx = 0; idx < layer._$characters.length; ++idx) {
                 layer._$characters[idx].dispose();
-            }
-        }
-    }
-
-    /**
-     * @description xyの値、screenのelementを移動する
-     *
-     * @param  {number} [x=0]
-     * @param  {number} [y=0]
-     * @return {void}
-     * @method
-     * @public
-     */
-    moveScene (x = 0, y = 0)
-    {
-        if (x || y) {
-            const screen = document.getElementById("screen");
-            if (screen) {
-                screen.scrollLeft -= x;
-                screen.scrollTop  -= y;
             }
         }
     }
