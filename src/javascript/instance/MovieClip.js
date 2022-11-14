@@ -269,7 +269,7 @@ class MovieClip extends Instance
             --idx;
         }
 
-        // 親のシーン情報を描画
+        // 子孫のMovieClipの時は先祖のシーン情報を透明にして描画
         if (Util.$sceneChange.length) {
 
             const children = document
@@ -314,8 +314,8 @@ class MovieClip extends Instance
                     }
 
                     for (let idx = 0; idx < characters.length; ++idx) {
-                        const character = characters[idx];
 
+                        const character = characters[idx];
                         if (character.id === characterId) {
                             continue;
                         }
@@ -1134,7 +1134,6 @@ class MovieClip extends Instance
                 }
 
                 dictionary.push({
-                    "id": character.id,
                     "name": character.name,
                     "characterId": instance.id,
                     "endFrame": endFrame,
@@ -1400,6 +1399,7 @@ class MovieClip extends Instance
             return movieClip;
         }
 
+        // 描画対象外のIDをセット
         const characterId = Util.$activeCharacterIds.length
             ? Util.$activeCharacterIds[Util.$activeCharacterIds.length - 1]
             : -1;
@@ -1408,9 +1408,6 @@ class MovieClip extends Instance
         for (let idx = 0; controller.length > idx; ++idx) {
 
             const tag = object.dictionary[controller[idx]];
-            if (tag.id === characterId) {
-                continue;
-            }
 
             const instance = workSpace.getLibrary(tag.characterId);
 
@@ -1468,6 +1465,7 @@ class MovieClip extends Instance
                             if (activeCharacters.length) {
                                 childRange = activeCharacters[0].getRange(frame);
                             }
+
                         }
 
                         if (place) {
@@ -1480,6 +1478,20 @@ class MovieClip extends Instance
 
                         displayObject = instance
                             .createInstance(place, childRange, frame);
+
+                        if (characterId > 0) {
+
+                            for (const layer of this._$layers.values()) {
+
+                                if (!layer._$instances.has(characterId)) {
+                                    continue;
+                                }
+
+                                displayObject.visible = false;
+                                break;
+                            }
+
+                        }
                     }
                     break;
 

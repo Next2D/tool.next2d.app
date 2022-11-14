@@ -621,6 +621,9 @@ class TransformController extends BaseController
             return this.hide();
         }
 
+        const standardPoint = document
+            .getElementById("standard-point");
+
         const width  = xMax - xMin;
         const height = yMax - yMin;
 
@@ -661,9 +664,6 @@ class TransformController extends BaseController
             const instance = workSpace.getLibrary(character.libraryId);
             if (instance.type === InstanceType.MOVIE_CLIP) {
 
-                const standardPoint = document
-                    .getElementById("standard-point");
-
                 // 初期化
                 standardPoint
                     .setAttribute("style", "");
@@ -684,6 +684,11 @@ class TransformController extends BaseController
 
                 standardPoint
                     .setAttribute("style", `left: ${left}px; top: ${top}px;`);
+            } else {
+
+                standardPoint
+                    .setAttribute("style", "display: none;");
+
             }
 
         } else {
@@ -696,6 +701,9 @@ class TransformController extends BaseController
             }
 
             point = Util.$referenceController.pointer;
+
+            standardPoint
+                .setAttribute("style", "display: none;");
 
         }
 
