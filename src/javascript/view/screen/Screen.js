@@ -460,8 +460,8 @@ class Screen extends BaseScreen
         divStyle += "pointer-events: none;";
         divStyle += "opacity: 0.25;";
 
-        const left = Util.$offsetLeft + character.screenX * Util.$zoomScale;
-        const top  = Util.$offsetTop  + character.screenY * Util.$zoomScale;
+        const left = Util.$offsetLeft + (character.screenX + Util.$sceneChange.offsetX) * Util.$zoomScale;
+        const top  = Util.$offsetTop  + (character.screenY + Util.$sceneChange.$offsetY) * Util.$zoomScale;
         divStyle += `left: ${left}px;`;
         divStyle += `top: ${top}px;`;
 
@@ -684,12 +684,18 @@ class Screen extends BaseScreen
             }
         });
 
-        let width = character.width * Util.$zoomScale;
+        let matrix = null;
+        if (Util.$sceneChange.length) {
+            matrix = Util.$sceneChange.concatenatedMatrix;
+        }
+        const bounds = character.getBounds(matrix);
+
+        let width = (bounds.xMax - bounds.xMin) * Util.$zoomScale;
         if (!width) {
             width = 10;
         }
 
-        let height = character.height * Util.$zoomScale;
+        let height = (bounds.yMax - bounds.yMin) * Util.$zoomScale;
         if (!height) {
             height = 10;
         }
@@ -697,9 +703,8 @@ class Screen extends BaseScreen
         divStyle += `width: ${Math.ceil(width)}px;`;
         divStyle += `height: ${Math.ceil(height)}px;`;
 
-        const bounds = character.getBounds();
-        let tx = Util.$offsetLeft + bounds.xMin * Util.$zoomScale;
-        let ty = Util.$offsetTop  + bounds.yMin * Util.$zoomScale;
+        let tx = Util.$offsetLeft + (bounds.xMin + Util.$sceneChange.offsetX) * Util.$zoomScale;
+        let ty = Util.$offsetTop  + (bounds.yMin + Util.$sceneChange.offsetY) * Util.$zoomScale;
         divStyle += `left: ${tx}px;`;
         divStyle += `top: ${ty}px;`;
 
@@ -760,26 +765,38 @@ class Screen extends BaseScreen
                     // 親のイベントを中止する
                     event.stopPropagation();
 
-                    // アクティブなDisplayObjectのIDを格納
-                    Util.$activeCharacterIds.push(
-                        event.currentTarget.dataset.characterId | 0
-                    );
+                    const target = event.currentTarget;
 
-                    // シーン名をリストに追加
+                    const layer = Util
+                        .$currentWorkSpace()
+                        .scene
+                        .getLayer(
+                            target.dataset.layerId | 0
+                        );
+
+                    const characterId = target.dataset.characterId | 0;
+                    const character   = layer.getCharacter(characterId);
+
+                    // アクティブなDisplayObjectのIDを格納
+                    Util.$activeCharacterIds.push(characterId);
+
+                    // シーン名をリストに追加(fixed logic)
                     Util
                         .$currentWorkSpace()
                         .scene
                         .addSceneName(true);
 
-                    const element = document
-                        .getElementById("standard-point");
+                    // 調整用のxy座標(fixed logic)
+                    Util.$sceneChange.offsetX += character.x;
+                    Util.$sceneChange.offsetY += character.y;
 
-                    Util.$offsetLeft = element.offsetLeft + element.clientWidth  / 2;
-                    Util.$offsetTop  = element.offsetTop  + element.clientHeight / 2;
+                    const frame = Util.$timelineFrame.currentFrame;
+                    const place = character.getPlace(frame);
+                    Util.$sceneChange.matrix.push(place.matrix);
 
                     // シーン移動
                     Util.$sceneChange.execute(
-                        event.currentTarget.dataset.libraryId | 0
+                        target.dataset.libraryId | 0
                     );
                 });
                 break;

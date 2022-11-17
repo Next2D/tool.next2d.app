@@ -606,15 +606,20 @@ class TransformController extends BaseController
             }
 
             const character = layer.getCharacter(characterId);
-            const bounds    = character.getBounds();
 
-            const tx = Util.$offsetLeft + bounds.xMin * Util.$zoomScale;
-            const ty = Util.$offsetTop  + bounds.yMin * Util.$zoomScale;
+            let matrix = null;
+            if (Util.$sceneChange.length) {
+                matrix = Util.$sceneChange.concatenatedMatrix;
+            }
+
+            const bounds = character.getBounds(matrix);
+            const tx = Util.$offsetLeft + (Util.$sceneChange.offsetX + bounds.xMin) * Util.$zoomScale;
+            const ty = Util.$offsetTop  + (Util.$sceneChange.offsetY + bounds.yMin) * Util.$zoomScale;
 
             xMin = Math.min(xMin, tx);
-            xMax = Math.max(xMax, tx + Math.ceil(Math.abs(bounds.xMax - bounds.xMin)) * Util.$zoomScale);
+            xMax = Math.max(xMax, tx + Math.ceil(Math.abs(bounds.xMax - bounds.xMin) * Util.$zoomScale));
             yMin = Math.min(yMin, ty);
-            yMax = Math.max(yMax, ty + Math.ceil(Math.abs(bounds.yMax - bounds.yMin)) * Util.$zoomScale);
+            yMax = Math.max(yMax, ty + Math.ceil(Math.abs(bounds.yMax - bounds.yMin) * Util.$zoomScale));
         }
 
         if (activeElements.length - skipCount === 0) {
@@ -634,8 +639,9 @@ class TransformController extends BaseController
             const target = activeElements[0];
             const layer  = scene.getLayer(target.dataset.layerId | 0);
 
-            const character = layer
-                .getCharacter(target.dataset.characterId | 0);
+            const character = layer.getCharacter(
+                target.dataset.characterId | 0
+            );
 
             // 画面の拡大縮小対応
             const place  = character.getPlace(frame);
@@ -671,19 +677,12 @@ class TransformController extends BaseController
                 const w = standardPoint.clientWidth  / 2;
                 const h = standardPoint.clientHeight / 2;
 
-                const baseBounds = instance.getBounds();
-
-                const left = Util.$offsetLeft + (bounds.xMin - baseBounds.xMin) * Util.$zoomScale - w;
-                const top  = Util.$offsetTop  + (bounds.yMin - baseBounds.yMin) * Util.$zoomScale - h;
-
-                // const left = x * place.matrix[0] + y * place.matrix[2] - place.matrix[4];
-                // const top  = x * place.matrix[1] + y * place.matrix[3] - place.matrix[5];
-
-                // const left = Util.$offsetLeft + dx * Util.$zoomScale - w;
-                // const top  = Util.$offsetTop  + dy * Util.$zoomScale - h;
+                const left = Util.$offsetLeft + (character.x + Util.$sceneChange.offsetX) * Util.$zoomScale - w;
+                const top  = Util.$offsetTop  + (character.y + Util.$sceneChange.offsetY) * Util.$zoomScale - h;
 
                 standardPoint
                     .setAttribute("style", `left: ${left}px; top: ${top}px;`);
+
             } else {
 
                 standardPoint
@@ -710,8 +709,8 @@ class TransformController extends BaseController
         // 中心点をセット
         if (point) {
 
-            const pointX = Util.$offsetLeft + point.x * Util.$zoomScale;
-            const pointY = Util.$offsetTop  + point.y * Util.$zoomScale;
+            const pointX = Util.$offsetLeft + (Util.$sceneChange.offsetX + point.x) * Util.$zoomScale;
+            const pointY = Util.$offsetTop  + (Util.$sceneChange.offsetY + point.y) * Util.$zoomScale;
 
             const referenceElement = document
                 .getElementById("reference-point");

@@ -1309,6 +1309,16 @@ class ArrowTool extends BaseTool
         const dx = event ? event.pageX - this.pageX : this.pageX;
         const dy = event ? event.pageY - this.pageY : this.pageY;
 
+        const parentMatrix = Util.$sceneChange.concatenatedMatrix;
+
+        const { Matrix } = next2d.geom;
+
+        const matrix = new Matrix(
+            parentMatrix[0], parentMatrix[1], parentMatrix[2],
+            parentMatrix[3], parentMatrix[4], parentMatrix[5]
+        );
+        matrix.invert();
+
         let xMin = Number.MAX_VALUE;
         let yMin = Number.MAX_VALUE;
         for (let idx = 0; idx < this._$activeElements.length; ++idx) {
@@ -1332,9 +1342,10 @@ class ArrowTool extends BaseTool
             this.initPlace(character, layerId, frame);
 
             const place  = character.getPlace(frame);
-            const matrix = place.matrix;
-            matrix[4] += dx / Util.$zoomScale;
-            matrix[5] += dy / Util.$zoomScale;
+            const pointX = dx * matrix.a + dy * matrix.c;
+            const pointY = dx * matrix.b + dy * matrix.d;
+            place.matrix[4] += pointX / Util.$zoomScale;
+            place.matrix[5] += pointY / Util.$zoomScale;
 
             const bounds = character.getBounds();
 
@@ -1349,8 +1360,17 @@ class ArrowTool extends BaseTool
                 place.point.y +=  dy / Util.$zoomScale;
             }
 
-            character.screenX = bounds.xMin;
-            character.screenY = bounds.yMin;
+            let rectMatrix = null;
+            if (Util.$sceneChange.length) {
+                rectMatrix = Util.$multiplicationMatrix(
+                    parentMatrix,
+                    place.matrix
+                );
+            }
+
+            const rectBounds = character.getBounds(rectMatrix);
+            character.screenX = rectBounds.xMin;
+            character.screenY = rectBounds.yMin;
 
             let divStyle = "position: absolute;";
             divStyle += `pointer-events: ${element.dataset.pointer};`;
@@ -1388,8 +1408,8 @@ class ArrowTool extends BaseTool
                 }
             }
 
-            const left = Util.$offsetLeft + bounds.xMin * Util.$zoomScale;
-            const top  = Util.$offsetTop  + bounds.yMin * Util.$zoomScale;
+            const left = Util.$offsetLeft + (Util.$sceneChange.offsetX + rectBounds.xMin) * Util.$zoomScale;
+            const top  = Util.$offsetTop  + (Util.$sceneChange.offsetY + rectBounds.yMin) * Util.$zoomScale;
 
             divStyle += `left: ${left}px;`;
             divStyle += `top: ${top}px;`;
@@ -1587,11 +1607,12 @@ class ArrowTool extends BaseTool
 
         if (node) {
 
-            Util.$offsetLeft = +node.dataset.offsetLeft;
-            Util.$offsetTop  = +node.dataset.offsetTop;
+            Util.$sceneChange.offsetX = +node.dataset.offsetX;
+            Util.$sceneChange.offsetY = +node.dataset.offsetY;
 
             // アクティブな情報を削除
             Util.$activeCharacterIds.pop();
+            Util.$sceneChange.matrix.pop();
             Util.$sceneChange.length--;
 
             // シーン移動

@@ -393,7 +393,7 @@ class Character
      * @method
      * @public
      */
-    getBounds ()
+    getBounds (matrix = null)
     {
         const instance = Util
             .$currentWorkSpace()
@@ -409,7 +409,15 @@ class Character
         const currentFrame = Util.$currentFrame;
         Util.$currentFrame = frame;
 
-        const bounds = instance.getBounds(place.matrix, place, range);
+        let multiMatrix = place.matrix;
+        if (matrix) {
+            multiMatrix = Util.$multiplicationMatrix(
+                [matrix[0], matrix[1], matrix[2], matrix[3], 0, 0],
+                place.matrix
+            );
+        }
+
+        const bounds = instance.getBounds(multiMatrix, place, range);
 
         // reset
         Util.$currentFrame = currentFrame;
@@ -670,7 +678,15 @@ class Character
         // reset
         Util.$currentFrame = frame;
 
-        const bounds = instance.getBounds(place.matrix, place, range);
+        let matrix = place.matrix;
+        if (Util.$sceneChange.length) {
+            matrix = Util.$multiplicationMatrix(
+                Util.$sceneChange.concatenatedMatrix,
+                place.matrix
+            );
+        }
+
+        const bounds = instance.getBounds(matrix, place, range);
         const width  = +Math.ceil(Math.abs(bounds.xMax - bounds.xMin));
         const height = +Math.ceil(Math.abs(bounds.yMax - bounds.yMin));
 

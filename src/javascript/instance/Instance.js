@@ -79,13 +79,15 @@ class Instance
      * @description 表示領域(バウンディングボックス)のObjectを返す
      *              Returns the Object of the display area (bounding box)
      *
-     * @param  {array} [matrix=null]
+     * @param  {array}  [matrix=null]
+     * @param  {object} [place=null]
+     * @param  {object} [range=null]
      * @return {object}
      * @method
      * @abstract
      */
     // eslint-disable-next-line no-empty-function,no-unused-vars
-    getBounds (matrix = null) {}
+    getBounds (matrix = null, place = null, range = null) {}
 
     /**
      * @description ライブラリ内のユニークな値
@@ -416,12 +418,25 @@ class Instance
 
         const { Matrix } = window.next2d.geom;
 
+        // ライブラリからplayer用のオブジェクトを作成
         const instance = this.createInstance(place, range, static_frame);
 
-        const object = this.calcFilter(width, height, place);
+        // place objectの値をセット
+        let matrix = place.matrix;
+        if (Util.$sceneChange.length) {
+            matrix = Util.$multiplicationMatrix(
+                Util.$sceneChange.concatenatedMatrix,
+                place.matrix
+            );
+        }
+
+        const container = this.createContainer(instance, place, matrix);
+
+        // フィルターの描画反映を計算してセット
+        const object     = this.calcFilter(width, height, place);
         instance.filters = object.filters;
 
-        const container  = this.createContainer(instance, place);
+        // BitmapDataオブジェクトを作成
         const bitmapData = this.createBitmapData(object.width, object.height);
 
         const ratio = window.devicePixelRatio * Util.$zoomScale;
@@ -450,7 +465,7 @@ class Instance
         canvas._$height  = object.height;
         canvas.draggable = false;
 
-        const bounds = this.getBounds(place.matrix, place, range);
+        const bounds = this.getBounds(matrix, place, range);
 
         canvas._$tx = bounds.xMin;
         canvas._$ty = bounds.yMin;
@@ -529,11 +544,12 @@ class Instance
      *
      * @param  {DisplayObject} instance
      * @param  {object} place
+     * @param  {array} matrix
      * @return {next2d.display.Sprite}
      * @method
      * @public
      */
-    createContainer (instance, place)
+    createContainer (instance, place, matrix)
     {
         const { Sprite } = window.next2d.display;
         const { Matrix, ColorTransform } = window.next2d.geom;
@@ -541,9 +557,9 @@ class Instance
         instance
             .transform
             .matrix = new Matrix(
-                place.matrix[0], place.matrix[1],
-                place.matrix[2], place.matrix[3],
-                place.matrix[4], place.matrix[5]
+                matrix[0], matrix[1],
+                matrix[2], matrix[3],
+                matrix[4], matrix[5]
             );
 
         // fixed logic

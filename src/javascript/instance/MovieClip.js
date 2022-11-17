@@ -281,8 +281,8 @@ class MovieClip extends Instance
                 : -1;
 
             const workSpace  = Util.$currentWorkSpace();
-            const offsetLeft = Util.$offsetLeft;
-            const offsetTop  = Util.$offsetTop;
+            const offsetX = Util.$sceneChange.offsetX;
+            const offsetY = Util.$sceneChange.offsetY;
             for (let idx = 0; children.length > idx; ++idx) {
 
                 const node = children[idx];
@@ -296,8 +296,8 @@ class MovieClip extends Instance
                     node.dataset.libraryId | 0
                 );
 
-                Util.$offsetLeft = +node.dataset.offsetLeft;
-                Util.$offsetTop  = +node.dataset.offsetTop;
+                Util.$sceneChange.offsetX = +node.dataset.offsetX;
+                Util.$sceneChange.offsetY = +node.dataset.offsetY;
 
                 const parentFrame = instance.currentFrame;
                 for (const layer of instance._$layers.values()) {
@@ -331,8 +331,8 @@ class MovieClip extends Instance
                 break;
             }
 
-            Util.$offsetLeft = offsetLeft;
-            Util.$offsetTop  = offsetTop;
+            Util.$sceneChange.offsetX = offsetX;
+            Util.$sceneChange.offsetY = offsetY;
         }
 
         const layers = Array.from(this._$layers.values());
@@ -366,7 +366,7 @@ class MovieClip extends Instance
             const div = document.createElement("div");
             div.setAttribute("class", "standard-point");
             div.setAttribute(
-                "style", `left: ${Util.$offsetLeft - 6}px; top: ${Util.$offsetTop - 6}px`
+                "style", `left: ${Util.$offsetLeft + Util.$sceneChange.offsetX * Util.$zoomScale - 6}px; top: ${Util.$offsetTop + Util.$sceneChange.offsetY * Util.$zoomScale - 6}px`
             );
             div.dataset.child = "true";
 
@@ -394,7 +394,7 @@ class MovieClip extends Instance
 
         // add menu
         const htmlTag = `
-<div id="scene-instance-id-${instance.id}" data-library-id="${instance.id}" data-offset-left="${Util.$offsetLeft}" data-offset-top="${Util.$offsetTop}" data-parent="${parent}">${instance.name}</div>
+<div id="scene-instance-id-${instance.id}" data-library-id="${instance.id}" data-offset-x="${Util.$sceneChange.offsetX}" data-offset-y="${Util.$sceneChange.offsetY}" data-parent="${parent}">${instance.name}</div>
 `;
 
         document
@@ -422,12 +422,12 @@ class MovieClip extends Instance
 
             // アクティブな情報を削除
             Util.$activeCharacterIds.pop();
+            Util.$sceneChange.matrix.pop();
             Util.$sceneChange.length--;
 
             const element = event.target;
-
-            Util.$offsetLeft = +element.dataset.offsetLeft;
-            Util.$offsetTop  = +element.dataset.offsetTop;
+            Util.$sceneChange.offsetX = +element.dataset.offsetX;
+            Util.$sceneChange.offsetY = +element.dataset.offsetY;
 
             // シーン移動
             Util.$sceneChange.execute(
@@ -935,11 +935,6 @@ class MovieClip extends Instance
             };
         }
 
-        let xMin =  Number.MAX_VALUE;
-        let xMax = -Number.MAX_VALUE;
-        let yMin =  Number.MAX_VALUE;
-        let yMax = -Number.MAX_VALUE;
-
         const currentFrame = Util.$currentFrame;
 
         let frame = parent_frame || 1;
@@ -959,7 +954,10 @@ class MovieClip extends Instance
 
         const workSpace = Util.$currentWorkSpace();
 
-        // over write
+        let xMin =  Number.MAX_VALUE;
+        let xMax = -Number.MAX_VALUE;
+        let yMin =  Number.MAX_VALUE;
+        let yMax = -Number.MAX_VALUE;
         for (const layer of this._$layers.values()) {
 
             if (layer.disable) {

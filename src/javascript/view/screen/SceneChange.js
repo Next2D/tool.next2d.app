@@ -19,6 +19,86 @@ class SceneChange extends BaseScreen
          * @private
          */
         this._$length = 0;
+
+        /**
+         * @type {array}
+         * @private
+         */
+        this._$matrix = [];
+
+        /**
+         * @type {number}
+         * @default 0
+         * @private
+         */
+        this._$offsetX = 0;
+
+        /**
+         * @type {number}
+         * @default 0
+         * @private
+         */
+        this._$offsetY = 0;
+    }
+
+    /**
+     * @description 親のmatrix
+     *
+     * @member   {array}
+     * @method
+     * @public
+     */
+    get matrix ()
+    {
+        return this._$matrix;
+    }
+
+    /**
+     * @description 親オブジェクトの結合された変換マトリックス
+     *
+     * @member {Float32Array}
+     * @method
+     * @public
+     */
+    get concatenatedMatrix ()
+    {
+        let matrix = [1, 0, 0, 1, 0, 0];
+        for (let idx = 0; this._$matrix.length > idx; ++idx) {
+            matrix = Util.$multiplicationMatrix(this._$matrix[idx], matrix);
+        }
+        return matrix;
+    }
+
+    /**
+     * @description 親の座標に合わせるx座標
+     *
+     * @member {number}
+     * @method
+     * @public
+     */
+    get offsetX ()
+    {
+        return this._$offsetX;
+    }
+    set offsetX (offset_x)
+    {
+        this._$offsetX = offset_x;
+    }
+
+    /**
+     * @description 親の座標に合わせるy座標
+     *
+     * @member {number}
+     * @method
+     * @public
+     */
+    get offsetY ()
+    {
+        return this._$offsetY;
+    }
+    set offsetY (offset_y)
+    {
+        this._$offsetY = offset_y;
     }
 
     /**
@@ -50,6 +130,21 @@ class SceneChange extends BaseScreen
     }
 
     /**
+     * @description パラメーターを初期化
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    clear ()
+    {
+        this._$offsetX       = 0;
+        this._$offsetY       = 0;
+        this._$matrix.length = 0;
+        this._$length        = 0;
+    }
+
+    /**
      * @description リスト表示の再読み込み
      *
      * @param  {number} library_id
@@ -66,12 +161,14 @@ class SceneChange extends BaseScreen
             scenes.children[0].remove();
         }
 
-        // シーン名をリストに追加
-        Util.$currentWorkSpace().root.addSceneName();
+        // 値を初期化
+        this.clear();
 
-        const stage = document.getElementById("stage");
-        Util.$offsetLeft = stage.offsetLeft;
-        Util.$offsetTop  = stage.offsetTop;
+        // シーン名をリストに追加
+        Util
+            .$currentWorkSpace()
+            .root
+            .addSceneName();
 
         // シーン移動
         Util.$sceneChange.execute(library_id);
