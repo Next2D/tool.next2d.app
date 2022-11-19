@@ -41,6 +41,13 @@ class TimelineKeyboardCommand extends KeyboardCommand
                     this.active = true;
                 }
             });
+
+            element.addEventListener("mouseup", () =>
+            {
+                if (!this.active) {
+                    this.active = true;
+                }
+            });
         }
 
         // レイヤー追加コマンド

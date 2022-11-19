@@ -31,6 +31,7 @@ class Screen extends BaseScreen
             element.addEventListener("drop", (event) =>
             {
                 event.preventDefault();
+                event.stopPropagation();
                 this.drop(event);
             });
 
@@ -235,9 +236,10 @@ class Screen extends BaseScreen
         }
 
         if (instanceIds.length) {
+
             // 座標
-            const x = event.offsetX - Util.$offsetLeft;
-            const y = event.offsetY - Util.$offsetTop;
+            const x = (event.offsetX - Util.$offsetLeft) / Util.$zoomScale;
+            const y = (event.offsetY - Util.$offsetTop)  / Util.$zoomScale;
 
             const { Matrix } = window.next2d.geom;
             const concatenatedMatrix = Util.$sceneChange.concatenatedMatrix;
@@ -364,13 +366,13 @@ class Screen extends BaseScreen
                     dy = bounds.yMin;
                 }
 
-                const bounds = character.getBounds(concatenatedMatrix);
-                let width = (bounds.xMax - bounds.xMin) * Util.$zoomScale;
+                const bounds = character.getBounds();
+                let width = bounds.xMax - bounds.xMin;
                 if (!width) {
                     width = 10;
                 }
 
-                let height = (bounds.yMax - bounds.yMin) * Util.$zoomScale;
+                let height = bounds.yMax - bounds.yMin;
                 if (!height) {
                     height = 10;
                 }

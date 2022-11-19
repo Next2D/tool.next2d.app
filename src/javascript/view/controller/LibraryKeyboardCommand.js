@@ -41,6 +41,13 @@ class LibraryKeyboardCommand extends KeyboardCommand
                     this.active = true;
                 }
             });
+
+            element.addEventListener("mouseup", () =>
+            {
+                if (!this.active) {
+                    this.active = true;
+                }
+            });
         }
 
         // 選択したアイテムを削除

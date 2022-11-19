@@ -69,6 +69,13 @@ class ScreenKeyboardCommand extends KeyboardCommand
                     this.active = true;
                 }
             });
+
+            element.addEventListener("mouseup", () =>
+            {
+                if (!this.active) {
+                    this.active = true;
+                }
+            });
         }
 
         this._$endHandTool = this.endHandTool.bind(this);

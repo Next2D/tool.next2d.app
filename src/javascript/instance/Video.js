@@ -444,20 +444,24 @@ class Video extends Instance
      *              Generate Image class via Next2D BitmapData class
      *
      * @param  {HTMLCanvasElement} canvas
-     * @param  {number} width
-     * @param  {number} height
-     * @param  {object} place
-     * @param  {object} [range = null]
-     * @param  {number} [static_frame = 0]
+     * @param  {number}  width
+     * @param  {number}  height
+     * @param  {object}  place
+     * @param  {object}  [range = null]
+     * @param  {number}  [static_frame = 0]
+     * @param  {boolean} [preview = false]
      * @return {CanvasRenderingContext2D}
      * @method
      * @public
      */
-    draw (canvas, width, height, place, range = null, static_frame = 0)
-    {
+    draw (
+        canvas, width, height, place,
+        range = null, static_frame = 0, preview = false
+    ) {
 
         const context = super.draw(
-            canvas, width, height, place, range, static_frame
+            canvas, width, height, place,
+            range, static_frame, preview
         );
 
         if (this._$loaded) {
