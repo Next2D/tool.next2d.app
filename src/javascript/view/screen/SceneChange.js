@@ -56,7 +56,8 @@ class SceneChange extends BaseScreen
     /**
      * @description 親オブジェクトの結合された変換マトリックス
      *
-     * @member {Float32Array}
+     * @return {Float32Array}
+     * @readonly
      * @method
      * @public
      */

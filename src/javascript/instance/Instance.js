@@ -398,17 +398,20 @@ class Instance
      *              Generate Image class via Next2D BitmapData class
      *
      * @param  {HTMLCanvasElement} canvas
-     * @param  {number} width
-     * @param  {number} height
-     * @param  {object} place
-     * @param  {object} [range = null]
-     * @param  {number} [static_frame = 0]
+     * @param  {number}  width
+     * @param  {number}  height
+     * @param  {object}  place
+     * @param  {object}  [range = null]
+     * @param  {number}  [static_frame = 0]
+     * @param  {boolean} [preview = false]
      * @return {CanvasRenderingContext2D}
      * @method
      * @public
      */
-    draw (canvas, width, height, place, range = null, static_frame = 0)
-    {
+    draw (
+        canvas, width, height, place,
+        range = null, static_frame = 0, preview = false
+    ) {
         // empty image
         if (!width || !height) {
             canvas.width  = 0;
@@ -423,23 +426,31 @@ class Instance
 
         // place objectの値をセット
         let matrix = place.matrix;
-        if (Util.$sceneChange.length) {
+        if (!preview && Util.$sceneChange.length) {
             matrix = Util.$multiplicationMatrix(
                 Util.$sceneChange.concatenatedMatrix,
                 place.matrix
             );
         }
 
-        const container = this.createContainer(instance, place, matrix);
+        const container = this.createContainer(
+            instance, place, matrix, preview
+        );
 
         // フィルターの描画反映を計算してセット
         const object     = this.calcFilter(width, height, place);
         instance.filters = object.filters;
 
         // BitmapDataオブジェクトを作成
-        const bitmapData = this.createBitmapData(object.width, object.height);
+        const bitmapData = this.createBitmapData(
+            object.width, object.height, preview
+        );
 
-        const ratio = window.devicePixelRatio * Util.$zoomScale;
+        let ratio = window.devicePixelRatio;
+        if (!preview) {
+            ratio *= Util.$zoomScale;
+        }
+
         const drawBounds = container.getBounds(container);
 
         let tx = -drawBounds.x;
@@ -545,11 +556,12 @@ class Instance
      * @param  {DisplayObject} instance
      * @param  {object} place
      * @param  {array} matrix
+     * @param  {boolean} [preview=false]
      * @return {next2d.display.Sprite}
      * @method
      * @public
      */
-    createContainer (instance, place, matrix)
+    createContainer (instance, place, matrix, preview = false)
     {
         const { Sprite } = window.next2d.display;
         const { Matrix, ColorTransform } = window.next2d.geom;
@@ -575,7 +587,11 @@ class Instance
         const sprite = new Sprite();
         sprite.addChild(instance);
 
-        const ratio = window.devicePixelRatio * Util.$zoomScale;
+        let ratio = window.devicePixelRatio;
+        if (!preview) {
+            ratio *= Util.$zoomScale;
+        }
+
         sprite.scaleX = ratio;
         sprite.scaleY = ratio;
 
@@ -595,11 +611,14 @@ class Instance
      * @method
      * @public
      */
-    createBitmapData (width, height)
+    createBitmapData (width, height, preview = false)
     {
         const { BitmapData } = window.next2d.display;
 
-        const ratio = window.devicePixelRatio * Util.$zoomScale;
+        let ratio = window.devicePixelRatio;
+        if (!preview) {
+            ratio *= Util.$zoomScale;
+        }
 
         return new BitmapData(
             Math.ceil(width  * ratio),
@@ -660,7 +679,8 @@ class Instance
                 "colorTransform": [1, 1, 1, 1, 0, 0, 0, 0],
                 "blendMode": "normal",
                 "filter": []
-            }
+            },
+            null, 0, true
         );
 
         if (canvas.height !== height) {

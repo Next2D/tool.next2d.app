@@ -175,6 +175,32 @@ class LibraryExport extends BaseController
     }
 
     /**
+     * @description Input終了後に再描画しない
+     *
+     * @param  {Event} event
+     * @return {void}
+     * @method
+     * @public
+     */
+    finishInput (event)
+    {
+        super.finishInput(event, false);
+    }
+
+    /**
+     * @description マウス移動時の処理で再描画させない
+     *
+     * @param  {MouseEvent} event
+     * @return {void}
+     * @method
+     * @public
+     */
+    mouseMove (event)
+    {
+        super.mouseMove(event, false);
+    }
+
+    /**
      * @description 書き出しの実行
      *
      * @return {void}
@@ -537,9 +563,11 @@ class LibraryExport extends BaseController
         // 書き出すアイテムの情報をセット
         const LibraryElement = activeInstances.values().next().value;
 
-        this._$instance = Util.$currentWorkSpace().getLibrary(
-            LibraryElement.dataset.libraryId | 0
-        );
+        this._$instance = Util
+            .$currentWorkSpace()
+            .getLibrary(
+                LibraryElement.dataset.libraryId | 0
+            );
 
         // 初期化
         this._$lock   = false;
@@ -794,7 +822,7 @@ class LibraryExport extends BaseController
                 "blendMode": "normal",
                 "filter": []
             },
-            null, frame
+            null, frame, true
         );
 
         // reset

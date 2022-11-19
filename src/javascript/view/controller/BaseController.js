@@ -261,11 +261,12 @@ class BaseController
      *              Add and subtract numbers with the mouse
      *
      * @param  {MouseEvent} event
+     * @param  {boolean} [reload=true]
      * @return {void}
      * @method
      * @public
      */
-    mouseMove (event)
+    mouseMove (event, reload = true)
     {
         if (this._$focus || !this._$currentTarget) {
             return ;
@@ -305,7 +306,9 @@ class BaseController
 
             this._$pointX = event.screenX;
 
-            this.reloadScreen();
+            if (reload) {
+                this.reloadScreen();
+            }
         });
     }
 

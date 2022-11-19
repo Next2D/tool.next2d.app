@@ -86,6 +86,18 @@ class BaseTool extends CommonTool
         // 挿入位置を取得
         const location = layer.adjustmentLocation(frame);
 
+        const { Matrix } = window.next2d.geom;
+        const concatenatedMatrix = Util.$sceneChange.concatenatedMatrix;
+
+        const matrix = new Matrix(
+            concatenatedMatrix[0], concatenatedMatrix[1], concatenatedMatrix[2],
+            concatenatedMatrix[3], concatenatedMatrix[4], concatenatedMatrix[5]
+        );
+        matrix.invert();
+
+        const localX = x * matrix.a + y * matrix.c + matrix.tx;
+        const localY = x * matrix.b + y * matrix.d + matrix.ty;
+
         // pointer
         const character = new Character();
         character.libraryId  = shape.id;
@@ -93,7 +105,7 @@ class BaseTool extends CommonTool
         character.endFrame   = location.endFrame;
         character.setPlace(location.startFrame, {
             "frame": location.startFrame,
-            "matrix": [1, 0, 0, 1, x, y],
+            "matrix": [1, 0, 0, 1, localX, localY],
             "colorTransform": [1, 1, 1, 1, 0, 0, 0, 0],
             "blendMode": "normal",
             "filter": [],
@@ -136,6 +148,18 @@ class BaseTool extends CommonTool
         // 挿入位置を取得
         const location = layer.adjustmentLocation(frame);
 
+        const { Matrix } = window.next2d.geom;
+        const concatenatedMatrix = Util.$sceneChange.concatenatedMatrix;
+
+        const matrix = new Matrix(
+            concatenatedMatrix[0], concatenatedMatrix[1], concatenatedMatrix[2],
+            concatenatedMatrix[3], concatenatedMatrix[4], concatenatedMatrix[5]
+        );
+        matrix.invert();
+
+        const localX = x * matrix.a + y * matrix.c + matrix.tx;
+        const localY = x * matrix.b + y * matrix.d + matrix.ty;
+
         // pointer
         const character = new Character();
         character.libraryId  = textField.id;
@@ -143,7 +167,7 @@ class BaseTool extends CommonTool
         character.endFrame   = location.endFrame;
         character.setPlace(location.startFrame, {
             "frame": location.startFrame,
-            "matrix": [1, 0, 0, 1, x, y],
+            "matrix": [1, 0, 0, 1, localX, localY],
             "colorTransform": [1, 1, 1, 1, 0, 0, 0, 0],
             "blendMode": "normal",
             "filter": [],

@@ -120,6 +120,8 @@ class ReferenceController extends BaseController
         const workSpace = Util.$currentWorkSpace();
         const scene = workSpace.scene;
 
+        const matrix = Util.$sceneChange.concatenatedMatrix;
+
         let xMin =  Number.MAX_VALUE;
         let xMax = -Number.MAX_VALUE;
         let yMin =  Number.MAX_VALUE;
@@ -142,12 +144,15 @@ class ReferenceController extends BaseController
             }
 
             const character = layer.getCharacter(characterId);
-            const bounds    = character.getBounds();
 
-            xMin = Math.min(xMin, bounds.xMin);
-            xMax = Math.max(xMax, bounds.xMin + Math.abs(bounds.xMax - bounds.xMin));
-            yMin = Math.min(yMin, bounds.yMin);
-            yMax = Math.max(yMax, bounds.yMin + Math.abs(bounds.yMax - bounds.yMin));
+            const bounds = character.getBounds(matrix);
+            const tx = Util.$sceneChange.offsetX + bounds.xMin;
+            const ty = Util.$sceneChange.offsetY + bounds.yMin;
+
+            xMin = Math.min(xMin, tx);
+            xMax = Math.max(xMax, tx + Math.ceil(Math.abs(bounds.xMax - bounds.xMin)));
+            yMin = Math.min(yMin, ty);
+            yMax = Math.max(yMax, ty + Math.ceil(Math.abs(bounds.yMax - bounds.yMin)));
         }
 
         const x = xMin;
@@ -381,6 +386,8 @@ class ReferenceController extends BaseController
         const workSpace = Util.$currentWorkSpace();
         const scene = workSpace.scene;
 
+        const matrix = Util.$sceneChange.concatenatedMatrix;
+
         let xMin =  Number.MAX_VALUE;
         let xMax = -Number.MAX_VALUE;
         let yMin =  Number.MAX_VALUE;
@@ -404,14 +411,21 @@ class ReferenceController extends BaseController
             }
 
             const character = layer.getCharacter(characterId);
-            const bounds    = character.getBounds();
 
-            xMin = Math.min(xMin, bounds.xMin);
-            xMax = Math.max(xMax, bounds.xMin + Math.abs(bounds.xMax - bounds.xMin));
-            yMin = Math.min(yMin, bounds.yMin);
-            yMax = Math.max(yMax, bounds.yMin + Math.abs(bounds.yMax - bounds.yMin));
+            const bounds = character.getBounds(matrix);
+            const tx = Util.$sceneChange.offsetX + bounds.xMin;
+            const ty = Util.$sceneChange.offsetY + bounds.yMin;
 
+            xMin = Math.min(xMin, tx);
+            xMax = Math.max(xMax, tx + Math.ceil(Math.abs(bounds.xMax - bounds.xMin)));
+            yMin = Math.min(yMin, ty);
+            yMax = Math.max(yMax, ty + Math.ceil(Math.abs(bounds.yMax - bounds.yMin)));
         }
+
+        const point = {
+            "x": xMin + Math.abs(xMax - xMin) / 2,
+            "y": yMin + Math.abs(yMax - yMin) / 2
+        };
 
         if (activeElements.length === 1) {
 
@@ -430,17 +444,11 @@ class ReferenceController extends BaseController
             const frame = Util.$timelineFrame.currentFrame;
             const place = character.getPlace(frame);
 
-            place.point = {
-                "x": xMin + Math.abs(xMax - xMin) / 2,
-                "y": yMin + Math.abs(yMax - yMin) / 2
-            };
+            place.point = point;
 
         } else {
 
-            this._$pointer = {
-                "x": xMin + Math.abs(xMax - xMin) / 2,
-                "y": yMin + Math.abs(yMax - yMin) / 2
-            };
+            this._$pointer = point;
 
         }
 

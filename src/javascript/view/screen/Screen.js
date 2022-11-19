@@ -239,6 +239,18 @@ class Screen extends BaseScreen
             const x = event.offsetX - Util.$offsetLeft;
             const y = event.offsetY - Util.$offsetTop;
 
+            const { Matrix } = window.next2d.geom;
+            const concatenatedMatrix = Util.$sceneChange.concatenatedMatrix;
+
+            const matrix = new Matrix(
+                concatenatedMatrix[0], concatenatedMatrix[1], concatenatedMatrix[2],
+                concatenatedMatrix[3], concatenatedMatrix[4], concatenatedMatrix[5]
+            );
+            matrix.invert();
+
+            const localX = x * matrix.a + y * matrix.c + matrix.tx;
+            const localY = x * matrix.b + y * matrix.d + matrix.ty;
+
             // スクリーンにアイテムを配置
             const location   = layer.adjustmentLocation(frame);
             const endFrame   = location.endFrame;
@@ -278,14 +290,14 @@ class Screen extends BaseScreen
                 const instance = workSpace.getLibrary(libraryId);
                 const place = {
                     "frame": location.startFrame,
-                    "matrix": [1, 0, 0, 1, x / Util.$zoomScale, y / Util.$zoomScale],
+                    "matrix": [1, 0, 0, 1, localX, localY],
                     "colorTransform": [1, 1, 1, 1, 0, 0, 0, 0],
                     "blendMode": "normal",
                     "filter": [],
                     "depth": layer._$characters.length,
                     "point": {
-                        "x": x / Util.$zoomScale,
-                        "y": y / Util.$zoomScale
+                        "x": localX,
+                        "y": localY
                     }
                 };
 
@@ -352,12 +364,13 @@ class Screen extends BaseScreen
                     dy = bounds.yMin;
                 }
 
-                let width = character.width;
+                const bounds = character.getBounds(concatenatedMatrix);
+                let width = (bounds.xMax - bounds.xMin) * Util.$zoomScale;
                 if (!width) {
                     width = 10;
                 }
 
-                let height = character.height;
+                let height = (bounds.yMax - bounds.yMin) * Util.$zoomScale;
                 if (!height) {
                     height = 10;
                 }
@@ -624,7 +637,7 @@ class Screen extends BaseScreen
         div.id = `character-${character.id}`;
         div.dataset.characterId  = `${character.id}`;
         div.dataset.layerId      = `${layer_id}`;
-        div.dataset.instanceType = instance.type;
+        div.dataset.instanceType = `${instance.type}`;
         div.dataset.libraryId    = `${character.libraryId}`;
         div.dataset.child        = "true";
         div.dataset.pointer      = `${event}`;
@@ -684,10 +697,7 @@ class Screen extends BaseScreen
             }
         });
 
-        let matrix = null;
-        if (Util.$sceneChange.length) {
-            matrix = Util.$sceneChange.concatenatedMatrix;
-        }
+        const matrix = Util.$sceneChange.concatenatedMatrix;
         const bounds = character.getBounds(matrix);
 
         let width = (bounds.xMax - bounds.xMin) * Util.$zoomScale;
@@ -703,8 +713,9 @@ class Screen extends BaseScreen
         divStyle += `width: ${Math.ceil(width)}px;`;
         divStyle += `height: ${Math.ceil(height)}px;`;
 
-        let tx = Util.$offsetLeft + (bounds.xMin + Util.$sceneChange.offsetX) * Util.$zoomScale;
-        let ty = Util.$offsetTop  + (bounds.yMin + Util.$sceneChange.offsetY) * Util.$zoomScale;
+        let tx = Util.$offsetLeft + (Util.$sceneChange.offsetX + bounds.xMin) * Util.$zoomScale;
+        let ty = Util.$offsetTop  + (Util.$sceneChange.offsetY + bounds.yMin) * Util.$zoomScale;
+
         divStyle += `left: ${tx}px;`;
         divStyle += `top: ${ty}px;`;
 
@@ -750,8 +761,8 @@ class Screen extends BaseScreen
                 divStyle += "-webkit-mask-repeat: no-repeat;";
                 divStyle += `mask-position: ${x}px ${y}px;`;
                 divStyle += `-webkit-mask-position: ${x}px ${y}px;`;
-                divStyle += `mix-blend-mode: ${image.style.mixBlendMode};`;
-                divStyle += `filter: ${image.style.filter};`;
+                divStyle += `mix-blend-mode: ${maskImage.style.mixBlendMode};`;
+                divStyle += `filter: ${maskImage.style.filter};`;
 
             }
         }
@@ -787,8 +798,14 @@ class Screen extends BaseScreen
                         .addSceneName(true);
 
                     // 調整用のxy座標(fixed logic)
-                    Util.$sceneChange.offsetX += character.x;
-                    Util.$sceneChange.offsetY += character.y;
+                    const matrix = Util.$sceneChange.concatenatedMatrix;
+                    const x  = character.x;
+                    const y  = character.y;
+                    const dx = x * matrix[0] + y * matrix[2] + matrix[4];
+                    const dy = x * matrix[1] + y * matrix[3] + matrix[5];
+
+                    Util.$sceneChange.offsetX = dx;
+                    Util.$sceneChange.offsetY = dy;
 
                     const frame = Util.$timelineFrame.currentFrame;
                     const place = character.getPlace(frame);

@@ -581,6 +581,8 @@ class TransformController extends BaseController
 
         const frame = Util.$timelineFrame.currentFrame;
 
+        const matrix = Util.$sceneChange.concatenatedMatrix;
+
         let skipCount = 0;
         let xMin =  Number.MAX_VALUE;
         let xMax = -Number.MAX_VALUE;
@@ -606,11 +608,6 @@ class TransformController extends BaseController
             }
 
             const character = layer.getCharacter(characterId);
-
-            let matrix = null;
-            if (Util.$sceneChange.length) {
-                matrix = Util.$sceneChange.concatenatedMatrix;
-            }
 
             const bounds = character.getBounds(matrix);
             const tx = Util.$offsetLeft + (Util.$sceneChange.offsetX + bounds.xMin) * Util.$zoomScale;
@@ -677,8 +674,15 @@ class TransformController extends BaseController
                 const w = standardPoint.clientWidth  / 2;
                 const h = standardPoint.clientHeight / 2;
 
-                const left = Util.$offsetLeft + (character.x + Util.$sceneChange.offsetX) * Util.$zoomScale - w;
-                const top  = Util.$offsetTop  + (character.y + Util.$sceneChange.offsetY) * Util.$zoomScale - h;
+                const matrix = Util.$sceneChange.concatenatedMatrix;
+
+                const x  = character.x;
+                const y  = character.y;
+                const dx = x * matrix[0] + y * matrix[2] + matrix[4];
+                const dy = x * matrix[1] + y * matrix[3] + matrix[5];
+
+                const left = Util.$offsetLeft + dx * Util.$zoomScale - w;
+                const top  = Util.$offsetTop  + dy * Util.$zoomScale - h;
 
                 standardPoint
                     .setAttribute("style", `left: ${left}px; top: ${top}px;`);
@@ -708,12 +712,13 @@ class TransformController extends BaseController
 
         // 中心点をセット
         if (point) {
-
-            const pointX = Util.$offsetLeft + (Util.$sceneChange.offsetX + point.x) * Util.$zoomScale;
-            const pointY = Util.$offsetTop  + (Util.$sceneChange.offsetY + point.y) * Util.$zoomScale;
+            const pointX = Util.$offsetLeft + point.x * Util.$zoomScale;
+            const pointY = Util.$offsetTop  + point.y * Util.$zoomScale;
 
             const referenceElement = document
                 .getElementById("reference-point");
+
+            referenceElement.setAttribute("style", "");
 
             const left = pointX - referenceElement.clientWidth  / 2;
             const top  = pointY - referenceElement.clientHeight / 2;
@@ -993,6 +998,8 @@ class TransformController extends BaseController
             return ;
         }
 
+        const { Matrix } = window.next2d.geom;
+
         scale_x = Util.$toFixed4(Util.$clamp(
             scale_x,
             TransformController.MIN_SCALE,
@@ -1012,6 +1019,7 @@ class TransformController extends BaseController
         let yMin =  Number.MAX_VALUE;
         let yMax = -Number.MAX_VALUE;
 
+        const concatenatedMatrix = Util.$sceneChange.concatenatedMatrix;
         if (activeElements.length > 1)  {
 
             // 中心点の座標情報
@@ -1093,12 +1101,20 @@ class TransformController extends BaseController
                 );
 
                 const place  = character.getPlace(frame);
-                const matrix = Util.$inverseMatrix(place.matrix);
+                const multiMatrix = Util.$multiplicationMatrix(
+                    concatenatedMatrix,
+                    place.matrix
+                );
+
+                const matrix = new Matrix(
+                    multiMatrix[0], multiMatrix[1], multiMatrix[2],
+                    multiMatrix[3], multiMatrix[4], multiMatrix[5]
+                );
+                matrix.invert();
 
                 const point = place.point;
-
-                const referenceX = point.x * matrix[0] + point.y * matrix[2] + matrix[4];
-                const referenceY = point.x * matrix[1] + point.y * matrix[3] + matrix[5];
+                const referenceX = point.x * matrix.a + point.y * matrix.c + matrix.tx;
+                const referenceY = point.x * matrix.b + point.y * matrix.d + matrix.ty;
 
                 const baseMatrix = [1, 0, 0, 1,
                     -referenceX,
@@ -1258,6 +1274,8 @@ class TransformController extends BaseController
             return ;
         }
 
+        const { Matrix } = window.next2d.geom;
+
         scale_y = Util.$toFixed4(Util.$clamp(
             scale_y,
             TransformController.MIN_SCALE,
@@ -1277,13 +1295,14 @@ class TransformController extends BaseController
         let yMin =  Number.MAX_VALUE;
         let yMax = -Number.MAX_VALUE;
 
+        const concatenatedMatrix = Util.$sceneChange.concatenatedMatrix;
         if (activeElements.length > 1) {
 
             // 中心点の座標情報
             const point = Util.$referenceController.pointer;
 
-            const referenceX = point.x;
-            const referenceY = point.y;
+            const referenceX = point.x * Util.$zoomScale;
+            const referenceY = point.y * Util.$zoomScale;
 
             const parentMatrix = Util.$multiplicationMatrix(
                 [1, 0, 0, scale_y, 0, 0],
@@ -1358,11 +1377,20 @@ class TransformController extends BaseController
                 );
 
                 const place  = character.getPlace(frame);
-                const matrix = Util.$inverseMatrix(place.matrix);
+                const multiMatrix = Util.$multiplicationMatrix(
+                    concatenatedMatrix,
+                    place.matrix
+                );
+
+                const matrix = new Matrix(
+                    multiMatrix[0], multiMatrix[1], multiMatrix[2],
+                    multiMatrix[3], multiMatrix[4], multiMatrix[5]
+                );
+                matrix.invert();
 
                 const point = place.point;
-                const referenceX = point.x * matrix[0] + point.y * matrix[2] + matrix[4];
-                const referenceY = point.x * matrix[1] + point.y * matrix[3] + matrix[5];
+                const referenceX = point.x * matrix.a + point.y * matrix.c + matrix.tx;
+                const referenceY = point.x * matrix.b + point.y * matrix.d + matrix.ty;
 
                 const baseMatrix = [
                     1, 0, 0, 1,
@@ -1461,6 +1489,7 @@ class TransformController extends BaseController
         let yMin =  Number.MAX_VALUE;
         let yMax = -Number.MAX_VALUE;
 
+        const concatenatedMatrix = Util.$sceneChange.concatenatedMatrix;
         if (activeElements.length > 1) {
 
             // 中心点の座標情報
@@ -1497,6 +1526,7 @@ class TransformController extends BaseController
                 matrix.invert();
 
                 const point = place.point;
+
                 const localMatrix = Util.$multiplicationMatrix(
                     parentMatrix, [1, 0, 0, 1, point.x, point.y]
                 );
@@ -1553,9 +1583,15 @@ class TransformController extends BaseController
                 }
 
                 const place  = character.getPlace(frame);
+
+                const multiMatrix = Util.$multiplicationMatrix(
+                    concatenatedMatrix,
+                    place.matrix
+                );
+
                 const matrix = new Matrix(
-                    place.matrix[0], place.matrix[1], place.matrix[2],
-                    place.matrix[3], place.matrix[4], place.matrix[5]
+                    multiMatrix[0], multiMatrix[1], multiMatrix[2],
+                    multiMatrix[3], multiMatrix[4], multiMatrix[5]
                 );
                 matrix.invert();
 

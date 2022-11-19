@@ -1347,17 +1347,16 @@ class ArrowTool extends BaseTool
             place.matrix[4] += pointX / Util.$zoomScale;
             place.matrix[5] += pointY / Util.$zoomScale;
 
-            const bounds = character.getBounds();
-
             // 中心点を更新
+            const bounds = character.getBounds(parentMatrix);
             if (!place.point) {
                 place.point = {
-                    "x": bounds.xMin + Math.abs(bounds.xMax - bounds.xMin) / 2,
-                    "y": bounds.yMin + Math.abs(bounds.yMax - bounds.yMin) / 2
+                    "x": Util.$sceneChange.offsetX + bounds.xMin + Math.abs(bounds.xMax - bounds.xMin) / 2,
+                    "y": Util.$sceneChange.offsetY + bounds.yMin + Math.abs(bounds.yMax - bounds.yMin) / 2
                 };
             } else {
-                place.point.x +=  dx / Util.$zoomScale;
-                place.point.y +=  dy / Util.$zoomScale;
+                place.point.x += dx / Util.$zoomScale;
+                place.point.y += dy / Util.$zoomScale;
             }
 
             let rectMatrix = null;
@@ -1388,6 +1387,10 @@ class ArrowTool extends BaseTool
                     const maskWidth  = maskImage._$width  * Util.$zoomScale;
                     const maskHeight = maskImage._$height * Util.$zoomScale;
 
+                    // const dx = maskCharacter.screenX - character.screenX;
+                    // const dy = maskCharacter.screenY - character.screenY;
+                    // const pointX = dx * matrix.a + dy * matrix.c;
+                    // const pointY = dx * matrix.b + dy * matrix.d;
                     const x = (maskCharacter.screenX - character.screenX) * Util.$zoomScale;
                     const y = (maskCharacter.screenY - character.screenY) * Util.$zoomScale;
 
@@ -1408,8 +1411,8 @@ class ArrowTool extends BaseTool
                 }
             }
 
-            const left = Util.$offsetLeft + (Util.$sceneChange.offsetX + rectBounds.xMin) * Util.$zoomScale;
-            const top  = Util.$offsetTop  + (Util.$sceneChange.offsetY + rectBounds.yMin) * Util.$zoomScale;
+            const left = Util.$offsetLeft + (Util.$sceneChange.offsetX + bounds.xMin) * Util.$zoomScale;
+            const top  = Util.$offsetTop  + (Util.$sceneChange.offsetY + bounds.yMin) * Util.$zoomScale;
 
             divStyle += `left: ${left}px;`;
             divStyle += `top: ${top}px;`;

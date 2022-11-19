@@ -281,8 +281,15 @@ class MovieClip extends Instance
                 : -1;
 
             const workSpace  = Util.$currentWorkSpace();
+
+            // 現在のパラメーターをキャッシュ
             const offsetX = Util.$sceneChange.offsetX;
             const offsetY = Util.$sceneChange.offsetY;
+            const length  = Util.$sceneChange.length;
+            const matrix  = Util.$sceneChange.matrix.slice(0);
+
+            // 初期化
+            Util.$sceneChange.clear();
             for (let idx = 0; children.length > idx; ++idx) {
 
                 const node = children[idx];
@@ -299,8 +306,17 @@ class MovieClip extends Instance
                 Util.$sceneChange.offsetX = +node.dataset.offsetX;
                 Util.$sceneChange.offsetY = +node.dataset.offsetY;
 
+                if (idx) {
+                    Util.$sceneChange.length = idx;
+                    Util.$sceneChange.matrix.push(matrix[idx - 1]);
+                }
+
                 const parentFrame = instance.currentFrame;
                 for (const layer of instance._$layers.values()) {
+
+                    if (layer.mode === LayerMode.MASK) {
+                        continue;
+                    }
 
                     const characters = layer
                         .getActiveCharacter(parentFrame);
@@ -331,8 +347,11 @@ class MovieClip extends Instance
                 break;
             }
 
-            Util.$sceneChange.offsetX = offsetX;
-            Util.$sceneChange.offsetY = offsetY;
+            // キャッシュした情報をセット
+            Util.$sceneChange.length   = length;
+            Util.$sceneChange._$matrix = matrix;
+            Util.$sceneChange.offsetX  = offsetX;
+            Util.$sceneChange.offsetY  = offsetY;
         }
 
         const layers = Array.from(this._$layers.values());
