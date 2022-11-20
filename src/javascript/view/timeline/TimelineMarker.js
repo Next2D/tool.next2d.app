@@ -278,37 +278,31 @@ class TimelineMarker extends BaseTimeline
             return ;
         }
 
-        const halfWidth = element.clientWidth / 2;
-
         const content = document
             .getElementById("timeline-content");
-
-        let left     = 318 + halfWidth;
-        const top    = content.offsetTop - 1;
-        const height = window.screen.height;
+        if (!content) {
+            return ;
+        }
 
         const border = document
             .getElementById("timeline-marker-border");
-
-        const children = content.children;
-        if (children.length) {
-            const timelineWidth = Util.$timelineTool.timelineWidth;
-            const scrollX = Util.$timelineHeader.scrollX;
-
-            const frame = 1 + scrollX / timelineWidth | 0;
-            const index = Util.$timelineFrame.currentFrame - frame;
-
-            const element = children[0].lastElementChild;
-            const node = element.children[index];
-
-            // elementがなければ非表示にして終了
-            if (!node) {
-                border.setAttribute("style", "display: none;");
-                return ;
-            }
-
-            left = node.offsetLeft + halfWidth;
+        if (!border) {
+            return ;
         }
+
+        const markerLeft = element.offsetLeft;
+        const offsetX    = 318;
+        const toolWidth  = 45;
+
+        // 表示外なら非表示
+        if (0 > markerLeft || markerLeft + offsetX - toolWidth >= content.clientWidth) {
+            border.setAttribute("style", "display: none;");
+            return ;
+        }
+
+        const left   = offsetX + element.clientWidth / 2 + markerLeft;
+        const top    = content.offsetTop - 1;
+        const height = window.screen.height;
 
         border.setAttribute(
             "style", `height: ${height}px; top: ${top}px; left: ${left}px;`

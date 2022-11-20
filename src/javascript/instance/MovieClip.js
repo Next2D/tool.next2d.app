@@ -447,7 +447,7 @@ class MovieClip extends Instance
 
             const element = event.target;
             const index   = children.indexOf(element);
-            for (let idx = children.length -1; idx > -1; --idx) {
+            for (let idx = children.length - 1; idx > -1; --idx) {
 
                 const node = children[idx];
                 node.remove();
