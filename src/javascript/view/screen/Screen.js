@@ -424,12 +424,13 @@ class Screen extends BaseScreen
         div.dataset.child   = "true";
         div.dataset.preview = "true";
 
-        // create image
-        const canvas = Util.$getCanvas();
+        const matrix = Util.$sceneChange.concatenatedMatrix;
+        const bounds = character.getBounds(matrix);
 
+        // create image
         const context = character._$context;
         character._$context = null;
-        const image = character.draw(canvas);
+        const image = character.draw(Util.$getCanvas());
         div.appendChild(image);
         character._$context = context;
 
@@ -456,11 +457,11 @@ class Screen extends BaseScreen
                 const maskCharacter = maskLayer._$characters[0];
                 maskCharacter.dispose();
 
-                const canvas = Util.$getCanvas();
-                const maskImage = maskCharacter.draw(canvas);
+                const maskImage  = maskCharacter.draw(Util.$getCanvas());
+                const maskBounds = maskCharacter.getBounds(matrix);
 
-                const x = (maskCharacter.screenX - character.screenX) * Util.$zoomScale;
-                const y = (maskCharacter.screenY - character.screenY) * Util.$zoomScale;
+                const x = (maskBounds.xMin - bounds.xMin) * Util.$zoomScale;
+                const y = (maskBounds.yMin - bounds.yMin) * Util.$zoomScale;
 
                 const maskSrc    = maskImage.toDataURL();
                 const maskWidth  = maskImage._$width  * Util.$zoomScale;
@@ -484,10 +485,11 @@ class Screen extends BaseScreen
         divStyle += "pointer-events: none;";
         divStyle += "opacity: 0.25;";
 
-        const left = Util.$offsetLeft + (character.screenX + Util.$sceneChange.offsetX) * Util.$zoomScale;
-        const top  = Util.$offsetTop  + (character.screenY + Util.$sceneChange.$offsetY) * Util.$zoomScale;
-        divStyle += `left: ${left}px;`;
-        divStyle += `top: ${top}px;`;
+        let tx = Util.$offsetLeft + (Util.$sceneChange.offsetX + bounds.xMin) * Util.$zoomScale;
+        let ty = Util.$offsetTop  + (Util.$sceneChange.offsetY + bounds.yMin) * Util.$zoomScale;
+
+        divStyle += `left: ${tx}px;`;
+        divStyle += `top: ${ty}px;`;
 
         div.setAttribute("style", divStyle);
 
@@ -755,10 +757,11 @@ class Screen extends BaseScreen
                 const maskCharacter = maskLayer._$characters[0];
                 maskCharacter.dispose();
 
-                const maskImage = maskCharacter.draw(Util.$getCanvas());
+                const maskImage  = maskCharacter.draw(Util.$getCanvas());
+                const maskBounds = maskCharacter.getBounds(matrix);
 
-                const x = (maskCharacter.screenX - character.screenX) * Util.$zoomScale;
-                const y = (maskCharacter.screenY - character.screenY) * Util.$zoomScale;
+                const x = (maskBounds.xMin - bounds.xMin) * Util.$zoomScale;
+                const y = (maskBounds.yMin - bounds.yMin) * Util.$zoomScale;
 
                 const maskSrc    = maskImage.toDataURL();
                 const maskWidth  = maskImage._$width  * Util.$zoomScale;
@@ -772,8 +775,8 @@ class Screen extends BaseScreen
                 divStyle += "-webkit-mask-repeat: no-repeat;";
                 divStyle += `mask-position: ${x}px ${y}px;`;
                 divStyle += `-webkit-mask-position: ${x}px ${y}px;`;
-                divStyle += `mix-blend-mode: ${maskImage.style.mixBlendMode};`;
-                divStyle += `filter: ${maskImage.style.filter};`;
+                divStyle += `mix-blend-mode: ${canvas.style.mixBlendMode};`;
+                divStyle += `filter: ${canvas.style.filter};`;
 
             }
         }

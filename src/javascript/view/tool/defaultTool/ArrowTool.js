@@ -1380,21 +1380,20 @@ class ArrowTool extends BaseTool
                 const maskLayer = scene.getLayer(layer.maskId);
                 if (maskLayer.lock && maskLayer._$characters.length) {
 
-                    const maskCanvas = Util.$getCanvas();
+                    const matrix = Util.$sceneChange.concatenatedMatrix;
 
                     const maskCharacter = maskLayer._$characters[0];
-                    const maskImage     = maskCharacter.draw(maskCanvas);
+                    maskCharacter.dispose();
+
+                    const maskImage     = maskCharacter.draw(Util.$getCanvas());
+                    const maskBounds    = maskCharacter.getBounds(matrix);
 
                     const maskSrc    = maskImage.toDataURL();
                     const maskWidth  = maskImage._$width  * Util.$zoomScale;
                     const maskHeight = maskImage._$height * Util.$zoomScale;
 
-                    // const dx = maskCharacter.screenX - character.screenX;
-                    // const dy = maskCharacter.screenY - character.screenY;
-                    // const pointX = dx * matrix.a + dy * matrix.c;
-                    // const pointY = dx * matrix.b + dy * matrix.d;
-                    const x = (maskCharacter.screenX - character.screenX) * Util.$zoomScale;
-                    const y = (maskCharacter.screenY - character.screenY) * Util.$zoomScale;
+                    const x = (maskBounds.xMin - bounds.xMin) * Util.$zoomScale;
+                    const y = (maskBounds.yMin - bounds.yMin) * Util.$zoomScale;
 
                     divStyle += `mask: url(${maskSrc}), none;`;
                     divStyle += `-webkit-mask: url(${maskSrc}), none;`;
@@ -1405,8 +1404,7 @@ class ArrowTool extends BaseTool
                     divStyle += `mask-position: ${x}px ${y}px;`;
                     divStyle += `-webkit-mask-position: ${x}px ${y}px;`;
 
-                    const canvas = Util.$getCanvas();
-                    const image = character.draw(canvas);
+                    const image = character.draw(Util.$getCanvas());
                     divStyle += `mix-blend-mode: ${image.style.mixBlendMode};`;
                     divStyle += `filter: ${image.style.filter};`;
 
