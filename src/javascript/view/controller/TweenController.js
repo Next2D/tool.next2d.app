@@ -1477,9 +1477,10 @@ class TweenController extends BaseController
             .getBounds();
 
         const matrix = Util.$sceneChange.concatenatedMatrix;
+
         const x = pointer.x * matrix[0] + pointer.y * matrix[2] + matrix[4];
         const y = pointer.x * matrix[1] + pointer.y * matrix[3] + matrix[5];
-        
+
         const width  = Math.abs(Math.ceil(bounds.xMax - bounds.xMin) / 2 * Util.$zoomScale);
         const height = Math.abs(Math.ceil(bounds.yMax - bounds.yMin) / 2 * Util.$zoomScale);
 
