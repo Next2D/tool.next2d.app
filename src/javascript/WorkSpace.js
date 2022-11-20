@@ -178,6 +178,9 @@ class WorkSpace
 
         // タイムラインの擬似スクロールの座標をセット
         Util.$timelineScroll.setX();
+
+        // スクリーンの表示をrootに変更
+        Util.$sceneChange.reload(0);
     }
 
     /**
