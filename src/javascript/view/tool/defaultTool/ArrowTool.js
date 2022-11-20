@@ -1203,7 +1203,6 @@ class ArrowTool extends BaseTool
                 .$referenceController
                 .setInputValue(place.point.x, place.point.y);
 
-            console.log(element.offsetWidth);
             const left = Util.$offsetLeft + place.point.x * Util.$zoomScale - element.offsetWidth  / 2;
             const top  = Util.$offsetTop  + place.point.y * Util.$zoomScale - element.offsetHeight / 2;
 
@@ -1346,6 +1345,7 @@ class ArrowTool extends BaseTool
             const place  = character.getPlace(frame);
             const pointX = dx * matrix.a + dy * matrix.c;
             const pointY = dx * matrix.b + dy * matrix.d;
+            
             place.matrix[4] += pointX / Util.$zoomScale;
             place.matrix[5] += pointY / Util.$zoomScale;
 

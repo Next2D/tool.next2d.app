@@ -556,8 +556,8 @@ class TweenController extends BaseController
      */
     changeEaseSelect ()
     {
-        const targetFrame = Util.$timelineLayer.targetFrame;
-        if (!targetFrame) {
+        const targetLayer = Util.$timelineLayer.targetLayer;
+        if (!targetLayer) {
             return ;
         }
 
@@ -570,12 +570,11 @@ class TweenController extends BaseController
 
         const scene = Util.$currentWorkSpace().scene;
         const layer = scene.getLayer(
-            targetFrame.dataset.layerId | 0
+            targetLayer.dataset.layerId | 0
         );
 
-        const frame = targetFrame.dataset.frame | 0;
+        const frame = Util.$timelineFrame.currentFrame;
         const characters = layer.getActiveCharacter(frame);
-
         if (!characters.length && characters.length > 1) {
             return ;
         }
@@ -1057,6 +1056,8 @@ class TweenController extends BaseController
             return ;
         }
 
+        const concatenatedMatrix = Util.$sceneChange.concatenatedMatrix;
+
         const frame = Util.$timelineFrame.currentFrame;
         const scene = Util.$currentWorkSpace().scene;
         for (let idx = 0; idx < activeElements.length; ++idx) {
@@ -1116,7 +1117,13 @@ class TweenController extends BaseController
 
                 // 表示座標
                 const matrix = character.getPlace(frame).matrix;
-                const bounds = Util.$boundsMatrix(baseBounds, matrix);
+
+                const multiMatrix = Util.$multiplicationMatrix(
+                    concatenatedMatrix,
+                    matrix
+                );
+
+                const bounds = Util.$boundsMatrix(baseBounds, multiMatrix);
                 const width  = Math.abs(Math.ceil(bounds.xMax - bounds.xMin) / 2 * Util.$zoomScale);
                 const height = Math.abs(Math.ceil(bounds.yMax - bounds.yMin) / 2 * Util.$zoomScale);
                 div.style.left = `${Util.$offsetLeft + bounds.xMin * Util.$zoomScale + width  - 2}px`;
@@ -1319,8 +1326,21 @@ class TweenController extends BaseController
                 .getTween(range.startFrame)
                 .curve[element.dataset.index];
 
-            point.x += x;
-            point.y += y;
+            const parentMatrix = Util.$sceneChange.concatenatedMatrix;
+
+            const { Matrix } = next2d.geom;
+
+            const matrix = new Matrix(
+                parentMatrix[0], parentMatrix[1], parentMatrix[2],
+                parentMatrix[3], parentMatrix[4], parentMatrix[5]
+            );
+            matrix.invert();
+
+            const dx = x * matrix.a + y * matrix.c;
+            const dy = x * matrix.b + y * matrix.d;
+
+            point.x += dx;
+            point.y += dy;
 
             // 再計算
             this.relocationPlace(character, range.startFrame);
@@ -1456,11 +1476,16 @@ class TweenController extends BaseController
             .getLibrary(character.libraryId)
             .getBounds();
 
+        const matrix = Util.$sceneChange.concatenatedMatrix;
+        const x = pointer.x * matrix[0] + pointer.y * matrix[2] + matrix[4];
+        const y = pointer.x * matrix[1] + pointer.y * matrix[3] + matrix[5];
+
+
         const width  = Math.abs(Math.ceil(bounds.xMax - bounds.xMin) / 2 * Util.$zoomScale);
         const height = Math.abs(Math.ceil(bounds.yMax - bounds.yMin) / 2 * Util.$zoomScale);
 
-        div.style.left = `${Util.$offsetLeft + pointer.x * Util.$zoomScale + width  - 7}px`;
-        div.style.top  = `${Util.$offsetTop  + pointer.y * Util.$zoomScale + height - 7}px`;
+        div.style.left = `${Util.$offsetLeft + x * Util.$zoomScale + width  - 7}px`;
+        div.style.top  = `${Util.$offsetTop  + y * Util.$zoomScale + height - 7}px`;
 
         if (pointer.usePoint) {
             div.classList.remove("tween-pointer-disabled");
@@ -2294,7 +2319,9 @@ class TweenController extends BaseController
         const tweenObject = character.getTween(range.startFrame);
 
         const index  = tweenObject.curve.length;
-        const bounds = character.getBounds();
+
+        const mateix = Util.$sceneChange.concatenatedMatrix;
+        const bounds = character.getBounds(mateix);
 
         const pointer = {
             "usePoint": true,

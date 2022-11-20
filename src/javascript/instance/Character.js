@@ -1101,70 +1101,31 @@ class Character
      */
     getNearPlaceFrame (frame)
     {
-        // 再生中は変更がないので、内部キャッシュを利用して高速化
-        if (!Util.$timelinePlayer._$stopFlag) {
+        // キャッシュがなければキャッシュ
+        if (!this._$cachePlaces.length) {
+            // 降順
+            this._$cachePlaces = Array.from(this._$places.keys());
+            this._$cachePlaces.sort((a, b) =>
+            {
+                switch (true) {
 
-            // キャッシュがなければキャッシュ
-            if (!this._$cachePlaces.length) {
-                // 降順
-                this._$cachePlaces = Array.from(this._$places.keys());
-                this._$cachePlaces.sort((a, b) =>
-                {
-                    switch (true) {
+                    case a > b:
+                        return -1;
 
-                        case a > b:
-                            return -1;
+                    case a < b:
+                        return 1;
 
-                        case a < b:
-                            return 1;
+                    default:
+                        return 0;
 
-                        default:
-                            return 0;
-
-                    }
-                });
-            }
-
-            let idx = 0;
-            while (this._$cachePlaces.length > idx) {
-
-                const placeFrame = this._$cachePlaces[idx++] | 0;
-
-                if (frame > placeFrame) {
-                    return placeFrame;
                 }
-
-            }
-
-            return 1;
+            });
         }
 
-        // 再生が終了してキャッシュがあれば削除
-        if (this._$cachePlaces.length) {
-            this._$cachePlaces.length = 0;
-        }
+        let idx = 0;
+        while (this._$cachePlaces.length > idx) {
 
-        // 降順
-        const places = Array.from(this._$places.keys());
-        places.sort((a, b) =>
-        {
-            switch (true) {
-
-                case a > b:
-                    return -1;
-
-                case a < b:
-                    return 1;
-
-                default:
-                    return 0;
-
-            }
-        });
-
-        for (let idx = 0; idx < places.length; ++idx) {
-
-            const placeFrame = places[idx];
+            const placeFrame = this._$cachePlaces[idx++] | 0;
 
             if (frame > placeFrame) {
                 return placeFrame;
@@ -1189,6 +1150,9 @@ class Character
     {
         place.frame = frame | 0;
         this._$places.set(frame | 0, place);
+
+        // キャッシュを削除
+        this._$cachePlaces.length = 0;
     }
 
     /**
@@ -1217,6 +1181,9 @@ class Character
     deletePlace (frame)
     {
         this._$places.delete(frame | 0);
+
+        // キャッシュを削除
+        this._$cachePlaces.length = 0;
     }
 
     /**
@@ -1419,6 +1386,9 @@ class Character
             layer.deleteCharacter(this.id);
             return this;
         }
+
+        // キャッシュを削除
+        this._$cachePlaces.length = 0;
 
         // 開始位置より先のフレームを指定した場合は分割
         if (start_frame > this.startFrame) {
