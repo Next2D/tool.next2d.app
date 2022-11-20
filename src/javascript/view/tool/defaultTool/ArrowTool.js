@@ -773,6 +773,7 @@ class ArrowTool extends BaseTool
                 case !node.dataset.child:
                 case node.dataset.child === "tween":
                 case node.dataset.preview === "true":
+                case node.classList.contains("standard-point"):
                     continue;
 
                 default:
@@ -1202,8 +1203,9 @@ class ArrowTool extends BaseTool
                 .$referenceController
                 .setInputValue(place.point.x, place.point.y);
 
-            const left = Util.$offsetLeft + place.point.x * Util.$zoomScale - 8;
-            const top  = Util.$offsetTop  + place.point.y * Util.$zoomScale - 8;
+            console.log(element.offsetWidth);
+            const left = Util.$offsetLeft + place.point.x * Util.$zoomScale - element.offsetWidth  / 2;
+            const top  = Util.$offsetTop  + place.point.y * Util.$zoomScale - element.offsetHeight / 2;
 
             element
                 .setAttribute("style", `left: ${left}px; top: ${top}px;`);
@@ -1572,10 +1574,7 @@ class ArrowTool extends BaseTool
 
             // 複数選択時には選択中心位置に移動
             if (!Util.$referenceController.pointer) {
-                Util.$referenceController.pointer = {
-                    "x": xMin + width  / 2,
-                    "y": yMin + height / 2
-                };
+                Util.$referenceController.resetPointer();
             }
 
             document

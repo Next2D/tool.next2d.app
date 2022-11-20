@@ -384,8 +384,11 @@ class MovieClip extends Instance
 
             const div = document.createElement("div");
             div.setAttribute("class", "standard-point");
+
+            const left = Util.$offsetLeft + Util.$sceneChange.offsetX * Util.$zoomScale - 6;
+            const top  = Util.$offsetTop  + Util.$sceneChange.offsetY * Util.$zoomScale - 6;
             div.setAttribute(
-                "style", `left: ${Util.$offsetLeft + Util.$sceneChange.offsetX * Util.$zoomScale - 6}px; top: ${Util.$offsetTop + Util.$sceneChange.offsetY * Util.$zoomScale - 6}px`
+                "style", `left: ${left}px; top: ${top}px;`
             );
             div.dataset.child = "true";
 

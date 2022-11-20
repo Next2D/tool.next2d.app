@@ -726,8 +726,8 @@ class TransformController extends BaseController
 
             referenceElement.setAttribute("style", "");
 
-            const left = pointX - referenceElement.clientWidth  / 2;
-            const top  = pointY - referenceElement.clientHeight / 2;
+            const left = pointX - referenceElement.offsetWidth  / 2;
+            const top  = pointY - referenceElement.offsetHeight / 2;
             referenceElement.setAttribute(
                 "style",
                 `left: ${left}px; top: ${top}px;`
