@@ -63,9 +63,12 @@ class SceneChange extends BaseScreen
      */
     get concatenatedMatrix ()
     {
-        let matrix = [1, 0, 0, 1, 0, 0];
+        let matrix = new Float32Array([1, 0, 0, 1, 0, 0]);
         for (let idx = 0; this._$matrix.length > idx; ++idx) {
-            matrix = Util.$multiplicationMatrix(this._$matrix[idx], matrix);
+            matrix = Util.$multiplicationMatrix(
+                matrix,
+                this._$matrix[idx]
+            );
         }
         return matrix;
     }

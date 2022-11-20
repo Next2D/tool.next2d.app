@@ -296,11 +296,7 @@ class Screen extends BaseScreen
                     "colorTransform": [1, 1, 1, 1, 0, 0, 0, 0],
                     "blendMode": "normal",
                     "filter": [],
-                    "depth": layer._$characters.length,
-                    "point": {
-                        "x": localX,
-                        "y": localY
-                    }
+                    "depth": layer._$characters.length
                 };
 
                 // MovieClipの場合はループ設定
@@ -382,6 +378,19 @@ class Screen extends BaseScreen
 
                 place.matrix[4] -= dx;
                 place.matrix[5] -= dy;
+
+                const matrixBounds = character.getBounds(concatenatedMatrix);
+                const tx = Util.$sceneChange.offsetX + matrixBounds.xMin;
+                const ty = Util.$sceneChange.offsetY + matrixBounds.yMin;
+                const w  = Math.ceil(Math.abs(matrixBounds.xMax - matrixBounds.xMin)) / 2;
+                const h  = Math.ceil(Math.abs(matrixBounds.yMax - matrixBounds.yMin)) / 2;
+
+                // 中心点をセット
+                place.point = {
+                    "x": tx + w,
+                    "y": ty + h
+                };
+
             }
 
             // タイムラインの表示を再計算
@@ -775,48 +784,7 @@ class Screen extends BaseScreen
             case InstanceType.MOVIE_CLIP:
                 div.addEventListener("dblclick", (event) =>
                 {
-                    // 親のイベントを中止する
-                    event.stopPropagation();
-
-                    const target = event.currentTarget;
-
-                    const layer = Util
-                        .$currentWorkSpace()
-                        .scene
-                        .getLayer(
-                            target.dataset.layerId | 0
-                        );
-
-                    const characterId = target.dataset.characterId | 0;
-                    const character   = layer.getCharacter(characterId);
-
-                    // アクティブなDisplayObjectのIDを格納
-                    Util.$activeCharacterIds.push(characterId);
-
-                    // シーン名をリストに追加(fixed logic)
-                    Util
-                        .$currentWorkSpace()
-                        .scene
-                        .addSceneName(true);
-
-                    // 調整用のxy座標(fixed logic)
-                    const matrix = Util.$sceneChange.concatenatedMatrix;
-                    const x  = character.x;
-                    const y  = character.y;
-                    const dx = x * matrix[0] + y * matrix[2] + matrix[4];
-                    const dy = x * matrix[1] + y * matrix[3] + matrix[5];
-
-                    Util.$sceneChange.offsetX = dx;
-                    Util.$sceneChange.offsetY = dy;
-
-                    const frame = Util.$timelineFrame.currentFrame;
-                    const place = character.getPlace(frame);
-                    Util.$sceneChange.matrix.push(place.matrix);
-
-                    // シーン移動
-                    Util.$sceneChange.execute(
-                        target.dataset.libraryId | 0
-                    );
+                    this.changeScene(event);
                 });
                 break;
 
@@ -840,113 +808,7 @@ class Screen extends BaseScreen
 
                     div.addEventListener("dblclick", (event) =>
                     {
-                        // 親のイベントを中止する
-                        event.stopPropagation();
-
-                        // ツールをリセット
-                        Util.$tools.reset();
-
-                        const children = document
-                            .getElementById("stage-area")
-                            .children;
-
-                        for (let idx = 0; idx < children.length; ++idx) {
-
-                            const node = children[idx];
-                            node.style.pointerEvents = "none";
-
-                        }
-
-                        const element = event.currentTarget;
-                        element.style.pointerEvents = "";
-
-                        const canvas = element.firstChild;
-                        canvas.remove();
-
-                        const textarea = window.document.createElement("textarea");
-                        element.style.display = "none";
-                        element.parentNode.appendChild(textarea);
-
-                        const scene       = Util.$currentWorkSpace().scene;
-                        const layerId     = element.dataset.layerId | 0;
-                        const layer       = scene.getLayer(layerId);
-                        const characterId = element.dataset.characterId | 0;
-                        const character   = layer.getCharacter(characterId);
-                        const instance    = workSpace.getLibrary(character.libraryId);
-
-                        textarea.value = instance._$text;
-
-                        textarea.style.border = instance._$border
-                            ? "1px solid gray"
-                            : "1px dashed gray";
-
-                        textarea.style.fontSize      = `${instance._$size}px`;
-                        textarea.style.fontFamily    = instance._$font;
-                        textarea.style.width         = `${parseFloat(canvas.style.width) - 4}px`;
-                        textarea.style.height        = `${parseFloat(canvas.style.height)}px`;
-                        textarea.style.position      = "absolute";
-                        textarea.style.left          = element.style.left;
-                        textarea.style.top           = element.style.top;
-                        textarea.style.pointerEvents = "auto";
-
-                        if (!instance._$border) {
-                            textarea.style.backgroundColor = "transparent";
-                        }
-
-                        // set params
-                        textarea.dataset.characterId = `${character.id}`;
-                        textarea.dataset.layerId     = `${layer_id}`;
-                        textarea.dataset.libraryId   = `${character.libraryId}`;
-                        textarea.dataset.child       = "true";
-
-                        if (!instance._$multiline) {
-                            textarea.addEventListener("keydown", (event) =>
-                            {
-                                if (event.key === "Enter") {
-                                    event.preventDefault();
-                                    return false;
-                                }
-                            });
-                        }
-
-                        textarea.addEventListener("focusin", () =>
-                        {
-                            Util.$keyLock = true;
-                        });
-
-                        textarea.addEventListener("focusout", (event) =>
-                        {
-                            const element     = event.target;
-                            const scene       = Util.$currentWorkSpace().scene;
-                            const layerId     = element.dataset.layerId | 0;
-                            const layer       = scene.getLayer(layerId);
-                            const characterId = element.dataset.characterId | 0;
-                            const character   = layer.getCharacter(characterId);
-                            const instance    = workSpace.getLibrary(character.libraryId);
-
-                            // update
-                            instance._$text = element.value;
-
-                            // clear
-                            character.dispose();
-                            Util.$keyLock     = false;
-
-                            const children = document
-                                .getElementById("stage-area")
-                                .children;
-
-                            for (let idx = 0; idx < children.length; ++idx) {
-                                const node = children[idx];
-                                node.style.pointerEvents = "";
-                            }
-
-                            const frame = Util.$timelineFrame.currentFrame;
-                            scene.changeFrame(frame);
-
-                        });
-
-                        textarea.focus();
-
+                        this.selectText(event);
                     });
                 }
                 break;
@@ -956,6 +818,178 @@ class Screen extends BaseScreen
         document
             .getElementById("stage-area")
             .appendChild(div);
+    }
+
+    /**
+     * @description 指定したテキストを選択状態に
+     *
+     * @param  {MouseEvent} event
+     * @return {void}
+     * @method
+     * @public
+     */
+    selectText (event)
+    {
+        // 親のイベントを中止する
+        event.stopPropagation();
+
+        // ツールをリセット
+        Util.$tools.reset();
+
+        const children = document
+            .getElementById("stage-area")
+            .children;
+
+        for (let idx = 0; idx < children.length; ++idx) {
+            children[idx].style.pointerEvents = "none";
+        }
+
+        const element = event.currentTarget;
+        element.style.pointerEvents = "";
+
+        const canvas = element.firstChild;
+        canvas.remove();
+
+        const textarea = window.document.createElement("textarea");
+        element.style.display = "none";
+        element.parentNode.appendChild(textarea);
+
+        const workSpace   = Util.$currentWorkSpace();
+        const scene       = workSpace.scene;
+        const layerId     = element.dataset.layerId | 0;
+        const layer       = scene.getLayer(layerId);
+        const characterId = element.dataset.characterId | 0;
+        const character   = layer.getCharacter(characterId);
+        const instance    = workSpace.getLibrary(character.libraryId);
+
+        textarea.value = instance._$text;
+
+        textarea.style.border = instance._$border
+            ? "1px solid gray"
+            : "1px dashed gray";
+
+        textarea.style.fontSize      = `${instance._$size}px`;
+        textarea.style.fontFamily    = instance._$font;
+        textarea.style.width         = `${parseFloat(canvas.style.width) - 4}px`;
+        textarea.style.height        = `${parseFloat(canvas.style.height)}px`;
+        textarea.style.position      = "absolute";
+        textarea.style.left          = element.style.left;
+        textarea.style.top           = element.style.top;
+        textarea.style.pointerEvents = "auto";
+
+        if (!instance._$border) {
+            textarea.style.backgroundColor = "transparent";
+        }
+
+        // set params
+        textarea.dataset.characterId = `${character.id}`;
+        textarea.dataset.layerId     = `${layer_id}`;
+        textarea.dataset.libraryId   = `${character.libraryId}`;
+        textarea.dataset.child       = "true";
+
+        if (!instance._$multiline) {
+            textarea.addEventListener("keydown", (event) =>
+            {
+                if (event.key === "Enter") {
+                    event.preventDefault();
+                    return false;
+                }
+            });
+        }
+
+        textarea.addEventListener("focusin", () =>
+        {
+            Util.$keyLock = true;
+        });
+
+        textarea.addEventListener("focusout", (event) =>
+        {
+            const element     = event.target;
+            const workSpace   = Util.$currentWorkSpace();
+            const scene       = workSpace.scene;
+            const layerId     = element.dataset.layerId | 0;
+            const layer       = scene.getLayer(layerId);
+            const characterId = element.dataset.characterId | 0;
+            const character   = layer.getCharacter(characterId);
+            const instance    = workSpace.getLibrary(character.libraryId);
+
+            // update
+            instance._$text = element.value;
+
+            // clear
+            character.dispose();
+            Util.$keyLock     = false;
+
+            const children = document
+                .getElementById("stage-area")
+                .children;
+
+            for (let idx = 0; idx < children.length; ++idx) {
+                const node = children[idx];
+                node.style.pointerEvents = "";
+            }
+
+            const frame = Util.$timelineFrame.currentFrame;
+            scene.changeFrame(frame);
+
+        });
+
+        textarea.focus();
+    }
+
+    /**
+     * @description 指定のMovieClipに移動
+     *
+     * @param  {MouseEvent} event
+     * @return {void}
+     * @method
+     * @public
+     */
+    changeScene (event)
+    {
+        // 親のイベントを中止する
+        event.stopPropagation();
+
+        const target = event.currentTarget;
+
+        const layer = Util
+            .$currentWorkSpace()
+            .scene
+            .getLayer(
+                target.dataset.layerId | 0
+            );
+
+        const characterId = target.dataset.characterId | 0;
+        const character   = layer.getCharacter(characterId);
+
+        // アクティブなDisplayObjectのIDを格納
+        Util.$activeCharacterIds.push(characterId);
+
+        // シーン名をリストに追加(fixed logic)
+        Util
+            .$currentWorkSpace()
+            .scene
+            .addSceneName(true);
+
+        // 調整用のxy座標(fixed logic)
+        const matrix = Util.$sceneChange.concatenatedMatrix;
+
+        const x  = character.x;
+        const y  = character.y;
+        const dx = x * matrix[0] + y * matrix[2] + matrix[4];
+        const dy = x * matrix[1] + y * matrix[3] + matrix[5];
+
+        Util.$sceneChange.offsetX = dx;
+        Util.$sceneChange.offsetY = dy;
+
+        const frame = Util.$timelineFrame.currentFrame;
+        const place = character.getPlace(frame);
+        Util.$sceneChange.matrix.push(place.matrix);
+
+        // シーン移動
+        Util.$sceneChange.execute(
+            target.dataset.libraryId | 0
+        );
     }
 
     /**

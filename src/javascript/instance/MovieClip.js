@@ -439,12 +439,29 @@ class MovieClip extends Instance
             // モーダルを全て閉じる
             Util.$endMenu();
 
-            // アクティブな情報を削除
-            Util.$activeCharacterIds.pop();
-            Util.$sceneChange.matrix.pop();
-            Util.$sceneChange.length--;
+            const children = Array.from(
+                document
+                    .getElementById("scene-name-menu-list")
+                    .children
+            );
 
             const element = event.target;
+            const index   = children.indexOf(element);
+            for (let idx = children.length -1; idx > -1; --idx) {
+
+                const node = children[idx];
+                node.remove();
+
+                // アクティブな情報を削除
+                Util.$activeCharacterIds.pop();
+                Util.$sceneChange.matrix.pop();
+                Util.$sceneChange.length--;
+
+                if (index === idx) {
+                    break;
+                }
+            }
+
             Util.$sceneChange.offsetX = +element.dataset.offsetX;
             Util.$sceneChange.offsetY = +element.dataset.offsetY;
 
@@ -1058,11 +1075,12 @@ class MovieClip extends Instance
      * @description 書き出し用のObjectを返す
      *              Returns an Object for export
      *
+     * @param  {boolean} [with_character_id=false]
      * @return {object}
      * @method
      * @public
      */
-    toPublish ()
+    toPublish (with_character_id = false)
     {
         const dictionary   = [];
         const controller   = [];
@@ -1150,7 +1168,7 @@ class MovieClip extends Instance
                     Util.$useIds.set(instance.id, true);
                 }
 
-                dictionary.push({
+                const object = {
                     "name": character.name,
                     "characterId": instance.id,
                     "endFrame": endFrame,
@@ -1158,7 +1176,13 @@ class MovieClip extends Instance
                     "clipDepth": layer.mode === LayerMode.MASK
                         ? index + clipCount + currentPlaceId
                         : 0
-                });
+                };
+
+                if (with_character_id) {
+                    object.id = character.id;
+                }
+
+                dictionary.push(object);
 
                 let placeIndex = 0;
                 for (let frame = startFrame; frame < endFrame; ++frame) {
@@ -1383,7 +1407,7 @@ class MovieClip extends Instance
 
             // キャッシュがなけれなキャッシュ
             if (!this._$publishObject) {
-                this._$publishObject = this.toPublish();
+                this._$publishObject = this.toPublish(true);
             }
 
             object = this._$publishObject;
@@ -1394,7 +1418,7 @@ class MovieClip extends Instance
                 this._$publishObject = null;
             }
 
-            object = this.toPublish();
+            object = this.toPublish(true);
         }
 
         let frame = parent_frame || 1;
@@ -1495,20 +1519,6 @@ class MovieClip extends Instance
 
                         displayObject = instance
                             .createInstance(place, childRange, frame);
-
-                        if (characterId > 0) {
-
-                            for (const layer of this._$layers.values()) {
-
-                                if (!layer._$instances.has(characterId)) {
-                                    continue;
-                                }
-
-                                displayObject.visible = false;
-                                break;
-                            }
-
-                        }
                     }
                     break;
 
@@ -1521,6 +1531,10 @@ class MovieClip extends Instance
                     displayObject = instance.createInstance();
                     break;
 
+            }
+
+            if (characterId > -1 && tag.id === characterId) {
+                displayObject.visible = false;
             }
 
             // matrix

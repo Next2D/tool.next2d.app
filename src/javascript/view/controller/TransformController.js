@@ -641,12 +641,18 @@ class TransformController extends BaseController
             );
 
             // 画面の拡大縮小対応
-            const place  = character.getPlace(frame);
-            const bounds = character.getBounds();
+            const place = character.getPlace(frame);
             if (!place.point) {
+
+                const bounds = character.getBounds(matrix);
+                const tx = Util.$sceneChange.offsetX + bounds.xMin;
+                const ty = Util.$sceneChange.offsetY + bounds.yMin;
+                const w  = Math.ceil(Math.abs(bounds.xMax - bounds.xMin)) / 2;
+                const h  = Math.ceil(Math.abs(bounds.yMax - bounds.yMin)) / 2;
+
                 place.point = {
-                    "x": bounds.xMin + character.width  / 2,
-                    "y": bounds.yMin + character.height / 2
+                    "x": tx + w,
+                    "y": ty + h
                 };
             }
 
