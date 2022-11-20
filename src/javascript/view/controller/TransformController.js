@@ -1031,8 +1031,14 @@ class TransformController extends BaseController
             // 中心点の座標情報
             const point = Util.$referenceController.pointer;
 
-            const referenceX = point.x;
-            const referenceY = point.y;
+            const matrix = new Matrix(
+                concatenatedMatrix[0], concatenatedMatrix[1], concatenatedMatrix[2],
+                concatenatedMatrix[3], concatenatedMatrix[4], concatenatedMatrix[5]
+            );
+            matrix.invert();
+
+            const referenceX = point.x * matrix.a + point.y * matrix.c + matrix.tx;
+            const referenceY = point.x * matrix.b + point.y * matrix.d + matrix.ty;
 
             const parentMatrix = Util.$multiplicationMatrix(
                 [scale_x, 0, 0, 1, 0, 0],
@@ -1307,8 +1313,14 @@ class TransformController extends BaseController
             // 中心点の座標情報
             const point = Util.$referenceController.pointer;
 
-            const referenceX = point.x * Util.$zoomScale;
-            const referenceY = point.y * Util.$zoomScale;
+            const matrix = new Matrix(
+                concatenatedMatrix[0], concatenatedMatrix[1], concatenatedMatrix[2],
+                concatenatedMatrix[3], concatenatedMatrix[4], concatenatedMatrix[5]
+            );
+            matrix.invert();
+
+            const referenceX = point.x * matrix.a + point.y * matrix.c + matrix.tx;
+            const referenceY = point.x * matrix.b + point.y * matrix.d + matrix.ty;
 
             const parentMatrix = Util.$multiplicationMatrix(
                 [1, 0, 0, scale_y, 0, 0],
@@ -1501,8 +1513,14 @@ class TransformController extends BaseController
             // 中心点の座標情報
             const point = Util.$referenceController.pointer;
 
-            const referenceX = point.x;
-            const referenceY = point.y;
+            const matrix = new Matrix(
+                concatenatedMatrix[0], concatenatedMatrix[1], concatenatedMatrix[2],
+                concatenatedMatrix[3], concatenatedMatrix[4], concatenatedMatrix[5]
+            );
+            matrix.invert();
+
+            const referenceX = point.x * matrix.a + point.y * matrix.c + matrix.tx;
+            const referenceY = point.x * matrix.b + point.y * matrix.d + matrix.ty;
 
             const radian = rotate * Util.$Deg2Rad;
             const parentMatrix = Util.$multiplicationMatrix(
@@ -1525,20 +1543,10 @@ class TransformController extends BaseController
 
                 // 中心点の移動
                 const place = character.getPlace(frame);
-                const matrix = new Matrix(
-                    place.matrix[0], place.matrix[1], place.matrix[2],
-                    place.matrix[3], place.matrix[4], place.matrix[5]
-                );
-                matrix.invert();
-
                 const point = place.point;
 
-                const localMatrix = Util.$multiplicationMatrix(
-                    parentMatrix, [1, 0, 0, 1, point.x, point.y]
-                );
-
-                point.x = localMatrix[4] + referenceX;
-                point.y = localMatrix[5] + referenceY;
+                point.x = referenceX;
+                point.y = referenceY;
 
                 const multiMatrix = Util.$multiplicationMatrix(
                     parentMatrix, place.matrix
