@@ -1345,7 +1345,7 @@ class ArrowTool extends BaseTool
             const place  = character.getPlace(frame);
             const pointX = dx * matrix.a + dy * matrix.c;
             const pointY = dx * matrix.b + dy * matrix.d;
-            
+
             place.matrix[4] += pointX / Util.$zoomScale;
             place.matrix[5] += pointY / Util.$zoomScale;
 
