@@ -47,6 +47,13 @@ class TimelineTool extends BaseTimeline
          * @private
          */
         this._$disableAll = false;
+
+        /**
+         * @type {boolean}
+         * @default false
+         * @private
+         */
+        this._$preview = false;
     }
 
     /**
@@ -125,6 +132,18 @@ class TimelineTool extends BaseTimeline
         if (element) {
             this.setInputEvent(element);
         }
+    }
+
+    /**
+     * @description プレビュー機能のOn/Offフラグ
+     *
+     * @member {boolean}
+     * @readonly
+     * @public
+     */
+    get preview ()
+    {
+        return this._$preview;
     }
 
     /**
@@ -1669,17 +1688,19 @@ class TimelineTool extends BaseTimeline
         const element = document
             .getElementById("timeline-preview");
 
-        if (element.classList.contains("timeline-preview-active")) {
+        if (!element) {
+            return ;
+        }
 
-            element
-                .classList
-                .remove("timeline-preview-active");
+        if (this._$preview) {
+
+            this._$preview = false;
+            element.setAttribute("class", "");
 
         } else {
 
-            element
-                .classList
-                .add("timeline-preview-active");
+            this._$preview = true;
+            element.setAttribute("class", "timeline-preview-active");
 
         }
     }

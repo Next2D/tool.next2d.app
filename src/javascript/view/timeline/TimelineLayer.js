@@ -1980,11 +1980,7 @@ class TimelineLayer extends BaseTimeline
      */
     showLayerPreview (event)
     {
-        if (!document
-            .getElementById("timeline-preview")
-            .classList
-            .contains("timeline-preview-active")
-        ) {
+        if (!Util.$timelineTool.preview) {
             return ;
         }
 
@@ -2075,30 +2071,32 @@ class TimelineLayer extends BaseTimeline
                 matrix.scale(scale, scale);
                 bitmapData.draw(sprite, matrix);
 
+                const context = bitmapData.drawFromCanvas(Util.$getCanvas());
+
+                // player側のメモリを解放
+                bitmapData.dispose();
+
                 while (preview.children.length) {
-                    preview.children[0].remove();
+                    const node = preview.children[0];
+                    Util.$poolCanvas(node);
+                    node.remove();
                 }
 
-                const image = new Image();
-                image.onload = () =>
-                {
-                    preview.appendChild(image);
+                let style = "";
+                style += `left: ${event.pageX + 10}px;`;
+                style += `top: ${event.pageY - preview.offsetHeight - 10}px;`;
+                style += `background-color: ${document.getElementById("stage-bgColor").value};`;
+                preview.setAttribute("style", style);
 
-                    preview.style.display = "";
-                    preview.style.left    = `${event.pageX + 10}px`;
-                    preview.style.top     = `${event.pageY - preview.offsetHeight - 10}px`;
-                    preview.style.backgroundColor = document.getElementById("stage-bgColor").value;
+                const canvas = context.canvas;
 
-                    if (!preview.classList.contains("fadeIn")) {
-                        preview.setAttribute("class", "fadeIn");
-                    }
-                };
+                canvas.style.width  = `${bitmapData.width  / ratio}px`;
+                canvas.style.height = `${bitmapData.height / ratio}px`;
+                preview.appendChild(canvas);
 
-                image.src    = bitmapData.toDataURL();
-                image.width  = bitmapData.width  / ratio;
-                image.height = bitmapData.height / ratio;
-
-                bitmapData.dispose();
+                if (!preview.classList.contains("fadeIn")) {
+                    preview.setAttribute("class", "fadeIn");
+                }
             }
 
             Util.$currentFrame = currentFrame;

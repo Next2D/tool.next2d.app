@@ -38,7 +38,7 @@
     pointer-events   : none;
 }
 
-#timeline-preview-modal img
+#timeline-preview-modal canvas
 {
     border          : none;
     pointer-events  : none;
