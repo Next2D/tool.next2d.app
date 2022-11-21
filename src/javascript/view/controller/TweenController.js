@@ -609,7 +609,7 @@ class TweenController extends BaseController
         const range = character.getRange(frame);
 
         // 指定レンジ以前のtweenがあれば再計算
-        if (mode === "none" && range.startFrame - 1) {
+        if (mode === "none" && range.startFrame - 1 >= character.startFrame) {
             const prevRange = character.getRange(range.startFrame - 1);
             if (character.hasTween(prevRange.startFrame)) {
                 this.relocationPlace(character, prevRange.startFrame, "prev");
