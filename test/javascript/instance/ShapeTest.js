@@ -289,7 +289,7 @@ describe("Shape.js createPointer test", () =>
         expect(element.dataset.libraryId).toBe("33");
         expect(element.dataset.curve).toBe("false");
         expect(element.dataset.type).toBe("99");
-        expect(element.dataset.position).toBe("16");
+        expect(element.dataset.position).toBe("17");
 
         Util.$workSpaces.length = 0;
     });

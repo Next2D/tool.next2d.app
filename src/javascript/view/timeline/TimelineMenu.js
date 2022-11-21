@@ -27,10 +27,10 @@ class TimelineMenu extends BaseTimeline
         this._$copyLayers = [];
 
         /**
-         * @type {array}
+         * @type {Map}
          * @private
          */
-        this._$copyFrames = [];
+        this._$copyFrames = new Map();
     }
 
     /**
@@ -97,7 +97,14 @@ class TimelineMenu extends BaseTimeline
         this._$copyWorkSpaceId = Util.$activeWorkSpaceId;
 
         // コピーレイヤーの配列を初期化
-        this._$copyFrames.length = 0;
+        this._$copyFrames.clear();
+
+        const targetFrames = Util.$timelineLayer.targetFrames;
+        for (let [layerId, frames] of targetFrames) {
+            this._$copyFrames.set(layerId, frames.slice());
+        }
+
+        console.log(this._$copyFrames);
     }
 
     /**
