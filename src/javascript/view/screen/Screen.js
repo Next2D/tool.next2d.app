@@ -655,6 +655,10 @@ class Screen extends BaseScreen
         div.dataset.child        = "true";
         div.dataset.pointer      = `${event}`;
 
+        if (parent_scene) {
+            div.dataset.preview = "true";
+        }
+
         let divStyle = "position: absolute;";
         divStyle += `pointer-events: ${event};`;
         if (1 > alpha) {

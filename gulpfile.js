@@ -54,6 +54,7 @@ const buildHTML = () =>
         "src/html/controller-text.ejs",
         "src/html/controller-transform.ejs",
         "src/html/controller-color.ejs",
+        "src/html/controller-align.ejs",
         "src/html/controller-reference.ejs",
         "src/html/controller-nine-slice.ejs",
         "src/html/controller-fill-color.ejs",

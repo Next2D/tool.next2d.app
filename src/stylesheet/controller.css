@@ -164,6 +164,7 @@
 #color-setting,
 #reference-setting,
 #blend-setting,
+#align-setting,
 #loop-setting,
 #video-setting,
 #ease-setting,
@@ -304,6 +305,7 @@
 #color-setting-title,
 #reference-setting-title,
 #blend-setting-title,
+#align-setting-title,
 #loop-setting-title,
 #filter-setting-title,
 #transform-setting-title,
@@ -347,6 +349,7 @@
 #color-setting-title i,
 #reference-setting-title i,
 #blend-setting-title i,
+#align-setting-title i,
 #loop-setting-title i,
 #filter-setting-title i,
 #transform-setting-title i,
@@ -369,6 +372,7 @@
 #color-setting-title .disable,
 #reference-setting-title .disable,
 #blend-setting-title .disable,
+#align-setting-title .disable,
 #loop-setting-title .disable,
 #filter-setting-title .disable,
 #transform-setting-title .disable,
@@ -389,6 +393,7 @@
 #color-setting-title .active,
 #reference-setting-title .active,
 #blend-setting-title .active,
+#align-setting-title .active,
 #loop-setting-title .active,
 #filter-setting-title .active,
 #transform-setting-title .active,
@@ -409,6 +414,7 @@
 #color-setting-title:hover,
 #reference-setting-title:hover,
 #blend-setting-title:hover,
+#align-setting-title:hover,
 #loop-setting-title:hover,
 #filter-setting-title:hover,
 #transform-setting-title:hover,
@@ -441,6 +447,45 @@
     display     : flex;
     align-items : center;
     margin      : 12px;
+}
+
+#align-setting .align-setting-container
+{
+    display         : flex;
+    align-items     : center;
+    margin-bottom   : 8px;
+}
+
+#align-setting .align-setting-text
+{
+    min-width : 90px;
+    font-size : 10px;
+    margin    : 0 8px 0 12px;
+    color     : darkgray;
+}
+
+#align-setting .align-setting-container-bottom
+{
+    display         : flex;
+    align-items     : center;
+    justify-content : center;
+}
+
+#align-setting .align-setting-container-bottom div
+{
+    display         : flex;
+    align-items     : center;
+    justify-content : center;
+    min-width       : 25px;
+    height          : 20px;
+    border-radius   : 5px;
+    padding         : 5px;
+}
+
+#align-setting .align-setting-container-bottom div:hover
+{
+    background-color : #1c1c1c;
+    cursor           : pointer;
 }
 
 #reference-setting-box

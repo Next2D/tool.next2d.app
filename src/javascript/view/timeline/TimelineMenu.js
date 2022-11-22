@@ -103,8 +103,6 @@ class TimelineMenu extends BaseTimeline
         for (let [layerId, frames] of targetFrames) {
             this._$copyFrames.set(layerId, frames.slice());
         }
-
-        console.log(this._$copyFrames);
     }
 
     /**

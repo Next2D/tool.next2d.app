@@ -1624,9 +1624,10 @@ class ScreenMenu extends BaseScreen
 
         this.save();
 
+        // 現在のプロジェクト
         const workSpace = Util.$currentWorkSpace();
-        const stage = workSpace.stage;
 
+        // 初期値
         let x = 0;
         let y = 0;
         let w = 0;
@@ -1636,17 +1637,37 @@ class ScreenMenu extends BaseScreen
             const element = document
                 .getElementById("target-rect");
 
-            x = element.offsetLeft - Util.$offsetLeft;
-            y = element.offsetTop  - Util.$offsetTop;
+            x = element.offsetLeft - Util.$offsetLeft - Util.$sceneChange.offsetX;
+            y = element.offsetTop  - Util.$offsetTop  - Util.$sceneChange.offsetY;
             w = element.offsetWidth;
             h = element.offsetHeight;
 
         } else {
 
-            w = stage.width;
-            h = stage.height;
+            const children = document
+                .getElementById("scene-name-menu-list")
+                .children;
+
+            let count = 0;
+            for (let idx = 0; idx < children.length; ++idx) {
+
+                const node = children[idx];
+                if (node.dataset.parent === "false") {
+                    continue;
+                }
+
+                count++;
+            }
+
+            if (!count) {
+                const stage = workSpace.stage;
+                w = stage.width;
+                h = stage.height;
+            }
 
         }
+
+        const matrix = Util.$sceneChange.concatenatedMatrix;
 
         const frame = Util.$timelineFrame.currentFrame;
         const scene = workSpace.scene;
@@ -1663,80 +1684,74 @@ class ScreenMenu extends BaseScreen
                 element.dataset.characterId | 0
             );
 
-            const point = character.getPlace(frame).point;
+            const place = character.getPlace(frame);
+            if (!place.point) {
+                const bounds = character.getBounds(matrix);
+                const tx = Util.$sceneChange.offsetX + bounds.xMin;
+                const ty = Util.$sceneChange.offsetY + bounds.yMin;
+                const w  = Math.ceil(Math.abs(bounds.xMax - bounds.xMin)) / 2;
+                const h  = Math.ceil(Math.abs(bounds.yMax - bounds.yMin)) / 2;
+
+                place.point = {
+                    "x": tx + w,
+                    "y": ty + h
+                };
+            }
+
+            // 現時点のxy座標をキャッシュ
+            const currentX = place.matrix[4];
+            const currentY = place.matrix[5];
+
+            // 表示領域をセット
+            const bounds = character.getBounds(matrix);
+            const width  = Math.abs(bounds.xMax - bounds.xMin);
+            const height = Math.abs(bounds.yMax - bounds.yMin);
             switch (align) {
 
                 case "left":
-                    if (character.x === character.screenX) {
-                        point.x += x - character.x;
-                        character.x = x;
-                    } else {
-                        const dx = x - character.screenX + character.x;
-                        point.x += dx - character.x;
-                        character.x = dx;
-                    }
+                    place.matrix[4] = currentX - bounds.xMin + x;
                     break;
 
                 case "right":
-                    if (character.x === character.screenX) {
-                        const dx = x + w - character.width;
-                        point.x += dx - character.x;
-                        character.x = dx;
-                    } else {
-                        const dx = x + w - character.width - character.screenX + character.x;
-                        point.x += dx - character.x;
-                        character.x = dx;
-                    }
+                    place.matrix[4] = currentX - bounds.xMin + x + w - width;
                     break;
 
                 case "center":
-                    if (character.x === character.screenX) {
-                        const dx = x + w / 2 - character.width / 2;
-                        point.x += dx - character.x;
-                        character.x = dx;
-                    } else {
-                        const dx = x + w / 2 - character.width / 2 - character.screenX + character.x;
-                        point.x += dx - character.x;
-                        character.x = dx;
-                    }
+                    place.matrix[4] = currentX - bounds.xMin + x + w / 2 - width / 2;
                     break;
 
                 case "top":
-                    if (character.y === character.screenY) {
-                        point.y += y - character.y;
-                        character.y = y;
-                    } else {
-                        const dy = y - character.screenY + character.y;
-                        point.y += dy - character.y;
-                        character.y = dy;
-                    }
+                    place.matrix[5] = currentY - bounds.yMin + y;
                     break;
 
                 case "bottom":
-                    if (character.y === character.screenY) {
-                        const dy = y + h - character.height;
-                        point.y += dy - character.y;
-                        character.y = y + h - character.height;
-                    } else {
-                        const dy = y + h - character.height - character.screenY + character.y;
-                        point.y += dy - character.y;
-                        character.y = y + h - character.height - character.screenY + character.y;
-                    }
+                    place.matrix[5] = currentY - bounds.yMin + y + h - height;
                     break;
 
                 case "middle":
-                    if (character.y === character.screenY) {
-                        const dy = y + h / 2 - character.height / 2;
-                        point.y += dy - character.y;
-                        character.y = y + h / 2 - character.height / 2;
-                    } else {
-                        const dy = y + h / 2 - character.height / 2 - character.screenY + character.y;
-                        point.y += dy - character.y;
-                        character.y = y + h / 2 - character.height / 2 - character.screenY + character.y;
-                    }
+                    place.matrix[5] = currentY - bounds.yMin + y + h / 2 - height / 2;
                     break;
 
             }
+
+            // elementを移動
+            const characterElement = document
+                .getElementById(`character-${character.id}`);
+
+            const afterBounds = character.getBounds(matrix);
+            const left = Util.$offsetLeft + (Util.$sceneChange.offsetX + afterBounds.xMin) * Util.$zoomScale;
+            const top  = Util.$offsetTop  + (Util.$sceneChange.offsetY + afterBounds.yMin) * Util.$zoomScale;
+            characterElement.style.top  = `${top}px`;
+            characterElement.style.left = `${left}px`;
+
+            // DisplayObjectの座標を修正
+            character.screenX = afterBounds.xMin;
+            character.screenY = afterBounds.yMin;
+
+            // 移動した分だけ中心点も移動
+            const point = place.point;
+            point.x += place.matrix[4] - currentX;
+            point.y += place.matrix[5] - currentY;
         }
 
         // 選択範囲を再計算
