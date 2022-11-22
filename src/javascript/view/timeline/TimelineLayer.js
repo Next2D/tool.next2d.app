@@ -760,8 +760,15 @@ class TimelineLayer extends BaseTimeline
 
             frameController.addEventListener("wheel", (event) =>
             {
-                const deltaY = event.deltaY | 0;
-                const deltaX = event.deltaX | 0;
+                let deltaY = event.deltaY | 0;
+                let deltaX = event.deltaX | 0;
+
+                // shift押下時は強制的に横スクールに切り替える
+                if (Util.$shiftKey) {
+                    deltaX = event.deltaY | 0;
+                    deltaY = 0;
+                }
+
                 if (!deltaX || deltaY > 0) {
                     return false;
                 }
