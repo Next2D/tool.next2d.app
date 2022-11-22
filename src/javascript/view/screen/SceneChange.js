@@ -158,11 +158,15 @@ class SceneChange extends BaseScreen
      */
     reload (library_id)
     {
-        const scenes = document
+        const element = document
             .getElementById("scene-name-menu-list");
 
-        while (scenes.children.length) {
-            scenes.children[0].remove();
+        if (!element) {
+            return ;
+        }
+        
+        while (element.children.length) {
+            element.children[0].remove();
         }
 
         // 値を初期化
