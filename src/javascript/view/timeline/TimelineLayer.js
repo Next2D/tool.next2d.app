@@ -150,6 +150,34 @@ class TimelineLayer extends BaseTimeline
          * @private
          */
         this._$endMultiSelect = null;
+
+        /**
+         * @type {function}
+         * @default null
+         * @private
+         */
+        this._$clearClickParam = null;
+
+        /**
+         * @type {boolean}
+         * @default false
+         * @private
+         */
+        this._$disableState = false;
+
+        /**
+         * @type {boolean}
+         * @default false
+         * @private
+         */
+        this._$lightState = false;
+
+        /**
+         * @type {boolean}
+         * @default false
+         * @private
+         */
+        this._$lockState = false;
     }
 
     /**
@@ -353,6 +381,22 @@ class TimelineLayer extends BaseTimeline
                 .classList
                 .add("frame-active");
         }
+    }
+
+    /**
+     * @description レイヤーコントローラーの表示アイコンのパラメーターを初期化
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    clearClickParam ()
+    {
+        window.removeEventListener("mouseup", this._$clearClickParam);
+
+        this._$disableState = false;
+        this._$lightState   = false;
+        this._$lockState    = false;
     }
 
     /**
@@ -823,28 +867,49 @@ class TimelineLayer extends BaseTimeline
             });
 
             // ハイライトアイコン
-            document
-                .getElementById(`layer-light-icon-${layer_id}`)
-                .addEventListener("mousedown", (event) =>
-                {
+            const lightIcon = document
+                .getElementById(`layer-light-icon-${layer_id}`);
+
+            lightIcon.addEventListener("mousedown", (event) =>
+            {
+                this.clickLight(event);
+            });
+            lightIcon.addEventListener("mouseover", (event) =>
+            {
+                if (this._$lightState) {
                     this.clickLight(event);
-                });
+                }
+            });
 
             // 表示・非表示アイコン
-            document
-                .getElementById(`layer-disable-icon-${layer_id}`)
-                .addEventListener("mousedown", (event) =>
-                {
+            const disableIcon = document
+                .getElementById(`layer-disable-icon-${layer_id}`);
+
+            disableIcon.addEventListener("mousedown", (event) =>
+            {
+                this.clickDisable(event);
+            });
+            disableIcon.addEventListener("mouseover", (event) =>
+            {
+                if (this._$disableState) {
                     this.clickDisable(event);
-                });
+                }
+            });
 
             // ロックアイコン
-            document
-                .getElementById(`layer-lock-icon-${layer_id}`)
-                .addEventListener("mousedown", (event) =>
-                {
+            const lockIcon = document
+                .getElementById(`layer-lock-icon-${layer_id}`);
+
+            lockIcon.addEventListener("mousedown", (event) =>
+            {
+                this.clickLock(event);
+            });
+            lockIcon.addEventListener("mouseover", (event) =>
+            {
+                if (this._$lockState) {
                     this.clickLock(event);
-                });
+                }
+            });
 
             // スクロールエリア
             const frameElement = document
@@ -1174,6 +1239,13 @@ class TimelineLayer extends BaseTimeline
         }
 
         event.stopPropagation();
+
+        this._$lightState = true;
+        if (!this._$clearClickParam) {
+            this._$clearClickParam = this.clearClickParam.bind(this);
+        }
+        window.addEventListener("mouseup", this._$clearClickParam);
+
         this.changeType(event.target, "light");
     }
 
@@ -1191,6 +1263,13 @@ class TimelineLayer extends BaseTimeline
         }
 
         event.stopPropagation();
+
+        this._$lockState = true;
+        if (!this._$clearClickParam) {
+            this._$clearClickParam = this.clearClickParam.bind(this);
+        }
+        window.addEventListener("mouseup", this._$clearClickParam);
+
         this.changeType(event.target, "lock");
         Util
             .$transformController
@@ -1212,6 +1291,13 @@ class TimelineLayer extends BaseTimeline
         }
 
         event.stopPropagation();
+
+        this._$disableState = true;
+        if (!this._$clearClickParam) {
+            this._$clearClickParam = this.clearClickParam.bind(this);
+        }
+        window.addEventListener("mouseup", this._$clearClickParam);
+
         this.changeType(event.target, "disable");
 
         // スクリーンエリアの変形Elementを表示
