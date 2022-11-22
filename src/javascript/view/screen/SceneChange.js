@@ -164,7 +164,7 @@ class SceneChange extends BaseScreen
         if (!element) {
             return ;
         }
-        
+
         while (element.children.length) {
             element.children[0].remove();
         }
