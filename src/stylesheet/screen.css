@@ -304,26 +304,6 @@
     cursor           : pointer;
 }
 
-#screen-align-menu .screen-align
-{
-    display         : flex;
-    align-items     : center;
-    justify-content : center;
-    margin-top      : 4px;
-    margin-bottom   : 2px;
-}
-
-#screen-align-menu .screen-align div
-{
-    display         : flex;
-    align-items     : center;
-    justify-content : center;
-    min-width       : 20px;
-    height          : 20px;
-    border-radius   : 5px;
-    padding         : 5px;
-}
-
 #screen-front i
 {
     width               : 18px;
