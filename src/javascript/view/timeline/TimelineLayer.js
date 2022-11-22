@@ -72,6 +72,13 @@ class TimelineLayer extends BaseTimeline
          * @default -1
          * @private
          */
+        this._$clickTimerId = -1;
+
+        /**
+         * @type {number}
+         * @default -1
+         * @private
+         */
         this._$selectLayerId = -1;
 
         /**
@@ -801,6 +808,11 @@ class TimelineLayer extends BaseTimeline
             frameController.addEventListener("mousedown", (event) =>
             {
                 this.selectFrame(event);
+            });
+
+            frameController.addEventListener("dblclick", (event) =>
+            {
+                this.selectRange(event);
             });
 
             // ハイライトアイコン
@@ -2215,6 +2227,69 @@ class TimelineLayer extends BaseTimeline
     }
 
     /**
+     * @description タイムラインのレンジでグループ選択にする
+     *
+     * @param  {MouseEvent} event
+     * @return {void}
+     * @method
+     * @public
+     */
+    selectRange (event)
+    {
+        // 選択のタイマーを停止
+        clearTimeout(this._$clickTimerId);
+
+        // 親のイベントを中止
+        event.stopPropagation();
+
+        // メニューモーダルを終了
+        Util.$endMenu();
+
+        const target = event.target;
+
+        const frame = Util.$timelineFrame.currentFrame;
+        const layerId = target.dataset.layerId | 0;
+
+        // 選択したフレームElementをMapに登録
+        const layer = Util
+            .$currentWorkSpace()
+            .scene
+            .getLayer(layerId);
+
+        let character = null;
+
+        const characters = layer.getActiveCharacter(frame);
+        if (characters.length) {
+            character = characters[0];
+        }
+
+        if (!character) {
+            character = layer.getActiveEmptyCharacter(frame);
+        }
+
+        if (!character) {
+            return ;
+        }
+
+        /**
+         * @type {ArrowTool}
+         */
+        const tool = Util.$tools.getDefaultTool("arrow");
+        tool.clear();
+
+        // fixed logic
+        this.targetLayer = document
+            .getElementById(`layer-id-${layerId}`);
+
+        const range = character.getRange(frame);
+        for (let frame = range.startFrame; range.endFrame > frame; ++frame) {
+            this.addTargetFrame(layer, frame);
+        }
+
+        this.moveFrame(frame);
+    }
+
+    /**
      * @description タイムラインの選択したフレームをアクティブにする
      *
      * @param  {MouseEvent} event
@@ -2270,86 +2345,92 @@ class TimelineLayer extends BaseTimeline
                 return ;
             }
 
-            // レイヤーを配列化
-            const children = Array.from(
-                document.getElementById("timeline-content").children
-            );
+            // タイマーを中止
+            clearTimeout(this._$clickTimerId);
 
-            // 一番左上のelementを算出
-            let index = children.indexOf(this.targetLayer);
-            if (this.targetFrames.size > 1) {
-                for (const layerId of this.targetFrames.keys()) {
-                    const layerElement =  document
-                        .getElementById(`layer-id-${layerId}`);
-
-                    if (!layerElement) {
-                        continue;
-                    }
-
-                    index = Math.min(index, children.indexOf(layerElement));
-                }
-            }
-
-            let frame = Number.MAX_VALUE;
-            for (let idx = 0; idx < firstFrames.length; ++idx) {
-                frame = Math.min(frame, firstFrames[idx]);
-            }
-
-            // 左上のelementを基準に選択範囲を生成
-            const layer = Util
-                .$currentWorkSpace()
-                .scene
-                .getLayer(
-                    children[index].dataset.layerId | 0
+            this._$clickTimerId = window.setTimeout(() =>
+            {
+                // レイヤーを配列化
+                const children = Array.from(
+                    document.getElementById("timeline-content").children
                 );
 
-            const leftElement = layer.getChildren(frame);
+                // 一番左上のelementを算出
+                let index = children.indexOf(this.targetLayer);
+                if (this.targetFrames.size > 1) {
+                    for (const layerId of this.targetFrames.keys()) {
+                        const layerElement =  document
+                            .getElementById(`layer-id-${layerId}`);
 
-            const parent = document
-                .getElementById("timeline-content");
+                        if (!layerElement) {
+                            continue;
+                        }
 
-            const width = firstFrames.length
-                * (Util.$timelineTool.timelineWidth + 1) - 5;
-
-            this._$clientX = leftElement.offsetLeft;
-            this._$clientY = leftElement.offsetTop - parent.scrollTop;
-
-            const element = document
-                .getElementById("target-group");
-
-            let style = `width: ${width}px;`;
-            style += `height: ${this.targetFrames.size * TimelineLayer.LAYER_HEIGHT - 5}px;`;
-            style += `left: ${this._$clientX}px;`;
-            style += `top: ${this._$clientY}px;`;
-            element.setAttribute("style", style);
-
-            element.dataset.frame = `${frame}`;
-            element.dataset.index = `${index}`;
-
-            const size = Util.$timelineTool.timelineWidth + 1;
-            for (;;) {
-                if (this._$clientX + size > event.clientX) {
-                    break;
+                        index = Math.min(index, children.indexOf(layerElement));
+                    }
                 }
-                this._$clientX += size;
-            }
-            for (;;) {
-                if (this._$clientY + 30 > event.clientY) {
-                    break;
+
+                let frame = Number.MAX_VALUE;
+                for (let idx = 0; idx < firstFrames.length; ++idx) {
+                    frame = Math.min(frame, firstFrames[idx]);
                 }
-                this._$clientY += 30;
-            }
 
-            if (!this._$endTargetGroup) {
-                this._$endTargetGroup = this.endTargetGroup.bind(this);
-            }
+                // 左上のelementを基準に選択範囲を生成
+                const layer = Util
+                    .$currentWorkSpace()
+                    .scene
+                    .getLayer(
+                        children[index].dataset.layerId | 0
+                    );
 
-            if (!this._$moveTargetGroup) {
-                this._$moveTargetGroup = this.moveTargetGroup.bind(this);
-            }
+                const leftElement = layer.getChildren(frame);
 
-            window.addEventListener("mousemove", this._$moveTargetGroup);
-            window.addEventListener("mouseup", this._$endTargetGroup);
+                const parent = document
+                    .getElementById("timeline-content");
+
+                const width = firstFrames.length
+                    * (Util.$timelineTool.timelineWidth + 1) - 5;
+
+                this._$clientX = leftElement.offsetLeft;
+                this._$clientY = leftElement.offsetTop - parent.scrollTop;
+
+                const element = document
+                    .getElementById("target-group");
+
+                let style = `width: ${width}px;`;
+                style += `height: ${this.targetFrames.size * TimelineLayer.LAYER_HEIGHT - 5}px;`;
+                style += `left: ${this._$clientX}px;`;
+                style += `top: ${this._$clientY}px;`;
+                element.setAttribute("style", style);
+
+                element.dataset.frame = `${frame}`;
+                element.dataset.index = `${index}`;
+
+                const size = Util.$timelineTool.timelineWidth + 1;
+                for (;;) {
+                    if (this._$clientX + size > event.clientX) {
+                        break;
+                    }
+                    this._$clientX += size;
+                }
+                for (;;) {
+                    if (this._$clientY + 30 > event.clientY) {
+                        break;
+                    }
+                    this._$clientY += 30;
+                }
+
+                if (!this._$endTargetGroup) {
+                    this._$endTargetGroup = this.endTargetGroup.bind(this);
+                }
+
+                if (!this._$moveTargetGroup) {
+                    this._$moveTargetGroup = this.moveTargetGroup.bind(this);
+                }
+
+                window.addEventListener("mousemove", this._$moveTargetGroup);
+                window.addEventListener("mouseup", this._$endTargetGroup);
+            }, 200);
 
         } else {
 

@@ -137,4 +137,20 @@ class EmptyCharacter
         }
 
     }
+
+    /**
+     * @description 空のキーフレームの開始・終了のフレームを返す
+     *              Returns the start and end frames of empty keyframes
+     *
+     * @return {object}
+     * @method
+     * @public
+     */
+    getRange ()
+    {
+        return {
+            "startFrame": this.startFrame,
+            "endFrame": this.endFrame
+        };
+    }
 }
