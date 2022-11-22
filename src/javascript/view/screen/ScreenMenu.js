@@ -122,7 +122,6 @@ class ScreenMenu extends BaseScreen
             });
         }
 
-
         const overViewElementIds = [
             "screen-order",
             "screen-align"
