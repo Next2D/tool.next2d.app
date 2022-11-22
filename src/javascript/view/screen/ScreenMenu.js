@@ -96,6 +96,121 @@ class ScreenMenu extends BaseScreen
                 this.executeFunction(event.target.id);
             });
         }
+
+        const overHideElementIds = [
+            "screen-distribute-to-layers",
+            "screen-distribute-to-keyframes",
+            "screen-integrating-paths",
+            "screen-add-tween-curve-pointer",
+            "screen-delete-tween-curve-pointer",
+            "screen-change-movie-clip",
+            "screen-preview"
+        ];
+        for (let idx = 0; idx < overHideElementIds.length; ++idx) {
+
+            const element = document
+                .getElementById(overHideElementIds[idx]);
+
+            if (!element) {
+                continue;
+            }
+
+            element.addEventListener("mouseover", () =>
+            {
+                // サブメニューを全て非表示
+                this.hideSubMenu();
+            });
+        }
+
+
+        const overViewElementIds = [
+            "screen-order",
+            "screen-align"
+        ];
+
+        for (let idx = 0; idx < overViewElementIds.length; ++idx) {
+
+            const element = document
+                .getElementById(overViewElementIds[idx]);
+
+            if (!element) {
+                continue;
+            }
+
+            element.addEventListener("mouseover", (event) =>
+            {
+                // 親のイベント中止
+                event.stopPropagation();
+
+                // 対象のサブメニューを表示
+                this.showSubMenu(event);
+
+            });
+        }
+    }
+
+    /**
+     * @description サブメニューを非表示
+     *
+     * @param  {string} [id=""]
+     * @return {void}
+     * @method
+     * @public
+     */
+    hideSubMenu (id = "")
+    {
+        const overElementIds = [
+            "screen-order-menu",
+            "screen-align-menu"
+        ];
+
+        for (let idx = 0; idx < overElementIds.length; ++idx) {
+
+            const elementId = overElementIds[idx];
+            if (id && id === elementId) {
+                continue;
+            }
+
+            const element = document.getElementById(elementId);
+            if (!element) {
+                continue;
+            }
+
+            if (!element.classList.contains("fadeIn")) {
+                continue;
+            }
+            element.setAttribute("class", "fadeOut");
+        }
+
+    }
+
+    /**
+     * @description サブメニューを表示
+     *
+     * @param  {MouseEvent} event
+     * @return {void}
+     * @method
+     * @public
+     */
+    showSubMenu (event)
+    {
+        const target = event.target;
+
+        const id = `${target.id}-menu`;
+
+        const element = document.getElementById(id);
+        if (!element) {
+            return ;
+        }
+
+        // 対象以外のサブメニューを全て非表示
+        this.hideSubMenu(id);
+
+        const parent = document.getElementById("screen-menu");
+        element.style.left = `${parent.offsetLeft + parent.clientWidth - 5}px`;
+        element.style.top  = `${parent.offsetTop + 20}px`;
+
+        element.setAttribute("class", "fadeIn");
     }
 
     /**

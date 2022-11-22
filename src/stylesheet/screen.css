@@ -215,6 +215,23 @@
     box-shadow       : 0 0 5px rgba(245, 245, 245, 0.25);
 }
 
+#screen-order-menu
+{
+    display          : flex;
+    flex-direction   : column;
+    justify-content  : center;
+    position         : fixed;
+    min-width        : 180px;
+    border-radius    : 10px;
+    background-color : #363636;
+    color            : whitesmoke;
+    border           : 1px solid #72777D;
+    z-index          : 9999;
+    padding          : 10px;
+    box-shadow       : 0 0 5px rgba(245, 245, 245, 0.25);
+}
+
+#screen-align-menu,
 #screen-menu
 {
     display          : flex;
@@ -231,6 +248,17 @@
     box-shadow       : 0 0 5px rgba(245, 245, 245, 0.25);
 }
 
+#screen-align-menu .screen-menu-list,
+#screen-order-menu .screen-menu-list
+{
+    display        : flex;
+    flex-direction : column;
+    margin         : 0;
+    padding        : 0;
+    min-height     : 100px;
+    overflow       : hidden;
+}
+
 #screen-menu .screen-menu-list
 {
     display        : flex;
@@ -242,36 +270,41 @@
     overflow-y     : auto;
 }
 
+#screen-align-menu .screen-menu-title,
 #screen-menu .screen-menu-title
 {
     font-weight : bold;
     margin      : 5px;
 }
 
+#screen-align-menu .screen-menu-list p,
 #screen-menu .screen-menu-list p
 {
     border-bottom : 1px solid #1c1c1c;
     margin        : 5px 0 5px 0;
 }
 
+#screen-order-menu .screen-menu-bottom,
+#screen-align-menu .screen-menu-bottom,
 #screen-menu .screen-menu-bottom
 {
     display       : flex;
     align-items   : center;
-    min-width     : 230px;
+    min-width     : 150px;
     height        : 20px;
     border-radius : 5px;
     padding       : 5px;
 }
 
+#screen-order-menu .screen-menu-bottom:hover,
+#screen-align-menu .screen-menu-bottom:hover,
 #screen-menu .screen-menu-bottom:hover
 {
     background-color : #1c1c1c;
     cursor           : pointer;
 }
 
-#screen-menu .screen-order,
-#screen-menu .screen-align
+#screen-align-menu .screen-align
 {
     display         : flex;
     align-items     : center;
@@ -280,23 +313,12 @@
     margin-bottom   : 2px;
 }
 
-#screen-menu .screen-align div
+#screen-align-menu .screen-align div
 {
     display         : flex;
     align-items     : center;
     justify-content : center;
     min-width       : 20px;
-    height          : 20px;
-    border-radius   : 5px;
-    padding         : 5px;
-}
-
-#screen-menu .screen-order div
-{
-    display         : flex;
-    align-items     : center;
-    justify-content : center;
-    min-width       : 45px;
     height          : 20px;
     border-radius   : 5px;
     padding         : 5px;

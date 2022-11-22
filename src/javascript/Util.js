@@ -469,7 +469,9 @@ Util.$endMenu = (ignore) =>
         "editor-modal",
         "plugin-modal",
         "shortcut-setting-menu",
-        "library-export-modal"
+        "library-export-modal",
+        "screen-order-menu",
+        "screen-align-menu"
     ];
 
     for (let idx = 0; idx < names.length; ++idx) {

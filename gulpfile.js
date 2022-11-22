@@ -73,6 +73,8 @@ const buildHTML = () =>
         "src/html/controller-end.ejs",
         "src/html/confirm-modal.ejs",
         "src/html/screen-menu.ejs",
+        "src/html/screen-order-menu.ejs",
+        "src/html/screen-align-menu.ejs",
         "src/html/plugin-modal.ejs",
         "src/html/editor-modal.ejs",
         "src/html/timeline-menu.ejs",
