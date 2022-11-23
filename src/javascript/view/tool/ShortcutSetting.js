@@ -236,6 +236,12 @@ class ShortcutSetting
                     "text": "Shift + M",
                     "css": "screen-change-movie-clip",
                     "description": "{{MovieClipに変換}}"
+                },
+                {
+                    "key": "rShift",
+                    "text": "Shift + R",
+                    "css": "screen-ruler",
+                    "description": "{{定規}}"
                 }
             ],
             "timeline": [

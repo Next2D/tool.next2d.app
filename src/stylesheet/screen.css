@@ -215,6 +215,24 @@
     box-shadow       : 0 0 5px rgba(245, 245, 245, 0.25);
 }
 
+#screen-order,
+#screen-align
+{
+    display     : flex;
+    align-items : center;
+}
+
+#screen-align i,
+#screen-order i
+{
+    width               : 10px;
+    height              : 10px;
+    background-image    : url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24"><path fill="darkgray" d="M5 3l3.057-3 11.943 12-11.943 12-3.057-3 9-9z"/></svg>');
+    background-repeat   : no-repeat;
+    background-position : center center;
+    margin-left         : auto;
+}
+
 #screen-order-menu
 {
     display          : flex;

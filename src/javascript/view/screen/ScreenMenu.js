@@ -75,7 +75,8 @@ class ScreenMenu extends BaseScreen
             "screen-add-tween-curve-pointer",
             "screen-delete-tween-curve-pointer",
             "screen-change-movie-clip",
-            "screen-preview"
+            "screen-preview",
+            "screen-ruler"
         ];
 
         for (let idx = 0; idx < elementIds.length; ++idx) {
@@ -104,7 +105,8 @@ class ScreenMenu extends BaseScreen
             "screen-add-tween-curve-pointer",
             "screen-delete-tween-curve-pointer",
             "screen-change-movie-clip",
-            "screen-preview"
+            "screen-preview",
+            "screen-ruler"
         ];
         for (let idx = 0; idx < overHideElementIds.length; ++idx) {
 
@@ -1496,6 +1498,18 @@ class ScreenMenu extends BaseScreen
 
         // 初期化
         this._$saved = false;
+    }
+
+    /**
+     * @description 定規機能のOn/Off
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    executeScreenRuler ()
+    {
+        Util.$screenRuler.show();
     }
 
     /**

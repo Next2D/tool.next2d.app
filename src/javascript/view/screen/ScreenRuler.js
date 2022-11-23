@@ -31,6 +31,41 @@ class ScreenRuler extends BaseScreen
     {
         super.initialize();
     }
+
+    /**
+     * @description 定規を表示にする
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    show ()
+    {
+        if (this._$state === "show") {
+            this.hide();
+            return ;
+        }
+
+        this._$state = "show";
+
+    }
+
+    /**
+     * @description 定規を非表示にする
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    hide ()
+    {
+        if (this._$state === "hide") {
+            return ;
+        }
+
+        this._$state = "hide";
+    }
+
 }
 
 Util.$screenRuler = new ScreenRuler();

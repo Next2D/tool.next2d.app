@@ -1238,6 +1238,8 @@ class TimelineLayer extends BaseTimeline
             return ;
         }
 
+        Util.$endMenu();
+
         event.stopPropagation();
 
         this._$lightState = true;
@@ -1261,6 +1263,8 @@ class TimelineLayer extends BaseTimeline
         if (event.button) {
             return ;
         }
+
+        Util.$endMenu();
 
         event.stopPropagation();
 
@@ -1289,6 +1293,8 @@ class TimelineLayer extends BaseTimeline
         if (event.button) {
             return ;
         }
+
+        Util.$endMenu();
 
         event.stopPropagation();
 
