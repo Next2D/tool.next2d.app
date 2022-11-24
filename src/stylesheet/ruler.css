@@ -1,0 +1,102 @@
+#ruler-top
+{
+    position         : absolute;
+    top              : 0;
+    left             : 0;
+    display          : flex;
+    align-items      : end;
+    height           : 19px;
+    background-color : #3c3c3c;
+    z-index          : 9990;
+}
+
+#ruler-top .vertical-main
+{
+    display        : flex;
+    flex-direction : column;
+    height         : 19px;
+}
+
+#ruler-top .vertical-header
+{
+    display      : flex;
+    align-items  : center;
+    height       : 14px;
+    font-size    : 10px;
+    color        : darkgray;
+    padding-left : 2px;
+    border-right : 1px darkgray solid;
+}
+
+#ruler-top .vertical-meter
+{
+    display     : flex;
+    align-items : flex-end;
+    height      : 5px;
+}
+
+#ruler-top .vertical-line-pointer
+{
+    width        : var(--ruler-size);
+    height       : 5px;
+    border-right : 1px darkgray solid;
+}
+
+#ruler-top .vertical-line
+{
+    width        : var(--ruler-size);
+    height       : 3px;
+    border-right : 1px darkgray solid;
+}
+
+#ruler-left
+{
+    position         : absolute;
+    top              : 0;
+    left             : 0;
+    display          : flex;
+    flex-direction   : column;
+    width            : 19px;
+    background-color : #3c3c3c;
+    z-index          : 9990;
+}
+
+#ruler-left .vertical-main
+{
+    display : flex;
+    width   : 19px;
+}
+
+#ruler-left .vertical-header
+{
+    display          : flex;
+    align-items      : center;
+    width            : 14px;
+    font-size        : 10px;
+    color            : darkgray;
+    writing-mode     : vertical-rl;
+    text-orientation : upright;
+    border-bottom    : 1px darkgray solid;
+}
+
+#ruler-left .vertical-meter
+{
+    display        : flex;
+    flex-direction : column;
+    width          : 5px;
+}
+
+#ruler-left .vertical-line-pointer
+{
+    width         : 5px;
+    height        : var(--ruler-size);
+    border-bottom : 1px darkgray solid;
+}
+
+#ruler-left .vertical-line
+{
+    width         : 3px;
+    height        : var(--ruler-size);
+    margin        : 0 0 0 auto;
+    border-bottom : 1px darkgray solid;
+}

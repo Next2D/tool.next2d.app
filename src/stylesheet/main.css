@@ -5,6 +5,7 @@
     --timeline-frame-width: 13px;
     --marker-width: 13px;
     --ad: 300;
+    --ruler-size: 4px;
 }
 
 html, body

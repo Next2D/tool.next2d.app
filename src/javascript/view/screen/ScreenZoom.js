@@ -175,6 +175,9 @@ class ScreenZoom extends BaseScreen
         //     }
         // }
 
+        // 定規を再構成
+        Util.$rebuildRuler();
+
         // 再描画
         scene.changeFrame(frame);
     }

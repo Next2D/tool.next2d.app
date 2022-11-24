@@ -19,6 +19,7 @@ class WorkSpace
         this._$nameMap         = new Map();
         this._$plugins         = new Map();
         this._$position        = 0;
+        this._$ruler           = false;
         this._$characterId     = 0;
         this._$revision        = [];
         this._$currentData     = null;
@@ -163,6 +164,12 @@ class WorkSpace
         // 選択中のライブラリを非アクティブに
         Util.$libraryController.clearActive();
 
+        if (this._$ruler) {
+            Util.$screenRuler.show();
+        } else {
+            Util.$screenRuler.hide();
+        }
+
         // ライブラリを初期化
         Util.$libraryController.reload(
             Array.from(this._$libraries.values())
@@ -228,6 +235,10 @@ class WorkSpace
             this._$scene.stop();
             this._$scene = null;
         }
+
+        if (this._$ruler) {
+            Util.$screenRuler.clear();
+        }
     }
 
     /**
@@ -271,6 +282,7 @@ class WorkSpace
         if (object.setting) {
             this._$timelineHeight  = object.setting.timelineHeight;
             this._$controllerWidth = object.setting.controllerWidth;
+            this._$ruler           = !!object.setting.ruler;
         }
     }
 
@@ -297,8 +309,9 @@ class WorkSpace
             "libraries": libraries,
             "plugins": Array.from(this._$plugins.values()),
             "setting": {
-                "timelineHeight": this._$timelineHeight,
-                "controllerWidth": this._$controllerWidth
+                "timelineHeight":  this._$timelineHeight,
+                "controllerWidth": this._$controllerWidth,
+                "ruler": this._$ruler
             }
         });
     }

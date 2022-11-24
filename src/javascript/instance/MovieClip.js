@@ -380,7 +380,7 @@ class MovieClip extends Instance
             .clearPointer()
             .relocationPointer();
 
-        if (Util.$sceneChange.length) {
+        if (this.id) {
 
             const div = document.createElement("div");
             div.setAttribute("class", "standard-point");

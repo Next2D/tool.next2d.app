@@ -85,25 +85,39 @@ class Screen extends BaseScreen
 
             element.addEventListener("mousewheel", (event) =>
             {
+                const delta = event.deltaX || event.deltaY;
+                if (!delta) {
+                    return ;
+                }
+
                 if (event.ctrlKey && !event.metaKey // windows
                     || !event.ctrlKey && event.metaKey // mac
                 ) {
 
-                    const delta = event.deltaX || event.deltaY;
-                    if (delta) {
+                    event.preventDefault();
 
-                        event.preventDefault();
-
-                        window.requestAnimationFrame(() => {
-                            Util.$screenZoom.execute(delta / 100 * -1);
-                        });
-                    }
+                    window.requestAnimationFrame(() => {
+                        Util.$screenZoom.execute(delta / 2 / 100 * -1);
+                    });
 
                     return false;
 
                 }
 
             }, { "passive" : false });
+
+            element.addEventListener("scroll", (event) =>
+            {
+                // 定規を再配置
+                if (Util.$screenRuler.state === "hide") {
+                    return ;
+                }
+
+                event.preventDefault();
+                Util.$screenRuler.reload();
+
+                return false;
+            });
 
             element.addEventListener("mousemove", (event) =>
             {

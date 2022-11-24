@@ -816,7 +816,21 @@ window.addEventListener("DOMContentLoaded", Util.$initialize);
 window.addEventListener("resize", () =>
 {
     Util.$rebuildTimeline();
+    Util.$rebuildRuler();
 });
+
+/**
+ * @description 定規を現在のスケールで再構成
+ *
+ * @method
+ * @static
+ */
+Util.$rebuildRuler = () =>
+{
+    if (Util.$currentWorkSpace()._$ruler) {
+        Util.$screenRuler.rebuild();
+    }
+};
 
 /**
  * @description タイムラインを現在の幅で再構成
