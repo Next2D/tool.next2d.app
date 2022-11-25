@@ -96,7 +96,8 @@ class LibraryMenu
             "library-menu-no-use-delete",
             "library-menu-empty-folder-delete",
             "library-menu-copy",
-            "library-menu-paste"
+            "library-menu-paste",
+            "library-open-photopea"
         ];
 
         for (let idx = 0; idx < elementIds.length; ++idx) {
@@ -155,6 +156,62 @@ class LibraryMenu
 
         // 終了コール
         Util.$initializeEnd();
+    }
+
+    /**
+     * @description 画像編集でPhotopeaを起動
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    executeLibraryOpenPhotopea ()
+    {
+        const activeInstances = Util
+            .$libraryController
+            .activeInstances;
+
+        if (!activeInstances.size) {
+            return ;
+        }
+
+        const workSpace = Util.$currentWorkSpace();
+        for (let libraryId of activeInstances.keys()) {
+
+            const instance = workSpace.getLibrary(libraryId);
+            if (instance.type !== InstanceType.BITMAP) {
+                continue;
+            }
+
+            const canvas  = Util.$getCanvas();
+            const context = instance.draw(
+                canvas,
+                Math.ceil(instance.width),
+                Math.ceil(instance.height),
+                {
+                    "frame": 1,
+                    "matrix": [1, 0, 0, 1, 0, 0],
+                    "colorTransform": [1, 1, 1, 1, 0, 0, 0, 0],
+                    "blendMode": "normal",
+                    "filter": []
+                },
+                null, 0, true
+            );
+
+            const object = {
+                "files" : [
+                    canvas.toDataURL(instance.imageType)
+                ]
+            };
+
+            Util.$poolCanvas(context);
+
+            const a = document.createElement("a");
+            a.href = `https://www.photopea.com#${encodeURI(JSON.stringify(object))}`;
+            a.target = "_blank";
+            a.click();
+        }
+
     }
 
     /**
@@ -725,11 +782,6 @@ class LibraryMenu
                         .$confirmModal
                         .createFolder(this._$copyWorkSpaceId, clone);
 
-                }
-
-                // 重複したデータがあれば、確認用にデータを転送
-                if (instance.type === InstanceType.MOVIE_CLIP) {
-                    Util.$timelineMenu.setConfirmModalFiles();
                 }
 
             }

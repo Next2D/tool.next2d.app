@@ -1602,7 +1602,7 @@ class LibraryController
                                 const width   = image.width;
                                 const height  = image.height;
 
-                                const canvas  = document.createElement("canvas");
+                                const canvas  = Util.$getCanvas();
                                 canvas.width  = width;
                                 canvas.height = height;
                                 const context = canvas.getContext("2d");
@@ -1611,6 +1611,7 @@ class LibraryController
                                 const buffer = new Uint8Array(
                                     context.getImageData(0, 0, width, height).data
                                 );
+                                Util.$poolCanvas(context);
 
                                 const object = this.createInstance(
                                     InstanceType.BITMAP,
