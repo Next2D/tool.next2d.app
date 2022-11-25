@@ -437,7 +437,7 @@ class ScreenTab
                 element.setAttribute("class", "tab active");
 
                 deleteWorkSpace.stop();
-                
+
                 Util.$activeWorkSpaceId = element.dataset.tabId | 0;
 
                 Util.$currentWorkSpace().run();
