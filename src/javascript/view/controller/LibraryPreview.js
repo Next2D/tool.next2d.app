@@ -182,13 +182,19 @@ class LibraryPreview
             .$currentWorkSpace()
             .getLibrary(library_id);
 
-        if (instance.type !== "folder") {
+        if (instance.type !== InstanceType.FOLDER) {
 
             this._$currentId = library_id;
 
             document
                 .getElementById("library-preview-area")
                 .appendChild(instance.getPreview());
+
+            if (instance.type === InstanceType.SOUND) {
+
+                Util.$soundWaveform.draw(instance._$buffer.slice());
+
+            }
 
         }
     }

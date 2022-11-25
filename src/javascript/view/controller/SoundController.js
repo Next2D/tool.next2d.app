@@ -288,11 +288,28 @@ class SoundController extends BaseController
     deleteIcon (frame)
     {
         const element = document
-            .getElementById(`frame-label-sound-${frame}`);
+            .getElementById("timeline-header");
 
-        if (element) {
-            element.setAttribute("class", "frame-border-box");
+        if (!element) {
+            return ;
         }
+
+        const nodes = element
+            .getElementsByClassName("frame-border-box-sound");
+
+        for (let idx = 0; idx < nodes.length; ++idx) {
+
+            const node = nodes[idx];
+
+            const targetFrame = node.dataset.frame | 0;
+            if (targetFrame !== frame) {
+                continue;
+            }
+
+            node.setAttribute("class", "frame-border-box");
+            break;
+        }
+
     }
 
     /**
