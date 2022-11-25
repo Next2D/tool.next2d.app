@@ -297,6 +297,12 @@ class ScreenKeyboardCommand extends KeyboardCommand
         {
             this.allDisplayObjectSelect();
         });
+
+        // ロックされていないDisplayObjectを全て選択
+        this.add(Util.$generateShortcutKey("r", { "ctrl": true, "shift": true }), () =>
+        {
+            Util.$screenRuler.show();
+        });
     }
 
     /**

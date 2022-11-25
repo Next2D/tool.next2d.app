@@ -566,7 +566,19 @@
     overflow        : hidden;
 }
 
-#timeline-scroll-bar
+#timeline-scroll-bar-x
+{
+    position         : fixed;
+    height           : 5px;
+    width            : var(--timeline-scroll-bar-width);
+    background-color : #363636;
+    color            : whitesmoke;
+    border-radius    : 5px;
+    border           : 1px solid #72777D;
+    box-shadow       : 0 0 1px rgba(245, 245, 245, 0.25);
+}
+
+#timeline-scroll-bar-y
 {
     position         : fixed;
     width            : 5px;
@@ -661,7 +673,6 @@
     display       : flex;
     height        : 30px;
     border-bottom : 1px solid #1c1c1c;
-    scrollbar-width: none;
 }
 
 #timeline-content .move-target

@@ -165,6 +165,7 @@ class MovieClip extends Instance
 
         // レイヤーの擬似スクロールをセット
         Util.$timelineLayer.updateClientHeight();
+        Util.$timelineScroll.updateHeight();
 
         // スクロールの座標をセット
         Util.$timelineScroll._$y = 1;

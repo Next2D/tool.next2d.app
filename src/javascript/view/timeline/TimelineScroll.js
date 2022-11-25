@@ -18,6 +18,13 @@ class TimelineScroll extends BaseTimeline
          * @default 0
          * @private
          */
+        this._$x = 0;
+
+        /**
+         * @type {number}
+         * @default 0
+         * @private
+         */
         this._$y = 0;
     }
 
@@ -35,7 +42,24 @@ class TimelineScroll extends BaseTimeline
     set y (y)
     {
         this._$y = y;
-        this.view();
+        this.viewY();
+    }
+
+    /**
+     * @description レイヤーの擬似スクロールの座標
+     *
+     * @member {number}
+     * @readonly
+     * @public
+     */
+    get x ()
+    {
+        return this._$x;
+    }
+    set x (x)
+    {
+        this._$x = x;
+        this.viewX();
     }
 
     /**
@@ -53,7 +77,7 @@ class TimelineScroll extends BaseTimeline
         if (parent) {
 
             const element = document
-                .getElementById("timeline-scroll-bar");
+                .getElementById("timeline-scroll-bar-y");
 
             const parentLeft = parent.offsetLeft + parent.offsetWidth;
 
@@ -108,7 +132,7 @@ class TimelineScroll extends BaseTimeline
 
             // 表示の高さがスクロールの高さを超えたら非表示に
             if (stopCount >= scene._$layers.size) {
-                this.view();
+                this.viewY();
                 return ;
             }
 
@@ -171,7 +195,7 @@ class TimelineScroll extends BaseTimeline
         }
 
         // 表示判定
-        this.view();
+        this.viewY();
 
         // スクロール座標の調整
         this.execute(0);
@@ -184,10 +208,10 @@ class TimelineScroll extends BaseTimeline
      * @method
      * @public
      */
-    view ()
+    viewY ()
     {
         const element = document
-            .getElementById("timeline-scroll-bar");
+            .getElementById("timeline-scroll-bar-y");
 
         if (element) {
 

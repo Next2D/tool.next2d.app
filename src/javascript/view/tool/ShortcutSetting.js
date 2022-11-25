@@ -238,8 +238,8 @@ class ShortcutSetting
                     "description": "{{MovieClipに変換}}"
                 },
                 {
-                    "key": "rShift",
-                    "text": "Shift + R",
+                    "key": "rShiftCtrl",
+                    "text": "Ctrl + Shift + R",
                     "css": "screen-ruler",
                     "description": "{{定規}}"
                 }
