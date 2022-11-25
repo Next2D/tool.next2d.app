@@ -381,6 +381,7 @@ class ScreenTab
         // 作業スペースを削除
         const tabId = event.currentTarget.dataset.tabId | 0;
 
+        const deleteWorkSpace = Util.$workSpaces[tabId];
         Util.$workSpaces[tabId] = null;
 
         document
@@ -421,6 +422,7 @@ class ScreenTab
             this.createElement(workSpace, 0);
 
             // start
+            deleteWorkSpace.stop();
             workSpace.run();
 
             const element = parent.children[0];
@@ -434,6 +436,8 @@ class ScreenTab
                 const element = parent.children[0];
                 element.setAttribute("class", "tab active");
 
+                deleteWorkSpace.stop();
+                
                 Util.$activeWorkSpaceId = element.dataset.tabId | 0;
 
                 Util.$currentWorkSpace().run();
