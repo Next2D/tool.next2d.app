@@ -209,7 +209,7 @@ class ScreenRuler extends BaseScreen
                     screen.getElementsByClassName("ruler-border-x")
                 ).indexOf(this._$target);
 
-                workSpace._$rulerX[index] = this._$target.offsetLeft - Util.$offsetLeft;
+                workSpace._$rulerX[index] = (this._$target.offsetLeft - Util.$offsetLeft) / Util.$zoomScale;
 
             } else {
 
@@ -217,7 +217,7 @@ class ScreenRuler extends BaseScreen
                     screen.getElementsByClassName("ruler-border-y")
                 ).indexOf(this._$target);
 
-                workSpace._$rulerY[index] = this._$target.offsetTop - Util.$offsetTop;
+                workSpace._$rulerY[index] = (this._$target.offsetTop - Util.$offsetTop) / Util.$zoomScale;
             }
 
         }
