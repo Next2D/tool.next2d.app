@@ -197,6 +197,27 @@ class MovieClip extends Instance
 
         }
 
+        // 定規を設定
+        if (!this.id) {
+
+            const workSpace = Util.$currentWorkSpace();
+            if (workSpace._$ruler) {
+
+                // 定規を表示
+                Util.$screenRuler.show();
+
+            } else {
+
+                // 線があれば線だけ表示
+                const rulerX = workSpace._$rulerX;
+                const rulerY = workSpace._$rulerY;
+                if (rulerX.length || rulerY.length) {
+                    Util.$screenRuler.createBorder();
+                }
+
+            }
+        }
+
         // サウンド設定を反映
         Util.$soundController.createSoundElements();
 

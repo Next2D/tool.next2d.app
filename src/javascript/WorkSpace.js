@@ -20,6 +20,8 @@ class WorkSpace
         this._$plugins         = new Map();
         this._$position        = 0;
         this._$ruler           = false;
+        this._$rulerX          = [];
+        this._$rulerY          = [];
         this._$characterId     = 0;
         this._$revision        = [];
         this._$currentData     = null;
@@ -164,12 +166,6 @@ class WorkSpace
         // 選択中のライブラリを非アクティブに
         Util.$libraryController.clearActive();
 
-        if (this._$ruler) {
-            Util.$screenRuler.show();
-        } else {
-            Util.$screenRuler.hide();
-        }
-
         // ライブラリを初期化
         Util.$libraryController.reload(
             Array.from(this._$libraries.values())
@@ -187,7 +183,7 @@ class WorkSpace
         Util.$timelineScroll.setX();
 
         // スクリーンの表示をrootに変更
-        Util.$sceneChange.reload(0);
+        Util.$sceneChange.reload();
     }
 
     /**
@@ -236,9 +232,8 @@ class WorkSpace
             this._$scene = null;
         }
 
-        if (this._$ruler) {
-            Util.$screenRuler.clear();
-        }
+        // 定規を初期化
+        Util.$screenRuler.clear();
     }
 
     /**
@@ -283,6 +278,8 @@ class WorkSpace
             this._$timelineHeight  = object.setting.timelineHeight;
             this._$controllerWidth = object.setting.controllerWidth;
             this._$ruler           = !!object.setting.ruler;
+            this._$rulerX          = object.setting.rulerX || [];
+            this._$rulerY          = object.setting.rulerY || [];
         }
     }
 
@@ -311,7 +308,9 @@ class WorkSpace
             "setting": {
                 "timelineHeight":  this._$timelineHeight,
                 "controllerWidth": this._$controllerWidth,
-                "ruler": this._$ruler
+                "ruler": this._$ruler,
+                "rulerX": this._$rulerX.slice(0),
+                "rulerY": this._$rulerY.slice(0)
             }
         });
     }

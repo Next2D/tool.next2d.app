@@ -151,12 +151,12 @@ class SceneChange extends BaseScreen
     /**
      * @description リスト表示の再読み込み
      *
-     * @param  {number} library_id
+     * @param  {number} [library_id=-1]
      * @return {void}
      * @method
      * @public
      */
-    reload (library_id)
+    reload (library_id = -1)
     {
         const element = document
             .getElementById("scene-name-menu-list");
@@ -179,7 +179,9 @@ class SceneChange extends BaseScreen
             .addSceneName();
 
         // シーン移動
-        Util.$sceneChange.execute(library_id);
+        if (library_id > -1) {
+            Util.$sceneChange.execute(library_id);
+        }
     }
 
     /**

@@ -1,3 +1,33 @@
+#screen .ruler-border-x
+{
+    width            : 1px;
+    position         : absolute;
+    top              : 0;
+    left             : 0;
+    background-color : #0dcaf0;
+    z-index          : 9900;
+}
+
+#screen .ruler-border-x:hover
+{
+    cursor: col-resize;
+}
+
+#screen .ruler-border-y
+{
+    height           : 1px;
+    position         : absolute;
+    top              : 0;
+    left             : 0;
+    background-color : #0dcaf0;
+    z-index          : 9900;
+}
+
+#screen .ruler-border-y:hover
+{
+    cursor: row-resize;
+}
+
 #ruler-top
 {
     position         : absolute;
@@ -15,6 +45,7 @@
     display        : flex;
     flex-direction : column;
     height         : 19px;
+    pointer-events : none;
 }
 
 #ruler-top .vertical-header
@@ -63,8 +94,9 @@
 
 #ruler-left .vertical-main
 {
-    display : flex;
-    width   : 19px;
+    display        : flex;
+    width          : 19px;
+    pointer-events : none;
 }
 
 #ruler-left .vertical-header

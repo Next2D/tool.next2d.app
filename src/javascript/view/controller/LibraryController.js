@@ -801,6 +801,10 @@ class LibraryController
                 .getElementById(`${type}-${id}`)
                 .addEventListener("dblclick", (event) =>
                 {
+                    // 定規は削除
+                    Util.$screenRuler.clear();
+
+                    // 再描画
                     Util.$sceneChange.reload(
                         event.currentTarget.dataset.libraryId | 0
                     );

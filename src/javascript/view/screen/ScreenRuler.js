@@ -34,6 +34,34 @@ class ScreenRuler extends BaseScreen
          * @private
          */
         this._$size = ScreenRuler.DEFAULT_SIZE;
+
+        /**
+         * @type {function}
+         * @default null
+         * @private
+         */
+        this._$mouseMove = null;
+
+        /**
+         * @type {function}
+         * @default null
+         * @private
+         */
+        this._$mouseUp = null;
+
+        /**
+         * @type {HTMLDivElement}
+         * @default null
+         * @private
+         */
+        this._$target = null;
+
+        /**
+         * @type {string}
+         * @default ""
+         * @private
+         */
+        this._$mode = "";
     }
 
     /**
@@ -75,6 +103,162 @@ class ScreenRuler extends BaseScreen
                 "--ruler-size",
                 `${ScreenRuler.DEFAULT_SIZE - 1}px`
             );
+
+        for (let idx = 0; idx < this._$elementIds.length; ++idx) {
+
+            const element = document
+                .getElementById(this._$elementIds[idx]);
+
+            if (!element) {
+                continue;
+            }
+
+            element.addEventListener("mousedown", (event) =>
+            {
+                event.stopPropagation();
+                event.preventDefault();
+
+                this.executeFunction(event.target.id);
+            });
+
+        }
+    }
+
+    /**
+     * @description ボーダーの移動処理
+     *
+     * @param  {MouseEvent} event
+     * @return {void}
+     * @method
+     * @public
+     */
+    mouseMove (event)
+    {
+        if (!this._$target) {
+            return ;
+        }
+
+        window.requestAnimationFrame(() =>
+        {
+            if (!this._$target) {
+                return ;
+            }
+
+            event.stopPropagation();
+            event.preventDefault();
+
+            if (this._$mode === "x") {
+                this._$target.style.left = `${event.offsetX}px`;
+            } else {
+                this._$target.style.top = `${event.offsetY}px`;
+            }
+        });
+    }
+
+    /**
+     * @description ボーダーの設置完了処理
+     *
+     * @param  {Event} event
+     * @return {void}
+     * @method
+     * @public
+     */
+    mouseUp (event)
+    {
+        /**
+         * @type {ArrowTool}
+         */
+        const tool = Util.$tools.getDefaultTool("arrow");
+        tool.changeNodeEvent();
+
+        window.removeEventListener("mousemove", this._$mouseMove);
+        window.removeEventListener("mouseup", this._$mouseUp);
+
+        this.save();
+
+        const workSpace = Util.$currentWorkSpace();
+        const screen = document.getElementById("screen");
+        if (event.target.dataset.removeZone === "true") {
+
+            // プロジェクトから削除
+            if (this._$mode === "x") {
+
+                const index = Array.from(
+                    screen.getElementsByClassName("ruler-border-x")
+                ).indexOf(this._$target);
+
+                workSpace._$rulerX.splice(index, 1);
+
+            } else {
+
+                const index = Array.from(
+                    screen.getElementsByClassName("ruler-border-y")
+                ).indexOf(this._$target);
+
+                workSpace._$rulerY.splice(index, 1);
+
+            }
+            this._$target.remove();
+
+        } else {
+
+            // プロジェクトに登録
+            if (this._$mode === "x") {
+
+                const index = Array.from(
+                    screen.getElementsByClassName("ruler-border-x")
+                ).indexOf(this._$target);
+
+                workSpace._$rulerX[index] = this._$target.offsetLeft - Util.$offsetLeft;
+
+            } else {
+
+                const index = Array.from(
+                    screen.getElementsByClassName("ruler-border-y")
+                ).indexOf(this._$target);
+
+                workSpace._$rulerY[index] = this._$target.offsetTop - Util.$offsetTop;
+            }
+
+        }
+
+        // アクティブ制御
+        this.changeNodeEvent(true);
+
+        // 初期化
+        this._$move   = "";
+        this._$target = null;
+        this._$saved  = false;
+    }
+
+    /**
+     * @description 定規で定義した線のアクティブ制御
+     *
+     * @param  {boolean} [active=true]
+     * @return {void}
+     * @method
+     * @public
+     */
+    changeNodeEvent (active = true)
+    {
+        const screen = document.getElementById("screen");
+        if (!screen) {
+            return ;
+        }
+
+        const rulerArrayX = screen
+            .getElementsByClassName("ruler-border-x");
+
+        for (let idx = 0; idx < rulerArrayX.length; ++idx) {
+            rulerArrayX[idx].style.pointerEvents = active ? "" : "none";
+        }
+
+        const rulerArrayY = screen
+            .getElementsByClassName("ruler-border-y");
+
+        for (let idx = 0; idx < rulerArrayY.length; ++idx) {
+            rulerArrayY[idx].style.pointerEvents = active ? "" : "none";
+        }
     }
 
     /**
@@ -125,7 +309,55 @@ class ScreenRuler extends BaseScreen
      */
     executeRulerTop ()
     {
-        console.log("TODO");
+        const stageArea = document.getElementById("stage-area");
+        if (!stageArea) {
+            return ;
+        }
+
+        this._$mode   = "y";
+        this._$target =  this.createBorderY();
+
+        document
+            .getElementById("screen")
+            .prepend(this._$target);
+
+        Util
+            .$currentWorkSpace()
+            ._$rulerY
+            .unshift(this._$target.offsetTop - Util.$offsetTop);
+
+        this.setupMove();
+    }
+
+    /**
+     * @description Y軸の線を追加
+     *
+     * @return {HTMLDivElement}
+     * @method
+     * @public
+     */
+    createBorderY ()
+    {
+        const stageArea = document.getElementById("stage-area");
+        if (!stageArea) {
+            return ;
+        }
+
+        const div = document.createElement("div");
+        div.setAttribute("style", `width: ${stageArea.offsetWidth}px;`);
+        div.setAttribute("class", "ruler-border-y");
+        div.addEventListener("mousedown", (event) =>
+        {
+            event.stopPropagation();
+            event.preventDefault();
+
+            this._$target = event.target;
+            this._$mode   = "y";
+
+            this.setupMove();
+        });
+
+        return div;
     }
 
     /**
@@ -137,7 +369,86 @@ class ScreenRuler extends BaseScreen
      */
     executeRulerLeft ()
     {
-        console.log("TODO");
+        const stageArea = document.getElementById("stage-area");
+        if (!stageArea) {
+            return ;
+        }
+
+        this._$mode   = "x";
+        this._$target =  this.createBorderX();
+
+        document
+            .getElementById("screen")
+            .prepend(this._$target);
+
+        Util
+            .$currentWorkSpace()
+            ._$rulerX
+            .unshift(this._$target.offsetLeft - Util.$offsetLeft);
+
+        this.setupMove();
+    }
+
+    /**
+     * @description Y軸の線を追加
+     *
+     * @return {HTMLDivElement}
+     * @method
+     * @public
+     */
+    createBorderX ()
+    {
+        const stageArea = document.getElementById("stage-area");
+        if (!stageArea) {
+            return ;
+        }
+
+        const div = document.createElement("div");
+        div.setAttribute("style", `height: ${stageArea.offsetHeight}px;`);
+        div.setAttribute("class", "ruler-border-x");
+        div.addEventListener("mousedown", (event) =>
+        {
+            event.stopPropagation();
+            event.preventDefault();
+
+            this._$target = event.target;
+            this._$mode   = "x";
+
+            this.setupMove();
+        });
+
+        return div;
+    }
+
+    /**
+     * @description x座標の移動開始処理
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    setupMove ()
+    {
+        /**
+         * @type {ArrowTool}
+         */
+        const tool = Util.$tools.getDefaultTool("arrow");
+        tool.clear();
+        tool.changeNodeEvent(false);
+
+        // アクティブ制御
+        this.changeNodeEvent(false);
+
+        if (!this._$mouseMove) {
+            this._$mouseMove = this.mouseMove.bind(this);
+        }
+
+        if (!this._$mouseUp) {
+            this._$mouseUp = this.mouseUp.bind(this);
+        }
+
+        window.addEventListener("mousemove", this._$mouseMove);
+        window.addEventListener("mouseup", this._$mouseUp);
     }
 
     /**
@@ -149,10 +460,6 @@ class ScreenRuler extends BaseScreen
      */
     rebuild ()
     {
-        if (this._$state !== "show") {
-            return ;
-        }
-
         // 要素を全て削除
         this.removeAll();
 
@@ -166,23 +473,81 @@ class ScreenRuler extends BaseScreen
                 `${this._$size - 1}px`
             );
 
-        const stage = document.getElementById("stage");
-        this.createRuler(document.getElementById("ruler-top"), stage.offsetLeft);
-        this.createRuler(document.getElementById("ruler-left"), stage.offsetTop);
-        this.reload();
+        if (this._$state === "show") {
+
+            const stage     = document.getElementById("stage");
+            const stageArea = document.getElementById("stage-area");
+
+            // 上の定規を生成
+            this.createRuler(
+                document.getElementById("ruler-top"),
+                stage.offsetLeft,
+                stageArea.offsetWidth
+            );
+
+            // 左の定規を生成
+            this.createRuler(
+                document.getElementById("ruler-left"),
+                stage.offsetTop,
+                stageArea.offsetHeight
+            );
+
+            // 現在の表示に合わせてバーを設置
+            this.reload();
+        }
+
+        // ボーダーを配置
+        this.createBorder();
     }
 
     /**
-     * @description 定規を生成
+     * @description 縦横線を構成
      *
      * @return {void}
      * @method
      * @public
      */
-    createRuler (element, offset_size)
+    createBorder ()
     {
-        const stageArea = document.getElementById("stage-area");
+        const workSpace = Util.$currentWorkSpace();
 
+        const screen = document.getElementById("screen");
+
+        // x座標の線を生成
+        for (let idx = workSpace._$rulerX.length - 1; idx > -1; --idx) {
+
+            const left = workSpace._$rulerX[idx];
+
+            const div = this.createBorderX();
+            div.style.left = `${Util.$offsetLeft + left * Util.$zoomScale}px`;
+
+            screen.prepend(div);
+        }
+
+        // y座標の線を生成
+        for (let idx = workSpace._$rulerY.length - 1; idx > -1; --idx) {
+
+            const top = workSpace._$rulerY[idx];
+
+            const div = this.createBorderY();
+            div.style.top = `${Util.$offsetTop + top * Util.$zoomScale}px`;
+
+            screen.prepend(div);
+        }
+    }
+
+    /**
+     * @description 定規を生成
+     *
+     * @param  {HTMLDivElement} element
+     * @param  {number} offset_size
+     * @param  {number} length
+     * @return {void}
+     * @method
+     * @public
+     */
+    createRuler (element, offset_size, length)
+    {
         const size = this._$size;
         const baseWidth = size >= ScreenRuler.DEFAULT_SIZE ? 50 : 200;
         const baseRange = size >= ScreenRuler.DEFAULT_SIZE ? 10 : 40;
@@ -192,8 +557,8 @@ class ScreenRuler extends BaseScreen
         const fraction = offset % baseWidth;
 
         // 差分を生成
-        const length = fraction / ScreenRuler.DEFAULT_SIZE;
-        if (length) {
+        const diff = fraction / ScreenRuler.DEFAULT_SIZE;
+        if (diff) {
             const left = document.createElement("div");
             left.setAttribute("class", "vertical-main");
 
@@ -205,7 +570,7 @@ class ScreenRuler extends BaseScreen
             left.appendChild(meter);
             meter.setAttribute("class", "vertical-meter");
 
-            for (let idx = 0; length > idx; ++idx) {
+            for (let idx = 0; diff > idx; ++idx) {
                 const line = document.createElement("div");
                 line.setAttribute("class", idx % 2 === 0
                     ? "vertical-line"
@@ -217,9 +582,9 @@ class ScreenRuler extends BaseScreen
             element.appendChild(left);
         }
 
-        const width = stageArea.offsetWidth / range | 0;
+        length = length / range | 0;
         let number  = offset - fraction;
-        for (let px = 0; width > px; ++px) {
+        for (let px = 0; length > px; ++px) {
 
             const main = document.createElement("div");
             main.setAttribute("class", "vertical-main");
@@ -268,9 +633,6 @@ class ScreenRuler extends BaseScreen
         // 状態を更新
         this._$state = "show";
 
-        // 現在の表示に合わせてバーを設置
-        this.reload();
-
         // 表示に合わせて再構成
         this.rebuild();
     }
@@ -292,8 +654,11 @@ class ScreenRuler extends BaseScreen
         const workSpace = Util.$currentWorkSpace();
         workSpace._$ruler = false;
 
-        // 非表示
+        // 初期化
         this.clear();
+
+        // ボーダーだけ生成
+        this.createBorder();
     }
 
     /**
@@ -336,6 +701,25 @@ class ScreenRuler extends BaseScreen
             }
 
             element.setAttribute("style", "display: none;");
+        }
+
+        const screen = document.getElementById("screen");
+        if (!screen) {
+            return ;
+        }
+
+        const rulerArrayX = screen
+            .getElementsByClassName("ruler-border-x");
+
+        while (rulerArrayX.length) {
+            rulerArrayX[0].remove();
+        }
+
+        const rulerArrayY = screen
+            .getElementsByClassName("ruler-border-y");
+
+        while (rulerArrayY.length) {
+            rulerArrayY[0].remove();
         }
     }
 }
