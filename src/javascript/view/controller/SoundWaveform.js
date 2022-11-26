@@ -23,6 +23,25 @@ class SoundWaveform
          * @private
          */
         this._$height = 60;
+
+        /**
+         * @type {boolean}
+         * @default false
+         * @private
+         */
+        this._$stopFlag = false;
+    }
+
+    /**
+     * @description 波形の生成を停止
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    stop ()
+    {
+        this._$stopFlag = true;
     }
 
     /**
@@ -35,10 +54,16 @@ class SoundWaveform
      */
     draw (buffer)
     {
+        this._$stopFlag = false;
+
         this
             .load(buffer, this._$width)
             .then((channels) =>
             {
+                if (this._$stopFlag) {
+                    return ;
+                }
+
                 const ch1 = channels[0];
                 const ch2 = channels[1];
 

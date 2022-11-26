@@ -195,6 +195,10 @@ class LibraryPreview
 
                 Util.$soundWaveform.draw(instance._$buffer.slice());
 
+            } else {
+
+                Util.$soundWaveform.stop();
+
             }
 
         }
