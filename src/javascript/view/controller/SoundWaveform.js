@@ -85,8 +85,8 @@ class SoundWaveform
      */
     load (buffer, width)
     {
-        return Util.
-            $audioContext
+        return Util
+            .$audioContext
             .decodeAudioData(buffer.buffer)
             .then((buffer) =>
             {

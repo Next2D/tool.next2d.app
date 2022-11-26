@@ -142,39 +142,6 @@ class ScreenZoom extends BaseScreen
 
         }
 
-        // 背景になっている描画もキャッシュクリア
-        // if (Util.$sceneChange.length) {
-        //
-        //     const children = document
-        //         .getElementById("scene-name-menu-list")
-        //         .children;
-        //
-        //     for (let idx = 0; children.length > idx; ++idx) {
-        //
-        //         const node = children[idx];
-        //
-        //         // 親子関係でない場合は終了
-        //         if (node.dataset.parent === "false") {
-        //             continue;
-        //         }
-        //
-        //         const instance = workSpace.getLibrary(
-        //             node.dataset.libraryId | 0
-        //         );
-        //
-        //         for (const layer of instance._$layers.values()) {
-        //
-        //             const characters = layer.getActiveCharacter(frame);
-        //             for (let idx = 0; idx < characters.length; ++idx) {
-        //                 characters[idx].dispose();
-        //             }
-        //
-        //         }
-        //
-        //         break;
-        //     }
-        // }
-
         // 定規を再構成
         Util.$rebuildRuler();
 
