@@ -215,7 +215,9 @@ class SaveProgress
     createJson ()
     {
         clearInterval(this._$timerId);
-        this.update(10, "Create JSON");
+        this.update(10,
+            Util.$currentLanguage.replace("{{JSONを生成}}")
+        );
     }
 
     /**
@@ -228,7 +230,9 @@ class SaveProgress
     createFile ()
     {
         clearInterval(this._$timerId);
-        this.update(90, "Create File");
+        this.update(90,
+            Util.$currentLanguage.replace("{{ファイルを生成}}")
+        );
     }
 
     /**
@@ -241,7 +245,9 @@ class SaveProgress
     loadN2D ()
     {
         clearInterval(this._$timerId);
-        this.update(90, "Load N2D File");
+        this.update(90,
+            Util.$currentLanguage.replace("{{N2Dファイルの読み込み}}")
+        );
     }
 
     /**
@@ -254,7 +260,9 @@ class SaveProgress
     loadJson ()
     {
         clearInterval(this._$timerId);
-        this.update(90, "Load JSON");
+        this.update(90,
+            Util.$currentLanguage.replace("{{JSONの読み込み}}")
+        );
     }
 
     /**
@@ -266,13 +274,15 @@ class SaveProgress
      */
     zlibInflate ()
     {
-        this.update(15, "Zlib Inflate");
+        this.update(15,
+            Util.$currentLanguage.replace("{{データを解凍中}}")
+        );
 
         this._$timerId = setInterval(() =>
         {
             this.update(
                 Math.min(80, this._$value + 1),
-                "Zlib Inflate"
+                Util.$currentLanguage.replace("{{データを解凍中}}")
             );
         }, 300);
     }
@@ -286,13 +296,15 @@ class SaveProgress
      */
     encode ()
     {
-        this.update(15, "Now Encoding");
+        this.update(15,
+            Util.$currentLanguage.replace("{{エンコード}}")
+        );
 
         this._$timerId = setInterval(() =>
         {
             this.update(
                 Math.min(80, this._$value + 1),
-                "Now Encoding"
+                Util.$currentLanguage.replace("{{エンコード}}")
             );
         }, 300);
     }
@@ -306,13 +318,15 @@ class SaveProgress
      */
     zlibDeflate ()
     {
-        this.update(15, "Zlib Deflate");
+        this.update(15,
+            Util.$currentLanguage.replace("{{データを圧縮中}}")
+        );
 
         this._$timerId = setInterval(() =>
         {
             this.update(
                 Math.min(80, this._$value + 1),
-                "Zlib Deflate"
+                Util.$currentLanguage.replace("{{データを圧縮中}}")
             );
         }, 300);
     }
@@ -326,13 +340,15 @@ class SaveProgress
      */
     loadFiles ()
     {
-        this.update(5, "Load Files");
+        this.update(5,
+            Util.$currentLanguage.replace("{{外部ファイルの読み込み}}")
+        );
 
         this._$timerId = setInterval(() =>
         {
             this.update(
                 Math.min(90, this._$value + 1),
-                "Load Files"
+                Util.$currentLanguage.replace("{{外部ファイルの読み込み}}")
             );
         }, 300);
     }
@@ -347,7 +363,9 @@ class SaveProgress
     createBinary ()
     {
         clearInterval(this._$timerId);
-        this.update(80, "Create Binary");
+        this.update(80,
+            Util.$currentLanguage.replace("{{バイナリデータを生成}}")
+        );
     }
 
     /**
@@ -361,7 +379,9 @@ class SaveProgress
     launchDatabase (value)
     {
         clearInterval(this._$timerId);
-        this.update(value, "Launch Database");
+        this.update(value,
+            Util.$currentLanguage.replace("{{データベースを起動}}")
+        );
     }
 
     /**
@@ -374,7 +394,9 @@ class SaveProgress
     commit ()
     {
         clearInterval(this._$timerId);
-        this.update(95, "Commit");
+        this.update(95,
+            Util.$currentLanguage.replace("{{データを保存中}}")
+        );
     }
 
     /**
@@ -387,7 +409,9 @@ class SaveProgress
     end ()
     {
         clearInterval(this._$timerId);
-        this.update(100, "Complete");
+        this.update(100,
+            Util.$currentLanguage.replace("{{完了}}")
+        );
 
         window.removeEventListener("mousemove", this._$mouseMove);
         window.removeEventListener("mouseup", this._$mouseUp);

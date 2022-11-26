@@ -10,7 +10,7 @@
     color            : whitesmoke;
     padding          : 4px;
     border           : 1px solid #72777D;
-    width            : 180px;
+    min-width        : 200px;
     height           : 35px;
     white-space      : nowrap;
     opacity          : 0.9;
@@ -22,13 +22,13 @@
 {
     display     : flex;
     place-items : center;
-    width       : 160px;
+    width       : 90%;
     padding     : 0 13px 3px 7px;
 }
 
 #save-progress-modal progress
 {
-    width          : 170px;
+    width          : 95%;
     height         : 10px;
     pointer-events : none;
 }
