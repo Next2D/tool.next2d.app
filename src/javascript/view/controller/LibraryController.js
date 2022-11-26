@@ -1350,7 +1350,6 @@ class LibraryController
                 ));
             }
 
-            console.log(promises);
             Promise
                 .all(promises)
                 .then(() =>
