@@ -501,7 +501,7 @@ Util.$endMenu = (ignore) =>
  */
 Util.$loadSaveData = () =>
 {
-    Util.$saveProgress.start("Load Start");
+    Util.$saveProgress.start();
 
     const binary = localStorage
         .getItem(`${Util.PREFIX}@${Util.DATABASE_NAME}`);
@@ -516,6 +516,8 @@ Util.$loadSaveData = () =>
         for (let idx = 0; idx < length; ++idx) {
             buffer[idx] = binary.charCodeAt(idx) & 0xff;
         }
+
+        Util.$saveProgress.zlibInflate();
 
         Util.$unZlibWorker.postMessage({
             "buffer": buffer,
@@ -1064,7 +1066,7 @@ Util.$autoSave = () =>
     }
 
     Util.$javaScriptEditor.save();
-    Util.$saveProgress.start("Save Start");
+    Util.$saveProgress.start();
 
     new Promise((resolve) =>
     {

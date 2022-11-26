@@ -175,12 +175,11 @@ class SaveProgress
     /**
      * @description プログレスバーを起動
      *
-     * @param  {string} [value = "Save Start"]
      * @return {void}
      * @method
      * @public
      */
-    start (value = "Save Start")
+    start ()
     {
         clearInterval(this._$timerId);
 
@@ -190,7 +189,7 @@ class SaveProgress
         }
 
         // プログレスバーを初期化
-        this.update(0, value);
+        this.update(0);
 
         if (!element.classList.contains("fadeIn")) {
             element.setAttribute("class", "fadeIn");
@@ -215,6 +214,7 @@ class SaveProgress
      */
     createJson ()
     {
+        clearInterval(this._$timerId);
         this.update(10, "Create JSON");
     }
 
@@ -318,6 +318,26 @@ class SaveProgress
     }
 
     /**
+     * @description 外部ファイルの読み込み待機
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    loadFiles ()
+    {
+        this.update(5, "Load Files");
+
+        this._$timerId = setInterval(() =>
+        {
+            this.update(
+                Math.min(90, this._$value + 1),
+                "Load Files"
+            );
+        }, 300);
+    }
+
+    /**
      * @description バイナリデータ生成待機
      *
      * @return {void}
@@ -340,6 +360,7 @@ class SaveProgress
      */
     launchDatabase (value)
     {
+        clearInterval(this._$timerId);
         this.update(value, "Launch Database");
     }
 
@@ -352,6 +373,7 @@ class SaveProgress
      */
     commit ()
     {
+        clearInterval(this._$timerId);
         this.update(95, "Commit");
     }
 
@@ -390,7 +412,7 @@ class SaveProgress
      * @description プログレスバーの値を更新
      *
      * @param  {number} value
-     * @param  {string} state
+     * @param  {string} [state = ""]
      * @return {void}
      * @method
      * @public

@@ -111,7 +111,11 @@ class Project
      */
     publish ()
     {
-        Util.$saveProgress.start("Start Publish");
+        if (Util.$saveProgress.active) {
+            return ;
+        }
+
+        Util.$saveProgress.start();
 
         // ダウンロードリンクを生成
         const anchor = document.getElementById("save-anchor");
@@ -191,7 +195,11 @@ class Project
      */
     load (file)
     {
-        Util.$saveProgress.start("Load N2D File");
+        if (Util.$saveProgress.active) {
+            return ;
+        }
+
+        Util.$saveProgress.start();
 
         file
             .arrayBuffer()
@@ -231,7 +239,11 @@ class Project
      */
     save ()
     {
-        Util.$saveProgress.start("Save N2D File");
+        if (Util.$saveProgress.active) {
+            return ;
+        }
+
+        Util.$saveProgress.start();
 
         new Promise((resolve) =>
         {

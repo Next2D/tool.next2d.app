@@ -142,12 +142,30 @@ class LibraryMenu
 
             fileInput.addEventListener("change", (event) =>
             {
+                if (Util.$saveProgress.active) {
+                    return ;
+                }
+
+                Util.$saveProgress.start();
+
                 this.save();
 
+                Util.$saveProgress.loadFiles();
+
+                const promises = [];
                 const files = event.target.files;
                 for (let idx = 0; idx < files.length; ++idx) {
-                    Util.$libraryController.loadFile(files[idx]);
+                    promises.push(
+                        Util.$libraryController.loadFile(files[idx])
+                    );
                 }
+
+                Promise
+                    .all(promises)
+                    .then(() =>
+                    {
+                        Util.$saveProgress.end();
+                    });
 
                 event.target.value = "";
                 this._$saved = false;

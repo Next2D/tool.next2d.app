@@ -1331,15 +1331,31 @@ class LibraryController
         const items = event.dataTransfer.items;
         if (items.length) {
 
+            if (Util.$saveProgress.active) {
+                return ;
+            }
+
             // 選択中のコンテンツを非アクティブに
             this.clearActive();
 
+            Util.$saveProgress.start();
+
+            Util.$saveProgress.loadFiles();
+
+            const promises = [];
             const items = event.dataTransfer.items;
             for (let idx = 0; idx < items.length; ++idx) {
-                this.scanFiles(
+                promises.push(this.scanFiles(
                     items[idx].webkitGetAsEntry()
-                );
+                ));
             }
+
+            Promise
+                .all(promises)
+                .then(() =>
+                {
+                    Util.$saveProgress.end();
+                });
 
         } else {
             // フォルダーの外に移動
@@ -1354,50 +1370,56 @@ class LibraryController
      *
      * @param  {FileSystemDirectoryEntry} entry
      * @param  {number} [folder_id=0]
-     * @return {void}
+     * @return {Promise}
      * @method
      * @public
      */
     scanFiles (entry, folder_id = 0)
     {
-        switch (true) {
+        if (entry.isDirectory) {
 
-            case entry.isDirectory:
-                {
-                    const instance = Util
-                        .$currentWorkSpace()
-                        .addLibrary({
-                            "id": Util.$currentWorkSpace().nextLibraryId,
-                            "type": "folder",
-                            "name": entry.name,
-                            "symbol": ""
-                        });
-
-                    if (folder_id) {
-                        instance.folderId = folder_id;
-                    }
-
-                    entry
-                        .createReader()
-                        .readEntries((entries) =>
-                        {
-                            for (let idx = 0; idx < entries.length; ++idx) {
-                                this.scanFiles(entries[idx], instance.id);
-                            }
-                        });
-
-                    this.updateFolderStyle(instance, instance.mode);
-                }
-                break;
-
-            case entry.isFile:
-                entry.file((file) =>
-                {
-                    this.loadFile(file, folder_id);
+            const instance = Util
+                .$currentWorkSpace()
+                .addLibrary({
+                    "id": Util.$currentWorkSpace().nextLibraryId,
+                    "type": "folder",
+                    "name": entry.name,
+                    "symbol": ""
                 });
-                break;
 
+            if (folder_id) {
+                instance.folderId = folder_id;
+            }
+
+            return new Promise((resolve) =>
+            {
+                entry
+                    .createReader()
+                    .readEntries((entries) =>
+                    {
+                        const promises = [];
+                        for (let idx = 0; idx < entries.length; ++idx) {
+                            promises.push(this.scanFiles(
+                                entries[idx], instance.id
+                            ));
+                        }
+
+                        Promise
+                            .all(promises)
+                            .then(() =>
+                            {
+                                this.updateFolderStyle(instance, instance.mode);
+                                resolve();
+                            });
+                    });
+            });
         }
+
+        return entry
+            .file((file) =>
+            {
+                return this.loadFile(file, folder_id);
+            });
     }
 
     /**
@@ -1580,6 +1602,8 @@ class LibraryController
                         if (library_id) {
                             this.reloadScreen(library_id);
                         }
+
+                        return Promise.resolve();
                     });
 
             case "image/png":
@@ -1666,6 +1690,8 @@ class LibraryController
                                 if (library_id) {
                                     this.reloadScreen(library_id);
                                 }
+
+                                return Promise.resolve();
                             });
                     });
 
@@ -1732,6 +1758,8 @@ class LibraryController
                             if (library_id) {
                                 this.reloadScreen(library_id);
                             }
+
+                            return Promise.resolve();
                         };
 
                         video.src = URL.createObjectURL(blob);
@@ -1789,6 +1817,8 @@ class LibraryController
                         if (library_id) {
                             this.reloadScreen(library_id);
                         }
+
+                        return Promise.resolve();
                     });
 
             case "application/x-shockwave-flash":
@@ -1799,6 +1829,8 @@ class LibraryController
                         new ReComposition()
                             .setData(new Uint8Array(buffer))
                             .run(name || file.name, folder_id, library_id);
+
+                        return Promise.resolve();
                     });
 
             default:

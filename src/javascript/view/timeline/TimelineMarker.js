@@ -300,12 +300,12 @@ class TimelineMarker extends BaseTimeline
             return ;
         }
 
-        const left   = offsetX + element.clientWidth / 2 + markerLeft;
+        const left   = offsetX + element.clientWidth / 2 + markerLeft - 1;
         const top    = content.offsetTop - 1;
         const height = window.screen.height;
 
         border.setAttribute(
-            "style", `height: ${height}px; top: ${top}px; left: ${left}px;`
+            "style", `height: ${height}px; top: ${top | 0}px; left: ${left | 0}px;`
         );
     }
 }
