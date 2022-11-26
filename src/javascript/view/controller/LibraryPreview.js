@@ -159,6 +159,7 @@ class LibraryPreview
         }
 
         while (element.firstChild) {
+            Util.$poolCanvas(element.firstChild);
             element.firstChild.remove();
         }
 
