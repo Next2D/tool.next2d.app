@@ -110,8 +110,6 @@ class Publish
      */
     static toZlib ()
     {
-        Util.$saveProgress.zlibDeflate();
-
         if (Util.$symbols.size) {
             Util.$symbols.clear();
         }

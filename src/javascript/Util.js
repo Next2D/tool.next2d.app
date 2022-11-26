@@ -1260,6 +1260,9 @@ Util.$zlibWorker.onmessage = (event) =>
 
         case "json":
         case "n2d":
+            Util.$saveProgress.createFile();
+
+            setTimeout(() =>
             {
                 const anchor = document.getElementById("save-anchor");
                 if (anchor.href) {
@@ -1275,7 +1278,8 @@ Util.$zlibWorker.onmessage = (event) =>
                 anchor.click();
 
                 Util.$saveProgress.end();
-            }
+
+            }, 200);
             break;
 
         case "local":

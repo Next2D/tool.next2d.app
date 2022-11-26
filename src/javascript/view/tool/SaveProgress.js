@@ -219,6 +219,19 @@ class SaveProgress
     }
 
     /**
+     * @description ファイルの生成待機
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    createFile ()
+    {
+        clearInterval(this._$timerId);
+        this.update(90, "Create File");
+    }
+
+    /**
      * @description N2Dファイルの読み込み待機
      *
      * @return {void}
@@ -297,6 +310,8 @@ class SaveProgress
 
         this._$timerId = setInterval(() =>
         {
+            console.log("zlibDeflate");
+
             this.update(
                 Math.min(80, this._$value + 1),
                 "Zlib Deflate"
