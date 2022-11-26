@@ -155,6 +155,7 @@ class LibraryMenu
                 const promises = [];
                 const files = event.target.files;
                 for (let idx = 0; idx < files.length; ++idx) {
+                    // eslint-disable-next-line no-loop-func
                     promises.push(new Promise((resolve) =>
                     {
                         Util
