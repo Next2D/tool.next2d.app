@@ -199,6 +199,10 @@ class Publish
         watch();
 
         Util.$showPreview();
+
+        const element = document.getElementById("player-preview");
+        element.style.display = "none";
+
         recorder.start(0);
     }
 
@@ -256,6 +260,9 @@ class Publish
         watch();
 
         Util.$showPreview();
+
+        const element = document.getElementById("player-preview");
+        element.style.display = "none";
     }
 
     /**
@@ -299,6 +306,9 @@ class Publish
         snapshot();
 
         Util.$showPreview();
+
+        const element = document.getElementById("player-preview");
+        element.style.display = "none";
     }
 
     /**
@@ -367,6 +377,9 @@ class Publish
         watch();
 
         Util.$showPreview();
+
+        const element = document.getElementById("player-preview");
+        element.style.display = "none";
     }
 
 }
