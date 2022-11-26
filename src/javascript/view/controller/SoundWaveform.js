@@ -53,26 +53,19 @@ class SoundWaveform
                 canvas.height = this._$height * window.devicePixelRatio;
                 const context = canvas.getContext("2d");
 
-                const barMargin   = 0;
-                const barWidth    = canvas.width / ch1.length - barMargin;
-                const canvasH     = canvas.height;
-                const halfCanvasH = canvasH / 2;
+                const barWidth    = canvas.width / ch1.length;
+                const halfCanvasH = canvas.height / 2;
 
                 context.fillStyle = "#1355a5";
-
-                let sample;
-                let barHeight;
                 for (let idx = 0; idx < ch1.length; ++idx) {
 
                     //ch1
-                    sample = ch1[idx];
-                    barHeight = sample * halfCanvasH;
-                    context.fillRect(idx * (barWidth + barMargin), halfCanvasH - barHeight, barWidth, barHeight);
+                    const ch1Height = ch1[idx] * halfCanvasH;
+                    context.fillRect(idx * barWidth, halfCanvasH - ch1Height, barWidth, ch1Height);
 
                     //ch2
-                    sample = ch2[idx];
-                    barHeight = sample * halfCanvasH;
-                    context.fillRect(idx * (barWidth + barMargin), halfCanvasH, barWidth, barHeight);
+                    const ch2Height = ch2[idx] * halfCanvasH;
+                    context.fillRect(idx * barWidth, halfCanvasH, barWidth, ch2Height);
 
                 }
 
