@@ -310,8 +310,6 @@ class SaveProgress
 
         this._$timerId = setInterval(() =>
         {
-            console.log("zlibDeflate");
-
             this.update(
                 Math.min(80, this._$value + 1),
                 "Zlib Deflate"
