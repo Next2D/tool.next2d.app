@@ -12,6 +12,7 @@ Util.$activeCharacterIds      = [];
 Util.$workSpaces              = [];
 Util.$readStatus              = 0;
 Util.$readEnd                 = 1;
+Util.$saveTimerId             = -1;
 Util.$shiftKey                = false;
 Util.$ctrlKey                 = false;
 Util.$altKey                  = false;
@@ -1044,30 +1045,45 @@ Util.$toJSON = () =>
 };
 
 /**
- * @param  {Event} event
  * @return {void}
  * @static
  */
 Util.$autoSave = () =>
 {
+    if (Util.$saveProgress.active) {
+        return ;
+    }
 
     Util.$javaScriptEditor.save();
+    Util.$saveProgress.start();
 
-    const postData = {
-        "object": Util.$toJSON(),
-        "type": "local"
-    };
+    new Promise((resolve) =>
+    {
+        Util.$saveProgress.createJson();
 
-    if (Util.$zlibWorkerActive) {
+        window.requestAnimationFrame(() =>
+        {
+            resolve({
+                "object": Util.$toJSON(),
+                "type": "local"
+            });
+        });
+    })
+        .then((data) =>
+        {
+            Util.$saveProgress.zlibDeflate();
 
-        Util.$zlibQueues.push(postData);
+            if (Util.$zlibWorkerActive) {
 
-    } else {
+                Util.$zlibQueues.push(data);
 
-        Util.$zlibWorkerActive = true;
-        Util.$zlibWorker.postMessage(postData);
+            } else {
 
-    }
+                Util.$zlibWorkerActive = true;
+                Util.$zlibWorker.postMessage(data);
+
+            }
+        });
 
 };
 
@@ -1246,33 +1262,54 @@ Util.$zlibWorker.onmessage = (event) =>
             {
                 const buffer = event.data.buffer;
 
-                let binary = "";
-                for (let idx = 0; idx < buffer.length; idx += 4096) {
-                    binary += String.fromCharCode.apply(null, buffer.slice(idx, idx + 4096));
-                }
+                clearInterval(Util.$saveTimerId);
 
-                const request = Util.$launchDB();
-
-                request.onsuccess = (event) =>
+                new Promise((resolve) =>
                 {
-                    const db = event.target.result;
-                    const transaction = db.transaction(
-                        `${Util.DATABASE_NAME}`, "readwrite"
-                    );
-
-                    const store = transaction
-                        .objectStore(`${Util.DATABASE_NAME}`);
-
-                    store.put(binary, Util.STORE_KEY);
-
-                    transaction.oncomplete = (event) =>
+                    window.requestAnimationFrame(() =>
                     {
-                        event.target.db.close();
-                        Util.$updated = false;
-                    };
+                        Util.$saveProgress.createBinary();
 
-                    transaction.commit();
-                };
+                        let binary = "";
+                        for (let idx = 0; idx < buffer.length; idx += 4096) {
+                            binary += String.fromCharCode.apply(
+                                null, buffer.slice(idx, idx + 4096)
+                            );
+                        }
+
+                        resolve(binary);
+                    });
+                })
+                    .then((data) =>
+                    {
+
+                        Util.$saveProgress.launchDatabase();
+
+                        const request = Util.$launchDB();
+
+                        request.onsuccess = (event) =>
+                        {
+                            const db = event.target.result;
+                            const transaction = db.transaction(
+                                `${Util.DATABASE_NAME}`, "readwrite"
+                            );
+
+                            const store = transaction
+                                .objectStore(`${Util.DATABASE_NAME}`);
+
+                            store.put(data, Util.STORE_KEY);
+
+                            transaction.oncomplete = (event) =>
+                            {
+                                event.target.db.close();
+                                Util.$updated = false;
+                                Util.$saveProgress.end();
+                            };
+
+                            Util.$saveProgress.commit();
+                            transaction.commit();
+                        };
+                    });
             }
 
             break;

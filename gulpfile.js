@@ -84,6 +84,7 @@ const buildHTML = () =>
         "src/html/user-setting.ejs",
         "src/html/shortcut-setting-menu.ejs",
         "src/html/detail-modal.ejs",
+        "src/html/save-progress-modal.ejs",
         "src/html/player-preview.ejs",
         "src/html/body-end.ejs",
         "src/html/html-end.ejs"

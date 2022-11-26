@@ -49,6 +49,7 @@ this.addEventListener("message", function (event)
     } else {
 
         const compress = new Zlib.Deflate(buffer).compress();
+
         this.postMessage({
             "buffer" : compress,
             "type"   : type

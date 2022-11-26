@@ -82,7 +82,7 @@ main
 {
     visibility : hidden;
     z-index    : -1;
-    animation  : fadeOut 0.1s linear;
+    animation  : fadeOut 0.3s linear;
 }
 
 @keyframes fadeIn
