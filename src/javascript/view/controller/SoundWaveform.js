@@ -23,12 +23,6 @@ class SoundWaveform
          * @private
          */
         this._$height = 60;
-
-        /**
-         * @type {AudioContext}
-         * @private
-         */
-        this._$context = new AudioContext();
     }
 
     /**
@@ -91,8 +85,8 @@ class SoundWaveform
      */
     load (buffer, width)
     {
-        return this
-            ._$context
+        return Util.
+            $audioContext
             .decodeAudioData(buffer.buffer)
             .then((buffer) =>
             {

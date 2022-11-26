@@ -670,6 +670,15 @@ Util.$executeKeyCommand = (event) =>
 };
 
 /**
+ * @description AudioContextを起動
+ */
+Util.$loadAudioContext = () =>
+{
+    window.removeEventListener("click", Util.$loadAudioContext);
+    Util.$audioContext = new AudioContext();
+};
+
+/**
  * @return {void}
  * @static
  */
@@ -677,6 +686,9 @@ Util.$initialize = () =>
 {
     // end event
     window.removeEventListener("DOMContentLoaded", Util.$initialize);
+
+    // clickでAudioContextを起動
+    window.addEventListener("mousedown", Util.$loadAudioContext);
 
     Util.$filterClasses = {
         "BevelFilter": BevelFilter,
