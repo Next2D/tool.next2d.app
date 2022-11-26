@@ -175,19 +175,22 @@ class SaveProgress
     /**
      * @description プログレスバーを起動
      *
+     * @param  {string} [value = "Save Start"]
      * @return {void}
      * @method
      * @public
      */
-    start ()
+    start (value = "Save Start")
     {
+        clearInterval(this._$timerId);
+
         const element = document.getElementById("save-progress-modal");
         if (!element) {
             return ;
         }
 
         // プログレスバーを初期化
-        this.update(0, "Save Start");
+        this.update(0, value);
 
         if (!element.classList.contains("fadeIn")) {
             element.setAttribute("class", "fadeIn");
@@ -216,6 +219,72 @@ class SaveProgress
     }
 
     /**
+     * @description N2Dファイルの読み込み待機
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    loadN2D ()
+    {
+        clearInterval(this._$timerId);
+        this.update(90, "Load N2D File");
+    }
+
+    /**
+     * @description JSON読み込み待機
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    loadJson ()
+    {
+        clearInterval(this._$timerId);
+        this.update(90, "Load JSON");
+    }
+
+    /**
+     * @description zlib解凍の待機
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    zlibInflate ()
+    {
+        this.update(15, "Zlib Inflate");
+
+        this._$timerId = setInterval(() =>
+        {
+            this.update(
+                Math.min(80, this._$value + 1),
+                "Zlib Inflate"
+            );
+        }, 300);
+    }
+
+    /**
+     * @description 各種エンコード待機
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    encode ()
+    {
+        this.update(15, "Now Encoding");
+
+        this._$timerId = setInterval(() =>
+        {
+            this.update(
+                Math.min(80, this._$value + 1),
+                "Now Encoding"
+            );
+        }, 300);
+    }
+
+    /**
      * @description zlib圧縮の待機
      *
      * @return {void}
@@ -224,12 +293,12 @@ class SaveProgress
      */
     zlibDeflate ()
     {
-        this.update(10, "Zlib Deflate");
+        this.update(15, "Zlib Deflate");
 
         this._$timerId = setInterval(() =>
         {
             this.update(
-                Math.min(70, this._$value + 1),
+                Math.min(80, this._$value + 1),
                 "Zlib Deflate"
             );
         }, 300);
@@ -245,19 +314,20 @@ class SaveProgress
     createBinary ()
     {
         clearInterval(this._$timerId);
-        this.update(70, "Create Binary");
+        this.update(80, "Create Binary");
     }
 
     /**
      * @description ローカルのDBの起動待機
      *
+     * @param  {number} value
      * @return {void}
      * @method
      * @public
      */
-    launchDatabase ()
+    launchDatabase (value)
     {
-        this.update(80, "Launch Database");
+        this.update(value, "Launch Database");
     }
 
     /**
@@ -269,7 +339,7 @@ class SaveProgress
      */
     commit ()
     {
-        this.update(90, "Commit");
+        this.update(95, "Commit");
     }
 
     /**
@@ -281,6 +351,7 @@ class SaveProgress
      */
     end ()
     {
+        clearInterval(this._$timerId);
         this.update(100, "Complete");
 
         window.removeEventListener("mousemove", this._$mouseMove);

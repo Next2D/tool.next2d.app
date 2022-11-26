@@ -12,7 +12,6 @@ Util.$activeCharacterIds      = [];
 Util.$workSpaces              = [];
 Util.$readStatus              = 0;
 Util.$readEnd                 = 1;
-Util.$saveTimerId             = -1;
 Util.$shiftKey                = false;
 Util.$ctrlKey                 = false;
 Util.$altKey                  = false;
@@ -502,6 +501,8 @@ Util.$endMenu = (ignore) =>
  */
 Util.$loadSaveData = () =>
 {
+    Util.$saveProgress.start("Load Start");
+
     const binary = localStorage
         .getItem(`${Util.PREFIX}@${Util.DATABASE_NAME}`);
 
@@ -522,6 +523,8 @@ Util.$loadSaveData = () =>
         }, [buffer.buffer]);
 
     } else {
+
+        Util.$saveProgress.launchDatabase(10);
 
         const request = Util.$launchDB();
         request.onsuccess = (event) =>
@@ -545,6 +548,8 @@ Util.$loadSaveData = () =>
                     for (let idx = 0; idx < length; ++idx) {
                         buffer[idx] = binary.charCodeAt(idx) & 0xff;
                     }
+
+                    Util.$saveProgress.zlibInflate();
 
                     Util.$unZlibWorker.postMessage({
                         "buffer": buffer,
@@ -828,6 +833,10 @@ Util.$initialize = () =>
 window.addEventListener("DOMContentLoaded", Util.$initialize);
 window.addEventListener("resize", () =>
 {
+    if (Util.$saveProgress.active) {
+        return ;
+    }
+
     Util.$rebuildTimeline();
     Util.$rebuildRuler();
 });
@@ -1055,19 +1064,20 @@ Util.$autoSave = () =>
     }
 
     Util.$javaScriptEditor.save();
-    Util.$saveProgress.start();
+    Util.$saveProgress.start("Save Start");
 
     new Promise((resolve) =>
     {
         Util.$saveProgress.createJson();
 
-        window.requestAnimationFrame(() =>
+        setTimeout(() =>
         {
             resolve({
                 "object": Util.$toJSON(),
                 "type": "local"
             });
-        });
+        }, 200);
+
     })
         .then((data) =>
         {
@@ -1153,6 +1163,8 @@ Util.$initializeEnd = () =>
     Util.$readStatus++;
     if (Util.$readStatus === Util.$readEnd) {
 
+        Util.$saveProgress.end();
+
         // HTML内に設定されたdata-detailの値を、モーダル出力するのに登録
         Util.$addModalEvent(document);
 
@@ -1191,6 +1203,8 @@ Util.$unZlibWorker.onmessage = (event) =>
 {
     if (event.data.type === "n2d") {
 
+        Util.$saveProgress.loadN2D();
+
         const workSpaces = new WorkSpace(
             decodeURIComponent(event.data.json)
         );
@@ -1205,7 +1219,11 @@ Util.$unZlibWorker.onmessage = (event) =>
             .$screenTab
             .createElement(workSpaces, Util.$workSpaces.length - 1);
 
+        Util.$saveProgress.end();
+
     } else {
+
+        Util.$saveProgress.loadJson();
 
         const values = JSON.parse(decodeURIComponent(event.data.json));
 
@@ -1255,14 +1273,14 @@ Util.$zlibWorker.onmessage = (event) =>
                     : URL.createObjectURL(new Blob([event.data.buffer], { "type" : "text/plain" }));
 
                 anchor.click();
+
+                Util.$saveProgress.end();
             }
             break;
 
         case "local":
             {
                 const buffer = event.data.buffer;
-
-                clearInterval(Util.$saveTimerId);
 
                 new Promise((resolve) =>
                 {
@@ -1283,7 +1301,7 @@ Util.$zlibWorker.onmessage = (event) =>
                     .then((data) =>
                     {
 
-                        Util.$saveProgress.launchDatabase();
+                        Util.$saveProgress.launchDatabase(90);
 
                         const request = Util.$launchDB();
 

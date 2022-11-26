@@ -111,6 +111,8 @@ class Project
      */
     publish ()
     {
+        Util.$saveProgress.start("Start Publish");
+
         // ダウンロードリンクを生成
         const anchor = document.getElementById("save-anchor");
 
@@ -125,12 +127,18 @@ class Project
         switch (type) {
 
             case "json":
-                anchor.download = `${Util.$currentWorkSpace().name}.json`;
-                anchor.href     = URL.createObjectURL(new Blob(
-                    [Publish.toJSON()],
-                    { "type" : "application/json" }
-                ));
-                anchor.click();
+                Util.$saveProgress.createJson();
+                setTimeout(() =>
+                {
+                    anchor.download = `${Util.$currentWorkSpace().name}.json`;
+                    anchor.href     = URL.createObjectURL(new Blob(
+                        [Publish.toJSON()],
+                        { "type" : "application/json" }
+                    ));
+                    anchor.click();
+
+                    Util.$saveProgress.end();
+                }, 200);
                 break;
 
             case "zlib":
@@ -166,6 +174,8 @@ class Project
                     window
                         .CustomPublish
                         .execute(Publish.toObject());
+
+                    Util.$saveProgress.end();
                 }
                 break;
 
@@ -181,10 +191,14 @@ class Project
      */
     load (file)
     {
+        Util.$saveProgress.start("Load N2D File");
+
         file
             .arrayBuffer()
             .then((buffer) =>
             {
+                Util.$saveProgress.zlibInflate();
+
                 const uint8Array = new Uint8Array(buffer);
                 Util.$unZlibWorker.postMessage({
                     "buffer": uint8Array,
@@ -217,21 +231,33 @@ class Project
      */
     save ()
     {
-        const postData = {
-            "object": Util.$currentWorkSpace().toJSON(),
-            "type": "n2d"
-        };
+        Util.$saveProgress.start("Save N2D File");
 
-        if (Util.$zlibWorkerActive) {
+        new Promise((resolve) =>
+        {
+            Util.$saveProgress.createJson();
+            setTimeout(() =>
+            {
+                resolve({
+                    "object": Util.$currentWorkSpace().toJSON(),
+                    "type": "n2d"
+                });
+            }, 200);
+        })
+            .then((data) =>
+            {
+                Util.$saveProgress.zlibDeflate();
+                if (Util.$zlibWorkerActive) {
 
-            Util.$zlibQueues.push(postData);
+                    Util.$zlibQueues.push(data);
 
-        } else {
+                } else {
 
-            Util.$zlibWorkerActive = true;
-            Util.$zlibWorker.postMessage(postData);
+                    Util.$zlibWorkerActive = true;
+                    Util.$zlibWorker.postMessage(data);
 
-        }
+                }
+            });
     }
 }
 

@@ -110,28 +110,44 @@ class Publish
      */
     static toZlib ()
     {
+        Util.$saveProgress.zlibDeflate();
+
         if (Util.$symbols.size) {
             Util.$symbols.clear();
         }
 
-        const object   = Publish.toObject();
-        object.symbols = Array.from(Util.$symbols);
+        new Promise((resolve) =>
+        {
+            Util.$saveProgress.createJson();
 
-        const postData = {
-            "object": JSON.stringify(object),
-            "type": "json"
-        };
+            setTimeout(() =>
+            {
+                const object   = Publish.toObject();
+                object.symbols = Array.from(Util.$symbols);
 
-        if (Util.$zlibWorkerActive) {
+                resolve({
+                    "object": JSON.stringify(object),
+                    "type": "json"
+                });
 
-            Util.$zlibQueues.push(postData);
+            }, 200);
+        })
+            .then((data) =>
+            {
+                Util.$saveProgress.zlibDeflate();
 
-        } else {
+                if (Util.$zlibWorkerActive) {
 
-            Util.$zlibWorkerActive = true;
-            Util.$zlibWorker.postMessage(postData);
+                    Util.$zlibQueues.push(data);
 
-        }
+                } else {
+
+                    Util.$zlibWorkerActive = true;
+                    Util.$zlibWorker.postMessage(data);
+
+                }
+            });
+
     }
 
     /**
@@ -141,6 +157,8 @@ class Publish
      */
     static toWebM ()
     {
+        Util.$saveProgress.encode();
+
         const canvas = document.getElementById("__next2d__").children[0];
         const stream = canvas.captureStream(
             document.getElementById("stage-fps").value | 0
@@ -163,6 +181,8 @@ class Publish
             anchor.download = `${Util.$currentWorkSpace().name}.webm`;
             anchor.href     = URL.createObjectURL(new Blob(chunks, { "type" : mimeType }));
             anchor.click();
+
+            Util.$saveProgress.end();
         });
 
         const watch = function ()
@@ -192,6 +212,8 @@ class Publish
      */
     static toGIF (repeat = 0)
     {
+        Util.$saveProgress.encode();
+
         const gif = new GIF({
             "repeat": repeat,
             "workerScript": "./assets/js/gif.worker.js"
@@ -203,6 +225,8 @@ class Publish
             anchor.download = `${Util.$currentWorkSpace().name}.gif`;
             anchor.href     = URL.createObjectURL(blob);
             anchor.click();
+
+            Util.$saveProgress.end();
         });
 
         const watch = function ()
@@ -243,6 +267,8 @@ class Publish
      */
     static toPng ()
     {
+        Util.$saveProgress.encode();
+
         const snapshot = () =>
         {
             if (!Util.$root.numChildren) {
@@ -268,6 +294,8 @@ class Publish
             anchor.href     = canvas.toDataURL();
             anchor.click();
 
+            Util.$saveProgress.end();
+
             Util.$hidePreview();
         };
         snapshot();
@@ -283,6 +311,8 @@ class Publish
      */
     static toApng (loop = true)
     {
+        Util.$saveProgress.encode();
+
         const buffer = [];
         let currentFrame = 0;
         const watch = () =>
@@ -323,6 +353,8 @@ class Publish
                             anchor.download = `${Util.$currentWorkSpace().name}.apng`;
                             anchor.href     = URL.createObjectURL(blob);
                             anchor.click();
+
+                            Util.$saveProgress.end();
                         });
 
                 }
