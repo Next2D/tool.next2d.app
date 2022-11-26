@@ -154,14 +154,19 @@ class ConfirmModal extends BaseController
 
                 // ファイル追加処理
                 default:
-                    promises.push(Util
-                        .$libraryController
-                        .loadFile(
-                            object.file,
-                            object.folderId,
-                            object.file.name,
-                            libraryId
-                        ));
+                    // eslint-disable-next-line no-loop-func
+                    promises.push(new Promise((resolve) =>
+                    {
+                        Util
+                            .$libraryController
+                            .loadFile(
+                                object.file,
+                                resolve,
+                                object.folderId,
+                                object.file.name,
+                                libraryId
+                            );
+                    }));
                     break;
 
             }
@@ -987,19 +992,23 @@ class ConfirmModal extends BaseController
 
             default:
 
-                Util
-                    .$libraryController
-                    .loadFile(
-                        this._$currentObject.file,
-                        this._$currentObject.folderId,
-                        inputValue,
-                        libraryId
-                    )
+                new Promise((resolve) =>
+                {
+                    Util
+                        .$libraryController
+                        .loadFile(
+                            this._$currentObject.file,
+                            resolve,
+                            this._$currentObject.folderId,
+                            inputValue,
+                            libraryId
+                        );
+
+                })
                     .then(() =>
                     {
                         this.setup();
                     });
-
                 break;
 
         }

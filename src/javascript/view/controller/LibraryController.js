@@ -1350,6 +1350,7 @@ class LibraryController
                 ));
             }
 
+            console.log(promises);
             Promise
                 .all(promises)
                 .then(() =>
@@ -1415,11 +1416,15 @@ class LibraryController
             });
         }
 
-        return entry
-            .file((file) =>
-            {
-                return this.loadFile(file, folder_id);
-            });
+        return new Promise((resolve) =>
+        {
+            entry
+                .file((file) =>
+                {
+                    this.loadFile(file, resolve, folder_id);
+                });
+        });
+
     }
 
     /**
@@ -1500,6 +1505,7 @@ class LibraryController
      * @description 読み込み処理
      *
      * @param  {File} file
+     * @param  {function} resolve
      * @param  {number} [folder_id=0]
      * @param  {string} [name=""]
      * @param  {number} [library_id=0]
@@ -1507,7 +1513,7 @@ class LibraryController
      * @method
      * @public
      */
-    loadFile (file, folder_id = 0, name = "", library_id = 0)
+    loadFile (file, resolve, folder_id = 0, name = "", library_id = 0)
     {
         const workSpace = Util.$currentWorkSpace();
 
@@ -1549,7 +1555,7 @@ class LibraryController
         switch (file.type) {
 
             case "image/svg+xml":
-                return file
+                file
                     .text()
                     .then((value) =>
                     {
@@ -1603,13 +1609,14 @@ class LibraryController
                             this.reloadScreen(library_id);
                         }
 
-                        return Promise.resolve();
+                        resolve();
                     });
+                break;
 
             case "image/png":
             case "image/jpeg":
             case "image/gif":
-                return file
+                file
                     .arrayBuffer()
                     .then((buffer) =>
                     {
@@ -1691,12 +1698,13 @@ class LibraryController
                                     this.reloadScreen(library_id);
                                 }
 
-                                return Promise.resolve();
+                                resolve();
                             });
                     });
+                break;
 
             case "video/mp4":
-                return file
+                file
                     .arrayBuffer()
                     .then((buffer) =>
                     {
@@ -1759,15 +1767,16 @@ class LibraryController
                                 this.reloadScreen(library_id);
                             }
 
-                            return Promise.resolve();
+                            resolve();
                         };
 
                         video.src = URL.createObjectURL(blob);
                         video.load();
                     });
+                break;
 
             case "audio/mpeg":
-                return file
+                file
                     .arrayBuffer()
                     .then((buffer) =>
                     {
@@ -1818,20 +1827,25 @@ class LibraryController
                             this.reloadScreen(library_id);
                         }
 
-                        return Promise.resolve();
+                        resolve();
                     });
+                break;
 
             case "application/x-shockwave-flash":
-                return file
+                file
                     .arrayBuffer()
                     .then((buffer) =>
                     {
                         new ReComposition()
                             .setData(new Uint8Array(buffer))
-                            .run(name || file.name, folder_id, library_id);
-
-                        return Promise.resolve();
+                            .run(
+                                name || file.name,
+                                resolve,
+                                folder_id,
+                                library_id
+                            );
                     });
+                break;
 
             default:
                 break;

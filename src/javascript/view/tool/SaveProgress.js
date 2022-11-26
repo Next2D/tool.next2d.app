@@ -274,6 +274,8 @@ class SaveProgress
      */
     zlibInflate ()
     {
+        clearInterval(this._$timerId);
+
         this.update(15,
             Util.$currentLanguage.replace("{{データを解凍中}}")
         );
@@ -296,6 +298,8 @@ class SaveProgress
      */
     encode ()
     {
+        clearInterval(this._$timerId);
+
         this.update(15,
             Util.$currentLanguage.replace("{{エンコード}}")
         );
@@ -318,6 +322,8 @@ class SaveProgress
      */
     zlibDeflate ()
     {
+        clearInterval(this._$timerId);
+
         this.update(15,
             Util.$currentLanguage.replace("{{データを圧縮中}}")
         );
@@ -327,6 +333,30 @@ class SaveProgress
             this.update(
                 Math.min(80, this._$value + 1),
                 Util.$currentLanguage.replace("{{データを圧縮中}}")
+            );
+        }, 300);
+    }
+
+    /**
+     * @description SWFの解析待機
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    parseSWF ()
+    {
+        clearInterval(this._$timerId);
+
+        this.update(15,
+            Util.$currentLanguage.replace("{{SWFを解析中}}")
+        );
+
+        this._$timerId = setInterval(() =>
+        {
+            this.update(
+                Math.min(80, this._$value + 1),
+                Util.$currentLanguage.replace("{{SWFを解析中}}")
             );
         }, 300);
     }

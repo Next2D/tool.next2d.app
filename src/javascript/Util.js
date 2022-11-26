@@ -781,10 +781,14 @@ Util.$initialize = () =>
         if (Util.$updated) {
 
             event.preventDefault();
+            event.stopPropagation();
+
             event.returnValue = "データ保存中...";
 
+            // 保存を実行
             Util.$autoSave();
 
+            return false;
         }
     });
 
@@ -1056,19 +1060,19 @@ Util.$toJSON = () =>
 };
 
 /**
- * @return {void}
+ * @return {Promise}
  * @static
  */
 Util.$autoSave = () =>
 {
     if (Util.$saveProgress.active) {
-        return ;
+        return Promise.resolve();
     }
 
     Util.$javaScriptEditor.save();
     Util.$saveProgress.start();
 
-    new Promise((resolve) =>
+    return new Promise((resolve) =>
     {
         Util.$saveProgress.createJson();
 
@@ -2271,6 +2275,10 @@ Util.$parserHandler = function (event)
 
     // parser end
     worker.onmessage = null;
+
+    if (this._$resolve) {
+        this._$resolve();
+    }
 
     // next
     if (Util.$parserQueues.length) {

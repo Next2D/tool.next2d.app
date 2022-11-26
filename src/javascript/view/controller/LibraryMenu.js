@@ -155,9 +155,12 @@ class LibraryMenu
                 const promises = [];
                 const files = event.target.files;
                 for (let idx = 0; idx < files.length; ++idx) {
-                    promises.push(
-                        Util.$libraryController.loadFile(files[idx])
-                    );
+                    promises.push(new Promise((resolve) =>
+                    {
+                        Util
+                            .$libraryController
+                            .loadFile(files[idx], resolve);
+                    }));
                 }
 
                 Promise

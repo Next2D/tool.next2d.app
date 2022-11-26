@@ -89,6 +89,13 @@ class ReComposition
          * @private
          */
         this._$offset = 0;
+
+        /**
+         * @type {function}
+         * @default null
+         * @private
+         */
+        this._$resolve = null;
     }
 
     /**
@@ -122,13 +129,15 @@ class ReComposition
 
     /**
      * @param  {string} file_name
+     * @param  {function} resolve
      * @param  {number} [folder_id=0]
      * @param  {number} [library_id=0]
      * @return {void}
      * @public
      */
-    run (file_name, folder_id = 0, library_id = 0)
+    run (file_name, resolve, folder_id = 0, library_id = 0)
     {
+        this._$resolve   = resolve;
         this._$fileName  = file_name.replace(".swf", "");
         this._$folderId  = folder_id;
         this._$libraryId = library_id;
@@ -138,6 +147,8 @@ class ReComposition
 
         // version
         this._$byteStream.getVersion();
+
+        Util.$saveProgress.parseSWF();
 
         // file size
         this._$fileSize = this._$byteStream.getUI32();
