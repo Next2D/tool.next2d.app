@@ -1847,6 +1847,7 @@ class LibraryController
                 break;
 
             default:
+                resolve();
                 break;
 
         }
