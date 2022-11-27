@@ -149,7 +149,7 @@ class TimelineAdjustment extends BaseTimeline
             this._$pointY = event.screenY;
 
             // タイムラインを再構成
-            Util.$timelineLayer.updateClientHeight();
+            Util.$timelineLayer.updateClientSize();
 
             // マーカーのボーダーの座標をセット
             Util.$timelineMarker.setMarkerPosition();
@@ -175,7 +175,7 @@ class TimelineAdjustment extends BaseTimeline
         Util.$setCursor("auto");
 
         // タイムラインを再構成
-        Util.$timelineLayer.updateClientHeight();
+        Util.$timelineLayer.updateClientSize();
     }
 }
 

@@ -376,6 +376,18 @@ class ShortcutSetting
                     "text": "Ctrl + L",
                     "css": "context-menu-layer-clone",
                     "description": "{{レイヤーを複製}}"
+                },
+                {
+                    "key": "ArrowLeftCtrl",
+                    "text": "Ctrl + ArrowLeft",
+                    "css": "frame-left",
+                    "description": "{{最初のフレームに移動}}"
+                },
+                {
+                    "key": "ArrowRightCtrl",
+                    "text": "Ctrl + ArrowRight",
+                    "css": "frame-right",
+                    "description": "{{最後のフレームに移動}}"
                 }
             ],
             "library": [

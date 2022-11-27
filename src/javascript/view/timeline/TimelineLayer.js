@@ -467,7 +467,7 @@ class TimelineLayer extends BaseTimeline
      * @method
      * @public
      */
-    updateClientHeight ()
+    updateClientSize ()
     {
         const element = document
             .getElementById("timeline-content");
@@ -2028,7 +2028,10 @@ class TimelineLayer extends BaseTimeline
      */
     moveTimeLine ()
     {
-        const scene  = Util.$currentWorkSpace().scene;
+        const scene = Util.$currentWorkSpace().scene;
+        if (!scene) {
+            return ;
+        }
 
         const clientHeight = this.clientHeight;
 

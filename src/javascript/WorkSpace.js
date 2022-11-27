@@ -180,7 +180,7 @@ class WorkSpace
         );
 
         // タイムラインの擬似スクロールの座標をセット
-        Util.$timelineScroll.setX();
+        Util.$timelineScroll.setBarPosition();
 
         // スクリーンの表示をrootに変更
         Util.$sceneChange.reload();

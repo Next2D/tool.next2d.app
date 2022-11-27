@@ -875,7 +875,8 @@ Util.$rebuildTimeline = () =>
 
     // タイムラインを再構成
     Util.$timelineLayer.moveTimeLine();
-    Util.$timelineScroll.setX();
+    Util.$timelineLayer.updateClientSize();
+    Util.$timelineScroll.setBarPosition();
 };
 
 /**
