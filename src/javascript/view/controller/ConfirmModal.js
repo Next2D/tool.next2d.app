@@ -1087,6 +1087,10 @@ class ConfirmModal extends BaseController
      */
     hide ()
     {
+        if (this._$state === "hide") {
+            return ;
+        }
+
         // 初期化
         this._$state = "hide";
 
@@ -1094,7 +1098,9 @@ class ConfirmModal extends BaseController
             .getElementById("confirm-modal");
 
         if (element) {
-            element.setAttribute("class", "fadeOut");
+            if (!element.classList.contains("fadeOut")) {
+                element.setAttribute("class", "fadeOut");
+            }
         }
     }
 
@@ -1122,7 +1128,9 @@ class ConfirmModal extends BaseController
             .getElementById("confirm-modal");
 
         if (element) {
-            element.setAttribute("class", "fadeIn");
+            if (!element.classList.contains("fadeIn")) {
+                element.setAttribute("class", "fadeIn");
+            }
         }
 
         this.setup();
