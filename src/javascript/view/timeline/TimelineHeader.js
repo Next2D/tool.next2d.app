@@ -257,6 +257,11 @@ class TimelineHeader extends BaseTimeline
             return ;
         }
 
+        const scene = Util.$currentWorkSpace().scene;
+        if (!scene) {
+            return ;
+        }
+
         // 初期値をセット
         if (!Util.$timelineTool.timelineWidth) {
             Util.$timelineTool.timelineWidth =
@@ -301,8 +306,6 @@ class TimelineHeader extends BaseTimeline
 
         let frame = this.leftFrame;
         let sec   = Math.max(1, (frame / 24 | 0) + 1);
-
-        const scene = Util.$currentWorkSpace().scene;
 
         const children = element.children;
         const length   = children.length;
