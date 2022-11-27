@@ -95,6 +95,17 @@ class TimelineMenu extends BaseTimeline
      */
     executeContextMenuFirstFrame ()
     {
+        const targetLayer = Util.$timelineLayer.targetLayer;
+        if (!targetLayer) {
+            return ;
+        }
+
+        /**
+         * @type {ArrowTool}
+         */
+        const tool = Util.$tools.getDefaultTool("arrow");
+        tool.clear();
+
         // フレーム1に設定
         Util.$timelineFrame.currentFrame = 1;
 
@@ -109,6 +120,22 @@ class TimelineMenu extends BaseTimeline
 
         // タイムラインを移動
         Util.$timelineLayer.moveTimeLine();
+
+        // レイヤーを選択
+        Util.$timelineLayer.targetLayer = targetLayer;
+
+        // 選択したフレームElementをMapに登録
+        const layer = Util
+            .$currentWorkSpace()
+            .scene
+            .getLayer(
+                targetLayer.dataset.layerId | 0
+            );
+
+        Util.$timelineLayer.addTargetFrame(layer, 1);
+
+        // 再描画
+        this.reloadScreen();
     }
 
     /**
@@ -120,8 +147,23 @@ class TimelineMenu extends BaseTimeline
      */
     executeContextMenuLastFrame ()
     {
-        const timelineWidth = Util.$timelineTool.timelineWidth;
+        const targetLayer = Util.$timelineLayer.targetLayer;
+        if (!targetLayer) {
+            return ;
+        }
+
         const totalFrame = Util.$currentWorkSpace().scene.totalFrame;
+        if (2 > totalFrame) {
+            return ;
+        }
+
+        /**
+         * @type {ArrowTool}
+         */
+        const tool = Util.$tools.getDefaultTool("arrow");
+        tool.clear();
+
+        const timelineWidth = Util.$timelineTool.timelineWidth;
 
         // 最終フレームにセット
         Util.$timelineFrame.currentFrame = totalFrame;
@@ -137,6 +179,22 @@ class TimelineMenu extends BaseTimeline
 
         // タイムラインを移動
         Util.$timelineLayer.moveTimeLine();
+
+        // レイヤーを選択
+        Util.$timelineLayer.targetLayer = targetLayer;
+
+        // 選択したフレームElementをMapに登録
+        const layer = Util
+            .$currentWorkSpace()
+            .scene
+            .getLayer(
+                targetLayer.dataset.layerId | 0
+            );
+
+        Util.$timelineLayer.addTargetFrame(layer, totalFrame);
+
+        // 再描画
+        this.reloadScreen();
     }
 
     /**
