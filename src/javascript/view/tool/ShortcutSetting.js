@@ -380,13 +380,13 @@ class ShortcutSetting
                 {
                     "key": "ArrowLeftCtrl",
                     "text": "Ctrl + ArrowLeft",
-                    "css": "frame-left",
+                    "css": "context-menu-first-frame",
                     "description": "{{最初のフレームに移動}}"
                 },
                 {
                     "key": "ArrowRightCtrl",
                     "text": "Ctrl + ArrowRight",
-                    "css": "frame-right",
+                    "css": "context-menu-last-frame",
                     "description": "{{最後のフレームに移動}}"
                 }
             ],

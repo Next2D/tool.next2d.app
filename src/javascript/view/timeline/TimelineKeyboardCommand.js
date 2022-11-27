@@ -225,42 +225,13 @@ class TimelineKeyboardCommand extends KeyboardCommand
         // フレーム1に移動
         this.add(Util.$generateShortcutKey("ArrowLeft", { "ctrl": true }), () =>
         {
-            // フレーム1に設定
-            Util.$timelineFrame.currentFrame = 1;
-
-            // スクロール位置を調整
-            Util.$timelineHeader.scrollX = 0;
-
-            // タイムラインヘッダーを再構成
-            Util.$timelineHeader.rebuild();
-
-            // マーカーを移動
-            Util.$timelineMarker.move();
-
-            // タイムラインを移動
-            Util.$timelineLayer.moveTimeLine();
+            Util.$timelineMenu.executeContextMenuFirstFrame();
         });
 
         // 最終フレームに移動
         this.add(Util.$generateShortcutKey("ArrowRight", { "ctrl": true }), () =>
         {
-            const timelineWidth = Util.$timelineTool.timelineWidth;
-            const totalFrame = Util.$currentWorkSpace().scene.totalFrame;
-
-            // 最終フレームにセット
-            Util.$timelineFrame.currentFrame = totalFrame;
-
-            // スクロール位置を調整
-            Util.$timelineHeader.scrollX = (totalFrame - 1) * timelineWidth;
-
-            // タイムラインヘッダーを再構成
-            Util.$timelineHeader.rebuild();
-
-            // マーカーを移動
-            Util.$timelineMarker.move();
-
-            // タイムラインを移動
-            Util.$timelineLayer.moveTimeLine();
+            Util.$timelineMenu.executeContextMenuLastFrame();
         });
     }
 
