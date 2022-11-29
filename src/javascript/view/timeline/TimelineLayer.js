@@ -2811,6 +2811,14 @@ class TimelineLayer extends BaseTimeline
         window.removeEventListener("mousemove", this._$moveTargetGroup);
         window.removeEventListener("mouseup", this._$endTargetGroup);
 
+        // 選択elementを非表示
+        this.hideTargetGroup();
+
+        const targetLayer = this.targetLayer;
+        if (!targetLayer) {
+            return ;
+        }
+
         const targetGroup = document
             .getElementById("target-group");
 
@@ -2821,12 +2829,9 @@ class TimelineLayer extends BaseTimeline
             document.getElementById("timeline-content").children
         );
 
-        // 選択elementを非表示
-        this.hideTargetGroup();
-
         // 移動をしてなければ中止
         const selectLayerId = children[index].dataset.layerId | 0;
-        const targetLayerId = this.targetLayer.dataset.layerId | 0;
+        const targetLayerId = targetLayer.dataset.layerId | 0;
 
         // 選択したフレームで一番若いフレーム番号
         const frame = Util.$timelineTool.getFirstFrame();
