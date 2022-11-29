@@ -60,8 +60,7 @@ class TimelineMenu extends BaseTimeline
             "context-menu-layer-clone",
             "context-menu-first-frame",
             "context-menu-last-frame",
-            "context-menu-key-frame-change",
-            "context-menu-empty-key-frame-change"
+            "context-menu-key-frame-change"
         ];
 
         for (let idx = 0; idx < elementIds.length; ++idx) {
@@ -86,18 +85,6 @@ class TimelineMenu extends BaseTimeline
                 this.executeFunction(event);
             });
         }
-    }
-
-    /**
-     * @description 指定した範囲に空のキーフレームに変換
-     *
-     * @return {void}
-     * @method
-     * @public
-     */
-    executeContextMenuEmptyKeyFrameChange ()
-    {
-        console.log("koko");
     }
 
     /**
