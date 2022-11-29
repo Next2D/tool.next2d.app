@@ -233,6 +233,18 @@ class TimelineKeyboardCommand extends KeyboardCommand
         {
             Util.$timelineMenu.executeContextMenuLastFrame();
         });
+
+        // キーフレームに変換
+        this.add("F6", () =>
+        {
+            Util.$timelineMenu.executeContextMenuKeyFrameChange();
+        });
+
+        // 空のキーフレームに変換
+        this.add("F7", () =>
+        {
+            Util.$timelineMenu.executeContextMenuKeyFrameChange();
+        });
     }
 
     /**

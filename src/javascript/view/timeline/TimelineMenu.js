@@ -59,7 +59,9 @@ class TimelineMenu extends BaseTimeline
             "context-menu-layer-paste",
             "context-menu-layer-clone",
             "context-menu-first-frame",
-            "context-menu-last-frame"
+            "context-menu-last-frame",
+            "context-menu-key-frame-change",
+            "context-menu-empty-key-frame-change"
         ];
 
         for (let idx = 0; idx < elementIds.length; ++idx) {
@@ -84,6 +86,142 @@ class TimelineMenu extends BaseTimeline
                 this.executeFunction(event);
             });
         }
+    }
+
+    /**
+     * @description 指定した範囲に空のキーフレームに変換
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    executeContextMenuEmptyKeyFrameChange ()
+    {
+        console.log("koko");
+    }
+
+    /**
+     * @description 指定した範囲にキーフレームに変換
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    executeContextMenuKeyFrameChange ()
+    {
+        const targetLayer = Util.$timelineLayer.targetLayer;
+        if (!targetLayer) {
+            return ;
+        }
+
+        this.save();
+
+        const scene = Util.$currentWorkSpace().scene;
+
+        let sortFrame = null;
+        const targetFrames = Util.$timelineLayer.targetFrames;
+        for (let [layerId, frames] of targetFrames) {
+
+            const layer = scene.getLayer(layerId);
+
+            // 何も配置されてないレイヤーならスキップ
+            if (!layer._$characters.length && !layer._$emptys.length) {
+                continue;
+            }
+
+            // 昇順
+            if (!sortFrame) {
+                sortFrame = frames.slice().sort((a, b) =>
+                {
+                    switch (true) {
+
+                        case a > b:
+                            return 1;
+
+                        case a < b:
+                            return -1;
+
+                        default:
+                            return 0;
+
+                    }
+                });
+            }
+
+            for (let idx = 0; idx < sortFrame.length; ++idx) {
+
+                const frame = sortFrame[idx];
+
+                const characters = layer.getActiveCharacter(frame);
+
+                // 配置されたDisplayObjectがあればクローン
+                if (characters.length) {
+
+                    for (let idx = 0; idx < characters.length; ++idx) {
+
+                        const character = characters[idx];
+
+                        // tween対応
+                        const place = character.getPlace(frame);
+                        if (place.tweenFrame) {
+
+                            const tweenFrame = place.tweenFrame;
+
+                            const tween = character.getTween(tweenFrame);
+
+                            // place objectのtweenフレームを書き換え
+                            for (let ketFrame = frame; tween.endFrame > ketFrame; ++ketFrame) {
+                                const place = character.getPlace(ketFrame);
+                                place.tweenFrame = frame;
+                            }
+
+                            // クローンを生成して配置
+                            const cloneTween = character
+                                .getCloneTween(tweenFrame);
+
+                            cloneTween.startFrame = frame;
+                            cloneTween.endFrame   = tween.endFrame;
+                            character.setTween(frame, cloneTween);
+
+                            // 前方のtweenの終了位置を修正
+                            tween.endFrame = frame;
+
+                            continue;
+                        }
+
+                        // キーフレームがあればスキップ
+                        if (character.hasPlace(frame)) {
+                            continue;
+                        }
+
+                        // クローンを配置
+                        character.setPlace(frame,
+                            character.getClonePlace(frame)
+                        );
+                    }
+
+                    continue;
+                }
+
+                // 空のキーフレームがあれば分割
+                const emptyCharacter = layer.getActiveEmptyCharacter(frame);
+                if (!emptyCharacter || emptyCharacter.startFrame === frame) {
+                    continue;
+                }
+
+                layer.addEmptyCharacter(new EmptyCharacter({
+                    "startFrame": frame,
+                    "endFrame": emptyCharacter.endFrame
+                }));
+
+                // fixed logic
+                emptyCharacter.endFrame = frame;
+            }
+
+            layer.reloadStyle();
+        }
+
+        this._$saved = false;
     }
 
     /**
