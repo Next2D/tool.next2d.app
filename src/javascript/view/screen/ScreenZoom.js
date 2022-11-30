@@ -112,23 +112,20 @@ class ScreenZoom extends BaseScreen
         const stageArea = document.getElementById("stage-area");
         const stage     = document.getElementById("stage");
 
-        const beforeWidth  = screen.clientWidth  / (stageArea.clientWidth  / screen.clientWidth);
-        const beforeHeight = screen.clientHeight / (stageArea.clientHeight / screen.clientHeight);
+        const scaleX = screen.scrollLeft / screen.scrollWidth;
+        const scaleY = screen.scrollTop  / screen.scrollHeight;
 
-        const positionX = screen.scrollLeft / screen.scrollWidth;
-        const positionY = screen.scrollTop  / screen.scrollHeight;
+        const stageAreaWidth  = width  + window.screen.width;
+        const stageAreaHeight = height + window.screen.height;
 
         // 値を更新
         stage.style.width      = `${width}px`;
         stage.style.height     = `${height}px`;
-        stageArea.style.width  = `${width  + window.screen.width}px`;
-        stageArea.style.height = `${height + window.screen.height}px`;
+        stageArea.style.width  = `${stageAreaWidth}px`;
+        stageArea.style.height = `${stageAreaHeight}px`;
 
-        const afterWidth  = screen.clientWidth  / (stageArea.clientWidth  / screen.clientWidth);
-        const afterHeight = screen.clientHeight / (stageArea.clientHeight / screen.clientHeight);
-
-        screen.scrollLeft = screen.scrollWidth  * positionX + (beforeWidth  - afterWidth);
-        screen.scrollTop  = screen.scrollHeight * positionY + (beforeHeight - afterHeight);
+        screen.scrollLeft = screen.scrollWidth * scaleX;
+        screen.scrollTop  = screen.scrollHeight * scaleY;
 
         // DisplayObjectのキャッシュを全て削除
         const frame = Util.$timelineFrame.currentFrame;

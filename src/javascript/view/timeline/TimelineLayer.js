@@ -3832,7 +3832,7 @@ class TimelineLayer extends BaseTimeline
         const leftFrame     = Util.$timelineHeader.leftFrame;
         const rightFrame    = leftFrame + elementCount;
 
-        const frame = Util.$timelineFrame.currentFrame;
+        const frame = Util.$timelineTool.getFirstFrame();
         const scene = Util.$currentWorkSpace().scene;
         for (const [layerId, values] of this._$targetFrames) {
 
