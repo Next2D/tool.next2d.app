@@ -119,6 +119,7 @@ class TimelineScroll extends BaseTimeline
 
         // タイマーを解除
         if (element) {
+
             clearTimeout(
                 element.dataset.timerId | 0
             );
@@ -151,13 +152,19 @@ class TimelineScroll extends BaseTimeline
      */
     mouseMove (event)
     {
+        event.stopPropagation();
+        event.preventDefault();
+
         window.requestAnimationFrame(() =>
         {
             if (this._$pageY) {
 
                 const deltaY = event.pageY - this._$pageY;
                 if (deltaY) {
-                    this.execute(deltaY);
+                    const scene = Util.$currentWorkSpace().scene;
+                    const maxHeight = scene._$layers.size * TimelineLayer.LAYER_HEIGHT;
+                    const scale = maxHeight / Util.$timelineLayer.clientHeight;
+                    this.execute(deltaY * scale);
                 }
 
                 // 現在のポジションをセット
@@ -190,7 +197,7 @@ class TimelineScroll extends BaseTimeline
                     if (!element.classList.contains("fadeOut")) {
                         element.setAttribute("class", "fadeOut");
                     }
-                }, 1000);
+                }, 1500);
             }
 
         }
@@ -207,7 +214,7 @@ class TimelineScroll extends BaseTimeline
                     if (!element.classList.contains("fadeOut")) {
                         element.setAttribute("class", "fadeOut");
                     }
-                }, 1000);
+                }, 1500);
             }
 
         }
@@ -235,9 +242,14 @@ class TimelineScroll extends BaseTimeline
             const yElement = document
                 .getElementById("timeline-scroll-bar-y");
 
+            const display = yElement.style.display;
+            yElement.style.display = "";
+
             const parentLeft = parent.offsetLeft + parent.offsetWidth;
 
-            yElement.style.left = `${parentLeft - 9}px`;
+            yElement.style.left = `${parentLeft - yElement.offsetWidth}px`;
+
+            yElement.style.display = display;
         }
     }
 
@@ -293,7 +305,6 @@ class TimelineScroll extends BaseTimeline
             }
 
             this.y = Math.max(0, Math.min(this.y + delta_y, this.maxY));
-
         }
 
         if (beforeY !== this.y) {
@@ -404,7 +415,7 @@ class TimelineScroll extends BaseTimeline
                 if (!element.classList.contains("fadeOut")) {
                     element.setAttribute("class", "fadeOut");
                 }
-            }, 1000);
+            }, 1500);
 
             const parent = document
                 .getElementById("timeline-content");
