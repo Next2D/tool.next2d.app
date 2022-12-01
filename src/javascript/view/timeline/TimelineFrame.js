@@ -77,7 +77,9 @@ class TimelineFrame extends BaseTimeline
         const element = document.getElementById("current-frame");
         if (element) {
             const scene = Util.$currentWorkSpace().scene;
-            const totalFrame = scene.totalFrame + TimelineScroll.FRAME_COUNT - 2;
+            const totalFrame = scene
+                ? scene.totalFrame + TimelineScroll.FRAME_COUNT - 2
+                : TimelineScroll.FRAME_COUNT - 2;
             element.value = `${Math.max(1, Math.min(frame, totalFrame)) | 0}`;
         }
     }
