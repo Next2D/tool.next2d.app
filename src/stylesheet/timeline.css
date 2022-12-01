@@ -579,9 +579,59 @@
     filter : brightness(200%);
 }
 
+#timeline .timeline-body
+{
+    height          : calc(var(--timeline-height) - 112px);
+    display         : flex;
+    flex-direction  : column;
+    overflow        : hidden;
+}
+
+#timeline .timeline-content-body
+{
+    height  : calc(var(--timeline-height) - 122px);
+    display : flex;
+}
+
+#timeline-y-bar-box
+{
+    position         : relative;
+    width            : 10px;
+    height           : calc(var(--timeline-height) - 122px);
+    display          : flex;
+    align-items      : center;
+    justify-content  : center;
+    background-color : #282828;
+}
+
+#timeline-x-bar-box
+{
+    position    : relative;
+    width       : calc(100vw - (var(--controller-width) + 338px));
+    height      : 10px;
+    display     : flex;
+    align-items : center;
+}
+
+#timeline .timeline-footer
+{
+    height           : 10px;
+    display          : flex;
+    align-items      : center;
+    background-color : #282828;
+}
+
+#timeline .timeline-scroll-bar-x-space
+{
+    width            : 270px;
+    height           : 10px;
+    background-color : #282828;
+    pointer-events   : none;
+}
+
 #timeline-content
 {
-    height          : calc(var(--timeline-height) - 102px);
+    height          : calc(var(--timeline-height) - 122px);
     display         : flex;
     flex-direction  : column;
     overflow        : hidden;
@@ -589,7 +639,7 @@
 
 #timeline-scroll-bar-x
 {
-    position         : fixed;
+    position         : absolute;
     height           : 6px;
     width            : var(--timeline-scroll-bar-width);
     background-color : #363636;
@@ -601,7 +651,7 @@
 
 #timeline-scroll-bar-y
 {
-    position         : fixed;
+    position         : absolute;
     width            : 6px;
     height           : var(--timeline-scroll-bar-height);
     background-color : #363636;
@@ -847,7 +897,7 @@
 
 #timeline-content .timeline-frame-controller
 {
-    width       : calc(100vw - (var(--controller-width) + 45px + 8px + 8px + 270px));
+    width       : calc(100vw - (var(--controller-width) + 338px));
     overflow    : hidden;
     display     : flex;
     align-items : center;

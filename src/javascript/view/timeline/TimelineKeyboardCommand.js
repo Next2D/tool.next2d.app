@@ -320,6 +320,7 @@ class TimelineKeyboardCommand extends KeyboardCommand
                 // 一番上のレイヤーを選択
                 element = parent.firstElementChild;
                 Util.$timelineScroll.execute(
+                    0,
                     -Util.$timelineScroll.y
                 );
 
@@ -328,6 +329,7 @@ class TimelineKeyboardCommand extends KeyboardCommand
                 // 一番下のレイヤーを選択
                 element = parent.lastElementChild;
                 Util.$timelineScroll.execute(
+                    0,
                     Util.$timelineLayer.clientHeight
                 );
 
@@ -346,6 +348,7 @@ class TimelineKeyboardCommand extends KeyboardCommand
                     > window.innerHeight
                 ) {
                     Util.$timelineScroll.execute(
+                        0,
                         TimelineLayer.LAYER_HEIGHT
                     );
                 }
@@ -359,6 +362,7 @@ class TimelineKeyboardCommand extends KeyboardCommand
 
                 if (parent.offsetTop > element.offsetTop) {
                     Util.$timelineScroll.execute(
+                        0,
                         -TimelineLayer.LAYER_HEIGHT
                     );
                 }

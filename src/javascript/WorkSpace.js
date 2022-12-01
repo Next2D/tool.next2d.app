@@ -179,9 +179,6 @@ class WorkSpace
             Array.from(this._$plugins.values())
         );
 
-        // タイムラインの擬似スクロールの座標をセット
-        Util.$timelineScroll.setBarPosition();
-
         // スクリーンの表示をrootに変更
         Util.$sceneChange.reload();
     }

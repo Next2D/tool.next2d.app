@@ -18,7 +18,21 @@ class TimelineScroll extends BaseTimeline
          * @default 0
          * @private
          */
+        this._$x = 0;
+
+        /**
+         * @type {number}
+         * @default 0
+         * @private
+         */
         this._$y = 0;
+
+        /**
+         * @type {number}
+         * @default 0
+         * @private
+         */
+        this._$pageX = 0;
 
         /**
          * @type {number}
@@ -43,6 +57,19 @@ class TimelineScroll extends BaseTimeline
     }
 
     /**
+     * @description シーンのフレーム数に加算するフレーム数
+     *
+     * @return {number}
+     * @const
+     * @static
+     * @public
+     */
+    static get FRAME_COUNT ()
+    {
+        return 600;
+    }
+
+    /**
      * @description 初期起動関数
      *
      * @return {void}
@@ -54,6 +81,7 @@ class TimelineScroll extends BaseTimeline
         super.initialize();
 
         const elementIds = [
+            "timeline-scroll-bar-x",
             "timeline-scroll-bar-y"
         ];
 
@@ -79,12 +107,77 @@ class TimelineScroll extends BaseTimeline
                 // id名で関数を実行
                 this.executeFunction(event);
             });
+
+            // eslint-disable-next-line no-loop-func
+            element.addEventListener("wheel", (event) =>
+            {
+                // 親のイベント中止
+                event.stopPropagation();
+                event.preventDefault();
+
+                // メニューを非表示
+                Util.$endMenu();
+
+                // id名で関数を実行
+                if (event.target.id === "timeline-scroll-bar-y") {
+                    this.executeTimelineYBarBox(event);
+                } else {
+                    this.executeTimelineXBarBox(event);
+                }
+
+            }, { "passive" : false });
         }
 
+        const wheelIds = [
+            "timeline-x-bar-box",
+            "timeline-y-bar-box"
+        ];
+
+        for (let idx = 0; idx < wheelIds.length; ++idx) {
+
+            const element = document
+                .getElementById(wheelIds[idx]);
+
+            if (!element) {
+                continue;
+            }
+
+            // eslint-disable-next-line no-loop-func
+            element.addEventListener("wheel", (event) =>
+            {
+                // 親のイベント中止
+                event.stopPropagation();
+                event.preventDefault();
+
+                // メニューを非表示
+                Util.$endMenu();
+
+                // id名で関数を実行
+                this.executeFunction(event);
+
+            }, { "passive" : false });
+        }
     }
 
     /**
-     * @description レイヤーの擬似スクロールの座標
+     * @description レイヤーの擬似スクロールのx座標
+     *
+     * @member {number}
+     * @readonly
+     * @public
+     */
+    get x ()
+    {
+        return this._$x;
+    }
+    set x (x)
+    {
+        this._$x = Math.max(0, Math.min(x, this.maxX));
+        this.viewX();
+    }
+
+    /**
+     * @description レイヤーの擬似スクロールのy座標
      *
      * @member {number}
      * @readonly
@@ -101,7 +194,76 @@ class TimelineScroll extends BaseTimeline
     }
 
     /**
-     * @description スクロールバーの移動処理をセット
+     * @description x軸のスクロール移動
+     *
+     * @param  {WheelEvent} event
+     * @return {void}
+     * @method
+     * @public
+     */
+    executeTimelineXBarBox (event)
+    {
+        const deltaX = event.deltaX | 0;
+        if (!deltaX) {
+            return false;
+        }
+
+        window.requestAnimationFrame(() =>
+        {
+            Util.$timelineScroll.execute(deltaX, 0);
+        });
+    }
+
+    /**
+     * @description y軸のスクロール移動
+     *
+     * @param  {WheelEvent} event
+     * @return {void}
+     * @method
+     * @public
+     */
+    executeTimelineYBarBox (event)
+    {
+        const deltaY = event.deltaY | 0;
+        if (!deltaY) {
+            return false;
+        }
+
+        window.requestAnimationFrame(() =>
+        {
+            Util.$timelineScroll.execute(0, deltaY);
+        });
+    }
+
+    /**
+     * @description スクロールバーのx移動処理をセット
+     *
+     * @param  {MouseEvent} event
+     * @return {void}
+     * @method
+     * @public
+     */
+    executeTimelineScrollBarX (event)
+    {
+        // 初期値をセット
+        this._$pageX = event.pageX;
+        this._$pageY = 0;
+
+        if (!this._$mouseMove) {
+            this._$mouseMove = this.mouseMove.bind(this);
+        }
+
+        if (!this._$mouseUp) {
+            this._$mouseUp = this.mouseUp.bind(this);
+        }
+
+        // イベントを登録
+        window.addEventListener("mousemove", this._$mouseMove);
+        window.addEventListener("mouseup", this._$mouseUp);
+    }
+
+    /**
+     * @description スクロールバーのy移動処理をセット
      *
      * @param  {MouseEvent} event
      * @return {void}
@@ -113,21 +275,6 @@ class TimelineScroll extends BaseTimeline
         // 初期値をセット
         this._$pageX = 0;
         this._$pageY = event.pageY;
-
-        const element = document
-            .getElementById("timeline-scroll-bar-y");
-
-        // タイマーを解除
-        if (element) {
-
-            clearTimeout(
-                element.dataset.timerId | 0
-            );
-
-            if (element.classList.contains("fadeOut")) {
-                element.setAttribute("class", "fadeIn");
-            }
-        }
 
         if (!this._$mouseMove) {
             this._$mouseMove = this.mouseMove.bind(this);
@@ -157,18 +304,37 @@ class TimelineScroll extends BaseTimeline
 
         window.requestAnimationFrame(() =>
         {
+            const scene = Util.$currentWorkSpace().scene;
+
             if (this._$pageY) {
 
                 const deltaY = event.pageY - this._$pageY;
                 if (deltaY) {
-                    const scene = Util.$currentWorkSpace().scene;
                     const maxHeight = scene._$layers.size * TimelineLayer.LAYER_HEIGHT;
                     const scale = maxHeight / Util.$timelineLayer.clientHeight;
-                    this.execute(deltaY * scale);
+                    this.execute(0, deltaY * scale);
                 }
 
                 // 現在のポジションをセット
                 this._$pageY = event.pageY;
+            }
+
+            if (this._$pageX) {
+
+                const deltaX = event.pageX - this._$pageX;
+                if (deltaX) {
+                    const clientWidth   = Util.$timelineLayer.clientWidth;
+                    const totalFrame    = scene.totalFrame + TimelineScroll.FRAME_COUNT;
+                    const timelineWidth = Util.$timelineTool.timelineWidth;
+
+                    // スクロールバーの幅を算出
+                    const scale = totalFrame * timelineWidth / clientWidth;
+                    this.execute(deltaX * scale, 0);
+                }
+
+                // 現在のポジションをセット
+                this._$pageX = event.pageX;
+
             }
         });
     }
@@ -185,72 +351,27 @@ class TimelineScroll extends BaseTimeline
         window.removeEventListener("mousemove", this._$mouseMove);
         window.removeEventListener("mouseup", this._$mouseUp);
 
-        if (this._$pageX) {
-
-            const element = document
-                .getElementById("timeline-scroll-bar-x");
-
-            // 1.5秒で自動的に消えるようタイマーをセット
-            if (element) {
-                element.dataset.timerId = setTimeout(() =>
-                {
-                    if (!element.classList.contains("fadeOut")) {
-                        element.setAttribute("class", "fadeOut");
-                    }
-                }, 1500);
-            }
-
-        }
-
-        if (this._$pageY) {
-
-            const element = document
-                .getElementById("timeline-scroll-bar-y");
-
-            // 1.5秒で自動的に消えるようタイマーをセット
-            if (element) {
-                element.dataset.timerId = setTimeout(() =>
-                {
-                    if (!element.classList.contains("fadeOut")) {
-                        element.setAttribute("class", "fadeOut");
-                    }
-                }, 1500);
-            }
-
-        }
-
         // 値を初期化
         this._$pageX = 0;
         this._$pageY = 0;
     }
 
     /**
-     * @description スクロールバーの座標をセット
+     * @description 移動できる最大のx座標の値を返す
      *
-     * @return {void}
-     * @method
+     * @member {number}
+     * @readonly
      * @public
      */
-    setBarPosition ()
+    get maxX ()
     {
-        const parent = document
-            .getElementById("timeline");
+        const scene = Util.$currentWorkSpace().scene;
 
-        if (parent) {
+        const clientWidth   = Util.$timelineLayer.clientWidth - 10;
+        const totalFrame    = scene.totalFrame + TimelineScroll.FRAME_COUNT;
+        const timelineWidth = Util.$timelineTool.timelineWidth;
 
-            // 縦スクロール座標セット
-            const yElement = document
-                .getElementById("timeline-scroll-bar-y");
-
-            const display = yElement.style.display;
-            yElement.style.display = "";
-
-            const parentLeft = parent.offsetLeft + parent.offsetWidth;
-
-            yElement.style.left = `${parentLeft - yElement.offsetWidth}px`;
-
-            yElement.style.display = display;
-        }
+        return totalFrame * timelineWidth - clientWidth;
     }
 
     /**
@@ -270,11 +391,12 @@ class TimelineScroll extends BaseTimeline
     /**
      * @description レイヤーのy軸のポジションの値を更新
      *
+     * @param {number} [delta_x = 0]
      * @param {number} [delta_y = 0]
      * @method
      * @public
      */
-    execute (delta_y = 0)
+    execute (delta_x = 0, delta_y = 0)
     {
         const workSpace = Util.$currentWorkSpace();
         if (!workSpace) {
@@ -286,30 +408,83 @@ class TimelineScroll extends BaseTimeline
             return ;
         }
 
-        const maxHeight = scene._$layers.size * TimelineLayer.LAYER_HEIGHT;
+        const beforeX = this.x;
+        if (delta_x) {
+            this.x = Math.max(0, Math.min(this.x + delta_x, this.maxX));
+            Util.$timelineHeader.scrollX = this.x;
+        }
 
         const beforeY = this.y;
-        if (Util.$timelineLayer.clientHeight > maxHeight) {
+        if (delta_y) {
+            const maxHeight = scene._$layers.size * TimelineLayer.LAYER_HEIGHT;
+            if (Util.$timelineLayer.clientHeight > maxHeight) {
 
-            this.y = 0;
+                this.y = 0;
 
-        } else {
+            } else {
 
-            // 移動範囲があれば実行
-            const stopCount = Util.$timelineLayer.clientHeight / TimelineLayer.LAYER_HEIGHT | 0;
+                // 移動範囲があれば実行
+                const stopCount = Util.$timelineLayer.clientHeight / TimelineLayer.LAYER_HEIGHT | 0;
 
-            // 表示の高さがスクロールの高さを超えたら非表示に
-            if (stopCount >= scene._$layers.size) {
-                this.viewY();
-                return ;
+                // 表示の高さがスクロールの高さを超えたら非表示に
+                if (stopCount >= scene._$layers.size) {
+                    this.viewY();
+                    return ;
+                }
+
+                this.y = Math.max(0, Math.min(this.y + delta_y, this.maxY));
             }
-
-            this.y = Math.max(0, Math.min(this.y + delta_y, this.maxY));
         }
 
-        if (beforeY !== this.y) {
+        // 更新があれば
+        if (beforeY !== this.y || beforeX !== this.x) {
+            // xの時はヘッダーも再構築
+            if (beforeX !== this.x) {
+                Util.$timelineHeader.rebuild();
+            }
+            // タイムラインを再構成
             Util.$timelineLayer.moveTimeLine();
         }
+    }
+
+    /**
+     * @description 擬似スクロールバーの幅をセット
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    updateWidth ()
+    {
+        const workSpace = Util.$currentWorkSpace();
+        if (!workSpace) {
+            return ;
+        }
+
+        const scene = workSpace.scene;
+        if (!scene) {
+            return ;
+        }
+
+        const clientWidth   = Util.$timelineLayer.clientWidth;
+        const totalFrame    = scene.totalFrame + TimelineScroll.FRAME_COUNT;
+        const timelineWidth = Util.$timelineTool.timelineWidth;
+
+        // スクロールバーの幅を算出
+        const scale = clientWidth / (totalFrame * timelineWidth);
+        const width = clientWidth * scale | 0;
+
+        // 2pxはborderの1pxの上下の分
+        document
+            .documentElement
+            .style
+            .setProperty(
+                "--timeline-scroll-bar-width",
+                `${width - 2}px`
+            );
+
+        // 表示判定
+        this.viewX();
     }
 
     /**
@@ -332,10 +507,7 @@ class TimelineScroll extends BaseTimeline
         }
 
         const clientHeight = Util.$timelineLayer.clientHeight;
-
-        const stopCount = clientHeight / TimelineLayer.LAYER_HEIGHT | 0;
-
-        const scale = clientHeight / (scene._$layers.size * TimelineLayer.LAYER_HEIGHT);
+        const stopCount    = clientHeight / TimelineLayer.LAYER_HEIGHT | 0;
 
         // 表示する場合だけ更新
         if (scene._$layers.size > stopCount) {
@@ -347,6 +519,7 @@ class TimelineScroll extends BaseTimeline
             const spaceHeight = clientHeight - minHeight;
 
             // スクロールバーの高さを算出
+            const scale  = clientHeight / (scene._$layers.size * TimelineLayer.LAYER_HEIGHT);
             const height = (clientHeight - spaceHeight) * scale | 0;
 
             // 2pxはborderの1pxの上下の分
@@ -362,9 +535,42 @@ class TimelineScroll extends BaseTimeline
 
         // 表示判定
         this.viewY();
+    }
 
-        // スクロール座標の調整
-        this.execute(0);
+    /**
+     * @description xスクロールバーを表示。タイマーで一定時間に非表示に
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    viewX ()
+    {
+        const element = document
+            .getElementById("timeline-scroll-bar-x");
+
+        if (element) {
+
+            const workSpace = Util.$currentWorkSpace();
+            if (!workSpace) {
+                return ;
+            }
+
+            const scene = workSpace.scene;
+            if (!scene) {
+                return ;
+            }
+
+            const clientWidth   = Util.$timelineLayer.clientWidth;
+            const totalFrame    = scene.totalFrame + TimelineScroll.FRAME_COUNT;
+            const timelineWidth = Util.$timelineTool.timelineWidth;
+
+            const scale = clientWidth / (totalFrame * timelineWidth);
+
+            const x = this.x * scale | 0;
+
+            element.style.left = `${x + 1}px`;
+        }
     }
 
     /**
@@ -380,11 +586,6 @@ class TimelineScroll extends BaseTimeline
             .getElementById("timeline-scroll-bar-y");
 
         if (element) {
-
-            // タイマーを解除
-            clearTimeout(
-                element.dataset.timerId | 0
-            );
 
             const workSpace = Util.$currentWorkSpace();
             if (!workSpace) {
@@ -405,27 +606,12 @@ class TimelineScroll extends BaseTimeline
             // 表示をon
             element.style.display = "";
 
-            if (!element.classList.contains("fadeIn")) {
-                element.setAttribute("class", "fadeIn");
-            }
-
-            // 1.5秒で自動的に消えるようタイマーをセット
-            element.dataset.timerId = setTimeout(() =>
-            {
-                if (!element.classList.contains("fadeOut")) {
-                    element.setAttribute("class", "fadeOut");
-                }
-            }, 1500);
-
-            const parent = document
-                .getElementById("timeline-content");
-
             const scale = Util.$timelineLayer.clientHeight
                 / (scene._$layers.size * TimelineLayer.LAYER_HEIGHT);
 
             const y = this.y * scale | 0;
 
-            element.style.top = `${parent.offsetTop + y + 1}px`;
+            element.style.top = `${y + 1}px`;
         }
     }
 }

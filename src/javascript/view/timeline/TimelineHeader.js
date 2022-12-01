@@ -128,7 +128,8 @@ class TimelineHeader extends BaseTimeline
      */
     set scrollX (scroll_x)
     {
-        this._$scrollX = Math.max(scroll_x, 0) | 0;
+        this._$scrollX = Math.max(0, Math.min(scroll_x, Util.$timelineScroll.maxX)) | 0;
+        Util.$timelineScroll.x = this._$scrollX;
     }
 
     /**
@@ -193,7 +194,7 @@ class TimelineHeader extends BaseTimeline
 
                     window.requestAnimationFrame(() =>
                     {
-                        this._$scrollX = Util.$clamp(
+                        this.scrollX = Util.$clamp(
                             this._$scrollX + delta, 0, Number.MAX_VALUE
                         );
 

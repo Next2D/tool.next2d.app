@@ -193,6 +193,22 @@ class TimelineLayer extends BaseTimeline
     }
 
     /**
+     * @description レイヤー表示枠の幅
+     *
+     * @member {number}
+     * @public
+     */
+    get clientWidth ()
+    {
+        return this._$clientWidth;
+    }
+    set clientWidth (client_width)
+    {
+        this._$clientWidth = client_width | 0;
+        Util.$timelineScroll.updateWidth();
+    }
+
+    /**
      * @description レイヤー表示枠の高さ
      *
      * @member {number}
@@ -438,7 +454,7 @@ class TimelineLayer extends BaseTimeline
 
                     window.requestAnimationFrame(() =>
                     {
-                        Util.$timelineScroll.execute(deltaY);
+                        Util.$timelineScroll.execute(0, deltaY);
                     });
 
                 } else {
@@ -474,10 +490,22 @@ class TimelineLayer extends BaseTimeline
 
         // 表示枠の高さを更新
         if (element) {
+
+            const controllerWidth = window.innerWidth - (document
+                .documentElement
+                .style
+                .getPropertyValue("--controller-width")
+                .split("px")[0] | 0) - 338;
+
             // 変化があれば更新
+            if (this.clientWidth !== controllerWidth) {
+                this.clientWidth = controllerWidth;
+                Util.$timelineScroll.updateWidth();
+            }
+
             if (this.clientHeight !== element.clientHeight) {
                 this.clientHeight = element.clientHeight;
-                Util.$timelineScroll.execute();
+                Util.$timelineScroll.updateHeight();
             }
         }
     }
@@ -2754,7 +2782,7 @@ class TimelineLayer extends BaseTimeline
                     if (Util.$timelineScroll.maxY >= Util.$timelineScroll.y + TimelineLayer.LAYER_HEIGHT) {
 
                         element.dataset.index = `${index + 1}`;
-                        Util.$timelineScroll.execute(TimelineLayer.LAYER_HEIGHT);
+                        Util.$timelineScroll.execute(0, TimelineLayer.LAYER_HEIGHT);
 
                     }
 
@@ -2782,7 +2810,7 @@ class TimelineLayer extends BaseTimeline
                     if (Util.$timelineScroll.y > 0) {
 
                         element.dataset.index = `${index - 1}`;
-                        Util.$timelineScroll.execute(-TimelineLayer.LAYER_HEIGHT);
+                        Util.$timelineScroll.execute(0, -TimelineLayer.LAYER_HEIGHT);
 
                     }
 

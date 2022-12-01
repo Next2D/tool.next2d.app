@@ -295,12 +295,15 @@ class TimelineMarker extends BaseTimeline
         const toolWidth  = 45;
 
         // 表示外なら非表示
-        if (0 > markerLeft || markerLeft + offsetX - toolWidth >= content.clientWidth) {
+        if (0 > markerLeft
+            || content.clientWidth
+            && markerLeft + offsetX - toolWidth >= content.clientWidth
+        ) {
             border.setAttribute("style", "display: none;");
             return ;
         }
 
-        const left   = offsetX + element.clientWidth / 2 + markerLeft - 1;
+        const left   = offsetX + element.clientWidth / 2 + markerLeft;
         const top    = content.offsetTop - 1;
         const height = window.screen.height;
 

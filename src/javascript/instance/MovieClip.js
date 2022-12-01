@@ -168,8 +168,8 @@ class MovieClip extends Instance
         Util.$timelineScroll.updateHeight();
 
         // スクロールの座標をセット
-        Util.$timelineScroll._$y = 1;
         Util.$timelineScroll.execute(
+            -Util.$timelineScroll.x,
             -Util.$timelineScroll.y
         );
 

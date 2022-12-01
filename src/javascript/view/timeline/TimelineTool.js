@@ -602,6 +602,9 @@ class TimelineTool extends BaseTimeline
                 }
             }
 
+            // レイヤーの横スクロール幅を再計算
+            Util.$timelineScroll.updateWidth();
+
             // 追加後のレイヤーを再構成
             Util.$timelineLayer.moveTimeLine();
 
@@ -1789,6 +1792,9 @@ class TimelineTool extends BaseTimeline
                     .add("frame-active");
             }
         }
+
+        // レイヤーの横スクロール幅を再計算
+        Util.$timelineScroll.updateWidth();
     }
 
     /**
