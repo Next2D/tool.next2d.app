@@ -349,7 +349,7 @@ class TimelineKeyboardCommand extends KeyboardCommand
                 ) {
                     Util.$timelineScroll.execute(
                         0,
-                        TimelineLayer.LAYER_HEIGHT
+                        Util.$timelineTool.timelineHeight
                     );
                 }
 
@@ -363,7 +363,7 @@ class TimelineKeyboardCommand extends KeyboardCommand
                 if (parent.offsetTop > element.offsetTop) {
                     Util.$timelineScroll.execute(
                         0,
-                        -TimelineLayer.LAYER_HEIGHT
+                        -Util.$timelineTool.timelineHeight
                     );
                 }
 

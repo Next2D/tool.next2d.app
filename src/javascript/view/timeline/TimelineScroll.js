@@ -310,7 +310,7 @@ class TimelineScroll extends BaseTimeline
 
                 const deltaY = event.pageY - this._$pageY;
                 if (deltaY) {
-                    const maxHeight = scene._$layers.size * TimelineLayer.LAYER_HEIGHT;
+                    const maxHeight = scene._$layers.size * Util.$timelineTool.timelineHeight;
                     const scale = maxHeight / Util.$timelineLayer.clientHeight;
                     this.execute(0, deltaY * scale);
                 }
@@ -384,8 +384,8 @@ class TimelineScroll extends BaseTimeline
     get maxY ()
     {
         const scene = Util.$currentWorkSpace().scene;
-        const stopCount = Util.$timelineLayer.clientHeight / TimelineLayer.LAYER_HEIGHT | 0;
-        return (scene._$layers.size - stopCount) * TimelineLayer.LAYER_HEIGHT;
+        const stopCount = Util.$timelineLayer.clientHeight / Util.$timelineTool.timelineHeight | 0;
+        return (scene._$layers.size - stopCount) * Util.$timelineTool.timelineHeight;
     }
 
     /**
@@ -416,7 +416,7 @@ class TimelineScroll extends BaseTimeline
 
         const beforeY = this.y;
         if (delta_y) {
-            const maxHeight = scene._$layers.size * TimelineLayer.LAYER_HEIGHT;
+            const maxHeight = scene._$layers.size * Util.$timelineTool.timelineHeight;
             if (Util.$timelineLayer.clientHeight > maxHeight) {
 
                 this.y = 0;
@@ -424,7 +424,7 @@ class TimelineScroll extends BaseTimeline
             } else {
 
                 // 移動範囲があれば実行
-                const stopCount = Util.$timelineLayer.clientHeight / TimelineLayer.LAYER_HEIGHT | 0;
+                const stopCount = Util.$timelineLayer.clientHeight / Util.$timelineTool.timelineHeight | 0;
 
                 // 表示の高さがスクロールの高さを超えたら非表示に
                 if (stopCount >= scene._$layers.size) {
@@ -508,19 +508,19 @@ class TimelineScroll extends BaseTimeline
         }
 
         const clientHeight = Util.$timelineLayer.clientHeight;
-        const stopCount    = clientHeight / TimelineLayer.LAYER_HEIGHT | 0;
+        const stopCount    = clientHeight / Util.$timelineTool.timelineHeight | 0;
 
         // 表示する場合だけ更新
         if (scene._$layers.size > stopCount) {
 
             // 最小表示の高さ
-            const minHeight = stopCount * TimelineLayer.LAYER_HEIGHT | 0;
+            const minHeight = stopCount * Util.$timelineTool.timelineHeight | 0;
 
             // 最小表示の時の余白の高さ
             const spaceHeight = clientHeight - minHeight;
 
             // スクロールバーの高さを算出
-            const scale  = clientHeight / (scene._$layers.size * TimelineLayer.LAYER_HEIGHT);
+            const scale  = clientHeight / (scene._$layers.size * Util.$timelineTool.timelineHeight);
             const height = (clientHeight - spaceHeight) * scale | 0;
 
             // 2pxはborderの1pxの上下の分
@@ -598,7 +598,7 @@ class TimelineScroll extends BaseTimeline
                 return ;
             }
 
-            const stopCount = Util.$timelineLayer.clientHeight / TimelineLayer.LAYER_HEIGHT | 0;
+            const stopCount = Util.$timelineLayer.clientHeight / Util.$timelineTool.timelineHeight | 0;
             if (stopCount >= scene._$layers.size) {
                 element.style.display = "none";
                 return ;
@@ -608,7 +608,7 @@ class TimelineScroll extends BaseTimeline
             element.style.display = "";
 
             const scale = Util.$timelineLayer.clientHeight
-                / (scene._$layers.size * TimelineLayer.LAYER_HEIGHT);
+                / (scene._$layers.size * Util.$timelineTool.timelineHeight);
 
             const y = this.y * scale | 0;
 

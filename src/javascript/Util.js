@@ -796,7 +796,18 @@ Util.$initialize = () =>
     document
         .documentElement
         .style
-        .setProperty("--timeline-frame-width", "13px");
+        .setProperty(
+            "--timeline-frame-width",
+            `${TimelineTool.DEFAULT_TIMELINE_WIDTH}px`
+        );
+
+    document
+        .documentElement
+        .style
+        .setProperty(
+            "--timeline-frame-height",
+            `${TimelineTool.DEFAULT_TIMELINE_HEIGHT - 1}px`
+        );
 
     document
         .documentElement

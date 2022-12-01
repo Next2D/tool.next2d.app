@@ -56,6 +56,38 @@ class TimelineLayerMenu extends BaseTimeline
                 this.changeLayerHighlightColor(event);
             });
         }
+
+        const select = document.getElementById("timeline-layer-scale");
+        if (select) {
+            select.addEventListener("change", (event) =>
+            {
+                // 親のイベント中止
+                event.stopPropagation();
+
+                // メニューを非表示
+                Util.$endMenu();
+
+                // レイヤーの高さを変更
+                this.changeLayerScale(event);
+            });
+        }
+    }
+
+    /**
+     * @description レイヤーの高さを変更
+     *
+     * @param  {Event} event
+     * @return {void}
+     * @method
+     * @public
+     */
+    changeLayerScale (event)
+    {
+        const scale = +event.target.value;
+
+        const defaultHeight = TimelineTool.DEFAULT_TIMELINE_HEIGHT - 1;
+
+        Util.$timelineTool.timelineHeight = defaultHeight * scale;
     }
 
     /**

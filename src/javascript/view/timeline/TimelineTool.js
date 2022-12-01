@@ -28,6 +28,13 @@ class TimelineTool extends BaseTimeline
         this._$timelineWidth = TimelineTool.DEFAULT_TIMELINE_WIDTH;
 
         /**
+         * @type {number}
+         * @default
+         * @private
+         */
+        this._$timelineHeight = TimelineTool.DEFAULT_TIMELINE_HEIGHT;
+
+        /**
          * @type {boolean}
          * @default false
          * @private
@@ -159,23 +166,54 @@ class TimelineTool extends BaseTimeline
     }
 
     /**
-     * @description タイムラインの幅を返す
+     * @description タイムライン高さの初期値
      *
      * @return {number}
+     * @const
+     * @static
+     */
+    static get DEFAULT_TIMELINE_HEIGHT ()
+    {
+        return 31;
+    }
+
+    /**
+     * @description タイムラインの高さを返す
+     *
+     * @return {number}
+     * @public
+     */
+    get timelineHeight ()
+    {
+        return this._$timelineHeight;
+    }
+    set timelineHeight (timeline_height)
+    {
+        this._$timelineHeight = timeline_height;
+
+        // タイムラインの幅を変更
+        document
+            .documentElement
+            .style
+            .setProperty("--timeline-frame-height", `${timeline_height}px`);
+
+        // レイヤーの横スクロール幅を再計算
+        Util.$timelineScroll.updateHeight();
+
+        // タイムラインを再構成
+        Util.$timelineLayer.moveTimeLine();
+    }
+
+    /**
+     * @description タイムラインの幅を返す
+     *
+     * @member {number}
      * @public
      */
     get timelineWidth ()
     {
         return this._$timelineWidth;
     }
-
-    /**
-     * @description タイムラインの幅を返す
-     *
-     * @param  {number} timeline_width
-     * @return {void}
-     * @public
-     */
     set timelineWidth (timeline_width)
     {
         this._$timelineWidth = timeline_width;
@@ -190,12 +228,18 @@ class TimelineTool extends BaseTimeline
         document
             .documentElement
             .style
-            .setProperty("--marker-width", `${Util.$clamp(timeline_width, 4, TimelineTool.DEFAULT_TIMELINE_WIDTH)}px`);
+            .setProperty(
+                "--marker-width",
+                `${Util.$clamp(timeline_width, 4, TimelineTool.DEFAULT_TIMELINE_WIDTH)}px`
+            );
 
         // スケールInputに値を反映
         document
             .getElementById("timeline-scale")
             .value = `${timeline_width / TimelineTool.DEFAULT_TIMELINE_WIDTH * 100 | 0}`;
+
+        // レイヤーの横スクロール幅を再計算
+        Util.$timelineScroll.updateWidth();
 
         // フレーム幅に合わせてマーカーを移動
         Util.$timelineHeader.rebuild();
