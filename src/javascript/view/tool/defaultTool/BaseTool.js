@@ -118,6 +118,9 @@ class BaseTool extends CommonTool
         // タイムラインを再描画
         layer.reloadStyle();
 
+        // レイヤーの横スクロール幅を再計算
+        Util.$timelineScroll.updateWidth();
+
         // ライブラリを再描画
         Util.$libraryController.reload();
     }
@@ -179,6 +182,9 @@ class BaseTool extends CommonTool
 
         // タイムラインを再描画
         layer.reloadStyle();
+
+        // レイヤーの横スクロール幅を再計算
+        Util.$timelineScroll.updateWidth();
 
         // ライブラリを再描画
         Util.$libraryController.reload();

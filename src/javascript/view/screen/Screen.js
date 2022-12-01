@@ -407,6 +407,9 @@ class Screen extends BaseScreen
 
             }
 
+            // レイヤーの横スクロール幅を再計算
+            Util.$timelineScroll.updateWidth();
+
             // タイムラインの表示を再計算
             layer.reloadStyle();
 

@@ -440,6 +440,7 @@ class TimelineScroll extends BaseTimeline
         if (beforeY !== this.y || beforeX !== this.x) {
             // xの時はヘッダーも再構築
             if (beforeX !== this.x) {
+                Util.$timelineMarker.move();
                 Util.$timelineHeader.rebuild();
             }
             // タイムラインを再構成
