@@ -5,6 +5,6 @@ Thumbs.db
 coverage
 node_modules
 Util.replaced.js
-*.min.js
+src/javascript/worker/*.min.js
 License.build.file
 package-lock.json
