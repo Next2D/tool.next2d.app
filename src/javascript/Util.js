@@ -1911,6 +1911,12 @@ Util.$parserHandler = function (event)
                                 }
                             }
 
+                            // 連続するplace objectをtweenに変換する
+                            for (let idx = 0; idx < layers.length; ++idx) {
+                                const layer = layers[idx];
+                                console.log(layer);
+                            }
+
                             Util.$characters.set(character._$characterId, id);
                         }
                         break;
