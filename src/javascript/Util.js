@@ -1961,6 +1961,8 @@ Util.$parserHandler = function (event)
                                         }
 
                                         frame++;
+
+                                        // フレームが終了したら次のレイヤーに
                                         if (frame >= totalFrame) {
                                             break;
                                         }
