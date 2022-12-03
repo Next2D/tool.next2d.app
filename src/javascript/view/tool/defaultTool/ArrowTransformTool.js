@@ -46,13 +46,25 @@ class ArrowTransformTool extends BaseTool
         // 開始イベント
         this.addEventListener(EventType.START, () =>
         {
+            Util.$setCursor(this._$cursor);
+            this.changeNodeEvent();
+
             const element = document.getElementById("target-rect");
             if (element) {
                 element.setAttribute("class", "");
             }
 
-            Util.$setCursor(this._$cursor);
-            this.changeNodeEvent();
+            // 選択中のDisplayObjectがあればアクティブ化
+            Util.$timelineLayer.activeCharacter();
+
+            // 強制的にアクティブ化
+            this.active = true;
+
+            // 変形ツールを再計算
+            Util
+                .$transformController
+                .show()
+                .relocation();
         });
 
         // ツール終了時に初期化
@@ -73,6 +85,9 @@ class ArrowTransformTool extends BaseTool
 
             // コントローラーエリアを初期化
             Util.$controller.default();
+
+            // 強制的に非アクティブ化
+            this.active = false;
         });
     }
 }

@@ -192,6 +192,9 @@ class ArrowTool extends BaseTool
             Util.$setCursor(this._$cursor);
             this.changeNodeEvent();
 
+            // 選択中のDisplayObjectがあればアクティブ化
+            Util.$timelineLayer.activeCharacter();
+
             const element = document.getElementById("target-rect");
             if (element) {
                 element.setAttribute("class", "arrow");
