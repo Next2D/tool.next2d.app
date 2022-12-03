@@ -178,9 +178,8 @@ class Project
                     window
                         .CustomPublish
                         .execute(Publish.toObject());
-
-                    Util.$saveProgress.end();
                 }
+                Util.$saveProgress.end();
                 break;
 
         }

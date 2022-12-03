@@ -1913,8 +1913,61 @@ Util.$parserHandler = function (event)
 
                             // 連続するplace objectをtweenに変換する
                             for (let idx = 0; idx < layers.length; ++idx) {
+
                                 const layer = layers[idx];
-                                console.log(layer);
+
+                                const totalFrame = layer.totalFrame;
+                                for (let frame = 1; totalFrame > frame; ) {
+
+                                    const characters = layer.getActiveCharacter(frame);
+                                    if (!characters.length || characters.length > 2) {
+                                        continue;
+                                    }
+
+                                    const character = characters[0];
+                                    const range = character.getRange(frame);
+
+                                    // 幅が1フレーム以上なら次のレンジに移動
+                                    if (range.endFrame - range.startFrame !== 1) {
+                                        frame = range.endFrame;
+                                        continue;
+                                    }
+
+                                    // キーフレームが終了していれば次のレイヤーへ
+                                    if (frame + 1 >= totalFrame) {
+                                        break;
+                                    }
+
+                                    const startFrame = frame;
+                                    for (;;) {
+
+                                        // 次のフレームにキーフレームがなければ終了
+                                        if (!character.hasPlace(frame + 1)) {
+                                            if (frame - startFrame > 2) {
+                                                character.setTween(startFrame, {
+                                                    "method": "linear",
+                                                    "curve": [],
+                                                    "custom": Util.$tweenController.createEasingObject(),
+                                                    "startFrame": startFrame,
+                                                    "endFrame": frame
+                                                });
+
+                                                // キーフレームにtweenの設定を追加
+                                                for (let tweenFrame = startFrame; frame > tweenFrame; ++tweenFrame) {
+                                                    character.getPlace(tweenFrame).tweenFrame = startFrame;
+                                                }
+                                            }
+                                            break;
+                                        }
+
+                                        frame++;
+                                        if (frame >= totalFrame) {
+                                            break;
+                                        }
+                                    }
+
+                                }
+
                             }
 
                             Util.$characters.set(character._$characterId, id);
