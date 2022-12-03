@@ -794,57 +794,60 @@ class TimelineMenu extends BaseTimeline
             return ;
         }
 
-        const frame = Util.$timelineFrame.currentFrame;
+        const scene = Util.$currentWorkSpace().scene;
+        for (let [layerId, frames] of Util.$timelineLayer.targetFrames) {
 
-        const layer = Util
-            .$currentWorkSpace()
-            .scene
-            .getLayer(
-                targetLayer.dataset.layerId | 0
-            );
+            const layer = scene.getLayer(layerId);
 
-        const characters = layer.getActiveCharacter(frame);
-        if (!characters.length || characters.length > 1) {
-            return ;
-        }
+            for (let idx = 0; idx < frames.length; ++idx) {
 
-        /**
-         * @param {Character}
-         */
-        const character = characters[0];
-        const range = character.getRange(frame);
+                const frame = frames[idx];
+                const characters = layer.getActiveCharacter(frame);
+                if (!characters.length || characters.length > 1) {
+                    continue ;
+                }
 
-        // tweenの設定がなければスキップ
-        if (!character.hasTween(range.startFrame)) {
-            return ;
-        }
+                /**
+                 * @param {Character}
+                 */
+                const character = characters[0];
+                const range = character.getRange(frame);
 
-        this.save();
+                // tweenの設定がなければスキップ
+                if (!character.hasTween(range.startFrame)) {
+                    continue ;
+                }
 
-        // tweenで作成したplace objectを削除
-        for (let frame = range.startFrame + 1; range.endFrame > frame; ++frame) {
-            if (!character.hasPlace(frame)) {
-                continue;
+                this.save();
+
+                // tweenで作成したplace objectを削除
+                for (let frame = range.startFrame + 1; range.endFrame > frame; ++frame) {
+                    if (!character.hasPlace(frame)) {
+                        continue;
+                    }
+                    character.deletePlace(frame);
+                }
+
+                // tweenのマスタを削除
+                character.deleteTween(range.startFrame);
+
+                const place = character.getPlace(range.startFrame);
+                delete place.tweenFrame;
+
+                // キャッシュを削除
+                character.dispose();
             }
-            character.deletePlace(frame);
+
+            // タイムラインを再描画
+            layer.reloadStyle();
         }
-
-        // tweenのマスタを削除
-        character.deleteTween(range.startFrame);
-
-        const place = character.getPlace(range.startFrame);
-        delete place.tweenFrame;
 
         // tweenのポインターを削除
         Util
             .$tweenController
             .clearPointer();
 
-        // タイムラインを再描画
-        layer.reloadStyle();
-
         // 再描画
-        character.dispose();
         this.reloadScreen();
 
         this._$saved = false;
