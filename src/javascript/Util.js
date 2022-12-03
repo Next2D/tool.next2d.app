@@ -1921,6 +1921,7 @@ Util.$parserHandler = function (event)
 
                                     const characters = layer.getActiveCharacter(frame);
                                     if (!characters.length || characters.length > 2) {
+                                        frame++;
                                         continue;
                                     }
 
@@ -1936,6 +1937,11 @@ Util.$parserHandler = function (event)
                                     // キーフレームが終了していれば次のレイヤーへ
                                     if (frame + 1 >= totalFrame) {
                                         break;
+                                    }
+
+                                    if (!character.hasPlace(frame + 1)) {
+                                        frame++;
+                                        continue;
                                     }
 
                                     const startFrame = frame;

@@ -34,6 +34,12 @@ class ShortcutSetting
                     "description": "{{選択ツール}}"
                 },
                 {
+                    "key": "q",
+                    "text": "Q",
+                    "css": "tools-arrow-transform",
+                    "description": "{{自由変形ツール}}"
+                },
+                {
                     "key": "a",
                     "text": "A",
                     "css": "tools-transform",

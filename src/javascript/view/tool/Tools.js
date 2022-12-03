@@ -90,6 +90,7 @@ class Tools
         // デフォルトツールクラス
         const defaultTools = [
             ArrowTool,
+            ArrowTransformTool,
             TransformTool,
             RectangleTool,
             CircleTool,

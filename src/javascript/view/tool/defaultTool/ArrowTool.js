@@ -191,6 +191,11 @@ class ArrowTool extends BaseTool
         {
             Util.$setCursor(this._$cursor);
             this.changeNodeEvent();
+
+            const element = document.getElementById("target-rect");
+            if (element) {
+                element.setAttribute("class", "arrow");
+            }
         });
 
         // ツール終了時に初期化

@@ -500,13 +500,17 @@ class TransformController extends BaseController
      */
     show ()
     {
+        const tool = Util.$tools.getDefaultTool("arrow-transform");
         if (this._$state !== "show") {
             this._$state = "show";
             for (let idx = 0; idx < this._$screenTargets.length; ++idx) {
 
-                const element = document
-                    .getElementById(this._$screenTargets[idx]);
+                const id = this._$screenTargets[idx];
+                if (!tool.active && id !== "target-rect") {
+                    continue;
+                }
 
+                const element = document.getElementById(id);
                 if (!element) {
                     continue;
                 }
@@ -716,94 +720,98 @@ class TransformController extends BaseController
 
         }
 
-        // 中心点をセット
-        if (point) {
-            const pointX = Util.$offsetLeft + point.x * Util.$zoomScale;
-            const pointY = Util.$offsetTop  + point.y * Util.$zoomScale;
-
-            const referenceElement = document
-                .getElementById("reference-point");
-
-            referenceElement.setAttribute("style", "");
-
-            const left = pointX - referenceElement.offsetWidth  / 2;
-            const top  = pointY - referenceElement.offsetHeight / 2;
-            referenceElement.setAttribute(
-                "style",
-                `left: ${left}px; top: ${top}px;`
-            );
-        }
-
         document
             .getElementById("target-rect")
             .setAttribute(
                 "style",
-                `width: ${width - 2}px; height: ${height - 2}px; left: ${xMin}px; top: ${yMin}px;`
+                `width: ${width}px; height: ${height}px; left: ${xMin - 1}px; top: ${yMin - 1}px;`
             );
 
-        document
-            .getElementById("scale-top-left")
-            .setAttribute(
-                "style",
-                `left: ${xMin - 5}px; top: ${yMin - 5}px;`
-            );
+        const arrowTransform = Util.$tools.getDefaultTool("arrow-transform");
+        if (arrowTransform.active) {
 
-        document
-            .getElementById("scale-top-right")
-            .setAttribute(
-                "style",
-                `left: ${xMax - 5}px; top: ${yMin - 5}px;`
-            );
+            // 中心点をセット
+            if (point) {
+                const pointX = Util.$offsetLeft + point.x * Util.$zoomScale;
+                const pointY = Util.$offsetTop  + point.y * Util.$zoomScale;
 
-        document
-            .getElementById("scale-bottom-left")
-            .setAttribute(
-                "style",
-                `left: ${xMin - 5}px; top: ${yMax - 5}px;`
-            );
+                const referenceElement = document
+                    .getElementById("reference-point");
 
-        document
-            .getElementById("scale-bottom-right")
-            .setAttribute(
-                "style",
-                `left: ${xMax - 5}px; top: ${yMax - 5}px;`
-            );
+                referenceElement.setAttribute("style", "");
 
-        document
-            .getElementById("target-rotation")
-            .setAttribute(
-                "style",
-                `left: ${xMax + 5}px; top: ${yMax + 5}px;`
-            );
+                const left = pointX - referenceElement.offsetWidth  / 2;
+                const top  = pointY - referenceElement.offsetHeight / 2;
+                referenceElement.setAttribute(
+                    "style",
+                    `left: ${left}px; top: ${top}px;`
+                );
+            }
 
-        document
-            .getElementById("scale-center-left")
-            .setAttribute(
-                "style",
-                `left: ${xMin - 5}px; top: ${yMin + height / 2 - 5}px;`
-            );
+            document
+                .getElementById("scale-top-left")
+                .setAttribute(
+                    "style",
+                    `left: ${xMin - 5}px; top: ${yMin - 5}px;`
+                );
 
-        document
-            .getElementById("scale-center-top")
-            .setAttribute(
-                "style",
-                `left: ${xMin + width / 2 - 5}px; top: ${yMin - 5}px;`
-            );
+            document
+                .getElementById("scale-top-right")
+                .setAttribute(
+                    "style",
+                    `left: ${xMax - 5}px; top: ${yMin - 5}px;`
+                );
 
-        document
-            .getElementById("scale-center-right")
-            .setAttribute(
-                "style",
-                `left: ${xMax - 5}px; top: ${yMin + height / 2 - 5}px;`
-            );
+            document
+                .getElementById("scale-bottom-left")
+                .setAttribute(
+                    "style",
+                    `left: ${xMin - 5}px; top: ${yMax - 5}px;`
+                );
 
-        document
-            .getElementById("scale-center-bottom")
-            .setAttribute(
-                "style",
-                `left: ${xMin + width / 2 - 5}px; top: ${yMax - 5}px;`
-            );
+            document
+                .getElementById("scale-bottom-right")
+                .setAttribute(
+                    "style",
+                    `left: ${xMax - 5}px; top: ${yMax - 5}px;`
+                );
 
+            document
+                .getElementById("target-rotation")
+                .setAttribute(
+                    "style",
+                    `left: ${xMax + 5}px; top: ${yMax + 5}px;`
+                );
+
+            document
+                .getElementById("scale-center-left")
+                .setAttribute(
+                    "style",
+                    `left: ${xMin - 5}px; top: ${yMin + height / 2 - 5}px;`
+                );
+
+            document
+                .getElementById("scale-center-top")
+                .setAttribute(
+                    "style",
+                    `left: ${xMin + width / 2 - 5}px; top: ${yMin - 5}px;`
+                );
+
+            document
+                .getElementById("scale-center-right")
+                .setAttribute(
+                    "style",
+                    `left: ${xMax - 5}px; top: ${yMin + height / 2 - 5}px;`
+                );
+
+            document
+                .getElementById("scale-center-bottom")
+                .setAttribute(
+                    "style",
+                    `left: ${xMin + width / 2 - 5}px; top: ${yMax - 5}px;`
+                );
+
+        }
     }
 
     /**

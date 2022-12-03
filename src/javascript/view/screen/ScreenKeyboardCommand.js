@@ -85,7 +85,8 @@ class ScreenKeyboardCommand extends KeyboardCommand
 
         // 初期のショートカット
         const keys = [
-            "v", // arrow
+            "v", // Arrow
+            "q", // Arrow Transform
             "a", // Shape Transform
             "p", // Pen
             "t", // Text
@@ -425,6 +426,10 @@ class ScreenKeyboardCommand extends KeyboardCommand
 
             case "v":
                 name = "arrow";
+                break;
+
+            case "q":
+                name = "arrow-transform";
                 break;
 
             case "a":
