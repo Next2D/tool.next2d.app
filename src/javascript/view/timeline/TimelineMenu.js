@@ -208,6 +208,9 @@ class TimelineMenu extends BaseTimeline
             layer.reloadStyle();
         }
 
+        // 選択したフレームをアクティブ表示
+        Util.$timelineTool.setActiveFrame();
+
         this._$saved = false;
     }
 

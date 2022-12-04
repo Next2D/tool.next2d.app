@@ -2468,6 +2468,11 @@ class TimelineLayer extends BaseTimeline
 
             this._$clickTimerId = window.setTimeout(() =>
             {
+                const targetLayer = this.targetLayer;
+                if (!targetLayer) {
+                    return ;
+                }
+
                 // レイヤーを配列化
                 const children = Array.from(
                     document.getElementById("timeline-content").children
@@ -2498,7 +2503,7 @@ class TimelineLayer extends BaseTimeline
                     .$currentWorkSpace()
                     .scene
                     .getLayer(
-                        children[index].dataset.layerId | 0
+                        targetLayer.dataset.layerId | 0
                     );
 
                 const leftElement = layer.getChildren(frame);
@@ -2677,8 +2682,9 @@ class TimelineLayer extends BaseTimeline
                 return ;
             }
 
-            const scrollElement = document
-                .getElementById(`frame-scroll-id-${targetLayer.dataset.layerId}`);
+            const scrollElement = document.getElementById(
+                `frame-scroll-id-${targetLayer.dataset.layerId}`
+            );
 
             const timelineWidth = Util.$timelineTool.timelineWidth;
             const size = timelineWidth + 1;
@@ -2859,33 +2865,36 @@ class TimelineLayer extends BaseTimeline
 
         this.save();
 
+        let frames = null;
         const scene = Util.$currentWorkSpace().scene;
         for (const [layerId, values] of this.targetFrames) {
 
             // 移動先の終了フレーム
             const endFrame = distFrame + values.length;
 
-            const frames = values.slice();
-            if (frames.length > 1) {
-                frames.sort((a, b) =>
-                {
-                    const aFrame = a | 0;
-                    const bFrame = b | 0;
+            if (!frames) {
+                frames = values.slice();
+                if (frames.length > 1) {
+                    frames.sort((a, b) =>
+                    {
+                        const aFrame = a | 0;
+                        const bFrame = b | 0;
 
-                    // 昇順
-                    switch (true) {
+                        // 昇順
+                        switch (true) {
 
-                        case aFrame > bFrame:
-                            return 1;
+                            case aFrame > bFrame:
+                                return 1;
 
-                        case aFrame < bFrame:
-                            return -1;
+                            case aFrame < bFrame:
+                                return -1;
 
-                        default:
-                            return 0;
+                            default:
+                                return 0;
 
-                    }
-                });
+                        }
+                    });
+                }
             }
 
             // 移動元のレイヤー
