@@ -11,6 +11,20 @@ class ChangeMovieClip extends BaseScreen
     constructor ()
     {
         super();
+
+        /**
+         * @type {HTMLDivElement}
+         * @default null
+         * @private
+         */
+        this._$element = null;
+
+        /**
+         * @type {string}
+         * @default ""
+         * @private
+         */
+        this._$message = "";
     }
 
     /**
@@ -24,11 +38,188 @@ class ChangeMovieClip extends BaseScreen
     {
         super.initialize();
 
-        const elementIds = [];
+        const element = document
+            .getElementById("change-movie-clip");
+
+        if (element) {
+            const elements = element
+                .getElementsByClassName("change-movie-clip-box-child");
+
+            for (let idx = 0; elements.length > idx; ++idx) {
+
+                const element = elements[idx];
+
+                // 初期値をセット
+                if (element.dataset.position === "middle-center") {
+                    this._$element = element;
+                    this._$element.classList.add("active");
+                }
+
+                element.addEventListener("mousedown", (event) =>
+                {
+                    // 親のイベント中止
+                    event.stopPropagation();
+
+                    // id名で関数を実行
+                    this.changeBox(event);
+                });
+            }
+
+        }
+
+        const elementIds = [
+            "change-movie-clip-button"
+        ];
+
+        for (let idx = 0; elementIds.length > idx; ++idx) {
+
+            const element = document
+                .getElementById(elementIds[idx]);
+
+            if (!element) {
+                continue;
+            }
+
+            element.addEventListener("mousedown", (event) =>
+            {
+                // 親のイベント中止
+                event.stopPropagation();
+
+                if (this._$message) {
+                    this.showModal(this._$message);
+                    return ;
+                }
+
+                // id名で関数を実行
+                this.executeFunction(event.target.id);
+            });
+
+        }
+
+        const input = document
+            .getElementById("change-movie-clip-input");
+
+        if (input) {
+
+            input.addEventListener("focusin", () =>
+            {
+                Util.$keyLock = true;
+            });
+
+            // 重複チェック
+            input.addEventListener("focusout", (event) =>
+            {
+                // 初期化
+                Util.$keyLock  = false;
+                this._$message = "";
+
+                const name = event.target.value;
+                if (!name) {
+                    this._$message = "名前は必須です";
+                }
+
+                if (!this._$message) {
+
+                    const workSpace = Util.$currentWorkSpace();
+                    for (const instance of workSpace._$libraries.values()) {
+
+                        if (instance.path !== name) {
+                            continue;
+                        }
+
+                        this._$message = "名前が重複しています";
+                        break;
+                    }
+                }
+
+                if (this._$message) {
+                    this.showModal(this._$message);
+                }
+            });
+        }
     }
 
-    execute ()
+    /**
+     * @description 注意テキストを表示
+     *
+     * @param  {string} [message=""]
+     * @return {void}
+     * @method
+     * @public
+     */
+    showModal (message = "")
     {
+        const element = document
+            .getElementById("detail-modal");
+
+        if (element) {
+
+            clearTimeout(
+                element.dataset.timerId | 0
+            );
+
+            element.textContent = Util.$currentLanguage.replace(
+                `{{${message}}`
+            );
+
+            const parent = document
+                .getElementById("change-movie-clip");
+
+            const x = parent.offsetLeft - parent.offsetWidth  / 2;
+            const y = parent.offsetTop  - parent.offsetHeight / 2;
+
+            const input = document
+                .getElementById("change-movie-clip-input");
+
+            element.style.left = `${x + input.offsetLeft}px`;
+            element.style.top  = `${y + input.offsetTop}px`;
+
+            if (!element.classList.contains("fadeIn")) {
+                element.setAttribute("class", "fadeIn");
+            }
+
+            // 1.5秒で自動的に消えるようタイマーをセット
+            element.dataset.timerId = setTimeout(() =>
+            {
+                if (!element.classList.contains("fadeOut")) {
+                    element.setAttribute("class", "fadeOut");
+                }
+            }, 1500);
+        }
+    }
+
+    /**
+     * @description 基準点を設定
+     *
+     * @return  {void}
+     * @method
+     * @public
+     */
+    changeBox (event)
+    {
+        // 初期化
+        if (this._$element) {
+            this._$element
+                .setAttribute("class", "change-movie-clip-box-child");
+        }
+
+        this._$element = event.target;
+        this._$element.classList.add("active");
+    }
+
+    /**
+     * @description MovieClipに変換
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    executeChangeMovieClipButton ()
+    {
+        if (!this._$element || this._$message) {
+            return ;
+        }
+
         /**
          * @type {ArrowTool}
          */
@@ -190,3 +381,5 @@ class ChangeMovieClip extends BaseScreen
         this._$saved = false;
     }
 }
+
+Util.$changeMovieClip = new ChangeMovieClip();

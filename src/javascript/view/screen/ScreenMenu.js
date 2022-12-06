@@ -1358,6 +1358,12 @@ class ScreenMenu extends BaseScreen
             return ;
         }
 
+        const input = document.getElementById("change-movie-clip-input");
+        if (input) {
+            const workSpace = Util.$currentWorkSpace();
+            input.value = `MovieClip_${workSpace.nextLibraryId}`;
+        }
+
         Util.$endMenu("change-movie-clip");
 
         if (!element.classList.contains("fadeIn")) {

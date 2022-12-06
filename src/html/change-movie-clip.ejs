@@ -1,33 +1,38 @@
 <div id="change-movie-clip" class="none">
-    <div>
+    <div class="change-movie-clip-title">
         <span class="language" data-text="{{MovieClipに変換}}">MovieClipに変換</span>
     </div>
-    <div>
-        <div>
+    <div class="change-movie-clip-container">
+        <div class="change-movie-clip-name">
             <span class="language" data-text="{{名前}}">名前</span>
         </div>
-        <div>
-            <input type="text" value="">
+        <div class="change-movie-clip-body">
+            <input type="text" id="change-movie-clip-input" value="" data-detail="{{変換後の名前を入力}}">
         </div>
     </div>
-    <div>
-        <div>
+    <div class="change-movie-clip-container">
+        <div class="change-movie-clip-name">
             <span class="language" data-text="{{基準点}}">基準点</span>
         </div>
-        <div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
+        <div class="change-movie-clip-body">
+            <div class="change-movie-clip-reference-point">
+                <div class="change-movie-clip-box-child" data-position="top-left" data-detail="{{左上}}"></div>
+                <div class="change-movie-clip-box-child" data-position="top-center" data-detail="{{中央上}}"></div>
+                <div class="change-movie-clip-box-child" data-position="top-right" data-detail="{{右上}}"></div>
+            </div>
+            <div class="change-movie-clip-reference-point">
+                <div class="change-movie-clip-box-child" data-position="middle-left" data-detail="{{中央左}}"></div>
+                <div class="change-movie-clip-box-child" data-position="middle-center" data-detail="{{中央}}"></div>
+                <div class="change-movie-clip-box-child" data-position="middle-right" data-detail="{{中央右}}"></div>
+            </div>
+            <div class="change-movie-clip-reference-point">
+                <div class="change-movie-clip-box-child" data-position="bottom-left" data-detail="{{左下}}"></div>
+                <div class="change-movie-clip-box-child" data-position="bottom-center" data-detail="{{中央下}}"></div>
+                <div class="change-movie-clip-box-child" data-position="bottom-right" data-detail="{{右下}}"></div>
+            </div>
         </div>
     </div>
-    <div>
-        <div>OK</div>
-        <div>キャンセル</div>
+    <div class="change-movie-clip-container change-movie-clip-box">
+        <div class="button" id="change-movie-clip-button">変換</div>
     </div>
 </div>
