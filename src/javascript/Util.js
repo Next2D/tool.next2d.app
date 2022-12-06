@@ -471,7 +471,8 @@ Util.$endMenu = (ignore) =>
         "shortcut-setting-menu",
         "library-export-modal",
         "screen-order-menu",
-        "screen-align-menu"
+        "screen-align-menu",
+        "change-movie-clip"
     ];
 
     for (let idx = 0; idx < names.length; ++idx) {

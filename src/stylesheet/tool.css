@@ -260,6 +260,7 @@
     color            : whitesmoke;
     border           : 1px solid #72777D;
     box-shadow       : 0 0 5px rgba(245, 245, 245, 0.25);
+    z-index          : 9999;
 }
 
 #user-setting .user-setting-list

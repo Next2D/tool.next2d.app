@@ -752,21 +752,21 @@ class TransformController extends BaseController
                 .getElementById("scale-top-left")
                 .setAttribute(
                     "style",
-                    `left: ${xMin - 5}px; top: ${yMin - 5}px;`
+                    `left: ${xMin - 6}px; top: ${yMin - 6}px;`
                 );
 
             document
                 .getElementById("scale-top-right")
                 .setAttribute(
                     "style",
-                    `left: ${xMax - 5}px; top: ${yMin - 5}px;`
+                    `left: ${xMax - 5}px; top: ${yMin - 6}px;`
                 );
 
             document
                 .getElementById("scale-bottom-left")
                 .setAttribute(
                     "style",
-                    `left: ${xMin - 5}px; top: ${yMax - 5}px;`
+                    `left: ${xMin - 6}px; top: ${yMax - 5}px;`
                 );
 
             document
@@ -787,14 +787,14 @@ class TransformController extends BaseController
                 .getElementById("scale-center-left")
                 .setAttribute(
                     "style",
-                    `left: ${xMin - 5}px; top: ${yMin + height / 2 - 5}px;`
+                    `left: ${xMin - 6}px; top: ${yMin + height / 2 - 5}px;`
                 );
 
             document
                 .getElementById("scale-center-top")
                 .setAttribute(
                     "style",
-                    `left: ${xMin + width / 2 - 5}px; top: ${yMin - 5}px;`
+                    `left: ${xMin + width / 2 - 5}px; top: ${yMin - 6}px;`
                 );
 
             document

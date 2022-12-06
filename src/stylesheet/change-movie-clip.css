@@ -1,0 +1,27 @@
+#change-movie-clip
+{
+    display          : flex;
+    justify-content  : center;
+    align-items      : center;
+    position         : fixed;
+    top              : 50%;
+    left             : 50%;
+    width            : 360px;
+    height           : 400px;
+    transform        : translate(-50%,-50%);
+    background-color : #363636;
+    color            : whitesmoke;
+    border           : 1px solid #72777D;
+    z-index          : 9999;
+    overflow         : hidden;
+    border-radius    : 4px;
+    box-shadow       : 0 0 5px rgba(245, 245, 245, 0.25);
+}
+
+#confirm-modal .confirm-preview-area
+{
+    width          : 400px;
+    height         : 410px;
+    display        : flex;
+    flex-direction : column;
+}
