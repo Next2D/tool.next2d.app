@@ -138,10 +138,10 @@ class SoundController extends BaseController
     <div class="sound-container">
         <div class="sound-setting-container">
             <div class="sound-text">Volume</div>
-            <div><input type="text" id="sound-volume-${id}" data-sound-id="${id}" data-name="volume" value="100" data-detail="{{音量設定}}"></div>
+            <div><input type="text" id="sound-volume-${id}" data-sound-id="${id}" data-name="volume" value="100" data-detail="{{音量設定}}" autocomplete="off"></div>
         
             <div class="sound-text">Loop<br>Count</div>
-            <div><input type="text" id="sound-loop-count-${id}" data-sound-id="${id}" data-name="loop-count" value="0" data-detail="{{ループ回数}}"></div>
+            <div><input type="text" id="sound-loop-count-${id}" data-sound-id="${id}" data-name="loop-count" value="0" data-detail="{{ループ回数}}" autocomplete="off"></div>
         </div>
     </div>
 </div>

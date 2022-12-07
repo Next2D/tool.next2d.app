@@ -780,13 +780,13 @@ class LibraryController
         <i class="library-type-${type} " id="${type}-${id}" data-library-id="${id}"></i>
         <p>
             <span id="library-name-${id}" class="view-text" data-type="name" data-library-id="${id}">${name}</span>
-            <input type="text" id="library-name-input-${id}" data-library-id="${id}" data-type="name" value="${name}" style="display: none;">
+            <input type="text" id="library-name-input-${id}" data-library-id="${id}" data-type="name" value="${name}" style="display: none;" autocomplete="off">
         </p>
     </div>
     <div class="library-list-box-symbol">
         <p>
             <span id="library-symbol-name-${id}" class="view-symbol-text" data-type="symbol" data-library-id="${id}">${symbol}</span>
-            <input type="text" id="library-symbol-name-input-${id}" data-library-id="${id}" data-type="symbol" value="${symbol}" style="display: none;">
+            <input type="text" id="library-symbol-name-input-${id}" data-library-id="${id}" data-type="symbol" value="${symbol}" style="display: none;" autocomplete="off">
         </p>
     </div>
 </div>`;

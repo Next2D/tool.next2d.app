@@ -702,7 +702,7 @@ class TimelineLayer extends BaseTimeline
         <i class="timeline-guide-icon" id="layer-guide-icon-${layer_id}" data-layer-id="${layer_id}" data-detail="{{レイヤー変更(ダブルクリック)}}"></i>
         <i class="timeline-guide-in-icon" id="layer-guide-in-icon-${layer_id}" data-layer-id="${layer_id}" data-detail="{{レイヤー変更(ダブルクリック)}}"></i>
         <div class="view-text" id="layer-name-${layer_id}" data-layer-id="${layer_id}">layer_${layer_id}</div>
-        <input type="text" class="view-text-input" id="layer-name-input-${layer_id}" data-layer-id="${layer_id}" value="layer_${layer_id}" style="display: none;">
+        <input type="text" class="view-text-input" id="layer-name-input-${layer_id}" data-layer-id="${layer_id}" value="layer_${layer_id}" style="display: none;" autocomplete="off">
         <i class="timeline-layer-light-one icon-disable" id="layer-light-icon-${layer_id}" data-click-type="light" data-layer-id="${layer_id}" data-detail="{{レイヤーをハイライト}}"></i>
         <i class="timeline-layer-disable-one icon-disable" id="layer-disable-icon-${layer_id}" data-click-type="disable" data-layer-id="${layer_id}" data-detail="{{レイヤーを非表示}}"></i>
         <i class="timeline-layer-lock-one icon-disable" id="layer-lock-icon-${layer_id}" data-click-type="lock" data-layer-id="${layer_id}" data-detail="{{レイヤーをロック}}"></i>

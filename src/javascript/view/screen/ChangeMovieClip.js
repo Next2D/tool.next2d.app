@@ -103,39 +103,72 @@ class ChangeMovieClip extends BaseScreen
 
             input.addEventListener("focusin", () =>
             {
-                Util.$keyLock = true;
+                this.focusIn();
             });
 
             // 重複チェック
-            input.addEventListener("focusout", (event) =>
+            input.addEventListener("focusout", () =>
             {
-                // 初期化
-                Util.$keyLock  = false;
-                this._$message = "";
-
-                const name = event.target.value;
-                if (!name) {
-                    this._$message = "名前は必須です";
-                }
-
-                if (!this._$message) {
-
-                    const workSpace = Util.$currentWorkSpace();
-                    for (const instance of workSpace._$libraries.values()) {
-
-                        if (instance.path !== name) {
-                            continue;
-                        }
-
-                        this._$message = "名前が重複しています";
-                        break;
-                    }
-                }
-
-                if (this._$message) {
-                    this.showModal(this._$message);
-                }
+                this.focusOut();
             });
+        }
+    }
+
+    /**
+     * @description 名前編集開始
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    focusIn ()
+    {
+        Util.$keyLock = true;
+    }
+
+    /**
+     * @description 名前編集終了
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    focusOut ()
+    {
+        if (!Util.$keyLock) {
+            return ;
+        }
+
+        // 初期化
+        Util.$keyLock  = false;
+        this._$message = "";
+
+        const input = document.getElementById("change-movie-clip-input");
+        if (!input) {
+            return ;
+        }
+
+        const name = input.value;
+        if (!name) {
+            this._$message = "{{名前は必須です}}";
+        }
+
+        if (!this._$message) {
+
+            const workSpace = Util.$currentWorkSpace();
+            for (const instance of workSpace._$libraries.values()) {
+
+                if (instance.path !== name) {
+                    continue;
+                }
+
+                this._$message = "{{名前が重複しています}}";
+                break;
+            }
+        }
+
+        if (this._$message) {
+            this.showModal(this._$message);
         }
     }
 
@@ -158,9 +191,9 @@ class ChangeMovieClip extends BaseScreen
                 element.dataset.timerId | 0
             );
 
-            element.textContent = Util.$currentLanguage.replace(
-                `{{${message}}`
-            );
+            element.textContent = Util
+                .$currentLanguage
+                .replace(message);
 
             const parent = document
                 .getElementById("change-movie-clip");
@@ -216,6 +249,17 @@ class ChangeMovieClip extends BaseScreen
      */
     executeChangeMovieClipButton ()
     {
+        const input = document
+            .getElementById("change-movie-clip-input");
+
+        if (!input) {
+            return ;
+        }
+
+        if (Util.$keyLock) {
+            input.blur();
+        }
+
         if (!this._$element || this._$message) {
             return ;
         }
@@ -229,8 +273,7 @@ class ChangeMovieClip extends BaseScreen
             return ;
         }
 
-        const targetLayer = Util.$timelineLayer.targetLayer;
-        if (!targetLayer) {
+        if (!Util.$timelineLayer.targetLayer) {
             return ;
         }
 
@@ -243,11 +286,14 @@ class ChangeMovieClip extends BaseScreen
 
         const id = workSpace.nextLibraryId;
 
+        // ライブラリに空のMovieClipを追加
         const instance = workSpace.addLibrary(
             Util
                 .$libraryController
                 .createInstance(
-                    InstanceType.MOVIE_CLIP, `MovieClip_${id}`, id
+                    InstanceType.MOVIE_CLIP,
+                    input.value,
+                    id
                 )
         );
 
@@ -255,15 +301,10 @@ class ChangeMovieClip extends BaseScreen
         const newLayer = new Layer();
         instance.setLayer(0, newLayer);
 
-        const x = +document.getElementById("object-x").value;
-        const y = +document.getElementById("object-y").value;
-        const w = +document.getElementById("object-width").value;
-        const h = +document.getElementById("object-height").value;
-
-        const dx = x + w / 2;
-        const dy = y + h / 2;
-
-        const layers = new Map();
+        let xMin =  Number.MAX_VALUE;
+        let xMax = -Number.MAX_VALUE;
+        let yMin =  Number.MAX_VALUE;
+        let yMax = -Number.MAX_VALUE;
         for (let idx = 0; idx < activeElements.length; ++idx) {
 
             const element = activeElements[idx];
@@ -274,6 +315,89 @@ class ChangeMovieClip extends BaseScreen
             const character = layer.getCharacter(
                 element.dataset.characterId | 0
             );
+
+            const bounds = character.getBounds();
+            xMin = Math.min(xMin, bounds.xMin);
+            xMax = Math.max(xMax, bounds.xMax);
+            yMin = Math.min(yMin, bounds.yMin);
+            yMax = Math.max(yMax, bounds.yMax);
+        }
+
+        const position = this._$element.dataset.position;
+
+        let dx = xMin;
+        let dy = yMin;
+
+        const w = Math.abs(xMax - xMin);
+        const h = Math.abs(yMax - yMin);
+        switch (position) {
+
+            case "top-left":
+                break;
+
+            case "top-center":
+                dx += w / 2;
+                break;
+
+            case "top-right":
+                dx += w;
+                break;
+
+            case "middle-left":
+                dy += h / 2;
+                break;
+
+            case "middle-center":
+                dx += w / 2;
+                dy += h / 2;
+                break;
+
+            case "middle-right":
+                dx += w;
+                dy += h / 2;
+                break;
+
+            case "bottom-left":
+                dy += h;
+                break;
+
+            case "bottom-center":
+                dx += w / 2;
+                dy += h;
+                break;
+
+            case "bottom-right":
+                dx += w;
+                dy += h;
+                break;
+
+        }
+
+        /**
+         * @type {Layer}
+         */
+        let targetLayer = null;
+
+        let targetRange = null;
+        const layers = new Map();
+        for (let idx = 0; idx < activeElements.length; ++idx) {
+
+            const element = activeElements[idx];
+            const layer = scene.getLayer(
+                element.dataset.layerId | 0
+            );
+
+            if (!targetLayer) {
+                targetLayer = layer;
+            }
+
+            const character = layer.getCharacter(
+                element.dataset.characterId | 0
+            );
+
+            if (!targetRange) {
+                targetRange = character.getRange(frame);
+            }
 
             const range = character.getRange(frame);
             if (!layers.has(layer.id)) {
@@ -294,13 +418,11 @@ class ChangeMovieClip extends BaseScreen
                 "colorTransform": place.colorTransform.slice(),
                 "blendMode": place.blendMode,
                 "filter": place.filter.slice(),
-                "loop": Util.$getDefaultLoopConfig(),
-                "depth": newLayer._$characters.length
+                "loop": place.loop
+                    ? JSON.parse(JSON.stringify(place.loop))
+                    : Util.$getDefaultLoopConfig(),
+                "depth": idx
             };
-
-            if (place.loop) {
-                clonePlace.loop = place.loop;
-            }
 
             cloneCharacter.setPlace(1, clonePlace);
 
@@ -343,16 +465,14 @@ class ChangeMovieClip extends BaseScreen
             layer.reloadStyle();
         }
 
-        // 選択中のelementを初期化
-        tool.clearActiveElement();
-
         const character = new Character();
-        character.libraryId = instance.id;
-        character.endFrame  = frame + 1;
+        character.libraryId  = instance.id;
+        character.startFrame = targetRange.startFrame;
+        character.endFrame   = targetRange.endFrame;
 
-        character.setPlace(frame, {
-            "frame": frame,
-            "matrix": [1, 0, 0, 1, dx / Util.$zoomScale, dy / Util.$zoomScale],
+        character.setPlace(targetRange.startFrame, {
+            "frame": targetRange.startFrame,
+            "matrix": [1, 0, 0, 1, dx, dy],
             "colorTransform": [1, 1, 1, 1, 0, 0, 0, 0],
             "blendMode": "normal",
             "filter": [],
@@ -360,19 +480,27 @@ class ChangeMovieClip extends BaseScreen
             "loop": Util.$getDefaultLoopConfig()
         });
 
-        const layer = new Layer();
-        layer.addCharacter(character);
-        scene.addLayer(layer);
+        targetLayer.addCharacter(character);
+
+        const emptyCharacter = targetLayer
+            .getActiveEmptyCharacter(targetRange.startFrame);
+
+        if (emptyCharacter) {
+            targetLayer.deleteEmptyCharacter(emptyCharacter);
+        }
 
         // 前方に空のキーフレームを追加
-        if (frame > 1) {
-            layer.addEmptyCharacter(new EmptyCharacter({
+        if (targetRange.startFrame > 1) {
+            targetLayer.addEmptyCharacter(new EmptyCharacter({
                 "startFrame": 1,
-                "endFrame": frame
+                "endFrame": targetRange.startFrame
             }));
         }
 
-        layer.reloadStyle();
+        targetLayer.reloadStyle();
+
+        // 選択中のelementを初期化
+        tool.clearActiveElement(); // fixed logic
 
         // 再描画
         this.reloadScreen();
