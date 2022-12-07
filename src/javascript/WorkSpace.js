@@ -412,11 +412,15 @@ class WorkSpace
      */
     reloadData (data)
     {
+        // 選択中のレイヤーを保持
         const layerIds = [];
         const targetLayers = Util.$timelineLayer.targetLayers;
         for (const layerId of targetLayers.keys()) {
             layerIds.push(layerId);
         }
+
+        // シーンの階層データを保持
+        Util.$sceneChange.cache();
 
         /**
          * @type {ArrowTool}
@@ -437,8 +441,17 @@ class WorkSpace
         this.load(data);
 
         // loadしたデータでレイヤーを再構築
-        const scene = this.getLibrary(currentSceneId);
-        scene._$currentFrame = currentFrame;
+        let scene = this.getLibrary(currentSceneId);
+
+        // 指定したシーンがなければrootをセット
+        if (!scene) {
+            scene = this.getLibrary(0);
+            layerIds.length = 0;
+        } else {
+            scene._$currentFrame = currentFrame;
+        }
+
+        Util.$sceneChange.restore();
         this.initialize(scene);
 
         // 再読み込み

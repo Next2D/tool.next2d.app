@@ -39,6 +39,72 @@ class SceneChange extends BaseScreen
          * @private
          */
         this._$offsetY = 0;
+
+        /**
+         * @type {object}
+         * @default null
+         * @private
+         */
+        this._$cache = null;
+    }
+
+    /**
+     * @description 現在のデータをキャッシュ
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    cache ()
+    {
+        // シーンの階層データを保持
+        const element = document
+            .getElementById("scene-name-menu-list");
+
+        if (element && element.children.length) {
+
+            const children = Array.from(element.children);
+
+            this._$cache = {
+                "children": children,
+                "length": this._$length,
+                "matrix": this._$matrix.slice(),
+                "offsetX": this._$offsetX,
+                "offsetY": this._$offsetY
+            };
+
+        }
+    }
+
+    /**
+     * @description キャッシュデータから復元
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    restore ()
+    {
+        if (!this._$cache) {
+            return ;
+        }
+
+        const element = document
+            .getElementById("scene-name-menu-list");
+
+        if (!element) {
+            return ;
+        }
+
+        this._$length  = this._$cache.length;
+        this._$matrix  = this._$cache.matrix;
+        this._$offsetX = this._$cache.offsetX;
+        this._$offsetY = this._$cache.offsetY;
+
+        const children = this._$cache.children;
+        for (let idx = 0; children.length > idx; ++idx) {
+            element.appendChild(children[idx]);
+        }
     }
 
     /**
@@ -158,6 +224,12 @@ class SceneChange extends BaseScreen
      */
     reload (library_id = -1)
     {
+        // キャッシュデータがある時は初期化してスキップ
+        if (this._$cache) {
+            this._$cache = null;
+            return;
+        }
+
         const element = document
             .getElementById("scene-name-menu-list");
 
