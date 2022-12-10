@@ -3645,7 +3645,7 @@ class TimelineLayer extends BaseTimeline
 
         const targetEmptys = layer._$emptys.slice();
 
-        let distLastFrame = dist_end_frame;
+        let distLastFrame = 0;
         for (let idx = 0; idx < targetEmptys.length; ++idx) {
 
             const emptyCharacter = targetEmptys[idx];
@@ -3700,7 +3700,7 @@ class TimelineLayer extends BaseTimeline
         layer, characters, select_layer_id,
         dist_start_frame, dist_end_frame
     ) {
-        let distLastFrame = dist_end_frame;
+        let distLastFrame = 0;
 
         const targetCharacters = layer._$characters.slice();
         for (let idx = 0; idx < targetCharacters.length; ++idx) {
@@ -3718,7 +3718,7 @@ class TimelineLayer extends BaseTimeline
             }
 
             if (character.startFrame >= dist_start_frame
-                && dist_end_frame + 1 >= character.endFrame
+                && dist_end_frame >= character.endFrame
             ) {
 
                 // 範囲内のDisplayObjectは削除する
