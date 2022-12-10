@@ -2903,7 +2903,6 @@ class TimelineLayer extends BaseTimeline
 
             // 移動先の幅で新規のDisplayObjectを生成、隙間は空のキーフレームを生成
             const object = this.createMoveCharacters(layer, frames);
-            console.log(object);
 
             const characters = object.characters;
             const emptys     = object.emptys;
