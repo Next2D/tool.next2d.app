@@ -3979,7 +3979,6 @@ class TimelineLayer extends BaseTimeline
 
                                 place.tweenFrame = frame;
                                 newCharacter.setTween(frame, tweenObject);
-
                             }
 
                             characters.set(character.id, newCharacter);
@@ -3994,18 +3993,28 @@ class TimelineLayer extends BaseTimeline
                         if (character.hasPlace(frame)) {
 
                             const place = character.getClonePlace(frame);
-                            newCharacter.setPlace(frame, place);
 
                             // tweenの設定も移動
                             if (place.tweenFrame) {
 
-                                place.tweenFrame = newCharacter.startFrame;
+                                place.tweenFrame = place.tweenFrame === frame
+                                    ? frame
+                                    : newCharacter.getPlace(frame).tweenFrame;
+
+                                if (!newCharacter.hasTween(place.tweenFrame)) {
+                                    newCharacter.setTween(
+                                        place.tweenFrame,
+                                        character.getCloneTween(place.tweenFrame)
+                                    );
+                                }
 
                                 newCharacter
                                     .getTween(place.tweenFrame)
                                     .endFrame = frame + 1;
-
                             }
+
+                            // fixed logic
+                            newCharacter.setPlace(frame, place);
                         }
 
                         newCharacter.endFrame = frame + 1;
