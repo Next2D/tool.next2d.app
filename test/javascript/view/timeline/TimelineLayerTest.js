@@ -1339,11 +1339,11 @@ describe("TimelineLayer.js createMoveCharacters test", () =>
     });
 
     /**
-     * |1|2|3|4|5|6|7|8|9|
-     * |●|-|-|●|-|-|-|空|空|
-     * |-|-|-|-|-|-|■|-|-|
+     * |1|2|3|4|5|6|7|8|9|10|
+     * |●|-|-|●|-|-|-|-|空|空|
+     * |-|-|-|-|-|-|■|■|-|-|
      * 1フレームと4フレームにtweenキーフレームがある8フレームのDisplayObject
-     * 7フレームを選択した場合
+     * 7から8フレームを選択した場合
      */
     it("test case16", () =>
     {
@@ -1374,7 +1374,7 @@ describe("TimelineLayer.js createMoveCharacters test", () =>
         const character = new Character();
         character.libraryId  = 2;
         character.startFrame = 1;
-        character.endFrame   = 8;
+        character.endFrame   = 9;
         character.setPlace(1, {
             "frame": 1,
             "matrix": [1, 0, 0, 1, 0, 0],
@@ -1438,6 +1438,15 @@ describe("TimelineLayer.js createMoveCharacters test", () =>
             "depth": 0,
             "tweenFrame": 4
         });
+        character.setPlace(8, {
+            "frame": 8,
+            "matrix": [1, 0, 0, 1, 0, 0],
+            "colorTransform": [1, 1, 1, 1, 0, 0, 0, 0],
+            "blendMode": "normal",
+            "filter": [],
+            "depth": 0,
+            "tweenFrame": 4
+        });
         character.setTween(1, {
             "method": "linear",
             "curve": [],
@@ -1450,12 +1459,12 @@ describe("TimelineLayer.js createMoveCharacters test", () =>
             "curve": [],
             "custom": Util.$tweenController.createEasingObject(),
             "startFrame": 4,
-            "endFrame": 8
+            "endFrame": 9
         });
         layer.addCharacter(character);
 
         const timelineLayer = new TimelineLayer();
-        const object = timelineLayer.createMoveCharacters(layer, [7]);
+        const object = timelineLayer.createMoveCharacters(layer, [7,8]);
 
         const characters = object.characters;
         expect(characters.size).toBe(1);
@@ -1464,21 +1473,21 @@ describe("TimelineLayer.js createMoveCharacters test", () =>
         const iterator = characters.values();
 
         const newCharacter = iterator.next().value;
-        expect(newCharacter._$places.size).toBe(1);
+        expect(newCharacter._$places.size).toBe(2);
         expect(newCharacter._$tween.size).toBe(1);
         expect(newCharacter.getPlace(7).tweenFrame).toBe(7);
         expect(newCharacter.startFrame).toBe(7);
-        expect(newCharacter.endFrame).toBe(8);
+        expect(newCharacter.endFrame).toBe(9);
 
         const tween = newCharacter.getTween(7);
         expect(tween.startFrame).toBe(7);
-        expect(tween.endFrame).toBe(8);
+        expect(tween.endFrame).toBe(9);
 
         Util.$workSpaces.length = 0;
     });
 });
 
-describe("TimelineLayer.js deleteDestinationKeyFrame test", () =>
+describe("TimelineLayer.js deleteSourceKeyFrame test", () =>
 {
     beforeEach(() =>
     {
@@ -1486,12 +1495,14 @@ describe("TimelineLayer.js deleteDestinationKeyFrame test", () =>
     });
 
     /**
-     * |1|2|3|4|5|6|
-     * |●|-|-|●|-|-|
-     * フレーム未設定
-     * 1フレームとキーフレームがある3フレームのDisplayObject
-     * 3フレームとキーフレームがある3フレームのDisplayObject
-     * 4から6フレームを選択して、1から3フレームに移動
+     * |1|2|3|4|5|6|7|8|9|
+     * |●|-|-|●|-|-|●|-|-|
+     * |-|-|-|-|-|-|■|■|■|
+     * |-|-|-|□|□|□|-|-|-|
+     * 1フレームにキーフレームがある3フレームのDisplayObject
+     * 4フーレムにキーフレームがある3フレームのDisplayObject
+     * 7フーレムにキーフレームがある3フレームのDisplayObject
+     * 7から9フレームを選択して、4から6フレームに移動
      */
     it("test case1", () =>
     {
@@ -1547,26 +1558,42 @@ describe("TimelineLayer.js deleteDestinationKeyFrame test", () =>
         });
         layer.addCharacter(character2);
 
-        expect(layer._$characters.length).toBe(2);
+        const character3 = new Character();
+        character3.libraryId  = 1;
+        character3.startFrame = 7;
+        character3.endFrame   = 10;
+        character3.setPlace(7, {
+            "frame": 7,
+            "matrix": [1, 0, 0, 1, 0, 0],
+            "colorTransform": [1, 1, 1, 1, 0, 0, 0, 0],
+            "blendMode": "normal",
+            "filter": [],
+            "depth": 0
+        });
+        layer.addCharacter(character3);
+
+        expect(layer._$characters.length).toBe(3);
 
         const timelineLayer = new TimelineLayer();
-        const object = timelineLayer.createMoveCharacters(layer, [4,5,6]);
-        timelineLayer.deleteDestinationKeyFrame(
-            layer, object.characters, layer.id, 1, 4
+        const object = timelineLayer.createMoveCharacters(layer, [7,8,9]);
+        timelineLayer.deleteSourceKeyFrame(
+            layer, object.characters, 7, 10
         );
 
-        expect(layer._$characters.length).toBe(1);
-        expect(layer._$characters[0]).toBe(character2);
+        expect(layer._$characters.length).toBe(2);
+        expect(layer._$characters[0]).toBe(character1);
+        expect(layer._$characters[1]).toBe(character2);
 
         Util.$workSpaces.length = 0;
     });
 
     /**
-     * |1|2|3|4|5|6|
-     * |●|-|-|空|空|空|
-     * フレーム未設定
-     * 1フレームとキーフレームがある3フレームのDisplayObject
-     * 1から3フレームを選択して、4から6フレームに移動
+     * |1|2|3|4|5|6|7|8|9|
+     * |●|-|-|●|-|-|●|-|-|
+     * |-|-|-|-|-|-|■|■|■|
+     * |-|-|-|□|□|□|-|-|-|
+     * 1フレーム、4フーレム、7フーレムにキーフレームがある3フレームのDisplayObject
+     * 7から9フレームを選択して、4から6フレームに移動
      */
     it("test case2", () =>
     {
@@ -1597,7 +1624,90 @@ describe("TimelineLayer.js deleteDestinationKeyFrame test", () =>
         const character = new Character();
         character.libraryId  = 1;
         character.startFrame = 1;
-        character.endFrame   = 4;
+        character.endFrame   = 10;
+        character.setPlace(1, {
+            "frame": 1,
+            "matrix": [1, 0, 0, 1, 0, 0],
+            "colorTransform": [1, 1, 1, 1, 0, 0, 0, 0],
+            "blendMode": "normal",
+            "filter": [],
+            "depth": 0
+        });
+        character.setPlace(4, {
+            "frame": 4,
+            "matrix": [1, 0, 0, 1, 0, 0],
+            "colorTransform": [1, 1, 1, 1, 0, 0, 0, 0],
+            "blendMode": "normal",
+            "filter": [],
+            "depth": 0
+        });
+        character.setPlace(7, {
+            "frame": 7,
+            "matrix": [1, 0, 0, 1, 0, 0],
+            "colorTransform": [1, 1, 1, 1, 0, 0, 0, 0],
+            "blendMode": "normal",
+            "filter": [],
+            "depth": 0
+        });
+        layer.addCharacter(character);
+
+        expect(layer._$characters.length).toBe(1);
+        expect(layer._$characters[0]._$places.size).toBe(3);
+
+        const timelineLayer = new TimelineLayer();
+        const object = timelineLayer.createMoveCharacters(layer, [7,8,9]);
+        timelineLayer.deleteSourceKeyFrame(
+            layer, object.characters, 7, 10
+        );
+
+        expect(layer._$characters.length).toBe(1);
+
+        const character1 = layer._$characters[0];
+        expect(character1._$places.size).toBe(2);
+        expect(character1.startFrame).toBe(1);
+        expect(character1.endFrame).toBe(10);
+
+        Util.$workSpaces.length = 0;
+    });
+
+    /**
+     * |1|2|3|4|5|6|7|8|9|
+     * |●|-|-|-|-|-|-|-|-|
+     * |-|-|-|■|■|■|-|-|-|
+     * |-|-|-|-|-|-|□|□|□|
+     * 1フレームにキーフレームがある3フレームのDisplayObject
+     * 4から6フレームを選択して、7から9フレームに移動
+     */
+    it("test case3", () =>
+    {
+        const workSpaces = new WorkSpace();
+        Util.$activeWorkSpaceId = Util.$workSpaces.length;
+        Util.$workSpaces.push(workSpaces);
+
+        const movieClip = new MovieClip({
+            "id": 0,
+            "name": "main",
+            "type": InstanceType.MOVIE_CLIP
+        });
+        workSpaces._$libraries.set(movieClip.id, movieClip);
+        workSpaces._$scene = movieClip;
+
+        const bitmap = new Bitmap({
+            "id": 1,
+            "name": "Bitmap_01",
+            "type": InstanceType.BITMAP,
+            "width": 200,
+            "height": 100
+        });
+        workSpaces._$libraries.set(bitmap.id, bitmap);
+
+        const layer = new Layer();
+        movieClip.setLayer(layer.id, layer);
+
+        const character = new Character();
+        character.libraryId  = 1;
+        character.startFrame = 1;
+        character.endFrame   = 10;
         character.setPlace(1, {
             "frame": 1,
             "matrix": [1, 0, 0, 1, 0, 0],
@@ -1611,14 +1721,426 @@ describe("TimelineLayer.js deleteDestinationKeyFrame test", () =>
         expect(layer._$characters.length).toBe(1);
 
         const timelineLayer = new TimelineLayer();
-        const object = timelineLayer.createMoveCharacters(layer, [1,2,3]);
-        timelineLayer.deleteDestinationKeyFrame(
-            layer, object.characters, layer.id, 4, 7
+        const object = timelineLayer.createMoveCharacters(layer, [4,5,6]);
+        timelineLayer.deleteSourceKeyFrame(
+            layer, object.characters, 4, 7
         );
 
         expect(layer._$characters.length).toBe(1);
-        expect(layer._$characters[0]).toBe(character);
+
+        const character1 = layer._$characters[0];
+        expect(character1._$places.size).toBe(1);
+        expect(character1.startFrame).toBe(1);
+        expect(character1.endFrame).toBe(10);
+
+        Util.$workSpaces.length = 0;
+    });
+
+    /**
+     * |1|2|3|4|5|6|7|8|9|
+     * |●|-|-|●|-|-|●|-|-|
+     * |-|-|-|-|-|-|■|■|■|
+     * |-|-|-|□|□|□|-|-|-|
+     * 1フレーム、4フーレム、7フーレムにキーフレームがある3フレームのDisplayObject
+     * 7から9フレームを選択して、4から6フレームに移動
+     */
+    it("test case4", () =>
+    {
+        const workSpaces = new WorkSpace();
+        Util.$activeWorkSpaceId = Util.$workSpaces.length;
+        Util.$workSpaces.push(workSpaces);
+
+        const movieClip = new MovieClip({
+            "id": 0,
+            "name": "main",
+            "type": InstanceType.MOVIE_CLIP
+        });
+        workSpaces._$libraries.set(movieClip.id, movieClip);
+        workSpaces._$scene = movieClip;
+
+        const bitmap = new Bitmap({
+            "id": 1,
+            "name": "Bitmap_01",
+            "type": InstanceType.BITMAP,
+            "width": 200,
+            "height": 100
+        });
+        workSpaces._$libraries.set(bitmap.id, bitmap);
+
+        const layer = new Layer();
+        movieClip.setLayer(layer.id, layer);
+
+        const character = new Character();
+        character.libraryId  = 1;
+        character.startFrame = 1;
+        character.endFrame   = 10;
+        character.setPlace(1, {
+            "frame": 1,
+            "matrix": [1, 0, 0, 1, 0, 0],
+            "colorTransform": [1, 1, 1, 1, 0, 0, 0, 0],
+            "blendMode": "normal",
+            "filter": [],
+            "depth": 0
+        });
+        character.setPlace(4, {
+            "frame": 4,
+            "matrix": [1, 0, 0, 1, 0, 0],
+            "colorTransform": [1, 1, 1, 1, 0, 0, 0, 0],
+            "blendMode": "normal",
+            "filter": [],
+            "depth": 0
+        });
+        character.setPlace(7, {
+            "frame": 7,
+            "matrix": [1, 0, 0, 1, 0, 0],
+            "colorTransform": [1, 1, 1, 1, 0, 0, 0, 0],
+            "blendMode": "normal",
+            "filter": [],
+            "depth": 0
+        });
+        layer.addCharacter(character);
+
+        expect(layer._$characters.length).toBe(1);
+
+        const timelineLayer = new TimelineLayer();
+        const object = timelineLayer.createMoveCharacters(layer, [4,5,6]);
+        timelineLayer.deleteSourceKeyFrame(
+            layer, object.characters, 4, 7
+        );
+
+        expect(layer._$characters.length).toBe(1);
+
+        const character1 = layer._$characters[0];
+        expect(character1._$places.size).toBe(2);
+        expect(character1.startFrame).toBe(1);
+        expect(character1.endFrame).toBe(10);
+
+        Util.$workSpaces.length = 0;
+    });
+
+    /**
+     * |1|2|3|4|5|
+     * |●|-|-|-|-|
+     * |■|■|-|-|-|
+     * |-|-|-|□|□|
+     * 1フレームにキーフレームとtweenがある5フレームのDisplayObject
+     * 1から2フレームを選択して、4から5フレームに移動
+     */
+    it("test case5", () =>
+    {
+        const workSpaces = new WorkSpace();
+        Util.$activeWorkSpaceId = Util.$workSpaces.length;
+        Util.$workSpaces.push(workSpaces);
+
+        const movieClip = new MovieClip({
+            "id": 0,
+            "name": "main",
+            "type": InstanceType.MOVIE_CLIP
+        });
+        workSpaces._$libraries.set(movieClip.id, movieClip);
+        workSpaces._$scene = movieClip;
+
+        const bitmap = new Bitmap({
+            "id": 1,
+            "name": "Bitmap_01",
+            "type": InstanceType.BITMAP,
+            "width": 200,
+            "height": 100
+        });
+        workSpaces._$libraries.set(bitmap.id, bitmap);
+
+        const layer = new Layer();
+        movieClip.setLayer(layer.id, layer);
+
+        const character = new Character();
+        character.libraryId  = 1;
+        character.startFrame = 1;
+        character.endFrame   = 6;
+        for (let idx = 1; idx < 6; ++idx) {
+            character.setPlace(idx, {
+                "frame": idx,
+                "matrix": [1, 0, 0, 1, 0, 0],
+                "colorTransform": [1, 1, 1, 1, 0, 0, 0, 0],
+                "blendMode": "normal",
+                "filter": [],
+                "depth": 0,
+                "tweenFrame": 1
+            });
+        }
+        character.setTween(1, {
+            "method": "linear",
+            "curve": [],
+            "custom": Util.$tweenController.createEasingObject(),
+            "startFrame": 1,
+            "endFrame": 6
+        });
+        layer.addCharacter(character);
+
+        expect(layer._$characters.length).toBe(1);
+
+        const timelineLayer = new TimelineLayer();
+        const object = timelineLayer.createMoveCharacters(layer, [1,2]);
+        timelineLayer.deleteSourceKeyFrame(
+            layer, object.characters, 1, 3
+        );
+
+        expect(layer._$characters.length).toBe(0);
+
+        Util.$workSpaces.length = 0;
+    });
+
+    /**
+     * |1|2|3|4|5|
+     * |●|-|-|-|-|
+     * |-|-|-|■|■|
+     * |□|□|-|-|-|
+     * 1フレームにキーフレームとtweenがある5フレームのDisplayObject
+     * 4から5フレームを選択して、1から2フレームに移動
+     */
+    it("test case6", () =>
+    {
+        const workSpaces = new WorkSpace();
+        Util.$activeWorkSpaceId = Util.$workSpaces.length;
+        Util.$workSpaces.push(workSpaces);
+
+        const movieClip = new MovieClip({
+            "id": 0,
+            "name": "main",
+            "type": InstanceType.MOVIE_CLIP
+        });
+        workSpaces._$libraries.set(movieClip.id, movieClip);
+        workSpaces._$scene = movieClip;
+
+        const bitmap = new Bitmap({
+            "id": 1,
+            "name": "Bitmap_01",
+            "type": InstanceType.BITMAP,
+            "width": 200,
+            "height": 100
+        });
+        workSpaces._$libraries.set(bitmap.id, bitmap);
+
+        const layer = new Layer();
+        movieClip.setLayer(layer.id, layer);
+
+        const character = new Character();
+        character.libraryId  = 1;
+        character.startFrame = 1;
+        character.endFrame   = 6;
+        for (let idx = 1; idx < 6; ++idx) {
+            character.setPlace(idx, {
+                "frame": idx,
+                "matrix": [1, 0, 0, 1, 0, 0],
+                "colorTransform": [1, 1, 1, 1, 0, 0, 0, 0],
+                "blendMode": "normal",
+                "filter": [],
+                "depth": 0,
+                "tweenFrame": 1
+            });
+        }
+        character.setTween(1, {
+            "method": "linear",
+            "curve": [],
+            "custom": Util.$tweenController.createEasingObject(),
+            "startFrame": 1,
+            "endFrame": 6
+        });
+        layer.addCharacter(character);
+
+        expect(layer._$characters.length).toBe(1);
+
+        const timelineLayer = new TimelineLayer();
+        const object = timelineLayer.createMoveCharacters(layer, [4,5]);
+        timelineLayer.deleteSourceKeyFrame(
+            layer, object.characters, 4, 6
+        );
+
+        expect(layer._$characters.length).toBe(1);
+        expect(layer._$characters[0]._$places.size).toBe(5);
+        expect(layer._$characters[0]._$tween.size).toBe(1);
 
         Util.$workSpaces.length = 0;
     });
 });
+
+// describe("TimelineLayer.js deleteDestinationKeyFrame test", () =>
+// {
+//     beforeEach(() =>
+//     {
+//         document.body.innerHTML = window.__html__["test/test.html"];
+//     });
+//
+//     /**
+//      * |1|2|3|4|5|6|7|8|9|
+//      * |●|-|-|●|-|-|●|-|-|
+//      * |-|-|-|-|-|-|■|■|■|
+//      * |-|-|-|□|□|□|-|-|-|
+//      * 1フレームにキーフレームがある3フレームのDisplayObject
+//      * 4フーレムにキーフレームがある3フレームのDisplayObject
+//      * 7フーレムにキーフレームがある3フレームのDisplayObject
+//      * 7から9フレームを選択して、4から6フレームに移動
+//      */
+//     it("test case1", () =>
+//     {
+//         const workSpaces = new WorkSpace();
+//         Util.$activeWorkSpaceId = Util.$workSpaces.length;
+//         Util.$workSpaces.push(workSpaces);
+//
+//         const movieClip = new MovieClip({
+//             "id": 0,
+//             "name": "main",
+//             "type": InstanceType.MOVIE_CLIP
+//         });
+//         workSpaces._$libraries.set(movieClip.id, movieClip);
+//         workSpaces._$scene = movieClip;
+//
+//         const bitmap = new Bitmap({
+//             "id": 1,
+//             "name": "Bitmap_01",
+//             "type": InstanceType.BITMAP,
+//             "width": 200,
+//             "height": 100
+//         });
+//         workSpaces._$libraries.set(bitmap.id, bitmap);
+//
+//         const layer = new Layer();
+//         movieClip.setLayer(layer.id, layer);
+//
+//         const character1 = new Character();
+//         character1.libraryId  = 1;
+//         character1.startFrame = 1;
+//         character1.endFrame   = 4;
+//         character1.setPlace(1, {
+//             "frame": 1,
+//             "matrix": [1, 0, 0, 1, 0, 0],
+//             "colorTransform": [1, 1, 1, 1, 0, 0, 0, 0],
+//             "blendMode": "normal",
+//             "filter": [],
+//             "depth": 0
+//         });
+//         layer.addCharacter(character1);
+//
+//         const character2 = new Character();
+//         character2.libraryId  = 1;
+//         character2.startFrame = 4;
+//         character2.endFrame   = 7;
+//         character2.setPlace(4, {
+//             "frame": 4,
+//             "matrix": [1, 0, 0, 1, 0, 0],
+//             "colorTransform": [1, 1, 1, 1, 0, 0, 0, 0],
+//             "blendMode": "normal",
+//             "filter": [],
+//             "depth": 0
+//         });
+//         layer.addCharacter(character2);
+//
+//         const character3 = new Character();
+//         character3.libraryId  = 1;
+//         character3.startFrame = 7;
+//         character3.endFrame   = 10;
+//         character3.setPlace(7, {
+//             "frame": 7,
+//             "matrix": [1, 0, 0, 1, 0, 0],
+//             "colorTransform": [1, 1, 1, 1, 0, 0, 0, 0],
+//             "blendMode": "normal",
+//             "filter": [],
+//             "depth": 0
+//         });
+//         layer.addCharacter(character3);
+//
+//         expect(layer._$characters.length).toBe(3);
+//
+//         const timelineLayer = new TimelineLayer();
+//         const object = timelineLayer.createMoveCharacters(layer, [7,8,9]);
+//         timelineLayer.deleteDestinationKeyFrame(
+//             layer, object.characters, layer.id, 4, 7
+//         );
+//
+//         expect(layer._$characters.length).toBe(2);
+//         expect(layer._$characters[0]).toBe(character1);
+//         expect(layer._$characters[1]).toBe(character3);
+//
+//         Util.$workSpaces.length = 0;
+//     });
+//
+//     /**
+//      * |1|2|3|4|5|6|7|8|9|
+//      * |●|-|-|●|-|-|●|-|-|
+//      * |-|-|-|-|-|-|■|■|■|
+//      * |-|-|-|□|□|□|-|-|-|
+//      * 1フレームと4フーレムと7フーレムにキーフレームがある9フレームのDisplayObject
+//      * 7から9フレームを選択して、4から6フレームに移動
+//      */
+//     it("test case2", () =>
+//     {
+//         const workSpaces = new WorkSpace();
+//         Util.$activeWorkSpaceId = Util.$workSpaces.length;
+//         Util.$workSpaces.push(workSpaces);
+//
+//         const movieClip = new MovieClip({
+//             "id": 0,
+//             "name": "main",
+//             "type": InstanceType.MOVIE_CLIP
+//         });
+//         workSpaces._$libraries.set(movieClip.id, movieClip);
+//         workSpaces._$scene = movieClip;
+//
+//         const bitmap = new Bitmap({
+//             "id": 1,
+//             "name": "Bitmap_01",
+//             "type": InstanceType.BITMAP,
+//             "width": 200,
+//             "height": 100
+//         });
+//         workSpaces._$libraries.set(bitmap.id, bitmap);
+//
+//         const layer = new Layer();
+//         movieClip.setLayer(layer.id, layer);
+//
+//         const character = new Character();
+//         character.libraryId  = 1;
+//         character.startFrame = 1;
+//         character.endFrame   = 10;
+//         character.setPlace(1, {
+//             "frame": 1,
+//             "matrix": [1, 0, 0, 1, 0, 0],
+//             "colorTransform": [1, 1, 1, 1, 0, 0, 0, 0],
+//             "blendMode": "normal",
+//             "filter": [],
+//             "depth": 0
+//         });
+//         character.setPlace(4, {
+//             "frame": 4,
+//             "matrix": [1, 0, 0, 1, 0, 0],
+//             "colorTransform": [1, 1, 1, 1, 0, 0, 0, 0],
+//             "blendMode": "normal",
+//             "filter": [],
+//             "depth": 0
+//         });
+//         character.setPlace(7, {
+//             "frame": 7,
+//             "matrix": [1, 0, 0, 1, 0, 0],
+//             "colorTransform": [1, 1, 1, 1, 0, 0, 0, 0],
+//             "blendMode": "normal",
+//             "filter": [],
+//             "depth": 0
+//         });
+//
+//         layer.addCharacter(character);
+//
+//         expect(layer._$characters.length).toBe(1);
+//
+//         const timelineLayer = new TimelineLayer();
+//         const object = timelineLayer.createMoveCharacters(layer, [7,8,9]);
+//         timelineLayer.deleteDestinationKeyFrame(
+//             layer, object.characters, layer.id, 4, 7
+//         );
+//
+//         expect(layer._$characters.length).toBe(1);
+//         expect(layer._$characters[0]._$places.size).toBe(2);
+//         expect(layer._$characters[0].startFrame).toBe(1);
+//         expect(layer._$characters[0].endFrame).toBe(4);
+//
+//         Util.$workSpaces.length = 0;
+//     });
+// });
