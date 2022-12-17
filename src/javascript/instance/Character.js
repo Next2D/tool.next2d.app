@@ -260,7 +260,9 @@ class Character
      */
     getRange (frame)
     {
-        if (this._$places.size === 1) {
+        if (this._$places.size === 1
+            && this._$places.has(frame)
+        ) {
             return {
                 "startFrame": this.startFrame,
                 "endFrame": this.endFrame
@@ -1077,7 +1079,9 @@ class Character
      */
     getPlace (frame)
     {
-        if (this._$places.size === 1) {
+        if (this._$places.size === 1
+            && this.hasPlace(this.startFrame)
+        ) {
             return this._$places.get(this.startFrame);
         }
 
@@ -1435,7 +1439,7 @@ class Character
             // 分割したDisplayObjectの情報を更新
             this._$tween      = tweenMap;
             this._$places     = places;
-            this._$startFrame = start_frame;
+            this._$startFrame = end_frame;
         }
 
         // 返却用のDisplayObject

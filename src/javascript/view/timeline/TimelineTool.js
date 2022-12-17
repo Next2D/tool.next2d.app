@@ -1553,7 +1553,9 @@ class TimelineTool extends BaseTimeline
                                 continue;
                             }
 
-                            if (keyFrame >= range.startFrame && range.endFrame > keyFrame) {
+                            if (keyFrame >= range.startFrame
+                                && range.endFrame > keyFrame
+                            ) {
 
                                 // 削除した範囲外だけ登録
                                 if (range.endFrame - moveFrame > keyFrame) {
@@ -1574,9 +1576,10 @@ class TimelineTool extends BaseTimeline
                             }
 
                             places.set(place.frame, place);
-
                         }
+
                         character._$places = places;
+                        character._$cachePlaces.length = 0;
 
                         // tweenの情報があれば更新して再計算
                         if (character._$tween.size) {
