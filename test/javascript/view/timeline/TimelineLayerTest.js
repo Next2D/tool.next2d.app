@@ -2273,7 +2273,7 @@ describe("TimelineLayer.js deleteSourceKeyFrame test", () =>
 
         const character1 = layer._$characters[0];
         expect(character1._$places.size).toBe(1);
-        expect(character1.startFrame).toBe(6);
+        expect(character1.startFrame).toBe(7);
         expect(character1.endFrame).toBe(10);
 
         const character2 = layer._$characters[1];
