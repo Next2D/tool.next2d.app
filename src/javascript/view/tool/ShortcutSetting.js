@@ -394,6 +394,18 @@ class ShortcutSetting
                     "text": "Ctrl + ArrowRight",
                     "css": "context-menu-last-frame",
                     "description": "{{最後のフレームに移動}}"
+                },
+                {
+                    "key": "cCtrl",
+                    "text": "Ctrl + C",
+                    "css": "context-menu-frame-copy",
+                    "description": "{{フレームをコピー}}"
+                },
+                {
+                    "key": "vtCtrl",
+                    "text": "Ctrl + V",
+                    "css": "context-menu-frame-paste",
+                    "description": "{{フレームをペースト}}"
                 }
             ],
             "library": [

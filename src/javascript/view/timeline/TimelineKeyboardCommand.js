@@ -204,14 +204,14 @@ class TimelineKeyboardCommand extends KeyboardCommand
         // 選択中のDisplayObjectをコピー
         this.add(Util.$generateShortcutKey("c", { "ctrl": true }), () =>
         {
-            Util.$screenMenu.copyDisplayObject();
+            Util.$timelineMenu.executeContextMenuFrameCopy();
             return false;
         });
 
         // コピーしたDisplayObjectをペースト
         this.add(Util.$generateShortcutKey("v", { "ctrl": true }), () =>
         {
-            Util.$screenMenu.pasteDisplayObject();
+            Util.$timelineMenu.executeContextMenuFramePaste();
             return false;
         });
 
