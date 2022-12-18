@@ -2952,11 +2952,12 @@ class TimelineLayer extends BaseTimeline
             this.moveEmptyKeyFrame(targetLayer, emptys, distFrame - frame);
 
             // 後方のキーフレーム補正
+            const maxFrame = Math.max(
+                endFrame, sourceLastFrame, endKeyFrame, endEmptyKeyFrame
+            );
+
             const minFrame = Math.min(frame, distFrame);
             if (targetLayerId === layerId) {
-                const maxFrame = Math.max(
-                    endFrame, sourceLastFrame, endKeyFrame, endEmptyKeyFrame
-                );
                 this.adjustBehindFrame(targetLayer, minFrame, maxFrame - 1);
             } else {
                 const maxFrame = Math.max(
@@ -2971,7 +2972,7 @@ class TimelineLayer extends BaseTimeline
 
             // 前方のキーフレームが未設定の場合は空のキーフレームを設定
             if (distFrame > 1) {
-                this.adjustPreviousFrame(targetLayer, distFrame, sourceLastFrame);
+                this.adjustPreviousFrame(targetLayer, distFrame, maxFrame);
             }
 
             if (frame === 1 && targetLayerId !== layerId) {
