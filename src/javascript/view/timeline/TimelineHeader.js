@@ -258,7 +258,12 @@ class TimelineHeader extends BaseTimeline
             return ;
         }
 
-        const scene = Util.$currentWorkSpace().scene;
+        const workSpace = Util.$currentWorkSpace();
+        if (!workSpace) {
+            return ;
+        }
+
+        const scene = workSpace.scene;
         if (!scene) {
             return ;
         }

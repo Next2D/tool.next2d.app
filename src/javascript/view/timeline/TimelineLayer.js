@@ -2913,17 +2913,18 @@ class TimelineLayer extends BaseTimeline
             const targetLayer   = scene.getLayer(targetLayerId);
 
             // Altキーが押下されていない時は、選択元を削除
-            let sourceLastFrame = 0;
+            let sourceLastFrame  = 0;
+            const sourceEndFrame = frame + values.length;
             if (!Util.$altKey) {
 
                 // DisplayObjectを削除
                 const sourceEndKeyFrame = this.deleteSourceKeyFrame(
-                    layer, characters, frame, frame + values.length
+                    layer, characters, frame, sourceEndFrame
                 );
 
                 // 空のフレームを削除
                 const sourceEndEmptyFrame = this.deleteSourceEmptyKeyFrame(
-                    layer, frame, frame + values.length
+                    layer, frame, sourceEndFrame
                 );
 
                 // 選択元のキーフレームの幅
@@ -2950,24 +2951,31 @@ class TimelineLayer extends BaseTimeline
             // 移動先に選択した空のキーフレームをセット
             this.moveEmptyKeyFrame(targetLayer, emptys, distFrame - frame);
 
-            // 移動先の後方キーフレーム補正
-            const maxFrame = Math.max(
-                endFrame, sourceLastFrame, endKeyFrame, endEmptyKeyFrame
-            );
+            // 後方のキーフレーム補正
             const minFrame = Math.min(frame, distFrame);
+            if (targetLayerId === layerId) {
+                const maxFrame = Math.max(
+                    endFrame, sourceLastFrame, endKeyFrame, endEmptyKeyFrame
+                );
+                this.adjustBehindFrame(targetLayer, minFrame, maxFrame - 1);
+            } else {
+                const maxFrame = Math.max(
+                    endKeyFrame, endEmptyKeyFrame
+                );
+                this.adjustBehindFrame(targetLayer, 1, maxFrame - 1);
+            }
 
-            // 後方フレームの補正
-            this.adjustBehindFrame(targetLayer, minFrame, maxFrame - 1);
             if (targetLayerId !== layerId) {
-                this.adjustBehindFrame(layer, minFrame, maxFrame - 1);
+                this.adjustBehindFrame(layer, 1, sourceLastFrame - 1);
             }
 
             // 前方のキーフレームが未設定の場合は空のキーフレームを設定
             if (distFrame > 1) {
-                this.adjustPreviousFrame(targetLayer, distFrame);
-                if (targetLayerId !== layerId) {
-                    this.adjustPreviousFrame(layer, distFrame);
-                }
+                this.adjustPreviousFrame(targetLayer, distFrame, sourceLastFrame);
+            }
+
+            if (frame === 1 && targetLayerId !== layerId) {
+                this.adjustPreviousFrame(layer, distFrame, sourceLastFrame);
             }
 
             // 前後の補正、同一のアイテムなら統合
@@ -3229,12 +3237,17 @@ class TimelineLayer extends BaseTimeline
      *
      * @param  {Layer} layer
      * @param  {number} dist_frame
+     * @param  {number} last_frame
      * @return {void}
      * @method
      * @public
      */
-    adjustPreviousFrame (layer, dist_frame)
+    adjustPreviousFrame (layer, dist_frame, last_frame)
     {
+        if (!last_frame) {
+            return ;
+        }
+
         let frame = 1;
         while (dist_frame >= frame) {
 
@@ -3255,7 +3268,7 @@ class TimelineLayer extends BaseTimeline
             "startFrame": frame
         });
 
-        for (;;) {
+        while (last_frame > frame) {
 
             if (layer.getActiveCharacter(frame).length) {
                 break;

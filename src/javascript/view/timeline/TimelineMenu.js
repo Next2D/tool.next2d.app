@@ -340,9 +340,40 @@ class TimelineMenu extends BaseTimeline
         // コピーレイヤーの配列を初期化
         this._$copyFrames.clear();
 
+        const scene = Util.$currentWorkSpace().scene;
+
         const targetFrames = Util.$timelineLayer.targetFrames;
-        for (let [layerId, frames] of targetFrames) {
-            this._$copyFrames.set(layerId, frames.slice());
+        for (let [layerId, values] of targetFrames) {
+
+            const frames = values.slice();
+            if (frames.length > 1) {
+                frames.sort((a, b) =>
+                {
+                    const aFrame = a | 0;
+                    const bFrame = b | 0;
+
+                    // 昇順
+                    switch (true) {
+
+                        case aFrame > bFrame:
+                            return 1;
+
+                        case aFrame < bFrame:
+                            return -1;
+
+                        default:
+                            return 0;
+
+                    }
+                });
+            }
+
+            const layer = scene.getLayer(layerId);
+            const object = Util
+                .$timelineLayer
+                .createMoveCharacters(layer, frames);
+
+            this._$copyFrames.set(layerId, object);
         }
     }
 
