@@ -2906,6 +2906,7 @@ class TimelineLayer extends BaseTimeline
 
             const characters = object.characters;
             const emptys     = object.emptys;
+            const tweenMap   = this.createTweenMap(layer, characters);
 
             // 移動先のレイヤー
             const targetLayerId = children[index++].dataset.layerId | 0;
@@ -2942,7 +2943,9 @@ class TimelineLayer extends BaseTimeline
             );
 
             // 移動先に選択したDisplayObjectをセット
-            this.moveKeyFrame(targetLayer, characters, distFrame - frame);
+            this.moveKeyFrame(
+                targetLayer, characters, distFrame - frame
+            );
 
             // 移動先に選択した空のキーフレームをセット
             this.moveEmptyKeyFrame(targetLayer, emptys, distFrame - frame);
@@ -2953,15 +2956,27 @@ class TimelineLayer extends BaseTimeline
             );
             const minFrame = Math.min(frame, distFrame);
 
+            // 後方フレームの補正
             this.adjustBehindFrame(targetLayer, minFrame, maxFrame - 1);
+            if (targetLayerId !== layerId) {
+                this.adjustBehindFrame(layer, minFrame, maxFrame - 1);
+            }
 
             // 前方のキーフレームが未設定の場合は空のキーフレームを設定
             if (distFrame > 1) {
                 this.adjustPreviousFrame(targetLayer, distFrame);
+                if (targetLayerId !== layerId) {
+                    this.adjustPreviousFrame(layer, distFrame);
+                }
             }
 
             // 前後の補正、同一のアイテムなら統合
             this.characterIntegration(targetLayer, characters);
+
+            // tween補正
+            if (tweenMap.size && targetLayerId === layerId) {
+                this.adjustTween(characters, tweenMap, distFrame - frame);
+            }
 
             // 同一レイヤーなら対象のレイヤーだけ再描画
             if (targetLayerId === layerId) {
@@ -2986,6 +3001,61 @@ class TimelineLayer extends BaseTimeline
         this.reloadScreen();
 
         this._$saved = false;
+    }
+
+    /**
+     * @description 移動先のtweenを補正
+     *
+     * @param  {Map} characters
+     * @param  {Map} tween_map
+     * @param  {number} move_frame
+     * @return {void}
+     * @method
+     * @public
+     */
+    adjustTween (characters, tween_map, move_frame)
+    {
+        for (const [id, character] of characters) {
+
+            // 最終フレームにあるtweenは削除対象とする
+            const lastFrame = character.endFrame - 1;
+            if (lastFrame > 1
+                && lastFrame > character.startFrame
+                && character.hasTween(lastFrame)
+            ) {
+
+                const range = character.getRange(lastFrame);
+
+                const prevRange = character.getRange(range.startFrame - 1);
+                if (character.hasTween(prevRange.startFrame)) {
+
+                    const tween = character.getTween(prevRange.startFrame);
+                    tween.endFrame = range.endFrame;
+
+                    const place = character.getPlace(lastFrame);
+                    place.tweenFrame = prevRange.startFrame;
+
+                    character.deleteTween(lastFrame);
+                }
+            }
+
+            if (!tween_map.has(id)) {
+                continue;
+            }
+
+            for (const [keyFrame, lastPlace] of tween_map.get(id)) {
+
+                const range = character.getRange(keyFrame + move_frame);
+
+                lastPlace.tweenFrame = range.startFrame;
+
+                character.setPlace(range.endFrame - 1, lastPlace);
+
+                Util
+                    .$tweenController
+                    .relocationPlace(character, range.startFrame);
+            }
+        }
     }
 
     /**
@@ -3023,20 +3093,20 @@ class TimelineLayer extends BaseTimeline
                         continue;
                     }
 
-                    unionCharacter = prevCharacter;
+                    // unionCharacter = prevCharacter;
 
-                    for (const [keyFrame, place] of character._$places) {
+                    for (const [keyFrame, place] of prevCharacter._$places) {
                         unionCharacter.setPlace(keyFrame, place);
                     }
 
-                    for (const [keyFrame, tweenObject] of character._$tween) {
+                    for (const [keyFrame, tweenObject] of prevCharacter._$tween) {
                         unionCharacter.setTween(keyFrame, tweenObject);
                     }
 
-                    unionCharacter.endFrame = character.endFrame;
+                    unionCharacter.startFrame = prevCharacter.startFrame;
 
                     // 統合元のDisplayObjectは削除
-                    layer.deleteCharacter(character.id);
+                    layer.deleteCharacter(prevCharacter.id);
                     break;
                 }
             }
@@ -3240,37 +3310,6 @@ class TimelineLayer extends BaseTimeline
 
             // 横移動の補正
             character.move(move_frame);
-
-            // 最終位置の補正
-            // if (character.endFrame === end_frame
-            //     && dist_last_frame > end_frame
-            // ) {
-            //
-            //     // tweenがあれば、tweenの最終フレームを補正
-            //     const keyFrame = character.endFrame - 1;
-            //     if (character.hasPlace(keyFrame)) {
-            //         const place = character.getPlace(keyFrame);
-            //         if (place.tweenFrame) {
-            //
-            //             for (let frame = keyFrame + 1; dist_last_frame > frame; ++frame) {
-            //                 character.setPlace(frame,
-            //                     character.getClonePlace(keyFrame)
-            //                 );
-            //             }
-            //
-            //             character
-            //                 .getTween(place.tweenFrame)
-            //                 .endFrame = dist_last_frame;
-            //
-            //             // 再計算
-            //             Util
-            //                 .$tweenController
-            //                 .relocationPlace(character, keyFrame);
-            //         }
-            //     }
-            //
-            //     character.endFrame = dist_last_frame;
-            // }
 
             layer.addCharacter(character);
         }
@@ -3663,14 +3702,25 @@ class TimelineLayer extends BaseTimeline
                         }
                     }
 
-                    // 終了位置を補正
-                    character.endFrame = dist_start_frame;
-                    const tweenRange = character.getRange(dist_start_frame);
-                    if (character.hasTween(tweenRange.startFrame)) {
+                    if (!character._$places.size) {
 
-                        character
-                            .getTween(tweenRange.startFrame)
-                            .endFrame = dist_start_frame;
+                        // 分割してキーフレームがない場合は削除
+                        layer.deleteCharacter(character.id);
+
+                    } else {
+
+                        // tweenの補正
+                        const range = character.getRange(dist_start_frame);
+                        if (character.hasTween(range.startFrame)) {
+
+                            character
+                                .getTween(range.startFrame)
+                                .endFrame = dist_start_frame;
+
+                        }
+
+                        // 終了位置を補正
+                        character.endFrame = dist_start_frame;
 
                     }
                 }
@@ -3691,8 +3741,8 @@ class TimelineLayer extends BaseTimeline
      */
     createMoveCharacters (layer, frames)
     {
-        const characters  = new Map();
-        const emptys      = [];
+        const characters = new Map();
+        const emptys     = [];
 
         let currentEmpty  = null;
         let rangeEndFrame = 1;
@@ -3873,6 +3923,43 @@ class TimelineLayer extends BaseTimeline
             "characters": characters,
             "emptys": emptys
         };
+    }
+
+    /**
+     * @description 移動するDisplayObjectのtween情報
+     *
+     * @param  {Layer} layer
+     * @param  {Map} characters
+     * @return {Map}
+     * @method
+     * @public
+     */
+    createTweenMap (layer, characters)
+    {
+        const tweenMap = new Map();
+        for (const [id, character] of characters) {
+
+            const beforeCharacter = layer.getCharacter(id);
+            if (!beforeCharacter) {
+                continue;
+            }
+
+            for (const tween of character._$tween.values()) {
+
+                const range = beforeCharacter.getRange(tween.startFrame);
+
+                const lastPlace = beforeCharacter
+                    .getClonePlace(range.endFrame - 1);
+
+                if (!tweenMap.has(id)) {
+                    tweenMap.set(id, new Map());
+                }
+
+                tweenMap.get(id).set(tween.startFrame, lastPlace);
+            }
+        }
+
+        return tweenMap;
     }
 
     /**

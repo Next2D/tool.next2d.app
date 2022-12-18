@@ -790,6 +790,7 @@ class ScreenMenu extends BaseScreen
 
                                 character._$places  = places;
                                 character.endFrame += characters.length;
+                                character._$cachePlaces.length = 0;
                             }
                         }
 
@@ -898,6 +899,7 @@ class ScreenMenu extends BaseScreen
 
                                 character._$places  = places;
                                 character.endFrame += moveFrame;
+                                character._$cachePlaces.length = 0;
                             }
                         }
 
@@ -949,6 +951,7 @@ class ScreenMenu extends BaseScreen
 
                                 character._$places  = places;
                                 character.endFrame -= moveFrame;
+                                character._$cachePlaces.length = 0;
                             }
 
                         }

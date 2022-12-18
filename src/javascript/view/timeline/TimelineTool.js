@@ -925,6 +925,7 @@ class TimelineTool extends BaseTimeline
 
                         // キーフレームの情報を上書き
                         character._$places = places;
+                        character._$cachePlaces.length = 0;
 
                         if (character._$tween.size) {
 

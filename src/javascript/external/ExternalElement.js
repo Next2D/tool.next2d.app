@@ -275,6 +275,7 @@ class ExternalElement
                     character._$places     = places;
                     character._$startFrame = 1;
                     character._$endFrame   = totalFrame;
+                    character._$cachePlaces.length = 0;
 
                     const layer = new Layer();
 

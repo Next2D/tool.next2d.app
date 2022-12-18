@@ -1351,7 +1351,9 @@ class Character
 
         // キーフレームの情報を上書き
         this._$places = places;
+        this._$cachePlaces.length = 0;
 
+        // tweenを移動
         if (this._$tween.size) {
 
             const tween = new Map();
@@ -1440,6 +1442,7 @@ class Character
             this._$tween      = tweenMap;
             this._$places     = places;
             this._$startFrame = end_frame;
+            this._$cachePlaces.length = 0;
         }
 
         // 返却用のDisplayObject

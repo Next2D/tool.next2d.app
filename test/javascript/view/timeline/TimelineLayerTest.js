@@ -3450,6 +3450,83 @@ describe("TimelineLayer.js deleteDestinationKeyFrame test", () =>
 
         Util.$workSpaces.length = 0;
     });
+
+    /**
+     * |1|2|3|4|5|6|7|8|9|
+     * |●|-|-|-|-|-|●|-|-|
+     * |-|-|-|-|-|-|■|-|-|
+     * |□|-|-|-|-|-|-|-|-|
+     * 1フレームと7フーレムにキーフレームがある9フレームのDisplayObject
+     * alt押下して7フレームを選択して1フレームに移動
+     */
+    it("test case10", () =>
+    {
+        const workSpaces = new WorkSpace();
+        Util.$activeWorkSpaceId = Util.$workSpaces.length;
+        Util.$workSpaces.push(workSpaces);
+
+        const movieClip = new MovieClip({
+            "id": 0,
+            "name": "main",
+            "type": InstanceType.MOVIE_CLIP
+        });
+        workSpaces._$libraries.set(movieClip.id, movieClip);
+        workSpaces._$scene = movieClip;
+
+        const bitmap = new Bitmap({
+            "id": 1,
+            "name": "Bitmap_01",
+            "type": InstanceType.BITMAP,
+            "width": 200,
+            "height": 100
+        });
+        workSpaces._$libraries.set(bitmap.id, bitmap);
+
+        const layer = new Layer();
+        movieClip.setLayer(layer.id, layer);
+
+        const character = new Character();
+        character.libraryId  = 1;
+        character.startFrame = 1;
+        character.endFrame   = 10;
+        character.setPlace(1, {
+            "frame": 1,
+            "matrix": [1, 0, 0, 1, 0, 0],
+            "colorTransform": [1, 1, 1, 1, 0, 0, 0, 0],
+            "blendMode": "normal",
+            "filter": [],
+            "depth": 0
+        });
+        character.setPlace(7, {
+            "frame": 7,
+            "matrix": [1, 0, 0, 1, 0, 0],
+            "colorTransform": [1, 1, 1, 1, 0, 0, 0, 0],
+            "blendMode": "normal",
+            "filter": [],
+            "depth": 0
+        });
+
+        layer.addCharacter(character);
+
+        expect(layer._$characters.length).toBe(1);
+
+        Util.$altKey = true;
+        const timelineLayer = new TimelineLayer();
+        timelineLayer.createMoveCharacters(layer, [7]);
+        const endKeyFrame = timelineLayer.deleteDestinationKeyFrame(
+            layer, 1, 2
+        );
+        Util.$altKey = false;
+
+        expect(layer._$characters.length).toBe(1);
+        expect(layer._$characters[0]._$places.size).toBe(1);
+        expect(layer._$characters[0].startFrame).toBe(7);
+        expect(layer._$characters[0].endFrame).toBe(10);
+
+        expect(endKeyFrame).toBe(7);
+
+        Util.$workSpaces.length = 0;
+    });
 });
 
 describe("TimelineLayer.js deleteDestinationEmptyKeyFrame test", () =>
