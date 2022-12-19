@@ -181,9 +181,11 @@ class Screen extends BaseScreen
             const element = document
                 .getElementById("detail-modal");
 
-            element.textContent = "ロックされたレイヤーです";
-            element.style.left  = `${event.pageX}px`;
-            element.style.top   = `${event.pageY}px`;
+            element.textContent = Util.$currentLanguage.replace(
+                "{{ロックされたレイヤーです}}"
+            );
+            element.style.left  = `${event.pageX + 10}px`;
+            element.style.top   = `${event.pageY - 30}px`;
 
             element.setAttribute("class", "fadeIn");
 
@@ -267,7 +269,9 @@ class Screen extends BaseScreen
                 const element = document
                     .getElementById("detail-modal");
 
-                element.textContent = "トゥイーンには複数のDisplayObjectを設定できません";
+                element.textContent = Util.$currentLanguage.replace(
+                    "{{トゥイーンには複数のオブジェクトを設置できません}}"
+                );
                 element.style.left  = `${event.pageX + 10}px`;
                 element.style.top   = `${event.pageY - 30}px`;
 
