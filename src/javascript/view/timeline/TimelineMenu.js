@@ -386,6 +386,32 @@ class TimelineMenu extends BaseTimeline
      */
     executeContextMenuFramePaste ()
     {
+        const fromWorkSpace = Util.$workSpaces[this._$copyWorkSpaceId];
+        const toWorkSpace   = Util.$currentWorkSpace();
+
+        // 状態保存
+        this.save();
+
+        let targetLayer = Util.$timelineLayer.targetLayer;
+        if (!targetLayer) {
+            Util.$timelineLayer.attachLayer();
+            targetLayer = Util.$timelineLayer.targetLayer;
+        }
+
+        const scene = toWorkSpace.scene;
+
+        console.log(this._$copyFrames);
+
+        // 選択したフレームで一番若いフレーム番号
+        const frame = Util.$timelineTool.getFirstFrame();
+
+        // ワークスペースが異なる場合は依存するライブラリを移動する
+        if (this._$copyWorkSpaceId !== Util.$activeWorkSpaceId) {
+
+        } else {
+
+        }
+
         console.log("TODO executeContextMenuFramePaste");
     }
 

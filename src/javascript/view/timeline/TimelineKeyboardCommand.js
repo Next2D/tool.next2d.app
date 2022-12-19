@@ -73,12 +73,54 @@ class TimelineKeyboardCommand extends KeyboardCommand
         });
 
         // レイヤーの上下移動
-        this.add("ArrowDown", this.selectLayer);
-        this.add("ArrowUp", this.selectLayer);
+        this.add(
+            Util.$generateShortcutKey("ArrowDown", { "ctrl": true }),
+            this.selectLayer
+        );
+        this.add(
+            Util.$generateShortcutKey("ArrowUp", { "ctrl": true }),
+            this.selectLayer
+        );
 
         // タイムラインの左右移動
-        this.add("ArrowLeft", this.moveFrame);
-        this.add("ArrowRight", this.moveFrame);
+        this.add(
+            Util.$generateShortcutKey("ArrowLeft", { "ctrl": true }),
+            this.moveFrame
+        );
+        this.add(
+            Util.$generateShortcutKey("ArrowRight", { "ctrl": true }),
+            this.moveFrame
+        );
+
+        // スクリーンのDisplayObjectを操作
+        const command = Util
+            .$screenKeyboardCommand
+            .executeMoveDisplayObject;
+
+        this.add("ArrowDown", command);
+        this.add(
+            Util.$generateShortcutKey("ArrowDown", { "shift": true }),
+            command
+        );
+
+        this.add("ArrowUp", command);
+        this.add(
+            Util.$generateShortcutKey("ArrowUp", { "shift": true }),
+            command
+        );
+
+        this.add("ArrowLeft", command);
+        this.add(
+            Util.$generateShortcutKey("ArrowLeft", { "shift": true }),
+            command
+        );
+
+        this.add("ArrowRight", command);
+        this.add(
+            Util.$generateShortcutKey("ArrowRight", { "shift": true }),
+            command
+        );
+
 
         // フレーム追加コマンド
         this.add("f", () =>
@@ -223,13 +265,13 @@ class TimelineKeyboardCommand extends KeyboardCommand
         });
 
         // フレーム1に移動
-        this.add(Util.$generateShortcutKey("ArrowLeft", { "ctrl": true }), () =>
+        this.add(Util.$generateShortcutKey("ArrowLeft", { "ctrl": true, "shift": true }), () =>
         {
             Util.$timelineMenu.executeContextMenuFirstFrame();
         });
 
         // 最終フレームに移動
-        this.add(Util.$generateShortcutKey("ArrowRight", { "ctrl": true }), () =>
+        this.add(Util.$generateShortcutKey("ArrowRight", { "ctrl": true, "shift": true }), () =>
         {
             Util.$timelineMenu.executeContextMenuLastFrame();
         });
@@ -278,7 +320,7 @@ class TimelineKeyboardCommand extends KeyboardCommand
         }
 
         const index = code
-            ? code === "ArrowRight" ? 1 : -1
+            ? code === "ArrowRightCtrl" ? 1 : -1
             : 0;
 
         const frame = Math.max(1, Util.$timelineFrame.currentFrame + index);
@@ -312,10 +354,12 @@ class TimelineKeyboardCommand extends KeyboardCommand
         const parent = document
             .getElementById("timeline-content");
 
+        const ctrlKey = Util.$ctrlKey;
+        Util.$ctrlKey = false;
         const targetLayer = Util.$timelineLayer.targetLayer;
         if (!targetLayer) {
 
-            if (code === "ArrowDown") {
+            if (code === "ArrowDownCtrl") {
 
                 // 一番上のレイヤーを選択
                 element = parent.firstElementChild;
@@ -337,7 +381,7 @@ class TimelineKeyboardCommand extends KeyboardCommand
 
         } else {
 
-            if (code === "ArrowDown") {
+            if (code === "ArrowDownCtrl") {
 
                 element = targetLayer.nextElementSibling;
                 if (!element) {
@@ -374,6 +418,9 @@ class TimelineKeyboardCommand extends KeyboardCommand
         Util
             .$timelineLayer
             .activeLayer(element);
+
+        // reset
+        Util.$ctrlKey = ctrlKey;
     }
 }
 
