@@ -725,7 +725,7 @@ class MovieClip extends Instance
      *              Adding Layers to a Scene
      *
      * @param  {Layer} [layer=null]
-     * @return {void}
+     * @return {Layer} layer
      * @method
      * @public
      */
@@ -738,6 +738,8 @@ class MovieClip extends Instance
         layer._$id = this._$layerId++;
         this._$layers.set(layer._$id, layer);
         layer.initialize();
+
+        return layer;
     }
 
     /**
