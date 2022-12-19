@@ -177,6 +177,24 @@ class Screen extends BaseScreen
         const layerId = targetLayer.dataset.layerId | 0;
         const layer = scene.getLayer(layerId);
         if (layer.lock) {
+
+            const element = document
+                .getElementById("detail-modal");
+
+            element.textContent = "ロックされたレイヤーです";
+            element.style.left  = `${event.pageX}px`;
+            element.style.top   = `${event.pageY}px`;
+
+            element.setAttribute("class", "fadeIn");
+
+            // 1.5秒で自動的に消えるようタイマーをセット
+            element.dataset.timerId = setTimeout(() =>
+            {
+                if (!element.classList.contains("fadeOut")) {
+                    element.setAttribute("class", "fadeOut");
+                }
+            }, 1500);
+
             return ;
         }
 
@@ -245,6 +263,24 @@ class Screen extends BaseScreen
             const character = activeCharacter[0];
             const range = character.getRange(frame);
             if (character.hasTween(range.startFrame)) {
+
+                const element = document
+                    .getElementById("detail-modal");
+
+                element.textContent = "トゥイーンには複数のDisplayObjectを設定できません";
+                element.style.left  = `${event.pageX + 10}px`;
+                element.style.top   = `${event.pageY - 30}px`;
+
+                element.setAttribute("class", "fadeIn");
+
+                // 1.5秒で自動的に消えるようタイマーをセット
+                element.dataset.timerId = setTimeout(() =>
+                {
+                    if (!element.classList.contains("fadeOut")) {
+                        element.setAttribute("class", "fadeOut");
+                    }
+                }, 1500);
+
                 return ;
             }
         }

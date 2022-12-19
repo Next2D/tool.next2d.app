@@ -660,26 +660,25 @@ class ArrowTool extends BaseTool
 
         const characterId = target.dataset.characterId | 0;
         const character   = layer.getCharacter(characterId);
-
-        // update
-        character._$libraryId = event.target.value | 0;
         character.dispose();
 
+        // update
+        const range = character.getRange(Util.$timelineFrame.currentFrame);
+        const splitCharacter = character.split(
+            layer, range.startFrame, range.endFrame
+        );
+        layer.addCharacter(splitCharacter);
+
+        splitCharacter._$libraryId = event.target.value | 0;
+        splitCharacter.dispose();
+
         const instance = workSpace
-            .getLibrary(character._$libraryId);
+            .getLibrary(splitCharacter._$libraryId);
 
         if (instance.type === InstanceType.MOVIE_CLIP) {
-            for (const place of character._$places.values()) {
+            for (const place of splitCharacter._$places.values()) {
                 place.loop = Util.$getDefaultLoopConfig();
             }
-        }
-
-        const range = character.getRange(Util.$timelineFrame.currentFrame);
-        if (character.hasTween(range.startFrame)) {
-            Util
-                .$tweenController
-                .clearPointer()
-                .relocationPointer();
         }
 
         const icon = document
@@ -687,6 +686,17 @@ class ArrowTool extends BaseTool
             .getElementsByTagName("i")[0];
 
         icon.setAttribute("class", `library-type-${instance.type}`);
+
+        // 選択中のDisplayObjectをアクティブ化
+        Util.$timelineLayer.activeCharacter();
+
+        // tweenの場合は座標を再計算
+        if (splitCharacter.hasTween(range.startFrame)) {
+            Util
+                .$tweenController
+                .clearPointer()
+                .relocationPointer();
+        }
 
         // スクリーンエリアのDisplayObjectを再描画
         this.reloadScreen();
