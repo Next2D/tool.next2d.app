@@ -186,6 +186,12 @@ class TimelinePlayer extends BaseTimeline
                     window.cancelAnimationFrame(this._$timerId);
                 }
 
+                /**
+                 * @type {ArrowTool}
+                 */
+                const tool = Util.$tools.getDefaultTool("arrow");
+                tool.clear();
+
                 // 再生位置の補正
                 let frame = Util.$timelineFrame.currentFrame;
                 if (frame >= this._$totalFrame) {
@@ -205,12 +211,6 @@ class TimelinePlayer extends BaseTimeline
                     // 再描画
                     this.reloadScreen();
                 }
-
-                /**
-                 * @type {ArrowTool}
-                 */
-                const tool = Util.$tools.getDefaultTool("arrow");
-                tool.clear();
 
                 // 再生ボタンを非表示
                 document

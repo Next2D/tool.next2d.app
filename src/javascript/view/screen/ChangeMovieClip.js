@@ -379,6 +379,7 @@ class ChangeMovieClip extends BaseScreen
         let targetLayer = null;
 
         let targetRange = null;
+        let targetTween = null;
         const layers = new Map();
         for (let idx = 0; idx < activeElements.length; ++idx) {
 
@@ -397,6 +398,13 @@ class ChangeMovieClip extends BaseScreen
 
             if (!targetRange) {
                 targetRange = character.getRange(frame);
+
+                if (character.hasTween(targetRange.startFrame)) {
+                    targetTween = {
+                        "tween": character.getTween(targetRange.startFrame),
+                        "place": character.getClonePlace(targetRange.endFrame - 1)
+                    };
+                }
             }
 
             const range = character.getRange(frame);
@@ -470,15 +478,92 @@ class ChangeMovieClip extends BaseScreen
         character.startFrame = targetRange.startFrame;
         character.endFrame   = targetRange.endFrame;
 
-        character.setPlace(targetRange.startFrame, {
-            "frame": targetRange.startFrame,
-            "matrix": [1, 0, 0, 1, dx, dy],
-            "colorTransform": [1, 1, 1, 1, 0, 0, 0, 0],
-            "blendMode": "normal",
-            "filter": [],
-            "depth": 0,
-            "loop": Util.$getDefaultLoopConfig()
-        });
+        if (targetTween) {
+
+            for (let keyFrame = targetRange.startFrame;
+                targetRange.endFrame > keyFrame;
+                ++keyFrame
+            ) {
+                character.setPlace(keyFrame, {
+                    "frame": keyFrame,
+                    "tweenFrame": targetRange.startFrame,
+                    "matrix": [1, 0, 0, 1, dx, dy],
+                    "colorTransform": [1, 1, 1, 1, 0, 0, 0, 0],
+                    "blendMode": "normal",
+                    "filter": [],
+                    "depth": 0,
+                    "loop": Util.$getDefaultLoopConfig()
+                });
+            }
+
+            let lastX = targetTween.place.matrix[4];
+            let lastY = targetTween.place.matrix[5];
+            switch (position) {
+
+                case "top-left":
+                    break;
+
+                case "top-center":
+                    lastX += w / 2;
+                    break;
+
+                case "top-right":
+                    lastX += w;
+                    break;
+
+                case "middle-left":
+                    lastY += h / 2;
+                    break;
+
+                case "middle-center":
+                    lastX += w / 2;
+                    lastY += h / 2;
+                    break;
+
+                case "middle-right":
+                    lastX += w;
+                    lastY += h / 2;
+                    break;
+
+                case "bottom-left":
+                    lastY += h;
+                    break;
+
+                case "bottom-center":
+                    lastX += w / 2;
+                    lastY += h;
+                    break;
+
+                case "bottom-right":
+                    lastX += w;
+                    lastY += h;
+                    break;
+
+            }
+
+            const lastPlace = character.getPlace(targetRange.endFrame - 1);
+            lastPlace.matrix[4] = lastX;
+            lastPlace.matrix[5] = lastY;
+
+            character.setTween(targetRange.startFrame, targetTween.tween);
+
+            Util
+                .$tweenController
+                .relocationPlace(character, targetRange.startFrame);
+
+        } else {
+
+            character.setPlace(targetRange.startFrame, {
+                "frame": targetRange.startFrame,
+                "matrix": [1, 0, 0, 1, dx, dy],
+                "colorTransform": [1, 1, 1, 1, 0, 0, 0, 0],
+                "blendMode": "normal",
+                "filter": [],
+                "depth": 0,
+                "loop": Util.$getDefaultLoopConfig()
+            });
+
+        }
 
         targetLayer.addCharacter(character);
 
