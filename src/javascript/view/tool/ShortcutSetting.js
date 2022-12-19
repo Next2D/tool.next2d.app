@@ -384,14 +384,14 @@ class ShortcutSetting
                     "description": "{{レイヤーを複製}}"
                 },
                 {
-                    "key": "ArrowLeftCtrl",
-                    "text": "Ctrl + ArrowLeft",
+                    "key": "ArrowLeftShiftCtrl",
+                    "text": "Ctrl + Shift + ArrowLeft",
                     "css": "context-menu-first-frame",
                     "description": "{{最初のフレームに移動}}"
                 },
                 {
-                    "key": "ArrowRightCtrl",
-                    "text": "Ctrl + ArrowRight",
+                    "key": "ArrowRightShiftCtrl",
+                    "text": "Ctrl + Shift + ArrowRight",
                     "css": "context-menu-last-frame",
                     "description": "{{最後のフレームに移動}}"
                 },
@@ -402,7 +402,7 @@ class ShortcutSetting
                     "description": "{{フレームをコピー}}"
                 },
                 {
-                    "key": "vtCtrl",
+                    "key": "vCtrl",
                     "text": "Ctrl + V",
                     "css": "context-menu-frame-paste",
                     "description": "{{フレームをペースト}}"
