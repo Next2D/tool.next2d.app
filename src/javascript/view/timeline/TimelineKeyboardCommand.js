@@ -121,7 +121,6 @@ class TimelineKeyboardCommand extends KeyboardCommand
             command
         );
 
-
         // フレーム追加コマンド
         this.add("f", () =>
         {
