@@ -12,6 +12,23 @@ class ArrowTransformTool extends BaseTool
     constructor ()
     {
         super("arrow-transform");
+
+        /**
+         * @type {boolean}
+         * @default false
+         * @private
+         */
+        this._$validity = false;
+    }
+
+    /**
+     * @member {boolean}
+     * @readonly
+     * @public
+     */
+    get validity ()
+    {
+        return this._$validity;
     }
 
     /**
@@ -58,7 +75,7 @@ class ArrowTransformTool extends BaseTool
             Util.$timelineLayer.activeCharacter();
 
             // 強制的にアクティブ化
-            this.active = true;
+            this._$validity = true;
 
             // 変形ツールを再計算
             Util
@@ -87,7 +104,7 @@ class ArrowTransformTool extends BaseTool
             Util.$controller.default();
 
             // 強制的に非アクティブ化
-            this.active = false;
+            this._$validity = false;
         });
     }
 }

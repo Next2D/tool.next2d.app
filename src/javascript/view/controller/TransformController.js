@@ -646,9 +646,6 @@ class TransformController extends BaseController
 
             // 画面の拡大縮小対応
             const place = character.getPlace(frame);
-            if (!place) {
-                console.log(frame, character);
-            }
             if (!place.point) {
 
                 const bounds = character.getBounds(matrix);
@@ -731,7 +728,7 @@ class TransformController extends BaseController
             );
 
         const arrowTransform = Util.$tools.getDefaultTool("arrow-transform");
-        if (arrowTransform.active) {
+        if (arrowTransform.validity) {
 
             // 中心点をセット
             if (point) {

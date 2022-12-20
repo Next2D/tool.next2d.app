@@ -538,8 +538,12 @@ class ArrowTool extends BaseTool
             target.dataset.characterId | 0
         );
 
+        // 現在のフレーム
+        const frame = Util.$timelineFrame.currentFrame;
+
         // 指定のDisplayObjectをクローンしてスクリーンに配置
-        if (Util.$altKey) {
+        const place = character.getPlace(frame);
+        if (Util.$altKey && !place.tweenFrame) {
 
             const clone = character.clone();
 
@@ -557,8 +561,6 @@ class ArrowTool extends BaseTool
 
             // レイヤーにセット
             layer.addCharacter(clone);
-
-            const frame = Util.$timelineFrame.currentFrame;
 
             // スクリーンに配置
             Util
