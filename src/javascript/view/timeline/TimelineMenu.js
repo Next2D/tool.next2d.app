@@ -384,6 +384,8 @@ class TimelineMenu extends BaseTimeline
         // ワークスペースが異なる場合は依存するライブラリを移動する
         if (this._$copyWorkSpaceId !== Util.$activeWorkSpaceId) {
 
+            console.log("TODO");
+
         } else {
 
             if (!this._$copyFrames.size) {
