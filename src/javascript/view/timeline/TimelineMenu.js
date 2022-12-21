@@ -31,6 +31,13 @@ class TimelineMenu extends BaseTimeline
          * @private
          */
         this._$copyFrames = new Map();
+
+        /**
+         * @type {number}
+         * @default 0
+         * @private
+         */
+        this._$targetLayer = 0;
     }
 
     /**
@@ -334,46 +341,20 @@ class TimelineMenu extends BaseTimeline
      */
     executeContextMenuFrameCopy ()
     {
-        // コピー元のワークスペースのIDをセット
-        this._$copyWorkSpaceId = Util.$activeWorkSpaceId;
-
         // コピーレイヤーの配列を初期化
         this._$copyFrames.clear();
 
-        const scene = Util.$currentWorkSpace().scene;
+        this._$targetLayer = Util.$timelineLayer.targetLayer;
+        if (!this._$targetLayer) {
+            return ;
+        }
+
+        // コピー元のワークスペースのIDをセット
+        this._$copyWorkSpaceId = Util.$activeWorkSpaceId;
 
         const targetFrames = Util.$timelineLayer.targetFrames;
         for (let [layerId, values] of targetFrames) {
-
-            const frames = values.slice();
-            if (frames.length > 1) {
-                frames.sort((a, b) =>
-                {
-                    const aFrame = a | 0;
-                    const bFrame = b | 0;
-
-                    // 昇順
-                    switch (true) {
-
-                        case aFrame > bFrame:
-                            return 1;
-
-                        case aFrame < bFrame:
-                            return -1;
-
-                        default:
-                            return 0;
-
-                    }
-                });
-            }
-
-            const layer = scene.getLayer(layerId);
-            const object = Util
-                .$timelineLayer
-                .createMoveCharacters(layer, frames);
-
-            this._$copyFrames.set(layerId, object);
+            this._$copyFrames.set(layerId, values.slice());
         }
     }
 
@@ -386,32 +367,80 @@ class TimelineMenu extends BaseTimeline
      */
     executeContextMenuFramePaste ()
     {
+        const targetLayer = Util.$timelineLayer.targetLayer;
+        if (!targetLayer) {
+            return;
+        }
+
         // const fromWorkSpace = Util.$workSpaces[this._$copyWorkSpaceId];
         // const toWorkSpace   = Util.$currentWorkSpace();
-        //
-        // // 状態保存
-        // this.save();
-        //
-        // let targetLayer = Util.$timelineLayer.targetLayer;
-        // if (!targetLayer) {
-        //     Util.$timelineLayer.attachLayer();
-        //     targetLayer = Util.$timelineLayer.targetLayer;
-        // }
-        //
-        // const scene = toWorkSpace.scene;
-        //
-        // console.log(this._$copyFrames);
-        //
-        // // 選択したフレームで一番若いフレーム番号
-        // const frame = Util.$timelineTool.getFirstFrame();
-        //
-        // // ワークスペースが異なる場合は依存するライブラリを移動する
-        // if (this._$copyWorkSpaceId !== Util.$activeWorkSpaceId) {
-        //
-        // } else {
-        //
-        // }
-        console.log("TODO executeContextMenuFramePaste");
+
+        // 状態保存
+        this.save();
+
+        // 選択したフレームで一番若いフレーム番号
+        const frame = Util.$timelineFrame.currentFrame;
+
+        // ワークスペースが異なる場合は依存するライブラリを移動する
+        if (this._$copyWorkSpaceId !== Util.$activeWorkSpaceId) {
+
+        } else {
+
+            if (!this._$copyFrames.size) {
+                return;
+            }
+
+            // タイマーを終了
+            clearTimeout(Util.$timelineLayer._$clickTimerId);
+            Util.$timelineLayer._$clickTimerId = -1;
+
+            // レイヤーを配列化
+            const targetGroup = document
+                .getElementById("target-group");
+
+            const children = Array.from(
+                document.getElementById("timeline-content").children
+            );
+            const index = children.indexOf(targetLayer);
+
+            targetGroup.dataset.frame = `${frame}`;
+            targetGroup.dataset.index = `${index}`;
+
+            // キーをキャッシュ
+            const ctrlKey = Util.$ctrlKey;
+            const altKey  = Util.$altKey;
+
+            // 選択前のレイヤーにセット
+            Util.$ctrlKey = false;
+            Util.$altKey  = false;
+            Util.$timelineLayer.targetLayer = this._$targetLayer;
+
+            // 初期化
+            Util.$timelineLayer.targetFrames.clear();
+
+            const scene = Util.$currentWorkSpace().scene;
+            for (let [layerId, values] of this._$copyFrames) {
+
+                const layer = scene.getLayer(layerId);
+                if (!layer) {
+                    this._$copyFrames.clear();
+                    break;
+                }
+
+                Util.$timelineLayer.targetFrames.set(layerId, values);
+            }
+
+            if (!this._$copyFrames.size) {
+                return;
+            }
+
+            Util.$altKey = true;
+            Util.$timelineLayer.endTargetGroup();
+
+            // reset
+            Util.$ctrlKey = ctrlKey;
+            Util.$altKey  = altKey;
+        }
     }
 
     /**

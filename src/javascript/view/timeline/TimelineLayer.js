@@ -2493,10 +2493,7 @@ class TimelineLayer extends BaseTimeline
                     }
                 }
 
-                let frame = Number.MAX_VALUE;
-                for (let idx = 0; idx < firstFrames.length; ++idx) {
-                    frame = Math.min(frame, firstFrames[idx]);
-                }
+                const frame = Util.$timelineTool.getFirstFrame();
 
                 // 左上のelementを基準に選択範囲を生成
                 const layer = Util
@@ -2543,17 +2540,18 @@ class TimelineLayer extends BaseTimeline
                     this._$clientY += 30;
                 }
 
-                if (!this._$endTargetGroup) {
-                    this._$endTargetGroup = this.endTargetGroup.bind(this);
-                }
-
                 if (!this._$moveTargetGroup) {
                     this._$moveTargetGroup = this.moveTargetGroup.bind(this);
                 }
-
                 window.addEventListener("mousemove", this._$moveTargetGroup);
-                window.addEventListener("mouseup", this._$endTargetGroup);
+
+                this._$clickTimerId = -1;
             }, 200);
+
+            if (!this._$endTargetGroup) {
+                this._$endTargetGroup = this.endTargetGroup.bind(this);
+            }
+            window.addEventListener("mouseup", this._$endTargetGroup);
 
         } else {
 
@@ -2832,6 +2830,13 @@ class TimelineLayer extends BaseTimeline
         // イベントを削除
         window.removeEventListener("mousemove", this._$moveTargetGroup);
         window.removeEventListener("mouseup", this._$endTargetGroup);
+
+        // タイマーを中止
+        if (this._$clickTimerId > 0) {
+            clearTimeout(this._$clickTimerId);
+            this._$clickTimerId = -1;
+            return ;
+        }
 
         // 選択elementを非表示
         this.hideTargetGroup();
