@@ -33,11 +33,11 @@ class TimelineMenu extends BaseTimeline
         this._$copyFrames = new Map();
 
         /**
-         * @type {number}
+         * @type {HTMLDivElement}
          * @default 0
          * @private
          */
-        this._$targetLayer = 0;
+        this._$targetLayer = null;
     }
 
     /**
@@ -372,8 +372,13 @@ class TimelineMenu extends BaseTimeline
             return;
         }
 
-        // const fromWorkSpace = Util.$workSpaces[this._$copyWorkSpaceId];
-        // const toWorkSpace   = Util.$currentWorkSpace();
+        if (!this._$copyFrames.size) {
+            return;
+        }
+
+        // タイマーを終了
+        clearTimeout(Util.$timelineLayer._$clickTimerId);
+        Util.$timelineLayer._$clickTimerId = -1;
 
         // 状態保存
         this.save();
@@ -381,46 +386,52 @@ class TimelineMenu extends BaseTimeline
         // 選択したフレームで一番若いフレーム番号
         const frame = Util.$timelineFrame.currentFrame;
 
+        // レイヤーを配列化
+        const targetGroup = document
+            .getElementById("target-group");
+
+        const children = Array.from(
+            document.getElementById("timeline-content").children
+        );
+        const index = children.indexOf(targetLayer);
+
+        targetGroup.dataset.frame = `${frame}`;
+        targetGroup.dataset.index = `${index}`;
+
+        // キーをキャッシュ
+        const ctrlKey = Util.$ctrlKey;
+        const altKey  = Util.$altKey;
+
+        // 選択前のレイヤーにセット
+        Util.$ctrlKey = false;
+        Util.$altKey  = false;
+
+        // 初期化
+        Util.$timelineLayer.targetFrames.clear();
+
+        const fromWorkSpace = Util.$workSpaces[this._$copyWorkSpaceId];
+        const toWorkSpace   = Util.$currentWorkSpace();
+
         // ワークスペースが異なる場合は依存するライブラリを移動する
         if (this._$copyWorkSpaceId !== Util.$activeWorkSpaceId) {
 
-            console.log("TODO");
+            // コピーするレイヤーが複数ならレイヤーを追加
+            if (this._$copyFrames.size > 1
+                && this._$copyFrames.size > children.length
+            ) {
+                const length = this._$copyFrames.size - 1;
+                for (let idx = 0; idx < length; ++idx) {
+                    Util.$timelineTool.executeTimelineLayerAdd();
+                }
+            }
+
+            console.log(toWorkSpace, fromWorkSpace);
 
         } else {
 
-            if (!this._$copyFrames.size) {
-                return;
-            }
-
-            // タイマーを終了
-            clearTimeout(Util.$timelineLayer._$clickTimerId);
-            Util.$timelineLayer._$clickTimerId = -1;
-
-            // レイヤーを配列化
-            const targetGroup = document
-                .getElementById("target-group");
-
-            const children = Array.from(
-                document.getElementById("timeline-content").children
-            );
-            const index = children.indexOf(targetLayer);
-
-            targetGroup.dataset.frame = `${frame}`;
-            targetGroup.dataset.index = `${index}`;
-
-            // キーをキャッシュ
-            const ctrlKey = Util.$ctrlKey;
-            const altKey  = Util.$altKey;
-
-            // 選択前のレイヤーにセット
-            Util.$ctrlKey = false;
-            Util.$altKey  = false;
             Util.$timelineLayer.targetLayer = this._$targetLayer;
 
-            // 初期化
-            Util.$timelineLayer.targetFrames.clear();
-
-            const scene = Util.$currentWorkSpace().scene;
+            const scene = toWorkSpace.scene;
             for (let [layerId, values] of this._$copyFrames) {
 
                 const layer = scene.getLayer(layerId);
@@ -438,11 +449,11 @@ class TimelineMenu extends BaseTimeline
 
             Util.$altKey = true;
             Util.$timelineLayer.endTargetGroup();
-
-            // reset
-            Util.$ctrlKey = ctrlKey;
-            Util.$altKey  = altKey;
         }
+
+        // reset
+        Util.$ctrlKey = ctrlKey;
+        Util.$altKey  = altKey;
     }
 
     /**

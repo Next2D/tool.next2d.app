@@ -681,10 +681,12 @@ class TimelineTool extends BaseTimeline
 
         // 最終行にレイヤーを追加
         const layer = scene.addLayer();
-        layer.addEmptyCharacter(new EmptyCharacter({
-            "startFrame": 1,
-            "endFrame": scene.totalFrame + 1
-        }));
+        if (scene.totalFrame > 1) {
+            layer.addEmptyCharacter(new EmptyCharacter({
+                "startFrame": 1,
+                "endFrame": scene.totalFrame + 1
+            }));
+        }
 
         // アクティブ中のレイヤーの上部に新規追加したレイヤーを移動
         if (layerElement) {
