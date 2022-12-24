@@ -426,7 +426,7 @@ class TimelineMenu extends BaseTimeline
         // 選択したフレームで一番若いフレーム番号
         const toFrame = Util.$timelineFrame.currentFrame;
 
-        const children = Array.from(
+        let children = Array.from(
             document.getElementById("timeline-content").children
         );
 
@@ -446,6 +446,10 @@ class TimelineMenu extends BaseTimeline
                 for (let idx = 0; idx < length; ++idx) {
                     Util.$timelineTool.executeTimelineLayerAdd();
                 }
+
+                children = Array.from(
+                    document.getElementById("timeline-content").children
+                );
 
                 index = children.indexOf(targetLayer) - length;
             }
