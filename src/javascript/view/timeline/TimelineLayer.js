@@ -2819,6 +2819,127 @@ class TimelineLayer extends BaseTimeline
     }
 
     /**
+     * @description コピーしたフレームを指定の反映にペースト
+     *
+     * @param  {Layer}   from_layer
+     * @param  {Layer}   to_layer
+     * @param  {number}  from_frame
+     * @param  {number}  to_frame
+     * @param  {array}   frames
+     * @param  {boolean} [deleted=false]
+     * @param  {boolean} [different_scene=false]
+     * @return {void}
+     * @method
+     * @public
+     */
+    pasteFrame (
+        from_layer, to_layer,
+        from_frame, to_frame, frames,
+        deleted = false, different_scene = false
+    ) {
+        // 移動先の終了フレーム
+        const endFrame = to_frame + frames.length;
+
+        // 移動先の幅で新規のDisplayObjectを生成、隙間は空のキーフレームを生成
+        const object = this.createMoveCharacters(from_layer, frames);
+
+        const characters = object.characters;
+        const emptys     = object.emptys;
+        const tweenMap   = this.createTweenMap(from_layer, characters);
+
+        // Altキーが押下されていない時は、選択元を削除
+        let sourceLastFrame  = 0;
+        const sourceEndFrame = from_frame + frames.length;
+        if (!deleted) {
+
+            // DisplayObjectを削除
+            const sourceEndKeyFrame = this.deleteSourceKeyFrame(
+                from_layer, characters, from_frame, sourceEndFrame
+            );
+
+            // 空のフレームを削除
+            const sourceEndEmptyFrame = this.deleteSourceEmptyKeyFrame(
+                from_layer, from_frame, sourceEndFrame
+            );
+
+            // 選択元のキーフレームの幅
+            sourceLastFrame = Math.max(
+                sourceEndKeyFrame, sourceEndEmptyFrame
+            );
+        }
+
+        // 移動先のDisplayObjectにキーフレームがあれば削除
+        const endKeyFrame = this.deleteDestinationKeyFrame(
+            to_layer, to_frame, endFrame
+        );
+
+        // 移動先に空のキーフレームがあれば削除
+        const endEmptyKeyFrame = this.deleteDestinationEmptyKeyFrame(
+            to_layer, to_frame, endFrame
+        );
+
+        // 移動先に選択したDisplayObjectをセット
+        this.moveKeyFrame(
+            to_layer, characters, to_frame - from_frame
+        );
+
+        // 移動先に選択した空のキーフレームをセット
+        this.moveEmptyKeyFrame(to_layer, emptys, to_frame - from_frame);
+
+        // 後方のキーフレーム補正
+        const maxFrame = Math.max(
+            endFrame, sourceLastFrame, endKeyFrame, endEmptyKeyFrame
+        );
+
+        const minFrame = Math.min(from_frame, to_frame);
+        if (!different_scene && to_layer.id === from_layer.id) {
+            this.adjustBehindFrame(to_layer, minFrame, maxFrame - 1);
+        } else {
+            const maxFrame = Math.max(
+                endKeyFrame, endEmptyKeyFrame
+            );
+            this.adjustBehindFrame(to_layer, 1, maxFrame - 1);
+        }
+
+        // 異なるレイヤーか異なるシーンなら後方フレームの補正
+        if (different_scene || to_layer.id !== from_layer.id) {
+            this.adjustBehindFrame(from_layer, 1, sourceLastFrame - 1);
+        }
+
+        // 前方のキーフレームが未設定の場合は空のキーフレームを設定
+        if (to_frame > 1) {
+            this.adjustPreviousFrame(to_layer, to_frame, maxFrame);
+        }
+
+        // 異なるシーンか異なるレイヤーなら前方フレームの補正
+        if (from_frame === 1
+            && (different_scene || to_layer.id !== from_layer.id)
+        ) {
+            this.adjustPreviousFrame(from_layer, to_frame, sourceLastFrame);
+        }
+
+        // 前後の補正、同一のアイテムなら統合
+        this.characterIntegration(to_layer, characters);
+
+        // tween補正
+        if (tweenMap.size && !different_scene
+            && to_layer.id === from_layer.id
+        ) {
+            this.adjustTween(characters, tweenMap, to_frame - from_frame);
+        }
+
+        // レイヤーを再描画
+        if (deleted) {
+            from_layer.reloadStyle();
+        }
+
+        // 同一レイヤーなら対象のレイヤーだけ再描画
+        if (!different_scene || to_layer.id !== from_layer.id) {
+            to_layer.reloadStyle();
+        }
+    }
+
+    /**
      * @description 選択したフレームの移動処理
      *
      * @return {void}
@@ -2874,9 +2995,6 @@ class TimelineLayer extends BaseTimeline
         const scene = Util.$currentWorkSpace().scene;
         for (const [layerId, values] of this.targetFrames) {
 
-            // 移動先の終了フレーム
-            const endFrame = distFrame + values.length;
-
             // 初回だけソートする
             if (!frames) {
                 frames = values.slice();
@@ -2904,105 +3022,17 @@ class TimelineLayer extends BaseTimeline
             }
 
             // 移動元のレイヤー
-            const layer = scene.getLayer(layerId);
-
-            // 移動先の幅で新規のDisplayObjectを生成、隙間は空のキーフレームを生成
-            const object = this.createMoveCharacters(layer, frames);
-
-            const characters = object.characters;
-            const emptys     = object.emptys;
-            const tweenMap   = this.createTweenMap(layer, characters);
+            const fromLayer = scene.getLayer(layerId);
 
             // 移動先のレイヤー
-            const targetLayerId = children[index++].dataset.layerId | 0;
-            const targetLayer   = scene.getLayer(targetLayerId);
+            const toLayerId = children[index++].dataset.layerId | 0;
+            const toLayer   = scene.getLayer(toLayerId);
 
-            // Altキーが押下されていない時は、選択元を削除
-            let sourceLastFrame  = 0;
-            const sourceEndFrame = frame + values.length;
-            if (!Util.$altKey) {
-
-                // DisplayObjectを削除
-                const sourceEndKeyFrame = this.deleteSourceKeyFrame(
-                    layer, characters, frame, sourceEndFrame
-                );
-
-                // 空のフレームを削除
-                const sourceEndEmptyFrame = this.deleteSourceEmptyKeyFrame(
-                    layer, frame, sourceEndFrame
-                );
-
-                // 選択元のキーフレームの幅
-                sourceLastFrame = Math.max(
-                    sourceEndKeyFrame, sourceEndEmptyFrame
-                );
-            }
-
-            // 移動先のDisplayObjectにキーフレームがあれば削除
-            const endKeyFrame = this.deleteDestinationKeyFrame(
-                targetLayer, distFrame, endFrame
+            this.pasteFrame(
+                fromLayer, toLayer,
+                frame, distFrame, frames,
+                Util.$altKey
             );
-
-            // 移動先に空のキーフレームがあれば削除
-            const endEmptyKeyFrame = this.deleteDestinationEmptyKeyFrame(
-                targetLayer, distFrame, endFrame
-            );
-
-            // 移動先に選択したDisplayObjectをセット
-            this.moveKeyFrame(
-                targetLayer, characters, distFrame - frame
-            );
-
-            // 移動先に選択した空のキーフレームをセット
-            this.moveEmptyKeyFrame(targetLayer, emptys, distFrame - frame);
-
-            // 後方のキーフレーム補正
-            const maxFrame = Math.max(
-                endFrame, sourceLastFrame, endKeyFrame, endEmptyKeyFrame
-            );
-
-            const minFrame = Math.min(frame, distFrame);
-            if (targetLayerId === layerId) {
-                this.adjustBehindFrame(targetLayer, minFrame, maxFrame - 1);
-            } else {
-                const maxFrame = Math.max(
-                    endKeyFrame, endEmptyKeyFrame
-                );
-                this.adjustBehindFrame(targetLayer, 1, maxFrame - 1);
-            }
-
-            if (targetLayerId !== layerId) {
-                this.adjustBehindFrame(layer, 1, sourceLastFrame - 1);
-            }
-
-            // 前方のキーフレームが未設定の場合は空のキーフレームを設定
-            if (distFrame > 1) {
-                this.adjustPreviousFrame(targetLayer, distFrame, maxFrame);
-            }
-
-            if (frame === 1 && targetLayerId !== layerId) {
-                this.adjustPreviousFrame(layer, distFrame, sourceLastFrame);
-            }
-
-            // 前後の補正、同一のアイテムなら統合
-            this.characterIntegration(targetLayer, characters);
-
-            // tween補正
-            if (tweenMap.size && targetLayerId === layerId) {
-                this.adjustTween(characters, tweenMap, distFrame - frame);
-            }
-
-            // 同一レイヤーなら対象のレイヤーだけ再描画
-            if (targetLayerId === layerId) {
-
-                layer.reloadStyle();
-
-            } else {
-
-                layer.reloadStyle();
-                targetLayer.reloadStyle();
-
-            }
         }
 
         /**
