@@ -359,11 +359,56 @@ class TimelineMenu extends BaseTimeline
 
         // コピー元のワークスペースのIDをセット
         this._$copyWorkSpaceId = Util.$activeWorkSpaceId;
-
         this._$copyScene = Util.$currentWorkSpace().scene;
+
         const targetFrames = Util.$timelineLayer.targetFrames;
-        for (let [layerId, values] of targetFrames) {
-            this._$copyFrames.set(layerId, values.slice());
+
+        const children = Array.from(
+            document.getElementById("timeline-content").children
+        );
+
+        const targets = [];
+        for (const [layerId, values] of targetFrames) {
+
+            const element =  document
+                .getElementById(`layer-id-${layerId}`);
+
+            targets.push({
+                "index": children.indexOf(element),
+                "value": {
+                    "layerId": layerId,
+                    "frames": values
+                }
+            });
+        }
+
+        // レイヤー順に並び替える(昇順)
+        targets.sort((a, b) =>
+        {
+            const aFrame = a.index | 0;
+            const bFrame = b.index | 0;
+
+            // 昇順
+            switch (true) {
+
+                case aFrame > bFrame:
+                    return 1;
+
+                case aFrame < bFrame:
+                    return -1;
+
+                default:
+                    return 0;
+
+            }
+        });
+
+        for (let idx = 0; idx < targets.length; ++idx) {
+            const object = targets[idx].value;
+            this._$copyFrames.set(
+                object.layerId,
+                object.frames.slice()
+            );
         }
     }
 

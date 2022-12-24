@@ -3006,9 +3006,49 @@ class TimelineLayer extends BaseTimeline
 
         this.save();
 
+        const targetFrames = [];
+        for (const [layerId, values] of this.targetFrames) {
+
+            const layerElement =  document
+                .getElementById(`layer-id-${layerId}`);
+
+            targetFrames.push({
+                "index": children.indexOf(layerElement),
+                "value": {
+                    "layerId": layerId,
+                    "frames": values
+                }
+            });
+        }
+
+        // レイヤー順に並び替える(昇順)
+        targetFrames.sort((a, b) =>
+        {
+            const aFrame = a.index | 0;
+            const bFrame = b.index | 0;
+
+            // 昇順
+            switch (true) {
+
+                case aFrame > bFrame:
+                    return 1;
+
+                case aFrame < bFrame:
+                    return -1;
+
+                default:
+                    return 0;
+
+            }
+        });
+
         let frames = null;
         const scene = Util.$currentWorkSpace().scene;
-        for (const [layerId, values] of this.targetFrames) {
+        for (let idx = 0; idx < targetFrames.length; ++idx) {
+
+            const object  = targetFrames[idx].value;
+            const layerId = object.layerId;
+            const values  = object.frames;
 
             if (!children[index]) {
                 break;
