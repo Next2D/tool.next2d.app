@@ -508,9 +508,71 @@ class TimelineMenu extends BaseTimeline
             // マッピングを初期化
             Util.$confirmModal.clear();
 
-            const mapping = Util.$confirmModal._$mapping;
+            // 実行関数を登録
+            Util.$confirmModal.addCallback((ignore) =>
+            {
+                const frames = this
+                    ._$copyFrames
+                    .values()
+                    .next()
+                    .value
+                    .slice();
 
-            const scene = toWorkSpace.scene;
+                if (frames.length > 1) {
+                    frames.sort((a, b) =>
+                    {
+                        const aFrame = a | 0;
+                        const bFrame = b | 0;
+
+                        // 昇順
+                        switch (true) {
+
+                            case aFrame > bFrame:
+                                return 1;
+
+                            case aFrame < bFrame:
+                                return -1;
+
+                            default:
+                                return 0;
+
+                        }
+                    });
+                }
+
+                let fromFrame = Number.MAX_VALUE;
+                for (let idx = 0; idx < frames.length; ++idx) {
+                    fromFrame = Math.min(fromFrame, frames[idx]);
+                }
+
+                const scene = Util.$currentWorkSpace().scene;
+                for (const layerId of this._$copyFrames.keys()) {
+
+                    // 移動元のレイヤー
+                    const fromLayer = this._$copyScene.getLayer(layerId);
+                    if (!fromLayer) {
+                        Util.$confirmModal.clear();
+                        this._$copyScene = null;
+                        this._$copyFrames.clear();
+                        break;
+                    }
+
+                    // 移動先のレイヤー
+                    const toLayer = scene.getLayer(
+                        children[index++].dataset.layerId | 0
+                    );
+
+                    const mapping = Util.$confirmModal._$mapping;
+                    const toFrame = Util.$timelineFrame.currentFrame;
+                    Util.$timelineLayer.pasteFrame(
+                        fromLayer, toLayer,
+                        fromFrame, toFrame, frames,
+                        true, false, ignore, mapping
+                    );
+                }
+            });
+
+            const mapping = Util.$confirmModal._$mapping;
             for (const layerId of this._$copyFrames.keys()) {
 
                 const fromLayer = this._$copyScene.getLayer(layerId);
@@ -519,11 +581,6 @@ class TimelineMenu extends BaseTimeline
                     this._$copyFrames.clear();
                     break;
                 }
-
-                // 移動先のレイヤー
-                const toLayer = scene.getLayer(
-                    children[index++].dataset.layerId | 0
-                );
 
                 // ライブラリに登録
                 for (let idx = 0; fromLayer._$characters.length > idx; ++idx) {
@@ -550,7 +607,7 @@ class TimelineMenu extends BaseTimeline
                             "file": instance,
                             "path": path,
                             "workSpaceId": this._$copyWorkSpaceId,
-                            "type": "frame"
+                            "type": "copy"
                         });
                         continue;
                     }
@@ -601,16 +658,18 @@ class TimelineMenu extends BaseTimeline
                             );
                     }
                 }
-
-                Util.$timelineLayer.pasteFrame(
-                    fromLayer, toLayer,
-                    fromFrame, toFrame, frames,
-                    true, false
-                );
             }
 
-            // 追加したライブラリを再構成
-            Util.$libraryController.reload();
+            // 確認モーダルを表示
+            if (Util.$confirmModal.files.length) {
+                Util.$confirmModal.show();
+            } else {
+                Util.$confirmModal.executeCallBack();
+                Util.$confirmModal.clear();
+
+                // 追加したライブラリを再構成
+                Util.$libraryController.reload();
+            }
 
         } else {
 

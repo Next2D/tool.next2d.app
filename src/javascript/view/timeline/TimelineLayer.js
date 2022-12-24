@@ -2829,6 +2829,7 @@ class TimelineLayer extends BaseTimeline
      * @param  {boolean} [clone_frame=false]
      * @param  {boolean} [different_scene=false]
      * @param  {Map} [ignore=null]
+     * @param  {Map} [mapping=null]
      * @return {void}
      * @method
      * @public
@@ -2837,13 +2838,15 @@ class TimelineLayer extends BaseTimeline
         from_layer, to_layer,
         from_frame, to_frame, frames,
         clone_frame = false, different_scene = false,
-        ignore = null
+        ignore = null, mapping = null
     ) {
         // 移動先の終了フレーム
         const endFrame = to_frame + frames.length;
 
         // 移動先の幅で新規のDisplayObjectを生成、隙間は空のキーフレームを生成
-        const object = this.createMoveCharacters(from_layer, frames, ignore);
+        const object = this.createMoveCharacters(
+            from_layer, frames, ignore, mapping
+        );
 
         const characters = object.characters;
         const emptys     = object.emptys;
@@ -3845,11 +3848,12 @@ class TimelineLayer extends BaseTimeline
      * @param  {Layer} layer
      * @param  {array} frames
      * @param  {Map}   [ignore=null]
+     * @param  {Map}   [mapping=null]
      * @return {object}
      * @method
      * @public
      */
-    createMoveCharacters (layer, frames, ignore = null)
+    createMoveCharacters (layer, frames, ignore = null, mapping = null)
     {
         const characters = new Map();
         const emptys     = [];
@@ -3961,15 +3965,19 @@ class TimelineLayer extends BaseTimeline
                         for (let idx = 0; idx < activeCharacters.length; ++idx) {
 
                             const character = activeCharacters[idx];
-                            if (ignore && ignore.has(character.li)) {
+                            if (ignore && ignore.has(character.libraryId)) {
                                 continue;
                             }
 
                             if (!characters.has(character.id)) {
 
                                 // 新規のDisplayObjectを生成
-                                const newCharacter      = new Character();
-                                newCharacter.libraryId  = character.libraryId;
+                                const newCharacter = new Character();
+
+                                newCharacter.libraryId = mapping
+                                    ? mapping.get(character.libraryId)
+                                    : character.libraryId;
+
                                 newCharacter.startFrame = frame;
                                 newCharacter.endFrame   = frame + 1;
                                 newCharacter.screenX    = character.screenX;

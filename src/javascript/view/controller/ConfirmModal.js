@@ -47,6 +47,19 @@ class ConfirmModal extends BaseController
          * @private
          */
         this._$layers = new Map();
+
+        /**
+         * @type {Map}
+         * @private
+         */
+        this._$ignore = new Map();
+
+        /**
+         * @type {function}
+         * @default null
+         * @private
+         */
+        this._$callback = null;
     }
 
     /**
@@ -110,6 +123,19 @@ class ConfirmModal extends BaseController
                 return this[`execute${functionName}`](event);
             });
         }
+    }
+
+    /**
+     * @description コールバック関数を設定
+     *              Overwrite all added files
+     *
+     * @return {Promise}
+     * @method
+     * @public
+     */
+    addCallback (method)
+    {
+        this._$callback = method;
     }
 
     /**
@@ -181,6 +207,10 @@ class ConfirmModal extends BaseController
             .all(promises)
             .then(() =>
             {
+                if (this._$callback) {
+                    this.executeCallBack();
+                }
+
                 // モーダルを非表示
                 this.hide();
 
@@ -213,6 +243,9 @@ class ConfirmModal extends BaseController
 
             const layer     = object.layer;
             const character = object.character;
+
+            // 除外リストに登録
+            this._$ignore.set(character.libraryId, true);
 
             if (layer && character) {
                 layer.deleteCharacter(character.id);
@@ -1069,12 +1102,28 @@ class ConfirmModal extends BaseController
             const layer     = this._$currentObject.layer;
             const character = this._$currentObject.character;
 
+            // 除外リストに登録
+            this._$ignore.set(character.libraryId, true);
+
             if (layer && character) {
                 layer.deleteCharacter(character.id);
             }
         }
 
         this.setup();
+    }
+
+    /**
+     * @description コールバックを実行
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    executeCallBack ()
+    {
+        this._$callback(this._$ignore);
+        this._$callback = null;
     }
 
     /**
@@ -1145,8 +1194,10 @@ class ConfirmModal extends BaseController
      */
     clear ()
     {
+        this._$callback = null;
         this._$layers.clear();
         this._$mapping.clear();
+        this._$ignore.clear();
     }
 
     /**
@@ -1177,6 +1228,10 @@ class ConfirmModal extends BaseController
 
         // 表示項目がなければモーダル表示を終了
         if (!this._$currentObject) {
+
+            if (this._$callback) {
+                Util.$confirmModal.executeCallBack();
+            }
 
             // 非表示
             this.hide();
