@@ -412,6 +412,7 @@ class Instance
         canvas, width, height, place,
         range = null, static_frame = 0, preview = false
     ) {
+
         // empty image
         if (!width || !height) {
             canvas.width  = 0;
@@ -476,7 +477,9 @@ class Instance
         canvas._$height  = object.height;
         canvas.draggable = false;
 
-        const bounds = this.getBounds(matrix, place, range);
+        const bounds = this.getBounds(
+            matrix, place, range, static_frame
+        );
 
         canvas._$tx = bounds.xMin;
         canvas._$ty = bounds.yMin;

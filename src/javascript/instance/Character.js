@@ -419,7 +419,7 @@ class Character
             );
         }
 
-        const bounds = instance.getBounds(multiMatrix, place, range);
+        const bounds = instance.getBounds(multiMatrix, place, range, frame);
 
         // reset
         Util.$currentFrame = currentFrame;
@@ -660,6 +660,30 @@ class Character
      */
     draw (canvas)
     {
+        const workSpace = Util.$currentWorkSpace();
+        const instance  = workSpace.getLibrary(this.libraryId);
+
+        let frame = Util.$timelineFrame.currentFrame;
+
+        const place = this.getPlace(frame);
+        const range = place.loop && place.loop.type === LoopController.DEFAULT
+            ? { "startFrame": this.startFrame, "endFrame": this.endFrame }
+            : this.getRange(frame);
+
+        if (instance.type === InstanceType.MOVIE_CLIP) {
+
+            const totalFrame = this.endFrame - 1;
+
+            frame = Util.$getFrame(place, range, frame, totalFrame);
+            if (frame > totalFrame) {
+                frame = 1;
+            }
+
+            if (frame !== this._$currentFrame) {
+                this.dispose();
+            }
+        }
+
         if (this._$context) {
             if (canvas instanceof HTMLCanvasElement) {
                 Util.$canvases.push(canvas);
@@ -667,15 +691,10 @@ class Character
             return this._$context.canvas;
         }
 
-        const workSpace = Util.$currentWorkSpace();
-        const instance  = workSpace.getLibrary(this.libraryId);
-
-        const frame = Util.$timelineFrame.currentFrame;
-
-        const place = this.getPlace(frame);
-        const range = place.loop && place.loop.type === LoopController.DEFAULT
-            ? { "startFrame": this.startFrame, "endFrame": this.endFrame }
-            : this.getRange(frame);
+        // シーンのフレームを更新
+        if (instance.type === InstanceType.MOVIE_CLIP) {
+            this._$currentFrame = frame;
+        }
 
         // reset
         Util.$currentFrame = frame;
@@ -688,7 +707,7 @@ class Character
             );
         }
 
-        const bounds = instance.getBounds(matrix, place, range);
+        const bounds = instance.getBounds(matrix, place, range, frame);
         const width  = +Math.ceil(Math.abs(bounds.xMax - bounds.xMin));
         const height = +Math.ceil(Math.abs(bounds.yMax - bounds.yMin));
 
@@ -712,14 +731,17 @@ class Character
                         "tweenFrame": place.tweenFrame,
                         "loop": place.loop
                     },
-                    range
+                    range, frame
                 );
                 break;
 
             case "alpha":
             case "erase":
                 {
-                    const bounds = this.getBounds(place.matrix, place, range);
+                    const bounds = this.getBounds(
+                        place.matrix, place, range, frame
+                    );
+
                     canvas._$tx      = bounds.xMin;
                     canvas._$ty      = bounds.yMin;
                     canvas._$offsetX = 0;
@@ -734,7 +756,10 @@ class Character
                 break;
 
             default:
-                context = instance.draw(canvas, width, height, place, range);
+                context = instance.draw(
+                    canvas, width, height, place,
+                    range, frame
+                );
                 break;
 
         }

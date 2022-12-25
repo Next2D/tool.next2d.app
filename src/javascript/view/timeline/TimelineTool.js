@@ -681,7 +681,7 @@ class TimelineTool extends BaseTimeline
 
         // 最終行にレイヤーを追加
         const layer = scene.addLayer();
-        if (scene.totalFrame > 1) {
+        if (scene.totalFrame > 0) {
             layer.addEmptyCharacter(new EmptyCharacter({
                 "startFrame": 1,
                 "endFrame": scene.totalFrame + 1

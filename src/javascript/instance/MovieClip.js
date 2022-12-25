@@ -999,16 +999,18 @@ class MovieClip extends Instance
             };
         }
 
+        const totalFrame = this.totalFrame;
+
         const currentFrame = Util.$currentFrame;
 
         let frame = parent_frame || 1;
         if (place && range) {
             frame = Util.$getFrame(
-                place, range, currentFrame, this.totalFrame, parent_frame
+                place, range, currentFrame, totalFrame, parent_frame
             );
         }
 
-        if (frame > this.totalFrame) {
+        if (frame > totalFrame) {
             frame = 1;
         }
 
@@ -1046,7 +1048,10 @@ class MovieClip extends Instance
                     .getLibrary(character.libraryId | 0);
 
                 const matrix = Util.$multiplicationMatrix(parentMatrix, place.matrix);
-                const bounds = instance.getBounds(matrix, place, range, frame);
+                const bounds = instance.getBounds(
+                    matrix, place, range,
+                    totalFrame === 1 ? parent_frame : frame
+                );
 
                 const width  = bounds.xMax - bounds.xMin;
                 const height = bounds.yMax - bounds.yMin;
@@ -1449,14 +1454,16 @@ class MovieClip extends Instance
             object = this.toPublish(true);
         }
 
+        const totalFrame = this.totalFrame;
+
         let frame = parent_frame || 1;
         if (place && range) {
             frame = Util.$getFrame(
-                place, range, currentFrame, this.totalFrame, parent_frame
+                place, range, currentFrame, totalFrame, parent_frame
             );
         }
 
-        if (frame > this.totalFrame) {
+        if (frame > totalFrame) {
             frame = 1;
         }
 
@@ -1545,8 +1552,10 @@ class MovieClip extends Instance
                             }
                         }
 
-                        displayObject = instance
-                            .createInstance(place, childRange, frame);
+                        displayObject = instance.createInstance(
+                            place, childRange,
+                            totalFrame === 1 ? parent_frame : frame
+                        );
                     }
                     break;
 
