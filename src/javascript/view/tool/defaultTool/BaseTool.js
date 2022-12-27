@@ -109,7 +109,10 @@ class BaseTool extends CommonTool
             "colorTransform": [1, 1, 1, 1, 0, 0, 0, 0],
             "blendMode": "normal",
             "filter": [],
-            "depth": layer._$characters.length
+            "depth": layer._$characters.length,
+            "scaleX": 1,
+            "scaleY": 1,
+            "rotation": 0
         });
 
         // Shapeをレイヤーに追加して再描画
@@ -174,7 +177,10 @@ class BaseTool extends CommonTool
             "colorTransform": [1, 1, 1, 1, 0, 0, 0, 0],
             "blendMode": "normal",
             "filter": [],
-            "depth": layer._$characters.length
+            "depth": layer._$characters.length,
+            "scaleX": 1,
+            "scaleY": 1,
+            "rotation": 0
         });
 
         // レイヤーに追加

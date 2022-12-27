@@ -1147,9 +1147,6 @@ class ArrowTool extends BaseTool
             TransformController.MIN_ROTATE,
             TransformController.MAX_ROTATE
         );
-        if (0 > value) {
-            value += 360;
-        }
 
         Util
             .$transformController

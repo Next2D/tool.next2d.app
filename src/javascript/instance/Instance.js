@@ -309,26 +309,17 @@ class Instance
             .getElementById("object-symbol")
             .value = this.symbol;
 
-        // matrixの値をセット
-        const matrix  = place.matrix;
-        const xScale  = Math.sqrt(matrix[0] * matrix[0] + matrix[1] * matrix[1]);
-        const yScale  = Math.sqrt(matrix[2] * matrix[2] + matrix[3] * matrix[3]);
-        const radianX = Math.atan2( matrix[1], matrix[0]) * Util.$Rad2Deg;
-        const radianY = Math.atan2(-matrix[2], matrix[3]) * Util.$Rad2Deg;
-
         document
             .getElementById("transform-scale-x")
-            .value = Math.abs(Math.ceil(radianX - radianY)) >= 180
-                ? xScale * -100
-                : xScale * 100;
+            .value = place.scaleX * 100;
 
         document
             .getElementById("transform-scale-y")
-            .value = yScale * 100;
+            .value = place.scaleY * 100;
 
         document
             .getElementById("transform-rotate")
-            .value = radianX;
+            .value = place.rotation;
 
         // ColorTransformの値をセット
         const colorTransform = place.colorTransform;

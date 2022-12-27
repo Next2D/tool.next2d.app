@@ -326,9 +326,6 @@ class TransformController extends BaseController
             TransformController.MIN_ROTATE,
             TransformController.MAX_ROTATE
         );
-        if (0 > value) {
-            value += 360;
-        }
 
         this.updateRotate(value);
 
@@ -1434,7 +1431,7 @@ class TransformController extends BaseController
                 character.x -= beforeMatrix[4];
                 character.y -= beforeMatrix[5];
 
-                character.scaleY  = scale_y;
+                character.scaleY = scale_y;
 
                 const afterMatrix = Util.$multiplicationMatrix([
                     place.matrix[0], place.matrix[1],
@@ -1652,22 +1649,17 @@ class TransformController extends BaseController
                 // clear
                 character.dispose();
 
-                let xScale = character.scaleX;
-                if (Math.atan2(place.matrix[1], place.matrix[0]) >= Math.PI) {
-                    xScale *= -1;
-                }
-
                 document
                     .getElementById("transform-rotate")
-                    .value = `${rotate}`;
+                    .value = `${place.rotation}`;
 
                 document
                     .getElementById("transform-scale-x")
-                    .value = `${xScale * 100}`;
+                    .value = `${place.scaleX * 100}`;
 
                 document
                     .getElementById("transform-scale-y")
-                    .value = `${character.scaleY * 100}`;
+                    .value = `${place.scaleY * 100}`;
 
                 const bounds = character.getBounds();
                 xMin = Math.min(xMin, bounds.xMin);

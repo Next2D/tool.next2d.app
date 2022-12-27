@@ -647,19 +647,17 @@ class TweenController extends BaseController
         const startPlace  = character.getPlace(range.startFrame);
         const startMatrix = startPlace.matrix;
 
-        const startScaleX = Math.sqrt(
-            startMatrix[0] * startMatrix[0]
-            + startMatrix[1] * startMatrix[1]
-        );
-        const startScaleY = Math.sqrt(
-            startMatrix[2] * startMatrix[2]
-            + startMatrix[3] * startMatrix[3]
-        );
+        const startScaleX = "scaleX" in startPlace
+            ? startPlace.scaleX
+            : Math.sqrt(startMatrix[0] * startMatrix[0] + startMatrix[1] * startMatrix[1]);
 
-        let startRotate = Math.atan2(startMatrix[1], startMatrix[0]) * Util.$Rad2Deg;
-        if (0 > startRotate) {
-            startRotate += 360;
-        }
+        const startScaleY = "scaleY" in startPlace
+            ? startPlace.scaleY
+            : Math.sqrt(startMatrix[2] * startMatrix[2] + startMatrix[3] * startMatrix[3]);
+
+        let startRotate = "rotation" in startPlace
+            ? startPlace.rotation
+            : Math.atan2(startMatrix[1], startMatrix[0]) * Util.$Rad2Deg;
 
         const startMultiMatrix = Util.$multiplicationMatrix(
             [startMatrix[0], startMatrix[1], startMatrix[2], startMatrix[3], 0, 0],
@@ -690,19 +688,18 @@ class TweenController extends BaseController
         }
 
         const endMatrix = endPlace.matrix;
-        const endScaleX = Math.sqrt(
-            endMatrix[0] * endMatrix[0]
-            + endMatrix[1] * endMatrix[1]
-        );
-        const endScaleY = Math.sqrt(
-            endMatrix[2] * endMatrix[2]
-            + endMatrix[3] * endMatrix[3]
-        );
 
-        let endRotate = Math.atan2(endMatrix[1], endMatrix[0]) * Util.$Rad2Deg;
-        if (0 > endRotate) {
-            endRotate += 360;
-        }
+        const endScaleX = "scaleX" in endPlace
+            ? endPlace.scaleX
+            : Math.sqrt(endMatrix[0] * endMatrix[0] + endMatrix[1] * endMatrix[1]);
+
+        const endScaleY = "scaleY" in endPlace
+            ? endPlace.scaleY
+            : Math.sqrt(endMatrix[2] * endMatrix[2] + endMatrix[3] * endMatrix[3]);
+
+        let endRotate = "rotation" in endPlace
+            ? endPlace.rotation
+            : Math.atan2(endMatrix[1], endMatrix[0]) * Util.$Rad2Deg;
 
         const endMultiMatrix = Util.$multiplicationMatrix(
             [endMatrix[0], endMatrix[1], endMatrix[2], endMatrix[3], 0, 0],

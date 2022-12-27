@@ -439,14 +439,23 @@ class Character
     {
         const frame = Util.$timelineFrame.currentFrame;
 
-        const matrix = this.getPlace(frame).matrix;
-        return Math.atan2(matrix[1], matrix[0]) * Util.$Rad2Deg;
+        const place = this.getPlace(frame);
+        if (!place.rotation) {
+            const matrix = place.matrix;
+            place.rotation = Math.atan2(matrix[1], matrix[0]) * Util.$Rad2Deg;
+        }
+
+        return place.rotation;
     }
     set rotation (rotate)
     {
         const frame = Util.$timelineFrame.currentFrame;
+        const place = this.getPlace(frame);
 
-        const matrix = this.getPlace(frame).matrix;
+        // 表示情報を更新
+        place.rotation = rotate;
+
+        const matrix = place.matrix;
         let radianX  = Math.atan2(matrix[1], matrix[0]);
         let radianY  = Math.atan2(-matrix[2], matrix[3]);
 
@@ -495,16 +504,23 @@ class Character
     {
         const frame = Util.$timelineFrame.currentFrame;
 
-        const matrix = this.getPlace(frame).matrix;
-        return Math.sqrt(matrix[0] * matrix[0] + matrix[1] * matrix[1]);
+        const place = this.getPlace(frame);
+        if (!place.scaleX) {
+            const matrix = place.matrix;
+            place.scaleX = Math.sqrt(matrix[0] * matrix[0] + matrix[1] * matrix[1]);
+        }
+
+        return place.scaleX;
     }
     set scaleX (scale_x)
     {
         scale_x = Util.$toFixed4(scale_x);
 
-        const frame = Util.$timelineFrame.currentFrame;
+        const frame  = Util.$timelineFrame.currentFrame;
+        const place  = this.getPlace(frame);
+        place.scaleX = scale_x;
 
-        const matrix = this.getPlace(frame).matrix;
+        const matrix = place.matrix;
         if (matrix[1]) {
 
             const radianX = Math.atan2(matrix[1], matrix[0]);
@@ -556,16 +572,23 @@ class Character
     {
         const frame = Util.$timelineFrame.currentFrame;
 
-        const matrix = this.getPlace(frame).matrix;
-        return Math.sqrt(matrix[2] * matrix[2] + matrix[3] * matrix[3]);
+        const place = this.getPlace(frame);
+        if (!place.scaleY) {
+            const matrix = place.matrix;
+            place.scaleY = Math.sqrt(matrix[2] * matrix[2] + matrix[3] * matrix[3]);
+        }
+
+        return place.scaleY;
     }
     set scaleY (scale_y)
     {
         scale_y = Util.$toFixed4(scale_y);
 
-        const frame = Util.$timelineFrame.currentFrame;
+        const frame  = Util.$timelineFrame.currentFrame;
+        const place  = this.getPlace(frame);
+        place.scaleY = scale_y;
 
-        const matrix = this.getPlace(frame).matrix;
+        const matrix = place.matrix;
         if (matrix[2]) {
 
             const radianY = Math.atan2(-matrix[2], matrix[3]);
@@ -1022,6 +1045,17 @@ class Character
                 "point": place.point
             };
 
+            // 表示オブジェクトがあればセット
+            if ("scaleX" in place) {
+                object.scaleX = place.scaleX;
+            }
+            if ("scaleY" in place) {
+                object.scaleY = place.scaleY;
+            }
+            if ("rotation" in place) {
+                object.rotation = place.rotation;
+            }
+
             if (place.tweenFrame) {
                 object.tweenFrame = place.tweenFrame;
             }
@@ -1064,6 +1098,20 @@ class Character
 
             if (!place.loop) {
                 place.loop = Util.$getDefaultLoopConfig();
+            }
+
+            // 表示オブジェクトがなければ追加
+            if (!("scaleX" in place)) {
+                const matrix = place.matrix;
+                place.scaleX = Math.sqrt(matrix[0] * matrix[0] + matrix[1] * matrix[1]);
+            }
+            if (!("scaleY" in place)) {
+                const matrix = place.matrix;
+                place.scaleY = Math.sqrt(matrix[2] * matrix[2] + matrix[3] * matrix[3]);
+            }
+            if (!("rotation" in place)) {
+                const matrix = place.matrix;
+                place.rotation = Math.atan2(matrix[1], matrix[0]) * Util.$Rad2Deg;
             }
 
             this._$places.set(place.frame | 0, place);
