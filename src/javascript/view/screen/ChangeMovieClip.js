@@ -432,6 +432,18 @@ class ChangeMovieClip extends BaseScreen
                 "depth": idx
             };
 
+            if ("scaleX" in place) {
+                clonePlace.scaleX = place.scaleX;
+            }
+
+            if ("scaleY" in place) {
+                clonePlace.scaleY = place.scaleY;
+            }
+
+            if ("rotation" in place) {
+                clonePlace.rotation = place.rotation;
+            }
+
             cloneCharacter.setPlace(1, clonePlace);
 
             cloneCharacter.x -= dx;

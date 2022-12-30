@@ -300,6 +300,8 @@ class Instance
             .$instanceSelectController
             .createInstanceSelect(this);
 
+        const matrix = place.matrix;
+
         // 名前とシンボルの値をセット
         document
             .getElementById("object-name")
@@ -309,17 +311,29 @@ class Instance
             .getElementById("object-symbol")
             .value = this.symbol;
 
+        const xScale = "scaleX" in place
+            ? place.scaleX
+            : Math.sqrt(matrix[0] * matrix[0] + matrix[1] * matrix[1]);
+
         document
             .getElementById("transform-scale-x")
-            .value = place.scaleX * 100;
+            .value = `${xScale * 100}`;
+
+        const yScale = "scaleY" in place
+            ? place.scaleY
+            : Math.sqrt(matrix[2] * matrix[2] + matrix[3] * matrix[3]);
 
         document
             .getElementById("transform-scale-y")
-            .value = place.scaleY * 100;
+            .value = `${yScale * 100}`;
+
+        const rotation = "rotation" in place
+            ? place.rotation
+            : Math.atan2(matrix[1], matrix[0]) * Util.$Rad2Deg;
 
         document
             .getElementById("transform-rotate")
-            .value = place.rotation;
+            .value = `${rotation}`;
 
         // ColorTransformの値をセット
         const colorTransform = place.colorTransform;
