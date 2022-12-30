@@ -628,20 +628,7 @@ class TweenController extends BaseController
         }
 
         // translate
-        const instance = library.createInstance(character.getPlace(frame));
-
-        const point = character.referencePoint;
-
-        const w = instance.width  / 2;
-        const h = instance.height / 2;
-
         const baseBounds = library.getBounds();
-        const rectangle  = instance.getBounds();
-        const baseMatrix = [
-            1, 0, 0, 1,
-            -w - rectangle.x - point.x,
-            -h - rectangle.y - point.y
-        ];
 
         // start params
         const startPlace  = character.getPlace(range.startFrame);
@@ -659,13 +646,8 @@ class TweenController extends BaseController
             ? startPlace.rotation
             : Math.atan2(startMatrix[1], startMatrix[0]) * Util.$Rad2Deg;
 
-        const startMultiMatrix = Util.$multiplicationMatrix(
-            [startMatrix[0], startMatrix[1], startMatrix[2], startMatrix[3], 0, 0],
-            baseMatrix
-        );
-
-        const startX = startMatrix[4] - (startMultiMatrix[4] + w + rectangle.x + point.x);
-        const startY = startMatrix[5] - (startMultiMatrix[5] + h + rectangle.y + point.y);
+        const startX = startMatrix[4];// - (startMultiMatrix[4] + w + rectangle.x + point.x);
+        const startY = startMatrix[5];// - (startMultiMatrix[5] + h + rectangle.y + point.y);
 
         const startDiv = document
             .getElementById(`tween-marker-${character.id}-${range.startFrame}`);
@@ -701,13 +683,8 @@ class TweenController extends BaseController
             ? endPlace.rotation
             : Math.atan2(endMatrix[1], endMatrix[0]) * Util.$Rad2Deg;
 
-        const endMultiMatrix = Util.$multiplicationMatrix(
-            [endMatrix[0], endMatrix[1], endMatrix[2], endMatrix[3], 0, 0],
-            baseMatrix
-        );
-
-        const endX = endMatrix[4] - (endMultiMatrix[4] + w + rectangle.x + point.x);
-        const endY = endMatrix[5] - (endMultiMatrix[5] + h + rectangle.y + point.y);
+        let endX = endMatrix[4];
+        let endY = endMatrix[5];
 
         const endDiv = document
             .getElementById(`tween-marker-${character.id}-${endFrame}`);
@@ -826,6 +803,19 @@ class TweenController extends BaseController
             matrix[2] = -yScale * Math.sin(radianY);
             matrix[3] = yScale  * Math.cos(radianY);
 
+            // 表示情報を更新
+            if (diffScaleX) {
+                place.scaleX = Math.sqrt(matrix[0] * matrix[0] + matrix[1] * matrix[1]);
+            }
+
+            if (diffScaleY) {
+                place.scaleY = Math.sqrt(matrix[2] * matrix[2] + matrix[3] * matrix[3]);
+            }
+
+            if (diffRotate) {
+                place.rotation = Math.atan2(matrix[1], matrix[0]) * Util.$Rad2Deg;
+            }
+
             matrix[4] = !diffX
                 ? startX
                 : functionName === "custom"
@@ -864,14 +854,6 @@ class TweenController extends BaseController
                     }
                 }
             }
-
-            const multiMatrix = Util.$multiplicationMatrix(
-                [matrix[0], matrix[1], matrix[2], matrix[3], 0, 0],
-                baseMatrix
-            );
-
-            matrix[4] += multiMatrix[4] + w + rectangle.x + point.x;
-            matrix[5] += multiMatrix[5] + h + rectangle.y + point.y;
 
             // ColorTransform
             const colorTransform = place.colorTransform;
@@ -1123,13 +1105,15 @@ class TweenController extends BaseController
                 const bounds = Util.$boundsMatrix(baseBounds, multiMatrix);
                 const width  = Math.abs(Math.ceil(bounds.xMax - bounds.xMin) / 2 * Util.$zoomScale);
                 const height = Math.abs(Math.ceil(bounds.yMax - bounds.yMin) / 2 * Util.$zoomScale);
-                div.style.left = `${Util.$offsetLeft + bounds.xMin * Util.$zoomScale + width  - 2}px`;
-                div.style.top  = `${Util.$offsetTop  + bounds.yMin * Util.$zoomScale + height - 2}px`;
+
+                const left = Util.$offsetLeft + bounds.xMin * Util.$zoomScale + width  - 2;
+                const top  = Util.$offsetTop  + bounds.yMin * Util.$zoomScale + height - 2;
 
                 // 表示用データ
                 div.id = `tween-marker-${character.id}-${frame}`;
-                div.classList.add("tween-marker");
                 div.dataset.child = "tween";
+                div.setAttribute("style", `left: ${left}px; top: ${top}px`);
+                div.setAttribute("class", "tween-marker");
 
                 parentElement.appendChild(div);
             }

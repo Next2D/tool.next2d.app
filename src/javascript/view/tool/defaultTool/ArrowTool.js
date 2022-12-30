@@ -1449,8 +1449,8 @@ class ArrowTool extends BaseTool
             this.pageY = event.pageY;
         }
 
-        document.getElementById("object-x").value = xMin;
-        document.getElementById("object-y").value = yMin;
+        document.getElementById("object-x").value = +xMin.toFixed(2);
+        document.getElementById("object-y").value = +yMin.toFixed(2);
 
         // 複数選択している場合のポインターを更新
         if (this._$activeElements.length > 1) {
@@ -1556,10 +1556,10 @@ class ArrowTool extends BaseTool
 
         const width  = Math.abs(xMax - xMin);
         const height = Math.abs(yMax - yMin);
-        document.getElementById("object-width").value  = `${width}`;
-        document.getElementById("object-height").value = `${height}`;
-        document.getElementById("object-x").value = `${tx}`;
-        document.getElementById("object-y").value = `${ty}`;
+        document.getElementById("object-width").value  = `${+width.toFixed(2)}`;
+        document.getElementById("object-height").value = `${+height.toFixed(2)}`;
+        document.getElementById("object-x").value = `${+tx.toFixed(2)}`;
+        document.getElementById("object-y").value = `${+ty.toFixed(2)}`;
 
         // オブジェクト設定を表示して、Stage情報は非表示にする
         Util.$controller.showObjectSetting([

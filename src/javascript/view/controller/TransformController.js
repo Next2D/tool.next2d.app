@@ -1182,19 +1182,19 @@ class TransformController extends BaseController
 
         document
             .getElementById("object-x")
-            .value = `${tx}`;
+            .value = `${+tx.toFixed(2)}`;
 
         document
             .getElementById("object-y")
-            .value = `${ty}`;
+            .value = `${+ty.toFixed(2)}`;
 
         document
             .getElementById("object-width")
-            .value = `${Math.abs(xMax - xMin)}`;
+            .value = `${+Math.abs(xMax - xMin).toFixed(2)}`;
 
         document
             .getElementById("object-height")
-            .value = `${Math.abs(yMax - yMin)}`;
+            .value = `${+Math.abs(yMax - yMin).toFixed(2)}`;
 
     }
 
@@ -1467,19 +1467,19 @@ class TransformController extends BaseController
 
         document
             .getElementById("object-x")
-            .value = `${tx}`;
+            .value = `${+tx.toFixed(2)}`;
 
         document
             .getElementById("object-y")
-            .value = `${ty}`;
+            .value = `${+ty.toFixed(2)}`;
 
         document
             .getElementById("object-width")
-            .value = `${Math.abs(xMax - xMin)}`;
+            .value = `${+Math.abs(xMax - xMin).toFixed(2)}`;
 
         document
             .getElementById("object-height")
-            .value = `${Math.abs(yMax - yMin)}`;
+            .value = `${+Math.abs(yMax - yMin).toFixed(2)}`;
 
     }
 
@@ -1601,7 +1601,7 @@ class TransformController extends BaseController
                     return ;
                 }
 
-                const place  = character.getPlace(frame);
+                const place = character.getPlace(frame);
 
                 const multiMatrix = Util.$multiplicationMatrix(
                     concatenatedMatrix,
@@ -1623,7 +1623,7 @@ class TransformController extends BaseController
                     -referenceY
                 ];
 
-                const beforeMatrix  = Util.$multiplicationMatrix([
+                const beforeMatrix = Util.$multiplicationMatrix([
                     place.matrix[0], place.matrix[1],
                     place.matrix[2], place.matrix[3],
                     referenceX,
@@ -1674,19 +1674,19 @@ class TransformController extends BaseController
 
         document
             .getElementById("object-x")
-            .value = `${xMin}`;
+            .value = `${+xMin.toFixed(2)}`;
 
         document
             .getElementById("object-y")
-            .value = `${yMin}`;
+            .value = `${+yMin.toFixed(2)}`;
 
         document
             .getElementById("object-width")
-            .value = `${Math.abs(xMax - xMin)}`;
+            .value = `${+Math.abs(xMax - xMin).toFixed(2)}`;
 
         document
             .getElementById("object-height")
-            .value = `${Math.abs(yMax - yMin)}`;
+            .value = `${+Math.abs(yMax - yMin).toFixed(2)}`;
 
     }
 }
