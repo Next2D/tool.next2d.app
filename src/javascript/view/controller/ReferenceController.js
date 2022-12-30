@@ -127,6 +127,7 @@ class ReferenceController extends BaseController
         let yMin =  Number.MAX_VALUE;
         let yMax = -Number.MAX_VALUE;
         for (let idx = 0; activeElements.length > idx; ++idx) {
+
             const target = activeElements[idx];
 
             const layer = scene.getLayer(target.dataset.layerId | 0);
@@ -229,7 +230,8 @@ class ReferenceController extends BaseController
             }
 
             const frame = Util.$timelineFrame.currentFrame;
-            const place = character.getPlace(frame);
+            const range = character.getRange(frame);
+            const place = character.getPlace(range.startFrame);
             if (!place.point) {
                 place.point = {
                     "x": 0,

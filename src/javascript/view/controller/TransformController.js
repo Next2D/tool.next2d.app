@@ -642,7 +642,8 @@ class TransformController extends BaseController
             );
 
             // 画面の拡大縮小対応
-            const place = character.getPlace(frame);
+            const range = character.getRange(frame);
+            const place = character.getPlace(range.startFrame);
             if (!place.point) {
 
                 const bounds = character.getBounds(matrix);
@@ -1064,8 +1065,9 @@ class TransformController extends BaseController
                 const character   = layer.getCharacter(characterId);
 
                 // 中心点の移動
+                const range = character.getRange(frame);
                 const place = character.getPlace(frame);
-                const point = place.point;
+                const point = character.getPlace(range.startFrame).point;
                 const localMatrix = Util.$multiplicationMatrix(
                     parentMatrix, [1, 0, 0, 1, point.x, point.y]
                 );
@@ -1119,7 +1121,7 @@ class TransformController extends BaseController
 
                 if (character.scaleX !== scale_x) {
 
-                    const place  = character.getPlace(frame);
+                    const place = character.getPlace(frame);
                     const multiMatrix = Util.$multiplicationMatrix(
                         concatenatedMatrix,
                         place.matrix
@@ -1131,7 +1133,8 @@ class TransformController extends BaseController
                     );
                     matrix.invert();
 
-                    const point = place.point;
+                    const range = character.getPlace(frame);
+                    const point = character.getPlace(range.startFrame).point;
                     const referenceX = point.x * matrix.a + point.y * matrix.c + matrix.tx;
                     const referenceY = point.x * matrix.b + point.y * matrix.d + matrix.ty;
 
@@ -1354,8 +1357,9 @@ class TransformController extends BaseController
                 const character   = layer.getCharacter(characterId);
 
                 // 中心点の移動
+                const range = character.getRange(frame);
                 const place = character.getPlace(frame);
-                const point = place.point;
+                const point = character.getPlace(range.startFrame).point;
                 const localMatrix = Util.$multiplicationMatrix(
                     parentMatrix, [1, 0, 0, 1, point.x, point.y]
                 );
@@ -1409,7 +1413,7 @@ class TransformController extends BaseController
 
                 if (character.scaleY !== scale_y) {
 
-                    const place  = character.getPlace(frame);
+                    const place = character.getPlace(frame);
                     const multiMatrix = Util.$multiplicationMatrix(
                         concatenatedMatrix,
                         place.matrix
@@ -1421,7 +1425,8 @@ class TransformController extends BaseController
                     );
                     matrix.invert();
 
-                    const point = place.point;
+                    const range = character.getRange(frame);
+                    const point = character.getPlace(range.startFrame).point;
                     const referenceX = point.x * matrix.a + point.y * matrix.c + matrix.tx;
                     const referenceY = point.x * matrix.b + point.y * matrix.d + matrix.ty;
 
@@ -1559,7 +1564,8 @@ class TransformController extends BaseController
 
                 // 中心点の移動
                 const place = character.getPlace(frame);
-                const point = place.point;
+                const range = character.getRange(frame);
+                const point = character.getPlace(range.startFrame).point;
 
                 point.x = referenceX;
                 point.y = referenceY;
@@ -1625,7 +1631,8 @@ class TransformController extends BaseController
                 );
                 matrix.invert();
 
-                const point = place.point;
+                const range = character.getRange(frame);
+                const point = character.getPlace(range.startFrame).point;
                 const referenceX = point.x * matrix.a + point.y * matrix.c + matrix.tx;
                 const referenceY = point.x * matrix.b + point.y * matrix.d + matrix.ty;
 
