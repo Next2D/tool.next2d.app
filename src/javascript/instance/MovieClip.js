@@ -270,13 +270,13 @@ class MovieClip extends Instance
      */
     changeFrame (frame = 1)
     {
-        // ステージのelementを全て削除
-        Util.$screen.clearStageArea();
-
         const element = document.getElementById("stage-area");
         if (!element) {
             return ;
         }
+
+        // ステージのelementを全て削除
+        Util.$screen.clearStageArea();
 
         const pointers = [];
         const children = element.children;

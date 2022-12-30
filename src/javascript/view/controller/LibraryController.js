@@ -804,6 +804,9 @@ class LibraryController
                     // 定規は削除
                     Util.$screenRuler.clear();
 
+                    // 内部
+                    Util.$activeCharacterIds.length = 0;
+
                     // 再描画
                     Util.$sceneChange.reload(
                         event.currentTarget.dataset.libraryId | 0
