@@ -317,7 +317,7 @@ class Instance
 
         document
             .getElementById("transform-scale-x")
-            .value = `${xScale * 100}`;
+            .value = `${+(xScale * 100).toFixed(2)}`;
 
         const yScale = "scaleY" in place
             ? place.scaleY
@@ -325,7 +325,7 @@ class Instance
 
         document
             .getElementById("transform-scale-y")
-            .value = `${yScale * 100}`;
+            .value = `${+(yScale * 100).toFixed(2)}`;
 
         const rotation = "rotation" in place
             ? place.rotation
@@ -333,7 +333,7 @@ class Instance
 
         document
             .getElementById("transform-rotate")
-            .value = `${rotation}`;
+            .value = `${rotation | 0}`;
 
         // ColorTransformの値をセット
         const colorTransform = place.colorTransform;

@@ -1117,50 +1117,58 @@ class TransformController extends BaseController
                     target.dataset.characterId | 0
                 );
 
-                const place  = character.getPlace(frame);
-                const multiMatrix = Util.$multiplicationMatrix(
-                    concatenatedMatrix,
-                    place.matrix
-                );
+                if (character.scaleX !== scale_x) {
 
-                const matrix = new Matrix(
-                    multiMatrix[0], multiMatrix[1], multiMatrix[2],
-                    multiMatrix[3], multiMatrix[4], multiMatrix[5]
-                );
-                matrix.invert();
+                    const place  = character.getPlace(frame);
+                    const multiMatrix = Util.$multiplicationMatrix(
+                        concatenatedMatrix,
+                        place.matrix
+                    );
 
-                const point = place.point;
-                const referenceX = point.x * matrix.a + point.y * matrix.c + matrix.tx;
-                const referenceY = point.x * matrix.b + point.y * matrix.d + matrix.ty;
+                    const matrix = new Matrix(
+                        multiMatrix[0], multiMatrix[1], multiMatrix[2],
+                        multiMatrix[3], multiMatrix[4], multiMatrix[5]
+                    );
+                    matrix.invert();
 
-                const baseMatrix = [1, 0, 0, 1,
-                    -referenceX,
-                    -referenceY
-                ];
+                    const point = place.point;
+                    const referenceX = point.x * matrix.a + point.y * matrix.c + matrix.tx;
+                    const referenceY = point.x * matrix.b + point.y * matrix.d + matrix.ty;
 
-                const beforeMatrix  = Util.$multiplicationMatrix([
-                    place.matrix[0], place.matrix[1],
-                    place.matrix[2], place.matrix[3],
-                    referenceX,
-                    referenceY
-                ], baseMatrix);
+                    const baseMatrix = [1, 0, 0, 1,
+                        -referenceX,
+                        -referenceY
+                    ];
 
-                character.x -= beforeMatrix[4];
-                character.y -= beforeMatrix[5];
+                    const beforeMatrix  = Util.$multiplicationMatrix([
+                        place.matrix[0], place.matrix[1],
+                        place.matrix[2], place.matrix[3],
+                        referenceX,
+                        referenceY
+                    ], baseMatrix);
 
-                character.scaleX = scale_x;
+                    const beforeScaleX = character.scaleX;
+                    if (beforeScaleX && scale_x) {
+                        character.x -= beforeMatrix[4];
+                        character.y -= beforeMatrix[5];
+                    }
 
-                const afterMatrix = Util.$multiplicationMatrix([
-                    place.matrix[0], place.matrix[1],
-                    place.matrix[2], place.matrix[3],
-                    referenceX,
-                    referenceY
-                ], baseMatrix);
+                    character.scaleX = scale_x;
 
-                character.x += afterMatrix[4];
-                character.y += afterMatrix[5];
+                    const afterMatrix = Util.$multiplicationMatrix([
+                        place.matrix[0], place.matrix[1],
+                        place.matrix[2], place.matrix[3],
+                        referenceX,
+                        referenceY
+                    ], baseMatrix);
 
-                character.dispose();
+                    if (beforeScaleX && scale_x) {
+                        character.x += afterMatrix[4];
+                        character.y += afterMatrix[5];
+                    }
+
+                    character.dispose();
+                }
 
                 tx = Math.min(tx, character.x);
                 ty = Math.min(ty, character.y);
@@ -1173,7 +1181,7 @@ class TransformController extends BaseController
 
                 document
                     .getElementById("transform-scale-x")
-                    .value = `${scale_x * 100}`;
+                    .value = `${+(scale_x * 100).toFixed(2)}`;
 
                 //  tweenの座標を再計算してポインターを再配置
                 character.relocationTween(frame);
@@ -1399,51 +1407,54 @@ class TransformController extends BaseController
                     target.dataset.characterId | 0
                 );
 
-                const place  = character.getPlace(frame);
-                const multiMatrix = Util.$multiplicationMatrix(
-                    concatenatedMatrix,
-                    place.matrix
-                );
+                if (character.scaleY !== scale_y) {
 
-                const matrix = new Matrix(
-                    multiMatrix[0], multiMatrix[1], multiMatrix[2],
-                    multiMatrix[3], multiMatrix[4], multiMatrix[5]
-                );
-                matrix.invert();
+                    const place  = character.getPlace(frame);
+                    const multiMatrix = Util.$multiplicationMatrix(
+                        concatenatedMatrix,
+                        place.matrix
+                    );
 
-                const point = place.point;
-                const referenceX = point.x * matrix.a + point.y * matrix.c + matrix.tx;
-                const referenceY = point.x * matrix.b + point.y * matrix.d + matrix.ty;
+                    const matrix = new Matrix(
+                        multiMatrix[0], multiMatrix[1], multiMatrix[2],
+                        multiMatrix[3], multiMatrix[4], multiMatrix[5]
+                    );
+                    matrix.invert();
 
-                const baseMatrix = [
-                    1, 0, 0, 1,
-                    -referenceX,
-                    -referenceY
-                ];
+                    const point = place.point;
+                    const referenceX = point.x * matrix.a + point.y * matrix.c + matrix.tx;
+                    const referenceY = point.x * matrix.b + point.y * matrix.d + matrix.ty;
 
-                const beforeMatrix  = Util.$multiplicationMatrix([
-                    place.matrix[0], place.matrix[1],
-                    place.matrix[2], place.matrix[3],
-                    referenceX,
-                    referenceY
-                ], baseMatrix);
+                    const baseMatrix = [
+                        1, 0, 0, 1,
+                        -referenceX,
+                        -referenceY
+                    ];
 
-                character.x -= beforeMatrix[4];
-                character.y -= beforeMatrix[5];
+                    const beforeMatrix  = Util.$multiplicationMatrix([
+                        place.matrix[0], place.matrix[1],
+                        place.matrix[2], place.matrix[3],
+                        referenceX,
+                        referenceY
+                    ], baseMatrix);
 
-                character.scaleY = scale_y;
+                    character.x -= beforeMatrix[4];
+                    character.y -= beforeMatrix[5];
 
-                const afterMatrix = Util.$multiplicationMatrix([
-                    place.matrix[0], place.matrix[1],
-                    place.matrix[2], place.matrix[3],
-                    referenceX,
-                    referenceY
-                ], baseMatrix);
+                    character.scaleY = scale_y;
 
-                character.x += afterMatrix[4];
-                character.y += afterMatrix[5];
+                    const afterMatrix = Util.$multiplicationMatrix([
+                        place.matrix[0], place.matrix[1],
+                        place.matrix[2], place.matrix[3],
+                        referenceX,
+                        referenceY
+                    ], baseMatrix);
 
-                character.dispose();
+                    character.x += afterMatrix[4];
+                    character.y += afterMatrix[5];
+
+                    character.dispose();
+                }
 
                 tx = Math.min(tx, character.x);
                 ty = Math.min(ty, character.y);
@@ -1457,7 +1468,7 @@ class TransformController extends BaseController
 
                 document
                     .getElementById("transform-scale-y")
-                    .value = `${scale_y * 100}`;
+                    .value = `${+(scale_y * 100).toFixed(2)}`;
 
                 //  tweenの座標を再計算してポインターを再配置
                 character.relocationTween(frame);
