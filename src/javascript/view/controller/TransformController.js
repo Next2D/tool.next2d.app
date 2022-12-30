@@ -1443,8 +1443,11 @@ class TransformController extends BaseController
                         referenceY
                     ], baseMatrix);
 
-                    character.x -= beforeMatrix[4];
-                    character.y -= beforeMatrix[5];
+                    const beforeScaleY = character.scaleY;
+                    if (beforeScaleY && scale_y) {
+                        character.x -= beforeMatrix[4];
+                        character.y -= beforeMatrix[5];
+                    }
 
                     character.scaleY = scale_y;
 
@@ -1455,8 +1458,10 @@ class TransformController extends BaseController
                         referenceY
                     ], baseMatrix);
 
-                    character.x += afterMatrix[4];
-                    character.y += afterMatrix[5];
+                    if (beforeScaleY && scale_y) {
+                        character.x += afterMatrix[4];
+                        character.y += afterMatrix[5];
+                    }
 
                     character.dispose();
                 }
