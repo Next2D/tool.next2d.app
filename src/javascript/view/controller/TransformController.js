@@ -646,9 +646,9 @@ class TransformController extends BaseController
             const place = character.getPlace(range.startFrame);
             if (!place.point) {
 
-                const bounds = character.getBounds(matrix);
-                const tx = Util.$sceneChange.offsetX + bounds.xMin;
-                const ty = Util.$sceneChange.offsetY + bounds.yMin;
+                const bounds = character.getBounds(place.matrix);
+                const tx = bounds.xMin;
+                const ty = bounds.yMin;
                 const w  = Math.ceil(Math.abs(bounds.xMax - bounds.xMin)) / 2;
                 const h  = Math.ceil(Math.abs(bounds.yMax - bounds.yMin)) / 2;
 

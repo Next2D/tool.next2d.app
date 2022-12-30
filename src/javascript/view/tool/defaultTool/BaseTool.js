@@ -52,6 +52,10 @@ class BaseTool extends CommonTool
                     continue;
                 }
 
+                if (node.dataset.preview === "true") {
+                    continue;
+                }
+
                 node.style.pointerEvents = active ? "auto" : "none";
 
             }
