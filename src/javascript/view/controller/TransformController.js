@@ -729,8 +729,8 @@ class TransformController extends BaseController
 
             // 中心点をセット
             if (point) {
-                const pointX = Util.$offsetLeft + point.x * Util.$zoomScale;
-                const pointY = Util.$offsetTop  + point.y * Util.$zoomScale;
+                const pointX = Util.$offsetLeft + (Util.$sceneChange.offsetX + point.x) * Util.$zoomScale;
+                const pointY = Util.$offsetTop  + (Util.$sceneChange.offsetY + point.y) * Util.$zoomScale;
 
                 const referenceElement = document
                     .getElementById("reference-point");

@@ -572,7 +572,10 @@ class ChangeMovieClip extends BaseScreen
                 "blendMode": "normal",
                 "filter": [],
                 "depth": 0,
-                "loop": Util.$getDefaultLoopConfig()
+                "loop": Util.$getDefaultLoopConfig(),
+                "scaleX": 1,
+                "scaleY": 1,
+                "rotation": 0
             });
 
         }

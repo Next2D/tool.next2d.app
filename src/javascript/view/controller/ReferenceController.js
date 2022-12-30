@@ -146,13 +146,10 @@ class ReferenceController extends BaseController
             const character = layer.getCharacter(characterId);
 
             const bounds = character.getBounds(matrix);
-            const tx = Util.$sceneChange.offsetX + bounds.xMin;
-            const ty = Util.$sceneChange.offsetY + bounds.yMin;
-
-            xMin = Math.min(xMin, tx);
-            xMax = Math.max(xMax, tx + Math.ceil(Math.abs(bounds.xMax - bounds.xMin)));
-            yMin = Math.min(yMin, ty);
-            yMax = Math.max(yMax, ty + Math.ceil(Math.abs(bounds.yMax - bounds.yMin)));
+            xMin = Math.min(xMin, bounds.xMin);
+            xMax = Math.max(xMax, bounds.xMin + Math.ceil(Math.abs(bounds.xMax - bounds.xMin)));
+            yMin = Math.min(yMin, bounds.yMin);
+            yMax = Math.max(yMax, bounds.yMin + Math.ceil(Math.abs(bounds.yMax - bounds.yMin)));
         }
 
         const x = xMin;
