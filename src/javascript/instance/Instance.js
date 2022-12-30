@@ -428,7 +428,9 @@ class Instance
         const { Matrix } = window.next2d.geom;
 
         // ライブラリからplayer用のオブジェクトを作成
-        const instance = this.createInstance(place, range, static_frame);
+        const instance = this.createInstance(
+            place, range, static_frame, preview
+        );
 
         // place objectの値をセット
         let matrix = place.matrix;

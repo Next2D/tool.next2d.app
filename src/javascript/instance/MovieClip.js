@@ -1413,14 +1413,15 @@ class MovieClip extends Instance
      * @description Next2DのDisplayObjectを生成
      *              Generate Next2D DisplayObject
      *
-     * @param  {object} place
-     * @param  {object} range
-     * @param  {number} [parent_frame = 0]
+     * @param  {object}  place
+     * @param  {object}  range
+     * @param  {number}  [parent_frame = 0]
+     * @param  {boolean} [preview = false]
      * @return {next2d.display.Sprite}
      * @method
      * @public
      */
-    createInstance (place, range, parent_frame = 0)
+    createInstance (place, range, parent_frame = 0, preview = false)
     {
         const { MovieClip } = window.next2d.display;
         const { Matrix, ColorTransform } = window.next2d.geom;
@@ -1554,7 +1555,8 @@ class MovieClip extends Instance
 
                         displayObject = instance.createInstance(
                             place, childRange,
-                            totalFrame === 1 ? parent_frame : frame
+                            totalFrame === 1 ? parent_frame : frame,
+                            preview
                         );
                     }
                     break;
@@ -1570,7 +1572,7 @@ class MovieClip extends Instance
 
             }
 
-            if (characterId > -1 && tag.id === characterId) {
+            if (!preview && characterId > -1 && tag.id === characterId) {
                 displayObject.visible = false;
             }
 

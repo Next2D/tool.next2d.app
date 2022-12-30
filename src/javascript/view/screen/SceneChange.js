@@ -212,6 +212,7 @@ class SceneChange extends BaseScreen
         this._$offsetY       = 0;
         this._$matrix.length = 0;
         this._$length        = 0;
+        Util.$activeCharacterIds.length = 0;
     }
 
     /**
