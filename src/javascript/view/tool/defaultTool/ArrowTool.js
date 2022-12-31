@@ -29,9 +29,24 @@ class ArrowTool extends BaseTool
 
         /**
          * @type {array}
+         * @default {array}
          * @private
          */
         this._$activeElements = [];
+
+        /**
+         * @type {boolean}
+         * @default false
+         * @private
+         */
+        this._$xReverse = false;
+
+        /**
+         * @type {boolean}
+         * @default false
+         * @private
+         */
+        this._$yReverse = false;
     }
 
     /**
@@ -103,6 +118,7 @@ class ArrowTool extends BaseTool
                     this._$activeElement = ArrowTool.TRANSFORM;
                     Util.$endMenu();
                     this.startPosition(event);
+                    this.setReverse();
                     break;
 
                 case event.grid:
@@ -840,6 +856,27 @@ class ArrowTool extends BaseTool
     }
 
     /**
+     * @description スケールのマイナス補正をセット
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    setReverse ()
+    {
+        const scaleX = +document
+            .getElementById("transform-scale-x")
+            .value;
+
+        const scaleY = document
+            .getElementById("transform-scale-y")
+            .value;
+
+        this._$xReverse = 0 > scaleX;
+        this._$yReverse = 0 > scaleY;
+    }
+
+    /**
      * @description マウスダウンした時の座標を保存
      *
      * @param  {MouseEvent} event
@@ -1106,9 +1143,13 @@ class ArrowTool extends BaseTool
      */
     updateTopScaleY (event)
     {
-        const updateScaleY = this.pageY - event.pageY;
+        let updateScaleY = this.pageY - event.pageY;
         if (!updateScaleY) {
             return 0;
+        }
+
+        if (this._$yReverse) {
+            updateScaleY *= -1;
         }
 
         const yScale = +document
@@ -1239,9 +1280,13 @@ class ArrowTool extends BaseTool
      */
     updateLeftScaleX (event)
     {
-        const updateScaleX = this.pageX - event.pageX;
+        let updateScaleX = this.pageX - event.pageX;
         if (!updateScaleX) {
             return 0;
+        }
+
+        if (this._$xReverse) {
+            updateScaleX *= -1;
         }
 
         const xScale = +document
@@ -1266,9 +1311,13 @@ class ArrowTool extends BaseTool
      */
     updateBottomScaleY (event)
     {
-        const updateScaleY = event.pageY - this.pageY;
+        let updateScaleY = event.pageY - this.pageY;
         if (!updateScaleY) {
             return 0;
+        }
+
+        if (this._$yReverse) {
+            updateScaleY *= -1;
         }
 
         const yScale = +document
@@ -1293,9 +1342,13 @@ class ArrowTool extends BaseTool
      */
     updateRightScaleX (event)
     {
-        const updateScaleX = event.pageX - this.pageX;
+        let updateScaleX = event.pageX - this.pageX;
         if (!updateScaleX) {
             return 0;
+        }
+
+        if (this._$xReverse) {
+            updateScaleX *= -1;
         }
 
         const xScale = +document
