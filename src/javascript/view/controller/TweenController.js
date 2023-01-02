@@ -646,8 +646,8 @@ class TweenController extends BaseController
             ? startPlace.rotation
             : Math.atan2(startMatrix[1], startMatrix[0]) * Util.$Rad2Deg;
 
-        const startX = startMatrix[4];// - (startMultiMatrix[4] + w + rectangle.x + point.x);
-        const startY = startMatrix[5];// - (startMultiMatrix[5] + h + rectangle.y + point.y);
+        const startX = startMatrix[4];
+        const startY = startMatrix[5];
 
         const startDiv = document
             .getElementById(`tween-marker-${character.id}-${range.startFrame}`);
@@ -705,8 +705,8 @@ class TweenController extends BaseController
         const totalFrame = endFrame - range.startFrame;
 
         // diff
-        const diffX = endX - startX;
-        const diffY = endY - startY;
+        let diffX = endX - startX;
+        let diffY = endY - startY;
 
         // scale
         const diffScaleX = endScaleX - startScaleX;
@@ -714,6 +714,39 @@ class TweenController extends BaseController
 
         // rotate
         const diffRotate = endRotate - startRotate;
+
+        const { Matrix } = window.next2d.geom;
+        const matrix = new Matrix(
+            startMatrix[0], startMatrix[1], startMatrix[2],
+            startMatrix[3], startMatrix[4], startMatrix[5]
+        );
+        matrix.invert();
+
+        // globalToLocal
+        const point = character.getPlace(range.startFrame).point;
+        const referenceX = point.x * matrix.a + point.y * matrix.c + matrix.tx;
+        const referenceY = point.x * matrix.b + point.y * matrix.d + matrix.ty;
+        const baseMatrix = [1, 0, 0, 1, -referenceX, -referenceY];
+
+        if (diffRotate) {
+
+            const beforeMatrix = Util.$multiplicationMatrix([
+                startMatrix[0], startMatrix[1],
+                startMatrix[2], startMatrix[3],
+                referenceX,
+                referenceY
+            ], baseMatrix);
+
+            const afterMatrix = Util.$multiplicationMatrix([
+                endMatrix[0], endMatrix[1],
+                endMatrix[2], endMatrix[3],
+                referenceX,
+                referenceY
+            ], baseMatrix);
+
+            diffX = endX - afterMatrix[4] - startX - beforeMatrix[4];
+            diffY = endY - afterMatrix[5] - startY - beforeMatrix[5];
+        }
 
         // ColorTransform
         const startColorTransform = startPlace.colorTransform;
@@ -812,10 +845,6 @@ class TweenController extends BaseController
                 place.scaleY = Math.sqrt(matrix[2] * matrix[2] + matrix[3] * matrix[3]);
             }
 
-            if (diffRotate) {
-                place.rotation = Math.atan2(matrix[1], matrix[0]) * Util.$Rad2Deg;
-            }
-
             matrix[4] = !diffX
                 ? startX
                 : functionName === "custom"
@@ -827,6 +856,20 @@ class TweenController extends BaseController
                 : functionName === "custom"
                     ? customValue * diffY + startY
                     : Easing[functionName](time, startY, diffY, totalFrame);
+
+            if (diffRotate) {
+
+                place.rotation = Math.atan2(matrix[1], matrix[0]) * Util.$Rad2Deg;
+
+                const multiMatrix = Util.$multiplicationMatrix(
+                    [Math.cos(radian), Math.sin(radian), -Math.sin(radian), Math.cos(radian), 0, 0],
+                    baseMatrix
+                );
+
+                matrix[4] += multiMatrix[4] + referenceX;
+                matrix[5] += multiMatrix[5] + referenceY;
+
+            }
 
             if (tween.curve.length) {
 

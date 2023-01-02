@@ -1127,14 +1127,16 @@ class TransformController extends BaseController
                         place.matrix
                     );
 
+                    const range = character.getPlace(frame);
+                    const point = character.getPlace(range.startFrame).point;
+
+                    // global to local
                     const matrix = new Matrix(
                         multiMatrix[0], multiMatrix[1], multiMatrix[2],
                         multiMatrix[3], multiMatrix[4], multiMatrix[5]
                     );
                     matrix.invert();
 
-                    const range = character.getPlace(frame);
-                    const point = character.getPlace(range.startFrame).point;
                     const referenceX = point.x * matrix.a + point.y * matrix.c + matrix.tx;
                     const referenceY = point.x * matrix.b + point.y * matrix.d + matrix.ty;
 
@@ -1419,14 +1421,16 @@ class TransformController extends BaseController
                         place.matrix
                     );
 
+                    const range = character.getRange(frame);
+                    const point = character.getPlace(range.startFrame).point;
+
+                    // global to local
                     const matrix = new Matrix(
                         multiMatrix[0], multiMatrix[1], multiMatrix[2],
                         multiMatrix[3], multiMatrix[4], multiMatrix[5]
                     );
                     matrix.invert();
 
-                    const range = character.getRange(frame);
-                    const point = character.getPlace(range.startFrame).point;
                     const referenceX = point.x * matrix.a + point.y * matrix.c + matrix.tx;
                     const referenceY = point.x * matrix.b + point.y * matrix.d + matrix.ty;
 
