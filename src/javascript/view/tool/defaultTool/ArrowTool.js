@@ -1244,7 +1244,9 @@ class ArrowTool extends BaseTool
                 .getCharacter(target.dataset.characterId | 0);
 
             const frame = Util.$timelineFrame.currentFrame;
-            const place = character.getPlace(frame);
+
+            const range = character.getRange(frame);
+            const place = character.getPlace(range.startFrame);
             if (!place.point) {
                 const bounds = character.getBounds();
 
@@ -1266,6 +1268,10 @@ class ArrowTool extends BaseTool
 
             element
                 .setAttribute("style", `left: ${left}px; top: ${top}px;`);
+
+            Util
+                .$tweenController
+                .relocationPlace(character, range.startFrame);
         }
     }
 
