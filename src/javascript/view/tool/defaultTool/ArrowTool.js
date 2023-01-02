@@ -1269,9 +1269,11 @@ class ArrowTool extends BaseTool
             element
                 .setAttribute("style", `left: ${left}px; top: ${top}px;`);
 
-            Util
-                .$tweenController
-                .relocationPlace(character, range.startFrame);
+            if (place.tweenFrame) {
+                Util
+                    .$tweenController
+                    .relocationPlace(character, range.startFrame);
+            }
         }
     }
 
