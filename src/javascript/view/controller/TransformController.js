@@ -1038,8 +1038,10 @@ class TransformController extends BaseController
             const point = Util.$referenceController.pointer;
 
             const matrix = new Matrix(
-                concatenatedMatrix[0], concatenatedMatrix[1], concatenatedMatrix[2],
-                concatenatedMatrix[3], concatenatedMatrix[4], concatenatedMatrix[5]
+                concatenatedMatrix[0], concatenatedMatrix[1],
+                concatenatedMatrix[2], concatenatedMatrix[3],
+                concatenatedMatrix[4] - Util.$sceneChange.offsetX,
+                concatenatedMatrix[5] - Util.$sceneChange.offsetY
             );
             matrix.invert();
 
@@ -1066,7 +1068,6 @@ class TransformController extends BaseController
 
                 // 中心点の移動
                 const range = character.getRange(frame);
-                const place = character.getPlace(frame);
                 const point = character.getPlace(range.startFrame).point;
                 const localMatrix = Util.$multiplicationMatrix(
                     parentMatrix, [1, 0, 0, 1, point.x, point.y]
@@ -1074,6 +1075,8 @@ class TransformController extends BaseController
 
                 point.x = localMatrix[4] + referenceX;
                 point.y = localMatrix[5] + referenceY;
+
+                const place = character.getPlace(frame);
 
                 // 実行
                 const multiMatrix = Util.$multiplicationMatrix(
@@ -1086,6 +1089,10 @@ class TransformController extends BaseController
                 place.matrix[3] = multiMatrix[3];
                 place.matrix[4] = multiMatrix[4] + referenceX;
                 place.matrix[5] = multiMatrix[5] + referenceY;
+
+                place.scaleX = Math.sqrt(
+                    multiMatrix[0] * multiMatrix[0] + multiMatrix[1] * multiMatrix[1]
+                );
 
                 const bounds = character.getBounds();
                 xMin = Math.min(xMin, bounds.xMin);
@@ -1122,18 +1129,13 @@ class TransformController extends BaseController
                 if (character.scaleX !== scale_x) {
 
                     const place = character.getPlace(frame);
-                    const multiMatrix = Util.$multiplicationMatrix(
-                        concatenatedMatrix,
-                        place.matrix
-                    );
-
-                    const range = character.getPlace(frame);
+                    const range = character.getRange(frame);
                     const point = character.getPlace(range.startFrame).point;
 
                     // global to local
                     const matrix = new Matrix(
-                        multiMatrix[0], multiMatrix[1], multiMatrix[2],
-                        multiMatrix[3], multiMatrix[4], multiMatrix[5]
+                        place.matrix[0], place.matrix[1], place.matrix[2],
+                        place.matrix[3], place.matrix[4], place.matrix[5]
                     );
                     matrix.invert();
 
@@ -1332,8 +1334,10 @@ class TransformController extends BaseController
             const point = Util.$referenceController.pointer;
 
             const matrix = new Matrix(
-                concatenatedMatrix[0], concatenatedMatrix[1], concatenatedMatrix[2],
-                concatenatedMatrix[3], concatenatedMatrix[4], concatenatedMatrix[5]
+                concatenatedMatrix[0], concatenatedMatrix[1],
+                concatenatedMatrix[2], concatenatedMatrix[3],
+                concatenatedMatrix[4] - Util.$sceneChange.offsetX,
+                concatenatedMatrix[5] - Util.$sceneChange.offsetY
             );
             matrix.invert();
 
@@ -1360,7 +1364,6 @@ class TransformController extends BaseController
 
                 // 中心点の移動
                 const range = character.getRange(frame);
-                const place = character.getPlace(frame);
                 const point = character.getPlace(range.startFrame).point;
                 const localMatrix = Util.$multiplicationMatrix(
                     parentMatrix, [1, 0, 0, 1, point.x, point.y]
@@ -1368,6 +1371,8 @@ class TransformController extends BaseController
 
                 point.x = localMatrix[4] + referenceX;
                 point.y = localMatrix[5] + referenceY;
+
+                const place = character.getPlace(frame);
 
                 const multiMatrix = Util.$multiplicationMatrix(
                     parentMatrix, place.matrix
@@ -1379,6 +1384,10 @@ class TransformController extends BaseController
                 place.matrix[3] = multiMatrix[3];
                 place.matrix[4] = multiMatrix[4] + referenceX;
                 place.matrix[5] = multiMatrix[5] + referenceY;
+
+                place.scaleY = Math.sqrt(
+                    multiMatrix[2] * multiMatrix[2] + multiMatrix[3] * multiMatrix[3]
+                );
 
                 const bounds = character.getBounds();
 
@@ -1416,18 +1425,13 @@ class TransformController extends BaseController
                 if (character.scaleY !== scale_y) {
 
                     const place = character.getPlace(frame);
-                    const multiMatrix = Util.$multiplicationMatrix(
-                        concatenatedMatrix,
-                        place.matrix
-                    );
-
                     const range = character.getRange(frame);
                     const point = character.getPlace(range.startFrame).point;
 
                     // global to local
                     const matrix = new Matrix(
-                        multiMatrix[0], multiMatrix[1], multiMatrix[2],
-                        multiMatrix[3], multiMatrix[4], multiMatrix[5]
+                        place.matrix[0], place.matrix[1], place.matrix[2],
+                        place.matrix[3], place.matrix[4], place.matrix[5]
                     );
                     matrix.invert();
 
@@ -1544,8 +1548,10 @@ class TransformController extends BaseController
             const point = Util.$referenceController.pointer;
 
             const matrix = new Matrix(
-                concatenatedMatrix[0], concatenatedMatrix[1], concatenatedMatrix[2],
-                concatenatedMatrix[3], concatenatedMatrix[4], concatenatedMatrix[5]
+                concatenatedMatrix[0], concatenatedMatrix[1],
+                concatenatedMatrix[2], concatenatedMatrix[3],
+                concatenatedMatrix[4] - Util.$sceneChange.offsetX,
+                concatenatedMatrix[5] - Util.$sceneChange.offsetY
             );
             matrix.invert();
 
@@ -1572,12 +1578,13 @@ class TransformController extends BaseController
                 const character   = layer.getCharacter(characterId);
 
                 // 中心点の移動
-                const place = character.getPlace(frame);
                 const range = character.getRange(frame);
                 const point = character.getPlace(range.startFrame).point;
 
                 point.x = referenceX;
                 point.y = referenceY;
+
+                const place = character.getPlace(frame);
 
                 const multiMatrix = Util.$multiplicationMatrix(
                     parentMatrix, place.matrix
@@ -1589,6 +1596,8 @@ class TransformController extends BaseController
                 place.matrix[3] = multiMatrix[3];
                 place.matrix[4] = multiMatrix[4] + referenceX;
                 place.matrix[5] = multiMatrix[5] + referenceY;
+
+                place.rotation = Math.atan2(multiMatrix[1], multiMatrix[0]) * Util.$Rad2Deg;
 
                 const bounds = character.getBounds();
 
@@ -1629,14 +1638,9 @@ class TransformController extends BaseController
 
                 const place = character.getPlace(frame);
 
-                const multiMatrix = Util.$multiplicationMatrix(
-                    concatenatedMatrix,
-                    place.matrix
-                );
-
                 const matrix = new Matrix(
-                    multiMatrix[0], multiMatrix[1], multiMatrix[2],
-                    multiMatrix[3], multiMatrix[4], multiMatrix[5]
+                    place.matrix[0], place.matrix[1], place.matrix[2],
+                    place.matrix[3], place.matrix[4], place.matrix[5]
                 );
                 matrix.invert();
 

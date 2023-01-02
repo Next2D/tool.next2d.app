@@ -728,24 +728,23 @@ class TweenController extends BaseController
         const referenceY = point.x * matrix.b + point.y * matrix.d + matrix.ty;
         const baseMatrix = [1, 0, 0, 1, -referenceX, -referenceY];
 
+        const beforeMatrix = Util.$multiplicationMatrix([
+            startMatrix[0], startMatrix[1],
+            startMatrix[2], startMatrix[3],
+            referenceX,
+            referenceY
+        ], baseMatrix);
+
+        const afterMatrix = Util.$multiplicationMatrix([
+            endMatrix[0], endMatrix[1],
+            endMatrix[2], endMatrix[3],
+            referenceX,
+            referenceY
+        ], baseMatrix);
+
         if (diffRotate) {
-
-            const beforeMatrix = Util.$multiplicationMatrix([
-                startMatrix[0], startMatrix[1],
-                startMatrix[2], startMatrix[3],
-                referenceX,
-                referenceY
-            ], baseMatrix);
-
-            const afterMatrix = Util.$multiplicationMatrix([
-                endMatrix[0], endMatrix[1],
-                endMatrix[2], endMatrix[3],
-                referenceX,
-                referenceY
-            ], baseMatrix);
-
-            diffX = endX - afterMatrix[4] - startX - beforeMatrix[4];
-            diffY = endY - afterMatrix[5] - startY - beforeMatrix[5];
+            diffX = endX - afterMatrix[4] - (startX - beforeMatrix[4]);
+            diffY = endY - afterMatrix[5] - (startY - beforeMatrix[5]);
         }
 
         // ColorTransform
@@ -862,13 +861,16 @@ class TweenController extends BaseController
                 place.rotation = Math.atan2(matrix[1], matrix[0]) * Util.$Rad2Deg;
 
                 const multiMatrix = Util.$multiplicationMatrix(
-                    [Math.cos(radian), Math.sin(radian), -Math.sin(radian), Math.cos(radian), 0, 0],
+                    [
+                        Math.cos(radian), Math.sin(radian),
+                        -Math.sin(radian), Math.cos(radian),
+                        referenceX, referenceY
+                    ],
                     baseMatrix
                 );
 
-                matrix[4] += multiMatrix[4] + referenceX;
-                matrix[5] += multiMatrix[5] + referenceY;
-
+                matrix[4] += -beforeMatrix[4] + multiMatrix[4];
+                matrix[5] += -beforeMatrix[5] + multiMatrix[5];
             }
 
             if (tween.curve.length) {
