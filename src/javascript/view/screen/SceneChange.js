@@ -14,13 +14,6 @@ class SceneChange extends BaseScreen
         super();
 
         /**
-         * @type {number}
-         * @default 0
-         * @private
-         */
-        this._$length = 0;
-
-        /**
          * @type {array}
          * @private
          */
@@ -67,7 +60,6 @@ class SceneChange extends BaseScreen
 
             this._$cache = {
                 "children": children,
-                "length": this._$length,
                 "matrix": this._$matrix.slice(),
                 "offsetX": this._$offsetX,
                 "offsetY": this._$offsetY
@@ -96,7 +88,6 @@ class SceneChange extends BaseScreen
             return ;
         }
 
-        this._$length  = this._$cache.length;
         this._$matrix  = this._$cache.matrix;
         this._$offsetX = this._$cache.offsetX;
         this._$offsetY = this._$cache.offsetY;
@@ -172,22 +163,6 @@ class SceneChange extends BaseScreen
     }
 
     /**
-     * @description メニューの配列数を返す
-     *
-     * @member   {number}
-     * @method
-     * @public
-     */
-    get length ()
-    {
-        return this._$length;
-    }
-    set length (length)
-    {
-        this._$length = length;
-    }
-
-    /**
      * @description 初期起動関数
      *
      * @return {void}
@@ -211,7 +186,6 @@ class SceneChange extends BaseScreen
         this._$offsetX       = 0;
         this._$offsetY       = 0;
         this._$matrix.length = 0;
-        this._$length        = 0;
     }
 
     /**

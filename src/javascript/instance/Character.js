@@ -723,7 +723,7 @@ class Character
         Util.$currentFrame = frame;
 
         let matrix = place.matrix;
-        if (Util.$sceneChange.length) {
+        if (Util.$sceneChange.matrix.length) {
             matrix = Util.$multiplicationMatrix(
                 Util.$sceneChange.concatenatedMatrix,
                 place.matrix

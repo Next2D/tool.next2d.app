@@ -1440,7 +1440,7 @@ class ArrowTool extends BaseTool
             }
 
             let rectMatrix = null;
-            if (Util.$sceneChange.length) {
+            if (Util.$sceneChange.matrix.length) {
                 rectMatrix = Util.$multiplicationMatrix(
                     parentMatrix,
                     place.matrix
@@ -1691,7 +1691,6 @@ class ArrowTool extends BaseTool
             // アクティブな情報を削除
             Util.$activeCharacterIds.pop();
             Util.$sceneChange.matrix.pop();
-            Util.$sceneChange.length--;
 
             // シーン移動
             Util.$sceneChange.execute(

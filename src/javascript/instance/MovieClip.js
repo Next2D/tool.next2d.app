@@ -293,7 +293,7 @@ class MovieClip extends Instance
         }
 
         // 子孫のMovieClipの時は先祖のシーン情報を透明にして描画
-        if (Util.$sceneChange.length) {
+        if (Util.$sceneChange.matrix.length) {
 
             const children = document
                 .getElementById("scene-name-menu-list")
@@ -308,7 +308,6 @@ class MovieClip extends Instance
             // 現在のパラメーターをキャッシュ
             const offsetX = Util.$sceneChange.offsetX;
             const offsetY = Util.$sceneChange.offsetY;
-            const length  = Util.$sceneChange.length;
             const matrix  = Util.$sceneChange.matrix.slice(0);
 
             // 初期化
@@ -330,7 +329,6 @@ class MovieClip extends Instance
                 Util.$sceneChange.offsetY = +node.dataset.offsetY;
 
                 if (idx) {
-                    Util.$sceneChange.length = idx;
                     Util.$sceneChange.matrix.push(matrix[idx - 1]);
                 }
 
@@ -371,7 +369,6 @@ class MovieClip extends Instance
             }
 
             // キャッシュした情報をセット
-            Util.$sceneChange.length   = length;
             Util.$sceneChange._$matrix = matrix;
             Util.$sceneChange.offsetX  = offsetX;
             Util.$sceneChange.offsetY  = offsetY;
@@ -481,7 +478,6 @@ class MovieClip extends Instance
                 // アクティブな情報を削除
                 Util.$activeCharacterIds.pop();
                 Util.$sceneChange.matrix.pop();
-                Util.$sceneChange.length--;
 
                 if (index === idx) {
                     break;
@@ -496,9 +492,6 @@ class MovieClip extends Instance
                 element.dataset.libraryId | 0
             );
         });
-
-        // 配列数を加算
-        Util.$sceneChange.length++;
     }
 
     /**

@@ -434,7 +434,7 @@ class Instance
 
         // place objectの値をセット
         let matrix = place.matrix;
-        if (!preview && Util.$sceneChange.length) {
+        if (!preview && Util.$sceneChange.matrix.length) {
             matrix = Util.$multiplicationMatrix(
                 Util.$sceneChange.concatenatedMatrix,
                 place.matrix
