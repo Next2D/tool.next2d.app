@@ -25,6 +25,7 @@ class WorkSpace
         this._$characterId     = 0;
         this._$revision        = [];
         this._$currentData     = null;
+        this._$currentFrame    = 0;
         this._$timelineHeight  = TimelineAdjustment.TIMELINE_DEFAULT_SIZE;
         this._$controllerWidth = ControllerAdjustment.DEFAULT_SIZE;
 
@@ -359,7 +360,9 @@ class WorkSpace
             this._$currentData = this.toJSON();
         }
 
+        this._$currentFrame = Util.$timelineFrame.currentFrame;
         this.reloadData(this._$revision[--this._$position]);
+        this._$currentFrame = 0;
     }
 
     /**
@@ -399,7 +402,9 @@ class WorkSpace
             return ;
         }
 
+        this._$currentFrame = Util.$timelineFrame.currentFrame;
         this.reloadData(data);
+        this._$currentFrame = 0;
     }
 
     /**

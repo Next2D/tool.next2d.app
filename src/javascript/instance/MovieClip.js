@@ -149,7 +149,7 @@ class MovieClip extends Instance
         Util.$timelineLayer.removeAll();
 
         // フレームを登録してヘッダーを再編成
-        const currentFrame = 1;//this.currentFrame;
+        const currentFrame = Util.$currentWorkSpace()._$currentFrame || 1;
         Util.$timelineFrame.currentFrame = currentFrame;
 
         // ヘッダーを生成
@@ -374,6 +374,8 @@ class MovieClip extends Instance
             Util.$sceneChange.offsetY  = offsetY;
         }
 
+        this.startSound(frame);
+
         const layers = Array.from(this._$layers.values());
         while (layers.length) {
             const layer = layers.pop();
@@ -416,6 +418,50 @@ class MovieClip extends Instance
                 .getElementById("stage-area")
                 .appendChild(div);
 
+        }
+    }
+
+    /**
+     * @description 指定フレームのサウンドを再生
+     *
+     * @param {number} frame
+     * @return {void}
+     * @method
+     * @public
+     */
+    startSound (frame = 1)
+    {
+        if (Util.$timelinePlayer.stopFlag || !this._$sounds.has(frame)) {
+            return ;
+        }
+
+        const { Sound } = window.next2d.media;
+
+        const workSpace = Util.$currentWorkSpace();
+
+        const sounds = this._$sounds.get(frame);
+        for (let idx = 0; idx < sounds.length; ++idx) {
+
+            const object = sounds[idx];
+
+            const instance = workSpace.getLibrary(object.characterId);
+            if (!instance) {
+                continue;
+            }
+
+            const sound = new Sound();
+            sound.volume = object.volume / 100;
+            sound.loopCount = object.loopCount;
+            sound.src = URL.createObjectURL(new Blob(
+                [new Uint8Array(instance._$buffer)],
+                { "type": "audio/mp3" }
+            ));
+            sound.play();
+
+            Util
+                .$timelinePlayer
+                ._$sounds
+                .push(sound);
         }
     }
 

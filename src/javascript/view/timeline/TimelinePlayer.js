@@ -63,6 +63,12 @@ class TimelinePlayer extends BaseTimeline
         this._$baseOffsetHalfWidth = 0;
 
         /**
+         * @type {array}
+         * @private
+         */
+        this._$sounds = [];
+
+        /**
          * @type {number}
          * @default 0
          * @private
@@ -170,11 +176,14 @@ class TimelinePlayer extends BaseTimeline
     {
         if (this._$stopFlag) {
 
+            if ("next2d" in window) {
+                Util.$root.stage._$player._$loadWebAudio();
+            }
+
+            const scene = Util.$currentWorkSpace().scene;
+
             // アクティブな再生範囲を取得(空のフレームは含めない)
-            this._$totalFrame = Util
-                .$currentWorkSpace()
-                .scene
-                .totalFrame;
+            this._$totalFrame = scene.totalFrame;
 
             // 1フレーム以上あるタイムラインが再生対象
             if (this._$totalFrame > 1) {
@@ -212,6 +221,8 @@ class TimelinePlayer extends BaseTimeline
                     this.reloadScreen();
                 }
 
+                scene.startSound(Util.$timelineFrame.currentFrame);
+
                 // 再生ボタンを非表示
                 document
                     .getElementById("timeline-play")
@@ -242,6 +253,23 @@ class TimelinePlayer extends BaseTimeline
     }
 
     /**
+     * @description 再生中のサウンドを全て停止する
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    stopAllSound ()
+    {
+        for (let idx = 0; idx < this._$sounds.length; ++idx) {
+            const sound = this._$sounds[idx];
+            sound.stop();
+        }
+
+        this._$sounds.length = 0;
+    }
+
+    /**
      * @description タイムラインのプレイヤーを停止する
      *
      * @return {void}
@@ -252,6 +280,9 @@ class TimelinePlayer extends BaseTimeline
     {
         // タイマーを終了
         window.cancelAnimationFrame(this._$timerId);
+
+        // 再生中のサウンドを全て停止する
+        this.stopAllSound();
 
         // 変数を初期化
         this._$stopFlag = true;

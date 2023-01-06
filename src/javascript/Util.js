@@ -685,6 +685,10 @@ Util.$loadAudioContext = () =>
 {
     window.removeEventListener("click", Util.$loadAudioContext);
     Util.$audioContext = new AudioContext();
+
+    if ("next2d" in window) {
+        Util.$root.stage._$player._$loadWebAudio();
+    }
 };
 
 /**

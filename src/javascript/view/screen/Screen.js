@@ -96,7 +96,8 @@ class Screen extends BaseScreen
 
                     event.preventDefault();
 
-                    window.requestAnimationFrame(() => {
+                    window.requestAnimationFrame(() =>
+                    {
                         Util.$screenZoom.execute(delta / 2 / 100 * -1);
                     });
 
