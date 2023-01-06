@@ -44,9 +44,9 @@ class ZoomTool extends BaseTool
             this.moveRect(event);
         });
 
-        this.addEventListener(EventType.MOUSE_UP, (event) =>
+        this.addEventListener(EventType.MOUSE_UP, () =>
         {
-            this.execute(event);
+            this.execute();
         });
     }
 
@@ -119,10 +119,18 @@ class ZoomTool extends BaseTool
         Util.$setCursor(this._$cursor);
 
         const element = document.getElementById("stage-rect");
+        if (!element) {
+            return ;
+        }
+
+        // 現在の座標を取得
+        const left = element.offsetLeft;
+        const top  = element.offsetTop;
+
         element.style.display = "none";
 
-        const width   = parseFloat(element.style.width);
-        const height  = parseFloat(element.style.height);
+        const width  = parseFloat(element.style.width);
+        const height = parseFloat(element.style.height);
         if (!width || !height) {
             return ;
         }
@@ -135,8 +143,15 @@ class ZoomTool extends BaseTool
             Util.$zoomScale
         );
 
-        Util.$zoomScale = 0;
-        Util.$screenZoom.execute(scale);
+        const screen = document.getElementById("screen");
+
+        const dx = left - screen.offsetLeft + width  / 2;
+        const dy = top  - screen.offsetTop  + height / 2;
+
+        screen.scrollLeft -= screen.clientWidth  / 2 - dx;
+        screen.scrollTop  -= screen.clientHeight / 2 - dy;
+
+        Util.$screenZoom.execute(scale - Util.$zoomScale);
 
         // アクティブなツールがあれば終了
         if (Util.$tools.activeTool) {

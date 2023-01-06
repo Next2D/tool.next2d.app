@@ -106,9 +106,10 @@ class Stage
         // stage area
         const area = document.getElementById("stage-area");
         if (area) {
-            area.style.transformOrigin = "50% 50%";
-            area.style.width  = `${this.width  + window.screen.width}px`;
-            area.style.height = `${this.height + window.screen.height}px`;
+            let style = "";
+            style += `width: ${this.width + window.screen.width}px;`;
+            style += `height: ${this.height + window.screen.height}px;`;
+            area.setAttribute("style", style);
         }
 
         // DOM

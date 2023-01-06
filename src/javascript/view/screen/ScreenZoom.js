@@ -91,6 +91,8 @@ class ScreenZoom extends BaseScreen
      */
     execute (delta)
     {
+        const beforeScale = Util.$zoomScale;
+
         Util.$zoomScale += delta;
         Util.$zoomScale = Math.min(
             ScreenZoom.MAX_LEVEL,
@@ -112,20 +114,26 @@ class ScreenZoom extends BaseScreen
         const stageArea = document.getElementById("stage-area");
         const stage     = document.getElementById("stage");
 
-        const scaleX = screen.scrollLeft / screen.scrollWidth;
-        const scaleY = screen.scrollTop  / screen.scrollHeight;
-
+        const screenWidth     = screen.clientWidth;
+        const screenHeight    = screen.clientHeight;
         const stageAreaWidth  = width  + window.screen.width;
         const stageAreaHeight = height + window.screen.height;
 
         // 値を更新
-        stage.style.width      = `${width}px`;
-        stage.style.height     = `${height}px`;
-        stageArea.style.width  = `${stageAreaWidth}px`;
-        stageArea.style.height = `${stageAreaHeight}px`;
+        stage.style.width  = `${width}px`;
+        stage.style.height = `${height}px`;
+        stageArea.setAttribute("style",
+            `width: ${stageAreaWidth}px; height: ${stageAreaHeight}px;`
+        );
 
-        screen.scrollLeft = screen.scrollWidth * scaleX;
-        screen.scrollTop  = screen.scrollHeight * scaleY;
+        const centerX = screenWidth  / 2;
+        const centerY = screenHeight / 2;
+
+        const dx = (screen.scrollLeft + centerX - Util.$offsetLeft) / beforeScale * Util.$zoomScale;
+        const dy = (screen.scrollTop  + centerY - Util.$offsetTop)  / beforeScale * Util.$zoomScale;
+
+        screen.scrollLeft = Util.$offsetLeft + dx - centerX;
+        screen.scrollTop  = Util.$offsetTop  + dy - centerY;
 
         // DisplayObjectのキャッシュを全て削除
         const frame = Util.$timelineFrame.currentFrame;
