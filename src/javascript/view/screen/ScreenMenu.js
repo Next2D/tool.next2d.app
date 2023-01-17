@@ -1754,7 +1754,14 @@ class ScreenMenu extends BaseScreen
             const point = place.point;
             point.x += place.matrix[4] - currentX;
             point.y += place.matrix[5] - currentY;
+
+            if (activeElements.length === 1 && mode === "stage") {
+                document.getElementById("object-x").value = `${place.matrix[4]}`;
+                document.getElementById("object-y").value = `${place.matrix[5]}`;
+            }
         }
+
+
 
         // 選択範囲を再計算
         Util.$transformController.relocation();
