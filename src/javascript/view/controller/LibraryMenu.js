@@ -505,6 +505,17 @@ class LibraryMenu
 
                     const addCount = useIds.get(libraryId) + 1;
                     useIds.set(libraryId, addCount);
+
+                    // 塗りの画像ID
+                    const library = workSpace.getLibrary(libraryId);
+                    if (library.type === "shape" && library.bitmapId) {
+                        if (!useIds.has(library.bitmapId)) {
+                            useIds.set(library.bitmapId, 0);
+                        }
+
+                        const addCount = useIds.get(libraryId) + 1;
+                        useIds.set(libraryId, addCount);
+                    }
                 }
             }
 
