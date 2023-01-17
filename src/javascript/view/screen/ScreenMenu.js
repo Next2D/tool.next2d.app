@@ -1761,8 +1761,6 @@ class ScreenMenu extends BaseScreen
             }
         }
 
-
-
         // 選択範囲を再計算
         Util.$transformController.relocation();
 
