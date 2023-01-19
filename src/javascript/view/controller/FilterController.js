@@ -1186,8 +1186,8 @@ ${FilterHTML.createHeaderHTML(id, "DropShadow")}
             </div>
     
             <div class="filter-container">
-                ${FilterHTML.createShadowColor(id, filter.color)}
-                ${FilterHTML.createShadowAlpha(id, filter.alpha)}
+                ${FilterHTML.createColor(id, filter.color)}
+                ${FilterHTML.createAlpha(id, filter.alpha)}
             </div>
             
             <div class="filter-container">
