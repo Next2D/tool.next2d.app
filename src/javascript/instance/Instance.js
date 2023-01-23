@@ -453,6 +453,7 @@ class Instance
             object.width, object.height, preview
         );
 
+        let sacle = window.devicePixelRatio;
         let ratio = window.devicePixelRatio;
         if (!preview) {
             ratio *= Util.$zoomScale;
@@ -460,18 +461,18 @@ class Instance
 
         const drawBounds = container.getBounds(container);
 
-        let tx = -drawBounds.x;
+        let tx = -drawBounds.x * sacle;
         if (0 > object.offsetX) {
             tx -= object.offsetX * ratio;
         }
 
-        let ty = -drawBounds.y;
+        let ty = -drawBounds.y * sacle;
         if (0 > object.offsetY) {
             ty -= object.offsetY * ratio;
         }
 
         // playerで描画を実行
-        bitmapData.draw(container, new Matrix(1, 0, 0, 1, tx, ty));
+        bitmapData.draw(container, new Matrix(sacle, 0, 0, sacle, tx, ty));
 
         // 指定のcanvasに描画
         const context = bitmapData.drawFromCanvas(canvas);
@@ -596,7 +597,7 @@ class Instance
         const sprite = new Sprite();
         sprite.addChild(instance);
 
-        let ratio = window.devicePixelRatio;
+        let ratio = 1;
         if (!preview) {
             ratio *= Util.$zoomScale;
         }
