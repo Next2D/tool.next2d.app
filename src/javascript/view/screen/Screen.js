@@ -951,7 +951,7 @@ class Screen extends BaseScreen
 
         // set params
         textarea.dataset.characterId = `${character.id}`;
-        textarea.dataset.layerId     = `${layer_id}`;
+        textarea.dataset.layerId     = `${layerId}`;
         textarea.dataset.libraryId   = `${character.libraryId}`;
         textarea.dataset.child       = "true";
 
