@@ -351,26 +351,33 @@ class GridController extends BaseController
 
         const bounds = character.getBounds();
 
+        const place = character.getPlace(
+            Util.$timelineFrame.currentFrame
+        );
+        const matrix = place.matrix;
+        const xScale = Math.sqrt(matrix[0] * matrix[0] + matrix[1] * matrix[1]);
+        const yScale = Math.sqrt(matrix[2] * matrix[2] + matrix[3] * matrix[3]);
+
         const x = element.offsetLeft;
         const y = element.offsetTop;
         const w = character.width  - Math.abs(bounds.xMax - bounds.xMin);
         const h = character.height - Math.abs(bounds.yMax - bounds.yMin);
 
         const topLeft = document.getElementById("grid-top-left");
-        topLeft.style.left = `${x + grid.x - 4}px`;
-        topLeft.style.top  = `${y + grid.y - 4}px`;
+        topLeft.style.left = `${x + grid.x * Util.$zoomScale - 4}px`;
+        topLeft.style.top  = `${y + grid.y * Util.$zoomScale - 4}px`;
 
         const topRight = document.getElementById("grid-top-right");
-        topRight.style.left = `${x + grid.x + grid.w + w - 4}px`;
-        topRight.style.top  = `${y + grid.y - 4}px`;
+        topRight.style.left = `${x + (grid.x + grid.w) * Util.$zoomScale * xScale + w - 4}px`;
+        topRight.style.top  = `${y + grid.y * Util.$zoomScale - 4}px`;
 
         const bottomLeft = document.getElementById("grid-bottom-left");
-        bottomLeft.style.left = `${x + grid.x - 4}px`;
-        bottomLeft.style.top  = `${y + grid.y + grid.h + h - 4}px`;
+        bottomLeft.style.left = `${x + grid.x * Util.$zoomScale - 4}px`;
+        bottomLeft.style.top  = `${y + (grid.y + grid.h) * Util.$zoomScale * yScale + h - 4}px`;
 
         const bottomRight = document.getElementById("grid-bottom-right");
-        bottomRight.style.left = `${x + grid.x + grid.w + w - 4}px`;
-        bottomRight.style.top  = `${y + grid.y + grid.h + h - 4}px`;
+        bottomRight.style.left = `${x + (grid.x + grid.w) * Util.$zoomScale * xScale + w - 4}px`;
+        bottomRight.style.top  = `${y + (grid.y + grid.h) * Util.$zoomScale * yScale + h - 4}px`;
     }
 }
 

@@ -417,7 +417,6 @@ class Instance
         canvas, width, height, place,
         range = null, static_frame = 0, preview = false
     ) {
-
         // empty image
         if (!width || !height) {
             canvas.width  = 0;
