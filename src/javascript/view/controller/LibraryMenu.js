@@ -205,35 +205,37 @@ class LibraryMenu
                 continue;
             }
 
-            const canvas  = Util.$getCanvas();
-            const context = instance.draw(
-                canvas,
-                Math.ceil(instance.width),
-                Math.ceil(instance.height),
+            instance
+                .draw(
+                    Util.$getCanvas(),
+                    Math.ceil(instance.width),
+                    Math.ceil(instance.height),
+                    {
+                        "frame": 1,
+                        "matrix": [1, 0, 0, 1, 0, 0],
+                        "colorTransform": [1, 1, 1, 1, 0, 0, 0, 0],
+                        "blendMode": "normal",
+                        "filter": []
+                    },
+                    null, 0, true
+                )
+                // eslint-disable-next-line no-loop-func
+                .then((canvas) =>
                 {
-                    "frame": 1,
-                    "matrix": [1, 0, 0, 1, 0, 0],
-                    "colorTransform": [1, 1, 1, 1, 0, 0, 0, 0],
-                    "blendMode": "normal",
-                    "filter": []
-                },
-                null, 0, true
-            );
+                    const object = {
+                        "files" : [
+                            canvas.toDataURL(instance.imageType)
+                        ]
+                    };
 
-            const object = {
-                "files" : [
-                    canvas.toDataURL(instance.imageType)
-                ]
-            };
+                    Util.$poolCanvas(canvas);
 
-            Util.$poolCanvas(context);
-
-            const a = document.createElement("a");
-            a.href = `https://www.photopea.com#${encodeURI(JSON.stringify(object))}`;
-            a.target = "_blank";
-            a.click();
+                    const a = document.createElement("a");
+                    a.href = `https://www.photopea.com#${encodeURI(JSON.stringify(object))}`;
+                    a.target = "_blank";
+                    a.click();
+                });
         }
-
     }
 
     /**

@@ -17,7 +17,7 @@ class Character
         this._$libraryId      = -1;
         this._$places         = new Map();
         this._$tween          = new Map();
-        this._$context        = null;
+        this._$canvas         = null;
         this._$currentFrame   = 0;
         this._$currentPlace   = null;
         this._$screenX        = 0;
@@ -676,12 +676,12 @@ class Character
      * @description 表示用のHTMLCanvasElementクラスを生成
      *              Generate HTMLCanvasElement class for display
      *
-     * @param  {HTMLCanvasElement} canvas
-     * @return {HTMLCanvasElement}
+     * @param  {HTMLCanvasElement} [canvas=null]
+     * @return {Promise}
      * @method
      * @public
      */
-    draw (canvas)
+    draw (canvas = null)
     {
         const workSpace = Util.$currentWorkSpace();
         const instance  = workSpace.getLibrary(this.libraryId);
@@ -707,11 +707,11 @@ class Character
             }
         }
 
-        if (this._$context) {
+        if (this._$canvas) {
             if (canvas instanceof HTMLCanvasElement) {
-                Util.$canvases.push(canvas);
+                Util.$poolCanvas(canvas);
             }
-            return this._$context.canvas;
+            return Promise.resolve(this._$canvas);
         }
 
         // シーンのフレームを更新
@@ -737,11 +737,11 @@ class Character
         // styleを初期化
         canvas.setAttribute("style", "");
 
-        let context = null;
+        let promise = null;
         switch (place.blendMode) {
 
             case "invert":
-                context = instance.draw(canvas, width, height,
+                promise = instance.draw(canvas, width, height,
                     {
                         "frame": place.frame,
                         "matrix": place.matrix,
@@ -761,6 +761,7 @@ class Character
             case "alpha":
             case "erase":
                 {
+
                     const bounds = this.getBounds(
                         place.matrix, place, range, frame
                     );
@@ -774,12 +775,13 @@ class Character
                     canvas.draggable = false;
 
                     canvas.width = canvas.height = 0;
-                    context = canvas.getContext("2d");
+
+                    promise = Promise.resolve(canvas);
                 }
                 break;
 
             default:
-                context = instance.draw(
+                promise = instance.draw(
                     canvas, width, height, place,
                     range, frame
                 );
@@ -787,49 +789,51 @@ class Character
 
         }
 
-        this._$context = context;
+        return promise
+            .then((canvas) =>
+            {
+                // set blend mode
+                if (place.blendMode !== "normal") {
+                    switch (place.blendMode) {
 
-        // set blend mode
-        switch (place.blendMode) {
+                        case "add":
+                            canvas.style.mixBlendMode = "color-dodge";
+                            break;
 
-            case "normal":
-                break;
+                        case "subtract":
+                            canvas.style.filter = "invert(100%)";
+                            canvas.style.mixBlendMode = "multiply";
+                            break;
 
-            case "add":
-                canvas.style.mixBlendMode = "color-dodge";
-                break;
+                        case "invert":
+                            canvas.style.filter = "invert(100%)";
+                            canvas.style.mixBlendMode = "difference";
+                            break;
 
-            case "subtract":
-                canvas.style.filter = "invert(100%)";
-                canvas.style.mixBlendMode = "multiply";
-                break;
+                        case "hardlight":
+                            canvas.style.mixBlendMode = "hard-light";
+                            break;
 
-            case "invert":
-                canvas.style.filter = "invert(100%)";
-                canvas.style.mixBlendMode = "difference";
-                break;
+                        case "alpha":
+                        case "erase":
+                        case "layer":
+                            break;
 
-            case "hardlight":
-                canvas.style.mixBlendMode = "hard-light";
-                break;
+                        default:
+                            canvas.style.mixBlendMode = place.blendMode;
+                            break;
 
-            case "alpha":
-            case "erase":
-            case "layer":
-                break;
+                    }
+                }
 
-            default:
-                canvas.style.mixBlendMode = place.blendMode;
-                break;
+                this.screenX   = canvas._$tx;
+                this.screenY   = canvas._$ty;
+                this._$offsetX = canvas._$offsetX;
+                this._$offsetY = canvas._$offsetY;
+                this._$canvas  = canvas;
 
-        }
-
-        this.screenX = canvas._$tx;
-        this.screenY = canvas._$ty;
-        this._$offsetX = canvas._$offsetX;
-        this._$offsetY = canvas._$offsetY;
-
-        return canvas;
+                return Promise.resolve(canvas);
+            });
     }
 
     /**
@@ -1631,11 +1635,11 @@ class Character
      */
     dispose ()
     {
-        if (!this._$context) {
+        if (!this._$canvas) {
             return ;
         }
 
-        Util.$poolCanvas(this._$context);
-        this._$context = null;
+        Util.$poolCanvas(this._$canvas);
+        this._$canvas = null;
     }
 }

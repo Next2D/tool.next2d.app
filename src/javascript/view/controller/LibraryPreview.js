@@ -187,19 +187,27 @@ class LibraryPreview
 
             this._$currentId = library_id;
 
-            document
-                .getElementById("library-preview-area")
-                .appendChild(instance.getPreview());
+            instance
+                .getPreview()
+                .then((element) =>
+                {
+                    if (element) {
+                        document
+                            .getElementById("library-preview-area")
+                            .appendChild(element);
+                    }
 
-            if (instance.type === InstanceType.SOUND) {
+                    if (instance.type === InstanceType.SOUND) {
 
-                Util.$soundWaveform.draw(instance._$buffer.slice());
+                        Util.$soundWaveform.draw(instance._$buffer.slice());
 
-            } else {
+                    } else {
 
-                Util.$soundWaveform.stop();
+                        Util.$soundWaveform.stop();
 
-            }
+                    }
+
+                });
 
         }
     }

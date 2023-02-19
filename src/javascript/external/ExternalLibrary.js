@@ -68,7 +68,8 @@ class ExternalLibrary
         const currentFrame = Util.$currentFrame;
 
         Util.$currentFrame = frame;
-        const context = this._$instance.draw(
+
+        const canvas = this._$instance.draw(
             Util.$getCanvas(),
             Math.ceil(width),
             Math.ceil(height),
@@ -89,9 +90,9 @@ class ExternalLibrary
         const image  = new Image();
         image.width  = Math.ceil(width);
         image.height = Math.ceil(height);
-        image.src    = context.canvas.toDataURL();
+        image.src    = canvas.toDataURL();
 
-        Util.$poolCanvas(context);
+        Util.$poolCanvas(canvas);
 
         return image;
     }

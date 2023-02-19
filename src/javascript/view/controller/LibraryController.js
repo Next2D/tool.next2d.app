@@ -1644,7 +1644,7 @@ class LibraryController
                                 const buffer = new Uint8Array(
                                     context.getImageData(0, 0, width, height).data
                                 );
-                                Util.$poolCanvas(context);
+                                Util.$poolCanvas(canvas);
 
                                 const object = this.createInstance(
                                     InstanceType.BITMAP,

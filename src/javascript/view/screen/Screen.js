@@ -471,92 +471,88 @@ class Screen extends BaseScreen
      * @param  {Character} character
      * @param  {number} layer_id
      * @param  {MovieClip} [parent=null]
-     * @return {void}
+     * @return {Promise}
      * @method
      * @public
      */
     appendOnionCharacter (character, layer_id, parent = null)
     {
-        const workSpace = Util.$currentWorkSpace();
-        const scene     = parent || workSpace.scene;
+        return character
+            .draw(Util.$getCanvas())
+            .then((canvas) =>
+            {
+                const scene  = parent || Util.$currentWorkSpace().scene;
+                const matrix = Util.$sceneChange.concatenatedMatrix;
+                const bounds = character.getBounds(matrix);
 
-        // create div
-        const div = document.createElement("div");
-        div.dataset.child   = "true";
-        div.dataset.preview = "true";
+                // create div
+                const div = document.createElement("div");
+                div.dataset.child   = "true";
+                div.dataset.preview = "true";
 
-        const matrix = Util.$sceneChange.concatenatedMatrix;
-        const bounds = character.getBounds(matrix);
+                div.appendChild(canvas);
 
-        // create image
-        const context = character._$context;
-        character._$context = null;
-        const image = character.draw(Util.$getCanvas());
-        div.appendChild(image);
-        character._$context = context;
+                canvas.style.width  = `${canvas._$width  * Util.$zoomScale}px`;
+                canvas.style.height = `${canvas._$height * Util.$zoomScale}px`;
+                canvas.style.left   = `${character.offsetX}px`;
+                canvas.style.top    = `${character.offsetY}px`;
 
-        image.style.width  = `${image._$width  * Util.$zoomScale}px`;
-        image.style.height = `${image._$height * Util.$zoomScale}px`;
-        image.style.left   = `${character.offsetX}px`;
-        image.style.top    = `${character.offsetY}px`;
+                let divStyle = "";
 
-        let divStyle = "";
+                // mask attach
+                const layer = scene.getLayer(layer_id);
+                if (layer.maskId !== null) {
 
-        // mask attach
-        const layer = scene.getLayer(layer_id);
-        if (layer.maskId !== null) {
+                    const maskLayer = scene.getLayer(layer.maskId);
+                    if (!maskLayer) {
+                        layer.maskId = null;
+                    }
 
-            const maskLayer = scene.getLayer(layer.maskId);
-            if (!maskLayer) {
-                layer.maskId = null;
-            }
+                    if (maskLayer && maskLayer.lock
+                        && maskLayer._$characters.length
+                    ) {
 
-            if (maskLayer && maskLayer.lock
-                && maskLayer._$characters.length
-            ) {
+                        const maskCharacter = maskLayer._$characters[0];
+                        maskCharacter.dispose();
 
-                const maskCharacter = maskLayer._$characters[0];
-                maskCharacter.dispose();
+                        const maskImage  = maskCharacter.draw(Util.$getCanvas());
+                        const maskBounds = maskCharacter.getBounds(matrix);
 
-                const maskImage  = maskCharacter.draw(Util.$getCanvas());
-                const maskBounds = maskCharacter.getBounds(matrix);
+                        const x = (maskBounds.xMin - bounds.xMin) * Util.$zoomScale;
+                        const y = (maskBounds.yMin - bounds.yMin) * Util.$zoomScale;
 
-                const x = (maskBounds.xMin - bounds.xMin) * Util.$zoomScale;
-                const y = (maskBounds.yMin - bounds.yMin) * Util.$zoomScale;
+                        const maskSrc    = maskImage.toDataURL();
+                        const maskWidth  = maskImage._$width  * Util.$zoomScale;
+                        const maskHeight = maskImage._$height * Util.$zoomScale;
 
-                const maskSrc    = maskImage.toDataURL();
-                const maskWidth  = maskImage._$width  * Util.$zoomScale;
-                const maskHeight = maskImage._$height * Util.$zoomScale;
+                        divStyle += `mask: url(${maskSrc}), none;`;
+                        divStyle += `-webkit-mask: url(${maskSrc}), none;`;
+                        divStyle += `mask-size: ${maskWidth}px ${maskHeight}px;`;
+                        divStyle += `-webkit-mask-size: ${maskWidth}px ${maskHeight}px;`;
+                        divStyle += "mask-repeat: no-repeat;";
+                        divStyle += "-webkit-mask-repeat: no-repeat;";
+                        divStyle += `mask-position: ${x}px ${y}px;`;
+                        divStyle += `-webkit-mask-position: ${x}px ${y}px;`;
+                        divStyle += `mix-blend-mode: ${canvas.style.mixBlendMode};`;
+                        divStyle += `filter: ${canvas.style.filter};`;
 
-                divStyle += `mask: url(${maskSrc}), none;`;
-                divStyle += `-webkit-mask: url(${maskSrc}), none;`;
-                divStyle += `mask-size: ${maskWidth}px ${maskHeight}px;`;
-                divStyle += `-webkit-mask-size: ${maskWidth}px ${maskHeight}px;`;
-                divStyle += "mask-repeat: no-repeat;";
-                divStyle += "-webkit-mask-repeat: no-repeat;";
-                divStyle += `mask-position: ${x}px ${y}px;`;
-                divStyle += `-webkit-mask-position: ${x}px ${y}px;`;
-                divStyle += `mix-blend-mode: ${image.style.mixBlendMode};`;
-                divStyle += `filter: ${image.style.filter};`;
+                    }
+                }
 
-            }
-        }
+                divStyle += "position: absolute;";
+                divStyle += "pointer-events: none;";
+                divStyle += "opacity: 0.25;";
 
-        divStyle += "position: absolute;";
-        divStyle += "pointer-events: none;";
-        divStyle += "opacity: 0.25;";
+                let tx = Util.$offsetLeft + (Util.$sceneChange.offsetX + bounds.xMin) * Util.$zoomScale;
+                let ty = Util.$offsetTop  + (Util.$sceneChange.offsetY + bounds.yMin) * Util.$zoomScale;
 
-        let tx = Util.$offsetLeft + (Util.$sceneChange.offsetX + bounds.xMin) * Util.$zoomScale;
-        let ty = Util.$offsetTop  + (Util.$sceneChange.offsetY + bounds.yMin) * Util.$zoomScale;
+                divStyle += `left: ${tx}px;`;
+                divStyle += `top: ${ty}px;`;
 
-        divStyle += `left: ${tx}px;`;
-        divStyle += `top: ${ty}px;`;
+                div.setAttribute("style", divStyle);
 
-        div.setAttribute("style", divStyle);
-
-        document
-            .getElementById("stage-area")
-            .appendChild(div);
+                return Promise.resolve(div);
+            });
     }
 
     /**
@@ -568,13 +564,16 @@ class Screen extends BaseScreen
      * @param  {string}    [event="auto"]
      * @param  {MovieClip} [parent_scene=null]
      * @param  {number}    [alpha=1]
-     * @return {void}
+     * @param  {number}    [offset_x=null]
+     * @param  {number}    [offset_y=null]
+     * @return {Promise}
      * @method
      * @public
      */
     appendCharacter (
         character, frame, layer_id,
-        event = "auto", parent_scene = null, alpha = 1
+        event = "auto", parent_scene = null, alpha = 1,
+        offset_x = null, offset_y = null
     ) {
 
         const workSpace = Util.$currentWorkSpace();
@@ -584,7 +583,7 @@ class Screen extends BaseScreen
         const place    = character.getPlace(frame);
         const instance = workSpace.getLibrary(character.libraryId);
         if (!instance) {
-            return ;
+            return Promise.resolve();
         }
 
         let doUpdate = character.libraryId === Util.$changeLibraryId;
@@ -703,189 +702,206 @@ class Screen extends BaseScreen
             character.dispose();
         }
 
-        const div = document.createElement("div");
+        return character
+            .draw(Util.$getCanvas())
+            .then((canvas) =>
+            {
+                const div = document.createElement("div");
+                div.appendChild(canvas);
 
-        const canvas = character.draw(Util.$getCanvas());
-        div.appendChild(canvas);
+                div.id = `character-${character.id}`;
+                div.dataset.characterId  = `${character.id}`;
+                div.dataset.layerId      = `${layer_id}`;
+                div.dataset.instanceType = `${instance.type}`;
+                div.dataset.libraryId    = `${character.libraryId}`;
+                div.dataset.child        = "true";
+                div.dataset.pointer      = `${event}`;
 
-        div.id = `character-${character.id}`;
-        div.dataset.characterId  = `${character.id}`;
-        div.dataset.layerId      = `${layer_id}`;
-        div.dataset.instanceType = `${instance.type}`;
-        div.dataset.libraryId    = `${character.libraryId}`;
-        div.dataset.child        = "true";
-        div.dataset.pointer      = `${event}`;
-
-        if (parent_scene) {
-            div.dataset.preview = "true";
-        }
-
-        let divStyle = "position: absolute;";
-        divStyle += `pointer-events: ${event};`;
-        if (1 > alpha) {
-            divStyle += `opacity: ${alpha};`;
-        }
-
-        div.addEventListener("mouseover", (event) =>
-        {
-            // 親のイベントを中止する
-            event.stopPropagation();
-
-            const activeTool = Util.$tools.activeTool;
-            if (activeTool) {
-                event.displayObject = true;
-                activeTool.dispatchEvent(
-                    EventType.MOUSE_OVER,
-                    event
-                );
-            }
-        });
-
-        div.addEventListener("mouseout", (event) =>
-        {
-            // 親のイベントを中止する
-            event.stopPropagation();
-
-            const activeTool = Util.$tools.activeTool;
-            if (activeTool) {
-                event.displayObject = true;
-                activeTool.dispatchEvent(
-                    EventType.MOUSE_OUT,
-                    event
-                );
-            }
-        });
-
-        div.addEventListener("mousedown", (event) =>
-        {
-            if (event.button) {
-                return ;
-            }
-
-            // 親のイベントを中止する
-            event.stopPropagation();
-
-            const activeTool = Util.$tools.activeTool;
-            if (activeTool) {
-                event.displayObject = true;
-                activeTool.dispatchEvent(
-                    EventType.MOUSE_DOWN,
-                    event
-                );
-            }
-        });
-
-        const matrix = Util.$sceneChange.concatenatedMatrix;
-        const bounds = character.getBounds(matrix);
-
-        let width = (bounds.xMax - bounds.xMin) * Util.$zoomScale;
-        if (!width) {
-            width = 10;
-        }
-
-        let height = (bounds.yMax - bounds.yMin) * Util.$zoomScale;
-        if (!height) {
-            height = 10;
-        }
-
-        divStyle += `width: ${Math.ceil(width)}px;`;
-        divStyle += `height: ${Math.ceil(height)}px;`;
-
-        let tx = Util.$offsetLeft + (Util.$sceneChange.offsetX + bounds.xMin) * Util.$zoomScale;
-        let ty = Util.$offsetTop  + (Util.$sceneChange.offsetY + bounds.yMin) * Util.$zoomScale;
-
-        divStyle += `left: ${tx}px;`;
-        divStyle += `top: ${ty}px;`;
-
-        let canvasStyle = canvas.getAttribute("style");
-        canvasStyle += `width: ${canvas._$width * Util.$zoomScale}px;`;
-        canvasStyle += `height: ${canvas._$height * Util.$zoomScale}px;`;
-        if (character.offsetX) {
-            canvasStyle += `left: ${character.offsetX * Util.$zoomScale}px;`;
-        }
-        if (character.offsetY) {
-            canvasStyle += `top: ${character.offsetY * Util.$zoomScale}px;`;
-        }
-        canvas.setAttribute("style", canvasStyle);
-
-        // mask attach
-        const layer = scene.getLayer(layer_id);
-        if (layer.maskId !== null) {
-
-            const maskLayer = scene.getLayer(layer.maskId);
-            if (!maskLayer) {
-                layer.maskId = null;
-            }
-
-            if (maskLayer && maskLayer.lock && maskLayer._$characters.length) {
-
-                const maskCharacter = maskLayer._$characters[0];
-                maskCharacter.dispose();
-
-                const maskImage  = maskCharacter.draw(Util.$getCanvas());
-                const maskBounds = maskCharacter.getBounds(matrix);
-
-                const x = (maskBounds.xMin - bounds.xMin) * Util.$zoomScale;
-                const y = (maskBounds.yMin - bounds.yMin) * Util.$zoomScale;
-
-                const maskSrc    = maskImage.toDataURL();
-                const maskWidth  = maskImage._$width  * Util.$zoomScale;
-                const maskHeight = maskImage._$height * Util.$zoomScale;
-
-                divStyle += `mask: url(${maskSrc}), none;`;
-                divStyle += `-webkit-mask: url(${maskSrc}), none;`;
-                divStyle += `mask-size: ${maskWidth}px ${maskHeight}px;`;
-                divStyle += `-webkit-mask-size: ${maskWidth}px ${maskHeight}px;`;
-                divStyle += "mask-repeat: no-repeat;";
-                divStyle += "-webkit-mask-repeat: no-repeat;";
-                divStyle += `mask-position: ${x}px ${y}px;`;
-                divStyle += `-webkit-mask-position: ${x}px ${y}px;`;
-                divStyle += `mix-blend-mode: ${canvas.style.mixBlendMode};`;
-                divStyle += `filter: ${canvas.style.filter};`;
-
-            }
-        }
-
-        div.setAttribute("style", divStyle);
-        switch (instance._$type) {
-
-            case InstanceType.MOVIE_CLIP:
-                div.addEventListener("dblclick", (event) =>
-                {
-                    this.changeScene(event);
-                });
-                break;
-
-            case InstanceType.TEXT:
-                {
-                    const borderDiv = document.createElement("div");
-
-                    borderDiv.style.width  = `${width  - 2}px`;
-                    borderDiv.style.height = `${height - 2}px`;
-                    borderDiv.style.pointerEvents = "none";
-
-                    borderDiv.style.position = "absolute";
-                    borderDiv.style.left     = "0px";
-                    borderDiv.style.top      = "0px";
-
-                    borderDiv.style.border = instance._$border
-                        ? "1px solid gray"
-                        : "1px dashed gray";
-
-                    div.appendChild(borderDiv);
-
-                    div.addEventListener("dblclick", (event) =>
-                    {
-                        this.selectText(event);
-                    });
+                if (parent_scene) {
+                    div.dataset.preview = "true";
                 }
-                break;
 
-        }
+                let divStyle = "position: absolute;";
+                divStyle += `pointer-events: ${event};`;
+                if (1 > alpha) {
+                    divStyle += `opacity: ${alpha};`;
+                }
 
-        document
-            .getElementById("stage-area")
-            .appendChild(div);
+                div.addEventListener("mouseover", (event) =>
+                {
+                    // 親のイベントを中止する
+                    event.stopPropagation();
+
+                    const activeTool = Util.$tools.activeTool;
+                    if (activeTool) {
+                        event.displayObject = true;
+                        activeTool.dispatchEvent(
+                            EventType.MOUSE_OVER,
+                            event
+                        );
+                    }
+                });
+
+                div.addEventListener("mouseout", (event) =>
+                {
+                    // 親のイベントを中止する
+                    event.stopPropagation();
+
+                    const activeTool = Util.$tools.activeTool;
+                    if (activeTool) {
+                        event.displayObject = true;
+                        activeTool.dispatchEvent(
+                            EventType.MOUSE_OUT,
+                            event
+                        );
+                    }
+                });
+
+                div.addEventListener("mousedown", (event) =>
+                {
+                    if (event.button) {
+                        return ;
+                    }
+
+                    // 親のイベントを中止する
+                    event.stopPropagation();
+
+                    const activeTool = Util.$tools.activeTool;
+                    if (activeTool) {
+                        event.displayObject = true;
+                        activeTool.dispatchEvent(
+                            EventType.MOUSE_DOWN,
+                            event
+                        );
+                    }
+                });
+
+                const matrix = Util.$sceneChange.concatenatedMatrix;
+                const bounds = character.getBounds(matrix);
+
+                let width = (bounds.xMax - bounds.xMin) * Util.$zoomScale;
+                if (!width) {
+                    width = 10;
+                }
+
+                let height = (bounds.yMax - bounds.yMin) * Util.$zoomScale;
+                if (!height) {
+                    height = 10;
+                }
+
+                divStyle += `width: ${Math.ceil(width)}px;`;
+                divStyle += `height: ${Math.ceil(height)}px;`;
+
+                const offsetX = offset_x === null ? Util.$sceneChange.offsetX : offset_x;
+                const offsetY = offset_y === null ? Util.$sceneChange.offsetY : offset_y;
+                let tx = Util.$offsetLeft + (offsetX + bounds.xMin) * Util.$zoomScale;
+                let ty = Util.$offsetTop  + (offsetY + bounds.yMin) * Util.$zoomScale;
+
+                divStyle += `left: ${tx}px;`;
+                divStyle += `top: ${ty}px;`;
+
+                let canvasStyle = canvas.getAttribute("style");
+                canvasStyle += `width: ${canvas._$width * Util.$zoomScale}px;`;
+                canvasStyle += `height: ${canvas._$height * Util.$zoomScale}px;`;
+                if (character.offsetX) {
+                    canvasStyle += `left: ${character.offsetX * Util.$zoomScale}px;`;
+                }
+                if (character.offsetY) {
+                    canvasStyle += `top: ${character.offsetY * Util.$zoomScale}px;`;
+                }
+                canvas.setAttribute("style", canvasStyle);
+
+                const promises = [];
+
+                // mask attach
+                const layer = scene.getLayer(layer_id);
+                if (layer.maskId !== null) {
+
+                    const maskLayer = scene.getLayer(layer.maskId);
+                    if (!maskLayer) {
+                        layer.maskId = null;
+                    }
+
+                    if (maskLayer && maskLayer.lock
+                        && maskLayer._$characters.length
+                    ) {
+
+                        const maskCharacter = maskLayer._$characters[0];
+                        maskCharacter.dispose();
+
+                        promises.push(maskCharacter
+                            .draw(Util.$getCanvas())
+                            .then((mask_canvas) =>
+                            {
+                                const maskBounds = maskCharacter.getBounds(matrix);
+
+                                const x = (maskBounds.xMin - bounds.xMin) * Util.$zoomScale;
+                                const y = (maskBounds.yMin - bounds.yMin) * Util.$zoomScale;
+
+                                const maskSrc    = mask_canvas.toDataURL();
+                                const maskWidth  = mask_canvas._$width  * Util.$zoomScale;
+                                const maskHeight = mask_canvas._$height * Util.$zoomScale;
+
+                                divStyle += `mask: url(${maskSrc}), none;`;
+                                divStyle += `-webkit-mask: url(${maskSrc}), none;`;
+                                divStyle += `mask-size: ${maskWidth}px ${maskHeight}px;`;
+                                divStyle += `-webkit-mask-size: ${maskWidth}px ${maskHeight}px;`;
+                                divStyle += "mask-repeat: no-repeat;";
+                                divStyle += "-webkit-mask-repeat: no-repeat;";
+                                divStyle += `mask-position: ${x}px ${y}px;`;
+                                divStyle += `-webkit-mask-position: ${x}px ${y}px;`;
+                                divStyle += `mix-blend-mode: ${canvas.style.mixBlendMode};`;
+                                divStyle += `filter: ${canvas.style.filter};`;
+
+                                Util.$poolCanvas(mask_canvas);
+                            }));
+                    }
+                }
+
+                switch (instance._$type) {
+
+                    case InstanceType.MOVIE_CLIP:
+                        div.addEventListener("dblclick", (event) =>
+                        {
+                            this.changeScene(event);
+                        });
+                        break;
+
+                    case InstanceType.TEXT:
+                        {
+                            const borderDiv = document.createElement("div");
+
+                            borderDiv.style.width  = `${width  - 2}px`;
+                            borderDiv.style.height = `${height - 2}px`;
+                            borderDiv.style.pointerEvents = "none";
+
+                            borderDiv.style.position = "absolute";
+                            borderDiv.style.left     = "0px";
+                            borderDiv.style.top      = "0px";
+
+                            borderDiv.style.border = instance._$border
+                                ? "1px solid gray"
+                                : "1px dashed gray";
+
+                            div.appendChild(borderDiv);
+
+                            div.addEventListener("dblclick", (event) =>
+                            {
+                                this.selectText(event);
+                            });
+                        }
+                        break;
+
+                }
+
+                return Promise
+                    .all(promises)
+                    .then(() =>
+                    {
+                        div.setAttribute("style", divStyle);
+                        return Promise.resolve(div);
+                    });
+            });
     }
 
     /**

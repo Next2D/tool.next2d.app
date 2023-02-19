@@ -160,7 +160,7 @@ class Video extends Instance
         this._$video.style.height = `${height}px`;
 
         this._$video.controls = true;
-        return this._$video;
+        return Promise.resolve(this._$video);
     }
 
     /**

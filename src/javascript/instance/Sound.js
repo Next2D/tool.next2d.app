@@ -61,13 +61,13 @@ class Sound extends Instance
      * @description プレビュー画面に表示する、HTMLAudioElementを返す
      *              Returns an HTMLAudioElement to be displayed on the preview screen.
      *
-     * @return {HTMLAudioElement}
+     * @return {Promise}
      * @method
      * @public
      */
     getPreview ()
     {
-        return this._$audio;
+        return Promise.resolve(this._$audio);
     }
 
     /**

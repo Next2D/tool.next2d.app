@@ -409,7 +409,7 @@ class Instance
      * @param  {object}  [range = null]
      * @param  {number}  [static_frame = 0]
      * @param  {boolean} [preview = false]
-     * @return {CanvasRenderingContext2D}
+     * @return {Promise}
      * @method
      * @public
      */
@@ -417,14 +417,13 @@ class Instance
         canvas, width, height, place,
         range = null, static_frame = 0, preview = false
     ) {
+
         // empty image
         if (!width || !height) {
             canvas.width  = 0;
             canvas.height = 0;
-            return canvas.getContext("2d");
+            return Promise.resolve(canvas);
         }
-
-        const { Matrix } = window.next2d.geom;
 
         // ライブラリからplayer用のオブジェクトを作成
         const instance = this.createInstance(
@@ -453,11 +452,13 @@ class Instance
             object.width, object.height, preview
         );
 
-        let sacle = window.devicePixelRatio;
-        let ratio = window.devicePixelRatio;
-        if (!preview) {
-            ratio *= Util.$zoomScale;
-        }
+        canvas.width  = object.width;
+        canvas.height = object.height;
+
+        const sacle = window.devicePixelRatio;
+        const ratio = !preview
+            ? window.devicePixelRatio * Util.$zoomScale
+            : window.devicePixelRatio;
 
         const drawBounds = container.getBounds(container);
 
@@ -470,15 +471,6 @@ class Instance
         if (0 > object.offsetY) {
             ty -= object.offsetY * ratio;
         }
-
-        // playerで描画を実行
-        bitmapData.draw(container, new Matrix(sacle, 0, 0, sacle, tx, ty));
-
-        // 指定のcanvasに描画
-        const context = bitmapData.drawFromCanvas(canvas);
-
-        // player側のメモリを解放
-        bitmapData.dispose();
 
         canvas._$width   = object.width;
         canvas._$height  = object.height;
@@ -494,7 +486,19 @@ class Instance
         canvas._$offsetX = 0 > object.offsetX ? object.offsetX : 0;
         canvas._$offsetY = 0 > object.offsetY ? object.offsetY : 0;
 
-        return context;
+        // playerで描画を実行
+        return new Promise((resolve) =>
+        {
+            const { Matrix } = window.next2d.geom;
+
+            bitmapData.draw(
+                container,
+                new Matrix(sacle, 0, 0, sacle, tx, ty),
+                null,
+                canvas,
+                resolve
+            );
+        });
     }
 
     /**
@@ -615,8 +619,9 @@ class Instance
      * @description 幅と高さを指定して、BitmapDataクラスを生成
      *              Generate BitmapData class by specifying width and height
      *
-     * @param  {number} width
-     * @param  {number} height
+     * @param  {number}  width
+     * @param  {number}  height
+     * @param  {boolean} [preview=false]
      * @return {next2d.display.BitmapData}
      * @method
      * @public
@@ -641,14 +646,14 @@ class Instance
      * @description プレビュー用のImageクラスを生成
      *              Generate Image class for preview
      *
-     * @return {HTMLImageElement}
+     * @return {Promise}
      * @method
      * @public
      */
     getPreview ()
     {
-        if (this.type === InstanceType.FOLDER) {
-            return new Image();
+        if (this._$type === InstanceType.FOLDER) {
+            return Promise.resolve();
         }
 
         const bounds = this.getBounds([1, 0, 0, 1, 0, 0]);
@@ -657,7 +662,7 @@ class Instance
         let width  = Math.abs(bounds.xMax - bounds.xMin);
         let height = Math.abs(bounds.yMax - bounds.yMin);
         if (!width || !height) {
-            return new Image();
+            return Promise.resolve();
         }
 
         let scaleX   = 1;
@@ -678,28 +683,28 @@ class Instance
             height = height * scaleX | 0;
         }
 
-        const canvas = Util.$getCanvas();
-        this.draw(
-            canvas,
-            Math.ceil(width),
-            Math.ceil(height),
+        return this
+            .draw(
+                Util.$getCanvas(),
+                Math.ceil(width),
+                Math.ceil(height),
+                {
+                    "frame": 1,
+                    "matrix": [scaleY * scaleX, 0, 0, scaleY * scaleX, 0, 0],
+                    "colorTransform": [1, 1, 1, 1, 0, 0, 0, 0],
+                    "blendMode": "normal",
+                    "filter": []
+                },
+                null, 0, true
+            )
+            .then((canvas) =>
             {
-                "frame": 1,
-                "matrix": [scaleY * scaleX, 0, 0, scaleY * scaleX, 0, 0],
-                "colorTransform": [1, 1, 1, 1, 0, 0, 0, 0],
-                "blendMode": "normal",
-                "filter": []
-            },
-            null, 0, true
-        );
+                const minHeight = Math.min(150, height);
+                canvas.style.width  = `${width * minHeight / height}px`;
+                canvas.style.height = `${minHeight}px`;
 
-        if (canvas.height !== height) {
-            const height = Math.min(150, canvas.height);
-            canvas.style.width  = `${canvas.width * height / canvas.height}px`;
-            canvas.style.height = `${height}px`;
-        }
-
-        return canvas;
+                return canvas;
+            });
     }
 
     /**

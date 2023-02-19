@@ -266,7 +266,7 @@ class Layer
      *              DisplayObject placed in the specified frame on the screen
      *
      * @param  {number} [frame=1]
-     * @return {void}
+     * @return {Promise}
      * @method
      * @public
      */
@@ -274,12 +274,13 @@ class Layer
     {
         // 非表示のレイヤーはスキップ
         if (this.disable) {
-            return ;
+            return Promise.resolve();
         }
 
         const element = document
             .getElementById("timeline-onion-skin");
 
+        const promises = [];
         if (element.classList.contains("onion-skin-active")
             && Util.$timelinePlayer.stopFlag
         ) {
@@ -323,7 +324,9 @@ class Layer
                     const character = characters[idx];
                     character.dispose();
 
-                    Util.$screen.appendOnionCharacter(character, this.id);
+                    promises.push(
+                        Util.$screen.appendOnionCharacter(character, this.id)
+                    );
                 }
             }
 
@@ -342,31 +345,36 @@ class Layer
                     const character = characters[idx];
                     character.dispose();
 
-                    Util.$screen.appendCharacter(
-                        character, cacheFrame, this.id, event
+                    promises.push(
+                        Util.$screen.appendCharacter(
+                            character, cacheFrame, this.id, event
+                        )
                     );
                 }
-
             }
 
         } else {
 
             const characters = this.getActiveCharacter(frame);
-            if (characters.length) {
+            if (!characters.length) {
+                return Promise.resolve();
+            }
 
-                if (characters.length > 1) {
-                    this.sort(characters, frame);
-                }
+            if (characters.length > 1) {
+                this.sort(characters, frame);
+            }
 
-                const event = this.lock ? "none" : "auto";
-                for (let idx = 0; idx < characters.length; ++idx) {
+            const event = this.lock ? "none" : "auto";
+            for (let idx = 0; idx < characters.length; ++idx) {
+                promises.push(
                     Util.$screen.appendCharacter(
                         characters[idx], frame, this.id, event
-                    );
-                }
-
+                    )
+                );
             }
         }
+
+        return Promise.all(promises);
     }
 
     /**

@@ -275,22 +275,9 @@ class MovieClip extends Instance
             return ;
         }
 
-        // ステージのelementを全て削除
-        Util.$screen.clearStageArea();
+        this.startSound(frame);
 
-        const pointers = [];
-        const children = element.children;
-        for (let idx = 0; children.length > idx; ++idx) {
-
-            const node = children[idx];
-            if (!node.dataset.shapePointer) {
-                continue;
-            }
-
-            node.remove();
-            pointers.push(node);
-            --idx;
-        }
+        const promises = [];
 
         // 子孫のMovieClipの時は先祖のシーン情報を透明にして描画
         if (Util.$sceneChange.matrix.length) {
@@ -358,9 +345,13 @@ class MovieClip extends Instance
                         }
                         character.dispose();
 
-                        Util.$screen.appendCharacter(
-                            character, parentFrame, layer.id,
-                            "none", instance, 0.25
+                        promises.push(
+                            Util.$screen.appendCharacter(
+                                character, parentFrame, layer.id,
+                                "none", instance, 0.25,
+                                Util.$sceneChange.offsetX,
+                                Util.$sceneChange.offsetY
+                            )
                         );
                     }
                 }
@@ -374,51 +365,92 @@ class MovieClip extends Instance
             Util.$sceneChange.offsetY  = offsetY;
         }
 
-        this.startSound(frame);
-
         const layers = Array.from(this._$layers.values());
         while (layers.length) {
             const layer = layers.pop();
             if (layer.mode === LayerMode.MASK && layer.lock) {
                 continue;
             }
-            layer.appendCharacter(frame);
+            promises.push(layer.appendCharacter(frame));
         }
+
+        Promise
+            .all(promises)
+            .then((values) =>
+            {
+                // ステージのelementを全て削除
+                Util.$screen.clearStageArea();
+
+                const pointers = [];
+                const children = element.children;
+                for (let idx = 0; children.length > idx; ++idx) {
+
+                    const node = children[idx];
+                    if (!node.dataset.shapePointer) {
+                        continue;
+                    }
+
+                    node.remove();
+                    pointers.push(node);
+                    --idx;
+                }
+
+                for (let idx = 0; values.length > idx; ++idx) {
+
+                    const value = values[idx];
+                    if (!value) {
+                        continue;
+                    }
+
+                    if (!Array.isArray(value)) {
+                        element.appendChild(value);
+                        continue;
+                    }
+
+                    for (let idx = 0; value.length > idx; ++idx) {
+                        const node = value[idx];
+                        if (!node) {
+                            continue;
+                        }
+                        element.appendChild(node);
+                    }
+                }
+
+                // スクリーンエリアの変形Elementの配置を再計算
+                // 非表示の時は何もしない
+                Util.$transformController.relocation();
+                Util.$gridController.relocation();
+
+                for (let idx = 0; pointers.length > idx; ++idx) {
+                    element.appendChild(pointers[idx]);
+                }
+
+                // tweenのポインターを再配置
+                Util
+                    .$tweenController
+                    .clearPointer()
+                    .relocationPointer();
+
+                if (this.id) {
+
+                    const div = document.createElement("div");
+                    div.setAttribute("class", "standard-point");
+
+                    const left = Util.$offsetLeft + Util.$sceneChange.offsetX * Util.$zoomScale - 6;
+                    const top  = Util.$offsetTop  + Util.$sceneChange.offsetY * Util.$zoomScale - 6;
+                    div.setAttribute(
+                        "style", `left: ${left}px; top: ${top}px;`
+                    );
+                    div.dataset.child = "true";
+
+                    document
+                        .getElementById("stage-area")
+                        .appendChild(div);
+
+                }
+            });
 
         this._$currentFrame = frame;
-
-        // スクリーンエリアの変形Elementの配置を再計算
-        // 非表示の時は何もしない
-        Util.$transformController.relocation();
-        Util.$gridController.relocation();
-
-        for (let idx = 0; pointers.length > idx; ++idx) {
-            element.appendChild(pointers[idx]);
-        }
-
-        // tweenのポインターを再配置
-        Util
-            .$tweenController
-            .clearPointer()
-            .relocationPointer();
-
-        if (this.id) {
-
-            const div = document.createElement("div");
-            div.setAttribute("class", "standard-point");
-
-            const left = Util.$offsetLeft + Util.$sceneChange.offsetX * Util.$zoomScale - 6;
-            const top  = Util.$offsetTop  + Util.$sceneChange.offsetY * Util.$zoomScale - 6;
-            div.setAttribute(
-                "style", `left: ${left}px; top: ${top}px;`
-            );
-            div.dataset.child = "true";
-
-            document
-                .getElementById("stage-area")
-                .appendChild(div);
-
-        }
     }
 
     /**

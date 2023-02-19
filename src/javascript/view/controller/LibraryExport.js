@@ -227,15 +227,15 @@ class LibraryExport extends BaseController
                     const zip = new JSZip();
                     for (let frame = this._$startFrame; this._$endFrame >= frame; ++frame) {
 
-                        const context = this.getContext(frame);
+                        const canvas = this.getCanvas(frame);
 
                         zip.file(
                             `${name}_frame_${frame}.${ext}`,
-                            context.canvas.toDataURL(`image/${ext}`, 1).replace(/^.*,/, ""),
+                            canvas.toDataURL(`image/${ext}`, 1).replace(/^.*,/, ""),
                             { "base64" : true }
                         );
 
-                        Util.$poolCanvas(context.canvas);
+                        Util.$poolCanvas(canvas);
                     }
 
                     zip
@@ -294,10 +294,9 @@ class LibraryExport extends BaseController
 
             default:
                 {
-                    const context   = this.getContext();
                     const anchor    = document.createElement("a");
                     anchor.download = `${name}.${ext}`;
-                    anchor.href     = context.canvas.toDataURL(`image/${ext}`, 1);
+                    anchor.href     = this.getCanvas().toDataURL(`image/${ext}`, 1);
                     anchor.click();
                 }
                 break;
@@ -748,8 +747,7 @@ class LibraryExport extends BaseController
 
             default:
                 {
-                    const context = this.getContext(this._$currentFrame, true);
-                    const canvas  = context.canvas;
+                    const canvas = this.getCanvas(this._$currentFrame, true);
 
                     const ratio = window.devicePixelRatio;
                     canvas.style.width  = `${canvas.width  / ratio}px`;
@@ -769,11 +767,11 @@ class LibraryExport extends BaseController
      *
      * @param  {number} frame
      * @param  {boolean} [preview=false]
-     * @return {CanvasRenderingContext2D}
+     * @return {HTMLCanvasElement}
      * @method
      * @public
      */
-    getContext (frame = 1, preview = false)
+    getCanvas (frame = 1, preview = false)
     {
         const currentFrame = Util.$currentFrame;
         const zoomScale    = Util.$zoomScale;
@@ -811,7 +809,7 @@ class LibraryExport extends BaseController
             yScale *= adjScaleY;
         }
 
-        const context = this._$instance.draw(
+        const canvas = this._$instance.draw(
             Util.$getCanvas(),
             Math.ceil(width * xScale),
             Math.ceil(height * yScale),
@@ -829,7 +827,7 @@ class LibraryExport extends BaseController
         Util.$zoomScale    = zoomScale;
         Util.$currentFrame = currentFrame;
 
-        return context;
+        return canvas;
     }
 }
 

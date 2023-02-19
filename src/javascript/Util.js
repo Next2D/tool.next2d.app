@@ -74,20 +74,14 @@ Util.$getCanvas = () =>
 };
 
 /**
- * @param {CanvasRenderingContext2D} context
+ * @param {HTMLCanvasElement} canvas
  * @static
  */
-Util.$poolCanvas = (context) =>
+Util.$poolCanvas = (canvas) =>
 {
-    if (!(context instanceof CanvasRenderingContext2D)) {
+    if (!(canvas instanceof HTMLCanvasElement)) {
         return ;
     }
-
-    const canvas = context.canvas;
-    const width  = canvas.width;
-    const height = canvas.height;
-
-    context.clearRect(0, 0, width + 1, height + 1);
 
     // canvas reset
     canvas.width = canvas.height = 1;
@@ -767,6 +761,25 @@ Util.$initialize = () =>
     const LanguageClass = Util.$languages.get(language);
     Util.$currentLanguage = new LanguageClass();
 
+    const width  = Stage.STAGE_DEFAULT_WIDTH;
+    const height = Stage.STAGE_DEFAULT_HEIGHT;
+    const fps    = Stage.STAGE_DEFAULT_FPS;
+
+    const previewDisplay = document.getElementById("preview-display");
+    if (previewDisplay) {
+        previewDisplay.style.width  = `${width}px`;
+        previewDisplay.style.height = `${height}px`;
+    }
+
+    if ("next2d" in window) {
+        Util.$root = window
+            .next2d
+            .createRootMovieClip(width, height, fps, {
+                "tagId": "preview-display"
+            });
+
+        Util.$root.stage._$player.stop();
+    }
     // load local data
     Util.$loadSaveData();
 
@@ -818,26 +831,6 @@ Util.$initialize = () =>
         .documentElement
         .style
         .setProperty("--screen-height", `${window.innerHeight - 50}px`);
-
-    const width  = Stage.STAGE_DEFAULT_WIDTH;
-    const height = Stage.STAGE_DEFAULT_HEIGHT;
-    const fps    = Stage.STAGE_DEFAULT_FPS;
-
-    const previewDisplay = document.getElementById("preview-display");
-    if (previewDisplay) {
-        previewDisplay.style.width  = `${width}px`;
-        previewDisplay.style.height = `${height}px`;
-    }
-
-    if ("next2d" in window) {
-        Util.$root = window
-            .next2d
-            .createRootMovieClip(width, height, fps, {
-                "tagId": "preview-display"
-            });
-
-        Util.$root.stage._$player.stop();
-    }
 
     const previewStop = document.getElementById("preview-stop");
     if (previewStop) {
@@ -926,14 +919,8 @@ Util.$showPreview = () =>
     stopElement.addEventListener("click", Util.$hidePreview);
 
     const stage = Util.$root.stage;
-    stage.frameRate = document.getElementById("stage-fps").value | 0;
-
     const player  = stage._$player;
-    player.width  = workSpace.stage.width;
-    player.height = workSpace.stage.height;
 
-    // fixed logic
-    player._$resize();
     stage.clearGlobalVariable();
     stage._$events = new Map();
     player._$broadcastEvents = new Map();
@@ -959,48 +946,24 @@ Util.$showPreview = () =>
 
             player.width  = data.stage.width;
             player.height = data.stage.height;
-            player.stage.frameRate = data.stage.fps;
+            player.stage._$frameRate = data.stage.fps;
 
-            const color = Util.$intToRGB(
-                `0x${data.stage.bgColor.slice(1)}` | 0
-            );
+            // fixed logic
+            player._$resize();
 
-            player._$context._$setColor(
-                color.R / 255,
-                color.G / 255,
-                color.B / 255,
-                1
-            );
-
-            player._$backgroundColor = [
-                color.R / 255,
-                color.G / 255,
-                color.B / 255,
-                1
-            ];
-
-            Util.$root = null;
-            Util.$root = loaderInfo.content;
             while (stage.numChildren) {
                 stage.removeChildAt(0);
             }
 
+            Util.$root = null;
+            Util.$root = loaderInfo.content;
             stage.addChild(Util.$root);
 
+            player._$setBackgroundColor(
+                `0xff${data.stage.bgColor.slice(1)}` | 0
+            );
+
             player._$cacheStore.reset();
-
-            const { BlendMode } = window.next2d.display;
-
-            const context = player._$context;
-            context._$globalAlpha              = 1;
-            context._$globalCompositeOperation = BlendMode.NORMAL;
-            context._$imageSmoothingEnabled    = false;
-
-            context.frameBuffer.unbind();
-            context.setTransform(1, 0, 0, 1, 0, 0);
-            context.clearRect(0, 0, context.canvas.width, context.canvas.height);
-            context._$bind(player._$buffer);
-
             player.play();
         });
 
@@ -1034,10 +997,14 @@ Util.$hidePreview = () =>
         Util.$keyLock = false;
     }
 
+    const root = Util.$root;
+    const player = root.stage._$player;
     while (Util.$root.numChildren) {
-        Util.$root.removeChild(Util.$root.getChildAt(0));
+        root.removeChildAt(0);
     }
-    Util.$root.stage._$player.stop();
+
+    player._$setBackgroundColor();
+    player.stop();
 };
 
 /**

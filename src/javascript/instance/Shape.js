@@ -1561,6 +1561,7 @@ class Shape extends Instance
         const { Shape, Graphics } = window.next2d.display;
 
         const shape = new Shape();
+        shape._$characterId = this.id;
 
         if (this._$grid) {
             const { Rectangle } = window.next2d.geom;
