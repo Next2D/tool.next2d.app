@@ -240,11 +240,11 @@ describe("Character.js function test", () =>
         Util.$workSpaces.push(workSpaces);
 
         const character = new Character();
-        character._$context = "test";
-        expect(character._$context).toBe("test");
+        character._$canvas = "test";
+        expect(character._$canvas).toBe("test");
 
         character.dispose();
-        expect(character._$context).toBe(null);
+        expect(character._$canvas).toBe(null);
 
         Util.$workSpaces.length = 0;
     });

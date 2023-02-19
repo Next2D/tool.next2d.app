@@ -81,7 +81,12 @@ describe("Video.js function test", () =>
             "height": 315
         });
 
-        expect(video.getPreview() instanceof HTMLVideoElement).toBe(true);
+        video
+            .getPreview()
+            .then((element) =>
+            {
+                expect(element instanceof HTMLVideoElement).toBe(true);
+            });
     });
 
     it("function getBounds and bounds test", () =>

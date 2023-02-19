@@ -1080,10 +1080,15 @@ class TweenController extends BaseController
             return ;
         }
 
+        const workSpace = Util.$currentWorkSpace();
+        if (!workSpace) {
+            return ;
+        }
+
         const concatenatedMatrix = Util.$sceneChange.concatenatedMatrix;
 
         const frame = Util.$timelineFrame.currentFrame;
-        const scene = Util.$currentWorkSpace().scene;
+        const scene = workSpace.scene;
         for (let idx = 0; idx < activeElements.length; ++idx) {
 
             const element = activeElements[idx];

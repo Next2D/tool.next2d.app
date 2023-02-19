@@ -30,7 +30,12 @@ describe("Sound.js function test", () =>
             "buffer": new Uint8Array([1,1,1,1,101,1,1,110])
         });
 
-        expect(sound.getPreview() instanceof HTMLAudioElement).toBe(true);
+        sound
+            .getPreview()
+            .then((element) =>
+            {
+                expect(element instanceof HTMLAudioElement).toBe(true);
+            });
     });
 
     it("function toObject test", () =>
