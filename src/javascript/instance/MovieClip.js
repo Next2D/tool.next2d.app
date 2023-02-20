@@ -403,16 +403,18 @@ class MovieClip extends Instance
                     }
 
                     if (!Array.isArray(value)) {
-                        element.appendChild(value);
+                        value.div.appendChild(value.canvas);
+                        element.appendChild(value.div);
                         continue;
                     }
 
                     for (let idx = 0; value.length > idx; ++idx) {
-                        const node = value[idx];
-                        if (!node) {
+                        const object = value[idx];
+                        if (!object) {
                             continue;
                         }
-                        element.appendChild(node);
+                        object.div.appendChild(object.canvas);
+                        element.appendChild(object.div);
                     }
                 }
 

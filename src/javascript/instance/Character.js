@@ -711,6 +711,7 @@ class Character
             if (canvas instanceof HTMLCanvasElement) {
                 Util.$poolCanvas(canvas);
             }
+
             return Promise.resolve(this._$canvas);
         }
 
@@ -1639,7 +1640,7 @@ class Character
             return ;
         }
 
-        Util.$poolCanvas(this._$canvas);
+        // Util.$poolCanvas(this._$canvas);
         this._$canvas = null;
     }
 }

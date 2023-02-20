@@ -1454,7 +1454,9 @@ class ArrowTool extends BaseTool
             let divStyle = "position: absolute;";
             divStyle += `pointer-events: ${element.dataset.pointer};`;
 
+            const promises = [];
             if (layer.maskId !== null) {
+
                 const maskLayer = scene.getLayer(layer.maskId);
                 if (maskLayer.lock && maskLayer._$characters.length) {
 
@@ -1463,45 +1465,55 @@ class ArrowTool extends BaseTool
                     const maskCharacter = maskLayer._$characters[0];
                     maskCharacter.dispose();
 
-                    const maskImage     = maskCharacter.draw(Util.$getCanvas());
-                    const maskBounds    = maskCharacter.getBounds(matrix);
+                    promises.push(maskCharacter
+                        .draw(Util.$getCanvas())
+                        // eslint-disable-next-line no-loop-func
+                        .then((mask_canvas) =>
+                        {
+                            const maskBounds = maskCharacter.getBounds(matrix);
 
-                    const maskSrc    = maskImage.toDataURL();
-                    const maskWidth  = maskImage._$width  * Util.$zoomScale;
-                    const maskHeight = maskImage._$height * Util.$zoomScale;
+                            const maskSrc    = mask_canvas.toDataURL();
+                            const maskWidth  = mask_canvas._$width  * Util.$zoomScale;
+                            const maskHeight = mask_canvas._$height * Util.$zoomScale;
 
-                    const x = (maskBounds.xMin - bounds.xMin) * Util.$zoomScale;
-                    const y = (maskBounds.yMin - bounds.yMin) * Util.$zoomScale;
+                            const x = (maskBounds.xMin - bounds.xMin) * Util.$zoomScale;
+                            const y = (maskBounds.yMin - bounds.yMin) * Util.$zoomScale;
 
-                    divStyle += `mask: url(${maskSrc}), none;`;
-                    divStyle += `-webkit-mask: url(${maskSrc}), none;`;
-                    divStyle += `mask-size: ${maskWidth}px ${maskHeight}px;`;
-                    divStyle += `-webkit-mask-size: ${maskWidth}px ${maskHeight}px;`;
-                    divStyle += "mask-repeat: no-repeat;";
-                    divStyle += "-webkit-mask-repeat: no-repeat;";
-                    divStyle += `mask-position: ${x}px ${y}px;`;
-                    divStyle += `-webkit-mask-position: ${x}px ${y}px;`;
+                            divStyle += `mask: url(${maskSrc}), none;`;
+                            divStyle += `-webkit-mask: url(${maskSrc}), none;`;
+                            divStyle += `mask-size: ${maskWidth}px ${maskHeight}px;`;
+                            divStyle += `-webkit-mask-size: ${maskWidth}px ${maskHeight}px;`;
+                            divStyle += "mask-repeat: no-repeat;";
+                            divStyle += "-webkit-mask-repeat: no-repeat;";
+                            divStyle += `mask-position: ${x}px ${y}px;`;
+                            divStyle += `-webkit-mask-position: ${x}px ${y}px;`;
 
-                    const image = character.draw(Util.$getCanvas());
-                    divStyle += `mix-blend-mode: ${image.style.mixBlendMode};`;
-                    divStyle += `filter: ${image.style.filter};`;
-
+                            const canvas = character._$canvas;
+                            divStyle += `mix-blend-mode: ${canvas.style.mixBlendMode};`;
+                            divStyle += `filter: ${canvas.style.filter};`;
+                        }));
                 }
             }
 
-            const left = Util.$offsetLeft + (Util.$sceneChange.offsetX + bounds.xMin) * Util.$zoomScale;
-            const top  = Util.$offsetTop  + (Util.$sceneChange.offsetY + bounds.yMin) * Util.$zoomScale;
+            Promise
+                .all(promises)
+                // eslint-disable-next-line no-loop-func
+                .then(() =>
+                {
+                    const left = Util.$offsetLeft + (Util.$sceneChange.offsetX + bounds.xMin) * Util.$zoomScale;
+                    const top  = Util.$offsetTop  + (Util.$sceneChange.offsetY + bounds.yMin) * Util.$zoomScale;
 
-            divStyle += `left: ${left}px;`;
-            divStyle += `top: ${top}px;`;
-            element.setAttribute("style", divStyle);
+                    divStyle += `left: ${left}px;`;
+                    divStyle += `top: ${top}px;`;
+                    element.setAttribute("style", divStyle);
 
-            // move resize rect
-            xMin = Math.min(xMin, character.x);
-            yMin = Math.min(yMin, character.y);
+                    // move resize rect
+                    xMin = Math.min(xMin, character.x);
+                    yMin = Math.min(yMin, character.y);
 
-            // tweenの座標を再計算してポインターを再配置
-            character.relocationTween(frame);
+                    // tweenの座標を再計算してポインターを再配置
+                    character.relocationTween(frame);
+                });
         }
 
         // 移動位置を更新

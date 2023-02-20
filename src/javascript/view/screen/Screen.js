@@ -707,7 +707,6 @@ class Screen extends BaseScreen
             .then((canvas) =>
             {
                 const div = document.createElement("div");
-                div.appendChild(canvas);
 
                 div.id = `character-${character.id}`;
                 div.dataset.characterId  = `${character.id}`;
@@ -853,7 +852,7 @@ class Screen extends BaseScreen
                                 divStyle += `mix-blend-mode: ${canvas.style.mixBlendMode};`;
                                 divStyle += `filter: ${canvas.style.filter};`;
 
-                                Util.$poolCanvas(mask_canvas);
+                                maskCharacter.dispose();
                             }));
                     }
                 }
@@ -899,7 +898,10 @@ class Screen extends BaseScreen
                     .then(() =>
                     {
                         div.setAttribute("style", divStyle);
-                        return Promise.resolve(div);
+                        return Promise.resolve({
+                            "div": div,
+                            "canvas": canvas
+                        });
                     });
             });
     }

@@ -1286,6 +1286,8 @@ class Shape extends Instance
                 character.dispose();
             }
         }
+
+        this._$created = false;
     }
 
     /**
@@ -1654,6 +1656,10 @@ class Shape extends Instance
 
             graphics._$recode = this._$recodes.slice(0);
 
+        }
+
+        if (!this._$created) {
+            this._$created = true;
         }
 
         return shape;

@@ -188,8 +188,8 @@ class StageController extends BaseController
         const stage     = document.getElementById("stage");
         const workSpace = Util.$currentWorkSpace();
 
-        stageArea.style.width = `${value + window.screen.width}px`;
-        stage.style.width     = `${value}px`;
+        stageArea.style.width = `${value * Util.$zoomScale + window.screen.width}px`;
+        stage.style.width     = `${value * Util.$zoomScale}px`;
         workSpace.stage.width = value;
 
         Util.$offsetLeft = stage.offsetLeft;
@@ -218,8 +218,8 @@ class StageController extends BaseController
         const stage     = document.getElementById("stage");
         const workSpace = Util.$currentWorkSpace();
 
-        stageArea.style.height = `${value + window.screen.height}px`;
-        stage.style.height     = `${value}px`;
+        stageArea.style.height = `${value * Util.$zoomScale + window.screen.height}px`;
+        stage.style.height     = `${value * Util.$zoomScale}px`;
         workSpace.stage.height = value;
 
         Util.$offsetLeft = stage.offsetLeft;

@@ -69,7 +69,7 @@ Util.$hitContext = canvas.getContext("2d");
 Util.$getCanvas = () =>
 {
     return Util.$canvases.length
-        ? Util.$canvases.pop()
+        ? Util.$canvases.shift()
         : document.createElement("canvas");
 };
 
