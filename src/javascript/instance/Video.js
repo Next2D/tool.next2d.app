@@ -48,15 +48,15 @@ class Video extends Instance
 
         const start = (event) =>
         {
-            event.target.removeEventListener("canplaythrough", start);
+            const video = event.target;
 
-            event.target.play();
-            event.target.currentTime = 1;
-            event.target.pause();
+            video.removeEventListener("canplaythrough", start);
 
-            this._$loaded = true;
+            video.play();
+            video.currentTime = 0;
+            video.pause();
+
             setTimeout(() => { this.delayImage() }, 150);
-
         };
         this._$video.addEventListener("canplaythrough", start);
 
@@ -404,18 +404,7 @@ class Video extends Instance
         video._$instanceId  = this._$instanceId;
         video._$characterId = this.id;
         video._$video       = this._$video;
-
-        if (this._$loaded) {
-            // const context = Util.$root.stage._$player._$context;
-
-            const currentFrame = Util.$timelineFrame.currentFrame;
-
-            video._$video.currentTime = currentFrame / 60;
-
-            // video._$texture = context
-            //     .frameBuffer
-            //     .createTextureFromVideo(video._$video, video._$smoothing);
-        }
+        video._$createContext();
 
         return video;
     }
@@ -430,6 +419,7 @@ class Video extends Instance
      */
     delayImage ()
     {
+        this._$loaded = true;
         for (let idx = 0; idx < this._$queue.length; ++idx) {
             const object = this._$queue[idx];
             this.draw(
@@ -451,7 +441,7 @@ class Video extends Instance
      * @param  {object}  [range = null]
      * @param  {number}  [static_frame = 0]
      * @param  {boolean} [preview = false]
-     * @return {CanvasRenderingContext2D}
+     * @return {Promise}
      * @method
      * @public
      */
@@ -459,28 +449,30 @@ class Video extends Instance
         canvas, width, height, place,
         range = null, static_frame = 0, preview = false
     ) {
-
-        return super
-            .draw(
-                canvas, width, height, place,
-                range, static_frame, preview
-            )
-            .then((canvas) =>
+        return new Promise((resolve) =>
+        {
+            this._$video.currentTime = Util.$timelineFrame.currentFrame / 60;
+            const loop = () =>
             {
                 if (this._$loaded) {
-                    return Promise.resolve(canvas);
+                    resolve();
+                } else {
+                    requestAnimationFrame(loop);
                 }
-
-                this._$queue.push({
-                    "canvas": canvas,
-                    "width": width,
-                    "height": height,
-                    "place": place,
-                    "range": range,
-                    "staticFrame": static_frame
-                });
-
-                return Promise.resolve(canvas);
+            };
+            loop();
+        })
+            .then(() =>
+            {
+                return super
+                    .draw(
+                        canvas, width, height, place,
+                        range, static_frame, preview
+                    )
+                    .then((canvas) =>
+                    {
+                        return Promise.resolve(canvas);
+                    });
             });
     }
 }

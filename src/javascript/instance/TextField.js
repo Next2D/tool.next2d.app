@@ -897,7 +897,7 @@ class TextField extends Instance
      * @param  {object}  [range = null]
      * @param  {number}  [static_frame = 0]
      * @param  {boolean} [preview = false]
-     * @return {CanvasRenderingContext2D}
+     * @return {Promise}
      * @method
      * @public
      */
