@@ -14,12 +14,13 @@ class Instance
      */
     constructor (object)
     {
-        this._$id       = object.id;
-        this._$name     = object.name;
-        this._$type     = object.type;
-        this._$symbol   = object.symbol || "";
-        this._$folderId = object.folderId | 0;
-        this._$created  = false;
+        this._$id         = object.id;
+        this._$name       = object.name;
+        this._$type       = object.type;
+        this._$symbol     = object.symbol || "";
+        this._$folderId   = object.folderId | 0;
+        this._$created    = false;
+        this._$instanceId = instanceId++;
     }
 
     /**
@@ -445,8 +446,10 @@ class Instance
         );
 
         // フィルターの描画反映を計算してセット
-        const object     = this.calcFilter(width, height, place);
-        instance.filters = object.filters;
+        const object = this.calcFilter(width, height, place);
+        if (object.filters.length) {
+            instance._$transform._$filters = object.filters;
+        }
 
         // BitmapDataオブジェクトを作成
         const bitmapData = this.createBitmapData(
@@ -582,8 +585,8 @@ class Instance
         const { Matrix, ColorTransform } = window.next2d.geom;
 
         instance
-            .transform
-            .matrix = new Matrix(
+            ._$transform
+            ._$matrix = new Matrix(
                 matrix[0], matrix[1],
                 matrix[2], matrix[3],
                 matrix[4], matrix[5]
@@ -591,8 +594,8 @@ class Instance
 
         // fixed logic
         instance
-            .transform
-            .colorTransform = new ColorTransform(
+            ._$transform
+            ._$colorTransform = new ColorTransform(
                 place.colorTransform[0], place.colorTransform[1],
                 place.colorTransform[2], place.colorTransform[3],
                 place.colorTransform[4], place.colorTransform[5],

@@ -1501,6 +1501,7 @@ class MovieClip extends Instance
 
         const workSpace = Util.$currentWorkSpace();
         const movieClip = new MovieClip();
+        movieClip._$instanceId = this._$instanceId;
 
         // cache
         const currentFrame = Util.$currentFrame;
@@ -1650,14 +1651,14 @@ class MovieClip extends Instance
             }
 
             // matrix
-            displayObject.transform.matrix = new Matrix(
+            displayObject._$transform._$matrix = new Matrix(
                 place.matrix[0], place.matrix[1],
                 place.matrix[2], place.matrix[3],
                 place.matrix[4], place.matrix[5]
             );
 
             // colorTransform
-            displayObject.transform.colorTransform = new ColorTransform(
+            displayObject._$transform._$colorTransform = new ColorTransform(
                 place.colorTransform[0], place.colorTransform[1],
                 place.colorTransform[2], place.colorTransform[3],
                 place.colorTransform[4], place.colorTransform[5],
@@ -1665,7 +1666,7 @@ class MovieClip extends Instance
             );
 
             // blendMode
-            displayObject.blendMode = place.blendMode;
+            displayObject._$transform._$blendMode = place.blendMode;
 
             // filters
             const filters = [];
@@ -1678,7 +1679,7 @@ class MovieClip extends Instance
                     new (filterClass.bind.apply(filterClass, filterTag.params))()
                 );
             }
-            displayObject.filters = filters;
+            displayObject._$transform._$filters = filters;
 
             // tag data
             displayObject._$placeId     = idx;

@@ -5,6 +5,22 @@
 class Screen extends BaseScreen
 {
     /**
+     * @constructor
+     * @public
+     */
+    constructor ()
+    {
+        super();
+
+        /**
+         * @type {number}
+         * @default -1
+         * @private
+         */
+        this._$timerId = -1;
+    }
+
+    /**
      * @description 初期起動関数
      *
      * @return {void}
@@ -96,7 +112,9 @@ class Screen extends BaseScreen
 
                     event.preventDefault();
 
-                    window.requestAnimationFrame(() =>
+                    window.cancelAnimationFrame(this._$timerId);
+
+                    this._$timerId = window.requestAnimationFrame(() =>
                     {
                         Util.$screenZoom.execute(delta / 2 / 100 * -1);
                     });
@@ -707,17 +725,70 @@ class Screen extends BaseScreen
             .then((canvas) =>
             {
                 const div = document.createElement("div");
+                div.setAttribute("data-child", "true");
 
-                div.id = `character-${character.id}`;
-                div.dataset.characterId  = `${character.id}`;
-                div.dataset.layerId      = `${layer_id}`;
-                div.dataset.instanceType = `${instance.type}`;
-                div.dataset.libraryId    = `${character.libraryId}`;
-                div.dataset.child        = "true";
-                div.dataset.pointer      = `${event}`;
+                if (Util.$timelinePlayer.stopFlag) {
+
+                    div.setAttribute("id", `character-${character.id}`);
+                    div.setAttribute("data-character-id", `${character.id}`);
+                    div.setAttribute("data-layer-id", `${layer_id}`);
+                    div.setAttribute("data-instance-type", `${instance.type}`);
+                    div.setAttribute("data-library-id", `${character.libraryId}`);
+                    div.setAttribute("data-pointer", `${event}`);
+
+                    div.addEventListener("mouseover", (event) =>
+                    {
+                        // 親のイベントを中止する
+                        event.stopPropagation();
+
+                        const activeTool = Util.$tools.activeTool;
+                        if (activeTool) {
+                            event.displayObject = true;
+                            activeTool.dispatchEvent(
+                                EventType.MOUSE_OVER,
+                                event
+                            );
+                        }
+                    });
+
+                    div.addEventListener("mouseout", (event) =>
+                    {
+                        // 親のイベントを中止する
+                        event.stopPropagation();
+
+                        const activeTool = Util.$tools.activeTool;
+                        if (activeTool) {
+                            event.displayObject = true;
+                            activeTool.dispatchEvent(
+                                EventType.MOUSE_OUT,
+                                event
+                            );
+                        }
+                    });
+
+                    div.addEventListener("mousedown", (event) =>
+                    {
+                        if (event.button) {
+                            return ;
+                        }
+
+                        // 親のイベントを中止する
+                        event.stopPropagation();
+
+                        const activeTool = Util.$tools.activeTool;
+                        if (activeTool) {
+                            event.displayObject = true;
+                            activeTool.dispatchEvent(
+                                EventType.MOUSE_DOWN,
+                                event
+                            );
+                        }
+                    });
+
+                }
 
                 if (parent_scene) {
-                    div.dataset.preview = "true";
+                    div.setAttribute("data-preview", "true");
                 }
 
                 let divStyle = "position: absolute;";
@@ -725,55 +796,6 @@ class Screen extends BaseScreen
                 if (1 > alpha) {
                     divStyle += `opacity: ${alpha};`;
                 }
-
-                div.addEventListener("mouseover", (event) =>
-                {
-                    // 親のイベントを中止する
-                    event.stopPropagation();
-
-                    const activeTool = Util.$tools.activeTool;
-                    if (activeTool) {
-                        event.displayObject = true;
-                        activeTool.dispatchEvent(
-                            EventType.MOUSE_OVER,
-                            event
-                        );
-                    }
-                });
-
-                div.addEventListener("mouseout", (event) =>
-                {
-                    // 親のイベントを中止する
-                    event.stopPropagation();
-
-                    const activeTool = Util.$tools.activeTool;
-                    if (activeTool) {
-                        event.displayObject = true;
-                        activeTool.dispatchEvent(
-                            EventType.MOUSE_OUT,
-                            event
-                        );
-                    }
-                });
-
-                div.addEventListener("mousedown", (event) =>
-                {
-                    if (event.button) {
-                        return ;
-                    }
-
-                    // 親のイベントを中止する
-                    event.stopPropagation();
-
-                    const activeTool = Util.$tools.activeTool;
-                    if (activeTool) {
-                        event.displayObject = true;
-                        activeTool.dispatchEvent(
-                            EventType.MOUSE_DOWN,
-                            event
-                        );
-                    }
-                });
 
                 const matrix = Util.$sceneChange.concatenatedMatrix;
                 const bounds = character.getBounds(matrix);
@@ -857,40 +879,42 @@ class Screen extends BaseScreen
                     }
                 }
 
-                switch (instance._$type) {
+                if (Util.$timelinePlayer.stopFlag) {
+                    switch (instance._$type) {
 
-                    case InstanceType.MOVIE_CLIP:
-                        div.addEventListener("dblclick", (event) =>
-                        {
-                            this.changeScene(event);
-                        });
-                        break;
-
-                    case InstanceType.TEXT:
-                        {
-                            const borderDiv = document.createElement("div");
-
-                            borderDiv.style.width  = `${width  - 2}px`;
-                            borderDiv.style.height = `${height - 2}px`;
-                            borderDiv.style.pointerEvents = "none";
-
-                            borderDiv.style.position = "absolute";
-                            borderDiv.style.left     = "0px";
-                            borderDiv.style.top      = "0px";
-
-                            borderDiv.style.border = instance._$border
-                                ? "1px solid gray"
-                                : "1px dashed gray";
-
-                            div.appendChild(borderDiv);
-
+                        case InstanceType.MOVIE_CLIP:
                             div.addEventListener("dblclick", (event) =>
                             {
-                                this.selectText(event);
+                                this.changeScene(event);
                             });
-                        }
-                        break;
+                            break;
 
+                        case InstanceType.TEXT:
+                            {
+                                const borderDiv = document.createElement("div");
+
+                                borderDiv.style.width  = `${width  - 2}px`;
+                                borderDiv.style.height = `${height - 2}px`;
+                                borderDiv.style.pointerEvents = "none";
+
+                                borderDiv.style.position = "absolute";
+                                borderDiv.style.left     = "0px";
+                                borderDiv.style.top      = "0px";
+
+                                borderDiv.style.border = instance._$border
+                                    ? "1px solid gray"
+                                    : "1px dashed gray";
+
+                                div.appendChild(borderDiv);
+
+                                div.addEventListener("dblclick", (event) =>
+                                {
+                                    this.selectText(event);
+                                });
+                            }
+                            break;
+
+                    }
                 }
 
                 return Promise

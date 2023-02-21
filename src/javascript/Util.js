@@ -1,4 +1,14 @@
+/**
+ * @type {number}
+ * @default 0
+ */
 let characterId = 0;
+
+/**
+ * @type {number}
+ * @default 0
+ */
+let instanceId  = 0;
 
 const Util = {};
 

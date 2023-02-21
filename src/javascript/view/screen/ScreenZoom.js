@@ -105,6 +105,21 @@ class ScreenZoom extends BaseScreen
 
         const workSpace = Util.$currentWorkSpace();
 
+        // DisplayObjectのキャッシュを全て削除
+        const frame = Util.$timelineFrame.currentFrame;
+        const scene = workSpace.scene;
+        for (const layer of scene._$layers.values()) {
+
+            const characters = layer.getActiveCharacter(frame);
+            for (let idx = 0; idx < characters.length; ++idx) {
+                characters[idx].dispose();
+            }
+
+        }
+
+        // 再描画
+        scene.changeFrame(frame);
+
         // ズームした幅と高さを算出
         const width  = workSpace.stage.width  * Util.$zoomScale;
         const height = workSpace.stage.height * Util.$zoomScale;
@@ -135,23 +150,8 @@ class ScreenZoom extends BaseScreen
         screen.scrollLeft = Util.$offsetLeft + dx - centerX;
         screen.scrollTop  = Util.$offsetTop  + dy - centerY;
 
-        // DisplayObjectのキャッシュを全て削除
-        const frame = Util.$timelineFrame.currentFrame;
-        const scene = workSpace.scene;
-        for (const layer of scene._$layers.values()) {
-
-            const characters = layer.getActiveCharacter(frame);
-            for (let idx = 0; idx < characters.length; ++idx) {
-                characters[idx].dispose();
-            }
-
-        }
-
         // 定規を再構成
         Util.$rebuildRuler();
-
-        // 再描画
-        scene.changeFrame(frame);
     }
 }
 
