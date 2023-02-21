@@ -290,7 +290,7 @@ class TimelineMarker extends BaseTimeline
             return ;
         }
 
-        const markerLeft = element.offsetLeft;
+        const markerLeft = this._$left;
         const offsetX    = 318;
         const toolWidth  = 45;
 

@@ -906,50 +906,53 @@ class TextField extends Instance
         range = null, static_frame = 0, preview = false
     ) {
 
-        const context = super.draw(
-            canvas, width, height, place,
-            range, static_frame, preview
-        );
+        return super
+            .draw(
+                canvas, width, height, place,
+                range, static_frame, preview
+            )
+            .then((canvas) =>
+            {
+                canvas._$tx -= this._$thickness;
+                canvas._$ty -= this._$thickness;
 
-        context.canvas._$tx -= this._$thickness;
-        context.canvas._$ty -= this._$thickness;
+                let resizeX = 0;
+                switch (this._$autoSize) {
 
-        let resizeX = 0;
-        switch (this._$autoSize) {
-
-            case 0:
-                if (this._$align === "right") {
-                    resizeX = -4;
-                }
-                break;
-
-            case 1:
-                switch (this._$align) {
-
-                    case "center":
-                        resizeX = (this._$bounds.xMax - this._$originBounds.xMax) / 2;
-                        if (resizeX) {
-                            resizeX -= 2;
+                    case 0:
+                        if (this._$align === "right") {
+                            resizeX = -4;
                         }
                         break;
 
-                    case "right":
-                        resizeX = this._$originBounds.xMax - this._$bounds.xMax;
-                        if (resizeX) {
-                            resizeX += 2;
-                            resizeX *= -1;
+                    case 1:
+                        switch (this._$align) {
+
+                            case "center":
+                                resizeX = (this._$bounds.xMax - this._$originBounds.xMax) / 2;
+                                if (resizeX) {
+                                    resizeX -= 2;
+                                }
+                                break;
+
+                            case "right":
+                                resizeX = this._$originBounds.xMax - this._$bounds.xMax;
+                                if (resizeX) {
+                                    resizeX += 2;
+                                    resizeX *= -1;
+                                }
+                                break;
+
                         }
                         break;
 
                 }
-                break;
 
-        }
+                if (this._$autoSize === 1) {
+                    canvas._$tx -= resizeX;
+                }
 
-        if (this._$autoSize === 1) {
-            context.canvas._$tx -= resizeX;
-        }
-
-        return context;
+                return Promise.resolve(canvas);
+            });
     }
 }

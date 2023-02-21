@@ -406,15 +406,15 @@ class Video extends Instance
         video._$video       = this._$video;
 
         if (this._$loaded) {
-            const context = Util.$root.stage._$player._$context;
+            // const context = Util.$root.stage._$player._$context;
 
             const currentFrame = Util.$timelineFrame.currentFrame;
 
             video._$video.currentTime = currentFrame / 60;
 
-            video._$texture = context
-                .frameBuffer
-                .createTextureFromVideo(video._$video, video._$smoothing);
+            // video._$texture = context
+            //     .frameBuffer
+            //     .createTextureFromVideo(video._$video, video._$smoothing);
         }
 
         return video;
@@ -460,24 +460,27 @@ class Video extends Instance
         range = null, static_frame = 0, preview = false
     ) {
 
-        const context = super.draw(
-            canvas, width, height, place,
-            range, static_frame, preview
-        );
+        return super
+            .draw(
+                canvas, width, height, place,
+                range, static_frame, preview
+            )
+            .then((canvas) =>
+            {
+                if (this._$loaded) {
+                    return Promise.resolve(canvas);
+                }
 
-        if (this._$loaded) {
-            return context;
-        }
+                this._$queue.push({
+                    "canvas": canvas,
+                    "width": width,
+                    "height": height,
+                    "place": place,
+                    "range": range,
+                    "staticFrame": static_frame
+                });
 
-        this._$queue.push({
-            "canvas": canvas,
-            "width": width,
-            "height": height,
-            "place": place,
-            "range": range,
-            "staticFrame": static_frame
-        });
-
-        return context;
+                return Promise.resolve(canvas);
+            });
     }
 }
