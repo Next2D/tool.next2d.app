@@ -821,7 +821,13 @@ class TextField extends Instance
     {
         const { TextField } = window.next2d.text;
         const textField = new TextField();
-        textField._$instanceId = this._$instanceId;
+        textField._$characterId = this.id;
+        textField._$instanceId  = this._$instanceId;
+        textField._$created     = this._$created;
+        textField._$cache       = true;
+        if (!this._$created) {
+            textField._$removeWorkerCache();
+        }
 
         textField._$bounds = {
             "xMin": this._$originBounds.xMin,
@@ -882,6 +888,10 @@ class TextField extends Instance
         textField.thickness      = this._$thickness;
         textField.thicknessColor = this._$thicknessColor;
         textField.text           = this._$text;
+
+        if (!this._$created) {
+            this._$created = true;
+        }
 
         return textField;
     }

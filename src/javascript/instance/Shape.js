@@ -1567,6 +1567,9 @@ class Shape extends Instance
         shape._$instanceId  = this._$instanceId;
         shape._$created     = this._$created;
         shape._$cache       = true;
+        if (!this._$created) {
+            shape._$removeWorkerCache();
+        }
 
         if (this._$grid) {
             const { Rectangle } = window.next2d.geom;

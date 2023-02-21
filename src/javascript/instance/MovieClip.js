@@ -1501,7 +1501,13 @@ class MovieClip extends Instance
 
         const workSpace = Util.$currentWorkSpace();
         const movieClip = new MovieClip();
-        movieClip._$instanceId = this._$instanceId;
+        movieClip._$characterId = this.id;
+        movieClip._$instanceId  = this._$instanceId;
+        movieClip._$created     = this._$created;
+        movieClip._$cache       = true;
+        if (!this._$created) {
+            movieClip._$removeWorkerCache();
+        }
 
         // cache
         const currentFrame = Util.$currentFrame;
@@ -1695,6 +1701,10 @@ class MovieClip extends Instance
 
         // reset
         Util.$currentFrame = currentFrame;
+
+        if (!this._$created) {
+            this._$created = true;
+        }
 
         return movieClip;
     }

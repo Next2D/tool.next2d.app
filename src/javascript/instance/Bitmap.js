@@ -258,7 +258,13 @@ class Bitmap extends Instance
         const { width, height } = this;
 
         const shape = new Shape();
-        shape._$instanceId = this._$instanceId;
+        shape._$characterId = this.id;
+        shape._$instanceId  = this._$instanceId;
+        shape._$created     = this._$created;
+        shape._$cache       = true;
+        if (!this._$created) {
+            shape._$removeWorkerCache();
+        }
 
         const bitmapData = new BitmapData(width, height, true, 0);
         bitmapData._$buffer = this._$buffer;
@@ -277,6 +283,10 @@ class Bitmap extends Instance
         shape.graphics._$yMin     = 0;
         shape.graphics._$yMax     = this.height;
         shape.graphics._$command  = this._$command;
+
+        if (!this._$created) {
+            this._$created = true;
+        }
 
         return shape;
     }
