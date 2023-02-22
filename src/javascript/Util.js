@@ -72,6 +72,8 @@ canvas.width     = 1;
 canvas.height    = 1;
 Util.$hitContext = canvas.getContext("2d");
 
+Util.$useOffscreenCanvas = "transferControlToOffscreen" in canvas;
+
 /**
  * @return {HTMLCanvasElement}
  * @static

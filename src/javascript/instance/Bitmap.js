@@ -262,9 +262,6 @@ class Bitmap extends Instance
         shape._$instanceId  = this._$instanceId;
         shape._$created     = this._$created;
         shape._$cache       = true;
-        if (!this._$created) {
-            shape._$removeWorkerCache();
-        }
 
         const bitmapData = new BitmapData(width, height, true, 0);
         bitmapData._$buffer = this._$buffer;
