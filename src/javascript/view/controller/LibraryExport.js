@@ -586,6 +586,11 @@ class LibraryExport extends BaseController
                 LibraryElement.dataset.libraryId | 0
             );
 
+        if (this._$instance.type === InstanceType.FOLDER) {
+            Util.$endMenu();
+            return ;
+        }
+
         // 初期化
         this._$lock   = false;
         this._$xScale = 1;

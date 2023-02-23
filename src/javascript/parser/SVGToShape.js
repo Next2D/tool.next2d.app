@@ -13,14 +13,20 @@ class SVGToShape
      */
     static parse (value, movie_clip)
     {
-        const defs  = /<defs>(.*)<\/defs>/sgi.exec(value);
+        let defs = /<defs>(.*)<\/defs>/sgi.exec(value);
+        if (defs) {
+            defs = defs[1]
+                .replace(/\n/, "")
+                .replace(" ", "");
+        }
+
         const paths = SVGToShape.parseXML(
             `${value.replace(/<defs>(.*)<\/defs>/sgi, "")}`
         );
 
         if (paths) {
 
-            SVGToShape.parsePath(paths, movie_clip, defs ? defs[1] : null);
+            SVGToShape.parsePath(paths, movie_clip, defs);
 
             const layers = [];
             for (const layer of movie_clip._$layers.values()) {
@@ -56,11 +62,11 @@ class SVGToShape
     /**
      * @param  {array}     paths
      * @param  {MovieClip} movie_clip
-     * @param  {string}    [defs=null]
+     * @param  {string}    defs
      * @method
      * @static
      */
-    static parsePath (paths, movie_clip, defs = null)
+    static parsePath (paths, movie_clip, defs)
     {
         const { Shape, Graphics } = window.next2d.display;
         const workSpace = Util.$currentWorkSpace();
@@ -70,6 +76,15 @@ class SVGToShape
             const graphics = new Shape().graphics;
 
             const value = paths[idx];
+
+            let styles = null;
+            const className = /class=\"(.+?)\"/gi.exec(value);
+            if (className && defs) {
+                styles = new RegExp(`.${className[1]}{(.+?)}`, "gi").exec(defs);
+                if (styles) {
+                    styles = styles[1]
+                }
+            }
 
             // STROKE
             let strokeWidth = /stroke-width=\"(.+?)\"/gi.exec(value);
@@ -93,6 +108,9 @@ class SVGToShape
             let color = /fill=\"(.+?)\"/gi.exec(value);
             if (!color) {
                 color = /fill:(.+?)["|;]/gi.exec(value);
+            }
+            if (!color && styles) {
+                color = new RegExp(`fill:(.+?);`, "gi").exec(styles);
             }
 
             let alpha = 1;
