@@ -1289,7 +1289,7 @@ class Shape extends Instance
             }
         }
 
-        this._$buffer = null;
+        this._$graphicBuffer = null;
     }
 
     /**
