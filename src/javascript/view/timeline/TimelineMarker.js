@@ -28,6 +28,41 @@ class TimelineMarker extends BaseTimeline
         this._$pointerEvents = "";
 
         /**
+         * @type {number}
+         * @default 0
+         * @private
+         */
+        this._$clientWidth = 0;
+
+        /**
+         * @type {number}
+         * @default 0
+         * @private
+         */
+        this._$offsetTop = 0;
+
+        /**
+         * @type {number}
+         * @default 0
+         * @private
+         */
+        this._$markerClientWidth = 0;
+
+        /**
+         * @type {number}
+         * @default 0
+         * @private
+         */
+        this._$controllerWidth = 0;
+
+        /**
+         * @type {number}
+         * @default 0
+         * @private
+         */
+        this._$timelineHeight = 0;
+
+        /**
          * @type {function}
          * @default null
          * @private
@@ -277,11 +312,25 @@ class TimelineMarker extends BaseTimeline
         if (!element) {
             return ;
         }
+        if (!this._$markerClientWidth) {
+            this._$markerClientWidth = element.clientWidth;
+        }
 
         const content = document
             .getElementById("timeline-content");
         if (!content) {
             return ;
+        }
+
+        const workSpace = Util.$currentWorkSpace();
+        if (this._$controllerWidth !== workSpace._$controllerWidth) {
+            this._$controllerWidth = workSpace._$controllerWidth;
+            this._$clientWidth = content.clientWidth;
+        }
+
+        if (this._$timelineHeight !== workSpace._$timelineHeight) {
+            this._$timelineHeight = workSpace._$timelineHeight;
+            this._$offsetTop = content.offsetTop;
         }
 
         const border = document
@@ -296,15 +345,15 @@ class TimelineMarker extends BaseTimeline
 
         // 表示外なら非表示
         if (0 > markerLeft
-            || content.clientWidth
-            && markerLeft + offsetX - toolWidth >= content.clientWidth
+            || this._$clientWidth > 0
+            && markerLeft + offsetX - toolWidth >= this._$clientWidth
         ) {
             border.setAttribute("style", "display: none;");
             return ;
         }
 
-        const left   = offsetX + element.clientWidth / 2 + markerLeft;
-        const top    = content.offsetTop - 1;
+        const left   = offsetX + this._$markerClientWidth / 2 + markerLeft;
+        const top    = this._$offsetTop - 1;
         const height = window.screen.height;
 
         border.setAttribute(

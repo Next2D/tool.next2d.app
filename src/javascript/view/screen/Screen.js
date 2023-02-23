@@ -917,6 +917,14 @@ class Screen extends BaseScreen
                     }
                 }
 
+                if (!promises.length) {
+                    div.setAttribute("style", divStyle);
+                    return Promise.resolve({
+                        "div": div,
+                        "canvas": canvas
+                    });
+                }
+
                 return Promise
                     .all(promises)
                     .then(() =>
