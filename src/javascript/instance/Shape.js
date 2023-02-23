@@ -22,6 +22,7 @@ class Shape extends Instance
         this._$grid     = null;
         this._$inBitmap = false;
         this._$recodes  = [];
+        this._$buffer   = null;
 
         if (object.inBitmap) {
             this.inBitmap = object.inBitmap;
@@ -1287,7 +1288,7 @@ class Shape extends Instance
             }
         }
 
-        this._$created = false;
+        this._$buffer = null;
     }
 
     /**
@@ -1564,12 +1565,6 @@ class Shape extends Instance
 
         const shape = new Shape();
         shape._$characterId = this.id;
-        shape._$instanceId  = this._$instanceId;
-        shape._$created     = this._$created;
-        shape._$cache       = true;
-        if (!this._$created) {
-            shape._$removeWorkerCache();
-        }
 
         if (this._$grid) {
             const { Rectangle } = window.next2d.geom;
@@ -1581,7 +1576,6 @@ class Shape extends Instance
 
         const graphics = shape.graphics;
 
-        graphics._$buffer   = this._$created;
         graphics._$maxAlpha = 1;
         graphics._$canDraw  = true;
         graphics._$xMin     = this._$bounds.xMin;
@@ -1665,9 +1659,10 @@ class Shape extends Instance
 
         }
 
-        if (!this._$created) {
-            this._$created = true;
+        if (!this._$buffer) {
+            this._$buffer = graphics._$getRecodes();
         }
+        graphics._$buffer = this._$buffer;
 
         return shape;
     }

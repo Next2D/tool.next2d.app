@@ -19,9 +19,6 @@ class Instance
         this._$type       = object.type;
         this._$symbol     = object.symbol || "";
         this._$folderId   = object.folderId | 0;
-        this._$created    = false;
-        this._$posted     = false;
-        this._$instanceId = instanceId++;
     }
 
     /**

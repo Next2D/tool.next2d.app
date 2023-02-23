@@ -259,31 +259,30 @@ class Bitmap extends Instance
 
         const shape = new Shape();
         shape._$characterId = this.id;
-        shape._$instanceId  = this._$instanceId;
-        shape._$created     = this._$created;
-        shape._$cache       = true;
 
         const bitmapData = new BitmapData(width, height, true, 0);
         bitmapData._$buffer = this._$buffer;
 
-        shape
-            .graphics
+        const graphics = shape.graphics;
+
+        graphics
             .beginBitmapFill(bitmapData, null, false)
             .drawRect(0, 0, width, height)
             .endFill();
 
         // setup
-        shape.graphics._$maxAlpha = 1;
-        shape.graphics._$canDraw  = true;
-        shape.graphics._$xMin     = 0;
-        shape.graphics._$xMax     = this.width;
-        shape.graphics._$yMin     = 0;
-        shape.graphics._$yMax     = this.height;
-        shape.graphics._$command  = this._$command;
+        graphics._$maxAlpha = 1;
+        graphics._$canDraw  = true;
+        graphics._$xMin     = 0;
+        graphics._$xMax     = this.width;
+        graphics._$yMin     = 0;
+        graphics._$yMax     = this.height;
+        graphics._$command  = this._$command;
 
-        if (!this._$created) {
-            this._$created = true;
+        if (!this._$buffer) {
+            this._$buffer = graphics._$getRecodes();
         }
+        graphics._$buffer = this._$buffer;
 
         return shape;
     }

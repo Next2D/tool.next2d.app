@@ -1,11 +1,11 @@
 :root{
     --tool-cursor: auto;
-    --controller-width: 0;
+    --controller-width: 360px;
     --timeline-height: 0;
     --timeline-frame-width: 13px;
     --timeline-frame-height: 30px;
     --marker-width: 13px;
-    --ad: 300;
+    --ad: 260px;
     --ruler-size: 4px;
     --timeline-scroll-bar-width: 0px;
     --timeline-scroll-bar-height: 0px;
@@ -119,9 +119,9 @@ main
     width            : var(--controller-width);
     height           : var(--ad);
     background-color : #1f1f1f;
-    display          : flex;
-    justify-content  : center;
-    align-items      : center;
+    display          : block;
+    /*justify-content  : center;*/
+    /*align-items      : center;*/
 }
 
 #advertisement img
