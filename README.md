@@ -1,8 +1,8 @@
 Authoring tools that work on the web
 =============
 
-https://user-images.githubusercontent.com/4123454/160549811-98562bb7-cdff-460c-96b0-c01bcd5e5eab.mp4
-
+https://user-images.githubusercontent.com/4123454/160549811-98562bb7-cdff-460c-96b0-c01bcd5e5eab.mp4 \
+ \
 [![UnitTest](https://github.com/Next2D/tool.next2d.app/actions/workflows/integration.yml/badge.svg?branch=develop)](https://github.com/Next2D/Player/actions/workflows/integration.yml)
 [![CodeQL](https://github.com/Next2D/tool.next2d.app/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/Next2D/tool.next2d.app/actions/workflows/codeql-analysis.yml)
 [![Lint](https://github.com/Next2D/tool.next2d.app/actions/workflows/lint.yml/badge.svg?branch=develop)](https://github.com/Next2D/Player/actions/workflows/lint.yml) \
