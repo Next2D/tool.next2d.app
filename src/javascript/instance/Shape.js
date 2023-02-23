@@ -22,7 +22,6 @@ class Shape extends Instance
         this._$grid     = null;
         this._$inBitmap = false;
         this._$recodes  = [];
-        this._$buffer   = null;
 
         if (object.inBitmap) {
             this.inBitmap = object.inBitmap;
@@ -43,6 +42,8 @@ class Shape extends Instance
         if (object.grid) {
             this.grid = object.grid;
         }
+
+        this._$graphicBuffer = null;
     }
 
     /**
@@ -1659,10 +1660,10 @@ class Shape extends Instance
 
         }
 
-        if (!this._$buffer) {
-            this._$buffer = graphics._$getRecodes();
+        if (!this._$graphicBuffer) {
+            this._$graphicBuffer = graphics._$getRecodes();
         }
-        graphics._$buffer = this._$buffer;
+        graphics._$buffer = this._$graphicBuffer;
 
         return shape;
     }

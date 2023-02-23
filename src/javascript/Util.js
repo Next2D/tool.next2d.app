@@ -846,7 +846,7 @@ Util.$initialize = () =>
     document
         .documentElement
         .style
-        .setProperty("--ad", "260px");
+        .setProperty("--ad", "280px");
 
     // clear
     Util.$initialize = null;

@@ -25,8 +25,9 @@ class Bitmap extends Instance
         if (object.buffer) {
             this.buffer = object.buffer;
         }
-        this._$command = null;
-        this._$binary  = "";
+
+        this._$graphicBuffer = null;
+        this._$binary        = "";
     }
 
     /**
@@ -277,12 +278,11 @@ class Bitmap extends Instance
         graphics._$xMax     = this.width;
         graphics._$yMin     = 0;
         graphics._$yMax     = this.height;
-        graphics._$command  = this._$command;
 
-        if (!this._$buffer) {
-            this._$buffer = graphics._$getRecodes();
+        if (!this._$graphicBuffer) {
+            this._$graphicBuffer = graphics._$getRecodes();
         }
-        graphics._$buffer = this._$buffer;
+        graphics._$buffer = this._$graphicBuffer;
 
         return shape;
     }
