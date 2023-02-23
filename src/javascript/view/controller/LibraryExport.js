@@ -224,11 +224,16 @@ class LibraryExport extends BaseController
 
             case InstanceType.MOVIE_CLIP:
                 {
+                    const promises = [];
                     const zip = new JSZip();
-                    for (let frame = this._$startFrame; this._$endFrame >= frame; ++frame) {
+                    for (let frame = this._$startFrame;
+                        this._$endFrame >= frame;
+                        ++frame
+                    ) {
 
-                        this
+                        promises.push(this
                             .getCanvas(frame)
+                            // eslint-disable-next-line no-loop-func
                             .then((canvas) =>
                             {
                                 zip.file(
@@ -238,21 +243,26 @@ class LibraryExport extends BaseController
                                 );
 
                                 Util.$poolCanvas(canvas);
-                            });
+                            }));
                     }
 
-                    zip
-                        .generateAsync({ "type" : "blob" })
-                        .then((content) =>
+                    Promise
+                        .all(promises)
+                        .then(() =>
                         {
-                            const url = URL.createObjectURL(content);
+                            zip
+                                .generateAsync({ "type" : "blob" })
+                                .then((content) =>
+                                {
+                                    const url = URL.createObjectURL(content);
 
-                            const anchor    = document.createElement("a");
-                            anchor.download = `${name}.zip`;
-                            anchor.href     = url;
-                            anchor.click();
+                                    const anchor    = document.createElement("a");
+                                    anchor.download = `${name}.zip`;
+                                    anchor.href     = url;
+                                    anchor.click();
 
-                            URL.revokeObjectURL(url);
+                                    URL.revokeObjectURL(url);
+                                });
                         });
                 }
                 break;
