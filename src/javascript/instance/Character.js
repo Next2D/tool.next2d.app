@@ -18,6 +18,7 @@ class Character
         this._$places         = new Map();
         this._$tween          = new Map();
         this._$canvas         = null;
+        this._$base64         = null;
         this._$currentFrame   = 0;
         this._$currentPlace   = null;
         this._$screenX        = 0;
@@ -26,6 +27,7 @@ class Character
         this._$offsetY        = 0;
         this._$name           = "";
         this._$cachePlaces    = [];
+        this._$maskPlaceFrame = 0;
         this._$referencePoint = { "x": 0, "y": 0 };
 
         if (object) {
@@ -1636,11 +1638,8 @@ class Character
      */
     dispose ()
     {
-        if (!this._$canvas) {
-            return ;
-        }
-
-        // Util.$poolCanvas(this._$canvas);
+        Util.$sleepCanvases.push(this._$canvas);
         this._$canvas = null;
+        this._$base64 = null;
     }
 }

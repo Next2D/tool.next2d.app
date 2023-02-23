@@ -48,6 +48,7 @@ Util.$shortcut                = new Map();
 Util.$useShortcutSetting      = false;
 Util.$changeLibraryId         = 0;
 Util.$canvases                = [];
+Util.$sleepCanvases           = [];
 
 const userAgentData = window.navigator.userAgentData;
 if (userAgentData) {

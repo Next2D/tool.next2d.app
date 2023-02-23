@@ -87,7 +87,14 @@ class TimelineLayerMenu extends BaseTimeline
 
         const defaultHeight = TimelineTool.DEFAULT_TIMELINE_HEIGHT - 1;
 
+        // スクロールを初期値に戻す
+        const y = Util.$timelineScroll.y;
+        Util.$timelineScroll.execute(0, -y);
+
         Util.$timelineTool.timelineHeight = defaultHeight * scale;
+
+        // 移動
+        Util.$timelineScroll.execute(0, y);
     }
 
     /**

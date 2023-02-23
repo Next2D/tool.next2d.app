@@ -626,18 +626,16 @@ class LibraryController
         {
             const aString = a.name.toLowerCase();
             const bString = b.name.toLowerCase();
-            switch (true) {
 
-                case aString > bString:
-                    return 1;
-
-                case aString < bString:
-                    return -1;
-
-                default:
-                    return 0;
-
+            if (aString < bString) {
+                return -1;
             }
+
+            if (aString > bString) {
+                return 1;
+            }
+
+            return 0;
         });
 
         const folderMap   = new Map();

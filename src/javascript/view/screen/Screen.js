@@ -848,7 +848,11 @@ class Screen extends BaseScreen
                     ) {
 
                         const maskCharacter = maskLayer._$characters[0];
-                        maskCharacter.dispose();
+                        const maskPlace = maskCharacter.getPlace(frame);
+                        if (maskCharacter._$maskPlaceFrame !== maskPlace.frame) {
+                            maskCharacter.dispose();
+                            maskCharacter._$maskPlaceFrame = maskPlace.frame;
+                        }
 
                         promises.push(maskCharacter
                             .draw(Util.$getCanvas())
@@ -859,7 +863,10 @@ class Screen extends BaseScreen
                                 const x = (maskBounds.xMin - bounds.xMin) * Util.$zoomScale;
                                 const y = (maskBounds.yMin - bounds.yMin) * Util.$zoomScale;
 
-                                const maskSrc    = mask_canvas.toDataURL();
+                                if (!mask_canvas._$base64) {
+                                    mask_canvas._$base64 = mask_canvas.toDataURL();
+                                }
+                                const maskSrc    = mask_canvas._$base64;
                                 const maskWidth  = mask_canvas._$width  * Util.$zoomScale;
                                 const maskHeight = mask_canvas._$height * Util.$zoomScale;
 
@@ -873,8 +880,6 @@ class Screen extends BaseScreen
                                 divStyle += `-webkit-mask-position: ${x}px ${y}px;`;
                                 divStyle += `mix-blend-mode: ${canvas.style.mixBlendMode};`;
                                 divStyle += `filter: ${canvas.style.filter};`;
-
-                                maskCharacter.dispose();
                             }));
                     }
                 }

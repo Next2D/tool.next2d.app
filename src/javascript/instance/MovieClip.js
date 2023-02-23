@@ -343,7 +343,6 @@ class MovieClip extends Instance
                         if (character.id === characterId) {
                             continue;
                         }
-                        character.dispose();
 
                         promises.push(
                             Util.$screen.appendCharacter(
@@ -449,6 +448,11 @@ class MovieClip extends Instance
                         .getElementById("stage-area")
                         .appendChild(div);
 
+                }
+
+                // リサイクルできるcanvasがあればpoolする
+                while (Util.$sleepCanvases.length) {
+                    Util.$poolCanvas(Util.$sleepCanvases.pop());
                 }
             });
 

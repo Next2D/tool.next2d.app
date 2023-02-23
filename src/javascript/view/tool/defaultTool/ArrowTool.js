@@ -459,6 +459,10 @@ class ArrowTool extends BaseTool
      */
     addElement (element, hit = false)
     {
+        if (!element) {
+            return ;
+        }
+
         for (let idx = 0; idx < this._$activeElements.length; ++idx) {
 
             const target = this._$activeElements[idx];
