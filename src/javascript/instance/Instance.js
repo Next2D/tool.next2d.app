@@ -705,7 +705,7 @@ class Instance
                 canvas.style.width  = `${width * minHeight / height}px`;
                 canvas.style.height = `${minHeight}px`;
 
-                return canvas;
+                return Promise.resolve(canvas);
             });
     }
 

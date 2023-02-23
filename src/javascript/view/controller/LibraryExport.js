@@ -227,15 +227,18 @@ class LibraryExport extends BaseController
                     const zip = new JSZip();
                     for (let frame = this._$startFrame; this._$endFrame >= frame; ++frame) {
 
-                        const canvas = this.getCanvas(frame);
+                        this
+                            .getCanvas(frame)
+                            .then((canvas) =>
+                            {
+                                zip.file(
+                                    `${name}_frame_${frame}.${ext}`,
+                                    canvas.toDataURL(`image/${ext}`, 1).replace(/^.*,/, ""),
+                                    { "base64" : true }
+                                );
 
-                        zip.file(
-                            `${name}_frame_${frame}.${ext}`,
-                            canvas.toDataURL(`image/${ext}`, 1).replace(/^.*,/, ""),
-                            { "base64" : true }
-                        );
-
-                        Util.$poolCanvas(canvas);
+                                Util.$poolCanvas(canvas);
+                            });
                     }
 
                     zip
@@ -293,12 +296,17 @@ class LibraryExport extends BaseController
                 break;
 
             default:
-                {
-                    const anchor    = document.createElement("a");
-                    anchor.download = `${name}.${ext}`;
-                    anchor.href     = this.getCanvas().toDataURL(`image/${ext}`, 1);
-                    anchor.click();
-                }
+                this
+                    .getCanvas()
+                    .then((canvas) =>
+                    {
+                        const anchor    = document.createElement("a");
+                        anchor.download = `${name}.${ext}`;
+                        anchor.href     = canvas.toDataURL(`image/${ext}`, 1);
+                        anchor.click();
+
+                        Util.$poolCanvas(canvas);
+                    });
                 break;
         }
     }
@@ -734,29 +742,36 @@ class LibraryExport extends BaseController
      */
     appendImage ()
     {
-        this.removeImage();
-
         switch (this._$instance.type) {
 
             case InstanceType.VIDEO:
             case InstanceType.SOUND:
-                document
-                    .getElementById("library-export-image")
-                    .appendChild(this._$instance.getPreview());
+                this
+                    ._$instance
+                    .getPreview()
+                    .then((element) =>
+                    {
+                        this.removeImage();
+                        document
+                            .getElementById("library-export-image")
+                            .appendChild(element);
+                    });
                 break;
 
             default:
-                {
-                    const canvas = this.getCanvas(this._$currentFrame, true);
+                this
+                    .getCanvas(this._$currentFrame, true)
+                    .then((canvas) =>
+                    {
+                        const ratio = window.devicePixelRatio;
+                        canvas.style.width  = `${canvas.width  / ratio}px`;
+                        canvas.style.height = `${canvas.height / ratio}px`;
 
-                    const ratio = window.devicePixelRatio;
-                    canvas.style.width  = `${canvas.width  / ratio}px`;
-                    canvas.style.height = `${canvas.height / ratio}px`;
-
-                    document
-                        .getElementById("library-export-image")
-                        .appendChild(canvas);
-                }
+                        this.removeImage();
+                        document
+                            .getElementById("library-export-image")
+                            .appendChild(canvas);
+                    });
                 break;
 
         }
@@ -767,7 +782,7 @@ class LibraryExport extends BaseController
      *
      * @param  {number} frame
      * @param  {boolean} [preview=false]
-     * @return {HTMLCanvasElement}
+     * @return {Promise}
      * @method
      * @public
      */
@@ -809,25 +824,29 @@ class LibraryExport extends BaseController
             yScale *= adjScaleY;
         }
 
-        const canvas = this._$instance.draw(
-            Util.$getCanvas(),
-            Math.ceil(width * xScale),
-            Math.ceil(height * yScale),
+        return this
+            ._$instance
+            .draw(
+                Util.$getCanvas(),
+                Math.ceil(width * xScale),
+                Math.ceil(height * yScale),
+                {
+                    "frame": 1,
+                    "matrix": [xScale, 0, 0, yScale, 0, 0],
+                    "colorTransform": [1, 1, 1, 1, 0, 0, 0, 0],
+                    "blendMode": "normal",
+                    "filter": []
+                },
+                null, frame, true
+            )
+            .then((canvas) =>
             {
-                "frame": 1,
-                "matrix": [xScale, 0, 0, yScale, 0, 0],
-                "colorTransform": [1, 1, 1, 1, 0, 0, 0, 0],
-                "blendMode": "normal",
-                "filter": []
-            },
-            null, frame, true
-        );
+                // reset
+                Util.$zoomScale    = zoomScale;
+                Util.$currentFrame = currentFrame;
 
-        // reset
-        Util.$zoomScale    = zoomScale;
-        Util.$currentFrame = currentFrame;
-
-        return canvas;
+                return Promise.resolve(canvas);
+            });
     }
 }
 
