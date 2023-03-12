@@ -24,6 +24,7 @@ module.exports = function(config)
             "src/javascript/instance/*.js",
             "src/javascript/filter/Filter.js",
             "src/javascript/filter/*.js",
+            "src/javascript/parser/SVGTransformable.js",
             "src/javascript/parser/*.js",
             "src/javascript/WorkSpace.js",
             "src/javascript/event/*.js",
