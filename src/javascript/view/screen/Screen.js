@@ -430,13 +430,9 @@ class Screen extends BaseScreen
                 }
 
                 // ドロップ位置補正
-                let dx = 0;
-                let dy = 0;
-                if (instance.type === InstanceType.MOVIE_CLIP) {
-                    const bounds = instance.getBounds([1, 0, 0, 1, 0, 0]);
-                    dx = bounds.xMin;
-                    dy = bounds.yMin;
-                }
+                const baseBounds = instance.getBounds([1, 0, 0, 1, 0, 0]);
+                let dx = baseBounds.xMin;
+                let dy = baseBounds.yMin;
 
                 const bounds = character.getBounds();
                 let width = bounds.xMax - bounds.xMin;

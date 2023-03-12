@@ -51,7 +51,7 @@ class BaseTimeline extends InputEvent
     /**
      * @description スクリーンエリアで変更があったElementを再描画
      *
-     * @return {void}
+     * @return {Promise}
      * @method
      * @public
      */
@@ -59,7 +59,7 @@ class BaseTimeline extends InputEvent
     {
         const frame = Util.$timelineFrame.currentFrame;
 
-        Util
+        return Util
             .$currentWorkSpace()
             .scene
             .changeFrame(frame);

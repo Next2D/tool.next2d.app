@@ -264,7 +264,7 @@ class MovieClip extends Instance
      *              DisplayObject placed in the specified frame
      *
      * @param  {number} [frame=1]
-     * @return {void}
+     * @return {Promise}
      * @method
      * @public
      */
@@ -272,7 +272,7 @@ class MovieClip extends Instance
     {
         const element = document.getElementById("stage-area");
         if (!element) {
-            return ;
+            return Promise.resolve();
         }
 
         this.startSound(frame);
@@ -373,7 +373,9 @@ class MovieClip extends Instance
             promises.push(layer.appendCharacter(frame));
         }
 
-        Promise
+        this._$currentFrame = frame;
+
+        return Promise
             .all(promises)
             .then((values) =>
             {
@@ -455,8 +457,6 @@ class MovieClip extends Instance
                     Util.$poolCanvas(Util.$sleepCanvases.pop());
                 }
             });
-
-        this._$currentFrame = frame;
     }
 
     /**

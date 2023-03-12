@@ -64,13 +64,18 @@ class DrawTool extends BaseTool
             if (event.screen) {
 
                 Util.$timelineLayer.attachLayer();
-                this.createCharacter();
 
-                document
-                    .getElementById("draw-rect")
-                    .style.display = "none";
+                this
+                    .createCharacter()
+                    .then(() =>
+                    {
+                        document
+                            .getElementById("draw-rect")
+                            .style.display = "none";
 
-                Util.$tools.reset();
+                        Util.$tools.reset();
+                    });
+
             }
         });
     }
@@ -78,13 +83,17 @@ class DrawTool extends BaseTool
     /**
      * @description 指定の座標に描画を行う
      *
-     * @param  {string} name
-     * @return {void}
+     * @param  {string} [name = ""]
+     * @return {Promise}
      * @method
      * @public
      */
-    createCharacter (name)
+    createCharacter (name = "")
     {
+        if (!name) {
+            return Promise.resolve();
+        }
+
         const element = document.getElementById("draw-rect");
 
         const { Graphics } =  window.next2d.display;
@@ -95,16 +104,65 @@ class DrawTool extends BaseTool
 
         const width  = (parseFloat(element.style.width)  + strokeSize) / Util.$zoomScale;
         const height = (parseFloat(element.style.height) + strokeSize) / Util.$zoomScale;
-        if (width && height) {
+        if (!width || !height) {
+            return Promise.resolve();
+        }
 
-            const workSpace = Util.$currentWorkSpace();
-            workSpace.temporarilySaved();
+        const workSpace = Util.$currentWorkSpace();
+        workSpace.temporarilySaved();
 
-            // draw
+        // draw
+        const graphics = new Graphics();
+
+        graphics
+            .beginFill(document.getElementById("fill-color").value, 1);
+
+        switch (name) {
+
+            case "rectangle":
+                graphics.drawRect(0, 0, width, height);
+                break;
+
+            case "circle":
+                graphics.drawEllipse(0, 0, width, height);
+                break;
+
+            case "round-rect":
+                graphics.drawRoundRect(
+                    0, 0, width, height,
+                    Math.min(width, height) / 4
+                );
+                break;
+
+        }
+        graphics.endFill();
+
+        const x  = (this.offsetX - Util.$offsetLeft) / Util.$zoomScale;
+        const y  = (this.offsetY - Util.$offsetTop)  / Util.$zoomScale;
+        const id = workSpace.nextLibraryId;
+
+        this.createShape({
+            "id": id,
+            "type": InstanceType.SHAPE,
+            "name": `Shape_${id}`,
+            "symbol": "",
+            "recodes": graphics._$recode ? graphics._$recode.slice(0) : [],
+            "bounds": {
+                "xMin": 0,
+                "xMax": width,
+                "yMin": 0,
+                "yMax": height
+            }
+        }, x + strokeSize / 2, y + strokeSize / 2);
+
+        if (strokeSize) {
+
             const graphics = new Graphics();
-
             graphics
-                .beginFill(document.getElementById("fill-color").value, 1);
+                .lineStyle(
+                    strokeSize,
+                    document.getElementById("stroke-color").value
+                );
 
             switch (name) {
 
@@ -124,10 +182,14 @@ class DrawTool extends BaseTool
                     break;
 
             }
-            graphics.endFill();
+            graphics.endLine();
 
-            const x  = (this.offsetX - Util.$offsetLeft) / Util.$zoomScale;
-            const y  = (this.offsetY - Util.$offsetTop)  / Util.$zoomScale;
+            const offsetX = Math.abs(graphics._$xMax - graphics._$xMin) - width;
+            const offsetY = Math.abs(graphics._$yMax - graphics._$yMin) - height;
+
+            const x = this.offsetX - Util.$offsetLeft;
+            const y = this.offsetY - Util.$offsetTop;
+
             const id = workSpace.nextLibraryId;
 
             this.createShape({
@@ -137,69 +199,17 @@ class DrawTool extends BaseTool
                 "symbol": "",
                 "recodes": graphics._$recode ? graphics._$recode.slice(0) : [],
                 "bounds": {
-                    "xMin": 0,
-                    "xMax": width,
-                    "yMin": 0,
-                    "yMax": height
+                    "xMin": -offsetX / 2,
+                    "xMax": width + offsetX / 2,
+                    "yMin": -offsetY / 2,
+                    "yMax": height + offsetY / 2
                 }
-            }, x + strokeSize / 2, y + strokeSize / 2);
+            }, x + offsetX / 2, y + offsetY / 2);
 
-            if (strokeSize) {
-
-                const graphics = new Graphics();
-                graphics
-                    .lineStyle(
-                        strokeSize,
-                        document.getElementById("stroke-color").value
-                    );
-
-                switch (name) {
-
-                    case "rectangle":
-                        graphics.drawRect(0, 0, width, height);
-                        break;
-
-                    case "circle":
-                        graphics.drawEllipse(0, 0, width, height);
-                        break;
-
-                    case "round-rect":
-                        graphics.drawRoundRect(
-                            0, 0, width, height,
-                            Math.min(width, height) / 4
-                        );
-                        break;
-
-                }
-                graphics.endLine();
-
-                const offsetX = Math.abs(graphics._$xMax - graphics._$xMin) - width;
-                const offsetY = Math.abs(graphics._$yMax - graphics._$yMin) - height;
-
-                const x = this.offsetX - Util.$offsetLeft;
-                const y = this.offsetY - Util.$offsetTop;
-
-                const id = workSpace.nextLibraryId;
-
-                this.createShape({
-                    "id": id,
-                    "type": InstanceType.SHAPE,
-                    "name": `Shape_${id}`,
-                    "symbol": "",
-                    "recodes": graphics._$recode ? graphics._$recode.slice(0) : [],
-                    "bounds": {
-                        "xMin": -offsetX / 2,
-                        "xMax": width + offsetX / 2,
-                        "yMin": -offsetY / 2,
-                        "yMax": height + offsetY / 2
-                    }
-                }, x + offsetX / 2, y + offsetY / 2);
-
-            }
-
-            // 再描画
-            this.reloadScreen();
         }
+
+        // 再描画
+        return this.reloadScreen();
     }
 
     /**

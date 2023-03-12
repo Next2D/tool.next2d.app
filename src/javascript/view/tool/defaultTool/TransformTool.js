@@ -60,12 +60,11 @@ class TransformTool extends BaseTool
         // スクリーン上でのマウスダウンイベント
         this.addEventListener(EventType.MOUSE_DOWN, (event) =>
         {
-            Util.$setCursor(this._$cursor);
             switch (true) {
 
                 case event.displayObject:
                     this._$element = null;
-                    this.mouseDownForDisplayObject(event);
+                    this.mouseDownForDisplayObject();
                     break;
 
                 case event.shapePointer:
@@ -566,12 +565,11 @@ class TransformTool extends BaseTool
     }
 
     /**
-     * @param  {MouseEvent} event
      * @return {void}
      * @method
      * @public
      */
-    mouseDownForDisplayObject (event)
+    mouseDownForDisplayObject ()
     {
         const target = this.target;
         if (target.dataset.instanceType !== InstanceType.SHAPE) {
@@ -596,13 +594,7 @@ class TransformTool extends BaseTool
         const instance  = workSpace.getLibrary(target.dataset.libraryId | 0);
         const matrix    = character.getPlace(frame).matrix;
 
-        const cacheColor = Util.$hitColor;
-        instance.setHitColor(event.offsetX, event.offsetY, matrix);
-        if (Util.$hitColor) {
-            instance.createPointer(matrix, layerId, characterId);
-        } else {
-            Util.$hitColor = cacheColor;
-        }
+        instance.createPointer(matrix, layerId, characterId);
     }
 
     /**
@@ -642,17 +634,17 @@ class TransformTool extends BaseTool
         const x = event.pageX - this.pageX;
         const y = event.pageY - this.pageY;
 
-        const angle  = Math.atan2(matrix[1], matrix[0]) * Util.$Rad2Deg;
-        const scaleX = Math.sqrt(matrix[0] * matrix[0] + matrix[1] * matrix[1]);
-        const scaleY = Math.sqrt(matrix[2] * matrix[2] + matrix[3] * matrix[3]);
+        const { Matrix } = window.next2d.geom;
+        const baseMatrix = new Matrix(
+            matrix[0], matrix[1], matrix[2], matrix[3], matrix[4], matrix[5]
+        );
+        baseMatrix.invert();
 
-        let tx = (x - element.offsetLeft) / scaleX;
-        let ty = (y - element.offsetTop)  / scaleY;
-        if (angle) {
-            const rad = (360 - angle) * (Math.PI / 180);
-            tx *= Math.cos(rad);
-            ty *= Math.sin(rad);
-        }
+        const dx = x - element.offsetLeft;
+        const dy = y - element.offsetTop;
+
+        const tx = dx * baseMatrix.a + dy * baseMatrix.c;
+        const ty = dx * baseMatrix.b + dy * baseMatrix.d;
 
         const index = element.dataset.index | 0;
         instance._$recodes[index    ] += tx / Util.$zoomScale;

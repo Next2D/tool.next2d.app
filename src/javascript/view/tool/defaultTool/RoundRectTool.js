@@ -15,12 +15,13 @@ class RoundRectTool extends DrawTool
     }
 
     /**
-     * @return {void}
+     * @param  {string} [name="round-rect"]
+     * @return {Promise}
      * @method
      * @public
      */
-    createCharacter ()
+    createCharacter (name = "round-rect")
     {
-        super.createCharacter("round-rect");
+        return super.createCharacter(name);
     }
 }

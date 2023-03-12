@@ -15,12 +15,13 @@ class RectangleTool extends DrawTool
     }
 
     /**
-     * @return {void}
+     * @param  {string} [name="rectangle"]
+     * @return {Promise}
      * @method
      * @public
      */
-    createCharacter ()
+    createCharacter (name = "rectangle")
     {
-        super.createCharacter("rectangle");
+        return super.createCharacter(name);
     }
 }

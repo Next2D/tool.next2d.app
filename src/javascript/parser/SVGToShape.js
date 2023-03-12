@@ -13,691 +13,1852 @@ class SVGToShape
      */
     static parse (value, movie_clip)
     {
-        let defs = /<defs>(.*)<\/defs>/sgi.exec(value);
-        if (defs) {
-            defs = defs[1]
-                .replace(/\n/, "")
-                .replace(" ", "");
+        const dom = new DOMParser()
+            .parseFromString(value, "image/svg+xml");
+
+        const svg = dom.children[0];
+        if (svg.tagName !== "svg") {
+            return ;
         }
 
-        const paths = SVGToShape.parseXML(
-            `${value.replace(/<defs>(.*)<\/defs>/sgi, "")}`
+        const parentAttributeMap = new Map();
+        const attributes = svg.attributes;
+        const length = attributes.length;
+        for (let idx = 0; idx < length; ++idx) {
+            const attribute = attributes[idx];
+            if (attribute.name === "style") {
+                continue;
+            }
+
+            parentAttributeMap.set(
+                attribute.name,
+                attribute.value
+            );
+        }
+
+        if (svg.hasAttribute("style")) {
+            const style = svg.style;
+            const length = style.length;
+            for (let idx = 0; idx < length; ++idx) {
+                const name = style[idx];
+                parentAttributeMap.set(name, style[name]);
+            }
+        }
+
+        SVGToShape.parseElement(
+            svg, movie_clip,
+            parentAttributeMap,
+            new Map()
         );
 
-        if (paths) {
+        const layers = [];
+        for (const layer of movie_clip._$layers.values()) {
+            layers.unshift(layer);
+        }
 
-            SVGToShape.parsePath(paths, movie_clip, defs);
-
-            const layers = [];
-            for (const layer of movie_clip._$layers.values()) {
-                layers.unshift(layer);
-            }
-
-            movie_clip.clearLayer();
-            for (let idx = 0; idx < layers.length; ++idx) {
-                movie_clip.setLayer(idx, layers[idx]);
-            }
+        movie_clip.clearLayer();
+        for (let idx = 0; idx < layers.length; ++idx) {
+            movie_clip.setLayer(idx, layers[idx]);
         }
     }
 
     /**
-     * @param  {string} xml
-     * @return {array}
-     * @method
-     * @static
-     */
-    static parseXML (xml)
-    {
-        const pathReg = /<((path|rect|circle|polygon).+?)\/>/gi;
-
-        const paths = [];
-        for (let reg = "1"; reg;) {
-            reg = pathReg.exec(xml);
-            reg && paths.push(reg[1]);
-        }
-
-        return paths;
-    }
-
-    /**
-     * @param  {array}     paths
+     * @param  {Element} node
      * @param  {MovieClip} movie_clip
-     * @param  {string}    defs
+     * @param  {Map} group_attribute_map
+     * @param  {Map} global_style
+     * @return {void}
      * @method
      * @static
      */
-    static parsePath (paths, movie_clip, defs)
+    static parseElement (node, movie_clip, group_attribute_map, global_style)
     {
-        const { Shape, Graphics } = window.next2d.display;
+        const children = node.children;
+        const length = children.length;
+        for (let idx = 0; length > idx; ++idx) {
+
+            const element = children[idx];
+
+            let groupAttributeMap = null;
+            switch (element.tagName.toLowerCase()) {
+
+                case "path":
+                    SVGToShape.createGraphics(
+                        element,
+                        movie_clip,
+                        group_attribute_map,
+                        global_style
+                    );
+                    break;
+
+                case "g":
+                    {
+                        groupAttributeMap = new Map();
+
+                        const attributes = element.attributes;
+                        const length = attributes.length;
+                        for (let idx = 0; idx < length; ++idx) {
+                            const attribute = attributes[idx];
+                            if (attribute.name === "style") {
+                                continue;
+                            }
+
+                            groupAttributeMap.set(
+                                attribute.name,
+                                attribute.value
+                            );
+                        }
+
+                        for (const [name, value] of group_attribute_map) {
+
+                            if (groupAttributeMap.has(name)) {
+                                continue;
+                            }
+
+                            groupAttributeMap.set(name, value);
+                        }
+
+                        const style = element.style;
+                        for (let idx = 0; idx < style.length; ++idx) {
+                            const name = style[idx];
+                            groupAttributeMap.set(
+                                name,
+                                element.style[name]
+                            );
+                        }
+
+                    }
+                    break;
+
+                case "rect":
+                    {
+                        const x = element.hasAttribute("x")
+                            ? parseFloat(element.getAttribute("x"))
+                            : 0;
+
+                        const y = element.hasAttribute("y")
+                            ? parseFloat(element.getAttribute("y"))
+                            : 0;
+
+                        const width = element.hasAttribute("width")
+                            ? parseFloat(element.getAttribute("width"))
+                            : 0;
+
+                        const height = element.hasAttribute("height")
+                            ? parseFloat(element.getAttribute("height"))
+                            : 0;
+
+                        if (!width || !height) {
+                            continue;
+                        }
+
+                        const commands = [];
+                        if (element.hasAttribute("rx") || element.hasAttribute("ry")) {
+
+                            const rx = parseFloat(element.getAttribute("rx"));
+                            const ry = parseFloat(element.getAttribute("ry"));
+
+                            const hew = rx / 2;
+                            const heh = ry / 2;
+                            const c   = 4 / 3 * (Math.SQRT2 - 1);
+                            const cw  = c * hew;
+                            const ch  = c * heh;
+
+                            const dx0 = x   + hew;
+                            const dx1 = x   + width;
+                            const dx2 = dx1 - hew;
+
+                            const dy0 = y   + heh;
+                            const dy1 = y   + height;
+                            const dy2 = dy1 - heh;
+
+                            commands.push(
+                                {
+                                    "type": SVGCommandTypes.MOVE_TO,
+                                    "relative": false,
+                                    "x": dx0,
+                                    "y": y
+                                },
+                                {
+                                    "type": SVGCommandTypes.LINE_TO,
+                                    "relative": false,
+                                    "x": dx2,
+                                    "y": y
+                                },
+                                {
+                                    "type": SVGCommandTypes.CURVE_TO,
+                                    "relative": false,
+                                    "x1": dx2 + cw,
+                                    "y1": y,
+                                    "x2": dx1,
+                                    "y2": dy0 - ch,
+                                    "x": dx1,
+                                    "y": dy0
+                                },
+                                {
+                                    "type": SVGCommandTypes.LINE_TO,
+                                    "relative": false,
+                                    "x": dx1,
+                                    "y": dy2
+                                },
+                                {
+                                    "type": SVGCommandTypes.CURVE_TO,
+                                    "relative": false,
+                                    "x1": dx1,
+                                    "y1": dy2 + ch,
+                                    "x2": dx2 + cw,
+                                    "y2": dy1,
+                                    "x": dx2,
+                                    "y": dy1
+                                },
+                                {
+                                    "type": SVGCommandTypes.LINE_TO,
+                                    "relative": false,
+                                    "x": dx0,
+                                    "y": dy1
+                                },
+                                {
+                                    "type": SVGCommandTypes.CURVE_TO,
+                                    "relative": false,
+                                    "x1": dx0 - cw,
+                                    "y1": dy1,
+                                    "x2": x,
+                                    "y2": dy2 + ch,
+                                    "x": x,
+                                    "y": dy2
+                                },
+                                {
+                                    "type": SVGCommandTypes.LINE_TO,
+                                    "relative": false,
+                                    "x": x,
+                                    "y": dy0
+                                },
+                                {
+                                    "type": SVGCommandTypes.CURVE_TO,
+                                    "relative": false,
+                                    "x1": x,
+                                    "y1": dy0 - ch,
+                                    "x2": dx0 - cw,
+                                    "y2": y,
+                                    "x": dx0,
+                                    "y": y
+                                }
+                            );
+
+                        } else {
+
+                            commands.push(
+                                {
+                                    "type": SVGCommandTypes.MOVE_TO,
+                                    "relative": false,
+                                    "x": x,
+                                    "y": y
+                                },
+                                {
+                                    "type": SVGCommandTypes.LINE_TO,
+                                    "relative": false,
+                                    "x": x + width,
+                                    "y": y
+                                },
+                                {
+                                    "type": SVGCommandTypes.LINE_TO,
+                                    "relative": false,
+                                    "x": x + width,
+                                    "y": y + height
+                                },
+                                {
+                                    "type": SVGCommandTypes.LINE_TO,
+                                    "relative": false,
+                                    "x": x,
+                                    "y": y + height
+                                },
+                                {
+                                    "type": SVGCommandTypes.LINE_TO,
+                                    "relative": false,
+                                    "x": x,
+                                    "y": y
+                                }
+                            );
+                        }
+
+                        const path = document.createElement("path");
+
+                        const attributes = element.attributes;
+                        const length = attributes.length;
+                        for (let idx = 0; idx < length; ++idx) {
+                            const attribute = attributes[idx];
+                            switch (attribute.name) {
+
+                                case "x":
+                                case "y":
+                                case "width":
+                                case "height":
+                                    continue;
+
+                            }
+
+                            path.setAttribute(
+                                attribute.name,
+                                attribute.value
+                            );
+                        }
+
+                        SVGToShape.createGraphics(
+                            path,
+                            movie_clip,
+                            group_attribute_map,
+                            global_style,
+                            commands
+                        );
+                    }
+                    break;
+
+                case "circle":
+                    {
+                        const x = element.hasAttribute("cx")
+                            ? parseFloat(element.getAttribute("cx"))
+                            : 0;
+
+                        const y = element.hasAttribute("cy")
+                            ? parseFloat(element.getAttribute("cy"))
+                            : 0;
+
+                        const r = element.hasAttribute("r")
+                            ? parseFloat(element.getAttribute("r"))
+                            : 0;
+
+                        if (!r) {
+                            continue;
+                        }
+
+                        const commands = [
+                            {
+                                "type": SVGCommandTypes.MOVE_TO,
+                                "relative": false,
+                                "x": x - r,
+                                "y": y
+                            },
+                            {
+                                "type": SVGCommandTypes.ARC,
+                                "relative": false,
+                                "x": x + r,
+                                "y": y,
+                                "rX": r,
+                                "rY": r,
+                                "lArcFlag": 0,
+                                "sweepFlag": 0,
+                                "xRot": 180
+                            },
+                            {
+                                "type": SVGCommandTypes.ARC,
+                                "relative": false,
+                                "x": x - r,
+                                "y": y,
+                                "rX": r,
+                                "rY": r,
+                                "lArcFlag": 0,
+                                "sweepFlag": 0,
+                                "xRot": 180
+                            },
+                            {
+                                "type": SVGCommandTypes.CIRCLE,
+                                "x": x,
+                                "y": y
+                            }
+                        ];
+
+                        const path = document.createElement("path");
+
+                        const attributes = element.attributes;
+                        const length = attributes.length;
+                        for (let idx = 0; idx < length; ++idx) {
+                            const attribute = attributes[idx];
+                            switch (attribute.name) {
+
+                                case "cx":
+                                case "cy":
+                                case "r":
+                                    continue;
+
+                            }
+
+                            path.setAttribute(
+                                attribute.name,
+                                attribute.value
+                            );
+                        }
+
+                        SVGToShape.createGraphics(
+                            path,
+                            movie_clip,
+                            group_attribute_map,
+                            global_style,
+                            commands
+                        );
+                    }
+                    break;
+
+                case "ellipse":
+                    {
+                        const x = element.hasAttribute("cx")
+                            ? parseFloat(element.getAttribute("cx"))
+                            : 0;
+
+                        const y = element.hasAttribute("cy")
+                            ? parseFloat(element.getAttribute("cy"))
+                            : 0;
+
+                        const rx = element.hasAttribute("rx")
+                            ? parseFloat(element.getAttribute("rx"))
+                            : 0;
+
+                        const ry = element.hasAttribute("ry")
+                            ? parseFloat(element.getAttribute("ry"))
+                            : 0;
+
+                        const commands = [
+                            {
+                                "type": SVGCommandTypes.MOVE_TO,
+                                "relative": false,
+                                "x": x - rx,
+                                "y": y
+                            },
+                            {
+                                "type": SVGCommandTypes.ARC,
+                                "relative": false,
+                                "x": x + rx,
+                                "y": y,
+                                "rX": rx,
+                                "rY": ry,
+                                "lArcFlag": 0,
+                                "sweepFlag": 0,
+                                "xRot": 180
+                            },
+                            {
+                                "type": SVGCommandTypes.ARC,
+                                "relative": false,
+                                "x": x - rx,
+                                "y": y,
+                                "rX": rx,
+                                "rY": ry,
+                                "lArcFlag": 0,
+                                "sweepFlag": 0,
+                                "xRot": 180
+                            },
+                            {
+                                "type": SVGCommandTypes.CIRCLE,
+                                "x": x,
+                                "y": y
+                            }
+                        ];
+
+                        const path = document.createElement("path");
+
+                        const attributes = element.attributes;
+                        const length = attributes.length;
+                        for (let idx = 0; idx < length; ++idx) {
+                            const attribute = attributes[idx];
+                            switch (attribute.name) {
+
+                                case "cx":
+                                case "cy":
+                                case "rx":
+                                case "ry":
+                                    continue;
+
+                            }
+
+                            path.setAttribute(
+                                attribute.name,
+                                attribute.value
+                            );
+                        }
+
+                        SVGToShape.createGraphics(
+                            path,
+                            movie_clip,
+                            group_attribute_map,
+                            global_style,
+                            commands
+                        );
+                    }
+                    break;
+
+                case "polygon":
+                case "polyline":
+                    {
+                        if (!element.hasAttribute("points")) {
+                            continue;
+                        }
+
+                        const points = element.getAttribute("points");
+                        const values = SVGToShape._$adjParam(points
+                            .replace(/,/g, " ")
+                            .replace(/-/g, " -")
+                            .trim()
+                            .split(" "));
+
+                        const commands = [{
+                            "type": SVGCommandTypes.MOVE_TO,
+                            "relative": false,
+                            "x": +values[0],
+                            "y": +values[1]
+                        }];
+
+                        for (let idx = 2; idx < values.length; idx += 2) {
+                            commands.push({
+                                "type": SVGCommandTypes.LINE_TO,
+                                "relative": false,
+                                "x": +values[idx],
+                                "y": +values[idx + 1]
+                            });
+                        }
+
+                        if (element.tagName === "polygon") {
+                            commands.push({
+                                "type": SVGCommandTypes.CLOSE_PATH
+                            });
+                        }
+
+                        const path = document.createElement("path");
+
+                        const attributes = element.attributes;
+                        const length = attributes.length;
+                        for (let idx = 0; idx < length; ++idx) {
+                            const attribute = attributes[idx];
+
+                            if (attribute.name === "points") {
+                                continue;
+                            }
+
+                            path.setAttribute(
+                                attribute.name,
+                                attribute.value
+                            );
+                        }
+
+                        SVGToShape.createGraphics(
+                            path,
+                            movie_clip,
+                            group_attribute_map,
+                            global_style,
+                            commands
+                        );
+                    }
+                    break;
+
+                case "line":
+                    {
+                        const x1 = element.hasAttribute("x1")
+                            ? parseFloat(element.getAttribute("x1"))
+                            : 0;
+
+                        const y1 = element.hasAttribute("y1")
+                            ? parseFloat(element.getAttribute("y1"))
+                            : 0;
+
+                        const x2 = element.hasAttribute("x2")
+                            ? parseFloat(element.getAttribute("x2"))
+                            : 0;
+
+                        const y2 = element.hasAttribute("y2")
+                            ? parseFloat(element.getAttribute("y2"))
+                            : 0;
+
+                        if (x1 === x2 && y1 === y2) {
+                            continue;
+                        }
+
+                        const commands = [
+                            {
+                                "type": SVGCommandTypes.MOVE_TO,
+                                "relative": false,
+                                "x": x1,
+                                "y": y1
+                            },
+                            {
+                                "type": SVGCommandTypes.LINE_TO,
+                                "relative": false,
+                                "x": x2,
+                                "y": y2
+                            }
+                        ];
+
+                        const path = document.createElement("path");
+
+                        const attributes = element.attributes;
+                        const length = attributes.length;
+                        for (let idx = 0; idx < length; ++idx) {
+                            const attribute = attributes[idx];
+                            switch (attribute.name) {
+
+                                case "x1":
+                                case "y1":
+                                case "x2":
+                                case "y2":
+                                    continue;
+
+                            }
+
+                            path.setAttribute(
+                                attribute.name,
+                                attribute.value
+                            );
+                        }
+
+                        SVGToShape.createGraphics(
+                            path,
+                            movie_clip,
+                            group_attribute_map,
+                            global_style,
+                            commands
+                        );
+                    }
+                    break;
+
+                case "style":
+                    {
+                        const rules  = element.sheet.cssRules;
+                        const length = rules.length;
+                        for (let idx = 0; idx < length; ++idx) {
+                            const node = rules[idx];
+                            global_style.set(node.selectorText, node);
+                        }
+                    }
+                    break;
+
+                case "use":
+                    {
+                        let id = null;
+                        switch (true) {
+
+                            case element.hasAttribute("href"):
+                                id = element
+                                    .getAttribute("href")
+                                    .slice(1);
+                                break;
+
+                            case element.hasAttribute("xlink:href"):
+                                id = element
+                                    .getAttribute("xlink:href")
+                                    .slice(1);
+                                break;
+
+                            default:
+                                break;
+
+                        }
+
+                        if (!id) {
+                            continue;
+                        }
+
+                        const node = element
+                            .viewportElement
+                            .getElementById(id);
+
+                        const path = document.createElement("path");
+
+                        const attributes = element.attributes;
+                        const length = attributes.length;
+                        for (let idx = 0; idx < length; ++idx) {
+                            const attribute = attributes[idx];
+                            switch (attribute.name) {
+
+                                case "href":
+                                case "xlink:href":
+                                    continue;
+
+                            }
+
+                            path.setAttribute(
+                                attribute.name,
+                                attribute.value
+                            );
+                        }
+
+                        const nodeAttributes = node.attributes;
+                        const nodeLength = nodeAttributes.length;
+                        for (let idx = 0; idx < nodeLength; ++idx) {
+                            const attribute = nodeAttributes[idx];
+
+                            path.setAttribute(
+                                attribute.name,
+                                attribute.value
+                            );
+                        }
+
+                        const parent = document.createElement("element");
+                        parent.appendChild(path);
+
+                        SVGToShape.parseElement(
+                            parent,
+                            movie_clip,
+                            group_attribute_map,
+                            global_style
+                        );
+                    }
+                    break;
+
+                default:
+                    break;
+
+            }
+
+            SVGToShape.parseElement(
+                element,
+                movie_clip,
+                groupAttributeMap || group_attribute_map,
+                global_style
+            );
+        }
+    }
+
+    /**
+     * @param  {MovieClip} movie_clip
+     * @param  {Element} element
+     * @param  {Map} group_attribute_map
+     * @param  {Map} global_style
+     * @return {Shape}
+     * @method
+     * @static
+     */
+    static createShape (movie_clip, element, group_attribute_map, global_style)
+    {
+
         const workSpace = Util.$currentWorkSpace();
 
-        for (let idx = 0; idx < paths.length; ++idx) {
+        const id = workSpace.nextLibraryId;
 
-            const graphics = new Shape().graphics;
+        const shape = workSpace.addLibrary(
+            Util
+                .$libraryController
+                .createInstance(InstanceType.SHAPE, `Shape_${id}`, id)
+        );
 
-            const value = paths[idx];
+        const layer = new Layer();
+        layer.name  = `Layer_${movie_clip._$layers.size}`;
 
-            let styles = null;
-            const className = /class=\"(.+?)\"/gi.exec(value);
-            if (className && defs) {
-                styles = new RegExp(`.${className[1]}{(.+?)}`, "gi").exec(defs);
-                if (styles) {
-                    styles = styles[1]
-                }
-            }
+        movie_clip.setLayer(movie_clip._$layers.size, layer);
 
-            // STROKE
-            let strokeWidth = /stroke-width=\"(.+?)\"/gi.exec(value);
-            if (!strokeWidth) {
-                strokeWidth = /stroke-width:(.+?)["|;]/gi.exec(value);
-            }
+        const character = new Character();
+        character.libraryId  = shape.id;
 
-            if (strokeWidth) {
-                strokeWidth = +strokeWidth[1];
-                if (strokeWidth) {
-                    let color = /stroke=\"(.+?)\"/gi.exec(value);
-                    if (!color) {
-                        color = /stroke:(.+?)["|;]/gi.exec(value);
+        const location = layer.adjustmentLocation(1);
+        character.startFrame = location.startFrame;
+        character.endFrame   = location.endFrame;
+
+        let x = 0;
+        let y = 0;
+        if (element.hasAttribute("transform")) {
+            const transform = element.getAttribute("transform");
+            if (transform.indexOf("translate") > -1) {
+
+                const translate = /translate\((.+?)\)/gi.exec(transform)[1];
+
+                const values = SVGToShape._$adjParam(translate
+                    .replace(/,/g, " ")
+                    .replace(/-/g, " -")
+                    .trim()
+                    .split(" "));
+
+                const param = [];
+                for (let idx = 0; idx < values.length; ++idx) {
+
+                    const value = values[idx];
+                    if (!value) {
+                        continue;
                     }
 
-                    graphics.lineStyle(strokeWidth, color ? color[1] : 0);
+                    param.push(+value);
                 }
-            }
 
-            // FILL
-            let color = /fill=\"(.+?)\"/gi.exec(value);
-            if (!color) {
-                color = /fill:(.+?)["|;]/gi.exec(value);
+                x += parseFloat(param[0]);
+                y += parseFloat(param[1]);
             }
-            if (!color && styles) {
-                color = new RegExp(`fill:(.+?);`, "gi").exec(styles);
-            }
+        }
 
-            let alpha = 1;
-            let style = /style=\"(.+?)\"/gi.exec(value);
-            if (style && style[1].indexOf("opacity") > -1) {
-                alpha = style[1].split(":")[1];
-            }
+        if (group_attribute_map.has("transform")) {
+            const transform = group_attribute_map.get("transform");
+            if (transform.indexOf("translate") > -1) {
 
-            if (color) {
-                graphics.beginFill(color[1], +alpha);
-            } else {
-                if (!strokeWidth) {
-                    graphics.beginFill(0, +alpha);
+                const translate = /translate\((.+?)\)/gi.exec(transform)[1];
+
+                const values = SVGToShape._$adjParam(translate
+                    .replace(/,/g, " ")
+                    .replace(/-/g, " -")
+                    .trim()
+                    .split(" "));
+
+                const param = [];
+                for (let idx = 0; idx < values.length; ++idx) {
+
+                    const value = values[idx];
+                    if (!value) {
+                        continue;
+                    }
+
+                    param.push(+value);
                 }
+
+                x += parseFloat(param[0]);
+                y += parseFloat(param[1]);
+            }
+        }
+
+        if (global_style.has("transform")) {
+            const transform = global_style.get("transform");
+            if (transform.indexOf("translate") > -1) {
+
+                const translate = /translate\((.+?)\)/gi.exec(transform)[1];
+
+                const values = SVGToShape._$adjParam(translate
+                    .replace(/,/g, " ")
+                    .replace(/-/g, " -")
+                    .trim()
+                    .split(" "));
+
+                const param = [];
+                for (let idx = 0; idx < values.length; ++idx) {
+
+                    const value = values[idx];
+                    if (!value) {
+                        continue;
+                    }
+
+                    param.push(+value);
+                }
+
+                x += parseFloat(param[0]);
+                y += parseFloat(param[1]);
+            }
+        }
+
+        character.setPlace(location.startFrame, {
+            "frame": location.startFrame,
+            "matrix": [1, 0, 0, 1, isNaN(x) ? 0 : x, isNaN(y) ? 0 : y],
+            "colorTransform": [1, 1, 1, 1, 0, 0, 0, 0],
+            "blendMode": "normal",
+            "filter": [],
+            "depth": layer._$characters.length
+        });
+        layer.addCharacter(character);
+
+        return shape;
+    }
+
+    /**
+     * @param  {Element} element
+     * @param  {Map} group_attribute_map
+     * @param  {Map} global_style
+     * @return {object}
+     * @method
+     * @static
+     */
+    static getFillObject (element, group_attribute_map, global_style)
+    {
+        let colorValue = null;
+        switch (true) {
+
+            case element.hasAttribute("fill"):
+                colorValue = element.getAttribute("fill");
+                break;
+
+            case element.style.fill !== "":
+                colorValue = element.style.fill;
+                break;
+
+            case group_attribute_map.has("fill"):
+                colorValue = group_attribute_map.get("fill");
+                break;
+
+            default:
+                {
+                    const classList = element.classList;
+                    const length = classList.length;
+                    for (let idx = 0; idx < length; ++idx) {
+                        const name = classList[idx];
+
+                        let rule = null;
+                        switch (true) {
+
+                            case global_style.has(`#${name}`):
+                                rule = global_style.get(`#${name}`);
+                                break;
+
+                            case global_style.has(`.${name}`):
+                                rule = global_style.get(`.${name}`);
+                                break;
+
+                            default:
+                                continue;
+
+                        }
+
+                        if (!rule) {
+                            continue;
+                        }
+
+                        if (rule.style.fill === "") {
+                            continue;
+                        }
+
+                        colorValue = rule.style.fill;
+
+                    }
+                }
+                break;
+
+        }
+
+        let alphaValue = null;
+        switch (true) {
+
+            case element.hasAttribute("fill-opacity"):
+                alphaValue = element.getAttribute("fill-opacity");
+                break;
+
+            case element.hasAttribute("opacity"):
+                alphaValue = element.getAttribute("opacity");
+                break;
+
+            case element.style.fillOpacity !== "":
+                alphaValue = element.style.fillOpacity;
+                break;
+
+            case element.style.opacity !== "":
+                alphaValue = element.style.opacity;
+                break;
+
+            case group_attribute_map.has("fill-opacity"):
+                alphaValue = group_attribute_map.get("fill-opacity");
+                break;
+
+            case group_attribute_map.has("opacity"):
+                alphaValue = group_attribute_map.get("opacity");
+                break;
+
+            default:
+                {
+                    const classList = element.classList;
+                    const length = classList.length;
+                    for (let idx = 0; idx < length; ++idx) {
+
+                        const name = classList[idx];
+
+                        let rule = null;
+                        switch (true) {
+
+                            case global_style.has(`#${name}`):
+                                rule = global_style.get(`#${name}`);
+                                break;
+
+                            case global_style.has(`.${name}`):
+                                rule = global_style.get(`.${name}`);
+                                break;
+
+                            default:
+                                continue;
+
+                        }
+
+                        if (!rule) {
+                            continue;
+                        }
+
+                        if (rule.style.fillOpacity !== "") {
+                            alphaValue = rule.style.fillOpacity;
+                        }
+
+                        if (rule.style.opacity !== "") {
+                            alphaValue = rule.style.opacity;
+                        }
+
+                        break;
+                    }
+                }
+                break;
+
+        }
+
+        let alpha = alphaValue === null ? 1 : +alphaValue;
+        let color = 0;
+        if (colorValue) {
+            switch (true) {
+
+                case colorValue.indexOf("rgba") > -1:
+                    {
+                        const colors = /rgba\((.+?)\)/gi
+                            .exec(colorValue)[1]
+                            .trim()
+                            .split(",");
+
+                        color = "0x";
+                        color += parseInt(colors[0].trim()).toString(16);
+                        color += parseInt(colors[1].trim()).toString(16);
+                        color += parseInt(colors[2].trim()).toString(16);
+                        color |= 0;
+
+                        alpha = +colors[3].trim();
+                    }
+                    break;
+
+                case colorValue.indexOf("rgb") > -1:
+                    {
+                        const colors = /rgb\((.+?)\)/gi
+                            .exec(colorValue)[1]
+                            .trim()
+                            .split(",");
+
+                        color = "0x";
+                        color += parseInt(colors[0].trim()).toString(16);
+                        color += parseInt(colors[1].trim()).toString(16);
+                        color += parseInt(colors[2].trim()).toString(16);
+                        color |= 0;
+                    }
+                    break;
+
+                case colorValue === "transparent":
+                case colorValue === "none":
+                    alpha = 0;
+                    break;
+
+                default:
+                    color = colorValue;
+                    break;
+
+            }
+        }
+
+        return {
+            "color": color,
+            "alpha": alpha
+        };
+    }
+
+    /**
+     * @param  {Element} element
+     * @param  {Map} group_attribute_map
+     * @param  {Map} global_style
+     * @return {object}
+     * @method
+     * @static
+     */
+    static getStrokeObject (element, group_attribute_map, global_style)
+    {
+        let caps = "none";
+        switch (true) {
+
+            case element.hasAttribute("stroke-linecap"):
+                caps = element.getAttribute("stroke-linecap");
+                break;
+
+            case element.style.strokeLinecap !== "":
+                caps = element.style.strokeLinecap;
+                break;
+
+            case group_attribute_map.has("stroke-linecap"):
+                caps = group_attribute_map.get("stroke-linecap");
+                break;
+
+            default:
+                {
+                    const classList = element.classList;
+                    const length = classList.length;
+                    for (let idx = 0; idx < length; ++idx) {
+                        const name = classList[idx];
+
+                        let rule = null;
+                        switch (true) {
+
+                            case global_style.has(`#${name}`):
+                                rule = global_style.get(`#${name}`);
+                                break;
+
+                            case global_style.has(`.${name}`):
+                                rule = global_style.get(`.${name}`);
+                                break;
+
+                            default:
+                                continue;
+
+                        }
+
+                        if (!rule) {
+                            continue;
+                        }
+
+                        if (rule.style.strokeLinecap === "") {
+                            continue;
+                        }
+
+                        caps = rule.style.strokeLinecap;
+
+                    }
+                }
+                break;
+
+        }
+
+        let join = "miter";
+        switch (true) {
+
+            case element.hasAttribute("stroke-linejoin"):
+                join = element.getAttribute("stroke-linejoin");
+                break;
+
+            case element.style.strokeLinejoin !== "":
+                join = element.style.strokeLinejoin;
+                break;
+
+            case group_attribute_map.has("stroke-linejoin"):
+                join = group_attribute_map.get("stroke-linejoin");
+                break;
+
+            default:
+                {
+                    const classList = element.classList;
+                    const length = classList.length;
+                    for (let idx = 0; idx < length; ++idx) {
+                        const name = classList[idx];
+
+                        let rule = null;
+                        switch (true) {
+
+                            case global_style.has(`#${name}`):
+                                rule = global_style.get(`#${name}`);
+                                break;
+
+                            case global_style.has(`.${name}`):
+                                rule = global_style.get(`.${name}`);
+                                break;
+
+                            default:
+                                continue;
+
+                        }
+
+                        if (!rule) {
+                            continue;
+                        }
+
+                        if (rule.style.strokeLinejoin === "") {
+                            continue;
+                        }
+
+                        join = rule.style.strokeLinejoin;
+
+                    }
+                }
+                break;
+
+        }
+
+        let colorValue = null;
+        switch (true) {
+
+            case element.hasAttribute("stroke"):
+                colorValue = element.getAttribute("stroke");
+                break;
+
+            case element.style.stroke !== "":
+                colorValue = element.style.stroke;
+                break;
+
+            case group_attribute_map.has("stroke"):
+                colorValue = group_attribute_map.get("stroke");
+                break;
+
+            default:
+                {
+                    const classList = element.classList;
+                    const length = classList.length;
+                    for (let idx = 0; idx < length; ++idx) {
+                        const name = classList[idx];
+
+                        let rule = null;
+                        switch (true) {
+
+                            case global_style.has(`#${name}`):
+                                rule = global_style.get(`#${name}`);
+                                break;
+
+                            case global_style.has(`.${name}`):
+                                rule = global_style.get(`.${name}`);
+                                break;
+
+                            default:
+                                continue;
+
+                        }
+
+                        if (!rule) {
+                            continue;
+                        }
+
+                        if (rule.style.stroke === "") {
+                            continue;
+                        }
+
+                        colorValue = rule.style.stroke;
+
+                    }
+                }
+                break;
+
+        }
+
+        let width = colorValue ? 1 : 0;
+        switch (true) {
+
+            case element.hasAttribute("stroke-width"):
+                width = parseFloat(
+                    element.getAttribute("stroke-width")
+                );
+                break;
+
+            case element.style.strokeWidth !== "":
+                width = parseFloat(element.style.strokeWidth);
+                break;
+
+            case group_attribute_map.has("stroke-width"):
+                width = parseFloat(
+                    group_attribute_map.get("stroke-width")
+                );
+                break;
+
+            default:
+                {
+                    const classList = element.classList;
+                    const length = classList.length;
+                    for (let idx = 0; idx < length; ++idx) {
+                        const name = classList[idx];
+
+                        let rule = null;
+                        switch (true) {
+
+                            case global_style.has(`#${name}`):
+                                rule = global_style.get(`#${name}`);
+                                break;
+
+                            case global_style.has(`.${name}`):
+                                rule = global_style.get(`.${name}`);
+                                break;
+
+                            default:
+                                continue;
+
+                        }
+
+                        if (!rule) {
+                            continue;
+                        }
+
+                        if (rule.style.strokeWidth === "") {
+                            continue;
+                        }
+
+                        width = parseFloat(rule.style.strokeWidth);
+
+                    }
+                }
+                break;
+
+        }
+
+        let alphaValue = null;
+        switch (true) {
+
+            case element.hasAttribute("stroke-opacity"):
+                alphaValue = element.getAttribute("stroke-opacity");
+                break;
+
+            case element.hasAttribute("opacity"):
+                alphaValue = element.getAttribute("opacity");
+                break;
+
+            case element.style.strokeOpacity !== "":
+                alphaValue = element.style.strokeOpacity;
+                break;
+
+            case element.style.opacity !== "":
+                alphaValue = element.style.opacity;
+                break;
+
+            case group_attribute_map.has("stroke-opacity"):
+                alphaValue = group_attribute_map.get("stroke-opacity");
+                break;
+
+            case group_attribute_map.has("opacity"):
+                alphaValue = group_attribute_map.get("opacity");
+                break;
+
+            default:
+                {
+                    const classList = element.classList;
+                    const length = classList.length;
+                    for (let idx = 0; idx < length; ++idx) {
+
+                        const name = classList[idx];
+
+                        let rule = null;
+                        switch (true) {
+
+                            case global_style.has(`#${name}`):
+                                rule = global_style.get(`#${name}`);
+                                break;
+
+                            case global_style.has(`.${name}`):
+                                rule = global_style.get(`.${name}`);
+                                break;
+
+                            default:
+                                continue;
+
+                        }
+
+                        if (!rule) {
+                            continue;
+                        }
+
+                        if (rule.style.strokeOpacity !== "") {
+                            alphaValue = rule.style.strokeOpacity;
+                        }
+
+                        if (rule.style.opacity !== "") {
+                            alphaValue = rule.style.opacity;
+                        }
+
+                    }
+                }
+                break;
+
+        }
+
+        let alpha = alphaValue === null ? 1 : alphaValue;
+        let color = 0;
+        if (colorValue) {
+            switch (true) {
+
+                case colorValue.indexOf("rgba") > -1:
+                    {
+                        const colors = /rgba\((.+?)\)/gi
+                            .exec(colorValue)[1]
+                            .trim()
+                            .split(",");
+
+                        color = "0x";
+                        color += +colors[0].trim();
+                        color += +colors[1].trim();
+                        color += +colors[2].trim();
+                        color |= 0;
+
+                        alpha = +colors[3].trim();
+                    }
+                    break;
+
+                case colorValue.indexOf("rgb") > -1:
+                    {
+                        const colors = /rgb\((.+?)\)/gi
+                            .exec(colorValue)[1]
+                            .trim()
+                            .split(",");
+
+                        color = "0x";
+                        color += +colors[0].trim();
+                        color += +colors[1].trim();
+                        color += +colors[2].trim();
+                        color |= 0;
+                    }
+                    break;
+
+                case colorValue === "transparent":
+                case colorValue === "none":
+                    alpha = 0;
+                    break;
+
+                default:
+                    color = colorValue;
+                    break;
+
+            }
+        }
+
+        return {
+            "color": color,
+            "alpha": alpha,
+            "width": width,
+            "caps": caps === "butt" ? "none" : caps,
+            "join": join
+        };
+    }
+
+    /**
+     * @param  {Element} element
+     * @param  {Map} group_attribute_map
+     * @return {SVGPathParser}
+     * @method
+     * @static
+     */
+    static createParser (element, group_attribute_map)
+    {
+        let parser = new SVGPathParser();
+
+        for (let idx = 0; 2 > idx; ++idx) {
+
+            let transform = null;
+            switch (idx) {
+
+                case 0:
+                    if (group_attribute_map.size
+                        && group_attribute_map.has("transform")
+                    ) {
+                        transform = group_attribute_map.get("transform");
+                    }
+                    break;
+
+                case 1:
+                    if (element.hasAttribute("transform")) {
+                        transform = element.getAttribute("transform");
+                    }
+                    break;
+
+                default:
+                    break;
+
             }
 
-            const id = workSpace.nextLibraryId;
+            if (transform) {
 
-            const shape = workSpace.addLibrary(
-                Util
-                    .$libraryController
-                    .createInstance(InstanceType.SHAPE, `Shape_${id}`, id)
-            );
+                const names = [
+                    "matrix",
+                    "scale",
+                    "rotate",
+                    "skewX",
+                    "skewY"
+                ];
 
-            const layer = new Layer();
-            layer.name  = `Layer_${movie_clip._$layers.size}`;
+                const transforms = [];
+                for (let idx = 0; names.length > idx; ++idx) {
+                    const name = names[idx];
+                    const index = transform.indexOf(name);
+                    if (index === -1) {
+                        continue;
+                    }
 
-            movie_clip.setLayer(movie_clip._$layers.size, layer);
+                    transforms.push({
+                        "index": index,
+                        "name": name
+                    })
+                }
 
-            const character = new Character();
-            character.libraryId  = shape.id;
+                // 昇順
+                transforms.sort((a, b) =>
+                {
+                    if (a.index > b.index) {
+                        return 1;
+                    }
 
-            const location = layer.adjustmentLocation(1);
-            character.startFrame = location.startFrame;
-            character.endFrame   = location.endFrame;
+                    if (b.index > a.index) {
+                        return -1;
+                    }
 
-            character.setPlace(location.startFrame, {
-                "frame": location.startFrame,
-                "matrix": [1, 0, 0, 1, 0, 0],
-                "colorTransform": [1, 1, 1, 1, 0, 0, 0, 0],
-                "blendMode": "normal",
-                "filter": [],
-                "depth": layer._$characters.length
-            });
-            layer.addCharacter(character);
+                    return 0;
+                });
 
-            // draw rect
-            if (value.indexOf("rect") > -1) {
+                for (let idx = 0; transforms.length > idx; ++idx) {
 
-                const param  = value.replace("rect", "");
-                const x      = +/x=\"(.+?)\"/gi.exec(param)[1];
-                const y      = +/y=\"(.+?)\"/gi.exec(param)[1];
-                const width  = +/width=\"(.+?)\"/gi.exec(param)[1];
-                const height = +/height=\"(.+?)\"/gi.exec(param)[1];
-                const rx     = +/rx=\"(.+?)\"/gi.exec(param)[1];
+                    const name = transforms[idx].name;
 
-                graphics
-                    .drawRoundRect(x, y, width, height, rx * 2)
-                    .endFill();
+                    const values = SVGToShape._$adjParam(
+                        new RegExp(`${name}\\((.+?)\\)`, "gi")
+                            .exec(transform)[1]
+                            .replace(/,/g, " ")
+                            .replace(/-/g, " -")
+                            .trim()
+                            .split(" ")
+                    );
 
-                shape._$recodes = graphics._$recode.slice();
-                shape._$bounds = {
-                    "xMin": graphics._$xMin,
-                    "xMax": graphics._$xMax,
-                    "yMin": graphics._$yMin,
-                    "yMax": graphics._$yMax
-                };
+                    const param = [];
+                    for (let idx = 0; idx < values.length; ++idx) {
 
-                continue;
-            }
+                        const value = values[idx];
+                        if (!value) {
+                            continue;
+                        }
 
-            if (value.indexOf("circle") > -1) {
+                        param.push(+value);
+                    }
 
-                const param = value.replace("rect", "");
-                const x     = +/cx=\"(.+?)\"/gi.exec(param)[1];
-                const y     = +/cy=\"(.+?)\"/gi.exec(param)[1];
-                const r     = +/r=\"(.+?)\"/gi.exec(param)[1];
-
-                graphics
-                    .drawCircle(x, y, r)
-                    .endFill();
-
-                shape._$recodes = graphics._$recode.slice();
-                shape._$bounds = {
-                    "xMin": graphics._$xMin,
-                    "xMax": graphics._$xMax,
-                    "yMin": graphics._$yMin,
-                    "yMax": graphics._$yMax
-                };
-
-                continue;
-            }
-
-            if (value.indexOf("polygon") > -1) {
-
-                const path = value.replace("polygon", "");
-
-                let points = /points=\"(.+?)\"/gi.exec(path)[1];
-
-                points = points.replace(/,/g, " ");
-                points = points.replace(/-/g, " -");
-                points = points.trim().split(" ");
-                points = SVGToShape._$adjParam(points);
-
-                graphics.moveTo(+points[0], +points[1]);
-                for (let idx = 2; idx < points.length; idx += 2) {
-                    graphics.lineTo(
-                        +points[idx    ],
-                        +points[idx + 1]
+                    parser = parser[name](
+                        param[0], param[1], param[2],
+                        param[3], param[4], param[5]
                     );
                 }
-                graphics.endFill();
-
-                shape._$recodes = graphics._$recode.slice();
-                shape._$bounds = {
-                    "xMin": graphics._$xMin,
-                    "xMax": graphics._$xMax,
-                    "yMin": graphics._$yMin,
-                    "yMax": graphics._$yMax
-                };
-
-                continue;
             }
-
-            let start   = false;
-            let startX  = 0;
-            let startY  = 0;
-
-            const currentPoint = [0, 0];
-            const lastControl  = [0, 0];
-            const actionReg = /([a-z])([^a-z]*)/gi;
-
-            const d = / d=\"(.+?)\"/gi.exec(value)[1];
-            for (let reg = "1"; reg;) {
-
-                // TODO transform
-                // let tx = 0;
-                // let ty = 0;
-                // if (value.indexOf("translate") > -1) {
-                //
-                //     let translate = /translate\((.+?)\)/gi.exec(value)[1];
-                //     translate = translate.replace(/,/g, " ");
-                //     translate = translate.replace(/-/g, " -");
-                //     translate = translate.trim().split(" ");
-                //     translate = SVGToShape._$adjParam(translate);
-                //
-                //     const param = [];
-                //     for (let idx = 0; idx < translate.length; ++idx) {
-                //
-                //         const value = translate[idx];
-                //         if (value === "") {
-                //             continue;
-                //         }
-                //
-                //         param.push(+value);
-                //     }
-                //
-                //     tx = param[0];
-                //     ty = param[1];
-                // }
-
-                reg = actionReg.exec(d);
-                if (reg) {
-
-                    const type = `${reg[1]}`;
-
-                    let param = reg[2];
-                    switch (type) {
-
-                        case "m":
-                            param = param.replace(/,/g, " ");
-                            param = param.replace(/-/g, " -");
-                            param = param.trim().split(" ");
-                            param = SVGToShape._$adjParam(param);
-
-                            currentPoint[0] += +param[0];
-                            currentPoint[1] += +param[1];
-
-                            if (!start) {
-                                start = true;
-                                startX = currentPoint[0];
-                                startY = currentPoint[1];
-                            }
-
-                            graphics.moveTo(
-                                currentPoint[0],
-                                currentPoint[1]
-                            );
-
-                            for (let idx = 2; idx < param.length; idx += 2) {
-                                currentPoint[0] += +param[idx    ];
-                                currentPoint[1] += +param[idx + 1];
-                                lastControl[0]   = currentPoint[0];
-                                lastControl[1]   = currentPoint[1];
-                                graphics.lineTo(
-                                    currentPoint[0],
-                                    currentPoint[1]
-                                );
-                            }
-                            break;
-
-                        case "M":
-                            param = param.replace(/,/g, " ");
-                            param = param.replace(/-/g, " -");
-                            param = param.trim().split(" ");
-                            param = SVGToShape._$adjParam(param);
-
-                            currentPoint[0] = +param[0];
-                            currentPoint[1] = +param[1];
-
-                            if (!start) {
-                                start = true;
-                                startX = currentPoint[0];
-                                startY = currentPoint[1];
-                            }
-
-                            graphics.moveTo(
-                                currentPoint[0],
-                                currentPoint[1]
-                            );
-
-                            for (let idx = 2; idx < param.length; idx += 2) {
-                                currentPoint[0] = +param[idx    ];
-                                currentPoint[1] = +param[idx + 1];
-                                lastControl[0]  = currentPoint[0];
-                                lastControl[1]  = currentPoint[1];
-                                graphics.lineTo(
-                                    currentPoint[0],
-                                    currentPoint[1]
-                                );
-                            }
-                            break;
-
-                        case "l":
-                            param = param.replace(/,/g, " ");
-                            param = param.replace(/-/g, " -");
-                            param = param.trim().split(" ");
-                            param = SVGToShape._$adjParam(param);
-
-                            for (let idx = 0; idx < param.length; idx += 2) {
-                                currentPoint[0] += +param[idx    ];
-                                currentPoint[1] += +param[idx + 1];
-                                lastControl[0]   = currentPoint[0];
-                                lastControl[1]   = currentPoint[1];
-                                graphics.lineTo(
-                                    currentPoint[0],
-                                    currentPoint[1]
-                                );
-                            }
-                            break;
-
-                        case "L":
-                            param = param.replace(/,/g, " ");
-                            param = param.replace(/-/g, " -");
-                            param = param.trim().split(" ");
-                            param = SVGToShape._$adjParam(param);
-
-                            for (let idx = 0; idx < param.length; idx += 2) {
-                                currentPoint[0] = +param[idx    ];
-                                currentPoint[1] = +param[idx + 1];
-                                lastControl[0]  = currentPoint[0];
-                                lastControl[1]  = currentPoint[1];
-                                graphics.lineTo(
-                                    currentPoint[0],
-                                    currentPoint[1]
-                                );
-                            }
-                            break;
-
-                        case "h":
-                            currentPoint[0] += +param;
-                            lastControl[0]   = currentPoint[0];
-                            graphics.lineTo(
-                                currentPoint[0],
-                                currentPoint[1]
-                            );
-                            break;
-
-                        case "H":
-                            currentPoint[0] = +param;
-                            lastControl[0]  = currentPoint[0];
-                            graphics.lineTo(
-                                currentPoint[0],
-                                currentPoint[1]
-                            );
-                            break;
-
-                        case "v":
-                            currentPoint[1] += +param;
-                            lastControl[1]   = currentPoint[1];
-                            graphics.lineTo(
-                                currentPoint[0],
-                                currentPoint[1]
-                            );
-                            break;
-
-                        case "V":
-                            currentPoint[1] = +param;
-                            lastControl[1]  = currentPoint[1];
-                            graphics.lineTo(currentPoint[0], currentPoint[1]);
-                            break;
-
-                        case "q":
-                            param = param.replace(/,/g, " ");
-                            param = param.replace(/-/g, " -");
-                            param = param.trim().split(" ");
-                            param = SVGToShape._$adjParam(param);
-
-                            for (let idx = 0; idx < param.length; idx += 4) {
-
-                                param[idx    ] = +param[idx    ] + currentPoint[0];
-                                param[idx + 1] = +param[idx + 1] + currentPoint[1];
-                                param[idx + 2] = +param[idx + 2] + currentPoint[0];
-                                param[idx + 3] = +param[idx + 3] + currentPoint[1];
-
-                                graphics.curveTo(
-                                    param[idx    ], param[idx + 1],
-                                    param[idx + 2], param[idx + 3]
-                                );
-
-                                currentPoint[0] = param[idx + 2];
-                                currentPoint[1] = param[idx + 3];
-
-                                lastControl[0]  = currentPoint[0];
-                                lastControl[1]  = currentPoint[1];
-                            }
-                            break;
-
-                        case "Q":
-                            param = param.replace(/,/g, " ");
-                            param = param.replace(/-/g, " -");
-                            param = param.trim().split(" ");
-                            param = SVGToShape._$adjParam(param);
-
-                            for (let idx = 0; idx < param.length; idx += 4) {
-
-                                param[idx    ] = +param[idx    ];
-                                param[idx + 1] = +param[idx + 1];
-                                param[idx + 2] = +param[idx + 2];
-                                param[idx + 3] = +param[idx + 3];
-
-                                graphics.curveTo(
-                                    param[idx    ], param[idx + 1],
-                                    param[idx + 2], param[idx + 3]
-                                );
-
-                                currentPoint[0] = param[idx + 2];
-                                currentPoint[1] = param[idx + 3];
-
-                                lastControl[0]  = currentPoint[0];
-                                lastControl[1]  = currentPoint[1];
-                            }
-                            break;
-
-                        case "c":
-                            param = param.replace(/,/g, " ");
-                            param = param.replace(/-/g, " -");
-                            param = param.trim().split(" ");
-                            param = SVGToShape._$adjParam(param);
-
-                            for (let idx = 0; idx < param.length; idx += 6) {
-
-                                param[idx    ] = +param[idx    ] + currentPoint[0];
-                                param[idx + 1] = +param[idx + 1] + currentPoint[1];
-                                param[idx + 2] = +param[idx + 2] + currentPoint[0];
-                                param[idx + 3] = +param[idx + 3] + currentPoint[1];
-                                param[idx + 4] = +param[idx + 4] + currentPoint[0];
-                                param[idx + 5] = +param[idx + 5] + currentPoint[1];
-
-                                graphics.cubicCurveTo(
-                                    param[idx    ], param[idx + 1], param[idx + 2],
-                                    param[idx + 3], param[idx + 4], param[idx + 5]
-                                );
-
-                                currentPoint[0] = param[idx + 4];
-                                currentPoint[1] = param[idx + 5];
-
-                                lastControl[0] = 2 * param[idx + 4] - param[idx + 2];
-                                lastControl[1] = 2 * param[idx + 5] - param[idx + 3];
-                            }
-
-                            break;
-
-                        case "C":
-                            param = param.replace(/,/g, " ");
-                            param = param.replace(/-/g, " -");
-                            param = param.trim().split(" ");
-                            param = SVGToShape._$adjParam(param);
-
-                            for (let idx = 0; idx < param.length; idx += 6) {
-
-                                param[idx    ] = +param[idx    ];
-                                param[idx + 1] = +param[idx + 1];
-                                param[idx + 2] = +param[idx + 2];
-                                param[idx + 3] = +param[idx + 3];
-                                param[idx + 4] = +param[idx + 4];
-                                param[idx + 5] = +param[idx + 5];
-
-                                graphics.cubicCurveTo(
-                                    param[idx    ], param[idx + 1], param[idx + 2],
-                                    param[idx + 3], param[idx + 4], param[idx + 5]
-                                );
-
-                                currentPoint[0] = param[idx + 4];
-                                currentPoint[1] = param[idx + 5];
-
-                                lastControl[0] = 2 * param[idx + 4] - param[idx + 2];
-                                lastControl[1] = 2 * param[idx + 5] - param[idx + 3];
-
-                            }
-                            break;
-
-                        case "s":
-                            param = param.replace(/,/g, " ");
-                            param = param.replace(/-/g, " -");
-                            param = param.trim().split(" ");
-                            param = SVGToShape._$adjParam(param);
-
-                            for (let idx = 0; idx < param.length; idx += 4) {
-
-                                param[idx    ] = +param[idx    ] + currentPoint[0];
-                                param[idx + 1] = +param[idx + 1] + currentPoint[1];
-                                param[idx + 2] = +param[idx + 2] + currentPoint[0];
-                                param[idx + 3] = +param[idx + 3] + currentPoint[1];
-
-                                graphics.cubicCurveTo(
-                                    lastControl[0], lastControl[1],
-                                    param[idx    ], param[idx + 1],
-                                    param[idx + 2], param[idx + 3]
-                                );
-
-                                currentPoint[0] = param[idx + 2];
-                                currentPoint[1] = param[idx + 3];
-
-                                lastControl[0] = 2 * param[idx + 2] - param[idx    ];
-                                lastControl[1] = 2 * param[idx + 3] - param[idx + 1];
-                            }
-
-                            break;
-
-                        case "S":
-                            param = param.replace(/,/g, " ");
-                            param = param.replace(/-/g, " -");
-                            param = param.trim().split(" ");
-                            param = SVGToShape._$adjParam(param);
-
-                            for (let idx = 0; idx < param.length; idx += 4) {
-
-                                param[idx    ] = +param[idx    ];
-                                param[idx + 1] = +param[idx + 1];
-                                param[idx + 2] = +param[idx + 2];
-                                param[idx + 3] = +param[idx + 3];
-
-                                graphics.cubicCurveTo(
-                                    lastControl[0], lastControl[1],
-                                    param[idx    ], param[idx + 1],
-                                    param[idx + 2], param[idx + 3]
-                                );
-
-                                currentPoint[0] = param[idx + 2];
-                                currentPoint[1] = param[idx + 3];
-
-                                lastControl[0] = 2 * param[idx + 2] - param[idx    ];
-                                lastControl[1] = 2 * param[idx + 3] - param[idx + 1];
-                            }
-                            break;
-
-                        case "a":
-                            param = param.replace(/,/g, " ");
-                            param = param.replace(/-/g, " -");
-                            param = param.trim().split(" ");
-                            param = SVGToShape._$adjParam(param);
-
-                            for (let idx = 0; idx < param.length; idx += 7) {
-
-                                param[idx    ] = +param[idx    ];
-                                param[idx + 1] = +param[idx + 1];
-                                param[idx + 2] = +param[idx + 2];
-                                param[idx + 3] = +param[idx + 3];
-                                param[idx + 4] = +param[idx + 4];
-                                param[idx + 5] = +param[idx + 5] + currentPoint[0];
-                                param[idx + 6] = +param[idx + 6] + currentPoint[1];
-
-                                const curves = SVGToShape._$arcToCurve(
-                                    currentPoint[0], currentPoint[1],
-                                    param[idx + 5], param[idx + 6],
-                                    param[idx + 3], param[idx + 4],
-                                    param[idx    ], param[idx + 1],
-                                    param[idx + 2]
-                                );
-
-                                for (let idx = 0; idx < curves.length; ++idx) {
-                                    const curve = curves[idx];
-                                    graphics.cubicCurveTo(
-                                        curve[0], curve[1],
-                                        curve[2], curve[3],
-                                        curve[4], curve[5]
-                                    );
-                                }
-
-                                currentPoint[0] = param[idx + 5];
-                                currentPoint[1] = param[idx + 6];
-
-                                lastControl[0]  = currentPoint[0];
-                                lastControl[1]  = currentPoint[1];
-                            }
-
-                            break;
-
-                        case "A":
-                            param = param.replace(/,/g, " ");
-                            param = param.replace(/-/g, " -");
-                            param = param.trim().split(" ");
-                            param = SVGToShape._$adjParam(param);
-
-                            for (let idx = 0; idx < param.length; idx += 7) {
-
-                                param[idx    ] = +param[idx    ];
-                                param[idx + 1] = +param[idx + 1];
-                                param[idx + 2] = +param[idx + 2];
-                                param[idx + 3] = +param[idx + 3];
-                                param[idx + 4] = +param[idx + 4];
-                                param[idx + 5] = +param[idx + 5];
-                                param[idx + 6] = +param[idx + 6];
-
-                                const curves = SVGToShape._$arcToCurve(
-                                    currentPoint[0], currentPoint[1],
-                                    param[idx + 5], param[idx + 6],
-                                    param[idx + 3], param[idx + 4],
-                                    param[idx    ], param[idx + 1],
-                                    param[idx + 2]
-                                );
-
-                                for (let idx = 0; idx < curves.length; ++idx) {
-                                    const curve = curves[idx];
-                                    graphics.cubicCurveTo(
-                                        curve[0], curve[1],
-                                        curve[2], curve[3],
-                                        curve[4], curve[5]
-                                    );
-                                }
-
-                                currentPoint[0] = param[idx + 5];
-                                currentPoint[1] = param[idx + 6];
-
-                                lastControl[0]  = currentPoint[0];
-                                lastControl[1]  = currentPoint[1];
-                            }
-                            break;
-
-                        case "z":
-                        case "Z":
-                            if (graphics._$fills) {
-                                graphics._$fills.push(Graphics.CLOSE_PATH);
-                            }
-                            if (graphics._$lines) {
-                                graphics._$lines.push(Graphics.CLOSE_PATH);
-                            }
-
-                            currentPoint[0] = startX;
-                            currentPoint[1] = startY;
-                            lastControl[0]  = currentPoint[0];
-                            lastControl[1]  = currentPoint[1];
-                            start = false;
-                            break;
-
-                        default:
-                            console.log("TODO: ", type, param);
-                            break;
-
-                    }
-                }
-            }
-            graphics.endLine();
-            graphics.endFill();
-
-            if (graphics._$recode) {
-                shape._$recodes = graphics._$recode.slice();
-            }
-
-            shape._$bounds = {
-                "xMin": graphics._$xMin,
-                "xMax": graphics._$xMax,
-                "yMin": graphics._$yMin,
-                "yMax": graphics._$yMax
-            };
         }
+
+        return parser;
+    }
+
+    /**
+     * @param  {Element} element
+     * @param  {MovieClip} movie_clip
+     * @param  {Map} group_attribute_map
+     * @param  {Map} global_style
+     * @param  {array} [commands=null]
+     * @return {void}
+     * @method
+     * @static
+     */
+    static createGraphics (
+        element, movie_clip, group_attribute_map, global_style,
+        commands = null
+    ) {
+        if (!commands && !element.hasAttribute("d")) {
+            return;
+        }
+
+        const { Shape, Graphics } = window.next2d.display;
+
+        const shape = SVGToShape.createShape(
+            movie_clip, element, group_attribute_map, global_style
+        );
+
+        const graphics = new Shape().graphics;
+
+        const fillObject = SVGToShape.getFillObject(
+            element, group_attribute_map, global_style
+        );
+        if (fillObject.alpha) {
+            graphics.beginFill(
+                fillObject.color,
+                fillObject.alpha
+            );
+        }
+
+        const strokeObject = SVGToShape.getStrokeObject(
+            element, group_attribute_map, global_style
+        );
+        if (strokeObject.width && strokeObject.alpha) {
+            graphics.lineStyle(
+                strokeObject.width,
+                strokeObject.color,
+                strokeObject.alpha,
+                strokeObject.caps,
+                strokeObject.join
+            );
+        }
+
+        const parser = SVGToShape.createParser(
+            element, group_attribute_map
+        );
+
+        let currentPointX = 0;
+        let currentPointY = 0;
+        let lastControlX  = 0;
+        let lastControlY  = 0;
+
+        if (!commands) {
+            commands = parser.execute(element.getAttribute("d"));
+        } else {
+            parser._$commands = commands;
+            parser.executeTransform();
+        }
+
+        for (let idx = 0; commands.length > idx; ++idx) {
+
+            const command = commands[idx];
+            switch (command.type) {
+
+                case SVGCommandTypes.MOVE_TO:
+
+                    if (command.relative) {
+                        currentPointX += command.x;
+                        currentPointY += command.y;
+                    } else {
+                        currentPointX = command.x;
+                        currentPointY = command.y;
+                    }
+
+                    if (graphics._$lines && graphics._$lines.length > 1) {
+                        graphics.endLine();
+                        graphics._$pointerX = 0;
+                        graphics._$pointerY = 0;
+                        graphics.lineStyle(
+                            strokeObject.width,
+                            strokeObject.color,
+                            strokeObject.alpha,
+                            strokeObject.caps,
+                            strokeObject.join
+                        );
+                    }
+
+                    if (graphics._$fills) {
+                        graphics.endFill();
+                        graphics.beginFill(
+                            fillObject.color,
+                            fillObject.alpha
+                        );
+                    }
+
+                    graphics.moveTo(
+                        currentPointX,
+                        currentPointY
+                    );
+
+                    break;
+
+                case SVGCommandTypes.LINE_TO:
+
+                    if (command.relative) {
+                        currentPointX += command.x;
+                        currentPointY += command.y;
+                    } else {
+                        currentPointX = command.x;
+                        currentPointY = command.y;
+                    }
+
+                    lastControlX = currentPointX;
+                    lastControlY = currentPointY;
+
+                    graphics.lineTo(
+                        currentPointX,
+                        currentPointY
+                    );
+                    break;
+
+                case SVGCommandTypes.CIRCLE:
+                    lastControlX = currentPointX = command.x;
+                    lastControlY = currentPointY = command.y;
+                    break;
+
+                case SVGCommandTypes.ARC:
+                {
+                    let x = command.x;
+                    let y = command.y;
+                    if (command.relative) {
+                        x += currentPointX;
+                        y += currentPointY;
+                    }
+
+                    const curves = SVGToShape._$arcToCurve(
+                        currentPointX, currentPointY,
+                        x, y,
+                        command.lArcFlag, command.sweepFlag,
+                        command.rX, command.rY,
+                        command.xRot
+                    );
+
+                    for (let idx = 0; idx < curves.length; ++idx) {
+                        const curve = curves[idx];
+                        graphics.cubicCurveTo(
+                            curve[0], curve[1],
+                            curve[2], curve[3],
+                            curve[4], curve[5]
+                        );
+                    }
+
+                    lastControlX = currentPointX = x;
+                    lastControlY = currentPointY = y;
+                }
+                    break;
+
+                case SVGCommandTypes.CURVE_TO:
+                    {
+                        let cx1 = command.x1;
+                        let cy1 = command.y1;
+                        let cx2 = command.x2;
+                        let cy2 = command.y2;
+                        let x = command.x;
+                        let y = command.y;
+                        if (command.relative) {
+                            cx1 += currentPointX;
+                            cy1 += currentPointY;
+                            cx2 += currentPointX;
+                            cy2 += currentPointY;
+                            x += currentPointX;
+                            y += currentPointY;
+                        }
+
+                        graphics.cubicCurveTo(
+                            cx1, cy1,
+                            cx2, cy2,
+                            x, y
+                        );
+
+                        currentPointX = x;
+                        currentPointY = y;
+
+                        lastControlX = 2 * x - cx2;
+                        lastControlY = 2 * y - cy2;
+                    }
+                    break;
+
+                case SVGCommandTypes.SMOOTH_CURVE_TO:
+                    {
+                        let cx = command.x2;
+                        let cy = command.y2;
+                        let x = command.x;
+                        let y = command.y;
+                        if (command.relative) {
+                            cx += currentPointX;
+                            cy += currentPointY;
+                            x += currentPointX;
+                            y += currentPointY;
+                        }
+
+                        graphics.cubicCurveTo(
+                            lastControlX, lastControlY,
+                            cx, cy,
+                            x, y
+                        );
+
+                        currentPointX = x;
+                        currentPointY = y;
+
+                        lastControlX = 2 * x - cx;
+                        lastControlY = 2 * y - cy;
+                    }
+                    break;
+
+                case SVGCommandTypes.SMOOTH_QUAD_TO:
+                    {
+                        const radian = Math.atan2(
+                            currentPointY - lastControlY,
+                            currentPointX - lastControlX
+                        );
+
+                        const distance = Math.sqrt(
+                            Math.pow(currentPointX - lastControlX, 2)
+                            + Math.pow(currentPointY - lastControlY, 2)
+                        );
+
+                        lastControlX = currentPointX + distance * Math.cos(radian);
+                        lastControlY = currentPointY + distance * Math.sin(radian);
+
+                        if (command.relative) {
+                            currentPointX += command.x;
+                            currentPointY += command.y;
+                        } else {
+                            currentPointX = command.x;
+                            currentPointY = command.y;
+                        }
+
+                        graphics.curveTo(
+                            lastControlX,
+                            lastControlY,
+                            currentPointX,
+                            currentPointY
+                        );
+                    }
+                    break;
+
+                case SVGCommandTypes.QUAD_TO:
+                    {
+                        let cx = command.x1;
+                        let cy = command.y1;
+                        let x = command.x;
+                        let y = command.y;
+                        if (command.relative) {
+                            cx += currentPointX;
+                            cy += currentPointY;
+                            x += currentPointX;
+                            y += currentPointY;
+                        }
+
+                        graphics.curveTo(
+                            cx, cy,
+                            x, y
+                        );
+
+                        currentPointX = x;
+                        currentPointY = y;
+                        lastControlX  = cx;
+                        lastControlY  = cy;
+                    }
+                    break;
+
+                case SVGCommandTypes.HORIZ_LINE_TO:
+                    {
+                        let x = command.x;
+                        if (command.relative) {
+                            x += currentPointX;
+                        }
+
+                        lastControlX = currentPointX = x;
+                        graphics.lineTo(currentPointX, currentPointY);
+                    }
+                    break;
+
+                case SVGCommandTypes.VERT_LINE_TO:
+                    {
+                        let y = command.y;
+                        if (command.relative) {
+                            y += currentPointY;
+                        }
+
+                        lastControlY = currentPointY = y;
+                        graphics.lineTo(currentPointX, currentPointY);
+                    }
+                    break;
+
+                case SVGCommandTypes.CLOSE_PATH:
+
+                    if (graphics._$fills) {
+
+                        const x = graphics._$fills[2];
+                        const y = graphics._$fills[3];
+                        if (x !== graphics._$pointerX || y !== graphics._$pointerY) {
+                            graphics._$fills.push(Graphics.LINE_TO, x, y);
+                        }
+
+                        graphics.endFill();
+                        graphics.beginFill(
+                            fillObject.color,
+                            fillObject.alpha
+                        );
+                    }
+
+                    if (graphics._$lines) {
+
+                        const x = graphics._$lines[2];
+                        const y = graphics._$lines[3];
+                        if (x !== graphics._$pointerX || y !== graphics._$pointerY) {
+                            graphics._$lines.push(Graphics.LINE_TO, x, y);
+                        }
+
+                        graphics.endLine();
+                        graphics.lineStyle(
+                            strokeObject.width,
+                            strokeObject.color,
+                            strokeObject.alpha,
+                            strokeObject.caps,
+                            strokeObject.join
+                        );
+                    }
+
+                    break;
+
+                default:
+                    break;
+
+            }
+        }
+
+        graphics.endLine();
+        graphics.endFill();
+
+        if (graphics._$recode) {
+            shape._$recodes = graphics._$recode.slice();
+        }
+
+        shape._$bounds = {
+            "xMin": graphics._$xMin,
+            "xMax": graphics._$xMax,
+            "yMin": graphics._$yMin,
+            "yMax": graphics._$yMax
+        };
     }
 
     /**

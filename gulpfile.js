@@ -19,7 +19,7 @@ const options = minimist(process.argv.slice(2), {
     "string": ["distPath", "version"],
     "default": {
         "prodBuild": false,
-        "version": "0.185.0",
+        "version": "0.186.0",
         "distPath": "."
     }
 });
@@ -161,6 +161,7 @@ const buildJavaScript = () =>
             "src/javascript/instance/*.js",
             "src/javascript/filter/Filter.js",
             "src/javascript/filter/*.js",
+            "src/javascript/parser/SVGTransformable.js",
             "src/javascript/parser/*.js",
             "src/javascript/WorkSpace.js",
             "src/javascript/event/*.js",

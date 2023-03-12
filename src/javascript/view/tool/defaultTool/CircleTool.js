@@ -15,12 +15,13 @@ class CircleTool extends DrawTool
     }
 
     /**
-     * @return {void}
+     * @param  {string} [name="circle"]
+     * @return {Promise}
      * @method
      * @public
      */
-    createCharacter ()
+    createCharacter (name = "circle")
     {
-        super.createCharacter("circle");
+        return super.createCharacter(name);
     }
 }

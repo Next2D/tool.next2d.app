@@ -2624,6 +2624,7 @@ class TimelineLayer extends BaseTimeline
      */
     moveFrame (frame)
     {
+        const promises = [];
         if (Util.$timelineFrame.currentFrame !== frame) {
 
             // フレームを移動
@@ -2653,11 +2654,16 @@ class TimelineLayer extends BaseTimeline
             Util.$soundController.createSoundElements();
 
             // 再描画
-            this.reloadScreen();
+            promises.push(this.reloadScreen());
         }
 
         // 再描画後にアクティブ判定を行う
-        this.activeCharacter();
+        Promise
+            .all(promises)
+            .then(() =>
+            {
+                this.activeCharacter();
+            });
     }
 
     /**

@@ -361,19 +361,26 @@ class Shape extends Instance
      */
     createPointer (matrix, layer_id, character_id)
     {
+        const { Graphics } = window.next2d.display;
+
         Util.$clearShapePointer();
 
         const element = document.getElementById("stage-area");
 
         let syncId = 2;
-        const { Graphics } = window.next2d.display;
+
+        let movePointer = null;
         for (let idx = 0; idx < this._$recodes.length; ) {
 
             switch (this._$recodes[idx++]) {
 
                 case Graphics.MOVE_TO:
                     syncId = idx;
-                    idx += 2;
+                    movePointer = {
+                        "idx": idx,
+                        "x": this._$recodes[idx++],
+                        "y": this._$recodes[idx++]
+                    };
                     break;
 
                 case Graphics.LINE_TO:
@@ -388,7 +395,7 @@ class Shape extends Instance
                         Graphics.LINE_TO
                     );
 
-                    this._$adjustmentPointer(idx, matrix, layer_id, character_id, syncId);
+                    this._$adjustmentPointer(idx, syncId);
 
                     break;
 
@@ -418,7 +425,7 @@ class Shape extends Instance
                         false
                     );
 
-                    this._$adjustmentPointer(idx, matrix, layer_id, character_id, syncId);
+                    this._$adjustmentPointer(idx, syncId);
 
                     break;
 
@@ -445,7 +452,7 @@ class Shape extends Instance
                         Graphics.CURVE_TO
                     );
 
-                    this._$adjustmentPointer(idx, matrix, layer_id, character_id, syncId);
+                    this._$adjustmentPointer(idx, syncId);
 
                     break;
 
@@ -454,6 +461,18 @@ class Shape extends Instance
                     break;
 
                 case Graphics.STROKE_STYLE:
+                    if (movePointer) {
+                        this.addPointer(
+                            layer_id,
+                            character_id,
+                            movePointer.idx,
+                            movePointer.x,
+                            movePointer.y,
+                            matrix,
+                            Graphics.MOVE_TO
+                        );
+                        movePointer = null;
+                    }
                     idx += 8;
                     break;
 
@@ -485,15 +504,12 @@ class Shape extends Instance
      *              Pointers where the start and end points overlap are adjusted
      *
      * @param  {number} index
-     * @param  {array}  matrix
-     * @param  {number} layer_id
-     * @param  {number} character_id
      * @param  {number} sync_id
      * @return {void}
      * @method
      * @private
      */
-    _$adjustmentPointer (index, matrix, layer_id, character_id, sync_id)
+    _$adjustmentPointer (index, sync_id)
     {
         const { Graphics } = window.next2d.display;
         switch (this._$recodes[index]) {
@@ -509,19 +525,6 @@ class Shape extends Instance
                     const node = children[children.length - 1];
                     node.dataset.syncId = `${sync_id}`;
                 }
-                break;
-
-            case Graphics.STROKE_STYLE:
-            case Graphics.GRADIENT_STROKE:
-                this.addPointer(
-                    layer_id,
-                    character_id,
-                    5,
-                    this._$recodes[5],
-                    this._$recodes[6],
-                    matrix,
-                    Graphics.MOVE_TO
-                );
                 break;
 
             default:
@@ -549,7 +552,6 @@ class Shape extends Instance
     addPointer (
         layer_id, character_id, index, x, y, matrix, type, curve = false
     ) {
-
         const stageArea = document
             .getElementById("stage-area");
 
@@ -571,8 +573,11 @@ class Shape extends Instance
         const tx = x * matrix[0] + y * matrix[2] + matrix[4];
         const ty = x * matrix[1] + y * matrix[3] + matrix[5];
 
-        div.style.left = `${tx * Util.$zoomScale + Util.$offsetLeft - 3}px`;
-        div.style.top  = `${ty * Util.$zoomScale + Util.$offsetTop  - 3}px`;
+        const offsetX = Util.$sceneChange.offsetX * Util.$zoomScale;
+        const offsetY = Util.$sceneChange.offsetY * Util.$zoomScale;
+
+        div.style.left = `${tx * Util.$zoomScale + offsetX + Util.$offsetLeft - 3}px`;
+        div.style.top  = `${ty * Util.$zoomScale + offsetY + Util.$offsetTop  - 3}px`;
 
         if (curve) {
             div.style.borderRadius = "5px";
@@ -622,24 +627,60 @@ class Shape extends Instance
      * @description リサイズやパスの座標変更時にバウンディングボックスの座標を再計算
      *              Recalculate bounding box coordinates when resizing or changing path coordinates
      *
-     * @param  {number} [stroke=0]
      * @return {object}
      * @method
      * @public
      */
-    reloadBounds (stroke = 0)
+    reloadBounds ()
     {
         const { Graphics, Shape } = window.next2d.display;
         const shape = new Shape();
 
-        if (stroke) {
-            shape
-                .graphics
-                .lineStyle(stroke);
-        } else {
-            shape
-                .graphics
-                .beginFill();
+        const graphics = shape.graphics;
+
+        const types = [];
+        for (let idx = 0; idx < this._$recodes.length; ) {
+            switch (this._$recodes[idx++]) {
+
+                case Graphics.MOVE_TO:
+                case Graphics.LINE_TO:
+                    idx += 2;
+                    break;
+
+                case Graphics.CURVE_TO:
+                    idx += 4;
+                    break;
+
+                case Graphics.CUBIC:
+                    idx += 6;
+                    break;
+
+                case Graphics.FILL_STYLE:
+                    types.push("fill");
+                    idx += 4;
+                    break;
+
+                case Graphics.STROKE_STYLE:
+                    types.push(idx + 1);
+                    idx += 8;
+                    break;
+
+                case Graphics.GRADIENT_FILL:
+                    types.push("fill");
+                    idx += 6;
+                    break;
+
+                case Graphics.GRADIENT_STROKE:
+                    types.push(idx + 1);
+                    idx += 10;
+                    break;
+
+                case Graphics.BEGIN_PATH:
+                case Graphics.END_FILL:
+                case Graphics.END_STROKE:
+                    break;
+
+            }
         }
 
         for (let idx = 0; idx < this._$recodes.length; ) {
@@ -647,45 +688,37 @@ class Shape extends Instance
             switch (this._$recodes[idx++]) {
 
                 case Graphics.MOVE_TO:
-                    shape
-                        .graphics
-                        .moveTo(
-                            this._$recodes[idx++],
-                            this._$recodes[idx++]
-                        );
+                    graphics.moveTo(
+                        this._$recodes[idx++],
+                        this._$recodes[idx++]
+                    );
                     break;
 
                 case Graphics.LINE_TO:
-                    shape
-                        .graphics
-                        .lineTo(
-                            this._$recodes[idx++],
-                            this._$recodes[idx++]
-                        );
+                    graphics.lineTo(
+                        this._$recodes[idx++],
+                        this._$recodes[idx++]
+                    );
                     break;
 
                 case Graphics.CUBIC:
-                    shape
-                        .graphics
-                        .cubicCurveTo(
-                            this._$recodes[idx++],
-                            this._$recodes[idx++],
-                            this._$recodes[idx++],
-                            this._$recodes[idx++],
-                            this._$recodes[idx++],
-                            this._$recodes[idx++]
-                        );
+                    graphics.cubicCurveTo(
+                        this._$recodes[idx++],
+                        this._$recodes[idx++],
+                        this._$recodes[idx++],
+                        this._$recodes[idx++],
+                        this._$recodes[idx++],
+                        this._$recodes[idx++]
+                    );
                     break;
 
                 case Graphics.CURVE_TO:
-                    shape
-                        .graphics
-                        .curveTo(
-                            this._$recodes[idx++],
-                            this._$recodes[idx++],
-                            this._$recodes[idx++],
-                            this._$recodes[idx++]
-                        );
+                    graphics.curveTo(
+                        this._$recodes[idx++],
+                        this._$recodes[idx++],
+                        this._$recodes[idx++],
+                        this._$recodes[idx++]
+                    );
                     break;
 
                 case Graphics.FILL_STYLE:
@@ -704,8 +737,8 @@ class Shape extends Instance
                         const yScale = this.height / 2 / 819.2;
                         matrix.scale(xScale, yScale);
                         matrix.translate(
-                            this.width  / 2 + shape.graphics._$xMin,
-                            this.height / 2 + shape.graphics._$yMin
+                            this.width  / 2 + graphics._$xMin,
+                            this.height / 2 + graphics._$yMin
                         );
 
                         this._$recodes[idx + 2] = Array.from(matrix._$matrix);
@@ -721,8 +754,8 @@ class Shape extends Instance
                         const yScale = this.height / 2 / 819.2;
                         matrix.scale(xScale, yScale);
                         matrix.translate(
-                            this.width  / 2 + shape.graphics._$xMin,
-                            this.height / 2 + shape.graphics._$yMin
+                            this.width  / 2 + graphics._$xMin,
+                            this.height / 2 + graphics._$yMin
                         );
 
                         this._$recodes[idx + 6] = Array.from(matrix._$matrix);
@@ -731,8 +764,22 @@ class Shape extends Instance
                     break;
 
                 case Graphics.BEGIN_PATH:
+                    {
+                        const type = types.shift();
+                        if (type === "fill") {
+                            graphics.beginFill();
+                        } else {
+                            graphics.lineStyle(type);
+                        }
+                    }
+                    break;
+
                 case Graphics.END_FILL:
+                    graphics.endFill();
+                    break;
+
                 case Graphics.END_STROKE:
+                    graphics.endLine();
                     break;
 
                 default:
@@ -743,10 +790,10 @@ class Shape extends Instance
         }
 
         return {
-            "xMin": shape.graphics._$xMin,
-            "xMax": shape.graphics._$xMax,
-            "yMin": shape.graphics._$yMin,
-            "yMax": shape.graphics._$yMax
+            "xMin": graphics._$xMin,
+            "xMax": graphics._$xMax,
+            "yMin": graphics._$yMin,
+            "yMax": graphics._$yMax
         };
     }
 

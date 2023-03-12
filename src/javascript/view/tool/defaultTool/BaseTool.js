@@ -201,17 +201,17 @@ class BaseTool extends CommonTool
     }
 
     /**
-     * @return {void}
+     * @return {Promise}
      * @method
      * @public
      */
     reloadScreen ()
     {
-        const frame = Util.$timelineFrame.currentFrame;
-
-        Util
+        return Util
             .$currentWorkSpace()
             .scene
-            .changeFrame(frame);
+            .changeFrame(
+                Util.$timelineFrame.currentFrame
+            );
     }
 }

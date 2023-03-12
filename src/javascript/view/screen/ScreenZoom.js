@@ -118,7 +118,48 @@ class ScreenZoom extends BaseScreen
         }
 
         // 再描画
-        scene.changeFrame(frame);
+        scene
+            .changeFrame(frame)
+            .then(() =>
+            {
+                const element = document.getElementById("stage-area");
+                if (!element) {
+                    return ;
+                }
+
+                // シェイプのポインターがあれば再構成
+                let shapePointer = null;
+                const children = element.children;
+                for (let idx = 0; children.length > idx; ++idx) {
+
+                    const node = children[idx];
+                    if (!node.dataset.shapePointer) {
+                        continue;
+                    }
+
+                    shapePointer = node;
+                    node.remove();
+                    --idx;
+                }
+
+                if (shapePointer) {
+
+                    const workSpace = Util.$currentWorkSpace();
+
+                    const characterId = shapePointer.dataset.characterId | 0;
+                    const layerId = shapePointer.dataset.layerId | 0;
+
+                    const layer = workSpace.scene.getLayer(layerId);
+                    const character = layer.getCharacter(characterId);
+
+                    const instance = workSpace.getLibrary(
+                        shapePointer.dataset.libraryId | 0
+                    );
+                    const matrix = character.getPlace(frame).matrix;
+
+                    instance.createPointer(matrix, layerId, characterId);
+                }
+            });
 
         // ズームした幅と高さを算出
         const width  = workSpace.stage.width  * Util.$zoomScale;

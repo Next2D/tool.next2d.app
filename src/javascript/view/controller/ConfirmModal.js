@@ -1289,7 +1289,12 @@ class ConfirmModal extends BaseController
         );
 
         if (instance) {
-            beforeElement.appendChild(instance.getPreview());
+            instance
+                .getPreview()
+                .then((canvas) =>
+                {
+                    beforeElement.appendChild(canvas);
+                });
         }
 
         const file = this._$currentObject.file;
@@ -1350,18 +1355,27 @@ class ConfirmModal extends BaseController
                     Util.$activeWorkSpaceId = this._$currentObject.workSpaceId;
 
                     // プレビューを生成して、ワークスペースを切り替え
-                    afterElement
-                        .appendChild(
-                            this._$currentObject.file.getPreview()
-                        );
+                    this
+                        ._$currentObject
+                        .file
+                        .getPreview()
+                        .then((canvas) =>
+                        {
+                            afterElement.appendChild(canvas);
+                        });
+
                     Util.$activeWorkSpaceId = activeWorkSpaceId;
 
                 } else {
 
-                    afterElement
-                        .appendChild(
-                            this._$currentObject.file.getPreview()
-                        );
+                    this
+                        ._$currentObject
+                        .file
+                        .getPreview()
+                        .then((canvas) =>
+                        {
+                            afterElement.appendChild(canvas);
+                        });
 
                 }
                 break;
