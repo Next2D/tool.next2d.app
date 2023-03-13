@@ -874,7 +874,8 @@ window.addEventListener("resize", () =>
  */
 Util.$rebuildRuler = () =>
 {
-    if (Util.$currentWorkSpace()._$ruler) {
+    const workSpace = Util.$currentWorkSpace();
+    if (workSpace._$rulerX.length || workSpace._$rulerY.length) {
         Util.$screenRuler.rebuild();
     }
 };
