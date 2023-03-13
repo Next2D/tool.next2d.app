@@ -401,6 +401,7 @@ class Video extends Instance
             ? new Video(this._$video.videoWidth, this._$video.videoHeight)
             : new Video(this.width, this.height);
 
+        video._$loaderInfo  = Util.$loaderInfo;
         video._$characterId = this.id;
         video._$video       = this._$video;
         video._$createContext();

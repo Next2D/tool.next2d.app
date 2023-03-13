@@ -786,6 +786,9 @@ Util.$initialize = () =>
             });
 
         Util.$root.stage._$player.stop();
+
+        const { LoaderInfo } = window.next2d.display;
+        Util.$loaderInfo = new LoaderInfo();
     }
     // load local data
     Util.$loadSaveData();

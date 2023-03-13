@@ -293,7 +293,7 @@ class Layer
 
                 const character = this._$characters[idx];
 
-                for (let keyFrame of character._$places.keys()) {
+                for (const keyFrame of character._$places.keys()) {
                     keyMap.set(keyFrame, true);
                 }
 

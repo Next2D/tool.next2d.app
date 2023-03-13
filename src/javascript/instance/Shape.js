@@ -1612,6 +1612,7 @@ class Shape extends Instance
         const { Shape, Graphics } = window.next2d.display;
 
         const shape = new Shape();
+        shape._$loaderInfo  = Util.$loaderInfo;
         shape._$characterId = this.id;
 
         if (this._$grid) {

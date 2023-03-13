@@ -508,8 +508,8 @@ class Screen extends BaseScreen
 
                 canvas.style.width  = `${canvas._$width  * Util.$zoomScale}px`;
                 canvas.style.height = `${canvas._$height * Util.$zoomScale}px`;
-                canvas.style.left   = `${character.offsetX}px`;
-                canvas.style.top    = `${character.offsetY}px`;
+                canvas.style.left   = `${character.offsetX * Util.$zoomScale}px`;
+                canvas.style.top    = `${character.offsetY * Util.$zoomScale}px`;
 
                 let divStyle = "";
 
@@ -557,15 +557,18 @@ class Screen extends BaseScreen
                 divStyle += "pointer-events: none;";
                 divStyle += "opacity: 0.25;";
 
-                let tx = Util.$offsetLeft + (Util.$sceneChange.offsetX + bounds.xMin) * Util.$zoomScale;
-                let ty = Util.$offsetTop  + (Util.$sceneChange.offsetY + bounds.yMin) * Util.$zoomScale;
+                let tx = Util.$offsetLeft + (Util.$sceneChange.offsetX + canvas._$tx) * Util.$zoomScale;
+                let ty = Util.$offsetTop  + (Util.$sceneChange.offsetY + canvas._$ty) * Util.$zoomScale;
 
                 divStyle += `left: ${tx}px;`;
                 divStyle += `top: ${ty}px;`;
 
                 div.setAttribute("style", divStyle);
 
-                return Promise.resolve(div);
+                return Promise.resolve({
+                    "div": div,
+                    "canvas": canvas
+                });
             });
     }
 

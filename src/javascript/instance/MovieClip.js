@@ -414,6 +414,7 @@ class MovieClip extends Instance
                         if (!object) {
                             continue;
                         }
+
                         object.div.appendChild(object.canvas);
                         element.appendChild(object.div);
                     }

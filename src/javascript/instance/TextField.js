@@ -821,6 +821,7 @@ class TextField extends Instance
     {
         const { TextField } = window.next2d.text;
         const textField = new TextField();
+        textField._$loaderInfo  = Util.$loaderInfo;
         textField._$characterId = this.id;
 
         textField._$bounds = {

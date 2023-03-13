@@ -259,6 +259,7 @@ class Bitmap extends Instance
         const { width, height } = this;
 
         const shape = new Shape();
+        shape._$loaderInfo  = Util.$loaderInfo;
         shape._$characterId = this.id;
 
         const bitmapData = new BitmapData(width, height, true, 0);
