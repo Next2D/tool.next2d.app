@@ -1709,6 +1709,9 @@ class Shape extends Instance
         }
 
         if (!this._$graphicBuffer) {
+            Util.$root.stage._$player.removeCache(
+                `${Util.$loaderInfo._$id}@${this.id}`
+            );
             this._$graphicBuffer = graphics._$getRecodes();
         }
         graphics._$buffer = this._$graphicBuffer;

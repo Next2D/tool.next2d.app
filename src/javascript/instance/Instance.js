@@ -719,6 +719,11 @@ class Instance
      */
     remove ()
     {
+        // player側のキャッシュを削除
+        Util.$root.stage._$player.removeCache(
+            `${Util.$loaderInfo._$id}@${this.id}`
+        );
+
         const workSpace = Util.$currentWorkSpace();
 
         const scene = workSpace.scene;
