@@ -1544,7 +1544,7 @@ class LibraryController
 
             Util.$confirmModal.show();
 
-            return Promise.resolve();
+            return resolve();
         }
 
         // 上書きの場合はElementと内部データを削除
