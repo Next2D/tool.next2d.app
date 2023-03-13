@@ -1156,8 +1156,8 @@ class TransformController extends BaseController
 
                     const beforeScaleX = character.scaleX;
                     if (beforeScaleX && scale_x) {
-                        character.x -= beforeMatrix[4];
-                        character.y -= beforeMatrix[5];
+                        place.matrix[4] -= beforeMatrix[4];
+                        place.matrix[5] -= beforeMatrix[5];
                     }
 
                     character.scaleX = scale_x;
@@ -1170,8 +1170,8 @@ class TransformController extends BaseController
                     ], baseMatrix);
 
                     if (beforeScaleX && scale_x) {
-                        character.x += afterMatrix[4];
-                        character.y += afterMatrix[5];
+                        place.matrix[4] += afterMatrix[4];
+                        place.matrix[5] += afterMatrix[5];
                     }
 
                     character.dispose();
@@ -1453,8 +1453,8 @@ class TransformController extends BaseController
 
                     const beforeScaleY = character.scaleY;
                     if (beforeScaleY && scale_y) {
-                        character.x -= beforeMatrix[4];
-                        character.y -= beforeMatrix[5];
+                        place.matrix[4] -= beforeMatrix[4];
+                        place.matrix[5] -= beforeMatrix[5];
                     }
 
                     character.scaleY = scale_y;
@@ -1467,8 +1467,8 @@ class TransformController extends BaseController
                     ], baseMatrix);
 
                     if (beforeScaleY && scale_y) {
-                        character.x += afterMatrix[4];
-                        character.y += afterMatrix[5];
+                        place.matrix[4] += afterMatrix[4];
+                        place.matrix[5] += afterMatrix[5];
                     }
 
                     character.dispose();
@@ -1661,8 +1661,8 @@ class TransformController extends BaseController
                     referenceY
                 ], baseMatrix);
 
-                character.x -= beforeMatrix[4];
-                character.y -= beforeMatrix[5];
+                place.matrix[4] -= beforeMatrix[4];
+                place.matrix[5] -= beforeMatrix[5];
 
                 // fixed
                 character.rotation = rotate;
@@ -1674,8 +1674,8 @@ class TransformController extends BaseController
                     referenceY
                 ], baseMatrix);
 
-                character.x += afterMatrix[4];
-                character.y += afterMatrix[5];
+                place.matrix[4] += afterMatrix[4];
+                place.matrix[5] += afterMatrix[5];
 
                 // clear
                 character.dispose();
