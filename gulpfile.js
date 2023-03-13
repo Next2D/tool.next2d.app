@@ -19,7 +19,7 @@ const options = minimist(process.argv.slice(2), {
     "string": ["distPath", "version"],
     "default": {
         "prodBuild": false,
-        "version": "0.193.0",
+        "version": "0.194.0",
         "distPath": "."
     }
 });
@@ -35,6 +35,7 @@ const buildHTML = () =>
         "src/html/html-start.ejs",
         "src/html/head-start.ejs",
         "src/html/head.ejs",
+        "src/html/load-raven.ejs",
         "src/html/head-google-tag.ejs",
         "src/html/head-end.ejs",
         "src/html/body-start.ejs",
@@ -95,8 +96,18 @@ const buildHTML = () =>
     for (let idx = 0; ejsList.length > idx; ++idx) {
 
         const path = ejsList[idx];
-        if (!options.prodBuild && path.indexOf("google") > -1) {
-            continue;
+        if (!options.prodBuild) {
+            switch (path) {
+
+                case "src/html/head-google-tag.ejs":
+                case "src/html/load-raven.ejs":
+                case "src/html/controller-google-tag.ejs":
+                    continue;
+
+                default:
+                    break;
+
+            }
         }
 
         src.push(path);

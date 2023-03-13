@@ -698,6 +698,19 @@ Util.$loadAudioContext = () =>
  */
 Util.$initialize = () =>
 {
+    if ("Raven" in window) {
+        Raven.config(
+            "https://ebbc692644d14dddaa6f6fec5a9a2dc6@o4504829779705856.ingest.sentry.io/4504829782458368"
+        ).install();
+
+        // eslint-disable-next-line no-unused-vars
+        window.onerror = (message, file, line, col, error) =>
+        {
+            console.log(message);
+            Raven.captureException(error);
+        };
+    }
+
     // end event
     window.removeEventListener("DOMContentLoaded", Util.$initialize);
 
