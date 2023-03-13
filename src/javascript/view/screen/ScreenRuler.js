@@ -317,7 +317,7 @@ class ScreenRuler extends BaseScreen
         if (Util.$tools.activeTool.name !== "arrow") {
             return ;
         }
-        
+
         this._$mode   = "y";
         this._$target =  this.createBorderY();
 
