@@ -720,9 +720,12 @@ class Instance
     remove ()
     {
         // player側のキャッシュを削除
-        Util.$root.stage._$player.removeCache(
-            `${Util.$loaderInfo._$id}@${this.id}`
-        );
+        const root = Util.$root;
+        if (root) {
+            root.stage._$player.removeCache(
+                `${Util.$loaderInfo._$id}@${this.id}`
+            );
+        }
 
         const workSpace = Util.$currentWorkSpace();
 
