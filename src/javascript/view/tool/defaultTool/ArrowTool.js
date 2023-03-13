@@ -563,6 +563,9 @@ class ArrowTool extends BaseTool
 
         // 指定のDisplayObjectをクローンしてスクリーンに配置
         const place = character.getPlace(frame);
+
+        let cloneId    = -1;
+        const promises = [];
         if (Util.$altKey && !place.tweenFrame) {
 
             const clone = character.clone();
@@ -583,40 +586,67 @@ class ArrowTool extends BaseTool
             layer.addCharacter(clone);
 
             // スクリーンに配置
-            Util
+            promises.push(Util
                 .$screen
-                .appendCharacter(clone, frame, layer.id);
+                .appendCharacter(clone, frame, layer.id));
 
-            target = document
-                .getElementById(`character-${clone.id}`);
-
+            cloneId = clone.id;
         }
 
-        // アクティブ登録
-        this.addElement(target);
+        Promise
+            .all(promises)
+            .then((values) => {
 
-        // コントローラーエリアの情報を更新
-        this.updateControllerProperty();
+                if (cloneId > -1) {
 
-        // Shapeは描画反映の判定で毎回ヒット判定を行う
-        if (this._$activeElements.length === 1) {
-            character.showShapeColor(event);
-        }
+                    const element = document.getElementById("stage-area");
+                    for (let idx = 0; idx < values.length; ++idx) {
+                        const object = values[idx];
 
-        // 拡大縮小回転のElementのポイントを表示して再計算
-        Util
-            .$transformController
-            .show()
-            .relocation();
+                        if (!object) {
+                            continue;
+                        }
 
-        // 9sliceのElementのポイントを表示して再計算
-        Util
-            .$gridController
-            .show()
-            .relocation();
+                        element.appendChild(object.div);
+                        object.div.appendChild(object.canvas);
+                    }
 
-        // 選択されたDisplayObjectが配置されてるタイムラインをアクティブに
-        this.activeTimeline();
+                    target = document
+                        .getElementById(`character-${cloneId}`);
+
+                    // リサイクルできるcanvasがあればpoolする
+                    while (Util.$sleepCanvases.length) {
+                        Util.$poolCanvas(Util.$sleepCanvases.pop());
+                    }
+                }
+
+                // アクティブ登録
+                this.addElement(target);
+
+                // コントローラーエリアの情報を更新
+                this.updateControllerProperty();
+
+                // Shapeは描画反映の判定で毎回ヒット判定を行う
+                if (this._$activeElements.length === 1) {
+                    character.showShapeColor(event);
+                }
+
+                // 拡大縮小回転のElementのポイントを表示して再計算
+                Util
+                    .$transformController
+                    .show()
+                    .relocation();
+
+                // 9sliceのElementのポイントを表示して再計算
+                Util
+                    .$gridController
+                    .show()
+                    .relocation();
+
+                // 選択されたDisplayObjectが配置されてるタイムラインをアクティブに
+                this.activeTimeline();
+            });
+
     }
 
     /**
