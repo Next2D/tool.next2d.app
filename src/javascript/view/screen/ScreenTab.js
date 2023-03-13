@@ -308,6 +308,9 @@ class ScreenTab
      */
     activeTab (event, move_tab = false)
     {
+        // playerの全てのキャッシュを初期化
+        Util.$root._$stage._$player.stop();
+
         // モーダルを非表示にする
         Util.$endMenu();
 
@@ -377,6 +380,9 @@ class ScreenTab
         if (!window.confirm(message)) {
             return ;
         }
+
+        // playerの全てのキャッシュを初期化
+        Util.$root._$stage._$player.stop();
 
         // 作業スペースを削除
         const tabId = event.currentTarget.dataset.tabId | 0;
