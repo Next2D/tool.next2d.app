@@ -314,6 +314,10 @@ class ScreenRuler extends BaseScreen
             return ;
         }
 
+        if (Util.$tools.activeTool.name !== "arrow") {
+            return ;
+        }
+        
         this._$mode   = "y";
         this._$target =  this.createBorderY();
 
@@ -371,6 +375,10 @@ class ScreenRuler extends BaseScreen
     {
         const stageArea = document.getElementById("stage-area");
         if (!stageArea) {
+            return ;
+        }
+
+        if (Util.$tools.activeTool.name !== "arrow") {
             return ;
         }
 
