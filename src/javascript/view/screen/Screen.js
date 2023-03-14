@@ -720,7 +720,7 @@ class Screen extends BaseScreen
         }
 
         return character
-            .draw(Util.$getCanvas())
+            .draw(Util.$getCanvas(), parent_scene ? frame : 0)
             .then((canvas) =>
             {
                 const div = document.createElement("div");
@@ -797,7 +797,7 @@ class Screen extends BaseScreen
                 }
 
                 const matrix = Util.$sceneChange.concatenatedMatrix;
-                const bounds = character.getBounds(matrix);
+                const bounds = character.getBounds(matrix, frame);
 
                 let width = (bounds.xMax - bounds.xMin) * Util.$zoomScale;
                 if (!width) {

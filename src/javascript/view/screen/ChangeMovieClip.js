@@ -379,6 +379,7 @@ class ChangeMovieClip extends BaseScreen
         let targetLayer = null;
 
         let targetRange = null;
+        let targetPlace = null;
         let targetTween = null;
         const layers = new Map();
         for (let idx = 0; idx < activeElements.length; ++idx) {
@@ -398,6 +399,7 @@ class ChangeMovieClip extends BaseScreen
 
             if (!targetRange) {
                 targetRange = character.getRange(frame);
+                targetPlace = character.getPlace(targetRange.startFrame);
 
                 if (character.hasTween(targetRange.startFrame)) {
                     targetTween = {
@@ -426,6 +428,10 @@ class ChangeMovieClip extends BaseScreen
                 "colorTransform": place.colorTransform.slice(),
                 "blendMode": place.blendMode,
                 "filter": place.filter.slice(),
+                "point": {
+                    "x": place.point.x,
+                    "y": place.point.y
+                },
                 "loop": place.loop
                     ? JSON.parse(JSON.stringify(place.loop))
                     : Util.$getDefaultLoopConfig(),
@@ -573,6 +579,10 @@ class ChangeMovieClip extends BaseScreen
                 "filter": [],
                 "depth": 0,
                 "loop": Util.$getDefaultLoopConfig(),
+                "point": {
+                    "x": targetPlace.point.x,
+                    "y": targetPlace.point.y
+                },
                 "scaleX": 1,
                 "scaleY": 1,
                 "rotation": 0

@@ -594,6 +594,63 @@ class MovieClip extends Instance
                 characters[idx].dispose();
             }
         }
+
+        if (Util.$activeCharacterIds.length) {
+
+            const children = document
+                .getElementById("scene-name-menu-list")
+                .children;
+
+            const characterId = Util.$activeCharacterIds[
+                Util.$activeCharacterIds.length - 1
+            ];
+
+            const workSpace = Util.$currentWorkSpace();
+            for (let idx = 0; children.length > idx; ++idx) {
+
+                const node = children[idx];
+
+                // 親子関係でない場合は終了
+                if (node.dataset.parent === "false") {
+                    continue;
+                }
+
+                const instance = workSpace.getLibrary(
+                    node.dataset.libraryId | 0
+                );
+
+                if (!instance) {
+                    continue;
+                }
+
+                const parentFrame = instance.currentFrame;
+                for (const layer of instance._$layers.values()) {
+
+                    if (layer.mode === LayerMode.MASK) {
+                        continue;
+                    }
+
+                    const characters = layer
+                        .getActiveCharacter(parentFrame);
+
+                    if (!characters.length) {
+                        continue;
+                    }
+
+                    for (let idx = 0; idx < characters.length; ++idx) {
+
+                        const character = characters[idx];
+                        if (character.id === characterId) {
+                            continue;
+                        }
+
+                        character.dispose();
+                    }
+                }
+
+                break;
+            }
+        }
     }
 
     /**
@@ -1633,9 +1690,7 @@ class MovieClip extends Instance
                         }
 
                         displayObject = instance.createInstance(
-                            place, childRange,
-                            totalFrame === 1 ? parent_frame : frame,
-                            preview
+                            place, childRange, parent_frame ? parent_frame : frame, preview
                         );
                     }
                     break;
