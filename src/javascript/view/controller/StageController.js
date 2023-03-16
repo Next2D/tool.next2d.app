@@ -120,6 +120,70 @@ class StageController extends BaseController
     }
 
     /**
+     * @description InputElementにフォーカスした際の処理関数
+     *
+     * @param  {Event} event
+     * @return {void}
+     * @method
+     * @public
+     */
+    focusIn (event)
+    {
+        super.focusIn(event);
+        this.setLockElement(event);
+    }
+
+    /**
+     * @description InputElement上でマウスを押下した際の処理関数
+     *
+     * @param  {MouseEvent} event
+     * @return {void}
+     * @method
+     * @public
+     */
+    mouseDown (event)
+    {
+        super.mouseDown(event);
+        this.setLockElement(event);
+    }
+
+    /**
+     * @description ロックが有効の際に対象となるElementを変数にセット
+     *
+     * @param  {Event} event
+     * @return {void}
+     * @method
+     * @public
+     */
+    setLockElement (event)
+    {
+        if (this._$focus) {
+            return ;
+        }
+
+        if (!this._$stageLock) {
+            this._$lockTarget = null;
+            return ;
+        }
+
+        switch (event.target.id) {
+
+            case "stage-width":
+                this._$lockTarget = document.getElementById("stage-height");
+                break;
+
+            case "stage-height":
+                this._$lockTarget = document.getElementById("stage-width");
+                break;
+
+            default:
+                this._$lockTarget = null;
+                break;
+
+        }
+    }
+
+    /**
      * @description 幅高さの変更のロックのOn/Off関数
      *
      * @param  {MouseEvent} event
@@ -129,6 +193,11 @@ class StageController extends BaseController
      */
     stageLock (event)
     {
+        const element = document.getElementById("stage-lock");
+        if (!element) {
+            return ;
+        }
+
         event.stopPropagation();
 
         // ロックのOn/Off
@@ -136,9 +205,11 @@ class StageController extends BaseController
 
         // 初期化
         this._$currentValue = null;
+        if (!this._$stageLock) {
+            this._$lockTarget = null;
+        }
 
-        event
-            .currentTarget
+        element
             .childNodes[1]
             .setAttribute("class", this._$stageLock
                 ? "active"
