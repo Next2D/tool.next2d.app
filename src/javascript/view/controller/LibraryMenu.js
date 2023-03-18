@@ -97,7 +97,8 @@ class LibraryMenu
             "library-menu-empty-folder-delete",
             "library-menu-copy",
             "library-menu-paste",
-            "library-open-photopea"
+            "library-open-photopea",
+            "library-menu-change-scene"
         ];
 
         for (let idx = 0; idx < elementIds.length; ++idx) {
@@ -655,6 +656,27 @@ class LibraryMenu
         this._$adjusted = false;
         this._$copyWorkSpaceId = -1;
         this._$copyLibraries.length = 0;
+    }
+
+    /**
+     * @description 選択したアイテムをコピー
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    executeLibraryMenuChangeScene ()
+    {
+        const activeInstance = Util.$libraryController._$activeInstances;
+        if (activeInstance.size === 1) {
+            const instance  = activeInstance.values().next().value;
+            const libraryId = instance.dataset.libraryId | 0;
+
+            const library = Util.$currentWorkSpace().getLibrary(libraryId);
+            if (library.type === InstanceType.MOVIE_CLIP) {
+                Util.$libraryController.changeScene(libraryId);
+            }
+        }
     }
 
     /**

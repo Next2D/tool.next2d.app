@@ -131,19 +131,7 @@ class LibraryKeyboardCommand extends KeyboardCommand
         });
 
         // 選択中のMovieClipを同じ位置で編集
-        this.add("e", () =>
-        {
-            const activeInstance = Util.$libraryController._$activeInstances;
-            if (activeInstance.size === 1) {
-                const instance  = activeInstance.values().next().value;
-                const libraryId = instance.dataset.libraryId | 0;
-
-                const library = Util.$currentWorkSpace().getLibrary(libraryId);
-                if (library.type === InstanceType.MOVIE_CLIP) {
-                    Util.$libraryController.changeScene(libraryId);
-                }
-            }
-        });
+        this.add("e", Util.$libraryMenu.executeLibraryMenuChangeScene);
     }
 
     /**
