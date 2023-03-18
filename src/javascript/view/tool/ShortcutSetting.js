@@ -253,7 +253,7 @@ class ShortcutSetting
                     "key": "e",
                     "text": "E",
                     "css": "screen-change-scene",
-                    "description": "{{シンボルを編集}}"
+                    "description": "{{MovieClipを編集}}"
                 },
                 {
                     "key": "eShift",
@@ -462,7 +462,13 @@ class ShortcutSetting
                     "text": "Ctrl + V",
                     "css": "library-menu-paste",
                     "description": "{{ペースト}}"
-                }
+                },
+                {
+                    "key": "e",
+                    "text": "E",
+                    "css": "library-menu-change-scene",
+                    "description": "{{MovieClipを編集}}"
+                },
             ]
         };
 

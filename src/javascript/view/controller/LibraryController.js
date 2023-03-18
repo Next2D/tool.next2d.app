@@ -796,14 +796,7 @@ class LibraryController
                 .getElementById(`${type}-${id}`)
                 .addEventListener("dblclick", (event) =>
                 {
-                    // 定規は削除
-                    Util.$screenRuler.clear();
-
-                    // 内部
-                    Util.$activeCharacterIds.length = 0;
-
-                    // 再描画
-                    Util.$sceneChange.reload(
+                    this.changeScene(
                         event.currentTarget.dataset.libraryId | 0
                     );
                 });
@@ -924,6 +917,26 @@ class LibraryController
             "name": name,
             "symbol": symbol
         };
+    }
+
+    /**
+     * @description 指定のMovieClipに移動
+     *
+     * @param  {number} libraryId
+     * @return {void}
+     * @method
+     * @public
+     */
+    changeScene (libraryId)
+    {
+        // 定規は削除
+        Util.$screenRuler.clear();
+
+        // 内部
+        Util.$activeCharacterIds.length = 0;
+
+        // 再描画
+        Util.$sceneChange.reload(libraryId);
     }
 
     /**

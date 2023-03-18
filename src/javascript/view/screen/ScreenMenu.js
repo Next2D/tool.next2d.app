@@ -1379,7 +1379,7 @@ class ScreenMenu extends BaseScreen
     }
 
     /**
-     * @description シンボルを編集
+     * @description MovieClipを編集
      *
      * @return {void}
      * @method
