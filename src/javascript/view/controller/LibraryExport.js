@@ -224,7 +224,6 @@ class LibraryExport extends BaseController
 
             case InstanceType.MOVIE_CLIP:
                 {
-                    console.log(this._$endFrame);
                     const promises = [];
                     const zip = new JSZip();
                     for (let frame = this._$startFrame;
