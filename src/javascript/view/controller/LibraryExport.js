@@ -224,6 +224,7 @@ class LibraryExport extends BaseController
 
             case InstanceType.MOVIE_CLIP:
                 {
+                    console.log(this._$endFrame);
                     const promises = [];
                     const zip = new JSZip();
                     for (let frame = this._$startFrame;
@@ -471,6 +472,8 @@ class LibraryExport extends BaseController
             this._$instance.totalFrame
         );
 
+        this._$endFrame = value;
+
         // 最終フレームが開始フレーム設定を下回った補正
         const element = document
             .getElementById("export-start-frame");
@@ -686,40 +689,19 @@ class LibraryExport extends BaseController
     {
         const matrix = [1, 0, 0, 1, 0, 0];
 
-        const place = {
-            "frame": 1,
-            "matrix": matrix,
-            "colorTransform": [1, 1, 1, 1, 0, 0, 0, 0],
-            "blendMode": "normal",
-            "filter": [],
-            "loop": Util.$getDefaultLoopConfig()
-        };
-
-        const range = {
-            "startFrame": 1,
-            "endFrame": this._$instance.totalFrame + 1
-        };
-
-        const currentFrame = Util.$currentFrame;
-
         let xMin =  Number.MAX_VALUE;
         let xMax = -Number.MAX_VALUE;
         let yMin =  Number.MAX_VALUE;
         let yMax = -Number.MAX_VALUE;
         for (let frame = this._$startFrame; this._$endFrame >= frame; ++frame) {
 
-            place.frame = Util.$currentFrame = frame;
-
-            const bounds = this._$instance.getBounds(matrix, place, range);
+            const bounds = this._$instance.getBounds(matrix, frame);
 
             xMin = Math.min(bounds.xMin, xMin);
             xMax = Math.max(bounds.xMax, xMax);
             yMin = Math.min(bounds.yMin, yMin);
             yMax = Math.max(bounds.yMax, yMax);
         }
-
-        // reset
-        Util.$currentFrame = currentFrame;
 
         return {
             "xMin": xMin,
@@ -803,12 +785,12 @@ class LibraryExport extends BaseController
      */
     getCanvas (frame = 1, preview = false)
     {
-        const currentFrame = Util.$currentFrame;
-        const zoomScale    = Util.$zoomScale;
-        Util.$currentFrame = frame;
-        Util.$zoomScale    = 1;
+        const zoomScale = Util.$zoomScale;
+        Util.$zoomScale = 1;
 
-        const bounds = this.getBounds();
+        const bounds = this
+            ._$instance
+            .getBounds([1,0,0,1,0,0], frame);
 
         // size
         let width  = Math.abs(bounds.xMax - bounds.xMin);
@@ -852,13 +834,12 @@ class LibraryExport extends BaseController
                     "blendMode": "normal",
                     "filter": []
                 },
-                null, frame, true
+                frame
             )
             .then((canvas) =>
             {
                 // reset
-                Util.$zoomScale    = zoomScale;
-                Util.$currentFrame = currentFrame;
+                Util.$zoomScale = zoomScale;
 
                 return Promise.resolve(canvas);
             });

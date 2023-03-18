@@ -565,14 +565,7 @@ class LoopController extends BaseController
         const characterId = target.dataset.characterId | 0;
         const character   = layer.getCharacter(characterId);
 
-        const range = {
-            "startFrame": character.startFrame,
-            "endFrame": character.endFrame
-        };
-
         const instance = workSpace.getLibrary(character.libraryId);
-
-        const currentFrame = Util.$timelineFrame.currentFrame;
 
         const promises = [];
         const endFrame = instance.totalFrame;
@@ -585,8 +578,6 @@ class LoopController extends BaseController
                 {
                     const { Sprite, BitmapData } = window.next2d.display;
                     const { Matrix, ColorTransform } = window.next2d.geom;
-
-                    Util.$currentFrame = frame;
 
                     const sprite = new Sprite();
 
@@ -626,6 +617,11 @@ class LoopController extends BaseController
                             canvas.style.width  = `${bitmapData.width  / ratio}px`;
                             canvas.style.height = `${bitmapData.height / ratio}px`;
 
+                            // リサイクルできるcanvasがあればpoolする
+                            while (Util.$sleepCanvases.length) {
+                                Util.$poolCanvas(Util.$sleepCanvases.pop());
+                            }
+
                             return resolve({
                                 "index": frame - 1,
                                 "image": canvas
@@ -638,9 +634,6 @@ class LoopController extends BaseController
         Promise.all(promises)
             .then((results) =>
             {
-                // reset
-                Util.$currentFrame = currentFrame;
-
                 const images = [];
                 for (let idx = 0; idx < results.length; ++idx) {
                     const object = results[idx];

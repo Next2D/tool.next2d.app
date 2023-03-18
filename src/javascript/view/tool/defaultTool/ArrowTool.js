@@ -1749,6 +1749,11 @@ class ArrowTool extends BaseTool
 
         if (node) {
 
+            // タイムラインを再生中なら停止
+            Util
+                .$timelinePlayer
+                .executeTimelineStop();
+
             Util.$sceneChange.offsetX = +node.dataset.offsetX;
             Util.$sceneChange.offsetY = +node.dataset.offsetY;
 

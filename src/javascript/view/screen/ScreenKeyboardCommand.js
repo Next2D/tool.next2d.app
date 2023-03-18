@@ -308,31 +308,17 @@ class ScreenKeyboardCommand extends KeyboardCommand
         // 選択中のMovieClipを同じ位置で編集
         this.add("e", () =>
         {
-            /**
-             * @type {ArrowTool}
-             */
-            const tool = Util.$tools.getDefaultTool("arrow");
-            if (tool._$activeElements.length === 1) {
-
-                const element = tool._$activeElements[0];
-                if (element.dataset.instanceType !== "container") {
-                    return ;
-                }
-
-                Util
-                    .$screen
-                    .changeScene({
-                        "stopPropagation": () => {},
-                        "currentTarget": element
-                    });
-
-            }
+            Util
+                .$screenMenu
+                .executeScreenChangeScene();
         });
 
         // 親のMovieClipへ移動
         this.add(Util.$generateShortcutKey("e", { "shift": true }), () =>
         {
-            Util.$tools.getDefaultTool("arrow").moveScene();
+            Util
+                .$screenMenu
+                .executeScreenMoveScene();
         });
     }
 

@@ -2119,11 +2119,8 @@ class TimelineLayer extends BaseTimeline
         window.requestAnimationFrame(() =>
         {
             const workSpace = Util.$currentWorkSpace();
-            const frame = element.dataset.frame | 0;
+            let frame = element.dataset.frame | 0;
             const layer = workSpace.scene.getLayer(layerId);
-
-            const currentFrame = Util.$currentFrame;
-            Util.$currentFrame = frame;
 
             const characters = layer.getActiveCharacter(frame);
             if (characters.length) {
@@ -2150,35 +2147,44 @@ class TimelineLayer extends BaseTimeline
 
                     const character = characters[idx];
 
-                    const range  = character.getRange(frame);
-                    const place  = character.getPlace(frame);
-
+                    const place = character.getPlace(frame);
                     const instance = workSpace
-                        .getLibrary(character.libraryId)
-                        .createInstance(place, range);
+                        .getLibrary(character.libraryId);
 
-                    instance.transform.matrix = new Matrix(
+                    if (instance.type === InstanceType.MOVIE_CLIP) {
+
+                        const range = place.loop && place.loop.type === LoopController.DEFAULT
+                            ? { "startFrame": character.startFrame, "endFrame": character.endFrame }
+                            : character.getRange(frame);
+
+                        frame = Util.$getFrame(
+                            place, range, frame, instance.totalFrame
+                        );
+
+                    }
+
+                    const displayObject = instance.createInstance(frame);
+
+                    displayObject.transform.matrix = new Matrix(
                         place.matrix[0], place.matrix[1],
                         place.matrix[2], place.matrix[3],
                         place.matrix[4], place.matrix[5]
                     );
-                    instance.transform.colorTransform = new ColorTransform(
+                    displayObject.transform.colorTransform = new ColorTransform(
                         place.colorTransform[0], place.colorTransform[1],
                         place.colorTransform[2], place.colorTransform[3],
                         place.colorTransform[4], place.colorTransform[5],
                         place.colorTransform[6], place.colorTransform[7]
                     );
 
-                    const bounds = workSpace
-                        .getLibrary(character.libraryId)
-                        .getBounds(place.matrix, place, range);
+                    const bounds = instance.getBounds(place.matrix, frame);
 
                     xMin = Math.min(xMin, bounds.xMin);
                     xMax = Math.max(xMax, bounds.xMax);
                     yMin = Math.min(yMin, bounds.yMin);
                     yMax = Math.max(yMax, bounds.yMax);
 
-                    sprite.addChild(instance);
+                    sprite.addChild(displayObject);
                 }
 
                 const width  = Math.ceil(Math.abs(xMax - xMin));
@@ -2199,37 +2205,35 @@ class TimelineLayer extends BaseTimeline
                 );
 
                 matrix.scale(scale, scale);
-                bitmapData.draw(sprite, matrix);
+                bitmapData
+                    .draw(sprite, matrix, null, Util.$getCanvas(), (canvas) =>
+                    {
+                        while (preview.children.length) {
+                            const node = preview.children[0];
+                            Util.$poolCanvas(node);
+                            node.remove();
+                        }
 
-                const context = bitmapData.drawFromCanvas(Util.$getCanvas());
+                        let style = "";
+                        style += `left: ${event.pageX + 10}px;`;
+                        style += `top: ${event.pageY - preview.offsetHeight - 10}px;`;
+                        style += `background-color: ${document.getElementById("stage-bgColor").value};`;
+                        preview.setAttribute("style", style);
 
-                // player側のメモリを解放
-                bitmapData.dispose();
+                        canvas.style.width  = `${bitmapData.width  / ratio}px`;
+                        canvas.style.height = `${bitmapData.height / ratio}px`;
+                        preview.appendChild(canvas);
 
-                while (preview.children.length) {
-                    const node = preview.children[0];
-                    Util.$poolCanvas(node);
-                    node.remove();
-                }
+                        if (!preview.classList.contains("fadeIn")) {
+                            preview.setAttribute("class", "fadeIn");
+                        }
 
-                let style = "";
-                style += `left: ${event.pageX + 10}px;`;
-                style += `top: ${event.pageY - preview.offsetHeight - 10}px;`;
-                style += `background-color: ${document.getElementById("stage-bgColor").value};`;
-                preview.setAttribute("style", style);
-
-                const canvas = context.canvas;
-
-                canvas.style.width  = `${bitmapData.width  / ratio}px`;
-                canvas.style.height = `${bitmapData.height / ratio}px`;
-                preview.appendChild(canvas);
-
-                if (!preview.classList.contains("fadeIn")) {
-                    preview.setAttribute("class", "fadeIn");
-                }
+                        // リサイクルできるcanvasがあればpoolする
+                        while (Util.$sleepCanvases.length) {
+                            Util.$poolCanvas(Util.$sleepCanvases.pop());
+                        }
+                    });
             }
-
-            Util.$currentFrame = currentFrame;
         });
     }
 

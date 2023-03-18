@@ -343,7 +343,6 @@ class MovieClip extends Instance
                             continue;
                         }
 
-                        console.log(parentFrame);
                         promises.push(
                             Util.$screen.appendCharacter(
                                 character, parentFrame, layer.id,
@@ -1155,7 +1154,8 @@ class MovieClip extends Instance
                 const instance = workSpace
                     .getLibrary(character.libraryId | 0);
 
-                const matrix = Util.$multiplicationMatrix(parentMatrix, place.matrix);
+                const matrix = Util
+                    .$multiplicationMatrix(parentMatrix, place.matrix);
 
                 let targetFrame = frame;
                 if (instance.type === InstanceType.MOVIE_CLIP) {

@@ -248,6 +248,18 @@ class ShortcutSetting
                     "text": "Ctrl + Shift + R",
                     "css": "screen-ruler",
                     "description": "{{定規}}"
+                },
+                {
+                    "key": "e",
+                    "text": "E",
+                    "css": "screen-change-scene",
+                    "description": "{{シンボルを編集}}"
+                },
+                {
+                    "key": "eShift",
+                    "text": "Shift + E",
+                    "css": "screen-move-scene",
+                    "description": "{{親の階層へ移動}}"
                 }
             ],
             "timeline": [

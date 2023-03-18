@@ -76,7 +76,9 @@ class ScreenMenu extends BaseScreen
             "screen-delete-tween-curve-pointer",
             "screen-change-movie-clip",
             "screen-preview",
-            "screen-ruler"
+            "screen-ruler",
+            "screen-change-scene",
+            "screen-move-scene"
         ];
 
         for (let idx = 0; idx < elementIds.length; ++idx) {
@@ -106,7 +108,9 @@ class ScreenMenu extends BaseScreen
             "screen-delete-tween-curve-pointer",
             "screen-change-movie-clip",
             "screen-preview",
-            "screen-ruler"
+            "screen-ruler",
+            "screen-change-scene",
+            "screen-move-scene"
         ];
         for (let idx = 0; idx < overHideElementIds.length; ++idx) {
 
@@ -1372,6 +1376,49 @@ class ScreenMenu extends BaseScreen
         if (!element.classList.contains("fadeIn")) {
             element.setAttribute("class", "fadeIn");
         }
+    }
+
+    /**
+     * @description シンボルを編集
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    executeScreenChangeScene ()
+    {
+        /**
+         * @type {ArrowTool}
+         */
+        const tool = Util.$tools.getDefaultTool("arrow");
+        if (tool._$activeElements.length === 1) {
+
+            const element = tool._$activeElements[0];
+            if (element.dataset.instanceType !== "container") {
+                return ;
+            }
+
+            Util
+                .$screen
+                .changeScene({
+                    // eslint-disable-next-line no-empty-function
+                    "stopPropagation": () => {},
+                    "currentTarget": element
+                });
+
+        }
+    }
+
+    /**
+     * @description 親の階層へ移動
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    executeScreenMoveScene ()
+    {
+        Util.$tools.getDefaultTool("arrow").moveScene();
     }
 
     /**

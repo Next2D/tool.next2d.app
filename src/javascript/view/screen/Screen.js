@@ -608,24 +608,15 @@ class Screen extends BaseScreen
             return Promise.resolve();
         }
 
-        let targetFrame = 1;
         let doUpdate = character.libraryId === Util.$changeLibraryId;
         switch (instance.type) {
 
             case InstanceType.MOVIE_CLIP:
-                {
-                    if (instance.totalFrame > 1 && character._$currentFrame !== frame) {
-                        doUpdate = true;
-                        character._$currentFrame = frame;
-                    }
-
-                    const range = place.loop && place.loop.type === LoopController.DEFAULT
-                        ? { "startFrame": character.startFrame, "endFrame": character.endFrame }
-                        : character.getRange(frame);
-
-                    targetFrame = Util.$getFrame(
-                        place, range, frame, instance.totalFrame
-                    );
+                if (instance.totalFrame > 1
+                    && character._$currentFrame !== frame
+                ) {
+                    doUpdate = true;
+                    character._$currentFrame = frame;
                 }
                 break;
 
@@ -813,7 +804,7 @@ class Screen extends BaseScreen
                 }
 
                 const matrix = Util.$sceneChange.concatenatedMatrix;
-                const bounds = character.getBounds(matrix);
+                const bounds = character.getBounds(matrix, parent_scene ? frame : 0);
 
                 let width = (bounds.xMax - bounds.xMin) * Util.$zoomScale;
                 if (!width) {
@@ -1089,6 +1080,11 @@ class Screen extends BaseScreen
         // 親のイベントを中止する
         event.stopPropagation();
 
+        // タイムラインを再生中なら停止
+        Util
+            .$timelinePlayer
+            .executeTimelineStop();
+
         const target = event.currentTarget;
 
         const layer = Util
@@ -1113,6 +1109,7 @@ class Screen extends BaseScreen
         // 調整用のxy座標(fixed logic)
         const matrix = Util.$sceneChange.concatenatedMatrix;
 
+        Util.$timelineFrame.currentFrame = 1;
         const x  = character.x;
         const y  = character.y;
         const dx = x * matrix[0] + y * matrix[2] + matrix[4];
@@ -1121,8 +1118,8 @@ class Screen extends BaseScreen
         Util.$sceneChange.offsetX = dx;
         Util.$sceneChange.offsetY = dy;
 
-        const frame = Util.$timelineFrame.currentFrame;
-        const place = character.getPlace(frame);
+        // const frame = Util.$timelineFrame.currentFrame;
+        const place = character.getPlace(1);
         Util.$sceneChange.matrix.push(place.matrix);
 
         // シーン移動
