@@ -171,7 +171,7 @@ class Screen extends BaseScreen
      * @description ライブラリからのドロップ処理
      *
      * @param  {DragEvent} event
-     * @return {void}
+     * @return {Promise}
      * @method
      * @public
      */
@@ -182,7 +182,7 @@ class Screen extends BaseScreen
             .activeInstances;
 
         if (!activeInstances.size) {
-            return ;
+            return Promise.resolve();
         }
 
         const workSpace = Util.$currentWorkSpace();
@@ -216,7 +216,7 @@ class Screen extends BaseScreen
                 }
             }, 1500);
 
-            return ;
+            return Promise.resolve();
         }
 
         const frame = Util.$timelineFrame.currentFrame;
@@ -304,179 +304,184 @@ class Screen extends BaseScreen
                     }
                 }, 1500);
 
-                return ;
+                return Promise.resolve();
             }
         }
 
-        if (instanceIds.length) {
+        if (!instanceIds.length) {
+            // 初期化
+            this._$saved = false;
+        }
 
-            // 座標
-            const x = (event.offsetX - Util.$offsetLeft) / Util.$zoomScale;
-            const y = (event.offsetY - Util.$offsetTop)  / Util.$zoomScale;
+        // 座標
+        const x = (event.offsetX - Util.$offsetLeft) / Util.$zoomScale;
+        const y = (event.offsetY - Util.$offsetTop)  / Util.$zoomScale;
 
-            const { Matrix } = window.next2d.geom;
-            const concatenatedMatrix = Util.$sceneChange.concatenatedMatrix;
+        const { Matrix } = window.next2d.geom;
+        const concatenatedMatrix = Util.$sceneChange.concatenatedMatrix;
 
-            const matrix = new Matrix(
-                concatenatedMatrix[0], concatenatedMatrix[1], concatenatedMatrix[2],
-                concatenatedMatrix[3], concatenatedMatrix[4], concatenatedMatrix[5]
-            );
-            matrix.invert();
+        const matrix = new Matrix(
+            concatenatedMatrix[0], concatenatedMatrix[1], concatenatedMatrix[2],
+            concatenatedMatrix[3], concatenatedMatrix[4], concatenatedMatrix[5]
+        );
+        matrix.invert();
 
-            const localX = x * matrix.a + y * matrix.c + matrix.tx;
-            const localY = x * matrix.b + y * matrix.d + matrix.ty;
+        const localX = x * matrix.a + y * matrix.c + matrix.tx;
+        const localY = x * matrix.b + y * matrix.d + matrix.ty;
 
-            // スクリーンにアイテムを配置
-            const location   = layer.adjustmentLocation(frame);
-            const endFrame   = location.endFrame;
-            const startFrame = location.startFrame;
-            for (let idx = 0; idx < instanceIds.length; ++idx) {
+        // スクリーンにアイテムを配置
+        const location   = layer.adjustmentLocation(frame);
+        const endFrame   = location.endFrame;
+        const startFrame = location.startFrame;
+        for (let idx = 0; idx < instanceIds.length; ++idx) {
 
-                const libraryId = instanceIds[idx];
+            const libraryId = instanceIds[idx];
 
-                // 前か後ろに同じDisplayObjectがあれば統合する
-                const join = {
-                    "start": null,
-                    "end": null
-                };
+            // 前か後ろに同じDisplayObjectがあれば統合する
+            const join = {
+                "start": null,
+                "end": null
+            };
 
-                // レイヤー内のDisplayObjectをチェック
-                const characters = layer._$characters;
-                for (let idx = 0; idx < characters.length; ++idx) {
+            // レイヤー内のDisplayObjectをチェック
+            const characters = layer._$characters;
+            for (let idx = 0; idx < characters.length; ++idx) {
 
-                    const character = characters[idx];
-                    if (character.libraryId !== libraryId) {
-                        continue;
+                const character = characters[idx];
+                if (character.libraryId !== libraryId) {
+                    continue;
+                }
+
+                switch (true) {
+
+                    case startFrame > 1 && character.endFrame === startFrame:
+                        join.start = character;
+                        break;
+
+                    case character.startFrame === endFrame:
+                        join.end = character;
+                        break;
+
+                }
+            }
+
+            const instance = workSpace.getLibrary(libraryId);
+            const place = {
+                "frame": location.startFrame,
+                "matrix": [1, 0, 0, 1, localX, localY],
+                "colorTransform": [1, 1, 1, 1, 0, 0, 0, 0],
+                "blendMode": "normal",
+                "filter": [],
+                "depth": layer._$characters.length,
+                "scaleX": 1,
+                "scaleY": 1,
+                "rotation": 0
+            };
+
+            // MovieClipの場合はループ設定
+            if (instance.type === InstanceType.MOVIE_CLIP) {
+                place.loop = Util.$getDefaultLoopConfig();
+            }
+
+            let character = null;
+            if (join.start) {
+                character = join.start;
+                character.endFrame = endFrame;
+            }
+
+            if (join.end) {
+
+                if (character) {
+
+                    character.endFrame = join.end.endFrame;
+
+                    for (let [frame, place] of join.end._$places) {
+                        character.setPlace(frame, place);
                     }
 
-                    switch (true) {
-
-                        case startFrame > 1 && character.endFrame === startFrame:
-                            join.start = character;
-                            break;
-
-                        case character.startFrame === endFrame:
-                            join.end = character;
-                            break;
-
+                    for (let [frame, tween] of join.end._$tween) {
+                        character.setTween(frame, tween);
                     }
-                }
 
-                const instance = workSpace.getLibrary(libraryId);
-                const place = {
-                    "frame": location.startFrame,
-                    "matrix": [1, 0, 0, 1, localX, localY],
-                    "colorTransform": [1, 1, 1, 1, 0, 0, 0, 0],
-                    "blendMode": "normal",
-                    "filter": [],
-                    "depth": layer._$characters.length,
-                    "scaleX": 1,
-                    "scaleY": 1,
-                    "rotation": 0
-                };
-
-                // MovieClipの場合はループ設定
-                if (instance.type === InstanceType.MOVIE_CLIP) {
-                    place.loop = Util.$getDefaultLoopConfig();
-                }
-
-                let character = null;
-                if (join.start) {
-                    character = join.start;
-                    character.endFrame = endFrame;
-                }
-
-                if (join.end) {
-
-                    if (character) {
-
-                        character.endFrame = join.end.endFrame;
-
-                        for (let [frame, place] of join.end._$places) {
-                            character.setPlace(frame, place);
-                        }
-
-                        for (let [frame, tween] of join.end._$tween) {
-                            character.setTween(frame, tween);
-                        }
-
-                        layer.deleteCharacter(join.end.id);
-
-                    } else {
-
-                        character = join.end;
-                        character.startFrame = startFrame;
-
-                    }
-                }
-
-                // new character
-                if (!character) {
-
-                    character = new Character();
-                    character.libraryId  = libraryId;
-                    character.startFrame = startFrame;
-                    character.endFrame   = endFrame;
-                    character.setPlace(startFrame, place);
-
-                    // added
-                    layer.addCharacter(character);
+                    layer.deleteCharacter(join.end.id);
 
                 } else {
 
-                    // add place
-                    character.setPlace(startFrame, place);
+                    character = join.end;
+                    character.startFrame = startFrame;
 
                 }
+            }
 
-                // ドロップ位置補正
-                const baseBounds = instance.getBounds([1, 0, 0, 1, 0, 0]);
-                let dx = baseBounds.xMin;
-                let dy = baseBounds.yMin;
+            // new character
+            if (!character) {
 
-                const bounds = character.getBounds();
-                let width = bounds.xMax - bounds.xMin;
-                if (!width) {
-                    width = 10;
-                }
+                character = new Character();
+                character.libraryId  = libraryId;
+                character.startFrame = startFrame;
+                character.endFrame   = endFrame;
+                character.setPlace(startFrame, place);
 
-                let height = bounds.yMax - bounds.yMin;
-                if (!height) {
-                    height = 10;
-                }
+                // added
+                layer.addCharacter(character);
 
-                dx += width  / 2;
-                dy += height / 2;
+            } else {
 
-                place.matrix[4] -= dx;
-                place.matrix[5] -= dy;
-
-                const matrixBounds = character.getBounds(concatenatedMatrix);
-                const tx = Util.$sceneChange.offsetX + matrixBounds.xMin;
-                const ty = Util.$sceneChange.offsetY + matrixBounds.yMin;
-                const w  = Math.ceil(Math.abs(matrixBounds.xMax - matrixBounds.xMin)) / 2;
-                const h  = Math.ceil(Math.abs(matrixBounds.yMax - matrixBounds.yMin)) / 2;
-
-                // 中心点をセット
-                place.point = {
-                    "x": tx + w,
-                    "y": ty + h
-                };
+                // add place
+                character.setPlace(startFrame, place);
 
             }
 
-            // レイヤーの横スクロール幅を再計算
-            Util.$timelineScroll.updateWidth();
+            // ドロップ位置補正
+            const baseBounds = instance.getBounds([1, 0, 0, 1, 0, 0]);
+            let dx = baseBounds.xMin;
+            let dy = baseBounds.yMin;
 
-            // タイムラインの表示を再計算
-            layer.reloadStyle();
+            const bounds = character.getBounds();
+            let width = bounds.xMax - bounds.xMin;
+            if (!width) {
+                width = 10;
+            }
 
-            // 描画リセット
-            this.reloadScreen();
+            let height = bounds.yMax - bounds.yMin;
+            if (!height) {
+                height = 10;
+            }
+
+            dx += width  / 2;
+            dy += height / 2;
+
+            place.matrix[4] -= dx;
+            place.matrix[5] -= dy;
+
+            const matrixBounds = character.getBounds(concatenatedMatrix);
+            const tx = Util.$sceneChange.offsetX + matrixBounds.xMin;
+            const ty = Util.$sceneChange.offsetY + matrixBounds.yMin;
+            const w  = Math.ceil(Math.abs(matrixBounds.xMax - matrixBounds.xMin)) / 2;
+            const h  = Math.ceil(Math.abs(matrixBounds.yMax - matrixBounds.yMin)) / 2;
+
+            // 中心点をセット
+            place.point = {
+                "x": tx + w,
+                "y": ty + h
+            };
+
         }
 
-        // 初期化
-        this._$saved = false;
+        // レイヤーの横スクロール幅を再計算
+        Util.$timelineScroll.updateWidth();
+
+        // タイムラインの表示を再計算
+        layer.reloadStyle();
+
+        // 描画リセット
+        return this
+            .reloadScreen()
+            .then(() =>
+            {
+                // 初期化
+                this._$saved = false;
+            });
     }
 
     /**
@@ -603,13 +608,24 @@ class Screen extends BaseScreen
             return Promise.resolve();
         }
 
+        let targetFrame = 1;
         let doUpdate = character.libraryId === Util.$changeLibraryId;
         switch (instance.type) {
 
             case InstanceType.MOVIE_CLIP:
-                if (instance.totalFrame > 1 && character._$currentFrame !== frame) {
-                    doUpdate = true;
-                    character._$currentFrame = frame;
+                {
+                    if (instance.totalFrame > 1 && character._$currentFrame !== frame) {
+                        doUpdate = true;
+                        character._$currentFrame = frame;
+                    }
+
+                    const range = place.loop && place.loop.type === LoopController.DEFAULT
+                        ? { "startFrame": character.startFrame, "endFrame": character.endFrame }
+                        : character.getRange(frame);
+
+                    targetFrame = Util.$getFrame(
+                        place, range, frame, instance.totalFrame
+                    );
                 }
                 break;
 
@@ -720,7 +736,7 @@ class Screen extends BaseScreen
         }
 
         return character
-            .draw(Util.$getCanvas(), parent_scene ? frame : 0)
+            .draw(Util.$getCanvas(), frame)
             .then((canvas) =>
             {
                 const div = document.createElement("div");
@@ -797,7 +813,7 @@ class Screen extends BaseScreen
                 }
 
                 const matrix = Util.$sceneChange.concatenatedMatrix;
-                const bounds = character.getBounds(matrix, frame);
+                const bounds = character.getBounds(matrix);
 
                 let width = (bounds.xMax - bounds.xMin) * Util.$zoomScale;
                 if (!width) {
@@ -857,7 +873,8 @@ class Screen extends BaseScreen
                             .draw(Util.$getCanvas())
                             .then((mask_canvas) =>
                             {
-                                const maskBounds = maskCharacter.getBounds(matrix);
+                                const maskBounds = maskCharacter
+                                    .getBounds(matrix);
 
                                 const x = (maskBounds.xMin - bounds.xMin) * Util.$zoomScale;
                                 const y = (maskBounds.yMin - bounds.yMin) * Util.$zoomScale;

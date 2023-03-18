@@ -176,9 +176,6 @@ class LibraryPreview
      */
     loadImage (library_id)
     {
-        // 初期化
-        this.dispose();
-
         const instance = Util
             .$currentWorkSpace()
             .getLibrary(library_id);
@@ -191,6 +188,9 @@ class LibraryPreview
                 .getPreview()
                 .then((element) =>
                 {
+                    // 初期化
+                    this.dispose();
+
                     if (element) {
                         document
                             .getElementById("library-preview-area")
@@ -208,6 +208,11 @@ class LibraryPreview
                     }
 
                 });
+
+        } else {
+
+            // 初期化
+            this.dispose();
 
         }
     }

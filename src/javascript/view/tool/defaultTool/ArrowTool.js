@@ -1488,7 +1488,12 @@ class ArrowTool extends BaseTool
             let divStyle = "position: absolute;";
             divStyle += `pointer-events: ${element.dataset.pointer};`;
 
-            const promises = [];
+            const left = Util.$offsetLeft + (Util.$sceneChange.offsetX + bounds.xMin) * Util.$zoomScale;
+            const top  = Util.$offsetTop  + (Util.$sceneChange.offsetY + bounds.yMin) * Util.$zoomScale;
+            divStyle += `left: ${left}px;`;
+            divStyle += `top: ${top}px;`;
+
+            let promise = null;
             if (layer.maskId !== null) {
 
                 const maskLayer = scene.getLayer(layer.maskId);
@@ -1497,21 +1502,28 @@ class ArrowTool extends BaseTool
                     const matrix = Util.$sceneChange.concatenatedMatrix;
 
                     const maskCharacter = maskLayer._$characters[0];
-                    maskCharacter.dispose();
+                    const maskPlace = maskCharacter.getPlace(frame);
+                    if (maskCharacter._$maskPlaceFrame !== maskPlace.frame) {
+                        maskCharacter.dispose();
+                        maskCharacter._$maskPlaceFrame = maskPlace.frame;
+                    }
 
-                    promises.push(maskCharacter
+                    promise = maskCharacter
                         .draw(Util.$getCanvas())
                         // eslint-disable-next-line no-loop-func
                         .then((mask_canvas) =>
                         {
                             const maskBounds = maskCharacter.getBounds(matrix);
 
-                            const maskSrc    = mask_canvas.toDataURL();
-                            const maskWidth  = mask_canvas._$width  * Util.$zoomScale;
-                            const maskHeight = mask_canvas._$height * Util.$zoomScale;
-
                             const x = (maskBounds.xMin - bounds.xMin) * Util.$zoomScale;
                             const y = (maskBounds.yMin - bounds.yMin) * Util.$zoomScale;
+
+                            if (!mask_canvas._$base64) {
+                                mask_canvas._$base64 = mask_canvas.toDataURL();
+                            }
+                            const maskSrc    = mask_canvas._$base64;
+                            const maskWidth  = mask_canvas._$width  * Util.$zoomScale;
+                            const maskHeight = mask_canvas._$height * Util.$zoomScale;
 
                             divStyle += `mask: url(${maskSrc}), none;`;
                             divStyle += `-webkit-mask: url(${maskSrc}), none;`;
@@ -1525,29 +1537,31 @@ class ArrowTool extends BaseTool
                             const canvas = character._$canvas;
                             divStyle += `mix-blend-mode: ${canvas.style.mixBlendMode};`;
                             divStyle += `filter: ${canvas.style.filter};`;
-                        }));
+
+                            return Promise.resolve(divStyle);
+                        });
                 }
             }
 
-            Promise
-                .all(promises)
-                // eslint-disable-next-line no-loop-func
-                .then(() =>
-                {
-                    const left = Util.$offsetLeft + (Util.$sceneChange.offsetX + bounds.xMin) * Util.$zoomScale;
-                    const top  = Util.$offsetTop  + (Util.$sceneChange.offsetY + bounds.yMin) * Util.$zoomScale;
+            if (promise) {
 
-                    divStyle += `left: ${left}px;`;
-                    divStyle += `top: ${top}px;`;
-                    element.setAttribute("style", divStyle);
+                promise
+                    .then((style) => {
+                        element.setAttribute("style", style);
+                    });
 
-                    // move resize rect
-                    xMin = Math.min(xMin, character.x);
-                    yMin = Math.min(yMin, character.y);
+            } else {
 
-                    // tweenの座標を再計算してポインターを再配置
-                    character.relocationTween(frame);
-                });
+                element.setAttribute("style", divStyle);
+
+            }
+
+            // move resize rect
+            xMin = Math.min(xMin, character.x);
+            yMin = Math.min(yMin, character.y);
+
+            // tweenの座標を再計算してポインターを再配置
+            character.relocationTween(frame);
         }
 
         // 移動位置を更新
@@ -1629,6 +1643,10 @@ class ArrowTool extends BaseTool
      */
     updateControllerProperty ()
     {
+        if (!this._$activeElements.length) {
+            return ;
+        }
+
         const workSpace = Util.$currentWorkSpace();
         const scene     = workSpace.scene;
         let character   = null;

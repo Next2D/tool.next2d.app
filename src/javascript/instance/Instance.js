@@ -80,14 +80,13 @@ class Instance
      *              Returns the Object of the display area (bounding box)
      *
      * @param  {array}  [matrix=null]
-     * @param  {object} [place=null]
-     * @param  {object} [range=null]
+     * @param  {number} [current_frame=null]
      * @return {object}
      * @method
      * @abstract
      */
     // eslint-disable-next-line no-empty-function,no-unused-vars
-    getBounds (matrix = null, place = null, range = null) {}
+    getBounds (matrix = null, current_frame = 1) {}
 
     /**
      * @description ライブラリ内のユニークな値
@@ -406,8 +405,7 @@ class Instance
      * @param  {number}  width
      * @param  {number}  height
      * @param  {object}  place
-     * @param  {object}  [range = null]
-     * @param  {number}  [static_frame = 0]
+     * @param  {number}  [current_frame = 0]
      * @param  {boolean} [preview = false]
      * @return {Promise}
      * @method
@@ -415,7 +413,7 @@ class Instance
      */
     draw (
         canvas, width, height, place,
-        range = null, static_frame = 0, preview = false
+        current_frame = 1, preview = false
     ) {
 
         // empty image
@@ -426,9 +424,7 @@ class Instance
         }
 
         // ライブラリからplayer用のオブジェクトを作成
-        const instance = this.createInstance(
-            place, range, static_frame, preview
-        );
+        const instance = this.createInstance(current_frame, preview);
 
         // place objectの値をセット
         let matrix = place.matrix;
@@ -478,10 +474,7 @@ class Instance
         canvas._$height  = object.height;
         canvas.draggable = false;
 
-        const bounds = this.getBounds(
-            matrix, place, range, static_frame
-        );
-
+        const bounds = this.getBounds(matrix, current_frame);
         canvas._$tx = bounds.xMin;
         canvas._$ty = bounds.yMin;
 
@@ -696,8 +689,7 @@ class Instance
                     "colorTransform": [1, 1, 1, 1, 0, 0, 0, 0],
                     "blendMode": "normal",
                     "filter": []
-                },
-                null, 0, true
+                }
             )
             .then((canvas) =>
             {

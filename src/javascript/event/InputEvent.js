@@ -350,7 +350,7 @@ class InputEvent
      * @description スクリーンエリアで変更があったElementを再描画
      *              Redraw Element with changes in screen area
      *
-     * @return {void}
+     * @return {Promise}
      * @method
      * @public
      */
@@ -358,7 +358,7 @@ class InputEvent
     {
         const frame = Util.$timelineFrame.currentFrame;
 
-        Util
+        return Util
             .$currentWorkSpace()
             .scene
             .changeFrame(frame);

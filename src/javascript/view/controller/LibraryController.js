@@ -486,9 +486,6 @@ class LibraryController
                 .remove("active");
         }
         this.activeInstances.clear();
-
-        // プレビューを初期化
-        Util.$libraryPreview.dispose();
     }
 
     /**

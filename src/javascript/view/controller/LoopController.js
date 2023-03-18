@@ -590,19 +590,8 @@ class LoopController extends BaseController
 
                     const sprite = new Sprite();
 
-                    const placeObject = {
-                        "frame": frame,
-                        "matrix": [1, 0, 0, 1, 0, 0],
-                        "colorTransform": [1, 1, 1, 1, 0, 0, 0, 0],
-                        "blendMode": "normal",
-                        "filter": [],
-                        "loop": Util.$getDefaultLoopConfig()
-                    };
-
                     const displayObject = sprite
-                        .addChild(
-                            instance.createInstance(placeObject, range)
-                        );
+                        .addChild(instance.createInstance(frame));
 
                     displayObject
                         .transform
@@ -612,10 +601,7 @@ class LoopController extends BaseController
                         .transform
                         .colorTransform = new ColorTransform();
 
-                    const bounds = instance.getBounds(
-                        [1, 0, 0, 1, 0, 0], placeObject, range
-                    );
-
+                    const bounds = instance.getBounds([1, 0, 0, 1, 0, 0]);
                     const width  = Math.ceil(Math.abs(bounds.xMax - bounds.xMin));
                     const height = Math.ceil(Math.abs(bounds.yMax - bounds.yMin));
                     const scale  = Math.min(95 / width, 95 / height);
@@ -634,18 +620,17 @@ class LoopController extends BaseController
                     );
 
                     matrix.scale(scale, scale);
-                    bitmapData.draw(sprite, matrix);
-                    const context = bitmapData.drawFromCanvas(Util.$getCanvas());
-                    bitmapData.dispose();
+                    bitmapData
+                        .draw(sprite, matrix, null, Util.$getCanvas(), (canvas) =>
+                        {
+                            canvas.style.width  = `${bitmapData.width  / ratio}px`;
+                            canvas.style.height = `${bitmapData.height / ratio}px`;
 
-                    const canvas = context.canvas;
-                    canvas.style.width  = `${bitmapData.width  / ratio}px`;
-                    canvas.style.height = `${bitmapData.height / ratio}px`;
-
-                    return resolve({
-                        "index": frame - 1,
-                        "image": canvas
-                    });
+                            return resolve({
+                                "index": frame - 1,
+                                "image": canvas
+                            });
+                        });
                 });
             }));
         }

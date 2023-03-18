@@ -405,16 +405,19 @@ class Character
             .$currentWorkSpace()
             .getLibrary(this.libraryId);
 
-        const frame = static_frame || Util.$timelineFrame.currentFrame;
+        let frame = static_frame || Util.$timelineFrame.currentFrame;
+
         const place = this.getPlace(frame);
-        const range = place.loop && place.loop.type === LoopController.DEFAULT
-            ? { "startFrame": this.startFrame, "endFrame": this.endFrame }
-            : this.getRange(frame);
+        if (!static_frame && instance.type === InstanceType.MOVIE_CLIP) {
+
+            const range = place.loop && place.loop.type === LoopController.DEFAULT
+                ? { "startFrame": this.startFrame, "endFrame": this.endFrame }
+                : this.getRange(frame);
+
+            frame = Util.$getFrame(place, range, frame, instance.totalFrame);
+        }
 
         // cache
-        const currentFrame = Util.$currentFrame;
-        Util.$currentFrame = frame;
-
         let multiMatrix = place.matrix;
         if (matrix) {
             multiMatrix = Util.$multiplicationMatrix(
@@ -423,12 +426,7 @@ class Character
             );
         }
 
-        const bounds = instance.getBounds(multiMatrix, place, range);
-
-        // reset
-        Util.$currentFrame = currentFrame;
-
-        return bounds;
+        return instance.getBounds(multiMatrix, frame);
     }
 
     /**
@@ -681,34 +679,26 @@ class Character
      *              Generate HTMLCanvasElement class for display
      *
      * @param  {HTMLCanvasElement} [canvas=null]
-     * @param  {number} [parent_frame=0]
+     * @param  {number} [current_frame=1]
      * @return {Promise}
      * @method
      * @public
      */
-    draw (canvas = null, parent_frame = 0)
+    draw (canvas = null, current_frame = 1)
     {
         const workSpace = Util.$currentWorkSpace();
         const instance  = workSpace.getLibrary(this.libraryId);
 
-        let frame = parent_frame || Util.$timelineFrame.currentFrame;
+        let frame = current_frame;
 
         const place = this.getPlace(frame);
         const range = place.loop && place.loop.type === LoopController.DEFAULT
             ? { "startFrame": this.startFrame, "endFrame": this.endFrame }
             : this.getRange(frame);
 
+        // MovieClipはループを考慮してframeを調整
         if (instance.type === InstanceType.MOVIE_CLIP) {
-
-            const totalFrame = this.endFrame - 1;
-
-            frame = Util.$getFrame(
-                place, range, frame, totalFrame, parent_frame
-            );
-            if (frame > totalFrame) {
-                frame = 1;
-            }
-
+            frame = Util.$getFrame(place, range, frame, instance.totalFrame);
             if (frame !== this._$currentFrame) {
                 this.dispose();
             }
@@ -727,9 +717,6 @@ class Character
             this._$currentFrame = frame;
         }
 
-        // reset
-        Util.$currentFrame = frame;
-
         let matrix = place.matrix;
         if (Util.$sceneChange.matrix.length) {
             matrix = Util.$multiplicationMatrix(
@@ -738,7 +725,7 @@ class Character
             );
         }
 
-        const bounds = instance.getBounds(matrix, place, range);
+        const bounds = instance.getBounds(matrix, frame);
         const width  = +Math.ceil(Math.abs(bounds.xMax - bounds.xMin));
         const height = +Math.ceil(Math.abs(bounds.yMax - bounds.yMin));
 
@@ -761,8 +748,7 @@ class Character
                         "filter": place.filter,
                         "tweenFrame": place.tweenFrame,
                         "loop": place.loop
-                    },
-                    range, parent_frame
+                    }, frame
                 );
                 break;
 
@@ -770,7 +756,7 @@ class Character
             case "erase":
                 {
 
-                    const bounds = this.getBounds(place.matrix);
+                    const bounds = this.getBounds(place.matrix, frame);
 
                     canvas._$tx      = bounds.xMin;
                     canvas._$ty      = bounds.yMin;
@@ -787,10 +773,7 @@ class Character
                 break;
 
             default:
-                promise = instance.draw(
-                    canvas, width, height,
-                    place, range, parent_frame
-                );
+                promise = instance.draw(canvas, width, height, place, frame);
                 break;
 
         }

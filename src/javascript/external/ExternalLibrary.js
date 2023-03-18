@@ -59,7 +59,7 @@ class ExternalLibrary
         }
 
         const bounds = this._$instance.getBounds(
-            [1, 0, 0, 1, 0, 0], null, null, frame
+            [1, 0, 0, 1, 0, 0], frame
         );
 
         const width  = Math.ceil(Math.abs(bounds.xMax - bounds.xMin));

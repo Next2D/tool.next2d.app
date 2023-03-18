@@ -113,7 +113,6 @@ class MovieClip extends Instance
         Util.$tools.reset();
 
         // スクリーンを初期化
-        Util.$screen.clearStageArea();
         Util.$clearShapePointer();
 
         // DisplayObjectを初期化
@@ -290,7 +289,7 @@ class MovieClip extends Instance
                 ? Util.$activeCharacterIds[Util.$activeCharacterIds.length - 1]
                 : -1;
 
-            const workSpace  = Util.$currentWorkSpace();
+            const workSpace = Util.$currentWorkSpace();
 
             // 現在のパラメーターをキャッシュ
             const offsetX = Util.$sceneChange.offsetX;
@@ -319,10 +318,10 @@ class MovieClip extends Instance
                     Util.$sceneChange.matrix.push(matrix[idx - 1]);
                 }
 
-                const parentFrame = instance.currentFrame;
+                const parentFrame = 1;//instance.currentFrame;
                 for (const layer of instance._$layers.values()) {
 
-                    if (layer.mode === LayerMode.MASK) {
+                    if (layer.disable || layer.mode === LayerMode.MASK) {
                         continue;
                     }
 
@@ -344,6 +343,7 @@ class MovieClip extends Instance
                             continue;
                         }
 
+                        console.log(parentFrame);
                         promises.push(
                             Util.$screen.appendCharacter(
                                 character, parentFrame, layer.id,
@@ -367,7 +367,7 @@ class MovieClip extends Instance
         const layers = Array.from(this._$layers.values());
         while (layers.length) {
             const layer = layers.pop();
-            if (layer.mode === LayerMode.MASK && layer.lock) {
+            if (layer.disable || layer.mode === LayerMode.MASK && layer.lock) {
                 continue;
             }
             promises.push(layer.appendCharacter(frame));
@@ -1113,17 +1113,13 @@ class MovieClip extends Instance
      *              Returns the Object of the display area (bounding box)
      *
      * @param  {array}  [matrix=[1, 0, 0, 1, 0, 0]]
-     * @param  {object} [place=null]
-     * @param  {object} [range=null]
-     * @param  {number} [parent_frame=0]
+     * @param  {number} [frame=1]
      * @return {object}
      * @method
      * @public
      */
-    getBounds (
-        matrix = [1, 0, 0, 1, 0, 0],
-        place = null, range = null, parent_frame = 0
-    ) {
+    getBounds (matrix = [1, 0, 0, 1, 0, 0], frame = 1)
+    {
 
         if (!this._$layers.size) {
             return {
@@ -1134,24 +1130,7 @@ class MovieClip extends Instance
             };
         }
 
-        const totalFrame = this.totalFrame;
-
-        const currentFrame = Util.$currentFrame;
-
-        let frame = parent_frame || 1;
-        if (place && range) {
-            frame = Util.$getFrame(
-                place, range, currentFrame, totalFrame, parent_frame
-            );
-        }
-
-        if (frame > totalFrame) {
-            frame = 1;
-        }
-
         const parentMatrix = matrix;
-
-        Util.$currentFrame = frame;
 
         const workSpace = Util.$currentWorkSpace();
 
@@ -1172,22 +1151,26 @@ class MovieClip extends Instance
 
                 const character = characters[idx];
                 const place     = character.getPlace(frame);
-                const range     = place.loop && place.loop.type === LoopController.DEFAULT
-                    ? {
-                        "startFrame": character.startFrame,
-                        "endFrame": character.endFrame
-                    }
-                    : character.getRange(frame);
 
                 const instance = workSpace
                     .getLibrary(character.libraryId | 0);
 
                 const matrix = Util.$multiplicationMatrix(parentMatrix, place.matrix);
-                const bounds = instance.getBounds(
-                    matrix, place, range,
-                    totalFrame === 1 ? parent_frame : frame
-                );
 
+                let targetFrame = frame;
+                if (instance.type === InstanceType.MOVIE_CLIP) {
+
+                    const range = place.loop && place.loop.type === LoopController.DEFAULT
+                        ? { "startFrame": character.startFrame, "endFrame": character.endFrame }
+                        : character.getRange(frame);
+
+                    targetFrame = Util.$getFrame(
+                        place, range, frame, instance.totalFrame
+                    );
+
+                }
+
+                const bounds = instance.getBounds(matrix, targetFrame);
                 const width  = bounds.xMax - bounds.xMin;
                 const height = bounds.yMax - bounds.yMin;
                 if (!width || !height) {
@@ -1203,9 +1186,6 @@ class MovieClip extends Instance
                 yMax = Math.max(bounds.yMax, yMax);
             }
         }
-
-        // reset
-        Util.$currentFrame = currentFrame;
 
         return {
             "xMin": xMin,
@@ -1548,15 +1528,13 @@ class MovieClip extends Instance
      * @description Next2DのDisplayObjectを生成
      *              Generate Next2D DisplayObject
      *
-     * @param  {object}  place
-     * @param  {object}  range
-     * @param  {number}  [parent_frame = 0]
+     * @param  {number}  [frame = 1]
      * @param  {boolean} [preview = false]
      * @return {next2d.display.Sprite}
      * @method
      * @public
      */
-    createInstance (place, range, parent_frame = 0, preview = false)
+    createInstance (frame = 1, preview = false)
     {
         const { MovieClip } = window.next2d.display;
         const { Matrix, ColorTransform } = window.next2d.geom;
@@ -1564,9 +1542,6 @@ class MovieClip extends Instance
         const workSpace = Util.$currentWorkSpace();
         const movieClip = new MovieClip();
         movieClip._$characterId = this.id;
-
-        // cache
-        const currentFrame = Util.$currentFrame;
 
         Util.$useIds.clear();
 
@@ -1591,20 +1566,7 @@ class MovieClip extends Instance
             object = this.toPublish(true);
         }
 
-        const totalFrame = this.totalFrame;
-
-        let frame = parent_frame || 1;
-        if (place && range) {
-            frame = Util.$getFrame(
-                place, range, currentFrame, totalFrame, parent_frame
-            );
-        }
-
-        if (frame > totalFrame) {
-            frame = 1;
-        }
-
-        Util.$currentFrame = frame;
+        // フレームを移動
         movieClip._$currentFrame = frame;
 
         const controller = object.controller[frame];
@@ -1638,60 +1600,13 @@ class MovieClip extends Instance
                             continue;
                         }
 
-                        const layers = Array.from(
-                            instance._$layers.values()
-                        ).reverse();
-
-                        let childRange = null;
-                        let depth = -1;
-                        for (let i = 0; i < layers.length; ++i) {
-
-                            depth++;
-
-                            if (depth !== idx) {
-                                continue;
-                            }
-
-                            const layer = layers[i];
-                            const activeCharacters = layer.getActiveCharacter(frame);
-                            if (activeCharacters.length > 1) {
-                                // 昇順
-                                activeCharacters.sort((a, b) =>
-                                {
-                                    const aDepth = a.getPlace(frame).depth;
-                                    const bDepth = b.getPlace(frame).depth;
-                                    switch (true) {
-
-                                        case aDepth > bDepth:
-                                            return 1;
-
-                                        case aDepth < bDepth:
-                                            return -1;
-
-                                        default:
-                                            return 0;
-
-                                    }
-                                });
-                            }
-
-                            if (activeCharacters.length) {
-                                childRange = activeCharacters[0].getRange(frame);
-                            }
-
+                        let targetFrame = frame - (tag.startFrame - 1);
+                        if (targetFrame > instance.totalFrame) {
+                            targetFrame = 1;
                         }
 
-                        if (place) {
-                            place.frame = frame;
-
-                            if (place.loop.type === LoopController.DEFAULT) {
-                                childRange = range;
-                            }
-                        }
-
-                        displayObject = instance.createInstance(
-                            place, childRange, parent_frame ? parent_frame : frame, preview
-                        );
+                        displayObject = instance
+                            .createInstance(targetFrame, preview);
                     }
                     break;
 
@@ -1752,9 +1667,6 @@ class MovieClip extends Instance
             // added
             movieClip.addChild(displayObject);
         }
-
-        // reset
-        Util.$currentFrame = currentFrame;
 
         return movieClip;
     }

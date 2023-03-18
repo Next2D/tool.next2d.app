@@ -233,6 +233,9 @@ class WorkSpace
         // 定規を初期化
         Util.$screenRuler.clear();
 
+        // プレビューを初期化
+        Util.$libraryPreview.dispose();
+
         // player側も停止
         Util.$root.stage._$player.stop();
     }

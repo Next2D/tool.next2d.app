@@ -384,17 +384,12 @@ class Video extends Instance
      * @description Next2DのDisplayObjectを生成
      *              Generate Next2D DisplayObject
      *
-     * @param  {object} place
      * @return {next2d.display.Video}
      * @method
      * @public
      */
-    createInstance (place)
+    createInstance ()
     {
-        if (!place) {
-            console.log(place);
-        }
-
         const { Video } = window.next2d.media;
 
         const video = this._$loaded

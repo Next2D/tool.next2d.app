@@ -304,6 +304,36 @@ class ScreenKeyboardCommand extends KeyboardCommand
         {
             Util.$screenRuler.show();
         });
+
+        // 選択中のMovieClipを同じ位置で編集
+        this.add("e", () =>
+        {
+            /**
+             * @type {ArrowTool}
+             */
+            const tool = Util.$tools.getDefaultTool("arrow");
+            if (tool._$activeElements.length === 1) {
+
+                const element = tool._$activeElements[0];
+                if (element.dataset.instanceType !== "container") {
+                    return ;
+                }
+
+                Util
+                    .$screen
+                    .changeScene({
+                        "stopPropagation": () => {},
+                        "currentTarget": element
+                    });
+
+            }
+        });
+
+        // 親のMovieClipへ移動
+        this.add(Util.$generateShortcutKey("e", { "shift": true }), () =>
+        {
+            Util.$tools.getDefaultTool("arrow").moveScene();
+        });
     }
 
     /**

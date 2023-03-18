@@ -458,15 +458,15 @@ class TimelineTool extends BaseTimeline
                 layer.disable = false;
 
             }
-
-            /**
-             * @type {ArrowTool}
-             */
-            const tool = Util.$tools.getDefaultTool("arrow");
-            tool.clear();
-
-            this.reloadScreen();
         }
+
+        /**
+         * @type {ArrowTool}
+         */
+        const tool = Util.$tools.getDefaultTool("arrow");
+        tool.clear();
+
+        this.reloadScreen();
     }
 
     /**
