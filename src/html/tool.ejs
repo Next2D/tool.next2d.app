@@ -12,13 +12,13 @@
     <div id="tools-round-rect" class="item" data-mode="tool" data-name="round-rect" data-detail="{{角丸矩形ツール}}" data-shortcut-key="rShift" data-shortcut-text="Shift + R" data-area="screen"></div>
 
     <div id="tools-fill-color">
-        <input type="color" id="fill-color" value="#000000" data-detail="{{塗りのカラー}}">
+        <input type="color" id="fill-color" value="#000000" data-detail="{{塗りのカラー}}" tabindex="-1">
     </div>
     <div id="tools-stroke-color">
-        <input type="color" id="stroke-color" value="#000000" data-detail="{{線のカラー}}">
+        <input type="color" id="stroke-color" value="#000000" data-detail="{{線のカラー}}" tabindex="-1">
     </div>
     <div id="tools-stroke-size">
-        <input type="number" id="stroke-size" value="1" data-detail="{{線の太さ}}" autocomplete="off">
+        <input type="number" id="stroke-size" value="1" data-detail="{{線の太さ}}" autocomplete="off" tabindex="-1">
     </div>
     <div class="tools-border"></div>
 
@@ -26,11 +26,11 @@
     <div class="tools-border"></div>
 
     <div id="tools-zoom" class="item" data-mode="tool" data-detail="{{ズームツール}}" data-shortcut-key="z" data-shortcut-text="Z" data-area="screen"></div>
-    <input type="number" id="screen-scale" value="100" data-detail="{{画面の拡大・縮小}}" autocomplete="off">
+    <input type="number" id="screen-scale" value="100" data-detail="{{画面の拡大・縮小}}" autocomplete="off" tabindex="-1">
     <div class="tools-border"></div>
 
     <div id="tools-load" class="item" data-detail="{{プロジェクトデータの読込}}" data-shortcut-key="rCtrl" data-shortcut-text="Ctrl + R" data-area="screen"></div>
-    <input type="file" id="tools-load-file-input" accept=".n2d">
+    <input type="file" id="tools-load-file-input" accept=".n2d" tabindex="-1">
     <div id="tools-save" class="item" data-detail="{{プロジェクトデータを保存}}" data-shortcut-key="sShiftCtrl" data-shortcut-text="Ctrl + Shift + S" data-area="screen"></div>
     <div id="tools-export" class="item" data-detail="{{書き出し}}" data-shortcut-key="EnterShiftCtrl" data-shortcut-text="Ctrl + Shift + Enter" data-area="screen"></div>
     <div id="tools-save-folder"><a id="save-anchor" href=""></a></div>

@@ -489,23 +489,25 @@ class Screen extends BaseScreen
      *
      * @param  {Character} character
      * @param  {number} layer_id
+     * @param  {number} [frame=1]
      * @param  {MovieClip} [parent=null]
      * @return {Promise}
      * @method
      * @public
      */
-    appendOnionCharacter (character, layer_id, parent = null)
+    appendOnionCharacter (character, layer_id, parent = null, frame = 1)
     {
         return character
-            .draw(Util.$getCanvas())
+            .draw(Util.$getCanvas(), frame)
             .then((canvas) =>
             {
                 const scene  = parent || Util.$currentWorkSpace().scene;
                 const matrix = Util.$sceneChange.concatenatedMatrix;
-                const bounds = character.getBounds(matrix);
+                const bounds = character.getBounds(matrix, frame);
 
                 // create div
                 const div = document.createElement("div");
+                div.setAttribute("class", "display-object");
                 div.dataset.child   = "true";
                 div.dataset.preview = "true";
 
@@ -731,6 +733,9 @@ class Screen extends BaseScreen
             .then((canvas) =>
             {
                 const div = document.createElement("div");
+                if (!parent_scene) {
+                    div.setAttribute("class", "display-object");
+                }
                 div.setAttribute("data-child", "true");
 
                 if (Util.$timelinePlayer.stopFlag) {

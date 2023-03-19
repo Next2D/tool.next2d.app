@@ -10,14 +10,14 @@
             <div class="video-setting-title-text">
                 <span class="language" data-text="{{音量}}">音量</span>
             </div>
-            <div><input type="number" id="video-volume" value="100" data-detail="{{ビデオの音量設定}}" autocomplete="off"></div>
+            <div><input type="number" id="video-volume" value="100" data-detail="{{ビデオの音量設定}}" autocomplete="off" tabindex="-1"></div>
         </div>
 
         <div class="video-setting-container">
             <div class="video-setting-title-text">
                 <span class="language" data-text="{{自動再生}}">自動再生</span>
             </div>
-            <select id="video-auto-select" data-detail="{{自動再生}}">
+            <select id="video-auto-select" data-detail="{{自動再生}}" tabindex="-1">
                 <option value="0">Off</option>
                 <option value="1">On</option>
             </select>
@@ -25,7 +25,7 @@
             <div class="video-setting-title-text">
                 <span class="language" data-text="{{ループ}}">ループ</span>
             </div>
-            <select id="video-loop-select" data-detail="{{ループ}}">
+            <select id="video-loop-select" data-detail="{{ループ}}" tabindex="-1">
                 <option value="0">Off</option>
                 <option value="1">On</option>
             </select>

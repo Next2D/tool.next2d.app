@@ -110,7 +110,94 @@ class GlobalKeyboardCommand
             this.changeProject
         );
 
+        Util.$setShortcut("Tab", (event) =>
+        {
+            event.stopPropagation();
+            this.selectDisplayObject("last");
+        });
+        Util.$setShortcut(
+            Util.$generateShortcutKey("Tab", { "shift": true }),
+            (event) =>
+            {
+                event.stopPropagation();
+                this.selectDisplayObject("first");
+            }
+        );
+
         Util.$initializeEnd();
+    }
+
+    /**
+     * @description タブでのDisplayObject選択
+     *
+     * @param  {string} [mode="last"]
+     * @return {void}
+     * @method
+     * @public
+     */
+    selectDisplayObject (mode = "last")
+    {
+        const activeTool = Util.$tools.activeTool;
+        if (activeTool.name !== "arrow") {
+            return ;
+        }
+
+        let element = null;
+
+        /**
+         * @type {ArrowTool}
+         */
+        const tool = Util.$tools.getDefaultTool("arrow");
+        if (!tool.activeElements.length) {
+            const elements = document
+                .getElementsByClassName("display-object");
+
+            if (!elements.length) {
+                return ;
+            }
+
+            const index = mode === "last"
+                ? elements.length - 1
+                : 0;
+
+            element = elements[index];
+        }
+
+        if (!element) {
+            const activeElement = tool.activeElements[
+                tool.activeElements.length - 1
+            ];
+
+            element = mode === "last"
+                ? activeElement.previousElementSibling
+                : activeElement.nextElementSibling;
+
+            if (!element
+                || !element.classList.contains("display-object")
+                || element.dataset.preview === "true"
+                || element.dataset.child !== "true"
+            ) {
+                const elements = document
+                    .getElementsByClassName("display-object");
+
+                if (!elements.length) {
+                    return ;
+                }
+
+                const index = mode === "last"
+                    ? elements.length - 1
+                    : 0;
+
+                element = elements[index];
+            }
+        }
+
+        tool.clear();
+        tool.target = element;
+        tool.activateElement({
+            "pageX": 0,
+            "pageY": 0
+        });
     }
 
     /**

@@ -57,7 +57,7 @@ class FilterHTML
     {
         return `
 <div class="filter-text">BlurX</div>
-<div><input type="text" id="blurX-${id}" value="${value}" data-name="blurX" data-filter-id="${id}" data-detail="{{水平方向にぼかす}}" autocomplete="off"></div>
+<div><input type="text" id="blurX-${id}" value="${value}" data-name="blurX" data-filter-id="${id}" data-detail="{{水平方向にぼかす}}" autocomplete="off" tabindex="-1"></div>
 `;
     }
 
@@ -75,7 +75,7 @@ class FilterHTML
     {
         return `
 <div class="filter-text">BlurY</div>
-<div><input type="text" id="blurY-${id}" value="${value}" data-name="blurY" data-filter-id="${id}" data-detail="{{垂直方向にぼかす}}" autocomplete="off"></div>
+<div><input type="text" id="blurY-${id}" value="${value}" data-name="blurY" data-filter-id="${id}" data-detail="{{垂直方向にぼかす}}" autocomplete="off" tabindex="-1"></div>
 `;
     }
 
@@ -93,7 +93,7 @@ class FilterHTML
     {
         return `
 <div class="filter-text">Strength</div>
-<div><input type="text" id="strength-${id}" value="${value}" data-filter-id="${id}" data-name="strength" data-detail="{{フィルター強度}}" autocomplete="off"></div>
+<div><input type="text" id="strength-${id}" value="${value}" data-filter-id="${id}" data-name="strength" data-detail="{{フィルター強度}}" autocomplete="off" tabindex="-1"></div>
 `;
     }
 
@@ -111,7 +111,7 @@ class FilterHTML
     {
         return `
 <div class="filter-text">Angle</div>
-<div><input type="text" id="angle-${id}" value="${value}" data-filter-id="${id}" data-name="angle" data-detail="{{フィルター角度}}" autocomplete="off"></div>
+<div><input type="text" id="angle-${id}" value="${value}" data-filter-id="${id}" data-name="angle" data-detail="{{フィルター角度}}" autocomplete="off" tabindex="-1"></div>
 `;
     }
 
@@ -129,7 +129,7 @@ class FilterHTML
     {
         return `
 <div class="filter-text">Distance</div>
-<div><input type="text" id="distance-${id}" value="${value}" data-filter-id="${id}" data-name="distance" data-detail="{{フィルター距離}}" autocomplete="off"></div>
+<div><input type="text" id="distance-${id}" value="${value}" data-filter-id="${id}" data-name="distance" data-detail="{{フィルター距離}}" autocomplete="off" tabindex="-1"></div>
 `;
     }
 
@@ -147,7 +147,7 @@ class FilterHTML
     {
         return `
 <div class="filter-text">Shadow<br>Color</div>
-<div><input type="color" id="shadowColor-${id}" value="#${value.toString(16).padStart(6, "0")}" data-filter-id="${id}" data-name="shadowColor" data-detail="{{シャドウのカラー}}"></div>
+<div><input type="color" id="shadowColor-${id}" value="#${value.toString(16).padStart(6, "0")}" data-filter-id="${id}" data-name="shadowColor" data-detail="{{シャドウのカラー}}" tabindex="-1"></div>
 `;
     }
 
@@ -165,7 +165,7 @@ class FilterHTML
     {
         return `
 <div class="filter-text">Shadow<br>Alpha</div>
-<div><input type="text" id="shadowAlpha-${id}" value="${value}" data-filter-id="${id}" data-name="shadowAlpha" data-detail="{{シャドウのアルファ}}" autocomplete="off"></div>
+<div><input type="text" id="shadowAlpha-${id}" value="${value}" data-filter-id="${id}" data-name="shadowAlpha" data-detail="{{シャドウのアルファ}}" autocomplete="off" tabindex="-1"></div>
 `;
     }
 
@@ -183,7 +183,7 @@ class FilterHTML
     {
         return `
 <div class="filter-text">Highlight<br>Color</div>
-<div><input type="color" id="highlightColor-${id}" value="#${value.toString(16).padStart(6, "0")}" data-filter-id="${id}" data-name="highlightColor" data-detail="{{ハイライトのカラー}}"></div>
+<div><input type="color" id="highlightColor-${id}" value="#${value.toString(16).padStart(6, "0")}" data-filter-id="${id}" data-name="highlightColor" data-detail="{{ハイライトのカラー}}" tabindex="-1"></div>
 `;
     }
 
@@ -201,7 +201,7 @@ class FilterHTML
     {
         return `
 <div class="filter-text">Highlight<br>Alpha</div>
-<div><input type="text" id="highlightAlpha-${id}" value="${value}" data-filter-id="${id}" data-name="highlightAlpha" data-detail="{{ハイライトのアルファ}}" autocomplete="off"></div>
+<div><input type="text" id="highlightAlpha-${id}" value="${value}" data-filter-id="${id}" data-name="highlightAlpha" data-detail="{{ハイライトのアルファ}}" autocomplete="off" tabindex="-1"></div>
 `;
     }
 
@@ -217,7 +217,7 @@ class FilterHTML
     static createKnockout (id)
     {
         return `
-<div><input type="checkbox" id="knockout-${id}" data-name="knockout" data-filter-id="${id}"></div>
+<div><input type="checkbox" id="knockout-${id}" data-name="knockout" data-filter-id="${id}" tabindex="-1"></div>
 <div class="filter-text-long">
     <label for="knockout-${id}">Knockout</label>
 </div>
@@ -238,7 +238,7 @@ class FilterHTML
         return `
 <div class="filter-text-long">Type</div>
 <div>
-    <select id="type-${id}" data-name="type" data-filter-id="${id}">
+    <select id="type-${id}" data-name="type" data-filter-id="${id}" tabindex="-1">
         <option value="inner">Inner</option>
         <option value="outer">Outer</option>
         <option value="full">Full</option>
@@ -261,7 +261,7 @@ class FilterHTML
         return `
 <div class="filter-text-long">Quality</div>
 <div>
-    <select id="quality-${id}" data-name="quality" data-filter-id="${id}">
+    <select id="quality-${id}" data-name="quality" data-filter-id="${id}" tabindex="-1">
         <option value="1">Low</option>
         <option value="2">Middle</option>
         <option value="3">High</option>
@@ -282,7 +282,7 @@ class FilterHTML
     static createInnerShadow (id)
     {
         return `
-<div><input type="checkbox" id="inner-${id}" data-name="inner" data-filter-id="${id}"></div>
+<div><input type="checkbox" id="inner-${id}" data-name="inner" data-filter-id="${id}" tabindex="-1"></div>
 <div class="filter-text-long">
     <label for="inner-${id}">Inner Shadow</label>
 </div>
@@ -301,7 +301,7 @@ class FilterHTML
     static createHideObject (id)
     {
         return `
-<div><input type="checkbox" id="hideObject-${id}" data-name="hideObject" data-filter-id="${id}"></div>
+<div><input type="checkbox" id="hideObject-${id}" data-name="hideObject" data-filter-id="${id}" tabindex="-1"></div>
 <div class="filter-text-long">
     <label for="hideObject-${id}">Hide Object</label>
 </div>
@@ -322,7 +322,7 @@ class FilterHTML
     {
         return `
 <div class="filter-text">Color</div>
-<div><input type="color" id="color-${id}" value="#${value.toString(16).padStart(6, "0")}" data-filter-id="${id}" data-name="color" data-detail="{{シャドウのカラー}}"></div>
+<div><input type="color" id="color-${id}" value="#${value.toString(16).padStart(6, "0")}" data-filter-id="${id}" data-name="color" data-detail="{{シャドウのカラー}}" tabindex="-1"></div>
 `;
     }
 
@@ -340,7 +340,7 @@ class FilterHTML
     {
         return `
 <div class="filter-text">Alpha</div>
-<div><input type="text" id="alpha-${id}" value="${value}" data-filter-id="${id}" data-name="alpha" data-detail="{{シャドウのアルファ}}" autocomplete="off"></div>
+<div><input type="text" id="alpha-${id}" value="${value}" data-filter-id="${id}" data-name="alpha" data-detail="{{シャドウのアルファ}}" autocomplete="off" tabindex="-1"></div>
 `;
     }
 
@@ -357,7 +357,7 @@ class FilterHTML
     {
         return `
 <div class="filter-text">Color</div>
-<div><input type="color" id="gradientColor-${id}" value="#000000" data-filter-id="${id}" data-name="gradientColor" data-detail="{{グラデーションカラー}}"></div>
+<div><input type="color" id="gradientColor-${id}" value="#000000" data-filter-id="${id}" data-name="gradientColor" data-detail="{{グラデーションカラー}}" tabindex="-1"></div>
 `;
     }
 
@@ -374,7 +374,7 @@ class FilterHTML
     {
         return `
 <div class="filter-text">Alpha</div>
-<div><input type="text" id="gradientAlpha-${id}" value="100" data-filter-id="${id}" data-name="gradientAlpha" data-detail="{{グラデーションのアルファ}}" autocomplete="off"></div>
+<div><input type="text" id="gradientAlpha-${id}" value="100" data-filter-id="${id}" data-name="gradientAlpha" data-detail="{{グラデーションのアルファ}}" autocomplete="off" tabindex="-1"></div>
         `;
     }
 

@@ -325,7 +325,7 @@ class Layer
                     character.dispose();
 
                     promises.push(
-                        Util.$screen.appendOnionCharacter(character, this.id)
+                        Util.$screen.appendOnionCharacter(character, this.id, null, frame)
                     );
                 }
             }
