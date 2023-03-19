@@ -558,6 +558,10 @@ class ArrowTool extends BaseTool
             target.dataset.characterId | 0
         );
 
+        if (!character) {
+            return ;
+        }
+
         // 現在のフレーム
         const frame = Util.$timelineFrame.currentFrame;
 

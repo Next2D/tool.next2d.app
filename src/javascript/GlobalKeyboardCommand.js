@@ -138,7 +138,9 @@ class GlobalKeyboardCommand
     selectDisplayObject (mode = "last")
     {
         const activeTool = Util.$tools.activeTool;
-        if (activeTool.name !== "arrow") {
+        if (activeTool.name !== "arrow"
+            && activeTool.name !== "arrow-transform"
+        ) {
             return ;
         }
 
