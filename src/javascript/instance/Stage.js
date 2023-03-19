@@ -151,11 +151,13 @@ class Stage
         const stageLock = document
             .getElementById("stage-lock");
 
-        if (stageLock) {
-            const element = stageLock.childNodes[1];
-
-            element
-                .setAttribute("class", this.lock ? "active" : "disable");
+        if (stageLock && stageLock.children.length) {
+            stageLock
+                .children[0]
+                .setAttribute("class", this.lock
+                    ? "active"
+                    : "disable"
+                );
         }
 
         Util.$controller._$stageLock = this.lock;
