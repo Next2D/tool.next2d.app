@@ -65,10 +65,6 @@ class ExternalLibrary
         const width  = Math.ceil(Math.abs(bounds.xMax - bounds.xMin));
         const height = Math.ceil(Math.abs(bounds.yMax - bounds.yMin));
 
-        const currentFrame = Util.$currentFrame;
-
-        Util.$currentFrame = frame;
-
         return this
             ._$instance
             .draw(Util.$getCanvas(),
@@ -82,12 +78,10 @@ class ExternalLibrary
                     "filter": [],
                     "loop": Util.$getDefaultLoopConfig()
                 },
-                null, frame
+                frame
             )
             .then((canvas) =>
             {
-                Util.$currentFrame = currentFrame;
-
                 const image  = new Image();
                 image.width  = width;
                 image.height = height;
