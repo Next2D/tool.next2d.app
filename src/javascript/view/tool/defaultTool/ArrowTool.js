@@ -460,7 +460,7 @@ class ArrowTool extends BaseTool
     addElement (element, hit = false)
     {
         if (!element) {
-            return ;
+            return false;
         }
 
         for (let idx = 0; idx < this._$activeElements.length; ++idx) {
@@ -510,6 +510,10 @@ class ArrowTool extends BaseTool
         const character = layer.getCharacter(
             element.dataset.characterId | 0
         );
+
+        if (!character) {
+            return false;
+        }
 
         const range = character.getRange(
             Util.$timelineFrame.currentFrame

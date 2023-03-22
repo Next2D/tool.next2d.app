@@ -45,6 +45,7 @@ class SVGToShape
             }
         }
 
+        SVGToShape.parent = svg;
         SVGToShape.parseElement(
             svg, movie_clip,
             parentAttributeMap,
@@ -60,6 +61,8 @@ class SVGToShape
         for (let idx = 0; idx < layers.length; ++idx) {
             movie_clip.setLayer(idx, layers[idx]);
         }
+
+        SVGToShape.parent = null;
     }
 
     /**
@@ -67,17 +70,103 @@ class SVGToShape
      * @param  {MovieClip} movie_clip
      * @param  {Map} group_attribute_map
      * @param  {Map} global_style
+     * @param  {boolean} [clip=false]
      * @return {void}
      * @method
      * @static
      */
-    static parseElement (node, movie_clip, group_attribute_map, global_style)
-    {
+    static parseElement (
+        node, movie_clip, group_attribute_map, global_style, clip = false
+    ) {
         const children = node.children;
         const length = children.length;
         for (let idx = 0; length > idx; ++idx) {
 
             const element = children[idx];
+
+            let movieClip = null;
+            let clipPath  = null;
+
+            if (element.tagName.toLowerCase() !== "use") {
+
+                if (element.hasAttribute("clip-path")) {
+                    clipPath = /url\((.+?)\)/gi
+                        .exec(element
+                            .getAttribute("clip-path")
+                            .replace(/#/gi, "")
+                            .replace(/"/gi, "")
+                            .replace(/'/gi, "")
+                        )[1];
+                }
+
+                if (element.style.clipPath) {
+                    clipPath = /url\((.+?)\)/gi
+                        .exec(element
+                            .style
+                            .clipPath
+                            .replace(/#/gi, "")
+                            .replace(/"/gi, "")
+                            .replace(/'/gi, "")
+                        )[1];
+                }
+
+                if (!clipPath && element.hasAttribute("class")) {
+
+                    const classList = element.classList;
+                    const length = classList.length;
+                    for (let idx = 0; idx < length; ++idx) {
+                        const name = classList[idx];
+
+                        let classObject = null;
+                        if (global_style.has(`#${name}`)) {
+                            classObject = global_style.get(`#${name}`);
+                        }
+
+                        if (global_style.has(`.${name}`)) {
+                            classObject = global_style.get(`.${name}`);
+                        }
+
+                        if (classObject && classObject.style.clipPath !== "") {
+
+                            clipPath = /url\((.+?)\)/gi
+                                .exec(classObject
+                                    .style
+                                    .clipPath
+                                    .replace(/#/gi, "")
+                                    .replace(/"/gi, "")
+                                    .replace(/'/gi, "")
+                                )[1];
+
+                            break;
+                        }
+                    }
+                }
+
+                if (clipPath) {
+
+                    const targetElement = SVGToShape
+                        .parent
+                        .getElementById(clipPath);
+
+                    if (targetElement) {
+
+                        movieClip = SVGToShape.createMovieClip(
+                            movie_clip,
+                            targetElement,
+                            group_attribute_map,
+                            global_style
+                        );
+
+                        SVGToShape.parseElement(
+                            targetElement,
+                            movieClip,
+                            group_attribute_map,
+                            global_style,
+                            true
+                        );
+                    }
+                }
+            }
 
             let groupAttributeMap = null;
             switch (element.tagName.toLowerCase()) {
@@ -85,9 +174,11 @@ class SVGToShape
                 case "path":
                     SVGToShape.createGraphics(
                         element,
-                        movie_clip,
+                        movieClip || movie_clip,
                         group_attribute_map,
-                        global_style
+                        global_style,
+                        null,
+                        clip
                     );
                     break;
 
@@ -126,7 +217,6 @@ class SVGToShape
                                 element.style[name]
                             );
                         }
-
                     }
                     break;
 
@@ -305,10 +395,11 @@ class SVGToShape
 
                         SVGToShape.createGraphics(
                             path,
-                            movie_clip,
+                            movieClip || movie_clip,
                             group_attribute_map,
                             global_style,
-                            commands
+                            commands,
+                            clip
                         );
                     }
                     break;
@@ -390,10 +481,11 @@ class SVGToShape
 
                         SVGToShape.createGraphics(
                             path,
-                            movie_clip,
+                            movieClip || movie_clip,
                             group_attribute_map,
                             global_style,
-                            commands
+                            commands,
+                            clip
                         );
                     }
                     break;
@@ -476,10 +568,11 @@ class SVGToShape
 
                         SVGToShape.createGraphics(
                             path,
-                            movie_clip,
+                            movieClip || movie_clip,
                             group_attribute_map,
                             global_style,
-                            commands
+                            commands,
+                            clip
                         );
                     }
                     break;
@@ -539,10 +632,11 @@ class SVGToShape
 
                         SVGToShape.createGraphics(
                             path,
-                            movie_clip,
+                            movieClip || movie_clip,
                             group_attribute_map,
                             global_style,
-                            commands
+                            commands,
+                            clip
                         );
                     }
                     break;
@@ -608,10 +702,11 @@ class SVGToShape
 
                         SVGToShape.createGraphics(
                             path,
-                            movie_clip,
+                            movieClip || movie_clip,
                             group_attribute_map,
                             global_style,
-                            commands
+                            commands,
+                            clip
                         );
                     }
                     break;
@@ -653,8 +748,8 @@ class SVGToShape
                             continue;
                         }
 
-                        const node = element
-                            .viewportElement
+                        const node = SVGToShape
+                            .parent
                             .getElementById(id);
 
                         const path = document.createElement("path");
@@ -698,6 +793,12 @@ class SVGToShape
                             global_style
                         );
                     }
+                    continue;
+
+                case "clippath":
+                    if (!clip) {
+                        continue;
+                    }
                     break;
 
                 default:
@@ -707,10 +808,23 @@ class SVGToShape
 
             SVGToShape.parseElement(
                 element,
-                movie_clip,
+                movieClip || movie_clip,
                 groupAttributeMap || group_attribute_map,
                 global_style
             );
+
+            if (movieClip) {
+                for (const [id, layer] of movieClip._$layers) {
+
+                    if (!id) {
+                        continue;
+                    }
+
+                    layer.mode   = LayerMode.MASK_IN;
+                    layer.maskId = 0;
+                }
+                movieClip = null;
+            }
         }
     }
 
@@ -719,12 +833,148 @@ class SVGToShape
      * @param  {Element} element
      * @param  {Map} group_attribute_map
      * @param  {Map} global_style
+     * @return {MovieClip}
+     * @method
+     * @static
+     */
+    static createMovieClip (
+        movie_clip, element, group_attribute_map, global_style
+    ) {
+        const workSpace = Util.$currentWorkSpace();
+
+        const id = workSpace.nextLibraryId;
+
+        const movieClip = workSpace.addLibrary(
+            Util
+                .$libraryController
+                .createInstance(InstanceType.MOVIE_CLIP, `MovieClip_${id}`, id)
+        );
+
+        const layer = new Layer();
+        layer.name  = `Layer_${movie_clip._$layers.size}`;
+
+        movie_clip.setLayer(movie_clip._$layers.size, layer);
+
+        const character = new Character();
+        character.libraryId  = movieClip.id;
+
+        const location = layer.adjustmentLocation(1);
+        character.startFrame = location.startFrame;
+        character.endFrame   = location.endFrame;
+
+        let x = 0;
+        let y = 0;
+        if (element.hasAttribute("transform")) {
+            const transform = element.getAttribute("transform");
+            if (transform.indexOf("translate") > -1) {
+
+                const translate = /translate\((.+?)\)/gi.exec(transform)[1];
+
+                const values = SVGToShape._$adjParam(translate
+                    .replace(/,/g, " ")
+                    .replace(/-/g, " -")
+                    .trim()
+                    .split(" "));
+
+                const param = [];
+                for (let idx = 0; idx < values.length; ++idx) {
+
+                    const value = values[idx];
+                    if (!value) {
+                        continue;
+                    }
+
+                    param.push(+value);
+                }
+
+                x += parseFloat(param[0]);
+                y += parseFloat(param[1]);
+            }
+        }
+
+        if (group_attribute_map.has("transform")) {
+            const transform = group_attribute_map.get("transform");
+            if (transform.indexOf("translate") > -1) {
+
+                const translate = /translate\((.+?)\)/gi.exec(transform)[1];
+
+                const values = SVGToShape._$adjParam(translate
+                    .replace(/,/g, " ")
+                    .replace(/-/g, " -")
+                    .trim()
+                    .split(" "));
+
+                const param = [];
+                for (let idx = 0; idx < values.length; ++idx) {
+
+                    const value = values[idx];
+                    if (!value) {
+                        continue;
+                    }
+
+                    param.push(+value);
+                }
+
+                x += parseFloat(param[0]);
+                y += parseFloat(param[1]);
+            }
+        }
+
+        if (global_style.has("transform")) {
+            const transform = global_style.get("transform");
+            if (transform.indexOf("translate") > -1) {
+
+                const translate = /translate\((.+?)\)/gi.exec(transform)[1];
+
+                const values = SVGToShape._$adjParam(translate
+                    .replace(/,/g, " ")
+                    .replace(/-/g, " -")
+                    .trim()
+                    .split(" "));
+
+                const param = [];
+                for (let idx = 0; idx < values.length; ++idx) {
+
+                    const value = values[idx];
+                    if (!value) {
+                        continue;
+                    }
+
+                    param.push(+value);
+                }
+
+                x += parseFloat(param[0]);
+                y += parseFloat(param[1]);
+            }
+        }
+
+        character.setPlace(location.startFrame, {
+            "frame": location.startFrame,
+            "matrix": [1, 0, 0, 1, isNaN(x) ? 0 : x, isNaN(y) ? 0 : y],
+            "colorTransform": [1, 1, 1, 1, 0, 0, 0, 0],
+            "blendMode": "normal",
+            "filter": [],
+            "loop": Util.$getDefaultLoopConfig(),
+            "depth": layer._$characters.length
+        });
+        layer.addCharacter(character);
+
+        return movieClip;
+    }
+
+    /**
+     * @param  {MovieClip} movie_clip
+     * @param  {Element} element
+     * @param  {Map} group_attribute_map
+     * @param  {Map} global_style
+     * @param  {boolean} [clip=false]
      * @return {Shape}
      * @method
      * @static
      */
-    static createShape (movie_clip, element, group_attribute_map, global_style)
-    {
+    static createShape (
+        movie_clip, element, group_attribute_map, global_style, clip = false
+    ) {
 
         const workSpace = Util.$currentWorkSpace();
 
@@ -738,6 +988,9 @@ class SVGToShape
 
         const layer = new Layer();
         layer.name  = `Layer_${movie_clip._$layers.size}`;
+        if (clip) {
+            layer.mode = LayerMode.MASK;
+        }
 
         movie_clip.setLayer(movie_clip._$layers.size, layer);
 
@@ -1507,13 +1760,14 @@ class SVGToShape
      * @param  {Map} group_attribute_map
      * @param  {Map} global_style
      * @param  {array} [commands=null]
+     * @param  {boolean} [clip=false]
      * @return {void}
      * @method
      * @static
      */
     static createGraphics (
         element, movie_clip, group_attribute_map, global_style,
-        commands = null
+        commands = null, clip = false
     ) {
         if (!commands && !element.hasAttribute("d")) {
             return;
@@ -1522,7 +1776,7 @@ class SVGToShape
         const { Shape, Graphics } = window.next2d.display;
 
         const shape = SVGToShape.createShape(
-            movie_clip, element, group_attribute_map, global_style
+            movie_clip, element, group_attribute_map, global_style, clip
         );
 
         const graphics = new Shape().graphics;
@@ -1530,7 +1784,8 @@ class SVGToShape
         const fillObject = SVGToShape.getFillObject(
             element, group_attribute_map, global_style
         );
-        if (fillObject.alpha) {
+
+        if (clip || fillObject.alpha) {
             graphics.beginFill(
                 fillObject.color,
                 fillObject.alpha
@@ -1594,13 +1849,13 @@ class SVGToShape
                         );
                     }
 
-                    if (graphics._$fills) {
-                        graphics.endFill();
-                        graphics.beginFill(
-                            fillObject.color,
-                            fillObject.alpha
-                        );
-                    }
+                    // if (graphics._$fills) {
+                    //     graphics.endFill();
+                    //     graphics.beginFill(
+                    //         fillObject.color,
+                    //         fillObject.alpha
+                    //     );
+                    // }
 
                     graphics.moveTo(
                         currentPointX,
@@ -1634,34 +1889,34 @@ class SVGToShape
                     break;
 
                 case SVGCommandTypes.ARC:
-                {
-                    let x = command.x;
-                    let y = command.y;
-                    if (command.relative) {
-                        x += currentPointX;
-                        y += currentPointY;
-                    }
+                    {
+                        let x = command.x;
+                        let y = command.y;
+                        if (command.relative) {
+                            x += currentPointX;
+                            y += currentPointY;
+                        }
 
-                    const curves = SVGToShape._$arcToCurve(
-                        currentPointX, currentPointY,
-                        x, y,
-                        command.lArcFlag, command.sweepFlag,
-                        command.rX, command.rY,
-                        command.xRot
-                    );
-
-                    for (let idx = 0; idx < curves.length; ++idx) {
-                        const curve = curves[idx];
-                        graphics.cubicCurveTo(
-                            curve[0], curve[1],
-                            curve[2], curve[3],
-                            curve[4], curve[5]
+                        const curves = SVGToShape._$arcToCurve(
+                            currentPointX, currentPointY,
+                            x, y,
+                            command.lArcFlag, command.sweepFlag,
+                            command.rX, command.rY,
+                            command.xRot
                         );
-                    }
 
-                    lastControlX = currentPointX = x;
-                    lastControlY = currentPointY = y;
-                }
+                        for (let idx = 0; idx < curves.length; ++idx) {
+                            const curve = curves[idx];
+                            graphics.cubicCurveTo(
+                                curve[0], curve[1],
+                                curve[2], curve[3],
+                                curve[4], curve[5]
+                            );
+                        }
+
+                        lastControlX = currentPointX = x;
+                        lastControlY = currentPointY = y;
+                    }
                     break;
 
                 case SVGCommandTypes.CURVE_TO:
