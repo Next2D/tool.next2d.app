@@ -53,11 +53,15 @@ class TimelineKeyboardCommand extends KeyboardCommand
         // レイヤー追加コマンド
         this.add(Util.$generateShortcutKey("+", { "ctrl": true }), () =>
         {
+            Util.$ctrlKey = false;
             Util.$timelineTool.executeTimelineLayerAdd();
+            Util.$ctrlKey = true;
         });
         this.add(Util.$generateShortcutKey(";", { "ctrl": true }), () =>
         {
+            Util.$ctrlKey = false;
             Util.$timelineTool.executeTimelineLayerAdd();
+            Util.$ctrlKey = true;
         });
 
         // レイヤの削除コマンド

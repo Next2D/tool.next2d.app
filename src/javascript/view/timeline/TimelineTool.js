@@ -755,6 +755,11 @@ class TimelineTool extends BaseTimeline
 
             // 追加後の擬似スクロールの高さを更新
             Util.$timelineScroll.updateHeight();
+
+            // 追加したレイヤーをアクティブにする
+            Util.$timelineLayer.activeLayer(
+                layerElement.previousElementSibling
+            );
         }
 
         // 初期化
