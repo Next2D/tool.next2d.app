@@ -1003,6 +1003,14 @@ class SVGToShape
 
         let x = 0;
         let y = 0;
+        if (element.hasAttribute("x")) {
+            x += parseFloat(element.getAttribute("x"));
+        }
+
+        if (element.hasAttribute("y")) {
+            y += parseFloat(element.getAttribute("y"));
+        }
+
         if (element.hasAttribute("transform")) {
             const transform = element.getAttribute("transform");
             if (transform.indexOf("translate") > -1) {
