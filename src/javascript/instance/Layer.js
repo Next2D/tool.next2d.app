@@ -258,7 +258,12 @@ class Layer
      */
     clone ()
     {
-        return new Layer(JSON.parse(JSON.stringify(this.toObject())));
+        const layer = new Layer(JSON.parse(JSON.stringify(this.toObject())));
+
+        // レイヤーのハイライトは固有にする
+        layer._$color = TimelineHighlight.color;
+
+        return layer;
     }
 
     /**

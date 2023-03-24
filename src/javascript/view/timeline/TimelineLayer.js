@@ -2559,6 +2559,11 @@ class TimelineLayer extends BaseTimeline
 
         } else {
 
+            if (Util.$shiftKey) {
+                this.multiSelect(null, target);
+                return ;
+            }
+
             // 初期化
             if (!Util.$ctrlKey) {
                 tool.clear();

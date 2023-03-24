@@ -907,6 +907,7 @@ Util.$rebuildTimeline = () =>
     Util.$timelineHeader.rebuild();
 
     // タイムラインを再構成
+    Util.$timelineMarker.resetMarker();
     Util.$timelineLayer.moveTimeLine();
     Util.$timelineLayer.updateClientSize();
 };
@@ -1176,6 +1177,7 @@ Util.$initializeEnd = () =>
     Util.$readStatus++;
     if (Util.$readStatus === Util.$readEnd) {
 
+        // ローディング演出終了
         Util.$saveProgress.end();
 
         // HTML内に設定されたdata-detailの値を、モーダル出力するのに登録

@@ -53,14 +53,14 @@ class TimelineMarker extends BaseTimeline
          * @default 0
          * @private
          */
-        this._$controllerWidth = 0;
+        this._$controllerWidth = -1;
 
         /**
          * @type {number}
          * @default 0
          * @private
          */
-        this._$timelineHeight = 0;
+        this._$timelineHeight = -1;
 
         /**
          * @type {function}
@@ -98,6 +98,20 @@ class TimelineMarker extends BaseTimeline
                 this.startMarker();
             });
         }
+    }
+
+    /**
+     * @description マーカーの表示パラメータを初期化
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    resetMarker ()
+    {
+        this._$markerClientWidth = 0;
+        this._$controllerWidth   = -1;
+        this._$timelineHeight    = -1;
     }
 
     /**
@@ -324,8 +338,13 @@ class TimelineMarker extends BaseTimeline
 
         const workSpace = Util.$currentWorkSpace();
         if (this._$controllerWidth !== workSpace._$controllerWidth) {
-            this._$controllerWidth = workSpace._$controllerWidth;
-            this._$clientWidth = content.clientWidth;
+            if (content.clientWidth) {
+                this._$controllerWidth = workSpace._$controllerWidth;
+                this._$clientWidth = content.clientWidth;
+            } else {
+                // 表示幅がセットされてなければ初期化
+                this._$controllerWidth = -1;
+            }
         }
 
         if (this._$timelineHeight !== workSpace._$timelineHeight) {

@@ -22,7 +22,8 @@ class TimelineLayerMenu extends BaseTimeline
             "timeline-layer-mask",
             "timeline-layer-guide",
             "timeline-layer-copy",
-            "timeline-layer-paste"
+            "timeline-layer-paste",
+            "timeline-layer-clone"
         ];
 
         for (let idx = 0; idx < elementIds.length; ++idx) {
@@ -213,6 +214,21 @@ class TimelineLayerMenu extends BaseTimeline
     }
 
     /**
+     * @description 指定したレイヤーを複製する
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    executeTimelineLayerClone ()
+    {
+        // 表示モーダルを全て終了
+        Util.$endMenu();
+
+        Util.$timelineMenu.executeContextMenuLayerClone();
+    }
+
+    /**
      * @description ガイドレイヤーに変更
      *
      * @return {void}
@@ -386,6 +402,10 @@ class TimelineLayerMenu extends BaseTimeline
             .$currentWorkSpace()
             .scene
             .getLayer(layerId);
+
+        if (!layer) {
+            return ;
+        }
 
         const input = document
             .getElementById("timeline-layer-color");
