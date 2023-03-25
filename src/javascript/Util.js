@@ -706,7 +706,6 @@ Util.$initialize = () =>
         // eslint-disable-next-line no-unused-vars
         window.onerror = (message, file, line, col, error) =>
         {
-            console.log(message);
             Raven.captureException(error);
         };
     }
@@ -716,6 +715,14 @@ Util.$initialize = () =>
 
     // clickでAudioContextを起動
     window.addEventListener("mousedown", Util.$loadAudioContext);
+
+    // ブラウザを離れる時は初期化
+    document.body.addEventListener("mouseleave", () =>
+    {
+        Util.$shiftKey = false;
+        Util.$ctrlKey  = false;
+        Util.$altKey   = false;
+    });
 
     Util.$filterClasses = {
         "BevelFilter": BevelFilter,

@@ -314,10 +314,6 @@ class MovieClip extends Instance
                 Util.$sceneChange.offsetX = +node.dataset.offsetX;
                 Util.$sceneChange.offsetY = +node.dataset.offsetY;
 
-                if (idx) {
-                    Util.$sceneChange.matrix.push(matrix[idx - 1]);
-                }
-
                 const parentFrame = 1;//instance.currentFrame;
                 for (const layer of instance._$layers.values()) {
 

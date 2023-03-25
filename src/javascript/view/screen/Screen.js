@@ -728,6 +728,9 @@ class Screen extends BaseScreen
             character.dispose();
         }
 
+        const matrix = Util.$sceneChange.concatenatedMatrix;
+        const bounds = character.getBounds(matrix, parent_scene ? frame : 0);
+
         return character
             .draw(Util.$getCanvas(), frame)
             .then((canvas) =>
@@ -808,10 +811,11 @@ class Screen extends BaseScreen
                     divStyle += `opacity: ${alpha};`;
                 }
 
-                const matrix = Util.$sceneChange.concatenatedMatrix;
-                const bounds = character.getBounds(matrix, parent_scene ? frame : 0);
-
                 let width = (bounds.xMax - bounds.xMin) * Util.$zoomScale;
+                if (character.id === 33) {
+                    console.log(bounds.xMin, "\n", matrix);
+                }
+
                 if (!width) {
                     width = 10;
                 }
@@ -826,6 +830,7 @@ class Screen extends BaseScreen
 
                 const offsetX = offset_x === null ? Util.$sceneChange.offsetX : offset_x;
                 const offsetY = offset_y === null ? Util.$sceneChange.offsetY : offset_y;
+
                 let tx = Util.$offsetLeft + (offsetX + bounds.xMin) * Util.$zoomScale;
                 let ty = Util.$offsetTop  + (offsetY + bounds.yMin) * Util.$zoomScale;
 
