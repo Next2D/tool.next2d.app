@@ -86,6 +86,7 @@ class Controller extends BaseController
 
         this.hideObjectSetting([
             "object-area",
+            "ruler-setting",
             "instance-setting",
             "fill-color-setting"
         ]);

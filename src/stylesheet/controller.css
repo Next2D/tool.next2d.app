@@ -162,6 +162,7 @@
 #text-setting,
 #text-setting .text-border,
 #color-setting,
+#ruler-setting,
 #reference-setting,
 #blend-setting,
 #align-setting,
@@ -303,6 +304,7 @@
 #object-setting-title,
 #sound-setting-title,
 #color-setting-title,
+#ruler-setting-title,
 #reference-setting-title,
 #blend-setting-title,
 #align-setting-title,
@@ -347,6 +349,7 @@
 #object-setting-title i,
 #sound-setting-title i,
 #color-setting-title i,
+#ruler-setting-title i,
 #reference-setting-title i,
 #blend-setting-title i,
 #align-setting-title i,
@@ -370,6 +373,7 @@
 #object-setting-title .disable,
 #sound-setting-title .disable,
 #color-setting-title .disable,
+#ruler-setting-title .disable,
 #reference-setting-title .disable,
 #blend-setting-title .disable,
 #align-setting-title .disable,
@@ -391,6 +395,7 @@
 #object-setting-title .active,
 #sound-setting-title .active,
 #color-setting-title .active,
+#ruler-setting-title .active,
 #reference-setting-title .active,
 #blend-setting-title .active,
 #align-setting-title .active,
@@ -412,6 +417,7 @@
 #object-setting-title:hover,
 #sound-setting-title:hover,
 #color-setting-title:hover,
+#ruler-setting-title:hover,
 #reference-setting-title:hover,
 #blend-setting-title:hover,
 #align-setting-title:hover,
@@ -437,6 +443,7 @@
 #blend-setting .blend-setting-container,
 #loop-setting .loop-setting-container,
 #color-setting .color-setting-container,
+#ruler-setting .ruler-setting-container,
 #reference-setting .reference-setting-container,
 #text-setting .text-setting-container,
 #video-setting .video-setting-container,
@@ -521,6 +528,7 @@
 #stage-setting-view-area .stage-setting-text,
 #object-setting .object-setting-text,
 #color-setting .color-setting-text,
+#ruler-setting .ruler-setting-text,
 #reference-setting .reference-setting-text,
 #transform-setting .transform-setting-text,
 #text-setting .text-setting-text,
@@ -1023,6 +1031,19 @@
     font-size        : 12px;
     padding-left     : 6px;
     padding-right    : 6px;
+}
+
+#ruler-setting input[type="text"]
+{
+    border           : none;
+    border-bottom    : 1px solid darkgray;
+    outline          : none;
+    background-color : transparent;
+    color            : #f5f5f5;
+    text-align       : center;
+    width            : 50px;
+    margin           : 3px;
+    padding          : 0;
 }
 
 #fill-color-setting input[type="text"]

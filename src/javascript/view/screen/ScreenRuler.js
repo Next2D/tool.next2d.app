@@ -149,8 +149,14 @@ class ScreenRuler extends BaseScreen
 
             if (this._$mode === "x") {
                 this._$target.style.left = `${event.offsetX}px`;
+                Util.$rulerController.setInputValue(
+                    event.offsetX - Util.$offsetLeft
+                );
             } else {
                 this._$target.style.top = `${event.offsetY}px`;
+                Util.$rulerController.setInputValue(
+                    event.offsetY - Util.$offsetTop
+                );
             }
         });
     }
@@ -203,22 +209,7 @@ class ScreenRuler extends BaseScreen
         } else {
 
             // プロジェクトに登録
-            if (this._$mode === "x") {
-
-                const index = Array.from(
-                    screen.getElementsByClassName("ruler-border-x")
-                ).indexOf(this._$target);
-
-                workSpace._$rulerX[index] = (this._$target.offsetLeft - Util.$offsetLeft) / Util.$zoomScale;
-
-            } else {
-
-                const index = Array.from(
-                    screen.getElementsByClassName("ruler-border-y")
-                ).indexOf(this._$target);
-
-                workSpace._$rulerY[index] = (this._$target.offsetTop - Util.$offsetTop) / Util.$zoomScale;
-            }
+            this.updatePosition();
 
         }
 
@@ -226,9 +217,46 @@ class ScreenRuler extends BaseScreen
         this.changeNodeEvent(true);
 
         // 初期化
-        this._$move   = "";
-        this._$target = null;
-        this._$saved  = false;
+        this._$saved = false;
+    }
+
+    /**
+     * @description 移動した境界線の情報をプロジェクトデータとして登録
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    updatePosition ()
+    {
+        const screen = document.getElementById("screen");
+        if (!screen) {
+            return ;
+        }
+
+        // プロジェクトに登録
+        const workSpace = Util.$currentWorkSpace();
+        const target = this._$target;
+        if (this._$mode === "x") {
+
+            const index = Array.from(
+                screen.getElementsByClassName("ruler-border-x")
+            ).indexOf(target);
+
+            workSpace._$rulerX[index] = Math.ceil(
+                (target.offsetLeft - Util.$offsetLeft) / Util.$zoomScale
+            );
+
+        } else {
+
+            const index = Array.from(
+                screen.getElementsByClassName("ruler-border-y")
+            ).indexOf(target);
+
+            workSpace._$rulerY[index] = Math.ceil(
+                (target.offsetTop - Util.$offsetTop) / Util.$zoomScale
+            );
+        }
     }
 
     /**
@@ -319,7 +347,7 @@ class ScreenRuler extends BaseScreen
         }
 
         this._$mode   = "y";
-        this._$target =  this.createBorderY();
+        this._$target = this.createBorderY();
 
         document
             .getElementById("screen")
@@ -359,6 +387,18 @@ class ScreenRuler extends BaseScreen
             this._$mode   = "y";
 
             this.setupMove();
+
+            // fixed logic
+            Util.$controller.showObjectSetting(["ruler-setting"]);
+
+            const element = document.getElementById("ruler-position");
+            if (!element) {
+                return ;
+            }
+
+            Util.$rulerController.setInputValue(
+                this._$target.offsetTop - Util.$offsetTop
+            );
         });
 
         return div;
@@ -383,7 +423,7 @@ class ScreenRuler extends BaseScreen
         }
 
         this._$mode   = "x";
-        this._$target =  this.createBorderX();
+        this._$target = this.createBorderX();
 
         document
             .getElementById("screen")
@@ -423,6 +463,18 @@ class ScreenRuler extends BaseScreen
             this._$mode   = "x";
 
             this.setupMove();
+
+            // fixed logic
+            Util.$controller.showObjectSetting(["ruler-setting"]);
+
+            const element = document.getElementById("ruler-position");
+            if (!element) {
+                return ;
+            }
+
+            Util.$rulerController.setInputValue(
+                this._$target.offsetLeft - Util.$offsetLeft
+            );
         });
 
         return div;
