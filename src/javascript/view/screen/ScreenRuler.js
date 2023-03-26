@@ -101,7 +101,7 @@ class ScreenRuler extends BaseScreen
             .style
             .setProperty(
                 "--ruler-size",
-                `${ScreenRuler.DEFAULT_SIZE - 1}px`
+                `${ScreenRuler.DEFAULT_SIZE}px`
             );
 
         for (let idx = 0; idx < this._$elementIds.length; ++idx) {
@@ -613,7 +613,7 @@ class ScreenRuler extends BaseScreen
         const baseRange = size >= ScreenRuler.DEFAULT_SIZE ? 10 : 40;
         const range = size * baseRange;
 
-        const offset   = offset_size / Util.$zoomScale | 0;
+        const offset   = Math.ceil(offset_size / Util.$zoomScale);
         const fraction = offset % baseWidth;
 
         // 差分を生成
