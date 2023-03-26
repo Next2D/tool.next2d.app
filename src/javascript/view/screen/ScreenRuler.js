@@ -205,6 +205,10 @@ class ScreenRuler extends BaseScreen
 
             }
             this._$target.remove();
+            this._$target = null;
+
+            // コントローラーを非表示に
+            Util.$controller.hideObjectSetting(["ruler-setting"]);
 
         } else {
 
