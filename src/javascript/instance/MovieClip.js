@@ -19,6 +19,7 @@ class MovieClip extends Instance
 
         // default
         this._$currentFrame  = 1;
+        this._$leftFrame     = 1;
         this._$layerId       = 0;
         this._$labels        = new Map();
         this._$layers        = new Map();
@@ -48,6 +49,10 @@ class MovieClip extends Instance
 
         if (object.currentFrame) {
             this._$currentFrame = Math.max(1, object.currentFrame | 0);
+        }
+
+        if (object.leftFrame) {
+            this._$leftFrame = Math.max(1, object.leftFrame | 0);
         }
     }
 
@@ -148,12 +153,20 @@ class MovieClip extends Instance
         Util.$timelineLayer.removeAll();
 
         // フレームを登録してヘッダーを再編成
-        const currentFrame = Util.$currentWorkSpace()._$currentFrame || 1;
+        const currentFrame = this._$currentFrame || 1;
         Util.$timelineFrame.currentFrame = currentFrame;
 
+        // スクロールの座標をセット
+        // fixed logic
+        Util.$timelineScroll.execute(
+            -Util.$timelineScroll.x,
+            -Util.$timelineScroll.y
+        );
+
         // ヘッダーを生成
+        const leftFrame = this._$leftFrame || 1;
         Util.$timelineHeader.setWidth();
-        Util.$timelineHeader.scrollX = (currentFrame - 1) * Util.$timelineTool.timelineWidth;
+        Util.$timelineHeader.scrollX = (leftFrame - 1) * Util.$timelineTool.timelineWidth;
         Util.$timelineHeader.rebuild();
 
         // マーカーを移動
@@ -166,12 +179,6 @@ class MovieClip extends Instance
         Util.$timelineLayer.updateClientSize();
         Util.$timelineScroll.updateWidth();
         Util.$timelineScroll.updateHeight();
-
-        // スクロールの座標をセット
-        Util.$timelineScroll.execute(
-            -Util.$timelineScroll.x,
-            -Util.$timelineScroll.y
-        );
 
         // insert layer
         this._$layerId = 0;
@@ -239,6 +246,18 @@ class MovieClip extends Instance
     get currentFrame ()
     {
         return this._$currentFrame;
+    }
+
+    /**
+     * @description タイムラインの表示されている一番左のフレームの番号を示します。
+     *
+     * @member {number}
+     * @readonly
+     * @public
+     */
+    get leftFrame ()
+    {
+        return this._$leftFrame;
     }
 
     /**
@@ -1208,6 +1227,7 @@ class MovieClip extends Instance
             "symbol":       this.symbol,
             "folderId":     this.folderId,
             "currentFrame": this.currentFrame,
+            "leftFrame":    this.leftFrame,
             "layers":       this.layers,
             "labels":       this.labels,
             "sounds":       this.sounds,

@@ -497,14 +497,19 @@ class Screen extends BaseScreen
      */
     appendOnionCharacter (character, layer_id, parent = null, frame = 1)
     {
+        const scene = parent || Util.$currentWorkSpace().scene;
+        const layer = scene.getLayer(layer_id);
+        if (!layer) {
+            return Promise.resolve();
+        }
+
+        const matrix = Util.$sceneChange.concatenatedMatrix;
+        const bounds = character.getBounds(matrix, frame);
+
         return character
             .draw(Util.$getCanvas(), frame)
             .then((canvas) =>
             {
-                const scene  = parent || Util.$currentWorkSpace().scene;
-                const matrix = Util.$sceneChange.concatenatedMatrix;
-                const bounds = character.getBounds(matrix, frame);
-
                 // create div
                 const div = document.createElement("div");
                 div.setAttribute("class", "display-object");
@@ -521,7 +526,6 @@ class Screen extends BaseScreen
                 let divStyle = "";
 
                 // mask attach
-                const layer = scene.getLayer(layer_id);
                 if (layer.maskId !== null) {
 
                     const maskLayer = scene.getLayer(layer.maskId);
@@ -564,8 +568,8 @@ class Screen extends BaseScreen
                 divStyle += "pointer-events: none;";
                 divStyle += "opacity: 0.25;";
 
-                let tx = Util.$offsetLeft + (Util.$sceneChange.offsetX + canvas._$tx) * Util.$zoomScale;
-                let ty = Util.$offsetTop  + (Util.$sceneChange.offsetY + canvas._$ty) * Util.$zoomScale;
+                let tx = Util.$offsetLeft + (Util.$sceneChange.offsetX + bounds.xMin) * Util.$zoomScale;
+                let ty = Util.$offsetTop  + (Util.$sceneChange.offsetY + bounds.yMin) * Util.$zoomScale;
 
                 divStyle += `left: ${tx}px;`;
                 divStyle += `top: ${ty}px;`;
@@ -812,10 +816,6 @@ class Screen extends BaseScreen
                 }
 
                 let width = (bounds.xMax - bounds.xMin) * Util.$zoomScale;
-                if (character.id === 33) {
-                    console.log(bounds.xMin, "\n", matrix);
-                }
-
                 if (!width) {
                     width = 10;
                 }
@@ -1119,14 +1119,12 @@ class Screen extends BaseScreen
         // 調整用のxy座標(fixed logic)
         const matrix = Util.$sceneChange.concatenatedMatrix;
 
-        Util.$timelineFrame.currentFrame = 1;
+        // Util.$timelineFrame.currentFrame = 1;
         const x  = character.x;
         const y  = character.y;
-        const dx = x * matrix[0] + y * matrix[2] + matrix[4];
-        const dy = x * matrix[1] + y * matrix[3] + matrix[5];
 
-        Util.$sceneChange.offsetX = dx;
-        Util.$sceneChange.offsetY = dy;
+        Util.$sceneChange.offsetX = x * matrix[0] + y * matrix[2] + matrix[4];
+        Util.$sceneChange.offsetY = x * matrix[1] + y * matrix[3] + matrix[5];
 
         // const frame = Util.$timelineFrame.currentFrame;
         const place = character.getPlace(1);

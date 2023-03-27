@@ -245,10 +245,12 @@ class SceneChange extends BaseScreen
 
         // ライブラリから指定のMovieClipを取得
         const scene = workSpace.getLibrary(library_id);
-        const frame = scene.currentFrame;
+        const frame = Util.$timelineFrame.currentFrame;
 
         // 指定のMovieClipのフレーム
-        Util.$timelineFrame.currentFrame = frame;
+        const currentScene = workSpace.scene;
+        currentScene._$currentFrame = frame;
+        currentScene._$leftFrame    = Util.$timelineHeader.leftFrame;
 
         // タイムラインのマーカーを移動
         Util.$timelineMarker.move();

@@ -128,7 +128,12 @@ class TimelineHeader extends BaseTimeline
      */
     set scrollX (scroll_x)
     {
-        this._$scrollX = Math.max(0, Math.min(scroll_x, Util.$timelineScroll.maxX)) | 0;
+        let maxX = Util.$timelineScroll.maxX;
+        if (isNaN(maxX)) {
+            maxX = scroll_x;
+        }
+
+        this._$scrollX = Math.max(0, Math.min(scroll_x, maxX)) | 0;
         Util.$timelineScroll.x = this._$scrollX;
     }
 
