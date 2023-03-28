@@ -1347,6 +1347,9 @@ class ConfirmModal extends BaseController
                 }
                 break;
 
+            case "application/x-shockwave-flash":
+                break;
+
             default:
                 if (this._$currentObject.type === "copy") {
 

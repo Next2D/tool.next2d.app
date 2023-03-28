@@ -19,7 +19,7 @@ const options = minimist(process.argv.slice(2), {
     "string": ["distPath", "version"],
     "default": {
         "prodBuild": false,
-        "version": "0.207.0",
+        "version": "0.208.0",
         "distPath": "."
     }
 });

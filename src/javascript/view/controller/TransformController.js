@@ -605,10 +605,15 @@ class TransformController extends BaseController
                 .getElementById(`character-${characterId}`);
 
             if (!element) {
+                skipCount++;
                 continue;
             }
 
             const character = layer.getCharacter(characterId);
+            if (!character) {
+                skipCount++;
+                continue;
+            }
 
             const bounds = character.getBounds(matrix);
             const tx = Util.$offsetLeft + (Util.$sceneChange.offsetX + bounds.xMin) * Util.$zoomScale;
