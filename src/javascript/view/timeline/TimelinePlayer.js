@@ -272,11 +272,12 @@ class TimelinePlayer extends BaseTimeline
     /**
      * @description タイムラインのプレイヤーを停止する
      *
+     * @param  {boolean} [reload=true]
      * @return {void}
      * @method
      * @public
      */
-    executeTimelineStop ()
+    executeTimelineStop (reload = true)
     {
         // タイマーを終了
         window.cancelAnimationFrame(this._$timerId);
@@ -299,7 +300,9 @@ class TimelinePlayer extends BaseTimeline
             .style.display = "none";
 
         // 再生位置で再描画
-        this.reloadScreen();
+        if (reload) {
+            this.reloadScreen();
+        }
     }
 
     /**

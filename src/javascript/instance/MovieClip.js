@@ -18,8 +18,8 @@ class MovieClip extends Instance
         super(object);
 
         // default
-        this._$currentFrame  = 1;
-        this._$leftFrame     = 1;
+        this._$currentFrame  = 0;
+        this._$leftFrame     = 0;
         this._$layerId       = 0;
         this._$labels        = new Map();
         this._$layers        = new Map();
@@ -149,11 +149,13 @@ class MovieClip extends Instance
             }
         }
 
+        const leftFrame    = this._$leftFrame || 1;
+        const currentFrame = this._$currentFrame || 1;
+
         // タイムラインを初期化
         Util.$timelineLayer.removeAll();
 
         // フレームを登録してヘッダーを再編成
-        const currentFrame = this._$currentFrame || 1;
         Util.$timelineFrame.currentFrame = currentFrame;
 
         // スクロールの座標をセット
@@ -164,7 +166,6 @@ class MovieClip extends Instance
         );
 
         // ヘッダーを生成
-        const leftFrame = this._$leftFrame || 1;
         Util.$timelineHeader.setWidth();
         Util.$timelineHeader.scrollX = (leftFrame - 1) * Util.$timelineTool.timelineWidth;
         Util.$timelineHeader.rebuild();

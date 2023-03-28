@@ -607,6 +607,11 @@ class Screen extends BaseScreen
         const workSpace = Util.$currentWorkSpace();
         const scene     = parent_scene || workSpace.scene;
 
+        const layer = scene.getLayer(layer_id);
+        if (!layer) {
+            return Promise.resolve();
+        }
+
         // setup
         const place    = character.getPlace(frame);
         const instance = workSpace.getLibrary(character.libraryId);
@@ -851,7 +856,6 @@ class Screen extends BaseScreen
                 const promises = [];
 
                 // mask attach
-                const layer = scene.getLayer(layer_id);
                 if (layer.maskId !== null) {
 
                     const maskLayer = scene.getLayer(layer.maskId);
@@ -1093,7 +1097,7 @@ class Screen extends BaseScreen
         // タイムラインを再生中なら停止
         Util
             .$timelinePlayer
-            .executeTimelineStop();
+            .executeTimelineStop(false);
 
         const target = event.currentTarget;
 
