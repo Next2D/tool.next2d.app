@@ -159,7 +159,7 @@
 
 #library-export-file-type
 {
-    width            : 150px;
+    width            : 120px;
     height           : 30px;
     border           : 1px solid darkgray;
     border-radius    : 5px;
@@ -168,6 +168,18 @@
     padding-left     : 6px;
     padding-right    : 6px;
     font-size        : 12px;
+}
+
+#export-jpeg-quality
+{
+    border           : none;
+    border-bottom    : 1px solid darkgray;
+    outline          : none;
+    background-color : transparent;
+    color            : #f5f5f5;
+    text-align       : center;
+    width            : 50px;
+    margin           : 3px 3px 3px 16px;
 }
 
 #library-export-execution

@@ -18,8 +18,8 @@ class MovieClip extends Instance
         super(object);
 
         // default
-        this._$currentFrame  = 0;
-        this._$leftFrame     = 0;
+        this._$currentFrame  = 1;
+        this._$leftFrame     = 1;
         this._$layerId       = 0;
         this._$labels        = new Map();
         this._$layers        = new Map();

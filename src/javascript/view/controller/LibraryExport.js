@@ -100,6 +100,24 @@ class LibraryExport extends BaseController
      * @return {number}
      * @static
      */
+    static get MIN_QUALITY ()
+    {
+        return 1;
+    }
+
+    /**
+     * @return {number}
+     * @static
+     */
+    static get MAX_QUALITY ()
+    {
+        return 100;
+    }
+
+    /**
+     * @return {number}
+     * @static
+     */
     static get DEFAULT_SIZE ()
     {
         return 450;
@@ -160,7 +178,8 @@ class LibraryExport extends BaseController
             "export-height",
             "export-start-frame",
             "export-end-frame",
-            "export-current-frame"
+            "export-current-frame",
+            "export-jpeg-quality"
         ];
 
         for (let idx = 0; idx < inputIds.length; ++idx) {
@@ -171,6 +190,22 @@ class LibraryExport extends BaseController
             }
 
             this.setInputEvent(element);
+        }
+
+        const select = document.getElementById("library-export-file-type");
+        if (select) {
+            select.addEventListener("change", (event) =>
+            {
+                const element = document.getElementById("jpeg-quality-area");
+                if (!element) {
+                    return ;
+                }
+
+                const ext = event.target.value;
+                element
+                    .style
+                    .display = ext === "jpeg" || ext === "webp" ? "" : "none";
+            });
         }
     }
 
@@ -216,6 +251,10 @@ class LibraryExport extends BaseController
             .getElementById("library-export-file-type")
             .value;
 
+        const quality = ext === "webp" || ext === "jpeg" ? parseInt(document
+            .getElementById("export-jpeg-quality")
+            .value) / 100 : 1;
+
         const name = document
             .getElementById("export-name")
             .value;
@@ -238,7 +277,7 @@ class LibraryExport extends BaseController
                             {
                                 zip.file(
                                     `${name}_frame_${frame}.${ext}`,
-                                    canvas.toDataURL(`image/${ext}`, 1).replace(/^.*,/, ""),
+                                    canvas.toDataURL(`image/${ext}`, quality).replace(/^.*,/, ""),
                                     { "base64" : true }
                                 );
 
@@ -312,7 +351,7 @@ class LibraryExport extends BaseController
                     {
                         const anchor    = document.createElement("a");
                         anchor.download = `${name}.${ext}`;
-                        anchor.href     = canvas.toDataURL(`image/${ext}`, 1);
+                        anchor.href     = canvas.toDataURL(`image/${ext}`, quality);
                         anchor.click();
 
                         Util.$poolCanvas(canvas);
@@ -344,6 +383,24 @@ class LibraryExport extends BaseController
                 ? "active"
                 : "disable"
             );
+    }
+
+    /**
+     * @description 画質設定
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    changeExportJpegQuality (value)
+    {
+        value = Util.$clamp(+value,
+            LibraryExport.MIN_QUALITY,
+            LibraryExport.MAX_QUALITY,
+            1
+        );
+
+        return value;
     }
 
     /**
