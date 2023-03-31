@@ -274,15 +274,11 @@ class LibraryExport extends BaseController
 
             case InstanceType.MOVIE_CLIP:
 
-
                 if (location === "local") {
 
                     const promises = [];
                     const zip = new JSZip();
-                    for (let frame = this._$startFrame;
-                         this._$endFrame >= frame;
-                         ++frame
-                    ) {
+                    for (let frame = this._$startFrame; this._$endFrame >= frame; ++frame) {
 
                         promises.push(this
                             .getCanvas(frame)
@@ -350,10 +346,7 @@ class LibraryExport extends BaseController
                         .createInstanceSelect(instance);
 
                     const promises = [];
-                    for (let frame = this._$startFrame;
-                         this._$endFrame >= frame;
-                         ++frame
-                    ) {
+                    for (let frame = this._$startFrame; this._$endFrame >= frame; ++frame) {
 
                         promises.push(this
                             .getCanvas(frame)
