@@ -891,6 +891,85 @@ class LibraryMenu
      */
     show (event)
     {
+        const instances = Util.$libraryController.activeInstances;
+        switch (instances.size) {
+
+            case 0:
+                document
+                    .getElementById("library-menu-export")
+                    .setAttribute("style", "opacity:0.5; pointer-events:none;");
+
+                document
+                    .getElementById("library-open-photopea")
+                    .setAttribute("style", "opacity:0.5; pointer-events:none;");
+
+                document
+                    .getElementById("library-menu-change-scene")
+                    .setAttribute("style", "opacity:0.5; pointer-events:none;");
+                break;
+
+            case 1:
+                {
+                    document
+                        .getElementById("library-menu-export")
+                        .setAttribute("style", "");
+
+                    document
+                        .getElementById("library-menu-change-scene")
+                        .setAttribute("style", "opacity:0.5; pointer-events:none;");
+
+                    document
+                        .getElementById("library-open-photopea")
+                        .setAttribute("style", "opacity:0.5; pointer-events:none;");
+
+                    const element = instances.values().next().value;
+                    const library = Util
+                        .$currentWorkSpace()
+                        .getLibrary(
+                            element.dataset.libraryId | 0
+                        );
+
+                    switch (library.type) {
+
+                        case InstanceType.BITMAP:
+                            document
+                                .getElementById("library-open-photopea")
+                                .setAttribute("style", "");
+                            break;
+
+                        case InstanceType.MOVIE_CLIP:
+                            document
+                                .getElementById("library-menu-change-scene")
+                                .setAttribute("style", "");
+                            break;
+
+                        case InstanceType.FOLDER:
+                            document
+                                .getElementById("library-menu-export")
+                                .setAttribute("style", "opacity:0.5; pointer-events:none;");
+                            break;
+
+                    }
+                }
+                break;
+
+            default:
+                document
+                    .getElementById("library-menu-export")
+                    .setAttribute("style", "opacity:0.5; pointer-events:none;");
+
+                document
+                    .getElementById("library-open-photopea")
+                    .setAttribute("style", "opacity:0.5; pointer-events:none;");
+
+                document
+                    .getElementById("library-menu-change-scene")
+                    .setAttribute("style", "opacity:0.5; pointer-events:none;");
+
+                break;
+
+        }
+
         const element = document
             .getElementById("library-menu");
 

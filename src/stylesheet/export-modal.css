@@ -137,7 +137,7 @@
     display         : flex;
     align-items     : center;
     justify-content : center;
-    margin          : 8px 26px 12px 12px;
+    margin          : 8px 32px 12px 6px;
 }
 
 #library-export-setting .library-export-setting-text
@@ -160,6 +160,27 @@
 #library-export-file-type
 {
     width            : 120px;
+    height           : 30px;
+    border           : 1px solid darkgray;
+    border-radius    : 5px;
+    background-color : #2c2c2c;
+    color            : #f5f5f5;
+    padding-left     : 6px;
+    padding-right    : 6px;
+    font-size        : 12px;
+}
+
+#library-export-setting .library-export-location-container
+{
+    display         : flex;
+    align-items     : center;
+    justify-content : center;
+    width           : 120px;
+}
+
+#library-export-location
+{
+    width            : 80px;
     height           : 30px;
     border           : 1px solid darkgray;
     border-radius    : 5px;
