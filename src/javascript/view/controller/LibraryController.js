@@ -274,14 +274,12 @@ class LibraryController
                 toWorkSpace._$libraries.set(clone.id, clone);
 
                 // ライブラリに登録
-                Util
-                    .$libraryController
-                    .createInstance(
-                        clone.type,
-                        clone.name,
-                        clone.id,
-                        clone.symbol
-                    );
+                this.createInstance(
+                    clone.type,
+                    clone.name,
+                    clone.id,
+                    clone.symbol
+                );
 
                 toWorkSpace
                     ._$nameMap
@@ -361,14 +359,12 @@ class LibraryController
             }
 
             // elementを追加
-            Util
-                .$libraryController
-                .createInstance(
-                    cloneFolder.type,
-                    cloneFolder.name,
-                    cloneFolder.id,
-                    cloneFolder.symbol
-                );
+            this.createInstance(
+                cloneFolder.type,
+                cloneFolder.name,
+                cloneFolder.id,
+                cloneFolder.symbol
+            );
 
             toWorkSpace
                 ._$nameMap
@@ -453,14 +449,12 @@ class LibraryController
         toWorkSpace._$libraries.set(clone.id, clone);
 
         // ライブラリに登録
-        Util
-            .$libraryController
-            .createInstance(
-                clone.type,
-                clone.name,
-                clone.id,
-                clone.symbol
-            );
+        this.createInstance(
+            clone.type,
+            clone.name,
+            clone.id,
+            clone.symbol
+        );
 
         // 登録
         toWorkSpace
@@ -647,11 +641,9 @@ class LibraryController
                 continue;
             }
 
-            Util
-                .$libraryController
-                .createInstance(
-                    value.type, value.name, value.id, value.symbol
-                );
+            this.createInstance(
+                value.type, value.name, value.id, value.symbol
+            );
 
             // 階層のパスでマッピング
             workSpace

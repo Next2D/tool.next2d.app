@@ -94,6 +94,8 @@ Util.$poolCanvas = (canvas) =>
     canvas.width = canvas.height = 1;
 
     // pool
+    canvas.setAttribute("class", "");
+    canvas.setAttribute("style", "");
     Util.$canvases.push(canvas);
 };
 

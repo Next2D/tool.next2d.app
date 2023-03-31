@@ -18,6 +18,13 @@ class LibraryExport extends BaseController
          * @default false
          * @private
          */
+        this._$saved = false;
+
+        /**
+         * @type {boolean}
+         * @default false
+         * @private
+         */
         this._$lock = false;
 
         /**
@@ -259,15 +266,22 @@ class LibraryExport extends BaseController
             .getElementById("export-name")
             .value;
 
+        const location = document
+            .getElementById("library-export-location")
+            .value;
+
         switch (this._$instance.type) {
 
             case InstanceType.MOVIE_CLIP:
-                {
+
+
+                if (location === "local") {
+
                     const promises = [];
                     const zip = new JSZip();
                     for (let frame = this._$startFrame;
-                        this._$endFrame >= frame;
-                        ++frame
+                         this._$endFrame >= frame;
+                         ++frame
                     ) {
 
                         promises.push(this
@@ -303,6 +317,93 @@ class LibraryExport extends BaseController
                                     URL.revokeObjectURL(url);
                                 });
                         });
+
+                } else {
+
+                    this.save();
+
+                    const workSpace = Util.$currentWorkSpace();
+
+                    let exportName = name;
+                    for (;;) {
+                        if (!workSpace._$nameMap.has(exportName)) {
+                            break;
+                        }
+                        exportName += "_bitmap";
+                    }
+
+                    const object = Util
+                        .$libraryController
+                        .createInstance(
+                            InstanceType.FOLDER,
+                            exportName,
+                            workSpace.nextLibraryId
+                        );
+
+                    workSpace
+                        ._$nameMap
+                        .set(exportName, object.id);
+
+                    const instance = workSpace.addLibrary(object);
+                    Util
+                        .$instanceSelectController
+                        .createInstanceSelect(instance);
+
+                    const promises = [];
+                    for (let frame = this._$startFrame;
+                         this._$endFrame >= frame;
+                         ++frame
+                    ) {
+
+                        promises.push(this
+                            .getCanvas(frame)
+                            // eslint-disable-next-line no-loop-func
+                            .then((canvas) =>
+                            {
+                                const name = `${exportName}_frame_${frame}`;
+
+                                const bitmap = Util
+                                    .$libraryController
+                                    .createInstance(
+                                        InstanceType.BITMAP,
+                                        name,
+                                        workSpace.nextLibraryId
+                                    );
+
+                                bitmap.width     = canvas.width;
+                                bitmap.height    = canvas.height;
+                                bitmap.imageType = `image/${ext}`;
+
+                                const context = canvas.getContext("2d");
+                                bitmap.buffer = new Uint8Array(context
+                                    .getImageData(0, 0, canvas.width, canvas.height)
+                                    .data
+                                );
+
+                                workSpace
+                                    ._$nameMap
+                                    .set(name, bitmap.id);
+
+                                const instance = workSpace.addLibrary(bitmap);
+                                instance.folderId = object.id;
+
+                                Util
+                                    .$instanceSelectController
+                                    .createInstanceSelect(instance);
+
+                                Util.$poolCanvas(canvas);
+
+                            }));
+                    }
+
+                    Promise
+                        .all(promises)
+                        .then(() =>
+                        {
+                            Util.$libraryController.reload();
+                            this._$saved = false;
+                        });
+
                 }
                 break;
 
@@ -349,10 +450,58 @@ class LibraryExport extends BaseController
                     .getCanvas()
                     .then((canvas) =>
                     {
-                        const anchor    = document.createElement("a");
-                        anchor.download = `${name}.${ext}`;
-                        anchor.href     = canvas.toDataURL(`image/${ext}`, quality);
-                        anchor.click();
+                        if (location === "local") {
+
+                            const anchor    = document.createElement("a");
+                            anchor.download = `${name}.${ext}`;
+                            anchor.href     = canvas.toDataURL(`image/${ext}`, quality);
+                            anchor.click();
+
+                        } else {
+
+                            this.save();
+
+                            const workSpace = Util.$currentWorkSpace();
+
+                            let exportName = name;
+                            for (;;) {
+                                if (!workSpace._$nameMap.has(exportName)) {
+                                    break;
+                                }
+                                exportName += "_bitmap";
+                            }
+
+                            const object = Util
+                                .$libraryController
+                                .createInstance(
+                                    InstanceType.BITMAP,
+                                    exportName,
+                                    workSpace.nextLibraryId
+                                );
+
+                            object.width     = canvas.width;
+                            object.height    = canvas.height;
+                            object.imageType = `image/${ext}`;
+
+                            const context = canvas.getContext("2d");
+                            object.buffer = new Uint8Array(context
+                                .getImageData(0, 0, canvas.width, canvas.height)
+                                .data
+                            );
+
+                            workSpace
+                                ._$nameMap
+                                .set(exportName, object.id);
+
+                            const instance = workSpace.addLibrary(object);
+                            Util
+                                .$instanceSelectController
+                                .createInstanceSelect(instance);
+
+                            Util.$libraryController.reload();
+
+                            this._$saved = false;
+                        }
 
                         Util.$poolCanvas(canvas);
                     });
@@ -669,6 +818,11 @@ class LibraryExport extends BaseController
         const fileArea = document
             .getElementById("library-export-file-area");
 
+        const location = document
+            .getElementById("library-export-location")
+            .parentElement;
+
+        location.style.display = "";
         switch (this._$instance.type) {
 
             case InstanceType.MOVIE_CLIP:
@@ -690,6 +844,7 @@ class LibraryExport extends BaseController
                 containerArea.style.display = "none";
                 sizeArea.style.display      = "none";
                 fileArea.style.display      = "none";
+                location.style.display      = "none";
                 break;
 
             default:
@@ -816,10 +971,6 @@ class LibraryExport extends BaseController
                     .getCanvas(this._$currentFrame, true)
                     .then((canvas) =>
                     {
-                        const ratio = window.devicePixelRatio;
-                        canvas.style.width  = `${canvas.width  / ratio}px`;
-                        canvas.style.height = `${canvas.height / ratio}px`;
-
                         this.removeImage();
                         document
                             .getElementById("library-export-image")
@@ -846,13 +997,13 @@ class LibraryExport extends BaseController
 
         const bounds = this
             ._$instance
-            .getBounds([1,0,0,1,0,0], frame);
+            .getBounds([1, 0, 0, 1, 0, 0], frame);
 
         // size
         let width  = Math.abs(bounds.xMax - bounds.xMin);
         let height = Math.abs(bounds.yMax - bounds.yMin);
         if (!width || !height) {
-            return new Image();
+            return Promise.resolve(Util.$getCanvas());
         }
 
         let xScale = this._$xScale;
@@ -877,11 +1028,14 @@ class LibraryExport extends BaseController
             yScale *= adjScaleY;
         }
 
+        xScale /= window.devicePixelRatio;
+        yScale /= window.devicePixelRatio;
+
         return this
             ._$instance
             .draw(
                 Util.$getCanvas(),
-                Math.ceil(width * xScale),
+                Math.ceil(width  * xScale),
                 Math.ceil(height * yScale),
                 {
                     "frame": 1,
@@ -899,6 +1053,24 @@ class LibraryExport extends BaseController
 
                 return Promise.resolve(canvas);
             });
+    }
+
+    /**
+     * @description undo用にデータを内部保管する
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    save ()
+    {
+        if (!this._$saved) {
+            this._$saved = true;
+
+            Util
+                .$currentWorkSpace()
+                .temporarilySaved();
+        }
     }
 }
 
