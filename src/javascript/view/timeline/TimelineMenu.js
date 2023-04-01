@@ -1215,6 +1215,68 @@ class TimelineMenu extends BaseTimeline
      */
     show (event)
     {
+        const targetLayers = Util.$timelineLayer.targetLayers;
+        if (!targetLayers.size) {
+            return ;
+        }
+
+        const hideElementIds = [
+            "context-menu-tween-add",
+            "context-menu-tween-delete"
+        ];
+
+        for (let idx = 0; idx < hideElementIds.length; ++idx) {
+
+            const element = document
+                .getElementById(hideElementIds[idx]);
+
+            if (!element) {
+                continue;
+            }
+
+            element.setAttribute("style", "opacity:0.5; pointer-events:none;");
+
+        }
+
+        if (targetLayers.size === 1) {
+
+            const targetLayer = Util.$timelineLayer.targetLayer;
+            const scene = Util.$currentWorkSpace().scene;
+
+            const layer = scene.getLayer(
+                targetLayer.dataset.layerId | 0
+            );
+
+            const frame = Util.$timelineFrame.currentFrame;
+            const activeCharacters = layer.getActiveCharacter(frame);
+
+            if (activeCharacters.length === 1) {
+                const character = activeCharacters[0];
+                const place = character.getPlace(frame);
+
+                if (place.tweenFrame) {
+
+                    const element = document
+                        .getElementById("context-menu-tween-delete");
+
+                    if (element) {
+                        element.setAttribute("style", "");
+                    }
+
+                } else {
+
+                    const element = document
+                        .getElementById("context-menu-tween-add");
+
+                    if (element) {
+                        element.setAttribute("style", "");
+                    }
+
+                }
+
+            }
+        }
+
         Util.$endMenu("timeline-menu");
 
         const element = document.getElementById("timeline-menu");

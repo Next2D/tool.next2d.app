@@ -4336,8 +4336,9 @@ class TimelineLayer extends BaseTimeline
             }
         }
 
-        // フレームのアクティブ表示を初期化
-        this.clearActiveFrames();
+        // 選択したレイヤーをセット
+        this.targetLayer = document
+            .getElementById(`layer-id-${targetLayerId}`);
 
         // 再度、選択した範囲でアクティブ計算を行う
         const scene = Util.$currentWorkSpace().scene;
@@ -4345,6 +4346,10 @@ class TimelineLayer extends BaseTimeline
 
             const layerId = selectIds[idx] | 0;
             const layer = scene.getLayer(layerId);
+            if (!layer) {
+                continue;
+            }
+
             for (let frame = minFrame; frame < maxFrame; ++frame) {
                 this.addTargetFrame(layer, frame);
             }
