@@ -1385,7 +1385,7 @@ class LibraryController
                 .$currentWorkSpace()
                 .addLibrary({
                     "id": Util.$currentWorkSpace().nextLibraryId,
-                    "type": "folder",
+                    "type": InstanceType.FOLDER,
                     "name": entry.name,
                     "symbol": ""
                 });
@@ -1561,6 +1561,17 @@ class LibraryController
                     .text()
                     .then((value) =>
                     {
+                        if (!folder_id) {
+                            const folder = workSpace
+                                .addLibrary(this.createInstance(
+                                    InstanceType.FOLDER,
+                                    name || file.name,
+                                    library_id || workSpace.nextLibraryId
+                                ));
+
+                            folder_id = folder.id;
+                        }
+
                         const object = this.createInstance(
                             InstanceType.MOVIE_CLIP,
                             name || file.name,
@@ -1593,7 +1604,7 @@ class LibraryController
                             this.updateFolderStyle(folder, folder.mode);
                         }
 
-                        SVGToShape.parse(value, movieClip);
+                        SVGToShape.parse(value, movieClip, folder_id);
 
                         // ライブラリ選択のselectを更新
                         Util
@@ -1838,6 +1849,17 @@ class LibraryController
                     .arrayBuffer()
                     .then((buffer) =>
                     {
+                        if (!folder_id) {
+                            const folder = workSpace
+                                .addLibrary(this.createInstance(
+                                    InstanceType.FOLDER,
+                                    name || file.name,
+                                    library_id || workSpace.nextLibraryId
+                                ));
+
+                            folder_id = folder.id;
+                        }
+
                         new ReComposition()
                             .setData(new Uint8Array(buffer))
                             .run(

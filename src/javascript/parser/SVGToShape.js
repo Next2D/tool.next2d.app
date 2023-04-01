@@ -7,11 +7,12 @@ class SVGToShape
     /**
      * @param  {string} value
      * @param  {MovieClip} movie_clip
+     * @param  {number} [folder_id = 0]
      * @return {void}
      * @method
      * @static
      */
-    static parse (value, movie_clip)
+    static parse (value, movie_clip, folder_id = 0)
     {
         const dom = new DOMParser()
             .parseFromString(value, "image/svg+xml");
@@ -49,7 +50,8 @@ class SVGToShape
         SVGToShape.parseElement(
             svg, movie_clip,
             parentAttributeMap,
-            new Map()
+            new Map(),
+            folder_id
         );
 
         const layers = [];
@@ -66,18 +68,21 @@ class SVGToShape
     }
 
     /**
-     * @param  {Element} node
+     * @param  {Element}   node
      * @param  {MovieClip} movie_clip
-     * @param  {Map} group_attribute_map
-     * @param  {Map} global_style
-     * @param  {boolean} [clip=false]
+     * @param  {Map}       group_attribute_map
+     * @param  {Map}       global_style
+     * @param  {number}    [folder_id=0]
+     * @param  {boolean}   [clip=false]
      * @return {void}
      * @method
      * @static
      */
     static parseElement (
-        node, movie_clip, group_attribute_map, global_style, clip = false
+        node, movie_clip, group_attribute_map, global_style,
+        folder_id = 0, clip = false
     ) {
+
         const children = node.children;
         const length = children.length;
         for (let idx = 0; length > idx; ++idx) {
@@ -154,7 +159,8 @@ class SVGToShape
                             movie_clip,
                             targetElement,
                             group_attribute_map,
-                            global_style
+                            global_style,
+                            folder_id
                         );
 
                         SVGToShape.parseElement(
@@ -162,6 +168,7 @@ class SVGToShape
                             movieClip,
                             group_attribute_map,
                             global_style,
+                            folder_id,
                             true
                         );
                     }
@@ -178,6 +185,7 @@ class SVGToShape
                         group_attribute_map,
                         global_style,
                         null,
+                        folder_id,
                         clip
                     );
                     break;
@@ -399,6 +407,7 @@ class SVGToShape
                             group_attribute_map,
                             global_style,
                             commands,
+                            folder_id,
                             clip
                         );
                     }
@@ -485,6 +494,7 @@ class SVGToShape
                             group_attribute_map,
                             global_style,
                             commands,
+                            folder_id,
                             clip
                         );
                     }
@@ -572,6 +582,7 @@ class SVGToShape
                             group_attribute_map,
                             global_style,
                             commands,
+                            folder_id,
                             clip
                         );
                     }
@@ -636,6 +647,7 @@ class SVGToShape
                             group_attribute_map,
                             global_style,
                             commands,
+                            folder_id,
                             clip
                         );
                     }
@@ -706,6 +718,7 @@ class SVGToShape
                             group_attribute_map,
                             global_style,
                             commands,
+                            folder_id,
                             clip
                         );
                     }
@@ -790,7 +803,8 @@ class SVGToShape
                             parent,
                             movie_clip,
                             group_attribute_map,
-                            global_style
+                            global_style,
+                            folder_id
                         );
                     }
                     continue;
@@ -810,7 +824,8 @@ class SVGToShape
                 element,
                 movieClip || movie_clip,
                 groupAttributeMap || group_attribute_map,
-                global_style
+                global_style,
+                folder_id
             );
 
             if (movieClip) {
@@ -833,12 +848,14 @@ class SVGToShape
      * @param  {Element} element
      * @param  {Map} group_attribute_map
      * @param  {Map} global_style
+     * @param  {number} [folder_id=0]
      * @return {MovieClip}
      * @method
      * @static
      */
     static createMovieClip (
-        movie_clip, element, group_attribute_map, global_style
+        movie_clip, element, group_attribute_map, global_style,
+        folder_id = 0
     ) {
         const workSpace = Util.$currentWorkSpace();
 
@@ -849,6 +866,7 @@ class SVGToShape
                 .$libraryController
                 .createInstance(InstanceType.MOVIE_CLIP, `MovieClip_${id}`, id)
         );
+        movieClip.folderId = folder_id;
 
         const layer = new Layer();
         layer.name  = `Layer_${movie_clip._$layers.size}`;
@@ -967,13 +985,15 @@ class SVGToShape
      * @param  {Element} element
      * @param  {Map} group_attribute_map
      * @param  {Map} global_style
+     * @param  {number} [folder_id=0]
      * @param  {boolean} [clip=false]
      * @return {Shape}
      * @method
      * @static
      */
     static createShape (
-        movie_clip, element, group_attribute_map, global_style, clip = false
+        movie_clip, element, group_attribute_map, global_style,
+        folder_id = 0, clip = false
     ) {
 
         const workSpace = Util.$currentWorkSpace();
@@ -985,6 +1005,7 @@ class SVGToShape
                 .$libraryController
                 .createInstance(InstanceType.SHAPE, `Shape_${id}`, id)
         );
+        shape.folderId = folder_id;
 
         const layer = new Layer();
         layer.name  = `Layer_${movie_clip._$layers.size}`;
@@ -1763,19 +1784,20 @@ class SVGToShape
     }
 
     /**
-     * @param  {Element} element
+     * @param  {Element}   element
      * @param  {MovieClip} movie_clip
-     * @param  {Map} group_attribute_map
-     * @param  {Map} global_style
-     * @param  {array} [commands=null]
-     * @param  {boolean} [clip=false]
+     * @param  {Map}       group_attribute_map
+     * @param  {Map}       global_style
+     * @param  {array}     [commands=null]
+     * @param  {number}    [folder_id=0]
+     * @param  {boolean}   [clip=false]
      * @return {void}
      * @method
      * @static
      */
     static createGraphics (
         element, movie_clip, group_attribute_map, global_style,
-        commands = null, clip = false
+        commands = null, folder_id = 0, clip = false
     ) {
         if (!commands && !element.hasAttribute("d")) {
             return;
@@ -1784,7 +1806,8 @@ class SVGToShape
         const { Shape, Graphics } = window.next2d.display;
 
         const shape = SVGToShape.createShape(
-            movie_clip, element, group_attribute_map, global_style, clip
+            movie_clip, element, group_attribute_map,
+            global_style, folder_id, clip
         );
 
         const graphics = new Shape().graphics;
@@ -1856,14 +1879,6 @@ class SVGToShape
                             strokeObject.join
                         );
                     }
-
-                    // if (graphics._$fills) {
-                    //     graphics.endFill();
-                    //     graphics.beginFill(
-                    //         fillObject.color,
-                    //         fillObject.alpha
-                    //     );
-                    // }
 
                     graphics.moveTo(
                         currentPointX,
