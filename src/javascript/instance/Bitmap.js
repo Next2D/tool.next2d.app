@@ -116,6 +116,12 @@ class Bitmap extends Instance
     {
         if (!this._$binary) {
 
+            if (!this._$buffer) {
+                this._$buffer = new Uint8Array(
+                    this._$width * this._$height * 4
+                );
+            }
+
             const length = this._$buffer.length;
 
             for (let idx = 0; idx < length; ++idx) {
