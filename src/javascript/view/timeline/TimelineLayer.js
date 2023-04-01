@@ -4336,9 +4336,15 @@ class TimelineLayer extends BaseTimeline
             }
         }
 
-        // 選択したレイヤーをセット
-        this.targetLayer = document
-            .getElementById(`layer-id-${targetLayerId}`);
+
+        if (Util.$shiftKey) {
+            // 選択したレイヤーをセット
+            this.targetLayer = document
+                .getElementById(`layer-id-${targetLayerId}`);
+        } else {
+            // 選択中のフレームを初期化
+            this.clearActiveFrames();
+        }
 
         // 再度、選択した範囲でアクティブ計算を行う
         const scene = Util.$currentWorkSpace().scene;
