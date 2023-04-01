@@ -2185,6 +2185,190 @@ class ScreenMenu extends BaseScreen
      */
     show (event)
     {
+        /**
+         * @type {ArrowTool}
+         */
+        const tool = Util.$tools.getDefaultTool("arrow");
+        switch (tool.activeElements.length) {
+
+            case 0:
+                {
+                    const elementIds = [
+                        "screen-order",
+                        "screen-align",
+                        "screen-move-scene",
+                        "screen-change-scene",
+                        "screen-distribute-to-layers",
+                        "screen-distribute-to-keyframes",
+                        "screen-integrating-paths",
+                        "screen-add-tween-curve-pointer",
+                        "screen-delete-tween-curve-pointer",
+                        "screen-change-movie-clip"
+                    ];
+
+                    for (let idx = 0; idx < elementIds.length; ++idx) {
+
+                        const element = document
+                            .getElementById(elementIds[idx]);
+
+                        if (!element) {
+                            continue;
+                        }
+
+                        element.setAttribute("style", "opacity:0.5; pointer-events:none;");
+                    }
+                }
+                break;
+
+            case 1:
+                {
+                    const showElementIds = [
+                        "screen-order",
+                        "screen-align",
+                        "screen-change-movie-clip",
+                        "screen-distribute-to-layers",
+                        "screen-distribute-to-keyframes"
+                    ];
+
+                    for (let idx = 0; idx < showElementIds.length; ++idx) {
+
+                        const element = document
+                            .getElementById(showElementIds[idx]);
+
+                        if (!element) {
+                            continue;
+                        }
+
+                        element.setAttribute("style", "");
+                    }
+
+                    const hideElementIds = [
+                        "screen-move-scene",
+                        "screen-change-scene",
+                        "screen-integrating-paths",
+                        "screen-add-tween-curve-pointer",
+                        "screen-delete-tween-curve-pointer"
+                    ];
+
+                    for (let idx = 0; idx < hideElementIds.length; ++idx) {
+
+                        const element = document
+                            .getElementById(hideElementIds[idx]);
+
+                        if (!element) {
+                            continue;
+                        }
+
+                        element.setAttribute("style", "opacity:0.5; pointer-events:none;");
+                    }
+
+                    const activeElement = tool.activeElements[0];
+                    if (activeElement.dataset.instanceType === InstanceType.MOVIE_CLIP) {
+                        document
+                            .getElementById("screen-change-scene")
+                            .setAttribute("style", "");
+                    }
+
+                    const scene = Util.$currentWorkSpace().scene;
+                    const layer = scene.getLayer(
+                        activeElement.dataset.layerId | 0
+                    );
+
+                    if (layer) {
+                        const character = layer.getCharacter(
+                            activeElement.dataset.characterId | 0
+                        );
+
+                        const place = character.getPlace(
+                            Util.$timelineFrame.currentFrame | 0
+                        );
+
+                        if (place.tweenFrame) {
+                            document
+                                .getElementById("screen-add-tween-curve-pointer")
+                                .setAttribute("style", "");
+
+                            document
+                                .getElementById("screen-delete-tween-curve-pointer")
+                                .setAttribute("style", "");
+                        }
+                    }
+                }
+                break;
+
+            default:
+                {
+                    const showElementIds = [
+                        "screen-order",
+                        "screen-align",
+                        "screen-change-movie-clip",
+                        "screen-distribute-to-layers",
+                        "screen-distribute-to-keyframes"
+                    ];
+
+                    for (let idx = 0; idx < showElementIds.length; ++idx) {
+
+                        const element = document
+                            .getElementById(showElementIds[idx]);
+
+                        if (!element) {
+                            continue;
+                        }
+
+                        element.setAttribute("style", "");
+                    }
+
+                    const hideElementIds = [
+                        "screen-move-scene",
+                        "screen-change-scene",
+                        "screen-integrating-paths",
+                        "screen-add-tween-curve-pointer",
+                        "screen-delete-tween-curve-pointer"
+                    ];
+
+                    for (let idx = 0; idx < hideElementIds.length; ++idx) {
+
+                        const element = document
+                            .getElementById(hideElementIds[idx]);
+
+                        if (!element) {
+                            continue;
+                        }
+
+                        element.setAttribute("style", "opacity:0.5; pointer-events:none;");
+                    }
+
+                    const activeElements = tool.activeElements;
+                    let useShape = true;
+                    for (let idx = 0; idx < activeElements.length; ++idx) {
+
+                        const activeElement = activeElements[idx];
+                        if (activeElement.dataset.instanceType === InstanceType.SHAPE) {
+                            continue;
+                        }
+
+                        useShape = false;
+                        break;
+                    }
+
+                    if (useShape) {
+                        document
+                            .getElementById("screen-integrating-paths")
+                            .setAttribute("style", "");
+                    }
+
+                }
+                break;
+
+        }
+
+        // 親のシーン移動をアクティブ
+        if (Util.$sceneChange.matrix.length) {
+            document
+                .getElementById("screen-move-scene")
+                .setAttribute("style", "");
+        }
+
         Util.$endMenu("screen-menu");
 
         const element = document.getElementById("screen-menu");
