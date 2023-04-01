@@ -4336,7 +4336,6 @@ class TimelineLayer extends BaseTimeline
             }
         }
 
-
         if (Util.$shiftKey) {
             // 選択したレイヤーをセット
             this.targetLayer = document
