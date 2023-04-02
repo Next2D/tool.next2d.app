@@ -348,6 +348,12 @@ class ShortcutSetting
                     "description": "{{空のキーフレームを追加}}"
                 },
                 {
+                    "key": "F6",
+                    "text": "F6",
+                    "css": "context-menu-key-frame-change",
+                    "description": "{{キーフレームに変換}}"
+                },
+                {
                     "key": "f",
                     "text": "F",
                     "css": "timeline-frame-add",
@@ -1014,7 +1020,11 @@ class ShortcutSetting
                 JSON.stringify(object)
             );
 
+        // 固有のショートカットを作成
         this.createShortcutMap();
+
+        // ショートカット表示を上書き
+        Util.$currentLanguage.initialize();
     }
 
     /**
