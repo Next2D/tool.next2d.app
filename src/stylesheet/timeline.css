@@ -582,7 +582,6 @@
     cursor : pointer;
 }
 
-#timeline .timeline-layer-light-one:active,
 #timeline .timeline-layer-disable-one:active,
 #timeline .timeline-layer-lock-one:active
 {
