@@ -190,7 +190,7 @@ class TimelinePlayer extends BaseTimeline
 
                 // サウンド設定を初期化
                 Util.$soundController.clear();
-                
+
                 this._$stopFlag = false;
 
                 // 先に起動しているタイマーがあれば停止する

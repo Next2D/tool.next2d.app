@@ -667,9 +667,6 @@ class TimelineHeader extends BaseTimeline
         // マーカーを移動
         Util.$timelineMarker.move();
 
-        // 移動先の音声設定を生成
-        Util.$soundController.createSoundElements();
-
         // マーカーの移動を有効化
         Util.$timelineMarker.startMarker();
 
