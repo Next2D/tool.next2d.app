@@ -251,7 +251,7 @@ class SoundController extends BaseController
             .value = `${volume}`;
 
         const frame = Util.$timelineFrame.currentFrame;
-        const scene = workSpace.scene;
+        const scene = Util.$currentWorkSpace().scene;
         if (scene._$sounds.has(frame)) {
             const object = scene
                 ._$sounds
