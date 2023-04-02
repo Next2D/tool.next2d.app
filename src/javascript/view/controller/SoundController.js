@@ -320,8 +320,11 @@ class SoundController extends BaseController
         value |= 0;
 
         const frame = Util.$timelineFrame.currentFrame;
+        const scene = Util.$currentWorkSpace().scene;
+        if (!scene._$sounds.has(frame)) {
+            return ;
+        }
 
-        const scene  = Util.$currentWorkSpace().scene;
         const index  = this._$currentTarget.dataset.soundId | 0;
         const object = scene._$sounds.get(frame)[index];
         object[name] = value;

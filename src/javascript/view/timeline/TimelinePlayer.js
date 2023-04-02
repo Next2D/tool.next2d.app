@@ -180,9 +180,6 @@ class TimelinePlayer extends BaseTimeline
                 Util.$root.stage._$player._$loadWebAudio();
             }
 
-            // サウンド設定を初期化
-            Util.$soundController.clear();
-
             const scene = Util.$currentWorkSpace().scene;
 
             // アクティブな再生範囲を取得(空のフレームは含めない)
@@ -191,6 +188,9 @@ class TimelinePlayer extends BaseTimeline
             // 1フレーム以上あるタイムラインが再生対象
             if (this._$totalFrame > 1) {
 
+                // サウンド設定を初期化
+                Util.$soundController.clear();
+                
                 this._$stopFlag = false;
 
                 // 先に起動しているタイマーがあれば停止する
