@@ -1049,6 +1049,11 @@ class LibraryController
                     const cache = library.name;
                     library.name = value;
 
+                    // サウンド側も更新
+                    if (library.type === InstanceType.SOUND) {
+                        Util.$soundController.createSoundElements();
+                    }
+
                     // 重複してないかチェック
                     if (workSpace._$nameMap.has(library.path)) {
                         library.name = cache;

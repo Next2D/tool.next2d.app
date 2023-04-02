@@ -48,7 +48,7 @@ class SoundWaveform
      * @description canvasに波形情報を描画
      *
      * @param  {Uint8Array} buffer
-     * @return {void}
+     * @return {Promise}
      * @method
      * @public
      */
@@ -56,12 +56,16 @@ class SoundWaveform
     {
         this._$stopFlag = false;
 
-        this
+        if (!Util.$audioContext) {
+            return Promise.resolve(Util.$getCanvas());
+        }
+
+        return this
             .load(buffer, this._$width)
             .then((channels) =>
             {
                 if (this._$stopFlag) {
-                    return ;
+                    return Promise.resolve(Util.$getCanvas());
                 }
 
                 const ch1 = channels[0];
@@ -93,9 +97,7 @@ class SoundWaveform
                     `margin-bottom: 10px; width: ${this._$width}px; height: ${this._$height}px`
                 );
 
-                document
-                    .getElementById("library-preview-area")
-                    .prepend(canvas);
+                return Promise.resolve(canvas);
             });
     }
 

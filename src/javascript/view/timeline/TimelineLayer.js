@@ -2675,9 +2675,6 @@ class TimelineLayer extends BaseTimeline
             // マーカーを移動
             Util.$timelineMarker.move();
 
-            // 移動先の音声設定を生成
-            Util.$soundController.createSoundElements();
-
             // 再描画
             promises.push(this.reloadScreen());
         }

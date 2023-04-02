@@ -199,7 +199,15 @@ class LibraryPreview
 
                     if (instance.type === InstanceType.SOUND) {
 
-                        Util.$soundWaveform.draw(instance._$buffer.slice());
+                        Util
+                            .$soundWaveform
+                            .draw(instance._$buffer.slice())
+                            .then((canvas) =>
+                            {
+                                document
+                                    .getElementById("library-preview-area")
+                                    .prepend(canvas);
+                            });
 
                     } else {
 

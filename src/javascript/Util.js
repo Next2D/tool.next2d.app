@@ -45,6 +45,7 @@ Util.$currentLanguage         = null;
 Util.$shapePointerColor       = "#009900";
 Util.$shapeLinkedPointerColor = "#ffa500";
 Util.$shortcut                = new Map();
+Util.$globalShortcut          = new Map();
 Util.$useShortcutSetting      = false;
 Util.$changeLibraryId         = 0;
 Util.$canvases                = [];
@@ -611,6 +612,20 @@ Util.$setShortcut = (code, callback) =>
 };
 
 /**
+ * @description 画面全体のショートカットを登録
+ *
+ * @param  {string} code
+ * @param  {function} callback
+ * @return {void}
+ * @method
+ * @static
+ */
+Util.$setGlobalShortcut = (code, callback) =>
+{
+    Util.$globalShortcut.set(code, callback);
+};
+
+/**
  * @description ショートカットを削除
  *
  * @param  {string} code
@@ -656,6 +671,19 @@ Util.$executeKeyCommand = (event) =>
 
     }
 
+    const code = Util.$generateShortcutKey(event.key, {
+        "alt": Util.$altKey,
+        "shift": Util.$shiftKey,
+        "ctrl": Util.$ctrlKey
+    });
+
+    if (Util.$globalShortcut.has(code)) {
+        event.stopPropagation();
+        event.preventDefault();
+        Util.$globalShortcut.get(code)(event);
+        return ;
+    }
+
     if (Util.$keyLock) {
         return ;
     }
@@ -665,12 +693,6 @@ Util.$executeKeyCommand = (event) =>
         event.preventDefault();
         return ;
     }
-
-    const code = Util.$generateShortcutKey(event.key, {
-        "alt": Util.$altKey,
-        "shift": Util.$shiftKey,
-        "ctrl": Util.$ctrlKey
-    });
 
     if (!Util.$shortcut.has(code)) {
         return ;

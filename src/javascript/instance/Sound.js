@@ -71,6 +71,36 @@ class Sound extends Instance
     }
 
     /**
+     * @description シーンに追加したサウンド用のElement
+     *
+     * @return {Promise}
+     * @method
+     * @public
+     */
+    getScenePreview ()
+    {
+        return new Promise((resolve) =>
+        {
+            const audio = document.createElement("audio");
+            audio.addEventListener("canplaythrough", () =>
+            {
+                return resolve(audio);
+            });
+
+            audio.preload  = "auto";
+            audio.autoplay = false;
+            audio.loop     = false;
+            audio.controls = true;
+
+            audio.src = URL.createObjectURL(new Blob(
+                [new Uint8Array(this._$buffer)],
+                { "type": "audio/mp3" }
+            ));
+            audio.load();
+        });
+    }
+
+    /**
      * @description シンボルを指定した時の継承先を返す
      *              Returns the inheritance destination when a symbol is specified.
      *

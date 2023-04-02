@@ -180,6 +180,9 @@ class TimelinePlayer extends BaseTimeline
                 Util.$root.stage._$player._$loadWebAudio();
             }
 
+            // サウンド設定を初期化
+            Util.$soundController.clear();
+
             const scene = Util.$currentWorkSpace().scene;
 
             // アクティブな再生範囲を取得(空のフレームは含めない)
@@ -261,12 +264,27 @@ class TimelinePlayer extends BaseTimeline
      */
     stopAllSound ()
     {
+        const sounds = [];
         for (let idx = 0; idx < this._$sounds.length; ++idx) {
+
             const sound = this._$sounds[idx];
+            if (sound._$stopFlag) {
+                sounds.push(sound);
+                continue;
+            }
+
             sound.stop();
         }
 
-        this._$sounds.length = 0;
+        this._$sounds = sounds;
+
+        // 読み込み途中の音声があれば待機して再実行
+        if (this._$sounds.length) {
+            requestAnimationFrame(() =>
+            {
+                this.stopAllSound();
+            });
+        }
     }
 
     /**

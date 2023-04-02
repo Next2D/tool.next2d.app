@@ -59,6 +59,9 @@ class BaseTimeline extends InputEvent
     {
         const frame = Util.$timelineFrame.currentFrame;
 
+        // サウンド設定
+        Util.$soundController.createSoundElements();
+
         return Util
             .$currentWorkSpace()
             .scene

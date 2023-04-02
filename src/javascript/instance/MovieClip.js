@@ -478,14 +478,16 @@ class MovieClip extends Instance
     /**
      * @description 指定フレームのサウンドを再生
      *
-     * @param {number} frame
+     * @param  {number} frame
      * @return {void}
      * @method
      * @public
      */
     startSound (frame = 1)
     {
-        if (Util.$timelinePlayer.stopFlag || !this._$sounds.has(frame)) {
+        if (Util.$timelinePlayer.stopFlag
+            || !this._$sounds.has(frame)
+        ) {
             return ;
         }
 
@@ -504,18 +506,20 @@ class MovieClip extends Instance
             }
 
             const sound = new Sound();
-            sound.volume = object.volume / 100;
-            sound.loopCount = object.loopCount;
-            sound.src = URL.createObjectURL(new Blob(
-                [new Uint8Array(instance._$buffer)],
-                { "type": "audio/mp3" }
-            ));
-            sound.play();
-
             Util
                 .$timelinePlayer
                 ._$sounds
                 .push(sound);
+
+            sound.volume    = object.volume / 100;
+            sound.loopCount = object.loopCount;
+
+            sound.src = URL.createObjectURL(new Blob(
+                [new Uint8Array(instance._$buffer)],
+                { "type": "audio/mp3" }
+            ));
+
+            sound.play();
         }
     }
 

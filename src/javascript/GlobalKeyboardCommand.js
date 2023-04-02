@@ -69,7 +69,7 @@ class GlobalKeyboardCommand
         );
 
         // データをローカルに保存
-        Util.$setShortcut(
+        Util.$setGlobalShortcut(
             Util.$generateShortcutKey("s", { "ctrl": true }),
             Util.$autoSave
         );

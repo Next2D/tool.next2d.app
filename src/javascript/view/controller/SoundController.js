@@ -99,14 +99,13 @@ class SoundController extends BaseController
      */
     addSound (object = null, id = 0)
     {
+        const workSpace = Util.$currentWorkSpace();
         if (!object) {
 
             const element = document.getElementById("sound-select");
-            const option  = element.options[element.selectedIndex];
 
             const frame = Util.$timelineFrame.currentFrame;
-
-            const scene = Util.$currentWorkSpace().scene;
+            const scene = workSpace.scene;
             if (!scene._$sounds.has(frame)) {
                 scene._$sounds.set(frame, []);
             }
@@ -116,7 +115,6 @@ class SoundController extends BaseController
 
             object = {
                 "characterId": element.value | 0,
-                "name":        option.textContent,
                 "volume":      100,
                 "loopCount":   0,
                 "autoPlay":    false
@@ -128,10 +126,12 @@ class SoundController extends BaseController
             this.setIcon(frame);
         }
 
+        const instance = workSpace.getLibrary(object.characterId);
+
         const htmlTag = `
 <div id="sound-id-${id}" class="sound-border">
     <div class="sound-title">
-      <span id="sound-name-${id}" data-sound-id="${id}">${object.name}</span>
+      <span id="sound-name-${id}" data-sound-id="${id}">${instance.name}</span>
       <i class="trash" id="sound-trash-${id}" data-sound-id="${id}" data-detail="{{サウンドを削除}}"></i>
     </div>
 
@@ -146,6 +146,49 @@ class SoundController extends BaseController
     </div>
 </div>
 `;
+        if (instance) {
+
+            instance
+                .getScenePreview()
+                .then((element) =>
+                {
+                    const soundElement = document
+                        .getElementById(`sound-id-${id}`);
+
+                    if (!soundElement) {
+                        return ;
+                    }
+
+                    const parent = soundElement
+                        .getElementsByClassName("sound-container")[0];
+
+                    const div = document.createElement("div");
+                    div.setAttribute("class", "sound-setting-preview-container");
+
+                    element.volume = object.volume / 100;
+                    element.setAttribute("id", `sound-preview-${id}`);
+                    div.appendChild(element);
+
+                    parent.appendChild(div);
+
+                    if (!Util.$audioContext) {
+                        Util.$audioContext = new window.AudioContext();
+                    }
+
+                    Util
+                        .$soundWaveform
+                        .draw(instance._$buffer.slice())
+                        .then((canvas) =>
+                        {
+                            const div = document.createElement("div");
+                            div.setAttribute("class", "sound-setting-preview-container");
+                            div.appendChild(canvas);
+
+                            parent.appendChild(div);
+                        });
+                });
+        }
+
         document
             .getElementById("sound-list-area")
             .insertAdjacentHTML("beforeend", htmlTag);
@@ -239,12 +282,20 @@ class SoundController extends BaseController
             return ;
         }
 
+        value |= 0;
+
         const frame = Util.$timelineFrame.currentFrame;
 
         const scene  = Util.$currentWorkSpace().scene;
         const index  = this._$currentTarget.dataset.soundId | 0;
         const object = scene._$sounds.get(frame)[index];
         object[name] = value;
+
+        if (name === "volume") {
+            document
+                .getElementById(`sound-preview-${index}`)
+                .volume = value / 100;
+        }
     }
 
     /**
@@ -337,13 +388,13 @@ class SoundController extends BaseController
     }
 
     /**
-     * @description 指定のシーンとフレームからサウンド設定を反映
+     * @description 設定を初期化
      *
      * @return {void}
      * @method
      * @public
      */
-    createSoundElements ()
+    clear ()
     {
         const element = document
             .getElementById("sound-list-area");
@@ -352,6 +403,24 @@ class SoundController extends BaseController
             while (element.children.length) {
                 element.children[0].remove();
             }
+        }
+    }
+
+    /**
+     * @description 指定のシーンとフレームからサウンド設定を反映
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    createSoundElements ()
+    {
+        // 初期化
+        this.clear();
+
+        // 再生中は表示をしない
+        if (!Util.$timelinePlayer.stopFlag) {
+            return ;
         }
 
         const frame = Util.$timelineFrame.currentFrame;

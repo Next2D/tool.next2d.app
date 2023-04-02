@@ -659,6 +659,14 @@
     margin      : 12px;
 }
 
+#sound-list-area .sound-setting-preview-container
+{
+    display         : flex;
+    justify-content : center;
+    align-items     : center;
+    margin-bottom   : 12px;
+}
+
 #sound-list-area .sound-text
 {
     width       : 50px;
