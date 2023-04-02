@@ -166,6 +166,12 @@ class SoundController extends BaseController
                     div.setAttribute("class", "sound-setting-preview-container");
 
                     element.volume = object.volume / 100;
+                    element.setAttribute("data-sound-id", id);
+                    element.addEventListener("volumechange", (event) =>
+                    {
+                        this.volumeChange(event);
+                    });
+
                     element.setAttribute("id", `sound-preview-${id}`);
                     div.appendChild(element);
 
@@ -224,6 +230,35 @@ class SoundController extends BaseController
         Util.$addModalEvent(
             document.getElementById(`sound-id-${id}`)
         );
+    }
+
+    /**
+     * @description audio elementの音声変更処理
+     *
+     * @param  {Event} event
+     * @return {void}
+     * @method
+     * @public
+     */
+    volumeChange (event)
+    {
+        const sound   = event.target;
+        const soundId = sound.dataset.soundId | 0;
+        const volume  = sound.volume * 100 | 0;
+
+        document
+            .getElementById(`sound-volume-${soundId}`)
+            .value = `${volume}`;
+
+        const frame = Util.$timelineFrame.currentFrame;
+        const scene = workSpace.scene;
+        if (scene._$sounds.has(frame)) {
+            const object = scene
+                ._$sounds
+                .get(frame)[soundId];
+
+            object.volume = volume;
+        }
     }
 
     /**
