@@ -985,6 +985,7 @@
     background-repeat   : no-repeat;
     background-position : center center;
     flex-shrink         : 0;
+    font-size           : 10px;
 }
 
 #timeline .frame-border-box-action

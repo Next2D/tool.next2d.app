@@ -371,10 +371,12 @@ class TimelineHeader extends BaseTimeline
                         if (scene.hasLabel(currentFrame)) {
                             if (!child.classList.contains("frame-border-box-marker")) {
                                 child.setAttribute("class", "frame-border-box-marker");
+                                child.textContent = scene.getLabel(currentFrame);
                             }
                         } else {
                             if (!child.classList.contains("frame-border-box")) {
                                 child.setAttribute("class", "frame-border-box");
+                                child.textContent = "";
                             }
                         }
                         break;
@@ -548,6 +550,7 @@ class TimelineHeader extends BaseTimeline
         switch (type) {
 
             case "marker":
+                this._$targetElement.textContent = "";
                 scene.deleteLabel(frame);
                 break;
 
@@ -611,7 +614,9 @@ class TimelineHeader extends BaseTimeline
             switch (type) {
 
                 case "marker":
+                    this._$targetElement.textContent = "";
                     targetElement = parent.children[1];
+                    targetElement.textContent = scene.getLabel(dragFrame);
                     scene.setLabel(dropFrame, scene.getLabel(dragFrame));
                     break;
 

@@ -293,6 +293,7 @@ class TimelineTool extends BaseTimeline
             this.save(); // 事前保存
             scene.setLabel(this._$labelFrame, value);
             element.setAttribute("class", "frame-border-box-marker");
+            element.textContent = value;
 
         } else {
 
@@ -302,6 +303,7 @@ class TimelineTool extends BaseTimeline
                 this.save(); // 事前保存
                 scene.deleteLabel(this._$labelFrame);
                 element.setAttribute("class", "frame-border-box");
+                element.textContent = "";
             }
 
         }
