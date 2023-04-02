@@ -491,7 +491,7 @@ class TimelineTool extends BaseTimeline
             const child   = content.children[idx];
             const layerId = child.dataset.layerId | 0;
 
-            const element = document
+            const lightIcon = document
                 .getElementById(`layer-light-icon-${layerId}`);
 
             const parent = document
@@ -500,13 +500,14 @@ class TimelineTool extends BaseTimeline
             const layer = scene.getLayer(layerId);
             if (this._$lightAll) {
 
-                element
-                    .classList
-                    .remove("icon-disable");
+                lightIcon
+                    .children[0]
+                    .style
+                    .display = "none";
 
-                element
-                    .classList
-                    .add("light-icon-active");
+                lightIcon
+                    .style
+                    .backgroundImage = `url('${layer.getHighlightURL()}')`;
 
                 parent
                     .style
@@ -516,13 +517,14 @@ class TimelineTool extends BaseTimeline
 
             } else {
 
-                element
-                    .classList
-                    .remove("light-icon-active");
+                lightIcon
+                    .children[0]
+                    .style
+                    .display = "";
 
-                element
-                    .classList
-                    .add("icon-disable");
+                lightIcon
+                    .style
+                    .backgroundImage = "";
 
                 parent
                     .style

@@ -143,7 +143,7 @@ class Layer
         this._$display  = "";
 
         // レイヤに必要なフレームをタイムラインに生成
-        Util.$timelineLayer.create(this._$id);
+        Util.$timelineLayer.create(this._$id, this._$color);
 
         const element = parent.lastElementChild;
         if (!element) {
@@ -163,19 +163,16 @@ class Layer
         const lightIcon = document
             .getElementById(`layer-light-icon-${this.id}`);
 
-        lightIcon
-            .style
-            .backgroundImage = `url('${this.getHighlightURL()}')`;
-
         if (this.light) {
 
             lightIcon
-                .classList
-                .remove("icon-disable");
+                .children[0]
+                .style
+                .display = "none";
 
             lightIcon
-                .classList
-                .add("light-icon-active");
+                .style
+                .backgroundImage = `url('${this.getHighlightURL()}')`;
 
             element
                 .style

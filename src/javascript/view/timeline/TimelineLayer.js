@@ -666,11 +666,12 @@ class TimelineLayer extends BaseTimeline
      * @description タイムラインにレイヤーを追加する
      *
      * @param  {number} layer_id
+     * @param  {string} color
      * @return {void}
      * @method
      * @public
      */
-    create (layer_id)
+    create (layer_id, color)
     {
         const workSpace = Util.$currentWorkSpace();
         if (!workSpace) {
@@ -692,7 +693,6 @@ class TimelineLayer extends BaseTimeline
 
             element.insertAdjacentHTML("beforeend", `
 <div class="timeline-content-child" id="layer-id-${layer_id}" data-layer-id="${layer_id}">
-
     <div class="timeline-layer-controller">
         <i class="timeline-exit-icon" id="timeline-exit-icon-${layer_id}" data-layer-id="${layer_id}"></i>
         <i class="timeline-exit-in-icon" id="timeline-exit-in-icon-${layer_id}" data-layer-id="${layer_id}"></i>
@@ -703,7 +703,7 @@ class TimelineLayer extends BaseTimeline
         <i class="timeline-guide-in-icon" id="layer-guide-in-icon-${layer_id}" data-layer-id="${layer_id}" data-detail="{{レイヤー変更(ダブルクリック)}}"></i>
         <div class="view-text" id="layer-name-${layer_id}" data-layer-id="${layer_id}">layer_${layer_id}</div>
         <input type="text" class="view-text-input" id="layer-name-input-${layer_id}" data-layer-id="${layer_id}" value="layer_${layer_id}" style="display: none;" autocomplete="off" tabindex="-1">
-        <i class="timeline-layer-light-one icon-disable" id="layer-light-icon-${layer_id}" data-click-type="light" data-layer-id="${layer_id}" data-detail="{{レイヤーをハイライト}}"></i>
+        <i class="timeline-layer-light-one" id="layer-light-icon-${layer_id}" data-layer-id="${layer_id}" data-detail="{{レイヤーをハイライト}}"><span style="background-color:${color};"></span></i>
         <i class="timeline-layer-disable-one icon-disable" id="layer-disable-icon-${layer_id}" data-click-type="disable" data-layer-id="${layer_id}" data-detail="{{レイヤーを非表示}}"></i>
         <i class="timeline-layer-lock-one icon-disable" id="layer-lock-icon-${layer_id}" data-click-type="lock" data-layer-id="${layer_id}" data-detail="{{レイヤーをロック}}"></i>
     </div>
@@ -1264,7 +1264,49 @@ class TimelineLayer extends BaseTimeline
         }
         window.addEventListener("mouseup", this._$clearClickParam);
 
-        this.changeType(event.target, "light");
+        const layerId = event.target.dataset.layerId | 0;
+
+        const lightIcon = document
+            .getElementById(`layer-light-icon-${layerId}`);
+
+        const element = document
+            .getElementById(`layer-id-${layerId}`);
+
+        const layer = Util
+            .$currentWorkSpace()
+            .scene
+            .getLayer(layerId);
+
+        layer.light = !layer.light;
+        if (layer.light) {
+
+            lightIcon
+                .children[0]
+                .style
+                .display = "none";
+
+            lightIcon
+                .style
+                .backgroundImage = `url('${layer.getHighlightURL()}')`;
+
+            element
+                .style
+                .borderBottom = `1px solid ${layer.color}`;
+
+        } else {
+
+            lightIcon
+                .children[0]
+                .style
+                .display = "";
+
+            lightIcon
+                .style
+                .backgroundImage = "";
+
+            element.style.borderBottom = "";
+
+        }
     }
 
     /**
@@ -1362,27 +1404,13 @@ class TimelineLayer extends BaseTimeline
                 .classList
                 .remove("icon-disable");
 
-            if (type === "light") {
+            element
+                .classList
+                .add("icon-active");
 
-                element
-                    .classList
-                    .add("light-icon-active");
-
-                layerElement
-                    .style
-                    .borderBottom = `1px solid ${layer.color}`;
-
-            } else {
-
-                element
-                    .classList
-                    .add("icon-active");
-
-                layerElement
-                    .classList
-                    .add(`${type}-active`);
-
-            }
+            layerElement
+                .classList
+                .add(`${type}-active`);
 
         } else {
 
@@ -1390,25 +1418,13 @@ class TimelineLayer extends BaseTimeline
                 .classList
                 .add("icon-disable");
 
-            if (type === "light") {
+            element
+                .classList
+                .remove("icon-active");
 
-                element
-                    .classList
-                    .remove("light-icon-active");
-
-                layerElement.style.borderBottom = "";
-
-            } else {
-
-                element
-                    .classList
-                    .remove("icon-active");
-
-                layerElement
-                    .classList
-                    .remove(`${type}-active`);
-
-            }
+            layerElement
+                .classList
+                .remove(`${type}-active`);
 
         }
 

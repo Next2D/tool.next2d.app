@@ -13,28 +13,25 @@ class TimelineHighlight
     static get color ()
     {
         const colors = [
-            "#ef857d",
-            "#ffedab",
-            "#a3d6cc",
-            "#8d93c8",
-            "#e3acae",
-            "#ea5550",
-            "#00947a",
-            "#4d4398",
-            "#915da3",
-            "#ed6d35",
-            "#bd6856",
-            "#72640c",
-            "#98605e",
-            "#6c3524",
-            "#f8f4e6",
-            "#6a1917",
-            "#7f1184",
-            "#00afcc",
-            "#e3e548",
-            "#af0082",
-            "#0073a8",
-            "#e4007f"
+            "#ff0000",
+            "#0000ff",
+            "#32cd32",
+            "#ffc0cb",
+            "#ffd700",
+            "#ff8c00",
+            "#00ffff",
+            "#ff00ff",
+            "#008080",
+            "#ff7f50",
+            "#00bfff",
+            "#ff6347",
+            "#fa8072",
+            "#adff2f",
+            "#ff69b4",
+            "#7fff00",
+            "#ffffe0",
+            "#87cefa",
+            "#9370db"
         ];
 
         const index = Math.random() * colors.length | 0;

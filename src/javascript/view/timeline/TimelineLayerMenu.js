@@ -300,6 +300,14 @@ class TimelineLayerMenu extends BaseTimeline
             .style
             .backgroundImage = `url('${layer.getHighlightURL()}')`;
 
+        const lightRectIcon = document
+            .getElementById(`layer-light-rect-icon-${layerId}`);
+
+        lightRectIcon
+            .children[0]
+            .style
+            .backgroundColor = `${layer.color}`;
+
         if (layer.light) {
             document
                 .getElementById(`layer-id-${layerId}`)
