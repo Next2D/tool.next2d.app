@@ -1543,15 +1543,43 @@ class LibraryController
         // 上書き確認
         if (!library_id && workSpace._$nameMap.has(path)) {
 
-            Util.$confirmModal.files.push({
-                "file": file,
-                "folderId": folder_id,
-                "path": path
-            });
+            const instance = workSpace.getLibrary(
+                workSpace._$nameMap.get(path)
+            );
 
-            Util.$confirmModal.show();
+            if (instance.type === InstanceType.FOLDER) {
 
-            return resolve();
+                path += `/${path}`;
+
+                if (workSpace._$nameMap.has(path)) {
+                    Util.$confirmModal.files.push({
+                        "file": file,
+                        "folderId": instance.id,
+                        "path": path
+                    });
+
+                    Util.$confirmModal.show();
+
+                    return resolve();
+
+                }
+
+                // 既存のフォルダが存在するなら設定を上書き
+                folder_id = instance.id;
+
+            } else {
+
+                Util.$confirmModal.files.push({
+                    "file": file,
+                    "folderId": folder_id,
+                    "path": path
+                });
+
+                Util.$confirmModal.show();
+
+                return resolve();
+
+            }
         }
 
         // 上書きの場合はElementと内部データを削除
@@ -1573,6 +1601,8 @@ class LibraryController
                                     name || file.name,
                                     library_id || workSpace.nextLibraryId
                                 ));
+
+                            folder.mode = FolderType.OPEN;
 
                             folder_id = folder.id;
                         }
@@ -1858,9 +1888,11 @@ class LibraryController
                             const folder = workSpace
                                 .addLibrary(this.createInstance(
                                     InstanceType.FOLDER,
-                                    name || file.name,
+                                    path,
                                     library_id || workSpace.nextLibraryId
                                 ));
+
+                            folder.mode = FolderType.OPEN;
 
                             folder_id = folder.id;
                         }
