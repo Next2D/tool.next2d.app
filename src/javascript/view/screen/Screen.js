@@ -526,6 +526,7 @@ class Screen extends BaseScreen
                 let divStyle = "";
 
                 // mask attach
+                const promises = [];
                 if (layer.maskId !== null) {
 
                     const maskLayer = scene.getLayer(layer.maskId);
@@ -540,27 +541,31 @@ class Screen extends BaseScreen
                         const maskCharacter = maskLayer._$characters[0];
                         maskCharacter.dispose();
 
-                        const maskImage  = maskCharacter.draw(Util.$getCanvas());
-                        const maskBounds = maskCharacter.getBounds(matrix);
+                        promises.push(maskCharacter
+                            .draw(Util.$getCanvas(), frame)
+                            .then((mask_canvas) =>
+                            {
+                                const maskBounds = maskCharacter
+                                    .getBounds(matrix);
 
-                        const x = (maskBounds.xMin - bounds.xMin) * Util.$zoomScale;
-                        const y = (maskBounds.yMin - bounds.yMin) * Util.$zoomScale;
+                                const x = (maskBounds.xMin - bounds.xMin) * Util.$zoomScale;
+                                const y = (maskBounds.yMin - bounds.yMin) * Util.$zoomScale;
 
-                        const maskSrc    = maskImage.toDataURL();
-                        const maskWidth  = maskImage._$width  * Util.$zoomScale;
-                        const maskHeight = maskImage._$height * Util.$zoomScale;
+                                const maskSrc    = mask_canvas.toDataURL();
+                                const maskWidth  = mask_canvas._$width  * Util.$zoomScale;
+                                const maskHeight = mask_canvas._$height * Util.$zoomScale;
 
-                        divStyle += `mask: url(${maskSrc}), none;`;
-                        divStyle += `-webkit-mask: url(${maskSrc}), none;`;
-                        divStyle += `mask-size: ${maskWidth}px ${maskHeight}px;`;
-                        divStyle += `-webkit-mask-size: ${maskWidth}px ${maskHeight}px;`;
-                        divStyle += "mask-repeat: no-repeat;";
-                        divStyle += "-webkit-mask-repeat: no-repeat;";
-                        divStyle += `mask-position: ${x}px ${y}px;`;
-                        divStyle += `-webkit-mask-position: ${x}px ${y}px;`;
-                        divStyle += `mix-blend-mode: ${canvas.style.mixBlendMode};`;
-                        divStyle += `filter: ${canvas.style.filter};`;
-
+                                divStyle += `mask: url(${maskSrc}), none;`;
+                                divStyle += `-webkit-mask: url(${maskSrc}), none;`;
+                                divStyle += `mask-size: ${maskWidth}px ${maskHeight}px;`;
+                                divStyle += `-webkit-mask-size: ${maskWidth}px ${maskHeight}px;`;
+                                divStyle += "mask-repeat: no-repeat;";
+                                divStyle += "-webkit-mask-repeat: no-repeat;";
+                                divStyle += `mask-position: ${x}px ${y}px;`;
+                                divStyle += `-webkit-mask-position: ${x}px ${y}px;`;
+                                divStyle += `mix-blend-mode: ${mask_canvas.style.mixBlendMode};`;
+                                divStyle += `filter: ${mask_canvas.style.filter};`;
+                            }));
                     }
                 }
 
@@ -574,12 +579,24 @@ class Screen extends BaseScreen
                 divStyle += `left: ${tx}px;`;
                 divStyle += `top: ${ty}px;`;
 
-                div.setAttribute("style", divStyle);
+                if (!promises.length) {
+                    div.setAttribute("style", divStyle);
+                    return Promise.resolve({
+                        "div": div,
+                        "canvas": canvas
+                    });
+                }
 
-                return Promise.resolve({
-                    "div": div,
-                    "canvas": canvas
-                });
+                return Promise
+                    .all(promises)
+                    .then(() =>
+                    {
+                        div.setAttribute("style", divStyle);
+                        return Promise.resolve({
+                            "div": div,
+                            "canvas": canvas
+                        });
+                    });
             });
     }
 
@@ -842,16 +859,34 @@ class Screen extends BaseScreen
                 divStyle += `left: ${tx}px;`;
                 divStyle += `top: ${ty}px;`;
 
-                let canvasStyle = canvas.getAttribute("style");
-                canvasStyle += `width: ${canvas._$width * Util.$zoomScale}px;`;
-                canvasStyle += `height: ${canvas._$height * Util.$zoomScale}px;`;
-                if (character.offsetX) {
+                let currentCanvasStyle = "";
+                if (canvas.hasAttribute("style")) {
+                    currentCanvasStyle = canvas.getAttribute("style");
+                }
+
+                let canvasStyle = "";
+                if (currentCanvasStyle.indexOf("width") === -1) {
+                    canvasStyle += `width: ${canvas._$width * Util.$zoomScale}px;`;
+                }
+
+                if (currentCanvasStyle.indexOf("height") === -1) {
+                    canvasStyle += `height: ${canvas._$height * Util.$zoomScale}px;`;
+                }
+
+                if (character.offsetX && currentCanvasStyle.indexOf("left") === -1) {
                     canvasStyle += `left: ${character.offsetX * Util.$zoomScale}px;`;
                 }
-                if (character.offsetY) {
+
+                if (character.offsetY && currentCanvasStyle.indexOf("top") === -1) {
                     canvasStyle += `top: ${character.offsetY * Util.$zoomScale}px;`;
                 }
-                canvas.setAttribute("style", canvasStyle);
+
+                if (canvasStyle) {
+                    if (currentCanvasStyle) {
+                        canvasStyle += currentCanvasStyle;
+                    }
+                    canvas.setAttribute("style", canvasStyle);
+                }
 
                 const promises = [];
 
@@ -868,25 +903,41 @@ class Screen extends BaseScreen
                     ) {
 
                         const maskCharacter = maskLayer._$characters[0];
-                        const maskPlace = maskCharacter.getPlace(frame);
-                        if (maskCharacter._$maskPlaceFrame !== maskPlace.frame) {
-                            maskCharacter.dispose();
-                            maskCharacter._$maskPlaceFrame = maskPlace.frame;
-                        }
-
                         promises.push(maskCharacter
-                            .draw(Util.$getCanvas())
+                            .draw(Util.$getCanvas(), frame)
                             .then((mask_canvas) =>
                             {
                                 const maskBounds = maskCharacter
-                                    .getBounds(matrix);
+                                    .getBounds(matrix, parent_scene ? frame : 0);
 
                                 const x = (maskBounds.xMin - bounds.xMin) * Util.$zoomScale;
                                 const y = (maskBounds.yMin - bounds.yMin) * Util.$zoomScale;
 
+                                const instance = workSpace.getLibrary(
+                                    maskCharacter.libraryId
+                                );
+
+                                if (instance.type === InstanceType.MOVIE_CLIP) {
+
+                                    if (maskCharacter._$base64Frame !== frame) {
+                                        mask_canvas._$base64 = null;
+                                        mask_canvas._$base64Frame = frame;
+                                    }
+
+                                } else {
+
+                                    const place = maskCharacter.getPlace(frame);
+                                    if (maskCharacter._$base64Frame !== place.frame) {
+                                        mask_canvas._$base64 = null;
+                                        mask_canvas._$base64Frame = place.frame;
+                                    }
+
+                                }
+
                                 if (!mask_canvas._$base64) {
                                     mask_canvas._$base64 = mask_canvas.toDataURL();
                                 }
+
                                 const maskSrc    = mask_canvas._$base64;
                                 const maskWidth  = mask_canvas._$width  * Util.$zoomScale;
                                 const maskHeight = mask_canvas._$height * Util.$zoomScale;
@@ -899,8 +950,8 @@ class Screen extends BaseScreen
                                 divStyle += "-webkit-mask-repeat: no-repeat;";
                                 divStyle += `mask-position: ${x}px ${y}px;`;
                                 divStyle += `-webkit-mask-position: ${x}px ${y}px;`;
-                                divStyle += `mix-blend-mode: ${canvas.style.mixBlendMode};`;
-                                divStyle += `filter: ${canvas.style.filter};`;
+                                divStyle += `mix-blend-mode: ${mask_canvas.style.mixBlendMode};`;
+                                divStyle += `filter: ${mask_canvas.style.filter};`;
                             }));
                     }
                 }

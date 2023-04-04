@@ -20,6 +20,7 @@ class Character
         this._$canvas         = null;
         this._$base64         = null;
         this._$currentFrame   = 0;
+        this._$base64Frame    = 0;
         this._$currentPlace   = null;
         this._$screenX        = 0;
         this._$screenY        = 0;
@@ -27,7 +28,6 @@ class Character
         this._$offsetY        = 0;
         this._$name           = "";
         this._$cachePlaces    = [];
-        this._$maskPlaceFrame = 0;
         this._$referencePoint = { "x": 0, "y": 0 };
 
         if (object) {
@@ -728,9 +728,6 @@ class Character
         const bounds = instance.getBounds(matrix, frame);
         const width  = +Math.ceil(Math.abs(bounds.xMax - bounds.xMin));
         const height = +Math.ceil(Math.abs(bounds.yMax - bounds.yMin));
-
-        // styleを初期化
-        canvas.setAttribute("style", "");
 
         let promise = null;
         switch (place.blendMode) {
