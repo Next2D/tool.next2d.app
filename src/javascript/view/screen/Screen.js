@@ -1181,8 +1181,7 @@ class Screen extends BaseScreen
         Util.$sceneChange.offsetX = x * matrix[0] + y * matrix[2] + matrix[4];
         Util.$sceneChange.offsetY = x * matrix[1] + y * matrix[3] + matrix[5];
 
-        // const frame = Util.$timelineFrame.currentFrame;
-        const place = character.getPlace(1);
+        const place = character.getPlace(character.startFrame);
         Util.$sceneChange.matrix.push(place.matrix);
 
         // シーン移動

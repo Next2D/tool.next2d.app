@@ -2108,24 +2108,22 @@ Util.$parserHandler = function (event)
                         break;
 
                     case "SimpleButton":
-                        {
-                            console.log("TODO SimpleButton: ", character);
+                        console.log("TODO SimpleButton: ", character);
 
-                            const object = Util
-                                .$libraryController
-                                .createInstance(InstanceType.BUTTON, `Button_${id}`, id);
+                        // const object = Util
+                        //     .$libraryController
+                        //     .createInstance(InstanceType.BUTTON, `Button_${id}`, id);
+                        //
+                        // object.bounds  = {
+                        //     "xMin": character._$bounds.xMin,
+                        //     "xMax": character._$bounds.xMax,
+                        //     "yMin": character._$bounds.yMin,
+                        //     "yMax": character._$bounds.yMax
+                        // };
 
-                            object.bounds  = {
-                                "xMin": character._$bounds.xMin,
-                                "xMax": character._$bounds.xMax,
-                                "yMin": character._$bounds.yMin,
-                                "yMax": character._$bounds.yMax
-                            };
+                        // workSpace.addLibrary(object);
 
-                            // workSpace.addLibrary(object);
-
-                            Util.$characters.set(character._$characterId, id);
-                        }
+                        Util.$characters.set(character._$characterId, id);
                         break;
 
                     case "TextField":
