@@ -765,6 +765,18 @@ Util.$initialize = () =>
     Util.$languages.set("Russia", Russia);
     Util.$languages.set("Italiano", Italiano);
     Util.$languages.set("Spanish", Spanish);
+    Util.$languages.set("Bulgaria", Bulgaria);
+    Util.$languages.set("Finland", Finland);
+    Util.$languages.set("Germany", Germany);
+    Util.$languages.set("Hungary", Hungary);
+    Util.$languages.set("Indonesia", Indonesia);
+    Util.$languages.set("Latvia", Latvia);
+    Util.$languages.set("Lithuania", Lithuania);
+    Util.$languages.set("Netherlands", Netherlands);
+    Util.$languages.set("Poland", Poland);
+    Util.$languages.set("Romania", Romania);
+    Util.$languages.set("Slovakia", Slovakia);
+    Util.$languages.set("Turkey", Turkey);
 
     let language = localStorage
         .getItem(`${Util.PREFIX}@language-setting`);
@@ -799,6 +811,54 @@ Util.$initialize = () =>
 
             case "es":
                 language = "Spanish";
+                break;
+
+            case "bg":
+                language = "Bulgaria";
+                break;
+
+            case "fi":
+                language = "Finland";
+                break;
+
+            case "de":
+                language = "Germany";
+                break;
+
+            case "hu":
+                language = "Hungary";
+                break;
+
+            case "id":
+                language = "Indonesia";
+                break;
+
+            case "lv":
+                language = "Latvia";
+                break;
+
+            case "lt":
+                language = "Lithuania";
+                break;
+
+            case "nl":
+                language = "Netherlands";
+                break;
+
+            case "pl":
+                language = "Poland";
+                break;
+
+            case "ro":
+                language = "Romania";
+                break;
+
+            case "sk":
+                language = "Slovakia";
+                break;
+
+            case "tr":
+                language = "Turkey";
                 break;
 
             default:

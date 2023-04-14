@@ -254,7 +254,7 @@
     flex-direction   : column;
     justify-content  : center;
     position         : fixed;
-    width            : 250px;
+    min-width        : 250px;
     border-radius    : 10px;
     background-color : #363636;
     color            : whitesmoke;
