@@ -278,7 +278,7 @@
 
 #user-setting select
 {
-    width            : 215px;
+    min-width        : 215px;
     height           : 25px;
     border           : 1px solid darkgray;
     border-radius    : 5px;
@@ -290,7 +290,7 @@
 
 #user-setting .user-setting-title
 {
-    width          : 170px;
+    min-width      : 170px;
     display        : flex;
     font-size      : 15px;
     font-weight    : bold;
