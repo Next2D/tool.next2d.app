@@ -568,13 +568,16 @@ class Shape extends Instance
         div.dataset.type         = `${type}`;
         div.dataset.position     = `${stageArea.children.length}`;
 
-        const frame = Util.$timelineFrame.currentFrame;
-        let matrix  = character.getPlace(frame).matrix;
-        if (Util.$sceneChange.matrix.length) {
-            matrix = Util.$multiplicationMatrix(
-                Util.$sceneChange.concatenatedMatrix,
-                matrix
-            );
+        let matrix = [1, 0, 0, 1, 0, 0];
+        if (character) {
+            const frame = Util.$timelineFrame.currentFrame;
+            matrix = character.getPlace(frame).matrix;
+            if (Util.$sceneChange.matrix.length) {
+                matrix = Util.$multiplicationMatrix(
+                    Util.$sceneChange.concatenatedMatrix,
+                    matrix
+                );
+            }
         }
 
         // css

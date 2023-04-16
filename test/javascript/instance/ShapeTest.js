@@ -261,6 +261,12 @@ describe("Shape.js createPointer test", () =>
         Util.$activeWorkSpaceId = Util.$workSpaces.length;
         Util.$workSpaces.push(workSpaces);
 
+        workSpaces.scene = new MovieClip({
+            "id": 1,
+            "name": "MovieClip_01",
+            "type": InstanceType.MOVIE_CLIP
+        });
+
         const shape = new Shape({
             "id": 33,
             "name": "Shape_01",
@@ -275,7 +281,7 @@ describe("Shape.js createPointer test", () =>
 
         Util.$clearShapePointer();
         shape.addPointer(
-            1, 10, 0, 100, 50, [1,0,0,1,0,0], 99
+            0, 10, 0, 100, 50, 99
         );
 
         const element = document
@@ -283,7 +289,7 @@ describe("Shape.js createPointer test", () =>
             .lastElementChild;
 
         expect(element.dataset.shapePointer).toBe("true");
-        expect(element.dataset.layerId).toBe("1");
+        expect(element.dataset.layerId).toBe("0");
         expect(element.dataset.characterId).toBe("10");
         expect(element.dataset.index).toBe("0");
         expect(element.dataset.libraryId).toBe("33");
