@@ -335,10 +335,7 @@ class TransformTool extends BaseTool
 
         scene.changeFrame(frame);
 
-        if (character) {
-            const matrix = character.getPlace(frame).matrix;
-            instance.createPointer(matrix, layerId, characterId);
-        }
+        instance.createPointer(layerId, characterId);
     }
 
     /**
@@ -409,7 +406,7 @@ class TransformTool extends BaseTool
                             .scene
                             .changeFrame(frame);
 
-                        instance.createPointer(event.matrix, layerId, characterId);
+                        instance.createPointer(layerId, characterId);
                     }
                     break;
 
@@ -429,7 +426,7 @@ class TransformTool extends BaseTool
                         const frame = Util.$timelineFrame.currentFrame;
                         Util.$currentWorkSpace().scene.changeFrame(frame);
 
-                        instance.createPointer(event.matrix, layerId, characterId);
+                        instance.createPointer(layerId, characterId);
                     }
                     break;
 
@@ -562,18 +559,14 @@ class TransformTool extends BaseTool
         // スクリーンを初期化
         tool.clear();
 
-        const frame = Util.$timelineFrame.currentFrame;
-
-        const workSpace   = Util.$currentWorkSpace();
         const layerId     = target.dataset.layerId | 0;
         const characterId = target.dataset.characterId | 0;
 
-        const layer     = workSpace.scene.getLayer(layerId);
-        const character = layer.getCharacter(characterId);
-        const instance  = workSpace.getLibrary(target.dataset.libraryId | 0);
-        const matrix    = character.getPlace(frame).matrix;
+        const instance  = Util
+            .$currentWorkSpace()
+            .getLibrary(target.dataset.libraryId | 0);
 
-        instance.createPointer(matrix, layerId, characterId);
+        instance.createPointer(layerId, characterId);
     }
 
     /**
@@ -787,8 +780,7 @@ class TransformTool extends BaseTool
             const layer       = scene.getLayer(layerId);
             const character   = layer.getCharacter(characterId);
             if (character) {
-                const matrix = character.getPlace(frame).matrix;
-                instance.createPointer(matrix, layerId, characterId);
+                instance.createPointer(layerId, characterId);
             }
         }
     }

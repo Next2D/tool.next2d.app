@@ -144,20 +144,16 @@ class ScreenZoom extends BaseScreen
 
                 if (shapePointer) {
 
-                    const workSpace = Util.$currentWorkSpace();
-
                     const characterId = shapePointer.dataset.characterId | 0;
                     const layerId = shapePointer.dataset.layerId | 0;
 
-                    const layer = workSpace.scene.getLayer(layerId);
-                    const character = layer.getCharacter(characterId);
+                    const instance = Util
+                        .$currentWorkSpace()
+                        .getLibrary(
+                            shapePointer.dataset.libraryId | 0
+                        );
 
-                    const instance = workSpace.getLibrary(
-                        shapePointer.dataset.libraryId | 0
-                    );
-                    const matrix = character.getPlace(frame).matrix;
-
-                    instance.createPointer(matrix, layerId, characterId);
+                    instance.createPointer(layerId, characterId);
                 }
             });
 

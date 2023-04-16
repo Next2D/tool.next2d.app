@@ -352,14 +352,13 @@ class Shape extends Instance
      * @description 描画パスのxyポインターを生成
      *              Generate xy pointer for drawing path
      *
-     * @param  {array}  matrix
      * @param  {number} layer_id
      * @param  {number} character_id
      * @return {void}
      * @method
      * @public
      */
-    createPointer (matrix, layer_id, character_id)
+    createPointer (layer_id, character_id)
     {
         const { Graphics } = window.next2d.display;
 
@@ -545,6 +544,13 @@ class Shape extends Instance
     addPointer (
         layer_id, character_id, index, x, y, type, curve = false
     ) {
+        const layer = Util
+            .$currentWorkSpace()
+            .scene
+            .getLayer(layer_id);
+
+        const character = layer.getCharacter(character_id);
+
         const stageArea = document
             .getElementById("stage-area");
 
@@ -562,15 +568,8 @@ class Shape extends Instance
         div.dataset.type         = `${type}`;
         div.dataset.position     = `${stageArea.children.length}`;
 
-        const layer = Util
-            .$currentWorkSpace()
-            .scene
-            .getLayer(layer_id);
-
-        const character = layer.getCharacter(character_id);
         const frame = Util.$timelineFrame.currentFrame;
-
-        let matrix = character.getPlace(frame).matrix;
+        let matrix  = character.getPlace(frame).matrix;
         if (Util.$sceneChange.matrix.length) {
             matrix = Util.$multiplicationMatrix(
                 Util.$sceneChange.concatenatedMatrix,
