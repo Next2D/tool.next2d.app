@@ -391,7 +391,6 @@ class Shape extends Instance
                         idx,
                         this._$recodes[idx++],
                         this._$recodes[idx++],
-                        matrix,
                         Graphics.LINE_TO
                     );
 
@@ -408,7 +407,6 @@ class Shape extends Instance
                             idx,
                             this._$recodes[idx++],
                             this._$recodes[idx++],
-                            matrix,
                             Graphics.CUBIC,
                             true
                         );
@@ -420,7 +418,6 @@ class Shape extends Instance
                         idx,
                         this._$recodes[idx++],
                         this._$recodes[idx++],
-                        matrix,
                         Graphics.CUBIC,
                         false
                     );
@@ -437,7 +434,6 @@ class Shape extends Instance
                         idx,
                         this._$recodes[idx++],
                         this._$recodes[idx++],
-                        matrix,
                         Graphics.CURVE_TO,
                         true
                     );
@@ -448,7 +444,6 @@ class Shape extends Instance
                         idx,
                         this._$recodes[idx++],
                         this._$recodes[idx++],
-                        matrix,
                         Graphics.CURVE_TO
                     );
 
@@ -468,7 +463,6 @@ class Shape extends Instance
                             movePointer.idx,
                             movePointer.x,
                             movePointer.y,
-                            matrix,
                             Graphics.MOVE_TO
                         );
                         movePointer = null;
@@ -542,7 +536,6 @@ class Shape extends Instance
      * @param  {number}  index
      * @param  {number}  x
      * @param  {number}  y
-     * @param  {array}   matrix
      * @param  {number}  type
      * @param  {boolean} [curve=false]
      * @return {void}
@@ -550,7 +543,7 @@ class Shape extends Instance
      * @public
      */
     addPointer (
-        layer_id, character_id, index, x, y, matrix, type, curve = false
+        layer_id, character_id, index, x, y, type, curve = false
     ) {
         const stageArea = document
             .getElementById("stage-area");
@@ -569,15 +562,28 @@ class Shape extends Instance
         div.dataset.type         = `${type}`;
         div.dataset.position     = `${stageArea.children.length}`;
 
+        const layer = Util
+            .$currentWorkSpace()
+            .scene
+            .getLayer(layer_id);
+
+        const character = layer.getCharacter(character_id);
+        const frame = Util.$timelineFrame.currentFrame;
+
+        let matrix = character.getPlace(frame).matrix;
+        if (Util.$sceneChange.matrix.length) {
+            matrix = Util.$multiplicationMatrix(
+                Util.$sceneChange.concatenatedMatrix,
+                matrix
+            );
+        }
+
         // css
         const tx = x * matrix[0] + y * matrix[2] + matrix[4];
         const ty = x * matrix[1] + y * matrix[3] + matrix[5];
 
-        const offsetX = Util.$sceneChange.offsetX * Util.$zoomScale;
-        const offsetY = Util.$sceneChange.offsetY * Util.$zoomScale;
-
-        div.style.left = `${tx * Util.$zoomScale + offsetX + Util.$offsetLeft - 3}px`;
-        div.style.top  = `${ty * Util.$zoomScale + offsetY + Util.$offsetTop  - 3}px`;
+        div.style.left = `${tx * Util.$zoomScale + Util.$offsetLeft - 3}px`;
+        div.style.top  = `${ty * Util.$zoomScale + Util.$offsetTop  - 3}px`;
 
         if (curve) {
             div.style.borderRadius = "5px";
@@ -612,7 +618,6 @@ class Shape extends Instance
             const activeTool = Util.$tools.activeTool;
             if (activeTool) {
                 event.shapePointer = true;
-                event.matrix       = matrix;
                 activeTool.dispatchEvent(
                     EventType.DBL_CLICK,
                     event

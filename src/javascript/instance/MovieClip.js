@@ -441,7 +441,9 @@ class MovieClip extends Instance
                 Util.$gridController.relocation();
 
                 for (let idx = 0; pointers.length > idx; ++idx) {
-                    element.appendChild(pointers[idx]);
+                    const node = pointers[idx];
+                    node.dataset.position = `${element.children.length}`;
+                    element.appendChild(node);
                 }
 
                 // tweenのポインターを再配置

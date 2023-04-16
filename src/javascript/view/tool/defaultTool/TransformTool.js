@@ -371,6 +371,23 @@ class TransformTool extends BaseTool
                 element.dataset.libraryId | 0
             );
 
+            const x1 = instance._$recodes[index    ];
+            const y1 = instance._$recodes[index + 1];
+
+            const targetElement = element.previousElementSibling;
+
+            let targetIndex = 2;
+            if (targetElement
+                && targetElement.dataset.shapePointer === "true"
+            ) {
+                targetIndex = targetElement.dataset.index | 0;
+            }
+
+            const x2 = instance._$recodes[targetIndex    ];
+            const y2 = instance._$recodes[targetIndex + 1];
+            const x3 = (x1 + x2) / 2;
+            const y3 = (y1 + y2) / 2;
+
             switch (type) {
 
                 case Graphics.LINE_TO:
@@ -378,14 +395,11 @@ class TransformTool extends BaseTool
                         workSpace
                             .temporarilySaved();
 
+                        // カーブ座標をセット
+                        instance._$recodes.splice(index, 0, x3, y3);
+
+                        // 対象の描画を2次パスに変更
                         instance._$recodes[index - 1] = Graphics.CURVE_TO;
-
-                        const tx = instance._$recodes[index    ];
-                        const ty = instance._$recodes[index + 1];
-                        instance._$recodes.splice(index + 2, 0, tx, ty);
-
-                        instance._$recodes[index    ] += 20;
-                        instance._$recodes[index + 1] += 20;
 
                         instance.cacheClear();
 
@@ -404,14 +418,11 @@ class TransformTool extends BaseTool
                         workSpace
                             .temporarilySaved();
 
+                        // カーブ座標をセット
+                        instance._$recodes.splice(index, 0, x3, y3);
+
+                        // 対象の描画を3次パスに変更
                         instance._$recodes[index - 3] = Graphics.CUBIC;
-
-                        const tx = instance._$recodes[index    ];
-                        const ty = instance._$recodes[index + 1];
-                        instance._$recodes.splice(index + 2, 0, tx, ty);
-
-                        instance._$recodes[index    ] += 20;
-                        instance._$recodes[index + 1] += 20;
 
                         instance.cacheClear();
 
@@ -433,49 +444,18 @@ class TransformTool extends BaseTool
      */
     clearActivePointer ()
     {
-        const { Graphics } = window.next2d.display;
-
         const stageArea = document
             .getElementById("stage-area");
 
         // アクティブなポインターがあれば初期化
-        const element = this._$element;
-        if (element) {
-
-            element.style.backgroundColor = "";
-
-            const position = element.dataset.position | 0;
-            const type     = element.dataset.type | 0;
-            const curve    = element.dataset.curve === "true";
-            switch (type) {
-
-                case Graphics.CURVE_TO:
-                    if (curve) {
-                        stageArea.children[position + 1].style.backgroundColor = "";
-                    } else {
-                        stageArea.children[position - 1].style.backgroundColor = "";
-                    }
-                    break;
-
-                case Graphics.CUBIC:
-                    if (curve) {
-                        for (let idx = 1; idx < 3; ++idx) {
-                            const element = stageArea.children[position + idx];
-                            element.style.backgroundColor = "";
-                            if (element.dataset.curve !== "true") {
-                                if (idx === 1) {
-                                    stageArea.children[position - 1].style.backgroundColor = "";
-                                }
-                                break;
-                            }
-                        }
-                    } else {
-                        stageArea.children[position - 1].style.backgroundColor = "";
-                        stageArea.children[position - 2].style.backgroundColor = "";
-                    }
-                    break;
-
+        const children = stageArea.children;
+        const length = children.length;
+        for (let idx = 0; idx < length; ++idx) {
+            const node = children[idx];
+            if (node.dataset.shapePointer !== "true") {
+                continue;
             }
+            node.style.backgroundColor = "";
         }
     }
 
@@ -512,7 +492,6 @@ class TransformTool extends BaseTool
         const position = element.dataset.position | 0;
         const type     = element.dataset.type | 0;
         const curve    = element.dataset.curve === "true";
-
         switch (type) {
 
             case Graphics.CURVE_TO:
@@ -629,14 +608,22 @@ class TransformTool extends BaseTool
         const scene       = workSpace.scene;
         const layer       = scene.getLayer(layerId);
         const character   = layer.getCharacter(characterId);
-        const matrix      = character.getPlace(frame).matrix;
+
+        let matrix = character.getPlace(frame).matrix;
+        if (Util.$sceneChange.matrix.length) {
+            matrix = Util.$multiplicationMatrix(
+                Util.$sceneChange.concatenatedMatrix,
+                matrix
+            );
+        }
 
         const x = event.pageX - this.pageX;
         const y = event.pageY - this.pageY;
 
         const { Matrix } = window.next2d.geom;
         const baseMatrix = new Matrix(
-            matrix[0], matrix[1], matrix[2], matrix[3], matrix[4], matrix[5]
+            matrix[0], matrix[1], matrix[2],
+            matrix[3], matrix[4], matrix[5]
         );
         baseMatrix.invert();
 
