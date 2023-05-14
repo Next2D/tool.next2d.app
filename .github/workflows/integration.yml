@@ -15,10 +15,10 @@ jobs:
         node-version: ["17.x", "18.x"]
     runs-on: macos-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           submodules: recursive
-      - uses: actions/setup-node@v2
+      - uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
       - uses: browser-actions/setup-chromium@latest
@@ -33,10 +33,10 @@ jobs:
         node-version: ["17.x", "18.x"]
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           submodules: recursive
-      - uses: actions/setup-node@v2
+      - uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
       - uses: browser-actions/setup-chromium@latest
