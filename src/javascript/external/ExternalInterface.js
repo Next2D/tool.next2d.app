@@ -151,6 +151,16 @@ class ExternalInterface
     }
 
     /**
+     * @return {ExternalDocument}
+     * @readonly
+     * @public
+     */
+    get documents ()
+    {
+        return this._$dom;
+    }
+
+    /**
      * @description 新規ツールを追加
      *
      * @param  {string} name

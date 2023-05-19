@@ -1325,6 +1325,16 @@ Util.$unZlibWorker.onmessage = (event) =>
             .$screenTab
             .createElement(workSpaces, Util.$workSpaces.length - 1);
 
+        Util
+            .$screenTab
+            .activeTab({
+                "currentTarget": {
+                    "dataset": {
+                        "tabId": Util.$workSpaces.length - 1
+                    }
+                }
+            });
+
         Util.$saveProgress.end();
 
     } else {
