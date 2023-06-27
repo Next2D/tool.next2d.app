@@ -5,6 +5,14 @@
 class ExternalTimeline
 {
     /**
+     * @param {ExternalDocument} external_document
+     */
+    constructor (external_document)
+    {
+        this._$document = external_document;
+    }
+
+    /**
      * @return {number}
      * @readonly
      * @public

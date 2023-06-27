@@ -1,6 +1,6 @@
 {
   "name": "next2d-tool",
-  "description": "Next2D NoCode Tools",
+  "description": "Nex2D NoCode Tool is a web browser-based authoring tool. Its intuitive interface and rich functionality make it easy for anyone to use. It allows you to combine various media formats, such as text, images, audio, and video, to create high-quality, engaging content.",
   "author": "Toshiyuki Ienaga<ienaga@tvon.jp>",
   "license": "MIT",
   "scripts": {

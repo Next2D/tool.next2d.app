@@ -281,9 +281,9 @@ class VectorToCanvas
 
             const isStroke = "Width" in data.object;
             let lineWidth  = 0;
-            let capsStyle  = CapsStyle.NONE;
+            let capsStyle  = "none";
             let miterLimit = 0;
-            let jointStyle = JointStyle.ROUND;
+            let jointStyle = "round";
             if (isStroke) {
 
                 lineWidth = data.object.Width;
@@ -291,15 +291,15 @@ class VectorToCanvas
                 switch (data.object.StartCapStyle) {
 
                     case 0:
-                        capsStyle = CapsStyle.ROUND;
+                        capsStyle = "round";
                         break;
 
                     case 1:
-                        capsStyle = CapsStyle.NONE;
+                        capsStyle = "none";
                         break;
 
                     case 2:
-                        capsStyle = CapsStyle.SQUARE;
+                        capsStyle = "square";
                         break;
 
                 }
@@ -307,15 +307,15 @@ class VectorToCanvas
                 switch (data.object.JoinStyle) {
 
                     case 0:
-                        jointStyle = JointStyle.ROUND;
+                        jointStyle = "round";
                         break;
 
                     case 1:
-                        jointStyle = JointStyle.BEVEL;
+                        jointStyle = "bevel";
                         break;
 
                     case 2:
-                        jointStyle = JointStyle.MITER;
+                        jointStyle = "miter";
                         miterLimit = data.object.MiterLimitFactor;
                         break;
 
@@ -380,22 +380,22 @@ class VectorToCanvas
                         }
 
                         const interpolationMode = gradient.InterpolationMode === 0
-                            ? InterpolationMethod.RGB
-                            : InterpolationMethod.LINEAR_RGB;
+                            ? "rgb"
+                            : "linearRGB";
 
-                        let spreadMode = SpreadMethod.PAD;
+                        let spreadMode = "pad";
                         switch (gradient.SpreadMode) {
 
                             case 0:
-                                spreadMode = SpreadMethod.PAD;
+                                spreadMode = "pad";
                                 break;
 
                             case 1:
-                                spreadMode = SpreadMethod.REFLECT;
+                                spreadMode = "reflect";
                                 break;
 
                             case 2:
-                                spreadMode = SpreadMethod.REPEAT;
+                                spreadMode = "repeat";
                                 break;
 
                         }
@@ -409,8 +409,8 @@ class VectorToCanvas
                                 jointStyle,
                                 miterLimit,
                                 styleObject.fillStyleType === 0x10
-                                    ? GradientType.LINEAR
-                                    : GradientType.RADIAL,
+                                    ? "linear"
+                                    : "radial",
                                 colorStops,
                                 styleObject.gradientMatrix,
                                 spreadMode,
@@ -423,8 +423,8 @@ class VectorToCanvas
                             recodes.push(
                                 Graphics.GRADIENT_FILL,
                                 styleObject.fillStyleType === 0x10
-                                    ? GradientType.LINEAR
-                                    : GradientType.RADIAL,
+                                    ? "linear"
+                                    : "radial",
                                 colorStops,
                                 styleObject.gradientMatrix,
                                 spreadMode,

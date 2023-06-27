@@ -141,23 +141,42 @@ class ExternalInterface
     }
 
     /**
+     * @param  {string} value
+     * @return {void}
+     * @method
+     * @public
+     */
+    trace (value)
+    {
+        Util.$saveProgress.message(value);
+    }
+
+    /**
      * @return {ExternalDocument}
      * @method
      * @public
      */
     getDocumentDOM ()
     {
-        return this._$dom;
+        return new ExternalDocument(Util.$currentWorkSpace());
     }
 
     /**
-     * @return {ExternalDocument}
+     * @return {array}
      * @readonly
      * @public
      */
     get documents ()
     {
-        return this._$dom;
+        const documents = [];
+        for (let idx = 0; idx < Util.$workSpaces.length; ++idx) {
+            const workSpaces = Util.$workSpaces[idx];
+            if (!workSpaces) {
+                continue;
+            }
+            documents.push(new ExternalDocument(workSpaces));
+        }
+        return documents;
     }
 
     /**

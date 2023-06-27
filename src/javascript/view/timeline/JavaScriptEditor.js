@@ -124,7 +124,7 @@ class JavaScriptEditor extends BaseTimeline
         super.initialize();
 
         // JavaScriptの編集エディターを起動
-        this.createEditor();
+        // this.createEditor();
 
         const elementIds = [
             "editor-hide-icon",
@@ -203,6 +203,14 @@ class JavaScriptEditor extends BaseTimeline
         for (let idx = 1; idx < level1.length; ++idx) {
 
             const name = level1[idx];
+            if (name.indexOf("_$") > -1) {
+                continue;
+            }
+
+            if (!window.next2d[name]) {
+                continue;
+            }
+
             words.push({
                 "word": `next2d.${name}`,
                 "meta": `next2d.${name}`

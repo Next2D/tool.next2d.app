@@ -174,12 +174,15 @@ class Project
                 break;
 
             case "custom":
-                if ("CustomPublish" in window) {
-                    window
-                        .CustomPublish
-                        .execute(Publish.toObject());
+                {
+                    const object = window.nt || window.fl;
+                    if ("customPublish" in object) {
+                        FLfile.clear();
+                        object
+                            .customPublish(Publish.toObject());
+                    }
+                    Util.$saveProgress.end();
                 }
-                Util.$saveProgress.end();
                 break;
 
         }

@@ -233,8 +233,7 @@ class Sound extends Instance
     {
         return {
             "buffer": Array.from(this._$buffer),
-            "audioBuffer": null,
-            "init": false
+            "audioBuffer": null
         };
     }
 }

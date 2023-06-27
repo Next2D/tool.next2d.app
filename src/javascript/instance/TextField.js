@@ -837,7 +837,7 @@ class TextField extends Instance
             "yMax": this._$originBounds.yMax
         };
 
-        const textFormat         = textField.defaultTextFormat;
+        const textFormat         = textField._$defaultTextFormat;
         textFormat.font          = this._$font;
         textFormat.size          = this._$size;
         textFormat.align         = this._$align;

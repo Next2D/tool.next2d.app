@@ -482,9 +482,23 @@ class SaveProgress
         element.value = `${value}`;
 
         // 状態を更新
+        this.message(state);
+    }
+
+    /**
+     * @description プログレスバーの状態メッセージを更新
+     *
+     * @param  {string} value
+     * @return {void}
+     * @method
+     * @public
+     */
+    message (value = "")
+    {
+        // 状態を更新
         document
             .getElementById("progress-state")
-            .textContent = state;
+            .textContent = `${value}`;
     }
 }
 

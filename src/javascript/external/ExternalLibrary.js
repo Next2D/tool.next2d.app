@@ -5,29 +5,34 @@
 class ExternalLibrary
 {
     /**
-     * @param {Instance} [instance=null]
+     * @param {ExternalDocument} external_document
      */
-    constructor (instance = null)
+    constructor (external_document)
     {
-        this._$instance = instance;
+        /**
+         * @type {ExternalDocument}
+         * @default null
+         * @private
+         */
+        this._$document = external_document;
     }
 
     /**
-     * @return {string}
+     * @member {ExternalDocument}
      * @public
      */
-    get name ()
+    get document ()
     {
-        if (!this._$instance) {
-            return "";
-        }
-
-        return this._$instance.path;
+        return this._$document;
+    }
+    set document (document)
+    {
+        this._$document = document;
     }
 
     /**
      * @param  {string} path
-     * @return {ExternalLibrary|null}
+     * @return {ExternalItem[]|null}
      */
     getItem (path)
     {
@@ -40,57 +45,32 @@ class ExternalLibrary
                 continue;
             }
 
-            return new ExternalLibrary(instance);
+            return new ExternalItem(instance);
         }
 
         return null;
     }
 
     /**
-     * @param  {number} [frame=1]
-     * @return {Promise}
-     * @method
+     * @return {array}
      * @public
      */
-    toImage (frame = 1)
+    get items ()
     {
-        if (!this._$instance) {
-            return Promise.resolve(new Image());
+        const workSpace = this._$document._$workSpace;
+
+        const items = [];
+        for (const instance of workSpace._$libraries.values()) {
+            if (instance.folderId) {
+                continue;
+            }
+            items.push(new ExternalItem(instance));
         }
 
-        const bounds = this._$instance.getBounds(
-            [1, 0, 0, 1, 0, 0], frame
-        );
+        // 最初はrootなので除外
+        items.shift();
 
-        const width  = Math.ceil(Math.abs(bounds.xMax - bounds.xMin));
-        const height = Math.ceil(Math.abs(bounds.yMax - bounds.yMin));
-
-        return this
-            ._$instance
-            .draw(Util.$getCanvas(),
-                width,
-                height,
-                {
-                    "frame": frame,
-                    "matrix": [1, 0, 0, 1, 0, 0],
-                    "colorTransform": [1, 1, 1, 1, 0, 0, 0, 0],
-                    "blendMode": "normal",
-                    "filter": [],
-                    "loop": Util.$getDefaultLoopConfig()
-                },
-                frame
-            )
-            .then((canvas) =>
-            {
-                const image  = new Image();
-                image.width  = width;
-                image.height = height;
-                image.src    = canvas.toDataURL();
-
-                Util.$poolCanvas(canvas);
-
-                return image;
-            });
+        return items;
     }
 
     /**

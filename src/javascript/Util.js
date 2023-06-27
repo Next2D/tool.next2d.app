@@ -883,13 +883,17 @@ Util.$initialize = () =>
     }
 
     if ("next2d" in window) {
-        Util.$root = window
+        window
             .next2d
             .createRootMovieClip(width, height, fps, {
                 "tagId": "preview-display"
-            });
+            }).then((root) =>
+            {
+                Util.$root = root;
+                root.stage._$player.stop();
 
-        Util.$root.stage._$player.stop();
+                Util.$javaScriptEditor.createEditor();
+            });
 
         const { LoaderInfo } = window.next2d.display;
         Util.$loaderInfo = new LoaderInfo();

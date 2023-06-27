@@ -1,4 +1,5 @@
 /**
+/**
  * コンテナとしてレイヤーやタイムラインを管理するクラス、Next2DのMovieClipクラスとして出力されます。
  * The output is a class that manages layers and timelines as containers and Next2D's MovieClip class.
  *
@@ -1384,12 +1385,30 @@ class MovieClip extends Instance
                             });
                         }
 
-                        const placeObject = {
-                            "matrix": place.matrix,
-                            "colorTransform": place.colorTransform,
-                            "blendMode": place.blendMode,
-                            "surfaceFilterList": filters
-                        };
+                        const placeObject = {};
+
+                        if (place.matrix[0] !== 1 || place.matrix[1] !== 0
+                            || place.matrix[2] !== 0 || place.matrix[3] !== 1
+                            || place.matrix[4] !== 0 || place.matrix[5] !== 0
+                        ) {
+                            placeObject.matrix = place.matrix;
+                        }
+
+                        if (place.colorTransform[0] !== 1 || place.colorTransform[1] !== 1
+                            || place.colorTransform[2] !== 1 || place.colorTransform[3] !== 1
+                            || place.colorTransform[4] !== 0 || place.colorTransform[5] !== 0
+                            || place.colorTransform[6] !== 0 || place.colorTransform[7] !== 0
+                        ) {
+                            placeObject.colorTransform = place.colorTransform;
+                        }
+
+                        if (place.blendMode !== "normal") {
+                            placeObject.blendMode = place.blendMode;
+                        }
+
+                        if (filters.length) {
+                            placeObject.surfaceFilterList = filters;
+                        }
 
                         if (instance.type === InstanceType.MOVIE_CLIP
                             && LoopController.DEFAULT > place.loop.type
@@ -1520,18 +1539,27 @@ class MovieClip extends Instance
             });
         }
 
-        return {
-            "actions": actions,
-            "symbol":  this.symbol,
+        const object = {
             "extends": this.defaultSymbol,
             "totalFrame": this.totalFrame,
             "controller": controller,
             "dictionary": dictionary,
-            "labels": this.labels,
             "placeMap": placeMap,
-            "placeObjects": placeObjects,
-            "sounds": sounds
+            "placeObjects": placeObjects
         };
+        if (actions.length) {
+            object.actions = actions;
+        }
+        if (this.symbol) {
+            object.symbol = this.symbol;
+        }
+        if (this.labels.length) {
+            object.labels = this.labels;
+        }
+        if (sounds.length) {
+            object.sounds = sounds;
+        }
+        return object;
     }
 
     /**
@@ -1649,33 +1677,39 @@ class MovieClip extends Instance
             }
 
             // matrix
-            displayObject._$transform._$matrix = new Matrix(
-                place.matrix[0], place.matrix[1],
-                place.matrix[2], place.matrix[3],
-                place.matrix[4], place.matrix[5]
-            );
+            displayObject._$transform._$matrix = place.matrix
+                ? new Matrix(
+                    place.matrix[0], place.matrix[1],
+                    place.matrix[2], place.matrix[3],
+                    place.matrix[4], place.matrix[5]
+                )
+                : new Matrix();
 
             // colorTransform
-            displayObject._$transform._$colorTransform = new ColorTransform(
-                place.colorTransform[0], place.colorTransform[1],
-                place.colorTransform[2], place.colorTransform[3],
-                place.colorTransform[4], place.colorTransform[5],
-                place.colorTransform[6], place.colorTransform[7]
-            );
+            displayObject._$transform._$colorTransform = place.colorTransform
+                ? new ColorTransform(
+                    place.colorTransform[0], place.colorTransform[1],
+                    place.colorTransform[2], place.colorTransform[3],
+                    place.colorTransform[4], place.colorTransform[5],
+                    place.colorTransform[6], place.colorTransform[7]
+                )
+                : new ColorTransform();
 
             // blendMode
             displayObject._$transform._$blendMode = place.blendMode;
 
             // filters
             const filters = [];
-            for (let idx = 0; idx < place.surfaceFilterList.length; ++idx) {
+            if (place.surfaceFilterList) {
+                for (let idx = 0; idx < place.surfaceFilterList.length; ++idx) {
 
-                const filterTag = place.surfaceFilterList[idx];
-                const filterClass = window.next2d.filters[filterTag.class];
+                    const filterTag = place.surfaceFilterList[idx];
+                    const filterClass = window.next2d.filters[filterTag.class];
 
-                filters.push(
-                    new (filterClass.bind.apply(filterClass, filterTag.params))()
-                );
+                    filters.push(
+                        new (filterClass.bind.apply(filterClass, filterTag.params))()
+                    );
+                }
             }
             displayObject._$transform._$filters = filters;
 
