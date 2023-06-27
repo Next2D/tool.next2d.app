@@ -258,14 +258,7 @@ class VectorToCanvas
      */
     toGraphicPath (stack)
     {
-        const {
-            Graphics,
-            GradientType,
-            InterpolationMethod,
-            SpreadMethod,
-            CapsStyle,
-            JointStyle
-        } = window.next2d.display;
+        const { Graphics } = window.next2d.display;
 
         let inBitmap = false;
         const recodes = [];

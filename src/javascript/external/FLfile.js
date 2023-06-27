@@ -9,8 +9,6 @@ class FLfile
      */
     constructor ()
     {
-        this._$zip = new JSZip();
-
         /**
          * @type {Map<any, any>}
          * @private

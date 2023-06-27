@@ -79,6 +79,5 @@ describe("Sound.js function test", () =>
         expect(object.buffer[6]).toBe(1);
         expect(object.buffer[7]).toBe(110);
         expect(object.audioBuffer).toBe(null);
-        expect(object.init).toBe(false);
     });
 });

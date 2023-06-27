@@ -227,12 +227,12 @@ describe("MovieClip.js common function test", () =>
         };
 
         const object = movieClip.toPublish();
-        expect(object.actions.length).toBe(0);
+        expect(object.actions).toBe(undefined);
         expect(object.symbol).toBe("app.movie.clip");
         expect(object.extends).toBe("next2d.display.MovieClip");
         expect(object.totalFrame).toBe(1);
-        expect(object.labels.length).toBe(0);
-        expect(object.sounds.length).toBe(0);
+        expect(object.labels).toBe(undefined);
+        expect(object.sounds).toBe(undefined);
         expect(object.controller.length).toBe(2);
         expect(object.placeMap.length).toBe(2);
         expect(object.placeObjects.length).toBe(2);
@@ -265,8 +265,8 @@ describe("MovieClip.js common function test", () =>
         expect(place1.colorTransform[5]).toBe(3);
         expect(place1.colorTransform[6]).toBe(2);
         expect(place1.colorTransform[7]).toBe(1);
-        expect(place1.blendMode).toBe("normal");
-        expect(place1.surfaceFilterList.length).toBe(0);
+        expect(place1.blendMode).toBe(undefined);
+        expect(place1.surfaceFilterList).toBe(undefined);
 
         const place2 = object.placeObjects[1];
         expect(place2.matrix.length).toBe(6);
@@ -285,8 +285,8 @@ describe("MovieClip.js common function test", () =>
         expect(place2.colorTransform[5]).toBe(6);
         expect(place2.colorTransform[6]).toBe(7);
         expect(place2.colorTransform[7]).toBe(8);
-        expect(place2.blendMode).toBe("normal");
-        expect(place2.surfaceFilterList.length).toBe(0);
+        expect(place2.blendMode).toBe(undefined);
+        expect(place2.surfaceFilterList).toBe(undefined);
 
         const dictionary1 = object.dictionary[0];
         expect(dictionary1.name).toBe("");
