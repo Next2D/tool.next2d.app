@@ -613,7 +613,6 @@ class SwfParser
         }
 
         const sounds = tags.sounds;
-
         length = sounds.length | 0;
         if (length) {
             parent._$sounds.push({
@@ -4183,50 +4182,24 @@ class SwfParser
 
         const dataLength = length - (this.byteStream.byte_offset - startOffset);
 
+        const offset = this.byteStream.byte_offset;
+
+        const buffer = this.byteStream.data.slice(
+            offset,
+            offset + dataLength
+        );
+
         // create object
         const sound = {
             "_$characterId": SoundId,
+            "_$name": "Sound",
             "_$data": null,
-            "_$buffer": null
+            "_$buffer": buffer
         };
 
-        sound._$length = this.byteStream.byte_offset + dataLength;
-        sound._$offset = this.byteStream.byte_offset;
         this.byteStream.byte_offset = startOffset + length;
 
-        // let mimeType = "";
-        // switch (obj.SoundFormat) {
-        //
-        //     case 0: // Uncompressed native-endian
-        //     case 3: // Uncompressed little-endian
-        //         mimeType = "wave";
-        //         break;
-        //
-        //     case 1: // ADPCM ? 32KADPCM
-        //         mimeType = "wave";
-        //         break;
-        //
-        //     case 2: // MP3
-        //         mimeType = "mpeg";
-        //         break;
-        //
-        //     case 4: // Nellymoser 16
-        //     case 5: // Nellymoser 8
-        //     case 6: //
-        //         mimeType = "nellymoser";
-        //         break;
-        //
-        //     case 11: // Speex
-        //         mimeType = "speex";
-        //         break;
-        //
-        //     case 15:
-        //         mimeType = "x-aiff";
-        //         break;
-        //
-        // }
-
-        this.setCharacter(SoundId, sound);
+        this.setCharacter(SoundId, sound, [buffer.buffer]);
     }
 
     /**

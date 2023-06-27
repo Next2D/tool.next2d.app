@@ -120,10 +120,14 @@ class SoundWaveform
                 const ch1 = buffer.getChannelData(0);
                 const peaks1 = this.getPeaks(ch1, width * window.devicePixelRatio);
 
-                const ch2 = buffer.getChannelData(1);
-                const peaks2 = this.getPeaks(ch2, width * window.devicePixelRatio);
+                if (buffer.numberOfChannels === 2) {
+                    const ch2 = buffer.getChannelData(1);
+                    const peaks2 = this.getPeaks(ch2, width * window.devicePixelRatio);
 
-                return [peaks1, peaks2];
+                    return [peaks1, peaks2];
+                }
+
+                return [peaks1, peaks1];
             });
     }
 

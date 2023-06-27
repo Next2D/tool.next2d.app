@@ -2081,6 +2081,26 @@ Util.$parserHandler = function (event)
 
                             }
 
+                            for (let idx = 0; idx < character._$sounds.length; ++idx) {
+
+                                const soundInfo = character._$sounds[idx];
+
+                                const sounds = [];
+                                for (let idx = 0; idx < soundInfo.data.length; ++idx) {
+
+                                    const object = soundInfo.data[idx];
+
+                                    sounds.push({
+                                        "characterId": Util.$characters.get(object.SoundId),
+                                        "volume":      100,
+                                        "loopCount":   object.SoundInfo.LoopCount | 0,
+                                        "autoPlay":    !!object.SoundInfo.HasLoops
+                                    });
+                                }
+
+                                movieClip._$sounds.set(soundInfo.frame, sounds);
+                            }
+
                             Util.$characters.set(character._$characterId, id);
                         }
                         break;
@@ -2243,6 +2263,23 @@ Util.$parserHandler = function (event)
                             const text = workSpace.addLibrary(object);
                             if (this._$folderId) {
                                 text.folderId = this._$folderId;
+                            }
+
+                            Util.$characters.set(character._$characterId, id);
+                        }
+                        break;
+
+                    case "Sound":
+                        {
+                            const object = Util
+                                .$libraryController
+                                .createInstance(InstanceType.SOUND, `Sound_${id}`, id);
+
+                            object.buffer = character._$buffer;
+
+                            const sound = workSpace.addLibrary(object);
+                            if (this._$folderId) {
+                                sound.folderId = this._$folderId;
                             }
 
                             Util.$characters.set(character._$characterId, id);
