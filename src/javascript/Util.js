@@ -464,6 +464,7 @@ Util.$endMenu = (ignore) =>
 {
     const names = [
         "timeline-menu",
+        "timeline-header-menu",
         "library-menu",
         "tab-name-menu",
         "timeline-layer-menu",

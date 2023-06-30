@@ -228,7 +228,41 @@ class TimelineHeader extends BaseTimeline
                 {
                     window.addEventListener("keydown", this._$deleteIcon);
                 });
+
+            element
+                .addEventListener("contextmenu", (event) =>
+                {
+                    this.show(event);
+                });
         }
+
+
+    }
+
+    /**
+     * @description ヘッダーのメニューを表示
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    show (event)
+    {
+        Util.$endMenu("timeline-header-menu");
+
+        const element = document.getElementById("timeline-header-menu");
+
+        element.style.left = `${event.pageX + 5}px`;
+        element.style.top  = `${event.pageY - element.clientHeight}px`;
+        if (15 > element.offsetTop) {
+            element.style.top = "10px";
+        }
+
+        if (event.pageY + 15 > window.innerHeight) {
+            element.style.top = `${event.pageY - element.clientHeight - 15}px`;
+        }
+
+        element.setAttribute("class", "fadeIn");
     }
 
     /**

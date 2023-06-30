@@ -21,6 +21,21 @@
     box-shadow       : 0 0 5px rgba(245, 245, 245, 0.25);
 }
 
+#timeline-header-menu
+{
+    display          : flex;
+    flex-direction   : column;
+    justify-content  : center;
+    position         : fixed;
+    min-width        : 250px;
+    border-radius    : 10px;
+    background-color : #363636;
+    color            : whitesmoke;
+    border           : 1px solid #72777D;
+    z-index          : 9999;
+    box-shadow       : 0 0 5px rgba(245, 245, 245, 0.25);
+}
+
 #timeline-preview-modal
 {
     display          : grid;
@@ -55,6 +70,7 @@
 }
 
 #timeline-menu .timeline-menu-list,
+#timeline-header-menu .timeline-header-menu-list,
 #timeline-layer-menu-list
 {
     display        : flex;
@@ -63,6 +79,7 @@
 }
 
 #timeline-menu .timeline-menu-list p,
+#timeline-header-menu .timeline-header-menu-list p,
 #timeline-layer-menu-list p
 {
     border-bottom : 1px solid #1c1c1c;
@@ -70,6 +87,7 @@
 }
 
 #timeline-menu .timeline-menu-list div,
+#timeline-header-menu .timeline-header-menu-list div,
 #timeline-layer-menu-list div
 {
     display       : flex;
@@ -193,6 +211,7 @@
 }
 
 #timeline-menu .timeline-menu-list div:hover,
+#timeline-header-menu .timeline-header-menu-list div:hover,
 #timeline-layer-menu-list div:hover
 {
     background-color : #1c1c1c;
@@ -376,6 +395,7 @@
     flex-shrink         : 0;
 }
 
+#context-menu-script-add-one i,
 #context-menu-script-add i
 {
     width               : 18px;
