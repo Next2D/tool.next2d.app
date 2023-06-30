@@ -13,13 +13,7 @@ class FLfile
          * @type {Map<any, any>}
          * @private
          */
-        this._$folderMap = new Map();
-
-        /**
-         * @type {Map<any, any>}
-         * @private
-         */
-        this._$fileMap = new Map();
+        this._$dataMap = new Map();
     }
 
     /**
@@ -29,8 +23,7 @@ class FLfile
      */
     clear ()
     {
-        this._$folderMap.clear();
-        this._$fileMap.clear();
+        this._$dataMap.clear();
     }
 
     /**
@@ -42,7 +35,54 @@ class FLfile
      */
     write (uri, text_to_write)
     {
-        console.log("write: ", uri, text_to_write);
+        const paths = uri.split("/");
+        const fileName = paths.pop();
+
+        let dataMap = this._$dataMap;
+        for (let idx = 0; idx < paths.length; ++idx) {
+
+            const path = paths[idx];
+            if (!dataMap.has(path)) {
+                dataMap.set(path, new Map());
+            }
+
+            dataMap = dataMap.get(path);
+        }
+
+        if (!dataMap.has(fileName)) {
+            dataMap.set(fileName, []);
+        }
+
+        console.log("write: ", uri);
+        console.log(this._$dataMap);
+        // console.log(text_to_write);
+        dataMap.get(fileName).push(text_to_write);
+    }
+
+    /**
+     * @param  {string} uri
+     * @param  {Uint8Array} buffer
+     * @return {boolean}
+     * @method
+     * @public
+     */
+    writeBuffer (uri, buffer)
+    {
+        const paths = uri.split("/");
+        const fileName = paths.pop();
+
+        let dataMap = this._$dataMap;
+        for (let idx = 0; idx < paths.length; ++idx) {
+
+            const path = paths[idx];
+            if (!dataMap.has(path)) {
+                dataMap.set(path, new Map());
+            }
+
+            dataMap = dataMap.get(path);
+        }
+
+        dataMap.set(fileName, buffer);
     }
 
     /**
@@ -53,23 +93,17 @@ class FLfile
      */
     createFolder (uri)
     {
-        if (this.exists(uri)) {
-            return false;
-        }
-
         const paths = uri.split("/");
 
-        let fileMap   = this._$fileMap;
-        let folderMap = this._$folderMap;
+        let dataMap = this._$dataMap;
         for (let idx = 0; idx < paths.length; ++idx) {
 
             const path = paths[idx];
-            if (folderMap.has(path)) {
+            if (dataMap.has(path)) {
                 continue;
             }
 
-            fileMap.set(path, new Map());
-            folderMap.set(path, new Map());
+            dataMap.set(path, new Map());
         }
 
         return true;
@@ -85,15 +119,15 @@ class FLfile
     {
         const paths = uri.split("/");
 
-        let folderMap = this._$folderMap;
+        let dataMap = this._$dataMap;
         for (let idx = 0; idx < paths.length; ++idx) {
 
             const path = paths[idx];
-            if (!folderMap.has(path)) {
+            if (!dataMap.has(path)) {
                 return false;
             }
 
-            folderMap = folderMap.get(path);
+            dataMap = dataMap.get(path);
         }
 
         return true;
@@ -108,33 +142,81 @@ class FLfile
     remove (uri)
     {
         const paths = uri.split("/");
-        const lastPath = paths.pop();
+        const fileName = paths.pop();
 
-        let fileMap   = this._$fileMap;
-        let folderMap = this._$folderMap;
+        let dataMap = this._$dataMap;
         for (let idx = 0; idx < paths.length; ++idx) {
 
             const path = paths[idx];
-            if (!folderMap.has(path)) {
-                break;
+            if (!dataMap.has(path)) {
+                return false;
             }
 
-            fileMap   = fileMap.get(path);
-            folderMap = folderMap.get(path);
+            dataMap = dataMap.get(path);
         }
 
-        if (fileMap.has(lastPath)) {
-            fileMap.delete(lastPath);
-            return true;
+        if (!dataMap.has(fileName)) {
+            return false;
         }
 
-        if (folderMap.has(lastPath)) {
-            fileMap.delete(lastPath);
-            folderMap.delete(lastPath);
-            return true;
-        }
+        dataMap.delete(fileName);
 
-        return false;
+        return true;
+    }
+
+    /**
+     * @return {void}
+     * @method
+     * @public
+     */
+    export ()
+    {
+        const zip = new JSZip();
+        this.createZip(zip, this._$dataMap);
+
+        zip
+            .generateAsync({ "type" : "blob" })
+            .then((content) =>
+            {
+                const url = URL.createObjectURL(content);
+
+                const anchor    = document.createElement("a");
+                anchor.download = `${name}.zip`;
+                anchor.href     = url;
+                anchor.click();
+
+                URL.revokeObjectURL(url);
+            });
+    }
+
+    /**
+     * @param {JSZip} zip
+     * @param {Map} data_map
+     * @method
+     * @public
+     */
+    createZip (zip, data_map)
+    {
+        for (const [name, value] of data_map) {
+
+            console.log(zip, name, value);
+            switch (true) {
+
+                case value instanceof Map:
+                    this.createZip(zip.folder(name), value);
+                    break;
+
+                case value instanceof Uint8Array:
+                    zip.file(name, value, { "buffer": true });
+                    break;
+
+                case Array.isArray(value):
+                    zip.file(name, value.join("\n"));
+                    break;
+
+            }
+
+        }
     }
 }
 

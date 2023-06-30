@@ -6,18 +6,68 @@ class ExternalLayer
 {
     /**
      * @param {Layer} layer
+     * @param {ExternalDocument} external_document
+     * @constructor
+     * @public
      */
-    constructor (layer)
+    constructor (layer, external_document)
     {
+        /**
+         * @type {Layer}
+         * @private
+         */
         this._$layer = layer;
+
+        /**
+         * @type {ExternalDocument}
+         * @default null
+         * @private
+         */
+        this._$document = external_document;
+    }
+
+    /**
+     * @return {string}
+     * @readonly
+     * @public
+     */
+    get layerType ()
+    {
+        switch (this._$layer.mode) {
+
+            case LayerMode.NORMAL:
+                return "normal";
+
+            case LayerMode.MASK:
+                return "mask";
+
+            case LayerMode.MASK_IN:
+                return "masked";
+
+            case LayerMode.GUIDE:
+                return "guide";
+
+            case LayerMode.GUIDE_IN:
+                return "guided";
+
+            case LayerMode.FOLDER:
+                return "folder";
+
+            default:
+                return "";
+
+        }
+
     }
 
     /**
      * @return {array}
+     * @readonly
+     * @public
      */
     get frames ()
     {
-        const frames = [undefined];
+        const frames = [null];
         const totalFrame = this._$layer.totalFrame;
         for (let frame = 1; totalFrame >= frame; ++frame) {
             frames.push(new ExternalFrame(frame, this));
@@ -26,19 +76,13 @@ class ExternalLayer
     }
 
     /**
-     * @return {boolean}
+     * @member {boolean}
      * @public
      */
     get locked ()
     {
         return this._$layer.lock;
     }
-
-    /**
-     * @param  {boolean} lock
-     * @return {void}
-     * @public
-     */
     set locked (lock)
     {
         this._$layer.lock = !!lock;

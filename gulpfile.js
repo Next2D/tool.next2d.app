@@ -19,7 +19,7 @@ const options = minimist(process.argv.slice(2), {
     "string": ["distPath", "version"],
     "default": {
         "prodBuild": false,
-        "version": "0.226.0",
+        "version": "0.227.0",
         "distPath": "."
     }
 });
@@ -185,6 +185,7 @@ const buildJavaScript = () =>
             "src/javascript/view/controller/GradientFilterController.js",
             "src/javascript/view/**/*.js",
             "src/javascript/view/*.js",
+            "src/javascript/external/ExternalItem.js",
             "src/javascript/external/*.js",
             "src/javascript/Footer.file"
         ])

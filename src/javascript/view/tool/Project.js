@@ -177,7 +177,7 @@ class Project
                 {
                     const object = window.nt || window.fl;
                     if ("customPublish" in object) {
-                        FLfile.clear();
+                        window.FLfile.clear();
                         object
                             .customPublish(Publish.toObject());
                     }

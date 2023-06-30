@@ -158,7 +158,7 @@ class ExternalInterface
      */
     getDocumentDOM ()
     {
-        return new ExternalDocument(Util.$currentWorkSpace());
+        return new ExternalDocument(Util.$currentWorkSpace().scene);
     }
 
     /**

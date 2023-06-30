@@ -71,4 +71,17 @@ class LayerMode
     {
         return 4;
     }
+
+    /**
+     * @description フォルダレイヤー
+     *              folder layer
+     *
+     * @return {number}
+     * @static
+     * @const
+     */
+    static get FOLDER ()
+    {
+        return 5;
+    }
 }

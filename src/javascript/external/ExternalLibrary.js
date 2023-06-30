@@ -6,28 +6,16 @@ class ExternalLibrary
 {
     /**
      * @param {ExternalDocument} external_document
+     * @constructor
+     * @public
      */
     constructor (external_document)
     {
         /**
          * @type {ExternalDocument}
-         * @default null
          * @private
          */
         this._$document = external_document;
-    }
-
-    /**
-     * @member {ExternalDocument}
-     * @public
-     */
-    get document ()
-    {
-        return this._$document;
-    }
-    set document (document)
-    {
-        this._$document = document;
     }
 
     /**
@@ -38,14 +26,53 @@ class ExternalLibrary
     {
         path = `${path}`;
 
-        const workSpace = Util.$currentWorkSpace();
+        const workSpace = this._$document._$workSpace;
         for (let instance of workSpace._$libraries.values()) {
 
             if (instance.path !== path) {
                 continue;
             }
 
-            return new ExternalItem(instance);
+            switch (instance.type) {
+
+                case InstanceType.MOVIE_CLIP:
+                    return new ExternalSymbolItem(
+                        instance, this._$document
+                    );
+
+                case InstanceType.SOUND:
+                    return new ExternalSoundItem(
+                        instance, this._$document
+                    );
+
+                case InstanceType.BITMAP:
+                    return new ExternalBitmapItem(
+                        instance, this._$document
+                    );
+
+                case InstanceType.SHAPE:
+                    if (instance.inBitmap) {
+                        const bitmapObject = instance._$recodes[instance._$recodes.length - 4];
+
+                        const bitmapInstance = workSpace.getLibrary(
+                            bitmapObject._$instanceId
+                        );
+
+                        return new ExternalBitmapItem(
+                            bitmapInstance, this._$document
+                        );
+                    }
+                    return new ExternalItem(
+                        instance, this._$document
+                    );
+
+                default:
+                    return new ExternalItem(
+                        instance, this._$document
+                    );
+
+            }
+
         }
 
         return null;
@@ -61,16 +88,87 @@ class ExternalLibrary
 
         const items = [];
         for (const instance of workSpace._$libraries.values()) {
-            if (instance.folderId) {
-                continue;
+            switch (instance.type) {
+
+                case InstanceType.MOVIE_CLIP:
+                    items.push(new ExternalSymbolItem(instance, this._$document));
+                    break;
+
+                case InstanceType.SHAPE:
+                    if (instance.inBitmap) {
+                        items.push(new ExternalBitmapItem(instance, this._$document));
+                    } else {
+                        items.push(new ExternalItem(instance, this._$document));
+                    }
+                    break;
+
+                case InstanceType.BITMAP:
+                    items.push(new ExternalBitmapItem(instance, this._$document));
+                    break;
+
+                case InstanceType.SOUND:
+                    items.push(new ExternalSoundItem(instance, this._$document));
+                    break;
+
+                default:
+                    items.push(new ExternalItem(instance, this._$document));
+                    break;
+
             }
-            items.push(new ExternalItem(instance));
         }
 
         // 最初はrootなので除外
         items.shift();
 
         return items;
+    }
+
+    /**
+     * @param  {string} path
+     * @return {number}
+     * @method
+     * @public
+     */
+    findItemIndex (path)
+    {
+        const workSpace = this._$document._$workSpace;
+
+        let index = 0;
+        for (const instance of workSpace._$libraries.values()) {
+
+            index++;
+
+            if (instance.path !== path) {
+                continue;
+            }
+
+            break;
+        }
+
+        return index - 1;
+    }
+
+    /**
+     * @param  {string} path
+     * @return {boolean}
+     * @method
+     * @public
+     */
+    itemExists (path)
+    {
+        path = `${path}`;
+
+        const workSpace = this._$document._$workSpace;
+        for (let instance of workSpace._$libraries.values()) {
+
+            if (instance.path !== path) {
+                continue;
+            }
+
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -88,7 +186,7 @@ class ExternalLibrary
 
         path = `${path}`;
 
-        const workSpace = Util.$currentWorkSpace();
+        const workSpace = this._$document._$workSpace;
         for (let instance of workSpace._$libraries.values()) {
 
             if (instance.path !== path) {

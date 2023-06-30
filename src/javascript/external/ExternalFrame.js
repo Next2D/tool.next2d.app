@@ -12,7 +12,16 @@ class ExternalFrame
      */
     constructor (frame, parent)
     {
-        this._$frame  = frame;
+        /**
+         * @type {number}
+         * @private
+         */
+        this._$frame = frame;
+
+        /**
+         * @type {ExternalLayer}
+         * @private
+         */
         this._$parent = parent;
     }
 
@@ -29,7 +38,9 @@ class ExternalFrame
 
         const elements = [];
         for (let idx = 0; idx < characters.length; ++idx) {
-            elements.push(new ExternalElement(characters[idx], this._$parent));
+            elements.push(new ExternalElement(
+                characters[idx], this
+            ));
         }
 
         return elements;

@@ -146,6 +146,29 @@ class Instance
     }
 
     /**
+     * @description フォルダを含めたライブラリのパスを返す
+     *              Returns the path to the library, including folders
+     *
+     * @param  {WorkSpace} work_space
+     * @member {string}
+     * @readonly
+     * @public
+     */
+    getPath (work_space)
+    {
+        let path = this._$name;
+        if (this._$folderId) {
+            let parent = this;
+            while (parent._$folderId) {
+                parent = work_space.getLibrary(parent._$folderId);
+                path = `${parent._$name}/${path}`;
+            }
+        }
+
+        return path;
+    }
+
+    /**
      * @description 指定したワークスペースからPathを取得
      *              Get Path from the specified workspace
      *

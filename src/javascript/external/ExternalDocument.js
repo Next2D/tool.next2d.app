@@ -5,6 +5,7 @@
 class ExternalDocument
 {
     /**
+     * @param {WorkSpace} work_space
      * @constructor
      * @public
      */
@@ -15,18 +16,6 @@ class ExternalDocument
          * @private
          */
         this._$workSpace = work_space;
-
-        /**
-         * @type {ExternalTimeline}
-         * @private
-         */
-        this._$timeline = new ExternalTimeline(this);
-
-        /**
-         * @type {ExternalLibrary}
-         * @private
-         */
-        this._$library = new ExternalLibrary(this);
     }
 
     /**
@@ -51,7 +40,7 @@ class ExternalDocument
                 continue;
             }
 
-            timelines.push(new ExternalTimeline(this._$workSpace));
+            timelines.push(new ExternalTimeline(instance, this));
         }
         return timelines;
     }
@@ -63,7 +52,7 @@ class ExternalDocument
      */
     getTimeline ()
     {
-        return this._$timeline;
+        return new ExternalTimeline(this._$workSpace.scene, this);
     }
 
     /**
@@ -71,6 +60,6 @@ class ExternalDocument
      */
     get library ()
     {
-        return this._$library;
+        return new ExternalLibrary(this);
     }
 }

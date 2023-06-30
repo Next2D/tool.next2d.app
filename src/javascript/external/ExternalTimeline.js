@@ -5,11 +5,35 @@
 class ExternalTimeline
 {
     /**
+     * @param {MovieClip} scene
      * @param {ExternalDocument} external_document
+     * @constructor
+     * @public
      */
-    constructor (external_document)
+    constructor (scene, external_document)
     {
+        /**
+         * @type {MovieClip}
+         * @private
+         */
+        this._$scene = scene;
+
+        /**
+         * @type {ExternalDocument}
+         * @default null
+         * @private
+         */
         this._$document = external_document;
+    }
+
+    /**
+     * @return {number}
+     * @readonly
+     * @public
+     */
+    get frameCount ()
+    {
+        return this._$scene.totalFrame;
     }
 
     /**
@@ -23,7 +47,7 @@ class ExternalTimeline
     }
 
     /**
-     * @return {number}
+     * @member {number}
      * @public
      */
     get currentLayer ()
@@ -34,19 +58,11 @@ class ExternalTimeline
         }
 
         const layerId = layerElement.dataset.layerId | 0;
-        const scene   = Util.$currentWorkSpace().scene;
-        return Array.from(scene._$layers.keys()).indexOf(layerId) | 0;
+        return Array.from(this._$scene._$layers.keys()).indexOf(layerId) | 0;
     }
-
-    /**
-     * @param  {number} index
-     * @return {void}
-     * @public
-     */
     set currentLayer (index)
     {
-        const scene = Util.$currentWorkSpace().scene;
-        const id    = Array.from(scene._$layers.keys())[index];
+        const id = Array.from(this._$scene._$layers.keys())[index];
 
         // target layer
         Util.$timelineLayer.targetLayer = document
@@ -60,19 +76,20 @@ class ExternalTimeline
      */
     get layers ()
     {
-        const children = Array.from(
-            document.getElementById("timeline-content").children
-        );
+        // const children = Array.from(
+        //     document.getElementById("timeline-content").children
+        // );
 
-        const scene  = Util.$currentWorkSpace().scene;
         const layers = [];
-        for (const layer of scene._$layers.values()) {
+        for (const layer of this._$scene._$layers.values()) {
 
-            const index = children.indexOf(
-                document.getElementById(`layer-id-${layer.id}`)
-            );
+            // const index = children.indexOf(
+            //     document.getElementById(`layer-id-${layer.id}`)
+            // );
+            //
+            // layers[index] = new ExternalLayer(layer);
 
-            layers[index] = new ExternalLayer(layer);
+            layers.push(new ExternalLayer(layer, this._$document));
         }
 
         return layers;
@@ -135,7 +152,6 @@ class ExternalTimeline
      */
     addNewLayer (name = "", type = "normal", above = true)
     {
-        const scene = Util.$currentWorkSpace().scene;
         const layer = new Layer();
         if (name) {
             layer.name = name;
@@ -161,7 +177,7 @@ class ExternalTimeline
 
         let index = 0;
         const layers = new Map();
-        for (const value of scene._$layers.values()) {
+        for (const value of this._$scene._$layers.values()) {
 
             if (above && index === targetIndex) {
                 layers.set(index++, layer);
@@ -174,8 +190,8 @@ class ExternalTimeline
             }
         }
 
-        scene._$layers = layers;
-        scene.initialize();
+        this._$scene._$layers = layers;
+        this._$scene.initialize();
 
         // target layer
         Util.$timelineLayer.targetLayer = document
@@ -188,7 +204,7 @@ class ExternalTimeline
             .$timelineLayer
             .addTargetFrame(layer, this.currentFrame);
 
-        return new ExternalLayer(layer);
+        return new ExternalLayer(layer, this._$document);
     }
 
     /**
@@ -209,9 +225,8 @@ class ExternalTimeline
 
         end_frame = Math.max(start_frame, end_frame);
 
-        const layer = Util
-            .$currentWorkSpace()
-            .scene
+        const layer = this
+            ._$scene
             .getLayer(
                 layerElement.dataset.layerId | 0
             );

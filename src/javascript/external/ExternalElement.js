@@ -6,7 +6,7 @@ class ExternalElement
 {
     /**
      * @param {Character} character
-     * @param {ExternalLayer} parent
+     * @param {ExternalFrame} parent
      * @constructor
      * @public
      */
@@ -19,37 +19,118 @@ class ExternalElement
         this._$character = character;
 
         /**
-         * @type {ExternalLayer}
+         * @type {ExternalFrame}
          * @private
          */
         this._$parent = parent;
     }
 
     /**
-     * @return {number}
+     * @return {string}
+     * @readonly
+     * @public
+     */
+    get elementType ()
+    {
+        const workSpace = this
+            ._$parent
+            ._$parent
+            ._$document
+            ._$workSpace;
+
+        const instance = workSpace.getLibrary(
+            this._$character.libraryId
+        );
+
+        switch (instance.type) {
+
+            case Instance.SHAPE:
+                return "shape";
+
+            case Instance.TEXT:
+                return "text";
+
+            default:
+                return "instance";
+
+        }
+
+    }
+
+    /**
+     * @return {string}
+     * @readonly
+     * @public
+     */
+    get instanceType ()
+    {
+        const workSpace = this
+            ._$parent
+            ._$parent
+            ._$document
+            ._$workSpace;
+
+        const instance = workSpace.getLibrary(
+            this._$character.libraryId
+        );
+
+        switch (instance.type) {
+
+            case InstanceType.BITMAP:
+                return "bitmap";
+
+            case InstanceType.VIDEO:
+                return "video";
+
+            case InstanceType.SHAPE:
+                if (instance.inBitmap) {
+                    return "bitmap";
+                }
+                return "symbol";
+
+            default:
+                return "symbol";
+
+        }
+    }
+
+    /**
+     * @member {Matrix}
+     * @public
+     */
+    get matrix ()
+    {
+        const { Matrix } = next2d.geom;
+        const place = this._$character.getPlace(this._$parent._$frame);
+        return new Matrix(
+            place.matrix[0], place.matrix[1], place.matrix[2],
+            place.matrix[3], place.matrix[4], place.matrix[5]
+        );
+    }
+
+    /**
+     * @member {number}
      * @public
      */
     get x ()
     {
-        return this._$character.x;
+        const place = this._$character.getPlace(this._$parent._$frame);
+        return place.matrix[4];
     }
-
-    /**
-     * @param  {number} x
-     * @return {void}
-     * @public
-     */
     set x (x)
     {
-        this._$character.x = x;
+        const place = this._$character.getPlace(this._$parent._$frame);
+        place.matrix[4] = x;
 
-        const workSpace = Util.$currentWorkSpace();
-        const instance  = workSpace
-            .getLibrary(this._$character.libraryId);
+        const workSpace = this
+            ._$parent
+            ._$parent
+            ._$document
+            ._$workSpace;
 
-        let frame = Util.$timelineFrame.currentFrame;
-
-        const place = this._$character.getPlace(frame);
+        const instance  = workSpace.getLibrary(
+            this._$character.libraryId
+        );
 
         let keys = Object.keys(place);
         const placeObject = {};
@@ -77,30 +158,28 @@ class ExternalElement
     }
 
     /**
-     * @return {number}
+     * @member {number}
      * @public
      */
     get y ()
     {
-        return this._$character.y;
+        const place = this._$character.getPlace(this._$parent._$frame);
+        return place.matrix[5];
     }
-
-    /**
-     * @param  {number} y
-     * @return {void}
-     * @public
-     */
     set y (y)
     {
-        this._$character.y = y;
+        const place = this._$character.getPlace(this._$parent._$frame);
+        place.matrix[5] = y;
 
-        const workSpace = Util.$currentWorkSpace();
-        const instance  = workSpace
-            .getLibrary(this._$character.libraryId);
+        const workSpace = this
+            ._$parent
+            ._$parent
+            ._$document
+            ._$workSpace;
 
-        let frame = Util.$timelineFrame.currentFrame;
-
-        const place = this._$character.getPlace(frame);
+        const instance  = workSpace.getLibrary(
+            this._$character.libraryId
+        );
 
         let keys = Object.keys(place);
         const placeObject = {};
@@ -128,35 +207,75 @@ class ExternalElement
     }
 
     /**
-     * @return {ExternalLibrary}
+     * @return {ExternalItem}
      * @readonly
      * @public
      */
     get libraryItem ()
     {
-        return new ExternalLibrary(Util
-            .$currentWorkSpace()
-            .getLibrary(this._$character.libraryId)
+        const externalDocument = this
+            ._$parent
+            ._$parent
+            ._$document;
+
+        const workSpace = externalDocument._$workSpace;
+
+        const instance = workSpace.getLibrary(
+            this._$character.libraryId
         );
+
+        switch (instance.type) {
+
+            case InstanceType.MOVIE_CLIP:
+                return new ExternalSymbolItem(
+                    instance, externalDocument
+                );
+
+            case InstanceType.SHAPE:
+                if (instance.inBitmap) {
+                    const bitmapObject = instance._$recodes[instance._$recodes.length - 4];
+
+                    const bitmapInstance = workSpace.getLibrary(
+                        bitmapObject._$instanceId
+                    );
+
+                    return new ExternalBitmapItem(bitmapInstance, externalDocument);
+                }
+                return new ExternalItem(instance, externalDocument);
+
+            case InstanceType.BITMAP:
+                return new ExternalBitmapItem(instance, externalDocument);
+
+            case InstanceType.SOUND:
+                return new ExternalSoundItem(instance, externalDocument);
+
+            default:
+                return new ExternalItem(instance, externalDocument);
+
+        }
     }
 
     /**
-     * @return {string}
+     * @member {string}
      * @public
      */
     get loop ()
     {
-        const instance = Util
-            .$currentWorkSpace()
-            .getLibrary(
-                this._$character.libraryId
-            );
+        const workSpace = this
+            ._$parent
+            ._$parent
+            ._$document
+            ._$workSpace;
+
+        const instance = workSpace.getLibrary(
+            this._$character.libraryId
+        );
 
         if (instance.type !== InstanceType.MOVIE_CLIP) {
             return "";
         }
 
-        const place = this._$character.getPlace(this._$character.startFrame);
+        const place = this._$character.getPlace(this._$parent._$frame);
         if (!place.loop) {
             return "loop";
         }
@@ -175,20 +294,17 @@ class ExternalElement
 
         }
     }
-
-    /**
-     *
-     * @param  {string} loop_type
-     * @return {void}
-     * @public
-     */
     set loop (loop_type)
     {
-        const instance = Util
-            .$currentWorkSpace()
-            .getLibrary(
-                this._$character.libraryId
-            );
+        const workSpace = this
+            ._$parent
+            ._$parent
+            ._$document
+            ._$workSpace;
+
+        const instance = workSpace.getLibrary(
+            this._$character.libraryId
+        );
 
         if (instance.type !== InstanceType.MOVIE_CLIP) {
             return ;
@@ -196,7 +312,7 @@ class ExternalElement
 
         const place = this
             ._$character
-            .getPlace(this._$character.startFrame);
+            .getPlace(this._$parent._$frame);
 
         switch (loop_type) {
 
@@ -220,38 +336,41 @@ class ExternalElement
     }
 
     /**
-     * @return {string}
+     * @member {string}
      * @public
      */
     get symbolType ()
     {
-        const instance = Util
-            .$currentWorkSpace()
-            .getLibrary(
-                this._$character.libraryId
-            );
+        const workSpace = this
+            ._$parent
+            ._$parent
+            ._$document
+            ._$workSpace;
 
-        return instance.type === InstanceType.MOVIE_CLIP ? "movie clip" : "";
+        const instance = workSpace.getLibrary(
+            this._$character.libraryId
+        );
+
+        return instance.type === InstanceType.MOVIE_CLIP ? "graphic" : "";
     }
-
-    /**
-     * @param  {string} symbol_type
-     * @return {void}
-     * @public
-     */
     set symbolType (symbol_type)
     {
+        const workSpace = this
+            ._$parent
+            ._$parent
+            ._$document
+            ._$workSpace;
+
         switch (symbol_type) {
 
             case "button":
             case "movie clip":
             case "graphic":
                 {
-                    const workSpace = Util.$currentWorkSpace();
-
                     const beforeInstance = workSpace.getLibrary(
                         this._$character.libraryId
                     );
+
                     if (beforeInstance.type === InstanceType.MOVIE_CLIP) {
                         return ;
                     }
@@ -280,7 +399,11 @@ class ExternalElement
                     const layer = new Layer();
 
                     // clone frame
-                    const frameClass = this._$parent._$layer._$frame;
+                    const frameClass = this
+                        ._$parent
+                        ._$parent
+                        ._$layer
+                        ._$frame;
                     for (let [frame, css] of frameClass._$classes) {
                         if (1 > frame - moveFrame) {
                             continue;

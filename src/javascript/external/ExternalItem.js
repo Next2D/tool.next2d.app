@@ -6,11 +6,23 @@ class ExternalItem
 {
     /**
      * @param {Instance} instance
+     * @param {ExternalDocument} external_document
      * @constructor
+     * @public
      */
-    constructor (instance)
+    constructor (instance, external_document)
     {
+        /**
+         * @type {Instance}
+         * @private
+         */
         this._$instance = instance;
+
+        /**
+         * @type {ExternalDocument}
+         * @private
+         */
+        this._$document = external_document;
     }
 
     /**
@@ -19,7 +31,7 @@ class ExternalItem
      */
     get name ()
     {
-        return this._$instance.path;
+        return this._$instance.getPath(this._$document._$workSpace);
     }
 
     /**
