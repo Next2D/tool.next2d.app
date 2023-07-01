@@ -814,6 +814,7 @@ class Instance
             }
 
             if (instance._$sounds.size) {
+
                 for (const [frame, sounds] of instance._$sounds) {
 
                     const pool = [];
@@ -827,8 +828,22 @@ class Instance
                         pool.push(sound);
                     }
 
-                    // 削除対象以外を再登録
-                    instance._$sounds.set(frame, pool);
+                    if (pool.length) {
+
+                        // 削除対象以外を再登録
+                        instance._$sounds.set(frame, pool);
+
+                    } else {
+
+                        // からの場合は削除、選択しているシーンの時はタイムラインのヘッダーを再構成
+                        instance._$sounds.delete(frame);
+
+                        if (scene.id === instance.id) {
+                            Util.$timelineHeader.rebuild();
+                            Util.$soundController.createSoundElements();
+                        }
+
+                    }
                 }
             }
         }

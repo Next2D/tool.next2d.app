@@ -311,6 +311,7 @@ class Screen extends BaseScreen
         if (!instanceIds.length) {
             // 初期化
             this._$saved = false;
+            return Promise.resolve();
         }
 
         // 座標

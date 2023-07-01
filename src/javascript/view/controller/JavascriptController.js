@@ -55,7 +55,15 @@ class JavascriptController
                 );
             });
 
-            for (const frame of instance._$actions.keys()) {
+            const frames = Array.from(instance._$actions.keys());
+            frames.sort((a, b) =>
+            {
+                return a - b;
+            });
+
+            for (let idx = 0; idx < frames.length; ++idx) {
+
+                const frame = frames[idx];
 
                 const childTag = `<div id="script-${id}-${frame}" data-library-id="${id}" data-frame="${frame}" class="internal-child"><i></i>frame ${frame}</div>`;
 
