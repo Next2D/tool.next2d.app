@@ -2082,6 +2082,15 @@ Util.$parserHandler = function (event)
 
                             }
 
+                            for (let idx = 0; idx < character._$labels.length; ++idx) {
+
+                                const object = character._$labels[idx];
+
+                                movieClip._$labels.set(object.frame, object.label);
+
+                            }
+
+
                             for (let idx = 0; idx < character._$sounds.length; ++idx) {
 
                                 const soundInfo = character._$sounds[idx];
