@@ -37,6 +37,7 @@ module.exports = function(config)
             "src/javascript/view/controller/GradientFilterController.js",
             "src/javascript/view/**/*.js",
             "src/javascript/view/*.js",
+            "src/javascript/external/ExternalItem.js",
             "src/javascript/external/*.js",
             "test/**/*.js"
         ],

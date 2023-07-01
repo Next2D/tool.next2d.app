@@ -15,14 +15,4 @@ class ExternalSoundItem extends ExternalItem
     {
         super(instance, external_document);
     }
-
-    /**
-     * @return {void}
-     * @method
-     * @public
-     */
-    exportToFile (path)
-    {
-
-    }
 }
