@@ -2082,6 +2082,7 @@ Util.$parserHandler = function (event)
 
                             }
 
+                            // ラベルの取り込み
                             for (let idx = 0; idx < character._$labels.length; ++idx) {
 
                                 const object = character._$labels[idx];
@@ -2090,7 +2091,7 @@ Util.$parserHandler = function (event)
 
                             }
 
-
+                            // 音声の取り込み
                             for (let idx = 0; idx < character._$sounds.length; ++idx) {
 
                                 const soundInfo = character._$sounds[idx];
