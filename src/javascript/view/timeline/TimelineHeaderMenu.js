@@ -503,7 +503,7 @@ class TimelineHeaderMenu extends BaseTimeline
                         "file": instance,
                         "path": path,
                         "workSpaceId": this._$copyWorkSpaceId,
-                        "type": "copy"
+                        "type": "copySound"
                     });
                     continue;
                 }
@@ -536,6 +536,7 @@ class TimelineHeaderMenu extends BaseTimeline
                 }
             }
 
+            const confirmSoundIds = new Map();
             for (const [frame, sounds] of this._$copySound) {
 
                 const copySounds = [];
@@ -544,6 +545,13 @@ class TimelineHeaderMenu extends BaseTimeline
                     const sound = sounds[idx];
 
                     if (!soundIds.has(sound.characterId)) {
+
+                        if (!confirmSoundIds.has(frame)) {
+                            confirmSoundIds.set(frame, []);
+                        }
+
+                        confirmSoundIds.get(frame).push(sound);
+
                         continue;
                     }
 
@@ -559,6 +567,7 @@ class TimelineHeaderMenu extends BaseTimeline
             }
 
             if (Util.$confirmModal.files.length) {
+                Util.$confirmModal.setSounds(confirmSoundIds);
                 Util.$confirmModal.show();
             } else {
                 Util.$confirmModal.clear();

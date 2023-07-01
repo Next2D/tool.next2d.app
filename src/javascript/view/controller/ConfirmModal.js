@@ -30,6 +30,13 @@ class ConfirmModal extends BaseController
         this._$state = "hide";
 
         /**
+         * @type {Map}
+         * @default null
+         * @private
+         */
+        this._$soundsMap = null;
+
+        /**
          * @type {object}
          * @default null
          * @private
@@ -176,6 +183,12 @@ class ConfirmModal extends BaseController
                 case "copy":
                     this._$currentObject = object;
                     this.copyOverwriting(libraryId);
+                    break;
+
+                // タイムラインヘッダーのサウンドコピー
+                case "copySound":
+                    this._$currentObject = object;
+                    this.copyOverwriting(libraryId, "", true);
                     break;
 
                 // ファイル追加処理
@@ -442,13 +455,14 @@ class ConfirmModal extends BaseController
      * @description コピー、ペースト時の上書き処理
      *              Overwrite processing when copying and pasting
      *
-     * @param  {number} [libraryId = 0]
-     * @param  {string} [value = ""]
+     * @param  {number}  [libraryId = 0]
+     * @param  {string}  [value = ""]
+     * @param  {boolean} [use_sound = false]
      * @return {void}
      * @method
      * @public
      */
-    copyOverwriting (libraryId = 0, value = "")
+    copyOverwriting (libraryId = 0, value = "", use_sound = false)
     {
         const workSpace = Util.$currentWorkSpace();
 
@@ -542,6 +556,33 @@ class ConfirmModal extends BaseController
                     this._$currentObject.workSpaceId,
                     clone
                 );
+            }
+
+            if (use_sound && this._$soundsMap) {
+
+                const subFrame = this._$soundsMap.keys().next().value - Util.$timelineFrame.currentFrame;
+                const scene = workSpace.scene;
+                for (const [copyFrame, sounds] of this._$soundsMap) {
+
+                    const frame = copyFrame - subFrame;
+                    for (let idx = 0; idx < sounds.length; ++idx) {
+
+                        const sound = sounds[idx];
+                        if (sound.characterId !== instance.id) {
+                            continue;
+                        }
+
+                        if (!scene._$sounds.has(frame)) {
+                            scene._$sounds.set(frame, []);
+                        }
+
+                        sound.characterId = id;
+                        scene._$sounds.get(frame).push(sound);
+                    }
+                }
+
+                Util.$timelineHeader.rebuild();
+                Util.$soundController.createSoundElements();
             }
         }
 
@@ -1023,6 +1064,11 @@ class ConfirmModal extends BaseController
                 this.setup();
                 break;
 
+            case "copySound":
+                this.copyOverwriting(libraryId, inputValue, true);
+                this.setup();
+                break;
+
             default:
 
                 new Promise((resolve) =>
@@ -1154,6 +1200,19 @@ class ConfirmModal extends BaseController
     }
 
     /**
+     * @description タイムラインヘッダーの設定値のコピー
+     *
+     * @param  {Map} sounds_map
+     * @return {void}
+     * @method
+     * @public
+     */
+    setSounds (sounds_map)
+    {
+        this._$soundsMap = sounds_map;
+    }
+
+    /**
      * @description 上書き確認モーダルを表示
      *              Display overwrite confirmation modal
      *
@@ -1198,6 +1257,9 @@ class ConfirmModal extends BaseController
         this._$layers.clear();
         this._$mapping.clear();
         this._$ignore.clear();
+        if (this._$soundsMap) {
+            this._$soundsMap = null;
+        }
     }
 
     /**
