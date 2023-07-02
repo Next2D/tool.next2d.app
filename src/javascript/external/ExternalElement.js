@@ -26,17 +26,21 @@ class ExternalElement
     }
 
     /**
+     * @return {external.ExternalDocument}
+     */
+    get document ()
+    {
+        return this._$parent._$parent._$parent._$document;
+    }
+
+    /**
      * @return {string}
      * @readonly
      * @public
      */
     get elementType ()
     {
-        const workSpace = this
-            ._$parent
-            ._$parent
-            ._$document
-            ._$workSpace;
+        const workSpace = this.document._$workSpace;
 
         const instance = workSpace.getLibrary(
             this._$character.libraryId
@@ -64,11 +68,7 @@ class ExternalElement
      */
     get instanceType ()
     {
-        const workSpace = this
-            ._$parent
-            ._$parent
-            ._$document
-            ._$workSpace;
+        const workSpace = this.document._$workSpace;;
 
         const instance = workSpace.getLibrary(
             this._$character.libraryId
@@ -122,11 +122,7 @@ class ExternalElement
         const place = this._$character.getPlace(this._$parent._$frame);
         place.matrix[4] = x;
 
-        const workSpace = this
-            ._$parent
-            ._$parent
-            ._$document
-            ._$workSpace;
+        const workSpace = this.document._$workSpace;;
 
         const instance  = workSpace.getLibrary(
             this._$character.libraryId
@@ -171,11 +167,7 @@ class ExternalElement
         const place = this._$character.getPlace(this._$parent._$frame);
         place.matrix[5] = y;
 
-        const workSpace = this
-            ._$parent
-            ._$parent
-            ._$document
-            ._$workSpace;
+        const workSpace = this.document._$workSpace;;
 
         const instance  = workSpace.getLibrary(
             this._$character.libraryId
@@ -213,10 +205,7 @@ class ExternalElement
      */
     get libraryItem ()
     {
-        const externalDocument = this
-            ._$parent
-            ._$parent
-            ._$document;
+        const externalDocument = this.document;
 
         const workSpace = externalDocument._$workSpace;
 
@@ -261,11 +250,7 @@ class ExternalElement
      */
     get loop ()
     {
-        const workSpace = this
-            ._$parent
-            ._$parent
-            ._$document
-            ._$workSpace;
+        const workSpace = this.document._$workSpace;
 
         const instance = workSpace.getLibrary(
             this._$character.libraryId
@@ -296,11 +281,7 @@ class ExternalElement
     }
     set loop (loop_type)
     {
-        const workSpace = this
-            ._$parent
-            ._$parent
-            ._$document
-            ._$workSpace;
+        const workSpace = this.document._$workSpace;
 
         const instance = workSpace.getLibrary(
             this._$character.libraryId
@@ -341,11 +322,7 @@ class ExternalElement
      */
     get symbolType ()
     {
-        const workSpace = this
-            ._$parent
-            ._$parent
-            ._$document
-            ._$workSpace;
+        const workSpace = this.document._$workSpace;
 
         const instance = workSpace.getLibrary(
             this._$character.libraryId
@@ -355,11 +332,7 @@ class ExternalElement
     }
     set symbolType (symbol_type)
     {
-        const workSpace = this
-            ._$parent
-            ._$parent
-            ._$document
-            ._$workSpace;
+        const workSpace = this.document._$workSpace;
 
         switch (symbol_type) {
 

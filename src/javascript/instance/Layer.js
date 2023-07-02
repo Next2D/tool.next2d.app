@@ -108,6 +108,27 @@ class Layer
          */
         this._$color = TimelineHighlight.color;
 
+        /**
+         * @type {Map}
+         * @default null
+         * @private
+         */
+        this._$actions = null;
+
+        /**
+         * @type {Map}
+         * @default null
+         * @private
+         */
+        this._$labels = null;
+
+        /**
+         * @type {Map}
+         * @default null
+         * @private
+         */
+        this._$sounds = null;
+
         // 設定値があれば初期値を上書き
         if (object) {
             this._$name          = object.name;
@@ -1443,6 +1464,24 @@ class Layer
             const character = this._$emptys[idx];
             frame = Math.max(frame, character.endFrame);
 
+        }
+
+        if (this._$actions) {
+            for (const keyFrame of this._$actions.keys()) {
+                frame = Math.max(frame, keyFrame);
+            }
+        }
+
+        if (this._$sounds) {
+            for (const keyFrame of this._$sounds.keys()) {
+                frame = Math.max(frame, keyFrame);
+            }
+        }
+
+        if (this._$labels) {
+            for (const keyFrame of this._$labels.keys()) {
+                frame = Math.max(frame, keyFrame);
+            }
         }
 
         return frame;

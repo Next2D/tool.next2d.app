@@ -88,6 +88,7 @@ class ExternalLibrary
 
         const items = [];
         for (const instance of workSpace._$libraries.values()) {
+
             switch (instance.type) {
 
                 case InstanceType.MOVIE_CLIP:

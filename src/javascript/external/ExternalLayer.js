@@ -6,11 +6,11 @@ class ExternalLayer
 {
     /**
      * @param {Layer} layer
-     * @param {ExternalDocument} external_document
+     * @param {ExternalTimeline} parent
      * @constructor
      * @public
      */
-    constructor (layer, external_document)
+    constructor (layer, parent)
     {
         /**
          * @type {Layer}
@@ -19,11 +19,11 @@ class ExternalLayer
         this._$layer = layer;
 
         /**
-         * @type {ExternalDocument}
+         * @type {ExternalTimeline}
          * @default null
          * @private
          */
-        this._$document = external_document;
+        this._$parent = parent;
     }
 
     /**
@@ -67,11 +67,68 @@ class ExternalLayer
      */
     get frames ()
     {
-        const frames = [null];
-        const totalFrame = this._$layer.totalFrame;
-        for (let frame = 1; totalFrame >= frame; ++frame) {
-            frames.push(new ExternalFrame(frame, this));
+        const frames = [];
+        const totalFrame = this._$parent._$scene.totalFrame;
+        switch (this._$layer._$name) {
+
+            case "script":
+                {
+                    const actions = this._$layer._$actions;
+                    let keyFrame  = 1;
+                    for (let frame = 1; totalFrame >= frame; ++frame) {
+                        if (actions.has(frame)) {
+                            keyFrame = frame;
+                        }
+                        frames.push(new ExternalFrame(frame, keyFrame - 1, this));
+                    }
+                }
+                break;
+
+            case "label":
+                {
+                    const labels = this._$layer._$labels;
+                    let keyFrame  = 1;
+                    for (let frame = 1; totalFrame >= frame; ++frame) {
+                        if (labels.has(frame)) {
+                            keyFrame = frame;
+                        }
+                        frames.push(new ExternalFrame(frame, keyFrame - 1, this));
+                    }
+                }
+                break;
+
+            case "sound":
+                {
+                    const sounds = this._$layer._$sounds;
+                    let keyFrame  = 1;
+                    for (let frame = 1; totalFrame >= frame; ++frame) {
+                        if (sounds.has(frame)) {
+                            keyFrame = frame;
+                        }
+                        frames.push(new ExternalFrame(frame, keyFrame - 1, this));
+                    }
+                }
+                break;
+
+            default:
+                {
+                    let keyFrame = 1;
+                    for (let frame = 1; totalFrame >= frame; ++frame) {
+                        const characters = this._$layer.getActiveCharacter(frame);
+                        if (characters.length) {
+                            keyFrame = frame;
+                        }
+                        const emptyCharacter = this._$layer.getActiveEmptyCharacter(frame);
+                        if (emptyCharacter) {
+                            keyFrame = frame;
+                        }
+                        frames.push(new ExternalFrame(frame, keyFrame - 1, this));
+                    }
+                }
+                break;
+
         }
+
         return frames;
     }
 

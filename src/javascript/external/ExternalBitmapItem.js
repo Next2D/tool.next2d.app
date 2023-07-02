@@ -43,7 +43,22 @@ class ExternalBitmapItem extends ExternalItem
      */
     exportToFile (path)
     {
-        // const ext = path.split(".").pop().toLowerCase();
-        window.FLfile.writeBuffer(path, this._$instance._$buffer);
+        const canvas  = Util.$getCanvas();
+        canvas.width  = this._$instance.width;
+        canvas.height = this._$instance.height;
+        const context = canvas.getContext("2d");
+
+        const bitmapData = context.createImageData(canvas.width, canvas.height);
+        const buffer = this._$instance._$buffer;
+        for (let idx = 0; idx < buffer.length; ++idx) {
+            bitmapData.data[idx] = buffer[idx];
+        }
+
+        context.putImageData(bitmapData, 0, 0);
+
+        const ext = path.split(".").pop().toLowerCase();
+        window.FLfile.writeBase64(path, canvas.toDataURL(`image/${ext}`));
+
+        Util.$poolCanvas(canvas);
     }
 }

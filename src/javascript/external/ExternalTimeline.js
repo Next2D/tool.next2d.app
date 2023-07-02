@@ -81,6 +81,25 @@ class ExternalTimeline
         // );
 
         const layers = [];
+
+        // アクションレイヤー
+        const scriptLayer = new Layer();
+        scriptLayer._$name = "script";
+        scriptLayer._$actions = this._$scene._$actions;
+        layers.push(new ExternalLayer(scriptLayer, this));
+
+        // ラベルレイヤー
+        const labelLayer = new Layer();
+        labelLayer._$name = "label";
+        labelLayer._$labels = this._$scene._$labels;
+        layers.push(new ExternalLayer(labelLayer, this));
+
+        // サウンドレイヤー
+        const soundLayer = new Layer();
+        soundLayer._$name = "sound";
+        soundLayer._$sounds = this._$scene._$sounds;
+        layers.push(new ExternalLayer(soundLayer, this));
+
         for (const layer of this._$scene._$layers.values()) {
 
             // const index = children.indexOf(
@@ -89,7 +108,7 @@ class ExternalTimeline
             //
             // layers[index] = new ExternalLayer(layer);
 
-            layers.push(new ExternalLayer(layer, this._$document));
+            layers.push(new ExternalLayer(layer, this));
         }
 
         return layers;
@@ -204,7 +223,7 @@ class ExternalTimeline
             .$timelineLayer
             .addTargetFrame(layer, this.currentFrame);
 
-        return new ExternalLayer(layer, this._$document);
+        return new ExternalLayer(layer, this);
     }
 
     /**

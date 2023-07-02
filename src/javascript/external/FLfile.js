@@ -53,20 +53,17 @@ class FLfile
             dataMap.set(fileName, []);
         }
 
-        console.log("write: ", uri);
-        console.log(this._$dataMap);
-        // console.log(text_to_write);
         dataMap.get(fileName).push(text_to_write);
     }
 
     /**
      * @param  {string} uri
-     * @param  {Uint8Array} buffer
+     * @param  {string} base64
      * @return {boolean}
      * @method
      * @public
      */
-    writeBuffer (uri, buffer)
+    writeBase64 (uri, base64)
     {
         const paths = uri.split("/");
         const fileName = paths.pop();
@@ -82,7 +79,7 @@ class FLfile
             dataMap = dataMap.get(path);
         }
 
-        dataMap.set(fileName, buffer);
+        dataMap.set(fileName, base64);
     }
 
     /**
@@ -99,11 +96,11 @@ class FLfile
         for (let idx = 0; idx < paths.length; ++idx) {
 
             const path = paths[idx];
-            if (dataMap.has(path)) {
-                continue;
+            if (!dataMap.has(path)) {
+                dataMap.set(path, new Map());
             }
 
-            dataMap.set(path, new Map());
+            dataMap = dataMap.get(path);
         }
 
         return true;
@@ -165,11 +162,12 @@ class FLfile
     }
 
     /**
+     * @param  {string} [file_name = "export"]
      * @return {void}
      * @method
      * @public
      */
-    export ()
+    export (file_name = "export")
     {
         const zip = new JSZip();
         this.createZip(zip, this._$dataMap);
@@ -181,7 +179,7 @@ class FLfile
                 const url = URL.createObjectURL(content);
 
                 const anchor    = document.createElement("a");
-                anchor.download = `${name}.zip`;
+                anchor.download = `${file_name}.zip`;
                 anchor.href     = url;
                 anchor.click();
 
@@ -199,15 +197,14 @@ class FLfile
     {
         for (const [name, value] of data_map) {
 
-            console.log(zip, name, value);
             switch (true) {
 
                 case value instanceof Map:
                     this.createZip(zip.folder(name), value);
                     break;
 
-                case value instanceof Uint8Array:
-                    zip.file(name, value, { "buffer": true });
+                case typeof value === "string":
+                    zip.file(name, value.split(",")[1], { "base64": true });
                     break;
 
                 case Array.isArray(value):
