@@ -58,8 +58,34 @@ class FLfile
 
     /**
      * @param  {string} uri
+     * @param  {string} buffer
+     * @return {void}
+     * @method
+     * @public
+     */
+    writeBuffer (uri, buffer)
+    {
+        const paths = uri.split("/");
+        const fileName = paths.pop();
+
+        let dataMap = this._$dataMap;
+        for (let idx = 0; idx < paths.length; ++idx) {
+
+            const path = paths[idx];
+            if (!dataMap.has(path)) {
+                dataMap.set(path, new Map());
+            }
+
+            dataMap = dataMap.get(path);
+        }
+
+        dataMap.set(fileName, buffer);
+    }
+
+    /**
+     * @param  {string} uri
      * @param  {string} base64
-     * @return {boolean}
+     * @return {void}
      * @method
      * @public
      */
@@ -205,6 +231,19 @@ class FLfile
 
                 case typeof value === "string":
                     zip.file(name, value.split(",")[1], { "base64": true });
+                    break;
+
+                case value instanceof Uint8Array:
+
+                    let ext = "";
+                    if (name.indexOf(".mp3") === -1) {
+                        ext = ".mp3";
+                    }
+
+                    zip.file(`${name}${ext}`, new Blob(
+                        [value],
+                        { "type": "audio/mp3" }
+                    ), { "base64": true });
                     break;
 
                 case Array.isArray(value):
