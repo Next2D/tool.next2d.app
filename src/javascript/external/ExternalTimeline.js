@@ -76,38 +76,33 @@ class ExternalTimeline
      */
     get layers ()
     {
-        // const children = Array.from(
-        //     document.getElementById("timeline-content").children
-        // );
-
         const layers = [];
 
         // アクションレイヤー
-        const scriptLayer = new Layer();
-        scriptLayer._$name = "script";
-        scriptLayer._$actions = this._$scene._$actions;
-        layers.push(new ExternalLayer(scriptLayer, this));
+        if (this._$scene._$actions.size) {
+            const scriptLayer = new Layer();
+            scriptLayer._$name = "script";
+            scriptLayer._$actions = this._$scene._$actions;
+            layers.push(new ExternalLayer(scriptLayer, this));
+        }
 
         // ラベルレイヤー
-        const labelLayer = new Layer();
-        labelLayer._$name = "label";
-        labelLayer._$labels = this._$scene._$labels;
-        layers.push(new ExternalLayer(labelLayer, this));
+        if (this._$scene._$labels.size) {
+            const labelLayer = new Layer();
+            labelLayer._$name = "label";
+            labelLayer._$labels = this._$scene._$labels;
+            layers.push(new ExternalLayer(labelLayer, this));
+        }
 
         // サウンドレイヤー
-        const soundLayer = new Layer();
-        soundLayer._$name = "sound";
-        soundLayer._$sounds = this._$scene._$sounds;
-        layers.push(new ExternalLayer(soundLayer, this));
+        if (this._$scene._$sounds.size) {
+            const soundLayer = new Layer();
+            soundLayer._$name = "sound";
+            soundLayer._$sounds = this._$scene._$sounds;
+            layers.push(new ExternalLayer(soundLayer, this));
+        }
 
         for (const layer of this._$scene._$layers.values()) {
-
-            // const index = children.indexOf(
-            //     document.getElementById(`layer-id-${layer.id}`)
-            // );
-            //
-            // layers[index] = new ExternalLayer(layer);
-
             layers.push(new ExternalLayer(layer, this));
         }
 

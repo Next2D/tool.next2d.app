@@ -317,6 +317,15 @@ class ExternalElement
     }
 
     /**
+     * @member {number}
+     * @public
+     */
+    get firstFrame ()
+    {
+        return this._$character.startFrame - 1;
+    }
+
+    /**
      * @member {string}
      * @public
      */
@@ -328,7 +337,7 @@ class ExternalElement
             this._$character.libraryId
         );
 
-        return instance.type === InstanceType.MOVIE_CLIP ? "graphic" : "";
+        return instance.type === InstanceType.MOVIE_CLIP ? "movie clip" : "";
     }
     set symbolType (symbol_type)
     {

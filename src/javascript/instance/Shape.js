@@ -892,7 +892,7 @@ class Shape extends Instance
      */
     changeStyle (style)
     {
-        const { Graphics, GradientType } = window.next2d.display;
+        const { Graphics } = window.next2d.display;
 
         const index = Util.$hitColor.index;
         const currentStyle = Util.$hitColor.style;
@@ -906,8 +906,8 @@ class Shape extends Instance
 
                     switch (element.value) {
 
-                        case GradientType.LINEAR:
-                        case GradientType.RADIAL:
+                        case "linear":
+                        case "radial":
                             {
                                 const colorValue = document
                                     .getElementById("fill-color-value")
@@ -978,8 +978,8 @@ class Shape extends Instance
 
                     switch (element.value) {
 
-                        case GradientType.LINEAR:
-                        case GradientType.RADIAL:
+                        case "linear":
+                        case "radial":
                             {
                                 const colorValue = document
                                     .getElementById("fill-color-value")
@@ -1075,7 +1075,7 @@ class Shape extends Instance
      */
     changeGradient (index, style, graphics_type, delete_number, color, alpha)
     {
-        const { Graphics, SpreadMethod, InterpolationMethod } = window.next2d.display;
+        const { Graphics } = window.next2d.display;
         const { Matrix } = window.next2d.geom;
 
         const matrix = new Matrix();
@@ -1116,8 +1116,8 @@ class Shape extends Instance
             this._$recodes.splice(index + 4, delete_number,
                 style, ratios,
                 Array.from(matrix._$matrix),
-                SpreadMethod.PAD,
-                InterpolationMethod.RGB,
+                "pad",
+                "rgb",
                 0
             );
 
@@ -1128,8 +1128,8 @@ class Shape extends Instance
             this._$recodes.splice(index - 1, delete_number,
                 graphics_type, style, ratios,
                 Array.from(matrix._$matrix),
-                SpreadMethod.PAD,
-                InterpolationMethod.RGB,
+                "pad",
+                "rgb",
                 0
             );
 
@@ -1363,7 +1363,7 @@ class Shape extends Instance
             return ;
         }
 
-        const { Graphics, GradientType } = window.next2d.display;
+        const { Graphics } = window.next2d.display;
         const { Point, Matrix } = window.next2d.geom;
 
         const matrix = new Matrix();
@@ -1492,7 +1492,7 @@ class Shape extends Instance
 
                         document
                             .getElementById("fill-color-type-select")[
-                                recode[idx] === GradientType.LINEAR ? 2 : 3
+                                recode[idx] === "linear" ? 2 : 3
                             ]
                             .selected = true;
 
@@ -1573,7 +1573,7 @@ class Shape extends Instance
 
                         document
                             .getElementById("fill-color-type-select")[
-                                recode[idx + 4] === GradientType.LINEAR ? 2 : 3
+                                recode[idx + 4] === "linear" ? 2 : 3
                             ]
                             .selected = true;
 

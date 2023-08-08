@@ -33,6 +33,6 @@ class ExternalSymbolItem extends ExternalItem
      */
     get timeline ()
     {
-        return new ExternalTimeline(this._$instance);
+        return new ExternalTimeline(this._$instance, this._$document);
     }
 }

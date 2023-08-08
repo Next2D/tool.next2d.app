@@ -48,10 +48,35 @@ class ExternalBitmapItem extends ExternalItem
         canvas.height = this._$instance.height;
         const context = canvas.getContext("2d");
 
-        const bitmapData = context.createImageData(canvas.width, canvas.height);
-        const buffer = this._$instance._$buffer;
-        for (let idx = 0; idx < buffer.length; ++idx) {
-            bitmapData.data[idx] = buffer[idx];
+        let bitmapData = null;
+        if (this._$instance.type === InstanceType.SHAPE) {
+            const { BitmapData } = window.next2d.display;
+            for (let idx = 0; this._$instance._$recodes.length > idx; ++idx) {
+
+                const value = this._$instance._$recodes[idx];
+
+                if (typeof value !== "object") {
+                    continue;
+                }
+
+                if (value.namespace !== BitmapData.namespace) {
+                    continue;
+                }
+
+                bitmapData = context.createImageData(value.width, value.height);
+                const buffer = value._$buffer;
+                for (let idx = 0; idx < buffer.length; ++idx) {
+                    bitmapData.data[idx] = buffer[idx];
+                }
+
+                break;
+            }
+        } else {
+            bitmapData = context.createImageData(canvas.width, canvas.height);
+            const buffer = this._$instance._$buffer;
+            for (let idx = 0; idx < buffer.length; ++idx) {
+                bitmapData.data[idx] = buffer[idx];
+            }
         }
 
         context.putImageData(bitmapData, 0, 0);

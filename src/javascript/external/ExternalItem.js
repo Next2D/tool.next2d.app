@@ -43,6 +43,9 @@ class ExternalItem
         switch (this._$instance.type) {
 
             case InstanceType.SHAPE:
+                if (this._$instance._$inBitmap) {
+                    return "bitmap";
+                }
                 return "graphic";
 
             case InstanceType.MOVIE_CLIP:

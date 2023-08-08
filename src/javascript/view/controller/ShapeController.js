@@ -332,11 +332,10 @@ class ShapeController extends BaseController
 
         if (Util.$hitColor) {
 
-            const { GradientType } = window.next2d.display;
             switch (Util.$hitColor.type) {
 
-                case GradientType.LINEAR:
-                case GradientType.RADIAL:
+                case "linear":
+                case "radial":
                     if (this._$currentPointer) {
                         this._$currentPointer.dataset.alpha = value;
                         Util.$hitColor.shape.changeColor(
@@ -377,11 +376,10 @@ class ShapeController extends BaseController
 
             Util.$hitColor.shape.changeColor();
 
-            const { GradientType } = window.next2d.display;
             switch (Util.$hitColor.type) {
 
-                case GradientType.LINEAR:
-                case GradientType.RADIAL:
+                case "linear":
+                case "radial":
                     this.updateGradientCanvas();
                     break;
 
