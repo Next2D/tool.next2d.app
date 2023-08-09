@@ -83,7 +83,7 @@ class ExternalTimeline
             const scriptLayer = new Layer();
             scriptLayer._$name = "script";
             scriptLayer._$actions = this._$scene._$actions;
-            layers.push(new ExternalLayer(scriptLayer, this));
+            layers.unshift(new ExternalLayer(scriptLayer, this));
         }
 
         // ラベルレイヤー
@@ -91,7 +91,7 @@ class ExternalTimeline
             const labelLayer = new Layer();
             labelLayer._$name = "label";
             labelLayer._$labels = this._$scene._$labels;
-            layers.push(new ExternalLayer(labelLayer, this));
+            layers.unshift(new ExternalLayer(labelLayer, this));
         }
 
         // サウンドレイヤー
@@ -99,11 +99,11 @@ class ExternalTimeline
             const soundLayer = new Layer();
             soundLayer._$name = "sound";
             soundLayer._$sounds = this._$scene._$sounds;
-            layers.push(new ExternalLayer(soundLayer, this));
+            layers.unshift(new ExternalLayer(soundLayer, this));
         }
 
         for (const layer of this._$scene._$layers.values()) {
-            layers.push(new ExternalLayer(layer, this));
+            layers.unshift(new ExternalLayer(layer, this));
         }
 
         return layers;

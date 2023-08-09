@@ -43,13 +43,12 @@ class ExternalBitmapItem extends ExternalItem
      */
     exportToFile (path)
     {
-        const canvas  = Util.$getCanvas();
-        canvas.width  = this._$instance.width;
-        canvas.height = this._$instance.height;
-        const context = canvas.getContext("2d");
+        let canvas = Util.$getCanvas();
 
+        let context = null;
         let bitmapData = null;
         if (this._$instance.type === InstanceType.SHAPE) {
+
             const { BitmapData } = window.next2d.display;
             for (let idx = 0; this._$instance._$recodes.length > idx; ++idx) {
 
@@ -63,6 +62,10 @@ class ExternalBitmapItem extends ExternalItem
                     continue;
                 }
 
+                canvas.width  = value.width;
+                canvas.height = value.height;
+                context = canvas.getContext("2d");
+
                 bitmapData = context.createImageData(value.width, value.height);
                 const buffer = value._$buffer;
                 for (let idx = 0; idx < buffer.length; ++idx) {
@@ -72,6 +75,11 @@ class ExternalBitmapItem extends ExternalItem
                 break;
             }
         } else {
+
+            canvas.width  = this._$instance.width;
+            canvas.height = this._$instance.height;
+            context = canvas.getContext("2d");
+
             bitmapData = context.createImageData(canvas.width, canvas.height);
             const buffer = this._$instance._$buffer;
             for (let idx = 0; idx < buffer.length; ++idx) {

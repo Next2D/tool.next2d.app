@@ -134,8 +134,14 @@ class ExternalLibrary
     {
         const workSpace = this._$document._$workSpace;
 
+        let rootSkip = false;
         let index = 0;
         for (const instance of workSpace._$libraries.values()) {
+
+            if (!rootSkip) {
+                rootSkip = true;
+                continue;
+            }
 
             index++;
 

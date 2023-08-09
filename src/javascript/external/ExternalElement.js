@@ -86,7 +86,7 @@ class ExternalElement
                 if (instance.inBitmap) {
                     return "bitmap";
                 }
-                return "symbol";
+                return "shape";
 
             default:
                 return "symbol";
@@ -222,13 +222,7 @@ class ExternalElement
 
             case InstanceType.SHAPE:
                 if (instance.inBitmap) {
-                    const bitmapObject = instance._$recodes[instance._$recodes.length - 4];
-
-                    const bitmapInstance = workSpace.getLibrary(
-                        bitmapObject._$instanceId
-                    );
-
-                    return new ExternalBitmapItem(bitmapInstance, externalDocument);
+                    return new ExternalBitmapItem(instance, externalDocument);
                 }
                 return new ExternalItem(instance, externalDocument);
 

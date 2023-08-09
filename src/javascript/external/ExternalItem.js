@@ -43,7 +43,7 @@ class ExternalItem
         switch (this._$instance.type) {
 
             case InstanceType.SHAPE:
-                if (this._$instance._$inBitmap) {
+                if (this._$instance.inBitmap) {
                     return "bitmap";
                 }
                 return "graphic";
