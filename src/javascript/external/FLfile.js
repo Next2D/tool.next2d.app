@@ -234,16 +234,17 @@ class FLfile
                     break;
 
                 case value instanceof Uint8Array:
+                    {
+                        let ext = "";
+                        if (name.indexOf(".mp3") === -1) {
+                            ext = ".mp3";
+                        }
 
-                    let ext = "";
-                    if (name.indexOf(".mp3") === -1) {
-                        ext = ".mp3";
+                        zip.file(`${name}${ext}`, new Blob(
+                            [value],
+                            { "type": "audio/mp3" }
+                        ), { "base64": true });
                     }
-
-                    zip.file(`${name}${ext}`, new Blob(
-                        [value],
-                        { "type": "audio/mp3" }
-                    ), { "base64": true });
                     break;
 
                 case Array.isArray(value):
