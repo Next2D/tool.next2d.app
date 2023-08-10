@@ -119,6 +119,15 @@ class ExternalFrame
     }
 
     /**
+     * @return {string}
+     * @public
+     */
+    get tweenType ()
+    {
+        return "none";
+    }
+
+    /**
      * @return {array}
      * @public
      */

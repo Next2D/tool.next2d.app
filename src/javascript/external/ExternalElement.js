@@ -95,6 +95,86 @@ class ExternalElement
     }
 
     /**
+     * @member {number}
+     * @public
+     */
+    get colorRedPercent ()
+    {
+        const place = this._$character.getPlace(this._$parent._$frame);
+        return place.colorTransform[0] * 100;
+    }
+
+    /**
+     * @member {number}
+     * @public
+     */
+    get colorGreenPercent ()
+    {
+        const place = this._$character.getPlace(this._$parent._$frame);
+        return place.colorTransform[1] * 100;
+    }
+
+    /**
+     * @member {number}
+     * @public
+     */
+    get colorBluePercent ()
+    {
+        const place = this._$character.getPlace(this._$parent._$frame);
+        return place.colorTransform[2] * 100;
+    }
+
+    /**
+     * @member {number}
+     * @public
+     */
+    get colorAlphaPercent ()
+    {
+        const place = this._$character.getPlace(this._$parent._$frame);
+        return place.colorTransform[3] * 100;
+    }
+
+    /**
+     * @member {number}
+     * @public
+     */
+    get colorRedAmount ()
+    {
+        const place = this._$character.getPlace(this._$parent._$frame);
+        return place.colorTransform[4];
+    }
+
+    /**
+     * @member {number}
+     * @public
+     */
+    get colorGreenAmount ()
+    {
+        const place = this._$character.getPlace(this._$parent._$frame);
+        return place.colorTransform[5];
+    }
+
+    /**
+     * @member {number}
+     * @public
+     */
+    get colorBlueAmount ()
+    {
+        const place = this._$character.getPlace(this._$parent._$frame);
+        return place.colorTransform[6];
+    }
+    
+    /**
+     * @member {number}
+     * @public
+     */
+    get colorAlphaAmount ()
+    {
+        const place = this._$character.getPlace(this._$parent._$frame);
+        return place.colorTransform[7];
+    }
+
+    /**
      * @member {Matrix}
      * @public
      */
@@ -102,9 +182,35 @@ class ExternalElement
     {
         const { Matrix } = next2d.geom;
         const place = this._$character.getPlace(this._$parent._$frame);
+
+        const workSpace = this.document._$workSpace;
+        const instance = workSpace.getLibrary(
+            this._$character.libraryId
+        );
+
+        let matrix = place.matrix.slice();
+        if (instance.type === InstanceType.SHAPE && instance.inBitmap) {
+            const bitmapMatrix = instance._$recodes[instance._$recodes.length - 3];
+            if (bitmapMatrix) {
+                const a00 = matrix[0];
+                const a01 = matrix[1];
+                const a10 = matrix[2];
+                const a11 = matrix[3];
+                const a20 = matrix[4];
+                const a21 = matrix[5];
+
+                matrix[0] = bitmapMatrix[0] * a00 + bitmapMatrix[1] * a10;
+                matrix[1] = bitmapMatrix[0] * a01 + bitmapMatrix[1] * a11;
+                matrix[2] = bitmapMatrix[2] * a00 + bitmapMatrix[3] * a10;
+                matrix[3] = bitmapMatrix[2] * a01 + bitmapMatrix[3] * a11;
+                matrix[4] = bitmapMatrix[4] * a00 + bitmapMatrix[5] * a10 + a20;
+                matrix[5] = bitmapMatrix[4] * a01 + bitmapMatrix[5] * a11 + a21;
+            }
+        }
+
         return new Matrix(
-            place.matrix[0], place.matrix[1], place.matrix[2],
-            place.matrix[3], place.matrix[4], place.matrix[5]
+            matrix[0], matrix[1], matrix[2],
+            matrix[3], matrix[4], matrix[5]
         );
     }
 
@@ -122,7 +228,7 @@ class ExternalElement
         const place = this._$character.getPlace(this._$parent._$frame);
         place.matrix[4] = x;
 
-        const workSpace = this.document._$workSpace;;
+        const workSpace = this.document._$workSpace;
 
         const instance  = workSpace.getLibrary(
             this._$character.libraryId
