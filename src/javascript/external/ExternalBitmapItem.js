@@ -43,11 +43,14 @@ class ExternalBitmapItem extends ExternalItem
      */
     exportToFile (path)
     {
-        let canvas = Util.$getCanvas();
-
+        let canvas  = Util.$getCanvas();
         let context = null;
-        let bitmapData = null;
         if (this._$instance.type === InstanceType.SHAPE) {
+
+            const bitmapObject = this._$instance._$recodes[this._$instance._$recodes.length - 4];
+            canvas.width  = bitmapObject.width;
+            canvas.height = bitmapObject.height;
+            context = canvas.getContext("2d");
 
             const { BitmapData } = window.next2d.display;
             for (let idx = 0; this._$instance._$recodes.length > idx; ++idx) {
@@ -62,17 +65,19 @@ class ExternalBitmapItem extends ExternalItem
                     continue;
                 }
 
-                canvas.width  = value.width;
-                canvas.height = value.height;
-                context = canvas.getContext("2d");
+                const bitmapCanvas  = Util.$getCanvas();
+                bitmapCanvas.width  = value.width;
+                bitmapCanvas.height = value.height;
+                const bitmapContext = bitmapCanvas.getContext("2d");
 
-                bitmapData = context.createImageData(value.width, value.height);
+                const bitmapData = context.createImageData(value.width, value.height);
                 const buffer = value._$buffer;
                 for (let idx = 0; idx < buffer.length; ++idx) {
                     bitmapData.data[idx] = buffer[idx];
                 }
 
-                break;
+                bitmapContext.putImageData(bitmapData, 0, 0);
+                context.drawImage(bitmapCanvas, 0, 0);
             }
         } else {
 
@@ -80,14 +85,14 @@ class ExternalBitmapItem extends ExternalItem
             canvas.height = this._$instance.height;
             context = canvas.getContext("2d");
 
-            bitmapData = context.createImageData(canvas.width, canvas.height);
+            const bitmapData = context.createImageData(canvas.width, canvas.height);
             const buffer = this._$instance._$buffer;
             for (let idx = 0; idx < buffer.length; ++idx) {
                 bitmapData.data[idx] = buffer[idx];
             }
-        }
 
-        context.putImageData(bitmapData, 0, 0);
+            context.putImageData(bitmapData, 0, 0);
+        }
 
         const ext = path.split(".").pop().toLowerCase();
         window.FLfile.writeBase64(path, canvas.toDataURL(`image/${ext}`));

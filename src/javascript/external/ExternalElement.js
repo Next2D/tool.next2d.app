@@ -163,7 +163,7 @@ class ExternalElement
         const place = this._$character.getPlace(this._$parent._$frame);
         return place.colorTransform[6];
     }
-    
+
     /**
      * @member {number}
      * @public
