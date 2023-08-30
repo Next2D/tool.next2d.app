@@ -95,6 +95,31 @@ class ExternalElement
     }
 
     /**
+     * @member {string}
+     * @public
+     */
+    get colorMode ()
+    {
+        const place = this._$character.getPlace(this._$parent._$frame);
+        if (place.colorTransform[0] !== 1
+            || place.colorTransform[1] !== 1
+            || place.colorTransform[2] !== 1
+            || place.colorTransform[4] !== 0
+            || place.colorTransform[5] !== 0
+            || place.colorTransform[6] !== 0
+            || place.colorTransform[7] !== 0
+        ) {
+            return "advanced";
+        }
+
+        if (place.colorTransform[3] !== 1) {
+            return "alpha";
+        }
+
+        return "none";
+    }
+
+    /**
      * @member {number}
      * @public
      */
@@ -172,6 +197,16 @@ class ExternalElement
     {
         const place = this._$character.getPlace(this._$parent._$frame);
         return place.colorTransform[7];
+    }
+
+    /**
+     * @member {string}
+     * @public
+     */
+    get blendMode ()
+    {
+        const place = this._$character.getPlace(this._$parent._$frame);
+        return place.blendMode;
     }
 
     /**

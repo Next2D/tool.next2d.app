@@ -1084,7 +1084,7 @@ Util.$showPreview = () =>
                 `0xff${data.stage.bgColor.slice(1)}` | 0
             );
 
-            player._$cacheStore.reset();
+            player.cacheStore.reset();
             player.play();
         });
 

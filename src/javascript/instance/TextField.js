@@ -751,7 +751,7 @@ class TextField extends Instance
      */
     get defaultSymbol ()
     {
-        return window.next2d.text.TextField.namespace;
+        return window.next2d.display.TextField.namespace;
     }
 
     /**
@@ -819,7 +819,7 @@ class TextField extends Instance
      */
     createInstance ()
     {
-        const { TextField } = window.next2d.text;
+        const { TextField } = window.next2d.display;
         const textField = new TextField();
         textField._$loaderInfo  = Util.$loaderInfo;
         textField._$characterId = this.id;

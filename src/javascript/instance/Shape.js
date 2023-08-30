@@ -1649,7 +1649,8 @@ class Shape extends Instance
 
             if (instance) {
 
-                shape._$bitmapId = this._$bitmapId;
+                graphics._$bitmapId = this._$bitmapId;
+                graphics._$mode     = "bitmap";
 
                 // setup
                 graphics._$recode = [];
@@ -1712,6 +1713,12 @@ class Shape extends Instance
         } else {
 
             graphics._$recode = this._$recodes.slice(0);
+            const bitmapData = graphics._$recode[graphics._$recode.length - 4];
+            if (typeof bitmapData === "object"
+                && bitmapData.namespace === "next2d.display.BitmapData"
+            ) {
+                graphics._$mode = "bitmap";
+            }
 
         }
 
