@@ -154,7 +154,7 @@ class TextField extends Instance
      * @description TextFieldクラスを複製
      *              Duplicate TextField class
      *
-     * @return {Video}
+     * @return {TextField}
      * @method
      * @public
      */

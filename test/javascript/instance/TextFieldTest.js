@@ -12,10 +12,10 @@ describe("TextField.js property test", () =>
         {
             this.defaultTextFormat = {};
         };
-        TextFieldClass.namespace = "next2d.text.TextField";
+        TextFieldClass.namespace = "next2d.display.TextField";
 
         window.next2d = {
-            "text": {
+            "display": {
                 "TextField": TextFieldClass
             }
         };
@@ -44,7 +44,7 @@ describe("TextField.js property test", () =>
         expect(textField.autoSize).toBe(0);
         expect(textField.thickness).toBe(0);
         expect(textField.thicknessColor).toBe(0);
-        expect(textField.defaultSymbol).toBe("next2d.text.TextField");
+        expect(textField.defaultSymbol).toBe("next2d.display.TextField");
     });
 });
 
@@ -94,7 +94,7 @@ describe("TextField.js showController test", () =>
     });
 });
 
-describe("Video.js function test", () =>
+describe("TextField.js function test", () =>
 {
     it("function toObject test", () =>
     {
@@ -103,10 +103,10 @@ describe("Video.js function test", () =>
         {
             this.defaultTextFormat = {};
         };
-        TextFieldClass.namespace = "next2d.text.TextField";
+        TextFieldClass.namespace = "next2d.display.TextField";
 
         window.next2d = {
-            "text": {
+            "display": {
                 "TextField": TextFieldClass
             }
         };
@@ -151,10 +151,10 @@ describe("Video.js function test", () =>
         {
             this.defaultTextFormat = {};
         };
-        TextFieldClass.namespace = "next2d.text.TextField";
+        TextFieldClass.namespace = "next2d.display.TextField";
 
         window.next2d = {
-            "text": {
+            "display": {
                 "TextField": TextFieldClass
             }
         };
@@ -169,7 +169,7 @@ describe("Video.js function test", () =>
 
         const object = textField.toPublish();
         expect(object.symbol).toBe("app.text");
-        expect(object.extends).toBe("next2d.text.TextField");
+        expect(object.extends).toBe("next2d.display.TextField");
         expect(object.text).toBe("test");
         expect(object.font).toBe("sans-serif");
         expect(object.fontType).toBe(0);
