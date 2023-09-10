@@ -885,84 +885,27 @@ class SVGToShape
         if (element.hasAttribute("transform")) {
             const transform = element.getAttribute("transform");
             if (transform.indexOf("translate") > -1) {
-
-                const translate = /translate\((.+?)\)/gi.exec(transform)[1];
-
-                const values = SVGToShape._$adjParam(translate
-                    .replace(/,/g, " ")
-                    .replace(/-/g, " -")
-                    .trim()
-                    .split(" "));
-
-                const param = [];
-                for (let idx = 0; idx < values.length; ++idx) {
-
-                    const value = values[idx];
-                    if (!value) {
-                        continue;
-                    }
-
-                    param.push(+value);
-                }
-
-                x += parseFloat(param[0]);
-                y += parseFloat(param[1]);
+                const point = SVGToShape.getTranslate(transform);
+                x += point.x;
+                y += point.y;
             }
         }
 
         if (group_attribute_map.has("transform")) {
             const transform = group_attribute_map.get("transform");
             if (transform.indexOf("translate") > -1) {
-
-                const translate = /translate\((.+?)\)/gi.exec(transform)[1];
-
-                const values = SVGToShape._$adjParam(translate
-                    .replace(/,/g, " ")
-                    .replace(/-/g, " -")
-                    .trim()
-                    .split(" "));
-
-                const param = [];
-                for (let idx = 0; idx < values.length; ++idx) {
-
-                    const value = values[idx];
-                    if (!value) {
-                        continue;
-                    }
-
-                    param.push(+value);
-                }
-
-                x += parseFloat(param[0]);
-                y += parseFloat(param[1]);
+                const point = SVGToShape.getTranslate(transform);
+                x += point.x;
+                y += point.y;
             }
         }
 
         if (global_style.has("transform")) {
             const transform = global_style.get("transform");
             if (transform.indexOf("translate") > -1) {
-
-                const translate = /translate\((.+?)\)/gi.exec(transform)[1];
-
-                const values = SVGToShape._$adjParam(translate
-                    .replace(/,/g, " ")
-                    .replace(/-/g, " -")
-                    .trim()
-                    .split(" "));
-
-                const param = [];
-                for (let idx = 0; idx < values.length; ++idx) {
-
-                    const value = values[idx];
-                    if (!value) {
-                        continue;
-                    }
-
-                    param.push(+value);
-                }
-
-                x += parseFloat(param[0]);
-                y += parseFloat(param[1]);
+                const point = SVGToShape.getTranslate(transform);
+                x += point.x;
+                y += point.y;
             }
         }
 
@@ -993,7 +936,7 @@ class SVGToShape
      */
     static createShape (
         movie_clip, element, group_attribute_map, global_style,
-        folder_id = 0, clip = false
+        folder_id = 0, clip = false, alpha = 1
     ) {
 
         const workSpace = Util.$currentWorkSpace();
@@ -1035,91 +978,34 @@ class SVGToShape
         if (element.hasAttribute("transform")) {
             const transform = element.getAttribute("transform");
             if (transform.indexOf("translate") > -1) {
-
-                const translate = /translate\((.+?)\)/gi.exec(transform)[1];
-
-                const values = SVGToShape._$adjParam(translate
-                    .replace(/,/g, " ")
-                    .replace(/-/g, " -")
-                    .trim()
-                    .split(" "));
-
-                const param = [];
-                for (let idx = 0; idx < values.length; ++idx) {
-
-                    const value = values[idx];
-                    if (!value) {
-                        continue;
-                    }
-
-                    param.push(+value);
-                }
-
-                x += parseFloat(param[0]);
-                y += parseFloat(param[1]);
+                const point = SVGToShape.getTranslate(transform);
+                x += point.x;
+                y += point.y;
             }
         }
 
         if (group_attribute_map.has("transform")) {
             const transform = group_attribute_map.get("transform");
             if (transform.indexOf("translate") > -1) {
-
-                const translate = /translate\((.+?)\)/gi.exec(transform)[1];
-
-                const values = SVGToShape._$adjParam(translate
-                    .replace(/,/g, " ")
-                    .replace(/-/g, " -")
-                    .trim()
-                    .split(" "));
-
-                const param = [];
-                for (let idx = 0; idx < values.length; ++idx) {
-
-                    const value = values[idx];
-                    if (!value) {
-                        continue;
-                    }
-
-                    param.push(+value);
-                }
-
-                x += parseFloat(param[0]);
-                y += parseFloat(param[1]);
+                const point = SVGToShape.getTranslate(transform);
+                x += point.x;
+                y += point.y;
             }
         }
 
         if (global_style.has("transform")) {
             const transform = global_style.get("transform");
             if (transform.indexOf("translate") > -1) {
-
-                const translate = /translate\((.+?)\)/gi.exec(transform)[1];
-
-                const values = SVGToShape._$adjParam(translate
-                    .replace(/,/g, " ")
-                    .replace(/-/g, " -")
-                    .trim()
-                    .split(" "));
-
-                const param = [];
-                for (let idx = 0; idx < values.length; ++idx) {
-
-                    const value = values[idx];
-                    if (!value) {
-                        continue;
-                    }
-
-                    param.push(+value);
-                }
-
-                x += parseFloat(param[0]);
-                y += parseFloat(param[1]);
+                const point = SVGToShape.getTranslate(transform);
+                x += point.x;
+                y += point.y;
             }
         }
 
         character.setPlace(location.startFrame, {
             "frame": location.startFrame,
             "matrix": [1, 0, 0, 1, isNaN(x) ? 0 : x, isNaN(y) ? 0 : y],
-            "colorTransform": [1, 1, 1, 1, 0, 0, 0, 0],
+            "colorTransform": [1, 1, 1, alpha, 0, 0, 0, 0],
             "blendMode": "normal",
             "filter": [],
             "depth": layer._$characters.length
@@ -1265,6 +1151,7 @@ class SVGToShape
 
         let alpha = alphaValue === null ? 1 : +alphaValue;
         let color = 0;
+        let gradient = null;
         if (colorValue) {
             switch (true) {
 
@@ -1300,6 +1187,205 @@ class SVGToShape
                     }
                     break;
 
+                case colorValue.indexOf("url") > -1:
+                    {
+                        gradient = {};
+
+                        const id = colorValue = /url\("#(.+?)"\)/gi
+                            .exec(colorValue)[1]
+                            .trim();
+
+                        const node = SVGToShape
+                            .parent
+                            .getElementById(id);
+
+                        gradient.spreadMethod = "pad";
+                        if (node.hasAttribute("spreadMethod")) {
+                            gradient.spreadMethod = node.getAttribute("spreadMethod");
+                        }
+
+                        if (node.nodeName === "radialGradient") {
+
+                            gradient.type = "radial";
+
+                            gradient.x0 = 0;
+                            if (node.hasAttribute("cx")) {
+                                gradient.x0 = parseFloat(node.getAttribute("cx"));
+                            }
+
+                            gradient.y0 = 0;
+                            if (node.hasAttribute("cy")) {
+                                gradient.y0 = parseFloat(node.getAttribute("cy"));
+                            }
+
+                            gradient.r0 = 0;
+                            if (node.hasAttribute("r")) {
+                                gradient.r0 = parseFloat(node.getAttribute("r"));
+                            }
+
+                            gradient.x1 = gradient.x0;
+                            if (node.hasAttribute("fx")) {
+                                gradient.x1 = parseFloat(node.getAttribute("fx"));
+                            }
+
+                            gradient.y1 = gradient.y0;
+                            if (node.hasAttribute("fy")) {
+                                gradient.y1 = parseFloat(node.getAttribute("fy"));
+                            }
+
+                            gradient.r1 = gradient.r0;
+                            if (node.hasAttribute("fr")) {
+                                gradient.r1 = parseFloat(node.getAttribute("fr"));
+                            }
+
+                            const { Matrix } = next2d.geom;
+                            const matrix = new Matrix();
+                            matrix.a  = gradient.r0 / 819.2;
+                            matrix.d  = gradient.r0 / 819.2;
+                            matrix.tx = gradient.x0;
+                            matrix.ty = gradient.y0;
+
+                            // scale => rotate => translate
+                            if (node.hasAttribute("gradientTransform")) {
+
+                                const transform = node
+                                    .getAttribute("gradientTransform")
+                                    .trim();
+
+                                if (transform.indexOf("skewX") > -1) {
+                                    const skewX = Math.tan(SVGToShape.getSkewX(transform));
+                                    matrix.a  = matrix.a + matrix.b * skewX;
+                                    matrix.c  = matrix.c + matrix.d * skewX;
+                                    matrix.tx = matrix.tx + matrix.ty * skewX;
+                                }
+
+                                if (transform.indexOf("skewY") > -1) {
+                                    const skewY = Math.tan(SVGToShape.getSkewY(transform));
+                                    matrix.b  = matrix.b + matrix.a * skewY;
+                                    matrix.d  = matrix.d + matrix.c * skewY;
+                                    matrix.ty = matrix.ty + matrix.tx * skewY;
+                                }
+
+                                if (transform.indexOf("scale") > -1) {
+                                    const scale  = SVGToShape.getScale(transform);
+                                    const scaleY = scale.y === undefined ? 1 : scale.y;
+                                    matrix.scale(scale.x, scaleY);
+                                }
+
+                                if (transform.indexOf("rotate") > -1) {
+                                    matrix.rotate(SVGToShape.getRotate(transform));
+                                }
+
+                                if (transform.indexOf("translate") > -1) {
+                                    const point = SVGToShape.getTranslate(transform);
+                                    matrix.translate(point.x,  point.y);
+                                }
+
+                                gradient.matrix = matrix;
+                            }
+
+                        } else {
+                            gradient.type = "linear";
+
+                        }
+
+                        let children = null;
+                        switch (true) {
+
+                            case node.hasAttribute("href"):
+                                {
+                                    const href = node
+                                        .getAttribute("href")
+                                        .slice(1);
+
+                                    const parentNode = SVGToShape
+                                        .parent
+                                        .getElementById(href);
+
+                                    if (parentNode) {
+                                        children = parentNode.children;
+                                    }
+                                }
+                                break;
+
+                            case node.hasAttribute("xlink:href"):
+                                {
+                                    const href = node
+                                        .getAttribute("xlink:href")
+                                        .slice(1);
+
+                                    const parentNode = SVGToShape
+                                        .parent
+                                        .getElementById(href);
+
+                                    if (parentNode) {
+                                        children = parentNode.children;
+                                    }
+                                }
+                                break;
+
+                            default:
+                                children = node.children;
+                                break;
+
+                        }
+
+                        if (!children) {
+                            children = node.children;
+                        }
+
+                        const colors = [];
+                        const alphas = [];
+                        const ratios = [];
+                        for (let idx = 0; idx < children.length; ++idx) {
+                            const node = children[idx];
+
+                            const attributes = node.attributes;
+                            const length = attributes.length;
+                            for (let idx = 0; idx < length; ++idx) {
+                                const attribute = attributes[idx];
+
+                                switch (attribute.name) {
+
+                                    case "offset":
+                                        ratios.push(+attribute.value * 255);
+                                        break;
+
+                                    case "stop-color":
+                                        {
+                                            const value = attribute.value;
+                                            switch (true) {
+
+                                                case value.indexOf("rgb") > -1:
+                                                    colors.push(SVGToShape.rgbToInt(value));
+                                                    break;
+
+                                                case value.indexOf("%") > -1:
+                                                    colors.push(parseFloat(value) / 100);
+                                                    break;
+
+                                                default:
+                                                    colors.push(value);
+                                                    break;
+
+                                            }
+                                        }
+                                        break;
+
+                                    case "stop-opacity":
+                                        alphas.push(+attribute.value);
+                                        break;
+
+                                }
+                            }
+                        }
+
+                        gradient.colors = colors;
+                        gradient.alphas = alphas;
+                        gradient.ratios = ratios;
+                    }
+                    break;
+
                 case colorValue === "transparent":
                 case colorValue === "none":
                     alpha = 0;
@@ -1314,8 +1400,216 @@ class SVGToShape
 
         return {
             "color": color,
+            "gradient": gradient,
             "alpha": alpha
         };
+    }
+
+    /**
+     * @param  {Matrix} matrix
+     * @param  {number} a
+     * @param  {number} b
+     * @param  {number} c
+     * @param  {number} d
+     * @param  {number} e
+     * @param  {number} f
+     * @return {void}
+     * @method
+     * @public
+     */
+    static transform (matrix, a, b, c, d, e, f)
+    {
+        const a00 = matrix._$matrix[0];
+        const a01 = matrix._$matrix[1];
+        const a10 = matrix._$matrix[2];
+        const a11 = matrix._$matrix[3];
+        const a20 = matrix._$matrix[4];
+        const a21 = matrix._$matrix[5];
+
+        matrix._$matrix[0] = a * a00 + b * a10;
+        matrix._$matrix[1] = a * a01 + b * a11;
+        matrix._$matrix[2] = c * a00 + d * a10;
+        matrix._$matrix[3] = c * a01 + d * a11;
+        matrix._$matrix[4] = e * a00 + f * a10 + a20;
+        matrix._$matrix[5] = e * a01 + f * a11 + a21;
+    }
+
+    /**
+     * @param  {string} value
+     * @return {object}
+     * @method
+     * @static
+     */
+    static getTranslate (value)
+    {
+        const translate = /translate\((.+?)\)/gi.exec(value)[1];
+
+        const values = SVGToShape._$adjParam(translate
+            .replace(/,/g, " ")
+            .replace(/-/g, " -")
+            .trim()
+            .split(" "));
+
+        const param = [];
+        for (let idx = 0; idx < values.length; ++idx) {
+
+            const value = values[idx];
+            if (!value) {
+                continue;
+            }
+
+            param.push(parseFloat(value));
+        }
+
+        return {
+            "x": param[0],
+            "y": param[1]
+        };
+    }
+
+    /**
+     * @param  {string} value
+     * @return {number}
+     * @method
+     * @static
+     */
+    static getRotate (value)
+    {
+        const rotate = /rotate\((.+?)\)/gi.exec(value)[1];
+
+        const values = SVGToShape._$adjParam(rotate
+            .replace(/,/g, " ")
+            .replace(/-/g, " -")
+            .trim()
+            .split(" "));
+
+        const param = [];
+        for (let idx = 0; idx < values.length; ++idx) {
+
+            const value = values[idx];
+            if (!value) {
+                continue;
+            }
+
+            param.push(parseFloat(value));
+        }
+
+        return param[0] * (Math.PI / 180);
+    }
+
+    /**
+     * @param  {string} value
+     * @return {object}
+     * @method
+     * @static
+     */
+    static getScale (value)
+    {
+        const scale = /scale\((.+?)\)/gi.exec(value)[1];
+
+        const values = SVGToShape._$adjParam(scale
+            .replace(/,/g, " ")
+            .replace(/-/g, " -")
+            .trim()
+            .split(" "));
+
+        const param = [];
+        for (let idx = 0; idx < values.length; ++idx) {
+
+            const value = values[idx];
+            if (!value) {
+                continue;
+            }
+
+            param.push(parseFloat(value));
+        }
+
+        return {
+            "x": param[0],
+            "y": param[1]
+        };
+    }
+
+    /**
+     * @param  {string} value
+     * @return {number}
+     * @method
+     * @static
+     */
+    static getSkewX (value)
+    {
+        const skewX = /skewX\((.+?)\)/gi.exec(value)[1];
+
+        const values = SVGToShape._$adjParam(skewX
+            .replace(/,/g, " ")
+            .replace(/-/g, " -")
+            .trim()
+            .split(" "));
+
+        const param = [];
+        for (let idx = 0; idx < values.length; ++idx) {
+
+            const value = values[idx];
+            if (!value) {
+                continue;
+            }
+
+            param.push(parseFloat(value));
+        }
+
+        return param[0] * (Math.PI / 180);
+    }
+
+    /**
+     * @param  {string} value
+     * @return {number}
+     * @method
+     * @static
+     */
+    static getSkewY (value)
+    {
+        const skewY = /skewY\((.+?)\)/gi.exec(value)[1];
+
+        const values = SVGToShape._$adjParam(skewY
+            .replace(/,/g, " ")
+            .replace(/-/g, " -")
+            .trim()
+            .split(" "));
+
+        const param = [];
+        for (let idx = 0; idx < values.length; ++idx) {
+
+            const value = values[idx];
+            if (!value) {
+                continue;
+            }
+
+            param.push(parseFloat(value));
+        }
+
+        return param[0] * (Math.PI / 180);
+    }
+
+    /**
+     * @param  {string} value
+     * @return {number}
+     * @method
+     * @static
+     */
+    static rgbToInt (value)
+    {
+        const colors = /rgb\((.+?)\)/gi
+            .exec(value)[1]
+            .trim()
+            .split(",");
+
+        color = "0x";
+        color += parseInt(colors[0].trim()).toString(16);
+        color += parseInt(colors[1].trim()).toString(16);
+        color += parseInt(colors[2].trim()).toString(16);
+        color |= 0;
+
+        return color;
     }
 
     /**
@@ -1731,7 +2025,7 @@ class SVGToShape
                     transforms.push({
                         "index": index,
                         "name": name
-                    })
+                    });
                 }
 
                 // 昇順
@@ -1769,7 +2063,7 @@ class SVGToShape
                             continue;
                         }
 
-                        param.push(+value);
+                        param.push(parseFloat(value));
                     }
 
                     parser = parser[name](
@@ -1805,11 +2099,6 @@ class SVGToShape
 
         const { Shape, Graphics } = window.next2d.display;
 
-        const shape = SVGToShape.createShape(
-            movie_clip, element, group_attribute_map,
-            global_style, folder_id, clip
-        );
-
         const graphics = new Shape().graphics;
 
         const fillObject = SVGToShape.getFillObject(
@@ -1817,11 +2106,27 @@ class SVGToShape
         );
 
         if (clip || fillObject.alpha) {
-            graphics.beginFill(
-                fillObject.color,
-                fillObject.alpha
-            );
+            if (fillObject.gradient) {
+                const gradient = fillObject.gradient;
+                graphics.beginGradientFill(
+                    gradient.type,
+                    gradient.colors,
+                    gradient.alphas,
+                    gradient.ratios,
+                    gradient.matrix
+                );
+            } else {
+                graphics.beginFill(
+                    fillObject.color,
+                    fillObject.alpha
+                );
+            }
         }
+
+        const shape = SVGToShape.createShape(
+            movie_clip, element, group_attribute_map,
+            global_style, folder_id, clip, fillObject.gradient ? fillObject.alpha : 1
+        );
 
         const strokeObject = SVGToShape.getStrokeObject(
             element, group_attribute_map, global_style
