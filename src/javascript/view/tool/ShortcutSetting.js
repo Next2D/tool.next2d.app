@@ -424,6 +424,18 @@ class ShortcutSetting
                     "text": "Ctrl + V",
                     "css": "context-menu-frame-paste",
                     "description": "{{フレームをペースト}}"
+                },
+                {
+                    "key": "ArrowLeftAlt",
+                    "text": "Alt + ArrowLeft",
+                    "css": "context-menu-prev-key-frame",
+                    "description": "{{前のキーフレームに移動}}"
+                },
+                {
+                    "key": "ArrowRightAlt",
+                    "text": "Alt + ArrowRight",
+                    "css": "context-menu-next-key-frame",
+                    "description": "{{次のキーフレームに移動}}"
                 }
             ],
             "library": [
@@ -474,7 +486,7 @@ class ShortcutSetting
                     "text": "E",
                     "css": "library-menu-change-scene",
                     "description": "{{MovieClipを編集}}"
-                },
+                }
             ]
         };
 
