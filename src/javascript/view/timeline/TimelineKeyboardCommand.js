@@ -95,6 +95,16 @@ class TimelineKeyboardCommand extends KeyboardCommand
             Util.$generateShortcutKey("ArrowRight", { "ctrl": true }),
             this.moveFrame
         );
+        
+        // タイムラインのキーフレーム間を移動
+        this.add(
+            Util.$generateShortcutKey("ArrowLeft", { "alt": true }),
+            this.moveKeyFrame
+        );
+        this.add(
+            Util.$generateShortcutKey("ArrowRight", { "alt": true }),
+            this.moveKeyFrame
+        );
 
         // スクリーンのDisplayObjectを操作
         const command = Util
@@ -305,6 +315,93 @@ class TimelineKeyboardCommand extends KeyboardCommand
         document
             .getElementById("controller-tab-area")
             .children[0].click();
+    }
+
+    /**
+     * @description 左右キーでキーフレームを移動
+     *
+     * @param  {string} code
+     * @return {void}
+     * @method
+     * @public
+     */
+    moveKeyFrame (code)
+    {
+        const targetLayer = Util.$timelineLayer.targetLayer;
+        if (!targetLayer) {
+            return ;
+        }
+
+        const scene = Util.$currentWorkSpace().scene;
+        const layer = scene.getLayer(targetLayer.dataset.layerId | 0);
+
+        let nextFrame = code === "ArrowRightAlt" ? layer.totalFrame - 1 : 0;
+
+        const currentFrame = Util.$timelineFrame.currentFrame;
+        for (let idx = 0; idx < layer._$characters.length; ++idx) {
+
+            const character = layer._$characters[idx];
+            for (const [keyFrame, place] of character._$places) {
+
+                if (place.tweenFrame && place.tweenFrame !== keyFrame) {
+                    continue;
+                }
+
+                if (code === "ArrowRightAlt") {
+
+                    if (currentFrame >= keyFrame) {
+                        continue;
+                    }
+
+                    nextFrame = Math.min(nextFrame, keyFrame);
+
+                } else {
+
+                    if (currentFrame <= keyFrame) {
+                        continue;
+                    }
+
+                    nextFrame = Math.max(nextFrame, keyFrame);
+
+                }
+            }
+        }
+
+        // 空のキーフレームを検索
+        for (let idx = 0; idx < layer._$emptys.length; ++idx) {
+
+            const emptyCharacter = layer._$emptys[idx];
+            if (code === "ArrowRightAlt") {
+
+                if (currentFrame >= emptyCharacter.startFrame) {
+                    continue;
+                }
+
+                nextFrame = Math.min(nextFrame, emptyCharacter.startFrame);
+
+            } else {
+
+                if (currentFrame <= emptyCharacter.startFrame) {
+                    continue;
+                }
+
+                nextFrame = Math.max(nextFrame, emptyCharacter.startFrame);
+
+            }
+        }
+
+        /**
+         * @type {ArrowTool}
+         */
+        const tool = Util.$tools.getDefaultTool("arrow");
+        tool.clear();
+
+        // フレーム移動前にラベルの情報を更新する
+        Util.$timelineLayer.changeLabel(nextFrame); // fixed logic
+
+        // フレーム移動
+        Util.$timelineLayer.moveFrame(nextFrame);
+        Util.$timelineLayer.activeLayer(targetLayer);
     }
 
     /**

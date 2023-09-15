@@ -74,6 +74,8 @@ class TimelineMenu extends BaseTimeline
             "context-menu-layer-clone",
             "context-menu-first-frame",
             "context-menu-last-frame",
+            "context-menu-next-key-frame",
+            "context-menu-prev-key-frame",
             "context-menu-key-frame-change"
         ];
 
@@ -99,6 +101,30 @@ class TimelineMenu extends BaseTimeline
                 this.executeFunction(event);
             });
         }
+    }
+
+    /**
+     * @description 次のキーフレームへ移動
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    executeContextMenuNextKeyFrame ()
+    {
+        Util.$timelineKeyboardCommand.moveKeyFrame("ArrowRightAlt");
+    }
+
+    /**
+     * @description 前のキーフレームへ移動
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    executeContextMenuPrevKeyFrame ()
+    {
+        Util.$timelineKeyboardCommand.moveKeyFrame("ArrowLeftAlt");
     }
 
     /**
