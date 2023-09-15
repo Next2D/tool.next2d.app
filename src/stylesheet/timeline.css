@@ -104,6 +104,27 @@
     pointer-events: none;
 }
 
+#context-menu-prev-key-frame i
+{
+    width               : 18px;
+    height              : 18px;
+    background-image    : url('data:image/svg+xml;charset=UTF-8,<svg clip-rule="evenodd" fill-rule="evenodd" stroke-linejoin="round" stroke-miterlimit="2" width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill="darkgray" d="m10.211 7.155c-.141-.108-.3-.157-.456-.157-.389 0-.755.306-.755.749v8.501c0 .445.367.75.755.75.157 0 .316-.05.457-.159 1.554-1.203 4.199-3.252 5.498-4.258.184-.142.29-.36.29-.592 0-.23-.107-.449-.291-.591-1.299-1.002-3.945-3.044-5.498-4.243z"/></svg>');
+    background-repeat   : no-repeat;
+    background-position : center center;
+    margin-right        : 6px;
+    transform           : rotate(180deg);
+}
+
+#context-menu-next-key-frame i
+{
+    width               : 18px;
+    height              : 18px;
+    background-image    : url('data:image/svg+xml;charset=UTF-8,<svg clip-rule="evenodd" fill-rule="evenodd" stroke-linejoin="round" stroke-miterlimit="2" width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill="darkgray" d="m10.211 7.155c-.141-.108-.3-.157-.456-.157-.389 0-.755.306-.755.749v8.501c0 .445.367.75.755.75.157 0 .316-.05.457-.159 1.554-1.203 4.199-3.252 5.498-4.258.184-.142.29-.36.29-.592 0-.23-.107-.449-.291-.591-1.299-1.002-3.945-3.044-5.498-4.243z"/></svg>');
+    background-repeat   : no-repeat;
+    background-position : center center;
+    margin-right        : 6px;
+}
+
 #context-menu-first-frame i
 {
     width               : 18px;
