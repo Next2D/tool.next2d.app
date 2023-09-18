@@ -2393,7 +2393,9 @@ class ScreenMenu extends BaseScreen
                         "screen-integrating-paths",
                         "screen-add-tween-curve-pointer",
                         "screen-delete-tween-curve-pointer",
-                        "screen-change-movie-clip"
+                        "screen-change-movie-clip",
+                        "screen-align-coordinates-prev-keyframe",
+                        "screen-align-matrix-prev-keyframe"
                     ];
 
                     for (let idx = 0; idx < elementIds.length; ++idx) {
@@ -2417,7 +2419,9 @@ class ScreenMenu extends BaseScreen
                         "screen-align",
                         "screen-change-movie-clip",
                         "screen-distribute-to-layers",
-                        "screen-distribute-to-keyframes"
+                        "screen-distribute-to-keyframes",
+                        "screen-align-coordinates-prev-keyframe",
+                        "screen-align-matrix-prev-keyframe"
                     ];
 
                     for (let idx = 0; idx < showElementIds.length; ++idx) {
@@ -2493,7 +2497,9 @@ class ScreenMenu extends BaseScreen
                         "screen-align",
                         "screen-change-movie-clip",
                         "screen-distribute-to-layers",
-                        "screen-distribute-to-keyframes"
+                        "screen-distribute-to-keyframes",
+                        "screen-align-coordinates-prev-keyframe",
+                        "screen-align-matrix-prev-keyframe"
                     ];
 
                     for (let idx = 0; idx < showElementIds.length; ++idx) {
