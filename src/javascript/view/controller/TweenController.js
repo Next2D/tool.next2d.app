@@ -801,6 +801,10 @@ class TweenController extends BaseController
                 }
             }
 
+            delete place.scaleX;
+            delete place.scaleY;
+            delete place.rotation;
+
             const matrix = place.matrix;
 
             // scale

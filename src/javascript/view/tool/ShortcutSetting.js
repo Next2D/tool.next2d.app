@@ -436,6 +436,18 @@ class ShortcutSetting
                     "text": "Alt + ArrowRight",
                     "css": "context-menu-next-key-frame",
                     "description": "{{次のキーフレームに移動}}"
+                },
+                {
+                    "key": "kShiftCtrl",
+                    "text": "Ctrl + Shift + K",
+                    "css": "screen-align-coordinates-prev-keyframe",
+                    "description": "{{前のキーフレームと座標を合わせる}}"
+                },
+                {
+                    "key": "mShiftCtrl",
+                    "text": "Ctrl + Shift + M",
+                    "css": "screen-align-matrix-prev-keyframe",
+                    "description": "{{前のキーフレームと変形を合わせる}}"
                 }
             ],
             "library": [

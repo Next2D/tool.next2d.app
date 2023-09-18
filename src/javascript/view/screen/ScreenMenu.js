@@ -71,6 +71,8 @@ class ScreenMenu extends BaseScreen
             "stage-position-bottom",
             "screen-distribute-to-layers",
             "screen-distribute-to-keyframes",
+            "screen-align-coordinates-prev-keyframe",
+            "screen-align-matrix-prev-keyframe",
             "screen-integrating-paths",
             "screen-add-tween-curve-pointer",
             "screen-delete-tween-curve-pointer",
@@ -103,6 +105,8 @@ class ScreenMenu extends BaseScreen
         const overHideElementIds = [
             "screen-distribute-to-layers",
             "screen-distribute-to-keyframes",
+            "screen-align-coordinates-prev-keyframe",
+            "screen-align-matrix-prev-keyframe",
             "screen-integrating-paths",
             "screen-add-tween-curve-pointer",
             "screen-delete-tween-curve-pointer",
@@ -530,6 +534,192 @@ class ScreenMenu extends BaseScreen
     executeScreenPreview ()
     {
         Util.$showPreview();
+    }
+
+    /**
+     * @description 選択したDisplayObjectの前のキーフレームにmatrixを合わせる
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    executeScreenAlignMatrixPrevKeyframe ()
+    {
+        /**
+         * @type {ArrowTool}
+         */
+        const tool = Util.$tools.getDefaultTool("arrow");
+        const activeElements = tool.activeElements;
+        if (!activeElements.length) {
+            return ;
+        }
+
+        const frame = Util.$timelineFrame.currentFrame;
+        if (frame === 1) {
+            return ;
+        }
+
+        this.save();
+
+        const scene  = Util.$currentWorkSpace().scene;
+        for (let idx = 0; idx < activeElements.length; ++idx) {
+
+            const element = activeElements[idx];
+
+            const layer = scene.getLayer(
+                element.dataset.layerId | 0
+            );
+
+            if (!layer) {
+                continue;
+            }
+
+            const character = layer.getCharacter(
+                element.dataset.characterId | 0
+            );
+
+            if (character._$places.size === 1) {
+                continue;
+            }
+
+            let useTween = false;
+            let currentPlace = character.getPlace(frame);
+            if (currentPlace.tweenFrame) {
+                useTween = true;
+                const range = character.getRange(currentPlace.tweenFrame);
+                if (range.endFrame - 1 !== frame) {
+                    currentPlace = character.getPlace(currentPlace.tweenFrame);
+                }
+            }
+
+            let prevPlace = character.getPlace(currentPlace.frame - 1);
+            if (!prevPlace) {
+                continue;
+            }
+            if (prevPlace.tweenFrame) {
+                prevPlace = character.getPlace(prevPlace.tweenFrame);
+            }
+
+            currentPlace.matrix[0] = prevPlace.matrix[0];
+            currentPlace.matrix[1] = prevPlace.matrix[1];
+            currentPlace.matrix[2] = prevPlace.matrix[2];
+            currentPlace.matrix[3] = prevPlace.matrix[3];
+            currentPlace.matrix[4] = prevPlace.matrix[4];
+            currentPlace.matrix[5] = prevPlace.matrix[5];
+
+            currentPlace.scaleX   = prevPlace.scaleX;
+            currentPlace.scaleY   = prevPlace.scaleY;
+            currentPlace.rotation = prevPlace.rotation;
+
+            character.dispose();
+
+            // tweenなら再計算
+            if (useTween) {
+                Util
+                    .$tweenController
+                    .relocationPlace(character, frame);
+
+                // ポインターを再配置
+                Util
+                    .$tweenController
+                    .clearPointer()
+                    .relocationPointer();
+            }
+        }
+
+        // 再描画
+        this.reloadScreen();
+
+        // save終了
+        this._$saved = false;
+    }
+
+    /**
+     * @description 選択したDisplayObjectの前のキーフレームに座標を合わせる
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    executeScreenAlignCoordinatesPrevKeyframe ()
+    {
+        /**
+         * @type {ArrowTool}
+         */
+        const tool = Util.$tools.getDefaultTool("arrow");
+        const activeElements = tool.activeElements;
+        if (!activeElements.length) {
+            return ;
+        }
+
+        const frame = Util.$timelineFrame.currentFrame;
+        if (frame === 1) {
+            return ;
+        }
+
+        this.save();
+
+        const scene  = Util.$currentWorkSpace().scene;
+        for (let idx = 0; idx < activeElements.length; ++idx) {
+
+            const element = activeElements[idx];
+
+            const layer = scene.getLayer(
+                element.dataset.layerId | 0
+            );
+
+            if (!layer) {
+                continue;
+            }
+
+            const character = layer.getCharacter(
+                element.dataset.characterId | 0
+            );
+
+            if (character._$places.size === 1) {
+                continue;
+            }
+
+            let useTween = false;
+            let currentPlace = character.getPlace(frame);
+            if (currentPlace.tweenFrame) {
+                useTween = true;
+                const range = character.getRange(currentPlace.tweenFrame);
+                if (range.endFrame - 1 !== frame) {
+                    currentPlace = character.getPlace(currentPlace.tweenFrame);
+                }
+            }
+
+            let prevPlace = character.getPlace(currentPlace.frame - 1);
+            if (!prevPlace) {
+                continue;
+            }
+            if (prevPlace.tweenFrame) {
+                prevPlace = character.getPlace(prevPlace.tweenFrame);
+            }
+
+            currentPlace.matrix[4] = prevPlace.matrix[4];
+            currentPlace.matrix[5] = prevPlace.matrix[5];
+
+            // tweenなら再計算
+            if (useTween) {
+                Util
+                    .$tweenController
+                    .relocationPlace(character, currentPlace.frame);
+
+                // ポインターを再配置
+                Util
+                    .$tweenController
+                    .clearPointer()
+                    .relocationPointer();
+            }
+        }
+
+        // 再描画
+        this.reloadScreen();
+
+        // save終了
+        this._$saved = false;
     }
 
     /**
