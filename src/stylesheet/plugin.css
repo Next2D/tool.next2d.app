@@ -1,3 +1,11 @@
+#screen-plugin-menu
+{
+    display        : flex;
+    flex-direction : column;
+    margin         : 0;
+    padding        : 0;
+}
+
 #plugin-list-box
 {
     border         : 1px solid darkgray;
@@ -46,8 +54,8 @@
     justify-content  : center;
     align-items      : center;
     position         : fixed;
-    width            : var(--plugin-panel-width);
-    height           : var(--plugin-panel-height);
+    width            : var(--plugin-modal-width);
+    height           : var(--plugin-modal-height);
     background-color : #363636;
     color            : whitesmoke;
     border           : 1px solid #72777D;
@@ -59,7 +67,7 @@
 
 #plugin-bar
 {
-    width            : var(--plugin-panel-width);
+    width            : var(--plugin-modal-width);
     height           : 25px;
     background-color : #2c2c2c;
     display          : flex;
@@ -74,7 +82,7 @@
 
 #plugin-title
 {
-    width           : calc(var(--plugin-panel-width) - 17px);
+    width           : calc(var(--plugin-modal-width) - 17px);
     height          : 25px;
     text-align      : center;
     color           : whitesmoke;
@@ -104,8 +112,8 @@
 
 #plugin-modal-element
 {
-    width            : var(--plugin-panel-width);
-    height           : calc(var(--plugin-panel-height) - 25px);
+    width            : var(--plugin-modal-width);
+    height           : calc(var(--plugin-modal-height) - 25px);
     border           : none;
     overflow         : auto;
     outline          : none;

@@ -385,6 +385,7 @@ class SVGToShape
                         const length = attributes.length;
                         for (let idx = 0; idx < length; ++idx) {
                             const attribute = attributes[idx];
+
                             switch (attribute.name) {
 
                                 case "x":
@@ -967,13 +968,13 @@ class SVGToShape
 
         let x = 0;
         let y = 0;
-        if (element.hasAttribute("x")) {
-            x += parseFloat(element.getAttribute("x"));
-        }
+        // if (element.hasAttribute("x")) {
+        //     x += parseFloat(element.getAttribute("x"));
+        // }
 
-        if (element.hasAttribute("y")) {
-            y += parseFloat(element.getAttribute("y"));
-        }
+        // if (element.hasAttribute("y")) {
+        //     y += parseFloat(element.getAttribute("y"));
+        // }
 
         if (element.hasAttribute("transform")) {
             const transform = element.getAttribute("transform");
@@ -1201,83 +1202,7 @@ class SVGToShape
                             .parent
                             .getElementById(id);
 
-                        gradient.spreadMethod = "pad";
-                        if (node.hasAttribute("spreadMethod")) {
-                            gradient.spreadMethod = node.getAttribute("spreadMethod");
-                        }
-
-                        const { Matrix } = next2d.geom;
-                        const matrix = new Matrix();
-                        if (node.nodeName === "radialGradient") {
-
-                            gradient.type = "radial";
-
-                            gradient.x0 = 0;
-                            if (node.hasAttribute("cx")) {
-                                gradient.x0 = parseFloat(node.getAttribute("cx"));
-                            }
-
-                            gradient.y0 = 0;
-                            if (node.hasAttribute("cy")) {
-                                gradient.y0 = parseFloat(node.getAttribute("cy"));
-                            }
-
-                            gradient.r0 = 0;
-                            if (node.hasAttribute("r")) {
-                                gradient.r0 = parseFloat(node.getAttribute("r"));
-                            }
-
-                            gradient.x1 = gradient.x0;
-                            if (node.hasAttribute("fx")) {
-                                gradient.x1 = parseFloat(node.getAttribute("fx"));
-                            }
-
-                            gradient.y1 = gradient.y0;
-                            if (node.hasAttribute("fy")) {
-                                gradient.y1 = parseFloat(node.getAttribute("fy"));
-                            }
-
-                            gradient.r1 = gradient.r0;
-                            if (node.hasAttribute("fr")) {
-                                gradient.r1 = parseFloat(node.getAttribute("fr"));
-                            }
-
-                            matrix.a  = gradient.r0 / 819.2;
-                            matrix.d  = gradient.r0 / 819.2;
-                            matrix.tx = gradient.x0;
-                            matrix.ty = gradient.y0;
-
-                        } else {
-                            gradient.type = "linear";
-
-                            gradient.x1 = 0;
-                            if (node.hasAttribute("x1")) {
-                                gradient.x1 = parseFloat(node.getAttribute("x1"));
-                            }
-
-                            gradient.y1 = 0;
-                            if (node.hasAttribute("y1")) {
-                                gradient.y1 = parseFloat(node.getAttribute("y1"));
-                            }
-
-                            gradient.x2 = 0;
-                            if (node.hasAttribute("x2")) {
-                                gradient.x2 = parseFloat(node.getAttribute("x2"));
-                            }
-
-                            gradient.y2 = 0;
-                            if (node.hasAttribute("y2")) {
-                                gradient.y2 = parseFloat(node.getAttribute("y2"));
-                            }
-                        }
-
-                        if (node.hasAttribute("gradientTransform")) {
-                            gradient.transform = node
-                                .getAttribute("gradientTransform")
-                                .trim();
-                        }
-                        gradient.matrix = matrix;
-
+                        let parentNode = null;
                         let children = null;
                         switch (true) {
 
@@ -1287,7 +1212,7 @@ class SVGToShape
                                         .getAttribute("href")
                                         .slice(1);
 
-                                    const parentNode = SVGToShape
+                                    parentNode = SVGToShape
                                         .parent
                                         .getElementById(href);
 
@@ -1303,7 +1228,7 @@ class SVGToShape
                                         .getAttribute("xlink:href")
                                         .slice(1);
 
-                                    const parentNode = SVGToShape
+                                    parentNode = SVGToShape
                                         .parent
                                         .getElementById(href);
 
@@ -1323,6 +1248,161 @@ class SVGToShape
                             children = node.children;
                         }
 
+                        gradient.spreadMethod = "pad";
+                        if (node.hasAttribute("spreadMethod")) {
+                            gradient.spreadMethod = node.getAttribute("spreadMethod");
+                        } else {
+                            if (parentNode && parentNode.hasAttribute("spreadMethod")) {
+                                gradient.spreadMethod = parentNode.getAttribute("spreadMethod");
+                            }
+                        }
+
+                        gradient.gradientUnits = null;
+                        if (node.hasAttribute("gradientUnits")) {
+                            gradient.gradientUnits = node.getAttribute("gradientUnits");
+                        } else {
+                            if (parentNode && parentNode.hasAttribute("gradientUnits")) {
+                                gradient.gradientUnits = parentNode.getAttribute("gradientUnits");
+                            }
+                        }
+
+                        if (node.nodeName === "radialGradient") {
+
+                            gradient.type = "radial";
+
+                            gradient.cx = 0;
+                            if (node.hasAttribute("cx")) {
+                                gradient.cx = parseFloat(node.getAttribute("cx"));
+                            } else {
+                                if (parentNode && parentNode.hasAttribute("cx")) {
+                                    gradient.cx = parseFloat(parentNode.getAttribute("cx"));
+                                }
+                            }
+
+                            gradient.cy = 0;
+                            if (node.hasAttribute("cy")) {
+                                gradient.cy = parseFloat(node.getAttribute("cy"));
+                            } else {
+                                if (parentNode && parentNode.hasAttribute("cy")) {
+                                    gradient.cy = parseFloat(parentNode.getAttribute("cy"));
+                                }
+                            }
+
+                            gradient.r = 0;
+                            if (node.hasAttribute("r")) {
+                                gradient.r = parseFloat(node.getAttribute("r"));
+                            } else {
+                                if (parentNode && parentNode.hasAttribute("r")) {
+                                    gradient.r = parseFloat(parentNode.getAttribute("r"));
+                                }
+                            }
+
+                            gradient.fx = gradient.cx;
+                            if (node.hasAttribute("fx")) {
+                                gradient.fx = parseFloat(node.getAttribute("fx"));
+                            } else {
+                                if (parentNode && parentNode.hasAttribute("r")) {
+                                    gradient.r = parseFloat(parentNode.getAttribute("r"));
+                                }
+                            }
+
+                            gradient.fy = gradient.cy;
+                            if (node.hasAttribute("fy")) {
+                                gradient.fy = parseFloat(node.getAttribute("fy"));
+                            } else {
+                                if (parentNode && parentNode.hasAttribute("fy")) {
+                                    gradient.fy = parseFloat(parentNode.getAttribute("fy"));
+                                }
+                            }
+
+                            gradient.fr = gradient.r;
+                            if (node.hasAttribute("fr")) {
+                                gradient.fr = parseFloat(node.getAttribute("fr"));
+                            } else {
+                                if (parentNode && parentNode.hasAttribute("fr")) {
+                                    gradient.fr = parseFloat(parentNode.getAttribute("fr"));
+                                }
+                            }
+
+                        } else {
+                            gradient.type = "linear";
+
+                            gradient.x1 = 0;
+                            if (node.hasAttribute("x1")) {
+                                const value = node.getAttribute("x1");
+                                gradient.x1 = value.indexOf("%") > -1
+                                    ? parseFloat(value) / 100
+                                    : parseFloat(value);
+                            } else {
+                                if (parentNode && parentNode.hasAttribute("x1")) {
+                                    const value = parentNode.getAttribute("x1");
+                                    gradient.x1 = value.indexOf("%") > -1
+                                        ? parseFloat(value) / 100
+                                        : parseFloat(value);
+                                }
+                            }
+
+                            gradient.y1 = 0;
+                            if (node.hasAttribute("y1")) {
+                                const value = node.getAttribute("y1");
+                                gradient.y1 = value.indexOf("%") > -1
+                                    ? parseFloat(value) / 100
+                                    : parseFloat(value);
+                            } else {
+                                if (parentNode && parentNode.hasAttribute("y1")) {
+                                    const value = parentNode.getAttribute("y1");
+                                    gradient.y1 = value.indexOf("%") > -1
+                                        ? parseFloat(value) / 100
+                                        : parseFloat(value);
+                                }
+                            }
+
+                            gradient.x2 = 0;
+                            if (node.hasAttribute("x2")) {
+                                const value = node.getAttribute("x2");
+                                gradient.x2 = value.indexOf("%") > -1
+                                    ? parseFloat(value) / 100
+                                    : parseFloat(value);
+                            } else {
+                                if (parentNode && parentNode.hasAttribute("x2")) {
+                                    const value = parentNode.getAttribute("x2");
+                                    gradient.x2 = value.indexOf("%") > -1
+                                        ? parseFloat(value) / 100
+                                        : parseFloat(value);
+                                }
+                            }
+
+                            gradient.y2 = 0;
+                            if (node.hasAttribute("y2")) {
+                                const value = node.getAttribute("y2");
+                                gradient.y2 = value.indexOf("%") > -1
+                                    ? parseFloat(value) / 100
+                                    : parseFloat(value);
+                            } else {
+                                if (parentNode && parentNode.hasAttribute("y2")) {
+                                    const value = parentNode.getAttribute("y2");
+                                    gradient.y2 = value.indexOf("%") > -1
+                                        ? parseFloat(value) / 100
+                                        : parseFloat(value);
+                                }
+                            }
+                        }
+
+                        if (node.hasAttribute("gradientTransform")) {
+                            gradient.transform = node
+                                .getAttribute("gradientTransform")
+                                .trim();
+                        } else {
+                            if (parentNode && parentNode.hasAttribute("gradientTransform")) {
+                                gradient.transform = parentNode
+                                    .getAttribute("gradientTransform")
+                                    .trim();
+                            }
+                        }
+
+                        const { Matrix } = next2d.geom;
+                        gradient.matrix = new Matrix();
+
                         const colors = [];
                         const alphas = [];
                         const ratios = [];
@@ -1337,7 +1417,9 @@ class SVGToShape
                                 switch (attribute.name) {
 
                                     case "offset":
-                                        ratios[idx] = +attribute.value * 255;
+                                        ratios[idx] = attribute.value.indexOf("%") > -1
+                                            ? parseFloat(attribute.value) / 100 * 255
+                                            : +attribute.value * 255;
                                         break;
 
                                     case "stop-color":
@@ -2396,83 +2478,279 @@ class SVGToShape
 
             }
         }
+        graphics.endLine();
+        graphics.endFill();
+
+        let scale = 1;
+        if (group_attribute_map.has("viewBox")) {
+
+            const values = group_attribute_map
+                .get("viewBox")
+                .trim()
+                .split(" ");
+
+            const size = Math.max(values[2], values[3]);
+            if (group_attribute_map.has("width")
+                && group_attribute_map.has("height")
+            ) {
+
+                const baseWidth  = parseFloat(group_attribute_map.get("width"));
+                const baseHeight = parseFloat(group_attribute_map.get("height"));
+
+                const baseSize = Math.min(baseWidth, baseHeight);
+                if (baseSize) {
+                    scale = baseSize / size;
+                }
+
+                if (scale !== 1) {
+
+                    let done = false;
+                    for (let idx = 0; graphics._$recode.length > idx;) {
+
+                        switch (graphics._$recode[idx++]) {
+
+                            case Graphics.FILL_STYLE:
+                            case Graphics.GRADIENT_FILL:
+                            case Graphics.BITMAP_FILL:
+                            case Graphics.STROKE_STYLE:
+                            case Graphics.GRADIENT_STROKE:
+                            case Graphics.BITMAP_STROKE:
+                                done = true;
+                                break;
+
+                            case Graphics.BEGIN_PATH:
+                                break;
+
+                            case Graphics.LINE_TO:
+                            case Graphics.MOVE_TO:
+                                graphics._$recode[idx++] *= scale;
+                                graphics._$recode[idx++] *= scale;
+                                break;
+
+                            case Graphics.CURVE_TO:
+                                graphics._$recode[idx++] *= scale;
+                                graphics._$recode[idx++] *= scale;
+                                graphics._$recode[idx++] *= scale;
+                                graphics._$recode[idx++] *= scale;
+                                break;
+
+                            case Graphics.CUBIC:
+                                graphics._$recode[idx++] *= scale;
+                                graphics._$recode[idx++] *= scale;
+                                graphics._$recode[idx++] *= scale;
+                                graphics._$recode[idx++] *= scale;
+                                graphics._$recode[idx++] *= scale;
+                                graphics._$recode[idx++] *= scale;
+                                break;
+
+                            default:
+                                break;
+                        }
+
+                        if (done) {
+                            break;
+                        }
+                    }
+
+                    graphics._$xMin *= scale;
+                    graphics._$xMax *= scale;
+                    graphics._$yMin *= scale;
+                    graphics._$yMax *= scale;
+                }
+            }
+        }
 
         // adj matrix
         if (fillObject.gradient) {
+
             const gradient = fillObject.gradient;
-            const matrix = gradient.matrix;
+            const matrix   = gradient.matrix;
+
+            let width  = Math.abs(graphics._$xMax - graphics._$xMin);
+            let height = Math.abs(graphics._$yMax - graphics._$yMin);
+            if (gradient.gradientUnits === "userSpaceOnUse") {
+                if (group_attribute_map.has("width")) {
+                    width = parseFloat(group_attribute_map.get("width"));
+                }
+                if (group_attribute_map.has("height")) {
+                    height = parseFloat(group_attribute_map.get("height"));
+                }
+            }
+
             if (gradient.type === "linear") {
 
-                const baseWidth = group_attribute_map.has("width")
-                    ? parseFloat(group_attribute_map.get("width"))
-                    : group_attribute_map.has("viewBox")
-                        ? parseFloat(group_attribute_map.get("viewBox").trim().split(" ")[2])
-                        : 0;
+                let array = [1, 0, 0, 1, 0, 0];
+                if (element.hasAttribute("transform")) {
 
-                const baseHeight = group_attribute_map.has("height")
-                    ? parseFloat(group_attribute_map.get("height"))
-                    : group_attribute_map.has("viewBox")
-                        ? parseFloat(group_attribute_map.get("viewBox").trim().split(" ")[2])
-                        : 0;
+                    const transform = element.getAttribute("transform");
 
-                const baseMatrix = [1, 0, 0, 1, -baseWidth / 2, -baseHeight / 2];
-                matrix.rotate(Math.atan2(
-                    gradient.y1 - gradient.y2,
-                    gradient.x1 - gradient.x2
-                ));
-                const multiMatrix = Util.$multiplicationMatrix(baseMatrix, matrix._$matrix);
+                    const transforms = transform.split(" ");
+                    for (let idx = 0; idx < transforms.length; ++idx) {
+                        const value = transforms[idx];
+                        switch (true) {
 
-                const w = Math.abs(graphics._$xMax - graphics._$xMin);
-                const h = Math.abs(graphics._$yMax - graphics._$yMin);
-                matrix.scale(
-                    w / 2 / 819.2,
-                    h / 2 / 819.2
+                            case value.indexOf("rotate") > -1:
+                                {
+                                    const angle = SVGToShape.getRotate(transform);
+                                    const cos = Math.cos(angle);
+                                    const sin = Math.sin(angle);
+                                    array = Util.$multiplicationMatrix(array, [cos, sin, -sin, cos, 0, 0]);
+                                }
+                                break;
+
+                            case value.indexOf("translate") > -1:
+                                {
+                                    const point = SVGToShape.getTranslate(transform);
+                                    array = Util.$multiplicationMatrix(array, [1, 0, 0, 1, point.x,  point.y]);
+                                }
+                                break;
+
+                            case value.indexOf("skewX") > -1:
+                                {
+                                    const skewX = Math.tan(SVGToShape.getSkewX(transform));
+                                    array = Util.$multiplicationMatrix(array, [1, 0, skewX, 1, 0, 0]);
+                                }
+                                break;
+
+                            case value.indexOf("skewY") > -1:
+                                {
+                                    const skewY = Math.tan(SVGToShape.getSkewY(transform));
+                                    array = Util.$multiplicationMatrix(array, [1, skewY, 0, 1, 0, 0]);
+                                }
+                                break;
+
+                            case value.indexOf("scale") > -1:
+                                {
+                                    const scale  = SVGToShape.getScale(transform);
+                                    const scaleY = scale.y === undefined ? 1 : scale.y;
+                                    array = Util.$multiplicationMatrix(array, [scale.x, 0, 0, scaleY, 0, 0]);
+                                }
+                                break;
+
+                            default:
+                                continue;
+
+                        }
+                    }
+                }
+
+                matrix.createGradientBox(
+                    width, height,
+                    Math.atan2(gradient.y2 - gradient.y1, gradient.x2 - gradient.x1),
+                    gradient.x1 - array[4], gradient.y1 - array[5]
                 );
 
-                matrix.translate(
-                    w / 2 - multiMatrix[4],
-                    h / 2 - multiMatrix[5]
+            } else {
+
+                const scale = Math.max(0, gradient.r) / width;
+                const rx = width  * scale;
+                const ry = height * scale;
+
+                let array = [1, 0, 0, 1, rx, ry];
+                if (element.hasAttribute("transform")) {
+
+                    const transform = element.getAttribute("transform");
+
+                    const transforms = transform.split(" ");
+                    for (let idx = 0; idx < transforms.length; ++idx) {
+                        const value = transforms[idx];
+                        switch (true) {
+
+                            case value.indexOf("rotate") > -1:
+                                {
+                                    const angle = SVGToShape.getRotate(transform);
+                                    const cos = Math.cos(angle);
+                                    const sin = Math.sin(angle);
+                                    array = Util.$multiplicationMatrix(array, [cos, sin, -sin, cos, 0, 0]);
+                                }
+                                break;
+
+                            case value.indexOf("translate") > -1:
+                                {
+                                    const point = SVGToShape.getTranslate(transform);
+                                    array = Util.$multiplicationMatrix(array, [1, 0, 0, 1, point.x,  point.y]);
+                                }
+                                break;
+
+                            case value.indexOf("skewX") > -1:
+                                {
+                                    const skewX = Math.tan(SVGToShape.getSkewX(transform));
+                                    array = Util.$multiplicationMatrix(array, [1, 0, skewX, 1, 0, 0]);
+                                }
+                                break;
+
+                            case value.indexOf("skewY") > -1:
+                                {
+                                    const skewY = Math.tan(SVGToShape.getSkewY(transform));
+                                    array = Util.$multiplicationMatrix(array, [1, skewY, 0, 1, 0, 0]);
+                                }
+                                break;
+
+                            case value.indexOf("scale") > -1:
+                                {
+                                    const scale  = SVGToShape.getScale(transform);
+                                    const scaleY = scale.y === undefined ? 1 : scale.y;
+                                    array = Util.$multiplicationMatrix(array, [scale.x, 0, 0, scaleY, 0, 0]);
+                                }
+                                break;
+
+                            default:
+                                continue;
+
+                        }
+                    }
+                }
+
+                matrix.createGradientBox(
+                    2 * rx, 2 * ry,
+                    Math.atan2((gradient.fy - gradient.cy) / ry, (gradient.fx - gradient.cx) / rx),
+                    gradient.cx - array[4], gradient.cy - array[5]
                 );
             }
 
-            // scale => rotate => translate
+            if (gradient.gradientUnits !== "userSpaceOnUse") {
+                matrix.translate(graphics._$xMin, graphics._$yMin);
+            }
+
+            // skew => scale => rotate => translate
             if (gradient.transform) {
+
+                const tMatrix = matrix;
 
                 const transform = gradient.transform;
 
                 if (transform.indexOf("skewX") > -1) {
                     const skewX = Math.tan(SVGToShape.getSkewX(transform));
-                    matrix.a  = matrix.a + matrix.b * skewX;
-                    matrix.c  = matrix.c + matrix.d * skewX;
-                    matrix.tx = matrix.tx + matrix.ty * skewX;
+                    tMatrix.a  = tMatrix.a + tMatrix.b * skewX;
+                    tMatrix.c  = tMatrix.c + tMatrix.d * skewX;
+                    tMatrix.tx = tMatrix.tx + tMatrix.ty * skewX;
                 }
 
                 if (transform.indexOf("skewY") > -1) {
                     const skewY = Math.tan(SVGToShape.getSkewY(transform));
-                    matrix.b  = matrix.b + matrix.a * skewY;
-                    matrix.d  = matrix.d + matrix.c * skewY;
-                    matrix.ty = matrix.ty + matrix.tx * skewY;
+                    tMatrix.b  = tMatrix.b + tMatrix.a * skewY;
+                    tMatrix.d  = tMatrix.d + tMatrix.c * skewY;
+                    tMatrix.ty = tMatrix.ty + tMatrix.tx * skewY;
                 }
 
                 if (transform.indexOf("scale") > -1) {
                     const scale  = SVGToShape.getScale(transform);
                     const scaleY = scale.y === undefined ? 1 : scale.y;
-                    matrix.scale(scale.x, scaleY);
+                    tMatrix.scale(scale.x, scaleY);
                 }
 
                 if (transform.indexOf("rotate") > -1) {
-                    matrix.rotate(SVGToShape.getRotate(transform));
+                    tMatrix.rotate(SVGToShape.getRotate(transform));
                 }
 
                 if (transform.indexOf("translate") > -1) {
                     const point = SVGToShape.getTranslate(transform);
-                    matrix.translate(point.x,  point.y);
+                    tMatrix.translate(point.x,  point.y);
                 }
+
             }
         }
 
-        graphics.endLine();
-        graphics.endFill();
         if (graphics._$recode) {
             shape._$recodes = graphics._$recode.slice();
         }

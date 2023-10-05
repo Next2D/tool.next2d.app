@@ -70,6 +70,16 @@ class ExternalTimeline
     }
 
     /**
+     * @return {number}
+     * @readonly
+     * @public
+     */
+    get layerCount ()
+    {
+        return this._$scene._$layers.size;
+    }
+
+    /**
      * @return {array}
      * @readonly
      * @public
@@ -107,6 +117,23 @@ class ExternalTimeline
         }
 
         return layers;
+    }
+
+    /**
+     * @return {array}
+     * @method
+     * @public
+     */
+    convertToKeyframes (start_frame_index = -1, end_frame_index = -1)
+    {
+        if (start_frame_index > -1) {
+            if (end_frame_index === -1) {
+                end_frame_index = start_frame_index + 1;
+            }
+            this.setSelectedFrames(start_frame_index + 1, end_frame_index + 1);
+        }
+
+        Util.$timelineMenu.executeContextMenuKeyFrameChange();
     }
 
     /**
@@ -154,6 +181,18 @@ class ExternalTimeline
         }
 
         return indexes;
+    }
+
+    /**
+     * @param  {number} index
+     * @return {void}
+     * @method
+     * @public
+     */
+    deleteLayer (index)
+    {
+        this.currentLayer = index;
+        Util.$timelineTool.executeTimelineLayerTrash();
     }
 
     /**
@@ -222,22 +261,154 @@ class ExternalTimeline
     }
 
     /**
-     * @param  {number} start_frame
-     * @param  {number} end_frame
+     * @return {number}  frame_index
      * @return {void}
      * @method
      * @public
      */
-    setSelectedFrames (start_frame, end_frame)
+    insertBlankKeyframe (frame_index)
+    {
+        Util.$timelineFrame.currentFrame = frame_index + 1;
+        Util.$timelineTool.executeTimelineEmptyAdd();
+    }
+
+    /**
+     * @return {number}  [num_frames = -1]
+     * @return {boolean} [all_layers = ture]
+     * @return {number}  [frame_index = -1]
+     * @return {void}
+     * @method
+     * @public
+     */
+    insertFrames (num_frames = -1, all_layers = true, frame_index = -1)
+    {
+        let layerId = 0;
+        if (isNaN(num_frames) || num_frames === -1) {
+            const layerElement = Util.$timelineLayer.targetLayer;
+            if (!layerElement) {
+                return ;
+            }
+
+            layerId = layerElement.dataset.layerId | 0;
+            const frames = Util
+                .$timelineLayer
+                .targetFrames
+                .get(layerId);
+
+            num_frames = frames.length;
+        }
+
+        const frames = [];
+        const currentFrame = frame_index > -1
+            ? frame_index + 1
+            : Util.$timelineFrame.currentFrame;
+
+        for (let idx = 0; idx < num_frames; ++idx) {
+            frames.push(currentFrame + idx);
+        }
+
+        if (all_layers) {
+            const scene = Util.$currentWorkSpace().scene;
+            for (const layerId of scene._$layers.keys()) {
+                Util.$timelineLayer.targetFrames.set(layerId, frames);
+            }
+        } else {
+            Util.$timelineLayer.targetFrames.set(layerId, frames);
+        }
+
+        Util.$timelineFrame.moveTimeline();
+        Util.$timelineTool.executeTimelineFrameAdd();
+    }
+
+    /**
+     * @return {number}  [start_frame_index = -1]
+     * @return {number}  [end_frame_index = -1]
+     * @return {void}
+     * @method
+     * @public
+     */
+    removeFrames (start_frame_index = -1, end_frame_index = -1)
     {
         const layerElement = Util.$timelineLayer.targetLayer;
         if (!layerElement) {
             return ;
         }
 
-        Util.$timelineLayer.clearActiveFrames();
+        const layerId = layerElement.dataset.layerId | 0;
 
-        end_frame = Math.max(start_frame, end_frame);
+        const targetFrames = Util.$timelineLayer.targetFrames;
+        const selectFrames = targetFrames.get(layerId);
+
+        if (isNaN(start_frame_index) || start_frame_index === -1) {
+            start_frame_index = Math.min(...selectFrames) - 1;
+        }
+
+        if (isNaN(end_frame_index) || end_frame_index === -1) {
+            end_frame_index = Math.max(...selectFrames) - 1;
+        }
+
+        const frames = [];
+        for (let idx = start_frame_index; idx <= end_frame_index; ++idx) {
+            frames.push(idx + 1);
+        }
+
+        targetFrames.clear();
+        targetFrames.set(layerId, frames);
+
+        Util.$timelineTool.executeTimelineFrameDelete();
+    }
+
+    /**
+     * @return {array}
+     * @method
+     * @public
+     */
+    getSelectedFrames ()
+    {
+        const layerElement = Util.$timelineLayer.targetLayer;
+        if (!layerElement) {
+            return [];
+        }
+
+        const frames = Util
+            .$timelineLayer
+            .targetFrames
+            .get(layerElement.dataset.layerId | 0);
+
+        const children = Array.from(
+            document.getElementById("timeline-content").children
+        );
+
+        return [
+            children.indexOf(layerElement),
+            Math.min(...frames),
+            Math.max(...frames) + 1
+        ];
+    }
+
+    /**
+     * @param  {number} start_frame_index
+     * @param  {number} end_frame_index
+     * @param  {boolean} [replace_selection=true]
+     * @return {void}
+     * @method
+     * @public
+     */
+    setSelectedFrames (start_frame_index, end_frame_index, replace_selection = true)
+    {
+        const layerElement = Util.$timelineLayer.targetLayer;
+        if (!layerElement) {
+            return ;
+        }
+
+        start_frame_index = Math.max(0, start_frame_index);
+        end_frame_index   = Math.max(0, end_frame_index);
+
+        if (replace_selection) {
+            Util.$timelineLayer.clearActiveFrames();
+        }
+
+        end_frame_index = Math.max(start_frame_index, end_frame_index);
 
         const layer = this
             ._$scene
@@ -245,7 +416,9 @@ class ExternalTimeline
                 layerElement.dataset.layerId | 0
             );
 
-        for (let frame = start_frame; end_frame >= frame; ++frame) {
+        const startFrame = start_frame_index + 1;
+        const endFrame   = end_frame_index + 1;
+        for (let frame = startFrame; endFrame >= frame; ++frame) {
 
             Util
                 .$timelineLayer
@@ -253,7 +426,7 @@ class ExternalTimeline
 
         }
 
-        Util.$timelineFrame.currentFrame = start_frame;
+        Util.$timelineFrame.currentFrame = startFrame;
     }
 
     /**

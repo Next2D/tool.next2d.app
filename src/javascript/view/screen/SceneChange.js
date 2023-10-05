@@ -226,7 +226,7 @@ class SceneChange extends BaseScreen
 
         // シーン移動
         if (library_id > -1) {
-            Util.$sceneChange.execute(library_id);
+            this.execute(library_id);
         }
     }
 
@@ -234,7 +234,7 @@ class SceneChange extends BaseScreen
      * @description 指定のMovieClipを表示
      *
      * @param  {number} library_id
-     * @return {void}
+     * @return {Promise}
      * @method
      * @public
      */
@@ -268,7 +268,7 @@ class SceneChange extends BaseScreen
         }
 
         // シーンの入れ替え
-        workSpace.scene = scene;
+        return workSpace.setScene(scene);
     }
 }
 

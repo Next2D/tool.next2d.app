@@ -1,59 +1,63 @@
 <div id="library-menu" class="none">
     <div class="library-menu-list">
 
-        <div id="library-menu-container-add" data-container-type="container">
+        <div id="library-menu-container-add" class="library-menu-bottom" data-container-type="container">
             <i class="library-type-container"></i>
             <span class="language" data-text="{{新規MovieClip}}" data-shortcut-key="mCtrl" data-shortcut-text="Ctrl + M" data-area="library">新規MovieClip</span>
         </div>
-        <div id="library-menu-folder-add" data-container-type="folder">
+        <div id="library-menu-folder-add" class="library-menu-bottom" data-container-type="folder">
             <i class="library-type-folder"></i>
             <span class="language" data-text="{{新規フォルダー}}" data-shortcut-key="fCtrl" data-shortcut-text="Ctrl + F" data-area="library">新規フォルダー</span>
         </div>
         <p></p>
 
-        <div id="library-menu-file">
+        <div id="library-menu-file" class="library-menu-bottom">
             <i class="library-type-load"></i>
             <span class="language" data-text="{{読み込み}}" data-shortcut-key="rCtrl" data-shortcut-text="Ctrl + R" data-area="library">読み込み</span>
         </div>
         <input id="library-menu-file-input" type="file" accept=".jpg,.jpeg,.png,.gif,.swf,.svg,.mp3,.mp4" multiple tabindex="-1">
-        <div id="library-menu-export">
+        <div id="library-menu-export" class="library-menu-bottom">
             <i class="library-type-download"></i>
             <span class="language" data-text="{{書き出し}}" data-shortcut-key="sShiftCtrl" data-shortcut-text="Ctrl + Shift + S" data-area="library">書き出し</span>
         </div>
-        <div id="library-open-photopea">
+        <div id="library-open-photopea" class="library-menu-bottom">
             <i class="library-open-photopea"></i>
             <span class="language" data-text="{{Photopea}}">Photopea</span>
         </div>
         <p></p>
 
-        <div id="library-menu-copy">
+        <div id="library-menu-copy" class="library-menu-bottom">
             <span class="language" data-text="{{コピー}}" data-shortcut-key="cCtrl" data-shortcut-text="Ctrl + C" data-area="library">コピー</span>
         </div>
 
-        <div id="library-menu-paste">
+        <div id="library-menu-paste" class="library-menu-bottom">
             <span class="language" data-text="{{ペースト}}" data-shortcut-key="vCtrl" data-shortcut-text="Ctrl + V" data-area="library">ペースト</span>
         </div>
 
-        <div id="library-menu-change-scene">
+        <div id="library-menu-change-scene" class="library-menu-bottom">
             <span class="language" data-text="{{MovieClipを編集}}" data-shortcut-key="e" data-shortcut-text="E" data-area="library">MovieClipを編集</span>
         </div>
 
         <p></p>
 
-        <div id="library-menu-delete">
+        <div id="library-menu-delete" class="library-menu-bottom">
             <i class="library-type-trash"></i>
             <span class="language" data-text="{{削除}}" data-shortcut-key="Backspace" data-shortcut-text="Backspace" data-area="library">削除</span>
         </div>
 
-        <div id="library-menu-no-use-delete">
+        <div id="library-menu-no-use-delete" class="library-menu-bottom">
             <i class="library-type-trash"></i>
             <span class="language" data-text="{{未使用のアイテムを削除}}">未使用のアイテムを削除</span>
         </div>
 
-        <div id="library-menu-empty-folder-delete">
+        <div id="library-menu-empty-folder-delete" class="library-menu-bottom">
             <i class="library-type-trash"></i>
             <span class="language" data-text="{{未使用のフォルダを削除}}">未使用のフォルダを削除</span>
         </div>
 
+        <p></p>
+
+        <span class="library-menu-title language" data-text="{{プラグインメニュー}}">Plugin Menu</span>
+        <div id="library-plugin-menu"></div>
     </div>
 </div>

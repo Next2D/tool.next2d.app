@@ -232,7 +232,7 @@ class MovieClip extends Instance
         Util.$soundController.createSoundElements();
 
         // スクリーンに描画
-        this.changeFrame(
+        return this.changeFrame(
             Util.$timelineFrame.currentFrame
         );
     }
@@ -541,9 +541,19 @@ class MovieClip extends Instance
             .$currentWorkSpace()
             .getLibrary(this.id | 0);
 
+        let layerIndex = -1;
+
+        const layerElement = Util.$timelineLayer.targetLayer;
+        if (layerElement) {
+            const children = Array.from(
+                document.getElementById("timeline-content").children
+            );
+            layerIndex = children.indexOf(layerElement);
+        }
+
         // add menu
         const htmlTag = `
-<div id="scene-instance-id-${instance.id}" data-library-id="${instance.id}" data-offset-x="${Util.$sceneChange.offsetX}" data-offset-y="${Util.$sceneChange.offsetY}" data-parent="${parent}">${instance.name}</div>
+<div id="scene-instance-id-${instance.id}" data-library-id="${instance.id}" data-offset-x="${Util.$sceneChange.offsetX}" data-offset-y="${Util.$sceneChange.offsetY}" data-parent="${parent}" data-layer-index="${layerIndex}">${instance.name}</div>
 `;
 
         document

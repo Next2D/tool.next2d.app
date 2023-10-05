@@ -11,7 +11,13 @@
     pointer-events : none;
 }
 
-#library-menu .library-menu-list div
+#library-menu .library-menu-title
+{
+    font-weight : bold;
+    margin      : 5px;
+}
+
+#library-menu .library-menu-bottom
 {
     display       : flex;
     align-items   : center;
@@ -27,7 +33,7 @@
     margin        : 5px 0 5px 0;
 }
 
-#library-menu .library-menu-list div:hover
+#library-menu .library-menu-bottom:hover
 {
     background-color : #1c1c1c;
     cursor           : pointer;

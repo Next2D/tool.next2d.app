@@ -35,6 +35,31 @@ class ExternalBitmapItem extends ExternalItem
         this._$smoothing = !!smoothing;
     }
 
+    _$load
+
+    /**
+     * @param  {File} file
+     * @return {Promise}
+     * @method
+     * @public
+     */
+    addFile (file)
+    {
+        return new Promise((reslove) => 
+        {
+            if (Util.$loadingFile) {
+                Util.$waitFiles.push({
+                    "file": file,
+                    "instance": this._$instance,
+                    "callback": reslove
+                });
+            } else {
+                Util.$loadingFile = true;
+                Util.$loadFils(file, this._$instance, reslove);
+            }
+        });
+    }
+
     /**
      * @param  {string} path
      * @return {void}

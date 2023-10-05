@@ -46,6 +46,29 @@ class ExternalDocument
     }
 
     /**
+     * @param  {string} path
+     * @return {void}
+     * @method
+     * @public
+     */
+    swapElement (path)
+    {
+        const workSpace = Util.$currentWorkSpace();
+        if (!workSpace._$nameMap.has(path)) {
+            return ;
+        }
+
+        Util
+            .$tools
+            .getDefaultTool("arrow")
+            .changeCharacter({
+                "target": {
+                    "value": workSpace._$nameMap.get(path)
+                }
+            });
+    }
+
+    /**
      * @return {ExternalTimeline}
      * @method
      * @public
@@ -53,6 +76,19 @@ class ExternalDocument
     getTimeline ()
     {
         return new ExternalTimeline(this._$workSpace.scene, this);
+    }
+
+    /**
+     * @return {Promise}
+     * @method
+     * @public
+     */
+    exitEditMode ()
+    {
+        return Util
+            .$tools
+            .getDefaultTool("arrow")
+            .moveScene();
     }
 
     /**

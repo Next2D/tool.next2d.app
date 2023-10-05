@@ -320,6 +320,18 @@ class ScreenKeyboardCommand extends KeyboardCommand
                 .$screenMenu
                 .executeScreenMoveScene();
         });
+
+        // 一つ前の座標に合わせる
+        this.add(Util.$generateShortcutKey("k", { "ctrl": true, "shift": true }), () =>
+        {
+            Util.$screenMenu.executeScreenAlignCoordinatesPrevKeyframe();
+        });
+
+        // 一つ前の変形に合わせる
+        this.add(Util.$generateShortcutKey("m", { "ctrl": true, "shift": true }), () =>
+        {
+            Util.$screenMenu.executeScreenAlignMatrixPrevKeyframe();
+        });
     }
 
     /**

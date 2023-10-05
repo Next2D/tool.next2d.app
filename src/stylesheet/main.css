@@ -9,6 +9,8 @@
     --ruler-size: 4px;
     --timeline-scroll-bar-width: 0px;
     --timeline-scroll-bar-height: 0px;
+    --plugin-modal-width: 200px;
+    --plugin-modal-height: 200px;
 }
 
 html, body

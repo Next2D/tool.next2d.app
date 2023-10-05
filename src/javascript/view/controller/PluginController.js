@@ -172,7 +172,9 @@ class PluginController
         const elementIds = [
             "plugin-list-box",
             "plugin-tools",
-            "plugin-menu"
+            "screen-plugin-menu",
+            "timeline-plugin-menu",
+            "library-plugin-menu"
         ];
 
         // プラグインで追加されたelementを初期化

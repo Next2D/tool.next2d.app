@@ -1745,7 +1745,7 @@ class ArrowTool extends BaseTool
     /**
      * @description 親のMovieClipへシーン移動
      *
-     * @return {void}
+     * @return {Promise}
      * @method
      * @public
      */
@@ -1770,12 +1770,59 @@ class ArrowTool extends BaseTool
             Util.$sceneChange.matrix.pop();
 
             // シーン移動
-            Util.$sceneChange.execute(
-                node.dataset.libraryId | 0
-            );
+            return Util
+                .$sceneChange
+                .execute(
+                    node.dataset.libraryId | 0
+                )
+                .then(() =>
+                {
+                    const layerIndex = node.dataset.layerIndex | 0;
+                    if (layerIndex > -1) {
+                        const children = Array.from(
+                            document.getElementById("timeline-content").children
+                        );
+
+                        const scene = Util.$currentWorkSpace().scene;
+                        const layerElement = children[layerIndex];
+                        if (layerElement) {
+                            const layer = scene.getLayer(
+                                layerElement.dataset.layerId | 0
+                            );
+
+                            const characters = layer.getActiveCharacter(
+                                Util.$timelineFrame.currentFrame
+                            );
+
+                            for (let idx = 0; idx < characters.length; ++idx) {
+                                const character = characters[idx];
+
+                                const element = document.getElementById(`character-${character.id}`);
+                                if (!element) {
+                                    continue;
+                                }
+
+                                this.addElement(element);
+                            }
+
+                            // 表示を切り替え
+                            this.updateControllerProperty();
+
+                            // 拡大縮小回転のElementのポイントを表示して再計算
+                            Util
+                                .$transformController
+                                .show()
+                                .relocation();
+
+                            this.activeTimeline();
+                        }
+                    }
+
+                });
 
             // リストから削除
             node.remove();
+
         }
     }
 }

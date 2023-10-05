@@ -25,15 +25,6 @@
     padding       : 5px;
 }
 
-#plugin-menu
-{
-    display        : flex;
-    align-items    : center;
-    flex-direction : column;
-    margin         : 0;
-    padding        : 0;
-}
-
 #tab-name-menu-list div:hover,
 #scene-name-menu-list div:hover
 {

@@ -126,6 +126,23 @@ class WorkSpace
     }
 
     /**
+     * @description 指定のシーン(MovieClip)を起動する
+     *
+     * @param  {MovieClip} scene
+     * @return {Promise}
+     * @public
+     */
+    setScene (scene)
+    {
+        if (this._$scene) {
+            this._$scene.stop();
+        }
+
+        this._$scene = scene;
+        return scene.initialize();
+    }
+
+    /**
      * @description ライブラリのユニークIDを生成
      *
      * @return {number}

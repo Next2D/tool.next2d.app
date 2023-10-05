@@ -175,7 +175,7 @@ class Screen extends BaseScreen
      * @method
      * @public
      */
-    drop (event)
+    drop (event, reload = true)
     {
         const activeInstances = Util
             .$libraryController
@@ -474,6 +474,11 @@ class Screen extends BaseScreen
 
         // タイムラインの表示を再計算
         layer.reloadStyle();
+
+        if (!reload) {
+            this._$saved = false;
+            return Promise.resolve();
+        }
 
         // 描画リセット
         return this
@@ -1175,9 +1180,8 @@ class Screen extends BaseScreen
         // 調整用のxy座標(fixed logic)
         const matrix = Util.$sceneChange.concatenatedMatrix;
 
-        // Util.$timelineFrame.currentFrame = 1;
-        const x  = character.x;
-        const y  = character.y;
+        const x = character.x;
+        const y = character.y;
 
         Util.$sceneChange.offsetX = x * matrix[0] + y * matrix[2] + matrix[4];
         Util.$sceneChange.offsetY = x * matrix[1] + y * matrix[3] + matrix[5];

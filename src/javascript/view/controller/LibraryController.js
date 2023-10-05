@@ -1647,7 +1647,7 @@ class LibraryController
                             .createInstanceSelect(movieClip);
 
                         // ライブラリ一覧を再構成
-                        Util.$libraryController.reload();
+                        this.reload();
 
                         // プレビューを表示
                         Util.$libraryPreview.loadImage(movieClip.id);
@@ -1684,7 +1684,9 @@ class LibraryController
                                 const canvas  = Util.$getCanvas();
                                 canvas.width  = width;
                                 canvas.height = height;
-                                const context = canvas.getContext("2d");
+                                const context = canvas.getContext("2d", {
+                                    "willReadFrequently": true
+                                });
 
                                 context.drawImage(image, 0, 0, width, height);
                                 const buffer = new Uint8Array(

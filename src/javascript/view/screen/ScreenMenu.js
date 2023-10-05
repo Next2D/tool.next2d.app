@@ -561,7 +561,7 @@ class ScreenMenu extends BaseScreen
 
         this.save();
 
-        const scene  = Util.$currentWorkSpace().scene;
+        const scene = Util.$currentWorkSpace().scene;
         for (let idx = 0; idx < activeElements.length; ++idx) {
 
             const element = activeElements[idx];
@@ -578,10 +578,6 @@ class ScreenMenu extends BaseScreen
                 element.dataset.characterId | 0
             );
 
-            if (character._$places.size === 1) {
-                continue;
-            }
-
             let useTween = false;
             let currentPlace = character.getPlace(frame);
             if (currentPlace.tweenFrame) {
@@ -592,12 +588,25 @@ class ScreenMenu extends BaseScreen
                 }
             }
 
-            let prevPlace = character.getPlace(currentPlace.frame - 1);
+            let prevPlace = null;
+            if (character.startFrame > currentPlace.frame - 1) {
+                const characters = layer.getActiveCharacter(currentPlace.frame - 1);
+                if (!characters.length) {
+                    continue;
+                }
+                prevPlace = characters[0].getPlace(currentPlace.frame - 1);
+                if (prevPlace.tweenFrame) {
+                    prevPlace = characters[0].getPlace(prevPlace.tweenFrame);
+                }
+            } else {
+                prevPlace = character.getPlace(currentPlace.frame - 1);
+                if (prevPlace.tweenFrame) {
+                    prevPlace = character.getPlace(prevPlace.tweenFrame);
+                }
+            }
+
             if (!prevPlace) {
                 continue;
-            }
-            if (prevPlace.tweenFrame) {
-                prevPlace = character.getPlace(prevPlace.tweenFrame);
             }
 
             currentPlace.matrix[0] = prevPlace.matrix[0];
@@ -676,10 +685,6 @@ class ScreenMenu extends BaseScreen
                 element.dataset.characterId | 0
             );
 
-            if (character._$places.size === 1) {
-                continue;
-            }
-
             let useTween = false;
             let currentPlace = character.getPlace(frame);
             if (currentPlace.tweenFrame) {
@@ -690,12 +695,21 @@ class ScreenMenu extends BaseScreen
                 }
             }
 
-            let prevPlace = character.getPlace(currentPlace.frame - 1);
-            if (!prevPlace) {
-                continue;
-            }
-            if (prevPlace.tweenFrame) {
-                prevPlace = character.getPlace(prevPlace.tweenFrame);
+            let prevPlace = null;
+            if (character.startFrame > currentPlace.frame - 1) {
+                const characters = layer.getActiveCharacter(currentPlace.frame - 1);
+                if (!characters.length) {
+                    continue;
+                }
+                prevPlace = characters[0].getPlace(currentPlace.frame - 1);
+                if (prevPlace.tweenFrame) {
+                    prevPlace = characters[0].getPlace(prevPlace.tweenFrame);
+                }
+            } else {
+                prevPlace = character.getPlace(currentPlace.frame - 1);
+                if (prevPlace.tweenFrame) {
+                    prevPlace = character.getPlace(prevPlace.tweenFrame);
+                }
             }
 
             currentPlace.matrix[4] = prevPlace.matrix[4];

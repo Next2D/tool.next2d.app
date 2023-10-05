@@ -27,6 +27,21 @@ class ExternalInterface
          * @private
          */
         this._$drawingLayer = new DrawingLayer();
+
+        /**
+         * @type {object}
+         * @private
+         */
+        this._$functions = {};
+    }
+
+    /**
+     * @return {object}
+     * @public
+     */
+    get functions ()
+    {
+        return this._$functions;
     }
 
     /**
@@ -45,20 +60,88 @@ class ExternalInterface
      * @method
      * @public
      */
-    addMenu (text, callback = null)
+    addScreenMenu (text, callback = null)
     {
         const element = document
-            .getElementById("plugin-menu");
+            .getElementById("screen-plugin-menu");
 
         const div = document.createElement("div");
         div.classList.add("screen-menu-bottom");
         div.textContent = text;
 
         if (callback) {
-            div.addEventListener("mousedown", callback);
+            div.addEventListener("mousedown", () =>
+            {
+                Util.$endMenu();
+                callback();
+            });
         }
 
         element.appendChild(div);
+    }
+
+    /**
+     * @param  {string} text
+     * @param  {function} [callback=null]
+     * @return {void}
+     * @method
+     * @public
+     */
+    addTimelineMenu (text, callback = null)
+    {
+        const element = document
+            .getElementById("timeline-plugin-menu");
+
+        const div = document.createElement("div");
+        div.classList.add("timeline-menu-bottom");
+        div.textContent = text;
+
+        if (callback) {
+            div.addEventListener("mousedown", () =>
+            {
+                Util.$endMenu();
+                callback();
+            });
+        }
+
+        element.appendChild(div);
+    }
+
+    /**
+     * @param  {string} text
+     * @param  {function} [callback=null]
+     * @return {void}
+     * @method
+     * @public
+     */
+    addLibraryMenu (text, callback = null)
+    {
+        const element = document
+            .getElementById("library-plugin-menu");
+
+        const div = document.createElement("div");
+        div.classList.add("library-menu-bottom");
+        div.textContent = text;
+
+        if (callback) {
+            div.addEventListener("mousedown", () =>
+            {
+                Util.$endMenu();
+                callback();
+            });
+        }
+
+        element.appendChild(div);
+    }
+
+    /**
+     * @param {string} name
+     * @method
+     * @public
+     */
+    hasPanel (name)
+    {
+        return this._$panel.has(name);
     }
 
     /**

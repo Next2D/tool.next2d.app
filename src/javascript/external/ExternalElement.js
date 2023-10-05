@@ -459,6 +459,10 @@ class ExternalElement
     {
         return this._$character.startFrame - 1;
     }
+    set firstFrame (frame)
+    {
+        this._$character.startFrame = frame;
+    }
 
     /**
      * @member {string}

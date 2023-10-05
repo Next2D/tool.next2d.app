@@ -19,6 +19,148 @@ class ExternalLibrary
     }
 
     /**
+     * @param  {string} rename
+     * @return {void}
+     * @method
+     * @public
+     */
+    renameItem (path, rename)
+    {
+        const item = this.getItem(path);
+        if (!item) {
+            return ;
+        }
+
+        item._$instance.name = rename;
+        Util.$libraryController.reload();
+    }
+
+    /**
+     * @param  {string} path
+     * @return {void}
+     * @method
+     * @public
+     */
+    duplicateItem (path)
+    {
+        const item = this.getItem(path);
+        if (!item) {
+            return ;
+        }
+
+        Util.$libraryController.activeInstance = document
+            .getElementById(`library-child-id-${item._$instance.id}`);
+
+        Util.$libraryMenu.executeLibraryMenuCopy();
+        Util.$libraryMenu.executeLibraryMenuPaste();
+    }
+
+    /**
+     * @param  {string} path
+     * @return {void}
+     * @method
+     * @public
+     */
+    selectItem (path)
+    {
+        const item = this.getItem(path);
+        if (!item) {
+            return ;
+        }
+
+        Util
+            .$libraryController
+            .activeInstance = document.getElementById(`library-child-id-${item._$instance.id}`);
+    }
+
+    /**
+     * @param  {string} path
+     * @return {Promise}
+     * @method
+     * @public
+     */
+    editItem (path)
+    {
+        const item = this.getItem(path);
+        if (!item || item._$instance.type !== InstanceType.MOVIE_CLIP) {
+            return Promise.resolve();
+        }
+
+        // シーン名をリストに追加
+        Util
+            .$currentWorkSpace()
+            .root
+            .addSceneName();
+
+        return Util.$sceneChange.execute(item._$instance.id);
+    }
+
+    /**
+     * @param  {string} type
+     * @param  {string} path
+     * @return {boolean}
+     * @method
+     * @public
+     */
+    addNewItem (type, path)
+    {
+        path = `${path}`;
+        const workSpace = this._$document._$workSpace;
+
+        const paths = path.split("/");
+        const item  = this.getItem(paths.join("/"));
+        if (!item) {
+            let libraryTyle = "";
+            switch (type) {
+
+                case "movie clip":
+                    libraryTyle = InstanceType.MOVIE_CLIP;
+                    break;
+
+                case "bitmap":
+                    libraryTyle = InstanceType.BITMAP;
+                    break;
+
+                case "folder":
+                    libraryTyle = InstanceType.FOLDER;
+                    break;
+
+                default:
+                    break;
+
+            }
+
+            const name = paths.pop();
+            const instance = workSpace.addLibrary({
+                "id": Util.$currentWorkSpace().nextLibraryId,
+                "type": libraryTyle,
+                "name": name,
+                "symbol": ""
+            });
+
+            if (paths.length) {
+                const folderPath = paths.join("/");
+                this.newFolder(folderPath);
+
+                const folderItem = this.getItem(folderPath);
+                instance.folderId = folderItem._$instance.id;
+            }
+
+            workSpace
+                ._$nameMap
+                .set(instance.path, instance.id);
+
+            Util
+                .$instanceSelectController
+                .createInstanceSelect(instance);
+
+            Util.$libraryController.reload();
+        }
+
+        return true;
+    }
+
+    /**
      * @param  {string} path
      * @return {ExternalItem[]|null}
      */
@@ -63,6 +205,11 @@ class ExternalLibrary
                         );
                     }
                     return new ExternalItem(
+                        instance, this._$document
+                    );
+
+                case InstanceType.FOLDER:
+                    return new ExternalFolderItem(
                         instance, this._$document
                     );
 
@@ -179,13 +326,51 @@ class ExternalLibrary
     }
 
     /**
+     * @param {string} path
+     * @method
+     * @public
+     */
+    newFolder (path)
+    {
+        const workSpace = this._$document._$workSpace;
+        const paths = path.split("/");
+
+        let folderPaths = [];
+        let folderId = 0;
+        for (let idx = 0; idx < paths.length; ++idx) {
+
+            const name = paths[idx];
+
+            folderPaths.push(name);
+
+            const item = this.getItem(folderPaths.join("/"));
+            if (item) {
+                folderId = item._$instance.id;
+                continue;
+            }
+
+            const instance = workSpace.addLibrary({
+                "id": Util.$currentWorkSpace().nextLibraryId,
+                "type": InstanceType.FOLDER,
+                "name": name,
+                "symbol": ""
+            });
+
+            instance.folderId = folderId;
+            folderId = instance.id;
+        }
+
+        Util.$libraryController.reload();
+    }
+
+    /**
      * @param  {object} point
      * @param  {string} path
      * @return {Promise}
      * @method
      * @public
      */
-    addItemToDocument (point, path)
+    addItemToDocument (point, path, reload = true)
     {
         if (!point || !path) {
             return Promise.resolve(false);
@@ -212,7 +397,7 @@ class ExternalLibrary
                 .drop({
                     "offsetX": point.x + Util.$offsetLeft,
                     "offsetY": point.y + Util.$offsetTop
-                })
+                }, reload)
                 .then(() =>
                 {
                     return Promise.resolve(true);

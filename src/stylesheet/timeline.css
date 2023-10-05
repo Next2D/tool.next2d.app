@@ -86,7 +86,13 @@
     margin        : 5px 0 5px 0;
 }
 
-#timeline-menu .timeline-menu-list div,
+#timeline-menu .timeline-menu-title
+{
+    font-weight : bold;
+    margin      : 5px;
+}
+
+#timeline-menu .timeline-menu-bottom,
 #timeline-header-menu .timeline-header-menu-list div,
 #timeline-layer-menu-list div
 {
@@ -231,7 +237,7 @@
     background-color : transparent;
 }
 
-#timeline-menu .timeline-menu-list div:hover,
+#timeline-menu .timeline-menu-bottom:hover,
 #timeline-header-menu .timeline-header-menu-list div:hover,
 #timeline-layer-menu-list div:hover
 {

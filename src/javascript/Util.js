@@ -50,6 +50,8 @@ Util.$useShortcutSetting      = false;
 Util.$changeLibraryId         = 0;
 Util.$canvases                = [];
 Util.$sleepCanvases           = [];
+Util.$waitFiles               = [];
+Util.$loadingFile             = false;
 
 const userAgentData = window.navigator.userAgentData;
 if (userAgentData) {
@@ -1789,6 +1791,7 @@ Util.$parserHandler = function (event)
                             };
 
                             const shape = workSpace.addLibrary(object);
+                            console.log(shape, object.recodes);
                             if (this._$folderId) {
                                 shape.folderId = this._$folderId;
                             }
@@ -2778,4 +2781,66 @@ Util.$getFrame = (place, range, parent_frame, total_frame, static_frame = 0) =>
     }
 
     return frame;
+};
+
+/**
+ * @param {File} file
+ * @param {Instance} instance
+ * @param {function} callback
+ * @method
+ * @static
+ */
+Util.$loadFils = (file, instance, callback) =>
+{
+    file
+        .arrayBuffer()
+        .then((buffer) =>
+        {
+            const image = new Image();
+            image.src = URL.createObjectURL(new Blob([buffer], {
+                "type": file.type
+            }));
+
+            image
+                .decode()
+                .then(() =>
+                {
+                    const width   = image.width;
+                    const height  = image.height;
+
+                    const canvas  = Util.$getCanvas();
+                    canvas.width  = width;
+                    canvas.height = height;
+                    const context = canvas.getContext("2d", {
+                        "willReadFrequently": true
+                    });
+
+                    context.drawImage(image, 0, 0, width, height);
+                    instance._$buffer = new Uint8Array(
+                        context.getImageData(0, 0, width, height).data
+                    );
+                    Util.$poolCanvas(canvas);
+
+                    // 上書き
+                    instance.width     = width;
+                    instance.height    = height;
+                    instance.imageType = file.type;
+
+                    callback();
+
+                    if (Util.$waitFiles.length) {
+                        requestAnimationFrame(() =>
+                        {
+                            const object = Util.$waitFiles.shift();
+                            Util.$loadFils(
+                                object.file,
+                                object.instance,
+                                object.callback
+                            );
+                        });
+                    } else {
+                        Util.$loadingFile = false;
+                    }
+                });
+        });
 };
