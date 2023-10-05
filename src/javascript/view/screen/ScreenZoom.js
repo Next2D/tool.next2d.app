@@ -109,12 +109,9 @@ class ScreenZoom extends BaseScreen
         const frame = Util.$timelineFrame.currentFrame;
         const scene = workSpace.scene;
         for (const layer of scene._$layers.values()) {
-
-            const characters = layer.getActiveCharacter(frame);
-            for (let idx = 0; idx < characters.length; ++idx) {
-                characters[idx].dispose();
+            for (let idx = 0; idx < layer._$characters.length; ++idx) {
+                layer._$characters[idx].dispose();
             }
-
         }
 
         // 再描画
