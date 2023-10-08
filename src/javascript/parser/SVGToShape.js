@@ -380,22 +380,12 @@ class SVGToShape
                         }
 
                         const path = document.createElement("path");
+                        path.dataset.type = "rect";
 
                         const attributes = element.attributes;
                         const length = attributes.length;
                         for (let idx = 0; idx < length; ++idx) {
                             const attribute = attributes[idx];
-
-                            switch (attribute.name) {
-
-                                case "x":
-                                case "y":
-                                case "width":
-                                case "height":
-                                    continue;
-
-                            }
-
                             path.setAttribute(
                                 attribute.name,
                                 attribute.value
@@ -469,20 +459,12 @@ class SVGToShape
                         ];
 
                         const path = document.createElement("path");
+                        path.dataset.type = "circle";
 
                         const attributes = element.attributes;
                         const length = attributes.length;
                         for (let idx = 0; idx < length; ++idx) {
                             const attribute = attributes[idx];
-                            switch (attribute.name) {
-
-                                case "cx":
-                                case "cy":
-                                case "r":
-                                    continue;
-
-                            }
-
                             path.setAttribute(
                                 attribute.name,
                                 attribute.value
@@ -556,21 +538,12 @@ class SVGToShape
                         ];
 
                         const path = document.createElement("path");
+                        path.dataset.type = "ellipse";
 
                         const attributes = element.attributes;
                         const length = attributes.length;
                         for (let idx = 0; idx < length; ++idx) {
                             const attribute = attributes[idx];
-                            switch (attribute.name) {
-
-                                case "cx":
-                                case "cy":
-                                case "rx":
-                                case "ry":
-                                    continue;
-
-                            }
-
                             path.setAttribute(
                                 attribute.name,
                                 attribute.value
@@ -626,6 +599,7 @@ class SVGToShape
                         }
 
                         const path = document.createElement("path");
+                        path.dataset.type = "polyline";
 
                         const attributes = element.attributes;
                         const length = attributes.length;
@@ -692,6 +666,7 @@ class SVGToShape
                         ];
 
                         const path = document.createElement("path");
+                        path.dataset.type = "line";
 
                         const attributes = element.attributes;
                         const length = attributes.length;
@@ -2584,52 +2559,72 @@ class SVGToShape
 
                     const transform = element.getAttribute("transform");
 
-                    const transforms = transform.split(" ");
-                    for (let idx = 0; idx < transforms.length; ++idx) {
-                        const value = transforms[idx];
-                        switch (true) {
+                    const transforms = transform.match(/\S+\(.*?\)/sg);
+                    transforms.reverse();
 
-                            case value.indexOf("rotate") > -1:
+                    for (let idx = 0; idx < transforms.length; ++idx) {
+                        const transform = transforms[idx].split("(",2);
+    
+                        const command = transform[0];
+                        const args = transform[1]
+                            .replace(")", "")
+                            .replace(/\s+/sg, ",")
+                            .replace(/,{2,}/sg, ",")
+                            .replace(/^,/, "")
+                            .replace(/,$/, "")
+                            .split(",");
+
+                        switch (command) {
+
+                            case "matrix":
+                                break;
+    
+                            case "translate":
+                                if (args.length === 1) {
+                                    array = Util.$multiplicationMatrix(array, [1, 0, 0, 1, parseFloat(args[0]), 0]);
+                                } else {
+                                    array = Util.$multiplicationMatrix(array, [1, 0, 0, 1, parseFloat(args[0]), parseFloat(args[1])]);
+                                }
+                                break;
+    
+                            case "scale":
+                                if (args.length === 1) {
+                                    array = Util.$multiplicationMatrix(array, 
+                                        [parseFloat(args[0]), 0, 0, 1, 0, 0]
+                                    );
+                                } else {
+                                    array = Util.$multiplicationMatrix(array, 
+                                        [parseFloat(args[0]), 0, 0, parseFloat(args[1]), 0, 0]
+                                    );
+                                }
+                                break;
+    
+                            case "skewX":
                                 {
-                                    const angle = SVGToShape.getRotate(transform);
+                                    const skewX = parseFloat(args[0]) * (Math.PI / 180);
+                                    array = Util.$multiplicationMatrix(array, [1, 0, Math.tan(skewX), 1, 0, 0]);
+                                }
+                                break;
+    
+                            case "skewY":
+                                {
+                                    const skewY = parseFloat(args[0]) * (Math.PI / 180);
+                                    array = Util.$multiplicationMatrix(array, [1, Math.tan(skewY), 0, 1, 0, 0]);
+                                }
+                                break;
+    
+                            case "rotate":
+                                {
+                                    const angle = parseFloat(args[0]) * (Math.PI / 180);
                                     const cos = Math.cos(angle);
                                     const sin = Math.sin(angle);
                                     array = Util.$multiplicationMatrix(array, [cos, sin, -sin, cos, 0, 0]);
                                 }
                                 break;
-
-                            case value.indexOf("translate") > -1:
-                                {
-                                    const point = SVGToShape.getTranslate(transform);
-                                    array = Util.$multiplicationMatrix(array, [1, 0, 0, 1, point.x,  point.y]);
-                                }
-                                break;
-
-                            case value.indexOf("skewX") > -1:
-                                {
-                                    const skewX = Math.tan(SVGToShape.getSkewX(transform));
-                                    array = Util.$multiplicationMatrix(array, [1, 0, skewX, 1, 0, 0]);
-                                }
-                                break;
-
-                            case value.indexOf("skewY") > -1:
-                                {
-                                    const skewY = Math.tan(SVGToShape.getSkewY(transform));
-                                    array = Util.$multiplicationMatrix(array, [1, skewY, 0, 1, 0, 0]);
-                                }
-                                break;
-
-                            case value.indexOf("scale") > -1:
-                                {
-                                    const scale  = SVGToShape.getScale(transform);
-                                    const scaleY = scale.y === undefined ? 1 : scale.y;
-                                    array = Util.$multiplicationMatrix(array, [scale.x, 0, 0, scaleY, 0, 0]);
-                                }
-                                break;
-
+                            
                             default:
-                                continue;
-
+                                break;
+    
                         }
                     }
                 }
@@ -2651,52 +2646,72 @@ class SVGToShape
 
                     const transform = element.getAttribute("transform");
 
-                    const transforms = transform.split(" ");
-                    for (let idx = 0; idx < transforms.length; ++idx) {
-                        const value = transforms[idx];
-                        switch (true) {
+                    const transforms = transform.match(/\S+\(.*?\)/sg);
+                    transforms.reverse();
 
-                            case value.indexOf("rotate") > -1:
+                    for (let idx = 0; idx < transforms.length; ++idx) {
+                        const transform = transforms[idx].split("(",2);
+    
+                        const command = transform[0];
+                        const args = transform[1]
+                            .replace(")", "")
+                            .replace(/\s+/sg, ",")
+                            .replace(/,{2,}/sg, ",")
+                            .replace(/^,/, "")
+                            .replace(/,$/, "")
+                            .split(",");
+
+                        switch (command) {
+
+                            case "matrix":
+                                break;
+    
+                            case "translate":
+                                if (args.length === 1) {
+                                    array = Util.$multiplicationMatrix(array, [1, 0, 0, 1, parseFloat(args[0]), 0]);
+                                } else {
+                                    array = Util.$multiplicationMatrix(array, [1, 0, 0, 1, parseFloat(args[0]), parseFloat(args[1])]);
+                                }
+                                break;
+    
+                            case "scale":
+                                if (args.length === 1) {
+                                    array = Util.$multiplicationMatrix(array, 
+                                        [parseFloat(args[0]), 0, 0, 1, 0, 0]
+                                    );
+                                } else {
+                                    array = Util.$multiplicationMatrix(array, 
+                                        [parseFloat(args[0]), 0, 0, parseFloat(args[1]), 0, 0]
+                                    );
+                                }
+                                break;
+    
+                            case "skewX":
                                 {
-                                    const angle = SVGToShape.getRotate(transform);
+                                    const skewX = parseFloat(args[0]) * (Math.PI / 180);
+                                    array = Util.$multiplicationMatrix(array, [1, 0, Math.tan(skewX), 1, 0, 0]);
+                                }
+                                break;
+    
+                            case "skewY":
+                                {
+                                    const skewY = parseFloat(args[0]) * (Math.PI / 180);
+                                    array = Util.$multiplicationMatrix(array, [1, Math.tan(skewY), 0, 1, 0, 0]);
+                                }
+                                break;
+    
+                            case "rotate":
+                                {
+                                    const angle = parseFloat(args[0]) * (Math.PI / 180);
                                     const cos = Math.cos(angle);
                                     const sin = Math.sin(angle);
                                     array = Util.$multiplicationMatrix(array, [cos, sin, -sin, cos, 0, 0]);
                                 }
                                 break;
-
-                            case value.indexOf("translate") > -1:
-                                {
-                                    const point = SVGToShape.getTranslate(transform);
-                                    array = Util.$multiplicationMatrix(array, [1, 0, 0, 1, point.x,  point.y]);
-                                }
-                                break;
-
-                            case value.indexOf("skewX") > -1:
-                                {
-                                    const skewX = Math.tan(SVGToShape.getSkewX(transform));
-                                    array = Util.$multiplicationMatrix(array, [1, 0, skewX, 1, 0, 0]);
-                                }
-                                break;
-
-                            case value.indexOf("skewY") > -1:
-                                {
-                                    const skewY = Math.tan(SVGToShape.getSkewY(transform));
-                                    array = Util.$multiplicationMatrix(array, [1, skewY, 0, 1, 0, 0]);
-                                }
-                                break;
-
-                            case value.indexOf("scale") > -1:
-                                {
-                                    const scale  = SVGToShape.getScale(transform);
-                                    const scaleY = scale.y === undefined ? 1 : scale.y;
-                                    array = Util.$multiplicationMatrix(array, [scale.x, 0, 0, scaleY, 0, 0]);
-                                }
-                                break;
-
+                            
                             default:
-                                continue;
-
+                                break;
+    
                         }
                     }
                 }
@@ -2706,48 +2721,78 @@ class SVGToShape
                     Math.atan2((gradient.fy - gradient.cy) / ry, (gradient.fx - gradient.cx) / rx),
                     gradient.cx - array[4], gradient.cy - array[5]
                 );
+                
             }
 
             if (gradient.gradientUnits !== "userSpaceOnUse") {
                 matrix.translate(graphics._$xMin, graphics._$yMin);
             }
 
-            // skew => scale => rotate => translate
             if (gradient.transform) {
 
-                const tMatrix = matrix;
+                const transforms = gradient.transform.match(/\S+\(.*?\)/sg);
+                transforms.reverse();
 
-                const transform = gradient.transform;
+                for (let idx = 0; idx < transforms.length; ++idx) {
+                    const transform = transforms[idx].split("(",2);
 
-                if (transform.indexOf("skewX") > -1) {
-                    const skewX = Math.tan(SVGToShape.getSkewX(transform));
-                    tMatrix.a  = tMatrix.a + tMatrix.b * skewX;
-                    tMatrix.c  = tMatrix.c + tMatrix.d * skewX;
-                    tMatrix.tx = tMatrix.tx + tMatrix.ty * skewX;
+                    const command = transform[0];
+                    const args = transform[1]
+                        .replace(")", "")
+                        .replace(/\s+/sg, ",")
+                        .replace(/,{2,}/sg, ",")
+                        .replace(/^,/, "")
+                        .replace(/,$/, "")
+                        .split(",");
+                    
+                    switch (command) {
+
+                        case "matrix":
+                            break;
+
+                        case "translate":
+                            if (args.length === 1) {
+                                matrix.translate(parseFloat(args[0]), 0);
+                            } else {
+                                matrix.translate(parseFloat(args[0]), parseFloat(args[1]));
+                            }
+                            break;
+
+                        case "scale":
+                            if (args.length === 1) {
+                                matrix.scale(parseFloat(args[0]), 1);
+                            } else {
+                                matrix.scale(parseFloat(args[0]), parseFloat(args[1]));
+                            }
+                            break;
+
+                        case "skewX":
+                            {
+                                const skewX = parseFloat(args[0]) * (Math.PI / 180);
+                                matrix.a  = matrix.a + matrix.b * skewX;
+                                matrix.c  = matrix.c + matrix.d * skewX;
+                                matrix.tx = matrix.tx + matrix.ty * skewX;
+                            }
+                            break;
+
+                        case "skewY":
+                            {
+                                const skewY = parseFloat(args[0]) * (Math.PI / 180);
+                                matrix.b  = matrix.b + matrix.a * skewY;
+                                matrix.d  = matrix.d + matrix.c * skewY;
+                                matrix.ty = matrix.ty + matrix.tx * skewY;
+                            }
+                            break;
+
+                        case "rotate":
+                            matrix.rotate(parseFloat(args[0]) * Math.PI / 180);
+                            break;
+                        
+                        default:
+                            break;
+
+                    }
                 }
-
-                if (transform.indexOf("skewY") > -1) {
-                    const skewY = Math.tan(SVGToShape.getSkewY(transform));
-                    tMatrix.b  = tMatrix.b + tMatrix.a * skewY;
-                    tMatrix.d  = tMatrix.d + tMatrix.c * skewY;
-                    tMatrix.ty = tMatrix.ty + tMatrix.tx * skewY;
-                }
-
-                if (transform.indexOf("scale") > -1) {
-                    const scale  = SVGToShape.getScale(transform);
-                    const scaleY = scale.y === undefined ? 1 : scale.y;
-                    tMatrix.scale(scale.x, scaleY);
-                }
-
-                if (transform.indexOf("rotate") > -1) {
-                    tMatrix.rotate(SVGToShape.getRotate(transform));
-                }
-
-                if (transform.indexOf("translate") > -1) {
-                    const point = SVGToShape.getTranslate(transform);
-                    tMatrix.translate(point.x,  point.y);
-                }
-
             }
         }
 
