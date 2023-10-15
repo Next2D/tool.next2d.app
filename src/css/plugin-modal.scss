@@ -1,0 +1,76 @@
+#plugin-modal
+{
+    display          : flex;
+    flex-direction   : column;
+    justify-content  : center;
+    align-items      : center;
+    position         : fixed;
+    width            : var(--plugin-modal-width);
+    height           : var(--plugin-modal-height);
+    background-color : #363636;
+    color            : whitesmoke;
+    border           : 1px solid #72777D;
+    z-index          : 9999;
+    overflow         : hidden;
+    border-radius    : 4px;
+    box-shadow       : 0 0 5px rgba(245, 245, 245, 0.25);
+}
+
+#plugin-bar
+{
+    width            : var(--plugin-modal-width);
+    height           : 25px;
+    background-color : #2c2c2c;
+    display          : flex;
+    justify-content  : flex-end;
+    align-items      : center;
+
+    &:hover
+    {
+        cursor : move;
+    }
+}
+
+#plugin-title
+{
+    width           : calc(var(--plugin-modal-width) - 17px);
+    height          : 25px;
+    text-align      : center;
+    color           : whitesmoke;
+    font-size       : 12px;
+    display         : flex;
+    justify-content : center;
+    align-items     : center;
+    pointer-events  : none;
+}
+
+#plugin-hide-icon
+{
+    width               : 12px;
+    height              : 12px;
+    background-image    : url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" width="6" height="6" viewBox="0 0 24 24"><path fill="whitesmoke" d="M23 20.168l-8.185-8.187 8.185-8.174-2.832-2.807-8.182 8.179-8.176-8.179-2.81 2.81 8.186 8.196-8.186 8.184 2.81 2.81 8.203-8.192 8.18 8.192z"/></svg>');
+    background-repeat   : no-repeat;
+    background-position : center center;
+    margin-right        : 5px;
+
+    &:hover
+    {
+        cursor           : pointer;
+        border-radius    : 2px;
+        background-color : #7c7c7c;
+    }
+}
+
+#plugin-modal-element
+{
+    width            : var(--plugin-modal-width);
+    height           : calc(var(--plugin-modal-height) - 25px);
+    border           : none;
+    overflow         : auto;
+    outline          : none;
+    padding          : 0;
+    margin           : 0;
+    display          : flex;
+    justify-content  : center;
+    align-items      : center;
+}

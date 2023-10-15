@@ -1,0 +1,425 @@
+#screen
+{
+    height      : calc(100vh - (var(--timeline-height) + 21px));
+    overflow    : scroll;
+    display     : grid;
+    place-items : center;
+    position    : relative;
+
+    img,
+    canvas
+    {
+        border          : none;
+        pointer-events  : none;
+        padding         : 0;
+        margin          : 0 auto;
+        vertical-align  : top;
+        image-rendering : -webkit-optimize-contrast;
+    }
+
+    textarea
+    {
+        border         : none;
+        resize         : none;
+        padding        : 0 2px 0 2px;
+        margin         : 0;
+        display        : block;
+        pointer-events : none;
+    }
+
+    .transform
+    {
+        z-index          : 9900;
+        width            : 5px;
+        height           : 5px;
+        border           : 1px solid #ffffff;
+        background-color : #990000;
+        position         : absolute;
+
+        &:hover
+        {
+            background-color : #009900;
+        }
+    }
+
+    .pen-pointer
+    {
+        z-index  : 9900;
+        position : absolute;
+    }
+
+    .standard-point
+    {
+        width               : 12px;
+        height              : 12px;
+        position            : absolute;
+        z-index             : 9000;
+        pointer-events      : none;
+        background-image    : url('data:image/svg+xml;charset=UTF-8,<svg clip-rule="evenodd" fill-rule="evenodd" stroke-linejoin="round" stroke-miterlimit="2" width="12" height="12" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="m11 11h-7.25c-.414 0-.75.336-.75.75s.336.75.75.75h7.25v7.25c0 .414.336.75.75.75s.75-.336.75-.75v-7.25h7.25c.414 0 .75-.336.75-.75s-.336-.75-.75-.75h-7.25v-7.25c0-.414-.336-.75-.75-.75s-.75.336-.75.75z" fill-rule="nonzero"/></svg>');
+        background-repeat   : no-repeat;
+        background-position : center center;
+    }
+
+    .standard-point
+    {
+        width               : 12px;
+        height              : 12px;
+        position            : absolute;
+        z-index             : 9000;
+        pointer-events      : none;
+        background-image    : url('data:image/svg+xml;charset=UTF-8,<svg clip-rule="evenodd" fill-rule="evenodd" stroke-linejoin="round" stroke-miterlimit="2" width="12" height="12" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="m11 11h-7.25c-.414 0-.75.336-.75.75s.336.75.75.75h7.25v7.25c0 .414.336.75.75.75s.75-.336.75-.75v-7.25h7.25c.414 0 .75-.336.75-.75s-.336-.75-.75-.75h-7.25v-7.25c0-.414-.336-.75-.75-.75s-.75.336-.75.75z" fill-rule="nonzero"/></svg>');
+        background-repeat   : no-repeat;
+        background-position : center center;
+    }
+
+    .ruler-border-x
+    {
+        width            : 1px;
+        position         : absolute;
+        top              : 0;
+        left             : 0;
+        background-color : #0dcaf0;
+        z-index          : 9900;
+
+        &:hover
+        {
+            cursor : col-resize;
+        }
+    }
+
+    .ruler-border-y
+    {
+        height           : 1px;
+        position         : absolute;
+        top              : 0;
+        left             : 0;
+        background-color : #0dcaf0;
+        z-index          : 9900;
+
+        &:hover
+        {
+            cursor : row-resize;
+        }
+    }
+}
+
+#target-rect
+{
+    border         : 1px solid #3a3a3a;
+    position       : absolute;
+    background     : transparent;
+    z-index        : 9000;
+    pointer-events : none;
+}
+
+#stage-area
+{
+    .arrow
+    {
+        border : 1px solid #acfeff;
+    }
+}
+
+#reference-point
+{
+    width            : 10px;
+    height           : 10px;
+    position         : absolute;
+    z-index          : 9000;
+    border-radius    : 10px;
+    border           : 1px solid #f4f1f0;
+    background-color : #e14f5f;
+    opacity          : 0.8;
+
+    &:hover
+    {
+        cursor : move;
+    }
+}
+
+#target-rotation
+{
+    width               : 20px;
+    height              : 20px;
+    position            : absolute;
+    z-index             : 9900;
+    background-image    : url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path d="M20.944 12.979c-.489 4.509-4.306 8.021-8.944 8.021-2.698 0-5.112-1.194-6.763-3.075l1.245-1.633c1.283 1.645 3.276 2.708 5.518 2.708 3.526 0 6.444-2.624 6.923-6.021h-2.923l4-5.25 4 5.25h-3.056zm-15.864-1.979c.487-3.387 3.4-6 6.92-6 2.237 0 4.228 1.059 5.51 2.698l1.244-1.632c-1.65-1.876-4.061-3.066-6.754-3.066-4.632 0-8.443 3.501-8.941 8h-3.059l4 5.25 4-5.25h-2.92z"/></svg>');
+    background-repeat   : no-repeat;
+    background-position : 0 0;
+}
+
+#grid-top-left,
+#grid-top-right,
+#grid-bottom-left,
+#grid-bottom-right
+{
+    width          : 5px;
+    height         : 5px;
+    border         : 1px solid #e0e0e0;
+    background     : #8fbc8f;
+    position       : absolute;
+    z-index        : 9900;
+}
+
+#scale-top-left,
+#scale-top-right,
+#scale-bottom-left,
+#scale-bottom-right,
+#scale-center-left,
+#scale-center-top,
+#scale-center-right,
+#scale-center-bottom
+{
+    width          : 9px;
+    height         : 9px;
+    border         : 1px solid #e0e0e0;
+    background     : #1c1c1c;
+    position       : absolute;
+    z-index        : 9000;
+}
+
+#scale-top-left:hover,
+#scale-top-right:hover,
+#scale-bottom-left:hover,
+#scale-bottom-right:hover,
+#scale-center-left:hover,
+#scale-center-top:hover,
+#scale-center-right:hover,
+#scale-center-bottom:hover,
+#grid-top-left:hover,
+#grid-top-right:hover,
+#grid-bottom-left:hover,
+#grid-bottom-right:hover
+{
+    cursor : pointer;
+}
+
+#target-rotation:hover
+{
+    cursor : ew-resize;
+}
+
+#stage-rect
+{
+    position       : fixed;
+    background     : rgba(128, 128, 128, 0.2);
+    border         : 1px solid #29628e;
+    z-index        : 9900;
+    pointer-events : none;
+}
+
+#draw-rect
+{
+    position       : fixed;
+    z-index        : 9900;
+    pointer-events : none;
+}
+
+#draw-text
+{
+    position       : fixed;
+    z-index        : 9900;
+    pointer-events : none;
+}
+
+#stage-area
+{
+    display     : grid;
+    place-items : center;
+
+    img,
+    canvas
+    {
+        position : relative;
+        left     : 0;
+        top      : 0;
+    }
+}
+
+#stage
+{
+    pointer-events: none;
+}
+
+#scene-name-menu
+{
+    position         : fixed;
+    min-width        : 200px;
+    min-height       : 40px;
+    border-radius    : 10px;
+    background-color : #363636;
+    color            : whitesmoke;
+    border           : 1px solid #72777D;
+}
+
+#tab-name-menu
+{
+    position         : fixed;
+    min-width        : 200px;
+    min-height       : 40px;
+    border-radius    : 10px;
+    background-color : #363636;
+    color            : whitesmoke;
+    border           : 1px solid #72777D;
+    z-index          : 9900;
+    box-shadow       : 0 0 5px rgba(245, 245, 245, 0.25);
+}
+
+#screen-order,
+#screen-align
+{
+    display     : flex;
+    align-items : center;
+
+    i
+    {
+        width               : 10px;
+        height              : 10px;
+        background-image    : url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24"><path fill="darkgray" d="M5 3l3.057-3 11.943 12-11.943 12-3.057-3 9-9z"/></svg>');
+        background-repeat   : no-repeat;
+        background-position : center center;
+        margin-left         : auto;
+    }
+}
+
+#player-preview
+{
+    position         : fixed;
+    top              : 0;
+    left             : 0;
+    width            : 100%;
+    height           : 100%;
+    background-color : #1f1f1f;
+    display          : flex;
+    justify-content  : center;
+    align-items      : center;
+}
+
+#preview-stop
+{
+    position            : fixed;
+    top                 : 0;
+    left                : 0;
+    width               : 20px;
+    height              : 20px;
+    background-image    : url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill="whitesmoke" d="M24 20.188l-8.315-8.209 8.2-8.282-3.697-3.697-8.212 8.318-8.31-8.203-3.666 3.666 8.321 8.24-8.206 8.313 3.666 3.666 8.237-8.318 8.285 8.203z"/></svg>');
+    background-repeat   : no-repeat;
+    background-position : 0;
+
+    &:hover
+    {
+        cursor : pointer;
+    }
+}
+
+#preview-display
+{
+    display         : flex;
+    justify-content : center;
+    align-items     : center;
+}
+
+#ruler-top
+{
+    position         : absolute;
+    top              : 0;
+    left             : 0;
+    display          : flex;
+    align-items      : end;
+    height           : 19px;
+    background-color : #3c3c3c;
+    z-index          : 9990;
+
+    .vertical-main
+    {
+        display        : flex;
+        flex-direction : column;
+        height         : 19px;
+        pointer-events : none;
+    }
+    
+    .vertical-header
+    {
+        display      : flex;
+        align-items  : center;
+        height       : 14px;
+        font-size    : 10px;
+        color        : darkgray;
+        padding-left : 2px;
+        border-right : 1px darkgray solid;
+    }
+    
+    .vertical-meter
+    {
+        display     : flex;
+        align-items : flex-end;
+        height      : 5px;
+    }
+    
+    .vertical-line-pointer
+    {
+        width        : var(--ruler-size);
+        height       : 5px;
+        border-right : 1px darkgray solid;
+    }
+    
+    .vertical-line
+    {
+        width        : var(--ruler-size);
+        height       : 3px;
+        border-right : 1px darkgray solid;
+    }
+}
+
+#ruler-left
+{
+    position         : absolute;
+    top              : 0;
+    left             : 0;
+    display          : flex;
+    flex-direction   : column;
+    width            : 19px;
+    background-color : #3c3c3c;
+    z-index          : 9990;
+
+    .vertical-main
+    {
+        display        : flex;
+        width          : 19px;
+        pointer-events : none;
+    }
+    
+    .vertical-header
+    {
+        display          : flex;
+        align-items      : center;
+        width            : 14px;
+        font-size        : 10px;
+        color            : darkgray;
+        writing-mode     : vertical-rl;
+        text-orientation : upright;
+        border-bottom    : 1px darkgray solid;
+    }
+    
+    .vertical-meter
+    {
+        display        : flex;
+        flex-direction : column;
+        width          : 5px;
+    }
+    
+    .vertical-line-pointer
+    {
+        width         : 5px;
+        height        : var(--ruler-size);
+        border-bottom : 1px darkgray solid;
+    }
+    
+    .vertical-line
+    {
+        width         : 3px;
+        height        : var(--ruler-size);
+        margin        : 0 0 0 auto;
+        border-bottom : 1px darkgray solid;
+    }
+}

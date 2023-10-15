@@ -1,0 +1,98 @@
+#user-setting
+{
+    display          : flex;
+    flex-direction   : column;
+    justify-content  : center;
+    position         : fixed;
+    min-width        : 250px;
+    border-radius    : 10px;
+    background-color : #363636;
+    color            : whitesmoke;
+    border           : 1px solid #72777D;
+    box-shadow       : 0 0 5px rgba(245, 245, 245, 0.25);
+    z-index          : 9999;
+
+    .item
+    {
+        width           : 29px;
+        height          : 29px;
+        margin          : 3px;
+        display         : flex;
+        justify-content : center;
+        align-items     : center;
+        border          : 1px solid transparent;
+
+        &:hover
+        {
+            filter           : brightness(200%);
+            border-radius    : 5px;
+            background-color : #333333;
+            cursor           : pointer;
+            border           : 1px solid #666666;
+        }   
+    }
+
+    select
+    {
+        min-width        : 215px;
+        height           : 27px;
+        border           : 1px solid darkgray;
+        border-radius    : 5px;
+        background-color : #2c2c2c;
+        color            : #f5f5f5;
+        font-size        : 12px;
+        margin-bottom    : 10px;
+        padding-left     : 2px;
+
+        &:hover
+        {
+            border : 1px solid #f5f5f5;
+        }
+    }
+
+    .user-setting-list
+    {
+        display        : flex;
+        flex-direction : column;
+        margin         : 15px;
+
+        p 
+        {
+            border-bottom : 1px solid #1c1c1c;
+            margin : 0 0 10px 0;
+        };
+    }
+
+    .user-setting-title
+    {
+        min-width      : 170px;
+        display        : flex;
+        font-size      : 15px;
+        font-weight    : bold;
+        margin         : 0 0 6px 0;
+
+        i 
+        {
+            width               : 18px;
+            height              : 18px;
+            background-image    : url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24"><path fill="darkgray" d="M5 3l3.057-3 11.943 12-11.943 12-3.057-3 9-9z"/></svg>');
+            background-repeat   : no-repeat;
+            background-position : center center;
+            margin-right        : 4px;
+        }
+    }
+
+    .user-setting-container-row
+    {
+        display : flex;
+        margin  : 5px;
+    }
+
+    .user-setting-container-column
+    {
+        display          : flex;
+        flex-direction   : column;
+        justify-content  : center;
+        margin           : 5px;
+    }
+}

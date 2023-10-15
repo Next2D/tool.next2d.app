@@ -1,3 +1,2 @@
 **/node_modules/*
-src/javascript/worker/*
-src/javascript/parser/SVGToShape.js
+src/js/**/*.test.ts

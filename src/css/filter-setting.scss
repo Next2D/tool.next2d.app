@@ -1,0 +1,335 @@
+#filter-setting
+{
+    .filter-setting-container
+    {
+        display     : flex;
+        align-items : center;
+        margin      : 12px;
+    }
+    
+    .filter-none
+    {
+        color       : darkgray;
+        margin-left : 16px;
+    }
+}
+
+#filter-setting-title
+{
+    display     : flex;
+    font-size   : 15px;
+    font-weight : bold;
+    margin      : 12px;
+    color       : #a9a9a9;
+
+    i
+    {
+        width             : 18px;
+        height            : 18px;
+        background-image  : url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24"><path fill="darkgray" d="M5 3l3.057-3 11.943 12-11.943 12-3.057-3 9-9z"/></svg>');
+        background-repeat : no-repeat;
+        margin-right      : 2px;
+    }
+
+    .disable
+    {
+        transform           : rotate(0);
+        transition          : 0.1s ease-out;
+        background-position : 1px center;
+    }
+    
+    .active
+    {
+        transform           : rotate(90deg);
+        transition          : 0.1s ease-out;
+        background-position : 4px 5px;
+    }
+    
+    #filter-setting-title:hover
+    {
+        filter : brightness(200%);
+        cursor : pointer;
+    }
+}
+
+#filter-select
+{
+    width            : 290px;
+    height           : 30px;
+    border           : 1px solid darkgray;
+    border-radius    : 5px;
+    background-color : #2c2c2c;
+    color            : #f5f5f5;
+    padding-left     : 6px;
+    padding-right    : 6px;
+
+    &:focus
+    {
+        border : 1px solid #f5f5f5;
+    }
+}
+
+#filter-setting-list
+{
+    display        : flex;
+    flex-direction : column;
+
+    .filter-border
+    {
+        width            : 315px;
+        border           : 1px solid darkgray;
+        border-radius    : 5px;
+        color            : #f5f5f5;
+        margin           : 12px 12px 0 12px;
+    }
+    
+    .filter-title
+    {
+        display     : flex;
+        font-size   : 15px;
+        font-weight : bold;
+        margin      : 6px 6px 6px 2px;
+        color       : #a9a9a9;
+
+        .disable
+        {
+            transform           : rotate(0);
+            transition          : 0.1s ease-out;
+            background-position : 5px 5px;
+        }
+        
+        .active
+        {
+            transform           : rotate(90deg);
+            transition          : 0.1s ease-out;
+            background-position : 4px 1px;
+        }
+        
+        span
+        {
+            width : 270px;
+
+            &:hover
+            {
+                filter : brightness(200%);
+                cursor : pointer;
+            }
+        }
+    }
+
+    .arrow
+    {
+        width               : 18px;
+        height              : 18px;
+        background-image    : url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24"><path fill="darkgray" d="M5 3l3.057-3 11.943 12-11.943 12-3.057-3 9-9z"/></svg>');
+        background-repeat   : no-repeat;
+        background-position : 5px 5px;
+        margin-right        : 5px;
+    }
+    
+    .filter-active
+    {
+        width               : 30px;
+        height              : 20px;
+        background-image    : url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24"><path fill="darkgray" d="M12.015 7c4.751 0 8.063 3.012 9.504 4.636-1.401 1.837-4.713 5.364-9.504 5.364-4.42 0-7.93-3.536-9.478-5.407 1.493-1.647 4.817-4.593 9.478-4.593zm0-2c-7.569 0-12.015 6.551-12.015 6.551s4.835 7.449 12.015 7.449c7.733 0 11.985-7.449 11.985-7.449s-4.291-6.551-11.985-6.551zm-.015 3c-2.209 0-4 1.792-4 4 0 2.209 1.791 4 4 4s4-1.791 4-4c0-2.208-1.791-4-4-4z"/></svg>');
+        background-repeat   : no-repeat;
+        background-position : 4px 4px;
+        margin-right        : 2px;
+
+        &:hover
+        {
+            filter : brightness(200%);
+            cursor : pointer;
+        }
+    }
+
+    .filter-disable
+    {
+        width               : 30px;
+        height              : 20px;
+        background-image    : url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24"><path fill="darkgray" d="M19.604 2.562l-3.346 3.137c-1.27-.428-2.686-.699-4.243-.699-7.569 0-12.015 6.551-12.015 6.551s1.928 2.951 5.146 5.138l-2.911 2.909 1.414 1.414 17.37-17.035-1.415-1.415zm-6.016 5.779c-3.288-1.453-6.681 1.908-5.265 5.206l-1.726 1.707c-1.814-1.16-3.225-2.65-4.06-3.66 1.493-1.648 4.817-4.594 9.478-4.594.927 0 1.796.119 2.61.315l-1.037 1.026zm-2.883 7.431l5.09-4.993c1.017 3.111-2.003 6.067-5.09 4.993zm13.295-4.221s-4.252 7.449-11.985 7.449c-1.379 0-2.662-.291-3.851-.737l1.614-1.583c.715.193 1.458.32 2.237.32 4.791 0 8.104-3.527 9.504-5.364-.729-.822-1.956-1.99-3.587-2.952l1.489-1.46c2.982 1.9 4.579 4.327 4.579 4.327z"/></svg>');
+        background-repeat   : no-repeat;
+        background-position : 4px 4px;
+        margin-right        : 2px;
+
+        &:hover
+        {
+            filter : brightness(200%);
+            cursor : pointer;
+        }
+    }
+    
+    .trash
+    {
+        width               : 30px;
+        height              : 20px;
+        background-image    : url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24"><path fill="darkgray" d="M3 6v18h18v-18h-18zm5 14c0 .552-.448 1-1 1s-1-.448-1-1v-10c0-.552.448-1 1-1s1 .448 1 1v10zm5 0c0 .552-.448 1-1 1s-1-.448-1-1v-10c0-.552.448-1 1-1s1 .448 1 1v10zm5 0c0 .552-.448 1-1 1s-1-.448-1-1v-10c0-.552.448-1 1-1s1 .448 1 1v10zm4-18v2h-20v-2h5.711c.9 0 1.631-1.099 1.631-2h5.315c0 .901.73 2 1.631 2h5.712z"/></svg>');
+        background-repeat   : no-repeat;
+        background-position : 4px 4px;
+        margin-right        : 2px;
+
+        &:hover
+        {
+            filter : brightness(200%);
+            cursor : pointer;
+        }
+    }
+
+    .filter-container
+    {
+        display     : flex;
+        align-items : center;
+        margin      : 12px;
+
+        input[type="checkbox"]
+        {
+            border           : 1px solid darkgray;
+            outline          : none;
+            background-color : transparent;
+            margin           : 2px 3px 3px 3px;
+            cursor           : pointer;
+        }
+        
+        label
+        {
+            cursor : pointer;
+        }
+        
+        input[type="text"]
+        {
+            border           : none;
+            border-bottom    : 1px solid darkgray;
+            outline          : none;
+            background-color : transparent;
+            color            : #f5f5f5;
+            text-align       : center;
+            width            : 40px;
+            margin           : 3px;
+            padding          : 0;
+
+            &:focus
+            {
+                border-bottom : 1px solid #f5f5f5;
+            }
+        }
+
+        input[type="color"]
+        {
+            border           : none;
+            outline          : none;
+            background-color : transparent;
+            color            : #f5f5f5;
+            text-align       : center;
+            width            : 40px;
+            margin           : 3px;
+            padding          : 0;
+        }
+        
+        select
+        {
+            width            : 80px;
+            height           : 30px;
+            border           : 1px solid darkgray;
+            border-radius    : 5px;
+            background-color : #2c2c2c;
+            color            : #f5f5f5;
+            padding-left     : 6px;
+            padding-right    : 6px;
+            margin-left      : 10px;
+            margin-right     : 10px;
+
+            &:focus
+            {
+                border : 1px solid #f5f5f5;
+            }
+        }
+    }
+    
+    .filter-text
+    {
+        width       : 50px;
+        font-size   : 10px;
+        color       : darkgray;
+        text-align  : center;
+    }
+    
+    .filter-text-long
+    {
+        font-size    : 13px;
+        color        : #a9a9a9;
+        padding-left : 6px;
+
+        &:hover
+        {
+            filter : brightness(200%);
+        }
+    }
+
+    .filter-view-area
+    {
+        display : flex;
+    }
+    
+    .filter-view-area-left
+    {
+        width           : 20px;
+        height          : 50px;
+        display         : flex;
+        justify-content : center;
+        margin-top      : 18px;
+    }
+    
+    .filter-lock
+    {
+        width       : 18px;
+        text-align  : right;
+        color       : darkgray;
+
+        &:hover
+        {
+            filter : brightness(200%);
+            cursor : pointer;
+        }
+
+        .active
+        {
+            width               : 18px;
+            height              : 18px;
+            background-image    : url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24"><path fill="gainsboro" d="M18 10v-4c0-3.313-2.687-6-6-6s-6 2.687-6 6v4h-3v14h18v-14h-3zm-10-4c0-2.206 1.794-4 4-4 2.205 0 4 1.794 4 4v4h-8v-4zm3.408 14l-2.842-2.756 1.172-1.173 1.67 1.583 3.564-3.654 1.174 1.173-4.738 4.827z"/></svg>');
+            background-repeat   : no-repeat;
+            background-position : 7px 3px;
+        }
+        
+        .disable
+        {
+            width               : 18px;
+            height              : 18px;
+            background-image    : url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24"><path fill="darkgray" d="M12 10v-4c0-3.313-2.687-6-6-6s-6 2.687-6 6v3h2v-3c0-2.206 1.794-4 4-4s4 1.794 4 4v4h-4v14h18v-14h-12z"/></svg>');
+            background-repeat   : no-repeat;
+            background-position : 6px 3px;
+        }
+    }
+}
+
+#filter-add
+{
+    width               : 25px;
+    height              : 25px;
+    background-image    : url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24"><path fill="darkgray" d="M24 10h-10v-10h-4v10h-10v4h10v10h4v-10h10z"/></svg>');
+    background-repeat   : no-repeat;
+    background-position : 5px 5px;
+    margin-left         : 5px;
+
+    &:active
+    {
+        filter           : none;
+        background-color : #2c2c2c;
+    }
+
+    &:hover
+    {
+        filter           : brightness(200%);
+        border-radius    : 5px;
+        background-color : #333333;
+    }
+}

@@ -1,0 +1,56 @@
+#timeline-header-menu
+{
+    display          : flex;
+    flex-direction   : column;
+    justify-content  : center;
+    position         : fixed;
+    min-width        : 250px;
+    border-radius    : 10px;
+    background-color : #363636;
+    color            : whitesmoke;
+    border           : 1px solid #72777D;
+    z-index          : 9999;
+    box-shadow       : 0 0 5px rgba(245, 245, 245, 0.25);
+
+    .timeline-header-menu-list
+    {
+        display        : flex;
+        flex-direction : column;
+        margin         : 12px;
+
+        p
+        {
+            border-bottom : 1px solid #1c1c1c;
+            margin        : 5px 0 5px 0;
+        }
+
+        div
+        {
+            display       : flex;
+            align-items   : center;
+            min-width     : 165px;
+            height        : 20px;
+            border-radius : 5px;
+            padding       : 5px;
+
+            &:hover
+            {
+                background-color : #1c1c1c;
+                cursor           : pointer;
+            }
+        }
+    }
+}
+
+#context-menu-script-add-one
+{
+    i
+    {
+        width               : 18px;
+        height              : 18px;
+        background-image    : url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24"><path fill="darkgray" d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm-1 10.199l-3.64 1.801 3.64 1.796v2.204l-6-2.935v-2.131l6-2.934v2.199zm8 2.866l-6 2.935v-2.204l3.64-1.796-3.64-1.801v-2.199l6 2.935v2.13z"/></svg>');
+        background-repeat   : no-repeat;
+        background-position : center center;
+        margin-right        : 6px;
+    }
+}

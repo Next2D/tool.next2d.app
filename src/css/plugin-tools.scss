@@ -1,0 +1,19 @@
+#plugin-tools
+{
+    padding        : 0;
+    margin         : 0;
+    display        : flex;
+    flex-direction : column;
+    align-items    : center;
+
+    div
+    {
+        &:hover
+        {
+            filter           : brightness(200%);
+            border-radius    : 5px;
+            background-color : #333333;
+            cursor           : pointer;
+        }
+    }
+}

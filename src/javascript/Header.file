@@ -1,4 +1,0 @@
-if (!("nt" in window)) {
-    (function (global)
-    {
-        "use strict";

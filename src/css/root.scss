@@ -1,0 +1,47 @@
+:root
+{
+    --tool-cursor: auto;
+    --controller-width: 360px;
+    --timeline-height: 270px;
+    --timeline-frame-width: 13px;
+    --timeline-frame-height: 30px;
+    --marker-width: 13px;
+    --ad: 260px;
+    --ruler-size: 4px;
+    --timeline-scroll-bar-width: 50px;
+    --timeline-scroll-bar-height: 50px;
+    --plugin-modal-width: 200px;
+    --plugin-modal-height: 200px;
+    --tool-width: 45px;
+    --script-modal-width: 620px;
+    --script-modal-height: 450px;
+    --script-modal-bar-height: 25px;
+}
+
+html, 
+body
+{
+    width            : 100%;
+    height           : 100%;
+    overflow         : hidden;
+    transform        : translate3d(0, 0, 0);
+    background-color : #1a1a1a;
+    margin           : 0;
+    padding          : 0;
+    color            : whitesmoke;
+    font-size        : 12px;
+    user-select      : none;
+    cursor           : var(--tool-cursor);
+    font-family      :
+        "Helvetica Neue",
+        Arial,
+        "Hiragino Kaku Gothic ProN",
+        "Hiragino Sans",
+        Meiryo,
+        sans-serif;
+}
+
+.language
+{
+    pointer-events : none;
+}

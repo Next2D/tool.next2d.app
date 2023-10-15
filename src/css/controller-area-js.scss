@@ -1,0 +1,67 @@
+#controller-area-js
+{
+    overflow : hidden;
+
+    .script-title
+    {
+        display     : flex;
+        font-size   : 12px;
+        margin      : 5px;
+        color       : #a9a9a9;
+    }
+}
+
+#javascript-internal-list-box
+{
+    border         : 1px solid darkgray;
+    border-radius  : 3px;
+    height         : calc(100vh - 21px - var(--ad) - 12px);
+    overflow-x     : hidden;
+    overflow-y     : auto;
+    display        : flex;
+    flex-direction : column;
+
+    .internal-parent
+    {
+        display     : flex;
+        align-items : center;
+        margin      : 6px;
+        
+        i
+        {
+            width               : 18px;
+            height              : 18px;
+            background-image    : url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24"><path fill="gainsboro" d="M18.546 3h-13.069l-5.477 8.986v9.014h24v-9.014l-5.454-8.986zm-11.946 2h10.82l4.249 7h-19.335l4.266-7zm-4.6 14v-5h20v5h-20zm3-8l.607-1h12.787l.606 1h-14zm12.787-2h-11.573l.607-1h10.359l.607 1zm-1.214-2h-9.145l.607-1h7.931l.607 1z"/></svg>');
+            background-repeat   : no-repeat;
+            background-position : center center;
+            margin-right        : 6px;
+        }
+
+        &:hover
+        {
+            cursor : pointer;
+        }
+    }
+    
+    .internal-child
+    {
+        display     : flex;
+        align-items : center;
+        margin      : 6px 6px 6px 30px;
+
+        i
+        {
+            width               : 18px;
+            height              : 18px;
+            background-image    : url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"><path fill="darkgray" d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm-1 10.199l-3.64 1.801 3.64 1.796v2.204l-6-2.935v-2.131l6-2.934v2.199zm8 2.866l-6 2.935v-2.204l3.64-1.796-3.64-1.801v-2.199l6 2.935v2.13z"/></svg>');
+            background-repeat   : no-repeat;
+            background-position : center center;
+            margin-right        : 6px;
+        }
+
+        &:hover
+        {
+            cursor : pointer;
+        }
+    }
+}

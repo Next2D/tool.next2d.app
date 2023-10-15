@@ -1,1 +1,0 @@
-/Users/l_0018/PhpstormProjects/Next2D/player/next2d.js

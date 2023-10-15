@@ -1,0 +1,26 @@
+#timeline-preview-modal
+{
+    display          : grid;
+    place-items      : center;
+    position         : fixed;
+    width            : 124px;
+    height           : 124px;
+    border-radius    : 4px;
+    background-color : #4c4c4c;
+    padding          : 2px;
+    border           : 2px solid whitesmoke;
+    white-space      : nowrap;
+    z-index          : 9999;
+    box-shadow       : 0 0 5px rgba(245, 245, 245, 0.25);
+    pointer-events   : none;
+
+    canvas
+    {
+        border          : none;
+        pointer-events  : none;
+        padding         : 0;
+        margin          : 0 auto;
+        vertical-align  : top;
+        image-rendering : -webkit-optimize-contrast;
+    }
+}

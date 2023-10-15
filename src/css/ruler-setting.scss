@@ -1,0 +1,76 @@
+#ruler-setting
+{
+    border-bottom : 1px solid #1c1c1c;
+    margin-bottom : 5px;
+
+    .ruler-setting-container
+    {
+        display     : flex;
+        align-items : center;
+        margin      : 12px;
+    }
+
+    .ruler-setting-text
+    {
+        width       : 25px;
+        font-size   : 10px;
+        color       : darkgray;
+        text-align  : center;
+    }
+
+    input[type="text"]
+    {
+        border           : none;
+        border-bottom    : 1px solid darkgray;
+        outline          : none;
+        background-color : transparent;
+        color            : #f5f5f5;
+        text-align       : center;
+        width            : 50px;
+        margin           : 3px;
+        padding          : 0;
+
+        &:focus
+        {
+            border-bottom : 1px solid #f5f5f5;
+        }
+    }
+}
+
+#ruler-setting-title
+{
+    display     : flex;
+    font-size   : 15px;
+    font-weight : bold;
+    margin      : 12px;
+    color       : #a9a9a9;
+
+    &:hover
+    {
+        filter : brightness(200%);
+        cursor : pointer;
+    }
+
+    .active
+    {
+        transform           : rotate(90deg);
+        transition          : 0.1s ease-out;
+        background-position : 4px 5px;
+    }
+    
+    .disable
+    {
+        transform           : rotate(0);
+        transition          : 0.1s ease-out;
+        background-position : 1px center;
+    }
+
+    i
+    {
+        width             : 18px;
+        height            : 18px;
+        background-image  : url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24"><path fill="darkgray" d="M5 3l3.057-3 11.943 12-11.943 12-3.057-3 9-9z"/></svg>');
+        background-repeat : no-repeat;
+        margin-right      : 2px;
+    }
+}

@@ -1,0 +1,13 @@
+#advertisement
+{
+    width            : var(--controller-width);
+    height           : var(--ad);
+    background-color : #1f1f1f;
+    display          : block;
+
+    img 
+    {
+        padding : 0;
+        margin  : 0; 
+    }
+}

@@ -1,0 +1,16 @@
+#detail-modal
+{
+    display          : grid;
+    place-items      : center;
+    position         : fixed;
+    border-radius    : 4px;
+    background-color : #4c4c4c;
+    color            : whitesmoke;
+    padding          : 4px;
+    border           : 1px solid whitesmoke;
+    font-size        : 10px;
+    white-space      : nowrap;
+    z-index          : 9999;
+    box-shadow       : 0 0 5px rgba(245, 245, 245, 0.25);
+    pointer-events   : none;
+}

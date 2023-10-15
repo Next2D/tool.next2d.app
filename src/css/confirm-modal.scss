@@ -1,0 +1,152 @@
+#confirm-modal
+{
+    display          : flex;
+    justify-content  : center;
+    align-items      : center;
+    position         : fixed;
+    top              : 50%;
+    left             : 50%;
+    width            : 720px;
+    height           : 410px;
+    transform        : translate(-50%,-50%);
+    background-color : #363636;
+    color            : whitesmoke;
+    border           : 1px solid #72777D;
+    z-index          : 9999;
+    overflow         : hidden;
+    border-radius    : 4px;
+    box-shadow       : 0 0 5px rgba(245, 245, 245, 0.25);
+
+    .confirm-preview-area
+    {
+        width          : 400px;
+        height         : 410px;
+        display        : flex;
+        flex-direction : column;
+    }
+
+    .confirm-setting
+    {
+        width          : 320px;
+        height         : 410px;
+        display        : flex;
+        align-items    : center;
+        flex-direction : column;
+    }
+
+    .confirm-preview-container
+    {
+        display        : flex;
+        flex-direction : column;
+        height         : 205px;
+    }
+
+    .confirm-setting-container
+    {
+        display         : flex;
+        justify-content : center;
+        align-items     : center;
+        margin-bottom   : 8px;
+    }
+
+    .confirm-setting-text
+    {
+        display         : flex;
+        align-items     : center;
+        justify-content : center;
+        flex-direction  : column;
+        width           : 280px;
+        height          : 200px;
+        margin-bottom   : 8px;
+    }
+
+    .confirm-button
+    {
+        display         : flex;
+        align-items     : center;
+        justify-content : center;
+        min-width       : 100px;
+        height          : 25px;
+        padding         : 5px;
+        margin          : 8px;
+        border-radius   : 5px;
+        border          : 1px solid #72777D;
+
+        &:hover
+        {
+            background-color : #1c1c1c;
+            cursor           : pointer;
+        }
+    }
+
+    .confirm-preview-text
+    {
+        display     : flex;
+        font-size   : 12px;
+        font-weight : bold;
+        margin      : 10px;
+        color       : #a9a9a9;
+    }
+}
+
+#confirm-file-name
+{
+    border           : none;
+    border-bottom    : 1px solid darkgray;
+    outline          : none;
+    background-color : transparent;
+    color            : #f5f5f5;
+    width            : 230px;
+    padding          : 6px;
+    margin-bottom    : 8px;
+}
+
+#confirm-before-preview
+{
+    display         : flex;
+    align-items     : center;
+    justify-content : center;
+    position        : relative;
+    width           : 400px;
+    height          : 150px;
+
+    img, 
+    video
+    {
+        position   : absolute;
+        top        : 0;
+        bottom     : 0;
+        left       : 0;
+        right      : 0;
+        height     : auto;
+        width      : auto;
+        max-width  : 100%;
+        max-height : 100%;
+        margin     : auto;
+    }
+}
+
+#confirm-after-preview
+{
+    display         : flex;
+    align-items     : center;
+    justify-content : center;
+    position        : relative;
+    width           : 400px;
+    height          : 150px;
+
+    img, 
+    video
+    {
+        position   : absolute;
+        top        : 0;
+        bottom     : 0;
+        left       : 0;
+        right      : 0;
+        height     : auto;
+        width      : auto;
+        max-width  : 100%;
+        max-height : 100%;
+        margin     : auto;
+    }
+}

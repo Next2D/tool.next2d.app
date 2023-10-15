@@ -1,11 +1,14 @@
 {
   "env": {
-    "es6": true
+    "browser": true,
+    "es2021": true
   },
   "parserOptions": {
-		"ecmaVersion": 13
-	},
-  "extends": "eslint:recommended",
+    "sourceType": "module",
+    "ecmaVersion": "latest"
+  },
+  "extends": "plugin:@typescript-eslint/eslint-recommended",
+  "parser": "@typescript-eslint/parser",
   "rules": {
     "no-var": "error",
     "semi": ["error", "always", { "omitLastInOneLineBlock": true }],
@@ -77,7 +80,7 @@
     "no-dupe-args": "error",
     "no-extra-boolean-cast": "error",
     "no-obj-calls": "error",
-    "no-console": "warn",
+    "no-console": "off",
     "no-extra-semi": "warn"
   }
 }

@@ -1,0 +1,15 @@
+#shortcut-setting
+{
+    display       : flex;
+    align-items   : center;
+    min-width     : 200px;
+    height        : 20px;
+    border-radius : 5px;
+    padding       : 5px;
+
+    &:hover
+    {
+        background-color : #1c1c1c;
+        cursor           : pointer;
+    }
+}
