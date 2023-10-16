@@ -1,4 +1,4 @@
-import { $TOOL_RECTANGLE_NAME } from "../../../const/ToolConfig";
+import { $TOOL_RECTANGLE_NAME } from "../../../config/ToolConfig";
 import { DrawTool } from "./DrawTool";
 
 /**

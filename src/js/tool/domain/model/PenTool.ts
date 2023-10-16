@@ -1,4 +1,4 @@
-import { $TOOL_PEN_NAME } from "../../../const/ToolConfig";
+import { $TOOL_PEN_NAME } from "../../../config/ToolConfig";
 import { BaseTool } from "./BaseTool";
 
 /**

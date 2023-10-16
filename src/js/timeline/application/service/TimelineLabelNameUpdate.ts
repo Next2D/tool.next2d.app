@@ -1,3 +1,5 @@
+import { $TIMELINE_LABEL_NAME } from "../../../config/TimelineConfig";
+
 /**
  * @description タイムラインのラベルの値を更新
  *              Update timeline label values
@@ -10,7 +12,7 @@ export const execute = (name: string = ""): void =>
 {
     // 表示Elementを初期化
     const element: HTMLInputElement | null = document
-        .getElementById("label-name") as HTMLInputElement;
+        .getElementById($TIMELINE_LABEL_NAME) as HTMLInputElement;
 
     if (!element) {
         return ;

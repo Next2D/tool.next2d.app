@@ -1,4 +1,4 @@
-import { $TOOL_ARROW_NAME } from "../../../const/ToolConfig";
+import { $TOOL_ARROW_NAME } from "../../../config/ToolConfig";
 import { $setActiveTool } from "../../application/Tool";
 import { BaseTool } from "./BaseTool";
 import { execute as arrowToolInitializeUseCase } from "../../application/usecase/ArrowToolInitializeUseCase";

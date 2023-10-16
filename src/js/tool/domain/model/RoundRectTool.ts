@@ -1,4 +1,4 @@
-import { $TOOL_ROUND_RECT_NAME } from "../../../const/ToolConfig";
+import { $TOOL_ROUND_RECT_NAME } from "../../../config/ToolConfig";
 import { DrawTool } from "./DrawTool";
 
 /**

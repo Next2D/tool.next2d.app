@@ -1,4 +1,4 @@
-import { $USER_MENU_NAME } from "../../../const/MenuConfig";
+import { $USER_MENU_NAME } from "../../../config/MenuConfig";
 import { MenuImpl } from "../../../interface/MenuImpl";
 import { $getMenu } from "../../../menu/application/Menu";
 import { UserSettingMenu } from "../../../menu/domain/model/UserSettingMenu";

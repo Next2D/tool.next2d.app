@@ -20,7 +20,7 @@ import { UserSettingTool } from "../domain/model/UserSettingTool";
 import { execute as toolAreaMouseMoveEventService } from "./service/ToolAreaMouseMoveEventService";
 import { execute as toolAreaMouseOutEventService } from "../application/service/ToolAreaMouseOutEventService";
 import { execute as toolAreaMouseDownEventService } from "../application/service/ToolAreaMouseDownEventService";
-import { $TOOL_PREFIX } from "../../const/ToolConfig";
+import { $TOOL_PREFIX } from "../../config/ToolConfig";
 
 /**
  * @description 起動対象のToolクラスの配列

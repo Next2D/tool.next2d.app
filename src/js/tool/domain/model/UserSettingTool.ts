@@ -1,7 +1,7 @@
 import { EventType } from "../event/EventType";
 import { BaseTool } from "./BaseTool";
 import { execute as userSettingToolMouseDownEventUseCase } from "../../application/usecase/UserSettingToolMouseDownEventUseCase";
-import { $TOOL_USER_SETTING_ID, $TOOL_USER_SETTING_NAME } from "../../../const/ToolConfig";
+import { $TOOL_USER_SETTING_ID, $TOOL_USER_SETTING_NAME } from "../../../config/ToolConfig";
 
 /**
  * @description 設定ツールの管理クラス

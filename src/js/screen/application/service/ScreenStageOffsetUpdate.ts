@@ -1,3 +1,4 @@
+import { $SCREEN_STAGE_ID } from "../../../config/ScreenConfig";
 import {
     $setOffsetLeft,
     $setOffsetTop
@@ -14,7 +15,7 @@ import {
 export const execute = (): void =>
 {
     const element: HTMLElement | null =  document
-        .getElementById("stage");
+        .getElementById($SCREEN_STAGE_ID);
 
     if (!element) {
         return ;

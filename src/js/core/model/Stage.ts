@@ -1,12 +1,12 @@
 import { StageObjectImpl } from "../../interface/StageObjectImpl";
-import { execute as stageInitializeUseCase } from "../usecase/StageInitializeUsecase";
+import { execute as stageInitializeUseCase } from "../usecase/StageInitializeUseCase";
 import { $clamp } from "../../util/Global";
 import {
-    STAGE_DEFAULT_FPS,
-    STAGE_DEFAULT_HEIGHT,
-    STAGE_DEFAULT_WIDTH,
-    STAGE_DEFAULT_COLOR
-} from "../../const/StageConfig";
+    $STAGE_DEFAULT_FPS,
+    $STAGE_DEFAULT_HEIGHT,
+    $STAGE_DEFAULT_WIDTH,
+    $STAGE_DEFAULT_COLOR
+} from "../../config/StageSettingConfig";
 
 /**
  * @description スクリーンエリアのステージの管理クラス
@@ -31,35 +31,35 @@ export class Stage
     {
         /**
          * @type {number}
-         * @default STAGE_DEFAULT_WIDTH
+         * @default $STAGE_DEFAULT_WIDTH
          * @private
          */
-        this._$width = STAGE_DEFAULT_WIDTH;
+        this._$width = $STAGE_DEFAULT_WIDTH;
 
         /**
          * @type {number}
-         * @default STAGE_DEFAULT_HEIGHT
+         * @default $STAGE_DEFAULT_HEIGHT
          * @private
          */
-        this._$height = STAGE_DEFAULT_HEIGHT;
+        this._$height = $STAGE_DEFAULT_HEIGHT;
 
         /**
          * @type {number}
-         * @default STAGE_DEFAULT_FPS
+         * @default $STAGE_DEFAULT_FPS
          * @private
          */
-        this._$fps = STAGE_DEFAULT_FPS;
+        this._$fps = $STAGE_DEFAULT_FPS;
 
         /**
          * @type {number}
-         * @default STAGE_DEFAULT_COLOR
+         * @default $STAGE_DEFAULT_COLOR
          * @private
          */
-        this._$bgColor = STAGE_DEFAULT_COLOR;
+        this._$bgColor = $STAGE_DEFAULT_COLOR;
 
         /**
          * @type {boolean}
-         * @default STAGE_DEFAULT_WIDTH
+         * @default false
          * @private
          */
         this._$lock = false;
@@ -70,7 +70,7 @@ export class Stage
      *              Stage display width
      *
      * @member {number}
-     * @default STAGE_DEFAULT_WIDTH
+     * @default $STAGE_DEFAULT_WIDTH
      * @public
      */
     get width (): number
@@ -87,7 +87,7 @@ export class Stage
      *              Stage display height
      *
      * @member {number}
-     * @default STAGE_DEFAULT_HEIGHT
+     * @default $STAGE_DEFAULT_HEIGHT
      * @public
      */
     get height (): number
@@ -104,7 +104,7 @@ export class Stage
      *              Set the stage drawing speed.
      *
      * @member {number}
-     * @default STAGE_DEFAULT_FPS
+     * @default $STAGE_DEFAULT_FPS
      * @public
      */
     get fps (): number
@@ -121,7 +121,7 @@ export class Stage
      *              Setting the background color of the stage
      *
      * @return {string}
-     * @default STAGE_DEFAULT_COLOR
+     * @default $STAGE_DEFAULT_COLOR
      * @public
      */
     get bgColor (): string

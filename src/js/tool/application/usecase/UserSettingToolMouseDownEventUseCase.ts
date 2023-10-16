@@ -1,4 +1,4 @@
-import { $USER_MENU_NAME } from "../../../const/MenuConfig";
+import { $USER_MENU_NAME } from "../../../config/MenuConfig";
 import { execute as menuAllHideService } from "../../../menu/application/service/MenuAllHideService";
 import { execute as userSettingToolMouseDownEventService } from "../service/UserSettingToolMouseDownEventService";
 

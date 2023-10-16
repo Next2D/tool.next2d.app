@@ -160,3 +160,11 @@ export const $TOOL_ZOOM_PLUS_NAME: string = "zoom-plus";
  */
 export const $TOOL_USER_SETTING_ID: string = `${$TOOL_PREFIX}-${$TOOL_USER_SETTING_NAME}`;
 
+/**
+ * @description スクリーンの拡大縮小値のElementのID
+ *              ID of the Element for the screen scaling value
+ *
+ * @type {string}
+ * @constant
+ */
+export const $SCREEN_SCALE_ID: string = "screen-scale";

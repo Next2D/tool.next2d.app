@@ -6,7 +6,7 @@ import {
     $getDefaultTool,
     $setActiveTool
 } from "../Tool";
-import { $TOOL_ARROW_NAME } from "../../../const/ToolConfig";
+import { $TOOL_ARROW_NAME } from "../../../config/ToolConfig";
 
 /**
  * @description ツールエリアを初回起動時の状態に戻す

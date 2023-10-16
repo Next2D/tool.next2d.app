@@ -1,4 +1,11 @@
 import { Stage } from "../../../core/model/Stage";
+import { 
+    $STAGE_BG_COLOR_ID,
+    $STAGE_FPS_ID,
+    $STAGE_HEIGHT_ID,
+    $STAGE_LOCK_ID,
+    $STAGE_WIDTH_ID
+} from "../../../config/StageSettingConfig";
 
 /**
  * @description ステージ設定の各値を更新
@@ -12,35 +19,35 @@ import { Stage } from "../../../core/model/Stage";
 export const execute = (stage: Stage): void =>
 {
     const stageWidth: HTMLInputElement | null = document
-        .getElementById("stage-width") as HTMLInputElement;
+        .getElementById($STAGE_WIDTH_ID) as HTMLInputElement;
 
     if (stageWidth) {
         stageWidth.value = `${stage.width}`;
     }
 
     const stageHeight: HTMLInputElement | null = document
-        .getElementById("stage-height") as HTMLInputElement;
+        .getElementById($STAGE_HEIGHT_ID) as HTMLInputElement;
 
     if (stageHeight) {
         stageHeight.value = `${stage.height}`;
     }
 
     const stageFps: HTMLInputElement | null = document
-        .getElementById("stage-fps") as HTMLInputElement;
+        .getElementById($STAGE_FPS_ID) as HTMLInputElement;
 
     if (stageFps) {
         stageFps.value = `${stage.fps}`;
     }
 
     const stageBgColor: HTMLInputElement | null = document
-        .getElementById("stage-bgColor") as HTMLInputElement;
+        .getElementById($STAGE_BG_COLOR_ID) as HTMLInputElement;
 
     if (stageBgColor) {
         stageBgColor.value = stage.bgColor;
     }
 
     const stageLock: HTMLElement | null = document
-        .getElementById("stage-lock");
+        .getElementById($STAGE_LOCK_ID);
 
     if (stageLock && stageLock.children.length) {
         stageLock

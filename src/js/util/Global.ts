@@ -1,4 +1,4 @@
-import { $PREFIX, $USER_SETTING_KEY } from "../const/Config";
+import { $USER_SETTING_KEY } from "../config/Config";
 import { UserSettingObjectImpl } from "../interface/UserSettingObjectImpl";
 
 /**

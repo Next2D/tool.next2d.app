@@ -1,4 +1,5 @@
 import type { Stage } from "../model/Stage";
+import { $SCREEN_STAGE_ID } from "../../config/ScreenConfig";
 
 /**
  * @description ステージElementの幅と高さと背景色をセット
@@ -12,7 +13,7 @@ import type { Stage } from "../model/Stage";
 export const execute = (stage: Stage): void =>
 {
     // canvas
-    const element: HTMLElement | null = document.getElementById("stage");
+    const element: HTMLElement | null = document.getElementById($SCREEN_STAGE_ID);
     if (!element) {
         return ;
     }

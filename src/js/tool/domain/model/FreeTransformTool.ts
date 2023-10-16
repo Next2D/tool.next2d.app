@@ -1,4 +1,4 @@
-import { $TOOL_FREE_TRANSFORM_NAME } from "../../../const/ToolConfig";
+import { $TOOL_FREE_TRANSFORM_NAME } from "../../../config/ToolConfig";
 import { BaseTool } from "./BaseTool";
 
 /**

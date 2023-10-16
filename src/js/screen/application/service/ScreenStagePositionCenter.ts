@@ -1,4 +1,5 @@
 import type { Stage } from "../../../core/model/Stage";
+import { $SCREEN_ID } from "../../../config/ScreenConfig";
 
 /**
  * @description ステージの背後のレイヤーのサイズを更新
@@ -11,7 +12,7 @@ import type { Stage } from "../../../core/model/Stage";
 export const execute = (stage: Stage): void =>
 {
     const element: HTMLElement | null = document
-        .getElementById("screen");
+        .getElementById($SCREEN_ID);
 
     if (!element) {
         return ;

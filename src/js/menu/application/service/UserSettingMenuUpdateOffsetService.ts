@@ -1,5 +1,5 @@
-import { $USER_MENU_NAME } from "../../../const/MenuConfig";
-import { $TOOL_USER_SETTING_ID } from "../../../const/ToolConfig";
+import { $USER_MENU_NAME } from "../../../config/MenuConfig";
+import { $TOOL_USER_SETTING_ID } from "../../../config/ToolConfig";
 import { $getMenu } from "../Menu";
 
 /**

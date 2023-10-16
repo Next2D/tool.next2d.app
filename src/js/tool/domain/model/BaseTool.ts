@@ -1,6 +1,6 @@
 import { ToolEvent } from "../event/ToolEvent";
 import { EventType } from "../event/EventType";
-import { $TOOL_PREFIX } from "../../../const/ToolConfig";
+import { $TOOL_PREFIX } from "../../../config/ToolConfig";
 import { execute as toolChangeActiveUseCase } from "../../application/usecase/ToolChangeActiveUseCase";
 import {
     $registerDefaultTool

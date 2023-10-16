@@ -1,3 +1,4 @@
+import { $SCREEN_STAGE_AREA_ID } from "../../../config/ScreenConfig";
 import type { Stage } from "../../../core/model/Stage";
 
 /**
@@ -11,7 +12,7 @@ import type { Stage } from "../../../core/model/Stage";
 export const execute = (stage: Stage): void =>
 {
     const element: HTMLElement | null =  document
-        .getElementById("stage-area");
+        .getElementById($SCREEN_STAGE_AREA_ID);
 
     if (!element) {
         return ;

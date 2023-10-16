@@ -1,3 +1,4 @@
+import { $SCREEN_SCALE_ID } from "../../../config/ToolConfig";
 import { $setZoom } from "../../../util/Global";
 
 /**
@@ -15,7 +16,7 @@ export const execute = (): void =>
 
     // 表示Elementを初期化
     const element: HTMLInputElement | null = document
-        .getElementById("screen-scale") as HTMLInputElement;
+        .getElementById($SCREEN_SCALE_ID) as HTMLInputElement;
 
     if (!element) {
         return ;
