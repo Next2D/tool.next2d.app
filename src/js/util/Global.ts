@@ -154,3 +154,18 @@ export const $setScreenOffsetTop = (value: number): void =>
 {
     $offsetTop = value;
 };
+
+/**
+ * @description ユニークな文字列を生成
+ *              Generate unique strings
+ *
+ * @return {string}
+ * @method
+ * @public
+ */
+export const $generateUniqId = (): string =>
+{
+    const sec = Date.now() * 1000 + Math.random() * 1000;
+    const id  = sec.toString(16).replace(/\./g, "").padEnd(14, "0");
+    return `${id}_${Math.trunc(Math.random() * 10000)}_${Math.trunc(Math.random() * 10000)}`;
+};

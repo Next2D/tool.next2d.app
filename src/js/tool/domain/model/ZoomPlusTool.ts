@@ -9,7 +9,7 @@ import { BaseTool } from "./BaseTool";
  * @public
  * @extends {BaseTool}
  */
-export class ZoomTool extends BaseTool
+export class ZoomPlusTool extends BaseTool
 {
     /**
      * @constructor

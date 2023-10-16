@@ -1,5 +1,6 @@
-import { UserSettingObjectImpl } from "../../../interface/UserSettingObjectImpl";
-import { execute as userSettingObjectGetService } from "../../../user/service/UserSettingObjectGetService";
+import { $USER_PUBLISH_LAYER_SETTING_ID } from "../../../config/UserSettingConfig";
+import { EventType } from "../../../tool/domain/event/EventType";
+
 /**
  * @description ユーザー設定メニューに配置された各Elementにイベント登録を行う
  *              Register events in each Element placed in the User Settings menu.
@@ -10,9 +11,14 @@ import { execute as userSettingObjectGetService } from "../../../user/service/Us
  */
 export const execute = (): void =>
 {
-    const object: UserSettingObjectImpl = userSettingObjectGetService();
+    const layerElement: HTMLElement | null = document
+        .getElementById($USER_PUBLISH_LAYER_SETTING_ID);
 
-    // ユーザー設定された項目を表示
-
-    // TODO
+    if (layerElement) {
+        layerElement
+            .addEventListener(EventType.CHANGE, (event: Event): void =>
+            {
+                event.stopPropagation();
+            });
+    }
 };
