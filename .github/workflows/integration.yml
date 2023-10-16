@@ -5,10 +5,12 @@ on:
     branches:
       - main
       - develop
+      - feature/typescript
   pull_request:
     branches:
       - main
       - develop
+      - feature/typescript
 
 jobs:
   macos-browser-test:
