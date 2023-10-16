@@ -4,8 +4,8 @@ import { execute as userSettingMenuLayerSettingChangeEventService } from "../ser
 import { execute as userSettingMenuLayerSettingOptionSelectedService } from "../service/UserSettingMenuLayerSettingOptionSelectedService";
 
 /**
- * @description ユーザー設定メニューの非表示レイヤーのイベント登録のユースケース
- *              Use case of event registration for hidden layers in the user settings menu
+ * @description 非表示レイヤーの初期起動ユースケース
+ *              Initial activation use case for hidden layers
  *
  * @return {void}
  * @method

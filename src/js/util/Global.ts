@@ -1,6 +1,3 @@
-import { $USER_SETTING_KEY } from "../config/Config";
-import { UserSettingObjectImpl } from "../interface/UserSettingObjectImpl";
-
 /**
  * @description 現在のカーソルタイプ
  *              Current cursor type

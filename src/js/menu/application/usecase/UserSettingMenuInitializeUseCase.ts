@@ -1,5 +1,6 @@
 import { execute as userSettingMenuUpdateOffsetService } from "../service/UserSettingMenuUpdateOffsetService";
-import { execute as userSettingMenuLayerSettingRegisterEventUseCase } from "./UserSettingMenuLayerSettingRegisterEventUseCase";
+import { execute as userSettingMenuLayerSettingInitializeUseCase } from "./UserSettingMenuLayerSettingInitializeUseCase";
+import { execute as userSettingMenuPublishTypeInitializeUseCase } from "./UserSettingMenuPublishTypeInitializeUseCase";
 
 /**
  * @description setTimerのIDを管理
@@ -33,8 +34,9 @@ export const execute = (): void =>
         }, 200);
     });
 
-    // 非表示レイヤーの設定のユースケースを実行
-    userSettingMenuLayerSettingRegisterEventUseCase();
+    // 非表示レイヤーのユースケースを実行
+    userSettingMenuLayerSettingInitializeUseCase();
 
-
+    // 書き出しフォーマットのユースケースを実行
+    userSettingMenuPublishTypeInitializeUseCase();
 };
