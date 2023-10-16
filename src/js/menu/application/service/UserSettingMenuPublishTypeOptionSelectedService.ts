@@ -1,4 +1,4 @@
-import { execute as userSettingObjectGetService } from "../../../user/service/UserSettingObjectGetService";
+import { execute as userSettingObjectGetService } from "../../../user/application/service/UserSettingObjectGetService";
 import type { UserSettingObjectImpl } from "../../../interface/UserSettingObjectImpl";
 
 /**

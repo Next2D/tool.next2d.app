@@ -11,8 +11,8 @@ import { BaseTool } from "./BaseTool";
  */
 export class ShapeTransformTool extends BaseTool
 {
-    private _$element: null;
-    private _$deletePointer: null;
+    // private _$element: null;
+    // private _$deletePointer: null;
 
     /**
      * @constructor
@@ -22,17 +22,17 @@ export class ShapeTransformTool extends BaseTool
     {
         super($TOOL_SHAPE_TRANSFORM_NAME);
 
-        /**
-         * @type {HTMLDivElement}
-         * @private
-         */
-        this._$element = null;
+        // /**
+        //  * @type {HTMLDivElement}
+        //  * @private
+        //  */
+        // this._$element = null;
 
-        /**
-         * @type {function}
-         * @default null
-         * @private
-         */
-        this._$deletePointer = null;
+        // /**
+        //  * @type {function}
+        //  * @default null
+        //  * @private
+        //  */
+        // this._$deletePointer = null;
     }
 }

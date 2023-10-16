@@ -60,10 +60,10 @@
       <div id="tools">
 
         <div id="tools-arrow" class="item" data-mode="tool" data-detail="{{選択ツール}}" data-shortcut-key="v" data-shortcut-text="V" data-area="screen"></div>
-        <div id="tools-arrow-transform" class="item" data-mode="tool" data-detail="{{自由変形ツール}}" data-shortcut-key="q" data-shortcut-text="Q" data-area="screen"></div>
+        <div id="tools-free-transform" class="item" data-mode="tool" data-detail="{{自由変形ツール}}" data-shortcut-key="q" data-shortcut-text="Q" data-area="screen"></div>
         <div class="tools-border"></div>
     
-        <div id="tools-transform" class="item" data-mode="tool" data-name="transform" data-detail="{{Shape変形ツール}}" data-shortcut-key="a" data-shortcut-text="A" data-area="screen"></div>
+        <div id="tools-shape-transform" class="item" data-mode="tool" data-name="transform" data-detail="{{Shape変形ツール}}" data-shortcut-key="a" data-shortcut-text="A" data-area="screen"></div>
         <div id="tools-pen" class="item" data-mode="tool" data-name="pen" data-detail="{{ペンツール}}" data-shortcut-key="p" data-shortcut-text="P" data-area="screen"></div>
         <div id="tools-bucket" class="item" data-mode="tool" data-name="bucket" data-detail="{{バケツツール}}" data-shortcut-key="k" data-shortcut-text="K" data-area="screen"></div>
         <div id="tools-rectangle" class="item" data-mode="tool" data-name="rectangle" data-detail="{{矩形ツール}}" data-shortcut-key="r" data-shortcut-text="R" data-area="screen"></div>
@@ -84,7 +84,7 @@
         <div id="tools-text" class="item" data-mode="tool" data-name="text" data-detail="{{テキストツール}}" data-shortcut-key="t" data-shortcut-text="T" data-area="screen"></div>
         <div class="tools-border"></div>
     
-        <div id="tools-zoom" class="item" data-mode="tool" data-detail="{{ズームツール}}" data-shortcut-key="z" data-shortcut-text="Z" data-area="screen"></div>
+        <div id="tools-zoom-plus" class="item" data-mode="tool" data-detail="{{ズームツール}}" data-shortcut-key="z" data-shortcut-text="Z" data-area="screen"></div>
         <div id="tools-zoom-minus" class="item" data-mode="tool" data-detail="{{ズームツール}}" data-shortcut-key="zShift" data-shortcut-text="Shift + Z" data-area="screen"></div>
         <input type="number" id="screen-scale" value="100" data-detail="{{画面の拡大・縮小}}" autocomplete="off" tabindex="-1">
         <div class="tools-border"></div>
@@ -822,39 +822,24 @@
               </div>
             
               <!-- nine-slice-setting -->
-              <div id="reference-setting">
-
-                <div id="reference-setting-title">
-                    <i class="active"></i>
-                    <span class="language" data-text="{{基準点}}">基準点</span>
-                </div>
+              <div id="nine-slice-setting">
+                <div id="nine-slice-setting-title"><i class="active"></i>9-slice</div>
             
-                <div id="reference-setting-view-area">
-                    <div class="reference-setting-container">
+                <div id="nine-slice-setting-view-area">
+                    <div class="nine-slice-setting-container">
+                        <div class="nine-slice-setting-text">X</div>
+                        <div><input type="text" id="nine-slice-setting-x" value="0" data-detail="{{選択対象のX座標}}" autocomplete="off" tabindex="-1"></div>
             
-                        <div id="reference-setting-box">
-                            <div class="reference-setting-box-list">
-                                <div class="reference-setting-box-child" data-position="top-left" data-detail="{{左上}}"></div>
-                                <div class="reference-setting-box-child" data-position="top-center" data-detail="{{中央上}}"></div>
-                                <div class="reference-setting-box-child" data-position="top-right" data-detail="{{右上}}"></div>
-                            </div>
-                            <div class="reference-setting-box-list">
-                                <div class="reference-setting-box-child" data-position="center-left" data-detail="{{中央左}}"></div>
-                                <div class="reference-setting-box-child" data-position="center-top" data-detail="{{中央}}"></div>
-                                <div class="reference-setting-box-child" data-position="center-right" data-detail="{{中央右}}"></div>
-                            </div>
-                            <div class="reference-setting-box-list">
-                                <div class="reference-setting-box-child" data-position="bottom-left" data-detail="{{左下}}"></div>
-                                <div class="reference-setting-box-child" data-position="bottom-center" data-detail="{{中央下}}"></div>
-                                <div class="reference-setting-box-child" data-position="bottom-right" data-detail="{{右下}}"></div>
-                            </div>
-                        </div>
+                        <div class="nine-slice-setting-text">W</div>
+                        <div><input type="number" id="nine-slice-setting-w" value="0" data-detail="{{選択対象の幅}}" autocomplete="off" tabindex="-1"></div>
+                    </div>
             
-                        <div class="reference-setting-text">X</div>
-                        <div><input type="text" id="transform-reference-x" value="0" data-detail="{{中心点のX座標}}" autocomplete="off" tabindex="-1"></div>
+                    <div class="nine-slice-setting-container">
+                        <div class="nine-slice-setting-text">Y</div>
+                        <div><input type="text" id="nine-slice-setting-y" value="0" data-detail="{{選択対象のY座標}}" autocomplete="off" tabindex="-1"></div>
             
-                        <div class="reference-setting-text">Y</div>
-                        <div><input type="text" id="transform-reference-y" value="0" data-detail="{{中心点のY座標}}" autocomplete="off" tabindex="-1"></div>
+                        <div class="nine-slice-setting-text">H</div>
+                        <div><input type="number" id="nine-slice-setting-h" value="0" data-detail="{{選択対象の高さ}}" autocomplete="off" tabindex="-1"></div>
                     </div>
                 </div>
             
@@ -1270,13 +1255,13 @@
             <p></p>
             <div id="context-menu-key-frame-add" class="timeline-menu-bottom"><i></i><span class="language" data-text="{{キーフレームを追加}}" data-shortcut-key="k" data-shortcut-text="K" data-area="timeline">キーフレームを追加</span></div>
             <div id="context-menu-empty-key-frame-add" class="timeline-menu-bottom"><i></i><span class="language" data-text="{{空のキーフレームを追加}}" data-shortcut-key="e" data-shortcut-text="E" data-area="timeline">空のキーフレームを追加</span></div>
-            <div id="context-menu-key-frame-delete" class="timeline-menu-bottom"><span class="language" data-text="{{キーフレームを削除}}" data-shortcut-key="kCtrl" data-shortcut-text="Ctrl + K" data-area="timeline">キーフレームを削除</span></div>
+            <div id="context-menu-key-frame-delete" class="timeline-menu-bottom"><i></i><span class="language" data-text="{{キーフレームを削除}}" data-shortcut-key="kCtrl" data-shortcut-text="Ctrl + K" data-area="timeline">キーフレームを削除</span></div>
             <div id="context-menu-key-frame-change" class="timeline-menu-bottom"><span class="language" data-text="{{キーフレームに変換}}" data-shortcut-key="F6" data-shortcut-text="F6" data-area="timeline">キーフレームに変換</span></div>
             <p></p>
             <div id="context-menu-frame-add" class="timeline-menu-bottom"><i></i><span class="language" data-text="{{フレームを追加}}" data-shortcut-key="f" data-shortcut-text="F" data-area="timeline">フレームを追加</span></div>
             <div id="context-menu-frame-delete" class="timeline-menu-bottom"><i></i><span class="language" data-text="{{フレームを削除}}" data-shortcut-key="fCtrl" data-shortcut-text="Ctrl + F" data-area="timeline">フレームを削除</span></div>
-            <div id="context-menu-frame-copy" class="timeline-menu-bottom"><span class="language" data-text="{{フレームをコピー}}" data-shortcut-key="cCtrl" data-shortcut-text="Ctrl + C" data-area="timeline">フレームをコピー</span></div>
-            <div id="context-menu-frame-paste" class="timeline-menu-bottom"><span class="language" data-text="{{フレームをペースト}}" data-shortcut-key="vCtrl" data-shortcut-text="Ctrl + V" data-area="timeline">フレームをペースト</span></div>
+            <div id="context-menu-frame-copy" class="timeline-menu-bottom"><i></i><span class="language" data-text="{{フレームをコピー}}" data-shortcut-key="cCtrl" data-shortcut-text="Ctrl + C" data-area="timeline">フレームをコピー</span></div>
+            <div id="context-menu-frame-paste" class="timeline-menu-bottom"><i></i><span class="language" data-text="{{フレームをペースト}}" data-shortcut-key="vCtrl" data-shortcut-text="Ctrl + V" data-area="timeline">フレームをペースト</span></div>
             <div id="context-menu-prev-key-frame" class="timeline-menu-bottom"><i></i><span class="language" data-text="{{前のキーフレームに移動}}" data-shortcut-key="ArrowLeftAlt" data-shortcut-text="Alt + ArrowLeft" data-area="timeline">前のキーフレームに移動</span></div>
             <div id="context-menu-next-key-frame" class="timeline-menu-bottom"><i></i><span class="language" data-text="{{次のキーフレームに移動}}" data-shortcut-key="ArrowRightAlt" data-shortcut-text="Alt + ArrowRight" data-area="timeline">次のキーフレームに移動</span></div>
             <div id="context-menu-first-frame" class="timeline-menu-bottom"><i></i><span class="language" data-text="{{最初のフレームに移動}}" data-shortcut-key="ArrowLeftShiftCtrl" data-shortcut-text="Ctrl + Shift + ArrowLeft" data-area="timeline">最初のフレームに移動</span></div>

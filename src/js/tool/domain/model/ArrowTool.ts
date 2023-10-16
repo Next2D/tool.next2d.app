@@ -12,11 +12,11 @@ import { execute as arrowToolInitializeUseCase } from "../../application/usecase
  */
 export class ArrowTool extends BaseTool
 {
-    private _$saved: boolean;
-    private _$xReverse: boolean;
-    private _$yReverse: boolean;
-    private _$activeElement: string;
-    private _$activeElements: Element[];
+    // private _$saved: boolean;
+    // private _$xReverse: boolean;
+    // private _$yReverse: boolean;
+    // private _$activeElement: string;
+    // private _$activeElements: Element[];
 
     /**
      * @constructor
@@ -26,40 +26,40 @@ export class ArrowTool extends BaseTool
     {
         super($TOOL_ARROW_NAME);
 
-        /**
-         * @type {boolean}
-         * @default false
-         * @private
-         */
-        this._$saved = false;
+        // /**
+        //  * @type {boolean}
+        //  * @default false
+        //  * @private
+        //  */
+        // this._$saved = false;
 
-        /**
-         * @type {string}
-         * @default ""
-         * @private
-         */
-        this._$activeElement = "";
+        // /**
+        //  * @type {string}
+        //  * @default ""
+        //  * @private
+        //  */
+        // this._$activeElement = "";
 
-        /**
-         * @type {array}
-         * @default {array}
-         * @private
-         */
-        this._$activeElements = [];
+        // /**
+        //  * @type {array}
+        //  * @default {array}
+        //  * @private
+        //  */
+        // this._$activeElements = [];
 
-        /**
-         * @type {boolean}
-         * @default false
-         * @private
-         */
-        this._$xReverse = false;
+        // /**
+        //  * @type {boolean}
+        //  * @default false
+        //  * @private
+        //  */
+        // this._$xReverse = false;
 
-        /**
-         * @type {boolean}
-         * @default false
-         * @private
-         */
-        this._$yReverse = false;
+        // /**
+        //  * @type {boolean}
+        //  * @default false
+        //  * @private
+        //  */
+        // this._$yReverse = false;
     }
 
     /**

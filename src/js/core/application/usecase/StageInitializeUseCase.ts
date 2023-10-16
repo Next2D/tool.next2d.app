@@ -1,12 +1,12 @@
-import type { Stage } from "../model/Stage";
+import type { Stage } from "../../domain/model/Stage";
 import { execute as stageChageStyleService } from "../service/StageChageStyleService";
-import { execute as screenScaleResetService } from "../../screen/application/service/ScreenScaleResetService";
-import { execute as libraryPreviewAreaChangeColorService } from "../../controller/application/service/LibraryPreviewAreaChangeColorService";
-import { execute as stageSettingUpdateService } from "../../controller/application/service/StageSettingUpdateService";
-import { execute as timelineLabelNameUpdateService } from "../../timeline/application/service/TimelineLabelNameUpdateService";
-import { execute as screenStageAreaUpdateSizeService } from "../../screen/application/service/ScreenStageAreaUpdateSizeService";
-import { execute as screenStagePositionCenterService } from "../../screen/application/service/ScreenStagePositionCenterService";
-import { execute as screenStageOffsetUpdateService } from "../../screen/application/service/ScreenStageOffsetUpdateService";
+import { execute as screenScaleResetService } from "../../../screen/application/service/ScreenScaleResetService";
+import { execute as libraryPreviewAreaChangeColorService } from "../../../controller/application/service/LibraryPreviewAreaChangeColorService";
+import { execute as stageSettingUpdateService } from "../../../controller/application/service/StageSettingUpdateService";
+import { execute as timelineLabelNameUpdateService } from "../../../timeline/application/service/TimelineLabelNameUpdateService";
+import { execute as screenStageAreaUpdateSizeService } from "../../../screen/application/service/ScreenStageAreaUpdateSizeService";
+import { execute as screenStagePositionCenterService } from "../../../screen/application/service/ScreenStagePositionCenterService";
+import { execute as screenStageOffsetUpdateService } from "../../../screen/application/service/ScreenStageOffsetUpdateService";
 
 /**
  * @description ステージクラスの初期起動ユースケース

@@ -1,4 +1,4 @@
-import type { InstanceImpl } from "../../interface/InstanceImpl";
+import type { InstanceImpl } from "../../../interface/InstanceImpl";
 import { MovieClip } from "./MovieClip";
 import { Stage } from "./Stage";
 
@@ -11,7 +11,7 @@ import { Stage } from "./Stage";
 export class WorkSpace
 {
     private _$name: string;
-    private _$scene: MovieClip | null;
+    // private _$scene: MovieClip | null;
     private _$stage: Stage;
     private _$libraries: Map<number, InstanceImpl<any>>;
 
@@ -28,12 +28,12 @@ export class WorkSpace
          */
         this._$name = "";
 
-        /**
-         * @type {MovieClip}
-         * @default null
-         * @private
-         */
-        this._$scene = null;
+        // /**
+        //  * @type {MovieClip}
+        //  * @default null
+        //  * @private
+        //  */
+        // this._$scene = null;
 
         /**
          * @type {Stage}

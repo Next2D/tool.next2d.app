@@ -1,12 +1,12 @@
-import { StageObjectImpl } from "../../interface/StageObjectImpl";
-import { execute as stageInitializeUseCase } from "../usecase/StageInitializeUseCase";
-import { $clamp } from "../../util/Global";
+import { StageObjectImpl } from "../../../interface/StageObjectImpl";
+import { execute as stageInitializeUseCase } from "../../application/usecase/StageInitializeUseCase";
+import { $clamp } from "../../../util/Global";
 import {
     $STAGE_DEFAULT_FPS,
     $STAGE_DEFAULT_HEIGHT,
     $STAGE_DEFAULT_WIDTH,
     $STAGE_DEFAULT_COLOR
-} from "../../config/StageSettingConfig";
+} from "../../../config/StageSettingConfig";
 
 /**
  * @description スクリーンエリアのステージの管理クラス
