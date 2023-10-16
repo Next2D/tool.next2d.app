@@ -1,6 +1,6 @@
-import { execute } from "./LibraryPreviewAreaChangeColor";
+import { execute } from "./LibraryPreviewAreaChangeColorService";
 
-describe("LibraryPreviewAreaChangeColorTest", () =>
+describe("LibraryPreviewAreaChangeColorServiceTest", () =>
 {
     test("execute test", () =>
     {

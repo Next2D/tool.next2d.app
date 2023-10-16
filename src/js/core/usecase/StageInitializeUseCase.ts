@@ -1,12 +1,12 @@
 import type { Stage } from "../model/Stage";
 import { execute as stageChageStyleService } from "../service/StageChageStyleService";
 import { execute as screenScaleResetService } from "../../screen/application/service/ScreenScaleResetService";
-import { execute as libraryPreviewAreaChangeColor } from "../../controller/application/service/LibraryPreviewAreaChangeColor";
-import { execute as stageSettingUpdate } from "../../controller/application/service/StageSettingUpdate";
-import { execute as timelineLabelNameUpdate } from "../../timeline/application/service/TimelineLabelNameUpdate";
-import { execute as screenStageAreaUpdateSize } from "../../screen/application/service/ScreenStageAreaUpdateSize";
-import { execute as screenStagePositionCenter } from "../../screen/application/service/ScreenStagePositionCenter";
-import { execute as screenStageOffsetUpdate } from "../../screen/application/service/ScreenStageOffsetUpdate";
+import { execute as libraryPreviewAreaChangeColorService } from "../../controller/application/service/LibraryPreviewAreaChangeColorService";
+import { execute as stageSettingUpdateService } from "../../controller/application/service/StageSettingUpdateService";
+import { execute as timelineLabelNameUpdateService } from "../../timeline/application/service/TimelineLabelNameUpdateService";
+import { execute as screenStageAreaUpdateSizeService } from "../../screen/application/service/ScreenStageAreaUpdateSizeService";
+import { execute as screenStagePositionCenterService } from "../../screen/application/service/ScreenStagePositionCenterService";
+import { execute as screenStageOffsetUpdateService } from "../../screen/application/service/ScreenStageOffsetUpdateService";
 
 /**
  * @description ステージクラスの初期起動ユースケース
@@ -25,20 +25,20 @@ export const execute = (stage: Stage): void =>
     screenScaleResetService();
 
     // ライブラリのプレビューの背景色を更新
-    libraryPreviewAreaChangeColor(stage.bgColor);
+    libraryPreviewAreaChangeColorService(stage.bgColor);
 
     // ステージ設定の値を更新
-    stageSettingUpdate(stage);
+    stageSettingUpdateService(stage);
 
     // タイムラインのラベルの値を初期化
-    timelineLabelNameUpdate("");
+    timelineLabelNameUpdateService("");
 
     // ステージ背後のレイヤーを更新
-    screenStageAreaUpdateSize(stage);
+    screenStageAreaUpdateSizeService(stage);
 
     // ステージを画面中央に配置
-    screenStagePositionCenter(stage);
+    screenStagePositionCenterService(stage);
 
     // ステージElementのoffset値を更新
-    screenStageOffsetUpdate();
+    screenStageOffsetUpdateService();
 };

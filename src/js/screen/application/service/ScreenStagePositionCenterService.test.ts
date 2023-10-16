@@ -1,6 +1,6 @@
-import { execute } from "./ScreenStagePositionCenter";
+import { execute } from "./ScreenStagePositionCenterService";
 
-describe("ScreenStagePositionCenterTest", () =>
+describe("ScreenStagePositionCenterServiceTest", () =>
 {
     test("execute test", () =>
     {

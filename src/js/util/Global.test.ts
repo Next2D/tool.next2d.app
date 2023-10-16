@@ -3,10 +3,10 @@ import {
     $clamp,
     $setZoom,
     $getZoom,
-    $getOffsetLeft,
-    $getOffsetTop,
-    $setOffsetLeft,
-    $setOffsetTop
+    $getScreenOffsetLeft,
+    $getScreenOffsetTop,
+    $setScreenOffsetLeft,
+    $setScreenOffsetTop
 } from "./Global";
 
 describe("GlobalTest", () =>
@@ -38,13 +38,13 @@ describe("GlobalTest", () =>
 
     test("offsetLeft and offsetTop test", () =>
     {
-        expect($getOffsetLeft()).toBe(0);
-        expect($getOffsetTop()).toBe(0);
+        expect($getScreenOffsetLeft()).toBe(0);
+        expect($getScreenOffsetTop()).toBe(0);
 
-        $setOffsetLeft(999);
-        expect($getOffsetLeft()).toBe(999);
+        $setScreenOffsetLeft(999);
+        expect($getScreenOffsetLeft()).toBe(999);
 
-        $setOffsetTop(222);
-        expect($getOffsetTop()).toBe(222);
+        $setScreenOffsetTop(222);
+        expect($getScreenOffsetTop()).toBe(222);
     });
 });

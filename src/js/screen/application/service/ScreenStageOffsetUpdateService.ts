@@ -1,7 +1,7 @@
 import { $SCREEN_STAGE_ID } from "../../../config/ScreenConfig";
 import {
-    $setOffsetLeft,
-    $setOffsetTop
+    $setScreenOffsetLeft,
+    $setScreenOffsetTop
 } from "../../../util/Global";
 
 /**
@@ -21,6 +21,6 @@ export const execute = (): void =>
         return ;
     }
 
-    $setOffsetLeft(element.offsetLeft);
-    $setOffsetTop(element.offsetTop);
+    $setScreenOffsetLeft(element.offsetLeft);
+    $setScreenOffsetTop(element.offsetTop);
 };

@@ -1,6 +1,6 @@
-import { execute } from "./TimelineLabelNameUpdate";
+import { execute } from "./TimelineLabelNameUpdateService";
 
-describe("TimelineLabelNameUpdateTest", () =>
+describe("TimelineLabelNameUpdateServiceTest", () =>
 {
     test("execute test", () =>
     {

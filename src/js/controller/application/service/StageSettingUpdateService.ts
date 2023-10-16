@@ -1,5 +1,5 @@
 import { Stage } from "../../../core/model/Stage";
-import { 
+import {
     $STAGE_BG_COLOR_ID,
     $STAGE_FPS_ID,
     $STAGE_HEIGHT_ID,

@@ -1,4 +1,5 @@
 import { execute as userSettingMenuUpdateOffsetService } from "../service/UserSettingMenuUpdateOffsetService";
+import { execute as userSettingMenuRegisterEventService } from "../service/UserSettingMenuRegisterEventService";
 
 /**
  * @description setTimerのIDを管理
@@ -31,4 +32,7 @@ export const execute = (): void =>
             userSettingMenuUpdateOffsetService();
         }, 200);
     });
+
+    // 各種イベントを設定
+    userSettingMenuRegisterEventService();
 };

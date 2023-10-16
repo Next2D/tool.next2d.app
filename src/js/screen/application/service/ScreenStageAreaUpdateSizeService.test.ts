@@ -1,6 +1,6 @@
-import { execute } from "./ScreenStageAreaUpdateSize";
+import { execute } from "./ScreenStageAreaUpdateSizeService";
 
-describe("ScreenStageAreaUpdateSizeTest", () =>
+describe("ScreenStageAreaUpdateSizeServiceTest", () =>
 {
     test("execute test", () =>
     {

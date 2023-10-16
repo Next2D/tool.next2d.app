@@ -101,7 +101,7 @@ let $offsetLeft: number = 0;
  * @method
  * @public
  */
-export const $getOffsetLeft = (): number =>
+export const $getScreenOffsetLeft = (): number =>
 {
     return $offsetLeft;
 };
@@ -114,7 +114,7 @@ export const $getOffsetLeft = (): number =>
  * @method
  * @public
  */
-export const $setOffsetLeft = (value: number): void =>
+export const $setScreenOffsetLeft = (value: number): void =>
 {
     $offsetLeft = value;
 };
@@ -137,7 +137,7 @@ let $offsetTop: number = 0;
  * @method
  * @public
  */
-export const $getOffsetTop = (): number =>
+export const $getScreenOffsetTop = (): number =>
 {
     return $offsetTop;
 };
@@ -150,30 +150,7 @@ export const $getOffsetTop = (): number =>
  * @method
  * @public
  */
-export const $setOffsetTop = (value: number): void =>
+export const $setScreenOffsetTop = (value: number): void =>
 {
     $offsetTop = value;
-};
-
-/**
- * @description ユーザー個別の設定情報を返す
- *              Returns user-specific configuration information
- *
- * @return {void}
- * @method
- * @public
- */
-export const $getUserSetting = (): UserSettingObjectImpl =>
-{
-    const json: string | null = localStorage.getItem($USER_SETTING_KEY);
-
-    if (json) {
-        return JSON.parse(json) as UserSettingObjectImpl;
-    }
-
-    return {
-        "layer": false,
-        "type": "zlib",
-        "modal": true
-    };
 };

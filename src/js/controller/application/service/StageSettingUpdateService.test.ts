@@ -1,6 +1,6 @@
-import { execute } from "./StageSettingUpdate";
+import { execute } from "./StageSettingUpdateService";
 
-describe("StageSettingUpdateTest", () =>
+describe("StageSettingUpdateServiceTest", () =>
 {
     test("execute test", () =>
     {

@@ -1,5 +1,5 @@
 import type { ToolImpl } from "../../../interface/ToolImpl";
-import { execute as menuAllHideService } from "../../../menu/application/service/MenuAllHideService"
+import { execute as menuAllHideService } from "../../../menu/application/service/MenuAllHideService";
 import { $setActiveTool } from "../Tool";
 
 /**
