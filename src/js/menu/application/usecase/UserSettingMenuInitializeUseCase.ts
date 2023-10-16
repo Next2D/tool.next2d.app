@@ -1,5 +1,5 @@
 import { execute as userSettingMenuUpdateOffsetService } from "../service/UserSettingMenuUpdateOffsetService";
-import { execute as userSettingMenuRegisterEventService } from "../service/UserSettingMenuRegisterEventService";
+import { execute as userSettingMenuLayerSettingRegisterEventUseCase } from "./UserSettingMenuLayerSettingRegisterEventUseCase";
 
 /**
  * @description setTimerのIDを管理
@@ -33,6 +33,8 @@ export const execute = (): void =>
         }, 200);
     });
 
-    // 各種イベントを設定
-    userSettingMenuRegisterEventService();
+    // 非表示レイヤーの設定のユースケースを実行
+    userSettingMenuLayerSettingRegisterEventUseCase();
+
+
 };

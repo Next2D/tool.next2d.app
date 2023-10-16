@@ -31,8 +31,8 @@ export class UserSettingMenu extends BaseMenu
      */
     move (element: HTMLElement): HTMLElement
     {
-        element.style.left = `${this._$offsetLeft}px`;
-        element.style.top  = `${this._$offsetTop}px`;
+        element.style.left = `${this.offsetLeft}px`;
+        element.style.top  = `${this.offsetTop}px`;
         return element;
     }
 
@@ -40,11 +40,11 @@ export class UserSettingMenu extends BaseMenu
      * @description 初期起動関数
      *              initial invoking function
      *
-     * @return {Promise}
+     * @return {void}
      * @method
      * @public
      */
-    async initialize (): Promise<void>
+    initialize (): void
     {
         userSettingMenuInitializeUseCase();
     }

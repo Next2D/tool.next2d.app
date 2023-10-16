@@ -12,8 +12,8 @@ export class BaseMenu
     private _$element: HTMLElement | null;
     private _$name: string;
     private _$state: "show" | "hide";
-    protected _$offsetLeft: number;
-    protected _$offsetTop: number;
+    private _$offsetLeft: number;
+    private _$offsetTop: number;
 
     /**
      * @param {string} name
