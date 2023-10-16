@@ -1,7 +1,6 @@
-import { EventType } from "../event/EventType";
 import { BaseTool } from "./BaseTool";
-import { execute as userSettingToolMouseDownEventUseCase } from "../../application/usecase/UserSettingToolMouseDownEventUseCase";
-import { $TOOL_USER_SETTING_ID, $TOOL_USER_SETTING_NAME } from "../../../config/ToolConfig";
+import { $TOOL_USER_SETTING_NAME } from "../../../config/ToolConfig";
+import { execute as userSettingToolInitializeUseCase } from "../../application/usecase/UserSettingToolInitializeUseCase";
 
 /**
  * @description 設定ツールの管理クラス
@@ -26,34 +25,13 @@ export class UserSettingTool extends BaseTool
      * @description 初期起動関数
      *              initial invoking function
      *
-     * @return {Promise}
-     * @method
-     * @public
-     */
-    async initialize (): Promise<void>
-    {
-        // 各種イベントを登録
-        this._$registerEvent();
-    }
-
-    /**
-     * @description 初期起動時に各種イベントを登録
-     *              Register various events at initial startup
-     *
      * @return {void}
      * @method
      * @public
      */
-    _$registerEvent (): void
+    initialize (): void
     {
-        const element: HTMLElement | null = document
-            .getElementById($TOOL_USER_SETTING_ID);
-
-        if (element) {
-            element.addEventListener(EventType.MOUSE_DOWN, (event: PointerEvent) =>
-            {
-                userSettingToolMouseDownEventUseCase(event);
-            });
-        }
+        // 初回起動ユースケース
+        userSettingToolInitializeUseCase();
     }
 }

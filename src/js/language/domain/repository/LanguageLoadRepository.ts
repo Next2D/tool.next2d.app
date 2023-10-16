@@ -1,0 +1,23 @@
+import { $LANGUAGE_URL } from "../../../config/LanguageConfig";
+
+/**
+ * @description 指定された言語のJSONを取得してobjectに変換して返却
+ *              Obtains JSON in the specified language, converts it to an object, and returns it
+ *
+ * @param  {string} language
+ * @return {object}
+ * @method
+ * @public
+ */
+export const execute = async (language: string): Promise<any> =>
+{
+    return await fetch(`${$LANGUAGE_URL}/${language}.json`)
+        .then((response) =>
+        {
+            return response.json();
+        })
+        .then((json) =>
+        {
+            return JSON.parse(json);
+        });
+};

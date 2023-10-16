@@ -66,11 +66,11 @@ export class ArrowTool extends BaseTool
      * @description 初期起動関数
      *              initial invoking function
      *
-     * @return {Promise}
+     * @return {void}
      * @method
      * @public
      */
-    async initialize (): Promise<void>
+    initialize (): void
     {
         arrowToolInitializeUseCase(this);
     }
