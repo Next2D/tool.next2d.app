@@ -8,10 +8,11 @@
  */
 export const execute = (): void =>
 {
-    const roomId: string = location.hash;
+    let roomId: string = location.hash;
     if (!roomId) {
         return ;
     }
 
-    
+    roomId = roomId.replace("#", "");
+    console.log(roomId);
 };
