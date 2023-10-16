@@ -6,7 +6,7 @@ import { execute as userSettingMenuModalSettingOptionSelectedService } from "../
 /**
  * @description モーダル表示の初期起動ユースケース
  *              Initial startup use case for modal display
- * 
+ *
  * @return {void}
  * @method
  * @public
