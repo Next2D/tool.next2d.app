@@ -1,4 +1,4 @@
-import { execute as userSettingMenuSetOffsetService } from "../service/UserSettingMenuSetOffsetService";
+import { execute as userSettingMenuUpdateOffsetService } from "../service/UserSettingMenuUpdateOffsetService";
 
 /**
  * @description setTimerのIDを管理
@@ -20,7 +20,7 @@ let $timerId: NodeJS.Timeout | number = 0;
 export const execute = (): void =>
 {
     // 現在のElementの配置からoffsetをセット
-    userSettingMenuSetOffsetService();
+    userSettingMenuUpdateOffsetService();
 
     // リサイズ時には座標を再取得
     window.addEventListener("resize", (): void =>
@@ -28,7 +28,7 @@ export const execute = (): void =>
         clearTimeout($timerId);
         $timerId = setTimeout(() =>
         {
-            userSettingMenuSetOffsetService();
+            userSettingMenuUpdateOffsetService();
         }, 200);
     });
 };

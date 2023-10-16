@@ -1,3 +1,4 @@
+import { $TOOL_ROUND_RECT_NAME } from "../../../const/ToolConfig";
 import { DrawTool } from "./DrawTool";
 
 /**
@@ -16,6 +17,6 @@ export class RoundRectTool extends DrawTool
      */
     constructor ()
     {
-        super("round-rect");
+        super($TOOL_ROUND_RECT_NAME);
     }
 }

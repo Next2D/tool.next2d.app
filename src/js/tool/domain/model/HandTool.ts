@@ -1,3 +1,4 @@
+import { $TOOL_HAND_NAME } from "../../../const/ToolConfig";
 import { BaseTool } from "./BaseTool";
 
 /**
@@ -16,6 +17,6 @@ export class HandTool extends BaseTool
      */
     constructor ()
     {
-        super("hand");
+        super($TOOL_HAND_NAME);
     }
 }

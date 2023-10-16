@@ -1,3 +1,4 @@
+import { $USER_MENU_NAME } from "../../../const/MenuConfig";
 import { MenuImpl } from "../../../interface/MenuImpl";
 import { $getMenu } from "../../../menu/application/Menu";
 import { UserSettingMenu } from "../../../menu/domain/model/UserSettingMenu";
@@ -12,7 +13,7 @@ import { UserSettingMenu } from "../../../menu/domain/model/UserSettingMenu";
  */
 export const execute = (): void =>
 {
-    const menu: MenuImpl<UserSettingMenu> | null = $getMenu("user-setting");
+    const menu: MenuImpl<UserSettingMenu> | null = $getMenu($USER_MENU_NAME);
     if (!menu) {
         return ;
     }

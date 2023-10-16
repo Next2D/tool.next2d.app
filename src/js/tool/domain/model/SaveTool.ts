@@ -1,8 +1,9 @@
+import { $TOOL_SAVE_NAME } from "../../../const/ToolConfig";
 import { BaseTool } from "./BaseTool";
 
 /**
- * @description n2dファイルの書き出すツール
- *              Tools for exporting n2d files
+ * @description n2dファイルの書き出しツール
+ *              Export tool for n2d files
  *
  * @class
  * @public
@@ -16,6 +17,6 @@ export class SaveTool extends BaseTool
      */
     constructor ()
     {
-        super("save");
+        super($TOOL_SAVE_NAME);
     }
 }

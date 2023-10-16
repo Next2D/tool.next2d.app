@@ -1,3 +1,4 @@
+import { $TOOL_BUCKET_NAME } from "../../../const/ToolConfig";
 import { BaseTool } from "./BaseTool";
 
 /**
@@ -16,6 +17,6 @@ export class BucketTool extends BaseTool
      */
     constructor ()
     {
-        super("bucket");
+        super($TOOL_BUCKET_NAME);
     }
 }

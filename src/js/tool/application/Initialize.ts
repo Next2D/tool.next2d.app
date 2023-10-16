@@ -20,6 +20,7 @@ import { UserSettingTool } from "../domain/model/UserSettingTool";
 import { execute as toolAreaMouseMoveEventService } from "./service/ToolAreaMouseMoveEventService";
 import { execute as toolAreaMouseOutEventService } from "../application/service/ToolAreaMouseOutEventService";
 import { execute as toolAreaMouseDownEventService } from "../application/service/ToolAreaMouseDownEventService";
+import { $TOOL_PREFIX } from "../../const/ToolConfig";
 
 /**
  * @description 起動対象のToolクラスの配列
@@ -56,7 +57,7 @@ const tools: ToolImpl<any>[] = [
  */
 const _$registerEvent = (): void =>
 {
-    const element: HTMLElement | null = document.getElementById("tools");
+    const element: HTMLElement | null = document.getElementById($TOOL_PREFIX);
     if (!element) {
         return ;
     }

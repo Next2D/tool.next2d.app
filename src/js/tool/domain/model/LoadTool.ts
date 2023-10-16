@@ -1,8 +1,9 @@
+import { $TOOL_LOAD_NAME } from "../../../const/ToolConfig";
 import { BaseTool } from "./BaseTool";
 
 /**
- * @description n2dファイルの書き出すツール
- *              Tools for exporting n2d files
+ * @description n2dファイルの読み込みツール
+ *              Tools for loading n2d files
  *
  * @class
  * @public
@@ -16,6 +17,6 @@ export class LoadTool extends BaseTool
      */
     constructor ()
     {
-        super("load");
+        super($TOOL_LOAD_NAME);
     }
 }

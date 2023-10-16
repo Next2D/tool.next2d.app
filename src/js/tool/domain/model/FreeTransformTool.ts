@@ -1,3 +1,4 @@
+import { $TOOL_FREE_TRANSFORM_NAME } from "../../../const/ToolConfig";
 import { BaseTool } from "./BaseTool";
 
 /**
@@ -18,7 +19,7 @@ export class FreeTransformTool extends BaseTool
      */
     constructor ()
     {
-        super("free-transform");
+        super($TOOL_FREE_TRANSFORM_NAME);
 
         /**
          * @type {boolean}
@@ -36,18 +37,5 @@ export class FreeTransformTool extends BaseTool
     get validity (): boolean
     {
         return this._$validity;
-    }
-
-    /**
-     * @description 初期起動関数
-     *              initial invoking function
-     *
-     * @return {Promise}
-     * @method
-     * @public
-     */
-    async initialize (): Promise<void>
-    {
-        // TODO
     }
 }

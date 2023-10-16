@@ -1,3 +1,4 @@
+import { $TOOL_SHAPE_TRANSFORM_NAME } from "../../../const/ToolConfig";
 import { BaseTool } from "./BaseTool";
 
 /**
@@ -19,7 +20,7 @@ export class ShapeTransformTool extends BaseTool
      */
     constructor ()
     {
-        super("shape-transform");
+        super($TOOL_SHAPE_TRANSFORM_NAME);
 
         /**
          * @type {HTMLDivElement}

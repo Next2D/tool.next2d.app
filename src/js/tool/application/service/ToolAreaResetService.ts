@@ -6,6 +6,7 @@ import {
     $getDefaultTool,
     $setActiveTool
 } from "../Tool";
+import { $TOOL_ARROW_NAME } from "../../../const/ToolConfig";
 
 /**
  * @description ツールエリアを初回起動時の状態に戻す
@@ -22,7 +23,7 @@ export const execute = (): void =>
         activeTool.dispatchEvent(EventType.END);
     }
 
-    const arrowTool: ToolImpl<ArrowTool> = $getDefaultTool("arrow");
+    const arrowTool: ToolImpl<ArrowTool> = $getDefaultTool($TOOL_ARROW_NAME);
     arrowTool.dispatchEvent(EventType.START);
 
     $setActiveTool(arrowTool);

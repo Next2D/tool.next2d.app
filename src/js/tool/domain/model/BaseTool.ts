@@ -1,5 +1,6 @@
 import { ToolEvent } from "../event/ToolEvent";
 import { EventType } from "../event/EventType";
+import { $TOOL_PREFIX } from "../../../const/ToolConfig";
 import { execute as toolChangeActiveUseCase } from "../../application/usecase/ToolChangeActiveUseCase";
 import {
     $registerDefaultTool
@@ -83,7 +84,7 @@ export class BaseTool extends ToolEvent
     {
         // 初期ElementになければPluginとして登録
         const element: HTMLElement | null = document
-            .getElementById(`tools-${name}`);
+            .getElementById(`${$TOOL_PREFIX}-${name}`);
 
         // 対象のElementにイベントを追加
         if (!element || element.dataset.mode !== "tool") {
@@ -177,7 +178,7 @@ export class BaseTool extends ToolEvent
     setIcon (element: HTMLElement): void
     {
         const parent: HTMLElement | null = document
-            .getElementById(`tools-${this.name}`);
+            .getElementById(`${$TOOL_PREFIX}-${this.name}`);
 
         if (!parent) {
             return ;
@@ -202,7 +203,7 @@ export class BaseTool extends ToolEvent
     setToolTip (tip: string): void
     {
         const element: HTMLElement | null = document
-            .getElementById(`tools-${this.name}`);
+            .getElementById(`${$TOOL_PREFIX}-${this.name}`);
 
         if (!element) {
             return ;

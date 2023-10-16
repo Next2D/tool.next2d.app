@@ -1,6 +1,6 @@
 import { $USER_MENU_NAME } from "../../../const/MenuConfig";
 import { BaseMenu } from "./BaseMenu";
-import { execute as userSettingInitializeUseCase } from "../../application/usecase/UserSettingInitializeUseCase";
+import { execute as userSettingMenuInitializeUseCase } from "../../application/usecase/UserSettingMenuInitializeUseCase";
 
 /**
  * @description ユーザー設定メニュークラス
@@ -46,23 +46,6 @@ export class UserSettingMenu extends BaseMenu
      */
     async initialize (): Promise<void>
     {
-        userSettingInitializeUseCase();
-
-        // // 各種イベントを登録
-        // this._$registerEvent();
-
-        // ユーザー個別データの読み込み
-    }
-    /**
-     * @description 初期起動時に各種イベントを登録
-     *              Register various events at initial startup
-     *
-     * @return {void}
-     * @method
-     * @public
-     */
-    _$registerEvent (): void
-    {
-        // TODO
+        userSettingMenuInitializeUseCase();
     }
 }

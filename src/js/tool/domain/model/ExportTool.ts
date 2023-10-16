@@ -1,3 +1,4 @@
+import { $TOOL_EXPORT_NAME } from "../../../const/ToolConfig";
 import { BaseTool } from "./BaseTool";
 
 /**
@@ -16,6 +17,6 @@ export class ExportTool extends BaseTool
      */
     constructor ()
     {
-        super("export");
+        super($TOOL_EXPORT_NAME);
     }
 }

@@ -1,5 +1,7 @@
+import { $TOOL_ARROW_NAME } from "../../../const/ToolConfig";
 import { $setActiveTool } from "../../application/Tool";
 import { BaseTool } from "./BaseTool";
+import { execute as arrowToolInitializeUseCase } from "../../application/usecase/ArrowToolInitializeUseCase";
 
 /**
  * @description アローツールの管理クラス
@@ -23,7 +25,7 @@ export class ArrowTool extends BaseTool
      */
     constructor ()
     {
-        super("arrow");
+        super($TOOL_ARROW_NAME);
 
         /**
          * @type {boolean}
@@ -71,23 +73,6 @@ export class ArrowTool extends BaseTool
      */
     async initialize (): Promise<void>
     {
-        // 各種イベントを登録
-        this._$registerEvent();
-
-        // 初期選択ツールとしてセット
-        $setActiveTool(this);
-    }
-
-    /**
-     * @description 初期起動時に各種イベントを登録
-     *              Register various events at initial startup
-     *
-     * @return {void}
-     * @method
-     * @public
-     */
-    _$registerEvent (): void
-    {
-        // TODO
+        arrowToolInitializeUseCase(this);
     }
 }

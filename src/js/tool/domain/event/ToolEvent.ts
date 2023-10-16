@@ -1,6 +1,7 @@
 import { EventDispatcher } from "./EventDispatcher";
 import { EventType } from "./EventType";
 import { $setCursor } from "../../../util/Global";
+import { $TOOL_PREFIX } from "../../../const/ToolConfig";
 
 /**
  * @description ツールのイベント後の状態管理クラス
@@ -175,7 +176,7 @@ export class ToolEvent extends EventDispatcher
 
         // 対象のElementがあればアクティブ表示
         const element: HTMLElement | null = document
-            .getElementById(`tools-${this._$name}`);
+            .getElementById(`${$TOOL_PREFIX}-${this._$name}`);
 
         if (!element || element.dataset.mode !== "tool") {
             return ;
@@ -199,7 +200,7 @@ export class ToolEvent extends EventDispatcher
 
         // 対象のElementがあれば非アクティブ表示
         const element: HTMLElement | null = document
-            .getElementById(`tools-${this._$name}`);
+            .getElementById(`${$TOOL_PREFIX}-${this._$name}`);
 
         if (element) {
             element.classList.remove("active");

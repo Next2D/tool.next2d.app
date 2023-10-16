@@ -1,3 +1,4 @@
+import { $TOOL_RECTANGLE_NAME } from "../../../const/ToolConfig";
 import { DrawTool } from "./DrawTool";
 
 /**
@@ -16,6 +17,6 @@ export class RectangleTool extends DrawTool
      */
     constructor ()
     {
-        super("rectangle");
+        super($TOOL_RECTANGLE_NAME);
     }
 }

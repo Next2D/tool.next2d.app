@@ -1,3 +1,4 @@
+import { $TOOL_TEXT_NAME } from "../../../const/ToolConfig";
 import { BaseTool } from "./BaseTool";
 
 /**
@@ -16,6 +17,6 @@ export class TextTool extends BaseTool
      */
     constructor ()
     {
-        super("text");
+        super($TOOL_TEXT_NAME);
     }
 }

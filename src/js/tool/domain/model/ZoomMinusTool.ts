@@ -1,3 +1,4 @@
+import { $TOOL_ZOOM_MINUS_NAME } from "../../../const/ToolConfig";
 import { BaseTool } from "./BaseTool";
 
 /**
@@ -16,6 +17,6 @@ export class ZoomMinusTool extends BaseTool
      */
     constructor ()
     {
-        super("zoom-minus");
+        super($TOOL_ZOOM_MINUS_NAME);
     }
 }

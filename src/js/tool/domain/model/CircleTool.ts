@@ -1,3 +1,4 @@
+import { $TOOL_CIRCLE_NAME } from "../../../const/ToolConfig";
 import { DrawTool } from "./DrawTool";
 
 /**
@@ -16,6 +17,6 @@ export class CircleTool extends DrawTool
      */
     constructor ()
     {
-        super("circle");
+        super($TOOL_CIRCLE_NAME);
     }
 }

@@ -1,6 +1,6 @@
 import { $USER_MENU_NAME } from "../../../const/MenuConfig";
 import { execute as menuAllHideService } from "../../../menu/application/service/MenuAllHideService";
-import { execute as userSettingMouseUpEventService } from "../service/UserSettingMouseDownEventService";
+import { execute as userSettingToolMouseDownEventService } from "../service/UserSettingToolMouseDownEventService";
 
 /**
  * @description ユーザー設定ツールの選択時のユースケース
@@ -19,5 +19,5 @@ export const execute = (event: PointerEvent): void =>
     menuAllHideService($USER_MENU_NAME);
 
     // ユーザー設定のメニューを表示
-    userSettingMouseUpEventService();
+    userSettingToolMouseDownEventService();
 };

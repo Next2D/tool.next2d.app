@@ -1,6 +1,6 @@
 import { EventType } from "../event/EventType";
 import { BaseTool } from "./BaseTool";
-import { execute as userSettingMouseDownEventService } from "../../application/usecase/UserSettingMouseUpEventUseCase";
+import { execute as userSettingToolMouseDownEventUseCase } from "../../application/usecase/UserSettingToolMouseDownEventUseCase";
 import { $TOOL_USER_SETTING_ID, $TOOL_USER_SETTING_NAME } from "../../../const/ToolConfig";
 
 /**
@@ -52,7 +52,7 @@ export class UserSettingTool extends BaseTool
         if (element) {
             element.addEventListener(EventType.MOUSE_DOWN, (event: PointerEvent) =>
             {
-                userSettingMouseDownEventService(event);
+                userSettingToolMouseDownEventUseCase(event);
             });
         }
     }
