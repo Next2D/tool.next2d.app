@@ -1,6 +1,8 @@
 import { execute as userSettingMenuUpdateOffsetService } from "../service/UserSettingMenuUpdateOffsetService";
 import { execute as userSettingMenuLayerSettingInitializeUseCase } from "./UserSettingMenuLayerSettingInitializeUseCase";
 import { execute as userSettingMenuPublishTypeInitializeUseCase } from "./UserSettingMenuPublishTypeInitializeUseCase";
+import { execute as userSettingMenuModalSettingInitializeUseCase } from "./UserSettingMenuModalSettingInitializeUseCase";
+import { execute as userSettingMenuVersionService } from "../service/UserSettingMenuVersionService";
 
 /**
  * @description setTimerのIDを管理
@@ -39,4 +41,10 @@ export const execute = (): void =>
 
     // 書き出しフォーマットのユースケースを実行
     userSettingMenuPublishTypeInitializeUseCase();
+
+    // モーダル表示のユースケースを実行
+    userSettingMenuModalSettingInitializeUseCase();
+
+    // バージョン情報を更新
+    userSettingMenuVersionService();
 };
