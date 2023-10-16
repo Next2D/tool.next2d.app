@@ -71,6 +71,40 @@ export class BaseMenu
     }
 
     /**
+     * @description 各メニューのoffsetLeftの値
+     *              Value of offsetLeft for each menu
+     *
+     * @member {number}
+     * @return {number}
+     * @public
+     */
+    get offsetLeft (): number
+    {
+        return this._$offsetLeft;
+    }
+    set offsetLeft (offset_left: number)
+    {
+        this._$offsetLeft = offset_left;
+    }
+
+    /**
+     * @description 各メニューのoffsetTopの値
+     *              Value of offsetTop for each menu
+     *
+     * @member {number}
+     * @return {number}
+     * @public
+     */
+    get offsetTop (): number
+    {
+        return this._$offsetTop;
+    }
+    set offsetTop (offset_top: number)
+    {
+        this._$offsetTop = offset_top;
+    }
+
+    /**
      * @description メニューを表示
      *              Show menu
      *

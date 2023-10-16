@@ -1,4 +1,6 @@
+import { $USER_MENU_NAME } from "../../../const/MenuConfig";
 import { BaseMenu } from "./BaseMenu";
+import { execute as userSettingInitializeUseCase } from "../../application/usecase/UserSettingInitializeUseCase";
 
 /**
  * @description ユーザー設定メニュークラス
@@ -10,21 +12,13 @@ import { BaseMenu } from "./BaseMenu";
  */
 export class UserSettingMenu extends BaseMenu
 {
-    private _$timerId: NodeJS.Timeout | number;
-
     /**
      * @constructor
      * @public
      */
     constructor ()
     {
-        super("user-setting");
-
-        /**
-         * @type {number}
-         * @private
-         */
-        this._$timerId = -1;
+        super($USER_MENU_NAME);
     }
 
     /**
@@ -39,7 +33,6 @@ export class UserSettingMenu extends BaseMenu
     {
         element.style.left = `${this._$offsetLeft}px`;
         element.style.top  = `${this._$offsetTop}px`;
-
         return element;
     }
 
@@ -53,44 +46,23 @@ export class UserSettingMenu extends BaseMenu
      */
     async initialize (): Promise<void>
     {
-        this.setOffset();
+        userSettingInitializeUseCase();
 
-        // リサイズ時には座標を再取得
-        window.addEventListener("resize", (): void =>
-        {
-            clearTimeout(this._$timerId);
-            this._$timerId = setTimeout(() =>
-            {
-                this.setOffset();
-            }, 200);
-        });
+        // // 各種イベントを登録
+        // this._$registerEvent();
+
+        // ユーザー個別データの読み込み
     }
-
     /**
-     * @description メニュー表示位置の座標をセット
-     *              Set the coordinates of the menu display position
+     * @description 初期起動時に各種イベントを登録
+     *              Register various events at initial startup
      *
      * @return {void}
      * @method
      * @public
      */
-    setOffset (): void
+    _$registerEvent (): void
     {
-        const menu: HTMLElement | null = document
-            .getElementById("user-setting");
-
-        if (!menu) {
-            return ;
-        }
-
-        const tool: HTMLElement | null = document
-            .getElementById("tools-setting");
-
-        if (!tool) {
-            return ;
-        }
-
-        this._$offsetLeft = tool.offsetLeft + 30;
-        this._$offsetTop  = tool.offsetTop - menu.clientHeight + 80;
+        // TODO
     }
 }

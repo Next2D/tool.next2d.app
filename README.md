@@ -3,9 +3,11 @@ Authoring tools that work on the web
 
 https://user-images.githubusercontent.com/4123454/160549811-98562bb7-cdff-460c-96b0-c01bcd5e5eab.mp4
   
-  
+[![UnitTest](https://github.com/Next2D/tool.next2d.app/actions/workflows/integration.yml/badge.svg?branch=main)](https://github.com/Next2D/tool.next2d.app/actions/workflows/integration.yml)
+[![CodeQL](https://github.com/Next2D/tool.next2d.app/actions/workflows/codeql-analysis.yml/badge.svg?branch=main)](https://github.com/Next2D/tool.next2d.app/actions/workflows/codeql-analysis.yml)
+[![Lint](https://github.com/Next2D/tool.next2d.app/actions/workflows/lint.yml/badge.svg?branch=main)](https://github.com/Next2D/tool.next2d.app/actions/workflows/lint.yml)
 [![Discord](https://badgen.net/badge/icon/discord?icon=discord&label)](https://discord.gg/6c9rv5Uns5)
-![Twitter Follow](https://img.shields.io/twitter/follow/Next2D?style=social)
+[![Twitter](https://img.shields.io/twitter/follow/Next2D?style=social)](https://twitter.com/Next2D)
 
 ## Next2D NoCode Tool
 

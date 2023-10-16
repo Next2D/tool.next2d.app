@@ -1,3 +1,6 @@
+import { $PREFIX, $USER_SETTING_KEY } from "../const/Config";
+import { UserSettingObjectImpl } from "../interface/UserSettingObjectImpl";
+
 /**
  * @description 現在のカーソルタイプ
  *              Current cursor type
@@ -150,4 +153,27 @@ export const $getOffsetTop = (): number =>
 export const $setOffsetTop = (value: number): void =>
 {
     $offsetTop = value;
+};
+
+/**
+ * @description ユーザー個別の設定情報を返す
+ *              Returns user-specific configuration information
+ *
+ * @return {void}
+ * @method
+ * @public
+ */
+export const $getUserSetting = (): UserSettingObjectImpl =>
+{
+    const json: string | null = localStorage.getItem($USER_SETTING_KEY);
+
+    if (json) {
+        return JSON.parse(json) as UserSettingObjectImpl;
+    }
+
+    return {
+        "layer": false,
+        "type": "zlib",
+        "modal": true
+    };
 };

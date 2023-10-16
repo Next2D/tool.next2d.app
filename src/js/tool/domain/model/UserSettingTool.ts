@@ -1,6 +1,7 @@
 import { EventType } from "../event/EventType";
 import { BaseTool } from "./BaseTool";
 import { execute as userSettingMouseDownEventService } from "../../application/usecase/UserSettingMouseUpEventUseCase";
+import { $TOOL_USER_SETTING_ID, $TOOL_USER_SETTING_NAME } from "../../../const/ToolConfig";
 
 /**
  * @description 設定ツールの管理クラス
@@ -18,7 +19,7 @@ export class UserSettingTool extends BaseTool
      */
     constructor ()
     {
-        super("setting");
+        super($TOOL_USER_SETTING_NAME);
     }
 
     /**
@@ -46,7 +47,7 @@ export class UserSettingTool extends BaseTool
     _$registerEvent (): void
     {
         const element: HTMLElement | null = document
-            .getElementById("tools-setting");
+            .getElementById($TOOL_USER_SETTING_ID);
 
         if (element) {
             element.addEventListener(EventType.MOUSE_DOWN, (event: PointerEvent) =>
