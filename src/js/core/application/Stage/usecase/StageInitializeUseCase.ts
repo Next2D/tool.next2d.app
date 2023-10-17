@@ -1,6 +1,6 @@
 import type { Stage } from "../../../domain/model/Stage";
 import { execute as stageChageStyleService } from "../service/StageChageStyleService";
-import { execute as screenScaleResetService } from "../../../../screen/application/service/ScreenScaleResetService";
+import { execute as screenScaleResetService } from "../../../../screen/application/ScreenScale/service/ScreenScaleResetService";
 import { execute as libraryPreviewAreaChangeColorService } from "../../../../controller/application/LibraryPreviewArea/service/LibraryPreviewAreaChangeColorService";
 import { execute as stageSettingUpdateService } from "../../../../controller/application/StageSetting/service/StageSettingUpdateService";
 import { execute as timelineLabelNameUpdateService } from "../../../../timeline/application/TimelineLabelName/service/TimelineLabelNameUpdateService";

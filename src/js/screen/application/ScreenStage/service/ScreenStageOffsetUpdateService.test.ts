@@ -1,6 +1,6 @@
-import { 
-    $getScreenOffsetLeft, 
-    $getScreenOffsetTop 
+import {
+    $getScreenOffsetLeft,
+    $getScreenOffsetTop
 } from "../../../../util/Global";
 import { execute } from "./ScreenStageOffsetUpdateService";
 
