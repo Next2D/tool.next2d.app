@@ -1,7 +1,7 @@
-import { $SHORTCUT_MENU_NAME } from "../../../config/MenuConfig";
-import type { MenuImpl } from "../../../interface/MenuImpl";
-import { $getMenu } from "../../../menu/application/Menu";
-import { UserSettingMenu } from "../../../menu/domain/model/UserSettingMenu";
+import { $SHORTCUT_MENU_NAME } from "../../../../config/MenuConfig";
+import type { MenuImpl } from "../../../../interface/MenuImpl";
+import { $getMenu } from "../../Menu";
+import { UserSettingMenu } from "../../../domain/model/UserSettingMenu";
 
 /**
  * @description ショートカットメニューを表示

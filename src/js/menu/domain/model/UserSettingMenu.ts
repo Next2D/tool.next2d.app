@@ -1,6 +1,6 @@
 import { $USER_MENU_NAME } from "../../../config/MenuConfig";
 import { BaseMenu } from "./BaseMenu";
-import { execute as userSettingMenuInitializeUseCase } from "../../application/usecase/UserSettingMenuInitializeUseCase";
+import { execute as userSettingMenuInitializeUseCase } from "../../application/UserSetting/usecase/UserSettingMenuInitializeUseCase";
 
 /**
  * @description ユーザー設定メニュークラス

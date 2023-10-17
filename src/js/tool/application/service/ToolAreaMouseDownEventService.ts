@@ -1,4 +1,4 @@
-import { execute as menuAllHideService } from "../../../menu/application/service/MenuAllHideService";
+import { $allHide } from "../../../menu/application/Menu";
 
 /**
  * @description ツールエリアでマウスダウンした際の関数
@@ -11,5 +11,5 @@ import { execute as menuAllHideService } from "../../../menu/application/service
 export const execute = (): void =>
 {
     // 表示されてるメニューを全て非表示にする
-    menuAllHideService();
+    $allHide();
 };

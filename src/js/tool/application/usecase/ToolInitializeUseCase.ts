@@ -1,4 +1,4 @@
-import { execute as toolInitializeRegisterEventService } from "../service/ToolInitializeRegisterEventService";
+import { execute as toolInitializeRegisterEventUseCase } from "./ToolInitializeRegisterEventUseCase";
 import { execute as toolInitializeBootService } from "../service/ToolInitializeBootService";
 
 /**
@@ -12,7 +12,7 @@ import { execute as toolInitializeBootService } from "../service/ToolInitializeB
 export const execute = (): Promise<void[]> =>
 {
     // 初期起動時のイベント登録処理
-    toolInitializeRegisterEventService();
+    toolInitializeRegisterEventUseCase();
 
     // 各種ツールクラスを起動
     return toolInitializeBootService();

@@ -1,5 +1,5 @@
 import { execute } from "./UserSettingMenuPublishTypeOptionSelectedService";
-import { execute as userSettingObjectUpdateService } from "../../../user/application/service/UserSettingObjectUpdateService";
+import { execute as userSettingObjectUpdateService } from "../../../../user/application/service/UserSettingObjectUpdateService";
 
 describe("UserSettingMenuPublishTypeOptionSelectedServiceTest", () =>
 {

@@ -1,4 +1,4 @@
-import { execute as userLanguageSettingObjectGetService } from "../../../user/application/service/UserLanguageSettingObjectGetService";
+import { execute as userLanguageSettingObjectGetService } from "../../../../user/application/service/UserLanguageSettingObjectGetService";
 
 /**
  * @description 言語設定を保存情報に合わせて表示を切り替える

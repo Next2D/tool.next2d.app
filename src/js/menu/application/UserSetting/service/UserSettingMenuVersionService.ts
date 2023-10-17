@@ -1,5 +1,5 @@
-import { $USER_CURRENT_VERSION_ID } from "../../../config/UserSettingConfig";
-import { version } from "../../../../../package.json";
+import { $USER_CURRENT_VERSION_ID } from "../../../../config/UserSettingConfig";
+import { version } from "../../../../../../package.json";
 
 /**
  * @description ユーザー設定メニューの表示位置のoffsetを更新

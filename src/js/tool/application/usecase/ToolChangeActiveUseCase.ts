@@ -1,5 +1,5 @@
 import type { ToolImpl } from "../../../interface/ToolImpl";
-import { execute as menuAllHideService } from "../../../menu/application/service/MenuAllHideService";
+import { $allHide } from "../../../menu/application/Menu";
 import { $setActiveTool } from "../Tool";
 
 /**
@@ -16,7 +16,7 @@ export const execute = (event: PointerEvent, tool: ToolImpl<any>): void =>
     event.stopPropagation();
 
     // メニューを全て非表示にする
-    menuAllHideService();
+    $allHide();
 
     // アクティブツールを入れ替える
     $setActiveTool(tool);

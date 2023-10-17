@@ -1,5 +1,5 @@
 import { execute } from "./UserSettingMenuLanguageSettingOptionSelectedService";
-import { execute as userLanguageSettingObjectUpdateService } from "../../../user/application/service/UserLanguageSettingObjectUpdateService";
+import { execute as userLanguageSettingObjectUpdateService } from "../../../../user/application/service/UserLanguageSettingObjectUpdateService";
 
 describe("UserSettingMenuLanguageSettingOptionSelectedServiceTest", () =>
 {

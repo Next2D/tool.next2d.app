@@ -1,5 +1,5 @@
-import { $SHORTCUT_MENU_NAME } from "../../../config/MenuConfig";
-import { execute as menuAllHideService } from "../service/MenuAllHideService";
+import { $SHORTCUT_MENU_NAME } from "../../../../config/MenuConfig";
+import { $allHide } from "../../Menu";
 import { execute as userSettingMenuShortcutSettingMouseDownEventService } from "../service/UserSettingMenuShortcutSettingMouseDownEventService";
 
 /**
@@ -16,7 +16,7 @@ export const execute = (event: PointerEvent): void =>
     event.stopPropagation();
 
     // ユーザー設定以外の全てのメニューを非表示にする
-    menuAllHideService($SHORTCUT_MENU_NAME);
+    $allHide($SHORTCUT_MENU_NAME);
 
     // ショートカット設定のメニューを表示
     userSettingMenuShortcutSettingMouseDownEventService();

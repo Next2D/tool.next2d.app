@@ -1,5 +1,5 @@
-import { $USER_PUBLISH_MODAL_SETTING_ID } from "../../../config/UserSettingConfig";
-import { EventType } from "../../../tool/domain/event/EventType";
+import { $USER_PUBLISH_MODAL_SETTING_ID } from "../../../../config/UserSettingConfig";
+import { EventType } from "../../../../tool/domain/event/EventType";
 import { execute as userSettingMenuModalSettingChangeEventService } from "../service/UserSettingMenuModalSettingChangeEventService";
 import { execute as userSettingMenuModalSettingOptionSelectedService } from "../service/UserSettingMenuModalSettingOptionSelectedService";
 

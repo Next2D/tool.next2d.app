@@ -1,7 +1,7 @@
-import { execute } from "./UserSettingMenuModalSettingOptionSelectedService";
-import { execute as userSettingObjectUpdateService } from "../../../user/application/service/UserSettingObjectUpdateService";
+import { execute } from "./UserSettingMenuLayerSettingOptionSelectedService";
+import { execute as userSettingObjectUpdateService } from "../../../../user/application/service/UserSettingObjectUpdateService";
 
-describe("UserSettingMenuModalSettingOptionSelectedServiceTest", () =>
+describe("UserSettingMenuLayerSettingOptionSelectedServiceTest", () =>
 {
     test("execute test", () =>
     {
@@ -18,7 +18,7 @@ describe("UserSettingMenuModalSettingOptionSelectedServiceTest", () =>
 
         const mock1 = {
             "layer": true,
-            "modal": false,
+            "modal": true,
             "type": "zlib"
         };
 
@@ -28,7 +28,7 @@ describe("UserSettingMenuModalSettingOptionSelectedServiceTest", () =>
         expect(option2.selected).toBe(true);
 
         const mock2 = {
-            "layer": true,
+            "layer": false,
             "modal": true,
             "type": "zlib"
         };

@@ -1,5 +1,5 @@
 import { $USER_MENU_NAME } from "../../../config/MenuConfig";
-import { execute as menuAllHideService } from "../../../menu/application/service/MenuAllHideService";
+import { $allHide } from "../../../menu/application/Menu";
 import { execute as userSettingToolMouseDownEventService } from "../service/UserSettingToolMouseDownEventService";
 
 /**
@@ -16,7 +16,7 @@ export const execute = (event: PointerEvent): void =>
     event.stopPropagation();
 
     // ユーザー設定以外の全てのメニューを非表示にする
-    menuAllHideService($USER_MENU_NAME);
+    $allHide($USER_MENU_NAME);
 
     // ユーザー設定のメニューを表示
     userSettingToolMouseDownEventService();
