@@ -1,9 +1,10 @@
 import { ToolEvent } from "../event/ToolEvent";
 import { EventType } from "../event/EventType";
 import { $TOOL_PREFIX } from "../../../config/ToolConfig";
-import { execute as toolChangeActiveUseCase } from "../../application/ToolArea/usecase/ToolAreaChangeActiveUseCase";
+import { $allHide } from "../../../menu/application/MenuUtil";
 import {
-    $registerDefaultTool
+    $registerDefaultTool,
+    $setActiveTool
 } from "../../application/ToolUtil";
 
 /**
@@ -96,7 +97,7 @@ export class BaseTool extends ToolEvent
 
         element.addEventListener(EventType.MOUSE_DOWN, (event: PointerEvent): void =>
         {
-            toolChangeActiveUseCase(event, this);
+            this.changeActiveTool(event);
         });
     }
 
@@ -164,6 +165,27 @@ export class BaseTool extends ToolEvent
     get cursor (): string
     {
         return this._$cursor;
+    }
+
+    /**
+     * @description マウスで選択したツールをアクティブにする
+     *              Activate the tool selected with the mouse
+     *
+     * @param  {PointerEvent} event
+     * @return {void}
+     * @method
+     * @public
+     */
+    changeActiveTool (event: PointerEvent): void
+    {
+        // 親のイベントを中止する
+        event.stopPropagation();
+
+        // メニューを全て非表示にする
+        $allHide();
+
+        // アクティブツールを入れ替える
+        $setActiveTool(this);
     }
 
     /**
