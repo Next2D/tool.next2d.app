@@ -1,4 +1,4 @@
-import { $LIBRARY_PREVIEW_AREA_ID } from "../../../config/LibraryConfig";
+import { $LIBRARY_PREVIEW_AREA_ID } from "../../../../config/LibraryConfig";
 
 /**
  * @description ライブラリのプレビューエリアの背景色を更新

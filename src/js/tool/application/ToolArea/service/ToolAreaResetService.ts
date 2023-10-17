@@ -1,12 +1,12 @@
-import type { ArrowTool } from "../../domain/model/ArrowTool";
-import type { ToolImpl } from "../../../interface/ToolImpl";
-import { EventType } from "../../domain/event/EventType";
+import type { ArrowTool } from "../../../domain/model/ArrowTool";
+import type { ToolImpl } from "../../../../interface/ToolImpl";
+import { EventType } from "../../../domain/event/EventType";
 import {
     $getActiveTool,
     $getDefaultTool,
     $setActiveTool
-} from "../Tool";
-import { $TOOL_ARROW_NAME } from "../../../config/ToolConfig";
+} from "../../Tool";
+import { $TOOL_ARROW_NAME } from "../../../../config/ToolConfig";
 
 /**
  * @description ツールエリアを初回起動時の状態に戻す

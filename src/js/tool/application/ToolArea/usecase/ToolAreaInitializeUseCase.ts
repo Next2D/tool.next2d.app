@@ -1,5 +1,5 @@
-import { execute as toolInitializeRegisterEventUseCase } from "./ToolInitializeRegisterEventUseCase";
-import { execute as toolInitializeBootService } from "../service/ToolInitializeBootService";
+import { execute as toolInitializeRegisterEventUseCase } from "./ToolAreaInitializeRegisterEventUseCase";
+import { execute as toolInitializeBootService } from "../service/ToolAreaInitializeBootService";
 
 /**
  * @description ツールエリアの初期起動時のユースケース

@@ -1,9 +1,9 @@
-import { $TOOL_ARROW_NAME, $TOOL_PREFIX } from "../../../config/ToolConfig";
-import { ArrowTool } from "../../domain/model/ArrowTool";
-import { $getDefaultTool } from "../Tool";
-import { execute } from "./ToolInitializeBootService";
+import { $TOOL_ARROW_NAME, $TOOL_PREFIX } from "../../../../config/ToolConfig";
+import { ArrowTool } from "../../../domain/model/ArrowTool";
+import { $getDefaultTool } from "../../Tool";
+import { execute } from "./ToolAreaInitializeBootService";
 
-describe("ToolInitializeBootServiceTest", () =>
+describe("ToolAreaInitializeBootServiceTest", () =>
 {
     test("execute test", async () =>
     {

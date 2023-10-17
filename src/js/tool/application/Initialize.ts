@@ -1,5 +1,5 @@
 
-import { execute as toolInitializeUseCase } from "../application/usecase/ToolInitializeUseCase";
+import { execute as toolInitializeUseCase } from "./ToolArea/usecase/ToolAreaInitializeUseCase";
 
 /**
  * @description ツールエリアの初期起動関数

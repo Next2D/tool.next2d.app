@@ -1,6 +1,6 @@
-import { $setActiveTool } from "../Tool";
+import { $setActiveTool } from "../../Tool";
 import { execute } from "./ToolAreaMouseMoveEventService";
-import { EventType } from "../../domain/event/EventType";
+import { EventType } from "../../../domain/event/EventType";
 
 describe("ToolAreaMouseMoveEventServiceTest", () =>
 {

@@ -1,6 +1,6 @@
-import { EventType } from "../../domain/event/EventType";
-import { $getActiveTool } from "../Tool";
-import type { ToolImpl } from "../../../interface/ToolImpl";
+import { EventType } from "../../../domain/event/EventType";
+import { $getActiveTool } from "../../Tool";
+import type { ToolImpl } from "../../../../interface/ToolImpl";
 
 /**
  * @description 選択中のツールの移動イベント関数

@@ -1,6 +1,6 @@
 import { $TOOL_ARROW_NAME } from "../../../config/ToolConfig";
 import { BaseTool } from "./BaseTool";
-import { execute as arrowToolInitializeUseCase } from "../../application/usecase/ArrowToolInitializeUseCase";
+import { execute as arrowToolInitializeUseCase } from "../../application/ArrowTool/usecase/ArrowToolInitializeUseCase";
 
 /**
  * @description アローツールの管理クラス

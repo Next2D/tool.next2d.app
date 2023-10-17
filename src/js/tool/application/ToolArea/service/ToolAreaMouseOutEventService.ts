@@ -1,4 +1,4 @@
-import { $setCursor } from "../../../util/Global";
+import { $setCursor } from "../../../../util/Global";
 
 /**
  * @description スクリーンエリアのDisplayObjectにマウスが乗った時の処理

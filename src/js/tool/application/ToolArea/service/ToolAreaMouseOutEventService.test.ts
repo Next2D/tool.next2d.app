@@ -1,4 +1,4 @@
-import { $setCursor } from "../../../util/Global";
+import { $setCursor } from "../../../../util/Global";
 import { execute } from "./ToolAreaMouseOutEventService";
 
 describe("ToolAreaMouseOutEventServiceTest", () =>

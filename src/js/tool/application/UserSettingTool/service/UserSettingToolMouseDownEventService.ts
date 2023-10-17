@@ -1,7 +1,7 @@
-import { $USER_MENU_NAME } from "../../../config/MenuConfig";
-import { $getMenu } from "../../../menu/application/Menu";
-import type { MenuImpl } from "../../../interface/MenuImpl";
-import type { UserSettingMenu } from "../../../menu/domain/model/UserSettingMenu";
+import { $USER_MENU_NAME } from "../../../../config/MenuConfig";
+import { $getMenu } from "../../../../menu/application/Menu";
+import type { MenuImpl } from "../../../../interface/MenuImpl";
+import type { UserSettingMenu } from "../../../../menu/domain/model/UserSettingMenu";
 
 /**
  * @description ユーザー設定メニューの表示

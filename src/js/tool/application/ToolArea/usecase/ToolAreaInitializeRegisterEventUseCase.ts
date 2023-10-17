@@ -1,5 +1,5 @@
-import { $TOOL_PREFIX } from "../../../config/ToolConfig";
-import { EventType } from "../../domain/event/EventType";
+import { $TOOL_PREFIX } from "../../../../config/ToolConfig";
+import { EventType } from "../../../domain/event/EventType";
 import { execute as toolAreaMouseMoveEventService } from "../service/ToolAreaMouseMoveEventService";
 import { execute as toolAreaMouseOutEventService } from "../service/ToolAreaMouseOutEventService";
 import { execute as toolAreaMouseDownEventService } from "../service/ToolAreaMouseDownEventService";

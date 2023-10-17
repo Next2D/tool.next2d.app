@@ -1,4 +1,4 @@
-import { $allHide } from "../../../menu/application/Menu";
+import { $allHide } from "../../../../menu/application/Menu";
 
 /**
  * @description ツールエリアでマウスダウンした際の関数
