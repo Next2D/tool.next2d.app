@@ -33,3 +33,12 @@ export const $USER_PUBLISH_MODAL_SETTING_ID: string = "modal-setting";
  * @constant
  */
 export const $USER_CURRENT_VERSION_ID: string = "current-version";
+
+/**
+ * @description 言語設定のElementのID
+ *              ID of Element in Language Settings
+ *
+ * @type {string}
+ * @constant
+ */
+export const $USER_LANGUAGE_SETTING_ID: string = "language-setting";

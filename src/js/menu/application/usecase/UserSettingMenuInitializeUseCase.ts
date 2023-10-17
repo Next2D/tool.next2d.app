@@ -2,6 +2,7 @@ import { execute as userSettingMenuUpdateOffsetService } from "../service/UserSe
 import { execute as userSettingMenuLayerSettingInitializeUseCase } from "./UserSettingMenuLayerSettingInitializeUseCase";
 import { execute as userSettingMenuPublishTypeInitializeUseCase } from "./UserSettingMenuPublishTypeInitializeUseCase";
 import { execute as userSettingMenuModalSettingInitializeUseCase } from "./UserSettingMenuModalSettingInitializeUseCase";
+import { execute as userSettingMenuLanguageSettingInitializeUseCase } from "./UserSettingMenuLanguageSettingInitializeUseCase";
 import { execute as userSettingMenuVersionService } from "../service/UserSettingMenuVersionService";
 
 /**
@@ -44,6 +45,9 @@ export const execute = (): void =>
 
     // モーダル表示のユースケースを実行
     userSettingMenuModalSettingInitializeUseCase();
+
+    // 言語設定のユースケースを実行
+    userSettingMenuLanguageSettingInitializeUseCase();
 
     // バージョン情報を更新
     userSettingMenuVersionService();

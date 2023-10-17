@@ -1,5 +1,6 @@
 import { execute as languageTranslationUseCase } from "../application/usecase/LanguageTranslationUseCase";
 import { execute as userLanguageSettingObjectGetService } from "../../user/application/service/UserLanguageSettingObjectGetService";
+import { execute as userLanguageSettingObjectUpdateService } from "../../user/application/service/UserLanguageSettingObjectUpdateService";
 
 /**
  * @description LocalStorageから言語設定を読み込んで、指定言語に変換
@@ -12,53 +13,52 @@ import { execute as userLanguageSettingObjectGetService } from "../../user/appli
 export const execute = (): void =>
 {
     let language: string | null = userLanguageSettingObjectGetService();
-
     if (!language) {
 
         switch (navigator.language) {
 
             case "ja":
-                language = "japanese";
+                language = "Japanese";
                 break;
 
             case "ko":
-                language = "korean";
+                language = "Korean";
                 break;
 
             case "zh":
-                language = "chinese";
+                language = "Chinese";
                 break;
 
             case "fr":
-                language = "french";
+                language = "French";
                 break;
 
             case "ru":
-                language = "russia";
+                language = "Russia";
                 break;
 
             case "it":
-                language = "italiano";
+                language = "Italiano";
                 break;
 
             case "es":
-                language = "spanish";
+                language = "Spanish";
                 break;
 
             case "bg":
-                language = "bulgaria";
+                language = "Bulgaria";
                 break;
 
             case "fi":
-                language = "finland";
+                language = "Finland";
                 break;
 
             case "de":
-                language = "germany";
+                language = "Germany";
                 break;
 
             case "hu":
-                language = "hungary";
+                language = "Hungary";
                 break;
 
             case "id":
@@ -66,40 +66,41 @@ export const execute = (): void =>
                 break;
 
             case "lv":
-                language = "latvia";
+                language = "Latvia";
                 break;
 
             case "lt":
-                language = "lithuania";
+                language = "Lithuania";
                 break;
 
             case "nl":
-                language = "netherlands";
+                language = "Netherlands";
                 break;
 
             case "pl":
-                language = "poland";
+                language = "Poland";
                 break;
 
             case "ro":
-                language = "romania";
+                language = "Romania";
                 break;
 
             case "sk":
-                language = "slovakia";
+                language = "Slovakia";
                 break;
 
             case "tr":
-                language = "turkey";
+                language = "Turkey";
                 break;
 
             default:
-                language = "english";
+                language = "English";
                 break;
 
         }
 
+        userLanguageSettingObjectUpdateService(language);
     }
 
-    languageTranslationUseCase(language.toLocaleLowerCase());
+    languageTranslationUseCase(language);
 };
