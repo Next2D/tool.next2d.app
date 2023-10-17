@@ -1,5 +1,5 @@
-import { execute as toolInitializeRegisterEventUseCase } from "./ToolAreaInitializeRegisterEventUseCase";
-import { execute as toolInitializeBootService } from "../service/ToolAreaInitializeBootService";
+import { execute as toolAreaInitializeRegisterEventUseCase } from "./ToolAreaInitializeRegisterEventUseCase";
+import { execute as toolAreaInitializeBootService } from "../service/ToolAreaInitializeBootService";
 
 /**
  * @description ツールエリアの初期起動時のユースケース
@@ -12,8 +12,8 @@ import { execute as toolInitializeBootService } from "../service/ToolAreaInitial
 export const execute = (): Promise<void[]> =>
 {
     // 初期起動時のイベント登録処理
-    toolInitializeRegisterEventUseCase();
+    toolAreaInitializeRegisterEventUseCase();
 
     // 各種ツールクラスを起動
-    return toolInitializeBootService();
+    return toolAreaInitializeBootService();
 };

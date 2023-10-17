@@ -1,5 +1,5 @@
 import { $SHORTCUT_MENU_NAME } from "../../../../config/MenuConfig";
-import { $allHide } from "../../Menu";
+import { $allHide } from "../../MenuUtil";
 import { execute as userSettingMenuShortcutSettingMouseDownEventService } from "../service/UserSettingMenuShortcutSettingMouseDownEventService";
 
 /**

@@ -1,5 +1,5 @@
 import { $USER_MENU_NAME } from "../../../../config/MenuConfig";
-import { $getMenu } from "../../../../menu/application/Menu";
+import { $getMenu } from "../../../../menu/application/MenuUtil";
 import type { MenuImpl } from "../../../../interface/MenuImpl";
 import type { UserSettingMenu } from "../../../../menu/domain/model/UserSettingMenu";
 

@@ -1,6 +1,6 @@
 import { $USER_MENU_NAME } from "../../../../config/MenuConfig";
 import { $TOOL_USER_SETTING_ID } from "../../../../config/ToolConfig";
-import { $getMenu } from "../../Menu";
+import { $getMenu } from "../../MenuUtil";
 
 /**
  * @description ユーザー設定メニューの表示位置のoffsetを更新

@@ -1,5 +1,5 @@
 import { $LANGUAGE_ELEMENTS_CLASS_NAME } from "../../../config/LanguageConfig";
-import { $setMapping } from "../Language";
+import { $setMapping } from "../LanguageUtil";
 import { execute } from "./LanguageTranslationService";
 
 describe("LanguageTranslationServiceTest", () =>

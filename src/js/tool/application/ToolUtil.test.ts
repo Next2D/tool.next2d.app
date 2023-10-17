@@ -4,7 +4,7 @@ import {
     $setActiveTool,
     $registerDefaultTool,
     $getDefaultTool
-} from "./Tool";
+} from "./ToolUtil";
 
 describe("ToolTest", () =>
 {

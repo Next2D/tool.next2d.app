@@ -1,4 +1,4 @@
-import { $getActiveTool, $registerDefaultTool, $setActiveTool } from "../../Tool";
+import { $getActiveTool, $registerDefaultTool, $setActiveTool } from "../../ToolUtil";
 import { execute } from "./ToolAreaResetService";
 
 describe("ToolAreaResetServiceTest", () =>

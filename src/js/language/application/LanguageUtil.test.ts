@@ -2,7 +2,7 @@ import {
     $getMapping,
     $setMapping,
     $replace
-} from "./Language";
+} from "./LanguageUtil";
 
 describe("LanguageTest", () =>
 {

@@ -1,5 +1,5 @@
 import { execute as languageLoadRepository } from "../../domain/repository/LanguageLoadRepository";
-import { $setMapping } from "../Language";
+import { $setMapping } from "../LanguageUtil";
 import { execute as languageTranslationService } from "../service/LanguageTranslationService";
 
 /**

@@ -1,5 +1,5 @@
 import { $USER_MENU_NAME } from "../../../../config/MenuConfig";
-import { $allHide } from "../../../../menu/application/Menu";
+import { $allHide } from "../../../../menu/application/MenuUtil";
 import { execute as userSettingToolMouseDownEventService } from "../service/UserSettingToolMouseDownEventService";
 
 /**

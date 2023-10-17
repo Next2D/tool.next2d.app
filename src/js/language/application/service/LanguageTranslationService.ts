@@ -1,5 +1,5 @@
 import { $LANGUAGE_ELEMENTS_CLASS_NAME } from "../../../config/LanguageConfig";
-import { $getMapping } from "../Language";
+import { $getMapping } from "../LanguageUtil";
 
 /**
  * @description 変換対象のクラス名が設定されてるElementの言語を変換

@@ -1,4 +1,4 @@
-import { $setSocket } from "../../Share";
+import { $setSocket } from "../ShareUtil";
 import {
     $SHARE_PREFIX,
     $SHARE_URL

@@ -1,6 +1,6 @@
 import { $SHORTCUT_MENU_NAME } from "../../../../config/MenuConfig";
 import type { MenuImpl } from "../../../../interface/MenuImpl";
-import { $getMenu } from "../../Menu";
+import { $getMenu } from "../../MenuUtil";
 import { UserSettingMenu } from "../../../domain/model/UserSettingMenu";
 
 /**

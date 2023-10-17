@@ -5,7 +5,7 @@ import {
     $getActiveTool,
     $getDefaultTool,
     $setActiveTool
-} from "../../Tool";
+} from "../../ToolUtil";
 import { $TOOL_ARROW_NAME } from "../../../../config/ToolConfig";
 
 /**

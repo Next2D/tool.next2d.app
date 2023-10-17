@@ -1,4 +1,4 @@
-import { $registerMenu } from "../../../../menu/application/Menu";
+import { $registerMenu } from "../../../../menu/application/MenuUtil";
 import { execute } from "./UserSettingToolMouseDownEventService";
 
 describe("UserSettingMouseDownEventServiceTest", () =>

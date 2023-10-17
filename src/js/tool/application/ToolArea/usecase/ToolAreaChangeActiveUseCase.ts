@@ -1,6 +1,6 @@
 import type { ToolImpl } from "../../../../interface/ToolImpl";
-import { $allHide } from "../../../../menu/application/Menu";
-import { $setActiveTool } from "../../Tool";
+import { $allHide } from "../../../../menu/application/MenuUtil";
+import { $setActiveTool } from "../../ToolUtil";
 
 /**
  * @description ユーザー設定ツールの選択時のユースケース

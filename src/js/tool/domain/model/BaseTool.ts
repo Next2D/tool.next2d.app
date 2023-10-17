@@ -4,7 +4,7 @@ import { $TOOL_PREFIX } from "../../../config/ToolConfig";
 import { execute as toolChangeActiveUseCase } from "../../application/ToolArea/usecase/ToolAreaChangeActiveUseCase";
 import {
     $registerDefaultTool
-} from "../../application/Tool";
+} from "../../application/ToolUtil";
 
 /**
  * @description 各種ツールクラスの親クラス

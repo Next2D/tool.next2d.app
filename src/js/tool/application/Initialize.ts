@@ -1,5 +1,5 @@
 
-import { execute as toolInitializeUseCase } from "./ToolArea/usecase/ToolAreaInitializeUseCase";
+import { execute as toolAreaInitializeUseCase } from "./ToolArea/usecase/ToolAreaInitializeUseCase";
 
 /**
  * @description ツールエリアの初期起動関数
@@ -14,7 +14,7 @@ export const execute = (): Promise<void> =>
     // 初期起動時のユースケース
     return new Promise((resolve): void =>
     {
-        toolInitializeUseCase()
+        toolAreaInitializeUseCase()
             .then((): void =>
             {
                 resolve();

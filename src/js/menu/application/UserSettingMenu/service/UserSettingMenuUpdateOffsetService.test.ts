@@ -1,6 +1,6 @@
 import { $USER_MENU_NAME } from "../../../../config/MenuConfig";
 import { $TOOL_USER_SETTING_ID } from "../../../../config/ToolConfig";
-import { $registerMenu } from "../../Menu";
+import { $registerMenu } from "../../MenuUtil";
 import { execute } from "./UserSettingMenuUpdateOffsetService";
 
 describe("UserSettingMenuUpdateOffsetServiceTest", () =>

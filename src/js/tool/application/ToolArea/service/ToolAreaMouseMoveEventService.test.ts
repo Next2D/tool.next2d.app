@@ -1,4 +1,4 @@
-import { $setActiveTool } from "../../Tool";
+import { $setActiveTool } from "../../ToolUtil";
 import { execute } from "./ToolAreaMouseMoveEventService";
 import { EventType } from "../../../domain/event/EventType";
 

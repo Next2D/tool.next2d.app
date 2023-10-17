@@ -3,7 +3,7 @@ import {
     $getMenu,
     $getMenuAll,
     $allHide
-} from "./Menu";
+} from "./MenuUtil";
 
 describe("MenuTest", () =>
 {

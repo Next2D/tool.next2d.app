@@ -1,4 +1,4 @@
-import { $registerMenu } from "../../application/Menu";
+import { $registerMenu } from "../../application/MenuUtil";
 
 /**
  * @description 各種メニュークラスの親クラス
