@@ -44,7 +44,7 @@ export const $setMapping = (object: any): void =>
  * @method
  * @public
  */
-export const replace = (value: string): string =>
+export const $replace = (value: string): string =>
 {
     return $mapping.has(value)
         ? $mapping.get(value) || value

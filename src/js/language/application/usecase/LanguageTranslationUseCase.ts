@@ -14,11 +14,15 @@ import { execute as languageTranslationService } from "../service/LanguageTransl
 export const execute = async (language: string): Promise<void> =>
 {
     // JSONを取得してマッピングに登録
-    $setMapping(languageLoadRepository(language));
+    languageLoadRepository(language)
+        .then((values) =>
+        {
+            $setMapping(values);
 
-    // 少しだけ遅延して指定言語に変換
-    requestAnimationFrame(() =>
-    {
-        languageTranslationService();
-    });
+            // 少しだけ遅延して指定言語に変換
+            requestAnimationFrame(() =>
+            {
+                languageTranslationService();
+            });
+        });
 };

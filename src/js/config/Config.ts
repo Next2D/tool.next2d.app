@@ -15,3 +15,12 @@ export const $PREFIX: string = "__next2d-tools__";
  * @constant
  */
 export const $USER_SETTING_KEY: string = `${$PREFIX}@user-setting`;
+
+/**
+ * @description 言語設定の保存キー
+ *              Key to save language settings
+ *
+ * @type {string}
+ * @constant
+ */
+export const $USER_LANGUAGE_SETTING_KEY: string = `${$PREFIX}@language-setting`;

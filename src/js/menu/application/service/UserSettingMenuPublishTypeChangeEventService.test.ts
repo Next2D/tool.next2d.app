@@ -1,5 +1,5 @@
 import { execute } from "./UserSettingMenuPublishTypeChangeEventService";
-import { execute as userSettingObjectGetService } from "../../../user/service/UserSettingObjectGetService";
+import { execute as userSettingObjectGetService } from "../../../user/application/service/UserSettingObjectGetService";
 
 describe("UserSettingMenuPublishTypeChangeEventServiceTest", () =>
 {

@@ -9,15 +9,11 @@ import { $LANGUAGE_URL } from "../../../config/LanguageConfig";
  * @method
  * @public
  */
-export const execute = async (language: string): Promise<any> =>
+export const execute = (language: string): Promise<any> =>
 {
-    return await fetch(`${$LANGUAGE_URL}/${language}.json`)
-        .then((response) =>
+    return fetch(`${$LANGUAGE_URL}/${language}.json`)
+        .then((response: Response) =>
         {
             return response.json();
-        })
-        .then((json) =>
-        {
-            return JSON.parse(json);
         });
 };
