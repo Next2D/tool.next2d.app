@@ -1,5 +1,5 @@
-import type { Stage } from "../../../core/domain/model/Stage";
-import { $SCREEN_ID } from "../../../config/ScreenConfig";
+import type { Stage } from "../../../../core/domain/model/Stage";
+import { $SCREEN_ID } from "../../../../config/ScreenConfig";
 
 /**
  * @description ステージの背後のレイヤーのサイズを更新

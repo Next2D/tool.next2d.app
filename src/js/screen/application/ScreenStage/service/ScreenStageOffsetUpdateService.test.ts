@@ -1,7 +1,7 @@
 import { 
     $getScreenOffsetLeft, 
     $getScreenOffsetTop 
-} from "../../../util/Global";
+} from "../../../../util/Global";
 import { execute } from "./ScreenStageOffsetUpdateService";
 
 describe("ScreenStageOffsetUpdateServiceTest", () =>

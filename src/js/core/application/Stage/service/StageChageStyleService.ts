@@ -1,5 +1,5 @@
-import type { Stage } from "../../domain/model/Stage";
-import { $SCREEN_STAGE_ID } from "../../../config/ScreenConfig";
+import type { Stage } from "../../../domain/model/Stage";
+import { $SCREEN_STAGE_ID } from "../../../../config/ScreenConfig";
 
 /**
  * @description ステージElementの幅と高さと背景色をセット
