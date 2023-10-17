@@ -1,5 +1,6 @@
 import type { MenuImpl } from "../../interface/MenuImpl";
 import { UserSettingMenu } from "../domain/model/UserSettingMenu";
+import { ShortcutSettingMenu } from "../domain/model/ShortcutSettingMenu";
 
 /**
  * @description 起動対象のToolクラスの配列
@@ -8,7 +9,8 @@ import { UserSettingMenu } from "../domain/model/UserSettingMenu";
  * @private
  */
 const menus: MenuImpl<any>[] = [
-    UserSettingMenu
+    UserSettingMenu,
+    ShortcutSettingMenu
 ];
 
 /**

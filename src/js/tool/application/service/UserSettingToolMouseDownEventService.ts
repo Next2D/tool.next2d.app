@@ -1,11 +1,11 @@
 import { $USER_MENU_NAME } from "../../../config/MenuConfig";
-import { MenuImpl } from "../../../interface/MenuImpl";
 import { $getMenu } from "../../../menu/application/Menu";
-import { UserSettingMenu } from "../../../menu/domain/model/UserSettingMenu";
+import type { MenuImpl } from "../../../interface/MenuImpl";
+import type { UserSettingMenu } from "../../../menu/domain/model/UserSettingMenu";
 
 /**
- * @description ユーザー設定ツールの選択時の関数
- *              Function when selecting the User Preferences tool
+ * @description ユーザー設定メニューの表示
+ *              Displaying the User Preferences Menu
  *
  * @return {void}
  * @method

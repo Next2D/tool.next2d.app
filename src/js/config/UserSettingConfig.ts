@@ -42,3 +42,13 @@ export const $USER_CURRENT_VERSION_ID: string = "current-version";
  * @constant
  */
 export const $USER_LANGUAGE_SETTING_ID: string = "language-setting";
+
+/**
+ * @description ショートカット設定のElementのID
+ *              ID of Element in Shortcut Settings
+ *
+ * @type {string}
+ * @constant
+ */
+export const $USER_SHORTCUT_SETTING_ID: string = "shortcut-setting";
+

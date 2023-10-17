@@ -4,6 +4,7 @@ import { execute as userSettingMenuPublishTypeInitializeUseCase } from "./UserSe
 import { execute as userSettingMenuModalSettingInitializeUseCase } from "./UserSettingMenuModalSettingInitializeUseCase";
 import { execute as userSettingMenuLanguageSettingInitializeUseCase } from "./UserSettingMenuLanguageSettingInitializeUseCase";
 import { execute as userSettingMenuVersionService } from "../service/UserSettingMenuVersionService";
+import { execute as userSettingMenuShortcutSettingInitializeUseCase } from "./UserSettingMenuShortcutSettingInitializeUseCase";
 
 /**
  * @description setTimerのIDを管理
@@ -48,6 +49,9 @@ export const execute = (): void =>
 
     // 言語設定のユースケースを実行
     userSettingMenuLanguageSettingInitializeUseCase();
+
+    // ショートカットメニューのユースケースを実行
+    userSettingMenuShortcutSettingInitializeUseCase();
 
     // バージョン情報を更新
     userSettingMenuVersionService();
