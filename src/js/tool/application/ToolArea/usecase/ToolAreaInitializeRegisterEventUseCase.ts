@@ -1,8 +1,8 @@
 import { $TOOL_PREFIX } from "../../../../config/ToolConfig";
 import { EventType } from "../../../domain/event/EventType";
 import { execute as toolAreaMouseMoveEventService } from "../service/ToolAreaMouseMoveEventService";
-import { execute as toolAreaMouseOutEventService } from "../service/ToolAreaMouseOutEventService";
-import { execute as toolAreaMouseDownEventService } from "../service/ToolAreaMouseDownEventService";
+import { execute as toolAreaMouseDownEventUseCase } from "./ToolAreaMouseDownEventUseCase";
+import { execute as toolAreaMouseUpEventUseCase } from "./ToolAreaMouseUpEventUseCase";
 
 /**
  * @description ツールエリアの初期起動時のイベント登録
@@ -22,7 +22,7 @@ export const execute = (): void =>
     // ツールエリア内でのマウス移動の処理
     element.addEventListener(EventType.MOUSE_DOWN, (): void =>
     {
-        toolAreaMouseDownEventService();
+        toolAreaMouseDownEventUseCase();
     });
 
     // ツールエリア内でのマウス移動の処理
@@ -31,9 +31,9 @@ export const execute = (): void =>
         toolAreaMouseMoveEventService(event);
     });
 
-    // ツールエリアからマウスが外れた場合の処理
-    element.addEventListener(EventType.MOUSE_OUT, (event: PointerEvent): void =>
+    // ツールエリア内でのマウスアップ処理
+    element.addEventListener(EventType.MOUSE_UP, (event: PointerEvent): void =>
     {
-        toolAreaMouseOutEventService(event);
+        toolAreaMouseUpEventUseCase(event);
     });
 };

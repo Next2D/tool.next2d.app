@@ -168,3 +168,12 @@ export const $TOOL_USER_SETTING_ID: string = `${$TOOL_PREFIX}-${$TOOL_USER_SETTI
  * @constant
  */
 export const $SCREEN_SCALE_ID: string = "screen-scale";
+
+/**
+ * @description ツールエリアの幅
+ *              Tool Area Width
+ *
+ * @type {number}
+ * @constant
+ */
+export const $TOOL_AERA_WIDTH: number = 45;

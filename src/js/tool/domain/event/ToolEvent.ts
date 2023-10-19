@@ -64,14 +64,20 @@ export class ToolEvent extends EventDispatcher
         // マウスダウン時にアクティブ化
         this.addEventListener(EventType.MOUSE_DOWN, (event: PointerEvent): void =>
         {
+            // 親のイベントを中止する
             event.stopPropagation();
+
+            // ツールをアクティブ化
             this.activation(event);
         });
 
         // マウスアップ時に非アクティブ化
         this.addEventListener(EventType.MOUSE_UP, (event: PointerEvent): void =>
         {
+            // 親のイベントを中止する
             event.stopPropagation();
+
+            // ツールを非アクティブ化
             this.termination();
         });
 

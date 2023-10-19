@@ -24,3 +24,12 @@ export const $USER_SETTING_KEY: string = `${$PREFIX}@user-setting`;
  * @constant
  */
 export const $USER_LANGUAGE_SETTING_KEY: string = `${$PREFIX}@language-setting`;
+
+/**
+ * @description ショートカットの保存キー
+ *              Key to save shortcut settings
+ *
+ * @type {string}
+ * @constant
+ */
+export const $USER_SHORTCUT_SETTING_KEY: string = `${$PREFIX}@shortcut`;

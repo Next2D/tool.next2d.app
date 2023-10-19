@@ -3,7 +3,9 @@ import {
     $getActiveTool,
     $setActiveTool,
     $registerDefaultTool,
-    $getDefaultTool
+    $getDefaultTool,
+    $getMouseState,
+    $setMouseState
 } from "./ToolUtil";
 
 describe("ToolTest", () =>
@@ -69,5 +71,14 @@ describe("ToolTest", () =>
         const tool2 = $getDefaultTool("mock2");
         expect(tool2 === mock1).toBe(false);
         expect(tool2 === mock2).toBe(true);
+    });
+
+    test("$getMouseState and $setMouseState test", () =>
+    {
+        expect($getMouseState()).toBe("up");
+        $setMouseState("down");
+        expect($getMouseState()).toBe("down");
+        $setMouseState("up");
+        expect($getMouseState()).toBe("up");
     });
 });

@@ -26,7 +26,10 @@ describe("UserSettingMenuUpdateOffsetServiceTest", () =>
         expect(menuMock.offsetTop).toBe(0);
 
         execute();
-        expect(menuMock.offsetLeft).toBe(30);
-        expect(menuMock.offsetTop).toBe(80);
+        expect(menuMock.offsetLeft).toBe(0);
+        expect(menuMock.offsetTop).toBe(0);
+
+        menuDiv.remove();
+        toolDiv.remove();
     });
 });

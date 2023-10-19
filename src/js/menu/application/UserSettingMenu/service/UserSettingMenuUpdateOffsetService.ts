@@ -1,5 +1,5 @@
 import { $USER_MENU_NAME } from "../../../../config/MenuConfig";
-import { $TOOL_USER_SETTING_ID } from "../../../../config/ToolConfig";
+import { $TOOL_AERA_WIDTH, $TOOL_PREFIX, $TOOL_USER_SETTING_ID } from "../../../../config/ToolConfig";
 import { $getMenu } from "../../MenuUtil";
 
 /**
@@ -12,25 +12,41 @@ import { $getMenu } from "../../MenuUtil";
  */
 export const execute = (): void =>
 {
-    const userSettingMenu = $getMenu($USER_MENU_NAME);
-    if (!userSettingMenu) {
-        return ;
-    }
-
-    const menu: HTMLElement | null = document
-        .getElementById($USER_MENU_NAME);
-
+    // ユーザーメニューオブジェクト
+    const menu = $getMenu($USER_MENU_NAME);
     if (!menu) {
         return ;
     }
 
-    const tool: HTMLElement | null = document
-        .getElementById($TOOL_USER_SETTING_ID);
+    // ユーザーメニューのElement
+    const userSettingMenu: HTMLElement | null = document
+        .getElementById($USER_MENU_NAME);
 
-    if (!tool) {
+    if (!userSettingMenu) {
         return ;
     }
 
-    userSettingMenu.offsetLeft = tool.offsetLeft + 30;
-    userSettingMenu.offsetTop  = tool.offsetTop - menu.clientHeight + 80;
+    // ユーザー設定ツールのElement
+    const userSettingTool: HTMLElement | null = document
+        .getElementById($TOOL_USER_SETTING_ID);
+
+    if (!userSettingTool) {
+        return ;
+    }
+
+    // ユーザーエリアのElement
+    const toolArea: HTMLElement | null = document
+        .getElementById($TOOL_PREFIX);
+
+    if (!toolArea) {
+        return ;
+    }
+
+    let left: number = toolArea.offsetLeft + userSettingTool.offsetLeft + $TOOL_AERA_WIDTH;
+    if (left + userSettingMenu.clientWidth > window.screen.width) {
+        left = toolArea.offsetLeft - userSettingTool.offsetLeft - userSettingMenu.clientWidth;
+    }
+
+    menu.offsetLeft = left;
+    menu.offsetTop  = toolArea.offsetTop + userSettingTool.offsetTop + userSettingTool.clientHeight - userSettingMenu.clientHeight;
 };

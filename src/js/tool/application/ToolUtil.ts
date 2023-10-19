@@ -78,3 +78,73 @@ export const $getDefaultTool = (name: string): ToolImpl<any> | null =>
         ? $defaultTools.get(name)
         : null;
 };
+
+/**
+ * @description ツールエリアでのマウス状態
+ *              Mouse state in tool area
+ *
+ * @private
+ */
+let $mouseState: "up" | "down" = "up";
+
+/**
+ * @description ツールエリアでのマウス状態を取得
+ *              Get mouse status in tool area
+ *
+ * @return {string}
+ * @method
+ * @public
+ */
+export const $getMouseState = (): "up" | "down" =>
+{
+    return $mouseState;
+};
+
+/**
+ * @description ツールエリアでのマウス状態を更新
+ *              Update mouse status in tool area
+ *
+ * @param  {string} state
+ * @return {void}
+ * @method
+ * @public
+ */
+export const $setMouseState = (state: "up" | "down"): void =>
+{
+    $mouseState = state;
+};
+
+/**
+ * @description ツールエリアの移動状態
+ *              Movement state of tool area
+ *
+ * @private
+ */
+let $toolAreaState: "move" | "fixed" = "fixed";
+
+/**
+ * @description ツールエリアでの移動状態を取得
+ *              Get move status in tool area
+ *
+ * @return {string}
+ * @method
+ * @public
+ */
+export const $getToolAreaState = (): "move" | "fixed" =>
+{
+    return $toolAreaState;
+};
+
+/**
+ * @description ツールエリアでの移動状態を更新
+ *              Update movement status in tool area
+ *
+ * @param  {string} state
+ * @return {void}
+ * @method
+ * @public
+ */
+export const $setToolAreaState = (state: "move" | "fixed"): void =>
+{
+    $toolAreaState = state;
+};

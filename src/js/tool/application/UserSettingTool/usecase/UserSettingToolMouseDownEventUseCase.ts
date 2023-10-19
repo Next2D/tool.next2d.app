@@ -1,6 +1,7 @@
 import { $USER_MENU_NAME } from "../../../../config/MenuConfig";
 import { $allHide } from "../../../../menu/application/MenuUtil";
 import { execute as userSettingToolMouseDownEventService } from "../service/UserSettingToolMouseDownEventService";
+import { execute as userSettingMenuUpdateOffsetService } from "../../../../menu/application/UserSettingMenu/service/UserSettingMenuUpdateOffsetService";
 
 /**
  * @description ユーザー設定ツールの選択時のユースケース
@@ -17,6 +18,9 @@ export const execute = (event: PointerEvent): void =>
 
     // ユーザー設定以外の全てのメニューを非表示にする
     $allHide($USER_MENU_NAME);
+
+    // 表示位置を調整
+    userSettingMenuUpdateOffsetService();
 
     // ユーザー設定のメニューを表示
     userSettingToolMouseDownEventService();

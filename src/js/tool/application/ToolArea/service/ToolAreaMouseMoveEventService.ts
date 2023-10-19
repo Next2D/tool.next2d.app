@@ -1,5 +1,5 @@
 import { EventType } from "../../../domain/event/EventType";
-import { $getActiveTool } from "../../ToolUtil";
+import { $getActiveTool, $getToolAreaState } from "../../ToolUtil";
 import type { ToolImpl } from "../../../../interface/ToolImpl";
 
 /**
@@ -14,7 +14,9 @@ import type { ToolImpl } from "../../../../interface/ToolImpl";
 export const execute = (event: PointerEvent): void =>
 {
     // 親のイベントを中止する
-    event.stopPropagation();
+    if ($getToolAreaState() === "fixed") {
+        event.stopPropagation();
+    }
 
     const activeTool: ToolImpl<any> | null = $getActiveTool();
     if (!activeTool) {
