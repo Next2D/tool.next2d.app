@@ -1,4 +1,3 @@
-import { $TOOL_PREFIX } from "../../../../config/ToolConfig";
 import { $setCursor } from "../../../../util/Global";
 import { EventType } from "../../../domain/event/EventType";
 import { execute as toolAreaActiveMoveService } from "./ToolAreaActiveMoveService";
