@@ -19,6 +19,7 @@ export const execute = (event: PointerEvent): void =>
     const element: HTMLElement | null = document
         .getElementById($TOOL_PREFIX);
 
+    // ツールエリアを移動
     if (element) {
         element.style.left = `${element.offsetLeft + event.movementX}px`;
         element.style.top  = `${element.offsetTop + event.movementY}px`;

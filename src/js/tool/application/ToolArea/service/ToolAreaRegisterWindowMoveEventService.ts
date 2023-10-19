@@ -1,6 +1,6 @@
 import { EventType } from "../../../domain/event/EventType";
 import { execute as toolAreaActiveMoveService } from "../service/ToolAreaActiveMoveService";
-import { execute as toolAreaMouseMoveUpService } from "../service/ToolAreaMouseMoveUpService";
+import { execute as toolAreaActiveMouseUpService } from "./ToolAreaActiveMouseUpService";
 
 /**
  * @description ツールエリアの移動関数をwindowに登録
@@ -14,5 +14,5 @@ export const execute = (): void =>
 {
     // 画面イベントを登録
     window.addEventListener(EventType.MOUSE_MOVE, toolAreaActiveMoveService);
-    window.addEventListener(EventType.MOUSE_UP, toolAreaMouseMoveUpService);
+    window.addEventListener(EventType.MOUSE_UP, toolAreaActiveMouseUpService);
 };
