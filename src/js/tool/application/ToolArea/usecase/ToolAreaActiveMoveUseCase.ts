@@ -4,7 +4,9 @@ import { execute as toolAreaRegisterWindowMoveEventService } from "../service/To
 import { execute as toolAreaChageStyleToActiveService } from "../service/ToolAreaChageStyleToActiveService";
 import {
     $getMouseState,
+    $getStandbyMoveState,
     $getToolAreaState,
+    $setStandbyMoveState,
     $setToolAreaState
 } from "../../ToolUtil";
 
@@ -18,6 +20,15 @@ import {
  */
 export const execute = (): void =>
 {
+    if (!$getStandbyMoveState()) {
+
+        // カーソルを初期値に変更
+        $setCursor("auto");
+
+        return ;
+    }
+
+    $setStandbyMoveState(false);
     if ($getMouseState() === "down") {
 
         const element: HTMLElement | null = document

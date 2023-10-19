@@ -33,3 +33,12 @@ export const $USER_LANGUAGE_SETTING_KEY: string = `${$PREFIX}@language-setting`;
  * @constant
  */
 export const $USER_SHORTCUT_SETTING_KEY: string = `${$PREFIX}@shortcut`;
+
+/**
+ * @description ツールエリアの移動状態の保存キー
+ *              Key to save tool area movement status
+ *
+ * @type {string}
+ * @constant
+ */
+export const $USER_TOOL_AREA_STATE_KEY: string = `${$PREFIX}@tool-area`;

@@ -1,5 +1,7 @@
 import { execute as toolAreaInitializeRegisterEventUseCase } from "./ToolAreaInitializeRegisterEventUseCase";
+import { execute as toolAreaInitializeSetActiveStateUseCase } from "./ToolAreaInitializeSetActiveStateUseCase";
 import { execute as toolAreaInitializeBootService } from "../service/ToolAreaInitializeBootService";
+import { $TOOL_PREFIX } from "../../../../config/ToolConfig";
 
 /**
  * @description ツールエリアの初期起動時のユースケース
@@ -11,8 +13,14 @@ import { execute as toolAreaInitializeBootService } from "../service/ToolAreaIni
  */
 export const execute = (): Promise<void[]> =>
 {
-    // 初期起動時のイベント登録処理
-    toolAreaInitializeRegisterEventUseCase();
+    const element: HTMLElement | null = document.getElementById($TOOL_PREFIX);
+    if (element) {
+        // 初期起動時のイベント登録処理
+        toolAreaInitializeRegisterEventUseCase(element);
+
+        // 初期起動時に保存データから移動状態を再構成
+        toolAreaInitializeSetActiveStateUseCase(element);
+    }
 
     // 各種ツールクラスを起動
     return toolAreaInitializeBootService();
