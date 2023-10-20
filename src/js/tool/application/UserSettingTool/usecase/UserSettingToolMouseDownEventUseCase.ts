@@ -1,6 +1,6 @@
 import { $USER_MENU_NAME } from "../../../../config/MenuConfig";
 import { $allHide } from "../../../../menu/application/MenuUtil";
-import { execute as userSettingToolMouseDownEventService } from "../service/UserSettingToolMouseDownEventService";
+import { execute as userSettingMenuShowService } from "../../../../menu/application/UserSettingMenu/service/UserSettingMenuShowService";
 import { execute as userSettingMenuUpdateOffsetService } from "../../../../menu/application/UserSettingMenu/service/UserSettingMenuUpdateOffsetService";
 
 /**
@@ -23,5 +23,5 @@ export const execute = (event: PointerEvent): void =>
     userSettingMenuUpdateOffsetService();
 
     // ユーザー設定のメニューを表示
-    userSettingToolMouseDownEventService();
+    userSettingMenuShowService();
 };

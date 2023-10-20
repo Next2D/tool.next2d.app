@@ -1,7 +1,7 @@
-import { $SHORTCUT_MENU_NAME } from "../../../../config/MenuConfig";
 import type { MenuImpl } from "../../../../interface/MenuImpl";
+import type { ShortcutSettingMenu } from "../../../domain/model/ShortcutSettingMenu";
 import { $getMenu } from "../../MenuUtil";
-import { UserSettingMenu } from "../../../domain/model/UserSettingMenu";
+import { $SHORTCUT_MENU_NAME } from "../../../../config/MenuConfig";
 
 /**
  * @description ショートカットメニューを表示
@@ -13,7 +13,7 @@ import { UserSettingMenu } from "../../../domain/model/UserSettingMenu";
  */
 export const execute = (): void =>
 {
-    const menu: MenuImpl<UserSettingMenu> | null = $getMenu($SHORTCUT_MENU_NAME);
+    const menu: MenuImpl<ShortcutSettingMenu> | null = $getMenu($SHORTCUT_MENU_NAME);
     if (!menu) {
         return ;
     }

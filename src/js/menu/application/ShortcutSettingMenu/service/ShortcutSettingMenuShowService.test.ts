@@ -1,13 +1,13 @@
-import { $registerMenu } from "../../../../menu/application/MenuUtil";
-import { execute } from "./UserSettingToolMouseDownEventService";
+import { $registerMenu } from "../../MenuUtil";
+import { execute } from "./ShortcutSettingMenuShowService";
 
-describe("UserSettingMouseDownEventServiceTest", () =>
+describe("ShortcutSettingMenuShowServiceTest", () =>
 {
     test("execute test", () =>
     {
         let state = "hide";
         const menuMock = {
-            "name": "user-setting",
+            "name": "shortcut-setting-menu",
             "_$state": "hide",
             "show": () =>
             {

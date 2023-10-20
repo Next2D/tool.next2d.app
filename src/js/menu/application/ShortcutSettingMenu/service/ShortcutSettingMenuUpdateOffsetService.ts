@@ -8,8 +8,8 @@ import {
 import { $TOOL_PREFIX, $TOOL_USER_SETTING_ID } from "../../../../config/ToolConfig";
 
 /**
- * @description ユーザー設定メニューの表示位置のoffsetを更新
- *              Updated display position offset in the User Preferences menu
+ * @description ショートカットメニューの表示位置のoffsetを更新
+ *              Updated shortcut menu display position offset
  *
  * @return {void}
  * @method
@@ -23,7 +23,7 @@ export const execute = (): void =>
         return ;
     }
 
-    // ユーザーメニューのElement
+    // ユーザー設定メニューのElement
     const userSettingMenu: HTMLElement | null = document
         .getElementById($USER_MENU_NAME);
 
@@ -31,7 +31,7 @@ export const execute = (): void =>
         return ;
     }
 
-    // ショートかっとメニューのElement
+    // ショートカットメニューのElement
     const shortcutSettingMenu: HTMLElement | null = document
         .getElementById($SHORTCUT_MENU_NAME);
 

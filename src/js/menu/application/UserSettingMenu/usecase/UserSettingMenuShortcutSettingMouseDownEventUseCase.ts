@@ -1,7 +1,7 @@
 import { $SHORTCUT_MENU_NAME } from "../../../../config/MenuConfig";
 import { $allHide } from "../../MenuUtil";
-import { execute as userSettingMenuShortcutSettingMouseDownEventService } from "../service/UserSettingMenuShortcutSettingMouseDownEventService";
 import { execute as shortcutSettingMenuUpdateOffsetService } from "../../ShortcutSettingMenu/service/ShortcutSettingMenuUpdateOffsetService";
+import { execute as shortcutSettingMenuShowService } from "../../ShortcutSettingMenu/service/ShortcutSettingMenuShowService";
 
 /**
  * @description ユーザー設定メニューのショートカットボタンのマウスダウンイベント
@@ -23,5 +23,5 @@ export const execute = (event: PointerEvent): void =>
     shortcutSettingMenuUpdateOffsetService();
 
     // ショートカット設定のメニューを表示
-    userSettingMenuShortcutSettingMouseDownEventService();
+    shortcutSettingMenuShowService();
 };
