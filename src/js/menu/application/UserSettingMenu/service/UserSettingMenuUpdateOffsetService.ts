@@ -1,6 +1,12 @@
+import type { MenuImpl } from "../../../../interface/MenuImpl";
+import type { UserSettingMenu } from "../../../domain/model/UserSettingMenu";
 import { $USER_MENU_NAME } from "../../../../config/MenuConfig";
-import { $TOOL_AERA_WIDTH, $TOOL_PREFIX, $TOOL_USER_SETTING_ID } from "../../../../config/ToolConfig";
 import { $getMenu } from "../../MenuUtil";
+import {
+    $TOOL_AERA_WIDTH,
+    $TOOL_PREFIX,
+    $TOOL_USER_SETTING_ID
+} from "../../../../config/ToolConfig";
 
 /**
  * @description ユーザー設定メニューの表示位置のoffsetを更新
@@ -13,7 +19,7 @@ import { $getMenu } from "../../MenuUtil";
 export const execute = (): void =>
 {
     // ユーザーメニューオブジェクト
-    const menu = $getMenu($USER_MENU_NAME);
+    const menu: MenuImpl<UserSettingMenu> = $getMenu($USER_MENU_NAME);
     if (!menu) {
         return ;
     }

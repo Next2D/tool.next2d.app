@@ -1,5 +1,6 @@
 import { $SHORTCUT_MENU_NAME } from "../../../config/MenuConfig";
 import { BaseMenu } from "./BaseMenu";
+import { execute as shortcutSettingMenuInitializeUseCase } from "../..//application/ShortcutSettingMenu/usecase/ShortcutSettingMenuInitializeUseCase";
 
 /**
  * @description ショートカット設定メニュークラス
@@ -45,6 +46,6 @@ export class ShortcutSettingMenu extends BaseMenu
      */
     initialize (): void
     {
-        // userSettingMenuInitializeUseCase();
+        shortcutSettingMenuInitializeUseCase();
     }
 }
