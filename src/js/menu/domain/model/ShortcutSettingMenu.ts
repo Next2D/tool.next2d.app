@@ -1,8 +1,7 @@
 import { $SHORTCUT_MENU_NAME } from "../../../config/MenuConfig";
 import { BaseMenu } from "./BaseMenu";
 import { execute as shortcutSettingMenuInitializeUseCase } from "../../application/ShortcutSettingMenu/usecase/ShortcutSettingMenuInitializeUseCase";
-import { execute as shortcutSettingMenuChangeListStyleService } from "../../application/ShortcutSettingMenu/service/ShortcutSettingMenuChangeListStyleService";
-import { $setSelectElement } from "../../application/ShortcutSettingMenu/ShortcutSettingMenuUtil";
+import { execute as shortcutSettingMenuResetListStyleUseCase } from "../../application/ShortcutSettingMenu/usecase/ShortcutSettingMenuResetListStyleUseCase/";
 
 /**
  * @description ショートカット設定メニュークラス
@@ -51,8 +50,7 @@ export class ShortcutSettingMenu extends BaseMenu
         super.hide();
 
         // 選択したElementを初期化
-        shortcutSettingMenuChangeListStyleService(null);
-        $setSelectElement(null);
+        shortcutSettingMenuResetListStyleUseCase();
     }
 
     /**

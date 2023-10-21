@@ -1,5 +1,5 @@
 import { EventType } from "../../../../tool/domain/event/EventType";
-import { execute as shortcutSettingMenuShowScreenListService } from "../service/ShortcutSettingMenuShowScreenListService";
+import { execute as shortcutSettingMenuShowScreenListUseCase } from "../usecase/ShortcutSettingMenuShowScreenListUseCase";
 import { execute as shortcutSettingMenuShowTimelineListService } from "../service/ShortcutSettingMenuShowTimelineListService";
 import { execute as shortcutSettingMenuShowLibraryListService } from "../service/ShortcutSettingMenuShowLibraryListService";
 import { execute as shortcutSettingMenuCloseElementMouseDownUseCase } from "./ShortcutSettingMenuCloseElementMouseDownUseCase";
@@ -36,16 +36,18 @@ export const execute = (): void =>
     // スクリーンのショートカットリストの選択ボタン
     const shortcutScreenList: HTMLElement | null = document
         .getElementById($SHORTCUT_SETTING_SCREEN_ID);
+
     if (shortcutScreenList) {
-        shortcutScreenList.addEventListener(EventType.MOUSE_DOWN, (): void =>
+        shortcutScreenList.addEventListener(EventType.MOUSE_DOWN, (event: PointerEvent): void =>
         {
-            shortcutSettingMenuShowScreenListService();
+            shortcutSettingMenuShowScreenListUseCase(event);
         });
     }
 
     // タイムラインのショートカットリストの選択ボタン
     const shortcutTimelineList: HTMLElement | null = document
         .getElementById($SHORTCUT_SETTING_TIMELINE_ID);
+
     if (shortcutTimelineList) {
         shortcutTimelineList.addEventListener(EventType.MOUSE_DOWN, (): void =>
         {
@@ -56,6 +58,7 @@ export const execute = (): void =>
     // ライブラリのショートカットリストの選択ボタン
     const shortcutLibraryList: HTMLElement | null = document
         .getElementById($SHORTCUT_SETTING_LIBRARY_ID);
+
     if (shortcutLibraryList) {
         shortcutLibraryList.addEventListener(EventType.MOUSE_DOWN, (): void =>
         {

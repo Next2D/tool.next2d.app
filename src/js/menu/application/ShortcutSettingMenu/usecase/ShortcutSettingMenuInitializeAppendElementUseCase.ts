@@ -1,4 +1,5 @@
 import type { ShortcutObjectImpl } from "../../../../interface/ShortcutObjectImpl";
+import { execute as shortcutSettingMenuListComponent } from "../component/ShortcutSettingMenuListComponent";
 import {
     $SHORTCUT_LIBRARY_LIST,
     $SHORTCUT_LIBRARY_LIST_ID,
@@ -7,9 +8,6 @@ import {
     $SHORTCUT_TIMELINE_LIST,
     $SHORTCUT_TIMELINE_LIST_ID
 } from "../../../../config/ShortcutConfig";
-import { EventType } from "../../../../tool/domain/event/EventType";
-import { execute as shortcutSettingMenuListComponent } from "../component/ShortcutSettingMenuListComponent";
-import { execute as shortcutSettingMenuChangeListStyleUseCase } from "./ShortcutSettingMenuChangeListStyleUseCase";
 
 /**
  * @description デフォルトのショートカットElementをメニューに追加
