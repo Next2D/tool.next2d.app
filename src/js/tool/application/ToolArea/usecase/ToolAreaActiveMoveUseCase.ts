@@ -2,13 +2,13 @@ import { $TOOL_PREFIX } from "../../../../config/ToolConfig";
 import { $setCursor } from "../../../../util/Global";
 import { execute as toolAreaRegisterWindowMoveEventService } from "../service/ToolAreaRegisterWindowMoveEventService";
 import { execute as toolAreaChageStyleToActiveService } from "../service/ToolAreaChageStyleToActiveService";
+import { $getMouseState } from "../../ToolUtil";
 import {
-    $getMouseState,
     $getStandbyMoveState,
     $getToolAreaState,
     $setStandbyMoveState,
     $setToolAreaState
-} from "../../ToolUtil";
+} from "../ToolAreaUtil";
 
 /**
  * @description ツールエリアを移動可能な状態にする

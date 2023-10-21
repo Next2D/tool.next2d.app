@@ -7,22 +7,20 @@ import { execute as languageTranslationService } from "../service/LanguageTransl
  *              Converts to specified language
  *
  * @param  {string} language
- * @return {void}
+ * @return {Promise}
  * @method
  * @public
  */
-export const execute = async (language: string): Promise<void> =>
+export const execute = (language: string): Promise<void> =>
 {
     // JSONを取得してマッピングに登録
-    languageLoadRepository(language)
+    return languageLoadRepository(language)
         .then((values) =>
         {
+            // 言語マッピングに登録
             $setMapping(values);
 
-            // 少しだけ遅延して指定言語に変換
-            requestAnimationFrame(() =>
-            {
-                languageTranslationService();
-            });
+            // 指定言語に変換
+            languageTranslationService();
         });
 };

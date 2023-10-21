@@ -1,5 +1,6 @@
 import { EventType } from "../../../domain/event/EventType";
-import { $getActiveTool, $getToolAreaState } from "../../ToolUtil";
+import { $getActiveTool } from "../../ToolUtil";
+import { $getToolAreaState } from "../ToolAreaUtil";
 import type { ToolImpl } from "../../../../interface/ToolImpl";
 
 /**

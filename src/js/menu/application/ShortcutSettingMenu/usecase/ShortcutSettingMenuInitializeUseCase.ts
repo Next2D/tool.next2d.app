@@ -1,6 +1,5 @@
-import { $SHORTCUT_SETTING_CLOSE_ID } from "../../../../config/ShortcutConfig";
-import { EventType } from "../../../../tool/domain/event/EventType";
-import { execute as shortcutSettingMenuCloseElementMouseDownUseCase } from "./ShortcutSettingMenuCloseElementMouseDownUseCase";
+import { execute as shortcutSettingMenuInitializeAppendElementUseCase } from "./ShortcutSettingMenuInitializeAppendElementUseCase";
+import { execute as shortcutSettingMenuInitializeRegisterEventUseCase } from "./ShortcutSettingMenuInitializeRegisterEventUseCase";
 
 /**
  * @description ショートカットメニューの初期起動ユースケース
@@ -12,13 +11,9 @@ import { execute as shortcutSettingMenuCloseElementMouseDownUseCase } from "./Sh
  */
 export const execute = (): void =>
 {
-    const shortcutSettingClose: HTMLElement | null = document
-        .getElementById($SHORTCUT_SETTING_CLOSE_ID);
+    // デフォルトのショートカットのElementをリストに追加
+    shortcutSettingMenuInitializeAppendElementUseCase();
 
-    if (shortcutSettingClose) {
-        shortcutSettingClose.addEventListener(EventType.MOUSE_DOWN, (): void =>
-        {
-            shortcutSettingMenuCloseElementMouseDownUseCase();
-        });
-    }
+    // 各ボタンのイベント登録
+    shortcutSettingMenuInitializeRegisterEventUseCase();
 };

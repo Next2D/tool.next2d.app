@@ -6,11 +6,11 @@ import { execute as userLanguageSettingObjectUpdateService } from "../../user/ap
  * @description LocalStorageから言語設定を読み込んで、指定言語に変換
  *              Read language settings from LocalStorage and convert to specified language
  *
- * @return {void}
+ * @return {Promise}
  * @method
  * @public
  */
-export const execute = (): void =>
+export const execute = (): Promise<void> =>
 {
     let language: string | null = userLanguageSettingObjectGetService();
     if (!language) {
@@ -102,5 +102,5 @@ export const execute = (): void =>
         userLanguageSettingObjectUpdateService(language);
     }
 
-    languageTranslationUseCase(language);
+    return languageTranslationUseCase(language);
 };

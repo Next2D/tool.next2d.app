@@ -1,7 +1,7 @@
 import { execute as userToolAreaStateGetService } from "../../../../user/application/service/UserToolAreaStateGetService";
 import { execute as toolAreaChageStyleToActiveService } from "../service/ToolAreaChageStyleToActiveService";
 import { UserToolAreaStateObjectImpl } from "../../../../interface/UserToolAreaStateObjectImpl";
-import { $setToolAreaState } from "../../ToolUtil";
+import { $setToolAreaState } from "../ToolAreaUtil";
 
 /**
  * @description ツールエリアの初期起動時に前回の移動状態をセット

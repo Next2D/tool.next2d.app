@@ -1,5 +1,5 @@
 import { $TOOL_PREFIX } from "../../../../config/ToolConfig";
-import { $getToolAreaState } from "../../ToolUtil";
+import { $getToolAreaState } from "../ToolAreaUtil";
 
 /**
  * @description ツールエリアを移動可能な状態にする

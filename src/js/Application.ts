@@ -5,8 +5,8 @@ import { WorkSpace } from "./core/domain/model/WorkSpace";
 
 const executes: Function[] = [
     tool,
-    language,
-    menu
+    menu,
+    language // fixed logic
 ];
 
 /**

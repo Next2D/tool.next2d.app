@@ -1,10 +1,15 @@
 import { $allHide } from "../../../../menu/application/MenuUtil";
-import { $getToolAreaState, $setMouseState, $setStandbyMoveState, $setToolAreaState } from "../../ToolUtil";
 import { execute as toolAreaActiveMoveUseCase } from "../usecase/ToolAreaActiveMoveUseCase";
 import { execute as toolAreaChageStyleToInactiveService } from "../service/ToolAreaChageStyleToInactiveService";
 import { execute as userAllFunctionStateService } from "../../../../user/application/service/UserAllFunctionStateService";
 import { execute as userToolAreaStateUpdateService } from "../../../../user/application/service/UserToolAreaStateUpdateService";
 import { $TOOL_PREFIX } from "../../../../config/ToolConfig";
+import { $setMouseState } from "../../ToolUtil";
+import {
+    $getToolAreaState,
+    $setStandbyMoveState,
+    $setToolAreaState
+} from "../ToolAreaUtil";
 
 /**
  * @description ダブルタップ用の待機フラグ
