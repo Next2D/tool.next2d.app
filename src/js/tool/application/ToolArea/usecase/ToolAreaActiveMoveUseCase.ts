@@ -1,6 +1,6 @@
 import { $TOOL_PREFIX } from "../../../../config/ToolConfig";
 import { $setCursor } from "../../../../util/Global";
-import { execute as toolAreaRegisterWindowMoveEventService } from "../service/ToolAreaRegisterWindowMoveEventService";
+import { execute as toolAreaRegisterWindowMoveEventUseCase } from "./ToolAreaRegisterWindowMoveEventUseCase";
 import { execute as toolAreaChageStyleToActiveService } from "../service/ToolAreaChageStyleToActiveService";
 import { $getMouseState } from "../../ToolUtil";
 import {
@@ -50,8 +50,8 @@ export const execute = (): void =>
         // カーソルを移動用に変更
         $setCursor("move");
 
-        // 画面イベントを登録
-        toolAreaRegisterWindowMoveEventService();
+        // windowにイベントを登録
+        toolAreaRegisterWindowMoveEventUseCase();
 
     } else {
 

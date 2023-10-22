@@ -1,7 +1,8 @@
 import { $SHORTCUT_MENU_NAME } from "../../../config/MenuConfig";
 import { BaseMenu } from "./BaseMenu";
 import { execute as shortcutSettingMenuInitializeUseCase } from "../../application/ShortcutSettingMenu/usecase/ShortcutSettingMenuInitializeUseCase";
-import { execute as shortcutSettingMenuResetListStyleUseCase } from "../../application/ShortcutSettingMenu/usecase/ShortcutSettingMenuResetListStyleUseCase/";
+import { execute as shortcutSettingMenuResetListStyleUseCase } from "../../application/ShortcutSettingMenu/usecase/ShortcutSettingMenuResetListStyleUseCase";
+import { execute as shortcutSettingMenuRegisterKeyboardEventService } from "../../application/ShortcutSettingMenu/service/ShortcutSettingMenuRegisterKeyboardEventService";
 
 /**
  * @description ショートカット設定メニュークラス
@@ -35,6 +36,22 @@ export class ShortcutSettingMenu extends BaseMenu
         element.style.left = `${this.offsetLeft}px`;
         element.style.top  = `${this.offsetTop}px`;
         return element;
+    }
+
+    /**
+     * @description メニューを表示
+     *              Show menu
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    show (): void
+    {
+        super.show();
+
+        // キーボードイベントを登録
+        shortcutSettingMenuRegisterKeyboardEventService();
     }
 
     /**

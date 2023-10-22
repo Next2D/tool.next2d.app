@@ -70,6 +70,7 @@ export const execute = (): void =>
     const parent: HTMLElement | null = document
         .getElementById($SHORTCUT_SETTING_LIST_ID);
 
+    // リストに追加されたElementにイベントを登録
     if (parent) {
 
         const elements: HTMLCollection = parent

@@ -13,6 +13,7 @@ export const execute = (event: PointerEvent): void =>
     // 親のイベントを中止
     event.stopPropagation();
 
+    // 選択されたElementのstyleを更新して、内部情報にセット
     const element: HTMLElement | null = event.target as HTMLElement;
     shortcutSettingMenuChangeListStyleService(element);
 };

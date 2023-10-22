@@ -1,3 +1,4 @@
+import { $getSelectElement } from "../ShortcutSettingMenuUtil";
 import { execute } from "./ShortcutSettingMenuChangeListStyleService";
 
 describe("ShortcutSettingMenuChangeListStyleServiceTest", () =>
@@ -8,11 +9,13 @@ describe("ShortcutSettingMenuChangeListStyleServiceTest", () =>
         expect(div1.classList.contains("shortcut-active")).toBe(false);
         execute(div1);
         expect(div1.classList.contains("shortcut-active")).toBe(true);
+        expect($getSelectElement()).toBe(div1);
 
         const div2 = document.createElement("div");
         expect(div2.classList.contains("shortcut-active")).toBe(false);
         execute(div2);
         expect(div1.classList.contains("shortcut-active")).toBe(false);
         expect(div2.classList.contains("shortcut-active")).toBe(true);
+        expect($getSelectElement()).toBe(div2);
     });
 });
