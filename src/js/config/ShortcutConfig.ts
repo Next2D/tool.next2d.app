@@ -1,6 +1,24 @@
 import { ShortcutObjectImpl } from "../interface/ShortcutObjectImpl";
 
 /**
+ * @description ショートカットメニューの保存ElementのID
+ *              ID of the Element where the shortcut menu is saved
+ *
+ * @type {string}
+ * @constant
+ */
+export const $SHORTCUT_SETTING_SAVE_ID: string = "shortcut-setting-save";
+
+/**
+ * @description ショートカットメニューのリセットElementのID
+ *              ID of the reset Element in the shortcut menu
+ *
+ * @type {string}
+ * @constant
+ */
+export const $SHORTCUT_SETTING_RESET_ID: string = "shortcut-setting-reset";
+
+/**
  * @description ショートカットメニューの閉じるElementのID
  *              ID of the Element to close in the shortcut menu
  *

@@ -14,21 +14,24 @@ import {
  */
 export const execute = (): void =>
 {
-    const areas = [
-        $SHORTCUT_SCREEN_LIST_ID,
-        $SHORTCUT_TIMELINE_LIST_ID,
-        $SHORTCUT_LIBRARY_LIST_ID
-    ];
+    setTimeout(() =>
+    {
+        const areas = [
+            $SHORTCUT_SCREEN_LIST_ID,
+            $SHORTCUT_TIMELINE_LIST_ID,
+            $SHORTCUT_LIBRARY_LIST_ID
+        ];
 
-    for (let idx: number = 0; idx < areas.length; ++idx) {
+        for (let idx: number = 0; idx < areas.length; ++idx) {
 
-        const parent: HTMLElement | null = document.getElementById(areas[idx]);
-        if (!parent) {
-            continue;
+            const parent: HTMLElement | null = document.getElementById(areas[idx]);
+            if (!parent) {
+                continue;
+            }
+
+            while (parent.children.length) {
+                parent.children[0].remove();
+            }
         }
-
-        while (parent.children.length) {
-            parent.children[0].remove();
-        }
-    }
+    }, 300);
 };

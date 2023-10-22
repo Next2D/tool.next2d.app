@@ -101,15 +101,20 @@ export const execute = (event: KeyboardEvent): boolean =>
             tempMap.delete(currentKey);
         }
 
-        tempMap.set(customKey, {
-            "defaultKey": commandElement.dataset.defaultKey as NonNullable<string>,
-            "customKey": customKey,
-            "text": commandText
-        });
+        const defaultKey: string = commandElement.dataset.defaultKey as NonNullable<string>;
+        if (defaultKey !== customKey) {
+            tempMap.set(customKey, {
+                "defaultKey": defaultKey,
+                "customKey": customKey,
+                "text": commandText
+            });
+
+            // 設定追加したキーをdatasetに追加
+            commandElement.dataset.key = `${customKey}`;
+        }
     }
 
     // 表示を更新
-    commandElement.dataset.key = `${customKey}`;
     commandElement.textContent = `${commandText}`;
 
     return false;

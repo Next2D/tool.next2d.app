@@ -46,7 +46,7 @@ export const $setSelectElement = (element: HTMLElement | null): void =>
  * @type {Map}
  * @private
  */
-const $viewMapping: Map<ShortcutKeyStringImpl, Map<string, ShortcutViewObjectImpl>> = new Map([
+const $viewMapping: Map<ShortcutKeyStringImpl, Map<string, string>> = new Map([
     ["screen",   new Map()],
     ["timeline", new Map()],
     ["library",  new Map()],
@@ -61,19 +61,35 @@ const $viewMapping: Map<ShortcutKeyStringImpl, Map<string, ShortcutViewObjectImp
  * @method
  * @public
  */
-export const $getViewMapping = ():  Map<ShortcutKeyStringImpl, Map<string, ShortcutViewObjectImpl>> =>
+export const $getViewMapping = (): Map<ShortcutKeyStringImpl, Map<string, string>> =>
 {
     return $viewMapping;
 };
 
 /**
- * @description 個別のショートカットに切り替えるようのマッピングデータ
- *              Mapping data to switch to individual shortcuts
+ * @description 表示に利用するマッピングデータを初期化
+ *              Initialize mapping data used for display
+ *
+ * @return {Map}
+ * @method
+ * @public
+ */
+export const $clearViewMapping = (): void =>
+{
+    $viewMapping.get("global")?.clear();
+    $viewMapping.get("library")?.clear();
+    $viewMapping.get("screen")?.clear();
+    $viewMapping.get("timeline")?.clear();
+};
+
+/**
+ * @description 個別のショートカットコマンドと既存のコマンドのマッピングデータ
+ *              Mapping data between individual shortcut commands and existing commands
  *
  * @type {Map}
  * @private
  */
-const $commandMapping: Map<ShortcutKeyStringImpl, Map<string, ShortcutViewObjectImpl>> = new Map([
+const $commandMapping: Map<ShortcutKeyStringImpl, Map<string, string>> = new Map([
     ["screen",   new Map()],
     ["timeline", new Map()],
     ["library",  new Map()],
@@ -81,14 +97,30 @@ const $commandMapping: Map<ShortcutKeyStringImpl, Map<string, ShortcutViewObject
 ]);
 
 /**
- * @description 個別のショートカットに切り替えるようのマッピングデータを返却
- *              Return mapping data to switch to individual shortcuts
+ * @description 個別のショートカットコマンドと既存のコマンドのマッピングデータを初期化
+ *              Initialize mapping data between individual shortcut commands and existing commands
  *
  * @return {Map}
  * @method
  * @public
  */
-export const $getCommandMapping = ():  Map<ShortcutKeyStringImpl, Map<string, ShortcutViewObjectImpl>> =>
+export const $clearCommandwMapping = (): void =>
+{
+    $commandMapping.get("global")?.clear();
+    $commandMapping.get("library")?.clear();
+    $commandMapping.get("screen")?.clear();
+    $commandMapping.get("timeline")?.clear();
+};
+
+/**
+ * @description 個別のショートカットコマンドと既存のコマンドのマッピングデータを返却
+ *              Return mapping data between individual shortcut commands and existing commands
+ *
+ * @return {Map}
+ * @method
+ * @public
+ */
+export const $getCommandMapping = (): Map<ShortcutKeyStringImpl, Map<string, string>> =>
 {
     return $commandMapping;
 };
@@ -118,6 +150,22 @@ const $tempMapping: Map<ShortcutKeyStringImpl, Map<string, ShortcutViewObjectImp
 export const $getTempMapping = (): Map<ShortcutKeyStringImpl, Map<string, ShortcutViewObjectImpl>> =>
 {
     return $tempMapping;
+};
+
+/**
+ * @description 個別のショートカットの設定の一時保存データを初期化
+ *              Initialize temporarily saved data of individual shortcut settings
+ *
+ * @return {void}
+ * @method
+ * @public
+ */
+export const $clearTempMapping = (): void =>
+{
+    $tempMapping.get("global")?.clear();
+    $tempMapping.get("library")?.clear();
+    $tempMapping.get("screen")?.clear();
+    $tempMapping.get("timeline")?.clear();
 };
 
 /**

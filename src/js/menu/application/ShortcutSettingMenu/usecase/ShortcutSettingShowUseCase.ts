@@ -11,7 +11,7 @@ import { execute as shortcutSettingMenuRegisterKeyboardEventService } from "../s
  */
 export const execute = (): void =>
 {
-    // ショートカットのElementをリストに追加
+    // ショートカットのElementを各リストに追加
     shortcutSettingMenuAppendElementUseCase();
 
     // キーボードイベントを登録

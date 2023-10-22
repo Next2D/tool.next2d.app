@@ -10,6 +10,9 @@ import {
     $SHORTCUT_TIMELINE_LIST,
     $SHORTCUT_TIMELINE_LIST_ID
 } from "../../../../config/ShortcutConfig";
+import { $getViewMapping } from "../ShortcutSettingMenuUtil";
+import type { ShortcutKeyStringImpl } from "../../../../interface/ShortcutKeyStringImpl";
+import type { ShortcutViewObjectImpl } from "../../../../interface/ShortcutViewObjectImpl";
 
 /**
  * @description デフォルトのショートカットElementをメニューに追加
@@ -26,6 +29,12 @@ export const execute = (): void =>
     areas.set($SHORTCUT_TIMELINE_LIST_ID, $SHORTCUT_TIMELINE_LIST);
     areas.set($SHORTCUT_LIBRARY_LIST_ID, $SHORTCUT_LIBRARY_LIST);
 
+    const viewAreas: ShortcutKeyStringImpl[] = [
+        "screen",
+        "timeline",
+        "library"
+    ];
+    const viewMapping: Map<ShortcutKeyStringImpl, Map<string, string>> = $getViewMapping();
     for (const [elementId, shortcutObjects] of areas) {
 
         const parent: HTMLElement | null = document.getElementById(elementId);
@@ -33,13 +42,27 @@ export const execute = (): void =>
             continue;
         }
 
+        const areaName: ShortcutKeyStringImpl = viewAreas.shift() as NonNullable<ShortcutKeyStringImpl>;
+        if (!viewMapping.has(areaName)) {
+            continue;
+        }
+
+        const mapping: Map<string, string> | undefined = viewMapping.get(areaName);
+        if (!mapping) {
+            continue;
+        }
+
         for (let idx: number = 0; idx < shortcutObjects.length; ++idx) {
 
             const shortcutObject: ShortcutObjectImpl = shortcutObjects[idx];
 
+            const customText: string = mapping.has(shortcutObject.key)
+                ? mapping.get(shortcutObject.key) as NonNullable<string>
+                : "";
+
             parent.insertAdjacentHTML(
                 "beforeend",
-                shortcutSettingMenuListComponent(shortcutObject)
+                shortcutSettingMenuListComponent(shortcutObject, customText)
             );
 
             const node: HTMLElement | null = parent.lastElementChild as HTMLElement;
@@ -51,7 +74,6 @@ export const execute = (): void =>
             {
                 shortcutSettingMenuChangeListStyleUseCase(event);
             });
-
         }
     }
 };
