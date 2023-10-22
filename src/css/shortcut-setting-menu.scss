@@ -174,13 +174,6 @@
 
 #shortcut-setting-list
 {
-    i
-    {
-        width          : 30px;
-        height         : 20px;
-        pointer-events : none;
-    }
-
     .shortcut-item
     {
         display         : flex;
@@ -197,21 +190,30 @@
             background-color : #1c1c1c;
             cursor           : pointer;
         }
+        
+        i
+        {
+            width          : 30px;
+            height         : 20px;
+            pointer-events : none;
+        }
+
+        .description
+        {
+            width          : 260px;
+            pointer-events : none;
+        }
+    
+        .command
+        {
+            width          : 150px;
+            margin         : 0 8px 0 auto;
+            pointer-events : none;
+            text-align     : right;
+        }
     }
 
-    .description
-    {
-        width          : 260px;
-        pointer-events : none;
-    }
 
-    .command
-    {
-        width          : 150px;
-        margin         : 0 8px 0 auto;
-        pointer-events : none;
-        text-align     : right;
-    }
 
     .tools-arrow
     {

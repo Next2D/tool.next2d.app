@@ -1,3 +1,6 @@
+import { ShortcutKeyStringImpl } from "../../../interface/ShortcutKeyStringImpl";
+import { ShortcutViewObjectImpl } from "../../../interface/ShortcutViewObjectImpl";
+
 /**
  * @description ショートカットリストで選択されたElement
  *              Element selected in the shortcut list
@@ -33,4 +36,31 @@ export const $getSelectElement = (): HTMLElement | null =>
 export const $setSelectElement = (element: HTMLElement | null): void =>
 {
     $selectElement = element;
+};
+
+/**
+ * @description 表示に利用するマッピング
+ *              Mapping used for display
+ *
+ * @type {Map}
+ * @private
+ */
+const $viewMapping: Map<ShortcutKeyStringImpl, Map<string, ShortcutViewObjectImpl>> = new Map([
+    ["screen",   new Map()],
+    ["timeline", new Map()],
+    ["library",  new Map()],
+    ["global",   new Map()]
+]);
+
+/**
+ * @description 表示に利用するマッピングデータを返却
+ *              Return mapping data for display
+ *
+ * @return {Map}
+ * @method
+ * @public
+ */
+export const $getViewMapping = ():  Map<ShortcutKeyStringImpl, Map<string, ShortcutViewObjectImpl>> =>
+{
+    return $viewMapping;
 };

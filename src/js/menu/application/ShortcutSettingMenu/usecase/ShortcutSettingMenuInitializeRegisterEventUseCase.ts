@@ -1,7 +1,7 @@
 import { EventType } from "../../../../tool/domain/event/EventType";
 import { execute as shortcutSettingMenuShowScreenListUseCase } from "../usecase/ShortcutSettingMenuShowScreenListUseCase";
-import { execute as shortcutSettingMenuShowTimelineListService } from "../service/ShortcutSettingMenuShowTimelineListService";
-import { execute as shortcutSettingMenuShowLibraryListService } from "../service/ShortcutSettingMenuShowLibraryListService";
+import { execute as shortcutSettingMenuShowTimelineListUseCase } from "../usecase/ShortcutSettingMenuShowTimelineListUseCase";
+import { execute as shortcutSettingMenuShowLibraryListUseCase } from "../usecase/ShortcutSettingMenuShowLibraryListUseCase";
 import { execute as shortcutSettingMenuCloseElementMouseDownUseCase } from "./ShortcutSettingMenuCloseElementMouseDownUseCase";
 import { execute as shortcutSettingMenuChangeListStyleUseCase } from "./ShortcutSettingMenuChangeListStyleUseCase";
 import {
@@ -49,9 +49,9 @@ export const execute = (): void =>
         .getElementById($SHORTCUT_SETTING_TIMELINE_ID);
 
     if (shortcutTimelineList) {
-        shortcutTimelineList.addEventListener(EventType.MOUSE_DOWN, (): void =>
+        shortcutTimelineList.addEventListener(EventType.MOUSE_DOWN, (event: PointerEvent): void =>
         {
-            shortcutSettingMenuShowTimelineListService();
+            shortcutSettingMenuShowTimelineListUseCase(event);
         });
     }
 
@@ -60,9 +60,9 @@ export const execute = (): void =>
         .getElementById($SHORTCUT_SETTING_LIBRARY_ID);
 
     if (shortcutLibraryList) {
-        shortcutLibraryList.addEventListener(EventType.MOUSE_DOWN, (): void =>
+        shortcutLibraryList.addEventListener(EventType.MOUSE_DOWN, (event: PointerEvent): void =>
         {
-            shortcutSettingMenuShowLibraryListService();
+            shortcutSettingMenuShowLibraryListUseCase(event);
         });
     }
 

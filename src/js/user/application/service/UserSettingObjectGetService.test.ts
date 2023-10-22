@@ -1,4 +1,4 @@
-import { UserSettingObjectImpl } from "../../interface/UserSettingObjectImpl";
+import { UserSettingObjectImpl } from "../../../interface/UserSettingObjectImpl";
 import { execute } from "./UserSettingObjectGetService";
 
 describe("UserSettingObjectGetServiceTest", () =>
