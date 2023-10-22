@@ -65,25 +65,5 @@ export const execute = (): void =>
             shortcutSettingMenuShowLibraryListUseCase(event);
         });
     }
-
-    // ショートカットリストの親Element
-    const parent: HTMLElement | null = document
-        .getElementById($SHORTCUT_SETTING_LIST_ID);
-
-    // リストに追加されたElementにイベントを登録
-    if (parent) {
-
-        const elements: HTMLCollection = parent
-            .getElementsByClassName($SHORTCUT_SETTING_LIST_CLASS_NAME);
-
-        const length: number = elements.length;
-        for (let idx: number = 0; idx < length; ++idx) {
-            const element: HTMLElement = elements[idx] as HTMLElement;
-            element.addEventListener(EventType.MOUSE_DOWN, (event: PointerEvent): void =>
-            {
-                shortcutSettingMenuChangeListStyleUseCase(event);
-            });
-        }
-    }
 };
 

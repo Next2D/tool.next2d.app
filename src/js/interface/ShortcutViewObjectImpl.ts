@@ -1,6 +1,6 @@
 export interface ShortcutViewObjectImpl
 {
-    key: string,
-    map: string,
+    defaultKey: string,
+    customKey: string,
     text: string
 }

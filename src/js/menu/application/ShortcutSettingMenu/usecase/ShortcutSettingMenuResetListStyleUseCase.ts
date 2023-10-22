@@ -1,6 +1,5 @@
 import { $setSelectElement } from "../ShortcutSettingMenuUtil";
 import { execute as shortcutSettingMenuChangeListStyleService } from "../service/ShortcutSettingMenuChangeListStyleService";
-import { execute as shortcutSettingMenuRemoveKeyboardEventService } from "../service/ShortcutSettingMenuRemoveKeyboardEventService";
 
 /**
  * @description ショートカットリストの選択状態を初期化
@@ -17,7 +16,4 @@ export const execute = (): void =>
 
     // 内部情報を初期化
     $setSelectElement(null); // fixed logic
-
-    // キーボードイベントを削除
-    shortcutSettingMenuRemoveKeyboardEventService();
 };

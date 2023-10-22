@@ -1,5 +1,6 @@
 import { execute as shortcutSettingMenuResetListStyleUseCase } from "./ShortcutSettingMenuResetListStyleUseCase";
 import { execute as shortcutSettingMenuShowLibraryListService } from "../service/ShortcutSettingMenuShowLibraryListService";
+import { $setSelectTabName } from "../ShortcutSettingMenuUtil";
 
 /**
  * @description ショートカットリストのライブラリ表示処理
@@ -14,6 +15,9 @@ export const execute = (event: PointerEvent): void =>
 {
     // 親のイベントを中止
     event.stopPropagation();
+
+    // タブの選択状態をセット
+    $setSelectTabName("library");
 
     // 選択状態を初期化
     shortcutSettingMenuResetListStyleUseCase();

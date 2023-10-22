@@ -1,4 +1,3 @@
-import { execute as shortcutSettingMenuInitializeAppendElementUseCase } from "./ShortcutSettingMenuInitializeAppendElementUseCase";
 import { execute as shortcutSettingMenuInitializeRegisterEventUseCase } from "./ShortcutSettingMenuInitializeRegisterEventUseCase";
 
 /**
@@ -11,9 +10,6 @@ import { execute as shortcutSettingMenuInitializeRegisterEventUseCase } from "./
  */
 export const execute = (): void =>
 {
-    // デフォルトのショートカットのElementをリストに追加
-    shortcutSettingMenuInitializeAppendElementUseCase();
-
     // 各ボタンのイベント登録
     shortcutSettingMenuInitializeRegisterEventUseCase();
 };

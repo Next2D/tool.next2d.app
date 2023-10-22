@@ -1,8 +1,8 @@
 import { $SHORTCUT_MENU_NAME } from "../../../config/MenuConfig";
 import { BaseMenu } from "./BaseMenu";
 import { execute as shortcutSettingMenuInitializeUseCase } from "../../application/ShortcutSettingMenu/usecase/ShortcutSettingMenuInitializeUseCase";
-import { execute as shortcutSettingMenuResetListStyleUseCase } from "../../application/ShortcutSettingMenu/usecase/ShortcutSettingMenuResetListStyleUseCase";
-import { execute as shortcutSettingMenuRegisterKeyboardEventService } from "../../application/ShortcutSettingMenu/service/ShortcutSettingMenuRegisterKeyboardEventService";
+import { execute as shortcutSettingShowUseCase } from "../../application/ShortcutSettingMenu/usecase/ShortcutSettingShowUseCase";
+import { execute as shortcutSettingHideUseCase } from "../../application/ShortcutSettingMenu/usecase/ShortcutSettingHideUseCase";
 
 /**
  * @description ショートカット設定メニュークラス
@@ -50,8 +50,8 @@ export class ShortcutSettingMenu extends BaseMenu
     {
         super.show();
 
-        // キーボードイベントを登録
-        shortcutSettingMenuRegisterKeyboardEventService();
+        // ショートカットの表示時のユースケース
+        shortcutSettingShowUseCase();
     }
 
     /**
@@ -66,8 +66,8 @@ export class ShortcutSettingMenu extends BaseMenu
     {
         super.hide();
 
-        // 選択したElementを初期化
-        shortcutSettingMenuResetListStyleUseCase();
+        // ショートカットの非表示時のユースケース
+        shortcutSettingHideUseCase();
     }
 
     /**

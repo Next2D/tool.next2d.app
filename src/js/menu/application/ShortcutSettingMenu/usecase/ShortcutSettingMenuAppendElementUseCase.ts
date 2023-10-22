@@ -1,5 +1,7 @@
 import type { ShortcutObjectImpl } from "../../../../interface/ShortcutObjectImpl";
 import { execute as shortcutSettingMenuListComponent } from "../component/ShortcutSettingMenuListComponent";
+import { execute as shortcutSettingMenuChangeListStyleUseCase } from "../usecase/ShortcutSettingMenuChangeListStyleUseCase";
+import { EventType } from "../../../../tool/domain/event/EventType";
 import {
     $SHORTCUT_LIBRARY_LIST,
     $SHORTCUT_LIBRARY_LIST_ID,
@@ -39,6 +41,16 @@ export const execute = (): void =>
                 "beforeend",
                 shortcutSettingMenuListComponent(shortcutObject)
             );
+
+            const node: HTMLElement | null = parent.lastElementChild as HTMLElement;
+            if (!node) {
+                continue;
+            }
+
+            node.addEventListener(EventType.MOUSE_DOWN, (event: PointerEvent): void =>
+            {
+                shortcutSettingMenuChangeListStyleUseCase(event);
+            });
 
         }
     }
