@@ -7,15 +7,11 @@ import { $replace } from "../../../../language/application/LanguageUtil";
  *              Return Element of shortcut list as string
  *
  * @params {object} shortcut_object
- * @params {string} [custom_text=""]
  * @return {string}
  * @method
  * @public
  */
-export const execute = (
-    shortcut_object: ShortcutObjectImpl,
-    custom_text: string = ""
-): string =>
+export const execute = (shortcut_object: ShortcutObjectImpl): string =>
 {
     return `
 <div class="${$SHORTCUT_SETTING_LIST_CLASS_NAME}">
@@ -23,7 +19,7 @@ export const execute = (
     <div class="description">
         <span class="language" data-text="${shortcut_object.description}">${$replace(shortcut_object.description)}</span>
     </div>
-    <div class="command" data-default-key="${shortcut_object.key}">${custom_text || shortcut_object.text}</div>
+    <div class="command" data-default-key="${shortcut_object.key}" data-default-text="${shortcut_object.text}">${shortcut_object.text}</div>
 </div>
 `;
 };

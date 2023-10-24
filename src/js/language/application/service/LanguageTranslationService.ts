@@ -1,4 +1,7 @@
 import { $LANGUAGE_ELEMENTS_CLASS_NAME } from "../../../config/LanguageConfig";
+import type { ShortcutKeyStringImpl } from "../../../interface/ShortcutKeyStringImpl";
+import type { ShortcutViewObjectImpl } from "../../../interface/ShortcutViewObjectImpl";
+import { $getTempMapping } from "../../../menu/application/ShortcutSettingMenu/ShortcutSettingMenuUtil";
 import { $getMapping } from "../LanguageUtil";
 
 /**
@@ -15,6 +18,8 @@ export const execute = (): void =>
     const elements: HTMLCollectionOf<Element> = document
         .getElementsByClassName($LANGUAGE_ELEMENTS_CLASS_NAME);
 
+    const tempMapping: Map<ShortcutKeyStringImpl, Map<string, ShortcutViewObjectImpl>> = $getTempMapping();
+
     const mapping = $getMapping();
     const length: number = elements.length;
     for (let idx: number = 0; idx < length; ++idx) {
@@ -27,7 +32,7 @@ export const execute = (): void =>
         }
 
         // 指定言語に変換
-        const value: string | undefined = mapping.get(text);
+        let value: string | undefined = mapping.get(text);
         if (!value) {
             continue;
         }
@@ -35,16 +40,23 @@ export const execute = (): void =>
         // ショートカットの設定があれば文字列に追加
         const shortcutKey: string | undefined = element.dataset.shortcutKey;
         if (shortcutKey) {
-            // TODO
-            // const mapping = Util.$shortcutSetting.viewMapping.get(
-            //     element.dataset.area
-            // );
 
-            // const shortcutText = mapping.has(shortcutKey)
-            //     ? mapping.get(shortcutKey).text
-            //     : element.dataset.shortcutText;
+            const areaName: ShortcutKeyStringImpl | undefined = element.dataset.area as ShortcutKeyStringImpl;
+            if (!areaName) {
+                continue;
+            }
 
-            // value += ` (${shortcutText})`;
+            const mapping: Map<string, ShortcutViewObjectImpl> | undefined = tempMapping.get(areaName);
+
+            let shortcutText: string = element.dataset.shortcutText as NonNullable<string>;
+            if (mapping && mapping.has(shortcutKey)) {
+                const shortcutObject: ShortcutViewObjectImpl | undefined = mapping.get(shortcutKey);
+                if (shortcutObject) {
+                    shortcutText = shortcutObject.text;
+                }
+            }
+
+            value += ` (${shortcutText})`;
         }
 
         element.innerText = value;

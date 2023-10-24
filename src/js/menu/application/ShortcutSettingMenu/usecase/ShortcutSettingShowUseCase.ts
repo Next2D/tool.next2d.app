@@ -1,5 +1,6 @@
-import { execute as shortcutSettingMenuAppendElementUseCase } from "../usecase/ShortcutSettingMenuAppendElementUseCase";
-import { execute as shortcutSettingMenuRegisterKeyboardEventService } from "../service/ShortcutSettingMenuRegisterKeyboardEventService";
+import { execute as shortcutSettingMenuRegisterKeyboardEventUseCase } from "./ShortcutSettingMenuRegisterKeyboardEventUseCase";
+import { execute as shortcutSettingMenuLoadObjectUseCase } from "../usecase/ShortcutSettingMenuLoadObjectUseCase";
+import { execute as shortcutSettingMenuUpdateElementTextService } from "../service/ShortcutSettingMenuUpdateElementTextService";
 
 /**
  * @description ショートカットメニュー表示ユースケース
@@ -11,9 +12,12 @@ import { execute as shortcutSettingMenuRegisterKeyboardEventService } from "../s
  */
 export const execute = (): void =>
 {
-    // ショートカットのElementを各リストに追加
-    shortcutSettingMenuAppendElementUseCase();
+    // LocalStorageのデータをtempのマッピングにセット
+    shortcutSettingMenuLoadObjectUseCase();
+
+    // LocalStorageのデータがあれば表示を更新
+    shortcutSettingMenuUpdateElementTextService();
 
     // キーボードイベントを登録
-    shortcutSettingMenuRegisterKeyboardEventService();
+    shortcutSettingMenuRegisterKeyboardEventUseCase();
 };

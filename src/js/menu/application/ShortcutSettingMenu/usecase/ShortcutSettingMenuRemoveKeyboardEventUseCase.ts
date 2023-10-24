@@ -1,5 +1,5 @@
 import { EventType } from "../../../../tool/domain/event/EventType";
-import { execute as shortcutSettingMenuKeyboardEventUseCase } from "../usecase/ShortcutSettingMenuKeyboardEventUseCase";
+import { execute as shortcutSettingMenuKeyboardEventUseCase } from "./ShortcutSettingMenuKeyboardEventUseCase";
 
 /**
  * @description ショートカット登録用のキーボードイベントを解除

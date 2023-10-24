@@ -5,13 +5,18 @@ import { execute as shortcutSettingMenuShowLibraryListUseCase } from "../usecase
 import { execute as shortcutSettingMenuCloseElementMouseDownUseCase } from "./ShortcutSettingMenuCloseElementMouseDownUseCase";
 import { execute as shortcutSettingMenuSaveUseCase } from "./ShortcutSettingMenuSaveUseCase";
 import { execute as shortcutSettingMenuResetUseCase } from "./ShortcutSettingMenuResetUseCase";
+import { execute as shortcutSettingMenuChangeListStyleUseCase } from "./ShortcutSettingMenuChangeListStyleUseCase";
 import {
     $SHORTCUT_SETTING_CLOSE_ID,
     $SHORTCUT_SETTING_LIBRARY_ID,
     $SHORTCUT_SETTING_SCREEN_ID,
     $SHORTCUT_SETTING_TIMELINE_ID,
     $SHORTCUT_SETTING_SAVE_ID,
-    $SHORTCUT_SETTING_RESET_ID
+    $SHORTCUT_SETTING_RESET_ID,
+    $SHORTCUT_SCREEN_LIST_ID,
+    $SHORTCUT_TIMELINE_LIST_ID,
+    $SHORTCUT_LIBRARY_LIST_ID,
+    $SHORTCUT_SETTING_LIST_CLASS_NAME
 } from "../../../../config/ShortcutConfig";
 
 /**
@@ -106,6 +111,31 @@ export const execute = (): void =>
 
             shortcutSettingMenuShowLibraryListUseCase();
         });
+    }
+
+    const parentElements: string[] = [
+        $SHORTCUT_SCREEN_LIST_ID,
+        $SHORTCUT_TIMELINE_LIST_ID,
+        $SHORTCUT_LIBRARY_LIST_ID
+    ];
+
+    for (let idx: number = 0; idx < parentElements.length; ++idx) {
+        const parent: HTMLElement | null = document.getElementById(parentElements[idx]);
+        if (!parent) {
+            continue;
+        }
+
+        const elements: HTMLCollection = parent
+            .getElementsByClassName($SHORTCUT_SETTING_LIST_CLASS_NAME);
+
+        const length: number = elements.length;
+        for (let idx = 0; idx < length; ++idx) {
+            const element: HTMLElement = elements[idx] as HTMLElement;
+            element.addEventListener(EventType.MOUSE_DOWN, (event: PointerEvent): void =>
+            {
+                shortcutSettingMenuChangeListStyleUseCase(event);
+            });
+        }
     }
 };
 

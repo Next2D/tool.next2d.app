@@ -40,49 +40,6 @@ export const $setSelectElement = (element: HTMLElement | null): void =>
 };
 
 /**
- * @description 表示に利用するマッピング
- *              Mapping used for display
- *
- * @type {Map}
- * @private
- */
-const $viewMapping: Map<ShortcutKeyStringImpl, Map<string, string>> = new Map([
-    ["screen",   new Map()],
-    ["timeline", new Map()],
-    ["library",  new Map()],
-    ["global",   new Map()]
-]);
-
-/**
- * @description 表示に利用するマッピングデータを返却
- *              Return mapping data for display
- *
- * @return {Map}
- * @method
- * @public
- */
-export const $getViewMapping = (): Map<ShortcutKeyStringImpl, Map<string, string>> =>
-{
-    return $viewMapping;
-};
-
-/**
- * @description 表示に利用するマッピングデータを初期化
- *              Initialize mapping data used for display
- *
- * @return {Map}
- * @method
- * @public
- */
-export const $clearViewMapping = (): void =>
-{
-    $viewMapping.get("global")?.clear();
-    $viewMapping.get("library")?.clear();
-    $viewMapping.get("screen")?.clear();
-    $viewMapping.get("timeline")?.clear();
-};
-
-/**
  * @description 個別のショートカットコマンドと既存のコマンドのマッピングデータ
  *              Mapping data between individual shortcut commands and existing commands
  *
@@ -104,7 +61,7 @@ const $commandMapping: Map<ShortcutKeyStringImpl, Map<string, string>> = new Map
  * @method
  * @public
  */
-export const $clearCommandwMapping = (): void =>
+export const $clearCommandMapping = (): void =>
 {
     $commandMapping.get("global")?.clear();
     $commandMapping.get("library")?.clear();

@@ -95,22 +95,17 @@ export const execute = (event: KeyboardEvent): boolean =>
     const commandElement: HTMLElement = elements[0] as HTMLElement;
     const tempMap: Map<string, ShortcutViewObjectImpl> | undefined = $getTempMapping().get($getSelectTabName());
     if (tempMap) {
-
-        const currentKey: string | undefined = commandElement.dataset.key;
-        if (currentKey) {
-            tempMap.delete(currentKey);
-        }
-
         const defaultKey: string = commandElement.dataset.defaultKey as NonNullable<string>;
+
+        // 一度削除して再登録
+        tempMap.delete(defaultKey);
+
         if (defaultKey !== customKey) {
-            tempMap.set(customKey, {
+            tempMap.set(defaultKey, {
                 "defaultKey": defaultKey,
                 "customKey": customKey,
                 "text": commandText
             });
-
-            // 設定追加したキーをdatasetに追加
-            commandElement.dataset.key = `${customKey}`;
         }
     }
 

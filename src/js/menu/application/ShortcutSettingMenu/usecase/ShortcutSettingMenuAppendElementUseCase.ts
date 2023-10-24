@@ -1,7 +1,5 @@
 import type { ShortcutObjectImpl } from "../../../../interface/ShortcutObjectImpl";
 import { execute as shortcutSettingMenuListComponent } from "../component/ShortcutSettingMenuListComponent";
-import { execute as shortcutSettingMenuChangeListStyleUseCase } from "../usecase/ShortcutSettingMenuChangeListStyleUseCase";
-import { EventType } from "../../../../tool/domain/event/EventType";
 import {
     $SHORTCUT_LIBRARY_LIST,
     $SHORTCUT_LIBRARY_LIST_ID,
@@ -10,7 +8,7 @@ import {
     $SHORTCUT_TIMELINE_LIST,
     $SHORTCUT_TIMELINE_LIST_ID
 } from "../../../../config/ShortcutConfig";
-import { $getViewMapping } from "../ShortcutSettingMenuUtil";
+import { $getTempMapping } from "../ShortcutSettingMenuUtil";
 import type { ShortcutKeyStringImpl } from "../../../../interface/ShortcutKeyStringImpl";
 import type { ShortcutViewObjectImpl } from "../../../../interface/ShortcutViewObjectImpl";
 
@@ -29,12 +27,12 @@ export const execute = (): void =>
     areas.set($SHORTCUT_TIMELINE_LIST_ID, $SHORTCUT_TIMELINE_LIST);
     areas.set($SHORTCUT_LIBRARY_LIST_ID, $SHORTCUT_LIBRARY_LIST);
 
-    const viewAreas: ShortcutKeyStringImpl[] = [
+    const areaNames: ShortcutKeyStringImpl[] = [
         "screen",
         "timeline",
         "library"
     ];
-    const viewMapping: Map<ShortcutKeyStringImpl, Map<string, string>> = $getViewMapping();
+    const tempMapping: Map<ShortcutKeyStringImpl, Map<string, ShortcutViewObjectImpl>> = $getTempMapping();
     for (const [elementId, shortcutObjects] of areas) {
 
         const parent: HTMLElement | null = document.getElementById(elementId);
@@ -42,12 +40,12 @@ export const execute = (): void =>
             continue;
         }
 
-        const areaName: ShortcutKeyStringImpl = viewAreas.shift() as NonNullable<ShortcutKeyStringImpl>;
-        if (!viewMapping.has(areaName)) {
+        const areaName: ShortcutKeyStringImpl = areaNames.shift() as NonNullable<ShortcutKeyStringImpl>;
+        if (!tempMapping.has(areaName)) {
             continue;
         }
 
-        const mapping: Map<string, string> | undefined = viewMapping.get(areaName);
+        const mapping: Map<string, ShortcutViewObjectImpl> | undefined = tempMapping.get(areaName);
         if (!mapping) {
             continue;
         }
@@ -56,24 +54,10 @@ export const execute = (): void =>
 
             const shortcutObject: ShortcutObjectImpl = shortcutObjects[idx];
 
-            const customText: string = mapping.has(shortcutObject.key)
-                ? mapping.get(shortcutObject.key) as NonNullable<string>
-                : "";
-
             parent.insertAdjacentHTML(
                 "beforeend",
-                shortcutSettingMenuListComponent(shortcutObject, customText)
+                shortcutSettingMenuListComponent(shortcutObject)
             );
-
-            const node: HTMLElement | null = parent.lastElementChild as HTMLElement;
-            if (!node) {
-                continue;
-            }
-
-            node.addEventListener(EventType.MOUSE_DOWN, (event: PointerEvent): void =>
-            {
-                shortcutSettingMenuChangeListStyleUseCase(event);
-            });
         }
     }
 };
