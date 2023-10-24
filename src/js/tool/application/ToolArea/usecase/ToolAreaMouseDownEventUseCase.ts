@@ -1,4 +1,4 @@
-import { $allHide } from "../../../../menu/application/MenuUtil";
+import { $allHideMenu } from "../../../../menu/application/MenuUtil";
 import { execute as toolAreaActiveMoveUseCase } from "../usecase/ToolAreaActiveMoveUseCase";
 import { execute as toolAreaChageStyleToInactiveService } from "../service/ToolAreaChageStyleToInactiveService";
 import { execute as userAllFunctionStateService } from "../../../../user/application/service/UserAllFunctionStateService";
@@ -40,7 +40,7 @@ let activeTimerId: NodeJS.Timeout | number = 0;
 export const execute = (): void =>
 {
     // 表示されてるメニューを全て非表示にする
-    $allHide();
+    $allHideMenu();
 
     // マウスの状態管理をダウンに更新
     $setMouseState("down");

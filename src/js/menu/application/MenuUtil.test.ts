@@ -2,7 +2,7 @@ import {
     $registerMenu,
     $getMenu,
     $getMenuAll,
-    $allHide
+    $allHideMenu
 } from "./MenuUtil";
 
 describe("MenuTest", () =>
@@ -51,7 +51,7 @@ describe("MenuTest", () =>
         $registerMenu(mock1);
         $registerMenu(mock2);
 
-        $allHide();
+        $allHideMenu();
         expect(mock1State).toBe("hide");
         expect(mock2State).toBe("hide");
     });

@@ -1,5 +1,5 @@
 import { $USER_MENU_NAME } from "../../../../config/MenuConfig";
-import { $allHide } from "../../../../menu/application/MenuUtil";
+import { $allHideMenu } from "../../../../menu/application/MenuUtil";
 import { execute as userSettingMenuShowService } from "../../../../menu/application/UserSettingMenu/service/UserSettingMenuShowService";
 import { execute as userSettingMenuUpdateOffsetService } from "../../../../menu/application/UserSettingMenu/service/UserSettingMenuUpdateOffsetService";
 
@@ -17,7 +17,7 @@ export const execute = (event: PointerEvent): void =>
     event.stopPropagation();
 
     // ユーザー設定以外の全てのメニューを非表示にする
-    $allHide($USER_MENU_NAME);
+    $allHideMenu($USER_MENU_NAME);
 
     // 表示位置を調整
     userSettingMenuUpdateOffsetService();

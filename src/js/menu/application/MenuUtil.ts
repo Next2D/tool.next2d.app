@@ -54,7 +54,7 @@ export const $getMenuAll = (): Map<string, MenuImpl<any>> =>
  * @method
  * @public
  */
-export const $allHide = (ignore: string = ""): void =>
+export const $allHideMenu = (ignore: string = ""): void =>
 {
     const menus: Map<string, MenuImpl<any>> = $getMenuAll();
     for (const menu of menus.values()) {

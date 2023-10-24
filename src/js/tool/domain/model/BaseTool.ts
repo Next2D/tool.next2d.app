@@ -1,7 +1,7 @@
 import { ToolEvent } from "../event/ToolEvent";
 import { EventType } from "../event/EventType";
 import { $TOOL_PREFIX } from "../../../config/ToolConfig";
-import { $allHide } from "../../../menu/application/MenuUtil";
+import { $allHideMenu } from "../../../menu/application/MenuUtil";
 import {
     $registerDefaultTool,
     $setActiveTool
@@ -182,7 +182,7 @@ export class BaseTool extends ToolEvent
         event.stopPropagation();
 
         // メニューを全て非表示にする
-        $allHide();
+        $allHideMenu();
 
         // アクティブツールを入れ替える
         $setActiveTool(this);

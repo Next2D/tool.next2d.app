@@ -1,4 +1,4 @@
-import { $allHide } from "../../MenuUtil";
+import { $allHideMenu } from "../../MenuUtil";
 import { execute as userSettingMenuShowService } from "../../UserSettingMenu/service/UserSettingMenuShowService";
 import { execute as shortcutSettingMenuResetListStyleUseCase } from "./ShortcutSettingMenuResetListStyleUseCase";
 import { execute as shortcutSettingMenuRemoveKeyboardEventService } from "./ShortcutSettingMenuRemoveKeyboardEventUseCase";
@@ -14,7 +14,7 @@ import { execute as shortcutSettingMenuRemoveKeyboardEventService } from "./Shor
 export const execute = (): void =>
 {
     // 全てのメニューを非表示にする
-    $allHide();
+    $allHideMenu();
 
     // ユーザー設定メニューを表示する
     userSettingMenuShowService();
