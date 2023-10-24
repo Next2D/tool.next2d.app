@@ -16,10 +16,7 @@ import {
  */
 export const execute = (): void =>
 {
-    const tempMapping: Map<ShortcutKeyStringImpl, Map<string, ShortcutViewObjectImpl>> | null = $getTempMapping();
-    if (!tempMapping) {
-        return ;
-    }
+    const tempMapping: Map<ShortcutKeyStringImpl, Map<string, ShortcutViewObjectImpl>> = $getTempMapping();
 
     // 上書き前に一度初期化
     $clearCommandMapping();

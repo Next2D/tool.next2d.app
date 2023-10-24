@@ -1,6 +1,7 @@
 import { $getTempMapping } from "../ShortcutSettingMenuUtil";
 import { execute as userShortcutObjectUpdateService } from "../../../../user/application/service/UserShortcutObjectUpdateService";
 import { execute as shortcutSettingMenuUpdateCommandMappingService } from "../service/ShortcutSettingMenuUpdateCommandMappingService";
+import { execute as languageTranslationService } from "../../../../language/application/service/LanguageTranslationService";
 import type { ShortcutSaveObjectImpl } from "../../../../interface/ShortcutSaveObjectImpl";
 import type { ShortcutKeyStringImpl } from "../../../../interface/ShortcutKeyStringImpl";
 import type { ShortcutViewObjectImpl } from "../../../../interface/ShortcutViewObjectImpl";
@@ -36,4 +37,7 @@ export const execute = (): void =>
 
     // コマンドマップを更新
     shortcutSettingMenuUpdateCommandMappingService();
+
+    // 変更があったショートカットの表示を更新
+    languageTranslationService();
 };

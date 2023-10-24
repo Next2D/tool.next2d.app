@@ -66,9 +66,9 @@ export const execute = (): void =>
 
             let text: string = node.dataset.defaultText as NonNullable<string>;
             if (mapping.has(defaultKey) ) {
-                const object = mapping.get(defaultKey);
+                const object: ShortcutViewObjectImpl | undefined = mapping.get(defaultKey);
                 if (object) {
-                    text = object?.text;
+                    text = object.text;
                 }
             }
             node.textContent = text;
