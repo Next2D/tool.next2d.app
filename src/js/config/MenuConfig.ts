@@ -23,4 +23,4 @@ export const $SHORTCUT_MENU_NAME: string = "shortcut-setting-menu";
  * @type {string}
  * @constant
  */
-export const $PROGRESS_MENU_NAME: string = "save-progress-container";
+export const $PROGRESS_MENU_NAME: string = "progress-container";

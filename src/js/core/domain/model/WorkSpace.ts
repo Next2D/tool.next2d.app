@@ -138,6 +138,23 @@ export class WorkSpace
     }
 
     /**
+     * @description 初期起動関数
+     *              initial invoking function
+     *
+     * @return {Promise}
+     * @method
+     * @public
+     */
+    initialize ():  Promise<void>
+    {
+        return new Promise((resolve) =>
+        {
+            // TODO
+            return resolve();
+        });
+    }
+
+    /**
      * @description ワークスペースを起動
      *              Start workspace
      *

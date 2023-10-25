@@ -2,6 +2,8 @@ import { $PROGRESS_MENU_NAME } from "../../../config/MenuConfig";
 import { BaseMenu } from "./BaseMenu";
 import { execute as progressMenuUpdateMessageService } from "../../application/ProgressMenu/service/ProgressMenuUpdateMessageService";
 import { execute as progressMenuUpdateStateService } from "../../application/ProgressMenu/service/ProgressMenuUpdateStateService";
+import { $setCursor } from "../../../util/Global";
+import { $replace } from "../../../language/application/LanguageUtil";
 
 /**
  * @description 進行管理メニュークラス
@@ -14,6 +16,8 @@ import { execute as progressMenuUpdateStateService } from "../../application/Pro
 export class ProgressMenu extends BaseMenu
 {
     private _$active: boolean;
+    private _$timerId: NodeJS.Timeout | number;
+    private _$currentState: number;
 
     /**
      * @constructor
@@ -29,6 +33,21 @@ export class ProgressMenu extends BaseMenu
          * @public
          */
         this._$active = false;
+
+        /**
+         * @type {number}
+         * @public
+         */
+        this._$currentState = 0;
+
+        /**
+         * @type {number}
+         * @public
+         */
+        this._$timerId = 0;
+
+        // 初期起動は表示
+        this.show();
     }
 
     /**
@@ -60,11 +79,16 @@ export class ProgressMenu extends BaseMenu
      * @description タスク進行のパーセント値を更新
      *              Update percent value of task progress
      *
-     * @params {number}
+     * @member {number}
      * @public
      */
-    set state (state: number)
+    get currentState (): number
     {
+        return this._$currentState;
+    }
+    set currentState (state: number)
+    {
+        this._$currentState = state;
         progressMenuUpdateStateService(state);
     }
 
@@ -79,7 +103,20 @@ export class ProgressMenu extends BaseMenu
     show (): void
     {
         super.show();
+
+        // 実行判定フラグを更新
         this._$active = true;
+
+        // 事前に起動しているtimerをストップ
+        clearInterval(this._$timerId);
+
+        this._$timerId = setInterval(() =>
+        {
+            this.currentState++;
+            if (this.currentState > 95) {
+                clearInterval(this._$timerId);
+            }
+        }, 300);
     }
 
     /**
@@ -92,7 +129,21 @@ export class ProgressMenu extends BaseMenu
      */
     hide (): void
     {
-        super.hide();
-        this._$active = false;
+        // 終了表示
+        this.message      = $replace("{{完了}}");
+        this.currentState = 100;
+
+        // timerをストップ
+        clearInterval(this._$timerId);
+
+        setTimeout(() =>
+        {
+            super.hide();
+
+            // reset
+            this._$active       = false;
+            this._$currentState = 0;
+
+        }, 200);
     }
 }

@@ -42,3 +42,21 @@ export const $USER_SHORTCUT_SETTING_KEY: string = `${$PREFIX}@shortcut`;
  * @constant
  */
 export const $USER_TOOL_AREA_STATE_KEY: string = `${$PREFIX}@tool-area`;
+
+/**
+ * @description IndexedDBのデータベース名
+ *              IndexedDB database name
+ *
+ * @type {string}
+ * @constant
+ */
+export const $USER_DATABASE_NAME: string = "save-data";
+
+/**
+ * @description IndexedDBのストア名
+ *              IndexedDB store name
+ *
+ * @type {string}
+ * @constant
+ */
+export const $USER_DATABASE_STORE_KEY: string = "local";

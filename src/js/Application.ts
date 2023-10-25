@@ -6,15 +6,19 @@ import { execute as language } from "./language/application/Initialize";
 import { execute as core } from "./core/application/Initialize";
 import { execute as user } from "./user/application/Initialize";
 import { WorkSpace } from "./core/domain/model/WorkSpace";
+import { $getMenu } from "./menu/application/MenuUtil";
+import { $PROGRESS_MENU_NAME } from "./config/MenuConfig";
+import { MenuImpl } from "./interface/MenuImpl";
+import { ProgressMenu } from "./menu/domain/model/ProgressMenu";
+import { $getAllWorkSpace, $getCurrentWorkSpace } from "./core/application/CoreUtil";
 
 const executes: Function[] = [
+    menu,
     user,
     core,
     view,
     timeline,
-    tool,
-    menu,
-    language // fixed logic
+    tool
 ];
 
 /**
@@ -25,8 +29,11 @@ const executes: Function[] = [
  * @method
  * @public
  */
-export const initialize = (): Promise<void[]> =>
+export const initialize = async (): Promise<void> =>
 {
+    // 言語ファイルを取得
+    await language();
+
     // 起動タスクを実行
     const promises: Promise<void>[] = [];
     for (let idx: number = 0; idx < executes.length; ++idx) {
@@ -34,19 +41,44 @@ export const initialize = (): Promise<void[]> =>
         promises.push(initialize());
     }
 
-    return Promise.all(promises);
+    // 起動タスクが全て完了するまで待機
+    await Promise.all(promises);
+
+    return await Promise.resolve();
 };
 
 /**
  * @description 全体の機能を起動
  *              Activate the entire function
  *
- * @return {void}
+ * @return {Promise}
  * @method
  * @public
  */
-export const run = (): void =>
+export const run = async (): Promise<void> =>
 {
-    const workSpace = new WorkSpace();
-    workSpace.run();
+    const promises: Promise<void>[] = [];
+
+    // 起動したWorkSpaceの初期関数を実行
+    const workSpaces: WorkSpace[] = $getAllWorkSpace();
+    for (let idx = 0; idx < workSpaces.length; ++idx) {
+        const workSpace: WorkSpace = workSpaces[idx];
+        promises.push(workSpace.initialize());
+    }
+
+    // 初期起動関数が終了するまで待機
+    await Promise.all(promises);
+
+    // 選択されたWorkSpaceを起動
+    $getCurrentWorkSpace()
+        .run()
+        .then((): void => {
+            const menu: MenuImpl<ProgressMenu> | null = $getMenu($PROGRESS_MENU_NAME);
+            if (!menu) {
+                return;
+            }
+
+            // 進行状況メニューを非表示に
+            menu.hide();
+        });
 };
