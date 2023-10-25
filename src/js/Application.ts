@@ -4,9 +4,11 @@ import { execute as view } from "./view/application/Initialize";
 import { execute as timeline } from "./timeline/application/Initialize";
 import { execute as language } from "./language/application/Initialize";
 import { execute as core } from "./core/application/Initialize";
+import { execute as user } from "./user/application/Initialize";
 import { WorkSpace } from "./core/domain/model/WorkSpace";
 
 const executes: Function[] = [
+    user,
     core,
     view,
     timeline,

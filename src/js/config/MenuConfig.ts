@@ -15,3 +15,12 @@ export const $USER_MENU_NAME: string = "user-setting";
  * @constant
  */
 export const $SHORTCUT_MENU_NAME: string = "shortcut-setting-menu";
+
+/**
+ * @description 進行管理メニューの名前
+ *              Name of progress menu
+ *
+ * @type {string}
+ * @constant
+ */
+export const $PROGRESS_MENU_NAME: string = "save-progress-container";

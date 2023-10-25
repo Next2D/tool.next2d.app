@@ -1,4 +1,5 @@
 import type { MenuImpl } from "../../interface/MenuImpl";
+import { ProgressMenu } from "../domain/model/ProgressMenu";
 import { UserSettingMenu } from "../domain/model/UserSettingMenu";
 import { ShortcutSettingMenu } from "../domain/model/ShortcutSettingMenu";
 
@@ -9,6 +10,7 @@ import { ShortcutSettingMenu } from "../domain/model/ShortcutSettingMenu";
  * @private
  */
 const menus: MenuImpl<any>[] = [
+    ProgressMenu,
     UserSettingMenu,
     ShortcutSettingMenu
 ];
