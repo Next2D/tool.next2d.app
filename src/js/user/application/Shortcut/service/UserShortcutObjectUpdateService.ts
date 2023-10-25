@@ -1,5 +1,5 @@
-import { $USER_SHORTCUT_SETTING_KEY } from "../../../config/Config";
-import type { ShortcutSaveObjectImpl } from "../../../interface/ShortcutSaveObjectImpl";
+import { $USER_SHORTCUT_SETTING_KEY } from "../../../../config/Config";
+import type { ShortcutSaveObjectImpl } from "../../../../interface/ShortcutSaveObjectImpl";
 
 /**
  * @description 個別に設定したショートカット情報をLocalStorageに保存

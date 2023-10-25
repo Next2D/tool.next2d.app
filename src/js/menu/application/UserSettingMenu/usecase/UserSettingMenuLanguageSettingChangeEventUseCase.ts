@@ -1,4 +1,4 @@
-import { execute as userLanguageSettingObjectUpdateService } from "../../../../user/application/service/UserLanguageSettingObjectUpdateService";
+import { execute as userLanguageSettingObjectUpdateService } from "../../../../user/application/Language/service/UserLanguageSettingObjectUpdateService";
 import { execute as languageTranslationUseCase } from "../../../../language/application/usecase/LanguageTranslationUseCase";
 
 /**

@@ -1,4 +1,4 @@
-import { execute as userShortcutObjectRemoveService } from "../../../../user/application/service/UserShortcutObjectRemoveService";
+import { execute as userShortcutObjectRemoveService } from "../../../../user/application/Shortcut/service/UserShortcutObjectRemoveService";
 import { execute as shortcutSettingMenuUpdateElementTextService } from "../service/ShortcutSettingMenuUpdateElementTextService";
 import { $clearTempMapping } from "../ShortcutSettingMenuUtil";
 

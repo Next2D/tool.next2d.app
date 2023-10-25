@@ -1,7 +1,6 @@
-import { ShortcutSaveObjectImpl } from "../../../interface/ShortcutSaveObjectImpl";
+import { ShortcutSaveObjectImpl } from "../../../../interface/ShortcutSaveObjectImpl";
 import { execute as userShortcutObjectGetService } from "./UserShortcutObjectGetService";
-import { execute as userShortcutObjectUpdateService } from "./UserShortcutObjectUpdateService";
-import { execute } from "./UserShortcutObjectRemoveService";
+import { execute } from "./UserShortcutObjectUpdateService";
 
 describe("UserShortcutObjectGetServiceTest", () =>
 {
@@ -10,7 +9,7 @@ describe("UserShortcutObjectGetServiceTest", () =>
         let object: ShortcutSaveObjectImpl | null = userShortcutObjectGetService();
         expect(object).toBe(null);
 
-        userShortcutObjectUpdateService({
+        execute({
             "screen": [{
                 "key": "screen_key",
                 "map": "screen_map",
@@ -44,10 +43,5 @@ describe("UserShortcutObjectGetServiceTest", () =>
         expect(keys[1]).toBe("library");
         expect(keys[2]).toBe("timeline");
         expect(keys[3]).toBe("global");
-
-        execute();
-
-        object = userShortcutObjectGetService();
-        expect(object).toBe(null);
     });
 });

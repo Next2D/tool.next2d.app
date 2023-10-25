@@ -1,7 +1,7 @@
 import type { ShortcutKeyStringImpl } from "../../../../interface/ShortcutKeyStringImpl";
 import type { ShortcutSaveObjectImpl } from "../../../../interface/ShortcutSaveObjectImpl";
 import type { ShortcutViewObjectImpl } from "../../../../interface/ShortcutViewObjectImpl";
-import { execute as userShortcutObjectGetService } from "../../../../user/application/service/UserShortcutObjectGetService";
+import { execute as userShortcutObjectGetService } from "../../../../user/application/Shortcut/service/UserShortcutObjectGetService";
 import { $getTempMapping } from "../ShortcutSettingMenuUtil";
 
 /**

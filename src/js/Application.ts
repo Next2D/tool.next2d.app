@@ -1,11 +1,15 @@
 import { execute as tool } from "./tool/application/Initialize";
 import { execute as menu } from "./menu/application/Initialize";
 import { execute as view } from "./view/application/Initialize";
+import { execute as timeline } from "./timeline/application/Initialize";
 import { execute as language } from "./language/application/Initialize";
+import { execute as core } from "./core/application/Initialize";
 import { WorkSpace } from "./core/domain/model/WorkSpace";
 
 const executes: Function[] = [
+    core,
     view,
+    timeline,
     tool,
     menu,
     language // fixed logic

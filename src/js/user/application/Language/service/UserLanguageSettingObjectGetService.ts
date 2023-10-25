@@ -1,4 +1,4 @@
-import { $USER_LANGUAGE_SETTING_KEY } from "../../../config/Config";
+import { $USER_LANGUAGE_SETTING_KEY } from "../../../../config/Config";
 
 /**
  * @description 言語設定した値をLocalStorageから取得

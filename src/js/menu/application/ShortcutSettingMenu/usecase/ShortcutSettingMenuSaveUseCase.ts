@@ -1,5 +1,5 @@
 import { $getTempMapping } from "../ShortcutSettingMenuUtil";
-import { execute as userShortcutObjectUpdateService } from "../../../../user/application/service/UserShortcutObjectUpdateService";
+import { execute as userShortcutObjectUpdateService } from "../../../../user/application/Shortcut/service/UserShortcutObjectUpdateService";
 import { execute as shortcutSettingMenuUpdateCommandMappingService } from "../service/ShortcutSettingMenuUpdateCommandMappingService";
 import { execute as languageTranslationService } from "../../../../language/application/service/LanguageTranslationService";
 import type { ShortcutSaveObjectImpl } from "../../../../interface/ShortcutSaveObjectImpl";

@@ -1,7 +1,7 @@
 import { $setCursor } from "../../../../util/Global";
 import { EventType } from "../../../domain/event/EventType";
 import { execute as toolAreaActiveMoveService } from "../service/ToolAreaActiveMoveService";
-import { execute as userToolAreaStateUpdateService } from "../../../../user/application/service/UserToolAreaStateUpdateService";
+import { execute as userToolAreaStateUpdateService } from "../../../../user/application/ToolArea/service/UserToolAreaStateUpdateService";
 
 /**
  * @description 選択中のツールの移動イベント関数

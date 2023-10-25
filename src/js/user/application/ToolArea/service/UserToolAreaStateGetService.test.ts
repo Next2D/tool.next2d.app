@@ -1,4 +1,4 @@
-import { UserToolAreaStateObjectImpl } from "../../../interface/UserToolAreaStateObjectImpl";
+import { UserToolAreaStateObjectImpl } from "../../../../interface/UserToolAreaStateObjectImpl";
 import { execute } from "./UserToolAreaStateGetService";
 
 describe("UserToolAreaStateGetServiceTest", () =>

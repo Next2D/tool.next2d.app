@@ -1,12 +1,13 @@
-import { ShortcutSaveObjectImpl } from "../../../interface/ShortcutSaveObjectImpl";
-import { execute } from "./UserShortcutObjectGetService";
+import { ShortcutSaveObjectImpl } from "../../../../interface/ShortcutSaveObjectImpl";
+import { execute as userShortcutObjectGetService } from "./UserShortcutObjectGetService";
 import { execute as userShortcutObjectUpdateService } from "./UserShortcutObjectUpdateService";
+import { execute } from "./UserShortcutObjectRemoveService";
 
 describe("UserShortcutObjectGetServiceTest", () =>
 {
     test("execute test", () =>
     {
-        let object: ShortcutSaveObjectImpl | null = execute();
+        let object: ShortcutSaveObjectImpl | null = userShortcutObjectGetService();
         expect(object).toBe(null);
 
         userShortcutObjectUpdateService({
@@ -32,7 +33,7 @@ describe("UserShortcutObjectGetServiceTest", () =>
             }]
         });
 
-        object = execute();
+        object = userShortcutObjectGetService();
         if (!object) {
             throw new Error("save data not found");
         }
@@ -43,5 +44,10 @@ describe("UserShortcutObjectGetServiceTest", () =>
         expect(keys[1]).toBe("library");
         expect(keys[2]).toBe("timeline");
         expect(keys[3]).toBe("global");
+
+        execute();
+
+        object = userShortcutObjectGetService();
+        expect(object).toBe(null);
     });
 });

@@ -1,6 +1,6 @@
 import { execute } from "./UserToolAreaStateUpdateService";
 import { execute as userToolAreaStateGetService } from "./UserToolAreaStateGetService";
-import { UserToolAreaStateObjectImpl } from "../../../interface/UserToolAreaStateObjectImpl";
+import { UserToolAreaStateObjectImpl } from "../../../../interface/UserToolAreaStateObjectImpl";
 
 describe("UserToolAreaStateUpdateServiceTest", () =>
 {

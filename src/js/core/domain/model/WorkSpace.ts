@@ -11,9 +11,10 @@ import { Stage } from "./Stage";
 export class WorkSpace
 {
     private _$name: string;
-    // private _$scene: MovieClip | null;
-    private _$stage: Stage;
-    private _$libraries: Map<number, InstanceImpl<any>>;
+    private _$scene: MovieClip;
+    private readonly _$root: MovieClip;
+    private readonly _$stage: Stage;
+    private readonly _$libraries: Map<number, InstanceImpl<any>>;
 
     /**
      * @constructor
@@ -28,16 +29,20 @@ export class WorkSpace
          */
         this._$name = "";
 
-        // /**
-        //  * @type {MovieClip}
-        //  * @default null
-        //  * @private
-        //  */
-        // this._$scene = null;
+        /**
+         * @type {MovieClip}
+         * @private
+         */
+        this._$root = new MovieClip();
+
+        /**
+         * @type {MovieClip}
+         * @private
+         */
+        this._$scene = this._$root;
 
         /**
          * @type {Stage}
-         * @default null
          * @private
          */
         this._$stage = new Stage();
@@ -113,34 +118,39 @@ export class WorkSpace
         return this._$stage;
     }
 
-    // /**
-    //  * @description 指定のシーン(MovieClip)を起動する
-    //  *
-    //  * @param  {MovieClip} scene
-    //  * @return {Promise}
-    //  * @public
-    //  */
-    // setScene (scene: MovieClip): Promise<void>
-    // {
-    //     if (this._$scene) {
-    //         this._$scene.stop();
-    //     }
+    /**
+     * @description 指定のシーン(MovieClip)を起動する
+     *              Launch the specified scene (MovieClip)
+     *
+     * @param  {MovieClip} movie_clip
+     * @return {Promise}
+     * @method
+     * @public
+     */
+    setScene (movie_clip: MovieClip): Promise<void>
+    {
+        // 現在のMovieClipを終了
+        this._$scene.stop();
 
-    //     this._$scene = scene;
-    //     return scene.run();
-    // }
+        // 指定のMovieClipを起動
+        this._$scene = movie_clip;
+        return movie_clip.run();
+    }
 
     /**
      * @description ワークスペースを起動
      *              Start workspace
      *
-     * @return {void}
+     * @return {Promise}
      * @method
      * @public
      */
-    run (): void
+    run (): Promise<void>
     {
-        // TODO
+        // Stageを起動
         this._$stage.run();
+
+        // rootのMovieClipを起動
+        return this._$scene.run();
     }
 }

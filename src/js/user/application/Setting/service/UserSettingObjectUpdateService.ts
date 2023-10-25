@@ -1,5 +1,5 @@
-import { $USER_SETTING_KEY } from "../../../config/Config";
-import type { UserSettingObjectImpl } from "../../../interface/UserSettingObjectImpl";
+import { $USER_SETTING_KEY } from "../../../../config/Config";
+import type { UserSettingObjectImpl } from "../../../../interface/UserSettingObjectImpl";
 
 /**
  * @description ユーザー設定メニューで設定した値をLocalStorageに保存する

@@ -1,15 +1,15 @@
-import { ShortcutSaveObjectImpl } from "../../../interface/ShortcutSaveObjectImpl";
-import { execute as userShortcutObjectGetService } from "./UserShortcutObjectGetService";
-import { execute } from "./UserShortcutObjectUpdateService";
+import { ShortcutSaveObjectImpl } from "../../../../interface/ShortcutSaveObjectImpl";
+import { execute } from "./UserShortcutObjectGetService";
+import { execute as userShortcutObjectUpdateService } from "./UserShortcutObjectUpdateService";
 
 describe("UserShortcutObjectGetServiceTest", () =>
 {
     test("execute test", () =>
     {
-        let object: ShortcutSaveObjectImpl | null = userShortcutObjectGetService();
+        let object: ShortcutSaveObjectImpl | null = execute();
         expect(object).toBe(null);
 
-        execute({
+        userShortcutObjectUpdateService({
             "screen": [{
                 "key": "screen_key",
                 "map": "screen_map",
@@ -32,7 +32,7 @@ describe("UserShortcutObjectGetServiceTest", () =>
             }]
         });
 
-        object = userShortcutObjectGetService();
+        object = execute();
         if (!object) {
             throw new Error("save data not found");
         }
