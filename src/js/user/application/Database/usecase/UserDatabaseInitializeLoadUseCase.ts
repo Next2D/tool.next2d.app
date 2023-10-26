@@ -3,12 +3,12 @@ import type { ProgressMenu } from "../../../../menu/domain/model/ProgressMenu";
 import { $PROGRESS_MENU_NAME } from "../../../../config/MenuConfig";
 import { $getMenu } from "../../../../menu/application/MenuUtil";
 import { $replace } from "../../../../language/application/LanguageUtil";
+import { $createWorkSpace } from "../../../../core/application/CoreUtil";
+import { execute as userDatabaseGetOpenDBRequestService } from "../service/UserDatabaseGetOpenDBRequestService";
 import {
-    $PREFIX,
     $USER_DATABASE_NAME,
     $USER_DATABASE_STORE_KEY
 } from "../../../../config/Config";
-import { $createWorkSpace } from "../../../../core/application/CoreUtil";
 
 /**
  * @description IndexedDbからデータ読み込みを行う
@@ -29,26 +29,15 @@ export const execute = (): Promise<void> =>
             menu.message = $replace("{{データベースを起動}}");
         }
 
-        const request: IDBOpenDBRequest = indexedDB.open(
-            `${$PREFIX}@${$USER_DATABASE_NAME}`
-        );
+        const request: IDBOpenDBRequest = userDatabaseGetOpenDBRequestService();
 
-        // 初回アクセスであれば、Storeを作成
-        request.onupgradeneeded = (event: IDBVersionChangeEvent) =>
+        // 起動成功処理
+        request.onsuccess = (event: Event) =>
         {
             if (!event.target) {
                 return ;
             }
 
-            const db: IDBDatabase = (event.target as IDBOpenDBRequest).result;
-            if (!db.objectStoreNames.contains(`${$USER_DATABASE_NAME}`)) {
-                db.createObjectStore(`${$USER_DATABASE_NAME}`);
-            }
-        };
-
-        // 起動成功処理
-        request.onsuccess = (event: Event) =>
-        {
             const db: IDBDatabase = (event.target as IDBOpenDBRequest).result;
 
             const transaction: IDBTransaction = db.transaction(
@@ -60,6 +49,10 @@ export const execute = (): Promise<void> =>
             const dbRequest: IDBRequest<any> = store.get(`${$USER_DATABASE_STORE_KEY}`);
             dbRequest.onsuccess = (event: Event) =>
             {
+                if (!event.target) {
+                    return ;
+                }
+
                 const binary: any = (event.target as IDBRequest).result;
                 if (binary) {
                     // TODO
@@ -73,7 +66,6 @@ export const execute = (): Promise<void> =>
 
                 db.close();
             };
-
         };
     });
 };

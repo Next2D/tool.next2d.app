@@ -5,12 +5,19 @@ import { execute as timeline } from "./timeline/application/Initialize";
 import { execute as language } from "./language/application/Initialize";
 import { execute as core } from "./core/application/Initialize";
 import { execute as user } from "./user/application/Initialize";
-import { WorkSpace } from "./core/domain/model/WorkSpace";
+import type { WorkSpace } from "./core/domain/model/WorkSpace";
 import { $getMenu } from "./menu/application/MenuUtil";
-import { $PROGRESS_MENU_NAME } from "./config/MenuConfig";
-import { MenuImpl } from "./interface/MenuImpl";
-import { ProgressMenu } from "./menu/domain/model/ProgressMenu";
-import { $getAllWorkSpace, $getCurrentWorkSpace } from "./core/application/CoreUtil";
+import {
+    $PROGRESS_MENU_NAME,
+    $DETAIL_MODAL_NAME
+} from "./config/MenuConfig";
+import type { MenuImpl } from "./interface/MenuImpl";
+import type { ProgressMenu } from "./menu/domain/model/ProgressMenu";
+import type { DetailModal } from "./menu/domain/model/DetailModal";
+import {
+    $getAllWorkSpace,
+    $getCurrentWorkSpace
+} from "./core/application/CoreUtil";
 
 const executes: Function[] = [
     menu,
@@ -44,6 +51,12 @@ export const initialize = async (): Promise<void> =>
     // 起動タスクが全て完了するまで待機
     await Promise.all(promises);
 
+    // 初期のDOMを対象に説明モーダルのイベントをセット
+    const detailModal: MenuImpl<DetailModal> | null = $getMenu($DETAIL_MODAL_NAME);
+    if (detailModal) {
+        detailModal.registerFadeEvent(document);
+    }
+
     return await Promise.resolve();
 };
 
@@ -70,15 +83,5 @@ export const run = async (): Promise<void> =>
     await Promise.all(promises);
 
     // 選択されたWorkSpaceを起動
-    $getCurrentWorkSpace()
-        .run()
-        .then((): void => {
-            const menu: MenuImpl<ProgressMenu> | null = $getMenu($PROGRESS_MENU_NAME);
-            if (!menu) {
-                return;
-            }
-
-            // 進行状況メニューを非表示に
-            menu.hide();
-        });
+    $getCurrentWorkSpace().run();
 };

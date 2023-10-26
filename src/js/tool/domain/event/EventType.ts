@@ -73,19 +73,6 @@ export class EventType
     }
 
     /**
-     * @description ダブルクリック時のイベント名
-     *              Event name on double-click
-     *
-     * @return {string}
-     * @static
-     * @const
-     */
-    static get DBL_CLICK (): "dblclick"
-    {
-        return "dblclick";
-    }
-
-    /**
      * @description Input、Selectの変更時のイベント名
      *              Event name when Input or Select is changed
      *

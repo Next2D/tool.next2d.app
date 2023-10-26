@@ -9,7 +9,6 @@ describe("EventTypeTest", () =>
         expect(EventType.MOUSE_MOVE).toBe("pointermove");
         expect(EventType.START).toBe("start");
         expect(EventType.END).toBe("end");
-        expect(EventType.DBL_CLICK).toBe("dblclick");
         expect(EventType.CHANGE).toBe("change");
         expect(EventType.MOUSE_OVER).toBe("pointerover");
         expect(EventType.MOUSE_OUT).toBe("pointerout");

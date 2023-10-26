@@ -24,3 +24,12 @@ export const $SHORTCUT_MENU_NAME: string = "shortcut-setting-menu";
  * @constant
  */
 export const $PROGRESS_MENU_NAME: string = "progress-container";
+
+/**
+ * @description 説明モーダルの名前
+ *              Description Modal Name
+ *
+ * @type {string}
+ * @constant
+ */
+export const $DETAIL_MODAL_NAME: string = "detail-modal";

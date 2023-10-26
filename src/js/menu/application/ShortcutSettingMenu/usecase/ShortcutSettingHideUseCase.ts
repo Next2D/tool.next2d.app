@@ -1,6 +1,7 @@
 import { execute as shortcutSettingMenuResetListStyleUseCase } from "../usecase/ShortcutSettingMenuResetListStyleUseCase";
 import { execute as shortcutSettingMenuRemoveKeyboardEventUseCase } from "./ShortcutSettingMenuRemoveKeyboardEventUseCase";
 import { $clearTempMapping } from "../ShortcutSettingMenuUtil";
+import { execute as shortcutSettingMenuLoadObjectUseCase } from "../usecase/ShortcutSettingMenuLoadObjectUseCase";
 
 /**
  * @description ショートカットメニュー非表示時のユースケース
@@ -20,4 +21,7 @@ export const execute = (): void =>
 
     // 一時保存データを初期化
     $clearTempMapping();
+
+    // LocalStorageのデータをtempのマッピングにセット
+    shortcutSettingMenuLoadObjectUseCase();
 };

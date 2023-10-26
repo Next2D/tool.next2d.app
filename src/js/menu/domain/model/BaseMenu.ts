@@ -9,7 +9,7 @@ import { $registerMenu } from "../../application/MenuUtil";
  */
 export class BaseMenu
 {
-    private _$state: "show" | "hide";
+    protected _$state: "show" | "hide";
     private _$element: HTMLElement | null;
     private _$name: string;
     private _$offsetLeft: number;

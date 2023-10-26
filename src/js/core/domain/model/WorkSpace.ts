@@ -1,6 +1,21 @@
+import { $PROGRESS_MENU_NAME } from "../../../config/MenuConfig";
 import type { InstanceImpl } from "../../../interface/InstanceImpl";
+import type { MenuImpl } from "../../../interface/MenuImpl";
+import { $getMenu } from "../../../menu/application/MenuUtil";
+import type { ProgressMenu } from "../../../menu/domain/model/ProgressMenu";
+import { ScreenTab } from "../../../screen/domain/model/ScreenTab";
 import { MovieClip } from "./MovieClip";
 import { Stage } from "./Stage";
+import { execute as progressMenuHideService } from "../../../menu/application/ProgressMenu/service/ProgressMenuHideService";
+
+/**
+ * @description プロジェクトのユニークID
+ *              Project Unique ID
+ *
+ * @type {number}
+ * @private
+ */
+let workSpaceId: number = 1;
 
 /**
  * @description 各エリアの状態管理を行うクラス
@@ -15,6 +30,8 @@ export class WorkSpace
     private readonly _$root: MovieClip;
     private readonly _$stage: Stage;
     private readonly _$libraries: Map<number, InstanceImpl<any>>;
+    private readonly _$sceneTab: ScreenTab;
+    private readonly _$id: number;
 
     /**
      * @constructor
@@ -23,11 +40,17 @@ export class WorkSpace
     constructor ()
     {
         /**
+         * @type {number}
+         * @private
+         */
+        this._$id = workSpaceId++;
+
+        /**
          * @type {string}
          * @default ""
          * @private
          */
-        this._$name = "";
+        this._$name = `Untitled-${this._$id}`;
 
         /**
          * @type {MovieClip}
@@ -53,6 +76,12 @@ export class WorkSpace
          */
         this._$libraries = new Map();
 
+        /**
+         * @type {ScreenTab}
+         * @private
+         */
+        this._$sceneTab = new ScreenTab(this);
+
         // /**
         //  * @type {Map}
         //  * @private
@@ -73,6 +102,19 @@ export class WorkSpace
         // this._$revision = [];
         // this._$currentData = null;
         // this._$currentFrame = 0;
+    }
+
+    /**
+     * @description プロジェクトのユニークIDを返却
+     *              Return the unique ID of the project
+     *
+     * @return {number}
+     * @readonly
+     * @public
+     */
+    get id (): number
+    {
+        return this._$id;
     }
 
     /**
@@ -149,8 +191,24 @@ export class WorkSpace
     {
         return new Promise((resolve) =>
         {
-            // TODO
+            this._$sceneTab.initialize();
             return resolve();
+        });
+    }
+
+    /**
+     * @description ワークスペースを停止して、全てを初期化
+     *              Stop workspace and initialize everything
+     *
+     * @return {Promise}
+     * @method
+     * @public
+     */
+    stop (): Promise<void>
+    {
+        return new Promise((reslove) =>
+        {
+            return reslove();
         });
     }
 
@@ -164,10 +222,26 @@ export class WorkSpace
      */
     run (): Promise<void>
     {
-        // Stageを起動
-        this._$stage.run();
+        return new Promise((reslove): void =>
+        {
+            // Stageを起動
+            this._$stage.run();
 
-        // rootのMovieClipを起動
-        return this._$scene.run();
+            // タブをアクティブに設定
+            this._$sceneTab.active();
+
+            // rootのMovieClipを起動
+            this
+                ._$scene
+                .run()
+                .then(() =>
+                {
+                    // 進行状況メニューを非表示に
+                    progressMenuHideService();
+
+                    // 終了
+                    reslove();
+                });
+        });
     }
 }

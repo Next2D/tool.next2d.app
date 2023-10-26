@@ -99,8 +99,10 @@ export const execute = (): Promise<void> =>
 
         }
 
+        // LocalStorageに言語設定がなければブラウザのナビゲーションの言語をセット
         userLanguageSettingObjectUpdateService(language);
     }
 
+    // 対象の言語JSONを取得する
     return languageTranslationUseCase(language);
 };
