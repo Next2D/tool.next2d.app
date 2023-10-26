@@ -2,7 +2,7 @@ import { $VIEW_TAB_AREA_ID } from "../../../../config/ViewConfig";
 import { WorkSpace } from "../../../../core/domain/model/WorkSpace";
 import { execute as screenTabComponent } from "../component/ScreenTabComponent";
 import { execute as screenTabGetElementService } from "../service/ScreenTabGetElementService";
-import { execute as screenTabRegisterFadeEventService } from "../service/ScreenTabRegisterFadeEventService";
+import { execute as detailModalRegisterFadeEventService } from "../../../../menu/application/DetailModal/service/DetailModalRegisterFadeEventService";
 import { execute as screenTabInitializeRegisterEventUseCase } from "../usecase/ScreenTabInitializeRegisterEventUseCase";
 
 /**
@@ -35,7 +35,7 @@ export const execute = (work_space: WorkSpace): void =>
     }
 
     // タブElementの説明文をモーダルで表示できるようイベントを登録する
-    screenTabRegisterFadeEventService(tabElement);
+    detailModalRegisterFadeEventService(tabElement);
 
     // 動作イベントの登録
     screenTabInitializeRegisterEventUseCase(work_space);

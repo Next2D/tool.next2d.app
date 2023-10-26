@@ -1,8 +1,4 @@
-import { $PROGRESS_MENU_NAME } from "../../../config/MenuConfig";
 import type { InstanceImpl } from "../../../interface/InstanceImpl";
-import type { MenuImpl } from "../../../interface/MenuImpl";
-import { $getMenu } from "../../../menu/application/MenuUtil";
-import type { ProgressMenu } from "../../../menu/domain/model/ProgressMenu";
 import { ScreenTab } from "../../../screen/domain/model/ScreenTab";
 import { MovieClip } from "./MovieClip";
 import { Stage } from "./Stage";
