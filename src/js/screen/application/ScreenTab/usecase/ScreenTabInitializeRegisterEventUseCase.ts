@@ -1,5 +1,6 @@
 import type { WorkSpace } from "../../../../core/domain/model/WorkSpace";
 import { EventType } from "../../../../tool/domain/event/EventType";
+import { execute as screenTabRemoveUseCase } from "./ScreenTabRemoveUseCase";
 
 /**
  * @description 初期起動時のイベント登録のユースケース
@@ -15,7 +16,7 @@ export const execute = (
     work_space: WorkSpace
 ): void =>
 {
-    // 閉じるボタンのいべんとを登録
+    // 閉じるボタンのイベント
     const closeElement: HTMLElement | null = document
         .getElementById(`tab-delete-id-${work_space.id}`);
 
@@ -36,7 +37,8 @@ export const execute = (
             // 他のイベントを中止
             event.preventDefault();
 
-            console.log("koko");
+            // 終了処理
+            screenTabRemoveUseCase(work_space);
         });
     }
 };

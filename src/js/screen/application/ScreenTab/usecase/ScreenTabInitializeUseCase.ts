@@ -1,4 +1,4 @@
-import { $VIEW_TAB_AREA_ID } from "../../../../config/ViewConfig";
+import { $SCREEN_TAB_AREA_ID } from "../../../../config/ScreenConfig";
 import { WorkSpace } from "../../../../core/domain/model/WorkSpace";
 import { execute as screenTabComponent } from "../component/ScreenTabComponent";
 import { execute as screenTabGetElementService } from "../service/ScreenTabGetElementService";
@@ -18,7 +18,7 @@ export const execute = (work_space: WorkSpace): void =>
 {
     // タブのElementを追加
     const element: HTMLElement | null = document
-        .getElementById($VIEW_TAB_AREA_ID);
+        .getElementById($SCREEN_TAB_AREA_ID);
 
     if (!element) {
         return ;

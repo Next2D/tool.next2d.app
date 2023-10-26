@@ -204,6 +204,9 @@ export class WorkSpace
     {
         return new Promise((reslove) =>
         {
+            // タブを非アクティブに更新
+            this._$sceneTab.disable();
+
             return reslove();
         });
     }
@@ -223,7 +226,7 @@ export class WorkSpace
             // Stageを起動
             this._$stage.run();
 
-            // タブをアクティブに設定
+            // タブをアクティブに更新
             this._$sceneTab.active();
 
             // rootのMovieClipを起動

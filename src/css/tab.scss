@@ -1,4 +1,4 @@
-#tab-name-menu-list
+#screen-tab-menu-name-list
 {
     display        : flex;
     flex-direction : column;
@@ -21,7 +21,7 @@
     }
 }
 
-#view-tab
+#screen-tab
 {
     height           : 21px;
     display          : flex;
@@ -32,7 +32,7 @@
     font-weight      : bold;
 }
 
-#view-tab-area
+#screen-tab-area
 {
     width       : calc(100vw - (var(--controller-width) + 99px));
     height      : 21px;
@@ -133,7 +133,7 @@
     }
 }
 
-#view-tab-add
+#screen-tab-add
 {
     width               : 20px;
     height              : 21px;
@@ -150,7 +150,7 @@
     }
 }
 
-#view-tab-list
+#screen-tab-list
 {
     width               : 20px;
     height              : 21px;
@@ -165,4 +165,17 @@
         background-color : #4c4c4c;
         cursor           : pointer;
     }    
+}
+
+#screen-tab-menu
+{
+    position         : fixed;
+    min-width        : 200px;
+    min-height       : 40px;
+    border-radius    : 10px;
+    background-color : #363636;
+    color            : whitesmoke;
+    border           : 1px solid #72777D;
+    z-index          : 9900;
+    box-shadow       : 0 0 5px rgba(245, 245, 245, 0.25);
 }

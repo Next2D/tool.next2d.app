@@ -1,6 +1,7 @@
 import { execute as tool } from "./tool/application/Initialize";
 import { execute as menu } from "./menu/application/Initialize";
 import { execute as view } from "./view/application/Initialize";
+import { execute as screen } from "./screen/application/Initialize";
 import { execute as timeline } from "./timeline/application/Initialize";
 import { execute as language } from "./language/application/Initialize";
 import { execute as core } from "./core/application/Initialize";
@@ -17,6 +18,7 @@ const executes: Function[] = [
     user,
     core,
     view,
+    screen,
     timeline,
     tool
 ];

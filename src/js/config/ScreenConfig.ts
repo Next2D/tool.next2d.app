@@ -24,3 +24,12 @@ export const $SCREEN_STAGE_AREA_ID: string = "stage-area";
  * @constant
  */
 export const $SCREEN_ID: string = "screen";
+
+/**
+ * @description スクリーンエリアのタブのElementのID
+ *              ID of the Element in the screen area tab
+ *
+ * @type {string}
+ * @constant
+ */
+export const $SCREEN_TAB_AREA_ID: string = "screen-tab-area";
