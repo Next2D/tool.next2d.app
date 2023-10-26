@@ -1,9 +1,13 @@
 import { $DETAIL_MODAL_NAME } from "../../../../config/MenuConfig";
-import { ShortcutKeyStringImpl } from "../../../../interface/ShortcutKeyStringImpl";
-import { ShortcutViewObjectImpl } from "../../../../interface/ShortcutViewObjectImpl";
+import type { MenuImpl } from "../../../../interface/MenuImpl";
+import type { ShortcutKeyStringImpl } from "../../../../interface/ShortcutKeyStringImpl";
+import type { ShortcutViewObjectImpl } from "../../../../interface/ShortcutViewObjectImpl";
 import type { UserSettingObjectImpl } from "../../../../interface/UserSettingObjectImpl";
 import { $replace } from "../../../../language/application/LanguageUtil";
 import { execute as userSettingObjectGetService } from "../../../../user/application/Setting/service/UserSettingObjectGetService";
+import { execute as detailModalHideService } from "../service/DetailModalHideService";
+import type { DetailModal } from "../../../domain/model/DetailModal";
+import { $getMenu } from "../../MenuUtil";
 import { $getTempMapping } from "../../ShortcutSettingMenu/ShortcutSettingMenuUtil";
 
 /**
@@ -63,19 +67,24 @@ export const execute = (event: PointerEvent): void =>
         element.textContent = value;
     }
 
+    const menu: MenuImpl<DetailModal> | null = $getMenu($DETAIL_MODAL_NAME);
+    if (!menu) {
+        return ;
+    }
+
     // 表示領域に収まるようx座標を調整
     switch (true) {
 
         case element.clientWidth + event.pageX - 20 > window.innerWidth:
-            element.style.left = `${event.pageX - (element.clientWidth + event.pageX + 10 - window.innerWidth)}px`;
+            menu.offsetLeft = event.pageX - (element.clientWidth + event.pageX + 10 - window.innerWidth);
             break;
 
         case 0 > event.pageX - 20:
-            element.style.left = "10px";
+            menu.offsetLeft = 10;
             break;
 
         default:
-            element.style.left  = `${event.pageX - 20}px`;
+            menu.offsetLeft = event.pageX - 20;
             break;
 
     }
@@ -84,25 +93,23 @@ export const execute = (event: PointerEvent): void =>
     switch (true) {
 
         case element.clientHeight + event.pageY + 20 > window.innerHeight:
-            element.style.top = `${event.pageY - element.clientHeight - 20}px`;
+            menu.offsetTop = event.pageY - element.clientHeight - 20;
             break;
 
         default:
-            element.style.top = `${event.pageY + 20}px`;
+            menu.offsetTop = event.pageY + 20;
             break;
 
     }
 
-    // クラスを書き換え
-    element.setAttribute("class", "fadeIn");
-
     // 1.5秒で自動的に消えるようタイマーをセット
     const timerId: NodeJS.Timeout = setTimeout(() =>
     {
-        if (!element.classList.contains("fadeOut")) {
-            element.setAttribute("class", "fadeOut");
-        }
+        detailModalHideService();
     }, 1500);
 
     element.dataset.timerId = `${timerId}`;
+
+    detailModalHideService();
+    menu.show();
 };

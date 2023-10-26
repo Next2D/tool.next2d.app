@@ -1,20 +1,20 @@
+import { $SCREEN_TAB_MENU_NAME } from "../../../../config/MenuConfig";
 import { $registerMenu } from "../../MenuUtil";
-import { execute } from "./UserSettingMenuShowService";
-import { $USER_MENU_NAME } from "../../../../config/MenuConfig";
+import { execute } from "./ScreenTabMenuShowService";
 
-describe("UserSettingMenuShowServiceTest", () =>
+describe("ScreenTabMenuShowServiceTest", () =>
 {
     test("execute test", () =>
     {
         let state = "hide";
-        const menuMock = {
-            "name": $USER_MENU_NAME,
+        const mockMenu = {
+            "name": $SCREEN_TAB_MENU_NAME,
             "show": () =>
             {
                 state = "show";
             }
         };
-        $registerMenu(menuMock);
+        $registerMenu(mockMenu);
 
         expect(state).toBe("hide");
         execute();

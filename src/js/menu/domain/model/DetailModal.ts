@@ -24,6 +24,21 @@ export class DetailModal extends BaseMenu
     }
 
     /**
+     * @description メニュー位置を補正
+     *              Correct menu position
+     *
+     * @return {HTMLElement}
+     * @method
+     * @public
+     */
+    move (element: HTMLElement): HTMLElement
+    {
+        element.style.left = `${this.offsetLeft}px`;
+        element.style.top  = `${this.offsetTop}px`;
+        return element;
+    }
+
+    /**
      * @description 指定Elementのタグ内にあるdataset.detailがあればイベントを登録
      *              Register an event if dataset.detail is in the tag of the specified Element
      *

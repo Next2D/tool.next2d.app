@@ -3,6 +3,7 @@ import { ProgressMenu } from "../domain/model/ProgressMenu";
 import { UserSettingMenu } from "../domain/model/UserSettingMenu";
 import { ShortcutSettingMenu } from "../domain/model/ShortcutSettingMenu";
 import { DetailModal } from "../domain/model/DetailModal";
+import { ScreenTabMenu } from "../domain/model/ScreenTabMenu";
 
 /**
  * @description 起動対象のToolクラスの配列
@@ -14,7 +15,8 @@ const menus: MenuImpl<any>[] = [
     DetailModal,
     ProgressMenu,
     UserSettingMenu,
-    ShortcutSettingMenu
+    ShortcutSettingMenu,
+    ScreenTabMenu
 ];
 
 /**

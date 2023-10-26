@@ -33,3 +33,12 @@ export const $PROGRESS_MENU_NAME: string = "progress-container";
  * @constant
  */
 export const $DETAIL_MODAL_NAME: string = "detail-modal";
+
+/**
+ * @description スクリーンのタブ一覧メニューの名前
+ *              Screen tab list menu name
+ *
+ * @type {string}
+ * @constant
+ */
+export const $SCREEN_TAB_MENU_NAME: string = "screen-tab-menu";

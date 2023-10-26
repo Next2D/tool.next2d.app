@@ -7,7 +7,6 @@ import { $getMenu } from "../../MenuUtil";
  * @description タスク進行管理の画面を非表示にする
  *              Hide the Task Progress Management screen.
  *
- * @params {string} message
  * @return {void}
  * @method
  * @public

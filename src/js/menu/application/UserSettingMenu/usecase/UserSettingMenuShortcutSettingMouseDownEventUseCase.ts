@@ -1,5 +1,4 @@
-import { $SHORTCUT_MENU_NAME } from "../../../../config/MenuConfig";
-import { $allHideMenu } from "../../MenuUtil";
+import { execute as userSettingMenuHideService } from "../service/UserSettingMenuHideService";
 import { execute as shortcutSettingMenuUpdateOffsetService } from "../../ShortcutSettingMenu/service/ShortcutSettingMenuUpdateOffsetService";
 import { execute as shortcutSettingMenuShowService } from "../../ShortcutSettingMenu/service/ShortcutSettingMenuShowService";
 
@@ -11,13 +10,10 @@ import { execute as shortcutSettingMenuShowService } from "../../ShortcutSetting
  * @method
  * @public
  */
-export const execute = (event: PointerEvent): void =>
+export const execute = (): void =>
 {
-    // 親のイベントを中止する
-    event.stopPropagation();
-
     // ユーザー設定以外の全てのメニューを非表示にする
-    $allHideMenu($SHORTCUT_MENU_NAME);
+    userSettingMenuHideService();
 
     // 表示位置を補正
     shortcutSettingMenuUpdateOffsetService();

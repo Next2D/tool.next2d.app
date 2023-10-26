@@ -7,7 +7,6 @@ import { $getMenu } from "../../MenuUtil";
  * @description タスク進行管理の画面を表示する
  *              Display the Task Progress Management screen
  *
- * @params {string} message
  * @return {void}
  * @method
  * @public

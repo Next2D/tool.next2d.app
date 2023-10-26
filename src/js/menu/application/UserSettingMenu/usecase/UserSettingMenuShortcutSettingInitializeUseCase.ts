@@ -20,7 +20,10 @@ export const execute = (): void =>
         element
             .addEventListener(EventType.MOUSE_DOWN, (event: PointerEvent): void =>
             {
-                userSettingMenuShortcutSettingMouseDownEventUseCase(event);
+                // 親のイベントを中止する
+                event.stopPropagation();
+
+                userSettingMenuShortcutSettingMouseDownEventUseCase();
             });
     }
 };
