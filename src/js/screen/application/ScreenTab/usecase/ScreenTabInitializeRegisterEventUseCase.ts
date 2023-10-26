@@ -1,3 +1,4 @@
+import type { WorkSpace } from "../../../../core/domain/model/WorkSpace";
 import { EventType } from "../../../../tool/domain/event/EventType";
 
 /**
@@ -11,14 +12,31 @@ import { EventType } from "../../../../tool/domain/event/EventType";
  * @public
  */
 export const execute = (
-    element: HTMLElement,
     work_space: WorkSpace
 ): void =>
 {
-    // TODO
-    element.addEventListener(EventType.MOUSE_UP, (event: PointerEvent) => 
-    {
-        // 親のイベントを中止
-        event.stopPropagation();
-    });
+    // 閉じるボタンのいべんとを登録
+    const closeElement: HTMLElement | null = document
+        .getElementById(`tab-delete-id-${work_space.id}`);
+
+    if (closeElement) {
+        closeElement.addEventListener(EventType.MOUSE_DOWN, (event: PointerEvent): void =>
+        {
+            // 全てのイベントを中止
+            event.stopPropagation();
+            event.stopImmediatePropagation();
+            event.preventDefault();
+        });
+
+        closeElement.addEventListener(EventType.MOUSE_UP, (event: PointerEvent): void =>
+        {
+            // 親のイベントを中止
+            event.stopPropagation();
+
+            // 他のイベントを中止
+            event.preventDefault();
+
+            console.log("koko");
+        });
+    }
 };

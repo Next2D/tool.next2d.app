@@ -6,14 +6,7 @@ import { execute as language } from "./language/application/Initialize";
 import { execute as core } from "./core/application/Initialize";
 import { execute as user } from "./user/application/Initialize";
 import type { WorkSpace } from "./core/domain/model/WorkSpace";
-import { $getMenu } from "./menu/application/MenuUtil";
-import {
-    $PROGRESS_MENU_NAME,
-    $DETAIL_MODAL_NAME
-} from "./config/MenuConfig";
-import type { MenuImpl } from "./interface/MenuImpl";
-import type { ProgressMenu } from "./menu/domain/model/ProgressMenu";
-import type { DetailModal } from "./menu/domain/model/DetailModal";
+import { execute as detailModalRegisterFadeEventService } from "./menu/application/DetailModal/service/DetailModalRegisterFadeEventService";
 import {
     $getAllWorkSpace,
     $getCurrentWorkSpace
@@ -52,10 +45,7 @@ export const initialize = async (): Promise<void> =>
     await Promise.all(promises);
 
     // 初期のDOMを対象に説明モーダルのイベントをセット
-    const detailModal: MenuImpl<DetailModal> | null = $getMenu($DETAIL_MODAL_NAME);
-    if (detailModal) {
-        detailModal.registerFadeEvent(document);
-    }
+    detailModalRegisterFadeEventService(document);
 
     return await Promise.resolve();
 };

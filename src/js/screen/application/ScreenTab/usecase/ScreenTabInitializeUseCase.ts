@@ -38,5 +38,5 @@ export const execute = (work_space: WorkSpace): void =>
     screenTabRegisterFadeEventService(tabElement);
 
     // 動作イベントの登録
-    screenTabInitializeRegisterEventUseCase(tabElement, work_space);
+    screenTabInitializeRegisterEventUseCase(work_space);
 };
