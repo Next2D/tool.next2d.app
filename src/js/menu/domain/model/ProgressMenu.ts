@@ -85,6 +85,29 @@ export class ProgressMenu extends BaseMenu
     }
 
     /**
+     * @description プログレスバーを自動更新する
+     *              Auto update progress bar
+     *
+     * @returns {void}
+     * @method
+     * @public
+     */
+    update (): void
+    {
+        if (this.currentState >= 100) {
+            return ;
+        }
+
+        this.currentState++;
+        if (95 > this.currentState) {
+            requestAnimationFrame(() =>
+            {
+                this.update();
+            });
+        }
+    }
+
+    /**
      * @description タスク管理開始関数
      *              Task Management Start Function
      *
@@ -94,10 +117,17 @@ export class ProgressMenu extends BaseMenu
      */
     show (): void
     {
+        if (this._$state === "show") {
+            return ;
+        }
+
         super.show();
 
         // 実行判定フラグを更新
         this._$active = true;
+
+        // プログレスバーのアニメーション
+        this.update();
     }
 
     /**

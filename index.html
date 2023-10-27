@@ -1650,10 +1650,10 @@
       <div id="detail-modal" class="none"></div>
 
       <!-- progress -->
-      <div id="progress-container" aria-busy="true" aria-describedby="progress-bar" class="">
+      <div id="progress-container" class="">
         <div class="progress-modal">
             <div id="progress-state">Initialize...</div>
-            <progress id="progress-bar" max="100"></progress>
+            <progress id="progress-bar" min="0" max="100" value="0"></progress>
         </div>
       </div>
 
@@ -1661,8 +1661,7 @@
       <div id="player-preview" style="display:none;">
         <div id="preview-stop"></div>
         <div id="preview-display"></div>
-      </div>
-
+      </div>      
     </main>
   </body>
 </html>

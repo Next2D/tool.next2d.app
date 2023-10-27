@@ -13,6 +13,10 @@ import {
     $getAllWorkSpace,
     $getCurrentWorkSpace
 } from "./core/application/CoreUtil";
+import { $PROGRESS_MENU_NAME } from "./config/MenuConfig";
+import { $getMenu } from "./menu/application/MenuUtil";
+import type { ProgressMenu } from "./menu/domain/model/ProgressMenu";
+import type { MenuImpl } from "./interface/MenuImpl";
 
 const executes: Function[] = [
     menu,
@@ -32,25 +36,34 @@ const executes: Function[] = [
  * @method
  * @public
  */
-export const initialize = async (): Promise<void> =>
+export const initialize = (): Promise<void> =>
 {
-    // 言語ファイルを取得
-    await language();
+    return new Promise(async (resolve) =>
+    {
+        // 言語ファイルを取得
+        await language();
 
-    // 起動タスクを実行
-    const promises: Promise<void>[] = [];
-    for (let idx: number = 0; idx < executes.length; ++idx) {
-        const initialize: Function = executes[idx];
-        promises.push(initialize());
-    }
+        // 起動タスクを実行
+        const promises: Promise<void>[] = [];
+        for (let idx: number = 0; idx < executes.length; ++idx) {
+            const initialize: Function = executes[idx];
+            promises.push(initialize());
+        }
 
-    // 起動タスクが全て完了するまで待機
-    await Promise.all(promises);
+        // 起動タスクが全て完了するまで待機
+        await Promise.all(promises);
 
-    // 初期のDOMを対象に説明モーダルのイベントをセット
-    detailModalRegisterFadeEventService(document);
+        const menu: MenuImpl<ProgressMenu> | null = $getMenu($PROGRESS_MENU_NAME);
+        if (menu) {
+            menu.update();
+        }
 
-    return await Promise.resolve();
+        // 初期のDOMを対象に説明モーダルのイベントをセット
+        detailModalRegisterFadeEventService(document);
+
+        // 終了
+        resolve();
+    });
 };
 
 /**

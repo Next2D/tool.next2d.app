@@ -27,19 +27,19 @@
         height           : 32px;
         white-space      : nowrap;
         box-shadow       : 0 0 5px rgba(245, 245, 245, 0.25);
-    
-        div
-        {
-            display       : flex;
-            place-items   : center;
-            width         : 90%;
-            margin-bottom : 4px;
-        }
-
-        progress
-        {
-            width  : 95%;
-            height : 10px;
-        }
     }
+}
+
+#progress-bar
+{
+    width  : 95%;
+    height : 10px;
+}
+
+#progress-state
+{
+    display       : flex;
+    place-items   : center;
+    width         : 90%;
+    margin-bottom : 4px;
 }

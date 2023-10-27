@@ -1,4 +1,4 @@
-import { $changeCurrentWorkSpace, $getCurrentWorkSpace } from "../../../../core/application/CoreUtil";
+import { $changeCurrentWorkSpace } from "../../../../core/application/CoreUtil";
 import type { WorkSpace } from "../../../../core/domain/model/WorkSpace";
 import { EventType } from "../../../../tool/domain/event/EventType";
 import { execute as screenTabRemoveUseCase } from "./ScreenTabRemoveUseCase";
