@@ -71,7 +71,7 @@ export const execute = (
     // ダブルクリック
     const tabElement: HTMLElement | null = screenTabGetElementService(work_space.id);
     if (tabElement) {
-        tabElement.addEventListener(EventType.MOUSE_DOWN, (event: PointerEvent) => 
+        tabElement.addEventListener(EventType.MOUSE_DOWN, (event: PointerEvent) =>
         {
             // 親のイベントを中止
             event.stopPropagation();
