@@ -23,7 +23,6 @@ export const execute = (work_space: WorkSpace): void =>
         return ;
     }
 
-    work_space.stop();
-
-    // TODO
+    // プロジェクトを終了
+    work_space.remove();
 };

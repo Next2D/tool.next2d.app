@@ -2,10 +2,10 @@ import type { InstanceImpl } from "../../../interface/InstanceImpl";
 import { ScreenTab } from "../../../screen/domain/model/ScreenTab";
 import { MovieClip } from "./MovieClip";
 import { Stage } from "./Stage";
-import { execute as progressMenuHideService } from "../../../menu/application/ProgressMenu/service/ProgressMenuHideService";
-import { execute as progressMenuShowService } from "../../../menu/application/ProgressMenu/service/ProgressMenuShowService";
-import { execute as progressMenuUpdateMessageService } from "../../../menu/application/ProgressMenu/service/ProgressMenuUpdateMessageService";
-import { $replace } from "../../../language/application/LanguageUtil";
+import { execute as workSpaceRunUseCase } from "../../application/WorkSpace/usecase/WorkSpaceRunUseCase";
+import { execute as workSpaceStopUseCase } from "../../application/WorkSpace/usecase/WorkSpaceStopUseCase";
+import { execute as workSpaceInitializeUseCase } from "../../application/WorkSpace/usecase/WorkSpaceInitializeUseCase";
+import { execute as workSpaceRemoveUseCase } from "../../application/WorkSpace/usecase/WorkSpaceRemoveUseCase";
 
 /**
  * @description プロジェクトのユニークID
@@ -26,10 +26,11 @@ export class WorkSpace
 {
     private _$name: string;
     private _$scene: MovieClip;
+    private _$active: boolean;
     private readonly _$root: MovieClip;
     private readonly _$stage: Stage;
     private readonly _$libraries: Map<number, InstanceImpl<any>>;
-    private readonly _$sceneTab: ScreenTab;
+    private readonly _$screenTab: ScreenTab;
     private readonly _$id: number;
 
     /**
@@ -79,7 +80,14 @@ export class WorkSpace
          * @type {ScreenTab}
          * @private
          */
-        this._$sceneTab = new ScreenTab(this);
+        this._$screenTab = new ScreenTab(this);
+
+        /**
+         * @type {boolean}
+         * @default false
+         * @private
+         */
+        this._$active = false;
 
         // /**
         //  * @type {Map}
@@ -117,6 +125,58 @@ export class WorkSpace
     }
 
     /**
+     * @description プロジェクトの起動状態を返却
+     *              Project startup status returned
+     *
+     * @return {boolean}
+     * @readonly
+     * @public
+     */
+    get active (): boolean
+    {
+        return this._$active;
+    }
+
+    /**
+     * @description rootのMovieClipを返す
+     *              Returns the root MovieClip
+     *
+     * @return {MovieClip}
+     * @readonly
+     * @public
+     */
+    get root (): MovieClip
+    {
+        return this._$root;
+    }
+
+    /**
+     * @description プロジェクトのStageオブジェクトを返す
+     *              Returns the Stage object of the project
+     *
+     * @return {Stage}
+     * @readonly
+     * @public
+     */
+    get stage (): Stage
+    {
+        return this._$stage;
+    }
+
+    /**
+     * @description プロジェクトのタブオブジェクトを返す
+     *              Returns the tab object of the project
+     *
+     * @return {Stage}
+     * @readonly
+     * @public
+     */
+    get screenTab (): ScreenTab
+    {
+        return this._$screenTab;
+    }
+
+    /**
      * @description プロジェクト名を返す
      *              Return project name
      *
@@ -131,32 +191,6 @@ export class WorkSpace
     set name (name: string)
     {
         this._$name = `${name}`;
-    }
-
-    /**
-     * @description rootのMovieClipを返す
-     *              Returns the root MovieClip
-     *
-     * @return {MovieClip}
-     * @readonly
-     * @public
-     */
-    get root (): MovieClip
-    {
-        return this._$libraries.get(0);
-    }
-
-    /**
-     * @description プロジェクトのStageオブジェクトを返す
-     *              Returns the Stage object of the project
-     *
-     * @return {Stage}
-     * @readonly
-     * @public
-     */
-    get stage (): Stage
-    {
-        return this._$stage;
     }
 
     /**
@@ -186,13 +220,9 @@ export class WorkSpace
      * @method
      * @public
      */
-    initialize ():  Promise<void>
+    initialize (): Promise<void>
     {
-        return new Promise((resolve) =>
-        {
-            this._$sceneTab.initialize();
-            return resolve();
-        });
+        return workSpaceInitializeUseCase(this);
     }
 
     /**
@@ -205,13 +235,11 @@ export class WorkSpace
      */
     stop (): Promise<void>
     {
-        return new Promise((reslove) =>
-        {
-            // タブを非アクティブに更新
-            this._$sceneTab.disable();
+        // 状態を終了状態に更新
+        this._$active = false;
 
-            return reslove();
-        });
+        // 終了処理を実行
+        return workSpaceStopUseCase(this);
     }
 
     /**
@@ -224,29 +252,24 @@ export class WorkSpace
      */
     run (): Promise<void>
     {
-        progressMenuShowService();
-        progressMenuUpdateMessageService($replace("{{N2Dファイルの読み込み}}"));
+        // 状態を起動状態に更新
+        this._$active = true;
 
-        return new Promise((reslove): void =>
-        {
-            // Stageを起動
-            this._$stage.run();
+        // 起動処理を実行
+        return workSpaceRunUseCase(this);
+    }
 
-            // タブをアクティブに更新
-            this._$sceneTab.active();
-
-            // rootのMovieClipを起動
-            this
-                ._$scene
-                .run()
-                .then(() =>
-                {
-                    // 進行状況メニューを非表示に
-                    progressMenuHideService();
-
-                    // 終了
-                    reslove();
-                });
-        });
+    /**
+     * @description ワークスペースの削除処理
+     *              Workspace deletion process
+     *
+     * @return {Promise}
+     * @method
+     * @public
+     */
+    remove (): Promise<void>
+    {
+        // 削除処理を実行
+        return workSpaceRemoveUseCase(this);
     }
 }

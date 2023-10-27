@@ -48,26 +48,38 @@ export const $getCurrentWorkSpace = (): WorkSpace =>
  *              Set the currently running WorkSpace
  *
  * @params  {WorkSpace} work_space
- * @returns {void}
+ * @returns {Promise}
  * @method
  * @public
  */
-export const $changeCurrentWorkSpace = (work_space: WorkSpace): void =>
+export const $changeCurrentWorkSpace = (work_space: WorkSpace): Promise<void> =>
 {
-    if ($workSpace) {
+    return new Promise((reslove) =>
+    {
+        if ($workSpace) {
 
-        // 同一の場合は終了
-        if ($workSpace.id === work_space.id) {
-            return ;
+            // 同一の場合は終了
+            if ($workSpace.id === work_space.id) {
+                return reslove();
+            }
+
+            // 現在のプロジェクトを停止
+            $workSpace
+                .stop()
+                .then(() =>
+                {
+                    // 指定のプロジェクトを起動
+                    $workSpace = work_space;
+                    $workSpace
+                        .run()
+                        .then(reslove);
+                });
+        } else {
+            // 指定のプロジェクトを起動
+            $workSpace = work_space;
+            $workSpace.run().then(reslove);
         }
-
-        // 現在のプロジェクトを停止
-        $workSpace.stop();
-    }
-
-    // 指定のプロジェクトを起動
-    $workSpace = work_space;
-    $workSpace.run();
+    });
 };
 
 /**
@@ -119,21 +131,43 @@ export const $createWorkSpace = (): WorkSpace =>
  *              Exit the specified WorkSpace
  *
  * @params  {WorkSpace} work_space
- * @returns {void}
+ * @returns {Promise}
  * @method
  * @public
  */
-export const $removeWorkSpace = (work_space: WorkSpace): void =>
+export const $removeWorkSpace = (work_space: WorkSpace): Promise<void> =>
 {
-    const index: number = $workSpaces.indexOf(work_space);
-    if (index === -1) {
-        return ;
-    }
+    return new Promise((reslove) =>
+    {
+        const index: number = $workSpaces.indexOf(work_space);
+        if (index === -1) {
+            return reslove();
+        }
 
-    $workSpaces.splice(index, 1);
+        $workSpaces.splice(index, 1);
 
-    // 起動中のWorkSpaceがなければ自動的に起動
-    if (!$workSpaces.length) {
-        $createWorkSpace();
-    }
+        // 他のプロジェクトがあれば起動
+        if ($workSpaces.length) {
+
+            // 削除するプロジェクトがアクティブなら別のプロジェクトを起動
+            if (work_space.active) {
+                $workSpace = null;
+                return $changeCurrentWorkSpace($workSpaces[0] as NonNullable<WorkSpace>).then(reslove);
+            }
+
+            return reslove();
+        }
+
+        // 起動中のWorkSpaceがなければ自動的に起動
+        const workSpace: WorkSpace = $createWorkSpace();
+
+        workSpace
+            .initialize()
+            .then(() =>
+            {
+                workSpace
+                    .run()
+                    .then(reslove);
+            });
+    });
 };

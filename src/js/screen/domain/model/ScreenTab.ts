@@ -3,6 +3,7 @@ import { execute as screenTabInitializeUseCase } from "../../application/ScreenT
 import { execute as screenTabGetElementService } from "../../application/ScreenTab/service/ScreenTabGetElementService";
 import { execute as screenTabActiveElementService } from "../../application/ScreenTab/service/ScreenTabActiveElementService";
 import { execute as screenTabDisableElementService } from "../../application/ScreenTab/service/ScreenTabDisableElementService";
+import { execute as screenTabRemoveElementService } from "../../application/ScreenTab/service/ScreenTabRemoveElementService";
 
 /**
  * @description アローツールの管理クラス
@@ -36,6 +37,19 @@ export class ScreenTab
     initialize (): void
     {
         screenTabInitializeUseCase(this._$workSpace);
+    }
+
+    /**
+     * @description タブの削除処理
+     *              Tab deletion process
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    remove (): void
+    {
+        screenTabRemoveElementService(this._$workSpace.id);
     }
 
     /**
