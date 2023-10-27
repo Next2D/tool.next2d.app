@@ -54,7 +54,7 @@ export const $getCurrentWorkSpace = (): WorkSpace =>
  */
 export const $changeCurrentWorkSpace = (work_space: WorkSpace): Promise<void> =>
 {
-    return new Promise((reslove) =>
+    return new Promise((reslove): void =>
     {
         if ($workSpace) {
 
@@ -66,7 +66,7 @@ export const $changeCurrentWorkSpace = (work_space: WorkSpace): Promise<void> =>
             // 現在のプロジェクトを停止
             $workSpace
                 .stop()
-                .then(() =>
+                .then((): void =>
                 {
                     // 指定のプロジェクトを起動
                     $workSpace = work_space;
@@ -137,7 +137,7 @@ export const $createWorkSpace = (): WorkSpace =>
  */
 export const $removeWorkSpace = (work_space: WorkSpace): Promise<void> =>
 {
-    return new Promise((reslove) =>
+    return new Promise((reslove): void =>
     {
         const index: number = $workSpaces.indexOf(work_space);
         if (index === -1) {
@@ -163,7 +163,7 @@ export const $removeWorkSpace = (work_space: WorkSpace): Promise<void> =>
 
         workSpace
             .initialize()
-            .then(() =>
+            .then((): void =>
             {
                 workSpace
                     .run()

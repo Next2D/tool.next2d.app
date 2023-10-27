@@ -1,14 +1,14 @@
-import {
-    $changeCurrentWorkSpace,
-    $getCurrentWorkSpace
-} from "../../../../core/application/CoreUtil";
 import type { WorkSpace } from "../../../../core/domain/model/WorkSpace";
-import { $allHideMenu } from "../../../../menu/application/MenuUtil";
 import { EventType } from "../../../../tool/domain/event/EventType";
 import { execute as screenTabRemoveUseCase } from "./ScreenTabRemoveUseCase";
 import { execute as screenTabGetListElementService } from "../service/ScreenTabGetListElementService";
 import { execute as screenTabGetElementService } from "../service/ScreenTabGetElementService";
 import { execute as screenTabMouseDownEventUseCase } from "./ScreenTabMouseDownEventUseCase";
+import { execute as screenTabGetTextElementService } from "../service/ScreenTabGetTextElementService";
+import { execute as screenTabChangeWorkSpaceServce } from "../service/ScreenTabChangeWorkSpaceServce";
+import { execute as screenTabInactiveStyleService } from "../service/ScreenTabInactiveStyleService";
+import { execute as screenTabKeyPressService } from "../service/ScreenTabKeyPressService";
+import { execute as screenTabFocusOutUseCase } from "../usecase/ScreenTabFocusOutUseCase";
 
 /**
  * @description 初期起動時のイベント登録のユースケース
@@ -33,12 +33,8 @@ export const execute = (
             // 全てのイベントを中止
             event.stopPropagation();
 
-            const workSpace = $getCurrentWorkSpace();
-            if (workSpace.id === work_space.id) {
-                $allHideMenu();
-            } else {
-                $changeCurrentWorkSpace(work_space);
-            }
+            // 指定のWorkSpaceに切り替える
+            screenTabChangeWorkSpaceServce(work_space);
         });
     }
 
@@ -60,23 +56,27 @@ export const execute = (
             // 親のイベントを中止
             event.stopPropagation();
 
-            // 他のイベントを中止
-            event.preventDefault();
-
             // 終了処理
             screenTabRemoveUseCase(work_space);
         });
     }
 
-    // ダブルクリック
+    // クリック＆ダブルクリック
     const tabElement: HTMLElement | null = screenTabGetElementService(work_space.id);
     if (tabElement) {
-        tabElement.addEventListener(EventType.MOUSE_DOWN, (event: PointerEvent) =>
+        tabElement.addEventListener(EventType.MOUSE_DOWN, (event: PointerEvent): void =>
         {
             // 親のイベントを中止
             event.stopPropagation();
 
             screenTabMouseDownEventUseCase(event);
         });
+    }
+
+    // 表示Elementのイベント
+    const textElement: HTMLElement | null = screenTabGetTextElementService(work_space.id);
+    if (textElement) {
+        textElement.addEventListener("focusout", screenTabFocusOutUseCase);
+        textElement.addEventListener("keypress", screenTabKeyPressService);
     }
 };

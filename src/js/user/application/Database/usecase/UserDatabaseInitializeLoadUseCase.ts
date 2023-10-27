@@ -20,7 +20,7 @@ import {
  */
 export const execute = (): Promise<void> =>
 {
-    return new Promise((resolve) =>
+    return new Promise((resolve): void =>
     {
         // 進行状況を表示
         const menu: MenuImpl<ProgressMenu> = $getMenu($PROGRESS_MENU_NAME);
@@ -32,7 +32,7 @@ export const execute = (): Promise<void> =>
         const request: IDBOpenDBRequest = userDatabaseGetOpenDBRequestService();
 
         // 起動成功処理
-        request.onsuccess = (event: Event) =>
+        request.onsuccess = (event: Event): void =>
         {
             if (!event.target) {
                 return ;
@@ -47,7 +47,7 @@ export const execute = (): Promise<void> =>
             const store: IDBObjectStore = transaction.objectStore(`${$USER_DATABASE_NAME}`);
 
             const dbRequest: IDBRequest<any> = store.get(`${$USER_DATABASE_STORE_KEY}`);
-            dbRequest.onsuccess = (event: Event) =>
+            dbRequest.onsuccess = (event: Event): void =>
             {
                 if (!event.target) {
                     return ;

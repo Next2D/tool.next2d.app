@@ -14,7 +14,7 @@ export const execute = (language: string): Promise<void> =>
 {
     // JSONを取得してマッピングに登録
     return languageLoadRepository(language)
-        .then((values) =>
+        .then((values): void =>
         {
             // 言語マッピングに登録
             $setMapping(values);

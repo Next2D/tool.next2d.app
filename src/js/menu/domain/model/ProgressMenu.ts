@@ -100,7 +100,7 @@ export class ProgressMenu extends BaseMenu
 
         this.currentState++;
         if (95 > this.currentState) {
-            requestAnimationFrame(() =>
+            requestAnimationFrame((): void =>
             {
                 this.update();
             });
@@ -148,7 +148,7 @@ export class ProgressMenu extends BaseMenu
         this.message      = $replace("{{完了}}");
         this.currentState = 100;
 
-        setTimeout(() =>
+        setTimeout((): void =>
         {
             super.hide();
 

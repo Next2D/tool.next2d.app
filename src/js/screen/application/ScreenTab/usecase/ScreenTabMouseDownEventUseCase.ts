@@ -1,5 +1,9 @@
-import { $changeCurrentWorkSpace, $getWorkSpace } from "../../../../core/application/CoreUtil";
+import {
+    $changeCurrentWorkSpace,
+    $getWorkSpace
+} from "../../../../core/application/CoreUtil";
 import type { WorkSpace } from "../../../../core/domain/model/WorkSpace";
+import { execute as screenTabShowInputElementUseCase } from "./ScreenTabShowInputElementUseCase";
 
 /**
  * @description ダブルタップ用の待機フラグ
@@ -20,25 +24,28 @@ let wait: boolean = false;
  */
 export const execute = (event: PointerEvent): void =>
 {
+    if (!event.target) {
+        return ;
+    }
+
+    const element: HTMLElement = event.target as NonNullable<HTMLElement>;
+    const workSpace : WorkSpace | null = $getWorkSpace(parseInt(element.dataset.tabId as string));
+    if (!workSpace) {
+        return ;
+    }
+
     if (!wait) {
 
         // 初回のタップであればダブルタップを待機モードに変更
         wait = true;
 
         // ダブルタップ有効期限をセット
-        setTimeout(() =>
+        setTimeout((): void =>
         {
             wait = false;
         }, 300);
 
-        if (!event.target) {
-            return ;
-        }
-
-        const element: HTMLElement = event.target as NonNullable<HTMLElement>;
-
-        const workSpace : WorkSpace | null = $getWorkSpace(parseInt(element.dataset.tabId as string));
-        if (workSpace) {
+        if (!workSpace.active) {
             $changeCurrentWorkSpace(workSpace);
         }
 
@@ -48,7 +55,6 @@ export const execute = (event: PointerEvent): void =>
         event.preventDefault();
 
         // ダブルクリック処理
-        console.log("koko");
-
+        screenTabShowInputElementUseCase(workSpace.id);
     }
 };

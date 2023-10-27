@@ -31,7 +31,7 @@ export const execute = (): void =>
     menu.offsetLeft = element.offsetLeft + element.offsetWidth;
     menu.offsetTop  = element.offsetTop  + 25;
 
-    element.addEventListener(EventType.MOUSE_DOWN, (event: PointerEvent) =>
+    element.addEventListener(EventType.MOUSE_DOWN, (event: PointerEvent): void =>
     {
         // 親のイベントを中止
         event.stopPropagation();

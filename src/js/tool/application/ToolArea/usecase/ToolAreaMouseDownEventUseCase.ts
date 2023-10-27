@@ -56,7 +56,7 @@ export const execute = (): void =>
         wait = true;
 
         // ダブルタップ有効期限をセット
-        setTimeout(() =>
+        setTimeout((): void =>
         {
             wait = false;
         }, 300);
@@ -65,7 +65,7 @@ export const execute = (): void =>
         $setStandbyMoveState(true);
 
         // ツールエリアの移動判定関数をタイマーにセット
-        activeTimerId = setTimeout(() =>
+        activeTimerId = setTimeout((): void =>
         {
             toolAreaActiveMoveUseCase();
         }, 600);

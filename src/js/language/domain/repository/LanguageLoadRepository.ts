@@ -12,7 +12,7 @@ import { $LANGUAGE_URL } from "../../../config/LanguageConfig";
 export const execute = (language: string): Promise<any> =>
 {
     return fetch(`${$LANGUAGE_URL}/${language.toLocaleLowerCase()}.json`)
-        .then((response: Response) =>
+        .then((response: Response): Promise<any> =>
         {
             return response.json();
         });

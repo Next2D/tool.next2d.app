@@ -10,7 +10,7 @@ import { execute as screenTabRegisterAddEventUseCase } from "../application/Scre
  */
 export const execute = (): Promise<void> =>
 {
-    return new Promise((resolve) =>
+    return new Promise((resolve): void =>
     {
         // タブ追加の初期起動ユースケース
         screenTabRegisterAddEventUseCase();

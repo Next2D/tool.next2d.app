@@ -38,7 +38,7 @@ const executes: Function[] = [
  */
 export const initialize = (): Promise<void> =>
 {
-    return new Promise(async (resolve) =>
+    return new Promise(async (resolve): Promise<void> =>
     {
         // 言語ファイルを取得
         await language();

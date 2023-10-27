@@ -33,7 +33,7 @@ export const execute = (work_space: WorkSpace): Promise<void> =>
         work_space
             .root
             .run()
-            .then(() =>
+            .then((): void =>
             {
                 // 進行状況画面を非表示にする
                 progressMenuHideService();

@@ -16,7 +16,7 @@ export const execute = (): void =>
         .getElementById($TOOL_USER_SETTING_ID);
 
     if (element) {
-        element.addEventListener(EventType.MOUSE_DOWN, (event: PointerEvent) =>
+        element.addEventListener(EventType.MOUSE_DOWN, (event: PointerEvent): void =>
         {
             userSettingToolMouseDownEventUseCase(event);
         });

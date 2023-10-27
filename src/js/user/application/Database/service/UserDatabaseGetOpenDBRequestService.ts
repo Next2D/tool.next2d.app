@@ -16,7 +16,7 @@ export const execute = (): IDBOpenDBRequest =>
     const request: IDBOpenDBRequest = indexedDB.open(`${$PREFIX}@${$USER_DATABASE_NAME}`);
 
     // NoCode Toolに始めてアクセスした場合はStoreを作成
-    request.addEventListener("upgradeneeded", (event: Event) =>
+    request.addEventListener("upgradeneeded", (event: Event): void =>
     {
         if (!event.target) {
             return ;

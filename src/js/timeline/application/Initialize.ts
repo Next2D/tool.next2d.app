@@ -8,7 +8,7 @@
  */
 export const execute = async (): Promise<void> =>
 {
-    return new Promise((resolve) =>
+    return new Promise((resolve): void =>
     {
         return resolve();
     });
