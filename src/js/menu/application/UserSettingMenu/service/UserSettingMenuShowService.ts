@@ -1,5 +1,8 @@
 import { $USER_MENU_NAME } from "../../../../config/MenuConfig";
-import { $getMenu } from "../../MenuUtil";
+import {
+    $allHideMenu,
+    $getMenu
+} from "../../MenuUtil";
 import type { MenuImpl } from "../../../../interface/MenuImpl";
 import type { UserSettingMenu } from "../../../domain/model/UserSettingMenu";
 
@@ -17,6 +20,8 @@ export const execute = (): void =>
     if (!menu) {
         return ;
     }
+
+    $allHideMenu($USER_MENU_NAME);
 
     menu.show();
 };

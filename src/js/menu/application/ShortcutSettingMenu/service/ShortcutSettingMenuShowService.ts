@@ -1,6 +1,9 @@
 import type { MenuImpl } from "../../../../interface/MenuImpl";
 import type { ShortcutSettingMenu } from "../../../domain/model/ShortcutSettingMenu";
-import { $getMenu } from "../../MenuUtil";
+import {
+    $allHideMenu,
+    $getMenu
+} from "../../MenuUtil";
 import { $SHORTCUT_MENU_NAME } from "../../../../config/MenuConfig";
 
 /**
@@ -17,6 +20,8 @@ export const execute = (): void =>
     if (!menu) {
         return ;
     }
+
+    $allHideMenu($SHORTCUT_MENU_NAME);
 
     menu.show();
 };

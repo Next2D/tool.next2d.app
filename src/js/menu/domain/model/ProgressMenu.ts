@@ -110,6 +110,10 @@ export class ProgressMenu extends BaseMenu
      */
     hide (): void
     {
+        if (this._$state === "hide") {
+            return ;
+        }
+
         // 終了表示
         this.message      = $replace("{{完了}}");
         this.currentState = 100;
@@ -119,8 +123,8 @@ export class ProgressMenu extends BaseMenu
             super.hide();
 
             // reset
-            this._$active       = false;
-            this._$currentState = 0;
+            this._$active     = false;
+            this.currentState = 0;
 
         }, 300);
     }

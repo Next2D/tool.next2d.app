@@ -1,6 +1,7 @@
-import { $SCREEN_TAB_AREA_ID } from "../../../../config/ScreenConfig";
+import { $SCREEN_TAB_AREA_ID, $SCREEN_TAB_MENU_NAME_LIST_ID } from "../../../../config/ScreenConfig";
 import { WorkSpace } from "../../../../core/domain/model/WorkSpace";
 import { execute as screenTabComponent } from "../component/ScreenTabComponent";
+import { execute as screenTabNameListComponent } from "../component/ScreenTabNameListComponent";
 import { execute as screenTabGetElementService } from "../service/ScreenTabGetElementService";
 import { execute as detailModalRegisterFadeEventService } from "../../../../menu/application/DetailModal/service/DetailModalRegisterFadeEventService";
 import { execute as screenTabInitializeRegisterEventUseCase } from "../usecase/ScreenTabInitializeRegisterEventUseCase";
@@ -27,6 +28,19 @@ export const execute = (work_space: WorkSpace): void =>
     element
         .insertAdjacentHTML("beforeend",
             screenTabComponent(work_space.id, work_space.name)
+        );
+
+    // タブ一覧にElementを追加
+    const listElement: HTMLElement | null = document
+        .getElementById($SCREEN_TAB_MENU_NAME_LIST_ID);
+
+    if (!listElement) {
+        return ;
+    }
+
+    listElement
+        .insertAdjacentHTML("beforeend",
+            screenTabNameListComponent(work_space.id, work_space.name)
         );
 
     const tabElement: HTMLElement | null = screenTabGetElementService(work_space.id);

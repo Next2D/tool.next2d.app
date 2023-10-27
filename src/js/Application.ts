@@ -8,6 +8,7 @@ import { execute as core } from "./core/application/Initialize";
 import { execute as user } from "./user/application/Initialize";
 import type { WorkSpace } from "./core/domain/model/WorkSpace";
 import { execute as detailModalRegisterFadeEventService } from "./menu/application/DetailModal/service/DetailModalRegisterFadeEventService";
+import { execute as progressMenuUpdateMessageService } from "./menu/application/ProgressMenu/service/ProgressMenuUpdateMessageService";
 import {
     $getAllWorkSpace,
     $getCurrentWorkSpace
@@ -62,6 +63,8 @@ export const initialize = async (): Promise<void> =>
  */
 export const run = async (): Promise<void> =>
 {
+    progressMenuUpdateMessageService("{{N2Dファイルの読み込み}}");
+
     const promises: Promise<void>[] = [];
 
     // 起動したWorkSpaceの初期関数を実行

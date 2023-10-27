@@ -3,6 +3,9 @@ import { ScreenTab } from "../../../screen/domain/model/ScreenTab";
 import { MovieClip } from "./MovieClip";
 import { Stage } from "./Stage";
 import { execute as progressMenuHideService } from "../../../menu/application/ProgressMenu/service/ProgressMenuHideService";
+import { execute as progressMenuShowService } from "../../../menu/application/ProgressMenu/service/ProgressMenuShowService";
+import { execute as progressMenuUpdateMessageService } from "../../../menu/application/ProgressMenu/service/ProgressMenuUpdateMessageService";
+import { $replace } from "../../../language/application/LanguageUtil";
 
 /**
  * @description プロジェクトのユニークID
@@ -221,6 +224,9 @@ export class WorkSpace
      */
     run (): Promise<void>
     {
+        progressMenuShowService();
+        progressMenuUpdateMessageService($replace("{{N2Dファイルの読み込み}}"));
+
         return new Promise((reslove): void =>
         {
             // Stageを起動

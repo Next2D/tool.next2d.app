@@ -1,4 +1,5 @@
 import { $createWorkSpace } from "../../../../core/application/CoreUtil";
+import { $allHideMenu } from "../../../../menu/application/MenuUtil";
 
 /**
  * @description 新規のプロジェクトを追加
@@ -10,5 +11,9 @@ import { $createWorkSpace } from "../../../../core/application/CoreUtil";
  */
 export const execute = (): void =>
 {
+    // 全てのメニューを非表示に
+    $allHideMenu();
+
+    // プロジェクトを作成して、初期起動関数を実行
     $createWorkSpace().initialize();
 };

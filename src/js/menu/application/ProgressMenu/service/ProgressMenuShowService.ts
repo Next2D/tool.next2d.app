@@ -1,7 +1,7 @@
 import { $PROGRESS_MENU_NAME } from "../../../../config/MenuConfig";
 import type { MenuImpl } from "../../../../interface/MenuImpl";
 import type { ProgressMenu } from "../../../domain/model/ProgressMenu";
-import { $getMenu } from "../../MenuUtil";
+import { $allHideMenu, $getMenu } from "../../MenuUtil";
 
 /**
  * @description タスク進行管理の画面を表示する
@@ -18,5 +18,8 @@ export const execute = (): void =>
     if (!menu) {
         return ;
     }
+
+    $allHideMenu($PROGRESS_MENU_NAME);
+
     menu.show();
 };

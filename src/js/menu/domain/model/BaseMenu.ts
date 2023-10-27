@@ -61,6 +61,22 @@ export class BaseMenu
     }
 
     /**
+     * @description 表示状態を返す
+     *              Return display status
+     *
+     * @return {string}
+     * @readonly
+     * @public
+     */
+    get state (): "show" | "hide"
+    {
+        return this._$state;
+    }
+
+    /**
+     * @description メニュー名を返す
+     *              Returns the menu name
+     *
      * @return {string}
      * @readonly
      * @public

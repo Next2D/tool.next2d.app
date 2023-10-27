@@ -54,7 +54,41 @@ export const $getCurrentWorkSpace = (): WorkSpace =>
  */
 export const $changeCurrentWorkSpace = (work_space: WorkSpace): void =>
 {
+    if ($workSpace) {
+
+        // 同一の場合は終了
+        if ($workSpace.id === work_space.id) {
+            return ;
+        }
+
+        // 現在のプロジェクトを停止
+        $workSpace.stop();
+    }
+
+    // 指定のプロジェクトを起動
     $workSpace = work_space;
+    $workSpace.run();
+};
+
+/**
+ * @description 指定のWorkSpaceを返却
+ *              Return the specified WorkSpace
+ *
+ * @params  {number} id
+ * @returns {WorkSpace | null}
+ * @method
+ * @public
+ */
+export const $getWorkSpace = (id: number): WorkSpace | null =>
+{
+    for (let idx: number = 0; idx < $workSpaces.length; ++idx) {
+        const workSpace = $workSpaces[idx];
+        if (workSpace.id !== id) {
+            continue;
+        }
+        return workSpace;
+    }
+    return null;
 };
 
 /**
@@ -74,7 +108,7 @@ export const $createWorkSpace = (): WorkSpace =>
 
     // 最初のWorkSpaceであれば起動中にセット
     if ($workSpaces.length === 1) {
-        $changeCurrentWorkSpace(workSpace);
+        $workSpace = workSpace;
     }
 
     return workSpace;
