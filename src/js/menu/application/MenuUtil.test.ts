@@ -5,7 +5,7 @@ import {
     $allHideMenu
 } from "./MenuUtil";
 
-describe("MenuTest", () =>
+describe("MenuUtilTest", () =>
 {
     test("$registerMenu and $getMenu and $getMenuAll test", () =>
     {
