@@ -6,9 +6,12 @@ import { execute as screenTabGetElementService } from "../service/ScreenTabGetEl
 import { execute as screenTabMouseDownEventUseCase } from "./ScreenTabMouseDownEventUseCase";
 import { execute as screenTabGetTextElementService } from "../service/ScreenTabGetTextElementService";
 import { execute as screenTabChangeWorkSpaceServce } from "../service/ScreenTabChangeWorkSpaceServce";
-import { execute as screenTabInactiveStyleService } from "../service/ScreenTabInactiveStyleService";
 import { execute as screenTabKeyPressService } from "../service/ScreenTabKeyPressService";
 import { execute as screenTabFocusOutUseCase } from "../usecase/ScreenTabFocusOutUseCase";
+import { execute as screenTabDragStartService } from "../service/ScreenTabDragStartService";
+import { execute as screenTabDragOverService } from "../service/ScreenTabDragOverService";
+import { execute as screenTabDragLeaveService } from "../service/ScreenTabDragLeaveService";
+import { execute as screenTabDragService } from "../service/ScreenTabDragService";
 
 /**
  * @description 初期起動時のイベント登録のユースケース
@@ -64,13 +67,15 @@ export const execute = (
     // クリック＆ダブルクリック
     const tabElement: HTMLElement | null = screenTabGetElementService(work_space.id);
     if (tabElement) {
-        tabElement.addEventListener(EventType.MOUSE_DOWN, (event: PointerEvent): void =>
-        {
-            // 親のイベントを中止
-            event.stopPropagation();
 
-            screenTabMouseDownEventUseCase(event);
-        });
+        // クリック＆ダブルクリック イベント
+        tabElement.addEventListener(EventType.MOUSE_DOWN, screenTabMouseDownEventUseCase);
+
+        // drop & drag イベント
+        tabElement.addEventListener("dragstart", screenTabDragStartService);
+        tabElement.addEventListener("dragover", screenTabDragOverService);
+        tabElement.addEventListener("dragleave", screenTabDragLeaveService);
+        tabElement.addEventListener("drop", screenTabDragService);
     }
 
     // 表示Elementのイベント
