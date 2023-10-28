@@ -4,19 +4,16 @@ describe("ScreenTabInactiveStyleServiceTest", () =>
 {
     test("execute test", () =>
     {
-        const div = document.createElement("div");
-        div.contentEditable = "true";
-        div.style.borderBottom = "1px solid #f5f5f5";
-        div.style.height = "20px";
+        const textElement = document.createElement("div");
+        textElement.contentEditable = "true";
 
-        expect(div.contentEditable).toBe("true");
-        expect(div.style.borderBottom).toBe("1px solid #f5f5f5");
-        expect(div.style.height).toBe("20px");
+        const tabElement = document.createElement("div");
+        tabElement.style.borderBottom = "1px solid #f5f5f5";
 
-        execute(div);
-
-        expect(div.contentEditable).toBe("false");
-        expect(div.style.borderBottom).toBe("");
-        expect(div.style.height).toBe("");
+        expect(textElement.contentEditable).toBe("true");
+        expect(tabElement.style.borderBottom).toBe("1px solid #f5f5f5");
+        execute(textElement, tabElement);
+        expect(textElement.contentEditable).toBe("false");
+        expect(tabElement.style.borderBottom).toBe("");
     });
 });

@@ -18,9 +18,6 @@ export const execute = (event: DragEvent): void =>
     event.stopPropagation();
     event.preventDefault();
 
-    // 初期化
-    $setDragElement(null);
-
     if (!event.currentTarget) {
         return ;
     }
@@ -55,4 +52,7 @@ export const execute = (event: DragEvent): void =>
             ? element
             : nextElement
     );
+
+    // 初期化
+    $setDragElement(null);
 };

@@ -1,4 +1,5 @@
 import { execute as screenTabGetTextElementService } from "../service/ScreenTabGetTextElementService";
+import { execute as screenTabGetElementService } from "../service/ScreenTabGetElementService";
 import { execute as screenTabActiveStyleService } from "../service/ScreenTabActiveStyleService";
 import { $allHideMenu } from "../../../../menu/application/MenuUtil";
 /**
@@ -12,8 +13,13 @@ import { $allHideMenu } from "../../../../menu/application/MenuUtil";
  */
 export const execute = (id: number): void =>
 {
-    const element: HTMLElement | null = screenTabGetTextElementService(id);
-    if (!element) {
+    const textElement: HTMLElement | null = screenTabGetTextElementService(id);
+    if (!textElement) {
+        return ;
+    }
+
+    const tabElement: HTMLElement | null = screenTabGetElementService(id);
+    if (!tabElement) {
         return ;
     }
 
@@ -21,5 +27,8 @@ export const execute = (id: number): void =>
     $allHideMenu();
 
     // 編集モードにstyleを更新
-    screenTabActiveStyleService(element);
+    screenTabActiveStyleService(textElement, tabElement);
+
+    // focus
+    textElement.focus();
 };

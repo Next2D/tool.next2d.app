@@ -22,37 +22,40 @@ export const execute = (event: Event): void =>
 
     const id: number = parseInt((event.target as HTMLElement).dataset.tabId as string);
 
-    const element: HTMLElement | null = screenTabGetTextElementService(id);
-    if (!element) {
+    const textElement: HTMLElement | null = screenTabGetTextElementService(id);
+    if (!textElement) {
         return ;
     }
 
-    const name: string | null = element.textContent;
-    if (!name) {
-        element.textContent = "Untitled";
-        return element.focus();
+    const tabElement: HTMLElement | null = screenTabGetElementService(id);
+    if (!tabElement) {
+        return ;
     }
-    screenTabInactiveStyleService(element);
 
     const listElement: HTMLElement | null = screenTabGetListElementService(id);
     if (!listElement) {
         return ;
     }
 
-    // リストの名前を更新
-    listElement.textContent = name;
+    const name: string | null = textElement.textContent;
+    if (!name) {
+        textElement.textContent = "Untitled";
+        return textElement.focus();
+    }
 
     const workSpace: WorkSpace | null = $getWorkSpace(id);
     if (!workSpace) {
         return ;
     }
 
-    workSpace.name = name;
+    // 親のイベントを終了
+    event.stopPropagation();
 
-    const tabElement: HTMLElement | null = screenTabGetElementService(id);
-    if (!tabElement) {
-        return ;
-    }
+    // styleの更新
+    screenTabInactiveStyleService(textElement, tabElement);
+
+    // リストの名前を更新
+    workSpace.name = listElement.textContent = name;
 
     // 移動を有効化
     tabElement.draggable = true;
