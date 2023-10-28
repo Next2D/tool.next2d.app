@@ -171,3 +171,39 @@ export const $removeWorkSpace = (work_space: WorkSpace): Promise<void> =>
             });
     });
 };
+
+/**
+ * @description 文字入力モード判定フラグ
+ *              Character Input Mode Judgment Flag
+ *
+ * @type {boolean}
+ * @private
+ */
+let $editMode: boolean = false;
+
+/**
+ * @description 文字入力モードの判定フラグを更新
+ *              Update judgment flag for character input mode
+ *
+ * @params  {boolean} flag
+ * @returns {void}
+ * @method
+ * @public
+ */
+export const $setEditMode = (flag: boolean): void =>
+{
+    $editMode = flag;
+};
+
+/**
+ * @description 文字入力モードの判定フラグを返却
+ *              Returns the character input mode decision flag.
+ *
+ * @returns {boolean}
+ * @method
+ * @public
+ */
+export const $getEditMode = (): boolean =>
+{
+    return $editMode;
+};

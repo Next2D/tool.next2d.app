@@ -1,3 +1,4 @@
+import { MovieClipObjectImpl } from "../../../interface/MovieClipObjectImpl";
 import { Instance } from "./Instance";
 
 /**
@@ -10,6 +11,16 @@ import { Instance } from "./Instance";
  */
 export class MovieClip extends Instance
 {
+    /**
+     * @params {object} object
+     * @constructs
+     * @public
+     */
+    constructor (object: MovieClipObjectImpl)
+    {
+        super(object);
+    }
+
     /**
      * @description MovieClipの起動関数
      *              MovieClip startup functions

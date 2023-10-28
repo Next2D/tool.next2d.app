@@ -53,16 +53,10 @@ export class WorkSpace
         this._$name = `Untitled-${this._$id}`;
 
         /**
-         * @type {MovieClip}
+         * @type {Map}
          * @private
          */
-        this._$root = new MovieClip();
-
-        /**
-         * @type {MovieClip}
-         * @private
-         */
-        this._$scene = this._$root;
+        this._$libraries = new Map();
 
         /**
          * @type {Stage}
@@ -71,10 +65,22 @@ export class WorkSpace
         this._$stage = new Stage();
 
         /**
-         * @type {Map}
+         * @type {MovieClip}
          * @private
          */
-        this._$libraries = new Map();
+        this._$root = new MovieClip({
+            "id": 0,
+            "type": "container",
+            "name": "main",
+            "symbol": ""
+        });
+        this._$libraries.set(0, this._$root);
+
+        /**
+         * @type {MovieClip}
+         * @private
+         */
+        this._$scene = this._$root;
 
         /**
          * @type {ScreenTab}

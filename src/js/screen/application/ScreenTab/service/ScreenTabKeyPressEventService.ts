@@ -20,7 +20,9 @@ export const execute = (event: KeyboardEvent): void =>
     // 親のイベントを終了
     event.stopPropagation();
 
-    (event.target as HTMLElement).blur();
+    // 入力終了
+    const element: HTMLElement = event.currentTarget as HTMLElement;
+    element.blur();
 
     return event.preventDefault();
 };

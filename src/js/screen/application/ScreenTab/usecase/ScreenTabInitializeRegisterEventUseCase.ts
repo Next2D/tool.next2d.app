@@ -6,8 +6,9 @@ import { execute as screenTabGetElementService } from "../service/ScreenTabGetEl
 import { execute as screenTabMouseDownEventUseCase } from "./ScreenTabMouseDownEventUseCase";
 import { execute as screenTabGetTextElementService } from "../service/ScreenTabGetTextElementService";
 import { execute as screenTabChangeWorkSpaceServce } from "../service/ScreenTabChangeWorkSpaceServce";
-import { execute as screenTabKeyPressService } from "../service/ScreenTabKeyPressService";
-import { execute as screenTabFocusOutUseCase } from "../usecase/ScreenTabFocusOutUseCase";
+import { execute as screenTabKeyPressEventService } from "../service/ScreenTabKeyPressEventService";
+import { execute as screenTabFocusOutUseCase } from "./ScreenTabFocusOutUseCase";
+import { execute as screenTabFocusInUseCase } from "./ScreenTabFocusInUseCase";
 import { execute as screenTabDragStartService } from "../service/ScreenTabDragStartService";
 import { execute as screenTabDragOverService } from "../service/ScreenTabDragOverService";
 import { execute as screenTabDragLeaveService } from "../service/ScreenTabDragLeaveService";
@@ -81,7 +82,8 @@ export const execute = (
     // 表示Elementのイベント
     const textElement: HTMLElement | null = screenTabGetTextElementService(work_space.id);
     if (textElement) {
+        textElement.addEventListener("focusin", screenTabFocusInUseCase);
         textElement.addEventListener("focusout", screenTabFocusOutUseCase);
-        textElement.addEventListener("keypress", screenTabKeyPressService);
+        textElement.addEventListener("keypress", screenTabKeyPressEventService);
     }
 };
