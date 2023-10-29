@@ -8,7 +8,7 @@ import {
     $setMouseState
 } from "./ToolUtil";
 
-describe("ToolTest", () =>
+describe("ToolUtilTest", () =>
 {
     test("$getActiveTool and $setActiveTool test", () =>
     {
