@@ -24,3 +24,21 @@ export const $TIMELINE_ID: string = "timeline";
  * @constant
  */
 export const $TIMELINE_LABEL_NAME: string = "label-name";
+
+/**
+ * @description タイムラインのヘッダーコンテナのElementのID
+ *              ID of the Element in the timeline header container
+ *
+ * @type {string}
+ * @constant
+ */
+export const $TIMELINE_CONTROLLER_BASE_ID: string = "timeline-controller-base";
+
+/**
+ * @description タイムラインのヘッダーのElementのID
+ *              ID of the Element in the timeline header
+ *
+ * @type {string}
+ * @constant
+ */
+export const $TIMELINE_HEADER_ID: string = "timeline-header";

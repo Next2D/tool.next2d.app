@@ -1,8 +1,8 @@
 import { EventType } from "../../../domain/event/EventType";
-import { $setStandbyMoveState } from "../ToolAreaUtil";
 import { execute as toolAreaMouseMoveEventService } from "../service/ToolAreaMouseMoveEventService";
 import { execute as toolAreaMouseDownEventUseCase } from "./ToolAreaMouseDownEventUseCase";
 import { execute as toolAreaMouseUpEventUseCase } from "./ToolAreaMouseUpEventUseCase";
+import { execute as toolAreaMouseOutEventService } from "../service/ToolAreaMouseOutEventService";
 
 /**
  * @description ツールエリアの初期起動時のイベント登録
@@ -16,27 +16,14 @@ import { execute as toolAreaMouseUpEventUseCase } from "./ToolAreaMouseUpEventUs
 export const execute = (element: HTMLElement): void =>
 {
     // ツールエリア内でのマウス移動の処理
-    element.addEventListener(EventType.MOUSE_DOWN, (): void =>
-    {
-        toolAreaMouseDownEventUseCase();
-    });
+    element.addEventListener(EventType.MOUSE_DOWN, toolAreaMouseDownEventUseCase);
 
     // ツールエリア内でのマウス移動の処理
-    element.addEventListener(EventType.MOUSE_MOVE, (event: PointerEvent): void =>
-    {
-        toolAreaMouseMoveEventService(event);
-    });
+    element.addEventListener(EventType.MOUSE_MOVE, toolAreaMouseMoveEventService);
 
     // ツールエリア内でのマウスアップ処理
-    element.addEventListener(EventType.MOUSE_UP, (event: PointerEvent): void =>
-    {
-        toolAreaMouseUpEventUseCase(event);
-    });
+    element.addEventListener(EventType.MOUSE_UP, toolAreaMouseUpEventUseCase);
 
-    // ツールエリア内でのマウスアップ処理
-    element.addEventListener(EventType.MOUSE_OUT, (event: PointerEvent): void =>
-    {
-        event.stopPropagation();
-        $setStandbyMoveState(false);
-    });
+    // ツールエリア内でのマウスアウト処理
+    element.addEventListener(EventType.MOUSE_OUT, toolAreaMouseOutEventService);
 };

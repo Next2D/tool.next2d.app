@@ -16,12 +16,18 @@ export const execute = (event: PointerEvent): void =>
         event.stopPropagation();
     }
 
-    const element: HTMLElement | null = document
-        .getElementById($TOOL_PREFIX);
+    // 遅延実行
+    requestAnimationFrame(() =>
+    {
+        const element: HTMLElement | null = document
+            .getElementById($TOOL_PREFIX);
 
-    // ツールエリアを移動
-    if (element) {
+        if (!element) {
+            return ;
+        }
+
+        // ツールエリアを移動
         element.style.left = `${element.offsetLeft + event.movementX}px`;
-        element.style.top  = `${element.offsetTop + event.movementY}px`;
-    }
+        element.style.top  = `${element.offsetTop  + event.movementY}px`;
+    });
 };

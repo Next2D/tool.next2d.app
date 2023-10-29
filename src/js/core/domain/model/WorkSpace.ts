@@ -170,6 +170,19 @@ export class WorkSpace
     }
 
     /**
+     * @description 選択中のMovieClipを返却
+     *              Return the selected MovieClip
+     *
+     * @return {MovieClip}
+     * @readonly
+     * @public
+     */
+    get scene (): MovieClip
+    {
+        return this._$scene;
+    }
+
+    /**
      * @description プロジェクトのタブオブジェクトを返す
      *              Returns the tab object of the project
      *

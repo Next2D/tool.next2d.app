@@ -335,7 +335,7 @@
 #timeline-controller-base
 {
     position        : relative;
-    width           : calc(100vw - (var(--controller-width) + 45px + 8px + 8px + 270px));
+    width           : calc(100vw - (var(--controller-width) + var(--tool-width) + var(--view-border-width) * 2 + var(--controller-adjustment-width) + var(--timeline-layer-controller-width)));
     height          : 61px;
     overflow        : hidden;
 }

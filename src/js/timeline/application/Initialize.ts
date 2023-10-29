@@ -1,3 +1,18 @@
+import type { TimelineHeader } from "../domain/model/TimelineHeader";
+import type { TimelineFrame } from "../domain/model/TimelineFrame";
+import { timelineHeader, timelineFrame } from "./TimelineUtil";
+
+/**
+ * @description 起動対象のToolクラスの配列
+ *              Array of Tool classes to be invoked
+ *
+ * @private
+ */
+const models: Array<TimelineHeader | TimelineFrame> = [
+    timelineHeader,
+    timelineFrame
+];
+
 /**
  * @description タイムラインの初期起動関数
  *              Initial startup function for timeline
@@ -8,8 +23,11 @@
  */
 export const execute = async (): Promise<void> =>
 {
-    return new Promise((resolve): void =>
-    {
-        return resolve();
-    });
+    // 起動
+    const promises: Promise<void>[] = [];
+    for (let idx: number = 0; idx < models.length; ++idx) {
+        promises.push(models[idx].initialize());
+    }
+
+    await Promise.all(promises);
 };

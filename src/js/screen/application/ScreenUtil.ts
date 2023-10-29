@@ -34,3 +34,19 @@ export const $getDragElement = (): HTMLElement | null =>
 {
     return draggedElement;
 };
+
+/**
+ * @description スクリーンの再描画を行う
+ *              Redraw the screen.
+ *
+ * @returns {Promise}
+ * @method
+ * @public
+ */
+export const $reloadScreen = (): Promise<void> =>
+{
+    return new Promise((resolve): void =>
+    {
+        resolve();
+    });
+};

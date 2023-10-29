@@ -1,11 +1,11 @@
 #view
 {
-    width          : calc(100vw - (var(--controller-width) + var(--tool-width) + 4px + 8px));
+    width          : calc(100vw - (var(--controller-width) + var(--tool-width) + var(--view-border-width) * 2 + var(--controller-adjustment-width)));
     height         : 100%;
     margin-right   : auto;
     display        : flex;
     flex-direction : column;
-    border-left    : 2px solid #1c1c1c;
-    border-right   : 2px solid #1c1c1c;
+    border-left    : var(--view-border-width) solid #1c1c1c;
+    border-right   : var(--view-border-width) solid #1c1c1c;
     overflow       : hidden;
 }

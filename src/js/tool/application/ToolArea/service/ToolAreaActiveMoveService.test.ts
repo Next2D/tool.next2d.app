@@ -3,7 +3,7 @@ import { execute } from "./ToolAreaActiveMoveService";
 
 describe("ToolAreaActiveMoveServiceTest", () =>
 {
-    test("execute test", async () =>
+    test("execute test", (): Promise<void> =>
     {
         const div = document.createElement("div");
         div.id = $TOOL_PREFIX;
@@ -18,9 +18,17 @@ describe("ToolAreaActiveMoveServiceTest", () =>
         };
 
         execute(mockEvent);
-        expect(div.style.left).toBe("20px");
-        expect(div.style.top).toBe("30px");
 
-        div.remove();
+        return new Promise((reslove) =>
+        {
+            requestAnimationFrame((): void =>
+            {
+                expect(div.style.left).toBe("20px");
+                expect(div.style.top).toBe("30px");
+                div.remove();
+
+                reslove();
+            });
+        });
     });
 });

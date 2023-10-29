@@ -6,6 +6,7 @@ import {
     $registerDefaultTool,
     $setActiveTool
 } from "../../application/ToolUtil";
+import { $setStandbyMoveState } from "../../application/ToolArea/ToolAreaUtil";
 
 /**
  * @description 各種ツールクラスの親クラス
@@ -183,6 +184,9 @@ export class BaseTool extends ToolEvent
 
         // メニューを全て非表示にする
         $allHideMenu();
+
+        // 待機モード終了
+        $setStandbyMoveState(false);
 
         // アクティブツールを入れ替える
         $setActiveTool(this);

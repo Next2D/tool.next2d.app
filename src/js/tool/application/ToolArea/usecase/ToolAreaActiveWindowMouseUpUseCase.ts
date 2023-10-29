@@ -2,6 +2,7 @@ import { $setCursor } from "../../../../util/Global";
 import { EventType } from "../../../domain/event/EventType";
 import { execute as toolAreaActiveMoveService } from "../service/ToolAreaActiveMoveService";
 import { execute as userToolAreaStateUpdateService } from "../../../../user/application/ToolArea/service/UserToolAreaStateUpdateService";
+import { $TOOL_PREFIX } from "../../../../config/ToolConfig";
 
 /**
  * @description 選択中のツールの移動イベント関数
@@ -23,10 +24,21 @@ export const execute = (event: PointerEvent): void =>
 
     $setCursor("auto");
 
+    const element: HTMLElement | null = document
+        .getElementById($TOOL_PREFIX);
+
+    if (!element) {
+        return ;
+    }
+
+    // ツールエリアを移動
+    element.style.left = `${element.offsetLeft + event.movementX}px`;
+    element.style.top  = `${element.offsetTop  + event.movementY}px`;
+
     // 移動状態をLocalStorageに保存
     userToolAreaStateUpdateService({
         "state": "move",
-        "offsetLeft": event.pageX - event.offsetX,
-        "offsetTop": event.pageY - event.offsetY
+        "offsetLeft": element.offsetLeft,
+        "offsetTop": element.offsetTop
     });
 };

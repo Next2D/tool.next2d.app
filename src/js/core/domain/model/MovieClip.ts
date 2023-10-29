@@ -1,5 +1,6 @@
 import { MovieClipObjectImpl } from "../../../interface/MovieClipObjectImpl";
 import { Instance } from "./Instance";
+import { execute as timelineHeaderBuildElementUseCase } from "../../../timeline/application/TimelineHeader/usecase/TimelineHeaderBuildElementUseCase";
 
 /**
  * @description MovieClipの状態管理クラス
@@ -33,6 +34,9 @@ export class MovieClip extends Instance
     {
         return new Promise((resolve) =>
         {
+            // タイムラインのヘッダーを生成
+            timelineHeaderBuildElementUseCase();
+
             return resolve();
         });
     }
