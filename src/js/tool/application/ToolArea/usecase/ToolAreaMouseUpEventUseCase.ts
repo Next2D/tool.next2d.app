@@ -1,10 +1,11 @@
 import { $setMouseState } from "../../ToolUtil";
-import { execute as toolAreaActiveMoveService } from "../service/ToolAreaActiveMoveService";
+import { execute as toolAreaActiveMoveService } from "../service/ToolAreaActiveWindowMoveService";
 
 /**
- * @description ツールエリアでマウスダウンした際の関数
- *              Function on mouse down in the tool area
+ * @description ツールエリアでマウスアップした時の処理
+ *              Processing when mouse is up in the tool area
  *
+ * @params {PointerEvent} event
  * @return {void}
  * @method
  * @public

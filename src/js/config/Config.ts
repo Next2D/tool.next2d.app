@@ -44,6 +44,15 @@ export const $USER_SHORTCUT_SETTING_KEY: string = `${$PREFIX}@shortcut`;
 export const $USER_TOOL_AREA_STATE_KEY: string = `${$PREFIX}@tool-area`;
 
 /**
+ * @description タイムラインエリアの移動状態の保存キー
+ *              Key to save the movement state of the timeline area
+ *
+ * @type {string}
+ * @constant
+ */
+export const $USER_TIMELINE_AREA_STATE_KEY: string = `${$PREFIX}@timeline-area`;
+
+/**
  * @description IndexedDBのデータベース名
  *              IndexedDB database name
  *

@@ -1,13 +1,10 @@
 import { $TIMELINE_HEADER_ID } from "../../../../config/TimelineConfig";
-import { $getCurrentWorkSpace } from "../../../../core/application/CoreUtil";
 import { execute as timelineHeaderFrameComponent } from "../component/TimelineHeaderFrameComponent";
-import { execute as timelineHeaderFrameRegisterEvent } from "./TimelineHeaderFrameRegisterEvent";
+import { execute as timelineHeaderFrameRegisterEventUseCase } from "./TimelineHeaderFrameRegisterEventUseCase";
 import {
     $getTimelineFrameWidth,
     timelineHeader
 } from "../../TimelineUtil";
-import type { MovieClip } from "../../../../core/domain/model/MovieClip";
-import type { WorkSpace } from "../../../../core/domain/model/WorkSpace";
 
 /**
  * @description タイムラインのヘッダーをスクロール位置の合わせて構築
@@ -26,13 +23,6 @@ export const execute = (): void =>
         return ;
     }
 
-    const workSpace: WorkSpace | null = $getCurrentWorkSpace();
-    if (!workSpace) {
-        return ;
-    }
-
-    const scene: MovieClip = workSpace.scene;
-
     const timelineFrameWidth: number = $getTimelineFrameWidth();
     const elementCount: number = timelineHeader.clientWidth / (timelineFrameWidth + 1) | 0;
 
@@ -50,7 +40,7 @@ export const execute = (): void =>
             }
 
             // フレームのタグにイベントを登録
-            timelineHeaderFrameRegisterEvent(node);
+            timelineHeaderFrameRegisterEventUseCase(node);
         }
     }
 };

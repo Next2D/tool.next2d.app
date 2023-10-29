@@ -1,6 +1,12 @@
 import type { TimelineHeader } from "../domain/model/TimelineHeader";
 import type { TimelineFrame } from "../domain/model/TimelineFrame";
-import { timelineHeader, timelineFrame } from "./TimelineUtil";
+import {
+    timelineHeader,
+    timelineFrame
+} from "./TimelineUtil";
+import { execute as timelineAreaInitializeRegisterEventUseCase } from "../application/TimelineArea/usecase/TimelineAreaInitializeRegisterEventUseCase";
+import { execute as timelineAreaInitializeSetActiveStateUseCase } from "../application/TimelineArea/usecase/TimelineAreaInitializeSetActiveStateUseCase";
+import { $TIMELINE_ID } from "../../config/TimelineConfig";
 
 /**
  * @description 起動対象のToolクラスの配列
@@ -30,4 +36,14 @@ export const execute = async (): Promise<void> =>
     }
 
     await Promise.all(promises);
+    const element: HTMLElement | null = document.getElementById($TIMELINE_ID);
+    if (!element) {
+        return ;
+    }
+
+    // 初期イベントの登録
+    timelineAreaInitializeRegisterEventUseCase(element);
+
+    // 初期起動時に保存データから移動状態を再構成
+    timelineAreaInitializeSetActiveStateUseCase(element);
 };

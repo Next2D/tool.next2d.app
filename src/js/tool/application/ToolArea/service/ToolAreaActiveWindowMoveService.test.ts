@@ -1,7 +1,7 @@
 import { $TOOL_PREFIX } from "../../../../config/ToolConfig";
-import { execute } from "./ToolAreaActiveMoveService";
+import { execute } from "./ToolAreaActiveWindowMoveService";
 
-describe("ToolAreaActiveMoveServiceTest", () =>
+describe("ToolAreaActiveWindowMoveServiceTest", () =>
 {
     test("execute test", (): Promise<void> =>
     {
@@ -13,6 +13,7 @@ describe("ToolAreaActiveMoveServiceTest", () =>
         expect(div.style.top).toBe("");
         const mockEvent = {
             "stopPropagation": () => { return null },
+            "preventDefault": () => { return null },
             "movementX": 20,
             "movementY": 30
         };

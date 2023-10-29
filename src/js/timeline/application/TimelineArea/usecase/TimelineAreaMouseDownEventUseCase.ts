@@ -1,15 +1,15 @@
+import { $TIMELINE_ID } from "../../../../config/TimelineConfig";
 import { $allHideMenu } from "../../../../menu/application/MenuUtil";
-import { execute as toolAreaActiveMoveUseCase } from "../usecase/ToolAreaActiveMoveUseCase";
-import { execute as toolAreaChageStyleToInactiveService } from "../service/ToolAreaChageStyleToInactiveService";
 import { execute as userAllFunctionStateService } from "../../../../user/application/Billing/service/UserAllFunctionStateService";
-import { execute as userToolAreaStateUpdateService } from "../../../../user/application/ToolArea/service/UserToolAreaStateUpdateService";
-import { $TOOL_PREFIX } from "../../../../config/ToolConfig";
-import { $setMouseState } from "../../ToolUtil";
+import { execute as timelineAreaActiveMoveUseCase } from "./TimelineAreaActiveMoveUseCase";
+import { execute as timelineAreaChageStyleToInactiveService } from "../service/TimelineAreaChageStyleToInactiveService";
+import { execute as userTimelineAreaStateUpdateService } from "../../../../user/application/TimelineArea/service/UserTimelineAreaStateUpdateService";
+import { $setMouseState } from "../../TimelineUtil";
 import {
-    $getToolAreaState,
+    $getTimelineAreaState,
     $setStandbyMoveState,
-    $setToolAreaState
-} from "../ToolAreaUtil";
+    $setTimelineAreaState
+} from "../TimelineAreaUtil";
 
 /**
  * @description ダブルタップ用の待機フラグ
@@ -30,15 +30,16 @@ let wait: boolean = false;
 let activeTimerId: NodeJS.Timeout | number = 0;
 
 /**
- * @description ツールエリアでマウスダウンした際の関数
- *              Function on mouse down in the tool area
+ * @description タイムラインエリアのマウスダウン処理
+ *              Mouse down process for timeline area
  *
- * @return {void}
+ * @returns {void}
  * @method
  * @public
  */
 export const execute = (event: PointerEvent): void =>
 {
+    // 親のイベントを終了
     event.stopPropagation();
     event.preventDefault();
 
@@ -70,7 +71,7 @@ export const execute = (event: PointerEvent): void =>
         // ツールエリアの移動判定関数をタイマーにセット
         activeTimerId = setTimeout((): void =>
         {
-            toolAreaActiveMoveUseCase();
+            timelineAreaActiveMoveUseCase();
         }, 600);
 
     } else {
@@ -82,12 +83,12 @@ export const execute = (event: PointerEvent): void =>
         $setStandbyMoveState(false);
 
         // ツールエリアが固定位置にあれば終了
-        if ($getToolAreaState() === "fixed") {
+        if ($getTimelineAreaState() === "fixed") {
             return ;
         }
 
         // 移動状態を保存
-        userToolAreaStateUpdateService({
+        userTimelineAreaStateUpdateService({
             "state": "fixed",
             "offsetLeft": 0,
             "offsetTop": 0
@@ -97,20 +98,20 @@ export const execute = (event: PointerEvent): void =>
         wait = false;
 
         // ツールエリアの状態を固定位置に更新
-        $setToolAreaState("fixed");
+        $setTimelineAreaState("fixed");
 
         // 強制的に固定位置に移動させるとマウスアップイベントが取得できない為、ここでアップモードに更新
         $setMouseState("up");
 
         const element: HTMLElement | null = document
-            .getElementById($TOOL_PREFIX);
+            .getElementById($TIMELINE_ID);
 
         if (!element) {
             return ;
         }
 
         // ツールエリアのstyleを固定位置に移動
-        toolAreaChageStyleToInactiveService(element);
+        timelineAreaChageStyleToInactiveService(element);
     }
 
 };

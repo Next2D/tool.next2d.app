@@ -1,8 +1,8 @@
+import { $TIMELINE_ID } from "../../../../config/TimelineConfig";
+import { EventType } from "../../../../tool/domain/event/EventType";
 import { $setCursor } from "../../../../util/Global";
-import { EventType } from "../../../domain/event/EventType";
-import { execute as toolAreaActiveWindowMoveService } from "../service/ToolAreaActiveWindowMoveService";
-import { execute as userToolAreaStateUpdateService } from "../../../../user/application/ToolArea/service/UserToolAreaStateUpdateService";
-import { $TOOL_PREFIX } from "../../../../config/ToolConfig";
+import { execute as timelineAreaActiveWindowMoveService } from "../service/TimelineAreaActiveWindowMoveService";
+import { execute as userTimelineAreaStateUpdateService } from "../../../../user/application/TimelineArea/service/UserTimelineAreaStateUpdateService";
 
 /**
  * @description 選択中のツールの移動イベント関数
@@ -19,13 +19,13 @@ export const execute = (event: PointerEvent): void =>
     event.stopPropagation();
 
     // 登録されたイベントを削除
-    window.removeEventListener(EventType.MOUSE_MOVE, toolAreaActiveWindowMoveService);
+    window.removeEventListener(EventType.MOUSE_MOVE, timelineAreaActiveWindowMoveService);
     window.removeEventListener(EventType.MOUSE_UP, execute);
 
     $setCursor("auto");
 
     const element: HTMLElement | null = document
-        .getElementById($TOOL_PREFIX);
+        .getElementById($TIMELINE_ID);
 
     if (!element) {
         return ;
@@ -36,7 +36,7 @@ export const execute = (event: PointerEvent): void =>
     element.style.top  = `${element.offsetTop  + event.movementY}px`;
 
     // 移動状態をLocalStorageに保存
-    userToolAreaStateUpdateService({
+    userTimelineAreaStateUpdateService({
         "state": "move",
         "offsetLeft": element.offsetLeft,
         "offsetTop": element.offsetTop

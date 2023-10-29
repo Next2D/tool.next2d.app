@@ -1,10 +1,11 @@
-import { $TOOL_PREFIX } from "../../../../config/ToolConfig";
-import { $getToolAreaState } from "../ToolAreaUtil";
+import { $TIMELINE_ID } from "../../../../config/TimelineConfig";
+import { $getTimelineAreaState } from "../TimelineAreaUtil";
 
 /**
- * @description ツールエリアを移動可能な状態にする
- *              Make the tool area movable
+ * @description タイムラインエリアの移動処理
+ *              Movement process for timeline area
  *
+ * @params {PointerEvent} event
  * @return {void}
  * @method
  * @public
@@ -12,15 +13,17 @@ import { $getToolAreaState } from "../ToolAreaUtil";
 export const execute = (event: PointerEvent): void =>
 {
     // 親のイベントを中止する
-    if ($getToolAreaState() === "fixed") {
+    if ($getTimelineAreaState() === "fixed") {
         event.stopPropagation();
     }
+
+    event.preventDefault();
 
     // 遅延実行
     requestAnimationFrame(() =>
     {
         const element: HTMLElement | null = document
-            .getElementById($TOOL_PREFIX);
+            .getElementById($TIMELINE_ID);
 
         if (!element) {
             return ;

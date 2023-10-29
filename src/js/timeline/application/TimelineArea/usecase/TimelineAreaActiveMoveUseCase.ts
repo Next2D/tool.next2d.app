@@ -1,17 +1,17 @@
-import { $TOOL_PREFIX } from "../../../../config/ToolConfig";
+import { $TIMELINE_ID } from "../../../../config/TimelineConfig";
 import { $setCursor } from "../../../../util/Global";
-import { execute as toolAreaRegisterWindowMoveEventUseCase } from "./ToolAreaRegisterWindowMoveEventUseCase";
-import { execute as toolAreaChageStyleToActiveService } from "../service/ToolAreaChageStyleToActiveService";
-import { $getMouseState } from "../../ToolUtil";
+import { $getMouseState } from "../../TimelineUtil";
+import { execute as timelineAreaChageStyleToActiveService } from "../service/TimelineAreaChageStyleToActiveService";
+import { execute as timelinelAreaRegisterWindowMoveEventUseCase } from "./TimelinelAreaRegisterWindowMoveEventUseCase";
 import {
     $getStandbyMoveState,
-    $getToolAreaState,
+    $getTimelineAreaState,
     $setStandbyMoveState,
-    $setToolAreaState
-} from "../ToolAreaUtil";
+    $setTimelineAreaState
+} from "../TimelineAreaUtil";
 
 /**
- * @description ツールエリアを移動可能な状態にする
+ * @description タイムラインエリアを移動可能な状態にする
  *              Make the tool area movable
  *
  * @return {void}
@@ -33,26 +33,26 @@ export const execute = (): void =>
     if ($getMouseState() === "down") {
 
         const element: HTMLElement | null = document
-            .getElementById($TOOL_PREFIX);
+            .getElementById($TIMELINE_ID);
 
         if (!element) {
             return ;
         }
 
-        if ($getToolAreaState() === "fixed") {
+        if ($getTimelineAreaState() === "fixed") {
 
             // ツールエリアを移動モードに設定
-            $setToolAreaState("move");
+            $setTimelineAreaState("move");
 
             // ツールエリアのstyleを更新
-            toolAreaChageStyleToActiveService(element);
+            timelineAreaChageStyleToActiveService(element);
         }
 
         // カーソルを移動用に変更
         $setCursor("move");
 
         // windowにイベントを登録
-        toolAreaRegisterWindowMoveEventUseCase();
+        timelinelAreaRegisterWindowMoveEventUseCase();
 
     } else {
 

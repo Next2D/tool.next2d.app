@@ -1,5 +1,5 @@
 import { EventType } from "../../../domain/event/EventType";
-import { execute as toolAreaActiveMoveService } from "../service/ToolAreaActiveMoveService";
+import { execute as toolAreaActiveWindowMoveService } from "../service/ToolAreaActiveWindowMoveService";
 import { execute as toolAreaActiveWindowMouseUpUseCase } from "./ToolAreaActiveWindowMouseUpUseCase";
 
 /**
@@ -13,6 +13,6 @@ import { execute as toolAreaActiveWindowMouseUpUseCase } from "./ToolAreaActiveW
 export const execute = (): void =>
 {
     // 画面イベントを登録
-    window.addEventListener(EventType.MOUSE_MOVE, toolAreaActiveMoveService);
+    window.addEventListener(EventType.MOUSE_MOVE, toolAreaActiveWindowMoveService);
     window.addEventListener(EventType.MOUSE_UP, toolAreaActiveWindowMouseUpUseCase);
 };
