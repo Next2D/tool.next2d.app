@@ -6,7 +6,6 @@ import {
 } from "./TimelineUtil";
 import { execute as timelineAreaInitializeRegisterEventUseCase } from "../application/TimelineArea/usecase/TimelineAreaInitializeRegisterEventUseCase";
 import { execute as timelineAreaInitializeSetActiveStateUseCase } from "../application/TimelineArea/usecase/TimelineAreaInitializeSetActiveStateUseCase";
-import { $TIMELINE_ID } from "../../config/TimelineConfig";
 
 /**
  * @description 起動対象のToolクラスの配列

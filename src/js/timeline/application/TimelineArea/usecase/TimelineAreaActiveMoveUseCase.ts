@@ -1,5 +1,5 @@
 import { $TIMELINE_ID } from "../../../../config/TimelineConfig";
-import { $setCursor } from "../../../../util/Global";
+import { $setCursor } from "../../../../global/Global";
 import { $getMouseState } from "../../TimelineUtil";
 import { execute as timelineAreaChageStyleToActiveService } from "../service/TimelineAreaChageStyleToActiveService";
 import { execute as timelinelAreaRegisterWindowMoveEventUseCase } from "./TimelinelAreaRegisterWindowMoveEventUseCase";

@@ -1,6 +1,6 @@
 import { $TIMELINE_ID } from "../../../../config/TimelineConfig";
 import { EventType } from "../../../../tool/domain/event/EventType";
-import { $setCursor } from "../../../../util/Global";
+import { $setCursor } from "../../../../global/Global";
 import { execute as timelineAreaActiveWindowMoveService } from "../service/TimelineAreaActiveWindowMoveService";
 import { execute as userTimelineAreaStateUpdateService } from "../../../../user/application/TimelineArea/service/UserTimelineAreaStateUpdateService";
 

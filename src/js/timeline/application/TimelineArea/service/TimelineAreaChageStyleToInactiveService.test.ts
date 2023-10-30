@@ -30,7 +30,7 @@ describe("TTimelineAreaChageStyleToInactiveServiceTest", () =>
             .documentElement
             .style
             .setProperty("--timeline-logic-width", "200px");
-            
+
         expect(document.documentElement.style.getPropertyValue("--timeline-height")).toBe("0px");
         expect(document.documentElement.style.getPropertyValue("--timeline-logic-height")).toBe("100px");
         expect(document.documentElement.style.getPropertyValue("--timeline-logic-width")).toBe("200px");

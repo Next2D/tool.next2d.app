@@ -6,6 +6,13 @@
     background-color : #2c2c2c;
     flex-direction   : column;
 
+    .timeline-container
+    {
+        width   : 100%;
+        height  : 100%;
+        display : flex;
+    }
+
     .timeline-border
     {
         margin        : 0 5px 0 5px;
@@ -23,7 +30,6 @@
         {
             display     : flex;
             align-items : center;
-            width       : calc(100vw - (var(--controller-width) + 45px + 8px + 8px + 270px));
             height      : 40px;
         }
     }
@@ -41,7 +47,7 @@
         display         : flex;
         align-items     : center;
         justify-content : flex-end;
-        width           : 270px;
+        width           : calc(var(--timeline-layer-controller-width) - 1px);
         height          : 61px;
         border-right    : 1px solid #1c1c1c;
     }
@@ -184,6 +190,7 @@
 
     .timeline-body
     {
+        width           : 100%;
         height          : calc(var(--timeline-logic-height) - 112px);
         display         : flex;
         flex-direction  : column;
@@ -206,7 +213,7 @@
 
     .timeline-scroll-bar-x-space
     {
-        width            : 270px;
+        width            : var(--timeline-layer-controller-width);
         height           : 10px;
         background-color : #282828;
         pointer-events   : none;
@@ -305,7 +312,6 @@
     width            : 10px;
     height           : calc(var(--timeline-logic-height) - 122px);
     display          : flex;
-    align-items      : center;
     justify-content  : center;
     background-color : #282828;
 }
@@ -313,7 +319,7 @@
 #timeline-x-bar-box
 {
     position    : relative;
-    width       : calc(100vw - (var(--controller-width) + 338px));
+    width       : calc(100% - var(--timeline-layer-controller-width));
     height      : 10px;
     display     : flex;
     align-items : center;
@@ -389,7 +395,7 @@
 {
     display      : flex;
     align-items  : center;
-    width        : 230px;
+    width        : 232px;
     font-weight  : bold;
     color        : #f5f5f5;
 }
@@ -571,7 +577,7 @@
 {
     display      : flex;
     align-items  : center;
-    width        : 270px;
+    width        : calc(var(--timeline-layer-controller-width) - 1px);
     height       : 40px;
     border-right : 1px solid #1c1c1c;
 
@@ -738,4 +744,10 @@
             cursor           : pointer;
         }
     }
+}
+
+#timeline-container-main
+{
+    width  : calc(100% - var(--timeline-adjustment-width));
+    height : 100%;
 }

@@ -29,7 +29,7 @@ export const execute = (): void =>
     }
 
     const timelineFrameWidth: number = $getTimelineFrameWidth();
-    const elementCount: number = timelineHeader.clientWidth / (timelineFrameWidth + 1) | 0;
+    const elementCount: number = Math.ceil(timelineHeader.clientWidth / (timelineFrameWidth + 1));
 
     // Elementがなければ初期登録
     if (!element.children.length) {

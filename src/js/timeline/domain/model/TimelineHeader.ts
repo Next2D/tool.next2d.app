@@ -46,13 +46,6 @@ export class TimelineHeader
     {
         return new Promise((resolve): void =>
         {
-            const element: HTMLElement | null = document
-                .getElementById($TIMELINE_CONTROLLER_BASE_ID);
-
-            if (element) {
-                this._$clientWidth = element.clientWidth | 0;
-            }
-
             timelineInitializeUseCase();
 
             // 終了

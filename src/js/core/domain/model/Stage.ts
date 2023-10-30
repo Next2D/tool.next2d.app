@@ -1,6 +1,6 @@
 import { StageObjectImpl } from "../../../interface/StageObjectImpl";
 import { execute as stageInitializeUseCase } from "../../application/Stage/usecase/StageInitializeUseCase";
-import { $clamp } from "../../../util/Global";
+import { $clamp } from "../../../global/Global";
 import {
     $STAGE_DEFAULT_FPS,
     $STAGE_DEFAULT_HEIGHT,

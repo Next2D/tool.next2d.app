@@ -1,5 +1,6 @@
 #timeline-content
 {
+    width           : calc(100% - 10px);
     height          : calc(var(--timeline-logic-height) - 122px);
     display         : flex;
     flex-direction  : column;
@@ -335,7 +336,7 @@
 #timeline-controller-base
 {
     position        : relative;
-    width           : calc(100vw - (var(--controller-width) + var(--tool-width) + var(--view-border-width) * 2 + var(--controller-adjustment-width) + var(--timeline-layer-controller-width)));
+    width           : calc(100vw - (var(--controller-width) + var(--tool-width) + var(--view-border-width) * 2 + var(--controller-adjustment-width) + var(--timeline-layer-controller-width) + var(--timeline-adjustment-width)));
     height          : 61px;
     overflow        : hidden;
 }

@@ -1,3 +1,4 @@
+import { execute as global } from "./global/application/Initialize";
 import { execute as tool } from "./tool/application/Initialize";
 import { execute as menu } from "./menu/application/Initialize";
 import { execute as view } from "./view/application/Initialize";
@@ -19,6 +20,7 @@ import type { ProgressMenu } from "./menu/domain/model/ProgressMenu";
 import type { MenuImpl } from "./interface/MenuImpl";
 
 const executes: Function[] = [
+    global,
     menu,
     user,
     core,

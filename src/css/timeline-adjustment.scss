@@ -1,5 +1,6 @@
-#timeline-adjustment
+#timeline-adjustment-y
 {
+    width               : 100%;
     height              : 8px;
     background-color    : #282828;
     background-image    : url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" width="8" height="8" viewBox="0 0 24 24"><path fill="darkgray" d="M6 12c0 1.657-1.343 3-3 3s-3-1.343-3-3 1.343-3 3-3 3 1.343 3 3zm9 0c0 1.657-1.343 3-3 3s-3-1.343-3-3 1.343-3 3-3 3 1.343 3 3zm9 0c0 1.657-1.343 3-3 3s-3-1.343-3-3 1.343-3 3-3 3 1.343 3 3z"/></svg>');
@@ -11,5 +12,21 @@
     &:hover
     {
         cursor : row-resize;
+    }
+}
+
+#timeline-adjustment-x
+{
+    width               : 7px;
+    height              : 100%;
+    background-color    : #282828;
+    background-image    : url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" width="8" height="8" viewBox="0 0 24 24"><path fill="darkgray" d="M12 18c1.657 0 3 1.343 3 3s-1.343 3-3 3-3-1.343-3-3 1.343-3 3-3zm0-9c1.657 0 3 1.343 3 3s-1.343 3-3 3-3-1.343-3-3 1.343-3 3-3zm0-9c1.657 0 3 1.343 3 3s-1.343 3-3 3-3-1.343-3-3 1.343-3 3-3z"/></svg>');
+    background-repeat   : no-repeat;
+    background-position : center center;
+    border-left         : 1px solid #1c1c1c;
+
+    &:hover
+    {
+        cursor : col-resize;
     }
 }

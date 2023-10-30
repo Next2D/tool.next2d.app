@@ -1,4 +1,7 @@
-import { $TIMELINE_CONTROLLER_BASE_ID } from "../../../../config/TimelineConfig";
+import {
+    $TIMELINE_ADJUSTMENT_X_ID,
+    $TIMELINE_CONTROLLER_BASE_ID
+} from "../../../../config/TimelineConfig";
 import { timelineHeader } from "../../TimelineUtil";
 
 /**
@@ -13,13 +16,16 @@ import { timelineHeader } from "../../TimelineUtil";
 export const execute = (element: HTMLElement): void =>
 {
     // ツールエリアを初期値に移動
-    element.style.width     = "";
-    element.style.minWidth  = "";
-    element.style.left      = "";
-    element.style.top       = "";
-    element.style.zIndex    = "";
-    element.style.boxShadow = "";
-    element.style.position  = "";
+    element.style.borderLeft   = "";
+    element.style.borderBottom = "";
+    element.style.borderRight  = "";
+    element.style.width        = "";
+    element.style.minWidth     = "";
+    element.style.left         = "";
+    element.style.top          = "";
+    element.style.zIndex       = "";
+    element.style.boxShadow    = "";
+    element.style.position     = "";
 
     const timelineHeight: string = document
         .documentElement
@@ -50,4 +56,20 @@ export const execute = (element: HTMLElement): void =>
 
     // ヘッダーの幅を更新
     timelineHeader.clientWidth = baseElement.clientWidth;
+
+    // 幅拡大Elementを非表示
+    const xAdjElement: HTMLElement | null = document
+        .getElementById($TIMELINE_ADJUSTMENT_X_ID);
+
+    if (!xAdjElement) {
+        return ;
+    }
+
+    xAdjElement.style.display = "none";
+
+    // 表示分をcssに適用
+    document
+        .documentElement
+        .style
+        .setProperty("--timeline-adjustment-width", "0px");
 };
