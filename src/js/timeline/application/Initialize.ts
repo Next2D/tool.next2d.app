@@ -36,14 +36,10 @@ export const execute = async (): Promise<void> =>
     }
 
     await Promise.all(promises);
-    const element: HTMLElement | null = document.getElementById($TIMELINE_ID);
-    if (!element) {
-        return ;
-    }
 
     // 初期イベントの登録
-    timelineAreaInitializeRegisterEventUseCase(element);
+    timelineAreaInitializeRegisterEventUseCase();
 
     // 初期起動時に保存データから移動状態を再構成
-    timelineAreaInitializeSetActiveStateUseCase(element);
+    timelineAreaInitializeSetActiveStateUseCase();
 };

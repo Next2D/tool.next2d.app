@@ -1,7 +1,7 @@
 #timeline
 {
     width            : calc(100vw - (var(--controller-width) + var(--tool-width) + var(--view-border-width) * 2 + var(--controller-adjustment-width)));
-    height           : var(--timeline-height);
+    height           : var(--timeline-logic-height);
     display          : flex;
     background-color : #2c2c2c;
     flex-direction   : column;
@@ -184,7 +184,7 @@
 
     .timeline-body
     {
-        height          : calc(var(--timeline-height) - 112px);
+        height          : calc(var(--timeline-logic-height) - 112px);
         display         : flex;
         flex-direction  : column;
         overflow        : hidden;
@@ -192,7 +192,7 @@
 
     .timeline-content-body
     {
-        height  : calc(var(--timeline-height) - 122px);
+        height  : calc(var(--timeline-logic-height) - 122px);
         display : flex;
     }
 
@@ -303,7 +303,7 @@
 {
     position         : relative;
     width            : 10px;
-    height           : calc(var(--timeline-height) - 122px);
+    height           : calc(var(--timeline-logic-height) - 122px);
     display          : flex;
     align-items      : center;
     justify-content  : center;

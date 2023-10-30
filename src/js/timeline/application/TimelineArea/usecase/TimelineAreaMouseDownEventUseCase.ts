@@ -3,6 +3,7 @@ import { $allHideMenu } from "../../../../menu/application/MenuUtil";
 import { execute as userAllFunctionStateService } from "../../../../user/application/Billing/service/UserAllFunctionStateService";
 import { execute as timelineAreaActiveMoveUseCase } from "./TimelineAreaActiveMoveUseCase";
 import { execute as timelineAreaChageStyleToInactiveService } from "../service/TimelineAreaChageStyleToInactiveService";
+import { execute as timelineHeaderBuildElementUseCase } from "../../TimelineHeader/usecase/TimelineHeaderBuildElementUseCase";
 import { execute as userTimelineAreaStateUpdateService } from "../../../../user/application/TimelineArea/service/UserTimelineAreaStateUpdateService";
 import { $setMouseState } from "../../TimelineUtil";
 import {
@@ -112,6 +113,9 @@ export const execute = (event: PointerEvent): void =>
 
         // ツールエリアのstyleを固定位置に移動
         timelineAreaChageStyleToInactiveService(element);
+
+        // ヘッダーを再描画
+        timelineHeaderBuildElementUseCase();
     }
 
 };

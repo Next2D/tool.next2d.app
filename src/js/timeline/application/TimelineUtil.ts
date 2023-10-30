@@ -89,3 +89,52 @@ export const $setMouseState = (state: "up" | "down"): void =>
 {
     $mouseState = state;
 };
+
+/**
+ * @description 現在のxスクロール座標
+ *              Current x-scroll coordinates
+ *
+ * @type {number}
+ * @private
+ */
+let $scrollX: number = 0;
+
+/**
+ * @description タイムラインのスクロールx座標
+ *              Scroll x-coordinate of timeline
+ *
+ * @return {number}
+ * @method
+ * @public
+ */
+export const $getScrollX = (): number =>
+{
+    return $scrollX;
+};
+
+/**
+ * @description タイムラインのスクロールx座標を更新
+ *              Update timeline scroll x-coordinate
+ *
+ * @param  {number} x
+ * @return {void}
+ * @method
+ * @public
+ */
+export const $setScrollX = (x: number): void =>
+{
+    $scrollX = x;
+};
+
+/**
+ * @description 移動してるx座標から最小のフレーム数を返却
+ *              Return the minimum number of frames from the moving x-coordinate
+ *
+ * @return {number}
+ * @method
+ * @public
+ */
+export const $getLeftFrame = (): number =>
+{
+    return 1 + $scrollX / $timeline_frame_width | 0;
+};

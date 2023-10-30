@@ -1,3 +1,6 @@
+import { $TIMELINE_CONTROLLER_BASE_ID } from "../../../../config/TimelineConfig";
+import { timelineHeader } from "../../TimelineUtil";
+
 /**
  * @description タイムラインエリアを初期位置に戻す
  *              Restore the timeline area to its initial position
@@ -21,11 +24,30 @@ export const execute = (element: HTMLElement): void =>
     const timelineHeight: string = document
         .documentElement
         .style
-        .getPropertyValue("--timeline-height");
+        .getPropertyValue("--timeline-logic-height");
 
     // ツールエリアの幅を元に戻す
     document
         .documentElement
         .style
-        .setProperty("--timeline-logic-height", timelineHeight);
+        .setProperty("--timeline-height", timelineHeight);
+
+    // 移動時に利用する幅の変数を初期化
+    document
+        .documentElement
+        .style
+        .setProperty("--timeline-logic-width", "0px");
+
+    const baseElement: HTMLElement | null = document
+        .getElementById($TIMELINE_CONTROLLER_BASE_ID);
+
+    if (!baseElement) {
+        return ;
+    }
+
+    // 個別設定を初期化
+    baseElement.style.width = "";
+
+    // ヘッダーの幅を更新
+    timelineHeader.clientWidth = baseElement.clientWidth;
 };

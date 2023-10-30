@@ -1,3 +1,4 @@
+import { $TIMELINE_ID } from "../../../../config/TimelineConfig";
 import { UserAreaStateObjectImpl } from "../../../../interface/UserAreaStateObjectImpl";
 import { execute as userTimelineAreaStateGetService } from "../../../../user/application/TimelineArea/service/UserTimelineAreaStateGetService";
 import { $setTimelineAreaState } from "../TimelineAreaUtil";
@@ -7,13 +8,17 @@ import { execute as timelineAreaChageStyleToActiveService } from "../service/Tim
  * @description タイムラインエリアの初期起動時に前回の移動状態をセット
  *              Set previous move state at initial startup of timeline area
  *
- * @param  {HTMLElement} element
  * @return {void}
  * @method
  * @public
  */
-export const execute = (element: HTMLElement): void =>
+export const execute = (): void =>
 {
+    const element: HTMLElement | null = document.getElementById($TIMELINE_ID);
+    if (!element) {
+        return ;
+    }
+
     // 移動していれば移動位置にElementを移動
     const UserAreaToolState: UserAreaStateObjectImpl = userTimelineAreaStateGetService();
     if (UserAreaToolState.state === "move") {

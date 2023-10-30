@@ -64,12 +64,15 @@ export class TimelineHeader
      * @description コンテナの表示幅を返却する
      *              Return container display width
      *
-     * @returns {number}
-     * @readonly
+     * @member {number}
      * @public
      */
     get clientWidth (): number
     {
         return this._$clientWidth;
+    }
+    set clientWidth (width: number)
+    {
+        this._$clientWidth = width;
     }
 }

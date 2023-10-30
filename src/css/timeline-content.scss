@@ -1,6 +1,6 @@
 #timeline-content
 {
-    height          : calc(var(--timeline-height) - 122px);
+    height          : calc(var(--timeline-logic-height) - 122px);
     display         : flex;
     flex-direction  : column;
     overflow        : hidden;

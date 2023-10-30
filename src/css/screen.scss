@@ -1,6 +1,6 @@
 #screen
 {
-    height      : calc(100vh - (var(--timeline-logic-height) + 21px));
+    height      : calc(100vh - (var(--timeline-height) + 21px));
     overflow    : scroll;
     display     : grid;
     place-items : center;

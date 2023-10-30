@@ -3,6 +3,7 @@ import { $setCursor } from "../../../../util/Global";
 import { $getMouseState } from "../../TimelineUtil";
 import { execute as timelineAreaChageStyleToActiveService } from "../service/TimelineAreaChageStyleToActiveService";
 import { execute as timelinelAreaRegisterWindowMoveEventUseCase } from "./TimelinelAreaRegisterWindowMoveEventUseCase";
+import { execute as timelineHeaderBuildElementUseCase } from "../../TimelineHeader/usecase/TimelineHeaderBuildElementUseCase";
 import {
     $getStandbyMoveState,
     $getTimelineAreaState,
@@ -53,6 +54,9 @@ export const execute = (): void =>
 
         // windowにイベントを登録
         timelinelAreaRegisterWindowMoveEventUseCase();
+
+        // ヘッダーを再描画
+        timelineHeaderBuildElementUseCase();
 
     } else {
 

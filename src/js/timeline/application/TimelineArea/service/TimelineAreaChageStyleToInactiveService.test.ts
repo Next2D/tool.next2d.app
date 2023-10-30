@@ -18,6 +18,22 @@ describe("TTimelineAreaChageStyleToInactiveServiceTest", () =>
             "offsetTop": 20
         };
 
+        document
+            .documentElement
+            .style
+            .setProperty("--timeline-height", "0px");
+        document
+            .documentElement
+            .style
+            .setProperty("--timeline-logic-height", "100px");
+        document
+            .documentElement
+            .style
+            .setProperty("--timeline-logic-width", "200px");
+            
+        expect(document.documentElement.style.getPropertyValue("--timeline-height")).toBe("0px");
+        expect(document.documentElement.style.getPropertyValue("--timeline-logic-height")).toBe("100px");
+        expect(document.documentElement.style.getPropertyValue("--timeline-logic-width")).toBe("200px");
         expect(mockElement.style.width).toBe("1000px");
         expect(mockElement.style.minWidth).toBe("860px");
         expect(mockElement.style.left).toBe("10px");
@@ -27,6 +43,10 @@ describe("TTimelineAreaChageStyleToInactiveServiceTest", () =>
         expect(mockElement.style.position).toBe("fixed");
 
         execute(mockElement);
+
+        expect(document.documentElement.style.getPropertyValue("--timeline-height")).toBe("100px");
+        expect(document.documentElement.style.getPropertyValue("--timeline-logic-height")).toBe("100px");
+        expect(document.documentElement.style.getPropertyValue("--timeline-logic-width")).toBe("0px");
         expect(mockElement.style.width).toBe("");
         expect(mockElement.style.minWidth).toBe("");
         expect(mockElement.style.left).toBe("");
