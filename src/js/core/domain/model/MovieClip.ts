@@ -1,7 +1,9 @@
 import { MovieClipObjectImpl } from "../../../interface/MovieClipObjectImpl";
 import { Instance } from "./Instance";
 import { execute as timelineHeaderBuildElementUseCase } from "../../../timeline/application/TimelineHeader/usecase/TimelineHeaderBuildElementUseCase";
-import type { Layer } from "./Layer";
+import { execute as timelineLayerBuildElementUseCase } from "../../../timeline/application/TimelineLayer/usecase/TimelineLayerBuildElementUseCase";
+import { Layer } from "./Layer";
+import { timelineLayer } from "../../../timeline/application/TimelineUtil";
 import type { Sound } from "./Sound";
 
 /**
@@ -15,7 +17,7 @@ import type { Sound } from "./Sound";
 export class MovieClip extends Instance
 {
     private readonly _$labels: Map<number, string>;
-    private readonly _$layers: Map<number, Layer[]>;
+    private readonly _$layers: Layer[];
     private readonly _$actions: Map<number, string>;
     private readonly _$sounds: Map<number, Sound[]>;
 
@@ -35,10 +37,10 @@ export class MovieClip extends Instance
         this._$labels = new Map();
 
         /**
-         * @type {Map}
+         * @type {array}
          * @private
          */
-        this._$layers = new Map();
+        this._$layers = [];
 
         /**
          * @type {Map}
@@ -51,6 +53,21 @@ export class MovieClip extends Instance
          * @private
          */
         this._$sounds = new Map();
+
+        // 指定objectからMovieCLipを復元
+        this.load(object);
+    }
+
+    /**
+     * @description MovieClipのLayerのMapデータを返却する
+     *              Return Map data of Layer in MovieClip
+     *
+     * @member {array}
+     * @public
+     */
+    get layers (): Layer[]
+    {
+        return this._$layers;
     }
 
     /**
@@ -68,6 +85,9 @@ export class MovieClip extends Instance
             // タイムラインのヘッダーを生成
             timelineHeaderBuildElementUseCase();
 
+            // MovieClipのLayerからタイムラインを生成
+            timelineLayerBuildElementUseCase(this);
+
             return resolve();
         });
     }
@@ -82,7 +102,32 @@ export class MovieClip extends Instance
      */
     stop (): void
     {
+        // 表示に利用していたレイヤーElementを非表示に更新
+        for (let idx = 0; idx < this._$layers.length; ++idx) {
+            const element = timelineLayer.elements[idx];
+            element.style.display = "none";
+        }
+
         // TODO
+    }
+
+    /**
+     * @description 保存データからMovieClipを復元
+     *              Recover MovieClip from saved data
+     *
+     * @param   {object} object
+     * @returns {void}
+     * @method
+     * @public
+     */
+    load (object: MovieClipObjectImpl): void
+    {
+        // Layerデータがなければ強制的に一個追加する
+        if (!object.layers) {
+            const layer = new Layer();
+            layer.name  = "Layer_0";
+            this._$layers.push(layer);
+        }
     }
 
     /**

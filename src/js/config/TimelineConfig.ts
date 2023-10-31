@@ -69,3 +69,12 @@ export const $TIMELINE_ADJUSTMENT_X_ID: string = "timeline-adjustment-x";
  * @constant
  */
 export const $TIMELINE_ADJUSTMENT_Y_ID: string = "timeline-adjustment-y";
+
+/**
+ * @description タイムラインのメインコンテンツのElementのID
+ *              ID of the Element in the main content of the timeline
+ *
+ * @type {string}
+ * @constant
+ */
+export const $TIMELINE_CONTENT_ID: string = "timeline-content";

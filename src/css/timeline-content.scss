@@ -126,7 +126,7 @@
         display          : flex;
         align-items      : center;
         justify-content  : flex-end;
-        width            : 270px;
+        width            : calc(var(--timeline-layer-controller-width) - 1px);
         border-right     : 1px solid #1c1c1c;
         background-color : #282828;
 
@@ -200,7 +200,7 @@
 
     .timeline-frame-controller
     {
-        width       : calc(100vw - (var(--controller-width) + 338px));
+        width       : calc(100% - var(--timeline-layer-controller-width));
         overflow    : hidden;
         display     : flex;
         align-items : center;

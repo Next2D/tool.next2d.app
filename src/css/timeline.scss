@@ -190,11 +190,10 @@
 
     .timeline-body
     {
-        width           : 100%;
-        height          : calc(var(--timeline-logic-height) - 112px);
-        display         : flex;
-        flex-direction  : column;
-        overflow        : hidden;
+        height         : calc(var(--timeline-logic-height) - 112px);
+        display        : flex;
+        flex-direction : column;
+        overflow       : hidden;
     }
 
     .timeline-content-body
