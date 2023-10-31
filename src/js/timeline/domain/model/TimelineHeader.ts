@@ -1,4 +1,3 @@
-import { $TIMELINE_CONTROLLER_BASE_ID } from "../../../config/TimelineConfig";
 import { execute as timelineInitializeUseCase } from "../../application/TimelineHeader/usecase/TimelineInitializeUseCase";
 
 /**
