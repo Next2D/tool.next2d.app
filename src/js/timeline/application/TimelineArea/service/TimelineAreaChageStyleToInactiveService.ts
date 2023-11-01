@@ -3,6 +3,9 @@ import {
     $TIMELINE_CONTROLLER_BASE_ID
 } from "../../../../config/TimelineConfig";
 import { timelineHeader } from "../../TimelineUtil";
+import { execute as userTimelineAreaStateUpdateService } from "../../../../user/application/TimelineArea/service/UserTimelineAreaStateUpdateService";
+import type { UserTimelineAreaStateObjectImpl } from "../../../../interface/UserTimelineAreaStateObjectImpl";
+import { execute as userTimelineAreaStateGetService } from "../../../../user/application/TimelineArea/service/UserTimelineAreaStateGetService";
 
 /**
  * @description タイムラインエリアを初期位置に戻す
@@ -15,6 +18,18 @@ import { timelineHeader } from "../../TimelineUtil";
  */
 export const execute = (element: HTMLElement): void =>
 {
+
+    // LocalStorageのデータを取得
+    const object: UserTimelineAreaStateObjectImpl = userTimelineAreaStateGetService();
+
+    // 最終位置をLocalStorageに保存
+    object.state      = "move";
+    object.offsetLeft = element.offsetLeft;
+    object.offsetTop  = element.offsetTop;
+    object.width      = element.clientWidth;
+    object.height     = element.clientHeight;
+    userTimelineAreaStateUpdateService(object);
+
     // ツールエリアを初期値に移動
     element.style.borderLeft   = "";
     element.style.borderBottom = "";
@@ -27,22 +42,19 @@ export const execute = (element: HTMLElement): void =>
     element.style.boxShadow    = "";
     element.style.position     = "";
 
-    const timelineHeight: string = document
+    const style: CSSStyleDeclaration = document
         .documentElement
-        .style
-        .getPropertyValue("--timeline-logic-height");
+        .style;
+
+    const timelineHeight: string = style.getPropertyValue("--timeline-logic-height");
 
     // ツールエリアの幅を元に戻す
-    document
-        .documentElement
-        .style
-        .setProperty("--timeline-height", timelineHeight);
+    style.setProperty("--timeline-height", timelineHeight);
 
     // 移動時に利用する幅の変数を初期化
-    document
-        .documentElement
-        .style
-        .setProperty("--timeline-logic-width", "0px");
+    style.setProperty("--timeline-logic-width", "0px");
+
+
 
     const baseElement: HTMLElement | null = document
         .getElementById($TIMELINE_CONTROLLER_BASE_ID);
@@ -68,8 +80,5 @@ export const execute = (element: HTMLElement): void =>
     xAdjElement.style.display = "none";
 
     // 表示分をcssに適用
-    document
-        .documentElement
-        .style
-        .setProperty("--timeline-adjustment-width", "0px");
+    style.setProperty("--timeline-adjustment-width", "0px");
 };

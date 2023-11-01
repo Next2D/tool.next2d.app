@@ -1,4 +1,4 @@
-import { $setEditMode } from "../../../../core/application/CoreUtil";
+import { $setEditMode } from "../../../../controller/core/application/CoreUtil";
 import { execute as screenTabGetElementService } from "../service/ScreenTabGetElementService";
 
 /**

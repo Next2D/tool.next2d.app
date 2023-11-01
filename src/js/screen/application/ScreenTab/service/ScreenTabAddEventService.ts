@@ -1,4 +1,4 @@
-import { $createWorkSpace } from "../../../../core/application/CoreUtil";
+import { $createWorkSpace } from "../../../../controller/core/application/CoreUtil";
 import { $allHideMenu } from "../../../../menu/application/MenuUtil";
 
 /**

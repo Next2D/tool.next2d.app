@@ -2,6 +2,7 @@ import { $TIMELINE_ID } from "../../../../config/TimelineConfig";
 import { EventType } from "../../../../tool/domain/event/EventType";
 import { $setCursor } from "../../../../global/Global";
 import { execute as timelineAreaActiveWindowMoveService } from "../service/TimelineAreaActiveWindowMoveService";
+import { execute as userTimelineAreaStateGetService } from "../../../../user/application/TimelineArea/service/UserTimelineAreaStateGetService";
 import { execute as userTimelineAreaStateUpdateService } from "../../../../user/application/TimelineArea/service/UserTimelineAreaStateUpdateService";
 
 /**
@@ -35,10 +36,12 @@ export const execute = (event: PointerEvent): void =>
     element.style.left = `${element.offsetLeft + event.movementX}px`;
     element.style.top  = `${element.offsetTop  + event.movementY}px`;
 
+    const userTimelineAreaState = userTimelineAreaStateGetService();
+
+    userTimelineAreaState.state = "move";
+    userTimelineAreaState.offsetLeft = element.offsetLeft;
+    userTimelineAreaState.offsetTop  = element.offsetTop;
+
     // 移動状態をLocalStorageに保存
-    userTimelineAreaStateUpdateService({
-        "state": "move",
-        "offsetLeft": element.offsetLeft,
-        "offsetTop": element.offsetTop
-    });
+    userTimelineAreaStateUpdateService(userTimelineAreaState);
 };

@@ -1,7 +1,8 @@
 import { $TIMELINE_ID } from "../../../../config/TimelineConfig";
-import { UserAreaStateObjectImpl } from "../../../../interface/UserAreaStateObjectImpl";
-import { execute as userTimelineAreaStateGetService } from "../../../../user/application/TimelineArea/service/UserTimelineAreaStateGetService";
+import { timelineHeader } from "../../TimelineUtil";
+import type { UserTimelineAreaStateObjectImpl } from "../../../../interface/UserTimelineAreaStateObjectImpl";
 import { $setTimelineAreaState } from "../TimelineAreaUtil";
+import { execute as userTimelineAreaStateGetService } from "../../../../user/application/TimelineArea/service/UserTimelineAreaStateGetService";
 import { execute as timelineAreaChageStyleToActiveService } from "../service/TimelineAreaChageStyleToActiveService";
 
 /**
@@ -19,9 +20,14 @@ export const execute = (): void =>
         return ;
     }
 
+    // CSS側の変数を上書き
+    const style: CSSStyleDeclaration = document
+        .documentElement
+        .style;
+
     // 移動していれば移動位置にElementを移動
-    const UserAreaToolState: UserAreaStateObjectImpl = userTimelineAreaStateGetService();
-    if (UserAreaToolState.state === "move") {
+    const UserTimelineAreaState: UserTimelineAreaStateObjectImpl = userTimelineAreaStateGetService();
+    if (UserTimelineAreaState.state === "move") {
 
         // ツールエリアの状態を移動状態に更新
         $setTimelineAreaState("move");
@@ -30,7 +36,19 @@ export const execute = (): void =>
         timelineAreaChageStyleToActiveService(element);
 
         // Elementを移動位置にセット
-        element.style.left = `${UserAreaToolState.offsetLeft}px`;
-        element.style.top  = `${UserAreaToolState.offsetTop}px`;
+        element.style.left = `${UserTimelineAreaState.offsetLeft}px`;
+        element.style.top  = `${UserTimelineAreaState.offsetTop}px`;
+
+        if (UserTimelineAreaState.width) {
+            style.setProperty("--timeline-logic-width", `${UserTimelineAreaState.width}px`);
+        }
+
+        // 計算用の幅を更新
+        timelineHeader.clientWidth = UserTimelineAreaState.width;
+    }
+
+    // 高さの設定があれば移動に関係なく更新
+    if (UserTimelineAreaState.height) {
+        style.setProperty("--timeline-logic-height", `${UserTimelineAreaState.height}px`);
     }
 };

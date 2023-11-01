@@ -1,5 +1,5 @@
 import { $SCREEN_TAB_AREA_ID, $SCREEN_TAB_MENU_NAME_LIST_ID } from "../../../../config/ScreenConfig";
-import { WorkSpace } from "../../../../core/domain/model/WorkSpace";
+import { WorkSpace } from "../../../../controller/core/domain/model/WorkSpace";
 import { execute as screenTabComponent } from "../component/ScreenTabComponent";
 import { execute as screenTabNameListComponent } from "../component/ScreenTabNameListComponent";
 import { execute as screenTabGetElementService } from "../service/ScreenTabGetElementService";

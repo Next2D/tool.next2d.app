@@ -88,13 +88,6 @@ export const execute = (event: PointerEvent): void =>
             return ;
         }
 
-        // 移動状態を保存
-        userTimelineAreaStateUpdateService({
-            "state": "fixed",
-            "offsetLeft": 0,
-            "offsetTop": 0
-        });
-
         // ダブルタップを終了
         wait = false;
 
@@ -110,6 +103,15 @@ export const execute = (event: PointerEvent): void =>
         if (!element) {
             return ;
         }
+
+        // 移動状態を保存
+        userTimelineAreaStateUpdateService({
+            "state": "fixed",
+            "offsetLeft": 0,
+            "offsetTop": 0,
+            "width": 0,
+            "height": element.clientHeight
+        });
 
         // ツールエリアのstyleを固定位置に移動
         timelineAreaChageStyleToInactiveService(element);

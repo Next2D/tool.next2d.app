@@ -1,7 +1,13 @@
 import { $TIMELINE_CONTENT_ID } from "../../../../config/TimelineConfig";
-import { Layer } from "../../../../core/domain/model/Layer";
-import type { MovieClip } from "../../../../core/domain/model/MovieClip";
-import { $getLeftFrame, $getTimelineFrameWidth, timelineHeader, timelineLayer } from "../../TimelineUtil";
+import { $getCurrentWorkSpace } from "../../../../controller/core/application/CoreUtil";
+import type { Layer } from "../../../../controller/core/domain/model/Layer";
+import type{ WorkSpace } from "../../../../controller/core/domain/model/WorkSpace";
+import {
+    $getLeftFrame,
+    $getTimelineFrameWidth,
+    timelineHeader,
+    timelineLayer
+} from "../../TimelineUtil";
 import { execute as layerContentControllerComponent } from "../component/LayerContentControllerComponent";
 import { execute as layerContentFrameComponent } from "../component/LayerContentFrameComponent";
 
@@ -9,14 +15,18 @@ import { execute as layerContentFrameComponent } from "../component/LayerContent
  * @description 指定のMoiveClipのLayerからタイムラインを生成
  *              Generate a timeline from the specified MoiveClip's Layer
  *
- * @params  {MovieClip} movie_clip
  * @returns {void}
  * @method
  * @public
  */
-export const execute = (movie_clip: MovieClip): void =>
+export const execute = (): void =>
 {
-    const layers: Layer[] = movie_clip.layers;
+    const workSpace: WorkSpace = $getCurrentWorkSpace();
+    if (!workSpace) {
+        return ;
+    }
+
+    const layers: Layer[] = workSpace.scene.layers;
     if (!layers.length) {
         return ;
     }

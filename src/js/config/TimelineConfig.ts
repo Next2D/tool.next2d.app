@@ -5,7 +5,7 @@
  * @type {number}
  * @constant
  */
-export const $TIMELINE_DEFAULT_HEIGHT_SIZE: number = 280;
+export const $TIMELINE_DEFAULT_HEIGHT_SIZE: number = 270;
 
 /**
  * @description タイムラインのElementのID
@@ -78,3 +78,21 @@ export const $TIMELINE_ADJUSTMENT_Y_ID: string = "timeline-adjustment-y";
  * @constant
  */
 export const $TIMELINE_CONTENT_ID: string = "timeline-content";
+
+/**
+ * @description タイムラインの最小幅の数値
+ *              Minimum width value for timeline
+ *
+ * @type {number}
+ * @constant
+ */
+export const $TIMELINE_MIN_WIDTH: number = 860;
+
+/**
+ * @description タイムラインの最小の高さの数値
+ *              Minimum height value for the timeline
+ *
+ * @type {number}
+ * @constant
+ */
+export const $TIMELINE_MIN_HEIGHT: number = 150;

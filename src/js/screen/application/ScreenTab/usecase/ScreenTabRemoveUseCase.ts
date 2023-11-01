@@ -1,4 +1,4 @@
-import type { WorkSpace } from "../../../../core/domain/model/WorkSpace";
+import type { WorkSpace } from "../../../../controller/core/domain/model/WorkSpace";
 import { $replace } from "../../../../language/application/LanguageUtil";
 
 /**

@@ -1,5 +1,5 @@
-import type { InstanceImpl } from "../../../interface/InstanceImpl";
-import { ScreenTab } from "../../../screen/domain/model/ScreenTab";
+import type { InstanceImpl } from "../../../../interface/InstanceImpl";
+import { ScreenTab } from "../../../../screen/domain/model/ScreenTab";
 import { MovieClip } from "./MovieClip";
 import { Stage } from "./Stage";
 import { execute as workSpaceRunUseCase } from "../../application/WorkSpace/usecase/WorkSpaceRunUseCase";

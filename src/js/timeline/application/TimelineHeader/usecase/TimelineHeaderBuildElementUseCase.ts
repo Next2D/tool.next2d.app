@@ -7,9 +7,9 @@ import {
     timelineHeader
 } from "../../TimelineUtil";
 import { $STAGE_FPS_ID } from "../../../../config/StageSettingConfig";
-import { $getCurrentWorkSpace } from "../../../../core/application/CoreUtil";
-import type { WorkSpace } from "../../../../core/domain/model/WorkSpace";
-import type { MovieClip } from "../../../../core/domain/model/MovieClip";
+import { $getCurrentWorkSpace } from "../../../../controller/core/application/CoreUtil";
+import type { WorkSpace } from "../../../../controller/core/domain/model/WorkSpace";
+import type { MovieClip } from "../../../../controller/core/domain/model/MovieClip";
 
 /**
  * @description タイムラインのヘッダーをスクロール位置の合わせて構築

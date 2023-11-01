@@ -6,6 +6,7 @@ import {
 } from "./TimelineUtil";
 import { execute as timelineAreaInitializeRegisterEventUseCase } from "../application/TimelineArea/usecase/TimelineAreaInitializeRegisterEventUseCase";
 import { execute as timelineAreaInitializeSetActiveStateUseCase } from "../application/TimelineArea/usecase/TimelineAreaInitializeSetActiveStateUseCase";
+import { execute as timelineAdjustmentInitializeRegisterEventUseCase } from "../application/TimelineAdjustment/usecase/TimelineAdjustmentInitializeRegisterEventUseCase";
 
 /**
  * @description 起動対象のToolクラスの配列
@@ -36,8 +37,11 @@ export const execute = async (): Promise<void> =>
 
     await Promise.all(promises);
 
-    // 初期イベントの登録
+    // タイムラインの初期イベントの登録
     timelineAreaInitializeRegisterEventUseCase();
+
+    // タイムラインの幅と高さ調整のイベントを登録
+    timelineAdjustmentInitializeRegisterEventUseCase();
 
     // 初期起動時に保存データから移動状態を再構成
     timelineAreaInitializeSetActiveStateUseCase();

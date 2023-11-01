@@ -1,4 +1,4 @@
-import { Stage } from "../../../../core/domain/model/Stage";
+import { Stage } from "../../../core/domain/model/Stage";
 import {
     $STAGE_BG_COLOR_ID,
     $STAGE_FPS_ID,

@@ -1,5 +1,5 @@
 import { $USER_TIMELINE_AREA_STATE_KEY } from "../../../../config/Config";
-import type { UserAreaStateObjectImpl } from "../../../../interface/UserAreaStateObjectImpl";
+import type { UserTimelineAreaStateObjectImpl } from "../../../../interface/UserTimelineAreaStateObjectImpl";
 
 /**
  * @description ツールエリアの移動状態をLocalStorageに保存する
@@ -10,7 +10,7 @@ import type { UserAreaStateObjectImpl } from "../../../../interface/UserAreaStat
  * @method
  * @public
  */
-export const execute = (object: UserAreaStateObjectImpl): void =>
+export const execute = (object: UserTimelineAreaStateObjectImpl): void =>
 {
     localStorage.setItem($USER_TIMELINE_AREA_STATE_KEY, JSON.stringify(object));
 };

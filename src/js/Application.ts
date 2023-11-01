@@ -5,15 +5,15 @@ import { execute as view } from "./view/application/Initialize";
 import { execute as screen } from "./screen/application/Initialize";
 import { execute as timeline } from "./timeline/application/Initialize";
 import { execute as language } from "./language/application/Initialize";
-import { execute as core } from "./core/application/Initialize";
+import { execute as core } from "./controller/core/application/Initialize";
 import { execute as user } from "./user/application/Initialize";
-import type { WorkSpace } from "./core/domain/model/WorkSpace";
+import type { WorkSpace } from "./controller/core/domain/model/WorkSpace";
 import { execute as detailModalRegisterFadeEventService } from "./menu/application/DetailModal/service/DetailModalRegisterFadeEventService";
 import { execute as progressMenuUpdateMessageService } from "./menu/application/ProgressMenu/service/ProgressMenuUpdateMessageService";
 import {
     $getAllWorkSpace,
     $getCurrentWorkSpace
-} from "./core/application/CoreUtil";
+} from "./controller/core/application/CoreUtil";
 import { $PROGRESS_MENU_NAME } from "./config/MenuConfig";
 import { $getMenu } from "./menu/application/MenuUtil";
 import type { ProgressMenu } from "./menu/domain/model/ProgressMenu";

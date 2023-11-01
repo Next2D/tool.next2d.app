@@ -1,3 +1,4 @@
+import { $TIMELINE_MIN_WIDTH } from "../../../../config/TimelineConfig";
 import { execute } from "./TimelineAreaChageStyleToInactiveService";
 
 describe("TTimelineAreaChageStyleToInactiveServiceTest", () =>
@@ -35,7 +36,7 @@ describe("TTimelineAreaChageStyleToInactiveServiceTest", () =>
         expect(document.documentElement.style.getPropertyValue("--timeline-logic-height")).toBe("100px");
         expect(document.documentElement.style.getPropertyValue("--timeline-logic-width")).toBe("200px");
         expect(mockElement.style.width).toBe("1000px");
-        expect(mockElement.style.minWidth).toBe("860px");
+        expect(mockElement.style.minWidth).toBe(`${$TIMELINE_MIN_WIDTH}px`);
         expect(mockElement.style.left).toBe("10px");
         expect(mockElement.style.top).toBe("20px");
         expect(mockElement.style.zIndex).toBe("16777215");

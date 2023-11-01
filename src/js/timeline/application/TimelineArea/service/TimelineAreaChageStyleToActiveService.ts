@@ -1,8 +1,12 @@
 import {
     $TIMELINE_ADJUSTMENT_X_ID,
-    $TIMELINE_CONTROLLER_BASE_ID
+    $TIMELINE_CONTROLLER_BASE_ID,
+    $TIMELINE_MIN_WIDTH
 } from "../../../../config/TimelineConfig";
 import { timelineHeader } from "../../TimelineUtil";
+import type { UserTimelineAreaStateObjectImpl } from "../../../../interface/UserTimelineAreaStateObjectImpl";
+import { execute as userTimelineAreaStateGetService } from "../../../../user/application/TimelineArea/service/UserTimelineAreaStateGetService";
+
 /**
  * @description タイムラインエリアを移動可能な状態にする
  *              Make the timeline area movable
@@ -14,28 +18,30 @@ import { timelineHeader } from "../../TimelineUtil";
  */
 export const execute = (element: HTMLElement): void =>
 {
-    // タイムラインエリアの高さを0にしてscreenの幅を広くする
-    document
+    const style: CSSStyleDeclaration = document
         .documentElement
-        .style
-        .setProperty("--timeline-height", "0px");
+        .style;
+
+    // タイムラインエリアの高さを0にしてscreenの幅を広くする
+    style.setProperty("--timeline-height", "0px");
+
+    // LocalStorageのデータを取得、データがあれば優先して利用する
+    const userTimelineAreaState: UserTimelineAreaStateObjectImpl = userTimelineAreaStateGetService();
 
     // ツールエリアのstyleを変更
     element.style.borderLeft   = "1px solid #1c1c1c";
     element.style.borderBottom = "1px solid #1c1c1c";
     element.style.borderRight  = "1px solid #1c1c1c";
-    element.style.minWidth     = "860px";
-    element.style.left         = `${element.offsetLeft}px`;
-    element.style.top          = `${element.offsetTop}px`;
+    element.style.minWidth     = `${$TIMELINE_MIN_WIDTH}px`;
+    element.style.left         = `${userTimelineAreaState.offsetLeft || element.offsetLeft}px`;
+    element.style.top          = `${userTimelineAreaState.offsetTop || element.offsetTop}px`;
     element.style.zIndex       = `${0xffffff}`;
     element.style.boxShadow    = "0 0 5px rgba(245, 245, 245, 0.25)";
     element.style.position     = "fixed"; // fixed logic
 
     // 移動時に現在の幅のセット
-    document
-        .documentElement
-        .style
-        .setProperty("--timeline-logic-width", `${element.clientWidth}px`);
+    style.setProperty("--timeline-logic-width",  `${userTimelineAreaState.width || element.clientWidth}px`);
+    style.setProperty("--timeline-logic-height", `${userTimelineAreaState.height || element.clientHeight}px`);
 
     // styleの幅も更新
     element.style.width = "var(--timeline-logic-width)";
@@ -48,13 +54,11 @@ export const execute = (element: HTMLElement): void =>
         return ;
     }
 
+    // 幅調整のElementを表示
     xAdjElement.style.display = "";
 
     // 表示分をcssに適用
-    document
-        .documentElement
-        .style
-        .setProperty("--timeline-adjustment-width", "8px");
+    style.setProperty("--timeline-adjustment-width", "8px");
 
     const baseElement: HTMLElement | null = document
         .getElementById($TIMELINE_CONTROLLER_BASE_ID);

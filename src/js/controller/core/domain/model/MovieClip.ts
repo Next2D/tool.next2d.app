@@ -1,9 +1,9 @@
-import { MovieClipObjectImpl } from "../../../interface/MovieClipObjectImpl";
+import { MovieClipObjectImpl } from "../../../../interface/MovieClipObjectImpl";
 import { Instance } from "./Instance";
-import { execute as timelineHeaderBuildElementUseCase } from "../../../timeline/application/TimelineHeader/usecase/TimelineHeaderBuildElementUseCase";
-import { execute as timelineLayerBuildElementUseCase } from "../../../timeline/application/TimelineLayer/usecase/TimelineLayerBuildElementUseCase";
+import { execute as timelineHeaderBuildElementUseCase } from "../../../../timeline/application/TimelineHeader/usecase/TimelineHeaderBuildElementUseCase";
+import { execute as timelineLayerBuildElementUseCase } from "../../../../timeline/application/TimelineLayer/usecase/TimelineLayerBuildElementUseCase";
 import { Layer } from "./Layer";
-import { timelineLayer } from "../../../timeline/application/TimelineUtil";
+import { timelineLayer } from "../../../../timeline/application/TimelineUtil";
 import type { Sound } from "./Sound";
 
 /**
@@ -86,7 +86,7 @@ export class MovieClip extends Instance
             timelineHeaderBuildElementUseCase();
 
             // MovieClipのLayerからタイムラインを生成
-            timelineLayerBuildElementUseCase(this);
+            timelineLayerBuildElementUseCase();
 
             return resolve();
         });
