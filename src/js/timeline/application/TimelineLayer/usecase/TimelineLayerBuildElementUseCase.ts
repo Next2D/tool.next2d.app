@@ -1,7 +1,7 @@
 import { $TIMELINE_CONTENT_ID } from "../../../../config/TimelineConfig";
-import { $getCurrentWorkSpace } from "../../../../controller/core/application/CoreUtil";
-import type { Layer } from "../../../../controller/core/domain/model/Layer";
-import type{ WorkSpace } from "../../../../controller/core/domain/model/WorkSpace";
+import { $getCurrentWorkSpace } from "../../../../core/application/CoreUtil";
+import type { Layer } from "../../../../core/domain/model/Layer";
+import type{ WorkSpace } from "../../../../core/domain/model/WorkSpace";
 import {
     $getLeftFrame,
     $getTimelineFrameWidth,

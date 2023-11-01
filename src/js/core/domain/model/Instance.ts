@@ -1,4 +1,4 @@
-import { InstanceObjectImpl } from "../../../../interface/InstanceObjectImpl";
+import { InstanceObjectImpl } from "../../../interface/InstanceObjectImpl";
 
 type ObjectImpl<T extends InstanceObjectImpl> = T;
 

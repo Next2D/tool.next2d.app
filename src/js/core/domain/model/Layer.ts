@@ -1,5 +1,5 @@
-import { LayerObjectImpl } from "../../../../interface/LayerObjectImpl";
-import { execute as timelineLayerGetHighlightColorService } from "../../../../timeline/application/TimelineLayer/service/TimelineLayerGetHighlightColorService";
+import { LayerObjectImpl } from "../../../interface/LayerObjectImpl";
+import { execute as timelineLayerGetHighlightColorService } from "../../../timeline/application/TimelineLayer/service/TimelineLayerGetHighlightColorService";
 
 /**
  * @description タイムラインのレイヤー状態管理クラス

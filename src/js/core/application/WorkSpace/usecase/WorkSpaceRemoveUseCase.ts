@@ -1,7 +1,7 @@
 import type { WorkSpace } from "../../../domain/model/WorkSpace";
-import { execute as progressMenuShowService } from "../../../../../menu/application/ProgressMenu/service/ProgressMenuShowService";
-import { execute as progressMenuHideService } from "../../../../../menu/application/ProgressMenu/service/ProgressMenuHideService";
-import { execute as progressMenuUpdateMessageService } from "../../../../../menu/application/ProgressMenu/service/ProgressMenuUpdateMessageService";
+import { execute as progressMenuShowService } from "../../../../menu/application/ProgressMenu/service/ProgressMenuShowService";
+import { execute as progressMenuHideService } from "../../../../menu/application/ProgressMenu/service/ProgressMenuHideService";
+import { execute as progressMenuUpdateMessageService } from "../../../../menu/application/ProgressMenu/service/ProgressMenuUpdateMessageService";
 import { $removeWorkSpace } from "../../CoreUtil";
 
 /**

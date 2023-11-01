@@ -1,5 +1,5 @@
-import { Character } from "../controller/core/domain/model/Character";
-import { EmptyCharacter } from "../controller/core/domain/model/EmptyCharacter";
+import { Character } from "../core/domain/model/Character";
+import { EmptyCharacter } from "../core/domain/model/EmptyCharacter";
 
 export interface LayerObjectImpl
 {

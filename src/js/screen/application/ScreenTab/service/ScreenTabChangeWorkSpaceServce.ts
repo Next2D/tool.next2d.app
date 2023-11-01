@@ -1,5 +1,5 @@
-import { $changeCurrentWorkSpace } from "../../../../controller/core/application/CoreUtil";
-import type { WorkSpace } from "../../../../controller/core/domain/model/WorkSpace";
+import { $changeCurrentWorkSpace } from "../../../../core/application/CoreUtil";
+import type { WorkSpace } from "../../../../core/domain/model/WorkSpace";
 import { execute as screenTabMenuHideService } from "../../../../menu/application/ScreenTabMenu/service/ScreenTabMenuHideService";
 
 /**

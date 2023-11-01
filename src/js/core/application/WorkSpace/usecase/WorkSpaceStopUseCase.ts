@@ -1,7 +1,7 @@
 import type { WorkSpace } from "../../../domain/model/WorkSpace";
-import { execute as progressMenuShowService } from "../../../../../menu/application/ProgressMenu/service/ProgressMenuShowService";
-import { execute as progressMenuUpdateMessageService } from "../../../../../menu/application/ProgressMenu/service/ProgressMenuUpdateMessageService";
-import { $replace } from "../../../../../language/application/LanguageUtil";
+import { execute as progressMenuShowService } from "../../../../menu/application/ProgressMenu/service/ProgressMenuShowService";
+import { execute as progressMenuUpdateMessageService } from "../../../../menu/application/ProgressMenu/service/ProgressMenuUpdateMessageService";
+import { $replace } from "../../../../language/application/LanguageUtil";
 
 /**
  * @description プロジェクトのを停止して、初期化

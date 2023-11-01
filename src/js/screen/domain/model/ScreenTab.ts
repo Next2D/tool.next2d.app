@@ -1,4 +1,4 @@
-import type { WorkSpace } from "../../../controller/core/domain/model/WorkSpace";
+import type { WorkSpace } from "../../../core/domain/model/WorkSpace";
 import { execute as screenTabInitializeUseCase } from "../../application/ScreenTab/usecase/ScreenTabInitializeUseCase";
 import { execute as screenTabGetElementService } from "../../application/ScreenTab/service/ScreenTabGetElementService";
 import { execute as screenTabActiveElementService } from "../../application/ScreenTab/service/ScreenTabActiveElementService";
