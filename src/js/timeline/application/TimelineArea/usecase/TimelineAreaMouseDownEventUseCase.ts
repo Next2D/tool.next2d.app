@@ -104,7 +104,10 @@ export const execute = (event: PointerEvent): void =>
             return ;
         }
 
-        // 移動状態を保存
+        // ツールエリアのstyleを固定位置に移動
+        timelineAreaChageStyleToInactiveService(element);
+
+        // 移動状態を保存(Fixed logic)
         userTimelineAreaStateUpdateService({
             "state": "fixed",
             "offsetLeft": 0,
@@ -112,9 +115,6 @@ export const execute = (event: PointerEvent): void =>
             "width": 0,
             "height": element.clientHeight
         });
-
-        // ツールエリアのstyleを固定位置に移動
-        timelineAreaChageStyleToInactiveService(element);
 
         // ヘッダーを再描画
         timelineHeaderBuildElementUseCase();
