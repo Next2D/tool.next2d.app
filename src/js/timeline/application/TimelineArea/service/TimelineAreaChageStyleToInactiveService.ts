@@ -54,8 +54,6 @@ export const execute = (element: HTMLElement): void =>
     // 移動時に利用する幅の変数を初期化
     style.setProperty("--timeline-logic-width", "0px");
 
-
-
     const baseElement: HTMLElement | null = document
         .getElementById($TIMELINE_CONTROLLER_BASE_ID);
 
