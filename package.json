@@ -1,7 +1,7 @@
 {
   "name": "nocode-tool",
   "private": true,
-  "version": "0.250.0",
+  "version": "0.251.0",
   "type": "module",
   "scripts": {
     "start": "vite",
@@ -11,17 +11,17 @@
     "lint": "eslint src/js/**/*.ts"
   },
   "devDependencies": {
-    "@next2d/player": "^1.18.6",
-    "@typescript-eslint/eslint-plugin": "^6.7.4",
-    "@typescript-eslint/parser": "^6.7.4",
-    "ace-code": "^1.28.0",
-    "ace-linters": "^0.13.2",
-    "eslint": "^8.51.0",
+    "@next2d/player": "^1.18.11",
+    "@typescript-eslint/eslint-plugin": "^6.11.0",
+    "@typescript-eslint/parser": "^6.11.0",
+    "ace-code": "^1.31.2",
+    "ace-linters": "^0.13.3",
+    "eslint": "^8.53.0",
     "jsdom": "^22.1.0",
     "jszip": "^3.10.1",
-    "sass": "^1.69.1",
-    "typescript": "^5.0.2",
-    "vite": "^4.4.5",
+    "sass": "^1.69.5",
+    "typescript": "^5.2.2",
+    "vite": "^5.0.0",
     "vitest": "^0.34.6"
   }
 }

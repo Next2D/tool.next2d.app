@@ -1,13 +1,22 @@
+/// <reference types="vitest" />
+
 import { defineConfig } from "vite";
 
 export default defineConfig({
+    "server": {
+        "open": "index.html"
+    },
     "build": {
         "outDir": "docs",
+        "target": "esnext",
+        "modulePreload": {
+            "polyfill": false
+        },
         "rollupOptions": { //ファイル出力設定
             "output": {
                 "assetFileNames": (assetInfo) =>
                 {
-                    let extType = assetInfo.name.split(".")[1];
+                    let extType: string = assetInfo?.name?.split(".")[1] as string;
 
                     if (/png|jpe?g|svg|gif|tiff|bmp|ico/i.test(extType)) {
                         extType = "img";

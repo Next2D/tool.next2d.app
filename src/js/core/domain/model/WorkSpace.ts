@@ -1,4 +1,6 @@
 import type { InstanceImpl } from "../../../interface/InstanceImpl";
+import type { UserAreaStateObjectImpl } from "../../../interface/UserAreaStateObjectImpl";
+import type { UserTimelineAreaStateObjectImpl } from "../../../interface/UserTimelineAreaStateObjectImpl";
 import { ScreenTab } from "../../../screen/domain/model/ScreenTab";
 import { MovieClip } from "./MovieClip";
 import { Stage } from "./Stage";
@@ -32,6 +34,8 @@ export class WorkSpace
     private readonly _$libraries: Map<number, InstanceImpl<any>>;
     private readonly _$screenTab: ScreenTab;
     private readonly _$id: number;
+    private readonly _$toolAreaState: UserAreaStateObjectImpl;
+    private readonly _$timelineAreaState: UserTimelineAreaStateObjectImpl;
 
     /**
      * @constructor
@@ -94,6 +98,28 @@ export class WorkSpace
          * @private
          */
         this._$active = false;
+
+        /**
+         * @type {object}
+         * @private
+         */
+        this._$toolAreaState = {
+            "state": "fixed",
+            "offsetLeft": 0,
+            "offsetTop": 0
+        };
+
+        /**
+         * @type {object}
+         * @private
+         */
+        this._$timelineAreaState = {
+            "state": "fixed",
+            "offsetLeft": 0,
+            "offsetTop": 0,
+            "width": 0,
+            "height": 0
+        };
 
         // /**
         //  * @type {Map}
@@ -193,6 +219,32 @@ export class WorkSpace
     get screenTab (): ScreenTab
     {
         return this._$screenTab;
+    }
+
+    /**
+     * @description ツールエリアの移動状況のオブジェクトを返却
+     *              Returns tool area movement status objects
+     *
+     * @return {object}
+     * @readonly
+     * @public
+     */
+    get toolAreaState (): UserAreaStateObjectImpl
+    {
+        return this._$toolAreaState;
+    }
+
+    /**
+     * @description タイムラインエリアの移動状況のオブジェクトを返却
+     *              Returns movement status objects in the timeline area
+     *
+     * @return {object}
+     * @readonly
+     * @public
+     */
+    get timelineAreaState (): UserTimelineAreaStateObjectImpl
+    {
+        return this._$timelineAreaState;
     }
 
     /**

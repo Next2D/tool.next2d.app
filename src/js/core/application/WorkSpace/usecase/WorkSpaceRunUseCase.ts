@@ -35,6 +35,10 @@ export const execute = (work_space: WorkSpace): Promise<void> =>
             .run()
             .then((): void =>
             {
+                // TODO ツールの状態をセット
+
+                // TODO タイムラインの状態をセット
+
                 // 進行状況画面を非表示にする
                 progressMenuHideService();
 
