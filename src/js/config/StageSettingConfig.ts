@@ -23,7 +23,7 @@ export const $STAGE_DEFAULT_HEIGHT: number = 400;
  * @type {number}
  * @constant
  */
-export const $STAGE_DEFAULT_FPS: number = 24;
+export const $STAGE_DEFAULT_FPS: number = 60;
 
 /**
  * @description ステージの初期背景色

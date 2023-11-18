@@ -40,6 +40,11 @@ let activeTimerId: NodeJS.Timeout | number = 0;
  */
 export const execute = (event: PointerEvent): void =>
 {
+    // 主ボタン以外はスキップ
+    if (event.button !== 0) {
+        return ;
+    }
+
     // 親のイベントを終了
     event.stopPropagation();
     event.preventDefault();

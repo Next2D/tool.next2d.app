@@ -1,4 +1,4 @@
-import { execute as timelineInitializeUseCase } from "../../application/TimelineHeader/usecase/TimelineInitializeUseCase";
+import { execute as timelineHeaderInitializeUseCase } from "../../application/TimelineHeader/usecase/TimelineHeaderInitializeUseCase";
 
 /**
  * @description タイムラインのヘッダーの管理クラス
@@ -45,7 +45,7 @@ export class TimelineHeader
     {
         return new Promise((resolve): void =>
         {
-            timelineInitializeUseCase();
+            timelineHeaderInitializeUseCase();
 
             // 終了
             resolve();

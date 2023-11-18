@@ -1,5 +1,6 @@
 import { EventType } from "../../../../tool/domain/event/EventType";
 import { execute as timelineAreaMouseDownEventUseCase } from "./TimelineAreaMouseDownEventUseCase";
+import { execute as timelineAreaMouseUpEventUseCase } from "./TimelineAreaMouseUpEventUseCase";
 import { execute as timelineAreaMouseOutEventService } from "../service/TimelineAreaMouseOutEventService";
 import { execute as timelineAreaDeleteIconService } from "../service/TimelineAreaDeleteIconService";
 import { $TIMELINE_CONTROLLER_BASE_ID, $TIMELINE_ID } from "../../../../config/TimelineConfig";
@@ -21,6 +22,7 @@ export const execute = (): void =>
 
     // タップ、ダブルタップの処理
     element.addEventListener(EventType.MOUSE_DOWN, timelineAreaMouseDownEventUseCase);
+    element.addEventListener(EventType.MOUSE_UP, timelineAreaMouseUpEventUseCase);
     element.addEventListener(EventType.MOUSE_OUT, timelineAreaMouseOutEventService);
 
     const baseElement: HTMLElement | null = document

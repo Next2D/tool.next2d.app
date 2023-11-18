@@ -4,6 +4,7 @@ import type { UserTimelineAreaStateObjectImpl } from "../../../../interface/User
 import { $setTimelineAreaState } from "../TimelineAreaUtil";
 import { execute as userTimelineAreaStateGetService } from "../../../../user/application/TimelineArea/service/UserTimelineAreaStateGetService";
 import { execute as timelineAreaChageStyleToActiveService } from "../service/TimelineAreaChageStyleToActiveService";
+import { execute as timelineHeaderBuildElementUseCase } from "../../TimelineHeader/usecase/TimelineHeaderBuildElementUseCase";
 
 /**
  * @description タイムラインエリアの初期起動時に前回の移動状態をセット
