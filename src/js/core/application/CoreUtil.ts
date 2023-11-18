@@ -9,7 +9,7 @@ const $workSpaces: WorkSpace[] = [];
 
 /**
  * @description 起動中のWorkSpaceを全て返却
- *              IndexedDB store name
+ *              Return all running WorkSpaces
  *
  * @returns {array}
  * @method

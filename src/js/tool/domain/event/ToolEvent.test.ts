@@ -1,6 +1,6 @@
 import { ToolEvent } from "./ToolEvent";
 import { EventType } from "./EventType";
-import { $setCursor } from "../../../global/Global";
+import { $setCursor } from "../../../global/GlobalUtil";
 
 describe("ToolEventTest", () =>
 {

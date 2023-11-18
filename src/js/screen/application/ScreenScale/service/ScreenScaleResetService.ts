@@ -1,5 +1,5 @@
 import { $SCREEN_SCALE_ID } from "../../../../config/ToolConfig";
-import { $setZoom } from "../../../../global/Global";
+import { $setZoom } from "../../../../global/GlobalUtil";
 
 /**
  * @description ステージのスケール情報をリセット

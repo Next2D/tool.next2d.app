@@ -1,5 +1,5 @@
 import { $TOOL_PREFIX } from "../../../../config/ToolConfig";
-import { $setCursor } from "../../../../global/Global";
+import { $setCursor } from "../../../../global/GlobalUtil";
 import { execute as toolAreaRegisterWindowMoveEventUseCase } from "./ToolAreaRegisterWindowMoveEventUseCase";
 import { execute as toolAreaChageStyleToActiveService } from "../service/ToolAreaChageStyleToActiveService";
 import { $getMouseState } from "../../ToolUtil";

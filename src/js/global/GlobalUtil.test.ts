@@ -7,7 +7,7 @@ import {
     $getScreenOffsetTop,
     $setScreenOffsetLeft,
     $setScreenOffsetTop
-} from "./Global";
+} from "./GlobalUtil";
 
 describe("GlobalTest", () =>
 {

@@ -1,6 +1,6 @@
 import { EventDispatcher } from "./EventDispatcher";
 import { EventType } from "./EventType";
-import { $setCursor } from "../../../global/Global";
+import { $setCursor } from "../../../global/GlobalUtil";
 import { $TOOL_PREFIX } from "../../../config/ToolConfig";
 
 /**

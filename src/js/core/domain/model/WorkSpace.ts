@@ -343,4 +343,17 @@ export class WorkSpace
         // 削除処理を実行
         return workSpaceRemoveUseCase(this);
     }
+
+    /**
+     * @description 今の状態をIndexedDBに保存
+     *              Save the current state to IndexedDB.
+     *
+     * @return {Promise}
+     * @method
+     * @public
+     */
+    save (): Promise<void>
+    {
+        //
+    }
 }

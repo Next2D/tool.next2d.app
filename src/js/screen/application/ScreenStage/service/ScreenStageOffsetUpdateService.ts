@@ -2,7 +2,7 @@ import { $SCREEN_STAGE_ID } from "../../../../config/ScreenConfig";
 import {
     $setScreenOffsetLeft,
     $setScreenOffsetTop
-} from "../../../../global/Global";
+} from "../../../../global/GlobalUtil";
 
 /**
  * @description ステージの背後のレイヤーのサイズを更新

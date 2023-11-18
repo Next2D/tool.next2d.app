@@ -20,10 +20,10 @@ import type { ProgressMenu } from "./menu/domain/model/ProgressMenu";
 import type { MenuImpl } from "./interface/MenuImpl";
 
 const executes: Function[] = [
-    global,
-    menu,
-    user,
-    core,
+    global, // fixed
+    menu, // fixed
+    user, // fixed
+    core, // fixed
     view,
     screen,
     timeline,

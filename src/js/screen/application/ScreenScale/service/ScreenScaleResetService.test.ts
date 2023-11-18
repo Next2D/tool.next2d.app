@@ -1,4 +1,4 @@
-import { $getZoom, $setZoom } from "../../../../global/Global";
+import { $getZoom, $setZoom } from "../../../../global/GlobalUtil";
 import { execute } from "./ScreenScaleResetService";
 
 describe("ScreenScaleResetServiceTest", () =>

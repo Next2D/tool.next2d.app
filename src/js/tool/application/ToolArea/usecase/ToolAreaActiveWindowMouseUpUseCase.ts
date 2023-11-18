@@ -1,4 +1,4 @@
-import { $setCursor } from "../../../../global/Global";
+import { $setCursor } from "../../../../global/GlobalUtil";
 import { EventType } from "../../../domain/event/EventType";
 import { execute as toolAreaActiveWindowMoveService } from "../service/ToolAreaActiveWindowMoveService";
 import { execute as userToolAreaStateUpdateService } from "../../../../user/application/ToolArea/service/UserToolAreaStateUpdateService";
