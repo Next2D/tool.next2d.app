@@ -1,4 +1,5 @@
-import { InstanceObjectImpl } from "../../../interface/InstanceObjectImpl";
+import type { InstanceObjectImpl } from "../../../interface/InstanceObjectImpl";
+import type { InstanceTypeImpl } from "../../../interface/InstanceTypeImpl";
 
 type ObjectImpl<T extends InstanceObjectImpl> = T;
 
@@ -13,7 +14,7 @@ export class Instance
 {
     private readonly _$id: number;
     private _$name: string;
-    private _$type: string;
+    private _$type: InstanceTypeImpl;
     private _$symbol: string;
     private _$folderId: number;
 
@@ -56,7 +57,8 @@ export class Instance
     }
 
     /**
-     * @description アイテムのユニークIDを返却
+     * @description インスタンスのユニークIDを返却
+     *              Return the unique ID of the instance
      *
      * @returns {number}
      * @readonly
@@ -68,7 +70,8 @@ export class Instance
     }
 
     /**
-     * @description
+     * @description ライブラリ一覧に表示されるインスタンス名
+     *              Instance name as it appears in the library list
      *
      * @member {string}
      * @public
@@ -83,22 +86,24 @@ export class Instance
     }
 
     /**
-     * @description
+     * @description インスタンスタイプ
+     *              instance type
      *
      * @member {string}
      * @public
      */
-    get type (): string
+    get type (): InstanceTypeImpl
     {
         return this._$type;
     }
-    set type (type :string)
+    set type (type :InstanceTypeImpl)
     {
         this._$type = type;
     }
 
     /**
-     * @description
+     * @description ライブラリ一覧で設定したシンボル名
+     *              Symbol name set in the library list
      *
      * @member {string}
      * @public
@@ -113,7 +118,8 @@ export class Instance
     }
 
     /**
-     * @description
+     * @description 親フォルダのID
+     *              ID of parent folder
      *
      * @member {number}
      * @public

@@ -8,6 +8,15 @@
 export const $PREFIX: string = "__next2d-tools__";
 
 /**
+ * @description セーブデータのバージョン
+ *              Version of saved data
+ *
+ * @type {number}
+ * @constant
+ */
+export const $VERSION: number = 1;
+
+/**
  * @description ユーザー個別データ保存のキー
  *              Key for saving individual user data
  *

@@ -1,6 +1,6 @@
 import { execute as userToolAreaStateGetService } from "../../../../user/application/ToolArea/service/UserToolAreaStateGetService";
 import { execute as toolAreaChageStyleToActiveService } from "../service/ToolAreaChageStyleToActiveService";
-import { UserAreaStateObjectImpl } from "../../../../interface/UserAreaStateObjectImpl";
+import { UserToolAreaStateObjectImpl } from "../../../../interface/UserToolAreaStateObjectImpl";
 import { $setToolAreaState } from "../ToolAreaUtil";
 
 /**
@@ -15,7 +15,7 @@ import { $setToolAreaState } from "../ToolAreaUtil";
 export const execute = (element: HTMLElement): void =>
 {
     // 移動していれば移動位置にElementを移動
-    const UserAreaToolState: UserAreaStateObjectImpl = userToolAreaStateGetService();
+    const UserAreaToolState: UserToolAreaStateObjectImpl = userToolAreaStateGetService();
     if (UserAreaToolState.state === "move") {
 
         // ツールエリアの状態を移動状態に更新

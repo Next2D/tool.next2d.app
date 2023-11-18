@@ -1,4 +1,4 @@
-export interface UserAreaStateObjectImpl
+export interface UserToolAreaStateObjectImpl
 {
     state: "fixed" | "move";
     offsetLeft: number;

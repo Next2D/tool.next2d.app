@@ -1,10 +1,11 @@
-import { MovieClipObjectImpl } from "../../../interface/MovieClipObjectImpl";
+import type { MovieClipObjectImpl } from "../../../interface/MovieClipObjectImpl";
 import { Instance } from "./Instance";
 import { execute as timelineHeaderBuildElementUseCase } from "../../../timeline/application/TimelineHeader/usecase/TimelineHeaderBuildElementUseCase";
 import { execute as timelineLayerBuildElementUseCase } from "../../../timeline/application/TimelineLayer/usecase/TimelineLayerBuildElementUseCase";
 import { Layer } from "./Layer";
 import { timelineLayer } from "../../../timeline/application/TimelineUtil";
-import type { Sound } from "./Sound";
+import type { SoundObjectImpl } from "../../../interface/SoundObjectImpl";
+import type { MovieClipSaveObjectImpl } from "../../../interface/MovieClipSaveObjectImpl";
 
 /**
  * @description MovieClipの状態管理クラス
@@ -19,7 +20,9 @@ export class MovieClip extends Instance
     private readonly _$labels: Map<number, string>;
     private readonly _$layers: Layer[];
     private readonly _$actions: Map<number, string>;
-    private readonly _$sounds: Map<number, Sound[]>;
+    private readonly _$sounds: Map<number, SoundObjectImpl[]>;
+    private _$currentFrame: number;
+    private _$leftFrame: number;
 
     /**
      * @params {object} object
@@ -54,6 +57,20 @@ export class MovieClip extends Instance
          */
         this._$sounds = new Map();
 
+        /**
+         * @type {number}
+         * @default 1
+         * @private
+         */
+        this._$currentFrame = 1;
+
+        /**
+         * @type {number}
+         * @default 1
+         * @private
+         */
+        this._$leftFrame = 1;
+
         // 指定objectからMovieCLipを復元
         this.load(object);
     }
@@ -68,6 +85,38 @@ export class MovieClip extends Instance
     get layers (): Layer[]
     {
         return this._$layers;
+    }
+
+    /**
+     * @description タイムラインマーカーが指定してるフレーム番号
+     *              The frame number specified by the timeline marker.
+     *
+     * @member {array}
+     * @public
+     */
+    get currentFrame (): number
+    {
+        return this._$currentFrame;
+    }
+    set currentFrame (current_frame: number)
+    {
+        this._$currentFrame = current_frame;
+    }
+
+    /**
+     * @description タイムラインの一番左に表示されてるフレーム番号
+     *              The frame number displayed on the leftmost side of the timeline.
+     *
+     * @member {array}
+     * @public
+     */
+    get leftFrame (): number
+    {
+        return this._$leftFrame;
+    }
+    set leftFrame (left_frame: number)
+    {
+        this._$leftFrame = left_frame;
     }
 
     /**
@@ -198,10 +247,10 @@ export class MovieClip extends Instance
      * @method
      * @public
      */
-    getSound (frame: number): Sound[]
+    getSound (frame: number): SoundObjectImpl[]
     {
         return this.hasSound(frame)
-            ? this._$sounds.get(frame) as Sound[]
+            ? this._$sounds.get(frame) as SoundObjectImpl[]
             : [];
     }
 
@@ -215,7 +264,7 @@ export class MovieClip extends Instance
      * @method
      * @public
      */
-    setSound (frame: number, sounds: Sound[]): void
+    setSound (frame: number, sounds: SoundObjectImpl[]): void
     {
         this._$sounds.set(frame, sounds);
     }
@@ -309,5 +358,59 @@ export class MovieClip extends Instance
         return this._$actions.delete(frame);
 
         // TODO コントローラーのJavaScriptタブを再読み込み
+    }
+
+    /**
+     * @description 保存用のオブジェクトに変換
+     *              Convert to an object for storage
+     *
+     * @return {object}
+     * @method
+     * @public
+     */
+    toObject (): MovieClipSaveObjectImpl
+    {
+        const layers = [];
+        for (let idx = 0; idx < this._$layers.length; ++idx) {
+            layers.push(this._$layers[idx].toObject());
+        }
+
+        const labels = [];
+        for (const [frame, value] of this._$labels) {
+            labels.push({
+                "frame": frame,
+                "name": value
+            });
+        }
+
+        const actions = [];
+        for (const [frame, action] of this._$actions) {
+            actions.push({
+                "frame": frame,
+                "action": action
+            });
+        }
+
+        const soundList = [];
+        for (const [frame, sounds] of this._$sounds) {
+            soundList.push({
+                "frame": frame,
+                "sounds": sounds
+            });
+        }
+
+        return {
+            "id":           this.id,
+            "name":         this.name,
+            "type":         this.type,
+            "symbol":       this.symbol,
+            "folderId":     this.folderId,
+            "currentFrame": this._$currentFrame,
+            "leftFrame":    this._$leftFrame,
+            "layers":       layers,
+            "labels":       labels,
+            "sounds":       soundList,
+            "actions":      actions
+        };
     }
 }

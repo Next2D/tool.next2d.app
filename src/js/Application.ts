@@ -21,9 +21,9 @@ import type { MenuImpl } from "./interface/MenuImpl";
 
 const executes: Function[] = [
     global, // fixed
-    menu, // fixed
     user, // fixed
     core, // fixed
+    menu,
     view,
     screen,
     timeline,

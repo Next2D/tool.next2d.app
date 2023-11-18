@@ -1,4 +1,5 @@
-import { LayerObjectImpl } from "../../../interface/LayerObjectImpl";
+import type { LayerObjectImpl } from "../../../interface/LayerObjectImpl";
+import type { LayerSaveObjectImpl } from "../../../interface/LayerSaveObjectImpl";
 import { execute as timelineLayerGetHighlightColorService } from "../../../timeline/application/TimelineLayer/service/TimelineLayerGetHighlightColorService";
 
 /**
@@ -112,4 +113,19 @@ export class Layer
         console.log(object);
     }
 
+    /**
+     * @description 保存用のオブジェクトに変換
+     *              Convert to an object for storage
+     *
+     * @return {object}
+     * @method
+     * @public
+     */
+    toObject (): LayerSaveObjectImpl
+    {
+        return {
+            "name": this._$name,
+            "color": this._$color
+        };
+    }
 }

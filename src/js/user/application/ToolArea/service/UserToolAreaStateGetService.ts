@@ -1,5 +1,5 @@
 import { $USER_TOOL_AREA_STATE_KEY } from "../../../../config/Config";
-import type { UserToolAreaStateObjectImpl } from "../../../../interface/UserAreaStateObjectImpl";
+import type { UserToolAreaStateObjectImpl } from "../../../../interface/UserToolAreaStateObjectImpl";
 
 /**
  * @description ツールエリアの移動状態をLocalStorageから取得

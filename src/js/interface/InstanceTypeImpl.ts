@@ -1,1 +1,1 @@
-export type InstanceTypeImple = "shape" | "bitmap" | "video" | "folder" | "sound" | "container" | "text";
+export type InstanceTypeImpl = "shape" | "bitmap" | "video" | "folder" | "sound" | "container" | "text";

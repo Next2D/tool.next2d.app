@@ -1,6 +1,7 @@
 import type { InstanceImpl } from "../../../interface/InstanceImpl";
-import type { UserAreaStateObjectImpl } from "../../../interface/UserAreaStateObjectImpl";
+import type { UserToolAreaStateObjectImpl } from "../../../interface/UserToolAreaStateObjectImpl";
 import type { UserTimelineAreaStateObjectImpl } from "../../../interface/UserTimelineAreaStateObjectImpl";
+import type { WorkSpaceSaveObjectImpl } from "../../../interface/WorkSpaceSaveObjectImpl";
 import { ScreenTab } from "../../../screen/domain/model/ScreenTab";
 import { MovieClip } from "./MovieClip";
 import { Stage } from "./Stage";
@@ -8,6 +9,7 @@ import { execute as workSpaceRunUseCase } from "../../application/WorkSpace/usec
 import { execute as workSpaceStopUseCase } from "../../application/WorkSpace/usecase/WorkSpaceStopUseCase";
 import { execute as workSpaceInitializeUseCase } from "../../application/WorkSpace/usecase/WorkSpaceInitializeUseCase";
 import { execute as workSpaceRemoveUseCase } from "../../application/WorkSpace/usecase/WorkSpaceRemoveUseCase";
+import { $VERSION } from "../../../config/Config";
 
 /**
  * @description プロジェクトのユニークID
@@ -34,8 +36,9 @@ export class WorkSpace
     private readonly _$libraries: Map<number, InstanceImpl<any>>;
     private readonly _$screenTab: ScreenTab;
     private readonly _$id: number;
-    private readonly _$toolAreaState: UserAreaStateObjectImpl;
+    private readonly _$toolAreaState: UserToolAreaStateObjectImpl;
     private readonly _$timelineAreaState: UserTimelineAreaStateObjectImpl;
+    private _$plugins: Map<any, any>;
 
     /**
      * @constructor
@@ -127,11 +130,11 @@ export class WorkSpace
         //  */
         // this._$nameMap = new Map();
 
-        // /**
-        //  * @type {Map}
-        //  * @private
-        //  */
-        // this._$plugins = new Map();
+        /**
+         * @type {Map}
+         * @private
+         */
+        this._$plugins = new Map();
 
         // this._$position = 0;
         // this._$ruler = false;
@@ -229,7 +232,7 @@ export class WorkSpace
      * @readonly
      * @public
      */
-    get toolAreaState (): UserAreaStateObjectImpl
+    get toolAreaState (): UserToolAreaStateObjectImpl
     {
         return this._$toolAreaState;
     }
@@ -352,8 +355,21 @@ export class WorkSpace
      * @method
      * @public
      */
-    save (): Promise<void>
+    toObject (): WorkSpaceSaveObjectImpl
     {
-        //
+        const libraries = [];
+        for (const instance of this._$libraries.values()) {
+            libraries.push(instance.toObject());
+        }
+
+        return {
+            "version": $VERSION,
+            "name": this.name,
+            "stage": this.stage.toObject(),
+            "libraries": libraries,
+            "plugins": Array.from(this._$plugins.values()),
+            "tool": structuredClone(this._$toolAreaState),
+            "timeline": structuredClone(this._$timelineAreaState)
+        };
     }
 }
