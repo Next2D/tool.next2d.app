@@ -1,3 +1,5 @@
+import { execute as userDatabaseInitializeLoadUseCase } from "./Database/usecase/UserDatabaseInitializeLoadUseCase";
+
 /**
  * @description ユーザー固有情報の初期起動関数
  *              Initial startup function for user-specific information
@@ -8,8 +10,6 @@
  */
 export const execute = (): Promise<void> =>
 {
-    return new Promise((resolve): void =>
-    {
-        resolve();
-    });
+    // 初期起動時のユースケース
+    return userDatabaseInitializeLoadUseCase();
 };

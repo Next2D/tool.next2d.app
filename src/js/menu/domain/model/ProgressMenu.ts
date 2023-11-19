@@ -153,8 +153,11 @@ export class ProgressMenu extends BaseMenu
             super.hide();
 
             // reset
-            this._$active     = false;
-            this.currentState = 0;
+            setTimeout((): void =>
+            {
+                this._$active     = false;
+                this.currentState = 0;
+            }, 300);
 
         }, 300);
     }

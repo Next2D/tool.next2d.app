@@ -8,11 +8,11 @@ import { $getMapping } from "@/language/application/LanguageUtil";
  * @description 変換対象のクラス名が設定されてるElementの言語を変換
  *              Convert the language of the Element for which the class name to be converted is set.
  *
- * @return {void}
+ * @return {Promise}
  * @method
  * @public
  */
-export const execute = (): void =>
+export const execute = async (): Promise<void> =>
 {
     // 指定されたクラスを全て取得
     const elements: HTMLCollectionOf<Element> = document

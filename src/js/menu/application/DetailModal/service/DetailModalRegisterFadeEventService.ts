@@ -1,24 +1,27 @@
-import { $DETAIL_MODAL_NAME } from "@/config/MenuConfig";
-import type { MenuImpl } from "@/interface/MenuImpl";
-import type { DetailModal } from "@/menu/domain/model/DetailModal";
-import { $getMenu } from "@/menu/application/MenuUtil";
+import { EventType } from "@/tool/domain/event/EventType";
+import { execute as detailModalFadeInUseCase } from "../usecase/DetailModalFadeInUseCase";
+import { execute as detailModalFadeOutUseCase } from "../usecase/DetailModalFadeOutUseCase";
 
 /**
- * @description 指定のElement内にイベントを登録する
- *              Register an event within a specified Element
+ * @description 指定Elementのタグ内にあるdataset.detailがあればイベントを登録
+ *              Register an event if dataset.detail is in the tag of the specified Element
  *
  * @params {HTMLElement | Document} element
- * @return {void}
+ * @return {Promise}
  * @method
  * @public
  */
-export const execute = (element: HTMLElement | Document): void =>
+export const execute = async (element: HTMLElement | Document): Promise<void> =>
 {
-    // 初期のDOMを対象に説明モーダルのイベントをセット
-    const detailModal: MenuImpl<DetailModal> | null = $getMenu($DETAIL_MODAL_NAME);
-    if (!detailModal) {
-        return ;
-    }
+    const elements = element
+        .querySelectorAll("[data-detail]");
 
-    detailModal.registerFadeEvent(element);
+    const length: number = elements.length;
+    for (let idx: number = 0; idx < length; ++idx) {
+
+        const element: HTMLElement = elements[idx] as HTMLElement;
+
+        element.addEventListener(EventType.MOUSE_OVER, detailModalFadeInUseCase);
+        element.addEventListener(EventType.MOUSE_OUT,  detailModalFadeOutUseCase);
+    }
 };

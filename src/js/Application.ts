@@ -11,9 +11,9 @@ import { execute as initializeLanguage } from "@/language/application/Initialize
 import { execute as initializeCore } from "@/core/application/Initialize";
 import { execute as initializeUser } from "@/user/application/Initialize";
 import { execute as initializeShortcut } from "@/shortcut/application/Initialize";
-import { execute as bootMenu } from "@/menu/application/Boot";
+import { execute as bootUser } from "@/user/application/Boot";
 import { execute as detailModalRegisterFadeEventService } from "@/menu/application/DetailModal/service/DetailModalRegisterFadeEventService";
-import { execute as progressMenuUpdateMessageService } from "@/menu/application/ProgressMenu/service/ProgressMenuUpdateMessageService";
+import { execute as languageTranslationService } from "@/language/application/service/LanguageTranslationService";
 import { $PROGRESS_MENU_NAME } from "@/config/MenuConfig";
 import { $getMenu } from "@/menu/application/MenuUtil";
 import {
@@ -31,7 +31,7 @@ const initializes: Function[] = [
     initializeGlobal, // OK
     initializeShortcut, // OK
     initializeMenu, // OK
-    initializeUser,
+    initializeUser, // OK
     initializeCore, // OK
     initializeView, // OK
     initializeScreen, // OK
@@ -45,7 +45,7 @@ const initializes: Function[] = [
  * @private
  */
 const boots: Function[] = [
-    bootMenu
+    bootUser
 ];
 
 /**
@@ -58,7 +58,7 @@ const boots: Function[] = [
  */
 export const initialize = (): Promise<void> =>
 {
-    return new Promise(async (resolve): Promise<void> =>
+    return new Promise((resolve): void =>
     {
         // 初期起動関数を実行
         const promises: Promise<void>[] = [];
@@ -68,15 +68,18 @@ export const initialize = (): Promise<void> =>
         }
 
         // 初期起動関数が全て完了するまで待機
-        await Promise.all(promises);
+        Promise
+            .all(promises)
+            .then((): void =>
+            {
+                const menu: MenuImpl<ProgressMenu> | null = $getMenu($PROGRESS_MENU_NAME);
+                if (menu) {
+                    menu.update();
+                }
 
-        const menu: MenuImpl<ProgressMenu> | null = $getMenu($PROGRESS_MENU_NAME);
-        if (menu) {
-            menu.update();
-        }
-
-        // 終了
-        resolve();
+                // 終了
+                resolve();
+            });
     });
 };
 
@@ -90,7 +93,12 @@ export const initialize = (): Promise<void> =>
  */
 export const boot = (): Promise<void> =>
 {
-    return new Promise(async (resolve): Promise<void> =>
+    const menu: MenuImpl<ProgressMenu> | null = $getMenu($PROGRESS_MENU_NAME);
+    if (menu) {
+        menu.message = "Booting the system.";
+    }
+
+    return new Promise((resolve): void =>
     {
         const promises: Promise<void>[] = [];
         // システム起動関数を実行
@@ -100,15 +108,13 @@ export const boot = (): Promise<void> =>
         }
 
         // システム起動関数が全て完了するまで待機
-        await Promise.all(promises);
-
-        const menu: MenuImpl<ProgressMenu> | null = $getMenu($PROGRESS_MENU_NAME);
-        if (menu) {
-            menu.message = "Booting the system.";
-        }
-
-        // 終了
-        resolve();
+        Promise
+            .all(promises)
+            .then((): void =>
+            {
+                // 終了
+                resolve();
+            });
     });
 };
 
@@ -120,23 +126,37 @@ export const boot = (): Promise<void> =>
  * @method
  * @public
  */
-export const run = async (): Promise<void> =>
+export const run = (): Promise<void> =>
 {
-    const promises: Promise<void>[] = [];
+    return new Promise((resolve): void =>
+    {
+        const promises: Promise<void>[] = [];
 
-    // 起動したWorkSpaceの初期関数を実行
-    const workSpaces: WorkSpace[] = $getAllWorkSpace();
-    for (let idx = 0; idx < workSpaces.length; ++idx) {
-        const workSpace: WorkSpace = workSpaces[idx];
-        promises.push(workSpace.initialize());
-    }
+        // 起動したWorkSpaceの初期関数を実行
+        const workSpaces: WorkSpace[] = $getAllWorkSpace();
+        for (let idx = 0; idx < workSpaces.length; ++idx) {
+            const workSpace: WorkSpace = workSpaces[idx];
+            promises.push(workSpace.initialize());
+        }
 
-    // 初期起動関数が終了するまで待機
-    await Promise.all(promises);
-
-    // 選択されたWorkSpaceを起動
-    $getCurrentWorkSpace().run();
-
-    // 初期のDOMを対象に説明モーダルのイベントをセット
-    detailModalRegisterFadeEventService(document);
+        // 初期起動関数が終了するまで待機
+        Promise
+            .all(promises)
+            .then((): Promise<void> =>
+            {
+                // 選択されたWorkSpaceを起動
+                return $getCurrentWorkSpace().run();
+            })
+            .then((): Promise<void> =>
+            {
+                // 初期のDOMを対象に説明モーダルのイベントをセット
+                return detailModalRegisterFadeEventService(document);
+            })
+            .then((): Promise<void> =>
+            {
+                // 言語を適用
+                return languageTranslationService();
+            })
+            .then(resolve);
+    });
 };

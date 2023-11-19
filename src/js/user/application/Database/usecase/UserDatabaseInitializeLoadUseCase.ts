@@ -2,7 +2,6 @@ import type { MenuImpl } from "@/interface/MenuImpl";
 import type { ProgressMenu } from "@/menu/domain/model/ProgressMenu";
 import { $PROGRESS_MENU_NAME } from "@/config/MenuConfig";
 import { $getMenu } from "@/menu/application/MenuUtil";
-import { $replace } from "@/language/application/LanguageUtil";
 import { $createWorkSpace, $registerWorkSpace } from "@/core/application/CoreUtil";
 import { execute as userDatabaseGetOpenDBRequestService } from "../service/UserDatabaseGetOpenDBRequestService";
 import ZlibInflateWorker from "@/worker/ZlibInflateWorker?worker&inline";
@@ -12,6 +11,7 @@ import {
 } from "@/config/Config";
 import { WorkSpaceSaveObjectImpl } from "@/interface/WorkSpaceSaveObjectImpl";
 import { WorkSpace } from "@/core/domain/model/WorkSpace";
+import { $replace } from "@/language/application/LanguageUtil";
 
 /**
  * @private
@@ -37,7 +37,7 @@ export const execute = (): Promise<void> =>
         }
 
         // 進行状況のテキストを更新
-        menu.message = "Launch database.";
+        menu.message = $replace("{{データベースを起動}}");
 
         const request: IDBOpenDBRequest = userDatabaseGetOpenDBRequestService();
 
@@ -72,14 +72,12 @@ export const execute = (): Promise<void> =>
                         buffer[idx] = binary.charCodeAt(idx) & 0xff;
                     }
 
-                    // 進行状況のテキストを更新
-                    menu.message = "Decompressing data";
                     worker.postMessage(buffer, [buffer.buffer]);
 
                     worker.onmessage = (event: MessageEvent): void =>
                     {
                         // 進行状況のテキストを更新
-                        menu.message = "Loading n2d file.";
+                        menu.message = $replace("{{N2Dファイルの読み込み}}");
 
                         let value: string = "";
 
