@@ -1,3 +1,6 @@
+import type { WorkSpace } from "@/core/domain/model/WorkSpace";
+import type { ProgressMenu } from "@/menu/domain/model/ProgressMenu";
+import type { MenuImpl } from "@/interface/MenuImpl";
 import { execute as global } from "@/global/application/Initialize";
 import { execute as tool } from "@/tool/application/Initialize";
 import { execute as menu } from "@/menu/application/Initialize";
@@ -8,17 +11,14 @@ import { execute as language } from "@/language/application/Initialize";
 import { execute as core } from "@/core/application/Initialize";
 import { execute as user } from "@/user/application/Initialize";
 import { execute as shortcut } from "@/shortcut/application/Initialize";
-import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import { execute as detailModalRegisterFadeEventService } from "@/menu/application/DetailModal/service/DetailModalRegisterFadeEventService";
 import { execute as progressMenuUpdateMessageService } from "@/menu/application/ProgressMenu/service/ProgressMenuUpdateMessageService";
+import { $PROGRESS_MENU_NAME } from "@/config/MenuConfig";
+import { $getMenu } from "@/menu/application/MenuUtil";
 import {
     $getAllWorkSpace,
     $getCurrentWorkSpace
 } from "@/core/application/CoreUtil";
-import { $PROGRESS_MENU_NAME } from "@/config/MenuConfig";
-import { $getMenu } from "@/menu/application/MenuUtil";
-import type { ProgressMenu } from "@/menu/domain/model/ProgressMenu";
-import type { MenuImpl } from "@/interface/MenuImpl";
 
 const executes: Function[] = [
     global, // fixed

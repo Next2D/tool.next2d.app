@@ -2,7 +2,7 @@ import { execute as userDatabaseInitializeSaveUseCase } from "@/user/application
 import {
     $generateShortcutKey,
     $setGlobalShortcut
-} from "../../../ShortcutUtil";
+} from "@/shortcut/ShortcutUtil";
 
 /**
  * @description 画面全体で利用可能なコマンドを登録

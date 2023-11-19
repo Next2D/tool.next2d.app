@@ -1,7 +1,10 @@
 import { execute as shortcutSettingMenuResetListStyleUseCase } from "../usecase/ShortcutSettingMenuResetListStyleUseCase";
 import { execute as shortcutSettingMenuRemoveKeyboardEventUseCase } from "./ShortcutSettingMenuRemoveKeyboardEventUseCase";
-import { $clearTempMapping } from "../ShortcutSettingMenuUtil";
 import { execute as shortcutSettingMenuLoadObjectUseCase } from "../usecase/ShortcutSettingMenuLoadObjectUseCase";
+import {
+    $clearTempMapping,
+    $updateShortcutSetting
+} from "../ShortcutSettingMenuUtil";
 
 /**
  * @description ショートカットメニュー非表示時のユースケース
@@ -13,6 +16,9 @@ import { execute as shortcutSettingMenuLoadObjectUseCase } from "../usecase/Shor
  */
 export const execute = (): void =>
 {
+    // ショートカット設定が終了するのでフラグを更新
+    $updateShortcutSetting(false);
+
     // 選択したElementを初期化
     shortcutSettingMenuResetListStyleUseCase();
 

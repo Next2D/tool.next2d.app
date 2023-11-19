@@ -188,3 +188,38 @@ export const $generateShortcutKey = (
     }
     return value;
 };
+
+/**
+ * @description ショートカット設定中かの判定フラグ
+ *              Flag to determine if a shortcut is being set
+ *
+ * @private
+ */
+let $shortcutSetting: boolean = false;
+
+/**
+ * @description ショートカット設定の利用フラグを更新
+ *              Update usage flags for shortcut settings
+ *
+ * @param  {boolean} flag
+ * @return {void}
+ * @method
+ * @public
+ */
+export const $updateShortcutSetting = (flag: boolean): void =>
+{
+    $shortcutSetting = flag;
+};
+
+/**
+ * @description ショートカット設定が利用中かを確認
+ *              Check if shortcut settings are in use
+ *
+ * @return {boolean}
+ * @method
+ * @public
+ */
+export const $useShortcutSetting = (): boolean =>
+{
+    return $shortcutSetting;
+};

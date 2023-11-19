@@ -25,6 +25,19 @@ export const $setGlobalShortcut = (code: string, callback: Function): void =>
 };
 
 /**
+ * @description グローバルショートカットのコマンドマップを返却
+ *              Return global shortcut command map
+ *
+ * @returns {Map}
+ * @method
+ * @public
+ */
+export const $getGlobalShortcut = (): Map<string, Function> =>
+{
+    return $globalShortcut;
+};
+
+/**
  * @description ショートカットキーとオプションコマンドを連結してstringで返却する
  *              ショートカットキーとオプションコマンドを連結してstringで返却する
  *
@@ -52,4 +65,38 @@ export const $generateShortcutKey = (
         }
     }
     return value;
+};
+
+/**
+ * @description キーボード入力中の判定フラグ
+ *              Decision flag during keyboard input
+ *
+ * @private
+ */
+let $keyLock: boolean = false;
+
+/**
+ * @description キーボードの利用フラグを更新
+ *              Update keyboard usage flag
+ *
+ * @return {void}
+ * @method
+ * @public
+ */
+export const $updateKeyLock = (lock: boolean): void =>
+{
+    $keyLock = lock;
+};
+
+/**
+ * @description キーボードの利用状態を返却
+ *              Return keyboard usage status
+ *
+ * @return {boolean}
+ * @method
+ * @public
+ */
+export const $useKeyboard = (): boolean =>
+{
+    return $keyLock;
 };

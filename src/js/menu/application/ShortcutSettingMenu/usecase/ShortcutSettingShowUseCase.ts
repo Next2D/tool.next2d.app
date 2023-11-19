@@ -1,6 +1,7 @@
 import { execute as shortcutSettingMenuRegisterKeyboardEventUseCase } from "./ShortcutSettingMenuRegisterKeyboardEventUseCase";
 import { execute as shortcutSettingMenuLoadObjectUseCase } from "../usecase/ShortcutSettingMenuLoadObjectUseCase";
 import { execute as shortcutSettingMenuUpdateElementTextService } from "../service/ShortcutSettingMenuUpdateElementTextService";
+import { $updateShortcutSetting } from "../ShortcutSettingMenuUtil";
 
 /**
  * @description ショートカットメニュー表示ユースケース
@@ -12,6 +13,9 @@ import { execute as shortcutSettingMenuUpdateElementTextService } from "../servi
  */
 export const execute = (): void =>
 {
+    // 既存のショートカットが起動しないようにフラグをセット
+    $updateShortcutSetting(true);
+
     // LocalStorageのデータをtempのマッピングにセット
     shortcutSettingMenuLoadObjectUseCase();
 
