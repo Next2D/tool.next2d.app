@@ -9,7 +9,7 @@ import {
     $setScreenOffsetTop
 } from "./GlobalUtil";
 
-describe("GlobalTest", () =>
+describe("GlobalUtilTest", () =>
 {
     test("$setCursor test", () =>
     {

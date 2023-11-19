@@ -24,4 +24,6 @@ export const execute = (): void =>
         "object": JSON.stringify(objects),
         "type": "local"
     };
+
+    console.log(saveData);
 };

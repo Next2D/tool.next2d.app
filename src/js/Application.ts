@@ -7,6 +7,7 @@ import { execute as timeline } from "./timeline/application/Initialize";
 import { execute as language } from "./language/application/Initialize";
 import { execute as core } from "./core/application/Initialize";
 import { execute as user } from "./user/application/Initialize";
+import { execute as shortcut } from "./shortcut/application/Initialize";
 import type { WorkSpace } from "./core/domain/model/WorkSpace";
 import { execute as detailModalRegisterFadeEventService } from "./menu/application/DetailModal/service/DetailModalRegisterFadeEventService";
 import { execute as progressMenuUpdateMessageService } from "./menu/application/ProgressMenu/service/ProgressMenuUpdateMessageService";
@@ -21,6 +22,7 @@ import type { MenuImpl } from "./interface/MenuImpl";
 
 const executes: Function[] = [
     global, // fixed
+    shortcut, // fixed
     user, // fixed
     core, // fixed
     menu,
