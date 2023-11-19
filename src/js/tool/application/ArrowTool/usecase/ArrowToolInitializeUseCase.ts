@@ -1,5 +1,5 @@
-import type { ToolImpl } from "../../../../interface/ToolImpl";
-import type { ArrowTool } from "../../../domain/model/ArrowTool";
+import type { ToolImpl } from "@/interface/ToolImpl";
+import type { ArrowTool } from "@/tool/domain/model/ArrowTool";
 import { $setActiveTool } from "../../ToolUtil";
 
 /**

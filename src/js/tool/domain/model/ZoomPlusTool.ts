@@ -1,4 +1,4 @@
-import { $TOOL_ZOOM_PLUS_NAME } from "../../../config/ToolConfig";
+import { $TOOL_ZOOM_PLUS_NAME } from "@/config/ToolConfig";
 import { BaseTool } from "./BaseTool";
 
 /**

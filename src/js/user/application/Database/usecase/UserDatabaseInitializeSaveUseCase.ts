@@ -1,5 +1,5 @@
-import { $getAllWorkSpace } from "../../../../core/application/CoreUtil";
-import { WorkSpace } from "../../../../core/domain/model/WorkSpace";
+import { $getAllWorkSpace } from "@/core/application/CoreUtil";
+import { WorkSpace } from "@/core/domain/model/WorkSpace";
 
 /**
  * @description IndexedDBにデータを保存

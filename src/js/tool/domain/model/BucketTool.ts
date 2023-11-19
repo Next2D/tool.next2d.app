@@ -1,4 +1,4 @@
-import { $TOOL_BUCKET_NAME } from "../../../config/ToolConfig";
+import { $TOOL_BUCKET_NAME } from "@/config/ToolConfig";
 import { BaseTool } from "./BaseTool";
 
 /**

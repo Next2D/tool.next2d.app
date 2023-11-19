@@ -1,7 +1,7 @@
-import { $USER_MENU_NAME } from "../../../../config/MenuConfig";
-import { $allHideMenu } from "../../../../menu/application/MenuUtil";
-import { execute as userSettingMenuShowService } from "../../../../menu/application/UserSettingMenu/service/UserSettingMenuShowService";
-import { execute as userSettingMenuUpdateOffsetService } from "../../../../menu/application/UserSettingMenu/service/UserSettingMenuUpdateOffsetService";
+import { $USER_MENU_NAME } from "@/config/MenuConfig";
+import { $allHideMenu } from "@/menu/application/MenuUtil";
+import { execute as userSettingMenuShowService } from "@/menu/application/UserSettingMenu/service/UserSettingMenuShowService";
+import { execute as userSettingMenuUpdateOffsetService } from "@/menu/application/UserSettingMenu/service/UserSettingMenuUpdateOffsetService";
 
 /**
  * @description ユーザー設定ツールの選択時のユースケース

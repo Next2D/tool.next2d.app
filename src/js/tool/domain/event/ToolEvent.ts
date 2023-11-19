@@ -1,7 +1,7 @@
 import { EventDispatcher } from "./EventDispatcher";
 import { EventType } from "./EventType";
-import { $setCursor } from "../../../global/GlobalUtil";
-import { $TOOL_PREFIX } from "../../../config/ToolConfig";
+import { $setCursor } from "@/global/GlobalUtil";
+import { $TOOL_PREFIX } from "@/config/ToolConfig";
 
 /**
  * @description ツールのイベント後の状態管理クラス

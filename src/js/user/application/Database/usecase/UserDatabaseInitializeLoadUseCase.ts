@@ -1,14 +1,14 @@
-import type { MenuImpl } from "../../../../interface/MenuImpl";
-import type { ProgressMenu } from "../../../../menu/domain/model/ProgressMenu";
-import { $PROGRESS_MENU_NAME } from "../../../../config/MenuConfig";
-import { $getMenu } from "../../../../menu/application/MenuUtil";
-import { $replace } from "../../../../language/application/LanguageUtil";
-import { $createWorkSpace } from "../../../../core/application/CoreUtil";
+import type { MenuImpl } from "@/interface/MenuImpl";
+import type { ProgressMenu } from "@/menu/domain/model/ProgressMenu";
+import { $PROGRESS_MENU_NAME } from "@/config/MenuConfig";
+import { $getMenu } from "@/menu/application/MenuUtil";
+import { $replace } from "@/language/application/LanguageUtil";
+import { $createWorkSpace } from "@/core/application/CoreUtil";
 import { execute as userDatabaseGetOpenDBRequestService } from "../service/UserDatabaseGetOpenDBRequestService";
 import {
     $USER_DATABASE_NAME,
     $USER_DATABASE_STORE_KEY
-} from "../../../../config/Config";
+} from "@/config/Config";
 
 /**
  * @description IndexedDbからデータ読み込みを行う

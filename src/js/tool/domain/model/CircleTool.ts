@@ -1,4 +1,4 @@
-import { $TOOL_CIRCLE_NAME } from "../../../config/ToolConfig";
+import { $TOOL_CIRCLE_NAME } from "@/config/ToolConfig";
 import { DrawTool } from "./DrawTool";
 
 /**

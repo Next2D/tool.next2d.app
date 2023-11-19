@@ -1,6 +1,6 @@
 import "../css/style.scss";
 
-import { initialize, run } from "./Application";
+import { initialize, run } from "@/Application";
 
 if (document.readyState === "loading") {
 

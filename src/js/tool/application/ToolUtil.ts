@@ -1,4 +1,4 @@
-import type { ToolImpl } from "../../interface/ToolImpl";
+import type { ToolImpl } from "@/interface/ToolImpl";
 import { EventType } from "../domain/event/EventType";
 
 /**

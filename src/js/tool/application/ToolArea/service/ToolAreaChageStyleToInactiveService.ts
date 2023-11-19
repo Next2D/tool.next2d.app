@@ -1,4 +1,4 @@
-import { $TOOL_AERA_WIDTH } from "../../../../config/ToolConfig";
+import { $TOOL_AERA_WIDTH } from "@/config/ToolConfig";
 
 /**
  * @description ツールエリアを初期位置に戻す

@@ -1,4 +1,4 @@
-import { $allHideMenu } from "../../../../menu/application/MenuUtil";
+import { $allHideMenu } from "@/menu/application/MenuUtil";
 
 /**
  * @description Viewコンテナでマウスダウンした際の関数

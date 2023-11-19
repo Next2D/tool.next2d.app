@@ -1,8 +1,8 @@
-import { $setCursor } from "../../../../global/GlobalUtil";
+import { $setCursor } from "@/global/GlobalUtil";
 import { EventType } from "../../../domain/event/EventType";
 import { execute as toolAreaActiveWindowMoveService } from "../service/ToolAreaActiveWindowMoveService";
-import { execute as userToolAreaStateUpdateService } from "../../../../user/application/ToolArea/service/UserToolAreaStateUpdateService";
-import { $TOOL_PREFIX } from "../../../../config/ToolConfig";
+import { execute as userToolAreaStateUpdateService } from "@/user/application/ToolArea/service/UserToolAreaStateUpdateService";
+import { $TOOL_PREFIX } from "@/config/ToolConfig";
 
 /**
  * @description 選択中のツールの移動イベント関数

@@ -1,5 +1,5 @@
-import { $USER_TIMELINE_AREA_STATE_KEY } from "../../../../config/Config";
-import type { UserTimelineAreaStateObjectImpl } from "../../../../interface/UserTimelineAreaStateObjectImpl";
+import { $USER_TIMELINE_AREA_STATE_KEY } from "@/config/Config";
+import type { UserTimelineAreaStateObjectImpl } from "@/interface/UserTimelineAreaStateObjectImpl";
 
 /**
  * @description ツールエリアの移動状態をLocalStorageに保存する

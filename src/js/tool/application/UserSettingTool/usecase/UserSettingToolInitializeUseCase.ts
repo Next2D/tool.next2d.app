@@ -1,5 +1,5 @@
-import { $TOOL_USER_SETTING_ID } from "../../../../config/ToolConfig";
-import { EventType } from "../../../domain/event/EventType";
+import { $TOOL_USER_SETTING_ID } from "@/config/ToolConfig";
+import { EventType } from "@/tool/domain/event/EventType";
 import { execute as userSettingToolMouseDownEventUseCase } from "./UserSettingToolMouseDownEventUseCase";
 
 /**

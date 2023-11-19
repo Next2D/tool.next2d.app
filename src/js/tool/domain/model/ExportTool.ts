@@ -1,4 +1,4 @@
-import { $TOOL_EXPORT_NAME } from "../../../config/ToolConfig";
+import { $TOOL_EXPORT_NAME } from "@/config/ToolConfig";
 import { BaseTool } from "./BaseTool";
 
 /**

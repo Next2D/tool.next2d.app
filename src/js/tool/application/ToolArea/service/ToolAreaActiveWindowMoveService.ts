@@ -1,4 +1,4 @@
-import { $TOOL_PREFIX } from "../../../../config/ToolConfig";
+import { $TOOL_PREFIX } from "@/config/ToolConfig";
 import { $getToolAreaState } from "../ToolAreaUtil";
 
 /**

@@ -1,4 +1,4 @@
-import { $TOOL_SHAPE_TRANSFORM_NAME } from "../../../config/ToolConfig";
+import { $TOOL_SHAPE_TRANSFORM_NAME } from "@/config/ToolConfig";
 import { BaseTool } from "./BaseTool";
 
 /**

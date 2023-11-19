@@ -1,7 +1,7 @@
 import {
     $PREFIX,
     $USER_DATABASE_NAME
-} from "../../../../config/Config";
+} from "@/config/Config";
 
 /**
  * @description 全ての機能が利用可能かの情報を返す

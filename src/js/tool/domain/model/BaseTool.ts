@@ -1,7 +1,7 @@
 import { ToolEvent } from "../event/ToolEvent";
 import { EventType } from "../event/EventType";
-import { $TOOL_PREFIX } from "../../../config/ToolConfig";
-import { $allHideMenu } from "../../../menu/application/MenuUtil";
+import { $TOOL_PREFIX } from "@/config/ToolConfig";
+import { $allHideMenu } from "@/menu/application/MenuUtil";
 import {
     $registerDefaultTool,
     $setActiveTool

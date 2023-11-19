@@ -1,5 +1,5 @@
 import { BaseTool } from "./BaseTool";
-import { $TOOL_USER_SETTING_NAME } from "../../../config/ToolConfig";
+import { $TOOL_USER_SETTING_NAME } from "@/config/ToolConfig";
 import { execute as userSettingToolInitializeUseCase } from "../../application/UserSettingTool/usecase/UserSettingToolInitializeUseCase";
 
 /**

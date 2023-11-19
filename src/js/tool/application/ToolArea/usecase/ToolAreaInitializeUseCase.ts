@@ -1,7 +1,7 @@
 import { execute as toolAreaInitializeRegisterEventUseCase } from "./ToolAreaInitializeRegisterEventUseCase";
 import { execute as toolAreaInitializeSetActiveStateUseCase } from "./ToolAreaInitializeSetActiveStateUseCase";
 import { execute as toolAreaInitializeBootService } from "../service/ToolAreaInitializeBootService";
-import { $TOOL_PREFIX } from "../../../../config/ToolConfig";
+import { $TOOL_PREFIX } from "@/config/ToolConfig";
 
 /**
  * @description ツールエリアの初期起動時のユースケース

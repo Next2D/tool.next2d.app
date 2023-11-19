@@ -1,4 +1,4 @@
-import { $TOOL_SAVE_NAME } from "../../../config/ToolConfig";
+import { $TOOL_SAVE_NAME } from "@/config/ToolConfig";
 import { BaseTool } from "./BaseTool";
 
 /**

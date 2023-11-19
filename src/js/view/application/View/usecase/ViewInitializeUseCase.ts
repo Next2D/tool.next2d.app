@@ -1,5 +1,5 @@
-import { $VIEW_ID } from "../../../../config/ViewConfig";
-import { EventType } from "../../../../tool/domain/event/EventType";
+import { $VIEW_ID } from "@/config/ViewConfig";
+import { EventType } from "@/tool/domain/event/EventType";
 import { execute as viewMouseDownEventService } from "../service/ViewMouseDownEventService";
 
 /**
