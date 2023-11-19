@@ -35,8 +35,8 @@ const initializes: Function[] = [
     initializeCore, // OK
     initializeView, // OK
     initializeScreen, // OK
-    initializeTimeline,
-    initializeTool
+    initializeTool,
+    initializeTimeline
 ];
 
 /**

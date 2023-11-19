@@ -4,6 +4,7 @@ import { $PROGRESS_MENU_NAME } from "@/config/MenuConfig";
 import { $getMenu } from "@/menu/application/MenuUtil";
 import { $createWorkSpace, $registerWorkSpace } from "@/core/application/CoreUtil";
 import { execute as userDatabaseGetOpenDBRequestService } from "../service/UserDatabaseGetOpenDBRequestService";
+// @ts-ignore
 import ZlibInflateWorker from "@/worker/ZlibInflateWorker?worker&inline";
 import {
     $USER_DATABASE_NAME,
@@ -66,6 +67,7 @@ export const execute = (): Promise<void> =>
                 const binary: string | undefined = (event.target as IDBRequest).result;
                 if (binary) {
 
+                    // 保存データがあれば復元
                     const length: number = binary.length;
                     const buffer: Uint8Array = new Uint8Array(length);
                     for (let idx: number = 0; idx < length; ++idx) {

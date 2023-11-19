@@ -2,7 +2,6 @@ import { $allHideMenu } from "@/menu/application/MenuUtil";
 import { execute as toolAreaActiveMoveUseCase } from "../usecase/ToolAreaActiveMoveUseCase";
 import { execute as toolAreaChageStyleToInactiveService } from "../service/ToolAreaChageStyleToInactiveService";
 import { execute as userAllFunctionStateService } from "@/user/application/Billing/service/UserAllFunctionStateService";
-import { execute as userToolAreaStateUpdateService } from "@/user/application/ToolArea/service/UserToolAreaStateUpdateService";
 import { $TOOL_PREFIX } from "@/config/ToolConfig";
 import { $setMouseState } from "../../ToolUtil";
 import {
@@ -10,6 +9,7 @@ import {
     $setStandbyMoveState,
     $setToolAreaState
 } from "../ToolAreaUtil";
+import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 
 /**
  * @description ダブルタップ用の待機フラグ
@@ -91,8 +91,9 @@ export const execute = (event: PointerEvent): void =>
             return ;
         }
 
-        // 移動状態を保存
-        userToolAreaStateUpdateService({
+        // 固定状態で保存
+        const workSpace = $getCurrentWorkSpace();
+        workSpace.updateToolArea({
             "state": "fixed",
             "offsetLeft": 0,
             "offsetTop": 0

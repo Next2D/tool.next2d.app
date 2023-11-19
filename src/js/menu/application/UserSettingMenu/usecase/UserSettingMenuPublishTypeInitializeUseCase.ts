@@ -22,7 +22,7 @@ export const execute = (): void =>
         userSettingMenuPublishTypeOptionSelectedService(element);
 
         element
-            .addEventListener(EventType.CHANGE, 
+            .addEventListener(EventType.CHANGE,
                 userSettingMenuPublishTypeChangeEventService
             );
     }

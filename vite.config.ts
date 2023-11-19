@@ -30,7 +30,7 @@ export default defineConfig({
                     return `assets/${extType}/[name][extname]`;
                 },
                 "chunkFileNames": "assets/js/[name].js",
-                "entryFileNames": "assets/js/nocode-tool.js"
+                "entryFileNames": "assets/js/animation-tool.js"
             }
         }
     },

@@ -311,6 +311,51 @@ export class WorkSpace
     load (object: WorkSpaceSaveObjectImpl): void
     {
         console.log(object);
+
+        this.name = object.name;
+
+        // Stageをセット
+        this._$stage.load(object.stage);
+
+        // update tool area
+        this.updateToolArea(object.tool);
+
+        // update timeline area
+        this.updateTimelineArea(object.timeline);
+    }
+
+    /**
+     * @description セーブデータからツールエリアの状態を読み込む
+     *              Read tool area status from saved data
+     *
+     * @param  {object} object
+     * @return {void}
+     * @method
+     * @public
+     */
+    updateToolArea (object: UserToolAreaStateObjectImpl): void
+    {
+        this._$toolAreaState.state      = object.state;
+        this._$toolAreaState.offsetLeft = object.offsetLeft;
+        this._$toolAreaState.offsetTop  = object.offsetTop;
+    }
+
+    /**
+     * @description セーブデータからタイムラインエリアの状態を読み込む
+     *              Read the state of the timeline area from the saved data
+     *
+     * @param  {object} object
+     * @return {void}
+     * @method
+     * @public
+     */
+    updateTimelineArea (object: UserTimelineAreaStateObjectImpl): void
+    {
+        this._$timelineAreaState.state      = object.state;
+        this._$timelineAreaState.offsetLeft = object.offsetLeft;
+        this._$timelineAreaState.offsetTop  = object.offsetTop;
+        this._$timelineAreaState.width      = object.width;
+        this._$timelineAreaState.height     = object.height;
     }
 
     /**

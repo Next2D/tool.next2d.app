@@ -1,8 +1,8 @@
 import { $setCursor } from "@/global/GlobalUtil";
 import { EventType } from "../../../domain/event/EventType";
 import { execute as toolAreaActiveWindowMoveService } from "../service/ToolAreaActiveWindowMoveService";
-import { execute as userToolAreaStateUpdateService } from "@/user/application/ToolArea/service/UserToolAreaStateUpdateService";
 import { $TOOL_PREFIX } from "@/config/ToolConfig";
+import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 
 /**
  * @description 選択中のツールの移動イベント関数
@@ -35,8 +35,9 @@ export const execute = (event: PointerEvent): void =>
     element.style.left = `${element.offsetLeft + event.movementX}px`;
     element.style.top  = `${element.offsetTop  + event.movementY}px`;
 
-    // 移動状態をLocalStorageに保存
-    userToolAreaStateUpdateService({
+    // 移動状態をセット
+    const workSpace = $getCurrentWorkSpace();
+    workSpace.updateToolArea({
         "state": "move",
         "offsetLeft": element.offsetLeft,
         "offsetTop": element.offsetTop

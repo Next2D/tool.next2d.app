@@ -1,5 +1,4 @@
 import { execute as toolAreaInitializeRegisterEventUseCase } from "./ToolAreaInitializeRegisterEventUseCase";
-import { execute as toolAreaInitializeSetActiveStateUseCase } from "./ToolAreaInitializeSetActiveStateUseCase";
 import { execute as toolAreaInitializeBootService } from "../service/ToolAreaInitializeBootService";
 import { $TOOL_PREFIX } from "@/config/ToolConfig";
 
@@ -17,9 +16,6 @@ export const execute = (): Promise<void[]> =>
     if (element) {
         // 初期起動時のイベント登録処理
         toolAreaInitializeRegisterEventUseCase(element);
-
-        // 初期起動時に保存データから移動状態を再構成
-        toolAreaInitializeSetActiveStateUseCase(element);
     }
 
     // 各種ツールクラスを起動

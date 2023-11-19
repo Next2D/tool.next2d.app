@@ -9,6 +9,7 @@ import {
     $setStandbyMoveState,
     $setToolAreaState
 } from "../ToolAreaUtil";
+import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 
 /**
  * @description ツールエリアを移動可能な状態にする
