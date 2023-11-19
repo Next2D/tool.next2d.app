@@ -1,4 +1,4 @@
-import { EventType } from "../../../../tool/domain/event/EventType";
+import { EventType } from "@/tool/domain/event/EventType";
 import { execute as timelineAdjustmentYMouseMoveService } from "../service/TimelineAdjustmentYMouseMoveService";
 import { execute as timelineAdjustmentYMouseUpService } from "../service/TimelineAdjustmentYMouseUpService";
 

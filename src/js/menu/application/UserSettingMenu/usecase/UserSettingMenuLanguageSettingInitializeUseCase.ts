@@ -1,5 +1,5 @@
-import { $USER_LANGUAGE_SETTING_ID } from "../../../../config/UserSettingConfig";
-import { EventType } from "../../../../tool/domain/event/EventType";
+import { $USER_LANGUAGE_SETTING_ID } from "@/config/UserSettingConfig";
+import { EventType } from "@/tool/domain/event/EventType";
 import { execute as settingMenuLanguageSettingChangeEventUseCase } from "./UserSettingMenuLanguageSettingChangeEventUseCase";
 import { execute as userSettingMenuLanguageSettingOptionSelectedService } from "../service/UserSettingMenuLanguageSettingOptionSelectedService";
 

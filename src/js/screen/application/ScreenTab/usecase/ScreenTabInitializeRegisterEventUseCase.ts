@@ -1,5 +1,5 @@
-import type { WorkSpace } from "../../../../core/domain/model/WorkSpace";
-import { EventType } from "../../../../tool/domain/event/EventType";
+import type { WorkSpace } from "@/core/domain/model/WorkSpace";
+import { EventType } from "@/tool/domain/event/EventType";
 import { execute as screenTabRemoveUseCase } from "./ScreenTabRemoveUseCase";
 import { execute as screenTabGetListElementService } from "../service/ScreenTabGetListElementService";
 import { execute as screenTabGetElementService } from "../service/ScreenTabGetElementService";

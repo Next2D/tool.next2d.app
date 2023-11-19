@@ -1,5 +1,5 @@
-import { $allHideMenu } from "../../../../menu/application/MenuUtil";
-import { $setDragElement } from "../../ScreenUtil";
+import { $allHideMenu } from "@/menu/application/MenuUtil";
+import { $setDragElement } from "@/screen/application/ScreenUtil";
 
 /**
  * @description dragstartのイベント処理関数

@@ -1,5 +1,5 @@
-import { execute as userSettingObjectGetService } from "../../../../user/application/Setting/service/UserSettingObjectGetService";
-import type { UserSettingObjectImpl } from "../../../../interface/UserSettingObjectImpl";
+import { execute as userSettingObjectGetService } from "@/user/application/Setting/service/UserSettingObjectGetService";
+import type { UserSettingObjectImpl } from "@/interface/UserSettingObjectImpl";
 
 /**
  * @description 非表示レイヤーの選択状態を保存情報に合わせて表示を切り替える

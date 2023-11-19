@@ -1,9 +1,9 @@
-import { $SCREEN_TAB_MENU_NAME } from "../../../../config/MenuConfig";
-import { $SCREEN_TAB_LIST_ID } from "../../../../config/ScreenConfig";
-import type { MenuImpl } from "../../../../interface/MenuImpl";
-import { EventType } from "../../../../tool/domain/event/EventType";
-import type { ScreenTabMenu } from "../../../domain/model/ScreenTabMenu";
-import { $getMenu } from "../../MenuUtil";
+import { $SCREEN_TAB_MENU_NAME } from "@/config/MenuConfig";
+import { $SCREEN_TAB_LIST_ID } from "@/config/ScreenConfig";
+import type { MenuImpl } from "@/interface/MenuImpl";
+import { EventType } from "@/tool/domain/event/EventType";
+import type { ScreenTabMenu } from "@/menu/domain/model/ScreenTabMenu";
+import { $getMenu } from "@/menu/application/MenuUtil";
 import { execute as screenTabMenuMouseDownEventUseCase } from "./ScreenTabMenuMouseDownEventUseCase";
 
 /**

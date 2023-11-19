@@ -1,4 +1,4 @@
-import { EventType } from "../../../../tool/domain/event/EventType";
+import { EventType } from "@/tool/domain/event/EventType";
 
 /**
  * @description タイムラインのヘッダーフレームにイベント登録を行う

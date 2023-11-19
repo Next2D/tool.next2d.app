@@ -1,12 +1,12 @@
-import { $TIMELINE_ID } from "../../../../config/TimelineConfig";
-import { $setCursor } from "../../../../global/GlobalUtil";
+import { $TIMELINE_ID } from "@/config/TimelineConfig";
+import { $setCursor } from "@/global/GlobalUtil";
 import { $getMouseState } from "../../TimelineUtil";
-import type { UserTimelineAreaStateObjectImpl } from "../../../../interface/UserTimelineAreaStateObjectImpl";
+import type { UserTimelineAreaStateObjectImpl } from "@/interface/UserTimelineAreaStateObjectImpl";
 import { execute as timelineAreaChageStyleToActiveService } from "../service/TimelineAreaChageStyleToActiveService";
 import { execute as timelinelAreaRegisterWindowMoveEventUseCase } from "./TimelinelAreaRegisterWindowMoveEventUseCase";
 import { execute as timelineHeaderBuildElementUseCase } from "../../TimelineHeader/usecase/TimelineHeaderBuildElementUseCase";
-import { execute as userTimelineAreaStateGetService } from "../../../../user/application/TimelineArea/service/UserTimelineAreaStateGetService";
-import { execute as userTimelineAreaStateUpdateService } from "../../../../user/application/TimelineArea/service/UserTimelineAreaStateUpdateService";
+import { execute as userTimelineAreaStateGetService } from "@/user/application/TimelineArea/service/UserTimelineAreaStateGetService";
+import { execute as userTimelineAreaStateUpdateService } from "@/user/application/TimelineArea/service/UserTimelineAreaStateUpdateService";
 import {
     $getStandbyMoveState,
     $getTimelineAreaState,

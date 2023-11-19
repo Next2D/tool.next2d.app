@@ -1,15 +1,15 @@
-import type { InstanceImpl } from "../../../interface/InstanceImpl";
-import type { UserToolAreaStateObjectImpl } from "../../../interface/UserToolAreaStateObjectImpl";
-import type { UserTimelineAreaStateObjectImpl } from "../../../interface/UserTimelineAreaStateObjectImpl";
-import type { WorkSpaceSaveObjectImpl } from "../../../interface/WorkSpaceSaveObjectImpl";
-import { ScreenTab } from "../../../screen/domain/model/ScreenTab";
+import type { InstanceImpl } from "@/interface/InstanceImpl";
+import type { UserToolAreaStateObjectImpl } from "@/interface/UserToolAreaStateObjectImpl";
+import type { UserTimelineAreaStateObjectImpl } from "@/interface/UserTimelineAreaStateObjectImpl";
+import type { WorkSpaceSaveObjectImpl } from "@/interface/WorkSpaceSaveObjectImpl";
+import { ScreenTab } from "@/screen/domain/model/ScreenTab";
 import { MovieClip } from "./MovieClip";
 import { Stage } from "./Stage";
-import { execute as workSpaceRunUseCase } from "../../application/WorkSpace/usecase/WorkSpaceRunUseCase";
-import { execute as workSpaceStopUseCase } from "../../application/WorkSpace/usecase/WorkSpaceStopUseCase";
-import { execute as workSpaceInitializeUseCase } from "../../application/WorkSpace/usecase/WorkSpaceInitializeUseCase";
-import { execute as workSpaceRemoveUseCase } from "../../application/WorkSpace/usecase/WorkSpaceRemoveUseCase";
-import { $VERSION } from "../../../config/Config";
+import { execute as workSpaceRunUseCase } from "@/core/application/WorkSpace/usecase/WorkSpaceRunUseCase";
+import { execute as workSpaceStopUseCase } from "@/core/application/WorkSpace/usecase/WorkSpaceStopUseCase";
+import { execute as workSpaceInitializeUseCase } from "@/core/application/WorkSpace/usecase/WorkSpaceInitializeUseCase";
+import { execute as workSpaceRemoveUseCase } from "@/core/application/WorkSpace/usecase/WorkSpaceRemoveUseCase";
+import { $VERSION } from "@/config/Config";
 
 /**
  * @description プロジェクトのユニークID

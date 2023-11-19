@@ -1,4 +1,4 @@
-import type { MenuImpl } from "../../interface/MenuImpl";
+import type { MenuImpl } from "@/interface/MenuImpl";
 import { ProgressMenu } from "../domain/model/ProgressMenu";
 import { UserSettingMenu } from "../domain/model/UserSettingMenu";
 import { ShortcutSettingMenu } from "../domain/model/ShortcutSettingMenu";

@@ -1,8 +1,8 @@
-import { $LANGUAGE_ELEMENTS_CLASS_NAME } from "../../../config/LanguageConfig";
-import type { ShortcutKeyStringImpl } from "../../../interface/ShortcutKeyStringImpl";
-import type { ShortcutViewObjectImpl } from "../../../interface/ShortcutViewObjectImpl";
-import { $getTempMapping } from "../../../menu/application/ShortcutSettingMenu/ShortcutSettingMenuUtil";
-import { $getMapping } from "../LanguageUtil";
+import { $LANGUAGE_ELEMENTS_CLASS_NAME } from "@/config/LanguageConfig";
+import type { ShortcutKeyStringImpl } from "@/interface/ShortcutKeyStringImpl";
+import type { ShortcutViewObjectImpl } from "@/interface/ShortcutViewObjectImpl";
+import { $getTempMapping } from "@/menu/application/ShortcutSettingMenu/ShortcutSettingMenuUtil";
+import { $getMapping } from "@/language/application/LanguageUtil";
 
 /**
  * @description 変換対象のクラス名が設定されてるElementの言語を変換

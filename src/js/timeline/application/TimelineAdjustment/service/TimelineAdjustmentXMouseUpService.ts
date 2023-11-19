@@ -1,8 +1,8 @@
-import type { UserTimelineAreaStateObjectImpl } from "../../../../interface/UserTimelineAreaStateObjectImpl";
-import { EventType } from "../../../../tool/domain/event/EventType";
+import type { UserTimelineAreaStateObjectImpl } from "@/interface/UserTimelineAreaStateObjectImpl";
+import { EventType } from "@/tool/domain/event/EventType";
 import { execute as timelineAdjustmentXMouseMoveService } from "./TimelineAdjustmentXMouseMoveService";
-import { execute as userTimelineAreaStateGetService } from "../../../../user/application/TimelineArea/service/UserTimelineAreaStateGetService";
-import { execute as userTimelineAreaStateUpdateService } from "../../../../user/application/TimelineArea/service/UserTimelineAreaStateUpdateService";
+import { execute as userTimelineAreaStateGetService } from "@/user/application/TimelineArea/service/UserTimelineAreaStateGetService";
+import { execute as userTimelineAreaStateUpdateService } from "@/user/application/TimelineArea/service/UserTimelineAreaStateUpdateService";
 
 /**
  * @description タイムラインの幅の調整イベントをwindowから削除

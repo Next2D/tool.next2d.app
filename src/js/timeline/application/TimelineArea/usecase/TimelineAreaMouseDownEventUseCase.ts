@@ -1,10 +1,10 @@
-import { $TIMELINE_ID } from "../../../../config/TimelineConfig";
-import { $allHideMenu } from "../../../../menu/application/MenuUtil";
-import { execute as userAllFunctionStateService } from "../../../../user/application/Billing/service/UserAllFunctionStateService";
+import { $TIMELINE_ID } from "@/config/TimelineConfig";
+import { $allHideMenu } from "@/menu/application/MenuUtil";
+import { execute as userAllFunctionStateService } from "@/user/application/Billing/service/UserAllFunctionStateService";
 import { execute as timelineAreaActiveMoveUseCase } from "./TimelineAreaActiveMoveUseCase";
 import { execute as timelineAreaChageStyleToInactiveService } from "../service/TimelineAreaChageStyleToInactiveService";
 import { execute as timelineHeaderBuildElementUseCase } from "../../TimelineHeader/usecase/TimelineHeaderBuildElementUseCase";
-import { execute as userTimelineAreaStateUpdateService } from "../../../../user/application/TimelineArea/service/UserTimelineAreaStateUpdateService";
+import { execute as userTimelineAreaStateUpdateService } from "@/user/application/TimelineArea/service/UserTimelineAreaStateUpdateService";
 import { $setMouseState } from "../../TimelineUtil";
 import {
     $getTimelineAreaState,

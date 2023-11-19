@@ -1,4 +1,4 @@
-import { EventType } from "../../../../tool/domain/event/EventType";
+import { EventType } from "@/tool/domain/event/EventType";
 import { execute as screenTabAddEventService } from "../service/ScreenTabAddEventService";
 
 /**

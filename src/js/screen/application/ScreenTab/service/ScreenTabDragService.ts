@@ -1,4 +1,4 @@
-import { $SCREEN_TAB_AREA_ID } from "../../../../config/ScreenConfig";
+import { $SCREEN_TAB_AREA_ID } from "@/config/ScreenConfig";
 import {
     $getDragElement,
     $setDragElement

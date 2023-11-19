@@ -1,14 +1,14 @@
-import { $DETAIL_MODAL_NAME } from "../../../../config/MenuConfig";
-import type { MenuImpl } from "../../../../interface/MenuImpl";
-import type { ShortcutKeyStringImpl } from "../../../../interface/ShortcutKeyStringImpl";
-import type { ShortcutViewObjectImpl } from "../../../../interface/ShortcutViewObjectImpl";
-import type { UserSettingObjectImpl } from "../../../../interface/UserSettingObjectImpl";
-import { $replace } from "../../../../language/application/LanguageUtil";
-import { execute as userSettingObjectGetService } from "../../../../user/application/Setting/service/UserSettingObjectGetService";
+import { $DETAIL_MODAL_NAME } from "@/config/MenuConfig";
+import type { MenuImpl } from "@/interface/MenuImpl";
+import type { ShortcutKeyStringImpl } from "@/interface/ShortcutKeyStringImpl";
+import type { ShortcutViewObjectImpl } from "@/interface/ShortcutViewObjectImpl";
+import type { UserSettingObjectImpl } from "@/interface/UserSettingObjectImpl";
+import { $replace } from "@/language/application/LanguageUtil";
+import { execute as userSettingObjectGetService } from "@/user/application/Setting/service/UserSettingObjectGetService";
 import { execute as detailModalHideService } from "../service/DetailModalHideService";
-import type { DetailModal } from "../../../domain/model/DetailModal";
-import { $getMenu } from "../../MenuUtil";
-import { $getTempMapping } from "../../ShortcutSettingMenu/ShortcutSettingMenuUtil";
+import type { DetailModal } from "@/menu/domain/model/DetailModal";
+import { $getMenu } from "@/menu/application/MenuUtil";
+import { $getTempMapping } from "@/menu/application/ShortcutSettingMenu/ShortcutSettingMenuUtil";
 
 /**
  * @description ショートカットメニューのフェードインのユースケース

@@ -2,9 +2,9 @@ import {
     $SHORTCUT_LIBRARY_LIST_ID,
     $SHORTCUT_SCREEN_LIST_ID,
     $SHORTCUT_TIMELINE_LIST_ID
-} from "../../../../config/ShortcutConfig";
-import type { ShortcutKeyStringImpl } from "../../../../interface/ShortcutKeyStringImpl";
-import type { ShortcutViewObjectImpl } from "../../../../interface/ShortcutViewObjectImpl";
+} from "@/config/ShortcutConfig";
+import type { ShortcutKeyStringImpl } from "@/interface/ShortcutKeyStringImpl";
+import type { ShortcutViewObjectImpl } from "@/interface/ShortcutViewObjectImpl";
 import { $getTempMapping } from "../ShortcutSettingMenuUtil";
 
 /**

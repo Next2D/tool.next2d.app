@@ -1,7 +1,7 @@
-import { $USER_MENU_NAME } from "../../../../config/MenuConfig";
-import { $getMenu } from "../../MenuUtil";
-import type { MenuImpl } from "../../../../interface/MenuImpl";
-import type { UserSettingMenu } from "../../../domain/model/UserSettingMenu";
+import { $USER_MENU_NAME } from "@/config/MenuConfig";
+import { $getMenu } from "@/menu/application/MenuUtil";
+import type { MenuImpl } from "@/interface/MenuImpl";
+import type { UserSettingMenu } from "@/menu/domain/model/UserSettingMenu";
 
 /**
  * @description ユーザー設定メニューを非表示にする

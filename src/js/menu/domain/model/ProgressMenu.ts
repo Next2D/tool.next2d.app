@@ -1,8 +1,8 @@
-import { $PROGRESS_MENU_NAME } from "../../../config/MenuConfig";
+import { $PROGRESS_MENU_NAME } from "@/config/MenuConfig";
 import { BaseMenu } from "./BaseMenu";
 import { execute as progressMenuUpdateMessageService } from "../../application/ProgressMenu/service/ProgressMenuUpdateMessageService";
 import { execute as progressMenuUpdateStateService } from "../../application/ProgressMenu/service/ProgressMenuUpdateStateService";
-import { $replace } from "../../../language/application/LanguageUtil";
+import { $replace } from "@/language/application/LanguageUtil";
 
 /**
  * @description 進行管理メニュークラス

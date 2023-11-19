@@ -1,4 +1,4 @@
-import { EventType } from "../../../../tool/domain/event/EventType";
+import { EventType } from "@/tool/domain/event/EventType";
 import { execute as timelineAreaActiveWindowMoveService } from "../service/TimelineAreaActiveWindowMoveService";
 import { execute as timelineAreaActiveWindowMouseUpUseCase } from "./TimelineAreaActiveWindowMouseUpUseCase";
 

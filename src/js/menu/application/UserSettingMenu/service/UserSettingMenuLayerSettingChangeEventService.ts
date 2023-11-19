@@ -1,6 +1,6 @@
-import type { UserSettingObjectImpl } from "../../../../interface/UserSettingObjectImpl";
-import { execute as userSettingObjectGetService } from "../../../../user/application/Setting/service/UserSettingObjectGetService";
-import { execute as userSettingObjectUpdateService } from "../../../../user/application/Setting/service/UserSettingObjectUpdateService";
+import type { UserSettingObjectImpl } from "@/interface/UserSettingObjectImpl";
+import { execute as userSettingObjectGetService } from "@/user/application/Setting/service/UserSettingObjectGetService";
+import { execute as userSettingObjectUpdateService } from "@/user/application/Setting/service/UserSettingObjectUpdateService";
 
 /**
  * @description ユーザー設定メニューの非表示レイヤーの設定情報更新

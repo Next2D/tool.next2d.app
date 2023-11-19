@@ -1,5 +1,5 @@
-import { $DETAIL_MODAL_NAME } from "../../../config/MenuConfig";
-import { EventType } from "../../../tool/domain/event/EventType";
+import { $DETAIL_MODAL_NAME } from "@/config/MenuConfig";
+import { EventType } from "@/tool/domain/event/EventType";
 import { BaseMenu } from "./BaseMenu";
 import { execute as detailModalFadeInUseCase } from "../../application/DetailModal/usecase/DetailModalFadeInUseCase";
 import { execute as detailModalFadeOutUseCase } from "../../application/DetailModal/usecase/DetailModalFadeOutUseCase";

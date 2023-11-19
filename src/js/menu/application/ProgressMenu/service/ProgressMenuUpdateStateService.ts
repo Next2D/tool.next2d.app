@@ -1,4 +1,4 @@
-import { $PROGRESS_BAR_ID } from "../../../../config/ProgressMenuConfig";
+import { $PROGRESS_BAR_ID } from "@/config/ProgressMenuConfig";
 
 /**
  * @description タスク進行管理のパーセント値を更新

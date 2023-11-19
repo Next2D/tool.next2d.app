@@ -1,11 +1,11 @@
 import {
     $TIMELINE_ADJUSTMENT_X_ID,
     $TIMELINE_CONTROLLER_BASE_ID
-} from "../../../../config/TimelineConfig";
+} from "@/config/TimelineConfig";
 import { timelineHeader } from "../../TimelineUtil";
-import { execute as userTimelineAreaStateUpdateService } from "../../../../user/application/TimelineArea/service/UserTimelineAreaStateUpdateService";
-import type { UserTimelineAreaStateObjectImpl } from "../../../../interface/UserTimelineAreaStateObjectImpl";
-import { execute as userTimelineAreaStateGetService } from "../../../../user/application/TimelineArea/service/UserTimelineAreaStateGetService";
+import { execute as userTimelineAreaStateUpdateService } from "@/user/application/TimelineArea/service/UserTimelineAreaStateUpdateService";
+import type { UserTimelineAreaStateObjectImpl } from "@/interface/UserTimelineAreaStateObjectImpl";
+import { execute as userTimelineAreaStateGetService } from "@/user/application/TimelineArea/service/UserTimelineAreaStateGetService";
 
 /**
  * @description タイムラインエリアを初期位置に戻す

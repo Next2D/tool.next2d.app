@@ -1,4 +1,4 @@
-import { $TIMELINE_MIN_WIDTH } from "../../../../config/TimelineConfig";
+import { $TIMELINE_MIN_WIDTH } from "@/config/TimelineConfig";
 import { execute as timelineHeaderUpdateClientWidthService } from "../../TimelineHeader/service/TimelineHeaderUpdateClientWidthService";
 import { execute as timelineHeaderBuildElementUseCase } from "../../TimelineHeader/usecase/TimelineHeaderBuildElementUseCase";
 import { execute as timelineLayerBuildElementUseCase } from "../../TimelineLayer/usecase/TimelineLayerBuildElementUseCase";

@@ -1,4 +1,4 @@
-import { $getDragElement } from "../../ScreenUtil";
+import { $getDragElement } from "@/screen/application/ScreenUtil";
 
 /**
  * @description dragoverのイベント処理関数

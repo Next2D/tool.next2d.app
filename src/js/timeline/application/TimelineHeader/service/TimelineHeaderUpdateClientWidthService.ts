@@ -1,4 +1,4 @@
-import { $TIMELINE_CONTROLLER_BASE_ID } from "../../../../config/TimelineConfig";
+import { $TIMELINE_CONTROLLER_BASE_ID } from "@/config/TimelineConfig";
 import { timelineHeader } from "../../TimelineUtil";
 
 /**

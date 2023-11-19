@@ -1,5 +1,5 @@
-import { $TIMELINE_ADJUSTMENT_X_ID, $TIMELINE_ADJUSTMENT_Y_ID } from "../../../../config/TimelineConfig";
-import { EventType } from "../../../../tool/domain/event/EventType";
+import { $TIMELINE_ADJUSTMENT_X_ID, $TIMELINE_ADJUSTMENT_Y_ID } from "@/config/TimelineConfig";
+import { EventType } from "@/tool/domain/event/EventType";
 import { execute as timelineAdjustmentXRegisterEventUseCase } from "./TimelineAdjustmentXRegisterEventUseCase";
 import { execute as timelineAdjustmentYRegisterEventUseCase } from "./TimelineAdjustmentYRegisterEventUseCase";
 

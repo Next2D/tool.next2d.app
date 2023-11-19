@@ -19,6 +19,11 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
 
+    "baseUrl": "./src/js",
+    "paths": {
+      "@/*": ["*"]
+    },
+
     "types": [
       "vitest/globals"
     ]

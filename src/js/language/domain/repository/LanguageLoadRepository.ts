@@ -1,4 +1,4 @@
-import { $LANGUAGE_URL } from "../../../config/LanguageConfig";
+import { $LANGUAGE_URL } from "@/config/LanguageConfig";
 
 /**
  * @description 指定された言語のJSONを取得してobjectに変換して返却

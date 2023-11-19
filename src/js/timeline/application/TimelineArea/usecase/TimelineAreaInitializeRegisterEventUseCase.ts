@@ -1,9 +1,9 @@
-import { EventType } from "../../../../tool/domain/event/EventType";
+import { EventType } from "@/tool/domain/event/EventType";
 import { execute as timelineAreaMouseDownEventUseCase } from "./TimelineAreaMouseDownEventUseCase";
 import { execute as timelineAreaMouseUpEventUseCase } from "./TimelineAreaMouseUpEventUseCase";
 import { execute as timelineAreaMouseOutEventService } from "../service/TimelineAreaMouseOutEventService";
 import { execute as timelineAreaDeleteIconService } from "../service/TimelineAreaDeleteIconService";
-import { $TIMELINE_CONTROLLER_BASE_ID, $TIMELINE_ID } from "../../../../config/TimelineConfig";
+import { $TIMELINE_CONTROLLER_BASE_ID, $TIMELINE_ID } from "@/config/TimelineConfig";
 
 /**
  * @description タイムラインエリアの初期イベント登録

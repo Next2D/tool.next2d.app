@@ -1,11 +1,11 @@
-import { Stage } from "../../../../core/domain/model/Stage";
+import { Stage } from "@/core/domain/model/Stage";
 import {
     $STAGE_BG_COLOR_ID,
     $STAGE_FPS_ID,
     $STAGE_HEIGHT_ID,
     $STAGE_LOCK_ID,
     $STAGE_WIDTH_ID
-} from "../../../../config/StageSettingConfig";
+} from "@/config/StageSettingConfig";
 
 /**
  * @description ステージ設定の各値を更新

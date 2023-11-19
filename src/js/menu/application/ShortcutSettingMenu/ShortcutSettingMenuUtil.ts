@@ -1,6 +1,6 @@
-import type { ShortcutKeyStringImpl } from "../../../interface/ShortcutKeyStringImpl";
-import type { ShortcutViewObjectImpl } from "../../../interface/ShortcutViewObjectImpl";
-import type { ShortcutKeyOptionObjectImpl } from "../../../interface/ShortcutKeyOptionObjectImpl";
+import type { ShortcutKeyStringImpl } from "@/interface/ShortcutKeyStringImpl";
+import type { ShortcutViewObjectImpl } from "@/interface/ShortcutViewObjectImpl";
+import type { ShortcutKeyOptionObjectImpl } from "@/interface/ShortcutKeyOptionObjectImpl";
 
 /**
  * @description ショートカットリストで選択されたElement

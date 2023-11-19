@@ -1,4 +1,4 @@
-import type { MenuImpl } from "../../interface/MenuImpl";
+import type { MenuImpl } from "@/interface/MenuImpl";
 
 const $menus: Map<string, MenuImpl<any>> = new Map();
 

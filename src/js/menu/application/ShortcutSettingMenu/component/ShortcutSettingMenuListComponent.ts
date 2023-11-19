@@ -1,6 +1,6 @@
-import { $SHORTCUT_SETTING_LIST_CLASS_NAME } from "../../../../config/ShortcutConfig";
-import type { ShortcutObjectImpl } from "../../../../interface/ShortcutObjectImpl";
-import { $replace } from "../../../../language/application/LanguageUtil";
+import { $SHORTCUT_SETTING_LIST_CLASS_NAME } from "@/config/ShortcutConfig";
+import type { ShortcutObjectImpl } from "@/interface/ShortcutObjectImpl";
+import { $replace } from "@/language/application/LanguageUtil";
 
 /**
  * @description ショートカットリストのElementをstringで返却

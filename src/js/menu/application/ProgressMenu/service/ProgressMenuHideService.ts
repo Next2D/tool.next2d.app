@@ -1,7 +1,7 @@
-import { $PROGRESS_MENU_NAME } from "../../../../config/MenuConfig";
-import type { MenuImpl } from "../../../../interface/MenuImpl";
-import type { ProgressMenu } from "../../../domain/model/ProgressMenu";
-import { $getMenu } from "../../MenuUtil";
+import { $PROGRESS_MENU_NAME } from "@/config/MenuConfig";
+import type { MenuImpl } from "@/interface/MenuImpl";
+import type { ProgressMenu } from "@/menu/domain/model/ProgressMenu";
+import { $getMenu } from "@/menu/application/MenuUtil";
 
 /**
  * @description タスク進行管理の画面を非表示にする

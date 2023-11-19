@@ -1,4 +1,4 @@
-import { $TIMELINE_LABEL_NAME } from "../../../../config/TimelineConfig";
+import { $TIMELINE_LABEL_NAME } from "@/config/TimelineConfig";
 
 /**
  * @description タイムラインのラベルの値を更新

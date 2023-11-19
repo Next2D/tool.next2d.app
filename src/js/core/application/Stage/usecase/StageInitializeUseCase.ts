@@ -5,8 +5,8 @@ import { execute as libraryPreviewAreaChangeColorService } from "../../../../con
 import { execute as stageSettingUpdateService } from "../../../../controller/application/StageSetting/service/StageSettingUpdateService";
 import { execute as timelineLabelNameUpdateService } from "../../../../timeline/application/TimelineLabelName/service/TimelineLabelNameUpdateService";
 import { execute as screenStageAreaUpdateSizeService } from "../../../../screen/application/ScreenStageArea/service/ScreenStageAreaUpdateSizeService";
-import { execute as screenStagePositionCenterService } from "../../../../screen/application/ScreenStage/service/ScreenStagePositionCenterService";
-import { execute as screenStageOffsetUpdateService } from "../../../../screen/application/ScreenStage/service/ScreenStageOffsetUpdateService";
+import { execute as screenStagePositionCenterService } from "@/screen/application/ScreenStage/service/ScreenStagePositionCenterService";
+import { execute as screenStageOffsetUpdateService } from "@/screen/application/ScreenStage/service/ScreenStageOffsetUpdateService";
 
 /**
  * @description ステージクラスの初期起動ユースケース

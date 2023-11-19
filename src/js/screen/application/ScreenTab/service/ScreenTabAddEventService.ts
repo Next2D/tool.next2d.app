@@ -1,5 +1,5 @@
-import { $createWorkSpace } from "../../../../core/application/CoreUtil";
-import { $allHideMenu } from "../../../../menu/application/MenuUtil";
+import { $createWorkSpace } from "@/core/application/CoreUtil";
+import { $allHideMenu } from "@/menu/application/MenuUtil";
 
 /**
  * @description 新規のプロジェクトを追加

@@ -1,4 +1,4 @@
-import { $TIMELINE_MIN_HEIGHT, $TIMELINE_ID } from "../../../../config/TimelineConfig";
+import { $TIMELINE_MIN_HEIGHT, $TIMELINE_ID } from "@/config/TimelineConfig";
 import { $getTimelineAreaState } from "../../TimelineArea/TimelineAreaUtil";
 import { execute as timelineLayerBuildElementUseCase } from "../../TimelineLayer/usecase/TimelineLayerBuildElementUseCase";
 

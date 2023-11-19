@@ -5,7 +5,7 @@ import {
     $SHORTCUT_SETTING_SCREEN_ID,
     $SHORTCUT_SETTING_TIMELINE_ID,
     $SHORTCUT_SETTING_LIBRARY_ID
-} from "../../../../config/ShortcutConfig";
+} from "@/config/ShortcutConfig";
 
 /**
  * @description ライブラリのショートカット一覧を表示

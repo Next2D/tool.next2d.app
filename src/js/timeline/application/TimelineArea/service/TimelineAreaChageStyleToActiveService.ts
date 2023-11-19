@@ -2,10 +2,10 @@ import {
     $TIMELINE_ADJUSTMENT_X_ID,
     $TIMELINE_CONTROLLER_BASE_ID,
     $TIMELINE_MIN_WIDTH
-} from "../../../../config/TimelineConfig";
+} from "@/config/TimelineConfig";
 import { timelineHeader } from "../../TimelineUtil";
-import type { UserTimelineAreaStateObjectImpl } from "../../../../interface/UserTimelineAreaStateObjectImpl";
-import { execute as userTimelineAreaStateGetService } from "../../../../user/application/TimelineArea/service/UserTimelineAreaStateGetService";
+import type { UserTimelineAreaStateObjectImpl } from "@/interface/UserTimelineAreaStateObjectImpl";
+import { execute as userTimelineAreaStateGetService } from "@/user/application/TimelineArea/service/UserTimelineAreaStateGetService";
 
 /**
  * @description タイムラインエリアを移動可能な状態にする

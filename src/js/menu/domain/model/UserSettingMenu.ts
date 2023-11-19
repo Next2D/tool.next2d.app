@@ -1,4 +1,4 @@
-import { $USER_MENU_NAME } from "../../../config/MenuConfig";
+import { $USER_MENU_NAME } from "@/config/MenuConfig";
 import { BaseMenu } from "./BaseMenu";
 import { execute as userSettingMenuInitializeUseCase } from "../../application/UserSettingMenu/usecase/UserSettingMenuInitializeUseCase";
 

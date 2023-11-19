@@ -1,4 +1,4 @@
-import { $SCREEN_TAB_MENU_NAME } from "../../../config/MenuConfig";
+import { $SCREEN_TAB_MENU_NAME } from "@/config/MenuConfig";
 import { BaseMenu } from "./BaseMenu";
 import { execute as screenTabMenuInitializeUseCase } from "../../application/ScreenTabMenu/usecase/ScreenTabMenuInitializeUseCase";
 

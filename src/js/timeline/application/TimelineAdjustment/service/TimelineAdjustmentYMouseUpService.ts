@@ -1,9 +1,9 @@
-import { UserTimelineAreaStateObjectImpl } from "../../../../interface/UserTimelineAreaStateObjectImpl";
-import { EventType } from "../../../../tool/domain/event/EventType";
+import { UserTimelineAreaStateObjectImpl } from "@/interface/UserTimelineAreaStateObjectImpl";
+import { EventType } from "@/tool/domain/event/EventType";
 import { execute as timelineAdjustmentYMouseMoveService } from "./TimelineAdjustmentYMouseMoveService";
-import { execute as userTimelineAreaStateGetService } from "../../../../user/application/TimelineArea/service/UserTimelineAreaStateGetService";
-import { execute as userTimelineAreaStateUpdateService } from "../../../../user/application/TimelineArea/service/UserTimelineAreaStateUpdateService";
-import { $TIMELINE_ID } from "../../../../config/TimelineConfig";
+import { execute as userTimelineAreaStateGetService } from "@/user/application/TimelineArea/service/UserTimelineAreaStateGetService";
+import { execute as userTimelineAreaStateUpdateService } from "@/user/application/TimelineArea/service/UserTimelineAreaStateUpdateService";
+import { $TIMELINE_ID } from "@/config/TimelineConfig";
 
 /**
  * @description タイムラインの高さの調整イベントをwindowから削除

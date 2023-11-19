@@ -1,5 +1,5 @@
-import type { InstanceObjectImpl } from "../../../interface/InstanceObjectImpl";
-import type { InstanceTypeImpl } from "../../../interface/InstanceTypeImpl";
+import type { InstanceObjectImpl } from "@/interface/InstanceObjectImpl";
+import type { InstanceTypeImpl } from "@/interface/InstanceTypeImpl";
 
 type ObjectImpl<T extends InstanceObjectImpl> = T;
 

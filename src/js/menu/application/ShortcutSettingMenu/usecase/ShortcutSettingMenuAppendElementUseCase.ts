@@ -1,4 +1,4 @@
-import type { ShortcutObjectImpl } from "../../../../interface/ShortcutObjectImpl";
+import type { ShortcutObjectImpl } from "@/interface/ShortcutObjectImpl";
 import { execute as shortcutSettingMenuListComponent } from "../component/ShortcutSettingMenuListComponent";
 import {
     $SHORTCUT_LIBRARY_LIST,
@@ -7,10 +7,10 @@ import {
     $SHORTCUT_SCREEN_LIST_ID,
     $SHORTCUT_TIMELINE_LIST,
     $SHORTCUT_TIMELINE_LIST_ID
-} from "../../../../config/ShortcutConfig";
+} from "@/config/ShortcutConfig";
 import { $getTempMapping } from "../ShortcutSettingMenuUtil";
-import type { ShortcutKeyStringImpl } from "../../../../interface/ShortcutKeyStringImpl";
-import type { ShortcutViewObjectImpl } from "../../../../interface/ShortcutViewObjectImpl";
+import type { ShortcutKeyStringImpl } from "@/interface/ShortcutKeyStringImpl";
+import type { ShortcutViewObjectImpl } from "@/interface/ShortcutViewObjectImpl";
 
 /**
  * @description デフォルトのショートカットElementをメニューに追加

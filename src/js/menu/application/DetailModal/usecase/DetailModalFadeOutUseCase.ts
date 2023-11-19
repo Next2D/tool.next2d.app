@@ -1,6 +1,6 @@
-import { $DETAIL_MODAL_NAME } from "../../../../config/MenuConfig";
-import type { UserSettingObjectImpl } from "../../../../interface/UserSettingObjectImpl";
-import { execute as userSettingObjectGetService } from "../../../../user/application/Setting/service/UserSettingObjectGetService";
+import { $DETAIL_MODAL_NAME } from "@/config/MenuConfig";
+import type { UserSettingObjectImpl } from "@/interface/UserSettingObjectImpl";
+import { execute as userSettingObjectGetService } from "@/user/application/Setting/service/UserSettingObjectGetService";
 
 /**
  * @description ショートカットメニューのフェードアウトのユースケース

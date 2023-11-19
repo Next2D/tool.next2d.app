@@ -1,4 +1,4 @@
-import { $PROGRESS_STATE_ID } from "../../../../config/ProgressMenuConfig";
+import { $PROGRESS_STATE_ID } from "@/config/ProgressMenuConfig";
 
 /**
  * @description タスク進行管理のテキスト情報を更新

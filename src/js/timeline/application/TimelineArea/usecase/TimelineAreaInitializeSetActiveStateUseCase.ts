@@ -1,8 +1,8 @@
-import { $TIMELINE_ID } from "../../../../config/TimelineConfig";
+import { $TIMELINE_ID } from "@/config/TimelineConfig";
 import { timelineHeader } from "../../TimelineUtil";
-import type { UserTimelineAreaStateObjectImpl } from "../../../../interface/UserTimelineAreaStateObjectImpl";
+import type { UserTimelineAreaStateObjectImpl } from "@/interface/UserTimelineAreaStateObjectImpl";
 import { $setTimelineAreaState } from "../TimelineAreaUtil";
-import { execute as userTimelineAreaStateGetService } from "../../../../user/application/TimelineArea/service/UserTimelineAreaStateGetService";
+import { execute as userTimelineAreaStateGetService } from "@/user/application/TimelineArea/service/UserTimelineAreaStateGetService";
 import { execute as timelineAreaChageStyleToActiveService } from "../service/TimelineAreaChageStyleToActiveService";
 
 /**

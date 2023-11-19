@@ -1,4 +1,4 @@
-import { $SHORTCUT_MENU_NAME } from "../../../config/MenuConfig";
+import { $SHORTCUT_MENU_NAME } from "@/config/MenuConfig";
 import { BaseMenu } from "./BaseMenu";
 import { execute as shortcutSettingMenuInitializeUseCase } from "../../application/ShortcutSettingMenu/usecase/ShortcutSettingMenuInitializeUseCase";
 import { execute as shortcutSettingShowUseCase } from "../../application/ShortcutSettingMenu/usecase/ShortcutSettingShowUseCase";

@@ -1,4 +1,4 @@
-import { $TIMELINE_HEADER_ID } from "../../../../config/TimelineConfig";
+import { $TIMELINE_HEADER_ID } from "@/config/TimelineConfig";
 import { execute as timelineHeaderFrameComponent } from "../component/TimelineHeaderFrameComponent";
 import { execute as timelineHeaderFrameRegisterEventUseCase } from "./TimelineHeaderFrameRegisterEventUseCase";
 import {
@@ -6,10 +6,10 @@ import {
     $getTimelineFrameWidth,
     timelineHeader
 } from "../../TimelineUtil";
-import { $STAGE_FPS_ID } from "../../../../config/StageSettingConfig";
-import { $getCurrentWorkSpace } from "../../../../core/application/CoreUtil";
-import type { WorkSpace } from "../../../../core/domain/model/WorkSpace";
-import type { MovieClip } from "../../../../core/domain/model/MovieClip";
+import { $STAGE_FPS_ID } from "@/config/StageSettingConfig";
+import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
+import type { WorkSpace } from "@/core/domain/model/WorkSpace";
+import type { MovieClip } from "@/core/domain/model/MovieClip";
 
 /**
  * @description タイムラインのヘッダーをスクロール位置の合わせて構築

@@ -1,4 +1,4 @@
-import type { WorkSpace } from "../../../domain/model/WorkSpace";
+import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 
 /**
  * @description プロジェクトの初期起動ユースケース

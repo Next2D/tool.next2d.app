@@ -1,5 +1,5 @@
-import { $USER_PUBLISH_TYPE_SETTING_ID } from "../../../../config/UserSettingConfig";
-import { EventType } from "../../../../tool/domain/event/EventType";
+import { $USER_PUBLISH_TYPE_SETTING_ID } from "@/config/UserSettingConfig";
+import { EventType } from "@/tool/domain/event/EventType";
 import { execute as userSettingMenuPublishTypeOptionSelectedService } from "../service/UserSettingMenuPublishTypeOptionSelectedService";
 import { execute as userSettingMenuPublishTypeChangeEventService } from "../service/UserSettingMenuPublishTypeChangeEventService";
 

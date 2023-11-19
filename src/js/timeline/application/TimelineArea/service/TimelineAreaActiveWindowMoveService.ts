@@ -1,4 +1,4 @@
-import { $TIMELINE_ID } from "../../../../config/TimelineConfig";
+import { $TIMELINE_ID } from "@/config/TimelineConfig";
 import { $getTimelineAreaState } from "../TimelineAreaUtil";
 
 /**

@@ -1,8 +1,8 @@
-import type { WorkSpace } from "../../../domain/model/WorkSpace";
-import { execute as progressMenuShowService } from "../../../../menu/application/ProgressMenu/service/ProgressMenuShowService";
-import { execute as progressMenuHideService } from "../../../../menu/application/ProgressMenu/service/ProgressMenuHideService";
-import { execute as progressMenuUpdateMessageService } from "../../../../menu/application/ProgressMenu/service/ProgressMenuUpdateMessageService";
-import { $removeWorkSpace } from "../../CoreUtil";
+import type { WorkSpace } from "@/core/domain/model/WorkSpace";
+import { execute as progressMenuShowService } from "@/menu/application/ProgressMenu/service/ProgressMenuShowService";
+import { execute as progressMenuHideService } from "@/menu/application/ProgressMenu/service/ProgressMenuHideService";
+import { execute as progressMenuUpdateMessageService } from "@/menu/application/ProgressMenu/service/ProgressMenuUpdateMessageService";
+import { $removeWorkSpace } from "@/core/application/CoreUtil";
 
 /**
  * @description ワークスペースの削除処理のユースケース

@@ -1,5 +1,5 @@
-import { execute as userLanguageSettingObjectUpdateService } from "../../../../user/application/Language/service/UserLanguageSettingObjectUpdateService";
-import { execute as languageTranslationUseCase } from "../../../../language/application/usecase/LanguageTranslationUseCase";
+import { execute as userLanguageSettingObjectUpdateService } from "@/user/application/Language/service/UserLanguageSettingObjectUpdateService";
+import { execute as languageTranslationUseCase } from "@/language/application/usecase/LanguageTranslationUseCase";
 
 /**
  * @description 言語設定の初期起動ユースケース

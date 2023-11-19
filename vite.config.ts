@@ -1,6 +1,7 @@
 /// <reference types="vitest" />
 
 import { defineConfig } from "vite";
+import path from "path";
 
 export default defineConfig({
     "server": {
@@ -31,6 +32,11 @@ export default defineConfig({
                 "chunkFileNames": "assets/js/[name].js",
                 "entryFileNames": "assets/js/nocode-tool.js"
             }
+        }
+    },
+    "resolve": {
+        "alias": {
+            "@": path.resolve(process.cwd(), "./src/js")
         }
     },
     "test": {

@@ -1,4 +1,4 @@
-import { WorkSpace } from "../domain/model/WorkSpace";
+import { WorkSpace } from "@/core/domain/model/WorkSpace";
 
 /**
  * @description 起動中のWorkSpace配列

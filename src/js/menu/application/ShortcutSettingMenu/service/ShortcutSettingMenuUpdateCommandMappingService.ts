@@ -1,5 +1,5 @@
-import { ShortcutKeyStringImpl } from "../../../../interface/ShortcutKeyStringImpl";
-import { ShortcutViewObjectImpl } from "../../../../interface/ShortcutViewObjectImpl";
+import { ShortcutKeyStringImpl } from "@/interface/ShortcutKeyStringImpl";
+import { ShortcutViewObjectImpl } from "@/interface/ShortcutViewObjectImpl";
 import {
     $clearCommandMapping,
     $getCommandMapping,

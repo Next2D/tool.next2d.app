@@ -1,5 +1,5 @@
-import type { WorkSpace } from "../../../../core/domain/model/WorkSpace";
-import { $replace } from "../../../../language/application/LanguageUtil";
+import type { WorkSpace } from "@/core/domain/model/WorkSpace";
+import { $replace } from "@/language/application/LanguageUtil";
 
 /**
  * @description タブの終了実行のユースケース

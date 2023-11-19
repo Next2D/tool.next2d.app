@@ -1,6 +1,6 @@
-import { $changeCurrentWorkSpace } from "../../../../core/application/CoreUtil";
-import type { WorkSpace } from "../../../../core/domain/model/WorkSpace";
-import { execute as screenTabMenuHideService } from "../../../../menu/application/ScreenTabMenu/service/ScreenTabMenuHideService";
+import { $changeCurrentWorkSpace } from "@/core/application/CoreUtil";
+import type { WorkSpace } from "@/core/domain/model/WorkSpace";
+import { execute as screenTabMenuHideService } from "@/menu/application/ScreenTabMenu/service/ScreenTabMenuHideService";
 
 /**
  * @description 指定のWorkSpaceに切り替える

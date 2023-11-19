@@ -1,5 +1,5 @@
-import type { ShortcutKeyOptionObjectImpl } from "../../../../interface/ShortcutKeyOptionObjectImpl";
-import type { ShortcutViewObjectImpl } from "../../../../interface/ShortcutViewObjectImpl";
+import type { ShortcutKeyOptionObjectImpl } from "@/interface/ShortcutKeyOptionObjectImpl";
+import type { ShortcutViewObjectImpl } from "@/interface/ShortcutViewObjectImpl";
 import {
     $generateShortcutKey,
     $getSelectElement,

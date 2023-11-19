@@ -1,11 +1,11 @@
-import type { MovieClipObjectImpl } from "../../../interface/MovieClipObjectImpl";
+import type { MovieClipObjectImpl } from "@/interface/MovieClipObjectImpl";
 import { Instance } from "./Instance";
-import { execute as timelineHeaderBuildElementUseCase } from "../../../timeline/application/TimelineHeader/usecase/TimelineHeaderBuildElementUseCase";
-import { execute as timelineLayerBuildElementUseCase } from "../../../timeline/application/TimelineLayer/usecase/TimelineLayerBuildElementUseCase";
+import { execute as timelineHeaderBuildElementUseCase } from "@/timeline/application/TimelineHeader/usecase/TimelineHeaderBuildElementUseCase";
+import { execute as timelineLayerBuildElementUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerBuildElementUseCase";
 import { Layer } from "./Layer";
-import { timelineLayer } from "../../../timeline/application/TimelineUtil";
-import type { SoundObjectImpl } from "../../../interface/SoundObjectImpl";
-import type { MovieClipSaveObjectImpl } from "../../../interface/MovieClipSaveObjectImpl";
+import { timelineLayer } from "@/timeline/application/TimelineUtil";
+import type { SoundObjectImpl } from "@/interface/SoundObjectImpl";
+import type { MovieClipSaveObjectImpl } from "@/interface/MovieClipSaveObjectImpl";
 
 /**
  * @description MovieClipの状態管理クラス

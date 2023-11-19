@@ -1,8 +1,8 @@
 import {
     $changeCurrentWorkSpace,
     $getWorkSpace
-} from "../../../../core/application/CoreUtil";
-import type { WorkSpace } from "../../../../core/domain/model/WorkSpace";
+} from "@/core/application/CoreUtil";
+import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import { execute as screenTabShowInputElementUseCase } from "./ScreenTabShowInputElementUseCase";
 
 /**

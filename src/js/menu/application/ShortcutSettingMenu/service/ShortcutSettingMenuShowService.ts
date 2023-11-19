@@ -1,10 +1,10 @@
-import type { MenuImpl } from "../../../../interface/MenuImpl";
-import type { ShortcutSettingMenu } from "../../../domain/model/ShortcutSettingMenu";
+import type { MenuImpl } from "@/interface/MenuImpl";
+import type { ShortcutSettingMenu } from "@/menu/domain/model/ShortcutSettingMenu";
 import {
     $allHideMenu,
     $getMenu
-} from "../../MenuUtil";
-import { $SHORTCUT_MENU_NAME } from "../../../../config/MenuConfig";
+} from "@/menu/application/MenuUtil";
+import { $SHORTCUT_MENU_NAME } from "@/config/MenuConfig";
 
 /**
  * @description ショートカットメニューを表示

@@ -1,6 +1,6 @@
-import { execute as languageTranslationUseCase } from "../application/usecase/LanguageTranslationUseCase";
-import { execute as userLanguageSettingObjectGetService } from "../../user/application/Language/service/UserLanguageSettingObjectGetService";
-import { execute as userLanguageSettingObjectUpdateService } from "../../user/application/Language/service/UserLanguageSettingObjectUpdateService";
+import { execute as languageTranslationUseCase } from "./usecase/LanguageTranslationUseCase";
+import { execute as userLanguageSettingObjectGetService } from "@/user/application/Language/service/UserLanguageSettingObjectGetService";
+import { execute as userLanguageSettingObjectUpdateService } from "@/user/application/Language/service/UserLanguageSettingObjectUpdateService";
 
 /**
  * @description LocalStorageから言語設定を読み込んで、指定言語に変換

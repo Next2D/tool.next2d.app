@@ -1,5 +1,5 @@
-import { $USER_SHORTCUT_SETTING_ID } from "../../../../config/UserSettingConfig";
-import { EventType } from "../../../../tool/domain/event/EventType";
+import { $USER_SHORTCUT_SETTING_ID } from "@/config/UserSettingConfig";
+import { EventType } from "@/tool/domain/event/EventType";
 import { execute as userSettingMenuShortcutSettingMouseDownEventUseCase } from "./UserSettingMenuShortcutSettingMouseDownEventUseCase";
 
 /**

@@ -2,7 +2,7 @@ import { $setSocket } from "../ShareUtil";
 import {
     $SHARE_PREFIX,
     $SHARE_URL
-} from "../../../config/ShareConfig";
+} from "@/config/ShareConfig";
 
 /**
  * @description 画面共有用のURLを発行してWebSocketを起動

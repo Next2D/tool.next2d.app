@@ -1,4 +1,4 @@
-import { EventType } from "../../../../tool/domain/event/EventType";
+import { EventType } from "@/tool/domain/event/EventType";
 import { execute as shortcutSettingMenuShowScreenListUseCase } from "../usecase/ShortcutSettingMenuShowScreenListUseCase";
 import { execute as shortcutSettingMenuShowTimelineListUseCase } from "../usecase/ShortcutSettingMenuShowTimelineListUseCase";
 import { execute as shortcutSettingMenuShowLibraryListUseCase } from "../usecase/ShortcutSettingMenuShowLibraryListUseCase";
@@ -17,7 +17,7 @@ import {
     $SHORTCUT_TIMELINE_LIST_ID,
     $SHORTCUT_LIBRARY_LIST_ID,
     $SHORTCUT_SETTING_LIST_CLASS_NAME
-} from "../../../../config/ShortcutConfig";
+} from "@/config/ShortcutConfig";
 
 /**
  * @description 初回起動時のイベント登録関数

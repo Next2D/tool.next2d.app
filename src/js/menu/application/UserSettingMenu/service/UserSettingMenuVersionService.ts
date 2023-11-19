@@ -1,4 +1,4 @@
-import { $USER_CURRENT_VERSION_ID } from "../../../../config/UserSettingConfig";
+import { $USER_CURRENT_VERSION_ID } from "@/config/UserSettingConfig";
 import { version } from "../../../../../../package.json";
 
 /**
