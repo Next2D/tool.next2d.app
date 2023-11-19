@@ -1,5 +1,21 @@
+import { $PROGRESS_MENU_NAME } from "@/config/MenuConfig";
 import { $getAllWorkSpace } from "@/core/application/CoreUtil";
 import { WorkSpace } from "@/core/domain/model/WorkSpace";
+import { MenuImpl } from "@/interface/MenuImpl";
+import { $replace } from "@/language/application/LanguageUtil";
+import { $getMenu } from "@/menu/application/MenuUtil";
+import { ProgressMenu } from "@/menu/domain/model/ProgressMenu";
+import ZlibDeflateWorker from "@/worker/ZlibDeflateWorker?worker&inline";
+import { execute as userDatabaseGetOpenDBRequestService } from "../service/UserDatabaseGetOpenDBRequestService";
+import {
+    $USER_DATABASE_NAME,
+    $USER_DATABASE_STORE_KEY
+} from "@/config/Config";
+
+/**
+ * @private
+ */
+const worker: Worker = new ZlibDeflateWorker();
 
 /**
  * @description IndexedDBにデータを保存
@@ -11,6 +27,16 @@ import { WorkSpace } from "@/core/domain/model/WorkSpace";
  */
 export const execute = (): void =>
 {
+    // 進行状況を表示
+    const menu: MenuImpl<ProgressMenu> = $getMenu($PROGRESS_MENU_NAME);
+    if (!menu) {
+        return ;
+    }
+
+    // 進行状況のテキストを更新
+    menu.show();
+    menu.message = $replace("{{データを圧縮中}}");
+
     // 全てのWorkSpcaceからobjectを取得
     const workSpaces: WorkSpace[] = $getAllWorkSpace();
 
@@ -20,10 +46,59 @@ export const execute = (): void =>
         objects.push(workSpace.toObject());
     }
 
-    const saveData = {
-        "object": JSON.stringify(objects),
-        "type": "local"
-    };
+    const value = encodeURIComponent(JSON.stringify(objects));
+    const buffer: Uint8Array = new Uint8Array(value.length);
+    for (let idx = 0; idx < value.length; ++idx) {
+        buffer[idx] = value[idx].charCodeAt(0);
+    }
 
-    console.log(saveData);
+    // サブスレッドで圧縮処理を行う
+    worker.postMessage(buffer, [buffer.buffer]);
+
+    // 終了したらIndesdDBに保存
+    worker.onmessage = (event: MessageEvent): void =>
+    {
+        const menu: MenuImpl<ProgressMenu> = $getMenu($PROGRESS_MENU_NAME);
+        if (!menu) {
+            return ;
+        }
+
+        const buffer: Uint8Array = event.data as NonNullable<Uint8Array>;
+
+        let binary = "";
+        for (let idx = 0; idx < buffer.length; idx += 4096) {
+            binary += String.fromCharCode(...buffer.slice(idx, idx + 4096));
+        }
+
+        // 進行状況のテキストを更新
+        menu.message = $replace("{{データベースを起動}}");
+
+        const request: IDBOpenDBRequest = userDatabaseGetOpenDBRequestService();
+
+        // 起動成功処理
+        request.onsuccess = (event: Event): void =>
+        {
+            if (!event.target) {
+                return ;
+            }
+
+            const db: IDBDatabase = (event.target as IDBOpenDBRequest).result;
+
+            const transaction: IDBTransaction = db.transaction(
+                `${$USER_DATABASE_NAME}`, "readwrite"
+            );
+
+            const store: IDBObjectStore = transaction.objectStore(`${$USER_DATABASE_NAME}`);
+
+            store.put(binary, $USER_DATABASE_STORE_KEY);
+
+            transaction.oncomplete = (): void =>
+            {
+                db.close();
+                menu.hide();
+            };
+
+            transaction.commit();
+        };
+    };
 };

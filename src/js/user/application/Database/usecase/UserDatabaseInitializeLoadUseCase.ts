@@ -3,12 +3,20 @@ import type { ProgressMenu } from "@/menu/domain/model/ProgressMenu";
 import { $PROGRESS_MENU_NAME } from "@/config/MenuConfig";
 import { $getMenu } from "@/menu/application/MenuUtil";
 import { $replace } from "@/language/application/LanguageUtil";
-import { $createWorkSpace } from "@/core/application/CoreUtil";
+import { $createWorkSpace, $registerWorkSpace } from "@/core/application/CoreUtil";
 import { execute as userDatabaseGetOpenDBRequestService } from "../service/UserDatabaseGetOpenDBRequestService";
+import ZlibInflateWorker from "@/worker/ZlibInflateWorker?worker&inline";
 import {
     $USER_DATABASE_NAME,
     $USER_DATABASE_STORE_KEY
 } from "@/config/Config";
+import { WorkSpaceSaveObjectImpl } from "@/interface/WorkSpaceSaveObjectImpl";
+import { WorkSpace } from "@/core/domain/model/WorkSpace";
+
+/**
+ * @private
+ */
+const worker: Worker = new ZlibInflateWorker();
 
 /**
  * @description IndexedDbからデータ読み込みを行う
@@ -24,10 +32,12 @@ export const execute = (): Promise<void> =>
     {
         // 進行状況を表示
         const menu: MenuImpl<ProgressMenu> = $getMenu($PROGRESS_MENU_NAME);
-        if (menu) {
-            // 進行状況のテキストを更新
-            menu.message = $replace("{{データベースを起動}}");
+        if (!menu) {
+            return ;
         }
+
+        // 進行状況のテキストを更新
+        menu.message = "Launch database.";
 
         const request: IDBOpenDBRequest = userDatabaseGetOpenDBRequestService();
 
@@ -53,9 +63,43 @@ export const execute = (): Promise<void> =>
                     return ;
                 }
 
-                const binary: any = (event.target as IDBRequest).result;
+                const binary: string | undefined = (event.target as IDBRequest).result;
                 if (binary) {
-                    // TODO
+
+                    const length: number = binary.length;
+                    const buffer: Uint8Array = new Uint8Array(length);
+                    for (let idx: number = 0; idx < length; ++idx) {
+                        buffer[idx] = binary.charCodeAt(idx) & 0xff;
+                    }
+
+                    // 進行状況のテキストを更新
+                    menu.message = "Decompressing data";
+                    worker.postMessage(buffer, [buffer.buffer]);
+
+                    worker.onmessage = (event: MessageEvent): void =>
+                    {
+                        // 進行状況のテキストを更新
+                        menu.message = "Loading n2d file.";
+
+                        let value: string = "";
+
+                        const buffer: Uint8Array = event.data as NonNullable<Uint8Array>;
+                        for (let idx: number = 0; idx < buffer.length; idx += 4096) {
+                            value += String.fromCharCode(...buffer.slice(idx, idx + 4096));
+                        }
+
+                        const workSpaceObjects: WorkSpaceSaveObjectImpl[] = JSON.parse(decodeURIComponent(value));
+                        for (let idx: number = 0; idx < workSpaceObjects.length; ++idx) {
+
+                            const workSpace = new WorkSpace();
+                            workSpace.load(workSpaceObjects[idx]);
+
+                            $registerWorkSpace(workSpace);
+                        }
+
+                        resolve();
+                    };
+
                 } else {
 
                     // 新規のWorkSpaceを起動

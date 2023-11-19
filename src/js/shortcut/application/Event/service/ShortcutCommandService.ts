@@ -25,6 +25,26 @@ export const execute = (event: KeyboardEvent): void =>
     const useCtrlKey: boolean  = event.ctrlKey || event.metaKey; // command
     const useAltKey: boolean   = event.altKey;
 
+    if (useCtrlKey) {
+
+        // ブラウザの拡大縮小を無効化
+        switch (event.key) {
+
+            case "-":
+            case "+":
+            case ";":
+                // 全てのイベントを中止
+                event.stopImmediatePropagation();
+                event.stopPropagation();
+                event.preventDefault();
+                break;
+
+            default:
+                break;
+
+        }
+    }
+
     const code: string = $generateShortcutKey(event.key, {
         "alt": useAltKey,
         "shift": useShiftKey,

@@ -300,6 +300,20 @@ export class WorkSpace
     }
 
     /**
+     * @description セーブデータからWorkSpaceを再構築
+     *              Rebuild WorkSpace from saved data
+     *
+     * @param {object} object
+     * @return {void}
+     * @method
+     * @public
+     */
+    load (object: WorkSpaceSaveObjectImpl): void
+    {
+        console.log(object);
+    }
+
+    /**
      * @description ワークスペースを停止して、全てを初期化
      *              Stop workspace and initialize everything
      *

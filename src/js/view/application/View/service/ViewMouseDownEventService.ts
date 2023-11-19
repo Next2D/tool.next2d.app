@@ -8,8 +8,11 @@ import { $allHideMenu } from "@/menu/application/MenuUtil";
  * @method
  * @public
  */
-export const execute = (): void =>
+export const execute = (event: PointerEvent): void =>
 {
+    // 親のイベントを中止
+    event.stopPropagation();
+
     // 全てのメニューを非表示にする
     $allHideMenu();
 };

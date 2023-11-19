@@ -18,5 +18,5 @@ export const execute = (message: string): void =>
         return ;
     }
 
-    element.textContent = `${message}`;
+    element.textContent = message;
 };

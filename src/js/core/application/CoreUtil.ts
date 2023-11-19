@@ -104,6 +104,24 @@ export const $getWorkSpace = (id: number): WorkSpace | null =>
 };
 
 /**
+ * @description 生成したWorkSpaceを配列に登録
+ *              Register the generated WorkSpace in the array
+ *
+ * @param  {WorkSpace} workSpace
+ * @return {void}
+ * @method
+ * @public
+ */
+export const $registerWorkSpace = (workSpace: WorkSpace): void =>
+{
+    // 最初のWorkSpaceは起動対象として登録
+    if (!$workSpaces.length) {
+        $workSpace = workSpace;
+    }
+    $workSpaces.push(workSpace);
+};
+
+/**
  * @description 新規のWorkSpaceを生成
  *              Create a new WorkSpace
  *
