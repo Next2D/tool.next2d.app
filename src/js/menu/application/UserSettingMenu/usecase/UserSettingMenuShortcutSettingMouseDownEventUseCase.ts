@@ -6,12 +6,16 @@ import { execute as shortcutSettingMenuShowService } from "../../ShortcutSetting
  * @description ユーザー設定メニューのショートカットボタンのマウスダウンイベント
  *              Mouse down event for shortcut buttons in the user settings menu
  *
+ * @param  {PointerEvent} event
  * @return {void}
  * @method
  * @public
  */
-export const execute = (): void =>
+export const execute = (event: PointerEvent): void =>
 {
+    // 親のイベントを中止する
+    event.stopPropagation();
+
     // ユーザー設定以外の全てのメニューを非表示にする
     userSettingMenuHideService();
 

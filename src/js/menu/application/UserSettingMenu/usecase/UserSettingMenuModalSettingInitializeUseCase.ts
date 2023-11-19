@@ -22,9 +22,8 @@ export const execute = (): void =>
         userSettingMenuModalSettingOptionSelectedService(element);
 
         element
-            .addEventListener(EventType.CHANGE, (event: Event): void =>
-            {
-                userSettingMenuModalSettingChangeEventService(event);
-            });
+            .addEventListener(EventType.CHANGE,
+                userSettingMenuModalSettingChangeEventService
+            );
     }
 };

@@ -22,9 +22,8 @@ export const execute = (): void =>
         userSettingMenuLayerSettingOptionSelectedService(element);
 
         element
-            .addEventListener(EventType.CHANGE, (event: Event): void =>
-            {
-                userSettingMenuLayerSettingChangeEventService(event);
-            });
+            .addEventListener(EventType.CHANGE,
+                userSettingMenuLayerSettingChangeEventService
+            );
     }
 };

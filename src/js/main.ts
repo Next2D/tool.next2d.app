@@ -1,24 +1,33 @@
 import "../css/style.scss";
 
-import { initialize, run } from "@/Application";
+import { initialize, boot, run } from "@/Application";
+
+/**
+ * @description 起動実行関数
+ *              invocation function
+ *
+ * @param  {Event} [event=null]
+ * @return {void}
+ * @method
+ * @private
+ */
+const execute = (event: Event | null = null): void =>
+{
+    if (event && event.target) {
+        event.target.removeEventListener("DOMContentLoaded", execute);
+    }
+
+    initialize()
+        .then(boot)
+        .then(run);
+};
 
 if (document.readyState === "loading") {
 
-    const wait = (event: Event): void =>
-    {
-        if (!event.target) {
-            return ;
-        }
-
-        event.target.removeEventListener("DOMContentLoaded", wait);
-
-        initialize().then(run);
-    };
-
-    window.addEventListener("DOMContentLoaded", wait);
+    window.addEventListener("DOMContentLoaded", execute);
 
 } else {
 
-    initialize().then(run);
+    execute();
 
 }

@@ -22,9 +22,8 @@ export const execute = (): void =>
         userSettingMenuPublishTypeOptionSelectedService(element);
 
         element
-            .addEventListener(EventType.CHANGE, (event: Event): void =>
-            {
-                userSettingMenuPublishTypeChangeEventService(event);
-            });
+            .addEventListener(EventType.CHANGE, 
+                userSettingMenuPublishTypeChangeEventService
+            );
     }
 };

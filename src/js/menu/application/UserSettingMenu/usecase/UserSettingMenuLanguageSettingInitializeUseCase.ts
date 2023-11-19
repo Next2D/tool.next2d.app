@@ -22,10 +22,8 @@ export const execute = (): void =>
         userSettingMenuLanguageSettingOptionSelectedService(element);
 
         element
-            .addEventListener(EventType.CHANGE, (event: Event): void =>
-            {
-                // 設定情報を元にユースケースを実行
-                settingMenuLanguageSettingChangeEventUseCase(event);
-            });
+            .addEventListener(EventType.CHANGE,
+                settingMenuLanguageSettingChangeEventUseCase
+            );
     }
 };

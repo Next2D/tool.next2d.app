@@ -30,11 +30,11 @@ const initializes: Function[] = [
     initializeLanguage, // OK
     initializeGlobal, // OK
     initializeShortcut, // OK
-    initializeMenu,
+    initializeMenu, // OK
     initializeUser,
     initializeCore, // OK
-    initializeView,
-    initializeScreen,
+    initializeView, // OK
+    initializeScreen, // OK
     initializeTimeline,
     initializeTool
 ];
@@ -70,9 +70,29 @@ export const initialize = (): Promise<void> =>
         // 初期起動関数が全て完了するまで待機
         await Promise.all(promises);
 
-        // 初期化
-        promises.length = 0;
+        const menu: MenuImpl<ProgressMenu> | null = $getMenu($PROGRESS_MENU_NAME);
+        if (menu) {
+            menu.update();
+        }
 
+        // 終了
+        resolve();
+    });
+};
+
+/**
+ * @description システム起動関数を実行
+ *              Activate menu functions
+ *
+ * @return {Promise}
+ * @method
+ * @public
+ */
+export const boot = (): Promise<void> =>
+{
+    return new Promise(async (resolve): Promise<void> =>
+    {
+        const promises: Promise<void>[] = [];
         // システム起動関数を実行
         for (let idx: number = 0; idx < boots.length; ++idx) {
             const boot: Function = boots[idx];
@@ -84,11 +104,8 @@ export const initialize = (): Promise<void> =>
 
         const menu: MenuImpl<ProgressMenu> | null = $getMenu($PROGRESS_MENU_NAME);
         if (menu) {
-            menu.update();
+            menu.message = "Booting the system.";
         }
-
-        // 初期のDOMを対象に説明モーダルのイベントをセット
-        detailModalRegisterFadeEventService(document);
 
         // 終了
         resolve();
@@ -105,8 +122,6 @@ export const initialize = (): Promise<void> =>
  */
 export const run = async (): Promise<void> =>
 {
-    progressMenuUpdateMessageService("Booting the system.");
-
     const promises: Promise<void>[] = [];
 
     // 起動したWorkSpaceの初期関数を実行
@@ -121,4 +136,7 @@ export const run = async (): Promise<void> =>
 
     // 選択されたWorkSpaceを起動
     $getCurrentWorkSpace().run();
+
+    // 初期のDOMを対象に説明モーダルのイベントをセット
+    detailModalRegisterFadeEventService(document);
 };

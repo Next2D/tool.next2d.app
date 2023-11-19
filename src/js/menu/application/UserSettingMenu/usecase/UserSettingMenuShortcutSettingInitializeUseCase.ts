@@ -18,12 +18,8 @@ export const execute = (): void =>
     if (element) {
 
         element
-            .addEventListener(EventType.MOUSE_DOWN, (event: PointerEvent): void =>
-            {
-                // 親のイベントを中止する
-                event.stopPropagation();
-
-                userSettingMenuShortcutSettingMouseDownEventUseCase();
-            });
+            .addEventListener(EventType.MOUSE_DOWN,
+                userSettingMenuShortcutSettingMouseDownEventUseCase
+            );
     }
 };
