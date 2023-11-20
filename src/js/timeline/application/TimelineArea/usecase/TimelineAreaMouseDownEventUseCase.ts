@@ -4,13 +4,13 @@ import { execute as userAllFunctionStateService } from "@/user/application/Billi
 import { execute as timelineAreaActiveMoveUseCase } from "./TimelineAreaActiveMoveUseCase";
 import { execute as timelineAreaChageStyleToInactiveService } from "../service/TimelineAreaChageStyleToInactiveService";
 import { execute as timelineHeaderBuildElementUseCase } from "../../TimelineHeader/usecase/TimelineHeaderBuildElementUseCase";
-import { execute as userTimelineAreaStateUpdateService } from "@/user/application/TimelineArea/service/UserTimelineAreaStateUpdateService";
 import { $setMouseState } from "../../TimelineUtil";
 import {
     $getTimelineAreaState,
     $setStandbyMoveState,
     $setTimelineAreaState
 } from "../TimelineAreaUtil";
+import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 
 /**
  * @description ダブルタップ用の待機フラグ
@@ -109,17 +109,18 @@ export const execute = (event: PointerEvent): void =>
             return ;
         }
 
-        // ツールエリアのstyleを固定位置に移動
-        timelineAreaChageStyleToInactiveService(element);
-
-        // 移動状態を保存(Fixed logic)
-        userTimelineAreaStateUpdateService({
+        // 固定状態で保存
+        const workSpace = $getCurrentWorkSpace();
+        workSpace.updateTimelineArea({
             "state": "fixed",
             "offsetLeft": 0,
             "offsetTop": 0,
-            "width": 0,
+            "width": element.clientWidth,
             "height": element.clientHeight
         });
+
+        // ツールエリアのstyleを固定位置に移動
+        timelineAreaChageStyleToInactiveService(element);
 
         // ヘッダーを再描画
         timelineHeaderBuildElementUseCase();

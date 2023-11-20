@@ -10,6 +10,7 @@ import { execute as workSpaceStopUseCase } from "@/core/application/WorkSpace/us
 import { execute as workSpaceInitializeUseCase } from "@/core/application/WorkSpace/usecase/WorkSpaceInitializeUseCase";
 import { execute as workSpaceRemoveUseCase } from "@/core/application/WorkSpace/usecase/WorkSpaceRemoveUseCase";
 import { $VERSION } from "@/config/Config";
+import { $TIMELINE_DEFAULT_HEIGHT_SIZE } from "@/config/TimelineConfig";
 
 /**
  * @description プロジェクトのユニークID
@@ -121,7 +122,7 @@ export class WorkSpace
             "offsetLeft": 0,
             "offsetTop": 0,
             "width": 0,
-            "height": 0
+            "height": $TIMELINE_DEFAULT_HEIGHT_SIZE
         };
 
         // /**

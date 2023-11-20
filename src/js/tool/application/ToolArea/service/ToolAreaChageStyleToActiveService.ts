@@ -1,3 +1,5 @@
+import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
+
 /**
  * @description ツールエリアを移動可能な状態にする
  *              Make the tool area movable
@@ -7,11 +9,20 @@
  * @method
  * @public
  */
-export const execute = (element: HTMLElement, left: number = 0, top: number = 0): void =>
+export const execute = (element: HTMLElement): void =>
 {
+    const workSpace = $getCurrentWorkSpace();
+    const toolAreaState = workSpace.toolAreaState;
+
     // ツールエリアのstyleを変更
-    element.style.left      = `${left || element.offsetLeft}px`;
-    element.style.top       = `${top || element.offsetTop}px`;
+    if (toolAreaState.state === "move") {
+        element.style.left = `${toolAreaState.offsetLeft}px`;
+        element.style.top  = `${toolAreaState.offsetTop}px`;
+    } else {
+        element.style.left = `${element.offsetLeft}px`;
+        element.style.top  = `${element.offsetTop}px`;
+    }
+
     element.style.zIndex    = `${0xffffff}`;
     element.style.boxShadow = "0 0 5px rgba(245, 245, 245, 0.25)";
     element.style.position  = "fixed"; // fixed logic

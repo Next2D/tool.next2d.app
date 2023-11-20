@@ -4,10 +4,8 @@ import { MenuImpl } from "@/interface/MenuImpl";
 import { ProgressMenu } from "@/menu/domain/model/ProgressMenu";
 import { $getMenu } from "@/menu/application/MenuUtil";
 import { $PROGRESS_MENU_NAME } from "@/config/MenuConfig";
-import { $TOOL_PREFIX } from "@/config/ToolConfig";
-import { execute as toolAreaChageStyleToActiveService } from "@/tool/application/ToolArea/service/ToolAreaChageStyleToActiveService";
-import { execute as toolAreaChageStyleToInactiveService } from "@/tool/application/ToolArea/service/ToolAreaChageStyleToInactiveService";
-import { $setToolAreaState } from "@/tool/application/ToolArea/ToolAreaUtil";
+import { execute as workSpaceBootToolAreaUseCase } from "./WorkSpaceBootToolAreaUseCase";
+import { execute as workSpaceBootTimelineAreaUseCase } from "./WorkSpaceBootTimelineAreaUseCase";
 
 /**
  * @description プロジェクトの起動処理
@@ -38,27 +36,11 @@ export const execute = (work_space: WorkSpace): Promise<void> =>
         // タブをアクティブ表示に変更
         work_space.screenTab.active();
 
-        // ツールエリアを移動していればElementのstyleを更新
-        const toolElement: HTMLElement | null = document
-            .getElementById($TOOL_PREFIX);
-        if (toolElement) {
-            const toolAreaState = work_space.toolAreaState;
-            if (toolAreaState.state === "move") {
+        // ツールエリアのElementのstyleを更新
+        workSpaceBootToolAreaUseCase(work_space.toolAreaState);
 
-                $setToolAreaState("move");
-
-                toolAreaChageStyleToActiveService(
-                    toolElement,
-                    toolAreaState.offsetLeft,
-                    toolAreaState.offsetTop
-                );
-            } else {
-
-                $setToolAreaState("fixed");
-
-                toolAreaChageStyleToInactiveService(toolElement);
-            }
-        }
+        // タイムラインエリアのElementのstyleを更新
+        workSpaceBootTimelineAreaUseCase(work_space.timelineAreaState);
 
         // rootのMovieClipを起動
         work_space
@@ -66,16 +48,8 @@ export const execute = (work_space: WorkSpace): Promise<void> =>
             .run()
             .then((): void =>
             {
-                // TODO ツールの状態をセット
-
-                // TODO タイムラインの状態をセット
-
-                const menu: MenuImpl<ProgressMenu> | null = $getMenu($PROGRESS_MENU_NAME);
-                if (menu) {
-                    menu.hide();
-                }
-
-                // 終了
+                // 進行状況画面を非表示にして終了
+                menu.hide();
                 reslove();
             });
     });

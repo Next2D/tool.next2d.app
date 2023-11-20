@@ -27,14 +27,14 @@ import {
  * @private
  */
 const initializes: Function[] = [
-    initializeLanguage, // OK
-    initializeGlobal, // OK
-    initializeShortcut, // OK
-    initializeMenu, // OK
-    initializeUser, // OK
-    initializeCore, // OK
-    initializeView, // OK
-    initializeScreen, // OK
+    initializeLanguage,
+    initializeGlobal,
+    initializeShortcut,
+    initializeMenu,
+    initializeUser,
+    initializeCore,
+    initializeView,
+    initializeScreen,
     initializeTool,
     initializeTimeline
 ];
@@ -49,8 +49,8 @@ const boots: Function[] = [
 ];
 
 /**
- * @description 全体の機能の起動を管理する関数
- *              Functions that manage the activation of the overall function
+ * @description イベント登録登録などの初期起動関数
+ *              Initial startup functions such as event registration registration
  *
  * @return {Promise}
  * @method
@@ -93,13 +93,13 @@ export const initialize = (): Promise<void> =>
  */
 export const boot = (): Promise<void> =>
 {
-    const menu: MenuImpl<ProgressMenu> | null = $getMenu($PROGRESS_MENU_NAME);
-    if (menu) {
-        menu.message = "Booting the system.";
-    }
-
     return new Promise((resolve): void =>
     {
+        const menu: MenuImpl<ProgressMenu> | null = $getMenu($PROGRESS_MENU_NAME);
+        if (menu) {
+            menu.message = "Booting the system.";
+        }
+
         const promises: Promise<void>[] = [];
         // システム起動関数を実行
         for (let idx: number = 0; idx < boots.length; ++idx) {
@@ -134,7 +134,7 @@ export const run = (): Promise<void> =>
 
         // 起動したWorkSpaceの初期関数を実行
         const workSpaces: WorkSpace[] = $getAllWorkSpace();
-        for (let idx = 0; idx < workSpaces.length; ++idx) {
+        for (let idx: number = 0; idx < workSpaces.length; ++idx) {
             const workSpace: WorkSpace = workSpaces[idx];
             promises.push(workSpace.initialize());
         }
@@ -142,21 +142,19 @@ export const run = (): Promise<void> =>
         // 初期起動関数が終了するまで待機
         Promise
             .all(promises)
-            .then((): Promise<void> =>
+            .then(async (): Promise<void> =>
             {
                 // 選択されたWorkSpaceを起動
-                return $getCurrentWorkSpace().run();
-            })
-            .then((): Promise<void> =>
-            {
+                await $getCurrentWorkSpace().run();
+
                 // 初期のDOMを対象に説明モーダルのイベントをセット
-                return detailModalRegisterFadeEventService(document);
-            })
-            .then((): Promise<void> =>
-            {
+                await detailModalRegisterFadeEventService(document);
+
                 // 言語を適用
-                return languageTranslationService();
-            })
-            .then(resolve);
+                await languageTranslationService();
+
+                // 終了
+                resolve();
+            });
     });
 };

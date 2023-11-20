@@ -2,8 +2,7 @@ import { $TIMELINE_ID } from "@/config/TimelineConfig";
 import { EventType } from "@/tool/domain/event/EventType";
 import { $setCursor } from "@/global/GlobalUtil";
 import { execute as timelineAreaActiveWindowMoveService } from "../service/TimelineAreaActiveWindowMoveService";
-import { execute as userTimelineAreaStateGetService } from "@/user/application/TimelineArea/service/UserTimelineAreaStateGetService";
-import { execute as userTimelineAreaStateUpdateService } from "@/user/application/TimelineArea/service/UserTimelineAreaStateUpdateService";
+import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 
 /**
  * @description 選択中のツールの移動イベント関数
@@ -36,12 +35,14 @@ export const execute = (event: PointerEvent): void =>
     element.style.left = `${element.offsetLeft + event.movementX}px`;
     element.style.top  = `${element.offsetTop  + event.movementY}px`;
 
-    const userTimelineAreaState = userTimelineAreaStateGetService();
+    // 移動状態をセット
+    const workSpace = $getCurrentWorkSpace();
+    const timelineAreaState = workSpace.timelineAreaState;
 
-    userTimelineAreaState.state = "move";
-    userTimelineAreaState.offsetLeft = element.offsetLeft;
-    userTimelineAreaState.offsetTop  = element.offsetTop;
-
-    // 移動状態をLocalStorageに保存
-    userTimelineAreaStateUpdateService(userTimelineAreaState);
+    timelineAreaState.state      = "move";
+    timelineAreaState.offsetLeft = element.offsetLeft;
+    timelineAreaState.offsetTop  = element.offsetTop;
+    timelineAreaState.width      = element.clientWidth;
+    timelineAreaState.height     = element.clientHeight;
+    workSpace.updateTimelineArea(timelineAreaState);
 };

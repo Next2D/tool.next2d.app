@@ -1,9 +1,7 @@
-import { UserTimelineAreaStateObjectImpl } from "@/interface/UserTimelineAreaStateObjectImpl";
 import { EventType } from "@/tool/domain/event/EventType";
 import { execute as timelineAdjustmentYMouseMoveService } from "./TimelineAdjustmentYMouseMoveService";
-import { execute as userTimelineAreaStateGetService } from "@/user/application/TimelineArea/service/UserTimelineAreaStateGetService";
-import { execute as userTimelineAreaStateUpdateService } from "@/user/application/TimelineArea/service/UserTimelineAreaStateUpdateService";
 import { $TIMELINE_ID } from "@/config/TimelineConfig";
+import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 
 /**
  * @description タイムラインの高さの調整イベントをwindowから削除
@@ -23,19 +21,20 @@ export const execute = (event: PointerEvent): void =>
         .style
         .getPropertyValue("--timeline-logic-height"));
 
-    // タイムラインの幅をLocalStorageに保存
-    const UserTimelineAreaState: UserTimelineAreaStateObjectImpl = userTimelineAreaStateGetService();
-    UserTimelineAreaState.height = height;
+    // 高さを更新
+    const workSpace = $getCurrentWorkSpace();
+    const timelineAreaState  = workSpace.timelineAreaState;
+    timelineAreaState.height = height;
 
     // 移動したOffset値も更新
     const element: HTMLElement | null = document
         .getElementById($TIMELINE_ID);
 
     if (element) {
-        UserTimelineAreaState.offsetTop = element.offsetTop;
+        timelineAreaState.offsetTop = element.offsetTop;
     }
 
-    userTimelineAreaStateUpdateService(UserTimelineAreaState);
+    workSpace.updateTimelineArea(timelineAreaState);
 
     // 移動イベントを削除
     window.removeEventListener(EventType.MOUSE_MOVE, timelineAdjustmentYMouseMoveService);

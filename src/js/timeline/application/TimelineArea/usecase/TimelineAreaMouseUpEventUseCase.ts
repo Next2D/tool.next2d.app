@@ -1,5 +1,4 @@
 import { $setMouseState } from "../../TimelineUtil";
-import { execute as timelineAreaActiveWindowMoveService } from "../service/TimelineAreaActiveWindowMoveService";
 
 /**
  * @description タイムラインエリアのマウスアップイベント
@@ -9,11 +8,8 @@ import { execute as timelineAreaActiveWindowMoveService } from "../service/Timel
  * @method
  * @public
  */
-export const execute = (event: PointerEvent): void =>
+export const execute = (): void =>
 {
     // マウスの状態管理をアップに更新
     $setMouseState("up");
-
-    // 状態更新
-    timelineAreaActiveWindowMoveService(event);
 };

@@ -1,9 +1,11 @@
 import { execute } from "./ToolAreaChageStyleToActiveService";
+import { $createWorkSpace } from "../../../../core/application/CoreUtil";
 
 describe("ToolAreaChageStyleToActiveServiceTest", () =>
 {
     test("execute test", async () =>
     {
+        $createWorkSpace();
         const mockElement = {
             "style": {
                 "left": "",

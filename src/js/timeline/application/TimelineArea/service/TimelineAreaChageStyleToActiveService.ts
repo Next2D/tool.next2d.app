@@ -4,8 +4,7 @@ import {
     $TIMELINE_MIN_WIDTH
 } from "@/config/TimelineConfig";
 import { timelineHeader } from "../../TimelineUtil";
-import type { UserTimelineAreaStateObjectImpl } from "@/interface/UserTimelineAreaStateObjectImpl";
-import { execute as userTimelineAreaStateGetService } from "@/user/application/TimelineArea/service/UserTimelineAreaStateGetService";
+import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 
 /**
  * @description タイムラインエリアを移動可能な状態にする
@@ -18,6 +17,9 @@ import { execute as userTimelineAreaStateGetService } from "@/user/application/T
  */
 export const execute = (element: HTMLElement): void =>
 {
+    const workSpace = $getCurrentWorkSpace();
+    const timelineAreaState = workSpace.timelineAreaState;
+
     const style: CSSStyleDeclaration = document
         .documentElement
         .style;
@@ -25,23 +27,32 @@ export const execute = (element: HTMLElement): void =>
     // タイムラインエリアの高さを0にしてscreenの幅を広くする
     style.setProperty("--timeline-height", "0px");
 
-    // LocalStorageのデータを取得、データがあれば優先して利用する
-    const userTimelineAreaState: UserTimelineAreaStateObjectImpl = userTimelineAreaStateGetService();
-
     // ツールエリアのstyleを変更
+    if (timelineAreaState.state === "move") {
+        element.style.left   = `${timelineAreaState.offsetLeft}px`;
+        element.style.top    = `${timelineAreaState.offsetTop}px`;
+        element.style.width  = `${timelineAreaState.width}px`;
+        element.style.height = `${timelineAreaState.height}px`;
+
+        // 移動時に現在の幅のセット
+        style.setProperty("--timeline-logic-width",  `${timelineAreaState.width}px`);
+        style.setProperty("--timeline-logic-height", `${timelineAreaState.height}px`);
+    } else {
+        element.style.left   = `${element.offsetLeft}px`;
+        element.style.top    = `${element.offsetTop}px`;
+
+        // 移動時に現在の幅のセット
+        style.setProperty("--timeline-logic-width",  `${element.clientWidth}px`);
+        style.setProperty("--timeline-logic-height", `${element.clientHeight}px`);
+    }
+
     element.style.borderLeft   = "1px solid #1c1c1c";
     element.style.borderBottom = "1px solid #1c1c1c";
     element.style.borderRight  = "1px solid #1c1c1c";
     element.style.minWidth     = `${$TIMELINE_MIN_WIDTH}px`;
-    element.style.left         = `${userTimelineAreaState.offsetLeft || element.offsetLeft}px`;
-    element.style.top          = `${userTimelineAreaState.offsetTop || element.offsetTop}px`;
     element.style.zIndex       = `${0xffffff}`;
     element.style.boxShadow    = "0 0 5px rgba(245, 245, 245, 0.25)";
     element.style.position     = "fixed"; // fixed logic
-
-    // 移動時に現在の幅のセット
-    style.setProperty("--timeline-logic-width",  `${userTimelineAreaState.width || element.clientWidth}px`);
-    style.setProperty("--timeline-logic-height", `${userTimelineAreaState.height || element.clientHeight}px`);
 
     // styleの幅も更新
     element.style.width = "var(--timeline-logic-width)";

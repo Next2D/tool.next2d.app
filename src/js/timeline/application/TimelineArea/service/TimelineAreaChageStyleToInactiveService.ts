@@ -3,9 +3,6 @@ import {
     $TIMELINE_CONTROLLER_BASE_ID
 } from "@/config/TimelineConfig";
 import { timelineHeader } from "../../TimelineUtil";
-import { execute as userTimelineAreaStateUpdateService } from "@/user/application/TimelineArea/service/UserTimelineAreaStateUpdateService";
-import type { UserTimelineAreaStateObjectImpl } from "@/interface/UserTimelineAreaStateObjectImpl";
-import { execute as userTimelineAreaStateGetService } from "@/user/application/TimelineArea/service/UserTimelineAreaStateGetService";
 
 /**
  * @description タイムラインエリアを初期位置に戻す
@@ -18,18 +15,6 @@ import { execute as userTimelineAreaStateGetService } from "@/user/application/T
  */
 export const execute = (element: HTMLElement): void =>
 {
-
-    // LocalStorageのデータを取得
-    const object: UserTimelineAreaStateObjectImpl = userTimelineAreaStateGetService();
-
-    // 最終位置をLocalStorageに保存
-    object.state      = "move";
-    object.offsetLeft = element.offsetLeft;
-    object.offsetTop  = element.offsetTop;
-    object.width      = element.clientWidth;
-    object.height     = element.clientHeight;
-    userTimelineAreaStateUpdateService(object);
-
     // ツールエリアを初期値に移動
     element.style.borderLeft   = "";
     element.style.borderBottom = "";

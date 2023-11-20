@@ -1,8 +1,6 @@
-import type { UserTimelineAreaStateObjectImpl } from "@/interface/UserTimelineAreaStateObjectImpl";
 import { EventType } from "@/tool/domain/event/EventType";
 import { execute as timelineAdjustmentXMouseMoveService } from "./TimelineAdjustmentXMouseMoveService";
-import { execute as userTimelineAreaStateGetService } from "@/user/application/TimelineArea/service/UserTimelineAreaStateGetService";
-import { execute as userTimelineAreaStateUpdateService } from "@/user/application/TimelineArea/service/UserTimelineAreaStateUpdateService";
+import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 
 /**
  * @description タイムラインの幅の調整イベントをwindowから削除
@@ -22,10 +20,11 @@ export const execute = (event: PointerEvent): void =>
         .style
         .getPropertyValue("--timeline-logic-width"));
 
-    // タイムラインの幅をLocalStorageに保存
-    const UserTimelineAreaState: UserTimelineAreaStateObjectImpl = userTimelineAreaStateGetService();
-    UserTimelineAreaState.width = width;
-    userTimelineAreaStateUpdateService(UserTimelineAreaState);
+    // 幅を更新
+    const workSpace = $getCurrentWorkSpace();
+    const timelineAreaState = workSpace.timelineAreaState;
+    timelineAreaState.width = width;
+    workSpace.updateTimelineArea(timelineAreaState);
 
     // 移動イベントを削除
     window.removeEventListener(EventType.MOUSE_MOVE, timelineAdjustmentXMouseMoveService);
