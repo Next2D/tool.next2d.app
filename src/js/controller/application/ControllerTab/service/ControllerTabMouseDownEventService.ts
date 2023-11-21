@@ -30,6 +30,7 @@ export const execute = (event: PointerEvent): void =>
             continue;
         }
 
+        // 非アクティブに更新
         node.classList.remove("active");
         node.classList.add("disable");
 
@@ -40,21 +41,24 @@ export const execute = (event: PointerEvent): void =>
             continue;
         }
 
+        // 非表示
         activeElement.style.display = "none";
 
         break;
     }
 
-    const targetElement = event.currentTarget as HTMLElement;
-    targetElement.classList.remove("disable");
-    targetElement.classList.add("active");
+    // アクティブに更新
+    const tabElement = event.currentTarget as HTMLElement;
+    tabElement.classList.remove("disable");
+    tabElement.classList.add("active");
 
-    const activeElement: HTMLElement | null = document
-        .getElementById(targetElement.dataset.tabType as string);
+    const targetElement: HTMLElement | null = document
+        .getElementById(tabElement.dataset.tabType as string);
 
-    if (!activeElement) {
+    if (!targetElement) {
         return ;
     }
 
-    activeElement.style.display = "";
+    // 表示
+    targetElement.style.display = "";
 };
