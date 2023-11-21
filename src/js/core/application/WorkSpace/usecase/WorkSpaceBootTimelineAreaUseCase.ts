@@ -1,6 +1,5 @@
 import { $TIMELINE_ID } from "@/config/TimelineConfig";
 import { UserTimelineAreaStateObjectImpl } from "@/interface/UserTimelineAreaStateObjectImpl";
-import { $setTimelineAreaState } from "@/timeline/application/TimelineArea/TimelineAreaUtil";
 import { execute as timelineAreaChageStyleToActiveService } from "@/timeline/application/TimelineArea/service/TimelineAreaChageStyleToActiveService";
 import { execute as timelineAreaChageStyleToInactiveService } from "@/timeline/application/TimelineArea/service/TimelineAreaChageStyleToInactiveService";
 
@@ -22,9 +21,6 @@ export const execute = (timeline_area_state: UserTimelineAreaStateObjectImpl): v
     if (!element) {
         return ;
     }
-
-    // 状態を更新
-    $setTimelineAreaState(timeline_area_state.state);
 
     // 状態に合わせてstyleを更新
     if (timeline_area_state.state === "move") {

@@ -5,11 +5,7 @@ import { execute as timelineAreaActiveMoveUseCase } from "./TimelineAreaActiveMo
 import { execute as timelineAreaChageStyleToInactiveService } from "../service/TimelineAreaChageStyleToInactiveService";
 import { execute as timelineHeaderBuildElementUseCase } from "../../TimelineHeader/usecase/TimelineHeaderBuildElementUseCase";
 import { $setMouseState } from "../../TimelineUtil";
-import {
-    $getTimelineAreaState,
-    $setStandbyMoveState,
-    $setTimelineAreaState
-} from "../TimelineAreaUtil";
+import { $setStandbyMoveState } from "../TimelineAreaUtil";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 
 /**
@@ -82,6 +78,9 @@ export const execute = (event: PointerEvent): void =>
 
     } else {
 
+        // ダブルタップを終了
+        wait = false;
+
         // 長押し判定を中止
         clearTimeout(activeTimerId);
 
@@ -89,19 +88,18 @@ export const execute = (event: PointerEvent): void =>
         $setStandbyMoveState(false);
 
         // ツールエリアが固定位置にあれば終了
-        if ($getTimelineAreaState() === "fixed") {
+        const workSpace = $getCurrentWorkSpace();
+        if (workSpace.timelineAreaState.state === "fixed") {
             return ;
         }
 
-        // ダブルタップを終了
-        wait = false;
+        // 高さ以外を固定状態で保存
+        workSpace.timelineAreaState.state      = "fixed";
+        workSpace.timelineAreaState.offsetLeft = 0;
+        workSpace.timelineAreaState.offsetTop  = 0;
+        workSpace.timelineAreaState.width      = 0;
 
-        // ツールエリアの状態を固定位置に更新
-        $setTimelineAreaState("fixed");
-
-        // 強制的に固定位置に移動させるとマウスアップイベントが取得できない為、ここでアップモードに更新
-        $setMouseState("up");
-
+        // ツールエリアのstyleを固定位置に移動
         const element: HTMLElement | null = document
             .getElementById($TIMELINE_ID);
 
@@ -109,17 +107,6 @@ export const execute = (event: PointerEvent): void =>
             return ;
         }
 
-        // 固定状態で保存
-        const workSpace = $getCurrentWorkSpace();
-        workSpace.updateTimelineArea({
-            "state": "fixed",
-            "offsetLeft": 0,
-            "offsetTop": 0,
-            "width": element.clientWidth,
-            "height": element.clientHeight
-        });
-
-        // ツールエリアのstyleを固定位置に移動
         timelineAreaChageStyleToInactiveService(element);
 
         // ヘッダーを再描画

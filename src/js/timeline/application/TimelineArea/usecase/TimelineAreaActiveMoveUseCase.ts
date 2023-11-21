@@ -6,10 +6,9 @@ import { execute as timelinelAreaRegisterWindowMoveEventUseCase } from "./Timeli
 import { execute as timelineHeaderBuildElementUseCase } from "../../TimelineHeader/usecase/TimelineHeaderBuildElementUseCase";
 import {
     $getStandbyMoveState,
-    $getTimelineAreaState,
-    $setStandbyMoveState,
-    $setTimelineAreaState
+    $setStandbyMoveState
 } from "../TimelineAreaUtil";
+import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 
 /**
  * @description タイムラインエリアを移動可能な状態にする
@@ -40,10 +39,13 @@ export const execute = (): void =>
             return ;
         }
 
-        if ($getTimelineAreaState() === "fixed") {
+        const workSpace = $getCurrentWorkSpace();
+        if (workSpace.timelineAreaState.state === "fixed") {
 
             // ツールエリアを移動モードに設定
-            $setTimelineAreaState("move");
+            workSpace.timelineAreaState.state = "move";
+            workSpace.timelineAreaState.offsetLeft = element.offsetLeft;
+            workSpace.timelineAreaState.offsetTop  = element.offsetTop;
 
             // ツールエリアのstyleを更新
             timelineAreaChageStyleToActiveService(element);

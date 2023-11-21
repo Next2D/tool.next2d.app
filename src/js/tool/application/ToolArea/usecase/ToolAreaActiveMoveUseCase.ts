@@ -44,7 +44,7 @@ export const execute = (): void =>
             // ツールエリアを移動モードに設定
             // fixed logic
             workSpace.updateToolArea({
-                "state": "fixed",
+                "state": "move",
                 "offsetLeft": element.offsetLeft,
                 "offsetTop": element.offsetTop
             });

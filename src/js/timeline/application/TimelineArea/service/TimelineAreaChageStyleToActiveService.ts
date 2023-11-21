@@ -27,17 +27,9 @@ export const execute = (element: HTMLElement): void =>
     // タイムラインエリアの高さを0にしてscreenの幅を広くする
     style.setProperty("--timeline-height", "0px");
 
-    // ツールエリアのstyleを変更
-    if (timelineAreaState.state === "move") {
-        element.style.left   = `${timelineAreaState.offsetLeft}px`;
-        element.style.top    = `${timelineAreaState.offsetTop}px`;
-        element.style.width  = `${timelineAreaState.width}px`;
-        element.style.height = `${timelineAreaState.height}px`;
-    } else {
-        element.style.left   = `${element.offsetLeft}px`;
-        element.style.top    = `${element.offsetTop}px`;
-    }
-
+    // タイムラインエリアのstyleを変更
+    element.style.left         = `${timelineAreaState.offsetLeft}px`;
+    element.style.top          = `${timelineAreaState.offsetTop}px`;
     element.style.borderLeft   = "1px solid #1c1c1c";
     element.style.borderBottom = "1px solid #1c1c1c";
     element.style.borderRight  = "1px solid #1c1c1c";

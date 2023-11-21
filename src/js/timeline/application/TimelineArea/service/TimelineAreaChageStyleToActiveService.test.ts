@@ -5,7 +5,7 @@ describe("TimelineAreaChageStyleToActiveServiceTest", () =>
 {
     test("execute test", async () =>
     {
-        $createWorkSpace();
+        const workSpace = $createWorkSpace();
         const mockElement = {
             "style": {
                 "width": "",
@@ -16,10 +16,13 @@ describe("TimelineAreaChageStyleToActiveServiceTest", () =>
                 "boxShadow": "",
                 "position": ""
             },
-            "offsetLeft": 10,
-            "offsetTop": 20,
-            "clientWidth": 1000
+            "clientWidth": 1000,
+            "clientHeight": 300
         };
+
+        workSpace.timelineAreaState.state = "move";
+        workSpace.timelineAreaState.offsetTop = 20;
+        workSpace.timelineAreaState.offsetLeft = 10;
 
         expect(mockElement.style.width).toBe("");
         expect(mockElement.style.minWidth).toBe("");

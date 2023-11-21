@@ -31,38 +31,3 @@ export const $setStandbyMoveState = (state: boolean): void =>
 {
     $standbyMove = state;
 };
-
-/**
- * @description タイムラインエリアの移動状態
- *              Movement state of tool area
- *
- * @private
- */
-let $timelineAreaState: "move" | "fixed" = "fixed";
-
-/**
- * @description タイムラインエリアでの移動状態を取得
- *              Get move status in tool area
- *
- * @return {string}
- * @method
- * @public
- */
-export const $getTimelineAreaState = (): "move" | "fixed" =>
-{
-    return $timelineAreaState;
-};
-
-/**
- * @description タイムラインエリアでの移動状態を更新
- *              Update movement status in tool area
- *
- * @param  {string} state
- * @return {void}
- * @method
- * @public
- */
-export const $setTimelineAreaState = (state: "move" | "fixed"): void =>
-{
-    $timelineAreaState = state;
-};

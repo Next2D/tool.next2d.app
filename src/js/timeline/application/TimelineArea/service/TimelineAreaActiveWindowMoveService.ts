@@ -1,5 +1,5 @@
 import { $TIMELINE_ID } from "@/config/TimelineConfig";
-import { $getTimelineAreaState } from "../TimelineAreaUtil";
+import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 
 /**
  * @description タイムラインエリアの移動処理
@@ -13,7 +13,8 @@ import { $getTimelineAreaState } from "../TimelineAreaUtil";
 export const execute = (event: PointerEvent): void =>
 {
     // 親のイベントを中止する
-    if ($getTimelineAreaState() === "fixed") {
+    const workSpace = $getCurrentWorkSpace();
+    if (workSpace.timelineAreaState.state === "fixed") {
         event.stopPropagation();
     }
 
