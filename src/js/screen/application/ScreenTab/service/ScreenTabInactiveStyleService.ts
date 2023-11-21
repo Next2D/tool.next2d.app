@@ -1,3 +1,5 @@
+import { $updateKeyLock } from "@/shortcut/ShortcutUtil";
+
 /**
  * @description 指定IDのElementを非アクティブに変更する
  *              Change the Element with the specified ID to inactive
@@ -15,4 +17,5 @@ export const execute = (
 {
     text_element.contentEditable   = "false";
     tab_element.style.borderBottom = "";
+    $updateKeyLock(false);
 };

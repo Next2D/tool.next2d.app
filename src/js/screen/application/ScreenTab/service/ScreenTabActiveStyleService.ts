@@ -1,3 +1,5 @@
+import { $updateKeyLock } from "@/shortcut/ShortcutUtil";
+
 /**
  * @description 指定IDのElementをアクティブ表示に変更する
  *              Changes the Element with the specified ID to the active display
@@ -15,4 +17,5 @@ export const execute = (
 {
     text_element.contentEditable   = "true";
     tab_element.style.borderBottom = "1px solid #f5f5f5";
+    $updateKeyLock(true);
 };
