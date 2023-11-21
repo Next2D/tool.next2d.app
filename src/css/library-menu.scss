@@ -126,36 +126,3 @@
     display        : flex;
     flex-direction : column;
 }
-
-#library-preview-area
-{
-    display          : flex;
-    flex-direction   : column;
-    justify-content  : center;
-    align-items      : center;
-    height           : 150px;
-    background-color : #ffffff;
-}
-
-#library-list-title
-{
-    display     : flex;
-    align-items : center;
-    color       : darkgray;
-    font-size   : 10px;
-
-    p
-    {
-        margin : 0 0 0 10px;
-    }
-}
-
-#library-list-title div
-{
-    display     : flex;
-    align-items : center;
-    width       : 50vw;
-    height      : 30px;
-    font-weight : bold;
-    flex-shrink : 1;
-}

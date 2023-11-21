@@ -1,6 +1,8 @@
 #controller-area-js
 {
     overflow : hidden;
+    padding  : 5px;
+    height   : calc(100vh - var(--controller-tab-area-height) - var(--ad) - var(--controller-padding-width));
 
     .script-title
     {
@@ -15,7 +17,7 @@
 {
     border         : 1px solid darkgray;
     border-radius  : 3px;
-    height         : calc(100vh - 21px - var(--ad) - 12px);
+    height         : calc(100vh - var(--controller-tab-area-height) - var(--ad) - var(--controller-padding-width) - 2px);
     overflow-x     : hidden;
     overflow-y     : auto;
     display        : flex;

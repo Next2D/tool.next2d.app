@@ -99,7 +99,7 @@
 #controller-tab-area
 {
     display  : flex;
-    height   : 21px;
+    height   : var(--controller-tab-area-height);
 
     .tab
     {
@@ -141,7 +141,7 @@
 
 #controller-area
 {
-    height     : calc(100vh - (var(--ad) + 21px + 10px));
+    height     : calc(100vh - var(--controller-tab-area-height) - var(--ad) - var(--controller-padding-width));
     padding    : 5px;
     overflow-x : hidden;
     overflow-y : auto;
@@ -149,7 +149,7 @@
     .controller-border
     {
         margin        : 5px 0 5px 0;
-        width         : calc(var(--controller-width) - 10px);
+        width         : calc(var(--controller-width) - var(--controller-padding-width));
         border-bottom : 1px solid #1c1c1c;
     }
 }

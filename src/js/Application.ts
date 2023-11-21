@@ -11,6 +11,7 @@ import { execute as initializeLanguage } from "@/language/application/Initialize
 import { execute as initializeCore } from "@/core/application/Initialize";
 import { execute as initializeUser } from "@/user/application/Initialize";
 import { execute as initializeShortcut } from "@/shortcut/application/Initialize";
+import { execute as initializeController } from "@/controller/application/Initialize";
 import { execute as bootUser } from "@/user/application/Boot";
 import { execute as detailModalRegisterFadeEventService } from "@/menu/application/DetailModal/service/DetailModalRegisterFadeEventService";
 import { execute as languageTranslationService } from "@/language/application/service/LanguageTranslationService";
@@ -36,7 +37,8 @@ const initializes: Function[] = [
     initializeView,
     initializeScreen,
     initializeTool,
-    initializeTimeline
+    initializeTimeline,
+    initializeController
 ];
 
 /**
