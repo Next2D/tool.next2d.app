@@ -1,12 +1,12 @@
 import { execute } from "./ControllerTabMouseDownEventService";
-import { $CONTROLLER_TAB_AREA_NAME } from "../../../../config/ControllerConfig";
+import { $CONTROLLER_TAB_AREA_ID } from "../../../../config/ControllerConfig";
 
 describe("ControllerTabMouseDownEventServiceTest", () =>
 {
     test("execute test", () =>
     {
         const div = document.createElement("div");
-        div.id = $CONTROLLER_TAB_AREA_NAME;
+        div.id = $CONTROLLER_TAB_AREA_ID;
 
         const node1 = document.createElement("div");
         div.appendChild(node1);

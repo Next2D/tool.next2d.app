@@ -1,4 +1,4 @@
-import { $CONTROLLER_TAB_AREA_NAME } from "@/config/ControllerConfig";
+import { $CONTROLLER_TAB_AREA_ID } from "@/config/ControllerConfig";
 
 /**
  * @description タブのタップイベント処理関数
@@ -15,7 +15,7 @@ export const execute = (event: PointerEvent): void =>
     event.stopPropagation();
 
     const element: HTMLElement | null = document
-        .getElementById($CONTROLLER_TAB_AREA_NAME);
+        .getElementById($CONTROLLER_TAB_AREA_ID);
 
     if (!element) {
         return ;

@@ -35,6 +35,24 @@ export const $STAGE_DEFAULT_FPS: number = 60;
 export const $STAGE_DEFAULT_COLOR: string = "#ffffff";
 
 /**
+ * @description ステージ設定のElementのID
+ *              ID of Element for stage setting
+ *
+ * @type {string}
+ * @constant
+ */
+export const $STAGE_SETTING_ID: string = "stage-setting";
+
+/**
+ * @description タイトルのElementのID
+ *              ID of the Element in the title
+ *
+ * @type {string}
+ * @constant
+ */
+export const $STAGE_SETTING_TITLE_ID: string = "stage-setting-title";
+
+/**
  * @description ステージの幅のElementのID
  *              ID of Element of Stage Width
  *

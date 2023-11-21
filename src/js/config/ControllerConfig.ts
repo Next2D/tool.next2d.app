@@ -5,5 +5,5 @@
  * @type {string}
  * @public
  */
-export const $CONTROLLER_TAB_AREA_NAME: string = "controller-tab-area";
+export const $CONTROLLER_TAB_AREA_ID: string = "controller-tab-area";
 

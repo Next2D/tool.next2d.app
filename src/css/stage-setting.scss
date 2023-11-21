@@ -30,14 +30,18 @@
         height            : 18px;
         background-image  : url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24"><path fill="darkgray" d="M5 3l3.057-3 11.943 12-11.943 12-3.057-3 9-9z"/></svg>');
         background-repeat : no-repeat;
-        margin-right      : 2px;
+    }
+
+    span 
+    {
+        margin-left: 2px;
     }
 
     .disable
     {
         transform           : rotate(0);
         transition          : 0.1s ease-out;
-        background-position : 1px center;
+        background-position : 1px 5px;
     }
 
     .active

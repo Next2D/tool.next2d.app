@@ -1,6 +1,7 @@
-import { $CONTROLLER_TAB_AREA_NAME } from "@/config/ControllerConfig";
+import { $CONTROLLER_TAB_AREA_ID } from "@/config/ControllerConfig";
 import { EventType } from "@/tool/domain/event/EventType";
 import { execute as controllerTabMouseDownEventService } from "../service/ControllerTabMouseDownEventService";
+
 /**
  * @description タブのタップイベントを登録
  *              Register tab tap events
@@ -12,7 +13,7 @@ import { execute as controllerTabMouseDownEventService } from "../service/Contro
 export const execute = (): void =>
 {
     const element: HTMLElement | null = document
-        .getElementById($CONTROLLER_TAB_AREA_NAME);
+        .getElementById($CONTROLLER_TAB_AREA_ID);
 
     if (!element) {
         return ;
