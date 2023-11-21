@@ -12,16 +12,16 @@
   },
   "devDependencies": {
     "@next2d/player": "^1.18.11",
-    "@typescript-eslint/eslint-plugin": "^6.11.0",
-    "@typescript-eslint/parser": "^6.11.0",
+    "@typescript-eslint/eslint-plugin": "^6.12.0",
+    "@typescript-eslint/parser": "^6.12.0",
     "ace-code": "^1.31.2",
     "ace-linters": "^0.13.3",
-    "eslint": "^8.53.0",
+    "eslint": "^8.54.0",
     "fflate": "^0.8.1",
     "jsdom": "^22.1.0",
     "jszip": "^3.10.1",
     "sass": "^1.69.5",
-    "typescript": "^5.2.2",
+    "typescript": "^5.3.2",
     "vite": "^5.0.0",
     "vitest": "^0.34.6"
   }

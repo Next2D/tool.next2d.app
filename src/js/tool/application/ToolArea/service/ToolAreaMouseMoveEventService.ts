@@ -1,7 +1,7 @@
 import { EventType } from "@/tool/domain/event/EventType";
 import { $getActiveTool } from "../../ToolUtil";
-import { $getToolAreaState } from "../ToolAreaUtil";
 import type { ToolImpl } from "@/interface/ToolImpl";
+import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 
 /**
  * @description 選択中のツールの移動イベント関数
@@ -15,7 +15,8 @@ import type { ToolImpl } from "@/interface/ToolImpl";
 export const execute = (event: PointerEvent): void =>
 {
     // 親のイベントを中止する
-    if ($getToolAreaState() === "fixed") {
+    const workSpace = $getCurrentWorkSpace();
+    if (workSpace.toolAreaState.state === "fixed") {
         event.stopPropagation();
     }
 

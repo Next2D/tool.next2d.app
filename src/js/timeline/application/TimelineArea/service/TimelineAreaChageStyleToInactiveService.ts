@@ -19,12 +19,12 @@ export const execute = (element: HTMLElement): void =>
     element.style.borderLeft   = "";
     element.style.borderBottom = "";
     element.style.borderRight  = "";
-    element.style.width        = "";
     element.style.minWidth     = "";
     element.style.left         = "";
     element.style.top          = "";
     element.style.zIndex       = "";
     element.style.boxShadow    = "";
+    element.style.width        = "";
     element.style.position     = "";
 
     const style: CSSStyleDeclaration = document

@@ -34,7 +34,7 @@ export const execute = (): void =>
     // Elementがなければ初期登録
     if (!element.children.length) {
         const lastFrame: number = elementCount + 1;
-        for (let frame = 1; lastFrame >= frame; ++frame) {
+        for (let frame: number = 1; lastFrame >= frame; ++frame) {
 
             // フレームのタグを追加
             element.insertAdjacentHTML("beforeend", timelineHeaderFrameComponent(frame));

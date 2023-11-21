@@ -1,8 +1,6 @@
 import {
     $getStandbyMoveState,
-    $setStandbyMoveState,
-    $getToolAreaState,
-    $setToolAreaState
+    $setStandbyMoveState
 } from "./ToolAreaUtil";
 
 describe("ToolAreaUtilTest", () =>
@@ -14,14 +12,5 @@ describe("ToolAreaUtilTest", () =>
         expect($getStandbyMoveState()).toBe(true);
         $setStandbyMoveState(false);
         expect($getStandbyMoveState()).toBe(false);
-    });
-
-    test("$getToolAreaState and $setToolAreaState test", () =>
-    {
-        expect($getToolAreaState()).toBe("fixed");
-        $setToolAreaState("move");
-        expect($getToolAreaState()).toBe("move");
-        $setToolAreaState("fixed");
-        expect($getToolAreaState()).toBe("fixed");
     });
 });

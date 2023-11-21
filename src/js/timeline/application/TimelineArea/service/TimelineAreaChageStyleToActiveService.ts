@@ -33,17 +33,9 @@ export const execute = (element: HTMLElement): void =>
         element.style.top    = `${timelineAreaState.offsetTop}px`;
         element.style.width  = `${timelineAreaState.width}px`;
         element.style.height = `${timelineAreaState.height}px`;
-
-        // 移動時に現在の幅のセット
-        style.setProperty("--timeline-logic-width",  `${timelineAreaState.width}px`);
-        style.setProperty("--timeline-logic-height", `${timelineAreaState.height}px`);
     } else {
         element.style.left   = `${element.offsetLeft}px`;
         element.style.top    = `${element.offsetTop}px`;
-
-        // 移動時に現在の幅のセット
-        style.setProperty("--timeline-logic-width",  `${element.clientWidth}px`);
-        style.setProperty("--timeline-logic-height", `${element.clientHeight}px`);
     }
 
     element.style.borderLeft   = "1px solid #1c1c1c";
@@ -52,10 +44,12 @@ export const execute = (element: HTMLElement): void =>
     element.style.minWidth     = `${$TIMELINE_MIN_WIDTH}px`;
     element.style.zIndex       = `${0xffffff}`;
     element.style.boxShadow    = "0 0 5px rgba(245, 245, 245, 0.25)";
+    element.style.width        = "var(--timeline-logic-width)";
     element.style.position     = "fixed"; // fixed logic
 
-    // styleの幅も更新
-    element.style.width = "var(--timeline-logic-width)";
+    // fixed logic
+    style.setProperty("--timeline-logic-width",  `${element.clientWidth}px`);
+    style.setProperty("--timeline-logic-height", `${element.clientHeight}px`);
 
     // 幅拡大Elementを表示
     const xAdjElement: HTMLElement | null = document

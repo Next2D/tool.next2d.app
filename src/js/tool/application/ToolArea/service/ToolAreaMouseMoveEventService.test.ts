@@ -1,11 +1,14 @@
 import { $setActiveTool } from "../../ToolUtil";
 import { execute } from "./ToolAreaMouseMoveEventService";
 import { EventType } from "../../../domain/event/EventType";
+import { $createWorkSpace } from "../../../../core/application/CoreUtil";
 
 describe("ToolAreaMouseMoveEventServiceTest", () =>
 {
     test("execute test", () =>
     {
+        $createWorkSpace();
+
         let status = "no";
 
         // mack tool

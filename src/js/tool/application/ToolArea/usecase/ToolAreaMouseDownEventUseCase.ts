@@ -4,11 +4,7 @@ import { execute as toolAreaChageStyleToInactiveService } from "../service/ToolA
 import { execute as userAllFunctionStateService } from "@/user/application/Billing/service/UserAllFunctionStateService";
 import { $TOOL_PREFIX } from "@/config/ToolConfig";
 import { $setMouseState } from "../../ToolUtil";
-import {
-    $getToolAreaState,
-    $setStandbyMoveState,
-    $setToolAreaState
-} from "../ToolAreaUtil";
+import { $setStandbyMoveState } from "../ToolAreaUtil";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 
 /**
@@ -80,6 +76,9 @@ export const execute = (event: PointerEvent): void =>
 
     } else {
 
+        // ダブルタップを終了
+        wait = false;
+
         // 長押し判定を中止
         clearTimeout(activeTimerId);
 
@@ -87,26 +86,17 @@ export const execute = (event: PointerEvent): void =>
         $setStandbyMoveState(false);
 
         // ツールエリアが固定位置にあれば終了
-        if ($getToolAreaState() === "fixed") {
+        const workSpace = $getCurrentWorkSpace();
+        if (workSpace.toolAreaState.state === "fixed") {
             return ;
         }
 
         // 固定状態で保存
-        const workSpace = $getCurrentWorkSpace();
         workSpace.updateToolArea({
             "state": "fixed",
             "offsetLeft": 0,
             "offsetTop": 0
         });
-
-        // ダブルタップを終了
-        wait = false;
-
-        // ツールエリアの状態を固定位置に更新
-        $setToolAreaState("fixed");
-
-        // 強制的に固定位置に移動させるとマウスアップイベントが取得できない為、ここでアップモードに更新
-        $setMouseState("up");
 
         const element: HTMLElement | null = document
             .getElementById($TOOL_PREFIX);

@@ -15,14 +15,12 @@ export const execute = (element: HTMLElement): void =>
     const toolAreaState = workSpace.toolAreaState;
 
     // ツールエリアのstyleを変更
-    if (toolAreaState.state === "move") {
-        element.style.left = `${toolAreaState.offsetLeft}px`;
-        element.style.top  = `${toolAreaState.offsetTop}px`;
-    } else {
-        element.style.left = `${element.offsetLeft}px`;
-        element.style.top  = `${element.offsetTop}px`;
+    if (toolAreaState.state === "fixed") {
+        return ;
     }
 
+    element.style.left      = `${toolAreaState.offsetLeft}px`;
+    element.style.top       = `${toolAreaState.offsetTop}px`;
     element.style.zIndex    = `${0xffffff}`;
     element.style.boxShadow = "0 0 5px rgba(245, 245, 245, 0.25)";
     element.style.position  = "fixed"; // fixed logic

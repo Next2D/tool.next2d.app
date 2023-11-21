@@ -22,9 +22,7 @@ export const execute = (event: PointerEvent): void =>
 
     // 幅を更新
     const workSpace = $getCurrentWorkSpace();
-    const timelineAreaState = workSpace.timelineAreaState;
-    timelineAreaState.width = width;
-    workSpace.updateTimelineArea(timelineAreaState);
+    workSpace.timelineAreaState.width = width;
 
     // 移動イベントを削除
     window.removeEventListener(EventType.MOUSE_MOVE, timelineAdjustmentXMouseMoveService);

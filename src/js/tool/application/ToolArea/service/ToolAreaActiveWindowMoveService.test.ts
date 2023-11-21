@@ -1,10 +1,13 @@
 import { $TOOL_PREFIX } from "../../../../config/ToolConfig";
 import { execute } from "./ToolAreaActiveWindowMoveService";
+import { $createWorkSpace } from "../../../../core/application/CoreUtil";
 
 describe("ToolAreaActiveWindowMoveServiceTest", () =>
 {
     test("execute test", (): Promise<void> =>
     {
+        $createWorkSpace();
+
         const div = document.createElement("div");
         div.id = $TOOL_PREFIX;
         document.body.appendChild(div);

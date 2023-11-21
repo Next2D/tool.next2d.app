@@ -1,5 +1,5 @@
 import { $TOOL_PREFIX } from "@/config/ToolConfig";
-import { $getToolAreaState } from "../ToolAreaUtil";
+import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 
 /**
  * @description ツールエリアの移動処理
@@ -13,7 +13,8 @@ import { $getToolAreaState } from "../ToolAreaUtil";
 export const execute = (event: PointerEvent): void =>
 {
     // 親のイベントを中止する
-    if ($getToolAreaState() === "fixed") {
+    const workSpace = $getCurrentWorkSpace();
+    if (workSpace.toolAreaState.state === "fixed") {
         event.stopPropagation();
     }
 

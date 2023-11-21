@@ -5,10 +5,9 @@ import { execute as toolAreaChageStyleToActiveService } from "../service/ToolAre
 import { $getMouseState } from "../../ToolUtil";
 import {
     $getStandbyMoveState,
-    $getToolAreaState,
-    $setStandbyMoveState,
-    $setToolAreaState
+    $setStandbyMoveState
 } from "../ToolAreaUtil";
+import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 
 /**
  * @description ツールエリアを移動可能な状態にする
@@ -39,10 +38,16 @@ export const execute = (): void =>
             return ;
         }
 
-        if ($getToolAreaState() === "fixed") {
+        const workSpace = $getCurrentWorkSpace();
+        if (workSpace.toolAreaState.state === "fixed") {
 
             // ツールエリアを移動モードに設定
-            $setToolAreaState("move");
+            // fixed logic
+            workSpace.updateToolArea({
+                "state": "fixed",
+                "offsetLeft": element.offsetLeft,
+                "offsetTop": element.offsetTop
+            });
 
             // ツールエリアのstyleを更新
             toolAreaChageStyleToActiveService(element);

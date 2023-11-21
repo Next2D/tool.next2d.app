@@ -23,18 +23,17 @@ export const execute = (event: PointerEvent): void =>
 
     // 高さを更新
     const workSpace = $getCurrentWorkSpace();
-    const timelineAreaState  = workSpace.timelineAreaState;
-    timelineAreaState.height = height;
+    workSpace.timelineAreaState.height = height;
 
     // 移動したOffset値も更新
-    const element: HTMLElement | null = document
-        .getElementById($TIMELINE_ID);
+    if (workSpace.timelineAreaState.state === "move") {
+        const element: HTMLElement | null = document
+            .getElementById($TIMELINE_ID);
 
-    if (element) {
-        timelineAreaState.offsetTop = element.offsetTop;
+        if (element) {
+            workSpace.timelineAreaState.offsetTop = element.offsetTop;
+        }
     }
-
-    workSpace.updateTimelineArea(timelineAreaState);
 
     // 移動イベントを削除
     window.removeEventListener(EventType.MOUSE_MOVE, timelineAdjustmentYMouseMoveService);

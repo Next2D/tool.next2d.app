@@ -5,7 +5,8 @@ describe("ToolAreaChageStyleToActiveServiceTest", () =>
 {
     test("execute test", async () =>
     {
-        $createWorkSpace();
+        const workSpace = $createWorkSpace();
+
         const mockElement = {
             "style": {
                 "left": "",
@@ -13,10 +14,12 @@ describe("ToolAreaChageStyleToActiveServiceTest", () =>
                 "zIndex": "",
                 "boxShadow": "",
                 "position": ""
-            },
-            "offsetLeft": 10,
-            "offsetTop": 20
+            }
         };
+
+        workSpace.toolAreaState.state = "move";
+        workSpace.toolAreaState.offsetLeft = 10;
+        workSpace.toolAreaState.offsetTop = 20;
 
         expect(mockElement.style.left).toBe("");
         expect(mockElement.style.top).toBe("");
