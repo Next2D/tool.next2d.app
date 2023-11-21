@@ -4,6 +4,7 @@ import { $getMouseState } from "../../TimelineUtil";
 import { execute as timelineAreaChageStyleToActiveService } from "../service/TimelineAreaChageStyleToActiveService";
 import { execute as timelinelAreaRegisterWindowMoveEventUseCase } from "./TimelinelAreaRegisterWindowMoveEventUseCase";
 import { execute as timelineHeaderBuildElementUseCase } from "../../TimelineHeader/usecase/TimelineHeaderBuildElementUseCase";
+import { execute as timelineLayerBuildElementUseCase } from "../../TimelineLayer/usecase/TimelineLayerBuildElementUseCase";
 import {
     $getStandbyMoveState,
     $setStandbyMoveState
@@ -60,6 +61,8 @@ export const execute = (): void =>
         // ヘッダーを再描画
         timelineHeaderBuildElementUseCase();
 
+        // タイムラインのレイヤーを再描画
+        timelineLayerBuildElementUseCase();
     } else {
 
         // カーソルを初期値に変更

@@ -36,12 +36,14 @@ export const execute = (element: HTMLElement): void =>
     element.style.minWidth     = `${$TIMELINE_MIN_WIDTH}px`;
     element.style.zIndex       = `${0xffffff}`;
     element.style.boxShadow    = "0 0 5px rgba(245, 245, 245, 0.25)";
-    element.style.width        = "var(--timeline-logic-width)";
     element.style.position     = "fixed"; // fixed logic
 
     // fixed logic
     style.setProperty("--timeline-logic-width",  `${element.clientWidth}px`);
     style.setProperty("--timeline-logic-height", `${element.clientHeight}px`);
+
+    // fixed logic
+    element.style.width = "var(--timeline-logic-width)";
 
     // 幅拡大Elementを表示
     const xAdjElement: HTMLElement | null = document

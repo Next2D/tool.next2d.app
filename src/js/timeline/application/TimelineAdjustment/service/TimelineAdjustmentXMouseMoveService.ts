@@ -2,6 +2,7 @@ import { $TIMELINE_MIN_WIDTH } from "@/config/TimelineConfig";
 import { execute as timelineHeaderUpdateClientWidthService } from "../../TimelineHeader/service/TimelineHeaderUpdateClientWidthService";
 import { execute as timelineHeaderBuildElementUseCase } from "../../TimelineHeader/usecase/TimelineHeaderBuildElementUseCase";
 import { execute as timelineLayerBuildElementUseCase } from "../../TimelineLayer/usecase/TimelineLayerBuildElementUseCase";
+import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 
 /**
  * @description タイムラインの幅を調整
@@ -25,7 +26,11 @@ export const execute = (event: PointerEvent): void =>
 
         let width: number = parseFloat(style.getPropertyValue("--timeline-logic-width"));
         width += event.movementX;
-        style.setProperty("--timeline-logic-width", `${Math.max($TIMELINE_MIN_WIDTH, width)}px`);
+        width = Math.max($TIMELINE_MIN_WIDTH, width);
+        style.setProperty("--timeline-logic-width", `${width}px`);
+
+        const workSpace = $getCurrentWorkSpace();
+        workSpace.timelineAreaState.width = width;
 
         // タイムラインのヘッダー幅を更新
         timelineHeaderUpdateClientWidthService();

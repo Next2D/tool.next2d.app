@@ -22,14 +22,19 @@ export const execute = (timeline_area_state: UserTimelineAreaStateObjectImpl): v
         return ;
     }
 
+    const style = document.documentElement.style;
+
     // 状態に合わせてstyleを更新
     if (timeline_area_state.state === "move") {
         timelineAreaChageStyleToActiveService(element);
+        // fixed logic
+        style.setProperty("--timeline-logic-width", `${timeline_area_state.width}px`);
     } else {
-        document
-            .documentElement
-            .style
-            .setProperty("--timeline-logic-height", `${timeline_area_state.height}px`);
         timelineAreaChageStyleToInactiveService(element);
+        // fixed logic
+        style.setProperty("--timeline-height", `${timeline_area_state.height}px`);
     }
+
+    // fixed logic
+    style.setProperty("--timeline-logic-height", `${timeline_area_state.height}px`);
 };
