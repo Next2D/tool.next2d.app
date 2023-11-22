@@ -1,4 +1,5 @@
 import { $CONTROLLER_TAB_AREA_ID } from "@/config/ControllerConfig";
+import { $allHideMenu } from "@/menu/application/MenuUtil";
 
 /**
  * @description タブのタップイベント処理関数
@@ -13,6 +14,9 @@ export const execute = (event: PointerEvent): void =>
 {
     // 親のイベントを中止
     event.stopPropagation();
+
+    // 表示されてるメニューをメニューを全て非表示にする
+    $allHideMenu();
 
     const element: HTMLElement | null = document
         .getElementById($CONTROLLER_TAB_AREA_ID);

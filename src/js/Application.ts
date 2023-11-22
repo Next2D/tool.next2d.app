@@ -4,7 +4,6 @@ import type { MenuImpl } from "@/interface/MenuImpl";
 import { execute as initializeGlobal } from "@/global/application/Initialize";
 import { execute as initializeTool } from "@/tool/application/Initialize";
 import { execute as initializeMenu } from "@/menu/application/Initialize";
-import { execute as initializeView } from "@/view/application/Initialize";
 import { execute as initializeScreen } from "@/screen/application/Initialize";
 import { execute as initializeTimeline } from "@/timeline/application/Initialize";
 import { execute as initializeLanguage } from "@/language/application/Initialize";
@@ -12,6 +11,7 @@ import { execute as initializeCore } from "@/core/application/Initialize";
 import { execute as initializeUser } from "@/user/application/Initialize";
 import { execute as initializeShortcut } from "@/shortcut/application/Initialize";
 import { execute as initializeController } from "@/controller/application/Initialize";
+import { execute as initializeView } from "@/view/application/Initialize";
 import { execute as bootUser } from "@/user/application/Boot";
 import { execute as detailModalRegisterFadeEventService } from "@/menu/application/DetailModal/service/DetailModalRegisterFadeEventService";
 import { execute as languageTranslationService } from "@/language/application/service/LanguageTranslationService";
@@ -34,11 +34,11 @@ const initializes: Function[] = [
     initializeMenu,
     initializeUser,
     initializeCore,
-    initializeView,
     initializeScreen,
     initializeTool,
     initializeTimeline,
-    initializeController
+    initializeController,
+    initializeView
 ];
 
 /**

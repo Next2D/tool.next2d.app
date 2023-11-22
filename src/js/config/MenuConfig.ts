@@ -42,3 +42,12 @@ export const $DETAIL_MODAL_NAME: string = "detail-modal";
  * @constant
  */
 export const $SCREEN_TAB_MENU_NAME: string = "screen-tab-menu";
+
+/**
+ * @description スクリーンメニューの名前
+ *              Screen menu name
+ *
+ * @type {string}
+ * @constant
+ */
+export const $SCREEN_MENU_NAME: string = "screen-menu";

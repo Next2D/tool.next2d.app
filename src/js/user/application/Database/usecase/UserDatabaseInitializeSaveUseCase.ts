@@ -36,12 +36,15 @@ export const execute = (): Promise<void> =>
             return reslove();
         }
 
+        // 全てのWorkSpcaceからobjectを取得
+        const workSpaces: WorkSpace[] = $getAllWorkSpace();
+        if (!workSpaces.length) {
+            return reslove();
+        }
+
         // 進行状況のテキストを更新
         menu.show();
         menu.message = $replace("{{データを圧縮中}}");
-
-        // 全てのWorkSpcaceからobjectを取得
-        const workSpaces: WorkSpace[] = $getAllWorkSpace();
 
         const objects = [];
         for (let idx = 0; idx < workSpaces.length; ++idx) {
