@@ -51,3 +51,21 @@ export const $SCREEN_TAB_MENU_NAME: string = "screen-tab-menu";
  * @constant
  */
 export const $SCREEN_MENU_NAME: string = "screen-menu";
+
+/**
+ * @description 表示順メニューの名前
+ *              Display Order Menu Name
+ *
+ * @type {string}
+ * @constant
+ */
+export const $SCREEN_ORDER_NAME: string = "screen-order-menu";
+
+/**
+ * @description 整列メニューの名前
+ *              Alignment Menu Name
+ *
+ * @type {string}
+ * @constant
+ */
+export const $SCREEN_ALIGN_NAME: string = "screen-align-menu";

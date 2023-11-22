@@ -5,6 +5,8 @@ import { ShortcutSettingMenu } from "../domain/model/ShortcutSettingMenu";
 import { DetailModal } from "../domain/model/DetailModal";
 import { ScreenTabMenu } from "../domain/model/ScreenTabMenu";
 import { ScreenMenu } from "../domain/model/ScreenMenu";
+import { ScreenOrderMenu } from "../domain/model/ScreenOrderMenu";
+import { ScreenAlignMenu } from "../domain/model/ScreenAlignMenu";
 
 /**
  * @description 起動対象のToolクラスの配列
@@ -18,7 +20,9 @@ const menus: MenuImpl<any>[] = [
     UserSettingMenu,
     ShortcutSettingMenu,
     ScreenTabMenu,
-    ScreenMenu
+    ScreenMenu,
+    ScreenOrderMenu,
+    ScreenAlignMenu
 ];
 
 /**

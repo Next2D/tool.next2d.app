@@ -33,4 +33,19 @@ export class ScreenMenu extends BaseMenu
     {
         screenMenuInitializeRegisterEventUseCase();
     }
+
+    /**
+     * @description メニュー位置を補正
+     *              Correct menu position
+     *
+     * @return {HTMLElement}
+     * @method
+     * @public
+     */
+    move (element: HTMLElement): HTMLElement
+    {
+        element.style.left = `${this.offsetLeft}px`;
+        element.style.top  = `${this.offsetTop}px`;
+        return element;
+    }
 }
