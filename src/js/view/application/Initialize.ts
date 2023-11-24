@@ -1,4 +1,4 @@
-import { execute as viewInitializeUseCase } from "./View/usecase/ViewInitializeUseCase";
+import { execute as viewInitializeRegisterEventUseCase } from "./View/usecase/ViewInitializeRegisterEventUseCase";
 /**
  * @description Viewコンテナの初期起動関数
  *              Initial startup function of the View container
@@ -10,5 +10,5 @@ import { execute as viewInitializeUseCase } from "./View/usecase/ViewInitializeU
 export const execute = (): void =>
 {
     // 初期起動時のユースケース
-    viewInitializeUseCase();
+    viewInitializeRegisterEventUseCase();
 };

@@ -1,3 +1,4 @@
+import { execute as controllerInitializeRegisterEventUseCase } from "@/controller/application/Controller/usecase/ControllerInitializeRegisterEventUseCase";
 import {
     stageSetting,
     controllerTab
@@ -24,6 +25,9 @@ const settings: any[] = [
  */
 export const execute = async (): Promise<void> =>
 {
+    // イベント登録
+    controllerInitializeRegisterEventUseCase();
+
     // 起動
     const promises: Promise<void>[] = [];
     for (let idx: number = 0; idx < settings.length; ++idx) {

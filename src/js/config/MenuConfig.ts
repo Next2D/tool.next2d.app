@@ -59,7 +59,7 @@ export const $SCREEN_MENU_NAME: string = "screen-menu";
  * @type {string}
  * @constant
  */
-export const $SCREEN_ORDER_NAME: string = "screen-order-menu";
+export const $SCREEN_ORDER_MENU_NAME: string = "screen-order-menu";
 
 /**
  * @description 整列メニューの名前
@@ -68,4 +68,31 @@ export const $SCREEN_ORDER_NAME: string = "screen-order-menu";
  * @type {string}
  * @constant
  */
-export const $SCREEN_ALIGN_NAME: string = "screen-align-menu";
+export const $SCREEN_ALIGN_MENU_NAME: string = "screen-align-menu";
+
+/**
+ * @description タイムラインメニューの名前
+ *              Timeline Menu Name
+ *
+ * @type {string}
+ * @constant
+ */
+export const $TIMELINE_MENU_NAME: string = "timeline-menu";
+
+/**
+ * @description タイムラインのヘッダーメニューの名前
+ *              Timeline Header Menu Name
+ *
+ * @type {string}
+ * @constant
+ */
+export const $TIMELINE_HEADER_MENU_NAME: string = "timeline-header-menu";
+
+/**
+ * @description タイムラインのレイヤーメニューの名前
+ *              Timeline Layer Menu Name
+ *
+ * @type {string}
+ * @constant
+ */
+export const $TIMELINE_LAYER_MENU_NAME: string = "timeline-layer-menu";

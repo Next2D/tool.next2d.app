@@ -7,6 +7,9 @@ import { ScreenTabMenu } from "../domain/model/ScreenTabMenu";
 import { ScreenMenu } from "../domain/model/ScreenMenu";
 import { ScreenOrderMenu } from "../domain/model/ScreenOrderMenu";
 import { ScreenAlignMenu } from "../domain/model/ScreenAlignMenu";
+import { TimelineMenu } from "../domain/model/TimelineMenu";
+import { TimelineHeaderMenu } from "../domain/model/TimelineHeaderMenu";
+import { TimelineLayerMenu } from "../domain/model/TimelineLayerMenu";
 
 /**
  * @description 起動対象のToolクラスの配列
@@ -22,7 +25,10 @@ const menus: MenuImpl<any>[] = [
     ScreenTabMenu,
     ScreenMenu,
     ScreenOrderMenu,
-    ScreenAlignMenu
+    ScreenAlignMenu,
+    TimelineMenu,
+    TimelineHeaderMenu,
+    TimelineLayerMenu
 ];
 
 /**

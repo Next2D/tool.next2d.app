@@ -1,8 +1,8 @@
 import { $allHideMenu } from "@/menu/application/MenuUtil";
 
 /**
- * @description Viewコンテナでマウスダウンした際の関数
- *              Function on mouse down in View container
+ * @description コントローラーエリアでマウスダウンした際の関数
+ *              Function when mouse down in controller area
  *
  * @return {void}
  * @method

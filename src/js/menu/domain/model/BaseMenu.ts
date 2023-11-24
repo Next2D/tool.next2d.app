@@ -130,16 +130,16 @@ export class BaseMenu
      */
     show (): void
     {
+        if (!this._$element) {
+            return ;
+        }
+        this.move(this._$element);
+
         if (this._$state === "show") {
             return ;
         }
         this._$state = "show";
 
-        if (!this._$element) {
-            return ;
-        }
-
-        this.move(this._$element);
         this._$element.setAttribute("class", "fadeIn");
     }
 

@@ -1,4 +1,4 @@
-import { $SCREEN_ORDER_NAME } from "@/config/MenuConfig";
+import { $SCREEN_ORDER_MENU_NAME } from "@/config/MenuConfig";
 import { BaseMenu } from "./BaseMenu";
 
 /**
@@ -17,7 +17,7 @@ export class ScreenOrderMenu extends BaseMenu
      */
     constructor ()
     {
-        super($SCREEN_ORDER_NAME);
+        super($SCREEN_ORDER_MENU_NAME);
     }
 
     /**

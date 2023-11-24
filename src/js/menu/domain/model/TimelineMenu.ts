@@ -1,15 +1,15 @@
+import { $TIMELINE_MENU_NAME } from "@/config/MenuConfig";
 import { BaseMenu } from "./BaseMenu";
-import { $SCREEN_ALIGN_MENU_NAME } from "@/config/MenuConfig";
 
 /**
- * @description 整列のメニュークラス
- *              Alignment menu class
+ * @description レイヤーのメニュークラス
+ *              Layer menu class
  *
  * @class
  * @public
  * @extends {BaseMenu}
  */
-export class ScreenAlignMenu extends BaseMenu
+export class TimelineMenu extends BaseMenu
 {
     /**
      * @constructor
@@ -17,7 +17,7 @@ export class ScreenAlignMenu extends BaseMenu
      */
     constructor ()
     {
-        super($SCREEN_ALIGN_MENU_NAME);
+        super($TIMELINE_MENU_NAME);
     }
 
     /**
