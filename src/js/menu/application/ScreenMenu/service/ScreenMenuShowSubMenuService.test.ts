@@ -1,6 +1,6 @@
 import { $SCREEN_MENU_NAME } from "../../../../config/MenuConfig";
 import { $registerMenu } from "../../MenuUtil";
-// import { execute } from "./ScreenMenuShowSubMenuService";
+import { execute } from "./ScreenMenuShowSubMenuService";
 
 describe("ScreenMenuShowSubMenuServiceTest", () =>
 {
@@ -59,35 +59,35 @@ describe("ScreenMenuShowSubMenuServiceTest", () =>
         document.body.appendChild(parent);
         parent.id = $SCREEN_MENU_NAME;
 
-        // expect(orderMenuMock.offsetLeft).toBe(0);
-        // expect(orderMenuMock.offsetTop).toBe(0);
-        // expect(alignMenuMock.offsetLeft).toBe(0);
-        // expect(alignMenuMock.offsetTop).toBe(0);
+        expect(orderMenuMock.offsetLeft).toBe(0);
+        expect(orderMenuMock.offsetTop).toBe(0);
+        expect(alignMenuMock.offsetLeft).toBe(0);
+        expect(alignMenuMock.offsetTop).toBe(0);
         expect(alignState).toBe("hide");
         expect(orderState).toBe("hide");
         expect(state).toBe("on");
 
         // 表示順を表示
         eventMock.target = alignElement;
-        // execute(eventMock);
-        // expect(orderMenuMock.offsetLeft).toBe(0);
-        // expect(orderMenuMock.offsetTop).toBe(0);
-        // expect(alignMenuMock.offsetLeft).toBe(-5);
-        // expect(alignMenuMock.offsetTop).toBe(20);
-        // expect(alignState).toBe("show");
-        // expect(orderState).toBe("hide");
-        // expect(state).toBe("off");
+        execute(eventMock);
+        expect(orderMenuMock.offsetLeft).toBe(0);
+        expect(orderMenuMock.offsetTop).toBe(0);
+        expect(alignMenuMock.offsetLeft).toBe(-5);
+        expect(alignMenuMock.offsetTop).toBe(20);
+        expect(alignState).toBe("show");
+        expect(orderState).toBe("hide");
+        expect(state).toBe("off");
 
         // 整列を表示
         eventMock.target = orderElement;
-        // execute(eventMock);
-        // expect(orderMenuMock.offsetLeft).toBe(-5);
-        // expect(orderMenuMock.offsetTop).toBe(20);
-        // expect(alignMenuMock.offsetLeft).toBe(-5);
-        // expect(alignMenuMock.offsetTop).toBe(20);
-        // expect(alignState).toBe("hide");
-        // expect(orderState).toBe("show");
-        // expect(state).toBe("off");
+        execute(eventMock);
+        expect(orderMenuMock.offsetLeft).toBe(-5);
+        expect(orderMenuMock.offsetTop).toBe(20);
+        expect(alignMenuMock.offsetLeft).toBe(-5);
+        expect(alignMenuMock.offsetTop).toBe(20);
+        expect(alignState).toBe("hide");
+        expect(orderState).toBe("show");
+        expect(state).toBe("off");
 
         parent.remove();
         alignElement.remove();

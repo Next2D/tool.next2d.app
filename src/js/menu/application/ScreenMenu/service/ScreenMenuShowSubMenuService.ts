@@ -1,7 +1,6 @@
 import { $SCREEN_MENU_NAME } from "@/config/MenuConfig";
 import { $getMenu } from "../../MenuUtil";
 import type { MenuImpl } from "@/interface/MenuImpl";
-import { $registerMenu } from "../../MenuUtil";
 
 /**
  * @description スクリーンエリアのサブメニューを全て非表示にする
