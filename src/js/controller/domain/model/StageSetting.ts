@@ -1,5 +1,3 @@
-import { execute as stageSettingInitializeRegisterEventUseCase } from "../../application/StageSetting/usecase/StageSettingInitializeRegisterEventUseCase";
-
 /**
  * @description ステージ設定の管理クラス
  *              Management class for stage setup
@@ -30,8 +28,7 @@ export class StageSetting
      */
     initialize (): void
     {
-        // ステージ設定の初期起動時のイベント登録
-        stageSettingInitializeRegisterEventUseCase();
+        // TODO
     }
 
     /**

@@ -15,3 +15,12 @@ export const $LIBRARY_PREVIEW_AREA_ID: string = "library-preview-area";
  * @constant
  */
 export const $LIBRARY_ID: string = "library";
+
+/**
+ * @description ライブラリ一覧のElementのID
+ *              ID of Element in the library list
+ *
+ * @type {string}
+ * @constant
+ */
+export const $LIBRARY_LIST_BOX_ID: string = "library-list-box";

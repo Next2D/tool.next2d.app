@@ -1,0 +1,14 @@
+#controller-area-property
+{
+    height     : calc(100vh - var(--controller-tab-area-height) - var(--ad) - var(--controller-padding-width));
+    padding    : 5px;
+    overflow-x : hidden;
+    overflow-y : auto;
+
+    .controller-border
+    {
+        margin        : 5px 0 5px 0;
+        width         : calc(var(--controller-width) - var(--controller-padding-width));
+        border-bottom : 1px solid #1c1c1c;
+    }
+}

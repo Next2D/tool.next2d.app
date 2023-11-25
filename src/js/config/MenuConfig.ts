@@ -96,3 +96,12 @@ export const $TIMELINE_HEADER_MENU_NAME: string = "timeline-header-menu";
  * @constant
  */
 export const $TIMELINE_LAYER_MENU_NAME: string = "timeline-layer-menu";
+
+/**
+ * @description ライブラリメニューの名前
+ *              Library Menu Name
+ *
+ * @type {string}
+ * @constant
+ */
+export const $LIBRARY_MENU_NAME: string = "library-menu";

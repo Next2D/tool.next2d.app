@@ -44,15 +44,6 @@ export const $STAGE_DEFAULT_COLOR: string = "#ffffff";
 export const $STAGE_SETTING_ID: string = "stage-setting";
 
 /**
- * @description タイトルのElementのID
- *              ID of the Element in the title
- *
- * @type {string}
- * @constant
- */
-export const $STAGE_SETTING_TITLE_ID: string = "stage-setting-title";
-
-/**
  * @description ステージの幅のElementのID
  *              ID of Element of Stage Width
  *

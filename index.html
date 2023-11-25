@@ -224,20 +224,19 @@
 
         <!-- controller-tab -->
         <div id="controller-tab-area">
-          <div class="tab active" data-tab-type="controller-area"><span class="language" data-text="{{プロパティ}}">プロパティ</span></div>
+          <div class="tab active" data-tab-type="controller-area-property"><span class="language" data-text="{{プロパティ}}">プロパティ</span></div>
           <div class="tab disable" data-tab-type="controller-area-library"><span class="language" data-text="{{ライブラリ}}">ライブラリ</span></div>
           <div class="tab disable" data-tab-type="controller-area-js">JavaScript</div>
           <div class="tab disable" data-tab-type="controller-area-plugin"><span class="language" data-text="{{プラグイン}}">プラグイン</span></div>
         </div>
 
         <!-- controller-area -->
-        <div id="controller-area">
-          <div id="controller-area-property">
+        <div id="controller-area-property">
 
             <!-- stage-setting -->
             <div id="stage-setting">
 
-              <div id="stage-setting-title">
+              <div class="container-title" data-setting-name="stage">
                   <i class="active"></i>
                   <span class="language" data-text="{{ステージ設定}}">ステージ設定</span>
               </div>
@@ -288,7 +287,7 @@
             <!-- ruler-setting -->
             <div id="ruler-setting">
         
-                <div id="ruler-setting-title">
+                <div class="container-title" data-setting-name="ruler">
                     <i class="active"></i>
                     <span class="language" data-text="{{定規}}">定規</span>
                 </div>
@@ -314,7 +313,7 @@
       
             <!-- object-setting -->
             <div id="object-setting">
-                <div id="object-setting-title">
+                <div class="container-title" data-setting-name="object">
                     <i class="active"></i>
                     <span class="language" data-text="{{オブジェクト}}">オブジェクト</span>
                 </div>
@@ -341,7 +340,7 @@
       
             <!-- sound-setting -->
             <div id="sound-setting">
-                <div id="sound-setting-title">
+                <div class="container-title" data-setting-name="sound">
                     <i class="active"></i>
                     <span class="language" data-text="{{サウンド}}">サウンド</span>
                 </div>
@@ -362,7 +361,7 @@
 
               <!-- ease-setting -->
               <div id="ease-setting">
-                <div id="ease-setting-title">
+                <div class="container-title" data-setting-name="ease">
                     <i class="active"></i>
                     <span class="language" data-text="{{イージング}}">イージング</span>
                 </div>
@@ -437,7 +436,7 @@
 
               <!-- video-setting -->
               <div id="video-setting">
-                <div id="video-setting-title">
+                <div class="container-title" data-setting-name="video">
                     <i class="active"></i>
                     <span class="language" data-text="{{ビデオ}}">ビデオ</span>
                 </div>
@@ -475,7 +474,7 @@
               <!-- text-setting -->
               <div id="text-setting">
 
-                <div id="text-setting-title">
+                <div class="container-title" data-setting-name="text">
                     <i class="active"></i>
                     <span class="language" data-text="{{テキスト}}">テキスト</span>
                 </div>
@@ -604,7 +603,7 @@
               <!-- transform-setting -->
               <div id="transform-setting">
 
-                <div id="transform-setting-title">
+                <div class="container-title" data-setting-name="transform">
                     <i class="active"></i>
                     <span class="language" data-text="{{変形}}">変形</span>
                 </div>
@@ -686,7 +685,7 @@
               <!-- color-setting -->
               <div id="color-setting">
 
-                <div id="color-setting-title">
+                <div class="container-title" data-setting-name="color">
                     <i class="active"></i>
                     <span class="language" data-text="{{カラー効果}}">カラー効果</span>
                 </div>
@@ -736,7 +735,7 @@
               <!-- align-setting -->
               <div id="align-setting">
 
-                <div id="align-setting-title">
+                <div class="container-title" data-setting-name="align">
                     <i class="active"></i>
                     <span class="language" data-text="{{整列}}">整列</span>
                 </div>
@@ -774,7 +773,7 @@
               <!-- reference-setting -->
               <div id="reference-setting">
 
-                <div id="reference-setting-title">
+                <div class="container-title" data-setting-name="reference">
                     <i class="active"></i>
                     <span class="language" data-text="{{基準点}}">基準点</span>
                 </div>
@@ -812,7 +811,9 @@
             
               <!-- nine-slice-setting -->
               <div id="nine-slice-setting">
-                <div id="nine-slice-setting-title"><i class="active"></i>9-slice</div>
+                <div class="container-title" data-setting-name="nine-slice">
+                    <i class="active"></i>9-slice
+                </div>
             
                 <div id="nine-slice-setting-view-area">
                     <div class="nine-slice-setting-container">
@@ -836,7 +837,7 @@
 
               <!-- fill-color-setting -->
               <div id="fill-color-setting">
-                <div id="fill-color-setting-title">
+                <div class="container-title" data-setting-name="fill-color">
                     <i class="active"></i>
                     <span class="language" data-text="{{Shapeの色設定}}">Shapeの色設定</span>
                 </div>
@@ -893,7 +894,7 @@
 
               <!-- loop-setting -->
               <div id="loop-setting">
-                <div id="loop-setting-title">
+                <div class="container-title" data-setting-name="loop">
                     <i class="active"></i>
                     <span class="language" data-text="{{カスタムループ}}">Custom Loop</span>
                 </div>
@@ -934,7 +935,7 @@
               <!-- blend-setting -->
               <div id="blend-setting">
 
-                <div id="blend-setting-title">
+                <div class="container-title" data-setting-name="blend">
                     <i class="active"></i>
                     <span class="language" data-text="{{ブレンドモード}}">ブレンドモード</span>
                 </div>
@@ -967,7 +968,7 @@
               <!-- filter-setting -->
               <div id="filter-setting">
 
-                <div id="filter-setting-title">
+                <div class="container-title" data-setting-name="filter">
                     <i class="active"></i>
                     <span class="language" data-text="{{フィルター}}">フィルター</span>
                 </div>
@@ -999,7 +1000,6 @@
 
             </div>
 
-          </div>
         </div>
 
         <!-- library-area -->

@@ -1,5 +1,4 @@
-import { execute } from "./StageSettingTitleMouseDownEventService";
-import { $STAGE_SETTING_TITLE_ID, $STAGE_SETTING_ID } from "../../../../config/StageSettingConfig";
+import { execute } from "./ControllerTitleMouseDownEventService";
 
 describe("StageSettingTitleMouseDownEventServiceTest", () =>
 {
@@ -7,42 +6,43 @@ describe("StageSettingTitleMouseDownEventServiceTest", () =>
     {
         const parentElement = document.createElement("div");
         document.body.appendChild(parentElement);
-        parentElement.id = $STAGE_SETTING_TITLE_ID;
+        parentElement.dataset.settingName = "stage";
 
-        const iconElement = document.createElement("div");
+        const iconElement = document.createElement("i");
         parentElement.appendChild(iconElement);
         iconElement.setAttribute("class", "active");
 
-        const areaElement = document.createElement("div");
-        document.body.appendChild(areaElement);
-        areaElement.id = `${$STAGE_SETTING_ID}-view-area`;
-        areaElement.style.display = "";
+        const viewAreaElement = document.createElement("div");
+        document.body.appendChild(viewAreaElement);
+        viewAreaElement.id = "stage-setting-view-area";
+        viewAreaElement.style.display = "";
 
         let state = "on";
         const eventMock = {
             "stopPropagation": () =>
             {
                 state = "off";
-            }
+            },
+            "currentTarget": parentElement
         };
 
         expect(state).toBe("on");
-        expect(areaElement.style.display).toBe("");
+        expect(viewAreaElement.style.display).toBe("");
         expect(iconElement.classList.contains("active")).toBe(true);
 
         // 非表示
         execute(eventMock);
         expect(state).toBe("off");
-        expect(areaElement.style.display).toBe("none");
+        expect(viewAreaElement.style.display).toBe("none");
         expect(iconElement.classList.contains("active")).toBe(false);
 
         // 表示
         execute(eventMock);
         expect(state).toBe("off");
-        expect(areaElement.style.display).toBe("");
+        expect(viewAreaElement.style.display).toBe("");
         expect(iconElement.classList.contains("disable")).toBe(false);
 
         parentElement.remove();
-        areaElement.remove();
+        viewAreaElement.remove();
     });
 });

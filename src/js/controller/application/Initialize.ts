@@ -1,4 +1,4 @@
-import { execute as controllerInitializeRegisterEventUseCase } from "@/controller/application/Controller/usecase/ControllerInitializeRegisterEventUseCase";
+import { execute as controllerInitializeRegisterEventUseCase } from "@/controller/application/ControllerArea/usecase/ControllerInitializeRegisterEventUseCase";
 import {
     stageSetting,
     controllerTab
