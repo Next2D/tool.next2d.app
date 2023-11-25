@@ -1,5 +1,5 @@
 import { EventType } from "@/tool/domain/event/EventType";
-import { execute as timelineAdjustmentYMouseMoveService } from "./TimelineAdjustmentYMouseMoveService";
+import { execute as timelineAdjustmentYMouseMoveUseCase } from "../usecase/TimelineAdjustmentYMouseMoveUseCase";
 import { $TIMELINE_ID } from "@/config/TimelineConfig";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 
@@ -36,6 +36,6 @@ export const execute = (event: PointerEvent): void =>
     }
 
     // 移動イベントを削除
-    window.removeEventListener(EventType.MOUSE_MOVE, timelineAdjustmentYMouseMoveService);
+    window.removeEventListener(EventType.MOUSE_MOVE, timelineAdjustmentYMouseMoveUseCase);
     window.removeEventListener(EventType.MOUSE_UP, execute);
 };

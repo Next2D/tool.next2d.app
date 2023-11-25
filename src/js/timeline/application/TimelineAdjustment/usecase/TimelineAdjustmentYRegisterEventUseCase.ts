@@ -1,5 +1,5 @@
 import { EventType } from "@/tool/domain/event/EventType";
-import { execute as timelineAdjustmentYMouseMoveService } from "../service/TimelineAdjustmentYMouseMoveService";
+import { execute as timelineAdjustmentYMouseMoveUseCase } from "./TimelineAdjustmentYMouseMoveUseCase";
 import { execute as timelineAdjustmentYMouseUpService } from "../service/TimelineAdjustmentYMouseUpService";
 
 /**
@@ -16,6 +16,6 @@ export const execute = (event: PointerEvent): void =>
     event.stopPropagation();
 
     // マウス移動イベントを登録
-    window.addEventListener(EventType.MOUSE_MOVE, timelineAdjustmentYMouseMoveService);
+    window.addEventListener(EventType.MOUSE_MOVE, timelineAdjustmentYMouseMoveUseCase);
     window.addEventListener(EventType.MOUSE_UP, timelineAdjustmentYMouseUpService);
 };

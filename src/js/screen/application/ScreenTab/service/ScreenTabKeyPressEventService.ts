@@ -13,7 +13,7 @@ export const execute = (event: KeyboardEvent): void =>
         return ;
     }
 
-    if (!event.target) {
+    if (!event.currentTarget) {
         return ;
     }
 

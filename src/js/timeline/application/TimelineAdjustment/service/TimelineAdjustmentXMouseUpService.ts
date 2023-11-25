@@ -1,5 +1,5 @@
 import { EventType } from "@/tool/domain/event/EventType";
-import { execute as timelineAdjustmentXMouseMoveService } from "./TimelineAdjustmentXMouseMoveService";
+import { execute as timelineAdjustmentXMouseMoveUseCase } from "../usecase/TimelineAdjustmentXMouseMoveUseCase";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 
 /**
@@ -25,6 +25,6 @@ export const execute = (event: PointerEvent): void =>
     workSpace.timelineAreaState.width = width;
 
     // 移動イベントを削除
-    window.removeEventListener(EventType.MOUSE_MOVE, timelineAdjustmentXMouseMoveService);
+    window.removeEventListener(EventType.MOUSE_MOVE, timelineAdjustmentXMouseMoveUseCase);
     window.removeEventListener(EventType.MOUSE_UP, execute);
 };
