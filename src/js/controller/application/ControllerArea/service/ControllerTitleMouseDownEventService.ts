@@ -1,8 +1,3 @@
-import {
-    $STAGE_SETTING_ID,
-    $STAGE_SETTING_TITLE_ID
-} from "@/config/StageSettingConfig";
-
 /**
  * @description プロパティエリアのタイトルタップの実行関数
  *              Execution function of the title tap in the property area
