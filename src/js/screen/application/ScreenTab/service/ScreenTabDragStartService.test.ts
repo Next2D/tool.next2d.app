@@ -1,6 +1,6 @@
-import { execute } from "./ScreenTabDragStartService";
 import { $registerMenu } from "../../../../menu/application/MenuUtil";
 import { $getDragElement } from "../../ScreenUtil";
+import { execute } from "./ScreenTabDragStartService";
 
 describe("ScreenTabDragStartServiceTest", () =>
 {
@@ -23,7 +23,9 @@ describe("ScreenTabDragStartServiceTest", () =>
 
         expect($getDragElement()).toBe(null);
         expect(state).toBe("show");
+
         execute(mockEvent);
+
         expect($getDragElement()).toBe(div);
         expect(state).toBe("hide");
     });
