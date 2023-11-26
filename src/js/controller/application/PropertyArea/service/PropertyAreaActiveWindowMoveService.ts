@@ -16,7 +16,7 @@ export const execute = (event: PointerEvent): void =>
     event.preventDefault();
 
     // 遅延実行
-    requestAnimationFrame(() =>
+    requestAnimationFrame((): void =>
     {
         const element: HTMLElement | null = document
             .getElementById($CONTROLLER_AREA_PROPERTY_ID);

@@ -1,5 +1,4 @@
 import { $TOOL_PREFIX } from "@/config/ToolConfig";
-import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 
 /**
  * @description ツールエリアの移動処理
@@ -12,17 +11,11 @@ import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
  */
 export const execute = (event: PointerEvent): void =>
 {
-    // 親のイベントを中止する
-    // const workSpace = $getCurrentWorkSpace();
-    // if (workSpace.toolAreaState.state === "fixed") {
-    //     event.stopPropagation();
-    // }
-
     event.stopPropagation();
     event.preventDefault();
 
     // 遅延実行
-    requestAnimationFrame(() =>
+    requestAnimationFrame((): void =>
     {
         const element: HTMLElement | null = document
             .getElementById($TOOL_PREFIX);
