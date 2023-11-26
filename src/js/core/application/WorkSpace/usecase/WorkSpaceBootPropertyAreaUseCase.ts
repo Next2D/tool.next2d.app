@@ -6,10 +6,10 @@ import { execute as propertyAreaHideTabService } from "@/controller/application/
 import { execute as propertyAreaChageStyleToInactiveService } from "@/controller/application/PropertyArea/service/PropertyAreaChageStyleToInactiveService";
 
 /**
- * @description WorkSpaceに保存されてるobjectからコントロールエリアのstyleを更新
- *              Update control area styles from objects stored in WorkSpace
+ * @description WorkSpaceに保存されてるobjectからプロパティエリアのstyleを更新
+ *              Update styles in the property area from objects stored in WorkSpace
  *
- * @param  {object} tool_area_state
+ * @param  {object} property_area_state
  * @return {void}
  * @method
  * @public
@@ -25,10 +25,16 @@ export const execute = (property_area_state: UserPropertyAreaStateObjectImpl): v
 
     // 状態に合わせてstyleを更新
     if (property_area_state.state === "move") {
+        // styleを移動モードに変更する
         propertyAreaChageStyleToActiveService(element);
+
+        // プロパティタブを非表示にする
         propertyAreaHideTabService();
     } else {
+        // styleを元に戻す
         propertyAreaChageStyleToInactiveService(element);
+
+        // プロパティタブを表示する
         propertyAreaShowTabService();
     }
 };

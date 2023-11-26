@@ -11,8 +11,8 @@ import {
 } from "../PropertyAreaUtil";
 
 /**
- * @description タイムラインエリアを移動可能な状態にする
- *              Make the tool area movable
+ * @description プロパティエリアを移動可能な状態にする
+ *              Make the property area movable
  *
  * @return {void}
  * @method
@@ -43,7 +43,7 @@ export const execute = (): void =>
         if (workSpace.propertyAreaState.state === "fixed") {
 
             // ツールエリアを移動モードに設定
-            workSpace.propertyAreaState.state = "move";
+            workSpace.propertyAreaState.state      = "move";
             workSpace.propertyAreaState.offsetLeft = element.offsetLeft;
             workSpace.propertyAreaState.offsetTop  = element.offsetTop;
 

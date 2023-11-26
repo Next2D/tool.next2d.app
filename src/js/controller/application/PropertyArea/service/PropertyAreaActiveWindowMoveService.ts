@@ -1,9 +1,8 @@
 import { $CONTROLLER_AREA_PROPERTY_ID } from "@/config/PropertyConfig";
-import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 
 /**
- * @description ツールエリアの移動処理
- *              Tool Area Movement Process
+ * @description プロパティエリアの移動処理
+ *              Movement process for property area
  *
  * @params {PointerEvent} event
  * @return {void}
@@ -13,11 +12,7 @@ import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 export const execute = (event: PointerEvent): void =>
 {
     // 親のイベントを中止する
-    const workSpace = $getCurrentWorkSpace();
-    if (workSpace.propertyAreaState.state === "fixed") {
-        event.stopPropagation();
-    }
-
+    event.stopPropagation();
     event.preventDefault();
 
     // 遅延実行

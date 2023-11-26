@@ -6,8 +6,8 @@ import { execute as propertyAreaMouseUpEventUseCase } from "../usecase/PropertyA
 import { execute as propertyAreaMouseDownEventUseCase } from "../usecase/PropertyAreaMouseDownEventUseCase";
 
 /**
- * @description プロパティーエリアの移動イベント登録
- *              Property Area Move Event Registration
+ * @description プロパティーエリアの移動イベントを登録
+ *              Register property area move events
  *
  * @return {void}
  * @method

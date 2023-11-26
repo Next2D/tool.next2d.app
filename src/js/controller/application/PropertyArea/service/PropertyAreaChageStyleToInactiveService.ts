@@ -1,6 +1,6 @@
 /**
- * @description プロパティエリアを移動可能な状態にする
- *              Make the timeline area movable
+ * @description プロパティエリアを固定位置に戻す
+ *              Return property area to fixed position
  *
  * @param  {HTMLElement} element
  * @return {void}
@@ -18,4 +18,5 @@ export const execute = (element: HTMLElement): void =>
     element.style.boxShadow       = "";
     element.style.position        = "";
     element.style.backgroundColor = "";
+    element.style.display         = "";
 };

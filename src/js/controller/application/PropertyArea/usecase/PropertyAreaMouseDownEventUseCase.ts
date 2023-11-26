@@ -29,9 +29,10 @@ let wait: boolean = false;
 let activeTimerId: NodeJS.Timeout | number = 0;
 
 /**
- * @description タイムラインエリアのマウスダウン処理
+ * @description プロパティエリアのマウスダウン処理
  *              Mouse down process for timeline area
  *
+ * @param   {PointerEvent} event
  * @returns {void}
  * @method
  * @public
@@ -72,7 +73,7 @@ export const execute = (event: PointerEvent): void =>
         // 長押し待機モードをonにする
         $setStandbyMoveState(true);
 
-        // ツールエリアの移動判定関数をタイマーにセット
+        // プロパティエリアの移動判定関数をタイマーにセット
         activeTimerId = setTimeout((): void =>
         {
             propertyAreaActiveMoveUseCase();
@@ -89,18 +90,20 @@ export const execute = (event: PointerEvent): void =>
         // 長押し待機モードをoffにする
         $setStandbyMoveState(false);
 
-        // ツールエリアが固定位置にあれば終了
+        // プロパティエリアが固定位置にあれば終了
         const workSpace = $getCurrentWorkSpace();
         if (workSpace.propertyAreaState.state === "fixed") {
             return ;
         }
 
-        // 高さ以外を固定状態で保存
-        workSpace.propertyAreaState.state      = "fixed";
-        workSpace.propertyAreaState.offsetLeft = 0;
-        workSpace.propertyAreaState.offsetTop  = 0;
+        // 固定位置に戻す
+        workSpace.updatePropertyArea({
+            "state": "fixed",
+            "offsetLeft": 0,
+            "offsetTop": 0
+        });
 
-        // ツールエリアのstyleを固定位置に移動
+        // プロパティエリアのstyleを固定位置に移動
         const element: HTMLElement | null = document
             .getElementById($CONTROLLER_AREA_PROPERTY_ID);
 
@@ -111,7 +114,7 @@ export const execute = (event: PointerEvent): void =>
         // styleを元に戻す
         propertyAreaChageStyleToInactiveService(element);
 
-        // プロパティータブを表示する
+        // プロパティタブを表示する
         propertyAreaShowTabService();
     }
 };

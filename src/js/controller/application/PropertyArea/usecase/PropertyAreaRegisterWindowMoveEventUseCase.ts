@@ -3,8 +3,8 @@ import { execute as propertyAreaActiveWindowMoveService } from "../service/Prope
 import { execute as propertyAreaActiveWindowMouseUpUseCase } from "../usecase/PropertyAreaActiveWindowMouseUpUseCase";
 
 /**
- * @description ツールエリアの移動関数をwindowに登録
- *              Register tool area move function in window
+ * @description プロパティエリアの移動関数をwindowに登録
+ *              Register property area move function to window
  *
  * @return {void}
  * @method

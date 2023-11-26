@@ -2,8 +2,8 @@ import { $CONTROLLER_DEFAULT_WIDTH_SIZE } from "@/config/ControllerConfig";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 
 /**
- * @description タイムラインエリアを移動可能な状態にする
- *              Make the timeline area movable
+ * @description プロパティエリアを移動可能な状態にする
+ *              Make the property area movable
  *
  * @param  {HTMLElement} element
  * @return {void}

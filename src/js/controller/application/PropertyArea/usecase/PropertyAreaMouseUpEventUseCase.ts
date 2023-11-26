@@ -1,8 +1,8 @@
 import { $setMouseState } from "../PropertyAreaUtil";
 
 /**
- * @description タイムラインエリアのマウスアップイベント
- *              Mouse-up events in the timeline area.
+ * @description プロパティエリアのマウスアップイベント
+ *              Mouse-up event in property area
  *
  * @return {void}
  * @method

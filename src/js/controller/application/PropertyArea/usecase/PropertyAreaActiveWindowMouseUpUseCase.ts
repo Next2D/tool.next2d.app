@@ -5,8 +5,8 @@ import { $CONTROLLER_AREA_PROPERTY_ID } from "@/config/PropertyConfig";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 
 /**
- * @description 選択中のツールの移動イベント関数
- *              Move event function for the currently selected tool
+ * @description プロパティエリアの移動終了関数
+ *              Property area move end function
  *
  * @param  {PointerEvent} event
  * @return {void}

@@ -18,14 +18,48 @@ export const execute = (): void =>
     }
 
     const propertyTabElement: HTMLElement | undefined = element.children[0] as HTMLElement;
-    if (propertyTabElement) {
-        propertyTabElement.style.display = "";
+    if (!propertyTabElement) {
+        return ;
+    }
 
-        const element: HTMLElement | null = document
-            .getElementById(propertyTabElement.dataset.tabType as string);
+    // プロパティタブを表示
+    propertyTabElement.style.display = "";
 
-        if (element) {
-            element.style.display = "none";
+    // アクティブに更新
+    propertyTabElement.classList.remove("disable");
+    propertyTabElement.classList.add("active");
+
+    const targetElement: HTMLElement | null = document
+        .getElementById(propertyTabElement.dataset.tabType as string);
+
+    if (!targetElement) {
+        return ;
+    }
+
+    // プロパティエリアを表示
+    targetElement.style.display = "";
+
+    // 他のタブを非アクティブにして非表示に更新
+    const length: number = element.children.length;
+    for (let idx: number = 1; idx < length; ++idx) {
+
+        const node: HTMLElement | undefined = element.children[idx] as HTMLElement;
+        if (!node) {
+            continue;
         }
+
+        // 非アクティブに更新
+        node.classList.add("disable");
+        node.classList.remove("active");
+
+        const targetElement: HTMLElement | null = document
+            .getElementById(node.dataset.tabType as string);
+
+        if (!targetElement) {
+            continue;
+        }
+
+        // 非表示に更新
+        targetElement.style.display = "none";
     }
 };
