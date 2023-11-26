@@ -3,6 +3,7 @@ import { execute as userAllFunctionStateService } from "@/user/application/Billi
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { execute as propertyAreaActiveMoveUseCase } from "./PropertyAreaActiveMoveUseCase";
 import { execute as propertyAreaChageStyleToInactiveService } from "../service/PropertyAreaChageStyleToInactiveService";
+import { execute as propertyAreaShowTabService } from "../service/PropertyAreaShowTabService";
 import {
     $setStandbyMoveState,
     $setMouseState
@@ -107,6 +108,10 @@ export const execute = (event: PointerEvent): void =>
             return ;
         }
 
+        // styleを元に戻す
         propertyAreaChageStyleToInactiveService(element);
+
+        // プロパティータブを表示する
+        propertyAreaShowTabService();
     }
 };

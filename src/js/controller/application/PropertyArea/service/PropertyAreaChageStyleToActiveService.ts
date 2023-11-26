@@ -16,7 +16,8 @@ export const execute = (element: HTMLElement): void =>
     const propertyAreaState = workSpace.propertyAreaState;
 
     // タイムラインエリアのstyleを変更
-    element.style.width            = `${$CONTROLLER_DEFAULT_WIDTH_SIZE}px`;
+    element.style.display         = "";
+    element.style.width           = `${$CONTROLLER_DEFAULT_WIDTH_SIZE}px`;
     element.style.height          = "96vh";
     element.style.left            = `${propertyAreaState.offsetLeft}px`;
     element.style.top             = `${propertyAreaState.offsetTop}px`;

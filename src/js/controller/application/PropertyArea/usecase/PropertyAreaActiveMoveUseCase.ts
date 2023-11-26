@@ -3,6 +3,7 @@ import { $setCursor } from "@/global/GlobalUtil";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { execute as propertyAreaChageStyleToActiveService } from "../service/PropertyAreaChageStyleToActiveService";
 import { execute as propertyAreaRegisterWindowMoveEventUseCase } from "./PropertyAreaRegisterWindowMoveEventUseCase";
+import { execute as propertyAreaHideTabService } from "../service/PropertyAreaHideTabService";
 import {
     $getMouseState,
     $getStandbyMoveState,
@@ -48,6 +49,9 @@ export const execute = (): void =>
 
             // ツールエリアのstyleを更新
             propertyAreaChageStyleToActiveService(element);
+
+            // タブを非表示にする
+            propertyAreaHideTabService();
         }
 
         // カーソルを移動用に変更
