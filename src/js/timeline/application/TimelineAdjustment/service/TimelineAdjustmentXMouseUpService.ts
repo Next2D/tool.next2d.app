@@ -1,6 +1,5 @@
 import { EventType } from "@/tool/domain/event/EventType";
 import { execute as timelineAdjustmentXMouseMoveUseCase } from "../usecase/TimelineAdjustmentXMouseMoveUseCase";
-import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 
 /**
  * @description タイムラインの幅の調整イベントをwindowから削除

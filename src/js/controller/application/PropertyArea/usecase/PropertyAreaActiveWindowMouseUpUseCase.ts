@@ -1,5 +1,5 @@
 import { EventType } from "@/tool/domain/event/EventType";
-import { execute as propertyAreaActiveWindowMoveService } from "../service/PropertyAreaActiveWindowMoveService"
+import { execute as propertyAreaActiveWindowMoveService } from "../service/PropertyAreaActiveWindowMoveService";
 import { $setCursor } from "@/global/GlobalUtil";
 import { $CONTROLLER_AREA_PROPERTY_ID } from "@/config/PropertyConfig";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
