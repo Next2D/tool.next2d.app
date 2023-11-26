@@ -1,6 +1,5 @@
 import { EventType } from "@/tool/domain/event/EventType";
-import { execute as timelineAdjustmentXMouseMoveUseCase } from "../usecase/TimelineAdjustmentXMouseMoveUseCase";
-import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
+import { execute as controllerAdjustmentMouseMoveUseCase } from "../usecase/ControllerAdjustmentMouseMoveUseCase";
 
 /**
  * @description タイムラインの幅の調整イベントをwindowから削除
@@ -16,6 +15,6 @@ export const execute = (event: PointerEvent): void =>
     event.stopPropagation();
 
     // 移動イベントを削除
-    window.removeEventListener(EventType.MOUSE_MOVE, timelineAdjustmentXMouseMoveUseCase);
+    window.removeEventListener(EventType.MOUSE_MOVE, controllerAdjustmentMouseMoveUseCase);
     window.removeEventListener(EventType.MOUSE_UP, execute);
 };

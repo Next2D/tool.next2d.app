@@ -1,4 +1,6 @@
 import { execute as controllerInitializeRegisterEventUseCase } from "@/controller/application/ControllerArea/usecase/ControllerInitializeRegisterEventUseCase";
+import { execute as propertyAreaInitializeRegisterEventUseCase } from "@/controller/application/PropertyArea/usecase/PropertyAreaInitializeRegisterEventUseCase";
+import { execute as controllerAdjustmentInitializeRegisterEventUseCase } from "@/controller/application/ControllerAdjustment/usecase/ControllerAdjustmentInitializeRegisterEventUseCase";
 import {
     stageSetting,
     controllerTab
@@ -25,10 +27,16 @@ const settings: any[] = [
  */
 export const execute = async (): Promise<void> =>
 {
-    // イベント登録
+    //  コントローラーエリアのイベント登録
     controllerInitializeRegisterEventUseCase();
 
-    // 起動
+    //  コントローラー幅調整のイベント登録
+    controllerAdjustmentInitializeRegisterEventUseCase();
+
+    // プロパティーの移動イベント登録
+    propertyAreaInitializeRegisterEventUseCase();
+
+    // 設定クラスの初期起動関数を実行
     const promises: Promise<void>[] = [];
     for (let idx: number = 0; idx < settings.length; ++idx) {
         const setting = settings[idx];

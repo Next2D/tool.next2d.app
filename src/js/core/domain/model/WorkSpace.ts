@@ -1,6 +1,7 @@
 import type { InstanceImpl } from "@/interface/InstanceImpl";
 import type { UserToolAreaStateObjectImpl } from "@/interface/UserToolAreaStateObjectImpl";
 import type { UserTimelineAreaStateObjectImpl } from "@/interface/UserTimelineAreaStateObjectImpl";
+import type { UserPropertyAreaStateObjectImpl } from "@/interface/UserPropertyAreaStateObjectImpl";
 import type { WorkSpaceSaveObjectImpl } from "@/interface/WorkSpaceSaveObjectImpl";
 import { ScreenTab } from "@/screen/domain/model/ScreenTab";
 import { MovieClip } from "./MovieClip";
@@ -11,6 +12,8 @@ import { execute as workSpaceInitializeUseCase } from "@/core/application/WorkSp
 import { execute as workSpaceRemoveUseCase } from "@/core/application/WorkSpace/usecase/WorkSpaceRemoveUseCase";
 import { $VERSION } from "@/config/Config";
 import { $TIMELINE_DEFAULT_HEIGHT_SIZE } from "@/config/TimelineConfig";
+import { $CONTROLLER_DEFAULT_WIDTH_SIZE } from "@/config/ControllerConfig";
+import { UserControllerAreaStateObjectImpl } from "@/interface/UserControllerAreaStateObjectImpl";
 
 /**
  * @description プロジェクトのユニークID
@@ -39,6 +42,8 @@ export class WorkSpace
     private readonly _$id: number;
     private readonly _$toolAreaState: UserToolAreaStateObjectImpl;
     private readonly _$timelineAreaState: UserTimelineAreaStateObjectImpl;
+    private readonly _$propertyAreaState: UserPropertyAreaStateObjectImpl;
+    private readonly _$controllerAreaState: UserControllerAreaStateObjectImpl;
     private _$plugins: Map<any, any>;
 
     /**
@@ -123,6 +128,24 @@ export class WorkSpace
             "offsetTop": 0,
             "width": 0,
             "height": $TIMELINE_DEFAULT_HEIGHT_SIZE
+        };
+
+        /**
+         * @type {object}
+         * @private
+         */
+        this._$propertyAreaState = {
+            "state": "fixed",
+            "offsetLeft": 0,
+            "offsetTop": 0
+        };
+
+        /**
+         * @type {object}
+         * @private
+         */
+        this._$controllerAreaState = {
+            "width": $CONTROLLER_DEFAULT_WIDTH_SIZE
         };
 
         // /**
@@ -252,6 +275,32 @@ export class WorkSpace
     }
 
     /**
+     * @description コントローラーエリアの状況オブジェクトを返却
+     *              Returns controller area status object
+     *
+     * @return {object}
+     * @readonly
+     * @public
+     */
+    get controllerAreaState (): UserControllerAreaStateObjectImpl
+    {
+        return this._$controllerAreaState;
+    }
+
+    /**
+     * @description プロパティエリアの移動状況のオブジェクトを返却
+     *              Returns an object of the movement status of the property area
+     *
+     * @return {object}
+     * @readonly
+     * @public
+     */
+    get propertyAreaState (): UserPropertyAreaStateObjectImpl
+    {
+        return this._$propertyAreaState;
+    }
+
+    /**
      * @description プロジェクト名を返す
      *              Return project name
      *
@@ -319,10 +368,23 @@ export class WorkSpace
         this._$stage.load(object.stage);
 
         // update tool area
-        this.updateToolArea(object.tool);
+        if (object.tool) {
+            this.updateToolArea(object.tool);
+        }
 
         // update timeline area
-        this.updateTimelineArea(object.timeline);
+        if (object.timeline) {
+            this.updateTimelineArea(object.timeline);
+        }
+
+        // update property area
+        if (object.property) {
+            this.updatePropertyArea(object.property);
+        }
+
+        if (object.controller) {
+            this.updateControllerArea(object.controller);
+        }
     }
 
     /**
@@ -342,6 +404,22 @@ export class WorkSpace
     }
 
     /**
+     * @description セーブデータからプロパティエリアの状態を読み込む
+     *              Read the state of the property area from the saved data
+     *
+     * @param  {object} object
+     * @return {void}
+     * @method
+     * @public
+     */
+    updatePropertyArea (object: UserPropertyAreaStateObjectImpl): void
+    {
+        this._$propertyAreaState.state      = object.state;
+        this._$propertyAreaState.offsetLeft = object.offsetLeft;
+        this._$propertyAreaState.offsetTop  = object.offsetTop;
+    }
+
+    /**
      * @description セーブデータからタイムラインエリアの状態を読み込む
      *              Read the state of the timeline area from the saved data
      *
@@ -357,6 +435,20 @@ export class WorkSpace
         this._$timelineAreaState.offsetTop  = object.offsetTop;
         this._$timelineAreaState.width      = object.width;
         this._$timelineAreaState.height     = object.height;
+    }
+
+    /**
+     * @description セーブデータからコントローラーエリアの状態を読み込む
+     *              Read controller area status from saved data
+     *
+     * @param  {object} object
+     * @return {void}
+     * @method
+     * @public
+     */
+    updateControllerArea (object: UserControllerAreaStateObjectImpl): void
+    {
+        this._$controllerAreaState.width  = object.width;
     }
 
     /**
@@ -429,7 +521,9 @@ export class WorkSpace
             "libraries": libraries,
             "plugins": Array.from(this._$plugins.values()),
             "tool": structuredClone(this._$toolAreaState),
-            "timeline": structuredClone(this._$timelineAreaState)
+            "timeline": structuredClone(this._$timelineAreaState),
+            "property": structuredClone(this._$propertyAreaState),
+            "controller": structuredClone(this._$controllerAreaState)
         };
     }
 }

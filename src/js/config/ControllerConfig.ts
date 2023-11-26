@@ -15,3 +15,21 @@ export const $CONTROLLER_ID: string = "controller";
  * @public
  */
 export const $CONTROLLER_TAB_AREA_ID: string = "controller-tab-area";
+
+/**
+ * @description コントローラー幅のタブのElement IDの名前
+ *              Name of the Element ID on the Controller Width tab
+ *
+ * @type {string}
+ * @public
+ */
+export const $CONTROLLER_ADJUSTMENT_ID: string = "controller-adjustment";
+
+/**
+ * @description コントローラー幅の初期値
+ *              Initial value of controller width
+ *
+ * @type {number}
+ * @constant
+ */
+export const $CONTROLLER_DEFAULT_WIDTH_SIZE: number = 360;

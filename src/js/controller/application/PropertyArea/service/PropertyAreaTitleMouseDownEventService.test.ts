@@ -1,6 +1,6 @@
-import { execute } from "./ControllerTitleMouseDownEventService";
+import { execute } from "./PropertyAreaTitleMouseDownEventService";
 
-describe("StageSettingTitleMouseDownEventServiceTest", () =>
+describe("PropertyAreaTitleMouseDownEventServiceTest", () =>
 {
     test("execute test", () =>
     {
