@@ -19,6 +19,7 @@ export const execute = (element: HTMLElement): void =>
         return ;
     }
 
+    element.style.height    = "96vh";
     element.style.left      = `${toolAreaState.offsetLeft}px`;
     element.style.top       = `${toolAreaState.offsetTop}px`;
     element.style.zIndex    = `${0xffffff}`;

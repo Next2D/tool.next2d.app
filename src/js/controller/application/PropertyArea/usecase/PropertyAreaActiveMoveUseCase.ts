@@ -1,6 +1,8 @@
 import { $CONTROLLER_AREA_PROPERTY_ID } from "@/config/PropertyConfig";
 import { $setCursor } from "@/global/GlobalUtil";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
+import { execute as propertyAreaChageStyleToActiveService } from "../service/PropertyAreaChageStyleToActiveService";
+import { execute as propertyAreaRegisterWindowMoveEventUseCase } from "./PropertyAreaRegisterWindowMoveEventUseCase";
 import {
     $getMouseState,
     $getStandbyMoveState,
@@ -45,14 +47,14 @@ export const execute = (): void =>
             workSpace.propertyAreaState.offsetTop  = element.offsetTop;
 
             // ツールエリアのstyleを更新
-            // propertyAreaChageStyleToActiveService(element);
+            propertyAreaChageStyleToActiveService(element);
         }
 
         // カーソルを移動用に変更
         $setCursor("move");
 
         // windowにイベントを登録
-        // timelinelAreaRegisterWindowMoveEventUseCase();
+        propertyAreaRegisterWindowMoveEventUseCase();
 
     } else {
 

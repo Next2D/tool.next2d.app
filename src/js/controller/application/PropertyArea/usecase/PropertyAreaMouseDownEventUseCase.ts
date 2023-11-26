@@ -1,7 +1,8 @@
-import { $TIMELINE_ID } from "@/config/TimelineConfig";
 import { $allHideMenu } from "@/menu/application/MenuUtil";
 import { execute as userAllFunctionStateService } from "@/user/application/Billing/service/UserAllFunctionStateService";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
+import { execute as propertyAreaActiveMoveUseCase } from "./PropertyAreaActiveMoveUseCase";
+import { execute as propertyAreaChageStyleToInactiveService } from "../service/PropertyAreaChageStyleToInactiveService";
 import {
     $setStandbyMoveState,
     $setMouseState
@@ -73,7 +74,7 @@ export const execute = (event: PointerEvent): void =>
         // ツールエリアの移動判定関数をタイマーにセット
         activeTimerId = setTimeout((): void =>
         {
-            // timelineAreaActiveMoveUseCase();
+            propertyAreaActiveMoveUseCase();
         }, 600);
 
     } else {
@@ -106,6 +107,6 @@ export const execute = (event: PointerEvent): void =>
             return ;
         }
 
-        // timelineAreaChageStyleToInactiveService(element);
+        propertyAreaChageStyleToInactiveService(element);
     }
 };

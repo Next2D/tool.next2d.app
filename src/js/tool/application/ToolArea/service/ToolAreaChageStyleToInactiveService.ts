@@ -12,6 +12,7 @@ import { $TOOL_AERA_WIDTH } from "@/config/ToolConfig";
 export const execute = (element: HTMLElement): void =>
 {
     // ツールエリアを初期値に移動
+    element.style.height    = "";
     element.style.left      = "";
     element.style.top       = "";
     element.style.zIndex    = "";

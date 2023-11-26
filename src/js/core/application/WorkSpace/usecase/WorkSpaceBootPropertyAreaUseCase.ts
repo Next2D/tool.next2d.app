@@ -1,4 +1,7 @@
+import { $CONTROLLER_AREA_PROPERTY_ID } from "@/config/PropertyConfig";
 import { UserPropertyAreaStateObjectImpl } from "@/interface/UserPropertyAreaStateObjectImpl";
+import { execute as propertyAreaChageStyleToActiveService } from "@/controller/application/PropertyArea/service/PropertyAreaChageStyleToActiveService";
+import { execute as propertyAreaChageStyleToInactiveService } from "@/controller/application/PropertyArea/service/PropertyAreaChageStyleToInactiveService";
 
 /**
  * @description WorkSpaceに保存されてるobjectからコントロールエリアのstyleを更新
@@ -11,5 +14,17 @@ import { UserPropertyAreaStateObjectImpl } from "@/interface/UserPropertyAreaSta
  */
 export const execute = (property_area_state: UserPropertyAreaStateObjectImpl): void =>
 {
-    console.log(property_area_state);
+    const element: HTMLElement | null = document
+        .getElementById($CONTROLLER_AREA_PROPERTY_ID);
+
+    if (!element) {
+        return ;
+    }
+
+    // 状態に合わせてstyleを更新
+    if (property_area_state.state === "move") {
+        propertyAreaChageStyleToActiveService(element);
+    } else {
+        propertyAreaChageStyleToInactiveService(element);
+    }
 };
