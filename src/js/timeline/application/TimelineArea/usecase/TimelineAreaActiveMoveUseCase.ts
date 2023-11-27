@@ -44,7 +44,7 @@ export const execute = (): void =>
         if (workSpace.timelineAreaState.state === "fixed") {
 
             // ツールエリアを移動モードに設定
-            workSpace.timelineAreaState.state = "move";
+            workSpace.timelineAreaState.state      = "move";
             workSpace.timelineAreaState.offsetLeft = element.offsetLeft;
             workSpace.timelineAreaState.offsetTop  = element.offsetTop;
 
