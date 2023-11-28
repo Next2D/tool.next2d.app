@@ -9,7 +9,7 @@ import { BaseMenu } from "./BaseMenu";
  * @public
  * @extends {BaseMenu}
  */
-export class TimelineLayerMenu extends BaseMenu
+export class TimelineLayerControllerMenu extends BaseMenu
 {
     /**
      * @constructor

@@ -1,14 +1,14 @@
-import { $TIMELINE_HEADER_MENU_NAME } from "@/config/MenuConfig";
-import type { TimelineHeaderMenu } from "@/menu/domain/model/TimelineHeaderMenu";
+import { $TIMELINE_LAYER_MENU_NAME } from "@/config/MenuConfig";
 import type { MenuImpl } from "@/interface/MenuImpl";
+import type { TimelineLayerControllerMenu } from "@/menu/domain/model/TimelineLayerControllerMenu";
 import {
     $allHideMenu,
     $getMenu
-} from "../../MenuUtil";
+} from "@/menu/application/MenuUtil";
 
 /**
- * @description ヘッダーメニューを表示
- *              Show Header Menu
+ * @description レイヤーのコントローラーメニューを表示
+ *              Display the Layer Controller menu
  *
  * @param  {MouseEvent} event
  * @return {void}
@@ -22,16 +22,15 @@ export const execute = (event: MouseEvent): void =>
     event.preventDefault();
 
     // 全てのメニューを非表示
-    $allHideMenu($TIMELINE_HEADER_MENU_NAME);
+    $allHideMenu($TIMELINE_LAYER_MENU_NAME);
 
-    // 進行状況メニューを非表示に
-    const menu: MenuImpl<TimelineHeaderMenu> | null = $getMenu($TIMELINE_HEADER_MENU_NAME);
+    const menu: MenuImpl<TimelineLayerControllerMenu> | null = $getMenu($TIMELINE_LAYER_MENU_NAME);
     if (!menu) {
         return ;
     }
 
     const element: HTMLElement | null = document
-        .getElementById($TIMELINE_HEADER_MENU_NAME);
+        .getElementById($TIMELINE_LAYER_MENU_NAME);
 
     if (!element) {
         return ;

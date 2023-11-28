@@ -1,6 +1,7 @@
 import { EventType } from "@/tool/domain/event/EventType";
 import { execute as timelineAdjustmentXMouseMoveUseCase } from "./TimelineAdjustmentXMouseMoveUseCase";
 import { execute as timelineAdjustmentXMouseUpService } from "../service/TimelineAdjustmentXMouseUpService";
+import { $allHideMenu } from "@/menu/application/MenuUtil";
 
 /**
  * @description タイムラインの幅調整のイベント開始処理
@@ -14,6 +15,10 @@ export const execute = (event: PointerEvent): void =>
 {
     // 親のイベントを中止
     event.stopPropagation();
+    event.preventDefault();
+
+    // 全てのメニューを非表示にする
+    $allHideMenu();
 
     // マウス移動イベントを登録
     window.addEventListener(EventType.MOUSE_MOVE, timelineAdjustmentXMouseMoveUseCase);
