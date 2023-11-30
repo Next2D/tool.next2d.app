@@ -3,6 +3,8 @@ import type { UserToolAreaStateObjectImpl } from "@/interface/UserToolAreaStateO
 import type { UserTimelineAreaStateObjectImpl } from "@/interface/UserTimelineAreaStateObjectImpl";
 import type { UserPropertyAreaStateObjectImpl } from "@/interface/UserPropertyAreaStateObjectImpl";
 import type { WorkSpaceSaveObjectImpl } from "@/interface/WorkSpaceSaveObjectImpl";
+import type { UserControllerAreaStateObjectImpl } from "@/interface/UserControllerAreaStateObjectImpl";
+import type { InstanceSaveObjectImpl } from "@/interface/InstanceSaveObjectImpl";
 import { ScreenTab } from "@/screen/domain/model/ScreenTab";
 import { MovieClip } from "./MovieClip";
 import { Stage } from "./Stage";
@@ -13,7 +15,6 @@ import { execute as workSpaceRemoveUseCase } from "@/core/application/WorkSpace/
 import { $VERSION } from "@/config/Config";
 import { $TIMELINE_DEFAULT_HEIGHT_SIZE } from "@/config/TimelineConfig";
 import { $CONTROLLER_DEFAULT_WIDTH_SIZE } from "@/config/ControllerConfig";
-import { UserControllerAreaStateObjectImpl } from "@/interface/UserControllerAreaStateObjectImpl";
 
 /**
  * @description プロジェクトのユニークID
@@ -318,6 +319,34 @@ export class WorkSpace
     }
 
     /**
+     * @description ライブラリのユニークIDを生成
+     *              Generate unique ID for library
+     *
+     * @return {number}
+     * @readonly
+     * @public
+     */
+    get nextLibraryId (): number
+    {
+        const keys: number[] = Array.from(this._$libraries.keys());
+        keys.sort((a: number, b: number): number =>
+        {
+            if (a > b) {
+                return 1;
+            }
+
+            if (a < b) {
+                return -1;
+            }
+
+            return 0;
+        });
+
+        const lastLibraryId: number = this._$libraries.get(keys.pop() || 0).id;
+        return lastLibraryId + 1;
+    }
+
+    /**
      * @description 指定のシーン(MovieClip)を起動する
      *              Launch the specified scene (MovieClip)
      *
@@ -360,12 +389,14 @@ export class WorkSpace
      */
     load (object: WorkSpaceSaveObjectImpl): void
     {
-        console.log(object);
-
         this.name = object.name;
 
         // Stageをセット
         this._$stage.load(object.stage);
+
+        if (object.libraries) {
+            this.loadLibrary(object.libraries);
+        }
 
         // update tool area
         if (object.tool) {
@@ -384,6 +415,43 @@ export class WorkSpace
 
         if (object.controller) {
             this.updateControllerArea(object.controller);
+        }
+    }
+
+    /**
+     * @description セーブデータからライブラリのオブジェクトを複製
+     *              Duplicate library objects from save data
+     *
+     * @param  {array} libraries
+     * @return {void}
+     * @method
+     * @public
+     */
+    loadLibrary (libraries: InstanceSaveObjectImpl[]): void
+    {
+        for (let idx: number = 0; idx < libraries.length; ++idx) {
+
+            const libraryObject = libraries[idx];
+
+            // rootの読み込み
+            if (libraryObject.id === 0) {
+                this._$root.load(libraryObject);
+                continue;
+            }
+
+            switch (libraryObject.type) {
+
+                case "container":
+                    {
+                        const movieClip = new MovieClip(libraryObject);
+                        this._$libraries.set(movieClip.id, movieClip);
+                    }
+                    break;
+
+                default:
+                    throw new Error("This is an undefined class.");
+
+            }
         }
     }
 

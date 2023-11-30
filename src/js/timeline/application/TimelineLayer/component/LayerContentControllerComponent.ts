@@ -12,7 +12,7 @@ export const execute = (layer_id: number, color: string): string =>
 {
     return `
 <div class="timeline-content-child" id="layer-id-${layer_id}" data-layer-id="${layer_id}">
-    <div class="timeline-layer-controller">
+    <div class="timeline-layer-controller" data-layer-id="${layer_id}">
         <i style="display: none;" class="timeline-exit-icon" id="timeline-exit-icon-${layer_id}" data-layer-id="${layer_id}"></i>
         <i style="display: none;" class="timeline-exit-in-icon" id="timeline-exit-in-icon-${layer_id}" data-layer-id="${layer_id}"></i>
         <i class="timeline-layer-icon" id="layer-icon-${layer_id}" data-layer-id="${layer_id}" data-detail="{{レイヤー変更(ダブルクリック)}}"></i>

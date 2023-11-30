@@ -164,8 +164,8 @@ export class Stage
     }
 
     /**
-     * @description クラス内の変数をObjectにして返す
-     *              Return variables in a class as Objects
+     * @description セーブオブジェクトに変換
+     *              Convert to save object
      *
      * @return {object}
      * @method

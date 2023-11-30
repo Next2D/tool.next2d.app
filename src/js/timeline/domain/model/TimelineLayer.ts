@@ -1,3 +1,10 @@
+/**
+ * @description タイムラインのレイヤーの管理クラス
+ *              Management class for timeline layers
+ *
+ * @class
+ * @public
+ */
 export class TimelineLayer
 {
     private readonly _$elements: HTMLElement[];

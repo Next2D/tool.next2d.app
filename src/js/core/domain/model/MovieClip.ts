@@ -1,4 +1,3 @@
-import type { MovieClipObjectImpl } from "@/interface/MovieClipObjectImpl";
 import { Instance } from "./Instance";
 import { execute as timelineHeaderBuildElementUseCase } from "@/timeline/application/TimelineHeader/usecase/TimelineHeaderBuildElementUseCase";
 import { execute as timelineLayerBuildElementUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerBuildElementUseCase";
@@ -18,18 +17,19 @@ import type { MovieClipSaveObjectImpl } from "@/interface/MovieClipSaveObjectImp
 export class MovieClip extends Instance
 {
     private readonly _$labels: Map<number, string>;
-    private readonly _$layers: Layer[];
+    private readonly _$layers: Map<number, Layer>;
     private readonly _$actions: Map<number, string>;
     private readonly _$sounds: Map<number, SoundObjectImpl[]>;
     private _$currentFrame: number;
     private _$leftFrame: number;
+    private _$layerId: number;
 
     /**
      * @params {object} object
      * @constructs
      * @public
      */
-    constructor (object: MovieClipObjectImpl)
+    constructor (object: MovieClipSaveObjectImpl)
     {
         super(object);
 
@@ -43,7 +43,7 @@ export class MovieClip extends Instance
          * @type {array}
          * @private
          */
-        this._$layers = [];
+        this._$layers = new Map();
 
         /**
          * @type {Map}
@@ -71,6 +71,13 @@ export class MovieClip extends Instance
          */
         this._$leftFrame = 1;
 
+        /**
+         * @type {number}
+         * @default 1
+         * @private
+         */
+        this._$layerId = 0;
+
         // 指定objectからMovieCLipを復元
         this.load(object);
     }
@@ -80,11 +87,12 @@ export class MovieClip extends Instance
      *              Return Map data of Layer in MovieClip
      *
      * @member {array}
+     * @readonly
      * @public
      */
     get layers (): Layer[]
     {
-        return this._$layers;
+        return Array.from(this._$layers.values());
     }
 
     /**
@@ -152,7 +160,7 @@ export class MovieClip extends Instance
     stop (): void
     {
         // 表示に利用していたレイヤーElementを非表示に更新
-        for (let idx = 0; idx < this._$layers.length; ++idx) {
+        for (let idx = 0; idx < this._$layers.size; ++idx) {
             const element = timelineLayer.elements[idx];
             element.style.display = "none";
         }
@@ -169,14 +177,50 @@ export class MovieClip extends Instance
      * @method
      * @public
      */
-    load (object: MovieClipObjectImpl): void
+    load (object: MovieClipSaveObjectImpl): void
     {
-        // Layerデータがなければ強制的に一個追加する
-        if (!object.layers) {
-            const layer = new Layer();
-            layer.name  = "Layer_0";
-            this._$layers.push(layer);
+        if (object.layers && object.layers.length) {
+
+            // reset
+            this._$layerId = 0;
+            this._$layers.clear();
+
+            // セーブデータからLayerを複製
+            for (let idx: number = 0; idx < object.layers.length; ++idx) {
+                // セーブデータの読み込み
+                const layer = new Layer();
+                layer.id = this._$layerId++;
+                layer.load(object.layers[idx]);
+
+                // 登録
+                this._$layers.set(layer.id, layer);
+            }
+
+        } else {
+            // Layerデータがなければ強制的に一個追加する
+            this.addLayer();
         }
+    }
+
+    /**
+     * @description MovieClipにLayerを追加
+     *              Add Layer to MovieClip
+     *
+     * @param  {Layer} [layer = null]
+     * @return {Layer}
+     * @method
+     * @public
+     */
+    addLayer (layer: Layer | null = null): Layer
+    {
+        if (!layer) {
+            layer = new Layer();
+        }
+
+        layer.id = this._$layerId++;
+        this._$layers.set(layer.id, layer);
+
+        return layer;
     }
 
     /**
@@ -361,8 +405,8 @@ export class MovieClip extends Instance
     }
 
     /**
-     * @description 保存用のオブジェクトに変換
-     *              Convert to an object for storage
+     * @description セーブオブジェクトに変換
+     *              Convert to save object
      *
      * @return {object}
      * @method
@@ -371,8 +415,8 @@ export class MovieClip extends Instance
     toObject (): MovieClipSaveObjectImpl
     {
         const layers = [];
-        for (let idx = 0; idx < this._$layers.length; ++idx) {
-            layers.push(this._$layers[idx].toObject());
+        for (const layer of this._$layers.values()) {
+            layers.push(layer.toObject());
         }
 
         const labels = [];

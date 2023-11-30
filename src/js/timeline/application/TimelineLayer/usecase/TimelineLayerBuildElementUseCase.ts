@@ -11,6 +11,7 @@ import {
 import { execute as layerContentControllerComponent } from "../component/LayerContentControllerComponent";
 import { execute as layerContentFrameComponent } from "../component/LayerContentFrameComponent";
 import { execute as timelineLayerControllerRegisterEventUseCase } from "./TimelineLayerControllerRegisterEventUseCase";
+import { execute as timelineLayerFrameRegisterEventUseCase } from "./TimelineLayerFrameRegisterEventUseCase";
 
 /**
  * @description 指定のMoiveClipのLayerからタイムラインを生成
@@ -63,6 +64,9 @@ export const execute = (): void =>
 
             const layerControllerElement = element.children[0] as NonNullable<HTMLElement>;
             timelineLayerControllerRegisterEventUseCase(layerControllerElement);
+
+            const layerFrameElement = element.children[1] as NonNullable<HTMLElement>;
+            timelineLayerFrameRegisterEventUseCase(layerFrameElement);
 
             const frameControllerElement = element.lastElementChild as NonNullable<HTMLElement>;
             for (let idx: number = 0; idx <= maxFrame; ++idx) {

@@ -6,15 +6,15 @@ import type { SoundSaveObjectImpl } from "./SoundSaveObjectImpl";
 
 export interface MovieClipSaveObjectImpl
 {
-    "id": number;
-    "name": string;
-    "type": InstanceTypeImpl;
-    "symbol": string;
-    "folderId": number;
-    "currentFrame": number;
-    "leftFrame": number;
-    "layers": LayerSaveObjectImpl[];
-    "labels": LabelSaveObjectImpl[];
-    "sounds": SoundSaveObjectImpl[];
-    "actions": ActionSaveObjectImpl[];
+    id: number;
+    name: string;
+    type: InstanceTypeImpl;
+    symbol: string;
+    folderId?: number;
+    currentFrame?: number;
+    leftFrame?: number;
+    layers?: LayerSaveObjectImpl[];
+    labels?: LabelSaveObjectImpl[];
+    sounds?: SoundSaveObjectImpl[];
+    actions?: ActionSaveObjectImpl[];
 }

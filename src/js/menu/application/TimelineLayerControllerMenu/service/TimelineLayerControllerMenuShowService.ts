@@ -36,6 +36,27 @@ export const execute = (event: MouseEvent): void =>
         return ;
     }
 
+    // const colorElement: HTMLElement | null = document
+    //     .getElementById("timeline-layer-color");
+
+    // if (!colorElement) {
+    //     return ;
+    // }
+
+    // if (!event.currentTarget) {
+    //     return ;
+    // }
+
+    // const targetElement = event.currentTarget as HTMLElement;
+
+    // const layerId: number = parseInt(targetElement.dataset.layerId as string);
+
+    // const workSpace = $getCurrentWorkSpace();
+    // const scene = workSpace.scene;
+
+    // // TODO
+    // console.log(layerId, scene);
+
     let top = event.pageY - element.clientHeight;
     if (0 > top) {
         top = 15;
