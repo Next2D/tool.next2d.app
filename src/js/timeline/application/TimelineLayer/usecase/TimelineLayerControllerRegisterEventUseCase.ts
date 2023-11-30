@@ -13,4 +13,6 @@ export const execute = (element: HTMLElement): void =>
 {
     // 右クリックイベント登録
     element.addEventListener("contextmenu", timelineLayerControllerMenuShowService);
+
+    console.log([element]);
 };

@@ -63,12 +63,13 @@
         p
         {
             outline         : 0px solid transparent;
-            min-width       : 78px;
-            height          : 19px;
+            min-width       : 84px;
+            height          : 17px;
             display         : flex;
-            place-items     : center;
             justify-content : center;
-            margin          : 0 3px 0 6px;
+            text-align      : center;
+            padding-top     : 3px;
+            margin          : 0 0 0 3px;
         }
     }
 

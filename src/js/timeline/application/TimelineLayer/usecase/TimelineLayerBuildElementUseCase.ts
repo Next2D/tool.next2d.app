@@ -62,9 +62,11 @@ export const execute = (): void =>
 
             element = parent.lastElementChild as HTMLElement;
 
+            // レイヤーのコントローラーのイベント登録
             const layerControllerElement = element.children[0] as NonNullable<HTMLElement>;
             timelineLayerControllerRegisterEventUseCase(layerControllerElement);
 
+            // レイヤーのフレーム側のイベントを登録
             const layerFrameElement = element.children[1] as NonNullable<HTMLElement>;
             timelineLayerFrameRegisterEventUseCase(layerFrameElement);
 
