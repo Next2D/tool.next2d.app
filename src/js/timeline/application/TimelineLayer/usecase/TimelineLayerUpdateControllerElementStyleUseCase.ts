@@ -3,6 +3,7 @@ import { execute as timelineLayerUpdateLockIconStyleService } from "../service/T
 import { execute as timelineLayerUpdateColorStyleService } from "../service/TimelineLayerUpdateColorStyleService";
 import { execute as timelineLayerDisableIconStyleService } from "../service/TimelineLayerDisableIconStyleService";
 import { execute as timelineLayerUpdateLightIconStyleService } from "../service/TimelineLayerUpdateLightIconStyleService";
+import { execute as timelineLayerUpdateNameTextStyleService } from "../service/TimelineLayerUpdateNameTextStyleService";
 
 /**
  * @description Layerの状態に合わせてElementのstyleを更新
@@ -15,6 +16,9 @@ import { execute as timelineLayerUpdateLightIconStyleService } from "../service/
  */
 export const execute = (layer: Layer): void =>
 {
+    // レイヤー名をセット
+    timelineLayerUpdateNameTextStyleService(layer.id, layer.name);
+
     // レイヤーカラーをセット
     timelineLayerUpdateColorStyleService(layer.id, layer.color);
 

@@ -1,6 +1,7 @@
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import type { Layer } from "@/core/domain/model/Layer";
 import { execute as timelineLayerUpdateLockIconStyleService } from "../service/TimelineLayerUpdateLockIconStyleService";
+import { $allHideMenu } from "@/menu/application/MenuUtil";
 
 /**
  * @description レイヤーのロックアイコンのイベント処理
@@ -15,6 +16,9 @@ export const execute = (event: PointerEvent): void =>
 {
     // 親のイベントを中止
     event.stopPropagation();
+
+    // メニュー表示があれば全て非表示にする
+    $allHideMenu();
 
     const element: HTMLElement | null = event.target as HTMLElement;
     if (!element) {

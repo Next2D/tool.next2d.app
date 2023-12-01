@@ -2,6 +2,7 @@ import { execute as timelineLayerControllerMenuShowService } from "@/menu/applic
 import { execute as timelineLayerLockIconMouseDownEventUseCase } from "./TimelineLayerLockIconMouseDownEventUseCase";
 import { execute as timelineLayerDisableIconMouseDownEventUseCase } from "./TimelineLayerDisableIconMouseDownEventUseCase";
 import { execute as timelineLayerLightIconMouseDownEventUseCase } from "./TimelineLayerLightIconMouseDownEventUseCase";
+import { execute as timelineLayerNameTextMouseDownEventUseCase } from "./TimelineLayerNameTextMouseDownEventUseCase";
 import { EventType } from "@/tool/domain/event/EventType";
 
 /**
@@ -19,6 +20,16 @@ export const execute = (element: HTMLElement): void =>
     element.addEventListener("contextmenu", timelineLayerControllerMenuShowService);
 
     const layerId: string = element.dataset.layerId as string;
+
+    // レイヤー名のElementにイベントを登録
+    const textElement: HTMLElement | null = document
+        .getElementById(`layer-name-${layerId}`);
+
+    if (textElement) {
+        textElement.addEventListener(EventType.MOUSE_DOWN,
+            timelineLayerNameTextMouseDownEventUseCase
+        );
+    }
 
     // ハイライトアイコンにイベントを登録
     const lightElement: HTMLElement | null = document

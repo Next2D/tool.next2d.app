@@ -2,6 +2,7 @@ import { execute as screenTabGetTextElementService } from "../service/ScreenTabG
 import { execute as screenTabGetElementService } from "../service/ScreenTabGetElementService";
 import { execute as screenTabActiveStyleService } from "../service/ScreenTabActiveStyleService";
 import { $allHideMenu } from "@/menu/application/MenuUtil";
+
 /**
  * @description 指定IDのElementを編集モードに変更する
  *              Changes the Element with the specified ID to edit mode.

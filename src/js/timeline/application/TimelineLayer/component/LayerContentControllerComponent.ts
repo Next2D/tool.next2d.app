@@ -19,7 +19,7 @@ export const execute = (layer_id: number): string =>
         <i style="display: none;" class="timeline-mask-in-icon" id="layer-mask-in-icon-${layer_id}" data-layer-id="${layer_id}"></i>
         <i style="display: none;" class="timeline-guide-icon" id="layer-guide-icon-${layer_id}" data-layer-id="${layer_id}" data-detail="{{レイヤー変更(ダブルクリック)}}"></i>
         <i style="display: none;" class="timeline-guide-in-icon" id="layer-guide-in-icon-${layer_id}" data-layer-id="${layer_id}" data-detail="{{レイヤー変更(ダブルクリック)}}"></i>
-        <div class="view-text" id="layer-name-${layer_id}" data-layer-id="${layer_id}">layer_${layer_id}</div>
+        <div class="view-text" id="layer-name-${layer_id}" data-layer-id="${layer_id}">Layer_${layer_id}</div>
         <i class="timeline-layer-light-one" id="layer-light-icon-${layer_id}" data-layer-id="${layer_id}" data-detail="{{レイヤーをハイライト}}"><span style="background-color:#000000;"></span></i>
         <i class="timeline-layer-disable-one icon-disable" id="layer-disable-icon-${layer_id}" data-click-type="disable" data-layer-id="${layer_id}" data-detail="{{レイヤーを非表示}}"></i>
         <i class="timeline-layer-lock-one icon-disable" id="layer-lock-icon-${layer_id}" data-click-type="lock" data-layer-id="${layer_id}" data-detail="{{レイヤーをロック}}"></i>

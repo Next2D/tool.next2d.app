@@ -213,11 +213,14 @@ export class MovieClip extends Instance
      */
     addLayer (layer: Layer | null = null): Layer
     {
+        const layerId: number = this._$layerId++;
+
         if (!layer) {
             layer = new Layer();
+            layer.name = `Layer_${layerId}`;
         }
 
-        layer.id = this._$layerId++;
+        layer.id = layerId;
         this._$layers.set(layer.id, layer);
 
         return layer;

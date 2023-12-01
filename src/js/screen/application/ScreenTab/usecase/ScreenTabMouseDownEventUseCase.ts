@@ -24,11 +24,14 @@ let wait: boolean = false;
  */
 export const execute = (event: PointerEvent): void =>
 {
-    if (!event.target) {
+    // 親のイベントを中止
+    event.stopPropagation();
+
+    const element: HTMLElement | null = event.target as HTMLElement;
+    if (!element) {
         return ;
     }
 
-    const element: HTMLElement = event.target as NonNullable<HTMLElement>;
     const workSpace : WorkSpace | null = $getWorkSpace(parseInt(element.dataset.tabId as string));
     if (!workSpace) {
         return ;
@@ -36,7 +39,7 @@ export const execute = (event: PointerEvent): void =>
 
     if (!wait) {
 
-        // 初回のタップであればダブルタップを待機モードに変更
+        // ダブルクリックを待機
         wait = true;
 
         // ダブルタップ有効期限をセット

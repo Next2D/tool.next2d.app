@@ -1,11 +1,19 @@
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import type { Layer } from "@/core/domain/model/Layer";
-import { execute as timelineLayerDisableIconStyleService } from "../service/TimelineLayerDisableIconStyleService";
 import { $allHideMenu } from "@/menu/application/MenuUtil";
 
 /**
- * @description レイヤーの表示・非表示アイコンのイベント処理
- *              Event processing for layer show/hide icons
+ * @description ダブルタップ用の待機フラグ
+ *              Standby flag for double-tap
+ *
+ * @type {boolean}
+ * @private
+ */
+let wait: boolean = false;
+
+/**
+ * @description Layerの名前変更のイベント実行関数
+ *              Event execution function for Layer renaming
  *
  * @param  {PointerEvent} event
  * @return {void}
@@ -37,6 +45,23 @@ export const execute = (event: PointerEvent): void =>
         return ;
     }
 
-    // 反転して登録
-    timelineLayerDisableIconStyleService(layerId, !layer.disable);
+    if (!wait) {
+
+        // ダブルクリックを待機
+        wait = true;
+
+        // ダブルタップ有効期限をセット
+        setTimeout((): void =>
+        {
+            wait = false;
+        }, 300);
+
+    } else {
+
+        // 他のイベントを中止
+        event.preventDefault();
+
+        // ダブルクリック処理
+
+    }
 };
