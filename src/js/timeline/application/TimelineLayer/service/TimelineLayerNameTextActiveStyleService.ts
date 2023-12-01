@@ -1,11 +1,10 @@
 import { $updateKeyLock } from "@/shortcut/ShortcutUtil";
 
 /**
- * @description 指定IDのElementをアクティブ表示に変更する
- *              Changes the Element with the specified ID to the active display
+ * @description 指定のLayer IDの名前を編集モードを有効にする
+ *              Enable edit mode for the name of the specified Layer ID
  *
- * @params {HTMLElement} text_element
- * @params {HTMLElement} tab_element
+ * @params {number} layer_id
  * @return {void}
  * @method
  * @public
@@ -19,7 +18,11 @@ export const execute = (layer_id: number): void =>
         return ;
     }
 
-    element.contentEditable   = "true";
-    element.style.borderBottom = "1px solid #f5f5f5";
+    // 入力モードをOnにする
     $updateKeyLock(true);
+
+    // 編集モードに切り替える
+    element.contentEditable    = "true";
+    element.style.borderBottom = "1px solid #f5f5f5";
+    element.focus();
 };

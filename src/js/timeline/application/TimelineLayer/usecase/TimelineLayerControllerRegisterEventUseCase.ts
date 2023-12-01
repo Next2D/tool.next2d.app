@@ -3,6 +3,8 @@ import { execute as timelineLayerLockIconMouseDownEventUseCase } from "./Timelin
 import { execute as timelineLayerDisableIconMouseDownEventUseCase } from "./TimelineLayerDisableIconMouseDownEventUseCase";
 import { execute as timelineLayerLightIconMouseDownEventUseCase } from "./TimelineLayerLightIconMouseDownEventUseCase";
 import { execute as timelineLayerNameTextMouseDownEventUseCase } from "./TimelineLayerNameTextMouseDownEventUseCase";
+import { execute as timelineLayerNameTextInactiveStyleService } from "../service/TimelineLayerNameTextInactiveStyleService";
+import { execute as timelineLayerNameTextKeyPressEventService } from "../service/TimelineLayerNameTextKeyPressEventService";
 import { EventType } from "@/tool/domain/event/EventType";
 
 /**
@@ -16,6 +18,8 @@ import { EventType } from "@/tool/domain/event/EventType";
  */
 export const execute = (element: HTMLElement): void =>
 {
+    // マウスダウンイベントを登録
+
     // 右クリックイベント登録
     element.addEventListener("contextmenu", timelineLayerControllerMenuShowService);
 
@@ -28,6 +32,13 @@ export const execute = (element: HTMLElement): void =>
     if (textElement) {
         textElement.addEventListener(EventType.MOUSE_DOWN,
             timelineLayerNameTextMouseDownEventUseCase
+        );
+
+        textElement.addEventListener("focusout",
+            timelineLayerNameTextInactiveStyleService
+        );
+        textElement.addEventListener("keypress",
+            timelineLayerNameTextKeyPressEventService
         );
     }
 

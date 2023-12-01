@@ -59,7 +59,4 @@ export const execute = (event: Event): void =>
 
     // 移動を有効化
     tabElement.draggable = true;
-
-    // 入力モードを終了
-    $setEditMode(false);
 };

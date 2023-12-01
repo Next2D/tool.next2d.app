@@ -29,7 +29,4 @@ export const execute = (id: number): void =>
 
     // 編集モードにstyleを更新
     screenTabActiveStyleService(textElement, tabElement);
-
-    // focus
-    textElement.focus();
 };

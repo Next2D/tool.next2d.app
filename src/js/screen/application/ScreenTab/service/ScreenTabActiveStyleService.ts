@@ -15,7 +15,12 @@ export const execute = (
     tab_element: HTMLElement
 ): void =>
 {
+
+    // 編集モードのstyleに更新
     text_element.contentEditable   = "true";
     tab_element.style.borderBottom = "1px solid #f5f5f5";
+    text_element.focus(); // fixed logic
+
+    // 編集モードをOnにする
     $updateKeyLock(true);
 };

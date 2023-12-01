@@ -1,6 +1,7 @@
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import type { Layer } from "@/core/domain/model/Layer";
 import { $allHideMenu } from "@/menu/application/MenuUtil";
+import { execute as timelineLayerNameTextActiveStyleService } from "../service/TimelineLayerNameTextActiveStyleService";
 
 /**
  * @description ダブルタップ用の待機フラグ
@@ -22,28 +23,8 @@ let wait: boolean = false;
  */
 export const execute = (event: PointerEvent): void =>
 {
-    // 親のイベントを中止
-    event.stopPropagation();
-
     // メニュー表示があれば全て非表示にする
     $allHideMenu();
-
-    const element: HTMLElement | null = event.target as HTMLElement;
-    if (!element) {
-        return ;
-    }
-
-    // イベントターゲットのLayerIDを取得
-    const layerId: number = parseInt(element.dataset.layerId as string);
-
-    // 指定のLayerオブジェクトを取得
-    const layer: Layer | null = $getCurrentWorkSpace()
-        .scene
-        .getLayer(layerId);
-
-    if (!layer) {
-        return ;
-    }
 
     if (!wait) {
 
@@ -59,9 +40,17 @@ export const execute = (event: PointerEvent): void =>
     } else {
 
         // 他のイベントを中止
+        event.stopPropagation();
         event.preventDefault();
 
-        // ダブルクリック処理
+        const element: HTMLElement | null = event.target as HTMLElement;
+        if (!element) {
+            return ;
+        }
 
+        // ダブルクリック処理
+        timelineLayerNameTextActiveStyleService(
+            parseInt(element.dataset.layerId as string)
+        );
     }
 };

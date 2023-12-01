@@ -1,4 +1,3 @@
-import { $setEditMode } from "@/core/application/CoreUtil";
 import { execute as screenTabGetElementService } from "../service/ScreenTabGetElementService";
 
 /**
@@ -26,7 +25,4 @@ export const execute = (event: Event): void =>
 
     // 移動を無効化
     tabElement.draggable = false;
-
-    // 入力モードをtrueに更新
-    $setEditMode(true);
 };
