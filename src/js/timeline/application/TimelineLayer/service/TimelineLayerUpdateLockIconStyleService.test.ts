@@ -18,7 +18,7 @@ describe("TimelineLayerUpdateLockIconStyleServiceTest", () =>
         expect(div.classList.contains("icon-active")).toBe(false);
 
         execute(0, true);
-        
+
         expect(layer.lock).toBe(true);
         expect(div.classList.contains("icon-disable")).toBe(false);
         expect(div.classList.contains("icon-active")).toBe(true);
