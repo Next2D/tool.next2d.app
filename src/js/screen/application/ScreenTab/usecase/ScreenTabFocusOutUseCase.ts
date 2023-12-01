@@ -2,7 +2,7 @@ import { execute as screenTabGetTextElementService } from "../service/ScreenTabG
 import { execute as screenTabInactiveStyleService } from "../service/ScreenTabInactiveStyleService";
 import { execute as screenTabGetListElementService } from "../service/ScreenTabGetListElementService";
 import { execute as screenTabGetElementService } from "../service/ScreenTabGetElementService";
-import { $getWorkSpace, $setEditMode } from "@/core/application/CoreUtil";
+import { $getWorkSpace } from "@/core/application/CoreUtil";
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 
 /**

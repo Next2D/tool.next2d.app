@@ -1,5 +1,3 @@
-import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
-import type { Layer } from "@/core/domain/model/Layer";
 import { $allHideMenu } from "@/menu/application/MenuUtil";
 import { execute as timelineLayerNameTextActiveStyleService } from "../service/TimelineLayerNameTextActiveStyleService";
 
