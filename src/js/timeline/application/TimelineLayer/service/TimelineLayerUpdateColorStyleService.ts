@@ -2,7 +2,8 @@ import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import type { Layer } from "@/core/domain/model/Layer";
 
 /**
- * @description タイムラインのレイヤーのハイライトカラーを生成して返却
+ * @description 指定のLayer IDのカラー情報を更新して、表示Elementのclassを更新
+ *              Update the color information of the specified Layer ID and update the class of the display Element.
  *
  * @param  {string} color
  * @return {void}

@@ -20,7 +20,6 @@ describe("TimelineLayerUpdateColorStyleServiceTest", () =>
         execute(0, layer.color);
 
         const bigint = parseInt(`0x${layer.color.slice(1)}`, 16);
-        console.log(layer.color, bigint);
         expect(span.style.backgroundColor).toBe(`rgb(${bigint >> 16 & 255}, ${bigint >> 8 & 255}, ${bigint & 255})`);
 
         div.remove();

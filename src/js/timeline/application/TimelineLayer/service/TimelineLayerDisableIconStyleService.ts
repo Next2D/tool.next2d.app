@@ -2,8 +2,8 @@ import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import type { Layer } from "@/core/domain/model/Layer";
 
 /**
- * @description 指定のLayer IDのロック情報を更新して、表示Elementのclassを更新
- *              Update the lock information of the specified Layer ID and update the class of the display Element.
+ * @description 指定のLayer IDの表示情報を更新して、表示Elementのclassを更新
+ *              Update the display information of the specified Layer ID and update the class of the display Element.
  *
  * @param  {number} layer_id
  * @param  {boolean} disable
