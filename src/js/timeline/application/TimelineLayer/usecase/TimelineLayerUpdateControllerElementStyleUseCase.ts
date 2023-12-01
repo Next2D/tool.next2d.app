@@ -1,5 +1,7 @@
 import { Layer } from "@/core/domain/model/Layer";
 import { execute as timelineLayerUpdateLockIconStyleService } from "../service/TimelineLayerUpdateLockIconStyleService";
+import { execute as timelineLayerUpdateColorStyleService } from "../service/TimelineLayerUpdateColorStyleService";
+import { execute as timelineLayerDisableIconStyleService } from "../service/TimelineLayerDisableIconStyleService";
 
 /**
  * @description Layerの状態に合わせてElementのstyleを更新
@@ -12,6 +14,12 @@ import { execute as timelineLayerUpdateLockIconStyleService } from "../service/T
  */
 export const execute = (layer: Layer): void =>
 {
+    // レイヤーカラーをセット
+    timelineLayerUpdateColorStyleService(layer.id, layer.color);
+
+    // レイヤーの表示・非表示情報を更新
+    timelineLayerDisableIconStyleService(layer.id, layer.disable);
+
     // ロックアイコンの表示情報を更新
     timelineLayerUpdateLockIconStyleService(layer.id, layer.lock);
 };

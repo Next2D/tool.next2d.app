@@ -1,5 +1,6 @@
 import { execute as timelineLayerControllerMenuShowService } from "@/menu/application/TimelineLayerControllerMenu/service/TimelineLayerControllerMenuShowService";
 import { execute as timelineLayerLockIconMouseDownEventUseCase } from "./TimelineLayerLockIconMouseDownEventUseCase";
+import { execute as timelineLayerDisableIconMouseDownEventUseCase } from "./TimelineLayerDisableIconMouseDownEventUseCase";
 import { EventType } from "@/tool/domain/event/EventType";
 
 /**
@@ -16,11 +17,22 @@ export const execute = (element: HTMLElement): void =>
     // 右クリックイベント登録
     element.addEventListener("contextmenu", timelineLayerControllerMenuShowService);
 
-    const layerId = element.dataset.layerId as string;
+    const layerId: string = element.dataset.layerId as string;
+
+    // 表示アイコンにイベントを登録
+    const disableIconElement: HTMLElement | null = document
+        .getElementById(`layer-disable-icon-${layerId}`);
+
+    if (disableIconElement) {
+        disableIconElement.addEventListener(EventType.MOUSE_DOWN,
+            timelineLayerDisableIconMouseDownEventUseCase
+        );
+    }
 
     // ロックアイコンにイベントを登録
     const lockIconElement: HTMLElement | null = document
         .getElementById(`layer-lock-icon-${layerId}`);
+
     if (lockIconElement) {
         lockIconElement.addEventListener(EventType.MOUSE_DOWN,
             timelineLayerLockIconMouseDownEventUseCase
