@@ -86,13 +86,13 @@ export class MovieClip extends Instance
      * @description MovieClipのLayerのMapデータを返却する
      *              Return Map data of Layer in MovieClip
      *
-     * @member {array}
+     * @member {Map}
      * @readonly
      * @public
      */
-    get layers (): Layer[]
+    get layers (): Map<number, Layer>
     {
-        return Array.from(this._$layers.values());
+        return this._$layers;
     }
 
     /**
@@ -221,6 +221,22 @@ export class MovieClip extends Instance
         this._$layers.set(layer.id, layer);
 
         return layer;
+    }
+
+    /**
+     * @description 指定IDのLayerを返却
+     *              Returns the Layer with the specified ID.
+     *
+     * @param  {number} layer_id
+     * @return {Layer | null}
+     * @method
+     * @public
+     */
+    getLayer (layer_id: number): Layer | null
+    {
+        return this._$layers.has(layer_id)
+            ? this._$layers.get(layer_id) as NonNullable<Layer>
+            : null;
     }
 
     /**

@@ -1,6 +1,5 @@
 import { $TIMELINE_CONTENT_ID } from "@/config/TimelineConfig";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
-import type { Layer } from "@/core/domain/model/Layer";
 import type{ WorkSpace } from "@/core/domain/model/WorkSpace";
 import {
     $getLeftFrame,
@@ -12,6 +11,7 @@ import { execute as layerContentControllerComponent } from "../component/LayerCo
 import { execute as layerContentFrameComponent } from "../component/LayerContentFrameComponent";
 import { execute as timelineLayerControllerRegisterEventUseCase } from "./TimelineLayerControllerRegisterEventUseCase";
 import { execute as timelineLayerFrameRegisterEventUseCase } from "./TimelineLayerFrameRegisterEventUseCase";
+import { execute as timelineLayerUpdateControllerElementStyleUseCase } from "./TimelineLayerUpdateControllerElementStyleUseCase";
 
 /**
  * @description 指定のMoiveClipのLayerからタイムラインを生成
@@ -28,8 +28,8 @@ export const execute = (): void =>
         return ;
     }
 
-    const layers: Layer[] = workSpace.scene.layers;
-    if (!layers.length) {
+    const layers = workSpace.scene.layers;
+    if (!layers.size) {
         return ;
     }
 
@@ -46,19 +46,14 @@ export const execute = (): void =>
     const elementCount: number = Math.ceil(timelineHeader.clientWidth / (timelineFrameWidth + 1));
     const maxFrame: number = elementCount + 1;
 
-    for (let layerId: number = 0; layerId < layers.length; ++layerId) {
-
-        const layer: Layer = layers[layerId];
-
-        // レイヤーのIDを更新
-        layer.id = layerId;
+    for (const [layerId, layer] of layers) {
 
         let element: HTMLElement | null = null;
         if (layerId >= timelineLayer.elements.length) {
 
             // レイヤーのElementを新規登録
             parent.insertAdjacentHTML("beforeend",
-                layerContentControllerComponent(layerId, layer.color));
+                layerContentControllerComponent(layerId));
 
             element = parent.lastElementChild as HTMLElement;
 
@@ -101,6 +96,7 @@ export const execute = (): void =>
             continue;
         }
 
-        // TODO イベント登録
+        // Layerの状態に合わせてstyle, classの状態を更新
+        timelineLayerUpdateControllerElementStyleUseCase(layer);
     }
 };

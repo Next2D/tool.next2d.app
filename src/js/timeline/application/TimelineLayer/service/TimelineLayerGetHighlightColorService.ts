@@ -28,7 +28,7 @@ const colors: string[] = [
  * @description タイムラインのレイヤーのハイライトカラーを生成して返却
  *              Generate and return highlight colors for timeline layers
  *
- * @return {void}
+ * @return {string}
  * @method
  * @public
  */
