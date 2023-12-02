@@ -1,7 +1,7 @@
-import { execute } from "./TimelineLayerNameTextInactiveStyleService";
+import { execute } from "./TimelineLayerControllerNameTextInactiveStyleService";
 import { $createWorkSpace } from "../../../../core/application/CoreUtil";
 
-describe("TimelineLayerNameTextInactiveStyleServiceTest", () =>
+describe("TimelineLayerControllerNameTextInactiveStyleServiceTest", () =>
 {
     test("execute test", async () =>
     {

@@ -1,6 +1,6 @@
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import type { Layer } from "@/core/domain/model/Layer";
-import { execute as timelineLayerUpdateLightIconStyleService } from "../service/TimelineLayerUpdateLightIconStyleService";
+import { execute as timelineLayerControllerUpdateLightIconStyleService } from "../service/TimelineLayerControllerUpdateLightIconStyleService";
 import { $allHideMenu } from "@/menu/application/MenuUtil";
 
 /**
@@ -38,5 +38,5 @@ export const execute = (event: PointerEvent): void =>
     }
 
     // 反転して登録
-    timelineLayerUpdateLightIconStyleService(layerId, !layer.light);
+    timelineLayerControllerUpdateLightIconStyleService(layerId, !layer.light);
 };

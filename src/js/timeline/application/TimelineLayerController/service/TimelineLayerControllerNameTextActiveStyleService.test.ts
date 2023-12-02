@@ -1,6 +1,6 @@
-import { execute } from "./TimelineLayerNameTextActiveStyleService";
+import { execute } from "./TimelineLayerControllerNameTextActiveStyleService";
 
-describe("TimelineLayerNameTextActiveStyleServiceTest", () =>
+describe("TimelineLayerControllerNameTextActiveStyleServiceTest", () =>
 {
     test("execute test", async () =>
     {

@@ -1,7 +1,7 @@
-import { execute } from "./TimelineLayerUpdateLightIconStyleService";
+import { execute } from "./TimelineLayerControllerUpdateLightIconStyleService";
 import { $createWorkSpace } from "../../../../core/application/CoreUtil";
 
-describe("TimelineLayerUpdateLightIconStyleServiceTest", () =>
+describe("TimelineLayerControllerUpdateLightIconStyleServiceTest", () =>
 {
     test("execute test", async () =>
     {

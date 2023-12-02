@@ -1,6 +1,6 @@
 import type { LayerSaveObjectImpl } from "@/interface/LayerSaveObjectImpl";
 import type { LayerModeImpl } from "@/interface/LayerModeImpl";
-import { execute as timelineLayerGetHighlightColorService } from "@/timeline/application/TimelineLayer/service/TimelineLayerGetHighlightColorService";
+import { execute as timelineLayerControllerGetHighlightColorService } from "@/timeline/application/TimelineLayerController/service/TimelineLayerControllerGetHighlightColorService";
 import { Character } from "./Character";
 import { EmptyCharacter } from "./EmptyCharacter";
 import type { CharacterSaveObjectImpl } from "@/interface/CharacterSaveObjectImpl";
@@ -120,7 +120,7 @@ export class Layer
         if (object) {
             this.load(object);
         } else {
-            this._$color = timelineLayerGetHighlightColorService();
+            this._$color = timelineLayerControllerGetHighlightColorService();
         }
     }
 

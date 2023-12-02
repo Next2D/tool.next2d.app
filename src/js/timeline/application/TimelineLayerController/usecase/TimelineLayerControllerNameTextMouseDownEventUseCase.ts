@@ -1,5 +1,5 @@
 import { $allHideMenu } from "@/menu/application/MenuUtil";
-import { execute as timelineLayerNameTextActiveStyleService } from "../service/TimelineLayerNameTextActiveStyleService";
+import { execute as timelineLayerControllerNameTextActiveStyleService } from "../service/TimelineLayerControllerNameTextActiveStyleService";
 
 /**
  * @description ダブルタップ用の待機フラグ
@@ -46,7 +46,7 @@ export const execute = (event: PointerEvent): void =>
         }
 
         // ダブルクリック処理
-        timelineLayerNameTextActiveStyleService(
+        timelineLayerControllerNameTextActiveStyleService(
             parseInt(element.dataset.layerId as string)
         );
     }

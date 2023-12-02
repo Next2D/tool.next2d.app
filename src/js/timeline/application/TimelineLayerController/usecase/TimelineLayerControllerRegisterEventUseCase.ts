@@ -1,10 +1,10 @@
 import { execute as timelineLayerControllerMenuShowService } from "@/menu/application/TimelineLayerControllerMenu/service/TimelineLayerControllerMenuShowService";
-import { execute as timelineLayerLockIconMouseDownEventUseCase } from "./TimelineLayerLockIconMouseDownEventUseCase";
-import { execute as timelineLayerDisableIconMouseDownEventUseCase } from "./TimelineLayerDisableIconMouseDownEventUseCase";
-import { execute as timelineLayerLightIconMouseDownEventUseCase } from "./TimelineLayerLightIconMouseDownEventUseCase";
-import { execute as timelineLayerNameTextMouseDownEventUseCase } from "./TimelineLayerNameTextMouseDownEventUseCase";
-import { execute as timelineLayerNameTextInactiveStyleService } from "../service/TimelineLayerNameTextInactiveStyleService";
-import { execute as timelineLayerNameTextKeyPressEventService } from "../service/TimelineLayerNameTextKeyPressEventService";
+import { execute as timelineLayerControllerLockIconMouseDownEventUseCase } from "./TimelineLayerControllerLockIconMouseDownEventUseCase";
+import { execute as timelineLayerControllerDisableIconMouseDownEventUseCase } from "./TimelineLayerControllerDisableIconMouseDownEventUseCase";
+import { execute as timelineLayerControllerLightIconMouseDownEventUseCase } from "./TimelineLayerControllerLightIconMouseDownEventUseCase";
+import { execute as timelineLayerControllerNameTextMouseDownEventUseCase } from "./TimelineLayerControllerNameTextMouseDownEventUseCase";
+import { execute as timelineLayerControllerNameTextInactiveStyleService } from "../service/TimelineLayerControllerNameTextInactiveStyleService";
+import { execute as timelineLayerControllerNameTextKeyPressEventService } from "../service/TimelineLayerControllerNameTextKeyPressEventService";
 import { EventType } from "@/tool/domain/event/EventType";
 
 /**
@@ -30,15 +30,20 @@ export const execute = (element: HTMLElement): void =>
         .getElementById(`layer-name-${layerId}`);
 
     if (textElement) {
+
+        // マウスダウンイベント
         textElement.addEventListener(EventType.MOUSE_DOWN,
-            timelineLayerNameTextMouseDownEventUseCase
+            timelineLayerControllerNameTextMouseDownEventUseCase
         );
 
+        // フォーカスアウトイベント
         textElement.addEventListener("focusout",
-            timelineLayerNameTextInactiveStyleService
+            timelineLayerControllerNameTextInactiveStyleService
         );
+
+        // キープレスイベント
         textElement.addEventListener("keypress",
-            timelineLayerNameTextKeyPressEventService
+            timelineLayerControllerNameTextKeyPressEventService
         );
     }
 
@@ -48,7 +53,7 @@ export const execute = (element: HTMLElement): void =>
 
     if (lightElement) {
         lightElement.addEventListener(EventType.MOUSE_DOWN,
-            timelineLayerLightIconMouseDownEventUseCase
+            timelineLayerControllerLightIconMouseDownEventUseCase
         );
     }
 
@@ -58,7 +63,7 @@ export const execute = (element: HTMLElement): void =>
 
     if (disableIconElement) {
         disableIconElement.addEventListener(EventType.MOUSE_DOWN,
-            timelineLayerDisableIconMouseDownEventUseCase
+            timelineLayerControllerDisableIconMouseDownEventUseCase
         );
     }
 
@@ -68,7 +73,7 @@ export const execute = (element: HTMLElement): void =>
 
     if (lockIconElement) {
         lockIconElement.addEventListener(EventType.MOUSE_DOWN,
-            timelineLayerLockIconMouseDownEventUseCase
+            timelineLayerControllerLockIconMouseDownEventUseCase
         );
     }
 };

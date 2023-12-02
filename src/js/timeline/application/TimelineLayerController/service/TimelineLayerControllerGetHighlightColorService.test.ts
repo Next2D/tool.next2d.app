@@ -1,6 +1,6 @@
-import { execute } from "./TimelineLayerGetHighlightColorService";
+import { execute } from "./TimelineLayerControllerGetHighlightColorService";
 
-describe("TimelineLayerGetHighlightColorServiceTest", () =>
+describe("TimelineLayerControllerGetHighlightColorServiceTest", () =>
 {
     test("execute test", async () =>
     {

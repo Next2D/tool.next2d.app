@@ -7,12 +7,12 @@ import {
     timelineHeader,
     timelineLayer
 } from "../../TimelineUtil";
-import { execute as layerContentControllerComponent } from "../component/LayerContentControllerComponent";
-import { execute as layerContentFrameComponent } from "../component/LayerContentFrameComponent";
+import { execute as timelineLayerControllerComponent } from "../../TimelineLayerController/component/TimelineLayerControllerComponent";
+import { execute as timelineLayerFrameContentComponent } from "../../TimelineLayerFrame/component/TimelineLayerFrameContentComponent";
 import { execute as timelineLayerMouseDownEventUseCase } from "./TimelineLayerMouseDownEventUseCase";
-import { execute as timelineLayerControllerRegisterEventUseCase } from "./TimelineLayerControllerRegisterEventUseCase";
-import { execute as timelineLayerFrameRegisterEventUseCase } from "./TimelineLayerFrameRegisterEventUseCase";
-import { execute as timelineLayerUpdateControllerElementStyleUseCase } from "./TimelineLayerUpdateControllerElementStyleUseCase";
+import { execute as timelineLayerControllerRegisterEventUseCase } from "../../TimelineLayerController/usecase/TimelineLayerControllerRegisterEventUseCase";
+import { execute as timelineLayerFrameRegisterEventUseCase } from "../../TimelineLayerFrame/usecase/TimelineLayerFrameRegisterEventUseCase";
+import { execute as timelineLayerControllerUpdateElementStyleUseCase } from "../../TimelineLayerController/usecase/TimelineLayerControllerUpdateElementStyleUseCase";
 import { EventType } from "@/tool/domain/event/EventType";
 
 /**
@@ -55,7 +55,8 @@ export const execute = (): void =>
 
             // レイヤーのElementを新規登録
             parent.insertAdjacentHTML("beforeend",
-                layerContentControllerComponent(layerId));
+                timelineLayerControllerComponent(layerId)
+            );
 
             element = parent.lastElementChild as HTMLElement;
 
@@ -72,7 +73,8 @@ export const execute = (): void =>
             const frameControllerElement = element.lastElementChild as NonNullable<HTMLElement>;
             for (let idx: number = 0; idx <= maxFrame; ++idx) {
                 frameControllerElement.insertAdjacentHTML("beforeend",
-                    layerContentFrameComponent(layerId, frame + idx));
+                    timelineLayerFrameContentComponent(layerId, frame + idx)
+                );
             }
 
             timelineLayer.elements.push(element);
@@ -101,6 +103,6 @@ export const execute = (): void =>
         }
 
         // Layerの状態に合わせてstyle, classの状態を更新
-        timelineLayerUpdateControllerElementStyleUseCase(layer);
+        timelineLayerControllerUpdateElementStyleUseCase(layer);
     }
 };

@@ -1,6 +1,6 @@
-import { execute } from "./TimelineLayerNameTextKeyPressEventService";
+import { execute } from "./TimelineLayerControllerNameTextKeyPressEventService";
 
-describe("TimelineLayerNameTextKeyPressEventServiceTest", () =>
+describe("TimelineLayerControllerNameTextKeyPressEventServiceTest", () =>
 {
     test("execute test", async () =>
     {

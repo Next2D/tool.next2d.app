@@ -1,11 +1,11 @@
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import type { Layer } from "@/core/domain/model/Layer";
-import { execute as timelineLayerDisableIconStyleService } from "../service/TimelineLayerDisableIconStyleService";
+import { execute as timelineLayerControllerUpdateLockIconStyleService } from "../service/TimelineLayerControllerUpdateLockIconStyleService";
 import { $allHideMenu } from "@/menu/application/MenuUtil";
 
 /**
- * @description レイヤーの表示・非表示アイコンのイベント処理
- *              Event processing for layer show/hide icons
+ * @description レイヤーのロックアイコンのイベント処理
+ *              Layer lock icon event handling
  *
  * @param  {PointerEvent} event
  * @return {void}
@@ -38,5 +38,5 @@ export const execute = (event: PointerEvent): void =>
     }
 
     // 反転して登録
-    timelineLayerDisableIconStyleService(layerId, !layer.disable);
+    timelineLayerControllerUpdateLockIconStyleService(layerId, !layer.lock);
 };

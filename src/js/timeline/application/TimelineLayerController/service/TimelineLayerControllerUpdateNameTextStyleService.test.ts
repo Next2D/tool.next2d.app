@@ -1,7 +1,7 @@
-import { execute } from "./TimelineLayerUpdateNameTextStyleService";
+import { execute } from "./TimelineLayerControllerUpdateNameTextStyleService";
 import { $createWorkSpace } from "../../../../core/application/CoreUtil";
 
-describe("TimelineLayerUpdateNameTextStyleServiceTest", () =>
+describe("TimelineLayerControllerUpdateNameTextStyleServiceTest", () =>
 {
     test("execute test", async () =>
     {
