@@ -89,6 +89,15 @@ export const $TIMELINE_CONTENT_ID: string = "timeline-content";
 export const $TIMELINE_MARKER_ID: string = "timeline-marker";
 
 /**
+ * @description 現在のフレーム表示のElementのID
+ *              ID of Element in current frame display
+ *
+ * @type {string}
+ * @constant
+ */
+export const $TIMELINE_CURRENT_FRAME_ID: string = "current-frame";
+
+/**
  * @description タイムラインの最小幅の数値
  *              Minimum width value for timeline
  *

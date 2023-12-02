@@ -1,4 +1,5 @@
 import { EventType } from "@/tool/domain/event/EventType";
+import { execute as timelineHeaderMouseDownEventUseCase } from "@/timeline/application/TimelineHeader/usecase/TimelineHeaderMouseDownEventUseCase";
 
 /**
  * @description タイムラインのヘッダーフレームにイベント登録を行う
@@ -11,18 +12,10 @@ import { EventType } from "@/tool/domain/event/EventType";
  */
 export const execute = (element: HTMLElement): void =>
 {
-    element.addEventListener(EventType.MOUSE_DOWN, (event: PointerEvent): void =>
-    {
-        if (event.button) {
-            return ;
-        }
-
-        // イベント停止
-        event.stopPropagation();
-
-        // TODO
-        console.log("TODO:", [event]);
-    });
+    // マウスダウンイベント
+    element.addEventListener(EventType.MOUSE_DOWN,
+        timelineHeaderMouseDownEventUseCase
+    );
 
     // アイコンにdrag/dropイベントを登録
     for (let idx = 0; idx < 3; ++idx) {

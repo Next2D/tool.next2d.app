@@ -14,6 +14,10 @@ import { $allHideMenu } from "@/menu/application/MenuUtil";
  */
 export const execute = (event: PointerEvent): void =>
 {
+    if (event.button !== 0) {
+        return ;
+    }
+
     // 親のイベントを中止
     event.stopPropagation();
 

@@ -21,6 +21,11 @@ let wait: boolean = false;
  */
 export const execute = (event: PointerEvent): void =>
 {
+    if (event.button !== 0) {
+        wait = false;
+        return ;
+    }
+
     // メニュー表示があれば全て非表示にする
     $allHideMenu();
 
