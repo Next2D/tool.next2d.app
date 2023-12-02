@@ -5,6 +5,7 @@ import { execute as timelineAreaChageStyleToActiveService } from "../service/Tim
 import { execute as timelinelAreaRegisterWindowMoveEventUseCase } from "./TimelinelAreaRegisterWindowMoveEventUseCase";
 import { execute as timelineHeaderBuildElementUseCase } from "../../TimelineHeader/usecase/TimelineHeaderBuildElementUseCase";
 import { execute as timelineLayerBuildElementUseCase } from "../../TimelineLayer/usecase/TimelineLayerBuildElementUseCase";
+import { execute as timelineHeaderUpdateClientWidthService } from "@/timeline/application/TimelineHeader/service/TimelineHeaderUpdateClientWidthService";
 import {
     $getStandbyMoveState,
     $setStandbyMoveState
@@ -43,13 +44,16 @@ export const execute = (): void =>
         const workSpace = $getCurrentWorkSpace();
         if (workSpace.timelineAreaState.state === "fixed") {
 
-            // ツールエリアを移動モードに設定
+            // タイムラインエリアを移動モードに設定
             workSpace.timelineAreaState.state      = "move";
             workSpace.timelineAreaState.offsetLeft = element.offsetLeft;
             workSpace.timelineAreaState.offsetTop  = element.offsetTop;
 
-            // ツールエリアのstyleを更新
+            // タイムラインエリアのstyleを更新
             timelineAreaChageStyleToActiveService(element);
+
+            // タイムラインヘッダーの幅を更新
+            timelineHeaderUpdateClientWidthService();
         }
 
         // カーソルを移動用に変更

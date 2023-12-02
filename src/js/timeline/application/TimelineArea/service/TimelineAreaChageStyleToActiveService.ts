@@ -68,5 +68,4 @@ export const execute = (element: HTMLElement): void =>
 
     // ヘッダー描画範囲の幅を変更して、計算用のclientWidthを更新
     baseElement.style.width = "calc(var(--timeline-logic-width) - var(--timeline-layer-controller-width) - var(--timeline-adjustment-width))";
-    timelineHeader.clientWidth = baseElement.clientWidth;
 };

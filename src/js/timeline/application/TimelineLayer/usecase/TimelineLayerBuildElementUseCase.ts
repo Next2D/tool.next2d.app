@@ -60,6 +60,7 @@ export const execute = (): void =>
 
             element = parent.lastElementChild as HTMLElement;
 
+            // レイヤー全体のマウスダウンイベント
             element.addEventListener(EventType.MOUSE_DOWN, timelineLayerMouseDownEventUseCase);
 
             // レイヤーのコントローラーのイベント登録
@@ -90,7 +91,8 @@ export const execute = (): void =>
             if (maxFrame > children.length) {
                 for (let idx: number = children.length; idx <= maxFrame; ++idx) {
                     frameControllerElement.insertAdjacentHTML("beforeend",
-                        layerContentFrameComponent(layerId, frame + idx));
+                        timelineLayerFrameContentComponent(layerId, frame + idx)
+                    );
                 }
             }
 

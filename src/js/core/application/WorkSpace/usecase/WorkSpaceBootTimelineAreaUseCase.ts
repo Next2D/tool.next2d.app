@@ -2,7 +2,8 @@ import { $TIMELINE_ID } from "@/config/TimelineConfig";
 import { UserTimelineAreaStateObjectImpl } from "@/interface/UserTimelineAreaStateObjectImpl";
 import { execute as timelineAreaChageStyleToActiveService } from "@/timeline/application/TimelineArea/service/TimelineAreaChageStyleToActiveService";
 import { execute as timelineAreaChageStyleToInactiveService } from "@/timeline/application/TimelineArea/service/TimelineAreaChageStyleToInactiveService";
-import { execute as timelineMarkerUpdatePositionUseCase } from "@/timeline/application/TimelineMarker/usecase/TimelineMarkerUpdatePositionUseCase";
+import { execute as timelineMarkerUpdateBorderPositionService } from "@/timeline/application/TimelineMarker/service/TimelineMarkerUpdateBorderPositionService";
+import { execute as timelineHeaderUpdateClientWidthService } from "@/timeline/application/TimelineHeader/service/TimelineHeaderUpdateClientWidthService";
 
 /**
  * @description WorkSpaceに保存されてるobjectからタイムラインエリアのstyleを更新
@@ -39,6 +40,9 @@ export const execute = (timeline_area_state: UserTimelineAreaStateObjectImpl): v
     // fixed logic
     style.setProperty("--timeline-logic-height", `${timeline_area_state.height}px`);
 
+    // タイムラインヘッダーの幅を更新
+    timelineHeaderUpdateClientWidthService();
+
     // タイムラインマーカーの座標をセット
-    timelineMarkerUpdatePositionUseCase();
+    timelineMarkerUpdateBorderPositionService();
 };

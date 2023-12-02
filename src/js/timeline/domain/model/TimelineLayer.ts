@@ -1,3 +1,5 @@
+import { execute as timelineLayerInitializeUseCase } from "../../application/TimelineLayer/usecase/TimelineLayerInitializeUseCase";
+
 /**
  * @description タイムラインのレイヤーの管理クラス
  *              Management class for timeline layers
@@ -16,6 +18,19 @@ export class TimelineLayer
     constructor ()
     {
         this._$elements = [];
+    }
+
+    /**
+     * @description 初期起動関数
+     *              initial invoking function
+     *
+     * @return {Promise}
+     * @method
+     * @public
+     */
+    async initialize (): Promise<void>
+    {
+        timelineLayerInitializeUseCase();
     }
 
     /**

@@ -39,6 +39,14 @@ export class TimelineMarker
         this._$offsetTop = 0;
     }
 
+    /**
+     * @description 初期起動関数
+     *              initial invoking function
+     *
+     * @return {Promise}
+     * @method
+     * @public
+     */
     async initialize (): Promise<void>
     {
         //
