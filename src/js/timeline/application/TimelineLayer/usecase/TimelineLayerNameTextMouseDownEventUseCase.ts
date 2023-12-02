@@ -38,7 +38,6 @@ export const execute = (event: PointerEvent): void =>
     } else {
 
         // 他のイベントを中止
-        event.stopPropagation();
         event.preventDefault();
 
         const element: HTMLElement | null = event.target as HTMLElement;

@@ -80,6 +80,15 @@ export const $TIMELINE_ADJUSTMENT_Y_ID: string = "timeline-adjustment-y";
 export const $TIMELINE_CONTENT_ID: string = "timeline-content";
 
 /**
+ * @description タイムラインマーカーのElementのID
+ *              ID of the Element of the timeline marker
+ *
+ * @type {string}
+ * @constant
+ */
+export const $TIMELINE_MARKER_ID: string = "timeline-marker";
+
+/**
  * @description タイムラインの最小幅の数値
  *              Minimum width value for timeline
  *

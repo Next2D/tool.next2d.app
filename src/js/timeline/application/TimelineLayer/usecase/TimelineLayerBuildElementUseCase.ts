@@ -9,9 +9,11 @@ import {
 } from "../../TimelineUtil";
 import { execute as layerContentControllerComponent } from "../component/LayerContentControllerComponent";
 import { execute as layerContentFrameComponent } from "../component/LayerContentFrameComponent";
+import { execute as timelineLayerMouseDownEventUseCase } from "./TimelineLayerMouseDownEventUseCase";
 import { execute as timelineLayerControllerRegisterEventUseCase } from "./TimelineLayerControllerRegisterEventUseCase";
 import { execute as timelineLayerFrameRegisterEventUseCase } from "./TimelineLayerFrameRegisterEventUseCase";
 import { execute as timelineLayerUpdateControllerElementStyleUseCase } from "./TimelineLayerUpdateControllerElementStyleUseCase";
+import { EventType } from "@/tool/domain/event/EventType";
 
 /**
  * @description 指定のMoiveClipのLayerからタイムラインを生成
@@ -56,6 +58,8 @@ export const execute = (): void =>
                 layerContentControllerComponent(layerId));
 
             element = parent.lastElementChild as HTMLElement;
+
+            element.addEventListener(EventType.MOUSE_DOWN, timelineLayerMouseDownEventUseCase);
 
             // レイヤーのコントローラーのイベント登録
             const layerControllerElement = element.children[0] as NonNullable<HTMLElement>;

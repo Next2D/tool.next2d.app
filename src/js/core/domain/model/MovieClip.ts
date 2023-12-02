@@ -142,6 +142,8 @@ export class MovieClip extends Instance
             // タイムラインのヘッダーを生成
             timelineHeaderBuildElementUseCase();
 
+            // タイムラインのマーカーの座標をセット
+
             // MovieClipのLayerからタイムラインを生成
             timelineLayerBuildElementUseCase();
 

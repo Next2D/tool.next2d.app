@@ -18,10 +18,10 @@ import { EventType } from "@/tool/domain/event/EventType";
  */
 export const execute = (element: HTMLElement): void =>
 {
-    // マウスダウンイベントを登録
-
     // 右クリックイベント登録
-    element.addEventListener("contextmenu", timelineLayerControllerMenuShowService);
+    element.addEventListener("contextmenu",
+        timelineLayerControllerMenuShowService
+    );
 
     const layerId: string = element.dataset.layerId as string;
 
