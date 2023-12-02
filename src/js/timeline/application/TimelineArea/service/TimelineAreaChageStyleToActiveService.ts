@@ -3,7 +3,6 @@ import {
     $TIMELINE_CONTROLLER_BASE_ID,
     $TIMELINE_MIN_WIDTH
 } from "@/config/TimelineConfig";
-import { timelineHeader } from "../../TimelineUtil";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 
 /**

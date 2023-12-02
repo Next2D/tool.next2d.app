@@ -5,6 +5,7 @@ import { execute as timelineLayerControllerLightIconMouseDownEventUseCase } from
 import { execute as timelineLayerControllerNameTextMouseDownEventUseCase } from "./TimelineLayerControllerNameTextMouseDownEventUseCase";
 import { execute as timelineLayerControllerNameTextInactiveStyleService } from "../service/TimelineLayerControllerNameTextInactiveStyleService";
 import { execute as timelineLayerControllerNameTextKeyPressEventService } from "../service/TimelineLayerControllerNameTextKeyPressEventService";
+import { execute as timelineLayerControllerLayerIconMouseDownEventUseCase } from "./TimelineLayerControllerLayerIconMouseDownEventUseCase";
 import { EventType } from "@/tool/domain/event/EventType";
 
 /**
@@ -24,6 +25,17 @@ export const execute = (element: HTMLElement): void =>
     );
 
     const layerId: string = element.dataset.layerId as string;
+
+    const layerIconElement: HTMLElement | null = document
+        .getElementById(`layer-icon-${layerId}`);
+
+    if (layerIconElement) {
+
+        // マウスダウンイベント
+        layerIconElement.addEventListener(EventType.MOUSE_DOWN,
+            timelineLayerControllerLayerIconMouseDownEventUseCase
+        );
+    }
 
     // レイヤー名のElementにイベントを登録
     const textElement: HTMLElement | null = document

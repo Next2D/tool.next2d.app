@@ -1,5 +1,6 @@
+import { $TIMELINE_LAYER_MENU_NAME } from "@/config/MenuConfig";
+import { execute as timelineLayerControllerMenuShowService } from "@/menu/application/TimelineLayerControllerMenu/service/TimelineLayerControllerMenuShowService";
 import { $allHideMenu } from "@/menu/application/MenuUtil";
-import { execute as timelineLayerControllerNameTextActiveStyleService } from "../service/TimelineLayerControllerNameTextActiveStyleService";
 
 /**
  * @description ダブルタップ用の待機フラグ
@@ -22,7 +23,7 @@ let wait: boolean = false;
 export const execute = (event: PointerEvent): void =>
 {
     // メニュー表示があれば全て非表示にする
-    $allHideMenu();
+    $allHideMenu($TIMELINE_LAYER_MENU_NAME);
 
     if (!wait) {
 
@@ -39,17 +40,7 @@ export const execute = (event: PointerEvent): void =>
 
         wait = false;
 
-        // 他のイベントを中止
-        event.preventDefault();
-
-        const element: HTMLElement | null = event.target as HTMLElement;
-        if (!element) {
-            return ;
-        }
-
-        // ダブルクリック処理
-        timelineLayerControllerNameTextActiveStyleService(
-            parseInt(element.dataset.layerId as string)
-        );
+        // タイムラインコントローラーメニューを表示
+        timelineLayerControllerMenuShowService(event);
     }
 };
