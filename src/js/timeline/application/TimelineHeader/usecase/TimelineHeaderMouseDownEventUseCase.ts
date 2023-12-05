@@ -1,4 +1,6 @@
 import { execute as timelineFrameUpdateFrameElementService } from "@/timeline/application/TimelineFrame/service/TimelineFrameUpdateFrameElementService";
+import { execute as timelineMarkerMovePositionService } from "@/timeline/application/TimelineMarker/service/TimelineMarkerMovePositionService";
+
 /**
  * @description タイムラインヘッダーのマウスダウンイベント処理関数
  *              Timeline header mouse down event handling function
@@ -28,4 +30,7 @@ export const execute = (event: PointerEvent): void =>
 
     // フレームの表示を更新
     timelineFrameUpdateFrameElementService(frame);
+
+    // マーカーを移動
+    timelineMarkerMovePositionService();
 };

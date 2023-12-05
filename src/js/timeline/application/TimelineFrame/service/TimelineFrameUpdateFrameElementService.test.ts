@@ -1,4 +1,5 @@
 import { $TIMELINE_CURRENT_FRAME_ID } from "../../../../config/TimelineConfig";
+import { timelineFrame } from "../../TimelineUtil";
 import { execute } from "./TimelineFrameUpdateFrameElementService";
 
 describe("TimelineFrameUpdateFrameElementServiceTest", () =>
@@ -10,11 +11,16 @@ describe("TimelineFrameUpdateFrameElementServiceTest", () =>
         input.value = "1";
         document.body.appendChild(input);
 
+        expect(timelineFrame.currentFrame).toBe(1);
         expect(input.value).toBe("1");
+
         execute(10);
         expect(input.value).toBe("10");
+        expect(timelineFrame.currentFrame).toBe(10);
+
         execute(99);
         expect(input.value).toBe("99");
+        expect(timelineFrame.currentFrame).toBe(99);
 
         input.remove();
     });

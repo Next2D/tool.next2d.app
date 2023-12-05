@@ -1,4 +1,5 @@
 import { $TIMELINE_CURRENT_FRAME_ID } from "@/config/TimelineConfig";
+import { timelineFrame } from "../../TimelineUtil";
 
 /**
  * @description タイムラインのフレーム表示を更新
@@ -17,5 +18,9 @@ export const execute = (frame: number): void =>
         return ;
     }
 
+    // 表示Elementを更新
     element.value = `${frame}`;
+
+    // 内部情報を更新
+    timelineFrame.currentFrame = frame;
 };

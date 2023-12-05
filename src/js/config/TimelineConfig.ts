@@ -89,6 +89,15 @@ export const $TIMELINE_CONTENT_ID: string = "timeline-content";
 export const $TIMELINE_MARKER_ID: string = "timeline-marker";
 
 /**
+ * @description タイムラインマーカーのボーダーのElementのID
+ *              ID of the Element of the border of the timeline marker
+ *
+ * @return {string}
+ * @constant
+ */
+export const $TIMELINE_MARKER_BORDER_ID: string = "timeline-marker-border";
+
+/**
  * @description 現在のフレーム表示のElementのID
  *              ID of Element in current frame display
  *

@@ -3,8 +3,8 @@ import { execute as timelineHeaderFrameComponent } from "../component/TimelineHe
 import { execute as timelineHeaderFrameRegisterEventUseCase } from "./TimelineHeaderFrameRegisterEventUseCase";
 import {
     $getLeftFrame,
-    $getTimelineFrameWidth,
-    timelineHeader
+    timelineHeader,
+    timelineFrame
 } from "../../TimelineUtil";
 import { $STAGE_FPS_ID } from "@/config/StageSettingConfig";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
@@ -28,8 +28,7 @@ export const execute = (): void =>
         return ;
     }
 
-    const timelineFrameWidth: number = $getTimelineFrameWidth();
-    const elementCount: number = Math.ceil(timelineHeader.clientWidth / (timelineFrameWidth + 1));
+    const elementCount: number = Math.ceil(timelineHeader.clientWidth / (timelineFrame.width + 1));
 
     // Elementがなければ初期登録
     if (!element.children.length) {

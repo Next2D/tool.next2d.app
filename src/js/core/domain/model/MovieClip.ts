@@ -1,6 +1,7 @@
 import { Instance } from "./Instance";
 import { execute as timelineHeaderBuildElementUseCase } from "@/timeline/application/TimelineHeader/usecase/TimelineHeaderBuildElementUseCase";
 import { execute as timelineLayerBuildElementUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerBuildElementUseCase";
+import { execute as timelineMarkerMovePositionService } from "@/timeline/application/TimelineMarker/service/TimelineMarkerMovePositionService";
 import { Layer } from "./Layer";
 import { timelineLayer } from "@/timeline/application/TimelineUtil";
 import type { SoundObjectImpl } from "@/interface/SoundObjectImpl";
@@ -143,6 +144,7 @@ export class MovieClip extends Instance
             timelineHeaderBuildElementUseCase();
 
             // タイムラインのマーカーの座標をセット
+            timelineMarkerMovePositionService();
 
             // MovieClipのLayerからタイムラインを生成
             timelineLayerBuildElementUseCase();

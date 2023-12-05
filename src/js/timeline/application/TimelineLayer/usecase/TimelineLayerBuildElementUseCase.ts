@@ -3,9 +3,9 @@ import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import type{ WorkSpace } from "@/core/domain/model/WorkSpace";
 import {
     $getLeftFrame,
-    $getTimelineFrameWidth,
     timelineHeader,
-    timelineLayer
+    timelineLayer,
+    timelineFrame
 } from "../../TimelineUtil";
 import { execute as timelineLayerControllerComponent } from "../../TimelineLayerController/component/TimelineLayerControllerComponent";
 import { execute as timelineLayerFrameContentComponent } from "../../TimelineLayerFrame/component/TimelineLayerFrameContentComponent";
@@ -44,8 +44,7 @@ export const execute = (): void =>
 
     const frame: number = $getLeftFrame();
 
-    const timelineFrameWidth: number = $getTimelineFrameWidth();
-    const elementCount: number = Math.ceil(timelineHeader.clientWidth / (timelineFrameWidth + 1));
+    const elementCount: number = Math.ceil(timelineHeader.clientWidth / (timelineFrame.width + 1));
     const maxFrame: number = elementCount + 1;
 
     for (const [layerId, layer] of layers) {
@@ -61,7 +60,9 @@ export const execute = (): void =>
             element = parent.lastElementChild as HTMLElement;
 
             // レイヤー全体のマウスダウンイベント
-            element.addEventListener(EventType.MOUSE_DOWN, timelineLayerMouseDownEventUseCase);
+            element.addEventListener(EventType.MOUSE_DOWN,
+                timelineLayerMouseDownEventUseCase
+            );
 
             // レイヤーのコントローラーのイベント登録
             const layerControllerElement = element.children[0] as NonNullable<HTMLElement>;

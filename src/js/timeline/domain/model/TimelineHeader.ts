@@ -10,7 +10,6 @@ import { execute as timelineHeaderInitializeUseCase } from "../../application/Ti
 export class TimelineHeader
 {
     private _$clientWidth: number;
-    private _$scrollX: number;
 
     /**
      * @constructor
@@ -24,13 +23,6 @@ export class TimelineHeader
          * @private
          */
         this._$clientWidth = 0;
-
-        /**
-         * @type {number}
-         * @default 0
-         * @private
-         */
-        this._$scrollX = 0;
     }
 
     /**
@@ -53,8 +45,8 @@ export class TimelineHeader
     }
 
     /**
-     * @description コンテナの表示幅を返却する
-     *              Return container display width
+     * @description タイムラインヘッダーの表示幅を返却する
+     *              Return the display width of the timeline header
      *
      * @member {number}
      * @public

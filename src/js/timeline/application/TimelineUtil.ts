@@ -1,43 +1,6 @@
 import { TimelineHeader } from "../domain/model/TimelineHeader";
 import { TimelineFrame } from "../domain/model/TimelineFrame";
 import { TimelineLayer } from "../domain/model/TimelineLayer";
-import { TimelineMarker } from "../domain/model/TimelineMarker";
-
-/**
- * @description フレームの幅の値
- *              Frame width value
- *
- * @typw {number}
- * @private
- */
-let $timeline_frame_width: number = 13;
-
-/**
- * @description 現在のフレームの幅の値を返却
- *              Returns the value of the current frame width
- *
- * @returns {number}
- * @method
- * @public
- */
-export const $getTimelineFrameWidth = (): number =>
-{
-    return $timeline_frame_width;
-};
-
-/**
- * @description フレームの幅の値を更新
- *              Update frame width values
- *
- * @params  {number}
- * @returns {void}
- * @method
- * @public
- */
-export const $setTimelineFrameWidth = (timeline_frame_width: number): void =>
-{
-    $timeline_frame_width = Math.min(260, Math.max(4, timeline_frame_width));
-};
 
 /**
  * @description タイムラインのヘッダー管理オブジェクト
@@ -65,15 +28,6 @@ export const timelineFrame: TimelineFrame = new TimelineFrame();
  * @public
  */
 export const timelineLayer: TimelineLayer = new TimelineLayer();
-
-/**
- * @description タイムラインのマーカーの管理オブジェクト
- *              Timeline Header Management Objects
- *
- * @type {TimelineMarker}
- * @public
- */
-export const timelineMarker: TimelineMarker = new TimelineMarker();
 
 /**
  * @description ツールエリアでのマウス状態
@@ -156,5 +110,5 @@ export const $setScrollX = (x: number): void =>
  */
 export const $getLeftFrame = (): number =>
 {
-    return 1 + $scrollX / $timeline_frame_width | 0;
+    return 1 + Math.floor($scrollX / timelineFrame.width);
 };

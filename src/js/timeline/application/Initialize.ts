@@ -1,14 +1,12 @@
 import type { TimelineHeader } from "../domain/model/TimelineHeader";
 import type { TimelineFrame } from "../domain/model/TimelineFrame";
-import type { TimelineMarker } from "../domain/model/TimelineMarker";
 import type { TimelineLayer } from "../domain/model/TimelineLayer";
 import { execute as timelineAreaInitializeRegisterEventUseCase } from "../application/TimelineArea/usecase/TimelineAreaInitializeRegisterEventUseCase";
 import { execute as timelineAdjustmentInitializeRegisterEventUseCase } from "../application/TimelineAdjustment/usecase/TimelineAdjustmentInitializeRegisterEventUseCase";
 import {
     timelineHeader,
     timelineFrame,
-    timelineLayer,
-    timelineMarker
+    timelineLayer
 } from "./TimelineUtil";
 
 /**
@@ -17,11 +15,10 @@ import {
  *
  * @private
  */
-const models: Array<TimelineHeader | TimelineFrame | TimelineMarker | TimelineLayer> = [
+const models: Array<TimelineHeader | TimelineFrame | TimelineLayer> = [
     timelineHeader,
     timelineFrame,
-    timelineLayer,
-    timelineMarker
+    timelineLayer
 ];
 
 /**

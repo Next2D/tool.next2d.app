@@ -2,7 +2,6 @@ import { $TIMELINE_ID } from "@/config/TimelineConfig";
 import { UserTimelineAreaStateObjectImpl } from "@/interface/UserTimelineAreaStateObjectImpl";
 import { execute as timelineAreaChageStyleToActiveService } from "@/timeline/application/TimelineArea/service/TimelineAreaChageStyleToActiveService";
 import { execute as timelineAreaChageStyleToInactiveService } from "@/timeline/application/TimelineArea/service/TimelineAreaChageStyleToInactiveService";
-import { execute as timelineMarkerUpdateBorderPositionService } from "@/timeline/application/TimelineMarker/service/TimelineMarkerUpdateBorderPositionService";
 import { execute as timelineHeaderUpdateClientWidthService } from "@/timeline/application/TimelineHeader/service/TimelineHeaderUpdateClientWidthService";
 
 /**
@@ -42,7 +41,4 @@ export const execute = (timeline_area_state: UserTimelineAreaStateObjectImpl): v
 
     // タイムラインヘッダーの幅を更新
     timelineHeaderUpdateClientWidthService();
-
-    // タイムラインマーカーの座標をセット
-    timelineMarkerUpdateBorderPositionService();
 };
