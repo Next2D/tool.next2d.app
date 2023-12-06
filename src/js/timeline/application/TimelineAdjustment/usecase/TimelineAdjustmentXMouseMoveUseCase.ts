@@ -1,8 +1,6 @@
 import { $TIMELINE_MIN_WIDTH } from "@/config/TimelineConfig";
-import { execute as timelineHeaderUpdateClientWidthService } from "../../TimelineHeader/service/TimelineHeaderUpdateClientWidthService";
-import { execute as timelineHeaderBuildElementUseCase } from "../../TimelineHeader/usecase/TimelineHeaderBuildElementUseCase";
-import { execute as timelineLayerBuildElementUseCase } from "../../TimelineLayer/usecase/TimelineLayerBuildElementUseCase";
-import { execute as timelineScrollUpdateWidthService } from "../../TimelineScroll/service/TimelineScrollUpdateWidthService";
+import { execute as timelineHeaderWindowResizeUseCase } from "../../TimelineHeader/usecase/TimelineHeaderWindowResizeUseCase";
+import { execute as timelineLayerWindowResizeUseCase } from "../../TimelineLayer/usecase/TimelineLayerWindowResizeUseCase";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 
 /**
@@ -33,16 +31,10 @@ export const execute = (event: PointerEvent): void =>
         const workSpace = $getCurrentWorkSpace();
         workSpace.timelineAreaState.width = width;
 
-        // タイムラインのヘッダー幅を更新
-        timelineHeaderUpdateClientWidthService();
+        // タイムラインのヘッダーをリサイズ
+        timelineHeaderWindowResizeUseCase();
 
-        // タイムラインのヘッダーを再描画
-        timelineHeaderBuildElementUseCase();
-
-        // タイムラインのレイヤーを再描画
-        timelineLayerBuildElementUseCase();
-
-        // x移動するスクロールバーの幅を更新
-        timelineScrollUpdateWidthService();
+        // タイムラインのレイヤーエリアをリサイズ
+        timelineLayerWindowResizeUseCase();
     });
 };

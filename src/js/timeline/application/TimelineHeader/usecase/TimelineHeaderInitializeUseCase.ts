@@ -2,6 +2,7 @@ import { $TIMELINE_CONTROLLER_BASE_ID } from "@/config/TimelineConfig";
 import { execute as timelineHeaderUpdateClientWidthService } from "../service/TimelineHeaderUpdateClientWidthService";
 import { execute as timelineHeaderWindowResizeUseCase } from "./TimelineHeaderWindowResizeUseCase";
 import { execute as timelineHeaderWheelEventUseCase } from "./TimelineHeaderWheelEventUseCase";
+import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 
 /**
  * @description タイムラインのヘッダー初期起動ユースケース
@@ -17,7 +18,16 @@ export const execute = (): void =>
     timelineHeaderUpdateClientWidthService();
 
     // ブラウザの表示サイズに変更イベント処理
-    window.addEventListener("resize", timelineHeaderWindowResizeUseCase);
+    window.addEventListener("resize", (): void =>
+    {
+        // 移動していれば処理終了
+        const workSpace = $getCurrentWorkSpace();
+        if (workSpace.timelineAreaState.state === "move") {
+            return ;
+        }
+
+        requestAnimationFrame(timelineHeaderWindowResizeUseCase);
+    });
 
     // ヘッダー全体のイベントを登録
     const element: HTMLElement | null = document

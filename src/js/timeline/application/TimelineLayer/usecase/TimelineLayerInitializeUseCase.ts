@@ -1,3 +1,4 @@
+import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { execute as timelineHeaderWindowResizeUseCase } from "./TimelineLayerWindowResizeUseCase";
 
 /**
@@ -11,5 +12,14 @@ import { execute as timelineHeaderWindowResizeUseCase } from "./TimelineLayerWin
 export const execute = (): void =>
 {
     // ブラウザの表示サイズに変更イベント処理
-    window.addEventListener("resize", timelineHeaderWindowResizeUseCase);
+    window.addEventListener("resize", (): void =>
+    {
+        // 移動していれば処理終了
+        const workSpace = $getCurrentWorkSpace();
+        if (workSpace.timelineAreaState.state === "move") {
+            return ;
+        }
+
+        requestAnimationFrame(timelineHeaderWindowResizeUseCase);
+    });
 };

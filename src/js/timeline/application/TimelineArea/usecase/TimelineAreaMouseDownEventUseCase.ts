@@ -3,7 +3,8 @@ import { $allHideMenu } from "@/menu/application/MenuUtil";
 import { execute as userAllFunctionStateService } from "@/user/application/Billing/service/UserAllFunctionStateService";
 import { execute as timelineAreaActiveMoveUseCase } from "./TimelineAreaActiveMoveUseCase";
 import { execute as timelineAreaChageStyleToInactiveService } from "../service/TimelineAreaChageStyleToInactiveService";
-import { execute as timelineHeaderBuildElementUseCase } from "../../TimelineHeader/usecase/TimelineHeaderBuildElementUseCase";
+import { execute as timelineHeaderWindowResizeUseCase } from "@/timeline/application/TimelineHeader/usecase/TimelineHeaderWindowResizeUseCase";
+import { execute as timelineLayerWindowResizeUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerWindowResizeUseCase";
 import { $setMouseState } from "../../TimelineUtil";
 import { $setStandbyMoveState } from "../TimelineAreaUtil";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
@@ -107,10 +108,15 @@ export const execute = (event: PointerEvent): void =>
             return ;
         }
 
+        // styleを更新
         timelineAreaChageStyleToInactiveService(element);
 
-        // ヘッダーを再描画
-        timelineHeaderBuildElementUseCase();
+        // リサイズを実行
+        // ヘッダーをリサイズ
+        timelineHeaderWindowResizeUseCase();
+
+        // レイヤーエリアをリサイズ
+        timelineLayerWindowResizeUseCase();
     }
 
 };
