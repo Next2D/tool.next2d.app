@@ -1,5 +1,6 @@
 import { $TIMELINE_CURRENT_FRAME_ID } from "@/config/TimelineConfig";
 import { timelineFrame } from "../../TimelineUtil";
+import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 
 /**
  * @description タイムラインのフレーム表示を更新
@@ -23,4 +24,8 @@ export const execute = (frame: number): void =>
 
     // 内部情報を更新
     timelineFrame.currentFrame = frame;
+
+    // 現在、表示中にMovieClipのフレームも更新
+    const scene = $getCurrentWorkSpace().scene;
+    scene.currentFrame = frame;
 };

@@ -2,6 +2,7 @@ import { $TIMELINE_MIN_WIDTH } from "@/config/TimelineConfig";
 import { execute as timelineHeaderUpdateClientWidthService } from "../../TimelineHeader/service/TimelineHeaderUpdateClientWidthService";
 import { execute as timelineHeaderBuildElementUseCase } from "../../TimelineHeader/usecase/TimelineHeaderBuildElementUseCase";
 import { execute as timelineLayerBuildElementUseCase } from "../../TimelineLayer/usecase/TimelineLayerBuildElementUseCase";
+import { execute as timelineScrollUpdateWidthService } from "../../TimelineScroll/service/TimelineScrollUpdateWidthService";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 
 /**
@@ -40,5 +41,8 @@ export const execute = (event: PointerEvent): void =>
 
         // タイムラインのレイヤーを再描画
         timelineLayerBuildElementUseCase();
+
+        // x移動するスクロールバーの幅を更新
+        timelineScrollUpdateWidthService();
     });
 };

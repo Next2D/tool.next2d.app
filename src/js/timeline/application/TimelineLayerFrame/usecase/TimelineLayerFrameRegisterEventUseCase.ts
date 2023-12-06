@@ -1,4 +1,6 @@
 import { execute as timelineMenuShowService } from "@/menu/application/TimelineMenu/service/TimelineMenuShowService";
+import { execute as timelineLayerFrameWheelEventUseCase } from "./TimelineLayerFrameWheelEventUseCase";
+import { EventType } from "@/tool/domain/event/EventType";
 
 /**
  * @description レイヤーのフーレム部分のイベント登録処理
@@ -13,4 +15,13 @@ export const execute = (element: HTMLElement): void =>
 {
     // 右クリックイベント登録
     element.addEventListener("contextmenu", timelineMenuShowService);
+
+    // スクロールイベントを登録
+    element.addEventListener("wheel", timelineLayerFrameWheelEventUseCase);
+
+    // マウスダウンイベントを登録
+    element.addEventListener(EventType.MOUSE_DOWN, () =>
+    {
+        //
+    });
 };

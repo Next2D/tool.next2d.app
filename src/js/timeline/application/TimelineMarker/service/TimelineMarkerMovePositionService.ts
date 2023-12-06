@@ -1,4 +1,7 @@
-import { $TIMELINE_MARKER_BORDER_ID, $TIMELINE_MARKER_ID } from "@/config/TimelineConfig";
+import {
+    $TIMELINE_MARKER_BORDER_ID,
+    $TIMELINE_MARKER_ID
+} from "@/config/TimelineConfig";
 import {
     $getLeftFrame,
     timelineFrame,
@@ -39,8 +42,9 @@ export const execute = (): void =>
     }
 
     const index: number = timelineFrame.currentFrame - $getLeftFrame();
+
     const left = index * (timelineFrame.width + 1);
-    if (0 > index || left > timelineHeader.clientWidth) {
+    if (0 > index || Math.abs(left) > timelineHeader.clientWidth) {
 
         if (display !== "") {
             return;
@@ -62,7 +66,7 @@ export const execute = (): void =>
 
         markerElement.style.left = `${left}px`;
 
-        // update
+        // ボーダー位置を更新
         document
             .documentElement
             .style

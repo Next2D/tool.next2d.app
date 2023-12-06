@@ -1,6 +1,7 @@
 import { TimelineHeader } from "../domain/model/TimelineHeader";
 import { TimelineFrame } from "../domain/model/TimelineFrame";
 import { TimelineLayer } from "../domain/model/TimelineLayer";
+import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 
 /**
  * @description タイムラインのヘッダー管理オブジェクト
@@ -65,42 +66,6 @@ export const $setMouseState = (state: "up" | "down"): void =>
 };
 
 /**
- * @description 現在のxスクロール座標
- *              Current x-scroll coordinates
- *
- * @type {number}
- * @private
- */
-let $scrollX: number = 0;
-
-/**
- * @description タイムラインのスクロールx座標
- *              Scroll x-coordinate of timeline
- *
- * @return {number}
- * @method
- * @public
- */
-export const $getScrollX = (): number =>
-{
-    return $scrollX;
-};
-
-/**
- * @description タイムラインのスクロールx座標を更新
- *              Update timeline scroll x-coordinate
- *
- * @param  {number} x
- * @return {void}
- * @method
- * @public
- */
-export const $setScrollX = (x: number): void =>
-{
-    $scrollX = x;
-};
-
-/**
  * @description 移動してるx座標から最小のフレーム数を返却
  *              Return the minimum number of frames from the moving x-coordinate
  *
@@ -110,5 +75,6 @@ export const $setScrollX = (x: number): void =>
  */
 export const $getLeftFrame = (): number =>
 {
-    return 1 + Math.floor($scrollX / timelineFrame.width);
+    const scene = $getCurrentWorkSpace().scene;
+    return 1 + Math.floor(scene.scrollX / timelineFrame.width);
 };

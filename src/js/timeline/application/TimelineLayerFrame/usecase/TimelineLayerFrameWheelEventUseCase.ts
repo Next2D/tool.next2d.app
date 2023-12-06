@@ -1,4 +1,4 @@
-import { execute as timelineHeaderUpdateScrollXUseCase } from "./TimelineHeaderUpdateScrollXUseCase";
+import { execute as timelineHeaderUpdateScrollXUseCase } from "@/timeline/application/TimelineHeader/usecase/TimelineHeaderUpdateScrollXUseCase";
 
 /**
  * @description タイムラインのヘッダーエリアでのWheelEventの実行関数
@@ -15,10 +15,16 @@ export const execute = (event: WheelEvent): void =>
     event.stopPropagation();
     event.preventDefault();
 
-    if (event.altKey) {
-        //
-    } else {
-        // ヘッダーをスクロールして再描画
-        timelineHeaderUpdateScrollXUseCase(event);
+    if (event.deltaX) {
+        // 横スクロールして再描画
+        return timelineHeaderUpdateScrollXUseCase(event);
+    }
+
+    if (event.deltaY) {
+        if (event.altKey) {
+            //
+        } else {
+            //
+        }
     }
 };

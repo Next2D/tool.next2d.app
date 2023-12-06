@@ -107,6 +107,24 @@ export const $TIMELINE_MARKER_BORDER_ID: string = "timeline-marker-border";
 export const $TIMELINE_CURRENT_FRAME_ID: string = "current-frame";
 
 /**
+ * @description タイムラインのスクロールのx座標位置
+ *              x-coordinate position of the timeline scroll
+ *
+ * @type {string}
+ * @constant
+ */
+export const $TIMELINE_SCROLL_BAR_X_ID: string = "timeline-scroll-bar-x";
+
+/**
+ * @description タイムラインのスクロールのy座標位置
+ *              y-coordinate position for timeline scrolling
+ *
+ * @type {string}
+ * @constant
+ */
+export const $TIMELINE_SCROLL_BAR_Y_ID: string = "timeline-scroll-bar-y";
+
+/**
  * @description タイムラインの最小幅の数値
  *              Minimum width value for timeline
  *
@@ -123,3 +141,12 @@ export const $TIMELINE_MIN_WIDTH: number = 860;
  * @constant
  */
 export const $TIMELINE_MIN_HEIGHT: number = 150;
+
+/**
+ * @description タイムラインの固定フレーム数
+ *              Fixed number of frames in the timeline
+ *
+ * @type {number}
+ * @constant
+ */
+export const $FIXED_FRAME_COUNT: number = 600;

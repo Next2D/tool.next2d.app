@@ -3,9 +3,12 @@ import { execute as timelineHeaderBuildElementUseCase } from "@/timeline/applica
 import { execute as timelineLayerBuildElementUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerBuildElementUseCase";
 import { execute as timelineMarkerMovePositionService } from "@/timeline/application/TimelineMarker/service/TimelineMarkerMovePositionService";
 import {
-    $getScrollX,
-    $setScrollX
+    timelineFrame,
+    timelineHeader
 } from "../../TimelineUtil";
+import { $FIXED_FRAME_COUNT } from "@/config/TimelineConfig";
+import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
+import { execute as timelineScrollUpdateXPositionService } from "@/timeline/application/TimelineScroll/service/TimelineScrollUpdateXPositionService";
 
 /**
  * @description タイムラインのヘッダーエリアのx座標を移動
@@ -23,20 +26,24 @@ export const execute = (event: WheelEvent): void =>
         return ;
     }
 
-    const scrollX = $getScrollX();
+    const scene = $getCurrentWorkSpace().scene;
+
     // 1フレーム目より以前には移動しない
-    if (!scrollX && 0 > delta) {
+    if (!scene.scrollX && 0 > delta) {
         return ;
     }
 
+    const limitX = (scene.totalFrame + $FIXED_FRAME_COUNT)
+        * timelineFrame.width - timelineHeader.clientWidth;
+
     // 最大値より右側には移動しない
-    if (scrollX >= Number.MAX_VALUE) {
+    if (scene.scrollX + delta > limitX) {
         return ;
     }
 
     requestAnimationFrame((): void =>
     {
-        $setScrollX($clamp(scrollX + delta, 0, Number.MAX_VALUE));
+        scene.scrollX = $clamp(scene.scrollX + delta, 0, limitX);
 
         // ヘッダーを再構築
         timelineHeaderBuildElementUseCase();
@@ -46,5 +53,8 @@ export const execute = (event: WheelEvent): void =>
 
         // レイヤーのタイムラインを再描画
         timelineLayerBuildElementUseCase();
+
+        // タイムラインのx移動するスクロールのx座標を更新
+        timelineScrollUpdateXPositionService();
     });
 };

@@ -1,11 +1,9 @@
-import { Instance } from "./Instance";
-import { execute as timelineHeaderBuildElementUseCase } from "@/timeline/application/TimelineHeader/usecase/TimelineHeaderBuildElementUseCase";
-import { execute as timelineLayerBuildElementUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerBuildElementUseCase";
-import { execute as timelineMarkerMovePositionService } from "@/timeline/application/TimelineMarker/service/TimelineMarkerMovePositionService";
-import { Layer } from "./Layer";
-import { timelineLayer } from "@/timeline/application/TimelineUtil";
 import type { SoundObjectImpl } from "@/interface/SoundObjectImpl";
 import type { MovieClipSaveObjectImpl } from "@/interface/MovieClipSaveObjectImpl";
+import { Instance } from "./Instance";
+import { Layer } from "./Layer";
+import { timelineLayer } from "@/timeline/application/TimelineUtil";
+import { execute as movieClipRunUseCase } from "@/core/application/MovieClip/usecase/MovieClipRunUseCase";
 
 /**
  * @description MovieClipの状態管理クラス
@@ -24,6 +22,8 @@ export class MovieClip extends Instance
     private _$currentFrame: number;
     private _$leftFrame: number;
     private _$layerId: number;
+    private _$scrollX: number;
+    private _$scrollY: number;
 
     /**
      * @params {object} object
@@ -79,8 +79,54 @@ export class MovieClip extends Instance
          */
         this._$layerId = 0;
 
+        /**
+         * @type {number}
+         * @default 0
+         * @private
+         */
+        this._$scrollX = 0;
+
+        /**
+         * @type {number}
+         * @default 0
+         * @private
+         */
+        this._$scrollY = 0;
+
         // 指定objectからMovieCLipを復元
         this.load(object);
+    }
+
+    /**
+     * @description タイムラインのスクロールのx座標
+     *              x-coordinate of timeline scrolling
+     *
+     * @member {number}
+     * @public
+     */
+    get scrollX (): number
+    {
+        return this._$scrollX;
+    }
+    set scrollX (scroll_x: number)
+    {
+        this._$scrollX = scroll_x;
+    }
+
+    /**
+     * @description タイムラインのスクロールのy座標
+     *              y-coordinate of timeline scrolling
+     *
+     * @member {number}
+     * @public
+     */
+    get scrollY (): number
+    {
+        return this._$scrollY;
+    }
+    set scrollY (scroll_y: number)
+    {
+        this._$scrollY = scroll_y;
     }
 
     /**
@@ -113,19 +159,17 @@ export class MovieClip extends Instance
     }
 
     /**
-     * @description タイムラインの一番左に表示されてるフレーム番号
-     *              The frame number displayed on the leftmost side of the timeline.
+     * TODO
+     * @description MovieClipの最大フレーム番号を返却
+     *              Returns the maximum frame number of MovieClip
      *
-     * @member {array}
+     * @member {number}
+     * @readonly
      * @public
      */
-    get leftFrame (): number
+    get totalFrame (): number
     {
-        return this._$leftFrame;
-    }
-    set leftFrame (left_frame: number)
-    {
-        this._$leftFrame = left_frame;
+        return 0;
     }
 
     /**
@@ -140,14 +184,8 @@ export class MovieClip extends Instance
     {
         return new Promise((resolve) =>
         {
-            // タイムラインのヘッダーを生成
-            timelineHeaderBuildElementUseCase();
-
-            // タイムラインのマーカーの座標をセット
-            timelineMarkerMovePositionService();
-
-            // MovieClipのLayerからタイムラインを生成
-            timelineLayerBuildElementUseCase();
+            // 起動処理を実行
+            movieClipRunUseCase(this);
 
             return resolve();
         });
@@ -203,6 +241,18 @@ export class MovieClip extends Instance
         } else {
             // Layerデータがなければ強制的に一個追加する
             this.addLayer();
+        }
+
+        if (object.scrollX) {
+            this._$scrollX = object.scrollX;
+        }
+
+        if (object.scrollY) {
+            this._$scrollY = object.scrollY;
+        }
+
+        if (object.currentFrame) {
+            this._$currentFrame = object.currentFrame;
         }
     }
 
@@ -477,7 +527,9 @@ export class MovieClip extends Instance
             "layers":       layers,
             "labels":       labels,
             "sounds":       soundList,
-            "actions":      actions
+            "actions":      actions,
+            "scrollX":      this._$scrollX,
+            "scrollY":      this._$scrollY
         };
     }
 }

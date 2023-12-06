@@ -42,14 +42,12 @@ export const execute = (): void =>
         return ;
     }
 
-    const frame: number = $getLeftFrame();
-
     const elementCount: number = Math.ceil(timelineHeader.clientWidth / (timelineFrame.width + 1));
-    const maxFrame: number = elementCount + 1;
-
+    const maxFrame: number     = elementCount + 1;
+    const leftFrame: number    = $getLeftFrame();
     for (const [layerId, layer] of layers) {
 
-        let element: HTMLElement | null = null;
+        let frameControllerElement: HTMLElement | null = null;
         if (layerId >= timelineLayer.elements.length) {
 
             // レイヤーのElementを新規登録
@@ -57,7 +55,7 @@ export const execute = (): void =>
                 timelineLayerControllerComponent(layerId)
             );
 
-            element = parent.lastElementChild as HTMLElement;
+            const element = parent.lastElementChild as HTMLElement;
 
             // レイヤー全体のマウスダウンイベント
             element.addEventListener(EventType.MOUSE_DOWN,
@@ -65,17 +63,20 @@ export const execute = (): void =>
             );
 
             // レイヤーのコントローラーのイベント登録
-            const layerControllerElement = element.children[0] as NonNullable<HTMLElement>;
-            timelineLayerControllerRegisterEventUseCase(layerControllerElement);
+            const layerControllerElement = element.firstElementChild as NonNullable<HTMLElement>;
+            timelineLayerControllerRegisterEventUseCase(
+                layerControllerElement
+            );
 
             // レイヤーのフレーム側のイベントを登録
-            const layerFrameElement = element.children[1] as NonNullable<HTMLElement>;
-            timelineLayerFrameRegisterEventUseCase(layerFrameElement);
+            frameControllerElement = element.lastElementChild as NonNullable<HTMLElement>;
+            timelineLayerFrameRegisterEventUseCase(
+                frameControllerElement
+            );
 
-            const frameControllerElement = element.lastElementChild as NonNullable<HTMLElement>;
             for (let idx: number = 0; idx <= maxFrame; ++idx) {
                 frameControllerElement.insertAdjacentHTML("beforeend",
-                    timelineLayerFrameContentComponent(layerId, frame + idx)
+                    timelineLayerFrameContentComponent(layerId, leftFrame + idx)
                 );
             }
 
@@ -83,16 +84,16 @@ export const execute = (): void =>
 
         } else {
 
-            element = timelineLayer.elements[layerId] as NonNullable<HTMLElement>;
+            const element = timelineLayer.elements[layerId] as NonNullable<HTMLElement>;
 
-            const frameControllerElement = element.lastElementChild as NonNullable<HTMLElement>;
-            const children: HTMLCollection = frameControllerElement.children;
+            frameControllerElement = element.lastElementChild as NonNullable<HTMLElement>;
 
             // 表示フレーム数が多い時はElementを追加
-            if (maxFrame > children.length) {
-                for (let idx: number = children.length; idx <= maxFrame; ++idx) {
+            const length: number = frameControllerElement.children.length;
+            if (maxFrame > length) {
+                for (let idx: number = length; idx <= maxFrame; ++idx) {
                     frameControllerElement.insertAdjacentHTML("beforeend",
-                        timelineLayerFrameContentComponent(layerId, frame + idx)
+                        timelineLayerFrameContentComponent(layerId, leftFrame + idx)
                     );
                 }
             }
@@ -101,8 +102,26 @@ export const execute = (): void =>
             element.style.display = "";
         }
 
-        if (!element) {
+        if (!frameControllerElement) {
             continue;
+        }
+
+        const children: HTMLCollection = frameControllerElement.children;
+        const length: number = children.length;
+        for (let idx = 0; idx < length; ++idx) {
+
+            const node: HTMLElement | undefined = children[idx] as HTMLElement;
+            if (!node) {
+                continue;
+            }
+
+            const frame = leftFrame + idx;
+            node.setAttribute("data-frame", `${frame}`);
+            node.setAttribute("data-frame-state", "empty");
+            node.setAttribute("class", frame % 5 !== 0
+                ? "frame"
+                : "frame frame-pointer"
+            );
         }
 
         // Layerの状態に合わせてstyle, classの状態を更新

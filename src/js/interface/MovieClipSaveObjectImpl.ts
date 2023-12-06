@@ -17,4 +17,6 @@ export interface MovieClipSaveObjectImpl
     labels?: LabelSaveObjectImpl[];
     sounds?: SoundSaveObjectImpl[];
     actions?: ActionSaveObjectImpl[];
+    scrollX?: number;
+    scrollY?: number;
 }
