@@ -19,6 +19,6 @@ export const execute = (event: WheelEvent): void =>
         //
     } else {
         // ヘッダーをスクロールして再描画
-        timelineHeaderUpdateScrollXUseCase(event);
+        timelineHeaderUpdateScrollXUseCase(event.deltaX || event.deltaY);
     }
 };

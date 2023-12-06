@@ -2,7 +2,7 @@ import { execute } from "./TimelineLayerControllerGetHighlightColorService";
 
 describe("TimelineLayerControllerGetHighlightColorServiceTest", () =>
 {
-    test("execute test", async () =>
+    test("execute test", () =>
     {
         const colors: string[] = [
             "#ff0000",

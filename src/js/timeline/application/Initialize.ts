@@ -3,6 +3,7 @@ import type { TimelineFrame } from "../domain/model/TimelineFrame";
 import type { TimelineLayer } from "../domain/model/TimelineLayer";
 import { execute as timelineAreaInitializeRegisterEventUseCase } from "../application/TimelineArea/usecase/TimelineAreaInitializeRegisterEventUseCase";
 import { execute as timelineAdjustmentInitializeRegisterEventUseCase } from "../application/TimelineAdjustment/usecase/TimelineAdjustmentInitializeRegisterEventUseCase";
+import { execute as timelineScrollXRegisterEventUseCase } from "../application/TimelineScroll/usecase/TimelineScrollXRegisterEventUseCase";
 import {
     timelineHeader,
     timelineFrame,
@@ -44,4 +45,7 @@ export const execute = async (): Promise<void> =>
 
     // タイムラインの幅と高さ調整のイベントを登録
     timelineAdjustmentInitializeRegisterEventUseCase();
+
+    // タイムラインのx座標に移動するスクロールのイベント登録
+    timelineScrollXRegisterEventUseCase();
 };

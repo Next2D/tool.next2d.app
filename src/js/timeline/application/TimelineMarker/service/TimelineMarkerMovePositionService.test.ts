@@ -3,7 +3,7 @@ import { $createWorkSpace } from "../../../../core/application/CoreUtil";
 
 describe("TimelineMarkerMovePositionServiceTest", () =>
 {
-    test("execute test", async () =>
+    test("execute test", () =>
     {
         $createWorkSpace();
         // expect(document.documentElement.style.getPropertyValue("--timeline-scroll-bar-width")).toBe("100px");

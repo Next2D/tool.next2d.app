@@ -2,7 +2,7 @@ import { execute } from "./TimelineLayerControllerNameTextActiveStyleService";
 
 describe("TimelineLayerControllerNameTextActiveStyleServiceTest", () =>
 {
-    test("execute test", async () =>
+    test("execute test", () =>
     {
         const div = document.createElement("div");
         document.body.appendChild(div);

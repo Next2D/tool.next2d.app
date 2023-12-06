@@ -3,7 +3,7 @@ import { $createWorkSpace } from "../../../../core/application/CoreUtil";
 
 describe("TimelineLayerControllerUpdateColorStyleServiceTest", () =>
 {
-    test("execute test", async () =>
+    test("execute test", () =>
     {
         const div = document.createElement("div");
         document.body.appendChild(div);

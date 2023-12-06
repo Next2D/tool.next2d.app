@@ -2,7 +2,7 @@ import { execute } from "./ToolAreaChageStyleToInactiveService";
 
 describe("ToolAreaChageStyleToInactiveServiceTest", () =>
 {
-    test("execute test", async () =>
+    test("execute test", () =>
     {
         const mockElement = {
             "style": {

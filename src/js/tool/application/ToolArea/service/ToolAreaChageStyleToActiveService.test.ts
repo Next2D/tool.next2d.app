@@ -3,7 +3,7 @@ import { $createWorkSpace } from "../../../../core/application/CoreUtil";
 
 describe("ToolAreaChageStyleToActiveServiceTest", () =>
 {
-    test("execute test", async () =>
+    test("execute test", () =>
     {
         const workSpace = $createWorkSpace();
 

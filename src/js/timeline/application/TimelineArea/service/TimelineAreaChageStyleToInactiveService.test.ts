@@ -4,7 +4,7 @@ import { $createWorkSpace } from "../../../../core/application/CoreUtil";
 
 describe("TTimelineAreaChageStyleToInactiveServiceTest", () =>
 {
-    test("execute test", async () =>
+    test("execute test", () =>
     {
         $createWorkSpace();
         const mockElement = {

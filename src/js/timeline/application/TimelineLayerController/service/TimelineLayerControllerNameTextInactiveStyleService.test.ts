@@ -3,7 +3,7 @@ import { $createWorkSpace } from "../../../../core/application/CoreUtil";
 
 describe("TimelineLayerControllerNameTextInactiveStyleServiceTest", () =>
 {
-    test("execute test", async () =>
+    test("execute test", () =>
     {
         const workSpace = $createWorkSpace();
         const layer = workSpace.scene.getLayer(0);

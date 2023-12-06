@@ -4,7 +4,7 @@ import { $CONTROLLER_DEFAULT_WIDTH_SIZE } from "../../../../config/ControllerCon
 
 describe("PropertyAreaChageStyleToActiveServiceTest", () =>
 {
-    test("execute test", async () =>
+    test("execute test", () =>
     {
         const workSpace = $createWorkSpace();
 

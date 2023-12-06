@@ -2,7 +2,7 @@ import { execute } from "./PropertyAreaChageStyleToInactiveService";
 
 describe("PropertyAreaChageStyleToInactiveServiceTest", () =>
 {
-    test("execute test", async () =>
+    test("execute test", () =>
     {
         const mockElement = {
             "style": {

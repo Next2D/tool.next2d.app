@@ -4,7 +4,7 @@ import { timelineHeader } from "../../../../timeline/application/TimelineUtil";
 
 describe("TimelineScrollUpdateWidthServiceTest", () =>
 {
-    test("execute test", async () =>
+    test("execute test", () =>
     {
         $createWorkSpace();
 

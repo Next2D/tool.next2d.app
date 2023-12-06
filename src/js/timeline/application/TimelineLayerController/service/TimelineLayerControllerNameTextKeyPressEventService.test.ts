@@ -2,7 +2,7 @@ import { execute } from "./TimelineLayerControllerNameTextKeyPressEventService";
 
 describe("TimelineLayerControllerNameTextKeyPressEventServiceTest", () =>
 {
-    test("execute test", async () =>
+    test("execute test", () =>
     {
         let stop = false;
         let preventDefault = false;

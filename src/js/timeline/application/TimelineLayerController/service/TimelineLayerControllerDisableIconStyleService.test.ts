@@ -3,7 +3,7 @@ import { $createWorkSpace } from "../../../../core/application/CoreUtil";
 
 describe("TimelineLayerControllerDisableIconStyleServiceTest", () =>
 {
-    test("execute test", async () =>
+    test("execute test", () =>
     {
         const div = document.createElement("div");
         div.setAttribute("class", "icon-disable");

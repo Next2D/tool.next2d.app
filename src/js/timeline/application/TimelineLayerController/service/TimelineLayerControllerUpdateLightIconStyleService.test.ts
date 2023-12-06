@@ -3,7 +3,7 @@ import { $createWorkSpace } from "../../../../core/application/CoreUtil";
 
 describe("TimelineLayerControllerUpdateLightIconStyleServiceTest", () =>
 {
-    test("execute test", async () =>
+    test("execute test", () =>
     {
         const layerElement = document.createElement("div");
         document.body.appendChild(layerElement);

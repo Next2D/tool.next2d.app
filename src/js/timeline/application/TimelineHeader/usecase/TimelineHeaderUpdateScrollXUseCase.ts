@@ -14,14 +14,13 @@ import { execute as timelineScrollUpdateXPositionService } from "@/timeline/appl
  * @description タイムラインのヘッダーエリアのx座標を移動
  *              Move the x-coordinate of the header area of the timeline
  *
- * @param  {WheelEvent} event
+ * @param  {number} delta
  * @return {void}
  * @method
  * @public
  */
-export const execute = (event: WheelEvent): void =>
+export const execute = (delta: number): void =>
 {
-    const delta: number = event.deltaX || event.deltaY;
     if (!delta) {
         return ;
     }
