@@ -44,6 +44,7 @@ export const execute = (): void =>
     const index: number = timelineFrame.currentFrame - $getLeftFrame();
 
     const left = index * (timelineFrame.width + 1);
+
     if (0 > index || Math.abs(left) > timelineHeader.clientWidth) {
 
         if (display !== "") {
@@ -72,7 +73,7 @@ export const execute = (): void =>
             .style
             .setProperty(
                 "--timeline-marker-border-left",
-                `${(markerElement.clientWidth - 1) / 2 + markerElement.offsetLeft}px`
+                `${Math.floor((markerElement.clientWidth - 1) / 2) + markerElement.offsetLeft}px`
             );
     }
 };
