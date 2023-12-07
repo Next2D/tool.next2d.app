@@ -2,6 +2,7 @@ import { $TIMELINE_MIN_WIDTH } from "@/config/TimelineConfig";
 import { execute as timelineHeaderWindowResizeUseCase } from "../../TimelineHeader/usecase/TimelineHeaderWindowResizeUseCase";
 import { execute as timelineLayerWindowResizeUseCase } from "../../TimelineLayer/usecase/TimelineLayerWindowResizeUseCase";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
+import { execute as timelineMarkerMovePositionService } from "@/timeline/application/TimelineMarker/service/TimelineMarkerMovePositionService";
 
 /**
  * @description タイムラインの幅を調整
@@ -36,5 +37,8 @@ export const execute = (event: PointerEvent): void =>
 
         // タイムラインのレイヤーエリアをリサイズ
         timelineLayerWindowResizeUseCase();
+
+        // マーカーを移動
+        timelineMarkerMovePositionService();
     });
 };

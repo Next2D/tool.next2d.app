@@ -25,9 +25,11 @@ export const execute = (): void =>
 
     const scene = $getCurrentWorkSpace().scene;
 
-    const totalFrame: number = scene.totalFrame + $FIXED_FRAME_COUNT;
+    const clientWidth: number = timelineHeader.clientWidth;
+    const totalFrame: number  = scene.totalFrame + $FIXED_FRAME_COUNT;
 
-    const scale: number = timelineHeader.clientWidth / (totalFrame * timelineFrame.width);
+    // スクロールバーの幅を算出
+    const scale: number = clientWidth / (totalFrame * timelineFrame.width);
 
     element.style.left = `${Math.floor(scene.scrollX * scale) + 1}px`;
 };

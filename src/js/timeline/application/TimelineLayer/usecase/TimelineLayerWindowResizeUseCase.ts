@@ -1,6 +1,7 @@
 import { execute as timelineLayerBuildElementUseCase } from "./TimelineLayerBuildElementUseCase";
 import { execute as timelineScrollUpdateWidthService } from "@/timeline/application/TimelineScroll/service/TimelineScrollUpdateWidthService";
 import { execute as timelineScrollUpdateXPositionService } from "@/timeline/application/TimelineScroll/service/TimelineScrollUpdateXPositionService";
+import { execute as timelineHeaderUpdateClientWidthService } from "@/timeline/application/TimelineHeader/service/TimelineHeaderUpdateClientWidthService";
 
 /**
  * @description タイムラインのリサイズ時の実行関数
@@ -13,12 +14,15 @@ import { execute as timelineScrollUpdateXPositionService } from "@/timeline/appl
  */
 export const execute = (): void =>
 {
-    // タイムラインの幅を再描画
-    timelineLayerBuildElementUseCase();
+    // 内部情報のヘッダーの幅を更新
+    timelineHeaderUpdateClientWidthService();
 
     // スクロール幅を更新
     timelineScrollUpdateWidthService();
 
     // x座標を更新
     timelineScrollUpdateXPositionService();
+
+    // タイムラインの幅を再描画
+    timelineLayerBuildElementUseCase();
 };

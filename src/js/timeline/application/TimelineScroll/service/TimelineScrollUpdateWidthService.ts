@@ -31,4 +31,9 @@ export const execute = (): void =>
             "--timeline-scroll-bar-width",
             `${Math.floor(clientWidth * scale) - 2}px`
         );
+
+    const limitX = (scene.totalFrame + $FIXED_FRAME_COUNT)
+        * timelineFrame.width - timelineHeader.clientWidth;
+
+    scene.scrollX = Math.min(scene.scrollX, limitX);
 };
