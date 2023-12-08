@@ -1,5 +1,5 @@
 import { execute as timelineHeaderUpdateScrollXUseCase } from "@/timeline/application/TimelineHeader/usecase/TimelineHeaderUpdateScrollXUseCase";
-
+import { execute as timelineFrameWheelEventUseCase } from "@/timeline/application/TimelineFrame/usecase/TimelineFrameWheelEventUseCase";
 /**
  * @description タイムラインのヘッダーエリアでのWheelEventの実行関数
  *              Execution function of WheelEvent in the header area of the timeline
@@ -17,9 +17,10 @@ export const execute = (event: WheelEvent): void =>
 
     if (event.deltaY) {
         if (event.altKey) {
-            //
+            // フレームの幅を更新
+            timelineFrameWheelEventUseCase(event);
         } else {
-            //
+            // 縦スクロール
         }
     } else {
         if (event.deltaX) {

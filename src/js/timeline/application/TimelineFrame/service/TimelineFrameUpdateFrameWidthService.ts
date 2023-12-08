@@ -1,7 +1,9 @@
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import {
     $TIMELINE_MIN_FRAME_WIDTH_SIZE,
-    $TIMELINE_MAX_FRAME_WIDTH_SIZE
+    $TIMELINE_MAX_FRAME_WIDTH_SIZE,
+    $TIMELINE_DEFAULT_FRAME_WIDTH_SIZE,
+    $TIMELINE_SCROLL_ID
 } from "@/config/TimelineConfig";
 
 /**
@@ -14,6 +16,13 @@ import {
  */
 export const execute = (width: number): void =>
 {
+    const input: HTMLInputElement | null = document
+        .getElementById($TIMELINE_SCROLL_ID) as HTMLInputElement;
+
+    if (!input) {
+        return ;
+    }
+
     const workSpace = $getCurrentWorkSpace();
 
     // フレームの幅を更新
@@ -34,4 +43,6 @@ export const execute = (width: number): void =>
         .documentElement
         .style
         .setProperty("--timeline-frame-width", `${width}px`);
+
+    input.value = `${Math.floor(width / $TIMELINE_DEFAULT_FRAME_WIDTH_SIZE * 100)}`;
 };

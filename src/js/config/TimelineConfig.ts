@@ -32,7 +32,7 @@ export const $TIMELINE_MIN_FRAME_WIDTH_SIZE: number = 5;
  * @type {number}
  * @constant
  */
-export const $TIMELINE_MAX_FRAME_WIDTH_SIZE: number = 240;
+export const $TIMELINE_MAX_FRAME_WIDTH_SIZE: number = 260;
 
 /**
  * @description タイムラインのElementのID
@@ -150,6 +150,15 @@ export const $TIMELINE_SCROLL_BAR_X_ID: string = "timeline-scroll-bar-x";
  * @constant
  */
 export const $TIMELINE_SCROLL_BAR_Y_ID: string = "timeline-scroll-bar-y";
+
+/**
+ * @description タイムラインのスケールのElementのID
+ *              ID of the Element of the timeline scale
+ *
+ * @type {string}
+ * @constant
+ */
+export const $TIMELINE_SCROLL_ID: string = "timeline-scale";
 
 /**
  * @description タイムラインの最小幅の数値

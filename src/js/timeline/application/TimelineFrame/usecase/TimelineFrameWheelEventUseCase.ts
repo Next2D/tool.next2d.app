@@ -1,7 +1,7 @@
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { execute as timelineFrameUpdateFrameWidthService } from "../service/TimelineFrameUpdateFrameWidthService";
-import { execute as timelineHeaderBuildElementUseCase } from "@/timeline/application/TimelineHeader/usecase/TimelineHeaderBuildElementUseCase";
-import { execute as timelineLayerBuildElementUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerBuildElementUseCase";
+import { execute as timelineHeaderWindowResizeUseCase } from "@/timeline/application/TimelineHeader/usecase/TimelineHeaderWindowResizeUseCase";
+import { execute as timelineLayerWindowResizeUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerWindowResizeUseCase";
 import { execute as timelineMarkerUpdateWidthService } from "@/timeline/application/TimelineMarker/service/TimelineMarkerUpdateWidthService";
 import { execute as timelineMarkerMovePositionService } from "@/timeline/application/TimelineMarker/service/TimelineMarkerMovePositionService";
 import {
@@ -41,7 +41,7 @@ export const execute = (event: WheelEvent): void =>
 
         const width: number = timelineAreaState.frameWidth + deltaY;
 
-        //  フレーム幅を更新
+        // フレーム幅を更新
         timelineFrameUpdateFrameWidthService(width);
 
         // マーカーの幅を更新
@@ -51,9 +51,9 @@ export const execute = (event: WheelEvent): void =>
         timelineMarkerMovePositionService();
 
         // ヘッダーを再描画
-        timelineHeaderBuildElementUseCase();
+        timelineHeaderWindowResizeUseCase();
 
         // レイヤーを再描画
-        timelineLayerBuildElementUseCase();
+        timelineLayerWindowResizeUseCase();
     });
 };
