@@ -7,7 +7,6 @@ import {
     timelineFrame,
     timelineHeader
 } from "../../TimelineUtil";
-import { $getCommandMapping } from "@/menu/application/ShortcutSettingMenu/ShortcutSettingMenuUtil";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 
 /**

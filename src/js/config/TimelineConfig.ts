@@ -177,3 +177,21 @@ export const $TIMELINE_MIN_HEIGHT: number = 150;
  * @constant
  */
 export const $FIXED_FRAME_COUNT: number = 600;
+
+/**
+ * @description タイムラインマーカー幅の最小値
+ *              Minimum timeline marker width
+ *
+ * @type {number}
+ * @constant
+ */
+export const $TIMELINE_MIN_MARKER_WIDTH_SIZE: number = 4;
+
+/**
+ * @description タイムラインマーカー幅の最小値
+ *              Minimum timeline marker width
+ *
+ * @type {number}
+ * @constant
+ */
+export const $TIMELINE_MAX_MARKER_WIDTH_SIZE: number = 13;

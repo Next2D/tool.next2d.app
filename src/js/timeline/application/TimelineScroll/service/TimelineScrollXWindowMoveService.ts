@@ -1,10 +1,7 @@
 import { $FIXED_FRAME_COUNT } from "@/config/TimelineConfig";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { execute as timelineHeaderUpdateScrollXUseCase } from "@/timeline/application/TimelineHeader/usecase/TimelineHeaderUpdateScrollXUseCase";
-import {
-    timelineFrame,
-    timelineHeader
-} from "../../TimelineUtil";
+import { timelineHeader } from "../../TimelineUtil";
 
 /**
  * @description タイムラインのx座標に移動するスクロールの移動処理

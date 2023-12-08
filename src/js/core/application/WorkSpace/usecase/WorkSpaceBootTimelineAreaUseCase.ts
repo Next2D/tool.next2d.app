@@ -4,6 +4,8 @@ import { execute as timelineAreaChageStyleToActiveService } from "@/timeline/app
 import { execute as timelineAreaChageStyleToInactiveService } from "@/timeline/application/TimelineArea/service/TimelineAreaChageStyleToInactiveService";
 import { execute as timelineHeaderUpdateClientWidthService } from "@/timeline/application/TimelineHeader/service/TimelineHeaderUpdateClientWidthService";
 import { execute as timelineFrameUpdateFrameWidthService } from "@/timeline/application/TimelineFrame/service/TimelineFrameUpdateFrameWidthService";
+import { execute as timelineMarkerUpdateWidthService } from "@/timeline/application/TimelineMarker/service/TimelineMarkerUpdateWidthService";
+import { execute as timelineMarkerMovePositionService } from "@/timeline/application/TimelineMarker/service/TimelineMarkerMovePositionService";
 
 /**
  * @description WorkSpaceに保存されてるobjectからタイムラインエリアのstyleを更新
@@ -42,6 +44,12 @@ export const execute = (timeline_area_state: UserTimelineAreaStateObjectImpl): v
 
     // タイムラインのフレーム幅を更新
     timelineFrameUpdateFrameWidthService(timeline_area_state.frameWidth);
+
+    // マーカーの幅を更新
+    timelineMarkerUpdateWidthService(timeline_area_state.frameWidth);
+
+    // マーカー位置を更新
+    timelineMarkerMovePositionService();
 
     // タイムラインヘッダーの幅を更新
     timelineHeaderUpdateClientWidthService();

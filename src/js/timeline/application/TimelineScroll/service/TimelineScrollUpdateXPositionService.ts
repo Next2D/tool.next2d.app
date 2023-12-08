@@ -1,10 +1,7 @@
 import { $TIMELINE_SCROLL_BAR_X_ID } from "@/config/TimelineConfig";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { $FIXED_FRAME_COUNT } from "@/config/TimelineConfig";
-import {
-    timelineHeader,
-    timelineFrame
-} from "../../TimelineUtil";
+import { timelineHeader } from "../../TimelineUtil";
 
 /**
  * @description スクロールバーのx座標を更新

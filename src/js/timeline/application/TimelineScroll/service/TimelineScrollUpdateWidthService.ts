@@ -1,9 +1,6 @@
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { $FIXED_FRAME_COUNT } from "@/config/TimelineConfig";
-import {
-    timelineFrame,
-    timelineHeader
-} from "../../TimelineUtil";
+import { timelineHeader } from "../../TimelineUtil";
 
 /**
  * @description x移動するスクロールバーの幅を更新

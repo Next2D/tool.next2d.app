@@ -1,11 +1,13 @@
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
+import { execute as timelineFrameUpdateFrameWidthService } from "../service/TimelineFrameUpdateFrameWidthService";
+import { execute as timelineHeaderBuildElementUseCase } from "@/timeline/application/TimelineHeader/usecase/TimelineHeaderBuildElementUseCase";
+import { execute as timelineLayerBuildElementUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerBuildElementUseCase";
+import { execute as timelineMarkerUpdateWidthService } from "@/timeline/application/TimelineMarker/service/TimelineMarkerUpdateWidthService";
+import { execute as timelineMarkerMovePositionService } from "@/timeline/application/TimelineMarker/service/TimelineMarkerMovePositionService";
 import {
     $TIMELINE_MIN_FRAME_WIDTH_SIZE,
     $TIMELINE_MAX_FRAME_WIDTH_SIZE
 } from "@/config/TimelineConfig";
-import { execute as timelineFrameUpdateFrameWidthService } from "../service/TimelineFrameUpdateFrameWidthService";
-import { execute as timelineHeaderBuildElementUseCase } from "@/timeline/application/TimelineHeader/usecase/TimelineHeaderBuildElementUseCase";
-import { execute as timelineLayerBuildElementUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerBuildElementUseCase";
 
 /**
  * @description フレーム幅のホイールイベント処理関数
@@ -37,8 +39,16 @@ export const execute = (event: WheelEvent): void =>
             return ;
         }
 
+        const width: number = timelineAreaState.frameWidth + deltaY;
+
         //  フレーム幅を更新
-        timelineFrameUpdateFrameWidthService(timelineAreaState.frameWidth + deltaY);
+        timelineFrameUpdateFrameWidthService(width);
+
+        // マーカーの幅を更新
+        timelineMarkerUpdateWidthService(width);
+
+        // マーカー位置を更新
+        timelineMarkerMovePositionService();
 
         // ヘッダーを再描画
         timelineHeaderBuildElementUseCase();
