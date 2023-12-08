@@ -7,6 +7,8 @@ import {
     timelineFrame,
     timelineHeader
 } from "../../TimelineUtil";
+import { $getCommandMapping } from "@/menu/application/ShortcutSettingMenu/ShortcutSettingMenuUtil";
+import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 
 /**
  * @description Elementの表示状態
@@ -43,7 +45,8 @@ export const execute = (): void =>
 
     const index: number = timelineFrame.currentFrame - $getLeftFrame();
 
-    const left = index * (timelineFrame.width + 1);
+    const workSpace = $getCurrentWorkSpace();
+    const left = index * (workSpace.timelineAreaState.frameWidth + 1);
 
     if (0 > index || Math.abs(left) > timelineHeader.clientWidth) {
 

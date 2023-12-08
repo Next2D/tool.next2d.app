@@ -3,6 +3,7 @@ import { UserTimelineAreaStateObjectImpl } from "@/interface/UserTimelineAreaSta
 import { execute as timelineAreaChageStyleToActiveService } from "@/timeline/application/TimelineArea/service/TimelineAreaChageStyleToActiveService";
 import { execute as timelineAreaChageStyleToInactiveService } from "@/timeline/application/TimelineArea/service/TimelineAreaChageStyleToInactiveService";
 import { execute as timelineHeaderUpdateClientWidthService } from "@/timeline/application/TimelineHeader/service/TimelineHeaderUpdateClientWidthService";
+import { execute as timelineFrameUpdateFrameWidthService } from "@/timeline/application/TimelineFrame/service/TimelineFrameUpdateFrameWidthService";
 
 /**
  * @description WorkSpaceに保存されてるobjectからタイムラインエリアのstyleを更新
@@ -38,6 +39,9 @@ export const execute = (timeline_area_state: UserTimelineAreaStateObjectImpl): v
 
     // fixed logic
     style.setProperty("--timeline-logic-height", `${timeline_area_state.height}px`);
+
+    // タイムラインのフレーム幅を更新
+    timelineFrameUpdateFrameWidthService(timeline_area_state.frameWidth);
 
     // タイムラインヘッダーの幅を更新
     timelineHeaderUpdateClientWidthService();

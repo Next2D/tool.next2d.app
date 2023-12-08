@@ -1,4 +1,5 @@
 import { execute as timelineHeaderUpdateScrollXUseCase } from "./TimelineHeaderUpdateScrollXUseCase";
+import { execute as timelineFrameWheelEventUseCase } from "@/timeline/application/TimelineFrame/usecase/TimelineFrameWheelEventUseCase";
 
 /**
  * @description タイムラインのヘッダーエリアでのWheelEventの実行関数
@@ -16,7 +17,8 @@ export const execute = (event: WheelEvent): void =>
     event.preventDefault();
 
     if (event.altKey) {
-        //
+        // フレームの幅を更新
+        timelineFrameWheelEventUseCase(event);
     } else {
         // ヘッダーをスクロールして再描画
         timelineHeaderUpdateScrollXUseCase(event.deltaX || event.deltaY);

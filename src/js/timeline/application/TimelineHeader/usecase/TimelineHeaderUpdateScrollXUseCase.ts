@@ -2,10 +2,7 @@ import { $clamp } from "@/global/GlobalUtil";
 import { execute as timelineHeaderBuildElementUseCase } from "@/timeline/application/TimelineHeader/usecase/TimelineHeaderBuildElementUseCase";
 import { execute as timelineLayerBuildElementUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerBuildElementUseCase";
 import { execute as timelineMarkerMovePositionService } from "@/timeline/application/TimelineMarker/service/TimelineMarkerMovePositionService";
-import {
-    timelineFrame,
-    timelineHeader
-} from "../../TimelineUtil";
+import { timelineHeader } from "../../TimelineUtil";
 import { $FIXED_FRAME_COUNT } from "@/config/TimelineConfig";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { execute as timelineScrollUpdateXPositionService } from "@/timeline/application/TimelineScroll/service/TimelineScrollUpdateXPositionService";
@@ -25,7 +22,8 @@ export const execute = (delta: number): void =>
         return ;
     }
 
-    const scene = $getCurrentWorkSpace().scene;
+    const workSpace = $getCurrentWorkSpace();
+    const scene = workSpace.scene;
 
     // 1フレーム目より以前には移動しない
     if (!scene.scrollX && 0 > delta) {
@@ -33,7 +31,7 @@ export const execute = (delta: number): void =>
     }
 
     const limitX = (scene.totalFrame + $FIXED_FRAME_COUNT)
-        * timelineFrame.width - timelineHeader.clientWidth;
+        * workSpace.timelineAreaState.frameWidth - timelineHeader.clientWidth;
 
     // 最大値より右側には移動しない
     if (scene.scrollX + delta > limitX) {

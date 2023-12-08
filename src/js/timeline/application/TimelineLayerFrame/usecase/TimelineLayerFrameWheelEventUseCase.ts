@@ -15,16 +15,16 @@ export const execute = (event: WheelEvent): void =>
     event.stopPropagation();
     event.preventDefault();
 
-    if (event.deltaX) {
-        // 横スクロールして再描画
-        return timelineHeaderUpdateScrollXUseCase(event.deltaX);
-    }
-
     if (event.deltaY) {
         if (event.altKey) {
             //
         } else {
             //
+        }
+    } else {
+        if (event.deltaX) {
+            // 横スクロールして再描画
+            return timelineHeaderUpdateScrollXUseCase(event.deltaX);
         }
     }
 };

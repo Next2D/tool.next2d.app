@@ -15,13 +15,15 @@ import {
  */
 export const execute = (): void =>
 {
-    const scene = $getCurrentWorkSpace().scene;
+    const workSpace = $getCurrentWorkSpace();
+    const scene = workSpace.scene;
 
     const clientWidth: number = timelineHeader.clientWidth;
     const totalFrame: number  = scene.totalFrame + $FIXED_FRAME_COUNT;
+    const frameWidth: number  = workSpace.timelineAreaState.frameWidth;
 
     // スクロールバーの幅を算出
-    const scale: number = clientWidth / (totalFrame * timelineFrame.width);
+    const scale: number = clientWidth / (totalFrame * frameWidth);
 
     // 2pxはborderの1pxの上下の分
     document
@@ -32,8 +34,9 @@ export const execute = (): void =>
             `${Math.floor(clientWidth * scale) - 2}px`
         );
 
-    const limitX = (scene.totalFrame + $FIXED_FRAME_COUNT)
-        * timelineFrame.width - timelineHeader.clientWidth;
-
-    scene.scrollX = Math.min(scene.scrollX, limitX);
+    // スクロール位置が見切れていたら補正
+    const limitX = (scene.totalFrame + $FIXED_FRAME_COUNT) * frameWidth - clientWidth;
+    if (scene.scrollX > limitX) {
+        scene.scrollX = limitX;
+    }
 };

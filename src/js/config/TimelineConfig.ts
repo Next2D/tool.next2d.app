@@ -8,6 +8,33 @@
 export const $TIMELINE_DEFAULT_HEIGHT_SIZE: number = 270;
 
 /**
+ * @description タイムラインのフレーム幅の初期値
+ *              Initial value of the timeline frame width
+ *
+ * @type {number}
+ * @constant
+ */
+export const $TIMELINE_DEFAULT_FRAME_WIDTH_SIZE: number = 13;
+
+/**
+ * @description タイムラインのフレーム幅の最小値
+ *              Minimum frame width of the timeline
+ *
+ * @type {number}
+ * @constant
+ */
+export const $TIMELINE_MIN_FRAME_WIDTH_SIZE: number = 5;
+
+/**
+ * @description タイムラインのフレーム幅の最大値
+ *              Maximum frame width of the timeline
+ *
+ * @type {number}
+ * @constant
+ */
+export const $TIMELINE_MAX_FRAME_WIDTH_SIZE: number = 240;
+
+/**
  * @description タイムラインのElementのID
  *              ID of the Element in the timeline
  *

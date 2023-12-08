@@ -1,11 +1,9 @@
 import { $TIMELINE_CONTENT_ID } from "@/config/TimelineConfig";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
-import type{ WorkSpace } from "@/core/domain/model/WorkSpace";
 import {
     $getLeftFrame,
     timelineHeader,
-    timelineLayer,
-    timelineFrame
+    timelineLayer
 } from "../../TimelineUtil";
 import { execute as timelineLayerControllerComponent } from "../../TimelineLayerController/component/TimelineLayerControllerComponent";
 import { execute as timelineLayerFrameContentComponent } from "../../TimelineLayerFrame/component/TimelineLayerFrameContentComponent";
@@ -25,10 +23,7 @@ import { EventType } from "@/tool/domain/event/EventType";
  */
 export const execute = (): void =>
 {
-    const workSpace: WorkSpace = $getCurrentWorkSpace();
-    if (!workSpace) {
-        return ;
-    }
+    const workSpace = $getCurrentWorkSpace();
 
     const layers = workSpace.scene.layers;
     if (!layers.size) {
@@ -42,7 +37,8 @@ export const execute = (): void =>
         return ;
     }
 
-    const elementCount: number = Math.ceil(timelineHeader.clientWidth / (timelineFrame.width + 1));
+    const frameWidth: number   = workSpace.timelineAreaState.frameWidth;
+    const elementCount: number = Math.ceil(timelineHeader.clientWidth / (frameWidth + 1));
     const maxFrame: number     = elementCount + 1;
     const leftFrame: number    = $getLeftFrame();
     for (const [layerId, layer] of layers) {
@@ -74,7 +70,7 @@ export const execute = (): void =>
                 frameControllerElement
             );
 
-            for (let idx: number = 0; idx <= maxFrame; ++idx) {
+            for (let idx: number = 0; idx < maxFrame; ++idx) {
                 frameControllerElement.insertAdjacentHTML("beforeend",
                     timelineLayerFrameContentComponent(layerId, leftFrame + idx)
                 );
@@ -91,7 +87,7 @@ export const execute = (): void =>
             // 表示フレーム数が多い時はElementを追加
             const length: number = frameControllerElement.children.length;
             if (maxFrame > length) {
-                for (let idx: number = length; idx <= maxFrame; ++idx) {
+                for (let idx: number = length; idx < maxFrame; ++idx) {
                     frameControllerElement.insertAdjacentHTML("beforeend",
                         timelineLayerFrameContentComponent(layerId, leftFrame + idx)
                     );

@@ -3,12 +3,10 @@ import { execute as timelineHeaderFrameComponent } from "../component/TimelineHe
 import { execute as timelineHeaderFrameRegisterEventUseCase } from "./TimelineHeaderFrameRegisterEventUseCase";
 import {
     $getLeftFrame,
-    timelineHeader,
-    timelineFrame
+    timelineHeader
 } from "../../TimelineUtil";
 import { $STAGE_FPS_ID } from "@/config/StageSettingConfig";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
-import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 
 /**
@@ -28,7 +26,10 @@ export const execute = (): void =>
         return ;
     }
 
-    const elementCount: number = Math.ceil(timelineHeader.clientWidth / (timelineFrame.width + 1));
+    const workSpace = $getCurrentWorkSpace();
+    const frameWidth = workSpace.timelineAreaState.frameWidth;
+
+    const elementCount: number = Math.ceil(timelineHeader.clientWidth / (frameWidth + 1));
 
     // Elementがなければ初期登録
     if (!element.children.length) {
@@ -82,11 +83,6 @@ export const execute = (): void =>
         .getElementById($STAGE_FPS_ID) as HTMLInputElement;
 
     if (!fpsElement) {
-        return ;
-    }
-
-    const workSpace: WorkSpace = $getCurrentWorkSpace();
-    if (!workSpace) {
         return ;
     }
 

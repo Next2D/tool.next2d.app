@@ -13,8 +13,11 @@ import { execute as workSpaceStopUseCase } from "@/core/application/WorkSpace/us
 import { execute as workSpaceInitializeUseCase } from "@/core/application/WorkSpace/usecase/WorkSpaceInitializeUseCase";
 import { execute as workSpaceRemoveUseCase } from "@/core/application/WorkSpace/usecase/WorkSpaceRemoveUseCase";
 import { $VERSION } from "@/config/Config";
-import { $TIMELINE_DEFAULT_HEIGHT_SIZE } from "@/config/TimelineConfig";
 import { $CONTROLLER_DEFAULT_WIDTH_SIZE } from "@/config/ControllerConfig";
+import {
+    $TIMELINE_DEFAULT_HEIGHT_SIZE,
+    $TIMELINE_DEFAULT_FRAME_WIDTH_SIZE
+} from "@/config/TimelineConfig";
 
 /**
  * @description プロジェクトのユニークID
@@ -128,7 +131,8 @@ export class WorkSpace
             "offsetLeft": 0,
             "offsetTop": 0,
             "width": 0,
-            "height": $TIMELINE_DEFAULT_HEIGHT_SIZE
+            "height": $TIMELINE_DEFAULT_HEIGHT_SIZE,
+            "frameWidth": $TIMELINE_DEFAULT_FRAME_WIDTH_SIZE
         };
 
         /**
@@ -503,6 +507,7 @@ export class WorkSpace
         this._$timelineAreaState.offsetTop  = object.offsetTop;
         this._$timelineAreaState.width      = object.width;
         this._$timelineAreaState.height     = object.height;
+        this._$timelineAreaState.frameWidth = object.frameWidth;
     }
 
     /**

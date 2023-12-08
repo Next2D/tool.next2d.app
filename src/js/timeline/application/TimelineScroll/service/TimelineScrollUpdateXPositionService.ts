@@ -23,13 +23,14 @@ export const execute = (): void =>
         return ;
     }
 
-    const scene = $getCurrentWorkSpace().scene;
+    const workSpace = $getCurrentWorkSpace();
+    const scene = workSpace.scene;
 
     const clientWidth: number = timelineHeader.clientWidth;
     const totalFrame: number  = scene.totalFrame + $FIXED_FRAME_COUNT;
 
     // スクロールバーの幅を算出
-    const scale: number = clientWidth / (totalFrame * timelineFrame.width);
+    const scale: number = clientWidth / (totalFrame * workSpace.timelineAreaState.frameWidth);
 
     element.style.left = `${Math.floor(scene.scrollX * scale) + 1}px`;
 };

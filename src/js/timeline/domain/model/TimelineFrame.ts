@@ -8,7 +8,6 @@
 export class TimelineFrame
 {
     private _$currentFrame: number;
-    private _$width: number;
 
     /**
      * @constructor
@@ -22,13 +21,6 @@ export class TimelineFrame
          * @private
          */
         this._$currentFrame = 1;
-
-        /**
-         * @type {number}
-         * @default 13
-         * @private
-         */
-        this._$width = 13;
     }
 
     /**
@@ -58,21 +50,5 @@ export class TimelineFrame
     set currentFrame (frame: number)
     {
         this._$currentFrame = frame;
-    }
-
-    /**
-     * @description フレームの表示幅
-     *              Frame display width
-     *
-     * @member {number}
-     * @public
-     */
-    get width (): number
-    {
-        return this._$width;
-    }
-    set width (width: number)
-    {
-        this._$width = width;
     }
 }

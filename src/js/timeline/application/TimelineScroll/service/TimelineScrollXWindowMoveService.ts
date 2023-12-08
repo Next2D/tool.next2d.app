@@ -24,12 +24,14 @@ export const execute = (event: PointerEvent): void =>
     // 遅延実行
     requestAnimationFrame((): void =>
     {
-        const scene = $getCurrentWorkSpace().scene;
+        const workSpace = $getCurrentWorkSpace();
+        const scene     = workSpace.scene;
+
         const clientWidth: number = timelineHeader.clientWidth;
         const totalFrame: number  = scene.totalFrame + $FIXED_FRAME_COUNT;
 
         // スクロールバーの幅を算出
-        const scale: number = clientWidth / (totalFrame * timelineFrame.width);
+        const scale: number = clientWidth / (totalFrame * workSpace.timelineAreaState.frameWidth);
 
         timelineHeaderUpdateScrollXUseCase(Math.floor(event.movementX / scale));
     });

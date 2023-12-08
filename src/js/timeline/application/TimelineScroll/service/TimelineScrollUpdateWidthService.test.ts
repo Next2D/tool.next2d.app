@@ -6,7 +6,7 @@ describe("TimelineScrollUpdateWidthServiceTest", () =>
 {
     test("execute test", () =>
     {
-        $createWorkSpace();
+        const scene = $createWorkSpace().scene;
 
         timelineHeader.clientWidth = 600;
 
@@ -18,8 +18,11 @@ describe("TimelineScrollUpdateWidthServiceTest", () =>
                 "100px"
             );
 
+        scene.scrollX = 10000;
+        expect(scene.scrollX).toBe(10000);
         expect(document.documentElement.style.getPropertyValue("--timeline-scroll-bar-width")).toBe("100px");
         execute();
+        expect(scene.scrollX).toBe(7200);
         expect(document.documentElement.style.getPropertyValue("--timeline-scroll-bar-width")).toBe("44px");
 
     });
