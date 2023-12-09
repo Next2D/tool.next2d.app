@@ -4,6 +4,7 @@ import type { TimelineLayer } from "../domain/model/TimelineLayer";
 import { execute as timelineAreaInitializeRegisterEventUseCase } from "../application/TimelineArea/usecase/TimelineAreaInitializeRegisterEventUseCase";
 import { execute as timelineAdjustmentInitializeRegisterEventUseCase } from "../application/TimelineAdjustment/usecase/TimelineAdjustmentInitializeRegisterEventUseCase";
 import { execute as timelineScrollXRegisterEventUseCase } from "../application/TimelineScroll/usecase/TimelineScrollXRegisterEventUseCase";
+import { execute as timelineToolInitializeRegisterEventUseCase } from "@/timeline/application/TimelineTool/usecase/TimelineToolInitializeRegisterEventUseCase";
 import {
     timelineHeader,
     timelineFrame,
@@ -39,6 +40,9 @@ export const execute = async (): Promise<void> =>
     }
 
     await Promise.all(promises);
+
+    // タイムラインの各種ツールのイベント登録
+    timelineToolInitializeRegisterEventUseCase();
 
     // タイムラインの初期イベントの登録
     timelineAreaInitializeRegisterEventUseCase();

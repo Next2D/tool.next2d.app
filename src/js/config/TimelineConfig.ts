@@ -170,6 +170,15 @@ export const $TIMELINE_SCROLL_BAR_Y_ID: string = "timeline-scroll-bar-y";
 export const $TIMELINE_SCROLL_ID: string = "timeline-scale";
 
 /**
+ * @description タイムラインのレイヤー追加ボタンのElementのID
+ *              ID of the Element of the Add Layer button on the Timeline
+ *
+ * @type {string}
+ * @constant
+ */
+export const $TIMELINE_LAYER_ADD_ID: string = "timeline-layer-add";
+
+/**
  * @description タイムラインの最小幅の数値
  *              Minimum width value for timeline
  *
