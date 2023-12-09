@@ -6,6 +6,7 @@ import { execute as timelineHeaderUpdateClientWidthService } from "@/timeline/ap
 import { execute as timelineFrameUpdateFrameWidthService } from "@/timeline/application/TimelineFrame/service/TimelineFrameUpdateFrameWidthService";
 import { execute as timelineMarkerUpdateWidthService } from "@/timeline/application/TimelineMarker/service/TimelineMarkerUpdateWidthService";
 import { execute as timelineMarkerMovePositionService } from "@/timeline/application/TimelineMarker/service/TimelineMarkerMovePositionService";
+import { execute as timelineLayerUpdateClientHeightService } from "@/timeline/application/TimelineLayer/service/TimelineLayerUpdateClientHeightService";
 
 /**
  * @description WorkSpaceに保存されてるobjectからタイムラインエリアのstyleを更新
@@ -53,4 +54,7 @@ export const execute = (timeline_area_state: UserTimelineAreaStateObjectImpl): v
 
     // タイムラインヘッダーの幅を更新
     timelineHeaderUpdateClientWidthService();
+
+    // レイヤーエリアの高さを更新
+    timelineLayerUpdateClientHeightService();
 };

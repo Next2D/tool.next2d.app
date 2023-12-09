@@ -1,5 +1,6 @@
 import { $TIMELINE_MIN_HEIGHT, $TIMELINE_ID } from "@/config/TimelineConfig";
 import { execute as timelineLayerBuildElementUseCase } from "../../TimelineLayer/usecase/TimelineLayerBuildElementUseCase";
+import { execute as timelineLayerUpdateClientHeightService } from "@/timeline/application/TimelineLayer/service/TimelineLayerUpdateClientHeightService";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 
 /**
@@ -49,6 +50,9 @@ export const execute = (event: PointerEvent): void =>
         // 高さを更新
         workSpace.timelineAreaState.height = height;
         style.setProperty("--timeline-logic-height", `${height}px`);
+
+        // タイムエリアの高さを更新
+        timelineLayerUpdateClientHeightService();
 
         // タイムラインのレイヤーを再描画
         timelineLayerBuildElementUseCase();

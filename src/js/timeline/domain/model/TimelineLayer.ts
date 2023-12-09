@@ -10,6 +10,7 @@ import { execute as timelineLayerInitializeUseCase } from "../../application/Tim
 export class TimelineLayer
 {
     private readonly _$elements: HTMLElement[];
+    private _$clientHeight: number;
 
     /**
      * @constructor
@@ -17,7 +18,18 @@ export class TimelineLayer
      */
     constructor ()
     {
+        /**
+         * @type {array}
+         * @private
+         */
         this._$elements = [];
+
+        /**
+         * @type {number}
+         * @default 0
+         * @private
+         */
+        this._$clientHeight = 0;
     }
 
     /**
@@ -44,5 +56,21 @@ export class TimelineLayer
     get elements (): HTMLElement[]
     {
         return this._$elements;
+    }
+
+    /**
+     * @description レイヤーエリアの表示の高さを返却する
+     *              Return the display height of the layer area
+     *
+     * @member {number}
+     * @public
+     */
+    get clientHeight (): number
+    {
+        return this._$clientHeight;
+    }
+    set clientHeight (height: number)
+    {
+        this._$clientHeight = height;
     }
 }

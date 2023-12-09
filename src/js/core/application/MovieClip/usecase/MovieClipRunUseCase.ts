@@ -5,6 +5,7 @@ import { execute as timelineMarkerMovePositionService } from "@/timeline/applica
 import { execute as timelineFrameUpdateFrameElementService } from "@/timeline/application/TimelineFrame/service/TimelineFrameUpdateFrameElementService";
 import { execute as timelineScrollUpdateWidthService } from "@/timeline/application/TimelineScroll/service/TimelineScrollUpdateWidthService";
 import { execute as timelineScrollUpdateXPositionService } from "@/timeline/application/TimelineScroll/service/TimelineScrollUpdateXPositionService";
+import { execute as timelineScrollUpdateHeightService } from "@/timeline/application/TimelineScroll/service/TimelineScrollUpdateHeightService";
 
 /**
  * @description MovieClipの起動処理
@@ -34,4 +35,7 @@ export const execute = (movie_clip: MovieClip): void =>
 
     // タイムラインのx移動するスクロールのx座標を更新
     timelineScrollUpdateXPositionService();
+
+    // タイムラインのy移動するスクロールの高さを更新
+    timelineScrollUpdateHeightService();
 };
