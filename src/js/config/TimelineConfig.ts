@@ -17,6 +17,15 @@ export const $TIMELINE_DEFAULT_HEIGHT_SIZE: number = 270;
 export const $TIMELINE_DEFAULT_FRAME_WIDTH_SIZE: number = 13;
 
 /**
+ * @description タイムラインのフレームの高さの初期値
+ *              Default height of frames in the timeline
+ *
+ * @type {number}
+ * @constant
+ */
+export const $TIMELINE_DEFAULT_FRAME_HEIGHT_SIZE: number = 30;
+
+/**
  * @description タイムラインのフレーム幅の最小値
  *              Minimum frame width of the timeline
  *

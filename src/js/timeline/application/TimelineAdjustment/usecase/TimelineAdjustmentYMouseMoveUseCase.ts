@@ -54,6 +54,8 @@ export const execute = (event: PointerEvent): void =>
         // タイムエリアの高さを更新
         timelineLayerUpdateClientHeightService();
 
+        // TODO レイヤーエリアを再描画
+
         // タイムラインのレイヤーを再描画
         timelineLayerBuildElementUseCase();
     });

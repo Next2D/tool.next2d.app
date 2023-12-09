@@ -6,4 +6,5 @@ export interface UserTimelineAreaStateObjectImpl
     width: number;
     height: number;
     frameWidth: number;
+    frameHeight: number;
 }

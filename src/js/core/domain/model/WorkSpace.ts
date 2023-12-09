@@ -16,7 +16,8 @@ import { $VERSION } from "@/config/Config";
 import { $CONTROLLER_DEFAULT_WIDTH_SIZE } from "@/config/ControllerConfig";
 import {
     $TIMELINE_DEFAULT_HEIGHT_SIZE,
-    $TIMELINE_DEFAULT_FRAME_WIDTH_SIZE
+    $TIMELINE_DEFAULT_FRAME_WIDTH_SIZE,
+    $TIMELINE_DEFAULT_FRAME_HEIGHT_SIZE
 } from "@/config/TimelineConfig";
 
 /**
@@ -132,7 +133,8 @@ export class WorkSpace
             "offsetTop": 0,
             "width": 0,
             "height": $TIMELINE_DEFAULT_HEIGHT_SIZE,
-            "frameWidth": $TIMELINE_DEFAULT_FRAME_WIDTH_SIZE
+            "frameWidth": $TIMELINE_DEFAULT_FRAME_WIDTH_SIZE,
+            "frameHeight": $TIMELINE_DEFAULT_FRAME_HEIGHT_SIZE
         };
 
         /**
@@ -502,12 +504,13 @@ export class WorkSpace
      */
     updateTimelineArea (object: UserTimelineAreaStateObjectImpl): void
     {
-        this._$timelineAreaState.state      = object.state;
-        this._$timelineAreaState.offsetLeft = object.offsetLeft;
-        this._$timelineAreaState.offsetTop  = object.offsetTop;
-        this._$timelineAreaState.width      = object.width;
-        this._$timelineAreaState.height     = object.height;
-        this._$timelineAreaState.frameWidth = object.frameWidth;
+        this._$timelineAreaState.state       = object.state;
+        this._$timelineAreaState.offsetLeft  = object.offsetLeft;
+        this._$timelineAreaState.offsetTop   = object.offsetTop;
+        this._$timelineAreaState.width       = object.width;
+        this._$timelineAreaState.height      = object.height;
+        this._$timelineAreaState.frameWidth  = object.frameWidth;
+        this._$timelineAreaState.frameHeight = object.frameHeight;
     }
 
     /**
