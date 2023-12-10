@@ -1,6 +1,6 @@
 import { $TIMELINE_LAYER_ADD_ID } from "@/config/TimelineConfig";
 import { EventType } from "@/tool/domain/event/EventType";
-import { execute as timelineToolLayerAddService } from "../service/TimelineToolLayerAddService";
+import { execute as timelineToolLayerAddUseCase } from "./TimelineToolLayerAddUseCase";
 
 /**
  * @description レイヤー追加のイベント登録
@@ -30,6 +30,6 @@ export const execute = (): void =>
         event.preventDefault();
 
         // 新規レイヤーを追加
-        timelineToolLayerAddService();
+        timelineToolLayerAddUseCase();
     });
 };

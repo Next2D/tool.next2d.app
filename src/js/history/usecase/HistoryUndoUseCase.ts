@@ -2,6 +2,7 @@ import { $TIMELINE_TOOL_LAYER_ADD_COMMAD } from "@/config/HistoryConfig";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import type { HistoryObjectImpl } from "@/interface/HistoryObjectImpl";
 import { execute as timelineToolLayerAddHistoryUndoUseCase } from "@/history/application/timeline/TimelineTool/LayerAdd/usecase/TimelineToolLayerAddHistoryUndoUseCase";
+import type { Layer } from "@/core/domain/model/Layer";
 
 /**
  * @description 作業履歴のポジションを一つ過去に戻す
@@ -22,12 +23,13 @@ export const execute = (): void =>
     switch (historyObject.command) {
 
         case $TIMELINE_TOOL_LAYER_ADD_COMMAD:
-            timelineToolLayerAddHistoryUndoUseCase();
+            timelineToolLayerAddHistoryUndoUseCase(
+                historyObject.object as NonNullable<Layer>
+            );
             break;
 
         default:
             break;
 
     }
-    console.log(historyObject);
 };

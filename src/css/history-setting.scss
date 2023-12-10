@@ -1,0 +1,45 @@
+#history-setting
+{
+    .history-setting-container
+    {
+        display     : flex;
+        align-items : center;
+        margin      : 12px;
+    }
+}
+
+#history-list
+{
+    display        : flex;
+    flex-direction : column;
+    width          : 316px;
+    height         : 200px;
+    border         : 1px solid darkgray;
+    border-radius  : 5px;
+    color          : #f5f5f5;
+    overflow-y     : auto;
+
+    .disable
+    {
+        opacity : 0.25;
+    }
+
+    div 
+    {
+        display       : flex;
+        align-items   : center;
+        height        : 35px;
+        padding-left  : 16px;
+        border-bottom : 1px solid #1c1c1c;
+
+        &:hover
+        {
+            cursor : pointer;
+        }
+
+        span
+        {
+            pointer-events: none;
+        }
+    }
+}
