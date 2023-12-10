@@ -153,7 +153,7 @@ export const run = (): Promise<void> =>
                 await detailModalRegisterFadeEventService(document);
 
                 // 言語を適用
-                await languageTranslationService();
+                await languageTranslationService(document);
 
                 // 終了
                 resolve();

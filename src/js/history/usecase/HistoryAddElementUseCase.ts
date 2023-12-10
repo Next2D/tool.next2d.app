@@ -3,6 +3,7 @@ import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { execute as historyListComponent } from "@/history/component/HistoryListComponent";
 import { EventType } from "@/tool/domain/event/EventType";
 import { execute as historyMouseDownEventUseCase } from "./HistoryMouseDownEventUseCase";
+import { execute as languageTranslationService } from "@/language/application/service/LanguageTranslationService";
 
 /**
  * @description 作業履歴のリストにElementを追加
@@ -32,6 +33,9 @@ export const execute = (text: string): void =>
     if (!lastElement) {
         return ;
     }
+
+    // 言語設定
+    languageTranslationService(lastElement);
 
     lastElement.addEventListener(EventType.MOUSE_DOWN, historyMouseDownEventUseCase);
 };

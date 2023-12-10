@@ -6,20 +6,23 @@ describe("LanguageTranslationServiceTest", () =>
 {
     test("execute test", () =>
     {
+        const parent = document.createElement("div");
+        document.body.appendChild(parent);
+
         const div = document.createElement("div");
+        parent.appendChild(div);
         div.classList.add($LANGUAGE_ELEMENTS_CLASS_NAME);
         div.dataset.text = "{{こんにちわ}}";
         div.innerText = "こんにちわ";
-        document.body.appendChild(div);
-
+        
         $setMapping([
             ["{{こんにちわ}}", "hello"]
         ]);
 
         expect(div.innerText).toBe("こんにちわ");
-        execute();
+        execute(parent);
         expect(div.innerText).toBe("hello");
 
-        div.remove();
+        parent.remove();
     });
 });

@@ -8,14 +8,15 @@ import { $getMapping } from "@/language/application/LanguageUtil";
  * @description 変換対象のクラス名が設定されてるElementの言語を変換
  *              Convert the language of the Element for which the class name to be converted is set.
  *
+ * @param  {HTMLElement} target_element
  * @return {Promise}
  * @method
  * @public
  */
-export const execute = async (): Promise<void> =>
+export const execute = async (target_element: HTMLElement | Document): Promise<void> =>
 {
     // 指定されたクラスを全て取得
-    const elements: HTMLCollectionOf<Element> = document
+    const elements: HTMLCollectionOf<Element> = target_element
         .getElementsByClassName($LANGUAGE_ELEMENTS_CLASS_NAME);
 
     const tempMapping: Map<ShortcutKeyStringImpl, Map<string, ShortcutViewObjectImpl>> = $getTempMapping();
