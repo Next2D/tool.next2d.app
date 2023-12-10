@@ -16,12 +16,13 @@ export const execute = (event: Event): void =>
     // 親のイベントを中止
     event.stopPropagation();
 
-    if (event.target) {
-        const userSettingObject: UserSettingObjectImpl = userSettingObjectGetService();
-
-        const element = event.target as HTMLSelectElement;
-        userSettingObject.type = element.value;
-
-        userSettingObjectUpdateService(userSettingObject);
+    const element = event.target as HTMLSelectElement;
+    if (!element) {
+        return ;
     }
+
+    const userSettingObject: UserSettingObjectImpl = userSettingObjectGetService();
+    userSettingObject.type = element.value;
+
+    userSettingObjectUpdateService(userSettingObject);
 };

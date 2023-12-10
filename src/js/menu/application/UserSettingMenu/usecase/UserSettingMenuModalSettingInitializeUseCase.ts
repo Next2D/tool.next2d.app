@@ -16,14 +16,14 @@ export const execute = (): void =>
     const element: HTMLSelectElement | null = document
         .getElementById($USER_PUBLISH_MODAL_SETTING_ID) as HTMLSelectElement;
 
-    if (element) {
-
-        // ユーザー個別のデータから表示を切り替える
-        userSettingMenuModalSettingOptionSelectedService(element);
-
-        element
-            .addEventListener(EventType.CHANGE,
-                userSettingMenuModalSettingChangeEventService
-            );
+    if (!element) {
+        return ;
     }
+
+    // ユーザー個別のデータから表示を切り替える
+    userSettingMenuModalSettingOptionSelectedService(element);
+
+    element.addEventListener(EventType.CHANGE,
+        userSettingMenuModalSettingChangeEventService
+    );
 };

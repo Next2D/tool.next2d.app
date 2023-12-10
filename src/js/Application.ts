@@ -102,8 +102,8 @@ export const boot = (): Promise<void> =>
             menu.message = "Booting the system.";
         }
 
-        const promises: Promise<void>[] = [];
         // システム起動関数を実行
+        const promises: Promise<void>[] = [];
         for (let idx: number = 0; idx < boots.length; ++idx) {
             const boot: Function = boots[idx];
             promises.push(boot());

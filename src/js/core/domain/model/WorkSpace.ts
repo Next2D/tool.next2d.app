@@ -19,6 +19,7 @@ import {
     $TIMELINE_DEFAULT_FRAME_WIDTH_SIZE,
     $TIMELINE_DEFAULT_FRAME_HEIGHT_SIZE
 } from "@/config/TimelineConfig";
+import { HistoryObjectImpl } from "@/interface/HistoryObjectImpl";
 
 /**
  * @description プロジェクトのユニークID
@@ -51,7 +52,7 @@ export class WorkSpace
     private readonly _$propertyAreaState: UserPropertyAreaStateObjectImpl;
     private readonly _$controllerAreaState: UserControllerAreaStateObjectImpl;
     private _$plugins: Map<any, any>;
-    private readonly _$histories: any[];
+    private readonly _$histories: HistoryObjectImpl[];
 
     /**
      * @constructor
@@ -322,16 +323,33 @@ export class WorkSpace
     }
 
     /**
-     * @description 作業履歴を返却
-     *              Return work history
+     * @description 作業履歴の配列を返却
+     *              Returns an array of work history
      *
      * @return {array}
      * @readonly
      * @public
      */
-    get histories (): any[]
+    get histories (): HistoryObjectImpl[]
     {
         return this._$histories;
+    }
+
+    /**
+     * @description 作業履歴の配列のポインター情報
+     *              Pointer information for the work history array
+     *
+     * @member {number} index
+     * @return {number}
+     * @public
+     */
+    get historyIndex (): number
+    {
+        return this._$historyIndex;
+    }
+    set historyIndex (index: number)
+    {
+        this._$historyIndex = index;
     }
 
     /**
@@ -600,6 +618,21 @@ export class WorkSpace
     {
         // 削除処理を実行
         return workSpaceRemoveUseCase(this);
+    }
+
+    /**
+     * @description 作業履歴を登録
+     *              Register work history
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    addHistory (history_object: HistoryObjectImpl): void
+    {
+        // ポジション以降の履歴を削除
+        this._$histories.length = this._$historyIndex;
+        this._$histories[this._$historyIndex++] = history_object;
     }
 
     /**

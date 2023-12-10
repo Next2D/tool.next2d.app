@@ -15,11 +15,11 @@ export const execute = (): void =>
     const element: HTMLSelectElement | null = document
         .getElementById($USER_SHORTCUT_SETTING_ID) as HTMLSelectElement;
 
-    if (element) {
-
-        element
-            .addEventListener(EventType.MOUSE_DOWN,
-                userSettingMenuShortcutSettingMouseDownEventUseCase
-            );
+    if (!element) {
+        return ;
     }
+
+    element.addEventListener(EventType.MOUSE_DOWN,
+        userSettingMenuShortcutSettingMouseDownEventUseCase
+    );
 };

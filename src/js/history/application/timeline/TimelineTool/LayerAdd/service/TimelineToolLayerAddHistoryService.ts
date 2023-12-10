@@ -1,3 +1,5 @@
+import { $TIMELINE_TOOL_LAYER_ADD_COMMAD } from "@/config/HistoryConfig";
+import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import type { Layer } from "@/core/domain/model/Layer";
 
 /**
@@ -10,6 +12,10 @@ import type { Layer } from "@/core/domain/model/Layer";
  */
 export const execute = (layer: Layer): void =>
 {
-    // TODO
-    console.log(layer);
+    // 追加したLayer Objectを履歴に登録
+    const workSpace = $getCurrentWorkSpace();
+    workSpace.addHistory({
+        "command": $TIMELINE_TOOL_LAYER_ADD_COMMAD,
+        "object": layer
+    });
 };

@@ -16,14 +16,14 @@ export const execute = (): void =>
     const element: HTMLSelectElement | null = document
         .getElementById($USER_LANGUAGE_SETTING_ID) as HTMLSelectElement;
 
-    if (element) {
-
-        // ユーザー個別のデータから表示を切り替える
-        userSettingMenuLanguageSettingOptionSelectedService(element);
-
-        element
-            .addEventListener(EventType.CHANGE,
-                settingMenuLanguageSettingChangeEventUseCase
-            );
+    if (!element) {
+        return ;
     }
+
+    // ユーザー個別のデータから表示を切り替える
+    userSettingMenuLanguageSettingOptionSelectedService(element);
+
+    element.addEventListener(EventType.CHANGE,
+        settingMenuLanguageSettingChangeEventUseCase
+    );
 };
