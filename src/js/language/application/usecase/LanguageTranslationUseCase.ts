@@ -2,8 +2,8 @@ import { execute as languageLoadRepository } from "../../domain/repository/Langu
 import { $setMapping } from "../LanguageUtil";
 
 /**
- * @description 指定した言語に変換
- *              Converts to specified language
+ * @description 指定した言語JSONを読み込んで、マッピング情報を更新
+ *              Reads specified language JSON and updates mapping information
  *
  * @param  {string} language
  * @return {Promise}

@@ -1,5 +1,5 @@
 import { execute } from "./ViewMouseDownEventService";
-import { $registerMenu } from "../../../../menu/application/MenuUtil";
+import { $registerMenu } from "../../../menu/application/MenuUtil";
 
 describe("ViewMouseDownEventServiceTest", () =>
 {

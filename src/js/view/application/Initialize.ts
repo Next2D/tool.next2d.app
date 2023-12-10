@@ -1,4 +1,4 @@
-import { execute as viewInitializeRegisterEventUseCase } from "./View/usecase/ViewInitializeRegisterEventUseCase";
+import { execute as viewInitializeRegisterEventUseCase } from "./usecase/ViewInitializeRegisterEventUseCase";
 /**
  * @description Viewコンテナの初期起動関数
  *              Initial startup function of the View container
