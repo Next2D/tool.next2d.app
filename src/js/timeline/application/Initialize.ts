@@ -41,11 +41,11 @@ export const execute = async (): Promise<void> =>
 
     await Promise.all(promises);
 
+    // タイムラインエリアの初期イベントの登録
+    timelineAreaInitializeRegisterEventUseCase();
+
     // タイムラインの各種ツールのイベント登録
     timelineToolInitializeRegisterEventUseCase();
-
-    // タイムラインの初期イベントの登録
-    timelineAreaInitializeRegisterEventUseCase();
 
     // タイムラインの幅と高さ調整のイベントを登録
     timelineAdjustmentInitializeRegisterEventUseCase();

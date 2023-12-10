@@ -20,6 +20,8 @@ export const execute = (event: PointerEvent): void =>
         return ;
     }
 
+    console.log([element]);
+
     element.classList.add("active");
 
     // フレーム情報を更新してマーカーを移動
@@ -31,4 +33,6 @@ export const execute = (event: PointerEvent): void =>
 
     // マーカーを移動
     timelineMarkerMovePositionService();
+
+    // 選択グループを更新
 };

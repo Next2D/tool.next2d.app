@@ -40,6 +40,7 @@ export class WorkSpace
     private _$name: string;
     private _$scene: MovieClip;
     private _$active: boolean;
+    private _$historyIndex: number;
     private readonly _$root: MovieClip;
     private readonly _$stage: Stage;
     private readonly _$libraries: Map<number, InstanceImpl<any>>;
@@ -50,6 +51,7 @@ export class WorkSpace
     private readonly _$propertyAreaState: UserPropertyAreaStateObjectImpl;
     private readonly _$controllerAreaState: UserControllerAreaStateObjectImpl;
     private _$plugins: Map<any, any>;
+    private readonly _$histories: any[];
 
     /**
      * @constructor
@@ -154,6 +156,18 @@ export class WorkSpace
         this._$controllerAreaState = {
             "width": $CONTROLLER_DEFAULT_WIDTH_SIZE
         };
+
+        /**
+         * @type {array}
+         * @private
+         */
+        this._$histories = [];
+
+        /**
+         * @type {number}
+         * @private
+         */
+        this._$historyIndex = 0;
 
         // /**
         //  * @type {Map}
@@ -305,6 +319,19 @@ export class WorkSpace
     get propertyAreaState (): UserPropertyAreaStateObjectImpl
     {
         return this._$propertyAreaState;
+    }
+
+    /**
+     * @description 作業履歴を返却
+     *              Return work history
+     *
+     * @return {array}
+     * @readonly
+     * @public
+     */
+    get histories (): any[]
+    {
+        return this._$histories;
     }
 
     /**
