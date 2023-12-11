@@ -30,5 +30,9 @@ export const execute = (event: Event): void =>
 
     // 変更された言語に切り替える
     languageTranslationUseCase(language)
-        .then(languageTranslationService);
+        .then((): void =>
+        {
+            // 言語設定を上書き
+            languageTranslationService(document);
+        });
 };

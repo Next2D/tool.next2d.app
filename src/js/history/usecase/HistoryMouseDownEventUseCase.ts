@@ -33,7 +33,7 @@ export const execute = (event: PointerEvent): void =>
             historyUndoUseCase();
         }
     } else {
-        while (workSpace.historyIndex !== index) {
+        while (workSpace.histories.length !== workSpace.historyIndex) {
             historyRedoUseCase();
         }
     }
