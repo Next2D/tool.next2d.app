@@ -281,6 +281,24 @@ export class MovieClip extends Instance
     }
 
     /**
+     * @description 指定のLayerを内部情報から削除
+     *              Delete specified Layer from internal information
+     *
+     * @param  {number} layer_id
+     * @return {void}
+     * @method
+     * @public
+     */
+    removeLayer (layer_id: number): void
+    {
+        if (!this._$layers.has(layer_id)) {
+            return ;
+        }
+
+        this._$layers.delete(layer_id);
+    }
+
+    /**
      * @description 指定IDのLayerを返却
      *              Returns the Layer with the specified ID.
      *

@@ -1,4 +1,6 @@
+import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import type { Layer } from "@/core/domain/model/Layer";
+import { execute as timelineLayerElementDisplayNoneService } from "@/timeline/application/TimelineLayer/service/TimelineLayerElementDisplayNoneService";
 
 /**
  * @description レイヤー追加作業を元に戻す
@@ -10,5 +12,10 @@ import type { Layer } from "@/core/domain/model/Layer";
  */
 export const execute = (layer: Layer): void =>
 {
-    console.log(layer);
+    // Layer Objectを内部情報から削除
+    const scene = $getCurrentWorkSpace().scene;
+    scene.removeLayer(layer.id);
+
+    // 対象のElementを非表示に
+    timelineLayerElementDisplayNoneService(layer.id);
 };

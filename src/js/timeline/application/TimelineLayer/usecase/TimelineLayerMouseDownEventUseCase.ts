@@ -20,13 +20,15 @@ export const execute = (event: PointerEvent): void =>
         return ;
     }
 
-    console.log([element]);
-
-    element.classList.add("active");
-
     // フレーム情報を更新してマーカーを移動
     const frameElement: HTMLElement | null = event.target as HTMLElement;
-    const frame = parseInt(frameElement.dataset.frame as string);
+    if (!frameElement) {
+        return ;
+    }
+
+    // フレームをアクティブに更新
+    element.classList.add("active");
+    const frame: number = parseInt(frameElement.dataset.frame as string);
 
     // フレーム情報を更新
     timelineFrameUpdateFrameElementService(frame);

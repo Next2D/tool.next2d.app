@@ -20,7 +20,6 @@ import {
     $TIMELINE_DEFAULT_FRAME_HEIGHT_SIZE
 } from "@/config/TimelineConfig";
 import type { HistoryObjectImpl } from "@/interface/HistoryObjectImpl";
-import { execute as historyRemoveElementService } from "@/history/service/HistoryRemoveElementService";
 
 /**
  * @description プロジェクトのユニークID
@@ -631,9 +630,6 @@ export class WorkSpace
      */
     addHistory (history_object: HistoryObjectImpl): void
     {
-        // ポジション位置に合わせて履歴を削除
-        historyRemoveElementService();
-
         // ポジション以降の履歴を削除
         this._$histories.length = this._$historyIndex;
         this._$histories[this._$historyIndex++] = history_object;

@@ -2,6 +2,7 @@ import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import { execute as progressMenuShowService } from "@/menu/application/ProgressMenu/service/ProgressMenuShowService";
 import { execute as progressMenuHideService } from "@/menu/application/ProgressMenu/service/ProgressMenuHideService";
 import { execute as progressMenuUpdateMessageService } from "@/menu/application/ProgressMenu/service/ProgressMenuUpdateMessageService";
+import { execute as timelineLayerAllElementDisplayNoneService } from "@/timeline/application/TimelineLayer/service/TimelineLayerAllElementDisplayNoneService";
 import { $removeWorkSpace } from "@/core/application/CoreUtil";
 
 /**
@@ -28,15 +29,19 @@ export const execute = (work_space: WorkSpace): Promise<void> =>
         // タブを削除
         work_space.screenTab.remove();
 
-        // プロジェクトを終了
-        $removeWorkSpace(work_space).then((): void =>
-        {
-            // 進行状況画面を非表示にする
-            if (work_space.active) {
-                progressMenuHideService();
-            }
+        // タイムラインのElementを全て非表示にする
+        timelineLayerAllElementDisplayNoneService();
 
-            reslove();
-        });
+        // プロジェクトを終了
+        $removeWorkSpace(work_space)
+            .then((): void =>
+            {
+                // 進行状況画面を非表示にする
+                if (work_space.active) {
+                    progressMenuHideService();
+                }
+
+                reslove();
+            });
     });
 };
