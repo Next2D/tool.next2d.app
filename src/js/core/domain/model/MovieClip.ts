@@ -281,6 +281,20 @@ export class MovieClip extends Instance
     }
 
     /**
+     * @description 指定のLayerを内部情報にセット
+     *              Set the specified Layer to the internal information
+     *
+     * @param  {Layer} layer
+     * @return {void}
+     * @method
+     * @public
+     */
+    setLayer (layer: Layer): void
+    {
+        this._$layers.set(layer.id, layer);
+    }
+
+    /**
      * @description 指定のLayerを内部情報から削除
      *              Delete specified Layer from internal information
      *

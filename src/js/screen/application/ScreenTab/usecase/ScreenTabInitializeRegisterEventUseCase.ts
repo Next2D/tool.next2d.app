@@ -55,13 +55,13 @@ export const execute = (
             event.preventDefault();
         });
 
-        closeElement.addEventListener(EventType.MOUSE_UP, (event: PointerEvent): void =>
+        closeElement.addEventListener(EventType.MOUSE_UP, async (event: PointerEvent): Promise<void> =>
         {
             // 親のイベントを中止
             event.stopPropagation();
 
             // 終了処理
-            screenTabRemoveUseCase(work_space);
+            await screenTabRemoveUseCase(work_space);
         });
     }
 

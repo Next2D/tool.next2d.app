@@ -1,11 +1,6 @@
-import type { Layer } from "@/core/domain/model/Layer";
 import type { HistoryObjectImpl } from "@/interface/HistoryObjectImpl";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
-import { execute as timelineToolLayerAddHistoryUndoUseCase } from "@/history/application/timeline/TimelineTool/LayerAdd/usecase/TimelineToolLayerAddHistoryUndoUseCase";
-import {
-    $HISTORY_LIST_ID,
-    $TIMELINE_TOOL_LAYER_ADD_COMMAD
-} from "@/config/HistoryConfig";
+import { $HISTORY_LIST_ID } from "@/config/HistoryConfig";
 
 /**
  * @description 作業履歴のポジションを一つ過去に戻す
@@ -29,7 +24,10 @@ export const execute = (): void =>
         return ;
     }
 
-    const historyObject: HistoryObjectImpl = workSpace.histories[--workSpace.historyIndex];
+    const historyObject: HistoryObjectImpl | undefined = workSpace.histories[--workSpace.historyIndex];
+    if (!historyObject) {
+        return ;
+    }
 
     const node: HTMLElement | undefined = element.children[workSpace.historyIndex] as HTMLElement;
     if (!node) {
@@ -39,16 +37,6 @@ export const execute = (): void =>
     // 履歴表示を非アクティブにする
     node.setAttribute("class", "disable");
 
-    switch (historyObject.command) {
-
-        case $TIMELINE_TOOL_LAYER_ADD_COMMAD:
-            timelineToolLayerAddHistoryUndoUseCase(
-                historyObject.object as NonNullable<Layer>
-            );
-            break;
-
-        default:
-            break;
-
-    }
+    // undoを実行
+    historyObject.undo();
 };

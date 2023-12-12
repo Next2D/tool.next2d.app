@@ -1,6 +1,7 @@
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import { execute as progressMenuShowService } from "@/menu/application/ProgressMenu/service/ProgressMenuShowService";
 import { execute as progressMenuUpdateMessageService } from "@/menu/application/ProgressMenu/service/ProgressMenuUpdateMessageService";
+import { execute as timelineLayerAllElementDisplayNoneService } from "@/timeline/application/TimelineLayer/service/TimelineLayerAllElementDisplayNoneService";
 import { $replace } from "@/language/application/LanguageUtil";
 
 /**
@@ -20,10 +21,13 @@ export const execute = (work_space: WorkSpace): Promise<void> =>
         progressMenuShowService();
 
         // 進行状況のテキストを更新
-        progressMenuUpdateMessageService($replace("Stop..."));
+        progressMenuUpdateMessageService($replace("{{停止}}"));
 
         // タブを非アクティブに更新
         work_space.screenTab.disable();
+
+        // 全てのレイヤーを非表示にする
+        timelineLayerAllElementDisplayNoneService();
 
         // 終了
         reslove();

@@ -1,5 +1,4 @@
 import { $HISTORY_LIST_ID } from "@/config/HistoryConfig";
-import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { execute as historyListComponent } from "@/history/component/HistoryListComponent";
 import { EventType } from "@/tool/domain/event/EventType";
 import { execute as historyMouseDownEventUseCase } from "./HistoryMouseDownEventUseCase";
@@ -9,13 +8,18 @@ import { execute as languageTranslationService } from "@/language/application/se
  * @description 作業履歴のリストにElementを追加
  *              Add Element to the list of work history
  *
+ * @param  {number} index
  * @param  {string} text
+ * @param  {string} class_name
  * @return {void}
  * @method
  * @public
  */
-export const execute = (text: string): void =>
-{
+export const execute = (
+    index: number, text: string,
+    class_name: "" | "disable" = ""
+): void => {
+
     const element: HTMLElement | null = document
         .getElementById($HISTORY_LIST_ID);
 
@@ -23,15 +27,17 @@ export const execute = (text: string): void =>
         return ;
     }
 
-    const workSpace = $getCurrentWorkSpace();
-
     element.insertAdjacentHTML("beforeend",
-        historyListComponent(workSpace.historyIndex, text)
+        historyListComponent(index, text)
     );
 
     const lastElement = element.lastElementChild as NonNullable<HTMLElement>;
     if (!lastElement) {
         return ;
+    }
+
+    if (class_name) {
+        lastElement.setAttribute("class", class_name);
     }
 
     // 言語設定

@@ -1,11 +1,6 @@
-import type { Layer } from "@/core/domain/model/Layer";
 import type { HistoryObjectImpl } from "@/interface/HistoryObjectImpl";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
-import { execute as timelineToolLayerAddHistoryRedoUseCase } from "@/history/application/timeline/TimelineTool/LayerAdd/usecase/TimelineToolLayerAddHistoryRedoUseCase";
-import {
-    $HISTORY_LIST_ID,
-    $TIMELINE_TOOL_LAYER_ADD_COMMAD
-} from "@/config/HistoryConfig";
+import { $HISTORY_LIST_ID } from "@/config/HistoryConfig";
 
 /**
  * @description 作業履歴のポジションを一つ未来に進める
@@ -33,17 +28,10 @@ export const execute = (): void =>
     // 履歴表示をアクティブに更新
     node.setAttribute("class", "");
 
-    const historyObject: HistoryObjectImpl = workSpace.histories[workSpace.historyIndex++];
-    switch (historyObject.command) {
-
-        case $TIMELINE_TOOL_LAYER_ADD_COMMAD:
-            timelineToolLayerAddHistoryRedoUseCase(
-                historyObject.object as NonNullable<Layer>
-            );
-            break;
-
-        default:
-            break;
-
+    const historyObject: HistoryObjectImpl | undefined = workSpace.histories[workSpace.historyIndex++];
+    if (!historyObject) {
+        return ;
     }
+
+    historyObject.redo();
 };

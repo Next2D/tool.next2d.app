@@ -170,7 +170,8 @@ export const $removeWorkSpace = (work_space: WorkSpace): Promise<void> =>
             // 削除するプロジェクトがアクティブなら別のプロジェクトを起動
             if (work_space.active) {
                 $workSpace = null;
-                return $changeCurrentWorkSpace($workSpaces[0] as NonNullable<WorkSpace>).then(reslove);
+                $changeCurrentWorkSpace($workSpaces[0] as NonNullable<WorkSpace>).then(reslove);
+                return;
             }
 
             return reslove();
@@ -179,13 +180,19 @@ export const $removeWorkSpace = (work_space: WorkSpace): Promise<void> =>
         // 起動中のWorkSpaceがなければ自動的に起動
         const workSpace: WorkSpace = $createWorkSpace();
 
-        workSpace
-            .initialize()
+        // 削除するプロジェクトを停止して、新しいプロジェクト起動
+        work_space
+            .stop()
+            .then((): Promise<void> =>
+            {
+                // 初期起動関数を実行
+                return workSpace.initialize();
+            })
             .then((): void =>
             {
-                workSpace
-                    .run()
-                    .then(reslove);
+                // 起動
+                workSpace.run().then(reslove);
             });
+
     });
 };

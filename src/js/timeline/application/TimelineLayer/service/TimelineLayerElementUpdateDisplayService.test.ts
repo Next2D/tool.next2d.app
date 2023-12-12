@@ -1,6 +1,6 @@
-import { execute } from "./TimelineLayerElementDisplayNoneService";
+import { execute } from "./TimelineLayerElementUpdateDisplayService";
 
-describe("TimelineLayerElementDisplayNoneServiceTest", () =>
+describe("TimelineLayerElementUpdateDisplayServiceTest", () =>
 {
     test("execute test", (): void =>
     {
@@ -10,10 +10,10 @@ describe("TimelineLayerElementDisplayNoneServiceTest", () =>
         div.style.display = "";
 
         expect(div.style.display).toBe("");
-        execute(1);
-        expect(div.style.display).toBe("");
-        execute(0);
+        execute(0, "none");
         expect(div.style.display).toBe("none");
+        execute(0, "");
+        expect(div.style.display).toBe("");
 
         div.remove();
     });

@@ -10,7 +10,7 @@ import { $replace } from "@/language/application/LanguageUtil";
  * @method
  * @public
  */
-export const execute = (work_space: WorkSpace): void =>
+export const execute = async (work_space: WorkSpace): Promise<void> =>
 {
     const message: string = $replace(
         "{{プロジェクトが保存されていない場合、" +
