@@ -24,6 +24,7 @@ export class MovieClip extends Instance
     private _$layerId: number;
     private _$scrollX: number;
     private _$scrollY: number;
+    private _$selectedLayerIds: number[];
 
     /**
      * @params {object} object
@@ -93,8 +94,27 @@ export class MovieClip extends Instance
          */
         this._$scrollY = 0;
 
+        /**
+         * @type {array}
+         * @private
+         */
+        this._$selectedLayerIds = [];
+
         // 指定objectからMovieCLipを復元
         this.load(object);
+    }
+
+    /**
+     * @description タイムラインで選択したLayerIdの配列を返却
+     *              Returns an array of LayerId's selected on the timeline
+     *
+     * @member {array}
+     * @readonly
+     * @public
+     */
+    get selectedLayerIds (): number[]
+    {
+        return this._$selectedLayerIds;
     }
 
     /**

@@ -5,13 +5,10 @@ import {
     timelineHeader,
     timelineLayer
 } from "../../TimelineUtil";
-import { execute as timelineLayerControllerComponent } from "../../TimelineLayerController/component/TimelineLayerControllerComponent";
-import { execute as timelineLayerFrameContentComponent } from "../../TimelineLayerFrame/component/TimelineLayerFrameContentComponent";
-import { execute as timelineLayerMouseDownEventUseCase } from "./TimelineLayerMouseDownEventUseCase";
-import { execute as timelineLayerControllerRegisterEventUseCase } from "../../TimelineLayerController/usecase/TimelineLayerControllerRegisterEventUseCase";
-import { execute as timelineLayerFrameRegisterEventUseCase } from "../../TimelineLayerFrame/usecase/TimelineLayerFrameRegisterEventUseCase";
 import { execute as timelineLayerControllerUpdateElementStyleUseCase } from "../../TimelineLayerController/usecase/TimelineLayerControllerUpdateElementStyleUseCase";
-import { EventType } from "@/tool/domain/event/EventType";
+import { execute as timelineLayerFrameCreateContentComponentService } from "@/timeline/application/TimelineLayerFrame/service/TimelineLayerFrameCreateContentComponentService";
+import { execute as timelineLayerFrameUpdateStyleService } from "@/timeline/application/TimelineLayerFrame/service/TimelineLayerFrameUpdateStyleService";
+import { execute as timelineLayerCreateUseCase } from "./TimelineLayerCreateUseCase";
 
 /**
  * @description 指定のMoiveClipのLayerからタイムラインを生成
@@ -46,52 +43,28 @@ export const execute = (): void =>
         let frameControllerElement: HTMLElement | null = null;
         if (layerId >= timelineLayer.elements.length) {
 
-            // レイヤーのElementを新規登録
-            parent.insertAdjacentHTML("beforeend",
-                timelineLayerControllerComponent(layerId)
+            // 新規レイヤーを追加
+            timelineLayerCreateUseCase(
+                parent, layerId, maxFrame, leftFrame
             );
 
+            // フレーム側のElementをを変数にセット
             const element = parent.lastElementChild as HTMLElement;
-
-            // レイヤー全体のマウスダウンイベント
-            element.addEventListener(EventType.MOUSE_DOWN,
-                timelineLayerMouseDownEventUseCase
-            );
-
-            // レイヤーのコントローラーのイベント登録
-            const layerControllerElement = element.firstElementChild as NonNullable<HTMLElement>;
-            timelineLayerControllerRegisterEventUseCase(
-                layerControllerElement
-            );
-
-            // レイヤーのフレーム側のイベントを登録
             frameControllerElement = element.lastElementChild as NonNullable<HTMLElement>;
-            timelineLayerFrameRegisterEventUseCase(
-                frameControllerElement
-            );
-
-            for (let idx: number = 0; idx < maxFrame; ++idx) {
-                frameControllerElement.insertAdjacentHTML("beforeend",
-                    timelineLayerFrameContentComponent(layerId, leftFrame + idx)
-                );
-            }
-
-            timelineLayer.elements.push(element);
 
         } else {
 
+            // フレーム側のElementをを変数にセット
             const element = timelineLayer.elements[layerId] as NonNullable<HTMLElement>;
-
             frameControllerElement = element.lastElementChild as NonNullable<HTMLElement>;
 
             // 表示フレーム数が多い時はElementを追加
             const length: number = frameControllerElement.children.length;
             if (maxFrame > length) {
-                for (let idx: number = length; idx < maxFrame; ++idx) {
-                    frameControllerElement.insertAdjacentHTML("beforeend",
-                        timelineLayerFrameContentComponent(layerId, leftFrame + idx)
-                    );
-                }
+                // 不足しているフレームを追加
+                timelineLayerFrameCreateContentComponentService(
+                    frameControllerElement, length, maxFrame, layerId, leftFrame
+                );
             }
 
             // 表示
@@ -102,23 +75,8 @@ export const execute = (): void =>
             continue;
         }
 
-        const children: HTMLCollection = frameControllerElement.children;
-        const length: number = children.length;
-        for (let idx = 0; idx < length; ++idx) {
-
-            const node: HTMLElement | undefined = children[idx] as HTMLElement;
-            if (!node) {
-                continue;
-            }
-
-            const frame = leftFrame + idx;
-            node.setAttribute("data-frame", `${frame}`);
-            node.setAttribute("data-frame-state", "empty");
-            node.setAttribute("class", frame % 5 !== 0
-                ? "frame"
-                : "frame frame-pointer"
-            );
-        }
+        // スクロール位置に合わせてフレームElementのStyleを更新
+        timelineLayerFrameUpdateStyleService(frameControllerElement, leftFrame);
 
         // Layerの状態に合わせてstyle, classの状態を更新
         timelineLayerControllerUpdateElementStyleUseCase(layer);

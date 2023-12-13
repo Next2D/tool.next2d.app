@@ -5,6 +5,8 @@ import { execute as historyAddElementUseCase } from "@/history/usecase/HistoryAd
 import { execute as historyGetTextService } from "@/history/service/HistoryGetTextService";
 import { execute as timelineToolLayerAddHistoryUndoUseCase } from "@/history/application/timeline/TimelineTool/LayerAdd/usecase/TimelineToolLayerAddHistoryUndoUseCase";
 import { execute as timelineToolLayerAddHistoryRedoUseCase } from "@/history/application/timeline/TimelineTool/LayerAdd/usecase/TimelineToolLayerAddHistoryRedoUseCase";
+import { execute as historyRemoveElementService } from "@/history/service/HistoryRemoveElementService";
+
 
 /**
  * @description 新規レイヤー追加の履歴を登録
@@ -16,6 +18,9 @@ import { execute as timelineToolLayerAddHistoryRedoUseCase } from "@/history/app
  */
 export const execute = (layer: Layer): void =>
 {
+    // ポジション位置から未来の履歴を全て削除
+    historyRemoveElementService();
+
     const workSpace = $getCurrentWorkSpace();
 
     // fixed logic

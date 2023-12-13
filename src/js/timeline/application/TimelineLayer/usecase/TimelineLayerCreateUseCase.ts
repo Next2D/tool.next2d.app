@@ -1,0 +1,57 @@
+import { EventType } from "@/tool/domain/event/EventType";
+import { timelineLayer } from "../../TimelineUtil";
+import { execute as timelineLayerControllerComponent } from "../../TimelineLayerController/component/TimelineLayerControllerComponent";
+import { execute as timelineLayerMouseDownEventUseCase } from "./TimelineLayerMouseDownEventUseCase";
+import { execute as timelineLayerControllerRegisterEventUseCase } from "../../TimelineLayerController/usecase/TimelineLayerControllerRegisterEventUseCase";
+import { execute as timelineLayerFrameRegisterEventUseCase } from "../../TimelineLayerFrame/usecase/TimelineLayerFrameRegisterEventUseCase";
+import { execute as timelineLayerFrameCreateContentComponentService } from "@/timeline/application/TimelineLayerFrame/service/TimelineLayerFrameCreateContentComponentService";
+
+/**
+ * @description 指定のElementに新規のレイヤーを追加
+ *              Add a new layer to the specified Element
+ *
+ * @param  {HTMLElement} parent
+ * @param  {number} layer_id
+ * @param  {number} max_frame
+ * @param  {number} left_frame
+ * @return {void}
+ * @method
+ * @public
+ */
+export const execute = (
+    parent: HTMLElement,
+    layer_id: number,
+    max_frame: number,
+    left_frame: number
+): void => {
+
+    // レイヤーのElementを新規登録
+    parent.insertAdjacentHTML("beforeend",
+        timelineLayerControllerComponent(layer_id)
+    );
+
+    const element = parent.lastElementChild as HTMLElement;
+    timelineLayer.elements.push(element);
+
+    // レイヤー全体のマウスダウンイベント
+    element.addEventListener(EventType.MOUSE_DOWN,
+        timelineLayerMouseDownEventUseCase
+    );
+
+    // レイヤーのコントローラーのイベント登録
+    const layerControllerElement = element.firstElementChild as NonNullable<HTMLElement>;
+    timelineLayerControllerRegisterEventUseCase(
+        layerControllerElement
+    );
+
+    // レイヤーのフレーム側のイベントを登録
+    const frameControllerElement = element.lastElementChild as NonNullable<HTMLElement>;
+    timelineLayerFrameRegisterEventUseCase(
+        frameControllerElement
+    );
+
+    // フレームのElementを追加
+    timelineLayerFrameCreateContentComponentService(
+        frameControllerElement, 0, max_frame, layer_id, left_frame
+    );
+};
