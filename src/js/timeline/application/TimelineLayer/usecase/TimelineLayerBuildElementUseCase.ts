@@ -23,7 +23,7 @@ export const execute = (): void =>
     const workSpace = $getCurrentWorkSpace();
 
     const layers = workSpace.scene.layers;
-    if (!layers.size) {
+    if (!layers.length) {
         return ;
     }
 
@@ -38,14 +38,16 @@ export const execute = (): void =>
     const elementCount: number = Math.ceil(timelineHeader.clientWidth / (frameWidth + 1));
     const maxFrame: number     = elementCount + 1;
     const leftFrame: number    = $getLeftFrame();
-    for (const [layerId, layer] of layers) {
+    for (let idx = 0; layers.length  > idx; ++idx) {
+
+        const layer = layers[idx];
 
         let frameControllerElement: HTMLElement | null = null;
-        if (layerId >= timelineLayer.elements.length) {
+        if (layer.id >= timelineLayer.elements.length) {
 
             // 新規レイヤーを追加
             timelineLayerCreateUseCase(
-                parent, layerId, maxFrame, leftFrame
+                parent, layer.id, maxFrame, leftFrame
             );
 
             // フレーム側のElementをを変数にセット
@@ -55,7 +57,7 @@ export const execute = (): void =>
         } else {
 
             // フレーム側のElementをを変数にセット
-            const element = timelineLayer.elements[layerId] as NonNullable<HTMLElement>;
+            const element = timelineLayer.elements[layer.id] as NonNullable<HTMLElement>;
             frameControllerElement = element.lastElementChild as NonNullable<HTMLElement>;
 
             // 表示フレーム数が多い時はElementを追加
@@ -63,7 +65,7 @@ export const execute = (): void =>
             if (maxFrame > length) {
                 // 不足しているフレームを追加
                 timelineLayerFrameCreateContentComponentService(
-                    frameControllerElement, length, maxFrame, layerId, leftFrame
+                    frameControllerElement, length, maxFrame, layer.id, leftFrame
                 );
             }
 

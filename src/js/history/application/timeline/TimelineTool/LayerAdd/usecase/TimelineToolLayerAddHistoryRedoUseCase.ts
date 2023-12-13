@@ -6,15 +6,17 @@ import { execute as timelineLayerElementDisplayNoneService } from "@/timeline/ap
  * @description レイヤー追加作業を元に戻す
  *              Undo the layer addition process
  *
+ * @param  {Layer}  layer
+ * @param  {number} index
  * @return {void}
  * @method
  * @public
  */
-export const execute = (layer: Layer): void =>
+export const execute = (layer: Layer, index: number): void =>
 {
     // Layer Objectを内部情報から削除
     const scene = $getCurrentWorkSpace().scene;
-    scene.setLayer(layer);
+    scene.setLayer(layer, index);
 
     // 対象のElementを表示する
     timelineLayerElementDisplayNoneService(layer.id, "");

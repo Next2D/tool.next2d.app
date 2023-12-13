@@ -14,7 +14,7 @@ export const execute = (layer: Layer): void =>
 {
     // Layer Objectを内部情報から削除
     const scene = $getCurrentWorkSpace().scene;
-    scene.removeLayer(layer.id);
+    scene.removeLayer(layer);
 
     // 対象のElementを非表示にする
     timelineLayerElementDisplayNoneService(layer.id, "none");

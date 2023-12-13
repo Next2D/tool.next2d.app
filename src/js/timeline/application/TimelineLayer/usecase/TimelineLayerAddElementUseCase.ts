@@ -23,14 +23,21 @@ import { execute as timelineLayerFrameUpdateStyleService } from "@/timeline/appl
  */
 export const execute = (add_layer: Layer, target_layer: Layer): void =>
 {
-    const workSpace = $getCurrentWorkSpace();
-
     const parent: HTMLElement | null = document
         .getElementById($TIMELINE_CONTENT_ID);
 
     if (!parent) {
         return ;
     }
+
+    const targetLayerElement: HTMLElement | null = document
+        .getElementById(`layer-id-${target_layer.id}`);
+
+    if (!targetLayerElement) {
+        return ;
+    }
+
+    const workSpace = $getCurrentWorkSpace();
 
     const frameWidth: number   = workSpace.timelineAreaState.frameWidth;
     const elementCount: number = Math.ceil(timelineHeader.clientWidth / (frameWidth + 1));
@@ -49,6 +56,9 @@ export const execute = (add_layer: Layer, target_layer: Layer): void =>
         const element = parent.lastElementChild as HTMLElement;
         frameControllerElement = element.lastElementChild as NonNullable<HTMLElement>;
 
+        // 指定レイヤーの上位に移動
+        parent.insertBefore(element, targetLayerElement);
+
     } else {
 
         // フレーム側のElementをを変数にセット
@@ -66,6 +76,10 @@ export const execute = (add_layer: Layer, target_layer: Layer): void =>
 
         // 表示
         element.style.display = "";
+
+        // 指定レイヤーの上位に移動
+        parent.insertBefore(element, targetLayerElement);
+
     }
 
     // スクロール位置に合わせてフレームElementのStyleを更新
@@ -73,14 +87,4 @@ export const execute = (add_layer: Layer, target_layer: Layer): void =>
 
     // Layerの状態に合わせてstyle, classの状態を更新
     timelineLayerControllerUpdateElementStyleUseCase(add_layer);
-
-    const targetLayerElement: HTMLElement | null = document
-        .getElementById(`layer-id-${target_layer.id}`);
-
-    if (!targetLayerElement) {
-        return ;
-    }
-
-    // 指定レイヤーの上位に移動
-    parent.insertBefore(parent.lastElementChild as NonNullable<HTMLElement>, targetLayerElement);
 };

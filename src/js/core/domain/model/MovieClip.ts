@@ -16,7 +16,8 @@ import { execute as movieClipRunUseCase } from "@/core/application/MovieClip/use
 export class MovieClip extends Instance
 {
     private readonly _$labels: Map<number, string>;
-    private readonly _$layers: Map<number, Layer>;
+    private readonly _$layers: Layer[];
+    private readonly _$layerMap: Map<number, Layer>;
     private readonly _$actions: Map<number, string>;
     private readonly _$sounds: Map<number, SoundObjectImpl[]>;
     private _$currentFrame: number;
@@ -24,7 +25,7 @@ export class MovieClip extends Instance
     private _$layerId: number;
     private _$scrollX: number;
     private _$scrollY: number;
-    private _$selectedLayerIds: number[];
+    private readonly _$selectedLayerIds: number[];
 
     /**
      * @params {object} object
@@ -45,7 +46,13 @@ export class MovieClip extends Instance
          * @type {array}
          * @private
          */
-        this._$layers = new Map();
+        this._$layers = [];
+
+        /**
+         * @type {Map}
+         * @private
+         */
+        this._$layerMap = new Map();
 
         /**
          * @type {Map}
@@ -150,14 +157,14 @@ export class MovieClip extends Instance
     }
 
     /**
-     * @description MovieClipのLayerのMapデータを返却する
-     *              Return Map data of Layer in MovieClip
+     * @description MovieClipのLayerの配列を返却する
+     *              Returns an array of MovieClip Layers
      *
      * @member {Map}
      * @readonly
      * @public
      */
-    get layers (): Map<number, Layer>
+    get layers (): Layer[]
     {
         return this._$layers;
     }
@@ -222,7 +229,7 @@ export class MovieClip extends Instance
     stop (): void
     {
         // 表示に利用していたレイヤーElementを非表示に更新
-        for (let idx = 0; idx < this._$layers.size; ++idx) {
+        for (let idx = 0; idx < this._$layers.length; ++idx) {
             const element = timelineLayer.elements[idx];
             element.style.display = "none";
         }
@@ -245,22 +252,26 @@ export class MovieClip extends Instance
 
             // reset
             this._$layerId = 0;
-            this._$layers.clear();
+            this._$layers.length = 0;
+            this._$layerMap.clear();
 
             // セーブデータからLayerを複製
             for (let idx: number = 0; idx < object.layers.length; ++idx) {
+
                 // セーブデータの読み込み
                 const layer = new Layer();
                 layer.id = this._$layerId++;
                 layer.load(object.layers[idx]);
 
                 // 登録
-                this._$layers.set(layer.id, layer);
+                this._$layers.push(layer);
+                this._$layerMap.set(layer.id, layer);
             }
 
         } else {
             // Layerデータがなければ強制的に一個追加する
-            this.addLayer();
+            const layer = this.createLayer();
+            this.setLayer(layer, 0);
         }
 
         if (object.scrollX) {
@@ -277,59 +288,55 @@ export class MovieClip extends Instance
     }
 
     /**
-     * @description MovieClipにLayerを追加
-     *              Add Layer to MovieClip
+     * @description 新規レイヤーを作成
+     *              新規レイヤーを作成
      *
-     * @param  {Layer} [layer = null]
      * @return {Layer}
      * @method
      * @public
      */
-    addLayer (layer: Layer | null = null): Layer
+    createLayer (): Layer
     {
         const layerId: number = this._$layerId++;
+        const layer = new Layer();
 
-        if (!layer) {
-            layer = new Layer();
-            layer.name = `Layer_${layerId}`;
-        }
-
-        layer.id = layerId;
-        this._$layers.set(layer.id, layer);
+        // set
+        layer.id   = layerId;
+        layer.name = `Layer_${layerId}`;
 
         return layer;
     }
 
     /**
-     * @description 指定のLayerを内部情報にセット
-     *              Set the specified Layer to the internal information
+     * @description 配列の指定index値にLayerを追加
+     *              Add Layer to the specified index value of the array
      *
      * @param  {Layer} layer
+     * @param  {number} index
      * @return {void}
      * @method
      * @public
      */
-    setLayer (layer: Layer): void
+    setLayer (layer: Layer, index: number): void
     {
-        this._$layers.set(layer.id, layer);
+        this._$layers.splice(index, 0, layer);
+        this._$layerMap.set(layer.id, layer);
     }
 
     /**
      * @description 指定のLayerを内部情報から削除
      *              Delete specified Layer from internal information
      *
-     * @param  {number} layer_id
+     * @param  {Layer} layer
      * @return {void}
      * @method
      * @public
      */
-    removeLayer (layer_id: number): void
+    removeLayer (layer: Layer): void
     {
-        if (!this._$layers.has(layer_id)) {
-            return ;
-        }
-
-        this._$layers.delete(layer_id);
+        const index = this._$layers.indexOf(layer);
+        this._$layers.splice(index, 1);
+        this._$layerMap.delete(layer.id);
     }
 
     /**
@@ -343,8 +350,8 @@ export class MovieClip extends Instance
      */
     getLayer (layer_id: number): Layer | null
     {
-        return this._$layers.has(layer_id)
-            ? this._$layers.get(layer_id) as NonNullable<Layer>
+        return this._$layerMap.has(layer_id)
+            ? this._$layerMap.get(layer_id) as NonNullable<Layer>
             : null;
     }
 
@@ -540,8 +547,8 @@ export class MovieClip extends Instance
     toObject (): MovieClipSaveObjectImpl
     {
         const layers = [];
-        for (const layer of this._$layers.values()) {
-            layers.push(layer.toObject());
+        for (let idx: number = 0; idx < this._$layers.length; ++idx) {
+            layers.push(this._$layers[idx].toObject());
         }
 
         const labels = [];

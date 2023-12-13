@@ -7,7 +7,6 @@ import { execute as timelineToolLayerAddHistoryUndoUseCase } from "@/history/app
 import { execute as timelineToolLayerAddHistoryRedoUseCase } from "@/history/application/timeline/TimelineTool/LayerAdd/usecase/TimelineToolLayerAddHistoryRedoUseCase";
 import { execute as historyRemoveElementService } from "@/history/service/HistoryRemoveElementService";
 
-
 /**
  * @description 新規レイヤー追加の履歴を登録
  *              Register history of adding new layers
@@ -30,6 +29,9 @@ export const execute = (layer: Layer): void =>
         historyGetTextService($TIMELINE_TOOL_LAYER_ADD_COMMAD)
     );
 
+    const scene = workSpace.scene;
+    const index = scene.layers.indexOf(layer as NonNullable<Layer>);
+
     // 追加したLayer Objectを履歴に登録
     workSpace.addHistory({
         "command": $TIMELINE_TOOL_LAYER_ADD_COMMAD,
@@ -39,7 +41,7 @@ export const execute = (layer: Layer): void =>
         },
         "redo": (): void =>
         {
-            timelineToolLayerAddHistoryRedoUseCase(layer);
+            timelineToolLayerAddHistoryRedoUseCase(layer, index);
         }
     });
 };
