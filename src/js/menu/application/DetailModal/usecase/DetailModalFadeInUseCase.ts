@@ -103,7 +103,7 @@ export const execute = (event: PointerEvent): void =>
     }
 
     // 1.5秒で自動的に消えるようタイマーをセット
-    const timerId: NodeJS.Timeout = setTimeout((): void =>
+    const timerId = setTimeout((): void =>
     {
         detailModalHideService();
     }, 1500);

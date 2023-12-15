@@ -28,7 +28,6 @@ import {
  * @private
  */
 const initializes: Function[] = [
-    initializeLanguage,
     initializeGlobal,
     initializeShortcut,
     initializeMenu,
@@ -38,7 +37,8 @@ const initializes: Function[] = [
     initializeTool,
     initializeTimeline,
     initializeController,
-    initializeView
+    initializeView,
+    initializeLanguage
 ];
 
 /**

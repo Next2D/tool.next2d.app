@@ -62,7 +62,7 @@ export const execute = (add_layer: Layer, target_layer: Layer): void =>
     } else {
 
         // フレーム側のElementをを変数にセット
-        const element = timelineLayer.elements[add_layer.id] as NonNullable<HTMLElement>;
+        const element = timelineLayer.elements[add_layer.id];
         frameControllerElement = element.lastElementChild as NonNullable<HTMLElement>;
 
         // 表示フレーム数が多い時はElementを追加
@@ -79,7 +79,6 @@ export const execute = (add_layer: Layer, target_layer: Layer): void =>
 
         // 指定レイヤーの上位に移動
         parent.insertBefore(element, targetLayerElement);
-
     }
 
     // スクロール位置に合わせてフレームElementのStyleを更新

@@ -2,8 +2,7 @@ import {
     $getSelectElement,
     $setSelectElement,
     $getSelectTabName,
-    $setSelectTabName,
-    $generateShortcutKey
+    $setSelectTabName
 } from "./ShortcutSettingMenuUtil";
 
 describe("ShortcutSettingMenuUtilTest", () =>
@@ -25,22 +24,5 @@ describe("ShortcutSettingMenuUtilTest", () =>
         expect($getSelectTabName()).toBe("timeline");
         $setSelectTabName("library");
         expect($getSelectTabName()).toBe("library");
-    });
-
-    test("$generateShortcutKey test", () =>
-    {
-        expect($generateShortcutKey("a")).toBe("a");
-        expect($generateShortcutKey("b", {
-            "shift": true
-        })).toBe("bShift");
-        expect($generateShortcutKey("c", {
-            "shift": true,
-            "alt": true
-        })).toBe("cShiftAlt");
-        expect($generateShortcutKey("d", {
-            "shift": true,
-            "ctrl": true,
-            "alt": true
-        })).toBe("dShiftAltCtrl");
     });
 });

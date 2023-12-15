@@ -1,5 +1,5 @@
 import { execute as shortcutGlobalCommandInitializeUseCase } from "@/shortcut/application/Global/usecase/ShortcutGlobalCommandInitializeUseCase";
-import { execute as shortcutRegisterEventUseCase } from "@/shortcut/application/Event/usecase/ShortcutRegisterEventUseCase";
+import { execute as shortcutRegisterEventUseCase } from "@/shortcut/application/Shortcut/usecase/ShortcutRegisterEventUseCase";
 /**
  * @description ショートカット機能の初期起動関数
  *              Initial startup function for shortcut functions

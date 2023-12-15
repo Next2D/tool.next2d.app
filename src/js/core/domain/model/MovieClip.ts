@@ -321,6 +321,7 @@ export class MovieClip extends Instance
     {
         this._$layers.splice(index, 0, layer);
         this._$layerMap.set(layer.id, layer);
+        this._$layerId = this._$layers.length;
     }
 
     /**
@@ -337,6 +338,7 @@ export class MovieClip extends Instance
         const index = this._$layers.indexOf(layer);
         this._$layers.splice(index, 1);
         this._$layerMap.delete(layer.id);
+        this._$layerId = this._$layers.length;
     }
 
     /**

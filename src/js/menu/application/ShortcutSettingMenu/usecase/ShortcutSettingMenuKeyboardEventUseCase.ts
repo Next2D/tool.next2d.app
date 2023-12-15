@@ -1,7 +1,7 @@
-import type { ShortcutKeyOptionObjectImpl } from "@/interface/ShortcutKeyOptionObjectImpl";
+import type { ShortcutOptionObjectImpl } from "@/interface/ShortcutOptionObjectImpl";
 import type { ShortcutViewObjectImpl } from "@/interface/ShortcutViewObjectImpl";
+import { $generateShortcutKey } from "@/shortcut/ShortcutUtil";
 import {
-    $generateShortcutKey,
     $getSelectElement,
     $getSelectTabName,
     $getTempMapping
@@ -48,7 +48,7 @@ export const execute = (event: KeyboardEvent): boolean =>
 
     // TODO
     const texts: string[] = [];
-    const options: ShortcutKeyOptionObjectImpl = {
+    const options: ShortcutOptionObjectImpl = {
         "shift": false,
         "alt": false,
         "ctrl": false

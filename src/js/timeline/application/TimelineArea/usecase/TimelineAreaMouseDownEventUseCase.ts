@@ -25,7 +25,7 @@ let wait: boolean = false;
  * @type {boolean}
  * @private
  */
-let activeTimerId: NodeJS.Timeout | number = 0;
+let activeTimerId: number = 0;
 
 /**
  * @description タイムラインエリアのマウスダウン処理

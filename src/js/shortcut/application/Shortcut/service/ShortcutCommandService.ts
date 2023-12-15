@@ -53,20 +53,22 @@ export const execute = (event: KeyboardEvent): void =>
 
     // グローバルコマンドマップに登録されたショートカットをチェック
     const globalShortcut = $getGlobalShortcut();
-    if (!globalShortcut.has(code)) {
-        return ;
+    if (globalShortcut.has(code)) {
+
+        const callback: Function | undefined = globalShortcut.get(code);
+        if (!callback) {
+            return ;
+        }
+
+        // 全てのイベントを中止
+        event.stopImmediatePropagation();
+        event.stopPropagation();
+        event.preventDefault();
+
+        // 登録されたコマンドを実行
+        return callback(event);
     }
 
-    const callback: Function | undefined = globalShortcut.get(code);
-    if (!callback) {
-        return ;
-    }
+    // エリア別のコマンドをチェック
 
-    // 全てのイベントを中止
-    event.stopImmediatePropagation();
-    event.stopPropagation();
-    event.preventDefault();
-
-    // 登録されたコマンドを実行
-    callback(event);
 };

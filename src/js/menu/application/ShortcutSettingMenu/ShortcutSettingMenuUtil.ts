@@ -1,6 +1,5 @@
 import type { ShortcutKeyStringImpl } from "@/interface/ShortcutKeyStringImpl";
 import type { ShortcutViewObjectImpl } from "@/interface/ShortcutViewObjectImpl";
-import type { ShortcutKeyOptionObjectImpl } from "@/interface/ShortcutKeyOptionObjectImpl";
 
 /**
  * @description ショートカットリストで選択されたElement
@@ -159,34 +158,6 @@ export const $getSelectTabName = (): ShortcutKeyStringImpl =>
 export const $setSelectTabName = (tab_name: ShortcutKeyStringImpl): void =>
 {
     $selectTabName = tab_name;
-};
-
-/**
- * @description 送られてきた文字列からショートカットマッピングの文字列を生成
- *              Generate shortcut mapping strings from sent strings
- *
- * @return {Map}
- * @method
- * @public
- */
-export const $generateShortcutKey = (
-    key: string,
-    options: ShortcutKeyOptionObjectImpl | null = null
-): string => {
-
-    let value: string = key.length === 1 ? key.toLowerCase() : key;
-    if (options) {
-        if (options.shift) {
-            value += "Shift";
-        }
-        if (options.alt) {
-            value += "Alt";
-        }
-        if (options.ctrl) {
-            value += "Ctrl";
-        }
-    }
-    return value;
 };
 
 /**

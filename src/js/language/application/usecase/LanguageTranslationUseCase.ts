@@ -1,5 +1,9 @@
+import { $getMenu } from "@/menu/application/MenuUtil";
 import { execute as languageLoadRepository } from "../../domain/repository/LanguageLoadRepository";
 import { $setMapping } from "../LanguageUtil";
+import { $PROGRESS_MENU_NAME } from "@/config/MenuConfig";
+import type { ProgressMenu } from "@/menu/domain/model/ProgressMenu";
+import type { MenuImpl } from "@/interface/MenuImpl";
 
 /**
  * @description 指定した言語JSONを読み込んで、マッピング情報を更新
@@ -18,5 +22,18 @@ export const execute = (language: string): Promise<void> =>
         {
             // 言語マッピングに登録
             $setMapping(values);
+        })
+        .catch((): void =>
+        {
+            // エラー表示
+            const menu: MenuImpl<ProgressMenu> | null = $getMenu($PROGRESS_MENU_NAME);
+            if (!menu) {
+                return ;
+            }
+
+            console.log(menu);
+            menu.message = "[Error] check network settings";
+
+            throw new Error("Communication error, check network settings");
         });
 };
