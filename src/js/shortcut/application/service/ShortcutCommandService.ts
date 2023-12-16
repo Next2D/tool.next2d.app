@@ -1,4 +1,4 @@
-import { $useShortcutSetting } from "@/menu/application/ShortcutSettingMenu/ShortcutSettingMenuUtil";
+import { $getCommandMapping, $useShortcutSetting } from "@/menu/application/ShortcutSettingMenu/ShortcutSettingMenuUtil";
 import {
     $generateShortcutKey,
     $getGlobalShortcut,
@@ -51,24 +51,24 @@ export const execute = (event: KeyboardEvent): void =>
         "ctrl": useCtrlKey
     });
 
+    $getCommandMapping();
+
     // グローバルコマンドマップに登録されたショートカットをチェック
     const globalShortcut = $getGlobalShortcut();
-    if (globalShortcut.has(code)) {
-
-        const callback: Function | undefined = globalShortcut.get(code);
-        if (!callback) {
-            return ;
-        }
-
-        // 全てのイベントを中止
-        event.stopImmediatePropagation();
-        event.stopPropagation();
-        event.preventDefault();
-
-        // 登録されたコマンドを実行
-        return callback(event);
+    if (!globalShortcut.has(code)) {
+        return ;
     }
 
-    // エリア別のコマンドをチェック
+    const callback: Function | undefined = globalShortcut.get(code);
+    if (!callback) {
+        return ;
+    }
 
+    // 全てのイベントを中止
+    event.stopImmediatePropagation();
+    event.stopPropagation();
+    event.preventDefault();
+
+    // 登録されたコマンドを実行
+    callback(event);
 };

@@ -1,5 +1,5 @@
 import { execute } from "./ShortcutCommandService";
-import { $setGlobalShortcut } from "../../../../shortcut/ShortcutUtil";
+import { $setGlobalShortcut } from "../../ShortcutUtil";
 
 describe("ShortcutCommandServiceTest", () =>
 {

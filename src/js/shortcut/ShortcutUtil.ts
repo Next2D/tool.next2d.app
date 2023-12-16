@@ -38,51 +38,6 @@ export const $getGlobalShortcut = (): Map<string, Function> =>
 };
 
 /**
- * @description タイムラインのショートカットマッピング
- *              Timeline Shortcut Mapping
- *
- * @type {Map}
- * @private
- */
-const $timelineShortcut: Map<string, Function> = new Map();;
-
-/**
- * @description タイムラインで利用可能なショートカットコマンドを登録
- *              Register shortcut commands available on the timeline
- *
- * @param   {string} code
- * @param   {Function} callback
- * @returns {void}
- * @method
- * @public
- */
-export const $setTimelineShortcut = (code: string, callback: Function): void =>
-{
-    $timelineShortcut.set(code, callback);
-};
-
-/**
- * @description アクティブなエリアのショートカット
- *              Map data for global shortcuts
- *
- * @type {Map}
- * @private
- */
-const $areaShortcut: Map<string, Function> | null = null;
-
-/**
- * @description
- *
- * @return {Map | null}
- * @method
- * @public
- */
-export const $getAreaShortcut = (): Map<string, Function> | null =>
-{
-    return $areaShortcut;
-};
-
-/**
  * @description ショートカットキーとオプションコマンドを連結してstringで返却する
  *              concatenate shortcut keys and option commands and return them as a string
  *

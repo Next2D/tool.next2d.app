@@ -1,5 +1,6 @@
-import { execute as shortcutGlobalCommandInitializeUseCase } from "@/shortcut/application/Global/usecase/ShortcutGlobalCommandInitializeUseCase";
-import { execute as shortcutRegisterEventUseCase } from "@/shortcut/application/Shortcut/usecase/ShortcutRegisterEventUseCase";
+import { execute as shortcutGlobalCommandInitializeRegisterUseCase } from "@/shortcut/application/usecase/ShortcutGlobalCommandInitializeRegisterUseCase";
+import { execute as timelineShortcutInitializeRegisterUseCase } from "@/shortcut/application/usecase/TimelineShortcutInitializeRegisterUseCase";
+import { execute as shortcutRegisterEventUseCase } from "@/shortcut/application/usecase/ShortcutRegisterEventUseCase";
 /**
  * @description ショートカット機能の初期起動関数
  *              Initial startup function for shortcut functions
@@ -13,7 +14,10 @@ export const execute = (): Promise<void> =>
     return new Promise((resolve): void =>
     {
         // 全体で利用可能なコマンドを登録
-        shortcutGlobalCommandInitializeUseCase();
+        shortcutGlobalCommandInitializeRegisterUseCase();
+
+        // タイムラインのコマンドを登録
+        timelineShortcutInitializeRegisterUseCase();
 
         // 実行イベントを登録
         shortcutRegisterEventUseCase();

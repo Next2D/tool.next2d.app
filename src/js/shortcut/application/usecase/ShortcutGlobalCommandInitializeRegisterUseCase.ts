@@ -16,16 +16,19 @@ import {
  */
 export const execute = (): void =>
 {
+    // データ保存
     $setGlobalShortcut(
         $generateShortcutKey("s", { "ctrl": true }),
         userDatabaseInitializeSaveUseCase
     );
 
+    // Undo
     $setGlobalShortcut(
         $generateShortcutKey("z", { "ctrl": true }),
         historyUndoUseCase
     );
 
+    // Redo
     $setGlobalShortcut(
         $generateShortcutKey("z", { "ctrl": true, "shift": true  }),
         historyRedoUseCase
