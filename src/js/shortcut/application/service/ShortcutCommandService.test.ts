@@ -1,5 +1,5 @@
 import { execute } from "./ShortcutCommandService";
-import { $setGlobalShortcut } from "../../ShortcutUtil";
+import { $setShortcut } from "../../ShortcutUtil";
 
 describe("ShortcutCommandServiceTest", () =>
 {
@@ -30,7 +30,7 @@ describe("ShortcutCommandServiceTest", () =>
         };
 
         let state = "off";
-        $setGlobalShortcut("a", () =>
+        $setShortcut("a", () =>
         {
             state = "on";
         });
