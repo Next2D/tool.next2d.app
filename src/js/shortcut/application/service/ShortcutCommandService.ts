@@ -1,7 +1,7 @@
 import { $getCommandMapping, $useShortcutSetting } from "@/menu/application/ShortcutSettingMenu/ShortcutSettingMenuUtil";
 import {
     $generateShortcutKey,
-    $getGlobalShortcut,
+    $getShortcut,
     $useKeyboard
 } from "@/shortcut/ShortcutUtil";
 
@@ -54,7 +54,7 @@ export const execute = (event: KeyboardEvent): void =>
     $getCommandMapping();
 
     // グローバルコマンドマップに登録されたショートカットをチェック
-    const globalShortcut = $getGlobalShortcut();
+    const globalShortcut = $getShortcut();
     if (!globalShortcut.has(code)) {
         return ;
     }

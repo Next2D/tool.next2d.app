@@ -7,7 +7,7 @@ import type { ShortcutOptionObjectImpl } from "../interface/ShortcutOptionObject
  * @type {Map}
  * @private
  */
-const $globalShortcut: Map<string, Function> = new Map();
+const $shortcutMap: Map<string, Function> = new Map();
 
 /**
  * @description グローバルで利用可能なショートカットコマンドを登録
@@ -19,9 +19,9 @@ const $globalShortcut: Map<string, Function> = new Map();
  * @method
  * @public
  */
-export const $setGlobalShortcut = (code: string, callback: Function): void =>
+export const $setShortcut = (code: string, callback: Function): void =>
 {
-    $globalShortcut.set(code, callback);
+    $shortcutMap.set(code, callback);
 };
 
 /**
@@ -32,9 +32,9 @@ export const $setGlobalShortcut = (code: string, callback: Function): void =>
  * @method
  * @public
  */
-export const $getGlobalShortcut = (): Map<string, Function> =>
+export const $getShortcut = (): Map<string, Function> =>
 {
-    return $globalShortcut;
+    return $shortcutMap;
 };
 
 /**

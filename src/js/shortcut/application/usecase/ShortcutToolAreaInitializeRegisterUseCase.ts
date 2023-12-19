@@ -1,9 +1,10 @@
 import { execute as userDatabaseInitializeSaveUseCase } from "@/user/application/Database/usecase/UserDatabaseInitializeSaveUseCase";
 import { execute as historyUndoUseCase } from "@/history/usecase/HistoryUndoUseCase";
 import { execute as historyRedoUseCase } from "@/history/usecase/HistoryRedoUseCase";
+import { execute as userSettingMenuShowService } from "@/menu/application/UserSettingMenu/service/UserSettingMenuShowService";
 import {
     $generateShortcutKey,
-    $setGlobalShortcut
+    $setShortcut
 } from "@/shortcut/ShortcutUtil";
 
 /**
@@ -17,20 +18,26 @@ import {
 export const execute = (): void =>
 {
     // データ保存
-    $setGlobalShortcut(
+    $setShortcut(
         $generateShortcutKey("s", { "ctrl": true }),
         userDatabaseInitializeSaveUseCase
     );
 
     // Undo
-    $setGlobalShortcut(
+    $setShortcut(
         $generateShortcutKey("z", { "ctrl": true }),
         historyUndoUseCase
     );
 
     // Redo
-    $setGlobalShortcut(
+    $setShortcut(
         $generateShortcutKey("z", { "ctrl": true, "shift": true  }),
         historyRedoUseCase
+    );
+
+    // ユーザー設定
+    $setShortcut(
+        $generateShortcutKey("s"),
+        userSettingMenuShowService
     );
 };

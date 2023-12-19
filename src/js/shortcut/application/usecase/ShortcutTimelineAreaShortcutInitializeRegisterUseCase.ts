@@ -1,7 +1,7 @@
 import { execute as timelineToolLayerAddUseCase } from "@/timeline/application/TimelineTool/application/LayerAdd/usecase/TimelineToolLayerAddUseCase";
 import {
     $generateShortcutKey,
-    $setGlobalShortcut
+    $setShortcut
 } from "@/shortcut/ShortcutUtil";
 
 /**
@@ -15,11 +15,11 @@ import {
 export const execute = (): void =>
 {
     // 新規レイヤー追加
-    $setGlobalShortcut(
+    $setShortcut(
         $generateShortcutKey("+", { "ctrl": true }),
         timelineToolLayerAddUseCase
     );
-    $setGlobalShortcut(
+    $setShortcut(
         $generateShortcutKey(";", { "ctrl": true }),
         timelineToolLayerAddUseCase
     );

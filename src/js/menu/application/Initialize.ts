@@ -54,5 +54,8 @@ export const execute = async (): Promise<void> =>
         promises.push(menu.initialize());
     }
 
+    // ショートカットを登録
+    // TODO
+
     await Promise.all(promises);
 };

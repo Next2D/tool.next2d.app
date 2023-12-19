@@ -131,10 +131,9 @@ export const execute = (): void =>
         const length: number = elements.length;
         for (let idx = 0; idx < length; ++idx) {
             const element: HTMLElement = elements[idx] as HTMLElement;
-            element.addEventListener(EventType.MOUSE_DOWN, (event: PointerEvent): void =>
-            {
-                shortcutSettingMenuChangeListStyleUseCase(event);
-            });
+            element.addEventListener(EventType.MOUSE_DOWN,
+                shortcutSettingMenuChangeListStyleUseCase
+            );
         }
     }
 };

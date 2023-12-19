@@ -12,17 +12,17 @@
   },
   "devDependencies": {
     "@next2d/player": "^1.18.11",
-    "@typescript-eslint/eslint-plugin": "^6.14.0",
-    "@typescript-eslint/parser": "^6.14.0",
-    "ace-code": "^1.32.1",
-    "ace-linters": "^0.13.3",
-    "eslint": "^8.55.0",
+    "@typescript-eslint/eslint-plugin": "^6.15.0",
+    "@typescript-eslint/parser": "^6.15.0",
+    "ace-code": "^1.32.2",
+    "ace-linters": "^1.0.0",
+    "eslint": "^8.56.0",
     "fflate": "^0.8.1",
     "jsdom": "^23.0.1",
     "jszip": "^3.10.1",
     "sass": "^1.69.5",
     "typescript": "^5.3.3",
-    "vite": "^5.0.8",
+    "vite": "^5.0.10",
     "vitest": "^1.0.4"
   }
 }
