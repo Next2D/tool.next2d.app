@@ -1,7 +1,7 @@
 import { $LANGUAGE_ELEMENTS_CLASS_NAME } from "@/config/LanguageConfig";
 import type { ShortcutKeyStringImpl } from "@/interface/ShortcutKeyStringImpl";
 import type { ShortcutViewObjectImpl } from "@/interface/ShortcutViewObjectImpl";
-import { $getTempMapping } from "@/menu/application/ShortcutSettingMenu/ShortcutSettingMenuUtil";
+import { $getViewMapping } from "@/menu/application/ShortcutSettingMenu/ShortcutSettingMenuUtil";
 import { $getMapping } from "@/language/application/LanguageUtil";
 
 /**
@@ -19,7 +19,7 @@ export const execute = async (target_element: HTMLElement | Document): Promise<v
     const elements: HTMLCollectionOf<Element> = target_element
         .getElementsByClassName($LANGUAGE_ELEMENTS_CLASS_NAME);
 
-    const tempMapping: Map<ShortcutKeyStringImpl, Map<string, ShortcutViewObjectImpl>> = $getTempMapping();
+    const viewMapping: Map<string, ShortcutViewObjectImpl> = $getViewMapping();
 
     const mapping = $getMapping();
     const length: number = elements.length;
@@ -47,11 +47,9 @@ export const execute = async (target_element: HTMLElement | Document): Promise<v
                 continue;
             }
 
-            const mapping: Map<string, ShortcutViewObjectImpl> | undefined = tempMapping.get(areaName);
-
             let shortcutText: string = element.dataset.shortcutText as NonNullable<string>;
-            if (mapping && mapping.has(shortcutKey)) {
-                const shortcutObject: ShortcutViewObjectImpl | undefined = mapping.get(shortcutKey);
+            if (viewMapping.size && viewMapping.has(shortcutKey)) {
+                const shortcutObject: ShortcutViewObjectImpl | undefined = viewMapping.get(shortcutKey);
                 if (shortcutObject) {
                     shortcutText = shortcutObject.text;
                 }

@@ -1,5 +1,6 @@
 import { execute as shortcutSettingMenuInitializeRegisterEventUseCase } from "./ShortcutSettingMenuInitializeRegisterEventUseCase";
 import { execute as shortcutSettingMenuAppendElementUseCase } from "./ShortcutSettingMenuAppendElementUseCase";
+import { execute as shortcutSettingMenuLoadObjectUseCase } from "./ShortcutSettingMenuLoadObjectUseCase";
 
 /**
  * @description ショートカットメニューの初期起動ユースケース
@@ -16,4 +17,7 @@ export const execute = (): void =>
 
     // 各ボタンのイベント登録
     shortcutSettingMenuInitializeRegisterEventUseCase();
+
+    // LocalStorageからデータを読み込む
+    shortcutSettingMenuLoadObjectUseCase();
 };

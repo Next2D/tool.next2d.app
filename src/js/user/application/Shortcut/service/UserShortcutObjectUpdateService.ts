@@ -1,5 +1,5 @@
 import { $USER_SHORTCUT_SETTING_KEY } from "@/config/Config";
-import type { ShortcutSaveObjectImpl } from "@/interface/ShortcutSaveObjectImpl";
+import type { ShortcutViewObjectImpl } from "@/interface/ShortcutViewObjectImpl";
 
 /**
  * @description 個別に設定したショートカット情報をLocalStorageに保存
@@ -10,7 +10,7 @@ import type { ShortcutSaveObjectImpl } from "@/interface/ShortcutSaveObjectImpl"
  * @method
  * @public
  */
-export const execute = (object: ShortcutSaveObjectImpl): void =>
+export const execute = (object: ShortcutViewObjectImpl[]): void =>
 {
     localStorage.setItem($USER_SHORTCUT_SETTING_KEY, JSON.stringify(object));
 };

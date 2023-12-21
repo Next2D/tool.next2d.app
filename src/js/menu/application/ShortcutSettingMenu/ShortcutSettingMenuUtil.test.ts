@@ -1,8 +1,6 @@
 import {
     $getSelectElement,
-    $setSelectElement,
-    $getSelectTabName,
-    $setSelectTabName
+    $setSelectElement
 } from "./ShortcutSettingMenuUtil";
 
 describe("ShortcutSettingMenuUtilTest", () =>
@@ -15,14 +13,5 @@ describe("ShortcutSettingMenuUtilTest", () =>
         expect($getSelectElement()).toBe(div);
         $setSelectElement(null);
         expect($getSelectElement()).toBe(null);
-    });
-
-    test("$getSelectTabName and $setSelectTabName test", () =>
-    {
-        expect($getSelectTabName()).toBe("screen");
-        $setSelectTabName("timeline");
-        expect($getSelectTabName()).toBe("timeline");
-        $setSelectTabName("library");
-        expect($getSelectTabName()).toBe("library");
     });
 });

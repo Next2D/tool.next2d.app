@@ -3,7 +3,6 @@ import type { ShortcutViewObjectImpl } from "@/interface/ShortcutViewObjectImpl"
 import { $generateShortcutKey } from "@/shortcut/ShortcutUtil";
 import {
     $getSelectElement,
-    $getSelectTabName,
     $getTempMapping
 } from "../ShortcutSettingMenuUtil";
 
@@ -93,20 +92,22 @@ export const execute = (event: KeyboardEvent): boolean =>
     const commandText: string = texts.join(" + ");
 
     const commandElement: HTMLElement = elements[0] as HTMLElement;
-    const tempMap: Map<string, ShortcutViewObjectImpl> | undefined = $getTempMapping().get($getSelectTabName());
-    if (tempMap) {
-        const defaultKey: string = commandElement.dataset.defaultKey as NonNullable<string>;
+    if (!commandElement) {
+        return true;
+    }
 
-        // 一度削除して再登録
-        tempMap.delete(defaultKey);
+    const tempMapping: Map<string, ShortcutViewObjectImpl> = $getTempMapping();
+    const defaultKey: string = commandElement.dataset.defaultKey as NonNullable<string>;
 
-        if (defaultKey !== customKey) {
-            tempMap.set(defaultKey, {
-                "defaultKey": defaultKey,
-                "customKey": customKey,
-                "text": commandText
-            });
-        }
+    // 一度削除して再登録
+    tempMapping.delete(defaultKey);
+
+    if (defaultKey !== customKey) {
+        tempMapping.set(defaultKey, {
+            "defaultKey": defaultKey,
+            "customKey": customKey,
+            "text": commandText
+        });
     }
 
     // 表示を更新

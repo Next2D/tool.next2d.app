@@ -45,12 +45,7 @@ export const $setSelectElement = (element: HTMLElement | null): void =>
  * @type {Map}
  * @private
  */
-const $commandMapping: Map<ShortcutKeyStringImpl, Map<string, string>> = new Map([
-    ["screen",   new Map()],
-    ["timeline", new Map()],
-    ["library",  new Map()],
-    ["global",   new Map()]
-]);
+const $commandMapping: Map<string, string> = new Map();
 
 /**
  * @description 個別のショートカットコマンドと既存のコマンドのマッピングデータを初期化
@@ -62,10 +57,7 @@ const $commandMapping: Map<ShortcutKeyStringImpl, Map<string, string>> = new Map
  */
 export const $clearCommandMapping = (): void =>
 {
-    $commandMapping.get("global")?.clear();
-    $commandMapping.get("library")?.clear();
-    $commandMapping.get("screen")?.clear();
-    $commandMapping.get("timeline")?.clear();
+    $commandMapping.clear();
 };
 
 /**
@@ -76,9 +68,44 @@ export const $clearCommandMapping = (): void =>
  * @method
  * @public
  */
-export const $getCommandMapping = (): Map<ShortcutKeyStringImpl, Map<string, string>> =>
+export const $getCommandMapping = (): Map<string, string> =>
 {
     return $commandMapping;
+};
+
+/**
+ * @description 個別のショートカットコマンドの表示Objectのマッピングデータ
+ *              Mapping data for display object of individual shortcut commands
+ *
+ * @type {Map}
+ * @private
+ */
+const $viewMapping: Map<string, ShortcutViewObjectImpl> = new Map();
+
+/**
+ * @description 個別のショートカットコマンドの表示Objectのマッピングデータを初期化
+ *              Initialize mapping data for display object of individual shortcut commands
+ *
+ * @return {Map}
+ * @method
+ * @public
+ */
+export const $clearViewMapping = (): void =>
+{
+    $viewMapping.clear();
+};
+
+/**
+ * @description 個別のショートカットコマンドの表示Objectのマッピングデータを返却
+ *              Return mapping data for display object of individual shortcut commands
+ *
+ * @return {Map}
+ * @method
+ * @public
+ */
+export const $getViewMapping = (): Map<string, ShortcutViewObjectImpl> =>
+{
+    return $viewMapping;
 };
 
 /**
@@ -88,12 +115,7 @@ export const $getCommandMapping = (): Map<ShortcutKeyStringImpl, Map<string, str
  * @type {Map}
  * @private
  */
-const $tempMapping: Map<ShortcutKeyStringImpl, Map<string, ShortcutViewObjectImpl>> = new Map([
-    ["screen",   new Map()],
-    ["timeline", new Map()],
-    ["library",  new Map()],
-    ["global",   new Map()]
-]);
+const $tempMapping: Map<string, ShortcutViewObjectImpl> = new Map();
 
 /**
  * @description 個別のショートカットの設定の一時保存データを返却
@@ -103,7 +125,7 @@ const $tempMapping: Map<ShortcutKeyStringImpl, Map<string, ShortcutViewObjectImp
  * @method
  * @public
  */
-export const $getTempMapping = (): Map<ShortcutKeyStringImpl, Map<string, ShortcutViewObjectImpl>> =>
+export const $getTempMapping = (): Map<string, ShortcutViewObjectImpl> =>
 {
     return $tempMapping;
 };
@@ -118,46 +140,7 @@ export const $getTempMapping = (): Map<ShortcutKeyStringImpl, Map<string, Shortc
  */
 export const $clearTempMapping = (): void =>
 {
-    $tempMapping.get("global")?.clear();
-    $tempMapping.get("library")?.clear();
-    $tempMapping.get("screen")?.clear();
-    $tempMapping.get("timeline")?.clear();
-};
-
-/**
- * @description 選択中のタブのエリア名
- *              Area name of the currently selected tab
- *
- * @type {Map}
- * @private
- */
-let $selectTabName: ShortcutKeyStringImpl = "screen";
-
-/**
- * @description 選択中のタブのエリア名を返却
- *              Returns the area name of the currently selected tab
- *
- * @return {string}
- * @method
- * @public
- */
-export const $getSelectTabName = (): ShortcutKeyStringImpl =>
-{
-    return $selectTabName;
-};
-
-/**
- * @description 選択中のタブのエリア名を更新
- *              Update the area name of the currently selected tab
- *
- * @params {string} tab_name
- * @return {void}
- * @method
- * @public
- */
-export const $setSelectTabName = (tab_name: ShortcutKeyStringImpl): void =>
-{
-    $selectTabName = tab_name;
+    $tempMapping.clear();
 };
 
 /**

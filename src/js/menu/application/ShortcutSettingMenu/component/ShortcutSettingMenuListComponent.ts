@@ -6,11 +6,12 @@ import type { ShortcutObjectImpl } from "@/interface/ShortcutObjectImpl";
  *              Return Element of shortcut list as string
  *
  * @params {object} shortcut_object
+ * @params {string} text
  * @return {string}
  * @method
  * @public
  */
-export const execute = (shortcut_object: ShortcutObjectImpl): string =>
+export const execute = (shortcut_object: ShortcutObjectImpl, text: string): string =>
 {
     return `
 <div class="${$SHORTCUT_SETTING_LIST_CLASS_NAME}">
@@ -18,7 +19,7 @@ export const execute = (shortcut_object: ShortcutObjectImpl): string =>
     <div class="description">
         <span class="language" data-text="${shortcut_object.description}">${shortcut_object.description}</span>
     </div>
-    <div class="command" data-default-key="${shortcut_object.key}" data-default-text="${shortcut_object.text}">${shortcut_object.text}</div>
+    <div class="command" data-default-key="${shortcut_object.key}" data-default-text="${shortcut_object.text}">${text}</div>
 </div>
 `;
 };

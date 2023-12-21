@@ -1,4 +1,4 @@
-import { ShortcutSaveObjectImpl } from "../../../../interface/ShortcutSaveObjectImpl";
+import { ShortcutViewObjectImpl } from "../../../../interface/ShortcutViewObjectImpl";
 import { execute } from "./UserShortcutObjectGetService";
 import { execute as userShortcutObjectUpdateService } from "./UserShortcutObjectUpdateService";
 
@@ -6,42 +6,41 @@ describe("UserShortcutObjectGetServiceTest", () =>
 {
     test("execute test", () =>
     {
-        let object: ShortcutSaveObjectImpl | null = execute();
+        let object: ShortcutViewObjectImpl[] | null = execute();
         expect(object).toBe(null);
 
-        userShortcutObjectUpdateService({
-            "screen": [{
-                "key": "screen_key",
-                "map": "screen_map",
+        userShortcutObjectUpdateService([
+            {
+                "defaultKey": "screen_key",
+                "customKey": "screen_map",
                 "text": "screen_text"
-            }],
-            "library": [{
-                "key": "library_key",
-                "map": "library_map",
+            },
+            {
+                "defaultKey": "library_key",
+                "customKey": "library_map",
                 "text": "library_text"
-            }],
-            "timeline": [{
-                "key": "timeline_key",
-                "map": "timeline_map",
+            },
+            {
+                "defaultKey": "timeline_key",
+                "customKey": "timeline_map",
                 "text": "timeline_text"
-            }],
-            "global": [{
-                "key": "global_key",
-                "map": "global_map",
+            },
+            {
+                "defaultKey": "global_key",
+                "customKey": "global_map",
                 "text": "global_text"
-            }]
-        });
+            }
+        ]);
 
         object = execute();
         if (!object) {
             throw new Error("save data not found");
         }
 
-        const keys: string[] = Object.keys(object);
-        expect(keys.length).toBe(4);
-        expect(keys[0]).toBe("screen");
-        expect(keys[1]).toBe("library");
-        expect(keys[2]).toBe("timeline");
-        expect(keys[3]).toBe("global");
+        expect(object.length).toBe(4);
+        expect(object[0].defaultKey).toBe("screen_key");
+        expect(object[1].defaultKey).toBe("library_key");
+        expect(object[2].defaultKey).toBe("timeline_key");
+        expect(object[3].defaultKey).toBe("global_key");
     });
 });

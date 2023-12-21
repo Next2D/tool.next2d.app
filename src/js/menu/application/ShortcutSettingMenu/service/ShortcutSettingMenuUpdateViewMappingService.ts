@@ -1,7 +1,7 @@
 import { ShortcutViewObjectImpl } from "@/interface/ShortcutViewObjectImpl";
 import {
-    $clearCommandMapping,
-    $getCommandMapping,
+    $clearTempMapping,
+    $getTempMapping,
     $getViewMapping
 } from "../ShortcutSettingMenuUtil";
 
@@ -15,15 +15,14 @@ import {
  */
 export const execute = (): void =>
 {
-    // 上書き前に一度初期化
-    $clearCommandMapping();
-
-    const commandMapping: Map<string, string> = $getCommandMapping();
+    // tempデータから新しい設定を追加
+    const tempMapping: Map<string, ShortcutViewObjectImpl> = $getTempMapping();
     const viewMapping: Map<string, ShortcutViewObjectImpl> = $getViewMapping();
-    for (const shortcutObject of viewMapping.values()) {
-        commandMapping.set(
-            shortcutObject.customKey,
-            shortcutObject.defaultKey
-        );
+
+    for (const [key, shortcutObject] of tempMapping) {
+        viewMapping.set(key, shortcutObject);
     }
+
+    // 初期化
+    $clearTempMapping();
 };

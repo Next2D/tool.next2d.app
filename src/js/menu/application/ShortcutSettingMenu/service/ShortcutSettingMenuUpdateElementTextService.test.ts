@@ -1,6 +1,5 @@
-import { ShortcutKeyStringImpl } from "../../../../interface/ShortcutKeyStringImpl";
 import { ShortcutViewObjectImpl } from "../../../../interface/ShortcutViewObjectImpl";
-import { $clearTempMapping, $getTempMapping } from "../ShortcutSettingMenuUtil";
+import { $clearViewMapping, $getViewMapping } from "../ShortcutSettingMenuUtil";
 import { execute } from "./ShortcutSettingMenuUpdateElementTextService";
 
 describe("ShortcutSettingMenuUpdateElementTextServiceTest", () =>
@@ -8,13 +7,9 @@ describe("ShortcutSettingMenuUpdateElementTextServiceTest", () =>
     test("execute test", () =>
     {
         // mock
-        const tempMapping: Map<ShortcutKeyStringImpl, Map<string, ShortcutViewObjectImpl>> = $getTempMapping();
-        const screenMap: Map<string, ShortcutViewObjectImpl> | undefined = tempMapping.get("screen");
-        if (!screenMap) {
-            throw new Error("not found screenMap");
-        }
+        const viewMapping: Map<string, ShortcutViewObjectImpl> = $getViewMapping();
 
-        screenMap.set("default_screen", {
+        viewMapping.set("default_screen", {
             "customKey": "custom_screen",
             "defaultKey": "default_screen",
             "text": "screen_text"
@@ -38,7 +33,7 @@ describe("ShortcutSettingMenuUpdateElementTextServiceTest", () =>
         expect(command.textContent).toBe("screen_text");
 
         // テスト終了したので初期化
-        $clearTempMapping();
+        $clearViewMapping();
 
         screen.remove();
     });

@@ -1,8 +1,12 @@
-import type { ShortcutKeyStringImpl } from "@/interface/ShortcutKeyStringImpl";
-import type { ShortcutSaveObjectImpl } from "@/interface/ShortcutSaveObjectImpl";
 import type { ShortcutViewObjectImpl } from "@/interface/ShortcutViewObjectImpl";
 import { execute as userShortcutObjectGetService } from "@/user/application/Shortcut/service/UserShortcutObjectGetService";
-import { $getTempMapping } from "../ShortcutSettingMenuUtil";
+import {
+    $clearCommandMapping,
+    $clearTempMapping,
+    $clearViewMapping,
+    $getCommandMapping,
+    $getViewMapping
+} from "../ShortcutSettingMenuUtil";
 
 /**
  * @description LocalStorageの個別設定情報をtempマッピングにセット
@@ -14,17 +18,25 @@ import { $getTempMapping } from "../ShortcutSettingMenuUtil";
  */
 export const execute = (): void =>
 {
-    const userShortcutObject: ShortcutSaveObjectImpl | null = userShortcutObjectGetService();
-    if (!userShortcutObject) {
+    const userShortcutObjects: ShortcutViewObjectImpl[] | null = userShortcutObjectGetService();
+    if (!userShortcutObjects) {
         return ;
     }
 
-    const tempMapping: Map<ShortcutKeyStringImpl, Map<string, ShortcutViewObjectImpl>> = $getTempMapping();
-    for (const [areaName, mapping] of tempMapping) {
-        const shortcutObjects: ShortcutViewObjectImpl[] = userShortcutObject[areaName];
-        for (let idx: number = 0; idx < shortcutObjects.length; ++idx) {
-            const shortcutObject: ShortcutViewObjectImpl = shortcutObjects[idx];
-            mapping.set(shortcutObject.defaultKey, shortcutObject);
-        }
+    // 初期化
+    $clearCommandMapping();
+    $clearViewMapping();
+    $clearTempMapping();
+
+    const commandMapping: Map<string, string> = $getCommandMapping();
+    const viewMapping: Map<string, ShortcutViewObjectImpl> = $getViewMapping();
+    for (let idx: number = 0; idx < userShortcutObjects.length; ++idx) {
+        const shortcutObject: ShortcutViewObjectImpl = userShortcutObjects[idx];
+
+        // 表示マッピングをセット
+        viewMapping.set(shortcutObject.defaultKey, shortcutObject);
+
+        // コマンドのマッピングをセット
+        commandMapping.set(shortcutObject.customKey, shortcutObject.defaultKey);
     }
 };

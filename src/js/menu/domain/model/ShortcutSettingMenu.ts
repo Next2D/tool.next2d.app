@@ -48,10 +48,12 @@ export class ShortcutSettingMenu extends BaseMenu
      */
     show (): void
     {
-        super.show();
+        if (this.state === "hide") {
+            // ショートカットの表示時のユースケース
+            shortcutSettingShowUseCase();
+        }
 
-        // ショートカットの表示時のユースケース
-        shortcutSettingShowUseCase();
+        super.show();
     }
 
     /**
@@ -64,10 +66,12 @@ export class ShortcutSettingMenu extends BaseMenu
      */
     hide (): void
     {
-        super.hide();
+        if (this.state === "show") {
+            // ショートカットの非表示時のユースケース
+            shortcutSettingHideUseCase();
+        }
 
-        // ショートカットの非表示時のユースケース
-        shortcutSettingHideUseCase();
+        super.hide();
     }
 
     /**

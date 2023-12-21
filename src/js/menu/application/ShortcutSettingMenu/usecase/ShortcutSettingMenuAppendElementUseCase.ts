@@ -8,8 +8,7 @@ import {
     $SHORTCUT_TIMELINE_LIST,
     $SHORTCUT_TIMELINE_LIST_ID
 } from "@/config/ShortcutConfig";
-import { $getTempMapping } from "../ShortcutSettingMenuUtil";
-import type { ShortcutKeyStringImpl } from "@/interface/ShortcutKeyStringImpl";
+import { $getViewMapping } from "../ShortcutSettingMenuUtil";
 import type { ShortcutViewObjectImpl } from "@/interface/ShortcutViewObjectImpl";
 
 /**
@@ -27,12 +26,7 @@ export const execute = (): void =>
     areas.set($SHORTCUT_TIMELINE_LIST_ID, $SHORTCUT_TIMELINE_LIST);
     areas.set($SHORTCUT_LIBRARY_LIST_ID, $SHORTCUT_LIBRARY_LIST);
 
-    const areaNames: ShortcutKeyStringImpl[] = [
-        "screen",
-        "timeline",
-        "library"
-    ];
-    const tempMapping: Map<ShortcutKeyStringImpl, Map<string, ShortcutViewObjectImpl>> = $getTempMapping();
+    const viewMapping: Map<string, ShortcutViewObjectImpl> = $getViewMapping();
     for (const [elementId, shortcutObjects] of areas) {
 
         const parent: HTMLElement | null = document.getElementById(elementId);
@@ -40,23 +34,21 @@ export const execute = (): void =>
             continue;
         }
 
-        const areaName: ShortcutKeyStringImpl = areaNames.shift() as NonNullable<ShortcutKeyStringImpl>;
-        if (!tempMapping.has(areaName)) {
-            continue;
-        }
-
-        const mapping: Map<string, ShortcutViewObjectImpl> | undefined = tempMapping.get(areaName);
-        if (!mapping) {
-            continue;
-        }
-
         for (let idx: number = 0; idx < shortcutObjects.length; ++idx) {
 
             const shortcutObject: ShortcutObjectImpl = shortcutObjects[idx];
 
+            let text = shortcutObject.text;
+            if (viewMapping.size && viewMapping.has(shortcutObject.key)) {
+                const viewObject: ShortcutViewObjectImpl | undefined = viewMapping.get(shortcutObject.key);
+                if (viewObject) {
+                    text = viewObject.text;
+                }
+            }
+
             parent.insertAdjacentHTML(
                 "beforeend",
-                shortcutSettingMenuListComponent(shortcutObject)
+                shortcutSettingMenuListComponent(shortcutObject, text)
             );
         }
     }

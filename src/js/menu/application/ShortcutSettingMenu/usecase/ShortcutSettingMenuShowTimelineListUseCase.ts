@@ -1,6 +1,5 @@
 import { execute as shortcutSettingMenuResetListStyleUseCase } from "./ShortcutSettingMenuResetListStyleUseCase";
 import { execute as shortcutSettingMenuShowTimelineListService } from "../service/ShortcutSettingMenuShowTimelineListService";
-import { $setSelectTabName } from "../ShortcutSettingMenuUtil";
 
 /**
  * @description ショートカットリストのタイムライン表示時の処理
@@ -12,9 +11,6 @@ import { $setSelectTabName } from "../ShortcutSettingMenuUtil";
  */
 export const execute = (): void =>
 {
-    // タブの選択状態をセット
-    $setSelectTabName("timeline");
-
     // 選択状態を初期化
     shortcutSettingMenuResetListStyleUseCase();
 

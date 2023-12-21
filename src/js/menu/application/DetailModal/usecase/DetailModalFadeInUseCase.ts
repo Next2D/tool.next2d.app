@@ -1,6 +1,5 @@
 import { $DETAIL_MODAL_NAME } from "@/config/MenuConfig";
 import type { MenuImpl } from "@/interface/MenuImpl";
-import type { ShortcutKeyStringImpl } from "@/interface/ShortcutKeyStringImpl";
 import type { ShortcutViewObjectImpl } from "@/interface/ShortcutViewObjectImpl";
 import type { UserSettingObjectImpl } from "@/interface/UserSettingObjectImpl";
 import { $replace } from "@/language/application/LanguageUtil";
@@ -8,7 +7,7 @@ import { execute as userSettingObjectGetService } from "@/user/application/Setti
 import { execute as detailModalHideService } from "../service/DetailModalHideService";
 import type { DetailModal } from "@/menu/domain/model/DetailModal";
 import { $getMenu } from "@/menu/application/MenuUtil";
-import { $getTempMapping } from "@/menu/application/ShortcutSettingMenu/ShortcutSettingMenuUtil";
+import { $getViewMapping } from "@/menu/application/ShortcutSettingMenu/ShortcutSettingMenuUtil";
 
 /**
  * @description ショートカットメニューのフェードインのユースケース
@@ -47,16 +46,12 @@ export const execute = (event: PointerEvent): void =>
 
         let shortcutText: string | undefined = target.dataset.shortcutText;
 
-        const tempMapping: Map<ShortcutKeyStringImpl, Map<string, ShortcutViewObjectImpl>> = $getTempMapping();
+        const viewMapping: Map<string, ShortcutViewObjectImpl> = $getViewMapping();
 
-        const areaName: ShortcutKeyStringImpl | undefined = target.dataset.area as ShortcutKeyStringImpl;
-        if (areaName && tempMapping.has(areaName)) {
-            const mapping: Map<string, ShortcutViewObjectImpl> | undefined = tempMapping.get(areaName);
-            if (mapping && mapping.has(shortcutKey)) {
-                const shortcutObject: ShortcutViewObjectImpl | undefined = mapping.get(shortcutKey) as ShortcutViewObjectImpl;
-                if (shortcutObject) {
-                    shortcutText = shortcutObject.text;
-                }
+        if (viewMapping.size && viewMapping.has(shortcutKey)) {
+            const shortcutObject: ShortcutViewObjectImpl | undefined = viewMapping.get(shortcutKey) as ShortcutViewObjectImpl;
+            if (shortcutObject) {
+                shortcutText = shortcutObject.text;
             }
         }
 

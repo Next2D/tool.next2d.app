@@ -1,6 +1,10 @@
 import { execute as userShortcutObjectRemoveService } from "@/user/application/Shortcut/service/UserShortcutObjectRemoveService";
 import { execute as shortcutSettingMenuUpdateElementTextService } from "../service/ShortcutSettingMenuUpdateElementTextService";
-import { $clearTempMapping } from "../ShortcutSettingMenuUtil";
+import {
+    $clearTempMapping,
+    $clearViewMapping,
+    $clearCommandMapping
+} from "../ShortcutSettingMenuUtil";
 
 /**
  * @description ショートカットリストを初期設定に戻す
@@ -17,9 +21,8 @@ export const execute = (): void =>
 
     // tempデータを初期化
     $clearTempMapping();
-
-    // コマンドマップを初期化
-    $clearTempMapping();
+    $clearViewMapping();
+    $clearCommandMapping();
 
     // 表示を更新
     shortcutSettingMenuUpdateElementTextService();

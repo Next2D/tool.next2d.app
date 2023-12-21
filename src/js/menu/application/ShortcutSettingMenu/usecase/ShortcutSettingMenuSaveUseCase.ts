@@ -1,9 +1,8 @@
-import { $getTempMapping } from "../ShortcutSettingMenuUtil";
 import { execute as userShortcutObjectUpdateService } from "@/user/application/Shortcut/service/UserShortcutObjectUpdateService";
 import { execute as shortcutSettingMenuUpdateCommandMappingService } from "../service/ShortcutSettingMenuUpdateCommandMappingService";
-import type { ShortcutSaveObjectImpl } from "@/interface/ShortcutSaveObjectImpl";
-import type { ShortcutKeyStringImpl } from "@/interface/ShortcutKeyStringImpl";
+import { execute as shortcutSettingMenuUpdateViewMappingService } from "../service/ShortcutSettingMenuUpdateViewMappingService";
 import type { ShortcutViewObjectImpl } from "@/interface/ShortcutViewObjectImpl";
+import { $getViewMapping } from "../ShortcutSettingMenuUtil";
 
 /**
  * @description tempに保存した個別のショートカット設定をLocalStorageに保存
@@ -15,25 +14,19 @@ import type { ShortcutViewObjectImpl } from "@/interface/ShortcutViewObjectImpl"
  */
 export const execute = (): void =>
 {
-    // tempデータから新しい設定を追加
-    const tempMapping: Map<ShortcutKeyStringImpl, Map<string, ShortcutViewObjectImpl>> = $getTempMapping();
+    // tempマッピングのデータをviewマッピングに上書き
+    shortcutSettingMenuUpdateViewMappingService();
 
-    const object: ShortcutSaveObjectImpl = {
-        "global": [],
-        "library": [],
-        "screen": [],
-        "timeline": []
-    };
+    // コマンドマップを更新
+    shortcutSettingMenuUpdateCommandMappingService();
 
-    for (const [area, shortcutMapping] of tempMapping) {
-        for (const shortcutObject of shortcutMapping.values()) {
-            object[area].push(shortcutObject);
-        }
+    // LocalStorage用の配列を生成
+    const viewMapping: Map<string, ShortcutViewObjectImpl> = $getViewMapping();
+    const object: ShortcutViewObjectImpl[] = [];
+    for (const shortcutObject of viewMapping.values()) {
+        object.push(shortcutObject);
     }
 
     // LocalStorageのデータを上書き
     userShortcutObjectUpdateService(object);
-
-    // コマンドマップを更新
-    shortcutSettingMenuUpdateCommandMappingService();
 };
