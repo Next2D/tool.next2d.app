@@ -37,7 +37,7 @@ export const execute = (): void =>
 
     // ユーザー設定
     $setShortcut(
-        $generateShortcutKey("s"),
+        $generateShortcutKey("u"),
         userSettingMenuShowService
     );
 };

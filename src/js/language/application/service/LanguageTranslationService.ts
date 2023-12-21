@@ -1,5 +1,4 @@
 import { $LANGUAGE_ELEMENTS_CLASS_NAME } from "@/config/LanguageConfig";
-import type { ShortcutKeyStringImpl } from "@/interface/ShortcutKeyStringImpl";
 import type { ShortcutViewObjectImpl } from "@/interface/ShortcutViewObjectImpl";
 import { $getViewMapping } from "@/menu/application/ShortcutSettingMenu/ShortcutSettingMenuUtil";
 import { $getMapping } from "@/language/application/LanguageUtil";
@@ -41,11 +40,6 @@ export const execute = async (target_element: HTMLElement | Document): Promise<v
         // ショートカットの設定があれば文字列に追加
         const shortcutKey: string | undefined = element.dataset.shortcutKey;
         if (shortcutKey) {
-
-            const areaName: ShortcutKeyStringImpl | undefined = element.dataset.area as ShortcutKeyStringImpl;
-            if (!areaName) {
-                continue;
-            }
 
             let shortcutText: string = element.dataset.shortcutText as NonNullable<string>;
             if (viewMapping.size && viewMapping.has(shortcutKey)) {

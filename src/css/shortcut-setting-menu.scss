@@ -327,7 +327,7 @@
         background-position : center center;
     }
     
-    .screen-menu-bottom
+    .screen-back-one
     {
         background-image    : url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24"><path fill="whitesmoke" d="M14 2v11h2.51l-4.51 5.01-4.509-5.01h2.509v-11h4zm2-2h-8v11h-5l9 10 9-10h-5v-11zm1 22h-10v2h10v-2z"/></svg>');
         background-repeat   : no-repeat;
@@ -465,28 +465,7 @@
 }
 
 #shortcut-list-timeline
-{
-    .timeline-layer-normal
-    {
-        background-image    : url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24"><path fill="darkgray" d="M22 6v16h-16v-16h16zm2-2h-20v20h20v-20zm-24-4v20h2v-18h18v-2h-20z"/></svg>');
-        background-repeat   : no-repeat;
-        background-position : center center;
-    }
-    
-    .timeline-layer-mask
-    {
-        background-image    : url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24"><path fill="darkgray" d="M22 2v20h-20v-20h20zm2-2h-24v24h24v-24zm-6 10v8h-8v-8h8zm2-2h-12v12h12v-12zm-16-4v12h2v-10h10v-2h-12z"/></svg>');
-        background-repeat   : no-repeat;
-        background-position : center center;
-    }
-    
-    .timeline-layer-guide
-    {
-        background-image    : url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24"><path fill="darkgray" d="M12 0c-4.198 0-8 3.403-8 7.602 0 4.198 3.469 9.21 8 16.398 4.531-7.188 8-12.2 8-16.398 0-4.199-3.801-7.602-8-7.602zm0 14c-3.314 0-6-2.686-6-6s2.686-6 6-6 6 2.686 6 6-2.686 6-6 6z"/></svg>');
-        background-repeat   : no-repeat;
-        background-position : center center;
-    }
-    
+{    
     .timeline-layer-add
     {
         background-image    : url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24"><path fill="darkgray" d="M22 6v16h-16v-16h16zm2-2h-20v20h20v-20zm-24-4v20h2v-18h18v-2h-20zm18 13h-3v-3h-2v3h-3v2h3v3h2v-3h3v-2z"/></svg>');

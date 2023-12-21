@@ -12,12 +12,12 @@ import { execute as shortcutSettingMenuLoadObjectUseCase } from "./ShortcutSetti
  */
 export const execute = (): void =>
 {
-    // ショートカットのElementを登録
-    shortcutSettingMenuAppendElementUseCase();
-
     // 各ボタンのイベント登録
     shortcutSettingMenuInitializeRegisterEventUseCase();
 
     // LocalStorageからデータを読み込む
     shortcutSettingMenuLoadObjectUseCase();
+
+    // コマンドのテキストに置き換える
+    // shortcutSettingMenuAppendElementUseCase();
 };
