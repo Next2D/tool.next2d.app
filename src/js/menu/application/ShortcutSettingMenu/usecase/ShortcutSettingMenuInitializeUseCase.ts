@@ -1,6 +1,6 @@
 import { execute as shortcutSettingMenuInitializeRegisterEventUseCase } from "./ShortcutSettingMenuInitializeRegisterEventUseCase";
-import { execute as shortcutSettingMenuAppendElementUseCase } from "./ShortcutSettingMenuAppendElementUseCase";
 import { execute as shortcutSettingMenuLoadObjectUseCase } from "./ShortcutSettingMenuLoadObjectUseCase";
+import { execute as shortcutSettingMenuUpdateElementTextService } from "../service/ShortcutSettingMenuUpdateElementTextService";
 
 /**
  * @description ショートカットメニューの初期起動ユースケース
@@ -19,5 +19,5 @@ export const execute = (): void =>
     shortcutSettingMenuLoadObjectUseCase();
 
     // コマンドのテキストに置き換える
-    // shortcutSettingMenuAppendElementUseCase();
+    shortcutSettingMenuUpdateElementTextService();
 };

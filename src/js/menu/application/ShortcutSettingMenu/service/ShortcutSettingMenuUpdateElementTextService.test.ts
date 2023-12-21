@@ -1,5 +1,5 @@
 import { ShortcutViewObjectImpl } from "../../../../interface/ShortcutViewObjectImpl";
-import { $clearViewMapping, $getViewMapping } from "../ShortcutSettingMenuUtil";
+import { $getViewMapping } from "../ShortcutSettingMenuUtil";
 import { execute } from "./ShortcutSettingMenuUpdateElementTextService";
 
 describe("ShortcutSettingMenuUpdateElementTextServiceTest", () =>
@@ -12,29 +12,19 @@ describe("ShortcutSettingMenuUpdateElementTextServiceTest", () =>
         viewMapping.set("default_screen", {
             "customKey": "custom_screen",
             "defaultKey": "default_screen",
-            "text": "screen_text"
+            "text": "test_text"
         });
 
-        const screen = document.createElement("div");
-        screen.id = "shortcut-list-screen";
-        document.body.appendChild(screen);
-
         const div = document.createElement("div");
-        screen.appendChild(div);
-        const command = document.createElement("div");
-        div.appendChild(command);
+        div.id = "shortcut-default_screen";
+        document.body.appendChild(div);
 
-        command.setAttribute("class", "command");
-        command.dataset.defaultKey = "default_screen";
-        command.textContent = "test";
-        expect(command.textContent).toBe("test");
+        div.textContent = "test";
+        expect(div.textContent).toBe("test");
 
         execute();
-        expect(command.textContent).toBe("screen_text");
+        expect(div.textContent).toBe("test_text");
 
-        // テスト終了したので初期化
-        $clearViewMapping();
-
-        screen.remove();
+        div.remove();
     });
 });

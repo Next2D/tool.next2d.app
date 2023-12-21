@@ -1,5 +1,5 @@
 import { execute as userShortcutObjectRemoveService } from "@/user/application/Shortcut/service/UserShortcutObjectRemoveService";
-import { execute as shortcutSettingMenuUpdateElementTextService } from "../service/ShortcutSettingMenuUpdateElementTextService";
+import { execute as shortcutSettingMenuResetElementTextService } from "../service/ShortcutSettingMenuResetElementTextService";
 import {
     $clearTempMapping,
     $clearViewMapping,
@@ -19,11 +19,11 @@ export const execute = (): void =>
     // LocalStorageのデータを削除
     userShortcutObjectRemoveService();
 
-    // tempデータを初期化
+    // 表示を更新
+    shortcutSettingMenuResetElementTextService();
+
+    // データを初期化
     $clearTempMapping();
     $clearViewMapping();
     $clearCommandMapping();
-
-    // 表示を更新
-    shortcutSettingMenuUpdateElementTextService();
 };

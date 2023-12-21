@@ -1,5 +1,4 @@
 import { execute as shortcutSettingMenuRegisterKeyboardEventUseCase } from "./ShortcutSettingMenuRegisterKeyboardEventUseCase";
-import { execute as shortcutSettingMenuUpdateElementTextService } from "../service/ShortcutSettingMenuUpdateElementTextService";
 import {
     $clearTempMapping,
     $updateShortcutSetting
@@ -17,9 +16,6 @@ export const execute = (): void =>
 {
     // 既存のショートカットが起動しないようにフラグをセット
     $updateShortcutSetting(true);
-
-    // LocalStorageのデータがあれば表示を更新
-    shortcutSettingMenuUpdateElementTextService();
 
     // キーボードイベントを登録
     shortcutSettingMenuRegisterKeyboardEventUseCase();
