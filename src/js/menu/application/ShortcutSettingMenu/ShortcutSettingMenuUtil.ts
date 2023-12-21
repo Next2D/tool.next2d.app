@@ -1,4 +1,3 @@
-import type { ShortcutKeyStringImpl } from "@/interface/ShortcutKeyStringImpl";
 import type { ShortcutViewObjectImpl } from "@/interface/ShortcutViewObjectImpl";
 
 /**
