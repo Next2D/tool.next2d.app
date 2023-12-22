@@ -1,0 +1,17 @@
+{
+    "name": "example-product-name",
+    "version": "0.0.1",
+    "description": "Your Production Description",
+    "main": "index.js",
+    "config": {
+        "forge": {
+            "packagerConfig": {
+                "icon": "./electron/icons/icon.icns",
+                "asar": true
+            }
+        }
+    },
+    "devDependencies": {
+        "electron": "^27.0.4"
+    }
+}
