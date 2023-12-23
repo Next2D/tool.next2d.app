@@ -2,6 +2,7 @@ import { execute as timelineFrameUpdateFrameElementService } from "@/timeline/ap
 import { execute as timelineMarkerMovePositionService } from "@/timeline/application/TimelineMarker/service/TimelineMarkerMovePositionService";
 import { execute as timelineLayerFrameClearSelectedElementService } from "../service/TimelineLayerFrameClearSelectedElementService";
 import { execute as timelineLayerFrameActiveElementService } from "../service/TimelineLayerFrameActiveElementService";
+import { execute as timelineLayerClearSelectedLayerService } from "@/timeline/application/TimelineLayer/service/TimelineLayerClearSelectedLayerService";
 
 /**
  * @description 通常のフレームエリア選択の処理関数（Alt、Shiftなし）
@@ -16,6 +17,10 @@ export const execute = (element: HTMLElement): void =>
 {
     // 選択中のフレームElementを非アクティブにする
     timelineLayerFrameClearSelectedElementService();
+
+    // 選択中のレイヤーElementを非アクティブにする
+    // fixed logic
+    timelineLayerClearSelectedLayerService();
 
     // フレームElementをアクティブ表示にする
     timelineLayerFrameActiveElementService(element);

@@ -2,6 +2,7 @@ import { execute as timelineLayerFrameClearSelectedElementService } from "@/time
 import { timelineFrame } from "@/timeline/domain/model/TimelineFrame";
 import { $getLeftFrame } from "../../TimelineUtil";
 import { execute as timelineLayerFrameActiveElementService } from "@/timeline/application/TimelineLayerFrame/service/TimelineLayerFrameActiveElementService";
+import { execute as timelineLayerClearSelectedLayerService } from "@/timeline/application/TimelineLayer/service/TimelineLayerClearSelectedLayerService";
 
 /**
  * @description 通常のレイヤーコントローラーエリア選択の処理関数（Alt、Shiftなし）
@@ -30,6 +31,10 @@ export const execute = (layer_id: number): void =>
 
     // 選択中のフレームElementを非アクティブにする
     timelineLayerFrameClearSelectedElementService();
+
+    // 選択中のレイヤーElementを非アクティブにする
+    // fixed logic
+    timelineLayerClearSelectedLayerService();
 
     // 対象のフレームElementをアクティブ表示にする
     timelineLayerFrameActiveElementService(frameElement);

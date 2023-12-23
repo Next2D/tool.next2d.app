@@ -11,6 +11,15 @@ import { execute as timelineLayerControllerNameTextActiveStyleService } from "..
 let wait: boolean = false;
 
 /**
+ * @description ダブルタップの対象となるレイヤーID
+ *              Layer ID to be double-tapped
+ *
+ * @type {number}
+ * @private
+ */
+let layerId: number = -1;
+
+/**
  * @description Layerの名前変更のイベント実行関数
  *              Event execution function for Layer renaming
  *
@@ -26,10 +35,16 @@ export const execute = (event: PointerEvent): void =>
         return ;
     }
 
+    const element: HTMLElement | null = event.target as HTMLElement;
+    if (!element) {
+        return ;
+    }
+
     // メニュー表示があれば全て非表示にする
     $allHideMenu();
 
-    if (!wait) {
+    const currentLayerId = parseInt(element.dataset.layerId as NonNullable<string>);
+    if (!wait || currentLayerId !== layerId) {
 
         // ダブルクリックを待機
         wait = true;
@@ -40,6 +55,9 @@ export const execute = (event: PointerEvent): void =>
             wait = false;
         }, 300);
 
+        // 選択中のレイヤーIDをセット
+        layerId = parseInt(element.dataset.layerId as NonNullable<string>);
+
     } else {
 
         wait = false;
@@ -47,14 +65,7 @@ export const execute = (event: PointerEvent): void =>
         // 他のイベントを中止
         event.preventDefault();
 
-        const element: HTMLElement | null = event.target as HTMLElement;
-        if (!element) {
-            return ;
-        }
-
         // ダブルクリック処理
-        timelineLayerControllerNameTextActiveStyleService(
-            parseInt(element.dataset.layerId as string)
-        );
+        timelineLayerControllerNameTextActiveStyleService(currentLayerId);
     }
 };

@@ -1,7 +1,7 @@
 import { EventType } from "@/tool/domain/event/EventType";
 import { timelineLayer } from "@/timeline/domain/model/TimelineLayer";
 import { execute as timelineLayerControllerComponent } from "../../TimelineLayerController/component/TimelineLayerControllerComponent";
-import { execute as timelineLayerMouseDownEventUseCase } from "./TimelineLayerMouseDownEventUseCase";
+import { execute as timelineLayerMouseDownEventService } from "../service/TimelineLayerMouseDownEventService";
 import { execute as timelineLayerControllerRegisterEventUseCase } from "../../TimelineLayerController/usecase/TimelineLayerControllerRegisterEventUseCase";
 import { execute as timelineLayerFrameRegisterEventUseCase } from "../../TimelineLayerFrame/usecase/TimelineLayerFrameRegisterEventUseCase";
 import { execute as timelineLayerFrameCreateContentComponentService } from "@/timeline/application/TimelineLayerFrame/service/TimelineLayerFrameCreateContentComponentService";
@@ -35,7 +35,7 @@ export const execute = (
 
     // レイヤー全体のマウスダウンイベント
     element.addEventListener(EventType.MOUSE_DOWN,
-        timelineLayerMouseDownEventUseCase
+        timelineLayerMouseDownEventService
     );
 
     // レイヤーのコントローラーのイベント登録

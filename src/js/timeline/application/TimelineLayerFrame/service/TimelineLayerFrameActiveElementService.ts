@@ -14,13 +14,15 @@ export const execute = (element: HTMLElement): void =>
     const layerId = parseInt(element.dataset.layerId as NonNullable<string>);
 
     // レイヤーIDで検索して配列がない場合は初期設定を実行
-    const targetFrames = timelineLayer.targetFrames;
-    if (!targetFrames.has(layerId)) {
-        targetFrames.set(layerId, []);
+    const targetLayers = timelineLayer.targetLayers;
+    if (!targetLayers.has(layerId)) {
+        targetLayers.set(layerId, []);
     }
 
-    const elements = targetFrames.get(layerId) as NonNullable<Array<HTMLElement>>;
-    elements.push(element);
+    const frames = targetLayers.get(layerId) as NonNullable<Array<number>>;
+
+    const frame = parseInt(element.dataset.frame as NonNullable<string>);
+    frames.push(frame);
 
     // styleを更新
     element.classList.add("frame-active");

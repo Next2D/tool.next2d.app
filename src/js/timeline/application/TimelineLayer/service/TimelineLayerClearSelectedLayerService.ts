@@ -12,10 +12,19 @@ export const execute = (): void =>
 {
     // 選択中のレイヤーElementを非アクティブにする
     const targetLayers = timelineLayer.targetLayers;
-    for (const element of targetLayers.values()) {
+    for (const layerId of targetLayers.keys()) {
+
+        const element: HTMLElement | null = document
+            .getElementById(`layer-id-${layerId}`);
+
+        if (!element) {
+            continue;
+        }
+
+        // 非アクティブに更新
         element.classList.remove("active");
     }
 
-    // マップを初期化
+    // 初期化
     targetLayers.clear();
 };

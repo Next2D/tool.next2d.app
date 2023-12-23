@@ -1,4 +1,5 @@
 import { timelineLayer } from "@/timeline/domain/model/TimelineLayer";
+import { $getLeftFrame } from "../../TimelineUtil";
 
 /**
  * @description 選択中のフレームElementを非アクティブに更新してマップデータを初期化
@@ -10,14 +11,26 @@ import { timelineLayer } from "@/timeline/domain/model/TimelineLayer";
  */
 export const execute = (): void =>
 {
-    const targetFrames = timelineLayer.targetFrames;
-    for (const elements of targetFrames.values()) {
-        for (let idx: number = 0; idx < elements.length; ++idx) {
-            const element = elements[idx];
-            element.classList.remove("frame-active");
+    const leftFrame = $getLeftFrame();
+    for (const [layerId, frames] of timelineLayer.targetLayers) {
+
+        const element: HTMLElement | null = document
+            .getElementById(`timeline-frame-controller-${layerId}`);
+
+        if (!element) {
+            continue;
+        }
+
+        const children = element.children;
+        for (let idx: number = 0; idx < frames.length; ++idx) {
+            const index = frames[idx] - leftFrame;
+
+            const node: HTMLElement | undefined = children[index] as HTMLElement;
+            if (!node) {
+                continue;
+            }
+
+            node.classList.remove("frame-active");
         }
     }
-
-    // 初期化
-    targetFrames.clear();
 };

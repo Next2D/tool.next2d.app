@@ -1,4 +1,6 @@
 import { execute as timelineToolLayerAddUseCase } from "@/timeline/application/TimelineTool/application/LayerAdd/usecase/TimelineToolLayerAddUseCase";
+import { execute as timelineLayerArrowDownUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerArrowDownUseCase";
+import { execute as timelineLayerArrowUpUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerArrowUpUseCase";
 import {
     $generateShortcutKey,
     $setShortcut
@@ -24,4 +26,12 @@ export const execute = (): void =>
         timelineToolLayerAddUseCase
     );
 
+    $setShortcut(
+        $generateShortcutKey("ArrowUp", { "ctrl": true }),
+        timelineLayerArrowUpUseCase
+    );
+    $setShortcut(
+        $generateShortcutKey("ArrowDown", { "ctrl": true }),
+        timelineLayerArrowDownUseCase
+    );
 };

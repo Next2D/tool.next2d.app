@@ -1,5 +1,3 @@
-import { execute as timelineLayerNormalSelectElementUseCase } from "./TimelineLayerNormalSelectElementUseCase";
-
 /**
  * @description レイヤーのコントローラーエリアのマウスダウン処理関数
  *              Mouse down processing function for the controller area of a layer
@@ -19,16 +17,6 @@ export const execute = (event: PointerEvent): void =>
         return ;
     }
 
-    switch (true) {
-
-        case event.altKey:
-            break;
-
-        case event.shiftKey:
-            break;
-
-        default:
-            timelineLayerNormalSelectElementUseCase(element);
-            break;
-    }
+    // フレームをアクティブに更新
+    element.classList.add("active");
 };
