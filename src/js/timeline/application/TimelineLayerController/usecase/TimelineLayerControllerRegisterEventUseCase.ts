@@ -6,6 +6,7 @@ import { execute as timelineLayerControllerNameTextMouseDownEventUseCase } from 
 import { execute as timelineLayerControllerNameTextInactiveStyleService } from "../service/TimelineLayerControllerNameTextInactiveStyleService";
 import { execute as timelineLayerControllerNameTextKeyPressEventService } from "../service/TimelineLayerControllerNameTextKeyPressEventService";
 import { execute as timelineLayerControllerLayerIconMouseDownEventUseCase } from "./TimelineLayerControllerLayerIconMouseDownEventUseCase";
+import { execute as timelineLayerControllerMouseDownEventUseCase } from "./TimelineLayerControllerMouseDownEventUseCase";
 import { EventType } from "@/tool/domain/event/EventType";
 
 /**
@@ -22,6 +23,11 @@ export const execute = (element: HTMLElement): void =>
     // 右クリックイベント登録
     element.addEventListener("contextmenu",
         timelineLayerControllerMenuShowService
+    );
+
+    // マウスダウンイベント
+    element.addEventListener(EventType.MOUSE_DOWN,
+        timelineLayerControllerMouseDownEventUseCase
     );
 
     const layerId: string = element.dataset.layerId as string;

@@ -12,6 +12,7 @@ class TimelineLayer
     private readonly _$elements: HTMLElement[];
     private _$clientHeight: number;
     private _$targetLayers: Map<number, HTMLElement>;
+    private _$targetFrames: Map<number, HTMLElement[]>;
 
     /**
      * @constructor
@@ -37,6 +38,12 @@ class TimelineLayer
          * @private
          */
         this._$targetLayers = new Map();
+
+        /**
+         * @type {Map}
+         * @private
+         */
+        this._$targetFrames = new Map();
     }
 
     /**
@@ -82,8 +89,8 @@ class TimelineLayer
     }
 
     /**
-     * @description 選択したレイヤーを格納したマップデータを返却
-     *              Returns map data containing selected layers
+     * @description 選択したレイヤーElementを格納したマップデータを返却
+     *              Returns map data containing the selected Layer Element
      *
      * @member {Map}
      * @public
@@ -91,6 +98,18 @@ class TimelineLayer
     get targetLayers (): Map<number, HTMLElement>
     {
         return this._$targetLayers;
+    }
+
+    /**
+     * @description 選択したフレームElementを格納したマップデータを返却
+     *              Returns map data storing the selected frame Element
+     *
+     * @member {Map}
+     * @public
+     */
+    get targetFrames (): Map<number, HTMLElement[]>
+    {
+        return this._$targetFrames;
     }
 }
 

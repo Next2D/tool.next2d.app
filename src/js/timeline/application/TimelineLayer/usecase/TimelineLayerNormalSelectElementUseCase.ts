@@ -1,3 +1,4 @@
+import { execute as timelineLayerClearSelectedLayerService } from "../service/TimelineLayerClearSelectedLayerService";
 import { timelineLayer } from "@/timeline/domain/model/TimelineLayer";
 
 /**
@@ -11,7 +12,10 @@ import { timelineLayer } from "@/timeline/domain/model/TimelineLayer";
 export const execute = (element: HTMLElement): void =>
 {
     // 選択中のレイヤーElementを非アクティブにする
-    console.log(timelineLayer);
+    timelineLayerClearSelectedLayerService();
+
+    const layerId = parseInt(element.dataset.layerId as NonNullable<string>);
+    timelineLayer.targetLayers.set(layerId, element);
 
     // フレームをアクティブに更新
     element.classList.add("active");

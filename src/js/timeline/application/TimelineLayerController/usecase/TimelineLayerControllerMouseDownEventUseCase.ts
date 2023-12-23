@@ -1,4 +1,4 @@
-import { execute as timelineLayerNormalSelectElementUseCase } from "./TimelineLayerNormalSelectElementUseCase";
+import { execute as timelineLayerControllerNormalSelectUseCase } from "./TimelineLayerControllerNormalSelectUseCase";
 
 /**
  * @description レイヤーのコントローラーエリアのマウスダウン処理関数
@@ -11,24 +11,22 @@ import { execute as timelineLayerNormalSelectElementUseCase } from "./TimelineLa
  */
 export const execute = (event: PointerEvent): void =>
 {
-    // 親のイベントを中止
-    event.stopPropagation();
-
-    const element: HTMLElement | null = event.currentTarget as HTMLElement;
-    if (!element) {
+    const targetElement: HTMLElement | null = event.currentTarget as HTMLElement;
+    if (!targetElement) {
         return ;
     }
+
+    const layerId = parseInt(targetElement.dataset.layerId as NonNullable<string>);
 
     switch (true) {
 
         case event.altKey:
-            break;
-
         case event.shiftKey:
             break;
 
         default:
-            timelineLayerNormalSelectElementUseCase(element);
+            timelineLayerControllerNormalSelectUseCase(layerId);
             break;
+
     }
 };
