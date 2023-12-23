@@ -1,5 +1,5 @@
 import { EventType } from "@/tool/domain/event/EventType";
-import { timelineLayer } from "../../TimelineUtil";
+import { timelineLayer } from "@/timeline/domain/model/TimelineLayer";
 import { execute as timelineLayerControllerComponent } from "../../TimelineLayerController/component/TimelineLayerControllerComponent";
 import { execute as timelineLayerMouseDownEventUseCase } from "./TimelineLayerMouseDownEventUseCase";
 import { execute as timelineLayerControllerRegisterEventUseCase } from "../../TimelineLayerController/usecase/TimelineLayerControllerRegisterEventUseCase";

@@ -26,6 +26,7 @@ export const execute = (element: HTMLElement): void =>
 
     const layerId: string = element.dataset.layerId as string;
 
+    // 通常レイヤーのアイコンにイベントを登録
     const layerIconElement: HTMLElement | null = document
         .getElementById(`layer-icon-${layerId}`);
 
@@ -36,6 +37,8 @@ export const execute = (element: HTMLElement): void =>
             timelineLayerControllerLayerIconMouseDownEventUseCase
         );
     }
+
+    // TODO アイコンにイベント登録
 
     // レイヤー名のElementにイベントを登録
     const textElement: HTMLElement | null = document

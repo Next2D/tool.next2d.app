@@ -1,5 +1,4 @@
-import { execute as timelineFrameUpdateFrameElementService } from "@/timeline/application/TimelineFrame/service/TimelineFrameUpdateFrameElementService";
-import { execute as timelineMarkerMovePositionService } from "@/timeline/application/TimelineMarker/service/TimelineMarkerMovePositionService";
+import { execute as timelineLayerNormalSelectElementService } from "../service/TimelineLayerNormalSelectElementService";
 
 /**
  * @description レイヤーのコントローラーエリアのマウスダウン処理関数
@@ -20,21 +19,16 @@ export const execute = (event: PointerEvent): void =>
         return ;
     }
 
-    // フレーム情報を更新してマーカーを移動
-    const frameElement: HTMLElement | null = event.target as HTMLElement;
-    if (!frameElement) {
-        return ;
+    switch (true) {
+
+        case event.altKey:
+            break;
+
+        case event.shiftKey:
+            break;
+
+        default:
+            timelineLayerNormalSelectElementService(element);
+            break;
     }
-
-    // フレームをアクティブに更新
-    element.classList.add("active");
-    const frame: number = parseInt(frameElement.dataset.frame as string);
-
-    // フレーム情報を更新
-    timelineFrameUpdateFrameElementService(frame);
-
-    // マーカーを移動
-    timelineMarkerMovePositionService();
-
-    // 選択グループを更新
 };

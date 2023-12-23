@@ -1,6 +1,6 @@
 import { execute } from "./TimelineScrollUpdateWidthService";
 import { $createWorkSpace } from "../../../../core/application/CoreUtil";
-import { timelineHeader } from "../../../../timeline/application/TimelineUtil";
+import { timelineHeader } from "../../../domain/model/TimelineHeader";
 
 describe("TimelineScrollUpdateWidthServiceTest", () =>
 {

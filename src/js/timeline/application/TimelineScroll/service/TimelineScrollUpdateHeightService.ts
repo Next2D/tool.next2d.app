@@ -1,5 +1,5 @@
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
-import { timelineLayer } from "../../TimelineUtil";
+import { timelineLayer } from "@/timeline/domain/model/TimelineLayer";
 import { $TIMELINE_SCROLL_BAR_Y_ID } from "@/config/TimelineConfig";
 
 /**

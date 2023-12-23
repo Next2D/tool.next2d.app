@@ -1,5 +1,5 @@
 import { $TIMELINE_CURRENT_FRAME_ID } from "@/config/TimelineConfig";
-import { timelineFrame } from "../../TimelineUtil";
+import { timelineFrame } from "@/timeline/domain/model/TimelineFrame";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 
 /**

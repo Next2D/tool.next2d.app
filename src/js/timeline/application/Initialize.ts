@@ -1,15 +1,10 @@
-import type { TimelineHeader } from "../domain/model/TimelineHeader";
-import type { TimelineFrame } from "../domain/model/TimelineFrame";
-import type { TimelineLayer } from "../domain/model/TimelineLayer";
 import { execute as timelineAreaInitializeRegisterEventUseCase } from "../application/TimelineArea/usecase/TimelineAreaInitializeRegisterEventUseCase";
 import { execute as timelineAdjustmentInitializeRegisterEventUseCase } from "../application/TimelineAdjustment/usecase/TimelineAdjustmentInitializeRegisterEventUseCase";
 import { execute as timelineScrollXRegisterEventUseCase } from "../application/TimelineScroll/usecase/TimelineScrollXRegisterEventUseCase";
 import { execute as timelineToolInitializeRegisterEventUseCase } from "@/timeline/application/TimelineTool/usecase/TimelineToolInitializeRegisterEventUseCase";
-import {
-    timelineHeader,
-    timelineFrame,
-    timelineLayer
-} from "./TimelineUtil";
+import { timelineHeader } from "@/timeline/domain/model/TimelineHeader";
+import { timelineFrame } from "@/timeline/domain/model/TimelineFrame";
+import { timelineLayer } from "@/timeline/domain/model/TimelineLayer";
 
 /**
  * @description 起動対象のToolクラスの配列
@@ -17,7 +12,7 @@ import {
  *
  * @private
  */
-const models: Array<TimelineHeader | TimelineFrame | TimelineLayer> = [
+const models: Array<any> = [
     timelineHeader,
     timelineFrame,
     timelineLayer

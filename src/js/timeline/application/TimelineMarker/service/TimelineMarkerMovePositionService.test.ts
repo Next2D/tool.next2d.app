@@ -1,7 +1,8 @@
 import { execute } from "./TimelineMarkerMovePositionService";
 import { $TIMELINE_MARKER_ID, $TIMELINE_MARKER_BORDER_ID } from "../../../../config/TimelineConfig";
 import { $createWorkSpace } from "../../../../core/application/CoreUtil";
-import { timelineHeader, timelineFrame } from "../../TimelineUtil";
+import { timelineFrame } from "../../../domain/model/TimelineFrame";
+import { timelineHeader } from "../../../domain/model/TimelineHeader";
 
 describe("TimelineMarkerMovePositionServiceTest", () =>
 {

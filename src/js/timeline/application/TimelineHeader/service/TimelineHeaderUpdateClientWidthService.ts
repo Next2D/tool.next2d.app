@@ -1,5 +1,5 @@
 import { $TIMELINE_CONTROLLER_BASE_ID } from "@/config/TimelineConfig";
-import { timelineHeader } from "../../TimelineUtil";
+import { timelineHeader } from "@/timeline/domain/model/TimelineHeader";
 
 /**
  * @description タイムラインのヘッダーの表示幅を更新

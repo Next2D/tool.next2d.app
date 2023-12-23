@@ -1,6 +1,6 @@
 import { execute } from "./TimelineScrollXWindowMoveService";
 import { $createWorkSpace } from "../../../../core/application/CoreUtil";
-import { timelineHeader } from "../../../../timeline/application/TimelineUtil";
+import { timelineHeader } from "../../../../timeline/domain/model/TimelineHeader";
 
 describe("TimelineScrollXWindowMoveServiceTest", () =>
 {

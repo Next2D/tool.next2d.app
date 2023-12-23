@@ -2,7 +2,7 @@ import {
     $TIMELINE_ADJUSTMENT_X_ID,
     $TIMELINE_CONTROLLER_BASE_ID
 } from "@/config/TimelineConfig";
-import { timelineHeader } from "../../TimelineUtil";
+import { timelineHeader } from "@/timeline/domain/model/TimelineHeader";
 
 /**
  * @description タイムラインエリアを初期位置に戻す

@@ -7,10 +7,11 @@ import { execute as timelineLayerInitializeUseCase } from "../../application/Tim
  * @class
  * @public
  */
-export class TimelineLayer
+class TimelineLayer
 {
     private readonly _$elements: HTMLElement[];
     private _$clientHeight: number;
+    private _$targetLayers: Map<number, HTMLElement>;
 
     /**
      * @constructor
@@ -30,6 +31,12 @@ export class TimelineLayer
          * @private
          */
         this._$clientHeight = 0;
+
+        /**
+         * @type {Map}
+         * @private
+         */
+        this._$targetLayers = new Map();
     }
 
     /**
@@ -73,4 +80,18 @@ export class TimelineLayer
     {
         this._$clientHeight = height;
     }
+
+    /**
+     * @description 選択したレイヤーを格納したマップデータを返却
+     *              Returns map data containing selected layers
+     *
+     * @member {Map}
+     * @public
+     */
+    get targetLayers (): Map<number, HTMLElement>
+    {
+        return this._$targetLayers;
+    }
 }
+
+export const timelineLayer = new TimelineLayer();

@@ -5,7 +5,7 @@
  * @class
  * @public
  */
-export class TimelineFrame
+class TimelineFrame
 {
     private _$currentFrame: number;
 
@@ -52,3 +52,5 @@ export class TimelineFrame
         this._$currentFrame = frame;
     }
 }
+
+export const timelineFrame = new TimelineFrame();

@@ -7,7 +7,7 @@ import { execute as timelineHeaderInitializeUseCase } from "../../application/Ti
  * @class
  * @public
  */
-export class TimelineHeader
+class TimelineHeader
 {
     private _$clientWidth: number;
 
@@ -60,3 +60,5 @@ export class TimelineHeader
         this._$clientWidth = width;
     }
 }
+
+export const timelineHeader = new TimelineHeader();

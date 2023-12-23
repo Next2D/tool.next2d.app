@@ -1,34 +1,4 @@
-import { TimelineHeader } from "../domain/model/TimelineHeader";
-import { TimelineFrame } from "../domain/model/TimelineFrame";
-import { TimelineLayer } from "../domain/model/TimelineLayer";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
-
-/**
- * @description タイムラインのヘッダー管理オブジェクト
- *              Timeline Header Management Objects
- *
- * @type {TimelineHeader}
- * @public
- */
-export const timelineHeader: TimelineHeader = new TimelineHeader();
-
-/**
- * @description タイムラインのフレーム管理オブジェクト
- *              Timeline Frame Management Objects
- *
- * @type {TimelineHeader}
- * @public
- */
-export const timelineFrame: TimelineFrame = new TimelineFrame();
-
-/**
- * @description タイムラインのレイヤー管理オブジェクト
- *              Timeline Layer Management Objects
- *
- * @type {TimelineLayer}
- * @public
- */
-export const timelineLayer: TimelineLayer = new TimelineLayer();
 
 /**
  * @description ツールエリアでのマウス状態

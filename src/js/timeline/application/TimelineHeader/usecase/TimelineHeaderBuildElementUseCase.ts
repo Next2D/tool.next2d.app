@@ -1,10 +1,8 @@
 import { $TIMELINE_HEADER_ID } from "@/config/TimelineConfig";
 import { execute as timelineHeaderFrameComponent } from "../component/TimelineHeaderFrameComponent";
 import { execute as timelineHeaderFrameRegisterEventUseCase } from "./TimelineHeaderFrameRegisterEventUseCase";
-import {
-    $getLeftFrame,
-    timelineHeader
-} from "../../TimelineUtil";
+import { $getLeftFrame } from "../../TimelineUtil";
+import { timelineHeader } from "@/timeline/domain/model/TimelineHeader";
 import { $STAGE_FPS_ID } from "@/config/StageSettingConfig";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import type { MovieClip } from "@/core/domain/model/MovieClip";

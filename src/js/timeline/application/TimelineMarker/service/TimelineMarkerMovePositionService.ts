@@ -2,11 +2,9 @@ import {
     $TIMELINE_MARKER_BORDER_ID,
     $TIMELINE_MARKER_ID
 } from "@/config/TimelineConfig";
-import {
-    $getLeftFrame,
-    timelineFrame,
-    timelineHeader
-} from "../../TimelineUtil";
+import { $getLeftFrame } from "../../TimelineUtil";
+import { timelineFrame } from "@/timeline/domain/model/TimelineFrame";
+import { timelineHeader } from "@/timeline/domain/model/TimelineHeader";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 
 /**

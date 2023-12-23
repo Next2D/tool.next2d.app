@@ -19,11 +19,11 @@
     "sass": "^1.69.5",
     "typescript": "^5.3.3",
     "vite": "^5.0.10",
-    "vitest": "^1.0.4"
+    "vitest": "^1.1.0"
   },
   "dependencies": {
     "ace-code": "^1.32.2",
-    "ace-linters": "^1.0.0",
+    "ace-linters": "^1.0.1",
     "fflate": "^0.8.1",
     "jszip": "^3.10.1"
   }

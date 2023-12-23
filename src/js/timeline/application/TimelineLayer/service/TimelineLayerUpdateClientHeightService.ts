@@ -1,5 +1,5 @@
 import { $TIMELINE_CONTENT_ID } from "@/config/TimelineConfig";
-import { timelineLayer } from "@/timeline/application/TimelineUtil";
+import { timelineLayer } from "@/timeline/domain/model/TimelineLayer";
 
 /**
  * @description レイヤーエリアのy移動するスクロールの高さを更新

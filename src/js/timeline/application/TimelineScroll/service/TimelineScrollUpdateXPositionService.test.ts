@@ -1,7 +1,7 @@
 import { execute } from "./TimelineScrollUpdateXPositionService";
 import { $TIMELINE_SCROLL_BAR_X_ID } from "../../../../config/TimelineConfig";
 import { $createWorkSpace } from "../../../../core/application/CoreUtil";
-import { timelineHeader } from "../../../../timeline/application/TimelineUtil";
+import { timelineHeader } from "../../../../timeline/domain/model/TimelineHeader";
 
 describe("TimelineScrollUpdateXPositionServiceTest", () =>
 {

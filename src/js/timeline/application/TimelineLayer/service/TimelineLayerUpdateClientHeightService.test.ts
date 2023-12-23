@@ -1,4 +1,4 @@
-import { timelineLayer } from "../../TimelineUtil";
+import { timelineLayer } from "../../../domain/model/TimelineLayer";
 import { $TIMELINE_CONTENT_ID } from "../../../../config/TimelineConfig";
 import { execute } from "./TimelineLayerUpdateClientHeightService";
 

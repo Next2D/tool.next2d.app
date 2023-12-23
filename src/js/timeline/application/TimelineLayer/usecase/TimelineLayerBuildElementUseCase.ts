@@ -1,10 +1,9 @@
 import { $TIMELINE_CONTENT_ID } from "@/config/TimelineConfig";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
-import {
-    $getLeftFrame,
-    timelineHeader,
-    timelineLayer
-} from "../../TimelineUtil";
+import { $getLeftFrame } from "../../TimelineUtil";
+import { timelineLayer } from "@/timeline/domain/model/TimelineLayer";
+import { timelineHeader } from "@/timeline/domain/model/TimelineHeader";
+
 import { execute as timelineLayerControllerUpdateElementStyleUseCase } from "../../TimelineLayerController/usecase/TimelineLayerControllerUpdateElementStyleUseCase";
 import { execute as timelineLayerFrameCreateContentComponentService } from "@/timeline/application/TimelineLayerFrame/service/TimelineLayerFrameCreateContentComponentService";
 import { execute as timelineLayerFrameUpdateStyleService } from "@/timeline/application/TimelineLayerFrame/service/TimelineLayerFrameUpdateStyleService";
