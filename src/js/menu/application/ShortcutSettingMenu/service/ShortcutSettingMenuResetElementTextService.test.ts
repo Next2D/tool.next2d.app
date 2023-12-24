@@ -1,5 +1,5 @@
 import { ShortcutViewObjectImpl } from "../../../../interface/ShortcutViewObjectImpl";
-import { $getTempMapping } from "../ShortcutSettingMenuUtil";
+import { $getTempMapping, $getViewMapping } from "../ShortcutSettingMenuUtil";
 import { execute } from "./ShortcutSettingMenuResetElementTextService";
 
 describe("ShortcutSettingMenuResetElementTextServiceTest", () =>
@@ -8,24 +8,41 @@ describe("ShortcutSettingMenuResetElementTextServiceTest", () =>
     {
         // mock
         const tempMapping: Map<string, ShortcutViewObjectImpl> = $getTempMapping();
+        const viewMapping: Map<string, ShortcutViewObjectImpl> = $getViewMapping();
 
         tempMapping.set("default_screen", {
             "customKey": "custom_screen",
             "defaultKey": "default_screen",
-            "text": "test_text"
+            "text": "test_screen_text"
         });
 
-        const div = document.createElement("div");
-        div.id = "shortcut-default_screen";
-        div.dataset.defaultText = "default_screen";
-        document.body.appendChild(div);
+        viewMapping.set("default_tool", {
+            "customKey": "custom_tool",
+            "defaultKey": "default_tool",
+            "text": "test_tool_text"
+        });
 
-        div.textContent = "test_text";
-        expect(div.textContent).toBe("test_text");
+        const div1 = document.createElement("div");
+        document.body.appendChild(div1);
+
+        div1.id = "shortcut-default_screen";
+        div1.dataset.defaultText = "default_screen";
+        div1.textContent = "test_screen_text";
+        expect(div1.textContent).toBe("test_screen_text");
+
+        const div2 = document.createElement("div");
+        document.body.appendChild(div2);
+
+        div2.id = "shortcut-default_tool";
+        div2.dataset.defaultText = "default_tool";
+        div2.textContent = "test_tool_text";
+        expect(div2.textContent).toBe("test_tool_text");
 
         execute();
-        expect(div.textContent).toBe("default_screen");
+        expect(div1.textContent).toBe("default_screen");
+        expect(div2.textContent).toBe("default_tool");
 
-        div.remove();
+        div1.remove();
+        div2.remove();
     });
 });

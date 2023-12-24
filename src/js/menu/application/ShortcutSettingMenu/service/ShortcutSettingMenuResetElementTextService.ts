@@ -1,5 +1,5 @@
 import { ShortcutViewObjectImpl } from "@/interface/ShortcutViewObjectImpl";
-import { $getTempMapping } from "../ShortcutSettingMenuUtil";
+import { $getTempMapping, $getViewMapping } from "../ShortcutSettingMenuUtil";
 
 /**
  * @description ショートカットのテキスト情報をtempデータを元にリセット
@@ -12,20 +12,34 @@ import { $getTempMapping } from "../ShortcutSettingMenuUtil";
 export const execute = (): void =>
 {
     const tempMapping: Map<string, ShortcutViewObjectImpl> = $getTempMapping();
-    if (!tempMapping.size) {
-        return ;
+    if (tempMapping.size) {
+        // 変更した設定のテキストを元に戻す
+        for (const shortcutObject of tempMapping.values()) {
+
+            const element: HTMLElement | null = document
+                .getElementById(`shortcut-${shortcutObject.defaultKey}`);
+
+            if (!element) {
+                continue;
+            }
+
+            element.textContent = element.dataset.defaultText as NonNullable<string>;
+        }
     }
 
-    // カスタム設定を行ったテキストに変更する
-    for (const shortcutObject of tempMapping.values()) {
+    const viewMapping: Map<string, ShortcutViewObjectImpl> = $getViewMapping();
+    if (viewMapping.size) {
+        // 保存データがあれば、テキストを元に戻す
+        for (const shortcutObject of viewMapping.values()) {
 
-        const element: HTMLElement | null = document
-            .getElementById(`shortcut-${shortcutObject.defaultKey}`);
+            const element: HTMLElement | null = document
+                .getElementById(`shortcut-${shortcutObject.defaultKey}`);
 
-        if (!element) {
-            continue;
+            if (!element) {
+                continue;
+            }
+
+            element.textContent = element.dataset.defaultText as NonNullable<string>;
         }
-
-        element.textContent = element.dataset.defaultText as NonNullable<string>;
     }
 };
