@@ -86,9 +86,8 @@ export const execute = (): void =>
 
     const scene: MovieClip = workSpace.scene;
 
-    const fps: number = parseInt(fpsElement.value);
+    const fps: number   = parseInt(fpsElement.value);
     const frame: number = $getLeftFrame();
-    let sec: number = Math.max(1, (frame / 24 | 0) + 1);
 
     const children: HTMLCollection = element.children;
     const length: number = children.length;
@@ -138,7 +137,7 @@ export const execute = (): void =>
                     }
 
                     if (currentFrame % fps === 0 && fps > 4) {
-                        const value: string = `${sec++}s`;
+                        const value: string = `${currentFrame / fps}s`;
                         if (!node.textContent || node.textContent !== value) {
                             node.textContent = value;
                         }
