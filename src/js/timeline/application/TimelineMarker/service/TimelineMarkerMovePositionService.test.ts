@@ -35,7 +35,7 @@ describe("TimelineMarkerMovePositionServiceTest", () =>
         execute();
 
         expect(markerElement.style.left).toBe("392px");
-        expect(document.documentElement.style.getPropertyValue("--timeline-marker-border-left")).toBe("-1px");
+        expect(document.documentElement.style.getPropertyValue("--timeline-marker-border-left")).toBe("391px");
 
         timelineFrame.currentFrame = 1;
         execute();

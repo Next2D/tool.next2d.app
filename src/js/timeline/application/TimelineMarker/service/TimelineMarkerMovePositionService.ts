@@ -5,6 +5,7 @@ import {
 import { $getLeftFrame } from "../../TimelineUtil";
 import { timelineFrame } from "@/timeline/domain/model/TimelineFrame";
 import { timelineHeader } from "@/timeline/domain/model/TimelineHeader";
+import { timelineMarker } from "@/timeline/domain/model/TimelineMarker";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 
 /**
@@ -73,7 +74,7 @@ export const execute = (): void =>
             .style
             .setProperty(
                 "--timeline-marker-border-left",
-                `${Math.floor((markerElement.clientWidth - 1) / 2) + markerElement.offsetLeft}px`
+                `${Math.floor((timelineMarker.clientWidth - 1) / 2) + left}px`
             );
     }
 };

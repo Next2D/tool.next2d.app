@@ -2,20 +2,23 @@ import { execute as timelineAreaInitializeRegisterEventUseCase } from "../applic
 import { execute as timelineAdjustmentInitializeRegisterEventUseCase } from "../application/TimelineAdjustment/usecase/TimelineAdjustmentInitializeRegisterEventUseCase";
 import { execute as timelineScrollXRegisterEventUseCase } from "../application/TimelineScroll/usecase/TimelineScrollXRegisterEventUseCase";
 import { execute as timelineToolInitializeRegisterEventUseCase } from "@/timeline/application/TimelineTool/usecase/TimelineToolInitializeRegisterEventUseCase";
+import { execute as timelineMarkerInitializeRegisterEventUseCase } from "@/timeline/application/TimelineMarker/usecase/TimelineMarkerInitializeRegisterEventUseCase";
 import { timelineHeader } from "@/timeline/domain/model/TimelineHeader";
 import { timelineFrame } from "@/timeline/domain/model/TimelineFrame";
 import { timelineLayer } from "@/timeline/domain/model/TimelineLayer";
+import { timelineMarker } from "@/timeline/domain/model/TimelineMarker";
 
 /**
- * @description 起動対象のToolクラスの配列
- *              Array of Tool classes to be invoked
+ * @description 初期起動対象の配列
+ *              Array of initial startup targets
  *
  * @private
  */
 const models: Array<any> = [
     timelineHeader,
     timelineFrame,
-    timelineLayer
+    timelineLayer,
+    timelineMarker
 ];
 
 /**
@@ -47,4 +50,7 @@ export const execute = async (): Promise<void> =>
 
     // タイムラインのx座標に移動するスクロールのイベント登録
     timelineScrollXRegisterEventUseCase();
+
+    // マーカーのイベントの登録
+    timelineMarkerInitializeRegisterEventUseCase();
 };

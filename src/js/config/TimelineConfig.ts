@@ -222,3 +222,12 @@ export const $TIMELINE_MIN_MARKER_WIDTH_SIZE: number = 4;
  * @constant
  */
 export const $TIMELINE_MAX_MARKER_WIDTH_SIZE: number = 13;
+
+/**
+ * @description タイムラインのレイヤーコントローラーエリアの幅
+ *              Width of the layer controller area in the timeline
+ *
+ * @type {number}
+ * @constant
+ */
+export const $TIMELINE_LAYER_CONTROLLER_WIDTH: number = 271;

@@ -12,14 +12,14 @@ import { execute as timelineScrollUpdateXPositionService } from "@/timeline/appl
  *              Move the x-coordinate of the header area of the timeline
  *
  * @param  {number} delta
- * @return {void}
+ * @return {number}
  * @method
  * @public
  */
-export const execute = (delta: number): void =>
+export const execute = (delta: number): number =>
 {
     if (!delta) {
-        return ;
+        return -1;
     }
 
     const workSpace = $getCurrentWorkSpace();
@@ -27,7 +27,7 @@ export const execute = (delta: number): void =>
 
     // 1フレーム目より以前には移動しない
     if (!scene.scrollX && 0 > delta) {
-        return ;
+        return -1;
     }
 
     const limitX = (scene.totalFrame + $FIXED_FRAME_COUNT)
@@ -35,10 +35,10 @@ export const execute = (delta: number): void =>
 
     // 最大値より右側には移動しない
     if (scene.scrollX + delta > limitX) {
-        return ;
+        return -1;
     }
 
-    requestAnimationFrame((): void =>
+    return requestAnimationFrame((): void =>
     {
         scene.scrollX = $clamp(scene.scrollX + delta, 0, limitX);
 

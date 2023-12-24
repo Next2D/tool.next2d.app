@@ -8,6 +8,8 @@ import {
     $setStandbyMoveState
 } from "../ToolAreaUtil";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
+import { execute as timelineHeaderWindowResizeUseCase } from "@/timeline/application/TimelineHeader/usecase/TimelineHeaderWindowResizeUseCase";
+import { execute as timelineLayerWindowResizeUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerWindowResizeUseCase";
 
 /**
  * @description ツールエリアを移動可能な状態にする
@@ -51,6 +53,13 @@ export const execute = (): void =>
 
             // ツールエリアのstyleを更新
             toolAreaChageStyleToActiveService(element);
+
+            // タイムラインのヘッダーをリサイズ
+            timelineHeaderWindowResizeUseCase();
+
+            // タイムラインのレイヤーエリアをリサイズ
+            timelineLayerWindowResizeUseCase();
+
         }
 
         // カーソルを移動用に変更

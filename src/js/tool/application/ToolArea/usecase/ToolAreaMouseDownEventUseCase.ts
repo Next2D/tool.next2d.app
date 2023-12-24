@@ -6,6 +6,8 @@ import { $TOOL_PREFIX } from "@/config/ToolConfig";
 import { $setMouseState } from "../../ToolUtil";
 import { $setStandbyMoveState } from "../ToolAreaUtil";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
+import { execute as timelineHeaderWindowResizeUseCase } from "@/timeline/application/TimelineHeader/usecase/TimelineHeaderWindowResizeUseCase";
+import { execute as timelineLayerWindowResizeUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerWindowResizeUseCase";
 
 /**
  * @description ダブルタップ用の待機フラグ
@@ -107,6 +109,12 @@ export const execute = (event: PointerEvent): void =>
 
         // ツールエリアのstyleを固定位置に移動
         toolAreaChageStyleToInactiveService(element);
+
+        // タイムラインのヘッダーをリサイズ
+        timelineHeaderWindowResizeUseCase();
+
+        // タイムラインのレイヤーエリアをリサイズ
+        timelineLayerWindowResizeUseCase();
     }
 
 };
