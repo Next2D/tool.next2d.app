@@ -1,11 +1,11 @@
 import { $TIMELINE_CURRENT_FRAME_ID } from "@/config/TimelineConfig";
 import { EventType } from "@/tool/domain/event/EventType";
-import { $updateKeyLock } from "@/shortcut/ShortcutUtil";
 import { execute as timelineToolCurrentFrameMouseDownEventUseCase } from "./TimelineToolCurrentFrameMouseDownEventUseCase";
 import { execute as timelineToolCurrentFrameMouseOverEventService } from "../service/TimelineToolCurrentFrameMouseOverEventService";
 import { execute as timelineToolCurrentFrameMouseOutEventService } from "../service/TimelineToolCurrentFrameMouseOutEventService";
 import { execute as timelineToolCurrentFrameFocusInEventService } from "../service/TimelineToolCurrentFrameFocusInEventService";
 import { execute as timelineToolCurrentFrameFocusOutEventService } from "../service/TimelineToolCurrentFrameFocusOutEventService";
+import { execute as timelineToolCurrentFrameKeyPressEventService } from "../service/TimelineToolCurrentFrameKeyPressEventService";
 
 /**
  * @description タイムラインの現在フレームのInput Elementのイベントを登録
@@ -43,5 +43,9 @@ export const execute = (): void =>
 
     element.addEventListener("focusout",
         timelineToolCurrentFrameFocusOutEventService
+    );
+
+    element.addEventListener("keypress",
+        timelineToolCurrentFrameKeyPressEventService
     );
 };
