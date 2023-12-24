@@ -11,6 +11,10 @@ import { execute as timelineLayerFrameNormalSelectUseCase } from "./TimelineLaye
  */
 export const execute = (event: PointerEvent): void =>
 {
+    if (event.button !== 0) {
+        return ;
+    }
+
     // フレーム情報を更新してマーカーを移動
     const element: HTMLElement | null = event.target as HTMLElement;
     if (!element) {

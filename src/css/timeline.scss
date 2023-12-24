@@ -632,6 +632,11 @@
     {
         border-bottom : 1px solid #f5f5f5;
     }
+
+    &:hover
+    {
+        cursor : ew-resize;
+    }
 }
 
 #target-group

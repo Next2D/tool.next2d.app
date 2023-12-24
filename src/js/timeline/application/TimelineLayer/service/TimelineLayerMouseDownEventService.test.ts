@@ -8,6 +8,7 @@ describe("TimelineLayerMouseDownEventServiceTest", () =>
 
         let stopPropagation = false;
         const eventMock = {
+            "button": 0,
             "stopPropagation": () =>
             {
                 stopPropagation = true;

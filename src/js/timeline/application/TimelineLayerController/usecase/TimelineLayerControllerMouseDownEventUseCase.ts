@@ -11,6 +11,10 @@ import { execute as timelineLayerControllerNormalSelectUseCase } from "./Timelin
  */
 export const execute = (event: PointerEvent): void =>
 {
+    if (event.button !== 0) {
+        return ;
+    }
+
     const targetElement: HTMLElement | null = event.currentTarget as HTMLElement;
     if (!targetElement) {
         return ;
