@@ -15,4 +15,11 @@ export const execute = (event: Event): void =>
     event.preventDefault();
 
     $updateKeyLock(true);
+
+    const element: HTMLInputElement | null = event.target as HTMLInputElement;
+    if (!element) {
+        return ;
+    }
+
+    element.style.cursor = "";
 };

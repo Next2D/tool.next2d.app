@@ -1,8 +1,10 @@
 import { $clamp, $setCursor } from "@/global/GlobalUtil";
 import { execute as timelineFrameUpdateFrameElementService } from "@/timeline/application/TimelineFrame/service/TimelineFrameUpdateFrameElementService";
 import { execute as timelineMarkerMovePositionService } from "@/timeline/application/TimelineMarker/service/TimelineMarkerMovePositionService";
-import { $getMaxFrame } from "@/timeline/application/TimelineUtil";
+import { $getLeftFrame, $getMaxFrame, $getRightFrame } from "@/timeline/application/TimelineUtil";
 import { timelineFrame } from "@/timeline/domain/model/TimelineFrame";
+import { timelineHeader } from "@/timeline/domain/model/TimelineHeader";
+import { execute as timelineHeaderUpdateScrollXUseCase } from "@/timeline/application/TimelineHeader/usecase/TimelineHeaderUpdateScrollXUseCase";
 
 /**
  * @description タイムラインのフレームInputElement上のマウスムーブ処理関数
@@ -31,7 +33,26 @@ export const execute = (event: PointerEvent): void =>
         // フレーム位置を移動
         timelineFrameUpdateFrameElementService(frame);
 
-        // マーカーを移動
-        timelineMarkerMovePositionService();
+        // スクロール位置を補正
+        switch (true) {
+
+            case $getLeftFrame() > frame:
+                timelineHeaderUpdateScrollXUseCase(
+                    -timelineHeader.clientWidth
+                );
+                break;
+
+            case frame > $getRightFrame():
+                timelineHeaderUpdateScrollXUseCase(
+                    timelineHeader.clientWidth
+                );
+                break;
+
+            default:
+                // マーカーを移動
+                timelineMarkerMovePositionService();
+                break;
+
+        }
     });
 };

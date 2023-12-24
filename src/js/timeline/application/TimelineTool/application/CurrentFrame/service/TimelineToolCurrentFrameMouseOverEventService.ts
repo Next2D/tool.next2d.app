@@ -1,3 +1,5 @@
+import { $useKeyboard } from "@/shortcut/ShortcutUtil";
+
 /**
  * @description フーレムInput Elementのマウスオーバー処理関数
  *              Mouse-over processing function for Hoolem Input Element
@@ -9,6 +11,10 @@
  */
 export const execute = (event: PointerEvent): void =>
 {
+    if ($useKeyboard()) {
+        return ;
+    }
+
     event.stopPropagation();
     event.preventDefault();
 

@@ -52,7 +52,7 @@ export const execute = (event: PointerEvent, loop_mode: boolean = false): void =
             workSpace.scene.scrollX = scrollX;
 
             timelineFrameUpdateFrameElementService(
-                $getLeftFrame() + Math.floor(timelineHeader.clientWidth / width) - 1
+                $getLeftFrame() + Math.floor(timelineHeader.clientWidth / width)
             );
 
         }
@@ -70,9 +70,6 @@ export const execute = (event: PointerEvent, loop_mode: boolean = false): void =
         timelineFrameUpdateFrameElementService(
             Math.min(timelineFrame.currentFrame + 1, $getMaxFrame())
         );
-
-        // マーカーを移動
-        timelineMarkerMovePositionService();
 
         if (loop_mode || !$getMoveMode()) {
 
@@ -102,7 +99,7 @@ export const execute = (event: PointerEvent, loop_mode: boolean = false): void =
             workSpace.scene.scrollX = scrollX;
 
             timelineFrameUpdateFrameElementService(
-                $getLeftFrame() + 1
+                $getLeftFrame()
             );
 
         }
@@ -116,9 +113,6 @@ export const execute = (event: PointerEvent, loop_mode: boolean = false): void =
             // フレームをマイナスに移動
             timelineFrameUpdateFrameElementService(1);
 
-            // マーカーを移動
-            timelineMarkerMovePositionService();
-
             return ;
         }
 
@@ -126,9 +120,6 @@ export const execute = (event: PointerEvent, loop_mode: boolean = false): void =
         timelineFrameUpdateFrameElementService(
             Math.max(timelineFrame.currentFrame - 1, 1)
         );
-
-        // マーカーを移動
-        timelineMarkerMovePositionService();
 
         if (loop_mode || !$getMoveMode()) {
 

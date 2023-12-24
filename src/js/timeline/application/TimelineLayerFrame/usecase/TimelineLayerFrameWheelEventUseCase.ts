@@ -25,7 +25,7 @@ export const execute = (event: WheelEvent): void =>
     } else {
         if (event.deltaX) {
             // 横スクロールして再描画
-            return timelineHeaderUpdateScrollXUseCase(event.deltaX);
+            timelineHeaderUpdateScrollXUseCase(event.deltaX);
         }
     }
 };

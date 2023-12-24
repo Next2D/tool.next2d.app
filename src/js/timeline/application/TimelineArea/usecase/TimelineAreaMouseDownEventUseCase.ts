@@ -8,6 +8,7 @@ import { execute as timelineLayerWindowResizeUseCase } from "@/timeline/applicat
 import { $setMouseState } from "../../TimelineUtil";
 import { $setStandbyMoveState } from "../TimelineAreaUtil";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
+import { $useKeyboard } from "@/shortcut/ShortcutUtil";
 
 /**
  * @description ダブルタップ用の待機フラグ
@@ -38,7 +39,7 @@ let activeTimerId: number = 0;
 export const execute = (event: PointerEvent): void =>
 {
     // 主ボタン以外はスキップ
-    if (event.button !== 0) {
+    if (event.button !== 0 || $useKeyboard()) {
         return ;
     }
 
