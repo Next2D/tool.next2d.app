@@ -3,6 +3,9 @@ import { EventType } from "@/tool/domain/event/EventType";
 import { $updateKeyLock } from "@/shortcut/ShortcutUtil";
 import { execute as timelineToolCurrentFrameMouseDownEventUseCase } from "./TimelineToolCurrentFrameMouseDownEventUseCase";
 import { execute as timelineToolCurrentFrameMouseOverEventService } from "../service/TimelineToolCurrentFrameMouseOverEventService";
+import { execute as timelineToolCurrentFrameMouseOutEventService } from "../service/TimelineToolCurrentFrameMouseOutEventService";
+import { execute as timelineToolCurrentFrameFocusInEventService } from "../service/TimelineToolCurrentFrameFocusInEventService";
+import { execute as timelineToolCurrentFrameFocusOutEventService } from "../service/TimelineToolCurrentFrameFocusOutEventService";
 
 /**
  * @description タイムラインの現在フレームのInput Elementのイベントを登録
@@ -30,19 +33,15 @@ export const execute = (): void =>
         timelineToolCurrentFrameMouseOverEventService
     );
 
-    element.addEventListener(EventType.MOUSE_OUT, (event: PointerEvent): void =>
-    {
-        event.stopPropagation();
-        event.preventDefault();
-        element.setAttribute("style", "");
-    });
+    element.addEventListener(EventType.MOUSE_OUT,
+        timelineToolCurrentFrameMouseOutEventService
+    );
 
-    element.addEventListener("focusin", (): void =>
-    {
-        $updateKeyLock(true);
-    });
-    element.addEventListener("focusout", (): void =>
-    {
-        $updateKeyLock(false);
-    });
+    element.addEventListener("focusin",
+        timelineToolCurrentFrameFocusInEventService
+    );
+
+    element.addEventListener("focusout",
+        timelineToolCurrentFrameFocusOutEventService
+    );
 };
