@@ -38,7 +38,7 @@ describe("TimelineScrollXWindowMoveServiceTest", () =>
         {
             setTimeout(() =>
             {
-                expect(scene.scrollX).toBe(286);
+                expect(scene.scrollX).toBe(293);
                 reslove();
             }, 100);
         });

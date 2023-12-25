@@ -22,8 +22,8 @@ describe("TimelineScrollUpdateWidthServiceTest", () =>
         expect(scene.scrollX).toBe(10000);
         expect(document.documentElement.style.getPropertyValue("--timeline-scroll-bar-width")).toBe("100px");
         execute();
-        expect(scene.scrollX).toBe(7200);
-        expect(document.documentElement.style.getPropertyValue("--timeline-scroll-bar-width")).toBe("44px");
+        expect(scene.scrollX).toBe(7800);
+        expect(document.documentElement.style.getPropertyValue("--timeline-scroll-bar-width")).toBe("40px");
 
     });
 });

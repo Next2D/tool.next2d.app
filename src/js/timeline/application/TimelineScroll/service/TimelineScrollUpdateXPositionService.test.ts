@@ -17,7 +17,7 @@ describe("TimelineScrollUpdateXPositionServiceTest", () =>
 
         expect(div.style.left).toBe("");
         execute();
-        expect(div.style.left).toBe("24px");
+        expect(div.style.left).toBe("22px");
 
         div.remove();
     });

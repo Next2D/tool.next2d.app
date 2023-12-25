@@ -1,6 +1,6 @@
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
-import { $FIXED_FRAME_COUNT } from "@/config/TimelineConfig";
 import { timelineHeader } from "@/timeline/domain/model/TimelineHeader";
+import { $getMaxFrame, $getScrollLimitX } from "../../TimelineUtil";
 
 /**
  * @description x移動するスクロールバーの幅を更新
@@ -16,11 +16,10 @@ export const execute = (): void =>
     const scene = workSpace.scene;
 
     const clientWidth: number = timelineHeader.clientWidth;
-    const totalFrame: number  = scene.totalFrame + $FIXED_FRAME_COUNT;
-    const frameWidth: number  = workSpace.timelineAreaState.frameWidth;
+    const frameWidth: number  = workSpace.timelineAreaState.frameWidth + 1;
 
     // スクロールバーの幅を算出
-    const scale: number = clientWidth / (totalFrame * frameWidth);
+    const scale: number = clientWidth / ($getMaxFrame() * frameWidth);
 
     // 2pxはborderの1pxの上下の分
     document
@@ -32,7 +31,7 @@ export const execute = (): void =>
         );
 
     // スクロール位置が見切れていたら補正
-    const limitX = (scene.totalFrame + $FIXED_FRAME_COUNT) * frameWidth - clientWidth;
+    const limitX = $getScrollLimitX();
     if (scene.scrollX > limitX) {
         scene.scrollX = limitX;
     }

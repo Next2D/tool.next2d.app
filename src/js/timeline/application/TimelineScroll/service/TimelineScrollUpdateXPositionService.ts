@@ -1,7 +1,7 @@
 import { $TIMELINE_SCROLL_BAR_X_ID } from "@/config/TimelineConfig";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
-import { $FIXED_FRAME_COUNT } from "@/config/TimelineConfig";
 import { timelineHeader } from "@/timeline/domain/model/TimelineHeader";
+import { $getMaxFrame } from "../../TimelineUtil";
 
 /**
  * @description スクロールバーのx座標を更新
@@ -24,10 +24,10 @@ export const execute = (): void =>
     const scene = workSpace.scene;
 
     const clientWidth: number = timelineHeader.clientWidth;
-    const totalFrame: number  = scene.totalFrame + $FIXED_FRAME_COUNT;
 
     // スクロールバーの幅を算出
-    const scale: number = clientWidth / (totalFrame * workSpace.timelineAreaState.frameWidth);
+    const width = workSpace.timelineAreaState.frameWidth + 1;
+    const scale: number = clientWidth / ($getMaxFrame() * width);
 
     element.style.left = `${Math.floor(scene.scrollX * scale) + 1}px`;
 };

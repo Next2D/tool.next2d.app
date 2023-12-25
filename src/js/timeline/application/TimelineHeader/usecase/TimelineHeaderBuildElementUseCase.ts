@@ -25,9 +25,9 @@ export const execute = (): void =>
     }
 
     const workSpace = $getCurrentWorkSpace();
-    const frameWidth = workSpace.timelineAreaState.frameWidth;
+    const frameWidth = workSpace.timelineAreaState.frameWidth + 1;
 
-    const elementCount: number = Math.ceil(timelineHeader.clientWidth / (frameWidth + 1));
+    const elementCount: number = Math.ceil(timelineHeader.clientWidth / frameWidth);
 
     // Elementがなければ初期登録
     if (!element.children.length) {

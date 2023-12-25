@@ -1,7 +1,7 @@
-import { $FIXED_FRAME_COUNT } from "@/config/TimelineConfig";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { execute as timelineHeaderUpdateScrollXUseCase } from "@/timeline/application/TimelineHeader/usecase/TimelineHeaderUpdateScrollXUseCase";
 import { timelineHeader } from "@/timeline/domain/model/TimelineHeader";
+import { $getMaxFrame } from "../../TimelineUtil";
 
 /**
  * @description タイムラインのx座標に移動するスクロールの移動処理
@@ -22,13 +22,12 @@ export const execute = (event: PointerEvent): void =>
     requestAnimationFrame((): void =>
     {
         const workSpace = $getCurrentWorkSpace();
-        const scene     = workSpace.scene;
 
         const clientWidth: number = timelineHeader.clientWidth;
-        const totalFrame: number  = scene.totalFrame + $FIXED_FRAME_COUNT;
 
         // スクロールバーの幅を算出
-        const scale: number = clientWidth / (totalFrame * workSpace.timelineAreaState.frameWidth);
+        const width = workSpace.timelineAreaState.frameWidth + 1;
+        const scale: number = clientWidth / ($getMaxFrame() * width);
 
         timelineHeaderUpdateScrollXUseCase(Math.floor(event.movementX / scale));
     });

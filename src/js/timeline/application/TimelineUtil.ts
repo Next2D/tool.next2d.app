@@ -48,7 +48,7 @@ export const $setMouseState = (state: "up" | "down"): void =>
 export const $getLeftFrame = (): number =>
 {
     const workSpace = $getCurrentWorkSpace();
-    return 1 + Math.floor(workSpace.scene.scrollX / (workSpace.timelineAreaState.frameWidth + 1));
+    return 1 + Math.ceil(workSpace.scene.scrollX / (workSpace.timelineAreaState.frameWidth + 1));
 };
 
 /**

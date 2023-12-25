@@ -36,18 +36,21 @@ export const execute = (event: PointerEvent): void =>
         // スクロール位置を補正
         switch (true) {
 
+            // 左端に達した処理
             case $getLeftFrame() > frame:
                 timelineHeaderUpdateScrollXUseCase(
                     -timelineHeader.clientWidth
                 );
                 break;
 
+            // 右端に達した処理
             case frame > $getRightFrame():
                 timelineHeaderUpdateScrollXUseCase(
                     timelineHeader.clientWidth
                 );
                 break;
 
+            // 通常の移動処理
             default:
                 // マーカーを移動
                 timelineMarkerMovePositionService();
