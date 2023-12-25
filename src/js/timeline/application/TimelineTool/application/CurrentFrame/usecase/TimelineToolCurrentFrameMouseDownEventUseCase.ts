@@ -23,7 +23,7 @@ let wait: boolean = false;
 export const execute = (event: PointerEvent): void =>
 {
     // 主ボタン以外はスキップ
-    if (event.button !== 0) {
+    if (event.button !== 0 || $useKeyboard()) {
         return ;
     }
 

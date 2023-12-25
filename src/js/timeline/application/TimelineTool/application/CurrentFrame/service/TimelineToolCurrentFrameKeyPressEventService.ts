@@ -3,6 +3,7 @@ import { execute as timelineFrameUpdateFrameElementService } from "@/timeline/ap
 import { $getMaxFrame, $getScrollLimitX } from "@/timeline/application/TimelineUtil";
 import { execute as timelineHeaderUpdateScrollXUseCase } from "@/timeline/application/TimelineHeader/usecase/TimelineHeaderUpdateScrollXUseCase";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
+import { execute as timelineMarkerMovePositionService } from "@/timeline/application/TimelineMarker/service/TimelineMarkerMovePositionService";
 
 /**
  * @description タイムラインのフレームInput Elementのキープレスイベント処理関数
@@ -36,16 +37,23 @@ export const execute = (event: KeyboardEvent): void =>
     const workSpace = $getCurrentWorkSpace();
 
     const delta = $clamp(
-        $getScrollLimitX(),
-        0, (frame - 1) * (workSpace.timelineAreaState.frameWidth + 1)
+        (frame - 1) * (workSpace.timelineAreaState.frameWidth + 1),
+        0, $getScrollLimitX()
     );
 
     // リセット
-    workSpace.scene.scrollX = 0;
-    timelineHeaderUpdateScrollXUseCase(delta);
+    if (delta) {
+        workSpace.scene.scrollX = 0;
+        timelineHeaderUpdateScrollXUseCase(delta);
+    } else {
+        timelineHeaderUpdateScrollXUseCase(-workSpace.scene.scrollX);
+    }
 
     // フレームを更新
     timelineFrameUpdateFrameElementService(frame);
+
+    // マーカーを移動
+    timelineMarkerMovePositionService();
 
     // 入力終了
     element.value = `${frame}`;

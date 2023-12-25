@@ -11,14 +11,14 @@ import { $getScrollLimitX } from "../../TimelineUtil";
  *              Move the x-coordinate of the header area of the timeline
  *
  * @param  {number} delta
- * @return {number}
+ * @return {boolean}
  * @method
  * @public
  */
-export const execute = (delta: number): number =>
+export const execute = (delta: number): boolean =>
 {
     if (!delta) {
-        return -1;
+        return false;
     }
 
     const workSpace = $getCurrentWorkSpace();
@@ -26,30 +26,30 @@ export const execute = (delta: number): number =>
 
     // 1フレーム目より以前には移動しない
     if (!scene.scrollX && 0 > delta) {
-        return -1;
+        return false;
     }
 
-    const limitX = $getScrollLimitX();
+    const beforeX = scene.scrollX;
+    const afterX  = $clamp(beforeX + delta, 0, $getScrollLimitX());
 
     // 最大値より右側には移動しない
-    if (scene.scrollX + delta > limitX) {
-        return -1;
+    if (beforeX === afterX) {
+        return false;
     }
 
-    return requestAnimationFrame((): void =>
-    {
-        scene.scrollX = $clamp(scene.scrollX + delta, 0, limitX);
+    scene.scrollX = afterX;
 
-        // ヘッダーを再構築
-        timelineHeaderBuildElementUseCase();
+    // ヘッダーを再構築
+    timelineHeaderBuildElementUseCase();
 
-        // マーカーを移動
-        timelineMarkerMovePositionService();
+    // マーカーを移動
+    timelineMarkerMovePositionService();
 
-        // レイヤーのタイムラインを再描画
-        timelineLayerBuildElementUseCase();
+    // レイヤーのタイムラインを再描画
+    timelineLayerBuildElementUseCase();
 
-        // タイムラインのx移動するスクロールのx座標を更新
-        timelineScrollUpdateXPositionService();
-    });
+    // タイムラインのx移動するスクロールのx座標を更新
+    timelineScrollUpdateXPositionService();
+
+    return true;
 };

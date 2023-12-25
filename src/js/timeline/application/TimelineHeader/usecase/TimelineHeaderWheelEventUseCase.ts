@@ -17,10 +17,17 @@ export const execute = (event: WheelEvent): void =>
     event.preventDefault();
 
     if (event.altKey) {
-        // フレームの幅を更新
-        timelineFrameWheelEventUseCase(event);
+        requestAnimationFrame((): void =>
+        {
+            // フレームの幅を更新
+            timelineFrameWheelEventUseCase(event);
+        });
+
     } else {
-        // ヘッダーをスクロールして再描画
-        timelineHeaderUpdateScrollXUseCase(event.deltaX || event.deltaY);
+        requestAnimationFrame((): void =>
+        {
+            // ヘッダーをスクロールして再描画
+            timelineHeaderUpdateScrollXUseCase(event.deltaX || event.deltaY);
+        });
     }
 };

@@ -44,7 +44,7 @@ export const execute = (event: PointerEvent): void =>
                 break;
 
             // 右端に達した処理
-            case frame > $getRightFrame():
+            case frame >= $getRightFrame():
                 timelineHeaderUpdateScrollXUseCase(
                     timelineHeader.clientWidth
                 );

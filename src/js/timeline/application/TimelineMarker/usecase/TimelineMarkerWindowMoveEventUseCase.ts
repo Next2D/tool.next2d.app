@@ -6,7 +6,6 @@ import { $TIMELINE_LAYER_CONTROLLER_WIDTH } from "@/config/TimelineConfig";
 import { execute as timelineHeaderUpdateScrollXUseCase } from "@/timeline/application/TimelineHeader/usecase/TimelineHeaderUpdateScrollXUseCase";
 import { timelineFrame } from "@/timeline/domain/model/TimelineFrame";
 import {
-    $getLeftFrame,
     $getMaxFrame,
     $getMoveMode,
     $setMoveMode
@@ -37,103 +36,79 @@ export const execute = (event: PointerEvent, loop_mode: boolean = false): void =
         offsetLeft = workSpace.toolAreaState.state === "fixed" ? $TOOL_AERA_WIDTH : 0;
     }
 
-    const baseWidth = $TIMELINE_LAYER_CONTROLLER_WIDTH + offsetLeft;
-    const minPositionX = baseWidth + timelineAreaState.frameWidth;
-    const maxPositionX = timelineHeader.clientWidth + baseWidth - timelineAreaState.frameWidth / 2;
+    const frameWidth   = timelineAreaState.frameWidth + 1;
+    const baseWidth    = $TIMELINE_LAYER_CONTROLLER_WIDTH + offsetLeft;
+    const minPositionX = baseWidth;
+    const maxPositionX = timelineHeader.clientWidth + baseWidth;
 
     // 移動範囲が右側を超えた場合の処理
     if (event.pageX > maxPositionX) {
+        requestAnimationFrame((): void =>
+        {
+            if (loop_mode && !$getMoveMode()) {
+                return ;
+            }
 
-        if (!loop_mode && !$getMoveMode()) {
-
-            const width   = timelineAreaState.frameWidth + 1;
-            const scrollX = Math.floor(workSpace.scene.scrollX / width) * width;
-
-            workSpace.scene.scrollX = scrollX;
-
+            // フレームをプラスに移動
             timelineFrameUpdateFrameElementService(
-                $getLeftFrame() + Math.floor(timelineHeader.clientWidth / width)
+                Math.min(timelineFrame.currentFrame + 1, $getMaxFrame())
             );
 
-        }
+            // 右方向に移動
+            if (!timelineHeaderUpdateScrollXUseCase(frameWidth)) {
 
-        // 右方向に移動
-        if (timelineHeaderUpdateScrollXUseCase(timelineAreaState.frameWidth + 1) === -1) {
+                // 自動移動モード終了
+                $setMoveMode(false);
 
-            // 自動移動モード終了
-            $setMoveMode(false);
+                return ;
+            }
 
-            return ;
-        }
+            if (loop_mode || !$getMoveMode()) {
 
-        // フレームをプラスに移動
-        timelineFrameUpdateFrameElementService(
-            Math.min(timelineFrame.currentFrame + 1, $getMaxFrame())
-        );
-
-        if (loop_mode || !$getMoveMode()) {
-
-            // 自動移動モードを開始にセット
-            $setMoveMode(true);
-
-            requestAnimationFrame((): void =>
-            {
-                if (!$getMoveMode()) {
-                    return ;
+                // 自動移動モードを開始にセット
+                if (!loop_mode) {
+                    $setMoveMode(true);
                 }
+
                 execute(event, true);
-            });
-        }
+            }
+        });
 
         return ;
     }
 
     // 移動範囲が左側を超えた場合の処理
     if (event.pageX < minPositionX) {
-
-        if (!loop_mode && !$getMoveMode()) {
-
-            const width   = timelineAreaState.frameWidth + 1;
-            const scrollX = Math.floor(workSpace.scene.scrollX / width) * width;
-
-            workSpace.scene.scrollX = scrollX;
-
-            timelineFrameUpdateFrameElementService(
-                $getLeftFrame()
-            );
-
-        }
-
-        // 左方向に移動
-        if (timelineHeaderUpdateScrollXUseCase(-(timelineAreaState.frameWidth + 1)) === -1) {
-
-            // 自動移動モード終了
-            $setMoveMode(false);
+        requestAnimationFrame((): void =>
+        {
+            if (loop_mode && !$getMoveMode()) {
+                return ;
+            }
 
             // フレームをマイナスに移動
-            timelineFrameUpdateFrameElementService(1);
+            timelineFrameUpdateFrameElementService(
+                Math.max(timelineFrame.currentFrame - 1, 1)
+            );
 
-            return ;
-        }
+            // 左方向に移動
+            if (!timelineHeaderUpdateScrollXUseCase(-frameWidth)) {
 
-        // フレームをマイナスに移動
-        timelineFrameUpdateFrameElementService(
-            Math.max(timelineFrame.currentFrame - 1, 1)
-        );
+                // 自動移動モード終了
+                $setMoveMode(false);
 
-        if (loop_mode || !$getMoveMode()) {
+                return ;
+            }
 
-            // 自動移動モードを開始にセット
-            $setMoveMode(true);
+            if (loop_mode || !$getMoveMode()) {
 
-            requestAnimationFrame((): void =>
-            {
-                if (!$getMoveMode()) {
-                    return ;
+                // 自動移動モードを開始にセット
+                if (!loop_mode) {
+                    $setMoveMode(true);
                 }
+
                 execute(event, true);
-            });
-        }
+            }
+        });
 
         return ;
     }

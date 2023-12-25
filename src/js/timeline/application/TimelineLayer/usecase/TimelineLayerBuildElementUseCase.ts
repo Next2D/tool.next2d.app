@@ -33,11 +33,11 @@ export const execute = (): void =>
         return ;
     }
 
-    const frameWidth: number   = workSpace.timelineAreaState.frameWidth;
-    const elementCount: number = Math.ceil(timelineHeader.clientWidth / (frameWidth + 1));
+    const frameWidth: number   = workSpace.timelineAreaState.frameWidth + 1;
+    const elementCount: number = Math.ceil(timelineHeader.clientWidth / frameWidth);
     const maxFrame: number     = elementCount + 1;
     const leftFrame: number    = $getLeftFrame();
-    for (let idx = 0; layers.length  > idx; ++idx) {
+    for (let idx = 0; layers.length > idx; ++idx) {
 
         const layer = layers[idx];
 
