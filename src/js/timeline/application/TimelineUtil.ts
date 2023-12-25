@@ -1,8 +1,6 @@
 import { $FIXED_FRAME_COUNT } from "@/config/TimelineConfig";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { timelineHeader } from "../domain/model/TimelineHeader";
-import { timelineFrame } from "../domain/model/TimelineFrame";
-import { timelineLayer } from "../domain/model/TimelineLayer";
 
 /**
  * @description ツールエリアでのマウス状態
@@ -54,8 +52,9 @@ export const $getLeftFrame = (): number =>
 };
 
 /**
- * @description タイムラインの表示されてる最大フレーム数
- *              Maximum number of frames displayed in the timeline.
+ * @description タイムラインの現在表示されてる最大フレーム数（最大フレーム数とは異なる）
+ *              The maximum number of frames currently displayed in the timeline
+ *              (different from the maximum number of frames)
  *
  * @return {number}
  * @method
@@ -80,7 +79,22 @@ export const $getRightFrame = (): number =>
 export const $getMaxFrame = (): number =>
 {
     const workSpace = $getCurrentWorkSpace();
-    return workSpace.scene.totalFrame + $FIXED_FRAME_COUNT - 3;
+    return workSpace.scene.totalFrame + $FIXED_FRAME_COUNT;
+};
+
+/**
+ * @description 移動可能なスクロールxの値
+ *              Moveable scroll x value
+ *
+ * @return {number}
+ * @method
+ * @public
+ */
+export const $getScrollLimitX = (): number =>
+{
+    const workSpace = $getCurrentWorkSpace();
+    const width = workSpace.timelineAreaState.frameWidth + 1;
+    return $getMaxFrame() * width - timelineHeader.clientWidth;
 };
 
 /**

@@ -6,6 +6,7 @@ import { timelineHeader } from "@/timeline/domain/model/TimelineHeader";
 import { $FIXED_FRAME_COUNT } from "@/config/TimelineConfig";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { execute as timelineScrollUpdateXPositionService } from "@/timeline/application/TimelineScroll/service/TimelineScrollUpdateXPositionService";
+import { $getScrollLimitX } from "../../TimelineUtil";
 
 /**
  * @description タイムラインのヘッダーエリアのx座標を移動
@@ -30,8 +31,7 @@ export const execute = (delta: number): number =>
         return -1;
     }
 
-    const limitX = (scene.totalFrame + $FIXED_FRAME_COUNT)
-        * workSpace.timelineAreaState.frameWidth - timelineHeader.clientWidth;
+    const limitX = $getScrollLimitX();
 
     // 最大値より右側には移動しない
     if (scene.scrollX + delta > limitX) {

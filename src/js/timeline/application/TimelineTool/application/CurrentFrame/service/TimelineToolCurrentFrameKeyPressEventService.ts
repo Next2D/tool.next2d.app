@@ -1,6 +1,6 @@
 import { $clamp } from "@/global/GlobalUtil";
 import { execute as timelineFrameUpdateFrameElementService } from "@/timeline/application/TimelineFrame/service/TimelineFrameUpdateFrameElementService";
-import { $getMaxFrame } from "@/timeline/application/TimelineUtil";
+import { $getMaxFrame, $getScrollLimitX } from "@/timeline/application/TimelineUtil";
 import { execute as timelineHeaderUpdateScrollXUseCase } from "@/timeline/application/TimelineHeader/usecase/TimelineHeaderUpdateScrollXUseCase";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 
@@ -35,10 +35,14 @@ export const execute = (event: KeyboardEvent): void =>
 
     const workSpace = $getCurrentWorkSpace();
 
-    workSpace.scene.scrollX = 0;
-    timelineHeaderUpdateScrollXUseCase(
-        (frame - 1) * (workSpace.timelineAreaState.frameWidth + 1)
+    const delta = $clamp(
+        $getScrollLimitX(),
+        0, (frame - 1) * (workSpace.timelineAreaState.frameWidth + 1)
     );
+
+    // リセット
+    workSpace.scene.scrollX = 0;
+    timelineHeaderUpdateScrollXUseCase(delta);
 
     // フレームを更新
     timelineFrameUpdateFrameElementService(frame);
