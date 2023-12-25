@@ -2,8 +2,6 @@ import { $clamp } from "@/global/GlobalUtil";
 import { execute as timelineHeaderBuildElementUseCase } from "@/timeline/application/TimelineHeader/usecase/TimelineHeaderBuildElementUseCase";
 import { execute as timelineLayerBuildElementUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerBuildElementUseCase";
 import { execute as timelineMarkerMovePositionService } from "@/timeline/application/TimelineMarker/service/TimelineMarkerMovePositionService";
-import { timelineHeader } from "@/timeline/domain/model/TimelineHeader";
-import { $FIXED_FRAME_COUNT } from "@/config/TimelineConfig";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { execute as timelineScrollUpdateXPositionService } from "@/timeline/application/TimelineScroll/service/TimelineScrollUpdateXPositionService";
 import { $getScrollLimitX } from "../../TimelineUtil";
