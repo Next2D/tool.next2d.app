@@ -15,3 +15,12 @@ export const $HISTORY_LIST_ID: string = "history-list";
  * @constant
  */
 export const $TIMELINE_TOOL_LAYER_ADD_COMMAD: string = "timieline_tool_layer_add";
+
+/**
+ * @description タイムラインの指定したレイヤー削除履歴の識別コマンド名
+ *              Identifying command name for the specified layer deletion history in the timeline
+ *
+ * @type {string}
+ * @constant
+ */
+export const $TIMELINE_TOOL_LAYER_DELETE_COMMAD: string = "timieline_tool_layer_delete";

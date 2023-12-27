@@ -1,6 +1,6 @@
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import type { Layer } from "@/core/domain/model/Layer";
-import { execute as timelineLayerElementDisplayNoneService } from "@/timeline/application/TimelineLayer/service/TimelineLayerElementUpdateDisplayService";
+import { execute as timelineLayerElementUpdateDisplayService } from "@/timeline/application/TimelineLayer/service/TimelineLayerElementUpdateDisplayService";
 
 /**
  * @description レイヤー追加作業を元に戻す
@@ -19,5 +19,5 @@ export const execute = (layer: Layer, index: number): void =>
     scene.setLayer(layer, index);
 
     // 対象のElementを表示する
-    timelineLayerElementDisplayNoneService(layer.id, "");
+    timelineLayerElementUpdateDisplayService(layer.id, "");
 };

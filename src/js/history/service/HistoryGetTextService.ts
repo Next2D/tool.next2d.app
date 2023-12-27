@@ -1,4 +1,7 @@
-import { $TIMELINE_TOOL_LAYER_ADD_COMMAD } from "@/config/HistoryConfig";
+import {
+    $TIMELINE_TOOL_LAYER_ADD_COMMAD,
+    $TIMELINE_TOOL_LAYER_DELETE_COMMAD
+} from "@/config/HistoryConfig";
 
 /**
  * @description 作業履歴のテキスト情報をコマンド名から識別して返却
@@ -14,6 +17,9 @@ export const execute = (command: string): string =>
 
         case $TIMELINE_TOOL_LAYER_ADD_COMMAD:
             return "レイヤーを追加";
+
+        case $TIMELINE_TOOL_LAYER_DELETE_COMMAD:
+            return "レイヤーを削除";
 
         default:
             break;

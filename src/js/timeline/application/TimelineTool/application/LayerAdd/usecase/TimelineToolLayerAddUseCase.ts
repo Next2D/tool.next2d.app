@@ -19,26 +19,30 @@ export const execute = (): void =>
     const scene = $getCurrentWorkSpace().scene;
 
     const targetLayers = timelineLayer.targetLayers;
-    const targetLayer: Layer = !targetLayers.size
-        ? scene.layers[0] as NonNullable<Layer>
-        : scene.getLayer(targetLayers.keys().next().value) as NonNullable<Layer>;
+    const selectedLayer: Layer | null = !targetLayers.size
+        ? scene.layers[0]
+        : scene.getLayer(targetLayers.keys().next().value);
+
+    if (!selectedLayer) {
+        return ;
+    }
 
     // レイヤーを追加
-    const layer = scene.createLayer();
-    const index = scene.layers.indexOf(targetLayer);
-    scene.setLayer(layer, index);
+    const newLayer = scene.createLayer();
+    const index = scene.layers.indexOf(selectedLayer);
+    scene.setLayer(newLayer, index);
 
     // 作業履歴を登録
-    timelineToolLayerAddHistoryUseCase(layer);
+    timelineToolLayerAddHistoryUseCase(newLayer);
 
     // タイムラインのレイヤーを再描画
-    timelineLayerAddElementUseCase(layer, targetLayer);
+    timelineLayerAddElementUseCase(newLayer, selectedLayer);
 
     // 追加したレイヤーをアクティブ表示にする
-    timelineLayerControllerNormalSelectUseCase(layer.id);
+    timelineLayerControllerNormalSelectUseCase(newLayer.id);
 
     const element: HTMLElement | null = document
-        .getElementById(`layer-id-${layer.id}`);
+        .getElementById(`layer-id-${newLayer.id}`);
 
     if (!element) {
         return ;

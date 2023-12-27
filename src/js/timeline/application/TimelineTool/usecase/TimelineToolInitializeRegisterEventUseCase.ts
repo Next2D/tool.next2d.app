@@ -1,5 +1,6 @@
 import { execute as timelineToolLayerAddInitializeRegisterEventUseCase } from "../application/LayerAdd/usecase/TimelineToolLayerAddInitializeRegisterEventUseCase";
 import { execute as timelineToolCurrentFrameInitializeRegisterEventUseCase } from "../application/CurrentFrame/usecase/TimelineToolCurrentFrameInitializeRegisterEventUseCase";
+import { execute as timelineToolLayerDeleteInitializeRegisterEventUseCase } from "../application/LayerDelete/usecase/TimelineToolLayerDeleteInitializeRegisterEventUseCase";
 
 /**
  * @description タイムラインの各種ツールにイベント登録を行う
@@ -16,4 +17,7 @@ export const execute = (): void =>
 
     // フレームInput Elementのイベント登録
     timelineToolCurrentFrameInitializeRegisterEventUseCase();
+
+    // レイヤー削除のイベント登録
+    timelineToolLayerDeleteInitializeRegisterEventUseCase();
 };

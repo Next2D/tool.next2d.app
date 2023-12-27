@@ -1,6 +1,7 @@
 import { execute as timelineToolLayerAddUseCase } from "@/timeline/application/TimelineTool/application/LayerAdd/usecase/TimelineToolLayerAddUseCase";
 import { execute as timelineLayerArrowDownUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerArrowDownUseCase";
 import { execute as timelineLayerArrowUpUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerArrowUpUseCase";
+import { execute as timelineToolLayerDeleteUseCase } from "@/timeline/application/TimelineTool/application/LayerDelete/usecase/TimelineToolLayerDeleteUseCase";
 import {
     $generateShortcutKey,
     $setShortcut
@@ -26,6 +27,7 @@ export const execute = (): void =>
         timelineToolLayerAddUseCase
     );
 
+    // レイヤー移動
     $setShortcut(
         $generateShortcutKey("ArrowUp", { "ctrl": true }),
         timelineLayerArrowUpUseCase
@@ -33,5 +35,11 @@ export const execute = (): void =>
     $setShortcut(
         $generateShortcutKey("ArrowDown", { "ctrl": true }),
         timelineLayerArrowDownUseCase
+    );
+
+    // レイヤー削除
+    $setShortcut(
+        $generateShortcutKey("Backspace", { "ctrl": true }),
+        timelineToolLayerDeleteUseCase
     );
 };

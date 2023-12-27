@@ -179,6 +179,15 @@ export const $TIMELINE_SCROLL_ID: string = "timeline-scale";
 export const $TIMELINE_LAYER_ADD_ID: string = "timeline-layer-add";
 
 /**
+ * @description タイムラインのレイヤー削除ボタンのElementのID
+ *              ID of the Element of the Delete Layer button on the Timeline
+ *
+ * @type {string}
+ * @constant
+ */
+export const $TIMELINE_LAYER_DELETE_ID: string = "timeline-layer-trash";
+
+/**
  * @description タイムラインの最小幅の数値
  *              Minimum width value for timeline
  *
