@@ -1,7 +1,7 @@
 import { Layer } from "@/core/domain/model/Layer";
 import { execute as timelineLayerControllerUpdateLockIconStyleService } from "../service/TimelineLayerControllerUpdateLockIconStyleService";
 import { execute as timelineLayerControllerUpdateColorStyleService } from "../service/TimelineLayerControllerUpdateColorStyleService";
-import { execute as timelineLayerControllerDisableIconStyleService } from "../service/TimelineLayerControllerDisableIconStyleService";
+import { execute as timelineLayerControllerUpdateDisableIconStyleService } from "../service/TimelineLayerControllerUpdateDisableIconStyleService";
 import { execute as timelineLayerControllerUpdateLightIconStyleService } from "../service/TimelineLayerControllerUpdateLightIconStyleService";
 import { execute as timelineLayerControllerUpdateNameTextStyleService } from "../service/TimelineLayerControllerUpdateNameTextStyleService";
 
@@ -26,7 +26,7 @@ export const execute = (layer: Layer): void =>
     timelineLayerControllerUpdateLightIconStyleService(layer.id, layer.light);
 
     // レイヤーの表示・非表示情報を更新
-    timelineLayerControllerDisableIconStyleService(layer.id, layer.disable);
+    timelineLayerControllerUpdateDisableIconStyleService(layer.id, layer.disable);
 
     // ロックアイコンの表示情報を更新
     timelineLayerControllerUpdateLockIconStyleService(layer.id, layer.lock);

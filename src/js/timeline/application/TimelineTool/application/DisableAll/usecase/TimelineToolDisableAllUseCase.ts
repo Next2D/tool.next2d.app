@@ -2,7 +2,7 @@ import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { $setAllDisableMode } from "@/timeline/application/TimelineUtil";
 import type { Layer } from "@/core/domain/model/Layer";
 import { execute as timelineToolDisableAllGetCurrentModeService } from "../service/TimelineToolDisableAllGetCurrentModeService";
-import { execute as timelineLayerControllerDisableIconStyleService } from "@/timeline/application/TimelineLayerController/service/TimelineLayerControllerDisableIconStyleService";
+import { execute as timelineLayerControllerUpdateDisableIconStyleService } from "@/timeline/application/TimelineLayerController/service/TimelineLayerControllerUpdateDisableIconStyleService";
 
 /**
  * @description タイムライン全体の表示On/Offツールのイベント登録
@@ -36,7 +36,7 @@ export const execute = (event: PointerEvent): void =>
         }
 
         // レイヤーの表示情報とElementを更新
-        timelineLayerControllerDisableIconStyleService(layer.id, mode);
+        timelineLayerControllerUpdateDisableIconStyleService(layer.id, mode);
     }
 
     // モードを更新

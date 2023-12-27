@@ -1,7 +1,7 @@
-import { execute } from "./TimelineLayerControllerDisableIconStyleService";
+import { execute } from "./TimelineLayerControllerUpdateDisableIconStyleService";
 import { $createWorkSpace } from "../../../../core/application/CoreUtil";
 
-describe("TimelineLayerControllerDisableIconStyleServiceTest", () =>
+describe("TimelineLayerControllerUpdateDisableIconStyleServiceTest", () =>
 {
     test("execute test", () =>
     {

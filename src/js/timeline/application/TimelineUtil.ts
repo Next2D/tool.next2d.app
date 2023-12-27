@@ -244,3 +244,77 @@ export const $setAllLockMode = (mode: boolean): void =>
 {
     $allLockMode = mode;
 };
+
+/**
+ * @description タイムラインのロック機能の利用状態の値
+ *              Value of the timeline lock function usage status
+ *
+ * @type {boolean}
+ * @default false
+ * @private
+ */
+let $lockState: boolean = false;
+
+/**
+ * @description タイムラインのロック機能の利用状態の値を返却
+ *              Returns the value of the usage status of the lock function of the timeline
+ *
+ * @return {boolean}
+ * @method
+ * @public
+ */
+export const $getLockState = (): boolean =>
+{
+    return $lockState;
+};
+
+/**
+ * @description タイムラインのロック機能の利用状態の値を更新
+ *              Update timeline lock feature usage status value
+ *
+ * @param  {boolean} state
+ * @return {void}
+ * @method
+ * @public
+ */
+export const $setLockState = (state: boolean): void =>
+{
+    $lockState = state;
+};
+
+/**
+ * @description タイムラインの表示機能の利用状態の値
+ *              Value of the usage status of the timeline display function.
+ *
+ * @type {boolean}
+ * @default false
+ * @private
+ */
+let $disableState: boolean = false;
+
+/**
+ * @description タイムラインの表示機能の利用状態の値を返却
+ *              Returns the value of the usage status of the timeline display function.
+ *
+ * @return {boolean}
+ * @method
+ * @public
+ */
+export const $getDisableState = (): boolean =>
+{
+    return $disableState;
+};
+
+/**
+ * @description タイムラインの表示機能の利用状態の値を更新
+ *              Update the value of the usage status of the timeline display function.
+ *
+ * @param  {boolean} state
+ * @return {void}
+ * @method
+ * @public
+ */
+export const $setDisableState = (state: boolean): void =>
+{
+    $disableState = state;
+};

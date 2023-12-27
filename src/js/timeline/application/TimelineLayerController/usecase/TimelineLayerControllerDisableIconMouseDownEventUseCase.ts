@@ -1,7 +1,13 @@
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import type { Layer } from "@/core/domain/model/Layer";
-import { execute as timelineLayerControllerDisableIconStyleService } from "../service/TimelineLayerControllerDisableIconStyleService";
+import { execute as timelineLayerControllerUpdateDisableIconStyleService } from "../service/TimelineLayerControllerUpdateDisableIconStyleService";
 import { $allHideMenu } from "@/menu/application/MenuUtil";
+import { EventType } from "@/tool/domain/event/EventType";
+import { execute as timelineLayerControllerDisableIconWindowMouseUpService } from "../service/TimelineLayerControllerDisableIconWindowMouseUpService";
+import {
+    $getDisableState,
+    $setDisableState
+} from "../../TimelineUtil";
 
 /**
  * @description レイヤーの表示・非表示アイコンのイベント処理
@@ -24,6 +30,14 @@ export const execute = (event: PointerEvent): void =>
     // メニュー表示があれば全て非表示にする
     $allHideMenu();
 
+    // 連続表示機能を有効にする
+    if (!$getDisableState()) {
+        $setDisableState(true);
+        window.addEventListener(EventType.MOUSE_UP,
+            timelineLayerControllerDisableIconWindowMouseUpService
+        );
+    }
+
     const element: HTMLElement | null = event.target as HTMLElement;
     if (!element) {
         return ;
@@ -42,5 +56,5 @@ export const execute = (event: PointerEvent): void =>
     }
 
     // 反転して登録
-    timelineLayerControllerDisableIconStyleService(layerId, !layer.disable);
+    timelineLayerControllerUpdateDisableIconStyleService(layerId, !layer.disable);
 };
