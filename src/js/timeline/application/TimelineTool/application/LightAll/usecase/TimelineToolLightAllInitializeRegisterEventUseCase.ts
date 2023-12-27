@@ -3,8 +3,8 @@ import { EventType } from "@/tool/domain/event/EventType";
 import { execute as timelineToolLightAllUseCase } from "./TimelineToolLightAllUseCase";
 
 /**
- * @description レイヤーの削除ツールのイベント登録
- *              Delete Layer tool event registration
+ * @description レイヤーの全体のハイライトツールのイベント登録
+ *              Event registration for the entire layer highlight tool
  *
  * @return {void}
  * @method

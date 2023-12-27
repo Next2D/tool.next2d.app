@@ -1,6 +1,10 @@
 import {
     $getMouseState,
-    $setMouseState
+    $setMouseState,
+    $getAllLightMode,
+    $setAllLightMode,
+    $getAllDisableMode,
+    $setAllDisableMode
 } from "./TimelineUtil";
 
 describe("TimelineUtilTest", () =>
@@ -12,5 +16,23 @@ describe("TimelineUtilTest", () =>
         expect($getMouseState()).toBe("down");
         $setMouseState("up");
         expect($getMouseState()).toBe("up");
+    });
+
+    test("$getAllLightMode and $setAllLightMode test", () =>
+    {
+        expect($getAllLightMode()).toBe(false);
+        $setAllLightMode(true);
+        expect($getAllLightMode()).toBe(true);
+        $setAllLightMode(false);
+        expect($getAllLightMode()).toBe(false);
+    });
+
+    test("$getAllDisableMode and $setAllDisableMode test", () =>
+    {
+        expect($getAllDisableMode()).toBe(false);
+        $setAllDisableMode(true);
+        expect($getAllDisableMode()).toBe(true);
+        $setAllDisableMode(false);
+        expect($getAllDisableMode()).toBe(false);
     });
 });

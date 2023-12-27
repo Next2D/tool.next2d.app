@@ -2,6 +2,7 @@ import { execute as timelineToolLayerAddInitializeRegisterEventUseCase } from ".
 import { execute as timelineToolCurrentFrameInitializeRegisterEventUseCase } from "../application/CurrentFrame/usecase/TimelineToolCurrentFrameInitializeRegisterEventUseCase";
 import { execute as timelineToolLayerDeleteInitializeRegisterEventUseCase } from "../application/LayerDelete/usecase/TimelineToolLayerDeleteInitializeRegisterEventUseCase";
 import { execute as timelineToolLightAllInitializeRegisterEventUseCase } from "../application/LightAll/usecase/TimelineToolLightAllInitializeRegisterEventUseCase";
+import { execute as timelineToolDisableAllInitializeRegisterEventUseCase } from "../application/DisableAll/usecase/TimelineToolDisableAllInitializeRegisterEventUseCase";
 
 /**
  * @description タイムラインの各種ツールにイベント登録を行う
@@ -24,4 +25,7 @@ export const execute = (): void =>
 
     // 全体ハイライトボタンのイベント登録
     timelineToolLightAllInitializeRegisterEventUseCase();
+
+    // 全体表示ボタンのイベント登録
+    timelineToolDisableAllInitializeRegisterEventUseCase();
 };

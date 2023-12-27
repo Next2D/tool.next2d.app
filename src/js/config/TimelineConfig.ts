@@ -197,6 +197,15 @@ export const $TIMELINE_LAYER_DELETE_ID: string = "timeline-layer-trash";
 export const $TIMELINE_LAYER_LIGHT_ALL_ID: string = "timeline-layer-light-all";
 
 /**
+ * @description タイムラインの全体非表示ボタンのElementのID
+ *              ID of the Element of the whole hide button on the timeline
+ *
+ * @type {string}
+ * @constant
+ */
+export const $TIMELINE_LAYER_DISABLE_ALL_ID: string = "timeline-layer-disable-all";
+
+/**
  * @description タイムラインの最小幅の数値
  *              Minimum width value for timeline
  *

@@ -170,3 +170,40 @@ export const $setAllLightMode = (mode: boolean): void =>
 {
     $allLightMode = mode;
 };
+
+/**
+ * @description タイムラインの全体の非表示設定の状態値
+ *              State value of the overall hide setting for the timeline
+ *
+ * @type {boolean}
+ * @default false
+ * @private
+ */
+let $allDisableMode: boolean = false;
+
+/**
+ * @description タイムラインの全体の非表設定の現在の状態の値を返却
+ *              Returns the value of the current state of the entire non-table setting of the timeline
+ *
+ * @return {boolean}
+ * @method
+ * @public
+ */
+export const $getAllDisableMode = (): boolean =>
+{
+    return $allDisableMode;
+};
+
+/**
+ * @description タイムラインの全体の非表設定の状態の値を更新
+ *              Update the value of the overall non-table setting status of the timeline
+ *
+ * @param  {boolean} mode
+ * @return {void}
+ * @method
+ * @public
+ */
+export const $setAllDisableMode = (mode: boolean): void =>
+{
+    $allDisableMode = mode;
+};
