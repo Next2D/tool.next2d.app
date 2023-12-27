@@ -3,6 +3,7 @@ import { execute as timelineToolCurrentFrameInitializeRegisterEventUseCase } fro
 import { execute as timelineToolLayerDeleteInitializeRegisterEventUseCase } from "../application/LayerDelete/usecase/TimelineToolLayerDeleteInitializeRegisterEventUseCase";
 import { execute as timelineToolLightAllInitializeRegisterEventUseCase } from "../application/LightAll/usecase/TimelineToolLightAllInitializeRegisterEventUseCase";
 import { execute as timelineToolDisableAllInitializeRegisterEventUseCase } from "../application/DisableAll/usecase/TimelineToolDisableAllInitializeRegisterEventUseCase";
+import { execute as timelineToolLockAllInitializeRegisterEventUseCase } from "../application/LockAll/usecase/TimelineToolLockAllInitializeRegisterEventUseCase";
 
 /**
  * @description タイムラインの各種ツールにイベント登録を行う
@@ -28,4 +29,7 @@ export const execute = (): void =>
 
     // 全体表示ボタンのイベント登録
     timelineToolDisableAllInitializeRegisterEventUseCase();
+
+    // 全体ロックボタンのイベント登録
+    timelineToolLockAllInitializeRegisterEventUseCase();
 };

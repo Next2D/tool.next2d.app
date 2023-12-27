@@ -207,3 +207,40 @@ export const $setAllDisableMode = (mode: boolean): void =>
 {
     $allDisableMode = mode;
 };
+
+/**
+ * @description タイムラインの全体のロック設定の状態値
+ *              State value of the overall lock setting for the timeline
+ *
+ * @type {boolean}
+ * @default false
+ * @private
+ */
+let $allLockMode: boolean = false;
+
+/**
+ * @description タイムラインの全体のロック設定の現在の状態の値を返却
+ *              Returns the value of the current state of the lock setting for the entire timeline
+ *
+ * @return {boolean}
+ * @method
+ * @public
+ */
+export const $getAllLockMode = (): boolean =>
+{
+    return $allLockMode;
+};
+
+/**
+ * @description タイムラインの全体のロック設定の状態の値を更新
+ *              Update the value of the status of the overall lock setting on the timeline
+ *
+ * @param  {boolean} mode
+ * @return {void}
+ * @method
+ * @public
+ */
+export const $setAllLockMode = (mode: boolean): void =>
+{
+    $allLockMode = mode;
+};

@@ -1,12 +1,12 @@
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
-import { $setAllDisableMode } from "@/timeline/application/TimelineUtil";
+import { $setAllLockMode } from "@/timeline/application/TimelineUtil";
+import { execute as timelineLayerControllerUpdateLockIconStyleService } from "@/timeline/application/TimelineLayerController/service/TimelineLayerControllerUpdateLockIconStyleService";
+import { execute as timelineToolLockAllGetCurrentModeService } from "../service/TimelineToolLockAllGetCurrentModeService";
 import type { Layer } from "@/core/domain/model/Layer";
-import { execute as timelineToolDisableAllGetCurrentModeService } from "../service/TimelineToolDisableAllGetCurrentModeService";
-import { execute as timelineLayerControllerDisableIconStyleService } from "@/timeline/application/TimelineLayerController/service/TimelineLayerControllerDisableIconStyleService";
 
 /**
- * @description タイムライン全体の表示On/Offツールのイベント登録
- *              Event registration for the entire timeline display On/Off tool
+ * @description タイムライン全体のロックツールのイベント登録
+ *              Timeline-wide lock tool event registration
  *
  * @param  {PointerEvent} event
  * @return {void}
@@ -24,7 +24,7 @@ export const execute = (event: PointerEvent): void =>
     event.preventDefault();
 
     // レイヤーの状態からモードを取得する
-    const mode = timelineToolDisableAllGetCurrentModeService();
+    const mode = timelineToolLockAllGetCurrentModeService();
 
     // 全てのレイヤーのモードを切り替える
     const layers = $getCurrentWorkSpace().scene.layers;
@@ -35,10 +35,10 @@ export const execute = (event: PointerEvent): void =>
             continue;
         }
 
-        // レイヤーの表示情報とElementを更新
-        timelineLayerControllerDisableIconStyleService(layer.id, mode);
+        // レイヤーのロック情報とElementを更新
+        timelineLayerControllerUpdateLockIconStyleService(layer.id, mode);
     }
 
     // モードを更新
-    $setAllDisableMode(mode);
+    $setAllLockMode(mode);
 };

@@ -4,7 +4,9 @@ import {
     $getAllLightMode,
     $setAllLightMode,
     $getAllDisableMode,
-    $setAllDisableMode
+    $setAllDisableMode,
+    $getAllLockMode,
+    $setAllLockMode
 } from "./TimelineUtil";
 
 describe("TimelineUtilTest", () =>
@@ -34,5 +36,14 @@ describe("TimelineUtilTest", () =>
         expect($getAllDisableMode()).toBe(true);
         $setAllDisableMode(false);
         expect($getAllDisableMode()).toBe(false);
+    });
+
+    test("$getAllLockMode and $setAllLockMode test", () =>
+    {
+        expect($getAllLockMode()).toBe(false);
+        $setAllLockMode(true);
+        expect($getAllLockMode()).toBe(true);
+        $setAllLockMode(false);
+        expect($getAllLockMode()).toBe(false);
     });
 });

@@ -206,6 +206,15 @@ export const $TIMELINE_LAYER_LIGHT_ALL_ID: string = "timeline-layer-light-all";
 export const $TIMELINE_LAYER_DISABLE_ALL_ID: string = "timeline-layer-disable-all";
 
 /**
+ * @description タイムラインの全体ロックボタンのElementのID
+ *              ID of the Element of the overall lock button on the timeline
+ *
+ * @type {string}
+ * @constant
+ */
+export const $TIMELINE_LAYER_LOCK_ALL_ID: string = "timeline-layer-lock-all";
+
+/**
  * @description タイムラインの最小幅の数値
  *              Minimum width value for timeline
  *
