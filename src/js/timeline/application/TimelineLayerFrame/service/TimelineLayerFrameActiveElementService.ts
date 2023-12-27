@@ -22,7 +22,9 @@ export const execute = (element: HTMLElement): void =>
     const frames = targetLayers.get(layerId) as NonNullable<Array<number>>;
 
     const frame = parseInt(element.dataset.frame as NonNullable<string>);
-    frames.push(frame);
+    if (frames.indexOf(frame) === -1) {
+        frames.push(frame);
+    }
 
     // styleを更新
     element.classList.add("frame-active");

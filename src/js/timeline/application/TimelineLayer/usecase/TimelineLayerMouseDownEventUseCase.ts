@@ -1,4 +1,5 @@
 import { $allHideMenu } from "@/menu/application/MenuUtil";
+import { execute as timelineLayerActiveElementService } from "../service/TimelineLayerActiveElementService";
 
 /**
  * @description レイヤーのコントローラーエリアのマウスダウン処理関数
@@ -27,5 +28,5 @@ export const execute = (event: PointerEvent): void =>
     }
 
     // フレームをアクティブに更新
-    element.classList.add("active");
+    timelineLayerActiveElementService(element);
 };
