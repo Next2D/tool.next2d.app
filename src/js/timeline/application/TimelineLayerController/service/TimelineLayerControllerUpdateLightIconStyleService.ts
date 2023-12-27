@@ -5,7 +5,7 @@ import type { Layer } from "@/core/domain/model/Layer";
  * @description 指定のLayer IDのハイライト情報を更新して、表示Elementのclassを更新
  *              Update the highlight information of the specified Layer ID and update the class of the display Element
  *
- * @param  {number} layer_id
+ * @param  {number}  layer_id
  * @param  {boolean} light
  * @return {void}
  * @method

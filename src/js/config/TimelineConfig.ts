@@ -188,6 +188,15 @@ export const $TIMELINE_LAYER_ADD_ID: string = "timeline-layer-add";
 export const $TIMELINE_LAYER_DELETE_ID: string = "timeline-layer-trash";
 
 /**
+ * @description タイムラインの全体ハイライトボタンのElementのID
+ *              ID of the Element of the overall highlight button on the timeline
+ *
+ * @type {string}
+ * @constant
+ */
+export const $TIMELINE_LAYER_LIGHT_ALL_ID: string = "timeline-layer-light-all";
+
+/**
  * @description タイムラインの最小幅の数値
  *              Minimum width value for timeline
  *

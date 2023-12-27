@@ -76,8 +76,7 @@ export const execute = (): void =>
         return ;
     }
 
-    // 削除した近辺にレイヤーがあれば選択状にして、
+    // 削除した近辺にレイヤーがあれば選択状にして、Elementをアクティブに更新する
     timelineLayerControllerNormalSelectUseCase(layer.id);
-    
     timelineLayerActiveElementService(element);
 };

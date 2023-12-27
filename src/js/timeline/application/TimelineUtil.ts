@@ -133,3 +133,40 @@ export const $setMoveMode = (move_mode: boolean): void =>
 {
     $moveMode = move_mode;
 };
+
+/**
+ * @description タイムラインの全体のハイライト設定の状態値
+ *              State value of the overall highlight setting for the timeline
+ *
+ * @type {boolean}
+ * @default false
+ * @private
+ */
+let $allLightMode: boolean = false;
+
+/**
+ * @description タイムラインの全体のハイライト設定の現在の状態の値を返却
+ *              Returns the value of the current state of the highlight settings for the entire timeline
+ *
+ * @return {boolean}
+ * @method
+ * @public
+ */
+export const $getAllLightMode = (): boolean =>
+{
+    return $allLightMode;
+};
+
+/**
+ * @description タイムラインの全体のハイライト設定の状態の値を更新
+ *              Update the value of the overall highlighting status of the timeline
+ *
+ * @param  {boolean} mode
+ * @return {void}
+ * @method
+ * @public
+ */
+export const $setAllLightMode = (mode: boolean): void =>
+{
+    $allLightMode = mode;
+};
