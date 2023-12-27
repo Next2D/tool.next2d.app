@@ -8,6 +8,7 @@ import { execute as timelineLayerControllerNameTextKeyPressEventService } from "
 import { execute as timelineLayerControllerLayerIconMouseDownEventUseCase } from "./TimelineLayerControllerLayerIconMouseDownEventUseCase";
 import { execute as timelineLayerControllerMouseDownEventUseCase } from "./TimelineLayerControllerMouseDownEventUseCase";
 import { execute as timelineLayerControllerDisableIconMouseOverUseCase } from "./TimelineLayerControllerDisableIconMouseOverUseCase";
+import { execute as timelineLayerControllerLockIconMouseOverUseCase } from "./TimelineLayerControllerLockIconMouseOverUseCase";
 import { EventType } from "@/tool/domain/event/EventType";
 
 /**
@@ -103,6 +104,11 @@ export const execute = (element: HTMLElement): void =>
         // マウスダウンのイベントを登録
         lockIconElement.addEventListener(EventType.MOUSE_DOWN,
             timelineLayerControllerLockIconMouseDownEventUseCase
+        );
+
+        // マウスオーバーのイベントを登録
+        lockIconElement.addEventListener(EventType.MOUSE_OVER,
+            timelineLayerControllerLockIconMouseOverUseCase
         );
     }
 };

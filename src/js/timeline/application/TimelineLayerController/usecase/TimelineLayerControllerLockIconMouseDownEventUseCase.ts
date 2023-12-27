@@ -2,6 +2,9 @@ import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import type { Layer } from "@/core/domain/model/Layer";
 import { execute as timelineLayerControllerUpdateLockIconStyleService } from "../service/TimelineLayerControllerUpdateLockIconStyleService";
 import { $allHideMenu } from "@/menu/application/MenuUtil";
+import { $getLockState, $setLockState } from "../../TimelineUtil";
+import { EventType } from "@/tool/domain/event/EventType";
+import { execute as timelineLayerControllerLockIconWindowMouseUpService } from "../service/TimelineLayerControllerLockIconWindowMouseUpService";
 
 /**
  * @description レイヤーのロックアイコンのイベント処理
@@ -23,6 +26,14 @@ export const execute = (event: PointerEvent): void =>
 
     // メニュー表示があれば全て非表示にする
     $allHideMenu();
+
+    // 連続表示機能を有効にする
+    if (!$getLockState()) {
+        $setLockState(true);
+        window.addEventListener(EventType.MOUSE_UP,
+            timelineLayerControllerLockIconWindowMouseUpService
+        );
+    }
 
     const element: HTMLElement | null = event.target as HTMLElement;
     if (!element) {
