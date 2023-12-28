@@ -99,6 +99,23 @@ export const $getScrollLimitX = (): number =>
 };
 
 /**
+ * @description 移動してるx座標からレイヤーの表示ポジションを返却
+ *              Returns the display position of the layer from the moving x-coordinate
+ *
+ * @return {number}
+ * @method
+ * @public
+ */
+export const $getTopIndex = (): number =>
+{
+    const workSpace = $getCurrentWorkSpace();
+    const scrollY = workSpace.scene.scrollY;
+    return scrollY
+        ? Math.ceil(scrollY / workSpace.timelineAreaState.frameHeight)
+        : 0;
+};
+
+/**
  * @description 移動可能なスクロールyの値
  *              Moveable scroll y value
  *

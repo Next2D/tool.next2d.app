@@ -17,13 +17,17 @@ export const execute = (): void =>
         .getElementById($TIMELINE_ADJUSTMENT_X_ID);
 
     if (xAdjElement) {
-        xAdjElement.addEventListener(EventType.MOUSE_DOWN, timelineAdjustmentXRegisterEventUseCase);
+        xAdjElement.addEventListener(EventType.MOUSE_DOWN,
+            timelineAdjustmentXRegisterEventUseCase
+        );
     }
 
     const yAdjElement: HTMLElement | null = document
         .getElementById($TIMELINE_ADJUSTMENT_Y_ID);
 
     if (yAdjElement) {
-        yAdjElement.addEventListener(EventType.MOUSE_DOWN, timelineAdjustmentYRegisterEventUseCase);
+        yAdjElement.addEventListener(EventType.MOUSE_DOWN,
+            timelineAdjustmentYRegisterEventUseCase
+        );
     }
 };

@@ -1,13 +1,15 @@
 import { $TIMELINE_CONTENT_ID } from "@/config/TimelineConfig";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
-import { $getLeftFrame } from "../../TimelineUtil";
 import { timelineLayer } from "@/timeline/domain/model/TimelineLayer";
 import { timelineHeader } from "@/timeline/domain/model/TimelineHeader";
-
 import { execute as timelineLayerControllerUpdateElementStyleUseCase } from "../../TimelineLayerController/usecase/TimelineLayerControllerUpdateElementStyleUseCase";
 import { execute as timelineLayerFrameCreateContentComponentService } from "@/timeline/application/TimelineLayerFrame/service/TimelineLayerFrameCreateContentComponentService";
 import { execute as timelineLayerFrameUpdateStyleService } from "@/timeline/application/TimelineLayerFrame/service/TimelineLayerFrameUpdateStyleService";
 import { execute as timelineLayerCreateUseCase } from "./TimelineLayerCreateUseCase";
+import {
+    $getLeftFrame,
+    $getTopIndex
+} from "../../TimelineUtil";
 
 /**
  * @description 指定のMoiveClipのLayerからタイムラインを生成
@@ -33,10 +35,14 @@ export const execute = (): void =>
         return ;
     }
 
+    const frameHeight: number  = workSpace.timelineAreaState.frameHeight;
     const frameWidth: number   = workSpace.timelineAreaState.frameWidth + 1;
     const elementCount: number = Math.ceil(timelineHeader.clientWidth / frameWidth);
     const maxFrame: number     = elementCount + 1;
     const leftFrame: number    = $getLeftFrame();
+    const topIndex: number     = $getTopIndex();
+
+    let currentHeight: number = 0;
     for (let idx = 0; layers.length > idx; ++idx) {
 
         const layer = layers[idx];
@@ -51,6 +57,9 @@ export const execute = (): void =>
 
             // フレーム側のElementをを変数にセット
             const element = parent.lastElementChild as HTMLElement;
+            if (topIndex > idx || currentHeight > timelineLayer.clientHeight) {
+                element.style.display = "none";
+            }
             frameControllerElement = element.lastElementChild as NonNullable<HTMLElement>;
 
         } else {
@@ -69,7 +78,11 @@ export const execute = (): void =>
             }
 
             // 表示
-            element.style.display = "";
+            if (topIndex > idx || currentHeight > timelineLayer.clientHeight) {
+                element.style.display = "none";
+            } else {
+                element.style.display = "";
+            }
         }
 
         if (!frameControllerElement) {
@@ -81,5 +94,9 @@ export const execute = (): void =>
 
         // Layerの状態に合わせてstyle, classの状態を更新
         timelineLayerControllerUpdateElementStyleUseCase(layer);
+
+        if (idx >= topIndex) {
+            currentHeight += frameHeight;
+        }
     }
 };

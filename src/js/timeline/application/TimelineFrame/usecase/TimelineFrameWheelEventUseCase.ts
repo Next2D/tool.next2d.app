@@ -25,35 +25,32 @@ export const execute = (event: WheelEvent): void =>
         return ;
     }
 
-    requestAnimationFrame((): void =>
-    {
-        const workSpace = $getCurrentWorkSpace();
+    const workSpace = $getCurrentWorkSpace();
 
-        // フレームの幅を更新
-        const timelineAreaState = workSpace.timelineAreaState;
-        if ($TIMELINE_MIN_FRAME_WIDTH_SIZE > timelineAreaState.frameWidth + deltaY) {
-            return ;
-        }
+    // フレームの幅を更新
+    const timelineAreaState = workSpace.timelineAreaState;
+    if ($TIMELINE_MIN_FRAME_WIDTH_SIZE > timelineAreaState.frameWidth + deltaY) {
+        return ;
+    }
 
-        if (timelineAreaState.frameWidth + deltaY > $TIMELINE_MAX_FRAME_WIDTH_SIZE) {
-            return ;
-        }
+    if (timelineAreaState.frameWidth + deltaY > $TIMELINE_MAX_FRAME_WIDTH_SIZE) {
+        return ;
+    }
 
-        const width: number = timelineAreaState.frameWidth + deltaY;
+    const width: number = timelineAreaState.frameWidth + deltaY;
 
-        // フレーム幅を更新
-        timelineFrameUpdateFrameWidthService(width);
+    // フレーム幅を更新
+    timelineFrameUpdateFrameWidthService(width);
 
-        // マーカーの幅を更新
-        timelineMarkerUpdateWidthService(width);
+    // マーカーの幅を更新
+    timelineMarkerUpdateWidthService(width);
 
-        // マーカー位置を更新
-        timelineMarkerMovePositionService();
+    // マーカー位置を更新
+    timelineMarkerMovePositionService();
 
-        // ヘッダーを再描画
-        timelineHeaderWindowResizeUseCase();
+    // ヘッダーを再描画
+    timelineHeaderWindowResizeUseCase();
 
-        // レイヤーを再描画
-        timelineLayerWindowResizeUseCase();
-    });
+    // レイヤーを再描画
+    timelineLayerWindowResizeUseCase();
 };

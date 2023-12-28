@@ -3,6 +3,7 @@ import { execute as timelineLayerBuildElementUseCase } from "../../TimelineLayer
 import { execute as timelineLayerUpdateClientHeightService } from "@/timeline/application/TimelineLayer/service/TimelineLayerUpdateClientHeightService";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { execute as timelineScrollUpdateHeightService } from "@/timeline/application/TimelineScroll/service/TimelineScrollUpdateHeightService";
+import { execute as timelineScrollUpdateYPositionService } from "@/timeline/application/TimelineScroll/service/TimelineScrollUpdateYPositionService";
 
 /**
  * @description タイムラインの高さを調整
@@ -53,10 +54,14 @@ export const execute = (event: PointerEvent): void =>
         style.setProperty("--timeline-logic-height", `${height}px`);
 
         // タイムエリアの高さを更新
+        // fixed logic
         timelineLayerUpdateClientHeightService();
 
         // タイムラインのスクロールの高さを更新
         timelineScrollUpdateHeightService();
+
+        // スクロールのy座標の更新
+        timelineScrollUpdateYPositionService();
 
         // タイムラインのレイヤーを再描画
         timelineLayerBuildElementUseCase();

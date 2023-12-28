@@ -8,6 +8,8 @@ import { execute as timelineLayerFrameClearSelectedElementService } from "@/time
 import { execute as timelineLayerControllerNormalSelectUseCase } from "@/timeline/application/TimelineLayerController/usecase/TimelineLayerControllerNormalSelectUseCase";
 import { execute as timelineLayerActiveElementService } from "@/timeline/application/TimelineLayer/service/TimelineLayerActiveElementService";
 import { execute as timelineScrollUpdateHeightService } from "@/timeline/application/TimelineScroll/service/TimelineScrollUpdateHeightService";
+import { execute as timelineScrollUpdateYPositionService } from "@/timeline/application/TimelineScroll/service/TimelineScrollUpdateYPositionService";
+import { execute as timelineLayerBuildElementUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerBuildElementUseCase";
 
 /**
  * @description タイムラインの指定レイヤーを削除する
@@ -56,6 +58,12 @@ export const execute = (): void =>
 
     // タイムラインのyスクロールの高さを更新
     timelineScrollUpdateHeightService();
+
+    // y座標のスクロール位置を更新
+    timelineScrollUpdateYPositionService();
+
+    // タイムラインを再描画
+    timelineLayerBuildElementUseCase();
 
     // 選択したフレームを解放
     timelineLayerFrameClearSelectedElementService();

@@ -1,5 +1,7 @@
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { execute as timelineHeaderWindowResizeUseCase } from "./TimelineLayerWindowResizeUseCase";
+import { $TIMELINE_CONTENT_ID } from "@/config/TimelineConfig";
+import { execute as timelineLayerWheelEventUseCase } from "./TimelineLayerWheelEventUseCase";
 
 /**
  * @description タイムラインのヘッダー初期起動ユースケース
@@ -22,4 +24,17 @@ export const execute = (): void =>
 
         requestAnimationFrame(timelineHeaderWindowResizeUseCase);
     });
+
+    const element: HTMLElement | null = document
+        .getElementById($TIMELINE_CONTENT_ID);
+
+    if (!element) {
+        return ;
+    }
+
+    // スクロールイベントを登録
+    element.addEventListener("wheel",
+        timelineLayerWheelEventUseCase
+    );
+
 };

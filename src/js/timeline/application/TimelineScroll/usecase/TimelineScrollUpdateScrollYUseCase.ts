@@ -2,6 +2,7 @@ import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { $clamp } from "@/global/GlobalUtil";
 import { $getScrollLimitY } from "../../TimelineUtil";
 import { execute as timelineScrollUpdateYPositionService } from "../service/TimelineScrollUpdateYPositionService";
+import { execute as timelineLayerBuildElementUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerBuildElementUseCase";
 
 /**
  * @description タイムラインのy座標を移動
@@ -38,6 +39,9 @@ export const execute = (delta: number): boolean =>
 
     // y座標を移動
     timelineScrollUpdateYPositionService();
+
+    // タイムラインを再描画
+    timelineLayerBuildElementUseCase();
 
     return true;
 };
