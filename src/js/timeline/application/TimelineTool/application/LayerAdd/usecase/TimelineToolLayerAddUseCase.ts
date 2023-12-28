@@ -5,6 +5,7 @@ import { timelineLayer } from "@/timeline/domain/model/TimelineLayer";
 import type { Layer } from "@/core/domain/model/Layer";
 import { execute as timelineLayerControllerNormalSelectUseCase } from "@/timeline/application/TimelineLayerController/usecase/TimelineLayerControllerNormalSelectUseCase";
 import { execute as timelineLayerActiveElementService } from "@/timeline/application/TimelineLayer/service/TimelineLayerActiveElementService";
+import { execute as timelineScrollUpdateHeightService } from "@/timeline/application/TimelineScroll/service/TimelineScrollUpdateHeightService";
 
 /**
  * @description タイムラインに新規レイヤーを追加する
@@ -34,6 +35,9 @@ export const execute = (): void =>
 
     // 作業履歴を登録
     timelineToolLayerAddHistoryUseCase(newLayer);
+
+    // タイムラインのyスクロールの高さを更新
+    timelineScrollUpdateHeightService();
 
     // タイムラインのレイヤーを再描画
     timelineLayerAddElementUseCase(newLayer, selectedLayer);

@@ -2,6 +2,7 @@ import { $TIMELINE_MIN_HEIGHT, $TIMELINE_ID } from "@/config/TimelineConfig";
 import { execute as timelineLayerBuildElementUseCase } from "../../TimelineLayer/usecase/TimelineLayerBuildElementUseCase";
 import { execute as timelineLayerUpdateClientHeightService } from "@/timeline/application/TimelineLayer/service/TimelineLayerUpdateClientHeightService";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
+import { execute as timelineScrollUpdateHeightService } from "@/timeline/application/TimelineScroll/service/TimelineScrollUpdateHeightService";
 
 /**
  * @description タイムラインの高さを調整
@@ -54,7 +55,8 @@ export const execute = (event: PointerEvent): void =>
         // タイムエリアの高さを更新
         timelineLayerUpdateClientHeightService();
 
-        // TODO レイヤーエリアを再描画
+        // タイムラインのスクロールの高さを更新
+        timelineScrollUpdateHeightService();
 
         // タイムラインのレイヤーを再描画
         timelineLayerBuildElementUseCase();

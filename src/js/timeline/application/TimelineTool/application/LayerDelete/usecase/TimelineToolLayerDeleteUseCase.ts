@@ -7,6 +7,7 @@ import { execute as timelineLayerClearSelectedLayerService } from "@/timeline/ap
 import { execute as timelineLayerFrameClearSelectedElementService } from "@/timeline/application/TimelineLayerFrame/service/TimelineLayerFrameClearSelectedElementService";
 import { execute as timelineLayerControllerNormalSelectUseCase } from "@/timeline/application/TimelineLayerController/usecase/TimelineLayerControllerNormalSelectUseCase";
 import { execute as timelineLayerActiveElementService } from "@/timeline/application/TimelineLayer/service/TimelineLayerActiveElementService";
+import { execute as timelineScrollUpdateHeightService } from "@/timeline/application/TimelineScroll/service/TimelineScrollUpdateHeightService";
 
 /**
  * @description タイムラインの指定レイヤーを削除する
@@ -52,6 +53,9 @@ export const execute = (): void =>
         // レイヤー削除を実行
         scene.removeLayer(targetLayer);
     }
+
+    // タイムラインのyスクロールの高さを更新
+    timelineScrollUpdateHeightService();
 
     // 選択したフレームを解放
     timelineLayerFrameClearSelectedElementService();

@@ -6,8 +6,18 @@ import {
     $getAllDisableMode,
     $setAllDisableMode,
     $getAllLockMode,
-    $setAllLockMode
+    $setAllLockMode,
+    $getMaxFrame,
+    $getLeftFrame,
+    $getRightFrame,
+    $getScrollLimitX,
+    $getScrollLimitY
 } from "./TimelineUtil";
+import {
+    $createWorkSpace,
+    $getCurrentWorkSpace
+} from "../../core/application/CoreUtil";
+import { timelineHeader } from "../../timeline/domain/model/TimelineHeader";
 
 describe("TimelineUtilTest", () =>
 {
@@ -45,5 +55,37 @@ describe("TimelineUtilTest", () =>
         expect($getAllLockMode()).toBe(true);
         $setAllLockMode(false);
         expect($getAllLockMode()).toBe(false);
+    });
+
+    test("$getMaxFrame test", () =>
+    {
+        $createWorkSpace();
+        expect($getMaxFrame()).toBe(600);
+    });
+
+    test("$getLeftFrame and $getRightFrame test", () =>
+    {
+        timelineHeader.clientWidth = 600;
+        const workSpace = $getCurrentWorkSpace() || $createWorkSpace();
+        expect($getLeftFrame()).toBe(1);
+        expect($getRightFrame()).toBe(44);
+
+        workSpace.scene.scrollX = 1400;
+        expect(workSpace.scene.scrollX).toBe(1400);
+        expect($getLeftFrame()).toBe(101);
+        expect($getRightFrame()).toBe(144);
+    });
+
+    test("$getScrollLimitX test", () =>
+    {
+        timelineHeader.clientWidth = 0;
+        const workSpace = $getCurrentWorkSpace() || $createWorkSpace();
+        expect($getScrollLimitX()).toBe(8400);
+    });
+
+    test("$getScrollLimitY test", () =>
+    {
+        const workSpace = $getCurrentWorkSpace() || $createWorkSpace();
+        expect($getScrollLimitY()).toBe(30);
     });
 });

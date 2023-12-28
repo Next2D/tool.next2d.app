@@ -7,8 +7,8 @@ import { execute as timelineScrollUpdateXPositionService } from "@/timeline/appl
 import { $getScrollLimitX } from "../../TimelineUtil";
 
 /**
- * @description タイムラインのヘッダーエリアのx座標を移動
- *              Move the x-coordinate of the header area of the timeline
+ * @description タイムラインのx座標を移動
+ *              Move the x-coordinate of the timeline
  *
  * @param  {number} delta
  * @return {boolean}

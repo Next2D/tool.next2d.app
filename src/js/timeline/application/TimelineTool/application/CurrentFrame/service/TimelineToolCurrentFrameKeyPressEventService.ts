@@ -1,7 +1,7 @@
 import { $clamp } from "@/global/GlobalUtil";
 import { execute as timelineFrameUpdateFrameElementService } from "@/timeline/application/TimelineFrame/service/TimelineFrameUpdateFrameElementService";
 import { $getMaxFrame, $getScrollLimitX } from "@/timeline/application/TimelineUtil";
-import { execute as timelineHeaderUpdateScrollXUseCase } from "@/timeline/application/TimelineHeader/usecase/TimelineHeaderUpdateScrollXUseCase";
+import { execute as timelineScrollUpdateScrollXUseCase } from "@/timeline/application/TimelineScroll/usecase/TimelineScrollUpdateScrollXUseCase";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { execute as timelineMarkerMovePositionService } from "@/timeline/application/TimelineMarker/service/TimelineMarkerMovePositionService";
 
@@ -44,9 +44,9 @@ export const execute = (event: KeyboardEvent): void =>
     // リセット
     if (delta) {
         workSpace.scene.scrollX = 0;
-        timelineHeaderUpdateScrollXUseCase(delta);
+        timelineScrollUpdateScrollXUseCase(delta);
     } else {
-        timelineHeaderUpdateScrollXUseCase(-workSpace.scene.scrollX);
+        timelineScrollUpdateScrollXUseCase(-workSpace.scene.scrollX);
     }
 
     // フレームを更新

@@ -1,6 +1,13 @@
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { timelineLayer } from "@/timeline/domain/model/TimelineLayer";
 import { $TIMELINE_SCROLL_BAR_Y_ID } from "@/config/TimelineConfig";
+import { $getScrollLimitY } from "../../TimelineUtil";
+
+/**
+ * @type {string}
+ * @private
+ */
+let display: "" | "none" = "none";
 
 /**
  * @description y移動するスクロールバーの高さを更新
@@ -24,7 +31,7 @@ export const execute = (): void =>
     const stopCount: number = Math.floor(timelineLayer.clientHeight / timelineAreaState.frameHeight);
 
     const scene = workSpace.scene;
-    if (scene.layers.size > stopCount) {
+    if (scene.layers.length > stopCount) {
 
         // 最小表示の高さ
         const minHeight = Math.floor(stopCount * timelineAreaState.frameHeight);
@@ -33,7 +40,7 @@ export const execute = (): void =>
         const spaceHeight = timelineLayer.clientHeight - minHeight;
 
         // スクロールバーの高さを算出
-        const scale  = timelineLayer.clientHeight / (scene.layers.size * timelineAreaState.frameHeight);
+        const scale  = timelineLayer.clientHeight / (scene.layers.length * timelineAreaState.frameHeight);
         const height = Math.floor((timelineLayer.clientHeight - spaceHeight) * scale);
 
         // 2pxはborderの1pxの上下の分
@@ -45,12 +52,33 @@ export const execute = (): void =>
                 `${height - 2}px`
             );
 
-        // 高さを表示
-        element.style.display = "";
+        // スクロール位置が見切れていたら補正
+        const limitY = $getScrollLimitY();
+        if (scene.scrollY > limitY) {
+            scene.scrollY = limitY;
+        }
+
+        // elementを更新
+        if (display === "none") {
+
+            display = "";
+
+            // 高さを表示
+            element.style.display = "";
+        }
 
     } else {
-        // 非表示にしてスクロール位置を初期化
-        element.style.display = "none";
+
+        // 初期値に移動
         scene.scrollY = 0;
+
+        // elementを更新
+        if (!display) {
+
+            display = "none";
+
+            // 非表示にしてスクロール位置を初期化
+            element.style.display = "none";
+        }
     }
 };

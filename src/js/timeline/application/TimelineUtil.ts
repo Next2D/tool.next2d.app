@@ -1,6 +1,7 @@
 import { $FIXED_FRAME_COUNT } from "@/config/TimelineConfig";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { timelineHeader } from "../domain/model/TimelineHeader";
+import { timelineLayer } from "../domain/model/TimelineLayer";
 
 /**
  * @description ツールエリアでのマウス状態
@@ -95,6 +96,21 @@ export const $getScrollLimitX = (): number =>
     const workSpace = $getCurrentWorkSpace();
     const width = workSpace.timelineAreaState.frameWidth + 1;
     return $getMaxFrame() * width - timelineHeader.clientWidth;
+};
+
+/**
+ * @description 移動可能なスクロールyの値
+ *              Moveable scroll y value
+ *
+ * @return {number}
+ * @method
+ * @public
+ */
+export const $getScrollLimitY = (): number =>
+{
+    const workSpace = $getCurrentWorkSpace();
+    const height = workSpace.timelineAreaState.frameHeight;
+    return workSpace.scene.layers.length * height - timelineLayer.clientHeight;
 };
 
 /**

@@ -1,4 +1,4 @@
-import { execute as timelineHeaderUpdateScrollXUseCase } from "@/timeline/application/TimelineHeader/usecase/TimelineHeaderUpdateScrollXUseCase";
+import { execute as timelineScrollUpdateScrollXUseCase } from "@/timeline/application/TimelineScroll/usecase/TimelineScrollUpdateScrollXUseCase";
 import { execute as timelineFrameWheelEventUseCase } from "@/timeline/application/TimelineFrame/usecase/TimelineFrameWheelEventUseCase";
 /**
  * @description タイムラインのヘッダーエリアでのWheelEventの実行関数
@@ -30,7 +30,7 @@ export const execute = (event: WheelEvent): void =>
             requestAnimationFrame((): void =>
             {
                 // 横スクロールして再描画
-                timelineHeaderUpdateScrollXUseCase(event.deltaX);
+                timelineScrollUpdateScrollXUseCase(event.deltaX);
             });
         }
     }

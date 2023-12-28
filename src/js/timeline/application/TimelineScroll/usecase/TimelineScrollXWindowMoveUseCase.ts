@@ -1,5 +1,5 @@
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
-import { execute as timelineHeaderUpdateScrollXUseCase } from "@/timeline/application/TimelineHeader/usecase/TimelineHeaderUpdateScrollXUseCase";
+import { execute as timelineScrollUpdateScrollXUseCase } from "@/timeline/application/TimelineScroll/usecase/TimelineScrollUpdateScrollXUseCase";
 import { timelineHeader } from "@/timeline/domain/model/TimelineHeader";
 import { $getMaxFrame } from "../../TimelineUtil";
 
@@ -29,6 +29,6 @@ export const execute = (event: PointerEvent): void =>
         const width = workSpace.timelineAreaState.frameWidth + 1;
         const scale: number = clientWidth / ($getMaxFrame() * width);
 
-        timelineHeaderUpdateScrollXUseCase(Math.floor(event.movementX / scale));
+        timelineScrollUpdateScrollXUseCase(Math.floor(event.movementX / scale));
     });
 };

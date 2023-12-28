@@ -1,5 +1,5 @@
 import { EventType } from "@/tool/domain/event/EventType";
-import { execute as timelineScrollXWindowMoveService } from "../service/TimelineScrollXWindowMoveService";
+import { execute as timelineScrollXWindowMoveUseCase } from "./TimelineScrollXWindowMoveUseCase";
 import { execute as timelineScrollXWindowMouseUpUseCase } from "../usecase/TimelineScrollXWindowMouseUpUseCase";
 
 /**
@@ -16,6 +16,6 @@ export const execute = (event: PointerEvent): void =>
     // 親のイベントを中止
     event.stopPropagation();
 
-    window.addEventListener(EventType.MOUSE_MOVE, timelineScrollXWindowMoveService);
+    window.addEventListener(EventType.MOUSE_MOVE, timelineScrollXWindowMoveUseCase);
     window.addEventListener(EventType.MOUSE_UP, timelineScrollXWindowMouseUpUseCase);
 };

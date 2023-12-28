@@ -1,6 +1,7 @@
 import { execute as timelineAreaInitializeRegisterEventUseCase } from "../application/TimelineArea/usecase/TimelineAreaInitializeRegisterEventUseCase";
 import { execute as timelineAdjustmentInitializeRegisterEventUseCase } from "../application/TimelineAdjustment/usecase/TimelineAdjustmentInitializeRegisterEventUseCase";
 import { execute as timelineScrollXRegisterEventUseCase } from "../application/TimelineScroll/usecase/TimelineScrollXRegisterEventUseCase";
+import { execute as timelineScrollYRegisterEventUseCase } from "../application/TimelineScroll/usecase/TimelineScrollYRegisterEventUseCase";
 import { execute as timelineToolInitializeRegisterEventUseCase } from "@/timeline/application/TimelineTool/usecase/TimelineToolInitializeRegisterEventUseCase";
 import { execute as timelineMarkerInitializeRegisterEventUseCase } from "@/timeline/application/TimelineMarker/usecase/TimelineMarkerInitializeRegisterEventUseCase";
 import { timelineHeader } from "@/timeline/domain/model/TimelineHeader";
@@ -50,6 +51,9 @@ export const execute = async (): Promise<void> =>
 
     // タイムラインのx座標に移動するスクロールのイベント登録
     timelineScrollXRegisterEventUseCase();
+
+    // タイムラインのy座標に移動するスクロールのイベント登録
+    timelineScrollYRegisterEventUseCase();
 
     // マーカーのイベントの登録
     timelineMarkerInitializeRegisterEventUseCase();

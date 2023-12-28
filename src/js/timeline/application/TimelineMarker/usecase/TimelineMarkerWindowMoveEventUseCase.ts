@@ -3,7 +3,7 @@ import { execute as timelineMarkerMovePositionService } from "../service/Timelin
 import { execute as timelineFrameUpdateFrameElementService } from "@/timeline/application/TimelineFrame/service/TimelineFrameUpdateFrameElementService";
 import { timelineHeader } from "@/timeline/domain/model/TimelineHeader";
 import { $TIMELINE_LAYER_CONTROLLER_WIDTH } from "@/config/TimelineConfig";
-import { execute as timelineHeaderUpdateScrollXUseCase } from "@/timeline/application/TimelineHeader/usecase/TimelineHeaderUpdateScrollXUseCase";
+import { execute as timelineScrollUpdateScrollXUseCase } from "@/timeline/application/TimelineScroll/usecase/TimelineScrollUpdateScrollXUseCase";
 import { timelineFrame } from "@/timeline/domain/model/TimelineFrame";
 import {
     $getMaxFrame,
@@ -55,7 +55,7 @@ export const execute = (event: PointerEvent, loop_mode: boolean = false): void =
             );
 
             // 右方向に移動
-            if (!timelineHeaderUpdateScrollXUseCase(frameWidth)) {
+            if (!timelineScrollUpdateScrollXUseCase(frameWidth)) {
 
                 // 自動移動モード終了
                 $setMoveMode(false);
@@ -91,7 +91,7 @@ export const execute = (event: PointerEvent, loop_mode: boolean = false): void =
             );
 
             // 左方向に移動
-            if (!timelineHeaderUpdateScrollXUseCase(-frameWidth)) {
+            if (!timelineScrollUpdateScrollXUseCase(-frameWidth)) {
 
                 // 自動移動モード終了
                 $setMoveMode(false);

@@ -1,9 +1,9 @@
 import { EventType } from "@/tool/domain/event/EventType";
-import { execute as timelineScrollXWindowMoveUseCase } from "./TimelineScrollXWindowMoveUseCase";
+import { execute as timelineScrollYWindowMoveUseCase } from "./TimelineScrollYWindowMoveUseCase";
 
 /**
- * @description x座標移動イベントの終了関数
- *              End function for x-coordinate move event
+ * @description y座標移動イベントの終了関数
+ *              End function for y-coordinate move events
  *
  * @param  {PointerEvent} event
  * @return {void}
@@ -16,6 +16,6 @@ export const execute = (event: PointerEvent): void =>
     event.stopPropagation();
 
     // 登録されたイベントを削除
-    window.removeEventListener(EventType.MOUSE_MOVE, timelineScrollXWindowMoveUseCase);
+    window.removeEventListener(EventType.MOUSE_MOVE, timelineScrollYWindowMoveUseCase);
     window.removeEventListener(EventType.MOUSE_UP, execute);
 };

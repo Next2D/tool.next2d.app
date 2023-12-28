@@ -4,7 +4,7 @@ import { execute as timelineMarkerMovePositionService } from "@/timeline/applica
 import { $getLeftFrame, $getMaxFrame, $getRightFrame } from "@/timeline/application/TimelineUtil";
 import { timelineFrame } from "@/timeline/domain/model/TimelineFrame";
 import { timelineHeader } from "@/timeline/domain/model/TimelineHeader";
-import { execute as timelineHeaderUpdateScrollXUseCase } from "@/timeline/application/TimelineHeader/usecase/TimelineHeaderUpdateScrollXUseCase";
+import { execute as timelineScrollUpdateScrollXUseCase } from "@/timeline/application/TimelineScroll/usecase/TimelineScrollUpdateScrollXUseCase";
 
 /**
  * @description タイムラインのフレームInputElement上のマウスムーブ処理関数
@@ -38,14 +38,14 @@ export const execute = (event: PointerEvent): void =>
 
             // 左端に達した処理
             case $getLeftFrame() > frame:
-                timelineHeaderUpdateScrollXUseCase(
+                timelineScrollUpdateScrollXUseCase(
                     -timelineHeader.clientWidth
                 );
                 break;
 
             // 右端に達した処理
             case frame >= $getRightFrame():
-                timelineHeaderUpdateScrollXUseCase(
+                timelineScrollUpdateScrollXUseCase(
                     timelineHeader.clientWidth
                 );
                 break;
