@@ -109,8 +109,9 @@ export const $getScrollLimitX = (): number =>
 export const $getScrollLimitY = (): number =>
 {
     const workSpace = $getCurrentWorkSpace();
-    const height = workSpace.timelineAreaState.frameHeight;
-    return workSpace.scene.layers.length * height - timelineLayer.clientHeight;
+    return workSpace.timelineAreaState.frameHeight
+        * workSpace.scene.layers.length
+        - timelineLayer.clientHeight;
 };
 
 /**

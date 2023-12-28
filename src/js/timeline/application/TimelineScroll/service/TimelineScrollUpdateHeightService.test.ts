@@ -38,7 +38,7 @@ describe("TimelineScrollUpdateHeightServiceTest", () =>
 
         expect(div.style.display).toBe("");
         expect(scene.scrollY).toBe(130);
-        expect(document.documentElement.style.getPropertyValue("--timeline-scroll-bar-height")).toBe("107px");
+        expect(document.documentElement.style.getPropertyValue("--timeline-scroll-bar-height")).toBe("119px");
 
         div.remove();
     });

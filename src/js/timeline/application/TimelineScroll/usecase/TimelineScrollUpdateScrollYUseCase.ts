@@ -1,5 +1,7 @@
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { $clamp } from "@/global/GlobalUtil";
+import { $getScrollLimitY } from "../../TimelineUtil";
+import { execute as timelineScrollUpdateYPositionService } from "../service/TimelineScrollUpdateYPositionService";
 
 /**
  * @description タイムラインのy座標を移動
@@ -25,7 +27,7 @@ export const execute = (delta: number): boolean =>
     }
 
     const beforeY = scene.scrollY;
-    const afterY  = $clamp(beforeY + delta, 0, $getScrollLimitX());
+    const afterY  = $clamp(beforeY + delta, 0, $getScrollLimitY());
 
     // 最大値より右側には移動しない
     if (beforeY === afterY) {
@@ -34,7 +36,8 @@ export const execute = (delta: number): boolean =>
 
     scene.scrollY = afterY;
 
-    // TODO
+    // y座標を移動
+    timelineScrollUpdateYPositionService();
 
     return true;
 };

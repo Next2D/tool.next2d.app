@@ -26,8 +26,7 @@ export const execute = (event: PointerEvent): void =>
 
         // スクロールバーの高さを算出
         const height = workSpace.timelineAreaState.frameHeight;
-        const scene  = workSpace.scene;
-        const scale  = clientHeight / (scene.layers.length * height);
+        const scale  = clientHeight / (workSpace.scene.layers.length * height);
 
         timelineScrollUpdateScrollYUseCase(Math.floor(event.movementY / scale));
     });

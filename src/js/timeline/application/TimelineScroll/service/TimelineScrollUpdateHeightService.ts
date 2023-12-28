@@ -28,20 +28,15 @@ export const execute = (): void =>
 
     const workSpace = $getCurrentWorkSpace();
     const timelineAreaState = workSpace.timelineAreaState;
-    const stopCount: number = Math.floor(timelineLayer.clientHeight / timelineAreaState.frameHeight);
+
+    const clientHeight: number = timelineLayer.clientHeight;
+    const stopCount: number = Math.floor(clientHeight / timelineAreaState.frameHeight);
 
     const scene = workSpace.scene;
     if (scene.layers.length > stopCount) {
 
-        // 最小表示の高さ
-        const minHeight = Math.floor(stopCount * timelineAreaState.frameHeight);
-
-        // 最小表示の時の余白の高さ
-        const spaceHeight = timelineLayer.clientHeight - minHeight;
-
-        // スクロールバーの高さを算出
-        const scale  = timelineLayer.clientHeight / (scene.layers.length * timelineAreaState.frameHeight);
-        const height = Math.floor((timelineLayer.clientHeight - spaceHeight) * scale);
+        // スクロールバーの幅を算出
+        const scale: number = clientHeight / (scene.layers.length * timelineAreaState.frameHeight);
 
         // 2pxはborderの1pxの上下の分
         document
@@ -49,7 +44,7 @@ export const execute = (): void =>
             .style
             .setProperty(
                 "--timeline-scroll-bar-height",
-                `${height - 2}px`
+                `${Math.floor(clientHeight * scale) - 2}px`
             );
 
         // スクロール位置が見切れていたら補正
