@@ -3,6 +3,7 @@ import { timelineFrame } from "@/timeline/domain/model/TimelineFrame";
 import { $getLeftFrame } from "../../TimelineUtil";
 import { execute as timelineLayerFrameActiveElementService } from "@/timeline/application/TimelineLayerFrame/service/TimelineLayerFrameActiveElementService";
 import { execute as timelineLayerClearSelectedLayerService } from "@/timeline/application/TimelineLayer/service/TimelineLayerClearSelectedLayerService";
+import { execute as timelineLayerRegisterLayerAndFrameService } from "@/timeline/application/TimelineLayer/service/TimelineLayerRegisterLayerAndFrameService";
 
 /**
  * @description 通常のレイヤーコントローラーエリア選択の処理関数（Alt、Shiftなし）
@@ -21,14 +22,6 @@ export const execute = (layer_id: number): void =>
         return ;
     }
 
-    // 現在のフレーム番号から対象のフレームElementを取得
-    const index = timelineFrame.currentFrame - $getLeftFrame();
-
-    const frameElement: HTMLElement | null = element.children[index] as HTMLElement;
-    if (!frameElement) {
-        return ;
-    }
-
     // 選択中のフレームElementを非アクティブにする
     timelineLayerFrameClearSelectedElementService();
 
@@ -36,6 +29,17 @@ export const execute = (layer_id: number): void =>
     // fixed logic
     timelineLayerClearSelectedLayerService();
 
-    // 対象のフレームElementをアクティブ表示にする
-    timelineLayerFrameActiveElementService(frameElement);
+    // 現在のフレーム番号から対象のフレームElementを取得
+    const index = timelineFrame.currentFrame - $getLeftFrame();
+
+    const frameElement: HTMLElement | null = element.children[index] as HTMLElement;
+    if (!frameElement) {
+        // Elementが表示されてない時は指定レイヤーと現在のフレーム番号をアクティブにする
+        timelineLayerRegisterLayerAndFrameService(
+            layer_id, timelineFrame.currentFrame
+        );
+    } else {
+        // 対象のフレームElementをアクティブ表示にする
+        timelineLayerFrameActiveElementService(frameElement);
+    }
 };

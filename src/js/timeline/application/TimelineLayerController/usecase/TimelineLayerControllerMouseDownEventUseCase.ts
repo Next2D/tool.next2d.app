@@ -21,7 +21,6 @@ export const execute = (event: PointerEvent): void =>
     }
 
     const layerId = parseInt(targetElement.dataset.layerId as NonNullable<string>);
-
     switch (true) {
 
         case event.altKey:
