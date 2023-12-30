@@ -1,7 +1,7 @@
 import { $TIMELINE_CONTENT_ID } from "@/config/TimelineConfig";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { Layer } from "@/core/domain/model/Layer";
-import { $getLeftFrame } from "../../TimelineUtil";
+import { $getLeftFrame, $getTopIndex } from "../../TimelineUtil";
 import { timelineHeader } from "@/timeline/domain/model/TimelineHeader";
 import { timelineLayer } from "@/timeline/domain/model/TimelineLayer";
 import { execute as timelineLayerControllerUpdateElementStyleUseCase } from "@/timeline/application/TimelineLayerController/usecase/TimelineLayerControllerUpdateElementStyleUseCase";
@@ -42,6 +42,7 @@ export const execute = (add_layer: Layer, target_layer: Layer): void =>
     const maxFrame: number     = elementCount + 1;
     const leftFrame: number    = $getLeftFrame();
 
+    let element: HTMLElement | null = null;
     let frameControllerElement: HTMLElement | null = null;
     if (add_layer.id >= timelineLayer.elements.length) {
 
@@ -51,7 +52,7 @@ export const execute = (add_layer: Layer, target_layer: Layer): void =>
         );
 
         // フレーム側のElementをを変数にセット
-        const element = parent.lastElementChild as HTMLElement;
+        element = parent.lastElementChild as HTMLElement;
         frameControllerElement = element.lastElementChild as NonNullable<HTMLElement>;
 
         // 指定レイヤーの上位に移動
@@ -60,7 +61,7 @@ export const execute = (add_layer: Layer, target_layer: Layer): void =>
     } else {
 
         // フレーム側のElementをを変数にセット
-        const element = timelineLayer.elements[add_layer.id];
+        element = timelineLayer.elements[add_layer.id];
         frameControllerElement = element.lastElementChild as NonNullable<HTMLElement>;
 
         // 表示フレーム数が多い時はElementを追加
@@ -72,11 +73,22 @@ export const execute = (add_layer: Layer, target_layer: Layer): void =>
             );
         }
 
-        // 表示
-        element.style.display = "";
-
         // 指定レイヤーの上位に移動
         parent.insertBefore(element, targetLayerElement);
+    }
+
+    // 表示領域にあれば表示、表示領域外なら非表示
+    const index = workSpace.scene.layers.indexOf(add_layer);
+    if ($getTopIndex() > index
+        || (index + 1) * workSpace.timelineAreaState.frameHeight > timelineLayer.clientHeight
+    ) {
+        if (add_layer.display === "") {
+            add_layer.display = element.style.display = "none";
+        }
+    } else {
+        if (add_layer.display === "none") {
+            add_layer.display = element.style.display = "";
+        }
     }
 
     // スクロール位置に合わせてフレームElementのStyleを更新

@@ -10,7 +10,7 @@
 export const execute = (layer_id: number): string =>
 {
     return `
-<div class="timeline-content-child" id="layer-id-${layer_id}" data-layer-id="${layer_id}">
+<div class="timeline-content-child" id="layer-id-${layer_id}" data-layer-id="${layer_id}" style="display: none;">
     <div class="timeline-layer-controller" data-layer-id="${layer_id}">
         <i style="display: none;" class="timeline-exit-icon" id="timeline-exit-icon-${layer_id}" data-layer-id="${layer_id}"></i>
         <i style="display: none;" class="timeline-exit-in-icon" id="timeline-exit-in-icon-${layer_id}" data-layer-id="${layer_id}"></i>

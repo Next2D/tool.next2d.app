@@ -1,6 +1,9 @@
-import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import type { Layer } from "@/core/domain/model/Layer";
-import { execute as timelineLayerElementUpdateDisplayService } from "@/timeline/application/TimelineLayer/service/TimelineLayerElementUpdateDisplayService";
+import { execute as timelineLayerFrameUpdateStyleService } from "@/timeline/application/TimelineLayerFrame/service/TimelineLayerFrameUpdateStyleService";
+import { $getLeftFrame, $getTopIndex } from "@/timeline/application/TimelineUtil";
+import { timelineLayer } from "@/timeline/domain/model/TimelineLayer";
+import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
+import { execute as timelineScrollUpdateHeightService } from "@/timeline/application/TimelineScroll/service/TimelineScrollUpdateHeightService";
 
 /**
  * @description レイヤー追加作業を元に戻す
@@ -18,6 +21,26 @@ export const execute = (layer: Layer, index: number): void =>
     const scene = $getCurrentWorkSpace().scene;
     scene.setLayer(layer, index);
 
-    // 対象のElementを表示する
-    timelineLayerElementUpdateDisplayService(layer.id, "");
+    // 表示領域にあれば表示
+    const workSpace = $getCurrentWorkSpace();
+    if (index >= $getTopIndex()
+        && (index + 1) * workSpace.timelineAreaState.frameHeight <= timelineLayer.clientHeight
+    ) {
+
+        const element: HTMLElement | null = document
+            .getElementById(`layer-id-${layer.id}`);
+
+        if (!element) {
+            return ;
+        }
+
+        // フレーム情報の表示を更新
+        const frameControllerElement = element.lastElementChild as NonNullable<HTMLElement>;
+        timelineLayerFrameUpdateStyleService(frameControllerElement, $getLeftFrame());
+
+        layer.display = element.style.display = "";
+    }
+
+    // タイムラインのyスクロールの高さを更新
+    timelineScrollUpdateHeightService();
 };

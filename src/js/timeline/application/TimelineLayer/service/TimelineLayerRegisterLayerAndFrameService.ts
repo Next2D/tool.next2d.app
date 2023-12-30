@@ -20,8 +20,10 @@ export const execute = (layer_id: number, frame: number): void =>
 
     const frames = targetLayers.get(layer_id) as NonNullable<Array<number>>;
 
-    // 指定のフレーム番号を選択状態に更新
-    if (frames.indexOf(frame) === -1) {
-        frames.push(frame);
+    // 指定のフレーム番号がなければ配列にセット
+    if (frames.indexOf(frame) > -1) {
+        return ;
     }
+
+    frames.push(frame);
 };

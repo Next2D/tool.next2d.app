@@ -89,7 +89,7 @@ export class Layer
          * @default ""
          * @private
          */
-        this._$display = "";
+        this._$display = "none";
 
         /**
          * @type {number}
@@ -280,6 +280,7 @@ export class Layer
      *              of layers for the displayed area in pseudo-scrolling
      *
      * @member {string}
+     * @default "none"
      * @method
      * @public
      */

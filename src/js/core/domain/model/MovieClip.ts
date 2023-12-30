@@ -230,11 +230,15 @@ export class MovieClip extends Instance
     {
         // 表示に利用していたレイヤーElementを非表示に更新
         for (let idx = 0; idx < this._$layers.length; ++idx) {
-            const element = timelineLayer.elements[idx];
-            element.style.display = "none";
-        }
 
-        // TODO
+            const layer = this._$layers[idx];
+            if (layer.display === "none") {
+                continue;
+            }
+
+            const element = timelineLayer.elements[idx];
+            layer.display = element.style.display = "none";
+        }
     }
 
     /**
@@ -339,6 +343,7 @@ export class MovieClip extends Instance
         this._$layers.splice(index, 1);
         this._$layerMap.delete(layer.id);
         this._$layerId = this._$layers.length;
+        layer.display = "none";
     }
 
     /**

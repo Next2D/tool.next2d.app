@@ -63,7 +63,7 @@ export const execute = (): void =>
     timelineScrollUpdateYPositionService();
 
     // タイムラインを再描画
-    timelineLayerBuildElementUseCase();
+    // timelineLayerBuildElementUseCase();
 
     // 選択したフレームを解放
     timelineLayerFrameClearSelectedElementService();

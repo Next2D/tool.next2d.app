@@ -47,6 +47,7 @@ export const execute = (): void =>
 
         const layer = layers[idx];
 
+        let element: HTMLElement | null = null;
         let frameControllerElement: HTMLElement | null = null;
         if (layer.id >= timelineLayer.elements.length) {
 
@@ -56,16 +57,13 @@ export const execute = (): void =>
             );
 
             // フレーム側のElementをを変数にセット
-            const element = parent.lastElementChild as HTMLElement;
-            if (topIndex > idx || currentHeight > timelineLayer.clientHeight) {
-                element.style.display = "none";
-            }
+            element = parent.lastElementChild as HTMLElement;
             frameControllerElement = element.lastElementChild as NonNullable<HTMLElement>;
 
         } else {
 
             // フレーム側のElementをを変数にセット
-            const element = timelineLayer.elements[layer.id] as NonNullable<HTMLElement>;
+            element = timelineLayer.elements[layer.id] as NonNullable<HTMLElement>;
             frameControllerElement = element.lastElementChild as NonNullable<HTMLElement>;
 
             // 表示フレーム数が多い時はElementを追加
@@ -76,17 +74,17 @@ export const execute = (): void =>
                     frameControllerElement, length, maxFrame, layer.id, leftFrame
                 );
             }
-
-            // 表示
-            if (topIndex > idx || currentHeight > timelineLayer.clientHeight) {
-                element.style.display = "none";
-            } else {
-                element.style.display = "";
-            }
         }
 
-        if (!frameControllerElement) {
-            continue;
+        // 表示領域にあれば表示、表示領域外なら非表示
+        if (topIndex > idx || currentHeight > timelineLayer.clientHeight) {
+            if (layer.display === "") {
+                layer.display = element.style.display = "none";
+            }
+        } else {
+            if (layer.display === "none") {
+                layer.display = element.style.display = "";
+            }
         }
 
         // スクロール位置に合わせてフレームElementのStyleを更新

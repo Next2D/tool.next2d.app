@@ -6,7 +6,7 @@ import { execute as timelineLayerElementDisplayNoneService } from "@/timeline/ap
  * @description レイヤー削除を再度実行する
  *              Execute layer deletion again.
  *
- * @param  {Layer}  layer
+ * @param  {Layer} layer
  * @return {void}
  * @method
  * @public
@@ -17,6 +17,6 @@ export const execute = (layer: Layer): void =>
     const scene = $getCurrentWorkSpace().scene;
     scene.removeLayer(layer);
 
-    // // 対象のElementを表示する
+    // 対象のElementを非表示する
     timelineLayerElementDisplayNoneService(layer.id, "none");
 };

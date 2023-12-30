@@ -39,7 +39,7 @@ export const execute = (): void =>
     // タイムラインのyスクロールの高さを更新
     timelineScrollUpdateHeightService();
 
-    // タイムラインのレイヤーを再描画
+    // タイムラインの追加したレイヤーだけを描画
     timelineLayerAddElementUseCase(newLayer, selectedLayer);
 
     // 追加したレイヤーをアクティブ表示にする
