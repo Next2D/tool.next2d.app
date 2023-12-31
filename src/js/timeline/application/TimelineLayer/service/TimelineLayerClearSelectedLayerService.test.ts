@@ -1,14 +1,17 @@
 import { execute } from "./TimelineLayerClearSelectedLayerService";
 import { timelineLayer } from "../../../domain/model/TimelineLayer";
+import { $getCurrentWorkSpace, $createWorkSpace } from "../../../../core/application/CoreUtil";
 
 describe("TimelineLayerClearSelectedLayerServiceTest", () =>
 {
     test("execute test", (): void =>
     {
+        const workSpace = $getCurrentWorkSpace() || $createWorkSpace();
+
         const div = document.createElement("div");
-        div.id = "layer-id-0";
-        document.body.appendChild(div);
         div.setAttribute("class", "active");
+        timelineLayer.elements.length = 0;
+        timelineLayer.elements.push(div);
 
         expect(timelineLayer.targetLayers.size).toBe(0);
         expect(div.classList.contains("active")).toBe(true);

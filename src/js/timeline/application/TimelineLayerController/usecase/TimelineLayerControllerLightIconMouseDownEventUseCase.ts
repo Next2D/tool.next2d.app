@@ -2,7 +2,7 @@ import type { Layer } from "@/core/domain/model/Layer";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { $allHideMenu } from "@/menu/application/MenuUtil";
 import { $getTopIndex } from "../../TimelineUtil";
-import { execute as timelineLayerControllerUpdateLightIconStyleService } from "../service/TimelineLayerControllerUpdateLightIconElementService";
+import { execute as timelineLayerControllerUpdateLightIconElementService } from "../service/TimelineLayerControllerUpdateLightIconElementService";
 import { execute as timelineLayerUpdateLightService } from "@/timeline/application/TimelineLayer/service/TimelineLayerUpdateLightService";
 
 /**
@@ -47,7 +47,7 @@ export const execute = (event: PointerEvent): void =>
     const light = !layer.light;
 
     // 表示Elementを更新
-    timelineLayerControllerUpdateLightIconStyleService(layer.id, light);
+    timelineLayerControllerUpdateLightIconElementService(layer.id, light);
 
     // Layerオブジェクトの値を更新
     timelineLayerUpdateLightService(layer.id, light);

@@ -25,9 +25,11 @@ export const execute = (
     left_frame: number
 ): void => {
 
+    const layerIndex = timelineLayer.elements.length;
+
     // レイヤーのElementを新規登録
     parent.insertAdjacentHTML("beforeend",
-        timelineLayerControllerComponent(timelineLayer.elements.length, layer_id)
+        timelineLayerControllerComponent(layerIndex, layer_id)
     );
 
     const element = parent.lastElementChild as NonNullable<HTMLElement>;
@@ -52,6 +54,6 @@ export const execute = (
 
     // フレームのElementを追加
     timelineLayerFrameCreateContentComponentService(
-        frameControllerElement, 0, max_frame, layer_id, left_frame
+        frameControllerElement, 0, max_frame, layerIndex, left_frame
     );
 };

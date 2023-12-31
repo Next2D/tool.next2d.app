@@ -1,5 +1,7 @@
 import { timelineLayer } from "@/timeline/domain/model/TimelineLayer";
-import { $getLeftFrame } from "../../TimelineUtil";
+import { $getLeftFrame, $getTopIndex } from "../../TimelineUtil";
+import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
+import { Layer } from "@/core/domain/model/Layer";
 
 /**
  * @description 選択中のフレームElementを非アクティブに更新してマップデータを初期化
@@ -11,21 +13,28 @@ import { $getLeftFrame } from "../../TimelineUtil";
  */
 export const execute = (): void =>
 {
+    const scene = $getCurrentWorkSpace().scene;
+
+    const topIndex = $getTopIndex();
     const leftFrame = $getLeftFrame();
     for (const [layerId, frames] of timelineLayer.targetLayers) {
 
-        const element: HTMLElement | null = document
-            .getElementById(`timeline-frame-controller-${layerId}`);
-
-        if (!element) {
+        const layer: Layer | null = scene.getLayer(layerId);
+        if (!layer) {
             continue;
         }
 
+        const index = topIndex + scene.layers.indexOf(layer);
+        const layerElement: HTMLElement | undefined = timelineLayer.elements[index];
+
+        const element = layerElement.lastElementChild as NonNullable<HTMLElement>;
+
         const children = element.children;
         for (let idx: number = 0; idx < frames.length; ++idx) {
-            const index = frames[idx] - leftFrame;
 
-            const node: HTMLElement | undefined = children[index] as HTMLElement;
+            const frameIndex = frames[idx] - leftFrame;
+
+            const node: HTMLElement | undefined = children[frameIndex] as HTMLElement;
             if (!node) {
                 continue;
             }

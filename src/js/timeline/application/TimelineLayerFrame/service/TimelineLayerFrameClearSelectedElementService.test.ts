@@ -1,31 +1,46 @@
 import { execute } from "./TimelineLayerFrameClearSelectedElementService";
 import { timelineLayer } from "../../../domain/model/TimelineLayer";
-import { $createWorkSpace } from "../../../../core/application/CoreUtil";
+import { $createWorkSpace, $getCurrentWorkSpace } from "../../../../core/application/CoreUtil";
+import { MovieClip } from "../../../../core/domain/model/MovieClip";
 
 describe("TimelineLayerFrameClearSelectedElementServiceTest", () =>
 {
     test("execute test", () =>
     {
-        $createWorkSpace();
+        const workSpace = $getCurrentWorkSpace () || $createWorkSpace();
+        const scene: MovieClip = workSpace.scene;
+        for (let idx = 0; idx < scene.layers.length; ++idx) {
+            const layer = scene.layers[idx];
+            scene.removeLayer(layer);
+        }
+        scene.setLayer(scene.createLayer(), 0);
+        scene.setLayer(scene.createLayer(), 1);
 
-        const parent1 = document.createElement("div");
-        document.body.appendChild(parent1);
-        parent1.id = "timeline-frame-controller-0";
+        // 初期化
+        timelineLayer.elements.length = 0;
+
+        const layerElement1 = document.createElement("div");
+        timelineLayer.elements.push(layerElement1);
+
+        const frameElement1 = document.createElement("div");
+        layerElement1.appendChild(frameElement1);
 
         const div1 = document.createElement("div");
-        parent1.appendChild(div1);
+        frameElement1.appendChild(div1);
         div1.setAttribute("class", "frame-active");
 
         const div2 = document.createElement("div");
-        parent1.appendChild(div2);
+        frameElement1.appendChild(div2);
         div2.setAttribute("class", "frame-active");
 
-        const parent2 = document.createElement("div");
-        document.body.appendChild(parent2);
-        parent2.id = "timeline-frame-controller-1";
+        const layerElement2 = document.createElement("div");
+        timelineLayer.elements.push(layerElement2);
+
+        const frameElement2 = document.createElement("div");
+        layerElement2.appendChild(frameElement2);
 
         const div3 = document.createElement("div");
-        parent2.appendChild(div3);
+        frameElement2.appendChild(div3);
         div3.setAttribute("class", "frame-active");
 
         const targetLayers = timelineLayer.targetLayers;
@@ -46,7 +61,5 @@ describe("TimelineLayerFrameClearSelectedElementServiceTest", () =>
         expect(div2.classList.contains("frame-active")).toBe(false);
         expect(div3.classList.contains("frame-active")).toBe(false);
 
-        parent1.remove();
-        parent2.remove();
     });
 });

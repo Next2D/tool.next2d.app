@@ -1,4 +1,7 @@
+import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
+import { $getTopIndex } from "../../TimelineUtil";
 import { execute as timelineLayerControllerNormalSelectUseCase } from "./TimelineLayerControllerNormalSelectUseCase";
+import { Layer } from "@/core/domain/model/Layer";
 
 /**
  * @description レイヤーのコントローラーエリアのマウスダウン処理関数
@@ -15,12 +18,18 @@ export const execute = (event: PointerEvent): void =>
         return ;
     }
 
-    const targetElement: HTMLElement | null = event.currentTarget as HTMLElement;
-    if (!targetElement) {
+    const element: HTMLElement | null = event.currentTarget as HTMLElement;
+    if (!element) {
         return ;
     }
 
-    const layerId = parseInt(targetElement.dataset.layerId as NonNullable<string>);
+    const index = $getTopIndex() + parseInt(element.dataset.layerIndex as string);
+    const scene = $getCurrentWorkSpace().scene;
+    const layer: Layer | undefined = scene.layers[index];
+    if (!layer)  {
+        return ;
+    }
+
     switch (true) {
 
         case event.altKey:
@@ -28,7 +37,7 @@ export const execute = (event: PointerEvent): void =>
             break;
 
         default:
-            timelineLayerControllerNormalSelectUseCase(layerId);
+            timelineLayerControllerNormalSelectUseCase(layer.id);
             break;
 
     }

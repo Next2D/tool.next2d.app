@@ -1,4 +1,7 @@
+import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
+import { Layer } from "@/core/domain/model/Layer";
 import { timelineLayer } from "@/timeline/domain/model/TimelineLayer";
+import { $getTopIndex } from "../../TimelineUtil";
 
 /**
  * @description 選択中のレイヤーElementを非アクティブに変更してマップを初期化
@@ -10,13 +13,20 @@ import { timelineLayer } from "@/timeline/domain/model/TimelineLayer";
  */
 export const execute = (): void =>
 {
+    const scene = $getCurrentWorkSpace().scene;
+    const topIndex = $getTopIndex();
+
     // 選択中のレイヤーElementを非アクティブにする
     const targetLayers = timelineLayer.targetLayers;
     for (const layerId of targetLayers.keys()) {
 
-        const element: HTMLElement | null = document
-            .getElementById(`layer-id-${layerId}`);
+        const layer: Layer | null = scene.getLayer(layerId);
+        if (!layer) {
+            continue;
+        }
 
+        const index = topIndex + scene.layers.indexOf(layer);
+        const element: HTMLElement | undefined = timelineLayer.elements[index];
         if (!element) {
             continue;
         }

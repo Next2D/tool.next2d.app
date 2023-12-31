@@ -1,5 +1,6 @@
 import { $TIMELINE_LAYER_MENU_NAME } from "@/config/MenuConfig";
 import { BaseMenu } from "./BaseMenu";
+import { execute as timelineLayerControllerMenuInitializeRegisterEventUseCase } from "@/menu/application/TimelineLayerControllerMenu/usecase/TimelineLayerControllerMenuInitializeRegisterEventUseCase";
 
 /**
  * @description レイヤーコントローラーのメニュークラス
@@ -33,5 +34,18 @@ export class TimelineLayerControllerMenu extends BaseMenu
         element.style.left = `${this.offsetLeft}px`;
         element.style.top  = `${this.offsetTop}px`;
         return element;
+    }
+
+    /**
+     * @description 初期起動関数
+     *              initial invoking function
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    initialize (): void
+    {
+        timelineLayerControllerMenuInitializeRegisterEventUseCase();
     }
 }

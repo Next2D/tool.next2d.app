@@ -1,6 +1,6 @@
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { $setAllLightMode } from "@/timeline/application/TimelineUtil";
-import { execute as timelineLayerControllerUpdateLightIconStyleService } from "@/timeline/application/TimelineLayerController/service/TimelineLayerControllerUpdateLightIconElementService";
+import { execute as timelineLayerControllerUpdateLightIconElementService } from "@/timeline/application/TimelineLayerController/service/TimelineLayerControllerUpdateLightIconElementService";
 import { execute as timelineToolLightAllGetCurrentModeService } from "../service/TimelineToolLightAllGetCurrentModeService";
 import type { Layer } from "@/core/domain/model/Layer";
 
@@ -36,7 +36,7 @@ export const execute = (event: PointerEvent): void =>
         }
 
         // レイヤーのハイライト情報とElementを更新
-        timelineLayerControllerUpdateLightIconStyleService(layer.id, mode);
+        timelineLayerControllerUpdateLightIconElementService(layer.id, mode);
     }
 
     // モードを更新

@@ -1,5 +1,5 @@
 import { $TIMELINE_LAYER_MENU_NAME } from "@/config/MenuConfig";
-import { execute as timelineLayerControllerMenuShowService } from "@/menu/application/TimelineLayerControllerMenu/service/TimelineLayerControllerMenuShowService";
+import { execute as timelineLayerControllerMenuShowUseCase } from "@/menu/application/TimelineLayerControllerMenu/usecase/TimelineLayerControllerMenuShowUseCase";
 import { $allHideMenu } from "@/menu/application/MenuUtil";
 
 /**
@@ -46,6 +46,6 @@ export const execute = (event: PointerEvent): void =>
         wait = false;
 
         // タイムラインコントローラーメニューを表示
-        timelineLayerControllerMenuShowService(event);
+        timelineLayerControllerMenuShowUseCase(event);
     }
 };

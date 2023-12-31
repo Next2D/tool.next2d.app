@@ -2,7 +2,7 @@ import { Layer } from "@/core/domain/model/Layer";
 import { execute as timelineLayerControllerUpdateLockIconStyleService } from "../service/TimelineLayerControllerUpdateLockIconStyleService";
 import { execute as timelineLayerControllerUpdateColorElementService } from "../service/TimelineLayerControllerUpdateColorElementService";
 import { execute as timelineLayerControllerUpdateDisableIconStyleService } from "../service/TimelineLayerControllerUpdateDisableIconStyleService";
-import { execute as timelineLayerControllerUpdateLightIconStyleService } from "../service/TimelineLayerControllerUpdateLightIconElementService";
+import { execute as timelineLayerControllerUpdateLightIconElementService } from "../service/TimelineLayerControllerUpdateLightIconElementService";
 import { execute as timelineLayerControllerUpdateNameElementService } from "../service/TimelineLayerControllerUpdateNameElementService";
 
 /**
@@ -23,7 +23,7 @@ export const execute = (layer: Layer): void =>
     timelineLayerControllerUpdateColorElementService(layer.id, layer.color);
 
     // レイヤーのハイライト情報を更新
-    timelineLayerControllerUpdateLightIconStyleService(layer.id, layer.light);
+    timelineLayerControllerUpdateLightIconElementService(layer.id, layer.light);
 
     // レイヤーの表示・非表示情報を更新
     timelineLayerControllerUpdateDisableIconStyleService(layer.id, layer.disable);

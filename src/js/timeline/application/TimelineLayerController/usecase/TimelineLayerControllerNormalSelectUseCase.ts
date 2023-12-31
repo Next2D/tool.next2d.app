@@ -1,9 +1,12 @@
 import { execute as timelineLayerFrameClearSelectedElementService } from "@/timeline/application/TimelineLayerFrame/service/TimelineLayerFrameClearSelectedElementService";
 import { timelineFrame } from "@/timeline/domain/model/TimelineFrame";
-import { $getLeftFrame } from "../../TimelineUtil";
+import { $getLeftFrame, $getTopIndex } from "../../TimelineUtil";
 import { execute as timelineLayerFrameActiveElementService } from "@/timeline/application/TimelineLayerFrame/service/TimelineLayerFrameActiveElementService";
 import { execute as timelineLayerClearSelectedLayerService } from "@/timeline/application/TimelineLayer/service/TimelineLayerClearSelectedLayerService";
 import { execute as timelineLayerRegisterLayerAndFrameService } from "@/timeline/application/TimelineLayer/service/TimelineLayerRegisterLayerAndFrameService";
+import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
+import { Layer } from "@/core/domain/model/Layer";
+import { timelineLayer } from "@/timeline/domain/model/TimelineLayer";
 
 /**
  * @description 通常のレイヤーコントローラーエリア選択の処理関数（Alt、Shiftなし）
@@ -15,12 +18,20 @@ import { execute as timelineLayerRegisterLayerAndFrameService } from "@/timeline
  */
 export const execute = (layer_id: number): void =>
 {
-    const element: HTMLElement | null = document
-        .getElementById(`timeline-frame-controller-${layer_id}`);
-
-    if (!element) {
+    const scene = $getCurrentWorkSpace().scene;
+    const layer: Layer | null = scene.getLayer(layer_id);
+    if (!layer) {
         return ;
     }
+
+    const index = $getTopIndex() + scene.layers.indexOf(layer);
+
+    const layerElement: HTMLElement | undefined = timelineLayer.elements[index];
+    if (!layerElement) {
+        return ;
+    }
+
+    const element: HTMLElement | null = layerElement.lastElementChild as NonNullable<HTMLElement>;
 
     // 選択中のフレームElementを非アクティブにする
     timelineLayerFrameClearSelectedElementService();
@@ -30,9 +41,9 @@ export const execute = (layer_id: number): void =>
     timelineLayerClearSelectedLayerService();
 
     // 現在のフレーム番号から対象のフレームElementを取得
-    const index = timelineFrame.currentFrame - $getLeftFrame();
+    const frameIndex = timelineFrame.currentFrame - $getLeftFrame();
 
-    const frameElement: HTMLElement | null = element.children[index] as HTMLElement;
+    const frameElement: HTMLElement | null = element.children[frameIndex] as HTMLElement;
     if (!frameElement) {
         // Elementが表示されてない時は指定レイヤーと現在のフレーム番号をアクティブにする
         timelineLayerRegisterLayerAndFrameService(

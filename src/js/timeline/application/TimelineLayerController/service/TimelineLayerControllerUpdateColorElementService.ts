@@ -31,7 +31,9 @@ export const execute = (layer_id: number, color: string): void =>
         return ;
     }
 
-    const lightElements = element.getElementsByClassName("timeline-layer-light-one");
+    const lightElements = element
+        .getElementsByClassName("timeline-layer-light-one");
+
     if (!lightElements) {
         return ;
     }
