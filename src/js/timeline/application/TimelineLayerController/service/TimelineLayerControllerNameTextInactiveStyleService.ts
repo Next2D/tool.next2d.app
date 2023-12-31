@@ -1,5 +1,7 @@
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { $updateKeyLock } from "@/shortcut/ShortcutUtil";
+import { $getTopIndex } from "../../TimelineUtil";
+import type { Layer } from "@/core/domain/model/Layer";
 
 /**
  * @description 指定のLayer IDの名前を編集モードを終了する
@@ -15,36 +17,12 @@ export const execute = (event: FocusEvent): void =>
     // 入力モードをOnにする
     $updateKeyLock(false);
 
-    const targetElement: HTMLElement | null = event.target as HTMLElement;
-    if (!targetElement) {
-        return ;
-    }
-
-    const layerId = parseInt(targetElement.dataset.layerId as string);
-
-    const element: HTMLElement | null = document
-        .getElementById(`layer-name-${layerId}`);
-
+    const element: HTMLElement | null = event.target as HTMLElement;
     if (!element) {
         return ;
     }
 
-    const layer = $getCurrentWorkSpace()
-        .scene
-        .getLayer(layerId);
-
-    if (!layer) {
-        return ;
-    }
-
-    const name: string | null = element.textContent;
-    if (!name) {
-        element.textContent = "Layer";
-    }
-
-    layer.name = element.textContent as NonNullable<string>;
-
-    // 編集モードに切り替える
+    // 編集モードを終了する
     element.contentEditable    = "false";
     element.style.borderBottom = "";
 };

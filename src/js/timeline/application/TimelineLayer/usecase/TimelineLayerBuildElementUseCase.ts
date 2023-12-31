@@ -37,8 +37,7 @@ export const execute = (): void =>
 
     const frameHeight: number  = workSpace.timelineAreaState.frameHeight;
     const frameWidth: number   = workSpace.timelineAreaState.frameWidth + 1;
-    const elementCount: number = Math.ceil(timelineHeader.clientWidth / frameWidth);
-    const maxFrame: number     = elementCount + 1;
+    const maxFrame: number     = Math.ceil(timelineHeader.clientWidth / frameWidth) + 1;
     const leftFrame: number    = $getLeftFrame();
     const topIndex: number     = $getTopIndex();
 

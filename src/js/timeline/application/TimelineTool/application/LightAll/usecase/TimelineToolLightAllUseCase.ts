@@ -1,6 +1,6 @@
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { $setAllLightMode } from "@/timeline/application/TimelineUtil";
-import { execute as timelineLayerControllerUpdateLightIconStyleService } from "@/timeline/application/TimelineLayerController/service/TimelineLayerControllerUpdateLightIconStyleService";
+import { execute as timelineLayerControllerUpdateLightIconStyleService } from "@/timeline/application/TimelineLayerController/service/TimelineLayerControllerUpdateLightIconElementService";
 import { execute as timelineToolLightAllGetCurrentModeService } from "../service/TimelineToolLightAllGetCurrentModeService";
 import type { Layer } from "@/core/domain/model/Layer";
 

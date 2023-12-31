@@ -1,5 +1,6 @@
 import { $allHideMenu } from "@/menu/application/MenuUtil";
 import { execute as timelineLayerControllerNameTextActiveStyleService } from "../service/TimelineLayerControllerNameTextActiveStyleService";
+import { $useKeyboard } from "@/shortcut/ShortcutUtil";
 
 /**
  * @description ダブルタップ用の待機フラグ
@@ -17,7 +18,7 @@ let wait: boolean = false;
  * @type {number}
  * @private
  */
-let layerId: number = -1;
+let layerIndex: number = -1;
 
 /**
  * @description Layerの名前変更のイベント実行関数
@@ -30,7 +31,7 @@ let layerId: number = -1;
  */
 export const execute = (event: PointerEvent): void =>
 {
-    if (event.button !== 0) {
+    if (event.button !== 0 || $useKeyboard()) {
         wait = false;
         return ;
     }
@@ -43,29 +44,33 @@ export const execute = (event: PointerEvent): void =>
     // メニュー表示があれば全て非表示にする
     $allHideMenu();
 
-    const currentLayerId = parseInt(element.dataset.layerId as NonNullable<string>);
-    if (!wait || currentLayerId !== layerId) {
+    const currentLayerIndex = parseInt(element.dataset.layerIndex as NonNullable<string>);
+    if (!wait || currentLayerIndex !== layerIndex) {
 
         // ダブルクリックを待機
         wait = true;
 
+        // 選択中のレイヤーIDをセット
+        layerIndex = parseInt(element.dataset.layerIndex as NonNullable<string>);
+
         // ダブルタップ有効期限をセット
         setTimeout((): void =>
         {
+            // 時間になったら設定を初期化
             wait = false;
+            layerIndex = -1;
         }, 300);
-
-        // 選択中のレイヤーIDをセット
-        layerId = parseInt(element.dataset.layerId as NonNullable<string>);
 
     } else {
 
+        // 設定を初期化
         wait = false;
+        layerIndex = -1;
 
         // 他のイベントを中止
         event.preventDefault();
 
         // ダブルクリック処理
-        timelineLayerControllerNameTextActiveStyleService(currentLayerId);
+        timelineLayerControllerNameTextActiveStyleService(element);
     }
 };

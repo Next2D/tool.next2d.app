@@ -5,7 +5,6 @@ describe("TimelineLayerControllerNameTextActiveStyleServiceTest", () =>
     test("execute test", () =>
     {
         const div = document.createElement("div");
-        document.body.appendChild(div);
 
         div.id = "layer-name-0";
         div.contentEditable    = "false";
@@ -14,11 +13,9 @@ describe("TimelineLayerControllerNameTextActiveStyleServiceTest", () =>
         expect(div.contentEditable).toBe("false");
         expect(div.style.borderBottom).toBe("");
 
-        execute(0);
+        execute(div);
 
         expect(div.contentEditable).toBe("true");
         expect(div.style.borderBottom).toBe("1px solid #f5f5f5");
-
-        div.remove();
     });
 });

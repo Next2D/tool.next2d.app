@@ -27,10 +27,10 @@ export const execute = (
 
     // レイヤーのElementを新規登録
     parent.insertAdjacentHTML("beforeend",
-        timelineLayerControllerComponent(layer_id)
+        timelineLayerControllerComponent(timelineLayer.elements.length, layer_id)
     );
 
-    const element = parent.lastElementChild as HTMLElement;
+    const element = parent.lastElementChild as NonNullable<HTMLElement>;
     timelineLayer.elements.push(element);
 
     // レイヤー全体のマウスダウンイベント

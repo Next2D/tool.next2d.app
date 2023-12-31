@@ -1,9 +1,9 @@
 import { Layer } from "@/core/domain/model/Layer";
 import { execute as timelineLayerControllerUpdateLockIconStyleService } from "../service/TimelineLayerControllerUpdateLockIconStyleService";
-import { execute as timelineLayerControllerUpdateColorStyleService } from "../service/TimelineLayerControllerUpdateColorStyleService";
+import { execute as timelineLayerControllerUpdateColorElementService } from "../service/TimelineLayerControllerUpdateColorElementService";
 import { execute as timelineLayerControllerUpdateDisableIconStyleService } from "../service/TimelineLayerControllerUpdateDisableIconStyleService";
-import { execute as timelineLayerControllerUpdateLightIconStyleService } from "../service/TimelineLayerControllerUpdateLightIconStyleService";
-import { execute as timelineLayerControllerUpdateNameTextStyleService } from "../service/TimelineLayerControllerUpdateNameTextStyleService";
+import { execute as timelineLayerControllerUpdateLightIconStyleService } from "../service/TimelineLayerControllerUpdateLightIconElementService";
+import { execute as timelineLayerControllerUpdateNameElementService } from "../service/TimelineLayerControllerUpdateNameElementService";
 
 /**
  * @description Layerの状態に合わせてElementのstyleを更新
@@ -17,10 +17,10 @@ import { execute as timelineLayerControllerUpdateNameTextStyleService } from "..
 export const execute = (layer: Layer): void =>
 {
     // レイヤー名をセット
-    timelineLayerControllerUpdateNameTextStyleService(layer.id, layer.name);
+    timelineLayerControllerUpdateNameElementService(layer.id, layer.name);
 
     // レイヤーカラーをセット
-    timelineLayerControllerUpdateColorStyleService(layer.id, layer.color);
+    timelineLayerControllerUpdateColorElementService(layer.id, layer.color);
 
     // レイヤーのハイライト情報を更新
     timelineLayerControllerUpdateLightIconStyleService(layer.id, layer.light);
