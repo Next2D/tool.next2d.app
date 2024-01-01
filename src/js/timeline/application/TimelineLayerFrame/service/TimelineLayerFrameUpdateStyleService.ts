@@ -1,4 +1,7 @@
+import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { timelineLayer } from "@/timeline/domain/model/TimelineLayer";
+import { $getTopIndex } from "../../TimelineUtil";
+import { Layer } from "@/core/domain/model/Layer";
 
 /**
  * @description 指定のフレームElementのStyleを更新
@@ -14,10 +17,14 @@ export const execute = (element: HTMLElement, left_frame: number): void =>
 {
     let frames: number[] | null = null;
 
-    const layerId = parseInt(element.dataset.layerId as NonNullable<string>);
-    const targetLayers = timelineLayer.targetLayers;
-    if (targetLayers.size && targetLayers.has(layerId)) {
-        frames = targetLayers.get(layerId) as NonNullable<Array<number>>;
+    const index = $getTopIndex() + parseInt(element.dataset.layerIndex as NonNullable<string>);
+    const scene = $getCurrentWorkSpace().scene;
+    const layer: Layer | null = scene.layers[index];
+    if (layer) {
+        const targetLayers = timelineLayer.targetLayers;
+        if (targetLayers.size && targetLayers.has(layer.id)) {
+            frames = targetLayers.get(layer.id) as NonNullable<Array<number>>;
+        }
     }
 
     const children: HTMLCollection = element.children;

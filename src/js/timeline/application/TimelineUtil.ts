@@ -126,9 +126,14 @@ export const $getTopIndex = (): number =>
 export const $getScrollLimitY = (): number =>
 {
     const workSpace = $getCurrentWorkSpace();
-    return workSpace.timelineAreaState.frameHeight
-        * workSpace.scene.layers.length
-        - timelineLayer.clientHeight;
+
+    // 表示レイヤーの高さの合算値
+    const actualHeight = workSpace.timelineAreaState.frameHeight
+        * workSpace.scene.layers.length;
+
+    return actualHeight > timelineLayer.clientHeight
+        ? actualHeight - timelineLayer.clientHeight
+        : 0;
 };
 
 /**

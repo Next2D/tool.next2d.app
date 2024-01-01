@@ -26,7 +26,7 @@ export const execute = (index: number, layer_id: number): string =>
         <i class="timeline-layer-lock-one icon-disable" data-layer-index="${index}" data-detail="{{レイヤーをロック}}"></i>
     </div>
 
-    <div class="timeline-frame-controller"></div>
+    <div class="timeline-frame-controller" data-layer-index="${index}"></div>
 </div>
 `;
 };

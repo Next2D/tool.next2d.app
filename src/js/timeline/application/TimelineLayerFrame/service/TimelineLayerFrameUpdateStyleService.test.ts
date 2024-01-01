@@ -1,14 +1,17 @@
 import { execute } from "./TimelineLayerFrameUpdateStyleService";
 import { timelineLayer } from "../../../domain/model/TimelineLayer";
+import { $getCurrentWorkSpace, $createWorkSpace } from "../../../../core/application/CoreUtil";
 
 describe("TimelineLayerFrameUpdateStyleServiceTest", () =>
 {
     test("execute test", () =>
     {
+        const workSpace = $getCurrentWorkSpace() || $createWorkSpace();
+
         timelineLayer.targetLayers.set(0, [1]);
 
         const div = document.createElement("div");
-        div.dataset.layerId = "0";
+        div.dataset.layerIndex = "0";
 
         // フレームを生成してセット
         for (let idx = 0; idx < 10; ++idx) {
