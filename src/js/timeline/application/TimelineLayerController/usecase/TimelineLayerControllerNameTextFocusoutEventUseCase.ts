@@ -2,7 +2,6 @@ import type { Layer } from "@/core/domain/model/Layer";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { $getTopIndex } from "../../TimelineUtil";
 import { execute as timelineLayerControllerNameTextInactiveStyleService } from "../service/TimelineLayerControllerNameTextInactiveStyleService";
-import { execute as timelineLayerUpdateNameService } from "@/timeline/application/TimelineLayer/service/TimelineLayerUpdateNameService";
 
 /**
  * @description テキスト編集終了のユースケース
@@ -37,5 +36,5 @@ export const execute = (event: FocusEvent): void =>
     }
 
     // Layerオブジェクトの名前を更新
-    timelineLayerUpdateNameService(layer.id, name);
+    layer.name = name;
 };

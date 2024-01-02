@@ -1,11 +1,10 @@
-import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
-import type { Layer } from "@/core/domain/model/Layer";
-import { execute as timelineLayerControllerUpdateDisableIconStyleService } from "../service/TimelineLayerControllerUpdateDisableIconStyleService";
+import { execute as timelineLayerControllerUpdateDisableIconElementService } from "../service/TimelineLayerControllerUpdateDisableIconElementService";
 import { $allHideMenu } from "@/menu/application/MenuUtil";
 import { EventType } from "@/tool/domain/event/EventType";
 import { execute as timelineLayerControllerDisableIconWindowMouseUpService } from "../service/TimelineLayerControllerDisableIconWindowMouseUpService";
 import {
     $getDisableState,
+    $getLayerFromElement,
     $setDisableState
 } from "../../TimelineUtil";
 
@@ -43,18 +42,14 @@ export const execute = (event: PointerEvent): void =>
         return ;
     }
 
-    // イベントターゲットのLayerIDを取得
-    const layerId: number = parseInt(element.dataset.layerId as string);
-
     // 指定のLayerオブジェクトを取得
-    const layer: Layer | null = $getCurrentWorkSpace()
-        .scene
-        .getLayer(layerId);
-
+    const layer = $getLayerFromElement(element);
     if (!layer) {
         return ;
     }
 
-    // 反転して登録
-    timelineLayerControllerUpdateDisableIconStyleService(layerId, !layer.disable);
+    layer.disable = !layer.disable;
+
+    // 表示Elementを更新
+    timelineLayerControllerUpdateDisableIconElementService(layer.id, layer.disable);
 };

@@ -1,5 +1,4 @@
 import { timelineLayer } from "@/timeline/domain/model/TimelineLayer";
-import { execute as timelineLayerUpdateColorService } from "@/timeline/application/TimelineLayer/service/TimelineLayerUpdateColorService";
 import { execute as timelineLayerControllerUpdateColorElementService } from "@/timeline/application/TimelineLayerController/service/TimelineLayerControllerUpdateColorElementService";
 import { execute as timelineLayerControllerUpdateLightIconElementService } from "@/timeline/application/TimelineLayerController/service/TimelineLayerControllerUpdateLightIconElementService";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
@@ -25,18 +24,18 @@ export const execute = (event: Event): void =>
     // アクティブなLayerオブジェクトを取得
     const layerId = timelineLayer.targetLayers.keys().next().value;
 
-    // Layerオブジェクトのハイライトカラーの値を更新
-    timelineLayerUpdateColorService(layerId, colorElement.value);
-
-    // ハイライトカラーを更新
-    timelineLayerControllerUpdateColorElementService(layerId, colorElement.value);
-
     // TODO レイヤーElementの表示を更新
     const scene = $getCurrentWorkSpace().scene;
     const layer = scene.getLayer(layerId);
     if (!layer || !layer.light) {
         return ;
     }
+
+    // Layerオブジェクトの値を更新
+    layer.color = colorElement.value;
+
+    // ハイライトカラーを更新
+    timelineLayerControllerUpdateColorElementService(layerId, layer.color);
 
     // ハイライトの機能がonの時は表示も更新
     timelineLayerControllerUpdateLightIconElementService(layerId, layer.light);

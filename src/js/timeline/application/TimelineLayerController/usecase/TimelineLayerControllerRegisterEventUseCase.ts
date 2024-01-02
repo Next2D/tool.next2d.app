@@ -5,6 +5,10 @@ import { execute as timelineLayerControllerNameTextKeyPressEventService } from "
 import { execute as timelineLayerControllerLayerIconMouseDownEventUseCase } from "./TimelineLayerControllerLayerIconMouseDownEventUseCase";
 import { execute as timelineLayerControllerMouseDownEventUseCase } from "./TimelineLayerControllerMouseDownEventUseCase";
 import { execute as timelineLayerControllerNameTextFocusoutEventUseCase } from "./TimelineLayerControllerNameTextFocusoutEventUseCase";
+import { execute as timelineLayerControllerDisableIconMouseDownEventUseCase } from "./TimelineLayerControllerDisableIconMouseDownEventUseCase";
+import { execute as timelineLayerControllerDisableIconMouseOverUseCase } from "./TimelineLayerControllerDisableIconMouseOverUseCase";
+import { execute as timelineLayerControllerLockIconMouseDownEventUseCase } from "./TimelineLayerControllerLockIconMouseDownEventUseCase";
+import { execute as timelineLayerControllerLockIconMouseOverUseCase } from "./TimelineLayerControllerLockIconMouseOverUseCase";
 import { EventType } from "@/tool/domain/event/EventType";
 
 /**
@@ -72,7 +76,8 @@ export const execute = (element: HTMLElement): void =>
     const lightElements = element
         .getElementsByClassName("timeline-layer-light-one");
 
-    if (lightElements) {
+    if (lightElements && lightElements.length) {
+
         const element = lightElements[0] as NonNullable<HTMLElement>;
 
         element.addEventListener(EventType.MOUSE_DOWN,
@@ -80,35 +85,41 @@ export const execute = (element: HTMLElement): void =>
         );
     }
 
-    // // 表示アイコンにイベントを登録
-    // const disableIconElement: HTMLElement | null = document
-    //     .getElementById(`layer-disable-icon-${layerId}`);
+    // 表示アイコンにイベントを登録
+    const disableIconElements = element
+        .getElementsByClassName("timeline-layer-disable-one");
 
-    // if (disableIconElement) {
-    //     // マウスダウンのイベントを登録
-    //     disableIconElement.addEventListener(EventType.MOUSE_DOWN,
-    //         timelineLayerControllerDisableIconMouseDownEventUseCase
-    //     );
+    if (disableIconElements && disableIconElements.length) {
 
-    //     // マウスオーバーのイベントを登録
-    //     disableIconElement.addEventListener(EventType.MOUSE_OVER,
-    //         timelineLayerControllerDisableIconMouseOverUseCase
-    //     );
-    // }
+        const element = disableIconElements[0] as NonNullable<HTMLElement>;
 
-    // // ロックアイコンにイベントを登録
-    // const lockIconElement: HTMLElement | null = document
-    //     .getElementById(`layer-lock-icon-${layerId}`);
+        // マウスダウンのイベントを登録
+        element.addEventListener(EventType.MOUSE_DOWN,
+            timelineLayerControllerDisableIconMouseDownEventUseCase
+        );
 
-    // if (lockIconElement) {
-    //     // マウスダウンのイベントを登録
-    //     lockIconElement.addEventListener(EventType.MOUSE_DOWN,
-    //         timelineLayerControllerLockIconMouseDownEventUseCase
-    //     );
+        // マウスオーバーのイベントを登録
+        element.addEventListener(EventType.MOUSE_OVER,
+            timelineLayerControllerDisableIconMouseOverUseCase
+        );
+    }
 
-    //     // マウスオーバーのイベントを登録
-    //     lockIconElement.addEventListener(EventType.MOUSE_OVER,
-    //         timelineLayerControllerLockIconMouseOverUseCase
-    //     );
-    // }
+    // ロックアイコンにイベントを登録
+    const lockIconElements = element
+        .getElementsByClassName("timeline-layer-lock-one");
+
+    if (lockIconElements && disableIconElements.length) {
+
+        const element = lockIconElements[0] as NonNullable<HTMLElement>;
+
+        // マウスダウンのイベントを登録
+        element.addEventListener(EventType.MOUSE_DOWN,
+            timelineLayerControllerLockIconMouseDownEventUseCase
+        );
+
+        // マウスオーバーのイベントを登録
+        element.addEventListener(EventType.MOUSE_OVER,
+            timelineLayerControllerLockIconMouseOverUseCase
+        );
+    }
 };

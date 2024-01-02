@@ -26,7 +26,9 @@ export const execute = (layer_id: number, disable: boolean): void =>
         return ;
     }
 
-    const elements = layerElement.getElementsByClassName("timeline-layer-disable-one");
+    const elements = layerElement
+        .getElementsByClassName("timeline-layer-disable-one");
+
     if (!elements || !elements.length) {
         return ;
     }

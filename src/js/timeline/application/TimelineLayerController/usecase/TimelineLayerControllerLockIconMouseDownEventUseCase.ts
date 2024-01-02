@@ -1,8 +1,6 @@
-import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
-import type { Layer } from "@/core/domain/model/Layer";
-import { execute as timelineLayerControllerUpdateLockIconStyleService } from "../service/TimelineLayerControllerUpdateLockIconStyleService";
+import { execute as timelineLayerControllerUpdateLockIconStyleService } from "../service/TimelineLayerControllerUpdateLockIconElementService";
 import { $allHideMenu } from "@/menu/application/MenuUtil";
-import { $getLockState, $setLockState } from "../../TimelineUtil";
+import { $getLayerFromElement, $getLockState, $setLockState } from "../../TimelineUtil";
 import { EventType } from "@/tool/domain/event/EventType";
 import { execute as timelineLayerControllerLockIconWindowMouseUpService } from "../service/TimelineLayerControllerLockIconWindowMouseUpService";
 
@@ -40,18 +38,15 @@ export const execute = (event: PointerEvent): void =>
         return ;
     }
 
-    // イベントターゲットのLayerIDを取得
-    const layerId: number = parseInt(element.dataset.layerId as string);
-
     // 指定のLayerオブジェクトを取得
-    const layer: Layer | null = $getCurrentWorkSpace()
-        .scene
-        .getLayer(layerId);
-
+    const layer = $getLayerFromElement(element);
     if (!layer) {
         return ;
     }
 
+    // Layerオブジェクトの値を更新
+    layer.lock = !layer.lock;
+
     // 反転して登録
-    timelineLayerControllerUpdateLockIconStyleService(layerId, !layer.lock);
+    timelineLayerControllerUpdateLockIconStyleService(layer.id, layer.lock);
 };

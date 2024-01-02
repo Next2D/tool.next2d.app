@@ -1,7 +1,5 @@
-import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
-import { $getLockState } from "../../TimelineUtil";
-import type { Layer } from "@/core/domain/model/Layer";
-import { execute as timelineLayerControllerUpdateLockIconStyleService } from "../service/TimelineLayerControllerUpdateLockIconStyleService";
+import { $getLayerFromElement, $getLockState } from "../../TimelineUtil";
+import { execute as timelineLayerControllerUpdateLockIconStyleService } from "../service/TimelineLayerControllerUpdateLockIconElementService";
 
 /**
  * @description 連続したロック機能の処理関数
@@ -23,13 +21,13 @@ export const execute = (event: PointerEvent): void =>
         return ;
     }
 
-    const layerId = parseInt(element.dataset.layerId as string);
-    const scene = $getCurrentWorkSpace().scene;
-
-    const layer: Layer | null = scene.getLayer(layerId);
+    // 指定のLayerオブジェクトを取得
+    const layer = $getLayerFromElement(element);
     if (!layer) {
         return ;
     }
 
-    timelineLayerControllerUpdateLockIconStyleService(layer.id, !layer.lock);
+    layer.lock = !layer.lock;
+
+    timelineLayerControllerUpdateLockIconStyleService(layer.id, layer.lock);
 };

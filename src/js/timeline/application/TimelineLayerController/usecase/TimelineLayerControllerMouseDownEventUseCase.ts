@@ -1,7 +1,5 @@
-import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
-import { $getTopIndex } from "../../TimelineUtil";
+import { $getLayerFromElement } from "../../TimelineUtil";
 import { execute as timelineLayerControllerNormalSelectUseCase } from "./TimelineLayerControllerNormalSelectUseCase";
-import { Layer } from "@/core/domain/model/Layer";
 
 /**
  * @description レイヤーのコントローラーエリアのマウスダウン処理関数
@@ -23,10 +21,9 @@ export const execute = (event: PointerEvent): void =>
         return ;
     }
 
-    const index = $getTopIndex() + parseInt(element.dataset.layerIndex as string);
-    const scene = $getCurrentWorkSpace().scene;
-    const layer: Layer | undefined = scene.layers[index];
-    if (!layer)  {
+    // 指定のLayerオブジェクトを取得
+    const layer = $getLayerFromElement(element);
+    if (!layer) {
         return ;
     }
 

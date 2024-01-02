@@ -1,7 +1,5 @@
-import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
-import { $getDisableState } from "../../TimelineUtil";
-import type { Layer } from "@/core/domain/model/Layer";
-import { execute as timelineLayerControllerUpdateDisableIconStyleService } from "../service/TimelineLayerControllerUpdateDisableIconStyleService";
+import { $getDisableState, $getLayerFromElement } from "../../TimelineUtil";
+import { execute as timelineLayerControllerUpdateDisableIconStyleService } from "../service/TimelineLayerControllerUpdateDisableIconElementService";
 
 /**
  * @description 連続した表示機能の処理関数
@@ -23,13 +21,13 @@ export const execute = (event: PointerEvent): void =>
         return ;
     }
 
-    const layerId = parseInt(element.dataset.layerId as string);
-    const scene = $getCurrentWorkSpace().scene;
-
-    const layer: Layer | null = scene.getLayer(layerId);
+    // 指定のLayerオブジェクトを取得
+    const layer = $getLayerFromElement(element);
     if (!layer) {
         return ;
     }
 
-    timelineLayerControllerUpdateDisableIconStyleService(layer.id, !layer.disable);
+    layer.disable = !layer.disable;
+
+    timelineLayerControllerUpdateDisableIconStyleService(layer.id, layer.disable);
 };

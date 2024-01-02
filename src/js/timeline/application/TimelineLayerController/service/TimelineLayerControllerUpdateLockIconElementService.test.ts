@@ -1,8 +1,8 @@
-import { execute } from "./TimelineLayerControllerUpdateDisableIconStyleService";
-import { $getCurrentWorkSpace, $createWorkSpace } from "../../../../core/application/CoreUtil";
+import { execute } from "./TimelineLayerControllerUpdateLockIconElementService";
+import { $createWorkSpace, $getCurrentWorkSpace } from "../../../../core/application/CoreUtil";
 import { timelineLayer } from "../../../domain/model/TimelineLayer";
 
-describe("TimelineLayerControllerUpdateDisableIconStyleServiceTest", () =>
+describe("TimelineLayerControllerUpdateLockIconElementServiceTest", () =>
 {
     test("execute test", () =>
     {
@@ -12,7 +12,7 @@ describe("TimelineLayerControllerUpdateDisableIconStyleServiceTest", () =>
 
         const iconElement = document.createElement("div");
         layerElement.appendChild(iconElement);
-        iconElement.setAttribute("class", "timeline-layer-disable-one icon-disable");
+        iconElement.setAttribute("class", "timeline-layer-lock-one icon-disable");
 
         const workSpace = $getCurrentWorkSpace() || $createWorkSpace();
 

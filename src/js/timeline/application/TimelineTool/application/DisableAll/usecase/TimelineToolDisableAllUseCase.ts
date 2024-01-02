@@ -2,7 +2,7 @@ import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { $setAllDisableMode } from "@/timeline/application/TimelineUtil";
 import type { Layer } from "@/core/domain/model/Layer";
 import { execute as timelineToolDisableAllGetCurrentModeService } from "../service/TimelineToolDisableAllGetCurrentModeService";
-import { execute as timelineLayerControllerUpdateDisableIconStyleService } from "@/timeline/application/TimelineLayerController/service/TimelineLayerControllerUpdateDisableIconStyleService";
+import { execute as timelineLayerControllerUpdateDisableIconStyleService } from "@/timeline/application/TimelineLayerController/service/TimelineLayerControllerUpdateDisableIconElementService";
 
 /**
  * @description タイムライン全体の表示On/Offツールのイベント登録

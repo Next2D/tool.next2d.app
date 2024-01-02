@@ -1,9 +1,6 @@
-import type { Layer } from "@/core/domain/model/Layer";
-import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { $allHideMenu } from "@/menu/application/MenuUtil";
-import { $getTopIndex } from "../../TimelineUtil";
+import { $getLayerFromElement } from "../../TimelineUtil";
 import { execute as timelineLayerControllerUpdateLightIconElementService } from "../service/TimelineLayerControllerUpdateLightIconElementService";
-import { execute as timelineLayerUpdateLightService } from "@/timeline/application/TimelineLayer/service/TimelineLayerUpdateLightService";
 
 /**
  * @description レイヤーのハイライトアイコンのイベント処理
@@ -31,24 +28,15 @@ export const execute = (event: PointerEvent): void =>
         return ;
     }
 
-    // イベントターゲットのLayerIDを取得
-    const index = $getTopIndex() + parseInt(element.dataset.layerIndex as string);
-
     // 指定のLayerオブジェクトを取得
-    const layer: Layer | undefined = $getCurrentWorkSpace()
-        .scene
-        .layers[index];
-
+    const layer = $getLayerFromElement(element);
     if (!layer) {
         return ;
     }
 
-    // 現在の設定を反転して変数にセット
-    const light = !layer.light;
+    // Layerオブジェクトの値を更新
+    layer.light = !layer.light;
 
     // 表示Elementを更新
-    timelineLayerControllerUpdateLightIconElementService(layer.id, light);
-
-    // Layerオブジェクトの値を更新
-    timelineLayerUpdateLightService(layer.id, light);
+    timelineLayerControllerUpdateLightIconElementService(layer.id, layer.light);
 };

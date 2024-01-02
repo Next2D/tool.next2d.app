@@ -1,6 +1,6 @@
 import { execute as timelineLayerFrameClearSelectedElementService } from "@/timeline/application/TimelineLayerFrame/service/TimelineLayerFrameClearSelectedElementService";
 import { timelineFrame } from "@/timeline/domain/model/TimelineFrame";
-import { $getLeftFrame, $getTopIndex } from "../../TimelineUtil";
+import { $getLeftFrame } from "../../TimelineUtil";
 import { execute as timelineLayerFrameActiveElementService } from "@/timeline/application/TimelineLayerFrame/service/TimelineLayerFrameActiveElementService";
 import { execute as timelineLayerClearSelectedLayerService } from "@/timeline/application/TimelineLayer/service/TimelineLayerClearSelectedLayerService";
 import { execute as timelineLayerRegisterLayerAndFrameService } from "@/timeline/application/TimelineLayer/service/TimelineLayerRegisterLayerAndFrameService";
@@ -24,9 +24,7 @@ export const execute = (layer_id: number): void =>
         return ;
     }
 
-    const index = $getTopIndex() + scene.layers.indexOf(layer);
-
-    const layerElement: HTMLElement | undefined = timelineLayer.elements[index];
+    const layerElement: HTMLElement | undefined = timelineLayer.elements[layer.getDisplayIndex()];
     if (!layerElement) {
         return ;
     }
