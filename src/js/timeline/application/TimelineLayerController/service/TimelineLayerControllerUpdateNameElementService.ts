@@ -1,7 +1,6 @@
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import type { Layer } from "@/core/domain/model/Layer";
 import { timelineLayer } from "@/timeline/domain/model/TimelineLayer";
-import { $getTopIndex } from "../../TimelineUtil";
 
 /**
  * @description 指定のLayer IDのレイヤーElementのレイヤー名を更新、表示領域外の時はスキップ
@@ -22,18 +21,13 @@ export const execute = (layer_id: number, name: string): void =>
     }
 
     // 表示領域にElementがなければ終了
-    const index = $getTopIndex() + scene.layers.indexOf(layer);
-    if (!(index in timelineLayer.elements)) {
-        return ;
-    }
-
-    const element: HTMLElement | undefined = timelineLayer.elements[index];
+    const element: HTMLElement | undefined = timelineLayer.elements[layer.getDisplayIndex()];
     if (!element) {
         return ;
     }
 
     const nameElements = element.getElementsByClassName("view-text");
-    if (!nameElements) {
+    if (!nameElements || !nameElements.length) {
         return ;
     }
 

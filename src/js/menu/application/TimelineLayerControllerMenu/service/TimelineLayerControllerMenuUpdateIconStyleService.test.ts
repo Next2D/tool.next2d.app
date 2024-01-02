@@ -51,7 +51,7 @@ describe("TimelineLayerControllerMenuUpdateIconStyleServiceTest", () =>
         expect(maskElement.style.pointerEvents).toBe("none");
         expect(guideElement.style.opacity).toBe("");
         expect(guideElement.style.pointerEvents).toBe("");
-        
+
         // ガイドレイヤー
         layer.mode = 3;
         execute(layer);

@@ -1,34 +1,32 @@
 import { execute } from "./TimelineLayerControllerUpdateLockIconStyleService";
-import { $createWorkSpace } from "../../../../core/application/CoreUtil";
+import { $createWorkSpace, $getCurrentWorkSpace } from "../../../../core/application/CoreUtil";
+import { timelineLayer } from "../../../domain/model/TimelineLayer";
 
 describe("TimelineLayerControllerUpdateLockIconStyleServiceTest", () =>
 {
     test("execute test", () =>
     {
-        const div = document.createElement("div");
-        div.setAttribute("class", "icon-disable");
-        div.id = "layer-lock-icon-0";
-        document.body.appendChild(div);
+        const layerElement = document.createElement("div");
+        timelineLayer.elements.length = 0;
+        timelineLayer.elements.push(layerElement);
 
-        const workSpace = $createWorkSpace();
-        const layer = workSpace.scene.getLayer(0);
+        const iconElement = document.createElement("div");
+        layerElement.appendChild(iconElement);
+        iconElement.setAttribute("class", "timeline-layer-lock-one icon-disable");
 
-        expect(layer.lock).toBe(false);
-        expect(div.classList.contains("icon-disable")).toBe(true);
-        expect(div.classList.contains("icon-active")).toBe(false);
+        const workSpace = $getCurrentWorkSpace() || $createWorkSpace();
+
+        expect(iconElement.classList.contains("icon-disable")).toBe(true);
+        expect(iconElement.classList.contains("icon-active")).toBe(false);
 
         execute(0, true);
 
-        expect(layer.lock).toBe(true);
-        expect(div.classList.contains("icon-disable")).toBe(false);
-        expect(div.classList.contains("icon-active")).toBe(true);
+        expect(iconElement.classList.contains("icon-disable")).toBe(false);
+        expect(iconElement.classList.contains("icon-active")).toBe(true);
 
         execute(0, false);
 
-        expect(layer.lock).toBe(false);
-        expect(div.classList.contains("icon-disable")).toBe(true);
-        expect(div.classList.contains("icon-active")).toBe(false);
-
-        div.remove();
+        expect(iconElement.classList.contains("icon-disable")).toBe(true);
+        expect(iconElement.classList.contains("icon-active")).toBe(false);
     });
 });

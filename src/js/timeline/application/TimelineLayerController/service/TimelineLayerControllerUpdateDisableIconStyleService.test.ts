@@ -1,34 +1,32 @@
 import { execute } from "./TimelineLayerControllerUpdateDisableIconStyleService";
-import { $createWorkSpace } from "../../../../core/application/CoreUtil";
+import { $getCurrentWorkSpace, $createWorkSpace } from "../../../../core/application/CoreUtil";
+import { timelineLayer } from "../../../domain/model/TimelineLayer";
 
 describe("TimelineLayerControllerUpdateDisableIconStyleServiceTest", () =>
 {
     test("execute test", () =>
     {
-        const div = document.createElement("div");
-        div.setAttribute("class", "icon-disable");
-        div.id = "layer-disable-icon-0";
-        document.body.appendChild(div);
+        const layerElement = document.createElement("div");
+        timelineLayer.elements.length = 0;
+        timelineLayer.elements.push(layerElement);
 
-        const workSpace = $createWorkSpace();
-        const layer = workSpace.scene.getLayer(0);
+        const iconElement = document.createElement("div");
+        layerElement.appendChild(iconElement);
+        iconElement.setAttribute("class", "timeline-layer-disable-one icon-disable");
 
-        expect(layer.disable).toBe(false);
-        expect(div.classList.contains("icon-disable")).toBe(true);
-        expect(div.classList.contains("icon-active")).toBe(false);
+        const workSpace = $getCurrentWorkSpace() || $createWorkSpace();
+
+        expect(iconElement.classList.contains("icon-disable")).toBe(true);
+        expect(iconElement.classList.contains("icon-active")).toBe(false);
 
         execute(0, true);
 
-        expect(layer.disable).toBe(true);
-        expect(div.classList.contains("icon-disable")).toBe(false);
-        expect(div.classList.contains("icon-active")).toBe(true);
+        expect(iconElement.classList.contains("icon-disable")).toBe(false);
+        expect(iconElement.classList.contains("icon-active")).toBe(true);
 
         execute(0, false);
 
-        expect(layer.disable).toBe(false);
-        expect(div.classList.contains("icon-disable")).toBe(true);
-        expect(div.classList.contains("icon-active")).toBe(false);
-
-        div.remove();
+        expect(iconElement.classList.contains("icon-disable")).toBe(true);
+        expect(iconElement.classList.contains("icon-active")).toBe(false);
     });
 });

@@ -2,11 +2,12 @@ import { execute } from "./TimelineLayerControllerUpdateLightIconElementService"
 import { $createWorkSpace, $getCurrentWorkSpace } from "../../../../core/application/CoreUtil";
 import { timelineLayer } from "../../../domain/model/TimelineLayer";
 
-describe("TimelineLayerControllerUpdateLightIconElementServiceTest", () =>
+describe("TimelineLayerControllerUpdateLightIconElementStyleServiceTest", () =>
 {
     test("execute test", () =>
     {
         const layerElement = document.createElement("div");
+        timelineLayer.elements.length = 0;
         timelineLayer.elements.push(layerElement);
 
         const lightElement = document.createElement("div");

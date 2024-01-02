@@ -8,6 +8,7 @@ import { execute as timelineFrameUpdateFrameHeightService } from "@/timeline/app
 import { execute as timelineMarkerUpdateWidthService } from "@/timeline/application/TimelineMarker/service/TimelineMarkerUpdateWidthService";
 import { execute as timelineMarkerMovePositionService } from "@/timeline/application/TimelineMarker/service/TimelineMarkerMovePositionService";
 import { execute as timelineLayerUpdateClientHeightService } from "@/timeline/application/TimelineLayer/service/TimelineLayerUpdateClientHeightService";
+import { execute as timelineLayerControllerMenuScaleSelectService } from "@/menu/application/TimelineLayerControllerMenu/service/TimelineLayerControllerMenuScaleSelectService";
 
 /**
  * @description WorkSpaceに保存されてるobjectからタイムラインエリアのstyleを更新
@@ -61,4 +62,7 @@ export const execute = (timeline_area_state: UserTimelineAreaStateObjectImpl): v
 
     // レイヤーエリアの高さを更新
     timelineLayerUpdateClientHeightService();
+
+    // Select Elementの表示を更新
+    timelineLayerControllerMenuScaleSelectService();
 };

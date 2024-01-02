@@ -1,5 +1,6 @@
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import type { Layer } from "@/core/domain/model/Layer";
+import { timelineLayer } from "@/timeline/domain/model/TimelineLayer";
 
 /**
  * @description 指定のLayer IDのロック情報を更新して、表示Elementのclassを更新
@@ -13,23 +14,25 @@ import type { Layer } from "@/core/domain/model/Layer";
  */
 export const execute = (layer_id: number, lock: boolean): void =>
 {
-    const layer: Layer | null = $getCurrentWorkSpace()
-        .scene
-        .getLayer(layer_id);
-
+    const scene = $getCurrentWorkSpace().scene;
+    const layer: Layer | null = scene.getLayer(layer_id);
     if (!layer) {
         return ;
     }
 
-    const element: HTMLElement | null = document
-        .getElementById(`layer-lock-icon-${layer_id}`);
+    // 表示領域にElementがなければ終了
+    const layerElement = timelineLayer.elements[layer.getDisplayIndex()] as NonNullable<HTMLElement>;
+    if (!layerElement) {
+        return ;
+    }
 
-    if (!element) {
+    const elements = layerElement.getElementsByClassName("timeline-layer-lock-one");
+    if (!elements || !elements.length) {
         return ;
     }
 
     // update property
-    layer.lock = lock;
+    const element = elements[0] as NonNullable<HTMLElement>;
 
     // update class
     if (lock) {

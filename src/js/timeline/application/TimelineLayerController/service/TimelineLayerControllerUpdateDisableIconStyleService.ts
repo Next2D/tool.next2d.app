@@ -1,9 +1,10 @@
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import type { Layer } from "@/core/domain/model/Layer";
+import { timelineLayer } from "@/timeline/domain/model/TimelineLayer";
 
 /**
- * @description 指定のLayer IDの表示情報を更新して、表示Elementのclassを更新
- *              Update the display information of the specified Layer ID and update the class of the display Element.
+ * @description 指定のLayer IDの表示・非表示アイコンElementのclassを更新
+ *              Update the class of the Show/Hide Icon Element for the specified Layer ID.
  *
  * @param  {number} layer_id
  * @param  {boolean} disable
@@ -13,23 +14,25 @@ import type { Layer } from "@/core/domain/model/Layer";
  */
 export const execute = (layer_id: number, disable: boolean): void =>
 {
-    const layer: Layer | null = $getCurrentWorkSpace()
-        .scene
-        .getLayer(layer_id);
-
+    const scene = $getCurrentWorkSpace().scene;
+    const layer: Layer | null = scene.getLayer(layer_id);
     if (!layer) {
         return ;
     }
 
-    const element: HTMLElement | null = document
-        .getElementById(`layer-disable-icon-${layer_id}`);
+    // 表示領域にElementがなければ終了
+    const layerElement = timelineLayer.elements[layer.getDisplayIndex()] as NonNullable<HTMLElement>;
+    if (!layerElement) {
+        return ;
+    }
 
-    if (!element) {
+    const elements = layerElement.getElementsByClassName("timeline-layer-disable-one");
+    if (!elements || !elements.length) {
         return ;
     }
 
     // update property
-    layer.disable = disable;
+    const element = elements[0] as NonNullable<HTMLElement>;
 
     // update class
     if (disable) {

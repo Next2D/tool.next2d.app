@@ -46,7 +46,7 @@ export const execute = (): void =>
 
         const layer = layers[idx];
 
-        // 表示領域にあればスキップ
+        // 表示領域外にあればスキップ
         if (topIndex > idx || currentHeight > timelineLayer.clientHeight) {
             layer.display = "none";
             continue;
@@ -96,7 +96,7 @@ export const execute = (): void =>
         // スクロール位置に合わせてフレームElementのStyleを更新
         timelineLayerFrameUpdateStyleService(frameControllerElement, leftFrame);
 
-        // Layerの状態に合わせてstyle, classの状態を更新
+        // Layerオブジェクトの状態に合わせて、表示Elementの情報を更新
         timelineLayerControllerUpdateElementStyleUseCase(layer);
     }
 };

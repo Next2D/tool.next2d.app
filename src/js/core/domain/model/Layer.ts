@@ -5,6 +5,8 @@ import { Character } from "./Character";
 import { EmptyCharacter } from "./EmptyCharacter";
 import type { CharacterSaveObjectImpl } from "@/interface/CharacterSaveObjectImpl";
 import type { EmptyCharacterSaveObjectImpl } from "@/interface/EmptyCharacterSaveObjectImpl";
+import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
+import { $getTopIndex } from "@/timeline/application/TimelineUtil";
 
 /**
  * @description タイムラインのレイヤー状態管理クラス
@@ -317,6 +319,21 @@ export class Layer
     get emptyCharacters (): EmptyCharacter[]
     {
         return this._$emptys;
+    }
+
+    /**
+     * @description 現在の表示index値を返却
+     *              Return current display index value
+     *
+     * @return {number}
+     * @method
+     * @public
+     */
+    getDisplayIndex (): number
+    {
+        const scene = $getCurrentWorkSpace().scene;
+        const index = scene.layers.indexOf(this);
+        return index === -1 ? index : $getTopIndex() + index;
     }
 
     /**

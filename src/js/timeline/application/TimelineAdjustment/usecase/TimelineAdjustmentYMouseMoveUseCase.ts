@@ -1,5 +1,5 @@
 import { $TIMELINE_MIN_HEIGHT, $TIMELINE_ID } from "@/config/TimelineConfig";
-import { execute as timelineLayerBuildElementUseCase } from "../../TimelineLayer/usecase/TimelineLayerBuildElementUseCase";
+import { execute as timelineLayerShowAndHideElementUseCase } from "../../TimelineLayer/usecase/TimelineLayerShowAndHideElementUseCase";
 import { execute as timelineLayerUpdateClientHeightService } from "@/timeline/application/TimelineLayer/service/TimelineLayerUpdateClientHeightService";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { execute as timelineScrollUpdateHeightService } from "@/timeline/application/TimelineScroll/service/TimelineScrollUpdateHeightService";
@@ -63,7 +63,7 @@ export const execute = (event: PointerEvent): void =>
         // スクロールのy座標の更新
         timelineScrollUpdateYPositionService();
 
-        // タイムラインのレイヤーを再描画
-        timelineLayerBuildElementUseCase();
+        // タイムラインの表示領域内の判定をして必要な部分だけ再描画
+        timelineLayerShowAndHideElementUseCase();
     });
 };

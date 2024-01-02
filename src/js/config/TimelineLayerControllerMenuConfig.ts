@@ -33,3 +33,12 @@ export const $TIMELINE_CONTROLLER_LAYER_MASK_ID: string = "timeline-layer-mask";
  * @constant
  */
 export const $TIMELINE_CONTROLLER_LAYER_GUIDE_ID: string = "timeline-layer-guide";
+
+/**
+ * @description タイムラインコントローラーメニューの高さ設定のElementのID
+ *              ID of Element for height setting in the Timeline Controller menu.
+ *
+ * @type {string}
+ * @constant
+ */
+export const $TIMELINE_CONTROLLER_LAYER_SCALE_ID: string = "timeline-layer-scale";
