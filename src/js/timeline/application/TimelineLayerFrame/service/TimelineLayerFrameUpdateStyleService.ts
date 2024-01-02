@@ -1,7 +1,5 @@
-import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { timelineLayer } from "@/timeline/domain/model/TimelineLayer";
-import { $getTopIndex } from "../../TimelineUtil";
-import { Layer } from "@/core/domain/model/Layer";
+import { $getLayerFromElement } from "../../TimelineUtil";
 
 /**
  * @description 指定のフレームElementのStyleを更新
@@ -17,9 +15,7 @@ export const execute = (element: HTMLElement, left_frame: number): void =>
 {
     let frames: number[] | null = null;
 
-    const index = $getTopIndex() + parseInt(element.dataset.layerIndex as NonNullable<string>);
-    const scene = $getCurrentWorkSpace().scene;
-    const layer: Layer | null = scene.layers[index];
+    const layer = $getLayerFromElement(element);
     if (layer) {
         const targetLayers = timelineLayer.targetLayers;
         if (targetLayers.size && targetLayers.has(layer.id)) {

@@ -24,6 +24,7 @@ export const execute = (layer_id: number): void =>
         return ;
     }
 
+    // 表示Elementがなければ終了
     const layerElement: HTMLElement | undefined = timelineLayer.elements[layer.getDisplayIndex()];
     if (!layerElement) {
         return ;

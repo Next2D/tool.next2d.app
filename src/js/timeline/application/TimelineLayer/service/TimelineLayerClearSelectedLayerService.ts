@@ -1,5 +1,5 @@
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
-import { Layer } from "@/core/domain/model/Layer";
+import type { Layer } from "@/core/domain/model/Layer";
 import { timelineLayer } from "@/timeline/domain/model/TimelineLayer";
 import { $getTopIndex } from "../../TimelineUtil";
 

@@ -1,6 +1,4 @@
-import type { Layer } from "@/core/domain/model/Layer";
-import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
-import { $getTopIndex } from "../../TimelineUtil";
+import { $getLayerFromElement } from "../../TimelineUtil";
 import { execute as timelineLayerControllerNameTextInactiveStyleService } from "../service/TimelineLayerControllerNameTextInactiveStyleService";
 
 /**
@@ -22,10 +20,7 @@ export const execute = (event: FocusEvent): void =>
         return ;
     }
 
-    const index = $getTopIndex() + parseInt(element.dataset.layerIndex as string);
-
-    const scene = $getCurrentWorkSpace().scene;
-    const layer: Layer | undefined = scene.layers[index];
+    const layer = $getLayerFromElement(element);
     if (!layer) {
         return ;
     }

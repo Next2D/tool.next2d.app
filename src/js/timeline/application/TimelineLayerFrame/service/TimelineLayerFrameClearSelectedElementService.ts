@@ -1,7 +1,10 @@
 import { timelineLayer } from "@/timeline/domain/model/TimelineLayer";
-import { $getLeftFrame, $getTopIndex } from "../../TimelineUtil";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
-import { Layer } from "@/core/domain/model/Layer";
+import type { Layer } from "@/core/domain/model/Layer";
+import {
+    $getLeftFrame,
+    $getTopIndex
+} from "../../TimelineUtil";
 
 /**
  * @description 選択中のフレームElementを非アクティブに更新してマップデータを初期化
@@ -15,7 +18,7 @@ export const execute = (): void =>
 {
     const scene = $getCurrentWorkSpace().scene;
 
-    const topIndex = $getTopIndex();
+    const topIndex  = $getTopIndex();
     const leftFrame = $getLeftFrame();
     for (const [layerId, frames] of timelineLayer.targetLayers) {
 

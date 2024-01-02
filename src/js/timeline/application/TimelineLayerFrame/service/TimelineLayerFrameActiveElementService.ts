@@ -1,7 +1,5 @@
 import { execute as timelineLayerRegisterLayerAndFrameService } from "@/timeline/application/TimelineLayer/service/TimelineLayerRegisterLayerAndFrameService";
-import { $getTopIndex } from "../../TimelineUtil";
-import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
-import { Layer } from "@/core/domain/model/Layer";
+import { $getLayerFromElement } from "../../TimelineUtil";
 
 /**
  * @description 選択したフレームElementをアクティブ表示にしてマップに登録
@@ -14,10 +12,7 @@ import { Layer } from "@/core/domain/model/Layer";
  */
 export const execute = (element: HTMLElement): void =>
 {
-    const index = $getTopIndex() + parseInt(element.dataset.layerIndex as string);
-
-    const scene = $getCurrentWorkSpace().scene;
-    const layer: Layer | null = scene.layers[index];
+    const layer = $getLayerFromElement(element);
     if (!layer) {
         return ;
     }
