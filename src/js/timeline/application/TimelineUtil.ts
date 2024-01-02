@@ -2,6 +2,7 @@ import { $FIXED_FRAME_COUNT } from "@/config/TimelineConfig";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { timelineHeader } from "../domain/model/TimelineHeader";
 import { timelineLayer } from "../domain/model/TimelineLayer";
+import type { Layer } from "@/core/domain/model/Layer";
 
 /**
  * @description ツールエリアでのマウス状態
@@ -356,4 +357,20 @@ export const $getDisableState = (): boolean =>
 export const $setDisableState = (state: boolean): void =>
 {
     $disableState = state;
+};
+
+/**
+ * @description タイムラインで選択したElementのIndex値からLayerオブジェクトを取得
+ *              Obtains a Layer object from the Index value of the Element selected on the timeline
+ *
+ * @param  {HTMLElement} element
+ * @return {Layer | void}
+ * @method
+ * @public
+ */
+export const $getLayerFromElement = (element: HTMLElement): Layer | undefined =>
+{
+    return $getCurrentWorkSpace()
+        .scene
+        .layers[$getTopIndex() + parseInt(element.dataset.layerIndex as string)];
 };

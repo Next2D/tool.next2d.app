@@ -32,27 +32,27 @@ export const execute = (
         timelineLayerControllerComponent(layerIndex, layer_id)
     );
 
-    const element = parent.lastElementChild as NonNullable<HTMLElement>;
-    timelineLayer.elements.push(element);
+    const layerElement = parent.lastElementChild as NonNullable<HTMLElement>;
+    timelineLayer.elements.push(layerElement);
 
     // レイヤー全体のマウスダウンイベント
-    element.addEventListener(EventType.MOUSE_DOWN,
+    layerElement.addEventListener(EventType.MOUSE_DOWN,
         timelineLayerMouseDownEventService
     );
 
     // レイヤーのコントローラーのイベント登録
-    const layerControllerElement = element.firstElementChild as NonNullable<HTMLElement>;
+    const layerControllerElement = layerElement.firstElementChild as NonNullable<HTMLElement>;
     timelineLayerControllerRegisterEventUseCase(
         layerControllerElement
     );
 
     // レイヤーのフレーム側のイベントを登録
-    const frameControllerElement = element.lastElementChild as NonNullable<HTMLElement>;
+    const frameControllerElement = layerElement.lastElementChild as NonNullable<HTMLElement>;
     timelineLayerFrameRegisterEventUseCase(
         frameControllerElement
     );
 
-    // フレームのElementを追加
+    // フレームElementを追加
     timelineLayerFrameCreateContentComponentService(
         frameControllerElement, 0, max_frame, layerIndex, left_frame
     );

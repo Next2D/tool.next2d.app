@@ -92,6 +92,20 @@ class TimelineLayer
     {
         return this._$targetLayers;
     }
+
+    /**
+     * @description 指定のElementからレイヤーElementを返却
+     *              Returns a Layer Element from the specified Element
+     *
+     * @param  {HTMLElement} element
+     * @return {HTMLElement | void}
+     * @method
+     * @public
+     */
+    getLayerElementFromElement (element: HTMLElement): HTMLElement | undefined
+    {
+        return this._$elements[parseInt(element.dataset.layerIndex as string)];
+    }
 }
 
 export const timelineLayer = new TimelineLayer();

@@ -1,10 +1,7 @@
-import type { Layer } from "@/core/domain/model/Layer";
 import type { MenuImpl } from "@/interface/MenuImpl";
 import type { TimelineLayerControllerMenu } from "@/menu/domain/model/TimelineLayerControllerMenu";
-import { $getTopIndex } from "@/timeline/application/TimelineUtil";
+import { $getLayerFromElement } from "@/timeline/application/TimelineUtil";
 import { $TIMELINE_LAYER_MENU_NAME } from "@/config/MenuConfig";
-import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
-import { $TIMELINE_CONTROLLER_LAYER_COLOR_ID } from "@/config/TimelineLayerControllerMenuConfig";
 import {
     $allHideMenu,
     $getMenu
@@ -12,6 +9,8 @@ import {
 import { execute as timelineLayerControllerNormalSelectUseCase } from "@/timeline/application/TimelineLayerController/usecase/TimelineLayerControllerNormalSelectUseCase";
 import { timelineLayer } from "@/timeline/domain/model/TimelineLayer";
 import { execute as timelineLayerActiveElementService } from "@/timeline/application/TimelineLayer/service/TimelineLayerActiveElementService";
+import { execute as timelineLayerControllerMenuSetColorService } from "../service/TimelineLayerControllerMenuSetColorService";
+import { execute as timelineLayerControllerMenuUpdateIconStyleService } from "../service/TimelineLayerControllerMenuUpdateIconStyleService";
 
 /**
  * @description レイヤーのコントローラーメニューを表示
@@ -43,42 +42,34 @@ export const execute = (event: MouseEvent): void =>
         return ;
     }
 
-    const iconElement: HTMLElement | null = event.target as HTMLElement;
-    if (!iconElement) {
+    const targetElement: HTMLElement | null = event.currentTarget as HTMLElement;
+    if (!targetElement) {
         return ;
     }
 
-    // 選択されたLayerオブジェクトを取得
-    const index = $getTopIndex() + parseInt(iconElement.dataset.layerIndex as string);
-
-    const workSpace = $getCurrentWorkSpace();
-    const scene = workSpace.scene;
-
-    const layer: Layer | undefined = scene.layers[index];
+    const layer = $getLayerFromElement(targetElement);
     if (!layer) {
         return ;
     }
 
-    // カラー設定Element
-    const colorElement: HTMLInputElement | null = document
-        .getElementById($TIMELINE_CONTROLLER_LAYER_COLOR_ID) as HTMLInputElement;
-
-    if (!colorElement) {
+    const layerElement: HTMLElement | undefined = timelineLayer.getLayerElementFromElement(targetElement);
+    if (!layerElement) {
         return ;
     }
 
     // カラー表示を更新
-    colorElement.value = layer.color;
+    timelineLayerControllerMenuSetColorService(targetElement);
 
     // 指定のレイヤーだけを選択状態に更新
     timelineLayerControllerNormalSelectUseCase(layer.id);
 
     // 指定レイヤーElementをアクティブ表示に更新
-    const layerElement: HTMLElement | undefined = timelineLayer.elements[index];
-    if (layerElement) {
-        timelineLayerActiveElementService(layerElement);
-    }
+    timelineLayerActiveElementService(layerElement);
 
+    // レイヤーのモードに合わせて表示
+    timelineLayerControllerMenuUpdateIconStyleService(layer);
+
+    // メニューの表示位置を調整
     let top = event.pageY - element.clientHeight;
     if (0 > top) {
         top = 15;
