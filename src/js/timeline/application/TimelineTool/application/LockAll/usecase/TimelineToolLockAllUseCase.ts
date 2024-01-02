@@ -35,6 +35,9 @@ export const execute = (event: PointerEvent): void =>
             continue;
         }
 
+        // Layerオブジェクトの値を更新
+        layer.lock = mode;
+
         // レイヤーのロック情報とElementを更新
         timelineLayerControllerUpdateLockIconStyleService(layer.id, mode);
     }

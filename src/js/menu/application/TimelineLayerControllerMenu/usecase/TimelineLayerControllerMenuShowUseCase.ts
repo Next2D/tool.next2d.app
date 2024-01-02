@@ -52,13 +52,12 @@ export const execute = (event: MouseEvent): void =>
         return ;
     }
 
-    const layerElement: HTMLElement | undefined = timelineLayer.getLayerElementFromElement(targetElement);
+    const layerElement: HTMLElement | undefined = timelineLayer
+        .getLayerElementFromElement(targetElement);
+
     if (!layerElement) {
         return ;
     }
-
-    // カラー表示を更新
-    timelineLayerControllerMenuSetColorService(targetElement);
 
     // 指定のレイヤーだけを選択状態に更新
     timelineLayerControllerNormalSelectUseCase(layer.id);
@@ -66,8 +65,11 @@ export const execute = (event: MouseEvent): void =>
     // 指定レイヤーElementをアクティブ表示に更新
     timelineLayerActiveElementService(layerElement);
 
-    // レイヤーのモードに合わせて表示
+    // レイヤーのモードに合わせてモード設定をアクティブ表示
     timelineLayerControllerMenuUpdateIconStyleService(layer);
+
+    // カラー表示を更新
+    timelineLayerControllerMenuSetColorService(targetElement);
 
     // メニューの表示位置を調整
     let top = event.pageY - element.clientHeight;

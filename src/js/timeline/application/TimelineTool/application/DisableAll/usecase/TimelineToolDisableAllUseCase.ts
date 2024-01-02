@@ -35,6 +35,9 @@ export const execute = (event: PointerEvent): void =>
             continue;
         }
 
+        // Layerオブジェクトの値を更新
+        layer.disable = mode;
+
         // レイヤーの表示情報とElementを更新
         timelineLayerControllerUpdateDisableIconStyleService(layer.id, mode);
     }

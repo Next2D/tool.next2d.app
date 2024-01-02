@@ -46,7 +46,7 @@ export const execute = (element: HTMLElement): void =>
         );
     }
 
-    // TODO アイコンにイベント登録
+    // TODO マスク・ガイドアイコンにイベントを登録する
 
     // レイヤー名のElementにイベントを登録
     const textElements = element
