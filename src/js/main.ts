@@ -6,16 +6,13 @@ import { initialize, boot, run } from "@/Application";
  * @description 起動実行関数
  *              invocation function
  *
- * @param  {Event} [event=null]
  * @return {void}
  * @method
  * @private
  */
-const execute = (event: Event | null = null): void =>
+const execute = (): void =>
 {
-    if (event && event.target) {
-        event.target.removeEventListener("DOMContentLoaded", execute);
-    }
+    window.removeEventListener("DOMContentLoaded", execute);
 
     initialize()
         .then(boot)

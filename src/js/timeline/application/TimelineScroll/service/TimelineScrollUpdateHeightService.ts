@@ -2,6 +2,7 @@ import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { timelineLayer } from "@/timeline/domain/model/TimelineLayer";
 import { $TIMELINE_SCROLL_BAR_Y_ID } from "@/config/TimelineConfig";
 import { $getScrollLimitY } from "../../TimelineUtil";
+import { execute as timelineScrollUpdateYPositionService } from "@/timeline/application/TimelineScroll/service/TimelineScrollUpdateYPositionService";
 
 /**
  * @type {string}
@@ -50,7 +51,9 @@ export const execute = (): void =>
         // スクロール位置が見切れていたら補正
         const limitY = $getScrollLimitY();
         if (scene.scrollY > limitY) {
+            // スクロールのy座標を更新
             scene.scrollY = limitY;
+            timelineScrollUpdateYPositionService();
         }
 
         // elementを更新

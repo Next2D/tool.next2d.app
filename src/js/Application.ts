@@ -58,31 +58,25 @@ const boots: Function[] = [
  * @method
  * @public
  */
-export const initialize = (): Promise<void> =>
+export const initialize = async (): Promise<void> =>
 {
-    return new Promise((resolve): void =>
-    {
-        // 初期起動関数を実行
-        const promises: Promise<void>[] = [];
-        for (let idx: number = 0; idx < initializes.length; ++idx) {
-            const initialize: Function = initializes[idx];
-            promises.push(initialize());
-        }
+    // 初期起動関数を実行
+    const promises: Promise<void>[] = [];
+    for (let idx: number = 0; idx < initializes.length; ++idx) {
+        const initialize: Function = initializes[idx];
+        promises.push(initialize());
+    }
 
-        // 初期起動関数が全て完了するまで待機
-        Promise
-            .all(promises)
-            .then((): void =>
-            {
-                const menu: MenuImpl<ProgressMenu> | null = $getMenu($PROGRESS_MENU_NAME);
-                if (menu) {
-                    menu.update();
-                }
+    // 初期起動関数が全て完了するまで待機
+    await Promise.all(promises);
 
-                // 終了
-                resolve();
-            });
-    });
+    // 進行メニューを表示
+    const menu: MenuImpl<ProgressMenu> | null = $getMenu($PROGRESS_MENU_NAME);
+    if (!menu) {
+        return ;
+    }
+
+    menu.update();
 };
 
 /**
@@ -93,31 +87,22 @@ export const initialize = (): Promise<void> =>
  * @method
  * @public
  */
-export const boot = (): Promise<void> =>
+export const boot = async (): Promise<void> =>
 {
-    return new Promise((resolve): void =>
-    {
-        const menu: MenuImpl<ProgressMenu> | null = $getMenu($PROGRESS_MENU_NAME);
-        if (menu) {
-            menu.message = "Booting the system.";
-        }
+    const menu: MenuImpl<ProgressMenu> | null = $getMenu($PROGRESS_MENU_NAME);
+    if (menu) {
+        menu.message = "Booting the system.";
+    }
 
-        // システム起動関数を実行
-        const promises: Promise<void>[] = [];
-        for (let idx: number = 0; idx < boots.length; ++idx) {
-            const boot: Function = boots[idx];
-            promises.push(boot());
-        }
+    // システム起動関数を実行
+    const promises: Promise<void>[] = [];
+    for (let idx: number = 0; idx < boots.length; ++idx) {
+        const boot: Function = boots[idx];
+        promises.push(boot());
+    }
 
-        // システム起動関数が全て完了するまで待機
-        Promise
-            .all(promises)
-            .then((): void =>
-            {
-                // 終了
-                resolve();
-            });
-    });
+    // システム起動関数が全て完了するまで待機
+    await Promise.all(promises);
 };
 
 /**
@@ -128,35 +113,26 @@ export const boot = (): Promise<void> =>
  * @method
  * @public
  */
-export const run = (): Promise<void> =>
+export const run = async (): Promise<void> =>
 {
-    return new Promise((resolve): void =>
-    {
-        const promises: Promise<void>[] = [];
+    const promises: Promise<void>[] = [];
 
-        // 起動したWorkSpaceの初期関数を実行
-        const workSpaces: WorkSpace[] = $getAllWorkSpace();
-        for (let idx: number = 0; idx < workSpaces.length; ++idx) {
-            const workSpace: WorkSpace = workSpaces[idx];
-            promises.push(workSpace.initialize());
-        }
+    // 起動したWorkSpaceの初期関数を実行
+    const workSpaces: WorkSpace[] = $getAllWorkSpace();
+    for (let idx: number = 0; idx < workSpaces.length; ++idx) {
+        const workSpace: WorkSpace = workSpaces[idx];
+        promises.push(workSpace.initialize());
+    }
 
-        // 初期起動関数が終了するまで待機
-        Promise
-            .all(promises)
-            .then(async (): Promise<void> =>
-            {
-                // 選択されたWorkSpaceを起動
-                await $getCurrentWorkSpace().run();
+    // 初期起動関数が終了するまで待機
+    await Promise.all(promises);
 
-                // 初期のDOMを対象に説明モーダルのイベントをセット
-                await detailModalRegisterFadeEventService(document);
+    // 選択されたWorkSpaceを起動
+    await $getCurrentWorkSpace().run();
 
-                // 言語を適用
-                await languageTranslationService(document);
+    // 初期のDOMを対象に説明モーダルのイベントをセット
+    await detailModalRegisterFadeEventService(document);
 
-                // 終了
-                resolve();
-            });
-    });
+    // 言語を適用
+    await languageTranslationService(document);
 };

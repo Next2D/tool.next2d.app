@@ -20,7 +20,6 @@ export class Layer
     private _$id: number;
     private _$name: string;
     private _$color: string;
-    private _$display: "" | "none";
     private _$light: boolean;
     private _$disable: boolean;
     private _$lock: boolean;
@@ -85,13 +84,6 @@ export class Layer
          * @private
          */
         this._$mode = 0;
-
-        /**
-         * @type {string}
-         * @default ""
-         * @private
-         */
-        this._$display = "none";
 
         /**
          * @type {number}
@@ -274,25 +266,6 @@ export class Layer
     set guideId (guide_id: null | number)
     {
         this._$guideId = guide_id;
-    }
-
-    /**
-     * @description 擬似スクロールでの表示領域に対してのレイヤー表示・非表示の状態管理
-     *              Management of the state of display and non-display
-     *              of layers for the displayed area in pseudo-scrolling
-     *
-     * @member {string}
-     * @default "none"
-     * @method
-     * @public
-     */
-    get display (): "" | "none"
-    {
-        return this._$display;
-    }
-    set display (state: "" | "none")
-    {
-        this._$display = state;
     }
 
     /**
