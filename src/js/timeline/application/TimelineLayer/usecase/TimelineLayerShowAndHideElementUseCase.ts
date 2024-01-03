@@ -43,9 +43,7 @@ export const execute = (): void =>
 
         // 表示領域外にあれば非表示にして終了
         if (currentHeight > timelineLayer.clientHeight) {
-            if (layer.display === "") {
-                layer.display = layerElement.style.display = "none";
-            }
+            layerElement.style.display = "none";
             continue;
         }
 
@@ -54,13 +52,8 @@ export const execute = (): void =>
             currentHeight += frameHeight;
         }
 
-        // 既に表示されていればスキップ
-        if (layer.display === "") {
-            continue;
-        }
-
         // 表示領域内にあれば表示
-        layer.display = layerElement.style.display = "";
+        layerElement.style.display = "";
 
         // スクロール位置に合わせてフレームElementのStyleを更新
         const frameControllerElement = layerElement.lastElementChild as NonNullable<HTMLElement>;

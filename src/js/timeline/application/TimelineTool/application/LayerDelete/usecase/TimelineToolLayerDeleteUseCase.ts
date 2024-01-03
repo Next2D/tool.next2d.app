@@ -3,12 +3,11 @@ import { timelineLayer } from "@/timeline/domain/model/TimelineLayer";
 import type { Layer } from "@/core/domain/model/Layer";
 import { execute as timelineLayerElementUpdateDisplayService } from "@/timeline/application/TimelineLayer/service/TimelineLayerElementUpdateDisplayService";
 import { execute as timelineToolLayerDeleteHistoryUseCase } from "@/history/application/timeline/TimelineTool/LayerDelete/usecase/TimelineToolLayerDeleteHistoryUseCase";
-import { execute as timelineLayerClearSelectedLayerService } from "@/timeline/application/TimelineLayer/service/TimelineLayerClearSelectedLayerService";
-import { execute as timelineLayerFrameClearSelectedElementService } from "@/timeline/application/TimelineLayerFrame/service/TimelineLayerFrameClearSelectedElementService";
 import { execute as timelineLayerControllerNormalSelectUseCase } from "@/timeline/application/TimelineLayerController/usecase/TimelineLayerControllerNormalSelectUseCase";
 import { execute as timelineLayerActiveElementService } from "@/timeline/application/TimelineLayer/service/TimelineLayerActiveElementService";
 import { execute as timelineScrollUpdateHeightService } from "@/timeline/application/TimelineScroll/service/TimelineScrollUpdateHeightService";
 import { execute as timelineScrollUpdateYPositionService } from "@/timeline/application/TimelineScroll/service/TimelineScrollUpdateYPositionService";
+import { execute as timelineLayerAllClearSelectedElementService } from "@/timeline/application/TimelineLayer/service/TimelineLayerAllClearSelectedElementService";
 
 /**
  * @description タイムラインの指定レイヤーを削除する
@@ -61,11 +60,8 @@ export const execute = (): void =>
     // y座標のスクロール位置を更新
     timelineScrollUpdateYPositionService();
 
-    // 選択したフレームを解放
-    timelineLayerFrameClearSelectedElementService();
-
-    // 選択したレイヤーを解放
-    timelineLayerClearSelectedLayerService();
+    // 選択したレイヤー・フレームを解放
+    timelineLayerAllClearSelectedElementService();
 
     // 選択中の内部情報を初期化
     // fixed logic

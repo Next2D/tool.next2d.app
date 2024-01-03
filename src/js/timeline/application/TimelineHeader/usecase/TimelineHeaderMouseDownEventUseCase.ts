@@ -1,7 +1,6 @@
 import { execute as timelineFrameUpdateFrameElementService } from "@/timeline/application/TimelineFrame/service/TimelineFrameUpdateFrameElementService";
 import { execute as timelineMarkerMovePositionService } from "@/timeline/application/TimelineMarker/service/TimelineMarkerMovePositionService";
-import { execute as timelineLayerFrameClearSelectedElementService } from "@/timeline/application/TimelineLayerFrame/service/TimelineLayerFrameClearSelectedElementService";
-import { execute as timelineLayerClearSelectedLayerService } from "@/timeline/application/TimelineLayer/service/TimelineLayerClearSelectedLayerService";
+import { execute as timelineLayerAllClearSelectedElementService } from "@/timeline/application/TimelineLayer/service/TimelineLayerAllClearSelectedElementService";
 import { timelineLayer } from "@/timeline/domain/model/TimelineLayer";
 
 /**
@@ -28,11 +27,8 @@ export const execute = (event: PointerEvent): void =>
         return ;
     }
 
-    // 選択したフレームElementを初期化
-    timelineLayerFrameClearSelectedElementService();
-
-    // 選択したレイヤーElementを初期化
-    timelineLayerClearSelectedLayerService();
+    // 選択したレイヤー・フレーム Elementを初期化
+    timelineLayerAllClearSelectedElementService();
 
     // 選択中の内部情報を初期化
     // fixed logic

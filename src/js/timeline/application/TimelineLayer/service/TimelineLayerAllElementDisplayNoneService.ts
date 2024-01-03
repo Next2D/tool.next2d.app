@@ -19,8 +19,5 @@ export const execute = (): void =>
 
         // 非表示に更新
         element.style.display = "none";
-
-        // アクティブ表示を削除
-        element.classList.remove("active");
     }
 };

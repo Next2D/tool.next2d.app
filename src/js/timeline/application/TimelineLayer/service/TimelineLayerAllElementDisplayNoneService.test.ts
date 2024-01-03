@@ -15,18 +15,13 @@ describe("TimelineLayerAllElementDisplayNoneServiceTest", () =>
         const node2 = document.createElement("div");
         timelineLayer.elements.push(node2);
         node2.style.display = "";
-        node2.classList.add("active");
 
         expect(node1.style.display).toBe("");
-        expect(node1.classList.contains("active")).toBe(true);
         expect(node2.style.display).toBe("");
-        expect(node2.classList.contains("active")).toBe(true);
 
         execute();
 
         expect(node1.style.display).toBe("none");
-        expect(node1.classList.contains("active")).toBe(false);
         expect(node2.style.display).toBe("none");
-        expect(node2.classList.contains("active")).toBe(false);
     });
 });

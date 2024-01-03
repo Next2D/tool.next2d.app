@@ -2,7 +2,7 @@ import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import { execute as progressMenuShowService } from "@/menu/application/ProgressMenu/service/ProgressMenuShowService";
 import { execute as progressMenuUpdateMessageService } from "@/menu/application/ProgressMenu/service/ProgressMenuUpdateMessageService";
 import { execute as timelineLayerAllElementDisplayNoneService } from "@/timeline/application/TimelineLayer/service/TimelineLayerAllElementDisplayNoneService";
-import { execute as timelineLayerFrameClearSelectedElementService } from "@/timeline/application/TimelineLayerFrame/service/TimelineLayerFrameClearSelectedElementService";
+import { execute as timelineLayerAllClearSelectedElementService } from "@/timeline/application/TimelineLayer/service/TimelineLayerAllClearSelectedElementService";
 import { $replace } from "@/language/application/LanguageUtil";
 import { timelineLayer } from "@/timeline/domain/model/TimelineLayer";
 
@@ -34,8 +34,8 @@ export const execute = (work_space: WorkSpace): Promise<void> =>
         // 全てのレイヤーを非表示にする
         timelineLayerAllElementDisplayNoneService();
 
-        // 選択中のフレームを初期化
-        timelineLayerFrameClearSelectedElementService();
+        // 選択中のレイヤー・フレームの表示を初期化
+        timelineLayerAllClearSelectedElementService();
 
         // 選択中のレイヤー初期化
         // fixed logic
