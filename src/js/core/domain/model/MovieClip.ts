@@ -228,17 +228,8 @@ export class MovieClip extends Instance
      */
     stop (): void
     {
-        // 表示に利用していたレイヤーElementを非表示に更新
-        for (let idx = 0; idx < this._$layers.length; ++idx) {
-
-            const layer = this._$layers[idx];
-            if (layer.display === "none") {
-                continue;
-            }
-
-            const element = timelineLayer.elements[idx];
-            layer.display = element.style.display = "none";
-        }
+        // 非表示に更新
+        this.allLayerHide();
     }
 
     /**
@@ -326,6 +317,23 @@ export class MovieClip extends Instance
         this._$layers.splice(index, 0, layer);
         this._$layerMap.set(layer.id, layer);
         this._$layerId = this._$layers.length;
+        this.allLayerHide();
+    }
+
+    /**
+     * @description 全てのLayerオブジェクトの表示設定をnoneに更新
+     *              Update display settings of all Layer objects to none
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    allLayerHide (): void
+    {
+        for (let idx: number = 0; idx < this._$layers.length; ++idx) {
+            const layer = this._$layers[idx];
+            layer.display = "none";
+        }
     }
 
     /**

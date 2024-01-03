@@ -6,6 +6,9 @@ import { execute as timelineLayerControllerUpdateElementStyleUseCase } from "../
 import { execute as timelineLayerFrameCreateContentComponentService } from "@/timeline/application/TimelineLayerFrame/service/TimelineLayerFrameCreateContentComponentService";
 import { execute as timelineLayerFrameUpdateStyleService } from "@/timeline/application/TimelineLayerFrame/service/TimelineLayerFrameUpdateStyleService";
 import { execute as timelineLayerCreateUseCase } from "./TimelineLayerCreateUseCase";
+import { execute as timelineLayerAllElementDisplayNoneService } from "../service/TimelineLayerAllElementDisplayNoneService";
+import { execute as timelineLayerActiveElementService } from "@/timeline/application/TimelineLayer/service/TimelineLayerActiveElementService";
+import { execute as timelineLayerFrameClearSelectedElementService } from "@/timeline/application/TimelineLayerFrame/service/TimelineLayerFrameClearSelectedElementService";
 import {
     $getLeftFrame,
     $getTopIndex
@@ -35,38 +38,35 @@ export const execute = (): void =>
         return ;
     }
 
+    // 再描画前に全てのレイヤーelementを非表示にする
+    timelineLayerAllElementDisplayNoneService();
+
+    // フレームElementを初期化
+    timelineLayerFrameClearSelectedElementService();
+
     const frameHeight: number = workSpace.timelineAreaState.frameHeight;
     const frameWidth: number  = workSpace.timelineAreaState.frameWidth + 1;
     const maxFrame: number    = Math.ceil(timelineHeader.clientWidth / frameWidth) + 1;
     const leftFrame: number   = $getLeftFrame();
-    const topIndex: number    = $getTopIndex();
 
+    const targetLayers = timelineLayer.targetLayers;
     let currentHeight: number = 0;
-    for (let idx = 0; layers.length > idx; ++idx) {
+    for (let idx = $getTopIndex(); layers.length > idx; ++idx) {
 
         const layer = layers[idx];
-
-        // 表示領域外にあればスキップ
-        if (topIndex > idx || currentHeight > timelineLayer.clientHeight) {
-            layer.display = "none";
-            continue;
-        }
-
-        if (idx >= topIndex) {
-            currentHeight += frameHeight;
-        }
 
         let element: HTMLElement | null = null;
         let frameControllerElement: HTMLElement | null = null;
 
         // 配列にElementがあれば再利用
-        if (timelineLayer.elements.length > idx) {
+        const index = layer.getDisplayIndex();
+        if (timelineLayer.elements.length > index) {
 
             // フレーム側のElementをを変数にセット
-            element = timelineLayer.elements[idx] as NonNullable<HTMLElement>;
+            element = timelineLayer.elements[index] as NonNullable<HTMLElement>;
             frameControllerElement = element.lastElementChild as NonNullable<HTMLElement>;
 
-            // 表示フレーム足りない時はEフレームのlementを追加
+            // 表示フレーム足りない時はフレームのlementを追加
             const length: number = frameControllerElement.children.length;
             if (maxFrame > length) {
                 // 不足しているフレームを追加
@@ -89,14 +89,24 @@ export const execute = (): void =>
         }
 
         // 表示をOnにする
-        if (layer.display === "none") {
-            layer.display = element.style.display = "";
-        }
+        element.style.display = "";
 
         // スクロール位置に合わせてフレームElementのStyleを更新
         timelineLayerFrameUpdateStyleService(frameControllerElement, leftFrame);
 
         // Layerオブジェクトの状態に合わせて、表示Elementの情報を更新
         timelineLayerControllerUpdateElementStyleUseCase(layer);
+
+        if (targetLayers.size && targetLayers.has(layer.id)) {
+            timelineLayerActiveElementService(element);
+        }
+
+        // フレームの高さを加算
+        currentHeight += frameHeight;
+
+        // 表示領域外になったら非表示設定にしてスキップ
+        if (currentHeight > timelineLayer.clientHeight) {
+            break;
+        }
     }
 };

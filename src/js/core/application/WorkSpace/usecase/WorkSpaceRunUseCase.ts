@@ -54,9 +54,9 @@ export const execute = (work_space: WorkSpace): Promise<void> =>
         // 作業履歴を読み込む
         historyReloadUseCase();
 
-        // rootのMovieClipを起動
+        // アクティブなMovieClipを起動
         work_space
-            .root
+            .scene
             .run()
             .then((): void =>
             {

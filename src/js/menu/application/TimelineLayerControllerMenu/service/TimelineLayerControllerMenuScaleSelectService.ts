@@ -19,18 +19,12 @@ export const execute = (): void =>
         return ;
     }
 
-    const value = `${$getCurrentWorkSpace().timelineAreaState.frameHeight / $TIMELINE_DEFAULT_FRAME_HEIGHT_SIZE}`;
+    const value = $getCurrentWorkSpace().timelineAreaState.frameHeight / $TIMELINE_DEFAULT_FRAME_HEIGHT_SIZE;
 
     const options = element.options;
     const length = options.length;
     for (let idx = 0; length > idx; ++idx) {
         const option = options[idx];
-
-        if (option.value !== value) {
-            continue;
-        }
-
-        option.selected = true;
-        break;
+        option.selected = parseFloat(option.value) === value;
     }
 };

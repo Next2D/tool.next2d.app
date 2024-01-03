@@ -106,6 +106,19 @@ class TimelineLayer
     {
         return this._$elements[parseInt(element.dataset.layerIndex as string)];
     }
+
+    /**
+     * @description 選択中のレイヤー・フレーム情報を初期化
+     *              Initializes the currently selected layer/frame information
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    clearSelectedTarget (): void
+    {
+        this._$targetLayers.clear();
+    }
 }
 
 export const timelineLayer = new TimelineLayer();

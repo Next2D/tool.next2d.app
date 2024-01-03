@@ -1,10 +1,10 @@
 import { $clamp } from "@/global/GlobalUtil";
 import { execute as timelineHeaderBuildElementUseCase } from "@/timeline/application/TimelineHeader/usecase/TimelineHeaderBuildElementUseCase";
-import { execute as timelineLayerBuildElementUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerBuildElementUseCase";
+import { execute as timelineLayerFrameUpdateAllElementUseCase } from "@/timeline/application/TimelineLayerFrame/usecase/TimelineLayerFrameUpdateAllElementUseCase";
 import { execute as timelineMarkerMovePositionService } from "@/timeline/application/TimelineMarker/service/TimelineMarkerMovePositionService";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { execute as timelineScrollUpdateXPositionService } from "@/timeline/application/TimelineScroll/service/TimelineScrollUpdateXPositionService";
-import { $getScrollLimitX } from "../../TimelineUtil";
+import { $getLeftFrame, $getScrollLimitX } from "../../TimelineUtil";
 
 /**
  * @description タイムラインのx座標を移動
@@ -37,7 +37,18 @@ export const execute = (delta: number): boolean =>
         return false;
     }
 
+    const beforeFrame = $getLeftFrame();
+
+    // スクロール位置を更新
     scene.scrollX = afterX;
+
+    // タイムラインのx移動するスクロールのx座標を更新
+    timelineScrollUpdateXPositionService();
+
+    // フレーム移動がなければ終了
+    if (beforeFrame === $getLeftFrame()) {
+        return true;
+    }
 
     // ヘッダーを再構築
     timelineHeaderBuildElementUseCase();
@@ -45,11 +56,8 @@ export const execute = (delta: number): boolean =>
     // マーカーを移動
     timelineMarkerMovePositionService();
 
-    // レイヤーのタイムラインを再描画
-    timelineLayerBuildElementUseCase();
-
-    // タイムラインのx移動するスクロールのx座標を更新
-    timelineScrollUpdateXPositionService();
+    // フレームElementを再描画
+    timelineLayerFrameUpdateAllElementUseCase();
 
     return true;
 };

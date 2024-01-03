@@ -1,10 +1,9 @@
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
-import { execute as timelineLayerAddElementUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerAddElementUseCase";
+import { execute as timelineLayerBuildElementUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerBuildElementUseCase";
 import { execute as timelineToolLayerAddHistoryUseCase } from "@/history/application/timeline/TimelineTool/LayerAdd/usecase/TimelineToolLayerAddHistoryUseCase";
 import { timelineLayer } from "@/timeline/domain/model/TimelineLayer";
 import type { Layer } from "@/core/domain/model/Layer";
 import { execute as timelineLayerControllerNormalSelectUseCase } from "@/timeline/application/TimelineLayerController/usecase/TimelineLayerControllerNormalSelectUseCase";
-import { execute as timelineLayerActiveElementService } from "@/timeline/application/TimelineLayer/service/TimelineLayerActiveElementService";
 import { execute as timelineScrollUpdateHeightService } from "@/timeline/application/TimelineScroll/service/TimelineScrollUpdateHeightService";
 
 /**
@@ -39,19 +38,9 @@ export const execute = (): void =>
     // タイムラインのyスクロールの高さを更新
     timelineScrollUpdateHeightService();
 
-    // タイムラインの追加したレイヤーだけを描画
-    timelineLayerAddElementUseCase(newLayer, selectedLayer);
+    // タイムラインを再描画
+    timelineLayerBuildElementUseCase();
 
     // 追加したレイヤーをアクティブ表示にする
     timelineLayerControllerNormalSelectUseCase(newLayer.id);
-
-    const element: HTMLElement | null = document
-        .getElementById(`layer-id-${newLayer.id}`);
-
-    if (!element) {
-        return ;
-    }
-
-    // レイヤーをアクティブに更新
-    timelineLayerActiveElementService(element);
 };

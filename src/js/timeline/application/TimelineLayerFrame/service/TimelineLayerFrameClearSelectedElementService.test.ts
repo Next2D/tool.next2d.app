@@ -56,7 +56,6 @@ describe("TimelineLayerFrameClearSelectedElementServiceTest", () =>
 
         execute();
 
-        expect(targetLayers.size).toBe(2);
         expect(div1.classList.contains("frame-active")).toBe(false);
         expect(div2.classList.contains("frame-active")).toBe(false);
         expect(div3.classList.contains("frame-active")).toBe(false);

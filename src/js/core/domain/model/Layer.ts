@@ -333,7 +333,7 @@ export class Layer
     {
         const scene = $getCurrentWorkSpace().scene;
         const index = scene.layers.indexOf(this);
-        return index === -1 ? index : $getTopIndex() + index;
+        return index === -1 ? index : index - $getTopIndex();
     }
 
     /**

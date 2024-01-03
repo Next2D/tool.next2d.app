@@ -21,7 +21,7 @@ export const execute = (layer_id: number, light: boolean): void =>
     }
 
     // 表示領域にElementがなければ終了
-    const layerElement = timelineLayer.elements[layer.getDisplayIndex()] as NonNullable<HTMLElement>;
+    const layerElement: HTMLElement | undefined = timelineLayer.elements[layer.getDisplayIndex()];
     if (!layerElement) {
         return ;
     }

@@ -1,5 +1,4 @@
 import { $allHideMenu } from "@/menu/application/MenuUtil";
-import { execute as timelineLayerActiveElementService } from "../service/TimelineLayerActiveElementService";
 
 /**
  * @description レイヤーのコントローラーエリアのマウスダウン処理関数
@@ -21,12 +20,4 @@ export const execute = (event: PointerEvent): void =>
 
     // 表示されてるメニューを全て非表示にする
     $allHideMenu();
-
-    const element: HTMLElement | null = event.currentTarget as HTMLElement;
-    if (!element) {
-        return ;
-    }
-
-    // フレームをアクティブに更新
-    timelineLayerActiveElementService(element);
 };

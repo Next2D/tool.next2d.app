@@ -3,6 +3,8 @@ import { execute as timelineMarkerMovePositionService } from "@/timeline/applica
 import { execute as timelineLayerFrameClearSelectedElementService } from "../service/TimelineLayerFrameClearSelectedElementService";
 import { execute as timelineLayerFrameActiveElementService } from "../service/TimelineLayerFrameActiveElementService";
 import { execute as timelineLayerClearSelectedLayerService } from "@/timeline/application/TimelineLayer/service/TimelineLayerClearSelectedLayerService";
+import { execute as timelineLayerActiveElementService } from "@/timeline/application/TimelineLayer/service/TimelineLayerActiveElementService";
+import { timelineLayer } from "@/timeline/domain/model/TimelineLayer";
 
 /**
  * @description 通常のフレームエリア選択の処理関数（Alt、Shiftなし）
@@ -25,6 +27,10 @@ export const execute = (element: HTMLElement): void =>
     // フレームElementをアクティブ表示にする
     timelineLayerFrameActiveElementService(element);
 
+    // 選択中の内部情報を初期化
+    // fixed logic
+    timelineLayer.clearSelectedTarget();
+
     // 選択したElementからフレーム番号を取得
     const frame: number = parseInt(element.dataset.frame as NonNullable<string>);
 
@@ -33,4 +39,10 @@ export const execute = (element: HTMLElement): void =>
 
     // マーカーを移動
     timelineMarkerMovePositionService();
+
+    // レイヤーElementをアクティブ表示
+    const layerElement = timelineLayer.getLayerElementFromElement(element);
+    if (layerElement) {
+        timelineLayerActiveElementService(layerElement);
+    }
 };

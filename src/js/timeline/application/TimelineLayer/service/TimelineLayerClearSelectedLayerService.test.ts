@@ -21,7 +21,6 @@ describe("TimelineLayerClearSelectedLayerServiceTest", () =>
 
         execute();
 
-        expect(timelineLayer.targetLayers.size).toBe(0);
         expect(div.classList.contains("active")).toBe(false);
 
         div.remove();

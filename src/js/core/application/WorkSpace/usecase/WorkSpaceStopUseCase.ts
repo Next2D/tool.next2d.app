@@ -3,8 +3,8 @@ import { execute as progressMenuShowService } from "@/menu/application/ProgressM
 import { execute as progressMenuUpdateMessageService } from "@/menu/application/ProgressMenu/service/ProgressMenuUpdateMessageService";
 import { execute as timelineLayerAllElementDisplayNoneService } from "@/timeline/application/TimelineLayer/service/TimelineLayerAllElementDisplayNoneService";
 import { execute as timelineLayerFrameClearSelectedElementService } from "@/timeline/application/TimelineLayerFrame/service/TimelineLayerFrameClearSelectedElementService";
-import { execute as timelineLayerClearSelectedLayerService } from "@/timeline/application/TimelineLayer/service/TimelineLayerClearSelectedLayerService";
 import { $replace } from "@/language/application/LanguageUtil";
+import { timelineLayer } from "@/timeline/domain/model/TimelineLayer";
 
 /**
  * @description プロジェクトのを停止して、初期化
@@ -28,6 +28,9 @@ export const execute = (work_space: WorkSpace): Promise<void> =>
         // タブを非アクティブに更新
         work_space.screenTab.disable();
 
+        // 現在のシーンを停止
+        work_space.scene.stop();
+
         // 全てのレイヤーを非表示にする
         timelineLayerAllElementDisplayNoneService();
 
@@ -36,7 +39,7 @@ export const execute = (work_space: WorkSpace): Promise<void> =>
 
         // 選択中のレイヤー初期化
         // fixed logic
-        timelineLayerClearSelectedLayerService();
+        timelineLayer.clearSelectedTarget();
 
         // 終了
         reslove();

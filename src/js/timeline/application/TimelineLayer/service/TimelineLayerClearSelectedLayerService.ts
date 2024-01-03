@@ -34,7 +34,4 @@ export const execute = (): void =>
         // 非アクティブに更新
         element.classList.remove("active");
     }
-
-    // 初期化
-    targetLayers.clear();
 };

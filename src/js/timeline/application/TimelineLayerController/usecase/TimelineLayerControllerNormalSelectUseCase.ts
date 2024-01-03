@@ -4,6 +4,7 @@ import { $getLeftFrame } from "../../TimelineUtil";
 import { execute as timelineLayerFrameActiveElementService } from "@/timeline/application/TimelineLayerFrame/service/TimelineLayerFrameActiveElementService";
 import { execute as timelineLayerClearSelectedLayerService } from "@/timeline/application/TimelineLayer/service/TimelineLayerClearSelectedLayerService";
 import { execute as timelineLayerRegisterLayerAndFrameService } from "@/timeline/application/TimelineLayer/service/TimelineLayerRegisterLayerAndFrameService";
+import { execute as timelineLayerActiveElementService } from "@/timeline/application/TimelineLayer/service/TimelineLayerActiveElementService";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { Layer } from "@/core/domain/model/Layer";
 import { timelineLayer } from "@/timeline/domain/model/TimelineLayer";
@@ -36,8 +37,11 @@ export const execute = (layer_id: number): void =>
     timelineLayerFrameClearSelectedElementService();
 
     // 選択中のレイヤーElementを非アクティブにする
-    // fixed logic
     timelineLayerClearSelectedLayerService();
+
+    // 選択中の内部情報を初期化
+    // fixed logic
+    timelineLayer.clearSelectedTarget();
 
     // 現在のフレーム番号から対象のフレームElementを取得
     const frameIndex = timelineFrame.currentFrame - $getLeftFrame();
@@ -52,4 +56,7 @@ export const execute = (layer_id: number): void =>
         // 対象のフレームElementをアクティブ表示にする
         timelineLayerFrameActiveElementService(frameElement);
     }
+
+    // レイヤーElementをアクティブ表示にする
+    timelineLayerActiveElementService(layerElement);
 };

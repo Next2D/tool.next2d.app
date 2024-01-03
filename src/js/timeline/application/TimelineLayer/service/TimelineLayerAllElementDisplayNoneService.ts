@@ -1,4 +1,4 @@
-import { $TIMELINE_CONTENT_ID } from "@/config/TimelineConfig";
+import { timelineLayer } from "@/timeline/domain/model/TimelineLayer";
 
 /**
  * @description タイムラインの全てのレイヤーを非表示にする
@@ -10,23 +10,17 @@ import { $TIMELINE_CONTENT_ID } from "@/config/TimelineConfig";
  */
 export const execute = (): void =>
 {
-    const element: HTMLElement | null = document
-        .getElementById($TIMELINE_CONTENT_ID);
+    for (let idx = 0; idx < timelineLayer.elements.length; ++idx) {
 
-    if (!element) {
-        return ;
-    }
-
-    const children: HTMLCollection = element.children;
-
-    const length = children.length;
-    for (let idx = 0; idx < length; ++idx) {
-
-        const node: HTMLElement | undefined = children[idx] as HTMLElement;
-        if (!node) {
+        const element: HTMLElement | undefined = timelineLayer.elements[idx] as HTMLElement;
+        if (!element) {
             continue;
         }
 
-        node.style.display = "none";
+        // 非表示に更新
+        element.style.display = "none";
+
+        // アクティブ表示を削除
+        element.classList.remove("active");
     }
 };

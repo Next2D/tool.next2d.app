@@ -7,8 +7,8 @@ import {
 } from "../../TimelineUtil";
 
 /**
- * @description 選択中のフレームElementを非アクティブに更新してマップデータを初期化
- *              Update selected frame Element to inactive and initialize map data
+ * @description 選択中のフレームElementを非アクティブに更新
+ *              Update selected frame Element to inactive
  *
  * @return {void}
  * @method
@@ -29,6 +29,9 @@ export const execute = (): void =>
 
         const index = topIndex + scene.layers.indexOf(layer);
         const layerElement: HTMLElement | undefined = timelineLayer.elements[index];
+        if (!layerElement) {
+            continue;
+        }
 
         const element = layerElement.lastElementChild as NonNullable<HTMLElement>;
 

@@ -61,14 +61,15 @@ export const execute = (): void =>
     // y座標のスクロール位置を更新
     timelineScrollUpdateYPositionService();
 
-    // タイムラインを再描画
-    // timelineLayerBuildElementUseCase();
-
     // 選択したフレームを解放
     timelineLayerFrameClearSelectedElementService();
 
     // 選択したレイヤーを解放
     timelineLayerClearSelectedLayerService();
+
+    // 選択中の内部情報を初期化
+    // fixed logic
+    timelineLayer.clearSelectedTarget();
 
     // 現時点での最小ポジション
     minIndex = Math.min(minIndex, scene.layers.length);

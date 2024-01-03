@@ -1,6 +1,6 @@
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { $clamp } from "@/global/GlobalUtil";
-import { $getScrollLimitY } from "../../TimelineUtil";
+import { $getScrollLimitY, $getTopIndex } from "../../TimelineUtil";
 import { execute as timelineScrollUpdateYPositionService } from "../service/TimelineScrollUpdateYPositionService";
 import { execute as timelineLayerBuildElementUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerBuildElementUseCase";
 
@@ -35,10 +35,16 @@ export const execute = (delta: number): boolean =>
         return false;
     }
 
+    const beforeIndex = $getTopIndex();
     scene.scrollY = afterY;
 
     // y座標を移動
     timelineScrollUpdateYPositionService();
+
+    // レイヤーの移動がなければここで終了
+    if (beforeIndex === $getTopIndex()) {
+        return true;
+    }
 
     // タイムラインを再描画
     timelineLayerBuildElementUseCase();
