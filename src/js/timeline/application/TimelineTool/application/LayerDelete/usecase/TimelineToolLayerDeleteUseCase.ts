@@ -1,7 +1,6 @@
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { timelineLayer } from "@/timeline/domain/model/TimelineLayer";
 import type { Layer } from "@/core/domain/model/Layer";
-import { execute as timelineLayerElementUpdateDisplayService } from "@/timeline/application/TimelineLayer/service/TimelineLayerElementUpdateDisplayService";
 import { execute as timelineToolLayerDeleteHistoryUseCase } from "@/history/application/timeline/TimelineTool/LayerDelete/usecase/TimelineToolLayerDeleteHistoryUseCase";
 import { execute as timelineLayerControllerNormalSelectUseCase } from "@/timeline/application/TimelineLayerController/usecase/TimelineLayerControllerNormalSelectUseCase";
 import { execute as timelineLayerActiveElementService } from "@/timeline/application/TimelineLayer/service/TimelineLayerActiveElementService";
@@ -36,9 +35,6 @@ export const execute = (): void =>
         if (!targetLayer) {
             continue;
         }
-
-        // レイヤーを非表示にする
-        timelineLayerElementUpdateDisplayService(targetLayer.id, "none");
 
         // 元の配列のポジションを取得
         // fixed logic

@@ -1,6 +1,5 @@
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import type { Layer } from "@/core/domain/model/Layer";
-import { execute as timelineLayerElementDisplayNoneService } from "@/timeline/application/TimelineLayer/service/TimelineLayerElementUpdateDisplayService";
 import { execute as timelineLayerFrameUpdateStyleService } from "@/timeline/application/TimelineLayerFrame/service/TimelineLayerFrameUpdateStyleService";
 import { $getLeftFrame } from "@/timeline/application/TimelineUtil";
 
@@ -28,7 +27,4 @@ export const execute = (layer: Layer, index: number): void =>
     // フレーム情報の表示を更新
     const frameControllerElement = element.lastElementChild as NonNullable<HTMLElement>;
     timelineLayerFrameUpdateStyleService(frameControllerElement, $getLeftFrame());
-
-    // 対象のElementを表示にする
-    timelineLayerElementDisplayNoneService(layer.id, "");
 };
