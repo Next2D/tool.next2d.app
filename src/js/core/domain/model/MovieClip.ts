@@ -2,7 +2,6 @@ import type { SoundObjectImpl } from "@/interface/SoundObjectImpl";
 import type { MovieClipSaveObjectImpl } from "@/interface/MovieClipSaveObjectImpl";
 import { Instance } from "./Instance";
 import { Layer } from "./Layer";
-import { timelineLayer } from "@/timeline/domain/model/TimelineLayer";
 import { execute as movieClipRunUseCase } from "@/core/application/MovieClip/usecase/MovieClipRunUseCase";
 
 /**
