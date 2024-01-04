@@ -19,7 +19,10 @@ export const execute = async (element: HTMLElement | Document): Promise<void> =>
     const length: number = elements.length;
     for (let idx: number = 0; idx < length; ++idx) {
 
-        const element: HTMLElement = elements[idx] as HTMLElement;
+        const element: HTMLElement | undefined = elements[idx] as HTMLElement;
+        if (!element) {
+            continue;
+        }
 
         element.addEventListener(EventType.MOUSE_OVER, detailModalFadeInUseCase);
         element.addEventListener(EventType.MOUSE_OUT,  detailModalFadeOutUseCase);

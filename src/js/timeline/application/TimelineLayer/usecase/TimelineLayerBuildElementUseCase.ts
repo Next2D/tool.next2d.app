@@ -41,7 +41,7 @@ export const execute = (): void =>
     // 再描画前に全てのレイヤーelementを非表示にする
     timelineLayerAllElementDisplayNoneService();
 
-    // フレームElementを初期化
+    // フレームElementの表示を初期化
     timelineLayerAllClearSelectedElementService();
 
     const frameHeight: number = workSpace.timelineAreaState.frameHeight;
@@ -51,6 +51,7 @@ export const execute = (): void =>
 
     const targetLayers = timelineLayer.targetLayers;
     let currentHeight: number = 0;
+    let index: number = 0;
     for (let idx = $getTopIndex(); layers.length > idx; ++idx) {
 
         const layer = layers[idx];
@@ -59,7 +60,6 @@ export const execute = (): void =>
         let frameControllerElement: HTMLElement | null = null;
 
         // 配列にElementがあれば再利用
-        const index = layer.getDisplayIndex();
         if (timelineLayer.elements.length > index) {
 
             // フレーム側のElementをを変数にセット
@@ -108,5 +108,7 @@ export const execute = (): void =>
         if (currentHeight > timelineLayer.clientHeight) {
             break;
         }
+
+        index++;
     }
 };

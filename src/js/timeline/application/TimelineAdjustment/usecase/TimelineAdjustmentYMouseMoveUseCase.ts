@@ -1,9 +1,13 @@
-import { $TIMELINE_MIN_HEIGHT, $TIMELINE_ID } from "@/config/TimelineConfig";
-import { execute as timelineLayerShowAndHideElementUseCase } from "../../TimelineLayer/usecase/TimelineLayerShowAndHideElementUseCase";
+import { timelineLayer } from "@/timeline/domain/model/TimelineLayer";
 import { execute as timelineLayerUpdateClientHeightService } from "@/timeline/application/TimelineLayer/service/TimelineLayerUpdateClientHeightService";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { execute as timelineScrollUpdateHeightService } from "@/timeline/application/TimelineScroll/service/TimelineScrollUpdateHeightService";
 import { execute as timelineScrollUpdateYPositionService } from "@/timeline/application/TimelineScroll/service/TimelineScrollUpdateYPositionService";
+import { execute as timelineLayerBuildElementUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerBuildElementUseCase";
+import {
+    $TIMELINE_MIN_HEIGHT,
+    $TIMELINE_ID
+} from "@/config/TimelineConfig";
 
 /**
  * @description タイムラインの高さを調整
@@ -25,8 +29,8 @@ export const execute = (event: PointerEvent): void =>
             .documentElement
             .style;
 
-        const workSpace = $getCurrentWorkSpace();
-        const name = workSpace.timelineAreaState.state === "move"
+        const timelineAreaState = $getCurrentWorkSpace().timelineAreaState;
+        const name = timelineAreaState.state === "move"
             ? "--timeline-logic-height"
             : "--timeline-height";
 
@@ -34,14 +38,15 @@ export const execute = (event: PointerEvent): void =>
         height += -event.movementY;
         height = Math.max($TIMELINE_MIN_HEIGHT, height);
 
-        if (workSpace.timelineAreaState.state === "move") {
+        const beforeCount = Math.ceil(timelineLayer.clientHeight / timelineAreaState.frameHeight);
+        if (timelineAreaState.state === "move") {
 
             const element: HTMLElement | null = document
                 .getElementById($TIMELINE_ID);
 
             if (element && $TIMELINE_MIN_HEIGHT < height) {
                 const offsetTop = element.offsetTop + event.movementY;
-                workSpace.timelineAreaState.offsetTop = offsetTop;
+                timelineAreaState.offsetTop = offsetTop;
                 element.style.top = `${offsetTop}px`;
             }
 
@@ -50,7 +55,7 @@ export const execute = (event: PointerEvent): void =>
         }
 
         // 高さを更新
-        workSpace.timelineAreaState.height = height;
+        timelineAreaState.height = height;
         style.setProperty("--timeline-logic-height", `${height}px`);
 
         // タイムエリアの高さを更新
@@ -63,7 +68,10 @@ export const execute = (event: PointerEvent): void =>
         // スクロールのy座標の更新
         timelineScrollUpdateYPositionService();
 
-        // タイムラインの表示領域内の判定をして必要な部分だけ再描画
-        timelineLayerShowAndHideElementUseCase();
+        // 表示数に変化があればタイムラインを再描画
+        const afterCount = Math.ceil(timelineLayer.clientHeight / timelineAreaState.frameHeight);
+        if (afterCount !== beforeCount) {
+            timelineLayerBuildElementUseCase();
+        }
     });
 };
