@@ -14,9 +14,10 @@ import { execute as timelineLayerBuildElementUseCase } from "@/timeline/applicat
  */
 export const execute = (layer: Layer): void =>
 {
-    // Layer Objectを内部情報から削除
-    const scene = $getCurrentWorkSpace().scene;
-    scene.removeLayer(layer);
+    // Layerオブジェクトの内部情報から削除
+    $getCurrentWorkSpace()
+        .scene
+        .removeLayer(layer);
 
     // タイムラインのyスクロールの高さを更新
     timelineScrollUpdateHeightService();

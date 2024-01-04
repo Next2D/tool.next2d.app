@@ -3,10 +3,10 @@ import { timelineLayer } from "@/timeline/domain/model/TimelineLayer";
 import type { Layer } from "@/core/domain/model/Layer";
 import { execute as timelineToolLayerDeleteHistoryUseCase } from "@/history/application/timeline/TimelineTool/LayerDelete/usecase/TimelineToolLayerDeleteHistoryUseCase";
 import { execute as timelineLayerControllerNormalSelectUseCase } from "@/timeline/application/TimelineLayerController/usecase/TimelineLayerControllerNormalSelectUseCase";
-import { execute as timelineLayerActiveElementService } from "@/timeline/application/TimelineLayer/service/TimelineLayerActiveElementService";
 import { execute as timelineScrollUpdateHeightService } from "@/timeline/application/TimelineScroll/service/TimelineScrollUpdateHeightService";
 import { execute as timelineScrollUpdateYPositionService } from "@/timeline/application/TimelineScroll/service/TimelineScrollUpdateYPositionService";
 import { execute as timelineLayerAllClearSelectedElementService } from "@/timeline/application/TimelineLayer/service/TimelineLayerAllClearSelectedElementService";
+import { execute as timelineLayerBuildElementUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerBuildElementUseCase";
 
 /**
  * @description タイムラインの指定レイヤーを削除する
@@ -18,11 +18,13 @@ import { execute as timelineLayerAllClearSelectedElementService } from "@/timeli
  */
 export const execute = (): void =>
 {
+    // レイヤーが0か1なら何もしない
     const scene = $getCurrentWorkSpace().scene;
     if (!scene.layers.length || scene.layers.length === 1) {
         return ;
     }
 
+    // 選択されたレイヤーがなければ終了
     const targetLayers = timelineLayer.targetLayers;
     if (!targetLayers.size) {
         return ;
@@ -63,6 +65,9 @@ export const execute = (): void =>
     // fixed logic
     timelineLayer.clearSelectedTarget();
 
+    // タイムラインを再描画
+    timelineLayerBuildElementUseCase();
+
     // 現時点での最小ポジション
     minIndex = Math.min(minIndex, scene.layers.length);
 
@@ -73,14 +78,6 @@ export const execute = (): void =>
         return ;
     }
 
-    const element: HTMLElement | null = document
-        .getElementById(`layer-id-${layer.id}`);
-
-    if (!element) {
-        return ;
-    }
-
     // 削除した近辺にレイヤーがあれば選択状にして、Elementをアクティブに更新する
     timelineLayerControllerNormalSelectUseCase(layer.id);
-    timelineLayerActiveElementService(element);
 };

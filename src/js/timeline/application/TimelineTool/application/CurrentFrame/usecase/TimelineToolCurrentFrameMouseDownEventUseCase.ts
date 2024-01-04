@@ -1,6 +1,8 @@
 import { $allHideMenu } from "@/menu/application/MenuUtil";
 import { execute as timelineToolCurrentFrameWindowRegisterEventUseCase } from "./TimelineToolCurrentFrameWindowRegisterEventUseCase";
 import { $useKeyboard } from "@/shortcut/ShortcutUtil";
+import { timelineLayer } from "@/timeline/domain/model/TimelineLayer";
+import { execute as timelineLayerAllClearSelectedElementService } from "@/timeline/application/TimelineLayer/service/TimelineLayerAllClearSelectedElementService";
 
 /**
  * @description ダブルタップ用の待機フラグ
@@ -37,6 +39,13 @@ export const execute = (event: PointerEvent): void =>
     if ($useKeyboard()) {
         return ;
     }
+
+    // レイヤー・フレームElementのアクティブ状態をリセット
+    timelineLayerAllClearSelectedElementService();
+
+    // 選択情報を初期化
+    // fixed logic
+    timelineLayer.clearSelectedTarget();
 
     if (!wait) {
 

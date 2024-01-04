@@ -31,13 +31,14 @@ export const execute = (): void =>
     const timelineAreaState = workSpace.timelineAreaState;
 
     const clientHeight: number = timelineLayer.clientHeight;
-    const stopCount: number = Math.floor(clientHeight / timelineAreaState.frameHeight);
+    const frameHeight: number = timelineAreaState.frameHeight + 1;
 
     const scene = workSpace.scene;
-    if (scene.layers.length > stopCount) {
+    const layerTotalHeight: number = scene.layers.length * frameHeight;
+    if (layerTotalHeight > clientHeight) {
 
         // スクロールバーの幅を算出
-        const scale: number = clientHeight / (scene.layers.length * timelineAreaState.frameHeight);
+        const scale: number = clientHeight / layerTotalHeight;
 
         // 2pxはborderの1pxの上下の分
         document
@@ -53,6 +54,8 @@ export const execute = (): void =>
         if (scene.scrollY > limitY) {
             // スクロールのy座標を更新
             scene.scrollY = limitY;
+
+            // Elementのスクロール位置を移動
             timelineScrollUpdateYPositionService();
         }
 
@@ -68,7 +71,13 @@ export const execute = (): void =>
     } else {
 
         // 初期値に移動
-        scene.scrollY = 0;
+        if (scene.scrollY !== 0) {
+            // スクロールのy座標を更新
+            scene.scrollY = 0;
+
+            // Elementのスクロール位置を移動
+            timelineScrollUpdateYPositionService();
+        }
 
         // elementを更新
         if (!display) {

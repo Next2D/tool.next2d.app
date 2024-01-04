@@ -24,7 +24,7 @@ export const execute = (event: Event): void =>
     // アクティブなLayerオブジェクトを取得
     const layerId = timelineLayer.targetLayers.keys().next().value;
 
-    // TODO レイヤーElementの表示を更新
+    // レイヤーElementの表示を更新
     const scene = $getCurrentWorkSpace().scene;
     const layer = scene.getLayer(layerId);
     if (!layer || !layer.light) {

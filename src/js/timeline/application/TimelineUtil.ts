@@ -129,7 +129,7 @@ export const $getScrollLimitY = (): number =>
     const workSpace = $getCurrentWorkSpace();
 
     // 表示レイヤーの高さの合算値
-    const actualHeight = workSpace.timelineAreaState.frameHeight
+    const actualHeight = (workSpace.timelineAreaState.frameHeight + 1)
         * workSpace.scene.layers.length;
 
     return actualHeight > timelineLayer.clientHeight

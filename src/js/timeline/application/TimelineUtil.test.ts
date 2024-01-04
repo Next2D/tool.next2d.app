@@ -86,6 +86,6 @@ describe("TimelineUtilTest", () =>
     test("$getScrollLimitY test", () =>
     {
         const workSpace = $getCurrentWorkSpace() || $createWorkSpace();
-        expect($getScrollLimitY()).toBe(30);
+        expect($getScrollLimitY()).toBe(31);
     });
 });

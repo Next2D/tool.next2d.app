@@ -25,7 +25,7 @@ export const execute = (event: Event): void =>
     }
 
     const timelineAreaState = $getCurrentWorkSpace().timelineAreaState;
-    const beforeCount = Math.ceil(timelineLayer.clientHeight / timelineAreaState.frameHeight);
+    const beforeCount = Math.floor(timelineLayer.clientHeight / timelineAreaState.frameHeight);
 
     // タイムラインの高さを更新
     timelineFrameUpdateFrameHeightService(
@@ -36,7 +36,7 @@ export const execute = (event: Event): void =>
     timelineScrollUpdateHeightService();
 
     // 表示数に変化があればタイムラインを再描画
-    const afterCount = Math.ceil(timelineLayer.clientHeight / timelineAreaState.frameHeight);
+    const afterCount = Math.floor(timelineLayer.clientHeight / timelineAreaState.frameHeight);
     if (beforeCount !== afterCount) {
         timelineLayerBuildElementUseCase();
     }

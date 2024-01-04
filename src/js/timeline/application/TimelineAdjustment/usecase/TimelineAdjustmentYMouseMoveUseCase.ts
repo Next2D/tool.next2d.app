@@ -38,7 +38,7 @@ export const execute = (event: PointerEvent): void =>
         height += -event.movementY;
         height = Math.max($TIMELINE_MIN_HEIGHT, height);
 
-        const beforeCount = Math.ceil(timelineLayer.clientHeight / timelineAreaState.frameHeight);
+        const beforeCount = Math.floor(timelineLayer.clientHeight / timelineAreaState.frameHeight);
         if (timelineAreaState.state === "move") {
 
             const element: HTMLElement | null = document
@@ -69,7 +69,7 @@ export const execute = (event: PointerEvent): void =>
         timelineScrollUpdateYPositionService();
 
         // 表示数に変化があればタイムラインを再描画
-        const afterCount = Math.ceil(timelineLayer.clientHeight / timelineAreaState.frameHeight);
+        const afterCount = Math.floor(timelineLayer.clientHeight / timelineAreaState.frameHeight);
         if (afterCount !== beforeCount) {
             timelineLayerBuildElementUseCase();
         }
