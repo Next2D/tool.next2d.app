@@ -1,6 +1,6 @@
 import { $TIMELINE_LAYER_ADD_ID } from "@/config/TimelineConfig";
 import { EventType } from "@/tool/domain/event/EventType";
-import { execute as timelineToolLayerAddUseCase } from "./TimelineToolLayerAddUseCase";
+import { execute as timelineToolLayerAddMouseDownEventUseCase } from "./TimelineToolLayerAddMouseDownEventUseCase";
 
 /**
  * @description レイヤー追加のイベント登録
@@ -19,17 +19,8 @@ export const execute = (): void =>
         return ;
     }
 
-    element.addEventListener(EventType.MOUSE_DOWN, (event: PointerEvent): void =>
-    {
-        if (event.button !== 0) {
-            return;
-        }
-
-        // 親のイベントを中止する
-        event.stopPropagation();
-        event.preventDefault();
-
-        // 新規レイヤーを追加
-        timelineToolLayerAddUseCase();
-    });
+    // マウスダウンイベントを登録
+    element.addEventListener(EventType.MOUSE_DOWN,
+        timelineToolLayerAddMouseDownEventUseCase
+    );
 };

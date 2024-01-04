@@ -2,6 +2,8 @@ import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import type { Layer } from "@/core/domain/model/Layer";
 import { execute as timelineScrollUpdateHeightService } from "@/timeline/application/TimelineScroll/service/TimelineScrollUpdateHeightService";
 import { execute as timelineLayerBuildElementUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerBuildElementUseCase";
+import { execute as timelineLayerAllClearSelectedElementService } from "@/timeline/application/TimelineLayer/service/TimelineLayerAllClearSelectedElementService";
+import { timelineLayer } from "@/timeline/domain/model/TimelineLayer";
 
 /**
  * @description 削除したレイヤーを元の配置に元に戻す
@@ -19,6 +21,13 @@ export const execute = (layer: Layer, index: number): void =>
     $getCurrentWorkSpace()
         .scene
         .setLayer(layer, index);
+
+    // 選択したレイヤー・フレーム Elementを初期化
+    timelineLayerAllClearSelectedElementService();
+
+    // 選択中の内部情報を初期化
+    // fixed logic
+    timelineLayer.clearSelectedTarget();
 
     // タイムラインのyスクロールの高さを更新
     timelineScrollUpdateHeightService();

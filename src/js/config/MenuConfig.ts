@@ -105,3 +105,12 @@ export const $TIMELINE_LAYER_MENU_NAME: string = "timeline-layer-menu";
  * @constant
  */
 export const $LIBRARY_MENU_NAME: string = "library-menu";
+
+/**
+ * @description スクリプトエディターメニューの名前
+ *              Script Editor menu name
+ *
+ * @type {string}
+ * @constant
+ */
+export const $EDITOR_MODAL_NAME: string = "editor-modal";

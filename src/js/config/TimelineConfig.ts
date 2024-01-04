@@ -215,6 +215,15 @@ export const $TIMELINE_LAYER_DISABLE_ALL_ID: string = "timeline-layer-disable-al
 export const $TIMELINE_LAYER_LOCK_ALL_ID: string = "timeline-layer-lock-all";
 
 /**
+ * @description タイムラインのスクリプトメニューボタンのElementのID
+ *              ID of the Element of the script menu button on the timeline
+ *
+ * @type {string}
+ * @constant
+ */
+export const $TIMELINE_LAYER_SCRIPT_ADD_ID: string = "timeline-script-add";
+
+/**
  * @description タイムラインの最小幅の数値
  *              Minimum width value for timeline
  *
