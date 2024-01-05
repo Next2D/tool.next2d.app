@@ -2,6 +2,7 @@ import { execute as timelineToolLayerAddUseCase } from "@/timeline/application/T
 import { execute as timelineLayerArrowDownUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerArrowDownUseCase";
 import { execute as timelineLayerArrowUpUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerArrowUpUseCase";
 import { execute as timelineToolLayerDeleteUseCase } from "@/timeline/application/TimelineTool/application/LayerDelete/usecase/TimelineToolLayerDeleteUseCase";
+import { execute as scriptEditorModalBootUseCase } from "@/menu/application/ScriptEditorModal/usecase/ScriptEditorModalBootUseCase";
 import {
     $generateShortcutKey,
     $setShortcut
@@ -42,4 +43,7 @@ export const execute = (): void =>
         $generateShortcutKey("Backspace", { "ctrl": true }),
         timelineToolLayerDeleteUseCase
     );
+
+    // スクリプトエディタの起動
+    $setShortcut("s", scriptEditorModalBootUseCase);
 };

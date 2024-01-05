@@ -23,8 +23,7 @@
     "vitest": "^1.1.1"
   },
   "dependencies": {
-    "ace-code": "^1.32.3",
-    "ace-linters": "^1.0.1",
+    "@types/ace": "^0.0.52",
     "fflate": "^0.8.1",
     "jszip": "^3.10.1"
   }

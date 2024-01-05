@@ -25,11 +25,13 @@
     },
 
     "types": [
-      "vitest/globals"
+      "vitest/globals",
+      "@types/ace"
     ]
   },
   "include": [
-    "src/js/**/*.ts"
+    "src/js/**/*.ts",
+    "@types/**/*.ts"
   ],
   "exclude": [
     "node_modules/**",

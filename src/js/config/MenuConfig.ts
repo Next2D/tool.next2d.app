@@ -113,4 +113,4 @@ export const $LIBRARY_MENU_NAME: string = "library-menu";
  * @type {string}
  * @constant
  */
-export const $EDITOR_MODAL_NAME: string = "editor-modal";
+export const $SCRIPT_EDITOR_MODAL_NAME: string = "editor-modal";

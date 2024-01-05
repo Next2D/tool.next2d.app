@@ -10,24 +10,21 @@
     background-color : #363636;
     color            : whitesmoke;
     border           : 1px solid #72777D;
-    z-index          : 9999;
+    z-index          : 65535;
     resize           : both;
     overflow         : hidden;
     border-radius    : 4px;
     box-shadow       : 0 0 5px rgba(245, 245, 245, 0.25);
+}
 
-    .ace_editor
-    {
-        .ace_autocomplete
-        {
-            width : 50% !important;
-        }
-    }
+.ace_autocomplete
+{
+    width : calc(var(--script-modal-width) * 0.6) !important;
 }
 
 #editor-bar
 {
-    width            : var(--script-modal-width);
+    width            : 100%;
     height           : var(--script-modal-bar-height);
     background-color : #2c2c2c;
     display          : flex;
@@ -58,7 +55,7 @@
 
 #editor-title
 {
-    width           : calc(var(--script-modal-width) - 17px);
+    width           : calc(100% - 17px);
     height          : var(--script-modal-bar-height);
     text-align      : center;
     color           : whitesmoke;
@@ -71,8 +68,8 @@
 
 #editor
 {
-    width            : var(--script-modal-width);
-    height           : calc(var(--script-modal-height) - var(--script-modal-bar-height));
+    width            : 100%;
+    height           : calc(100% - var(--script-modal-bar-height));
     border           : none;
     overflow         : auto;
     outline          : none;

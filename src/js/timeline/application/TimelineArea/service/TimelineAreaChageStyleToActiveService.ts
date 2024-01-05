@@ -33,7 +33,7 @@ export const execute = (element: HTMLElement): void =>
     element.style.borderBottom = "1px solid #1c1c1c";
     element.style.borderRight  = "1px solid #1c1c1c";
     element.style.minWidth     = `${$TIMELINE_MIN_WIDTH}px`;
-    element.style.zIndex       = `${0xffffff}`;
+    element.style.zIndex       = `${0xffff}`;
     element.style.boxShadow    = "0 0 5px rgba(245, 245, 245, 0.25)";
     element.style.position     = "fixed"; // fixed logic
 

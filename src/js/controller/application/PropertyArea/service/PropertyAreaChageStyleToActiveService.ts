@@ -21,7 +21,7 @@ export const execute = (element: HTMLElement): void =>
     element.style.height          = "96vh";
     element.style.left            = `${propertyAreaState.offsetLeft}px`;
     element.style.top             = `${propertyAreaState.offsetTop}px`;
-    element.style.zIndex          = `${0xffffff}`;
+    element.style.zIndex          = `${0xffff}`;
     element.style.backgroundColor = "#2c2c2c";
     element.style.boxShadow       = "0 0 5px rgba(245, 245, 245, 0.25)";
     element.style.position        = "fixed"; // fixed logic

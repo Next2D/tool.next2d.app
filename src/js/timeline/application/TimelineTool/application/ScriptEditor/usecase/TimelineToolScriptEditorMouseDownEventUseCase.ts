@@ -1,3 +1,5 @@
+import { execute as scriptEditorModalBootUseCase } from "@/menu/application/ScriptEditorModal/usecase/ScriptEditorModalBootUseCase";
+
 /**
  * @description スクリプトエディタ起動ボタンのイベント処理関数
  *              Event handling function for script editor start button
@@ -17,5 +19,6 @@ export const execute = (event: PointerEvent): void =>
     event.stopPropagation();
     event.preventDefault();
 
-    // TODO
+    // スクリプトエディタを表示
+    scriptEditorModalBootUseCase();
 };
