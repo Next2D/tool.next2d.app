@@ -1,16 +1,18 @@
 import type { ScriptEditorCompletionWordObjectImpl } from "@/interface/ScriptEditorCompletionWordObjectImpl";
+import { $getAceEditor } from "../ScriptEditorModalUtil";
 
 /**
  * @description スクリプトエディタの初期起動処理
  *              Initial startup process of the Script Editor
  *
- * @param  {AceAjax.Editor} editor
  * @return {void}
  * @method
  * @public
  */
-export const execute = (editor: AceAjax.Editor): void =>
+export const execute = (): void =>
 {
+    const editor = $getAceEditor();
+
     editor.setOptions({
         "enableBasicAutocompletion": true,
         "enableSnippets": true,

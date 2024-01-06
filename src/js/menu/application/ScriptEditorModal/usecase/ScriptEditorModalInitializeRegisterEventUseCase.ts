@@ -6,6 +6,7 @@ import {
     $SCRIPT_EDITOR_HIDE_ICON_ID,
     $SCRIPT_EDITOR_BAR_ID
 } from "@/config/ScriptEditorModalConfig";
+import { $getAceEditor } from "../ScriptEditorModalUtil";
 
 /**
  * @description スクリプトエディタの初期起動ユースケース
@@ -15,7 +16,7 @@ import {
  * @method
  * @public
  */
-export const execute = (editor: AceAjax.Editor): void =>
+export const execute = (): void =>
 {
     const modalElement: HTMLElement | null = document
         .getElementById($SCRIPT_EDITOR_MODAL_ID);
@@ -41,7 +42,7 @@ export const execute = (editor: AceAjax.Editor): void =>
                     style.setProperty("--script-modal-height", `${element.clientHeight}px`);
                 });
 
-                editor.resize(true);
+                $getAceEditor().resize(true);
             });
         });
 

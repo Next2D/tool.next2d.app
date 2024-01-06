@@ -3,6 +3,7 @@ import type { MovieClipSaveObjectImpl } from "@/interface/MovieClipSaveObjectImp
 import { Instance } from "./Instance";
 import { Layer } from "./Layer";
 import { execute as movieClipRunUseCase } from "@/core/application/MovieClip/usecase/MovieClipRunUseCase";
+import type { ActionSaveObjectImpl } from "@/interface/ActionSaveObjectImpl";
 
 /**
  * @description MovieClipの状態管理クラス
@@ -227,8 +228,7 @@ export class MovieClip extends Instance
      */
     stop (): void
     {
-        // 非表示に更新
-        this.allLayerHide();
+        // TODO
     }
 
     /**
@@ -279,6 +279,14 @@ export class MovieClip extends Instance
         if (object.currentFrame) {
             this._$currentFrame = object.currentFrame;
         }
+
+        // スクリプトマップに再登録
+        if (object.actions) {
+            for (let idx = 0; idx < object.actions.length; ++idx) {
+                const actionObject: ActionSaveObjectImpl = object.actions[idx];
+                this._$actions.set(actionObject.frame, actionObject.action);
+            }
+        }
     }
 
     /**
@@ -316,23 +324,6 @@ export class MovieClip extends Instance
         this._$layers.splice(index, 0, layer);
         this._$layerMap.set(layer.id, layer);
         this._$layerId = this._$layers.length;
-        this.allLayerHide();
-    }
-
-    /**
-     * @description 全てのLayerオブジェクトの表示設定をnoneに更新
-     *              Update display settings of all Layer objects to none
-     *
-     * @return {void}
-     * @method
-     * @public
-     */
-    allLayerHide (): void
-    {
-        for (let idx: number = 0; idx < this._$layers.length; ++idx) {
-            const layer = this._$layers[idx];
-            layer.display = "none";
-        }
     }
 
     /**
@@ -350,7 +341,6 @@ export class MovieClip extends Instance
         this._$layers.splice(index, 1);
         this._$layerMap.delete(layer.id);
         this._$layerId = this._$layers.length;
-        layer.display = "none";
     }
 
     /**
@@ -516,8 +506,6 @@ export class MovieClip extends Instance
     setAction (frame: number, script: string): void
     {
         this._$actions.set(frame, script);
-
-        // TODO コントローラーのJavaScriptタブを再読み込み
     }
 
     /**
@@ -546,8 +534,6 @@ export class MovieClip extends Instance
     deleteAction (frame: number): boolean
     {
         return this._$actions.delete(frame);
-
-        // TODO コントローラーのJavaScriptタブを再読み込み
     }
 
     /**
@@ -573,7 +559,7 @@ export class MovieClip extends Instance
             });
         }
 
-        const actions = [];
+        const actions: ActionSaveObjectImpl[] = [];
         for (const [frame, action] of this._$actions) {
             actions.push({
                 "frame": frame,

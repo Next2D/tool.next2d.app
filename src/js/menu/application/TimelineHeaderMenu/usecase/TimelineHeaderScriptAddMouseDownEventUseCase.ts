@@ -1,10 +1,10 @@
 import { execute as scriptEditorModalCurrentBootUseCase } from "@/menu/application/ScriptEditorModal/usecase/ScriptEditorModalCurrentBootUseCase";
 
 /**
- * @description スクリプトエディタ起動ボタンのイベント処理関数
- *              Event handling function for script editor start button
+ * @description ヘッダーメニューのスクリプト追加ボタンの実行関数
+ *              Execution function of the Add Script button in the header menu
  *
- * @param  {PointerEvent} event
+ * @param {PointerEvent} event
  * @return {void}
  * @method
  * @public
@@ -12,13 +12,13 @@ import { execute as scriptEditorModalCurrentBootUseCase } from "@/menu/applicati
 export const execute = (event: PointerEvent): void =>
 {
     if (event.button !== 0) {
-        return;
+        return ;
     }
 
-    // 親のイベントを中止する
+    // 他のイベントを中止
     event.stopPropagation();
     event.preventDefault();
 
-    // スクリプトエディタを表示
+    // スクリプトエディターを表示
     scriptEditorModalCurrentBootUseCase();
 };

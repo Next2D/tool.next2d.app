@@ -2,6 +2,7 @@ import { execute as timelineFrameUpdateFrameElementService } from "@/timeline/ap
 import { execute as timelineMarkerMovePositionService } from "@/timeline/application/TimelineMarker/service/TimelineMarkerMovePositionService";
 import { execute as timelineLayerAllClearSelectedElementService } from "@/timeline/application/TimelineLayer/service/TimelineLayerAllClearSelectedElementService";
 import { timelineLayer } from "@/timeline/domain/model/TimelineLayer";
+import { $allHideMenu } from "@/menu/application/MenuUtil";
 
 /**
  * @description タイムラインヘッダーのマウスダウンイベント処理関数
@@ -21,6 +22,9 @@ export const execute = (event: PointerEvent): void =>
     // イベント停止
     event.stopPropagation();
     event.preventDefault();
+
+    // メニューを全て非表示に更新
+    $allHideMenu();
 
     const element: HTMLElement | null = event.currentTarget as HTMLElement;
     if (!element) {

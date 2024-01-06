@@ -71,6 +71,15 @@ export const $TIMELINE_LABEL_NAME: string = "label-name";
 export const $TIMELINE_CONTROLLER_BASE_ID: string = "timeline-controller-base";
 
 /**
+ * @description タイムラインのヘッダースクリプト追加ElementのID
+ *              ID of the Timeline Header Script Addition Element
+ *
+ * @type {string}
+ * @constant
+ */
+export const $TIMELINE_HEADER_MENU_SCRIPT_ADD_ONE_ID: string = "context-menu-script-add-one";
+
+/**
  * @description タイムラインのメインコンテナのElementのID
  *              ID of the Element in the main container of the timeline
  *
@@ -276,3 +285,48 @@ export const $TIMELINE_MAX_MARKER_WIDTH_SIZE: number = 13;
  * @constant
  */
 export const $TIMELINE_LAYER_CONTROLLER_WIDTH: number = 271;
+
+/**
+ * @description タイムラインヘッダーの表示Elementの配置Index
+ *              Timeline Header DisplayElement PlacementIndex
+ *
+ * @type {number}
+ * @constant
+ */
+export const $TIMELINE_HEADER_DISPLAY_INDEX: number = 0;
+
+/**
+ * @description タイムラインヘッダーのラベルElementの配置Index
+ *              Placement Index for the label Element in the timeline header
+ *
+ * @type {number}
+ * @constant
+ */
+export const $TIMELINE_HEADER_LABEL_INDEX: number = 1;
+
+/**
+ * @description タイムラインヘッダーのスクリプトElementの配置Index
+ *              Placement Index of Script Element in Timeline Header
+ *
+ * @type {number}
+ * @constant
+ */
+export const $TIMELINE_HEADER_SCRIPT_INDEX: number = 2;
+
+/**
+ * @description タイムラインヘッダーのサウンドElementの配置Index
+ *              Placement of Sound Element in Timeline HeaderIndex
+ *
+ * @type {number}
+ * @constant
+ */
+export const $TIMELINE_HEADER_SOUND_INDEX: number = 3;
+
+/**
+ * @description タイムラインヘッダーのフレームElementの配置Index
+ *              Placement Index for the frame Element of the timeline header
+ *
+ * @type {number}
+ * @constant
+ */
+export const $TIMELINE_HEADER_FRAME_INDEX: number = 4;

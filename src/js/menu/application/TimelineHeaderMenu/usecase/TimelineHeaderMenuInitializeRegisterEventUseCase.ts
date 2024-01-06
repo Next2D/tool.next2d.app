@@ -1,5 +1,7 @@
-import { $TIMELINE_CONTROLLER_BASE_ID } from "@/config/TimelineConfig";
+import { $TIMELINE_CONTROLLER_BASE_ID, $TIMELINE_HEADER_MENU_SCRIPT_ADD_ONE_ID } from "@/config/TimelineConfig";
 import { execute as timelineHeaderMenuShowService } from "../service/TimelineHeaderMenuShowService";
+import { EventType } from "@/tool/domain/event/EventType";
+import { execute as timelineHeaderScriptAddMouseDownEventUseCase } from "./TimelineHeaderScriptAddMouseDownEventUseCase";
 
 /**
  * @description タイムラインヘッダーのイベント登録関数
@@ -19,4 +21,14 @@ export const execute = (): void =>
     }
 
     element.addEventListener("contextmenu", timelineHeaderMenuShowService);
+
+    // スクリプト追加ボタンにイベントを登録
+    const scriptElement: HTMLElement | null = document
+        .getElementById($TIMELINE_HEADER_MENU_SCRIPT_ADD_ONE_ID);
+
+    if (scriptElement) {
+        scriptElement.addEventListener(EventType.MOUSE_DOWN,
+            timelineHeaderScriptAddMouseDownEventUseCase
+        );
+    }
 };

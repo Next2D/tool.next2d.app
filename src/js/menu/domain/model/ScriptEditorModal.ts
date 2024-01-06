@@ -2,7 +2,8 @@ import { $SCRIPT_EDITOR_MODAL_NAME } from "@/config/MenuConfig";
 import { BaseMenu } from "./BaseMenu";
 import { execute as scriptEditorModalInitializeRegisterEventUseCase } from "@/menu/application/ScriptEditorModal/usecase/ScriptEditorModalInitializeRegisterEventUseCase";
 import { execute as scriptEditorModalInitializeUseCase } from "@/menu/application/ScriptEditorModal/usecase/ScriptEditorModalInitializeUseCase";
-import { $updateKeyLock } from "@/shortcut/ShortcutUtil";
+import { execute as scriptEditorModalSaveUseCase } from "@/menu/application/ScriptEditorModal/usecase/ScriptEditorModalSaveUseCase";
+import { execute as scriptEditorModalBootUseCase } from "@/menu/application/ScriptEditorModal/usecase/ScriptEditorModalBootUseCase";
 
 /**
  * @description スクリプトメニューの管理クラス
@@ -14,8 +15,6 @@ import { $updateKeyLock } from "@/shortcut/ShortcutUtil";
  */
 export class ScriptEditorModal extends BaseMenu
 {
-    private readonly _$editor: AceAjax.Editor;
-
     /**
      * @constructor
      * @public
@@ -23,12 +22,6 @@ export class ScriptEditorModal extends BaseMenu
     constructor ()
     {
         super($SCRIPT_EDITOR_MODAL_NAME);
-
-        /**
-         * @type {AceAjax.Editor}
-         * @private
-         */
-        this._$editor = ace.edit("editor");
     }
 
     /**
@@ -42,10 +35,10 @@ export class ScriptEditorModal extends BaseMenu
     initialize (): void
     {
         // エディタのイベント登録
-        scriptEditorModalInitializeRegisterEventUseCase(this._$editor);
+        scriptEditorModalInitializeRegisterEventUseCase();
 
         // エディタの初期起動処理
-        scriptEditorModalInitializeUseCase(this._$editor);
+        scriptEditorModalInitializeUseCase();
     }
 
     /**
@@ -65,11 +58,8 @@ export class ScriptEditorModal extends BaseMenu
         // fixed logic
         super.show();
 
-        // 入力モードをonにする
-        $updateKeyLock(true);
-
-        // フォーカスをセット
-        this._$editor.focus();
+        // スクリプトエディタを起動
+        scriptEditorModalBootUseCase();
     }
 
     /**
@@ -89,22 +79,7 @@ export class ScriptEditorModal extends BaseMenu
         // fixed logic
         super.hide();
 
-        // 入力モードをoffにする
-        $updateKeyLock(false);
-
-        // TODO 保存処理
-    }
-
-    /**
-     * @description AceEditorオブジェクトを返却
-     *              Return AceEditor object
-     *
-     * @member {AceAjax.Editor}
-     * @readonly
-     * @public
-     */
-    get editor (): AceAjax.Editor
-    {
-        return this._$editor;
+        // 保存処理
+        scriptEditorModalSaveUseCase();
     }
 }

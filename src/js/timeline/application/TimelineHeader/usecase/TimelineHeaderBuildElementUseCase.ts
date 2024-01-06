@@ -5,7 +5,11 @@ import { $getLeftFrame } from "../../TimelineUtil";
 import { timelineHeader } from "@/timeline/domain/model/TimelineHeader";
 import { $STAGE_FPS_ID } from "@/config/StageSettingConfig";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
-import type { MovieClip } from "@/core/domain/model/MovieClip";
+import { execute as timelineHeaderUpdateDisplayElementService } from "../service/TimelineHeaderUpdateDisplayElementService";
+import { execute as timelineHeaderUpdateLabelElementService } from "../service/TimelineHeaderUpdateLabelElementService";
+import { execute as timelineHeaderUpdateScriptElementService } from "../service/TimelineHeaderUpdateScriptElementService";
+import { execute as timelineHeaderUpdateSoundElementService } from "../service/TimelineHeaderUpdateSoundElementService";
+import { execute as timelineHeaderUpdateFrameElementService } from "../service/TimelineHeaderUpdateFrameElementService";
 
 /**
  * @description タイムラインのヘッダーをスクロール位置の合わせて構築
@@ -64,7 +68,11 @@ export const execute = (): void =>
 
             const length: number = elementCount - element.children.length;
             for (let idx: number = 1; length >= idx; ++idx) {
-                element.insertAdjacentHTML("beforeend", timelineHeaderFrameComponent(frame++));
+
+                // elementを追加
+                element.insertAdjacentHTML("beforeend",
+                    timelineHeaderFrameComponent(frame++)
+                );
 
                 const node: HTMLElement | null = element.lastElementChild as HTMLElement;
                 if (!node) {
@@ -83,8 +91,6 @@ export const execute = (): void =>
     if (!fpsElement) {
         return ;
     }
-
-    const scene: MovieClip = workSpace.scene;
 
     const fps: number   = parseInt(fpsElement.value);
     const frame: number = $getLeftFrame();
@@ -108,105 +114,19 @@ export const execute = (): void =>
             node.setAttribute("data-frame", `${currentFrame}`);
         }
 
-        const nodeChildren: HTMLCollection = node.children;
-        const length: number = nodeChildren.length;
-        for (let idx: number = 0; length > idx; ++idx) {
+        // 表示Elementを更新
+        timelineHeaderUpdateDisplayElementService(node, currentFrame, fps);
 
-            const node: HTMLElement | undefined = nodeChildren[idx] as HTMLElement;
-            if (!node) {
-                continue;
-            }
+        // ラベルElementを更新
+        timelineHeaderUpdateLabelElementService(node, currentFrame);
 
-            const nodeFrame: number = parseInt(node.dataset.frame as string);
-            if (nodeFrame !== currentFrame) {
-                node.setAttribute("data-frame", `${currentFrame}`);
-            }
+        // スクリプトElementを更新
+        timelineHeaderUpdateScriptElementService(node, currentFrame);
 
-            switch (idx) {
+        // サウンドElementを更新
+        timelineHeaderUpdateSoundElementService(node, currentFrame);
 
-                // display
-                case 0:
-                    if (currentFrame % 5 === 0) {
-                        if (!node.classList.contains("frame-border-end")) {
-                            node.setAttribute("class", "frame-border-end");
-                        }
-                    } else {
-                        if (!node.classList.contains("frame-border")) {
-                            node.setAttribute("class", "frame-border");
-                        }
-                    }
-
-                    if (currentFrame % fps === 0 && fps > 4) {
-                        const value: string = `${currentFrame / fps}s`;
-                        if (!node.textContent || node.textContent !== value) {
-                            node.textContent = value;
-                        }
-                    } else {
-                        if (node.textContent) {
-                            node.textContent = "";
-                        }
-                    }
-                    break;
-
-                // label
-                case 1:
-                    if (scene.hasLabel(currentFrame)) {
-                        if (!node.classList.contains("frame-border-box-marker")) {
-                            node.setAttribute("class", "frame-border-box-marker");
-                            node.textContent = scene.getLabel(currentFrame);
-                        }
-                    } else {
-                        if (!node.classList.contains("frame-border-box")) {
-                            node.setAttribute("class", "frame-border-box");
-                            node.textContent = "";
-                        }
-                    }
-                    break;
-
-                // script
-                case 2:
-                    if (scene.hasAction(currentFrame)) {
-                        if (!node.classList.contains("frame-border-box-action")) {
-                            node.setAttribute("class", "frame-border-box-action");
-                        }
-                    } else {
-                        if (!node.classList.contains("frame-border-box")) {
-                            node.setAttribute("class", "frame-border-box");
-                        }
-                    }
-                    break;
-
-                // sound
-                case 3:
-                    if (scene.hasSound(currentFrame)) {
-                        if (!node.classList.contains("frame-border-box-sound")) {
-                            node.setAttribute("class", "frame-border-box-sound");
-                        }
-                    } else {
-                        if (!node.classList.contains("frame-border-box")) {
-                            node.setAttribute("class", "frame-border-box");
-                        }
-                    }
-                    break;
-
-                case 4:
-                    if (currentFrame % 5 === 0) {
-                        const value: string = `${currentFrame}`;
-                        if (!node.textContent || node.textContent !== value) {
-                            node.textContent = value;
-                        }
-                    } else {
-                        if (node.textContent) {
-                            node.textContent = "";
-                        }
-                    }
-                    break;
-
-                default:
-                    break;
-
-            }
-        }
-
+        // フレーム数Elementを更新
+        timelineHeaderUpdateFrameElementService(node, currentFrame);
     }
 };
