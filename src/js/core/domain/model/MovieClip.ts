@@ -4,6 +4,7 @@ import { Instance } from "./Instance";
 import { Layer } from "./Layer";
 import { execute as movieClipRunUseCase } from "@/core/application/MovieClip/usecase/MovieClipRunUseCase";
 import type { ActionSaveObjectImpl } from "@/interface/ActionSaveObjectImpl";
+import { HistoryObjectImpl } from "@/interface/HistoryObjectImpl";
 
 /**
  * @description MovieClipの状態管理クラス
@@ -26,6 +27,8 @@ export class MovieClip extends Instance
     private _$scrollX: number;
     private _$scrollY: number;
     private readonly _$selectedLayerIds: number[];
+    private readonly _$histories: HistoryObjectImpl[];
+    private _$historyIndex: number;
 
     /**
      * @params {object} object
@@ -107,8 +110,65 @@ export class MovieClip extends Instance
          */
         this._$selectedLayerIds = [];
 
+        /**
+         * @type {array}
+         * @private
+         */
+        this._$histories = [];
+
+        /**
+         * @type {number}
+         * @private
+         */
+        this._$historyIndex = 0;
+
         // 指定objectからMovieCLipを復元
         this.load(object);
+    }
+
+    /**
+     * @description 作業履歴を登録
+     *              Register work history
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    addHistory (history_object: HistoryObjectImpl): void
+    {
+        // ポジション以降の履歴を削除
+        this._$histories.length = this._$historyIndex;
+        this._$histories[this._$historyIndex++] = history_object;
+    }
+
+    /**
+     * @description 作業履歴の配列を返却
+     *              Returns an array of work history
+     *
+     * @return {array}
+     * @readonly
+     * @public
+     */
+    get histories (): HistoryObjectImpl[]
+    {
+        return this._$histories;
+    }
+
+    /**
+     * @description 作業履歴の配列のポインター情報
+     *              Pointer information for the work history array
+     *
+     * @member {number} index
+     * @return {number}
+     * @public
+     */
+    get historyIndex (): number
+    {
+        return this._$historyIndex;
+    }
+    set historyIndex (index: number)
+    {
+        this._$historyIndex = index;
     }
 
     /**

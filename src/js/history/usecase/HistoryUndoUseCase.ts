@@ -19,17 +19,17 @@ export const execute = (): void =>
         return ;
     }
 
-    const workSpace = $getCurrentWorkSpace();
-    if (!workSpace.historyIndex) {
+    const scene = $getCurrentWorkSpace().scene;
+    if (!scene.historyIndex) {
         return ;
     }
 
-    const historyObject: HistoryObjectImpl | undefined = workSpace.histories[--workSpace.historyIndex];
+    const historyObject: HistoryObjectImpl | undefined = scene.histories[--scene.historyIndex];
     if (!historyObject) {
         return ;
     }
 
-    const node: HTMLElement | undefined = element.children[workSpace.historyIndex] as HTMLElement;
+    const node: HTMLElement | undefined = element.children[scene.historyIndex] as HTMLElement;
     if (!node) {
         return ;
     }

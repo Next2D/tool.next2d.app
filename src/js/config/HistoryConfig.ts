@@ -14,7 +14,7 @@ export const $HISTORY_LIST_ID: string = "history-list";
  * @type {string}
  * @constant
  */
-export const $TIMELINE_TOOL_LAYER_ADD_COMMAD: string = "timieline_tool_layer_add";
+export const $TIMELINE_TOOL_LAYER_ADD_COMMAND: string = "timieline_tool_layer_add";
 
 /**
  * @description タイムラインの指定したレイヤー削除履歴の識別コマンド名
@@ -23,4 +23,13 @@ export const $TIMELINE_TOOL_LAYER_ADD_COMMAD: string = "timieline_tool_layer_add
  * @type {string}
  * @constant
  */
-export const $TIMELINE_TOOL_LAYER_DELETE_COMMAD: string = "timieline_tool_layer_delete";
+export const $TIMELINE_TOOL_LAYER_DELETE_COMMAND: string = "timieline_tool_layer_delete";
+
+/**
+ * @description タイムラインの指定したフレームへのスクリプト追加履歴の識別コマンド名
+ *              Identifying command name for the history of script additions to the specified frame of the timeline
+ *
+ * @type {string}
+ * @constant
+ */
+export const $TIMIELINE_TOOL_SCRIPT_NEW_REGISTER_COMMAND: string = "timieline_tool_script_new_register";

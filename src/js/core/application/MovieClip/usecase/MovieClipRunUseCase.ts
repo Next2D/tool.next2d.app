@@ -7,6 +7,7 @@ import { execute as timelineScrollUpdateWidthService } from "@/timeline/applicat
 import { execute as timelineScrollUpdateXPositionService } from "@/timeline/application/TimelineScroll/service/TimelineScrollUpdateXPositionService";
 import { execute as timelineScrollUpdateHeightService } from "@/timeline/application/TimelineScroll/service/TimelineScrollUpdateHeightService";
 import { execute as timelineScrollUpdateYPositionService } from "@/timeline/application/TimelineScroll/service/TimelineScrollUpdateYPositionService";
+import { execute as historyReloadUseCase } from "@/history/usecase/HistoryReloadUseCase";
 
 /**
  * @description MovieClipの起動処理
@@ -19,6 +20,9 @@ import { execute as timelineScrollUpdateYPositionService } from "@/timeline/appl
  */
 export const execute = (movie_clip: MovieClip): void =>
 {
+    // 作業履歴を読み込む
+    historyReloadUseCase();
+
     // タイムラインのx移動するスクロール幅を更新
     timelineScrollUpdateWidthService();
 

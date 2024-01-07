@@ -1,23 +1,21 @@
-import type { Layer } from "@/core/domain/model/Layer";
-import { $TIMELINE_TOOL_LAYER_DELETE_COMMAND } from "@/config/HistoryConfig";
+import { $TIMIELINE_TOOL_SCRIPT_NEW_REGISTER_COMMAND } from "@/config/HistoryConfig";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { execute as historyAddElementUseCase } from "@/history/usecase/HistoryAddElementUseCase";
 import { execute as historyGetTextService } from "@/history/service/HistoryGetTextService";
 import { execute as historyRemoveElementService } from "@/history/service/HistoryRemoveElementService";
-import { execute as timelineToolLayerDeleteHistoryRedoUseCase } from "./TimelineToolLayerDeleteHistoryRedoUseCase";
-import { execute as timelineToolLayerDeleteHistoryUndoUseCase } from "./TimelineToolLayerDeleteHistoryUndoUseCase";
+import { execute as scriptEditorNewRegisterHistoryUndoUseCase } from "./ScriptEditorNewRegisterHistoryUndoUseCase";
+import { execute as scriptEditorNewRegisterHistoryRedoUseCase } from "./ScriptEditorNewRegisterHistoryRedoUseCase";
 
 /**
- * @description 指定のレイヤーの削除履歴と登録
- *              Deletion history and registration of the specified layer
+ * @description スクリプトの新規登録を削除
+ *              Delete specified layer
  *
- * @param  {Layer} layer
- * @param  {number} index
+ * @param  {number} frame
  * @return {void}
  * @method
  * @public
  */
-export const execute = (layer: Layer, index: number): void =>
+export const execute = (frame: number, script: string): void =>
 {
     // ポジション位置から未来の履歴を全て削除
     // fixed logic
@@ -29,19 +27,19 @@ export const execute = (layer: Layer, index: number): void =>
     // 作業履歴にElementを追加
     historyAddElementUseCase(
         scene.historyIndex,
-        historyGetTextService($TIMELINE_TOOL_LAYER_DELETE_COMMAND)
+        historyGetTextService($TIMIELINE_TOOL_SCRIPT_NEW_REGISTER_COMMAND)
     );
 
     // 追加したLayer Objectを履歴に登録
     scene.addHistory({
-        "command": $TIMELINE_TOOL_LAYER_DELETE_COMMAND,
+        "command": $TIMIELINE_TOOL_SCRIPT_NEW_REGISTER_COMMAND,
         "undo": (): void =>
         {
-            timelineToolLayerDeleteHistoryUndoUseCase(layer, index);
+            scriptEditorNewRegisterHistoryUndoUseCase(frame);
         },
         "redo": (): void =>
         {
-            timelineToolLayerDeleteHistoryRedoUseCase(layer);
+            scriptEditorNewRegisterHistoryRedoUseCase(frame, script);
         }
     });
 };

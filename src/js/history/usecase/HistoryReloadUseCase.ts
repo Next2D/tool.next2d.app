@@ -25,14 +25,14 @@ export const execute = (): void =>
         element.children[0].remove();
     }
 
-    const workSpace = $getCurrentWorkSpace();
+    const scene = $getCurrentWorkSpace().scene;
 
-    const histories = workSpace.histories;
+    const histories = scene.histories;
     for (let idx = 0; idx < histories.length; ++idx) {
         const historyObject = histories[idx];
         historyAddElementUseCase(
             idx, historyGetTextService(historyObject.command),
-            workSpace.historyIndex > idx ? "" : "disable"
+            scene.historyIndex > idx ? "" : "disable"
         );
     }
 };

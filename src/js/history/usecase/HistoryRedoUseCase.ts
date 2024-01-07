@@ -19,8 +19,8 @@ export const execute = (): void =>
         return ;
     }
 
-    const workSpace = $getCurrentWorkSpace();
-    const node: HTMLElement | undefined = element.children[workSpace.historyIndex] as HTMLElement;
+    const scene = $getCurrentWorkSpace().scene;
+    const node: HTMLElement | undefined = element.children[scene.historyIndex] as HTMLElement;
     if (!node) {
         return ;
     }
@@ -28,7 +28,7 @@ export const execute = (): void =>
     // 履歴表示をアクティブに更新
     node.setAttribute("class", "");
 
-    const historyObject: HistoryObjectImpl | undefined = workSpace.histories[workSpace.historyIndex++];
+    const historyObject: HistoryObjectImpl | undefined = scene.histories[scene.historyIndex++];
     if (!historyObject) {
         return ;
     }

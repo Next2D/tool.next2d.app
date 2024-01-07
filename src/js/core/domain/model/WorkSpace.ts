@@ -41,7 +41,6 @@ export class WorkSpace
     private _$name: string;
     private _$scene: MovieClip;
     private _$active: boolean;
-    private _$historyIndex: number;
     private readonly _$root: MovieClip;
     private readonly _$stage: Stage;
     private readonly _$libraries: Map<number, InstanceImpl<any>>;
@@ -52,7 +51,6 @@ export class WorkSpace
     private readonly _$propertyAreaState: UserPropertyAreaStateObjectImpl;
     private readonly _$controllerAreaState: UserControllerAreaStateObjectImpl;
     private _$plugins: Map<any, any>;
-    private readonly _$histories: HistoryObjectImpl[];
 
     /**
      * @constructor
@@ -157,18 +155,6 @@ export class WorkSpace
         this._$controllerAreaState = {
             "width": $CONTROLLER_DEFAULT_WIDTH_SIZE
         };
-
-        /**
-         * @type {array}
-         * @private
-         */
-        this._$histories = [];
-
-        /**
-         * @type {number}
-         * @private
-         */
-        this._$historyIndex = 0;
 
         // /**
         //  * @type {Map}
@@ -320,36 +306,6 @@ export class WorkSpace
     get propertyAreaState (): UserPropertyAreaStateObjectImpl
     {
         return this._$propertyAreaState;
-    }
-
-    /**
-     * @description 作業履歴の配列を返却
-     *              Returns an array of work history
-     *
-     * @return {array}
-     * @readonly
-     * @public
-     */
-    get histories (): HistoryObjectImpl[]
-    {
-        return this._$histories;
-    }
-
-    /**
-     * @description 作業履歴の配列のポインター情報
-     *              Pointer information for the work history array
-     *
-     * @member {number} index
-     * @return {number}
-     * @public
-     */
-    get historyIndex (): number
-    {
-        return this._$historyIndex;
-    }
-    set historyIndex (index: number)
-    {
-        this._$historyIndex = index;
     }
 
     /**
@@ -618,21 +574,6 @@ export class WorkSpace
     {
         // 削除処理を実行
         return workSpaceRemoveUseCase(this);
-    }
-
-    /**
-     * @description 作業履歴を登録
-     *              Register work history
-     *
-     * @return {void}
-     * @method
-     * @public
-     */
-    addHistory (history_object: HistoryObjectImpl): void
-    {
-        // ポジション以降の履歴を削除
-        this._$histories.length = this._$historyIndex;
-        this._$histories[this._$historyIndex++] = history_object;
     }
 
     /**

@@ -18,13 +18,13 @@ export const execute = (): void =>
         return ;
     }
 
-    const workSpace = $getCurrentWorkSpace();
-    const length = workSpace.histories.length;
-    if (workSpace.historyIndex === length) {
+    const scene = $getCurrentWorkSpace().scene;
+    const length = scene.histories.length;
+    if (scene.historyIndex === length) {
         return ;
     }
 
-    for (let idx = workSpace.historyIndex; idx < length; ++idx) {
+    for (let idx = scene.historyIndex; idx < length; ++idx) {
 
         const node: HTMLElement | undefined = element.lastElementChild as HTMLElement;
         if (!node) {

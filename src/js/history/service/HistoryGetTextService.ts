@@ -1,6 +1,7 @@
 import {
-    $TIMELINE_TOOL_LAYER_ADD_COMMAD,
-    $TIMELINE_TOOL_LAYER_DELETE_COMMAD
+    $TIMELINE_TOOL_LAYER_ADD_COMMAND,
+    $TIMELINE_TOOL_LAYER_DELETE_COMMAND,
+    $TIMIELINE_TOOL_SCRIPT_NEW_REGISTER_COMMAND
 } from "@/config/HistoryConfig";
 
 /**
@@ -15,11 +16,14 @@ export const execute = (command: string): string =>
 {
     switch (command) {
 
-        case $TIMELINE_TOOL_LAYER_ADD_COMMAD:
+        case $TIMELINE_TOOL_LAYER_ADD_COMMAND:
             return "レイヤーを追加";
 
-        case $TIMELINE_TOOL_LAYER_DELETE_COMMAD:
+        case $TIMELINE_TOOL_LAYER_DELETE_COMMAND:
             return "レイヤーを削除";
+
+        case $TIMIELINE_TOOL_SCRIPT_NEW_REGISTER_COMMAND:
+            return "スクリプトを追加";
 
         default:
             break;

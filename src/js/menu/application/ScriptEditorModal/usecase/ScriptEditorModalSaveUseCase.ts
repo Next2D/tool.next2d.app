@@ -1,6 +1,7 @@
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { $updateKeyLock } from "@/shortcut/ShortcutUtil";
 import { execute as timelineHeaderUpdateScriptElementService } from "@/timeline/application/TimelineHeader/service/TimelineHeaderUpdateScriptElementService";
+import { execute as scriptEditorNewRegisterHistoryUseCase } from "@/history/application/timeline/TimelineTool/ScriptEditorNewRegister/usecase/ScriptEditorNewRegisterHistoryUseCase";
 import {
     $getLeftFrame,
     $getRightFrame
@@ -36,9 +37,20 @@ export const execute = (): void =>
     // 対象のMovieClipにスクリプトを保存
     const frame = $getTargetFrame();
     if (script) {
+
+        // 作業履歴を残す
+        if (!movieClip.hasAction(frame)) {
+            // 初回登録履歴を登録
+            scriptEditorNewRegisterHistoryUseCase(frame, script);
+        } else {
+            // TODO 編集履歴を登録
+
+        }
         movieClip.setAction(frame, script);
     } else {
         movieClip.deleteAction(frame);
+
+        // TODO 削除履歴を登録
     }
 
     // 初期化

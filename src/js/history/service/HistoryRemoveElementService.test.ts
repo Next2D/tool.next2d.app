@@ -6,8 +6,8 @@ describe("HistoryRemoveElementServiceTest", () =>
 {
     test("execute test", () =>
     {
-        const workSpace = $createWorkSpace();
-        workSpace.histories.push({});
+        const scene = $createWorkSpace().scene;
+        scene.histories.push({});
 
         const div = document.createElement("div");
         document.body.appendChild(div);

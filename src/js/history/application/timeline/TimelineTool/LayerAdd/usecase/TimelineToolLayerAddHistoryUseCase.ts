@@ -1,5 +1,5 @@
 import type { Layer } from "@/core/domain/model/Layer";
-import { $TIMELINE_TOOL_LAYER_ADD_COMMAD } from "@/config/HistoryConfig";
+import { $TIMELINE_TOOL_LAYER_ADD_COMMAND } from "@/config/HistoryConfig";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { execute as historyAddElementUseCase } from "@/history/usecase/HistoryAddElementUseCase";
 import { execute as historyGetTextService } from "@/history/service/HistoryGetTextService";
@@ -22,21 +22,20 @@ export const execute = (layer: Layer): void =>
     // fixed logic
     historyRemoveElementService();
 
-    const workSpace = $getCurrentWorkSpace();
+    const scene = $getCurrentWorkSpace().scene;
 
     // fixed logic
     // 作業履歴にElementを追加
     historyAddElementUseCase(
-        workSpace.historyIndex,
-        historyGetTextService($TIMELINE_TOOL_LAYER_ADD_COMMAD)
+        scene.historyIndex,
+        historyGetTextService($TIMELINE_TOOL_LAYER_ADD_COMMAND)
     );
 
-    const scene = workSpace.scene;
     const index = scene.layers.indexOf(layer as NonNullable<Layer>);
 
     // 追加したLayer Objectを履歴に登録
-    workSpace.addHistory({
-        "command": $TIMELINE_TOOL_LAYER_ADD_COMMAD,
+    scene.addHistory({
+        "command": $TIMELINE_TOOL_LAYER_ADD_COMMAND,
         "undo": (): void =>
         {
             timelineToolLayerAddHistoryUndoUseCase(layer);

@@ -27,13 +27,13 @@ export const execute = (event: PointerEvent): void =>
 
     const index: number = parseInt(element.dataset.index as string);
 
-    const workSpace = $getCurrentWorkSpace();
-    if (workSpace.historyIndex > index) {
-        while (workSpace.historyIndex !== index) {
+    const scene = $getCurrentWorkSpace().scene;
+    if (scene.historyIndex > index) {
+        while (scene.historyIndex !== index) {
             historyUndoUseCase();
         }
     } else {
-        while (index >= workSpace.historyIndex) {
+        while (index >= scene.historyIndex) {
             historyRedoUseCase();
         }
     }
