@@ -2,6 +2,8 @@ import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { $updateKeyLock } from "@/shortcut/ShortcutUtil";
 import { execute as timelineHeaderUpdateScriptElementService } from "@/timeline/application/TimelineHeader/service/TimelineHeaderUpdateScriptElementService";
 import { execute as scriptEditorNewRegisterHistoryUseCase } from "@/history/application/timeline/TimelineTool/ScriptEditorNewRegister/usecase/ScriptEditorNewRegisterHistoryUseCase";
+import { execute as scriptEditorUpdateHistoryUseCase } from "@/history/application/timeline/TimelineTool/ScriptEditorUpdate/usecase/ScriptEditorUpdateHistoryUseCase";
+import { execute as scriptEditorDeleteHistoryUseCase } from "@/history/application/timeline/TimelineTool/ScriptEditorDelete/usecase/ScriptEditorDeleteHistoryUseCase";
 import {
     $getLeftFrame,
     $getRightFrame
@@ -41,16 +43,25 @@ export const execute = (): void =>
         // 作業履歴を残す
         if (!movieClip.hasAction(frame)) {
             // 初回登録履歴を登録
-            scriptEditorNewRegisterHistoryUseCase(frame, script);
+            scriptEditorNewRegisterHistoryUseCase(movieClip, frame, script);
         } else {
-            // TODO 編集履歴を登録
+            const beforeScript = movieClip.getAction(frame);
 
+            // 編集履歴を登録
+            if (beforeScript !== script) {
+                scriptEditorUpdateHistoryUseCase(movieClip, frame, script);
+            }
         }
+
+        // 上書き
         movieClip.setAction(frame, script);
     } else {
-        movieClip.deleteAction(frame);
 
-        // TODO 削除履歴を登録
+        // 削除履歴を登録
+        scriptEditorDeleteHistoryUseCase(movieClip, frame);
+
+        // スクリプトを削除
+        movieClip.deleteAction(frame);
     }
 
     // 初期化

@@ -1,8 +1,10 @@
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
-import { $getLeftFrame, $getRightFrame } from "@/timeline/application/TimelineUtil";
-import { timelineLayer } from "@/timeline/domain/model/TimelineLayer";
 import { execute as timelineHeaderUpdateScriptElementService } from "@/timeline/application/TimelineHeader/service/TimelineHeaderUpdateScriptElementService";
 import { $TIMELINE_HEADER_ID } from "@/config/TimelineConfig";
+import {
+    $getLeftFrame,
+    $getRightFrame
+} from "@/timeline/application/TimelineUtil";
 
 /**
  * @description 追加したスクリプトを削除して元に戻す
@@ -15,7 +17,7 @@ import { $TIMELINE_HEADER_ID } from "@/config/TimelineConfig";
  */
 export const execute = (frame: number): void =>
 {
-    // Layerオブジェクトの内部情報に再登録
+    // スクリプトを削除
     $getCurrentWorkSpace()
         .scene
         .deleteAction(frame);

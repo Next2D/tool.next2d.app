@@ -1,7 +1,9 @@
 import {
     $TIMELINE_TOOL_LAYER_ADD_COMMAND,
     $TIMELINE_TOOL_LAYER_DELETE_COMMAND,
-    $TIMIELINE_TOOL_SCRIPT_NEW_REGISTER_COMMAND
+    $TIMIELINE_TOOL_SCRIPT_NEW_REGISTER_COMMAND,
+    $TIMIELINE_TOOL_SCRIPT_UPDATE_COMMAND,
+    $TIMIELINE_TOOL_SCRIPT_DELETE_COMMAND
 } from "@/config/HistoryConfig";
 
 /**
@@ -24,6 +26,12 @@ export const execute = (command: string): string =>
 
         case $TIMIELINE_TOOL_SCRIPT_NEW_REGISTER_COMMAND:
             return "スクリプトを追加";
+
+        case $TIMIELINE_TOOL_SCRIPT_UPDATE_COMMAND:
+            return "スクリプトを変更";
+
+        case $TIMIELINE_TOOL_SCRIPT_DELETE_COMMAND:
+            return "スクリプトを削除";
 
         default:
             break;

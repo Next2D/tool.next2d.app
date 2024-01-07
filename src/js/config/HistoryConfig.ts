@@ -26,10 +26,28 @@ export const $TIMELINE_TOOL_LAYER_ADD_COMMAND: string = "timieline_tool_layer_ad
 export const $TIMELINE_TOOL_LAYER_DELETE_COMMAND: string = "timieline_tool_layer_delete";
 
 /**
- * @description タイムラインの指定したフレームへのスクリプト追加履歴の識別コマンド名
- *              Identifying command name for the history of script additions to the specified frame of the timeline
+ * @description スクリプト追加履歴の識別コマンド名
+ *              Script addition history identification command name
  *
  * @type {string}
  * @constant
  */
 export const $TIMIELINE_TOOL_SCRIPT_NEW_REGISTER_COMMAND: string = "timieline_tool_script_new_register";
+
+/**
+ * @description スクリプト変更履歴の識別コマンド名
+ *              Script Change History Identification Command Name
+ *
+ * @type {string}
+ * @constant
+ */
+export const $TIMIELINE_TOOL_SCRIPT_UPDATE_COMMAND: string = "timieline_tool_script_update";
+
+/**
+ * @description スクリプト削除履歴の識別コマンド名
+ *              Script deletion history identification command name
+ *
+ * @type {string}
+ * @constant
+ */
+export const $TIMIELINE_TOOL_SCRIPT_DELETE_COMMAND: string = "timieline_tool_script_delete";

@@ -16,7 +16,8 @@ import { execute as languageTranslationService } from "@/language/application/se
  * @public
  */
 export const execute = (
-    index: number, text: string,
+    index: number,
+    text: string,
     class_name: "" | "disable" = ""
 ): void => {
 
@@ -43,5 +44,7 @@ export const execute = (
     // 言語設定
     languageTranslationService(lastElement);
 
-    lastElement.addEventListener(EventType.MOUSE_DOWN, historyMouseDownEventUseCase);
+    lastElement.addEventListener(EventType.MOUSE_DOWN,
+        historyMouseDownEventUseCase
+    );
 };

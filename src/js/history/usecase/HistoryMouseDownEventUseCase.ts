@@ -1,6 +1,7 @@
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { execute as historyRedoUseCase } from "./HistoryRedoUseCase";
 import { execute as historyUndoUseCase } from "./HistoryUndoUseCase";
+import { $allHideMenu } from "@/menu/application/MenuUtil";
 
 /**
  * @description 指定のIndexまで作業履歴を更新する
@@ -17,13 +18,16 @@ export const execute = (event: PointerEvent): void =>
         return ;
     }
 
+    // 親のイベントを中止
+    event.stopPropagation();
+
+    // 全てのメニューを非表示にする
+    $allHideMenu();
+
     const element = event.currentTarget as HTMLElement;
     if (!element) {
         return ;
     }
-
-    // 親のイベントを中止
-    event.stopPropagation();
 
     const index: number = parseInt(element.dataset.index as string);
 

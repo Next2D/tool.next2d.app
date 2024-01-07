@@ -15,7 +15,7 @@ import { $TIMELINE_HEADER_ID } from "@/config/TimelineConfig";
  */
 export const execute = (frame: number, script: string): void =>
 {
-    // Layerオブジェクトの内部情報から削除
+    // スクリプトを上書き
     $getCurrentWorkSpace()
         .scene
         .setAction(frame, script);
