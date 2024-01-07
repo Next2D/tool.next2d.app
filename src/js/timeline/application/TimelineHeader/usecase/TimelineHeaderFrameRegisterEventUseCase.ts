@@ -26,10 +26,10 @@ export const execute = (element: HTMLElement): void =>
         );
 
         // drop & drag イベント
-        scriptElement.addEventListener("dragstart", () => {});
-        scriptElement.addEventListener("dragover", () => {});
-        scriptElement.addEventListener("dragleave", () => {});
-        scriptElement.addEventListener("drop", () => {});
+        // scriptElement.addEventListener("dragstart", () => {});
+        // scriptElement.addEventListener("dragover", () => {});
+        // scriptElement.addEventListener("dragleave", () => {});
+        // scriptElement.addEventListener("drop", () => {});
     }
 
     // アイコンにdrag/dropイベントを登録

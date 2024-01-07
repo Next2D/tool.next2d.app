@@ -19,7 +19,6 @@ import {
     $TIMELINE_DEFAULT_FRAME_WIDTH_SIZE,
     $TIMELINE_DEFAULT_FRAME_HEIGHT_SIZE
 } from "@/config/TimelineConfig";
-import type { HistoryObjectImpl } from "@/interface/HistoryObjectImpl";
 
 /**
  * @description プロジェクトのユニークID
