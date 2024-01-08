@@ -1,6 +1,7 @@
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import { ExternalTimeline } from "@/external/timeline/domain/model/ExternalTimeline";
 import { ExternalMovieClip } from "@/external/core/domain/model/ExternalMovieClip";
+import { ExternalLibrary } from "@/external/controller/domain/model/ExternalLibrary";
 import { execute as externalWorkSpaceUpdateNameUseCase } from "@/external/core/application/ExternalWorkSpace/usecase/ExternalWorkSpaceUpdateNameUseCase";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 
@@ -46,6 +47,18 @@ export class ExternalWorkSpace
     }
 
     /**
+     * @description WorkSpaceのアクティブ状態を返却
+     *              Returns the active state of WorkSpace
+     *
+     * @member {boolean}
+     * @public
+     */
+    get active (): boolean
+    {
+        return this._$workSpace.active;
+    }
+
+    /**
      * @description 現在、起動中のMovieClipのタイムラインAPIオブジェクトを返却
      *              Returns the timeline API object of the currently running MovieClip
      *
@@ -59,5 +72,18 @@ export class ExternalWorkSpace
             new ExternalMovieClip($getCurrentWorkSpace().scene),
             this
         );
+    }
+
+    /**
+     * @description ライブラリAPIオブジェクトを返却
+     *              Return library API object
+     *
+     * @return {ExternalTimeline}
+     * @method
+     * @public
+     */
+    getLibrary (): ExternalLibrary
+    {
+        return new ExternalLibrary(this);
     }
 }

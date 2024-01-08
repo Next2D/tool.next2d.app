@@ -22,7 +22,6 @@ export const execute = (event: WheelEvent): void =>
             // フレームの幅を更新
             timelineFrameWheelEventUseCase(event);
         });
-
     } else {
         requestAnimationFrame((): void =>
         {

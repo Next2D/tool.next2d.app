@@ -1,5 +1,9 @@
 import type { ExternalMovieClip } from "@/external/core/domain/model/ExternalMovieClip";
 import type { ExternalWorkSpace } from "@/external/core/domain/model/ExternalWorkSpace";
+import { execute as timelineLayerControllerNormalSelectUseCase } from "@/timeline/application/TimelineLayerController/usecase/TimelineLayerControllerNormalSelectUseCase";
+import { execute as externalTimelineChageFrameUseCase } from "@/external/timeline/application/ExternalTimeline/usecase/ExternalTimelineChageFrameUseCase";
+import { execute as timelineToolLayerAddUseCase } from "@/timeline/application/TimelineTool/application/LayerAdd/usecase/TimelineToolLayerAddUseCase";
+import { $clamp } from "@/global/GlobalUtil";
 
 /**
  * @description タイムラインの外部APIクラス
@@ -33,5 +37,64 @@ export class ExternalTimeline
          * @private
          */
         this._$externalWorkSpace = external_work_space;
+    }
+
+    /**
+     * @description 指定のフレームをアクティブにする
+     *              Activate the specified frame
+     *
+     * @param  {number} frame
+     * @return {void}
+     * @method
+     * @public
+     */
+    changeFrame (frame: number): void
+    {
+        frame = $clamp(frame, 1, Number.MAX_VALUE);
+
+        if (this._$externalWorkSpace.active) {
+            // アクティブなら表示も更新
+            externalTimelineChageFrameUseCase(frame);
+        } else {
+            this._$externalMovieClip.currentFrame = frame;
+        }
+    }
+
+    /**
+     * @description 新規レイヤーを追加
+     *              Add new layer
+     *
+     * @param  {string} name
+     * @param  {string} type
+     * @return {void}
+     * @method
+     * @public
+     */
+    addNewLayer (name: string, type: string = "normal"): void
+    {
+        if (this._$externalWorkSpace.active) {
+            timelineToolLayerAddUseCase();
+        }
+    }
+
+    /**
+     * @description 指定したindex値のレイヤーをアクティブにする
+     *              Activate the layer with the specified index value
+     *
+     * @param  {number} index
+     * @return {void}
+     * @method
+     * @public
+     */
+    setSelectedLayer (index: number): void
+    {
+        const externalLayers = this._$externalMovieClip.layers;
+
+        const externalLayer = externalLayers[index];
+        if (!externalLayer) {
+            return ;
+        }
+
+        timelineLayerControllerNormalSelectUseCase(externalLayer.id);
     }
 }
