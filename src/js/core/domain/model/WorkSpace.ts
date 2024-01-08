@@ -49,7 +49,7 @@ export class WorkSpace
     private readonly _$timelineAreaState: UserTimelineAreaStateObjectImpl;
     private readonly _$propertyAreaState: UserPropertyAreaStateObjectImpl;
     private readonly _$controllerAreaState: UserControllerAreaStateObjectImpl;
-    private _$plugins: Map<any, any>;
+    private readonly _$plugins: Map<any, any>;
 
     /**
      * @constructor
@@ -243,6 +243,19 @@ export class WorkSpace
     }
 
     /**
+     * @description ライブラリのアイテム情報を全て返却
+     *              Return all item information in the library
+     *
+     * @return {Map}
+     * @readonly
+     * @public
+     */
+    get libraries ():  Map<number, InstanceImpl<any>>
+    {
+        return this._$libraries;
+    }
+
+    /**
      * @description プロジェクトのタブオブジェクトを返す
      *              Returns the tab object of the project
      *
@@ -353,8 +366,8 @@ export class WorkSpace
     }
 
     /**
-     * @description 指定のシーン(MovieClip)を起動する
-     *              Launch the specified scene (MovieClip)
+     * @description 既存のシーン(MovieClip)を終了して、指定のシーン(MovieClip)を起動する
+     *              Exit an existing scene (MovieClip) and start the specified scene (MovieClip)
      *
      * @param  {MovieClip} movie_clip
      * @return {Promise}
@@ -422,6 +435,22 @@ export class WorkSpace
         if (object.controller) {
             this.updateControllerArea(object.controller);
         }
+    }
+
+    /**
+     * @description ライブラリに登録されたアイテムを指定IDで取得
+     *              Obtain items registered in the library with a specified ID
+     *
+     * @param {number} library_id
+     * @return {void}
+     * @method
+     * @public
+     */
+    getLibrary (library_id: number): InstanceImpl<any> | null
+    {
+        return this._$libraries.has(library_id)
+            ? this._$libraries.get(library_id) as NonNullable<InstanceImpl<any>>
+            : null;
     }
 
     /**

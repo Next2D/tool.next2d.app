@@ -538,6 +538,19 @@ export class MovieClip extends Instance
     }
 
     /**
+     * @description スクリプトのマップデータを返却
+     *              Return script map data
+     *
+     * @return {Map}
+     * @readonly
+     * @public
+     */
+    get actions (): Map<number, string>
+    {
+        return this._$actions;
+    }
+
+    /**
      * @description 指定したフレームのJavaScript情報を返す
      *              Returns JavaScript information for the specified frame
      *

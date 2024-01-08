@@ -21,6 +21,7 @@ import {
     $getAllWorkSpace,
     $getCurrentWorkSpace
 } from "@/core/application/CoreUtil";
+import { ExternalApplication } from "./external/ExternalApplication";
 
 /**
  * @description 初期起動関数
@@ -49,6 +50,22 @@ const initializes: Function[] = [
 const boots: Function[] = [
     bootUser
 ];
+
+/**
+ * @description 外部APIクラスの起動関数
+ *              External API class invocation function
+ *
+ * @return {Promise}
+ * @method
+ * @private
+ */
+const external = (): void =>
+{
+    if ("nl" in window) {
+        return ;
+    }
+    window.nl = new ExternalApplication();
+};
 
 /**
  * @description イベント登録登録などの初期起動関数
@@ -135,4 +152,7 @@ export const run = async (): Promise<void> =>
 
     // 言語を適用
     await languageTranslationService(document);
+
+    // 外部APIクラスを起動
+    external();
 };
