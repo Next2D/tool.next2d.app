@@ -83,6 +83,15 @@ export class ExternalTimeline
         }
     }
 
+    deleteLayer (index: number = 0)
+    {
+        if (this._$externalWorkSpace.active) {
+
+        } else {
+            
+        }
+    }
+
     /**
      * @description 指定したindex値のレイヤーをアクティブにする
      *              Activate the layer with the specified index value

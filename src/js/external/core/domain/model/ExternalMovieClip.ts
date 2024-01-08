@@ -1,6 +1,7 @@
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import { ExternalItem } from "./ExternalItem";
 import { ExternalLayer } from "./ExternalLayer";
+import { execute as externalMovieClipCreateLayerUseCase } from "@/external/core/application/ExternalMovieClip/usecase/ExternalMovieClipCreateLayerUseCase";
 
 /**
  * @description MovieClipの外部APIクラス
@@ -17,7 +18,7 @@ export class ExternalMovieClip extends ExternalItem
      */
     constructor (movie_clip: MovieClip)
     {
-        super();
+        super(movie_clip);
 
         /**
          * @type {MovieClip}
@@ -76,8 +77,7 @@ export class ExternalMovieClip extends ExternalItem
     createLayer (name: string = "", index: number = 0): ExternalLayer
     {
         // 新規レイヤーを作成して、指定indexに配置
-        const layer = this._$movieClip.createLayer(name);
-        this._$movieClip.setLayer(layer, index);
+        const layer = externalMovieClipCreateLayerUseCase(this._$movieClip, name, index);
 
         return new ExternalLayer(layer);
     }

@@ -29,6 +29,7 @@ export class MovieClip extends Instance
     private readonly _$selectedLayerIds: number[];
     private readonly _$histories: HistoryObjectImpl[];
     private _$historyIndex: number;
+    private _$active: boolean;
 
     /**
      * @params {object} object
@@ -121,6 +122,13 @@ export class MovieClip extends Instance
          * @private
          */
         this._$historyIndex = 0;
+
+        /**
+         * @type {boolean}
+         * @default false
+         * @private
+         */
+        this._$active = false;
 
         // 指定objectからMovieCLipを復元
         this.load(object);
@@ -260,6 +268,19 @@ export class MovieClip extends Instance
     }
 
     /**
+     * @description MovieClipの起動状態を返却
+     *              Return MovieClip startup status
+     *
+     * @member {boolean}
+     * @readonly
+     * @public
+     */
+    get active (): boolean
+    {
+        return this._$active;
+    }
+
+    /**
      * @description MovieClipの起動関数
      *              MovieClip startup functions
      *
@@ -273,6 +294,9 @@ export class MovieClip extends Instance
         {
             // 起動処理を実行
             movieClipRunUseCase(this);
+
+            // 状態をアクティブに更新
+            this._$active = true;
 
             return resolve();
         });
@@ -288,7 +312,8 @@ export class MovieClip extends Instance
      */
     stop (): void
     {
-        // TODO
+        // 状態を非アクティブに更新
+        this._$active = false;
     }
 
     /**

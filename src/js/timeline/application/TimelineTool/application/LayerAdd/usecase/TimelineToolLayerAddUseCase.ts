@@ -34,7 +34,7 @@ export const execute = (name: string = ""): void =>
     scene.setLayer(newLayer, index);
 
     // 作業履歴を登録
-    timelineToolLayerAddHistoryUseCase(newLayer);
+    timelineToolLayerAddHistoryUseCase(newLayer, scene);
 
     // タイムラインのyスクロールの高さを更新
     timelineScrollUpdateHeightService();
