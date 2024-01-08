@@ -10,11 +10,12 @@ import { execute as timelineScrollUpdateHeightService } from "@/timeline/applica
  * @description タイムラインに新規レイヤーを追加する
  *              Adding a new layer to the timeline
  *
+ * @param  {string} name
  * @return {void}
  * @method
  * @public
  */
-export const execute = (): void =>
+export const execute = (name: string = ""): void =>
 {
     const scene = $getCurrentWorkSpace().scene;
 
@@ -28,7 +29,7 @@ export const execute = (): void =>
     }
 
     // レイヤーを追加
-    const newLayer = scene.createLayer();
+    const newLayer = scene.createLayer(name);
     const index = scene.layers.indexOf(selectedLayer);
     scene.setLayer(newLayer, index);
 

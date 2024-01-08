@@ -64,16 +64,22 @@ export class ExternalTimeline
      * @description 新規レイヤーを追加
      *              Add new layer
      *
-     * @param  {string} name
-     * @param  {string} type
+     * @param  {string} [name = ""]
+     * @param  {number} [index = 0]
      * @return {void}
      * @method
      * @public
      */
-    addNewLayer (name: string, type: string = "normal"): void
+    addNewLayer (name: string = "", index: number = 0): void
     {
         if (this._$externalWorkSpace.active) {
-            timelineToolLayerAddUseCase();
+            // 指定されたレイヤーを選択状態にする
+            this.setSelectedLayer(index);
+
+            // レイヤーを追加
+            timelineToolLayerAddUseCase(name);
+        } else {
+            this._$externalMovieClip.createLayer(name, index);
         }
     }
 

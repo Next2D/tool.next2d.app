@@ -357,14 +357,14 @@ export class MovieClip extends Instance
      * @method
      * @public
      */
-    createLayer (): Layer
+    createLayer (name: string = ""): Layer
     {
         const layerId: number = this._$layerId++;
         const layer = new Layer();
 
         // set
         layer.id   = layerId;
-        layer.name = `Layer_${layerId}`;
+        layer.name = name ? name : `Layer_${layerId}`;
 
         return layer;
     }

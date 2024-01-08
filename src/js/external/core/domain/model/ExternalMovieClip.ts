@@ -57,9 +57,28 @@ export class ExternalMovieClip extends ExternalItem
 
         const externalLayers = [];
         for (let idx = 0; idx < layers.length; ++idx) {
-            externalLayers.push(new ExternalLayer(layers[idx]))
+            externalLayers.push(new ExternalLayer(layers[idx]));
         }
 
         return externalLayers;
+    }
+
+    /**
+     * @description 新規レイヤーを作成
+     *              Create a new layer
+     *
+     * @param  {string} [name = ""]
+     * @param  {number} [index = 0]
+     * @return {ExternalLayer}
+     * @method
+     * @public
+     */
+    createLayer (name: string = "", index: number = 0): ExternalLayer
+    {
+        // 新規レイヤーを作成して、指定indexに配置
+        const layer = this._$movieClip.createLayer(name);
+        this._$movieClip.setLayer(layer, index);
+
+        return new ExternalLayer(layer);
     }
 }
