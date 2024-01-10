@@ -1,4 +1,6 @@
 import { $setSocket } from "../ShareUtil";
+import { execute as shareConnectOpenEventUseCase } from "./ShareConnectOpenEventUseCase";
+import { execute as shareMessageUseCase } from "./ShareMessageUseCase";
 import {
     $SHARE_PREFIX,
     $SHARE_URL
@@ -16,7 +18,13 @@ import {
 export const execute = (room_id: string): void =>
 {
     const webSocket: WebSocket = new WebSocket(
-        `${$SHARE_URL}/${$SHARE_PREFIX}_${room_id}`
+        `${$SHARE_URL}/${$SHARE_PREFIX}-${room_id}`
     );
+
+    // ソケットオブジェクトをセット
     $setSocket(webSocket);
+
+    // イベントを登録
+    webSocket.addEventListener("open", shareConnectOpenEventUseCase);
+    webSocket.addEventListener("message", shareMessageUseCase);
 };

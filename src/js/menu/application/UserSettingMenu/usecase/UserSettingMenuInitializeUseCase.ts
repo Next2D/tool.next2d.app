@@ -5,6 +5,7 @@ import { execute as userSettingMenuModalSettingInitializeUseCase } from "./UserS
 import { execute as userSettingMenuLanguageSettingInitializeUseCase } from "./UserSettingMenuLanguageSettingInitializeUseCase";
 import { execute as userSettingMenuVersionService } from "../service/UserSettingMenuVersionService";
 import { execute as userSettingMenuShortcutSettingInitializeUseCase } from "./UserSettingMenuShortcutSettingInitializeUseCase";
+import { execute as userSettingMenuShareSettingInitializeUseCase } from "./UserSettingMenuShareSettingInitializeUseCase";
 
 /**
  * @description ユーザー設定のメニュー画面の初期起動時のユースケース
@@ -33,6 +34,9 @@ export const execute = (): void =>
 
     // ショートカットメニューのユースケースを実行
     userSettingMenuShortcutSettingInitializeUseCase();
+
+    // 画面共有ボタンのユースケースを実行
+    userSettingMenuShareSettingInitializeUseCase();
 
     // バージョン情報を更新
     userSettingMenuVersionService();

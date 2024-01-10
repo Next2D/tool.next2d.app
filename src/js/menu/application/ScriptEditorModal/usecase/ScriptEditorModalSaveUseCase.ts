@@ -57,11 +57,14 @@ export const execute = (): void =>
         movieClip.setAction(frame, script);
     } else {
 
-        // 削除履歴を登録
-        scriptEditorDeleteHistoryUseCase(movieClip, frame);
+        if (movieClip.hasAction(frame)) {
+            // 削除履歴を登録
+            scriptEditorDeleteHistoryUseCase(movieClip, frame);
 
-        // スクリプトを削除
-        movieClip.deleteAction(frame);
+            // スクリプトを削除
+            movieClip.deleteAction(frame);
+        }
+
     }
 
     // 初期化

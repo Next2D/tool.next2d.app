@@ -7,6 +7,19 @@
 let $webSocket: WebSocket | null = null;
 
 /**
+ * @description WebSocketを利用しているか判定
+ *              Determine if WebSocket is used
+ *
+ * @return {boolean}
+ * @method
+ * @public
+ */
+export const $useSocket = (): boolean =>
+{
+    return $webSocket !== null;
+};
+
+/**
  * @description WebSocketオブジェクトを返す
  *              Returns a WebSocket object
  *
@@ -23,12 +36,47 @@ export const $getSocket = (): WebSocket | null =>
  * @description WebSocketオブジェクトをセット
  *              Set WebSocket object
  *
- * @param  {WebSocket} web_socket
+ * @param  {WebSocket | null} web_socket
  * @return {void}
  * @method
  * @public
  */
-export const $setSocket = (web_socket: WebSocket): void =>
+export const $setSocket = (web_socket: WebSocket | null): void =>
 {
     $webSocket = web_socket;
+};
+
+/**
+ * @description WebSocketの起動オーナー判定
+ *              WebSocket startup owner determination
+ *
+ * @private
+ */
+let $webSocketOwner = false;
+
+/**
+ * @description WebSocketオブジェクトをセット
+ *              Set WebSocket object
+ *
+ * @param  {WebSocket | null} web_socket
+ * @return {void}
+ * @method
+ * @public
+ */
+export const $setSocketOwner = (owner: boolean): void =>
+{
+    $webSocketOwner = owner;
+};
+
+/**
+ * @description WebSocketのオーナー状態を返却
+ *              Return WebSocket owner status
+ *
+ * @return {boolean}
+ * @method
+ * @public
+ */
+export const $isSocketOwner = (): boolean =>
+{
+    return $webSocketOwner;
 };

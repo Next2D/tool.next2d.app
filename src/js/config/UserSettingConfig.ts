@@ -52,3 +52,11 @@ export const $USER_LANGUAGE_SETTING_ID: string = "language-setting";
  */
 export const $USER_SHORTCUT_SETTING_ID: string = "shortcut-setting";
 
+/**
+ * @description 画面共有ボタンのElementのID
+ *              ID of the Element of the Screen Share Button
+ *
+ * @type {string}
+ * @constant
+ */
+export const $USER_SHARE_SETTING_ID: string = "share-setting";

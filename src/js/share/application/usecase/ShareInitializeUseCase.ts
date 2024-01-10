@@ -1,3 +1,6 @@
+import { execute as userAllFunctionStateService } from "@/user/application/Billing/service/UserAllFunctionStateService";
+import { execute as shareConnectUseCase } from "./ShareConnectUseCase";
+
 /**
  * @description WebSocketの初期起動時のユースケース
  *              Use cases for initial WebSocket startup
@@ -8,11 +11,15 @@
  */
 export const execute = (): void =>
 {
-    let roomId: string = location.hash;
+    // 全ての機能が利用可能でなければ中止
+    if (!userAllFunctionStateService()) {
+        return ;
+    }
+
+    const roomId: string = location.hash;
     if (!roomId) {
         return ;
     }
 
-    roomId = roomId.replace("#", "");
-    console.log(roomId);
+    shareConnectUseCase(roomId.replace("#", ""));
 };

@@ -2,22 +2,14 @@ import type { MenuImpl } from "@/interface/MenuImpl";
 import type { ProgressMenu } from "@/menu/domain/model/ProgressMenu";
 import { $PROGRESS_MENU_NAME } from "@/config/MenuConfig";
 import { $getMenu } from "@/menu/application/MenuUtil";
-import { $createWorkSpace, $registerWorkSpace } from "@/core/application/CoreUtil";
+import { $createWorkSpace } from "@/core/application/CoreUtil";
+import { $replace } from "@/language/application/LanguageUtil";
 import { execute as userDatabaseGetOpenDBRequestService } from "../service/UserDatabaseGetOpenDBRequestService";
-// @ts-ignore
-import ZlibInflateWorker from "@/worker/ZlibInflateWorker?worker&inline";
+import { execute as workSpaceRestoreSaveDataService } from "@/core/application/WorkSpace/service/WorkSpaceRestoreSaveDataService";
 import {
     $USER_DATABASE_NAME,
     $USER_DATABASE_STORE_KEY
 } from "@/config/Config";
-import { WorkSpaceSaveObjectImpl } from "@/interface/WorkSpaceSaveObjectImpl";
-import { WorkSpace } from "@/core/domain/model/WorkSpace";
-import { $replace } from "@/language/application/LanguageUtil";
-
-/**
- * @private
- */
-const worker: Worker = new ZlibInflateWorker();
 
 /**
  * @description IndexedDbからデータ読み込みを行う
@@ -64,41 +56,15 @@ export const execute = (): Promise<void> =>
                     return ;
                 }
 
+                // 進行状況のテキストを更新
+                menu.message = $replace("{{N2Dファイルの読み込み}}");
+
                 const binary: string | undefined = (event.target as IDBRequest).result;
                 if (binary) {
 
-                    // 保存データがあれば復元
-                    const length: number = binary.length;
-                    const buffer: Uint8Array = new Uint8Array(length);
-                    for (let idx: number = 0; idx < length; ++idx) {
-                        buffer[idx] = binary.charCodeAt(idx) & 0xff;
-                    }
-
-                    worker.postMessage(buffer, [buffer.buffer]);
-
-                    worker.onmessage = (event: MessageEvent): void =>
-                    {
-                        // 進行状況のテキストを更新
-                        menu.message = $replace("{{N2Dファイルの読み込み}}");
-
-                        let value: string = "";
-
-                        const buffer: Uint8Array = event.data as NonNullable<Uint8Array>;
-                        for (let idx: number = 0; idx < buffer.length; idx += 4096) {
-                            value += String.fromCharCode(...buffer.slice(idx, idx + 4096));
-                        }
-
-                        const workSpaceObjects: WorkSpaceSaveObjectImpl[] = JSON.parse(decodeURIComponent(value));
-                        for (let idx: number = 0; idx < workSpaceObjects.length; ++idx) {
-
-                            const workSpace = new WorkSpace();
-                            workSpace.load(workSpaceObjects[idx]);
-
-                            $registerWorkSpace(workSpace);
-                        }
-
-                        resolve();
-                    };
+                    // 保存データを復元
+                    workSpaceRestoreSaveDataService(binary)
+                        .then(resolve);
 
                 } else {
 
