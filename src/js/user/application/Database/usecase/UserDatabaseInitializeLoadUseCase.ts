@@ -7,6 +7,7 @@ import { $replace } from "@/language/application/LanguageUtil";
 import { execute as userDatabaseGetOpenDBRequestService } from "../service/UserDatabaseGetOpenDBRequestService";
 import { execute as workSpaceRestoreSaveDataService } from "@/core/application/WorkSpace/service/WorkSpaceRestoreSaveDataService";
 import {
+    $USER_DATABASE_BILLING_STORE_KEY,
     $USER_DATABASE_NAME,
     $USER_DATABASE_STORE_KEY
 } from "@/config/Config";
@@ -49,32 +50,45 @@ export const execute = (): Promise<void> =>
 
             const store: IDBObjectStore = transaction.objectStore(`${$USER_DATABASE_NAME}`);
 
-            const dbRequest: IDBRequest<any> = store.get(`${$USER_DATABASE_STORE_KEY}`);
-            dbRequest.onsuccess = (event: Event): void =>
+            const billingDBRequest: IDBRequest<any> = store.get(`${$USER_DATABASE_BILLING_STORE_KEY}`);
+            billingDBRequest.onsuccess = (event: Event): void =>
             {
                 if (!event.target) {
                     return ;
                 }
 
-                // 進行状況のテキストを更新
-                menu.message = $replace("{{N2Dファイルの読み込み}}");
-
                 const binary: string | undefined = (event.target as IDBRequest).result;
                 if (binary) {
-
-                    // 保存データを復元
-                    workSpaceRestoreSaveDataService(binary)
-                        .then(resolve);
-
-                } else {
-
-                    // 新規のWorkSpaceを起動
-                    $createWorkSpace();
-
-                    resolve();
+                    //
                 }
 
-                db.close();
+                const dataDBRequest: IDBRequest<any> = store.get(`${$USER_DATABASE_STORE_KEY}`);
+                dataDBRequest.onsuccess = (event: Event): void =>
+                {
+                    if (!event.target) {
+                        return ;
+                    }
+
+                    // 進行状況のテキストを更新
+                    menu.message = $replace("{{N2Dファイルの読み込み}}");
+
+                    const binary: string | undefined = (event.target as IDBRequest).result;
+                    if (binary) {
+
+                        // 保存データを復元
+                        workSpaceRestoreSaveDataService(binary)
+                            .then(resolve);
+
+                    } else {
+
+                        // 新規のWorkSpaceを起動
+                        $createWorkSpace();
+
+                        resolve();
+                    }
+
+                    db.close();
+                };
             };
         };
     });

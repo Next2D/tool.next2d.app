@@ -71,10 +71,19 @@ export const $USER_TIMELINE_AREA_STATE_KEY: string = `${$PREFIX}@timeline-area`;
 export const $USER_DATABASE_NAME: string = "save-data";
 
 /**
- * @description IndexedDBのストア名
- *              IndexedDB store name
+ * @description IndexedDBのプロジェクトのストア名
+ *              IndexedDB project store name
  *
  * @type {string}
  * @constant
  */
 export const $USER_DATABASE_STORE_KEY: string = "local";
+
+/**
+ * @description IndexedDBの制限状態のストア名
+ *              IndexedDB restricted state store name
+ *
+ * @type {string}
+ * @constant
+ */
+export const $USER_DATABASE_BILLING_STORE_KEY: string = "billing";

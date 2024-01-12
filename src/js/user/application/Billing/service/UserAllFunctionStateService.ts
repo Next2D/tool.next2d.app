@@ -1,3 +1,5 @@
+import { $canAllFunction } from "../BillingUtil";
+
 /**
  * @description 全ての機能が利用可能かの情報を返す
  *              Returns information on whether all functions are available
@@ -8,5 +10,5 @@
  */
 export const execute = (): boolean | null =>
 {
-    return true;
+    return $canAllFunction();
 };
