@@ -12,6 +12,7 @@ import { TimelineHeaderMenu } from "../domain/model/TimelineHeaderMenu";
 import { TimelineLayerControllerMenu } from "../domain/model/TimelineLayerControllerMenu";
 import { LibraryMenu } from "../domain/model/LibraryMenu";
 import { ScriptEditorModal } from "../domain/model/ScriptEditorModal";
+import { BillingModal } from "../domain/model/BillingModal";
 
 /**
  * @description 起動対象のToolクラスの配列
@@ -32,7 +33,8 @@ const menus: MenuImpl<any>[] = [
     TimelineHeaderMenu,
     TimelineLayerControllerMenu,
     LibraryMenu,
-    ScriptEditorModal
+    ScriptEditorModal,
+    BillingModal
 ];
 
 /**

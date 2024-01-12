@@ -114,3 +114,12 @@ export const $LIBRARY_MENU_NAME: string = "library-menu";
  * @constant
  */
 export const $SCRIPT_EDITOR_MODAL_NAME: string = "editor-modal";
+
+/**
+ * @description 機能制限解除モーダルの名前
+ *              Functional Restriction Removal Modal Name
+ *
+ * @type {string}
+ * @constant
+ */
+export const $BILLING_MODAL_NAME: string = "billing-modal";

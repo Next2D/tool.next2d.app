@@ -26,7 +26,8 @@
 
     "types": [
       "vitest/globals",
-      "@types/ace"
+      "@types/ace",
+      "@types/qrcode"
     ]
   },
   "include": [

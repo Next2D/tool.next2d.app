@@ -1,5 +1,17 @@
-import { $getSocket, $isSocketOwner } from "../ShareUtil";
+import {
+    $getSocket,
+    $isSocketOwner
+} from "../ShareUtil";
 
+/**
+ * @description Socketのメッセージ管理関数
+ *              Message management functions of the Socket
+ *
+ * @param  {MessageEvent} event
+ * @return {void}
+ * @method
+ * @public
+ */
 export const execute = (event: MessageEvent): void =>
 {
     const message = JSON.parse(event.data);
