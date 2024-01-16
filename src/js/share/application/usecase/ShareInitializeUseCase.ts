@@ -1,6 +1,4 @@
-import { execute as userAllFunctionStateService } from "@/user/application/Billing/service/UserAllFunctionStateService";
 import { execute as shareConnectUseCase } from "./ShareConnectUseCase";
-import { execute as billingModelShowService } from "@/menu/application/BillingModal/service/BillingModelShowService";
 
 /**
  * @description WebSocketの初期起動時のユースケース
@@ -12,12 +10,6 @@ import { execute as billingModelShowService } from "@/menu/application/BillingMo
  */
 export const execute = (): void =>
 {
-    // 全ての機能が利用可能でなければ中止
-    if (!userAllFunctionStateService()) {
-        billingModelShowService();
-        return ;
-    }
-
     const roomId: string = location.hash;
     if (!roomId) {
         return ;
