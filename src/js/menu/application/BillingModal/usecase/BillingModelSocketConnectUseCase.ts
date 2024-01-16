@@ -1,9 +1,8 @@
 import { $setSocket } from "@/share/application/ShareUtil";
 import {
-    $SHARE_PREFIX,
-    $SHARE_URL
+    $API_KEY,
+    $REWORD_URL
 } from "@/config/ShareConfig";
-import { execute as billingModelSocketOpenEventService } from "../service/BillingModelSocketOpenEventService";
 import { execute as billingModelSocketMessageUseCase } from "./BillingModelSocketMessageUseCase";
 
 /**
@@ -16,19 +15,17 @@ import { execute as billingModelSocketMessageUseCase } from "./BillingModelSocke
  * @method
  * @public
  */
-export const execute = (room_id: string, user_id: string): void =>
+export const execute = (room_id: string): void =>
 {
     const webSocket: WebSocket = new WebSocket(
-        `${$SHARE_URL}/${$SHARE_PREFIX}-${room_id}`
+        `${$REWORD_URL}/${room_id}?api_key=${$API_KEY}`
     );
 
     // ソケットオブジェクトをセット
     $setSocket(webSocket);
 
     // イベントを登録
-    webSocket.addEventListener("open", (): void =>
-    {
-        billingModelSocketOpenEventService(user_id);
-    });
-    webSocket.addEventListener("message", billingModelSocketMessageUseCase);
+    webSocket.addEventListener("message",
+        billingModelSocketMessageUseCase
+    );
 };

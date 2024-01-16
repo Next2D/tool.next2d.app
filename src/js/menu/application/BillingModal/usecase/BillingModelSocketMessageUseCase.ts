@@ -1,25 +1,23 @@
 import { execute as billingModelHideService } from "../service/BillingModelHideService";
+import { execute as adAreaHideService } from "@/controller/application/AdArea/service/AdAreaHideService";
+import { execute as userDataBillingSaveUseCase } from "@/user/application/Billing/usecase/UserDataBillingSaveUseCase";
 
 /**
  * @description アプリからのメッセージを受け取る
  *              Receive messages from the app
  *
- * @return {void}
+ * @return {Promise}
  * @method
  * @public
  */
-export const execute = (event: MessageEvent): void =>
+export const execute = async (): Promise<void> =>
 {
-    const message = JSON.parse(event.data);
-    console.log("message: ", message);
+    // 現在の有効期限に加算して保存
+    await userDataBillingSaveUseCase();
 
-    // 更新処理
-    if (message.command === "reward") {
+    // 広告枠を非表示にする
+    adAreaHideService();
 
-        // メニューを非表示にする
-        billingModelHideService();
-
-        // TODO 報酬受け取り処理
-        console.log("reward: ", message);
-    }
+    // メニューを非表示にする
+    billingModelHideService();
 };

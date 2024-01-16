@@ -1,3 +1,4 @@
+import type { BillingExpireObjectImpl } from "@/interface/BillingExpireObjectImpl";
 import { execute as userDatabaseGetOpenDBRequestService } from "@/user/application/Database/service/UserDatabaseGetOpenDBRequestService";
 import {
     $USER_DATABASE_BILLING_STORE_KEY,
@@ -43,9 +44,13 @@ export const execute = (): Promise<void> =>
             const month = ("0" + String(date.getMonth() + 1)).slice(-2);
             const day   = ("0" + String(date.getDate())).slice(-2);
 
+            const expireObject: BillingExpireObjectImpl = {
+                "expire": `${year}-${month}-${day}`
+            };
+
             // IndesdDBに保存
             store.put(
-                JSON.stringify({ "expire": `${year}-${month}-${day}` }),
+                JSON.stringify(expireObject),
                 $USER_DATABASE_BILLING_STORE_KEY
             );
 

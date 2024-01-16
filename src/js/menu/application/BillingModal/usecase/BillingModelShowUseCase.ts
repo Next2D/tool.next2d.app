@@ -12,11 +12,10 @@ import { execute as billingModelGenerateQRCodeService } from "../service/Billing
 export const execute = (): Promise<void> =>
 {
     const roomId = crypto.randomUUID();
-    const userId = crypto.randomUUID();
 
     // WebSocketを起動
-    billingModelSocketConnectUseCase(roomId, userId);
+    billingModelSocketConnectUseCase(roomId);
 
     // QRコードを生成
-    return billingModelGenerateQRCodeService(roomId, userId);
+    return billingModelGenerateQRCodeService(roomId);
 };

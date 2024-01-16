@@ -11,6 +11,8 @@ import {
     $USER_DATABASE_NAME,
     $USER_DATABASE_STORE_KEY
 } from "@/config/Config";
+import { BillingExpireObjectImpl } from "@/interface/BillingExpireObjectImpl";
+import { $setExpireDate } from "../../Billing/BillingUtil";
 
 /**
  * @description IndexedDbからデータ読み込みを行う
@@ -57,9 +59,11 @@ export const execute = (): Promise<void> =>
                     return ;
                 }
 
-                const binary: string | undefined = (event.target as IDBRequest).result;
-                if (binary) {
-                    //
+                // 機能制限の解除データがあればセット
+                const json: string | undefined = (event.target as IDBRequest).result;
+                if (json) {
+                    const saveObject: BillingExpireObjectImpl = JSON.parse(json);
+                    $setExpireDate(saveObject.expire);
                 }
 
                 const dataDBRequest: IDBRequest<any> = store.get(`${$USER_DATABASE_STORE_KEY}`);

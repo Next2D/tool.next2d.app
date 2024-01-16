@@ -8,6 +8,7 @@ import { $setStandbyMoveState } from "../ToolAreaUtil";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { execute as timelineHeaderWindowResizeUseCase } from "@/timeline/application/TimelineHeader/usecase/TimelineHeaderWindowResizeUseCase";
 import { execute as timelineLayerWindowResizeUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerWindowResizeUseCase";
+import { execute as billingModelShowService } from "@/menu/application/BillingModal/service/BillingModelShowService";
 
 /**
  * @description ダブルタップ用の待機フラグ
@@ -53,6 +54,7 @@ export const execute = (event: PointerEvent): void =>
 
     // 全ての機能が利用可能でなければ中止
     if (!userAllFunctionStateService()) {
+        billingModelShowService();
         return ;
     }
 
