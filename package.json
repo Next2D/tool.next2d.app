@@ -13,7 +13,7 @@
   "devDependencies": {
     "@next2d/player": "^1.18.11",
     "@types/ace": "^0.0.52",
-    "@types/node": "^20.11.3",
+    "@types/node": "^20.11.4",
     "@types/qrcode": "^1.5.5",
     "@typescript-eslint/eslint-plugin": "^6.19.0",
     "@typescript-eslint/parser": "^6.19.0",
@@ -22,7 +22,7 @@
     "sass": "^1.69.7",
     "typescript": "^5.3.3",
     "vite": "^5.0.11",
-    "vitest": "^1.1.0"
+    "vitest": "^1.2.0"
   },
   "dependencies": {
     "fflate": "^0.8.1",
