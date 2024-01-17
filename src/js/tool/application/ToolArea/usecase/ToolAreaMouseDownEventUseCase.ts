@@ -26,7 +26,7 @@ let wait: boolean = false;
  * @type {boolean}
  * @private
  */
-let activeTimerId: number = 0;
+let activeTimerId: NodeJS.Timeout;
 
 /**
  * @description ツールエリアでマウスダウンした際の関数

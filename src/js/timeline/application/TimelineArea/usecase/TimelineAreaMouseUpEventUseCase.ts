@@ -1,4 +1,5 @@
 import { $setMouseState } from "../../TimelineUtil";
+import { $setStandbyMoveState } from "../TimelineAreaUtil";
 
 /**
  * @description タイムラインエリアのマウスアップイベント
@@ -12,4 +13,7 @@ export const execute = (): void =>
 {
     // マウスの状態管理をアップに更新
     $setMouseState("up");
+
+    // 長押しモードをOff
+    $setStandbyMoveState(false);
 };

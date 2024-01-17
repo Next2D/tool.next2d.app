@@ -17,7 +17,7 @@ let wait: boolean = false;
  * @type {boolean}
  * @private
  */
-let activeTimerId: number = 0;
+let activeTimerId: NodeJS.Timeout;
 
 /**
  * @description 親Elementのマウスダウン処理関数

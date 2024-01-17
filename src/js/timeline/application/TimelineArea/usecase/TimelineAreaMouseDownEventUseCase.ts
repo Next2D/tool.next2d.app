@@ -5,7 +5,7 @@ import { execute as timelineAreaActiveMoveUseCase } from "./TimelineAreaActiveMo
 import { execute as timelineAreaChageStyleToInactiveService } from "../service/TimelineAreaChageStyleToInactiveService";
 import { execute as timelineHeaderWindowResizeUseCase } from "@/timeline/application/TimelineHeader/usecase/TimelineHeaderWindowResizeUseCase";
 import { execute as timelineLayerWindowResizeUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerWindowResizeUseCase";
-import { $setMouseState } from "../../TimelineUtil";
+import { $getMouseState, $setMouseState } from "../../TimelineUtil";
 import { $setStandbyMoveState } from "../TimelineAreaUtil";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { $useKeyboard } from "@/shortcut/ShortcutUtil";
@@ -27,7 +27,7 @@ let wait: boolean = false;
  * @type {boolean}
  * @private
  */
-let activeTimerId: number = 0;
+let activeTimerId: NodeJS.Timeout;
 
 /**
  * @description タイムラインエリアのマウスダウン処理
@@ -54,12 +54,6 @@ export const execute = (event: PointerEvent): void =>
     // マウスの状態管理をダウンに更新
     $setMouseState("down");
 
-    // 全ての機能が利用可能でなければ中止
-    if (!userAllFunctionStateService()) {
-        billingModelShowService();
-        return ;
-    }
-
     if (!wait) {
 
         // 初回のタップであればダブルタップを待機モードに変更
@@ -77,6 +71,16 @@ export const execute = (event: PointerEvent): void =>
         // ツールエリアの移動判定関数をタイマーにセット
         activeTimerId = setTimeout((): void =>
         {
+            if ($getMouseState() === "up") {
+                return ;
+            }
+
+            // 全ての機能が利用可能でなければ中止
+            if (!userAllFunctionStateService()) {
+                billingModelShowService();
+                return ;
+            }
+
             timelineAreaActiveMoveUseCase();
         }, 600);
 
