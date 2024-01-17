@@ -2159,11 +2159,32 @@
       <!-- billing-modal -->
       <div id="billing-modal" class="none">
         <div class="billing-bar">
+            <div class="billing-modal-title">
+                <span class="language" data-text="{{動画広告を見て機能制限を解除する}}">動画広告を見て機能制限を解除する</span>
+            </div>
             <i id="billing-hide-icon"></i>
         </div>
         <div class="billing-container">
             <div id="billing-qrcode-container">
-                <img id="billing-qrcode">
+                <img id="billing-qrcode" decoding="auto">
+            </div>
+            <div class="billing-detail-container">
+                <video></video>
+            </div>
+        </div>
+        <div class="billing-bar">
+            <div class="billing-app-title">
+                <span class="language" data-text="{{サポーターアプリをインストールする}}">サポーターアプリをインストールする</span>
+            </div>
+        </div>
+        <div class="billing-app-container">
+            <div>
+                <img class="ios-badge" src="./assets/img/apple-store-badge.svg" decoding="auto">
+                <img class="qr" src="./assets/img/ios.png" decoding="auto">
+            </div>
+            <div>
+                <img class="android-badge" src="./assets/img/google-play-badge.png" decoding="auto">
+                <img class="qr" src="./assets/img/android.png" decoding="auto">
             </div>
         </div>
       </div>

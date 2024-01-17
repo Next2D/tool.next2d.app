@@ -1,3 +1,4 @@
+import { $LIBRARY_BILLING_QRCODE_IMG_ID } from "@/config/BillingConfig";
 import QRCode from "qrcode";
 
 /**
@@ -14,11 +15,11 @@ export const execute = (room_id: string): Promise<void> =>
     return new Promise((resolve): void =>
     {
         QRCode
-            .toDataURL(`${room_id}`)
+            .toDataURL(`${room_id}`, { "width": 300 })
             .then((src: string): void =>
             {
                 const element: HTMLImageElement | null = document
-                    .getElementById("billing-qrcode") as HTMLImageElement;
+                    .getElementById($LIBRARY_BILLING_QRCODE_IMG_ID) as HTMLImageElement;
 
                 if (!element) {
                     return resolve();

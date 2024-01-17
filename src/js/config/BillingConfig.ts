@@ -15,3 +15,12 @@ export const $BILLING_REWARD_PERIOD: number = 30;
  * @constant
  */
 export const $LIBRARY_BILLING_HIDE_ICON_ID: string = "billing-hide-icon";
+
+/**
+ * @description QRコードのImageElementのID
+ *              ID of ImageElement of QR Code
+ *
+ * @type {string}
+ * @constant
+ */
+export const $LIBRARY_BILLING_QRCODE_IMG_ID: string = "billing-qrcode";
