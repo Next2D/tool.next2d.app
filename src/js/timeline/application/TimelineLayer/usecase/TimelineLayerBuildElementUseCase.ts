@@ -111,4 +111,6 @@ export const execute = (): void =>
 
         index++;
     }
+
+    timelineLayer.numberOfDisplays = index;
 };

@@ -8,6 +8,7 @@ import {
     $TIMELINE_MIN_HEIGHT,
     $TIMELINE_ID
 } from "@/config/TimelineConfig";
+import { $getTopIndex } from "../../TimelineUtil";
 
 /**
  * @description タイムラインの高さを調整
@@ -38,7 +39,6 @@ export const execute = (event: PointerEvent): void =>
         height += -event.movementY;
         height = Math.max($TIMELINE_MIN_HEIGHT, height);
 
-        const beforeCount = Math.floor(timelineLayer.clientHeight / timelineAreaState.frameHeight);
         if (timelineAreaState.state === "move") {
 
             const element: HTMLElement | null = document
@@ -70,7 +70,7 @@ export const execute = (event: PointerEvent): void =>
 
         // 表示数に変化があればタイムラインを再描画
         const afterCount = Math.floor(timelineLayer.clientHeight / timelineAreaState.frameHeight);
-        if (afterCount !== beforeCount) {
+        if (afterCount !== timelineLayer.numberOfDisplays) {
             timelineLayerBuildElementUseCase();
         }
     });

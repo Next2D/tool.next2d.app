@@ -12,6 +12,7 @@ class TimelineLayer
     private readonly _$elements: HTMLElement[];
     private _$clientHeight: number;
     private _$targetLayers: Map<number, number[]>;
+    private _$numberOfDisplays: number;
 
     /**
      * @constructor
@@ -37,6 +38,12 @@ class TimelineLayer
          * @private
          */
         this._$targetLayers = new Map();
+
+        /**
+         * @type {number}
+         * @private
+         */
+        this._$numberOfDisplays = 0;
     }
 
     /**
@@ -63,6 +70,22 @@ class TimelineLayer
     get elements (): HTMLElement[]
     {
         return this._$elements;
+    }
+
+    /**
+     * @description 現在のタイムラインに表示されてるレイヤー数
+     *              Number of layers displayed in the current timeline
+     *
+     * @memner {number}
+     * @public
+     */
+    get numberOfDisplays (): number
+    {
+        return this._$numberOfDisplays;
+    }
+    set numberOfDisplays (count: number)
+    {
+        this._$numberOfDisplays = count;
     }
 
     /**
