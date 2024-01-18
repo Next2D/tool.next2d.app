@@ -196,3 +196,28 @@ export const $removeWorkSpace = (work_space: WorkSpace): Promise<void> =>
 
     });
 };
+
+/**
+ * @description 現在起動中のすべてのWorkSpaceを停止して、配列を初期化する
+ *              Stop all currently running WorkSpaces and initialize the array
+ *
+ * @returns {Promise}
+ * @method
+ * @public
+ */
+export const $removeAllWorkSpace = async (): Promise<void> =>
+{
+    for (let idx = 0; idx < $workSpaces.length; ++idx) {
+
+        const workSpace = $workSpaces[idx];
+
+        // プロジェクトを停止
+        await workSpace.stop();
+
+        // タブを削除
+        workSpace.screenTab.remove();
+    }
+
+    // 配列を初期化
+    $workSpaces.length = 0;
+};

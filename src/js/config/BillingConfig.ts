@@ -5,7 +5,7 @@
  * @type {number}
  * @public
  */
-export const $BILLING_REWARD_PERIOD: number = 30;
+export const $BILLING_REWARD_PERIOD: number = 7;
 
 /**
  * @description リワードモーダルの閉じるボタンのElementのID
@@ -24,3 +24,21 @@ export const $LIBRARY_BILLING_HIDE_ICON_ID: string = "billing-hide-icon";
  * @constant
  */
 export const $LIBRARY_BILLING_QRCODE_IMG_ID: string = "billing-qrcode";
+
+/**
+ * @description リワードで利用するsocketのURL
+ *              URL of the socket to be used for rewards
+ *
+ * @type {string}
+ * @constant
+ */
+export const $REWORD_URL: string = "wss://free.blr2.piesocket.com/v3";
+
+/**
+ * @description リワードで利用するsocketのAPI KEY
+ *              API KEY of the socket to be used for rewards
+ *
+ * @type {string}
+ * @constant
+ */
+export const $API_KEY: string = "8cOA5hGuUUQu5jRByX35HodVTPxMchtaANchsGyw";

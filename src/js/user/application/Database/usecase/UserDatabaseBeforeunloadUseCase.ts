@@ -1,4 +1,5 @@
-import { execute as userDatabaseInitializeSaveUseCase } from "@/user/application/Database/usecase/UserDatabaseInitializeSaveUseCase";
+import { $isSocketOwner } from "@/share/application/ShareUtil";
+import { execute as userDatabaseSaveUseCase } from "@/user/application/Database/usecase/UserDatabaseSaveUseCase";
 
 /**
  * @description IndexedDbからデータ読み込みを行う
@@ -10,11 +11,15 @@ import { execute as userDatabaseInitializeSaveUseCase } from "@/user/application
  */
 export const execute = async (event: BeforeUnloadEvent): Promise<void> =>
 {
+    if (location.hash && !$isSocketOwner()) {
+        return ;
+    }
+
     event.preventDefault();
     event.stopPropagation();
 
     event.returnValue = "Saving data...";
 
     // 現在のデータを保存
-    await userDatabaseInitializeSaveUseCase();
+    await userDatabaseSaveUseCase();
 };

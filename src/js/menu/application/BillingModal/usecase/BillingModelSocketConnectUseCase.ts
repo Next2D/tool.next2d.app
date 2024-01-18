@@ -2,7 +2,7 @@ import { $setSocket } from "@/share/application/ShareUtil";
 import {
     $API_KEY,
     $REWORD_URL
-} from "@/config/ShareConfig";
+} from "@/config/BillingConfig";
 import { execute as billingModelSocketMessageUseCase } from "./BillingModelSocketMessageUseCase";
 
 /**

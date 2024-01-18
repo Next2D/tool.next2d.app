@@ -1,7 +1,6 @@
-import {
-    $getSocket,
-    $isSocketOwner
-} from "../ShareUtil";
+import { execute as shareInitializeCommandUseCase } from "./ShareInitializeCommandUseCase";
+import { execute as shareLoadCommandUseCase } from "./ShareLoadCommandUseCase";
+import { $isSocketOwner } from "../ShareUtil";
 
 /**
  * @description Socketのメッセージ管理関数
@@ -15,31 +14,25 @@ import {
 export const execute = (event: MessageEvent): void =>
 {
     const message = JSON.parse(event.data);
-    console.log("message", message);
 
     switch (message.command) {
 
         case "initialize":
-            if ($isSocketOwner()) {
-
-                const webSocket = $getSocket();
-                if (!webSocket) {
-                    return ;
-                }
-
-                console.log("your owner.");
-                webSocket.send(JSON.stringify({
-                    "to": message.FROM,
-                    "data": { "work_space_data": true },
-                    "command": "load"
-                }));
+            // オーナーでなれければ終了
+            if (!$isSocketOwner()) {
+                return;
             }
+
+            shareInitializeCommandUseCase(message.FROM);
             break;
 
         case "load":
-            if (!$isSocketOwner()) {
-                //
+            // オーナーなら何もしないで終了
+            if ($isSocketOwner()) {
+                return;
             }
+
+            shareLoadCommandUseCase(message.data);
             break;
 
         default:

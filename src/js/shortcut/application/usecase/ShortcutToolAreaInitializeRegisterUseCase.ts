@@ -1,4 +1,4 @@
-import { execute as userDatabaseInitializeSaveUseCase } from "@/user/application/Database/usecase/UserDatabaseInitializeSaveUseCase";
+import { execute as userDatabaseSaveUseCase } from "@/user/application/Database/usecase/UserDatabaseSaveUseCase";
 import { execute as historyUndoUseCase } from "@/history/usecase/HistoryUndoUseCase";
 import { execute as historyRedoUseCase } from "@/history/usecase/HistoryRedoUseCase";
 import { execute as userSettingMenuShowService } from "@/menu/application/UserSettingMenu/service/UserSettingMenuShowService";
@@ -20,7 +20,7 @@ export const execute = (): void =>
     // データ保存
     $setShortcut(
         $generateShortcutKey("s", { "ctrl": true }),
-        userDatabaseInitializeSaveUseCase
+        userDatabaseSaveUseCase
     );
 
     // Undo
