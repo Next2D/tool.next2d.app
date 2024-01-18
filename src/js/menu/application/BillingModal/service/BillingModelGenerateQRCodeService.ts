@@ -15,7 +15,7 @@ export const execute = (room_id: string): Promise<void> =>
     return new Promise((resolve): void =>
     {
         QRCode
-            .toDataURL(`${room_id}`, { "width": 300 })
+            .toDataURL(`${room_id}`, { "width": 320 })
             .then((src: string): void =>
             {
                 const element: HTMLImageElement | null = document

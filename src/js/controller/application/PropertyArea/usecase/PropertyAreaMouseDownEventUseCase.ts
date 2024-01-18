@@ -27,7 +27,7 @@ let wait: boolean = false;
  * @type {boolean}
  * @private
  */
-let activeTimerId: number = 0;
+let activeTimerId: NodeJS.Timeout;
 
 /**
  * @description プロパティエリアのマウスダウン処理
@@ -55,12 +55,6 @@ export const execute = (event: PointerEvent): void =>
     // マウスの状態管理をダウンに更新
     $setMouseState("down");
 
-    // 全ての機能が利用可能でなければ中止
-    if (!userAllFunctionStateService()) {
-        billingModelShowService();
-        return ;
-    }
-
     if (!wait) {
 
         // 初回のタップであればダブルタップを待機モードに変更
@@ -78,6 +72,13 @@ export const execute = (event: PointerEvent): void =>
         // プロパティエリアの移動判定関数をタイマーにセット
         activeTimerId = setTimeout((): void =>
         {
+
+            // 全ての機能が利用可能でなければ中止
+            if (!userAllFunctionStateService()) {
+                billingModelShowService();
+                return ;
+            }
+
             propertyAreaActiveMoveUseCase();
         }, 600);
 

@@ -4,7 +4,7 @@ import {
     $USER_DATABASE_BILLING_STORE_KEY,
     $USER_DATABASE_NAME
 } from "@/config/Config";
-import { $getExpireDate } from "../BillingUtil";
+import { $getExpireDate, $setExpireDate } from "../BillingUtil";
 import { $BILLING_REWARD_PERIOD } from "@/config/BillingConfig";
 
 /**
@@ -47,6 +47,8 @@ export const execute = (): Promise<void> =>
             const expireObject: BillingExpireObjectImpl = {
                 "expire": `${year}-${month}-${day}`
             };
+
+            $setExpireDate(expireObject.expire);
 
             // IndesdDBに保存
             store.put(

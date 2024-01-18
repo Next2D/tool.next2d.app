@@ -239,7 +239,7 @@
             <div id="history-setting">
                 <div class="container-title" data-setting-name="history">
                     <i class="active"></i>
-                    <span class="language" data-text="{{履歴}}">履歴</span>
+                    <span class="language" data-text="{{作業履歴}}">作業履歴</span>
                 </div>
                 
                 <div id="history-setting-view-area">
@@ -2160,31 +2160,51 @@
       <div id="billing-modal" class="none">
         <div class="billing-bar">
             <div class="billing-modal-title">
-                <span class="language" data-text="{{動画広告を見て機能制限を解除する}}">動画広告を見て機能制限を解除する</span>
+                <span class="language" data-text="{{機能制限を解除}}">機能制限を解除</span>
             </div>
             <i id="billing-hide-icon"></i>
         </div>
+
+        <div class="billing-supporter-container">
+            <span class="language" data-text="{{動画広告を視聴することで、7日間の機能制限が解除される特典が得られます。}}">
+                動画広告を視聴することで、7日間の機能制限が解除される特典が得られます。
+            </span>
+            <span class="language" data-text="{{Animation Toolはオープンソースで提供されており、無料で利用できます。}}">
+                Animation Toolはオープンソースで提供されており、無料で利用できます。
+            </span>
+            <span class="language" data-text="{{新しいバージョンの開発のため、動画広告を視聴していただき、ご支援いただけると幸いです。}}">
+                新しいバージョンの開発のため、動画広告を視聴していただき、ご支援いただけると幸いです。
+            </span>
+        </div>
+        
         <div class="billing-container">
             <div id="billing-qrcode-container">
                 <img id="billing-qrcode" decoding="auto">
             </div>
             <div class="billing-detail-container">
-                <video></video>
+                <ul>
+                    <li><span class="language" data-text="{{広告枠の非表示}}">広告枠の非表示</span></li>
+                    <li><span class="language" data-text="{{画面共有}}">画面共有</span></li>
+                    <li><span class="language" data-text="{{作業履歴}}">作業履歴</span></li>
+                    <li><span class="language" data-text="{{エリア位置の移動}}">エリア位置の移動</span></li>
+                </ul>
             </div>
         </div>
+
         <div class="billing-bar">
             <div class="billing-app-title">
-                <span class="language" data-text="{{サポーターアプリをインストールする}}">サポーターアプリをインストールする</span>
+                <span class="language" data-text="{{サポーターアプリをインストール}}">サポーターアプリをインストール</span>
             </div>
         </div>
+
         <div class="billing-app-container">
             <div>
-                <img class="ios-badge" src="./assets/img/apple-store-badge.svg" decoding="auto">
-                <img class="qr" src="./assets/img/ios.png" decoding="auto">
+                <img class="billing-ios-badge" src="./assets/img/apple-store-badge.svg" decoding="auto">
+                <img class="billing-store-qr" src="./assets/img/ios.png" decoding="auto">
             </div>
             <div>
-                <img class="android-badge" src="./assets/img/google-play-badge.png" decoding="auto">
-                <img class="qr" src="./assets/img/android.png" decoding="auto">
+                <img class="billing-android-badge" src="./assets/img/google-play-badge.png" decoding="auto">
+                <img class="billing-store-qr" src="./assets/img/android.png" decoding="auto">
             </div>
         </div>
       </div>

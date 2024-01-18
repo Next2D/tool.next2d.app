@@ -11,7 +11,7 @@ import { $getMenu } from "../../MenuUtil";
  * @method
  * @public
  */
-export const execute = (): void =>
+export const    execute = (): void =>
 {
     // メニューを非表示にする
     const menu: MenuImpl<BillingModal> | null = $getMenu($BILLING_MODAL_NAME);

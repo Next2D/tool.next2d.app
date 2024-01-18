@@ -71,10 +71,6 @@ export const execute = (event: PointerEvent): void =>
         // ツールエリアの移動判定関数をタイマーにセット
         activeTimerId = setTimeout((): void =>
         {
-            if ($getMouseState() === "up") {
-                return ;
-            }
-
             // 全ての機能が利用可能でなければ中止
             if (!userAllFunctionStateService()) {
                 billingModelShowService();

@@ -52,12 +52,6 @@ export const execute = (event: PointerEvent): void =>
     // マウスの状態管理をダウンに更新
     $setMouseState("down");
 
-    // 全ての機能が利用可能でなければ中止
-    if (!userAllFunctionStateService()) {
-        billingModelShowService();
-        return ;
-    }
-
     if (!wait) {
 
         // 初回のタップであればダブルタップを待機モードに変更
@@ -75,6 +69,12 @@ export const execute = (event: PointerEvent): void =>
         // ツールエリアの移動判定関数をタイマーにセット
         activeTimerId = setTimeout((): void =>
         {
+            // 全ての機能が利用可能でなければ中止
+            if (!userAllFunctionStateService()) {
+                billingModelShowService();
+                return ;
+            }
+
             toolAreaActiveMoveUseCase();
         }, 600);
 
