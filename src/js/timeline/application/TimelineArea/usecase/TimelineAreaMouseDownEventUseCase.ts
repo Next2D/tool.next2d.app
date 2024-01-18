@@ -5,7 +5,7 @@ import { execute as timelineAreaActiveMoveUseCase } from "./TimelineAreaActiveMo
 import { execute as timelineAreaChageStyleToInactiveService } from "../service/TimelineAreaChageStyleToInactiveService";
 import { execute as timelineHeaderWindowResizeUseCase } from "@/timeline/application/TimelineHeader/usecase/TimelineHeaderWindowResizeUseCase";
 import { execute as timelineLayerWindowResizeUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerWindowResizeUseCase";
-import { $getMouseState, $setMouseState } from "../../TimelineUtil";
+import { $setMouseState } from "../../TimelineUtil";
 import { $setStandbyMoveState } from "../TimelineAreaUtil";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { $useKeyboard } from "@/shortcut/ShortcutUtil";

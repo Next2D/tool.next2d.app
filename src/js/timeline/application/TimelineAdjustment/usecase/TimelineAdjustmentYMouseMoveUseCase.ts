@@ -8,7 +8,6 @@ import {
     $TIMELINE_MIN_HEIGHT,
     $TIMELINE_ID
 } from "@/config/TimelineConfig";
-import { $getTopIndex } from "../../TimelineUtil";
 
 /**
  * @description タイムラインの高さを調整
