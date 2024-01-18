@@ -8,6 +8,7 @@ import type { UserControllerAreaStateObjectImpl } from "./UserControllerAreaStat
 export interface WorkSpaceSaveObjectImpl
 {
     version: number;
+    id: number;
     name: string;
     stage: StageObjectImpl;
     libraries: InstanceSaveObjectImpl[];

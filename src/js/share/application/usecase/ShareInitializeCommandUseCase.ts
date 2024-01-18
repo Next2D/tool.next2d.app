@@ -1,5 +1,7 @@
+import type { ShareInitializeSendObjectImpl } from "@/interface/ShareInitializeSendObjectImpl";
 import { $getSocket } from "../ShareUtil";
 import { execute as workSpaceCreateSaveDataService } from "@/core/application/WorkSpace/service/WorkSpaceCreateSaveDataService";
+import { WorkSpace } from "@/core/domain/model/WorkSpace";
 
 /**
  * @description オーナーのプロジェクトデーターを共有者に送信
@@ -20,11 +22,14 @@ export const execute = (send_id: string): void =>
     workSpaceCreateSaveDataService()
         .then((binary): void =>
         {
-            // オーナーのデータをレシバーに送信
-            webSocket.send(JSON.stringify({
+            const initializeObject: ShareInitializeSendObjectImpl = {
                 "to": send_id,
+                "workSpaceId": WorkSpace.workSpaceId,
                 "data": binary,
                 "command": "load"
-            }));
+            };
+
+            // オーナーのデータをレシバーに送信
+            webSocket.send(JSON.stringify(initializeObject));
         });
 };

@@ -19,6 +19,7 @@ import {
     $TIMELINE_DEFAULT_FRAME_WIDTH_SIZE,
     $TIMELINE_DEFAULT_FRAME_HEIGHT_SIZE
 } from "@/config/TimelineConfig";
+import { $clamp } from "@/global/GlobalUtil";
 
 /**
  * @description プロジェクトのユニークID
@@ -27,7 +28,7 @@ import {
  * @type {number}
  * @private
  */
-let workSpaceId: number = 1;
+let $workSpaceId: number = 1;
 
 /**
  * @description 各エリアの状態管理を行うクラス
@@ -37,6 +38,7 @@ let workSpaceId: number = 1;
  */
 export class WorkSpace
 {
+    private _$id: number;
     private _$name: string;
     private _$scene: MovieClip;
     private _$active: boolean;
@@ -44,7 +46,6 @@ export class WorkSpace
     private readonly _$stage: Stage;
     private readonly _$libraries: Map<number, InstanceImpl<any>>;
     private readonly _$screenTab: ScreenTab;
-    private readonly _$id: number;
     private readonly _$toolAreaState: UserToolAreaStateObjectImpl;
     private readonly _$timelineAreaState: UserTimelineAreaStateObjectImpl;
     private readonly _$propertyAreaState: UserPropertyAreaStateObjectImpl;
@@ -61,7 +62,7 @@ export class WorkSpace
          * @type {number}
          * @private
          */
-        this._$id = workSpaceId++;
+        this._$id = $workSpaceId++;
 
         /**
          * @type {string}
@@ -175,6 +176,22 @@ export class WorkSpace
         // this._$revision = [];
         // this._$currentData = null;
         // this._$currentFrame = 0;
+    }
+
+    /**
+     * @description WorkSpaceの管理ID
+     *              WorkSpace administrative ID
+     *
+     * @member {number}
+     * @static
+     */
+    static get workSpaceId (): number
+    {
+        return $workSpaceId;
+    }
+    static set workSpaceId (id: number)
+    {
+        $workSpaceId = $clamp(id, 1, Number.MAX_VALUE);
     }
 
     /**
@@ -401,14 +418,19 @@ export class WorkSpace
      * @description セーブデータからWorkSpaceを再構築
      *              Rebuild WorkSpace from saved data
      *
-     * @param {object} object
+     * @param  {object} object
+     * @param  {boolean} [share=false]
      * @return {void}
      * @method
      * @public
      */
-    load (object: WorkSpaceSaveObjectImpl): void
+    load (object: WorkSpaceSaveObjectImpl, share: boolean = false): void
     {
         this.name = object.name;
+
+        if (share && object.id) {
+            this._$id = object.id;
+        }
 
         // Stageをセット
         this._$stage.load(object.stage);
@@ -621,6 +643,7 @@ export class WorkSpace
 
         return {
             "version": $VERSION,
+            "id": this.id,
             "name": this.name,
             "stage": this.stage.toObject(),
             "libraries": libraries,

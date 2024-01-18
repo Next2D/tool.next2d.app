@@ -13,11 +13,13 @@ const worker: Worker = new ZlibInflateWorker();
  * @description バイナリデータからプロジェクトを復元
  *              Restore projects from binary data
  *
+ * @param  {string} binary
+ * @param  {boolean} [share=false]
  * @return {Promise}
  * @method
  * @public
  */
-export const execute = (binary: string): Promise<void> =>
+export const execute = (binary: string, share: boolean = false): Promise<void> =>
 {
     return new Promise((resolve): void =>
     {
@@ -43,7 +45,7 @@ export const execute = (binary: string): Promise<void> =>
             for (let idx: number = 0; idx < workSpaceObjects.length; ++idx) {
 
                 const workSpace = new WorkSpace();
-                workSpace.load(workSpaceObjects[idx]);
+                workSpace.load(workSpaceObjects[idx], share);
 
                 $registerWorkSpace(workSpace);
             }

@@ -5,6 +5,8 @@ import { execute as screenTabNameAddHistoryRedoUseCase } from "./ScreenTabNameAd
 import { execute as screenTabNameAddHistoryUndoUseCase } from "./ScreenTabNameAddHistoryUndoUseCase";
 import { $SCREEN_TAB_NAME_UPDATE_COMMAND } from "@/config/HistoryConfig";
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
+import { $useSocket } from "@/share/application/ShareUtil";
+import { execute as shareSendUseCase } from "@/share/application/usecase/ShareSendUseCase";
 
 /**
  * @description プロジェクト名の変更を作業履歴に登録
@@ -46,4 +48,12 @@ export const execute = (work_space: WorkSpace, name: string): void =>
             screenTabNameAddHistoryRedoUseCase(work_space, name);
         }
     });
+
+    // 画面共有していれば共有者に送信
+    if ($useSocket()) {
+        shareSendUseCase(
+            $SCREEN_TAB_NAME_UPDATE_COMMAND,
+            [work_space.id, name]
+        );
+    }
 };

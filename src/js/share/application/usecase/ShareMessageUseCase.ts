@@ -1,5 +1,6 @@
 import { execute as shareInitializeCommandUseCase } from "./ShareInitializeCommandUseCase";
 import { execute as shareLoadCommandUseCase } from "./ShareLoadCommandUseCase";
+import { execute as shareReceiveUseCase } from "./ShareReceiveUseCase";
 import { $isSocketOwner } from "../ShareUtil";
 
 /**
@@ -32,7 +33,11 @@ export const execute = (event: MessageEvent): void =>
                 return;
             }
 
-            shareLoadCommandUseCase(message.data);
+            shareLoadCommandUseCase(message);
+            break;
+
+        case "receive":
+            shareReceiveUseCase(message);
             break;
 
         default:

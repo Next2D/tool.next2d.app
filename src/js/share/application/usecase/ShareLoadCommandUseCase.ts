@@ -7,6 +7,8 @@ import {
     $removeAllWorkSpace
 } from "@/core/application/CoreUtil";
 import { $allHideMenu } from "@/menu/application/MenuUtil";
+import type { ShareInitializeSendObjectImpl } from "@/interface/ShareInitializeSendObjectImpl";
+import { WorkSpace } from "@/core/domain/model/WorkSpace";
 
 /**
  * @description オーナーのプロジェクトデータを受け取って起動、既存のプロジェクトは保存して終了
@@ -17,13 +19,16 @@ import { $allHideMenu } from "@/menu/application/MenuUtil";
  * @method
  * @public
  */
-export const execute = async (binary: string): Promise<void> =>
+export const execute = async (message: ShareInitializeSendObjectImpl): Promise<void> =>
 {
     // 全てのメニューを終了
     $allHideMenu();
 
     // 進行メニューを表示
     progressMenuShowService();
+
+    // オーナーのIDに合わせる
+    WorkSpace.workSpaceId = message.workSpaceId;
 
     // 現在のプロジェクトデータを保存
     await userDatabaseSaveUseCase();
@@ -32,7 +37,7 @@ export const execute = async (binary: string): Promise<void> =>
     await $removeAllWorkSpace();
 
     // 受け取ったプロジェクトを起動
-    await workSpaceRestoreSaveDataService(binary);
+    await workSpaceRestoreSaveDataService(message.data, true);
 
     const workSpaces = $getAllWorkSpace();
     for (let idx: number = 0; idx < workSpaces.length; ++idx) {

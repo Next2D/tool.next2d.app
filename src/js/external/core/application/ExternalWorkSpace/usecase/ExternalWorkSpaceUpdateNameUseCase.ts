@@ -25,18 +25,23 @@ export const execute = (work_space: WorkSpace, name: string): void =>
         name = "Untitled";
     }
 
-    // タブの表示情報を更新
-    const textElement = screenTabGetTextElementService(work_space.id);
-    if (textElement) {
-        textElement.textContent = name;
-    }
-
-    // タブ一覧の表示情報を更新
-    const listElement = screenTabGetListElementService(work_space.id);
-    if (listElement) {
-        listElement.textContent = name;
-    }
-
     // 内部情報を更新
     workSpaceUpdateNameUseCase(work_space.id, name);
+
+    // アクティブならElementも更新
+    if (work_space.active) {
+
+        // タブの表示情報を更新
+        const textElement = screenTabGetTextElementService(work_space.id);
+        if (textElement) {
+            textElement.textContent = name;
+        }
+
+        // タブ一覧の表示情報を更新
+        const listElement = screenTabGetListElementService(work_space.id);
+        if (listElement) {
+            listElement.textContent = name;
+        }
+
+    }
 };
