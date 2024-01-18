@@ -21,7 +21,7 @@ export const execute = (layer: Layer, movie_clip: MovieClip): void =>
 {
     // ポジション位置から未来の履歴を全て削除
     // fixed logic
-    historyRemoveElementService();
+    historyRemoveElementService(movie_clip);
 
     // fixed logic
     // 作業履歴にElementを追加

@@ -22,7 +22,7 @@ export const execute = (movie_clip: MovieClip, frame: number): void =>
     if ($getCurrentWorkSpace().scene.id === movie_clip.id) {
 
         // ポジション位置から未来の履歴を全て削除
-        historyRemoveElementService();
+        historyRemoveElementService(movie_clip);
 
         // 作業履歴にElementを追加
         historyAddElementUseCase(

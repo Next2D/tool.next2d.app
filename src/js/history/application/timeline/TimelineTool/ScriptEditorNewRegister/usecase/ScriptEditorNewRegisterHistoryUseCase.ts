@@ -24,7 +24,7 @@ export const execute = (movie_clip: MovieClip, frame: number, script: string): v
 
         // ポジション位置から未来の履歴を全て削除
         // fixed logic
-        historyRemoveElementService();
+        historyRemoveElementService(movie_clip);
 
         // 作業履歴にElementを追加
         // fixed logic
