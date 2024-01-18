@@ -17,7 +17,7 @@ describe("HistoryRemoveElementServiceTest", () =>
         div.appendChild(node);
 
         expect(div.children.length).toBe(1);
-        execute();
+        execute(scene);
         expect(div.children.length).toBe(0);
 
         div.remove();

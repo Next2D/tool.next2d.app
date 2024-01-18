@@ -2,6 +2,7 @@ import { execute as screenTabGetTextElementService } from "../service/ScreenTabG
 import { execute as screenTabInactiveStyleService } from "../service/ScreenTabInactiveStyleService";
 import { execute as screenTabGetListElementService } from "../service/ScreenTabGetListElementService";
 import { execute as screenTabGetElementService } from "../service/ScreenTabGetElementService";
+import { execute as workSpaceUpdateNameUseCase } from "@/core/application/WorkSpace/usecase/WorkSpaceUpdateNameUseCase";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 
@@ -21,10 +22,20 @@ export const execute = (event: Event): void =>
     }
 
     const id: number = parseInt((event.target as HTMLElement).dataset.tabId as string);
+    const workSpace: WorkSpace | null = $getWorkSpace(id);
+    if (!workSpace) {
+        return ;
+    }
 
     const textElement: HTMLElement | null = screenTabGetTextElementService(id);
     if (!textElement) {
         return ;
+    }
+
+    const name: string | null = textElement.textContent;
+    if (!name) {
+        textElement.textContent = "Untitled";
+        return textElement.focus();
     }
 
     const tabElement: HTMLElement | null = screenTabGetElementService(id);
@@ -37,26 +48,23 @@ export const execute = (event: Event): void =>
         return ;
     }
 
-    const name: string | null = textElement.textContent;
-    if (!name) {
-        textElement.textContent = "Untitled";
-        return textElement.focus();
-    }
-
-    const workSpace: WorkSpace | null = $getWorkSpace(id);
-    if (!workSpace) {
-        return ;
-    }
-
     // 親のイベントを終了
     event.stopPropagation();
 
     // styleの更新
     screenTabInactiveStyleService(textElement, tabElement);
 
-    // リストの名前を更新
-    workSpace.name = listElement.textContent = name;
-
     // 移動を有効化
     tabElement.draggable = true;
+
+    // 修正がなければ終了
+    if (name === workSpace.name) {
+        return ;
+    }
+
+    // リストの名前を更新
+    listElement.textContent = name;
+
+    // WorkSpaceの名前を更新
+    workSpaceUpdateNameUseCase(id, name);
 };

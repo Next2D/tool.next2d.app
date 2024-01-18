@@ -51,3 +51,12 @@ export const $TIMIELINE_TOOL_SCRIPT_UPDATE_COMMAND: string = "timieline_tool_scr
  * @constant
  */
 export const $TIMIELINE_TOOL_SCRIPT_DELETE_COMMAND: string = "timieline_tool_script_delete";
+
+/**
+ * @description プロジェクト名の更新履歴の識別コマンド名
+ *              Project Name Update History Identification Command Name
+ *
+ * @type {string}
+ * @constant
+ */
+export const $SCREEN_TAB_NAME_UPDATE_COMMAND: string = "screen_tab_name_update";

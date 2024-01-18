@@ -4,7 +4,8 @@ import {
     $TIMELINE_TOOL_LAYER_DELETE_COMMAND,
     $TIMIELINE_TOOL_SCRIPT_NEW_REGISTER_COMMAND,
     $TIMIELINE_TOOL_SCRIPT_UPDATE_COMMAND,
-    $TIMIELINE_TOOL_SCRIPT_DELETE_COMMAND
+    $TIMIELINE_TOOL_SCRIPT_DELETE_COMMAND,
+    $SCREEN_TAB_NAME_UPDATE_COMMAND
 } from "../../config/HistoryConfig";
 
 describe("HistoryGetTextServiceTest", () =>
@@ -16,5 +17,6 @@ describe("HistoryGetTextServiceTest", () =>
         expect(execute($TIMIELINE_TOOL_SCRIPT_NEW_REGISTER_COMMAND)).toBe("スクリプトを追加");
         expect(execute($TIMIELINE_TOOL_SCRIPT_UPDATE_COMMAND)).toBe("スクリプトを変更");
         expect(execute($TIMIELINE_TOOL_SCRIPT_DELETE_COMMAND)).toBe("スクリプトを削除");
+        expect(execute($SCREEN_TAB_NAME_UPDATE_COMMAND)).toBe("プロジェクト名を変更");
     });
 });

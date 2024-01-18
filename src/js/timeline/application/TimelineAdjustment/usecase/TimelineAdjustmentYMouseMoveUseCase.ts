@@ -70,7 +70,7 @@ export const execute = (event: PointerEvent): void =>
 
         // 表示数に変化があればタイムラインを再描画
         const afterCount = Math.floor(timelineLayer.clientHeight / timelineAreaState.frameHeight);
-        if (afterCount !== timelineLayer.numberOfDisplays) {
+        if (afterCount > timelineLayer.numberOfDisplays) {
             timelineLayerBuildElementUseCase();
         }
     });

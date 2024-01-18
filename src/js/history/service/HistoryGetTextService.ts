@@ -3,7 +3,8 @@ import {
     $TIMELINE_TOOL_LAYER_DELETE_COMMAND,
     $TIMIELINE_TOOL_SCRIPT_NEW_REGISTER_COMMAND,
     $TIMIELINE_TOOL_SCRIPT_UPDATE_COMMAND,
-    $TIMIELINE_TOOL_SCRIPT_DELETE_COMMAND
+    $TIMIELINE_TOOL_SCRIPT_DELETE_COMMAND,
+    $SCREEN_TAB_NAME_UPDATE_COMMAND
 } from "@/config/HistoryConfig";
 
 /**
@@ -32,6 +33,9 @@ export const execute = (command: string): string =>
 
         case $TIMIELINE_TOOL_SCRIPT_DELETE_COMMAND:
             return "スクリプトを削除";
+
+        case $SCREEN_TAB_NAME_UPDATE_COMMAND:
+            return "プロジェクト名を変更";
 
         default:
             break;
