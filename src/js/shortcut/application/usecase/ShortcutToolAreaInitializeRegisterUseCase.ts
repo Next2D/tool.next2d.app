@@ -6,6 +6,7 @@ import {
     $generateShortcutKey,
     $setShortcut
 } from "@/shortcut/ShortcutUtil";
+import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 
 /**
  * @description 画面全体で利用可能なコマンドを登録
@@ -25,14 +26,22 @@ export const execute = (): void =>
 
     // Undo
     $setShortcut(
-        $generateShortcutKey("z", { "ctrl": true }),
-        historyUndoUseCase
+        $generateShortcutKey("z", { "ctrl": true }), (): void =>
+        {
+            const workSpace = $getCurrentWorkSpace();
+            const scene = workSpace.scene;
+            historyUndoUseCase(workSpace.id, scene.id);
+        }
     );
 
     // Redo
     $setShortcut(
-        $generateShortcutKey("z", { "ctrl": true, "shift": true  }),
-        historyRedoUseCase
+        $generateShortcutKey("z", { "ctrl": true, "shift": true  }), (): void =>
+        {
+            const workSpace = $getCurrentWorkSpace();
+            const scene = workSpace.scene;
+            historyRedoUseCase(workSpace.id, scene.id);
+        }
     );
 
     // ユーザー設定

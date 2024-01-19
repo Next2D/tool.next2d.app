@@ -1,16 +1,25 @@
 import type { HistoryObjectImpl } from "@/interface/HistoryObjectImpl";
-import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
-import { $HISTORY_LIST_ID } from "@/config/HistoryConfig";
+import type { MovieClip } from "@/core/domain/model/MovieClip";
+import type { InstanceImpl } from "@/interface/InstanceImpl";
+import { $getWorkSpace } from "@/core/application/CoreUtil";
+import { $useSocket } from "@/share/application/ShareUtil";
+import { execute as shareSendUseCase } from "@/share/application/usecase/ShareSendUseCase";
+import {
+    $HISTORY_LIST_ID,
+    $HISTORY_REDO_COMMAND
+} from "@/config/HistoryConfig";
 
 /**
  * @description 作業履歴のポジションを一つ未来に進める
  *              Advance one work history position into the future.
  *
+ * @param  {number} work_space_id
+ * @param  {number} library_id
  * @return {void}
  * @method
  * @public
  */
-export const execute = (): void =>
+export const execute = (work_space_id: number, library_id: number): void =>
 {
     const element: HTMLElement | null = document
         .getElementById($HISTORY_LIST_ID);
@@ -19,7 +28,16 @@ export const execute = (): void =>
         return ;
     }
 
-    const scene = $getCurrentWorkSpace().scene;
+    const workSpace = $getWorkSpace(work_space_id);
+    if (!workSpace) {
+        return ;
+    }
+
+    const scene: InstanceImpl<MovieClip> = workSpace.getLibrary(library_id);
+    if (!scene || !scene.histories.length) {
+        return ;
+    }
+
     const node: HTMLElement | undefined = element.children[scene.historyIndex] as HTMLElement;
     if (!node) {
         return ;
@@ -34,4 +52,12 @@ export const execute = (): void =>
     }
 
     historyObject.redo();
+
+    // 画面共有していればUndoを送信
+    if ($useSocket()) {
+        shareSendUseCase(
+            $HISTORY_REDO_COMMAND,
+            [workSpace.id, scene.id]
+        );
+    }
 };

@@ -38,14 +38,15 @@ export const execute = (event: PointerEvent): void =>
 
     const index: number = parseInt(element.dataset.index as string);
 
-    const scene = $getCurrentWorkSpace().scene;
+    const workSpace = $getCurrentWorkSpace();
+    const scene = workSpace.scene;
     if (scene.historyIndex > index) {
         while (scene.historyIndex !== index) {
-            historyUndoUseCase();
+            historyUndoUseCase(workSpace.id, scene.id);
         }
     } else {
         while (index >= scene.historyIndex) {
-            historyRedoUseCase();
+            historyRedoUseCase(workSpace.id, scene.id);
         }
     }
 };

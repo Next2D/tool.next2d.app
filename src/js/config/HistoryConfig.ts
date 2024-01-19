@@ -53,6 +53,24 @@ export const $TIMIELINE_TOOL_SCRIPT_UPDATE_COMMAND: string = "timieline_tool_scr
 export const $TIMIELINE_TOOL_SCRIPT_DELETE_COMMAND: string = "timieline_tool_script_delete";
 
 /**
+ * @description Undoの識別コマンド名
+ *              Identification command name for Undo
+ *
+ * @type {string}
+ * @constant
+ */
+export const $HISTORY_UNDO_COMMAND: string = "history_undo";
+
+/**
+ * @description Redoの識別コマンド名
+ *              Identification command name for Redo
+ *
+ * @type {string}
+ * @constant
+ */
+export const $HISTORY_REDO_COMMAND: string = "history_redo";
+
+/**
  * @description プロジェクト名の更新履歴の識別コマンド名
  *              Project Name Update History Identification Command Name
  *
