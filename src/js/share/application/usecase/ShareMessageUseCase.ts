@@ -18,8 +18,6 @@ import {
 export const execute = (event: MessageEvent): void =>
 {
     const message = JSON.parse(event.data);
-
-    console.log(message);
     switch (message.command) {
 
         case "initialize":

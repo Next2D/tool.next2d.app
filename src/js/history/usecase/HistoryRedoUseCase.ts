@@ -3,7 +3,7 @@ import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { InstanceImpl } from "@/interface/InstanceImpl";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
 import { $useSocket } from "@/share/application/ShareUtil";
-import { execute as shareSendUseCase } from "@/share/application/usecase/ShareSendUseCase";
+import { execute as shareSendService } from "@/share/application/service/ShareSendService";
 import {
     $HISTORY_LIST_ID,
     $HISTORY_REDO_COMMAND
@@ -60,7 +60,7 @@ export const execute = (
 
     // 受け取り処理ではなく、画面共有していればUndoを送信
     if (!receiver && $useSocket()) {
-        shareSendUseCase(
+        shareSendService(
             $HISTORY_REDO_COMMAND,
             [workSpace.id, scene.id]
         );

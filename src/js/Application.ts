@@ -23,6 +23,7 @@ import {
     $getCurrentWorkSpace
 } from "@/core/application/CoreUtil";
 import { ExternalApplication } from "./external/ExternalApplication";
+import { $useSocket } from "./share/application/ShareUtil";
 
 /**
  * @description 初期起動関数
@@ -108,6 +109,14 @@ export const initialize = async (): Promise<void> =>
  */
 export const boot = async (): Promise<void> =>
 {
+    if ($useSocket()) {
+        const menu: MenuImpl<ProgressMenu> | null = $getMenu($PROGRESS_MENU_NAME);
+        if (menu) {
+            menu.message = "Socket connection...";
+        }
+        return ;
+    }
+
     const menu: MenuImpl<ProgressMenu> | null = $getMenu($PROGRESS_MENU_NAME);
     if (menu) {
         menu.message = "Booting the system.";
@@ -134,6 +143,10 @@ export const boot = async (): Promise<void> =>
  */
 export const run = async (): Promise<void> =>
 {
+    if ($useSocket()) {
+        return ;
+    }
+
     const promises: Promise<void>[] = [];
 
     // 起動したWorkSpaceの初期関数を実行
