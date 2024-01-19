@@ -9,12 +9,17 @@ import { execute as workSpaceUpdateNameUseCase } from "@/core/application/WorkSp
  *
  * @param  {WorkSpace} work_space
  * @param  {string} name
+ * @param  {boolean} [receiver=false]
  * @return {void}
  * @method
  * @public
  */
-export const execute = (work_space: WorkSpace, name: string): void =>
-{
+export const execute = (
+    work_space: WorkSpace,
+    name: string,
+    receiver: boolean = false
+): void => {
+
     // 変更がなければ終了
     if (work_space.name === name) {
         return ;
@@ -24,9 +29,6 @@ export const execute = (work_space: WorkSpace, name: string): void =>
     if (!name) {
         name = "Untitled";
     }
-
-    // 内部情報を更新
-    workSpaceUpdateNameUseCase(work_space.id, name);
 
     // アクティブならElementも更新
     if (work_space.active) {
@@ -44,4 +46,7 @@ export const execute = (work_space: WorkSpace, name: string): void =>
         }
 
     }
+
+    // 内部情報を更新
+    workSpaceUpdateNameUseCase(work_space.id, name, receiver);
 };

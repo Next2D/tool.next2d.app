@@ -14,12 +14,17 @@ import { execute as shareSendUseCase } from "@/share/application/usecase/ShareSe
  *
  * @param  {WorkSpace} work_space
  * @param  {string} name
+ * @param  {boolean} [receiver=false]
  * @return {void}
  * @method
  * @public
  */
-export const execute = (work_space: WorkSpace, name: string): void =>
-{
+export const execute = (
+    work_space: WorkSpace,
+    name: string,
+    receiver: boolean = false
+): void => {
+
     // 指定のプロジェクトで起動中のMovieClipをセット
     const scene = work_space.scene;
 
@@ -49,8 +54,8 @@ export const execute = (work_space: WorkSpace, name: string): void =>
         }
     });
 
-    // 画面共有していれば共有者に送信
-    if ($useSocket()) {
+    // 受け取り処理ではなく、画面共有していれば共有者に送信
+    if (!receiver && $useSocket()) {
         shareSendUseCase(
             $SCREEN_TAB_NAME_UPDATE_COMMAND,
             [work_space.id, name]

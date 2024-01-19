@@ -83,3 +83,38 @@ export const $isSocketOwner = (): boolean =>
 {
     return $webSocketOwner;
 };
+
+/**
+ * @description 共有時のユーザー名
+ *              User name when sharing
+ *
+ * @type {string}
+ * @private
+ */
+let $userName: string = "";
+
+/**
+ * @description 共有時のユーザー名を返却
+ *              Returns the user name at the time of sharing
+ *
+ * @return {string}
+ * @method
+ * @public
+ */
+export const $getUserName = (): string =>
+{
+    return $userName;
+};
+
+/**
+ * @description 共有時のユーザー名をセット
+ *              Set user name when sharing
+ *
+ * @return {string}
+ * @method
+ * @public
+ */
+export const $setUserName = (name: string): void =>
+{
+    $userName = name;
+};

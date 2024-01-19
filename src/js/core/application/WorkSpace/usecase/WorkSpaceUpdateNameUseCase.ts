@@ -4,12 +4,16 @@ import { $getWorkSpace } from "../../CoreUtil";
 
 /**
  * @description プロジェクト名を変更
+ *              Change project name
  *
+ * @param  {number} id
+ * @param  {string} name
+ * @param  {boolean} [receiver=false]
  * @return {void}
  * @method
  * @public
  */
-export const execute = (id: number, name: string): void =>
+export const execute = (id: number, name: string, receiver: boolean = false): void =>
 {
     const workSpace: WorkSpace | null = $getWorkSpace(id);
     if (!workSpace) {
@@ -17,7 +21,7 @@ export const execute = (id: number, name: string): void =>
     }
 
     // 作業履歴を残す
-    screenTabUpdateHistoryUseCase(workSpace, name);
+    screenTabUpdateHistoryUseCase(workSpace, name, receiver);
 
     // 名前を更新
     workSpace.name = name || "Untitled";

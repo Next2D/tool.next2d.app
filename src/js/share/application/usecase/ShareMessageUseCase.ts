@@ -1,7 +1,10 @@
 import { execute as shareInitializeCommandUseCase } from "./ShareInitializeCommandUseCase";
 import { execute as shareLoadCommandUseCase } from "./ShareLoadCommandUseCase";
 import { execute as shareReceiveUseCase } from "./ShareReceiveUseCase";
-import { $isSocketOwner } from "../ShareUtil";
+import {
+    $getUserName,
+    $isSocketOwner
+} from "../ShareUtil";
 
 /**
  * @description Socketのメッセージ管理関数
@@ -16,6 +19,7 @@ export const execute = (event: MessageEvent): void =>
 {
     const message = JSON.parse(event.data);
 
+    console.log(message);
     switch (message.command) {
 
         case "initialize":

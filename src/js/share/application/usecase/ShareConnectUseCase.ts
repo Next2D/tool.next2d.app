@@ -1,5 +1,5 @@
 import { $setSocket } from "../ShareUtil";
-import { execute as shareConnectOpenEventUseCase } from "./ShareConnectOpenEventUseCase";
+import { execute as shareConnectOpenEventService } from "../service/ShareConnectOpenEventService";
 import { execute as shareMessageUseCase } from "./ShareMessageUseCase";
 import {
     $SHARE_PREFIX,
@@ -25,6 +25,6 @@ export const execute = (room_id: string): void =>
     $setSocket(webSocket);
 
     // イベントを登録
-    webSocket.addEventListener("open", shareConnectOpenEventUseCase);
+    webSocket.addEventListener("open", shareConnectOpenEventService);
     webSocket.addEventListener("message", shareMessageUseCase);
 };

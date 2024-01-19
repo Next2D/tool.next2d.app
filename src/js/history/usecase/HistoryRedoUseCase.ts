@@ -15,12 +15,17 @@ import {
  *
  * @param  {number} work_space_id
  * @param  {number} library_id
+ * @param  {boolean} [receiver=false]
  * @return {void}
  * @method
  * @public
  */
-export const execute = (work_space_id: number, library_id: number): void =>
-{
+export const execute = (
+    work_space_id: number,
+    library_id: number,
+    receiver: boolean = false
+): void => {
+
     const element: HTMLElement | null = document
         .getElementById($HISTORY_LIST_ID);
 
@@ -53,8 +58,8 @@ export const execute = (work_space_id: number, library_id: number): void =>
 
     historyObject.redo();
 
-    // 画面共有していればUndoを送信
-    if ($useSocket()) {
+    // 受け取り処理ではなく、画面共有していればUndoを送信
+    if (!receiver && $useSocket()) {
         shareSendUseCase(
             $HISTORY_REDO_COMMAND,
             [workSpace.id, scene.id]

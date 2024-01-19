@@ -21,5 +21,5 @@ export const execute = (message: ShareReceiveMessageImpl): void =>
     }
 
     const name = message.data[1] as NonNullable<string>;
-    externalWorkSpaceUpdateNameUseCase(workSpace, name);
+    externalWorkSpaceUpdateNameUseCase(workSpace, name, true);
 };

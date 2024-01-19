@@ -1,4 +1,9 @@
-import { $getSocket, $isSocketOwner } from "../ShareUtil";
+import {
+    $getSocket,
+    $getUserName,
+    $isSocketOwner,
+    $setUserName
+} from "../ShareUtil";
 
 /**
  * @description WebSocketの接続成功時のユースケース
@@ -16,7 +21,8 @@ export const execute = (): void =>
     }
 
     // ユーザー登録
-    const uuid = crypto.randomUUID();
+    const uuid = $isSocketOwner() ? $getUserName() : crypto.randomUUID();
+    $setUserName(uuid);
     webSocket.send(JSON.stringify({ "auth": uuid, "passwd": uuid }));
 
     // ルームに招待

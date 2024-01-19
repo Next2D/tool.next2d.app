@@ -28,14 +28,16 @@ export const execute = (message: ShareReceiveMessageImpl): void =>
         case $HISTORY_UNDO_COMMAND:
             historyUndoUseCase(
                 message.data[0] as NonNullable<number>,
-                message.data[1] as NonNullable<number>
+                message.data[1] as NonNullable<number>,
+                true
             );
             break;
 
         case $HISTORY_REDO_COMMAND:
             historyRedoUseCase(
                 message.data[0] as NonNullable<number>,
-                message.data[1] as NonNullable<number>
+                message.data[1] as NonNullable<number>,
+                true
             );
             break;
 
