@@ -1,10 +1,7 @@
 import { execute as shareInitializeCommandUseCase } from "./ShareInitializeCommandUseCase";
 import { execute as shareLoadCommandUseCase } from "./ShareLoadCommandUseCase";
 import { execute as shareReceiveUseCase } from "./ShareReceiveUseCase";
-import {
-    $getUserName,
-    $isSocketOwner
-} from "../ShareUtil";
+import { $isSocketOwner } from "../ShareUtil";
 
 /**
  * @description Socketのメッセージ管理関数
