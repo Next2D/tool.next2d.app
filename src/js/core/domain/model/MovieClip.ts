@@ -16,20 +16,20 @@ import { HistoryObjectImpl } from "@/interface/HistoryObjectImpl";
  */
 export class MovieClip extends Instance
 {
-    private readonly _$labels: Map<number, string>;
-    private readonly _$layers: Layer[];
-    private readonly _$layerMap: Map<number, Layer>;
-    private readonly _$actions: Map<number, string>;
-    private readonly _$sounds: Map<number, SoundObjectImpl[]>;
     private _$currentFrame: number;
     private _$leftFrame: number;
     private _$layerId: number;
     private _$scrollX: number;
     private _$scrollY: number;
-    private readonly _$selectedLayerIds: number[];
-    private readonly _$histories: HistoryObjectImpl[];
     private _$historyIndex: number;
     private _$active: boolean;
+    private readonly _$labels: Map<number, string>;
+    private readonly _$layers: Layer[];
+    private readonly _$layerMap: Map<number, Layer>;
+    private readonly _$actions: Map<number, string>;
+    private readonly _$sounds: Map<number, SoundObjectImpl[]>;
+    private readonly _$selectedLayerIds: number[];
+    private readonly _$histories: HistoryObjectImpl[];
 
     /**
      * @params {object} object

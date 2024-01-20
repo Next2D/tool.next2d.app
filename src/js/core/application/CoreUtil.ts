@@ -178,6 +178,7 @@ export const $removeWorkSpace = (work_space: WorkSpace): Promise<void> =>
         }
 
         // 起動中のWorkSpaceがなければ自動的に起動
+        WorkSpace.workSpaceId = 1;
         const workSpace: WorkSpace = $createWorkSpace();
 
         // 削除するプロジェクトを停止して、新しいプロジェクト起動
