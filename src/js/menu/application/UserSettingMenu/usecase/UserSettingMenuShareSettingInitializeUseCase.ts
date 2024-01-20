@@ -3,8 +3,8 @@ import { EventType } from "@/tool/domain/event/EventType";
 import { execute as userSettingMenuShareSettingMouseDownEventUseCase } from "./UserSettingMenuShareSettingMouseDownEventUseCase";
 
 /**
- * @description 書き出しフォーマットの初期起動ユースケース
- *              Initial startup use case for export format
+ * @description 画面共有ボタンのイベント登録
+ *              Screen share button event registration
  *
  * @return {void}
  * @method

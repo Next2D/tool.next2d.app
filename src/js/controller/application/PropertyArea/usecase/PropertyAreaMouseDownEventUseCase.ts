@@ -10,6 +10,7 @@ import {
 } from "../PropertyAreaUtil";
 import { $CONTROLLER_AREA_PROPERTY_ID } from "@/config/PropertyConfig";
 import { execute as billingModelShowService } from "@/menu/application/BillingModal/service/BillingModelShowService";
+import { $useSocket } from "@/share/application/ShareUtil";
 
 /**
  * @description ダブルタップ用の待機フラグ
@@ -74,7 +75,7 @@ export const execute = (event: PointerEvent): void =>
         {
 
             // 全ての機能が利用可能でなければ中止
-            if (!userAllFunctionStateService()) {
+            if (!userAllFunctionStateService() && !$useSocket()) {
                 billingModelShowService();
                 return ;
             }

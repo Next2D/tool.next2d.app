@@ -9,6 +9,7 @@ import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { execute as timelineHeaderWindowResizeUseCase } from "@/timeline/application/TimelineHeader/usecase/TimelineHeaderWindowResizeUseCase";
 import { execute as timelineLayerWindowResizeUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerWindowResizeUseCase";
 import { execute as billingModelShowService } from "@/menu/application/BillingModal/service/BillingModelShowService";
+import { $useSocket } from "@/share/application/ShareUtil";
 
 /**
  * @description ダブルタップ用の待機フラグ
@@ -70,7 +71,7 @@ export const execute = (event: PointerEvent): void =>
         activeTimerId = setTimeout((): void =>
         {
             // 全ての機能が利用可能でなければ中止
-            if (!userAllFunctionStateService()) {
+            if (!userAllFunctionStateService() && !$useSocket()) {
                 billingModelShowService();
                 return ;
             }
