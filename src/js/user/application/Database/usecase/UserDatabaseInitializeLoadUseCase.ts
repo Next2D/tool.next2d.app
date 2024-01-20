@@ -13,6 +13,8 @@ import {
 } from "@/config/Config";
 import { BillingExpireObjectImpl } from "@/interface/BillingExpireObjectImpl";
 import { $setExpireDate } from "../../Billing/BillingUtil";
+import { execute as adAreaHideService } from "@/controller/application/AdArea/service/AdAreaHideService";
+import { execute as userAllFunctionStateService } from "@/user/application/Billing/service/UserAllFunctionStateService";
 
 /**
  * @description IndexedDbからデータ読み込みを行う
@@ -64,6 +66,11 @@ export const execute = (): Promise<void> =>
                 if (json) {
                     const saveObject: BillingExpireObjectImpl = JSON.parse(json);
                     $setExpireDate(saveObject.expire);
+
+                    // 機能を解放
+                    if (userAllFunctionStateService()) {
+                        adAreaHideService();
+                    }
                 }
 
                 const dataDBRequest: IDBRequest<any> = store.get(`${$USER_DATABASE_STORE_KEY}`);

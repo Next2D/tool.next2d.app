@@ -4,6 +4,7 @@ import type { InstanceImpl } from "@/interface/InstanceImpl";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
 import { $useSocket } from "@/share/application/ShareUtil";
 import { execute as shareSendService } from "@/share/application/service/ShareSendService";
+import { execute as historyUndoCommandUseCase } from "./HistoryUndoCommandUseCase";
 import {
     $HISTORY_LIST_ID,
     $HISTORY_UNDO_COMMAND
@@ -57,7 +58,7 @@ export const execute = (
     node.setAttribute("class", "disable");
 
     // undoを実行
-    historyObject.undo();
+    historyUndoCommandUseCase(historyObject);
 
     // 受け取り処理ではなく、画面共有していればUndoを送信
     if (!receiver && $useSocket()) {

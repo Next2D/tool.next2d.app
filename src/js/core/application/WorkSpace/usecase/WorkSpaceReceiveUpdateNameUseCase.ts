@@ -20,6 +20,10 @@ export const execute = (message: ShareReceiveMessageImpl): void =>
         return ;
     }
 
-    const name = message.data[1] as NonNullable<string>;
-    externalWorkSpaceUpdateNameUseCase(workSpace, name, true);
+    const beforeName = message.data[1] as NonNullable<string>;
+    const afterName  = message.data[2] as NonNullable<string>;
+    workSpace.name   = beforeName;
+
+    // 名前を更新
+    externalWorkSpaceUpdateNameUseCase(workSpace, afterName, true);
 };

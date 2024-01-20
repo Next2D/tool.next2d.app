@@ -7,6 +7,7 @@ import { $SCREEN_TAB_NAME_UPDATE_COMMAND } from "@/config/HistoryConfig";
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import { $useSocket } from "@/share/application/ShareUtil";
 import { execute as shareSendService } from "@/share/application/service/ShareSendService";
+import { execute as screenTabCreateHistoryObjectService } from "../service/ScreenTabCreateHistoryObjectService";
 
 /**
  * @description プロジェクト名の変更を作業履歴に登録
@@ -39,26 +40,18 @@ export const execute = (
         historyGetTextService($SCREEN_TAB_NAME_UPDATE_COMMAND)
     );
 
-    const beforeName = work_space.name;
-
     // 追加したLayer Objectを履歴に登録
-    scene.addHistory({
-        "command": $SCREEN_TAB_NAME_UPDATE_COMMAND,
-        "undo": (): void =>
-        {
-            screenTabNameAddHistoryUndoUseCase(work_space, beforeName);
-        },
-        "redo": (): void =>
-        {
-            screenTabNameAddHistoryRedoUseCase(work_space, name);
-        }
-    });
+    scene.addHistory(screenTabCreateHistoryObjectService(
+        work_space.id,
+        work_space.name,
+        name
+    ));
 
     // 受け取り処理ではなく、画面共有していれば共有者に送信
     if (!receiver && $useSocket()) {
         shareSendService(
             $SCREEN_TAB_NAME_UPDATE_COMMAND,
-            [work_space.id, name]
+            [work_space.id, work_space.name, name]
         );
     }
 };

@@ -5,6 +5,7 @@ import { Layer } from "./Layer";
 import { execute as movieClipRunUseCase } from "@/core/application/MovieClip/usecase/MovieClipRunUseCase";
 import type { ActionSaveObjectImpl } from "@/interface/ActionSaveObjectImpl";
 import { HistoryObjectImpl } from "@/interface/HistoryObjectImpl";
+import { $HISTORY_LIMIT } from "@/config/HistoryConfig";
 
 /**
  * @description MovieClipの状態管理クラス
@@ -147,6 +148,10 @@ export class MovieClip extends Instance
         // ポジション以降の履歴を削除
         this._$histories.length = this._$historyIndex;
         this._$histories[this._$historyIndex++] = history_object;
+
+        while (this._$histories.length > $HISTORY_LIMIT) {
+            this._$histories.shift();
+        }
     }
 
     /**
@@ -371,6 +376,14 @@ export class MovieClip extends Instance
                 const actionObject: ActionSaveObjectImpl = object.actions[idx];
                 this._$actions.set(actionObject.frame, actionObject.action);
             }
+        }
+
+        if ("historyIndex" in object) {
+            this._$historyIndex = object.historyIndex as number;
+        }
+
+        if (object.histories) {
+            this._$histories.push(...object.histories);
         }
     }
 
@@ -686,7 +699,9 @@ export class MovieClip extends Instance
             "sounds":       soundList,
             "actions":      actions,
             "scrollX":      this._$scrollX,
-            "scrollY":      this._$scrollY
+            "scrollY":      this._$scrollY,
+            "histories":    this._$histories,
+            "historyIndex": this._$historyIndex
         };
     }
 }

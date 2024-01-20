@@ -1,0 +1,1 @@
+export type HistoryObjectScreenTabUpdateArgsImpl = [number, string, string];

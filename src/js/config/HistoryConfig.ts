@@ -1,4 +1,13 @@
 /**
+ * @description MovieClipの作業履歴の最大値
+ *              Maximum MovieClip work history
+ *
+ * @type {number}
+ * @constant
+ */
+export const $HISTORY_LIMIT: number = 100;
+
+/**
  * @description コントローラーエリアのElement IDの名前
  *              Name of the Element ID in the controller area
  *

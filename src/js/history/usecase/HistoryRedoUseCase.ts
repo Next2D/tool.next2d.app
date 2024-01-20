@@ -4,6 +4,7 @@ import type { InstanceImpl } from "@/interface/InstanceImpl";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
 import { $useSocket } from "@/share/application/ShareUtil";
 import { execute as shareSendService } from "@/share/application/service/ShareSendService";
+import { execute as historyRedoCommandUseCase } from "./HistoryRedoCommandUseCase";
 import {
     $HISTORY_LIST_ID,
     $HISTORY_REDO_COMMAND
@@ -56,7 +57,7 @@ export const execute = (
         return ;
     }
 
-    historyObject.redo();
+    historyRedoCommandUseCase(historyObject);
 
     // 受け取り処理ではなく、画面共有していればUndoを送信
     if (!receiver && $useSocket()) {

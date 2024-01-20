@@ -44,6 +44,7 @@ export const execute = (
     // 言語設定
     languageTranslationService(lastElement);
 
+    // マウスダウンイベントを登録
     lastElement.addEventListener(EventType.MOUSE_DOWN,
         historyMouseDownEventUseCase
     );
