@@ -1,11 +1,9 @@
+import type { WorkSpace } from "@/core/domain/model/WorkSpace";
+import { $SCREEN_TAB_NAME_UPDATE_COMMAND } from "@/config/HistoryConfig";
+import { $useSocket } from "@/share/application/ShareUtil";
 import { execute as historyRemoveElementService } from "@/history/service/HistoryRemoveElementService";
 import { execute as historyAddElementUseCase } from "@/history/usecase/HistoryAddElementUseCase";
 import { execute as historyGetTextService } from "@/history/service/HistoryGetTextService";
-import { execute as screenTabNameAddHistoryRedoUseCase } from "./ScreenTabNameAddHistoryRedoUseCase";
-import { execute as screenTabNameAddHistoryUndoUseCase } from "./ScreenTabNameAddHistoryUndoUseCase";
-import { $SCREEN_TAB_NAME_UPDATE_COMMAND } from "@/config/HistoryConfig";
-import type { WorkSpace } from "@/core/domain/model/WorkSpace";
-import { $useSocket } from "@/share/application/ShareUtil";
 import { execute as shareSendService } from "@/share/application/service/ShareSendService";
 import { execute as screenTabCreateHistoryObjectService } from "../service/ScreenTabCreateHistoryObjectService";
 
