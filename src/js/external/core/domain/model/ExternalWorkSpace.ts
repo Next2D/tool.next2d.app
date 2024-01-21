@@ -3,7 +3,6 @@ import { ExternalTimeline } from "@/external/timeline/domain/model/ExternalTimel
 import { ExternalMovieClip } from "@/external/core/domain/model/ExternalMovieClip";
 import { ExternalLibrary } from "@/external/controller/domain/model/ExternalLibrary";
 import { execute as externalWorkSpaceUpdateNameUseCase } from "@/external/core/application/ExternalWorkSpace/usecase/ExternalWorkSpaceUpdateNameUseCase";
-import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 
 /**
  * @description WorkSpaceの外部APIクラス
