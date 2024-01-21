@@ -13,9 +13,10 @@ import { execute as timelineScrollUpdateHeightService } from "@/timeline/applica
  *
  * @param  {WorkSpace} work_space
  * @param  {MovieClip} movie_clip
- * @param  {string} [name = ""]
- * @param  {number} [index = 0]
- * @param  {string} [color = ""]
+ * @param  {string}  [name = ""]
+ * @param  {number}  [index = 0]
+ * @param  {string}  [color = ""]
+ * @param  {boolean} [receiver = false]
  * @return {Layer}
  * @method
  * @public
@@ -25,7 +26,8 @@ export const execute = (
     movie_clip: MovieClip,
     name: string = "",
     index: number = -1,
-    color: string = ""
+    color: string = "",
+    receiver: boolean = false
 ): Layer | null => {
 
     // レイヤーを追加
@@ -42,7 +44,7 @@ export const execute = (
     }
 
     // 作業履歴を登録
-    timelineToolLayerAddHistoryUseCase(work_space, movie_clip, newLayer);
+    timelineToolLayerAddHistoryUseCase(work_space, movie_clip, newLayer, receiver);
 
     // 画面表示されてる、WorkSpaceとMovieClipの場合は表示Elementを更新
     if (work_space.active && movie_clip.active) {
@@ -53,7 +55,7 @@ export const execute = (
         timelineLayerBuildElementUseCase();
 
         // 追加したレイヤーをアクティブ表示にする
-        timelineLayerControllerNormalSelectUseCase(newLayer.id);
+        timelineLayerControllerNormalSelectUseCase(newLayer);
     }
 
     return newLayer;

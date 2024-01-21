@@ -15,7 +15,7 @@ import { execute as timelineToolLayerCreateService } from "../service/TimelineTo
  * @param  {number} [work_space_id = 0]
  * @param  {number} [library_id = -1]
  * @param  {string} [name = ""]
- * @param  {number} [target_index = -1]
+ * @param  {number} [index = -1]
  * @param  {string} [color = ""]
  * @return {void}
  * @method
@@ -25,12 +25,12 @@ export const execute = (
     work_space_id: number = 0,
     library_id: number = -1,
     name: string = "",
-    target_index: number = -1,
+    index: number = -1,
     color: string = ""
 ): void => {
 
     // 指定がなければ起動中のWorkSpaceを利用する
-    const workSpace = work_space_id
+    const workSpace = work_space_id !== 0
         ? $getWorkSpace(work_space_id)
         : $getCurrentWorkSpace();
 
@@ -52,7 +52,7 @@ export const execute = (
         workSpace.id,
         scene.id,
         name,
-        target_index,
+        index,
         color
     );
 
@@ -72,5 +72,5 @@ export const execute = (
     timelineLayerBuildElementUseCase();
 
     // 追加したレイヤーをアクティブ表示にする
-    timelineLayerControllerNormalSelectUseCase(newLayer.id);
+    timelineLayerControllerNormalSelectUseCase(newLayer);
 };

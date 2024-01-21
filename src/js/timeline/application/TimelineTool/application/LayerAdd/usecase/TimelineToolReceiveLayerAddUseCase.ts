@@ -34,6 +34,7 @@ export const execute = (message: ShareReceiveMessageImpl): void =>
         movieClip,
         message.data[2] as NonNullable<string>,
         message.data[3] as NonNullable<number>,
-        message.data[4] as NonNullable<string>
+        message.data[4] as NonNullable<string>,
+        true
     );
 };

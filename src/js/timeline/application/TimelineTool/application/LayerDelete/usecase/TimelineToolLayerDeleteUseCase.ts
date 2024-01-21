@@ -31,25 +31,20 @@ export const execute = (): void =>
     }
 
     let minIndex = Number.MAX_VALUE;
-    for (const layerId of targetLayers.keys()) {
-
-        const targetLayer = scene.getLayer(layerId);
-        if (!targetLayer) {
-            continue;
-        }
+    for (const layer of targetLayers.keys()) {
 
         // 元の配列のポジションを取得
         // fixed logic
-        const index = scene.layers.indexOf(targetLayer);
+        const index = scene.layers.indexOf(layer);
 
         // 一番小さいポジションをセット
         minIndex = Math.min(minIndex, index);
 
         // 作業履歴に登録
-        timelineToolLayerDeleteHistoryUseCase(scene, targetLayer, index);
+        timelineToolLayerDeleteHistoryUseCase(scene, layer, index);
 
         // レイヤー削除を実行
-        scene.removeLayer(targetLayer);
+        scene.removeLayer(layer);
     }
 
     // タイムラインのyスクロールの高さを更新

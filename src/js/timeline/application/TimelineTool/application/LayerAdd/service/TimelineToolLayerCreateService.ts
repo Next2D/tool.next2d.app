@@ -50,7 +50,7 @@ export const execute = (
     const targetLayers = timelineLayer.targetLayers;
     const selectedLayer: Layer | null = !targetLayers.size
         ? scene.layers[0]
-        : scene.getLayer(targetLayers.keys().next().value);
+        : targetLayers.keys().next().value;
 
     if (!selectedLayer) {
         return null;
