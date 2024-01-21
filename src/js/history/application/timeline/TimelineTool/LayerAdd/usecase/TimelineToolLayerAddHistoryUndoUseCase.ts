@@ -1,36 +1,58 @@
-import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
-import type { Layer } from "@/core/domain/model/Layer";
+import { $getWorkSpace } from "@/core/application/CoreUtil";
 import { execute as timelineScrollUpdateHeightService } from "@/timeline/application/TimelineScroll/service/TimelineScrollUpdateHeightService";
 import { execute as timelineLayerBuildElementUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerBuildElementUseCase";
 import { execute as timelineLayerAllClearSelectedElementService } from "@/timeline/application/TimelineLayer/service/TimelineLayerAllClearSelectedElementService";
 import { timelineLayer } from "@/timeline/domain/model/TimelineLayer";
+import type { InstanceImpl } from "@/interface/InstanceImpl";
+import type { MovieClip } from "@/core/domain/model/MovieClip";
 
 /**
  * @description レイヤー追加作業を元に戻す
  *              Undo the layer addition process
  *
- * @param  {Layer} layer
+ * @param  {number} work_space_id
+ * @param  {number} library_id
+ * @param  {number} index
  * @return {void}
  * @method
  * @public
  */
-export const execute = (layer: Layer): void =>
-{
+export const execute = (
+    work_space_id: number,
+    library_id: number,
+    index: number
+): void => {
+
+    const workSpace = $getWorkSpace(work_space_id);
+    if (!workSpace) {
+        return ;
+    }
+
+    const movieClip: InstanceImpl<MovieClip> | null = workSpace.getLibrary(library_id);
+    if (!movieClip) {
+        return ;
+    }
+
+    const layer = movieClip.layers[index];
+    if (!layer) {
+        return ;
+    }
+
     // Layerオブジェクトの内部情報から削除
-    $getCurrentWorkSpace()
-        .scene
-        .removeLayer(layer);
+    movieClip.removeLayer(layer);
 
-    // 選択したレイヤー・フレーム Elementを初期化
-    timelineLayerAllClearSelectedElementService();
+    if (workSpace.active && movieClip.active) {
+        // 選択したレイヤー・フレーム Elementを初期化
+        timelineLayerAllClearSelectedElementService();
 
-    // 選択中の内部情報を初期化
-    // fixed logic
-    timelineLayer.clearSelectedTarget();
+        // 選択中の内部情報を初期化
+        // fixed logic
+        timelineLayer.clearSelectedTarget();
 
-    // タイムラインのyスクロールの高さを更新
-    timelineScrollUpdateHeightService();
+        // タイムラインのyスクロールの高さを更新
+        timelineScrollUpdateHeightService();
 
-    // タイムラインを再描画
-    timelineLayerBuildElementUseCase();
+        // タイムラインを再描画
+        timelineLayerBuildElementUseCase();
+    }
 };

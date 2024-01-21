@@ -71,7 +71,7 @@ export const execute = (): void =>
             if (maxFrame > length) {
                 // 不足しているフレームを追加
                 timelineLayerFrameCreateContentComponentService(
-                    frameControllerElement, length, maxFrame, layer.id, leftFrame
+                    frameControllerElement, length, maxFrame, index, leftFrame
                 );
             }
 
@@ -79,7 +79,7 @@ export const execute = (): void =>
 
             // 新規レイヤーを追加
             timelineLayerCreateUseCase(
-                parent, layer.id, maxFrame, leftFrame
+                parent, layer, maxFrame, leftFrame
             );
 
             // フレーム側のElementをを変数にセット
@@ -91,13 +91,13 @@ export const execute = (): void =>
         // 表示をOnにする
         element.style.display = "";
 
-        // スクロール位置に合わせてフレームElementのStyleを更新
+        // xスクロール位置に合わせてフレームElementのStyleを更新
         timelineLayerFrameUpdateStyleService(frameControllerElement, leftFrame);
 
         // Layerオブジェクトの状態に合わせて、表示Elementの情報を更新
         timelineLayerControllerUpdateElementStyleUseCase(layer);
 
-        if (targetLayers.size && targetLayers.has(layer.id)) {
+        if (targetLayers.size && targetLayers.has(layer)) {
             timelineLayerActiveElementService(element);
         }
 

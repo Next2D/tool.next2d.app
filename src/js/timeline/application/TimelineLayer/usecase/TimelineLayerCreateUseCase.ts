@@ -5,13 +5,14 @@ import { execute as timelineLayerMouseDownEventService } from "./TimelineLayerMo
 import { execute as timelineLayerControllerRegisterEventUseCase } from "../../TimelineLayerController/usecase/TimelineLayerControllerRegisterEventUseCase";
 import { execute as timelineLayerFrameRegisterEventUseCase } from "../../TimelineLayerFrame/usecase/TimelineLayerFrameRegisterEventUseCase";
 import { execute as timelineLayerFrameCreateContentComponentService } from "@/timeline/application/TimelineLayerFrame/service/TimelineLayerFrameCreateContentComponentService";
+import type { Layer } from "@/core/domain/model/Layer";
 
 /**
  * @description 指定のElementに新規のレイヤーを追加
  *              Add a new layer to the specified Element
  *
  * @param  {HTMLElement} parent
- * @param  {number} layer_id
+ * @param  {Layer} layer
  * @param  {number} max_frame
  * @param  {number} left_frame
  * @return {void}
@@ -20,7 +21,7 @@ import { execute as timelineLayerFrameCreateContentComponentService } from "@/ti
  */
 export const execute = (
     parent: HTMLElement,
-    layer_id: number,
+    layer: Layer,
     max_frame: number,
     left_frame: number
 ): void => {
@@ -29,7 +30,7 @@ export const execute = (
 
     // レイヤーのElementを新規登録
     parent.insertAdjacentHTML("beforeend",
-        timelineLayerControllerComponent(layerIndex, layer_id)
+        timelineLayerControllerComponent(layerIndex, layer)
     );
 
     const layerElement = parent.lastElementChild as NonNullable<HTMLElement>;

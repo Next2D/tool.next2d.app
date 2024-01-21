@@ -32,7 +32,8 @@ export const execute = (): void =>
 
         const layer = layers[idx];
 
-        const element: HTMLElement | undefined = timelineLayer.elements[layer.getDisplayIndex()];
+        const index = layer.getDisplayIndex();
+        const element: HTMLElement | undefined = timelineLayer.elements[index];
         if (!element) {
             continue;
         }
@@ -44,7 +45,7 @@ export const execute = (): void =>
         if (maxFrame > length) {
             // 不足しているフレームを追加
             timelineLayerFrameCreateContentComponentService(
-                frameControllerElement, length, maxFrame, layer.id, leftFrame
+                frameControllerElement, length, maxFrame, index, leftFrame
             );
         }
 

@@ -34,7 +34,7 @@ export const execute = (event: PointerEvent): void =>
             break;
 
         default:
-            timelineLayerControllerNormalSelectUseCase(layer.id);
+            timelineLayerControllerNormalSelectUseCase(layer);
             break;
 
     }

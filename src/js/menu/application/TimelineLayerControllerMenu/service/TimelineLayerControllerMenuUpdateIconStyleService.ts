@@ -9,6 +9,7 @@ import type { Layer } from "@/core/domain/model/Layer";
  * @description レイヤーのモードに合わせてStyleを更新
  *              Update Style to match layer mode
  *
+ * @param  {Layer} layer
  * @return {void}
  * @method
  * @public

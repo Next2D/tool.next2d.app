@@ -1,29 +1,23 @@
+import type { Layer } from "@/core/domain/model/Layer";
 import { timelineFrame } from "@/timeline/domain/model/TimelineFrame";
 import { $getLeftFrame } from "../../TimelineUtil";
 import { execute as timelineLayerFrameActiveElementService } from "@/timeline/application/TimelineLayerFrame/service/TimelineLayerFrameActiveElementService";
 import { execute as timelineLayerRegisterLayerAndFrameService } from "@/timeline/application/TimelineLayer/service/TimelineLayerRegisterLayerAndFrameService";
 import { execute as timelineLayerActiveElementService } from "@/timeline/application/TimelineLayer/service/TimelineLayerActiveElementService";
 import { execute as timelineLayerAllClearSelectedElementService } from "@/timeline/application/TimelineLayer/service/TimelineLayerAllClearSelectedElementService";
-import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
-import { Layer } from "@/core/domain/model/Layer";
 import { timelineLayer } from "@/timeline/domain/model/TimelineLayer";
 
 /**
  * @description 通常のレイヤーコントローラーエリア選択の処理関数（Alt、Shiftなし）
  *              Processing function for normal layer controller area selection (without Alt and Shift)
  *
+ * @param  {Layer} layer
  * @return {void}
  * @method
  * @public
  */
-export const execute = (layer_id: number): void =>
+export const execute = (layer: Layer): void =>
 {
-    const scene = $getCurrentWorkSpace().scene;
-    const layer: Layer | null = scene.getLayer(layer_id);
-    if (!layer) {
-        return ;
-    }
-
     // 表示Elementがなければ終了
     const layerElement: HTMLElement | undefined = timelineLayer.elements[layer.getDisplayIndex()];
     if (!layerElement) {
@@ -49,11 +43,11 @@ export const execute = (layer_id: number): void =>
 
         // 選択情報を登録
         const frame = parseInt(frameElement.dataset.frame as string);
-        timelineLayerRegisterLayerAndFrameService(layer_id, frame);
+        timelineLayerRegisterLayerAndFrameService(layer, frame);
     } else {
         // Elementが表示されてない時は指定レイヤーと現在のフレーム番号をアクティブにする
         timelineLayerRegisterLayerAndFrameService(
-            layer_id, timelineFrame.currentFrame
+            layer, timelineFrame.currentFrame
         );
     }
 

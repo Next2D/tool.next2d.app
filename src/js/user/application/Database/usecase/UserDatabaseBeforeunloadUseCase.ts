@@ -18,8 +18,6 @@ export const execute = async (event: BeforeUnloadEvent): Promise<void> =>
     event.preventDefault();
     event.stopPropagation();
 
-    event.returnValue = "Saving data...";
-
     // 現在のデータを保存
     await userDatabaseSaveUseCase();
 };

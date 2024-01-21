@@ -23,7 +23,7 @@ describe("TimelineLayerControllerUpdateColorElementServiceTest", () =>
         const layer = workSpace.scene.getLayer(0);
 
         expect(span.style.backgroundColor).toBe("rgb(0, 0, 0)");
-        execute(0, layer.color);
+        execute(layer, layer.color);
 
         const bigint = parseInt(`0x${layer.color.slice(1)}`, 16);
         expect(span.style.backgroundColor).toBe(`rgb(${bigint >> 16 & 255}, ${bigint >> 8 & 255}, ${bigint & 255})`);

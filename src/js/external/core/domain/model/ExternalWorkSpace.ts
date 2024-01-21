@@ -30,6 +30,32 @@ export class ExternalWorkSpace
     }
 
     /**
+     * @description 指定したWorkSpaceの識別ID
+     *              Identification ID of the specified WorkSpace
+     *
+     * @return {number}
+     * @readonly
+     * @public
+     */
+    get id (): number
+    {
+        return this._$workSpace.id;
+    }
+
+    /**
+     * @description WorkSpaceのアクティブ状態を返却
+     *              Returns the active state of WorkSpace
+     *
+     * @member {boolean}
+     * @readonly
+     * @public
+     */
+    get active (): boolean
+    {
+        return this._$workSpace.active;
+    }
+
+    /**
      * @description WorkSpaceの表示名
      *              WorkSpace display name
      *
@@ -47,18 +73,6 @@ export class ExternalWorkSpace
     }
 
     /**
-     * @description WorkSpaceのアクティブ状態を返却
-     *              Returns the active state of WorkSpace
-     *
-     * @member {boolean}
-     * @public
-     */
-    get active (): boolean
-    {
-        return this._$workSpace.active;
-    }
-
-    /**
      * @description 現在、起動中のMovieClipのタイムラインAPIオブジェクトを返却
      *              Returns the timeline API object of the currently running MovieClip
      *
@@ -69,7 +83,7 @@ export class ExternalWorkSpace
     getCurrentTimeline (): ExternalTimeline
     {
         return new ExternalTimeline(
-            new ExternalMovieClip($getCurrentWorkSpace().scene),
+            new ExternalMovieClip(this._$workSpace, this._$workSpace.scene),
             this
         );
     }

@@ -6,7 +6,7 @@ import { execute as timelineLayerFrameContentComponent } from "../component/Time
  * @param  {HTMLElement} element
  * @param  {number} index
  * @param  {number} length
- * @param  {number} layer_id
+ * @param  {number} layer_index
  * @param  {number} left_frame
  * @return {void}
  * @method

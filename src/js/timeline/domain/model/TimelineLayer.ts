@@ -1,3 +1,4 @@
+import type { Layer } from "@/core/domain/model/Layer";
 import { execute as timelineLayerInitializeUseCase } from "../../application/TimelineLayer/usecase/TimelineLayerInitializeUseCase";
 
 /**
@@ -9,10 +10,10 @@ import { execute as timelineLayerInitializeUseCase } from "../../application/Tim
  */
 class TimelineLayer
 {
-    private readonly _$elements: HTMLElement[];
     private _$clientHeight: number;
-    private _$targetLayers: Map<number, number[]>;
     private _$numberOfDisplays: number;
+    private readonly _$elements: HTMLElement[];
+    private readonly _$targetLayers: Map<Layer, number[]>;
 
     /**
      * @constructor
@@ -21,12 +22,6 @@ class TimelineLayer
     constructor ()
     {
         /**
-         * @type {array}
-         * @private
-         */
-        this._$elements = [];
-
-        /**
          * @type {number}
          * @default 0
          * @private
@@ -34,16 +29,22 @@ class TimelineLayer
         this._$clientHeight = 0;
 
         /**
-         * @type {Map}
-         * @private
-         */
-        this._$targetLayers = new Map();
-
-        /**
          * @type {number}
          * @private
          */
         this._$numberOfDisplays = 0;
+
+        /**
+         * @type {array}
+         * @private
+         */
+        this._$elements = [];
+
+        /**
+         * @type {Map}
+         * @private
+         */
+        this._$targetLayers = new Map();
     }
 
     /**
@@ -111,7 +112,7 @@ class TimelineLayer
      * @member {Map}
      * @public
      */
-    get targetLayers (): Map<number, number[]>
+    get targetLayers (): Map<Layer, number[]>
     {
         return this._$targetLayers;
     }

@@ -1,5 +1,5 @@
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
-import { execute as timelineHeaderWindowResizeUseCase } from "./TimelineLayerWindowResizeUseCase";
+import { execute as timelineLayerWindowResizeUseCase } from "./TimelineLayerWindowResizeUseCase";
 import { $TIMELINE_CONTENT_ID } from "@/config/TimelineConfig";
 import { execute as timelineLayerWheelEventUseCase } from "./TimelineLayerWheelEventUseCase";
 
@@ -22,7 +22,8 @@ export const execute = (): void =>
             return ;
         }
 
-        requestAnimationFrame(timelineHeaderWindowResizeUseCase);
+        // タイムラインをリサイズ
+        requestAnimationFrame(timelineLayerWindowResizeUseCase);
     });
 
     const element: HTMLElement | null = document

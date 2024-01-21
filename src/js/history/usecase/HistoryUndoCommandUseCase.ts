@@ -1,6 +1,10 @@
-import { $SCREEN_TAB_NAME_UPDATE_COMMAND } from "@/config/HistoryConfig";
 import type { HistoryObjectImpl } from "@/interface/HistoryObjectImpl";
 import { execute as screenTabNameAddHistoryUndoUseCase } from "../application/screen/ScreenTab/usecase/ScreenTabNameAddHistoryUndoUseCase";
+import { execute as timelineToolLayerAddHistoryUndoUseCase } from "../application/timeline/TimelineTool/LayerAdd/usecase/TimelineToolLayerAddHistoryUndoUseCase";
+import {
+    $SCREEN_TAB_NAME_UPDATE_COMMAND,
+    $TIMELINE_TOOL_LAYER_ADD_COMMAND
+} from "@/config/HistoryConfig";
 
 /**
  * @description Undoコマンドの実行関数
@@ -19,6 +23,14 @@ export const execute = (history_object: HistoryObjectImpl): void =>
             screenTabNameAddHistoryUndoUseCase(
                 args[0] as number, // workSpaceId
                 args[1] as string  // beforeName
+            );
+            break;
+
+        case $TIMELINE_TOOL_LAYER_ADD_COMMAND:
+            timelineToolLayerAddHistoryUndoUseCase(
+                args[0] as number, // workSpaceId
+                args[1] as number, // MovieClipId
+                args[3] as number  // Index
             );
             break;
 

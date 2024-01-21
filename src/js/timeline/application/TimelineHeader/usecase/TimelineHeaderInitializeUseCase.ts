@@ -26,6 +26,7 @@ export const execute = (): void =>
             return ;
         }
 
+        // タイムラインのヘッダーをリサイズ
         requestAnimationFrame(timelineHeaderWindowResizeUseCase);
     });
 

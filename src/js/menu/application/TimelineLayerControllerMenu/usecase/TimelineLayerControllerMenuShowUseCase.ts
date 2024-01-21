@@ -60,7 +60,7 @@ export const execute = (event: MouseEvent): void =>
     }
 
     // 指定のレイヤーだけを選択状態に更新
-    timelineLayerControllerNormalSelectUseCase(layer.id);
+    timelineLayerControllerNormalSelectUseCase(layer);
 
     // 指定レイヤーElementをアクティブ表示に更新
     timelineLayerActiveElementService(layerElement);

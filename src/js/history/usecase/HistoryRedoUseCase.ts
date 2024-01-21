@@ -61,9 +61,9 @@ export const execute = (
 
     // 受け取り処理ではなく、画面共有していればUndoを送信
     if (!receiver && $useSocket()) {
-        shareSendService(
-            $HISTORY_REDO_COMMAND,
-            [workSpace.id, scene.id]
-        );
+        shareSendService({
+            "command": $HISTORY_REDO_COMMAND,
+            "args": [workSpace.id, scene.id]
+        });
     }
 };

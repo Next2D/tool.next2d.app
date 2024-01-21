@@ -24,12 +24,12 @@ describe("TimelineLayerControllerUpdateLightIconElementStyleServiceTest", () =>
         expect(span.style.display).toBe("");
         expect(layerElement.style.borderBottom).toBe("");
 
-        execute(0, true);
+        execute(layer, true);
 
         expect(span.style.display).toBe("none");
         expect(layerElement.style.borderBottom).toBe(`1px solid ${layer.color}`);
 
-        execute(0, false);
+        execute(layer, false);
 
         expect(span.style.display).toBe("");
         expect(layerElement.style.borderBottom).toBe("");

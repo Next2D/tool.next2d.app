@@ -15,16 +15,17 @@ describe("TimelineLayerControllerUpdateDisableIconElementServiceTest", () =>
         iconElement.setAttribute("class", "timeline-layer-disable-one icon-disable");
 
         const workSpace = $getCurrentWorkSpace() || $createWorkSpace();
+        const layer = workSpace.scene.getLayer(0);
 
         expect(iconElement.classList.contains("icon-disable")).toBe(true);
         expect(iconElement.classList.contains("icon-active")).toBe(false);
 
-        execute(0, true);
+        execute(layer, true);
 
         expect(iconElement.classList.contains("icon-disable")).toBe(false);
         expect(iconElement.classList.contains("icon-active")).toBe(true);
 
-        execute(0, false);
+        execute(layer, false);
 
         expect(iconElement.classList.contains("icon-disable")).toBe(true);
         expect(iconElement.classList.contains("icon-active")).toBe(false);

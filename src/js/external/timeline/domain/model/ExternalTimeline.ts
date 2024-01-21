@@ -72,15 +72,24 @@ export class ExternalTimeline
      */
     addNewLayer (name: string = "", index: number = 0): void
     {
-        if (this._$externalWorkSpace.active) {
-            // 指定されたレイヤーを選択状態にする
-            this.setSelectedLayer(index);
-
-            // レイヤーを追加
-            timelineToolLayerAddUseCase(name);
-        } else {
-            this._$externalMovieClip.createLayer(name, index);
+        if (!this._$externalWorkSpace.active
+            || !this._$externalMovieClip.active
+        ) {
+            // 表示されてなければ、データだけ登録
+            this
+                ._$externalMovieClip
+                .createLayer(name, index);
+            return ;
         }
+
+        // 指定されたレイヤーを選択状態にする
+        this.setSelectedLayer(index);
+
+        // レイヤーを追加
+        timelineToolLayerAddUseCase(
+            this._$externalWorkSpace.id,
+            this._$externalMovieClip.id
+        );
     }
 
     /**

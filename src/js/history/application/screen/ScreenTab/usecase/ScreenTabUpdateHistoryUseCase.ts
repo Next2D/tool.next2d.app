@@ -39,17 +39,16 @@ export const execute = (
     );
 
     // 追加したLayer Objectを履歴に登録
-    scene.addHistory(screenTabCreateHistoryObjectService(
+    const historyObject = screenTabCreateHistoryObjectService(
         work_space.id,
         work_space.name,
         name
-    ));
+    );
+
+    scene.addHistory(historyObject);
 
     // 受け取り処理ではなく、画面共有していれば共有者に送信
     if (!receiver && $useSocket()) {
-        shareSendService(
-            $SCREEN_TAB_NAME_UPDATE_COMMAND,
-            [work_space.id, work_space.name, name]
-        );
+        shareSendService(historyObject);
     }
 };

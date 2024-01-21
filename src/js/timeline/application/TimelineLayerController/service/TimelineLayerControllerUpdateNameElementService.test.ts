@@ -1,12 +1,13 @@
 import { execute } from "./TimelineLayerControllerUpdateNameElementService";
 import { timelineLayer } from "../../../domain/model/TimelineLayer";
-import { $createWorkSpace } from "../../../../core/application/CoreUtil";
+import { $getCurrentWorkSpace, $createWorkSpace } from "../../../../core/application/CoreUtil";
 
 describe("TimelineLayerControllerUpdateNameElementServiceTest", () =>
 {
     test("execute test", () =>
     {
-        $createWorkSpace();
+        const workSpace = $getCurrentWorkSpace() || $createWorkSpace();
+        const layer = workSpace.scene.getLayer(0);
 
         const layerElement = document.createElement("div");
 
@@ -20,7 +21,7 @@ describe("TimelineLayerControllerUpdateNameElementServiceTest", () =>
         nameElement.textContent = "Layer_Test";
 
         expect(nameElement.textContent).toBe("Layer_Test");
-        execute(0, "test");
+        execute(layer, "test");
         expect(nameElement.textContent).toBe("test");
     });
 });

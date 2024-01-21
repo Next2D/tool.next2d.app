@@ -17,7 +17,6 @@ import { $getTopIndex } from "@/timeline/application/TimelineUtil";
  */
 export class Layer
 {
-    private _$id: number;
     private _$name: string;
     private _$color: string;
     private _$light: boolean;
@@ -36,13 +35,6 @@ export class Layer
      */
     constructor (object: LayerSaveObjectImpl | null = null)
     {
-        /**
-         * @type {number}
-         * @default 0
-         * @private
-         */
-        this._$id = 0;
-
         /**
          * @type {string}
          * @default ""
@@ -116,22 +108,6 @@ export class Layer
         } else {
             this._$color = timelineLayerControllerGetHighlightColorService();
         }
-    }
-
-    /**
-     * @description Layerの固有ID
-     *              Unique ID of Layer
-     *
-     * @member {number}
-     * @public
-     */
-    get id (): number
-    {
-        return this._$id;
-    }
-    set id (id: number)
-    {
-        this._$id = id;
     }
 
     /**

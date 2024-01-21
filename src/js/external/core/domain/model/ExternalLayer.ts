@@ -1,6 +1,8 @@
 import type { Layer } from "@/core/domain/model/Layer";
 
 /**
+ * @description Layerの外部APIクラス
+ *              Layer external API classes
  * @class
  */
 export class ExternalLayer

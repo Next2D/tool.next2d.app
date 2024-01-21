@@ -18,8 +18,8 @@ export const execute = (element: HTMLElement, left_frame: number): void =>
     const layer = $getLayerFromElement(element);
     if (layer) {
         const targetLayers = timelineLayer.targetLayers;
-        if (targetLayers.size && targetLayers.has(layer.id)) {
-            frames = targetLayers.get(layer.id) as NonNullable<Array<number>>;
+        if (targetLayers.size && targetLayers.has(layer)) {
+            frames = targetLayers.get(layer) as NonNullable<Array<number>>;
         }
     }
 

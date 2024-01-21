@@ -1,4 +1,3 @@
-import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import type { Layer } from "@/core/domain/model/Layer";
 import { timelineLayer } from "@/timeline/domain/model/TimelineLayer";
 
@@ -11,14 +10,8 @@ import { timelineLayer } from "@/timeline/domain/model/TimelineLayer";
  * @method
  * @public
  */
-export const execute = (layer_id: number, color: string): void =>
+export const execute = (layer: Layer, color: string): void =>
 {
-    const scene = $getCurrentWorkSpace().scene;
-    const layer: Layer | null = scene.getLayer(layer_id);
-    if (!layer) {
-        return ;
-    }
-
     // 表示領域にElementがなければ終了
     const element: HTMLElement | undefined = timelineLayer.elements[layer.getDisplayIndex()];
     if (!element) {

@@ -17,17 +17,17 @@ import { execute as timelineLayerControllerUpdateNameElementService } from "../s
 export const execute = (layer: Layer): void =>
 {
     // レイヤー名の表示情報を更新
-    timelineLayerControllerUpdateNameElementService(layer.id, layer.name);
+    timelineLayerControllerUpdateNameElementService(layer, layer.name);
 
     // レイヤーカラーの表示情報を更新
-    timelineLayerControllerUpdateColorElementService(layer.id, layer.color);
+    timelineLayerControllerUpdateColorElementService(layer, layer.color);
 
     // レイヤーのハイライトの表示情報を更新
-    timelineLayerControllerUpdateLightIconElementService(layer.id, layer.light);
+    timelineLayerControllerUpdateLightIconElementService(layer, layer.light);
 
     // レイヤーの表示・非表示の表示情報を更新
-    timelineLayerControllerUpdateDisableIconStyleService(layer.id, layer.disable);
+    timelineLayerControllerUpdateDisableIconStyleService(layer, layer.disable);
 
     // ロックアイコンの表示情報を更新
-    timelineLayerControllerUpdateLockIconStyleService(layer.id, layer.lock);
+    timelineLayerControllerUpdateLockIconStyleService(layer, layer.lock);
 };

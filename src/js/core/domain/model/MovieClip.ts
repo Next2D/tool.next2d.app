@@ -6,6 +6,7 @@ import { execute as movieClipRunUseCase } from "@/core/application/MovieClip/use
 import type { ActionSaveObjectImpl } from "@/interface/ActionSaveObjectImpl";
 import { HistoryObjectImpl } from "@/interface/HistoryObjectImpl";
 import { $HISTORY_LIMIT } from "@/config/HistoryConfig";
+import { $clamp } from "@/global/GlobalUtil";
 
 /**
  * @description MovieClipの状態管理クラス
@@ -19,14 +20,12 @@ export class MovieClip extends Instance
 {
     private _$currentFrame: number;
     private _$leftFrame: number;
-    private _$layerId: number;
     private _$scrollX: number;
     private _$scrollY: number;
     private _$historyIndex: number;
     private _$active: boolean;
     private readonly _$labels: Map<number, string>;
     private readonly _$layers: Layer[];
-    private readonly _$layerMap: Map<number, Layer>;
     private readonly _$actions: Map<number, string>;
     private readonly _$sounds: Map<number, SoundObjectImpl[]>;
     private readonly _$selectedLayerIds: number[];
@@ -57,12 +56,6 @@ export class MovieClip extends Instance
          * @type {Map}
          * @private
          */
-        this._$layerMap = new Map();
-
-        /**
-         * @type {Map}
-         * @private
-         */
         this._$actions = new Map();
 
         /**
@@ -84,13 +77,6 @@ export class MovieClip extends Instance
          * @private
          */
         this._$leftFrame = 1;
-
-        /**
-         * @type {number}
-         * @default 1
-         * @private
-         */
-        this._$layerId = 0;
 
         /**
          * @type {number}
@@ -335,21 +321,17 @@ export class MovieClip extends Instance
         if (object.layers && object.layers.length) {
 
             // reset
-            this._$layerId = 0;
             this._$layers.length = 0;
-            this._$layerMap.clear();
 
             // セーブデータからLayerを複製
             for (let idx: number = 0; idx < object.layers.length; ++idx) {
 
                 // セーブデータの読み込み
                 const layer = new Layer();
-                layer.id = this._$layerId++;
                 layer.load(object.layers[idx]);
 
                 // 登録
                 this._$layers.push(layer);
-                this._$layerMap.set(layer.id, layer);
             }
 
         } else {
@@ -395,14 +377,10 @@ export class MovieClip extends Instance
      * @method
      * @public
      */
-    createLayer (name: string = ""): Layer
+    createLayer (): Layer
     {
-        const layerId: number = this._$layerId++;
         const layer = new Layer();
-
-        // set
-        layer.id   = layerId;
-        layer.name = name ? name : `Layer_${layerId}`;
+        layer.name  = `Layer_${this._$layers.length}`;
 
         return layer;
     }
@@ -419,9 +397,10 @@ export class MovieClip extends Instance
      */
     setLayer (layer: Layer, index: number): void
     {
-        this._$layers.splice(index, 0, layer);
-        this._$layerMap.set(layer.id, layer);
-        this._$layerId = this._$layers.length;
+        const targetIndex = $clamp(index, 0, this._$layers.length - 1);
+
+        // 指定のindexの前に挿入
+        this._$layers.splice(targetIndex, 0, layer);
     }
 
     /**
@@ -437,23 +416,21 @@ export class MovieClip extends Instance
     {
         const index = this._$layers.indexOf(layer);
         this._$layers.splice(index, 1);
-        this._$layerMap.delete(layer.id);
-        this._$layerId = this._$layers.length;
     }
 
     /**
      * @description 指定IDのLayerを返却
      *              Returns the Layer with the specified ID.
      *
-     * @param  {number} layer_id
+     * @param  {number} index
      * @return {Layer | null}
      * @method
      * @public
      */
-    getLayer (layer_id: number): Layer | null
+    getLayer (index: number): Layer | null
     {
-        return this._$layerMap.has(layer_id)
-            ? this._$layerMap.get(layer_id) as NonNullable<Layer>
+        return index in this._$layers
+            ? this._$layers[index] as NonNullable<Layer>
             : null;
     }
 

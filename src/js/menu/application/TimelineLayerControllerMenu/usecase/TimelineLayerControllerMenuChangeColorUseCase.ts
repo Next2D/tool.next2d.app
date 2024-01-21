@@ -21,22 +21,21 @@ export const execute = (event: Event): void =>
         return ;
     }
 
-    // アクティブなLayerオブジェクトを取得
-    const layerId = timelineLayer.targetLayers.keys().next().value;
-
-    // レイヤーElementの表示を更新
-    const scene = $getCurrentWorkSpace().scene;
-    const layer = scene.getLayer(layerId);
-    if (!layer || !layer.light) {
+    if (!timelineLayer.targetLayers.size) {
         return ;
     }
+
+    // アクティブなLayerオブジェクトを取得
+    const layer = timelineLayer.targetLayers.keys().next().value;
 
     // Layerオブジェクトの値を更新
     layer.color = colorElement.value;
 
     // ハイライトカラーを更新
-    timelineLayerControllerUpdateColorElementService(layerId, layer.color);
+    timelineLayerControllerUpdateColorElementService(layer, layer.color);
 
     // ハイライトの機能がonの時は表示も更新
-    timelineLayerControllerUpdateLightIconElementService(layerId, layer.light);
+    if (layer.light) {
+        timelineLayerControllerUpdateLightIconElementService(layer, layer.light);
+    }
 };

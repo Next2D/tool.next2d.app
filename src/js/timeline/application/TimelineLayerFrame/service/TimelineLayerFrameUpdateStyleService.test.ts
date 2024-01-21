@@ -7,8 +7,9 @@ describe("TimelineLayerFrameUpdateStyleServiceTest", () =>
     test("execute test", () =>
     {
         const workSpace = $getCurrentWorkSpace() || $createWorkSpace();
+        const layer = workSpace.scene.getLayer(0);
 
-        timelineLayer.targetLayers.set(0, [1]);
+        timelineLayer.targetLayers.set(layer, [1]);
 
         const div = document.createElement("div");
         div.dataset.layerIndex = "0";
