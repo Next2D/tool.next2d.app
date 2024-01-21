@@ -14,19 +14,13 @@ import { execute as timelineToolLayerCreateService } from "../service/TimelineTo
  *
  * @param  {number} [work_space_id = 0]
  * @param  {number} [library_id = -1]
- * @param  {string} [name = ""]
- * @param  {number} [index = -1]
- * @param  {string} [color = ""]
  * @return {void}
  * @method
  * @public
  */
 export const execute = (
     work_space_id: number = 0,
-    library_id: number = -1,
-    name: string = "",
-    index: number = -1,
-    color: string = ""
+    library_id: number = -1
 ): void => {
 
     // 指定がなければ起動中のWorkSpaceを利用する
@@ -48,13 +42,7 @@ export const execute = (
     }
 
     // レイヤーを追加
-    const newLayer: Layer | null = timelineToolLayerCreateService(
-        workSpace.id,
-        scene.id,
-        name,
-        index,
-        color
-    );
+    const newLayer: Layer | null = timelineToolLayerCreateService(workSpace.id, scene.id);
 
     // 失敗時はここで終了
     if (!newLayer) {

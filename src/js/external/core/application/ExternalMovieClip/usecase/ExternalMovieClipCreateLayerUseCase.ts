@@ -44,7 +44,9 @@ export const execute = (
     }
 
     // 作業履歴を登録
-    timelineToolLayerAddHistoryUseCase(work_space, movie_clip, newLayer, receiver);
+    timelineToolLayerAddHistoryUseCase(
+        work_space, movie_clip, newLayer, receiver
+    );
 
     // 画面表示されてる、WorkSpaceとMovieClipの場合は表示Elementを更新
     if (work_space.active && movie_clip.active) {
