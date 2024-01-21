@@ -7,7 +7,6 @@ import type { ActionSaveObjectImpl } from "@/interface/ActionSaveObjectImpl";
 import { HistoryObjectImpl } from "@/interface/HistoryObjectImpl";
 import { $HISTORY_LIMIT } from "@/config/HistoryConfig";
 import { $clamp } from "@/global/GlobalUtil";
-import { execute as timelineToolLayerAddHistoryUseCase } from "@/history/application/timeline/TimelineTool/LayerAdd/usecase/TimelineToolLayerAddHistoryUseCase";
 
 /**
  * @description MovieClipの状態管理クラス

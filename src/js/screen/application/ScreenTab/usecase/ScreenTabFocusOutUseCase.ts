@@ -3,6 +3,7 @@ import { execute as screenTabInactiveStyleService } from "../service/ScreenTabIn
 import { execute as screenTabGetListElementService } from "../service/ScreenTabGetListElementService";
 import { execute as screenTabGetElementService } from "../service/ScreenTabGetElementService";
 import { execute as workSpaceUpdateNameUseCase } from "@/core/application/WorkSpace/usecase/WorkSpaceUpdateNameUseCase";
+import { execute as externalWorkSpaceUpdateNameUseCase } from "@/external/core/application/ExternalWorkSpace/usecase/ExternalWorkSpaceUpdateNameUseCase";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 
@@ -17,6 +18,9 @@ import type { WorkSpace } from "@/core/domain/model/WorkSpace";
  */
 export const execute = (event: Event): void =>
 {
+    // 親のイベントを終了
+    event.stopPropagation();
+
     if (!event.target) {
         return ;
     }
@@ -38,33 +42,6 @@ export const execute = (event: Event): void =>
         return textElement.focus();
     }
 
-    const tabElement: HTMLElement | null = screenTabGetElementService(id);
-    if (!tabElement) {
-        return ;
-    }
-
-    const listElement: HTMLElement | null = screenTabGetListElementService(id);
-    if (!listElement) {
-        return ;
-    }
-
-    // 親のイベントを終了
-    event.stopPropagation();
-
-    // styleの更新
-    screenTabInactiveStyleService(textElement, tabElement);
-
-    // 移動を有効化
-    tabElement.draggable = true;
-
-    // 修正がなければ終了
-    if (name === workSpace.name) {
-        return ;
-    }
-
-    // リストの名前を更新
-    listElement.textContent = name;
-
-    // WorkSpaceの名前を更新
-    workSpaceUpdateNameUseCase(id, name);
+    // タブ名を変更
+    externalWorkSpaceUpdateNameUseCase(workSpace, name);
 };

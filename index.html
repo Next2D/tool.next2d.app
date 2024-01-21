@@ -229,25 +229,13 @@
         <div id="controller-tab-area">
           <div class="tab active" data-tab-type="controller-area-property"><span class="language" data-text="{{プロパティ}}">プロパティ</span></div>
           <div class="tab disable" data-tab-type="controller-area-library"><span class="language" data-text="{{ライブラリ}}">ライブラリ</span></div>
+          <div class="tab disable" data-tab-type="controller-area-history"><span class="language" data-text="{{履歴}}">履歴</span></div>
           <div class="tab disable" data-tab-type="controller-area-js">JavaScript</div>
           <div class="tab disable" data-tab-type="controller-area-plugin"><span class="language" data-text="{{プラグイン}}">プラグイン</span></div>
         </div>
 
         <!-- controller-area -->
         <div id="controller-area-property">
-            <!-- history -->
-            <div id="history-setting">
-                <div class="container-title" data-setting-name="history">
-                    <i class="active"></i>
-                    <span class="language" data-text="{{作業履歴}}">作業履歴</span>
-                </div>
-                
-                <div id="history-setting-view-area">
-                    <div class="history-setting-container">
-                        <div id="history-list"></div>
-                    </div>
-                </div>
-            </div>
             
             <!-- stage-setting -->
             <div id="stage-setting">
@@ -1048,6 +1036,11 @@
         <!-- plugin-area -->
         <div id="controller-area-plugin" style="display: none;">
           <div id="plugin-list-box"></div>
+        </div>
+
+        <!-- history-area -->
+        <div id="controller-area-history" style="display: none;">
+            <div id="history-list"></div>
         </div>
 
         <!-- ads -->
