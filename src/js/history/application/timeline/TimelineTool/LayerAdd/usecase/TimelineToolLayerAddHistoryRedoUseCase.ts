@@ -3,8 +3,7 @@ import type { InstanceImpl } from "@/interface/InstanceImpl";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
 import { execute as timelineScrollUpdateHeightService } from "@/timeline/application/TimelineScroll/service/TimelineScrollUpdateHeightService";
 import { execute as timelineLayerBuildElementUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerBuildElementUseCase";
-import { execute as timelineLayerAllClearSelectedElementService } from "@/timeline/application/TimelineLayer/service/TimelineLayerAllClearSelectedElementService";
-import { timelineLayer } from "@/timeline/domain/model/TimelineLayer";
+import { execute as timelineLayerControllerNormalSelectUseCase } from "@/timeline/application/TimelineLayerController/usecase/TimelineLayerControllerNormalSelectUseCase";
 
 /**
  * @description レイヤー追加作業を元に戻す
@@ -44,12 +43,8 @@ export const execute = (
 
     movieClip.setLayer(layer, index);
 
-    // 選択したレイヤー・フレーム Elementを初期化
-    timelineLayerAllClearSelectedElementService();
-
-    // 選択中の内部情報を初期化
-    // fixed logic
-    timelineLayer.clearSelectedTarget();
+    // 復元したレイヤーを選択状態に更新
+    timelineLayerControllerNormalSelectUseCase(layer);
 
     // タイムラインのyスクロールの高さを更新
     timelineScrollUpdateHeightService();

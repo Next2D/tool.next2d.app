@@ -7,7 +7,6 @@ describe("TimelineToolLayerAddCreateHistoryObjectServiceTest", () =>
     test("execute test", () =>
     {
         const layer = new Layer();
-        layer.id = 100;
         layer.name = "test_layer";
 
         const object = execute(1, 0, layer, 10);

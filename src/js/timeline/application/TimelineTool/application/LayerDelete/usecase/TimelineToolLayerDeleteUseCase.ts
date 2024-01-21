@@ -63,7 +63,9 @@ export const execute = (
         minIndex = Math.min(minIndex, index);
 
         // 作業履歴に登録
-        timelineToolLayerDeleteHistoryUseCase(scene, layer, index);
+        timelineToolLayerDeleteHistoryUseCase(
+            workSpace, scene, layer, index
+        );
 
         // レイヤー削除を実行
         scene.removeLayer(layer);

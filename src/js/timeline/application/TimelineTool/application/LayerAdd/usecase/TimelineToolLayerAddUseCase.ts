@@ -52,13 +52,13 @@ export const execute = (
     // 作業履歴を登録
     timelineToolLayerAddHistoryUseCase(workSpace, scene, newLayer);
 
+    // 追加したレイヤーをアクティブ表示にする
+    timelineLayerControllerNormalSelectUseCase(newLayer);
+
     // 画面表示されてる、WorkSpaceとMovieClipの場合は表示Elementを更新
     // タイムラインのyスクロールの高さを更新
     timelineScrollUpdateHeightService();
 
     // タイムラインを再描画
     timelineLayerBuildElementUseCase();
-
-    // 追加したレイヤーをアクティブ表示にする
-    timelineLayerControllerNormalSelectUseCase(newLayer);
 };

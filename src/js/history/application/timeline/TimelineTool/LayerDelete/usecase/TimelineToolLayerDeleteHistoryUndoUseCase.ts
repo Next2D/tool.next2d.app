@@ -1,33 +1,47 @@
-import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
-import type { Layer } from "@/core/domain/model/Layer";
+import type { LayerSaveObjectImpl } from "@/interface/LayerSaveObjectImpl";
+import type { InstanceImpl } from "@/interface/InstanceImpl";
+import type { MovieClip } from "@/core/domain/model/MovieClip";
 import { execute as timelineScrollUpdateHeightService } from "@/timeline/application/TimelineScroll/service/TimelineScrollUpdateHeightService";
 import { execute as timelineLayerBuildElementUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerBuildElementUseCase";
-import { execute as timelineLayerAllClearSelectedElementService } from "@/timeline/application/TimelineLayer/service/TimelineLayerAllClearSelectedElementService";
-import { timelineLayer } from "@/timeline/domain/model/TimelineLayer";
+import { execute as timelineLayerControllerNormalSelectUseCase } from "@/timeline/application/TimelineLayerController/usecase/TimelineLayerControllerNormalSelectUseCase";
+import { Layer } from "@/core/domain/model/Layer";
+import { $getWorkSpace } from "@/core/application/CoreUtil";
 
 /**
  * @description 削除したレイヤーを元の配置に元に戻す
  *              Restore deleted layers to their original placement
  *
- * @param  {Layer}  layer
+ * @param  {number} work_space_id
+ * @param  {number} library_id
+ * @param  {object} layer_object
  * @param  {number} index
  * @return {void}
  * @method
  * @public
  */
-export const execute = (layer: Layer, index: number): void =>
-{
+export const execute = (
+    work_space_id: number,
+    library_id: number,
+    layer_object: LayerSaveObjectImpl,
+    index: number
+): void => {
+
+    const workSpace = $getWorkSpace(work_space_id);
+    if (!workSpace) {
+        return ;
+    }
+
+    const movieClip: InstanceImpl<MovieClip> | null = workSpace.getLibrary(library_id);
+    if (!movieClip) {
+        return ;
+    }
+
     // Layerオブジェクトの内部情報に再登録
-    $getCurrentWorkSpace()
-        .scene
-        .setLayer(layer, index);
+    const layer = new Layer(layer_object);
+    movieClip.setLayer(layer, index);
 
-    // 選択したレイヤー・フレーム Elementを初期化
-    timelineLayerAllClearSelectedElementService();
-
-    // 選択中の内部情報を初期化
-    // fixed logic
-    timelineLayer.clearSelectedTarget();
+    // 復元したレイヤーを選択状に更新
+    timelineLayerControllerNormalSelectUseCase(layer);
 
     // タイムラインのyスクロールの高さを更新
     timelineScrollUpdateHeightService();
