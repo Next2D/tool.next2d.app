@@ -1,12 +1,10 @@
-import type { Layer } from "@/core/domain/model/Layer";
 import type { InstanceImpl } from "@/interface/InstanceImpl";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
-import { $getCurrentWorkSpace, $getWorkSpace } from "@/core/application/CoreUtil";
-import { execute as timelineLayerBuildElementUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerBuildElementUseCase";
-import { execute as timelineToolLayerAddHistoryUseCase } from "@/history/application/timeline/TimelineTool/LayerAdd/usecase/TimelineToolLayerAddHistoryUseCase";
-import { execute as timelineLayerControllerNormalSelectUseCase } from "@/timeline/application/TimelineLayerController/usecase/TimelineLayerControllerNormalSelectUseCase";
-import { execute as timelineScrollUpdateHeightService } from "@/timeline/application/TimelineScroll/service/TimelineScrollUpdateHeightService";
-import { execute as timelineToolLayerCreateService } from "../service/TimelineToolLayerCreateService";
+import { execute as externalMovieClipCreateLayerUseCase } from "@/external/core/application/ExternalMovieClip/usecase/ExternalMovieClipCreateLayerUseCase";
+import {
+    $getCurrentWorkSpace,
+    $getWorkSpace
+} from "@/core/application/CoreUtil";
 
 /**
  * @description タイムラインに新規レイヤーを追加する
@@ -42,23 +40,5 @@ export const execute = (
     }
 
     // レイヤーを追加
-    const newLayer: Layer | null = timelineToolLayerCreateService(workSpace.id, scene.id);
-
-    // 失敗時はここで終了
-    if (!newLayer) {
-        return ;
-    }
-
-    // 作業履歴を登録
-    timelineToolLayerAddHistoryUseCase(workSpace, scene, newLayer);
-
-    // 追加したレイヤーをアクティブ表示にする
-    timelineLayerControllerNormalSelectUseCase(newLayer);
-
-    // 画面表示されてる、WorkSpaceとMovieClipの場合は表示Elementを更新
-    // タイムラインのyスクロールの高さを更新
-    timelineScrollUpdateHeightService();
-
-    // タイムラインを再描画
-    timelineLayerBuildElementUseCase();
+    externalMovieClipCreateLayerUseCase(workSpace, scene);
 };

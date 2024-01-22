@@ -110,6 +110,6 @@ export class ExternalTimeline
             return ;
         }
 
-        timelineLayerControllerNormalSelectUseCase(externalLayer.id);
+        timelineLayerControllerNormalSelectUseCase(externalLayer._$body);
     }
 }

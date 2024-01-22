@@ -24,15 +24,16 @@ export class ExternalLayer
     }
 
     /**
-     * @description Layerオブジェクトの識別ID
-     *              Identification ID of the Layer object
+     * @description Layer本体を返却、内部処理以外でのアクセスは非推奨
+     *              Layer body returned, deprecated for access other than for internal processing
      *
-     * @member {number}
+     * @deprecated
+     * @return {Layer}
      * @readonly
      * @public
      */
-    get id (): number
+    get _$body (): Layer
     {
-        return this._$layer.id;
+        return this._$layer;
     }
 }
