@@ -1,9 +1,9 @@
-import type { ExternalMovieClip } from "@/external/core/domain/model/ExternalMovieClip";
-import type { ExternalWorkSpace } from "@/external/core/domain/model/ExternalWorkSpace";
 import { execute as timelineLayerControllerNormalSelectUseCase } from "@/timeline/application/TimelineLayerController/usecase/TimelineLayerControllerNormalSelectUseCase";
 import { execute as externalTimelineChageFrameUseCase } from "@/external/timeline/application/ExternalTimeline/usecase/ExternalTimelineChageFrameUseCase";
 import { execute as timelineToolLayerAddUseCase } from "@/timeline/application/TimelineTool/application/LayerAdd/usecase/TimelineToolLayerAddUseCase";
 import { $clamp } from "@/global/GlobalUtil";
+import type { WorkSpace } from "@/core/domain/model/WorkSpace";
+import type { MovieClip } from "@/core/domain/model/MovieClip";
 
 /**
  * @description タイムラインの外部APIクラス
@@ -13,30 +13,30 @@ import { $clamp } from "@/global/GlobalUtil";
  */
 export class ExternalTimeline
 {
-    private readonly _$externalMovieClip: ExternalMovieClip;
-    private readonly _$externalWorkSpace: ExternalWorkSpace;
+    private readonly _$workSpace: WorkSpace;
+    private readonly _$movieClip: MovieClip;
 
     /**
-     * @param {ExternalMovieClip} external_movie_clip
-     * @param {ExternalWorkSpace} external_work_space
+     * @param {WorkSpace} work_space
+     * @param {MovieClip} movie_clip
      * @constructor
      * @public
      */
     constructor (
-        external_movie_clip: ExternalMovieClip,
-        external_work_space: ExternalWorkSpace
+        work_space: WorkSpace,
+        movie_clip: MovieClip
     ) {
         /**
          * @type {ExternalMovieClip}
          * @private
          */
-        this._$externalMovieClip = external_movie_clip;
+        this._$workSpace = work_space;
 
         /**
          * @type {ExternalWorkSpace}
          * @private
          */
-        this._$externalWorkSpace = external_work_space;
+        this._$movieClip = movie_clip;
     }
 
     /**
@@ -52,11 +52,11 @@ export class ExternalTimeline
     {
         frame = $clamp(frame, 1, Number.MAX_VALUE);
 
-        if (this._$externalWorkSpace.active) {
+        if (this._$workSpace.active) {
             // アクティブなら表示も更新
             externalTimelineChageFrameUseCase(frame);
         } else {
-            this._$externalMovieClip.currentFrame = frame;
+            this._$movieClip.currentFrame = frame;
         }
     }
 
@@ -72,8 +72,8 @@ export class ExternalTimeline
      */
     addNewLayer (name: string = "", index: number = 0): void
     {
-        if (!this._$externalWorkSpace.active
-            || !this._$externalMovieClip.active
+        if (!this._$workSpace.active
+            || !this._$movieClip.active
         ) {
             // 表示されてなければ、データだけ登録
             this
@@ -87,8 +87,8 @@ export class ExternalTimeline
 
         // レイヤーを追加
         timelineToolLayerAddUseCase(
-            this._$externalWorkSpace.id,
-            this._$externalMovieClip.id
+            this._$workSpace.id,
+            this._$movieClip.id
         );
     }
 
@@ -103,13 +103,13 @@ export class ExternalTimeline
      */
     setSelectedLayer (index: number): void
     {
-        const externalLayers = this._$externalMovieClip.layers;
+        const layers = this._$movieClip.layers;
 
-        const externalLayer = externalLayers[index];
-        if (!externalLayer) {
+        const layer = layers[index];
+        if (!layer) {
             return ;
         }
 
-        timelineLayerControllerNormalSelectUseCase(externalLayer._$body);
+        timelineLayerControllerNormalSelectUseCase(layer);
     }
 }

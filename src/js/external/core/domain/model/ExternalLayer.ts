@@ -22,18 +22,4 @@ export class ExternalLayer
          */
         this._$layer = layer;
     }
-
-    /**
-     * @description Layer本体を返却、内部処理以外でのアクセスは非推奨
-     *              Layer body returned, deprecated for access other than for internal processing
-     *
-     * @deprecated
-     * @return {Layer}
-     * @readonly
-     * @public
-     */
-    get _$body (): Layer
-    {
-        return this._$layer;
-    }
 }

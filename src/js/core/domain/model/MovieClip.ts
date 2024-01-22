@@ -28,7 +28,7 @@ export class MovieClip extends Instance
     private readonly _$layers: Layer[];
     private readonly _$actions: Map<number, string>;
     private readonly _$sounds: Map<number, SoundObjectImpl[]>;
-    private readonly _$selectedLayerIds: number[];
+    private readonly _$selectedLayers: Map<Layer, number[]>;
     private readonly _$histories: HistoryObjectImpl[];
 
     /**
@@ -93,10 +93,10 @@ export class MovieClip extends Instance
         this._$scrollY = 0;
 
         /**
-         * @type {array}
+         * @type {Map}
          * @private
          */
-        this._$selectedLayerIds = [];
+        this._$selectedLayers = new Map();
 
         /**
          * @type {array}
@@ -171,16 +171,16 @@ export class MovieClip extends Instance
     }
 
     /**
-     * @description タイムラインで選択したLayerIdの配列を返却
-     *              Returns an array of LayerId's selected on the timeline
+     * @description タイムラインで選択したLayerの配列を返却
+     *              Returns an array of Layers selected on the timeline
      *
      * @member {array}
      * @readonly
      * @public
      */
-    get selectedLayerIds (): number[]
+    get selectedLayers (): Map<Layer, number[]>
     {
-        return this._$selectedLayerIds;
+        return this._$selectedLayers;
     }
 
     /**
@@ -283,6 +283,11 @@ export class MovieClip extends Instance
     {
         return new Promise((resolve) =>
         {
+            // 選択中のLayerを全て解放
+            if (this._$selectedLayers.size) {
+                this._$selectedLayers.clear();
+            }
+
             // 起動処理を実行
             movieClipRunUseCase(this);
 
@@ -303,6 +308,11 @@ export class MovieClip extends Instance
      */
     stop (): void
     {
+        // 選択中のLayerを全て解放
+        if (this._$selectedLayers.size) {
+            this._$selectedLayers.clear();
+        }
+
         // 状態を非アクティブに更新
         this._$active = false;
     }

@@ -3,6 +3,7 @@ import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import { ExternalItem } from "./ExternalItem";
 import { ExternalLayer } from "./ExternalLayer";
 import { execute as externalMovieClipCreateLayerUseCase } from "@/external/core/application/ExternalMovieClip/usecase/ExternalMovieClipCreateLayerUseCase";
+import { ExternalTimeline } from "@/external/timeline/domain/model/ExternalTimeline";
 
 /**
  * @description MovieClipの外部APIクラス
@@ -62,6 +63,14 @@ export class ExternalMovieClip extends ExternalItem
     get active (): boolean
     {
         return this._$movieClip.active;
+    }
+
+    get timeline (): ExternalTimeline
+    {
+        return new ExternalTimeline(
+            this._$workSpace,
+            this._$movieClip
+        );
     }
 
     /**

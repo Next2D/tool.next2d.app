@@ -1,8 +1,10 @@
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import { ExternalTimeline } from "@/external/timeline/domain/model/ExternalTimeline";
-import { ExternalMovieClip } from "@/external/core/domain/model/ExternalMovieClip";
 import { ExternalLibrary } from "@/external/controller/domain/model/ExternalLibrary";
 import { execute as externalWorkSpaceUpdateNameUseCase } from "@/external/core/application/ExternalWorkSpace/usecase/ExternalWorkSpaceUpdateNameUseCase";
+import type { ExternalMovieClip } from "./ExternalMovieClip";
+import type { InstanceImpl } from "@/interface/InstanceImpl";
+import type { MovieClip } from "@/core/domain/model/MovieClip";
 
 /**
  * @description WorkSpaceの外部APIクラス
@@ -82,9 +84,27 @@ export class ExternalWorkSpace
     getCurrentTimeline (): ExternalTimeline
     {
         return new ExternalTimeline(
-            new ExternalMovieClip(this._$workSpace, this._$workSpace.scene),
-            this
+            this._$workSpace,
+            this._$workSpace.scene
         );
+    }
+
+    /**
+     * @description 指定されたMovieClipを起動
+     *              Launch the specified MovieClip
+     *
+     * @param {ExternalMovieClip} external_movie_clip
+     * @return {Promise}
+     * @method
+     * @public
+     */
+    runMovieClip (external_movie_clip: ExternalMovieClip): Promise<void>
+    {
+        const movieClip: InstanceImpl<MovieClip> = this
+            ._$workSpace
+            .getLibrary(external_movie_clip.id);
+
+        return this._$workSpace.setScene(movieClip);
     }
 
     /**

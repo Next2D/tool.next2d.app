@@ -36,6 +36,38 @@ export const $getDragElement = (): HTMLElement | null =>
 };
 
 /**
+ * @type {boolean}
+ * @private
+ */
+let $doReloadScreen: boolean = false;
+
+/**
+ * @description スクリーンの再描画を後で行うかをセット
+ *              Sets whether the screen will be redrawn later
+ *
+ * @returns {void}
+ * @method
+ * @public
+ */
+export const setReloadLater = (): void =>
+{
+    $doReloadScreen = true;
+};
+
+/**
+ * @description スクリーンの再描画を後で行うかを判別
+ *              Determines if the screen will be redrawn later
+ *
+ * @returns {void}
+ * @method
+ * @public
+ */
+export const doReloadLater = (): boolean =>
+{
+    return $doReloadScreen;
+};
+
+/**
  * @description スクリーンの再描画を行う
  *              Redraw the screen.
  *
