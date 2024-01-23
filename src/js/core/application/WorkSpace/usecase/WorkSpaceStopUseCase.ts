@@ -28,18 +28,15 @@ export const execute = (work_space: WorkSpace): Promise<void> =>
         // タブを非アクティブに更新
         work_space.screenTab.disable();
 
-        // 現在のシーンを停止
-        work_space.scene.stop();
-
         // 全てのレイヤーを非表示にする
         timelineLayerAllElementDisplayNoneService();
 
         // 選択中のレイヤー・フレームの表示を初期化
         timelineLayerAllClearSelectedElementService();
 
-        // 選択中のレイヤー初期化
+        // 現在のシーンを停止
         // fixed logic
-        timelineLayer.clearSelectedTarget();
+        work_space.scene.stop();
 
         // 終了
         reslove();

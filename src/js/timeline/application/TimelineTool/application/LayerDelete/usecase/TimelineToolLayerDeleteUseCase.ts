@@ -82,7 +82,7 @@ export const execute = (
 
     // 選択中の内部情報を初期化
     // fixed logic
-    timelineLayer.clearSelectedTarget();
+    scene.clearSelectedLayer();
 
     // タイムラインを再描画
     timelineLayerBuildElementUseCase();

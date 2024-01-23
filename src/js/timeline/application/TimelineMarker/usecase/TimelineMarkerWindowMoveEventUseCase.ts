@@ -124,8 +124,13 @@ export const execute = (event: PointerEvent, loop_mode: boolean = false): void =
             return ;
         }
 
+        const frameElement: HTMLElement | null = element.parentElement;
+        if (!frameElement) {
+            return ;
+        }
+
         // マウスで指定したElementのフレームをセット
-        const frame: string | undefined = element.dataset.frame as string;
+        const frame: string | undefined = frameElement.dataset.frame as string;
         if (!frame) {
             return ;
         }

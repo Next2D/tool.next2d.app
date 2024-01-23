@@ -1,8 +1,8 @@
 import { EventType } from "@/tool/domain/event/EventType";
-import { timelineLayer } from "@/timeline/domain/model/TimelineLayer";
 import { execute as timelineMarkerWindowMoveEventUseCase } from "./TimelineMarkerWindowMoveEventUseCase";
 import { execute as timelineMarkerRemoveWindowEventUseCase } from "./TimelineMarkerRemoveWindowEventUseCase";
 import { execute as timelineLayerAllClearSelectedElementService } from "@/timeline/application/TimelineLayer/service/TimelineLayerAllClearSelectedElementService";
+import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 
 /**
  * @description マーカー移動用の関数をwindowに登録
@@ -23,7 +23,7 @@ export const execute = (event: PointerEvent): void =>
 
     // 選択情報を初期化
     // fixed logic
-    timelineLayer.clearSelectedTarget();
+    $getCurrentWorkSpace().scene.clearSelectedLayer();
 
     // windowにイベントを登録
     window.addEventListener(EventType.MOUSE_MOVE, timelineMarkerWindowMoveEventUseCase);

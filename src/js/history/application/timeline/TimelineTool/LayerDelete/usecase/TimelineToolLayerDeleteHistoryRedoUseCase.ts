@@ -2,7 +2,6 @@ import { $getWorkSpace } from "@/core/application/CoreUtil";
 import { execute as timelineScrollUpdateHeightService } from "@/timeline/application/TimelineScroll/service/TimelineScrollUpdateHeightService";
 import { execute as timelineLayerBuildElementUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerBuildElementUseCase";
 import { execute as timelineLayerAllClearSelectedElementService } from "@/timeline/application/TimelineLayer/service/TimelineLayerAllClearSelectedElementService";
-import { timelineLayer } from "@/timeline/domain/model/TimelineLayer";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { InstanceImpl } from "@/interface/InstanceImpl";
 
@@ -42,7 +41,7 @@ export const execute = (
 
     // 選択中の内部情報を初期化
     // fixed logic
-    timelineLayer.clearSelectedTarget();
+    movieClip.clearSelectedLayer();
 
     // タイムラインのyスクロールの高さを更新
     timelineScrollUpdateHeightService();

@@ -1,8 +1,8 @@
 import { execute as timelineFrameUpdateFrameElementService } from "@/timeline/application/TimelineFrame/service/TimelineFrameUpdateFrameElementService";
 import { execute as timelineMarkerMovePositionService } from "@/timeline/application/TimelineMarker/service/TimelineMarkerMovePositionService";
 import { execute as timelineLayerAllClearSelectedElementService } from "@/timeline/application/TimelineLayer/service/TimelineLayerAllClearSelectedElementService";
-import { timelineLayer } from "@/timeline/domain/model/TimelineLayer";
 import { $allHideMenu } from "@/menu/application/MenuUtil";
+import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 
 /**
  * @description タイムラインヘッダーのマウスダウンイベント処理関数
@@ -36,7 +36,7 @@ export const execute = (event: PointerEvent): void =>
 
     // 選択中の内部情報を初期化
     // fixed logic
-    timelineLayer.clearSelectedTarget();
+    $getCurrentWorkSpace().scene.clearSelectedLayer();
 
     // マウスで指定したElementのフレームをセット
     const frame: number = parseInt(element.dataset.frame as string);

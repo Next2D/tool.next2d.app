@@ -60,6 +60,9 @@ export class ExternalTimeline
         } else {
             this._$movieClip.currentFrame = frame;
         }
+
+        // 選択中のLayerを解放
+        this._$movieClip.clearSelectedLayer();
     }
 
     /**
