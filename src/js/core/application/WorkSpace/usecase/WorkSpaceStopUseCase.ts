@@ -4,7 +4,6 @@ import { execute as progressMenuUpdateMessageService } from "@/menu/application/
 import { execute as timelineLayerAllElementDisplayNoneService } from "@/timeline/application/TimelineLayer/service/TimelineLayerAllElementDisplayNoneService";
 import { execute as timelineLayerAllClearSelectedElementService } from "@/timeline/application/TimelineLayer/service/TimelineLayerAllClearSelectedElementService";
 import { $replace } from "@/language/application/LanguageUtil";
-import { timelineLayer } from "@/timeline/domain/model/TimelineLayer";
 
 /**
  * @description プロジェクトのを停止して、初期化
