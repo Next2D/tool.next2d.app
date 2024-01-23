@@ -41,7 +41,8 @@ export const execute = (
     movieClip.removeLayer(layer);
 
     if (workSpace.active && movieClip.active) {
-        // 選択したレイヤー・フレーム Elementを初期化
+
+        // 選択中のレイヤー・フレーム Elementを初期化
         timelineLayerAllClearSelectedElementService();
 
         // 選択中の内部情報を初期化

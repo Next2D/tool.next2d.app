@@ -3,6 +3,7 @@ import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { Layer } from "@/core/domain/model/Layer";
 import { execute as externalTimelineChageFrameUseCase } from "@/external/timeline/application/ExternalTimeline/usecase/ExternalTimelineChageFrameUseCase";
 import { execute as externalMovieClipCreateLayerUseCase } from "@/external/core/application/ExternalMovieClip/usecase/ExternalMovieClipCreateLayerUseCase";
+import { execute as timelineToolLayerAddHistoryUseCase } from "@/history/application/timeline/TimelineTool/LayerAdd/usecase/TimelineToolLayerAddHistoryUseCase";
 import { execute as externalTimelineLayerControllerNormalSelectUseCase } from "@/external/timeline/application/ExternalTimelineLayerController/usecase/ExternalTimelineLayerControllerNormalSelectUseCase";
 import { $clamp } from "@/global/GlobalUtil";
 import { ExternalLayer } from "@/external/core/domain/model/ExternalLayer";
@@ -89,7 +90,16 @@ export class ExternalTimeline
             index, name, color
         );
 
-        return layer ? new ExternalLayer(layer) : null;
+        if (!layer) {
+            return null;
+        }
+
+        // 履歴を登録
+        timelineToolLayerAddHistoryUseCase(
+            this._$workSpace, this._$movieClip, layer
+        );
+
+        return new ExternalLayer(layer);
     }
 
     /**
@@ -101,6 +111,10 @@ export class ExternalTimeline
      */
     editMovieClip (movie_clip: MovieClip): Promise<void>
     {
+        if (this._$movieClip === movie_clip) {
+            return Promise.resolve();
+        }
+
         this._$movieClip = movie_clip;
         return this._$workSpace.active
             ? movie_clip.run()

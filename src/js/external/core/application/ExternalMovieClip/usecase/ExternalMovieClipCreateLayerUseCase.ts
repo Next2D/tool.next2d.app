@@ -2,7 +2,6 @@ import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { Layer } from "@/core/domain/model/Layer";
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import { execute as timelineToolLayerCreateService } from "@/timeline/application/TimelineTool/application/LayerAdd/service/TimelineToolLayerCreateService";
-import { execute as timelineToolLayerAddHistoryUseCase } from "@/history/application/timeline/TimelineTool/LayerAdd/usecase/TimelineToolLayerAddHistoryUseCase";
 import { execute as timelineLayerBuildElementUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerBuildElementUseCase";
 import { execute as timelineLayerControllerNormalSelectUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerNormalSelectUseCase";
 import { execute as timelineScrollUpdateHeightService } from "@/timeline/application/TimelineScroll/service/TimelineScrollUpdateHeightService";
@@ -16,7 +15,6 @@ import { execute as timelineScrollUpdateHeightService } from "@/timeline/applica
  * @param  {string}  [name = ""]
  * @param  {number}  [index = 0]
  * @param  {string}  [color = ""]
- * @param  {boolean} [receiver = false]
  * @return {Layer}
  * @method
  * @public
@@ -26,8 +24,7 @@ export const execute = (
     movie_clip: MovieClip,
     index: number,
     name: string = "",
-    color: string = "",
-    receiver: boolean = false
+    color: string = ""
 ): Layer | null => {
 
     // レイヤーを追加
@@ -40,11 +37,6 @@ export const execute = (
     if (!newLayer) {
         return null;
     }
-
-    // 作業履歴を登録
-    timelineToolLayerAddHistoryUseCase(
-        work_space, movie_clip, newLayer, receiver
-    );
 
     const frame = movie_clip.currentFrame;
 

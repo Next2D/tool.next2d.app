@@ -15,8 +15,8 @@ describe("TimelineToolLayerAddCreateHistoryObjectServiceTest", () =>
         // 配列の順番が崩れてもいいようにテストケースを残す
         expect(object.args[0]).toBe(1);
         expect(object.args[1]).toBe(0);
-        expect(object.args[2]).toBe(layer.name);
-        expect(object.args[3]).toBe(10);
+        expect(object.args[2]).toBe(10);
+        expect(object.args[3]).toBe(layer.name);
         expect(object.args[4]).toBe(layer.color);
     });
 });

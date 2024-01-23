@@ -35,7 +35,7 @@ export const execute = (history_object: HistoryObjectImpl): void =>
             timelineToolLayerAddHistoryUndoUseCase(
                 args[0] as number, // workSpaceId
                 args[1] as number, // MovieClipId
-                args[3] as number  // Index
+                args[2] as number  // Index
             );
             break;
 

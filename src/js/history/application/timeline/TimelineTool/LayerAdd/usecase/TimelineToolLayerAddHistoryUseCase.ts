@@ -41,7 +41,7 @@ export const execute = (
         );
     }
 
-    const index = movie_clip.layers.indexOf(layer as NonNullable<Layer>);
+    const index = movie_clip.layers.indexOf(layer);
 
     const historyObject = timelineToolLayerAddCreateHistoryObjectService(
         work_space.id, movie_clip.id, layer, index
