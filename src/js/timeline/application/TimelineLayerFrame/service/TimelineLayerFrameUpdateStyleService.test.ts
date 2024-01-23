@@ -1,15 +1,20 @@
 import { execute } from "./TimelineLayerFrameUpdateStyleService";
-import { timelineLayer } from "../../../domain/model/TimelineLayer";
 import { $getCurrentWorkSpace, $createWorkSpace } from "../../../../core/application/CoreUtil";
+import type { MovieClip } from "../../../../core/domain/model/MovieClip";
+import type { Layer } from "../../../../core/domain/model/Layer";
 
 describe("TimelineLayerFrameUpdateStyleServiceTest", () =>
 {
     test("execute test", () =>
     {
         const workSpace = $getCurrentWorkSpace() || $createWorkSpace();
-        const layer = workSpace.scene.getLayer(0);
+        const scene: MovieClip = workSpace.scene;
+        const layer = scene.getLayer(0) as NonNullable<Layer>;
 
-        timelineLayer.targetLayers.set(layer, [1]);
+        layer.targetFrame = 1;
+        layer.selectedFrame.start = 1;
+        layer.selectedFrame.end = 1;
+        scene.selectedLayer(layer);
 
         const div = document.createElement("div");
         div.dataset.layerIndex = "0";

@@ -2,6 +2,7 @@ import { execute } from "./TimelineLayerAllClearSelectedElementService";
 import { timelineLayer } from "../../../domain/model/TimelineLayer";
 import { $getCurrentWorkSpace, $createWorkSpace } from "../../../../core/application/CoreUtil";
 import type { MovieClip } from "../../../../core/domain/model/MovieClip";
+import type { Layer } from "../../../../core/domain/model/Layer";
 
 describe("TimelineLayerAllClearSelectedElementServiceTest", () =>
 {
@@ -9,11 +10,7 @@ describe("TimelineLayerAllClearSelectedElementServiceTest", () =>
     {
         const workSpace = $getCurrentWorkSpace() || $createWorkSpace();
         const scene: MovieClip = workSpace.scene;
-
-        const layer = scene.getLayer(0);
-        if (!layer) {
-            throw new Error("Layer undefined");
-        }
+        const layer = scene.getLayer(0) as NonNullable<Layer>;
 
         layer.targetFrame = 1;
         layer.selectedFrame.start = 1;
@@ -22,6 +19,7 @@ describe("TimelineLayerAllClearSelectedElementServiceTest", () =>
         scene.selectedLayer(layer);
 
         const layerElement = document.createElement("div");
+        layer.element = layerElement;
         layerElement.setAttribute("class", "active");
 
         timelineLayer.elements.length = 0;

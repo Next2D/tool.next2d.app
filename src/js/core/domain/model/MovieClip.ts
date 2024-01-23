@@ -194,8 +194,8 @@ export class MovieClip extends Instance
      */
     selectedLayer (layer: Layer): void
     {
-        // 単体選択なので、都度初期化を行う
-        this._$selectedLayers.length = 0;
+        // 選択中のLayerを初期化
+        movieClipClearSelectedLayerService(this);
 
         // 選択したレイヤーをセット
         this._$selectedLayers.push(layer);

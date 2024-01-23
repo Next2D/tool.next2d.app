@@ -28,8 +28,6 @@ export const execute = (
     movie_clip.selectedLayer(layer);
 
     // レイヤーを初期化して、選択状態をセット
-    // fixed logic
-    layer.clear();
     layer.targetFrame = frame;
     layer.selectedFrame.start = frame;
     layer.selectedFrame.end   = frame;

@@ -19,13 +19,16 @@ export const execute = (): void =>
 
         const layer = scene.selectedLayers[idx];
 
-        const layerElement: HTMLElement | undefined = timelineLayer.elements[layer.getDisplayIndex()];
+        const layerElement: HTMLElement | null = layer.element;
         if (!layerElement) {
             continue;
         }
 
         // レイヤーのアクティブ表示を初期化
         layerElement.classList.remove("active");
+
+        // 選択したHTMLElementをnullに更新
+        layer.element = null;
 
         const startFrame = layer.selectedFrame.start;
         const endFrame   = layer.selectedFrame.end;

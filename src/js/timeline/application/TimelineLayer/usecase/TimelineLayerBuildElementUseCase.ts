@@ -32,6 +32,7 @@ export const execute = (): void =>
     }
 
     const workSpace = $getCurrentWorkSpace();
+    const scene = workSpace.scene;
 
     const layers = workSpace.scene.layers;
     if (!layers.length) {
@@ -49,7 +50,6 @@ export const execute = (): void =>
     const maxFrame: number    = Math.ceil(timelineHeader.clientWidth / frameWidth) + 1;
     const leftFrame: number   = $getLeftFrame();
 
-    const targetLayers = timelineLayer.targetLayers;
     let currentHeight: number = 0;
     let index: number = 0;
     for (let idx = $getTopIndex(); layers.length > idx; ++idx) {
@@ -97,8 +97,11 @@ export const execute = (): void =>
         // Layerオブジェクトの状態に合わせて、表示Elementの情報を更新
         timelineLayerControllerUpdateElementStyleUseCase(layer);
 
-        if (targetLayers.size && targetLayers.has(layer)) {
+        if (scene.selectedLayers.indexOf(layer) > -1) {
+            layer.element = element;
             timelineLayerActiveElementService(element);
+        } else {
+            layer.element = null;
         }
 
         // フレームの高さを加算

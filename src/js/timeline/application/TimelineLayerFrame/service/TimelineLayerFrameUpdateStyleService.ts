@@ -13,15 +13,13 @@ import { $getLayerFromElement } from "../../TimelineUtil";
  */
 export const execute = (element: HTMLElement, left_frame: number): void =>
 {
-    let frames: number[] | null = null;
-
     const layer = $getLayerFromElement(element);
-    if (layer) {
-        const targetLayers = timelineLayer.targetLayers;
-        if (targetLayers.size && targetLayers.has(layer)) {
-            frames = targetLayers.get(layer) as NonNullable<Array<number>>;
-        }
+    if (!layer) {
+        return;
     }
+
+    const startFrame = layer.selectedFrame.start;
+    const endFrame   = layer.selectedFrame.end;
 
     const children: HTMLCollection = element.children;
     const length: number = children.length;
@@ -43,7 +41,7 @@ export const execute = (element: HTMLElement, left_frame: number): void =>
         }
 
         // アクティブフレームのクラスをセット
-        if (frames && frames.indexOf(frame) > -1) {
+        if (frame >= startFrame  && endFrame >= frame) {
             classValues.push("frame-active");
         }
 

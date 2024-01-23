@@ -24,7 +24,7 @@ import { execute as timelineScrollUpdateHeightService } from "@/timeline/applica
 export const execute = (
     work_space: WorkSpace,
     movie_clip: MovieClip,
-    index: number = -1,
+    index: number,
     name: string = "",
     color: string = "",
     receiver: boolean = false

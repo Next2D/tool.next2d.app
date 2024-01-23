@@ -29,13 +29,16 @@ export const execute = (layer: Layer, frame: number): void =>
         return ;
     }
 
+    // レイヤーElementをセット
+    layer.element = layerElement;
+
     // レイヤーElementをアクティブ表示に更新
     timelineLayerActiveElementService(layerElement);
 
-    // フレーム側のElement
+    // フレーム側のElementを取得
     const frameElement = layerElement.lastElementChild as NonNullable<HTMLElement>;
 
-    // 現在のフレーム番号から対象のフレームElementを取得
+    // 指定のフレーム番号から対象のフレームElementを取得
     const frameIndex = frame - $getLeftFrame();
 
     const element: HTMLElement | null = frameElement.children[frameIndex] as HTMLElement;

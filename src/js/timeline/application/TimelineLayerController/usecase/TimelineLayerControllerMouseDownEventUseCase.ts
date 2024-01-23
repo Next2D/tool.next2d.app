@@ -1,4 +1,4 @@
-import { $getLayerFromElement } from "../../TimelineUtil";
+import { $getLayerFromElement, $getTopIndex } from "../../TimelineUtil";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { timelineFrame } from "@/timeline/domain/model/TimelineFrame";
 
@@ -39,7 +39,7 @@ export const execute = (event: PointerEvent): void =>
 
         default:
             externalTimeline.setSelectedLayer(
-                parseInt(element.dataset.layerIndex as string),
+                $getTopIndex() + parseInt(element.dataset.layerIndex as string),
                 timelineFrame.currentFrame
             );
             break;

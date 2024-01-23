@@ -2,7 +2,6 @@ import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import { ExternalItem } from "./ExternalItem";
 import { ExternalLayer } from "./ExternalLayer";
-import { execute as externalMovieClipCreateLayerUseCase } from "@/external/core/application/ExternalMovieClip/usecase/ExternalMovieClipCreateLayerUseCase";
 import { ExternalTimeline } from "@/external/timeline/domain/model/ExternalTimeline";
 
 /**
@@ -14,6 +13,7 @@ export class ExternalMovieClip extends ExternalItem
 {
     private readonly _$movieClip: MovieClip;
     private readonly _$workSpace: WorkSpace;
+    private readonly _$externalTimeline: ExternalTimeline;
 
     /**
      * @constructor
@@ -37,6 +37,12 @@ export class ExternalMovieClip extends ExternalItem
          * @private
          */
         this._$movieClip = movie_clip;
+
+        /**
+         * @type {ExternalTimeline}
+         * @private
+         */
+        this._$externalTimeline = new ExternalTimeline(work_space, movie_clip);
     }
 
     /**
@@ -65,12 +71,17 @@ export class ExternalMovieClip extends ExternalItem
         return this._$movieClip.active;
     }
 
+    /**
+     * @description MovieClip固有のタイムラインを返却
+     *              Returns a MovieClip-specific timeline
+     *
+     * @member {ExternalTimeline}
+     * @readonly
+     * @public
+     */
     get timeline (): ExternalTimeline
     {
-        return new ExternalTimeline(
-            this._$workSpace,
-            this._$movieClip
-        );
+        return this._$externalTimeline;
     }
 
     /**
@@ -108,32 +119,5 @@ export class ExternalMovieClip extends ExternalItem
         }
 
         return externalLayers;
-    }
-
-    /**
-     * @description 新規レイヤーを作成
-     *              Create a new layer
-     *
-     * @param  {string} [name = ""]
-     * @param  {number} [index = 0]
-     * @param  {string} [color = ""]
-     * @return {ExternalLayer | null}
-     * @method
-     * @public
-     */
-    createLayer (
-        name: string = "",
-        index: number = 0,
-        color: string = ""
-    ): ExternalLayer | null {
-
-        // 新規レイヤーを作成して、指定indexに配置
-        const layer = externalMovieClipCreateLayerUseCase(
-            this._$workSpace,
-            this._$movieClip,
-            name, index, color
-        );
-
-        return layer ? new ExternalLayer(layer) : null;
     }
 }

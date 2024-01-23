@@ -1,4 +1,6 @@
+import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { execute as timelineLayerFrameNormalSelectUseCase } from "./TimelineLayerFrameNormalSelectUseCase";
+import { $getTopIndex } from "../../TimelineUtil";
 
 /**
  * @description フレームエリアのマウスダウンの実行関数
@@ -21,6 +23,9 @@ export const execute = (event: PointerEvent): void =>
         return ;
     }
 
+    // タイムラインのAPIに指定したLayerとフレームを送る
+    const externalTimeline = $getCurrentWorkSpace().getExternalTimeline();
+
     switch (true) {
 
         case event.altKey:
@@ -30,7 +35,10 @@ export const execute = (event: PointerEvent): void =>
             break;
 
         default:
-            timelineLayerFrameNormalSelectUseCase(element);
+            externalTimeline.setSelectedLayer(
+                $getTopIndex() + parseInt(element.dataset.layerIndex as string),
+                parseInt(element.dataset.frame as NonNullable<string>)
+            );
             break;
 
     }
