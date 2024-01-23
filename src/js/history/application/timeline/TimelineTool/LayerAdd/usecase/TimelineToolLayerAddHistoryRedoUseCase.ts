@@ -1,7 +1,6 @@
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { InstanceImpl } from "@/interface/InstanceImpl";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
-import { Layer } from "@/core/domain/model/Layer";
 import { execute as externalMovieClipCreateLayerUseCase } from "@/external/core/application/ExternalMovieClip/usecase/ExternalMovieClipCreateLayerUseCase";
 /**
  * @description レイヤー追加作業を元に戻す
