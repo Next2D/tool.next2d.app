@@ -3,6 +3,7 @@ import type { MovieClipSaveObjectImpl } from "@/interface/MovieClipSaveObjectImp
 import { Instance } from "./Instance";
 import { Layer } from "./Layer";
 import { execute as movieClipRunUseCase } from "@/core/application/MovieClip/usecase/MovieClipRunUseCase";
+import { execute as movieClipClearSelectedLayerService } from "@/core/application/MovieClip/service/MovieClipClearSelectedLayerService";
 import type { ActionSaveObjectImpl } from "@/interface/ActionSaveObjectImpl";
 import { HistoryObjectImpl } from "@/interface/HistoryObjectImpl";
 import { $HISTORY_LIMIT } from "@/config/HistoryConfig";
@@ -300,15 +301,6 @@ export class MovieClip extends Instance
     {
         return new Promise((resolve) =>
         {
-            // 選択中のLayerを初期化
-            for (let idx = 0; idx < this._$selectedLayers.length; ++idx) {
-                const layer = this._$selectedLayers[idx];
-                layer.clear();
-            }
-
-            // 選択中のLayerを初期化
-            this._$selectedLayers.length = 0;
-
             // 起動処理を実行
             movieClipRunUseCase(this);
 
@@ -329,10 +321,8 @@ export class MovieClip extends Instance
      */
     stop (): void
     {
-        // 選択中のLayerを全て解放
-        if (this._$selectedLayers.length) {
-            this._$selectedLayers.length = 0;
-        }
+        // 選択中のLayerを初期化
+        movieClipClearSelectedLayerService(this);
 
         // 状態を非アクティブに更新
         this._$active = false;

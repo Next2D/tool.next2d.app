@@ -1,7 +1,7 @@
 import type { Layer } from "@/core/domain/model/Layer";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
-import { execute as timelineLayerControllerNormalSelectUseCase } from "@/timeline/application/TimelineLayerController/usecase/TimelineLayerControllerNormalSelectUseCase";
+import { execute as timelineLayerNormalSelectUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerNormalSelectUseCase";
 
 /**
  * @description 指定のレイヤーとフレームを選択状に更新
@@ -18,10 +18,10 @@ export const execute = (
     frame: number
 ): void => {
 
-    // 現在、表示されていなければ、ここで終了
+    // 表示されているプロジェクトであれば表示を更新
     if (work_spcae.active && movie_clip.active) {
         // 対象のElementをアクティブ表示に更新
-        timelineLayerControllerNormalSelectUseCase(layer, frame);
+        timelineLayerNormalSelectUseCase(layer, frame);
     }
 
     // 内部情報を更新

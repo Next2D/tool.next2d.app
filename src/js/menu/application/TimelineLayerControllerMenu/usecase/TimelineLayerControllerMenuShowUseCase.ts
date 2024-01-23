@@ -6,7 +6,7 @@ import {
     $allHideMenu,
     $getMenu
 } from "@/menu/application/MenuUtil";
-import { execute as timelineLayerControllerNormalSelectUseCase } from "@/timeline/application/TimelineLayerController/usecase/TimelineLayerControllerNormalSelectUseCase";
+import { execute as timelineLayerControllerNormalSelectUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerNormalSelectUseCase";
 import { timelineLayer } from "@/timeline/domain/model/TimelineLayer";
 import { execute as timelineLayerActiveElementService } from "@/timeline/application/TimelineLayer/service/TimelineLayerActiveElementService";
 import { execute as timelineLayerControllerMenuSetColorService } from "../service/TimelineLayerControllerMenuSetColorService";
