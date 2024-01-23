@@ -1,4 +1,3 @@
-import { timelineLayer } from "@/timeline/domain/model/TimelineLayer";
 import { $getLeftFrame } from "../../TimelineUtil";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 

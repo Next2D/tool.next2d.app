@@ -1,4 +1,3 @@
-import { timelineLayer } from "@/timeline/domain/model/TimelineLayer";
 import { $getLayerFromElement } from "../../TimelineUtil";
 
 /**

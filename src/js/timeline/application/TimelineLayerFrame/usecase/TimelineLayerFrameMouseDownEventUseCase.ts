@@ -1,5 +1,4 @@
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
-import { execute as timelineLayerFrameNormalSelectUseCase } from "./TimelineLayerFrameNormalSelectUseCase";
 import { $getTopIndex } from "../../TimelineUtil";
 
 /**
