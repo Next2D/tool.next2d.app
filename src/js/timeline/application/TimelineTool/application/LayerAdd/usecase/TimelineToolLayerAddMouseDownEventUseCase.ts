@@ -19,6 +19,6 @@ export const execute = (event: PointerEvent): void =>
     event.stopPropagation();
     event.preventDefault();
 
-    // 新規レイヤーを追加
+    // レイヤーを追加
     timelineToolLayerAddUseCase();
 };

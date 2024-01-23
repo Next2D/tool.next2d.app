@@ -1,10 +1,11 @@
 import type { LayerSaveObjectImpl } from "@/interface/LayerSaveObjectImpl";
 import type { LayerModeImpl } from "@/interface/LayerModeImpl";
+import type { FrameObjectImpl } from "@/interface/FrameObjectImpl";
+import type { CharacterSaveObjectImpl } from "@/interface/CharacterSaveObjectImpl";
+import type { EmptyCharacterSaveObjectImpl } from "@/interface/EmptyCharacterSaveObjectImpl";
 import { execute as timelineLayerControllerGetHighlightColorService } from "@/timeline/application/TimelineLayerController/service/TimelineLayerControllerGetHighlightColorService";
 import { Character } from "./Character";
 import { EmptyCharacter } from "./EmptyCharacter";
-import type { CharacterSaveObjectImpl } from "@/interface/CharacterSaveObjectImpl";
-import type { EmptyCharacterSaveObjectImpl } from "@/interface/EmptyCharacterSaveObjectImpl";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { $getTopIndex } from "@/timeline/application/TimelineUtil";
 
@@ -25,8 +26,10 @@ export class Layer
     private _$mode: LayerModeImpl;
     private _$maskId: null | number;
     private _$guideId: null | number;
+    private _$targetFrame: number;
     private readonly _$characters: Character[];
     private readonly _$emptys: EmptyCharacter[];
+    private readonly _$selectedFrame: FrameObjectImpl;
 
     /**
      * @param {object} [object = null]
@@ -102,6 +105,21 @@ export class Layer
          * @private
          */
         this._$emptys = [];
+
+        /**
+         * @type {number}
+         * @private
+         */
+        this._$targetFrame = 0;
+
+        /**
+         * @type {object}
+         * @private
+         */
+        this._$selectedFrame = {
+            "start": 0,
+            "end": 0
+        };
 
         if (object) {
             this.load(object);
@@ -245,6 +263,35 @@ export class Layer
     }
 
     /**
+     * @description 最初に選択したフレーム
+     *              First selected frame
+     *
+     * @member {string}
+     * @public
+     */
+    get targetFrame (): number
+    {
+        return this._$targetFrame;
+    }
+    set targetFrame (frame: number)
+    {
+        this._$targetFrame = frame;
+    }
+
+    /**
+     * @description フレーム選択の範囲
+     *              Frame Selection Range
+     *
+     * @member {object}
+     * @readonly
+     * @public
+     */
+    get selectedFrame (): FrameObjectImpl
+    {
+        return this._$selectedFrame;
+    }
+
+    /**
      * @description レイヤー内のDisplayObject配列
      *              DisplayObject array in layer
      *
@@ -283,6 +330,21 @@ export class Layer
         const scene = $getCurrentWorkSpace().scene;
         const index = scene.layers.indexOf(this);
         return index === -1 ? index : index - $getTopIndex();
+    }
+
+    /**
+     * @description 表示で利用している内部情報を初期化
+     *              Initialize internal information used in the display
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    clear (): void
+    {
+        this._$targetFrame = 0;
+        this._$selectedFrame.start = 0;
+        this._$selectedFrame.end   = 0;
     }
 
     /**

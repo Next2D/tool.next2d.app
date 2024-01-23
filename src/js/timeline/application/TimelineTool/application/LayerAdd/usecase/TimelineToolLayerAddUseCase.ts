@@ -1,44 +1,29 @@
-import type { InstanceImpl } from "@/interface/InstanceImpl";
-import type { MovieClip } from "@/core/domain/model/MovieClip";
-import { execute as externalMovieClipCreateLayerUseCase } from "@/external/core/application/ExternalMovieClip/usecase/ExternalMovieClipCreateLayerUseCase";
-import {
-    $getCurrentWorkSpace,
-    $getWorkSpace
-} from "@/core/application/CoreUtil";
+import type { Layer } from "@/core/domain/model/Layer";
+import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
+import { ExternalTimeline } from "@/external/timeline/domain/model/ExternalTimeline";
 
 /**
  * @description タイムラインに新規レイヤーを追加する
  *              Adding a new layer to the timeline
  *
- * @param  {number} [work_space_id = 0]
- * @param  {number} [library_id = -1]
  * @return {void}
  * @method
  * @public
  */
-export const execute = (
-    work_space_id: number = 0,
-    library_id: number = -1
-): void => {
+export const execute = (): void =>
+{
+    const workSpace = $getCurrentWorkSpace();
+    const scene = workSpace.scene;
 
-    // 指定がなければ起動中のWorkSpaceを利用する
-    const workSpace = work_space_id !== 0
-        ? $getWorkSpace(work_space_id)
-        : $getCurrentWorkSpace();
+    // タイムラインのAPIを起動
+    const externalTimeline = new ExternalTimeline(workSpace, scene);
 
-    if (!workSpace) {
-        return ;
-    }
-
-    // 指定がなければ、アクティブなMovieClipを利用する
-    const scene: InstanceImpl<MovieClip>  = library_id === -1
-        ? workSpace.scene
-        : workSpace.getLibrary(library_id);
-
-    if (!scene) {
-        return ;
+    let index = 0;
+    if (scene.selectedLayers.length) {
+        const layer = scene.selectedLayers[0] as NonNullable<Layer>;
+        index = scene.layers.indexOf(layer);
     }
 
     // レイヤーを追加
-    externalMovieClipCreateLayerUseCase(workSpace, scene);
+    externalTimeline.addNewLayer(index);
 };

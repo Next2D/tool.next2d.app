@@ -13,8 +13,8 @@ import {
  *
  * @param  {number} [work_space_id = 0]
  * @param  {number} [library_id = -1]
- * @param  {string} [name = ""]
  * @param  {number} [target_index = -1]
+ * @param  {string} [name = ""]
  * @param  {string} [color = ""]
  * @return {Layer}
  * @method
@@ -23,8 +23,8 @@ import {
 export const execute = (
     work_space_id: number = 0,
     library_id: number = -1,
-    name: string = "",
     target_index: number = -1,
+    name: string = "",
     color: string = ""
 ): Layer | null => {
 

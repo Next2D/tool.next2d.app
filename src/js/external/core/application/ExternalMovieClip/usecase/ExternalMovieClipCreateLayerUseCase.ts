@@ -24,8 +24,8 @@ import { execute as timelineScrollUpdateHeightService } from "@/timeline/applica
 export const execute = (
     work_space: WorkSpace,
     movie_clip: MovieClip,
-    name: string = "",
     index: number = -1,
+    name: string = "",
     color: string = "",
     receiver: boolean = false
 ): Layer | null => {
@@ -34,9 +34,7 @@ export const execute = (
     const newLayer: Layer | null = timelineToolLayerCreateService(
         work_space.id,
         movie_clip.id,
-        name,
-        index,
-        color
+        index, name, color
     );
 
     if (!newLayer) {

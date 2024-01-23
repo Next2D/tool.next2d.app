@@ -28,7 +28,7 @@ export class MovieClip extends Instance
     private readonly _$layers: Layer[];
     private readonly _$actions: Map<number, string>;
     private readonly _$sounds: Map<number, SoundObjectImpl[]>;
-    private readonly _$selectedLayers: Map<Layer, number[]>;
+    private readonly _$selectedLayers: Layer[];
     private readonly _$histories: HistoryObjectImpl[];
 
     /**
@@ -93,10 +93,10 @@ export class MovieClip extends Instance
         this._$scrollY = 0;
 
         /**
-         * @type {Map}
+         * @type {array}
          * @private
          */
-        this._$selectedLayers = new Map();
+        this._$selectedLayers = [];
 
         /**
          * @type {array}
@@ -178,7 +178,7 @@ export class MovieClip extends Instance
      * @readonly
      * @public
      */
-    get selectedLayers (): Map<Layer, number[]>
+    get selectedLayers (): Layer[]
     {
         return this._$selectedLayers;
     }
@@ -284,8 +284,8 @@ export class MovieClip extends Instance
         return new Promise((resolve) =>
         {
             // 選択中のLayerを全て解放
-            if (this._$selectedLayers.size) {
-                this._$selectedLayers.clear();
+            if (this._$selectedLayers.length) {
+                this._$selectedLayers.length = 0;
             }
 
             // 起動処理を実行
@@ -309,8 +309,8 @@ export class MovieClip extends Instance
     stop (): void
     {
         // 選択中のLayerを全て解放
-        if (this._$selectedLayers.size) {
-            this._$selectedLayers.clear();
+        if (this._$selectedLayers.length) {
+            this._$selectedLayers.length = 0;
         }
 
         // 状態を非アクティブに更新

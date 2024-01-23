@@ -1,9 +1,10 @@
-import { execute as timelineLayerControllerNormalSelectUseCase } from "@/timeline/application/TimelineLayerController/usecase/TimelineLayerControllerNormalSelectUseCase";
 import { execute as externalTimelineChageFrameUseCase } from "@/external/timeline/application/ExternalTimeline/usecase/ExternalTimelineChageFrameUseCase";
-import { execute as timelineToolLayerAddUseCase } from "@/timeline/application/TimelineTool/application/LayerAdd/usecase/TimelineToolLayerAddUseCase";
+import { execute as externalMovieClipCreateLayerUseCase } from "@/external/core/application/ExternalMovieClip/usecase/ExternalMovieClipCreateLayerUseCase";
+import { execute as externalTimelineLayerControllerNormalSelectUseCase } from "@/external/timeline/application/ExternalTimelineLayerController/usecase/ExternalTimelineLayerControllerNormalSelectUseCase";
 import { $clamp } from "@/global/GlobalUtil";
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
+import { ExternalLayer } from "@/external/core/domain/model/ExternalLayer";
 
 /**
  * @description タイムラインの外部APIクラス
@@ -64,32 +65,27 @@ export class ExternalTimeline
      * @description 新規レイヤーを追加
      *              Add new layer
      *
-     * @param  {string} [name = ""]
      * @param  {number} [index = 0]
-     * @return {void}
+     * @param  {string} [name = ""]
+     * @param  {string} [color = ""]
+     * @return {voiExternalLayer | nulld}
      * @method
      * @public
      */
-    addNewLayer (name: string = "", index: number = 0): void
-    {
-        if (!this._$workSpace.active
-            || !this._$movieClip.active
-        ) {
-            // 表示されてなければ、データだけ登録
-            this
-                ._$externalMovieClip
-                .createLayer(name, index);
-            return ;
-        }
+    addNewLayer (
+        index: number = 0,
+        name: string = "",
+        color: string = ""
+    ): ExternalLayer | null {
 
-        // 指定されたレイヤーを選択状態にする
-        this.setSelectedLayer(index);
-
-        // レイヤーを追加
-        timelineToolLayerAddUseCase(
-            this._$workSpace.id,
-            this._$movieClip.id
+        // 新規レイヤーを追加
+        const layer = externalMovieClipCreateLayerUseCase(
+            this._$workSpace,
+            this._$movieClip,
+            index, name, color
         );
+
+        return layer ? new ExternalLayer(layer) : null;
     }
 
     /**
@@ -97,12 +93,16 @@ export class ExternalTimeline
      *              Activate the layer with the specified index value
      *
      * @param  {number} index
+     * @param  {number} [frame = 0]
      * @return {void}
      * @method
      * @public
      */
-    setSelectedLayer (index: number): void
-    {
+    setSelectedLayer (
+        index: number,
+        frame: number = 0
+    ): void {
+
         const layers = this._$movieClip.layers;
 
         const layer = layers[index];
@@ -110,6 +110,9 @@ export class ExternalTimeline
             return ;
         }
 
-        timelineLayerControllerNormalSelectUseCase(layer);
+        // 指定のレイヤーを選択状態に更新
+        externalTimelineLayerControllerNormalSelectUseCase(
+            this._$workSpace, this._$movieClip, layer, frame
+        );
     }
 }

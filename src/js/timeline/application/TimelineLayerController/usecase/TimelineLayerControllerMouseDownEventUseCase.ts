@@ -1,5 +1,8 @@
-import { $getLayerFromElement } from "../../TimelineUtil";
 import { execute as timelineLayerControllerNormalSelectUseCase } from "./TimelineLayerControllerNormalSelectUseCase";
+import {
+    $getLayerFromElement,
+    $getTopIndex
+} from "../../TimelineUtil";
 
 /**
  * @description レイヤーのコントローラーエリアのマウスダウン処理関数
@@ -22,6 +25,7 @@ export const execute = (event: PointerEvent): void =>
     }
 
     // 指定のLayerオブジェクトを取得
+    const index = $getTopIndex() + parseInt(element.dataset.layerIndex as string);
     const layer = $getLayerFromElement(element);
     if (!layer) {
         return ;

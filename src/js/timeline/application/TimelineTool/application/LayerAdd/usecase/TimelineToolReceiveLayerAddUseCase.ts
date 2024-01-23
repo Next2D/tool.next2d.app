@@ -32,9 +32,9 @@ export const execute = (message: ShareReceiveMessageImpl): void =>
     externalMovieClipCreateLayerUseCase(
         workSpace,
         movieClip,
-        message.data[2] as NonNullable<string>,
-        message.data[3] as NonNullable<number>,
-        message.data[4] as NonNullable<string>,
+        message.data[2] as NonNullable<number>, // index
+        message.data[3] as NonNullable<string>, // name
+        message.data[4] as NonNullable<string>, // color
         true
     );
 };
