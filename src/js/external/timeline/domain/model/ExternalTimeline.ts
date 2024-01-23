@@ -73,7 +73,7 @@ export class ExternalTimeline
      * @param  {number} [index = 0]
      * @param  {string} [name = ""]
      * @param  {string} [color = ""]
-     * @return {voiExternalLayer | nulld}
+     * @return {ExternalLayer | null}
      * @method
      * @public
      */
@@ -99,7 +99,7 @@ export class ExternalTimeline
             this._$workSpace, this._$movieClip, layer
         );
 
-        return new ExternalLayer(layer);
+        return new ExternalLayer(this._$workSpace, this._$movieClip, layer);
     }
 
     /**

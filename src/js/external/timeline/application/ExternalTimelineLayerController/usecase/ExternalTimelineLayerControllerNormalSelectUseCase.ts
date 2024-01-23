@@ -2,6 +2,7 @@ import type { Layer } from "@/core/domain/model/Layer";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import { execute as timelineLayerNormalSelectUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerNormalSelectUseCase";
+import { execute as externalMovieClipSelectedLayer } from "@/external/core/application/ExternalMovieClip/service/ExternalMovieClipSelectedLayer";
 
 /**
  * @description 指定のレイヤーとフレームを選択状に更新
@@ -25,10 +26,5 @@ export const execute = (
     }
 
     // 内部情報を更新
-    movie_clip.selectedLayer(layer);
-
-    // レイヤーを初期化して、選択状態をセット
-    layer.targetFrame = frame;
-    layer.selectedFrame.start = frame;
-    layer.selectedFrame.end   = frame;
+    externalMovieClipSelectedLayer(movie_clip, layer, frame);
 };

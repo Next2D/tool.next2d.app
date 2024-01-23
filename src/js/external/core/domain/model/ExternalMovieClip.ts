@@ -115,7 +115,11 @@ export class ExternalMovieClip extends ExternalItem
 
         const externalLayers = [];
         for (let idx = 0; idx < layers.length; ++idx) {
-            externalLayers.push(new ExternalLayer(layers[idx]));
+            externalLayers.push(new ExternalLayer(
+                this._$workSpace,
+                this._$movieClip,
+                layers[idx]
+            ));
         }
 
         return externalLayers;

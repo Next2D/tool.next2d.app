@@ -5,6 +5,7 @@ import { execute as timelineToolLayerCreateService } from "@/timeline/applicatio
 import { execute as timelineLayerBuildElementUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerBuildElementUseCase";
 import { execute as timelineLayerControllerNormalSelectUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerNormalSelectUseCase";
 import { execute as timelineScrollUpdateHeightService } from "@/timeline/application/TimelineScroll/service/TimelineScrollUpdateHeightService";
+import { execute as externalMovieClipSelectedLayer } from "@/external/core/application/ExternalMovieClip/service/ExternalMovieClipSelectedLayer";
 
 /**
  * @description 指定のMovieClipにレイヤーを追加
@@ -52,14 +53,8 @@ export const execute = (
         timelineLayerControllerNormalSelectUseCase(newLayer, frame);
     }
 
-    // 内部情報を更新
     // 追加したレイヤーを選択状態に更新
-    movie_clip.selectedLayer(newLayer);
-
-    // 追加したレイヤーのフレームを選択状に更新
-    newLayer.targetFrame = frame;
-    newLayer.selectedFrame.start = frame;
-    newLayer.selectedFrame.end   = frame;
+    externalMovieClipSelectedLayer(movie_clip, newLayer, frame);
 
     return newLayer;
 };
