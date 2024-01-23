@@ -1,8 +1,6 @@
-import { execute as timelineLayerControllerNormalSelectUseCase } from "./TimelineLayerControllerNormalSelectUseCase";
-import {
-    $getLayerFromElement,
-    $getTopIndex
-} from "../../TimelineUtil";
+import { $getLayerFromElement } from "../../TimelineUtil";
+import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
+import { timelineFrame } from "@/timeline/domain/model/TimelineFrame";
 
 /**
  * @description レイヤーのコントローラーエリアのマウスダウン処理関数
@@ -25,11 +23,13 @@ export const execute = (event: PointerEvent): void =>
     }
 
     // 指定のLayerオブジェクトを取得
-    const index = $getTopIndex() + parseInt(element.dataset.layerIndex as string);
     const layer = $getLayerFromElement(element);
     if (!layer) {
         return ;
     }
+
+    // タイムラインのAPIを起動
+    const externalTimeline = $getCurrentWorkSpace().getExternalTimeline();
 
     switch (true) {
 
@@ -38,7 +38,10 @@ export const execute = (event: PointerEvent): void =>
             break;
 
         default:
-            timelineLayerControllerNormalSelectUseCase(layer);
+            externalTimeline.setSelectedLayer(
+                parseInt(element.dataset.layerIndex as string),
+                timelineFrame.currentFrame
+            );
             break;
 
     }

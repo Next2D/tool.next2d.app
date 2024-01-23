@@ -3,7 +3,6 @@ import { execute as timelineMarkerMovePositionService } from "@/timeline/applica
 import { execute as timelineLayerFrameActiveElementService } from "../service/TimelineLayerFrameActiveElementService";
 import { execute as timelineLayerActiveElementService } from "@/timeline/application/TimelineLayer/service/TimelineLayerActiveElementService";
 import { execute as timelineLayerAllClearSelectedElementService } from "@/timeline/application/TimelineLayer/service/TimelineLayerAllClearSelectedElementService";
-import { execute as timelineLayerRegisterLayerAndFrameService } from "@/timeline/application/TimelineLayer/service/TimelineLayerRegisterLayerAndFrameService";
 import { timelineLayer } from "@/timeline/domain/model/TimelineLayer";
 import { $getLayerFromElement } from "../../TimelineUtil";
 
@@ -41,7 +40,6 @@ export const execute = (element: HTMLElement): void =>
 
     // 選択したElementからフレーム番号を取得
     const frame: number = parseInt(element.dataset.frame as NonNullable<string>);
-    timelineLayerRegisterLayerAndFrameService(layer.id, frame);
 
     // フレーム情報を更新
     timelineFrameUpdateFrameElementService(frame);

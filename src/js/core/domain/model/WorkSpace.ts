@@ -20,6 +20,7 @@ import {
     $TIMELINE_DEFAULT_FRAME_HEIGHT_SIZE
 } from "@/config/TimelineConfig";
 import { $clamp } from "@/global/GlobalUtil";
+import { ExternalTimeline } from "@/external/timeline/domain/model/ExternalTimeline";
 
 /**
  * @description プロジェクトのユニークID
@@ -51,6 +52,7 @@ export class WorkSpace
     private readonly _$propertyAreaState: UserPropertyAreaStateObjectImpl;
     private readonly _$controllerAreaState: UserControllerAreaStateObjectImpl;
     private readonly _$plugins: Map<any, any>;
+    private readonly _$externalTimeline: ExternalTimeline;
 
     /**
      * @constructor
@@ -155,6 +157,12 @@ export class WorkSpace
         this._$controllerAreaState = {
             "width": $CONTROLLER_DEFAULT_WIDTH_SIZE
         };
+
+        /**
+         * @type {ExternalTimeline}
+         * @private
+         */
+        this._$externalTimeline = new ExternalTimeline(this, this._$root);
 
         // /**
         //  * @type {Map}
@@ -383,6 +391,19 @@ export class WorkSpace
     }
 
     /**
+     * @description タイムラインのAPIを返却
+     *              Launch Timeline API
+     *
+     * @return {ExternalTimeline}
+     * @method
+     * @public
+     */
+    getExternalTimeline (): ExternalTimeline
+    {
+        return this._$externalTimeline;
+    }
+
+    /**
      * @description 既存のシーン(MovieClip)を終了して、指定のシーン(MovieClip)を起動する
      *              Exit an existing scene (MovieClip) and start the specified scene (MovieClip)
      *
@@ -398,7 +419,10 @@ export class WorkSpace
 
         // 指定のMovieClipを起動
         this._$scene = movie_clip;
-        return movie_clip.run();
+
+        return this
+            ._$externalTimeline
+            .editMovieClip(movie_clip);
     }
 
     /**

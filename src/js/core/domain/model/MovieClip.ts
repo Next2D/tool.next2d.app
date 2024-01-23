@@ -184,6 +184,23 @@ export class MovieClip extends Instance
     }
 
     /**
+     * @description
+     *
+     * @param  {Layer} layer
+     * @return {void}
+     * @method
+     * @public
+     */
+    selectedLayer (layer: Layer): void
+    {
+        // 単体選択なので、都度初期化を行う
+        this._$selectedLayers.length = 0;
+
+        // 選択したレイヤーをセット
+        this._$selectedLayers.push(layer);
+    }
+
+    /**
      * @description タイムラインのスクロールのx座標
      *              x-coordinate of timeline scrolling
      *
@@ -283,10 +300,14 @@ export class MovieClip extends Instance
     {
         return new Promise((resolve) =>
         {
-            // 選択中のLayerを全て解放
-            if (this._$selectedLayers.length) {
-                this._$selectedLayers.length = 0;
+            // 選択中のLayerを初期化
+            for (let idx = 0; idx < this._$selectedLayers.length; ++idx) {
+                const layer = this._$selectedLayers[idx];
+                layer.clear();
             }
+
+            // 選択中のLayerを初期化
+            this._$selectedLayers.length = 0;
 
             // 起動処理を実行
             movieClipRunUseCase(this);

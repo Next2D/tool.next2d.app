@@ -1,5 +1,6 @@
 import { timelineLayer } from "@/timeline/domain/model/TimelineLayer";
 import { $getLeftFrame } from "../../TimelineUtil";
+import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 
 /**
  * @description 全てのレイヤーElementのアクティブ情報をリセット
@@ -11,32 +12,30 @@ import { $getLeftFrame } from "../../TimelineUtil";
  */
 export const execute = (): void =>
 {
-    const frames = timelineLayer
-        .targetLayers
-        .values()
-        .next()
-        .value;
+    const scene = $getCurrentWorkSpace().scene;
 
     const leftFrame = $getLeftFrame();
-    const length: number = timelineLayer.elements.length;
-    for (let idx: number = 0; length > idx; ++idx) {
+    for (let idx = 0; scene.selectedLayers.length > idx; ++idx) {
 
-        const layerElement = timelineLayer.elements[idx];
+        const layer = scene.selectedLayers[idx];
 
-        // 非アクティブならスキップ
-        if (!layerElement.classList.contains("active")) {
+        const layerElement: HTMLElement | undefined = timelineLayer.elements[layer.getDisplayIndex()];
+        if (!layerElement) {
             continue;
         }
 
         // レイヤーのアクティブ表示を初期化
         layerElement.classList.remove("active");
 
+        const startFrame = layer.selectedFrame.start;
+        const endFrame   = layer.selectedFrame.end;
+
+        // フレーム側のElementを更新
         const frameElement = layerElement.lastElementChild as NonNullable<HTMLElement>;
-
         const children = frameElement.children;
-        for (let idx: number = 0; idx < frames.length; ++idx) {
+        for (let frame: number = startFrame; endFrame >= frame; ++frame) {
 
-            const frameIndex = frames[idx] - leftFrame;
+            const frameIndex = frame - leftFrame;
 
             const element: HTMLElement | undefined = children[frameIndex] as HTMLElement;
             if (!element) {

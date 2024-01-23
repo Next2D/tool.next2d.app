@@ -1,14 +1,25 @@
 import { execute } from "./TimelineLayerAllClearSelectedElementService";
 import { timelineLayer } from "../../../domain/model/TimelineLayer";
 import { $getCurrentWorkSpace, $createWorkSpace } from "../../../../core/application/CoreUtil";
+import type { MovieClip } from "../../../../core/domain/model/MovieClip";
 
 describe("TimelineLayerAllClearSelectedElementServiceTest", () =>
 {
     test("execute test", (): void =>
     {
         const workSpace = $getCurrentWorkSpace() || $createWorkSpace();
+        const scene: MovieClip = workSpace.scene;
 
-        timelineLayer.targetLayers.set(0, [1, 2]);
+        const layer = scene.getLayer(0);
+        if (!layer) {
+            throw new Error("Layer undefined");
+        }
+
+        layer.targetFrame = 1;
+        layer.selectedFrame.start = 1;
+        layer.selectedFrame.end   = 2;
+
+        scene.selectedLayer(layer);
 
         const layerElement = document.createElement("div");
         layerElement.setAttribute("class", "active");
@@ -29,7 +40,7 @@ describe("TimelineLayerAllClearSelectedElementServiceTest", () =>
 
         frameElement2.setAttribute("class", "frame-active");
 
-        expect(timelineLayer.targetLayers.size).toBe(1);
+        expect(scene.selectedLayers.length).toBe(1);
         expect(layerElement.classList.contains("active")).toBe(true);
         expect(frameElement1.classList.contains("frame-active")).toBe(true);
         expect(frameElement2.classList.contains("frame-active")).toBe(true);

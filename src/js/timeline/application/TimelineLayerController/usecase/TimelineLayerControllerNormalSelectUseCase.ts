@@ -1,8 +1,6 @@
 import type { Layer } from "@/core/domain/model/Layer";
-import { timelineFrame } from "@/timeline/domain/model/TimelineFrame";
 import { $getLeftFrame } from "../../TimelineUtil";
 import { execute as timelineLayerFrameActiveElementService } from "@/timeline/application/TimelineLayerFrame/service/TimelineLayerFrameActiveElementService";
-import { execute as timelineLayerRegisterLayerAndFrameService } from "@/timeline/application/TimelineLayer/service/TimelineLayerRegisterLayerAndFrameService";
 import { execute as timelineLayerActiveElementService } from "@/timeline/application/TimelineLayer/service/TimelineLayerActiveElementService";
 import { execute as timelineLayerAllClearSelectedElementService } from "@/timeline/application/TimelineLayer/service/TimelineLayerAllClearSelectedElementService";
 import { timelineLayer } from "@/timeline/domain/model/TimelineLayer";
@@ -12,45 +10,34 @@ import { timelineLayer } from "@/timeline/domain/model/TimelineLayer";
  *              Processing function for normal layer controller area selection (without Alt and Shift)
  *
  * @param  {Layer} layer
+ * @param  {number} frame
  * @return {void}
  * @method
  * @public
  */
-export const execute = (layer: Layer): void =>
+export const execute = (layer: Layer, frame: number): void =>
 {
+    // 全てのレイヤー・フレーム Elementを非アクティブにする
+    timelineLayerAllClearSelectedElementService();
+
     // 表示Elementがなければ終了
     const layerElement: HTMLElement | undefined = timelineLayer.elements[layer.getDisplayIndex()];
     if (!layerElement) {
         return ;
     }
 
-    const element: HTMLElement | null = layerElement.lastElementChild as NonNullable<HTMLElement>;
+    // レイヤーElementをアクティブ表示に更新
+    timelineLayerActiveElementService(layerElement);
 
-    // 全てのレイヤー・フレーム Elementを非アクティブにする
-    timelineLayerAllClearSelectedElementService();
-
-    // 選択中の内部情報を初期化
-    // fixed logic
-    timelineLayer.clearSelectedTarget();
+    // フレーム側のElement
+    const frameElement = layerElement.lastElementChild as NonNullable<HTMLElement>;
 
     // 現在のフレーム番号から対象のフレームElementを取得
-    const frameIndex = timelineFrame.currentFrame - $getLeftFrame();
+    const frameIndex = frame - $getLeftFrame();
 
-    const frameElement: HTMLElement | null = element.children[frameIndex] as HTMLElement;
-    if (frameElement) {
+    const element: HTMLElement | null = frameElement.children[frameIndex] as HTMLElement;
+    if (element) {
         // 対象のフレームElementをアクティブ表示にする
-        timelineLayerFrameActiveElementService(frameElement);
-
-        // 選択情報を登録
-        const frame = parseInt(frameElement.dataset.frame as string);
-        timelineLayerRegisterLayerAndFrameService(layer, frame);
-    } else {
-        // Elementが表示されてない時は指定レイヤーと現在のフレーム番号をアクティブにする
-        timelineLayerRegisterLayerAndFrameService(
-            layer, timelineFrame.currentFrame
-        );
+        timelineLayerFrameActiveElementService(element);
     }
-
-    // レイヤーElementをアクティブ表示にする
-    timelineLayerActiveElementService(layerElement);
 };

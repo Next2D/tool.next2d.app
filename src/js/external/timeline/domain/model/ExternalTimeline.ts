@@ -1,9 +1,10 @@
+import type { WorkSpace } from "@/core/domain/model/WorkSpace";
+import type { MovieClip } from "@/core/domain/model/MovieClip";
+import type { Layer } from "@/core/domain/model/Layer";
 import { execute as externalTimelineChageFrameUseCase } from "@/external/timeline/application/ExternalTimeline/usecase/ExternalTimelineChageFrameUseCase";
 import { execute as externalMovieClipCreateLayerUseCase } from "@/external/core/application/ExternalMovieClip/usecase/ExternalMovieClipCreateLayerUseCase";
 import { execute as externalTimelineLayerControllerNormalSelectUseCase } from "@/external/timeline/application/ExternalTimelineLayerController/usecase/ExternalTimelineLayerControllerNormalSelectUseCase";
 import { $clamp } from "@/global/GlobalUtil";
-import type { WorkSpace } from "@/core/domain/model/WorkSpace";
-import type { MovieClip } from "@/core/domain/model/MovieClip";
 import { ExternalLayer } from "@/external/core/domain/model/ExternalLayer";
 
 /**
@@ -15,7 +16,7 @@ import { ExternalLayer } from "@/external/core/domain/model/ExternalLayer";
 export class ExternalTimeline
 {
     private readonly _$workSpace: WorkSpace;
-    private readonly _$movieClip: MovieClip;
+    private _$movieClip: MovieClip;
 
     /**
      * @param {WorkSpace} work_space
@@ -89,23 +90,36 @@ export class ExternalTimeline
     }
 
     /**
+     * @description 指定のMovieClipを編集モードに
+     * @param  {MovieClip} movie_clip
+     * @return {void}
+     * @method
+     * @public
+     */
+    editMovieClip (movie_clip: MovieClip): Promise<void>
+    {
+        this._$movieClip = movie_clip;
+        return this._$workSpace.active
+            ? movie_clip.run()
+            : Promise.resolve();
+    }
+
+    /**
      * @description 指定したindex値のレイヤーをアクティブにする
      *              Activate the layer with the specified index value
      *
      * @param  {number} index
-     * @param  {number} [frame = 0]
+     * @param  {number} frame
      * @return {void}
      * @method
      * @public
      */
     setSelectedLayer (
         index: number,
-        frame: number = 0
+        frame: number
     ): void {
 
-        const layers = this._$movieClip.layers;
-
-        const layer = layers[index];
+        const layer: Layer | undefined = this._$movieClip.layers[index];
         if (!layer) {
             return ;
         }
