@@ -4,7 +4,8 @@ import {
     $TIMIELINE_TOOL_SCRIPT_NEW_REGISTER_COMMAND,
     $TIMIELINE_TOOL_SCRIPT_UPDATE_COMMAND,
     $TIMIELINE_TOOL_SCRIPT_DELETE_COMMAND,
-    $SCREEN_TAB_NAME_UPDATE_COMMAND
+    $SCREEN_TAB_NAME_UPDATE_COMMAND,
+    $LAYER_NAME_UPDATE_COMMAND,
 } from "@/config/HistoryConfig";
 
 /**
@@ -36,6 +37,9 @@ export const execute = (command: string): string =>
 
         case $SCREEN_TAB_NAME_UPDATE_COMMAND:
             return "プロジェクト名を変更";
+
+        case $LAYER_NAME_UPDATE_COMMAND:
+            return "レイヤー名を変更";
 
         default:
             break;

@@ -87,3 +87,12 @@ export const $HISTORY_REDO_COMMAND: string = "history_redo";
  * @constant
  */
 export const $SCREEN_TAB_NAME_UPDATE_COMMAND: string = "screen_tab_name_update";
+
+/**
+ * @description レイヤー名の更新履歴の識別コマンド名
+ *              Layer Name Update History Identification Command Name
+ *
+ * @type {string}
+ * @constant
+ */
+export const $LAYER_NAME_UPDATE_COMMAND: string = "layer_name_update";
