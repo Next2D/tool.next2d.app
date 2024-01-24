@@ -1,6 +1,7 @@
 import type { Layer } from "@/core/domain/model/Layer";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
+import { execute as externalLayerUpdateNameUseCase } from "@/external/core/application/ExternalLayer/usecase/ExternalLayerUpdateNameUseCase";
 
 /**
  * @description Layerの外部APIクラス
@@ -10,6 +11,8 @@ import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 export class ExternalLayer
 {
     private readonly _$layer: Layer;
+    private readonly _$workSpace: WorkSpace;
+    private readonly _$movieClip: MovieClip;
 
     /**
      * @param {Layer} layer
@@ -56,5 +59,18 @@ export class ExternalLayer
         if (!name) {
             name = "Layer";
         }
+
+        // 変更がなければ終了
+        if (this._$layer.name === name) {
+            return ;
+        }
+
+        // レイヤー名を更新
+        externalLayerUpdateNameUseCase(
+            this._$workSpace, this._$movieClip, this._$layer, name
+        );
+
+        // 作業履歴を登録
+
     }
 }

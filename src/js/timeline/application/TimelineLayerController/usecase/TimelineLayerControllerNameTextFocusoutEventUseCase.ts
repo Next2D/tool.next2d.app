@@ -1,5 +1,7 @@
+import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { $getLayerFromElement } from "../../TimelineUtil";
 import { execute as timelineLayerControllerNameTextInactiveStyleService } from "../service/TimelineLayerControllerNameTextInactiveStyleService";
+import { execute as externalLayerUpdateNameUseCase } from "@/external/core/application/ExternalLayer/usecase/ExternalLayerUpdateNameUseCase";
 
 /**
  * @description テキスト編集終了のユースケース
@@ -30,6 +32,10 @@ export const execute = (event: FocusEvent): void =>
         name = "Layer";
     }
 
-    // Layerオブジェクトの名前を更新
-    layer.name = name;
+    const workSpace = $getCurrentWorkSpace();
+
+    // Layerオブジェクトの名前を更新、Elementの更新はしない
+    externalLayerUpdateNameUseCase(
+        workSpace, workSpace.scene, layer, name, false
+    );
 };

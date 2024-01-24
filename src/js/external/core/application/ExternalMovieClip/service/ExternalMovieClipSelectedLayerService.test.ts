@@ -1,8 +1,8 @@
-import { execute } from "./ExternalMovieClipSelectedLayer";
+import { execute } from "./ExternalMovieClipSelectedLayerService";
 import { MovieClip } from "../../../../../core/domain/model/MovieClip";
 import { Layer } from "../../../../../core/domain/model/Layer";
 
-describe("ExternalMovieClipSelectedLayerTest", () =>
+describe("ExternalMovieClipSelectedLayerServiceTest", () =>
 {
     test("execute test", (): void =>
     {

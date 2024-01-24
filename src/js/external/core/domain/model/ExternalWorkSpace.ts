@@ -69,7 +69,6 @@ export class ExternalWorkSpace
     }
     set name (name: string)
     {
-        // データ更新
         externalWorkSpaceUpdateNameUseCase(this._$workSpace, name);
     }
 

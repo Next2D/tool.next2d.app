@@ -2,7 +2,7 @@ import type { Layer } from "@/core/domain/model/Layer";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import { execute as timelineLayerNormalSelectUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerNormalSelectUseCase";
-import { execute as externalMovieClipSelectedLayer } from "@/external/core/application/ExternalMovieClip/service/ExternalMovieClipSelectedLayer";
+import { execute as externalMovieClipSelectedLayerService } from "@/external/core/application/ExternalMovieClip/service/ExternalMovieClipSelectedLayerService";
 
 /**
  * @description 指定のレイヤーとフレームを選択状に更新
@@ -26,5 +26,5 @@ export const execute = (
     }
 
     // 内部情報を更新
-    externalMovieClipSelectedLayer(movie_clip, layer, frame);
+    externalMovieClipSelectedLayerService(movie_clip, layer, frame);
 };
