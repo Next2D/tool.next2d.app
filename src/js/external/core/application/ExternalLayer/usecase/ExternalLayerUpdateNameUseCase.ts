@@ -24,9 +24,6 @@ export const execute = (
     element_update: boolean = true
 ): void => {
 
-    // 内部データを更新
-    layer.name = name;
-
     // API経由で、表示中ならElementを更新
     if (element_update && work_space.active && movie_clip.active) {
         const layerElement = timelineLayer.elements[layer.getDisplayIndex()];
@@ -42,4 +39,7 @@ export const execute = (
         const element = elements[0] as NonNullable<HTMLElement>;
         element.textContent = name;
     }
+
+    // 内部データを更新
+    layer.name = name;
 };

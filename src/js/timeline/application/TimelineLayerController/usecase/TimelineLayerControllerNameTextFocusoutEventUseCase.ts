@@ -2,6 +2,7 @@ import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { $getLayerFromElement } from "../../TimelineUtil";
 import { execute as timelineLayerControllerNameTextInactiveStyleService } from "../service/TimelineLayerControllerNameTextInactiveStyleService";
 import { execute as externalLayerUpdateNameUseCase } from "@/external/core/application/ExternalLayer/usecase/ExternalLayerUpdateNameUseCase";
+import { execute as timelineLayerControllerLayerNameUpdateHistoryUseCase } from "@/history/application/timeline/TimelineLayerController/LayerName/usecase/TimelineLayerControllerLayerNameUpdateHistoryUseCase";
 
 /**
  * @description テキスト編集終了のユースケース
@@ -33,6 +34,11 @@ export const execute = (event: FocusEvent): void =>
     }
 
     const workSpace = $getCurrentWorkSpace();
+
+    // 作業履歴を登録
+    timelineLayerControllerLayerNameUpdateHistoryUseCase(
+        workSpace, workSpace.scene, layer, name
+    );
 
     // Layerオブジェクトの名前を更新、Elementの更新はしない
     externalLayerUpdateNameUseCase(

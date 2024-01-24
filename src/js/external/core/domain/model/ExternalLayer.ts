@@ -2,6 +2,7 @@ import type { Layer } from "@/core/domain/model/Layer";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import { execute as externalLayerUpdateNameUseCase } from "@/external/core/application/ExternalLayer/usecase/ExternalLayerUpdateNameUseCase";
+import { execute as timelineLayerControllerLayerNameUpdateHistoryUseCase } from "@/history/application/timeline/TimelineLayerController/LayerName/usecase/TimelineLayerControllerLayerNameUpdateHistoryUseCase";
 
 /**
  * @description Layerの外部APIクラス
@@ -65,12 +66,14 @@ export class ExternalLayer
             return ;
         }
 
+        // 作業履歴を登録
+        timelineLayerControllerLayerNameUpdateHistoryUseCase(
+            this._$workSpace, this._$movieClip, this._$layer, name
+        );
+
         // レイヤー名を更新
         externalLayerUpdateNameUseCase(
             this._$workSpace, this._$movieClip, this._$layer, name
         );
-
-        // 作業履歴を登録
-
     }
 }

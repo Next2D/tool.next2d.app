@@ -2,10 +2,12 @@ import type { HistoryObjectImpl } from "@/interface/HistoryObjectImpl";
 import { execute as screenTabNameAddHistoryRedoUseCase } from "../application/screen/ScreenTab/usecase/ScreenTabNameAddHistoryRedoUseCase";
 import { execute as timelineToolLayerAddHistoryRedoUseCase } from "../application/timeline/TimelineTool/LayerAdd/usecase/TimelineToolLayerAddHistoryRedoUseCase";
 import { execute as timelineToolLayerDeleteHistoryRedoUseCase } from "../application/timeline/TimelineTool/LayerDelete/usecase/TimelineToolLayerDeleteHistoryRedoUseCase";
+import { execute as timelineLayerControllerLayerNameUpdateHistoryRedoUseCase } from "../application/timeline/TimelineLayerController/LayerName/usecase/TimelineLayerControllerLayerNameUpdateHistoryRedoUseCase";
 import {
     $SCREEN_TAB_NAME_UPDATE_COMMAND,
     $TIMELINE_TOOL_LAYER_ADD_COMMAND,
-    $TIMELINE_TOOL_LAYER_DELETE_COMMAND
+    $TIMELINE_TOOL_LAYER_DELETE_COMMAND,
+    $LAYER_NAME_UPDATE_COMMAND
 } from "@/config/HistoryConfig";
 
 /**
@@ -20,6 +22,16 @@ export const execute = (history_object: HistoryObjectImpl): void =>
 {
     const args = history_object.args;
     switch (history_object.command) {
+
+        // レイヤー名を変更
+        case $LAYER_NAME_UPDATE_COMMAND:
+            timelineLayerControllerLayerNameUpdateHistoryRedoUseCase(
+                args[0] as number, // workSpaceId
+                args[1] as number, // MovieClipId
+                args[2] as number, // Layer Index,
+                args[4] as string  // afterName
+            );
+            break;
 
         // タブ名の変更
         case $SCREEN_TAB_NAME_UPDATE_COMMAND:

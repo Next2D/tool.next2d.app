@@ -1,5 +1,5 @@
 import type { ShareReceiveMessageImpl } from "@/interface/ShareReceiveMessageImpl";
-import { $getWorkSpace } from "../../CoreUtil";
+import { $getWorkSpace } from "@/core/application/CoreUtil";
 import { execute as externalWorkSpaceUpdateNameUseCase } from "@/external/core/application/ExternalWorkSpace/usecase/ExternalWorkSpaceUpdateNameUseCase";
 
 /**
