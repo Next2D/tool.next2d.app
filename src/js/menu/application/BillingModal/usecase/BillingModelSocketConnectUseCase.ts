@@ -1,4 +1,4 @@
-import { $setSocket } from "@/share/application/ShareUtil";
+import { $setSocket } from "@/share/ShareUtil";
 import {
     $API_KEY,
     $REWORD_URL

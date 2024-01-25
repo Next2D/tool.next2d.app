@@ -1,6 +1,6 @@
 import type { ShareReceiveMessageImpl } from "@/interface/ShareReceiveMessageImpl";
 import type { HistoryObjectImpl } from "@/interface/HistoryObjectImpl";
-import { $getSocket } from "../application/ShareUtil";
+import { $getSocket } from "../ShareUtil";
 
 /**
  * @description 作業履歴を共有者に送信

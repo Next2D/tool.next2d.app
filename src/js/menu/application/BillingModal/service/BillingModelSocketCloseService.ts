@@ -1,4 +1,4 @@
-import { $getSocket, $setSocket } from "@/share/application/ShareUtil";
+import { $getSocket, $setSocket } from "@/share/ShareUtil";
 
 /**
  * @description WebSocketを閉じて、オブジェクトを初期化

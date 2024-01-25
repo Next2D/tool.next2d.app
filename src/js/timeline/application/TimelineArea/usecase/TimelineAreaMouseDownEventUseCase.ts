@@ -10,7 +10,7 @@ import { $setStandbyMoveState } from "../TimelineAreaUtil";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { $useKeyboard } from "@/shortcut/ShortcutUtil";
 import { execute as billingModelShowService } from "@/menu/application/BillingModal/service/BillingModelShowService";
-import { $useSocket } from "@/share/application/ShareUtil";
+import { $useSocket } from "@/share/ShareUtil";
 
 /**
  * @description ダブルタップ用の待機フラグ

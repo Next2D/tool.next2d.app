@@ -3,7 +3,7 @@ import {
     $getUserName,
     $isSocketOwner,
     $setUserName
-} from "../application/ShareUtil";
+} from "../ShareUtil";
 
 /**
  * @description WebSocketの接続成功時のユースケース

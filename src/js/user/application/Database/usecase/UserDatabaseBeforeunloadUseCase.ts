@@ -1,4 +1,4 @@
-import { $isSocketOwner } from "@/share/application/ShareUtil";
+import { $isSocketOwner } from "@/share/ShareUtil";
 import { execute as userDatabaseSaveUseCase } from "@/user/application/Database/usecase/UserDatabaseSaveUseCase";
 
 /**

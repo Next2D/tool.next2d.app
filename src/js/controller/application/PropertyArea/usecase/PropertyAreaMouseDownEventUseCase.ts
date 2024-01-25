@@ -10,7 +10,7 @@ import {
 } from "../PropertyAreaUtil";
 import { $CONTROLLER_AREA_PROPERTY_ID } from "@/config/PropertyConfig";
 import { execute as billingModelShowService } from "@/menu/application/BillingModal/service/BillingModelShowService";
-import { $useSocket } from "@/share/application/ShareUtil";
+import { $useSocket } from "@/share/ShareUtil";
 
 /**
  * @description ダブルタップ用の待機フラグ

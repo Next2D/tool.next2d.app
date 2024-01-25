@@ -6,7 +6,7 @@ import { execute as historyAddElementUseCase } from "@/history/usecase/HistoryAd
 import { execute as historyGetTextService } from "@/history/service/HistoryGetTextService";
 import { execute as timelineLayerControllerLayerNameUpdateCreateHistoryObjectService } from "../service/TimelineLayerControllerLayerNameUpdateCreateHistoryObjectService";
 import { $LAYER_NAME_UPDATE_COMMAND } from "@/config/HistoryConfig";
-import { $useSocket } from "@/share/application/ShareUtil";
+import { $useSocket } from "@/share/ShareUtil";
 import { execute as shareSendService } from "@/share/service/ShareSendService";
 
 /**

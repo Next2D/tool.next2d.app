@@ -12,7 +12,7 @@ import { execute as initializeUser } from "@/user/application/Initialize";
 import { execute as initializeShortcut } from "@/shortcut/application/Initialize";
 import { execute as initializeController } from "@/controller/application/Initialize";
 import { execute as initializeView } from "@/view/application/Initialize";
-import { execute as initializeShare } from "@/share/application/Initialize";
+import { execute as initializeShare } from "@/share/Initialize";
 import { execute as bootUser } from "@/user/application/Boot";
 import { execute as detailModalRegisterFadeEventService } from "@/menu/application/DetailModal/service/DetailModalRegisterFadeEventService";
 import { execute as languageTranslationService } from "@/language/application/service/LanguageTranslationService";
@@ -23,7 +23,7 @@ import {
     $getCurrentWorkSpace
 } from "@/core/application/CoreUtil";
 import { ExternalApplication } from "./external/ExternalApplication";
-import { $useSocket } from "./share/application/ShareUtil";
+import { $useSocket } from "./share/ShareUtil";
 
 /**
  * @description 初期起動関数

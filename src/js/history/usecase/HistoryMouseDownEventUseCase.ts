@@ -4,7 +4,7 @@ import { execute as historyUndoUseCase } from "./HistoryUndoUseCase";
 import { $allHideMenu } from "@/menu/application/MenuUtil";
 import { execute as userAllFunctionStateService } from "@/user/application/Billing/service/UserAllFunctionStateService";
 import { execute as billingModelShowService } from "@/menu/application/BillingModal/service/BillingModelShowService";
-import { $useSocket } from "@/share/application/ShareUtil";
+import { $useSocket } from "@/share/ShareUtil";
 
 /**
  * @description 指定のIndexまで作業履歴を更新する

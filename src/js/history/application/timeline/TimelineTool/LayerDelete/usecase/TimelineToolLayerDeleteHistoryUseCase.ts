@@ -6,7 +6,7 @@ import { execute as historyAddElementUseCase } from "@/history/usecase/HistoryAd
 import { execute as historyGetTextService } from "@/history/service/HistoryGetTextService";
 import { execute as historyRemoveElementService } from "@/history/service/HistoryRemoveElementService";
 import { execute as timelineToolLayerDeleteCreateHistoryObjectService } from "../service/TimelineToolLayerDeleteCreateHistoryObjectService";
-import { $useSocket } from "@/share/application/ShareUtil";
+import { $useSocket } from "@/share/ShareUtil";
 import { execute as shareSendService } from "@/share/service/ShareSendService";
 
 /**

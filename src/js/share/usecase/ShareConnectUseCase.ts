@@ -1,4 +1,4 @@
-import { $setSocket } from "../application/ShareUtil";
+import { $setSocket } from "../ShareUtil";
 import { execute as shareConnectOpenEventService } from "../service/ShareConnectOpenEventService";
 import { execute as shareMessageUseCase } from "./ShareMessageUseCase";
 import {

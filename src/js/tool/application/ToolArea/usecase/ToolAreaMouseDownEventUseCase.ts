@@ -9,7 +9,7 @@ import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { execute as timelineHeaderWindowResizeUseCase } from "@/timeline/application/TimelineHeader/usecase/TimelineHeaderWindowResizeUseCase";
 import { execute as timelineLayerWindowResizeUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerWindowResizeUseCase";
 import { execute as billingModelShowService } from "@/menu/application/BillingModal/service/BillingModelShowService";
-import { $useSocket } from "@/share/application/ShareUtil";
+import { $useSocket } from "@/share/ShareUtil";
 
 /**
  * @description ダブルタップ用の待機フラグ
