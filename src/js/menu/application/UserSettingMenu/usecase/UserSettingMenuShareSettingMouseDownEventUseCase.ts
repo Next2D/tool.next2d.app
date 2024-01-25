@@ -1,5 +1,5 @@
 import { $allHideMenu } from "../../MenuUtil";
-import { execute as shareConnectBootUseCase } from "@/share/application/usecase/ShareConnectBootUseCase";
+import { execute as shareConnectBootUseCase } from "@/share/usecase/ShareConnectBootUseCase";
 
 /**
  * @description 画面共有機能を起動

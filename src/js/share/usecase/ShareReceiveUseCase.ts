@@ -1,7 +1,7 @@
 import type { ShareReceiveMessageImpl } from "@/interface/ShareReceiveMessageImpl";
-import { execute as workSpaceUpdateNameReceiveUseCase } from "@/share/application/receive/application/core/application/WorkSpace/usecase/WorkSpaceUpdateNameReceiveUseCase";
-import { execute as timelineToolLayerAddReceiveUseCase } from "@/share/application/receive/application/timeline/application/TimelineTool/application/LayerAdd/usecase/TimelineToolLayerAddReceiveUseCase";
-import { execute as timelineLayerControllerLayerNameUpdateReceiveUseCase } from "@/share/application/receive/application/timeline/application/TimelineLayerController/usecase/TimelineLayerControllerLayerNameUpdateReceiveUseCase";
+import { execute as workSpaceUpdateNameReceiveUseCase } from "@/share/receive/application/core/application/WorkSpace/usecase/WorkSpaceUpdateNameReceiveUseCase";
+import { execute as timelineToolLayerAddReceiveUseCase } from "@/share/receive/application/timeline/application/TimelineTool/application/LayerAdd/usecase/TimelineToolLayerAddReceiveUseCase";
+import { execute as timelineLayerControllerLayerNameUpdateReceiveUseCase } from "@/share/receive/application/timeline/application/TimelineLayerController/usecase/TimelineLayerControllerLayerNameUpdateReceiveUseCase";
 import { execute as historyRedoUseCase } from "@/history/usecase/HistoryRedoUseCase";
 import { execute as historyUndoUseCase } from "@/history/usecase/HistoryUndoUseCase";
 import {

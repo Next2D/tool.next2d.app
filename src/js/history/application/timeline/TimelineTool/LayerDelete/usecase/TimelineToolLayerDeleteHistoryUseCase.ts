@@ -7,7 +7,7 @@ import { execute as historyGetTextService } from "@/history/service/HistoryGetTe
 import { execute as historyRemoveElementService } from "@/history/service/HistoryRemoveElementService";
 import { execute as timelineToolLayerDeleteCreateHistoryObjectService } from "../service/TimelineToolLayerDeleteCreateHistoryObjectService";
 import { $useSocket } from "@/share/application/ShareUtil";
-import { execute as shareSendService } from "@/share/application/service/ShareSendService";
+import { execute as shareSendService } from "@/share/service/ShareSendService";
 
 /**
  * @description 指定のレイヤーの削除履歴と登録

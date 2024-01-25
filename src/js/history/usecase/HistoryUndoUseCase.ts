@@ -3,7 +3,7 @@ import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { InstanceImpl } from "@/interface/InstanceImpl";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
 import { $useSocket } from "@/share/application/ShareUtil";
-import { execute as shareSendService } from "@/share/application/service/ShareSendService";
+import { execute as shareSendService } from "@/share/service/ShareSendService";
 import { execute as historyUndoCommandUseCase } from "./HistoryUndoCommandUseCase";
 import {
     $HISTORY_LIST_ID,

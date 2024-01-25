@@ -4,7 +4,7 @@ import { $useSocket } from "@/share/application/ShareUtil";
 import { execute as historyRemoveElementService } from "@/history/service/HistoryRemoveElementService";
 import { execute as historyAddElementUseCase } from "@/history/usecase/HistoryAddElementUseCase";
 import { execute as historyGetTextService } from "@/history/service/HistoryGetTextService";
-import { execute as shareSendService } from "@/share/application/service/ShareSendService";
+import { execute as shareSendService } from "@/share/service/ShareSendService";
 import { execute as screenTabCreateHistoryObjectService } from "../service/ScreenTabCreateHistoryObjectService";
 
 /**

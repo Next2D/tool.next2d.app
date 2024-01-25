@@ -7,7 +7,7 @@ import { execute as historyGetTextService } from "@/history/service/HistoryGetTe
 import { execute as timelineLayerControllerLayerNameUpdateCreateHistoryObjectService } from "../service/TimelineLayerControllerLayerNameUpdateCreateHistoryObjectService";
 import { $LAYER_NAME_UPDATE_COMMAND } from "@/config/HistoryConfig";
 import { $useSocket } from "@/share/application/ShareUtil";
-import { execute as shareSendService } from "@/share/application/service/ShareSendService";
+import { execute as shareSendService } from "@/share/service/ShareSendService";
 
 /**
  * @description 新規レイヤー追加の履歴を登録

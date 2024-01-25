@@ -1,5 +1,5 @@
 import type { ShareInitializeSendObjectImpl } from "@/interface/ShareInitializeSendObjectImpl";
-import { $getSocket } from "../ShareUtil";
+import { $getSocket } from "../application/ShareUtil";
 import { execute as workSpaceCreateSaveDataService } from "@/core/application/WorkSpace/service/WorkSpaceCreateSaveDataService";
 import { WorkSpace } from "@/core/domain/model/WorkSpace";
 

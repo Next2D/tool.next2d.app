@@ -7,7 +7,7 @@ import { execute as historyRemoveElementService } from "@/history/service/Histor
 import { execute as timelineToolLayerAddCreateHistoryObjectService } from "../service/TimelineToolLayerAddCreateHistoryObjectService";
 import { WorkSpace } from "@/core/domain/model/WorkSpace";
 import { $useSocket } from "@/share/application/ShareUtil";
-import { execute as shareSendService } from "@/share/application/service/ShareSendService";
+import { execute as shareSendService } from "@/share/service/ShareSendService";
 
 /**
  * @description 新規レイヤー追加の履歴を登録
