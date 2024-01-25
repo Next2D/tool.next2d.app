@@ -1,7 +1,7 @@
 import { execute as shareInitializeCommandUseCase } from "./ShareInitializeCommandUseCase";
 import { execute as shareLoadCommandUseCase } from "./ShareLoadCommandUseCase";
 import { execute as shareReceiveUseCase } from "./ShareReceiveUseCase";
-import { $isSocketOwner } from "../ShareUtil";
+import { $isLoadedInitializeData, $isSocketOwner } from "../ShareUtil";
 
 /**
  * @description Socketのメッセージ管理関数
@@ -17,26 +17,31 @@ export const execute = (event: MessageEvent): void =>
     const message = JSON.parse(event.data);
     switch (message.command) {
 
+        case "receive":
+            shareReceiveUseCase(message);
+            break;
+
         case "initialize":
             // オーナーでなれければ終了
             if (!$isSocketOwner()) {
-                return;
+                return ;
             }
 
-            shareInitializeCommandUseCase(message.FROM);
+            shareInitializeCommandUseCase();
             break;
 
         case "load":
             // オーナーなら何もしないで終了
             if ($isSocketOwner()) {
-                return;
+                return ;
+            }
+
+            // 初回読み込みが完了していれば終了
+            if ($isLoadedInitializeData()) {
+                return ;
             }
 
             shareLoadCommandUseCase(message);
-            break;
-
-        case "receive":
-            shareReceiveUseCase(message);
             break;
 
         default:

@@ -83,3 +83,37 @@ export const $isSocketOwner = (): boolean =>
 {
     return $webSocketOwner;
 };
+
+/**
+ * @description 初回のデータ同期が完了しているか
+ *              Is the initial data synchronization complete?
+ *
+ * @private
+ */
+let $loadedData = false;
+
+/**
+ * @description 初回のデータ同期完了をセット
+ *              Set initial data synchronization completion
+ *
+ * @return {void}
+ * @method
+ * @public
+ */
+export const $loadedInitializeData = (): void =>
+{
+    $loadedData = true;
+};
+
+/**
+ * @description 初回のデータ同期完了してるかを返却
+ *              Returns whether data synchronization is completed for the first time.
+ *
+ * @return {boolean}
+ * @method
+ * @public
+ */
+export const $isLoadedInitializeData = (): boolean =>
+{
+    return $loadedData;
+};

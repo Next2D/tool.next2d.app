@@ -1,26 +1,30 @@
+import type { ShareInitializeSendObjectImpl } from "@/interface/ShareInitializeSendObjectImpl";
 import { execute as workSpaceRestoreSaveDataService } from "@/core/application/WorkSpace/service/WorkSpaceRestoreSaveDataService";
 import { execute as userDatabaseSaveUseCase } from "@/user/application/Database/usecase/UserDatabaseSaveUseCase";
 import { execute as progressMenuShowService } from "@/menu/application/ProgressMenu/service/ProgressMenuShowService";
+import { $allHideMenu } from "@/menu/application/MenuUtil";
+import { WorkSpace } from "@/core/domain/model/WorkSpace";
+import { $loadedInitializeData } from "../ShareUtil";
 import {
     $getAllWorkSpace,
     $getCurrentWorkSpace,
     $removeAllWorkSpace
 } from "@/core/application/CoreUtil";
-import { $allHideMenu } from "@/menu/application/MenuUtil";
-import type { ShareInitializeSendObjectImpl } from "@/interface/ShareInitializeSendObjectImpl";
-import { WorkSpace } from "@/core/domain/model/WorkSpace";
 
 /**
  * @description オーナーのプロジェクトデータを受け取って起動、既存のプロジェクトは保存して終了
  *              Receives owner's project data and launches, existing projects are saved and closed
  *
- * @param  {string} binary
+ * @param  {object} message
  * @return {void}
  * @method
  * @public
  */
 export const execute = async (message: ShareInitializeSendObjectImpl): Promise<void> =>
 {
+    // 初回のロードを完了したかの判定を更新
+    $loadedInitializeData();
+
     // 全てのメニューを終了
     $allHideMenu();
 

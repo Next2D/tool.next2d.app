@@ -7,12 +7,11 @@ import { WorkSpace } from "@/core/domain/model/WorkSpace";
  * @description オーナーのプロジェクトデーターを共有者に送信
  *              Send owner's project data to co-owner
  *
- * @param  {string} send_id
  * @return {void}
  * @method
  * @public
  */
-export const execute = (send_id: string): void =>
+export const execute = (): void =>
 {
     const webSocket = $getSocket();
     if (!webSocket) {
@@ -23,7 +22,6 @@ export const execute = (send_id: string): void =>
         .then((binary): void =>
         {
             const initializeObject: ShareInitializeSendObjectImpl = {
-                "to": send_id,
                 "workSpaceId": WorkSpace.workSpaceId,
                 "data": binary,
                 "command": "load"
