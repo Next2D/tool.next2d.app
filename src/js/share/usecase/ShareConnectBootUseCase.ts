@@ -1,4 +1,4 @@
-import { $setSocketOwner, $setUserName, $useSocket } from "../ShareUtil";
+import { $setSocketOwner, $useSocket } from "../ShareUtil";
 import { execute as shareConnectUseCase } from "./ShareConnectUseCase";
 import { execute as userAllFunctionStateService } from "@/user/application/Billing/service/UserAllFunctionStateService";
 import { execute as billingModelShowService } from "@/menu/application/BillingModal/service/BillingModelShowService";
@@ -34,9 +34,6 @@ export const execute = (): void =>
 
     // オーナーとして登録
     $setSocketOwner(true);
-
-    // オーナーIDをセット
-    $setUserName(roomId);
 
     // WebSocketを起動
     shareConnectUseCase(roomId);

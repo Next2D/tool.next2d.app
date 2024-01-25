@@ -3,7 +3,8 @@ import { execute as shareConnectOpenEventService } from "../service/ShareConnect
 import { execute as shareMessageUseCase } from "./ShareMessageUseCase";
 import {
     $SHARE_PREFIX,
-    $SHARE_URL
+    $SHARE_URL,
+    $API_KEY
 } from "@/config/ShareConfig";
 
 /**
@@ -18,7 +19,7 @@ import {
 export const execute = (room_id: string): void =>
 {
     const webSocket: WebSocket = new WebSocket(
-        `${$SHARE_URL}/${$SHARE_PREFIX}-${room_id}`
+        `${$SHARE_URL}/${$SHARE_PREFIX}-${room_id}?api_key=${$API_KEY}`
     );
 
     // ソケットオブジェクトをセット
