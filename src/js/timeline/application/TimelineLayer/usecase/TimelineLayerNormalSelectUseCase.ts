@@ -29,9 +29,6 @@ export const execute = (layer: Layer, frame: number): void =>
         return ;
     }
 
-    // レイヤーElementをセット
-    layer.element = layerElement;
-
     // レイヤーElementをアクティブ表示に更新
     timelineLayerActiveElementService(layerElement);
 

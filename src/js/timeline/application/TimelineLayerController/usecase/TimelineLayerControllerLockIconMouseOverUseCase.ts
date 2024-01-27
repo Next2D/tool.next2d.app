@@ -29,5 +29,5 @@ export const execute = (event: PointerEvent): void =>
 
     layer.lock = !layer.lock;
 
-    timelineLayerControllerUpdateLockIconStyleService(layer.id, layer.lock);
+    timelineLayerControllerUpdateLockIconStyleService(layer, layer.lock);
 };

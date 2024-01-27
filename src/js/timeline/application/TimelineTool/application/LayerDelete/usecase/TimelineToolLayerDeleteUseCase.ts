@@ -47,13 +47,15 @@ export const execute = (
     }
 
     // 選択されたレイヤーがなければ終了
-    const targetLayers = timelineLayer.targetLayers;
-    if (!targetLayers.size) {
+    const selectedLayers = scene.selectedLayers;
+    if (!selectedLayers.length) {
         return ;
     }
 
     let minIndex = Number.MAX_VALUE;
-    for (const layer of targetLayers.keys()) {
+    for (let idx = 0; idx < selectedLayers.length; ++idx) {
+
+        const layer = selectedLayers[idx];
 
         // 元の配列のポジションを取得
         // fixed logic

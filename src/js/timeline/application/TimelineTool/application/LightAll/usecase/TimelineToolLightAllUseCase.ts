@@ -39,7 +39,7 @@ export const execute = (event: PointerEvent): void =>
         layer.light = mode;
 
         // レイヤーのハイライト情報とElementを更新
-        timelineLayerControllerUpdateLightIconElementService(layer.id, mode);
+        timelineLayerControllerUpdateLightIconElementService(layer, mode);
     }
 
     // モードを更新

@@ -29,5 +29,5 @@ export const execute = (event: PointerEvent): void =>
 
     layer.disable = !layer.disable;
 
-    timelineLayerControllerUpdateDisableIconStyleService(layer.id, layer.disable);
+    timelineLayerControllerUpdateDisableIconStyleService(layer, layer.disable);
 };

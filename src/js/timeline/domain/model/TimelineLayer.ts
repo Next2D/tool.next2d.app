@@ -13,7 +13,6 @@ class TimelineLayer
     private _$clientHeight: number;
     private _$numberOfDisplays: number;
     private readonly _$elements: HTMLElement[];
-    private readonly _$targetLayers: Map<Layer, number[]>;
 
     /**
      * @constructor
@@ -39,12 +38,6 @@ class TimelineLayer
          * @private
          */
         this._$elements = [];
-
-        /**
-         * @type {Map}
-         * @private
-         */
-        this._$targetLayers = new Map();
     }
 
     /**
@@ -103,18 +96,6 @@ class TimelineLayer
     set clientHeight (height: number)
     {
         this._$clientHeight = height;
-    }
-
-    /**
-     * @description 選択したレイヤーIdとフレーム番号を格納したマップデータを返却
-     *              Returns map data containing the selected layer Id and frame number
-     *
-     * @member {Map}
-     * @public
-     */
-    get targetLayers (): Map<Layer, number[]>
-    {
-        return this._$targetLayers;
     }
 
     /**

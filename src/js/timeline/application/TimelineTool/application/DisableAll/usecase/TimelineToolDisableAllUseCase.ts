@@ -39,7 +39,7 @@ export const execute = (event: PointerEvent): void =>
         layer.disable = mode;
 
         // レイヤーの表示情報とElementを更新
-        timelineLayerControllerUpdateDisableIconStyleService(layer.id, mode);
+        timelineLayerControllerUpdateDisableIconStyleService(layer, mode);
     }
 
     // モードを更新

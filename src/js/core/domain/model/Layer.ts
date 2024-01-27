@@ -27,7 +27,6 @@ export class Layer
     private _$maskId: null | number;
     private _$guideId: null | number;
     private _$targetFrame: number;
-    private _$element: HTMLElement | null;
     private readonly _$characters: Character[];
     private readonly _$emptys: EmptyCharacter[];
     private readonly _$selectedFrame: FrameObjectImpl;
@@ -122,12 +121,6 @@ export class Layer
             "end": 0
         };
 
-        /**
-         * @type {HTMLElement}
-         * @private
-         */
-        this._$element = null;
-
         if (object) {
             this.load(object);
         } else {
@@ -149,22 +142,6 @@ export class Layer
     set name (name: string)
     {
         this._$name = name;
-    }
-
-    /**
-     * @description 選択したHTMLElementを返却、表示反映にない場合はnullを返却
-     *              Returns the selected HTMLElement, or null if it is not in the display reflection.
-     *
-     * @member {HTMLElement | null}
-     * @public
-     */
-    get element (): HTMLElement | null
-    {
-        return this._$element;
-    }
-    set element (element: HTMLElement | null)
-    {
-        this._$element = element;
     }
 
     /**
@@ -365,7 +342,6 @@ export class Layer
      */
     clear (): void
     {
-        this._$element = null;
         this._$targetFrame = 0;
         this._$selectedFrame.start = 0;
         this._$selectedFrame.end   = 0;

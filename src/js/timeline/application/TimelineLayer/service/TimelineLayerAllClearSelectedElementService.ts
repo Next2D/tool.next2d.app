@@ -1,3 +1,4 @@
+import { timelineLayer } from "@/timeline/domain/model/TimelineLayer";
 import { $getLeftFrame } from "../../TimelineUtil";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 
@@ -18,16 +19,13 @@ export const execute = (): void =>
 
         const layer = scene.selectedLayers[idx];
 
-        const layerElement: HTMLElement | null = layer.element;
+        const layerElement: HTMLElement | undefined = timelineLayer.elements[layer.getDisplayIndex()];
         if (!layerElement) {
             continue;
         }
 
         // レイヤーのアクティブ表示を初期化
         layerElement.classList.remove("active");
-
-        // 選択したHTMLElementをnullに更新
-        layer.element = null;
 
         const startFrame = layer.selectedFrame.start;
         const endFrame   = layer.selectedFrame.end;

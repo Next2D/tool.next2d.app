@@ -98,10 +98,7 @@ export const execute = (): void =>
         timelineLayerControllerUpdateElementStyleUseCase(layer);
 
         if (scene.selectedLayers.indexOf(layer) > -1) {
-            layer.element = element;
             timelineLayerActiveElementService(element);
-        } else {
-            layer.element = null;
         }
 
         // フレームの高さを加算
