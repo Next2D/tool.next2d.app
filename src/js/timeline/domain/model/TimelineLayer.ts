@@ -1,4 +1,3 @@
-import type { Layer } from "@/core/domain/model/Layer";
 import { execute as timelineLayerInitializeUseCase } from "../../application/TimelineLayer/usecase/TimelineLayerInitializeUseCase";
 
 /**

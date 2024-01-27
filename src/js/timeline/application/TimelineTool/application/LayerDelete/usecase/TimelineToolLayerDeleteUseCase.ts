@@ -1,13 +1,13 @@
 import type { InstanceImpl } from "@/interface/InstanceImpl";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { Layer } from "@/core/domain/model/Layer";
-import { timelineLayer } from "@/timeline/domain/model/TimelineLayer";
 import { execute as timelineToolLayerDeleteHistoryUseCase } from "@/history/application/timeline/TimelineTool/LayerDelete/usecase/TimelineToolLayerDeleteHistoryUseCase";
 import { execute as timelineLayerControllerNormalSelectUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerNormalSelectUseCase";
 import { execute as timelineScrollUpdateHeightService } from "@/timeline/application/TimelineScroll/service/TimelineScrollUpdateHeightService";
 import { execute as timelineScrollUpdateYPositionService } from "@/timeline/application/TimelineScroll/service/TimelineScrollUpdateYPositionService";
 import { execute as timelineLayerAllClearSelectedElementService } from "@/timeline/application/TimelineLayer/service/TimelineLayerAllClearSelectedElementService";
 import { execute as timelineLayerBuildElementUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerBuildElementUseCase";
+import { timelineFrame } from "@/timeline/domain/model/TimelineFrame";
 import {
     $getCurrentWorkSpace,
     $getWorkSpace
@@ -80,6 +80,7 @@ export const execute = (
     timelineScrollUpdateYPositionService();
 
     // 選択したレイヤー・フレームを解放
+    // fixed logic
     timelineLayerAllClearSelectedElementService();
 
     // 選択中の内部情報を初期化
@@ -100,5 +101,5 @@ export const execute = (
     }
 
     // 削除した近辺にレイヤーがあれば選択状にして、Elementをアクティブに更新する
-    timelineLayerControllerNormalSelectUseCase(layer);
+    timelineLayerControllerNormalSelectUseCase(layer, timelineFrame.currentFrame);
 };
