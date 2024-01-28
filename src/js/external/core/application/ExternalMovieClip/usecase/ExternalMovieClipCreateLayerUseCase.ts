@@ -3,9 +3,8 @@ import type { Layer } from "@/core/domain/model/Layer";
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import { execute as timelineToolLayerCreateService } from "@/timeline/application/TimelineTool/application/LayerAdd/service/TimelineToolLayerCreateService";
 import { execute as timelineLayerBuildElementUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerBuildElementUseCase";
-import { execute as timelineLayerControllerNormalSelectUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerNormalSelectUseCase";
 import { execute as timelineScrollUpdateHeightService } from "@/timeline/application/TimelineScroll/service/TimelineScrollUpdateHeightService";
-import { execute as externalMovieClipSelectedLayerService } from "@/external/core/application/ExternalMovieClip/service/ExternalMovieClipSelectedLayerService";
+import { execute as externalTimelineLayerControllerNormalSelectUseCase } from "@/external/timeline/application/ExternalTimelineLayerController/usecase/ExternalTimelineLayerControllerNormalSelectUseCase";
 
 /**
  * @description 指定のMovieClipにレイヤーを追加
@@ -39,8 +38,6 @@ export const execute = (
         return null;
     }
 
-    // const frame = movie_clip.currentFrame;
-
     // 画面表示されてる、WorkSpaceとMovieClipの場合は表示Elementを更新
     if (work_space.active && movie_clip.active) {
         // タイムラインのyスクロールの高さを更新
@@ -48,13 +45,7 @@ export const execute = (
 
         // タイムラインを再描画
         timelineLayerBuildElementUseCase();
-
-        // // 追加したレイヤーをアクティブ表示にする
-        // timelineLayerControllerNormalSelectUseCase(newLayer, frame);
     }
-
-    // 追加したレイヤーを選択状態に更新
-    // externalMovieClipSelectedLayerService(movie_clip, newLayer, frame);
 
     return newLayer;
 };

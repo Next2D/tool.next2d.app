@@ -4,6 +4,7 @@ import type { MovieClip } from "@/core/domain/model/MovieClip";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
 import { execute as externalMovieClipCreateLayerUseCase } from "@/external/core/application/ExternalMovieClip/usecase/ExternalMovieClipCreateLayerUseCase";
 import { execute as timelineToolLayerAddHistoryUseCase } from "@/history/application/timeline/TimelineTool/LayerAdd/usecase/TimelineToolLayerAddHistoryUseCase";
+import { ExternalTimeline } from "@/external/timeline/domain/model/ExternalTimeline";
 
 /**
  * @description socketで受け取った情報の受け取り処理関数
@@ -29,21 +30,11 @@ export const execute = (message: ShareReceiveMessageImpl): void =>
         return ;
     }
 
-    // レイヤの追加処理を実行
-    const layer = externalMovieClipCreateLayerUseCase(
-        workSpace,
-        movieClip,
+    const externalTimeline = new ExternalTimeline(workSpace, movieClip);
+    externalTimeline.addNewLayer(
         message.data[2] as NonNullable<number>, // index
         message.data[3] as NonNullable<string>, // name
-        message.data[4] as NonNullable<string> // color
-    );
-
-    if (!layer) {
-        return ;
-    }
-
-    // 履歴を登録
-    timelineToolLayerAddHistoryUseCase(
-        workSpace, movieClip, layer, true
+        message.data[4] as NonNullable<string>, // color
+        true
     );
 };

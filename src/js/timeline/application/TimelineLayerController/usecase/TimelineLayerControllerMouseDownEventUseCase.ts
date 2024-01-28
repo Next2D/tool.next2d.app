@@ -2,6 +2,8 @@ import { $getLayerFromElement } from "../../TimelineUtil";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { timelineFrame } from "@/timeline/domain/model/TimelineFrame";
 import { execute as externalTimelineLayerControllerNormalSelectUseCase } from "@/external/timeline/application/ExternalTimelineLayerController/usecase/ExternalTimelineLayerControllerNormalSelectUseCase";
+import { ExternalLayer } from "@/external/core/domain/model/ExternalLayer";
+import { ExternalTimeline } from "@/external/timeline/domain/model/ExternalTimeline";
 
 /**
  * @description レイヤーのコントローラーエリアのマウスダウン処理関数
@@ -30,6 +32,11 @@ export const execute = (event: PointerEvent): void =>
     }
 
     const workSpace = $getCurrentWorkSpace();
+
+    // 外部APIを起動
+    const externalLayer    = new ExternalLayer(workSpace, workSpace.scene, layer);
+    const externalTimeline = new ExternalTimeline(workSpace, workSpace.scene);
+
     switch (true) {
 
         case event.altKey:
@@ -40,8 +47,9 @@ export const execute = (event: PointerEvent): void =>
 
         default:
             // 単体選択の外部APIを実行
-            externalTimelineLayerControllerNormalSelectUseCase(
-                workSpace, workSpace.scene, layer, timelineFrame.currentFrame
+            externalTimeline.selectedLayer(
+                externalLayer.index,
+                timelineFrame.currentFrame
             );
             break;
 

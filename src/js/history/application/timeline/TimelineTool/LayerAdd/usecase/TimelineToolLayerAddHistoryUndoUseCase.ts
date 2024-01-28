@@ -1,9 +1,10 @@
 import { $getWorkSpace } from "@/core/application/CoreUtil";
 import { execute as timelineScrollUpdateHeightService } from "@/timeline/application/TimelineScroll/service/TimelineScrollUpdateHeightService";
 import { execute as timelineLayerBuildElementUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerBuildElementUseCase";
-import { execute as timelineLayerAllClearSelectedElementService } from "@/timeline/application/TimelineLayer/service/TimelineLayerAllClearSelectedElementService";
 import type { InstanceImpl } from "@/interface/InstanceImpl";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
+import { ExternalLayer } from "@/external/core/domain/model/ExternalLayer";
+import { ExternalTimeline } from "@/external/timeline/domain/model/ExternalTimeline";
 
 /**
  * @description レイヤー追加作業を元に戻す
@@ -37,17 +38,17 @@ export const execute = (
         return ;
     }
 
-    // 選択中のレイヤー・フレーム Elementを初期化
-    if (workSpace.active && movieClip.active) {
-        timelineLayerAllClearSelectedElementService();
-    }
+    // 外部APIを起動
+    const externalLayer = new ExternalLayer(workSpace, movieClip, layer);
+    const externalTimeline = new ExternalTimeline(workSpace, movieClip);
+
+    // 非アクティブに更新
+    externalTimeline.deactivatedLayer(externalLayer.index);
 
     // Layerオブジェクトの内部情報から削除
     movieClip.removeLayer(layer);
 
     if (workSpace.active && movieClip.active) {
-        // fixed logic
-        movieClip.clearSelectedLayer();
 
         // タイムラインのyスクロールの高さを更新
         timelineScrollUpdateHeightService();

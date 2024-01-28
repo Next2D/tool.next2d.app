@@ -76,4 +76,30 @@ export class ExternalLayer
             this._$workSpace, this._$movieClip, this._$layer, name
         );
     }
+
+    /**
+     * @description レイヤーの階層番号を返却
+     *              Layer hierarchy number returned
+     *
+     * @return {number}
+     * @readonly
+     * @public
+     */
+    get index (): number
+    {
+        return this._$movieClip.layers.indexOf(this._$layer);
+    }
+
+    /**
+     * @description レイヤーが選択中か判定
+     *              Determines if a layer is currently selected.
+     *
+     * @return {boolean}
+     * @method
+     * @public
+     */
+    isSelected (): boolean
+    {
+        return this._$movieClip.selectedLayers.indexOf(this._$layer) > -1;
+    }
 }

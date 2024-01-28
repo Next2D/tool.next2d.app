@@ -2,6 +2,8 @@ import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { InstanceImpl } from "@/interface/InstanceImpl";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
 import { execute as externalMovieClipCreateLayerUseCase } from "@/external/core/application/ExternalMovieClip/usecase/ExternalMovieClipCreateLayerUseCase";
+import { execute as timelineLayerAllClearSelectedElementService } from "@/timeline/application/TimelineLayer/service/TimelineLayerAllClearSelectedElementService";
+
 /**
  * @description レイヤー追加作業を元に戻す
  *              Undo the layer addition process
@@ -33,11 +35,12 @@ export const execute = (
         return ;
     }
 
+    // 表示を初期化
+    timelineLayerAllClearSelectedElementService();
+
     // レイヤーを追加
     externalMovieClipCreateLayerUseCase(
         workSpace, movieClip,
         index, name, color
     );
-
-    console.log(movieClip);
 };

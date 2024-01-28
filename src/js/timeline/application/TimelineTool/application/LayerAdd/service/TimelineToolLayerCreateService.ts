@@ -31,7 +31,7 @@ export const execute = (
     }
 
     // 指定がなければ、アクティブなMovieClipを利用する
-    const scene: InstanceImpl<MovieClip>  = workSpace.getLibrary(library_id);
+    const scene: InstanceImpl<MovieClip> = workSpace.getLibrary(library_id);
     if (!scene) {
         return null;
     }

@@ -5,7 +5,9 @@ import { execute as externalTimelineChageFrameUseCase } from "@/external/timelin
 import { execute as externalMovieClipCreateLayerUseCase } from "@/external/core/application/ExternalMovieClip/usecase/ExternalMovieClipCreateLayerUseCase";
 import { execute as timelineToolLayerAddHistoryUseCase } from "@/history/application/timeline/TimelineTool/LayerAdd/usecase/TimelineToolLayerAddHistoryUseCase";
 import { execute as externalTimelineLayerControllerNormalSelectUseCase } from "@/external/timeline/application/ExternalTimelineLayerController/usecase/ExternalTimelineLayerControllerNormalSelectUseCase";
-import { execute as externalTimelineLayerControllerNormalDeactivateUseCase } from "@/external/timeline/application/ExternalTimelineLayerController/usecase/ExternalTimelineLayerControllerNormalDeactivateUseCase";
+import { execute as externalTimelineLayerDeactivateLayerUseCase } from "@/external/timeline/application/ExternalTimelineLayer/usecase/ExternalTimelineLayerDeactivateLayerUseCase";
+import { execute as timelineLayerAllClearSelectedElementService } from "@/timeline/application/TimelineLayer/service/TimelineLayerAllClearSelectedElementService";
+import { execute as movieClipClearSelectedLayerService } from "@/core/application/MovieClip/service/MovieClipClearSelectedLayerService";
 import { $clamp } from "@/global/GlobalUtil";
 import { ExternalLayer } from "@/external/core/domain/model/ExternalLayer";
 
@@ -74,6 +76,7 @@ export class ExternalTimeline
      * @param  {number} [index = 0]
      * @param  {string} [name = ""]
      * @param  {string} [color = ""]
+     * @param  {boolean} [receiver = false]
      * @return {ExternalLayer | null}
      * @method
      * @public
@@ -81,8 +84,12 @@ export class ExternalTimeline
     addNewLayer (
         index: number = 0,
         name: string = "",
-        color: string = ""
+        color: string = "",
+        receiver: boolean = false
     ): ExternalLayer | null {
+
+        // fixed logic
+        this.deactivatedAllLayers();
 
         // 新規レイヤーを追加
         const layer = externalMovieClipCreateLayerUseCase(
@@ -97,10 +104,39 @@ export class ExternalTimeline
 
         // 履歴を登録
         timelineToolLayerAddHistoryUseCase(
+            this._$workSpace, this._$movieClip, layer, receiver
+        );
+
+        const externalLayer = new ExternalLayer(
             this._$workSpace, this._$movieClip, layer
         );
 
-        return new ExternalLayer(this._$workSpace, this._$movieClip, layer);
+        // 追加したレイヤーを選択上に更新
+        this.selectedLayer(
+            externalLayer.index,
+            this._$movieClip.currentFrame
+        );
+
+        return externalLayer;
+    }
+
+    addLayer (layer: ExternalLayer): void
+    {
+
+    }
+
+    /**
+     * @description 指定したindex値のレイヤーを削除
+     *              Delete layer with specified index value
+     *
+     * @param  {number} index
+     * @return {void}
+     * @method
+     * @public
+     */
+    removeLayer (index: number): void
+    {
+        // TODO
     }
 
     /**
@@ -149,6 +185,25 @@ export class ExternalTimeline
     }
 
     /**
+     * @description 選択中の全てのレイヤーのアクティブを解除する
+     *              Deactivate all selected layers
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    deactivatedAllLayers (): void
+    {
+        // 表示中のMovieClipなら表示側を更新
+        if (this._$workSpace.active && this._$movieClip.active) {
+            timelineLayerAllClearSelectedElementService();
+        }
+
+        // 内部データを初期化
+        movieClipClearSelectedLayerService(this._$movieClip);
+    }
+
+    /**
      * @description 指定したindex値のレイヤーのアクティブを解除する
      *              Deactivates the layer with the specified index value
      *
@@ -164,8 +219,8 @@ export class ExternalTimeline
             return ;
         }
 
-        // 指定のレイヤーの選択を解除状態に更新
-        externalTimelineLayerControllerNormalDeactivateUseCase(
+        // 指定のレイヤーを非アクティブ化する
+        externalTimelineLayerDeactivateLayerUseCase(
             this._$workSpace, this._$movieClip, layer
         );
     }

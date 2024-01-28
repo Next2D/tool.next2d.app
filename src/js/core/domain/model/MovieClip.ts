@@ -448,15 +448,32 @@ export class MovieClip extends Instance
      */
     removeLayer (layer: Layer): void
     {
+        // 非アクティブに更新
+        this.deactivatedLayer(layer);
+
         const layerIndex = this._$layers.indexOf(layer);
         if (layerIndex > -1) {
             this._$layers.splice(layerIndex, 1);
         }
+    }
 
+    /**
+     * @description 指定Layerを内部アクティブ情報から削除
+     *              Delete specified Layer from internal active information
+     *
+     * @param  {Layer} layer
+     * @return {void}
+     * @method
+     * @public
+     */
+    deactivatedLayer (layer: Layer): void
+    {
         const selectedIndex = this._$selectedLayers.indexOf(layer);
         if (selectedIndex > -1) {
             this._$selectedLayers.splice(selectedIndex, 1);
         }
+
+        layer.clear();
     }
 
     /**
