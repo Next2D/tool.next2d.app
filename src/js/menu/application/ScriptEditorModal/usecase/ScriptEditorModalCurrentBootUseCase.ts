@@ -1,6 +1,5 @@
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { $setTargetFrame, $setTargetMovieClip } from "../ScriptEditorModalUtil";
-import { timelineFrame } from "@/timeline/domain/model/TimelineFrame";
 import { execute as scriptEditorModalShowService } from "../service/ScriptEditorModalShowService";
 
 /**
@@ -13,8 +12,9 @@ import { execute as scriptEditorModalShowService } from "../service/ScriptEditor
  */
 export const execute = (): void =>
 {
-    $setTargetMovieClip($getCurrentWorkSpace().scene);
-    $setTargetFrame(timelineFrame.currentFrame);
+    const scene = $getCurrentWorkSpace().scene;
+    $setTargetMovieClip(scene);
+    $setTargetFrame(scene.currentFrame);
 
     // スクリプトエディタを起動
     scriptEditorModalShowService();

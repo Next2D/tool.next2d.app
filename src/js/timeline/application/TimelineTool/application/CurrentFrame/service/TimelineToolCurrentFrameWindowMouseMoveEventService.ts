@@ -2,9 +2,9 @@ import { $clamp, $setCursor } from "@/global/GlobalUtil";
 import { execute as timelineFrameUpdateFrameElementService } from "@/timeline/application/TimelineFrame/service/TimelineFrameUpdateFrameElementService";
 import { execute as timelineMarkerMovePositionService } from "@/timeline/application/TimelineMarker/service/TimelineMarkerMovePositionService";
 import { $getLeftFrame, $getMaxFrame, $getRightFrame } from "@/timeline/application/TimelineUtil";
-import { timelineFrame } from "@/timeline/domain/model/TimelineFrame";
 import { timelineHeader } from "@/timeline/domain/model/TimelineHeader";
 import { execute as timelineScrollUpdateScrollXUseCase } from "@/timeline/application/TimelineScroll/usecase/TimelineScrollUpdateScrollXUseCase";
+import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 
 /**
  * @description タイムラインのフレームInputElement上のマウスムーブ処理関数
@@ -25,8 +25,9 @@ export const execute = (event: PointerEvent): void =>
 
     requestAnimationFrame((): void =>
     {
+        const scene = $getCurrentWorkSpace().scene;
         const frame = $clamp(
-            timelineFrame.currentFrame + event.movementX,
+            scene.currentFrame + event.movementX,
             1, $getMaxFrame()
         );
 

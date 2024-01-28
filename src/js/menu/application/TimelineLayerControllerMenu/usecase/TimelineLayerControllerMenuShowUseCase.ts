@@ -6,7 +6,6 @@ import { execute as timelineLayerControllerNormalSelectUseCase } from "@/timelin
 import { execute as timelineLayerControllerMenuSetColorService } from "../service/TimelineLayerControllerMenuSetColorService";
 import { execute as timelineLayerControllerMenuUpdateIconStyleService } from "../service/TimelineLayerControllerMenuUpdateIconStyleService";
 import { execute as externalMovieClipSelectedLayerService } from "@/external/core/application/ExternalMovieClip/service/ExternalMovieClipSelectedLayerService";
-import { timelineFrame } from "@/timeline/domain/model/TimelineFrame";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import {
     $allHideMenu,
@@ -53,13 +52,17 @@ export const execute = (event: MouseEvent): void =>
         return ;
     }
 
+    const scene = $getCurrentWorkSpace().scene;
+
     // 指定のレイヤーだけを選択状態に更新
-    timelineLayerControllerNormalSelectUseCase(layer, timelineFrame.currentFrame);
+    timelineLayerControllerNormalSelectUseCase(
+        layer, scene.currentFrame
+    );
 
     // 内部データとしてレイヤーを選択状態に更新
     // fixed logic
     externalMovieClipSelectedLayerService(
-        $getCurrentWorkSpace().scene, layer, timelineFrame.currentFrame
+        scene, layer, scene.currentFrame
     );
 
     // レイヤーのモードに合わせてモード設定をアクティブ表示

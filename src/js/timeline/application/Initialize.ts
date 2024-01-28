@@ -5,7 +5,6 @@ import { execute as timelineScrollYRegisterEventUseCase } from "../application/T
 import { execute as timelineToolInitializeRegisterEventUseCase } from "@/timeline/application/TimelineTool/usecase/TimelineToolInitializeRegisterEventUseCase";
 import { execute as timelineMarkerInitializeRegisterEventUseCase } from "@/timeline/application/TimelineMarker/usecase/TimelineMarkerInitializeRegisterEventUseCase";
 import { timelineHeader } from "@/timeline/domain/model/TimelineHeader";
-import { timelineFrame } from "@/timeline/domain/model/TimelineFrame";
 import { timelineLayer } from "@/timeline/domain/model/TimelineLayer";
 import { timelineMarker } from "@/timeline/domain/model/TimelineMarker";
 
@@ -17,7 +16,6 @@ import { timelineMarker } from "@/timeline/domain/model/TimelineMarker";
  */
 const models: Array<any> = [
     timelineHeader,
-    timelineFrame,
     timelineLayer,
     timelineMarker
 ];

@@ -41,7 +41,8 @@ export const execute = (): void =>
         return ;
     }
 
-    const index: number = timelineFrame.currentFrame - $getLeftFrame();
+    const scene = $getCurrentWorkSpace().scene;
+    const index: number = scene.currentFrame - $getLeftFrame();
 
     const workSpace = $getCurrentWorkSpace();
     const left = index * (workSpace.timelineAreaState.frameWidth + 1);

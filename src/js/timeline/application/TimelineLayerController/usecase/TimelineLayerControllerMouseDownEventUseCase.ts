@@ -31,10 +31,11 @@ export const execute = (event: PointerEvent): void =>
     }
 
     const workSpace = $getCurrentWorkSpace();
+    const scene = workSpace.scene;
 
     // 外部APIを起動
-    const externalLayer    = new ExternalLayer(workSpace, workSpace.scene, layer);
-    const externalTimeline = new ExternalTimeline(workSpace, workSpace.scene);
+    const externalLayer    = new ExternalLayer(workSpace, scene, layer);
+    const externalTimeline = new ExternalTimeline(workSpace, scene);
 
     switch (true) {
 
@@ -48,7 +49,7 @@ export const execute = (event: PointerEvent): void =>
             // 単体選択の外部APIを実行
             externalTimeline.selectedLayer(
                 externalLayer.index,
-                timelineFrame.currentFrame
+                scene.currentFrame
             );
             break;
 

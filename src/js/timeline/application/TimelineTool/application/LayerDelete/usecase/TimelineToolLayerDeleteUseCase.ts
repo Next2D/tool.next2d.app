@@ -11,7 +11,6 @@ import {
     $getCurrentWorkSpace,
     $getWorkSpace
 } from "@/core/application/CoreUtil";
-import { timelineFrame } from "@/timeline/domain/model/TimelineFrame";
 
 /**
  * @description タイムラインの指定レイヤーを削除する
@@ -87,7 +86,7 @@ export const execute = (
     // 削除した近辺にレイヤーがあれば選択状にして、Elementをアクティブに更新する
     if (layer) {
         externalTimelineLayerControllerNormalSelectUseCase(
-            workSpace, scene, layer, timelineFrame.currentFrame
+            workSpace, scene, layer, scene.currentFrame
         );
     }
 

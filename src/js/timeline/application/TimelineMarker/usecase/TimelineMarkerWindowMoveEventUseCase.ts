@@ -4,7 +4,6 @@ import { execute as timelineFrameUpdateFrameElementService } from "@/timeline/ap
 import { timelineHeader } from "@/timeline/domain/model/TimelineHeader";
 import { $TIMELINE_LAYER_CONTROLLER_WIDTH } from "@/config/TimelineConfig";
 import { execute as timelineScrollUpdateScrollXUseCase } from "@/timeline/application/TimelineScroll/usecase/TimelineScrollUpdateScrollXUseCase";
-import { timelineFrame } from "@/timeline/domain/model/TimelineFrame";
 import {
     $getMaxFrame,
     $getMoveMode,
@@ -29,6 +28,7 @@ export const execute = (event: PointerEvent, loop_mode: boolean = false): void =
     event.preventDefault();
 
     const workSpace = $getCurrentWorkSpace();
+    const scene = workSpace.scene;
     const timelineAreaState = workSpace.timelineAreaState;
 
     let offsetLeft = timelineAreaState.offsetLeft;
@@ -51,7 +51,7 @@ export const execute = (event: PointerEvent, loop_mode: boolean = false): void =
 
             // フレームをプラスに移動
             timelineFrameUpdateFrameElementService(
-                Math.min(timelineFrame.currentFrame + 1, $getMaxFrame())
+                Math.min(scene.currentFrame + 1, $getMaxFrame())
             );
 
             // 右方向に移動
@@ -87,7 +87,7 @@ export const execute = (event: PointerEvent, loop_mode: boolean = false): void =
 
             // フレームをマイナスに移動
             timelineFrameUpdateFrameElementService(
-                Math.max(timelineFrame.currentFrame - 1, 1)
+                Math.max(scene.currentFrame - 1, 1)
             );
 
             // 左方向に移動
