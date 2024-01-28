@@ -1,6 +1,5 @@
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
-import { $getLayerFromElement, $getTopIndex } from "../../TimelineUtil";
-import { execute as externalTimelineLayerControllerNormalSelectUseCase } from "@/external/timeline/application/ExternalTimelineLayerController/usecase/ExternalTimelineLayerControllerNormalSelectUseCase";
+import { $getLayerFromElement } from "../../TimelineUtil";
 import { ExternalTimeline } from "@/external/timeline/domain/model/ExternalTimeline";
 import { ExternalLayer } from "@/external/core/domain/model/ExternalLayer";
 

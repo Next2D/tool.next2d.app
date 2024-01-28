@@ -58,15 +58,15 @@ export class ExternalTimeline
     {
         frame = $clamp(frame, 1, Number.MAX_VALUE);
 
-        if (this._$workSpace.active) {
-            // アクティブなら表示も更新
+        if (this._$workSpace.active && this._$movieClip.active) {
+            // アクティブなら表示を非アクティブに更新
             externalTimelineChageFrameUseCase(frame);
-        } else {
-            this._$movieClip.currentFrame = frame;
         }
 
+        this._$movieClip.currentFrame = frame;
+
         // 選択中のLayerを解放
-        this._$movieClip.clearSelectedLayer();
+        this.deactivatedAllLayers();
     }
 
     /**
@@ -118,25 +118,6 @@ export class ExternalTimeline
         );
 
         return externalLayer;
-    }
-
-    addLayer (layer: ExternalLayer): void
-    {
-
-    }
-
-    /**
-     * @description 指定したindex値のレイヤーを削除
-     *              Delete layer with specified index value
-     *
-     * @param  {number} index
-     * @return {void}
-     * @method
-     * @public
-     */
-    removeLayer (index: number): void
-    {
-        // TODO
     }
 
     /**
