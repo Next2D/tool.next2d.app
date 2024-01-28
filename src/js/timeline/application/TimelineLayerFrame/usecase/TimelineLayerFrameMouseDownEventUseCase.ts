@@ -1,5 +1,6 @@
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
-import { $getTopIndex } from "../../TimelineUtil";
+import { $getLayerFromElement, $getTopIndex } from "../../TimelineUtil";
+import { execute as externalTimelineLayerControllerNormalSelectUseCase } from "@/external/timeline/application/ExternalTimelineLayerController/usecase/ExternalTimelineLayerControllerNormalSelectUseCase";
 
 /**
  * @description フレームエリアのマウスダウンの実行関数
@@ -22,9 +23,15 @@ export const execute = (event: PointerEvent): void =>
         return ;
     }
 
-    // タイムラインのAPIに指定したLayerとフレームを送る
-    const externalTimeline = $getCurrentWorkSpace().getExternalTimeline();
+    // 指定のLayerオブジェクトを取得
+    const layer = $getLayerFromElement(element);
+    if (!layer) {
+        return ;
+    }
 
+    // タイムラインのAPIに指定したLayerとフレームを送る
+    const workSpace = $getCurrentWorkSpace();
+    const frame = parseInt(element.dataset.frame as NonNullable<string>);
     switch (true) {
 
         case event.altKey:
@@ -34,9 +41,8 @@ export const execute = (event: PointerEvent): void =>
             break;
 
         default:
-            externalTimeline.setSelectedLayer(
-                $getTopIndex() + parseInt(element.dataset.layerIndex as string),
-                parseInt(element.dataset.frame as NonNullable<string>)
+            externalTimelineLayerControllerNormalSelectUseCase(
+                workSpace, workSpace.scene, layer, frame
             );
             break;
 

@@ -6,6 +6,7 @@ import { execute as timelineLayerBuildElementUseCase } from "@/timeline/applicat
 import { execute as timelineLayerControllerNormalSelectUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerNormalSelectUseCase";
 import { Layer } from "@/core/domain/model/Layer";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
+import { timelineFrame } from "@/timeline/domain/model/TimelineFrame";
 
 /**
  * @description 削除したレイヤーを元の配置に元に戻す
@@ -41,7 +42,7 @@ export const execute = (
     movieClip.setLayer(layer, index);
 
     // 復元したレイヤーを選択状に更新
-    timelineLayerControllerNormalSelectUseCase(layer);
+    timelineLayerControllerNormalSelectUseCase(layer, timelineFrame.currentFrame);
 
     // タイムラインのyスクロールの高さを更新
     timelineScrollUpdateHeightService();

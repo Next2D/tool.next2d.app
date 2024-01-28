@@ -2,16 +2,16 @@ import type { InstanceImpl } from "@/interface/InstanceImpl";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { Layer } from "@/core/domain/model/Layer";
 import { execute as timelineToolLayerDeleteHistoryUseCase } from "@/history/application/timeline/TimelineTool/LayerDelete/usecase/TimelineToolLayerDeleteHistoryUseCase";
-import { execute as timelineLayerControllerNormalSelectUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerNormalSelectUseCase";
 import { execute as timelineScrollUpdateHeightService } from "@/timeline/application/TimelineScroll/service/TimelineScrollUpdateHeightService";
 import { execute as timelineScrollUpdateYPositionService } from "@/timeline/application/TimelineScroll/service/TimelineScrollUpdateYPositionService";
 import { execute as timelineLayerAllClearSelectedElementService } from "@/timeline/application/TimelineLayer/service/TimelineLayerAllClearSelectedElementService";
 import { execute as timelineLayerBuildElementUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerBuildElementUseCase";
-import { timelineFrame } from "@/timeline/domain/model/TimelineFrame";
+import { execute as externalTimelineLayerControllerNormalSelectUseCase } from "@/external/timeline/application/ExternalTimelineLayerController/usecase/ExternalTimelineLayerControllerNormalSelectUseCase";
 import {
     $getCurrentWorkSpace,
     $getWorkSpace
 } from "@/core/application/CoreUtil";
+import { timelineFrame } from "@/timeline/domain/model/TimelineFrame";
 
 /**
  * @description タイムラインの指定レイヤーを削除する
@@ -52,6 +52,10 @@ export const execute = (
         return ;
     }
 
+    // 選択したレイヤー・フレームを解放
+    // fixed logic
+    timelineLayerAllClearSelectedElementService();
+
     let minIndex = Number.MAX_VALUE;
     for (let idx = 0; idx < selectedLayers.length; ++idx) {
 
@@ -73,33 +77,26 @@ export const execute = (
         scene.removeLayer(layer);
     }
 
-    // タイムラインのyスクロールの高さを更新
-    timelineScrollUpdateHeightService();
-
-    // y座標のスクロール位置を更新
-    timelineScrollUpdateYPositionService();
-
-    // 選択したレイヤー・フレームを解放
-    // fixed logic
-    timelineLayerAllClearSelectedElementService();
-
-    // 選択中の内部情報を初期化
-    // fixed logic
-    scene.clearSelectedLayer();
-
-    // タイムラインを再描画
-    timelineLayerBuildElementUseCase();
-
     // 現時点での最小ポジション
     minIndex = Math.min(minIndex, scene.layers.length);
 
     const layer: Layer | undefined = scene.layers[
         minIndex > 0 ? minIndex - 1 : 0
     ];
-    if (!layer) {
-        return ;
-    }
 
     // 削除した近辺にレイヤーがあれば選択状にして、Elementをアクティブに更新する
-    timelineLayerControllerNormalSelectUseCase(layer, timelineFrame.currentFrame);
+    if (layer) {
+        externalTimelineLayerControllerNormalSelectUseCase(
+            workSpace, scene, layer, timelineFrame.currentFrame
+        );
+    }
+
+    // タイムラインのyスクロールの高さを更新
+    timelineScrollUpdateHeightService();
+
+    // y座標のスクロール位置を更新
+    timelineScrollUpdateYPositionService();
+
+    // タイムラインを再描画
+    timelineLayerBuildElementUseCase();
 };

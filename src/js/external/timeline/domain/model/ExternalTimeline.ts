@@ -5,6 +5,7 @@ import { execute as externalTimelineChageFrameUseCase } from "@/external/timelin
 import { execute as externalMovieClipCreateLayerUseCase } from "@/external/core/application/ExternalMovieClip/usecase/ExternalMovieClipCreateLayerUseCase";
 import { execute as timelineToolLayerAddHistoryUseCase } from "@/history/application/timeline/TimelineTool/LayerAdd/usecase/TimelineToolLayerAddHistoryUseCase";
 import { execute as externalTimelineLayerControllerNormalSelectUseCase } from "@/external/timeline/application/ExternalTimelineLayerController/usecase/ExternalTimelineLayerControllerNormalSelectUseCase";
+import { execute as externalTimelineLayerControllerNormalDeactivateUseCase } from "@/external/timeline/application/ExternalTimelineLayerController/usecase/ExternalTimelineLayerControllerNormalDeactivateUseCase";
 import { $clamp } from "@/global/GlobalUtil";
 import { ExternalLayer } from "@/external/core/domain/model/ExternalLayer";
 
@@ -131,7 +132,7 @@ export class ExternalTimeline
      * @method
      * @public
      */
-    setSelectedLayer (
+    selectedLayer (
         index: number,
         frame: number
     ): void {
@@ -144,6 +145,28 @@ export class ExternalTimeline
         // 指定のレイヤーを選択状態に更新
         externalTimelineLayerControllerNormalSelectUseCase(
             this._$workSpace, this._$movieClip, layer, frame
+        );
+    }
+
+    /**
+     * @description 指定したindex値のレイヤーのアクティブを解除する
+     *              Deactivates the layer with the specified index value
+     *
+     * @param  {number} index
+     * @return {void}
+     * @method
+     * @public
+     */
+    deactivatedLayer (index: number): void
+    {
+        const layer: Layer | undefined = this._$movieClip.layers[index];
+        if (!layer) {
+            return ;
+        }
+
+        // 指定のレイヤーの選択を解除状態に更新
+        externalTimelineLayerControllerNormalDeactivateUseCase(
+            this._$workSpace, this._$movieClip, layer
         );
     }
 }

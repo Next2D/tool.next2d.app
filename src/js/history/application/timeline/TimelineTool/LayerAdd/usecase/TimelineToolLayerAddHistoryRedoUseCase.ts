@@ -38,4 +38,6 @@ export const execute = (
         workSpace, movieClip,
         index, name, color
     );
+
+    console.log(movieClip);
 };

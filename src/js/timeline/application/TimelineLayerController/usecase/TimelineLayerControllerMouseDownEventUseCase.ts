@@ -1,6 +1,7 @@
-import { $getLayerFromElement, $getTopIndex } from "../../TimelineUtil";
+import { $getLayerFromElement } from "../../TimelineUtil";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { timelineFrame } from "@/timeline/domain/model/TimelineFrame";
+import { execute as externalTimelineLayerControllerNormalSelectUseCase } from "@/external/timeline/application/ExternalTimelineLayerController/usecase/ExternalTimelineLayerControllerNormalSelectUseCase";
 
 /**
  * @description レイヤーのコントローラーエリアのマウスダウン処理関数
@@ -28,19 +29,19 @@ export const execute = (event: PointerEvent): void =>
         return ;
     }
 
-    // タイムラインのAPIを起動
-    const externalTimeline = $getCurrentWorkSpace().getExternalTimeline();
-
+    const workSpace = $getCurrentWorkSpace();
     switch (true) {
 
         case event.altKey:
+            break;
+
         case event.shiftKey:
             break;
 
         default:
-            externalTimeline.setSelectedLayer(
-                $getTopIndex() + parseInt(element.dataset.layerIndex as string),
-                timelineFrame.currentFrame
+            // 単体選択の外部APIを実行
+            externalTimelineLayerControllerNormalSelectUseCase(
+                workSpace, workSpace.scene, layer, timelineFrame.currentFrame
             );
             break;
 

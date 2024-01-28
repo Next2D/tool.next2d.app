@@ -39,7 +39,7 @@ export const execute = (
         return null;
     }
 
-    const frame = movie_clip.currentFrame;
+    // const frame = movie_clip.currentFrame;
 
     // 画面表示されてる、WorkSpaceとMovieClipの場合は表示Elementを更新
     if (work_space.active && movie_clip.active) {
@@ -49,12 +49,12 @@ export const execute = (
         // タイムラインを再描画
         timelineLayerBuildElementUseCase();
 
-        // 追加したレイヤーをアクティブ表示にする
-        timelineLayerControllerNormalSelectUseCase(newLayer, frame);
+        // // 追加したレイヤーをアクティブ表示にする
+        // timelineLayerControllerNormalSelectUseCase(newLayer, frame);
     }
 
     // 追加したレイヤーを選択状態に更新
-    externalMovieClipSelectedLayerService(movie_clip, newLayer, frame);
+    // externalMovieClipSelectedLayerService(movie_clip, newLayer, frame);
 
     return newLayer;
 };

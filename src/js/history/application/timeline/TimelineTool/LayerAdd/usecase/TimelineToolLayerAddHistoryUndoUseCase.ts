@@ -37,15 +37,15 @@ export const execute = (
         return ;
     }
 
+    // 選択中のレイヤー・フレーム Elementを初期化
+    if (workSpace.active && movieClip.active) {
+        timelineLayerAllClearSelectedElementService();
+    }
+
     // Layerオブジェクトの内部情報から削除
     movieClip.removeLayer(layer);
 
     if (workSpace.active && movieClip.active) {
-
-        // 選択中のレイヤー・フレーム Elementを初期化
-        timelineLayerAllClearSelectedElementService();
-
-        // 選択中の内部情報を初期化
         // fixed logic
         movieClip.clearSelectedLayer();
 

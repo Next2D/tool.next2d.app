@@ -448,8 +448,15 @@ export class MovieClip extends Instance
      */
     removeLayer (layer: Layer): void
     {
-        const index = this._$layers.indexOf(layer);
-        this._$layers.splice(index, 1);
+        const layerIndex = this._$layers.indexOf(layer);
+        if (layerIndex > -1) {
+            this._$layers.splice(layerIndex, 1);
+        }
+
+        const selectedIndex = this._$selectedLayers.indexOf(layer);
+        if (selectedIndex > -1) {
+            this._$selectedLayers.splice(selectedIndex, 1);
+        }
     }
 
     /**

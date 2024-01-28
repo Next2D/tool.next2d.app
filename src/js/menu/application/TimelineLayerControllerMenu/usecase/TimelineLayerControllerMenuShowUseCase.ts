@@ -2,15 +2,16 @@ import type { MenuImpl } from "@/interface/MenuImpl";
 import type { TimelineLayerControllerMenu } from "@/menu/domain/model/TimelineLayerControllerMenu";
 import { $getLayerFromElement } from "@/timeline/application/TimelineUtil";
 import { $TIMELINE_LAYER_MENU_NAME } from "@/config/MenuConfig";
+import { execute as timelineLayerControllerNormalSelectUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerNormalSelectUseCase";
+import { execute as timelineLayerControllerMenuSetColorService } from "../service/TimelineLayerControllerMenuSetColorService";
+import { execute as timelineLayerControllerMenuUpdateIconStyleService } from "../service/TimelineLayerControllerMenuUpdateIconStyleService";
+import { execute as externalMovieClipSelectedLayerService } from "@/external/core/application/ExternalMovieClip/service/ExternalMovieClipSelectedLayerService";
+import { timelineFrame } from "@/timeline/domain/model/TimelineFrame";
+import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import {
     $allHideMenu,
     $getMenu
 } from "@/menu/application/MenuUtil";
-import { execute as timelineLayerControllerNormalSelectUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerNormalSelectUseCase";
-import { timelineLayer } from "@/timeline/domain/model/TimelineLayer";
-import { execute as timelineLayerActiveElementService } from "@/timeline/application/TimelineLayer/service/TimelineLayerActiveElementService";
-import { execute as timelineLayerControllerMenuSetColorService } from "../service/TimelineLayerControllerMenuSetColorService";
-import { execute as timelineLayerControllerMenuUpdateIconStyleService } from "../service/TimelineLayerControllerMenuUpdateIconStyleService";
 
 /**
  * @description レイヤーのコントローラーメニューを表示
@@ -52,18 +53,14 @@ export const execute = (event: MouseEvent): void =>
         return ;
     }
 
-    const layerElement: HTMLElement | undefined = timelineLayer
-        .getLayerElementFromElement(targetElement);
-
-    if (!layerElement) {
-        return ;
-    }
-
     // 指定のレイヤーだけを選択状態に更新
-    timelineLayerControllerNormalSelectUseCase(layer);
+    timelineLayerControllerNormalSelectUseCase(layer, timelineFrame.currentFrame);
 
-    // 指定レイヤーElementをアクティブ表示に更新
-    timelineLayerActiveElementService(layerElement);
+    // 内部データとしてレイヤーを選択状態に更新
+    // fixed logic
+    externalMovieClipSelectedLayerService(
+        $getCurrentWorkSpace().scene, layer, timelineFrame.currentFrame
+    );
 
     // レイヤーのモードに合わせてモード設定をアクティブ表示
     timelineLayerControllerMenuUpdateIconStyleService(layer);
