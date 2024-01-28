@@ -3,7 +3,6 @@ import {
     $TIMELINE_MARKER_ID
 } from "@/config/TimelineConfig";
 import { $getLeftFrame } from "../../TimelineUtil";
-import { timelineFrame } from "@/timeline/domain/model/TimelineFrame";
 import { timelineHeader } from "@/timeline/domain/model/TimelineHeader";
 import { timelineMarker } from "@/timeline/domain/model/TimelineMarker";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
