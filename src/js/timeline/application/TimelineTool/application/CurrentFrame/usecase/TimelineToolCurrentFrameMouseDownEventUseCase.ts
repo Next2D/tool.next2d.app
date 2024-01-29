@@ -1,7 +1,6 @@
 import { $allHideMenu } from "@/menu/application/MenuUtil";
 import { execute as timelineToolCurrentFrameWindowRegisterEventUseCase } from "./TimelineToolCurrentFrameWindowRegisterEventUseCase";
 import { $useKeyboard } from "@/shortcut/ShortcutUtil";
-import { execute as timelineLayerAllClearSelectedElementService } from "@/timeline/application/TimelineLayer/service/TimelineLayerAllClearSelectedElementService";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { ExternalTimeline } from "@/external/timeline/domain/model/ExternalTimeline";
 
