@@ -1,13 +1,12 @@
 import { execute } from "./TimelineToolCurrentFrameKeyPressEventService";
-import { timelineFrame } from "../../../../../domain/model/TimelineFrame";
-import { $createWorkSpace } from "../../../../../../core/application/CoreUtil";
+import { $createWorkSpace, $getCurrentWorkSpace } from "../../../../../../core/application/CoreUtil";
 import { $TIMELINE_CURRENT_FRAME_ID } from "../../../../../../config/TimelineConfig";
 
 describe("TTimelineToolCurrentFrameKeyPressEventServiceTest", () =>
 {
     test("execute test", () =>
     {
-        $createWorkSpace();
+        const workSpace = $getCurrentWorkSpace() || $createWorkSpace();
 
         const input = document.createElement("input");
         document.body.appendChild(input);
@@ -31,13 +30,13 @@ describe("TTimelineToolCurrentFrameKeyPressEventServiceTest", () =>
 
         expect(stopPropagation).toBe(false);
         expect(preventDefault).toBe(false);
-        expect(timelineFrame.currentFrame).toBe(1);
+        expect(workSpace.scene.currentFrame).toBe(1);
 
         execute(eventMock);
 
         expect(stopPropagation).toBe(true);
         expect(preventDefault).toBe(true);
-        expect(timelineFrame.currentFrame).toBe(13);
+        expect(workSpace.scene.currentFrame).toBe(13);
 
         input.remove();
     });

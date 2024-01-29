@@ -1,7 +1,6 @@
 import { execute } from "./TimelineMarkerMovePositionService";
 import { $TIMELINE_MARKER_ID, $TIMELINE_MARKER_BORDER_ID } from "../../../../config/TimelineConfig";
 import { $createWorkSpace } from "../../../../core/application/CoreUtil";
-import { timelineFrame } from "../../../domain/model/TimelineFrame";
 import { timelineHeader } from "../../../domain/model/TimelineHeader";
 
 describe("TimelineMarkerMovePositionServiceTest", () =>
@@ -9,7 +8,7 @@ describe("TimelineMarkerMovePositionServiceTest", () =>
     test("execute test", () =>
     {
         const scene = $createWorkSpace().scene;
-        timelineFrame.currentFrame = 30;
+        scene.currentFrame = 30;
         scene.scrollX = 20;
         timelineHeader.clientWidth = 900;
 
@@ -37,12 +36,12 @@ describe("TimelineMarkerMovePositionServiceTest", () =>
         expect(markerElement.style.left).toBe("378px");
         expect(document.documentElement.style.getPropertyValue("--timeline-marker-border-left")).toBe("377px");
 
-        timelineFrame.currentFrame = 1;
+        scene.currentFrame = 1;
         execute();
         expect(markerElement.style.display).toBe("none");
         expect(borderElement.style.display).toBe("none");
 
-        timelineFrame.currentFrame = 15;
+        scene.currentFrame = 15;
         execute();
         expect(markerElement.style.display).toBe("");
         expect(borderElement.style.display).toBe("");
