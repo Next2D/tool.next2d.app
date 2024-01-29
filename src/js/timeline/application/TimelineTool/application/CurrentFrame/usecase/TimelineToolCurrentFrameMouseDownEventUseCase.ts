@@ -3,15 +3,7 @@ import { execute as timelineToolCurrentFrameWindowRegisterEventUseCase } from ".
 import { $useKeyboard } from "@/shortcut/ShortcutUtil";
 import { execute as timelineLayerAllClearSelectedElementService } from "@/timeline/application/TimelineLayer/service/TimelineLayerAllClearSelectedElementService";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
-
-/**
- * @description ダブルタップ用の待機フラグ
- *              Standby flag for double-tap
- *
- * @type {boolean}
- * @private
- */
-let wait: boolean = false;
+import { ExternalTimeline } from "@/external/timeline/domain/model/ExternalTimeline";
 
 /**
  * @description タイムラインの現在フレームのInput Elementのマウスダウン処理関数
@@ -41,29 +33,10 @@ export const execute = (event: PointerEvent): void =>
     }
 
     // レイヤー・フレームElementのアクティブ状態をリセット
-    timelineLayerAllClearSelectedElementService();
+    const workSpace = $getCurrentWorkSpace();
+    const externalTimeline = new ExternalTimeline(workSpace, workSpace.scene);
+    externalTimeline.deactivatedAllLayers();
 
-    // 選択情報を初期化
-    // fixed logic
-    $getCurrentWorkSpace().scene.clearSelectedLayer();
-
-    if (!wait) {
-
-        // 初回のタップであればダブルタップを待機モードに変更
-        wait = true;
-
-        // ダブルタップ有効期限をセット
-        setTimeout((): void =>
-        {
-            wait = false;
-        }, 300);
-
-        // windowイベントを登録
-        timelineToolCurrentFrameWindowRegisterEventUseCase();
-
-    } else {
-
-        // ダブルタップを終了
-        wait = false;
-    }
+    // windowイベントを登録
+    timelineToolCurrentFrameWindowRegisterEventUseCase();
 };

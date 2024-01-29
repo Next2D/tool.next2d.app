@@ -22,5 +22,7 @@ export const execute = (frame: number): void =>
     element.value = `${frame}`;
 
     // 現在、表示中にMovieClipのフレームも更新
-    $getCurrentWorkSpace().scene.currentFrame = frame;
+    $getCurrentWorkSpace()
+        .scene
+        .currentFrame = frame;
 };
