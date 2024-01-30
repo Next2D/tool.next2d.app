@@ -74,12 +74,14 @@ class ExternalLayer
             case "script":
                 {
                     const actions = this._$layer._$actions;
-                    let keyFrame  = 1;
-                    for (let frame = 1; totalFrame >= frame; ++frame) {
-                        if (actions.has(frame)) {
-                            keyFrame = frame;
+                    if (actions) {
+                        let keyFrame  = 1;
+                        for (let frame = 1; totalFrame >= frame; ++frame) {
+                            if (actions.has(frame)) {
+                                keyFrame = frame;
+                            }
+                            frames.push(new ExternalFrame(frame, keyFrame - 1, this));
                         }
-                        frames.push(new ExternalFrame(frame, keyFrame - 1, this));
                     }
                 }
                 break;
@@ -87,12 +89,14 @@ class ExternalLayer
             case "label":
                 {
                     const labels = this._$layer._$labels;
-                    let keyFrame  = 1;
-                    for (let frame = 1; totalFrame >= frame; ++frame) {
-                        if (labels.has(frame)) {
-                            keyFrame = frame;
+                    if (labels) {
+                        let keyFrame  = 1;
+                        for (let frame = 1; totalFrame >= frame; ++frame) {
+                            if (labels.has(frame)) {
+                                keyFrame = frame;
+                            }
+                            frames.push(new ExternalFrame(frame, keyFrame - 1, this));
                         }
-                        frames.push(new ExternalFrame(frame, keyFrame - 1, this));
                     }
                 }
                 break;
@@ -100,12 +104,14 @@ class ExternalLayer
             case "sound":
                 {
                     const sounds = this._$layer._$sounds;
-                    let keyFrame  = 1;
-                    for (let frame = 1; totalFrame >= frame; ++frame) {
-                        if (sounds.has(frame)) {
-                            keyFrame = frame;
+                    if (sounds) {
+                        let keyFrame  = 1;
+                        for (let frame = 1; totalFrame >= frame; ++frame) {
+                            if (sounds.has(frame)) {
+                                keyFrame = frame;
+                            }
+                            frames.push(new ExternalFrame(frame, keyFrame - 1, this));
                         }
-                        frames.push(new ExternalFrame(frame, keyFrame - 1, this));
                     }
                 }
                 break;
