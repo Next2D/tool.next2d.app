@@ -46,7 +46,7 @@ export const execute = (
     externalTimeline.deactivatedLayer(externalLayer.index);
 
     // Layerオブジェクトの内部情報から削除
-    movieClip.removeLayer(layer);
+    movieClip.deleteLayer(layer);
 
     if (workSpace.active && movieClip.active) {
 

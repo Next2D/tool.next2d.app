@@ -54,6 +54,6 @@ export const execute = (
 
         // レイヤーのAPIを起動
         const externalLayer = new ExternalLayer(workSpace, scene, layer);
-        externalTimeline.removeLayer(externalLayer.index);
+        externalTimeline.deleteLayer(externalLayer.index);
     }
 };

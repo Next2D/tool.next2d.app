@@ -31,7 +31,7 @@ export const execute = (
     externalTimeline.deactivatedLayer(index);
 
     // 内部データを削除
-    movie_clip.removeLayer(layer);
+    movie_clip.deleteLayer(layer);
 
     if (work_space.active && movie_clip.active) {
         // タイムラインのyスクロールの高さを更新

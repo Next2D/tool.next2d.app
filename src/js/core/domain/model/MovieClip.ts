@@ -446,7 +446,7 @@ export class MovieClip extends Instance
      * @method
      * @public
      */
-    removeLayer (layer: Layer): void
+    deleteLayer (layer: Layer): void
     {
         // 非アクティブに更新
         this.deactivatedLayer(layer);

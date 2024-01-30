@@ -34,7 +34,7 @@ export const execute = (
 
     // Layerオブジェクトの内部情報から削除
     const layer = movieClip.layers[index];
-    movieClip.removeLayer(layer);
+    movieClip.deleteLayer(layer);
 
     // 選択したレイヤー・フレーム Elementを初期化
     timelineLayerAllClearSelectedElementService();
