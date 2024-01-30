@@ -1,12 +1,7 @@
 import type { InstanceImpl } from "@/interface/InstanceImpl";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
-import type { Layer } from "@/core/domain/model/Layer";
-import { execute as timelineToolLayerDeleteHistoryUseCase } from "@/history/application/timeline/TimelineTool/LayerDelete/usecase/TimelineToolLayerDeleteHistoryUseCase";
-import { execute as timelineScrollUpdateHeightService } from "@/timeline/application/TimelineScroll/service/TimelineScrollUpdateHeightService";
-import { execute as timelineScrollUpdateYPositionService } from "@/timeline/application/TimelineScroll/service/TimelineScrollUpdateYPositionService";
-import { execute as timelineLayerAllClearSelectedElementService } from "@/timeline/application/TimelineLayer/service/TimelineLayerAllClearSelectedElementService";
-import { execute as timelineLayerBuildElementUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerBuildElementUseCase";
-import { execute as externalTimelineLayerControllerNormalSelectUseCase } from "@/external/timeline/application/ExternalTimelineLayerController/usecase/ExternalTimelineLayerControllerNormalSelectUseCase";
+import { ExternalTimeline } from "@/external/timeline/domain/model/ExternalTimeline";
+import { ExternalLayer } from "@/external/core/domain/model/ExternalLayer";
 import {
     $getCurrentWorkSpace,
     $getWorkSpace
@@ -51,51 +46,14 @@ export const execute = (
         return ;
     }
 
-    // 選択したレイヤー・フレームを解放
-    // fixed logic
-    timelineLayerAllClearSelectedElementService();
-
-    let minIndex = Number.MAX_VALUE;
+    // タイムラインのAPIを起動
+    const externalTimeline = new ExternalTimeline(workSpace, scene);
     for (let idx = 0; idx < selectedLayers.length; ++idx) {
 
         const layer = selectedLayers[idx];
 
-        // 元の配列のポジションを取得
-        // fixed logic
-        const index = scene.layers.indexOf(layer);
-
-        // 一番小さいポジションをセット
-        minIndex = Math.min(minIndex, index);
-
-        // 作業履歴に登録
-        timelineToolLayerDeleteHistoryUseCase(
-            workSpace, scene, layer, index
-        );
-
-        // レイヤー削除を実行
-        scene.removeLayer(layer);
+        // レイヤーのAPIを起動
+        const externalLayer = new ExternalLayer(workSpace, scene, layer);
+        externalTimeline.removeLayer(externalLayer.index);
     }
-
-    // 現時点での最小ポジション
-    minIndex = Math.min(minIndex, scene.layers.length);
-
-    const layer: Layer | undefined = scene.layers[
-        minIndex > 0 ? minIndex - 1 : 0
-    ];
-
-    // 削除した近辺にレイヤーがあれば選択状にして、Elementをアクティブに更新する
-    if (layer) {
-        externalTimelineLayerControllerNormalSelectUseCase(
-            workSpace, scene, layer, scene.currentFrame
-        );
-    }
-
-    // タイムラインのyスクロールの高さを更新
-    timelineScrollUpdateHeightService();
-
-    // y座標のスクロール位置を更新
-    timelineScrollUpdateYPositionService();
-
-    // タイムラインを再描画
-    timelineLayerBuildElementUseCase();
 };

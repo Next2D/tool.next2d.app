@@ -3,11 +3,13 @@ import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { Layer } from "@/core/domain/model/Layer";
 import { execute as externalTimelineChageFrameUseCase } from "@/external/timeline/application/ExternalTimeline/usecase/ExternalTimelineChageFrameUseCase";
 import { execute as externalMovieClipCreateLayerUseCase } from "@/external/core/application/ExternalMovieClip/usecase/ExternalMovieClipCreateLayerUseCase";
+import { execute as externalMovieClipRemoveLayerUseCase } from "@/external/core/application/ExternalMovieClip/usecase/ExternalMovieClipRemoveLayerUseCase";
 import { execute as timelineToolLayerAddHistoryUseCase } from "@/history/application/timeline/TimelineTool/LayerAdd/usecase/TimelineToolLayerAddHistoryUseCase";
 import { execute as externalTimelineLayerControllerNormalSelectUseCase } from "@/external/timeline/application/ExternalTimelineLayerController/usecase/ExternalTimelineLayerControllerNormalSelectUseCase";
 import { execute as externalTimelineLayerDeactivateLayerUseCase } from "@/external/timeline/application/ExternalTimelineLayer/usecase/ExternalTimelineLayerDeactivateLayerUseCase";
 import { execute as timelineLayerAllClearSelectedElementService } from "@/timeline/application/TimelineLayer/service/TimelineLayerAllClearSelectedElementService";
 import { execute as movieClipClearSelectedLayerService } from "@/core/application/MovieClip/service/MovieClipClearSelectedLayerService";
+import { execute as timelineToolLayerDeleteHistoryUseCase } from "@/history/application/timeline/TimelineTool/LayerDelete/usecase/TimelineToolLayerDeleteHistoryUseCase";
 import { $clamp } from "@/global/GlobalUtil";
 import { ExternalLayer } from "@/external/core/domain/model/ExternalLayer";
 
@@ -118,6 +120,41 @@ export class ExternalTimeline
         );
 
         return externalLayer;
+    }
+
+    /**
+     * @description 指定したindexのレイヤーを削除
+     *              Delete layer of specified index
+     *
+     * @param  {number} index
+     * @return {void}
+     * @method
+     * @public
+     */
+    removeLayer (
+        index: number,
+        receiver: boolean = false
+    ): void {
+
+        const layer: Layer | undefined = this._$movieClip.layers[index];
+        if (!layer) {
+            return ;
+        }
+
+        // 指定のレイヤーを削除
+        externalMovieClipRemoveLayerUseCase(
+            this._$workSpace,
+            this._$movieClip,
+            layer,
+            index
+        );
+
+        // 作業履歴に登録
+        timelineToolLayerDeleteHistoryUseCase(
+            this._$workSpace,
+            this._$movieClip,
+            layer, index, receiver
+        );
     }
 
     /**
