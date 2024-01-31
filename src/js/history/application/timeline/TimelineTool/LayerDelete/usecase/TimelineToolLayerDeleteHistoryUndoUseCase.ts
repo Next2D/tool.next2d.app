@@ -13,8 +13,8 @@ import { $getWorkSpace } from "@/core/application/CoreUtil";
  *
  * @param  {number} work_space_id
  * @param  {number} library_id
- * @param  {object} layer_object
  * @param  {number} index
+ * @param  {object} layer_object
  * @return {void}
  * @method
  * @public
@@ -22,8 +22,8 @@ import { $getWorkSpace } from "@/core/application/CoreUtil";
 export const execute = (
     work_space_id: number,
     library_id: number,
-    layer_object: LayerSaveObjectImpl,
-    index: number
+    index: number,
+    layer_object: LayerSaveObjectImpl
 ): void => {
 
     const workSpace = $getWorkSpace(work_space_id);

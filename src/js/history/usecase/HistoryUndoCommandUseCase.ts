@@ -56,8 +56,8 @@ export const execute = (history_object: HistoryObjectImpl): void =>
             timelineToolLayerDeleteHistoryUndoUseCase(
                 args[0] as number, // workSpaceId
                 args[1] as number, // MovieClipId
-                args[2] as LayerSaveObjectImpl, // Layer Object
-                args[3] as number // Layer Index
+                args[2] as number, // Layer Index
+                args[3] as LayerSaveObjectImpl // Layer Object
             );
             break;
 

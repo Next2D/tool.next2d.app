@@ -42,7 +42,7 @@ export const execute = (
     );
 
     const historyObject = timelineToolLayerDeleteCreateHistoryObjectService(
-        work_space.id, movie_clip.id, layer, index
+        work_space.id, movie_clip.id, index, layer
     );
 
     // 追加したLayer Objectを履歴に登録
@@ -50,6 +50,12 @@ export const execute = (
 
     // 受け取り処理ではなく、画面共有していれば共有者に送信
     if (!receiver && $useSocket()) {
+
+        const shareObject = timelineToolLayerDeleteCreateHistoryObjectService(
+            work_space.id, movie_clip.id, index, layer
+        );
+
+        shareObject.args.pop();
         shareSendService(historyObject);
     }
 };

@@ -8,8 +8,8 @@ import { $TIMELINE_TOOL_LAYER_DELETE_COMMAND } from "@/config/HistoryConfig";
  *
  * @param  {number} work_space_id
  * @param  {number} movie_clip_id
- * @param  {Layer} layer
  * @param  {number} index
+ * @param  {Layer} layer
  * @return {object}
  * @method
  * @public
@@ -17,8 +17,8 @@ import { $TIMELINE_TOOL_LAYER_DELETE_COMMAND } from "@/config/HistoryConfig";
 export const execute = (
     work_space_id: number,
     movie_clip_id: number,
-    layer: Layer,
-    index: number
+    index: number,
+    layer: Layer
 ): HistoryObjectImpl => {
 
     return {
@@ -26,8 +26,8 @@ export const execute = (
         "args": [
             work_space_id,
             movie_clip_id,
-            layer.toObject(),
-            index
+            index,
+            layer.toObject()
         ]
     };
 };
