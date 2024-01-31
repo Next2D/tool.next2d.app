@@ -1,9 +1,9 @@
-import { $LAYER_LOCK_UPDATE_COMMAND } from "@/config/HistoryConfig";
+import { $LAYER_DISABLE_UPDATE_COMMAND } from "@/config/HistoryConfig";
 import { HistoryObjectImpl } from "@/interface/HistoryObjectImpl";
 
 /**
- * @description レイヤーロックの画面共有オブジェクトを作成
- *              Create a layer lock screen sharing object
+ * @description レイヤー表示の画面共有オブジェクトを作成
+ *              Create a screen-sharing object with a layered view
  *
  * @param  {number} work_space_id
  * @param  {number} movie_clip_id
@@ -21,7 +21,7 @@ export const execute = (
 ): HistoryObjectImpl => {
 
     return {
-        "command": $LAYER_LOCK_UPDATE_COMMAND,
+        "command": $LAYER_DISABLE_UPDATE_COMMAND,
         "args": [
             work_space_id,
             movie_clip_id,

@@ -105,3 +105,12 @@ export const $LAYER_NAME_UPDATE_COMMAND: number = 8;
  * @constant
  */
 export const $LAYER_LOCK_UPDATE_COMMAND: number = 9;
+
+/**
+ * @description レイヤーのロック操作の識別コマンド名
+ *              Identifying command name for layer lock operation
+ *
+ * @type {number}
+ * @constant
+ */
+export const $LAYER_DISABLE_UPDATE_COMMAND: number = 10;

@@ -36,7 +36,7 @@ export const execute = (message: ShareReceiveMessageImpl): void =>
 
     // 外部APIを起動
     const externalLayer = new ExternalLayer(workSpace, movieClip, layer);
-    externalLayer.setLock(
+    externalLayer.setDisable(
         message.data[3] as NonNullable<boolean>,
         true
     );

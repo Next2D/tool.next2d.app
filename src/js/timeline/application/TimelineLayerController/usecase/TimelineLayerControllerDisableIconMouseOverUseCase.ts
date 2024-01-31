@@ -1,5 +1,7 @@
+import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { $getDisableState, $getLayerFromElement } from "../../TimelineUtil";
 import { execute as timelineLayerControllerUpdateDisableIconStyleService } from "../service/TimelineLayerControllerUpdateDisableIconElementService";
+import { ExternalLayer } from "@/external/core/domain/model/ExternalLayer";
 
 /**
  * @description 連続した表示機能の処理関数
@@ -27,7 +29,12 @@ export const execute = (event: PointerEvent): void =>
         return ;
     }
 
-    layer.disable = !layer.disable;
+    // 外部APIを起動
+    const workSpace = $getCurrentWorkSpace();
+    const externalLayer = new ExternalLayer(workSpace, workSpace.scene, layer);
+
+    // Layerオブジェクトの値を更新
+    externalLayer.setDisable(!layer.disable);
 
     timelineLayerControllerUpdateDisableIconStyleService(layer, layer.disable);
 };

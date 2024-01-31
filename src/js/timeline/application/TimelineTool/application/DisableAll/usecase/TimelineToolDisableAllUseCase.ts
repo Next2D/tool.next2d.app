@@ -3,6 +3,7 @@ import { $setAllDisableMode } from "@/timeline/application/TimelineUtil";
 import type { Layer } from "@/core/domain/model/Layer";
 import { execute as timelineToolDisableAllGetCurrentModeService } from "../service/TimelineToolDisableAllGetCurrentModeService";
 import { execute as timelineLayerControllerUpdateDisableIconStyleService } from "@/timeline/application/TimelineLayerController/service/TimelineLayerControllerUpdateDisableIconElementService";
+import { ExternalLayer } from "@/external/core/domain/model/ExternalLayer";
 
 /**
  * @description タイムライン全体の表示On/Offツールのイベント登録
@@ -26,8 +27,11 @@ export const execute = (event: PointerEvent): void =>
     // レイヤーの状態からモードを取得する
     const mode = timelineToolDisableAllGetCurrentModeService();
 
+    const workSpace = $getCurrentWorkSpace();
+    const scene = workSpace.scene;
+
     // 全てのレイヤーのモードを切り替える
-    const layers = $getCurrentWorkSpace().scene.layers;
+    const layers = scene.layers;
     for (let idx: number = 0; idx < layers.length; ++idx) {
 
         const layer: Layer | undefined = layers[idx];
@@ -35,8 +39,9 @@ export const execute = (event: PointerEvent): void =>
             continue;
         }
 
-        // Layerオブジェクトの値を更新
-        layer.disable = mode;
+        // 外部APIを起動
+        const externalLayer = new ExternalLayer(workSpace, scene, layer);
+        externalLayer.setDisable(mode);
 
         // レイヤーの表示情報とElementを更新
         timelineLayerControllerUpdateDisableIconStyleService(layer, mode);

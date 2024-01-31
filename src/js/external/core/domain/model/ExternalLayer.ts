@@ -4,6 +4,7 @@ import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import { execute as externalLayerUpdateNameUseCase } from "@/external/core/application/ExternalLayer/usecase/ExternalLayerUpdateNameUseCase";
 import { execute as timelineLayerControllerLayerNameUpdateHistoryUseCase } from "@/history/application/timeline/TimelineLayerController/LayerName/usecase/TimelineLayerControllerLayerNameUpdateHistoryUseCase";
 import { execute as externalLayerUpdateLockUseCase } from "@/external/core/application/ExternalLayer/usecase/ExternalLayerUpdateLockUseCase";
+import { execute as externalLayerUpdateDisableUseCase } from "@/external/core/application/ExternalLayer/usecase/ExternalLayerUpdateDisableUseCase";
 
 /**
  * @description Layerの外部APIクラス
@@ -132,6 +133,37 @@ export class ExternalLayer
     {
         externalLayerUpdateLockUseCase(
             this._$workSpace, this._$movieClip, this._$layer, lock, receiver
+        );
+    }
+
+    /**
+     * @description レイヤー表示状態を返却
+     *              Layer display status returned
+     *
+     * @default false
+     * @return {boolean}
+     * @method
+     * @public
+     */
+    getDisable(): boolean
+    {
+        return this._$layer.disable;
+    }
+
+    /**
+     * @description レイヤー表示の値を更新
+     *              Update Layer Display Values
+     *
+     * @param  {boolean} disable
+     * @param  {boolean} [receiver = false]
+     * @return {void}
+     * @method
+     * @public
+     */
+    setDisable (disable: boolean, receiver: boolean = false): void
+    {
+        externalLayerUpdateDisableUseCase(
+            this._$workSpace, this._$movieClip, this._$layer, disable, receiver
         );
     }
 }

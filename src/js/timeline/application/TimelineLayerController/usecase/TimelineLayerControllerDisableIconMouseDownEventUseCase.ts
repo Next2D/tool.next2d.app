@@ -7,6 +7,8 @@ import {
     $getLayerFromElement,
     $setDisableState
 } from "../../TimelineUtil";
+import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
+import { ExternalLayer } from "@/external/core/domain/model/ExternalLayer";
 
 /**
  * @description レイヤーの表示・非表示アイコンのイベント処理
@@ -48,7 +50,12 @@ export const execute = (event: PointerEvent): void =>
         return ;
     }
 
-    layer.disable = !layer.disable;
+    // 外部APIを起動
+    const workSpace = $getCurrentWorkSpace();
+    const externalLayer = new ExternalLayer(workSpace, workSpace.scene, layer);
+
+    // Layerオブジェクトの値を更新
+    externalLayer.setDisable(!layer.disable);
 
     // 表示Elementを更新
     timelineLayerControllerUpdateDisableIconElementService(layer, layer.disable);
