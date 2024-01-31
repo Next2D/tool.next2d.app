@@ -431,10 +431,14 @@ export class MovieClip extends Instance
      */
     setLayer (layer: Layer, index: number): void
     {
-        const targetIndex = $clamp(index, 0, this._$layers.length - 1);
+        const targetIndex = $clamp(index, 0, this._$layers.length);
 
-        // 指定のindexの前に挿入
-        this._$layers.splice(targetIndex, 0, layer);
+        if (targetIndex >= this._$layers.length) {
+            this._$layers.push(layer);
+        } else {
+            // 指定のindexの前に挿入
+            this._$layers.splice(targetIndex, 0, layer);
+        }
     }
 
     /**
