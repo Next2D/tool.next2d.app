@@ -36,7 +36,9 @@ export const execute = (
     }
 
     // 表示を初期化
-    timelineLayerAllClearSelectedElementService();
+    if (workSpace.active && movieClip.active) {
+        timelineLayerAllClearSelectedElementService();
+    }
 
     // レイヤーを追加
     externalMovieClipCreateLayerUseCase(
