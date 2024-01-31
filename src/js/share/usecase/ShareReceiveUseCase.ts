@@ -5,6 +5,7 @@ import { execute as timelineToolLayerDeleteReceiveService } from "@/share/receiv
 import { execute as timelineLayerControllerLayerNameUpdateReceiveUseCase } from "@/share/receive/application/timeline/application/TimelineLayerController/usecase/TimelineLayerControllerLayerNameUpdateReceiveUseCase";
 import { execute as timelineLayerControllerLayerLockUpdateReceiveUseCase } from "@/share/receive/application/timeline/application/TimelineLayerController/usecase/TimelineLayerControllerLayerLockUpdateReceiveUseCase";
 import { execute as timelineLayerControllerLayerDisableUpdateReceiveUseCase } from "@/share/receive/application/timeline/application/TimelineLayerController/usecase/TimelineLayerControllerLayerDisableUpdateReceiveUseCase";
+import { execute as timelineLayerControllerLayerLightUpdateReceiveUseCase } from "@/share/receive/application/timeline/application/TimelineLayerController/usecase/TimelineLayerControllerLayerLightUpdateReceiveUseCase";
 import { execute as historyRedoUseCase } from "@/history/usecase/HistoryRedoUseCase";
 import { execute as historyUndoUseCase } from "@/history/usecase/HistoryUndoUseCase";
 import {
@@ -15,7 +16,8 @@ import {
     $TIMELINE_TOOL_LAYER_DELETE_COMMAND,
     $LAYER_NAME_UPDATE_COMMAND,
     $LAYER_LOCK_UPDATE_COMMAND,
-    $LAYER_DISABLE_UPDATE_COMMAND
+    $LAYER_DISABLE_UPDATE_COMMAND,
+    $LAYER_LIGHT_UPDATE_COMMAND
 } from "@/config/HistoryConfig";
 
 /**
@@ -77,6 +79,11 @@ export const execute = (message: ShareReceiveMessageImpl): void =>
         // レイヤー表示を更新
         case $LAYER_DISABLE_UPDATE_COMMAND:
             timelineLayerControllerLayerDisableUpdateReceiveUseCase(message);
+            break;
+
+        // レイヤーハイライトを更新
+        case $LAYER_LIGHT_UPDATE_COMMAND:
+            timelineLayerControllerLayerLightUpdateReceiveUseCase(message);
             break;
 
         default:

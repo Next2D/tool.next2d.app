@@ -3,6 +3,7 @@ import { $setAllLightMode } from "@/timeline/application/TimelineUtil";
 import { execute as timelineLayerControllerUpdateLightIconElementService } from "@/timeline/application/TimelineLayerController/service/TimelineLayerControllerUpdateLightIconElementService";
 import { execute as timelineToolLightAllGetCurrentModeService } from "../service/TimelineToolLightAllGetCurrentModeService";
 import type { Layer } from "@/core/domain/model/Layer";
+import { ExternalLayer } from "@/external/core/domain/model/ExternalLayer";
 
 /**
  * @description タイムライン全体のハイライトOn/Offツールのイベント登録
@@ -26,6 +27,9 @@ export const execute = (event: PointerEvent): void =>
     // レイヤーの状態からモードを取得する
     const mode = timelineToolLightAllGetCurrentModeService();
 
+    const workSpace = $getCurrentWorkSpace();
+    const scene = workSpace.scene;
+
     // 全てのレイヤーのモードを切り替える
     const layers = $getCurrentWorkSpace().scene.layers;
     for (let idx: number = 0; idx < layers.length; ++idx) {
@@ -35,8 +39,9 @@ export const execute = (event: PointerEvent): void =>
             continue;
         }
 
-        // Layerオブジェクトの値を更新
-        layer.light = mode;
+        // 外部APIを起動
+        const externalLayer = new ExternalLayer(workSpace, scene, layer);
+        externalLayer.setLight(mode);
 
         // レイヤーのハイライト情報とElementを更新
         timelineLayerControllerUpdateLightIconElementService(layer, mode);

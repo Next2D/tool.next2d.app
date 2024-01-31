@@ -5,6 +5,7 @@ import { execute as externalLayerUpdateNameUseCase } from "@/external/core/appli
 import { execute as timelineLayerControllerLayerNameUpdateHistoryUseCase } from "@/history/application/timeline/TimelineLayerController/LayerName/usecase/TimelineLayerControllerLayerNameUpdateHistoryUseCase";
 import { execute as externalLayerUpdateLockUseCase } from "@/external/core/application/ExternalLayer/usecase/ExternalLayerUpdateLockUseCase";
 import { execute as externalLayerUpdateDisableUseCase } from "@/external/core/application/ExternalLayer/usecase/ExternalLayerUpdateDisableUseCase";
+import { execute as externalLayerUpdateLightUseCase } from "@/external/core/application/ExternalLayer/usecase/ExternalLayerUpdateLightUseCase";
 
 /**
  * @description Layerの外部APIクラス
@@ -145,7 +146,7 @@ export class ExternalLayer
      * @method
      * @public
      */
-    getDisable(): boolean
+    getDisable (): boolean
     {
         return this._$layer.disable;
     }
@@ -164,6 +165,37 @@ export class ExternalLayer
     {
         externalLayerUpdateDisableUseCase(
             this._$workSpace, this._$movieClip, this._$layer, disable, receiver
+        );
+    }
+
+    /**
+     * @description レイヤーハイライトの状態を返却
+     *              Layer highlight status returned
+     *
+     * @default false
+     * @return {boolean}
+     * @method
+     * @public
+     */
+    getLight (): boolean
+    {
+        return this._$layer.light;
+    }
+
+    /**
+     * @description レイヤーハイライトの値を更新
+     *              Update Layer Highlight values
+     *
+     * @param  {boolean} light
+     * @param  {boolean} [receiver = false]
+     * @return {void}
+     * @method
+     * @public
+     */
+    setLight (light: boolean, receiver: boolean = false): void
+    {
+        externalLayerUpdateLightUseCase(
+            this._$workSpace, this._$movieClip, this._$layer, light, receiver
         );
     }
 }

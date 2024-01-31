@@ -1,6 +1,8 @@
 import { $allHideMenu } from "@/menu/application/MenuUtil";
 import { $getLayerFromElement } from "../../TimelineUtil";
 import { execute as timelineLayerControllerUpdateLightIconElementService } from "../service/TimelineLayerControllerUpdateLightIconElementService";
+import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
+import { ExternalLayer } from "@/external/core/domain/model/ExternalLayer";
 
 /**
  * @description レイヤーのハイライトアイコンのイベント処理
@@ -34,8 +36,12 @@ export const execute = (event: PointerEvent): void =>
         return ;
     }
 
+    // 外部APIを起動
+    const workSpace = $getCurrentWorkSpace();
+    const externalLayer = new ExternalLayer(workSpace, workSpace.scene, layer);
+
     // Layerオブジェクトの値を更新
-    layer.light = !layer.light;
+    externalLayer.setLight(!layer.light);
 
     // 表示Elementを更新
     timelineLayerControllerUpdateLightIconElementService(layer, layer.light);

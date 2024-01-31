@@ -11,10 +11,10 @@ import { execute as timelineLayerControllerUpdateLockIconStyleService } from "@/
  * @description レイヤーのロック情報を更新
  *              Update layer lock information
  *
- * @param {WorkSpace} work_space
- * @param {MovieClip} movie_clip
- * @param {Layer} layer
- * @param {boolean} value
+ * @param  {WorkSpace} work_space
+ * @param  {MovieClip} movie_clip
+ * @param  {Layer} layer
+ * @param  {boolean} value
  * @return {void}
  * @method
  * @public

@@ -3,13 +3,13 @@ import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import { $useSocket } from "@/share/ShareUtil";
 import { execute as shareSendService } from "@/share/service/ShareSendService";
-import { execute as externalLayerUpdateDisableHistoryObjectService } from "../service/ExternalLayerUpdateDisableHistoryObjectService";
+import { execute as externalLayerUpdateLightHistoryObjectService } from "../service/ExternalLayerUpdateLightHistoryObjectService";
 import { ExternalLayer } from "@/external/core/domain/model/ExternalLayer";
-import { execute as timelineLayerControllerUpdateDisableIconElementService } from "@/timeline/application/TimelineLayerController/service/TimelineLayerControllerUpdateDisableIconElementService";
+import { execute as timelineLayerControllerUpdateLightIconElementService } from "@/timeline/application/TimelineLayerController/service/TimelineLayerControllerUpdateLightIconElementService";
 
 /**
- * @description レイヤーの表示情報を更新
- *              Update layer display information
+ * @description レイヤーのハイライト表示を更新
+ *              Updated layer highlighting
  *
  * @param  {WorkSpace} work_space
  * @param  {MovieClip} movie_clip
@@ -32,16 +32,16 @@ export const execute = (
         work_space, movie_clip, layer
     );
 
-    const historyObject = externalLayerUpdateDisableHistoryObjectService(
+    const historyObject = externalLayerUpdateLightHistoryObjectService(
         work_space.id, movie_clip.id, externalLayer.index, value
     );
 
     // 内部情報を更新
-    layer.disable = value;
+    layer.light = value;
 
     // 表示中ならレイヤーの表示を更新
     if (work_space.active && movie_clip.active) {
-        timelineLayerControllerUpdateDisableIconElementService(layer, value);
+        timelineLayerControllerUpdateLightIconElementService(layer, value);
     }
 
     // 受け取り処理ではなく、画面共有していれば共有者に送信
