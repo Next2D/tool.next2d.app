@@ -7,6 +7,7 @@ import { execute as timelineScrollUpdateYPositionService } from "@/timeline/appl
 import { execute as timelineLayerBuildElementUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerBuildElementUseCase";
 import { $clamp } from "@/global/GlobalUtil";
 import { execute as externalTimelineLayerControllerNormalSelectUseCase } from "@/external/timeline/application/ExternalTimelineLayerController/usecase/ExternalTimelineLayerControllerNormalSelectUseCase";
+import { execute as timelineLayerAllClearSelectedElementService } from "@/timeline/application/TimelineLayer/service/TimelineLayerAllClearSelectedElementService";
 
 /**
  * @description 指定indexのレイヤーを削除
@@ -27,6 +28,11 @@ export const execute = (
     index: number
 ): void => {
 
+    // 表示されているElementを初期化、内部データに変更なし
+    if (work_space.active && movie_clip.active) {
+        timelineLayerAllClearSelectedElementService();
+    }
+
     const externalTimeline = new ExternalTimeline(work_space, movie_clip);
     externalTimeline.deactivatedLayer(index);
 
@@ -44,13 +50,15 @@ export const execute = (
         timelineLayerBuildElementUseCase();
     }
 
-    const targetLayer: Layer | undefined = movie_clip.layers[
-        $clamp(index, 0, movie_clip.layers.length - 1)
-    ];
+    if (!movie_clip.selectedLayers.length) {
+        const targetLayer: Layer | undefined = movie_clip.layers[
+            $clamp(index, 0, movie_clip.layers.length - 1)
+        ];
 
-    if (targetLayer) {
-        externalTimelineLayerControllerNormalSelectUseCase(
-            work_space, movie_clip, targetLayer, movie_clip.currentFrame
-        );
+        if (targetLayer) {
+            externalTimelineLayerControllerNormalSelectUseCase(
+                work_space, movie_clip, targetLayer, movie_clip.currentFrame
+            );
+        }
     }
 };

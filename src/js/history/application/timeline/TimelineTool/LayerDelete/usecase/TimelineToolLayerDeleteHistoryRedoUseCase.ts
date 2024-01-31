@@ -1,9 +1,7 @@
 import { $getWorkSpace } from "@/core/application/CoreUtil";
-import { execute as timelineScrollUpdateHeightService } from "@/timeline/application/TimelineScroll/service/TimelineScrollUpdateHeightService";
-import { execute as timelineLayerBuildElementUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerBuildElementUseCase";
-import { execute as timelineLayerAllClearSelectedElementService } from "@/timeline/application/TimelineLayer/service/TimelineLayerAllClearSelectedElementService";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { InstanceImpl } from "@/interface/InstanceImpl";
+import { execute as externalMovieClipRemoveLayerUseCase } from "@/external/core/application/ExternalMovieClip/usecase/ExternalMovieClipDeleteLayerUseCase";
 
 /**
  * @description レイヤー削除を再度実行する
@@ -32,20 +30,8 @@ export const execute = (
         return ;
     }
 
-    // Layerオブジェクトの内部情報から削除
     const layer = movieClip.layers[index];
-    movieClip.deleteLayer(layer);
-
-    // 選択したレイヤー・フレーム Elementを初期化
-    timelineLayerAllClearSelectedElementService();
-
-    // 選択中の内部情報を初期化
-    // fixed logic
-    movieClip.clearSelectedLayer();
-
-    // タイムラインのyスクロールの高さを更新
-    timelineScrollUpdateHeightService();
-
-    // タイムラインを再描画
-    timelineLayerBuildElementUseCase();
+    externalMovieClipRemoveLayerUseCase(
+        workSpace, movieClip, layer, index
+    );
 };

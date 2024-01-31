@@ -3,8 +3,10 @@ import { $getLeftFrame } from "../../TimelineUtil";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 
 /**
- * @description 全てのレイヤーElementのアクティブ情報をリセット
- *              Reset active information for all Layer Elements
+ * @description 全てのレイヤーElementのアクティブ情報をリセット、内部情報はここで初期化はしない。
+ *              Elementだけの初期化関数
+ *              Reset active information of all layer elements, internal information is not initialized here.
+ *              Element-only initialization functions
  *
  * @return {void}
  * @method

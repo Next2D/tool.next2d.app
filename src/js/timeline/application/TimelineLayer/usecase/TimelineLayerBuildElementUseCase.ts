@@ -40,7 +40,8 @@ export const execute = (): void =>
     }
 
     // 再描画前に全てのレイヤーelementを非表示にする
-    timelineLayerAllElementDisplayNoneService();
+    const topIndex = $getTopIndex();
+    timelineLayerAllElementDisplayNoneService(layers.length - topIndex);
 
     // フレームElementの表示を初期化
     timelineLayerAllClearSelectedElementService();
@@ -52,7 +53,7 @@ export const execute = (): void =>
 
     let currentHeight: number = 0;
     let index: number = 0;
-    for (let idx = $getTopIndex(); layers.length > idx; ++idx) {
+    for (let idx = topIndex; layers.length > idx; ++idx) {
 
         const layer = layers[idx];
 
