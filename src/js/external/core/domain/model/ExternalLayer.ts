@@ -3,6 +3,7 @@ import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import { execute as externalLayerUpdateNameUseCase } from "@/external/core/application/ExternalLayer/usecase/ExternalLayerUpdateNameUseCase";
 import { execute as timelineLayerControllerLayerNameUpdateHistoryUseCase } from "@/history/application/timeline/TimelineLayerController/LayerName/usecase/TimelineLayerControllerLayerNameUpdateHistoryUseCase";
+import { execute as externalLayerUpdateLockUseCase } from "@/external/core/application/ExternalLayer/usecase/ExternalLayerUpdateLockUseCase";
 
 /**
  * @description Layerの外部APIクラス
@@ -101,5 +102,24 @@ export class ExternalLayer
     isSelected (): boolean
     {
         return this._$movieClip.selectedLayers.indexOf(this._$layer) > -1;
+    }
+
+    /**
+     * @description レイヤーロックのon/off設定
+     *              Layer lock on/off setting
+     *
+     * @default false
+     * @member {boolean}
+     * @public
+     */
+    get lock (): boolean
+    {
+        return this._$layer.lock;
+    }
+    set lock (lock: boolean)
+    {
+        externalLayerUpdateLockUseCase(
+            this._$workSpace, this._$movieClip, this._$layer, lock
+        );
     }
 }

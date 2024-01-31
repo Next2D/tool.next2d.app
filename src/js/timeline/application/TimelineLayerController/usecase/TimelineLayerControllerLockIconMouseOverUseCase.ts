@@ -1,5 +1,7 @@
+import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { $getLayerFromElement, $getLockState } from "../../TimelineUtil";
 import { execute as timelineLayerControllerUpdateLockIconStyleService } from "../service/TimelineLayerControllerUpdateLockIconElementService";
+import { ExternalLayer } from "@/external/core/domain/model/ExternalLayer";
 
 /**
  * @description 連続したロック機能の処理関数
@@ -27,7 +29,11 @@ export const execute = (event: PointerEvent): void =>
         return ;
     }
 
-    layer.lock = !layer.lock;
+    // 外部APIを起動
+    const workSpace = $getCurrentWorkSpace();
+    const externalLayer = new ExternalLayer(workSpace, workSpace.scene, layer);
+
+    externalLayer.lock = !layer.lock;
 
     timelineLayerControllerUpdateLockIconStyleService(layer, layer.lock);
 };

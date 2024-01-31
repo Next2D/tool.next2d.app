@@ -3,6 +3,8 @@ import { $allHideMenu } from "@/menu/application/MenuUtil";
 import { $getLayerFromElement, $getLockState, $setLockState } from "../../TimelineUtil";
 import { EventType } from "@/tool/domain/event/EventType";
 import { execute as timelineLayerControllerLockIconWindowMouseUpService } from "../service/TimelineLayerControllerLockIconWindowMouseUpService";
+import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
+import { ExternalLayer } from "@/external/core/domain/model/ExternalLayer";
 
 /**
  * @description レイヤーのロックアイコンのイベント処理
@@ -44,8 +46,12 @@ export const execute = (event: PointerEvent): void =>
         return ;
     }
 
+    // 外部APIを起動
+    const workSpace = $getCurrentWorkSpace();
+    const externalLayer = new ExternalLayer(workSpace, workSpace.scene, layer);
+
     // Layerオブジェクトの値を更新
-    layer.lock = !layer.lock;
+    externalLayer.lock = !layer.lock;
 
     // 反転して登録
     timelineLayerControllerUpdateLockIconStyleService(layer, layer.lock);

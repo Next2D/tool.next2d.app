@@ -12,11 +12,11 @@ import {
  * @description 作業履歴のテキスト情報をコマンド名から識別して返却
  *              Identifies and returns work history text information from command names
  *
- * @return {string}
+ * @return {number}
  * @method
  * @public
  */
-export const execute = (command: string): string =>
+export const execute = (command: number): string =>
 {
     switch (command) {
 

@@ -28,7 +28,6 @@ export const execute = (): void =>
     const scene = $getCurrentWorkSpace().scene;
 
     const histories = scene.histories;
-    console.log(histories);
     for (let idx = 0; idx < histories.length; ++idx) {
         const historyObject = histories[idx];
         historyAddElementUseCase(

@@ -1,6 +1,6 @@
 export interface ShareReceiveMessageImpl
 {
-    historyCommand: string;
+    historyCommand: number;
     data: any[];
     command: string;
 }

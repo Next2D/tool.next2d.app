@@ -3,6 +3,7 @@ import { $setAllLockMode } from "@/timeline/application/TimelineUtil";
 import { execute as timelineLayerControllerUpdateLockIconStyleService } from "@/timeline/application/TimelineLayerController/service/TimelineLayerControllerUpdateLockIconElementService";
 import { execute as timelineToolLockAllGetCurrentModeService } from "../service/TimelineToolLockAllGetCurrentModeService";
 import type { Layer } from "@/core/domain/model/Layer";
+import { ExternalLayer } from "@/external/core/domain/model/ExternalLayer";
 
 /**
  * @description タイムライン全体のロックツールのイベント登録
@@ -26,8 +27,11 @@ export const execute = (event: PointerEvent): void =>
     // レイヤーの状態からモードを取得する
     const mode = timelineToolLockAllGetCurrentModeService();
 
+    const workSpace = $getCurrentWorkSpace();
+    const scene = workSpace.scene;
+
     // 全てのレイヤーのモードを切り替える
-    const layers = $getCurrentWorkSpace().scene.layers;
+    const layers = scene.layers;
     for (let idx: number = 0; idx < layers.length; ++idx) {
 
         const layer: Layer | undefined = layers[idx];
@@ -35,8 +39,9 @@ export const execute = (event: PointerEvent): void =>
             continue;
         }
 
-        // Layerオブジェクトの値を更新
-        layer.lock = mode;
+        // 外部APIを起動
+        const externalLayer = new ExternalLayer(workSpace, scene, layer);
+        externalLayer.lock = mode;
 
         // レイヤーのロック情報とElementを更新
         timelineLayerControllerUpdateLockIconStyleService(layer, mode);
