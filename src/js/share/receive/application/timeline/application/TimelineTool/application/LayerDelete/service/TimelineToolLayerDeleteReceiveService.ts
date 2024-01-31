@@ -29,7 +29,7 @@ export const execute = (message: ShareReceiveMessageImpl): void =>
 
     const externalTimeline = new ExternalTimeline(workSpace, movieClip);
     externalTimeline.deleteLayer(
-        message.data[2] as NonNullable<number>, // index
+        message.data[3] as NonNullable<number>, // index
         true
     );
 };
