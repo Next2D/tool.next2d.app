@@ -1,6 +1,7 @@
 import type { ShareReceiveMessageImpl } from "@/interface/ShareReceiveMessageImpl";
 import { execute as workSpaceUpdateNameReceiveUseCase } from "@/share/receive/application/core/application/WorkSpace/usecase/WorkSpaceUpdateNameReceiveUseCase";
 import { execute as timelineToolLayerAddReceiveService } from "@/share/receive/application/timeline/application/TimelineTool/application/LayerAdd/service/TimelineToolLayerAddReceiveService";
+import { execute as timelineToolLayerDeleteReceiveService } from "@/share/receive/application/timeline/application/TimelineTool/application/LayerDelete/service/TimelineToolLayerDeleteReceiveService";
 import { execute as timelineLayerControllerLayerNameUpdateReceiveUseCase } from "@/share/receive/application/timeline/application/TimelineLayerController/usecase/TimelineLayerControllerLayerNameUpdateReceiveUseCase";
 import { execute as historyRedoUseCase } from "@/history/usecase/HistoryRedoUseCase";
 import { execute as historyUndoUseCase } from "@/history/usecase/HistoryUndoUseCase";
@@ -9,6 +10,7 @@ import {
     $HISTORY_UNDO_COMMAND,
     $SCREEN_TAB_NAME_UPDATE_COMMAND,
     $TIMELINE_TOOL_LAYER_ADD_COMMAND,
+    $TIMELINE_TOOL_LAYER_DELETE_COMMAND,
     $LAYER_NAME_UPDATE_COMMAND
 } from "@/config/HistoryConfig";
 
@@ -51,6 +53,11 @@ export const execute = (message: ShareReceiveMessageImpl): void =>
         // 新規レイヤー追加
         case $TIMELINE_TOOL_LAYER_ADD_COMMAND:
             timelineToolLayerAddReceiveService(message);
+            break;
+
+        // 新規レイヤー削除
+        case $TIMELINE_TOOL_LAYER_DELETE_COMMAND:
+            timelineToolLayerDeleteReceiveService(message);
             break;
 
         // レイヤー名の変更

@@ -36,7 +36,8 @@ export const execute = (
         ? workSpace.scene
         : workSpace.getLibrary(library_id);
 
-    if (!scene) {
+    // レイヤーが1個しかなければ何もしない
+    if (!scene || 2 > scene.layers.length) {
         return ;
     }
 

@@ -5,8 +5,8 @@ import { $getWorkSpace } from "@/core/application/CoreUtil";
 import { ExternalTimeline } from "@/external/timeline/domain/model/ExternalTimeline";
 
 /**
- * @description socketで受け取った情報の受け取り処理関数
- *              Receiving and processing functions for information received in the socket
+ * @description レイヤー追加処理を実行
+ *              Execute layer addition process
  *
  * @param  {object} message
  * @return {void}

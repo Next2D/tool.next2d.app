@@ -5,8 +5,8 @@ import { $getWorkSpace } from "@/core/application/CoreUtil";
 import { execute as externalLayerUpdateNameUseCase } from "@/external/core/application/ExternalLayer/usecase/ExternalLayerUpdateNameUseCase";
 
 /**
- * @description socketで受け取った情報の受け取り処理関数
- *              Receiving and processing functions for information received in the socket
+ * @description レイヤー名の変更を実行
+ *              Perform layer name change
  *
  * @param  {object} message
  * @return {void}
