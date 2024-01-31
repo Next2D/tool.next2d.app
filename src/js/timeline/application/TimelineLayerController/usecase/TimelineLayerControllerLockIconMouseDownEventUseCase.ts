@@ -51,7 +51,7 @@ export const execute = (event: PointerEvent): void =>
     const externalLayer = new ExternalLayer(workSpace, workSpace.scene, layer);
 
     // Layerオブジェクトの値を更新
-    externalLayer.lock = !layer.lock;
+    externalLayer.setLock(!layer.lock);
 
     // 反転して登録
     timelineLayerControllerUpdateLockIconStyleService(layer, layer.lock);

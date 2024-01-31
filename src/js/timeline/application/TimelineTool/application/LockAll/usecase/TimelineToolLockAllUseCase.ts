@@ -41,7 +41,7 @@ export const execute = (event: PointerEvent): void =>
 
         // 外部APIを起動
         const externalLayer = new ExternalLayer(workSpace, scene, layer);
-        externalLayer.lock = mode;
+        externalLayer.setLock(mode);
 
         // レイヤーのロック情報とElementを更新
         timelineLayerControllerUpdateLockIconStyleService(layer, mode);

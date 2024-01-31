@@ -5,6 +5,7 @@ import { $useSocket } from "@/share/ShareUtil";
 import { execute as shareSendService } from "@/share/service/ShareSendService";
 import { execute as externalLayerUpdateLockHistoryObjectService } from "../service/ExternalLayerUpdateLockHistoryObjectService";
 import { ExternalLayer } from "@/external/core/domain/model/ExternalLayer";
+import { execute as timelineLayerControllerUpdateLockIconStyleService } from "@/timeline/application/TimelineLayerController/service/TimelineLayerControllerUpdateLockIconElementService";
 
 /**
  * @description レイヤーのロック情報を更新
@@ -37,6 +38,11 @@ export const execute = (
 
     // 値を更新
     layer.lock = value;
+
+    // 表示中ならレイヤーの表示を更新
+    if (work_space.active && movie_clip.active) {
+        timelineLayerControllerUpdateLockIconStyleService(layer, value);
+    }
 
     // 受け取り処理ではなく、画面共有していれば共有者に送信
     if (!receiver && $useSocket()) {

@@ -3,6 +3,7 @@ import { execute as workSpaceUpdateNameReceiveUseCase } from "@/share/receive/ap
 import { execute as timelineToolLayerAddReceiveService } from "@/share/receive/application/timeline/application/TimelineTool/application/LayerAdd/service/TimelineToolLayerAddReceiveService";
 import { execute as timelineToolLayerDeleteReceiveService } from "@/share/receive/application/timeline/application/TimelineTool/application/LayerDelete/service/TimelineToolLayerDeleteReceiveService";
 import { execute as timelineLayerControllerLayerNameUpdateReceiveUseCase } from "@/share/receive/application/timeline/application/TimelineLayerController/usecase/TimelineLayerControllerLayerNameUpdateReceiveUseCase";
+import { execute as timelineLayerControllerLayerLockUpdateReceiveUseCase } from "@/share/receive/application/timeline/application/TimelineLayerController/usecase/TimelineLayerControllerLayerLockUpdateReceiveUseCase";
 import { execute as historyRedoUseCase } from "@/history/usecase/HistoryRedoUseCase";
 import { execute as historyUndoUseCase } from "@/history/usecase/HistoryUndoUseCase";
 import {
@@ -11,7 +12,8 @@ import {
     $SCREEN_TAB_NAME_UPDATE_COMMAND,
     $TIMELINE_TOOL_LAYER_ADD_COMMAND,
     $TIMELINE_TOOL_LAYER_DELETE_COMMAND,
-    $LAYER_NAME_UPDATE_COMMAND
+    $LAYER_NAME_UPDATE_COMMAND,
+    $LAYER_LOCK_UPDATE_COMMAND
 } from "@/config/HistoryConfig";
 
 /**
@@ -63,6 +65,11 @@ export const execute = (message: ShareReceiveMessageImpl): void =>
         // レイヤー名の変更
         case $LAYER_NAME_UPDATE_COMMAND:
             timelineLayerControllerLayerNameUpdateReceiveUseCase(message);
+            break;
+
+        // レイヤーのロックを更新
+        case $LAYER_LOCK_UPDATE_COMMAND:
+            timelineLayerControllerLayerLockUpdateReceiveUseCase(message);
             break;
 
         default:

@@ -105,21 +105,33 @@ export class ExternalLayer
     }
 
     /**
-     * @description レイヤーロックのon/off設定
-     *              Layer lock on/off setting
+     * @description レイヤーロックの状態を返却
+     *              Layer lock status returned
      *
      * @default false
-     * @member {boolean}
+     * @return {boolean}
+     * @method
      * @public
      */
-    get lock (): boolean
+    getLock (): boolean
     {
         return this._$layer.lock;
     }
-    set lock (lock: boolean)
+
+    /**
+     * @description レイヤーロックの値を更新
+     *              Update Layer Lock value
+     *
+     * @param  {boolean} lock
+     * @param  {boolean} [receiver = false]
+     * @return {void}
+     * @method
+     * @public
+     */
+    setLock (lock: boolean, receiver: boolean = false): void
     {
         externalLayerUpdateLockUseCase(
-            this._$workSpace, this._$movieClip, this._$layer, lock
+            this._$workSpace, this._$movieClip, this._$layer, lock, receiver
         );
     }
 }

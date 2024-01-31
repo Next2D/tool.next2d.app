@@ -1,12 +1,12 @@
-import type { ShareReceiveMessageImpl } from "@/interface/ShareReceiveMessageImpl";
-import type { InstanceImpl } from "@/interface/InstanceImpl";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
+import type { InstanceImpl } from "@/interface/InstanceImpl";
+import type { ShareReceiveMessageImpl } from "@/interface/ShareReceiveMessageImpl";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
-import { execute as externalLayerUpdateNameUseCase } from "@/external/core/application/ExternalLayer/usecase/ExternalLayerUpdateNameUseCase";
+import { ExternalLayer } from "@/external/core/domain/model/ExternalLayer";
 
 /**
- * @description レイヤー名の変更を実行
- *              Perform layer name change
+ * @description レイヤーのロックを更新
+ *              Update layer locks
  *
  * @param  {object} message
  * @return {void}
@@ -34,9 +34,9 @@ export const execute = (message: ShareReceiveMessageImpl): void =>
         return ;
     }
 
-    // レイヤー名を更新
-    const name = message.data[4] as NonNullable<string>;
-    externalLayerUpdateNameUseCase(
-        workSpace, movieClip, layer, name
+    const externalLayer = new ExternalLayer(workSpace, movieClip, layer);
+    externalLayer.setLock(
+        message.data[3] as NonNullable<boolean>,
+        true
     );
 };

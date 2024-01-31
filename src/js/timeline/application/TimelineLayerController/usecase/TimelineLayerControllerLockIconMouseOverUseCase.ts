@@ -33,7 +33,7 @@ export const execute = (event: PointerEvent): void =>
     const workSpace = $getCurrentWorkSpace();
     const externalLayer = new ExternalLayer(workSpace, workSpace.scene, layer);
 
-    externalLayer.lock = !layer.lock;
+    externalLayer.setLock(!layer.lock);
 
     timelineLayerControllerUpdateLockIconStyleService(layer, layer.lock);
 };
