@@ -11,6 +11,7 @@ import { execute as historyReloadUseCase } from "@/controller/application/Histor
 import { execute as propertyAreaDisplayItemControllerUseCase } from "@/controller/application/PropertyArea/usecase/PropertyAreaDisplayItemControllerUseCase";
 import { execute as objectSettingUpdateNameService } from "@/controller/application/ObjectSetting/service/ObjectSettingUpdateNameService";
 import { execute as objectSettingUpdateSymbolService } from "@/controller/application/ObjectSetting/service/ObjectSettingUpdateSymbolService";
+import { execute as timelineToolUpdateSceneNameService } from "@/timeline/application/TimelineTool/application/SceneName/service/TimelineToolUpdateSceneNameService";
 
 /**
  * @description MovieClipの起動処理
@@ -46,6 +47,9 @@ export const execute = (movie_clip: MovieClip): void =>
 
     // タイムラインのマーカーの座標をセット
     timelineMarkerMovePositionService();
+
+    // タイムラインのシーン名を更新
+    timelineToolUpdateSceneNameService(movie_clip.name);
 
     // MovieClipのLayerからタイムラインを生成
     timelineLayerBuildElementUseCase();

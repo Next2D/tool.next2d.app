@@ -330,3 +330,12 @@ export const $TIMELINE_HEADER_SOUND_INDEX: number = 3;
  * @constant
  */
 export const $TIMELINE_HEADER_FRAME_INDEX: number = 4;
+
+/**
+ * @description タイムラインのシーン名のElementのID
+ *              ID of the Element of the scene name in the timeline
+ *
+ * @type {string}
+ * @constant
+ */
+export const $TIMELINE_SCENE_NAME_ID: string = "scene-name";
