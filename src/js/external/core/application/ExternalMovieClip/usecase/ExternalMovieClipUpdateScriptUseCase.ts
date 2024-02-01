@@ -6,6 +6,7 @@ import { execute as scriptEditorUpdateHistoryUseCase } from "@/history/applicati
 import { execute as scriptEditorDeleteHistoryUseCase } from "@/history/application/timeline/TimelineTool/ScriptEditorDelete/usecase/ScriptEditorDeleteHistoryUseCase";
 import { $getLeftFrame, $getRightFrame } from "@/timeline/application/TimelineUtil";
 import { timelineHeader } from "@/timeline/domain/model/TimelineHeader";
+import { execute as scriptAreaReloadUseCase } from "@/controller/application/ScriptArea/usecase/ScriptAreaReloadUseCase";
 
 /**
  * @description 指定フレームのスクリプト情報を更新
@@ -32,7 +33,9 @@ export const execute = (
         // 作業履歴を残す
         if (!movie_clip.hasAction(frame)) {
             // 初回登録履歴を登録
-            scriptEditorNewRegisterHistoryUseCase(movie_clip, frame, script);
+            scriptEditorNewRegisterHistoryUseCase(
+                work_space, movie_clip, frame, script
+            );
         } else {
             const beforeScript = movie_clip.getAction(frame);
 
@@ -57,16 +60,22 @@ export const execute = (
     }
 
     // 表示領域にElementがあればclassを更新
-    if (work_space.active && movie_clip.active
-        && $getLeftFrame() <= frame
-        && $getRightFrame() >= frame
-    ) {
-        const node = timelineHeader.elements[frame - $getLeftFrame()] as HTMLElement;
-        if (!node) {
-            return ;
-        }
+    if (work_space.active) {
 
-        // スクリプトアイコンの更新
-        timelineHeaderUpdateScriptElementService(node, frame);
+        // JavaScriptタブを再描画
+        scriptAreaReloadUseCase();
+
+        if (movie_clip.active
+            && $getLeftFrame() <= frame
+            && $getRightFrame() >= frame
+        ) {
+            const node = timelineHeader.elements[frame - $getLeftFrame()] as HTMLElement;
+            if (!node) {
+                return ;
+            }
+
+            // スクリプトアイコンの更新
+            timelineHeaderUpdateScriptElementService(node, frame);
+        }
     }
 };

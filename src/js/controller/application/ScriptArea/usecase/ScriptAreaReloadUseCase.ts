@@ -9,11 +9,11 @@ import { execute as scriptAreaFrameComponent } from "../component/ScriptAreaFram
  * @description スクリプト一覧表示を再読み込み
  *              Reload script list view
  *
- * @return {void}
+ * @return {Promise}
  * @method
  * @public
  */
-export const execute = (): void =>
+export const execute = async (): Promise<void> =>
 {
     const element = document
         .getElementById($CONTROLLER_JAVASCRIPT_INTERNAL_LIST_BOX_ID);

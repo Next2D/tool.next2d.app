@@ -34,12 +34,14 @@ export const execute = (
     // fixed logic
     historyRemoveElementService(movie_clip);
 
-    // fixed logic
     // 作業履歴にElementを追加
-    historyAddElementUseCase(
-        movie_clip.historyIndex,
-        historyGetTextService($TIMELINE_TOOL_LAYER_DELETE_COMMAND)
-    );
+    // fixed logic
+    if (work_space.active && movie_clip.actions) {
+        historyAddElementUseCase(
+            movie_clip.historyIndex,
+            historyGetTextService($TIMELINE_TOOL_LAYER_DELETE_COMMAND)
+        );
+    }
 
     const historyObject = timelineToolLayerDeleteCreateHistoryObjectService(
         work_space.id, movie_clip.id, index, layer
