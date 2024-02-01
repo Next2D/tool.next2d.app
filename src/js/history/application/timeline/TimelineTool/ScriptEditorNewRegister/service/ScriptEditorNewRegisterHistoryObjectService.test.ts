@@ -1,16 +1,12 @@
-import { execute } from "./ScriptEditorNewRegisterCreateHistoryObjectService";
+import { execute } from "./ScriptEditorNewRegisterHistoryObjectService";
 import { $TIMIELINE_TOOL_SCRIPT_NEW_REGISTER_COMMAND } from "../../../../../../config/HistoryConfig";
-import { Layer } from "../../../../../../core/domain/model/Layer";
 
-describe("ScriptEditorNewRegisterCreateHistoryObjectServiceTest", () =>
+describe("ScriptEditorNewRegisterHistoryObjectServiceTest", () =>
 {
     test("execute test", () =>
     {
-        const layer = new Layer();
-        layer.name = "test_layer";
-
         const script = "var a = \"test\";";
-        const object = execute(1, 0, 10,script );
+        const object = execute(1, 0, 10, script);
         expect(object.command).toBe($TIMIELINE_TOOL_SCRIPT_NEW_REGISTER_COMMAND);
 
         // 配列の順番が崩れてもいいようにテストケースを残す

@@ -6,12 +6,13 @@ import { execute as historyGetTextService } from "@/controller/application/Histo
 import { execute as historyRemoveElementService } from "@/controller/application/HistoryArea/service/HistoryRemoveElementService";
 import { $useSocket } from "@/share/ShareUtil";
 import { execute as shareSendService } from "@/share/service/ShareSendService";
-import { execute as scriptEditorNewRegisterCreateHistoryObjectService } from "../service/ScriptEditorNewRegisterCreateHistoryObjectService";
+import { execute as scriptEditorNewRegisterHistoryObjectService } from "../service/ScriptEditorNewRegisterHistoryObjectService";
 
 /**
  * @description スクリプトの新規登録を削除
  *              Delete specified layer
  *
+ * @param  {WorkSpace} work_space
  * @param  {MovieClip} movie_clip
  * @param  {number} frame
  * @param  {string} script
@@ -44,7 +45,7 @@ export const execute = (
 
     }
 
-    const historyObject = scriptEditorNewRegisterCreateHistoryObjectService(
+    const historyObject = scriptEditorNewRegisterHistoryObjectService(
         work_space.id, movie_clip.id, frame, script
     );
 

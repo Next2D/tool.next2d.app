@@ -52,7 +52,9 @@ export const execute = (
 
             // 編集履歴を登録
             if (beforeScript !== script) {
-                scriptEditorUpdateHistoryUseCase(movie_clip, frame, script);
+                scriptEditorUpdateHistoryUseCase(
+                    work_space, movie_clip, frame, script, receiver
+                );
 
                 if (work_space.active) {
                     doReload = true;
@@ -68,7 +70,9 @@ export const execute = (
         if (movie_clip.hasAction(frame)) {
 
             // 削除履歴を登録
-            scriptEditorDeleteHistoryUseCase(movie_clip, frame);
+            scriptEditorDeleteHistoryUseCase(
+                work_space, movie_clip, frame, receiver
+            );
 
             // スクリプトを削除
             movie_clip.deleteAction(frame);
