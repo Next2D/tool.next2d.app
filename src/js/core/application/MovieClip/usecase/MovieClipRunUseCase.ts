@@ -8,6 +8,7 @@ import { execute as timelineScrollUpdateXPositionService } from "@/timeline/appl
 import { execute as timelineScrollUpdateHeightService } from "@/timeline/application/TimelineScroll/service/TimelineScrollUpdateHeightService";
 import { execute as timelineScrollUpdateYPositionService } from "@/timeline/application/TimelineScroll/service/TimelineScrollUpdateYPositionService";
 import { execute as historyReloadUseCase } from "@/controller/application/HistoryArea/usecase/HistoryReloadUseCase";
+import { execute as propertyAreaDisplayItemControllerUseCase } from "@/controller/application/PropertyArea/usecase/PropertyAreaDisplayItemControllerUseCase";
 
 /**
  * @description MovieClipの起動処理
@@ -46,4 +47,7 @@ export const execute = (movie_clip: MovieClip): void =>
 
     // MovieClipのLayerからタイムラインを生成
     timelineLayerBuildElementUseCase();
+
+    // プロパティーエリアの表示を更新
+    propertyAreaDisplayItemControllerUseCase();
 };
