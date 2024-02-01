@@ -1,6 +1,6 @@
 import { execute as userDatabaseSaveUseCase } from "@/user/application/Database/usecase/UserDatabaseSaveUseCase";
-import { execute as historyUndoUseCase } from "@/history/usecase/HistoryUndoUseCase";
-import { execute as historyRedoUseCase } from "@/history/usecase/HistoryRedoUseCase";
+import { execute as historyUndoUseCase } from "@/controller/application/HistoryArea/usecase/HistoryUndoUseCase";
+import { execute as historyRedoUseCase } from "@/controller/application/HistoryArea/usecase/HistoryRedoUseCase";
 import { execute as userSettingMenuShowService } from "@/menu/application/UserSettingMenu/service/UserSettingMenuShowService";
 import {
     $generateShortcutKey,

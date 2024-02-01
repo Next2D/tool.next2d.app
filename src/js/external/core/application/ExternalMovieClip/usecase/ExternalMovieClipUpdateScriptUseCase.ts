@@ -16,6 +16,7 @@ import { execute as scriptAreaReloadUseCase } from "@/controller/application/Scr
  * @param  {MovieClip} movie_clip
  * @param  {number} frame
  * @param  {string} script
+ * @param  {boolean} [receiver = false]
  * @return {void}
  * @method
  * @public
@@ -24,7 +25,8 @@ export const execute = (
     work_space: WorkSpace,
     movie_clip: MovieClip,
     frame: number,
-    script: string
+    script: string,
+    receiver: boolean = false
 ): void => {
 
     let doReload = false;
@@ -37,7 +39,7 @@ export const execute = (
 
             // 初回登録履歴を登録
             scriptEditorNewRegisterHistoryUseCase(
-                work_space, movie_clip, frame, script
+                work_space, movie_clip, frame, script, receiver
             );
 
             if (work_space.active) {

@@ -1,5 +1,5 @@
 import { $HISTORY_LIST_ID } from "@/config/HistoryConfig";
-import { execute as historyListComponent } from "@/history/component/HistoryListComponent";
+import { execute as historyListComponent } from "@/controller/application/HistoryArea/component/HistoryListComponent";
 import { EventType } from "@/tool/domain/event/EventType";
 import { execute as historyMouseDownEventUseCase } from "./HistoryMouseDownEventUseCase";
 import { execute as languageTranslationService } from "@/language/application/service/LanguageTranslationService";

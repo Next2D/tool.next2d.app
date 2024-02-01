@@ -1,7 +1,7 @@
 import { $HISTORY_LIST_ID } from "@/config/HistoryConfig";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
-import { execute as historyAddElementUseCase } from "@/history/usecase/HistoryAddElementUseCase";
-import { execute as historyGetTextService } from "@/history/service/HistoryGetTextService";
+import { execute as historyAddElementUseCase } from "@/controller/application/HistoryArea/usecase/HistoryAddElementUseCase";
+import { execute as historyGetTextService } from "@/controller/application/HistoryArea/service/HistoryGetTextService";
 
 /**
  * @description 作業履歴のElementを全て削除して、現在プロジェクトの作業履歴を読み込む

@@ -1,6 +1,6 @@
 import { execute } from "./HistoryRemoveElementService";
-import { $HISTORY_LIST_ID } from "../../config/HistoryConfig";
-import { $createWorkSpace } from "../../core/application/CoreUtil";
+import { $HISTORY_LIST_ID } from "../../../../config/HistoryConfig";;
+import { $createWorkSpace } from "../../../../core/application/CoreUtil";
 
 describe("HistoryRemoveElementServiceTest", () =>
 {

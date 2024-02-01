@@ -1,8 +1,8 @@
 import { $TIMIELINE_TOOL_SCRIPT_DELETE_COMMAND } from "@/config/HistoryConfig";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
-import { execute as historyAddElementUseCase } from "@/history/usecase/HistoryAddElementUseCase";
-import { execute as historyGetTextService } from "@/history/service/HistoryGetTextService";
-import { execute as historyRemoveElementService } from "@/history/service/HistoryRemoveElementService";
+import { execute as historyAddElementUseCase } from "@/controller/application/HistoryArea/usecase/HistoryAddElementUseCase";
+import { execute as historyGetTextService } from "@/controller/application/HistoryArea/service/HistoryGetTextService";
+import { execute as historyRemoveElementService } from "@/controller/application/HistoryArea/service/HistoryRemoveElementService";
 import { execute as scriptEditorDeleteHistoryUndoUseCase } from "./ScriptEditorDeleteHistoryUndoUseCase";
 import { execute as scriptEditorDeleteHistoryRedoUseCase } from "./ScriptEditorDeleteHistoryRedoUseCase";
 import type { MovieClip } from "@/core/domain/model/MovieClip";

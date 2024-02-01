@@ -1,9 +1,9 @@
 import type { Layer } from "@/core/domain/model/Layer";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import { $TIMELINE_TOOL_LAYER_ADD_COMMAND } from "@/config/HistoryConfig";
-import { execute as historyAddElementUseCase } from "@/history/usecase/HistoryAddElementUseCase";
-import { execute as historyGetTextService } from "@/history/service/HistoryGetTextService";
-import { execute as historyRemoveElementService } from "@/history/service/HistoryRemoveElementService";
+import { execute as historyAddElementUseCase } from "@/controller/application/HistoryArea/usecase/HistoryAddElementUseCase";
+import { execute as historyGetTextService } from "@/controller/application/HistoryArea/service/HistoryGetTextService";
+import { execute as historyRemoveElementService } from "@/controller/application/HistoryArea/service/HistoryRemoveElementService";
 import { execute as timelineToolLayerAddCreateHistoryObjectService } from "../service/TimelineToolLayerAddCreateHistoryObjectService";
 import { WorkSpace } from "@/core/domain/model/WorkSpace";
 import { $useSocket } from "@/share/ShareUtil";

@@ -7,8 +7,8 @@ import { execute as timelineLayerControllerLayerLockUpdateReceiveService } from 
 import { execute as timelineLayerControllerLayerDisableUpdateReceiveService } from "@/share/receive/application/timeline/application/TimelineLayerController/service/TimelineLayerControllerLayerDisableUpdateReceiveService";
 import { execute as timelineLayerControllerLayerLightUpdateReceiveService } from "@/share/receive/application/timeline/application/TimelineLayerController/service/TimelineLayerControllerLayerLightUpdateReceiveService";
 import { execute as scriptEditorNewRegisterReceiveUseCase } from "@/share/receive/application/timeline/application/TimelineTool/application/ScriptEditorNewRegister/usecase/ScriptEditorNewRegisterReceiveUseCase";
-import { execute as historyRedoUseCase } from "@/history/usecase/HistoryRedoUseCase";
-import { execute as historyUndoUseCase } from "@/history/usecase/HistoryUndoUseCase";
+import { execute as historyRedoUseCase } from "@/controller/application/HistoryArea/usecase/HistoryRedoUseCase";
+import { execute as historyUndoUseCase } from "@/controller/application/HistoryArea/usecase/HistoryUndoUseCase";
 import {
     $HISTORY_REDO_COMMAND,
     $HISTORY_UNDO_COMMAND,

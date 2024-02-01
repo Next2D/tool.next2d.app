@@ -7,7 +7,7 @@ import {
     $TIMIELINE_TOOL_SCRIPT_DELETE_COMMAND,
     $SCREEN_TAB_NAME_UPDATE_COMMAND,
     $LAYER_NAME_UPDATE_COMMAND
-} from "../../config/HistoryConfig";
+} from "../../../../config/HistoryConfig";
 
 describe("HistoryGetTextServiceTest", () =>
 {

@@ -1,8 +1,8 @@
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { InstanceImpl } from "@/interface/InstanceImpl";
 import type { ShareReceiveMessageImpl } from "@/interface/ShareReceiveMessageImpl";
-import { execute as scriptEditorNewRegisterHistoryUseCase } from "@/history/application/timeline/TimelineTool/ScriptEditorNewRegister/usecase/ScriptEditorNewRegisterHistoryUseCase";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
+import { execute as externalMovieClipUpdateScriptUseCase } from "@/external/core/application/ExternalMovieClip/usecase/ExternalMovieClipUpdateScriptUseCase";
 
 /**
   * @description 新規スクリプトを追加
@@ -28,7 +28,7 @@ export const execute = (message: ShareReceiveMessageImpl): void =>
         return ;
     }
 
-    scriptEditorNewRegisterHistoryUseCase(
+    externalMovieClipUpdateScriptUseCase(
         workSpace,
         movieClip,
         message.data[2] as NonNullable<number>,

@@ -7,7 +7,7 @@ import { execute as timelineScrollUpdateWidthService } from "@/timeline/applicat
 import { execute as timelineScrollUpdateXPositionService } from "@/timeline/application/TimelineScroll/service/TimelineScrollUpdateXPositionService";
 import { execute as timelineScrollUpdateHeightService } from "@/timeline/application/TimelineScroll/service/TimelineScrollUpdateHeightService";
 import { execute as timelineScrollUpdateYPositionService } from "@/timeline/application/TimelineScroll/service/TimelineScrollUpdateYPositionService";
-import { execute as historyReloadUseCase } from "@/history/usecase/HistoryReloadUseCase";
+import { execute as historyReloadUseCase } from "@/controller/application/HistoryArea/usecase/HistoryReloadUseCase";
 
 /**
  * @description MovieClipの起動処理

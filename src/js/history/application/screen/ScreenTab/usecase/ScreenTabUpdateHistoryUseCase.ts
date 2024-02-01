@@ -1,9 +1,9 @@
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import { $SCREEN_TAB_NAME_UPDATE_COMMAND } from "@/config/HistoryConfig";
 import { $useSocket } from "@/share/ShareUtil";
-import { execute as historyRemoveElementService } from "@/history/service/HistoryRemoveElementService";
-import { execute as historyAddElementUseCase } from "@/history/usecase/HistoryAddElementUseCase";
-import { execute as historyGetTextService } from "@/history/service/HistoryGetTextService";
+import { execute as historyRemoveElementService } from "@/controller/application/HistoryArea/service/HistoryRemoveElementService";
+import { execute as historyAddElementUseCase } from "@/controller/application/HistoryArea/usecase/HistoryAddElementUseCase";
+import { execute as historyGetTextService } from "@/controller/application/HistoryArea/service/HistoryGetTextService";
 import { execute as shareSendService } from "@/share/service/ShareSendService";
 import { execute as screenTabCreateHistoryObjectService } from "../service/ScreenTabCreateHistoryObjectService";
 
