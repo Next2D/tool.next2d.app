@@ -10,6 +10,7 @@ import { execute as timelineHeaderInitializeUseCase } from "../../application/Ti
 class TimelineHeader
 {
     private _$clientWidth: number;
+    private readonly _$elements: HTMLElement[];
 
     /**
      * @constructor
@@ -23,6 +24,25 @@ class TimelineHeader
          * @private
          */
         this._$clientWidth = 0;
+
+        /**
+         * @type {array}
+         * @private
+         */
+        this._$elements = [];
+    }
+
+    /**
+     * @description ヘッダーコンテンツのElement配列
+     *              Element array of header content
+     *
+     * @readonly
+     * @return {array}
+     * @public
+     */
+    get elements (): HTMLElement[]
+    {
+        return this._$elements;
     }
 
     /**

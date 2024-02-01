@@ -2,7 +2,7 @@ import { $SCRIPT_EDITOR_MODAL_NAME } from "@/config/MenuConfig";
 import { BaseMenu } from "./BaseMenu";
 import { execute as scriptEditorModalInitializeRegisterEventUseCase } from "@/menu/application/ScriptEditorModal/usecase/ScriptEditorModalInitializeRegisterEventUseCase";
 import { execute as scriptEditorModalInitializeUseCase } from "@/menu/application/ScriptEditorModal/usecase/ScriptEditorModalInitializeUseCase";
-import { execute as scriptEditorModalSaveUseCase } from "@/menu/application/ScriptEditorModal/usecase/ScriptEditorModalSaveUseCase";
+import { execute as scriptEditorModalSaveService } from "@/menu/application/ScriptEditorModal/service/ScriptEditorModalSaveService";
 import { execute as scriptEditorModalBootUseCase } from "@/menu/application/ScriptEditorModal/usecase/ScriptEditorModalBootUseCase";
 
 /**
@@ -80,6 +80,6 @@ export class ScriptEditorModal extends BaseMenu
         super.hide();
 
         // 保存処理
-        scriptEditorModalSaveUseCase();
+        scriptEditorModalSaveService();
     }
 }

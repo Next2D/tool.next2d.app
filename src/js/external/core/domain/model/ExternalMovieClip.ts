@@ -3,6 +3,7 @@ import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import { ExternalItem } from "./ExternalItem";
 import { ExternalLayer } from "./ExternalLayer";
 import { ExternalTimeline } from "@/external/timeline/domain/model/ExternalTimeline";
+import { execute as externalMovieClipUpdateScriptUseCase } from "@/external/core/application/ExternalMovieClip/usecase/ExternalMovieClipUpdateScriptUseCase";
 
 /**
  * @description MovieClipの外部APIクラス
@@ -123,5 +124,36 @@ export class ExternalMovieClip extends ExternalItem
         }
 
         return externalLayers;
+    }
+
+    /**
+     * @description 指定フレームのスクリプトを返却
+     *              Returns the script for the specified frame
+     *
+     * @param  {number} frame
+     * @return {string}
+     * @method
+     * @public
+     */
+    getAction (frame: number): string
+    {
+        return this._$movieClip.getAction(frame);
+    }
+
+    /**
+     * @description 指定フレームのスクリプトを更新
+     *              Update script information for specified frame
+     *
+     * @param  {number} frame
+     * @param  {string} script
+     * @return {void}
+     * @method
+     * @public
+     */
+    setAction (frame: number, script: string): void
+    {
+        externalMovieClipUpdateScriptUseCase(
+            this._$workSpace, this._$movieClip, frame, script
+        );
     }
 }

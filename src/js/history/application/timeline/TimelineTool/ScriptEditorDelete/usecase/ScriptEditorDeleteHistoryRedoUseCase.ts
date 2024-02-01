@@ -1,7 +1,7 @@
-import { $TIMELINE_HEADER_ID } from "@/config/TimelineConfig";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { $getLeftFrame, $getRightFrame } from "@/timeline/application/TimelineUtil";
 import { execute as timelineHeaderUpdateScriptElementService } from "@/timeline/application/TimelineHeader/service/TimelineHeaderUpdateScriptElementService";
+import { timelineHeader } from "@/timeline/domain/model/TimelineHeader";
 
 /**
  * @description スクリプトを削除する
@@ -23,14 +23,7 @@ export const execute = (frame: number): void =>
     if ($getLeftFrame() <= frame
         && $getRightFrame() >= frame
     ) {
-        const element: HTMLElement | null = document
-            .getElementById($TIMELINE_HEADER_ID);
-
-        if (!element) {
-            return ;
-        }
-
-        const node = element.children[frame - $getLeftFrame()] as HTMLElement;
+        const node = timelineHeader.elements[frame - $getLeftFrame()] as HTMLElement;
         if (!node) {
             return ;
         }

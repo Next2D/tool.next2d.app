@@ -16,7 +16,7 @@ let $webSocket: WebSocket | null = null;
  */
 export const $useSocket = (): boolean =>
 {
-    return $webSocket !== null;
+    return $webSocket !== null || location.hash !== "";
 };
 
 /**

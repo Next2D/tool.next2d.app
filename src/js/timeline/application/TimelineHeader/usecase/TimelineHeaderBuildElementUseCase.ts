@@ -48,6 +48,8 @@ export const execute = (): void =>
 
             // フレームのタグにイベントを登録
             timelineHeaderFrameRegisterEventUseCase(node);
+
+            timelineHeader.elements.push(node);
         }
     }
 
@@ -55,7 +57,11 @@ export const execute = (): void =>
     if (element.children.length + 1 > elementCount) {
         const index = elementCount + 1;
         while (element.children.length > index) {
-            element.children[index].remove();
+            const nodes = timelineHeader.elements.splice(index, 1);
+            if (!nodes || !nodes.length) {
+                break;
+            }
+            nodes[0].remove();
         }
     }
 
@@ -81,6 +87,8 @@ export const execute = (): void =>
 
                 // フレームのタグにイベントを登録
                 timelineHeaderFrameRegisterEventUseCase(node);
+
+                timelineHeader.elements.push(node);
             }
         }
     }
@@ -95,15 +103,14 @@ export const execute = (): void =>
     const fps: number   = parseInt(fpsElement.value);
     const frame: number = $getLeftFrame();
 
-    const children: HTMLCollection = element.children;
-    const length: number = children.length;
+    const length: number = timelineHeader.elements.length;
     for (let idx: number = 0; length > idx; ++idx) {
 
         // 指定のフレーム番号をセット
         const currentFrame: number = frame + idx;
 
         // 対象のElementを更新
-        const node: HTMLElement | undefined = children[idx] as HTMLElement;
+        const node: HTMLElement | undefined = timelineHeader.elements[idx] as HTMLElement;
         if (!node) {
             continue;
         }
