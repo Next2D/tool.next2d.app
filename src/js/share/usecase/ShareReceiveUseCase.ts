@@ -7,6 +7,8 @@ import { execute as timelineLayerControllerLayerLockUpdateReceiveService } from 
 import { execute as timelineLayerControllerLayerDisableUpdateReceiveService } from "@/share/receive/application/timeline/application/TimelineLayerController/service/TimelineLayerControllerLayerDisableUpdateReceiveService";
 import { execute as timelineLayerControllerLayerLightUpdateReceiveService } from "@/share/receive/application/timeline/application/TimelineLayerController/service/TimelineLayerControllerLayerLightUpdateReceiveService";
 import { execute as scriptEditorNewRegisterReceiveUseCase } from "@/share/receive/application/timeline/application/TimelineTool/application/ScriptEditorNewRegister/usecase/ScriptEditorNewRegisterReceiveUseCase";
+import { execute as scriptEditorUpdateReceiveUseCase } from "@/share/receive/application/timeline/application/TimelineTool/application/ScriptEditorUpdate/usecase/ScriptEditorUpdateReceiveUseCase";
+import { execute as scriptEditorDeleteReceiveUseCase } from "@/share/receive/application/timeline/application/TimelineTool/application/ScriptEditorDelete/usecase/ScriptEditorDeleteReceiveUseCase";
 import { execute as historyRedoUseCase } from "@/controller/application/HistoryArea/usecase/HistoryRedoUseCase";
 import { execute as historyUndoUseCase } from "@/controller/application/HistoryArea/usecase/HistoryUndoUseCase";
 import {
@@ -19,7 +21,9 @@ import {
     $LAYER_LOCK_UPDATE_COMMAND,
     $LAYER_DISABLE_UPDATE_COMMAND,
     $LAYER_LIGHT_UPDATE_COMMAND,
-    $TIMIELINE_TOOL_SCRIPT_NEW_REGISTER_COMMAND
+    $TIMIELINE_TOOL_SCRIPT_NEW_REGISTER_COMMAND,
+    $TIMIELINE_TOOL_SCRIPT_UPDATE_COMMAND,
+    $TIMIELINE_TOOL_SCRIPT_DELETE_COMMAND
 } from "@/config/HistoryConfig";
 
 /**
@@ -91,6 +95,16 @@ export const execute = (message: ShareReceiveMessageImpl): void =>
         // 新規スクリプトを追加
         case $TIMIELINE_TOOL_SCRIPT_NEW_REGISTER_COMMAND:
             scriptEditorNewRegisterReceiveUseCase(message);
+            break;
+
+        // スクリプトを更新
+        case $TIMIELINE_TOOL_SCRIPT_UPDATE_COMMAND:
+            scriptEditorUpdateReceiveUseCase(message);
+            break;
+
+        // スクリプトを削除
+        case $TIMIELINE_TOOL_SCRIPT_DELETE_COMMAND:
+            scriptEditorDeleteReceiveUseCase(message);
             break;
 
         default:

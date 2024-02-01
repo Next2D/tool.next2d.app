@@ -5,12 +5,16 @@ import { execute as timelineToolLayerAddHistoryUndoUseCase } from "../../../../h
 import { execute as timelineToolLayerDeleteHistoryUndoUseCase } from "../../../../history/application/timeline/TimelineTool/LayerDelete/usecase/TimelineToolLayerDeleteHistoryUndoUseCase";
 import { execute as timelineLayerControllerLayerNameUpdateHistoryUndoUseCase } from "../../../../history/application/timeline/TimelineLayerController/LayerName/usecase/TimelineLayerControllerLayerNameUpdateHistoryUndoUseCase";
 import { execute as scriptEditorNewRegisterHistoryUndoUseCase } from "../../../../history/application/timeline/TimelineTool/ScriptEditorNewRegister/usecase/ScriptEditorNewRegisterHistoryUndoUseCase";
+import { execute as scriptEditorUpdateHistoryUndoUseCase } from "../../../../history/application/timeline/TimelineTool/ScriptEditorUpdate/usecase/ScriptEditorUpdateHistoryUndoUseCase";
+import { execute as scriptEditorDeleteHistoryUndoUseCase } from "../../../../history/application/timeline/TimelineTool/ScriptEditorDelete/usecase/ScriptEditorDeleteHistoryUndoUseCase";
 import {
     $SCREEN_TAB_NAME_UPDATE_COMMAND,
     $TIMELINE_TOOL_LAYER_ADD_COMMAND,
     $TIMELINE_TOOL_LAYER_DELETE_COMMAND,
     $LAYER_NAME_UPDATE_COMMAND,
-    $TIMIELINE_TOOL_SCRIPT_NEW_REGISTER_COMMAND
+    $TIMIELINE_TOOL_SCRIPT_NEW_REGISTER_COMMAND,
+    $TIMIELINE_TOOL_SCRIPT_UPDATE_COMMAND,
+    $TIMIELINE_TOOL_SCRIPT_DELETE_COMMAND
 } from "@/config/HistoryConfig";
 
 /**
@@ -69,6 +73,26 @@ export const execute = (history_object: HistoryObjectImpl): void =>
                 args[0] as number, // workSpaceId
                 args[1] as number, // MovieClipId
                 args[2] as number // frame
+            );
+            break;
+
+        // スクリプトの変更
+        case $TIMIELINE_TOOL_SCRIPT_UPDATE_COMMAND:
+            scriptEditorUpdateHistoryUndoUseCase(
+                args[0] as number, // workSpaceId
+                args[1] as number, // MovieClipId
+                args[2] as number, // frame
+                args[3] as string // before script
+            );
+            break;
+
+        // スクリプトの削除
+        case $TIMIELINE_TOOL_SCRIPT_DELETE_COMMAND:
+            scriptEditorDeleteHistoryUndoUseCase(
+                args[0] as number, // workSpaceId
+                args[1] as number, // MovieClipId
+                args[2] as number, // frame
+                args[3] as string // after script
             );
             break;
 

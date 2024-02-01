@@ -10,5 +10,5 @@
  */
 export const execute = (id: number, name: string): string =>
 {
-    return `<div id="script-${id}" data-library-id="${id}" class="internal-parent"><i></i>${name}</div>`;
+    return `<div data-library-id="${id}" class="internal-parent"><i></i>${name}</div>`;
 };

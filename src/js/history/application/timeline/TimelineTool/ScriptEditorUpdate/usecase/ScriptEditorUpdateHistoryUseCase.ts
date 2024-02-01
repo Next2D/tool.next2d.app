@@ -15,7 +15,7 @@ import { execute as scriptEditorUpdateHistoryObjectService } from "../service/Sc
  * @param  {WorkSpace} work_space
  * @param  {MovieClip} movie_clip
  * @param  {number} frame
- * @param  {string} script
+ * @param  {string} after_script
  * @param  {boolean} [receiver = false]
  * @return {void}
  * @method
@@ -25,7 +25,7 @@ export const execute = (
     work_space: WorkSpace,
     movie_clip: MovieClip,
     frame: number,
-    script: string,
+    after_script: string,
     receiver: boolean = false
 ): void => {
 
@@ -48,7 +48,7 @@ export const execute = (
     const beforeScript = movie_clip.getAction(frame);
 
     const historyObject = scriptEditorUpdateHistoryObjectService(
-        work_space.id, movie_clip.id, frame, beforeScript, script
+        work_space.id, movie_clip.id, frame, beforeScript, after_script
     );
 
     // Objectを履歴に登録
