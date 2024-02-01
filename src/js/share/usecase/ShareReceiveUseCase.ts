@@ -3,9 +3,10 @@ import { execute as workSpaceUpdateNameReceiveUseCase } from "@/share/receive/ap
 import { execute as timelineToolLayerAddReceiveService } from "@/share/receive/application/timeline/application/TimelineTool/application/LayerAdd/service/TimelineToolLayerAddReceiveService";
 import { execute as timelineToolLayerDeleteReceiveService } from "@/share/receive/application/timeline/application/TimelineTool/application/LayerDelete/service/TimelineToolLayerDeleteReceiveService";
 import { execute as timelineLayerControllerLayerNameUpdateReceiveUseCase } from "@/share/receive/application/timeline/application/TimelineLayerController/usecase/TimelineLayerControllerLayerNameUpdateReceiveUseCase";
-import { execute as timelineLayerControllerLayerLockUpdateReceiveUseCase } from "@/share/receive/application/timeline/application/TimelineLayerController/usecase/TimelineLayerControllerLayerLockUpdateReceiveUseCase";
-import { execute as timelineLayerControllerLayerDisableUpdateReceiveUseCase } from "@/share/receive/application/timeline/application/TimelineLayerController/usecase/TimelineLayerControllerLayerDisableUpdateReceiveUseCase";
-import { execute as timelineLayerControllerLayerLightUpdateReceiveUseCase } from "@/share/receive/application/timeline/application/TimelineLayerController/usecase/TimelineLayerControllerLayerLightUpdateReceiveUseCase";
+import { execute as timelineLayerControllerLayerLockUpdateReceiveService } from "@/share/receive/application/timeline/application/TimelineLayerController/service/TimelineLayerControllerLayerLockUpdateReceiveService";
+import { execute as timelineLayerControllerLayerDisableUpdateReceiveService } from "@/share/receive/application/timeline/application/TimelineLayerController/service/TimelineLayerControllerLayerDisableUpdateReceiveService";
+import { execute as timelineLayerControllerLayerLightUpdateReceiveService } from "@/share/receive/application/timeline/application/TimelineLayerController/service/TimelineLayerControllerLayerLightUpdateReceiveService";
+import { execute as scriptEditorNewRegisterReceiveUseCase } from "@/share/receive/application/timeline/application/TimelineTool/application/ScriptEditorNewRegister/usecase/ScriptEditorNewRegisterReceiveUseCase";
 import { execute as historyRedoUseCase } from "@/history/usecase/HistoryRedoUseCase";
 import { execute as historyUndoUseCase } from "@/history/usecase/HistoryUndoUseCase";
 import {
@@ -17,7 +18,8 @@ import {
     $LAYER_NAME_UPDATE_COMMAND,
     $LAYER_LOCK_UPDATE_COMMAND,
     $LAYER_DISABLE_UPDATE_COMMAND,
-    $LAYER_LIGHT_UPDATE_COMMAND
+    $LAYER_LIGHT_UPDATE_COMMAND,
+    $TIMIELINE_TOOL_SCRIPT_NEW_REGISTER_COMMAND
 } from "@/config/HistoryConfig";
 
 /**
@@ -73,17 +75,22 @@ export const execute = (message: ShareReceiveMessageImpl): void =>
 
         // レイヤーのロックを更新
         case $LAYER_LOCK_UPDATE_COMMAND:
-            timelineLayerControllerLayerLockUpdateReceiveUseCase(message);
+            timelineLayerControllerLayerLockUpdateReceiveService(message);
             break;
 
         // レイヤー表示を更新
         case $LAYER_DISABLE_UPDATE_COMMAND:
-            timelineLayerControllerLayerDisableUpdateReceiveUseCase(message);
+            timelineLayerControllerLayerDisableUpdateReceiveService(message);
             break;
 
         // レイヤーハイライトを更新
         case $LAYER_LIGHT_UPDATE_COMMAND:
-            timelineLayerControllerLayerLightUpdateReceiveUseCase(message);
+            timelineLayerControllerLayerLightUpdateReceiveService(message);
+            break;
+
+        // 新規スクリプトを追加
+        case $TIMIELINE_TOOL_SCRIPT_NEW_REGISTER_COMMAND:
+            scriptEditorNewRegisterReceiveUseCase(message);
             break;
 
         default:

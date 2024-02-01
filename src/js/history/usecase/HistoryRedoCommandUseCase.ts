@@ -3,11 +3,13 @@ import { execute as screenTabNameAddHistoryRedoUseCase } from "../application/sc
 import { execute as timelineToolLayerAddHistoryRedoUseCase } from "../application/timeline/TimelineTool/LayerAdd/usecase/TimelineToolLayerAddHistoryRedoUseCase";
 import { execute as timelineToolLayerDeleteHistoryRedoUseCase } from "../application/timeline/TimelineTool/LayerDelete/usecase/TimelineToolLayerDeleteHistoryRedoUseCase";
 import { execute as timelineLayerControllerLayerNameUpdateHistoryRedoUseCase } from "../application/timeline/TimelineLayerController/LayerName/usecase/TimelineLayerControllerLayerNameUpdateHistoryRedoUseCase";
+import { execute as scriptEditorNewRegisterHistoryRedoUseCase } from "../application/timeline/TimelineTool/ScriptEditorNewRegister/usecase/ScriptEditorNewRegisterHistoryRedoUseCase";
 import {
     $SCREEN_TAB_NAME_UPDATE_COMMAND,
     $TIMELINE_TOOL_LAYER_ADD_COMMAND,
     $TIMELINE_TOOL_LAYER_DELETE_COMMAND,
-    $LAYER_NAME_UPDATE_COMMAND
+    $LAYER_NAME_UPDATE_COMMAND,
+    $TIMIELINE_TOOL_SCRIPT_NEW_REGISTER_COMMAND
 } from "@/config/HistoryConfig";
 
 /**
@@ -58,6 +60,15 @@ export const execute = (history_object: HistoryObjectImpl): void =>
                 args[0] as number, // workSpaceId
                 args[1] as number, // MovieClipId
                 args[2] as number  // Layer index
+            );
+            break;
+
+        case $TIMIELINE_TOOL_SCRIPT_NEW_REGISTER_COMMAND:
+            scriptEditorNewRegisterHistoryRedoUseCase(
+                args[0] as number, // workSpaceId
+                args[1] as number, // MovieClipId
+                args[2] as number, // frame
+                args[3] as string  // script
             );
             break;
 

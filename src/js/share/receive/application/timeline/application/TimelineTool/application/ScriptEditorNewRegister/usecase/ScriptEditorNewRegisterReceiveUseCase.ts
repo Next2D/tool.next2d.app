@@ -1,12 +1,12 @@
-import type { ShareReceiveMessageImpl } from "@/interface/ShareReceiveMessageImpl";
-import type { InstanceImpl } from "@/interface/InstanceImpl";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
+import type { InstanceImpl } from "@/interface/InstanceImpl";
+import type { ShareReceiveMessageImpl } from "@/interface/ShareReceiveMessageImpl";
+import { execute as scriptEditorNewRegisterHistoryUseCase } from "@/history/application/timeline/TimelineTool/ScriptEditorNewRegister/usecase/ScriptEditorNewRegisterHistoryUseCase";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
-import { ExternalTimeline } from "@/external/timeline/domain/model/ExternalTimeline";
 
 /**
-  * @description レイヤー削除処理を実行
- *               Execute layer deletion process
+  * @description 新規スクリプトを追加
+ *               Add new script
  *
  * @param  {object} message
  * @return {void}
@@ -28,9 +28,11 @@ export const execute = (message: ShareReceiveMessageImpl): void =>
         return ;
     }
 
-    const externalTimeline = new ExternalTimeline(workSpace, movieClip);
-    externalTimeline.deleteLayer(
-        message.data[2] as NonNullable<number>, // index
+    scriptEditorNewRegisterHistoryUseCase(
+        workSpace,
+        movieClip,
+        message.data[2] as NonNullable<number>,
+        message.data[3] as NonNullable<string>,
         true
     );
 };

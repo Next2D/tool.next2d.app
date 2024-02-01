@@ -141,16 +141,16 @@ export class ExternalMovieClip extends ExternalItem
     }
 
     /**
-     * @description 指定フレームのスクリプトを更新
-     *              Update script information for specified frame
+     * @description 指定フレームのスクリプトを更新、空のスクリプト指定で削除
+     *              Update scripts in specified frame, delete with empty script specification
      *
      * @param  {number} frame
-     * @param  {string} script
+     * @param  {string} [script = ""]
      * @return {void}
      * @method
      * @public
      */
-    setAction (frame: number, script: string): void
+    setAction (frame: number, script: string = ""): void
     {
         externalMovieClipUpdateScriptUseCase(
             this._$workSpace, this._$movieClip, frame, script

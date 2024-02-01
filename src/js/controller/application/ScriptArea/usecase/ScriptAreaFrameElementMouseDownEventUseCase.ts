@@ -1,5 +1,6 @@
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { execute as scriptEditorModalShowService } from "@/menu/application/ScriptEditorModal/service/ScriptEditorModalShowService";
+import { $allHideMenu } from "@/menu/application/MenuUtil";
 import {
     $setTargetFrame,
     $setTargetMovieClip
@@ -20,17 +21,19 @@ export const execute = (event: PointerEvent): void =>
     event.stopPropagation();
     event.preventDefault();
 
-    const element = event.target as HTMLElement;
+    const element = event.currentTarget as HTMLElement;
     if (!element) {
         return ;
     }
+
+    $allHideMenu();
 
     const workSpace = $getCurrentWorkSpace();
     const libraryId = parseInt(element.dataset.libraryId as string);
     const movieClip = workSpace.getLibrary(libraryId);
 
     // MovieClipでなければ終了
-    if (movieClip.type !== "container") {
+    if (!movieClip || movieClip.type !== "container") {
         return ;
     }
 
