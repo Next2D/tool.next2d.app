@@ -4,6 +4,8 @@ import { execute as scriptAreaRemoveElementService } from "../service/ScriptArea
 import { execute as scriptAreaParentComponent } from "../component/ScriptAreaParentComponent";
 import { execute as scriptAreaParentElementRegisterEventUseCase } from "./ScriptAreaParentElementRegisterEventUseCase";
 import { execute as scriptAreaFrameComponent } from "../component/ScriptAreaFrameComponent";
+import { execute as scriptAreaFrameElementMouseDownEventUseCase } from "./ScriptAreaFrameElementMouseDownEventUseCase";
+import { EventType } from "@/tool/domain/event/EventType";
 
 /**
  * @description スクリプト一覧表示を再読み込み
@@ -42,7 +44,10 @@ export const execute = async (): Promise<void> =>
             scriptAreaParentComponent(instance.id, instance.name)
         );
 
-        const parentElement = element.lastElementChild as NonNullable<HTMLElement>;
+        const parentElement = element.lastElementChild as HTMLElement;
+        if (!parentElement) {
+            continue;
+        }
 
         // 親Elementにイベントを登録
         scriptAreaParentElementRegisterEventUseCase(parentElement);
@@ -56,8 +61,18 @@ export const execute = async (): Promise<void> =>
 
         // 各フレームのelementを作成
         for (let idx = 0; idx < frames.length; ++idx) {
+
             element.insertAdjacentHTML("beforeend",
                 scriptAreaFrameComponent(instance.id, frames[idx])
+            );
+
+            const frameElement = element.lastElementChild as HTMLElement;
+            if (!frameElement) {
+                continue;
+            }
+
+            frameElement.addEventListener(EventType.MOUSE_DOWN,
+                scriptAreaFrameElementMouseDownEventUseCase
             );
         }
     }

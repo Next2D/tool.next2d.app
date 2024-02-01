@@ -27,55 +27,73 @@ export const execute = (
     script: string
 ): void => {
 
+    let doReload = false;
+
     // scriptの値によって分岐
     if (script) {
 
         // 作業履歴を残す
         if (!movie_clip.hasAction(frame)) {
+
             // 初回登録履歴を登録
             scriptEditorNewRegisterHistoryUseCase(
                 work_space, movie_clip, frame, script
             );
+
+            if (work_space.active) {
+                doReload = true;
+            }
+
         } else {
+
             const beforeScript = movie_clip.getAction(frame);
 
             // 編集履歴を登録
             if (beforeScript !== script) {
                 scriptEditorUpdateHistoryUseCase(movie_clip, frame, script);
+
+                if (work_space.active) {
+                    doReload = true;
+                }
             }
         }
 
         // スクリプトを上書き
         movie_clip.setAction(frame, script);
+
     } else {
 
         if (movie_clip.hasAction(frame)) {
+
             // 削除履歴を登録
             scriptEditorDeleteHistoryUseCase(movie_clip, frame);
 
             // スクリプトを削除
             movie_clip.deleteAction(frame);
+
+            if (work_space.active) {
+                doReload = true;
+            }
         }
 
     }
 
-    // 表示領域にElementがあればclassを更新
-    if (work_space.active) {
-
-        // JavaScriptタブを再描画
+    // JavaScriptタブを再描画
+    if (doReload) {
         scriptAreaReloadUseCase();
+    }
 
-        if (movie_clip.active
-            && $getLeftFrame() <= frame
-            && $getRightFrame() >= frame
-        ) {
-            const node = timelineHeader.elements[frame - $getLeftFrame()] as HTMLElement;
-            if (!node) {
-                return ;
-            }
-
-            // スクリプトアイコンの更新
-            timelineHeaderUpdateScriptElementService(node, frame);
+    // 表示領域にElementがあればclassを更新
+    if (work_space.active && movie_clip.active
+        && $getLeftFrame() <= frame
+        && $getRightFrame() >= frame
+    ) {
+        const node = timelineHeader.elements[frame - $getLeftFrame()] as HTMLElement;
+        if (!node) {
+            return ;
         }
+
+        // スクリプトアイコンの更新
+        timelineHeaderUpdateScriptElementService(node, frame);
     }
 };

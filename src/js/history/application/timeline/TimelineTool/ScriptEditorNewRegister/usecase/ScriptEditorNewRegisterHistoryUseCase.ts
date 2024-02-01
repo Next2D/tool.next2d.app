@@ -33,7 +33,7 @@ export const execute = (
     historyRemoveElementService(movie_clip);
 
     // fixed logic
-    if (work_space.active === movie_clip.active) {
+    if (work_space.active && movie_clip.active) {
 
         // 作業履歴にElementを追加
         // fixed logic

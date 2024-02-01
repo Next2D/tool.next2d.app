@@ -4,7 +4,7 @@ import type { MovieClip } from "@/core/domain/model/MovieClip";
  * @type {AceAjax.Editor}
  * @private
  */
-const $editor: AceAjax.Editor = ace.edit("editor");
+let $editor: AceAjax.Editor | null = null;
 
 /**
  * @description AceEditorオブジェクトを返却
@@ -16,6 +16,9 @@ const $editor: AceAjax.Editor = ace.edit("editor");
  */
 export const $getAceEditor = (): AceAjax.Editor =>
 {
+    if (!$editor) {
+        $editor = ace.edit("editor");
+    }
     return $editor;
 };
 
