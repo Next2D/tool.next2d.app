@@ -9,8 +9,8 @@ import { execute as timelineScrollUpdateHeightService } from "@/timeline/applica
 import { execute as timelineScrollUpdateYPositionService } from "@/timeline/application/TimelineScroll/service/TimelineScrollUpdateYPositionService";
 import { execute as historyReloadUseCase } from "@/controller/application/HistoryArea/usecase/HistoryReloadUseCase";
 import { execute as propertyAreaDisplayItemControllerUseCase } from "@/controller/application/PropertyArea/usecase/PropertyAreaDisplayItemControllerUseCase";
-import { execute as objectSettingUpdateNameService } from "@/controller/application/PropertyArea/application/ObjectSetting/service/ObjectSettingUpdateNameService";
-import { execute as objectSettingUpdateSymbolService } from "@/controller/application/PropertyArea/application/ObjectSetting/service/ObjectSettingUpdateSymbolService";
+import { execute as objectSettingUpdateNameService } from "@/controller/application/ObjectSetting/service/ObjectSettingUpdateNameService";
+import { execute as objectSettingUpdateSymbolService } from "@/controller/application/ObjectSetting/service/ObjectSettingUpdateSymbolService";
 
 /**
  * @description MovieClipの起動処理
