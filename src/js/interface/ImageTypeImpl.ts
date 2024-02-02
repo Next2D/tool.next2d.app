@@ -1,0 +1,1 @@
+export type ImageTypeImpl = "image/png" | "image/jpeg" | "image/gif" | "";

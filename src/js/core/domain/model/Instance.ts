@@ -1,7 +1,5 @@
-import type { InstanceObjectImpl } from "@/interface/InstanceObjectImpl";
 import type { InstanceTypeImpl } from "@/interface/InstanceTypeImpl";
-
-type ObjectImpl<T extends InstanceObjectImpl> = T;
+import type { ObjectImpl } from "@/interface/ObjectImpl";
 
 /**
  * @description ライブラリのアイテムの親クラス
@@ -35,13 +33,13 @@ export class Instance
          * @type {string}
          * @private
          */
-        this._$name = object.name;
+        this._$type = object.type;
 
         /**
          * @type {string}
          * @private
          */
-        this._$type = object.type;
+        this._$name = object.name || "";
 
         /**
          * @type {string}
@@ -70,6 +68,19 @@ export class Instance
     }
 
     /**
+     * @description インスタンスタイプ
+     *              instance type
+     *
+     * @returns {string}
+     * @readonly
+     * @public
+     */
+    get type (): InstanceTypeImpl
+    {
+        return this._$type;
+    }
+
+    /**
      * @description ライブラリ一覧に表示されるインスタンス名
      *              Instance name as it appears in the library list
      *
@@ -80,25 +91,9 @@ export class Instance
     {
         return this._$name;
     }
-    set name (name :string)
+    set name (name: string)
     {
         this._$name = name;
-    }
-
-    /**
-     * @description インスタンスタイプ
-     *              instance type
-     *
-     * @member {string}
-     * @public
-     */
-    get type (): InstanceTypeImpl
-    {
-        return this._$type;
-    }
-    set type (type :InstanceTypeImpl)
-    {
-        this._$type = type;
     }
 
     /**
@@ -112,7 +107,7 @@ export class Instance
     {
         return this._$symbol;
     }
-    set symbol (symbol :string)
+    set symbol (symbol: string)
     {
         this._$symbol = symbol;
     }

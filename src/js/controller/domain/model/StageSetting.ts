@@ -47,3 +47,5 @@ export class StageSetting
         this._$lock = lock;
     }
 }
+
+export const stageSetting = new StageSetting();

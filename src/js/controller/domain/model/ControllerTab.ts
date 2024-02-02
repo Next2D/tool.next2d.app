@@ -23,3 +23,5 @@ export class ControllerTab
         controllerTabInitializeRegisterEventUseCase();
     }
 }
+
+export const controllerTab = new ControllerTab();

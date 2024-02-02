@@ -116,6 +116,6 @@ export class ExternalWorkSpace
      */
     getLibrary (): ExternalLibrary
     {
-        return new ExternalLibrary(this);
+        return new ExternalLibrary(this._$workSpace);
     }
 }

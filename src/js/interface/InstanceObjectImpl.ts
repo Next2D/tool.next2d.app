@@ -1,10 +1,10 @@
-import { InstanceTypeImple } from "./InstanceTypeImpl";
+import { InstanceTypeImpl } from "./InstanceTypeImpl";
 
 export interface InstanceObjectImpl
 {
     id: number;
-    name: string;
-    type: InstanceTypeImple;
-    symbol: string;
+    type: InstanceTypeImpl;
+    name?: string;
+    symbol?: string;
     folderId?: number;
 }
