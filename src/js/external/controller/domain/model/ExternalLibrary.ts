@@ -3,7 +3,7 @@ import type { ExternalInstanceImpl } from "@/interface/ExternalInstanceImpl";
 import type { InstanceTypeImpl } from "@/interface/InstanceTypeImpl";
 import { ExternalBitmap } from "@/external/core/domain/model/ExternalBitmap";
 import { ExternalFolder } from "@/external/core/domain/model/ExternalFolder";
-import type { ExternalItem } from "@/external/core/domain/model/ExternalItem";
+import { execute as libraryAreaAddNewFolderHistoryUseCase } from "@/history/application/controller/LibraryArea/Folder/usecase/LibraryAreaAddNewFolderHistoryUseCase";
 
 /**
  * @description ライブラリの外部APIクラス
@@ -113,7 +113,14 @@ export class ExternalLibrary
             // 次は自分が親になるので、IDを書き換え
             folderId = externalFolder.id;
 
-            // TODO 作業履歴に残す
+            // 作業履歴に残す
+            libraryAreaAddNewFolderHistoryUseCase(
+                this._$workSpace,
+                this._$workSpace.scene,
+                folderName,
+                folderId,
+                receiver
+            );
         }
     }
 }

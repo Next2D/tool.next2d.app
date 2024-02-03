@@ -35,6 +35,7 @@ export const execute = (event: MouseEvent): void =>
     const clientWidth: number  = element.clientWidth;
     const clientHeight: number = element.clientHeight;
 
+    // 上部にはみ出さない
     const height: number = clientHeight / 2;
     let top: number = event.pageY - height;
     if (0 > top) {
@@ -45,6 +46,7 @@ export const execute = (event: MouseEvent): void =>
         top = window.innerHeight - clientHeight - 15;
     }
 
+    // 右端にはみ出さない
     let left = event.pageX + 15;
     if (left + clientWidth > window.innerWidth) {
         left = event.pageX - clientWidth - 15;

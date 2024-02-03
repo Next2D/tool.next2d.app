@@ -123,3 +123,12 @@ export const $LAYER_DISABLE_UPDATE_COMMAND: number = 10;
  * @constant
  */
 export const $LAYER_LIGHT_UPDATE_COMMAND: number = 11;
+
+/**
+ * @description 新規フォルダ追加操作の識別コマンド名
+ *              Identification command name for new folder add operation
+ *
+ * @type {number}
+ * @constant
+ */
+export const $LIBRARY_ADD_NEW_FOLDER: number = 12;
