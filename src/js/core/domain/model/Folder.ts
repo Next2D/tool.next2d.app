@@ -61,7 +61,7 @@ export class Folder extends Instance
             "type":     this.type,
             "symbol":   this.symbol,
             "folderId": this.folderId,
-            "mode":     this.mode
+            "mode":     this._$mode
         };
     }
 }

@@ -16,14 +16,24 @@ export class ExternalBitmap extends ExternalItem
      * @constructor
      * @public
      */
-    constructor (work_space: WorkSpace)
-    {
+    constructor (
+        work_space: WorkSpace,
+        name: string,
+        symbol: string = ""
+    ) {
         super(work_space);
 
         // Bitmapクラスを生成
         this._$instance = new Bitmap({
             "id": this._$workSpace.nextLibraryId,
-            "type": "bitmap"
+            "type": "bitmap",
+            "name": name,
+            "symbol": symbol
         });
+
+        // 内部情報を追加
+        work_space
+            .libraries
+            .set(this._$instance.id, this._$instance);
     }
 }

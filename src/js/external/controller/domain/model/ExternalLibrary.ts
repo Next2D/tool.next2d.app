@@ -2,6 +2,8 @@ import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import type { ExternalInstanceImpl } from "@/interface/ExternalInstanceImpl";
 import type { InstanceTypeImpl } from "@/interface/InstanceTypeImpl";
 import { ExternalBitmap } from "@/external/core/domain/model/ExternalBitmap";
+import { ExternalFolder } from "@/external/core/domain/model/ExternalFolder";
+import type { ExternalItem } from "@/external/core/domain/model/ExternalItem";
 
 /**
  * @description ライブラリの外部APIクラス
@@ -40,8 +42,8 @@ export class ExternalLibrary
         type: InstanceTypeImpl,
         name: string,
         folder_path: string = ""
-    ): ExternalInstanceImpl<any>
-    {
+    ): ExternalInstanceImpl<any> {
+
         let folder;
         if (folder_path) {
             this.addNewFolder(folder_path);
@@ -51,35 +53,42 @@ export class ExternalLibrary
         switch (type) {
 
             case "bitmap":
-                instance = new ExternalBitmap(this._$workSpace);
+                instance = new ExternalBitmap(this._$workSpace, name);
                 break;
 
         }
 
-        // 名前をセット
-        instance.name = name;
-
         return instance;
     }
 
-    getItem (): ExternalInstanceImpl<any>
+    importFile (file: File, path: string = ""): Promise<void>
     {
+        return new Promise((resolve): void =>
+        {
+            console.log(file, path);
+            resolve();
+        });
+    }
 
+    getItem (path: string): ExternalInstanceImpl<any>
+    {
+        //
     }
 
     /**
      * @description
      *
      * @param  {string} path
+     * @param  {boolean} [receiver = false]
      * @return {void}
      * @method
      * @public
      */
-    addNewFolder (path: string): void
+    addNewFolder (path: string, receiver: boolean = false): void
     {
         const paths = path.split("/");
 
-        let folderPaths = [];
+        const folderPaths: string[] = [];
         let folderId = 0;
         for (let idx = 0; idx < paths.length; ++idx) {
 
@@ -87,20 +96,24 @@ export class ExternalLibrary
 
             folderPaths.push(folderName);
 
-            const item = this.getItem(folderPaths.join("/"));
-            if (item) {
-                folderId = item._$instance.id;
+            const instance = this.getItem(folderPaths.join("/"));
+
+            // フォルダがあればスキップ
+            if (instance && instance.type === "folder") {
+                folderId = instance.id;
                 continue;
             }
 
-            const instance = workSpace.addLibrary({
-                "id": this._$workSpace.nextLibraryId,
-                "type": "",
-                "name": folderName,
-            });
+            // 新規フォルダを作成
+            const externalFolder = new ExternalFolder(this._$workSpace, folderName);
 
-            instance.folderId = folderId;
-            folderId = instance.id;
+            // 親階層のIDをセット
+            externalFolder.folderId = folderId;
+
+            // 次は自分が親になるので、IDを書き換え
+            folderId = externalFolder.id;
+
+            // TODO 作業履歴に残す
         }
     }
 }

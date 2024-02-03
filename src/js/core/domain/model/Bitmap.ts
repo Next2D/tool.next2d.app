@@ -108,7 +108,7 @@ export class Bitmap extends Instance
      * @method
      * @public
      */
-    toObject (): Promise<BitmapObjectImpl>
+    toObject (): BitmapObjectImpl
     {
         // バイナリがなければ生成
         if (!this._$binary) {
@@ -120,37 +120,13 @@ export class Bitmap extends Instance
             }
 
             // bufferを複製してzlib圧縮
-            const buffer = this._$buffer.slice();
-            return new Promise((reslove): void =>
-            {
-                worker.postMessage(buffer, [buffer.buffer]);
-
-                // 圧縮が完了したらバイナリデータとして返却
-                worker.onmessage = (event: MessageEvent): void =>
-                {
-                    const buffer: Uint8Array = event.data as NonNullable<Uint8Array>;
-
-                    this._$binary = "";
-                    for (let idx = 0; idx < buffer.length; idx += 4096) {
-                        this._$binary += String.fromCharCode(...buffer.slice(idx, idx + 4096));
-                    }
-
-                    return reslove({
-                        "id":        this.id,
-                        "name":      this.name,
-                        "type":      this.type,
-                        "symbol":    this.symbol,
-                        "folderId":  this.folderId,
-                        "width":     this._$width,
-                        "height":    this._$height,
-                        "imageType": this._$imageType,
-                        "buffer":    this._$binary
-                    });
-                };
-            });
+            this._$binary = "";
+            for (let idx = 0; idx < this._$buffer.length; idx += 4096) {
+                this._$binary += String.fromCharCode(...this._$buffer.slice(idx, idx + 4096));
+            }
         }
 
-        return Promise.resolve({
+        return {
             "id":        this.id,
             "name":      this.name,
             "type":      this.type,
@@ -160,6 +136,6 @@ export class Bitmap extends Instance
             "height":    this._$height,
             "imageType": this._$imageType,
             "buffer":    this._$binary
-        });
+        };
     }
 }
