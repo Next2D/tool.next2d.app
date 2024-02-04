@@ -2,13 +2,6 @@ import type { BitmapObjectImpl } from "@/interface/BitmapObjectImpl";
 import type { ObjectImpl } from "@/interface/ObjectImpl";
 import type { ImageTypeImpl } from "@/interface/ImageTypeImpl";
 import { Instance } from "./Instance";
-// @ts-ignore
-import ZlibDeflateWorker from "@/worker/ZlibDeflateWorker?worker&inline";
-
-/**
- * @private
- */
-const worker: Worker = new ZlibDeflateWorker();
 
 /**
  * @description 画像管理クラス

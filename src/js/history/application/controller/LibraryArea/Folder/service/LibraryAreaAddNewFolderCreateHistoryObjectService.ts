@@ -7,6 +7,7 @@ import { $LIBRARY_ADD_NEW_FOLDER } from "@/config/HistoryConfig";
  *
  * @param  {number} work_space_id
  * @param  {number} movie_clip_id
+ * @param  {number} instance_id
  * @param  {string} name
  * @param  {number} folder_id
  * @return {object}
@@ -16,6 +17,7 @@ import { $LIBRARY_ADD_NEW_FOLDER } from "@/config/HistoryConfig";
 export const execute = (
     work_space_id: number,
     movie_clip_id: number,
+    instance_id: number,
     name: string,
     folder_id: number
 ): HistoryObjectImpl => {
@@ -25,6 +27,7 @@ export const execute = (
         "args": [
             work_space_id,
             movie_clip_id,
+            instance_id,
             name,
             folder_id
         ]

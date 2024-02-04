@@ -9,12 +9,14 @@ import { $useSocket } from "@/share/ShareUtil";
 import { execute as shareSendService } from "@/share/service/ShareSendService";
 
 /**
- * @description 新規レイヤー追加の履歴を登録
- *              Register history of adding new layers
+ * @description 新規フォルダー追加の履歴を登録
+ *              Register history of new folder additions
  *
  * @param  {WorkSpace} work_space
  * @param  {MovieClip} movie_clip
- * @param  {Layer} layer
+ * @param  {number} instance_id
+ * @param  {string} name
+ * @param  {number} folder_id
  * @param  {boolean} [receiver=false]
  * @return {void}
  * @method
@@ -23,6 +25,7 @@ import { execute as shareSendService } from "@/share/service/ShareSendService";
 export const execute = (
     work_space: WorkSpace,
     movie_clip: MovieClip,
+    instance_id: number,
     name: string,
     folder_id: number,
     receiver: boolean = false
@@ -42,7 +45,7 @@ export const execute = (
     }
 
     const historyObject = libraryAreaAddNewFolderCreateHistoryObjectService(
-        work_space.id, movie_clip.id, name, folder_id
+        work_space.id, movie_clip.id, instance_id, name, folder_id
     );
 
     // 追加したLayer Objectを履歴に登録

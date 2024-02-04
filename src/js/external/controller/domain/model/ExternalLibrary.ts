@@ -44,9 +44,12 @@ export class ExternalLibrary
         folder_path: string = ""
     ): ExternalInstanceImpl<any> {
 
-        let folder;
+        // TODO
+        let folder: any;
         if (folder_path) {
             this.addNewFolder(folder_path);
+            folder = this.getItem(folder_path);
+            console.log(folder);
         }
 
         let instance: ExternalInstanceImpl<any>;
@@ -72,7 +75,7 @@ export class ExternalLibrary
 
     getItem (path: string): ExternalInstanceImpl<any>
     {
-        //
+        console.log(path);
     }
 
     /**
@@ -110,17 +113,20 @@ export class ExternalLibrary
             // 親階層のIDをセット
             externalFolder.folderId = folderId;
 
-            // 次は自分が親になるので、IDを書き換え
-            folderId = externalFolder.id;
-
             // 作業履歴に残す
+            // fixed logic
             libraryAreaAddNewFolderHistoryUseCase(
                 this._$workSpace,
                 this._$workSpace.scene,
+                externalFolder.id,
                 folderName,
                 folderId,
                 receiver
             );
+
+            // 次は自分が親になるので、IDを書き換え
+            // fixed logic
+            folderId = externalFolder.id;
         }
     }
 }

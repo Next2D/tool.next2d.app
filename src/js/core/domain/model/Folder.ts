@@ -1,5 +1,5 @@
 import type { ObjectImpl } from "@/interface/ObjectImpl";
-import type { FolderObjectImpl } from "@/interface/FolderObjectImpl";
+import type { FolderSaveObjectImpl } from "@/interface/FolderSaveObjectImpl";
 import type { FolderTypeImpl } from "@/interface/FolderTypeImpl";
 import { Instance } from "./Instance";
 
@@ -17,7 +17,7 @@ export class Folder extends Instance
      * @constructor
      * @public
      */
-    constructor (object: ObjectImpl<FolderObjectImpl>)
+    constructor (object: ObjectImpl<FolderSaveObjectImpl>)
     {
         super(object);
 
@@ -53,7 +53,7 @@ export class Folder extends Instance
      * @method
      * @public
      */
-    toObject (): FolderObjectImpl
+    toObject (): FolderSaveObjectImpl
     {
         return {
             "id":       this.id,

@@ -5,6 +5,8 @@ import type { UserPropertyAreaStateObjectImpl } from "@/interface/UserPropertyAr
 import type { WorkSpaceSaveObjectImpl } from "@/interface/WorkSpaceSaveObjectImpl";
 import type { UserControllerAreaStateObjectImpl } from "@/interface/UserControllerAreaStateObjectImpl";
 import type { InstanceSaveObjectImpl } from "@/interface/InstanceSaveObjectImpl";
+import type { MovieClipSaveObjectImpl } from "@/interface/MovieClipSaveObjectImpl";
+import type { FolderSaveObjectImpl } from "@/interface/FolderSaveObjectImpl";
 import { ScreenTab } from "@/screen/domain/model/ScreenTab";
 import { MovieClip } from "./MovieClip";
 import { Stage } from "./Stage";
@@ -14,13 +16,14 @@ import { execute as workSpaceInitializeUseCase } from "@/core/application/WorkSp
 import { execute as workSpaceRemoveUseCase } from "@/core/application/WorkSpace/usecase/WorkSpaceRemoveUseCase";
 import { $VERSION } from "@/config/Config";
 import { $CONTROLLER_DEFAULT_WIDTH_SIZE } from "@/config/ControllerConfig";
+import { $clamp } from "@/global/GlobalUtil";
+import { ExternalTimeline } from "@/external/timeline/domain/model/ExternalTimeline";
+import { Folder } from "./Folder";
 import {
     $TIMELINE_DEFAULT_HEIGHT_SIZE,
     $TIMELINE_DEFAULT_FRAME_WIDTH_SIZE,
     $TIMELINE_DEFAULT_FRAME_HEIGHT_SIZE
 } from "@/config/TimelineConfig";
-import { $clamp } from "@/global/GlobalUtil";
-import { ExternalTimeline } from "@/external/timeline/domain/model/ExternalTimeline";
 
 /**
  * @description プロジェクトのユニークID
@@ -510,23 +513,25 @@ export class WorkSpace
      */
     loadLibrary (libraries: InstanceSaveObjectImpl[]): void
     {
+        console.log(libraries);
         for (let idx: number = 0; idx < libraries.length; ++idx) {
 
             const libraryObject = libraries[idx];
 
             // rootの読み込み
             if (libraryObject.id === 0) {
-                this._$root.load(libraryObject);
+                this._$root.load(libraryObject as MovieClipSaveObjectImpl);
                 continue;
             }
 
             switch (libraryObject.type) {
 
                 case "container":
-                    {
-                        const movieClip = new MovieClip(libraryObject);
-                        this._$libraries.set(movieClip.id, movieClip);
-                    }
+                    this._$libraries.set(libraryObject.id, new MovieClip(libraryObject as MovieClipSaveObjectImpl));
+                    break;
+
+                case "folder":
+                    this._$libraries.set(libraryObject.id, new Folder(libraryObject as FolderSaveObjectImpl));
                     break;
 
                 default:
