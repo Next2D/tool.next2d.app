@@ -131,4 +131,4 @@ export const $LAYER_LIGHT_UPDATE_COMMAND: number = 11;
  * @type {number}
  * @constant
  */
-export const $LIBRARY_ADD_NEW_FOLDER: number = 12;
+export const $LIBRARY_ADD_NEW_FOLDER_COMMAND: number = 12;

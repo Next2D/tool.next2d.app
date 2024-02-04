@@ -15,7 +15,7 @@ import {
     $TIMIELINE_TOOL_SCRIPT_NEW_REGISTER_COMMAND,
     $TIMIELINE_TOOL_SCRIPT_UPDATE_COMMAND,
     $TIMIELINE_TOOL_SCRIPT_DELETE_COMMAND,
-    $LIBRARY_ADD_NEW_FOLDER
+    $LIBRARY_ADD_NEW_FOLDER_COMMAND
 } from "@/config/HistoryConfig";
 
 /**
@@ -99,7 +99,7 @@ export const execute = (history_object: HistoryObjectImpl): void =>
             break;
 
         // 新規フォルダ追加
-        case $LIBRARY_ADD_NEW_FOLDER:
+        case $LIBRARY_ADD_NEW_FOLDER_COMMAND:
             libraryAreaAddNewFolderHistoryRedoUseCase(
                 args[0] as number, // workSpaceId
                 args[1] as number, // FolderId

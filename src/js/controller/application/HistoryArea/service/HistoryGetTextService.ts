@@ -6,7 +6,7 @@ import {
     $TIMIELINE_TOOL_SCRIPT_DELETE_COMMAND,
     $SCREEN_TAB_NAME_UPDATE_COMMAND,
     $LAYER_NAME_UPDATE_COMMAND,
-    $LIBRARY_ADD_NEW_FOLDER
+    $LIBRARY_ADD_NEW_FOLDER_COMMAND
 } from "@/config/HistoryConfig";
 
 /**
@@ -42,7 +42,7 @@ export const execute = (command: number): string =>
         case $LAYER_NAME_UPDATE_COMMAND:
             return "レイヤー名を変更";
 
-        case $LIBRARY_ADD_NEW_FOLDER:
+        case $LIBRARY_ADD_NEW_FOLDER_COMMAND:
             return "新規フォルダー";
 
         default:

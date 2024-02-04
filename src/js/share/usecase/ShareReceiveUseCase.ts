@@ -23,7 +23,8 @@ import {
     $LAYER_LIGHT_UPDATE_COMMAND,
     $TIMIELINE_TOOL_SCRIPT_NEW_REGISTER_COMMAND,
     $TIMIELINE_TOOL_SCRIPT_UPDATE_COMMAND,
-    $TIMIELINE_TOOL_SCRIPT_DELETE_COMMAND
+    $TIMIELINE_TOOL_SCRIPT_DELETE_COMMAND,
+    $LIBRARY_ADD_NEW_FOLDER_COMMAND
 } from "@/config/HistoryConfig";
 
 /**
@@ -105,6 +106,10 @@ export const execute = (message: ShareReceiveMessageImpl): void =>
         // スクリプトを削除
         case $TIMIELINE_TOOL_SCRIPT_DELETE_COMMAND:
             scriptEditorDeleteReceiveUseCase(message);
+            break;
+
+        // 新規フォルダー追加
+        case $LIBRARY_ADD_NEW_FOLDER_COMMAND:
             break;
 
         default:
