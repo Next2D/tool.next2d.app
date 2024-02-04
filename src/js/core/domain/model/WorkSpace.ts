@@ -5,8 +5,6 @@ import type { UserPropertyAreaStateObjectImpl } from "@/interface/UserPropertyAr
 import type { WorkSpaceSaveObjectImpl } from "@/interface/WorkSpaceSaveObjectImpl";
 import type { UserControllerAreaStateObjectImpl } from "@/interface/UserControllerAreaStateObjectImpl";
 import type { InstanceSaveObjectImpl } from "@/interface/InstanceSaveObjectImpl";
-import type { MovieClipSaveObjectImpl } from "@/interface/MovieClipSaveObjectImpl";
-import type { FolderSaveObjectImpl } from "@/interface/FolderSaveObjectImpl";
 import { ScreenTab } from "@/screen/domain/model/ScreenTab";
 import { MovieClip } from "./MovieClip";
 import { Stage } from "./Stage";
@@ -14,11 +12,12 @@ import { execute as workSpaceRunUseCase } from "@/core/application/WorkSpace/use
 import { execute as workSpaceStopUseCase } from "@/core/application/WorkSpace/usecase/WorkSpaceStopUseCase";
 import { execute as workSpaceInitializeUseCase } from "@/core/application/WorkSpace/usecase/WorkSpaceInitializeUseCase";
 import { execute as workSpaceRemoveUseCase } from "@/core/application/WorkSpace/usecase/WorkSpaceRemoveUseCase";
+import { execute as workSpaceLoadLibraryService } from "@/core/application/WorkSpace/service/WorkSpaceLoadLibraryService";
+import { execute as workSpaceCreatePathMapService } from "@/core/application/WorkSpace/service/WorkSpaceCreatePathMapService";
 import { $VERSION } from "@/config/Config";
 import { $CONTROLLER_DEFAULT_WIDTH_SIZE } from "@/config/ControllerConfig";
 import { $clamp } from "@/global/GlobalUtil";
 import { ExternalTimeline } from "@/external/timeline/domain/model/ExternalTimeline";
-import { Folder } from "./Folder";
 import {
     $TIMELINE_DEFAULT_HEIGHT_SIZE,
     $TIMELINE_DEFAULT_FRAME_WIDTH_SIZE,
@@ -533,42 +532,11 @@ export class WorkSpace
      */
     loadLibrary (libraries: InstanceSaveObjectImpl[]): void
     {
-        for (let idx: number = 0; idx < libraries.length; ++idx) {
-
-            const libraryObject = libraries[idx];
-
-            // rootの読み込み
-            if (libraryObject.id === 0) {
-                this._$root.load(libraryObject as MovieClipSaveObjectImpl);
-                continue;
-            }
-
-            switch (libraryObject.type) {
-
-                case "container":
-                    this._$libraries.set(
-                        libraryObject.id,
-                        new MovieClip(libraryObject as MovieClipSaveObjectImpl)
-                    );
-                    break;
-
-                case "folder":
-                    this._$libraries.set(
-                        libraryObject.id,
-                        new Folder(libraryObject as FolderSaveObjectImpl)
-                    );
-                    break;
-
-                default:
-                    throw new Error("This is an undefined class.");
-
-            }
-        }
+        // セーブデータからライブラリを複製
+        workSpaceLoadLibraryService(this, libraries);
 
         // 名前とIDのマッピングを生成
-        for (const instance of this._$libraries.values()) {
-            this._$pathMap.set(instance.getPath(this), instance.id);
-        }
+        workSpaceCreatePathMapService(this);
     }
 
     /**
@@ -582,9 +550,7 @@ export class WorkSpace
      */
     updateToolArea (object: UserToolAreaStateObjectImpl): void
     {
-        this._$toolAreaState.state      = object.state;
-        this._$toolAreaState.offsetLeft = object.offsetLeft;
-        this._$toolAreaState.offsetTop  = object.offsetTop;
+        Object.assign(this._$toolAreaState, object);
     }
 
     /**
@@ -598,9 +564,7 @@ export class WorkSpace
      */
     updatePropertyArea (object: UserPropertyAreaStateObjectImpl): void
     {
-        this._$propertyAreaState.state      = object.state;
-        this._$propertyAreaState.offsetLeft = object.offsetLeft;
-        this._$propertyAreaState.offsetTop  = object.offsetTop;
+        Object.assign(this._$propertyAreaState, object);
     }
 
     /**
@@ -614,13 +578,7 @@ export class WorkSpace
      */
     updateTimelineArea (object: UserTimelineAreaStateObjectImpl): void
     {
-        this._$timelineAreaState.state       = object.state;
-        this._$timelineAreaState.offsetLeft  = object.offsetLeft;
-        this._$timelineAreaState.offsetTop   = object.offsetTop;
-        this._$timelineAreaState.width       = object.width;
-        this._$timelineAreaState.height      = object.height;
-        this._$timelineAreaState.frameWidth  = object.frameWidth;
-        this._$timelineAreaState.frameHeight = object.frameHeight;
+        Object.assign(this._$timelineAreaState, object);
     }
 
     /**
@@ -634,7 +592,7 @@ export class WorkSpace
      */
     updateControllerArea (object: UserControllerAreaStateObjectImpl): void
     {
-        this._$controllerAreaState.width  = object.width;
+        Object.assign(this._$controllerAreaState, object);
     }
 
     /**
