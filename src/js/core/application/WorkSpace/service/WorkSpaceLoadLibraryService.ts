@@ -20,6 +20,7 @@ export const execute = (
     libraries: InstanceSaveObjectImpl[]
 ): void => {
 
+    // 復元処理
     for (let idx: number = 0; idx < libraries.length; ++idx) {
 
         const libraryObject = libraries[idx];

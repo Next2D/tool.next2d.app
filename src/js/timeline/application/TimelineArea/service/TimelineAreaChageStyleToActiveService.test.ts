@@ -1,11 +1,11 @@
 import { execute } from "./TimelineAreaChageStyleToActiveService";
-import { $createWorkSpace } from "../../../../core/application/CoreUtil";
+import { $createWorkSpace, $getCurrentWorkSpace } from "../../../../core/application/CoreUtil";
 
 describe("TimelineAreaChageStyleToActiveServiceTest", () =>
 {
     test("execute test", () =>
     {
-        const workSpace = $createWorkSpace();
+        const workSpace = $getCurrentWorkSpace() || $createWorkSpace();
         const mockElement = {
             "style": {
                 "width": "",

@@ -1,12 +1,12 @@
 import { $TIMELINE_MIN_WIDTH } from "../../../../config/TimelineConfig";
 import { execute } from "./TimelineAreaChageStyleToInactiveService";
-import { $createWorkSpace } from "../../../../core/application/CoreUtil";
+import { $createWorkSpace, $getCurrentWorkSpace } from "../../../../core/application/CoreUtil";
 
 describe("TTimelineAreaChageStyleToInactiveServiceTest", () =>
 {
     test("execute test", () =>
     {
-        $createWorkSpace();
+        const workSpace = $getCurrentWorkSpace() || $createWorkSpace();
         const mockElement = {
             "style": {
                 "width": "1000px",

@@ -9,6 +9,7 @@ import { execute as workSpaceBootTimelineAreaUseCase } from "./WorkSpaceBootTime
 import { execute as workSpaceBootPropertyAreaUseCase } from "./WorkSpaceBootPropertyAreaUseCase";
 import { execute as workSpaceBootControllerAreaUseCase } from "./WorkSpaceBootControllerAreaUseCase";
 import { execute as scriptAreaReloadUseCase } from "@/controller/application/ScriptArea/usecase/ScriptAreaReloadUseCase";
+import { execute as libraryAreaReloadUseCase } from "@/controller/application/LibraryArea/usecase/LibraryAreaReloadUseCase";
 
 /**
  * @description プロジェクトの起動処理
@@ -53,6 +54,9 @@ export const execute = (work_space: WorkSpace): Promise<void> =>
 
         // スクリプト一覧を再読み込み
         scriptAreaReloadUseCase();
+
+        // ライブラリの一覧を再描画
+        libraryAreaReloadUseCase();
 
         // アクティブなMovieClipを起動
         work_space

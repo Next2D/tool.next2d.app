@@ -104,7 +104,10 @@ export class WorkSpace
             "name": "main",
             "symbol": ""
         });
+
+        // root情報をセット
         this._$libraries.set(0, this._$root);
+        this._$pathMap.set("main", 0);
 
         /**
          * @type {MovieClip}
@@ -184,15 +187,6 @@ export class WorkSpace
          * @private
          */
         this._$plugins = new Map();
-
-        // this._$position = 0;
-        // this._$ruler = false;
-        // this._$rulerX = [];
-        // this._$rulerY = [];
-        // this._$characterId = 0;
-        // this._$revision = [];
-        // this._$currentData = null;
-        // this._$currentFrame = 0;
     }
 
     /**

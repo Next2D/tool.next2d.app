@@ -45,7 +45,7 @@ export const execute = (
     }
 
     const historyObject = libraryAreaAddNewFolderCreateHistoryObjectService(
-        work_space.id, movie_clip.id, instance_id, name, folder_id
+        work_space.id, instance_id, name, folder_id
     );
 
     // 追加したLayer Objectを履歴に登録

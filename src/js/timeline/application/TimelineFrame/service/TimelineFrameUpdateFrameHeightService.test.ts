@@ -1,11 +1,12 @@
 import { execute } from "./TimelineFrameUpdateFrameHeightService";
-import { $createWorkSpace } from "../../../../core/application/CoreUtil";
+import { $createWorkSpace, $getCurrentWorkSpace } from "../../../../core/application/CoreUtil";
 
 describe("TimelineFrameUpdateFrameHeightServiceTest", () =>
 {
     test("execute test", (): void =>
     {
-        const timelineAreaState = $createWorkSpace().timelineAreaState;
+        const workSpace = $getCurrentWorkSpace() || $createWorkSpace();
+        const timelineAreaState = workSpace.timelineAreaState;
 
         document
             .documentElement

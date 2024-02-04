@@ -1,12 +1,12 @@
 import { $TIMELINE_ID } from "../../../../config/TimelineConfig";
 import { execute } from "./TimelineAreaActiveWindowMoveService";
-import { $createWorkSpace } from "../../../../core/application/CoreUtil";
+import { $createWorkSpace, $getCurrentWorkSpace } from "../../../../core/application/CoreUtil";
 
 describe("TimelineAreaActiveWindowMoveServiceTest", () =>
 {
     test("execute test", (): Promise<void> =>
     {
-        $createWorkSpace();
+        const workSpace = $getCurrentWorkSpace() || $createWorkSpace();
 
         const div = document.createElement("div");
         div.id = $TIMELINE_ID;

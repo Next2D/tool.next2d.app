@@ -2,6 +2,7 @@ import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import type { FolderTypeImpl } from "@/interface/FolderTypeImpl";
 import { ExternalItem } from "./ExternalItem";
 import { Folder } from "@/core/domain/model/Folder";
+import { execute as externalLibraryAddInstanceUseCase } from "@/external/controller/application/ExternalLibrary/usecase/ExternalLibraryAddInstanceUseCase";
 
 /**
  * @extends {ExternalItem}
@@ -27,15 +28,26 @@ export class ExternalFolder extends ExternalItem
 
         // フォルダクラスを生成
         this._$instance = new Folder({
-            "id": this._$workSpace.nextLibraryId,
+            "id": work_space.nextLibraryId,
             "type": "folder",
             "name": name,
             "mode": mode
         });
 
         // 内部情報を追加
-        work_space
-            .libraries
-            .set(this._$instance.id, this._$instance);
+        externalLibraryAddInstanceUseCase(work_space, this._$instance);
+    }
+
+    /**
+     * @description ライブラリからの削除処理
+     *              Deletion process from the library
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    remove (): void
+    {
+        // TODO
     }
 }

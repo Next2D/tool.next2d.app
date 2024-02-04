@@ -1,12 +1,13 @@
 import { $TIMELINE_CURRENT_FRAME_ID } from "../../../../config/TimelineConfig";
 import { execute } from "./TimelineFrameUpdateFrameElementService";
-import { $createWorkSpace } from "../../../../core/application/CoreUtil";
+import { $createWorkSpace, $getCurrentWorkSpace } from "../../../../core/application/CoreUtil";
 
 describe("TimelineFrameUpdateFrameElementServiceTest", () =>
 {
     test("execute test", (): void =>
     {
-        const scene = $createWorkSpace().scene;
+        const workSpace = $getCurrentWorkSpace() || $createWorkSpace();
+        const scene = workSpace.scene;
 
         const input = document.createElement("input");
         input.id = $TIMELINE_CURRENT_FRAME_ID;

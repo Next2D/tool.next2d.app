@@ -1,5 +1,5 @@
 import { execute } from "./TimelineFrameUpdateFrameWidthService";
-import { $createWorkSpace } from "../../../../core/application/CoreUtil";
+import { $createWorkSpace, $getCurrentWorkSpace } from "../../../../core/application/CoreUtil";
 import { $TIMELINE_DEFAULT_FRAME_WIDTH_SIZE, $TIMELINE_SCROLL_ID } from "../../../../config/TimelineConfig";
 
 describe("TimelineFrameUpdateFrameWidthServiceTest", () =>
@@ -11,7 +11,8 @@ describe("TimelineFrameUpdateFrameWidthServiceTest", () =>
         input.id = $TIMELINE_SCROLL_ID;
         input.value = "100";
 
-        const timelineAreaState = $createWorkSpace().timelineAreaState;
+        const workSpace = $getCurrentWorkSpace() || $createWorkSpace();
+        const timelineAreaState = workSpace.timelineAreaState;
 
         document
             .documentElement

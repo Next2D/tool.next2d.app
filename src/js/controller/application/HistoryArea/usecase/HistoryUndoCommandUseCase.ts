@@ -1,12 +1,13 @@
 import type { HistoryObjectImpl } from "@/interface/HistoryObjectImpl";
 import type { LayerSaveObjectImpl } from "@/interface/LayerSaveObjectImpl";
-import { execute as screenTabNameAddHistoryUndoUseCase } from "../../../../history/application/screen/ScreenTab/usecase/ScreenTabNameAddHistoryUndoUseCase";
-import { execute as timelineToolLayerAddHistoryUndoUseCase } from "../../../../history/application/timeline/TimelineTool/LayerAdd/usecase/TimelineToolLayerAddHistoryUndoUseCase";
-import { execute as timelineToolLayerDeleteHistoryUndoUseCase } from "../../../../history/application/timeline/TimelineTool/LayerDelete/usecase/TimelineToolLayerDeleteHistoryUndoUseCase";
-import { execute as timelineLayerControllerLayerNameUpdateHistoryUndoUseCase } from "../../../../history/application/timeline/TimelineLayerController/LayerName/usecase/TimelineLayerControllerLayerNameUpdateHistoryUndoUseCase";
-import { execute as scriptEditorNewRegisterHistoryUndoUseCase } from "../../../../history/application/timeline/TimelineTool/ScriptEditorNewRegister/usecase/ScriptEditorNewRegisterHistoryUndoUseCase";
-import { execute as scriptEditorUpdateHistoryUndoUseCase } from "../../../../history/application/timeline/TimelineTool/ScriptEditorUpdate/usecase/ScriptEditorUpdateHistoryUndoUseCase";
-import { execute as scriptEditorDeleteHistoryUndoUseCase } from "../../../../history/application/timeline/TimelineTool/ScriptEditorDelete/usecase/ScriptEditorDeleteHistoryUndoUseCase";
+import { execute as screenTabNameAddHistoryUndoUseCase } from "@/history/application/screen/ScreenTab/usecase/ScreenTabNameAddHistoryUndoUseCase";
+import { execute as timelineToolLayerAddHistoryUndoUseCase } from "@/history/application/timeline/TimelineTool/LayerAdd/usecase/TimelineToolLayerAddHistoryUndoUseCase";
+import { execute as timelineToolLayerDeleteHistoryUndoUseCase } from "@/history/application/timeline/TimelineTool/LayerDelete/usecase/TimelineToolLayerDeleteHistoryUndoUseCase";
+import { execute as timelineLayerControllerLayerNameUpdateHistoryUndoUseCase } from "@/history/application/timeline/TimelineLayerController/LayerName/usecase/TimelineLayerControllerLayerNameUpdateHistoryUndoUseCase";
+import { execute as scriptEditorNewRegisterHistoryUndoUseCase } from "@/history/application/timeline/TimelineTool/ScriptEditorNewRegister/usecase/ScriptEditorNewRegisterHistoryUndoUseCase";
+import { execute as scriptEditorUpdateHistoryUndoUseCase } from "@/history/application/timeline/TimelineTool/ScriptEditorUpdate/usecase/ScriptEditorUpdateHistoryUndoUseCase";
+import { execute as scriptEditorDeleteHistoryUndoUseCase } from "@/history/application/timeline/TimelineTool/ScriptEditorDelete/usecase/ScriptEditorDeleteHistoryUndoUseCase";
+import { execute as libraryAreaAddNewFolderHistoryUndoUseCase } from "@/history/application/controller/LibraryArea/Folder/usecase/LibraryAreaAddNewFolderHistoryUndoUseCase";
 import {
     $SCREEN_TAB_NAME_UPDATE_COMMAND,
     $TIMELINE_TOOL_LAYER_ADD_COMMAND,
@@ -14,7 +15,8 @@ import {
     $LAYER_NAME_UPDATE_COMMAND,
     $TIMIELINE_TOOL_SCRIPT_NEW_REGISTER_COMMAND,
     $TIMIELINE_TOOL_SCRIPT_UPDATE_COMMAND,
-    $TIMIELINE_TOOL_SCRIPT_DELETE_COMMAND
+    $TIMIELINE_TOOL_SCRIPT_DELETE_COMMAND,
+    $LIBRARY_ADD_NEW_FOLDER
 } from "@/config/HistoryConfig";
 
 /**
@@ -93,6 +95,14 @@ export const execute = (history_object: HistoryObjectImpl): void =>
                 args[1] as number, // MovieClipId
                 args[2] as number, // frame
                 args[3] as string // after script
+            );
+            break;
+
+        // 新規フォルダ追加
+        case $LIBRARY_ADD_NEW_FOLDER:
+            libraryAreaAddNewFolderHistoryUndoUseCase(
+                args[0] as number, // workSpaceId
+                args[1] as number // FolderId
             );
             break;
 
