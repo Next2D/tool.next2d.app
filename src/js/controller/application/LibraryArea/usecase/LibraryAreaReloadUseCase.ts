@@ -3,6 +3,7 @@ import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { execute as libraryAreaComponent } from "../component/LibraryAreaComponent";
 import { execute as libraryAreaSelectedMouseDownService } from "../service/LibraryAreaSelectedMouseDownUseCase";
 import { EventType } from "@/tool/domain/event/EventType";
+import { libraryArea } from "@/controller/domain/model/LibraryArea";
 
 /**
  * @description ライブラリエリアのElementを生成してイベントを登録する
@@ -41,6 +42,11 @@ export const execute = async (): Promise<void> =>
 
         // イベントを登録
         const node = element.lastElementChild as NonNullable<HTMLElement>;
+
+        // 選択中ならstyleを更新
+        if (libraryArea.selectedIds.indexOf(instance.id) > -1) {
+            node.classList.add("active");
+        }
 
         // 親Elementに選択イベントを登録
         node.addEventListener(EventType.MOUSE_DOWN,

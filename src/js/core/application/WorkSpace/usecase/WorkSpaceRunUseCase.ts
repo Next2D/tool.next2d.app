@@ -10,6 +10,7 @@ import { execute as workSpaceBootPropertyAreaUseCase } from "./WorkSpaceBootProp
 import { execute as workSpaceBootControllerAreaUseCase } from "./WorkSpaceBootControllerAreaUseCase";
 import { execute as scriptAreaReloadUseCase } from "@/controller/application/ScriptArea/usecase/ScriptAreaReloadUseCase";
 import { execute as libraryAreaReloadUseCase } from "@/controller/application/LibraryArea/usecase/LibraryAreaReloadUseCase";
+import { libraryArea } from "@/controller/domain/model/LibraryArea";
 
 /**
  * @description プロジェクトの起動処理
@@ -33,6 +34,9 @@ export const execute = (work_space: WorkSpace): Promise<void> =>
         // 進行状況画面を表示
         menu.show();
         menu.message = $replace("{{N2Dファイルの読み込み}}");
+
+        // ライブラリで選択中のIDを初期化
+        libraryArea.clear();
 
         // Stageを起動
         work_space.stage.run();

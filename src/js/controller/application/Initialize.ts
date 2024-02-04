@@ -3,7 +3,7 @@ import { execute as propertyAreaInitializeRegisterEventUseCase } from "@/control
 import { execute as controllerAdjustmentInitializeRegisterEventUseCase } from "@/controller/application/ControllerAdjustment/usecase/ControllerAdjustmentInitializeRegisterEventUseCase";
 import { controllerTab } from "../domain/model/ControllerTab";
 import { stageSetting } from "../domain/model/StageSetting";
-import { libraryItem } from "../domain/model/LibraryItem";
+import { libraryArea } from "../domain/model/LibraryArea";
 
 /**
  * @description 起動対象のToolクラスの配列
@@ -14,7 +14,7 @@ import { libraryItem } from "../domain/model/LibraryItem";
 const settings: any[] = [
     stageSetting,
     controllerTab,
-    libraryItem
+    libraryArea
 ];
 
 /**

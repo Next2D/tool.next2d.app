@@ -13,9 +13,10 @@ import { execute as initializeShortcut } from "@/shortcut/application/Initialize
 import { execute as initializeController } from "@/controller/application/Initialize";
 import { execute as initializeView } from "@/view/application/Initialize";
 import { execute as initializeShare } from "@/share/Initialize";
-import { execute as bootUser } from "@/user/application/Boot";
+import { execute as bootUser } from "@/user/application/UserBoot";
 import { execute as detailModalRegisterFadeEventService } from "@/menu/application/DetailModal/service/DetailModalRegisterFadeEventService";
 import { execute as languageTranslationService } from "@/language/application/service/LanguageTranslationService";
+import { execute as registerWindowResizeEventUseCase } from "@/global/usecase/RegisterWindowResizeEventUseCase";
 import { $PROGRESS_MENU_NAME } from "@/config/MenuConfig";
 import { $getMenu } from "@/menu/application/MenuUtil";
 import {
@@ -158,6 +159,9 @@ export const run = async (): Promise<void> =>
 
     // 初期起動関数が終了するまで待機
     await Promise.all(promises);
+
+    // リサイズイベントを登録
+    registerWindowResizeEventUseCase();
 
     // 選択されたWorkSpaceを起動
     await $getCurrentWorkSpace().run();
