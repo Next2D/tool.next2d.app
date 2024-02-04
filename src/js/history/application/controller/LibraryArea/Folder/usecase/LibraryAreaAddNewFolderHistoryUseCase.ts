@@ -1,5 +1,5 @@
 import type { MovieClip } from "@/core/domain/model/MovieClip";
-import { $LIBRARY_ADD_NEW_FOLDER } from "@/config/HistoryConfig";
+import { $LIBRARY_ADD_NEW_FOLDER_COMMAND } from "@/config/HistoryConfig";
 import { execute as historyAddElementUseCase } from "@/controller/application/HistoryArea/usecase/HistoryAddElementUseCase";
 import { execute as historyGetTextService } from "@/controller/application/HistoryArea/service/HistoryGetTextService";
 import { execute as historyRemoveElementService } from "@/controller/application/HistoryArea/service/HistoryRemoveElementService";
@@ -40,7 +40,7 @@ export const execute = (
     if (work_space.active && movie_clip.actions) {
         historyAddElementUseCase(
             movie_clip.historyIndex,
-            historyGetTextService($LIBRARY_ADD_NEW_FOLDER)
+            historyGetTextService($LIBRARY_ADD_NEW_FOLDER_COMMAND)
         );
     }
 

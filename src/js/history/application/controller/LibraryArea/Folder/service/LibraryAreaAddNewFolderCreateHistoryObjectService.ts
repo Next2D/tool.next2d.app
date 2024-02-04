@@ -1,5 +1,5 @@
 import type { HistoryObjectImpl } from "@/interface/HistoryObjectImpl";
-import { $LIBRARY_ADD_NEW_FOLDER } from "@/config/HistoryConfig";
+import { $LIBRARY_ADD_NEW_FOLDER_COMMAND } from "@/config/HistoryConfig";
 
 /**
  * @description 新規フォルダー追加の履歴用オブジェクトを作成
@@ -21,7 +21,7 @@ export const execute = (
 ): HistoryObjectImpl => {
 
     return {
-        "command": $LIBRARY_ADD_NEW_FOLDER,
+        "command": $LIBRARY_ADD_NEW_FOLDER_COMMAND,
         "args": [
             work_space_id,
             instance_id,
