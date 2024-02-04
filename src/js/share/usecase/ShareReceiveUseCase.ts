@@ -9,6 +9,7 @@ import { execute as timelineLayerControllerLayerLightUpdateReceiveService } from
 import { execute as scriptEditorNewRegisterReceiveUseCase } from "@/share/receive/application/timeline/application/TimelineTool/application/ScriptEditorNewRegister/usecase/ScriptEditorNewRegisterReceiveUseCase";
 import { execute as scriptEditorUpdateReceiveUseCase } from "@/share/receive/application/timeline/application/TimelineTool/application/ScriptEditorUpdate/usecase/ScriptEditorUpdateReceiveUseCase";
 import { execute as scriptEditorDeleteReceiveUseCase } from "@/share/receive/application/timeline/application/TimelineTool/application/ScriptEditorDelete/usecase/ScriptEditorDeleteReceiveUseCase";
+import { execute as folderAddNewReceiveService } from "@/share/receive/application/core/application/Folder/service/FolderAddNewReceiveService";
 import { execute as historyRedoUseCase } from "@/controller/application/HistoryArea/usecase/HistoryRedoUseCase";
 import { execute as historyUndoUseCase } from "@/controller/application/HistoryArea/usecase/HistoryUndoUseCase";
 import {
@@ -110,6 +111,7 @@ export const execute = (message: ShareReceiveMessageImpl): void =>
 
         // 新規フォルダー追加
         case $LIBRARY_ADD_NEW_FOLDER_COMMAND:
+            folderAddNewReceiveService(message);
             break;
 
         default:
