@@ -1,12 +1,12 @@
 import { execute } from "./LibraryAreaAddNewFolderCreateHistoryObjectService";
-import { $LIBRARY_ADD_NEW_FOLDER } from "../../../../../../config/HistoryConfig";
+import { $LIBRARY_ADD_NEW_FOLDER_COMMAND } from "../../../../../../config/HistoryConfig";
 
 describe("LibraryAreaAddNewFolderCreateHistoryObjectServiceTest", () =>
 {
     test("execute test", () =>
     {
         const object = execute(1, 2, "Folder", 10);
-        expect(object.command).toBe($LIBRARY_ADD_NEW_FOLDER);
+        expect(object.command).toBe($LIBRARY_ADD_NEW_FOLDER_COMMAND);
 
         // 配列の順番が崩れてもいいようにテストケースを残す
         expect(object.args[0]).toBe(1);
