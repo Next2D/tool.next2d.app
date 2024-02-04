@@ -1,5 +1,7 @@
 import type { InstanceTypeImpl } from "@/interface/InstanceTypeImpl";
 import type { ObjectImpl } from "@/interface/ObjectImpl";
+import { WorkSpace } from "./WorkSpace";
+import { execute as instanceGetPathNameService } from "@/core/application/Instance/service/InstanceGetPathNameService";
 
 /**
  * @description ライブラリのアイテムの親クラス
@@ -78,6 +80,20 @@ export class Instance
     get type (): InstanceTypeImpl
     {
         return this._$type;
+    }
+
+    /**
+     * @description フォルダを含めたライブラリのパスを返す
+     *              Returns the path to the library, including folders
+     *
+     * @param  {WorkSpace} work_space
+     * @return {string}
+     * @method
+     * @public
+     */
+    getPath (work_space: WorkSpace): string
+    {
+        return instanceGetPathNameService(work_space, this);
     }
 
     /**

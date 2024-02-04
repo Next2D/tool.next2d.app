@@ -4,7 +4,7 @@ export interface InstanceObjectImpl
 {
     id: number;
     type: InstanceTypeImpl;
-    name?: string;
+    name: string;
     symbol?: string;
     folderId?: number;
 }

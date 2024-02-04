@@ -49,6 +49,7 @@ export class WorkSpace
     private readonly _$root: MovieClip;
     private readonly _$stage: Stage;
     private readonly _$libraries: Map<number, InstanceImpl<any>>;
+    private readonly _$pathMap: Map<string, number>;
     private readonly _$screenTab: ScreenTab;
     private readonly _$toolAreaState: UserToolAreaStateObjectImpl;
     private readonly _$timelineAreaState: UserTimelineAreaStateObjectImpl;
@@ -81,6 +82,12 @@ export class WorkSpace
          * @private
          */
         this._$libraries = new Map();
+
+        /**
+         * @type {Map}
+         * @private
+         */
+        this._$pathMap = new Map();
 
         /**
          * @type {Stage}
@@ -281,6 +288,19 @@ export class WorkSpace
     get libraries ():  Map<number, InstanceImpl<any>>
     {
         return this._$libraries;
+    }
+
+    /**
+     * @description ライブラリ名とIDのマッピング情報を返却
+     *              Return library name and ID mapping information
+     *
+     * @return {Map}
+     * @readonly
+     * @public
+     */
+    get pathMap (): Map<string, number>
+    {
+        return this._$pathMap;
     }
 
     /**
@@ -513,7 +533,6 @@ export class WorkSpace
      */
     loadLibrary (libraries: InstanceSaveObjectImpl[]): void
     {
-        console.log(libraries);
         for (let idx: number = 0; idx < libraries.length; ++idx) {
 
             const libraryObject = libraries[idx];
@@ -527,17 +546,28 @@ export class WorkSpace
             switch (libraryObject.type) {
 
                 case "container":
-                    this._$libraries.set(libraryObject.id, new MovieClip(libraryObject as MovieClipSaveObjectImpl));
+                    this._$libraries.set(
+                        libraryObject.id,
+                        new MovieClip(libraryObject as MovieClipSaveObjectImpl)
+                    );
                     break;
 
                 case "folder":
-                    this._$libraries.set(libraryObject.id, new Folder(libraryObject as FolderSaveObjectImpl));
+                    this._$libraries.set(
+                        libraryObject.id,
+                        new Folder(libraryObject as FolderSaveObjectImpl)
+                    );
                     break;
 
                 default:
                     throw new Error("This is an undefined class.");
 
             }
+        }
+
+        // 名前とIDのマッピングを生成
+        for (const instance of this._$libraries.values()) {
+            this._$pathMap.set(instance.getPath(this), instance.id);
         }
     }
 
