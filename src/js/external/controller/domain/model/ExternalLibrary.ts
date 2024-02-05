@@ -3,6 +3,10 @@ import type { ExternalInstanceImpl } from "@/interface/ExternalInstanceImpl";
 import type { InstanceTypeImpl } from "@/interface/InstanceTypeImpl";
 import { ExternalBitmap } from "@/external/core/domain/model/ExternalBitmap";
 import { execute as externalLibraryAddNewFolderUseCase } from "@/external/controller/application/ExternalLibrary/usecase/ExternalLibraryAddNewFolderUseCase";
+import { execute as libraryAreaAllClearElementService } from "@/controller/application/LibraryArea/service/LibraryAreaAllClearElementService";
+import { execute as libraryAreaActiveElementService } from "@/controller/application/LibraryArea/service/LibraryAreaActiveElementService";
+import { InstanceImpl } from "@/interface/InstanceImpl";
+import { ExternalFolder } from "@/external/core/domain/model/ExternalFolder";
 
 /**
  * @description ライブラリの外部APIクラス
@@ -72,10 +76,62 @@ export class ExternalLibrary
         });
     }
 
+    /**
+     * @description 指定のライブラリアイテムを返却
+     *              Returns specified library items
+     *
+     * @return {object | null}
+     * @method
+     * @public
+     */
     getItem (path: string): ExternalInstanceImpl<any> | null
     {
-        console.log(path);
+        if (!this._$workSpace.pathMap.has(path)) {
+            return null;
+        }
+
+        const libraryId = this._$workSpace.pathMap.get(path) as NonNullable<number>;
+        const instance: InstanceImpl<any> | null = this._$workSpace.getLibrary(libraryId);
+        if (!instance) {
+            return null;
+        }
+
+        switch (instance.type) {
+
+            case "folder":
+                return new ExternalFolder(this._$workSpace, instance);
+
+        }
+
         return null;
+    }
+
+    /**
+     * @description 指定のライブラリアイテムを選択状態にする
+     *              Make the specified library item selected
+     *
+     * @param  {string} path_name
+     * @return {void}
+     * @method
+     * @public
+     */
+    selectedItem (path_name: string): void
+    {
+        const item = this.getItem(path_name);
+        if (!item) {
+            return ;
+        }
+
+        // 起動中のプロジェクトなら選択中のElementを初期化
+        if (this._$workSpace.active) {
+            libraryAreaAllClearElementService();
+        }
+
+        // TODO
+
+        if (this._$workSpace.active) {
+            libraryAreaActiveElementService(item.id);
+        }
     }
 
     /**

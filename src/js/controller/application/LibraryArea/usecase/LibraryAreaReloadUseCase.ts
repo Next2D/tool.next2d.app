@@ -1,7 +1,7 @@
 import { $LIBRARY_LIST_BOX_ID } from "@/config/LibraryConfig";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { execute as libraryAreaComponent } from "../component/LibraryAreaComponent";
-import { execute as libraryAreaSelectedMouseDownService } from "../service/LibraryAreaSelectedMouseDownUseCase";
+import { execute as libraryAreaSelectedMouseDownService } from "./LibraryAreaSelectedMouseDownUseCase";
 import { execute as libraryAreaArrowIconMouseDownEventService } from "../service/LibraryAreaArrowIconMouseDownEventService";
 import { EventType } from "@/tool/domain/event/EventType";
 import { libraryArea } from "@/controller/domain/model/LibraryArea";

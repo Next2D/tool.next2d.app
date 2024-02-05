@@ -177,23 +177,20 @@
     
     .library-list-box-name
     {
-        i
+        .open
         {
-            .open
-            {
-                transform           : rotate(90deg);
-                transition          : 0.1s ease-out;
-                background-position : center center;
-                flex-shrink         : 0;
-            }
+            transform           : rotate(90deg);
+            transition          : 0.1s ease-out;
+            background-position : center center;
+            flex-shrink         : 0;
+        }
 
-            .close
-            {
-                transform           : rotate(0);
-                transition          : 0.1s ease-out;
-                background-position : center center;
-                flex-shrink         : 0;
-            }
+        .close
+        {
+            transform           : rotate(0);
+            transition          : 0.1s ease-out;
+            background-position : center center;
+            flex-shrink         : 0;
         }
     }
 
