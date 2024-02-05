@@ -15,6 +15,7 @@ import { $LIBRARY_ADD_NEW_FOLDER_COMMAND } from "@/config/HistoryConfig";
  */
 export const execute = (
     work_space_id: number,
+    movie_clip_id: number,
     instance_id: number,
     name: string,
     folder_id: number
@@ -24,6 +25,7 @@ export const execute = (
         "command": $LIBRARY_ADD_NEW_FOLDER_COMMAND,
         "args": [
             work_space_id,
+            movie_clip_id,
             instance_id,
             name,
             folder_id

@@ -1,7 +1,10 @@
 import type { ShareReceiveMessageImpl } from "@/interface/ShareReceiveMessageImpl";
+import type { MovieClip } from "@/core/domain/model/MovieClip";
+import type { InstanceImpl } from "@/interface/InstanceImpl";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
-import { ExternalLibrary } from "@/external/controller/domain/model/ExternalLibrary";
-import { Instance } from "@/core/domain/model/Instance";
+import { Folder } from "@/core/domain/model/Folder";
+import { execute as externalLibraryAddInstanceUseCase } from "@/external/controller/application/ExternalLibrary/usecase/ExternalLibraryAddInstanceUseCase";
+import { execute as libraryAreaAddNewFolderHistoryUseCase } from "@/history/application/controller/LibraryArea/Folder/usecase/LibraryAreaAddNewFolderHistoryUseCase";
 
 /**
  * @description socketで受け取った情報の受け取り処理関数
@@ -21,15 +24,30 @@ export const execute = (message: ShareReceiveMessageImpl): void =>
         return ;
     }
 
-    const instance = new Instance({
-        "id": message.data[1] as NonNullable<number>,
-        "name": message.data[2] as NonNullable<string>,
-        "folderId": message.data[3] as NonNullable<number>,
-        "type": "folder"
+    const libraryId = message.data[1] as NonNullable<number>;
+    const movieClip: InstanceImpl<MovieClip> = workSpace.getLibrary(libraryId);
+    if (!movieClip) {
+        return ;
+    }
+
+    const folder = new Folder({
+        "id": message.data[2] as NonNullable<number>,
+        "name": message.data[3] as NonNullable<string>,
+        "folderId": message.data[4] as NonNullable<number>,
+        "type": "folder",
+        "mode": "close"
     });
 
-    const externalLibrary = new ExternalLibrary(workSpace);
-    externalLibrary.addNewFolder(
-        instance.getPath(workSpace), true
+    // 内部情報に追加
+    // fixed logic
+    externalLibraryAddInstanceUseCase(workSpace, folder);
+
+    // 作業履歴に残す
+    // fixed logic
+    libraryAreaAddNewFolderHistoryUseCase(
+        workSpace,
+        movieClip,
+        folder,
+        true
     );
 };

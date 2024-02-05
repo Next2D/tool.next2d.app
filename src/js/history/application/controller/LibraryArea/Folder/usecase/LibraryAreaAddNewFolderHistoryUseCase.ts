@@ -1,11 +1,12 @@
-import type { MovieClip } from "@/core/domain/model/MovieClip";
+import type { WorkSpace } from "@/core/domain/model/WorkSpace";
+import type { Folder } from "@/core/domain/model/Folder.ts";
+import type { MovieClip } from "@/core/domain/model/MovieClip.ts";
+import { $useSocket } from "@/share/ShareUtil";
 import { $LIBRARY_ADD_NEW_FOLDER_COMMAND } from "@/config/HistoryConfig";
 import { execute as historyAddElementUseCase } from "@/controller/application/HistoryArea/usecase/HistoryAddElementUseCase";
 import { execute as historyGetTextService } from "@/controller/application/HistoryArea/service/HistoryGetTextService";
 import { execute as historyRemoveElementService } from "@/controller/application/HistoryArea/service/HistoryRemoveElementService";
 import { execute as libraryAreaAddNewFolderCreateHistoryObjectService } from "../service/LibraryAreaAddNewFolderCreateHistoryObjectService.ts";
-import { WorkSpace } from "@/core/domain/model/WorkSpace";
-import { $useSocket } from "@/share/ShareUtil";
 import { execute as shareSendService } from "@/share/service/ShareSendService";
 
 /**
@@ -25,9 +26,7 @@ import { execute as shareSendService } from "@/share/service/ShareSendService";
 export const execute = (
     work_space: WorkSpace,
     movie_clip: MovieClip,
-    instance_id: number,
-    name: string,
-    folder_id: number,
+    folder: Folder,
     receiver: boolean = false
 ): void => {
 
@@ -45,7 +44,7 @@ export const execute = (
     }
 
     const historyObject = libraryAreaAddNewFolderCreateHistoryObjectService(
-        work_space.id, instance_id, name, folder_id
+        work_space.id, movie_clip.id, folder.id, folder.name, folder.folderId
     );
 
     // 追加したLayer Objectを履歴に登録

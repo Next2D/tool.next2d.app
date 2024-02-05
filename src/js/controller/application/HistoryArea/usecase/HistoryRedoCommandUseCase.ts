@@ -102,9 +102,9 @@ export const execute = (history_object: HistoryObjectImpl): void =>
         case $LIBRARY_ADD_NEW_FOLDER_COMMAND:
             libraryAreaAddNewFolderHistoryRedoUseCase(
                 args[0] as number, // workSpaceId
-                args[1] as number, // FolderId
-                args[2] as string, // Folder Name
-                args[3] as number // Parent FolderId
+                args[2] as number, // FolderId
+                args[3] as string, // Folder Name
+                args[4] as number // Parent FolderId
             );
             break;
 

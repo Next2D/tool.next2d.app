@@ -2,8 +2,7 @@ import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import type { ExternalInstanceImpl } from "@/interface/ExternalInstanceImpl";
 import type { InstanceTypeImpl } from "@/interface/InstanceTypeImpl";
 import { ExternalBitmap } from "@/external/core/domain/model/ExternalBitmap";
-import { ExternalFolder } from "@/external/core/domain/model/ExternalFolder";
-import { execute as libraryAreaAddNewFolderHistoryUseCase } from "@/history/application/controller/LibraryArea/Folder/usecase/LibraryAreaAddNewFolderHistoryUseCase";
+import { execute as externalLibraryAddNewFolderUseCase } from "@/external/controller/application/ExternalLibrary/usecase/ExternalLibraryAddNewFolderUseCase";
 
 /**
  * @description ライブラリの外部APIクラス
@@ -73,21 +72,22 @@ export class ExternalLibrary
         });
     }
 
-    getItem (path: string): ExternalInstanceImpl<any>
+    getItem (path: string): ExternalInstanceImpl<any> | null
     {
         console.log(path);
+        return null;
     }
 
     /**
-     * @description
+     * @description 指定の階層に新規フォルダーを追加、階層が存在しなければフォルダを生成
+     *              Add a new folder to the specified hierarchy, or create a folder if the hierarchy does not exist
      *
      * @param  {string} path
-     * @param  {boolean} [receiver = false]
      * @return {void}
      * @method
      * @public
      */
-    addNewFolder (path: string, receiver: boolean = false): void
+    addNewFolder (path: string): void
     {
         const paths = path.split("/");
 
@@ -108,25 +108,15 @@ export class ExternalLibrary
             }
 
             // 新規フォルダを作成
-            const externalFolder = new ExternalFolder(this._$workSpace, folderName);
-
-            // 親階層のIDをセット
-            externalFolder.folderId = folderId;
-
-            // 作業履歴に残す
-            // fixed logic
-            libraryAreaAddNewFolderHistoryUseCase(
+            const folder = externalLibraryAddNewFolderUseCase(
                 this._$workSpace,
                 this._$workSpace.scene,
-                externalFolder.id,
-                folderName,
-                folderId,
-                receiver
+                folderName, folderId
             );
 
             // 次は自分が親になるので、IDを書き換え
             // fixed logic
-            folderId = externalFolder.id;
+            folderId = folder.id;
         }
     }
 }

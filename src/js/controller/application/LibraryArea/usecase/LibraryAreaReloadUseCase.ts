@@ -2,6 +2,7 @@ import { $LIBRARY_LIST_BOX_ID } from "@/config/LibraryConfig";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { execute as libraryAreaComponent } from "../component/LibraryAreaComponent";
 import { execute as libraryAreaSelectedMouseDownService } from "../service/LibraryAreaSelectedMouseDownUseCase";
+import { execute as libraryAreaArrowIconMouseDownEventService } from "../service/LibraryAreaArrowIconMouseDownEventService";
 import { EventType } from "@/tool/domain/event/EventType";
 import { libraryArea } from "@/controller/domain/model/LibraryArea";
 
@@ -53,6 +54,20 @@ export const execute = async (): Promise<void> =>
             libraryAreaSelectedMouseDownService
         );
 
-        console.log([node, instance]);
+        // フォルダ時はアローアイコンにイベントを登録
+        if (instance.type === "folder") {
+            const icons = node.getElementsByTagName("i");
+            if (icons.length) {
+
+                const arrowIcon = icons[0] as NonNullable<HTMLElement>;
+                arrowIcon.addEventListener(EventType.MOUSE_DOWN,
+                    libraryAreaArrowIconMouseDownEventService
+                );
+
+                // アローアイコンにイベントを登録
+                // console.log(icons);
+
+            }
+        }
     }
 };
