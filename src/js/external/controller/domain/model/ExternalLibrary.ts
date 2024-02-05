@@ -7,6 +7,7 @@ import { execute as libraryAreaAllClearElementService } from "@/controller/appli
 import { execute as libraryAreaActiveElementService } from "@/controller/application/LibraryArea/service/LibraryAreaActiveElementService";
 import { InstanceImpl } from "@/interface/InstanceImpl";
 import { ExternalFolder } from "@/external/core/domain/model/ExternalFolder";
+import { execute as externalLibrarySelectedOneService } from "@/external/controller/application/ExternalLibrary/service/ExternalLibrarySelectedOneService";
 
 /**
  * @description ライブラリの外部APIクラス
@@ -127,8 +128,10 @@ export class ExternalLibrary
             libraryAreaAllClearElementService();
         }
 
-        // TODO
+        // 内部情報を更新
+        externalLibrarySelectedOneService(item.id);
 
+        // 起動中のプロジェクトなら指定のアイテムのElementをアクティブに更新
         if (this._$workSpace.active) {
             libraryAreaActiveElementService(item.id);
         }

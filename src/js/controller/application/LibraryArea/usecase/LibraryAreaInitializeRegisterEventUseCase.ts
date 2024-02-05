@@ -1,6 +1,8 @@
 import { $LIBRARY_LIST_BOX_ID } from "@/config/LibraryConfig";
-import { execute as libraryAreaDragoverService } from "../service/LibraryAreaDragoverService";
+import { execute as libraryAreaMouseDownEventUseCase } from "./LibraryAreaMouseDownEventUseCase";
 import { execute as libraryAreaDropUseCase } from "./LibraryAreaDropUseCase";
+import { execute as libraryAreaDragoverService } from "../service/LibraryAreaDragoverService";
+import { EventType } from "@/tool/domain/event/EventType";
 
 /**
  * @description ライブラリエリアのイベントを登録
@@ -18,6 +20,10 @@ export const execute = (): void =>
     if (!element) {
         return ;
     }
+
+    element.addEventListener(EventType.MOUSE_DOWN,
+        libraryAreaMouseDownEventUseCase
+    );
 
     element.addEventListener("dragover", libraryAreaDragoverService);
     element.addEventListener("drop", libraryAreaDropUseCase);
