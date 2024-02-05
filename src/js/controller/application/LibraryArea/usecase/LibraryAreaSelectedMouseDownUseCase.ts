@@ -1,5 +1,4 @@
 import { $allHideMenu } from "@/menu/application/MenuUtil";
-import { execute as libraryAreaNormalSelectedUseCase } from "./LibraryAreaNormalSelectedUseCase";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { InstanceImpl } from "@/interface/InstanceImpl";
 import { ExternalLibrary } from "@/external/controller/domain/model/ExternalLibrary";
