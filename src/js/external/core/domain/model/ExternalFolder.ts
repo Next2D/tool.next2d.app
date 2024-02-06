@@ -1,6 +1,4 @@
-import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import { ExternalItem } from "./ExternalItem";
-import { Folder } from "@/core/domain/model/Folder";
 import { execute as libraryAreaUpdateFolderStateService } from "@/controller/application/LibraryArea/service/LibraryAreaUpdateFolderStateService";
 import { $useSocket } from "@/share/ShareUtil";
 import { execute as externalFolderStateCreateHistoryObjectServic } from "@/external/core/application/ExternalFolder/service/ExternalFolderStateCreateHistoryObjectServic";

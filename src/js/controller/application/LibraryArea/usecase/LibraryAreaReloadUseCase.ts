@@ -93,7 +93,18 @@ export const execute = async (): Promise<void> =>
 
         if (instance.type !== "folder") {
             const symbolElement = spans[1] as NonNullable<HTMLElement>;
-            symbolElement.addEventListener(EventType.MOUSE_DOWN, () => {});
+            symbolElement.addEventListener(EventType.MOUSE_DOWN, () =>
+            {
+                //
+            });
+            nameElement.addEventListener("focusout", () =>
+            {
+                //
+            });
+            nameElement.addEventListener("keypress", () =>
+            {
+                //
+            });
         }
     }
 };
