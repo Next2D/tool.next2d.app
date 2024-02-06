@@ -11,6 +11,7 @@ import { execute as scriptEditorUpdateReceiveUseCase } from "@/share/receive/app
 import { execute as scriptEditorDeleteReceiveUseCase } from "@/share/receive/application/timeline/application/TimelineTool/application/ScriptEditorDelete/usecase/ScriptEditorDeleteReceiveUseCase";
 import { execute as folderAddNewReceiveService } from "@/share/receive/application/core/application/Folder/service/FolderAddNewReceiveService";
 import { execute as folderUpdateStateReceiveService } from "@/share/receive/application/core/application/Folder/service/FolderUpdateStateReceiveService";
+import { execute as instanceUpdateNameReceiveUseCase } from "@/share/receive/application/core/application/Instance/usecase/InstanceUpdateNameReceiveUseCase";
 import { execute as historyRedoUseCase } from "@/controller/application/HistoryArea/usecase/HistoryRedoUseCase";
 import { execute as historyUndoUseCase } from "@/controller/application/HistoryArea/usecase/HistoryUndoUseCase";
 import {
@@ -27,7 +28,8 @@ import {
     $TIMIELINE_TOOL_SCRIPT_UPDATE_COMMAND,
     $TIMIELINE_TOOL_SCRIPT_DELETE_COMMAND,
     $LIBRARY_ADD_NEW_FOLDER_COMMAND,
-    $LIBRARY_FOLDER_STATE_COMMAND
+    $LIBRARY_FOLDER_STATE_COMMAND,
+    $LIBRARY_UPDATE_INSTANCE_NAME_COMMAND
 } from "@/config/HistoryConfig";
 
 /**
@@ -119,6 +121,11 @@ export const execute = (message: ShareReceiveMessageImpl): void =>
         // フォルダの開閉更新
         case $LIBRARY_FOLDER_STATE_COMMAND:
             folderUpdateStateReceiveService(message);
+            break;
+
+        // インスタンス名の更新
+        case $LIBRARY_UPDATE_INSTANCE_NAME_COMMAND:
+            instanceUpdateNameReceiveUseCase(message);
             break;
 
         default:
