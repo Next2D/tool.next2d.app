@@ -13,8 +13,7 @@ import { $updateKeyLock } from "@/shortcut/ShortcutUtil";
 export const execute = (
     text_element: HTMLElement,
     tab_element: HTMLElement
-): void =>
-{
+): void => {
 
     // 編集モードのstyleに更新
     text_element.contentEditable   = "true";

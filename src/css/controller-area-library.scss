@@ -212,11 +212,13 @@
 
         .view-text
         {
-            display     : flex;
-            align-items : center;
-            width       : 100vw;
-            height      : 35px;
-            white-space : nowrap;
+            display       : flex;
+            align-items   : center;
+            width         : 100vw;
+            height        : 34px;
+            white-space   : nowrap;
+            border-bottom : transparent 1px solid;
+            outline       : 0px solid transparent;
         }
 
         .view-symbol-text
@@ -224,8 +226,9 @@
             display     : flex;
             align-items : center;
             width       : 100vw;
-            height      : 35px;
+            height      : 34px;
             white-space : nowrap;
+            border-bottom : transparent 1px solid;
         }
 
         .library-list-box-name

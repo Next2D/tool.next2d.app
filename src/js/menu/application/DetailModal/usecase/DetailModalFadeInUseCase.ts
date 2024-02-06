@@ -1,11 +1,11 @@
-import { $DETAIL_MODAL_NAME } from "@/config/MenuConfig";
 import type { MenuImpl } from "@/interface/MenuImpl";
 import type { ShortcutViewObjectImpl } from "@/interface/ShortcutViewObjectImpl";
 import type { UserSettingObjectImpl } from "@/interface/UserSettingObjectImpl";
+import type { DetailModal } from "@/menu/domain/model/DetailModal";
+import { $DETAIL_MODAL_NAME } from "@/config/MenuConfig";
 import { $replace } from "@/language/application/LanguageUtil";
 import { execute as userSettingObjectGetService } from "@/user/application/Setting/service/UserSettingObjectGetService";
 import { execute as detailModalHideService } from "../service/DetailModalHideService";
-import type { DetailModal } from "@/menu/domain/model/DetailModal";
 import { $getMenu } from "@/menu/application/MenuUtil";
 import { $getViewMapping } from "@/menu/application/ShortcutSettingMenu/ShortcutSettingMenuUtil";
 

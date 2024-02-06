@@ -32,7 +32,6 @@ let layerIndex: number = -1;
 export const execute = (event: PointerEvent): void =>
 {
     if (event.button !== 0 || $useKeyboard()) {
-        wait = false;
         return ;
     }
 
@@ -51,7 +50,7 @@ export const execute = (event: PointerEvent): void =>
         wait = true;
 
         // 選択中のレイヤーIDをセット
-        layerIndex = parseInt(element.dataset.layerIndex as NonNullable<string>);
+        layerIndex = currentLayerIndex;
 
         // ダブルタップ有効期限をセット
         setTimeout((): void =>
@@ -69,6 +68,7 @@ export const execute = (event: PointerEvent): void =>
 
         // 他のイベントを中止
         event.preventDefault();
+        event.stopPropagation();
 
         // ダブルクリック処理
         timelineLayerControllerNameTextActiveStyleService(element);

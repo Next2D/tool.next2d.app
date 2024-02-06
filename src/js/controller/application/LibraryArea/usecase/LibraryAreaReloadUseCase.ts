@@ -4,6 +4,9 @@ import { execute as libraryAreaComponent } from "../component/LibraryAreaCompone
 import { execute as libraryAreaSelectedMouseDownService } from "./LibraryAreaSelectedMouseDownUseCase";
 import { execute as libraryAreaArrowIconMouseDownEventService } from "../service/LibraryAreaArrowIconMouseDownEventService";
 import { execute as libraryAreaFolderIconMouseDownEventService } from "../service/LibraryAreaFolderIconMouseDownEventService";
+import { execute as libraryAreaInstanceNameMouseDownEventUseCase } from "./LibraryAreaInstanceNameMouseDownEventUseCase";
+import { execute as libraryAreaInstanceNameKeyPressEventService } from "../service/LibraryAreaInstanceNameKeyPressEventService";
+import { execute as libraryAreaInstanceNameFocusOutEventUseCase } from "./LibraryAreaInstanceNameFocusOutEventUseCase";
 import { EventType } from "@/tool/domain/event/EventType";
 import { libraryArea } from "@/controller/domain/model/LibraryArea";
 
@@ -71,6 +74,26 @@ export const execute = async (): Promise<void> =>
                     libraryAreaFolderIconMouseDownEventService
                 );
             }
+        }
+
+        const spans = node.getElementsByTagName("span");
+
+        const nameElement = spans[0] as NonNullable<HTMLElement>;
+        nameElement.addEventListener(EventType.MOUSE_DOWN,
+            libraryAreaInstanceNameMouseDownEventUseCase
+        );
+
+        nameElement.addEventListener("focusout",
+            libraryAreaInstanceNameFocusOutEventUseCase
+        );
+
+        nameElement.addEventListener("keypress",
+            libraryAreaInstanceNameKeyPressEventService
+        );
+
+        if (instance.type !== "folder") {
+            const symbolElement = spans[1] as NonNullable<HTMLElement>;
+            symbolElement.addEventListener(EventType.MOUSE_DOWN, () => {});
         }
     }
 };

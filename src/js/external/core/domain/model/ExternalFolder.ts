@@ -14,23 +14,6 @@ import { execute as shareSendService } from "@/share/service/ShareSendService";
 export class ExternalFolder extends ExternalItem
 {
     /**
-     * @param {WorkSpace} work_space
-     * @param {Folder} folder
-     * @constructor
-     * @public
-     */
-    constructor (
-        work_space: WorkSpace,
-        folder: Folder
-    ) {
-
-        super(work_space);
-
-        // フォルダクラスを生成
-        this._$instance = folder;
-    }
-
-    /**
      * @description フォルダを開けて、一覧を表示
      *              Open a folder and view the list
      *

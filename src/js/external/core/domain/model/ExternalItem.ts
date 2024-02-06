@@ -1,5 +1,5 @@
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
-import type { ExternalItemImpl } from "@/interface/ExternalItemImpl";
+import type { InstanceImpl } from "@/interface/InstanceImpl";
 import type { InstanceTypeImpl } from "@/interface/InstanceTypeImpl";
 
 /**
@@ -7,14 +7,16 @@ import type { InstanceTypeImpl } from "@/interface/InstanceTypeImpl";
  */
 export class ExternalItem
 {
-    protected _$instance: ExternalItemImpl<any> | null;
+    protected readonly _$instance: InstanceImpl<any>;
     protected readonly _$workSpace: WorkSpace;
 
     /**
+     * @param {WorkSpace} work_space
+     * @param {Instance} instance
      * @constructor
      * @public
      */
-    constructor (work_space: WorkSpace)
+    constructor (work_space: WorkSpace, instance: InstanceImpl<any>)
     {
         /**
          * @type {WorkSpace}
@@ -26,7 +28,7 @@ export class ExternalItem
          * @type {ExternalItem}
          * @private
          */
-        this._$instance = null;
+        this._$instance = instance;
     }
 
     /**
@@ -68,6 +70,7 @@ export class ExternalItem
     }
     set name (name: string)
     {
+        // インスタンス名を更新
         this._$instance.name = name;
     }
 

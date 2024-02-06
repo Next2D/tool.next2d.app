@@ -2,6 +2,7 @@ import { $allHideMenu } from "@/menu/application/MenuUtil";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { InstanceImpl } from "@/interface/InstanceImpl";
 import { ExternalLibrary } from "@/external/controller/domain/model/ExternalLibrary";
+import { $useKeyboard } from "@/shortcut/ShortcutUtil";
 
 /**
  * @description 親Elementのマウスダウン処理関数、Elementを選択状態に更新
@@ -23,6 +24,11 @@ export const execute = (event: PointerEvent): void =>
 
     // メニューを全て非表示に更新
     $allHideMenu();
+
+    // 編集中なら終了
+    if ($useKeyboard()) {
+        return ;
+    }
 
     const element = event.currentTarget as HTMLElement;
     if (!element) {

@@ -33,6 +33,11 @@ export const execute = (event: FocusEvent): void =>
         name = "Layer";
     }
 
+    // 編集されてなければ終了
+    if (layer.name === name) {
+        return ;
+    }
+
     const workSpace = $getCurrentWorkSpace();
 
     // 作業履歴を登録
