@@ -6,7 +6,8 @@ import {
     $TIMIELINE_TOOL_SCRIPT_DELETE_COMMAND,
     $SCREEN_TAB_NAME_UPDATE_COMMAND,
     $LAYER_NAME_UPDATE_COMMAND,
-    $LIBRARY_ADD_NEW_FOLDER_COMMAND
+    $LIBRARY_ADD_NEW_FOLDER_COMMAND,
+    $LIBRARY_UPDATE_INSTANCE_NAME_COMMAND
 } from "@/config/HistoryConfig";
 
 /**
@@ -44,6 +45,9 @@ export const execute = (command: number): string =>
 
         case $LIBRARY_ADD_NEW_FOLDER_COMMAND:
             return "新規フォルダー";
+
+        case $LIBRARY_UPDATE_INSTANCE_NAME_COMMAND:
+            return "インスタンス名を変更";
 
         default:
             break;

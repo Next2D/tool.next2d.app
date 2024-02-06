@@ -7,6 +7,10 @@ import { $getWorkSpace } from "@/core/application/CoreUtil";
  * @description 新規フォルダ追加処理のRedo関数
  *              Redo function for new folder addition process
  *
+ * @param  {number} work_space_id
+ * @param  {number} library_id
+ * @param  {string} name
+ * @param  {number} folder_id
  * @return {void}
  * @method
  * @public

@@ -141,3 +141,12 @@ export const $LIBRARY_ADD_NEW_FOLDER_COMMAND: number = 12;
  * @constant
  */
 export const $LIBRARY_FOLDER_STATE_COMMAND: number = 13;
+
+/**
+ * @description インスタンス名更新の識別コマンド名
+ *              Identification command name for instance name update
+ *
+ * @type {number}
+ * @constant
+ */
+export const $LIBRARY_UPDATE_INSTANCE_NAME_COMMAND: number = 14;

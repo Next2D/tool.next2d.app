@@ -1,6 +1,7 @@
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import type { InstanceImpl } from "@/interface/InstanceImpl";
 import type { InstanceTypeImpl } from "@/interface/InstanceTypeImpl";
+import { execute as externalItemUpdateNameUseCase } from "@/external/core/application/ExternalItem/usecase/ExternalItemUpdateNameUseCase";
 
 /**
  * @class
@@ -70,8 +71,12 @@ export class ExternalItem
     }
     set name (name: string)
     {
-        // インスタンス名を更新
-        this._$instance.name = name;
+        externalItemUpdateNameUseCase(
+            this._$workSpace,
+            this._$workSpace.scene,
+            this._$instance,
+            name
+        );
     }
 
     /**
