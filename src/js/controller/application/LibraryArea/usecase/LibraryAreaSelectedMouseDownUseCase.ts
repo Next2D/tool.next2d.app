@@ -38,7 +38,6 @@ export const execute = (event: PointerEvent): void =>
 
     // 外部APIを起動
     const externalLibrary = new ExternalLibrary(workSpace);
-
     switch (true) {
 
         case event.altKey:

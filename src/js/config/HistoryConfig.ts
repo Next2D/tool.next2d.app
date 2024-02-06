@@ -132,3 +132,12 @@ export const $LAYER_LIGHT_UPDATE_COMMAND: number = 11;
  * @constant
  */
 export const $LIBRARY_ADD_NEW_FOLDER_COMMAND: number = 12;
+
+/**
+ * @description フォルダ開閉状態の識別コマンド名
+ *              Folder open/close status identification command name
+ *
+ * @type {number}
+ * @constant
+ */
+export const $LIBRARY_FOLDER_STATE_COMMAND: number = 13;

@@ -58,6 +58,6 @@ export const execute = (
         );
 
         shareObject.args.pop();
-        shareSendService(historyObject);
+        shareSendService(shareObject);
     }
 };
