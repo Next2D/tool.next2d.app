@@ -7,6 +7,7 @@ import { execute as libraryAreaFolderIconMouseDownEventService } from "../servic
 import { execute as libraryAreaInstanceNameMouseDownEventUseCase } from "./LibraryAreaInstanceNameMouseDownEventUseCase";
 import { execute as libraryAreaInstanceNameKeyPressEventService } from "../service/LibraryAreaInstanceNameKeyPressEventService";
 import { execute as libraryAreaInstanceNameFocusOutEventUseCase } from "./LibraryAreaInstanceNameFocusOutEventUseCase";
+import { execute as libraryAreaInstanceSymbolMouseDownEventUseCase } from "./LibraryAreaInstanceSymbolMouseDownEventUseCase";
 import { EventType } from "@/tool/domain/event/EventType";
 import { libraryArea } from "@/controller/domain/model/LibraryArea";
 
@@ -93,10 +94,10 @@ export const execute = async (): Promise<void> =>
 
         if (instance.type !== "folder") {
             const symbolElement = spans[1] as NonNullable<HTMLElement>;
-            symbolElement.addEventListener(EventType.MOUSE_DOWN, () =>
-            {
-                //
-            });
+            symbolElement.addEventListener(EventType.MOUSE_DOWN,
+                libraryAreaInstanceSymbolMouseDownEventUseCase
+            );
+
             nameElement.addEventListener("focusout", () =>
             {
                 //
