@@ -60,6 +60,11 @@ export const execute = (event: FocusEvent): void =>
         return ;
     }
 
+    // 変更前に戻す
+    // fixed logic
+    instance.name = before;
+
+    // 外部APIを起動
     const externalItem = new ExternalItem(workSpace, instance);
     externalItem.name = name;
 };

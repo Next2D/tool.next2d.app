@@ -8,6 +8,7 @@ import { execute as scriptEditorNewRegisterHistoryUndoUseCase } from "@/history/
 import { execute as scriptEditorUpdateHistoryUndoUseCase } from "@/history/application/timeline/TimelineTool/ScriptEditorUpdate/usecase/ScriptEditorUpdateHistoryUndoUseCase";
 import { execute as scriptEditorDeleteHistoryUndoUseCase } from "@/history/application/timeline/TimelineTool/ScriptEditorDelete/usecase/ScriptEditorDeleteHistoryUndoUseCase";
 import { execute as libraryAreaAddNewFolderHistoryUndoUseCase } from "@/history/application/controller/LibraryArea/Folder/usecase/LibraryAreaAddNewFolderHistoryUndoUseCase";
+import { execute as instanceUpdateNameHistoryUndoUseCase } from "@/history/application/core/Instance/usecase/InstanceUpdateNameHistoryUndoUseCase";
 import {
     $SCREEN_TAB_NAME_UPDATE_COMMAND,
     $TIMELINE_TOOL_LAYER_ADD_COMMAND,
@@ -16,7 +17,8 @@ import {
     $TIMIELINE_TOOL_SCRIPT_NEW_REGISTER_COMMAND,
     $TIMIELINE_TOOL_SCRIPT_UPDATE_COMMAND,
     $TIMIELINE_TOOL_SCRIPT_DELETE_COMMAND,
-    $LIBRARY_ADD_NEW_FOLDER_COMMAND
+    $LIBRARY_ADD_NEW_FOLDER_COMMAND,
+    $LIBRARY_UPDATE_INSTANCE_NAME_COMMAND
 } from "@/config/HistoryConfig";
 
 /**
@@ -103,6 +105,15 @@ export const execute = (history_object: HistoryObjectImpl): void =>
             libraryAreaAddNewFolderHistoryUndoUseCase(
                 args[0] as number, // workSpaceId
                 args[2] as number // FolderId
+            );
+            break;
+
+        // インスタンス名を変更
+        case $LIBRARY_UPDATE_INSTANCE_NAME_COMMAND:
+            instanceUpdateNameHistoryUndoUseCase(
+                args[0] as number, // workSpaceId
+                args[2] as number, // InstanceId
+                args[3] as string  // before name
             );
             break;
 

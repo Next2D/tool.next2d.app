@@ -3,6 +3,8 @@ import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import type { InstanceImpl } from "@/interface/InstanceImpl";
 import { execute as instanceUpdateNameHistoryUseCase } from "@/history/application/core/Instance/usecase/InstanceUpdateNameHistoryUseCase";
+import { execute as libraryAreaReOrderingService } from "@/controller/application/LibraryArea/service/LibraryAreaReOrderingService";
+import { execute as libraryAreaReloadUseCase } from "@/controller/application/LibraryArea/usecase/LibraryAreaReloadUseCase";
 
 /**
  * @description インスタス名の変更実行処理関数
@@ -33,10 +35,19 @@ export const execute = (
         throw new Error("The same name exists.");
     }
 
+    instance.name = beforeName;
+    work_space.pathMap.delete(instance.getPath(work_space));
+
+    instance.name = name;
+    work_space.pathMap.set(instance.getPath(work_space), instance.id);
+
+    // 名前の並び替えを実行
+    libraryAreaReOrderingService(work_space);
+
     // 起動中のプロジェクトなら表示も更新
     if (work_space.active) {
-        // ライブラリの表示を更新
-
+        // ライブラリの表示を際描画
+        libraryAreaReloadUseCase();
     }
 
     // 履歴に残す
