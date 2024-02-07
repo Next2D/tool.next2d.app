@@ -2,6 +2,7 @@ import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import type { InstanceImpl } from "@/interface/InstanceImpl";
 import type { InstanceTypeImpl } from "@/interface/InstanceTypeImpl";
 import { execute as externalItemUpdateNameUseCase } from "@/external/core/application/ExternalItem/usecase/ExternalItemUpdateNameUseCase";
+import { execute as externalItemUpdateSymbolUseCase } from "@/external/core/application/ExternalItem/usecase/ExternalItemUpdateSymbolUseCase";
 
 /**
  * @class
@@ -92,7 +93,12 @@ export class ExternalItem
     }
     set symbol (symbol: string)
     {
-        this._$instance.symbol = symbol;
+        externalItemUpdateSymbolUseCase(
+            this._$workSpace,
+            this._$workSpace.scene,
+            this._$instance,
+            symbol
+        );
     }
 
     /**

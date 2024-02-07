@@ -4,7 +4,7 @@ import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { execute as libraryAreaInacticeInstanceTextContentService } from "../service/LibraryAreaInacticeInstanceTextContentService";
 import { ExternalItem } from "@/external/core/domain/model/ExternalItem";
 import { execute as detailModalCustomFadeInUseCase } from "@/menu/application/DetailModal/usecase/DetailModalCustomFadeInUseCase";
-import { $ERROR_DUPLICATE_NAME_TEXT } from "@/config/ErrorTextConfig";
+import { $ERROR_DUPLICATE_SYMBOL_TEXT } from "@/config/ErrorTextConfig";
 
 /**
  * @description インスタンスのシンボルエリアのダブルタップ処理関数
@@ -39,14 +39,14 @@ export const execute = (event: FocusEvent): void =>
     }
 
     // 重複していればエラーを表示
-    if (workSpace.pathMap.has(symbol)) {
+    if (workSpace.symbolMap.has(symbol)) {
 
         // 元の名前に戻す
         element.textContent = instance.symbol;
 
         // エラーを表示
         detailModalCustomFadeInUseCase(
-            $ERROR_DUPLICATE_NAME_TEXT,
+            $ERROR_DUPLICATE_SYMBOL_TEXT,
             element.offsetLeft,
             element.offsetTop - element.clientHeight - 4
         );

@@ -50,6 +50,7 @@ export class WorkSpace
     private readonly _$stage: Stage;
     private readonly _$libraries: Map<number, InstanceImpl<any>>;
     private readonly _$pathMap: Map<string, number>;
+    private readonly _$symbolMap: Map<string, number>;
     private readonly _$screenTab: ScreenTab;
     private readonly _$toolAreaState: UserToolAreaStateObjectImpl;
     private readonly _$timelineAreaState: UserTimelineAreaStateObjectImpl;
@@ -88,6 +89,12 @@ export class WorkSpace
          * @private
          */
         this._$pathMap = new Map();
+
+        /**
+         * @type {Map}
+         * @private
+         */
+        this._$symbolMap = new Map();
 
         /**
          * @type {Stage}
@@ -294,6 +301,19 @@ export class WorkSpace
     get pathMap (): Map<string, number>
     {
         return this._$pathMap;
+    }
+
+    /**
+     * @description シンボル名とIDのマッピング情報を返却
+     *              Symbol name and ID mapping information returned
+     *
+     * @return {Map}
+     * @readonly
+     * @public
+     */
+    get symbolMap (): Map<string, number>
+    {
+        return this._$symbolMap;
     }
 
     /**
