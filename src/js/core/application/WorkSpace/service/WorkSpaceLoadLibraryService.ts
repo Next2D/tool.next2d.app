@@ -1,9 +1,11 @@
-import { Folder } from "@/core/domain/model/Folder";
-import { MovieClip } from "@/core/domain/model/MovieClip";
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
+import type { BitmapSaveObjectImpl } from "@/interface/BitmapSaveObjectImpl";
 import type { FolderSaveObjectImpl } from "@/interface/FolderSaveObjectImpl";
 import type { InstanceSaveObjectImpl } from "@/interface/InstanceSaveObjectImpl";
 import type { MovieClipSaveObjectImpl } from "@/interface/MovieClipSaveObjectImpl";
+import { Bitmap } from "@/core/domain/model/Bitmap";
+import { Folder } from "@/core/domain/model/Folder";
+import { MovieClip } from "@/core/domain/model/MovieClip";
 
 /**
  * @description 保存データからライブラリ情報を復元
@@ -47,6 +49,12 @@ export const execute = (
                 );
                 break;
 
+            case "bitmap":
+                work_space.libraries.set(
+                    libraryObject.id,
+                    new Bitmap(libraryObject as BitmapSaveObjectImpl)
+                );
+                break;
             default:
                 throw new Error("This is an undefined class.");
 

@@ -2,6 +2,9 @@ import { execute as progressMenuShowService } from "@/menu/application/ProgressM
 import { execute as progressMenuUpdateMessageService } from "@/menu/application/ProgressMenu/service/ProgressMenuUpdateMessageService";
 import { execute as progressMenuHideService } from "@/menu/application/ProgressMenu/service/ProgressMenuHideService";
 import { execute as libraryAreaScanFileUseCase } from "./LibraryAreaScanFileUseCase";
+import { execute as libraryAreaReOrderingService } from "../service/LibraryAreaReOrderingService";
+import { execute as libraryAreaReloadUseCase } from "./LibraryAreaReloadUseCase";
+import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 
 /**
  * @description 外部アイテムの読み込み実行関数
@@ -30,6 +33,12 @@ export const execute = async (items: DataTransferItemList): Promise<void> =>
         // ファイルクラスをスキャン
         await libraryAreaScanFileUseCase(entry);
     }
+
+    // ファイル名で昇順に並び替え
+    libraryAreaReOrderingService($getCurrentWorkSpace());
+
+    // ライブラリエリアを際描画
+    libraryAreaReloadUseCase();
 
     // プログレバーを非表示に更新
     progressMenuHideService();

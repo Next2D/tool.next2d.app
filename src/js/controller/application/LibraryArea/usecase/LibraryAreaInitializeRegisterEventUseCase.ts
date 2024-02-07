@@ -27,4 +27,12 @@ export const execute = (): void =>
 
     element.addEventListener("dragover", libraryAreaDragoverService);
     element.addEventListener("drop", libraryAreaDropUseCase);
+    element.addEventListener("dragstart", () =>
+    {
+        //
+    });
+    element.addEventListener("dragend", () =>
+    {
+        //
+    });
 };

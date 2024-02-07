@@ -8,6 +8,9 @@ import { execute as libraryAreaActiveElementService } from "@/controller/applica
 import { InstanceImpl } from "@/interface/InstanceImpl";
 import { ExternalFolder } from "@/external/core/domain/model/ExternalFolder";
 import { execute as externalLibrarySelectedOneService } from "@/external/controller/application/ExternalLibrary/service/ExternalLibrarySelectedOneService";
+import { execute as externalLibraryImportBitmapFileUseCase } from "@/external/controller/application/ExternalLibrary/usecase/ExternalLibraryImportBitmapFileUseCase";
+import { execute as libraryAreaReOrderingService } from "@/controller/application/LibraryArea/service/LibraryAreaReOrderingService";
+import { execute as libraryAreaReloadUseCase } from "@/controller/application/LibraryArea/usecase/LibraryAreaReloadUseCase";
 
 /**
  * @description ライブラリの外部APIクラス
@@ -68,13 +71,62 @@ export class ExternalLibrary
         return instance;
     }
 
-    importFile (file: File, path: string = ""): Promise<void>
-    {
-        return new Promise((resolve): void =>
-        {
-            console.log(file, path);
-            resolve();
-        });
+    /**
+     * @description 外部ファイルの読み込み
+     *              Loading external files
+     *
+     * @param  {File} file
+     * @param  {string} path
+     * @param  {boolean} [reload = false]
+     * @return {Promise}
+     * @method
+     * @public
+     */
+    async importFile (
+        file: File,
+        path: string = "",
+        reload: boolean = true
+    ): Promise<void> {
+
+        switch (file.type) {
+
+            // SVG
+            case "image/svg+xml":
+                break;
+
+            // 画像
+            case "image/png":
+            case "image/jpeg":
+            case "image/gif":
+                await externalLibraryImportBitmapFileUseCase(this._$workSpace, file, path);
+                break;
+
+            // ビデオ
+            case "video/mp4":
+                break;
+
+            // 音声
+            case "audio/mpeg":
+                break;
+
+            // SWF
+            case "application/x-shockwave-flash":
+                break;
+
+            default:
+                break;
+
+        }
+
+        if (reload) {
+            // 読み込んだファイルを昇順に並び替え
+            libraryAreaReOrderingService(this._$workSpace);
+
+            // 起動中のプロジェクトならライブラリエリアをさ描画
+            if (this._$workSpace.active) {
+                libraryAreaReloadUseCase();
+            }
+        }
     }
 
     /**

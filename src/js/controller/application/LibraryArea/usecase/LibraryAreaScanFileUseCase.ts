@@ -13,8 +13,8 @@ import { ExternalLibrary } from "@/external/controller/domain/model/ExternalLibr
  * @method
  * @public
  */
-export const execute = async <T extends FileSystemEntry>(
-    entry: T,
+export const execute = async (
+    entry: any,
     path: string = ""
 ): Promise<void> => {
 
@@ -22,44 +22,45 @@ export const execute = async <T extends FileSystemEntry>(
     const externalLibrary = new ExternalLibrary($getCurrentWorkSpace());
 
     // ディレクトリの中のファイルを全てスキャンする
-    if (entry instanceof FileSystemDirectoryEntry) {
+    if (entry.isDirectory) {
 
-        const paths: string[] = [];
-        if (path) {
-            paths.push(path);
-        }
-
-        // ディレクトリ名を追加
-        paths.push(entry.name);
-
-        const folderPath = paths.join("/");
-
-        // フォルダを作成
-        externalLibrary.addNewFolder(folderPath);
-
-        entry
-            .createReader()
-            .readEntries(async (entries: FileSystemEntry[]): Promise<void> =>
-            {
-                for (let idx = 0; idx < entries.length; ++idx) {
-                    await execute(entries[idx], folderPath);
-                }
-            });
-
-        return ;
-    }
-
-    // ファイルなら読み込む
-    if (entry instanceof FileSystemFileEntry) {
         return new Promise((resolve): void =>
         {
-            entry
-                .file((file: File): void =>
+            const paths: string[] = [];
+            if (path) {
+                paths.push(path);
+            }
+
+            // ディレクトリ名を追加
+            paths.push(entry.name);
+
+            const folderPath = paths.join("/");
+
+            // フォルダを作成
+            externalLibrary.addNewFolder(folderPath);
+
+            (entry as FileSystemDirectoryEntry)
+                .createReader()
+                .readEntries(async (entries: FileSystemEntry[]): Promise<void> =>
                 {
-                    externalLibrary
-                        .importFile(file, path)
-                        .then(resolve);
+                    for (let idx = 0; idx < entries.length; ++idx) {
+                        await execute(entries[idx], folderPath);
+                    }
+
+                    resolve();
                 });
         });
     }
+
+    // ファイルなら読み込む
+    return new Promise((resolve): void =>
+    {
+        (entry as FileSystemFileEntry)
+            .file((file: File): void =>
+            {
+                externalLibrary
+                    .importFile(file, path, false)
+                    .then(resolve);
+            });
+    });
 };

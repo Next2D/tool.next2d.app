@@ -14,6 +14,7 @@ import { execute as workSpaceInitializeUseCase } from "@/core/application/WorkSp
 import { execute as workSpaceRemoveUseCase } from "@/core/application/WorkSpace/usecase/WorkSpaceRemoveUseCase";
 import { execute as workSpaceLoadLibraryService } from "@/core/application/WorkSpace/service/WorkSpaceLoadLibraryService";
 import { execute as workSpaceCreatePathMapService } from "@/core/application/WorkSpace/service/WorkSpaceCreatePathMapService";
+import { execute as externalWorkSpaceRegisterInstanceService } from "@/external/core/application/ExternalWorkSpace/service/ExternalWorkSpaceRegisterInstanceService";
 import { $VERSION } from "@/config/Config";
 import { $CONTROLLER_DEFAULT_WIDTH_SIZE } from "@/config/ControllerConfig";
 import { $clamp } from "@/global/GlobalUtil";
@@ -106,8 +107,7 @@ export class WorkSpace
         });
 
         // root情報をセット
-        this._$libraries.set(0, this._$root);
-        this._$pathMap.set("main", 0);
+        externalWorkSpaceRegisterInstanceService(this, this._$root);
 
         /**
          * @type {MovieClip}

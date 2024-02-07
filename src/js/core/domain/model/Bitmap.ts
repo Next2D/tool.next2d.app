@@ -1,7 +1,8 @@
-import type { BitmapObjectImpl } from "@/interface/BitmapObjectImpl";
+import type { BitmapSaveObjectImpl } from "@/interface/BitmapSaveObjectImpl";
 import type { ObjectImpl } from "@/interface/ObjectImpl";
-import type { ImageTypeImpl } from "@/interface/ImageTypeImpl";
 import { Instance } from "./Instance";
+import { execute as bitmapBufferToBinaryService } from "@/core/application/Bitmap/service/BitmapBufferToBinaryService";
+import { execute as bitmapBinaryToBufferService } from "@/core/application/Bitmap/service/BitmapBinaryToBufferService";
 
 /**
  * @description 画像管理クラス
@@ -13,7 +14,7 @@ import { Instance } from "./Instance";
  */
 export class Bitmap extends Instance
 {
-    private _$imageType: ImageTypeImpl;
+    private _$imageType: string;
     private _$binary: string;
     private _$width: number;
     private _$height: number;
@@ -24,7 +25,7 @@ export class Bitmap extends Instance
      * @constructor
      * @public
      */
-    constructor (object: ObjectImpl<BitmapObjectImpl>)
+    constructor (object: ObjectImpl<BitmapSaveObjectImpl>)
     {
         super(object);
 
@@ -43,6 +44,15 @@ export class Bitmap extends Instance
         if (object.height) {
             this._$height = object.height;
         }
+        if (object.buffer) {
+            if (typeof object.buffer === "string") {
+                this._$binary = object.buffer;
+                // バイナリをbufferに変換
+                this._$buffer = bitmapBinaryToBufferService(object.buffer);
+            } else {
+                this._$buffer = object.buffer;
+            }
+        }
     }
 
     /**
@@ -52,11 +62,11 @@ export class Bitmap extends Instance
      * @member {string}
      * @public
      */
-    get imageType (): ImageTypeImpl
+    get imageType (): string
     {
         return this._$imageType;
     }
-    set imageType (image_type: ImageTypeImpl)
+    set imageType (image_type: string)
     {
         this._$imageType = image_type;
     }
@@ -94,6 +104,22 @@ export class Bitmap extends Instance
     }
 
     /**
+     * @description 画像の色情報の配列をUint8Arrayで返却
+     *              Returns an array of image color information as Uint8Array
+     *
+     * @member {Uint8Array | null}
+     * @public
+     */
+    get buffer (): Uint8Array | null
+    {
+        return this._$buffer;
+    }
+    set buffer (buffer: Uint8Array)
+    {
+        this._$buffer = buffer;
+    }
+
+    /**
      * @description クラス内の変数をObjectにして返す
      *              Return variables in a class as Objects
      *
@@ -101,7 +127,7 @@ export class Bitmap extends Instance
      * @method
      * @public
      */
-    toObject (): BitmapObjectImpl
+    toObject (): BitmapSaveObjectImpl
     {
         // バイナリがなければ生成
         if (!this._$binary) {
@@ -112,11 +138,8 @@ export class Bitmap extends Instance
                 );
             }
 
-            // bufferを複製してzlib圧縮
-            this._$binary = "";
-            for (let idx = 0; idx < this._$buffer.length; idx += 4096) {
-                this._$binary += String.fromCharCode(...this._$buffer.slice(idx, idx + 4096));
-            }
+            // Uint8Arrayをバイナリに変換
+            this._$binary = bitmapBufferToBinaryService(this._$buffer);
         }
 
         return {

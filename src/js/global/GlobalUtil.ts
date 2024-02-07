@@ -151,3 +151,47 @@ export const $setScreenOffsetTop = (value: number): void =>
 {
     $offsetTop = value;
 };
+
+/**
+ * @description 利用したCanvas Elementをプールする配列
+ *              Array to pool the Canvas Elements used
+ *
+ * @type {HTMLCanvasElement}
+ * @private
+ */
+const $canvasPool: HTMLCanvasElement[] = [];
+
+/**
+ * @description Canvas Elementを返却
+ *              Return Canvas Element
+ *
+ * @return {HTMLCanvasElement}
+ * @method
+ * @public
+ */
+export const $getCanvas = (): HTMLCanvasElement =>
+{
+    return $canvasPool.length
+        ? $canvasPool.shift() as HTMLCanvasElement
+        : document.createElement("canvas");
+};
+
+/**
+ * @description 利用し終わったcanvas elementを配列に格納
+ *              Store used canvas elements in an array
+ *
+ * @param  {HTMLCanvasElement} canvas
+ * @return {void}
+ * @method
+ * @public
+ */
+export const $poolCanvas = (canvas: HTMLCanvasElement): void =>
+{
+    // canvas reset
+    canvas.width = canvas.height = 1;
+
+    // pool
+    canvas.setAttribute("class", "");
+    canvas.setAttribute("style", "");
+    $canvasPool.push(canvas);
+};
