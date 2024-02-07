@@ -1,5 +1,5 @@
 import { $useKeyboard } from "@/shortcut/ShortcutUtil";
-import { execute as libraryAreaActiceInstanceSymbolService } from "../service/LibraryAreaActiceInstanceSymbolService";
+import { execute as libraryAreaActiceInstanceTextContentService } from "../service/LibraryAreaActiceInstanceTextContentService";
 
 /**
  * @description ダブルタップ用の待機フラグ
@@ -70,6 +70,6 @@ export const execute = (event: PointerEvent): void =>
         event.preventDefault();
 
         // インスタンス名を編集モードへ
-        libraryAreaActiceInstanceSymbolService(element);
+        libraryAreaActiceInstanceTextContentService(element);
     }
 };

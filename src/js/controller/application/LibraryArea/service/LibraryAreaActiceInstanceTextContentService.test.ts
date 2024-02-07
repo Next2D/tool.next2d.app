@@ -1,6 +1,6 @@
-import { execute } from "./LibraryAreaActiceInstanceNameService";
+import { execute } from "./LibraryAreaActiceInstanceTextContentService";
 
-describe("LibraryAreaActiceInstanceNameServiceTest", () =>
+describe("LibraryAreaActiceInstanceTextContentServiceTest", () =>
 {
     test("execute test", () =>
     {

@@ -1,6 +1,6 @@
-import { execute } from "./LibraryAreaInacticeInstanceNameService";
+import { execute } from "./LibraryAreaInacticeInstanceTextContentService";
 
-describe("LibraryAreaInacticeInstanceNameServiceTest", () =>
+describe("LibraryAreaInacticeInstanceTextContentServiceTest", () =>
 {
     test("execute test", () =>
     {

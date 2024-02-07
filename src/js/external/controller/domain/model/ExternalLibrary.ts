@@ -1,16 +1,15 @@
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import type { ExternalInstanceImpl } from "@/interface/ExternalInstanceImpl";
 import type { InstanceTypeImpl } from "@/interface/InstanceTypeImpl";
-import { ExternalBitmap } from "@/external/core/domain/model/ExternalBitmap";
+import type { InstanceImpl } from "@/interface/InstanceImpl";
 import { execute as externalLibraryAddNewFolderUseCase } from "@/external/controller/application/ExternalLibrary/usecase/ExternalLibraryAddNewFolderUseCase";
 import { execute as libraryAreaAllClearElementService } from "@/controller/application/LibraryArea/service/LibraryAreaAllClearElementService";
 import { execute as libraryAreaActiveElementService } from "@/controller/application/LibraryArea/service/LibraryAreaActiveElementService";
-import { InstanceImpl } from "@/interface/InstanceImpl";
-import { ExternalFolder } from "@/external/core/domain/model/ExternalFolder";
 import { execute as externalLibrarySelectedOneService } from "@/external/controller/application/ExternalLibrary/service/ExternalLibrarySelectedOneService";
 import { execute as externalLibraryImportBitmapFileUseCase } from "@/external/controller/application/ExternalLibrary/usecase/ExternalLibraryImportBitmapFileUseCase";
 import { execute as libraryAreaReOrderingService } from "@/controller/application/LibraryArea/service/LibraryAreaReOrderingService";
 import { execute as libraryAreaReloadUseCase } from "@/controller/application/LibraryArea/usecase/LibraryAreaReloadUseCase";
+import { execute as externalLibraryCreateInstanceService } from "@/external/controller/application/ExternalLibrary/service/ExternalLibraryCreateInstanceService";
 
 /**
  * @description ライブラリの外部APIクラス
@@ -30,45 +29,6 @@ export class ExternalLibrary
     constructor (work_space: WorkSpace)
     {
         this._$workSpace = work_space;
-    }
-
-    /**
-     * @description 指定typeのアイテムを新規で作成して、指定のパスにライブラリに登録
-     *              パスが存在しない場合は、自動的にフォルダが作成されます
-     *              Create a new item of the specified type and register it in the library in the specified path
-     *              If the path does not exist, the folder will be created automatically
-     *
-     * @param  {string} type
-     * @param  {string} name
-     * @param  {string} folder_path
-     * @return {object}
-     * @method
-     * @public
-     */
-    addNewItem (
-        type: InstanceTypeImpl,
-        name: string,
-        folder_path: string = ""
-    ): ExternalInstanceImpl<any> {
-
-        // TODO
-        let folder: any;
-        if (folder_path) {
-            this.addNewFolder(folder_path);
-            folder = this.getItem(folder_path);
-            console.log(folder);
-        }
-
-        let instance: ExternalInstanceImpl<any>;
-        switch (type) {
-
-            case "bitmap":
-                instance = new ExternalBitmap(this._$workSpace, name);
-                break;
-
-        }
-
-        return instance;
     }
 
     /**
@@ -114,7 +74,7 @@ export class ExternalLibrary
                 break;
 
             default:
-                break;
+                return ;
 
         }
 
@@ -149,14 +109,8 @@ export class ExternalLibrary
             return null;
         }
 
-        switch (instance.type) {
-
-            case "folder":
-                return new ExternalFolder(this._$workSpace, instance);
-
-        }
-
-        return null;
+        // タイプ別のクラスを作成
+        return externalLibraryCreateInstanceService(this._$workSpace, instance);
     }
 
     /**

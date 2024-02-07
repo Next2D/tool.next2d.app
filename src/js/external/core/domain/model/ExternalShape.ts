@@ -1,13 +1,13 @@
 import { ExternalItem } from "./ExternalItem";
 
 /**
- * @description 画像アイテムのクラス
- *              Image Item Class
+ * @description ベクターアイテムのクラス
+ *              Vector Item Class
  *
  * @class
  * @public
  */
-export class ExternalBitmap extends ExternalItem
+export class ExternalShape extends ExternalItem
 {
     /**
      * @description ライブラリからの削除処理

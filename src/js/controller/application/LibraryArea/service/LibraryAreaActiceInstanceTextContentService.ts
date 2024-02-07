@@ -1,8 +1,8 @@
 import { $updateKeyLock } from "@/shortcut/ShortcutUtil";
 
 /**
- * @description インスタス名の編集モードにセット
- *              Set to edit mode for Instas name
+ * @description インスタスの名前もしくはシンボルを編集モードにセット
+ *              Instas name or symbol set to edit mode
  *
  * @param  {HTMLElement} element
  * @return {void}

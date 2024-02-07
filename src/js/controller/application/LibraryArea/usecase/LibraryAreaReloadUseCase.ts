@@ -5,9 +5,10 @@ import { execute as libraryAreaSelectedMouseDownService } from "./LibraryAreaSel
 import { execute as libraryAreaArrowIconMouseDownEventService } from "../service/LibraryAreaArrowIconMouseDownEventService";
 import { execute as libraryAreaFolderIconMouseDownEventService } from "../service/LibraryAreaFolderIconMouseDownEventService";
 import { execute as libraryAreaInstanceNameMouseDownEventUseCase } from "./LibraryAreaInstanceNameMouseDownEventUseCase";
-import { execute as libraryAreaInstanceNameKeyPressEventService } from "../service/LibraryAreaInstanceNameKeyPressEventService";
+import { execute as libraryAreaInstanceTextContentKeyPressEventService } from "../service/LibraryAreaInstanceTextContentKeyPressEventService";
 import { execute as libraryAreaInstanceNameFocusOutEventUseCase } from "./LibraryAreaInstanceNameFocusOutEventUseCase";
 import { execute as libraryAreaInstanceSymbolMouseDownEventUseCase } from "./LibraryAreaInstanceSymbolMouseDownEventUseCase";
+import { execute as libraryAreaInstanceSymbolFocusOutEventUseCase } from "./LibraryAreaInstanceSymbolFocusOutEventUseCase";
 import { EventType } from "@/tool/domain/event/EventType";
 import { libraryArea } from "@/controller/domain/model/LibraryArea";
 
@@ -89,7 +90,7 @@ export const execute = async (): Promise<void> =>
         );
 
         nameElement.addEventListener("keypress",
-            libraryAreaInstanceNameKeyPressEventService
+            libraryAreaInstanceTextContentKeyPressEventService
         );
 
         if (instance.type !== "folder") {
@@ -98,14 +99,13 @@ export const execute = async (): Promise<void> =>
                 libraryAreaInstanceSymbolMouseDownEventUseCase
             );
 
-            nameElement.addEventListener("focusout", () =>
-            {
-                //
-            });
-            nameElement.addEventListener("keypress", () =>
-            {
-                //
-            });
+            symbolElement.addEventListener("focusout",
+                libraryAreaInstanceSymbolFocusOutEventUseCase
+            );
+
+            symbolElement.addEventListener("keypress",
+                libraryAreaInstanceTextContentKeyPressEventService
+            );
         }
     }
 };

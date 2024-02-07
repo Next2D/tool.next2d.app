@@ -7,8 +7,8 @@ import { execute as detailModalCustomFadeInUseCase } from "@/menu/application/De
 import { $ERROR_DUPLICATE_NAME_TEXT } from "@/config/ErrorTextConfig";
 
 /**
- * @description インスタンスの名前エリアのダブルタップ処理関数
- *              Double-tap processing function for instance name area
+ * @description インスタンスのシンボルエリアのダブルタップ処理関数
+ *              Double-tap processing function for the symbol area of an instance
  *
  * @param  {FocusEvent} event
  * @return {void}
@@ -32,23 +32,17 @@ export const execute = (event: FocusEvent): void =>
         return ;
     }
 
-    let name = element.textContent as string;
-    if (!name) {
-        element.textContent = name = instance.name;
-    }
-
     // 変更がなければ終了
-    if (name === instance.name) {
+    const symbol = element.textContent as string;
+    if (symbol === instance.symbol) {
         return ;
     }
 
     // 重複していればエラーを表示
-    const before  = instance.name;
-    instance.name = name;
-    if (workSpace.pathMap.has(instance.getPath(workSpace))) {
+    if (workSpace.pathMap.has(symbol)) {
 
         // 元の名前に戻す
-        element.textContent = instance.name = before;
+        element.textContent = instance.symbol;
 
         // エラーを表示
         detailModalCustomFadeInUseCase(
@@ -60,11 +54,7 @@ export const execute = (event: FocusEvent): void =>
         return ;
     }
 
-    // 変更前に戻す
-    // fixed logic
-    instance.name = before;
-
     // 外部APIを起動
     const externalItem = new ExternalItem(workSpace, instance);
-    externalItem.name = name;
+    externalItem.symbol = symbol;
 };

@@ -12,8 +12,6 @@ import { execute as externalMovieClipUpdateScriptUseCase } from "@/external/core
  */
 export class ExternalMovieClip extends ExternalItem
 {
-    private readonly _$movieClip: MovieClip;
-    private readonly _$workSpace: WorkSpace;
     private readonly _$externalTimeline: ExternalTimeline;
 
     /**
@@ -25,38 +23,13 @@ export class ExternalMovieClip extends ExternalItem
         movie_clip: MovieClip
     ) {
 
-        super(movie_clip);
-
-        /**
-         * @type {WorkSpace}
-         * @private
-         */
-        this._$workSpace = work_space;
-
-        /**
-         * @type {MovieClip}
-         * @private
-         */
-        this._$movieClip = movie_clip;
+        super(work_space, movie_clip);
 
         /**
          * @type {ExternalTimeline}
          * @private
          */
         this._$externalTimeline = new ExternalTimeline(work_space, movie_clip);
-    }
-
-    /**
-     * @description 指定したMovieClipの識別ID
-     *              Identification ID of the specified MovieClip
-     *
-     * @return {number}
-     * @readonly
-     * @public
-     */
-    get id (): number
-    {
-        return this._$movieClip.id;
     }
 
     /**
@@ -69,7 +42,7 @@ export class ExternalMovieClip extends ExternalItem
      */
     get active (): boolean
     {
-        return this._$movieClip.active;
+        return this._$instance.active;
     }
 
     /**
@@ -95,11 +68,11 @@ export class ExternalMovieClip extends ExternalItem
      */
     get currentFrame (): number
     {
-        return this._$movieClip.currentFrame;
+        return this._$instance.currentFrame;
     }
     set currentFrame (frame: number)
     {
-        this._$movieClip.currentFrame = frame;
+        this._$instance.currentFrame = frame;
     }
 
     /**
@@ -112,13 +85,13 @@ export class ExternalMovieClip extends ExternalItem
      */
     get layers (): ExternalLayer[]
     {
-        const layers = this._$movieClip.layers;
+        const layers = this._$instance.layers;
 
         const externalLayers = [];
         for (let idx = 0; idx < layers.length; ++idx) {
             externalLayers.push(new ExternalLayer(
                 this._$workSpace,
-                this._$movieClip,
+                this._$instance,
                 layers[idx]
             ));
         }
@@ -137,7 +110,7 @@ export class ExternalMovieClip extends ExternalItem
      */
     getAction (frame: number): string
     {
-        return this._$movieClip.getAction(frame);
+        return this._$instance.getAction(frame);
     }
 
     /**
@@ -153,7 +126,7 @@ export class ExternalMovieClip extends ExternalItem
     setAction (frame: number, script: string = ""): void
     {
         externalMovieClipUpdateScriptUseCase(
-            this._$workSpace, this._$movieClip, frame, script
+            this._$workSpace, this._$instance, frame, script
         );
     }
 }

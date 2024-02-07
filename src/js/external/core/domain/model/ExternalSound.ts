@@ -7,7 +7,7 @@ import { ExternalItem } from "./ExternalItem";
  * @class
  * @public
  */
-export class ExternalBitmap extends ExternalItem
+export class ExternalSound extends ExternalItem
 {
     /**
      * @description ライブラリからの削除処理
