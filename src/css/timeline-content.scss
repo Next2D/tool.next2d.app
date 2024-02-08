@@ -136,6 +136,7 @@
             align-items   : center;
             width         : 130px;
             height        : calc(var(--timeline-frame-height) - 8px);
+            line-height   : calc(var(--timeline-frame-height) - 8px);
             margin        : 3px;
             outline       : none;
             overflow      : hidden;
