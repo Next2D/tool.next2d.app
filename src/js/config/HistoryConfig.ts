@@ -150,3 +150,12 @@ export const $LIBRARY_FOLDER_STATE_COMMAND: number = 13;
  * @constant
  */
 export const $LIBRARY_UPDATE_INSTANCE_NAME_COMMAND: number = 14;
+
+/**
+ * @description インスタンスのシンボル名更新の識別コマンド名
+ *              Identification command name of instance symbol name update
+ *
+ * @type {number}
+ * @constant
+ */
+export const $LIBRARY_UPDATE_INSTANCE_SYMBOL_COMMAND: number = 15;

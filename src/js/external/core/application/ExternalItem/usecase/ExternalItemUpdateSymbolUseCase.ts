@@ -2,7 +2,7 @@ import type { Instance } from "@/core/domain/model/Instance";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import type { InstanceImpl } from "@/interface/InstanceImpl";
-import { execute as instanceUpdateNameHistoryUseCase } from "@/history/application/core/Instance/usecase/InstanceUpdateNameHistoryUseCase";
+import { execute as instanceUpdateSymbolHistoryUseCase } from "@/history/application/core/Instance/usecase/InstanceUpdateSymbolHistoryUseCase";
 import { execute as libraryAreaUpdateSymbolElementService } from "@/controller/application/LibraryArea/service/LibraryAreaUpdateSymbolElementService";
 
 /**
@@ -33,9 +33,9 @@ export const execute = (
     }
 
     // マップを更新
-    work_space.pathMap.delete(beforeName);
+    work_space.symbolMap.delete(beforeName);
     if (symbol) {
-        work_space.pathMap.set(symbol, instance.id);
+        work_space.symbolMap.set(symbol, instance.id);
     }
 
     // シンボル名を更新
@@ -48,7 +48,7 @@ export const execute = (
     }
 
     // 履歴に残す
-    instanceUpdateNameHistoryUseCase(
+    instanceUpdateSymbolHistoryUseCase(
         work_space,
         movie_clip,
         instance,

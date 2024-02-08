@@ -14,6 +14,7 @@ import { execute as workSpaceInitializeUseCase } from "@/core/application/WorkSp
 import { execute as workSpaceRemoveUseCase } from "@/core/application/WorkSpace/usecase/WorkSpaceRemoveUseCase";
 import { execute as workSpaceLoadLibraryService } from "@/core/application/WorkSpace/service/WorkSpaceLoadLibraryService";
 import { execute as workSpaceCreatePathMapService } from "@/core/application/WorkSpace/service/WorkSpaceCreatePathMapService";
+import { execute as workSpaceCreateSymbolMapService } from "@/core/application/WorkSpace/service/WorkSpaceCreateSymbolMapService";
 import { execute as externalWorkSpaceRegisterInstanceService } from "@/external/core/application/ExternalWorkSpace/service/ExternalWorkSpaceRegisterInstanceService";
 import { $VERSION } from "@/config/Config";
 import { $CONTROLLER_DEFAULT_WIDTH_SIZE } from "@/config/ControllerConfig";
@@ -551,6 +552,9 @@ export class WorkSpace
 
         // 名前とIDのマッピングを生成
         workSpaceCreatePathMapService(this);
+
+        // シンボル名とIDのマッピングを生成
+        workSpaceCreateSymbolMapService(this);
     }
 
     /**

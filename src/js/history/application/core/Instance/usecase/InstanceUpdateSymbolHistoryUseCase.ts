@@ -3,11 +3,11 @@ import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { InstanceImpl } from "@/interface/InstanceImpl";
 import type { Instance } from "@/core/domain/model/Instance";
 import { $useSocket } from "@/share/ShareUtil";
-import { $LIBRARY_UPDATE_INSTANCE_NAME_COMMAND } from "@/config/HistoryConfig";
+import { $LIBRARY_UPDATE_INSTANCE_SYMBOL_COMMAND } from "@/config/HistoryConfig";
 import { execute as historyAddElementUseCase } from "@/controller/application/HistoryArea/usecase/HistoryAddElementUseCase";
 import { execute as historyGetTextService } from "@/controller/application/HistoryArea/service/HistoryGetTextService";
 import { execute as historyRemoveElementService } from "@/controller/application/HistoryArea/service/HistoryRemoveElementService";
-import { execute as instanceUpdateNameCreateHistoryObjectService } from "../service/InstanceUpdateNameCreateHistoryObjectService";
+import { execute as instanceUpdateSymbolCreateHistoryObjectService } from "../service/InstanceUpdateSymbolCreateHistoryObjectService";
 import { execute as shareSendService } from "@/share/service/ShareSendService";
 
 /**
@@ -40,12 +40,12 @@ export const execute = (
     if (work_space.active && movie_clip.actions) {
         historyAddElementUseCase(
             movie_clip.historyIndex,
-            historyGetTextService($LIBRARY_UPDATE_INSTANCE_NAME_COMMAND)
+            historyGetTextService($LIBRARY_UPDATE_INSTANCE_SYMBOL_COMMAND)
         );
     }
 
-    const historyObject = instanceUpdateNameCreateHistoryObjectService(
-        work_space.id, movie_clip.id, instance.id, before_name, instance.name
+    const historyObject = instanceUpdateSymbolCreateHistoryObjectService(
+        work_space.id, movie_clip.id, instance.id, before_name, instance.symbol
     );
 
     // 追加したLayer Objectを履歴に登録

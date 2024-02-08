@@ -1,12 +1,12 @@
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
-import type { Folder } from "@/core/domain/model/Folder.ts";
-import type { MovieClip } from "@/core/domain/model/MovieClip.ts";
+import type { Folder } from "@/core/domain/model/Folder";
+import type { MovieClip } from "@/core/domain/model/MovieClip";
 import { $useSocket } from "@/share/ShareUtil";
 import { $LIBRARY_ADD_NEW_FOLDER_COMMAND } from "@/config/HistoryConfig";
 import { execute as historyAddElementUseCase } from "@/controller/application/HistoryArea/usecase/HistoryAddElementUseCase";
 import { execute as historyGetTextService } from "@/controller/application/HistoryArea/service/HistoryGetTextService";
 import { execute as historyRemoveElementService } from "@/controller/application/HistoryArea/service/HistoryRemoveElementService";
-import { execute as libraryAreaAddNewFolderCreateHistoryObjectService } from "../service/LibraryAreaAddNewFolderCreateHistoryObjectService.ts";
+import { execute as libraryAreaAddNewFolderCreateHistoryObjectService } from "../service/LibraryAreaAddNewFolderCreateHistoryObjectService";
 import { execute as shareSendService } from "@/share/service/ShareSendService";
 
 /**

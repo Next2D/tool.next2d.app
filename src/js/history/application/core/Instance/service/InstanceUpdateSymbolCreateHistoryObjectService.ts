@@ -1,9 +1,9 @@
 import type { HistoryObjectImpl } from "@/interface/HistoryObjectImpl";
-import { $LIBRARY_UPDATE_INSTANCE_NAME_COMMAND } from "@/config/HistoryConfig";
+import { $LIBRARY_UPDATE_INSTANCE_SYMBOL_COMMAND } from "@/config/HistoryConfig";
 
 /**
- * @description インスタンス名更新の履歴用オブジェクトを作成
- *              Create object for history of instance name updates
+ * @description インスタンスのシンボル名更新の履歴用オブジェクトを作成
+ *              Create object for history of instance symbol name updates
  *
  * @param  {number} work_space_id
  * @param  {number} movie_clip_id
@@ -23,7 +23,7 @@ export const execute = (
 ): HistoryObjectImpl => {
 
     return {
-        "command": $LIBRARY_UPDATE_INSTANCE_NAME_COMMAND,
+        "command": $LIBRARY_UPDATE_INSTANCE_SYMBOL_COMMAND,
         "args": [
             work_space_id,
             movie_clip_id,

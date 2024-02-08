@@ -8,6 +8,7 @@ import { execute as scriptEditorUpdateHistoryRedoUseCase } from "@/history/appli
 import { execute as scriptEditorDeleteHistoryRedoUseCase } from "@/history/application/timeline/TimelineTool/ScriptEditorDelete/usecase/ScriptEditorDeleteHistoryRedoUseCase";
 import { execute as libraryAreaAddNewFolderHistoryRedoUseCase } from "@/history/application/controller/LibraryArea/Folder/usecase/LibraryAreaAddNewFolderHistoryRedoUseCase";
 import { execute as instanceUpdateNameHistoryRedoUseCase } from "@/history/application/core/Instance/usecase/InstanceUpdateNameHistoryRedoUseCase";
+import { execute as instanceUpdateSymbolHistoryRedoUseCase } from "@/history/application/core/Instance/usecase/InstanceUpdateSymbolHistoryRedoUseCase";
 import {
     $SCREEN_TAB_NAME_UPDATE_COMMAND,
     $TIMELINE_TOOL_LAYER_ADD_COMMAND,
@@ -17,7 +18,8 @@ import {
     $TIMIELINE_TOOL_SCRIPT_UPDATE_COMMAND,
     $TIMIELINE_TOOL_SCRIPT_DELETE_COMMAND,
     $LIBRARY_ADD_NEW_FOLDER_COMMAND,
-    $LIBRARY_UPDATE_INSTANCE_NAME_COMMAND
+    $LIBRARY_UPDATE_INSTANCE_NAME_COMMAND,
+    $LIBRARY_UPDATE_INSTANCE_SYMBOL_COMMAND
 } from "@/config/HistoryConfig";
 
 /**
@@ -113,6 +115,15 @@ export const execute = (history_object: HistoryObjectImpl): void =>
         // インスタンス名を変更
         case $LIBRARY_UPDATE_INSTANCE_NAME_COMMAND:
             instanceUpdateNameHistoryRedoUseCase(
+                args[0] as number, // workSpaceId
+                args[2] as number, // InstanceId
+                args[4] as string  // after name
+            );
+            break;
+
+        // インスタンスのシンボル名を変更
+        case $LIBRARY_UPDATE_INSTANCE_SYMBOL_COMMAND:
+            instanceUpdateSymbolHistoryRedoUseCase(
                 args[0] as number, // workSpaceId
                 args[2] as number, // InstanceId
                 args[4] as string  // after name
