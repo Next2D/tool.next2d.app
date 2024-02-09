@@ -17,14 +17,14 @@ const worker: Worker = new ZlibDeflateWorker();
  * @method
  * @public
  */
-export const execute = (): Promise<string> =>
+export const execute = (): Promise<Uint8Array | null> =>
 {
     return new Promise((reslove) =>
     {
         // 全てのWorkSpcaceからobjectを取得
         const workSpaces: WorkSpace[] = $getAllWorkSpace();
         if (!workSpaces.length) {
-            return reslove("");
+            return reslove(null);
         }
 
         const objects = [];
@@ -45,14 +45,7 @@ export const execute = (): Promise<string> =>
         // 圧縮が完了したらバイナリデータとして返却
         worker.onmessage = (event: MessageEvent): void =>
         {
-            const buffer: Uint8Array = event.data as NonNullable<Uint8Array>;
-
-            let binary = "";
-            for (let idx = 0; idx < buffer.length; idx += 4096) {
-                binary += String.fromCharCode(...buffer.slice(idx, idx + 4096));
-            }
-
-            reslove(binary);
+            reslove(event.data);
         };
     });
 };

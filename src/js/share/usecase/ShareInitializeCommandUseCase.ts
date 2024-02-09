@@ -19,8 +19,17 @@ export const execute = (): void =>
     }
 
     workSpaceCreateSaveDataService()
-        .then((binary): void =>
+        .then((buffer: Uint8Array | null): void =>
         {
+            if (!buffer) {
+                return ;
+            }
+
+            let binary = "";
+            for (let idx = 0; idx < buffer.length; idx += 4096) {
+                binary += String.fromCharCode(...buffer.slice(idx, idx + 4096));
+            }
+
             const initializeObject: ShareInitializeSendObjectImpl = {
                 "workSpaceId": WorkSpace.workSpaceId,
                 "data": binary,

@@ -34,10 +34,15 @@ export const execute = (): Promise<void> =>
 
         // バイナリを生成
         workSpaceCreateSaveDataService()
-            .then((binary: string): void =>
+            .then((buffer: Uint8Array | null): void =>
             {
-                if (!binary) {
+                if (!buffer) {
                     return reslove();
+                }
+
+                let binary = "";
+                for (let idx = 0; idx < buffer.length; idx += 4096) {
+                    binary += String.fromCharCode(...buffer.slice(idx, idx + 4096));
                 }
 
                 // 進行状況のテキストを更新
