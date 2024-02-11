@@ -24,5 +24,8 @@ export const execute = (): void =>
     }
 
     // 招待されてれば、元データをリクエスト
-    webSocket.send(JSON.stringify({ "command": "initialize" }));
+    webSocket.send(JSON.stringify({
+        "roomId": location.hash.replace("#", ""),
+        "command": "initialize"
+    }));
 };

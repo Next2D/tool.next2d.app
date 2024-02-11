@@ -27,7 +27,7 @@ export const execute = (event: MessageEvent): void =>
                 return ;
             }
 
-            shareInitializeCommandUseCase();
+            shareInitializeCommandUseCase(message.connectionId);
             break;
 
         case "load":

@@ -20,6 +20,7 @@ export const execute = (history_object: HistoryObjectImpl): void =>
 
     // 共有しているメンバー全員に送信
     const sendObject: ShareReceiveMessageImpl = {
+        "roomId": location.hash.replace("#", ""),
         "historyCommand": history_object.command,
         "data": history_object.args,
         "command": "receive"
