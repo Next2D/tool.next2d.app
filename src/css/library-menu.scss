@@ -30,6 +30,12 @@
             border-bottom : 1px solid #1c1c1c;
             margin        : 5px 0 5px 0;
         }
+
+        .disabled
+        {
+            opacity        : 0.5;
+            pointer-events : none;
+        }
     }
 
     .library-menu-title
