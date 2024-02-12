@@ -1,10 +1,11 @@
-import type { Instance } from "@/core/domain/model/Instance";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import type { InstanceImpl } from "@/interface/InstanceImpl";
 import { execute as instanceUpdateNameHistoryUseCase } from "@/history/application/core/Instance/usecase/InstanceUpdateNameHistoryUseCase";
 import { execute as libraryAreaReOrderingService } from "@/controller/application/LibraryArea/service/LibraryAreaReOrderingService";
 import { execute as libraryAreaReloadUseCase } from "@/controller/application/LibraryArea/usecase/LibraryAreaReloadUseCase";
+import { execute as timelineToolUpdateSceneNameService } from "@/timeline/application/TimelineTool/application/SceneName/service/TimelineToolUpdateSceneNameService";
+import { execute as timelineToolUpdateSceneListNameService } from "@/timeline/application/TimelineTool/application/SceneName/service/TimelineToolUpdateSceneListNameService";
 
 /**
  * @description インスタス名の変更実行処理関数
@@ -22,7 +23,7 @@ import { execute as libraryAreaReloadUseCase } from "@/controller/application/Li
 export const execute = (
     work_space: WorkSpace,
     movie_clip: MovieClip,
-    instance: InstanceImpl<Instance>,
+    instance: InstanceImpl<any>,
     name: string,
     receiver: boolean = false
 ): void => {
@@ -48,6 +49,17 @@ export const execute = (
     if (work_space.active) {
         // ライブラリの表示を際描画
         libraryAreaReloadUseCase();
+
+        // MovieClipの場合はタイムラインの表示情報を更新
+        if (instance.type === "container") {
+            // スクリーン一覧にあれば名前を更新
+            timelineToolUpdateSceneListNameService(instance.id, name);
+
+            // アクティブなら表示を更新
+            if (instance.active) {
+                timelineToolUpdateSceneNameService(name);
+            }
+        }
     }
 
     // 履歴に残す

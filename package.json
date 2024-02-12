@@ -12,20 +12,20 @@
   },
   "devDependencies": {
     "@types/ace": "^0.0.52",
-    "@types/node": "^20.11.16",
+    "@types/node": "^20.11.17",
     "@types/qrcode": "^1.5.5",
-    "@typescript-eslint/eslint-plugin": "^6.21.0",
-    "@typescript-eslint/parser": "^6.21.0",
+    "@typescript-eslint/eslint-plugin": "^7.0.1",
+    "@typescript-eslint/parser": "^7.0.1",
     "eslint": "^8.56.0",
     "jsdom": "^24.0.0",
     "sass": "^1.70.0",
     "typescript": "^5.3.3",
-    "vite": "^5.0.12",
+    "vite": "^5.1.1",
     "vitest": "^1.2.2"
   },
   "dependencies": {
     "@next2d/player": "^1.18.11",
-    "fflate": "^0.8.1",
+    "fflate": "^0.8.2",
     "jszip": "^3.10.1",
     "qrcode": "^1.5.3",
     "terser": "^5.27.0"

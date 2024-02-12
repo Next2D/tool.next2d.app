@@ -15,8 +15,6 @@ const SOCKET_URL = import.meta.env.VITE_SOCKET_URL;
  */
 export const execute = (room_id: string): void =>
 {
-    console.log(import.meta.env);
-
     const webSocket: WebSocket = new WebSocket(
         `${SOCKET_URL}?roomId=${room_id}`
     );
