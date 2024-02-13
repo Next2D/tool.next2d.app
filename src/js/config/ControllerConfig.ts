@@ -44,6 +44,24 @@ export const $CONTROLLER_LIBRARY_MENU_COPY_ID: string = "library-menu-copy";
 export const $CONTROLLER_LIBRARY_MENU_EXPORT_ID: string = "library-menu-export";
 
 /**
+ * @description ライブラリメニューのMovieClip編集ボタンのElement ID
+ *              Element ID for the Edit MovieClip button in the Library menu
+ *
+ * @type {string}
+ * @public
+ */
+export const $CONTROLLER_LIBRARY_CHANGE_SCENE_ID: string = "library-menu-change-scene";
+
+/**
+ * @description ライブラリメニューのphotopea起動ボタンのElement ID
+ *              Element ID of the photopea start button in the library menu
+ *
+ * @type {string}
+ * @public
+ */
+export const $CONTROLLER_LIBRARY_PHOTOPEA_ID: string = "library-open-photopea";
+
+/**
  * @description コントローラー幅の初期値
  *              Initial value of controller width
  *

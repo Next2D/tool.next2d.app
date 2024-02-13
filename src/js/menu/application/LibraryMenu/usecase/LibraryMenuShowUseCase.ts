@@ -6,10 +6,16 @@ import { execute as libraryMenuCopyInactiveService } from "@/menu/application/Li
 import { execute as libraryMenuCopyActiveService } from "@/menu/application/LibraryMenu/service/LibraryMenuCopyActiveService";
 import { execute as libraryMenuExportActiveService } from "@/menu/application/LibraryMenu/service/LibraryMenuExportActiveService";
 import { execute as libraryMenuExportInactiveService } from "@/menu/application/LibraryMenu/service/LibraryMenuExportInactiveService";
+import { execute as libraryMenuEditMovieClipActiveService } from "@/menu/application/LibraryMenu/service/LibraryMenuEditMovieClipActiveService";
+import { execute as libraryMenuEditMovieClipInactiveService } from "@/menu/application/LibraryMenu/service/LibraryMenuEditMovieClipInactiveService";
+import { execute as libraryMenuPhotopeaActiveService } from "@/menu/application/LibraryMenu/service/LibraryMenuPhotopeaActiveService";
+import { execute as libraryMenuPhotopeaInactiveService } from "@/menu/application/LibraryMenu/service/LibraryMenuPhotopeaInactiveService";
 import {
     $allHideMenu,
     $getMenu
 } from "../../MenuUtil";
+import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
+import { InstanceImpl } from "@/interface/InstanceImpl";
 
 /**
  * @description ライブラリ一覧エリアのメニューを表示
@@ -67,8 +73,39 @@ export const execute = (event: MouseEvent): void =>
 
         // 選択中のアイテムが1個の場合
         if (libraryArea.selectedIds.length === 1) {
+
             // 書き出しボタンをアクティブに更新
             libraryMenuExportActiveService();
+
+            const instance: InstanceImpl<any>  = $getCurrentWorkSpace()
+                .getLibrary(libraryArea.selectedIds[0]);
+
+            if (instance) {
+
+                switch (instance.type) {
+
+                    case "container":
+                        // MovieClipの編集ボタンをアクティブに更新
+                        libraryMenuEditMovieClipActiveService();
+                        break;
+
+                    case "bitmap":
+                        // photopea起動をアクティブに更新
+                        libraryMenuPhotopeaActiveService();
+                        break;
+
+                    default:
+                        // MovieClipの編集ボタンを非アクティブに更新
+                        libraryMenuEditMovieClipInactiveService();
+
+                        // photopea起動を非アクティブに更新
+                        libraryMenuPhotopeaInactiveService();
+                        break;
+
+                }
+
+            }
+
         } else {
             // 書き出しボタンを非アクティブに更新
             libraryMenuExportInactiveService();
@@ -84,6 +121,12 @@ export const execute = (event: MouseEvent): void =>
 
         // 書き出しボタンを非アクティブに更新
         libraryMenuExportInactiveService();
+
+        // MovieClipの編集ボタンを非アクティブに更新
+        libraryMenuEditMovieClipInactiveService();
+
+        // photopea起動を非アクティブに更新
+        libraryMenuPhotopeaInactiveService();
     }
 
     menu.show();
