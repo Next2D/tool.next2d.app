@@ -14,4 +14,8 @@ export const execute = (work_space: WorkSpace, instance: InstanceImpl<any>): voi
 {
     work_space.libraries.set(instance.id, instance);
     work_space.pathMap.set(instance.getPath(work_space), instance.id);
+
+    if (instance.symbol) {
+        work_space.symbolMap.set(instance.symbol, instance.id);
+    }
 };

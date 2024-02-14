@@ -32,15 +32,14 @@ export const execute = (
             .arrayBuffer()
             .then((buffer: ArrayBuffer) =>
             {
-                const blob = new Blob([buffer], {
-                    "type": file.type
-                });
-
                 const image = new Image();
-                image.src = URL.createObjectURL(blob);
+                image.src = URL.createObjectURL(new Blob([buffer], {
+                    "type": file.type
+                }));
+
                 image
                     .decode()
-                    .then(() =>
+                    .then((): void =>
                     {
                         const width   = image.width;
                         const height  = image.height;
@@ -77,13 +76,20 @@ export const execute = (
                             "folderId": folderId,
                             "imageType": file.type,
                             "width": width,
-                            "height": height
+                            "height": height,
+                            "buffer": buffer
                         });
-
-                        bitmap.buffer = buffer;
 
                         // 内部情報に登録
                         externalWorkSpaceRegisterInstanceService(work_space, bitmap);
+
+                        // 作業履歴に残す
+                        // fixed logic
+                        libraryAreaAddNewFolderHistoryUseCase(
+                            work_space,
+                            work_space.scene,
+                            bitmap
+                        );
 
                         resolve();
                     });

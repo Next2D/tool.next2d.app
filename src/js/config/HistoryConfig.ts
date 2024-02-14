@@ -159,3 +159,12 @@ export const $LIBRARY_UPDATE_INSTANCE_NAME_COMMAND: number = 14;
  * @constant
  */
 export const $LIBRARY_UPDATE_INSTANCE_SYMBOL_COMMAND: number = 15;
+
+/**
+ * @description 新規bitmap追加操作の識別コマンド名
+ *              Identification command name for new bitmap add operation
+ *
+ * @type {number}
+ * @constant
+ */
+export const $LIBRARY_ADD_NEW_BITMAP_COMMAND: number = 16;

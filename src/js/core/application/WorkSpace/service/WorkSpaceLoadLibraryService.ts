@@ -55,6 +55,7 @@ export const execute = (
                     new Bitmap(libraryObject as BitmapSaveObjectImpl)
                 );
                 break;
+
             default:
                 throw new Error("This is an undefined class.");
 

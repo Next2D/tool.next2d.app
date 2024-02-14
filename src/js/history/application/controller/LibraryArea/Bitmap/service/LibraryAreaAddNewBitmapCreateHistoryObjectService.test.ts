@@ -1,0 +1,18 @@
+import { execute } from "./LibraryAreaAddNewBitmapCreateHistoryObjectService";
+import { $LIBRARY_ADD_NEW_FOLDER_COMMAND } from "../../../../../../config/HistoryConfig";
+
+describe("LibraryAreaAddNewFolderCreateHistoryObjectServiceTest", () =>
+{
+    test("execute test", () =>
+    {
+        const object = execute(1, 2, 0, "Folder", 10);
+        expect(object.command).toBe($LIBRARY_ADD_NEW_FOLDER_COMMAND);
+
+        // 配列の順番が崩れてもいいようにテストケースを残す
+        expect(object.args[0]).toBe(1);
+        expect(object.args[1]).toBe(2);
+        expect(object.args[2]).toBe(0);
+        expect(object.args[3]).toBe("Folder");
+        expect(object.args[4]).toBe(10);
+    });
+});

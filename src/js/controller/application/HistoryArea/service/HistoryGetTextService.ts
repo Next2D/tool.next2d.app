@@ -8,7 +8,8 @@ import {
     $LAYER_NAME_UPDATE_COMMAND,
     $LIBRARY_ADD_NEW_FOLDER_COMMAND,
     $LIBRARY_UPDATE_INSTANCE_NAME_COMMAND,
-    $LIBRARY_UPDATE_INSTANCE_SYMBOL_COMMAND
+    $LIBRARY_UPDATE_INSTANCE_SYMBOL_COMMAND,
+    $LIBRARY_ADD_NEW_BITMAP_COMMAND
 } from "@/config/HistoryConfig";
 
 /**
@@ -52,6 +53,9 @@ export const execute = (command: number): string =>
 
         case $LIBRARY_UPDATE_INSTANCE_SYMBOL_COMMAND:
             return "シンボル名を変更";
+
+        case $LIBRARY_ADD_NEW_BITMAP_COMMAND:
+            return "画像の取り込み";
 
         default:
             break;
