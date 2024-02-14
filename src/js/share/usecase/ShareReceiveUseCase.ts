@@ -9,7 +9,8 @@ import { execute as timelineLayerControllerLayerLightUpdateReceiveService } from
 import { execute as scriptEditorNewRegisterReceiveUseCase } from "@/share/receive/application/timeline/application/TimelineTool/application/ScriptEditorNewRegister/usecase/ScriptEditorNewRegisterReceiveUseCase";
 import { execute as scriptEditorUpdateReceiveUseCase } from "@/share/receive/application/timeline/application/TimelineTool/application/ScriptEditorUpdate/usecase/ScriptEditorUpdateReceiveUseCase";
 import { execute as scriptEditorDeleteReceiveUseCase } from "@/share/receive/application/timeline/application/TimelineTool/application/ScriptEditorDelete/usecase/ScriptEditorDeleteReceiveUseCase";
-import { execute as folderAddNewReceiveService } from "@/share/receive/application/core/application/Folder/service/FolderAddNewReceiveService";
+import { execute as folderAddNewReceiveService } from "@/share/receive/application/controller/application/LibraryArea/Folder/service/FolderAddNewReceiveService";
+import { execute as bitmapAddNewReceiveService } from "@/share/receive/application/controller/application/LibraryArea/Bitmap/service/BitmapAddNewReceiveService";
 import { execute as folderUpdateStateReceiveService } from "@/share/receive/application/core/application/Folder/service/FolderUpdateStateReceiveService";
 import { execute as instanceUpdateNameReceiveUseCase } from "@/share/receive/application/core/application/Instance/usecase/InstanceUpdateNameReceiveUseCase";
 import { execute as instanceUpdateSymbolReceiveUseCase } from "@/share/receive/application/core/application/Instance/usecase/InstanceUpdateSymbolReceiveUseCase";
@@ -31,7 +32,8 @@ import {
     $LIBRARY_ADD_NEW_FOLDER_COMMAND,
     $LIBRARY_FOLDER_STATE_COMMAND,
     $LIBRARY_UPDATE_INSTANCE_NAME_COMMAND,
-    $LIBRARY_UPDATE_INSTANCE_SYMBOL_COMMAND
+    $LIBRARY_UPDATE_INSTANCE_SYMBOL_COMMAND,
+    $LIBRARY_ADD_NEW_BITMAP_COMMAND
 } from "@/config/HistoryConfig";
 
 /**
@@ -133,6 +135,11 @@ export const execute = (message: ShareReceiveMessageImpl): void =>
         // シンボル名の更新
         case $LIBRARY_UPDATE_INSTANCE_SYMBOL_COMMAND:
             instanceUpdateSymbolReceiveUseCase(message);
+            break;
+
+        // 新規bitmap追加
+        case $LIBRARY_ADD_NEW_BITMAP_COMMAND:
+            bitmapAddNewReceiveService(message);
             break;
 
         default:

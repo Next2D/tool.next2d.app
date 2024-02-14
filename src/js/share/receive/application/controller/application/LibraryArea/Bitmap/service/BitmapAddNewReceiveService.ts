@@ -1,0 +1,50 @@
+import type { ShareReceiveMessageImpl } from "@/interface/ShareReceiveMessageImpl";
+import type { MovieClip } from "@/core/domain/model/MovieClip";
+import type { InstanceImpl } from "@/interface/InstanceImpl";
+import { $getWorkSpace } from "@/core/application/CoreUtil";
+import { Bitmap } from "@/core/domain/model/Bitmap";
+import { execute as externalLibraryAddInstanceUseCase } from "@/external/controller/application/ExternalLibrary/usecase/ExternalLibraryAddInstanceUseCase";
+import { execute as libraryAreaAddNewBitmapHistoryUseCase } from "@/history/application/controller/LibraryArea/Bitmap/usecase/LibraryAreaAddNewBitmapHistoryUseCase";
+import { BitmapSaveObjectImpl } from "@/interface/BitmapSaveObjectImpl";
+
+/**
+ * @description socketで受け取った情報の受け取り処理関数
+ *              Receiving and processing functions for information received in the socket
+ *
+ * @param  {object} message
+ * @return {void}
+ * @method
+ * @public
+ */
+export const execute = (message: ShareReceiveMessageImpl): void =>
+{
+    const id = message.data[0] as NonNullable<number>;
+
+    const workSpace = $getWorkSpace(id);
+    if (!workSpace) {
+        return ;
+    }
+
+    const libraryId = message.data[1] as NonNullable<number>;
+    const movieClip: InstanceImpl<MovieClip> = workSpace.getLibrary(libraryId);
+    if (!movieClip) {
+        return ;
+    }
+
+    const bitmap = new Bitmap(
+        message.data[2] as NonNullable<BitmapSaveObjectImpl>
+    );
+
+    // 内部情報に追加
+    // fixed logic
+    externalLibraryAddInstanceUseCase(workSpace, bitmap);
+
+    // 作業履歴に残す
+    // fixed logic
+    libraryAreaAddNewBitmapHistoryUseCase(
+        workSpace,
+        movieClip,
+        bitmap,
+        true
+    );
+};
