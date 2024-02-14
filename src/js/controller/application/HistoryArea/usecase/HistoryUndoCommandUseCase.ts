@@ -1,5 +1,6 @@
 import type { HistoryObjectImpl } from "@/interface/HistoryObjectImpl";
 import type { LayerSaveObjectImpl } from "@/interface/LayerSaveObjectImpl";
+import type { BitmapSaveObjectImpl } from "@/interface/BitmapSaveObjectImpl";
 import { execute as screenTabNameAddHistoryUndoUseCase } from "@/history/application/screen/ScreenTab/usecase/ScreenTabNameAddHistoryUndoUseCase";
 import { execute as timelineToolLayerAddHistoryUndoUseCase } from "@/history/application/timeline/TimelineTool/LayerAdd/usecase/TimelineToolLayerAddHistoryUndoUseCase";
 import { execute as timelineToolLayerDeleteHistoryUndoUseCase } from "@/history/application/timeline/TimelineTool/LayerDelete/usecase/TimelineToolLayerDeleteHistoryUndoUseCase";
@@ -8,6 +9,7 @@ import { execute as scriptEditorNewRegisterHistoryUndoUseCase } from "@/history/
 import { execute as scriptEditorUpdateHistoryUndoUseCase } from "@/history/application/timeline/TimelineTool/ScriptEditorUpdate/usecase/ScriptEditorUpdateHistoryUndoUseCase";
 import { execute as scriptEditorDeleteHistoryUndoUseCase } from "@/history/application/timeline/TimelineTool/ScriptEditorDelete/usecase/ScriptEditorDeleteHistoryUndoUseCase";
 import { execute as libraryAreaAddNewFolderHistoryUndoUseCase } from "@/history/application/controller/LibraryArea/Folder/usecase/LibraryAreaAddNewFolderHistoryUndoUseCase";
+import { execute as libraryAreaAddNewBitmapHistoryUndoUseCase } from "@/history/application/controller/LibraryArea/Bitmap/usecase/LibraryAreaAddNewBitmapHistoryUndoUseCase";
 import { execute as instanceUpdateNameHistoryUndoUseCase } from "@/history/application/core/Instance/usecase/InstanceUpdateNameHistoryUndoUseCase";
 import { execute as instanceUpdateSymbolHistoryUndoUseCase } from "@/history/application/core/Instance/usecase/InstanceUpdateSymbolHistoryUndoUseCase";
 import {
@@ -20,7 +22,8 @@ import {
     $TIMIELINE_TOOL_SCRIPT_DELETE_COMMAND,
     $LIBRARY_ADD_NEW_FOLDER_COMMAND,
     $LIBRARY_UPDATE_INSTANCE_NAME_COMMAND,
-    $LIBRARY_UPDATE_INSTANCE_SYMBOL_COMMAND
+    $LIBRARY_UPDATE_INSTANCE_SYMBOL_COMMAND,
+    $LIBRARY_ADD_NEW_BITMAP_COMMAND
 } from "@/config/HistoryConfig";
 
 /**
@@ -106,7 +109,7 @@ export const execute = (history_object: HistoryObjectImpl): void =>
         case $LIBRARY_ADD_NEW_FOLDER_COMMAND:
             libraryAreaAddNewFolderHistoryUndoUseCase(
                 args[0] as number, // workSpaceId
-                args[2] as number // FolderId
+                args[2] as number // Folder Id
             );
             break;
 
@@ -125,6 +128,14 @@ export const execute = (history_object: HistoryObjectImpl): void =>
                 args[0] as number, // workSpaceId
                 args[2] as number, // InstanceId
                 args[3] as string  // before name
+            );
+            break;
+
+        // 新規bitmap追加
+        case $LIBRARY_ADD_NEW_BITMAP_COMMAND:
+            libraryAreaAddNewBitmapHistoryUndoUseCase(
+                args[0] as number, // workSpaceId
+                args[2] as BitmapSaveObjectImpl // Bitmap Save Object
             );
             break;
 

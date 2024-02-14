@@ -4,6 +4,7 @@ import type { ExternalInstanceImpl } from "@/interface/ExternalInstanceImpl";
 import { Bitmap } from "@/core/domain/model/Bitmap";
 import { ExternalLibrary } from "@/external/controller/domain/model/ExternalLibrary";
 import { execute as externalWorkSpaceRegisterInstanceService } from "@/external/core/application/ExternalWorkSpace/service/ExternalWorkSpaceRegisterInstanceService";
+import { execute as libraryAreaAddNewBitmapHistoryUseCase } from "@/history/application/controller/LibraryArea/Bitmap/usecase/LibraryAreaAddNewBitmapHistoryUseCase";
 import {
     $getCanvas,
     $poolCanvas
@@ -85,7 +86,7 @@ export const execute = (
 
                         // 作業履歴に残す
                         // fixed logic
-                        libraryAreaAddNewFolderHistoryUseCase(
+                        libraryAreaAddNewBitmapHistoryUseCase(
                             work_space,
                             work_space.scene,
                             bitmap

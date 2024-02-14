@@ -1,4 +1,5 @@
 import type { HistoryObjectImpl } from "@/interface/HistoryObjectImpl";
+import type { BitmapSaveObjectImpl } from "@/interface/BitmapSaveObjectImpl";
 import { execute as screenTabNameAddHistoryRedoUseCase } from "@/history/application/screen/ScreenTab/usecase/ScreenTabNameAddHistoryRedoUseCase";
 import { execute as timelineToolLayerAddHistoryRedoUseCase } from "@/history/application/timeline/TimelineTool/LayerAdd/usecase/TimelineToolLayerAddHistoryRedoUseCase";
 import { execute as timelineToolLayerDeleteHistoryRedoUseCase } from "@/history/application/timeline/TimelineTool/LayerDelete/usecase/TimelineToolLayerDeleteHistoryRedoUseCase";
@@ -7,6 +8,7 @@ import { execute as scriptEditorNewRegisterHistoryRedoUseCase } from "@/history/
 import { execute as scriptEditorUpdateHistoryRedoUseCase } from "@/history/application/timeline/TimelineTool/ScriptEditorUpdate/usecase/ScriptEditorUpdateHistoryRedoUseCase";
 import { execute as scriptEditorDeleteHistoryRedoUseCase } from "@/history/application/timeline/TimelineTool/ScriptEditorDelete/usecase/ScriptEditorDeleteHistoryRedoUseCase";
 import { execute as libraryAreaAddNewFolderHistoryRedoUseCase } from "@/history/application/controller/LibraryArea/Folder/usecase/LibraryAreaAddNewFolderHistoryRedoUseCase";
+import { execute as libraryAreaAddNewBitmapHistoryRedoUseCase } from "@/history/application/controller/LibraryArea/Bitmap/usecase/LibraryAreaAddNewBitmapHistoryRedoUseCase";
 import { execute as instanceUpdateNameHistoryRedoUseCase } from "@/history/application/core/Instance/usecase/InstanceUpdateNameHistoryRedoUseCase";
 import { execute as instanceUpdateSymbolHistoryRedoUseCase } from "@/history/application/core/Instance/usecase/InstanceUpdateSymbolHistoryRedoUseCase";
 import {
@@ -19,7 +21,8 @@ import {
     $TIMIELINE_TOOL_SCRIPT_DELETE_COMMAND,
     $LIBRARY_ADD_NEW_FOLDER_COMMAND,
     $LIBRARY_UPDATE_INSTANCE_NAME_COMMAND,
-    $LIBRARY_UPDATE_INSTANCE_SYMBOL_COMMAND
+    $LIBRARY_UPDATE_INSTANCE_SYMBOL_COMMAND,
+    $LIBRARY_ADD_NEW_BITMAP_COMMAND
 } from "@/config/HistoryConfig";
 
 /**
@@ -127,6 +130,13 @@ export const execute = (history_object: HistoryObjectImpl): void =>
                 args[0] as number, // workSpaceId
                 args[2] as number, // InstanceId
                 args[4] as string  // after name
+            );
+            break;
+
+        case $LIBRARY_ADD_NEW_BITMAP_COMMAND:
+            libraryAreaAddNewBitmapHistoryRedoUseCase(
+                args[0] as number, // workSpaceId
+                args[2] as BitmapSaveObjectImpl // Bitmap Save Object
             );
             break;
 

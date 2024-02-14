@@ -14,4 +14,7 @@ export const execute = (work_space: WorkSpace, instance: InstanceImpl<any>): voi
 {
     work_space.libraries.delete(instance.id);
     work_space.pathMap.delete(instance.getPath(work_space));
+    if (instance.symbol) {
+        work_space.symbolMap.delete(instance.symbol);
+    }
 };
