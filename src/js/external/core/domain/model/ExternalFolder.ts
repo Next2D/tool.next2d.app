@@ -3,6 +3,7 @@ import { execute as libraryAreaUpdateFolderStateService } from "@/controller/app
 import { $useSocket } from "@/share/ShareUtil";
 import { execute as externalFolderStateCreateHistoryObjectServic } from "@/external/core/application/ExternalFolder/service/ExternalFolderStateCreateHistoryObjectServic";
 import { execute as shareSendService } from "@/share/service/ShareSendService";
+import { execute as libraryAreaReloadUseCase } from "@/controller/application/LibraryArea/usecase/LibraryAreaReloadUseCase";
 
 /**
  * @extends {ExternalItem}
@@ -28,6 +29,9 @@ export class ExternalFolder extends ExternalItem
         if (this._$workSpace.active) {
             // フォルダの表示を更新
             libraryAreaUpdateFolderStateService(this._$instance);
+
+            // ライブラリを再描画
+            libraryAreaReloadUseCase();
         }
 
         // 画面共有
@@ -58,6 +62,9 @@ export class ExternalFolder extends ExternalItem
         if (this._$workSpace.active) {
             // フォルダの表示を更新
             libraryAreaUpdateFolderStateService(this._$instance);
+
+            // ライブラリを再描画
+            libraryAreaReloadUseCase();
         }
 
         // 画面共有

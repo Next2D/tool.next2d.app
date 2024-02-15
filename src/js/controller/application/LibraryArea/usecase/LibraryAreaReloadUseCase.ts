@@ -9,6 +9,7 @@ import { execute as libraryAreaInstanceTextContentKeyPressEventService } from ".
 import { execute as libraryAreaInstanceNameFocusOutEventUseCase } from "./LibraryAreaInstanceNameFocusOutEventUseCase";
 import { execute as libraryAreaInstanceSymbolMouseDownEventUseCase } from "./LibraryAreaInstanceSymbolMouseDownEventUseCase";
 import { execute as libraryAreaInstanceSymbolFocusOutEventUseCase } from "./LibraryAreaInstanceSymbolFocusOutEventUseCase";
+import { execute as libraryAreaCanDisplayInstanceService } from "../service/LibraryAreaCanDisplayInstanceService";
 import { EventType } from "@/tool/domain/event/EventType";
 import { libraryArea } from "@/controller/domain/model/LibraryArea";
 
@@ -40,6 +41,11 @@ export const execute = async (): Promise<void> =>
 
         // rootはスキップ
         if (instance.id === 0) {
+            continue;
+        }
+
+        // フォルダ内にあって、フォルダが閉じられていれば非表示
+        if (!libraryAreaCanDisplayInstanceService(instance)) {
             continue;
         }
 
@@ -93,6 +99,7 @@ export const execute = async (): Promise<void> =>
             libraryAreaInstanceTextContentKeyPressEventService
         );
 
+        // フォルダ以外はシンボル名の変更イベントを登録
         if (instance.type !== "folder") {
             const symbolElement = spans[1] as NonNullable<HTMLElement>;
             symbolElement.addEventListener(EventType.MOUSE_DOWN,
