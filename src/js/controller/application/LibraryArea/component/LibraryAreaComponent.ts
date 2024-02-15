@@ -13,6 +13,7 @@ export const execute = (instance: InstanceImpl<any>): string =>
 {
     return `
 <div draggable="true" class="library-list-box-child" id="library-child-id-${instance.id}" data-library-id="${instance.id}">
+    <div class="library-list-box-spacer"></div>
     <div class="library-list-box-name">
         <i class="library-type-${instance.type === "folder" ? `arrow ${instance.mode}` : "space"}" data-library-id="${instance.id}"></i>
         <i class="library-type-${instance.type}${instance.type === "folder" ? `-${instance.mode}` : ""}" data-library-id="${instance.id}"></i>

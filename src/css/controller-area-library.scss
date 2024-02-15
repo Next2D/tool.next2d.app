@@ -78,14 +78,15 @@
     border         : 1px solid darkgray;
     border-radius  : 3px;
     height         : calc(100vh - var(--ad) - var(--library-search-area-height) - var(--controller-tab-area-height) - var(--library-preview-area-height) - var(--library-list-title-height) - var(--controller-padding-width) - 2px);
-    overflow       : auto;
+    overflow-x     : hidden;
+    overflow-y     : auto;
     display        : flex;
     flex-direction : column;
 
     .library-type-space
     {
-        width       : 28px;
-        height      : 35px;
+        width  : 28px;
+        height : 35px;
     }
 
     .library-type-arrow
@@ -196,14 +197,15 @@
 
     .active
     {
-        opacity          : 0.85;
+        opacity          : 0.95;
         background-color : slategray;
     }
 
     .library-list-box-child
     {
-        display : flex;
-        height  : 35px;
+        display  : flex;
+        width    : calc(var(--controller-width) - 10px - 2px);
+        height   : 35px;
 
         &:hover
         {
@@ -234,16 +236,23 @@
             outline       : 0px solid transparent;
         }
 
+        .library-list-box-spacer
+        {
+            display     : flex;
+            height      : 35px;
+            flex-shrink : 0;
+        }
+
         .library-list-box-name
         {
             p
             {
                 display     : flex;
                 align-items : center;
-                width       : calc((var(--controller-width) - 10px) / 2 - 48px - 1px);
+                width       : calc((var(--controller-width) - 10px - 2px) / 2 - 48px);
                 height      : 35px;
                 margin      : 0;
-                overflow-x  : hidden;
+                overflow    : hidden;
             }
         }
 
@@ -253,10 +262,10 @@
             {
                 display     : flex;
                 align-items : center;
-                width       : calc((var(--controller-width) - 10px) / 2 - 1px);
+                width       : calc((var(--controller-width) - 10px - 2px) / 2);
                 height      : 35px;
                 margin      : 0;
-                overflow-x  : hidden;
+                overflow    : hidden;
             }
         }
     }
@@ -265,13 +274,11 @@
     {
         display     : flex;
         align-items : center;
-        width       : calc(50vw - 2px);
     }
 
     .library-list-box-symbol
     {
         display     : flex;
         align-items : center;
-        width       : calc(50vw - 2px);
     }
 }

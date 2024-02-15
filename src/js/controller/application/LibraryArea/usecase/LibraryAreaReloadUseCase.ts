@@ -10,6 +10,7 @@ import { execute as libraryAreaInstanceNameFocusOutEventUseCase } from "./Librar
 import { execute as libraryAreaInstanceSymbolMouseDownEventUseCase } from "./LibraryAreaInstanceSymbolMouseDownEventUseCase";
 import { execute as libraryAreaInstanceSymbolFocusOutEventUseCase } from "./LibraryAreaInstanceSymbolFocusOutEventUseCase";
 import { execute as libraryAreaCanDisplayInstanceService } from "../service/LibraryAreaCanDisplayInstanceService";
+import { execute as libraryAreaGetPaddingService } from "../service/LibraryAreaGetPaddingService";
 import { EventType } from "@/tool/domain/event/EventType";
 import { libraryArea } from "@/controller/domain/model/LibraryArea";
 
@@ -55,6 +56,22 @@ export const execute = async (): Promise<void> =>
 
         // イベントを登録
         const node = element.lastElementChild as NonNullable<HTMLElement>;
+
+        // フォルダ内にあればpaddingを設定
+        const padding = libraryAreaGetPaddingService(instance);
+        if (padding) {
+            const divs = node.getElementsByTagName("div");
+            const spacer = divs[0] as NonNullable<HTMLElement>;
+            spacer.style.width = `${padding}px`;
+
+            const nameDiv = divs[1] as NonNullable<HTMLElement>;
+            const nameElement = nameDiv.getElementsByTagName("p")[0] as NonNullable<HTMLElement>;
+            nameElement.style.width = `calc((var(--controller-width) - 10px - 2px) / 2 - 48px - ${padding / 2}px)`;
+
+            const symbolDiv = divs[2] as NonNullable<HTMLElement>;
+            const symbolElement = symbolDiv.getElementsByTagName("p")[0] as NonNullable<HTMLElement>;
+            symbolElement.style.width = `calc((var(--controller-width) - 10px - 2px) / 2 - ${padding / 2}px)`;
+        }
 
         // 選択中ならstyleを更新
         if (libraryArea.selectedIds.indexOf(instance.id) > -1) {
