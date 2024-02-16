@@ -37,7 +37,7 @@ export const execute = async (
             const folderPath = paths.join("/");
 
             // フォルダを作成
-            externalLibrary.addNewFolder(folderPath);
+            externalLibrary.addNewFolder(folderPath, false);
 
             (entry as FileSystemDirectoryEntry)
                 .createReader()

@@ -147,11 +147,12 @@ export class ExternalLibrary
      *              Add a new folder to the specified hierarchy, or create a folder if the hierarchy does not exist
      *
      * @param  {string} path
+     * @param  {boolean} [reload = true]
      * @return {void}
      * @method
      * @public
      */
-    addNewFolder (path: string): void
+    addNewFolder (path: string, reload: boolean = true): void
     {
         const paths = path.split("/");
 
@@ -175,7 +176,7 @@ export class ExternalLibrary
             const folder = externalLibraryAddNewFolderUseCase(
                 this._$workSpace,
                 this._$workSpace.scene,
-                folderName, folderId
+                folderName, folderId, reload
             );
 
             // 次は自分が親になるので、IDを書き換え

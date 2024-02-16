@@ -10,12 +10,17 @@ import { execute as externalWorkSpaceRegisterInstanceService } from "@/external/
  *
  * @param  {WorkSpace} work_space
  * @param  {Instance} instance
+ * @param  {boolean} [reload=true]
  * @return {void}
  * @method
  * @public
  */
-export const execute = (work_space: WorkSpace, instance: InstanceImpl<any>): void =>
-{
+export const execute = (
+    work_space: WorkSpace,
+    instance: InstanceImpl<any>,
+    reload: boolean = true
+): void => {
+
     // 内部情報を追加
     externalWorkSpaceRegisterInstanceService(work_space, instance);
 
@@ -23,7 +28,7 @@ export const execute = (work_space: WorkSpace, instance: InstanceImpl<any>): voi
     libraryAreaReOrderingService(work_space);
 
     // 起動中のプロジェクトならライブラリエリアの表示を更新
-    if (work_space.active) {
+    if (reload && work_space.active) {
         libraryAreaReloadUseCase();
     }
 };

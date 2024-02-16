@@ -12,6 +12,7 @@ import { execute as libraryAreaAddNewFolderHistoryUseCase } from "@/history/appl
  * @param  {MovieClip} movie_clip
  * @param  {string} name
  * @param  {number} folder_id
+ * @param  {boolean} [reload = true]
  * @return {void}
  * @method
  * @public
@@ -20,7 +21,8 @@ export const execute = (
     work_space: WorkSpace,
     movie_clip: MovieClip,
     name: string,
-    folder_id: number = 0
+    folder_id: number = 0,
+    reload: boolean = true
 ): Folder => {
 
     // フォルダのデータを生成
@@ -34,7 +36,7 @@ export const execute = (
 
     // 内部情報に追加
     // fixed logic
-    externalLibraryAddInstanceUseCase(work_space, folder);
+    externalLibraryAddInstanceUseCase(work_space, folder, reload);
 
     // 作業履歴に残す
     // fixed logic
