@@ -29,10 +29,10 @@ export const execute = (): void =>
     element.addEventListener("drop", libraryAreaDropUseCase);
     element.addEventListener("dragstart", () =>
     {
-        //
+        // TODO stage-areaのアイテムのイベントを無効化
     });
     element.addEventListener("dragend", () =>
     {
-        //
+        // TODO stage-areaのアイテムのイベントを無効化を解除
     });
 };

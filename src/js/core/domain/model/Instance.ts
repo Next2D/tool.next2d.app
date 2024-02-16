@@ -2,6 +2,7 @@ import type { InstanceTypeImpl } from "@/interface/InstanceTypeImpl";
 import type { ObjectImpl } from "@/interface/ObjectImpl";
 import { WorkSpace } from "./WorkSpace";
 import { execute as instanceGetPathNameService } from "@/core/application/Instance/service/InstanceGetPathNameService";
+import { execute as instanceCheckDuplicateFolder } from "@/core/application/Instance/service/InstanceCheckDuplicateFolder";
 
 /**
  * @description ライブラリのアイテムの親クラス
@@ -94,6 +95,25 @@ export class Instance
     getPath (work_space: WorkSpace): string
     {
         return instanceGetPathNameService(work_space, this);
+    }
+
+    /**
+     * @description ライブラリエリアの移動する先のフォルダーが自分の親フォルダーかチェック
+     *              Check if the destination folder in the library area is your parent folder
+     *
+     * @param  {WorkSpace} work_space
+     * @param  {number} folder_id
+     * @return {boolean}
+     * @method
+     * @public
+     */
+    duplicateFolderId (work_space: WorkSpace, folder_id: number): boolean
+    {
+        if (!this._$folderId) {
+            return false;
+        }
+
+        return instanceCheckDuplicateFolder(work_space, this, folder_id);
     }
 
     /**

@@ -17,6 +17,10 @@ export class LibraryArea
      */
     constructor ()
     {
+        /**
+         * @type {array}
+         * @private
+         */
         this._$selectedIds = [];
     }
 
