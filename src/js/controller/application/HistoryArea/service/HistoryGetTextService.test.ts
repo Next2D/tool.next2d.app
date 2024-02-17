@@ -9,7 +9,9 @@ import {
     $LAYER_NAME_UPDATE_COMMAND,
     $LIBRARY_ADD_NEW_FOLDER_COMMAND,
     $LIBRARY_UPDATE_INSTANCE_NAME_COMMAND,
-    $LIBRARY_UPDATE_INSTANCE_SYMBOL_COMMAND
+    $LIBRARY_UPDATE_INSTANCE_SYMBOL_COMMAND,
+    $LIBRARY_ADD_NEW_BITMAP_COMMAND,
+    $LIBRARY_MOVE_FOLDER_COMMAND
 } from "../../../../config/HistoryConfig";
 
 describe("HistoryGetTextServiceTest", () =>
@@ -26,5 +28,7 @@ describe("HistoryGetTextServiceTest", () =>
         expect(execute($LIBRARY_ADD_NEW_FOLDER_COMMAND)).toBe("新規フォルダー");
         expect(execute($LIBRARY_UPDATE_INSTANCE_NAME_COMMAND)).toBe("インスタンス名を変更");
         expect(execute($LIBRARY_UPDATE_INSTANCE_SYMBOL_COMMAND)).toBe("シンボル名を変更");
+        expect(execute($LIBRARY_ADD_NEW_BITMAP_COMMAND)).toBe("画像の取り込み");
+        expect(execute($LIBRARY_MOVE_FOLDER_COMMAND)).toBe("アイテムのフォルダ移動");
     });
 });
