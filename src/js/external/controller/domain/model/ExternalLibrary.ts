@@ -190,6 +190,10 @@ export class ExternalLibrary
             return false;
         }
 
+        if (item.folderId === folder.id) {
+            return false;
+        }
+
         // 移動するアイテムがフォルダの場合は、親階層のフォルダと重複してないかチェックする
         if (item.type === "folder"
             && (folder as ExternalFolder).checkDuplicate(item.id)

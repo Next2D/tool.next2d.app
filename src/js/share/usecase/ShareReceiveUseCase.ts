@@ -10,6 +10,7 @@ import { execute as scriptEditorNewRegisterReceiveUseCase } from "@/share/receiv
 import { execute as scriptEditorUpdateReceiveUseCase } from "@/share/receive/application/timeline/application/TimelineTool/application/ScriptEditorUpdate/usecase/ScriptEditorUpdateReceiveUseCase";
 import { execute as scriptEditorDeleteReceiveUseCase } from "@/share/receive/application/timeline/application/TimelineTool/application/ScriptEditorDelete/usecase/ScriptEditorDeleteReceiveUseCase";
 import { execute as folderAddNewReceiveService } from "@/share/receive/application/controller/application/LibraryArea/Folder/service/FolderAddNewReceiveService";
+import { execute as folderMoveReceiveService } from "@/share/receive/application/controller/application/LibraryArea/Folder/service/FolderMoveReceiveService";
 import { execute as bitmapAddNewReceiveService } from "@/share/receive/application/controller/application/LibraryArea/Bitmap/service/BitmapAddNewReceiveService";
 import { execute as folderUpdateStateReceiveService } from "@/share/receive/application/core/application/Folder/service/FolderUpdateStateReceiveService";
 import { execute as instanceUpdateNameReceiveUseCase } from "@/share/receive/application/core/application/Instance/usecase/InstanceUpdateNameReceiveUseCase";
@@ -33,7 +34,8 @@ import {
     $LIBRARY_FOLDER_STATE_COMMAND,
     $LIBRARY_UPDATE_INSTANCE_NAME_COMMAND,
     $LIBRARY_UPDATE_INSTANCE_SYMBOL_COMMAND,
-    $LIBRARY_ADD_NEW_BITMAP_COMMAND
+    $LIBRARY_ADD_NEW_BITMAP_COMMAND,
+    $LIBRARY_MOVE_FOLDER_COMMAND
 } from "@/config/HistoryConfig";
 
 /**
@@ -140,6 +142,11 @@ export const execute = (message: ShareReceiveMessageImpl): void =>
         // 新規bitmap追加
         case $LIBRARY_ADD_NEW_BITMAP_COMMAND:
             bitmapAddNewReceiveService(message);
+            break;
+
+        // フォルダ移動
+        case $LIBRARY_MOVE_FOLDER_COMMAND:
+            folderMoveReceiveService(message);
             break;
 
         default:
