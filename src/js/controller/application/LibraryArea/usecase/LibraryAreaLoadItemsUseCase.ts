@@ -5,6 +5,7 @@ import { execute as libraryAreaScanFileUseCase } from "./LibraryAreaScanFileUseC
 import { execute as libraryAreaReOrderingService } from "../service/LibraryAreaReOrderingService";
 import { execute as libraryAreaReloadUseCase } from "./LibraryAreaReloadUseCase";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
+import { libraryArea } from "@/controller/domain/model/LibraryArea";
 
 /**
  * @description 外部アイテムの読み込み実行関数
@@ -23,6 +24,16 @@ export const execute = async (items: DataTransferItemList): Promise<void> =>
     // 進行状況のテキストを更新
     progressMenuUpdateMessageService("{{外部ファイルの読み込み}}");
 
+    const workSpace = $getCurrentWorkSpace();
+
+    let path = "";
+    if (libraryArea.selectedIds.length === 1) {
+        const instance = workSpace.getLibrary(libraryArea.selectedIds[0]);
+        if (instance && instance.type === "folder") {
+            path = instance.getPath(workSpace);
+        }
+    }
+
     for (let idx = 0; idx < items.length; ++idx) {
 
         const entry: FileSystemEntry | null = items[idx].webkitGetAsEntry();
@@ -31,11 +42,11 @@ export const execute = async (items: DataTransferItemList): Promise<void> =>
         }
 
         // ファイルクラスをスキャン
-        await libraryAreaScanFileUseCase(entry);
+        await libraryAreaScanFileUseCase(entry, path);
     }
 
     // ファイル名で昇順に並び替え
-    libraryAreaReOrderingService($getCurrentWorkSpace());
+    libraryAreaReOrderingService(workSpace);
 
     // ライブラリエリアを際描画
     libraryAreaReloadUseCase();
