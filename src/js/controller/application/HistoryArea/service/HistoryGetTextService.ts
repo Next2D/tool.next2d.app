@@ -9,7 +9,8 @@ import {
     $LIBRARY_ADD_NEW_FOLDER_COMMAND,
     $LIBRARY_UPDATE_INSTANCE_NAME_COMMAND,
     $LIBRARY_UPDATE_INSTANCE_SYMBOL_COMMAND,
-    $LIBRARY_ADD_NEW_BITMAP_COMMAND
+    $LIBRARY_ADD_NEW_BITMAP_COMMAND,
+    $LIBRARY_MOVE_FOLDER_COMMAND
 } from "@/config/HistoryConfig";
 
 /**
@@ -56,6 +57,9 @@ export const execute = (command: number): string =>
 
         case $LIBRARY_ADD_NEW_BITMAP_COMMAND:
             return "画像の取り込み";
+
+        case $LIBRARY_MOVE_FOLDER_COMMAND:
+            return "アイテムのフォルダ移動";
 
         default:
             break;

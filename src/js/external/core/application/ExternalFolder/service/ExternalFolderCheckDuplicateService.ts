@@ -20,12 +20,11 @@ export const execute = (
 ): boolean => {
 
     let folderId = instance.folderId;
-
     while (folderId) {
 
         const instance: InstanceImpl<Folder> | null = work_space.getLibrary(folderId);
         if (!instance) {
-            return false;
+            return true;
         }
 
         if (instance.id === parent_folder_id) {

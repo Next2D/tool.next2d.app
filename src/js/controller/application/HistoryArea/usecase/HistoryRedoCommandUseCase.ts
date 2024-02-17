@@ -8,6 +8,7 @@ import { execute as scriptEditorNewRegisterHistoryRedoUseCase } from "@/history/
 import { execute as scriptEditorUpdateHistoryRedoUseCase } from "@/history/application/timeline/TimelineTool/ScriptEditorUpdate/usecase/ScriptEditorUpdateHistoryRedoUseCase";
 import { execute as scriptEditorDeleteHistoryRedoUseCase } from "@/history/application/timeline/TimelineTool/ScriptEditorDelete/usecase/ScriptEditorDeleteHistoryRedoUseCase";
 import { execute as libraryAreaAddNewFolderHistoryRedoUseCase } from "@/history/application/controller/LibraryArea/Folder/usecase/LibraryAreaAddNewFolderHistoryRedoUseCase";
+import { execute as libraryAreaMoveFolderHistoryRedoUseCase } from "@/history/application/controller/LibraryArea/Folder/usecase/LibraryAreaMoveFolderHistoryRedoUseCase";
 import { execute as libraryAreaAddNewBitmapHistoryRedoUseCase } from "@/history/application/controller/LibraryArea/Bitmap/usecase/LibraryAreaAddNewBitmapHistoryRedoUseCase";
 import { execute as instanceUpdateNameHistoryRedoUseCase } from "@/history/application/core/Instance/usecase/InstanceUpdateNameHistoryRedoUseCase";
 import { execute as instanceUpdateSymbolHistoryRedoUseCase } from "@/history/application/core/Instance/usecase/InstanceUpdateSymbolHistoryRedoUseCase";
@@ -22,7 +23,8 @@ import {
     $LIBRARY_ADD_NEW_FOLDER_COMMAND,
     $LIBRARY_UPDATE_INSTANCE_NAME_COMMAND,
     $LIBRARY_UPDATE_INSTANCE_SYMBOL_COMMAND,
-    $LIBRARY_ADD_NEW_BITMAP_COMMAND
+    $LIBRARY_ADD_NEW_BITMAP_COMMAND,
+    $LIBRARY_MOVE_FOLDER_COMMAND
 } from "@/config/HistoryConfig";
 
 /**
@@ -137,6 +139,14 @@ export const execute = (history_object: HistoryObjectImpl): void =>
             libraryAreaAddNewBitmapHistoryRedoUseCase(
                 args[0] as number, // workSpaceId
                 args[2] as BitmapSaveObjectImpl // Bitmap Save Object
+            );
+            break;
+
+        case $LIBRARY_MOVE_FOLDER_COMMAND:
+            libraryAreaMoveFolderHistoryRedoUseCase(
+                args[0] as number, // workSpaceId
+                args[2] as number, // InstanceId
+                args[4] as number // After FolderID
             );
             break;
 

@@ -2,7 +2,6 @@ import type { InstanceTypeImpl } from "@/interface/InstanceTypeImpl";
 import type { ObjectImpl } from "@/interface/ObjectImpl";
 import { WorkSpace } from "./WorkSpace";
 import { execute as instanceGetPathNameService } from "@/core/application/Instance/service/InstanceGetPathNameService";
-import { execute as instanceCheckDuplicateFolder } from "@/external/core/application/ExternalFolder/service/ExternalFolderCheckDuplicateService";
 
 /**
  * @description ライブラリのアイテムの親クラス

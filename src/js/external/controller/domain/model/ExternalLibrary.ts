@@ -1,6 +1,7 @@
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import type { ExternalInstanceImpl } from "@/interface/ExternalInstanceImpl";
 import type { InstanceImpl } from "@/interface/InstanceImpl";
+import type { ExternalFolder } from "@/external/core/domain/model/ExternalFolder";
 import { execute as externalLibraryAddNewFolderUseCase } from "@/external/controller/application/ExternalLibrary/usecase/ExternalLibraryAddNewFolderUseCase";
 import { execute as libraryAreaAllClearElementService } from "@/controller/application/LibraryArea/service/LibraryAreaAllClearElementService";
 import { execute as libraryAreaActiveElementService } from "@/controller/application/LibraryArea/service/LibraryAreaActiveElementService";
@@ -9,6 +10,8 @@ import { execute as externalLibraryImportBitmapFileUseCase } from "@/external/co
 import { execute as libraryAreaReOrderingService } from "@/controller/application/LibraryArea/service/LibraryAreaReOrderingService";
 import { execute as libraryAreaReloadUseCase } from "@/controller/application/LibraryArea/usecase/LibraryAreaReloadUseCase";
 import { execute as externalLibraryCreateInstanceService } from "@/external/controller/application/ExternalLibrary/service/ExternalLibraryCreateInstanceService";
+import { execute as workSpaceCreatePathMapService } from "@/core/application/WorkSpace/service/WorkSpaceCreatePathMapService";
+import { execute as libraryAreaMoveFolderHistoryUseCase } from "@/history/application/controller/LibraryArea/Folder/usecase/LibraryAreaMoveFolderHistoryUseCase";
 
 /**
  * @description ライブラリの外部APIクラス
@@ -113,17 +116,70 @@ export class ExternalLibrary
     }
 
     /**
-     * @description 指定のフォルダに指定のアイテムを移動、成功時はtrue、失敗時はfalseを返却
-     *              Move the specified item to the specified folder, returning true on success, false on failure
+     * @description 指定のアイテムをフォルダの外に移動、成功時はtrue、失敗時はfalseを返却
+     *              Moves specified item out of folder, returns true on success, false on failure
      *
-     * @param  {string} folder_path
-     * @param  {string} item_path
+     * @param  {string}  item_path
+     * @param  {boolean} [reload = true]
      * @return {boolean}
      * @method
      * @public
      */
-    moveToFolder (folder_path: string, item_path: string): boolean
-    {
+    outOfFolder (
+        item_path: string,
+        reload: boolean = true
+    ): boolean {
+
+        const item = this.getItem(item_path);
+        if (!item || item.folderId === 0) {
+            return false;
+        }
+
+        // 履歴に残す
+        // fixed logic
+        libraryAreaMoveFolderHistoryUseCase(
+            this._$workSpace,
+            this._$workSpace.scene,
+            item,
+            0
+        );
+
+        // フォルダの外(top)に移動
+        item.folderId = 0;
+
+        // 再読み込みがonなら再生成
+        if (reload) {
+            workSpaceCreatePathMapService(this._$workSpace);
+
+            // ソートを実行
+            libraryAreaReOrderingService(this._$workSpace);
+
+            // アクティブなプロジェクトなら再描画
+            if (this._$workSpace.active) {
+                libraryAreaReloadUseCase();
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * @description 指定のフォルダに指定のアイテムを移動、成功時はtrue、失敗時はfalseを返却
+     *              Move the specified item to the specified folder, returning true on success, false on failure
+     *
+     * @param  {string}  folder_path
+     * @param  {string}  item_path
+     * @param  {boolean} [reload = true]
+     * @return {boolean}
+     * @method
+     * @public
+     */
+    moveToFolder (
+        folder_path: string,
+        item_path: string,
+        reload: boolean = true
+    ): boolean {
+
         const folder = this.getItem(folder_path);
         if (!folder) {
             return false;
@@ -132,6 +188,38 @@ export class ExternalLibrary
         const item = this.getItem(item_path);
         if (!item) {
             return false;
+        }
+
+        // 移動するアイテムがフォルダの場合は、親階層のフォルダと重複してないかチェックする
+        if (item.type === "folder"
+            && (folder as ExternalFolder).checkDuplicate(item.id)
+        ) {
+            return false;
+        }
+
+        // 履歴に残す
+        // fixed logic
+        libraryAreaMoveFolderHistoryUseCase(
+            this._$workSpace,
+            this._$workSpace.scene,
+            item,
+            folder.id
+        );
+
+        // フォルダ内に格納
+        item.folderId = folder.id;
+
+        // 再読み込みがonなら再生成
+        if (reload) {
+            workSpaceCreatePathMapService(this._$workSpace);
+
+            // ソートを実行
+            libraryAreaReOrderingService(this._$workSpace);
+
+            // アクティブなプロジェクトなら再描画
+            if (this._$workSpace.active) {
+                libraryAreaReloadUseCase();
+            }
         }
 
         return true;

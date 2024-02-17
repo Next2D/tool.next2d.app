@@ -168,3 +168,12 @@ export const $LIBRARY_UPDATE_INSTANCE_SYMBOL_COMMAND: number = 15;
  * @constant
  */
 export const $LIBRARY_ADD_NEW_BITMAP_COMMAND: number = 16;
+
+/**
+ * @description フォルダ移動の識別コマンド名
+ *              Identification command name for folder move
+ *
+ * @type {number}
+ * @constant
+ */
+export const $LIBRARY_MOVE_FOLDER_COMMAND: number = 17;

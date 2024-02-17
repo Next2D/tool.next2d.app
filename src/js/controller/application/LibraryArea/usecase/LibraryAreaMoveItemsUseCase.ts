@@ -1,6 +1,8 @@
 import type { Folder } from "@/core/domain/model/Folder";
+import type { InstanceImpl } from "@/interface/InstanceImpl";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { libraryArea } from "@/controller/domain/model/LibraryArea";
+import { ExternalLibrary } from "@/external/controller/domain/model/ExternalLibrary";
 import { execute as libraryAreaReloadUseCase } from "@/controller/application/LibraryArea/usecase/LibraryAreaReloadUseCase";
 import { execute as libraryAreaReOrderingService } from "@/controller/application/LibraryArea/service/LibraryAreaReOrderingService";
 import { execute as workSpaceCreatePathMapService } from "@/core/application/WorkSpace/service/WorkSpaceCreatePathMapService";
@@ -22,6 +24,10 @@ export const execute = (event: DragEvent): void =>
     }
 
     const workSpace = $getCurrentWorkSpace();
+
+    // 外部APIを起動
+    const externalLibrary = new ExternalLibrary(workSpace);
+
     let reload = false;
 
     const length = libraryArea.selectedIds.length;
@@ -33,32 +39,48 @@ export const execute = (event: DragEvent): void =>
             return ;
         }
 
-        const folderId = instance.type === "folder" ? instance.id : instance.folderId;
+        const folder: InstanceImpl<Folder> | null = instance.type === "folder"
+            ? instance
+            : workSpace.getLibrary(instance.folderId);
+
         for (let idx: number = 0; idx < length; ++idx) {
 
             const libraryId = libraryArea.selectedIds[idx];
 
             // 自分ならスキップ
-            if (folderId === libraryId) {
+            if (instance.id === libraryId) {
                 continue;
             }
 
             const selectedInstance = workSpace.getLibrary(libraryId);
-            if (!selectedInstance || selectedInstance.folderId === folderId) {
+            if (!selectedInstance) {
                 continue;
             }
 
             // 移動する先がフォルダで、選択中のインスタンスがフォルダの時は
             // 親フォルダの配下にないかをチェック
-            if (instance.type === "folder"
-                && selectedInstance.type === "folder"
-                && (instance as Folder).checkDuplicate(workSpace, selectedInstance.id)
-            ) {
-                continue;
-            }
+            if (folder) {
+                const result = externalLibrary.moveToFolder(
+                    folder.getPath(workSpace),
+                    selectedInstance.getPath(workSpace),
+                    false
+                );
 
-            // ドロップ先のfolderIdを利用
-            selectedInstance.folderId = folderId;
+                // 移動してない時はスキップ
+                if (!result) {
+                    continue;
+                }
+            } else {
+                const result = externalLibrary.outOfFolder(
+                    selectedInstance.getPath(workSpace),
+                    false
+                );
+
+                // 移動してない時はスキップ
+                if (!result) {
+                    continue;
+                }
+            }
 
             reload = true;
         }
@@ -70,12 +92,19 @@ export const execute = (event: DragEvent): void =>
             const libraryId = libraryArea.selectedIds[idx];
 
             const selectedInstance = workSpace.getLibrary(libraryId);
-            if (!selectedInstance || selectedInstance.folderId === 0) {
+            if (!selectedInstance) {
                 continue;
             }
 
-            // フォルダ情報を更新
-            selectedInstance.folderId = 0;
+            const result = externalLibrary.outOfFolder(
+                selectedInstance.getPath(workSpace),
+                false
+            );
+
+            // 移動してない時はスキップ
+            if (!result) {
+                continue;
+            }
 
             reload = true;
         }
