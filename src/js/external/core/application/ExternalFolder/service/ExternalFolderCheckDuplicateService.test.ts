@@ -1,10 +1,10 @@
-import { execute } from "./InstanceCheckDuplicateFolder";
-import { $getCurrentWorkSpace, $createWorkSpace } from "../../../../core/application/CoreUtil";
-import { MovieClip } from "../../../../core/domain/model/MovieClip";
-import { Folder } from "../../../../core/domain/model/Folder";
-import { WorkSpace } from "../../../../core/domain/model/WorkSpace";
+import { execute } from "./ExternalFolderCheckDuplicateService";
+import { $getCurrentWorkSpace, $createWorkSpace } from "../../../../../core/application/CoreUtil";
+import { MovieClip } from "../../../../../core/domain/model/MovieClip";
+import { Folder } from "../../../../../core/domain/model/Folder";
+import { WorkSpace } from "../../../../../core/domain/model/WorkSpace";
 
-describe("InstanceCheckDuplicateFolderTest", () =>
+describe("ExternalFolderCheckDuplicateServiceTest", () =>
 {
     test("execute test", () =>
     {

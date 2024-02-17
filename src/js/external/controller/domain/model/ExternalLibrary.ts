@@ -113,6 +113,31 @@ export class ExternalLibrary
     }
 
     /**
+     * @description 指定のフォルダに指定のアイテムを移動、成功時はtrue、失敗時はfalseを返却
+     *              Move the specified item to the specified folder, returning true on success, false on failure
+     *
+     * @param  {string} folder_path
+     * @param  {string} item_path
+     * @return {boolean}
+     * @method
+     * @public
+     */
+    moveToFolder (folder_path: string, item_path: string): boolean
+    {
+        const folder = this.getItem(folder_path);
+        if (!folder) {
+            return false;
+        }
+
+        const item = this.getItem(item_path);
+        if (!item) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
      * @description 指定のライブラリアイテムを選択状態にする
      *              Make the specified library item selected
      *

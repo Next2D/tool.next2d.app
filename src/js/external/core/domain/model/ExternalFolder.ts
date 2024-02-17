@@ -4,6 +4,7 @@ import { $useSocket } from "@/share/ShareUtil";
 import { execute as externalFolderStateCreateHistoryObjectServic } from "@/external/core/application/ExternalFolder/service/ExternalFolderStateCreateHistoryObjectServic";
 import { execute as shareSendService } from "@/share/service/ShareSendService";
 import { execute as libraryAreaReloadUseCase } from "@/controller/application/LibraryArea/usecase/LibraryAreaReloadUseCase";
+import { execute as externalFolderCheckDuplicateService } from "@/external/core/application/ExternalFolder/service/ExternalFolderCheckDuplicateService";
 
 /**
  * @extends {ExternalItem}
@@ -76,6 +77,24 @@ export class ExternalFolder extends ExternalItem
             );
             shareSendService(historyObject);
         }
+    }
+
+    /**
+     * @description 移動先のフォルダーが自分の親フォルダーかチェック
+     *              Check if the destination folder is your parent folder
+     *
+     * @param  {number} parent_folder_id
+     * @return {boolean}
+     * @method
+     * @public
+     */
+    checkDuplicate (parent_folder_id: number): boolean
+    {
+        return externalFolderCheckDuplicateService(
+            this._$workSpace,
+            this._$instance,
+            parent_folder_id
+        );
     }
 
     /**

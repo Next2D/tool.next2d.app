@@ -1,7 +1,9 @@
 import type { ObjectImpl } from "@/interface/ObjectImpl";
 import type { FolderSaveObjectImpl } from "@/interface/FolderSaveObjectImpl";
 import type { FolderTypeImpl } from "@/interface/FolderTypeImpl";
+import type { WorkSpace } from "./WorkSpace";
 import { Instance } from "./Instance";
+import { execute as externalFolderCheckDuplicateService } from "@/external/core/application/ExternalFolder/service/ExternalFolderCheckDuplicateService";
 
 /**
  * @extends {Instance}
@@ -43,6 +45,21 @@ export class Folder extends Instance
     set mode (mode: FolderTypeImpl)
     {
         this._$mode = mode;
+    }
+
+    /**
+     * @description ライブラリエリアの移動する先のフォルダーが自分の親フォルダーかチェック
+     *              Check if the destination folder in the library area is your parent folder
+     *
+     * @param  {WorkSpace} work_space
+     * @param  {number} parent_folder_id
+     * @return {boolean}
+     * @method
+     * @public
+     */
+    checkDuplicate (work_space: WorkSpace, parent_folder_id: number): boolean
+    {
+        return externalFolderCheckDuplicateService(work_space, this, parent_folder_id);
     }
 
     /**

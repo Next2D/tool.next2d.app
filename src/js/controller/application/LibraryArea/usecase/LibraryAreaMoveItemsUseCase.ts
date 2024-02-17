@@ -1,3 +1,4 @@
+import type { Folder } from "@/core/domain/model/Folder";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { libraryArea } from "@/controller/domain/model/LibraryArea";
 import { execute as libraryAreaReloadUseCase } from "@/controller/application/LibraryArea/usecase/LibraryAreaReloadUseCase";
@@ -33,7 +34,7 @@ export const execute = (event: DragEvent): void =>
         }
 
         const folderId = instance.type === "folder" ? instance.id : instance.folderId;
-        for (let idx = 0; idx < length; ++idx) {
+        for (let idx: number = 0; idx < length; ++idx) {
 
             const libraryId = libraryArea.selectedIds[idx];
 
@@ -47,8 +48,11 @@ export const execute = (event: DragEvent): void =>
                 continue;
             }
 
+            // 移動する先がフォルダで、選択中のインスタンスがフォルダの時は
+            // 親フォルダの配下にないかをチェック
             if (instance.type === "folder"
-                && instance.duplicateFolderId(workSpace, selectedInstance.id)
+                && selectedInstance.type === "folder"
+                && (instance as Folder).checkDuplicate(workSpace, selectedInstance.id)
             ) {
                 continue;
             }
@@ -61,7 +65,7 @@ export const execute = (event: DragEvent): void =>
 
     } else {
 
-        for (let idx = 0; idx < length; ++idx) {
+        for (let idx: number  = 0; idx < length; ++idx) {
 
             const libraryId = libraryArea.selectedIds[idx];
 
