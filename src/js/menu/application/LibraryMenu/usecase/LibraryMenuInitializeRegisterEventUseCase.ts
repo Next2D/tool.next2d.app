@@ -2,10 +2,12 @@ import { EventType } from "@/tool/domain/event/EventType";
 import { execute as libraryMenuShowUseCase } from "./LibraryMenuShowUseCase";
 import { execute as libraryMenuAddNewFolderMouseDownEventUseCase } from "./LibraryMenuAddNewFolderMouseDownEventUseCase";
 import { execute as libraryMenuFileMouseDownEventUseCase } from "./LibraryMenuFileMouseDownEventUseCase";
+import { execute as libraryMenuLoadFileUseCase } from "./LibraryMenuLoadFileUseCase";
 import {
     $LIBRARY_LIST_BOX_ID,
     $LIBRARY_FOLDER_ADD_ID,
-    $LIBRARY_FILE_ID
+    $LIBRARY_FILE_ID,
+    $LIBRARY_FILE_INPUT_ID
 } from "@/config/LibraryConfig";
 
 /**
@@ -45,6 +47,16 @@ export const execute = (): void =>
     if (fileElement) {
         fileElement.addEventListener(EventType.MOUSE_DOWN,
             libraryMenuFileMouseDownEventUseCase
+        );
+    }
+
+    // 外部ファイルの読込処理イベントを登録
+    const fileInputElement: HTMLElement | null = document
+        .getElementById($LIBRARY_FILE_INPUT_ID);
+
+    if (fileInputElement) {
+        fileInputElement.addEventListener("change",
+            libraryMenuLoadFileUseCase
         );
     }
 };
