@@ -66,11 +66,7 @@ export const execute = async (): Promise<void> =>
 
             const nameDiv = divs[1] as NonNullable<HTMLElement>;
             const nameElement = nameDiv.getElementsByTagName("p")[0] as NonNullable<HTMLElement>;
-            nameElement.style.width = `calc((var(--controller-width) - 10px - 2px) / 2 - 48px - ${padding / 2}px)`;
-
-            const symbolDiv = divs[2] as NonNullable<HTMLElement>;
-            const symbolElement = symbolDiv.getElementsByTagName("p")[0] as NonNullable<HTMLElement>;
-            symbolElement.style.width = `calc((var(--controller-width) - 10px - 2px) / 2 - ${padding / 2}px)`;
+            nameElement.style.width = `calc((var(--controller-width) - 10px - 2px) / 2 - 48px - ${padding}px)`;
         }
 
         // 選択中ならstyleを更新

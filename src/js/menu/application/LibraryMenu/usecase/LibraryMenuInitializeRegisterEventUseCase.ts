@@ -1,6 +1,6 @@
 import { EventType } from "@/tool/domain/event/EventType";
 import { execute as libraryMenuShowUseCase } from "./LibraryMenuShowUseCase";
-import { execute as libraryMenuAddNewFolderMouseDownEventService } from "../service/LibraryMenuAddNewFolderMouseDownEventService";
+import { execute as libraryMenuAddNewFolderMouseDownEventUseCase } from "./LibraryMenuAddNewFolderMouseDownEventUseCase";
 import {
     $LIBRARY_LIST_BOX_ID,
     $LIBRARY_FOLDER_ADD_ID
@@ -32,7 +32,7 @@ export const execute = (): void =>
 
     if (addFolderElement) {
         addFolderElement.addEventListener(EventType.MOUSE_DOWN,
-            libraryMenuAddNewFolderMouseDownEventService
+            libraryMenuAddNewFolderMouseDownEventUseCase
         );
     }
 };
