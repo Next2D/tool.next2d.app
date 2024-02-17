@@ -24,3 +24,21 @@ export const $LIBRARY_LIST_BOX_ID: string = "library-list-box";
  * @constant
  */
 export const $LIBRARY_FOLDER_ADD_ID: string = "library-menu-folder-add";
+
+/**
+ * @description 外部ファイル追加ボタンのElementのID
+ *              ID of the Element of the Add External File button
+ *
+ * @type {string}
+ * @constant
+ */
+export const $LIBRARY_FILE_ID: string = "library-menu-file";
+
+/**
+ * @description 外部ファイルのInput ElementのID
+ *              ID of Input Element in external file
+ *
+ * @type {string}
+ * @constant
+ */
+export const $LIBRARY_FILE_INPUT_ID: string = "library-menu-file-input";
