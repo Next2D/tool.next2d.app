@@ -4,8 +4,8 @@ import { $getMenu } from "@/menu/application/MenuUtil";
 import { $CONFIRM_MODAL_NAME } from "@/config/MenuConfig";
 
 /**
- * @description Drop時に重複したアイテムがあれば確認モーダルを起動
- *              If there are duplicate items when dropping, a confirmation modal is triggered.
+ * @description 全ての重複アイテムを上書きする
+ *              Overwrite all duplicate items
  *
  * @return {void}
  * @method
@@ -18,15 +18,13 @@ export const execute = (): void =>
         return ;
     }
 
-    // 重複があればモーダルを表示
     switch (true) {
 
+        // Fileを全て上書く
         case menu.fileObjects.length > 0:
-            menu.show();
             break;
 
         default:
             break;
-
     }
 };

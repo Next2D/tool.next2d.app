@@ -15,7 +15,7 @@ import { execute as confirmModalInitializeRegisterEventUseCase } from "@/menu/ap
 export class ConfirmModal extends BaseMenu
 {
     private readonly _$fileObjects: ConfirmModalFileObjectImpl[];
-    private readonly _$instances: InstanceImpl<any>[];
+    private readonly _$instanceObjects: InstanceImpl<any>[];
 
     /**
      * @constructor
@@ -35,7 +35,7 @@ export class ConfirmModal extends BaseMenu
          * @type {array}
          * @private
          */
-        this._$instances = [];
+        this._$instanceObjects = [];
     }
 
     /**
