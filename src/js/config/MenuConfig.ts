@@ -123,3 +123,12 @@ export const $SCRIPT_EDITOR_MODAL_NAME: string = "editor-modal";
  * @constant
  */
 export const $BILLING_MODAL_NAME: string = "billing-modal";
+
+/**
+ * @description 機能制限解除モーダルの名前
+ *              Functional Restriction Removal Modal Name
+ *
+ * @type {string}
+ * @constant
+ */
+export const $CONFIRM_MODAL_NAME: string = "confirm-modal";

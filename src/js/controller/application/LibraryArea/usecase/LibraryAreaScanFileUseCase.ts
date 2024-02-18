@@ -1,5 +1,6 @@
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { ExternalLibrary } from "@/external/controller/domain/model/ExternalLibrary";
+import { execute as confirmModalFilePushService } from "@/menu/application/ConfirmModal/service/ConfirmModalFilePushService";
 
 /**
  * @description ディレクトリの場合はフォルダファイルを作成してディレクトリ内のデータを読み込み
@@ -19,7 +20,8 @@ export const execute = async (
 ): Promise<void> => {
 
     // 外部APIを起動
-    const externalLibrary = new ExternalLibrary($getCurrentWorkSpace());
+    const workSpace = $getCurrentWorkSpace();
+    const externalLibrary = new ExternalLibrary(workSpace);
 
     // ディレクトリの中のファイルを全てスキャンする
     if (entry.isDirectory) {
@@ -58,6 +60,13 @@ export const execute = async (
         (entry as FileSystemFileEntry)
             .file((file: File): void =>
             {
+                // 重複チェック
+                const name = path ? `${path}/${file.name}` : file.name;
+                if (workSpace.pathMap.has(name)) {
+                    confirmModalFilePushService(file, path);
+                    return resolve();
+                }
+
                 externalLibrary
                     .importFile(file, path, false)
                     .then(resolve);

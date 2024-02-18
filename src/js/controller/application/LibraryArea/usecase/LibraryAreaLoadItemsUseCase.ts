@@ -6,6 +6,7 @@ import { execute as libraryAreaReOrderingService } from "../service/LibraryAreaR
 import { execute as libraryAreaReloadUseCase } from "./LibraryAreaReloadUseCase";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { libraryArea } from "@/controller/domain/model/LibraryArea";
+import { execute as confirmModalFileResetService } from "@/menu/application/ConfirmModal/service/ConfirmModalFileResetService";
 
 /**
  * @description 外部アイテムの読み込み実行関数
@@ -18,6 +19,9 @@ import { libraryArea } from "@/controller/domain/model/LibraryArea";
  */
 export const execute = async (items: DataTransferItemList): Promise<void> =>
 {
+    // 重複チェックの配列を初期化
+    confirmModalFileResetService();
+
     // アクティブなプロジェクトならプログレバーを表示
     progressMenuShowService();
 
