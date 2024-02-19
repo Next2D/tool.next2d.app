@@ -21,10 +21,11 @@ export const execute = (
 
     return {
         "command": $LIBRARY_FOLDER_STATE_COMMAND,
-        "args": [
+        "messages": [
             work_space_id,
             folder_id,
             mode
-        ]
+        ],
+        "args": []
     };
 };

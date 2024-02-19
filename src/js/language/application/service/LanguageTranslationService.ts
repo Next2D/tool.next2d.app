@@ -1,7 +1,7 @@
 import { $LANGUAGE_ELEMENTS_CLASS_NAME } from "@/config/LanguageConfig";
 import type { ShortcutViewObjectImpl } from "@/interface/ShortcutViewObjectImpl";
 import { $getViewMapping } from "@/menu/application/ShortcutSettingMenu/ShortcutSettingMenuUtil";
-import { $getMapping } from "@/language/application/LanguageUtil";
+import { $getMapping, $sprintf } from "@/language/application/LanguageUtil";
 
 /**
  * @description 変換対象のクラス名が設定されてるElementの言語を変換
@@ -12,7 +12,7 @@ import { $getMapping } from "@/language/application/LanguageUtil";
  * @method
  * @public
  */
-export const execute = async (target_element: HTMLElement | Document): Promise<void> =>
+export const execute = async (target_element: HTMLElement | Document): Promise<void> => 
 {
     // 指定されたクラスを全て取得
     const elements: HTMLCollectionOf<Element> = target_element
@@ -50,6 +50,12 @@ export const execute = async (target_element: HTMLElement | Document): Promise<v
             }
 
             value += ` (${shortcutText})`;
+        }
+
+        // 置換文字があれば変換
+        const args = element.dataset.args;
+        if (args) {
+            value = $sprintf(value, ...args.split("__@"));
         }
 
         element.innerText = value;

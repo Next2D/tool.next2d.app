@@ -31,8 +31,10 @@ export const execute = (): void =>
     for (let idx = 0; idx < histories.length; ++idx) {
         const historyObject = histories[idx];
         historyAddElementUseCase(
-            idx, historyGetTextService(historyObject.command),
-            scene.historyIndex > idx ? "" : "disable"
+            idx,
+            historyGetTextService(historyObject.command),
+            scene.historyIndex > idx ? "" : "disable",
+            ...historyObject.args
         );
     }
 };

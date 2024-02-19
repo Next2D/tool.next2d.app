@@ -63,7 +63,8 @@ export const execute = (
     if (!receiver && $useSocket()) {
         shareSendService({
             "command": $HISTORY_REDO_COMMAND,
-            "args": [workSpace.id, scene.id]
+            "messages": [workSpace.id, scene.id],
+            "args": []
         });
     }
 };

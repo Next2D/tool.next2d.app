@@ -24,12 +24,13 @@ export const execute = (
 
     return {
         "command": $LIBRARY_MOVE_FOLDER_COMMAND,
-        "args": [
+        "messages": [
             work_space_id,
             movie_clip_id,
             instance_id,
             before_folder_id,
             after_folder_id
-        ]
+        ],
+        "args": []
     };
 };

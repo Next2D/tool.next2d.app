@@ -1,7 +1,8 @@
 import {
     $getMapping,
     $setMapping,
-    $replace
+    $replace,
+    $sprintf
 } from "./LanguageUtil";
 
 describe("LanguageTest", () =>
@@ -16,5 +17,12 @@ describe("LanguageTest", () =>
 
         expect($getMapping().size).toBe(1);
         expect($replace("{{テスト}}")).toBe("てすと");
+    });
+
+    test("$sprintf test", () =>
+    {
+        const value = "%sを%sに変更";
+        expect(value).toBe("%sを%sに変更");
+        expect($sprintf(value, "before", "after")).toBe("beforeをafterに変更");
     });
 });

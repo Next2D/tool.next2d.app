@@ -20,6 +20,7 @@ export const execute = (
 
     return {
         "command": $SCREEN_TAB_NAME_UPDATE_COMMAND,
-        "args": [work_space_id, before_name, after_name]
+        "messages": [work_space_id, before_name, after_name],
+        "args": []
     };
 };

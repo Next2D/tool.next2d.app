@@ -20,6 +20,7 @@ export const execute = (): void =>
 
     // スクロールイベントを登録
     element.addEventListener("wheel",
-        timelineLayerWheelEventUseCase
+        timelineLayerWheelEventUseCase,
+        { "passive": false }
     );
 };

@@ -20,6 +20,9 @@ export const execute = (): void =>
         .getElementById($TIMELINE_CONTROLLER_BASE_ID);
 
     if (element) {
-        element.addEventListener("wheel", timelineHeaderWheelEventUseCase);
+        element.addEventListener("wheel",
+            timelineHeaderWheelEventUseCase,
+            { "passive": false }
+        );
     }
 };

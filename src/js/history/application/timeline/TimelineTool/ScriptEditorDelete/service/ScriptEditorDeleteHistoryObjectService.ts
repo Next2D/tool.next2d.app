@@ -22,11 +22,12 @@ export const execute = (
 
     return {
         "command": $TIMIELINE_TOOL_SCRIPT_DELETE_COMMAND,
-        "args": [
+        "messages": [
             work_space_id,
             movie_clip_id,
             frame,
             before_script
-        ]
+        ],
+        "args": []
     };
 };

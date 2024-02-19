@@ -23,11 +23,12 @@ export const execute = (
 
     return {
         "command": $TIMELINE_TOOL_LAYER_DELETE_COMMAND,
-        "args": [
+        "messages": [
             work_space_id,
             movie_clip_id,
             index,
             layer.toObject()
-        ]
+        ],
+        "args": []
     };
 };

@@ -8,11 +8,14 @@
  * @method
  * @public
  */
-export const execute = (index: number, text: string): string =>
-{
+export const execute = (
+    index: number,
+    text: string,
+    ...values: string[]
+): string => {
     return `
 <div data-index="${index}">
-    <span class="language" data-text="{{${text}}}">${text}</span> 
+    <span class="language" data-text="{{${text}}}" data-args="${values.join("__@")}">${text}</span> 
 </div>
 `;
 };

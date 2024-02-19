@@ -15,6 +15,7 @@ import { execute as confirmModalInitializeRegisterEventUseCase } from "@/menu/ap
 export class ConfirmModal extends BaseMenu
 {
     private readonly _$fileObjects: ConfirmModalFileObjectImpl[];
+    private _$fileObject: ConfirmModalFileObjectImpl | null;
     private readonly _$instanceObjects: InstanceImpl<any>[];
 
     /**
@@ -30,6 +31,12 @@ export class ConfirmModal extends BaseMenu
          * @private
          */
         this._$fileObjects = [];
+
+        /**
+         * @type {object}
+         * @private
+         */
+        this._$fileObject = null;
 
         /**
          * @type {array}
@@ -48,6 +55,41 @@ export class ConfirmModal extends BaseMenu
     get fileObjects (): ConfirmModalFileObjectImpl[]
     {
         return this._$fileObjects;
+    }
+
+    /**
+     * @description 現在利用中のFileオブジェクト
+     *              File object currently in use
+     *
+     * @member {object | null}
+     * @public
+     */
+    get fileObject (): ConfirmModalFileObjectImpl | null
+    {
+        return this._$fileObject;
+    }
+    set fileObject (file_object: ConfirmModalFileObjectImpl | null)
+    {
+        this._$fileObject = file_object;
+    }
+
+    /**
+     * @description Fileの配列から作業変数にセット
+     *              Set to a working variable from an array of File
+     *
+     * @return {boolean}
+     * @method
+     * @public
+     */
+    setupFileObject (): boolean
+    {
+        if (!this._$fileObjects.length) {
+            return false;
+        }
+
+        this._$fileObject = this._$fileObjects.pop() as NonNullable<ConfirmModalFileObjectImpl>;
+
+        return true;
     }
 
     /**

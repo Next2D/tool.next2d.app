@@ -18,5 +18,7 @@ export const execute = (): void =>
         return ;
     }
 
+    // file reset
+    menu.fileObject = null;
     menu.fileObjects.length = 0;
 };

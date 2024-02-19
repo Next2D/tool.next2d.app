@@ -23,12 +23,13 @@ export const execute = (
 
     return {
         "command": $TIMELINE_TOOL_LAYER_ADD_COMMAND,
-        "args": [
+        "messages": [
             work_space_id,
             movie_clip_id,
             index,
             layer.name,
             layer.color
-        ]
+        ],
+        "args": [layer.name]
     };
 };

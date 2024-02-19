@@ -24,12 +24,13 @@ export const execute = (
 
     return {
         "command": $LAYER_NAME_UPDATE_COMMAND,
-        "args": [
+        "messages": [
             work_space_id,
             movie_clip_id,
             index,
             before_name,
             after_name
-        ]
+        ],
+        "args": []
     };
 };

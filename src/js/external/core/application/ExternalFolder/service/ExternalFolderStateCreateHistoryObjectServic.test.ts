@@ -9,8 +9,8 @@ describe("ExternalFolderStateCreateHistoryObjectServicTest", () =>
         expect(object.command).toBe($LIBRARY_FOLDER_STATE_COMMAND);
 
         // 配列の順番が崩れてもいいようにテストケースを残す
-        expect(object.args[0]).toBe(1);
-        expect(object.args[1]).toBe(2);
-        expect(object.args[2]).toBe("open");
+        expect(object.messages[0]).toBe(1);
+        expect(object.messages[1]).toBe(2);
+        expect(object.messages[2]).toBe("open");
     });
 });

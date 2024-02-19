@@ -24,12 +24,13 @@ export const execute = (
 
     return {
         "command": $LIBRARY_ADD_NEW_FOLDER_COMMAND,
-        "args": [
+        "messages": [
             work_space_id,
             movie_clip_id,
             instance_id,
             name,
             folder_id
-        ]
+        ],
+        "args": []
     };
 };

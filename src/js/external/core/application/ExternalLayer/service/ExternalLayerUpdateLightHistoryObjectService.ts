@@ -22,11 +22,12 @@ export const execute = (
 
     return {
         "command": $LAYER_LIGHT_UPDATE_COMMAND,
-        "args": [
+        "messages": [
             work_space_id,
             movie_clip_id,
             index,
             value
-        ]
+        ],
+        "args": []
     };
 };

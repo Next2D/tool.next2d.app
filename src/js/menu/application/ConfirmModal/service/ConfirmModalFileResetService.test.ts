@@ -6,21 +6,12 @@ describe("ConfirmModalFileResetServiceTest", () =>
 {
     test("execute test", () =>
     {
-        const mockFile = {
-            "name": "fileName"
-        };
-
         const mockMenu = {
             "name": $CONFIRM_MODAL_NAME,
-            "fileObjects": [{
-                "file": mockFile,
-                "path": "test"
-            }]
+            "fileObjects": [0]
         };
         $registerMenu(mockMenu);
 
-        expect(mockMenu.fileObjects[0].file).toBe(mockFile);
-        expect(mockMenu.fileObjects[0].path).toBe("test");
         expect(mockMenu.fileObjects.length).toBe(1);
         execute();
         expect(mockMenu.fileObjects.length).toBe(0);

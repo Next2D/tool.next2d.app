@@ -1,4 +1,5 @@
 export interface HistoryObjectImpl {
     command: number;
-    args: any[];
+    messages: any[];
+    args: string[];
 }

@@ -21,10 +21,11 @@ export const execute = (
 
     return {
         "command": $LIBRARY_ADD_NEW_BITMAP_COMMAND,
-        "args": [
+        "messages": [
             work_space_id,
             movie_clip_id,
             bitmap.toObject()
-        ]
+        ],
+        "args": []
     };
 };

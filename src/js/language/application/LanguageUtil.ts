@@ -50,3 +50,26 @@ export const $replace = (value: string): string =>
         ? $mapping.get(value) || value
         : value;
 };
+
+/**
+ * @description %sを指定のテキストに置換
+ *              Replace %s with specified text
+ *
+ * @param  {string} value
+ * @param  {array} values
+ * @return {string}
+ * @method
+ * @public
+ */
+export const $sprintf = (value: string, ...values: string[]): string =>
+{
+    if (!values.length) {
+        return "";
+    }
+
+    for (let idx = 0; idx < values.length; ++idx) {
+        value = value.replace("%s", values[idx]);
+    }
+
+    return value;
+};

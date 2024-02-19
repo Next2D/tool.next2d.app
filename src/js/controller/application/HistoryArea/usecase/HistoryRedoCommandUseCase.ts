@@ -37,116 +37,116 @@ import {
  */
 export const execute = (history_object: HistoryObjectImpl): void =>
 {
-    const args = history_object.args;
+    const messages = history_object.messages;
     switch (history_object.command) {
 
         // レイヤー名を変更
         case $LAYER_NAME_UPDATE_COMMAND:
             timelineLayerControllerLayerNameUpdateHistoryRedoUseCase(
-                args[0] as number, // workSpaceId
-                args[1] as number, // MovieClipId
-                args[2] as number, // Layer Index,
-                args[4] as string  // afterName
+                messages[0] as number, // workSpaceId
+                messages[1] as number, // MovieClipId
+                messages[2] as number, // Layer Index,
+                messages[4] as string  // afterName
             );
             break;
 
         // タブ名の変更
         case $SCREEN_TAB_NAME_UPDATE_COMMAND:
             screenTabNameAddHistoryRedoUseCase(
-                args[0] as number, // workSpaceId
-                args[2] as string  // afterName
+                messages[0] as number, // workSpaceId
+                messages[2] as string  // afterName
             );
             break;
 
         // 新規レイヤー追加
         case $TIMELINE_TOOL_LAYER_ADD_COMMAND:
             timelineToolLayerAddHistoryRedoUseCase(
-                args[0] as number, // workSpaceId
-                args[1] as number, // MovieClipId
-                args[2] as number, // Layer Index
-                args[3] as string, // Layer Name
-                args[4] as string  // Layer Color
+                messages[0] as number, // workSpaceId
+                messages[1] as number, // MovieClipId
+                messages[2] as number, // Layer Index
+                messages[3] as string, // Layer Name
+                messages[4] as string  // Layer Color
             );
             break;
 
         // レイヤー削除
         case $TIMELINE_TOOL_LAYER_DELETE_COMMAND:
             timelineToolLayerDeleteHistoryRedoUseCase(
-                args[0] as number, // workSpaceId
-                args[1] as number, // MovieClipId
-                args[2] as number  // Layer index
+                messages[0] as number, // workSpaceId
+                messages[1] as number, // MovieClipId
+                messages[2] as number  // Layer index
             );
             break;
 
         // スクリプトの新規追加
         case $TIMIELINE_TOOL_SCRIPT_NEW_REGISTER_COMMAND:
             scriptEditorNewRegisterHistoryRedoUseCase(
-                args[0] as number, // workSpaceId
-                args[1] as number, // MovieClipId
-                args[2] as number, // frame
-                args[3] as string  // script
+                messages[0] as number, // workSpaceId
+                messages[1] as number, // MovieClipId
+                messages[2] as number, // frame
+                messages[3] as string  // script
             );
             break;
 
         // スクリプトの変更
         case $TIMIELINE_TOOL_SCRIPT_UPDATE_COMMAND:
             scriptEditorUpdateHistoryRedoUseCase(
-                args[0] as number, // workSpaceId
-                args[1] as number, // MovieClipId
-                args[2] as number, // frame
-                args[4] as string // after script
+                messages[0] as number, // workSpaceId
+                messages[1] as number, // MovieClipId
+                messages[2] as number, // frame
+                messages[4] as string // after script
             );
             break;
 
         // スクリプトの削除
         case $TIMIELINE_TOOL_SCRIPT_DELETE_COMMAND:
             scriptEditorDeleteHistoryRedoUseCase(
-                args[0] as number, // workSpaceId
-                args[1] as number, // MovieClipId
-                args[2] as number // frame
+                messages[0] as number, // workSpaceId
+                messages[1] as number, // MovieClipId
+                messages[2] as number // frame
             );
             break;
 
         // 新規フォルダ追加
         case $LIBRARY_ADD_NEW_FOLDER_COMMAND:
             libraryAreaAddNewFolderHistoryRedoUseCase(
-                args[0] as number, // workSpaceId
-                args[2] as number, // FolderId
-                args[3] as string, // Folder Name
-                args[4] as number // Parent FolderId
+                messages[0] as number, // workSpaceId
+                messages[2] as number, // FolderId
+                messages[3] as string, // Folder Name
+                messages[4] as number // Parent FolderId
             );
             break;
 
         // インスタンス名を変更
         case $LIBRARY_UPDATE_INSTANCE_NAME_COMMAND:
             instanceUpdateNameHistoryRedoUseCase(
-                args[0] as number, // workSpaceId
-                args[2] as number, // InstanceId
-                args[4] as string  // after name
+                messages[0] as number, // workSpaceId
+                messages[2] as number, // InstanceId
+                messages[4] as string  // after name
             );
             break;
 
         // インスタンスのシンボル名を変更
         case $LIBRARY_UPDATE_INSTANCE_SYMBOL_COMMAND:
             instanceUpdateSymbolHistoryRedoUseCase(
-                args[0] as number, // workSpaceId
-                args[2] as number, // InstanceId
-                args[4] as string  // after name
+                messages[0] as number, // workSpaceId
+                messages[2] as number, // InstanceId
+                messages[4] as string  // after name
             );
             break;
 
         case $LIBRARY_ADD_NEW_BITMAP_COMMAND:
             libraryAreaAddNewBitmapHistoryRedoUseCase(
-                args[0] as number, // workSpaceId
-                args[2] as BitmapSaveObjectImpl // Bitmap Save Object
+                messages[0] as number, // workSpaceId
+                messages[2] as BitmapSaveObjectImpl // Bitmap Save Object
             );
             break;
 
         case $LIBRARY_MOVE_FOLDER_COMMAND:
             libraryAreaMoveFolderHistoryRedoUseCase(
-                args[0] as number, // workSpaceId
-                args[2] as number, // InstanceId
-                args[4] as number // After FolderID
+                messages[0] as number, // workSpaceId
+                messages[2] as number, // InstanceId
+                messages[4] as number // After FolderID
             );
             break;
 

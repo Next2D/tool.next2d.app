@@ -32,20 +32,21 @@ export const execute = (
     // fixed logic
     historyRemoveElementService(movie_clip);
 
-    // 作業履歴にElementを追加
-    // fixed logic
-    if (work_space.active && movie_clip.actions) {
-        historyAddElementUseCase(
-            movie_clip.historyIndex,
-            historyGetTextService($TIMELINE_TOOL_LAYER_ADD_COMMAND)
-        );
-    }
-
     const index = movie_clip.layers.indexOf(layer);
 
     const historyObject = timelineToolLayerAddCreateHistoryObjectService(
         work_space.id, movie_clip.id, layer, index
     );
+
+    // 作業履歴にElementを追加
+    if (work_space.active && movie_clip.actions) {
+        historyAddElementUseCase(
+            movie_clip.historyIndex,
+            historyGetTextService($TIMELINE_TOOL_LAYER_ADD_COMMAND),
+            "",
+            ...historyObject.args
+        );
+    }
 
     // 追加したLayer Objectを履歴に登録
     movie_clip.addHistory(historyObject);

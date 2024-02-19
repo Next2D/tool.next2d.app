@@ -24,12 +24,13 @@ export const execute = (
 
     return {
         "command": $TIMIELINE_TOOL_SCRIPT_UPDATE_COMMAND,
-        "args": [
+        "messages": [
             work_space_id,
             movie_clip_id,
             frame,
             before_script,
             after_script
-        ]
+        ],
+        "args": []
     };
 };

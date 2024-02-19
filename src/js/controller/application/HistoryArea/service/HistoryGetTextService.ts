@@ -26,7 +26,7 @@ export const execute = (command: number): string =>
     switch (command) {
 
         case $TIMELINE_TOOL_LAYER_ADD_COMMAND:
-            return "レイヤーを追加";
+            return "レイヤーに「%s」を追加";
 
         case $TIMELINE_TOOL_LAYER_DELETE_COMMAND:
             return "レイヤーを削除";

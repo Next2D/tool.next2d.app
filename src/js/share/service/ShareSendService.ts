@@ -22,7 +22,7 @@ export const execute = (history_object: HistoryObjectImpl): void =>
     const sendObject: ShareReceiveMessageImpl = {
         "roomId": location.hash.replace("#", ""),
         "historyCommand": history_object.command,
-        "data": history_object.args,
+        "data": history_object.messages,
         "command": "receive"
     };
 

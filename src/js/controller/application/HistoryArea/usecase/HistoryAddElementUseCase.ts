@@ -18,7 +18,8 @@ import { execute as languageTranslationService } from "@/language/application/se
 export const execute = (
     index: number,
     text: string,
-    class_name: "" | "disable" = ""
+    class_name: "" | "disable" = "",
+    ...values: string[]
 ): void => {
 
     const element: HTMLElement | null = document
@@ -29,7 +30,7 @@ export const execute = (
     }
 
     element.insertAdjacentHTML("beforeend",
-        historyListComponent(index, text)
+        historyListComponent(index, text, ...values)
     );
 
     const lastElement = element.lastElementChild as NonNullable<HTMLElement>;

@@ -24,12 +24,13 @@ export const execute = (
 
     return {
         "command": $LIBRARY_UPDATE_INSTANCE_SYMBOL_COMMAND,
-        "args": [
+        "messages": [
             work_space_id,
             movie_clip_id,
             instance_id,
             before_name,
             after_name
-        ]
+        ],
+        "args": []
     };
 };

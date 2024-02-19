@@ -15,8 +15,8 @@ describe("LibraryAreaAddNewBitmapCreateHistoryObjectServiceTest", () =>
         expect(object.command).toBe($LIBRARY_ADD_NEW_BITMAP_COMMAND);
 
         // 配列の順番が崩れてもいいようにテストケースを残す
-        expect(object.args[0]).toBe(1);
-        expect(object.args[1]).toBe(2);
-        expect(object.args[2].id).toBe(bitmap.id);
+        expect(object.messages[0]).toBe(1);
+        expect(object.messages[1]).toBe(2);
+        expect(object.messages[2].id).toBe(bitmap.id);
     });
 });

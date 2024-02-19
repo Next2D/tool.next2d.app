@@ -38,115 +38,115 @@ import {
  */
 export const execute = (history_object: HistoryObjectImpl): void =>
 {
-    const args = history_object.args;
+    const messages = history_object.messages;
     switch (history_object.command) {
 
         // レイヤー名を変更
         case $LAYER_NAME_UPDATE_COMMAND:
             timelineLayerControllerLayerNameUpdateHistoryUndoUseCase(
-                args[0] as number, // workSpaceId
-                args[1] as number, // MovieClipId
-                args[2] as number, // Layer Index,
-                args[3] as string  // beforeName
+                messages[0] as number, // workSpaceId
+                messages[1] as number, // MovieClipId
+                messages[2] as number, // Layer Index,
+                messages[3] as string  // beforeName
             );
             break;
 
         // タブ名を更新
         case $SCREEN_TAB_NAME_UPDATE_COMMAND:
             screenTabNameAddHistoryUndoUseCase(
-                args[0] as number, // workSpaceId
-                args[1] as string  // beforeName
+                messages[0] as number, // workSpaceId
+                messages[1] as string  // beforeName
             );
             break;
 
         // レイヤー追加
         case $TIMELINE_TOOL_LAYER_ADD_COMMAND:
             timelineToolLayerAddHistoryUndoUseCase(
-                args[0] as number, // workSpaceId
-                args[1] as number, // MovieClipId
-                args[2] as number  // Layer Index
+                messages[0] as number, // workSpaceId
+                messages[1] as number, // MovieClipId
+                messages[2] as number  // Layer Index
             );
             break;
 
         // レイヤーの削除
         case $TIMELINE_TOOL_LAYER_DELETE_COMMAND:
             timelineToolLayerDeleteHistoryUndoUseCase(
-                args[0] as number, // workSpaceId
-                args[1] as number, // MovieClipId
-                args[2] as number, // Layer Index
-                args[3] as LayerSaveObjectImpl // Layer Object
+                messages[0] as number, // workSpaceId
+                messages[1] as number, // MovieClipId
+                messages[2] as number, // Layer Index
+                messages[3] as LayerSaveObjectImpl // Layer Object
             );
             break;
 
         // スクリプトの新規追加
         case $TIMIELINE_TOOL_SCRIPT_NEW_REGISTER_COMMAND:
             scriptEditorNewRegisterHistoryUndoUseCase(
-                args[0] as number, // workSpaceId
-                args[1] as number, // MovieClipId
-                args[2] as number // frame
+                messages[0] as number, // workSpaceId
+                messages[1] as number, // MovieClipId
+                messages[2] as number // frame
             );
             break;
 
         // スクリプトの変更
         case $TIMIELINE_TOOL_SCRIPT_UPDATE_COMMAND:
             scriptEditorUpdateHistoryUndoUseCase(
-                args[0] as number, // workSpaceId
-                args[1] as number, // MovieClipId
-                args[2] as number, // frame
-                args[3] as string // before script
+                messages[0] as number, // workSpaceId
+                messages[1] as number, // MovieClipId
+                messages[2] as number, // frame
+                messages[3] as string // before script
             );
             break;
 
         // スクリプトの削除
         case $TIMIELINE_TOOL_SCRIPT_DELETE_COMMAND:
             scriptEditorDeleteHistoryUndoUseCase(
-                args[0] as number, // workSpaceId
-                args[1] as number, // MovieClipId
-                args[2] as number, // frame
-                args[3] as string // after script
+                messages[0] as number, // workSpaceId
+                messages[1] as number, // MovieClipId
+                messages[2] as number, // frame
+                messages[3] as string // after script
             );
             break;
 
         // 新規フォルダ追加
         case $LIBRARY_ADD_NEW_FOLDER_COMMAND:
             libraryAreaAddNewFolderHistoryUndoUseCase(
-                args[0] as number, // workSpaceId
-                args[2] as number // Folder Id
+                messages[0] as number, // workSpaceId
+                messages[2] as number // Folder Id
             );
             break;
 
         // インスタンス名を変更
         case $LIBRARY_UPDATE_INSTANCE_NAME_COMMAND:
             instanceUpdateNameHistoryUndoUseCase(
-                args[0] as number, // workSpaceId
-                args[2] as number, // InstanceId
-                args[3] as string  // before name
+                messages[0] as number, // workSpaceId
+                messages[2] as number, // InstanceId
+                messages[3] as string  // before name
             );
             break;
 
         // インスタンスのシンボル名を変更
         case $LIBRARY_UPDATE_INSTANCE_SYMBOL_COMMAND:
             instanceUpdateSymbolHistoryUndoUseCase(
-                args[0] as number, // workSpaceId
-                args[2] as number, // InstanceId
-                args[3] as string  // before name
+                messages[0] as number, // workSpaceId
+                messages[2] as number, // InstanceId
+                messages[3] as string  // before name
             );
             break;
 
         // 新規bitmap追加
         case $LIBRARY_ADD_NEW_BITMAP_COMMAND:
             libraryAreaAddNewBitmapHistoryUndoUseCase(
-                args[0] as number, // workSpaceId
-                args[2] as BitmapSaveObjectImpl // Bitmap Save Object
+                messages[0] as number, // workSpaceId
+                messages[2] as BitmapSaveObjectImpl // Bitmap Save Object
             );
             break;
 
         // フォルダ移動追加
         case $LIBRARY_MOVE_FOLDER_COMMAND:
             libraryAreaMoveFolderHistoryUndoUseCase(
-                args[0] as number, // workSpaceId
-                args[2] as number, // InstanceId
-                args[3] as number // Before FolderID
+                messages[0] as number, // workSpaceId
+                messages[2] as number, // InstanceId
+                messages[3] as number // Before FolderID
             );
             break;
 
