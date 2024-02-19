@@ -1,4 +1,4 @@
-import { $LANGUAGE_ELEMENTS_CLASS_NAME } from "@/config/LanguageConfig";
+import { $LANGUAGE_ELEMENTS_CLASS_NAME, $LANGUAGE_SPLIT_TEXT } from "@/config/LanguageConfig";
 import type { ShortcutViewObjectImpl } from "@/interface/ShortcutViewObjectImpl";
 import { $getViewMapping } from "@/menu/application/ShortcutSettingMenu/ShortcutSettingMenuUtil";
 import { $getMapping, $sprintf } from "@/language/application/LanguageUtil";
@@ -55,7 +55,7 @@ export const execute = async (target_element: HTMLElement | Document): Promise<v
         // 置換文字があれば変換
         const args = element.dataset.args;
         if (args) {
-            value = $sprintf(value, ...args.split("__@"));
+            value = $sprintf(value, ...args.split($LANGUAGE_SPLIT_TEXT));
         }
 
         element.innerText = value;

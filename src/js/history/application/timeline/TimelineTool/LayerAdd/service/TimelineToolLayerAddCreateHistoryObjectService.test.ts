@@ -18,5 +18,8 @@ describe("TimelineToolLayerAddCreateHistoryObjectServiceTest", () =>
         expect(object.messages[2]).toBe(10);
         expect(object.messages[3]).toBe(layer.name);
         expect(object.messages[4]).toBe(layer.color);
+
+        // 表示様の配列のチェック
+        expect(object.args[0]).toBe(layer.name);
     });
 });

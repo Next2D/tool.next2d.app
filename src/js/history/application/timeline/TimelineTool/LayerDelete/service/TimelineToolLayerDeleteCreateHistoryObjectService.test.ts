@@ -17,5 +17,8 @@ describe("TimelineToolLayerDeleteCreateHistoryObjectServiceTest", () =>
         expect(object.messages[1]).toBe(0);
         expect(object.messages[2]).toBe(9);
         expect(object.messages[3].name).toBe(layer.name);
+
+        // 表示様の配列のチェック
+        expect(object.args[0]).toBe(layer.name);
     });
 });

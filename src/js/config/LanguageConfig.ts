@@ -15,3 +15,12 @@ export const $LANGUAGE_URL: string = "https://language.next2d.app";
  * @constant
  */
 export const $LANGUAGE_ELEMENTS_CLASS_NAME: string = "language";
+
+/**
+ * @description Elementのdatasetにセットされた%sの値を分解するキーテキスト
+ *              Key text to decompose the %s value set in the Element's dataset
+ *
+ * @type {string}
+ * @constant
+ */
+export const $LANGUAGE_SPLIT_TEXT: string = "__@";

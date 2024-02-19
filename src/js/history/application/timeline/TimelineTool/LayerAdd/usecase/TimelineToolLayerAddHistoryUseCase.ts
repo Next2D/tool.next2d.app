@@ -34,11 +34,13 @@ export const execute = (
 
     const index = movie_clip.layers.indexOf(layer);
 
+    // fixed logic
     const historyObject = timelineToolLayerAddCreateHistoryObjectService(
         work_space.id, movie_clip.id, layer, index
     );
 
     // 作業履歴にElementを追加
+    // fixed logic
     if (work_space.active && movie_clip.actions) {
         historyAddElementUseCase(
             movie_clip.historyIndex,
@@ -49,6 +51,7 @@ export const execute = (
     }
 
     // 追加したLayer Objectを履歴に登録
+    // fixed logic
     movie_clip.addHistory(historyObject);
 
     // 受け取り処理ではなく、画面共有していれば共有者に送信

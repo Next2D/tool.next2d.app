@@ -1,3 +1,5 @@
+import { $LANGUAGE_SPLIT_TEXT } from "@/config/LanguageConfig";
+
 /**
  * @description 作業履歴のElementをstringで返却
  *              Return Element of work history as string
@@ -15,7 +17,7 @@ export const execute = (
 ): string => {
     return `
 <div data-index="${index}">
-    <span class="language" data-text="{{${text}}}" data-args="${values.join("__@")}">${text}</span> 
+    <span class="language" data-text="{{${text}}}" data-args="${values.join($LANGUAGE_SPLIT_TEXT)}">${text}</span> 
 </div>
 `;
 };

@@ -29,6 +29,6 @@ export const execute = (
             index,
             layer.toObject()
         ],
-        "args": []
+        "args": [layer.name]
     };
 };

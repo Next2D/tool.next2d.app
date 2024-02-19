@@ -29,7 +29,7 @@ export const execute = (command: number): string =>
             return "レイヤーに「%s」を追加";
 
         case $TIMELINE_TOOL_LAYER_DELETE_COMMAND:
-            return "レイヤーを削除";
+            return "レイヤーの「%s」を削除";
 
         case $TIMIELINE_TOOL_SCRIPT_NEW_REGISTER_COMMAND:
             return "スクリプトを追加";
