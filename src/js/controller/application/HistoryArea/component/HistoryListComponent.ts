@@ -13,7 +13,7 @@ import { $LANGUAGE_SPLIT_TEXT } from "@/config/LanguageConfig";
 export const execute = (
     index: number,
     text: string,
-    ...values: string[]
+    ...values: Array<string | number>
 ): string => {
     return `
 <div data-index="${index}">

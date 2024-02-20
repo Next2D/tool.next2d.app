@@ -26,6 +26,8 @@ export const execute = (
             movie_clip_id,
             bitmap.toObject()
         ],
-        "args": []
+        "args": [
+            bitmap.name
+        ]
     };
 };

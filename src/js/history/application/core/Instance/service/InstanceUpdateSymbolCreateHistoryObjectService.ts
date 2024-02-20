@@ -31,6 +31,9 @@ export const execute = (
             before_name,
             after_name
         ],
-        "args": []
+        "args": [
+            before_name,
+            after_name
+        ]
     };
 };

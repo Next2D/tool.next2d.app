@@ -34,20 +34,24 @@ export const execute = (
     // fixed logic
     historyRemoveElementService(movie_clip);
 
+    // fixed logic
+    const historyObject = libraryAreaMoveFolderCreateHistoryObjectService(
+        work_space.id, movie_clip.id, instance.id, instance.folderId, folder_id, instance.name
+    );
+
     // 作業履歴にElementを追加
     // fixed logic
     if (work_space.active && movie_clip.actions) {
         historyAddElementUseCase(
             movie_clip.historyIndex,
-            historyGetTextService($LIBRARY_MOVE_FOLDER_COMMAND)
+            historyGetTextService($LIBRARY_MOVE_FOLDER_COMMAND),
+            "",
+            ...historyObject.args
         );
     }
 
-    const historyObject = libraryAreaMoveFolderCreateHistoryObjectService(
-        work_space.id, movie_clip.id, instance.id, instance.folderId, folder_id
-    );
-
     // 追加したLayer Objectを履歴に登録
+    // fixed logic
     movie_clip.addHistory(historyObject);
 
     // 受け取り処理ではなく、画面共有していれば共有者に送信

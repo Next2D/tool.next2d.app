@@ -5,7 +5,7 @@ describe("LibraryAreaMoveFolderCreateHistoryObjectServiceTest", () =>
 {
     test("execute test", () =>
     {
-        const object = execute(1, 2, 0, 4, 0);
+        const object = execute(1, 2, 0, 4, 0, "test");
         expect(object.command).toBe($LIBRARY_MOVE_FOLDER_COMMAND);
 
         // 配列の順番が崩れてもいいようにテストケースを残す
@@ -14,5 +14,8 @@ describe("LibraryAreaMoveFolderCreateHistoryObjectServiceTest", () =>
         expect(object.messages[2]).toBe(0);
         expect(object.messages[3]).toBe(4);
         expect(object.messages[4]).toBe(0);
+
+        // 表示様の配列のチェック
+        expect(object.args[0]).toBe("test");
     });
 });

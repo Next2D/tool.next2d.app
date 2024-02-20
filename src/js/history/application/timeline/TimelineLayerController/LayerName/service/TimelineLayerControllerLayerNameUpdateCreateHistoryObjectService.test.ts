@@ -18,5 +18,9 @@ describe("TimelineLayerControllerLayerNameUpdateCreateHistoryObjectServiceTest",
         expect(object.messages[2]).toBe(0);
         expect(object.messages[3]).toBe(layer.name);
         expect(object.messages[4]).toBe("after_name");
+
+        // 表示様の配列のチェック
+        expect(object.args[0]).toBe(layer.name);
+        expect(object.args[1]).toBe("after_name");
     });
 });

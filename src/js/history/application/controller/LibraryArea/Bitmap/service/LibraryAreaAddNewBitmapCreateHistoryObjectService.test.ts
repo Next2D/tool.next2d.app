@@ -18,5 +18,8 @@ describe("LibraryAreaAddNewBitmapCreateHistoryObjectServiceTest", () =>
         expect(object.messages[0]).toBe(1);
         expect(object.messages[1]).toBe(2);
         expect(object.messages[2].id).toBe(bitmap.id);
+
+        // 表示様の配列のチェック
+        expect(object.args[0]).toBe(bitmap.name);
     });
 });

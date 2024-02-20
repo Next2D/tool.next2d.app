@@ -31,20 +31,24 @@ export const execute = (
     // fixed logic
     historyRemoveElementService(scene);
 
-    // fixed logic
-    // 作業履歴にElementを追加
-    historyAddElementUseCase(
-        scene.historyIndex,
-        historyGetTextService($SCREEN_TAB_NAME_UPDATE_COMMAND)
-    );
-
     // 追加したLayer Objectを履歴に登録
+    // fixed logic
     const historyObject = screenTabCreateHistoryObjectService(
         work_space.id,
         work_space.name,
         name
     );
 
+    // 作業履歴にElementを追加
+    // fixed logic
+    historyAddElementUseCase(
+        scene.historyIndex,
+        historyGetTextService($SCREEN_TAB_NAME_UPDATE_COMMAND),
+        "",
+        ...historyObject.args
+    );
+
+    // fixed logic
     scene.addHistory(historyObject);
 
     // 受け取り処理ではなく、画面共有していれば共有者に送信

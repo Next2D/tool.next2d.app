@@ -19,7 +19,7 @@ export const execute = (
     index: number,
     text: string,
     class_name: "" | "disable" = "",
-    ...values: string[]
+    ...values: Array<string | number>
 ): void => {
 
     const element: HTMLElement | null = document

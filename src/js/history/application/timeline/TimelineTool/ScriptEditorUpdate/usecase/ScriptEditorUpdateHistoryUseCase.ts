@@ -33,25 +33,26 @@ export const execute = (
     // fixed logic
     historyRemoveElementService(movie_clip);
 
-    // fixed logic
-    if (work_space.active && movie_clip.active) {
-
-        // 作業履歴にElementを追加
-        // fixed logic
-        historyAddElementUseCase(
-            movie_clip.historyIndex,
-            historyGetTextService($TIMIELINE_TOOL_SCRIPT_UPDATE_COMMAND)
-        );
-
-    }
-
     const beforeScript = movie_clip.getAction(frame);
 
+    // fixed logic
     const historyObject = scriptEditorUpdateHistoryObjectService(
         work_space.id, movie_clip.id, frame, beforeScript, after_script
     );
 
+    // 作業履歴にElementを追加
+    // fixed logic
+    if (work_space.active && movie_clip.active) {
+        historyAddElementUseCase(
+            movie_clip.historyIndex,
+            historyGetTextService($TIMIELINE_TOOL_SCRIPT_UPDATE_COMMAND),
+            "",
+            ...historyObject.args
+        );
+    }
+
     // Objectを履歴に登録
+    // fixed logic
     movie_clip.addHistory(historyObject);
 
     // 受け取り処理ではなく、画面共有していれば共有者に送信

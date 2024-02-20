@@ -12,5 +12,8 @@ describe("ScreenTabCreateHistoryObjectServiceTest", () =>
         expect(object.messages[0]).toBe(1);
         expect(object.messages[1]).toBe("before_name");
         expect(object.messages[2]).toBe("after_name");
+
+        expect(object.args[0]).toBe("before_name");
+        expect(object.args[1]).toBe("after_name");
     });
 });

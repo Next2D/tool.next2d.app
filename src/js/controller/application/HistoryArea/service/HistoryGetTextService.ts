@@ -32,34 +32,34 @@ export const execute = (command: number): string =>
             return "レイヤーの「%s」を削除";
 
         case $TIMIELINE_TOOL_SCRIPT_NEW_REGISTER_COMMAND:
-            return "スクリプトを追加";
+            return "%sフレームにスクリプトを追加";
 
         case $TIMIELINE_TOOL_SCRIPT_UPDATE_COMMAND:
-            return "スクリプトを変更";
+            return "%sフレームのスクリプトを変更";
 
         case $TIMIELINE_TOOL_SCRIPT_DELETE_COMMAND:
-            return "スクリプトを削除";
+            return "%sフレームのスクリプトを削除";
 
         case $SCREEN_TAB_NAME_UPDATE_COMMAND:
-            return "プロジェクト名を変更";
+            return "プロジェクト名「%s」を「%s」に変更";
 
         case $LAYER_NAME_UPDATE_COMMAND:
-            return "レイヤー名を変更";
+            return "レイヤー名「%s」を「%s」変更";
 
         case $LIBRARY_ADD_NEW_FOLDER_COMMAND:
             return "新規フォルダー";
 
         case $LIBRARY_UPDATE_INSTANCE_NAME_COMMAND:
-            return "インスタンス名を変更";
+            return "インスタンス名「%s」を「%s」変更";
 
         case $LIBRARY_UPDATE_INSTANCE_SYMBOL_COMMAND:
-            return "シンボル名を変更";
+            return "シンボル名を「%s」に変更";
 
         case $LIBRARY_ADD_NEW_BITMAP_COMMAND:
-            return "画像の取り込み";
+            return "画像「%s」を取り込み";
 
         case $LIBRARY_MOVE_FOLDER_COMMAND:
-            return "アイテムのフォルダ移動";
+            return "「%s」のフォルダ移動";
 
         default:
             break;

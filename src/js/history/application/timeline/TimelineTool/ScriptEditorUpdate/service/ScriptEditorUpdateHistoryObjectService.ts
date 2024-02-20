@@ -31,6 +31,6 @@ export const execute = (
             before_script,
             after_script
         ],
-        "args": []
+        "args": [frame]
     };
 };

@@ -10,6 +10,7 @@ import { $LIBRARY_MOVE_FOLDER_COMMAND } from "@/config/HistoryConfig";
  * @param  {number} instance_id
  * @param  {number} before_folder_id
  * @param  {number} after_folder_id
+ * @param  {string} name
  * @return {object}
  * @method
  * @public
@@ -19,7 +20,8 @@ export const execute = (
     movie_clip_id: number,
     instance_id: number,
     before_folder_id: number,
-    after_folder_id: number
+    after_folder_id: number,
+    name: string
 ): HistoryObjectImpl => {
 
     return {
@@ -31,6 +33,6 @@ export const execute = (
             before_folder_id,
             after_folder_id
         ],
-        "args": []
+        "args": [name]
     };
 };

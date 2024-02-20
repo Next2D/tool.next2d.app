@@ -16,5 +16,8 @@ describe("ScriptEditorUpdateHistoryObjectServiceTest", () =>
         expect(object.messages[2]).toBe(10);
         expect(object.messages[3]).toBe(beforeScript);
         expect(object.messages[4]).toBe(afterScript);
+
+        // 表示様の配列のチェック
+        expect(object.args[0]).toBe(10);
     });
 });

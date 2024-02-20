@@ -28,6 +28,6 @@ export const execute = (
             frame,
             script
         ],
-        "args": []
+        "args": [frame]
     };
 };

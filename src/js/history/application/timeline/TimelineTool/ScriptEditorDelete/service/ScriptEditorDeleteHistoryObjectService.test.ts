@@ -14,5 +14,8 @@ describe("ScriptEditorDeleteHistoryObjectServiceTest", () =>
         expect(object.messages[1]).toBe(0);
         expect(object.messages[2]).toBe(10);
         expect(object.messages[3]).toBe(script);
+
+        // 表示様の配列のチェック
+        expect(object.args[0]).toBe(10);
     });
 });

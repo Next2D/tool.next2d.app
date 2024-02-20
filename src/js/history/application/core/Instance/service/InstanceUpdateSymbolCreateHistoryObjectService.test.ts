@@ -14,5 +14,9 @@ describe("InstanceUpdateSymbolCreateHistoryObjectServiceTest", () =>
         expect(object.messages[2]).toBe(1);
         expect(object.messages[3]).toBe("before name");
         expect(object.messages[4]).toBe("after name");
+
+        // 表示様の配列のチェック
+        expect(object.args[0]).toBe("before name");
+        expect(object.args[1]).toBe("after_name");
     });
 });
