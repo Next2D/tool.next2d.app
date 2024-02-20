@@ -20,15 +20,10 @@ export const execute = (): void =>
 
     switch (true) {
 
-        // Fileを全て上書く
-        case menu.fileObjects.length > 0:
-            // 一個のFile重複をキャンセルする
-            menu.fileObjects.pop();
-
-            // 配列が空ならモーダルを終了
-            if (!menu.fileObjects.length) {
-                menu.hide();
-            }
+        // Fileの単体キャンセル
+        case menu.fileObject !== null:
+            // 次のFileに移動
+            menu.setupFileObject();
             break;
 
         default:

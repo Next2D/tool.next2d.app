@@ -3,6 +3,7 @@ import type { ObjectImpl } from "@/interface/ObjectImpl";
 import { Instance } from "./Instance";
 import { execute as bitmapBufferToBinaryService } from "@/core/application/Bitmap/service/BitmapBufferToBinaryService";
 import { execute as bitmapBinaryToBufferService } from "@/core/application/Bitmap/service/BitmapBinaryToBufferService";
+import { execute as bitmapBufferToElementService } from "@/core/application/Bitmap/service/BitmapBufferToElementService";
 
 /**
  * @description 画像管理クラス
@@ -117,6 +118,23 @@ export class Bitmap extends Instance
     set buffer (buffer: Uint8Array)
     {
         this._$buffer = buffer;
+    }
+
+    /**
+     * @description Bitmapで保有しているUint8ArrayからImageElementを生成
+     *              Generate ImageElement from Uint8Array held in Bitmap
+     *
+     * @return {Promise}
+     * @method
+     * @public
+     */
+    getHTMLElement (): Promise<HTMLCanvasElement>
+    {
+        return bitmapBufferToElementService(
+            this._$buffer,
+            this._$width,
+            this._$height
+        );
     }
 
     /**

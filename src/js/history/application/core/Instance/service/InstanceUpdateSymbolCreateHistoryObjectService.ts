@@ -32,7 +32,6 @@ export const execute = (
             after_name
         ],
         "args": [
-            before_name,
             after_name
         ]
     };

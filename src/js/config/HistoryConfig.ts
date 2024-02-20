@@ -177,3 +177,12 @@ export const $LIBRARY_ADD_NEW_BITMAP_COMMAND: number = 16;
  * @constant
  */
 export const $LIBRARY_MOVE_FOLDER_COMMAND: number = 17;
+
+/**
+ * @description 画像の上書きの識別コマンド名
+ *              Identification command name of image overwrite
+ *
+ * @type {number}
+ * @constant
+ */
+export const $LIBRARY_OVERWRITE_IMAGE_COMMAND: number = 18;

@@ -2,6 +2,7 @@ import type { MenuImpl } from "@/interface/MenuImpl";
 import type { ConfirmModal } from "@/menu/domain/model/ConfirmModal";
 import { $getMenu } from "@/menu/application/MenuUtil";
 import { $CONFIRM_MODAL_NAME } from "@/config/MenuConfig";
+import { execute as confirmModalUpdateDisplayByFileUseCase } from "./ConfirmModalUpdateDisplayUseCase";
 
 /**
  * @description Drop時に重複したアイテムがあれば確認モーダルを起動
@@ -22,7 +23,7 @@ export const execute = (): void =>
     switch (true) {
 
         case menu.fileObjects.length > 0:
-            menu.show();
+            menu.setupFileObject();
             break;
 
         default:

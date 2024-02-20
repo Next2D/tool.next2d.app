@@ -1,4 +1,6 @@
+import type { InstanceImpl } from "./InstanceImpl";
+
 export interface ConfirmModalFileObjectImpl {
     file: File;
-    path: string;
+    instance: InstanceImpl<any>;
 }

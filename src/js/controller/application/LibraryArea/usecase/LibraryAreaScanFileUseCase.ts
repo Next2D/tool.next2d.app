@@ -63,7 +63,11 @@ export const execute = async (
                 // 重複チェック
                 const name = path ? `${path}/${file.name}` : file.name;
                 if (workSpace.pathMap.has(name)) {
-                    confirmModalFilePushService(file, path);
+                    const instanceId = workSpace.pathMap.get(name) as NonNullable<number>;
+                    const instance = workSpace.getLibrary(instanceId);
+                    if (instance) {
+                        confirmModalFilePushService(file, instance);
+                    }
                     return resolve();
                 }
 
