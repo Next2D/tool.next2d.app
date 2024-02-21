@@ -3,7 +3,6 @@ import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { InstanceImpl } from "@/interface/InstanceImpl";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
 import { Bitmap } from "@/core/domain/model/Bitmap";
-import { execute as externalLibraryAddInstanceUseCase } from "@/external/controller/application/ExternalLibrary/usecase/ExternalLibraryAddInstanceUseCase";
 import { execute as libraryAreaUpdateBitmapHistoryUseCase } from "@/history/application/controller/LibraryArea/Bitmap/usecase/LibraryAreaUpdateBitmapHistoryUseCase";
 import { BitmapSaveObjectImpl } from "@/interface/BitmapSaveObjectImpl";
 
