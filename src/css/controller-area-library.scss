@@ -48,6 +48,23 @@
     align-items      : center;
     height           : var(--library-preview-area-height);
     background-color : #ffffff;
+    position         : relative;
+
+    img, 
+    video,
+    canvas
+    {
+        position   : absolute;
+        top        : 0;
+        bottom     : 0;
+        left       : 0;
+        right      : 0;
+        height     : auto;
+        width      : auto;
+        max-width  : 96%;
+        max-height : 96%;
+        margin     : auto;
+    }
 }
 
 #library-list-title

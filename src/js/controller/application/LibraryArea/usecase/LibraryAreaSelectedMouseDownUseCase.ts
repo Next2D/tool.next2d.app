@@ -3,6 +3,7 @@ import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { InstanceImpl } from "@/interface/InstanceImpl";
 import { ExternalLibrary } from "@/external/controller/domain/model/ExternalLibrary";
 import { $useKeyboard } from "@/shortcut/ShortcutUtil";
+import { execute as libraryPreviewAreaUpdateDisplayUseCase } from "@/controller/application/LibraryPreviewArea/usecase/LibraryPreviewAreaUpdateDisplayUseCase";
 
 /**
  * @description 親Elementのマウスダウン処理関数、Elementを選択状態に更新
@@ -41,6 +42,9 @@ export const execute = (event: PointerEvent): void =>
     if (!instance) {
         return ;
     }
+
+    // プレビューエリアを更新
+    libraryPreviewAreaUpdateDisplayUseCase(instance);
 
     // 外部APIを起動
     const externalLibrary = new ExternalLibrary(workSpace);
