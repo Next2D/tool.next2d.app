@@ -2,7 +2,6 @@ import type { MenuImpl } from "@/interface/MenuImpl";
 import type { ConfirmModal } from "@/menu/domain/model/ConfirmModal";
 import { $getMenu } from "@/menu/application/MenuUtil";
 import { $CONFIRM_MODAL_NAME } from "@/config/MenuConfig";
-import { execute as confirmModalUpdateDisplayByFileUseCase } from "./ConfirmModalUpdateDisplayUseCase";
 
 /**
  * @description Drop時に重複したアイテムがあれば確認モーダルを起動

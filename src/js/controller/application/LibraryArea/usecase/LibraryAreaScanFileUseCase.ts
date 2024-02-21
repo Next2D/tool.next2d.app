@@ -1,6 +1,6 @@
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { ExternalLibrary } from "@/external/controller/domain/model/ExternalLibrary";
-import { execute as confirmModalFilePushService } from "@/menu/application/ConfirmModal/service/ConfirmModalFilePushService";
+import { execute as confirmModalDuplicateCheckService } from "@/menu/application/ConfirmModal/service/ConfirmModalDuplicateCheckService";
 
 /**
  * @description ディレクトリの場合はフォルダファイルを作成してディレクトリ内のデータを読み込み
@@ -60,19 +60,17 @@ export const execute = async (
         (entry as FileSystemFileEntry)
             .file((file: File): void =>
             {
-                // 重複チェック
-                const name = path ? `${path}/${file.name}` : file.name;
-                if (workSpace.pathMap.has(name)) {
-                    const instanceId = workSpace.pathMap.get(name) as NonNullable<number>;
-                    const instance = workSpace.getLibrary(instanceId);
-                    if (instance) {
-                        confirmModalFilePushService(file, instance);
-                    }
+                // 重複していればスキップ
+                if (confirmModalDuplicateCheckService(workSpace, file, path)) {
                     return resolve();
                 }
 
+                const names = file.name.split(".");
+                names.pop();
+                const name = names.join(".");
+
                 externalLibrary
-                    .importFile(file, path, false)
+                    .importFile(file, name, path, false)
                     .then(resolve);
             });
     });

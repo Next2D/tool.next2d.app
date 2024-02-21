@@ -7,7 +7,7 @@ import { execute as libraryAreaReloadUseCase } from "./LibraryAreaReloadUseCase"
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { libraryArea } from "@/controller/domain/model/LibraryArea";
 import { execute as confirmModalFileResetService } from "@/menu/application/ConfirmModal/service/ConfirmModalFileResetService";
-import { execute as confirmModalFileCheckDuplicationUseCase } from "@/menu/application/ConfirmModal/usecase/ConfirmModalFileCheckDuplicationUseCase";
+import { execute as confirmModalFileShowUseCase } from "@/menu/application/ConfirmModal/usecase/ConfirmModalFileShowUseCase";
 
 /**
  * @description 外部アイテムの読み込み実行関数
@@ -60,5 +60,5 @@ export const execute = async (items: DataTransferItemList): Promise<void> =>
     progressMenuHideService();
 
     // 重複があればモーダルを表示
-    confirmModalFileCheckDuplicationUseCase();
+    confirmModalFileShowUseCase();
 };

@@ -16,6 +16,7 @@ import {
  *
  * @param  {WorkSpace} work_space
  * @param  {File} file
+ * @param  {string} [name = ""]
  * @param  {string} [path = ""]
  * @return {Promise}
  * @method
@@ -24,6 +25,7 @@ import {
 export const execute = (
     work_space: WorkSpace,
     file: File,
+    name: string,
     path: string = ""
 ): Promise<void> => {
 
@@ -73,7 +75,7 @@ export const execute = (
                         const bitmap = new Bitmap({
                             "id": work_space.nextLibraryId,
                             "type": "bitmap",
-                            "name": file.name,
+                            "name": name,
                             "folderId": folderId,
                             "imageType": file.type,
                             "width": width,

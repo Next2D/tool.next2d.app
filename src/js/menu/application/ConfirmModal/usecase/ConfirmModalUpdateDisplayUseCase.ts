@@ -70,7 +70,7 @@ export const execute = (
             if (!element) {
                 return ;
             }
-            beforePreviewElement.appendChild(element);
+            afterPreviewElement.appendChild(element);
         });
 
     // 現在のinstanceをプレビューエリアに表示
@@ -78,7 +78,7 @@ export const execute = (
         .getHTMLElement()
         .then((element: any): void =>
         {
-            afterPreviewElement
+            beforePreviewElement
                 .appendChild(element as NonNullable<HTMLElement>);
         });
 };

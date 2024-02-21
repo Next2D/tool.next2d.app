@@ -6,6 +6,9 @@ import { execute as libraryAreaReloadUseCase } from "@/controller/application/Li
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { ExternalLibrary } from "@/external/controller/domain/model/ExternalLibrary";
 import { libraryArea } from "@/controller/domain/model/LibraryArea";
+import { execute as confirmModalFileResetService } from "@/menu/application/ConfirmModal/service/ConfirmModalFileResetService";
+import { execute as confirmModalFileShowUseCase } from "@/menu/application/ConfirmModal/usecase/ConfirmModalFileShowUseCase";
+import { execute as confirmModalDuplicateCheckService } from "@/menu/application/ConfirmModal/service/ConfirmModalDuplicateCheckService";
 
 /**
  * @description 外部ファイル読み込み処理関数
@@ -32,6 +35,9 @@ export const execute = async (event: Event): Promise<void> =>
     event.preventDefault();
     event.stopPropagation();
 
+    // 重複チェックの配列を初期化
+    confirmModalFileResetService();
+
     // アクティブなプロジェクトならプログレバーを表示
     progressMenuShowService();
 
@@ -53,8 +59,19 @@ export const execute = async (event: Event): Promise<void> =>
     // 選択したファイルを読み込む
     for (let idx: number = 0; idx < files.length; ++idx) {
 
+        const file = files[idx];
+
+        // 重複していればスキップ
+        if (confirmModalDuplicateCheckService(workSpace, file, path)) {
+            continue;
+        }
+
+        const names = file.name.split(".");
+        names.pop();
+        const name = names.join(".");
+
         await externalLibrary
-            .importFile(files[idx], path, false);
+            .importFile(file, name, path, false);
 
     }
 
@@ -66,4 +83,7 @@ export const execute = async (event: Event): Promise<void> =>
 
     // プログレバーを非表示に更新
     progressMenuHideService();
+
+    // 重複があればモーダルを表示
+    confirmModalFileShowUseCase();
 };

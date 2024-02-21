@@ -17,6 +17,6 @@ describe("InstanceUpdateNameCreateHistoryObjectServiceTest", () =>
 
         // 表示様の配列のチェック
         expect(object.args[0]).toBe("before name");
-        expect(object.args[1]).toBe("after_name");
+        expect(object.args[1]).toBe("after name");
     });
 });

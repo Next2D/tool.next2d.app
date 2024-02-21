@@ -38,6 +38,7 @@ export class ExternalLibrary
      *              Loading external files
      *
      * @param  {File} file
+     * @param  {string} name
      * @param  {string} path
      * @param  {boolean} [reload = false]
      * @return {Promise}
@@ -46,6 +47,7 @@ export class ExternalLibrary
      */
     async importFile (
         file: File,
+        name: string,
         path: string = "",
         reload: boolean = true
     ): Promise<void> {
@@ -60,7 +62,7 @@ export class ExternalLibrary
             case "image/png":
             case "image/jpeg":
             case "image/gif":
-                await externalLibraryImportBitmapFileUseCase(this._$workSpace, file, path);
+                await externalLibraryImportBitmapFileUseCase(this._$workSpace, file, name, path);
                 break;
 
             // ビデオ
