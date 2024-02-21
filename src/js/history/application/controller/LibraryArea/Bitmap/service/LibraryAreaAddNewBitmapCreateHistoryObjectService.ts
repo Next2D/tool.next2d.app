@@ -3,8 +3,8 @@ import type { Bitmap } from "@/core/domain/model/Bitmap";
 import { $LIBRARY_ADD_NEW_BITMAP_COMMAND } from "@/config/HistoryConfig";
 
 /**
- * @description 新規フォルダー追加の履歴用オブジェクトを作成
- *              Create object for history of adding new folders
+ * @description 画像データ追加の履歴用オブジェクトを作成
+ *              Create object for history of image data addition
  *
  * @param  {number} work_space_id
  * @param  {number} movie_clip_id

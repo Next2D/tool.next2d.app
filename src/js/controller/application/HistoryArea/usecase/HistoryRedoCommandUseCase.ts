@@ -10,6 +10,7 @@ import { execute as scriptEditorDeleteHistoryRedoUseCase } from "@/history/appli
 import { execute as libraryAreaAddNewFolderHistoryRedoUseCase } from "@/history/application/controller/LibraryArea/Folder/usecase/LibraryAreaAddNewFolderHistoryRedoUseCase";
 import { execute as libraryAreaMoveFolderHistoryRedoUseCase } from "@/history/application/controller/LibraryArea/Folder/usecase/LibraryAreaMoveFolderHistoryRedoUseCase";
 import { execute as libraryAreaAddNewBitmapHistoryRedoUseCase } from "@/history/application/controller/LibraryArea/Bitmap/usecase/LibraryAreaAddNewBitmapHistoryRedoUseCase";
+import { execute as libraryAreaUpdateBitmapHistoryRedoUseCase } from "@/history/application/controller/LibraryArea/Bitmap/usecase/LibraryAreaUpdateBitmapHistoryRedoUseCase";
 import { execute as instanceUpdateNameHistoryRedoUseCase } from "@/history/application/core/Instance/usecase/InstanceUpdateNameHistoryRedoUseCase";
 import { execute as instanceUpdateSymbolHistoryRedoUseCase } from "@/history/application/core/Instance/usecase/InstanceUpdateSymbolHistoryRedoUseCase";
 import {
@@ -24,7 +25,8 @@ import {
     $LIBRARY_UPDATE_INSTANCE_NAME_COMMAND,
     $LIBRARY_UPDATE_INSTANCE_SYMBOL_COMMAND,
     $LIBRARY_ADD_NEW_BITMAP_COMMAND,
-    $LIBRARY_MOVE_FOLDER_COMMAND
+    $LIBRARY_MOVE_FOLDER_COMMAND,
+    $LIBRARY_OVERWRITE_IMAGE_COMMAND
 } from "@/config/HistoryConfig";
 
 /**
@@ -147,6 +149,13 @@ export const execute = (history_object: HistoryObjectImpl): void =>
                 messages[0] as number, // workSpaceId
                 messages[2] as number, // InstanceId
                 messages[4] as number // After FolderID
+            );
+            break;
+
+        case $LIBRARY_OVERWRITE_IMAGE_COMMAND:
+            libraryAreaUpdateBitmapHistoryRedoUseCase(
+                messages[0] as number, // workSpaceId
+                messages[3] as BitmapSaveObjectImpl // Bitmap Save Object
             );
             break;
 

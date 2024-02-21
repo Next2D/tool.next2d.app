@@ -6,6 +6,7 @@ import { $CONFIRM_MODAL_FILE_NAME_ID } from "@/config/ConfirmModalConfig";
 import { ExternalLibrary } from "@/external/controller/domain/model/ExternalLibrary";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { execute as detailModalCustomFadeInUseCase } from "@/menu/application/DetailModal/usecase/DetailModalCustomFadeInUseCase";
+import { execute as confirmModalFileOverWritingUseCase } from "./ConfirmModalFileOverWritingUseCase";
 import { $ERROR_EMPTY_FILE_NAME_TEXT } from "@/config/ErrorTextConfig";
 
 /**
@@ -32,6 +33,7 @@ export const execute = (): void =>
 
     // 名前が空の時はエラーテキストを表示
     if (!inputElement.value) {
+
         const element: HTMLElement | null = document
             .getElementById($CONFIRM_MODAL_NAME);
 
@@ -49,6 +51,7 @@ export const execute = (): void =>
             offsetX + inputElement.offsetLeft + 25,
             offsetY + inputElement.offsetTop - inputElement.clientHeight + 5
         );
+
         return ;
     }
 
@@ -56,22 +59,32 @@ export const execute = (): void =>
 
         // Fileを全て上書く
         case menu.fileObject !== null:
-            if (inputElement.value === menu.fileObject.file.name) {
-                // 名前が一緒なら上書き
-            } else {
-                // 名前が異なる場合は通常の追加処理
-                const externalLibrary = new ExternalLibrary($getCurrentWorkSpace());
-                externalLibrary
-                    .importFile(
-                        menu.fileObject.file,
-                        inputElement.value,
-                        menu.fileObject.path
-                    )
-                    .then((): void =>
-                    {
-                        // 次のオブジェクトに移動
-                        menu.setupFileObject();
-                    });
+            {
+                const file = menu.fileObject.file;
+                const path = menu.fileObject.path;
+                const names = file.name.split(".");
+                names.pop();
+
+                const name = names.join(".");
+                if (inputElement.value === name) {
+                    // 名前が一緒なら上書き
+                    confirmModalFileOverWritingUseCase(file, path)
+                        .then((): void =>
+                        {
+                            // 次のオブジェクトに移動
+                            menu.setupFileObject();
+                        });
+                } else {
+                    // 名前が異なる場合は通常の追加処理
+                    const externalLibrary = new ExternalLibrary($getCurrentWorkSpace());
+                    externalLibrary
+                        .importFile(file, inputElement.value, path)
+                        .then((): void =>
+                        {
+                            // 次のオブジェクトに移動
+                            menu.setupFileObject();
+                        });
+                }
             }
             break;
 

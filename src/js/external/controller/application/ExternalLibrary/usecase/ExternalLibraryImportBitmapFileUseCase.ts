@@ -31,71 +31,64 @@ export const execute = (
 
     return new Promise((resolve): void =>
     {
-        file
-            .arrayBuffer()
-            .then((buffer: ArrayBuffer) =>
+        const image = new Image();
+        image.src = URL.createObjectURL(file);
+
+        image
+            .decode()
+            .then((): void =>
             {
-                const image = new Image();
-                image.src = URL.createObjectURL(new Blob([buffer], {
-                    "type": file.type
-                }));
+                const width   = image.width;
+                const height  = image.height;
 
-                image
-                    .decode()
-                    .then((): void =>
-                    {
-                        const width   = image.width;
-                        const height  = image.height;
+                const canvas  = $getCanvas();
+                canvas.width  = width;
+                canvas.height = height;
+                const context: CanvasRenderingContext2D | null = canvas.getContext("2d", {
+                    "willReadFrequently": true
+                });
 
-                        const canvas  = $getCanvas();
-                        canvas.width  = width;
-                        canvas.height = height;
-                        const context: CanvasRenderingContext2D | null = canvas.getContext("2d", {
-                            "willReadFrequently": true
-                        });
+                if (!context) {
+                    throw new Error("CanvasRenderingContext2D cannot be loaded");
+                }
 
-                        if (!context) {
-                            throw new Error("CanvasRenderingContext2D cannot be loaded");
-                        }
+                context.drawImage(image, 0, 0, width, height);
 
-                        context.drawImage(image, 0, 0, width, height);
+                const buffer = new Uint8Array(
+                    context.getImageData(0, 0, width, height).data
+                );
 
-                        const buffer = new Uint8Array(
-                            context.getImageData(0, 0, width, height).data
-                        );
+                // canvas elementは再利用するので配列に格納
+                $poolCanvas(canvas);
 
-                        // canvas elementは再利用するので配列に格納
-                        $poolCanvas(canvas);
+                const externalLibrary = new ExternalLibrary(work_space);
+                const folder: ExternalInstanceImpl<ExternalFolder> | null = externalLibrary.getItem(path);
 
-                        const externalLibrary = new ExternalLibrary(work_space);
-                        const folder: ExternalInstanceImpl<ExternalFolder> | null = externalLibrary.getItem(path);
+                const folderId = folder && folder.type === "folder" ? folder.id : 0;
 
-                        const folderId = folder && folder.type === "folder" ? folder.id : 0;
+                const bitmap = new Bitmap({
+                    "id": work_space.nextLibraryId,
+                    "type": "bitmap",
+                    "name": name,
+                    "folderId": folderId,
+                    "imageType": file.type,
+                    "width": width,
+                    "height": height,
+                    "buffer": buffer
+                });
 
-                        const bitmap = new Bitmap({
-                            "id": work_space.nextLibraryId,
-                            "type": "bitmap",
-                            "name": name,
-                            "folderId": folderId,
-                            "imageType": file.type,
-                            "width": width,
-                            "height": height,
-                            "buffer": buffer
-                        });
+                // 内部情報に登録
+                externalWorkSpaceRegisterInstanceService(work_space, bitmap);
 
-                        // 内部情報に登録
-                        externalWorkSpaceRegisterInstanceService(work_space, bitmap);
+                // 作業履歴に残す
+                // fixed logic
+                libraryAreaAddNewBitmapHistoryUseCase(
+                    work_space,
+                    work_space.scene,
+                    bitmap
+                );
 
-                        // 作業履歴に残す
-                        // fixed logic
-                        libraryAreaAddNewBitmapHistoryUseCase(
-                            work_space,
-                            work_space.scene,
-                            bitmap
-                        );
-
-                        resolve();
-                    });
+                resolve();
             });
     });
 };
