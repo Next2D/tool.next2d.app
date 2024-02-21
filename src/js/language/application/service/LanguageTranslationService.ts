@@ -12,7 +12,7 @@ import { $getMapping, $sprintf } from "@/language/application/LanguageUtil";
  * @method
  * @public
  */
-export const execute = async (target_element: HTMLElement | Document): Promise<void> => 
+export const execute = async (target_element: HTMLElement | Document): Promise<void> =>
 {
     // 指定されたクラスを全て取得
     const elements: HTMLCollectionOf<Element> = target_element
