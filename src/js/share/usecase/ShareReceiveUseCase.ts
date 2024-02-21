@@ -12,6 +12,7 @@ import { execute as scriptEditorDeleteReceiveUseCase } from "@/share/receive/app
 import { execute as folderAddNewReceiveService } from "@/share/receive/application/controller/application/LibraryArea/Folder/service/FolderAddNewReceiveService";
 import { execute as folderMoveReceiveService } from "@/share/receive/application/controller/application/LibraryArea/Folder/service/FolderMoveReceiveService";
 import { execute as bitmapAddNewReceiveService } from "@/share/receive/application/controller/application/LibraryArea/Bitmap/service/BitmapAddNewReceiveService";
+import { execute as bitmapUpdateReceiveService } from "@/share/receive/application/controller/application/LibraryArea/Bitmap/service/BitmapUpdateReceiveService";
 import { execute as folderUpdateStateReceiveService } from "@/share/receive/application/core/application/Folder/service/FolderUpdateStateReceiveService";
 import { execute as instanceUpdateNameReceiveUseCase } from "@/share/receive/application/core/application/Instance/usecase/InstanceUpdateNameReceiveUseCase";
 import { execute as instanceUpdateSymbolReceiveUseCase } from "@/share/receive/application/core/application/Instance/usecase/InstanceUpdateSymbolReceiveUseCase";
@@ -35,7 +36,8 @@ import {
     $LIBRARY_UPDATE_INSTANCE_NAME_COMMAND,
     $LIBRARY_UPDATE_INSTANCE_SYMBOL_COMMAND,
     $LIBRARY_ADD_NEW_BITMAP_COMMAND,
-    $LIBRARY_MOVE_FOLDER_COMMAND
+    $LIBRARY_MOVE_FOLDER_COMMAND,
+    $LIBRARY_OVERWRITE_IMAGE_COMMAND
 } from "@/config/HistoryConfig";
 
 /**
@@ -147,6 +149,10 @@ export const execute = (message: ShareReceiveMessageImpl): void =>
         // フォルダ移動
         case $LIBRARY_MOVE_FOLDER_COMMAND:
             folderMoveReceiveService(message);
+            break;
+
+        case $LIBRARY_OVERWRITE_IMAGE_COMMAND:
+            bitmapUpdateReceiveService(message);
             break;
 
         default:
