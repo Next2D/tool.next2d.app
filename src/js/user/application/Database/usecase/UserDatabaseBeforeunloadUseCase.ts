@@ -1,5 +1,5 @@
 import { $isSocketOwner } from "@/share/ShareUtil";
-import { execute as userDatabaseSaveUseCase } from "@/user/application/Database/usecase/UserDatabaseSaveUseCase";
+import { execute as userDatabaseSaveShowModalUseCase } from "@/user/application/Database/usecase/UserDatabaseSaveShowModalUseCase";
 
 /**
  * @description IndexedDbからデータ読み込みを行う
@@ -20,5 +20,5 @@ export const execute = async (event: BeforeUnloadEvent): Promise<void> =>
     event.stopPropagation();
 
     // 現在のデータを保存
-    await userDatabaseSaveUseCase();
+    await userDatabaseSaveShowModalUseCase();
 };

@@ -1,6 +1,6 @@
 import type { ShareInitializeSendObjectImpl } from "@/interface/ShareInitializeSendObjectImpl";
 import { execute as workSpaceRestoreSaveDataService } from "@/core/application/WorkSpace/service/WorkSpaceRestoreSaveDataService";
-import { execute as userDatabaseSaveUseCase } from "@/user/application/Database/usecase/UserDatabaseSaveUseCase";
+import { execute as userDatabaseSaveShowModalUseCase } from "@/user/application/Database/usecase/UserDatabaseSaveShowModalUseCase";
 import { execute as progressMenuShowService } from "@/menu/application/ProgressMenu/service/ProgressMenuShowService";
 import { $allHideMenu } from "@/menu/application/MenuUtil";
 import { WorkSpace } from "@/core/domain/model/WorkSpace";
@@ -35,7 +35,7 @@ export const execute = async (message: ShareInitializeSendObjectImpl): Promise<v
     WorkSpace.workSpaceId = message.workSpaceId;
 
     // 現在のプロジェクトデータを保存
-    await userDatabaseSaveUseCase();
+    await userDatabaseSaveShowModalUseCase();
 
     // 全てのプロジェクトを停止
     await $removeAllWorkSpace();
