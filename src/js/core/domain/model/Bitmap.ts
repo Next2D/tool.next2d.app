@@ -118,6 +118,7 @@ export class Bitmap extends Instance
     set buffer (buffer: Uint8Array)
     {
         this._$buffer = buffer;
+        this._$binary = "";
     }
 
     /**

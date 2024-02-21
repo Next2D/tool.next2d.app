@@ -13,7 +13,10 @@ export const execute = (): Promise<void> =>
     return new Promise((resolve): void =>
     {
         // 画面を閉じる時に強制的にデータ保存を実行する
-        window.addEventListener("beforeunload", userDatabaseBeforeunloadUseCase);
+        window.addEventListener("beforeunload",
+            userDatabaseBeforeunloadUseCase,
+            { "passive": false }
+        );
 
         resolve();
     });

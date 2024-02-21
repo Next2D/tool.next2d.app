@@ -15,6 +15,7 @@ export const execute = async (event: BeforeUnloadEvent): Promise<void> =>
         return ;
     }
 
+    // 他のイベントを中止
     event.preventDefault();
     event.stopPropagation();
 
