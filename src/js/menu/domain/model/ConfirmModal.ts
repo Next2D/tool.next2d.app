@@ -87,8 +87,11 @@ export class ConfirmModal extends BaseMenu
     {
         // 配列が空なら終了
         if (!this._$fileObjects.length) {
+
             // 初期化して終了
             confirmModalFileResetService();
+
+            // モーダルを非表示に更新
             return this.hide();
         }
 

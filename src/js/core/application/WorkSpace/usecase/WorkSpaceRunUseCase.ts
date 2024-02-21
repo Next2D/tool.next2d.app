@@ -10,6 +10,7 @@ import { execute as workSpaceBootPropertyAreaUseCase } from "./WorkSpaceBootProp
 import { execute as workSpaceBootControllerAreaUseCase } from "./WorkSpaceBootControllerAreaUseCase";
 import { execute as scriptAreaReloadUseCase } from "@/controller/application/ScriptArea/usecase/ScriptAreaReloadUseCase";
 import { execute as libraryAreaReloadUseCase } from "@/controller/application/LibraryArea/usecase/LibraryAreaReloadUseCase";
+import { execute as libraryAreaSelectedClearUseCase } from "@/controller/application/LibraryArea/usecase/LibraryAreaSelectedClearUseCase";
 import { libraryArea } from "@/controller/domain/model/LibraryArea";
 
 /**
@@ -58,6 +59,9 @@ export const execute = (work_space: WorkSpace): Promise<void> =>
 
         // スクリプト一覧を再読み込み
         scriptAreaReloadUseCase();
+
+        // ライブラリの一覧の選択状態を初期化
+        libraryAreaSelectedClearUseCase();
 
         // ライブラリの一覧を再描画
         libraryAreaReloadUseCase();

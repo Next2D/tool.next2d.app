@@ -1,7 +1,15 @@
 import { $allHideMenu } from "@/menu/application/MenuUtil";
-import { execute as libraryAreaAllClearElementService } from "../service/LibraryAreaAllClearElementService";
-import { libraryArea } from "@/controller/domain/model/LibraryArea";
+import { execute as libraryAreaSelectedClearUseCase } from "./LibraryAreaSelectedClearUseCase";
 
+/**
+ * @description ライブラリエリアの親のイベント関数
+ *              Event functions of the parent of the library area
+ *
+ * @param {PointerEvent} event
+ * @return {void}
+ * @method
+ * @public
+ */
 export const execute = (event: PointerEvent): void =>
 {
     if (event.button !== 0) {
@@ -14,9 +22,6 @@ export const execute = (event: PointerEvent): void =>
     // 全てのメニューを非表示に更新
     $allHideMenu();
 
-    // 選択表示のElementを初期化
-    libraryAreaAllClearElementService();
-
-    // 選択情報を初期化
-    libraryArea.clear();
+    // 選択を初期化
+    libraryAreaSelectedClearUseCase();
 };

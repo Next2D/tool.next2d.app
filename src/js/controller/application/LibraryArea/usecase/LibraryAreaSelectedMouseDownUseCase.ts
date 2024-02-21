@@ -4,6 +4,7 @@ import { InstanceImpl } from "@/interface/InstanceImpl";
 import { ExternalLibrary } from "@/external/controller/domain/model/ExternalLibrary";
 import { $useKeyboard } from "@/shortcut/ShortcutUtil";
 import { execute as libraryPreviewAreaUpdateDisplayUseCase } from "@/controller/application/LibraryPreviewArea/usecase/LibraryPreviewAreaUpdateDisplayUseCase";
+import { execute as libraryPreviewAreaClearDisplayService } from "@/controller/application/LibraryPreviewArea/service/LibraryPreviewAreaClearDisplayService";
 
 /**
  * @description 親Elementのマウスダウン処理関数、Elementを選択状態に更新
@@ -43,8 +44,12 @@ export const execute = (event: PointerEvent): void =>
         return ;
     }
 
-    // プレビューエリアを更新
-    libraryPreviewAreaUpdateDisplayUseCase(instance);
+    // フォルダーのインスタンスでなければ、プレビューエリアを更新
+    if (instance.type !== "folder") {
+        libraryPreviewAreaUpdateDisplayUseCase(instance);
+    } else {
+        libraryPreviewAreaClearDisplayService();
+    }
 
     // 外部APIを起動
     const externalLibrary = new ExternalLibrary(workSpace);

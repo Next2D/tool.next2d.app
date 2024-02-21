@@ -1,4 +1,3 @@
-import { $poolCanvas } from "@/global/GlobalUtil";
 import type { InstanceImpl } from "@/interface/InstanceImpl";
 import { $LIBRARY_PREVIEW_AREA_ID } from "@/config/LibraryConfig";
 import { execute as libraryPreviewAreaClearDisplayService } from "../service/LibraryPreviewAreaClearDisplayService";

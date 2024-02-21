@@ -4,6 +4,7 @@ import { execute as progressMenuHideService } from "@/menu/application/ProgressM
 import { execute as libraryAreaScanFileUseCase } from "./LibraryAreaScanFileUseCase";
 import { execute as libraryAreaReOrderingService } from "../service/LibraryAreaReOrderingService";
 import { execute as libraryAreaReloadUseCase } from "./LibraryAreaReloadUseCase";
+import { execute as libraryAreaSelectedClearUseCase } from "./LibraryAreaSelectedClearUseCase";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { libraryArea } from "@/controller/domain/model/LibraryArea";
 import { execute as confirmModalFileResetService } from "@/menu/application/ConfirmModal/service/ConfirmModalFileResetService";
@@ -52,6 +53,9 @@ export const execute = async (items: DataTransferItemList): Promise<void> =>
 
     // ファイル名で昇順に並び替え
     libraryAreaReOrderingService(workSpace);
+
+    // 選択状態を初期化
+    libraryAreaSelectedClearUseCase();
 
     // ライブラリエリアを際描画
     libraryAreaReloadUseCase();
