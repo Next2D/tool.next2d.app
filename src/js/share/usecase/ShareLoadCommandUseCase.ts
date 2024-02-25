@@ -2,6 +2,8 @@ import type { ShareInitializeSendObjectImpl } from "@/interface/ShareInitializeS
 import { execute as workSpaceRestoreSaveDataService } from "@/core/application/WorkSpace/service/WorkSpaceRestoreSaveDataService";
 import { execute as userDatabaseSaveShowModalUseCase } from "@/user/application/Database/usecase/UserDatabaseSaveShowModalUseCase";
 import { execute as progressMenuShowService } from "@/menu/application/ProgressMenu/service/ProgressMenuShowService";
+import { execute as shareGetS3FileRepository } from "@/share/domain/repository/ShareGetS3FileRepository";
+import { execute as shareGetS3EndPointRepository } from "@/share/domain/repository/ShareGetS3EndPointRepository";
 import { $allHideMenu } from "@/menu/application/MenuUtil";
 import { WorkSpace } from "@/core/domain/model/WorkSpace";
 import { $loadedInitializeData } from "../ShareUtil";
@@ -39,6 +41,11 @@ export const execute = async (message: ShareInitializeSendObjectImpl): Promise<v
 
     // 全てのプロジェクトを停止
     await $removeAllWorkSpace();
+
+    console.log(message);
+    const url = await shareGetS3EndPointRepository(message.fileId, "get");
+
+    await shareGetS3FileRepository(url);
 
     // 受け取ったプロジェクトを起動
     await workSpaceRestoreSaveDataService(message.data, true);

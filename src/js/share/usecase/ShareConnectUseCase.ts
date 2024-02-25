@@ -14,10 +14,8 @@ import { execute as shareGetSocketEndPointRepository } from "../domain/repositor
  */
 export const execute = async (room_id: string): Promise<void> =>
 {
-    const response = await shareGetSocketEndPointRepository(room_id);
-
-    console.log(response.url);
-    const webSocket: WebSocket = new WebSocket(response.url);
+    const response  = await shareGetSocketEndPointRepository(room_id);
+    const webSocket = new WebSocket(response.url);
 
     // ソケットオブジェクトをセット
     $setSocket(webSocket);

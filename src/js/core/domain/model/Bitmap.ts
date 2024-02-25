@@ -8,12 +8,6 @@ import { execute as bitmapBufferToElementService } from "@/core/application/Bitm
 import ZlibDeflateWorker from "@/worker/ZlibDeflateWorker?worker&inline";
 
 /**
- * @type {Worker}
- * @private
- */
-const worker: Worker = new ZlibDeflateWorker();
-
-/**
  * @description 画像管理クラス
  *              Image Management Class
  *
@@ -201,6 +195,12 @@ export class Bitmap extends Instance
             }
 
             const buffer = this._$buffer.slice();
+
+            /**
+             * @type {Worker}
+             * @private
+             */
+            const worker: Worker = new ZlibDeflateWorker();
 
             // サブスレッドで圧縮処理を行う
             worker.postMessage(buffer, [buffer.buffer]);

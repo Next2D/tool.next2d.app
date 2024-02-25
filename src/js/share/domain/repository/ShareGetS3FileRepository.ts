@@ -1,0 +1,15 @@
+/**
+ * @description S3のファイルをダウンロード
+ *              Download S3 files
+ *
+ * @param  {string} url
+ * @return {object}
+ * @method
+ * @public
+ */
+export const execute = async (url: string): Promise<string> =>
+{
+    const response = await fetch(url);
+    console.log(response);
+    return response.data as string;
+};
