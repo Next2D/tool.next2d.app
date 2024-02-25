@@ -40,7 +40,6 @@ export const execute = async (connection_id: string): Promise<void> =>
         "workSpaceId": WorkSpace.workSpaceId,
         "connectionId": connection_id,
         "fileId": fileId,
-        "data": binary,
         "command": "load"
     };
 

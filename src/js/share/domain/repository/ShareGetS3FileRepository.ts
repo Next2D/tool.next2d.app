@@ -10,6 +10,5 @@
 export const execute = async (url: string): Promise<string> =>
 {
     const response = await fetch(url);
-    console.log(response);
-    return response.data as string;
+    return response.text();
 };

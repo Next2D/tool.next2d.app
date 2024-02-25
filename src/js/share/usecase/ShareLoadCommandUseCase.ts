@@ -42,13 +42,12 @@ export const execute = async (message: ShareInitializeSendObjectImpl): Promise<v
     // 全てのプロジェクトを停止
     await $removeAllWorkSpace();
 
-    console.log(message);
     const url = await shareGetS3EndPointRepository(message.fileId, "get");
 
-    await shareGetS3FileRepository(url);
+    const binary = await shareGetS3FileRepository(url);
 
     // 受け取ったプロジェクトを起動
-    await workSpaceRestoreSaveDataService(message.data, true);
+    await workSpaceRestoreSaveDataService(binary, true);
 
     const workSpaces = $getAllWorkSpace();
     for (let idx: number = 0; idx < workSpaces.length; ++idx) {
