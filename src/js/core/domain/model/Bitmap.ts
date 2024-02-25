@@ -4,6 +4,14 @@ import { Instance } from "./Instance";
 import { execute as bitmapBufferToBinaryService } from "@/core/application/Bitmap/service/BitmapBufferToBinaryService";
 import { execute as bitmapBinaryToBufferService } from "@/core/application/Bitmap/service/BitmapBinaryToBufferService";
 import { execute as bitmapBufferToElementService } from "@/core/application/Bitmap/service/BitmapBufferToElementService";
+// @ts-ignore
+import ZlibDeflateWorker from "@/worker/ZlibDeflateWorker?worker&inline";
+
+/**
+ * @type {Worker}
+ * @private
+ */
+const worker: Worker = new ZlibDeflateWorker();
 
 /**
  * @description 画像管理クラス
@@ -172,5 +180,51 @@ export class Bitmap extends Instance
             "imageType": this._$imageType,
             "buffer":    this._$binary
         };
+    }
+
+    /**
+     * @description 画面共有の転送用にデータを圧縮したobjectを生成
+     *              Generate object with compressed data for screen sharing transfer
+     *
+     * @return {Promise}
+     * @method
+     * @public
+     */
+    toZlibObject (): Promise<BitmapSaveObjectImpl>
+    {
+        return new Promise((reslove) =>
+        {
+            if (!this._$buffer) {
+                this._$buffer = new Uint8Array(
+                    this._$width * this._$height * 4
+                );
+            }
+
+            const buffer = this._$buffer.slice();
+
+            // サブスレッドで圧縮処理を行う
+            worker.postMessage(buffer, [buffer.buffer]);
+
+            // 圧縮が完了したらバイナリデータとして返却
+            worker.onmessage = (event: MessageEvent): void =>
+            {
+                const buffer = event.data as Uint8Array;
+
+                // Uint8Arrayをバイナリに変換
+                const binary = bitmapBufferToBinaryService(buffer);
+
+                reslove({
+                    "id":        this.id,
+                    "name":      this.name,
+                    "type":      this.type,
+                    "symbol":    this.symbol,
+                    "folderId":  this.folderId,
+                    "width":     this._$width,
+                    "height":    this._$height,
+                    "imageType": this._$imageType,
+                    "buffer":    binary
+                });
+            };
+        });
     }
 }

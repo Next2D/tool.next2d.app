@@ -1,8 +1,7 @@
 import { $setSocket } from "../ShareUtil";
 import { execute as shareConnectOpenEventService } from "../service/ShareConnectOpenEventService";
 import { execute as shareMessageUseCase } from "./ShareMessageUseCase";
-// @ts-ignore
-const SOCKET_URL = import.meta.env.VITE_SOCKET_URL;
+import { execute as shareGetSocketEndPointRepository } from "../domain/repository/ShareGetSocketEndPointRepository";
 
 /**
  * @description 画面共有用のURLを発行してWebSocketを起動
@@ -13,11 +12,12 @@ const SOCKET_URL = import.meta.env.VITE_SOCKET_URL;
  * @method
  * @public
  */
-export const execute = (room_id: string): void =>
+export const execute = async (room_id: string): Promise<void> =>
 {
-    const webSocket: WebSocket = new WebSocket(
-        `${SOCKET_URL}?roomId=${room_id}`
-    );
+    const response = await shareGetSocketEndPointRepository(room_id);
+
+    console.log(response.url);
+    const webSocket: WebSocket = new WebSocket(response.url);
 
     // ソケットオブジェクトをセット
     $setSocket(webSocket);

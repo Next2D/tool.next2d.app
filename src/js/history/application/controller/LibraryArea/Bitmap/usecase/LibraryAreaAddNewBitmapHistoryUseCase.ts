@@ -17,23 +17,23 @@ import { execute as shareSendService } from "@/share/service/ShareSendService";
  * @param  {MovieClip} movie_clip
  * @param  {Bitmap} bitmap
  * @param  {boolean} [receiver=false]
- * @return {void}
+ * @return {Promise}
  * @method
  * @public
  */
-export const execute = (
+export const execute = async (
     work_space: WorkSpace,
     movie_clip: MovieClip,
     bitmap: Bitmap,
     receiver: boolean = false
-): void => {
+): Promise<void> => {
 
     // ポジション位置から未来の履歴を全て削除
     // fixed logic
     historyRemoveElementService(movie_clip);
 
     // fixed logic
-    const historyObject = libraryAreaAddNewBitmapCreateHistoryObjectService(
+    const historyObject = await libraryAreaAddNewBitmapCreateHistoryObjectService(
         work_space.id, movie_clip.id, bitmap
     );
 

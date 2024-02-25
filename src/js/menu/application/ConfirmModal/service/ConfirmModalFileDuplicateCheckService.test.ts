@@ -3,9 +3,9 @@ import { $registerMenu } from "../../MenuUtil";
 import { $getCurrentWorkSpace, $createWorkSpace } from "../../../../core/application/CoreUtil";
 import { Bitmap } from "../../../../core/domain/model/Bitmap";
 import { Folder } from "../../../../core/domain/model/Folder";
-import { execute } from "./ConfirmModalDuplicateCheckService";
+import { execute } from "./ConfirmModalFileDuplicateCheckService";
 
-describe("ConfirmModalDuplicateCheckServiceTest", () =>
+describe("ConfirmModalFileDuplicateCheckServiceTest", () =>
 {
     test("execute test", () =>
     {

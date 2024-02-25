@@ -13,18 +13,18 @@ import { $LIBRARY_ADD_NEW_BITMAP_COMMAND } from "@/config/HistoryConfig";
  * @method
  * @public
  */
-export const execute = (
+export const execute = async (
     work_space_id: number,
     movie_clip_id: number,
     bitmap: Bitmap
-): HistoryObjectImpl => {
+): Promise<HistoryObjectImpl> => {
 
     return {
         "command": $LIBRARY_ADD_NEW_BITMAP_COMMAND,
         "messages": [
             work_space_id,
             movie_clip_id,
-            bitmap.toObject()
+            await bitmap.toZlibObject()
         ],
         "args": [
             bitmap.name

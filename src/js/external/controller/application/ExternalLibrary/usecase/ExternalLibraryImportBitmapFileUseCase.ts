@@ -86,9 +86,8 @@ export const execute = (
                     work_space,
                     work_space.scene,
                     bitmap
-                );
-
-                resolve();
+                )
+                    .then(resolve);
             });
     });
 };

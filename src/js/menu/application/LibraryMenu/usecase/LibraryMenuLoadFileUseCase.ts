@@ -8,7 +8,7 @@ import { ExternalLibrary } from "@/external/controller/domain/model/ExternalLibr
 import { libraryArea } from "@/controller/domain/model/LibraryArea";
 import { execute as confirmModalFileResetService } from "@/menu/application/ConfirmModal/service/ConfirmModalFileResetService";
 import { execute as confirmModalFileShowUseCase } from "@/menu/application/ConfirmModal/usecase/ConfirmModalFileShowUseCase";
-import { execute as confirmModalDuplicateCheckService } from "@/menu/application/ConfirmModal/service/ConfirmModalDuplicateCheckService";
+import { execute as confirmModalFileDuplicateCheckService } from "@/menu/application/ConfirmModal/service/ConfirmModalFileDuplicateCheckService";
 
 /**
  * @description 外部ファイル読み込み処理関数
@@ -62,7 +62,7 @@ export const execute = async (event: Event): Promise<void> =>
         const file = files[idx];
 
         // 重複していればスキップ
-        if (confirmModalDuplicateCheckService(workSpace, file, path)) {
+        if (confirmModalFileDuplicateCheckService(workSpace, file, path)) {
             continue;
         }
 

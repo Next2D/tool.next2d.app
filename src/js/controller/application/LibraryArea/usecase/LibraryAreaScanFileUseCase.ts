@@ -1,6 +1,6 @@
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { ExternalLibrary } from "@/external/controller/domain/model/ExternalLibrary";
-import { execute as confirmModalDuplicateCheckService } from "@/menu/application/ConfirmModal/service/ConfirmModalDuplicateCheckService";
+import { execute as confirmModalFileDuplicateCheckService } from "@/menu/application/ConfirmModal/service/ConfirmModalFileDuplicateCheckService";
 
 /**
  * @description ディレクトリの場合はフォルダファイルを作成してディレクトリ内のデータを読み込み
@@ -61,7 +61,7 @@ export const execute = async (
             .file((file: File): void =>
             {
                 // 重複していればスキップ
-                if (confirmModalDuplicateCheckService(workSpace, file, path)) {
+                if (confirmModalFileDuplicateCheckService(workSpace, file, path)) {
                     return resolve();
                 }
 
