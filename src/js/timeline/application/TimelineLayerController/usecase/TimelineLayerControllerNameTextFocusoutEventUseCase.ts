@@ -2,7 +2,6 @@ import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { $getLayerFromElement } from "../../TimelineUtil";
 import { execute as timelineLayerControllerNameTextInactiveStyleService } from "../service/TimelineLayerControllerNameTextInactiveStyleService";
 import { execute as externalLayerUpdateNameUseCase } from "@/external/core/application/ExternalLayer/usecase/ExternalLayerUpdateNameUseCase";
-import { execute as timelineLayerControllerLayerNameUpdateHistoryUseCase } from "@/history/application/timeline/TimelineLayerController/LayerName/usecase/TimelineLayerControllerLayerNameUpdateHistoryUseCase";
 
 /**
  * @description テキスト編集終了のユースケース

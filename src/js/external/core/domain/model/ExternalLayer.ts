@@ -2,7 +2,6 @@ import type { Layer } from "@/core/domain/model/Layer";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import { execute as externalLayerUpdateNameUseCase } from "@/external/core/application/ExternalLayer/usecase/ExternalLayerUpdateNameUseCase";
-import { execute as timelineLayerControllerLayerNameUpdateHistoryUseCase } from "@/history/application/timeline/TimelineLayerController/LayerName/usecase/TimelineLayerControllerLayerNameUpdateHistoryUseCase";
 import { execute as externalLayerUpdateLockUseCase } from "@/external/core/application/ExternalLayer/usecase/ExternalLayerUpdateLockUseCase";
 import { execute as externalLayerUpdateDisableUseCase } from "@/external/core/application/ExternalLayer/usecase/ExternalLayerUpdateDisableUseCase";
 import { execute as externalLayerUpdateLightUseCase } from "@/external/core/application/ExternalLayer/usecase/ExternalLayerUpdateLightUseCase";
