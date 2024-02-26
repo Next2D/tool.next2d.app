@@ -4,7 +4,7 @@ import type { BitmapSaveObjectImpl } from "@/interface/BitmapSaveObjectImpl";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
 import { execute as externalWorkSpaceRemoveInstanceService } from "@/external/core/application/ExternalWorkSpace/service/ExternalWorkSpaceRemoveInstanceService";
 import { execute as libraryAreaReloadUseCase } from "@/controller/application/LibraryArea/usecase/LibraryAreaReloadUseCase";
-import { execute as libraryPreviewAreaClearDisplayService } from "@/controller/application/LibraryPreviewArea/service/LibraryPreviewAreaClearDisplayService";
+import { execute as libraryAreaSelectedClearUseCase } from "@/controller/application/LibraryArea/usecase/LibraryAreaSelectedClearUseCase";
 
 /**
  * @description 新規bitmap追加処理のUndo関数
@@ -38,7 +38,7 @@ export const execute = (
     if (workSpace.active) {
 
         // プレビューエリアを初期化
-        libraryPreviewAreaClearDisplayService();
+        libraryAreaSelectedClearUseCase();
 
         // ライブラリを再描画
         libraryAreaReloadUseCase();

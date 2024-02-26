@@ -44,37 +44,10 @@ export const execute = async (
     // fixed logic
     historyRemoveElementService(movie_clip);
 
-    // S3にアップ
+    // S3判定用のuuid
     const fileId = window.crypto.randomUUID();
 
-    if (!receiver) {
-        await new Promise<void>((reslove): void =>
-        {
-            if (!bitmap.buffer) {
-                return ;
-            }
-
-            const buffer: Uint8Array | null = bitmap.buffer.slice();
-
-            // サブスレッドで圧縮処理を行う
-            worker.postMessage(buffer, [buffer.buffer]);
-
-            // 圧縮が完了したらバイナリデータとして返却
-            worker.onmessage = async (event: MessageEvent): Promise<void> =>
-            {
-                const buffer = event.data as Uint8Array;
-
-                // Uint8Arrayをバイナリに変換
-                const binary = bitmapBufferToBinaryService(buffer);
-
-                const url = await shareGetS3EndPointRepository(fileId, "put");
-                await sharePutS3FileRepository(url, binary);
-
-                reslove();
-            };
-        });
-    }
-
+    // fixed logic
     const historyObject = libraryAreaAddNewBitmapCreateHistoryObjectService(
         work_space.id, movie_clip.id, bitmap.toObject(), fileId
     );
@@ -96,11 +69,40 @@ export const execute = async (
 
     // 受け取り処理ではなく、画面共有していれば共有者に送信
     if (!receiver && $useSocket()) {
+
+        await new Promise<void>((reslove): void =>
+        {
+            if (!bitmap.buffer) {
+                return ;
+            }
+
+            // Uint8Arrayを複製
+            const buffer: Uint8Array | null = bitmap.buffer.slice();
+
+            // サブスレッドで圧縮処理を行う
+            worker.postMessage(buffer, [buffer.buffer]);
+
+            // 圧縮が完了したらバイナリデータとして返却
+            worker.onmessage = async (event: MessageEvent): Promise<void> =>
+            {
+                const buffer = event.data as Uint8Array;
+
+                // Uint8Arrayをバイナリに変換
+                const binary = bitmapBufferToBinaryService(buffer);
+
+                const url = await shareGetS3EndPointRepository(fileId, "put");
+                await sharePutS3FileRepository(url, binary);
+
+                reslove();
+            };
+        });
+
         const bitmapObject = bitmap.toObject();
 
         // バイナリは転送しない
         bitmapObject.buffer = "";
 
+        // 転送用の履歴を生成
         const historyObject = libraryAreaAddNewBitmapCreateHistoryObjectService(
             work_space.id, movie_clip.id, bitmapObject, fileId
         );
