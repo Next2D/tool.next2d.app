@@ -1,7 +1,7 @@
 import { $getWorkSpace } from "@/core/application/CoreUtil";
 import type { InstanceImpl } from "@/interface/InstanceImpl";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
-import { execute as externalLayerUpdateNameUseCase } from "@/external/core/application/ExternalLayer/usecase/ExternalLayerUpdateNameUseCase";
+import { execute as timelineLayerControllerUpdateNameElementService } from "@/timeline/application/TimelineLayerController/service/TimelineLayerControllerUpdateNameElementService";
 
 /**
  * @description レイヤー名の更新後の状態に進める
@@ -19,7 +19,7 @@ export const execute = (
     work_space_id: number,
     library_id: number,
     index: number,
-    name: string
+    after_name: string
 ): void => {
 
     const workSpace = $getWorkSpace(work_space_id);
@@ -37,8 +37,11 @@ export const execute = (
         return ;
     }
 
-    const elementUpdate: boolean = workSpace.active && movieClip.active;
-    externalLayerUpdateNameUseCase(
-        workSpace, movieClip, layer, name, elementUpdate
-    );
+    // アクティブなら表示を更新
+    if (workSpace.active && movieClip.active) {
+        timelineLayerControllerUpdateNameElementService(layer, after_name);
+    }
+
+    // レイヤー名を更新
+    layer.name = after_name;
 };

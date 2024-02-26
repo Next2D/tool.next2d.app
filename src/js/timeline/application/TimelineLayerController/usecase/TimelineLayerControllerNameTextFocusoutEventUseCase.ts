@@ -38,15 +38,9 @@ export const execute = (event: FocusEvent): void =>
         return ;
     }
 
-    const workSpace = $getCurrentWorkSpace();
-
-    // 作業履歴を登録
-    timelineLayerControllerLayerNameUpdateHistoryUseCase(
-        workSpace, workSpace.scene, layer, name
-    );
-
     // Layerオブジェクトの名前を更新、Elementの更新はしない
+    const workSpace = $getCurrentWorkSpace();
     externalLayerUpdateNameUseCase(
-        workSpace, workSpace.scene, layer, name, false
+        workSpace, workSpace.scene, layer, name
     );
 };

@@ -69,11 +69,6 @@ export class ExternalLayer
             return ;
         }
 
-        // 作業履歴を登録
-        timelineLayerControllerLayerNameUpdateHistoryUseCase(
-            this._$workSpace, this._$movieClip, this._$layer, name
-        );
-
         // レイヤー名を更新
         externalLayerUpdateNameUseCase(
             this._$workSpace, this._$movieClip, this._$layer, name

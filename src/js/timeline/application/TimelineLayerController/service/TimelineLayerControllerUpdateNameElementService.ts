@@ -26,5 +26,9 @@ export const execute = (layer: Layer, name: string): void =>
 
     // 表示Elementを更新
     const nameElement = nameElements[0] as NonNullable<HTMLElement>;
+    if (nameElement.textContent === name) {
+        return ;
+    }
+
     nameElement.textContent = name;
 };

@@ -37,6 +37,6 @@ export const execute = (message: ShareReceiveMessageImpl): void =>
     // レイヤー名を更新
     const name = message.data[4] as NonNullable<string>;
     externalLayerUpdateNameUseCase(
-        workSpace, movieClip, layer, name
+        workSpace, movieClip, layer, name, true
     );
 };
