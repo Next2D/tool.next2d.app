@@ -6,6 +6,10 @@ import { Bitmap } from "@/core/domain/model/Bitmap";
 import { execute as externalLibraryAddInstanceUseCase } from "@/external/controller/application/ExternalLibrary/usecase/ExternalLibraryAddInstanceUseCase";
 import { execute as libraryAreaAddNewBitmapHistoryUseCase } from "@/history/application/controller/LibraryArea/Bitmap/usecase/LibraryAreaAddNewBitmapHistoryUseCase";
 import { BitmapSaveObjectImpl } from "@/interface/BitmapSaveObjectImpl";
+import { execute as shareGetS3EndPointRepository } from "@/share/domain/repository/ShareGetS3EndPointRepository";
+import { execute as shareGetS3FileRepository } from "@/share/domain/repository/ShareGetS3FileRepository";
+import { execute as bitmapBinaryToBufferService } from "@/core/application/Bitmap/service/BitmapBinaryToBufferService";
+
 // @ts-ignore
 import ZlibInflateWorker from "@/worker/ZlibInflateWorker?worker&inline";
 
@@ -24,33 +28,32 @@ const worker: Worker = new ZlibInflateWorker();
  * @method
  * @public
  */
-export const execute = (message: ShareReceiveMessageImpl): Promise<void> =>
+export const execute = async (message: ShareReceiveMessageImpl): Promise<void> =>
 {
+    const id = message.data[0] as NonNullable<number>;
+
+    const workSpace = $getWorkSpace(id);
+    if (!workSpace) {
+        return ;
+    }
+
+    const libraryId = message.data[1] as NonNullable<number>;
+    const movieClip: InstanceImpl<MovieClip> = workSpace.getLibrary(libraryId);
+    if (!movieClip) {
+        return ;
+    }
+
+    // 受け取ったBitmapのbufferはZlibで圧縮されてるので解答が必要
+    const bitmapSaveObject = message.data[2] as NonNullable<BitmapSaveObjectImpl>;
+
+    const url = await shareGetS3EndPointRepository(message.data[3] as string, "get");
+    const binary = await shareGetS3FileRepository(url);
+
+    // バイナリをUint8Arrayに変換
+    const buffer: Uint8Array = bitmapBinaryToBufferService(binary);
+
     return new Promise((reslove): void =>
     {
-        const id = message.data[0] as NonNullable<number>;
-
-        const workSpace = $getWorkSpace(id);
-        if (!workSpace) {
-            return reslove();
-        }
-
-        const libraryId = message.data[1] as NonNullable<number>;
-        const movieClip: InstanceImpl<MovieClip> = workSpace.getLibrary(libraryId);
-        if (!movieClip) {
-            return reslove();
-        }
-
-        // 受け取ったBitmapのbufferはZlibで圧縮されてるので解答が必要
-        const bitmapSaveObject = message.data[2] as NonNullable<BitmapSaveObjectImpl>;
-
-        // バイナリデータをUint8Arrayに変換
-        const value = bitmapSaveObject.buffer as string;
-        const buffer: Uint8Array = new Uint8Array(value.length);
-        for (let idx: number = 0; idx < value.length; ++idx) {
-            buffer[idx] = value[idx].charCodeAt(0);
-        }
-
         // サブスレッドで解答処理を行う
         worker.postMessage(buffer, [buffer.buffer]);
 

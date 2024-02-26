@@ -3,6 +3,7 @@ import { execute as externalWorkSpaceRegisterInstanceService } from "@/external/
 import { execute as libraryAreaReloadUseCase } from "@/controller/application/LibraryArea/usecase/LibraryAreaReloadUseCase";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
 import type { BitmapSaveObjectImpl } from "@/interface/BitmapSaveObjectImpl";
+import { execute as libraryPreviewAreaClearDisplayService } from "@/controller/application/LibraryPreviewArea/service/LibraryPreviewAreaClearDisplayService";
 
 /**
  * @description 新規bitmap追加処理のRedo関数
@@ -31,6 +32,11 @@ export const execute = (
 
     // 起動中のプロジェクトならライブラリエリアを再描画
     if (workSpace.active) {
+
+        // プレビューエリアを初期化
+        libraryPreviewAreaClearDisplayService();
+
+        // ライブラリを再描画
         libraryAreaReloadUseCase();
     }
 };

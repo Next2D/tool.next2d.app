@@ -43,6 +43,7 @@ export default defineConfig({
     "test": {
         "globals": true,
         "environment": "jsdom",
+        "setupFiles": ["@vitest/web-worker"],
         "include": ["src/**/*.test.ts"]
     }
 });

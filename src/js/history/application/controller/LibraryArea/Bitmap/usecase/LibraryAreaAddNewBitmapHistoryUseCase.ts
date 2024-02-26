@@ -8,6 +8,18 @@ import { execute as historyGetTextService } from "@/controller/application/Histo
 import { execute as historyRemoveElementService } from "@/controller/application/HistoryArea/service/HistoryRemoveElementService";
 import { execute as libraryAreaAddNewBitmapCreateHistoryObjectService } from "../service/LibraryAreaAddNewBitmapCreateHistoryObjectService";
 import { execute as shareSendService } from "@/share/service/ShareSendService";
+import { execute as shareGetS3EndPointRepository } from "@/share/domain/repository/ShareGetS3EndPointRepository";
+import { execute as sharePutS3FileRepository } from "@/share/domain/repository/SharePutS3FileRepository";
+import { execute as bitmapBufferToBinaryService } from "@/core/application/Bitmap/service/BitmapBufferToBinaryService";
+
+// @ts-ignore
+import ZlibDeflateWorker from "@/worker/ZlibDeflateWorker?worker&inline";
+
+/**
+ * @type {Worker}
+ * @private
+ */
+const worker: Worker = new ZlibDeflateWorker();
 
 /**
  * @description 新規bitmap追加の履歴を登録
@@ -32,9 +44,39 @@ export const execute = async (
     // fixed logic
     historyRemoveElementService(movie_clip);
 
-    // fixed logic
-    const historyObject = await libraryAreaAddNewBitmapCreateHistoryObjectService(
-        work_space.id, movie_clip.id, bitmap
+    // S3にアップ
+    const fileId = window.crypto.randomUUID();
+
+    if (!receiver) {
+        await new Promise<void>((reslove): void =>
+        {
+            if (!bitmap.buffer) {
+                return ;
+            }
+
+            const buffer: Uint8Array | null = bitmap.buffer.slice();
+
+            // サブスレッドで圧縮処理を行う
+            worker.postMessage(buffer, [buffer.buffer]);
+
+            // 圧縮が完了したらバイナリデータとして返却
+            worker.onmessage = async (event: MessageEvent): Promise<void> =>
+            {
+                const buffer = event.data as Uint8Array;
+
+                // Uint8Arrayをバイナリに変換
+                const binary = bitmapBufferToBinaryService(buffer);
+
+                const url = await shareGetS3EndPointRepository(fileId, "put");
+                await sharePutS3FileRepository(url, binary);
+
+                reslove();
+            };
+        });
+    }
+
+    const historyObject = libraryAreaAddNewBitmapCreateHistoryObjectService(
+        work_space.id, movie_clip.id, bitmap.toObject(), fileId
     );
 
     // 作業履歴にElementを追加
@@ -54,6 +96,15 @@ export const execute = async (
 
     // 受け取り処理ではなく、画面共有していれば共有者に送信
     if (!receiver && $useSocket()) {
+        const bitmapObject = bitmap.toObject();
+
+        // バイナリは転送しない
+        bitmapObject.buffer = "";
+
+        const historyObject = libraryAreaAddNewBitmapCreateHistoryObjectService(
+            work_space.id, movie_clip.id, bitmapObject, fileId
+        );
+
         shareSendService(historyObject);
     }
 };
