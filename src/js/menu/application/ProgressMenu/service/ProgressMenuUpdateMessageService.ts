@@ -9,7 +9,7 @@ import { $PROGRESS_STATE_ID } from "@/config/ProgressMenuConfig";
  * @method
  * @public
  */
-export const execute = (message: string): void =>
+export const execute = async (message: string): Promise<void> =>
 {
     const element: HTMLElement | null = document
         .getElementById($PROGRESS_STATE_ID);

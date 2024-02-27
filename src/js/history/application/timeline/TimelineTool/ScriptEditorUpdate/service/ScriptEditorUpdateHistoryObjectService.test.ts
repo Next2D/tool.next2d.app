@@ -11,6 +11,7 @@ describe("ScriptEditorUpdateHistoryObjectServiceTest", () =>
         expect(object.command).toBe($TIMIELINE_TOOL_SCRIPT_UPDATE_COMMAND);
 
         // 配列の順番が崩れてもいいようにテストケースを残す
+        expect(object.messages.length).toBe(5);
         expect(object.messages[0]).toBe(1);
         expect(object.messages[1]).toBe(0);
         expect(object.messages[2]).toBe(10);
@@ -18,6 +19,7 @@ describe("ScriptEditorUpdateHistoryObjectServiceTest", () =>
         expect(object.messages[4]).toBe(afterScript);
 
         // 表示様の配列のチェック
+        expect(object.args.length).toBe(1);
         expect(object.args[0]).toBe(10);
     });
 });

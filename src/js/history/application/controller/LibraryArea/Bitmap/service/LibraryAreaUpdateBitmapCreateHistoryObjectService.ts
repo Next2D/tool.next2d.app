@@ -10,6 +10,7 @@ import { $LIBRARY_OVERWRITE_IMAGE_COMMAND } from "@/config/HistoryConfig";
  * @param  {number} movie_clip_id
  * @param  {object} before_object
  * @param  {object} after_object
+ * @param  {string} fileId
  * @return {object}
  * @method
  * @public
@@ -18,7 +19,8 @@ export const execute = (
     work_space_id: number,
     movie_clip_id: number,
     before_object: BitmapSaveObjectImpl,
-    after_object: BitmapSaveObjectImpl
+    after_object: BitmapSaveObjectImpl,
+    fileId: string
 ): HistoryObjectImpl => {
 
     return {
@@ -27,7 +29,8 @@ export const execute = (
             work_space_id,
             movie_clip_id,
             before_object,
-            after_object
+            after_object,
+            fileId
         ],
         "args": [
             before_object.name

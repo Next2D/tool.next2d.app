@@ -34,9 +34,12 @@ export const execute = (
     // fixed logic
     historyRemoveElementService(movie_clip);
 
+    // S3判定用のuuid
+    const fileId = window.crypto.randomUUID();
+
     // fixed logic
     const historyObject = libraryAreaUpdateBitmapCreateHistoryObjectService(
-        work_space.id, movie_clip.id, before_object, after_object
+        work_space.id, movie_clip.id, before_object, after_object, fileId
     );
 
     // 作業履歴にElementを追加
