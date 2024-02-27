@@ -4,7 +4,6 @@ import { Instance } from "./Instance";
 import { $clamp } from "@/global/GlobalUtil";
 import { execute as binaryToBufferService } from "@/core/service/BinaryToBufferService";
 import { execute as bufferToBinaryService } from "@/core/service/BufferToBinaryService";
-import { execute as videoBufferToElementService } from "@/core/application/Video/service/VideoBufferToElementService";
 
 /**
  * @description 映像の状態管理クラス
@@ -23,7 +22,6 @@ export class Video extends Instance
     private _$height: number;
     private _$autoPlay: boolean;
     private _$binary: string;
-    private _$queue: any[];
     private _$loaded: boolean;
     private _$buffer: Uint8Array | null;
 
@@ -77,12 +75,6 @@ export class Video extends Instance
          * @private
          */
         this._$binary = "";
-
-        /**
-         * @type {array}
-         * @private
-         */
-        this._$queue = [];
 
         /**
          * @type {boolean}
