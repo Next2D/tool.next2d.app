@@ -82,7 +82,7 @@ export const execute = (file: File, path: string): Promise<void> =>
                     workSpace,
                     workSpace.scene,
                     beforeObject,
-                    instance.toObject()
+                    instance
                 );
 
                 resolve();

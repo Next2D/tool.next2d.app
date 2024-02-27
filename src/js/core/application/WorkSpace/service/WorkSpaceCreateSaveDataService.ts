@@ -39,13 +39,13 @@ export const execute = (): Promise<Uint8Array | null> =>
             buffer[idx] = value[idx].charCodeAt(0);
         }
 
-        // サブスレッドで圧縮処理を行う
-        worker.postMessage(buffer, [buffer.buffer]);
-
         // 圧縮が完了したらバイナリデータとして返却
         worker.onmessage = (event: MessageEvent): void =>
         {
             reslove(event.data);
         };
+
+        // サブスレッドで圧縮処理を行う
+        worker.postMessage(buffer, [buffer.buffer]);
     });
 };

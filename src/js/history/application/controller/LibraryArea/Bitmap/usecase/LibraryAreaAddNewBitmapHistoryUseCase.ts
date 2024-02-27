@@ -76,12 +76,6 @@ export const execute = async (
                 return ;
             }
 
-            // Uint8Arrayを複製
-            const buffer: Uint8Array | null = bitmap.buffer.slice();
-
-            // サブスレッドで圧縮処理を行う
-            worker.postMessage(buffer, [buffer.buffer]);
-
             // 圧縮が完了したらバイナリデータとして返却
             worker.onmessage = async (event: MessageEvent): Promise<void> =>
             {
@@ -93,20 +87,25 @@ export const execute = async (
                 const url = await shareGetS3EndPointRepository(fileId, "put");
                 await sharePutS3FileRepository(url, binary);
 
+                // 転送用のオブジェクトを作成
+                const bitmapObject = bitmap.toObject();
+
+                // バイナリは転送しない
+                bitmapObject.buffer = "";
+
+                // 転送用の履歴オブジェクトを作成
+                const historyObject = libraryAreaAddNewBitmapCreateHistoryObjectService(
+                    work_space.id, movie_clip.id, bitmapObject, fileId
+                );
+
+                shareSendService(historyObject);
+
                 reslove();
             };
+
+            // Uint8Arrayを複製して、サブスレッドで圧縮処理を行う
+            const buffer: Uint8Array | null = bitmap.buffer.slice();
+            worker.postMessage(buffer, [buffer.buffer]);
         });
-
-        const bitmapObject = bitmap.toObject();
-
-        // バイナリは転送しない
-        bitmapObject.buffer = "";
-
-        // 転送用の履歴を生成
-        const historyObject = libraryAreaAddNewBitmapCreateHistoryObjectService(
-            work_space.id, movie_clip.id, bitmapObject, fileId
-        );
-
-        shareSendService(historyObject);
     }
 };

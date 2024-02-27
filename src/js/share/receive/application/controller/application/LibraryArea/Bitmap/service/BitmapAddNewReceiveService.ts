@@ -54,9 +54,6 @@ export const execute = async (message: ShareReceiveMessageImpl): Promise<void> =
 
     return new Promise((reslove): void =>
     {
-        // サブスレッドで解答処理を行う
-        worker.postMessage(buffer, [buffer.buffer]);
-
         // 解答が完了したらバイナリデータとして返却
         worker.onmessage = (event: MessageEvent): void =>
         {
@@ -80,5 +77,8 @@ export const execute = async (message: ShareReceiveMessageImpl): Promise<void> =
 
             reslove();
         };
+
+        // サブスレッドで解答処理を行う
+        worker.postMessage(buffer, [buffer.buffer]);
     });
 };

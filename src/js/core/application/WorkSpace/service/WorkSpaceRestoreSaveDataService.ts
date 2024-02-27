@@ -30,8 +30,6 @@ export const execute = (binary: string, share: boolean = false): Promise<void> =
             buffer[idx] = binary.charCodeAt(idx) & 0xff;
         }
 
-        worker.postMessage(buffer, [buffer.buffer]);
-
         worker.onmessage = (event: MessageEvent): void =>
         {
             let value: string = "";
@@ -52,5 +50,8 @@ export const execute = (binary: string, share: boolean = false): Promise<void> =
 
             resolve();
         };
+
+        // データを解凍
+        worker.postMessage(buffer, [buffer.buffer]);
     });
 };
