@@ -481,11 +481,11 @@ export class WorkSpace
      *
      * @param  {object} object
      * @param  {boolean} [share=false]
-     * @return {void}
+     * @return {Promise}
      * @method
      * @public
      */
-    load (object: WorkSpaceSaveObjectImpl, share: boolean = false): void
+    async load (object: WorkSpaceSaveObjectImpl, share: boolean = false): Promise<void>
     {
         this.name = object.name;
 
@@ -497,7 +497,7 @@ export class WorkSpace
         this._$stage.load(object.stage);
 
         if (object.libraries) {
-            this.loadLibrary(object.libraries);
+            await this.loadLibrary(object.libraries);
         }
 
         // update tool area
@@ -541,14 +541,14 @@ export class WorkSpace
      *              Duplicate library objects from save data
      *
      * @param  {array} libraries
-     * @return {void}
+     * @return {Promise}
      * @method
      * @public
      */
-    loadLibrary (libraries: InstanceSaveObjectImpl[]): void
+    async loadLibrary (libraries: InstanceSaveObjectImpl[]): Promise<void>
     {
         // セーブデータからライブラリを複製
-        workSpaceLoadLibraryService(this, libraries);
+        await workSpaceLoadLibraryService(this, libraries);
 
         // 名前とIDのマッピングを生成
         workSpaceCreatePathMapService(this);

@@ -1,8 +1,8 @@
 import type { BitmapSaveObjectImpl } from "@/interface/BitmapSaveObjectImpl";
 import type { ObjectImpl } from "@/interface/ObjectImpl";
 import { Instance } from "./Instance";
-import { execute as bitmapBufferToBinaryService } from "@/core/application/Bitmap/service/BitmapBufferToBinaryService";
-import { execute as bitmapBinaryToBufferService } from "@/core/application/Bitmap/service/BitmapBinaryToBufferService";
+import { execute as bufferToBinaryService } from "@/core/service/BufferToBinaryService";
+import { execute as binaryToBufferService } from "@/core/service/BinaryToBufferService";
 import { execute as bitmapBufferToElementService } from "@/core/application/Bitmap/service/BitmapBufferToElementService";
 
 /**
@@ -30,12 +30,42 @@ export class Bitmap extends Instance
     {
         super(object);
 
-        this._$buffer    = null;
-        this._$binary    = "";
-        this._$imageType = "";
-        this._$width     = 0;
-        this._$height    = 0;
+        /**
+         * @type {Uint8Array | null}
+         * @default null
+         * @private
+         */
+        this._$buffer = null;
 
+        /**
+         * @type {string}
+         * @default ""
+         * @private
+         */
+        this._$binary = "";
+
+        /**
+         * @type {string}
+         * @default ""
+         * @private
+         */
+        this._$imageType = "";
+
+        /**
+         * @type {number}
+         * @default 0
+         * @private
+         */
+        this._$width = 0;
+
+        /**
+         * @type {number}
+         * @default 0
+         * @private
+         */
+        this._$height = 0;
+
+        // オブジェクトから復元
         if (object.imageType) {
             this._$imageType = object.imageType;
         }
@@ -49,7 +79,7 @@ export class Bitmap extends Instance
             if (typeof object.buffer === "string") {
                 this._$binary = object.buffer;
                 // バイナリをbufferに変換
-                this._$buffer = bitmapBinaryToBufferService(object.buffer);
+                this._$buffer = binaryToBufferService(object.buffer);
             } else {
                 this._$buffer = object.buffer;
             }
@@ -141,7 +171,7 @@ export class Bitmap extends Instance
             }
 
             // Uint8Arrayをバイナリに変換
-            this._$binary = bitmapBufferToBinaryService(this._$buffer);
+            this._$binary = bufferToBinaryService(this._$buffer);
         }
 
         return this._$binary;

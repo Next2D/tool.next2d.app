@@ -4,6 +4,7 @@ import { $getMenu } from "@/menu/application/MenuUtil";
 import { ProgressMenu } from "@/menu/domain/model/ProgressMenu";
 import { execute as userDatabaseGetOpenDBRequestService } from "../service/UserDatabaseGetOpenDBRequestService";
 import { execute as workSpaceCreateSaveDataService } from "@/core/application/WorkSpace/service/WorkSpaceCreateSaveDataService";
+import { execute as bufferToBinaryService } from "@/core/service/BufferToBinaryService";
 import {
     $USER_DATABASE_NAME,
     $USER_DATABASE_STORE_KEY
@@ -26,11 +27,6 @@ export const execute = async (): Promise<void> =>
         return ;
     }
 
-    let binary = "";
-    for (let idx = 0; idx < buffer.length; idx += 4096) {
-        binary += String.fromCharCode(...buffer.slice(idx, idx + 4096));
-    }
-
     const request: IDBOpenDBRequest = userDatabaseGetOpenDBRequestService();
 
     // 起動成功処理
@@ -50,6 +46,7 @@ export const execute = async (): Promise<void> =>
             .objectStore(`${$USER_DATABASE_NAME}`);
 
         // IndesdDBに保存
+        const binary = bufferToBinaryService(buffer);
         store.put(binary, $USER_DATABASE_STORE_KEY);
 
         transaction.oncomplete = (): void =>

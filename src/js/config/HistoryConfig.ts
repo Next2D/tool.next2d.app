@@ -186,3 +186,12 @@ export const $LIBRARY_MOVE_FOLDER_COMMAND: number = 17;
  * @constant
  */
 export const $LIBRARY_OVERWRITE_IMAGE_COMMAND: number = 18;
+
+/**
+ * @description 新規video追加操作の識別コマンド名
+ *              Identification command name for new video add operation
+ *
+ * @type {number}
+ * @constant
+ */
+export const $LIBRARY_ADD_NEW_VIDEO_COMMAND: number = 19;

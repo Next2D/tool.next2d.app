@@ -4,6 +4,7 @@ import { execute as workSpaceCreateSaveDataService } from "@/core/application/Wo
 import { WorkSpace } from "@/core/domain/model/WorkSpace";
 import { execute as shareGetS3EndPointRepository } from "../domain/repository/ShareGetS3EndPointRepository";
 import { execute as sharePutS3FileRepository } from "../domain/repository/SharePutS3FileRepository";
+import { execute as bufferToBinaryService } from "@/core/service/BufferToBinaryService";
 
 /**
  * @description オーナーのプロジェクトデーターを共有者に送信
@@ -26,14 +27,11 @@ export const execute = async (connection_id: string): Promise<void> =>
         return ;
     }
 
-    let binary = "";
-    for (let idx = 0; idx < buffer.length; idx += 4096) {
-        binary += String.fromCharCode(...buffer.slice(idx, idx + 4096));
-    }
-
     // S3にファイルをアップロード
     const fileId = window.crypto.randomUUID();
     const url = await shareGetS3EndPointRepository(fileId, "put");
+
+    const binary = bufferToBinaryService(buffer);
     await sharePutS3FileRepository(url, binary);
 
     const initializeObject: ShareInitializeSendObjectImpl = {

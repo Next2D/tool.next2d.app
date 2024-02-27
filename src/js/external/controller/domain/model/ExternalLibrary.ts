@@ -7,6 +7,7 @@ import { execute as libraryAreaAllClearElementService } from "@/controller/appli
 import { execute as libraryAreaActiveElementService } from "@/controller/application/LibraryArea/service/LibraryAreaActiveElementService";
 import { execute as externalLibrarySelectedOneService } from "@/external/controller/application/ExternalLibrary/service/ExternalLibrarySelectedOneService";
 import { execute as externalLibraryImportBitmapFileUseCase } from "@/external/controller/application/ExternalLibrary/usecase/ExternalLibraryImportBitmapFileUseCase";
+import { execute as externalLibraryImportVideoFileUseCase } from "@/external/controller/application/ExternalLibrary/usecase/ExternalLibraryImportVideoFileUseCase";
 import { execute as libraryAreaReOrderingService } from "@/controller/application/LibraryArea/service/LibraryAreaReOrderingService";
 import { execute as libraryAreaReloadUseCase } from "@/controller/application/LibraryArea/usecase/LibraryAreaReloadUseCase";
 import { execute as externalLibraryCreateInstanceService } from "@/external/controller/application/ExternalLibrary/service/ExternalLibraryCreateInstanceService";
@@ -67,6 +68,7 @@ export class ExternalLibrary
 
             // ビデオ
             case "video/mp4":
+                await externalLibraryImportVideoFileUseCase(this._$workSpace, file, name, path);
                 break;
 
             // 音声

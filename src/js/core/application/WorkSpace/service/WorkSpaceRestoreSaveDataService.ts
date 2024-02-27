@@ -3,6 +3,8 @@ import type { WorkSpaceSaveObjectImpl } from "@/interface/WorkSpaceSaveObjectImp
 // @ts-ignore
 import ZlibInflateWorker from "@/worker/ZlibInflateWorker?worker&inline";
 import { $registerWorkSpace } from "../../CoreUtil";
+import { execute as binaryToBufferService } from "@/core/service/BinaryToBufferService";
+import { execute as bufferToBinaryService } from "@/core/service/BufferToBinaryService";
 
 /**
  * @private
@@ -24,26 +26,19 @@ export const execute = (binary: string, share: boolean = false): Promise<void> =
     return new Promise((resolve): void =>
     {
         // バイナリデータを数値に戻す
-        const length: number = binary.length;
-        const buffer: Uint8Array = new Uint8Array(length);
-        for (let idx: number = 0; idx < length; ++idx) {
-            buffer[idx] = binary.charCodeAt(idx) & 0xff;
-        }
+        const buffer: Uint8Array = binaryToBufferService(binary);
 
-        worker.onmessage = (event: MessageEvent): void =>
+        worker.onmessage = async (event: MessageEvent): Promise<void> =>
         {
-            let value: string = "";
-
-            const buffer: Uint8Array = event.data as NonNullable<Uint8Array>;
-            for (let idx: number = 0; idx < buffer.length; idx += 4096) {
-                value += String.fromCharCode(...buffer.slice(idx, idx + 4096));
-            }
+            const value = bufferToBinaryService(
+                event.data as NonNullable<Uint8Array>
+            );
 
             const workSpaceObjects: WorkSpaceSaveObjectImpl[] = JSON.parse(decodeURIComponent(value));
             for (let idx: number = 0; idx < workSpaceObjects.length; ++idx) {
 
                 const workSpace = new WorkSpace();
-                workSpace.load(workSpaceObjects[idx], share);
+                await workSpace.load(workSpaceObjects[idx], share);
 
                 $registerWorkSpace(workSpace);
             }

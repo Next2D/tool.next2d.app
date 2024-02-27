@@ -7,7 +7,7 @@ import { execute as libraryAreaUpdateBitmapHistoryUseCase } from "@/history/appl
 import { BitmapSaveObjectImpl } from "@/interface/BitmapSaveObjectImpl";
 import { execute as shareGetS3EndPointRepository } from "@/share/domain/repository/ShareGetS3EndPointRepository";
 import { execute as shareGetS3FileRepository } from "@/share/domain/repository/ShareGetS3FileRepository";
-import { execute as bitmapBinaryToBufferService } from "@/core/application/Bitmap/service/BitmapBinaryToBufferService";
+import { execute as binaryToBufferService } from "@/core/service/BinaryToBufferService";
 
 // @ts-ignore
 import ZlibInflateWorker from "@/worker/ZlibInflateWorker?worker&inline";
@@ -53,7 +53,7 @@ export const execute = async (message: ShareReceiveMessageImpl): Promise<void> =
     const beforeBitmapObject = bitmap.toObject();
 
     // バイナリをUint8Arrayに変換
-    const buffer: Uint8Array = bitmapBinaryToBufferService(binary);
+    const buffer: Uint8Array = binaryToBufferService(binary);
 
     return new Promise((reslove): void =>
     {

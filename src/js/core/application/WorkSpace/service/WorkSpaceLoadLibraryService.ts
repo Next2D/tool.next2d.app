@@ -3,9 +3,11 @@ import type { BitmapSaveObjectImpl } from "@/interface/BitmapSaveObjectImpl";
 import type { FolderSaveObjectImpl } from "@/interface/FolderSaveObjectImpl";
 import type { InstanceSaveObjectImpl } from "@/interface/InstanceSaveObjectImpl";
 import type { MovieClipSaveObjectImpl } from "@/interface/MovieClipSaveObjectImpl";
+import type { VideoSaveObjectImpl } from "@/interface/VideoSaveObjectImpl";
 import { Bitmap } from "@/core/domain/model/Bitmap";
 import { Folder } from "@/core/domain/model/Folder";
 import { MovieClip } from "@/core/domain/model/MovieClip";
+import { Video } from "@/core/domain/model/Video";
 
 /**
  * @description 保存データからライブラリ情報を復元
@@ -13,14 +15,14 @@ import { MovieClip } from "@/core/domain/model/MovieClip";
  *
  * @param  {WorkSpace} work_space
  * @param  {array} libraries
- * @return {vpod}
+ * @return {Promise}
  * @method
  * @public
  */
-export const execute = (
+export const execute = async (
     work_space: WorkSpace,
     libraries: InstanceSaveObjectImpl[]
-): void => {
+): Promise<void> => {
 
     // 復元処理
     for (let idx: number = 0; idx < libraries.length; ++idx) {
@@ -54,6 +56,17 @@ export const execute = (
                     libraryObject.id,
                     new Bitmap(libraryObject as BitmapSaveObjectImpl)
                 );
+                break;
+
+            case "video":
+                {
+                    const video = new Video(libraryObject as VideoSaveObjectImpl);
+                    await video.wait();
+                    work_space.libraries.set(
+                        libraryObject.id,
+                        video
+                    );
+                }
                 break;
 
             default:

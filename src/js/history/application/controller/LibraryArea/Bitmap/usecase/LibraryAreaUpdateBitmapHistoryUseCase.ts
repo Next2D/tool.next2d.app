@@ -9,7 +9,7 @@ import { execute as historyGetTextService } from "@/controller/application/Histo
 import { execute as historyRemoveElementService } from "@/controller/application/HistoryArea/service/HistoryRemoveElementService";
 import { execute as libraryAreaUpdateBitmapCreateHistoryObjectService } from "../service/LibraryAreaUpdateBitmapCreateHistoryObjectService";
 import { execute as shareSendService } from "@/share/service/ShareSendService";
-import { execute as bitmapBufferToBinaryService } from "@/core/application/Bitmap/service/BitmapBufferToBinaryService";
+import { execute as bufferToBinaryService } from "@/core/service/BufferToBinaryService";
 import { execute as shareGetS3EndPointRepository } from "@/share/domain/repository/ShareGetS3EndPointRepository";
 import { execute as sharePutS3FileRepository } from "@/share/domain/repository/SharePutS3FileRepository";
 
@@ -47,13 +47,14 @@ export const execute = async (
     // fixed logic
     historyRemoveElementService(movie_clip);
 
-    // S3判定用のuuid
-    const fileId = window.crypto.randomUUID();
-
+    // fileIdは不要なので空文字をセット
     // fixed logic
     const historyObject = libraryAreaUpdateBitmapCreateHistoryObjectService(
-        work_space.id, movie_clip.id, before_object, bitmap.toObject(), fileId
+        work_space.id, movie_clip.id, before_object, bitmap.toObject(), ""
     );
+
+    // 履歴にはfileIdは不要なので削除
+    historyObject.messages.pop();
 
     // 作業履歴にElementを追加
     // fixed logic
@@ -85,8 +86,10 @@ export const execute = async (
                 const buffer = event.data as Uint8Array;
 
                 // Uint8Arrayをバイナリに変換
-                const binary = bitmapBufferToBinaryService(buffer);
+                const binary = bufferToBinaryService(buffer);
 
+                // S3判定用のuuid
+                const fileId = window.crypto.randomUUID();
                 const url = await shareGetS3EndPointRepository(fileId, "put");
                 await sharePutS3FileRepository(url, binary);
 
