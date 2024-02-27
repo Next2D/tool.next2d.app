@@ -11,7 +11,8 @@ import {
     $LIBRARY_UPDATE_INSTANCE_SYMBOL_COMMAND,
     $LIBRARY_ADD_NEW_BITMAP_COMMAND,
     $LIBRARY_MOVE_FOLDER_COMMAND,
-    $LIBRARY_OVERWRITE_IMAGE_COMMAND
+    $LIBRARY_OVERWRITE_IMAGE_COMMAND,
+    $LIBRARY_ADD_NEW_VIDEO_COMMAND
 } from "@/config/HistoryConfig";
 
 /**
@@ -64,6 +65,9 @@ export const execute = (command: number): string =>
 
         case $LIBRARY_OVERWRITE_IMAGE_COMMAND:
             return "「%s」の画像を上書き";
+
+        case $LIBRARY_ADD_NEW_VIDEO_COMMAND:
+            return "動画「%s」を取り込み";
 
         default:
             break;

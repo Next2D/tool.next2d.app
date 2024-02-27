@@ -1,6 +1,7 @@
 import type { HistoryObjectImpl } from "@/interface/HistoryObjectImpl";
 import type { LayerSaveObjectImpl } from "@/interface/LayerSaveObjectImpl";
 import type { BitmapSaveObjectImpl } from "@/interface/BitmapSaveObjectImpl";
+import type { VideoSaveObjectImpl } from "@/interface/VideoSaveObjectImpl";
 import { execute as screenTabNameAddHistoryUndoUseCase } from "@/history/application/screen/ScreenTab/usecase/ScreenTabNameAddHistoryUndoUseCase";
 import { execute as timelineToolLayerAddHistoryUndoUseCase } from "@/history/application/timeline/TimelineTool/LayerAdd/usecase/TimelineToolLayerAddHistoryUndoUseCase";
 import { execute as timelineToolLayerDeleteHistoryUndoUseCase } from "@/history/application/timeline/TimelineTool/LayerDelete/usecase/TimelineToolLayerDeleteHistoryUndoUseCase";
@@ -10,6 +11,7 @@ import { execute as scriptEditorUpdateHistoryUndoUseCase } from "@/history/appli
 import { execute as scriptEditorDeleteHistoryUndoUseCase } from "@/history/application/timeline/TimelineTool/ScriptEditorDelete/usecase/ScriptEditorDeleteHistoryUndoUseCase";
 import { execute as libraryAreaAddNewFolderHistoryUndoUseCase } from "@/history/application/controller/LibraryArea/Folder/usecase/LibraryAreaAddNewFolderHistoryUndoUseCase";
 import { execute as libraryAreaMoveFolderHistoryUndoUseCase } from "@/history/application/controller/LibraryArea/Folder/usecase/LibraryAreaMoveFolderHistoryUndoUseCase";
+import { execute as libraryAreaAddNewVideoHistoryUndoUseCase } from "@/history/application/controller/LibraryArea/Video/usecase/LibraryAreaAddNewVideoHistoryUndoUseCase";
 import { execute as libraryAreaAddNewBitmapHistoryUndoUseCase } from "@/history/application/controller/LibraryArea/Bitmap/usecase/LibraryAreaAddNewBitmapHistoryUndoUseCase";
 import { execute as libraryAreaUpdateBitmapHistoryUndoUseCase } from "@/history/application/controller/LibraryArea/Bitmap/usecase/LibraryAreaUpdateBitmapHistoryUndoUseCase";
 import { execute as instanceUpdateNameHistoryUndoUseCase } from "@/history/application/core/Instance/usecase/InstanceUpdateNameHistoryUndoUseCase";
@@ -27,7 +29,8 @@ import {
     $LIBRARY_UPDATE_INSTANCE_SYMBOL_COMMAND,
     $LIBRARY_ADD_NEW_BITMAP_COMMAND,
     $LIBRARY_MOVE_FOLDER_COMMAND,
-    $LIBRARY_OVERWRITE_IMAGE_COMMAND
+    $LIBRARY_OVERWRITE_IMAGE_COMMAND,
+    $LIBRARY_ADD_NEW_VIDEO_COMMAND
 } from "@/config/HistoryConfig";
 
 /**
@@ -157,6 +160,13 @@ export const execute = (history_object: HistoryObjectImpl): void =>
             libraryAreaUpdateBitmapHistoryUndoUseCase(
                 messages[0] as number, // workSpaceId,
                 messages[2] as BitmapSaveObjectImpl // Bitmap Save Object
+            );
+            break;
+
+        case $LIBRARY_ADD_NEW_VIDEO_COMMAND:
+            libraryAreaAddNewVideoHistoryUndoUseCase(
+                messages[0] as number, // workSpaceId,
+                messages[2] as VideoSaveObjectImpl // Video Save Object
             );
             break;
 

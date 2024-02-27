@@ -12,7 +12,8 @@ import {
     $LIBRARY_UPDATE_INSTANCE_SYMBOL_COMMAND,
     $LIBRARY_ADD_NEW_BITMAP_COMMAND,
     $LIBRARY_MOVE_FOLDER_COMMAND,
-    $LIBRARY_OVERWRITE_IMAGE_COMMAND
+    $LIBRARY_OVERWRITE_IMAGE_COMMAND,
+    $LIBRARY_ADD_NEW_VIDEO_COMMAND
 } from "../../../../config/HistoryConfig";
 
 describe("HistoryGetTextServiceTest", () =>
@@ -32,5 +33,6 @@ describe("HistoryGetTextServiceTest", () =>
         expect(execute($LIBRARY_ADD_NEW_BITMAP_COMMAND)).toBe("画像「%s」を取り込み");
         expect(execute($LIBRARY_MOVE_FOLDER_COMMAND)).toBe("「%s」のフォルダ移動");
         expect(execute($LIBRARY_OVERWRITE_IMAGE_COMMAND)).toBe("「%s」の画像を上書き");
+        expect(execute($LIBRARY_ADD_NEW_VIDEO_COMMAND)).toBe("動画「%s」を取り込み");
     });
 });

@@ -2,7 +2,7 @@ import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import type { Video } from "@/core/domain/model/Video";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import { $useSocket } from "@/share/ShareUtil";
-import { $LIBRARY_ADD_NEW_BITMAP_COMMAND } from "@/config/HistoryConfig";
+import { $LIBRARY_ADD_NEW_VIDEO_COMMAND } from "@/config/HistoryConfig";
 import { execute as historyAddElementUseCase } from "@/controller/application/HistoryArea/usecase/HistoryAddElementUseCase";
 import { execute as historyGetTextService } from "@/controller/application/HistoryArea/service/HistoryGetTextService";
 import { execute as historyRemoveElementService } from "@/controller/application/HistoryArea/service/HistoryRemoveElementService";
@@ -54,7 +54,7 @@ export const execute = async (
     if (work_space.active && movie_clip.actions) {
         historyAddElementUseCase(
             movie_clip.historyIndex,
-            historyGetTextService($LIBRARY_ADD_NEW_BITMAP_COMMAND),
+            historyGetTextService($LIBRARY_ADD_NEW_VIDEO_COMMAND),
             "",
             ...historyObject.args
         );
