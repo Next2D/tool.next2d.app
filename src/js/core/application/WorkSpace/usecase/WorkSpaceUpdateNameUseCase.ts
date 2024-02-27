@@ -1,5 +1,5 @@
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
-import { execute as screenTabUpdateHistoryUseCase } from "@/history/application/screen/ScreenTab/usecase/ScreenTabUpdateHistoryUseCase";
+import { execute as screenTabUpdateHistoryUseCase } from "@/history/application/screen/application/ScreenTab/usecase/ScreenTabUpdateHistoryUseCase";
 import { $getWorkSpace } from "../../CoreUtil";
 
 /**

@@ -4,7 +4,7 @@ import type { ExternalInstanceImpl } from "@/interface/ExternalInstanceImpl";
 import { Bitmap } from "@/core/domain/model/Bitmap";
 import { ExternalLibrary } from "@/external/controller/domain/model/ExternalLibrary";
 import { execute as externalWorkSpaceRegisterInstanceService } from "@/external/core/application/ExternalWorkSpace/service/ExternalWorkSpaceRegisterInstanceService";
-import { execute as libraryAreaAddNewBitmapHistoryUseCase } from "@/history/application/controller/LibraryArea/Bitmap/usecase/LibraryAreaAddNewBitmapHistoryUseCase";
+import { execute as libraryAreaAddNewBitmapHistoryUseCase } from "@/history/application/controller/application/LibraryArea/Bitmap/usecase/LibraryAreaAddNewBitmapHistoryUseCase";
 import {
     $getCanvas,
     $poolCanvas

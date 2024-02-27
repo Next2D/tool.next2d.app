@@ -3,7 +3,7 @@ import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { InstanceImpl } from "@/interface/InstanceImpl";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
 import { Folder } from "@/core/domain/model/Folder";
-import { execute as libraryAreaMoveFolderHistoryUseCase } from "@/history/application/controller/LibraryArea/Folder/usecase/LibraryAreaMoveFolderHistoryUseCase";
+import { execute as libraryAreaMoveFolderHistoryUseCase } from "@/history/application/controller/application/LibraryArea/Folder/usecase/LibraryAreaMoveFolderHistoryUseCase";
 import { execute as workSpaceCreatePathMapService } from "@/core/application/WorkSpace/service/WorkSpaceCreatePathMapService";
 import { execute as libraryAreaReOrderingService } from "@/controller/application/LibraryArea/service/LibraryAreaReOrderingService";
 import { execute as libraryAreaReloadUseCase } from "@/controller/application/LibraryArea/usecase/LibraryAreaReloadUseCase";

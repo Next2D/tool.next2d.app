@@ -4,7 +4,7 @@ import type { ExternalInstanceImpl } from "@/interface/ExternalInstanceImpl";
 import { Video } from "@/core/domain/model/Video";
 import { ExternalLibrary } from "@/external/controller/domain/model/ExternalLibrary";
 import { execute as externalWorkSpaceRegisterInstanceService } from "@/external/core/application/ExternalWorkSpace/service/ExternalWorkSpaceRegisterInstanceService";
-import { execute as libraryAreaAddNewVideoHistoryUseCase } from "@/history/application/controller/LibraryArea/Video/usecase/LibraryAreaAddNewVideoHistoryUseCase";
+import { execute as libraryAreaAddNewVideoHistoryUseCase } from "@/history/application/controller/application/LibraryArea/Video/usecase/LibraryAreaAddNewVideoHistoryUseCase";
 
 /**
  * @description 映像の読み込み実行処理関数

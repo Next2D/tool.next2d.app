@@ -2,7 +2,7 @@ import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import { Folder } from "@/core/domain/model/Folder";
 import { execute as externalLibraryAddInstanceUseCase } from "@/external/controller/application/ExternalLibrary/usecase/ExternalLibraryAddInstanceUseCase";
-import { execute as libraryAreaAddNewFolderHistoryUseCase } from "@/history/application/controller/LibraryArea/Folder/usecase/LibraryAreaAddNewFolderHistoryUseCase";
+import { execute as libraryAreaAddNewFolderHistoryUseCase } from "@/history/application/controller/application/LibraryArea/Folder/usecase/LibraryAreaAddNewFolderHistoryUseCase";
 
 /**
  * @description 新規フォルダーの追加ユースケース

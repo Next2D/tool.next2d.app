@@ -4,7 +4,7 @@ import type { InstanceImpl } from "@/interface/InstanceImpl";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
 import { Folder } from "@/core/domain/model/Folder";
 import { execute as externalLibraryAddInstanceUseCase } from "@/external/controller/application/ExternalLibrary/usecase/ExternalLibraryAddInstanceUseCase";
-import { execute as libraryAreaAddNewFolderHistoryUseCase } from "@/history/application/controller/LibraryArea/Folder/usecase/LibraryAreaAddNewFolderHistoryUseCase";
+import { execute as libraryAreaAddNewFolderHistoryUseCase } from "@/history/application/controller/application/LibraryArea/Folder/usecase/LibraryAreaAddNewFolderHistoryUseCase";
 
 /**
  * @description socketで受け取った情報の受け取り処理関数

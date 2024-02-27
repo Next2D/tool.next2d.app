@@ -4,7 +4,7 @@ import type { InstanceImpl } from "@/interface/InstanceImpl";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
 import { Bitmap } from "@/core/domain/model/Bitmap";
 import { execute as externalLibraryAddInstanceUseCase } from "@/external/controller/application/ExternalLibrary/usecase/ExternalLibraryAddInstanceUseCase";
-import { execute as libraryAreaAddNewBitmapHistoryUseCase } from "@/history/application/controller/LibraryArea/Bitmap/usecase/LibraryAreaAddNewBitmapHistoryUseCase";
+import { execute as libraryAreaAddNewBitmapHistoryUseCase } from "@/history/application/controller/application/LibraryArea/Bitmap/usecase/LibraryAreaAddNewBitmapHistoryUseCase";
 import { BitmapSaveObjectImpl } from "@/interface/BitmapSaveObjectImpl";
 import { execute as shareGetS3EndPointRepository } from "@/share/domain/repository/ShareGetS3EndPointRepository";
 import { execute as shareGetS3FileRepository } from "@/share/domain/repository/ShareGetS3FileRepository";

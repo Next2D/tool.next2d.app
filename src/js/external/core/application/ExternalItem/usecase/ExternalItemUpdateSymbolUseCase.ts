@@ -2,7 +2,7 @@ import type { Instance } from "@/core/domain/model/Instance";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import type { InstanceImpl } from "@/interface/InstanceImpl";
-import { execute as instanceUpdateSymbolHistoryUseCase } from "@/history/application/core/Instance/usecase/InstanceUpdateSymbolHistoryUseCase";
+import { execute as instanceUpdateSymbolHistoryUseCase } from "@/history/application/core/application/Instance/usecase/InstanceUpdateSymbolHistoryUseCase";
 import { execute as libraryAreaUpdateSymbolElementService } from "@/controller/application/LibraryArea/service/LibraryAreaUpdateSymbolElementService";
 
 /**

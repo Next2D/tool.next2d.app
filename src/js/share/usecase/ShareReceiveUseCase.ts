@@ -13,7 +13,7 @@ import { execute as folderAddNewReceiveService } from "@/share/receive/applicati
 import { execute as folderMoveReceiveService } from "@/share/receive/application/controller/application/LibraryArea/Folder/service/FolderMoveReceiveService";
 import { execute as bitmapAddNewReceiveService } from "@/share/receive/application/controller/application/LibraryArea/Bitmap/service/BitmapAddNewReceiveService";
 import { execute as bitmapUpdateReceiveService } from "@/share/receive/application/controller/application/LibraryArea/Bitmap/service/BitmapUpdateReceiveService";
-import { execute as folderUpdateStateReceiveService } from "@/share/receive/application/core/application/Folder/service/FolderUpdateStateReceiveService";
+import { execute as folderUpdateStateReceiveService } from "@/share/receive/application/controller/application/LibraryArea/Folder/service/FolderUpdateStateReceiveService";
 import { execute as instanceUpdateNameReceiveUseCase } from "@/share/receive/application/core/application/Instance/usecase/InstanceUpdateNameReceiveUseCase";
 import { execute as instanceUpdateSymbolReceiveUseCase } from "@/share/receive/application/core/application/Instance/usecase/InstanceUpdateSymbolReceiveUseCase";
 import { execute as historyRedoUseCase } from "@/controller/application/HistoryArea/usecase/HistoryRedoUseCase";

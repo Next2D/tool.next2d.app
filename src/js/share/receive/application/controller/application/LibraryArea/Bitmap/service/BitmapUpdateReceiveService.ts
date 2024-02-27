@@ -3,7 +3,7 @@ import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { InstanceImpl } from "@/interface/InstanceImpl";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
 import { Bitmap } from "@/core/domain/model/Bitmap";
-import { execute as libraryAreaUpdateBitmapHistoryUseCase } from "@/history/application/controller/LibraryArea/Bitmap/usecase/LibraryAreaUpdateBitmapHistoryUseCase";
+import { execute as libraryAreaUpdateBitmapHistoryUseCase } from "@/history/application/controller/application/LibraryArea/Bitmap/usecase/LibraryAreaUpdateBitmapHistoryUseCase";
 import { BitmapSaveObjectImpl } from "@/interface/BitmapSaveObjectImpl";
 import { execute as shareGetS3EndPointRepository } from "@/share/domain/repository/ShareGetS3EndPointRepository";
 import { execute as shareGetS3FileRepository } from "@/share/domain/repository/ShareGetS3FileRepository";

@@ -1,7 +1,7 @@
 import type { Layer } from "@/core/domain/model/Layer";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
-import { execute as timelineLayerControllerLayerNameUpdateHistoryUseCase } from "@/history/application/timeline/TimelineLayerController/LayerName/usecase/TimelineLayerControllerLayerNameUpdateHistoryUseCase";
+import { execute as timelineLayerControllerLayerNameUpdateHistoryUseCase } from "@/history/application/timeline/application/TimelineLayerController/LayerName/usecase/TimelineLayerControllerLayerNameUpdateHistoryUseCase";
 import { execute as timelineLayerControllerUpdateNameElementService } from "@/timeline/application/TimelineLayerController/service/TimelineLayerControllerUpdateNameElementService";
 
 /**

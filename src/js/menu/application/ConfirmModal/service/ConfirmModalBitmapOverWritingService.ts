@@ -1,7 +1,7 @@
 import type { InstanceImpl } from "@/interface/InstanceImpl";
 import type { Bitmap } from "@/core/domain/model/Bitmap";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
-import { execute as libraryAreaUpdateBitmapHistoryUseCase } from "@/history/application/controller/LibraryArea/Bitmap/usecase/LibraryAreaUpdateBitmapHistoryUseCase";
+import { execute as libraryAreaUpdateBitmapHistoryUseCase } from "@/history/application/controller/application/LibraryArea/Bitmap/usecase/LibraryAreaUpdateBitmapHistoryUseCase";
 import {
     $getCanvas,
     $poolCanvas
