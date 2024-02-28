@@ -13,7 +13,9 @@ import {
     $LIBRARY_MOVE_FOLDER_COMMAND,
     $LIBRARY_OVERWRITE_IMAGE_COMMAND,
     $LIBRARY_ADD_NEW_VIDEO_COMMAND,
-    $LIBRARY_OVERWRITE_VIDEO_COMMAND
+    $LIBRARY_OVERWRITE_VIDEO_COMMAND,
+    $LIBRARY_ADD_NEW_SOUND_COMMAND,
+    $LIBRARY_OVERWRITE_SOUND_COMMAND
 } from "@/config/HistoryConfig";
 
 /**
@@ -72,6 +74,12 @@ export const execute = (command: number): string =>
 
         case $LIBRARY_OVERWRITE_VIDEO_COMMAND:
             return "「%s」の動画を上書き";
+
+        case $LIBRARY_ADD_NEW_SOUND_COMMAND:
+            return "音声「%s」を取り込み";
+
+        case $LIBRARY_OVERWRITE_SOUND_COMMAND:
+            return "「%s」の音声を上書き";
 
         default:
             break;

@@ -2,7 +2,7 @@ import { execute } from "./LibraryAreaAddNewVideoCreateHistoryObjectService";
 import { Video } from "../../../../../../../core/domain/model/Video";
 import { $LIBRARY_ADD_NEW_VIDEO_COMMAND } from "../../../../../../../config/HistoryConfig";
 
-describe("LibraryAreaAddNewBitmapCreateHistoryObjectServiceTest", () =>
+describe("LibraryAreaAddNewVideoCreateHistoryObjectServiceTest", () =>
 {
     test("execute test", () =>
     {

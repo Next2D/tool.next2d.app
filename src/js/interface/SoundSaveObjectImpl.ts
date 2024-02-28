@@ -1,7 +1,8 @@
-import type { SoundObjectImpl } from "./SoundObjectImpl";
+import type { InstanceObjectImpl } from "./InstanceObjectImpl";
 
-export interface SoundSaveObjectImpl
+export interface SoundSaveObjectImpl extends InstanceObjectImpl
 {
-    "frame": number;
-    "sounds": SoundObjectImpl[];
+    buffer: Uint8Array | string;
+    volume?: number;
+    loopCount?: number;
 }

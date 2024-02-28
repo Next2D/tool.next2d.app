@@ -146,8 +146,8 @@ export class Video extends Instance
     }
 
     /**
-     * @description 映像データの内部データを読み込み開始、再生可能になったら完了
-     *              Starts reading internal data of video data and completes when playback becomes possible.
+     * @description データを読み込み、再生可能になったら完了
+     *              When data is loaded and ready for playback, it is done.
      *
      * @return {Promise}
      * @method

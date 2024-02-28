@@ -1,14 +1,14 @@
 import type { HistoryObjectImpl } from "@/interface/HistoryObjectImpl";
-import type { VideoSaveObjectImpl } from "@/interface/VideoSaveObjectImpl";
-import { $LIBRARY_ADD_NEW_VIDEO_COMMAND } from "@/config/HistoryConfig";
+import type { SoundSaveObjectImpl } from "@/interface/SoundSaveObjectImpl";
+import { $LIBRARY_ADD_NEW_SOUND_COMMAND } from "@/config/HistoryConfig";
 
 /**
- * @description 映像データ追加の履歴用オブジェクトを作成
- *              Create object for history of image data addition
+ * @description 音声データ追加の履歴用オブジェクトを作成
+ *              Create object for history of voice data addition
  *
  * @param  {number} work_space_id
  * @param  {number} movie_clip_id
- * @param  {object} video_object
+ * @param  {object} sound_object
  * @param  {string} fileId
  * @return {object}
  * @method
@@ -17,20 +17,20 @@ import { $LIBRARY_ADD_NEW_VIDEO_COMMAND } from "@/config/HistoryConfig";
 export const execute = (
     work_space_id: number,
     movie_clip_id: number,
-    video_object: VideoSaveObjectImpl,
+    sound_object: SoundSaveObjectImpl,
     fileId: string
 ): HistoryObjectImpl => {
 
     return {
-        "command": $LIBRARY_ADD_NEW_VIDEO_COMMAND,
+        "command": $LIBRARY_ADD_NEW_SOUND_COMMAND,
         "messages": [
             work_space_id,
             movie_clip_id,
-            video_object,
+            sound_object,
             fileId
         ],
         "args": [
-            video_object.name
+            sound_object.name
         ]
     };
 };

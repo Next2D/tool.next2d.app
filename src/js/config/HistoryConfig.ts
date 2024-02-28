@@ -204,3 +204,21 @@ export const $LIBRARY_ADD_NEW_VIDEO_COMMAND: number = 19;
  * @constant
  */
 export const $LIBRARY_OVERWRITE_VIDEO_COMMAND: number = 20;
+
+/**
+ * @description 新規audio追加操作の識別コマンド名
+ *              Identification command name for new audio add operation
+ *
+ * @type {number}
+ * @constant
+ */
+export const $LIBRARY_ADD_NEW_SOUND_COMMAND: number = 21;
+
+/**
+ * @description 音声の上書きの識別コマンド名
+ *              Identification command name for voice override
+ *
+ * @type {number}
+ * @constant
+ */
+export const $LIBRARY_OVERWRITE_SOUND_COMMAND: number = 22;
