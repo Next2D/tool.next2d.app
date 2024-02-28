@@ -86,7 +86,7 @@ export const execute = (): Promise<void> =>
                     const binary: string | undefined = (event.target as IDBRequest).result;
                     if (binary) {
                         // 保存データを復元
-                        await workSpaceRestoreSaveDataService(binary)
+                        await workSpaceRestoreSaveDataService(binary);
                     } else {
                         // 新規のWorkSpaceを起動
                         $createWorkSpace();
