@@ -9,17 +9,18 @@ import { execute as timelineLayerControllerLayerLightUpdateReceiveService } from
 import { execute as scriptEditorNewRegisterReceiveUseCase } from "@/share/receive/application/timeline/application/TimelineTool/application/ScriptEditorNewRegister/usecase/ScriptEditorNewRegisterReceiveUseCase";
 import { execute as scriptEditorUpdateReceiveUseCase } from "@/share/receive/application/timeline/application/TimelineTool/application/ScriptEditorUpdate/usecase/ScriptEditorUpdateReceiveUseCase";
 import { execute as scriptEditorDeleteReceiveUseCase } from "@/share/receive/application/timeline/application/TimelineTool/application/ScriptEditorDelete/usecase/ScriptEditorDeleteReceiveUseCase";
-import { execute as videoAddNewReceiveService } from "@/share/receive/application/controller/application/LibraryArea/Video/service/VideoAddNewReceiveService";
-import { execute as videoUpdateReceiveService } from "@/share/receive/application/controller/application/LibraryArea/Video/service/VideoUpdateReceiveService";
-import { execute as soundAddNewReceiveService } from "@/share/receive/application/controller/application/LibraryArea/Sound/service/SoundAddNewReceiveService";
-import { execute as soundUpdateReceiveService } from "@/share/receive/application/controller/application/LibraryArea/Sound/service/SoundUpdateReceiveService";
-import { execute as folderAddNewReceiveService } from "@/share/receive/application/controller/application/LibraryArea/Folder/service/FolderAddNewReceiveService";
-import { execute as folderMoveReceiveService } from "@/share/receive/application/controller/application/LibraryArea/Folder/service/FolderMoveReceiveService";
-import { execute as bitmapAddNewReceiveService } from "@/share/receive/application/controller/application/LibraryArea/Bitmap/service/BitmapAddNewReceiveService";
-import { execute as bitmapUpdateReceiveService } from "@/share/receive/application/controller/application/LibraryArea/Bitmap/service/BitmapUpdateReceiveService";
+import { execute as videoAddNewReceiveUseCase } from "@/share/receive/application/controller/application/LibraryArea/Video/usecase/VideoAddNewReceiveUseCase";
+import { execute as videoUpdateReceiveUseCase } from "@/share/receive/application/controller/application/LibraryArea/Video/usecase/VideoUpdateReceiveUseCase";
+import { execute as soundAddNewReceiveUseCase } from "@/share/receive/application/controller/application/LibraryArea/Sound/usecase/SoundAddNewReceiveUseCase";
+import { execute as soundUpdateReceiveUseCase } from "@/share/receive/application/controller/application/LibraryArea/Sound/usecase/SoundUpdateReceiveUseCase";
+import { execute as folderAddNewReceiveUseCase } from "@/share/receive/application/controller/application/LibraryArea/Folder/usecase/FolderAddNewReceiveUseCase";
+import { execute as folderMoveReceiveUseCase } from "@/share/receive/application/controller/application/LibraryArea/Folder/usecase/FolderMoveReceiveUseCase";
+import { execute as bitmapAddNewReceiveUseCase } from "@/share/receive/application/controller/application/LibraryArea/Bitmap/usecase/BitmapAddNewReceiveUseCase";
+import { execute as bitmapUpdateReceiveUseCase } from "@/share/receive/application/controller/application/LibraryArea/Bitmap/usecase/BitmapUpdateReceiveUseCase";
 import { execute as folderUpdateStateReceiveService } from "@/share/receive/application/controller/application/LibraryArea/Folder/service/FolderUpdateStateReceiveService";
 import { execute as instanceUpdateNameReceiveUseCase } from "@/share/receive/application/core/application/Instance/usecase/InstanceUpdateNameReceiveUseCase";
 import { execute as instanceUpdateSymbolReceiveUseCase } from "@/share/receive/application/core/application/Instance/usecase/InstanceUpdateSymbolReceiveUseCase";
+import { execute as movieClipAddNewReceiveUseCase } from "@/share/receive/application/controller/application/LibraryArea/MovieClip/usecase/MovieClipAddNewReceiveUseCase";
 import { execute as historyRedoUseCase } from "@/controller/application/HistoryArea/usecase/HistoryRedoUseCase";
 import { execute as historyUndoUseCase } from "@/controller/application/HistoryArea/usecase/HistoryUndoUseCase";
 import {
@@ -45,7 +46,8 @@ import {
     $LIBRARY_ADD_NEW_VIDEO_COMMAND,
     $LIBRARY_OVERWRITE_VIDEO_COMMAND,
     $LIBRARY_ADD_NEW_SOUND_COMMAND,
-    $LIBRARY_OVERWRITE_SOUND_COMMAND
+    $LIBRARY_OVERWRITE_SOUND_COMMAND,
+    $LIBRARY_ADD_NEW_MOVIE_CLIP_COMMAND
 } from "@/config/HistoryConfig";
 
 /**
@@ -131,7 +133,7 @@ export const execute = (message: ShareReceiveMessageImpl): void =>
 
         // 新規フォルダー追加
         case $LIBRARY_ADD_NEW_FOLDER_COMMAND:
-            folderAddNewReceiveService(message);
+            folderAddNewReceiveUseCase(message);
             break;
 
         // フォルダの開閉更新
@@ -151,37 +153,41 @@ export const execute = (message: ShareReceiveMessageImpl): void =>
 
         // 新規bitmap追加
         case $LIBRARY_ADD_NEW_BITMAP_COMMAND:
-            bitmapAddNewReceiveService(message);
+            bitmapAddNewReceiveUseCase(message);
             break;
 
         // フォルダ移動
         case $LIBRARY_MOVE_FOLDER_COMMAND:
-            folderMoveReceiveService(message);
+            folderMoveReceiveUseCase(message);
             break;
 
         // 画像の上書き
         case $LIBRARY_OVERWRITE_IMAGE_COMMAND:
-            bitmapUpdateReceiveService(message);
+            bitmapUpdateReceiveUseCase(message);
             break;
 
         // 動画の取り込み
         case $LIBRARY_ADD_NEW_VIDEO_COMMAND:
-            videoAddNewReceiveService(message);
+            videoAddNewReceiveUseCase(message);
             break;
 
         // 動画の上書き
         case $LIBRARY_OVERWRITE_VIDEO_COMMAND:
-            videoUpdateReceiveService(message);
+            videoUpdateReceiveUseCase(message);
             break;
 
         // 音声の取り込み
         case $LIBRARY_ADD_NEW_SOUND_COMMAND:
-            soundAddNewReceiveService(message);
+            soundAddNewReceiveUseCase(message);
             break;
 
         // 音声の上書き
         case $LIBRARY_OVERWRITE_SOUND_COMMAND:
-            soundUpdateReceiveService(message);
+            soundUpdateReceiveUseCase(message);
+            break;
+
+        case $LIBRARY_ADD_NEW_MOVIE_CLIP_COMMAND:
+            movieClipAddNewReceiveUseCase(message);
             break;
 
         default:

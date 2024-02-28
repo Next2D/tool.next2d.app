@@ -206,6 +206,7 @@ export const execute = (history_object: HistoryObjectImpl): void =>
             );
             break;
 
+        // MovieClipの追加
         case $LIBRARY_ADD_NEW_MOVIE_CLIP_COMMAND:
             libraryAreaAddNewMovieClipHistoryRedoUseCase(
                 messages[0] as number, // workSpaceId,
