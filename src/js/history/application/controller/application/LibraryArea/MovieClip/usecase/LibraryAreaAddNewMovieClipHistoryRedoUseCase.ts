@@ -1,11 +1,11 @@
-import { Folder } from "@/core/domain/model/Folder";
+import { MovieClip } from "@/core/domain/model/MovieClip";
 import { execute as externalWorkSpaceRegisterInstanceService } from "@/external/core/application/ExternalWorkSpace/service/ExternalWorkSpaceRegisterInstanceService";
 import { execute as libraryAreaReloadUseCase } from "@/controller/application/LibraryArea/usecase/LibraryAreaReloadUseCase";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
 
 /**
- * @description 新規フォルダ追加処理のRedo関数
- *              Redo function for new folder addition process
+ * @description 新規MovieClip追加処理のRedo関数
+ *              Redo function for new MovieClip addition process
  *
  * @param  {number} work_space_id
  * @param  {number} library_id
@@ -27,16 +27,15 @@ export const execute = (
         return ;
     }
 
-    const folder = new Folder({
+    const movieClip = new MovieClip({
         "id": library_id,
-        "type": "folder",
         "name": name,
-        "mode": "close",
+        "type": "container",
         "folderId": folder_id
     });
 
     // 内部情報に登録
-    externalWorkSpaceRegisterInstanceService(workSpace, folder);
+    externalWorkSpaceRegisterInstanceService(workSpace, movieClip);
 
     // 起動中のプロジェクトならライブラリエリアを再描画
     if (workSpace.active) {

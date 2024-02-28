@@ -32,18 +32,21 @@ export const execute = (
     // fixed logic
     historyRemoveElementService(movie_clip);
 
+    // fixed logic
+    const historyObject = libraryAreaAddNewFolderCreateHistoryObjectService(
+        work_space.id, movie_clip.id, folder.id, folder.name, folder.folderId
+    );
+
     // 作業履歴にElementを追加
     // fixed logic
     if (work_space.active && movie_clip.actions) {
         historyAddElementUseCase(
             movie_clip.historyIndex,
-            historyGetTextService($LIBRARY_ADD_NEW_FOLDER_COMMAND)
+            historyGetTextService($LIBRARY_ADD_NEW_FOLDER_COMMAND),
+            "",
+            ...historyObject.args
         );
     }
-
-    const historyObject = libraryAreaAddNewFolderCreateHistoryObjectService(
-        work_space.id, movie_clip.id, folder.id, folder.name, folder.folderId
-    );
 
     // 追加したLayer Objectを履歴に登録
     movie_clip.addHistory(historyObject);

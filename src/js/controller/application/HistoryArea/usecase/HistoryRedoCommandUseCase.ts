@@ -17,6 +17,7 @@ import { execute as libraryAreaAddNewBitmapHistoryRedoUseCase } from "@/history/
 import { execute as libraryAreaUpdateBitmapHistoryRedoUseCase } from "@/history/application/controller/application/LibraryArea/Bitmap/usecase/LibraryAreaUpdateBitmapHistoryRedoUseCase";
 import { execute as libraryAreaAddNewSoundHistoryRedoUseCase } from "@/history/application/controller/application/LibraryArea/Sound/usecase/LibraryAreaAddNewSoundHistoryRedoUseCase";
 import { execute as libraryAreaUpdateSoundHistoryRedoUseCase } from "@/history/application/controller/application/LibraryArea/Sound/usecase/LibraryAreaUpdateSoundHistoryRedoUseCase";
+import { execute as libraryAreaAddNewMovieClipHistoryRedoUseCase } from "@/history/application/controller/application/LibraryArea/MovieClip/usecase/LibraryAreaAddNewMovieClipHistoryRedoUseCase";
 import { execute as instanceUpdateNameHistoryRedoUseCase } from "@/history/application/core/application/Instance/usecase/InstanceUpdateNameHistoryRedoUseCase";
 import { execute as instanceUpdateSymbolHistoryRedoUseCase } from "@/history/application/core/application/Instance/usecase/InstanceUpdateSymbolHistoryRedoUseCase";
 import {
@@ -36,7 +37,8 @@ import {
     $LIBRARY_ADD_NEW_VIDEO_COMMAND,
     $LIBRARY_OVERWRITE_VIDEO_COMMAND,
     $LIBRARY_ADD_NEW_SOUND_COMMAND,
-    $LIBRARY_OVERWRITE_SOUND_COMMAND
+    $LIBRARY_OVERWRITE_SOUND_COMMAND,
+    $LIBRARY_ADD_NEW_MOVIE_CLIP_COMMAND
 } from "@/config/HistoryConfig";
 
 /**
@@ -201,6 +203,15 @@ export const execute = (history_object: HistoryObjectImpl): void =>
             libraryAreaUpdateSoundHistoryRedoUseCase(
                 messages[0] as number, // workSpaceId,
                 messages[3] as SoundSaveObjectImpl // Sound Save Object
+            );
+            break;
+
+        case $LIBRARY_ADD_NEW_MOVIE_CLIP_COMMAND:
+            libraryAreaAddNewMovieClipHistoryRedoUseCase(
+                messages[0] as number, // workSpaceId,
+                messages[2] as number, // MovieCLip ID,
+                messages[3] as string, // MovieCLip name,
+                messages[4] as number // Folder ID,
             );
             break;
 

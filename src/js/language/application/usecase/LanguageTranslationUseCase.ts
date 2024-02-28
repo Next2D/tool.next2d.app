@@ -26,7 +26,6 @@ export const execute = async (language: string): Promise<void> =>
                 return ;
             }
 
-            console.log(menu);
             menu.message = "[Error] check network settings";
 
             throw new Error("Communication error, check network settings");

@@ -31,19 +31,22 @@ export const execute = (
     // fixed logic
     historyRemoveElementService(movie_clip);
 
+    // fixed logic
+    const historyObject = libraryAreaAddNewMovieClipCreateHistoryObjectService(
+        work_space.id, movie_clip.id,
+        add_movie_clip.id, add_movie_clip.name, add_movie_clip.folderId,
+    );
+
     // 作業履歴にElementを追加
     // fixed logic
     if (work_space.active && movie_clip.actions) {
         historyAddElementUseCase(
             movie_clip.historyIndex,
-            historyGetTextService($LIBRARY_ADD_NEW_MOVIE_CLIP_COMMAND)
+            historyGetTextService($LIBRARY_ADD_NEW_MOVIE_CLIP_COMMAND),
+            "",
+            ...historyObject.args
         );
     }
-
-    const historyObject = libraryAreaAddNewMovieClipCreateHistoryObjectService(
-        work_space.id, movie_clip.id,
-        add_movie_clip.id, add_movie_clip.name, add_movie_clip.folderId
-    );
 
     // 追加したLayer Objectを履歴に登録
     movie_clip.addHistory(historyObject);

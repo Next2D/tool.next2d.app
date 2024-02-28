@@ -18,6 +18,7 @@ import { execute as libraryAreaAddNewBitmapHistoryUndoUseCase } from "@/history/
 import { execute as libraryAreaUpdateBitmapHistoryUndoUseCase } from "@/history/application/controller/application/LibraryArea/Bitmap/usecase/LibraryAreaUpdateBitmapHistoryUndoUseCase";
 import { execute as libraryAreaAddNewSoundHistoryUndoUseCase } from "@/history/application/controller/application/LibraryArea/Sound/usecase/LibraryAreaAddNewSoundHistoryUndoUseCase";
 import { execute as libraryAreaUpdateSoundHistoryUndoUseCase } from "@/history/application/controller/application/LibraryArea/Sound/usecase/LibraryAreaUpdateSoundHistoryUndoUseCase";
+import { execute as libraryAreaAddNewMovieClipHistoryUndoUseCase } from "@/history/application/controller/application/LibraryArea/MovieClip/usecase/LibraryAreaAddNewMovieClipHistoryUndoUseCase";
 import { execute as instanceUpdateNameHistoryUndoUseCase } from "@/history/application/core/application/Instance/usecase/InstanceUpdateNameHistoryUndoUseCase";
 import { execute as instanceUpdateSymbolHistoryUndoUseCase } from "@/history/application/core/application/Instance/usecase/InstanceUpdateSymbolHistoryUndoUseCase";
 import {
@@ -37,7 +38,8 @@ import {
     $LIBRARY_ADD_NEW_VIDEO_COMMAND,
     $LIBRARY_OVERWRITE_VIDEO_COMMAND,
     $LIBRARY_ADD_NEW_SOUND_COMMAND,
-    $LIBRARY_OVERWRITE_SOUND_COMMAND
+    $LIBRARY_OVERWRITE_SOUND_COMMAND,
+    $LIBRARY_ADD_NEW_MOVIE_CLIP_COMMAND
 } from "@/config/HistoryConfig";
 
 /**
@@ -199,6 +201,13 @@ export const execute = (history_object: HistoryObjectImpl): void =>
             libraryAreaUpdateSoundHistoryUndoUseCase(
                 messages[0] as number, // workSpaceId,
                 messages[2] as SoundSaveObjectImpl // Sound Save Object
+            );
+            break;
+
+        case $LIBRARY_ADD_NEW_MOVIE_CLIP_COMMAND:
+            libraryAreaAddNewMovieClipHistoryUndoUseCase(
+                messages[0] as number, // workSpaceId,
+                messages[2] as number // MovieClip ID
             );
             break;
 
