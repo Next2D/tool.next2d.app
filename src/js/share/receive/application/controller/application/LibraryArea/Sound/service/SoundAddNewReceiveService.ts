@@ -1,11 +1,11 @@
 import type { ShareReceiveMessageImpl } from "@/interface/ShareReceiveMessageImpl";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { InstanceImpl } from "@/interface/InstanceImpl";
+import type { SoundSaveObjectImpl } from "@/interface/SoundSaveObjectImpl";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
-import type { VideoSaveObjectImpl } from "@/interface/VideoSaveObjectImpl";
-import { Video } from "@/core/domain/model/Video";
+import { Sound } from "@/core/domain/model/Sound";
 import { execute as externalLibraryAddInstanceUseCase } from "@/external/controller/application/ExternalLibrary/usecase/ExternalLibraryAddInstanceUseCase";
-import { execute as libraryAreaAddNewVideoHistoryUseCase } from "@/history/application/controller/application/LibraryArea/Video/usecase/LibraryAreaAddNewVideoHistoryUseCase";
+import { execute as libraryAreaAddNewSoundHistoryUseCase } from "@/history/application/controller/application/LibraryArea/Sound/usecase/LibraryAreaAddNewSoundHistoryUseCase";
 import { execute as shareGetS3EndPointRepository } from "@/share/domain/repository/ShareGetS3EndPointRepository";
 import { execute as shareGetS3FileRepository } from "@/share/domain/repository/ShareGetS3FileRepository";
 import { execute as binaryToBufferService } from "@/core/service/BinaryToBufferService";
@@ -43,8 +43,8 @@ export const execute = async (message: ShareReceiveMessageImpl): Promise<void> =
         return ;
     }
 
-    // 受け取ったVideoのbufferはZlibで圧縮されてるので解答が必要
-    const videoSaveObject = message.data[2] as NonNullable<VideoSaveObjectImpl>;
+    // 受け取ったSoundのbufferはZlibで圧縮されてるので解答が必要
+    const soundSaveObject = message.data[2] as NonNullable<SoundSaveObjectImpl>;
 
     // バイナリをUint8Arrayに変換
     const url = await shareGetS3EndPointRepository(message.data[3] as string, "get");
@@ -56,21 +56,21 @@ export const execute = async (message: ShareReceiveMessageImpl): Promise<void> =
         // 解答が完了したらバイナリデータとして返却
         worker.onmessage = (event: MessageEvent): void =>
         {
-            videoSaveObject.buffer = event.data as Uint8Array;
+            soundSaveObject.buffer = event.data as Uint8Array;
 
-            // 転送データからVideoデータを生成
-            const video = new Video(videoSaveObject);
+            // 転送データからBitmapデータを生成
+            const sound = new Sound(soundSaveObject);
 
             // 内部情報に追加
             // fixed logic
-            externalLibraryAddInstanceUseCase(workSpace, video);
+            externalLibraryAddInstanceUseCase(workSpace, sound);
 
             // 作業履歴に残す
             // fixed logic
-            libraryAreaAddNewVideoHistoryUseCase(
+            libraryAreaAddNewSoundHistoryUseCase(
                 workSpace,
                 movieClip,
-                video,
+                sound,
                 true
             );
 

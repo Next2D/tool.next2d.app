@@ -11,6 +11,8 @@ import { execute as scriptEditorUpdateReceiveUseCase } from "@/share/receive/app
 import { execute as scriptEditorDeleteReceiveUseCase } from "@/share/receive/application/timeline/application/TimelineTool/application/ScriptEditorDelete/usecase/ScriptEditorDeleteReceiveUseCase";
 import { execute as videoAddNewReceiveService } from "@/share/receive/application/controller/application/LibraryArea/Video/service/VideoAddNewReceiveService";
 import { execute as videoUpdateReceiveService } from "@/share/receive/application/controller/application/LibraryArea/Video/service/VideoUpdateReceiveService";
+import { execute as soundAddNewReceiveService } from "@/share/receive/application/controller/application/LibraryArea/Sound/service/SoundAddNewReceiveService";
+import { execute as soundUpdateReceiveService } from "@/share/receive/application/controller/application/LibraryArea/Sound/service/SoundUpdateReceiveService";
 import { execute as folderAddNewReceiveService } from "@/share/receive/application/controller/application/LibraryArea/Folder/service/FolderAddNewReceiveService";
 import { execute as folderMoveReceiveService } from "@/share/receive/application/controller/application/LibraryArea/Folder/service/FolderMoveReceiveService";
 import { execute as bitmapAddNewReceiveService } from "@/share/receive/application/controller/application/LibraryArea/Bitmap/service/BitmapAddNewReceiveService";
@@ -41,7 +43,9 @@ import {
     $LIBRARY_MOVE_FOLDER_COMMAND,
     $LIBRARY_OVERWRITE_IMAGE_COMMAND,
     $LIBRARY_ADD_NEW_VIDEO_COMMAND,
-    $LIBRARY_OVERWRITE_VIDEO_COMMAND
+    $LIBRARY_OVERWRITE_VIDEO_COMMAND,
+    $LIBRARY_ADD_NEW_SOUND_COMMAND,
+    $LIBRARY_OVERWRITE_SOUND_COMMAND
 } from "@/config/HistoryConfig";
 
 /**
@@ -168,6 +172,16 @@ export const execute = (message: ShareReceiveMessageImpl): void =>
         // 動画の上書き
         case $LIBRARY_OVERWRITE_VIDEO_COMMAND:
             videoUpdateReceiveService(message);
+            break;
+
+        // 音声の取り込み
+        case $LIBRARY_ADD_NEW_SOUND_COMMAND:
+            soundAddNewReceiveService(message);
+            break;
+
+        // 音声の上書き
+        case $LIBRARY_OVERWRITE_SOUND_COMMAND:
+            soundUpdateReceiveService(message);
             break;
 
         default:

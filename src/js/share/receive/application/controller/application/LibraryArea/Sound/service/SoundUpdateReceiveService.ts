@@ -1,11 +1,10 @@
 import type { ShareReceiveMessageImpl } from "@/interface/ShareReceiveMessageImpl";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { InstanceImpl } from "@/interface/InstanceImpl";
+import type { SoundSaveObjectImpl } from "@/interface/SoundSaveObjectImpl";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
-import type { VideoSaveObjectImpl } from "@/interface/VideoSaveObjectImpl";
-import { Video } from "@/core/domain/model/Video";
-import { execute as externalLibraryAddInstanceUseCase } from "@/external/controller/application/ExternalLibrary/usecase/ExternalLibraryAddInstanceUseCase";
-import { execute as libraryAreaAddNewVideoHistoryUseCase } from "@/history/application/controller/application/LibraryArea/Video/usecase/LibraryAreaAddNewVideoHistoryUseCase";
+import { Sound } from "@/core/domain/model/Sound";
+import { execute as libraryAreaUpdateSoundHistoryUseCase } from "@/history/application/controller/application/LibraryArea/Sound/usecase/LibraryAreaUpdateSoundHistoryUseCase";
 import { execute as shareGetS3EndPointRepository } from "@/share/domain/repository/ShareGetS3EndPointRepository";
 import { execute as shareGetS3FileRepository } from "@/share/domain/repository/ShareGetS3FileRepository";
 import { execute as binaryToBufferService } from "@/core/service/BinaryToBufferService";
@@ -24,7 +23,7 @@ const worker: Worker = new ZlibInflateWorker();
  *              Receiving and processing functions for information received in the socket
  *
  * @param  {object} message
- * @return {void}
+ * @return {Promise}
  * @method
  * @public
  */
@@ -43,34 +42,36 @@ export const execute = async (message: ShareReceiveMessageImpl): Promise<void> =
         return ;
     }
 
-    // 受け取ったVideoのbufferはZlibで圧縮されてるので解答が必要
-    const videoSaveObject = message.data[2] as NonNullable<VideoSaveObjectImpl>;
+    // バイナリをUint8Arrayに変換
+    const soundObject = message.data[3] as NonNullable<SoundSaveObjectImpl>;
+
+    // 変更前のSoundからセーブオブジェクトを作成
+    const sound: InstanceImpl<Sound> = workSpace.getLibrary(soundObject.id);
+    const beforeSoundObject = sound.toObject();
 
     // バイナリをUint8Arrayに変換
-    const url = await shareGetS3EndPointRepository(message.data[3] as string, "get");
+    const url = await shareGetS3EndPointRepository(message.data[4] as string, "get");
     const binary = await shareGetS3FileRepository(url);
     const buffer: Uint8Array = binaryToBufferService(binary);
 
     return new Promise((reslove): void =>
     {
-        // 解答が完了したらバイナリデータとして返却
         worker.onmessage = (event: MessageEvent): void =>
         {
-            videoSaveObject.buffer = event.data as Uint8Array;
-
-            // 転送データからVideoデータを生成
-            const video = new Video(videoSaveObject);
+            soundObject.buffer = event.data as Uint8Array;
+            const sound = new Sound(soundObject);
 
             // 内部情報に追加
             // fixed logic
-            externalLibraryAddInstanceUseCase(workSpace, video);
+            workSpace.libraries.set(sound.id, sound);
 
             // 作業履歴に残す
             // fixed logic
-            libraryAreaAddNewVideoHistoryUseCase(
+            libraryAreaUpdateSoundHistoryUseCase(
                 workSpace,
                 movieClip,
-                video,
+                beforeSoundObject,
+                sound,
                 true
             );
 

@@ -45,7 +45,7 @@ export const execute = async (message: ShareReceiveMessageImpl): Promise<void> =
     // バイナリをUint8Arrayに変換
     const videoObject = message.data[3] as NonNullable<VideoSaveObjectImpl>;
 
-    // 変更前のBitmapからセーブオブジェクトを作成
+    // 変更前のVideoからセーブオブジェクトを作成
     const video: InstanceImpl<Video> = workSpace.getLibrary(videoObject.id);
     const beforeVideoObject = video.toObject();
 
