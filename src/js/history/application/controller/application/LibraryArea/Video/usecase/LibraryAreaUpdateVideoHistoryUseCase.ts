@@ -111,7 +111,7 @@ export const execute = async (
 
             // Uint8Arrayを複製して、サブスレッドで圧縮処理を行う
             const buffer: Uint8Array | null = video.buffer.slice();
-            worker.postMessage(buffer, [video.buffer]);
+            worker.postMessage(buffer, [buffer.buffer]);
         });
     }
 };

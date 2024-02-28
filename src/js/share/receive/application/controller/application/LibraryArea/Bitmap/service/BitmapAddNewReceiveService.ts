@@ -46,10 +46,9 @@ export const execute = async (message: ShareReceiveMessageImpl): Promise<void> =
     // 受け取ったBitmapのbufferはZlibで圧縮されてるので解答が必要
     const bitmapSaveObject = message.data[2] as NonNullable<BitmapSaveObjectImpl>;
 
+    // バイナリをUint8Arrayに変換
     const url = await shareGetS3EndPointRepository(message.data[3] as string, "get");
     const binary = await shareGetS3FileRepository(url);
-
-    // バイナリをUint8Arrayに変換
     const buffer: Uint8Array = binaryToBufferService(binary);
 
     return new Promise((reslove): void =>

@@ -10,7 +10,7 @@ import { execute as userLanguageSettingObjectUpdateService } from "@/user/applic
  * @method
  * @public
  */
-export const execute = (): Promise<void> =>
+export const execute = async (): Promise<void> =>
 {
     let language: string | null = userLanguageSettingObjectGetService();
     if (!language) {
@@ -104,5 +104,5 @@ export const execute = (): Promise<void> =>
     }
 
     // 対象の言語JSONを取得する
-    return languageTranslationUseCase(language);
+    await languageTranslationUseCase(language);
 };

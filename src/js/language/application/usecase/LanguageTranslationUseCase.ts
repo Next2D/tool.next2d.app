@@ -14,15 +14,10 @@ import type { MenuImpl } from "@/interface/MenuImpl";
  * @method
  * @public
  */
-export const execute = (language: string): Promise<void> =>
+export const execute = async (language: string): Promise<void> =>
 {
     // JSONを取得してマッピングに登録
-    return languageLoadRepository(language)
-        .then((values): void =>
-        {
-            // 言語マッピングに登録
-            $setMapping(values);
-        })
+    const values = await languageLoadRepository(language)
         .catch((): void =>
         {
             // エラー表示
@@ -36,4 +31,7 @@ export const execute = (language: string): Promise<void> =>
 
             throw new Error("Communication error, check network settings");
         });
+
+    // 言語マッピングに登録
+    $setMapping(values);
 };

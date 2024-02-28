@@ -42,9 +42,6 @@ export const execute = async (message: ShareReceiveMessageImpl): Promise<void> =
         return ;
     }
 
-    const url = await shareGetS3EndPointRepository(message.data[4] as string, "get");
-    const binary = await shareGetS3FileRepository(url);
-
     // バイナリをUint8Arrayに変換
     const bitmapObject = message.data[3] as NonNullable<BitmapSaveObjectImpl>;
 
@@ -53,6 +50,8 @@ export const execute = async (message: ShareReceiveMessageImpl): Promise<void> =
     const beforeBitmapObject = bitmap.toObject();
 
     // バイナリをUint8Arrayに変換
+    const url = await shareGetS3EndPointRepository(message.data[4] as string, "get");
+    const binary = await shareGetS3FileRepository(url);
     const buffer: Uint8Array = binaryToBufferService(binary);
 
     return new Promise((reslove): void =>
