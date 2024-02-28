@@ -11,6 +11,7 @@ import { execute as scriptEditorDeleteHistoryRedoUseCase } from "@/history/appli
 import { execute as libraryAreaAddNewFolderHistoryRedoUseCase } from "@/history/application/controller/application/LibraryArea/Folder/usecase/LibraryAreaAddNewFolderHistoryRedoUseCase";
 import { execute as libraryAreaMoveFolderHistoryRedoUseCase } from "@/history/application/controller/application/LibraryArea/Folder/usecase/LibraryAreaMoveFolderHistoryRedoUseCase";
 import { execute as libraryAreaAddNewVideoHistoryRedoUseCase } from "@/history/application/controller/application/LibraryArea/Video/usecase/LibraryAreaAddNewVideoHistoryRedoUseCase";
+import { execute as libraryAreaUpdateVideoHistoryRedoUseCase } from "@/history/application/controller/application/LibraryArea/Video/usecase/LibraryAreaUpdateVideoHistoryRedoUseCase";
 import { execute as libraryAreaAddNewBitmapHistoryRedoUseCase } from "@/history/application/controller/application/LibraryArea/Bitmap/usecase/LibraryAreaAddNewBitmapHistoryRedoUseCase";
 import { execute as libraryAreaUpdateBitmapHistoryRedoUseCase } from "@/history/application/controller/application/LibraryArea/Bitmap/usecase/LibraryAreaUpdateBitmapHistoryRedoUseCase";
 import { execute as instanceUpdateNameHistoryRedoUseCase } from "@/history/application/core/application/Instance/usecase/InstanceUpdateNameHistoryRedoUseCase";
@@ -29,7 +30,8 @@ import {
     $LIBRARY_ADD_NEW_BITMAP_COMMAND,
     $LIBRARY_MOVE_FOLDER_COMMAND,
     $LIBRARY_OVERWRITE_IMAGE_COMMAND,
-    $LIBRARY_ADD_NEW_VIDEO_COMMAND
+    $LIBRARY_ADD_NEW_VIDEO_COMMAND,
+    $LIBRARY_OVERWRITE_VIDEO_COMMAND
 } from "@/config/HistoryConfig";
 
 /**
@@ -140,6 +142,7 @@ export const execute = (history_object: HistoryObjectImpl): void =>
             );
             break;
 
+        // 新規bitmap追加
         case $LIBRARY_ADD_NEW_BITMAP_COMMAND:
             libraryAreaAddNewBitmapHistoryRedoUseCase(
                 messages[0] as number, // workSpaceId
@@ -147,6 +150,7 @@ export const execute = (history_object: HistoryObjectImpl): void =>
             );
             break;
 
+        // フォルダ移動追加
         case $LIBRARY_MOVE_FOLDER_COMMAND:
             libraryAreaMoveFolderHistoryRedoUseCase(
                 messages[0] as number, // workSpaceId
@@ -155,6 +159,7 @@ export const execute = (history_object: HistoryObjectImpl): void =>
             );
             break;
 
+        // 画像の上書き
         case $LIBRARY_OVERWRITE_IMAGE_COMMAND:
             libraryAreaUpdateBitmapHistoryRedoUseCase(
                 messages[0] as number, // workSpaceId
@@ -162,10 +167,19 @@ export const execute = (history_object: HistoryObjectImpl): void =>
             );
             break;
 
+        // 動画の追加
         case $LIBRARY_ADD_NEW_VIDEO_COMMAND:
             libraryAreaAddNewVideoHistoryRedoUseCase(
                 messages[0] as number, // workSpaceId
                 messages[2] as VideoSaveObjectImpl // Video Save Object
+            );
+            break;
+
+        // 動画の上書き
+        case $LIBRARY_OVERWRITE_VIDEO_COMMAND:
+            libraryAreaUpdateVideoHistoryRedoUseCase(
+                messages[0] as number, // workSpaceId,
+                messages[3] as VideoSaveObjectImpl // Video Save Object
             );
             break;
 

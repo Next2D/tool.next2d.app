@@ -12,6 +12,7 @@ import { execute as scriptEditorDeleteHistoryUndoUseCase } from "@/history/appli
 import { execute as libraryAreaAddNewFolderHistoryUndoUseCase } from "@/history/application/controller/application/LibraryArea/Folder/usecase/LibraryAreaAddNewFolderHistoryUndoUseCase";
 import { execute as libraryAreaMoveFolderHistoryUndoUseCase } from "@/history/application/controller/application/LibraryArea/Folder/usecase/LibraryAreaMoveFolderHistoryUndoUseCase";
 import { execute as libraryAreaAddNewVideoHistoryUndoUseCase } from "@/history/application/controller/application/LibraryArea/Video/usecase/LibraryAreaAddNewVideoHistoryUndoUseCase";
+import { execute as libraryAreaUpdateVideoHistoryUndoUseCase } from "@/history/application/controller/application/LibraryArea/Video/usecase/LibraryAreaUpdateVideoHistoryUndoUseCase";
 import { execute as libraryAreaAddNewBitmapHistoryUndoUseCase } from "@/history/application/controller/application/LibraryArea/Bitmap/usecase/LibraryAreaAddNewBitmapHistoryUndoUseCase";
 import { execute as libraryAreaUpdateBitmapHistoryUndoUseCase } from "@/history/application/controller/application/LibraryArea/Bitmap/usecase/LibraryAreaUpdateBitmapHistoryUndoUseCase";
 import { execute as instanceUpdateNameHistoryUndoUseCase } from "@/history/application/core/application/Instance/usecase/InstanceUpdateNameHistoryUndoUseCase";
@@ -30,7 +31,8 @@ import {
     $LIBRARY_ADD_NEW_BITMAP_COMMAND,
     $LIBRARY_MOVE_FOLDER_COMMAND,
     $LIBRARY_OVERWRITE_IMAGE_COMMAND,
-    $LIBRARY_ADD_NEW_VIDEO_COMMAND
+    $LIBRARY_ADD_NEW_VIDEO_COMMAND,
+    $LIBRARY_OVERWRITE_VIDEO_COMMAND
 } from "@/config/HistoryConfig";
 
 /**
@@ -163,8 +165,17 @@ export const execute = (history_object: HistoryObjectImpl): void =>
             );
             break;
 
+        // 動画の追加
         case $LIBRARY_ADD_NEW_VIDEO_COMMAND:
             libraryAreaAddNewVideoHistoryUndoUseCase(
+                messages[0] as number, // workSpaceId,
+                messages[2] as VideoSaveObjectImpl // Video Save Object
+            );
+            break;
+
+        // 動画の上書き
+        case $LIBRARY_OVERWRITE_VIDEO_COMMAND:
+            libraryAreaUpdateVideoHistoryUndoUseCase(
                 messages[0] as number, // workSpaceId,
                 messages[2] as VideoSaveObjectImpl // Video Save Object
             );
