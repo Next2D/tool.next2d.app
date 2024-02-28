@@ -1,3 +1,6 @@
+import { execute as soundBufferToElementService } from "@/core/application/Sound/usecase/SoundBufferToElementService";
+import { execute as soundPreviewComponent } from "@/controller/application/LibraryPreviewArea/component/SoundPreviewComponent";
+
 /**
  * @description Fileのtype別にHTMLElementを生成
  *              Generate HTMLElement by File type
@@ -7,7 +10,7 @@
  * @method
  * @public
  */
-export const execute = (file: File): Promise<HTMLImageElement | HTMLVideoElement | HTMLAudioElement | void> =>
+export const execute = (file: File): Promise<HTMLImageElement | HTMLVideoElement | HTMLAudioElement | HTMLElement | void> =>
 {
     switch (file.type) {
 
@@ -53,7 +56,16 @@ export const execute = (file: File): Promise<HTMLImageElement | HTMLVideoElement
 
                 audio.addEventListener("canplaythrough", (): void =>
                 {
-                    resolve(audio);
+                    file
+                        .arrayBuffer()
+                        .then(async (array_buffer: ArrayBuffer): Promise<void> =>
+                        {
+                            const canvas = await soundBufferToElementService(
+                                new Uint8Array(array_buffer)
+                            );
+
+                            resolve(soundPreviewComponent(canvas, audio));
+                        });
                 });
 
                 audio.src = URL.createObjectURL(file);

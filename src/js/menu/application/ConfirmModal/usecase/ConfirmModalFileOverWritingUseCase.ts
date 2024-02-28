@@ -1,5 +1,6 @@
-import { execute as confirmModalBitmapOverWritingService } from "../service/ConfirmModalBitmapOverWritingService";
-import { execute as confirmModalVideoOverWritingService } from "../service/ConfirmModalVideoOverWritingService";
+import { execute as confirmModalBitmapOverWritingUseCase } from "./ConfirmModalBitmapOverWritingUseCase";
+import { execute as confirmModalVideoOverWritingUseCase } from "./ConfirmModalVideoOverWritingUseCase";
+import { execute as confirmModalSoundOverWritingUseCase } from "./ConfirmModalSoundOverWritingUseCase";
 
 /**
  * @description Fileデータを既存のインスタンスに上書きする
@@ -15,26 +16,26 @@ export const execute = (file: File, path: string): Promise<void> =>
 {
     switch (file.type) {
 
-        // SVG
-        case "image/svg+xml":
-            return Promise.resolve();
-
         // 画像
         case "image/png":
         case "image/jpeg":
         case "image/gif":
-            return confirmModalBitmapOverWritingService(file, path);
+            return confirmModalBitmapOverWritingUseCase(file, path);
 
         // ビデオ
         case "video/mp4":
-            return confirmModalVideoOverWritingService(file, path);
+            return confirmModalVideoOverWritingUseCase(file, path);
 
         // 音声
         case "audio/mpeg":
-            return Promise.resolve();
+            return confirmModalSoundOverWritingUseCase(file, path);
 
         // SWF
         case "application/x-shockwave-flash":
+            return Promise.resolve();
+
+        // SVG
+        case "image/svg+xml":
             return Promise.resolve();
 
         default:

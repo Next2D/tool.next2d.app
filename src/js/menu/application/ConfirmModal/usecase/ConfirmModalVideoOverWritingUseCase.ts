@@ -35,13 +35,13 @@ export const execute = (file: File, path: string): Promise<void> =>
 
         file
             .arrayBuffer()
-            .then(async (buffer: ArrayBuffer): Promise<void> =>
+            .then(async (array_buffer: ArrayBuffer): Promise<void> =>
             {
                 // 上書き履歴を残す
                 const beforeObject = instance.toObject();
 
                 // データを上書き
-                instance.buffer = new Uint8Array(buffer);
+                instance.buffer = new Uint8Array(array_buffer);
                 await instance.wait();
 
                 // 上書き履歴を残す

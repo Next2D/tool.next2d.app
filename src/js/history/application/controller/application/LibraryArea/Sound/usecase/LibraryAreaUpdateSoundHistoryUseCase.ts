@@ -1,13 +1,13 @@
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
-import type { VideoSaveObjectImpl } from "@/interface/VideoSaveObjectImpl";
-import type { Video } from "@/core/domain/model/Video";
+import type { SoundSaveObjectImpl } from "@/interface/SoundSaveObjectImpl";
+import type { Sound } from "@/core/domain/model/Sound";
 import { $useSocket } from "@/share/ShareUtil";
-import { $LIBRARY_OVERWRITE_VIDEO_COMMAND } from "@/config/HistoryConfig";
+import { $LIBRARY_OVERWRITE_SOUND_COMMAND } from "@/config/HistoryConfig";
 import { execute as historyAddElementUseCase } from "@/controller/application/HistoryArea/usecase/HistoryAddElementUseCase";
 import { execute as historyGetTextService } from "@/controller/application/HistoryArea/service/HistoryGetTextService";
 import { execute as historyRemoveElementService } from "@/controller/application/HistoryArea/service/HistoryRemoveElementService";
-import { execute as libraryAreaUpdateVideoCreateHistoryObjectService } from "../service/LibraryAreaUpdateVideoCreateHistoryObjectService";
+import { execute as libraryAreaUpdateSoundCreateHistoryObjectService } from "../service/LibraryAreaUpdateSoundCreateHistoryObjectService";
 import { execute as shareSendService } from "@/share/service/ShareSendService";
 import { execute as bufferToBinaryService } from "@/core/service/BufferToBinaryService";
 import { execute as shareGetS3EndPointRepository } from "@/share/domain/repository/ShareGetS3EndPointRepository";
@@ -23,14 +23,14 @@ import ZlibDeflateWorker from "@/worker/ZlibDeflateWorker?worker&inline";
 const worker: Worker = new ZlibDeflateWorker();
 
 /**
- * @description 新規video追加の履歴を登録
- *              Register history of new video additions
+ * @description 新規sound追加の履歴を登録
+ *              Register history of new sound additions
  *
  * @param  {WorkSpace} work_space
  * @param  {MovieClip} movie_clip
  * @param  {object} before_object
- * @param  {Uint8Array} video
- * @param  {Video} [receiver=false]
+ * @param  {Sound} sound
+ * @param  {boolean} [receiver=false]
  * @return {void}
  * @method
  * @public
@@ -38,8 +38,8 @@ const worker: Worker = new ZlibDeflateWorker();
 export const execute = async (
     work_space: WorkSpace,
     movie_clip: MovieClip,
-    before_object: VideoSaveObjectImpl,
-    video: Video,
+    before_object: SoundSaveObjectImpl,
+    sound: Sound,
     receiver: boolean = false
 ): Promise<void> => {
 
@@ -49,8 +49,8 @@ export const execute = async (
 
     // fileIdは不要なので空文字をセット
     // fixed logic
-    const historyObject = libraryAreaUpdateVideoCreateHistoryObjectService(
-        work_space.id, movie_clip.id, before_object, video.toObject(), ""
+    const historyObject = libraryAreaUpdateSoundCreateHistoryObjectService(
+        work_space.id, movie_clip.id, before_object, sound.toObject(), ""
     );
 
     // 履歴にはfileIdは不要なので削除
@@ -61,7 +61,7 @@ export const execute = async (
     if (work_space.active && movie_clip.actions) {
         historyAddElementUseCase(
             movie_clip.historyIndex,
-            historyGetTextService($LIBRARY_OVERWRITE_VIDEO_COMMAND),
+            historyGetTextService($LIBRARY_OVERWRITE_SOUND_COMMAND),
             "",
             ...historyObject.args
         );
@@ -76,7 +76,7 @@ export const execute = async (
 
         await new Promise<void>((reslove): void =>
         {
-            if (!video.buffer) {
+            if (!sound.buffer) {
                 return ;
             }
 
@@ -94,14 +94,14 @@ export const execute = async (
                 await sharePutS3FileRepository(url, binary);
 
                 // 転送用のオブジェクトを作成
-                const videoObject = video.toObject();
+                const soundObject = sound.toObject();
 
                 // バイナリは転送しない
-                videoObject.buffer = "";
+                soundObject.buffer = "";
 
-                // 型は揃えるが必要なvideoObjectだけをセットする
-                const historyObject = libraryAreaUpdateVideoCreateHistoryObjectService(
-                    work_space.id, movie_clip.id, videoObject, videoObject, fileId
+                // 型は揃えるが必要なsoundObjectだけをセットする
+                const historyObject = libraryAreaUpdateSoundCreateHistoryObjectService(
+                    work_space.id, movie_clip.id, soundObject, soundObject, fileId
                 );
 
                 shareSendService(historyObject);
@@ -110,7 +110,7 @@ export const execute = async (
             };
 
             // Uint8Arrayを複製して、サブスレッドで圧縮処理を行う
-            const buffer: Uint8Array | null = video.buffer.slice();
+            const buffer: Uint8Array | null = sound.buffer.slice();
             worker.postMessage(buffer, [buffer.buffer]);
         });
     }

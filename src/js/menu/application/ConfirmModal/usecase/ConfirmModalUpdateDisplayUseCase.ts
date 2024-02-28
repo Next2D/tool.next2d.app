@@ -1,5 +1,5 @@
 import type { InstanceImpl } from "@/interface/InstanceImpl";
-import { execute as confirmModalFileToElementService } from "../service/ConfirmModalFileToElementService";
+import { execute as confirmModalFileToElementUseCase } from "./ConfirmModalFileToElementUseCase";
 import { $poolCanvas } from "@/global/GlobalUtil";
 import {
     $CONFIRM_MODAL_AFTER_PREVIEW_ID,
@@ -64,7 +64,7 @@ export const execute = (
     }
 
     // 読み込むFileをプレビューエリアに表示
-    confirmModalFileToElementService(file)
+    confirmModalFileToElementUseCase(file)
         .then((element): void =>
         {
             if (!element) {
