@@ -74,7 +74,7 @@ export const execute = (): Promise<void> =>
                 }
 
                 const dataDBRequest: IDBRequest<any> = store.get(`${$USER_DATABASE_STORE_KEY}`);
-                dataDBRequest.onsuccess = (event: Event): void =>
+                dataDBRequest.onsuccess = async (event: Event): Promise<void> =>
                 {
                     if (!event.target) {
                         return ;
@@ -85,20 +85,16 @@ export const execute = (): Promise<void> =>
 
                     const binary: string | undefined = (event.target as IDBRequest).result;
                     if (binary) {
-
                         // 保存データを復元
-                        workSpaceRestoreSaveDataService(binary)
-                            .then(resolve);
-
+                        await workSpaceRestoreSaveDataService(binary)
                     } else {
-
                         // 新規のWorkSpaceを起動
                         $createWorkSpace();
-
-                        resolve();
                     }
 
                     db.close();
+
+                    resolve();
                 };
             };
         };

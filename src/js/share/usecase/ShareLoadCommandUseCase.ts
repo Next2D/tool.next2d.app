@@ -42,8 +42,8 @@ export const execute = async (message: ShareInitializeSendObjectImpl): Promise<v
     // 全てのプロジェクトを停止
     await $removeAllWorkSpace();
 
+    // オーナーのデータの受け取り
     const url = await shareGetS3EndPointRepository(message.fileId, "get");
-
     const binary = await shareGetS3FileRepository(url);
 
     // 受け取ったプロジェクトを起動
