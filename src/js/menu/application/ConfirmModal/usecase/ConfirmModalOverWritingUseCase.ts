@@ -13,11 +13,11 @@ import { $ERROR_EMPTY_FILE_NAME_TEXT } from "@/config/ErrorTextConfig";
  * @description 単体のアイテムの重複を上書きする
  *              Override duplicates of single items
  *
- * @return {void}
+ * @return {Promise}
  * @method
  * @public
  */
-export const execute = (): void =>
+export const execute = async (): Promise<void> =>
 {
     const menu: MenuImpl<ConfirmModal> = $getMenu($CONFIRM_MODAL_NAME);
     if (!menu) {
@@ -57,7 +57,7 @@ export const execute = (): void =>
 
     switch (true) {
 
-        // Fileを全て上書く
+        // 単体のFileを上書く
         case menu.fileObject !== null:
             {
                 const file = menu.fileObject.file;
@@ -68,23 +68,16 @@ export const execute = (): void =>
                 const name = names.join(".");
                 if (inputElement.value === name) {
                     // 名前が一緒なら上書き
-                    confirmModalFileOverWritingUseCase(file, path)
-                        .then((): void =>
-                        {
-                            // 次のオブジェクトに移動
-                            menu.setupFileObject();
-                        });
+                    await confirmModalFileOverWritingUseCase(file, path);
                 } else {
                     // 名前が異なる場合は通常の追加処理
                     const externalLibrary = new ExternalLibrary($getCurrentWorkSpace());
-                    externalLibrary
-                        .importFile(file, inputElement.value, path)
-                        .then((): void =>
-                        {
-                            // 次のオブジェクトに移動
-                            menu.setupFileObject();
-                        });
+                    await externalLibrary
+                        .importFile(file, inputElement.value, path);
                 }
+
+                // 次のオブジェクトに移動
+                menu.setupFileObject();
             }
             break;
 

@@ -187,7 +187,18 @@ export class Video extends Instance
     set buffer (buffer: Uint8Array)
     {
         this._$buffer = buffer;
+
+        // 初期化
         this._$binary = "";
+        this._$loaded = false;
+
+        // videoの再読み込み
+        this._$video.src = URL.createObjectURL(new Blob(
+            [this._$buffer],
+            { "type": "video/mp4" }
+        ));
+
+        this._$video.load();
     }
 
     /**

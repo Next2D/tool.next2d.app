@@ -29,7 +29,7 @@ export const execute = (
     {
         file
             .arrayBuffer()
-            .then(async (buffer): Promise<void> =>
+            .then(async (buffer: ArrayBuffer): Promise<void> =>
             {
                 const externalLibrary = new ExternalLibrary(work_space);
                 const folder: ExternalInstanceImpl<ExternalFolder> | null = externalLibrary.getItem(path);

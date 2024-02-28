@@ -195,3 +195,12 @@ export const $LIBRARY_OVERWRITE_IMAGE_COMMAND: number = 18;
  * @constant
  */
 export const $LIBRARY_ADD_NEW_VIDEO_COMMAND: number = 19;
+
+/**
+ * @description 動画の上書きの識別コマンド名
+ *              Identification command name of video overwrite
+ *
+ * @type {number}
+ * @constant
+ */
+export const $LIBRARY_OVERWRITE_VIDEO_COMMAND: number = 20;

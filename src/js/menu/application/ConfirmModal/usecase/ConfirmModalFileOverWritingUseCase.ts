@@ -1,4 +1,5 @@
 import { execute as confirmModalBitmapOverWritingService } from "../service/ConfirmModalBitmapOverWritingService";
+import { execute as confirmModalVideoOverWritingService } from "../service/ConfirmModalVideoOverWritingService";
 
 /**
  * @description Fileデータを既存のインスタンスに上書きする
@@ -26,7 +27,7 @@ export const execute = (file: File, path: string): Promise<void> =>
 
         // ビデオ
         case "video/mp4":
-            return Promise.resolve();
+            return confirmModalVideoOverWritingService(file, path);
 
         // 音声
         case "audio/mpeg":

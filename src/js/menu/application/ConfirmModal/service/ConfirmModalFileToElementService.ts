@@ -34,7 +34,7 @@ export const execute = (file: File): Promise<HTMLImageElement | HTMLVideoElement
                 video.autoplay    = false;
                 video.controls    = true;
 
-                video.addEventListener("loadedmetadata", (): void =>
+                video.addEventListener("canplaythrough", (): void =>
                 {
                     resolve(video);
                 });
