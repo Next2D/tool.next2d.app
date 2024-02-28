@@ -31,12 +31,28 @@ export const execute = (
 
     return new Promise((resolve): void =>
     {
+        const externalLibrary = new ExternalLibrary(work_space);
+        const folder: ExternalInstanceImpl<ExternalFolder> | null = externalLibrary.getItem(path);
+
+        const folderId = folder && folder.type === "folder" ? folder.id : 0;
+
+        const bitmap = new Bitmap({
+            "id": work_space.nextLibraryId,
+            "type": "bitmap",
+            "name": name,
+            "folderId": folderId,
+            "imageType": file.type
+        });
+
+        // 内部情報に登録
+        externalWorkSpaceRegisterInstanceService(work_space, bitmap);
+
         const image = new Image();
         image.src = URL.createObjectURL(file);
 
         image
             .decode()
-            .then((): void =>
+            .then(async (): Promise<void> =>
             {
                 const width   = image.width;
                 const height  = image.height;
@@ -61,33 +77,22 @@ export const execute = (
                 // canvas elementは再利用するので配列に格納
                 $poolCanvas(canvas);
 
-                const externalLibrary = new ExternalLibrary(work_space);
-                const folder: ExternalInstanceImpl<ExternalFolder> | null = externalLibrary.getItem(path);
-
-                const folderId = folder && folder.type === "folder" ? folder.id : 0;
-
-                const bitmap = new Bitmap({
-                    "id": work_space.nextLibraryId,
-                    "type": "bitmap",
-                    "name": name,
-                    "folderId": folderId,
-                    "imageType": file.type,
-                    "width": width,
-                    "height": height,
-                    "buffer": buffer
-                });
+                bitmap.width  = width;
+                bitmap.height = height;
+                bitmap.buffer = buffer;
 
                 // 内部情報に登録
                 externalWorkSpaceRegisterInstanceService(work_space, bitmap);
 
                 // 作業履歴に残す
                 // fixed logic
-                libraryAreaAddNewBitmapHistoryUseCase(
+                await libraryAreaAddNewBitmapHistoryUseCase(
                     work_space,
                     work_space.scene,
                     bitmap
-                )
-                    .then(resolve);
+                );
+
+                resolve();
             });
     });
 };

@@ -89,6 +89,13 @@ export class Sound extends Instance
         this._$audio.autoplay = false;
         this._$audio.loop     = false;
         this._$audio.controls = true;
+        this._$audio.oncanplaythrough = async (): Promise<void> =>
+        {
+            if ($getAudioContext()) {
+                this._$canvas = await soundBufferToElementService(this._$buffer);
+            }
+            this._$loaded = true;
+        };
 
         if (object.buffer) {
 
@@ -101,14 +108,6 @@ export class Sound extends Instance
             }
 
             if (this._$buffer instanceof Uint8Array) {
-                this._$audio.oncanplaythrough = async (): Promise<void> =>
-                {
-                    if ($getAudioContext()) {
-                        this._$canvas = await soundBufferToElementService(this._$buffer);
-                    }
-                    this._$loaded = true;
-                };
-
                 this._$audio.src = URL.createObjectURL(new Blob(
                     [this._$buffer],
                     { "type": "audio/mp3" }

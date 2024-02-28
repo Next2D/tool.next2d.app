@@ -14,20 +14,19 @@ import { execute as confirmModalFileDuplicateCheckService } from "@/menu/applica
  * @method
  * @public
  */
-export const execute = async (
+export const execute = (
     entry: any,
     path: string = ""
 ): Promise<void> => {
 
-    // 外部APIを起動
-    const workSpace = $getCurrentWorkSpace();
-    const externalLibrary = new ExternalLibrary(workSpace);
+    return new Promise((resolve): void =>
+    {
+        // 外部APIを起動
+        const workSpace = $getCurrentWorkSpace();
+        const externalLibrary = new ExternalLibrary(workSpace);
 
-    // ディレクトリの中のファイルを全てスキャンする
-    if (entry.isDirectory) {
-
-        return new Promise((resolve): void =>
-        {
+        // ディレクトリの中のファイルを全てスキャンする
+        if (entry.isDirectory) {
             const paths: string[] = [];
             if (path) {
                 paths.push(path);
@@ -51,27 +50,25 @@ export const execute = async (
 
                     resolve();
                 });
-        });
-    }
 
-    // ファイルなら読み込む
-    return new Promise((resolve): void =>
-    {
-        (entry as FileSystemFileEntry)
-            .file((file: File): void =>
-            {
-                // 重複していればスキップ
-                if (confirmModalFileDuplicateCheckService(workSpace, file, path)) {
-                    return resolve();
-                }
+        } else {
+            (entry as FileSystemFileEntry)
+                .file(async (file): Promise<void> =>
+                {
+                    // 重複していればスキップ
+                    if (confirmModalFileDuplicateCheckService(workSpace, file, path)) {
+                        return resolve();
+                    }
 
-                const names = file.name.split(".");
-                names.pop();
-                const name = names.join(".");
+                    const names = file.name.split(".");
+                    names.pop();
+                    const name = names.join(".");
 
-                externalLibrary
-                    .importFile(file, name, path, false)
-                    .then(resolve);
-            });
+                    await externalLibrary
+                        .importFile(file, name, path, false);
+
+                    resolve();
+                });
+        }
     });
 };

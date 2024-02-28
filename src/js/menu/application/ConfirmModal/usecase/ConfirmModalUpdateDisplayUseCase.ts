@@ -70,6 +70,7 @@ export const execute = (
             if (!element) {
                 return ;
             }
+            element.classList.add("preview-center");
             afterPreviewElement.appendChild(element);
         });
 

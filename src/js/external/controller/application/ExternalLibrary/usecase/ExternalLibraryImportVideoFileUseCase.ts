@@ -27,28 +27,28 @@ export const execute = (
 
     return new Promise((resolve): void =>
     {
+        const externalLibrary = new ExternalLibrary(work_space);
+        const folder: ExternalInstanceImpl<ExternalFolder> | null = externalLibrary.getItem(path);
+        const folderId = folder && folder.type === "folder" ? folder.id : 0;
+
+        const video = new Video({
+            "id": work_space.nextLibraryId,
+            "type": "video",
+            "name": name,
+            "folderId": folderId
+        });
+
+        // 内部情報に登録
+        externalWorkSpaceRegisterInstanceService(work_space, video);
+
         file
             .arrayBuffer()
-            .then(async (buffer: ArrayBuffer): Promise<void> =>
+            .then(async (array_buffer: ArrayBuffer): Promise<void> =>
             {
-                const externalLibrary = new ExternalLibrary(work_space);
-                const folder: ExternalInstanceImpl<ExternalFolder> | null = externalLibrary.getItem(path);
-
-                const folderId = folder && folder.type === "folder" ? folder.id : 0;
-
-                const video = new Video({
-                    "id": work_space.nextLibraryId,
-                    "type": "video",
-                    "name": name,
-                    "folderId": folderId,
-                    "buffer": new Uint8Array(buffer)
-                });
+                video.buffer = new Uint8Array(array_buffer);
 
                 // 映像内部データの読み込み開始
                 await video.wait();
-
-                // 内部情報に登録
-                externalWorkSpaceRegisterInstanceService(work_space, video);
 
                 // 作業履歴に残す
                 // fixed logic

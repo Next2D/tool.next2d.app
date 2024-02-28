@@ -116,6 +116,14 @@ export class Video extends Instance
         this._$video.autoplay    = false;
         this._$video.controls    = true;
 
+        this._$video.oncanplaythrough = (): void =>
+        {
+            // サイズをセット
+            this._$width  = this._$video.videoWidth;
+            this._$height = this._$video.videoHeight;
+            this._$loaded = true;
+        };
+
         if (object.buffer) {
 
             if (typeof object.buffer === "string") {
@@ -127,14 +135,6 @@ export class Video extends Instance
             }
 
             if (this._$buffer instanceof Uint8Array) {
-                this._$video.oncanplaythrough = (): void =>
-                {
-                    // サイズをセット
-                    this._$width  = this._$video.videoWidth;
-                    this._$height = this._$video.videoHeight;
-                    this._$loaded = true;
-                };
-
                 this._$video.src = URL.createObjectURL(new Blob(
                     [this._$buffer],
                     { "type": "video/mp4" }

@@ -9,6 +9,7 @@ import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { libraryArea } from "@/controller/domain/model/LibraryArea";
 import { execute as confirmModalFileResetService } from "@/menu/application/ConfirmModal/service/ConfirmModalFileResetService";
 import { execute as confirmModalFileShowUseCase } from "@/menu/application/ConfirmModal/usecase/ConfirmModalFileShowUseCase";
+import { $replace } from "@/language/application/LanguageUtil";
 
 /**
  * @description 外部アイテムの読み込み実行関数
@@ -28,7 +29,7 @@ export const execute = async (items: DataTransferItemList): Promise<void> =>
     progressMenuShowService();
 
     // 進行状況のテキストを更新
-    progressMenuUpdateMessageService("{{外部ファイルの読み込み}}");
+    progressMenuUpdateMessageService($replace("{{外部ファイルの読み込み}}"));
 
     const workSpace = $getCurrentWorkSpace();
 
@@ -40,6 +41,7 @@ export const execute = async (items: DataTransferItemList): Promise<void> =>
         }
     }
 
+    const promises = [];
     for (let idx = 0; idx < items.length; ++idx) {
 
         const entry: FileSystemEntry | null = items[idx].webkitGetAsEntry();
@@ -48,8 +50,10 @@ export const execute = async (items: DataTransferItemList): Promise<void> =>
         }
 
         // ファイルクラスをスキャン
-        await libraryAreaScanFileUseCase(entry, path);
+        promises.push(libraryAreaScanFileUseCase(entry, path));
     }
+
+    await Promise.all(promises);
 
     // ファイル名で昇順に並び替え
     libraryAreaReOrderingService(workSpace);

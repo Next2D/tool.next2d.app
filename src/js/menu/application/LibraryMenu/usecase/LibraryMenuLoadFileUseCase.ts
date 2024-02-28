@@ -9,6 +9,7 @@ import { libraryArea } from "@/controller/domain/model/LibraryArea";
 import { execute as confirmModalFileResetService } from "@/menu/application/ConfirmModal/service/ConfirmModalFileResetService";
 import { execute as confirmModalFileShowUseCase } from "@/menu/application/ConfirmModal/usecase/ConfirmModalFileShowUseCase";
 import { execute as confirmModalFileDuplicateCheckService } from "@/menu/application/ConfirmModal/service/ConfirmModalFileDuplicateCheckService";
+import { $replace } from "@/language/application/LanguageUtil";
 
 /**
  * @description 外部ファイル読み込み処理関数
@@ -42,7 +43,7 @@ export const execute = async (event: Event): Promise<void> =>
     progressMenuShowService();
 
     // 進行状況のテキストを更新
-    progressMenuUpdateMessageService("{{外部ファイルの読み込み}}");
+    progressMenuUpdateMessageService($replace("{{外部ファイルの読み込み}}"));
 
     // 外部APIを起動
     const workSpace = $getCurrentWorkSpace();

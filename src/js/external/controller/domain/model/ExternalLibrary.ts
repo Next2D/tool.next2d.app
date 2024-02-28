@@ -56,10 +56,6 @@ export class ExternalLibrary
 
         switch (file.type) {
 
-            // SVG
-            case "image/svg+xml":
-                break;
-
             // 画像
             case "image/png":
             case "image/jpeg":
@@ -85,6 +81,10 @@ export class ExternalLibrary
 
             // SWF
             case "application/x-shockwave-flash":
+                break;
+
+            // SVG
+            case "image/svg+xml":
                 break;
 
             default:

@@ -3,6 +3,7 @@ import { execute as progressMenuShowService } from "@/menu/application/ProgressM
 import { execute as progressMenuHideService } from "@/menu/application/ProgressMenu/service/ProgressMenuHideService";
 import { execute as progressMenuUpdateMessageService } from "@/menu/application/ProgressMenu/service/ProgressMenuUpdateMessageService";
 import { $removeWorkSpace } from "@/core/application/CoreUtil";
+import { $replace } from "@/language/application/LanguageUtil";
 
 /**
  * @description ワークスペースの削除処理のユースケース
@@ -22,7 +23,7 @@ export const execute = (work_space: WorkSpace): Promise<void> =>
             progressMenuShowService();
 
             // 進行状況のテキストを更新
-            progressMenuUpdateMessageService("{{プロジェクトを閉じる}}");
+            progressMenuUpdateMessageService($replace("{{プロジェクトを閉じる}}"));
         }
 
         // タブを削除
