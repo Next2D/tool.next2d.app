@@ -185,7 +185,7 @@ export class Bitmap extends Instance
      * @method
      * @public
      */
-    getHTMLElement (): Promise<HTMLCanvasElement>
+    async getHTMLElement (): Promise<HTMLCanvasElement>
     {
         return bitmapBufferToElementService(
             this._$buffer,

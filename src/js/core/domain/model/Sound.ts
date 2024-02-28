@@ -3,6 +3,10 @@ import type { SoundSaveObjectImpl } from "@/interface/SoundSaveObjectImpl";
 import { Instance } from "./Instance";
 import { execute as binaryToBufferService } from "@/core/service/BinaryToBufferService";
 import { execute as bufferToBinaryService } from "@/core/service/BufferToBinaryService";
+import { execute as soundBufferToElementService } from "@/core/application/Sound/usecase/SoundBufferToElementService";
+import { $poolCanvas } from "@/global/GlobalUtil";
+import { $getAudioContext } from "@/core/application/CoreUtil";
+import { execute as soundPreviewComponent } from "@/controller/application/LibraryPreviewArea/component/SoundPreviewComponent";
 
 /**
  * @description サウンドの状態管理クラス
@@ -19,6 +23,7 @@ export class Sound extends Instance
     private _$binary: string;
     private _$loaded: boolean;
     private _$buffer: Uint8Array | null;
+    private _$canvas: HTMLCanvasElement | null;
     private readonly _$audio: HTMLAudioElement;
 
     /**
@@ -64,6 +69,13 @@ export class Sound extends Instance
          */
         this._$buffer = null;
 
+        /**
+         * @type {HTMLCanvasElement | null}
+         * @default null
+         * @private
+         */
+        this._$canvas = null;
+
         if ("volume" in object) {
             this._$volume = object.volume as number;
         }
@@ -89,8 +101,11 @@ export class Sound extends Instance
             }
 
             if (this._$buffer instanceof Uint8Array) {
-                this._$audio.oncanplaythrough = (): void =>
+                this._$audio.oncanplaythrough = async (): Promise<void> =>
                 {
+                    if ($getAudioContext()) {
+                        this._$canvas = await soundBufferToElementService(this._$buffer);
+                    }
                     this._$loaded = true;
                 };
 
@@ -130,6 +145,23 @@ export class Sound extends Instance
 
             loop();
         });
+    }
+
+    /**
+     * @description HTMLAudioElementを返却
+     *              Return HTMLAudioElement
+     *
+     * @return {Promise}
+     * @method
+     * @public
+     */
+    async getHTMLElement (): Promise<HTMLElement>
+    {
+        // canvasがない時は描画を実行
+        if (!this._$canvas) {
+            this._$canvas = await soundBufferToElementService(this._$buffer);
+        }
+        return soundPreviewComponent(this._$canvas, this._$audio);
     }
 
     /**
@@ -184,6 +216,11 @@ export class Sound extends Instance
         // 初期化
         this._$binary = "";
         this._$loaded = false;
+
+        if (this._$canvas) {
+            $poolCanvas(this._$canvas);
+            this._$canvas = null;
+        }
 
         // soundの再読み込み
         this._$audio.src = URL.createObjectURL(new Blob(

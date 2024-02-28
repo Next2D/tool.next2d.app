@@ -314,11 +314,11 @@ export class Video extends Instance
      * @description HTMLVideoElementを返却
      *              Return HTMLVideoElement
      *
-     * @return {HTMLVideoElement}
+     * @return {Promise}
      * @method
      * @public
      */
-    async getHTMLElement (): Promise<HTMLVideoElement>
+    async getHTMLElement (): Promise<HTMLAudioElement>
     {
         return this._$video;
     }

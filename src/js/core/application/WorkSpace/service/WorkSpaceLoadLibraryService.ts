@@ -4,10 +4,12 @@ import type { FolderSaveObjectImpl } from "@/interface/FolderSaveObjectImpl";
 import type { InstanceSaveObjectImpl } from "@/interface/InstanceSaveObjectImpl";
 import type { MovieClipSaveObjectImpl } from "@/interface/MovieClipSaveObjectImpl";
 import type { VideoSaveObjectImpl } from "@/interface/VideoSaveObjectImpl";
+import type { SoundSaveObjectImpl } from "@/interface/SoundSaveObjectImpl";
 import { Bitmap } from "@/core/domain/model/Bitmap";
 import { Folder } from "@/core/domain/model/Folder";
 import { MovieClip } from "@/core/domain/model/MovieClip";
 import { Video } from "@/core/domain/model/Video";
+import { Sound } from "@/core/domain/model/Sound";
 
 /**
  * @description 保存データからライブラリ情報を復元
@@ -65,6 +67,17 @@ export const execute = async (
                     work_space.libraries.set(
                         libraryObject.id,
                         video
+                    );
+                }
+                break;
+
+            case "sound":
+                {
+                    const sound = new Sound(libraryObject as SoundSaveObjectImpl);
+                    await sound.wait();
+                    work_space.libraries.set(
+                        libraryObject.id,
+                        sound
                     );
                 }
                 break;

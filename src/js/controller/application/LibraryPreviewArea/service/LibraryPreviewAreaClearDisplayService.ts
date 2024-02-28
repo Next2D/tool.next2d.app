@@ -19,10 +19,13 @@ export const execute = (): void =>
     }
 
     while (element.firstElementChild) {
+
         const firstElementChild = element.firstElementChild;
         if (firstElementChild instanceof HTMLCanvasElement) {
             $poolCanvas(firstElementChild);
         }
+
+        element.classList.remove("preview-center");
         firstElementChild.remove();
     }
 };

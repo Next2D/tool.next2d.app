@@ -222,3 +222,41 @@ export const $removeAllWorkSpace = async (): Promise<void> =>
     // 配列を初期化
     $workSpaces.length = 0;
 };
+
+/**
+ * @description AudioContextの本体
+ *              AudioContext body
+ *
+ * @type {AudioContext}
+ * @default null
+ * @private
+ */
+let $audioContext: AudioContext | null = null;
+
+/**
+ * @description AudioContextを起動
+ *              Launch AudioContext
+ *
+ * @returns {void}
+ * @method
+ * @public
+ */
+export const $bootAudioContext = (): void =>
+{
+    // 初回だけのイベントなので起動したらイベントを削除
+    window.removeEventListener("click", $bootAudioContext);
+    $audioContext = new AudioContext();
+};
+
+/**
+ * @description AudioContextを返却
+ *              Return AudioContext
+ *
+ * @returns {AudioContext | null}
+ * @method
+ * @public
+ */
+export const $getAudioContext = (): AudioContext | null =>
+{
+    return $audioContext;
+};

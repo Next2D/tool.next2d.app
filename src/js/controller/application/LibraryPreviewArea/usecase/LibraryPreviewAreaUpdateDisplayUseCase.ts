@@ -29,6 +29,7 @@ export const execute = (instance: InstanceImpl<any>): void =>
                 return ;
             }
 
+            element.classList.add("preview-center");
             previewElement.appendChild(element);
         });
 };

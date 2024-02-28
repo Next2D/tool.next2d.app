@@ -120,9 +120,33 @@
     width           : 400px;
     height          : 150px;
 
-    img, 
-    video,
-    canvas
+    .sound-parent
+    {
+        width           : 400px;
+        height          : 150px;
+        display         : flex;
+        flex-direction  : column;
+        justify-content : center;
+        align-items     : center;
+    }
+
+    .sound-canvas-element
+    {
+        display         : flex;
+        justify-content : center;
+        align-items     : center;
+        height          : 60px;
+    }
+
+    .sound-audio-element
+    {
+        display         : flex;
+        justify-content : center;
+        align-items     : center;
+        height          : calc(var(--library-preview-area-height) - 60px);
+    }
+
+    .preview-center
     {
         position   : absolute;
         top        : 0;
@@ -146,9 +170,7 @@
     width           : 400px;
     height          : 150px;
 
-    img, 
-    video,
-    canvas
+    .preview-center
     {
         position   : absolute;
         top        : 0;

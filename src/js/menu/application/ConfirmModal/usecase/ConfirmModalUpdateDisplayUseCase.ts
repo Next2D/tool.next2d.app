@@ -76,9 +76,9 @@ export const execute = (
     // 現在のinstanceをプレビューエリアに表示
     instance
         .getHTMLElement()
-        .then((element: any): void =>
+        .then((element: HTMLElement): void =>
         {
-            beforePreviewElement
-                .appendChild(element as NonNullable<HTMLElement>);
+            element.classList.add("preview-center");
+            beforePreviewElement.appendChild(element);
         });
 };

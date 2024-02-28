@@ -7,8 +7,7 @@ import { $getCanvas } from "@/global/GlobalUtil";
  * @param  {Uint8Array | null} buffer
  * @param  {number} width
  * @param  {number} height
- * @param  {string} type
- * @return {Promise}
+ * @return {HTMLCanvasElement}
  * @method
  * @public
  */
@@ -16,31 +15,28 @@ export const execute = (
     buffer: Uint8Array | null,
     width: number,
     height: number
-): Promise<HTMLCanvasElement> => {
+): HTMLCanvasElement => {
 
-    return new Promise((resolve): void =>
-    {
-        const canvas = $getCanvas();
-        if (!buffer) {
-            return resolve(canvas);
-        }
+    const canvas = $getCanvas();
+    if (!buffer) {
+        return canvas;
+    }
 
-        canvas.width  = width;
-        canvas.height = height;
+    canvas.width  = width;
+    canvas.height = height;
 
-        const context = canvas.getContext("2d", {
-            "willReadFrequently": true
-        });
-        if (!context) {
-            return resolve(canvas);
-        }
-
-        const imageData = new ImageData(
-            new Uint8ClampedArray(buffer.buffer),
-            width, height
-        );
-        context.putImageData(imageData, 0, 0);
-
-        resolve(canvas);
+    const context = canvas.getContext("2d", {
+        "willReadFrequently": true
     });
+    if (!context) {
+        return canvas;
+    }
+
+    const imageData = new ImageData(
+        new Uint8ClampedArray(buffer.buffer),
+        width, height
+    );
+    context.putImageData(imageData, 0, 0);
+
+    return canvas;
 };
