@@ -1,13 +1,15 @@
 import { EventType } from "@/tool/domain/event/EventType";
 import { execute as libraryMenuShowUseCase } from "./LibraryMenuShowUseCase";
 import { execute as libraryMenuAddNewFolderMouseDownEventUseCase } from "./LibraryMenuAddNewFolderMouseDownEventUseCase";
+import { execute as libraryMenuAddNewMovieClipMouseDownEventUseCase } from "./LibraryMenuAddNewMovieClipMouseDownEventUseCase";
 import { execute as libraryMenuFileMouseDownEventUseCase } from "./LibraryMenuFileMouseDownEventUseCase";
 import { execute as libraryMenuLoadFileUseCase } from "./LibraryMenuLoadFileUseCase";
 import {
     $LIBRARY_LIST_BOX_ID,
     $LIBRARY_FOLDER_ADD_ID,
     $LIBRARY_FILE_ID,
-    $LIBRARY_FILE_INPUT_ID
+    $LIBRARY_FILE_INPUT_ID,
+    $LIBRARY_MOVIE_CLIP_ADD_ID
 } from "@/config/LibraryConfig";
 
 /**
@@ -37,6 +39,16 @@ export const execute = (): void =>
     if (addFolderElement) {
         addFolderElement.addEventListener(EventType.MOUSE_DOWN,
             libraryMenuAddNewFolderMouseDownEventUseCase
+        );
+    }
+
+    // MovieClip追加のイベント登録
+    const addMovieClipElement: HTMLElement | null = document
+        .getElementById($LIBRARY_MOVIE_CLIP_ADD_ID);
+
+    if (addMovieClipElement) {
+        addMovieClipElement.addEventListener(EventType.MOUSE_DOWN,
+            libraryMenuAddNewMovieClipMouseDownEventUseCase
         );
     }
 

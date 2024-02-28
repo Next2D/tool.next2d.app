@@ -222,3 +222,12 @@ export const $LIBRARY_ADD_NEW_SOUND_COMMAND: number = 21;
  * @constant
  */
 export const $LIBRARY_OVERWRITE_SOUND_COMMAND: number = 22;
+
+/**
+ * @description 新規MovieClip追加操作の識別コマンド名
+ *              Identification command name for new MovieClip add operation
+ *
+ * @type {number}
+ * @constant
+ */
+export const $LIBRARY_ADD_NEW_MOVIE_CLIP_COMMAND: number = 23;

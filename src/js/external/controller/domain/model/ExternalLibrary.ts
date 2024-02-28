@@ -3,6 +3,7 @@ import type { ExternalInstanceImpl } from "@/interface/ExternalInstanceImpl";
 import type { InstanceImpl } from "@/interface/InstanceImpl";
 import type { ExternalFolder } from "@/external/core/domain/model/ExternalFolder";
 import { execute as externalLibraryAddNewFolderUseCase } from "@/external/controller/application/ExternalLibrary/usecase/ExternalLibraryAddNewFolderUseCase";
+import { execute as externalLibraryAddNewMovieClipUseCase } from "@/external/controller/application/ExternalLibrary/usecase/ExternalLibraryAddNewMovieClipUseCase";
 import { execute as libraryAreaAllClearElementService } from "@/controller/application/LibraryArea/service/LibraryAreaAllClearElementService";
 import { execute as libraryAreaActiveElementService } from "@/controller/application/LibraryArea/service/LibraryAreaActiveElementService";
 import { execute as externalLibrarySelectedOneService } from "@/external/controller/application/ExternalLibrary/service/ExternalLibrarySelectedOneService";
@@ -283,7 +284,16 @@ export class ExternalLibrary
      */
     addNewFolder (path: string, reload: boolean = true): void
     {
+        if (!path) {
+            return ;
+        }
+
         const paths = path.split("/");
+
+        // 銭湯が空文字なら排除
+        if (paths[0] === "") {
+            paths.shift();
+        }
 
         const folderPaths: string[] = [];
         let folderId = 0;
@@ -312,5 +322,53 @@ export class ExternalLibrary
             // fixed logic
             folderId = folder.id;
         }
+    }
+
+    /**
+     * @description 指定の階層に新規MovieClipを追加、階層が存在しなければフォルダを生成
+     *              Add a new MovieClip to the specified hierarchy, or create a folder if the hierarchy does not exist
+     *
+     * @param  {string} path
+     * @param  {boolean} [reload = true]
+     * @return {void}
+     * @method
+     * @public
+     */
+    addNewMovieClip (path: string, reload: boolean = true): void
+    {
+        if (!path) {
+            return ;
+        }
+
+        const paths = path.split("/");
+
+        // 銭湯が空文字なら排除
+        if (paths[0] === "") {
+            paths.shift();
+        }
+
+        if (!paths.length) {
+            return ;
+        }
+
+        const name  = paths.pop() as NonNullable<string>;
+
+        // フォルダー指定があれば先にフォルダーを生成
+        let folderId = 0;
+        if (paths.length) {
+
+            this.addNewFolder(paths.join("/"), reload);
+
+            const item = this.getItem(paths.join("/"));
+
+            folderId = item.id;
+        }
+
+        // 新規MovieClipを作成
+        externalLibraryAddNewMovieClipUseCase(
+            this._$workSpace,
+            this._$workSpace.scene,
+            name, folderId, reload
+        );
     }
 }

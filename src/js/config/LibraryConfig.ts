@@ -17,6 +17,15 @@ export const $LIBRARY_PREVIEW_AREA_ID: string = "library-preview-area";
 export const $LIBRARY_LIST_BOX_ID: string = "library-list-box";
 
 /**
+ * @description 新規MovieClip追加のElementのID
+ *              ID of Element for adding a new MovieClip
+ *
+ * @type {string}
+ * @constant
+ */
+export const $LIBRARY_MOVIE_CLIP_ADD_ID: string = "library-menu-container-add";
+
+/**
  * @description 新規フォルダー追加のElementのID
  *              ID of Element for adding a new folder
  *

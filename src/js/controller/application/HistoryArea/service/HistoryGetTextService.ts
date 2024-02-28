@@ -15,7 +15,8 @@ import {
     $LIBRARY_ADD_NEW_VIDEO_COMMAND,
     $LIBRARY_OVERWRITE_VIDEO_COMMAND,
     $LIBRARY_ADD_NEW_SOUND_COMMAND,
-    $LIBRARY_OVERWRITE_SOUND_COMMAND
+    $LIBRARY_OVERWRITE_SOUND_COMMAND,
+    $LIBRARY_ADD_NEW_MOVIE_CLIP_COMMAND
 } from "@/config/HistoryConfig";
 
 /**
@@ -52,7 +53,7 @@ export const execute = (command: number): string =>
             return "レイヤー名「%s」を「%s」変更";
 
         case $LIBRARY_ADD_NEW_FOLDER_COMMAND:
-            return "新規フォルダー";
+            return "新規フォルダー「%s」を追加";
 
         case $LIBRARY_UPDATE_INSTANCE_NAME_COMMAND:
             return "インスタンス名「%s」を「%s」変更";
@@ -80,6 +81,9 @@ export const execute = (command: number): string =>
 
         case $LIBRARY_OVERWRITE_SOUND_COMMAND:
             return "「%s」の音声を上書き";
+
+        case $LIBRARY_ADD_NEW_MOVIE_CLIP_COMMAND:
+            return "新規MovieClip「%s」を追加";
 
         default:
             break;

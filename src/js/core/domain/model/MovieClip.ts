@@ -123,6 +123,20 @@ export class MovieClip extends Instance
     }
 
     /**
+     * @description HTMLCanvasElementを返却
+     *              Return HTMLCanvasElement
+     *
+     * @return {Promise}
+     * @method
+     * @public
+     */
+    async getHTMLElement(): Promise<null>
+    {
+        // TODO
+        return null;
+    }
+
+    /**
      * @description 作業履歴を登録
      *              Register work history
      *

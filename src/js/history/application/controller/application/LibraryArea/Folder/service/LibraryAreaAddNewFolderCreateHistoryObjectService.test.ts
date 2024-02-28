@@ -17,6 +17,7 @@ describe("LibraryAreaAddNewFolderCreateHistoryObjectServiceTest", () =>
         expect(object.messages[4]).toBe(10);
 
         // 表示様の配列のチェック
-        expect(object.args.length).toBe(0);
+        expect(object.args.length).toBe(1);
+        expect(object.args[0]).toBe("Folder");
     });
 });
