@@ -339,3 +339,21 @@ export const $TIMELINE_HEADER_FRAME_INDEX: number = 4;
  * @constant
  */
 export const $TIMELINE_SCENE_NAME_ID: string = "scene-name";
+
+/**
+ * @description タイムラインの親のシーン名一覧ボタンのElementのID
+ *              ID of the Element of the parent scene name list button on the timeline
+ *
+ * @type {string}
+ * @constant
+ */
+export const $TIMELINE_SCENE_LIST_BUTTON_ID: string = "scene-list";
+
+/**
+ * @description タイムラインの親のシーン名一覧のElementのID
+ *              ID of the Element in the parent scene name list of the timeline
+ *
+ * @type {string}
+ * @constant
+ */
+export const $TIMELINE_SCENE_NAME_LIST_ID: string = "scene-name-menu-list";

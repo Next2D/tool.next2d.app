@@ -14,6 +14,7 @@ import { LibraryMenu } from "../domain/model/LibraryMenu";
 import { ScriptEditorModal } from "../domain/model/ScriptEditorModal";
 import { BillingModal } from "../domain/model/BillingModal";
 import { ConfirmModal } from "../domain/model/ConfirmModal";
+import { SceneListMenu } from "../domain/model/SceneListMenu";
 
 /**
  * @description 起動対象のToolクラスの配列
@@ -36,7 +37,8 @@ const menus: MenuImpl<any>[] = [
     LibraryMenu,
     ScriptEditorModal,
     BillingModal,
-    ConfirmModal
+    ConfirmModal,
+    SceneListMenu
 ];
 
 /**
