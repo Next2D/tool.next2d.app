@@ -1,5 +1,6 @@
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { $allHideMenu } from "@/menu/application/MenuUtil";
+import { ExternalWorkSpace } from "@/external/core/domain/model/ExternalWorkSpace";
 
 /**
  * @description ダブルタップ用の待機フラグ
@@ -75,6 +76,7 @@ export const execute = (event: PointerEvent): void =>
             return ;
         }
 
-        workSpace.setScene(instance);
+        const externalWorkSpace = new ExternalWorkSpace(workSpace);
+        externalWorkSpace.runMovieClip(instance);
     }
 };

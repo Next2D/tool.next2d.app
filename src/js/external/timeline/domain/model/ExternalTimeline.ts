@@ -158,7 +158,9 @@ export class ExternalTimeline
     }
 
     /**
-     * @description 指定のMovieClipを編集モードに
+     * @description 指定のMovieClipを編集モードに切り替える
+     *              Switch the specified MovieClip to edit mode
+     *
      * @param  {MovieClip} movie_clip
      * @return {void}
      * @method

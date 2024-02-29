@@ -19,7 +19,6 @@ import { execute as externalWorkSpaceRegisterInstanceService } from "@/external/
 import { $VERSION } from "@/config/Config";
 import { $CONTROLLER_DEFAULT_WIDTH_SIZE } from "@/config/ControllerConfig";
 import { $clamp } from "@/global/GlobalUtil";
-import { ExternalTimeline } from "@/external/timeline/domain/model/ExternalTimeline";
 import {
     $TIMELINE_DEFAULT_HEIGHT_SIZE,
     $TIMELINE_DEFAULT_FRAME_WIDTH_SIZE,
@@ -58,7 +57,6 @@ export class WorkSpace
     private readonly _$propertyAreaState: UserPropertyAreaStateObjectImpl;
     private readonly _$controllerAreaState: UserControllerAreaStateObjectImpl;
     private readonly _$plugins: Map<any, any>;
-    private readonly _$externalTimeline: ExternalTimeline;
 
     /**
      * @constructor
@@ -178,12 +176,6 @@ export class WorkSpace
             "width": $CONTROLLER_DEFAULT_WIDTH_SIZE
         };
 
-        /**
-         * @type {ExternalTimeline}
-         * @private
-         */
-        this._$externalTimeline = new ExternalTimeline(this, this._$root);
-
         // /**
         //  * @type {Map}
         //  * @private
@@ -269,13 +261,16 @@ export class WorkSpace
      * @description 選択中のMovieClipを返却
      *              Return the selected MovieClip
      *
-     * @return {MovieClip}
-     * @readonly
+     * @member {MovieClip}
      * @public
      */
     get scene (): MovieClip
     {
         return this._$scene;
+    }
+    set scene (scene: MovieClip)
+    {
+        this._$scene = scene;
     }
 
     /**
@@ -425,41 +420,6 @@ export class WorkSpace
 
         const lastLibraryId: number = this._$libraries.get(keys.pop() || 0).id;
         return lastLibraryId + 1;
-    }
-
-    /**
-     * @description タイムラインのAPIを返却
-     *              Launch Timeline API
-     *
-     * @return {ExternalTimeline}
-     * @method
-     * @public
-     */
-    getExternalTimeline (): ExternalTimeline
-    {
-        return this._$externalTimeline;
-    }
-
-    /**
-     * @description 既存のシーン(MovieClip)を終了して、指定のシーン(MovieClip)を起動する
-     *              Exit an existing scene (MovieClip) and start the specified scene (MovieClip)
-     *
-     * @param  {MovieClip} movie_clip
-     * @return {Promise}
-     * @method
-     * @public
-     */
-    setScene (movie_clip: MovieClip): Promise<void>
-    {
-        // 現在のMovieClipを終了
-        this._$scene.stop();
-
-        // 指定のMovieClipを起動
-        this._$scene = movie_clip;
-
-        return this
-            ._$externalTimeline
-            .editMovieClip(movie_clip);
     }
 
     /**

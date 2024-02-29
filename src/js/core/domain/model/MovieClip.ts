@@ -324,18 +324,13 @@ export class MovieClip extends Instance
      * @method
      * @public
      */
-    run (): Promise<void>
+    async run (): Promise<void>
     {
-        return new Promise((resolve) =>
-        {
-            // 起動処理を実行
-            movieClipRunUseCase(this);
+        // 起動処理を実行
+        movieClipRunUseCase(this);
 
-            // 状態をアクティブに更新
-            this._$active = true;
-
-            return resolve();
-        });
+        // 状態をアクティブに更新
+        this._$active = true;
     }
 
     /**

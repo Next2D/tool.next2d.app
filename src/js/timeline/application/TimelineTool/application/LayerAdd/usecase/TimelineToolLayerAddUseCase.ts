@@ -1,5 +1,6 @@
 import type { Layer } from "@/core/domain/model/Layer";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
+import { ExternalTimeline } from "@/external/timeline/domain/model/ExternalTimeline";
 
 /**
  * @description タイムラインに新規レイヤーを追加する
@@ -20,8 +21,7 @@ export const execute = (): void =>
         index = scene.layers.indexOf(layer);
     }
 
-    // レイヤーを追加
-    workSpace
-        .getExternalTimeline()
-        .addNewLayer(index);
+    // 外部APIを起動してレイヤーを追加
+    const externalTimeline = new ExternalTimeline(workSpace, scene);
+    externalTimeline.addNewLayer(index);
 };

@@ -97,13 +97,26 @@ export class ExternalWorkSpace
      * @method
      * @public
      */
-    runMovieClip (external_movie_clip: ExternalMovieClip): Promise<void>
+    async runMovieClip (external_movie_clip: ExternalMovieClip): Promise<void>
     {
         const movieClip: InstanceImpl<MovieClip> = this
             ._$workSpace
             .getLibrary(external_movie_clip.id);
 
-        return this._$workSpace.setScene(movieClip);
+        const scene = this._$workSpace.scene;
+        if (!scene || scene === movieClip) {
+            return ;
+        }
+
+        // 起動中のMovieClipを停止して、指定のMovieClipに入れ替える
+        scene.stop();
+        this._$workSpace.scene = movieClip;
+
+        if (!this._$workSpace.active) {
+            return ;
+        }
+
+        await movieClip.run();
     }
 
     /**
