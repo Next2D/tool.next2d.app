@@ -1,11 +1,12 @@
 import type { SoundObjectImpl } from "@/interface/SoundObjectImpl";
 import type { MovieClipSaveObjectImpl } from "@/interface/MovieClipSaveObjectImpl";
+import type { ActionSaveObjectImpl } from "@/interface/ActionSaveObjectImpl";
+import type { HistoryObjectImpl } from "@/interface/HistoryObjectImpl";
 import { Instance } from "./Instance";
 import { Layer } from "./Layer";
 import { execute as movieClipRunUseCase } from "@/core/application/MovieClip/usecase/MovieClipRunUseCase";
+import { execute as movieClipStopUseCase } from "@/core/application/MovieClip/usecase/MovieClipStopUseCase";
 import { execute as movieClipClearSelectedLayerService } from "@/core/application/MovieClip/service/MovieClipClearSelectedLayerService";
-import type { ActionSaveObjectImpl } from "@/interface/ActionSaveObjectImpl";
-import { HistoryObjectImpl } from "@/interface/HistoryObjectImpl";
 import { $HISTORY_LIMIT } from "@/config/HistoryConfig";
 import { $clamp } from "@/global/GlobalUtil";
 
@@ -344,7 +345,7 @@ export class MovieClip extends Instance
     stop (): void
     {
         // 選択中のLayerを初期化
-        movieClipClearSelectedLayerService(this);
+        movieClipStopUseCase();
 
         // 状態を非アクティブに更新
         this._$active = false;
