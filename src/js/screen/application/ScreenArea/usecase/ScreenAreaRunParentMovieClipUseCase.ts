@@ -1,18 +1,20 @@
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { InstanceImpl } from "@/interface/InstanceImpl";
-import { $TIMELINE_SCENE_NAME_LIST_ID } from "@/config/TimelineConfig";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { timelineSceneList } from "@/timeline/domain/model/TimelineSceneList";
+import { ExternalWorkSpace } from "@/external/core/domain/model/ExternalWorkSpace";
+import { ExternalMovieClip } from "@/external/core/domain/model/ExternalMovieClip";
+import { execute as timelineSceneListExcludeElememtService } from "@/timeline/application/TimelineSceneList/service/TimelineSceneListExcludeElememtService";
 
 /**
  * @description 一つ上の親のMovieClipに切り替える
  *              Switch to the parent MovieClip one level above.
  *
- * @return {void}
+ * @return {Promise}
  * @method
  * @public
  */
-export const execute = (): void =>
+export const execute = async (): Promise<void> =>
 {
     // mainのMovieClipなら何もしない
     if (!timelineSceneList.scenes.length) {
@@ -26,17 +28,12 @@ export const execute = (): void =>
         return ;
     }
 
-    const element: HTMLElement | null = document
-        .getElementById($TIMELINE_SCENE_NAME_LIST_ID);
+    // 指定のIDまでシーン名一覧を更新
+    timelineSceneListExcludeElememtService(libraryId);
 
-    if (!element) {
-        return ;
-    }
-
-    const node = element.lastElementChild as HTMLElement;
-    if (!node) {
-        return ;
-    }
-
-    node.remove();
+    // 指定のMovieClipを起動
+    const externalWorkSpace = new ExternalWorkSpace(workSpace);
+    await externalWorkSpace.runMovieClip(new ExternalMovieClip(
+        workSpace, movieClip
+    ));
 };

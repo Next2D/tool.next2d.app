@@ -1,4 +1,4 @@
-import { execute as screenAreaRunParenMovieClipUseCase } from "./ScreenAreaRunParenMovieClipUseCase"
+import { execute as screenAreaRunParentMovieClipUseCase } from "./ScreenAreaRunParentMovieClipUseCase";
 
 /**
  * @description ダブルタップ用の待機フラグ
@@ -44,6 +44,6 @@ export const execute = (event: PointerEvent): void =>
         event.preventDefault();
 
         // 親のMovieClipに移動
-        screenAreaRunParenMovieClipUseCase();
+        screenAreaRunParentMovieClipUseCase();
     }
 };

@@ -10,6 +10,7 @@ import {
     $TIMELINE_SCENE_LIST_BUTTON_ID,
     $TIMELINE_SCENE_NAME_LIST_ID
 } from "@/config/TimelineConfig";
+import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 
 /**
  * @description シーン一覧メニューの画面を表示する
@@ -30,19 +31,14 @@ export const execute = (): void =>
     // 一覧がない時(root)はスキップ
     const listElement: HTMLElement | null = document
         .getElementById($TIMELINE_SCENE_NAME_LIST_ID);
-    if (!listElement || !listElement.children.length) {
-        return ;
-    }
 
-    // 表示位置
-    const element: HTMLElement | null = document
-        .getElementById($TIMELINE_ID);
-    if (!element) {
+    if (!listElement || !listElement.children.length) {
         return ;
     }
 
     const buttonElement: HTMLElement | null = document
         .getElementById($TIMELINE_SCENE_LIST_BUTTON_ID);
+
     if (!buttonElement) {
         return ;
     }
@@ -50,7 +46,30 @@ export const execute = (): void =>
     // シーン名一覧メニュー以外を非表示
     $allHideMenu($SCENE_LIST_MENU_NAME);
 
-    menu.offsetLeft = element.offsetLeft + buttonElement.offsetLeft + buttonElement.clientWidth + 5;
-    menu.offsetTop  = element.offsetTop  + buttonElement.offsetTop  + buttonElement.clientHeight;
+    const workSpace = $getCurrentWorkSpace();
+    const timelineAreaState = workSpace.timelineAreaState;
+
+    // ベース
+    const offsetX = buttonElement.offsetLeft + buttonElement.clientWidth + 5;
+    const offsetY = buttonElement.offsetTop  + buttonElement.clientHeight;
+    if (timelineAreaState.state === "fixed") {
+
+        menu.offsetLeft = offsetX;
+        menu.offsetTop  = offsetY;
+
+    } else {
+
+        // タイムラインの表示位置
+        const timelineElement: HTMLElement | null = document
+            .getElementById($TIMELINE_ID);
+
+        if (!timelineElement) {
+            return ;
+        }
+
+        menu.offsetLeft = timelineElement.offsetLeft + offsetX;
+        menu.offsetTop  = timelineElement.offsetTop  + offsetY;
+    }
+
     menu.show();
 };

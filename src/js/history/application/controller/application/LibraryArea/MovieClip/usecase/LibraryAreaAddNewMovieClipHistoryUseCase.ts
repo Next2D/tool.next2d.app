@@ -34,7 +34,7 @@ export const execute = (
     // fixed logic
     const historyObject = libraryAreaAddNewMovieClipCreateHistoryObjectService(
         work_space.id, movie_clip.id,
-        add_movie_clip.id, add_movie_clip.name, add_movie_clip.folderId,
+        add_movie_clip.id, add_movie_clip.name, add_movie_clip.folderId
     );
 
     // 作業履歴にElementを追加
