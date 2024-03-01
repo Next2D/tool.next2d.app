@@ -26,11 +26,11 @@ let activeTimerId: NodeJS.Timeout;
  *              Mouse down processing function of the parent Element
  *
  * @param  {PointerEvent} event
- * @return {void}
+ * @return {Promise}
  * @method
  * @public
  */
-export const execute = (event: PointerEvent): void =>
+export const execute = async (event: PointerEvent): Promise<void> =>
 {
     // 親のイベントを終了
     event.stopPropagation();
@@ -81,6 +81,6 @@ export const execute = (event: PointerEvent): void =>
         timelineSceneListClearAddRootUseCase();
 
         const externalWorkSpace = new ExternalWorkSpace(workSpace);
-        externalWorkSpace.runMovieClip(instance);
+        await externalWorkSpace.runMovieClip(instance);
     }
 };

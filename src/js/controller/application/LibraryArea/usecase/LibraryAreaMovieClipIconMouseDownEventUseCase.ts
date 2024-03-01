@@ -28,11 +28,11 @@ let selectedLibraryId: number = -1;
  *              Double-tap processing function for MovieClip icons
  *
  * @param  {PointerEvent} event
- * @return {void}
+ * @return {Promise}
  * @method
  * @public
  */
-export const execute = (event: PointerEvent): void =>
+export const execute = async (event: PointerEvent): Promise<void> =>
 {
     if (event.button !== 0) {
         return ;
@@ -85,7 +85,7 @@ export const execute = (event: PointerEvent): void =>
         timelineSceneListClearAddRootUseCase();
 
         const externalWorkSpace = new ExternalWorkSpace(workSpace);
-        externalWorkSpace.runMovieClip(new ExternalMovieClip(
+        await externalWorkSpace.runMovieClip(new ExternalMovieClip(
             workSpace, movieClip
         ));
     }

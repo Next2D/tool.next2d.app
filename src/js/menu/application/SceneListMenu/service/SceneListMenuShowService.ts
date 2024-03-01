@@ -47,9 +47,10 @@ export const execute = (): void =>
         return ;
     }
 
+    // シーン名一覧メニュー以外を非表示
     $allHideMenu($SCENE_LIST_MENU_NAME);
 
     menu.offsetLeft = element.offsetLeft + buttonElement.offsetLeft + buttonElement.clientWidth + 5;
-    menu.offsetTop  = element.offsetTop + buttonElement.offsetTop + buttonElement.clientHeight;
+    menu.offsetTop  = element.offsetTop  + buttonElement.offsetTop  + buttonElement.clientHeight;
     menu.show();
 };

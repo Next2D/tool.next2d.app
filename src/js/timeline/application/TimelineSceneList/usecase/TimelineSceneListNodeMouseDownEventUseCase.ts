@@ -4,17 +4,18 @@ import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { ExternalWorkSpace } from "@/external/core/domain/model/ExternalWorkSpace";
 import { ExternalMovieClip } from "@/external/core/domain/model/ExternalMovieClip";
 import { execute as sceneListMenuHideService } from "@/menu/application/SceneListMenu/service/SceneListMenuHideService";
+import { execute as timelineSceneListExcludeElememtService } from "../service/TimelineSceneListExcludeElememtService";
 
 /**
  * @description タイムラインのシーン名のマウスダウンのイベント処理関数
  *              Event handling function for mouse down of a scene name in the timeline
  *
  * @param  {PointerEvent} event
- * @return {void}
+ * @return {Promise}
  * @method
  * @public
  */
-export const execute = (event: PointerEvent): void =>
+export const execute = async (event: PointerEvent): Promise<void> =>
 {
     if (event.button !== 0) {
         return ;
@@ -39,9 +40,12 @@ export const execute = (event: PointerEvent): void =>
         return ;
     }
 
+    // 指定のIDまでシーン名一覧を更新
+    timelineSceneListExcludeElememtService(libraryId);
+
     // 指定のMovieClipを起動
     const externalWorkSpace = new ExternalWorkSpace(workSpace);
-    externalWorkSpace.runMovieClip(new ExternalMovieClip(
+    await externalWorkSpace.runMovieClip(new ExternalMovieClip(
         workSpace, movieClip
     ));
 };
