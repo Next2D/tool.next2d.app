@@ -6,11 +6,14 @@ import {
     $TIMELINE_SCENE_LIST_BUTTON_ID,
     $TIMELINE_SCENE_NAME_LIST_ID
 } from "../../../../config/TimelineConfig";
+import { $getCurrentWorkSpace, $createWorkSpace } from "../../../../core/application/CoreUtil";
 
 describe("SceneListMenuShowServiceTest", () =>
 {
     test("execute test", () =>
     {
+        const workSpace = $getCurrentWorkSpace() || $createWorkSpace();
+
         let state = "hide";
         const menuMock = {
             "name": $SCENE_LIST_MENU_NAME,
