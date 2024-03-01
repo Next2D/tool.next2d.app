@@ -5,7 +5,7 @@ describe("TimelineToolUpdateSceneListNameServiceTest", () =>
     test("execute test", async () =>
     {
         const div = document.createElement("div");
-        div.id = "scene-instance-id-0";
+        div.id = "scene-library-id-0";
         document.body.appendChild(div);
 
         expect(div.textContent).toBe("");
