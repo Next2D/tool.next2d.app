@@ -11,7 +11,7 @@
 export const execute = async (id: number, name: string): Promise<void> =>
 {
     const element: HTMLElement | null = document
-        .getElementById(`scene-instance-id-${id}`);
+        .getElementById(`scene-library-id-${id}`);
 
     if (!element) {
         return ;

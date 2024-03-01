@@ -53,7 +53,7 @@ export const execute = (
         return ;
     }
 
-    // リストの名前を更新
+    // タブ一覧の表示名を更新
     textElement.textContent = listElement.textContent = name;
 
     // 内部情報を更新

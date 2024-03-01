@@ -2,7 +2,7 @@ import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { $allHideMenu } from "@/menu/application/MenuUtil";
 import { ExternalWorkSpace } from "@/external/core/domain/model/ExternalWorkSpace";
 import { execute as timelineSceneListClearAddRootUseCase } from "@/timeline/application/TimelineSceneList/usecase/TimelineSceneListClearAddRootUseCase";
-
+import { execute as timelineSceneListClearAllService } from "@/timeline/application/TimelineSceneList/service/TimelineSceneListClearAllService";
 /**
  * @description ダブルタップ用の待機フラグ
  *              Standby flag for double-tap
@@ -77,8 +77,12 @@ export const execute = async (event: PointerEvent): Promise<void> =>
             return ;
         }
 
-        // タイムラインのシーン名を初期化してrootを追加
-        timelineSceneListClearAddRootUseCase();
+        // rootじゃない場合は、タイムラインのシーン名を初期化してrootを追加
+        if (instance.id > 0) {
+            timelineSceneListClearAddRootUseCase();
+        } else {
+            timelineSceneListClearAllService();
+        }
 
         const externalWorkSpace = new ExternalWorkSpace(workSpace);
         await externalWorkSpace.runMovieClip(instance);
