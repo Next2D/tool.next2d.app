@@ -11,6 +11,7 @@ import { execute as workSpaceBootControllerAreaUseCase } from "./WorkSpaceBootCo
 import { execute as scriptAreaReloadUseCase } from "@/controller/application/ScriptArea/usecase/ScriptAreaReloadUseCase";
 import { execute as libraryAreaReloadUseCase } from "@/controller/application/LibraryArea/usecase/LibraryAreaReloadUseCase";
 import { execute as libraryAreaSelectedClearUseCase } from "@/controller/application/LibraryArea/usecase/LibraryAreaSelectedClearUseCase";
+import { execute as timelineSceneListClearAllService } from "@/timeline/application/TimelineSceneList/service/TimelineSceneListClearAllService";
 import { libraryArea } from "@/controller/domain/model/LibraryArea";
 
 /**
@@ -65,6 +66,9 @@ export const execute = (work_space: WorkSpace): Promise<void> =>
 
         // ライブラリの一覧を再描画
         libraryAreaReloadUseCase();
+
+        // タイムラインのシーン名を初期化
+        timelineSceneListClearAllService();
 
         // アクティブなMovieClipを起動
         work_space

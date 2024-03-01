@@ -484,7 +484,7 @@ export class WorkSpace
      * @description ライブラリに登録されたアイテムを指定IDで取得
      *              Obtain items registered in the library with a specified ID
      *
-     * @param {number} library_id
+     * @param  {number} library_id
      * @return {void}
      * @method
      * @public

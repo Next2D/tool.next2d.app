@@ -4,7 +4,7 @@ import { execute as libraryAreaComponent } from "../component/LibraryAreaCompone
 import { execute as libraryAreaSelectedMouseDownService } from "./LibraryAreaSelectedMouseDownUseCase";
 import { execute as libraryAreaArrowIconMouseDownEventService } from "../service/LibraryAreaArrowIconMouseDownEventService";
 import { execute as libraryAreaFolderIconMouseDownEventService } from "../service/LibraryAreaFolderIconMouseDownEventService";
-import { execute as libraryAreaMovieClipIconMouseDownEventService } from "../service/LibraryAreaMovieClipIconMouseDownEventService";
+import { execute as libraryAreaMovieClipIconMouseDownEventUseCase } from "./LibraryAreaMovieClipIconMouseDownEventUseCase";
 import { execute as libraryAreaInstanceNameMouseDownEventUseCase } from "./LibraryAreaInstanceNameMouseDownEventUseCase";
 import { execute as libraryAreaInstanceTextContentKeyPressEventService } from "../service/LibraryAreaInstanceTextContentKeyPressEventService";
 import { execute as libraryAreaInstanceNameFocusOutEventUseCase } from "./LibraryAreaInstanceNameFocusOutEventUseCase";
@@ -105,7 +105,7 @@ export const execute = async (): Promise<void> =>
                 // MovieClipアイコンにイベントを登録
                 const movieClipIcon = icons[1] as NonNullable<HTMLElement>;
                 movieClipIcon.addEventListener(EventType.MOUSE_DOWN,
-                    libraryAreaMovieClipIconMouseDownEventService
+                    libraryAreaMovieClipIconMouseDownEventUseCase
                 );
             }
         }

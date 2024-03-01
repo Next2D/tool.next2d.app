@@ -1,6 +1,7 @@
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { $allHideMenu } from "@/menu/application/MenuUtil";
 import { ExternalWorkSpace } from "@/external/core/domain/model/ExternalWorkSpace";
+import { execute as timelineSceneListClearAddRootUseCase } from "@/timeline/application/TimelineSceneList/usecase/TimelineSceneListClearAddRootUseCase";
 
 /**
  * @description ダブルタップ用の待機フラグ
@@ -75,6 +76,9 @@ export const execute = (event: PointerEvent): void =>
         if (!instance || instance.type !== "container") {
             return ;
         }
+
+        // タイムラインのシーン名を初期化してrootを追加
+        timelineSceneListClearAddRootUseCase();
 
         const externalWorkSpace = new ExternalWorkSpace(workSpace);
         externalWorkSpace.runMovieClip(instance);

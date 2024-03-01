@@ -1,7 +1,8 @@
 import { execute as sceneListMenuShowService } from "@/menu/application/SceneListMenu/service/SceneListMenuShowService";
 
 /**
- * @description
+ * @description タイムラインのシーン名の一覧ボタンのマウスダウンイベント
+ *              Mouse down event for the scene name list button on the timeline
  *
  * @param {PointerEvent} event
  * @return {void}
