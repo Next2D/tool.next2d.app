@@ -1,16 +1,15 @@
-import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
-import { ExternalLibrary } from "@/external/controller/domain/model/ExternalLibrary";
 import { $useKeyboard } from "@/shortcut/ShortcutUtil";
+import { execute as libraryAreaRemoveInstanceService } from "../service/LibraryAreaRemoveInstanceService";
 
 /**
  * @description ライブラリエリアのキーイベント処理
  *              Key event processing in the library area
  *
- * @return {void}
+ * @return {Promise}
  * @method
  * @public
  */
-export const execute = (event: KeyboardEvent): void =>
+export const execute = async (event: KeyboardEvent): Promise<void> =>
 {
     if ($useKeyboard()) {
         return ;
@@ -25,10 +24,7 @@ export const execute = (event: KeyboardEvent): void =>
 
         case "Backspace":
         case "Delete":
-            {
-                const externalLibrary = new ExternalLibrary($getCurrentWorkSpace());
-                externalLibrary.removeItem();
-            }
+            libraryAreaRemoveInstanceService();
             break;
 
         case "ArrowDown":

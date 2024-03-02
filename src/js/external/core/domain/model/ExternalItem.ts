@@ -3,6 +3,7 @@ import type { InstanceImpl } from "@/interface/InstanceImpl";
 import type { InstanceTypeImpl } from "@/interface/InstanceTypeImpl";
 import { execute as externalItemUpdateNameUseCase } from "@/external/core/application/ExternalItem/usecase/ExternalItemUpdateNameUseCase";
 import { execute as externalItemUpdateSymbolUseCase } from "@/external/core/application/ExternalItem/usecase/ExternalItemUpdateSymbolUseCase";
+import { execute as externalItemRemoveUseCase } from "@/external/core/application/ExternalItem/usecase/ExternalItemRemoveUseCase";
 
 /**
  * @class
@@ -115,5 +116,21 @@ export class ExternalItem
     set folderId (folder_id: number)
     {
         this._$instance.folderId = folder_id;
+    }
+
+    /**
+     * @description アイテムをライブラリエリアから削除
+     *              ID of parent folder
+     *
+     * @param  {boolean} [reload = true]
+     * @return {Promise}
+     * @method
+     * @public
+     */
+    async remove (reload: boolean = true): Promise<void>
+    {
+        await externalItemRemoveUseCase(
+            this._$workSpace, this._$instance, reload
+        );
     }
 }

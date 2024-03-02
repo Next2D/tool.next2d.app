@@ -373,15 +373,22 @@ export class ExternalLibrary
     }
 
     /**
-     * @description 指定されてるアイテムを削除
-     *              Delete the specified item
+     * @description 指定のアイテムをライブラリエリアから削除
+     *              Remove specified items from the library area
      *
-     * @return {void}
+     * @param  {string} path
+     * @param  {boolean} [reload = true]
+     * @return {Promise}
      * @method
      * @public
      */
-    removeItem (): void
+    async removeItem (path: string, reload: boolean = true): Promise<void>
     {
-        console.log("removeItem");
+        const item = this.getItem(path);
+        if (!item) {
+            return ;
+        }
+
+        await item.remove(reload);
     }
 }
