@@ -4,12 +4,14 @@ import { execute as libraryMenuAddNewFolderMouseDownEventUseCase } from "./Libra
 import { execute as libraryMenuAddNewMovieClipMouseDownEventUseCase } from "./LibraryMenuAddNewMovieClipMouseDownEventUseCase";
 import { execute as libraryMenuFileMouseDownEventUseCase } from "./LibraryMenuFileMouseDownEventUseCase";
 import { execute as libraryMenuLoadFileUseCase } from "./LibraryMenuLoadFileUseCase";
+import { execute as libraryMenuEditMovieClipMouseDownEventUseCase } from "./LibraryMenuEditMovieClipMouseDownEventUseCase";
 import {
     $LIBRARY_LIST_BOX_ID,
     $LIBRARY_FOLDER_ADD_ID,
     $LIBRARY_FILE_ID,
     $LIBRARY_FILE_INPUT_ID,
-    $LIBRARY_MOVIE_CLIP_ADD_ID
+    $LIBRARY_MOVIE_CLIP_ADD_ID,
+    $LIBRARY_CHANGE_SCENE_ID
 } from "@/config/LibraryConfig";
 
 /**
@@ -69,6 +71,16 @@ export const execute = (): void =>
     if (fileInputElement) {
         fileInputElement.addEventListener("change",
             libraryMenuLoadFileUseCase
+        );
+    }
+
+    // MovieClip編集ボタンのイベント登録
+    const editMovieClipElement: HTMLElement | null = document
+        .getElementById($LIBRARY_CHANGE_SCENE_ID);
+
+    if (editMovieClipElement) {
+        editMovieClipElement.addEventListener(EventType.MOUSE_DOWN,
+            libraryMenuEditMovieClipMouseDownEventUseCase
         );
     }
 };

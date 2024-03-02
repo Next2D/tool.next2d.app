@@ -51,3 +51,12 @@ export const $LIBRARY_FILE_ID: string = "library-menu-file";
  * @constant
  */
 export const $LIBRARY_FILE_INPUT_ID: string = "library-menu-file-input";
+
+/**
+ * @description MovieClipの編集モードボタンのElementのID
+ *              ID of the Element of the edit mode button in MovieClip
+ *
+ * @type {string}
+ * @constant
+ */
+export const $LIBRARY_CHANGE_SCENE_ID: string = "library-menu-change-scene";

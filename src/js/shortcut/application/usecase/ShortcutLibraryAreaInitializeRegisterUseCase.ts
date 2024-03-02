@@ -1,6 +1,7 @@
 import { execute as libraryMenuAddNewFolderService } from "@/menu/application/LibraryMenu/service/LibraryMenuAddNewFolderService";
 import { execute as libraryMenuAddNewMovieClipService } from "@/menu/application/LibraryMenu/service/LibraryMenuAddNewMovieClipService";
 import { execute as libraryMenuOpenFileLoadingModalService } from "@/menu/application/LibraryMenu/service/LibraryMenuOpenFileLoadingModalService";
+import { execute as libraryMenuRunSelectedMovieClipUseCase } from "@/menu/application/LibraryMenu/usecase/LibraryMenuRunSelectedMovieClipUseCase";
 import {
     $generateShortcutKey,
     $setShortcut
@@ -32,5 +33,11 @@ export const execute = (): void =>
     $setShortcut(
         $generateShortcutKey("r", { "ctrl": true }),
         libraryMenuOpenFileLoadingModalService
+    );
+
+    // 指定のMovieClipを編集モードにする
+    $setShortcut(
+        $generateShortcutKey("e"),
+        libraryMenuRunSelectedMovieClipUseCase
     );
 };

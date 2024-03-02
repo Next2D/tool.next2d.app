@@ -143,4 +143,17 @@ export class Instance
     {
         this._$folderId = folder_id;
     }
+
+    /**
+     * @description ライブラリからの削除時の処理関数
+     *              Processing functions for deletion from the library
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    remove (): void
+    {
+        // TODO ライブラリからの削除時の処理
+    }
 }

@@ -27,10 +27,6 @@ export const execute = (event: PointerEvent): void =>
     // メニューを全て非表示にする
     $allHideMenu();
 
-    if ($useKeyboard()) {
-        return ;
-    }
-
     // レイヤー・フレームElementのアクティブ状態をリセット
     const workSpace = $getCurrentWorkSpace();
     const externalTimeline = new ExternalTimeline(workSpace, workSpace.scene);

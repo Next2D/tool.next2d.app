@@ -371,4 +371,17 @@ export class ExternalLibrary
             name, folderId, reload
         );
     }
+
+    /**
+     * @description 指定されてるアイテムを削除
+     *              Delete the specified item
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    removeItem (): void
+    {
+        console.log("removeItem");
+    }
 }
