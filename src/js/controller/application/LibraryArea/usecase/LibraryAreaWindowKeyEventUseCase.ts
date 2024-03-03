@@ -1,5 +1,5 @@
 import { $useKeyboard } from "@/shortcut/ShortcutUtil";
-import { execute as libraryAreaRemoveInstanceService } from "../service/LibraryAreaRemoveInstanceService";
+import { execute as libraryAreaRemoveInstanceUseCase } from "./LibraryAreaRemoveInstanceUseCase";
 
 /**
  * @description ライブラリエリアのキーイベント処理
@@ -24,7 +24,7 @@ export const execute = async (event: KeyboardEvent): Promise<void> =>
 
         case "Backspace":
         case "Delete":
-            libraryAreaRemoveInstanceService();
+            await libraryAreaRemoveInstanceUseCase();
             break;
 
         case "ArrowDown":
