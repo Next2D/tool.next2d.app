@@ -231,3 +231,12 @@ export const $LIBRARY_OVERWRITE_SOUND_COMMAND: number = 22;
  * @constant
  */
 export const $LIBRARY_ADD_NEW_MOVIE_CLIP_COMMAND: number = 23;
+
+/**
+ * @description ライブラリのインスタンス削除の識別コマンド名
+ *              Identification command name for deletion of library instances
+ *
+ * @type {number}
+ * @constant
+ */
+export const $LIBRARY_REMOVE_INSTANCE_COMMAND: number = 24;

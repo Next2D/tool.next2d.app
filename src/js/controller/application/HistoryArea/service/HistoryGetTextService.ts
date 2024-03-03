@@ -16,7 +16,8 @@ import {
     $LIBRARY_OVERWRITE_VIDEO_COMMAND,
     $LIBRARY_ADD_NEW_SOUND_COMMAND,
     $LIBRARY_OVERWRITE_SOUND_COMMAND,
-    $LIBRARY_ADD_NEW_MOVIE_CLIP_COMMAND
+    $LIBRARY_ADD_NEW_MOVIE_CLIP_COMMAND,
+    $LIBRARY_REMOVE_INSTANCE_COMMAND
 } from "@/config/HistoryConfig";
 
 /**
@@ -84,6 +85,9 @@ export const execute = (command: number): string =>
 
         case $LIBRARY_ADD_NEW_MOVIE_CLIP_COMMAND:
             return "新規MovieClip「%s」を追加";
+
+        case $LIBRARY_REMOVE_INSTANCE_COMMAND:
+            return "ライブラリから「%s」を削除";
 
         default:
             break;

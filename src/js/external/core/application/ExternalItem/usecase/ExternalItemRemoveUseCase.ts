@@ -3,6 +3,7 @@ import type { InstanceImpl } from "@/interface/InstanceImpl";
 import { execute as libraryAreaReloadUseCase } from "@/controller/application/LibraryArea/usecase/LibraryAreaReloadUseCase";
 import { execute as libraryAreaSelectedClearUseCase } from "@/controller/application/LibraryArea/usecase/LibraryAreaSelectedClearUseCase";
 import { execute as externalWorkSpaceRemoveInstanceService } from "@/external/core/application/ExternalWorkSpace/service/ExternalWorkSpaceRemoveInstanceService";
+import { execute as libraryAreaRemoveInstanceHistoryUseCase } from "@/history/application/controller/application/LibraryArea/Instance/usecase/LibraryAreaRemoveInstanceHistoryUseCase";
 
 /**
  * @description
@@ -25,7 +26,13 @@ export const execute = async (
     // TODO レイヤーに設置されたDisplayObjectを削除
     // fixed logic
 
-    // TODO 履歴に残す
+    // 履歴に残す
+    libraryAreaRemoveInstanceHistoryUseCase(
+        work_space,
+        work_space.scene,
+        instance,
+        receiver
+    );
 
     // 内部情報から削除
     externalWorkSpaceRemoveInstanceService(

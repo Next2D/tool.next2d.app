@@ -104,7 +104,7 @@ export const execute = async (
             };
 
             // Uint8Arrayを複製して、サブスレッドで圧縮処理を行う
-            const buffer: Uint8Array | null = bitmap.buffer.slice();
+            const buffer: Uint8Array = bitmap.buffer.slice();
             worker.postMessage(buffer, [buffer.buffer]);
         });
     }

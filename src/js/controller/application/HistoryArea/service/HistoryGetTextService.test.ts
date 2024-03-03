@@ -17,7 +17,8 @@ import {
     $LIBRARY_OVERWRITE_VIDEO_COMMAND,
     $LIBRARY_ADD_NEW_SOUND_COMMAND,
     $LIBRARY_OVERWRITE_SOUND_COMMAND,
-    $LIBRARY_ADD_NEW_MOVIE_CLIP_COMMAND
+    $LIBRARY_ADD_NEW_MOVIE_CLIP_COMMAND,
+    $LIBRARY_REMOVE_INSTANCE_COMMAND
 } from "../../../../config/HistoryConfig";
 
 describe("HistoryGetTextServiceTest", () =>
@@ -42,5 +43,6 @@ describe("HistoryGetTextServiceTest", () =>
         expect(execute($LIBRARY_ADD_NEW_SOUND_COMMAND)).toBe("音声「%s」を取り込み");
         expect(execute($LIBRARY_OVERWRITE_SOUND_COMMAND)).toBe("「%s」の音声を上書き");
         expect(execute($LIBRARY_ADD_NEW_MOVIE_CLIP_COMMAND)).toBe("新規MovieClip「%s」を追加");
+        expect(execute($LIBRARY_REMOVE_INSTANCE_COMMAND)).toBe("ライブラリから「%s」を削除");
     });
 });
