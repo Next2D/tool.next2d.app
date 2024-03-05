@@ -31,7 +31,7 @@ describe("HistoryGetTextServiceTest", () =>
         expect(execute($TIMIELINE_TOOL_SCRIPT_UPDATE_COMMAND)).toBe("「%s1」の%s2フレームのスクリプトを変更");
         expect(execute($TIMIELINE_TOOL_SCRIPT_DELETE_COMMAND)).toBe("「%s1」の%s2フレームのスクリプトを削除");
         expect(execute($SCREEN_TAB_NAME_UPDATE_COMMAND)).toBe("プロジェクト名「%s1」を「%s2」に変更");
-        expect(execute($LAYER_NAME_UPDATE_COMMAND)).toBe("「%s」のレイヤー名「%s」を「%s」に変更");
+        expect(execute($LAYER_NAME_UPDATE_COMMAND)).toBe("「%s1」のレイヤー名「%s2」を「%s3」に変更");
         expect(execute($LIBRARY_ADD_NEW_FOLDER_COMMAND)).toBe("新規フォルダー「%s」を追加");
         expect(execute($LIBRARY_UPDATE_INSTANCE_NAME_COMMAND)).toBe("「%s1」の名前を「%s2」に変更");
         expect(execute($LIBRARY_UPDATE_INSTANCE_SYMBOL_COMMAND)).toBe("「%s1」のシンボル名を「%s2」に変更");

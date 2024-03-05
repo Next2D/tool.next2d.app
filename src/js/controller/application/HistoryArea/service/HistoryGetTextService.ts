@@ -51,7 +51,7 @@ export const execute = (command: number): string =>
             return "プロジェクト名「%s1」を「%s2」に変更";
 
         case $LAYER_NAME_UPDATE_COMMAND:
-            return "「%s」のレイヤー名「%s」を「%s」に変更";
+            return "「%s1」のレイヤー名「%s2」を「%s3」に変更";
 
         case $LIBRARY_ADD_NEW_FOLDER_COMMAND:
             return "新規フォルダー「%s」を追加";

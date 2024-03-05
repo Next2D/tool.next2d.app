@@ -1,7 +1,6 @@
 import type { SoundObjectImpl } from "@/interface/SoundObjectImpl";
 import type { MovieClipSaveObjectImpl } from "@/interface/MovieClipSaveObjectImpl";
 import type { ActionSaveObjectImpl } from "@/interface/ActionSaveObjectImpl";
-import type { HistoryObjectImpl } from "@/interface/HistoryObjectImpl";
 import { Instance } from "./Instance";
 import { Layer } from "./Layer";
 import { execute as movieClipRunUseCase } from "@/core/application/MovieClip/usecase/MovieClipRunUseCase";
