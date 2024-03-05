@@ -43,7 +43,7 @@ export const execute = (
 
     // 作業履歴にElementを追加
     // fixed logic
-    if (work_space.active && movie_clip.actions) {
+    if (work_space.active) {
         historyAddElementUseCase(
             movie_clip.id,
             work_space.historyIndex,
