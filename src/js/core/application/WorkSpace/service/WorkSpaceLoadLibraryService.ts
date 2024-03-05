@@ -1,15 +1,7 @@
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
-import type { BitmapSaveObjectImpl } from "@/interface/BitmapSaveObjectImpl";
-import type { FolderSaveObjectImpl } from "@/interface/FolderSaveObjectImpl";
 import type { InstanceSaveObjectImpl } from "@/interface/InstanceSaveObjectImpl";
 import type { MovieClipSaveObjectImpl } from "@/interface/MovieClipSaveObjectImpl";
-import type { VideoSaveObjectImpl } from "@/interface/VideoSaveObjectImpl";
-import type { SoundSaveObjectImpl } from "@/interface/SoundSaveObjectImpl";
-import { Bitmap } from "@/core/domain/model/Bitmap";
-import { Folder } from "@/core/domain/model/Folder";
-import { MovieClip } from "@/core/domain/model/MovieClip";
-import { Video } from "@/core/domain/model/Video";
-import { Sound } from "@/core/domain/model/Sound";
+import { execute as workSpaceCreateToSaveDataService } from "./WorkSpaceCreateToSaveDataService";
 
 /**
  * @description 保存データからライブラリ情報を復元
@@ -37,54 +29,8 @@ export const execute = async (
             continue;
         }
 
-        switch (libraryObject.type) {
-
-            case "container":
-                work_space.libraries.set(
-                    libraryObject.id,
-                    new MovieClip(libraryObject as MovieClipSaveObjectImpl)
-                );
-                break;
-
-            case "folder":
-                work_space.libraries.set(
-                    libraryObject.id,
-                    new Folder(libraryObject as FolderSaveObjectImpl)
-                );
-                break;
-
-            case "bitmap":
-                work_space.libraries.set(
-                    libraryObject.id,
-                    new Bitmap(libraryObject as BitmapSaveObjectImpl)
-                );
-                break;
-
-            case "video":
-                {
-                    const video = new Video(libraryObject as VideoSaveObjectImpl);
-                    await video.wait();
-                    work_space.libraries.set(
-                        libraryObject.id,
-                        video
-                    );
-                }
-                break;
-
-            case "sound":
-                {
-                    const sound = new Sound(libraryObject as SoundSaveObjectImpl);
-                    await sound.wait();
-                    work_space.libraries.set(
-                        libraryObject.id,
-                        sound
-                    );
-                }
-                break;
-
-            default:
-                throw new Error("This is an undefined class.");
-
-        }
+        // インスタンスオブジェクトを作成してマップに登録、初回はライブラリだけに登録
+        const instance = await workSpaceCreateToSaveDataService(libraryObject);
+        work_space.libraries.set(instance.id, instance);
     }
 };

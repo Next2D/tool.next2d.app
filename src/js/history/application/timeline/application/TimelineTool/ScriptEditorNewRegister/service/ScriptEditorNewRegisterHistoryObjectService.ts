@@ -1,4 +1,5 @@
 import type { HistoryObjectImpl } from "@/interface/HistoryObjectImpl";
+import type { MovieClip } from "@/core/domain/model/MovieClip";
 import { $TIMIELINE_TOOL_SCRIPT_NEW_REGISTER_COMMAND } from "@/config/HistoryConfig";
 
 /**
@@ -6,7 +7,7 @@ import { $TIMIELINE_TOOL_SCRIPT_NEW_REGISTER_COMMAND } from "@/config/HistoryCon
  *              Create object for history of newly added scripts
  *
  * @param  {number} work_space_id
- * @param  {number} movie_clip_id
+ * @param  {MovieClip} movie_clip
  * @param  {number} frame
  * @param  {string} script
  * @return {object}
@@ -15,7 +16,7 @@ import { $TIMIELINE_TOOL_SCRIPT_NEW_REGISTER_COMMAND } from "@/config/HistoryCon
  */
 export const execute = (
     work_space_id: number,
-    movie_clip_id: number,
+    movie_clip: MovieClip,
     frame: number,
     script: string
 ): HistoryObjectImpl => {
@@ -24,10 +25,13 @@ export const execute = (
         "command": $TIMIELINE_TOOL_SCRIPT_NEW_REGISTER_COMMAND,
         "messages": [
             work_space_id,
-            movie_clip_id,
+            movie_clip.id,
             frame,
             script
         ],
-        "args": [frame]
+        "args": [
+            movie_clip.name,
+            frame
+        ]
     };
 };

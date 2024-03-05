@@ -8,6 +8,7 @@ import { execute as languageTranslationService } from "@/language/application/se
  * @description 作業履歴のリストにElementを追加
  *              Add Element to the list of work history
  *
+ * @param  {number} movie_clip_id
  * @param  {number} index
  * @param  {string} text
  * @param  {string} class_name
@@ -16,6 +17,7 @@ import { execute as languageTranslationService } from "@/language/application/se
  * @public
  */
 export const execute = (
+    movie_clip_id: number,
     index: number,
     text: string,
     class_name: "" | "disable" = "",
@@ -30,7 +32,7 @@ export const execute = (
     }
 
     element.insertAdjacentHTML("beforeend",
-        historyListComponent(index, text, ...values)
+        historyListComponent(movie_clip_id, index, text, ...values)
     );
 
     const lastElement = element.lastElementChild as NonNullable<HTMLElement>;

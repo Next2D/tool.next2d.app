@@ -6,7 +6,7 @@ import { WorkSpace } from "../../../../core/domain/model/WorkSpace";
 
 describe("WorkSpaceLoadLibraryServiceTest", () =>
 {
-    test("execute test", () =>
+    test("execute test", async () =>
     {
         const workSpace: WorkSpace = $getCurrentWorkSpace() || $createWorkSpace();
 
@@ -29,7 +29,7 @@ describe("WorkSpaceLoadLibraryServiceTest", () =>
         libraries.push(movieClip.toObject());
 
         expect(workSpace.libraries.size).toBe(1);
-        execute(workSpace, libraries);
+        await execute(workSpace, libraries);
 
         expect(workSpace.libraries.size).toBe(3);
 

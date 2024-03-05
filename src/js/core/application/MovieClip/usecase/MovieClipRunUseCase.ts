@@ -7,7 +7,6 @@ import { execute as timelineScrollUpdateWidthService } from "@/timeline/applicat
 import { execute as timelineScrollUpdateXPositionService } from "@/timeline/application/TimelineScroll/service/TimelineScrollUpdateXPositionService";
 import { execute as timelineScrollUpdateHeightService } from "@/timeline/application/TimelineScroll/service/TimelineScrollUpdateHeightService";
 import { execute as timelineScrollUpdateYPositionService } from "@/timeline/application/TimelineScroll/service/TimelineScrollUpdateYPositionService";
-import { execute as historyReloadUseCase } from "@/controller/application/HistoryArea/usecase/HistoryReloadUseCase";
 import { execute as propertyAreaDisplayItemControllerUseCase } from "@/controller/application/PropertyArea/usecase/PropertyAreaDisplayItemControllerUseCase";
 import { execute as objectSettingUpdateNameService } from "@/controller/application/ObjectSetting/service/ObjectSettingUpdateNameService";
 import { execute as objectSettingUpdateSymbolService } from "@/controller/application/ObjectSetting/service/ObjectSettingUpdateSymbolService";
@@ -24,9 +23,6 @@ import { execute as timelineToolUpdateSceneNameService } from "@/timeline/applic
  */
 export const execute = (movie_clip: MovieClip): void =>
 {
-    // 作業履歴を読み込む
-    historyReloadUseCase();
-
     // タイムラインのx移動するスクロール幅を更新
     timelineScrollUpdateWidthService();
 

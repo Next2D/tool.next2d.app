@@ -6,6 +6,7 @@ import { $SCREEN_TAB_NAME_UPDATE_COMMAND } from "@/config/HistoryConfig";
  *              Create object for history of tab name changes
  *
  * @param  {number} work_space_id
+ * @param  {number} movie_clip_id
  * @param  {string} before_name
  * @param  {string} after_name
  * @return {object}
@@ -14,6 +15,7 @@ import { $SCREEN_TAB_NAME_UPDATE_COMMAND } from "@/config/HistoryConfig";
  */
 export const execute = (
     work_space_id: number,
+    movie_clip_id: number,
     before_name: string,
     after_name: string
 ): HistoryObjectImpl => {
@@ -22,6 +24,7 @@ export const execute = (
         "command": $SCREEN_TAB_NAME_UPDATE_COMMAND,
         "messages": [
             work_space_id,
+            movie_clip_id,
             before_name,
             after_name
         ],

@@ -1,5 +1,6 @@
 import type { HistoryObjectImpl } from "@/interface/HistoryObjectImpl";
 import type { Layer } from "@/core/domain/model/Layer";
+import type { MovieClip } from "@/core/domain/model/MovieClip";
 import { $TIMELINE_TOOL_LAYER_DELETE_COMMAND } from "@/config/HistoryConfig";
 
 /**
@@ -16,7 +17,7 @@ import { $TIMELINE_TOOL_LAYER_DELETE_COMMAND } from "@/config/HistoryConfig";
  */
 export const execute = (
     work_space_id: number,
-    movie_clip_id: number,
+    movie_clip: MovieClip,
     index: number,
     layer: Layer
 ): HistoryObjectImpl => {
@@ -25,10 +26,13 @@ export const execute = (
         "command": $TIMELINE_TOOL_LAYER_DELETE_COMMAND,
         "messages": [
             work_space_id,
-            movie_clip_id,
+            movie_clip.id,
             index,
             layer.toObject()
         ],
-        "args": [layer.name]
+        "args": [
+            movie_clip.name,
+            layer.name
+        ]
     };
 };

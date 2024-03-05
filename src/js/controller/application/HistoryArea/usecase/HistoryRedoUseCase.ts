@@ -39,12 +39,12 @@ export const execute = (
         return ;
     }
 
-    const scene: InstanceImpl<MovieClip> = workSpace.getLibrary(library_id);
-    if (!scene || !scene.histories.length) {
+    const movieClip: InstanceImpl<MovieClip> = workSpace.getLibrary(library_id);
+    if (!movieClip) {
         return ;
     }
 
-    const node: HTMLElement | undefined = element.children[scene.historyIndex] as HTMLElement;
+    const node: HTMLElement | undefined = element.children[workSpace.historyIndex] as HTMLElement;
     if (!node) {
         return ;
     }
@@ -52,7 +52,7 @@ export const execute = (
     // 履歴表示をアクティブに更新
     node.setAttribute("class", "");
 
-    const historyObject: HistoryObjectImpl | undefined = scene.histories[scene.historyIndex++];
+    const historyObject: HistoryObjectImpl | undefined = workSpace.histories[workSpace.historyIndex++];
     if (!historyObject) {
         return ;
     }
@@ -63,7 +63,7 @@ export const execute = (
     if (!receiver && $useSocket()) {
         shareSendService({
             "command": $HISTORY_REDO_COMMAND,
-            "messages": [workSpace.id, scene.id],
+            "messages": [workSpace.id, movieClip.id],
             "args": []
         });
     }

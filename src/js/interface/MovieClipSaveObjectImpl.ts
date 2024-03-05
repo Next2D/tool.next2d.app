@@ -2,7 +2,6 @@ import type { LayerSaveObjectImpl } from "./LayerSaveObjectImpl";
 import type { LabelSaveObjectImpl } from "./LabelSaveObjectImpl";
 import type { ActionSaveObjectImpl } from "./ActionSaveObjectImpl";
 import type { MovieClipSoundSaveObjectImpl } from "./MovieClipSoundSaveObjectImpl";
-import type { HistoryObjectImpl } from "./HistoryObjectImpl";
 import type { InstanceObjectImpl } from "./InstanceObjectImpl";
 
 export interface MovieClipSaveObjectImpl extends InstanceObjectImpl
@@ -16,6 +15,4 @@ export interface MovieClipSaveObjectImpl extends InstanceObjectImpl
     actions?: ActionSaveObjectImpl[];
     scrollX?: number;
     scrollY?: number;
-    histories?: HistoryObjectImpl[];
-    historyIndex?: number;
 }

@@ -1,5 +1,6 @@
 import type { HistoryObjectImpl } from "@/interface/HistoryObjectImpl";
 import type { Layer } from "@/core/domain/model/Layer";
+import type { MovieClip } from "@/core/domain/model/MovieClip";
 import { $TIMELINE_TOOL_LAYER_ADD_COMMAND } from "@/config/HistoryConfig";
 
 /**
@@ -7,7 +8,7 @@ import { $TIMELINE_TOOL_LAYER_ADD_COMMAND } from "@/config/HistoryConfig";
  *              Create object for layer addition history
  *
  * @param  {number} work_space_id
- * @param  {number} movie_clip_id
+ * @param  {number} movie_clip
  * @param  {Layer} layer
  * @param  {number} index
  * @return {object}
@@ -16,7 +17,7 @@ import { $TIMELINE_TOOL_LAYER_ADD_COMMAND } from "@/config/HistoryConfig";
  */
 export const execute = (
     work_space_id: number,
-    movie_clip_id: number,
+    movie_clip: MovieClip,
     layer: Layer,
     index: number
 ): HistoryObjectImpl => {
@@ -25,11 +26,14 @@ export const execute = (
         "command": $TIMELINE_TOOL_LAYER_ADD_COMMAND,
         "messages": [
             work_space_id,
-            movie_clip_id,
+            movie_clip.id,
             index,
             layer.name,
             layer.color
         ],
-        "args": [layer.name]
+        "args": [
+            movie_clip.name,
+            layer.name
+        ]
     };
 };

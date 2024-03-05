@@ -21,8 +21,8 @@ describe("LanguageTest", () =>
 
     test("$sprintf test", () =>
     {
-        const value = "%sを%sに変更";
-        expect(value).toBe("%sを%sに変更");
+        const value = "%s1を%s2に変更";
+        expect(value).toBe("%s1を%s2に変更");
         expect($sprintf(value, "before", "after")).toBe("beforeをafterに変更");
     });
 });

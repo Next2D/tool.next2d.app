@@ -13,6 +13,7 @@ import { execute as libraryAreaReloadUseCase } from "@/controller/application/Li
 import { execute as libraryAreaSelectedClearUseCase } from "@/controller/application/LibraryArea/usecase/LibraryAreaSelectedClearUseCase";
 import { execute as timelineSceneListClearAllService } from "@/timeline/application/TimelineSceneList/service/TimelineSceneListClearAllService";
 import { libraryArea } from "@/controller/domain/model/LibraryArea";
+import { execute as historyReloadUseCase } from "@/controller/application/HistoryArea/usecase/HistoryReloadUseCase";
 
 /**
  * @description プロジェクトの起動処理
@@ -69,6 +70,9 @@ export const execute = (work_space: WorkSpace): Promise<void> =>
 
         // タイムラインのシーン名を初期化
         timelineSceneListClearAllService();
+
+        // 作業履歴を読み込む
+        historyReloadUseCase();
 
         // アクティブなMovieClipを起動
         work_space

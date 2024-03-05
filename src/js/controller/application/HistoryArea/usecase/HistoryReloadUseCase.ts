@@ -25,15 +25,17 @@ export const execute = (): void =>
         element.children[0].remove();
     }
 
-    const scene = $getCurrentWorkSpace().scene;
+    const workSpace = $getCurrentWorkSpace();
 
-    const histories = scene.histories;
+    const histories = workSpace.histories;
     for (let idx = 0; idx < histories.length; ++idx) {
         const historyObject = histories[idx];
+        const movieClipId = historyObject.messages[1] as NonNullable<number>;
         historyAddElementUseCase(
+            movieClipId,
             idx,
             historyGetTextService(historyObject.command),
-            scene.historyIndex > idx ? "" : "disable",
+            workSpace.historyIndex > idx ? "" : "disable",
             ...historyObject.args
         );
     }

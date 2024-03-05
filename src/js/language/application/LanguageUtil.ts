@@ -68,7 +68,7 @@ export const $sprintf = (value: string, ...values: string[]): string =>
     }
 
     for (let idx = 0; idx < values.length; ++idx) {
-        value = value.replace("%s", values[idx]);
+        value = value.replace(`%s${idx + 1}`, values[idx]);
     }
 
     return value;

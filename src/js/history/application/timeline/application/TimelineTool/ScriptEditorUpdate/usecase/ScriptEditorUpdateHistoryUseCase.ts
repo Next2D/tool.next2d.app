@@ -31,20 +31,21 @@ export const execute = (
 
     // ポジション位置から未来の履歴を全て削除
     // fixed logic
-    historyRemoveElementService(movie_clip);
+    historyRemoveElementService(work_space);
 
     const beforeScript = movie_clip.getAction(frame);
 
     // fixed logic
     const historyObject = scriptEditorUpdateHistoryObjectService(
-        work_space.id, movie_clip.id, frame, beforeScript, after_script
+        work_space.id, movie_clip, frame, beforeScript, after_script
     );
 
     // 作業履歴にElementを追加
     // fixed logic
     if (work_space.active && movie_clip.active) {
         historyAddElementUseCase(
-            movie_clip.historyIndex,
+            movie_clip.id,
+            work_space.historyIndex,
             historyGetTextService($TIMIELINE_TOOL_SCRIPT_UPDATE_COMMAND),
             "",
             ...historyObject.args
@@ -53,7 +54,7 @@ export const execute = (
 
     // Objectを履歴に登録
     // fixed logic
-    movie_clip.addHistory(historyObject);
+    work_space.addHistory(historyObject);
 
     // 受け取り処理ではなく、画面共有していれば共有者に送信
     if (!receiver && $useSocket()) {

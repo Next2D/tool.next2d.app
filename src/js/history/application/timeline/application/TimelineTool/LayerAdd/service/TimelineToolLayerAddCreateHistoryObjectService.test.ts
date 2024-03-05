@@ -1,6 +1,7 @@
 import { execute } from "./TimelineToolLayerAddCreateHistoryObjectService";
 import { $TIMELINE_TOOL_LAYER_ADD_COMMAND } from "../../../../../../../config/HistoryConfig";
 import { Layer } from "../../../../../../../core/domain/model/Layer";
+import { MovieClip } from "../../../../../../../core/domain/model/MovieClip";
 
 describe("TimelineToolLayerAddCreateHistoryObjectServiceTest", () =>
 {
@@ -9,7 +10,13 @@ describe("TimelineToolLayerAddCreateHistoryObjectServiceTest", () =>
         const layer = new Layer();
         layer.name = "test_layer";
 
-        const object = execute(1, 0, layer, 10);
+        const movieClip = new MovieClip({
+            "id": 0,
+            "name": "MovieClip_01",
+            "type": "container"
+        });
+
+        const object = execute(1, movieClip, layer, 10);
         expect(object.command).toBe($TIMELINE_TOOL_LAYER_ADD_COMMAND);
 
         // 配列の順番が崩れてもいいようにテストケースを残す
@@ -21,7 +28,8 @@ describe("TimelineToolLayerAddCreateHistoryObjectServiceTest", () =>
         expect(object.messages[4]).toBe(layer.color);
 
         // 表示様の配列のチェック
-        expect(object.args.length).toBe(1);
-        expect(object.args[0]).toBe(layer.name);
+        expect(object.args.length).toBe(2);
+        expect(object.args[0]).toBe(movieClip.name);
+        expect(object.args[1]).toBe(layer.name);
     });
 });

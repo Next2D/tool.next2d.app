@@ -69,7 +69,7 @@ export const execute = (history_object: HistoryObjectImpl): void =>
         case $SCREEN_TAB_NAME_UPDATE_COMMAND:
             screenTabNameAddHistoryUndoUseCase(
                 messages[0] as number, // workSpaceId
-                messages[1] as string  // beforeName
+                messages[2] as string  // beforeName
             );
             break;
 

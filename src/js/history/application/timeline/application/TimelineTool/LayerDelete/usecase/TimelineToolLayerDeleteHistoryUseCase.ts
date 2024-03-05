@@ -32,18 +32,19 @@ export const execute = (
 
     // ポジション位置から未来の履歴を全て削除
     // fixed logic
-    historyRemoveElementService(movie_clip);
+    historyRemoveElementService(work_space);
 
     // fixed logic
     const historyObject = timelineToolLayerDeleteCreateHistoryObjectService(
-        work_space.id, movie_clip.id, index, layer
+        work_space.id, movie_clip, index, layer
     );
 
     // 作業履歴にElementを追加
     // fixed logic
     if (work_space.active && movie_clip.actions) {
         historyAddElementUseCase(
-            movie_clip.historyIndex,
+            movie_clip.id,
+            work_space.historyIndex,
             historyGetTextService($TIMELINE_TOOL_LAYER_DELETE_COMMAND),
             "",
             ...historyObject.args
@@ -52,15 +53,16 @@ export const execute = (
 
     // 追加したLayer Objectを履歴に登録
     // fixed logic
-    movie_clip.addHistory(historyObject);
+    work_space.addHistory(historyObject);
 
     // 受け取り処理ではなく、画面共有していれば共有者に送信
     if (!receiver && $useSocket()) {
 
         const shareObject = timelineToolLayerDeleteCreateHistoryObjectService(
-            work_space.id, movie_clip.id, index, layer
+            work_space.id, movie_clip, index, layer
         );
 
+        // layerオブジェクトは不要なので削除
         shareObject.args.pop();
         shareSendService(shareObject);
     }

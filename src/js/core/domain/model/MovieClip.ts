@@ -7,7 +7,6 @@ import { Layer } from "./Layer";
 import { execute as movieClipRunUseCase } from "@/core/application/MovieClip/usecase/MovieClipRunUseCase";
 import { execute as movieClipStopUseCase } from "@/core/application/MovieClip/usecase/MovieClipStopUseCase";
 import { execute as movieClipClearSelectedLayerService } from "@/core/application/MovieClip/service/MovieClipClearSelectedLayerService";
-import { $HISTORY_LIMIT } from "@/config/HistoryConfig";
 import { $clamp } from "@/global/GlobalUtil";
 
 /**
@@ -24,14 +23,12 @@ export class MovieClip extends Instance
     private _$leftFrame: number;
     private _$scrollX: number;
     private _$scrollY: number;
-    private _$historyIndex: number;
     private _$active: boolean;
     private readonly _$labels: Map<number, string>;
     private readonly _$layers: Layer[];
     private readonly _$actions: Map<number, string>;
     private readonly _$sounds: Map<number, SoundObjectImpl[]>;
     private readonly _$selectedLayers: Layer[];
-    private readonly _$histories: HistoryObjectImpl[];
 
     /**
      * @params {object} object
@@ -101,18 +98,6 @@ export class MovieClip extends Instance
         this._$selectedLayers = [];
 
         /**
-         * @type {array}
-         * @private
-         */
-        this._$histories = [];
-
-        /**
-         * @type {number}
-         * @private
-         */
-        this._$historyIndex = 0;
-
-        /**
          * @type {boolean}
          * @default false
          * @private
@@ -135,55 +120,6 @@ export class MovieClip extends Instance
     {
         // TODO
         return null;
-    }
-
-    /**
-     * @description 作業履歴を登録
-     *              Register work history
-     *
-     * @return {void}
-     * @method
-     * @public
-     */
-    addHistory (history_object: HistoryObjectImpl): void
-    {
-        // ポジション以降の履歴を削除
-        this._$histories.length = this._$historyIndex;
-        this._$histories[this._$historyIndex++] = history_object;
-
-        while (this._$histories.length > $HISTORY_LIMIT) {
-            this._$histories.shift();
-        }
-    }
-
-    /**
-     * @description 作業履歴の配列を返却
-     *              Returns an array of work history
-     *
-     * @return {array}
-     * @readonly
-     * @public
-     */
-    get histories (): HistoryObjectImpl[]
-    {
-        return this._$histories;
-    }
-
-    /**
-     * @description 作業履歴の配列のポインター情報
-     *              Pointer information for the work history array
-     *
-     * @member {number} index
-     * @return {number}
-     * @public
-     */
-    get historyIndex (): number
-    {
-        return this._$historyIndex;
-    }
-    set historyIndex (index: number)
-    {
-        this._$historyIndex = index;
     }
 
     /**
@@ -402,14 +338,6 @@ export class MovieClip extends Instance
                 const actionObject: ActionSaveObjectImpl = object.actions[idx];
                 this._$actions.set(actionObject.frame, actionObject.action);
             }
-        }
-
-        if ("historyIndex" in object) {
-            this._$historyIndex = object.historyIndex as number;
-        }
-
-        if (object.histories) {
-            this._$histories.push(...object.histories);
         }
     }
 
@@ -748,9 +676,7 @@ export class MovieClip extends Instance
             "sounds":       soundList,
             "actions":      actions,
             "scrollX":      this._$scrollX,
-            "scrollY":      this._$scrollY,
-            "histories":    this._$histories,
-            "historyIndex": this._$historyIndex
+            "scrollY":      this._$scrollY
         };
     }
 }

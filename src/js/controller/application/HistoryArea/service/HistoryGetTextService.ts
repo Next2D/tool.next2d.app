@@ -33,34 +33,34 @@ export const execute = (command: number): string =>
     switch (command) {
 
         case $TIMELINE_TOOL_LAYER_ADD_COMMAND:
-            return "レイヤーに「%s」を追加";
+            return "「%s1」にレイヤー「%s2」を追加";
 
         case $TIMELINE_TOOL_LAYER_DELETE_COMMAND:
-            return "レイヤーの「%s」を削除";
+            return "「%s1」のレイヤー「%s2」を削除";
 
         case $TIMIELINE_TOOL_SCRIPT_NEW_REGISTER_COMMAND:
-            return "%sフレームにスクリプトを追加";
+            return "「%s1」の%s2フレームにスクリプトを追加";
 
         case $TIMIELINE_TOOL_SCRIPT_UPDATE_COMMAND:
-            return "%sフレームのスクリプトを変更";
+            return "「%s1」の%s2フレームのスクリプトを変更";
 
         case $TIMIELINE_TOOL_SCRIPT_DELETE_COMMAND:
-            return "%sフレームのスクリプトを削除";
+            return "「%s1」の%s2フレームのスクリプトを削除";
 
         case $SCREEN_TAB_NAME_UPDATE_COMMAND:
-            return "プロジェクト名「%s」を「%s」に変更";
+            return "プロジェクト名「%s1」を「%s2」に変更";
 
         case $LAYER_NAME_UPDATE_COMMAND:
-            return "レイヤー名「%s」を「%s」変更";
+            return "「%s」のレイヤー名「%s」を「%s」に変更";
 
         case $LIBRARY_ADD_NEW_FOLDER_COMMAND:
             return "新規フォルダー「%s」を追加";
 
         case $LIBRARY_UPDATE_INSTANCE_NAME_COMMAND:
-            return "インスタンス名「%s」を「%s」変更";
+            return "「%s1」の名前を「%s2」に変更";
 
         case $LIBRARY_UPDATE_INSTANCE_SYMBOL_COMMAND:
-            return "シンボル名を「%s」に変更";
+            return "「%s1」のシンボル名を「%s2」に変更";
 
         case $LIBRARY_ADD_NEW_BITMAP_COMMAND:
             return "画像「%s」を取り込み";

@@ -29,12 +29,13 @@ export const execute = (
 
     // ポジション位置から未来の履歴を全て削除
     // fixed logic
-    historyRemoveElementService(scene);
+    historyRemoveElementService(work_space);
 
     // 追加したLayer Objectを履歴に登録
     // fixed logic
     const historyObject = screenTabCreateHistoryObjectService(
         work_space.id,
+        scene.id,
         work_space.name,
         name
     );
@@ -42,14 +43,15 @@ export const execute = (
     // 作業履歴にElementを追加
     // fixed logic
     historyAddElementUseCase(
-        scene.historyIndex,
+        scene.id,
+        work_space.historyIndex,
         historyGetTextService($SCREEN_TAB_NAME_UPDATE_COMMAND),
         "",
         ...historyObject.args
     );
 
     // fixed logic
-    scene.addHistory(historyObject);
+    work_space.addHistory(historyObject);
 
     // 受け取り処理ではなく、画面共有していれば共有者に送信
     if (!receiver && $useSocket()) {

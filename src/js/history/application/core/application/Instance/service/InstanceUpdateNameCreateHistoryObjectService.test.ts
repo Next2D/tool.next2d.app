@@ -1,17 +1,24 @@
 import { execute } from "./InstanceUpdateNameCreateHistoryObjectService";
 import { $LIBRARY_UPDATE_INSTANCE_NAME_COMMAND } from "../../../../../../config/HistoryConfig";
+import { MovieClip } from "../../../../../../core/domain/model/MovieClip";
 
 describe("InstanceUpdateNameCreateHistoryObjectServiceTest", () =>
 {
     test("execute test", () =>
     {
-        const object = execute(1, 0, 1, "before name", "after name");
+        const movieClip = new MovieClip({
+            "id": 0,
+            "type": "container",
+            "name": "MovieClip_01"
+        });
+
+        const object = execute(1, movieClip, 1, "before name", "after name");
         expect(object.command).toBe($LIBRARY_UPDATE_INSTANCE_NAME_COMMAND);
 
         // 配列の順番が崩れてもいいようにテストケースを残す
         expect(object.messages.length).toBe(5);
         expect(object.messages[0]).toBe(1);
-        expect(object.messages[1]).toBe(0);
+        expect(object.messages[1]).toBe(movieClip.id);
         expect(object.messages[2]).toBe(1);
         expect(object.messages[3]).toBe("before name");
         expect(object.messages[4]).toBe("after name");
