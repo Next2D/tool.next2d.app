@@ -9,7 +9,7 @@ import { $LIBRARY_ADD_NEW_BITMAP_COMMAND } from "@/config/HistoryConfig";
  * @param  {number} work_space_id
  * @param  {number} movie_clip_id
  * @param  {object} bitmap_object
- * @param  {string} fileId
+ * @param  {string} [file_id = ""]
  * @return {object}
  * @method
  * @public
@@ -18,7 +18,7 @@ export const execute = (
     work_space_id: number,
     movie_clip_id: number,
     bitmap_object: BitmapSaveObjectImpl,
-    fileId: string
+    file_id: string = ""
 ): HistoryObjectImpl => {
 
     return {
@@ -27,7 +27,7 @@ export const execute = (
             work_space_id,
             movie_clip_id,
             bitmap_object,
-            fileId
+            file_id
         ],
         "args": [
             bitmap_object.name

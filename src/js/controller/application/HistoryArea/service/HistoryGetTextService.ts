@@ -54,7 +54,7 @@ export const execute = (command: number): string =>
             return "「%s1」のレイヤー名「%s2」を「%s3」に変更";
 
         case $LIBRARY_ADD_NEW_FOLDER_COMMAND:
-            return "新規フォルダー「%s」を追加";
+            return "新規フォルダー「%s1」を追加";
 
         case $LIBRARY_UPDATE_INSTANCE_NAME_COMMAND:
             return "「%s1」の名前を「%s2」に変更";
@@ -63,31 +63,31 @@ export const execute = (command: number): string =>
             return "「%s1」のシンボル名を「%s2」に変更";
 
         case $LIBRARY_ADD_NEW_BITMAP_COMMAND:
-            return "画像「%s」を取り込み";
+            return "画像「%s1」を取り込み";
 
         case $LIBRARY_MOVE_FOLDER_COMMAND:
-            return "「%s」のフォルダ移動";
+            return "「%s1」のフォルダ移動";
 
         case $LIBRARY_OVERWRITE_IMAGE_COMMAND:
-            return "「%s」の画像を上書き";
+            return "「%s1」の画像を上書き";
 
         case $LIBRARY_ADD_NEW_VIDEO_COMMAND:
-            return "動画「%s」を取り込み";
+            return "動画「%s1」を取り込み";
 
         case $LIBRARY_OVERWRITE_VIDEO_COMMAND:
-            return "「%s」の動画を上書き";
+            return "「%s1」の動画を上書き";
 
         case $LIBRARY_ADD_NEW_SOUND_COMMAND:
-            return "音声「%s」を取り込み";
+            return "音声「%s1」を取り込み";
 
         case $LIBRARY_OVERWRITE_SOUND_COMMAND:
-            return "「%s」の音声を上書き";
+            return "「%s1」の音声を上書き";
 
         case $LIBRARY_ADD_NEW_MOVIE_CLIP_COMMAND:
-            return "新規MovieClip「%s」を追加";
+            return "新規MovieClip「%s1」を追加";
 
         case $LIBRARY_REMOVE_INSTANCE_COMMAND:
-            return "ライブラリから「%s」を削除";
+            return "ライブラリから「%s1」を削除";
 
         default:
             break;
