@@ -1,4 +1,6 @@
 import type { HistoryObjectImpl } from "@/interface/HistoryObjectImpl";
+import type { MovieClip } from "@/core/domain/model/MovieClip";
+import type { InstanceImpl } from "@/interface/InstanceImpl";
 import { $LIBRARY_UPDATE_INSTANCE_SYMBOL_COMMAND } from "@/config/HistoryConfig";
 
 /**
@@ -6,33 +8,32 @@ import { $LIBRARY_UPDATE_INSTANCE_SYMBOL_COMMAND } from "@/config/HistoryConfig"
  *              Create object for history of instance symbol name updates
  *
  * @param  {number} work_space_id
- * @param  {number} movie_clip_id
- * @param  {number} instance_id
+ * @param  {MovieClip} movie_clip
+ * @param  {Instance} instance
  * @param  {string} before_name
- * @param  {string} after_name
  * @return {object}
  * @method
  * @public
  */
 export const execute = (
     work_space_id: number,
-    movie_clip_id: number,
-    instance_id: number,
-    before_name: string,
-    after_name: string
+    movie_clip: MovieClip,
+    instance: InstanceImpl<any>,
+    before_name: string
 ): HistoryObjectImpl => {
 
     return {
         "command": $LIBRARY_UPDATE_INSTANCE_SYMBOL_COMMAND,
         "messages": [
             work_space_id,
-            movie_clip_id,
-            instance_id,
+            movie_clip.id,
+            instance.id,
             before_name,
-            after_name
+            instance.symbol
         ],
         "args": [
-            after_name
+            instance.name,
+            instance.symbol
         ]
     };
 };

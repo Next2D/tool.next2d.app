@@ -37,7 +37,7 @@ export const execute = (
 
     // fixed logic
     const historyObject = instanceUpdateNameCreateHistoryObjectService(
-        work_space.id, movie_clip, instance.id, before_name, instance.name
+        work_space.id, movie_clip.id, instance.id, before_name, instance.name
     );
 
     // 作業履歴にElementを追加
