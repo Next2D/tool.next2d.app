@@ -45,6 +45,7 @@ export const execute = (
     // fixed logic
     if (work_space.active && movie_clip.actions) {
         historyAddElementUseCase(
+            movie_clip.id,
             work_space.historyIndex,
             historyGetTextService($LAYER_NAME_UPDATE_COMMAND),
             "",
