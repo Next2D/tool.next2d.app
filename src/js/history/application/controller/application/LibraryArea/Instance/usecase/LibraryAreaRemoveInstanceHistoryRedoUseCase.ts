@@ -9,7 +9,7 @@ import { execute as libraryAreaReloadUseCase } from "@/controller/application/Li
  *              Restore the bitmap to its post-overwrite state
  *
  * @param  {number} work_space_id
- * @param  {object} after_bitmap_object
+ * @param  {object} instance_object
  * @return {void}
  * @method
  * @public

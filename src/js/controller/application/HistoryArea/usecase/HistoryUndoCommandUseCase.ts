@@ -3,6 +3,7 @@ import type { LayerSaveObjectImpl } from "@/interface/LayerSaveObjectImpl";
 import type { BitmapSaveObjectImpl } from "@/interface/BitmapSaveObjectImpl";
 import type { VideoSaveObjectImpl } from "@/interface/VideoSaveObjectImpl";
 import type { SoundSaveObjectImpl } from "@/interface/SoundSaveObjectImpl";
+import type { InstanceSaveObjectImpl } from "@/interface/InstanceSaveObjectImpl";
 import { execute as screenTabNameAddHistoryUndoUseCase } from "@/history/application/screen/application/ScreenTab/usecase/ScreenTabNameAddHistoryUndoUseCase";
 import { execute as timelineToolLayerAddHistoryUndoUseCase } from "@/history/application/timeline/application/TimelineTool/LayerAdd/usecase/TimelineToolLayerAddHistoryUndoUseCase";
 import { execute as timelineToolLayerDeleteHistoryUndoUseCase } from "@/history/application/timeline/application/TimelineTool/LayerDelete/usecase/TimelineToolLayerDeleteHistoryUndoUseCase";
@@ -19,6 +20,7 @@ import { execute as libraryAreaUpdateBitmapHistoryUndoUseCase } from "@/history/
 import { execute as libraryAreaAddNewSoundHistoryUndoUseCase } from "@/history/application/controller/application/LibraryArea/Sound/usecase/LibraryAreaAddNewSoundHistoryUndoUseCase";
 import { execute as libraryAreaUpdateSoundHistoryUndoUseCase } from "@/history/application/controller/application/LibraryArea/Sound/usecase/LibraryAreaUpdateSoundHistoryUndoUseCase";
 import { execute as libraryAreaAddNewMovieClipHistoryUndoUseCase } from "@/history/application/controller/application/LibraryArea/MovieClip/usecase/LibraryAreaAddNewMovieClipHistoryUndoUseCase";
+import { execute as libraryAreaRemoveInstanceHistoryUndoUseCase } from "@/history/application/controller/application/LibraryArea/Instance/usecase/LibraryAreaRemoveInstanceHistoryUndoUseCase";
 import { execute as instanceUpdateNameHistoryUndoUseCase } from "@/history/application/core/application/Instance/usecase/InstanceUpdateNameHistoryUndoUseCase";
 import { execute as instanceUpdateSymbolHistoryUndoUseCase } from "@/history/application/core/application/Instance/usecase/InstanceUpdateSymbolHistoryUndoUseCase";
 import {
@@ -39,19 +41,23 @@ import {
     $LIBRARY_OVERWRITE_VIDEO_COMMAND,
     $LIBRARY_ADD_NEW_SOUND_COMMAND,
     $LIBRARY_OVERWRITE_SOUND_COMMAND,
-    $LIBRARY_ADD_NEW_MOVIE_CLIP_COMMAND
+    $LIBRARY_ADD_NEW_MOVIE_CLIP_COMMAND,
+    $LIBRARY_REMOVE_INSTANCE_COMMAND
 } from "@/config/HistoryConfig";
 
 /**
  * @description Undoコマンドの実行関数
  *              Execution function of the Undo command
  *
- * @return {void}
+ * @param  {object} history_object
+ * @return {Promise}
  * @method
  * @public
  */
-export const execute = (history_object: HistoryObjectImpl): void =>
-{
+export const execute = async (
+    history_object: HistoryObjectImpl
+): Promise<void> => {
+
     const messages = history_object.messages;
     switch (history_object.command) {
 
@@ -167,7 +173,7 @@ export const execute = (history_object: HistoryObjectImpl): void =>
         // 画像の上書き
         case $LIBRARY_OVERWRITE_IMAGE_COMMAND:
             libraryAreaUpdateBitmapHistoryUndoUseCase(
-                messages[0] as number, // workSpaceId,
+                messages[0] as number, // workSpaceId
                 messages[2] as BitmapSaveObjectImpl // Bitmap Save Object
             );
             break;
@@ -175,7 +181,7 @@ export const execute = (history_object: HistoryObjectImpl): void =>
         // 動画の追加
         case $LIBRARY_ADD_NEW_VIDEO_COMMAND:
             libraryAreaAddNewVideoHistoryUndoUseCase(
-                messages[0] as number, // workSpaceId,
+                messages[0] as number, // workSpaceId
                 messages[2] as VideoSaveObjectImpl // Video Save Object
             );
             break;
@@ -183,7 +189,7 @@ export const execute = (history_object: HistoryObjectImpl): void =>
         // 動画の上書き
         case $LIBRARY_OVERWRITE_VIDEO_COMMAND:
             libraryAreaUpdateVideoHistoryUndoUseCase(
-                messages[0] as number, // workSpaceId,
+                messages[0] as number, // workSpaceId
                 messages[2] as VideoSaveObjectImpl // Video Save Object
             );
             break;
@@ -191,7 +197,7 @@ export const execute = (history_object: HistoryObjectImpl): void =>
         // 音声の追加
         case $LIBRARY_ADD_NEW_SOUND_COMMAND:
             libraryAreaAddNewSoundHistoryUndoUseCase(
-                messages[0] as number, // workSpaceId,
+                messages[0] as number, // workSpaceId
                 messages[2] as SoundSaveObjectImpl // Sound Save Object
             );
             break;
@@ -199,7 +205,7 @@ export const execute = (history_object: HistoryObjectImpl): void =>
         // 音声の上書き
         case $LIBRARY_OVERWRITE_SOUND_COMMAND:
             libraryAreaUpdateSoundHistoryUndoUseCase(
-                messages[0] as number, // workSpaceId,
+                messages[0] as number, // workSpaceId
                 messages[2] as SoundSaveObjectImpl // Sound Save Object
             );
             break;
@@ -207,8 +213,16 @@ export const execute = (history_object: HistoryObjectImpl): void =>
         // MovieClipの追加
         case $LIBRARY_ADD_NEW_MOVIE_CLIP_COMMAND:
             libraryAreaAddNewMovieClipHistoryUndoUseCase(
-                messages[0] as number, // workSpaceId,
+                messages[0] as number, // workSpaceId
                 messages[2] as number // MovieClip ID
+            );
+            break;
+
+        // ライブラリのアイテムを削除
+        case $LIBRARY_REMOVE_INSTANCE_COMMAND:
+            await libraryAreaRemoveInstanceHistoryUndoUseCase(
+                messages[0] as number, // workSpaceId
+                messages[2] as InstanceSaveObjectImpl // save object
             );
             break;
 

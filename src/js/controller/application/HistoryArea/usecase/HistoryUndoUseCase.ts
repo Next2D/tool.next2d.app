@@ -21,11 +21,11 @@ import {
  * @method
  * @public
  */
-export const execute = (
+export const execute = async (
     work_space_id: number,
     library_id: number,
     receiver: boolean = false
-): void => {
+): Promise<void> => {
 
     const element: HTMLElement | null = document
         .getElementById($HISTORY_LIST_ID);
@@ -58,7 +58,7 @@ export const execute = (
     node.setAttribute("class", "disable");
 
     // undoを実行
-    historyUndoCommandUseCase(historyObject);
+    await historyUndoCommandUseCase(historyObject);
 
     // 受け取り処理ではなく、画面共有していればUndoを送信
     if (!receiver && $useSocket()) {

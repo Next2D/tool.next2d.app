@@ -2,6 +2,7 @@ import type { HistoryObjectImpl } from "@/interface/HistoryObjectImpl";
 import type { BitmapSaveObjectImpl } from "@/interface/BitmapSaveObjectImpl";
 import type { VideoSaveObjectImpl } from "@/interface/VideoSaveObjectImpl";
 import type { SoundSaveObjectImpl } from "@/interface/SoundSaveObjectImpl";
+import type { InstanceSaveObjectImpl } from "@/interface/InstanceSaveObjectImpl";
 import { execute as screenTabNameAddHistoryRedoUseCase } from "@/history/application/screen/application/ScreenTab/usecase/ScreenTabNameAddHistoryRedoUseCase";
 import { execute as timelineToolLayerAddHistoryRedoUseCase } from "@/history/application/timeline/application/TimelineTool/LayerAdd/usecase/TimelineToolLayerAddHistoryRedoUseCase";
 import { execute as timelineToolLayerDeleteHistoryRedoUseCase } from "@/history/application/timeline/application/TimelineTool/LayerDelete/usecase/TimelineToolLayerDeleteHistoryRedoUseCase";
@@ -18,6 +19,7 @@ import { execute as libraryAreaUpdateBitmapHistoryRedoUseCase } from "@/history/
 import { execute as libraryAreaAddNewSoundHistoryRedoUseCase } from "@/history/application/controller/application/LibraryArea/Sound/usecase/LibraryAreaAddNewSoundHistoryRedoUseCase";
 import { execute as libraryAreaUpdateSoundHistoryRedoUseCase } from "@/history/application/controller/application/LibraryArea/Sound/usecase/LibraryAreaUpdateSoundHistoryRedoUseCase";
 import { execute as libraryAreaAddNewMovieClipHistoryRedoUseCase } from "@/history/application/controller/application/LibraryArea/MovieClip/usecase/LibraryAreaAddNewMovieClipHistoryRedoUseCase";
+import { execute as libraryAreaRemoveInstanceHistoryRedoUseCase } from "@/history/application/controller/application/LibraryArea/Instance/usecase/LibraryAreaRemoveInstanceHistoryRedoUseCase";
 import { execute as instanceUpdateNameHistoryRedoUseCase } from "@/history/application/core/application/Instance/usecase/InstanceUpdateNameHistoryRedoUseCase";
 import { execute as instanceUpdateSymbolHistoryRedoUseCase } from "@/history/application/core/application/Instance/usecase/InstanceUpdateSymbolHistoryRedoUseCase";
 import {
@@ -38,7 +40,8 @@ import {
     $LIBRARY_OVERWRITE_VIDEO_COMMAND,
     $LIBRARY_ADD_NEW_SOUND_COMMAND,
     $LIBRARY_OVERWRITE_SOUND_COMMAND,
-    $LIBRARY_ADD_NEW_MOVIE_CLIP_COMMAND
+    $LIBRARY_ADD_NEW_MOVIE_CLIP_COMMAND,
+    $LIBRARY_REMOVE_INSTANCE_COMMAND
 } from "@/config/HistoryConfig";
 
 /**
@@ -49,8 +52,10 @@ import {
  * @method
  * @public
  */
-export const execute = (history_object: HistoryObjectImpl): void =>
-{
+export const execute = async (
+    history_object: HistoryObjectImpl
+): Promise<void> => {
+
     const messages = history_object.messages;
     switch (history_object.command) {
 
@@ -213,6 +218,14 @@ export const execute = (history_object: HistoryObjectImpl): void =>
                 messages[2] as number, // MovieCLip ID,
                 messages[3] as string, // MovieCLip name,
                 messages[4] as number // Folder ID,
+            );
+            break;
+
+        // ライブラリのアイテムを削除
+        case $LIBRARY_REMOVE_INSTANCE_COMMAND:
+            libraryAreaRemoveInstanceHistoryRedoUseCase(
+                messages[0] as number, // workSpaceId
+                messages[2] as InstanceSaveObjectImpl // save object
             );
             break;
 

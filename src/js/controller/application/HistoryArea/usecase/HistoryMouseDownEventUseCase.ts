@@ -13,11 +13,11 @@ import { execute as historyUndoUseCase } from "./HistoryUndoUseCase";
  *              Update work history to specified Index
  *
  * @param  {PointerEvent} event
- * @return {void}
+ * @return {Promise}
  * @method
  * @public
  */
-export const execute = (event: PointerEvent): void =>
+export const execute = async (event: PointerEvent): Promise<void> =>
 {
     if (event.button !== 0) {
         return ;
@@ -51,11 +51,11 @@ export const execute = (event: PointerEvent): void =>
     const index: number = parseInt(element.dataset.index as string);
     if (workSpace.historyIndex > index) {
         while (workSpace.historyIndex !== index) {
-            historyUndoUseCase(workSpace.id, movieClip.id);
+            await historyUndoUseCase(workSpace.id, movieClip.id);
         }
     } else {
         while (index >= workSpace.historyIndex) {
-            historyRedoUseCase(workSpace.id, movieClip.id);
+            await historyRedoUseCase(workSpace.id, movieClip.id);
         }
     }
 };

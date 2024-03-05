@@ -17,15 +17,15 @@ import {
  * @param  {number} work_space_id
  * @param  {number} library_id
  * @param  {boolean} [receiver=false]
- * @return {void}
+ * @return {Promise}
  * @method
  * @public
  */
-export const execute = (
+export const execute = async (
     work_space_id: number,
     library_id: number,
     receiver: boolean = false
-): void => {
+): Promise<void> => {
 
     const element: HTMLElement | null = document
         .getElementById($HISTORY_LIST_ID);
@@ -57,7 +57,7 @@ export const execute = (
         return ;
     }
 
-    historyRedoCommandUseCase(historyObject);
+    await historyRedoCommandUseCase(historyObject);
 
     // 受け取り処理ではなく、画面共有していればUndoを送信
     if (!receiver && $useSocket()) {

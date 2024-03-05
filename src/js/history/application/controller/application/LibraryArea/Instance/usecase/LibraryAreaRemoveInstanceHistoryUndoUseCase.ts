@@ -15,18 +15,20 @@ import { execute as libraryAreaReloadUseCase } from "@/controller/application/Li
  * @method
  * @public
  */
-export const execute = (
+export const execute = async (
     work_space_id: number,
     instance_object: InstanceSaveObjectImpl
-): void => {
+): Promise<void> => {
 
     const workSpace = $getWorkSpace(work_space_id);
     if (!workSpace) {
         return ;
     }
 
-    // 上書き前のセーブデータからBitmapを復元
-    const instance = workSpaceCreateToSaveDataService(instance_object);
+    // 上書き前のセーブデータからオブジェクトを復元
+    const instance = await workSpaceCreateToSaveDataService(instance_object);
+
+    // 内部情報に登録
     externalWorkSpaceRegisterInstanceService(workSpace, instance);
 
     // 起動中のプロジェクトならライブラリを再描画
