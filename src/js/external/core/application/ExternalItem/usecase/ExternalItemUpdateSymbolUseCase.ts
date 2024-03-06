@@ -1,9 +1,9 @@
-import type { Instance } from "@/core/domain/model/Instance";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import type { InstanceImpl } from "@/interface/InstanceImpl";
 import { execute as instanceUpdateSymbolHistoryUseCase } from "@/history/application/core/application/Instance/usecase/InstanceUpdateSymbolHistoryUseCase";
 import { execute as libraryAreaUpdateSymbolElementService } from "@/controller/application/LibraryArea/service/LibraryAreaUpdateSymbolElementService";
+import { execute as objectSettingUpdateSymbolService } from "@/controller/application/ObjectSetting/service/ObjectSettingUpdateSymbolService";
 
 /**
  * @description インスタスのシンボル名の変更実行処理関数
@@ -21,7 +21,7 @@ import { execute as libraryAreaUpdateSymbolElementService } from "@/controller/a
 export const execute = (
     work_space: WorkSpace,
     movie_clip: MovieClip,
-    instance: InstanceImpl<Instance>,
+    instance: InstanceImpl<any>,
     symbol: string,
     receiver: boolean = false
 ): void => {
@@ -43,8 +43,12 @@ export const execute = (
 
     // 起動中のプロジェクトなら表示も更新
     if (work_space.active) {
-        // ライブラリの表示を際描画
+        // ライブラリの表示を再描画
         libraryAreaUpdateSymbolElementService(instance);
+
+        if (instance.type === "container" && instance.active) {
+            objectSettingUpdateSymbolService(symbol);
+        }
     }
 
     // 履歴に残す

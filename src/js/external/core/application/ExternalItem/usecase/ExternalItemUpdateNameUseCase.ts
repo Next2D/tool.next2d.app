@@ -6,6 +6,7 @@ import { execute as libraryAreaReOrderingService } from "@/controller/applicatio
 import { execute as libraryAreaReloadUseCase } from "@/controller/application/LibraryArea/usecase/LibraryAreaReloadUseCase";
 import { execute as timelineToolUpdateSceneNameService } from "@/timeline/application/TimelineTool/application/SceneName/service/TimelineToolUpdateSceneNameService";
 import { execute as timelineToolUpdateSceneListNameService } from "@/timeline/application/TimelineTool/application/SceneName/service/TimelineToolUpdateSceneListNameService";
+import { execute as objectSettingUpdateNameService } from "@/controller/application/ObjectSetting/service/ObjectSettingUpdateNameService";
 
 /**
  * @description インスタス名の変更実行処理関数
@@ -47,7 +48,8 @@ export const execute = (
 
     // 起動中のプロジェクトなら表示も更新
     if (work_space.active) {
-        // ライブラリの表示を際描画
+
+        // ライブラリの表示を再描画
         libraryAreaReloadUseCase();
 
         // MovieClipの場合はタイムラインの表示情報を更新
@@ -57,7 +59,11 @@ export const execute = (
 
             // アクティブなら表示を更新
             if (instance.active) {
+                // タイムラインの表示を更新
                 timelineToolUpdateSceneNameService(name);
+
+                // プロパティの表示を更新
+                objectSettingUpdateNameService(name);
             }
         }
     }
