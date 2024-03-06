@@ -1,6 +1,7 @@
 import type { InstanceSaveObjectImpl } from "@/interface/InstanceSaveObjectImpl";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
 import { execute as libraryAreaSelectedClearUseCase } from "@/controller/application/LibraryArea/usecase/LibraryAreaSelectedClearUseCase";
+import { execute as libraryAreaReOrderingService } from "@/controller/application/LibraryArea/service/LibraryAreaReOrderingService";
 import { execute as workSpaceCreateToSaveDataService } from "@/core/application/WorkSpace/service/WorkSpaceCreateToSaveDataService";
 import { execute as externalWorkSpaceRegisterInstanceService } from "@/external//core/application/ExternalWorkSpace/service/ExternalWorkSpaceRegisterInstanceService";
 import { execute as libraryAreaReloadUseCase } from "@/controller/application/LibraryArea/usecase/LibraryAreaReloadUseCase";
@@ -30,6 +31,9 @@ export const execute = async (
 
     // 内部情報に登録
     externalWorkSpaceRegisterInstanceService(workSpace, instance);
+
+    // ライブラリの内部情報の並び替えを実行
+    libraryAreaReOrderingService(workSpace);
 
     // 起動中のプロジェクトならライブラリを再描画
     if (workSpace.active) {

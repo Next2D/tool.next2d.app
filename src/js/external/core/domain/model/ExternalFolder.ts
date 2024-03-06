@@ -5,6 +5,7 @@ import { execute as externalFolderStateCreateHistoryObjectServic } from "@/exter
 import { execute as shareSendService } from "@/share/service/ShareSendService";
 import { execute as libraryAreaReloadUseCase } from "@/controller/application/LibraryArea/usecase/LibraryAreaReloadUseCase";
 import { execute as externalFolderCheckDuplicateService } from "@/external/core/application/ExternalFolder/service/ExternalFolderCheckDuplicateService";
+import { execute as externalFolderRemoveUseCase } from "@/external/core/application/ExternalFolder/usecase/ExternalFolderRemoveUseCase";
 
 /**
  * @extends {ExternalItem}
@@ -95,5 +96,22 @@ export class ExternalFolder extends ExternalItem
             this._$instance,
             parent_folder_id
         );
+    }
+
+    /**
+     * @description アイテムをライブラリエリアから削除
+     *              ID of parent folder
+     *
+     * @param  {boolean} [reload = true]
+     * @return {Promise}
+     * @method
+     * @public
+     */
+    async remove (reload: boolean = true): Promise<void>
+    {
+        // フォルダー内のアイテムを削除
+        await externalFolderRemoveUseCase(this._$workSpace, this._$instance.id);
+
+        await super.remove(reload);
     }
 }

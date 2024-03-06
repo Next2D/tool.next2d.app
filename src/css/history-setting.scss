@@ -25,8 +25,8 @@
         display       : flex;
         align-items   : center;
         flex-shrink   : 0;
-        height        : 35px;
-        padding-left  : 16px;
+        min-height    : 27px;
+        padding       : 4px 16px 4px 16px;
         border-bottom : 1px solid #1c1c1c;
 
         &:hover
