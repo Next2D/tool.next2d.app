@@ -1,5 +1,7 @@
 import { $useKeyboard } from "@/shortcut/ShortcutUtil";
 import { execute as libraryAreaRemoveInstanceUseCase } from "./LibraryAreaRemoveInstanceUseCase";
+import { execute as libraryAreaArrowDownEventUseCase } from "./LibraryAreaArrowDownEventUseCase";
+import { execute as libraryAreaArrowUpEventUseCase } from "./LibraryAreaArrowUpEventUseCase";
 
 /**
  * @description ライブラリエリアのキーイベント処理
@@ -28,9 +30,11 @@ export const execute = async (event: KeyboardEvent): Promise<void> =>
             break;
 
         case "ArrowDown":
+            libraryAreaArrowDownEventUseCase();
             break;
 
         case "ArrowUp":
+            libraryAreaArrowUpEventUseCase();
             break;
 
         default:
