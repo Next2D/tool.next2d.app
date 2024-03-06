@@ -15,6 +15,7 @@ import { execute as libraryAreaReloadUseCase } from "@/controller/application/Li
 import { execute as externalLibraryCreateInstanceService } from "@/external/controller/application/ExternalLibrary/service/ExternalLibraryCreateInstanceService";
 import { execute as workSpaceCreatePathMapService } from "@/core/application/WorkSpace/service/WorkSpaceCreatePathMapService";
 import { execute as libraryAreaMoveFolderHistoryUseCase } from "@/history/application/controller/application/LibraryArea/Folder/usecase/LibraryAreaMoveFolderHistoryUseCase";
+import { libraryArea } from "@/controller/domain/model/LibraryArea";
 
 /**
  * @description ライブラリの外部APIクラス
@@ -255,6 +256,11 @@ export class ExternalLibrary
     {
         const item = this.getItem(path_name);
         if (!item) {
+            return ;
+        }
+
+        // 選択中ならスキップ
+        if (libraryArea.selectedIds.indexOf(item.id) > -1) {
             return ;
         }
 

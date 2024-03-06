@@ -60,3 +60,12 @@ export const $LIBRARY_FILE_INPUT_ID: string = "library-menu-file-input";
  * @constant
  */
 export const $LIBRARY_CHANGE_SCENE_ID: string = "library-menu-change-scene";
+
+/**
+ * @description 削除モードボタンのElementのID
+ *              ID of the Element of the Delete mode button
+ *
+ * @type {string}
+ * @constant
+ */
+export const $LIBRARY_DELETE_ID: string = "library-menu-delete";

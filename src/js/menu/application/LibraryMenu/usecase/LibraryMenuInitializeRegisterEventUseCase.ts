@@ -5,13 +5,15 @@ import { execute as libraryMenuAddNewMovieClipMouseDownEventUseCase } from "./Li
 import { execute as libraryMenuFileMouseDownEventUseCase } from "./LibraryMenuFileMouseDownEventUseCase";
 import { execute as libraryMenuLoadFileUseCase } from "./LibraryMenuLoadFileUseCase";
 import { execute as libraryMenuEditMovieClipMouseDownEventUseCase } from "./LibraryMenuEditMovieClipMouseDownEventUseCase";
+import { execute as libraryAreaRemoveInstanceUseCase } from "@/controller/application/LibraryArea/usecase/LibraryAreaRemoveInstanceUseCase";
 import {
     $LIBRARY_LIST_BOX_ID,
     $LIBRARY_FOLDER_ADD_ID,
     $LIBRARY_FILE_ID,
     $LIBRARY_FILE_INPUT_ID,
     $LIBRARY_MOVIE_CLIP_ADD_ID,
-    $LIBRARY_CHANGE_SCENE_ID
+    $LIBRARY_CHANGE_SCENE_ID,
+    $LIBRARY_DELETE_ID
 } from "@/config/LibraryConfig";
 
 /**
@@ -81,6 +83,16 @@ export const execute = (): void =>
     if (editMovieClipElement) {
         editMovieClipElement.addEventListener(EventType.MOUSE_DOWN,
             libraryMenuEditMovieClipMouseDownEventUseCase
+        );
+    }
+
+    // 削除ボタンのイベント登録
+    const deleteElement: HTMLElement | null = document
+        .getElementById($LIBRARY_DELETE_ID);
+
+    if (deleteElement) {
+        deleteElement.addEventListener(EventType.MOUSE_DOWN,
+            libraryAreaRemoveInstanceUseCase
         );
     }
 };

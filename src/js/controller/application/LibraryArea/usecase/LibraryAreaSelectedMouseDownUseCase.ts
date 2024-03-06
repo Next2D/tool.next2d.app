@@ -3,8 +3,11 @@ import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { InstanceImpl } from "@/interface/InstanceImpl";
 import { ExternalLibrary } from "@/external/controller/domain/model/ExternalLibrary";
 import { $useKeyboard } from "@/shortcut/ShortcutUtil";
+import { libraryArea } from "@/controller/domain/model/LibraryArea";
 import { execute as libraryPreviewAreaUpdateDisplayUseCase } from "@/controller/application/LibraryPreviewArea/usecase/LibraryPreviewAreaUpdateDisplayUseCase";
 import { execute as libraryPreviewAreaClearDisplayService } from "@/controller/application/LibraryPreviewArea/service/LibraryPreviewAreaClearDisplayService";
+import { execute as libraryAreaAltSelectedUseCase } from "@/controller/application/LibraryArea/usecase/LibraryAreaAltSelectedUseCase";
+import { execute as libraryAreaShiftSelectedUseCase } from "@/controller/application/LibraryArea/usecase/LibraryAreaShiftSelectedUseCase";
 
 /**
  * @description 親Elementのマウスダウン処理関数、Elementを選択状態に更新
@@ -52,17 +55,22 @@ export const execute = (event: PointerEvent): void =>
     }
 
     // 外部APIを起動
-    const externalLibrary = new ExternalLibrary(workSpace);
     switch (true) {
 
-        case event.altKey:
+        case event.altKey || event.metaKey:
+            libraryAreaAltSelectedUseCase(libraryId);
             break;
 
         case event.shiftKey:
+            libraryAreaShiftSelectedUseCase(libraryId);
             break;
 
         default:
-            externalLibrary.selectedItem(instance.getPath(workSpace));
+            // 未選択時は選択処理を実行
+            if (libraryArea.selectedIds.indexOf(libraryId) === -1) {
+                const externalLibrary = new ExternalLibrary(workSpace);
+                externalLibrary.selectedItem(instance.getPath(workSpace));
+            }
             break;
 
     }
