@@ -2,6 +2,8 @@ import type { InstanceImpl } from "@/interface/InstanceImpl";
 import { Bitmap } from "@/core/domain/model/Bitmap";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { execute as libraryAreaUpdateBitmapHistoryUseCase } from "@/history/application/controller/application/LibraryArea/Bitmap/usecase/LibraryAreaUpdateBitmapHistoryUseCase";
+import { execute as libraryAreaReloadUseCase } from "@/controller/application/LibraryArea/usecase/LibraryAreaReloadUseCase";
+import { execute as libraryAreaSelectedClearUseCase } from "@/controller/application/LibraryArea/usecase/LibraryAreaSelectedClearUseCase";
 import {
     $getCanvas,
     $poolCanvas
@@ -90,6 +92,17 @@ export const execute = (file: File, path: string): Promise<void> =>
                     beforeSaveObject,
                     bitmap
                 );
+
+                // 内部情報を上書き
+                workSpace.libraries.set(bitmap.id, bitmap);
+
+                if (workSpace.active) {
+                    // 選択状態を初期化
+                    libraryAreaSelectedClearUseCase();
+
+                    // ライブラリ再描画
+                    libraryAreaReloadUseCase();
+                }
 
                 resolve();
             });

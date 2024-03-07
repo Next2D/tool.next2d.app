@@ -2,6 +2,8 @@ import type { InstanceImpl } from "@/interface/InstanceImpl";
 import { Sound } from "@/core/domain/model/Sound";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { execute as libraryAreaUpdateSoundHistoryUseCase } from "@/history/application/controller/application/LibraryArea/Sound/usecase/LibraryAreaUpdateSoundHistoryUseCase";
+import { execute as libraryAreaReloadUseCase } from "@/controller/application/LibraryArea/usecase/LibraryAreaReloadUseCase";
+import { execute as libraryAreaSelectedClearUseCase } from "@/controller/application/LibraryArea/usecase/LibraryAreaSelectedClearUseCase";
 
 /**
  * @description Soundクラスのデータを上書きする
@@ -59,6 +61,17 @@ export const execute = (file: File, path: string): Promise<void> =>
                     beforeSaveObject,
                     sound
                 );
+
+                // 内部情報を上書き
+                workSpace.libraries.set(sound.id, sound);
+
+                if (workSpace.active) {
+                    // 選択状態を初期化
+                    libraryAreaSelectedClearUseCase();
+
+                    // ライブラリ再描画
+                    libraryAreaReloadUseCase();
+                }
 
                 resolve();
             });

@@ -2,6 +2,7 @@ import type { SoundSaveObjectImpl } from "@/interface/SoundSaveObjectImpl";
 import { Sound } from "@/core/domain/model/Sound";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
 import { execute as libraryAreaSelectedClearUseCase } from "@/controller/application/LibraryArea/usecase/LibraryAreaSelectedClearUseCase";
+import { execute as libraryAreaReloadUseCase } from "@/controller/application/LibraryArea/usecase/LibraryAreaReloadUseCase";
 
 /**
  * @description 上書き後の状態のsoundに戻す
@@ -31,5 +32,8 @@ export const execute = (
     if (workSpace.active) {
         // プレビューエリアを初期化
         libraryAreaSelectedClearUseCase();
+
+        // ライブラリ再描画
+        libraryAreaReloadUseCase();
     }
 };

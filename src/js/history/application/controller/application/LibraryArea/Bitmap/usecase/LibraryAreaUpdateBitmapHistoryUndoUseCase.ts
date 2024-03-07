@@ -2,6 +2,7 @@ import type { InstanceSaveObjectImpl } from "@/interface/InstanceSaveObjectImpl"
 import { $getWorkSpace } from "@/core/application/CoreUtil";
 import { execute as libraryAreaSelectedClearUseCase } from "@/controller/application/LibraryArea/usecase/LibraryAreaSelectedClearUseCase";
 import { execute as workSpaceCreateToSaveDataService } from "@/core/application/WorkSpace/service/WorkSpaceCreateToSaveDataService";
+import { execute as libraryAreaReloadUseCase } from "@/controller/application/LibraryArea/usecase/LibraryAreaReloadUseCase";
 
 /**
  * @description 上書き前の状態のbitmapに戻す
@@ -31,5 +32,8 @@ export const execute = async (
     if (workSpace.active) {
         // プレビューエリアを初期化
         libraryAreaSelectedClearUseCase();
+
+        // ライブラリ再描画
+        libraryAreaReloadUseCase();
     }
 };

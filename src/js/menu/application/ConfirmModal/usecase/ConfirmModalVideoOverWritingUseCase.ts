@@ -2,6 +2,8 @@ import type { InstanceImpl } from "@/interface/InstanceImpl";
 import { Video } from "@/core/domain/model/Video";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { execute as libraryAreaUpdateVideoHistoryUseCase } from "@/history/application/controller/application/LibraryArea/Video/usecase/LibraryAreaUpdateVideoHistoryUseCase";
+import { execute as libraryAreaReloadUseCase } from "@/controller/application/LibraryArea/usecase/LibraryAreaReloadUseCase";
+import { execute as libraryAreaSelectedClearUseCase } from "@/controller/application/LibraryArea/usecase/LibraryAreaSelectedClearUseCase";
 
 /**
  * @description Videoクラスのデータを上書きする
@@ -59,6 +61,17 @@ export const execute = (file: File, path: string): Promise<void> =>
                     beforeSaveObject,
                     video
                 );
+
+                // 内部情報を上書き
+                workSpace.libraries.set(video.id, video);
+
+                if (workSpace.active) {
+                    // 選択状態を初期化
+                    libraryAreaSelectedClearUseCase();
+
+                    // ライブラリ再描画
+                    libraryAreaReloadUseCase();
+                }
 
                 resolve();
             });

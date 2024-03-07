@@ -2,6 +2,7 @@ import type { VideoSaveObjectImpl } from "@/interface/VideoSaveObjectImpl";
 import { Video } from "@/core/domain/model/Video";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
 import { execute as libraryAreaSelectedClearUseCase } from "@/controller/application/LibraryArea/usecase/LibraryAreaSelectedClearUseCase";
+import { execute as libraryAreaReloadUseCase } from "@/controller/application/LibraryArea/usecase/LibraryAreaReloadUseCase";
 
 /**
  * @description 上書き後の状態のvideoに戻す
@@ -31,5 +32,8 @@ export const execute = (
     if (workSpace.active) {
         // プレビューエリアを初期化
         libraryAreaSelectedClearUseCase();
+
+        // ライブラリ再描画
+        libraryAreaReloadUseCase();
     }
 };
