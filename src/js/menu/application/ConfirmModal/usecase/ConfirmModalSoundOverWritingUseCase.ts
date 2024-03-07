@@ -1,5 +1,5 @@
 import type { InstanceImpl } from "@/interface/InstanceImpl";
-import type { Sound } from "@/core/domain/model/Sound";
+import { Sound } from "@/core/domain/model/Sound";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { execute as libraryAreaUpdateSoundHistoryUseCase } from "@/history/application/controller/application/LibraryArea/Sound/usecase/LibraryAreaUpdateSoundHistoryUseCase";
 
@@ -38,18 +38,26 @@ export const execute = (file: File, path: string): Promise<void> =>
             .then(async (array_buffer: ArrayBuffer): Promise<void> =>
             {
                 // 上書き履歴を残す
-                const beforeObject = instance.toObject();
+                const beforeSaveObject = instance.toObject();
+
+                // 新規Soundを作成して、共通部分をinstanceから取得
+                const sound = new Sound({
+                    "id": instance.id,
+                    "type": "sound",
+                    "name": instance.name,
+                    "folderId": instance.folderId,
+                    "buffer": new Uint8Array(array_buffer)
+                });
 
                 // データを上書き
-                instance.buffer = new Uint8Array(array_buffer);
-                await instance.wait();
+                await sound.wait();
 
                 // 上書き履歴を残す
                 libraryAreaUpdateSoundHistoryUseCase(
                     workSpace,
                     workSpace.scene,
-                    beforeObject,
-                    instance
+                    beforeSaveObject,
+                    sound
                 );
 
                 resolve();

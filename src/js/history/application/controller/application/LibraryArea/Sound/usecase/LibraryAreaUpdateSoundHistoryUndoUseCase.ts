@@ -1,22 +1,22 @@
-import type { SoundSaveObjectImpl } from "@/interface/SoundSaveObjectImpl";
-import { Sound } from "@/core/domain/model/Sound";
+import type { InstanceSaveObjectImpl } from "@/interface/InstanceSaveObjectImpl";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
 import { execute as libraryAreaSelectedClearUseCase } from "@/controller/application/LibraryArea/usecase/LibraryAreaSelectedClearUseCase";
+import { execute as workSpaceCreateToSaveDataService } from "@/core/application/WorkSpace/service/WorkSpaceCreateToSaveDataService";
 
 /**
  * @description 上書き前の状態のsoundに戻す
  *              Restore the sound to its pre-write state
  *
  * @param  {number} work_space_id
- * @param  {object} before_sound_object
+ * @param  {object} before_save_object
  * @return {void}
  * @method
  * @public
  */
-export const execute = (
+export const execute = async (
     work_space_id: number,
-    before_sound_object: SoundSaveObjectImpl
-): void => {
+    before_save_object: InstanceSaveObjectImpl
+): Promise<void> => {
 
     const workSpace = $getWorkSpace(work_space_id);
     if (!workSpace) {
@@ -24,8 +24,8 @@ export const execute = (
     }
 
     // 上書き前のセーブデータからBitmapを復元
-    const sound = new Sound(before_sound_object);
-    workSpace.libraries.set(sound.id, sound);
+    const instance = await workSpaceCreateToSaveDataService(before_save_object);
+    workSpace.libraries.set(instance.id, instance);
 
     // 起動中のプロジェクトならライブラリを再描画
     if (workSpace.active) {

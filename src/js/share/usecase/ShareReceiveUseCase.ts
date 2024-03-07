@@ -55,17 +55,17 @@ import {
  *              Receive work history from co-owners
  *
  * @param  {object} message
- * @return {void}
+ * @return {Promise}
  * @method
  * @public
  */
-export const execute = (message: ShareReceiveMessageImpl): void =>
+export const execute = async (message: ShareReceiveMessageImpl): Promise<void> =>
 {
     switch (message.historyCommand) {
 
         // Undo処理
         case $HISTORY_UNDO_COMMAND:
-            historyUndoUseCase(
+            await historyUndoUseCase(
                 message.data[0] as NonNullable<number>,
                 message.data[1] as NonNullable<number>,
                 true
@@ -74,7 +74,7 @@ export const execute = (message: ShareReceiveMessageImpl): void =>
 
         // Redo処理
         case $HISTORY_REDO_COMMAND:
-            historyRedoUseCase(
+            await historyRedoUseCase(
                 message.data[0] as NonNullable<number>,
                 message.data[1] as NonNullable<number>,
                 true
@@ -153,7 +153,7 @@ export const execute = (message: ShareReceiveMessageImpl): void =>
 
         // 新規bitmap追加
         case $LIBRARY_ADD_NEW_BITMAP_COMMAND:
-            bitmapAddNewReceiveUseCase(message);
+            await bitmapAddNewReceiveUseCase(message);
             break;
 
         // フォルダ移動
@@ -163,27 +163,27 @@ export const execute = (message: ShareReceiveMessageImpl): void =>
 
         // 画像の上書き
         case $LIBRARY_OVERWRITE_IMAGE_COMMAND:
-            bitmapUpdateReceiveUseCase(message);
+            await bitmapUpdateReceiveUseCase(message);
             break;
 
         // 動画の取り込み
         case $LIBRARY_ADD_NEW_VIDEO_COMMAND:
-            videoAddNewReceiveUseCase(message);
+            await videoAddNewReceiveUseCase(message);
             break;
 
         // 動画の上書き
         case $LIBRARY_OVERWRITE_VIDEO_COMMAND:
-            videoUpdateReceiveUseCase(message);
+            await videoUpdateReceiveUseCase(message);
             break;
 
         // 音声の取り込み
         case $LIBRARY_ADD_NEW_SOUND_COMMAND:
-            soundAddNewReceiveUseCase(message);
+            await soundAddNewReceiveUseCase(message);
             break;
 
         // 音声の上書き
         case $LIBRARY_OVERWRITE_SOUND_COMMAND:
-            soundUpdateReceiveUseCase(message);
+            await soundUpdateReceiveUseCase(message);
             break;
 
         case $LIBRARY_ADD_NEW_MOVIE_CLIP_COMMAND:

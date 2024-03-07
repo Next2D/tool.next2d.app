@@ -43,11 +43,11 @@ export const execute = async (message: ShareReceiveMessageImpl): Promise<void> =
     }
 
     // バイナリをUint8Arrayに変換
-    const videoObject = message.data[3] as NonNullable<VideoSaveObjectImpl>;
+    const videoSaveObject = message.data[3] as NonNullable<VideoSaveObjectImpl>;
 
     // 変更前のVideoからセーブオブジェクトを作成
-    const video: InstanceImpl<Video> = workSpace.getLibrary(videoObject.id);
-    const beforeVideoObject = video.toObject();
+    const instance: InstanceImpl<Video> = workSpace.getLibrary(videoSaveObject.id);
+    const beforeSaveObject = instance.toObject();
 
     // バイナリをUint8Arrayに変換
     const url = await shareGetS3EndPointRepository(message.data[4] as string, "get");
@@ -56,10 +56,11 @@ export const execute = async (message: ShareReceiveMessageImpl): Promise<void> =
 
     return new Promise((reslove): void =>
     {
-        worker.onmessage = (event: MessageEvent): void =>
+        worker.onmessage = async (event: MessageEvent): Promise<void> =>
         {
-            videoObject.buffer = event.data as Uint8Array;
-            const video = new Video(videoObject);
+            videoSaveObject.buffer = event.data as Uint8Array;
+            const video = new Video(videoSaveObject);
+            await video.wait();
 
             // 内部情報に追加
             // fixed logic
@@ -70,7 +71,7 @@ export const execute = async (message: ShareReceiveMessageImpl): Promise<void> =
             libraryAreaUpdateVideoHistoryUseCase(
                 workSpace,
                 movieClip,
-                beforeVideoObject,
+                beforeSaveObject,
                 video,
                 true
             );

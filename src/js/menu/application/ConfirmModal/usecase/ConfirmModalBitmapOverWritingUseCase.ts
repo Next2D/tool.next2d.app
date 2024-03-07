@@ -1,5 +1,5 @@
 import type { InstanceImpl } from "@/interface/InstanceImpl";
-import type { Bitmap } from "@/core/domain/model/Bitmap";
+import { Bitmap } from "@/core/domain/model/Bitmap";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { execute as libraryAreaUpdateBitmapHistoryUseCase } from "@/history/application/controller/application/LibraryArea/Bitmap/usecase/LibraryAreaUpdateBitmapHistoryUseCase";
 import {
@@ -32,7 +32,7 @@ export const execute = (file: File, path: string): Promise<void> =>
         }
 
         const libraryId = workSpace.pathMap.get(pathName) as NonNullable<number>;
-        const instance: InstanceImpl<Bitmap> = workSpace.getLibrary(libraryId);
+        const instance: InstanceImpl<any> = workSpace.getLibrary(libraryId);
         if (!instance) {
             return resolve();
         }
@@ -69,20 +69,26 @@ export const execute = (file: File, path: string): Promise<void> =>
                 $poolCanvas(canvas);
 
                 // 上書き履歴を残す
-                const beforeObject = instance.toObject();
+                const beforeSaveObject = instance.toObject();
 
-                // bufferを上書き
-                instance.width     = width;
-                instance.height    = height;
-                instance.imageType = file.type;
-                instance.buffer    = buffer;
+                // 新規Bitmapを作成して、共通部分をinstanceから取得
+                const bitmap = new Bitmap({
+                    "id": instance.id,
+                    "type": "bitmap",
+                    "name": instance.name,
+                    "folderId": instance.folderId,
+                    "width": width,
+                    "height": height,
+                    "imageType": file.type,
+                    "buffer": buffer
+                });
 
                 // 上書き履歴を残す
                 libraryAreaUpdateBitmapHistoryUseCase(
                     workSpace,
                     workSpace.scene,
-                    beforeObject,
-                    instance
+                    beforeSaveObject,
+                    bitmap
                 );
 
                 resolve();

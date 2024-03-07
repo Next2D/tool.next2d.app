@@ -45,9 +45,9 @@ export const execute = async (message: ShareReceiveMessageImpl): Promise<void> =
     // バイナリをUint8Arrayに変換
     const bitmapObject = message.data[3] as NonNullable<BitmapSaveObjectImpl>;
 
-    // 変更前のBitmapからセーブオブジェクトを作成
-    const bitmap: InstanceImpl<Bitmap> = workSpace.getLibrary(bitmapObject.id);
-    const beforeBitmapObject = bitmap.toObject();
+    // 変更前のインスタンスからセーブオブジェクトを作成
+    const instance: InstanceImpl<any> = workSpace.getLibrary(bitmapObject.id);
+    const beforeSaveObject = instance.toObject();
 
     // バイナリをUint8Arrayに変換
     const url = await shareGetS3EndPointRepository(message.data[4] as string, "get");
@@ -70,7 +70,7 @@ export const execute = async (message: ShareReceiveMessageImpl): Promise<void> =
             libraryAreaUpdateBitmapHistoryUseCase(
                 workSpace,
                 movieClip,
-                beforeBitmapObject,
+                beforeSaveObject,
                 bitmap,
                 true
             );

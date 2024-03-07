@@ -54,12 +54,12 @@ export const execute = async (message: ShareReceiveMessageImpl): Promise<void> =
     return new Promise((reslove): void =>
     {
         // 解答が完了したらバイナリデータとして返却
-        worker.onmessage = (event: MessageEvent): void =>
+        worker.onmessage = async (event: MessageEvent): Promise<void> =>
         {
-            videoSaveObject.buffer = event.data as Uint8Array;
-
             // 転送データからVideoデータを生成
+            videoSaveObject.buffer = event.data as Uint8Array;
             const video = new Video(videoSaveObject);
+            await video.wait();
 
             // 内部情報に追加
             // fixed logic

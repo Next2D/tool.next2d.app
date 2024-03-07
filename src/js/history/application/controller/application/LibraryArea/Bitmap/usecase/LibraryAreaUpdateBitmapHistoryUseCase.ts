@@ -1,6 +1,6 @@
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
-import type { BitmapSaveObjectImpl } from "@/interface/BitmapSaveObjectImpl";
+import type { InstanceSaveObjectImpl } from "@/interface/InstanceSaveObjectImpl";
 import type { Bitmap } from "@/core/domain/model/Bitmap";
 import { $useSocket } from "@/share/ShareUtil";
 import { $LIBRARY_OVERWRITE_IMAGE_COMMAND } from "@/config/HistoryConfig";
@@ -28,7 +28,7 @@ const worker: Worker = new ZlibDeflateWorker();
  *
  * @param  {WorkSpace} work_space
  * @param  {MovieClip} movie_clip
- * @param  {object} before_object
+ * @param  {object} before_save_object
  * @param  {Bitmap} bitmap
  * @param  {boolean} [receiver=false]
  * @return {void}
@@ -38,7 +38,7 @@ const worker: Worker = new ZlibDeflateWorker();
 export const execute = async (
     work_space: WorkSpace,
     movie_clip: MovieClip,
-    before_object: BitmapSaveObjectImpl,
+    before_save_object: InstanceSaveObjectImpl,
     bitmap: Bitmap,
     receiver: boolean = false
 ): Promise<void> => {
@@ -50,7 +50,7 @@ export const execute = async (
     // fileIdは不要なので空文字をセット
     // fixed logic
     const historyObject = libraryAreaUpdateBitmapCreateHistoryObjectService(
-        work_space.id, movie_clip.id, before_object, bitmap.toObject()
+        work_space.id, movie_clip.id, before_save_object, bitmap.toObject()
     );
 
     // 履歴にはfileIdは不要なので削除
@@ -100,7 +100,7 @@ export const execute = async (
                 // バイナリは転送しない
                 bitmapObject.buffer = "";
 
-                // 型は揃えるが必要なbitmapObjectだけをセットする
+                // 型は揃えるが必要なのはbitmapObjectだけなので、同一のオブジェクトをセットする
                 const historyObject = libraryAreaUpdateBitmapCreateHistoryObjectService(
                     work_space.id, movie_clip.id, bitmapObject, bitmapObject, fileId
                 );

@@ -1,6 +1,6 @@
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
-import type { SoundSaveObjectImpl } from "@/interface/SoundSaveObjectImpl";
+import type { InstanceSaveObjectImpl } from "@/interface/InstanceSaveObjectImpl";
 import type { Sound } from "@/core/domain/model/Sound";
 import { $useSocket } from "@/share/ShareUtil";
 import { $LIBRARY_OVERWRITE_SOUND_COMMAND } from "@/config/HistoryConfig";
@@ -28,7 +28,7 @@ const worker: Worker = new ZlibDeflateWorker();
  *
  * @param  {WorkSpace} work_space
  * @param  {MovieClip} movie_clip
- * @param  {object} before_object
+ * @param  {object} before_save_object
  * @param  {Sound} sound
  * @param  {boolean} [receiver=false]
  * @return {void}
@@ -38,7 +38,7 @@ const worker: Worker = new ZlibDeflateWorker();
 export const execute = async (
     work_space: WorkSpace,
     movie_clip: MovieClip,
-    before_object: SoundSaveObjectImpl,
+    before_save_object: InstanceSaveObjectImpl,
     sound: Sound,
     receiver: boolean = false
 ): Promise<void> => {
@@ -50,7 +50,7 @@ export const execute = async (
     // fileIdは不要なので空文字をセット
     // fixed logic
     const historyObject = libraryAreaUpdateSoundCreateHistoryObjectService(
-        work_space.id, movie_clip.id, before_object, sound.toObject(), ""
+        work_space.id, movie_clip.id, before_save_object, sound.toObject()
     );
 
     // 履歴にはfileIdは不要なので削除

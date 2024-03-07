@@ -56,9 +56,8 @@ export const execute = async (message: ShareReceiveMessageImpl): Promise<void> =
         // 解答が完了したらバイナリデータとして返却
         worker.onmessage = (event: MessageEvent): void =>
         {
-            bitmapSaveObject.buffer = event.data as Uint8Array;
-
             // 転送データからBitmapデータを生成
+            bitmapSaveObject.buffer = event.data as Uint8Array;
             const bitmap = new Bitmap(bitmapSaveObject);
 
             // 内部情報に追加

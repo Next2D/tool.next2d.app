@@ -172,9 +172,9 @@ export const execute = async (
 
         // 画像の上書き
         case $LIBRARY_OVERWRITE_IMAGE_COMMAND:
-            libraryAreaUpdateBitmapHistoryUndoUseCase(
+            await libraryAreaUpdateBitmapHistoryUndoUseCase(
                 messages[0] as number, // workSpaceId
-                messages[2] as BitmapSaveObjectImpl // Bitmap Save Object
+                messages[2] as InstanceSaveObjectImpl // Save Object
             );
             break;
 
@@ -188,7 +188,7 @@ export const execute = async (
 
         // 動画の上書き
         case $LIBRARY_OVERWRITE_VIDEO_COMMAND:
-            libraryAreaUpdateVideoHistoryUndoUseCase(
+            await libraryAreaUpdateVideoHistoryUndoUseCase(
                 messages[0] as number, // workSpaceId
                 messages[2] as VideoSaveObjectImpl // Video Save Object
             );
@@ -204,7 +204,7 @@ export const execute = async (
 
         // 音声の上書き
         case $LIBRARY_OVERWRITE_SOUND_COMMAND:
-            libraryAreaUpdateSoundHistoryUndoUseCase(
+            await libraryAreaUpdateSoundHistoryUndoUseCase(
                 messages[0] as number, // workSpaceId
                 messages[2] as SoundSaveObjectImpl // Sound Save Object
             );

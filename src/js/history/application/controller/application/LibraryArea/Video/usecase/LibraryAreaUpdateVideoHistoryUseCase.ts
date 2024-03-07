@@ -1,6 +1,6 @@
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
-import type { VideoSaveObjectImpl } from "@/interface/VideoSaveObjectImpl";
+import type { InstanceSaveObjectImpl } from "@/interface/InstanceSaveObjectImpl";
 import type { Video } from "@/core/domain/model/Video";
 import { $useSocket } from "@/share/ShareUtil";
 import { $LIBRARY_OVERWRITE_VIDEO_COMMAND } from "@/config/HistoryConfig";
@@ -28,9 +28,9 @@ const worker: Worker = new ZlibDeflateWorker();
  *
  * @param  {WorkSpace} work_space
  * @param  {MovieClip} movie_clip
- * @param  {object} before_object
- * @param  {Uint8Array} video
- * @param  {Video} [receiver=false]
+ * @param  {object} before_save_object
+ * @param  {Video} video
+ * @param  {boolean} [receiver=false]
  * @return {void}
  * @method
  * @public
@@ -38,7 +38,7 @@ const worker: Worker = new ZlibDeflateWorker();
 export const execute = async (
     work_space: WorkSpace,
     movie_clip: MovieClip,
-    before_object: VideoSaveObjectImpl,
+    before_save_object: InstanceSaveObjectImpl,
     video: Video,
     receiver: boolean = false
 ): Promise<void> => {
@@ -50,7 +50,7 @@ export const execute = async (
     // fileIdは不要なので空文字をセット
     // fixed logic
     const historyObject = libraryAreaUpdateVideoCreateHistoryObjectService(
-        work_space.id, movie_clip.id, before_object, video.toObject(), ""
+        work_space.id, movie_clip.id, before_save_object, video.toObject()
     );
 
     // 履歴にはfileIdは不要なので削除
@@ -100,7 +100,7 @@ export const execute = async (
                 // バイナリは転送しない
                 videoObject.buffer = "";
 
-                // 型は揃えるが必要なvideoObjectだけをセットする
+                // 型は揃えるが必要なのはbitmapObjectだけなので、同一のオブジェクトをセットする
                 const historyObject = libraryAreaUpdateVideoCreateHistoryObjectService(
                     work_space.id, movie_clip.id, videoObject, videoObject, fileId
                 );
