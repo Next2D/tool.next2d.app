@@ -8,6 +8,8 @@ import { BitmapSaveObjectImpl } from "@/interface/BitmapSaveObjectImpl";
 import { execute as shareGetS3EndPointRepository } from "@/share/domain/repository/ShareGetS3EndPointRepository";
 import { execute as shareGetS3FileRepository } from "@/share/domain/repository/ShareGetS3FileRepository";
 import { execute as binaryToBufferService } from "@/core/service/BinaryToBufferService";
+import { execute as libraryAreaSelectedClearUseCase } from "@/controller/application/LibraryArea/usecase/LibraryAreaSelectedClearUseCase";
+import { execute as libraryAreaReloadUseCase } from "@/controller/application/LibraryArea/usecase/LibraryAreaReloadUseCase";
 
 // @ts-ignore
 import ZlibInflateWorker from "@/worker/ZlibInflateWorker?worker&inline";
@@ -74,6 +76,15 @@ export const execute = async (message: ShareReceiveMessageImpl): Promise<void> =
                 bitmap,
                 true
             );
+
+            // 起動中のプロジェクトならライブラリを再描画
+            if (workSpace.active) {
+                // プレビューエリアを初期化
+                libraryAreaSelectedClearUseCase();
+
+                // ライブラリ再描画
+                libraryAreaReloadUseCase();
+            }
 
             reslove();
         };

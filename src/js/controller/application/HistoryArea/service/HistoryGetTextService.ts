@@ -62,26 +62,26 @@ export const execute = (command: number): string =>
         case $LIBRARY_UPDATE_INSTANCE_SYMBOL_COMMAND:
             return "「%s1」のシンボル名を「%s2」に変更";
 
-        case $LIBRARY_ADD_NEW_BITMAP_COMMAND:
-            return "画像「%s1」を取り込み";
-
         case $LIBRARY_MOVE_FOLDER_COMMAND:
             return "「%s1」のフォルダ移動";
 
+        case $LIBRARY_ADD_NEW_BITMAP_COMMAND:
+            return "画像「%s1」を取り込み";
+
         case $LIBRARY_OVERWRITE_IMAGE_COMMAND:
-            return "「%s1」の画像を上書き";
+            return "「%s1」を画像に上書き";
 
         case $LIBRARY_ADD_NEW_VIDEO_COMMAND:
             return "動画「%s1」を取り込み";
 
         case $LIBRARY_OVERWRITE_VIDEO_COMMAND:
-            return "「%s1」の動画を上書き";
+            return "「%s1」を動画に上書き";
 
         case $LIBRARY_ADD_NEW_SOUND_COMMAND:
             return "音声「%s1」を取り込み";
 
         case $LIBRARY_OVERWRITE_SOUND_COMMAND:
-            return "「%s1」の音声を上書き";
+            return "「%s1」を音声に上書き";
 
         case $LIBRARY_ADD_NEW_MOVIE_CLIP_COMMAND:
             return "新規MovieClip「%s1」を追加";
