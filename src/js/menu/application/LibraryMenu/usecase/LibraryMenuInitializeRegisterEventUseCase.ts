@@ -6,6 +6,7 @@ import { execute as libraryMenuFileMouseDownEventUseCase } from "./LibraryMenuFi
 import { execute as libraryMenuLoadFileUseCase } from "./LibraryMenuLoadFileUseCase";
 import { execute as libraryMenuEditMovieClipMouseDownEventUseCase } from "./LibraryMenuEditMovieClipMouseDownEventUseCase";
 import { execute as libraryAreaRemoveInstanceUseCase } from "@/controller/application/LibraryArea/usecase/LibraryAreaRemoveInstanceUseCase";
+import { execute as libraryMenuPhotopeaMouseDownService } from "../service/LibraryMenuPhotopeaMouseDownService";
 import {
     $LIBRARY_LIST_BOX_ID,
     $LIBRARY_FOLDER_ADD_ID,
@@ -13,7 +14,8 @@ import {
     $LIBRARY_FILE_INPUT_ID,
     $LIBRARY_MOVIE_CLIP_ADD_ID,
     $LIBRARY_CHANGE_SCENE_ID,
-    $LIBRARY_DELETE_ID
+    $LIBRARY_DELETE_ID,
+    $LIBRARY_PHOTOPEA_ID
 } from "@/config/LibraryConfig";
 
 /**
@@ -93,6 +95,16 @@ export const execute = (): void =>
     if (deleteElement) {
         deleteElement.addEventListener(EventType.MOUSE_DOWN,
             libraryAreaRemoveInstanceUseCase
+        );
+    }
+
+    // 削除ボタンのイベント登録
+    const photopeaElement: HTMLElement | null = document
+        .getElementById($LIBRARY_PHOTOPEA_ID);
+
+    if (photopeaElement) {
+        photopeaElement.addEventListener(EventType.MOUSE_DOWN,
+            libraryMenuPhotopeaMouseDownService
         );
     }
 };

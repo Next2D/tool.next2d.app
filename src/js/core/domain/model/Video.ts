@@ -16,11 +16,8 @@ import { execute as bufferToBinaryService } from "@/core/service/BufferToBinaryS
 export class Video extends Instance
 {
     private readonly _$video: HTMLVideoElement;
-    private _$volume: number;
-    private _$loop: boolean;
     private _$width: number;
     private _$height: number;
-    private _$autoPlay: boolean;
     private _$binary: string;
     private _$loaded: boolean;
     private _$buffer: Uint8Array | null;
@@ -49,27 +46,6 @@ export class Video extends Instance
         this._$height = 0;
 
         /**
-         * @type {number}
-         * @default 100
-         * @private
-         */
-        this._$volume = 100;
-
-        /**
-         * @type {boolean}
-         * @default false
-         * @private
-         */
-        this._$loop = false;
-
-        /**
-         * @type {boolean}
-         * @default true
-         * @private
-         */
-        this._$autoPlay = true;
-
-        /**
          * @type {string}
          * @default ""
          * @private
@@ -88,19 +64,6 @@ export class Video extends Instance
          * @private
          */
         this._$buffer = null;
-
-        // オブジェクトから復元
-        if ("volume" in object) {
-            this._$volume = object.volume as number;
-        }
-
-        if ("loop" in object) {
-            this._$loop = object.loop as boolean;
-        }
-
-        if ("autoPlay" in object) {
-            this._$autoPlay = object.autoPlay as boolean;
-        }
 
         if (object.width) {
             this._$width = object.width;
@@ -202,57 +165,6 @@ export class Video extends Instance
     }
 
     /**
-     * @description 動画音声の設定
-     *              Video audio settings.
-     *
-     * @member {number}
-     * @default 100
-     * @public
-     */
-    get volume (): number
-    {
-        return this._$volume;
-    }
-    set volume (volume: number)
-    {
-        this._$volume = $clamp(volume | 0, 0, 100);
-    }
-
-    /**
-     * @description 動画再生のループのon/off設定
-     *              Video playback loop on/off setting
-     *
-     * @member {boolean}
-     * @default false
-     * @public
-     */
-    get loop (): boolean
-    {
-        return this._$loop;
-    }
-    set loop (loop: boolean)
-    {
-        this._$loop = !!loop;
-    }
-
-    /**
-     * @description 動画の自動再生のon/off設定
-     *              Video autoplay on/off setting.
-     *
-     * @member {boolean}
-     * @default true
-     * @public
-     */
-    get autoPlay (): boolean
-    {
-        return this._$autoPlay;
-    }
-    set autoPlay (auto_play: boolean)
-    {
-        this._$autoPlay = !!auto_play;
-    }
-
-    /**
      * @description 動画の幅
      *              Video width
      *
@@ -341,9 +253,6 @@ export class Video extends Instance
             "folderId":  this.folderId,
             "width":     this._$width,
             "height":    this._$height,
-            "volume":    this._$volume,
-            "loop":      this._$loop,
-            "autoPlay":  this._$autoPlay,
             "buffer":    this.binary
         };
     }

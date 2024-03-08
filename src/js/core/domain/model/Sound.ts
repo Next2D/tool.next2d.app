@@ -18,8 +18,6 @@ import { execute as soundPreviewComponent } from "@/controller/application/Libra
  */
 export class Sound extends Instance
 {
-    private _$loopCount: number;
-    private _$volume: number;
     private _$binary: string;
     private _$loaded: boolean;
     private _$buffer: Uint8Array | null;
@@ -34,20 +32,6 @@ export class Sound extends Instance
     constructor (object: ObjectImpl<SoundSaveObjectImpl>)
     {
         super(object);
-
-        /**
-         * @type {number}
-         * @default 100
-         * @private
-         */
-        this._$volume = 100;
-
-        /**
-         * @type {number}
-         * @default 100
-         * @private
-         */
-        this._$loopCount = 0;
 
         /**
          * @type {string}
@@ -75,14 +59,6 @@ export class Sound extends Instance
          * @private
          */
         this._$canvas = null;
-
-        if ("volume" in object) {
-            this._$volume = object.volume as number;
-        }
-
-        if ("loopCount" in object) {
-            this._$loopCount = object.loopCount as number;
-        }
 
         this._$audio = document.createElement("audio");
         this._$audio.preload  = "auto";
@@ -164,40 +140,6 @@ export class Sound extends Instance
     }
 
     /**
-     * @description サウンドのボリューム設定
-     *              Sound volume setting
-     *
-     * @member {number}
-     * @default 100
-     * @public
-     */
-    get volume (): number
-    {
-        return this._$volume;
-    }
-    set volume (volume: number)
-    {
-        this._$volume = volume;
-    }
-
-    /**
-     * @description サウンドのループ設定
-     *              Sound loop settings
-     *
-     * @member {number}
-     * @default 0
-     * @public
-     */
-    get loopCount (): number
-    {
-        return this._$loopCount;
-    }
-    set loopCount (loop_count: number)
-    {
-        this._$loopCount = loop_count;
-    }
-
-    /**
      * @description 音声情報の配列をUint8Arrayで返却
      *              Returns an array of audio information as Uint8Array
      *
@@ -264,9 +206,7 @@ export class Sound extends Instance
             "type":      this.type,
             "symbol":    this.symbol,
             "folderId":  this.folderId,
-            "buffer":    this.binary,
-            "volume":    this._$volume,
-            "loopCount": this._$loopCount
+            "buffer":    this.binary
         };
     }
 }

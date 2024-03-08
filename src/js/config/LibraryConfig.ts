@@ -69,3 +69,12 @@ export const $LIBRARY_CHANGE_SCENE_ID: string = "library-menu-change-scene";
  * @constant
  */
 export const $LIBRARY_DELETE_ID: string = "library-menu-delete";
+
+/**
+ * @description Photopea連動ボタンのElementのID
+ *              ID of Element of Photopea linked button
+ *
+ * @type {string}
+ * @constant
+ */
+export const $LIBRARY_PHOTOPEA_ID: string = "library-open-photopea";
