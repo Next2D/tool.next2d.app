@@ -3,7 +3,7 @@ import { $allHideMenu } from "../../MenuUtil";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import type { InstanceImpl } from "@/interface/InstanceImpl";
 import type { Bitmap } from "@/core/domain/model/Bitmap";
-import { $getCanvas, $poolCanvas } from "@/global/GlobalUtil";
+import { $poolCanvas } from "@/global/GlobalUtil";
 
 /**
  * @description Photopea連動処理

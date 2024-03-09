@@ -1,7 +1,6 @@
 import type { ObjectImpl } from "@/interface/ObjectImpl";
 import type { VideoSaveObjectImpl } from "@/interface/VideoSaveObjectImpl";
 import { Instance } from "./Instance";
-import { $clamp } from "@/global/GlobalUtil";
 import { execute as binaryToBufferService } from "@/core/service/BinaryToBufferService";
 import { execute as bufferToBinaryService } from "@/core/service/BufferToBinaryService";
 

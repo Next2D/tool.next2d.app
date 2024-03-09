@@ -42,8 +42,12 @@ export const execute = (): void =>
     element.addEventListener(EventType.MOUSE_OVER,
         libraryAreaRegisterWindowKeyEventUseCase
     );
+
     // キーイベントの削除
     element.addEventListener(EventType.MOUSE_OUT,
+        libraryAreaRemoveWindowKeyEventUseCase
+    );
+    element.addEventListener(EventType.MOUSE_LEAVE,
         libraryAreaRemoveWindowKeyEventUseCase
     );
 };

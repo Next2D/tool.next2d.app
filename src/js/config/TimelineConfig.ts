@@ -357,3 +357,12 @@ export const $TIMELINE_SCENE_LIST_BUTTON_ID: string = "scene-list";
  * @constant
  */
 export const $TIMELINE_SCENE_NAME_LIST_ID: string = "scene-name-menu-list";
+
+/**
+ * @description タイムラインのキーフレーム追加のElementのID
+ *              ID of the Element for adding keyframes in the timeline
+ *
+ * @type {string}
+ * @constant
+ */
+export const $TIMELINE_KEY_ADD_ID: string = "timeline-key-add";

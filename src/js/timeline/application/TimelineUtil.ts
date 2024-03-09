@@ -3,6 +3,8 @@ import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { timelineHeader } from "../domain/model/TimelineHeader";
 import { timelineLayer } from "../domain/model/TimelineLayer";
 import type { Layer } from "@/core/domain/model/Layer";
+import { FrameObjectImpl } from "@/interface/FrameObjectImpl";
+import { $clamp } from "@/global/GlobalUtil";
 
 /**
  * @description ツールエリアでのマウス状態
@@ -373,4 +375,24 @@ export const $getLayerFromElement = (element: HTMLElement): Layer | undefined =>
     return $getCurrentWorkSpace()
         .scene
         .layers[$getTopIndex() + parseInt(element.dataset.layerIndex as string)];
+};
+
+/**
+ * @description 開始フレームと終了フレームをFrameObjectにコンバート
+ *              Converts start and end frames to FrameObjects
+ *
+ * @param  {number} start_frame
+ * @param  {number} [end_frame = 0]
+ * @return {object}
+ * @method
+ * @public
+ */
+export const $convertFrameObject = (
+    start_frame: number,
+    end_frame: number = 0
+): FrameObjectImpl => {
+    return {
+        "start": start_frame,
+        "end": $clamp(end_frame, start_frame + 1, Number.MAX_VALUE)
+    };
 };

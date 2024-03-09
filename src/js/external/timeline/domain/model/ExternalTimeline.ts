@@ -11,6 +11,7 @@ import { execute as timelineLayerAllClearSelectedElementService } from "@/timeli
 import { execute as timelineToolLayerDeleteHistoryUseCase } from "@/history/application/timeline/application/TimelineTool/LayerDelete/usecase/TimelineToolLayerDeleteHistoryUseCase";
 import { $clamp } from "@/global/GlobalUtil";
 import { ExternalLayer } from "@/external/core/domain/model/ExternalLayer";
+import { $convertFrameObject } from "@/timeline/application/TimelineUtil";
 
 /**
  * @description タイムラインの外部APIクラス
@@ -44,6 +45,28 @@ export class ExternalTimeline
          * @private
          */
         this._$movieClip = movie_clip;
+    }
+
+    /**
+     * @description TODO
+     *
+     * @param {number} start_frame
+     * @param {number} end_frame
+     * @return {void}
+     * @method
+     * @public
+     */
+    convertToKeyframes (start_frame: number, end_frame: number = 0): void
+    {
+        console.log("TODO convertToKeyframes");
+
+        // 選択中のレイヤーがなければ終了
+        if (!this._$movieClip.selectedLayers.length) {
+            return ;
+        }
+
+        const frameObject = $convertFrameObject(start_frame, end_frame);
+        console.log(frameObject);
     }
 
     /**
