@@ -1,8 +1,8 @@
 import type { ConfirmModal } from "@/menu/domain/model/ConfirmModal";
 import type { MenuImpl } from "@/interface/MenuImpl";
+import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import { $CONFIRM_MODAL_NAME } from "@/config/MenuConfig";
 import { $getMenu } from "../../MenuUtil";
-import { WorkSpace } from "@/core/domain/model/WorkSpace";
 
 /**
  * @description 重複したFileを内部配列にpush

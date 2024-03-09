@@ -1,10 +1,11 @@
 import { BaseMenu } from "./BaseMenu";
 import { $CONFIRM_MODAL_NAME } from "@/config/MenuConfig";
 import type { ConfirmModalFileObjectImpl } from "@/interface/ConfirmModalFileObjectImpl";
-import type { InstanceImpl } from "@/interface/InstanceImpl";
+import type { ConfirmModalInstanceObjectImpl } from "@/interface/ConfirmModalInstanceObjectImpl";
 import { execute as confirmModalInitializeRegisterEventUseCase } from "@/menu/application/ConfirmModal/usecase/ConfirmModalInitializeRegisterEventUseCase";
-import { execute as confirmModalUpdateDisplayUseCase } from "@/menu/application/ConfirmModal/usecase/ConfirmModalUpdateDisplayUseCase";
+import { execute as confirmModalUpdateDisplayByFileUseCase } from "@/menu/application/ConfirmModal/usecase/ConfirmModalUpdateDisplayByFileUseCase";
 import { execute as confirmModalFileResetService } from "@/menu/application/ConfirmModal/service/ConfirmModalFileResetService";
+import { execute as confirmModalInstaceResetService } from "@/menu/application/ConfirmModal/service/ConfirmModalInstaceResetService";
 
 /**
  * @description ライブラリ読み込み時の重複チェックモーダル管理クラス
@@ -16,9 +17,10 @@ import { execute as confirmModalFileResetService } from "@/menu/application/Conf
  */
 export class ConfirmModal extends BaseMenu
 {
-    private readonly _$fileObjects: ConfirmModalFileObjectImpl[];
+    private _$instanceObject: ConfirmModalInstanceObjectImpl | null;
     private _$fileObject: ConfirmModalFileObjectImpl | null;
-    private readonly _$instanceObjects: InstanceImpl<any>[];
+    private readonly _$fileObjects: ConfirmModalFileObjectImpl[];
+    private readonly _$instanceObjects: ConfirmModalInstanceObjectImpl[];
 
     /**
      * @constructor
@@ -45,6 +47,25 @@ export class ConfirmModal extends BaseMenu
          * @private
          */
         this._$instanceObjects = [];
+
+        /**
+         * @type {object}
+         * @private
+         */
+        this._$instanceObject = null;
+    }
+
+    /**
+     * @description 初期起動関数
+     *              initial invoking function
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    initialize (): void
+    {
+        confirmModalInitializeRegisterEventUseCase();
     }
 
     /**
@@ -98,7 +119,7 @@ export class ConfirmModal extends BaseMenu
         this._$fileObject = this._$fileObjects.pop() as NonNullable<ConfirmModalFileObjectImpl>;
 
         // 表示を更新
-        confirmModalUpdateDisplayUseCase(
+        confirmModalUpdateDisplayByFileUseCase(
             this._$fileObject.file,
             this._$fileObject.instance
         );
@@ -107,15 +128,61 @@ export class ConfirmModal extends BaseMenu
     }
 
     /**
-     * @description 初期起動関数
-     *              initial invoking function
+     * @description Instanceの読み込み時の重複配列
+     *              Duplicate array when reading Instance
+     *
+     * @readonly
+     * @public
+     */
+    get instanceObjects (): ConfirmModalInstanceObjectImpl[]
+    {
+        return this._$instanceObjects;
+    }
+
+    /**
+     * @description 現在利用中のInstanceオブジェクト
+     *              Instance object currently in use
+     *
+     * @member {object | null}
+     * @public
+     */
+    get instanceObject (): ConfirmModalInstanceObjectImpl| null
+    {
+        return this._$instanceObject;
+    }
+    set instanceObject (instance_object: ConfirmModalInstanceObjectImpl | null)
+    {
+        this._$instanceObject = instance_object;
+    }
+
+    /**
+     * @description Instanceの配列から作業変数にセット
+     *              Set to a working variable from an array of Instance
      *
      * @return {void}
      * @method
      * @public
      */
-    initialize (): void
+    setupInstanceObject (): void
     {
-        confirmModalInitializeRegisterEventUseCase();
+        // 配列が空なら終了
+        if (!this._$instanceObjects.length) {
+
+            // 初期化して終了
+            confirmModalInstaceResetService();
+
+            // モーダルを非表示に更新
+            return this.hide();
+        }
+
+        this._$instanceObject = this._$instanceObjects.pop() as NonNullable<ConfirmModalInstanceObjectImpl>;
+
+        // // 表示を更新
+        // confirmModalUpdateDisplayUseCase(
+        //     this._$fileObject.file,
+        //     this._$fileObject.instance
+        // );
+
+        this.show();
     }
 }

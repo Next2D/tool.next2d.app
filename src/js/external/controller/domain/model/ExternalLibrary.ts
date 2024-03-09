@@ -149,6 +149,8 @@ export class ExternalLibrary
             return false;
         }
 
+        // TODO 重複をチェック
+
         // 履歴に残す
         // fixed logic
         libraryAreaMoveFolderHistoryUseCase(

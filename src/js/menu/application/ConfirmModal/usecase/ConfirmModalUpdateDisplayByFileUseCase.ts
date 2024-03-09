@@ -70,6 +70,7 @@ export const execute = (
             if (!element) {
                 return ;
             }
+
             element.classList.add("preview-center");
             afterPreviewElement.appendChild(element);
         });
@@ -77,8 +78,12 @@ export const execute = (
     // 現在のinstanceをプレビューエリアに表示
     instance
         .getHTMLElement()
-        .then((element: HTMLElement): void =>
+        .then((element: HTMLElement | null): void =>
         {
+            if (!element) {
+                return ;
+            }
+
             element.classList.add("preview-center");
             beforePreviewElement.appendChild(element);
         });

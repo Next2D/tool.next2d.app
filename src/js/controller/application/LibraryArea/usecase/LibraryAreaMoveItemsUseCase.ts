@@ -6,6 +6,9 @@ import { ExternalLibrary } from "@/external/controller/domain/model/ExternalLibr
 import { execute as libraryAreaReloadUseCase } from "@/controller/application/LibraryArea/usecase/LibraryAreaReloadUseCase";
 import { execute as libraryAreaReOrderingService } from "@/controller/application/LibraryArea/service/LibraryAreaReOrderingService";
 import { execute as workSpaceCreatePathMapService } from "@/core/application/WorkSpace/service/WorkSpaceCreatePathMapService";
+import { execute as confirmModalInstaceResetService } from "@/menu/application/ConfirmModal/service/ConfirmModalInstaceResetService";
+import { execute as confirmModalinstanceShowUseCase } from "@/menu/application/ConfirmModal/usecase/ConfirmModalinstanceShowUseCase";
+import { execute as confirmModalInstanceDuplicateCheckService } from "@/menu/application/ConfirmModal/service/ConfirmModalInstanceDuplicateCheckService";
 
 /**
  * @description ライブラリエリア内でのインスタンス移動処理
@@ -23,6 +26,9 @@ export const execute = (event: DragEvent): void =>
         return ;
     }
 
+    // 重複チェックの配列を初期化
+    confirmModalInstaceResetService();
+
     const workSpace = $getCurrentWorkSpace();
 
     // 外部APIを起動
@@ -31,6 +37,8 @@ export const execute = (event: DragEvent): void =>
     let reload = false;
 
     const length = libraryArea.selectedIds.length;
+
+    // 移動先がアイテムを選択している時
     if ("libraryId" in element.dataset) {
 
         const libraryId = parseInt(element.dataset.libraryId as string);
@@ -87,12 +95,18 @@ export const execute = (event: DragEvent): void =>
 
     } else {
 
+        // 何も指定がない時は一番上の階層に移動
         for (let idx: number  = 0; idx < length; ++idx) {
 
             const libraryId = libraryArea.selectedIds[idx];
 
             const selectedInstance = workSpace.getLibrary(libraryId);
             if (!selectedInstance) {
+                continue;
+            }
+
+            // 重複していればスキップ
+            if (confirmModalInstanceDuplicateCheckService(workSpace, selectedInstance)) {
                 continue;
             }
 
@@ -122,4 +136,6 @@ export const execute = (event: DragEvent): void =>
         libraryAreaReloadUseCase();
     }
 
+    // 重複があればモーダルを表示
+    confirmModalinstanceShowUseCase();
 };

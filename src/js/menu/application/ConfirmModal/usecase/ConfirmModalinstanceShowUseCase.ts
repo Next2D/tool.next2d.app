@@ -19,7 +19,7 @@ export const execute = (): void =>
     }
 
     // 重複があればモーダルを表示
-    if (menu.fileObjects.length > 0) {
-        menu.setupFileObject();
+    if (menu.instanceObjects.length > 0) {
+        menu.setupInstanceObject();
     }
 };

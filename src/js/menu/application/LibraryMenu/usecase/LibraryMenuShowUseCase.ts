@@ -77,7 +77,7 @@ export const execute = (event: MouseEvent): void =>
             // 書き出しボタンをアクティブに更新
             libraryMenuExportActiveService();
 
-            const instance: InstanceImpl<any>  = $getCurrentWorkSpace()
+            const instance: InstanceImpl<any> = $getCurrentWorkSpace()
                 .getLibrary(libraryArea.selectedIds[0]);
 
             if (instance) {
@@ -87,11 +87,17 @@ export const execute = (event: MouseEvent): void =>
                     case "container":
                         // MovieClipの編集ボタンをアクティブに更新
                         libraryMenuEditMovieClipActiveService();
+
+                        // photopea起動を非アクティブに更新
+                        libraryMenuPhotopeaInactiveService();
                         break;
 
                     case "bitmap":
                         // photopea起動をアクティブに更新
                         libraryMenuPhotopeaActiveService();
+
+                        // MovieClipの編集ボタンを非アクティブに更新
+                        libraryMenuEditMovieClipInactiveService();
                         break;
 
                     default:
