@@ -22,7 +22,7 @@ export const execute = (): void =>
         const layer = scene.selectedLayers[idx];
 
         const layerElement: HTMLElement | undefined = timelineLayer.elements[layer.getDisplayIndex()];
-        if (!layerElement) {
+        if (!layerElement || !layerElement.classList.contains("active")) {
             continue;
         }
 
@@ -34,17 +34,21 @@ export const execute = (): void =>
 
         // フレーム側のElementを更新
         const frameElement = layerElement.lastElementChild as NonNullable<HTMLElement>;
+
         const children = frameElement.children;
-        for (let frame: number = startFrame; endFrame >= frame; ++frame) {
+        const length   = children.length;
+        for (let frame: number = startFrame; endFrame > frame; ++frame) {
 
             const frameIndex = frame - leftFrame;
+            if (frameIndex > length) {
+                continue;
+            }
 
             const element: HTMLElement | undefined = children[frameIndex] as HTMLElement;
             if (!element) {
                 continue;
             }
 
-            // フレームのアクティブ表示を初期化
             element.classList.remove("frame-active");
         }
     }

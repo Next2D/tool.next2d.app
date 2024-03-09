@@ -26,7 +26,6 @@ export class Layer
     private _$mode: LayerModeImpl;
     private _$maskId: null | number;
     private _$guideId: null | number;
-    private _$targetFrame: number;
     private readonly _$characters: Character[];
     private readonly _$emptys: EmptyCharacter[];
     private readonly _$selectedFrame: FrameObjectImpl;
@@ -105,12 +104,6 @@ export class Layer
          * @private
          */
         this._$emptys = [];
-
-        /**
-         * @type {number}
-         * @private
-         */
-        this._$targetFrame = 0;
 
         /**
          * @type {object}
@@ -263,22 +256,6 @@ export class Layer
     }
 
     /**
-     * @description 最初に選択したフレーム
-     *              First selected frame
-     *
-     * @member {string}
-     * @public
-     */
-    get targetFrame (): number
-    {
-        return this._$targetFrame;
-    }
-    set targetFrame (frame: number)
-    {
-        this._$targetFrame = frame;
-    }
-
-    /**
      * @description フレーム選択の範囲
      *              Frame Selection Range
      *
@@ -333,8 +310,8 @@ export class Layer
     }
 
     /**
-     * @description 表示で利用している内部情報を初期化
-     *              Initialize internal information used in the display
+     * @description 選択中のフレーム内部情報を初期化
+     *              Initialize information inside the selected frame
      *
      * @return {void}
      * @method
@@ -342,7 +319,6 @@ export class Layer
      */
     clear (): void
     {
-        this._$targetFrame = 0;
         this._$selectedFrame.start = 0;
         this._$selectedFrame.end   = 0;
     }

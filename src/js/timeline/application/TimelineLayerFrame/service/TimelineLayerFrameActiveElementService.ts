@@ -1,6 +1,6 @@
 /**
- * @description 選択したフレームElementをアクティブ表示にしてマップに登録
- *              Register the selected frame Element on the map with the active display
+ * @description 選択したフレームElementをアクティブ表示
+ *              Active display of selected frame Element
  *
  * @param  {HTMLElement} element
  * @return {void}
@@ -9,5 +9,11 @@
  */
 export const execute = (element: HTMLElement): void =>
 {
+    // 既にstyleが登録されていれば終了
+    if (element.classList.contains("frame-active")) {
+        return ;
+    }
+
+    // styleをセット
     element.classList.add("frame-active");
 };

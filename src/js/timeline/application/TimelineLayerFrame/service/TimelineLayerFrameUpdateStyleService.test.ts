@@ -11,9 +11,8 @@ describe("TimelineLayerFrameUpdateStyleServiceTest", () =>
         const scene: MovieClip = workSpace.scene;
         const layer = scene.getLayer(0) as NonNullable<Layer>;
 
-        layer.targetFrame = 1;
         layer.selectedFrame.start = 1;
-        layer.selectedFrame.end = 1;
+        layer.selectedFrame.end = 2;
         scene.selectedLayer(layer);
 
         const div = document.createElement("div");

@@ -16,15 +16,13 @@ describe("ExternalMovieClipSelectedLayerServiceTest", () =>
         const layer = movieClip.getLayer(0) as NonNullable<Layer>;
 
         expect(movieClip.selectedLayers.length).toBe(0);
-        expect(layer.targetFrame).toBe(0);
         expect(layer.selectedFrame.start).toBe(0);
         expect(layer.selectedFrame.end).toBe(0);
 
         execute(movieClip, layer, 10);
 
         expect(movieClip.selectedLayers.length).toBe(1);
-        expect(layer.targetFrame).toBe(10);
         expect(layer.selectedFrame.start).toBe(10);
-        expect(layer.selectedFrame.end).toBe(10);
+        expect(layer.selectedFrame.end).toBe(11);
     });
 });

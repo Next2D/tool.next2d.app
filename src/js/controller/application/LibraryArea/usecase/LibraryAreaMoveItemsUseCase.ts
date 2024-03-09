@@ -101,7 +101,7 @@ export const execute = (event: DragEvent): void =>
             const libraryId = libraryArea.selectedIds[idx];
 
             const selectedInstance = workSpace.getLibrary(libraryId);
-            if (!selectedInstance) {
+            if (!selectedInstance || !selectedInstance.folderId) {
                 continue;
             }
 

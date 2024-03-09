@@ -38,7 +38,7 @@ export const execute = (layer: Layer, frame: number): void =>
     // 指定のフレーム番号から対象のフレームElementを取得
     const frameIndex = frame - $getLeftFrame();
 
-    const element: HTMLElement | null = frameElement.children[frameIndex] as HTMLElement;
+    const element: HTMLElement | undefined = frameElement.children[frameIndex] as HTMLElement;
     if (element) {
         // 対象のフレームElementをアクティブ表示にする
         timelineLayerFrameActiveElementService(element);

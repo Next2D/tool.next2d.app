@@ -40,7 +40,7 @@ export const execute = (element: HTMLElement, left_frame: number): void =>
         }
 
         // アクティブフレームのクラスをセット
-        if (frame >= startFrame  && endFrame >= frame) {
+        if (frame >= startFrame  && endFrame > frame) {
             classValues.push("frame-active");
         }
 

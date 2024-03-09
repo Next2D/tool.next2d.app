@@ -1,5 +1,7 @@
 import { $getLayerFromElement } from "../../TimelineUtil";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
+import { execute as timelineLayerSelectedUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerSelectedUseCase";
+import { execute as timelineLayerAltSelectedUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerAltSelectedUseCase";
 import { ExternalLayer } from "@/external/core/domain/model/ExternalLayer";
 import { ExternalTimeline } from "@/external/timeline/domain/model/ExternalTimeline";
 
@@ -30,26 +32,30 @@ export const execute = (event: PointerEvent): void =>
     }
 
     const workSpace = $getCurrentWorkSpace();
-    const scene = workSpace.scene;
-
-    // 外部APIを起動
-    const externalLayer    = new ExternalLayer(workSpace, scene, layer);
-    const externalTimeline = new ExternalTimeline(workSpace, scene);
+    const movieClip = workSpace.scene;
 
     switch (true) {
 
-        case event.altKey:
+        case event.altKey || event.metaKey:
+            timelineLayerAltSelectedUseCase(movieClip, layer);
             break;
 
         case event.shiftKey:
+            // TODO
             break;
 
         default:
-            // 単体選択の外部APIを実行
-            externalTimeline.selectedLayer(
-                externalLayer.index,
-                scene.currentFrame
-            );
+            {
+                // 外部APIを起動
+                const externalLayer    = new ExternalLayer(workSpace, movieClip, layer);
+                const externalTimeline = new ExternalTimeline(workSpace, movieClip);
+
+                // 単体選択の外部APIを実行
+                externalTimeline.selectedLayer(
+                    externalLayer.index,
+                    movieClip.currentFrame
+                );
+            }
             break;
 
     }

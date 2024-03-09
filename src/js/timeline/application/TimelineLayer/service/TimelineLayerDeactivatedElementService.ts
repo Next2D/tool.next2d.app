@@ -20,15 +20,20 @@ export const execute = (layer: Layer): void =>
     // レイヤーのアクティブ表示を初期化
     layerElement.classList.remove("active");
 
+    const leftFrame  = $getLeftFrame();
     const startFrame = layer.selectedFrame.start;
     const endFrame   = layer.selectedFrame.end;
 
     // フレーム側のElementを更新
     const frameElement = layerElement.lastElementChild as NonNullable<HTMLElement>;
     const children = frameElement.children;
-    for (let frame: number = startFrame; endFrame >= frame; ++frame) {
+    const length   = children.length;
+    for (let frame: number = startFrame; endFrame > frame; ++frame) {
 
-        const frameIndex = frame - $getLeftFrame();
+        const frameIndex = frame - leftFrame;
+        if (frameIndex > length) {
+            continue;
+        }
 
         const element: HTMLElement | undefined = children[frameIndex] as HTMLElement;
         if (!element) {

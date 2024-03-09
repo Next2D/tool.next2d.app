@@ -15,7 +15,6 @@ export const execute = (movie_clip: MovieClip, layer: Layer, frame: number): voi
     movie_clip.selectedLayer(layer);
 
     // レイヤーを初期化して、選択状態をセット
-    layer.targetFrame = frame;
     layer.selectedFrame.start = frame;
-    layer.selectedFrame.end   = frame;
+    layer.selectedFrame.end   = frame + 1;
 };

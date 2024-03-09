@@ -1,7 +1,7 @@
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { $getLayerFromElement } from "../../TimelineUtil";
-import { ExternalTimeline } from "@/external/timeline/domain/model/ExternalTimeline";
 import { ExternalLayer } from "@/external/core/domain/model/ExternalLayer";
+import { ExternalTimeline } from "@/external/timeline/domain/model/ExternalTimeline";
 
 /**
  * @description フレームエリアのマウスダウンの実行関数
@@ -31,24 +31,16 @@ export const execute = (event: PointerEvent): void =>
     }
 
     const workSpace = $getCurrentWorkSpace();
+    const movieClip = workSpace.scene;
     const frame = parseInt(element.dataset.frame as NonNullable<string>);
 
     // 外部APIを起動
-    const externalLayer    = new ExternalLayer(workSpace, workSpace.scene, layer);
-    const externalTimeline = new ExternalTimeline(workSpace, workSpace.scene);
+    const externalLayer    = new ExternalLayer(workSpace, movieClip, layer);
+    const externalTimeline = new ExternalTimeline(workSpace, movieClip);
 
-    switch (true) {
-
-        case event.altKey:
-            break;
-
-        case event.shiftKey:
-            break;
-
-        default:
-            // 単体選択の外部APIを実行
-            externalTimeline.selectedLayer(externalLayer.index, frame);
-            break;
-
-    }
+    // 単体選択の外部APIを実行
+    externalTimeline.selectedLayer(
+        externalLayer.index,
+        frame
+    );
 };

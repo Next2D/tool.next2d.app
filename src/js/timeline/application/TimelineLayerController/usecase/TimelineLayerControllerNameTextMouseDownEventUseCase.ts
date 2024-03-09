@@ -31,8 +31,18 @@ let layerIndex: number = -1;
  */
 export const execute = (event: PointerEvent): void =>
 {
-    if (event.button !== 0 || $useKeyboard()) {
-        return ;
+    switch (true) {
+
+        case event.button !== 0:
+        case $useKeyboard():
+        case event.altKey:
+        case event.metaKey:
+        case event.shiftKey:
+            return ;
+
+        default:
+            break;
+
     }
 
     const element: HTMLElement | null = event.target as HTMLElement;

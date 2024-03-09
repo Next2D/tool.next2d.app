@@ -8,6 +8,7 @@ import { execute as timelineLayerFrameUpdateStyleService } from "@/timeline/appl
 import { execute as timelineLayerCreateUseCase } from "./TimelineLayerCreateUseCase";
 import { execute as timelineLayerAllElementDisplayNoneService } from "../service/TimelineLayerAllElementDisplayNoneService";
 import { execute as timelineLayerActiveElementService } from "@/timeline/application/TimelineLayer/service/TimelineLayerActiveElementService";
+import { execute as timelineLayerInactiveElementService } from "@/timeline/application/TimelineLayer/service/TimelineLayerInactiveElementService";
 import { execute as timelineLayerAllClearSelectedElementService } from "@/timeline/application/TimelineLayer/service/TimelineLayerAllClearSelectedElementService";
 import {
     $getLeftFrame,
@@ -99,7 +100,11 @@ export const execute = (): void =>
         timelineLayerControllerUpdateElementStyleUseCase(layer);
 
         if (scene.selectedLayers.indexOf(layer) > -1) {
+            // 選択中ならアクティブ表示
             timelineLayerActiveElementService(element);
+        } else {
+            // 選択してない時は非アクティブ表示
+            timelineLayerInactiveElementService(element);
         }
 
         // フレームの高さを加算
