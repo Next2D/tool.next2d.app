@@ -1,7 +1,7 @@
 import { $getLayerFromElement } from "../../TimelineUtil";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
-import { execute as timelineLayerSelectedUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerSelectedUseCase";
 import { execute as timelineLayerAltSelectedUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerAltSelectedUseCase";
+import { execute as timelineLayerShiftSelectedUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerShiftSelectedUseCase";
 import { ExternalLayer } from "@/external/core/domain/model/ExternalLayer";
 import { ExternalTimeline } from "@/external/timeline/domain/model/ExternalTimeline";
 
@@ -41,7 +41,7 @@ export const execute = (event: PointerEvent): void =>
             break;
 
         case event.shiftKey:
-            // TODO
+            timelineLayerShiftSelectedUseCase(movieClip, layer);
             break;
 
         default:
