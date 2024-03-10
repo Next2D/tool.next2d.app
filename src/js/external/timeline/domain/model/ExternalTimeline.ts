@@ -7,7 +7,7 @@ import { execute as externalMovieClipRemoveLayerUseCase } from "@/external/core/
 import { execute as timelineToolLayerAddHistoryUseCase } from "@/history/application/timeline/application/TimelineTool/LayerAdd/usecase/TimelineToolLayerAddHistoryUseCase";
 import { execute as externalTimelineLayerControllerNormalSelectUseCase } from "@/external/timeline/application/ExternalTimelineLayerController/usecase/ExternalTimelineLayerControllerNormalSelectUseCase";
 import { execute as externalTimelineLayerDeactivateLayerUseCase } from "@/external/timeline/application/ExternalTimelineLayer/usecase/ExternalTimelineLayerDeactivateLayerUseCase";
-import { execute as timelineLayerAllClearSelectedElementService } from "@/timeline/application/TimelineLayer/service/TimelineLayerAllClearSelectedElementService";
+import { execute as timelineLayerAllClearSelectedElementUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerAllClearSelectedElementUseCase";
 import { execute as timelineToolLayerDeleteHistoryUseCase } from "@/history/application/timeline/application/TimelineTool/LayerDelete/usecase/TimelineToolLayerDeleteHistoryUseCase";
 import { $clamp } from "@/global/GlobalUtil";
 import { ExternalLayer } from "@/external/core/domain/model/ExternalLayer";
@@ -238,7 +238,7 @@ export class ExternalTimeline
     {
         // 表示中のMovieClipなら表示側を更新
         if (this._$workSpace.active && this._$movieClip.active) {
-            timelineLayerAllClearSelectedElementService();
+            timelineLayerAllClearSelectedElementUseCase();
         }
 
         // 内部データを初期化

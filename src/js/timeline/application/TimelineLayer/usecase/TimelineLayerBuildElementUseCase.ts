@@ -9,7 +9,7 @@ import { execute as timelineLayerCreateUseCase } from "./TimelineLayerCreateUseC
 import { execute as timelineLayerAllElementDisplayNoneService } from "../service/TimelineLayerAllElementDisplayNoneService";
 import { execute as timelineLayerActiveElementService } from "@/timeline/application/TimelineLayer/service/TimelineLayerActiveElementService";
 import { execute as timelineLayerInactiveElementService } from "@/timeline/application/TimelineLayer/service/TimelineLayerInactiveElementService";
-import { execute as timelineLayerAllClearSelectedElementService } from "@/timeline/application/TimelineLayer/service/TimelineLayerAllClearSelectedElementService";
+import { execute as timelineLayerAllClearSelectedElementUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerAllClearSelectedElementUseCase";
 import {
     $getLeftFrame,
     $getTopIndex
@@ -45,7 +45,7 @@ export const execute = (): void =>
     timelineLayerAllElementDisplayNoneService(layers.length - topIndex);
 
     // フレームElementの表示を初期化
-    timelineLayerAllClearSelectedElementService();
+    timelineLayerAllClearSelectedElementUseCase();
 
     const frameHeight: number = workSpace.timelineAreaState.frameHeight;
     const frameWidth: number  = workSpace.timelineAreaState.frameWidth + 1;

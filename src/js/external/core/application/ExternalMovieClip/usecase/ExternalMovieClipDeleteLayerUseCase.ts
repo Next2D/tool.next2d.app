@@ -7,7 +7,7 @@ import { execute as timelineScrollUpdateYPositionService } from "@/timeline/appl
 import { execute as timelineLayerBuildElementUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerBuildElementUseCase";
 import { $clamp } from "@/global/GlobalUtil";
 import { execute as externalTimelineLayerControllerNormalSelectUseCase } from "@/external/timeline/application/ExternalTimelineLayerController/usecase/ExternalTimelineLayerControllerNormalSelectUseCase";
-import { execute as timelineLayerAllClearSelectedElementService } from "@/timeline/application/TimelineLayer/service/TimelineLayerAllClearSelectedElementService";
+import { execute as timelineLayerAllClearSelectedElementUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerAllClearSelectedElementUseCase";
 
 /**
  * @description 指定indexのレイヤーを削除
@@ -30,7 +30,7 @@ export const execute = (
 
     // 表示されているElementを初期化、内部データに変更なし
     if (work_space.active && movie_clip.active) {
-        timelineLayerAllClearSelectedElementService();
+        timelineLayerAllClearSelectedElementUseCase();
     }
 
     const externalTimeline = new ExternalTimeline(work_space, movie_clip);

@@ -3,7 +3,7 @@ import type { InstanceImpl } from "@/interface/InstanceImpl";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import { execute as timelineScrollUpdateHeightService } from "@/timeline/application/TimelineScroll/service/TimelineScrollUpdateHeightService";
 import { execute as timelineLayerBuildElementUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerBuildElementUseCase";
-import { execute as timelineLayerAllClearSelectedElementService } from "@/timeline/application/TimelineLayer/service/TimelineLayerAllClearSelectedElementService";
+import { execute as timelineLayerAllClearSelectedElementUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerAllClearSelectedElementUseCase";
 import { Layer } from "@/core/domain/model/Layer";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
 
@@ -38,7 +38,7 @@ export const execute = (
 
     // 表示されているElementを初期化、内部データに変更なし
     if (workSpace.active && movieClip.active) {
-        timelineLayerAllClearSelectedElementService();
+        timelineLayerAllClearSelectedElementUseCase();
     }
 
     // Layerオブジェクトの内部情報に再登録

@@ -2,6 +2,10 @@ import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { $getLayerFromElement } from "../../TimelineUtil";
 import { ExternalLayer } from "@/external/core/domain/model/ExternalLayer";
 import { ExternalTimeline } from "@/external/timeline/domain/model/ExternalTimeline";
+import { EventType } from "@/tool/domain/event/EventType";
+import { execute as timelineLayerFrameMouseMoveEventUseCase } from "./TimelineLayerFrameMouseMoveEventUseCase";
+import { execute as timelineLayerFrameFirstSelectedService } from "../service/TimelineLayerFrameFirstSelectedService";
+import { execute as timelineLayerFrameClearSelectedUseCase } from "./TimelineLayerFrameClearSelectedUseCase";
 
 /**
  * @description フレームエリアのマウスダウンの実行関数
@@ -30,6 +34,10 @@ export const execute = (event: PointerEvent): void =>
         return ;
     }
 
+    // 表示を初期化
+    // fixed logic
+    timelineLayerFrameClearSelectedUseCase();
+
     const workSpace = $getCurrentWorkSpace();
     const movieClip = workSpace.scene;
     const frame = parseInt(element.dataset.frame as NonNullable<string>);
@@ -42,5 +50,13 @@ export const execute = (event: PointerEvent): void =>
     externalTimeline.selectedLayer(
         externalLayer.index,
         frame
+    );
+
+    // 最初に選択したフレームとレイヤーをセット
+    timelineLayerFrameFirstSelectedService(frame, layer);
+
+    // フレーム選択イベントを登録
+    window.addEventListener(EventType.MOUSE_MOVE,
+        timelineLayerFrameMouseMoveEventUseCase
     );
 };

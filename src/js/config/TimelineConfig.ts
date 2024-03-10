@@ -366,3 +366,12 @@ export const $TIMELINE_SCENE_NAME_LIST_ID: string = "scene-name-menu-list";
  * @constant
  */
 export const $TIMELINE_KEY_ADD_ID: string = "timeline-key-add";
+
+/**
+ * @description タイムラインのフレーム選択のグループElementのID
+ *              ID of the group Element of the timeline frame selection
+ *
+ * @type {string}
+ * @constant
+ */
+export const $TIMELINE_TARGET_GROUP_ID: string = "target-group";

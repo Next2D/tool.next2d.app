@@ -4,6 +4,7 @@ import { execute as timelineLayerAltSelectedUseCase } from "@/timeline/applicati
 import { execute as timelineLayerShiftSelectedUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerShiftSelectedUseCase";
 import { ExternalLayer } from "@/external/core/domain/model/ExternalLayer";
 import { ExternalTimeline } from "@/external/timeline/domain/model/ExternalTimeline";
+import { execute as timelineLayerFrameClearSelectedUseCase } from "@/timeline/application/TimelineLayerFrame/usecase/TimelineLayerFrameClearSelectedUseCase";
 
 /**
  * @description レイヤーのコントローラーエリアのマウスダウン処理関数
@@ -30,6 +31,9 @@ export const execute = (event: PointerEvent): void =>
     if (!layer) {
         return ;
     }
+
+    // 選択状態を初期化
+    timelineLayerFrameClearSelectedUseCase();
 
     const workSpace = $getCurrentWorkSpace();
     const movieClip = workSpace.scene;

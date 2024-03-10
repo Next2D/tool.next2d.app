@@ -2,7 +2,7 @@ import type { Layer } from "@/core/domain/model/Layer";
 import { $getLeftFrame } from "../../TimelineUtil";
 import { execute as timelineLayerFrameActiveElementService } from "@/timeline/application/TimelineLayerFrame/service/TimelineLayerFrameActiveElementService";
 import { execute as timelineLayerActiveElementService } from "@/timeline/application/TimelineLayer/service/TimelineLayerActiveElementService";
-import { execute as timelineLayerAllClearSelectedElementService } from "@/timeline/application/TimelineLayer/service/TimelineLayerAllClearSelectedElementService";
+import { execute as timelineLayerAllClearSelectedElementUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerAllClearSelectedElementUseCase";
 import { timelineLayer } from "@/timeline/domain/model/TimelineLayer";
 import { execute as timelineFrameUpdateFrameElementService } from "@/timeline/application/TimelineFrame/service/TimelineFrameUpdateFrameElementService";
 import { execute as timelineMarkerMovePositionService } from "@/timeline/application/TimelineMarker/service/TimelineMarkerMovePositionService";
@@ -21,7 +21,7 @@ import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 export const execute = (layer: Layer, frame: number): void =>
 {
     // 全てのレイヤー・フレーム Elementを非アクティブにする
-    timelineLayerAllClearSelectedElementService();
+    timelineLayerAllClearSelectedElementUseCase();
 
     // 表示Elementがなければ終了
     const layerElement: HTMLElement | undefined = timelineLayer.elements[layer.getDisplayIndex()];

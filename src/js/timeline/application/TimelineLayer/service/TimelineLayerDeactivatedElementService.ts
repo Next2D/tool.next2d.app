@@ -6,11 +6,13 @@ import { $getLeftFrame } from "../../TimelineUtil";
  * @description 指定レイヤーElementを非アクティブに更新
  *              Update specified Layer Element to inactive
  *
+ * @param  {Layer} layer
+ * @param  {boolean} [layer_clear = true]
  * @return {void}
  * @method
  * @public
  */
-export const execute = (layer: Layer): void =>
+export const execute = (layer: Layer, layer_clear: boolean = true): void =>
 {
     const layerElement: HTMLElement | undefined = timelineLayer.elements[layer.getDisplayIndex()];
     if (!layerElement) {
@@ -18,7 +20,9 @@ export const execute = (layer: Layer): void =>
     }
 
     // レイヤーのアクティブ表示を初期化
-    layerElement.classList.remove("active");
+    if (layer_clear) {
+        layerElement.classList.remove("active");
+    }
 
     const leftFrame  = $getLeftFrame();
     const startFrame = layer.selectedFrame.start;

@@ -5,7 +5,7 @@ import type { InstanceImpl } from "@/interface/InstanceImpl";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import { ExternalLayer } from "@/external/core/domain/model/ExternalLayer";
 import { ExternalTimeline } from "@/external/timeline/domain/model/ExternalTimeline";
-import { execute as timelineLayerAllClearSelectedElementService } from "@/timeline/application/TimelineLayer/service/TimelineLayerAllClearSelectedElementService";
+import { execute as timelineLayerAllClearSelectedElementUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerAllClearSelectedElementUseCase";
 
 /**
  * @description レイヤー追加作業を元に戻す
@@ -41,7 +41,7 @@ export const execute = (
 
     // 表示されているElementを初期化、内部データに変更なし
     if (workSpace.active && movieClip.active) {
-        timelineLayerAllClearSelectedElementService();
+        timelineLayerAllClearSelectedElementUseCase();
     }
 
     // 外部APIを起動
