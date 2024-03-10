@@ -28,8 +28,18 @@ export const execute = (library_id: number): void =>
     }
 
     // 最後に選択したアイテムのID
-    const lastSelectedId = libraryArea.selectedIds[length - 1];
-    if (library_id === lastSelectedId) {
+    const firstSelectedId = libraryArea.selectedIds[0];
+    if (library_id === firstSelectedId) {
+
+        // 選択中のElementを初期化
+        libraryAreaAllClearElementService();
+
+        // 内部情報を更新
+        externalLibrarySelectedOneService(library_id);
+
+        // アクティブ表示に更新
+        libraryAreaActiveElementService(library_id);
+
         return ;
     }
 
@@ -47,15 +57,6 @@ export const execute = (library_id: number): void =>
         return ;
     }
 
-    const lastSelectedElement: HTMLElement | null = document
-        .getElementById(`library-child-id-${lastSelectedId}`);
-
-    if (!lastSelectedElement) {
-        return ;
-    }
-
-    // 最初に選択したIDを取得
-    const firstSelectedId = libraryArea.selectedIds[0];
     const firstSelectedElement: HTMLElement | null = document
         .getElementById(`library-child-id-${firstSelectedId}`);
 
@@ -67,30 +68,39 @@ export const execute = (library_id: number): void =>
 
     // 対象のElementのindex値を取得
     const selectedIndex      = children.indexOf(selectedElement);
-    const lastSelectedIndex  = children.indexOf(lastSelectedElement);
     const firstSelectedIndex = children.indexOf(firstSelectedElement);
 
-    if (library_id === firstSelectedId) {
+    if (selectedIndex > firstSelectedIndex) {
 
-        // 選択中のElementを初期化
-        libraryAreaAllClearElementService();
+        // 上部のアイテムを未選択に更新
+        let prevElement = firstSelectedElement;
+        while (prevElement) {
 
-        // 内部情報を更新
-        externalLibrarySelectedOneService(library_id);
+            prevElement = prevElement.previousElementSibling as HTMLElement;
+            if (!prevElement) {
+                break;
+            }
 
-        // アクティブ表示に更新
-        libraryAreaActiveElementService(library_id);
+            const libraryId = parseInt(prevElement.dataset.libraryId as string);
+            const index = libraryArea.selectedIds.indexOf(libraryId);
 
-        return ;
-    }
+            // 選択中でなければ終了
+            if (index === -1) {
+                break;
+            }
 
-    if (selectedIndex > lastSelectedIndex) {
+            // 内部情報を更新
+            libraryArea.selectedIds.splice(index, 1);
 
-        // 下方向への選択
-        let nextElement = lastSelectedElement;
-        while (true) {
+            // 表示されているElementなら非アクティブ表示に更新
+            libraryAreaInactiveElementService(libraryId);
+        }
 
-            // 次がなければ終了
+        // 選択したElementの下部のアイテムを選択解除
+        let nextElement = selectedElement;
+        while (nextElement) {
+
+            nextElement = nextElement.nextElementSibling as HTMLElement;
             if (!nextElement) {
                 break;
             }
@@ -98,101 +108,120 @@ export const execute = (library_id: number): void =>
             const libraryId = parseInt(nextElement.dataset.libraryId as string);
             const index = libraryArea.selectedIds.indexOf(libraryId);
             if (index === -1) {
-
-                // 内部情報に追加
-                libraryArea.selectedIds.push(libraryId);
-
-                // アクティブ表示に更新
-                libraryAreaActiveElementService(libraryId);
-
-            } else {
-
-                if (firstSelectedIndex > selectedIndex) {
-
-                    // 選択したElementに到達したら終了
-                    if (libraryId === library_id) {
-                        break;
-                    }
-
-                    // 内部情報から削除
-                    libraryArea.selectedIds.splice(index, 1);
-
-                    // 非アクティブ表示に更新
-                    libraryAreaInactiveElementService(libraryId);
-                }
-
+                break;
             }
+            // 内部情報を更新
+            libraryArea.selectedIds.splice(index, 1);
 
-            // 選択したElementに到達したら終了
-            if (libraryId === library_id) {
+            // 表示されているElementなら非アクティブ表示に更新
+            libraryAreaInactiveElementService(libraryId);
+        }
+
+        // 選択範囲をアクティブに更新
+        nextElement = firstSelectedElement;
+        while (nextElement) {
+
+            nextElement = nextElement.nextElementSibling as HTMLElement;
+            if (!nextElement) {
                 break;
             }
 
-            nextElement = nextElement.nextElementSibling as HTMLElement;
+            const libraryId = parseInt(nextElement.dataset.libraryId as string);
+            const index = libraryArea.selectedIds.indexOf(libraryId);
+
+            // 選択中ならスキップ
+            if (index > -1) {
+                if (libraryId === library_id) {
+                    break;
+                }
+                continue;
+            }
+
+            // 内部情報に追加
+            libraryArea.selectedIds.push(libraryId);
+
+            // アクティブ表示に更新
+            libraryAreaActiveElementService(libraryId);
+
+            if (libraryId === library_id) {
+                break;
+            }
         }
     } else {
 
-        if (selectedIndex > firstSelectedIndex) {
+        // 下部のアイテムを未選択に更新
+        let nextElement = firstSelectedElement;
+        while (nextElement) {
 
-            // 下から上方向への選択
-            let prevElement = lastSelectedElement;
-            while (true) {
-
-                // 次がなければ終了
-                if (!prevElement) {
-                    break;
-                }
-
-                const libraryId = parseInt(prevElement.dataset.libraryId as string);
-
-                // 選択したElementに到達したら終了
-                if (libraryId === library_id) {
-                    break;
-                }
-
-                // 選択中でなければ終了
-                const index = libraryArea.selectedIds.indexOf(libraryId);
-                if (index === -1) {
-                    break;
-                }
-
-                // 内部情報から削除
-                libraryArea.selectedIds.splice(index, 1);
-
-                // 非アクティブ表示に更新
-                libraryAreaInactiveElementService(libraryId);
-
-                prevElement = prevElement.previousElementSibling as HTMLElement;
+            nextElement = nextElement.nextElementSibling as HTMLElement;
+            if (!nextElement) {
+                break;
             }
 
-        } else {
+            const libraryId = parseInt(nextElement.dataset.libraryId as string);
+            const index = libraryArea.selectedIds.indexOf(libraryId);
 
-            // 上方向だけの選択処理
-            let prevElement = firstSelectedElement;
-            while (true) {
+            // 選択中でなければ終了
+            if (index === -1) {
+                break;
+            }
 
-                // 次がなければ終了
-                if (!prevElement) {
-                    break;
-                }
+            // 内部情報を更新
+            libraryArea.selectedIds.splice(index, 1);
 
-                const libraryId = parseInt(prevElement.dataset.libraryId as string);
+            // 表示されているElementなら非アクティブ表示に更新
+            libraryAreaInactiveElementService(libraryId);
+        }
 
-                // 選択中でなければ終了
-                if (libraryArea.selectedIds.indexOf(libraryId) === -1) {
-                    // 内部情報から削除
-                    libraryArea.selectedIds.push(libraryId);
+        // 選択したElementの下部のアイテムを選択解除
+        let prevElement = selectedElement;
+        while (prevElement) {
 
-                    // アクティブ表示に更新
-                    libraryAreaActiveElementService(libraryId);
-                }
+            prevElement = prevElement.previousElementSibling as HTMLElement;
+            if (!prevElement) {
+                break;
+            }
 
-                // 選択したElementに到達したら終了
+            const libraryId = parseInt(prevElement.dataset.libraryId as string);
+            const index = libraryArea.selectedIds.indexOf(libraryId);
+            if (index === -1) {
+                break;
+            }
+            // 内部情報を更新
+            libraryArea.selectedIds.splice(index, 1);
+
+            // 表示されているElementなら非アクティブ表示に更新
+            libraryAreaInactiveElementService(libraryId);
+        }
+
+        // 選択範囲をアクティブに更新
+        prevElement = firstSelectedElement;
+        while (prevElement) {
+
+            prevElement = prevElement.previousElementSibling as HTMLElement;
+            if (!prevElement) {
+                break;
+            }
+
+            const libraryId = parseInt(prevElement.dataset.libraryId as string);
+            const index = libraryArea.selectedIds.indexOf(libraryId);
+
+            // 選択中ならスキップ
+            if (index > -1) {
                 if (libraryId === library_id) {
                     break;
                 }
+                continue;
+            }
 
-                prevElement = prevElement.previousElementSibling as HTMLElement;
+            // 内部情報に追加
+            libraryArea.selectedIds.push(libraryId);
+
+            // アクティブ表示に更新
+            libraryAreaActiveElementService(libraryId);
+
+            if (libraryId === library_id) {
+                break;
             }
         }
     }
