@@ -5,10 +5,11 @@ import { execute as externalTimelineChageFrameUseCase } from "@/external/timelin
 import { execute as externalMovieClipCreateLayerUseCase } from "@/external/core/application/ExternalMovieClip/usecase/ExternalMovieClipCreateLayerUseCase";
 import { execute as externalMovieClipRemoveLayerUseCase } from "@/external/core/application/ExternalMovieClip/usecase/ExternalMovieClipDeleteLayerUseCase";
 import { execute as timelineToolLayerAddHistoryUseCase } from "@/history/application/timeline/application/TimelineTool/LayerAdd/usecase/TimelineToolLayerAddHistoryUseCase";
-import { execute as externalTimelineLayerControllerNormalSelectUseCase } from "@/external/timeline/application/ExternalTimelineLayerController/usecase/ExternalTimelineLayerControllerNormalSelectUseCase";
 import { execute as externalTimelineLayerDeactivateLayerUseCase } from "@/external/timeline/application/ExternalTimelineLayer/usecase/ExternalTimelineLayerDeactivateLayerUseCase";
+import { execute as externalTimelineLayerControllerSelectedLayersUseCase } from "@/external/timeline/application/ExternalTimelineLayerController/usecase/ExternalTimelineLayerControllerSelectedLayersUseCase";
 import { execute as timelineLayerAllClearSelectedElementUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerAllClearSelectedElementUseCase";
 import { execute as timelineToolLayerDeleteHistoryUseCase } from "@/history/application/timeline/application/TimelineTool/LayerDelete/usecase/TimelineToolLayerDeleteHistoryUseCase";
+import { execute as timelineLayerSelectedUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerSelectedUseCase";
 import { $clamp } from "@/global/GlobalUtil";
 import { ExternalLayer } from "@/external/core/domain/model/ExternalLayer";
 import { $convertFrameObject } from "@/timeline/application/TimelineUtil";
@@ -136,10 +137,7 @@ export class ExternalTimeline
         );
 
         // 追加したレイヤーを選択上に更新
-        this.selectedLayer(
-            externalLayer.index,
-            this._$movieClip.currentFrame
-        );
+        this.selectedLayers(externalLayer.index);
 
         return externalLayer;
     }
@@ -204,25 +202,21 @@ export class ExternalTimeline
      * @description 指定したindex値のレイヤーをアクティブにする
      *              Activate the layer with the specified index value
      *
-     * @param  {number} index
-     * @param  {number} frame
+     * @param  {array} indexes
      * @return {void}
      * @method
      * @public
      */
-    selectedLayer (
-        index: number,
-        frame: number
-    ): void {
+    selectedLayers (...indexes: number[]): void {
 
-        const layer: Layer | undefined = this._$movieClip.layers[index];
-        if (!layer) {
-            return ;
-        }
+        // 全ての選択を解除
+        this.deactivatedAllLayers();
 
-        // 指定のレイヤーを選択状態に更新
-        externalTimelineLayerControllerNormalSelectUseCase(
-            this._$workSpace, this._$movieClip, layer, frame
+        // 指定のIndexを選択状態に更新
+        externalTimelineLayerControllerSelectedLayersUseCase(
+            this._$workSpace,
+            this._$movieClip,
+            indexes
         );
     }
 

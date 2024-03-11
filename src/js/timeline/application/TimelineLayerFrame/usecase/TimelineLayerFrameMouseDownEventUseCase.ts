@@ -47,10 +47,8 @@ export const execute = (event: PointerEvent): void =>
     const externalTimeline = new ExternalTimeline(workSpace, movieClip);
 
     // 単体選択の外部APIを実行
-    externalTimeline.selectedLayer(
-        externalLayer.index,
-        frame
-    );
+    externalTimeline
+        .selectedLayers(externalLayer.index);
 
     // 最初に選択したフレームとレイヤーをセット
     timelineLayerFrameFirstSelectedService(frame, layer);
