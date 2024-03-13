@@ -2,6 +2,7 @@ import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { execute as timelineLayerFrameClearSelectedUseCase } from "./TimelineLayerFrameClearSelectedUseCase";
 import { timelineLayer } from "@/timeline/domain/model/TimelineLayer";
 import { $getLeftFrame } from "../../TimelineUtil";
+import { ExternalTimeline } from "@/external/timeline/domain/model/ExternalTimeline";
 
 /**
  * @description マウスでの複数フレーム選択処理関数
@@ -31,73 +32,40 @@ export const execute = (event: PointerEvent): void =>
             return ;
         }
 
-        // 現在の表示を初期化
-        timelineLayerFrameClearSelectedUseCase();
+        const workSpace = $getCurrentWorkSpace();
+        const scene = workSpace.scene;
 
-        // 最後に選択したフレームをセット
-        timelineLayer.selectedFrameObject.end = parseInt(frame);
+        // 最初に選択したレイヤーのindex値を取得
+        const layer = scene.selectedLayers[0];
+        const firstIndex = scene.layers.indexOf(layer);
 
-        const layer = timelineLayer.selectedLayers[0];
-        const movieClip  = $getCurrentWorkSpace().scene;
-        const firstIndex = movieClip.layers.indexOf(layer);
+        // 選択したレイヤーと最初のレイヤーを比較
+        const minIndex = Math.min(parseInt(layerIndex), firstIndex);
+        const maxIndex = Math.max(parseInt(layerIndex), firstIndex);
 
-        const minLayerIndex = Math.min(firstIndex, parseInt(layerIndex));
-        const maxLayerIndex = Math.max(firstIndex, parseInt(layerIndex));
-
-        const startFrame = Math.min(
-            timelineLayer.selectedFrameObject.start,
-            timelineLayer.selectedFrameObject.end
-        );
-
-        const endFrame = Math.max(
-            timelineLayer.selectedFrameObject.start,
-            timelineLayer.selectedFrameObject.end
-        );
-
-        // 内部情報を初期化
-        timelineLayer.selectedLayers.length = 0;
-
-        // 選択範囲を更新
-        timelineLayer.selectedLayers.push(layer);
-
-        const leftFrame = $getLeftFrame();
-        for (let idx = minLayerIndex; maxLayerIndex >= idx; ++idx) {
-
-            const layer = movieClip.layers[idx];
-
-            // フレームの選択範囲をセット
-            layer.selectedFrame.start = startFrame;
-            layer.selectedFrame.end   = endFrame + 1;
-
-            // 内部情報に追加
-            if (timelineLayer.selectedLayers.indexOf(layer) === -1) {
-                timelineLayer.selectedLayers.push(layer);
-            }
-
-            const layerElement = timelineLayer.elements[layer.getDisplayIndex()];
-            if (!layerElement) {
+        // 選択範囲のレイヤーindex値の配列を作成
+        const indexes = [firstIndex];
+        for (let index = minIndex; maxIndex >= index; ++index) {
+            if (firstIndex === index) {
                 continue;
             }
-
-            // フレーム側のElementを更新
-            const frameElement = layerElement.lastElementChild as NonNullable<HTMLElement>;
-
-            const children = frameElement.children;
-            const length   = children.length;
-            for (let frame: number = startFrame; endFrame >= frame; ++frame) {
-
-                const frameIndex = frame - leftFrame;
-                if (frameIndex > length) {
-                    continue;
-                }
-
-                const element: HTMLElement | undefined = children[frameIndex] as HTMLElement;
-                if (!element) {
-                    continue;
-                }
-
-                element.classList.add("frame-active");
-            }
+            indexes.push(index);
         }
+
+        // 外部APIを起動
+        const externalTimeline = new ExternalTimeline(workSpace, scene);
+        externalTimeline.selectedLayers(indexes);
+
+        // 最後に選択したフレームを更新
+        scene.selectedFrameObject.end = parseInt(frame);
+
+        const startFrame = scene.selectedStartFrame;
+        const endFrame   = scene.selectedEndFrame;
+
+        const frames = [];
+        for (let frame = startFrame; frame < endFrame; ++frame) {
+            frames.push(frame);
+        }
+        externalTimeline.selectedFrames(frames);
     });
 };

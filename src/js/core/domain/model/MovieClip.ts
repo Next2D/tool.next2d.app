@@ -189,23 +189,6 @@ export class MovieClip extends Instance
     }
 
     /**
-     * @description
-     *
-     * @param  {Layer} layer
-     * @return {void}
-     * @method
-     * @public
-     */
-    selectedLayer (layer: Layer): void
-    {
-        // 選択中のLayerを初期化
-        this.clearSelectedLayer();
-
-        // 選択したレイヤーをセット
-        this._$selectedLayers.push(layer);
-    }
-
-    /**
      * @description 選択中のLayerを初期化
      *              Initialize the currently selected Layer
      *

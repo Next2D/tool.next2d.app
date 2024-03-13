@@ -9,11 +9,14 @@ describe("TimelineLayerFrameUpdateStyleServiceTest", () =>
     {
         const workSpace = $getCurrentWorkSpace() || $createWorkSpace();
         const scene: MovieClip = workSpace.scene;
-        const layer = scene.getLayer(0) as NonNullable<Layer>;
 
-        layer.selectedFrame.start = 1;
-        layer.selectedFrame.end = 2;
-        scene.selectedLayer(layer);
+        scene.selectedFrameObject.start = 1;
+        scene.selectedFrameObject.end   = 1;
+
+        // 初期化して配置
+        const layer = scene.getLayer(0) as NonNullable<Layer>;
+        scene.clearSelectedLayer();
+        scene.selectedLayers.push(layer);
 
         const div = document.createElement("div");
         div.dataset.layerIndex = "0";
@@ -28,7 +31,7 @@ describe("TimelineLayerFrameUpdateStyleServiceTest", () =>
         }
 
         // 初期値のテスト
-        execute(div, 1);
+        execute(scene, div, 1);
         for (let idx = 0; idx < 10; ++idx) {
 
             const frame = idx + 1;
@@ -51,7 +54,7 @@ describe("TimelineLayerFrameUpdateStyleServiceTest", () =>
         }
 
         // スクロール位置のテスト
-        execute(div, 6);
+        execute(scene, div, 6);
         for (let idx = 0; idx < 10; ++idx) {
 
             const frame = idx + 6;

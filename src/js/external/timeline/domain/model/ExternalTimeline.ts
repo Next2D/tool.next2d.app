@@ -7,6 +7,7 @@ import { execute as externalLayerUpdateReloadUseCase } from "@/external/core/app
 import { execute as timelineToolLayerAddHistoryUseCase } from "@/history/application/timeline/application/TimelineTool/LayerAdd/usecase/TimelineToolLayerAddHistoryUseCase";
 import { execute as externalTimelineLayerDeactivateLayerUseCase } from "@/external/timeline/application/ExternalTimelineLayer/usecase/ExternalTimelineLayerDeactivateLayerUseCase";
 import { execute as externalTimelineLayerControllerSelectedLayersUseCase } from "@/external/timeline/application/ExternalTimelineLayerController/usecase/ExternalTimelineLayerControllerSelectedLayersUseCase";
+import { execute as externalTimelineLayerFrameSelectedUseCase } from "@/external/timeline/application/ExternalTimelineLayerFrame/usecase/ExternalTimelineLayerFrameSelectedUseCase";
 import { execute as timelineLayerAllClearSelectedElementUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerAllClearSelectedElementUseCase";
 import { execute as timelineToolLayerDeleteHistoryUseCase } from "@/history/application/timeline/application/TimelineTool/LayerDelete/usecase/TimelineToolLayerDeleteHistoryUseCase";
 import { $clamp } from "@/global/GlobalUtil";
@@ -259,7 +260,10 @@ export class ExternalTimeline
         if (!this._$movieClip.selectedLayers.length) {
             return ;
         }
-        console.log(frames);
+
+        if (this._$workSpace.active && this._$movieClip.active) {
+            externalTimelineLayerFrameSelectedUseCase(this._$movieClip, frames);
+        }
     }
 
     /**

@@ -37,10 +37,10 @@ describe("TimelineLayerDeactivatedElementServiceTest", () =>
         const scene: MovieClip = workSpace.scene;
 
         const layer = scene.getLayer(0) as NonNullable<Layer>;
-        layer.selectedFrame.start = 1;
-        layer.selectedFrame.end   = 3;
+        scene.selectedFrameObject.start = 1;
+        scene.selectedFrameObject.end   = 2;
 
-        execute(layer);
+        execute(scene, layer);
 
         expect(node1.classList.contains("active")).toBe(false);
         expect(node2.classList.contains("active")).toBe(true);

@@ -4,7 +4,6 @@ import { ExternalLayer } from "@/external/core/domain/model/ExternalLayer";
 import { ExternalTimeline } from "@/external/timeline/domain/model/ExternalTimeline";
 import { EventType } from "@/tool/domain/event/EventType";
 import { execute as timelineLayerFrameMouseMoveEventUseCase } from "./TimelineLayerFrameMouseMoveEventUseCase";
-import { execute as timelineLayerFrameFirstSelectedService } from "../service/TimelineLayerFrameFirstSelectedService";
 
 /**
  * @description フレームエリアのマウスダウンの実行関数
@@ -50,10 +49,11 @@ export const execute = (event: PointerEvent): void =>
     externalTimeline.selectedFrames([frame]);
 
     // 最初に選択したフレームとレイヤーをセット
-    timelineLayerFrameFirstSelectedService(frame);
+    movieClip.selectedFrameObject.start = frame;
+    movieClip.selectedFrameObject.end   = frame;
 
     // フレーム選択イベントを登録
-    // window.addEventListener(EventType.MOUSE_MOVE,
-    //     timelineLayerFrameMouseMoveEventUseCase
-    // );
+    window.addEventListener(EventType.MOUSE_MOVE,
+        timelineLayerFrameMouseMoveEventUseCase
+    );
 };
