@@ -1,9 +1,6 @@
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { $getLayerFromElement } from "../../TimelineUtil";
-import { ExternalLayer } from "@/external/core/domain/model/ExternalLayer";
-import { ExternalTimeline } from "@/external/timeline/domain/model/ExternalTimeline";
-import { EventType } from "@/tool/domain/event/EventType";
-import { execute as timelineLayerFrameMouseMoveEventUseCase } from "./TimelineLayerFrameMouseMoveEventUseCase";
+import { execute as timelineLayerFrameSelectedStartUseCase } from "./TimelineLayerFrameSelectedStartUseCase";
 
 /**
  * @description フレームエリアのマウスダウンの実行関数
@@ -35,25 +32,20 @@ export const execute = (event: PointerEvent): void =>
     const workSpace = $getCurrentWorkSpace();
     const movieClip = workSpace.scene;
 
-    // 外部APIを起動
-    const externalLayer    = new ExternalLayer(workSpace, movieClip, layer);
-    const externalTimeline = new ExternalTimeline(workSpace, movieClip);
-
-    // 指定レイヤーを選択状態に更新
-    // fixed logic
-    externalTimeline
-        .selectedLayers([externalLayer.index]);
-
-    // 指定フレームを選択状態に更新
     const frame = parseInt(element.dataset.frame as NonNullable<string>);
-    externalTimeline.selectedFrames([frame]);
+    if (movieClip.selectedLayers.indexOf(layer) > -1
+        && frame >= movieClip.selectedStartFrame
+        && movieClip.selectedEndFrame > frame
+    ) {
+        // TODO グループ選択
 
-    // 最初に選択したフレームとレイヤーをセット
-    movieClip.selectedFrameObject.start = frame;
-    movieClip.selectedFrameObject.end   = frame;
-
-    // フレーム選択イベントを登録
-    window.addEventListener(EventType.MOUSE_MOVE,
-        timelineLayerFrameMouseMoveEventUseCase
-    );
+    } else {
+        // フレーム選択
+        timelineLayerFrameSelectedStartUseCase(
+            workSpace,
+            movieClip,
+            layer,
+            frame
+        );
+    }
 };
