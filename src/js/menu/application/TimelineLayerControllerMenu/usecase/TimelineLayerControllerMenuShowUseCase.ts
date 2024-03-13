@@ -2,11 +2,11 @@ import type { MenuImpl } from "@/interface/MenuImpl";
 import type { TimelineLayerControllerMenu } from "@/menu/domain/model/TimelineLayerControllerMenu";
 import { $getLayerFromElement } from "@/timeline/application/TimelineUtil";
 import { $TIMELINE_LAYER_MENU_NAME } from "@/config/MenuConfig";
-import { execute as timelineLayerControllerNormalSelectUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerNormalSelectUseCase";
 import { execute as timelineLayerControllerMenuSetColorService } from "../service/TimelineLayerControllerMenuSetColorService";
 import { execute as timelineLayerControllerMenuUpdateIconStyleService } from "../service/TimelineLayerControllerMenuUpdateIconStyleService";
-import { execute as externalMovieClipSelectedLayerService } from "@/external/core/application/ExternalMovieClip/service/ExternalMovieClipSelectedLayerService";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
+import { ExternalTimeline } from "@/external/timeline/domain/model/ExternalTimeline";
+import { ExternalLayer } from "@/external/core/domain/model/ExternalLayer";
 import {
     $allHideMenu,
     $getMenu
@@ -52,18 +52,15 @@ export const execute = (event: MouseEvent): void =>
         return ;
     }
 
-    const scene = $getCurrentWorkSpace().scene;
+    const workSpace = $getCurrentWorkSpace();
+    const scene = workSpace.scene;
 
-    // 指定のレイヤーだけを選択状態に更新
-    timelineLayerControllerNormalSelectUseCase(
-        layer, scene.currentFrame
-    );
+    // 外部APIを起動
+    const externalTimeline = new ExternalTimeline(workSpace, scene);
+    const externalLayer = new ExternalLayer(workSpace, scene, layer);
 
-    // 内部データとしてレイヤーを選択状態に更新
-    // fixed logic
-    externalMovieClipSelectedLayerService(
-        scene, layer, scene.currentFrame
-    );
+    // 指定のレイヤーを選択状態に更新
+    externalTimeline.selectedLayers([externalLayer.index]);
 
     // レイヤーのモードに合わせてモード設定をアクティブ表示
     timelineLayerControllerMenuUpdateIconStyleService(layer);

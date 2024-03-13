@@ -1,6 +1,5 @@
 import { execute as timelineFrameUpdateFrameElementService } from "@/timeline/application/TimelineFrame/service/TimelineFrameUpdateFrameElementService";
 import { execute as timelineMarkerMovePositionService } from "@/timeline/application/TimelineMarker/service/TimelineMarkerMovePositionService";
-import { execute as timelineLayerAllClearSelectedElementUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerAllClearSelectedElementUseCase";
 
 /**
  * @description レイヤーのアクティブを初期化して指定のフレームを選択する
@@ -12,9 +11,6 @@ import { execute as timelineLayerAllClearSelectedElementUseCase } from "@/timeli
  */
 export const execute = (frame: number): void =>
 {
-    // 選択したレイヤー・フレーム Elementを初期化
-    timelineLayerAllClearSelectedElementUseCase();
-
     // フレームの表示を更新
     timelineFrameUpdateFrameElementService(frame);
 

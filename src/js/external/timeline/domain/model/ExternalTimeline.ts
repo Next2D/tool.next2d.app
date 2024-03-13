@@ -87,6 +87,7 @@ export class ExternalTimeline
             externalTimelineChageFrameUseCase(frame);
         }
 
+        // 内部情報を更新
         this._$movieClip.currentFrame = frame;
 
         // 選択中のLayerを解放
