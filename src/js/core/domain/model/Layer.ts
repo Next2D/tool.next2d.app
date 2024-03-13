@@ -1,6 +1,5 @@
 import type { LayerSaveObjectImpl } from "@/interface/LayerSaveObjectImpl";
 import type { LayerModeImpl } from "@/interface/LayerModeImpl";
-import type { FrameObjectImpl } from "@/interface/FrameObjectImpl";
 import type { CharacterSaveObjectImpl } from "@/interface/CharacterSaveObjectImpl";
 import type { EmptyCharacterSaveObjectImpl } from "@/interface/EmptyCharacterSaveObjectImpl";
 import { execute as timelineLayerControllerGetHighlightColorService } from "@/timeline/application/TimelineLayerController/service/TimelineLayerControllerGetHighlightColorService";

@@ -1,7 +1,4 @@
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
-import { execute as timelineLayerFrameClearSelectedUseCase } from "./TimelineLayerFrameClearSelectedUseCase";
-import { timelineLayer } from "@/timeline/domain/model/TimelineLayer";
-import { $getLeftFrame } from "../../TimelineUtil";
 import { ExternalTimeline } from "@/external/timeline/domain/model/ExternalTimeline";
 
 /**
