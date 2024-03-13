@@ -26,21 +26,21 @@ export const execute = (): void =>
 
     // Undo
     $setShortcut(
-        $generateShortcutKey("z", { "ctrl": true }), (): void =>
+        $generateShortcutKey("z", { "ctrl": true }), async (): Promise<void> =>
         {
             const workSpace = $getCurrentWorkSpace();
             const scene = workSpace.scene;
-            historyUndoUseCase(workSpace.id, scene.id);
+            await historyUndoUseCase(workSpace.id, scene.id);
         }
     );
 
     // Redo
     $setShortcut(
-        $generateShortcutKey("z", { "ctrl": true, "shift": true  }), (): void =>
+        $generateShortcutKey("z", { "ctrl": true, "shift": true  }), async (): Promise<void> =>
         {
             const workSpace = $getCurrentWorkSpace();
             const scene = workSpace.scene;
-            historyRedoUseCase(workSpace.id, scene.id);
+            await historyRedoUseCase(workSpace.id, scene.id);
         }
     );
 

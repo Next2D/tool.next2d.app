@@ -35,7 +35,7 @@ export const execute = async (
     }
 
     const workSpace = $getWorkSpace(work_space_id);
-    if (!workSpace) {
+    if (!workSpace || workSpace.historyIndex >= workSpace.histories.length) {
         return ;
     }
 

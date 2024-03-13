@@ -8,7 +8,7 @@ import { $TIMELINE_TOOL_LAYER_DELETE_COMMAND } from "@/config/HistoryConfig";
  *              Create object for layer deletion history
  *
  * @param  {number} work_space_id
- * @param  {number} movie_clip_id
+ * @param  {MovieClip} movie_clip
  * @param  {number} index
  * @param  {Layer} layer
  * @return {object}

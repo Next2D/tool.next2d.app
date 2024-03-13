@@ -14,11 +14,11 @@ import {
  *              Execution function for keyboard events
  *
  * @param  {KeyboardEvent} event
- * @return {void}
+ * @return {Promise}
  * @method
  * @public
  */
-export const execute = (event: KeyboardEvent): void =>
+export const execute = async (event: KeyboardEvent): Promise<void> =>
 {
     // キーボードの入力中、もしくはショートカット設定中であれば終了
     if ($useKeyboard() || $useShortcutSetting()) {
@@ -101,5 +101,5 @@ export const execute = (event: KeyboardEvent): void =>
     event.preventDefault();
 
     // 登録されたコマンドを実行
-    callback(event);
+    await callback(event);
 };

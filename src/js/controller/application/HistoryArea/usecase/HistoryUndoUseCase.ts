@@ -35,12 +35,12 @@ export const execute = async (
     }
 
     const workSpace = $getWorkSpace(work_space_id);
-    if (!workSpace) {
+    if (!workSpace || !workSpace.historyIndex) {
         return ;
     }
 
     const movieClip: InstanceImpl<MovieClip> = workSpace.getLibrary(library_id);
-    if (!movieClip || !workSpace.historyIndex) {
+    if (!movieClip) {
         return ;
     }
 
