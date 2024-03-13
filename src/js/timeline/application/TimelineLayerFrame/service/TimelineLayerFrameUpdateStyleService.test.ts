@@ -31,7 +31,7 @@ describe("TimelineLayerFrameUpdateStyleServiceTest", () =>
         }
 
         // 初期値のテスト
-        execute(scene, div, 1);
+        execute(workSpace, scene, div, 1);
         for (let idx = 0; idx < 10; ++idx) {
 
             const frame = idx + 1;
@@ -54,7 +54,7 @@ describe("TimelineLayerFrameUpdateStyleServiceTest", () =>
         }
 
         // スクロール位置のテスト
-        execute(scene, div, 6);
+        execute(workSpace, scene, div, 6);
         for (let idx = 0; idx < 10; ++idx) {
 
             const frame = idx + 6;

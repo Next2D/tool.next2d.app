@@ -94,7 +94,9 @@ export const execute = (): void =>
         element.style.display = "";
 
         // xスクロール位置に合わせてフレームElementのStyleを更新
-        timelineLayerFrameUpdateStyleService(scene, frameControllerElement, leftFrame);
+        timelineLayerFrameUpdateStyleService(
+            workSpace, scene, frameControllerElement, leftFrame
+        );
 
         // Layerオブジェクトの状態に合わせて、表示Elementの情報を更新
         timelineLayerControllerUpdateElementStyleUseCase(layer);

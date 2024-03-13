@@ -51,7 +51,9 @@ export const execute = (): void =>
         }
 
         // スクロール位置に合わせてフレームElementのStyleを更新
-        timelineLayerFrameUpdateStyleService(scene, frameControllerElement, leftFrame);
+        timelineLayerFrameUpdateStyleService(
+            workSpace, scene, frameControllerElement, leftFrame
+        );
 
         // フレームの高さを加算
         currentHeight += frameHeight;

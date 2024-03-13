@@ -209,7 +209,7 @@ export class MovieClip extends Instance
      * @method
      * @public
      */
-    clearSelectedFrmae (): void
+    clearSelectedFrame (): void
     {
         this._$selectedFrameObject.start = 0;
         this._$selectedFrameObject.end   = 0;

@@ -118,6 +118,9 @@ export class ExternalTimeline
         // fixed logic
         this.deactivatedAllLayers();
 
+        // フレーム選択を初期化
+        this._$movieClip.clearSelectedFrame();
+
         // 新規レイヤーを追加
         const layer = externalMovieClipCreateLayerUseCase(
             this._$workSpace,
@@ -195,6 +198,9 @@ export class ExternalTimeline
                 layer, index, receiver
             );
         }
+
+        // フレーム選択を初期化
+        this._$movieClip.clearSelectedFrame();
 
         // レイヤー更新によるタイムラインの再描画
         if (this._$workSpace.active && this._$movieClip.active) {
