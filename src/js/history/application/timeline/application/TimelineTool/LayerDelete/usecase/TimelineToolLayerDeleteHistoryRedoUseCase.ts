@@ -1,7 +1,8 @@
 import { $getWorkSpace } from "@/core/application/CoreUtil";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { InstanceImpl } from "@/interface/InstanceImpl";
-import { execute as externalMovieClipRemoveLayerUseCase } from "@/external/core/application/ExternalMovieClip/usecase/ExternalMovieClipDeleteLayerUseCase";
+import { execute as externalLayerUpdateReloadUseCase } from "@/external/core/application/ExternalLayer/usecase/ExternalLayerUpdateReloadUseCase";
+import { ExternalTimeline } from "@/external/timeline/domain/model/ExternalTimeline";
 
 /**
  * @description レイヤー削除を再度実行する
@@ -31,7 +32,21 @@ export const execute = (
     }
 
     const layer = movieClip.layers[index];
-    externalMovieClipRemoveLayerUseCase(
-        workSpace, movieClip, layer, index
-    );
+    if (!layer) {
+        return ;
+    }
+
+    // 外部APIを起動
+    const externalTimeline = new ExternalTimeline(workSpace, movieClip);
+
+    // 選択中であれば非アクティブに更新
+    externalTimeline.deactivatedLayer([index]);
+
+    // 内部情報から削除
+    movieClip.deleteLayer(layer);
+
+    // レイヤー更新によるタイムラインの再描画
+    if (workSpace.active && movieClip.active) {
+        externalLayerUpdateReloadUseCase();
+    }
 };

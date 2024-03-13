@@ -16,8 +16,9 @@ import { timelineHeader } from "@/timeline/domain/model/TimelineHeader";
 export const execute = (): void =>
 {
     const workSpace = $getCurrentWorkSpace();
+    const scene = workSpace.scene;
 
-    const layers = workSpace.scene.layers;
+    const layers = scene.layers;
     if (!layers.length) {
         return ;
     }
@@ -50,7 +51,7 @@ export const execute = (): void =>
         }
 
         // スクロール位置に合わせてフレームElementのStyleを更新
-        timelineLayerFrameUpdateStyleService(frameControllerElement, leftFrame);
+        timelineLayerFrameUpdateStyleService(scene, frameControllerElement, leftFrame);
 
         // フレームの高さを加算
         currentHeight += frameHeight;

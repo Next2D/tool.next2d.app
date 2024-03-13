@@ -9,7 +9,9 @@
   },
   "extends": "plugin:@typescript-eslint/eslint-recommended",
   "parser": "@typescript-eslint/parser",
+  "plugins": ["unused-imports"],
   "rules": {
+    "unused-imports/no-unused-imports": "warn",
     "no-var": "error",
     "semi": ["error", "always", { "omitLastInOneLineBlock": true }],
     "block-spacing": "error",
@@ -27,7 +29,7 @@
     "arrow-spacing": "error",
     "no-undef": "off",
     "comma-dangle": "warn",
-    "no-unused-vars": ["error", { "vars": "local", "args": "all" }],
+    "no-unused-vars": "off",
     "no-use-before-define": "error",
     "no-const-assign": "error",
     "space-before-blocks": "error",

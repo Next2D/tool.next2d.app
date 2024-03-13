@@ -25,7 +25,7 @@ export const execute = (
 
         // 選択中なら、対象のElementを非アクティブに更新
         if (externalLayer.isSelected()) {
-            timelineLayerDeactivatedElementService(layer);
+            timelineLayerDeactivatedElementService(movie_clip, layer);
         }
     }
 

@@ -1,21 +1,17 @@
+import type { MovieClip } from "@/core/domain/model/MovieClip";
 import { execute as timelineLayerAllClearSelectedElementUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerAllClearSelectedElementUseCase";
-import { timelineLayer } from "@/timeline/domain/model/TimelineLayer";
-import { execute as timelineLayerFrameClearSelectedUseCase } from "@/timeline/application/TimelineLayerFrame/usecase/TimelineLayerFrameClearSelectedUseCase";
 
 /**
  * @description MovieClipの終了処理
  *              Exit Process for MovieClip
  *
+ * @param  {MovieClip} movie_clip
  * @return {Promise}
  * @method
  * @public
  */
-export const execute = (): void =>
+export const execute = (movie_clip: MovieClip): void =>
 {
     // 選択中のElementを初期化
-    timelineLayerAllClearSelectedElementUseCase();
-
-    // タイムラインのフレーム選択の情報を初期化
-    timelineLayerFrameClearSelectedUseCase();
-    timelineLayer.clear();
+    timelineLayerAllClearSelectedElementUseCase(movie_clip);
 };

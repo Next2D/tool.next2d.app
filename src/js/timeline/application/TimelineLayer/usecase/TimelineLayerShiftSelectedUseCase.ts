@@ -40,5 +40,5 @@ export const execute = (
 
     // 外部APIを起動
     const externalTimeline = new ExternalTimeline($getCurrentWorkSpace(), movie_clip);
-    externalTimeline.selectedLayers(...indexes);
+    externalTimeline.selectedLayers(indexes);
 };

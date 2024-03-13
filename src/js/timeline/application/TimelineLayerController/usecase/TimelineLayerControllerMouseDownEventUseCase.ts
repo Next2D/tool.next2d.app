@@ -52,7 +52,7 @@ export const execute = (event: PointerEvent): void =>
 
                 // 単体選択の外部APIを実行
                 externalTimeline
-                    .selectedLayers(externalLayer.index);
+                    .selectedLayers([externalLayer.index]);
             }
             break;
 

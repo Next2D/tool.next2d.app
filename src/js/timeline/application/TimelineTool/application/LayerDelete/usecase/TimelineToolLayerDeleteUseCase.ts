@@ -47,14 +47,20 @@ export const execute = (
         return ;
     }
 
-    // タイムラインのAPIを起動
-    const externalTimeline = new ExternalTimeline(workSpace, scene);
+    // 削除するレイヤーのindex配列を作成
+    const indexes = [];
     for (let idx = 0; idx < selectedLayers.length; ++idx) {
 
         const layer = selectedLayers[idx];
 
         // レイヤーのAPIを起動
         const externalLayer = new ExternalLayer(workSpace, scene, layer);
-        externalTimeline.deleteLayer(externalLayer.index);
+        indexes.push(externalLayer.index);
     }
+
+    // タイムラインのAPIを起動
+    const externalTimeline = new ExternalTimeline(workSpace, scene);
+
+    // 削除を実行
+    externalTimeline.deleteLayer(indexes);
 };

@@ -2,8 +2,7 @@ import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { Layer } from "@/core/domain/model/Layer";
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import { execute as timelineToolLayerCreateService } from "@/timeline/application/TimelineTool/application/LayerAdd/service/TimelineToolLayerCreateService";
-import { execute as timelineLayerBuildElementUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerBuildElementUseCase";
-import { execute as timelineScrollUpdateHeightService } from "@/timeline/application/TimelineScroll/service/TimelineScrollUpdateHeightService";
+import { execute as externalLayerUpdateReloadUseCase } from "@/external/core/application/ExternalLayer/usecase/ExternalLayerUpdateReloadUseCase";
 
 /**
  * @description 指定のMovieClipにレイヤーを追加
@@ -37,13 +36,9 @@ export const execute = (
         return null;
     }
 
-    // 画面表示されてる、WorkSpaceとMovieClipの場合は表示Elementを更新
+    // レイヤー更新によるタイムラインの再描画
     if (work_space.active && movie_clip.active) {
-        // タイムラインのyスクロールの高さを更新
-        timelineScrollUpdateHeightService();
-
-        // タイムラインを再描画
-        timelineLayerBuildElementUseCase();
+        externalLayerUpdateReloadUseCase();
     }
 
     return newLayer;

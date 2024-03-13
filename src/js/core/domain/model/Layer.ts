@@ -28,7 +28,6 @@ export class Layer
     private _$guideId: null | number;
     private readonly _$characters: Character[];
     private readonly _$emptys: EmptyCharacter[];
-    private readonly _$selectedFrame: FrameObjectImpl;
 
     /**
      * @param {object} [object = null]
@@ -104,15 +103,6 @@ export class Layer
          * @private
          */
         this._$emptys = [];
-
-        /**
-         * @type {object}
-         * @private
-         */
-        this._$selectedFrame = {
-            "start": 0,
-            "end": 0
-        };
 
         if (object) {
             this.load(object);
@@ -256,19 +246,6 @@ export class Layer
     }
 
     /**
-     * @description フレーム選択の範囲
-     *              Frame Selection Range
-     *
-     * @member {object}
-     * @readonly
-     * @public
-     */
-    get selectedFrame (): FrameObjectImpl
-    {
-        return this._$selectedFrame;
-    }
-
-    /**
      * @description レイヤー内のDisplayObject配列
      *              DisplayObject array in layer
      *
@@ -307,20 +284,6 @@ export class Layer
         const scene = $getCurrentWorkSpace().scene;
         const index = scene.layers.indexOf(this);
         return index === -1 ? index : index - $getTopIndex();
-    }
-
-    /**
-     * @description 選択中のフレーム内部情報を初期化
-     *              Initialize information inside the selected frame
-     *
-     * @return {void}
-     * @method
-     * @public
-     */
-    clear (): void
-    {
-        this._$selectedFrame.start = 0;
-        this._$selectedFrame.end   = 0;
     }
 
     /**

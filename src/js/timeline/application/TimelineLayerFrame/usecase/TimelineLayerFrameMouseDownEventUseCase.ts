@@ -5,7 +5,6 @@ import { ExternalTimeline } from "@/external/timeline/domain/model/ExternalTimel
 import { EventType } from "@/tool/domain/event/EventType";
 import { execute as timelineLayerFrameMouseMoveEventUseCase } from "./TimelineLayerFrameMouseMoveEventUseCase";
 import { execute as timelineLayerFrameFirstSelectedService } from "../service/TimelineLayerFrameFirstSelectedService";
-import { execute as timelineLayerFrameClearSelectedUseCase } from "./TimelineLayerFrameClearSelectedUseCase";
 
 /**
  * @description フレームエリアのマウスダウンの実行関数
@@ -34,27 +33,27 @@ export const execute = (event: PointerEvent): void =>
         return ;
     }
 
-    // 表示を初期化
-    // fixed logic
-    timelineLayerFrameClearSelectedUseCase();
-
     const workSpace = $getCurrentWorkSpace();
     const movieClip = workSpace.scene;
-    const frame = parseInt(element.dataset.frame as NonNullable<string>);
 
     // 外部APIを起動
     const externalLayer    = new ExternalLayer(workSpace, movieClip, layer);
     const externalTimeline = new ExternalTimeline(workSpace, movieClip);
 
-    // 単体選択の外部APIを実行
+    // 指定レイヤーを選択状態に更新
+    // fixed logic
     externalTimeline
-        .selectedLayers(externalLayer.index);
+        .selectedLayers([externalLayer.index]);
+
+    // 指定フレームを選択状態に更新
+    const frame = parseInt(element.dataset.frame as NonNullable<string>);
+    externalTimeline.selectedFrames([frame]);
 
     // 最初に選択したフレームとレイヤーをセット
-    timelineLayerFrameFirstSelectedService(frame, layer);
+    timelineLayerFrameFirstSelectedService(frame);
 
     // フレーム選択イベントを登録
-    window.addEventListener(EventType.MOUSE_MOVE,
-        timelineLayerFrameMouseMoveEventUseCase
-    );
+    // window.addEventListener(EventType.MOUSE_MOVE,
+    //     timelineLayerFrameMouseMoveEventUseCase
+    // );
 };

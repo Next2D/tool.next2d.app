@@ -1,11 +1,11 @@
 import type { SoundObjectImpl } from "@/interface/SoundObjectImpl";
 import type { MovieClipSaveObjectImpl } from "@/interface/MovieClipSaveObjectImpl";
 import type { ActionSaveObjectImpl } from "@/interface/ActionSaveObjectImpl";
+import type { FrameObjectImpl } from "@/interface/FrameObjectImpl";
 import { Instance } from "./Instance";
 import { Layer } from "./Layer";
 import { execute as movieClipRunUseCase } from "@/core/application/MovieClip/usecase/MovieClipRunUseCase";
 import { execute as movieClipStopUseCase } from "@/core/application/MovieClip/usecase/MovieClipStopUseCase";
-import { execute as movieClipClearSelectedLayerService } from "@/core/application/MovieClip/service/MovieClipClearSelectedLayerService";
 import { $clamp } from "@/global/GlobalUtil";
 
 /**
@@ -28,6 +28,7 @@ export class MovieClip extends Instance
     private readonly _$actions: Map<number, string>;
     private readonly _$sounds: Map<number, SoundObjectImpl[]>;
     private readonly _$selectedLayers: Layer[];
+    private readonly _$selectedFrameObject: FrameObjectImpl;
 
     /**
      * @params {object} object
@@ -37,6 +38,13 @@ export class MovieClip extends Instance
     constructor (object: MovieClipSaveObjectImpl)
     {
         super(object);
+
+        /**
+         * @type {boolean}
+         * @default false
+         * @private
+         */
+        this._$active = false;
 
         /**
          * @type {Map}
@@ -97,16 +105,62 @@ export class MovieClip extends Instance
         this._$selectedLayers = [];
 
         /**
-         * @type {boolean}
-         * @default false
+         * @type {object}
          * @private
          */
-        this._$active = false;
+        this._$selectedFrameObject = {
+            "start": 0,
+            "end": 0
+        };
 
         // 指定objectからMovieCLipを復元
         this.load(object);
     }
 
+    /**
+     * @description フレームの選択状態を保存したオブジェクトを返却
+     *              Returns an object with the frame selection state saved
+     *
+     * @return {object}
+     * @readonly
+     * @public
+     */
+    get selectedFrameObject (): FrameObjectImpl
+    {
+        return this._$selectedFrameObject;
+    }
+
+    /**
+     * @description 選択したフレームの最小値を返却
+     *              Returns the minimum value for the selected frame
+     *
+     * @return {number}
+     * @readonly
+     * @public
+     */
+    get selectedStartFrame (): number
+    {
+        return Math.min(
+            this._$selectedFrameObject.start,
+            this._$selectedFrameObject.end
+        );
+    }
+
+    /**
+     * @description 選択したフレームの最大値を返却
+     *              Returns the maximum value for the selected frame
+     *
+     * @return {number}
+     * @readonly
+     * @public
+     */
+    get selectedEndFrame (): number
+    {
+        return Math.max(
+            this._$selectedFrameObject.start,
+            this._$selectedFrameObject.end
+        ) + 1;
+    }
     /**
      * @description HTMLCanvasElementを返却
      *              Return HTMLCanvasElement
@@ -161,7 +215,21 @@ export class MovieClip extends Instance
      */
     clearSelectedLayer (): void
     {
-        movieClipClearSelectedLayerService(this);
+        this._$selectedLayers.length = 0;
+    }
+
+    /**
+     * @description 選択中のフレームを初期化
+     *              Initialize the currently selected frame
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    clearSelectedFrmae (): void
+    {
+        this._$selectedFrameObject.start = 0;
+        this._$selectedFrameObject.end   = 0;
     }
 
     /**
@@ -280,7 +348,7 @@ export class MovieClip extends Instance
     stop (): void
     {
         // 選択中のLayerを初期化
-        movieClipStopUseCase();
+        movieClipStopUseCase(this);
 
         // 状態を非アクティブに更新
         this._$active = false;
@@ -389,12 +457,13 @@ export class MovieClip extends Instance
      */
     deleteLayer (layer: Layer): void
     {
-        // 非アクティブに更新
+        // 選択情報から削除
         this.deactivatedLayer(layer);
 
-        const layerIndex = this._$layers.indexOf(layer);
-        if (layerIndex > -1) {
-            this._$layers.splice(layerIndex, 1);
+        // 内部情報から削除
+        const index = this._$layers.indexOf(layer);
+        if (index > -1) {
+            this._$layers.splice(index, 1);
         }
     }
 
@@ -409,12 +478,10 @@ export class MovieClip extends Instance
      */
     deactivatedLayer (layer: Layer): void
     {
-        const selectedIndex = this._$selectedLayers.indexOf(layer);
-        if (selectedIndex > -1) {
-            this._$selectedLayers.splice(selectedIndex, 1);
+        const index = this._$selectedLayers.indexOf(layer);
+        if (index > -1) {
+            this._$selectedLayers.splice(index, 1);
         }
-
-        layer.clear();
     }
 
     /**

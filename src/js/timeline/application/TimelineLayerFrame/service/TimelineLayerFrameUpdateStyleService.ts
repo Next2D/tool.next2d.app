@@ -1,24 +1,30 @@
 import { $getLayerFromElement } from "../../TimelineUtil";
+import type { MovieClip } from "@/core/domain/model/MovieClip";
 
 /**
  * @description 指定のフレームElementのStyleを更新
  *              Update the Style of the specified Frame Element
  *
+ * @param  {MovieClip} movie_clip
  * @param  {HTMLElement} element
  * @param  {number} left_frame
  * @return {void}
  * @method
  * @public
  */
-export const execute = (element: HTMLElement, left_frame: number): void =>
-{
+export const execute = (
+    movie_clip: MovieClip,
+    element: HTMLElement,
+    left_frame: number
+): void => {
+
     const layer = $getLayerFromElement(element);
     if (!layer) {
         return;
     }
 
-    const startFrame = layer.selectedFrame.start;
-    const endFrame   = layer.selectedFrame.end;
+    const startFrame = movie_clip.selectedStartFrame;
+    const endFrame   = movie_clip.selectedEndFrame;
 
     const children: HTMLCollection = element.children;
     const length: number = children.length;
@@ -40,7 +46,7 @@ export const execute = (element: HTMLElement, left_frame: number): void =>
         }
 
         // アクティブフレームのクラスをセット
-        if (frame >= startFrame  && endFrame > frame) {
+        if (startFrame > 0 && frame >= startFrame  && endFrame > frame) {
             classValues.push("frame-active");
         }
 

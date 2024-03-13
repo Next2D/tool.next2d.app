@@ -1,5 +1,5 @@
-import { timelineLayer } from "@/timeline/domain/model/TimelineLayer";
 import { execute as timelineLayerDeactivatedElementService } from "@/timeline/application/TimelineLayer/service/TimelineLayerDeactivatedElementService";
+import { MovieClip } from "@/core/domain/model/MovieClip";
 
 /**
  * @description タイムラインのマウスダウンで選択した最初のフレームとレイヤーをセット
@@ -9,15 +9,14 @@ import { execute as timelineLayerDeactivatedElementService } from "@/timeline/ap
  * @method
  * @public
  */
-export const execute = (): void =>
+export const execute = (movie_clip: MovieClip): void =>
 {
-    for (let idx = 0; idx < timelineLayer.selectedLayers.length; ++idx) {
+    for (let idx = 0; idx < movie_clip.selectedLayers.length; ++idx) {
+
+        const layer = movie_clip.selectedLayers[idx];
 
         // フレームの表示を初期化
-        const layer = timelineLayer.selectedLayers[idx];
-        timelineLayerDeactivatedElementService(layer, false);
+        timelineLayerDeactivatedElementService(movie_clip, layer);
 
-        // レイヤーの内部情報を初期化
-        layer.clear();
     }
 };

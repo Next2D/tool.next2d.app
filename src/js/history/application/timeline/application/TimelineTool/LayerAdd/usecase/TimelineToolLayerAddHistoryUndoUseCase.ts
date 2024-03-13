@@ -1,11 +1,9 @@
-import { $getWorkSpace } from "@/core/application/CoreUtil";
-import { execute as timelineScrollUpdateHeightService } from "@/timeline/application/TimelineScroll/service/TimelineScrollUpdateHeightService";
-import { execute as timelineLayerBuildElementUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerBuildElementUseCase";
 import type { InstanceImpl } from "@/interface/InstanceImpl";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
+import { $getWorkSpace } from "@/core/application/CoreUtil";
 import { ExternalLayer } from "@/external/core/domain/model/ExternalLayer";
 import { ExternalTimeline } from "@/external/timeline/domain/model/ExternalTimeline";
-import { execute as timelineLayerAllClearSelectedElementUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerAllClearSelectedElementUseCase";
+import { execute as externalLayerUpdateReloadUseCase } from "@/external/core/application/ExternalLayer/usecase/ExternalLayerUpdateReloadUseCase";
 
 /**
  * @description レイヤー追加作業を元に戻す
@@ -39,27 +37,18 @@ export const execute = (
         return ;
     }
 
-    // 表示されているElementを初期化、内部データに変更なし
-    if (workSpace.active && movieClip.active) {
-        timelineLayerAllClearSelectedElementUseCase();
-    }
-
     // 外部APIを起動
     const externalLayer = new ExternalLayer(workSpace, movieClip, layer);
     const externalTimeline = new ExternalTimeline(workSpace, movieClip);
 
     // 非アクティブに更新
-    externalTimeline.deactivatedLayer(externalLayer.index);
+    externalTimeline.deactivatedLayer([externalLayer.index]);
 
     // Layerオブジェクトの内部情報から削除
     movieClip.deleteLayer(layer);
 
+    // レイヤー更新によるタイムラインの再描画
     if (workSpace.active && movieClip.active) {
-
-        // タイムラインのyスクロールの高さを更新
-        timelineScrollUpdateHeightService();
-
-        // タイムラインを再描画
-        timelineLayerBuildElementUseCase();
+        externalLayerUpdateReloadUseCase();
     }
 };

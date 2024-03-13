@@ -45,7 +45,7 @@ export const execute = (): void =>
     timelineLayerAllElementDisplayNoneService(layers.length - topIndex);
 
     // フレームElementの表示を初期化
-    timelineLayerAllClearSelectedElementUseCase();
+    timelineLayerAllClearSelectedElementUseCase(scene);
 
     const frameHeight: number = workSpace.timelineAreaState.frameHeight;
     const frameWidth: number  = workSpace.timelineAreaState.frameWidth + 1;
@@ -94,7 +94,7 @@ export const execute = (): void =>
         element.style.display = "";
 
         // xスクロール位置に合わせてフレームElementのStyleを更新
-        timelineLayerFrameUpdateStyleService(frameControllerElement, leftFrame);
+        timelineLayerFrameUpdateStyleService(scene, frameControllerElement, leftFrame);
 
         // Layerオブジェクトの状態に合わせて、表示Elementの情報を更新
         timelineLayerControllerUpdateElementStyleUseCase(layer);
