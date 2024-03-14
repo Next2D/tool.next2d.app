@@ -1,6 +1,5 @@
 import { execute as timelineMenuShowService } from "@/menu/application/TimelineMenu/service/TimelineMenuShowService";
 import { execute as timelineLayerFrameMouseDownEventUseCase } from "./TimelineLayerFrameMouseDownEventUseCase";
-import { execute as timelineLayerFrameMouseUpEventUseCase } from "./TimelineLayerFrameMouseUpEventUseCase";
 import { EventType } from "@/tool/domain/event/EventType";
 
 /**
@@ -20,10 +19,5 @@ export const execute = (element: HTMLElement): void =>
     // マウスダウンイベントを登録
     element.addEventListener(EventType.MOUSE_DOWN,
         timelineLayerFrameMouseDownEventUseCase
-    );
-
-    // マウスアップイベントを登録
-    element.addEventListener(EventType.MOUSE_UP,
-        timelineLayerFrameMouseUpEventUseCase
     );
 };

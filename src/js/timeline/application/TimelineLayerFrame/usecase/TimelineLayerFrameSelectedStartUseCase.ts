@@ -4,7 +4,8 @@ import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import { ExternalLayer } from "@/external/core/domain/model/ExternalLayer";
 import { ExternalTimeline } from "@/external/timeline/domain/model/ExternalTimeline";
 import { EventType } from "@/tool/domain/event/EventType";
-import { execute as timelineLayerFrameMouseMoveEventUseCase } from "./TimelineLayerFrameMouseMoveEventUseCase";
+import { execute as timelineLayerFrameWindowMouseMoveEventUseCase } from "./TimelineLayerFrameWindowMouseMoveEventUseCase";
+import { execute as timelineLayerFrameWindowMouseUpEventUseCase } from "./TimelineLayerFrameWindowMouseUpEventUseCase";
 
 /**
  * @description 複数フレームの選択の開始関数、windowにmoveイベントを登録する
@@ -43,6 +44,10 @@ export const execute = (
 
     // フレーム選択イベントを登録
     window.addEventListener(EventType.MOUSE_MOVE,
-        timelineLayerFrameMouseMoveEventUseCase
+        timelineLayerFrameWindowMouseMoveEventUseCase
+    );
+    // 終了イベントを登録
+    window.addEventListener(EventType.MOUSE_UP,
+        timelineLayerFrameWindowMouseUpEventUseCase
     );
 };

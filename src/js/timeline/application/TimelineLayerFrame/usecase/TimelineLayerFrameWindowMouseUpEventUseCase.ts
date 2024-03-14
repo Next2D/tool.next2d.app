@@ -1,5 +1,5 @@
 import { EventType } from "@/tool/domain/event/EventType";
-import { execute as timelineLayerFrameMouseMoveEventUseCase } from "./TimelineLayerFrameMouseMoveEventUseCase";
+import { execute as timelineLayerFrameWindowMouseMoveEventUseCase } from "./TimelineLayerFrameWindowMouseMoveEventUseCase";
 
 /**
  * @description フレームエリアのマウスダウンの実行関数
@@ -15,8 +15,8 @@ export const execute = (event: PointerEvent): void =>
     // 親のイベントを中止
     event.stopPropagation();
 
-    // マウスムーブイベントを削除
+    // windowのムーブイベントを削除
     window.removeEventListener(EventType.MOUSE_MOVE,
-        timelineLayerFrameMouseMoveEventUseCase
+        timelineLayerFrameWindowMouseMoveEventUseCase
     );
 };
