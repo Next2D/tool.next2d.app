@@ -1,7 +1,6 @@
 import { $TIMELINE_LAYER_CONTROLLER_WIDTH } from "@/config/TimelineConfig";
 import { $TOOL_AERA_WIDTH } from "@/config/ToolConfig";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
-import { ExternalTimeline } from "@/external/timeline/domain/model/ExternalTimeline";
 import { ExternalLayer } from "@/external/core/domain/model/ExternalLayer";
 import { timelineHeader } from "@/timeline/domain/model/TimelineHeader";
 import { execute as timelineScrollUpdateScrollXUseCase } from "@/timeline/application/TimelineScroll/usecase/TimelineScrollUpdateScrollXUseCase";
