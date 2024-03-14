@@ -2,8 +2,10 @@ import { $TIMELINE_LAYER_CONTROLLER_WIDTH } from "@/config/TimelineConfig";
 import { $TOOL_AERA_WIDTH } from "@/config/ToolConfig";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { ExternalTimeline } from "@/external/timeline/domain/model/ExternalTimeline";
+import { ExternalLayer } from "@/external/core/domain/model/ExternalLayer";
 import { timelineHeader } from "@/timeline/domain/model/TimelineHeader";
 import { execute as timelineScrollUpdateScrollXUseCase } from "@/timeline/application/TimelineScroll/usecase/TimelineScrollUpdateScrollXUseCase";
+import { execute as timelineLayerFrameSelectedService } from "../service/TimelineLayerFrameSelectedService";
 import {
     $getMoveMode,
     $getTopIndex,
@@ -16,12 +18,16 @@ import {
  *
  * @param  {PointerEvent} event
  * @param  {boolean} [loop_mode = false]
+ * @param  {number} [add_frame = 0]
  * @return {void}
  * @method
  * @public
  */
-export const execute = (event: PointerEvent, loop_mode: boolean = false): void =>
-{
+export const execute = (
+    event: PointerEvent,
+    loop_mode: boolean = false
+): void => {
+
     // 他のイベントを中止する
     event.stopPropagation();
     event.preventDefault();
@@ -64,6 +70,18 @@ export const execute = (event: PointerEvent, loop_mode: boolean = false): void =
                     $setMoveMode(true);
                 }
 
+                const indexes = [];
+                for (let idx = 0; scene.selectedLayers.length >= idx; ++idx) {
+                    const externalLayer = new ExternalLayer(workSpace, scene, scene.selectedLayers[idx]);
+                    indexes.push(externalLayer.index);
+                }
+
+                // 1フレーム追加
+                timelineLayerFrameSelectedService(
+                    workSpace, scene, indexes,
+                    scene.selectedFrameObject.end + 1
+                );
+
                 execute(event, true);
             }
         });
@@ -94,6 +112,18 @@ export const execute = (event: PointerEvent, loop_mode: boolean = false): void =
                 if (!loop_mode) {
                     $setMoveMode(true);
                 }
+
+                const indexes = [];
+                for (let idx = 0; scene.selectedLayers.length >= idx; ++idx) {
+                    const externalLayer = new ExternalLayer(workSpace, scene, scene.selectedLayers[idx]);
+                    indexes.push(externalLayer.index);
+                }
+
+                // 1フレーム減算
+                timelineLayerFrameSelectedService(
+                    workSpace, scene, indexes,
+                    scene.selectedFrameObject.end - 1
+                );
 
                 execute(event, true);
             }
@@ -138,20 +168,10 @@ export const execute = (event: PointerEvent, loop_mode: boolean = false): void =
             indexes.push(index);
         }
 
-        // 外部APIを起動
-        const externalTimeline = new ExternalTimeline(workSpace, scene);
-        externalTimeline.selectedLayers(indexes);
-
-        // 最後に選択したフレームを更新
-        scene.selectedFrameObject.end = parseInt(frame);
-
-        const startFrame = scene.selectedStartFrame;
-        const endFrame   = scene.selectedEndFrame;
-
-        const frames = [];
-        for (let frame = startFrame; frame < endFrame; ++frame) {
-            frames.push(frame);
-        }
-        externalTimeline.selectedFrames(frames);
+        // 指定フレームを選択
+        timelineLayerFrameSelectedService(
+            workSpace, scene, indexes,
+            parseInt(frame)
+        );
     });
 };
