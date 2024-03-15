@@ -8,7 +8,8 @@ import { execute as timelineLayerWindowResizeUseCase } from "../../TimelineLayer
 import { execute as timelineHeaderUpdateClientWidthService } from "@/timeline/application/TimelineHeader/service/TimelineHeaderUpdateClientWidthService";
 import {
     $getStandbyMoveState,
-    $setStandbyMoveState
+    $setStandbyMoveState,
+    $setTimelineOffsetTop
 } from "../TimelineAreaUtil";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 
@@ -48,6 +49,9 @@ export const execute = (): void =>
             workSpace.timelineAreaState.state      = "move";
             workSpace.timelineAreaState.offsetLeft = element.offsetLeft;
             workSpace.timelineAreaState.offsetTop  = element.offsetTop;
+
+            // タイムラインのOffsetTopを更新
+            $setTimelineOffsetTop(element.offsetTop);
 
             // タイムラインエリアのstyleを更新
             timelineAreaChageStyleToActiveService(element);

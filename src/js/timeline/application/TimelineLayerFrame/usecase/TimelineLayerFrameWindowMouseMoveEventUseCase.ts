@@ -4,12 +4,15 @@ import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { ExternalLayer } from "@/external/core/domain/model/ExternalLayer";
 import { timelineHeader } from "@/timeline/domain/model/TimelineHeader";
 import { execute as timelineScrollUpdateScrollXUseCase } from "@/timeline/application/TimelineScroll/usecase/TimelineScrollUpdateScrollXUseCase";
+import { execute as timelineScrollUpdateScrollYUseCase } from "@/timeline/application/TimelineScroll/usecase/TimelineScrollUpdateScrollYUseCase";
 import { execute as timelineLayerFrameSelectedService } from "../service/TimelineLayerFrameSelectedService";
 import {
     $getMoveMode,
     $getTopIndex,
     $setMoveMode
 } from "../../TimelineUtil";
+import { $getTimelineOffsetTop } from "../../TimelineArea/TimelineAreaUtil";
+import { timelineLayer } from "@/timeline/domain/model/TimelineLayer";
 
 /**
  * @description フレームの複数選択の実行関数
@@ -44,6 +47,71 @@ export const execute = (
     const baseWidth    = $TIMELINE_LAYER_CONTROLLER_WIDTH + offsetLeft;
     const minPositionX = baseWidth;
     const maxPositionX = timelineHeader.clientWidth + baseWidth;
+
+    const minPositionY = $getTimelineOffsetTop() + 112;
+    const maxPositionY = minPositionY + timelineAreaState.height - 122;
+
+    // 移動範囲が上部を超えた場合の処理
+    if (event.pageY < minPositionY) {
+        requestAnimationFrame((): void =>
+        {
+            if (loop_mode && !$getMoveMode()) {
+                return ;
+            }
+
+            // 上方向に移動
+            if (!timelineScrollUpdateScrollYUseCase(-2)) {
+
+                // 自動移動モード終了
+                $setMoveMode(false);
+
+                return ;
+            }
+
+            if (loop_mode || !$getMoveMode()) {
+
+                // 自動移動モードを開始にセット
+                if (!loop_mode) {
+                    $setMoveMode(true);
+                }
+
+                execute(event, true);
+            }
+        });
+
+        return ;
+    }
+
+    // 移動範囲が下部を超えた場合の処理
+    if (event.pageY > maxPositionY) {
+        requestAnimationFrame((): void =>
+        {
+            if (loop_mode && !$getMoveMode()) {
+                return ;
+            }
+
+            // 下方向に移動
+            if (!timelineScrollUpdateScrollYUseCase(2)) {
+
+                // 自動移動モード終了
+                $setMoveMode(false);
+
+                return ;
+            }
+
+            if (loop_mode || !$getMoveMode()) {
+
+                // 自動移動モードを開始にセット
+                if (!loop_mode) {
+                    $setMoveMode(true);
+                }
+
+                execute(event, true);
+            }
+        });
+
+        return ;
+    }
 
     // 移動範囲が右側を超えた場合の処理
     if (event.pageX > maxPositionX) {

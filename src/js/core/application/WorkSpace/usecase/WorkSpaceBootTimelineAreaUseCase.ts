@@ -9,6 +9,7 @@ import { execute as timelineMarkerUpdateWidthService } from "@/timeline/applicat
 import { execute as timelineMarkerMovePositionService } from "@/timeline/application/TimelineMarker/service/TimelineMarkerMovePositionService";
 import { execute as timelineLayerUpdateClientHeightService } from "@/timeline/application/TimelineLayer/service/TimelineLayerUpdateClientHeightService";
 import { execute as timelineLayerControllerMenuScaleSelectService } from "@/menu/application/TimelineLayerControllerMenu/service/TimelineLayerControllerMenuScaleSelectService";
+import { $setTimelineOffsetTop } from "@/timeline/application/TimelineArea/TimelineAreaUtil";
 
 /**
  * @description WorkSpaceに保存されてるobjectからタイムラインエリアのstyleを更新
@@ -36,10 +37,18 @@ export const execute = (timeline_area_state: UserTimelineAreaStateObjectImpl): v
         timelineAreaChageStyleToActiveService(element);
         // fixed logic
         style.setProperty("--timeline-logic-width", `${timeline_area_state.width}px`);
+
+        // タイムラインのOffsetTopを更新
+        $setTimelineOffsetTop(timeline_area_state.offsetTop);
+
     } else {
         timelineAreaChageStyleToInactiveService(element);
+
         // fixed logic
         style.setProperty("--timeline-height", `${timeline_area_state.height}px`);
+
+        // タイムラインのOffsetTopを更新
+        $setTimelineOffsetTop(element.offsetTop);
     }
 
     // fixed logic

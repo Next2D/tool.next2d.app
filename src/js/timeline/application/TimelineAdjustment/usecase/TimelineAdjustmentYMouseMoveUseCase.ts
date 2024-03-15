@@ -8,6 +8,7 @@ import {
     $TIMELINE_MIN_HEIGHT,
     $TIMELINE_ID
 } from "@/config/TimelineConfig";
+import { $setTimelineOffsetTop } from "../../TimelineArea/TimelineAreaUtil";
 
 /**
  * @description タイムラインの高さを調整
@@ -38,19 +39,29 @@ export const execute = (event: PointerEvent): void =>
         height += -event.movementY;
         height = Math.max($TIMELINE_MIN_HEIGHT, height);
 
+        const element: HTMLElement | null = document
+            .getElementById($TIMELINE_ID);
+
         if (timelineAreaState.state === "move") {
 
-            const element: HTMLElement | null = document
-                .getElementById($TIMELINE_ID);
-
             if (element && $TIMELINE_MIN_HEIGHT < height) {
+
                 const offsetTop = element.offsetTop + event.movementY;
                 timelineAreaState.offsetTop = offsetTop;
                 element.style.top = `${offsetTop}px`;
+
+                // タイムラインのOffsetTopを更新
+                $setTimelineOffsetTop(offsetTop);
             }
 
         } else {
+
             style.setProperty("--timeline-height", `${height}px`);
+
+            // タイムラインのOffsetTopを更新
+            if (element) {
+                $setTimelineOffsetTop(element.offsetTop);
+            }
         }
 
         // 高さを更新

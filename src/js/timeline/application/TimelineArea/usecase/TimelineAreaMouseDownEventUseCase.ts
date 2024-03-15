@@ -6,11 +6,14 @@ import { execute as timelineAreaChageStyleToInactiveService } from "../service/T
 import { execute as timelineHeaderWindowResizeUseCase } from "@/timeline/application/TimelineHeader/usecase/TimelineHeaderWindowResizeUseCase";
 import { execute as timelineLayerWindowResizeUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerWindowResizeUseCase";
 import { $setMouseState } from "../../TimelineUtil";
-import { $setStandbyMoveState } from "../TimelineAreaUtil";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { $useKeyboard } from "@/shortcut/ShortcutUtil";
 import { execute as billingModelShowService } from "@/menu/application/BillingModal/service/BillingModelShowService";
 import { $useSocket } from "@/share/ShareUtil";
+import {
+    $setStandbyMoveState,
+    $setTimelineOffsetTop
+} from "../TimelineAreaUtil";
 
 /**
  * @description ダブルタップ用の待機フラグ
@@ -121,6 +124,10 @@ export const execute = (event: PointerEvent): void =>
 
         // レイヤーエリアをリサイズ
         timelineLayerWindowResizeUseCase();
+
+        // タイムラインのOffsetTopを更新
+        // fixed logic
+        $setTimelineOffsetTop(element.offsetTop);
     }
 
 };

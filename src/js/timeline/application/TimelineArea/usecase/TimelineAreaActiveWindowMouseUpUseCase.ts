@@ -3,6 +3,7 @@ import { EventType } from "@/tool/domain/event/EventType";
 import { $setCursor } from "@/global/GlobalUtil";
 import { execute as timelineAreaActiveWindowMoveService } from "../service/TimelineAreaActiveWindowMoveService";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
+import { $setTimelineOffsetTop } from "../TimelineAreaUtil";
 
 /**
  * @description 選択中のツールの移動イベント関数
@@ -45,4 +46,7 @@ export const execute = (event: PointerEvent): void =>
     timelineAreaState.width      = element.clientWidth;
     timelineAreaState.height     = element.clientHeight;
     workSpace.updateTimelineArea(timelineAreaState);
+
+    // タイムラインのOffsetTopを更新
+    $setTimelineOffsetTop(element.offsetTop);
 };
