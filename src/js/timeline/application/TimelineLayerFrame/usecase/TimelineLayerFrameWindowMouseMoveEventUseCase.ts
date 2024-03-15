@@ -12,7 +12,6 @@ import {
     $setMoveMode
 } from "../../TimelineUtil";
 import { $getTimelineOffsetTop } from "../../TimelineArea/TimelineAreaUtil";
-import { timelineLayer } from "@/timeline/domain/model/TimelineLayer";
 
 /**
  * @description フレームの複数選択の実行関数
