@@ -2,6 +2,7 @@ import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { $getLayerFromElement } from "../../TimelineUtil";
 import { execute as timelineLayerFrameSelectedStartUseCase } from "./TimelineLayerFrameSelectedStartUseCase";
 import { execute as timelineLayerFrameActiveGroupUseCase } from "./TimelineLayerFrameActiveGroupUseCase";
+import { $allHideMenu } from "@/menu/application/MenuUtil";
 
 /**
  * @description ダブルタップ用の待機フラグ
@@ -48,6 +49,9 @@ export const execute = (event: PointerEvent): void =>
         return ;
     }
 
+    // メニューを非表示にする
+    $allHideMenu();
+
     const workSpace = $getCurrentWorkSpace();
     const movieClip = workSpace.scene;
 
@@ -69,7 +73,7 @@ export const execute = (event: PointerEvent): void =>
         ) {
 
             // 選択したフレームグループの移動
-            activeTimerId = setTimeout(timelineLayerFrameActiveGroupUseCase, 600);
+            activeTimerId = setTimeout(timelineLayerFrameActiveGroupUseCase, 500);
 
         } else {
 

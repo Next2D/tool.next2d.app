@@ -5,6 +5,7 @@ import { $getLeftFrame } from "../../TimelineUtil";
 import { $getTimelineOffsetTop } from "../../TimelineArea/TimelineAreaUtil";
 import { execute as timelineLayerFrameGroupRegisterEventUseCase } from "./TimelineLayerFrameGroupRegisterEventUseCase";
 import { $TOOL_AERA_WIDTH } from "@/config/ToolConfig";
+import { timelineGroup } from "@/timeline/domain/model/TimelineGroup";
 
 /**
  * @description 選択したフレームのグループをアクティブにする
@@ -22,9 +23,6 @@ export const execute = (): void =>
     if (!element) {
         return ;
     }
-
-    // windowイベントを登録する
-    timelineLayerFrameGroupRegisterEventUseCase();
 
     const workSpace = $getCurrentWorkSpace();
     const movieClip = workSpace.scene;
@@ -59,6 +57,12 @@ export const execute = (): void =>
     if (!selectedFrameElement) {
         return ;
     }
+
+    // 移動情報を初期化
+    timelineGroup.clear();
+
+    // windowイベントを登録する
+    timelineLayerFrameGroupRegisterEventUseCase();
 
     // x座標
     const offsetTop = selectedFrameElement.offsetTop
