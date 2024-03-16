@@ -1,6 +1,9 @@
 import { EventType } from "@/tool/domain/event/EventType";
 import { execute as timelineLayerFrameWindowMouseMoveEventUseCase } from "./TimelineLayerFrameWindowMouseMoveEventUseCase";
-import { $setMoveMode } from "../../TimelineUtil";
+import {
+    $setMouseState,
+    $setMoveMode
+} from "../../TimelineUtil";
 
 /**
  * @description フレームエリアのマウスダウンの実行関数
@@ -15,6 +18,9 @@ export const execute = (event: PointerEvent): void =>
 {
     // 親のイベントを中止
     event.stopPropagation();
+
+    // マウスダウン状態に変更
+    $setMouseState("up");
 
     // 自動移動モード終了
     $setMoveMode(false);

@@ -1,8 +1,12 @@
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
-import { $getLayerFromElement } from "../../TimelineUtil";
 import { execute as timelineLayerFrameSelectedStartUseCase } from "./TimelineLayerFrameSelectedStartUseCase";
 import { execute as timelineTargetGroupActiveGroupUseCase } from "@/timeline/application/TimelineTargetGroup/usecase/TimelineTargetGroupActiveGroupUseCase";
 import { $allHideMenu } from "@/menu/application/MenuUtil";
+import {
+    $getLayerFromElement,
+    $getMouseState,
+    $setMouseState
+} from "../../TimelineUtil";
 
 /**
  * @description ダブルタップ用の待機フラグ
@@ -49,6 +53,9 @@ export const execute = (event: PointerEvent): void =>
         return ;
     }
 
+    // マウスダウン状態に変更
+    $setMouseState("down");
+
     // メニューを非表示にする
     $allHideMenu();
 
@@ -75,6 +82,9 @@ export const execute = (event: PointerEvent): void =>
             // 選択したフレームグループの移動
             activeTimerId = setTimeout((): void =>
             {
+                if ($getMouseState() === "up") {
+                    return ;
+                }
                 timelineTargetGroupActiveGroupUseCase(event.pageX, event.pageY);
             }, 500);
 
