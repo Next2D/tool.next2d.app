@@ -3,7 +3,7 @@ import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { timelineLayer } from "@/timeline/domain/model/TimelineLayer";
 import { $getLeftFrame } from "../../TimelineUtil";
 import { $getTimelineOffsetTop } from "../../TimelineArea/TimelineAreaUtil";
-import { execute as timelineLayerFrameGroupRegisterEventUseCase } from "./TimelineLayerFrameGroupRegisterEventUseCase";
+import { execute as timelineTargetGroupRegisterEventUseCase } from "./TimelineTargetGroupRegisterEventUseCase";
 import { $TOOL_AERA_WIDTH } from "@/config/ToolConfig";
 import { timelineGroup } from "@/timeline/domain/model/TimelineGroup";
 
@@ -62,7 +62,7 @@ export const execute = (): void =>
     timelineGroup.clear();
 
     // windowイベントを登録する
-    timelineLayerFrameGroupRegisterEventUseCase();
+    timelineTargetGroupRegisterEventUseCase();
 
     // x座標
     const offsetTop = selectedFrameElement.offsetTop

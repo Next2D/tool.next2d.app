@@ -1,6 +1,6 @@
 import { EventType } from "@/tool/domain/event/EventType";
-import { execute as timelineLayerFrameGroupInactiveElementService } from "../service/TimelineLayerFrameGroupInactiveElementService";
-import { execute as timelineLayerFrameGroupWindowMouseMoveEventUseCase } from "./TimelineLayerFrameGroupWindowMouseMoveEventUseCase";
+import { execute as timelineTargetGroupInactiveElementService } from "../service/TimelineTargetGroupInactiveElementService";
+import { execute as timelineTargetGroupWindowMouseMoveEventUseCase } from "./TimelineTargetGroupWindowMouseMoveEventUseCase";
 
 /**
  * @description グループウィンドウのマウスアップイベント
@@ -17,11 +17,11 @@ export const execute = (event: PointerEvent): void =>
     event.stopPropagation();
 
     // 選択したグループを非アクティブにする
-    timelineLayerFrameGroupInactiveElementService();
+    timelineTargetGroupInactiveElementService();
 
     // イベントを削除
     window.removeEventListener(EventType.MOUSE_MOVE,
-        timelineLayerFrameGroupWindowMouseMoveEventUseCase
+        timelineTargetGroupWindowMouseMoveEventUseCase
     );
     window.removeEventListener(EventType.MOUSE_UP, execute);
 };

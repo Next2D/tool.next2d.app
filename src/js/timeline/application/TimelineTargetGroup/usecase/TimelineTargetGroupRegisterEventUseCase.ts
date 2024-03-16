@@ -1,6 +1,6 @@
 import { EventType } from "@/tool/domain/event/EventType";
-import { execute as timelineLayerFrameGroupWindowMouseMoveEventUseCase } from "./TimelineLayerFrameGroupWindowMouseMoveEventUseCase";
-import { execute as timelineLayerFrameGroupWindowMouseUpEventUseCase } from "./TimelineLayerFrameGroupWindowMouseUpEventUseCase";
+import { execute as timelineTargetGroupWindowMouseMoveEventUseCase } from "./TimelineTargetGroupWindowMouseMoveEventUseCase";
+import { execute as timelineTargetGroupWindowMouseUpEventUseCase } from "./TimelineTargetGroupWindowMouseUpEventUseCase";
 
 /**
  * @description フレームグループのwindowイベントを登録する
@@ -14,11 +14,11 @@ export const execute = (): void =>
 {
     // グループウィンドウのマウスムーブイベント
     window.addEventListener(EventType.MOUSE_MOVE,
-        timelineLayerFrameGroupWindowMouseMoveEventUseCase
+        timelineTargetGroupWindowMouseMoveEventUseCase
     );
 
     // グループウィンドウのマウスアップイベント
     window.addEventListener(EventType.MOUSE_UP,
-        timelineLayerFrameGroupWindowMouseUpEventUseCase
+        timelineTargetGroupWindowMouseUpEventUseCase
     );
 };

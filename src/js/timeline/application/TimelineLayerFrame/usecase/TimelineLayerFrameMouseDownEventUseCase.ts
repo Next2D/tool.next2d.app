@@ -1,7 +1,7 @@
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { $getLayerFromElement } from "../../TimelineUtil";
 import { execute as timelineLayerFrameSelectedStartUseCase } from "./TimelineLayerFrameSelectedStartUseCase";
-import { execute as timelineLayerFrameActiveGroupUseCase } from "./TimelineLayerFrameActiveGroupUseCase";
+import { execute as timelineTargetGroupActiveGroupUseCase } from "@/timeline/application/TimelineTargetGroup/usecase/TimelineTargetGroupActiveGroupUseCase";
 import { $allHideMenu } from "@/menu/application/MenuUtil";
 
 /**
@@ -73,7 +73,7 @@ export const execute = (event: PointerEvent): void =>
         ) {
 
             // 選択したフレームグループの移動
-            activeTimerId = setTimeout(timelineLayerFrameActiveGroupUseCase, 500);
+            activeTimerId = setTimeout(timelineTargetGroupActiveGroupUseCase, 500);
 
         } else {
 
