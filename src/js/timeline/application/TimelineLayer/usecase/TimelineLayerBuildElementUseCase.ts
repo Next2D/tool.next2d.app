@@ -52,6 +52,9 @@ export const execute = (): void =>
     const maxFrame: number    = Math.ceil(timelineHeader.clientWidth / frameWidth) + 1;
     const leftFrame: number   = $getLeftFrame();
 
+    // 表示数をリセット
+    timelineLayer.viewCount = 0;
+
     let currentHeight: number = 0;
     let index: number = 0;
     for (let idx = topIndex; layers.length > idx; ++idx) {
@@ -92,6 +95,7 @@ export const execute = (): void =>
 
         // 表示をOnにする
         element.style.display = "";
+        timelineLayer.viewCount++;
 
         // xスクロール位置に合わせてフレームElementのStyleを更新
         timelineLayerFrameUpdateStyleService(

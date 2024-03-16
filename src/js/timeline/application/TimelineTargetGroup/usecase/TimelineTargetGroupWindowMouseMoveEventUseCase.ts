@@ -1,12 +1,20 @@
-import { $TIMELINE_LAYER_CONTROLLER_WIDTH, $TIMELINE_TARGET_GROUP_ID, $TIMELINE_TOOL_HEIGHT_SIZE } from "@/config/TimelineConfig";
 import { $TOOL_AERA_WIDTH } from "@/config/ToolConfig";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { timelineGroup } from "@/timeline/domain/model/TimelineGroup";
 import { execute as timelineScrollUpdateScrollXUseCase } from "@/timeline/application/TimelineScroll/usecase/TimelineScrollUpdateScrollXUseCase";
 import { execute as timelineScrollUpdateScrollYUseCase } from "@/timeline/application/TimelineScroll/usecase/TimelineScrollUpdateScrollYUseCase";
 import { timelineHeader } from "@/timeline/domain/model/TimelineHeader";
-import { $getMoveMode, $setMoveMode } from "../../TimelineUtil";
 import { $getTimelineOffsetTop } from "../../TimelineArea/TimelineAreaUtil";
+import {
+    $getMoveMode,
+    $setMoveMode
+} from "../../TimelineUtil";
+import {
+    $TIMELINE_LAYER_CONTROLLER_WIDTH,
+    $TIMELINE_TARGET_GROUP_ID,
+    $TIMELINE_TOOL_HEIGHT_SIZE
+} from "@/config/TimelineConfig";
+import { timelineLayer } from "@/timeline/domain/model/TimelineLayer";
 
 /**
  * @description グループウィンドウのマウスムーブイベント
@@ -41,8 +49,14 @@ export const execute = (
     const minPositionX = baseWidth;
     const maxPositionX = timelineHeader.clientWidth + baseWidth;
 
-    const minPositionY = $getTimelineOffsetTop() + $TIMELINE_TOOL_HEIGHT_SIZE;
-    const maxPositionY = minPositionY + timelineAreaState.height - $TIMELINE_TOOL_HEIGHT_SIZE - 12; // 2pxは余白分
+    const timelineHeigth = Math.min(
+        timelineLayer.viewCount * frameHeight + $TIMELINE_TOOL_HEIGHT_SIZE,
+        timelineAreaState.height
+    );
+
+    const minPositionY   = $getTimelineOffsetTop() + $TIMELINE_TOOL_HEIGHT_SIZE;
+    const maxPositionY   = minPositionY + timelineHeigth - $TIMELINE_TOOL_HEIGHT_SIZE;
+    const limitPositionY = minPositionY + timelineAreaState.height - $TIMELINE_TOOL_HEIGHT_SIZE - 12; // 2pxは余白分
 
     // 移動範囲が上部を超えた場合の処理
     if (event.pageY < minPositionY) {
@@ -85,7 +99,7 @@ export const execute = (
     }
 
     // 移動範囲が下部を超えた場合の処理
-    if (event.pageY > maxPositionY) {
+    if (event.pageY > limitPositionY) {
         requestAnimationFrame((): void =>
         {
             if (loop_mode && !$getMoveMode()) {
@@ -213,85 +227,81 @@ export const execute = (
     timelineGroup.pageX = event.pageX;
     timelineGroup.pageY = event.pageY;
 
-    requestAnimationFrame((): void =>
-    {
-        const timelineAreaState = $getCurrentWorkSpace().timelineAreaState;
+    // x軸の移動処理
+    if (Math.abs(timelineGroup.x) > timelineAreaState.frameWidth) {
 
-        // x軸の移動処理
-        if (Math.abs(timelineGroup.x) > timelineAreaState.frameWidth) {
+        const direction = timelineGroup.x > 0 ? 1 : -1;
 
-            const direction = timelineGroup.x > 0 ? 1 : -1;
+        // 移動した情報を記録
+        const scale = Math.round(Math.abs(timelineGroup.x) / frameWidth);
+        const dx = frameWidth * scale * direction;
+        timelineGroup.moveX += dx;
 
-            // 移動した情報を記録
-            const scale = Math.round(Math.abs(timelineGroup.x) / frameWidth);
-            const dx = frameWidth * scale * direction;
-            timelineGroup.moveX += dx;
+        // 初期化
+        timelineGroup.x = 0;
 
-            // 初期化
-            timelineGroup.x = 0;
+        // 表示を更新
+        const element: HTMLElement | null = document
+            .getElementById($TIMELINE_TARGET_GROUP_ID);
 
-            // 表示を更新
-            const element: HTMLElement | null = document
-                .getElementById($TIMELINE_TARGET_GROUP_ID);
+        if (element) {
+            const offsetLeft = element.offsetLeft + dx;
+            switch (true) {
 
-            if (element) {
-                const offsetLeft = element.offsetLeft + dx;
-                switch (true) {
+                // 最大値が右側を超えた場合
+                case maxPositionX < offsetLeft + element.clientWidth:
+                    timelineScrollUpdateScrollXUseCase(frameWidth);
+                    break;
 
-                    // 最大値が右側を超えた場合
-                    case maxPositionX < offsetLeft + element.clientWidth:
-                        timelineScrollUpdateScrollXUseCase(frameWidth);
-                        break;
+                // 最小値が左側を超えた場合
+                case minPositionX > offsetLeft:
+                    timelineScrollUpdateScrollXUseCase(-frameWidth);
+                    break;
 
-                    // 最小値が左側を超えた場合
-                    case minPositionX > offsetLeft:
-                        timelineScrollUpdateScrollXUseCase(-frameWidth);
-                        break;
+                default:
+                    element.style.left = `${offsetLeft}px`;
+                    break;
 
-                    default:
-                        element.style.left = `${offsetLeft}px`;
-                        break;
-
-                }
             }
         }
+    }
 
-        // y軸の移動処理
-        if (Math.abs(timelineGroup.y) > timelineAreaState.frameHeight) {
+    // y軸の移動処理
+    if (Math.abs(timelineGroup.y) > timelineAreaState.frameHeight) {
 
-            const direction = timelineGroup.y > 0 ? 1 : -1;
+        const direction = timelineGroup.y > 0 ? 1 : -1;
 
-            // 移動した情報を記録
-            const scale = Math.round(Math.abs(timelineGroup.y) / frameHeight);
-            const dy = frameHeight * scale * direction;
-            timelineGroup.moveY += dy;
+        // 移動した情報を記録
+        const scale = Math.round(Math.abs(timelineGroup.y) / frameHeight);
+        const dy = frameHeight * scale * direction;
+        timelineGroup.moveY += dy;
 
-            // 初期化
-            timelineGroup.y = 0;
+        // 初期化
+        timelineGroup.y = 0;
 
-            // 表示を更新
-            const element: HTMLElement | null = document
-                .getElementById($TIMELINE_TARGET_GROUP_ID);
+        // 表示を更新
+        const element: HTMLElement | null = document
+            .getElementById($TIMELINE_TARGET_GROUP_ID);
 
-            if (element) {
+        if (element) {
 
-                const offsetLeft = element.offsetTop + dy;
-                switch (true) {
+            const offsetLeft = element.offsetTop + dy;
+            switch (true) {
 
-                    case maxPositionY < offsetLeft + element.clientHeight:
-                        timelineScrollUpdateScrollYUseCase(frameHeight);
-                        break;
+                case maxPositionY < offsetLeft + element.clientHeight:
+                    timelineScrollUpdateScrollYUseCase(frameHeight);
+                    break;
 
-                    case minPositionY > offsetLeft:
-                        timelineScrollUpdateScrollYUseCase(-frameHeight);
-                        break;
+                case minPositionY > offsetLeft:
+                    timelineScrollUpdateScrollYUseCase(-frameHeight);
+                    break;
 
-                    default:
-                        element.style.top = `${element.offsetTop + dy}px`;
-                        break;
+                default:
+                    element.style.top = `${element.offsetTop + dy}px`;
+                    break;
 
-                }
             }
         }
-    });
+    }
+
 };

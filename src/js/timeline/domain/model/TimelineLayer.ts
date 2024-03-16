@@ -12,6 +12,7 @@ class TimelineLayer
     private _$clientHeight: number;
     private _$numberOfDisplays: number;
     private readonly _$elements: HTMLElement[];
+    private _$viewCount: number;
 
     /**
      * @constructor
@@ -28,6 +29,7 @@ class TimelineLayer
 
         /**
          * @type {number}
+         * @default 0
          * @private
          */
         this._$numberOfDisplays = 0;
@@ -37,6 +39,13 @@ class TimelineLayer
          * @private
          */
         this._$elements = [];
+
+        /**
+         * @type {number}
+         * @default 0
+         * @private
+         */
+        this._$viewCount = 0;
     }
 
     /**
@@ -109,6 +118,22 @@ class TimelineLayer
     getLayerElementFromElement (element: HTMLElement): HTMLElement | undefined
     {
         return this._$elements[parseInt(element.dataset.layerIndex as string)];
+    }
+
+    /**
+     * @description 現在のビューカウント
+     *              Current view count
+     *
+     * @member {number}
+     * @public
+     */
+    get viewCount (): number
+    {
+        return this._$viewCount;
+    }
+    set viewCount (view_count: number)
+    {
+        this._$viewCount = view_count;
     }
 }
 
