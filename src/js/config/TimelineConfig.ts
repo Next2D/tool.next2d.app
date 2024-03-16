@@ -44,6 +44,15 @@ export const $TIMELINE_MIN_FRAME_WIDTH_SIZE: number = 5;
 export const $TIMELINE_MAX_FRAME_WIDTH_SIZE: number = 260;
 
 /**
+ * @description タイムラインツールエリアの高さの値
+ *              Value of the height of the timeline tool area
+ *
+ * @type {number}
+ * @constant
+ */
+export const $TIMELINE_TOOL_HEIGHT_SIZE: number = 112;
+
+/**
  * @description タイムラインのElementのID
  *              ID of the Element in the timeline
  *

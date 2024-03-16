@@ -1,6 +1,7 @@
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { $getLayerFromElement } from "../../TimelineUtil";
 import { execute as timelineLayerFrameSelectedStartUseCase } from "./TimelineLayerFrameSelectedStartUseCase";
+import { execute as timelineLayerFrameActiveGroupUseCase } from "./TimelineLayerFrameActiveGroupUseCase";
 
 /**
  * @description ダブルタップ用の待機フラグ
@@ -68,10 +69,7 @@ export const execute = (event: PointerEvent): void =>
         ) {
 
             // 選択したフレームグループの移動
-            activeTimerId = setTimeout((): void =>
-            {
-                // TODO
-            }, 600);
+            activeTimerId = setTimeout(timelineLayerFrameActiveGroupUseCase, 600);
 
         } else {
 

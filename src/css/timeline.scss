@@ -188,7 +188,7 @@
 
     .timeline-body
     {
-        height         : calc(var(--timeline-logic-height) - 112px);
+        height         : calc(var(--timeline-logic-height) - var(--timeline-tool-area-height));
         display        : flex;
         flex-direction : column;
         overflow       : hidden;
@@ -197,7 +197,7 @@
     .timeline-content-body
     {
         position: relative;
-        height  : calc(var(--timeline-logic-height) - 122px);
+        height  : calc(var(--timeline-logic-height) - var(--timeline-tool-area-height) - 10px);
         display : flex;
     }
 

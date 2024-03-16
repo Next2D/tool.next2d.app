@@ -23,4 +23,5 @@ export const execute = (event: PointerEvent): void =>
     window.removeEventListener(EventType.MOUSE_MOVE,
         timelineLayerFrameWindowMouseMoveEventUseCase
     );
+    window.removeEventListener(EventType.MOUSE_UP, execute);
 };

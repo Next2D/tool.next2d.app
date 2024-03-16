@@ -1,4 +1,4 @@
-import { $TIMELINE_LAYER_CONTROLLER_WIDTH } from "@/config/TimelineConfig";
+import { $TIMELINE_LAYER_CONTROLLER_WIDTH, $TIMELINE_TOOL_HEIGHT_SIZE } from "@/config/TimelineConfig";
 import { $TOOL_AERA_WIDTH } from "@/config/ToolConfig";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { ExternalLayer } from "@/external/core/domain/model/ExternalLayer";
@@ -47,8 +47,8 @@ export const execute = (
     const minPositionX = baseWidth;
     const maxPositionX = timelineHeader.clientWidth + baseWidth;
 
-    const minPositionY = $getTimelineOffsetTop() + 112;
-    const maxPositionY = minPositionY + timelineAreaState.height - 122;
+    const minPositionY = $getTimelineOffsetTop() + $TIMELINE_TOOL_HEIGHT_SIZE;
+    const maxPositionY = minPositionY + timelineAreaState.height - $TIMELINE_TOOL_HEIGHT_SIZE + 10;
 
     // 移動範囲が上部を超えた場合の処理
     if (event.pageY < minPositionY) {
