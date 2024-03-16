@@ -73,7 +73,10 @@ export const execute = (event: PointerEvent): void =>
         ) {
 
             // 選択したフレームグループの移動
-            activeTimerId = setTimeout(timelineTargetGroupActiveGroupUseCase, 500);
+            activeTimerId = setTimeout((): void =>
+            {
+                timelineTargetGroupActiveGroupUseCase(event.pageX, event.pageY);
+            }, 500);
 
         } else {
 

@@ -11,6 +11,8 @@ class TimelineGroup
     private _$y: number;
     private _$moveX: number;
     private _$moveY: number;
+    private _$pageX: number;
+    private _$pageY: number;
 
     /**
      * @constructor
@@ -45,6 +47,20 @@ class TimelineGroup
          * @private
          */
         this._$moveY = 0;
+
+        /**
+         * @type {number}
+         * @default 0
+         * @private
+         */
+        this._$pageX = 0;
+
+        /**
+         * @type {number}
+         * @default 0
+         * @private
+         */
+        this._$pageY = 0;
     }
 
     /**
@@ -77,6 +93,38 @@ class TimelineGroup
     set y (y: number)
     {
         this._$y = y;
+    }
+
+    /**
+     * @description 移動元のx座標の位置
+     *              x coordinate position of the move source
+     *
+     * @member {number}
+     * @public
+     */
+    get pageX (): number
+    {
+        return this._$pageX;
+    }
+    set pageX (page_x: number)
+    {
+        this._$pageX = page_x;
+    }
+
+    /**
+     * @description 移動元のy座標の位置
+     *              y coordinate position of the move source
+     *
+     * @member {number}
+     * @public
+     */
+    get pageY (): number
+    {
+        return this._$pageY;
+    }
+    set pageY (page_y: number)
+    {
+        this._$pageY = page_y;
     }
 
     /**
@@ -125,6 +173,8 @@ class TimelineGroup
         this._$y = 0;
         this._$moveX = 0;
         this._$moveY = 0;
+        this._$pageX = 0;
+        this._$pageY = 0;
     }
 }
 

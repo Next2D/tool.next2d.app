@@ -1,4 +1,3 @@
-import { $TIMELINE_TARGET_GROUP_ID, $TIMELINE_TOOL_HEIGHT_SIZE } from "@/config/TimelineConfig";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { timelineLayer } from "@/timeline/domain/model/TimelineLayer";
 import { $getLeftFrame } from "../../TimelineUtil";
@@ -6,6 +5,10 @@ import { $getTimelineOffsetTop } from "../../TimelineArea/TimelineAreaUtil";
 import { execute as timelineTargetGroupRegisterEventUseCase } from "./TimelineTargetGroupRegisterEventUseCase";
 import { $TOOL_AERA_WIDTH } from "@/config/ToolConfig";
 import { timelineGroup } from "@/timeline/domain/model/TimelineGroup";
+import {
+    $TIMELINE_TARGET_GROUP_ID,
+    $TIMELINE_TOOL_HEIGHT_SIZE
+} from "@/config/TimelineConfig";
 
 /**
  * @description 選択したフレームのグループをアクティブにする
@@ -15,7 +18,7 @@ import { timelineGroup } from "@/timeline/domain/model/TimelineGroup";
  * @method
  * @public
  */
-export const execute = (): void =>
+export const execute = (page_x: number, page_y: number): void =>
 {
     const element: HTMLElement | null = document
         .getElementById($TIMELINE_TARGET_GROUP_ID);
@@ -60,6 +63,8 @@ export const execute = (): void =>
 
     // 移動情報を初期化
     timelineGroup.clear();
+    timelineGroup.pageX = page_x;
+    timelineGroup.pageY = page_y;
 
     // windowイベントを登録する
     timelineTargetGroupRegisterEventUseCase();

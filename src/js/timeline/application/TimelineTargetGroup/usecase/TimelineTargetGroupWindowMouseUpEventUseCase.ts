@@ -1,6 +1,7 @@
 import { EventType } from "@/tool/domain/event/EventType";
 import { execute as timelineTargetGroupInactiveElementService } from "../service/TimelineTargetGroupInactiveElementService";
 import { execute as timelineTargetGroupWindowMouseMoveEventUseCase } from "./TimelineTargetGroupWindowMouseMoveEventUseCase";
+import { $setMoveMode } from "../../TimelineUtil";
 
 /**
  * @description グループウィンドウのマウスアップイベント
@@ -15,6 +16,9 @@ export const execute = (event: PointerEvent): void =>
 {
     // 親のイベントを中止
     event.stopPropagation();
+
+    // 自動移動モード終了
+    $setMoveMode(false);
 
     // 選択したグループを非アクティブにする
     timelineTargetGroupInactiveElementService();
