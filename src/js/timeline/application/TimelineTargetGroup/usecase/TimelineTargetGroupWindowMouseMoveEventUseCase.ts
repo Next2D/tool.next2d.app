@@ -42,7 +42,7 @@ export const execute = (
     const maxPositionX = timelineHeader.clientWidth + baseWidth;
 
     const minPositionY = $getTimelineOffsetTop() + $TIMELINE_TOOL_HEIGHT_SIZE;
-    const maxPositionY = minPositionY + timelineAreaState.height - $TIMELINE_TOOL_HEIGHT_SIZE;
+    const maxPositionY = minPositionY + timelineAreaState.height - $TIMELINE_TOOL_HEIGHT_SIZE - 12; // 2pxは余白分
 
     // 移動範囲が上部を超えた場合の処理
     if (event.pageY < minPositionY) {
@@ -66,6 +66,15 @@ export const execute = (
                 // 自動移動モードを開始にセット
                 if (!loop_mode) {
                     $setMoveMode(true);
+                }
+
+                timelineGroup.y -= 1;
+                if (Math.abs(timelineGroup.y) > timelineAreaState.frameHeight) {
+                    // 初期化
+                    timelineGroup.y = 0;
+
+                    // 移動した情報を記録
+                    timelineGroup.moveY -= frameHeight;
                 }
 
                 execute(event, true);
@@ -97,6 +106,15 @@ export const execute = (
                 // 自動移動モードを開始にセット
                 if (!loop_mode) {
                     $setMoveMode(true);
+                }
+
+                timelineGroup.y += 1;
+                if (Math.abs(timelineGroup.y) > timelineAreaState.frameHeight) {
+                    // 初期化
+                    timelineGroup.y = 0;
+
+                    // 移動した情報を記録
+                    timelineGroup.moveY += frameHeight;
                 }
 
                 execute(event, true);
@@ -260,7 +278,7 @@ export const execute = (
                 const offsetLeft = element.offsetTop + dy;
                 switch (true) {
 
-                    case maxPositionY - frameHeight < offsetLeft + element.clientHeight:
+                    case maxPositionY < offsetLeft + element.clientHeight:
                         timelineScrollUpdateScrollYUseCase(frameHeight);
                         break;
 
