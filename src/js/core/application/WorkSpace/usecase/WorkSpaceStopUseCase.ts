@@ -1,7 +1,6 @@
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import { execute as progressMenuShowService } from "@/menu/application/ProgressMenu/service/ProgressMenuShowService";
 import { execute as progressMenuUpdateMessageService } from "@/menu/application/ProgressMenu/service/ProgressMenuUpdateMessageService";
-import { execute as timelineLayerAllElementDisplayNoneService } from "@/timeline/application/TimelineLayer/service/TimelineLayerAllElementDisplayNoneService";
 import { $replace } from "@/language/application/LanguageUtil";
 
 /**
