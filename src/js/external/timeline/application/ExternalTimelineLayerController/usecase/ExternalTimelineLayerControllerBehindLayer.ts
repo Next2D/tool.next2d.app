@@ -39,23 +39,18 @@ export const execute = (
         return layers.indexOf(a) - layers.indexOf(b);
     });
 
-    // 選択中のレイヤーを配列から削除
-    for (let idx = 0; idx < selectedLayers.length; idx++) {
-        const layer = selectedLayers[idx];
-        layers.splice(layers.indexOf(layer), 1);
-    }
-
     // レイヤーの移動を実行
     for (let idx = 0; idx < selectedLayers.length; idx++) {
 
         const layer = selectedLayers[idx];
 
         // 移動前のindex値を取得
-        // fixed logic
         const beforeIndex = layers.indexOf(layer);
 
+        // 配列から削除
+        layers.splice(beforeIndex, 1);
+
         // レイヤーを移動
-        // fixed logic
         const afterIndex = layers.indexOf(distLayer) + idx + 1;
 
         // 変更がなければスキップ
