@@ -14,7 +14,7 @@ class TimelineLayer
     private _$viewCount: number;
     private _$distIndex: number;
     private readonly _$elements: HTMLElement[];
-    
+
     /**
      * @constructor
      * @public
