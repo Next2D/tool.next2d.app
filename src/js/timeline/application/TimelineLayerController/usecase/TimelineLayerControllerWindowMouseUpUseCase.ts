@@ -4,8 +4,8 @@ import { $setCursor } from "@/global/GlobalUtil";
 import { $setMoveLayerMode } from "../../TimelineUtil";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { execute as timelineLayerAllElementRemoveMoveTargetService } from "@/timeline/application/TimelineLayer/service/TimelineLayerAllElementRemoveMoveTargetService";
-import { execute as timelineLayerBuildElementUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerBuildElementUseCase";
 import { timelineLayer } from "@/timeline/domain/model/TimelineLayer";
+import { ExternalTimeline } from "@/external/timeline/domain/model/ExternalTimeline";
 
 /**
  * @description レイヤーコントローラーウィンドウのマウスアップ処理関数
@@ -32,8 +32,10 @@ export const execute = (event: PointerEvent): void =>
     window.removeEventListener(EventType.MOUSE_MOVE, timelineLayerControllerWindowMouseMoveUseCase);
     window.removeEventListener(EventType.MOUSE_UP, execute);
 
-    const scene  = $getCurrentWorkSpace().scene;
-    const layers = scene.layers;
+    const workSpace = $getCurrentWorkSpace();
+    const movieClip = workSpace.scene;
+
+    const layers = movieClip.layers;
     if (!layers.length) {
         return ;
     }
@@ -46,22 +48,9 @@ export const execute = (event: PointerEvent): void =>
         return ;
     }
 
-    // 移動先のレイヤーを取得
-    const distLayer = layers[timelineLayer.distIndex];
+    // 外部APIを起動
+    const externalTimeline = new ExternalTimeline(workSpace, movieClip);
 
-    // 選択中のレイヤーを配列から削除
-    for (let idx = 0; idx < scene.selectedLayers.length; idx++) {
-        const layer = scene.selectedLayers[idx];
-        layers.splice(layers.indexOf(layer), 1);
-    }
-
-    // 内部情報を更新
-    layers.splice(
-        layers.indexOf(distLayer) + 1,
-        0,
-        ...scene.selectedLayers
-    );
-
-    // タイムラインを再描画
-    timelineLayerBuildElementUseCase();
+    // 指定のindex値のうしろにレイヤーを移動
+    externalTimeline.behindLayer(timelineLayer.distIndex);
 };

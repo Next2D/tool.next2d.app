@@ -1,18 +1,17 @@
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { Layer } from "@/core/domain/model/Layer";
+import { $clamp } from "@/global/GlobalUtil";
+import { ExternalLayer } from "@/external/core/domain/model/ExternalLayer";
+import { $convertFrameObject } from "@/timeline/application/TimelineUtil";
 import { execute as externalTimelineChageFrameUseCase } from "@/external/timeline/application/ExternalTimeline/usecase/ExternalTimelineChageFrameUseCase";
-import { execute as externalMovieClipCreateLayerUseCase } from "@/external/core/application/ExternalMovieClip/usecase/ExternalMovieClipCreateLayerUseCase";
-import { execute as externalLayerUpdateReloadUseCase } from "@/external/core/application/ExternalLayer/usecase/ExternalLayerUpdateReloadUseCase";
-import { execute as timelineToolLayerAddHistoryUseCase } from "@/history/application/timeline/application/TimelineTool/LayerAdd/usecase/TimelineToolLayerAddHistoryUseCase";
 import { execute as externalTimelineLayerDeactivateLayerUseCase } from "@/external/timeline/application/ExternalTimelineLayer/usecase/ExternalTimelineLayerDeactivateLayerUseCase";
 import { execute as externalTimelineLayerControllerSelectedLayersUseCase } from "@/external/timeline/application/ExternalTimelineLayerController/usecase/ExternalTimelineLayerControllerSelectedLayersUseCase";
 import { execute as externalTimelineLayerFrameSelectedUseCase } from "@/external/timeline/application/ExternalTimelineLayerFrame/usecase/ExternalTimelineLayerFrameSelectedUseCase";
 import { execute as timelineLayerAllClearSelectedElementUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerAllClearSelectedElementUseCase";
-import { execute as timelineToolLayerDeleteHistoryUseCase } from "@/history/application/timeline/application/TimelineTool/LayerDelete/usecase/TimelineToolLayerDeleteHistoryUseCase";
-import { $clamp } from "@/global/GlobalUtil";
-import { ExternalLayer } from "@/external/core/domain/model/ExternalLayer";
-import { $convertFrameObject } from "@/timeline/application/TimelineUtil";
+import { execute as externalTimelineLayerControllerBehindLayer } from "@/external/timeline/application/ExternalTimelineLayerController/usecase/ExternalTimelineLayerControllerBehindLayer";
+import { execute as externalTimelineAddNewLayerUseCase } from "@/external/timeline/application/ExternalTimeline/usecase/ExternalTimelineAddNewLayerUseCase";
+import { execute as externalTimelineDeleteLayerUseCase } from "@/external/timeline/application/ExternalTimeline/usecase/ExternalTimelineDeleteLayerUseCase";
 
 /**
  * @description タイムラインの外部APIクラス
@@ -118,28 +117,15 @@ export class ExternalTimeline
         // fixed logic
         this.deactivatedAllLayers();
 
-        // フレーム選択を初期化
-        this._$movieClip.clearSelectedFrame();
-
-        // 新規レイヤーを追加
-        const layer = externalMovieClipCreateLayerUseCase(
+        const externalLayer = externalTimelineAddNewLayerUseCase(
             this._$workSpace,
             this._$movieClip,
-            index, name, color
+            index, name, color, receiver
         );
 
-        if (!layer) {
+        if (!externalLayer) {
             return null;
         }
-
-        // 履歴を登録
-        timelineToolLayerAddHistoryUseCase(
-            this._$workSpace, this._$movieClip, layer, receiver
-        );
-
-        const externalLayer = new ExternalLayer(
-            this._$workSpace, this._$movieClip, layer
-        );
 
         // 追加したレイヤーを選択状態に更新
         this.selectedLayers([externalLayer.index]);
@@ -165,47 +151,17 @@ export class ExternalTimeline
         // 削除前に非アクティブに更新
         this.deactivatedLayer(indexes);
 
-        // 削除対象のlayerオブジェクトを配列に格納
-        const layers = [];
-        for (let idx = 0; idx < indexes.length; ++idx) {
+        externalTimelineDeleteLayerUseCase(
+            this._$workSpace,
+            this._$movieClip,
+            indexes,
+            receiver
+        );
 
-            const index = indexes[idx];
-
-            const layer: Layer | undefined = this._$movieClip.layers[index];
-            if (!layer) {
-                return ;
-            }
-
-            // layerオブジェクトを配列に格納
-            layers.push(layer);
-        }
-
-        // 削除処理
-        for (let idx = 0; idx < layers.length; ++idx) {
-
-            const layer = layers[idx];
-
-            // 削除時点のindex値を取得
-            const index = this._$movieClip.layers.indexOf(layer);
-
-            // 内部情報から削除
-            this._$movieClip.deleteLayer(layer);
-
-            // 作業履歴に登録
-            timelineToolLayerDeleteHistoryUseCase(
-                this._$workSpace,
-                this._$movieClip,
-                layer, index, receiver
-            );
-        }
-
-        // フレーム選択を初期化
-        this._$movieClip.clearSelectedFrame();
-
-        // レイヤー更新によるタイムラインの再描画
-        if (this._$workSpace.active && this._$movieClip.active) {
-            externalLayerUpdateReloadUseCase();
-        }
+        // 削除後に選択状態を更新
+        this.selectedLayers([
+            Math.min(...indexes, this._$movieClip.layers.length - 1)
+        ]);
     }
 
     /**
@@ -314,5 +270,23 @@ export class ExternalTimeline
                 this._$workSpace, this._$movieClip, layer
             );
         }
+    }
+
+    /**
+     * @description 指定のindex値の後ろに選択中のレイヤーを移動
+     *              Move the selected layer behind the specified index value
+     *
+     * @param  {number} index
+     * @return {void}
+     * @method
+     * @public
+     */
+    behindLayer (index: number): void
+    {
+        externalTimelineLayerControllerBehindLayer(
+            this._$workSpace,
+            this._$movieClip,
+            index
+        );
     }
 }

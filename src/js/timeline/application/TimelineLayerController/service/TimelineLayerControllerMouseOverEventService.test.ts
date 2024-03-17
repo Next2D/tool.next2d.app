@@ -1,10 +1,13 @@
 import { execute } from "./TimelineLayerControllerMouseOverEventService";
 import { $setMoveLayerMode } from "../../TimelineUtil";
+import { $getCurrentWorkSpace, $createWorkSpace } from "../../../../core/application/CoreUtil";
 
 describe("TimelineLayerControllerMouseOverEventServiceTest", () =>
 {
     test("execute test", () =>
     {
+        const workSpace = $getCurrentWorkSpace() || $createWorkSpace();
+
         $setMoveLayerMode(true);
 
         const parent = document.createElement("div");

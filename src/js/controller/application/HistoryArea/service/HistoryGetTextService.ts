@@ -17,7 +17,8 @@ import {
     $LIBRARY_ADD_NEW_SOUND_COMMAND,
     $LIBRARY_OVERWRITE_SOUND_COMMAND,
     $LIBRARY_ADD_NEW_MOVIE_CLIP_COMMAND,
-    $LIBRARY_REMOVE_INSTANCE_COMMAND
+    $LIBRARY_REMOVE_INSTANCE_COMMAND,
+    $TIMELINE_MOVE_LAYER_COMMAND
 } from "@/config/HistoryConfig";
 
 /**
@@ -88,6 +89,9 @@ export const execute = (command: number): string =>
 
         case $LIBRARY_REMOVE_INSTANCE_COMMAND:
             return "ライブラリから「%s1」を削除";
+
+        case $TIMELINE_MOVE_LAYER_COMMAND:
+            return "レイヤー「%s1」を移動";
 
         default:
             break;

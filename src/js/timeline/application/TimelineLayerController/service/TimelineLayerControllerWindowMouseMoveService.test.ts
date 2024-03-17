@@ -1,9 +1,12 @@
 import { execute } from "./TimelineLayerControllerWindowMouseMoveService";
+import { $getCurrentWorkSpace, $createWorkSpace } from "../../../../core/application/CoreUtil";
 
 describe("TimelineLayerControllerWindowMouseMoveServiceTest", () =>
 {
     test("execute test", () =>
     {
+        const workSpace = $getCurrentWorkSpace() || $createWorkSpace();
+
         let stopPropagation = false;
         let preventDefault = false;
         const mockEvent = {

@@ -240,3 +240,12 @@ export const $LIBRARY_ADD_NEW_MOVIE_CLIP_COMMAND: number = 23;
  * @constant
  */
 export const $LIBRARY_REMOVE_INSTANCE_COMMAND: number = 24;
+
+/**
+ * @description タイムラインのレイヤー移動の識別コマンド名
+ *              Identification command name for layer movement in the timeline
+ *
+ * @type {number}
+ * @constant
+ */
+export const $TIMELINE_MOVE_LAYER_COMMAND: number = 25;
