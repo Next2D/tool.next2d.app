@@ -26,9 +26,6 @@ export const execute = (work_space: WorkSpace): Promise<void> =>
         // タブを非アクティブに更新
         work_space.screenTab.disable();
 
-        // 全てのレイヤーを非表示にする
-        timelineLayerAllElementDisplayNoneService();
-
         // 現在のシーンを停止
         // fixed logic
         work_space.scene.stop();

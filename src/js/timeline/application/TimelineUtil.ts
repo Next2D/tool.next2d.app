@@ -396,3 +396,40 @@ export const $convertFrameObject = (
         "end": $clamp(end_frame, start_frame + 1, Number.MAX_VALUE)
     };
 };
+
+/**
+ * @description タイムラインのレイヤーの移動モードの設定値
+ *              Setting value of the move mode of the timeline layer
+ *
+ * @type {boolean}
+ * @default false
+ * @private
+ */
+let $moveLayerMode: boolean = false;
+
+/**
+ * @description タイムラインのレイヤーの移動モードの設定を上書き
+ *              Overwrite the setting of the move mode of the timeline layer
+ *
+ * @param  {boolean} mode
+ * @return {void}
+ * @method
+ * @public
+ */
+export const $setMoveLayerMode = (mode: boolean): void =>
+{
+    $moveLayerMode = mode;
+};
+
+/**
+ * @description タイムラインのレイヤーの移動モードの設定を返却
+ *              Return the setting of the move mode of the timeline layer
+ *
+ * @return {void}
+ * @method
+ * @public
+ */
+export const $getMoveLayerMode = (): boolean =>
+{
+    return $moveLayerMode;
+};

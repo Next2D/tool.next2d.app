@@ -1,4 +1,4 @@
-import { $getLayerFromElement } from "../../TimelineUtil";
+import { $getLayerFromElement, $setMoveLayerMode } from "../../TimelineUtil";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { execute as timelineLayerAltSelectedUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerAltSelectedUseCase";
 import { execute as timelineLayerShiftSelectedUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerShiftSelectedUseCase";
@@ -58,6 +58,9 @@ export const execute = (event: PointerEvent): void =>
             break;
 
     }
+
+    // レイヤーの移動モードを設定
+    $setMoveLayerMode(true);
 
     // レイヤーの移動イベントを登録
     timelineLayerControllerRegisterWindowEventUseCase();

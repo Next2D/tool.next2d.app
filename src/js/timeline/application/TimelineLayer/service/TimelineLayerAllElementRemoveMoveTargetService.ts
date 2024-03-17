@@ -1,8 +1,8 @@
 import { timelineLayer } from "@/timeline/domain/model/TimelineLayer";
 
 /**
- * @description タイムラインの全てのレイヤーを非表示にする
- *              Hide all layers in the timeline
+ * @description タイムラインの全てのレイヤースタイルから"move-target"を削除する
+ *              Remove "move-target" from all layer styles in the timeline
  *
  * @return {void}
  * @method
@@ -17,7 +17,11 @@ export const execute = (): void =>
             continue;
         }
 
-        // 非表示に更新
-        element.style.display = "none";
+        // styleを削除
+        if (!element.classList.contains("move-target")) {
+            continue;
+        }
+
+        element.classList.remove("move-target");
     }
 };
