@@ -46,7 +46,7 @@ export const execute = (event: PointerEvent): void =>
             break;
 
         default:
-            {
+            if (movieClip.selectedLayers.indexOf(layer) === -1) {
                 // 外部APIを起動
                 const externalLayer    = new ExternalLayer(workSpace, movieClip, layer);
                 const externalTimeline = new ExternalTimeline(workSpace, movieClip);

@@ -1,4 +1,5 @@
-import { $getMoveLayerMode } from "../../TimelineUtil";
+import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
+import { $getMoveLayerMode, $getTopIndex } from "../../TimelineUtil";
 
 /**
  * @description レイヤーコントローラーのマウスオーバー処理関数
@@ -26,6 +27,16 @@ export const execute = (event: PointerEvent): void =>
 
     const parent = element.parentElement as HTMLElement;
     if (!parent) {
+        return ;
+    }
+
+    const layerIndex = parseInt(parent.dataset.layerIndex as string) + $getTopIndex();
+    const workSpace = $getCurrentWorkSpace();
+    const movieClip = workSpace.scene;
+    const layer = movieClip.layers[layerIndex];
+
+    // 選択中の場合は処理をしない
+    if (movieClip.selectedLayers.indexOf(layer) > -1) {
         return ;
     }
 
