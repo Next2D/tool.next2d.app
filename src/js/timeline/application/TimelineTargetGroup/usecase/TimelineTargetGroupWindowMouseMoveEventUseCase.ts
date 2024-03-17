@@ -4,7 +4,7 @@ import { timelineGroup } from "@/timeline/domain/model/TimelineGroup";
 import { execute as timelineScrollUpdateScrollXUseCase } from "@/timeline/application/TimelineScroll/usecase/TimelineScrollUpdateScrollXUseCase";
 import { execute as timelineScrollUpdateScrollYUseCase } from "@/timeline/application/TimelineScroll/usecase/TimelineScrollUpdateScrollYUseCase";
 import { timelineHeader } from "@/timeline/domain/model/TimelineHeader";
-import { $getTimelineOffsetTop } from "../../TimelineArea/TimelineAreaUtil";
+import { $getTimelineOffsetTop } from "@/timeline/application/TimelineArea/TimelineAreaUtil";
 import {
     $getMoveMode,
     $setMoveMode

@@ -1,3 +1,4 @@
+import { timelineLayer } from "@/timeline/domain/model/TimelineLayer";
 import { $getMoveLayerMode } from "../../TimelineUtil";
 
 /**
@@ -31,4 +32,7 @@ export const execute = (event: PointerEvent): void =>
 
     // styleを追加
     parent.classList.remove("move-target");
+
+    // 移動先のレイヤーを未選択に更新
+    timelineLayer.distIndex = -1;
 };

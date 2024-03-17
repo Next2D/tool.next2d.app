@@ -48,7 +48,7 @@ let $timelineOffsetTop: number = 0;
  * @method
  * @public
  */
-export const $getTimelineOffsetTop = (): number =>
+const $getTimelineOffsetTop = (): number =>
 {
     return $timelineOffsetTop;
 };
@@ -61,7 +61,9 @@ export const $getTimelineOffsetTop = (): number =>
  * @method
  * @public
  */
-export const $setTimelineOffsetTop = (offset_top: number): void =>
+const $setTimelineOffsetTop = (offset_top: number): void =>
 {
     $timelineOffsetTop = offset_top;
 };
+
+export { $getTimelineOffsetTop, $setTimelineOffsetTop };

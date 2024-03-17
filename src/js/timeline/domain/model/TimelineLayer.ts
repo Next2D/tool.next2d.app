@@ -11,9 +11,10 @@ class TimelineLayer
 {
     private _$clientHeight: number;
     private _$numberOfDisplays: number;
-    private readonly _$elements: HTMLElement[];
     private _$viewCount: number;
-
+    private _$distIndex: number;
+    private readonly _$elements: HTMLElement[];
+    
     /**
      * @constructor
      * @public
@@ -46,6 +47,13 @@ class TimelineLayer
          * @private
          */
         this._$viewCount = 0;
+
+        /**
+         * @type {number}
+         * @default -1
+         * @private
+         */
+        this._$distIndex = -1;
     }
 
     /**
@@ -134,6 +142,22 @@ class TimelineLayer
     set viewCount (view_count: number)
     {
         this._$viewCount = view_count;
+    }
+
+    /**
+     * @description 移動先のレイヤーの表インデックス値
+     *              Table index value of the layer to move to
+     *
+     * @member {number}
+     * @public
+     */
+    get distIndex (): number
+    {
+        return this._$distIndex;
+    }
+    set distIndex (index: number)
+    {
+        this._$distIndex = index;
     }
 }
 

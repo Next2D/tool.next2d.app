@@ -1,5 +1,6 @@
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { $getMoveLayerMode, $getTopIndex } from "../../TimelineUtil";
+import { timelineLayer } from "@/timeline/domain/model/TimelineLayer";
 
 /**
  * @description レイヤーコントローラーのマウスオーバー処理関数
@@ -39,6 +40,9 @@ export const execute = (event: PointerEvent): void =>
     if (movieClip.selectedLayers.indexOf(layer) > -1) {
         return ;
     }
+
+    // 移動先のレイヤーを未選択に更新
+    timelineLayer.distIndex = parseInt(parent.dataset.layerIndex as string) + $getTopIndex();
 
     // styleを追加
     parent.classList.add("move-target");

@@ -5,6 +5,7 @@ import { execute as timelineLayerShiftSelectedUseCase } from "@/timeline/applica
 import { ExternalLayer } from "@/external/core/domain/model/ExternalLayer";
 import { ExternalTimeline } from "@/external/timeline/domain/model/ExternalTimeline";
 import { execute as timelineLayerControllerRegisterWindowEventUseCase } from "./TimelineLayerControllerRegisterWindowEventUseCase";
+import { timelineLayer } from "@/timeline/domain/model/TimelineLayer";
 
 /**
  * @description レイヤーのコントローラーエリアのマウスダウン処理関数
@@ -58,6 +59,9 @@ export const execute = (event: PointerEvent): void =>
             break;
 
     }
+
+    // 移動先のレイヤーを未選択に更新
+    timelineLayer.distIndex = -1;
 
     // レイヤーの移動モードを設定
     $setMoveLayerMode(true);

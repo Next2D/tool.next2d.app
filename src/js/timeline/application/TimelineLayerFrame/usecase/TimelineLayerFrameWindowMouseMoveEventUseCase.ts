@@ -11,7 +11,7 @@ import {
     $getTopIndex,
     $setMoveMode
 } from "../../TimelineUtil";
-import { $getTimelineOffsetTop } from "../../TimelineArea/TimelineAreaUtil";
+import { $getTimelineOffsetTop } from "@/timeline/application/TimelineArea/TimelineAreaUtil";
 
 /**
  * @description フレームの複数選択の実行関数
@@ -19,7 +19,6 @@ import { $getTimelineOffsetTop } from "../../TimelineArea/TimelineAreaUtil";
  *
  * @param  {PointerEvent} event
  * @param  {boolean} [loop_mode = false]
- * @param  {number} [add_frame = 0]
  * @return {void}
  * @method
  * @public
@@ -48,7 +47,7 @@ export const execute = (
     const maxPositionX = timelineHeader.clientWidth + baseWidth;
 
     const minPositionY = $getTimelineOffsetTop() + $TIMELINE_TOOL_HEIGHT_SIZE;
-    const maxPositionY = minPositionY + timelineAreaState.height - $TIMELINE_TOOL_HEIGHT_SIZE + 10;
+    const maxPositionY = minPositionY + timelineAreaState.height - $TIMELINE_TOOL_HEIGHT_SIZE - 12;
 
     // 移動範囲が上部を超えた場合の処理
     if (event.pageY < minPositionY) {
