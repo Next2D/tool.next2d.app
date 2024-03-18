@@ -34,5 +34,5 @@ export const execute = (message: ShareReceiveMessageImpl): void =>
     const instance: InstanceImpl<any> = workSpace.getLibrary(saveObject.id);
 
     // 削除を実行する
-    externalItemRemoveUseCase(workSpace, movieClip, instance, true);
+    externalItemRemoveUseCase(workSpace, instance, true, true);
 };

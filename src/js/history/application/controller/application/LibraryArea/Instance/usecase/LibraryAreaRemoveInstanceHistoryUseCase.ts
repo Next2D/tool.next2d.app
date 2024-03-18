@@ -66,7 +66,6 @@ export const execute = (
 
     // 受け取り処理ではなく、画面共有していれば共有者に送信
     if (!receiver && $useSocket()) {
-
         switch (instance.type) {
 
             // メディア系はS3を経由して共有する
