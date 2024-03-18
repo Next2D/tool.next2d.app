@@ -53,7 +53,7 @@ export const execute = async (message: ShareReceiveMessageImpl): Promise<void> =
 
     return new Promise((reslove): void =>
     {
-        // 解答が完了したらバイナリデータとして返却
+        // 解凍が完了したらバイナリデータとして返却
         worker.onmessage = (event: MessageEvent): void =>
         {
             // 転送データからBitmapデータを生成

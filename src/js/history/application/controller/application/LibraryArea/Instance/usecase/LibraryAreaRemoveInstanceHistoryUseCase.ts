@@ -27,18 +27,18 @@ const worker: Worker = new ZlibDeflateWorker();
  *
  * @param  {WorkSpace} work_space
  * @param  {MovieClip} movie_clip
- * @param  {OBJECT} instance
+ * @param  {Instance} instance
  * @param  {boolean} [receiver=false]
  * @return {void}
  * @method
  * @public
  */
-export const execute = async (
+export const execute = (
     work_space: WorkSpace,
     movie_clip: MovieClip,
     instance: InstanceImpl<any>,
     receiver: boolean = false
-): Promise<void> => {
+): void => {
 
     // ポジション位置から未来の履歴を全て削除
     // fixed logic
@@ -73,40 +73,20 @@ export const execute = async (
             case "bitmap":
             case "video":
             case "sound":
-                await new Promise<void>((reslove): void =>
                 {
-                    worker.onmessage = async (event: MessageEvent): Promise<void> =>
-                    {
-                        const buffer = event.data as Uint8Array;
+                    // 転送用のオブジェクトを作成
+                    const instanceObject = instance.toObject();
 
-                        // Uint8Arrayをバイナリに変換
-                        const binary = bufferToBinaryService(buffer);
+                    // バイナリは転送しない
+                    instanceObject.buffer = "";
 
-                        // S3判定用のuuid
-                        const fileId = window.crypto.randomUUID();
-                        const url = await shareGetS3EndPointRepository(fileId, "put");
-                        await sharePutS3FileRepository(url, binary);
+                    // 型は揃えるが必要なinstanceObjectだけをセットする
+                    const historyObject = libraryArearRemoveInstanceCreateHistoryObjectService(
+                        work_space.id, movie_clip.id, instanceObject
+                    );
 
-                        // 転送用のオブジェクトを作成
-                        const instanceObject = instance.toObject();
-
-                        // バイナリは転送しない
-                        instanceObject.buffer = "";
-
-                        // 型は揃えるが必要なinstanceObjectだけをセットする
-                        const historyObject = libraryArearRemoveInstanceCreateHistoryObjectService(
-                            work_space.id, movie_clip.id, instanceObject, fileId
-                        );
-
-                        shareSendService(historyObject);
-
-                        reslove();
-                    };
-
-                    // Uint8Arrayを複製して、サブスレッドで圧縮処理を行う
-                    const buffer: Uint8Array = instance.buffer.slice();
-                    worker.postMessage(buffer, [buffer.buffer]);
-                });
+                    shareSendService(historyObject);
+                }
                 break;
 
             // メディア以外はjsonで共有

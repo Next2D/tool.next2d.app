@@ -1,8 +1,5 @@
 import type { HistoryObjectImpl } from "@/interface/HistoryObjectImpl";
-import type { VideoSaveObjectImpl } from "@/interface/VideoSaveObjectImpl";
-import type { BitmapSaveObjectImpl } from "@/interface/BitmapSaveObjectImpl";
-import type { SoundSaveObjectImpl } from "@/interface/SoundSaveObjectImpl";
-import type { MovieClipSaveObjectImpl } from "@/interface/MovieClipSaveObjectImpl";
+import type { AllSaveObjectImpl } from "@/interface/AllSaveObjectImpl";
 import { $LIBRARY_REMOVE_INSTANCE_COMMAND } from "@/config/HistoryConfig";
 
 /**
@@ -12,7 +9,6 @@ import { $LIBRARY_REMOVE_INSTANCE_COMMAND } from "@/config/HistoryConfig";
  * @param  {number} work_space_id
  * @param  {number} movie_clip_id
  * @param  {object} instance_object
- * @param  {string} file_id
  * @return {object}
  * @method
  * @public
@@ -20,8 +16,7 @@ import { $LIBRARY_REMOVE_INSTANCE_COMMAND } from "@/config/HistoryConfig";
 export const execute = (
     work_space_id: number,
     movie_clip_id: number,
-    instance_object: MovieClipSaveObjectImpl | VideoSaveObjectImpl | BitmapSaveObjectImpl | SoundSaveObjectImpl,
-    file_id: string = ""
+    instance_object: AllSaveObjectImpl
 ): HistoryObjectImpl => {
 
     return {
@@ -29,8 +24,7 @@ export const execute = (
         "messages": [
             work_space_id,
             movie_clip_id,
-            instance_object,
-            file_id
+            instance_object
         ],
         "args": [
             instance_object.name

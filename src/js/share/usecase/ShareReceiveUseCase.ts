@@ -21,6 +21,7 @@ import { execute as folderUpdateStateReceiveService } from "@/share/receive/appl
 import { execute as instanceUpdateNameReceiveUseCase } from "@/share/receive/application/core/application/Instance/usecase/InstanceUpdateNameReceiveUseCase";
 import { execute as instanceUpdateSymbolReceiveUseCase } from "@/share/receive/application/core/application/Instance/usecase/InstanceUpdateSymbolReceiveUseCase";
 import { execute as movieClipAddNewReceiveUseCase } from "@/share/receive/application/controller/application/LibraryArea/MovieClip/usecase/MovieClipAddNewReceiveUseCase";
+import { execute as instanceRemoveReceiveUseCase } from "@/share/receive/application/controller/application/LibraryArea/Instance/InstanceRemoveReceiveUseCase";
 import { execute as historyRedoUseCase } from "@/controller/application/HistoryArea/usecase/HistoryRedoUseCase";
 import { execute as historyUndoUseCase } from "@/controller/application/HistoryArea/usecase/HistoryUndoUseCase";
 import {
@@ -47,7 +48,9 @@ import {
     $LIBRARY_OVERWRITE_VIDEO_COMMAND,
     $LIBRARY_ADD_NEW_SOUND_COMMAND,
     $LIBRARY_OVERWRITE_SOUND_COMMAND,
-    $LIBRARY_ADD_NEW_MOVIE_CLIP_COMMAND
+    $LIBRARY_ADD_NEW_MOVIE_CLIP_COMMAND,
+    $LIBRARY_REMOVE_INSTANCE_COMMAND,
+    $TIMELINE_MOVE_LAYER_COMMAND
 } from "@/config/HistoryConfig";
 
 /**
@@ -186,8 +189,18 @@ export const execute = async (message: ShareReceiveMessageImpl): Promise<void> =
             await soundUpdateReceiveUseCase(message);
             break;
 
+        // ライブラリに新規MovieClipを追加
         case $LIBRARY_ADD_NEW_MOVIE_CLIP_COMMAND:
             movieClipAddNewReceiveUseCase(message);
+            break;
+
+        // ライブラリからインスタンスを削除
+        case $LIBRARY_REMOVE_INSTANCE_COMMAND:
+            instanceRemoveReceiveUseCase(message);
+            break;
+
+        // レイヤー移動
+        case $TIMELINE_MOVE_LAYER_COMMAND:
             break;
 
         default:
