@@ -19,7 +19,8 @@ import {
     $LIBRARY_OVERWRITE_SOUND_COMMAND,
     $LIBRARY_ADD_NEW_MOVIE_CLIP_COMMAND,
     $LIBRARY_REMOVE_INSTANCE_COMMAND,
-    $TIMELINE_MOVE_LAYER_COMMAND
+    $TIMELINE_MOVE_LAYER_COMMAND,
+    $LAYER_UPDATE_LIGHT_COLOR_COMMAND
 } from "../../../../config/HistoryConfig";
 
 describe("HistoryGetTextServiceTest", () =>
@@ -46,5 +47,6 @@ describe("HistoryGetTextServiceTest", () =>
         expect(execute($LIBRARY_ADD_NEW_MOVIE_CLIP_COMMAND)).toBe("新規MovieClip「%s1」を追加");
         expect(execute($LIBRARY_REMOVE_INSTANCE_COMMAND)).toBe("ライブラリから「%s1」を削除");
         expect(execute($TIMELINE_MOVE_LAYER_COMMAND)).toBe("レイヤー「%s1」を移動");
+        expect(execute($LAYER_UPDATE_LIGHT_COLOR_COMMAND)).toBe("レイヤー「%s1」のハイライトカラーを変更");
     });
 });

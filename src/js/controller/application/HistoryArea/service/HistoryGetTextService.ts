@@ -18,7 +18,8 @@ import {
     $LIBRARY_OVERWRITE_SOUND_COMMAND,
     $LIBRARY_ADD_NEW_MOVIE_CLIP_COMMAND,
     $LIBRARY_REMOVE_INSTANCE_COMMAND,
-    $TIMELINE_MOVE_LAYER_COMMAND
+    $TIMELINE_MOVE_LAYER_COMMAND,
+    $LAYER_UPDATE_LIGHT_COLOR_COMMAND
 } from "@/config/HistoryConfig";
 
 /**
@@ -92,6 +93,9 @@ export const execute = (command: number): string =>
 
         case $TIMELINE_MOVE_LAYER_COMMAND:
             return "レイヤー「%s1」を移動";
+
+        case $LAYER_UPDATE_LIGHT_COLOR_COMMAND:
+            return "レイヤー「%s1」のハイライトカラーを変更";
 
         default:
             break;

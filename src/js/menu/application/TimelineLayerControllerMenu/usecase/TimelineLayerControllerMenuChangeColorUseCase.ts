@@ -1,6 +1,5 @@
-import { execute as timelineLayerControllerUpdateColorElementService } from "@/timeline/application/TimelineLayerController/service/TimelineLayerControllerUpdateColorElementService";
-import { execute as timelineLayerControllerUpdateLightIconElementService } from "@/timeline/application/TimelineLayerController/service/TimelineLayerControllerUpdateLightIconElementService";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
+import { ExternalLayer } from "@/external/core/domain/model/ExternalLayer";
 
 /**
  * @description タイムラインコントローラーメニューのハイライトカラー変更の処理関数
@@ -15,28 +14,23 @@ export const execute = (event: Event): void =>
     // 親のイベントを中止
     event.stopPropagation();
 
-    const colorElement = event.target as HTMLInputElement;
-    if (!colorElement) {
+    const element = event.target as HTMLInputElement;
+    if (!element) {
         return ;
     }
 
-    const scene = $getCurrentWorkSpace().scene;
-    const selectedLayers = scene.selectedLayers;
-    if (!selectedLayers.length) {
+    const workSpace = $getCurrentWorkSpace();
+    const movieClip = workSpace.scene;
+
+    // レイヤーが何も選択されてない場合は処理を行わない
+    if (!movieClip.selectedLayers.length) {
         return ;
     }
 
     // アクティブなLayerオブジェクトを取得
-    const layer = selectedLayers[0];
+    const layer = movieClip.selectedLayers[0];
 
-    // Layerオブジェクトの値を更新
-    layer.color = colorElement.value;
-
-    // ハイライトカラーを更新
-    timelineLayerControllerUpdateColorElementService(layer, layer.color);
-
-    // ハイライトの機能がonの時は表示も更新
-    if (layer.light) {
-        timelineLayerControllerUpdateLightIconElementService(layer, layer.light);
-    }
+    // 外部APIを起動
+    const externalLayer = new ExternalLayer(workSpace, movieClip, layer);
+    externalLayer.updateLightColor(element.value);
 };

@@ -5,6 +5,7 @@ import { execute as externalLayerUpdateNameUseCase } from "@/external/core/appli
 import { execute as externalLayerUpdateLockUseCase } from "@/external/core/application/ExternalLayer/usecase/ExternalLayerUpdateLockUseCase";
 import { execute as externalLayerUpdateDisableUseCase } from "@/external/core/application/ExternalLayer/usecase/ExternalLayerUpdateDisableUseCase";
 import { execute as externalLayerUpdateLightUseCase } from "@/external/core/application/ExternalLayer/usecase/ExternalLayerUpdateLightUseCase";
+import { execute as externalLayerUpdateLightColorUseCase } from "@/external/core/application/ExternalLayer/usecase/ExternalLayerUpdateLightColorUseCase";
 
 /**
  * @description Layerの外部APIクラス
@@ -190,6 +191,22 @@ export class ExternalLayer
     {
         externalLayerUpdateLightUseCase(
             this._$workSpace, this._$movieClip, this._$layer, light, receiver
+        );
+    }
+
+    /**
+     * @description レイヤーハイライトの色を更新
+     *              Update Layer Highlight Color
+     *
+     * @param  {string} color
+     * @return {void}
+     * @method
+     * @public
+     */
+    updateLightColor (color: string): void
+    {
+        externalLayerUpdateLightColorUseCase(
+            this._$workSpace, this._$movieClip, this._$layer, color
         );
     }
 }

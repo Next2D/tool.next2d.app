@@ -249,3 +249,12 @@ export const $LIBRARY_REMOVE_INSTANCE_COMMAND: number = 24;
  * @constant
  */
 export const $TIMELINE_MOVE_LAYER_COMMAND: number = 25;
+
+/**
+ * @description レイヤーのハイライトカラー値の更新の識別コマンド名
+ *              Identification command name for updating the highlight color value of the layer
+ *
+ * @type {number}
+ * @constant
+ */
+export const $LAYER_UPDATE_LIGHT_COLOR_COMMAND: number = 26;
