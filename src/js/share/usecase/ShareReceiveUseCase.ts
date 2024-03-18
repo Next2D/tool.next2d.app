@@ -22,6 +22,7 @@ import { execute as instanceUpdateNameReceiveUseCase } from "@/share/receive/app
 import { execute as instanceUpdateSymbolReceiveUseCase } from "@/share/receive/application/core/application/Instance/usecase/InstanceUpdateSymbolReceiveUseCase";
 import { execute as movieClipAddNewReceiveUseCase } from "@/share/receive/application/controller/application/LibraryArea/MovieClip/usecase/MovieClipAddNewReceiveUseCase";
 import { execute as instanceRemoveReceiveUseCase } from "@/share/receive/application/controller/application/LibraryArea/Instance/InstanceRemoveReceiveUseCase";
+import { execute as timelineLayerControllerLayerMoveReceiveUseCase } from "@/share/receive/application/timeline/application/TimelineLayerController/usecase/TimelineLayerControllerLayerMoveReceiveUseCase";
 import { execute as historyRedoUseCase } from "@/controller/application/HistoryArea/usecase/HistoryRedoUseCase";
 import { execute as historyUndoUseCase } from "@/controller/application/HistoryArea/usecase/HistoryUndoUseCase";
 import {
@@ -201,6 +202,7 @@ export const execute = async (message: ShareReceiveMessageImpl): Promise<void> =
 
         // レイヤー移動
         case $TIMELINE_MOVE_LAYER_COMMAND:
+            timelineLayerControllerLayerMoveReceiveUseCase(message);
             break;
 
         default:
