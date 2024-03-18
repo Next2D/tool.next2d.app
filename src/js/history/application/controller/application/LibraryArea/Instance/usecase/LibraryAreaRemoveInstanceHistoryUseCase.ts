@@ -8,18 +8,6 @@ import { execute as historyRemoveElementService } from "@/controller/application
 import { execute as libraryArearRemoveInstanceCreateHistoryObjectService } from "../service/LibraryArearRemoveInstanceCreateHistoryObjectService";
 import { execute as shareSendService } from "@/share/service/ShareSendService";
 import { InstanceImpl } from "@/interface/InstanceImpl";
-import { execute as shareGetS3EndPointRepository } from "@/share/domain/repository/ShareGetS3EndPointRepository";
-import { execute as sharePutS3FileRepository } from "@/share/domain/repository/SharePutS3FileRepository";
-import { execute as bufferToBinaryService } from "@/core/service/BufferToBinaryService";
-
-// @ts-ignore
-import ZlibDeflateWorker from "@/worker/ZlibDeflateWorker?worker&inline";
-
-/**
- * @type {Worker}
- * @private
- */
-const worker: Worker = new ZlibDeflateWorker();
 
 /**
  * @description ライブラリのアイテム削除の履歴を登録
