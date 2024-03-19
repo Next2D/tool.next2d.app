@@ -26,7 +26,8 @@ describe("LayerUpdateLightColorCreateHistoryObjectServiceTest", () =>
         expect(object.messages[4]).toBe(layer.color);
 
         // 表示様の配列のチェック
-        expect(object.args.length).toBe(1);
-        expect(object.args[0]).toBe(layer.name);
+        expect(object.args.length).toBe(2);
+        expect(object.args[0]).toBe(movieClip.name);
+        expect(object.args[1]).toBe(layer.name);
     });
 });

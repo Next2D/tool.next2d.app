@@ -4,6 +4,7 @@ import { execute as timelineLayerControllerUpdateColorElementService } from "../
 import { execute as timelineLayerControllerUpdateDisableIconStyleService } from "../service/TimelineLayerControllerUpdateDisableIconElementService";
 import { execute as timelineLayerControllerUpdateLightIconElementService } from "../service/TimelineLayerControllerUpdateLightIconElementService";
 import { execute as timelineLayerControllerUpdateNameElementService } from "../service/TimelineLayerControllerUpdateNameElementService";
+import { execute as timelineLayerControllerUpdateIconElementService } from "../service/TimelineLayerControllerUpdateIconElementService";
 
 /**
  * @description Layerオブジェクトの状態に合わせて、表示Elementの情報を更新
@@ -16,6 +17,9 @@ import { execute as timelineLayerControllerUpdateNameElementService } from "../s
  */
 export const execute = (layer: Layer): void =>
 {
+    // レイヤーアイコンの表示情報を更新
+    timelineLayerControllerUpdateIconElementService(layer, 0, layer.mode);
+
     // レイヤー名の表示情報を更新
     timelineLayerControllerUpdateNameElementService(layer, layer.name);
 

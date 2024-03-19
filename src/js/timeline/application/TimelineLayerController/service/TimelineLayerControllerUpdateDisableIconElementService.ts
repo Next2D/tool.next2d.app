@@ -19,15 +19,12 @@ export const execute = (layer: Layer, disable: boolean): void =>
         return ;
     }
 
-    const elements = layerElement
-        .getElementsByClassName("timeline-layer-disable-one");
+    const element = layerElement
+        .querySelector(".timeline-layer-disable-one") as HTMLElement;
 
-    if (!elements || !elements.length) {
+    if (!element) {
         return ;
     }
-
-    // update property
-    const element = elements[0] as NonNullable<HTMLElement>;
 
     // update class
     if (disable) {

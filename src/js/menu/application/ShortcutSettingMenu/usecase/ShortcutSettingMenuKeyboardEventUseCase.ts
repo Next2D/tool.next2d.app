@@ -35,8 +35,8 @@ export const execute = (event: KeyboardEvent): boolean =>
         return true;
     }
 
-    const elements: HTMLCollection = element.getElementsByClassName("command");
-    if (!elements.length) {
+    const commandElement = element.querySelector(".command") as HTMLElement;
+    if (!commandElement) {
         return true;
     }
 
@@ -90,12 +90,6 @@ export const execute = (event: KeyboardEvent): boolean =>
 
     const customKey: string   = $generateShortcutKey(event.key, options);
     const commandText: string = texts.join(" + ");
-
-    const commandElement: HTMLElement = elements[0] as HTMLElement;
-    if (!commandElement) {
-        return true;
-    }
-
     const tempMapping: Map<string, ShortcutViewObjectImpl> = $getTempMapping();
     const defaultKey: string = commandElement.dataset.defaultKey as NonNullable<string>;
 

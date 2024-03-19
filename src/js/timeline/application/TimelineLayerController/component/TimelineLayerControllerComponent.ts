@@ -18,10 +18,6 @@ export const execute = (index: number, layer: Layer): string =>
         <i style="display: none;" class="timeline-exit-icon" data-layer-index="${index}"></i>
         <i style="display: none;" class="timeline-exit-in-icon" data-layer-index="${index}"></i>
         <i class="timeline-layer-icon" data-layer-index="${index}" data-detail="{{レイヤー変更(ダブルクリック)}}"></i>
-        <i style="display: none;" class="timeline-mask-icon" data-layer-index="${index}" data-detail="{{レイヤー変更(ダブルクリック)}}"></i>
-        <i style="display: none;" class="timeline-mask-in-icon" data-layer-index="${index}"></i>
-        <i style="display: none;" class="timeline-guide-icon" data-layer-index="${index}" data-detail="{{レイヤー変更(ダブルクリック)}}"></i>
-        <i style="display: none;" class="timeline-guide-in-icon" data-layer-index="${index}" data-detail="{{レイヤー変更(ダブルクリック)}}"></i>
         <div class="view-text" data-layer-index="${index}">${layer.name}</div>
         <i class="timeline-layer-light-one" data-layer-index="${index}" data-detail="{{レイヤーをハイライト}}"><span style="background-color:#000000;"></span></i>
         <i class="timeline-layer-disable-one icon-disable" data-layer-index="${index}" data-detail="{{レイヤーを非表示}}"></i>

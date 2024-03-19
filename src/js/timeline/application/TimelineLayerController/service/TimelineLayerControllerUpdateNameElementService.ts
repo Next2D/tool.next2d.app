@@ -19,13 +19,14 @@ export const execute = (layer: Layer, name: string): void =>
         return ;
     }
 
-    const nameElements = element.getElementsByClassName("view-text");
-    if (!nameElements || !nameElements.length) {
+    const nameElement = element
+        .querySelector(".view-text") as HTMLElement;
+
+    if (!nameElement) {
         return ;
     }
 
     // 表示Elementを更新
-    const nameElement = nameElements[0] as NonNullable<HTMLElement>;
     if (nameElement.textContent === name) {
         return ;
     }

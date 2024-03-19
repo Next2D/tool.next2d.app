@@ -19,13 +19,12 @@ export const execute = (layer: Layer, lock: boolean): void =>
         return ;
     }
 
-    const elements = layerElement.getElementsByClassName("timeline-layer-lock-one");
-    if (!elements || !elements.length) {
+    const element = layerElement
+        .querySelector(".timeline-layer-lock-one") as HTMLElement;
+
+    if (!element) {
         return ;
     }
-
-    // update property
-    const element = elements[0] as NonNullable<HTMLElement>;
 
     // update class
     if (lock) {

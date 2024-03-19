@@ -25,12 +25,12 @@ export const execute = (layer: Layer, light: boolean): void =>
         : "";
 
     // ハイライトElementの表示を更新
-    const elements = layerElement.getElementsByClassName("timeline-layer-light-one");
-    if (!elements || !elements.length) {
+    const lightElement = layerElement
+        .querySelector(".timeline-layer-light-one") as HTMLElement;
+    if (!lightElement) {
         return ;
     }
 
-    const lightElement = elements[0] as NonNullable<HTMLElement>;
     const span = lightElement.children[0] as NonNullable<HTMLElement>;
 
     if (light) {

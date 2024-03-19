@@ -1,11 +1,13 @@
 import type { Layer } from "@/core/domain/model/Layer";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
+import type { LayerModeStringImpl } from "@/interface/LayerModeSringImpl";
 import { execute as externalLayerUpdateNameUseCase } from "@/external/core/application/ExternalLayer/usecase/ExternalLayerUpdateNameUseCase";
 import { execute as externalLayerUpdateLockUseCase } from "@/external/core/application/ExternalLayer/usecase/ExternalLayerUpdateLockUseCase";
 import { execute as externalLayerUpdateDisableUseCase } from "@/external/core/application/ExternalLayer/usecase/ExternalLayerUpdateDisableUseCase";
 import { execute as externalLayerUpdateLightUseCase } from "@/external/core/application/ExternalLayer/usecase/ExternalLayerUpdateLightUseCase";
 import { execute as externalLayerUpdateLightColorUseCase } from "@/external/core/application/ExternalLayer/usecase/ExternalLayerUpdateLightColorUseCase";
+import { execute as externalLayerUpdateTypeUseCase } from "@/external/core/application/ExternalLayer/usecase/ExternalLayerUpdateTypeUseCase";
 
 /**
  * @description Layerの外部APIクラス
@@ -207,6 +209,45 @@ export class ExternalLayer
     {
         externalLayerUpdateLightColorUseCase(
             this._$workSpace, this._$movieClip, this._$layer, color
+        );
+    }
+
+    /**
+     * @description レイヤータイプを文字列で返却
+     *              Returns the layer type as a string
+     *
+     * @mwmbwe {string}
+     * @method
+     * @public
+     */
+    get layerType (): LayerModeStringImpl
+    {
+        switch (this._$layer.mode) {
+
+            case 1:
+                return "mask";
+
+            case 2:
+                return "mask_in";
+
+            case 3:
+                return "guide";
+
+            case 4:
+                return "guide_in";
+
+            case 5:
+                return "folder";
+
+            default:
+                return "normal";
+
+        }
+    }
+    set layerType (type: LayerModeStringImpl)
+    {
+        externalLayerUpdateTypeUseCase(
+            this._$workSpace, this._$movieClip, this._$layer, type
         );
     }
 }

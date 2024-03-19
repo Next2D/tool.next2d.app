@@ -18,14 +18,13 @@ export const execute = (layer: Layer, color: string): void =>
         return ;
     }
 
-    const lightElements = element
-        .getElementsByClassName("timeline-layer-light-one");
+    const lightElement = element
+        .querySelector(".timeline-layer-light-one") as HTMLElement;
 
-    if (!lightElements || !lightElements.length) {
+    if (!lightElement) {
         return ;
     }
 
-    const lightElement = lightElements[0] as NonNullable<HTMLElement>;
     const span = lightElement.children[0] as NonNullable<HTMLElement>;
     span.style.backgroundColor = color;
 };
