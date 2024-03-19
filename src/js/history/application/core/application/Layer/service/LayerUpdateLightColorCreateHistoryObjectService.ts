@@ -32,6 +32,7 @@ export const execute = (
             layer.color
         ],
         "args": [
+            movie_clip.name,
             layer.name
         ]
     };

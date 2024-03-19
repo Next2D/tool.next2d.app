@@ -55,6 +55,8 @@ export const execute = (
 
         // 変更がなければスキップ
         if (beforeIndex === afterIndex) {
+            // 削除したレイヤーを元のindex値に戻す
+            layers.splice(beforeIndex, 0, layer);
             continue;
         }
 
