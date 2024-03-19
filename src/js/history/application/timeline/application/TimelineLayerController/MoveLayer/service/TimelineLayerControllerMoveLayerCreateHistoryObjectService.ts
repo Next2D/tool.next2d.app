@@ -31,6 +31,7 @@ export const execute = (
             after_index
         ],
         "args": [
+            movie_clip.name,
             layer_name
         ]
     };

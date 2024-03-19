@@ -92,10 +92,10 @@ export const execute = (command: number): string =>
             return "ライブラリから「%s1」を削除";
 
         case $TIMELINE_MOVE_LAYER_COMMAND:
-            return "レイヤー「%s1」を移動";
+            return "「%s1」のレイヤー「%s2」を移動";
 
         case $LAYER_UPDATE_LIGHT_COLOR_COMMAND:
-            return "レイヤー「%s1」のハイライトカラーを変更";
+            return "「%s1」のレイヤー「%s2」のハイライトカラーを変更";
 
         default:
             break;

@@ -23,7 +23,8 @@ describe("TimelineLayerControllerMoveLayerCreateHistoryObjectServiceTest", () =>
         expect(object.messages[3]).toBe(1);
 
         // 表示様の配列のチェック
-        expect(object.args.length).toBe(1);
-        expect(object.args[0]).toBe("layer_name");
+        expect(object.args.length).toBe(2);
+        expect(object.args[0]).toBe(movieClip.name);
+        expect(object.args[1]).toBe("layer_name");
     });
 });
