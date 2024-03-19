@@ -21,6 +21,7 @@ import { execute as libraryAreaUpdateSoundHistoryRedoUseCase } from "@/history/a
 import { execute as libraryAreaAddNewMovieClipHistoryRedoUseCase } from "@/history/application/controller/application/LibraryArea/MovieClip/usecase/LibraryAreaAddNewMovieClipHistoryRedoUseCase";
 import { execute as libraryAreaRemoveInstanceHistoryRedoUseCase } from "@/history/application/controller/application/LibraryArea/Instance/usecase/LibraryAreaRemoveInstanceHistoryRedoUseCase";
 import { execute as timelineLayerControllerMoveLayerHistoryRedoUseCase } from "@/history/application/timeline/application/TimelineLayerController/MoveLayer/usecase/TimelineLayerControllerMoveLayerHistoryRedoUseCase";
+import { execute as layerUpdateLightColorHistoryRedoUseCase } from "@/history/application/core/application/Layer/usecase/LayerUpdateLightColorHistoryRedoUseCase";
 import { execute as instanceUpdateNameHistoryRedoUseCase } from "@/history/application/core/application/Instance/usecase/InstanceUpdateNameHistoryRedoUseCase";
 import { execute as instanceUpdateSymbolHistoryRedoUseCase } from "@/history/application/core/application/Instance/usecase/InstanceUpdateSymbolHistoryRedoUseCase";
 import {
@@ -43,7 +44,8 @@ import {
     $LIBRARY_OVERWRITE_SOUND_COMMAND,
     $LIBRARY_ADD_NEW_MOVIE_CLIP_COMMAND,
     $LIBRARY_REMOVE_INSTANCE_COMMAND,
-    $TIMELINE_MOVE_LAYER_COMMAND
+    $TIMELINE_MOVE_LAYER_COMMAND,
+    $LAYER_UPDATE_LIGHT_COLOR_COMMAND
 } from "@/config/HistoryConfig";
 
 /**
@@ -238,6 +240,16 @@ export const execute = async (
                 messages[1] as number, // MovieClip ID
                 messages[2] as number, // Before Index
                 messages[3] as number // After Index
+            );
+            break;
+
+        // レイヤーのハイライトカラーの変更
+        case $LAYER_UPDATE_LIGHT_COLOR_COMMAND:
+            layerUpdateLightColorHistoryRedoUseCase(
+                messages[0] as number, // workSpaceId
+                messages[1] as number, // MovieClip ID
+                messages[2] as number, // Layer Index
+                messages[4] as string  // After Color
             );
             break;
 
