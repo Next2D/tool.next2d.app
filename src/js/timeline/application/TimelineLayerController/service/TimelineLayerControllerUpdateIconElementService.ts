@@ -1,6 +1,7 @@
 import type { Layer } from "@/core/domain/model/Layer";
 import type { LayerModeImpl } from "@/interface/LayerModeImpl";
 import { timelineLayer } from "@/timeline/domain/model/TimelineLayer";
+import { execute as timelineLayerGetClassNameService } from "@/timeline/application/TimelineLayer/service/TimelineLayerGetClassNameService";
 
 /**
  * @description レイヤーアイコンの更新
@@ -25,64 +26,10 @@ export const execute = (
     }
 
     // 現在のclass名を取得
-    let beforeClassName = "timeline-layer-icon";
-    switch (before_mode) {
-
-        case 1:
-            beforeClassName = "timeline-mask-icon";
-            break;
-
-        case 2:
-            beforeClassName = "timeline-mask-in-icon";
-            break;
-
-        case 3:
-            beforeClassName = "timeline-guide-icon";
-            break;
-
-        case 4:
-            beforeClassName = "timeline-guide-in-icon";
-            break;
-
-        case 5:
-            beforeClassName = "timeline-folder-icon";
-            break;
-
-        default:
-            beforeClassName = "timeline-layer-icon";
-            break;
-
-    }
+    const beforeClassName = timelineLayerGetClassNameService(before_mode);
 
     // 変更になるclass名を取得
-    let afterClassName = "timeline-layer-icon";
-    switch (after_mode) {
-
-        case 1:
-            afterClassName = "timeline-mask-icon";
-            break;
-
-        case 2:
-            afterClassName = "timeline-mask-in-icon";
-            break;
-
-        case 3:
-            afterClassName = "timeline-guide-icon";
-            break;
-
-        case 4:
-            afterClassName = "timeline-guide-in-icon";
-            break;
-
-        case 5:
-            afterClassName = "timeline-folder-icon";
-            break;
-
-        default:
-            afterClassName = "timeline-layer-icon";
-            break;
-
-    }
+    const afterClassName = timelineLayerGetClassNameService(after_mode);
 
     // 現在のクラス名からElementを取得
     const iconElement = element.querySelector(`.${beforeClassName}`) as HTMLElement;

@@ -2,6 +2,8 @@ import { EventType } from "@/tool/domain/event/EventType";
 import { execute as timelineLayerControllerMenuChangeColorUseCase } from "./TimelineLayerControllerMenuChangeColorUseCase";
 import { execute as timelineLayerControllerMenuChangeScaleUseCase } from "./TimelineLayerControllerMenuChangeScaleUseCase";
 import { execute as timelineLayerControllerMenuMaskMouseDownUseCase } from "./TimelineLayerControllerMenuMaskMouseDownUseCase";
+import { execute as timelineLayerControllerMenuNormalMouseDownUseCase } from "./TimelineLayerControllerMenuNormalMouseDownUseCase";
+import { execute as timelineLayerControllerMenuGuideMouseDownUseCase } from "./TimelineLayerControllerMenuGuideMouseDownUseCase";
 import {
     $TIMELINE_CONTROLLER_LAYER_COLOR_ID,
     $TIMELINE_CONTROLLER_LAYER_GUIDE_ID,
@@ -45,10 +47,9 @@ export const execute = (): void =>
 
     // 通常レイヤーのイベントを登録
     if (normalElement) {
-        normalElement.addEventListener(EventType.MOUSE_DOWN, (): void =>
-        {
-            console.log("normalElement");
-        });
+        normalElement.addEventListener(EventType.MOUSE_DOWN,
+            timelineLayerControllerMenuNormalMouseDownUseCase
+        );
     }
 
     const maskElement: HTMLElement | null = document
@@ -66,9 +67,8 @@ export const execute = (): void =>
 
     // ガイドレイヤーのイベントを登録
     if (guideElement) {
-        guideElement.addEventListener(EventType.MOUSE_DOWN, (): void =>
-        {
-            console.log("guideElement");
-        });
+        guideElement.addEventListener(EventType.MOUSE_DOWN,
+            timelineLayerControllerMenuGuideMouseDownUseCase
+        );
     }
 };
