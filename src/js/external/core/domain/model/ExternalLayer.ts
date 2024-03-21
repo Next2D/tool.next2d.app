@@ -8,6 +8,7 @@ import { execute as externalLayerUpdateDisableUseCase } from "@/external/core/ap
 import { execute as externalLayerUpdateLightUseCase } from "@/external/core/application/ExternalLayer/usecase/ExternalLayerUpdateLightUseCase";
 import { execute as externalLayerUpdateLightColorUseCase } from "@/external/core/application/ExternalLayer/usecase/ExternalLayerUpdateLightColorUseCase";
 import { execute as externalLayerUpdateTypeUseCase } from "@/external/core/application/ExternalLayer/usecase/ExternalLayerUpdateTypeUseCase";
+import { execute as externalLayerGetLayerTypeService } from "@/external/core/application/ExternalLayer/service/ExternalLayerGetLayerTypeService";
 
 /**
  * @description Layerの外部APIクラス
@@ -222,27 +223,7 @@ export class ExternalLayer
      */
     get layerType (): LayerModeStringImpl
     {
-        switch (this._$layer.mode) {
-
-            case 1:
-                return "mask";
-
-            case 2:
-                return "mask_in";
-
-            case 3:
-                return "guide";
-
-            case 4:
-                return "guide_in";
-
-            case 5:
-                return "folder";
-
-            default:
-                return "normal";
-
-        }
+        return externalLayerGetLayerTypeService(this._$layer.mode);
     }
     set layerType (type: LayerModeStringImpl)
     {

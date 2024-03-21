@@ -23,8 +23,7 @@ export class Layer
     private _$disable: boolean;
     private _$lock: boolean;
     private _$mode: LayerModeImpl;
-    private _$maskId: null | number;
-    private _$guideId: null | number;
+    private _$parentIndex: null | number;
     private readonly _$characters: Character[];
     private readonly _$emptys: EmptyCharacter[];
 
@@ -82,14 +81,7 @@ export class Layer
          * @default null
          * @private
          */
-        this._$maskId = null;
-
-        /**
-         * @type {number}
-         * @default null
-         * @private
-         */
-        this._$guideId = null;
+        this._$parentIndex = null;
 
         /**
          * @type {array}
@@ -211,37 +203,20 @@ export class Layer
     }
 
     /**
-     * @description マスクレイヤーのID
-     *              Mask Layer ID
+     * @description 入れ子になってる親のレイヤーIndex値
+     *              Index value of the parent layer that is nested
      *
      * @default null
      * @member {number|null}
      * @public
      */
-    get maskId (): null | number
+    get parentIndex (): null | number
     {
-        return this._$maskId;
+        return this._$parentIndex;
     }
-    set maskId (mask_id: null | number)
+    set parentIndex (parent_index: null | number)
     {
-        this._$maskId = mask_id;
-    }
-
-    /**
-     * @description ガイドレイヤーのID
-     *              Guide Layer ID
-     *
-     * @default null
-     * @member {number|null}
-     * @public
-     */
-    get guideId (): null | number
-    {
-        return this._$guideId;
-    }
-    set guideId (guide_id: null | number)
-    {
-        this._$guideId = guide_id;
+        this._$parentIndex = parent_index;
     }
 
     /**
@@ -302,8 +277,18 @@ export class Layer
         this._$disable = object.disable;
         this._$light   = object.light;
         this._$mode    = object.mode;
-        this._$maskId  = object.maskId;
-        this._$guideId = object.guideId;
+
+        if ("parentIndex" in object) {
+            this._$parentIndex = object.parentIndex as number;
+        }
+
+        if ("maskId" in object) {
+            this._$parentIndex = object.maskId as number;
+        }
+
+        if ("guideId" in object) {
+            this._$parentIndex = object.guideId as number;
+        }
 
         // 各、キャラクターの読み込み
         this.loadCharacter(object.characters);
@@ -393,8 +378,7 @@ export class Layer
             "disable": this._$disable,
             "light": this._$light,
             "mode": this._$mode,
-            "maskId": this._$maskId,
-            "guideId": this._$guideId,
+            "parentIndex": this._$parentIndex,
             "characters": characters,
             "emptyCharacters": emptyCharacters
         };

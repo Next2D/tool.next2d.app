@@ -16,7 +16,6 @@ import { execute as timelineLayerGetClassNameService } from "@/timeline/applicat
  */
 export const execute = (
     layer: Layer,
-    before_mode: LayerModeImpl,
     after_mode: LayerModeImpl
 ): void => {
 
@@ -25,19 +24,31 @@ export const execute = (
         return ;
     }
 
-    // 現在のclass名を取得
-    const beforeClassName = timelineLayerGetClassNameService(before_mode);
-
     // 変更になるclass名を取得
     const afterClassName = timelineLayerGetClassNameService(after_mode);
 
     // 現在のクラス名からElementを取得
-    const iconElement = element.querySelector(`.${beforeClassName}`) as HTMLElement;
+    const iconElement = element.querySelector(".identification-class") as HTMLElement;
     if (!iconElement) {
         return ;
     }
 
-    // classを更新
-    iconElement.classList.remove(beforeClassName);
-    iconElement.classList.add(afterClassName);
+    const classList = iconElement.classList;
+    for (let idx = 0; idx < classList.length; ++idx) {
+        const className = classList[idx];
+        if (className === "identification-class") {
+            continue;
+        }
+
+        if (className === afterClassName) {
+            continue;
+        }
+
+        iconElement.classList.remove(className);
+    }
+
+    // レイヤータイプのクラスを追加
+    if (!iconElement.classList.contains(afterClassName)) {
+        iconElement.classList.add(afterClassName);
+    }
 };

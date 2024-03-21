@@ -18,7 +18,7 @@ import { execute as timelineLayerControllerUpdateIconElementService } from "../s
 export const execute = (layer: Layer): void =>
 {
     // レイヤーアイコンの表示情報を更新
-    timelineLayerControllerUpdateIconElementService(layer, 0, layer.mode);
+    timelineLayerControllerUpdateIconElementService(layer, layer.mode);
 
     // レイヤー名の表示情報を更新
     timelineLayerControllerUpdateNameElementService(layer, layer.name);

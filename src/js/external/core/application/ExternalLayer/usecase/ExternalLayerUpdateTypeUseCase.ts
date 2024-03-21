@@ -1,18 +1,21 @@
 import type { Layer } from "@/core/domain/model/Layer";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
-import type { LayerModeImpl } from "@/interface/LayerModeImpl";
 import type { LayerModeStringImpl } from "@/interface/LayerModeSringImpl";
 import { execute as timelineLayerControllerUpdateIconElementService } from "@/timeline/application/TimelineLayerController/service/TimelineLayerControllerUpdateIconElementService";
+import { execute as externalLayerGetLayerModeService } from "../service/ExternalLayerGetLayerModeService";
 
 /**
  * @description レイヤータイプの更新
  *              Layer type update
  *
- * @param {WorkSpace} work_space
- * @param {MovieClip} movie_clip
- * @param {Layer} layer
- * @param {string} type
+ * @param  {WorkSpace} work_space
+ * @param  {MovieClip} movie_clip
+ * @param  {Layer} layer
+ * @param  {string} type
+ * @return {void}
+ * @method
+ * @public
  */
 export const execute = (
     work_space: WorkSpace,
@@ -21,43 +24,22 @@ export const execute = (
     type: LayerModeStringImpl
 ): void => {
 
-    let afterMode: LayerModeImpl = 0;
-    switch (type) {
+    const beforeMode = layer.mode;
+    const afterMode  = externalLayerGetLayerModeService(type);
 
-        case "mask":
-            afterMode = 1;
-            break;
-
-        case "mask_in":
-            afterMode = 2;
-            break;
-
-        case "guide":
-            afterMode = 3;
-            break;
-
-        case "guide_in":
-            afterMode = 4;
-            break;
-
-        case "folder":
-            afterMode = 5;
-            break;
-
-        default:
-            afterMode = 0;
-            break;
-
+    // 変更がなけれな終了(連続実行防止)
+    if (beforeMode === afterMode) {
+        return ;
     }
 
-    const beforeMode = layer.mode;
+    layer.parentIndex = null;
+    layer.mode = afterMode;
 
-    layer.maskId  = null;
-    layer.guideId = null;
-    layer.mode    = afterMode;
+    // TODO 履歴に追加
+    console.log(beforeMode);
 
     // アクティブなら表示を更新
     if (work_space.active && movie_clip.active) {
-        timelineLayerControllerUpdateIconElementService(layer, beforeMode, afterMode);
+        timelineLayerControllerUpdateIconElementService(layer, layer.mode);
     }
 };

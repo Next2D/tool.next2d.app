@@ -9,8 +9,9 @@ export interface LayerSaveObjectImpl {
     disable: boolean;
     light: boolean;
     mode: LayerModeImpl;
-    maskId: null | number;
-    guideId: null | number;
     characters: CharacterSaveObjectImpl[];
     emptyCharacters: EmptyCharacterSaveObjectImpl[];
+    parentIndex?: null | number;
+    maskId?: null | number;
+    guideId?: null | number;
 }

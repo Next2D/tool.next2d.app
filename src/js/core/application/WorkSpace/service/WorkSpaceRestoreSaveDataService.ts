@@ -1,10 +1,12 @@
 import { WorkSpace } from "@/core/domain/model/WorkSpace";
 import type { WorkSpaceSaveObjectImpl } from "@/interface/WorkSpaceSaveObjectImpl";
-// @ts-ignore
-import ZlibInflateWorker from "@/worker/ZlibInflateWorker?worker&inline";
 import { $registerWorkSpace } from "../../CoreUtil";
 import { execute as binaryToBufferService } from "@/core/service/BinaryToBufferService";
 import { execute as bufferToBinaryService } from "@/core/service/BufferToBinaryService";
+import { execute as migrationSaveDataUseCase } from "@/migration/usecase/MigrationSaveDataUseCase";
+
+// @ts-ignore
+import ZlibInflateWorker from "@/worker/ZlibInflateWorker?worker&inline";
 
 /**
  * @private
@@ -34,7 +36,11 @@ export const execute = (binary: string, share: boolean = false): Promise<void> =
                 event.data as NonNullable<Uint8Array>
             );
 
-            const workSpaceObjects: WorkSpaceSaveObjectImpl[] = JSON.parse(decodeURIComponent(value));
+            const workSpaceObjects: WorkSpaceSaveObjectImpl[] = migrationSaveDataUseCase(
+                JSON.parse(decodeURIComponent(value))
+            );
+
+            // データを復元
             for (let idx: number = 0; idx < workSpaceObjects.length; ++idx) {
 
                 const workSpace = new WorkSpace();
