@@ -9,8 +9,8 @@ import { execute as timelineLayerControllerDisableIconMouseDownEventUseCase } fr
 import { execute as timelineLayerControllerDisableIconMouseOverUseCase } from "./TimelineLayerControllerDisableIconMouseOverUseCase";
 import { execute as timelineLayerControllerLockIconMouseDownEventUseCase } from "./TimelineLayerControllerLockIconMouseDownEventUseCase";
 import { execute as timelineLayerControllerLockIconMouseOverUseCase } from "./TimelineLayerControllerLockIconMouseOverUseCase";
-import { execute as timelineLayerControllerMouseOverEventService } from "../service/TimelineLayerControllerMouseOverEventService";
-import { execute as timelineLayerControllerMouseOutEventService } from "../service/TimelineLayerControllerMouseOutEventService";
+import { execute as timelineLayerControllerMouseOverEventUseCase } from "./TimelineLayerControllerMouseOverEventUseCase";
+import { execute as timelineLayerControllerMouseOutEventUseCase } from "./TimelineLayerControllerMouseOutEventUseCase";
 import { EventType } from "@/tool/domain/event/EventType";
 
 /**
@@ -36,12 +36,12 @@ export const execute = (element: HTMLElement): void =>
 
     // マウスオーバーイベント
     element.addEventListener(EventType.MOUSE_OVER,
-        timelineLayerControllerMouseOverEventService
+        timelineLayerControllerMouseOverEventUseCase
     );
 
     // マウスアウトイベント
     element.addEventListener(EventType.MOUSE_OUT,
-        timelineLayerControllerMouseOutEventService
+        timelineLayerControllerMouseOutEventUseCase
     );
 
     // 通常レイヤーのアイコンにイベントを登録

@@ -16,7 +16,7 @@ export const execute = (index: number, layer: Layer): string =>
 <div class="timeline-content-child" data-layer-index="${index}" style="display: none;">
     <div class="timeline-layer-controller" data-layer-index="${index}">
         <i style="display: none;" class="timeline-exit-icon" data-layer-index="${index}"></i>
-        <i style="display: none;" class="timeline-exit-in-icon" data-layer-index="${index}"></i>
+        <i style="display: none;" class="timeline-insert-icon" data-layer-index="${index}"></i>
         <i class="timeline-layer-icon identification-class" data-layer-index="${index}" data-detail="{{レイヤー変更(ダブルクリック)}}"></i>
         <div class="view-text" data-layer-index="${index}">${layer.name}</div>
         <i class="timeline-layer-light-one" data-layer-index="${index}" data-detail="{{レイヤーをハイライト}}"><span style="background-color:#000000;"></span></i>

@@ -3,7 +3,7 @@ import { execute as timelineLayerControllerWindowMouseMoveUseCase } from "../ser
 import { $setCursor } from "@/global/GlobalUtil";
 import { $setMoveLayerMode } from "../../TimelineUtil";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
-import { execute as timelineLayerAllElementRemoveMoveTargetService } from "@/timeline/application/TimelineLayer/service/TimelineLayerAllElementRemoveMoveTargetService";
+import { execute as timelineLayerElementResettingService } from "@/timeline/application/TimelineLayer/service/TimelineLayerElementResettingService";
 import { timelineLayer } from "@/timeline/domain/model/TimelineLayer";
 import { ExternalTimeline } from "@/external/timeline/domain/model/ExternalTimeline";
 
@@ -35,18 +35,22 @@ export const execute = (event: PointerEvent): void =>
     const workSpace = $getCurrentWorkSpace();
     const movieClip = workSpace.scene;
 
-    const layers = movieClip.layers;
-    if (!layers.length) {
+    if (!movieClip.layers.length) {
         return ;
     }
-
-    // 表示されてるレイヤーの"move-target"を削除
-    timelineLayerAllElementRemoveMoveTargetService();
 
     // 移動先のレイヤーの表インデックス値が-1の場合は処理を終了
     if (timelineLayer.distIndex === -1) {
         return ;
     }
+
+    const layer = movieClip.layers[timelineLayer.distIndex];
+    if (!layer) {
+        return ;
+    }
+
+    // 選択したレイヤーの表示を初期化
+    timelineLayerElementResettingService(layer);
 
     // 外部APIを起動
     const externalTimeline = new ExternalTimeline(workSpace, movieClip);

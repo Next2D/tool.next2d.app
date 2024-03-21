@@ -1,6 +1,7 @@
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { $getMoveLayerMode, $getTopIndex } from "../../TimelineUtil";
 import { timelineLayer } from "@/timeline/domain/model/TimelineLayer";
+import { execute as timelineLayerControllerActiveInsertIconElementService } from "../service/TimelineLayerControllerActiveInsertIconElementService";
 
 /**
  * @description レイヤーコントローラーのマウスオーバー処理関数
@@ -46,4 +47,18 @@ export const execute = (event: PointerEvent): void =>
 
     // styleを追加
     parent.classList.add("move-target");
+
+    // 入れ子にできるタイプの場合はインサートアイコンを表示
+    switch (layer.mode) {
+
+        case 1: // mask
+        case 3: // guide
+            timelineLayerControllerActiveInsertIconElementService(parent);
+            break;
+
+        default:
+            break;
+
+    }
+
 };

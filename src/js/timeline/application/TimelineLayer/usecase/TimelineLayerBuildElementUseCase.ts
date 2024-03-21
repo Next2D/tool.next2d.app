@@ -7,7 +7,6 @@ import { execute as timelineLayerFrameCreateContentComponentService } from "@/ti
 import { execute as timelineLayerFrameUpdateStyleService } from "@/timeline/application/TimelineLayerFrame/service/TimelineLayerFrameUpdateStyleService";
 import { execute as timelineLayerCreateUseCase } from "./TimelineLayerCreateUseCase";
 import { execute as timelineLayerAllElementDisplayNoneService } from "../service/TimelineLayerAllElementDisplayNoneService";
-import { execute as timelineLayerAllElementRemoveMoveTargetService } from "../service/TimelineLayerAllElementRemoveMoveTargetService";
 import { execute as timelineLayerActiveElementService } from "@/timeline/application/TimelineLayer/service/TimelineLayerActiveElementService";
 import { execute as timelineLayerInactiveElementService } from "@/timeline/application/TimelineLayer/service/TimelineLayerInactiveElementService";
 import { execute as timelineLayerAllClearSelectedElementUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerAllClearSelectedElementUseCase";
@@ -45,9 +44,6 @@ export const execute = (): void =>
 
     // 再描画前に全てのレイヤーelementを非表示にする
     timelineLayerAllElementDisplayNoneService();
-
-    // 表示されてるレイヤーの"move-target"を削除
-    timelineLayerAllElementRemoveMoveTargetService();
 
     // フレームElementの表示を初期化
     timelineLayerAllClearSelectedElementUseCase(scene);
