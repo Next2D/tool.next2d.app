@@ -46,7 +46,9 @@ export const execute = (event: PointerEvent): void =>
     timelineLayer.distIndex = parseInt(parent.dataset.layerIndex as string) + $getTopIndex();
 
     // styleを追加
-    parent.classList.add("move-target");
+    if (!parent.classList.contains("move-target")) {
+        parent.classList.add("move-target");
+    }
 
     // 入れ子にできるタイプの場合はインサートアイコンを表示
     switch (layer.mode) {
