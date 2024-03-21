@@ -1,5 +1,6 @@
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
+import type { Layer } from "@/core/domain/model/Layer";
 import { execute as historyRemoveElementService } from "@/controller/application/HistoryArea/service/HistoryRemoveElementService";
 import { execute as historyAddElementUseCase } from "@/controller/application/HistoryArea/usecase/HistoryAddElementUseCase";
 import { execute as historyGetTextService } from "@/controller/application/HistoryArea/service/HistoryGetTextService";
@@ -14,6 +15,7 @@ import { execute as shareSendService } from "@/share/service/ShareSendService";
  *
  * @param  {WorkSpace} work_space
  * @param  {MovieClip} movie_clip
+ * @param  {Layer} layer
  * @param  {number} before_index
  * @param  {number} after_index
  * @param  {boolean} [receiver=false]
@@ -24,6 +26,7 @@ import { execute as shareSendService } from "@/share/service/ShareSendService";
 export const execute = (
     work_space: WorkSpace,
     movie_clip: MovieClip,
+    layer: Layer,
     before_index: number,
     after_index: number,
     receiver: boolean = false
@@ -34,9 +37,8 @@ export const execute = (
     historyRemoveElementService(work_space);
 
     // fixed logic
-    const layer = movie_clip.layers[after_index];
     const historyObject = timelineLayerControllerMoveLayerCreateHistoryObjectService(
-        work_space.id, movie_clip, before_index, after_index, layer.name
+        work_space.id, movie_clip, layer, before_index, after_index
     );
 
     // 作業履歴にElementを追加

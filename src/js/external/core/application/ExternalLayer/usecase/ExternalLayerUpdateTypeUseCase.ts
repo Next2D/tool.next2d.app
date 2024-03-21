@@ -32,11 +32,9 @@ export const execute = (
         return ;
     }
 
-    layer.parentIndex = null;
-    layer.mode = afterMode;
-
     // TODO 履歴に追加
     console.log(beforeMode);
+    layer.mode = afterMode;
 
     // アクティブなら表示を更新
     if (work_space.active && movie_clip.active) {

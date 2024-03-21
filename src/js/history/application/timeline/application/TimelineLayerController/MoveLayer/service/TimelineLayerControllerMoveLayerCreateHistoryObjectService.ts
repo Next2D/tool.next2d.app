@@ -1,5 +1,6 @@
 import type { HistoryObjectImpl } from "@/interface/HistoryObjectImpl";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
+import type { Layer } from "@/core/domain/model/Layer";
 import { $TIMELINE_MOVE_LAYER_COMMAND } from "@/config/HistoryConfig";
 
 /**
@@ -8,6 +9,7 @@ import { $TIMELINE_MOVE_LAYER_COMMAND } from "@/config/HistoryConfig";
  *
  * @param  {number} work_space_id
  * @param  {MovieClip} movie_clip
+ * @param  {Layer} layer
  * @param  {number} before_index
  * @param  {number} after_index
  * @return {object}
@@ -17,9 +19,9 @@ import { $TIMELINE_MOVE_LAYER_COMMAND } from "@/config/HistoryConfig";
 export const execute = (
     work_space_id: number,
     movie_clip: MovieClip,
+    layer: Layer,
     before_index: number,
-    after_index: number,
-    layer_name: string
+    after_index: number
 ): HistoryObjectImpl => {
 
     return {
@@ -28,11 +30,13 @@ export const execute = (
             work_space_id,
             movie_clip.id,
             before_index,
-            after_index
+            after_index,
+            layer.mode,
+            layer.parentIndex
         ],
         "args": [
             movie_clip.name,
-            layer_name
+            layer.name
         ]
     };
 };

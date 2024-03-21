@@ -5,12 +5,12 @@ import { execute as timelineLayerBuildElementUseCase } from "@/timeline/applicat
 import { execute as timelineLayerControllerMoveLayerHistoryUseCase } from "@/history/application/timeline/application/TimelineLayerController/MoveLayer/usecase/TimelineLayerControllerMoveLayerHistoryUseCase";
 
 /**
- * @description 指定のindex値の後ろに選択中のレイヤーを移動
- *              Move the selected layer behind the specified index value
+ * @description 指定のレイヤーの後ろに選択中のレイヤーを移動
+ *              Move the selected layer behind the specified layer
  *
  * @param  {WorkSpace} work_space
  * @param  {MovieClip} movie_clip
- * @param  {number} index
+ * @param  {Layer} dist_layer
  * @return {void}
  * @method
  * @public
@@ -18,23 +18,17 @@ import { execute as timelineLayerControllerMoveLayerHistoryUseCase } from "@/his
 export const execute = (
     work_space: WorkSpace,
     movie_clip: MovieClip,
-    index: number
+    dist_layer: Layer
 ): void => {
-
-    // 選択中のレイヤーがなければ終了
-    if (!movie_clip.selectedLayers.length) {
-        return ;
-    }
 
     // MovieClipのレイヤー配列を取得
     const layers = movie_clip.layers;
 
-    // 移動先のレイヤーを取得
-    const distLayer = layers[index];
-
-    // 複製してindex順に並び替え
+    // 選択配列を複製
     const selectedLayers = movie_clip.selectedLayers.slice();
-    selectedLayers.sort((a: Layer, b: Layer) =>
+
+    // index順に並び替え
+    selectedLayers.sort((a: Layer, b: Layer): number =>
     {
         return layers.indexOf(a) - layers.indexOf(b);
     });
@@ -51,7 +45,7 @@ export const execute = (
         layers.splice(beforeIndex, 1);
 
         // レイヤーを移動
-        const afterIndex = layers.indexOf(distLayer) + idx + 1;
+        const afterIndex = layers.indexOf(dist_layer) + idx + 1;
 
         // 変更がなければスキップ
         if (beforeIndex === afterIndex) {
@@ -68,9 +62,14 @@ export const execute = (
         timelineLayerControllerMoveLayerHistoryUseCase(
             work_space,
             movie_clip,
+            layer,
             beforeIndex,
             afterIndex
         );
+
+        // 通常レイヤ移動の場合は親子関係を解除
+        // fixed logic
+        layer.clearRelation();
     }
 
     // タイムラインを再描画

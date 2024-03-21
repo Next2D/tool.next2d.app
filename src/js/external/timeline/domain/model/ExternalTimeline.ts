@@ -9,7 +9,7 @@ import { execute as externalTimelineLayerDeactivateLayerUseCase } from "@/extern
 import { execute as externalTimelineLayerControllerSelectedLayersUseCase } from "@/external/timeline/application/ExternalTimelineLayerController/usecase/ExternalTimelineLayerControllerSelectedLayersUseCase";
 import { execute as externalTimelineLayerFrameSelectedUseCase } from "@/external/timeline/application/ExternalTimelineLayerFrame/usecase/ExternalTimelineLayerFrameSelectedUseCase";
 import { execute as timelineLayerAllClearSelectedElementUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerAllClearSelectedElementUseCase";
-import { execute as externalTimelineLayerControllerBehindLayer } from "@/external/timeline/application/ExternalTimelineLayerController/usecase/ExternalTimelineLayerControllerBehindLayer";
+import { execute as externalTimelineLayerControllerBehindUseCase } from "@/external/timeline/application/ExternalTimelineLayerController/usecase/ExternalTimelineLayerControllerBehindUseCase";
 import { execute as externalTimelineAddNewLayerUseCase } from "@/external/timeline/application/ExternalTimeline/usecase/ExternalTimelineAddNewLayerUseCase";
 import { execute as externalTimelineDeleteLayerUseCase } from "@/external/timeline/application/ExternalTimeline/usecase/ExternalTimelineDeleteLayerUseCase";
 
@@ -283,7 +283,7 @@ export class ExternalTimeline
      */
     behindLayer (index: number): void
     {
-        externalTimelineLayerControllerBehindLayer(
+        externalTimelineLayerControllerBehindUseCase(
             this._$workSpace,
             this._$movieClip,
             index

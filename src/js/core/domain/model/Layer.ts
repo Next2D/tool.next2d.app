@@ -261,6 +261,23 @@ export class Layer
     }
 
     /**
+     * @description レイヤーのモードを変更
+     *             Change the mode of the layer
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    clearRelation (): void
+    {
+        // ノーマルモードに更新
+        this._$mode = 0;
+
+        // 親のIndexをnullに更新
+        this._$parentIndex = null;
+    }
+
+    /**
      * @description 保存データからLayerを復元
      *              Restore Layer from stored data
      *
