@@ -24,7 +24,7 @@ describe("TimelineLayerControllerMoveLayerCreateHistoryObjectServiceTest", () =>
         expect(object.messages[2]).toBe(11);
         expect(object.messages[3]).toBe(1);
         expect(object.messages[4]).toBe(0);
-        expect(object.messages[5]).toBe(null);
+        expect(object.messages[5]).toBe(-1);
 
         // 表示様の配列のチェック
         expect(object.args.length).toBe(2);

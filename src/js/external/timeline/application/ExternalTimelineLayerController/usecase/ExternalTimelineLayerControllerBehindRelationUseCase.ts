@@ -5,6 +5,17 @@ import { execute as timelineLayerBuildElementUseCase } from "@/timeline/applicat
 import { execute as timelineLayerControllerMoveLayerHistoryUseCase } from "@/history/application/timeline/application/TimelineLayerController/MoveLayer/usecase/TimelineLayerControllerMoveLayerHistoryUseCase";
 import { ExternalLayer } from "@/external/core/domain/model/ExternalLayer";
 
+/**
+ * @description マスク、ガイドレイヤーの親子関係を考慮してレイヤーを移動
+ *              Move the layer considering the parent-child relationship of the mask and guide layers
+ *
+ * @param {WorkSpace} work_space
+ * @param {MovieClip} movie_clip
+ * @param {number} index
+ * @return {void}
+ * @method
+ * @public
+ */
 export const execute = (
     work_space: WorkSpace,
     movie_clip: MovieClip,

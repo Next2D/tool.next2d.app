@@ -1,7 +1,7 @@
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import { execute as externalTimelineLayerControllerBehindNormalUseCase } from "./ExternalTimelineLayerControllerBehindNormalUseCase";
-import { execute as externalTimelineLayerControllerBehindParentUseCase } from "./ExternalTimelineLayerControllerBehindParentUseCase";
+import { execute as externalTimelineLayerControllerBehindRelationUseCase } from "./ExternalTimelineLayerControllerBehindRelationUseCase";
 
 /**
  * @description 指定のindex値の後ろに選択中のレイヤーを移動
@@ -35,7 +35,7 @@ export const execute = (
 
         case 1: // マスクレイヤー
         case 3: // ガイドレイヤー
-            externalTimelineLayerControllerBehindParentUseCase(
+            externalTimelineLayerControllerBehindRelationUseCase(
                 work_space,
                 movie_clip,
                 index

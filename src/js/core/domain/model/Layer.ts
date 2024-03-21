@@ -23,7 +23,7 @@ export class Layer
     private _$disable: boolean;
     private _$lock: boolean;
     private _$mode: LayerModeImpl;
-    private _$parentIndex: null | number;
+    private _$parentIndex: number;
     private readonly _$characters: Character[];
     private readonly _$emptys: EmptyCharacter[];
 
@@ -81,7 +81,7 @@ export class Layer
          * @default null
          * @private
          */
-        this._$parentIndex = null;
+        this._$parentIndex = -1;
 
         /**
          * @type {array}
@@ -206,15 +206,15 @@ export class Layer
      * @description 入れ子になってる親のレイヤーIndex値
      *              Index value of the parent layer that is nested
      *
-     * @default null
-     * @member {number|null}
+     * @default -1
+     * @member {number}
      * @public
      */
-    get parentIndex (): null | number
+    get parentIndex (): number
     {
         return this._$parentIndex;
     }
-    set parentIndex (parent_index: null | number)
+    set parentIndex (parent_index: number)
     {
         this._$parentIndex = parent_index;
     }
@@ -274,7 +274,7 @@ export class Layer
         this._$mode = 0;
 
         // 親のIndexをnullに更新
-        this._$parentIndex = null;
+        this._$parentIndex = -1;
     }
 
     /**
@@ -299,11 +299,11 @@ export class Layer
             this._$parentIndex = object.parentIndex as number;
         }
 
-        if ("maskId" in object) {
+        if ("maskId" in object && object.maskId !== null) {
             this._$parentIndex = object.maskId as number;
         }
 
-        if ("guideId" in object) {
+        if ("guideId" in object && object.guideId !== null) {
             this._$parentIndex = object.guideId as number;
         }
 
