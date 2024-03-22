@@ -41,11 +41,11 @@ export const execute = (
     // アクティブな場合のみ処理を行う
     if (work_space.active && movie_clip.active) {
         // ハイライトカラーを更新
-        timelineLayerControllerUpdateColorElementService(layer, layer.color);
+        timelineLayerControllerUpdateColorElementService(layer);
 
         // ハイライトの機能がonの時は表示も更新
         if (layer.light) {
-            timelineLayerControllerUpdateLightIconElementService(layer, layer.light);
+            timelineLayerControllerUpdateLightIconElementService(layer);
         }
     }
 };

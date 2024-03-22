@@ -4,6 +4,8 @@ import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import { execute as timelineLayerBuildElementUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerBuildElementUseCase";
 import { execute as timelineLayerControllerMoveLayerHistoryUseCase } from "@/history/application/timeline/application/TimelineLayerController/MoveLayer/usecase/TimelineLayerControllerMoveLayerHistoryUseCase";
 import { ExternalLayer } from "@/external/core/domain/model/ExternalLayer";
+import { execute as timelineLayerControllerUpdateIconElementService } from "@/timeline/application/TimelineLayerController/service/TimelineLayerControllerUpdateIconElementService";
+import { LayerModeImpl } from "@/interface/LayerModeImpl";
 
 /**
  * @description マスク、ガイドレイヤーの親子関係を考慮してレイヤーを移動
@@ -31,47 +33,14 @@ export const execute = (
     // 複製して親子関係がないかチェック
     const selectedLayers = movie_clip.selectedLayers.slice();
 
+    // 移動するレイヤーの中に、親レイヤーが含まれていたら処理を終了
     for (let idx = 0; idx < selectedLayers.length; idx++) {
         const layer = selectedLayers[idx];
         switch (layer.mode) {
 
             case 1: // マスクレイヤー
             case 3: // ガイドレイヤー
-                // 親レイヤーが含まれていたら処理を終了
                 return ;
-
-            default:
-                break;
-
-        }
-    }
-
-    // 親レイヤーの場合は子のレイヤーを内部的に選択状態にする
-    for (let idx = 0; idx < selectedLayers.length; idx++) {
-
-        const layer = selectedLayers[idx];
-        switch (layer.mode) {
-
-            case 1: // マスクレイヤー
-            case 3: // ガイドレイヤー
-                {
-                    // selectedLayersは複製配列なので、pushしても表示に影響はない
-                    const index = layers.indexOf(layer);
-                    for (let idx = index + 1; idx < layers.length; ++idx) {
-
-                        const childLayer = layers[idx];
-                        if (childLayer.parentIndex !== index) {
-                            break;
-                        }
-
-                        if (selectedLayers.indexOf(childLayer) > -1) {
-                            continue;
-                        }
-
-                        selectedLayers.push(childLayer);
-                    }
-                }
-                break;
 
             default:
                 break;
@@ -99,35 +68,10 @@ export const execute = (
         // レイヤーを移動
         const afterIndex = layers.indexOf(distLayer) + idx + 1;
 
-        // 変更がなければスキップ
+        // 移動先が移動元と同じ場合は親レイヤーの中に移動する
         if (beforeIndex === afterIndex) {
-
             // 削除したレイヤーを元のindex値に戻す
             layers.splice(beforeIndex, 0, layer);
-
-            switch (distLayer.mode) {
-
-                case 1: // マスクレイヤー
-                    {
-                        const externalLayer = new ExternalLayer(work_space, movie_clip, layer);
-                        externalLayer.layerType = "mask_in";
-                        layer.parentIndex = index;
-                    }
-                    break;
-
-                case 3: // ガイドレイヤー
-                    {
-                        const externalLayer = new ExternalLayer(work_space, movie_clip, layer);
-                        externalLayer.layerType = "guide_in";
-                        layer.parentIndex = index;
-                    }
-                    break;
-
-                default:
-                    continue;
-
-            }
-
         } else {
             // 指定のindexにレイヤーを移動
             layers.splice(afterIndex, 0, layer);
@@ -138,9 +82,40 @@ export const execute = (
         timelineLayerControllerMoveLayerHistoryUseCase(
             work_space,
             movie_clip,
+            layer,
             beforeIndex,
             afterIndex
         );
+    }
+
+    let mode: LayerModeImpl = 0;
+    switch (distLayer.mode) {
+
+        case 1: // マスクレイヤー
+            mode = 2;
+            break;
+
+        case 3: // ガイドレイヤー
+            mode = 4;
+            break;
+
+        default:
+            break;
+
+    }
+
+    const parentIndex = layers.indexOf(distLayer);
+    for (let idx = 0; idx < selectedLayers.length; idx++) {
+        const layer = selectedLayers[idx];
+
+        // 親子関係を設定
+        layer.mode = mode;
+        layer.parentIndex = parentIndex;
+
+        // アクティブならアイコン表示を更新
+        if (work_space.active && movie_clip.active) {
+            timelineLayerControllerUpdateIconElementService(layer);
+        }
     }
 
     // タイムラインを再描画

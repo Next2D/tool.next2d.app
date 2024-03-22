@@ -38,6 +38,6 @@ export const execute = (
 
     // アクティブなら表示を更新
     if (work_space.active && movie_clip.active) {
-        timelineLayerControllerUpdateIconElementService(layer, layer.mode);
+        timelineLayerControllerUpdateIconElementService(layer);
     }
 };

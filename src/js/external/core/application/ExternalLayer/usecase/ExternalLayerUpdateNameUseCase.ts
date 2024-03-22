@@ -30,11 +30,11 @@ export const execute = (
         work_space, movie_clip, layer, name, receiver
     );
 
-    // 表示中ならElementを更新
-    if (work_space.active && movie_clip.active) {
-        timelineLayerControllerUpdateNameElementService(layer, name);
-    }
-
     // 内部データを更新
     layer.name = name;
+
+    // 表示中ならElementを更新
+    if (work_space.active && movie_clip.active) {
+        timelineLayerControllerUpdateNameElementService(layer);
+    }
 };

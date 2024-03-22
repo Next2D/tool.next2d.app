@@ -44,7 +44,7 @@ export const execute = (event: PointerEvent): void =>
         externalLayer.setLock(mode);
 
         // レイヤーのロック情報とElementを更新
-        timelineLayerControllerUpdateLockIconStyleService(layer, mode);
+        timelineLayerControllerUpdateLockIconStyleService(layer);
     }
 
     // モードを更新

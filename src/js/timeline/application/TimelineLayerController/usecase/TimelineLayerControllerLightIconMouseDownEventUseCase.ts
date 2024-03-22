@@ -44,5 +44,5 @@ export const execute = (event: PointerEvent): void =>
     externalLayer.setLight(!layer.light);
 
     // 表示Elementを更新
-    timelineLayerControllerUpdateLightIconElementService(layer, layer.light);
+    timelineLayerControllerUpdateLightIconElementService(layer);
 };

@@ -18,20 +18,20 @@ import { execute as timelineLayerControllerUpdateIconElementService } from "../s
 export const execute = (layer: Layer): void =>
 {
     // レイヤーアイコンの表示情報を更新
-    timelineLayerControllerUpdateIconElementService(layer, layer.mode);
+    timelineLayerControllerUpdateIconElementService(layer);
 
     // レイヤー名の表示情報を更新
-    timelineLayerControllerUpdateNameElementService(layer, layer.name);
+    timelineLayerControllerUpdateNameElementService(layer);
 
     // レイヤーカラーの表示情報を更新
-    timelineLayerControllerUpdateColorElementService(layer, layer.color);
+    timelineLayerControllerUpdateColorElementService(layer);
 
     // レイヤーのハイライトの表示情報を更新
-    timelineLayerControllerUpdateLightIconElementService(layer, layer.light);
+    timelineLayerControllerUpdateLightIconElementService(layer);
 
     // レイヤーの表示・非表示の表示情報を更新
-    timelineLayerControllerUpdateDisableIconStyleService(layer, layer.disable);
+    timelineLayerControllerUpdateDisableIconStyleService(layer);
 
     // ロックアイコンの表示情報を更新
-    timelineLayerControllerUpdateLockIconStyleService(layer, layer.lock);
+    timelineLayerControllerUpdateLockIconStyleService(layer);
 };

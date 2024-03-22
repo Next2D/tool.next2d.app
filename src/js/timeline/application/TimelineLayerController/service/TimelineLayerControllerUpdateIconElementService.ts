@@ -1,5 +1,4 @@
 import type { Layer } from "@/core/domain/model/Layer";
-import type { LayerModeImpl } from "@/interface/LayerModeImpl";
 import { timelineLayer } from "@/timeline/domain/model/TimelineLayer";
 import { execute as timelineLayerGetClassNameService } from "@/timeline/application/TimelineLayer/service/TimelineLayerGetClassNameService";
 
@@ -8,24 +7,19 @@ import { execute as timelineLayerGetClassNameService } from "@/timeline/applicat
  *              Update layer icon
  *
  * @param  {Layer} layer
- * @param  {number} before_mode
- * @param  {number} after_mode
  * @return {void}
  * @method
  * @public
  */
-export const execute = (
-    layer: Layer,
-    after_mode: LayerModeImpl
-): void => {
-
+export const execute = (layer: Layer): void =>
+{
     const element: HTMLElement | undefined = timelineLayer.elements[layer.getDisplayIndex()];
     if (!element) {
         return ;
     }
 
     // 変更になるclass名を取得
-    const afterClassName = timelineLayerGetClassNameService(after_mode);
+    const afterClassName = timelineLayerGetClassNameService(layer.mode);
 
     // 現在のクラス名からElementを取得
     const iconElement = element.querySelector(".identification-class") as HTMLElement;
@@ -50,5 +44,35 @@ export const execute = (
     // レイヤータイプのクラスを追加
     if (!iconElement.classList.contains(afterClassName)) {
         iconElement.classList.add(afterClassName);
+    }
+
+    const textElement = element
+        .querySelector(".identification-view-text") as HTMLElement;
+
+    if (!textElement) {
+        return ;
+    }
+
+    switch (layer.mode) {
+
+        case 2: // マスクレイヤー
+        case 4: // ガイドレイヤー
+            if (textElement.classList.contains("view-text")) {
+                textElement.classList.remove("view-text");
+            }
+            if (!textElement.classList.contains("view-in-text")) {
+                textElement.classList.add("view-in-text");
+            }
+            break;
+
+        default:
+            if (!textElement.classList.contains("view-text")) {
+                textElement.classList.add("view-text");
+            }
+            if (textElement.classList.contains("view-in-text")) {
+                textElement.classList.remove("view-in-text");
+            }
+            break;
+
     }
 };

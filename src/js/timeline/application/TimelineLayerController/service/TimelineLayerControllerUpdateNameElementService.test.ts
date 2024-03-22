@@ -17,11 +17,12 @@ describe("TimelineLayerControllerUpdateNameElementServiceTest", () =>
 
         const nameElement = document.createElement("div");
         layerElement.appendChild(nameElement);
-        nameElement.setAttribute("class", "view-text");
+        nameElement.classList.add("identification-view-text");
         nameElement.textContent = "Layer_Test";
 
+        layer.name = "test";
         expect(nameElement.textContent).toBe("Layer_Test");
-        execute(layer, "test");
+        execute(layer);
         expect(nameElement.textContent).toBe("test");
     });
 });

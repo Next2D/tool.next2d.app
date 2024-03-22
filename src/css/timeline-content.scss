@@ -145,6 +145,21 @@
             border-bottom : transparent 1px solid;
         }
 
+        .view-in-text
+        {
+            display       : flex;
+            align-items   : center;
+            width         : 116px;
+            height        : calc(var(--timeline-frame-height) - 8px);
+            line-height   : calc(var(--timeline-frame-height) - 8px);
+            margin        : 3px;
+            outline       : none;
+            overflow      : hidden;
+            white-space   : nowrap;
+            border-top    : transparent 1px solid;
+            border-bottom : transparent 1px solid;
+        }
+
         &:hover
         {
             i

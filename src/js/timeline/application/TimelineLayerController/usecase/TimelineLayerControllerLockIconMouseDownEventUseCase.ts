@@ -54,5 +54,5 @@ export const execute = (event: PointerEvent): void =>
     externalLayer.setLock(!layer.lock);
 
     // 反転して登録
-    timelineLayerControllerUpdateLockIconStyleService(layer, layer.lock);
+    timelineLayerControllerUpdateLockIconStyleService(layer);
 };

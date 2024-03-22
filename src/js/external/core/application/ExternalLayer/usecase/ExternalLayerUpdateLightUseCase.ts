@@ -41,7 +41,7 @@ export const execute = (
 
     // 表示中ならレイヤーの表示を更新
     if (work_space.active && movie_clip.active) {
-        timelineLayerControllerUpdateLightIconElementService(layer, value);
+        timelineLayerControllerUpdateLightIconElementService(layer);
     }
 
     // 受け取り処理ではなく、画面共有していれば共有者に送信

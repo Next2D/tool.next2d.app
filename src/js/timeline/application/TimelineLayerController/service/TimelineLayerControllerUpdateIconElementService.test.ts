@@ -20,22 +20,34 @@ describe("TimelineLayerControllerUpdateIconElementServiceTest", () =>
         const layer = workSpace.scene.getLayer(0);
 
         expect(iconElement.classList.contains("timeline-layer-icon")).toBe(true);
-        execute(layer, 1);
+        
+        layer.mode = 1;
+        execute(layer);
         expect(iconElement.classList.contains("timeline-layer-icon")).toBe(false);
         expect(iconElement.classList.contains("timeline-mask-icon")).toBe(true);
-        execute(layer, 2);
+        
+        layer.mode = 2;
+        execute(layer);
         expect(iconElement.classList.contains("timeline-mask-icon")).toBe(false);
         expect(iconElement.classList.contains("timeline-mask-in-icon")).toBe(true);
-        execute(layer, 3);
+
+        layer.mode = 3;
+        execute(layer);
         expect(iconElement.classList.contains("timeline-mask-in-icon")).toBe(false);
         expect(iconElement.classList.contains("timeline-guide-icon")).toBe(true);
-        execute(layer, 4);
+        
+        layer.mode = 4;
+        execute(layer);
         expect(iconElement.classList.contains("timeline-guide-icon")).toBe(false);
         expect(iconElement.classList.contains("timeline-guide-in-icon")).toBe(true);
-        execute(layer, 5);
+        
+        layer.mode = 5;
+        execute(layer);
         expect(iconElement.classList.contains("timeline-guide-in-icon")).toBe(false);
         expect(iconElement.classList.contains("timeline-folder-icon")).toBe(true);
-        execute(layer, 0);
+        
+        layer.mode = 0;
+        execute(layer);
         expect(iconElement.classList.contains("timeline-folder-icon")).toBe(false);
         expect(iconElement.classList.contains("timeline-layer-icon")).toBe(true);
     });

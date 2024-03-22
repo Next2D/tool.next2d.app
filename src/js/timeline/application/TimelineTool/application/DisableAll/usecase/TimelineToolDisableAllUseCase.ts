@@ -44,7 +44,7 @@ export const execute = (event: PointerEvent): void =>
         externalLayer.setDisable(mode);
 
         // レイヤーの表示情報とElementを更新
-        timelineLayerControllerUpdateDisableIconStyleService(layer, mode);
+        timelineLayerControllerUpdateDisableIconStyleService(layer);
     }
 
     // モードを更新

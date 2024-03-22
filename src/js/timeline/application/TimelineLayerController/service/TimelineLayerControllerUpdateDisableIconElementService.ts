@@ -6,12 +6,11 @@ import { timelineLayer } from "@/timeline/domain/model/TimelineLayer";
  *              Update the class of the Show/Hide Icon Element for the specified Layer ID.
  *
  * @param  {Layer} layer
- * @param  {boolean} disable
  * @return {void}
  * @method
  * @public
  */
-export const execute = (layer: Layer, disable: boolean): void =>
+export const execute = (layer: Layer): void =>
 {
     // 表示領域にElementがなければ終了
     const layerElement: HTMLElement | undefined = timelineLayer.elements[layer.getDisplayIndex()];
@@ -27,7 +26,7 @@ export const execute = (layer: Layer, disable: boolean): void =>
     }
 
     // update class
-    if (disable) {
+    if (layer.disable) {
         element.classList.remove("icon-disable");
         element.classList.add("icon-active");
     } else {

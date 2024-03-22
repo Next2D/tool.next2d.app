@@ -20,12 +20,14 @@ describe("TimelineLayerControllerUpdateDisableIconElementServiceTest", () =>
         expect(iconElement.classList.contains("icon-disable")).toBe(true);
         expect(iconElement.classList.contains("icon-active")).toBe(false);
 
-        execute(layer, true);
+        layer.disable = true;
+        execute(layer);
 
         expect(iconElement.classList.contains("icon-disable")).toBe(false);
         expect(iconElement.classList.contains("icon-active")).toBe(true);
 
-        execute(layer, false);
+        layer.disable = false;
+        execute(layer);
 
         expect(iconElement.classList.contains("icon-disable")).toBe(true);
         expect(iconElement.classList.contains("icon-active")).toBe(false);

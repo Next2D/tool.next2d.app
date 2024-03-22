@@ -6,12 +6,11 @@ import { timelineLayer } from "@/timeline/domain/model/TimelineLayer";
  *              Update the highlight information of the specified Layer ID and update the class of the display Element
  *
  * @param  {Layer}  layer
- * @param  {boolean} light
  * @return {void}
  * @method
  * @public
  */
-export const execute = (layer: Layer, light: boolean): void =>
+export const execute = (layer: Layer): void =>
 {
     // 表示領域にElementがなければ終了
     const layerElement: HTMLElement | undefined = timelineLayer.elements[layer.getDisplayIndex()];
@@ -20,7 +19,7 @@ export const execute = (layer: Layer, light: boolean): void =>
     }
 
     // レイヤー本体の下部のボーダー表示を更新
-    layerElement.style.borderBottom = light
+    layerElement.style.borderBottom = layer.light
         ? `1px solid ${layer.color}`
         : "";
 
@@ -33,7 +32,7 @@ export const execute = (layer: Layer, light: boolean): void =>
 
     const span = lightElement.children[0] as NonNullable<HTMLElement>;
 
-    if (light) {
+    if (layer.light) {
         span.style.display                 = "none";
         lightElement.style.backgroundImage = `url('${layer.getHighlightURL()}')`;
     } else {

@@ -5,12 +5,12 @@ import { timelineLayer } from "@/timeline/domain/model/TimelineLayer";
  * @description 指定のLayer IDのハイライトカラーElementを更新、表示領域外の時はスキップ
  *              Update the highlight color Element of the specified Layer ID, skipping when it is outside the display area.
  *
- * @param  {string} color
+ * @param  {Layer} layer
  * @return {void}
  * @method
  * @public
  */
-export const execute = (layer: Layer, color: string): void =>
+export const execute = (layer: Layer): void =>
 {
     // 表示領域にElementがなければ終了
     const element: HTMLElement | undefined = timelineLayer.elements[layer.getDisplayIndex()];
@@ -26,5 +26,5 @@ export const execute = (layer: Layer, color: string): void =>
     }
 
     const span = lightElement.children[0] as NonNullable<HTMLElement>;
-    span.style.backgroundColor = color;
+    span.style.backgroundColor = layer.color;
 };

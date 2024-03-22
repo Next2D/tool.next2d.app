@@ -37,10 +37,11 @@ export const execute = (
         return ;
     }
 
+    // データを更新
+    layer.name = before_name;
+
     // アクティブなら表示を更新
     if (workSpace.active && movieClip.active) {
-        timelineLayerControllerUpdateNameElementService(layer, before_name);
+        timelineLayerControllerUpdateNameElementService(layer);
     }
-
-    layer.name = before_name;
 };

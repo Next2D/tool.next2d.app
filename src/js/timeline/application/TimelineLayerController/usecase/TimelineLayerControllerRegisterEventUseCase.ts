@@ -57,7 +57,7 @@ export const execute = (element: HTMLElement): void =>
 
     // レイヤー名のElementにイベントを登録
     const textElement = element
-        .querySelector(".view-text") as HTMLElement;
+        .querySelector(".identification-view-text") as HTMLElement;
 
     if (textElement) {
 
