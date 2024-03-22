@@ -21,11 +21,14 @@ export const execute = (
     const childLayers = [];
 
     const layers = movie_clip.layers;
-    for (let idx = layers.indexOf(parent_layer) + 1; idx < layers.length; ++idx) {
+    for (let idx = before_index; idx < layers.length; ++idx) {
 
         const childLayer = layers[idx];
         if (before_index !== childLayer.parentIndex) {
-            break;
+            if (idx > before_index + 1) {
+                break;
+            }
+            continue;
         }
 
         // 子のレイヤーを配列から削除
