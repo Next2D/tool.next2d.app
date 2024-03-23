@@ -93,6 +93,16 @@ export const execute = (
         if (beforeIndex === afterIndex) {
             // 削除したレイヤーを元のindex値に戻す
             layers.splice(beforeIndex, 0, layer);
+
+            // お互いに子レイヤーならスキップ
+            if (layer.mode === distLayer.mode) {
+                continue;
+            }
+
+            // 移動先が一緒で、親子関係がある場合はスキップ
+            if (layer.parentIndex === parentIndex) {
+                continue;
+            }
         } else {
             // 指定のindexにレイヤーを移動
             layers.splice(afterIndex, 0, layer);

@@ -3,7 +3,7 @@ import { execute as timelineLayerControllerWindowMouseMoveUseCase } from "../ser
 import { $setCursor } from "@/global/GlobalUtil";
 import { $setMoveLayerMode } from "../../TimelineUtil";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
-import { execute as timelineLayerElementResettingService } from "@/timeline/application/TimelineLayer/service/TimelineLayerElementResettingService";
+import { execute as timelineLayerElementResettingService } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerElementResettingUseCase";
 import { timelineLayer } from "@/timeline/domain/model/TimelineLayer";
 import { ExternalTimeline } from "@/external/timeline/domain/model/ExternalTimeline";
 
@@ -39,7 +39,7 @@ export const execute = (event: PointerEvent): void =>
         return ;
     }
 
-    // 移動先のレイヤーの表インデックス値が-1の場合は処理を終了
+    // 移動先のレイヤーのインデックス値が-1の場合は処理を終了
     if (timelineLayer.distIndex === -1) {
         return ;
     }

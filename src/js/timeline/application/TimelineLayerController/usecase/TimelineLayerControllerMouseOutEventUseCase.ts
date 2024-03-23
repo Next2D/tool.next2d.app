@@ -1,6 +1,7 @@
 import { timelineLayer } from "@/timeline/domain/model/TimelineLayer";
 import { $getMoveLayerMode, $getTopIndex } from "../../TimelineUtil";
 import { execute as timelineLayerControllerInactiveInsertIconElementService } from "../service/TimelineLayerControllerInactiveInsertIconElementService";
+import { execute as timelineLayerControllerInactiveExitIconElementService } from "../service/TimelineLayerControllerInactiveExitIconElementService";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 
 /**
@@ -53,8 +54,14 @@ export const execute = (event: PointerEvent): void =>
     // 入れ子にできるタイプの場合はインサートアイコンを非表示
     switch (layer.mode) {
 
-        case 1: // mask
-        case 3: // guide
+        case 1: // マスクレイヤー
+        case 3: // ガイドレイヤー
+            timelineLayerControllerInactiveInsertIconElementService(parent);
+            break;
+
+        case 2: // マスクの子レイヤー
+        case 4: // ガイドの子レイヤー
+            timelineLayerControllerInactiveExitIconElementService(parent);
             timelineLayerControllerInactiveInsertIconElementService(parent);
             break;
 

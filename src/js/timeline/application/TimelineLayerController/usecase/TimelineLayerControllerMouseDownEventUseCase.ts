@@ -5,6 +5,7 @@ import { execute as timelineLayerShiftSelectedUseCase } from "@/timeline/applica
 import { ExternalLayer } from "@/external/core/domain/model/ExternalLayer";
 import { ExternalTimeline } from "@/external/timeline/domain/model/ExternalTimeline";
 import { execute as timelineLayerControllerRegisterWindowEventUseCase } from "./TimelineLayerControllerRegisterWindowEventUseCase";
+import { execute as timelineLayerControllerActiveExitIconElementService } from "../service/TimelineLayerControllerActiveExitIconElementService";
 import { timelineLayer } from "@/timeline/domain/model/TimelineLayer";
 
 /**
@@ -65,6 +66,18 @@ export const execute = (event: PointerEvent): void =>
 
     // レイヤーの移動モードを設定
     $setMoveLayerMode(true);
+
+    switch (layer.mode) {
+
+        case 2: // マスクの子レイヤー
+        case 4: // ガイドの子レイヤー
+            timelineLayerControllerActiveExitIconElementService(element);
+            break;
+
+        default:
+            break;
+
+    }
 
     // レイヤーの移動イベントを登録
     timelineLayerControllerRegisterWindowEventUseCase();
