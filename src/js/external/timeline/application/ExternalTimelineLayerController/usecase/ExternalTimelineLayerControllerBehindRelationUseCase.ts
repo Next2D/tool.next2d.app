@@ -53,6 +53,28 @@ export const execute = (
         return layers.indexOf(a) - layers.indexOf(b);
     });
 
+    let mode: LayerModeImpl = 0;
+    switch (distLayer.mode) {
+
+        case 1: // マスクレイヤー
+        case 2: // マスクの子レイヤー
+            mode = 2;
+            break;
+
+        case 3: // ガイドレイヤー
+        case 4: // ガイドの子レイヤー
+            mode = 4;
+            break;
+
+        default:
+            break;
+
+    }
+
+    const parentIndex = distLayer.parentIndex === -1
+        ? layers.indexOf(distLayer)
+        : distLayer.parentIndex;
+
     // レイヤーの移動を実行
     for (let idx = 0; idx < selectedLayers.length; idx++) {
 
@@ -76,6 +98,14 @@ export const execute = (
             layers.splice(afterIndex, 0, layer);
         }
 
+        // 変更前のレイヤー情報を取得
+        const beforeMode = layer.mode;
+        const beforeParentIndex = layer.parentIndex;
+
+        // 親子関係を設定
+        layer.mode = mode;
+        layer.parentIndex = parentIndex;
+
         // 履歴に登録
         // fixed logic
         timelineLayerControllerMoveLayerHistoryUseCase(
@@ -83,33 +113,10 @@ export const execute = (
             movie_clip,
             layer,
             beforeIndex,
-            afterIndex
+            afterIndex,
+            beforeMode,
+            beforeParentIndex
         );
-    }
-
-    let mode: LayerModeImpl = 0;
-    switch (distLayer.mode) {
-
-        case 1: // マスクレイヤー
-            mode = 2;
-            break;
-
-        case 3: // ガイドレイヤー
-            mode = 4;
-            break;
-
-        default:
-            break;
-
-    }
-
-    const parentIndex = layers.indexOf(distLayer);
-    for (let idx = 0; idx < selectedLayers.length; idx++) {
-        const layer = selectedLayers[idx];
-
-        // 親子関係を設定
-        layer.mode = mode;
-        layer.parentIndex = parentIndex;
 
         // アクティブならアイコン表示を更新
         if (work_space.active && movie_clip.active) {

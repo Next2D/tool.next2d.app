@@ -21,7 +21,9 @@ export const execute = (
     movie_clip: MovieClip,
     layer: Layer,
     before_index: number,
-    after_index: number
+    after_index: number,
+    before_mode: number,
+    before_parent_index: number
 ): HistoryObjectImpl => {
 
     return {
@@ -31,7 +33,9 @@ export const execute = (
             movie_clip.id,
             before_index,
             after_index,
+            before_mode,
             layer.mode,
+            before_parent_index,
             layer.parentIndex
         ],
         "args": [

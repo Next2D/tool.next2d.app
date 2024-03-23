@@ -34,7 +34,9 @@ export const execute = (
     switch (distLayer.mode) {
 
         case 1: // マスクレイヤー
+        case 2: // マスクの子レイヤー
         case 3: // ガイドレイヤー
+        case 4: // ガイドの子レイヤー
             externalTimelineLayerControllerBehindRelationUseCase(
                 work_space,
                 movie_clip,

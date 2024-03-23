@@ -66,6 +66,9 @@ export const execute = (
         // 指定のindexにレイヤーを移動
         layers.splice(afterIndex, 0, layer);
 
+        const beforeMode = layer.mode;
+        const beforeParentIndex = layer.parentIndex;
+
         switch (layer.mode) {
 
             case 1: // マスクレイヤーの場合
@@ -89,7 +92,9 @@ export const execute = (
             movie_clip,
             layer,
             beforeIndex,
-            layers.indexOf(layer) // 親レイヤーの場合は補正が入るので、indexOfで取得
+            layers.indexOf(layer), // 親レイヤーの場合は補正が入るので、indexOfで取得,
+            beforeMode,
+            beforeParentIndex
         );
     }
 

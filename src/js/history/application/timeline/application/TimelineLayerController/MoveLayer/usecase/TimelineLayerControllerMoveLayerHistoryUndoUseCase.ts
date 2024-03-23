@@ -1,7 +1,9 @@
-import { $getWorkSpace } from "@/core/application/CoreUtil";
 import type { InstanceImpl } from "@/interface/InstanceImpl";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
+import type { LayerModeImpl } from "@/interface/LayerModeImpl";
+import { $getWorkSpace } from "@/core/application/CoreUtil";
 import { execute as timelineLayerBuildElementUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerBuildElementUseCase";
+import { execute as externalTimelineLayerControllerCorrectionRelationshipService } from "@/external/timeline/application/ExternalTimelineLayerController/service/ExternalTimelineLayerControllerCorrectionRelationshipService";
 
 /**
  * @description レイヤーの移動を元に戻す
@@ -11,6 +13,8 @@ import { execute as timelineLayerBuildElementUseCase } from "@/timeline/applicat
  * @param  {number} library_id
  * @param  {number} before_index
  * @param  {number} after_index
+ * @param  {number} before_mode
+ * @param  {number} before_parent_index
  * @return {void}
  * @method
  * @public
@@ -19,7 +23,9 @@ export const execute = (
     work_space_id: number,
     library_id: number,
     before_index: number,
-    after_index: number
+    after_index: number,
+    before_mode: LayerModeImpl,
+    before_parent_index: number
 ): void => {
 
     const workSpace = $getWorkSpace(work_space_id);
@@ -32,12 +38,52 @@ export const execute = (
         return ;
     }
 
+    // レイヤーを抜き出し
     const layers = movieClip.layers.splice(after_index, 1);
     if (!layers.length) {
         return ;
     }
 
-    movieClip.layers.splice(before_index, 0, layers[0]);
+    const layer = layers[0];
+    layer.mode = before_mode;
+    layer.parentIndex = before_parent_index;
+
+    switch (layer.mode) {
+
+        case 1: // マスクレイヤー
+        case 3: // ガイドレイヤー
+            if (before_index > after_index) {
+
+                let childCount = 0;
+                for (let idx = after_index; idx < movieClip.layers.length; ++idx) {
+                    const childLayer = movieClip.layers[idx];
+                    if (childLayer.parentIndex !== after_index) {
+                        if (after_index + 1 > idx) {
+                            break;
+                        }
+                        continue;
+                    }
+
+                    childCount++;
+                }
+
+                movieClip.layers.splice(before_index + childCount, 0, layer);
+            } else {
+                movieClip.layers.splice(before_index, 0, layer);
+            }
+
+            externalTimelineLayerControllerCorrectionRelationshipService(
+                movieClip,
+                layer,
+                after_index
+            );
+            break;
+
+        default:
+            movieClip.layers.splice(before_index, 0, layer);
+            break;
+
+    }
 
     // アクティブならタイムラインを再描画
     if (workSpace.active && movieClip.active) {

@@ -29,6 +29,8 @@ export const execute = (
     layer: Layer,
     before_index: number,
     after_index: number,
+    before_mode: number,
+    before_parent_index: number,
     receiver: boolean = false
 ): void => {
 
@@ -38,7 +40,9 @@ export const execute = (
 
     // fixed logic
     const historyObject = timelineLayerControllerMoveLayerCreateHistoryObjectService(
-        work_space.id, movie_clip, layer, before_index, after_index
+        work_space.id, movie_clip, layer,
+        before_index, after_index,
+        before_mode, before_parent_index
     );
 
     // 作業履歴にElementを追加

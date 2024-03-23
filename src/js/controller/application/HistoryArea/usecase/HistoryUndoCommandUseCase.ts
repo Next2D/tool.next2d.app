@@ -4,6 +4,7 @@ import type { BitmapSaveObjectImpl } from "@/interface/BitmapSaveObjectImpl";
 import type { VideoSaveObjectImpl } from "@/interface/VideoSaveObjectImpl";
 import type { SoundSaveObjectImpl } from "@/interface/SoundSaveObjectImpl";
 import type { InstanceSaveObjectImpl } from "@/interface/InstanceSaveObjectImpl";
+import type { LayerModeImpl } from "@/interface/LayerModeImpl";
 import { execute as screenTabNameAddHistoryUndoUseCase } from "@/history/application/screen/application/ScreenTab/usecase/ScreenTabNameAddHistoryUndoUseCase";
 import { execute as timelineToolLayerAddHistoryUndoUseCase } from "@/history/application/timeline/application/TimelineTool/LayerAdd/usecase/TimelineToolLayerAddHistoryUndoUseCase";
 import { execute as timelineToolLayerDeleteHistoryUndoUseCase } from "@/history/application/timeline/application/TimelineTool/LayerDelete/usecase/TimelineToolLayerDeleteHistoryUndoUseCase";
@@ -236,7 +237,9 @@ export const execute = async (
                 messages[0] as number, // workSpaceId
                 messages[1] as number, // MovieClip ID
                 messages[2] as number, // Before Index
-                messages[3] as number // After Index
+                messages[3] as number, // After Index
+                messages[4] as LayerModeImpl, // Layer Mode
+                messages[6] as number // Layer Parent Index
             );
             break;
 

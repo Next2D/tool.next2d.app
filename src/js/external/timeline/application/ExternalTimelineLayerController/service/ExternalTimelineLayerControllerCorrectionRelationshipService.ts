@@ -24,6 +24,10 @@ export const execute = (
     for (let idx = before_index; idx < layers.length; ++idx) {
 
         const childLayer = layers[idx];
+        if (childLayers.indexOf(childLayer) > -1) {
+            continue;
+        }
+
         if (before_index !== childLayer.parentIndex) {
             if (idx > before_index + 1) {
                 break;
@@ -39,6 +43,8 @@ export const execute = (
         layers.splice(parentIndex + childLayers.length + 1, 0, childLayer);
 
         childLayers.push(childLayer);
+
+        --idx;
     }
 
     // 子のレイヤーに親のindexを設定
