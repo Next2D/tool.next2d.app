@@ -12,6 +12,8 @@ import { $TIMELINE_MOVE_LAYER_COMMAND } from "@/config/HistoryConfig";
  * @param  {Layer} layer
  * @param  {number} before_index
  * @param  {number} after_index
+ * @param  {number} before_mode
+ * @param  {number} before_parent_id
  * @return {object}
  * @method
  * @public
@@ -23,7 +25,7 @@ export const execute = (
     before_index: number,
     after_index: number,
     before_mode: number,
-    before_parent_index: number
+    before_parent_id: number
 ): HistoryObjectImpl => {
 
     return {
@@ -35,8 +37,8 @@ export const execute = (
             after_index,
             before_mode,
             layer.mode,
-            before_parent_index,
-            layer.parentIndex
+            before_parent_id,
+            layer.parentId
         ],
         "args": [
             movie_clip.name,

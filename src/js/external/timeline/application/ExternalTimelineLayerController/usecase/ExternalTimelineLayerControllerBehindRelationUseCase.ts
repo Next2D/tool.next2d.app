@@ -71,9 +71,9 @@ export const execute = (
 
     }
 
-    const parentIndex = distLayer.parentIndex === -1
-        ? layers.indexOf(distLayer)
-        : distLayer.parentIndex;
+    const parentId = distLayer.parentId === -1
+        ? distLayer.id
+        : distLayer.parentId;
 
     // レイヤーの移動を実行
     for (let idx = 0; idx < selectedLayers.length; idx++) {
@@ -100,7 +100,7 @@ export const execute = (
             }
 
             // 移動先が一緒で、親子関係がある場合はスキップ
-            if (layer.parentIndex === parentIndex) {
+            if (layer.parentId === parentId) {
                 continue;
             }
         } else {
@@ -109,12 +109,12 @@ export const execute = (
         }
 
         // 変更前のレイヤー情報を取得
-        const beforeMode = layer.mode;
-        const beforeParentIndex = layer.parentIndex;
+        const beforeMode     = layer.mode;
+        const beforeParentId = layer.parentId;
 
         // 親子関係を設定
-        layer.mode = mode;
-        layer.parentIndex = parentIndex;
+        layer.mode     = mode;
+        layer.parentId = parentId;
 
         // 履歴に登録
         // fixed logic
@@ -125,7 +125,7 @@ export const execute = (
             beforeIndex,
             afterIndex,
             beforeMode,
-            beforeParentIndex
+            beforeParentId
         );
 
         // アクティブならアイコン表示を更新

@@ -30,7 +30,7 @@ export const execute = (
     for (let idx = 0; idx < movie_clip.selectedLayers.length; ++idx) {
 
         const layer = movie_clip.selectedLayers[idx];
-        if (layer.parentIndex !== distLayer.parentIndex) {
+        if (layer.parentId !== distLayer.parentId) {
             continue;
         }
 

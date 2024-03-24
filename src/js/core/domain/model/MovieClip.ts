@@ -23,6 +23,7 @@ export class MovieClip extends Instance
     private _$scrollX: number;
     private _$scrollY: number;
     private _$active: boolean;
+    private _$layerId: number;
     private readonly _$labels: Map<number, string>;
     private readonly _$layers: Layer[];
     private readonly _$actions: Map<number, string>;
@@ -57,6 +58,13 @@ export class MovieClip extends Instance
          * @private
          */
         this._$layers = [];
+
+        /**
+         * @type {number}
+         * @default 1
+         * @private
+         */
+        this._$layerId = 1;
 
         /**
          * @type {Map}
@@ -352,13 +360,15 @@ export class MovieClip extends Instance
 
             // reset
             this._$layers.length = 0;
-
             // セーブデータからLayerを複製
             for (let idx: number = 0; idx < object.layers.length; ++idx) {
 
                 // セーブデータの読み込み
-                const layer = new Layer();
+                const layer = this.createLayer();
                 layer.load(object.layers[idx]);
+
+                // LayerIDの最大値を更新
+                this._$layerId = Math.max(this._$layerId, layer.id);
 
                 // 登録
                 this._$layers.push(layer);
@@ -402,6 +412,7 @@ export class MovieClip extends Instance
     createLayer (): Layer
     {
         const layer = new Layer();
+        layer.id    = this._$layerId++;
         layer.name  = `Layer_${this._$layers.length}`;
 
         return layer;

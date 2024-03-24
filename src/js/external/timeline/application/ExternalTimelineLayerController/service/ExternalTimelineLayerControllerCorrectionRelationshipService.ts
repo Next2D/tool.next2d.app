@@ -28,7 +28,7 @@ export const execute = (
             continue;
         }
 
-        if (before_index !== childLayer.parentIndex) {
+        if (childLayer.parentId !== parent_layer.id) {
             if (idx > before_index + 1) {
                 break;
             }
@@ -45,13 +45,6 @@ export const execute = (
         childLayers.push(childLayer);
 
         --idx;
-    }
-
-    // 子のレイヤーに親のindexを設定
-    const parentIndex = layers.indexOf(parent_layer);
-    for (let idx = 0; idx < childLayers.length; ++idx) {
-        const childLayer = childLayers[idx];
-        childLayer.parentIndex = parentIndex;
     }
 
     return childLayers.length;

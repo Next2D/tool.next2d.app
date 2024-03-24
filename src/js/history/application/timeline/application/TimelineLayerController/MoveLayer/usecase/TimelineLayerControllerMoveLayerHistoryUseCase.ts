@@ -18,6 +18,8 @@ import { execute as shareSendService } from "@/share/service/ShareSendService";
  * @param  {Layer} layer
  * @param  {number} before_index
  * @param  {number} after_index
+ * @param  {number} before_mode
+ * @param  {number} before_parent_id
  * @param  {boolean} [receiver=false]
  * @return {void}
  * @method
@@ -30,7 +32,7 @@ export const execute = (
     before_index: number,
     after_index: number,
     before_mode: number,
-    before_parent_index: number,
+    before_parent_id: number,
     receiver: boolean = false
 ): void => {
 
@@ -42,7 +44,7 @@ export const execute = (
     const historyObject = timelineLayerControllerMoveLayerCreateHistoryObjectService(
         work_space.id, movie_clip, layer,
         before_index, after_index,
-        before_mode, before_parent_index
+        before_mode, before_parent_id
     );
 
     // 作業履歴にElementを追加

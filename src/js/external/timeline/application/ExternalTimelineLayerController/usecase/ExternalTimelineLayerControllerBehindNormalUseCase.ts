@@ -33,17 +33,37 @@ export const execute = (
     });
 
     // レイヤーの移動を実行
+    const parentMap = new Map<number, boolean>();
     let adjustmentIndex = 0;
     for (let idx = 0; idx < selectedLayers.length; idx++) {
 
         const layer = selectedLayers[idx];
 
         // 子のレイヤーで親が選択されている場合は選択配列から削除してidxを補正
-        if (layer.parentIndex !== -1) {
-            const parentLayer = movie_clip.layers[layer.parentIndex];
-            if (selectedLayers.indexOf(parentLayer) > -1) {
-                selectedLayers.splice(idx, 1);
-                idx -= 1;
+        if (layer.parentId !== -1) {
+            if (!parentMap.has(layer.parentId)) {
+                let index = layers.indexOf(layer) - 1;
+                for (; index > -1; --index) {
+
+                    const parentLayer = movie_clip.layers[index];
+                    if (parentLayer.id !== layer.parentId) {
+                        continue;
+                    }
+
+                    if (selectedLayers.indexOf(parentLayer) === -1) {
+                        continue;
+                    }
+
+                    selectedLayers.splice(idx, 1);
+                    idx -= 1;
+
+                    // 親のレイヤーIDをマップに登録
+                    parentMap.set(parentLayer.id, true);
+                    break;
+                }
+            }
+
+            if (parentMap.has(layer.parentId)) {
                 continue;
             }
         }
@@ -67,7 +87,7 @@ export const execute = (
         layers.splice(afterIndex, 0, layer);
 
         const beforeMode = layer.mode;
-        const beforeParentIndex = layer.parentIndex;
+        const beforeParentId = layer.parentId;
 
         switch (layer.mode) {
 
@@ -94,7 +114,7 @@ export const execute = (
             beforeIndex,
             layers.indexOf(layer), // 親レイヤーの場合は補正が入るので、indexOfで取得,
             beforeMode,
-            beforeParentIndex
+            beforeParentId
         );
     }
 

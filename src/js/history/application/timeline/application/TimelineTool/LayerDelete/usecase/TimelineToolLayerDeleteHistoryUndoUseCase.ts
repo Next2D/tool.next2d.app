@@ -42,7 +42,8 @@ export const execute = (
     externalTimeline.deactivatedAllLayers();
 
     // Layerオブジェクトの内部情報に再登録
-    const layer = new Layer(layer_object);
+    const layer = movieClip.createLayer();
+    layer.load(layer_object);
     movieClip.setLayer(layer, index);
 
     // レイヤー更新によるタイムラインの再描画

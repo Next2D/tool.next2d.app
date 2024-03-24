@@ -3,6 +3,7 @@ import type { CharacterSaveObjectImpl } from "./CharacterSaveObjectImpl";
 import type { EmptyCharacterSaveObjectImpl } from "./EmptyCharacterSaveObjectImpl";
 
 export interface LayerSaveObjectImpl {
+    id: number;
     name: string;
     color: string;
     lock: boolean;
@@ -11,7 +12,7 @@ export interface LayerSaveObjectImpl {
     mode: LayerModeImpl;
     characters: CharacterSaveObjectImpl[];
     emptyCharacters: EmptyCharacterSaveObjectImpl[];
-    parentIndex?: null | number;
+    parentId?: null | number;
     maskId?: null | number;
     guideId?: null | number;
 }

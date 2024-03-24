@@ -13,6 +13,8 @@ import { execute as externalTimelineLayerControllerCorrectionRelationshipService
  * @param  {number} library_id
  * @param  {number} before_index
  * @param  {number} after_index
+ * @param  {number} after_mode
+ * @param  {number} after_parent_id
  * @return {void}
  * @method
  * @public
@@ -23,7 +25,7 @@ export const execute = (
     before_index: number,
     after_index: number,
     after_mode: LayerModeImpl,
-    after_parent_index: number
+    after_parent_id: number
 ): void => {
 
     const workSpace = $getWorkSpace(work_space_id);
@@ -42,8 +44,8 @@ export const execute = (
     }
 
     const layer = layers[0];
-    layer.mode = after_mode;
-    layer.parentIndex = after_parent_index;
+    layer.mode     = after_mode;
+    layer.parentId = after_parent_id;
 
     switch (layer.mode) {
 
@@ -54,7 +56,7 @@ export const execute = (
                 let childCount = 0;
                 for (let idx = before_index; idx < movieClip.layers.length; ++idx) {
                     const childLayer = movieClip.layers[idx];
-                    if (childLayer.parentIndex !== before_index) {
+                    if (childLayer.parentId !== layer.id) {
                         if (before_index + 1 > idx) {
                             break;
                         }

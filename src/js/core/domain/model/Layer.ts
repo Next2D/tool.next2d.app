@@ -17,13 +17,14 @@ import { $getTopIndex } from "@/timeline/application/TimelineUtil";
  */
 export class Layer
 {
+    private _$id: number;
     private _$name: string;
     private _$color: string;
     private _$light: boolean;
     private _$disable: boolean;
     private _$lock: boolean;
     private _$mode: LayerModeImpl;
-    private _$parentIndex: number;
+    private _$parentId: number;
     private readonly _$characters: Character[];
     private readonly _$emptys: EmptyCharacter[];
 
@@ -34,6 +35,13 @@ export class Layer
      */
     constructor (object: LayerSaveObjectImpl | null = null)
     {
+        /**
+         * @type {number}
+         * @default -1
+         * @private
+         */
+        this._$id = -1;
+
         /**
          * @type {string}
          * @default ""
@@ -81,7 +89,7 @@ export class Layer
          * @default null
          * @private
          */
-        this._$parentIndex = -1;
+        this._$parentId = -1;
 
         /**
          * @type {array}
@@ -100,6 +108,22 @@ export class Layer
         } else {
             this._$color = timelineLayerControllerGetHighlightColorService();
         }
+    }
+
+    /**
+     * @description Layerの識別ID
+     *              Layer identification ID
+     *
+     * @member {number}
+     * @public
+     */
+    get id (): number
+    {
+        return this._$id;
+    }
+    set id (id: number)
+    {
+        this._$id = id;
     }
 
     /**
@@ -210,13 +234,13 @@ export class Layer
      * @member {number}
      * @public
      */
-    get parentIndex (): number
+    get parentId (): number
     {
-        return this._$parentIndex;
+        return this._$parentId;
     }
-    set parentIndex (parent_index: number)
+    set parentId (parent_id: number)
     {
-        this._$parentIndex = parent_index;
+        this._$parentId = parent_id;
     }
 
     /**
@@ -274,7 +298,7 @@ export class Layer
         this._$mode = 0;
 
         // 親のIndexをnullに更新
-        this._$parentIndex = -1;
+        this._$parentId = -1;
     }
 
     /**
@@ -288,6 +312,7 @@ export class Layer
      */
     load (object: LayerSaveObjectImpl): void
     {
+        this._$id      = object.id;
         this._$name    = object.name;
         this._$color   = object.color;
         this._$lock    = object.lock;
@@ -295,16 +320,16 @@ export class Layer
         this._$light   = object.light;
         this._$mode    = object.mode;
 
-        if ("parentIndex" in object) {
-            this._$parentIndex = object.parentIndex as number;
+        if (object.parentId) {
+            this._$parentId = object.parentId as number;
         }
 
         if ("maskId" in object && object.maskId !== null) {
-            this._$parentIndex = object.maskId as number;
+            this._$parentId = object.maskId as number;
         }
 
         if ("guideId" in object && object.guideId !== null) {
-            this._$parentIndex = object.guideId as number;
+            this._$parentId = object.guideId as number;
         }
 
         // 各、キャラクターの読み込み
@@ -389,13 +414,14 @@ export class Layer
         }
 
         return {
+            "id": this._$id,
             "name": this._$name,
             "color": this._$color,
             "lock": this._$lock,
             "disable": this._$disable,
             "light": this._$light,
             "mode": this._$mode,
-            "parentIndex": this._$parentIndex,
+            "parentId": this._$parentId,
             "characters": characters,
             "emptyCharacters": emptyCharacters
         };
