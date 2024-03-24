@@ -3,6 +3,12 @@ import { $getMoveLayerMode, $getTopIndex } from "../../TimelineUtil";
 import { execute as timelineLayerControllerInactiveInsertIconElementService } from "../service/TimelineLayerControllerInactiveInsertIconElementService";
 import { execute as timelineLayerControllerInactiveExitIconElementService } from "../service/TimelineLayerControllerInactiveExitIconElementService";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
+import {
+    $GUIDE_IN_MODE,
+    $GUIDE_MODE,
+    $MASK_IN_MODE,
+    $MASK_MODE
+} from "@/config/LayerModeConfig";
 
 /**
  * @description レイヤーコントローラーのマウスアウト処理関数
@@ -54,13 +60,13 @@ export const execute = (event: PointerEvent): void =>
     // 入れ子にできるタイプの場合はインサートアイコンを非表示
     switch (layer.mode) {
 
-        case 1: // マスクレイヤー
-        case 3: // ガイドレイヤー
+        case $MASK_MODE: // マスクレイヤー
+        case $GUIDE_MODE: // ガイドレイヤー
             timelineLayerControllerInactiveInsertIconElementService(parent);
             break;
 
-        case 2: // マスクの子レイヤー
-        case 4: // ガイドの子レイヤー
+        case $MASK_IN_MODE: // マスクの子レイヤー
+        case $GUIDE_IN_MODE: // ガイドの子レイヤー
             timelineLayerControllerInactiveExitIconElementService(parent);
             timelineLayerControllerInactiveInsertIconElementService(parent);
             break;

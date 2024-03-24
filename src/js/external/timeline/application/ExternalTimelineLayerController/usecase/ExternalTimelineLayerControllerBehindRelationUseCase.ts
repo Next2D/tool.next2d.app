@@ -5,6 +5,12 @@ import { execute as timelineLayerBuildElementUseCase } from "@/timeline/applicat
 import { execute as timelineLayerControllerMoveLayerHistoryUseCase } from "@/history/application/timeline/application/TimelineLayerController/MoveLayer/usecase/TimelineLayerControllerMoveLayerHistoryUseCase";
 import { execute as timelineLayerControllerUpdateIconElementService } from "@/timeline/application/TimelineLayerController/service/TimelineLayerControllerUpdateIconElementService";
 import { LayerModeImpl } from "@/interface/LayerModeImpl";
+import {
+    $GUIDE_IN_MODE,
+    $GUIDE_MODE,
+    $MASK_IN_MODE,
+    $MASK_MODE
+} from "@/config/LayerModeConfig";
 
 /**
  * @description マスク、ガイドレイヤーの親子関係を考慮してレイヤーを移動
@@ -37,8 +43,8 @@ export const execute = (
         const layer = selectedLayers[idx];
         switch (layer.mode) {
 
-            case 1: // マスクレイヤー
-            case 3: // ガイドレイヤー
+            case $MASK_MODE: // マスクレイヤー
+            case $GUIDE_MODE: // ガイドレイヤー
                 return ;
 
             default:
@@ -56,13 +62,13 @@ export const execute = (
     let mode: LayerModeImpl = 0;
     switch (distLayer.mode) {
 
-        case 1: // マスクレイヤー
-        case 2: // マスクの子レイヤー
+        case $MASK_MODE: // マスクレイヤー
+        case $MASK_IN_MODE: // マスクの子レイヤー
             mode = 2;
             break;
 
-        case 3: // ガイドレイヤー
-        case 4: // ガイドの子レイヤー
+        case $GUIDE_MODE: // ガイドレイヤー
+        case $GUIDE_IN_MODE: // ガイドの子レイヤー
             mode = 4;
             break;
 

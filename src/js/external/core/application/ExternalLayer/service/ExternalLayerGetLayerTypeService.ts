@@ -1,5 +1,11 @@
 import type { LayerModeImpl } from "@/interface/LayerModeImpl";
 import type { LayerModeStringImpl } from "@/interface/LayerModeSringImpl";
+import {
+    $GUIDE_IN_MODE,
+    $GUIDE_MODE,
+    $MASK_IN_MODE,
+    $MASK_MODE
+} from "@/config/LayerModeConfig";
 
 /**
  * @description レイヤーモードを文字列に変換
@@ -14,20 +20,17 @@ export const execute = (mode: LayerModeImpl): LayerModeStringImpl =>
 {
     switch (mode) {
 
-        case 1:
+        case $MASK_MODE:
             return "mask";
 
-        case 2:
+        case $MASK_IN_MODE:
             return "mask_in";
 
-        case 3:
+        case $GUIDE_MODE:
             return "guide";
 
-        case 4:
+        case $GUIDE_IN_MODE:
             return "guide_in";
-
-        case 5:
-            return "folder";
 
         default:
             return "normal";

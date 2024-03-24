@@ -1,3 +1,4 @@
+import { $GUIDE_IN_MODE, $GUIDE_MODE, $MASK_IN_MODE, $MASK_MODE } from "@/config/LayerModeConfig";
 import type { LayerModeImpl } from "@/interface/LayerModeImpl";
 
 /**
@@ -13,20 +14,17 @@ export const execute = (mode: LayerModeImpl): string =>
 {
     switch (mode) {
 
-        case 1:
+        case $MASK_MODE:
             return "timeline-mask-icon";
 
-        case 2:
+        case $MASK_IN_MODE:
             return "timeline-mask-in-icon";
 
-        case 3:
+        case $GUIDE_MODE:
             return "timeline-guide-icon";
 
-        case 4:
+        case $GUIDE_IN_MODE:
             return "timeline-guide-in-icon";
-
-        case 5:
-            return "timeline-folder-icon";
 
         default:
             return "timeline-layer-icon";

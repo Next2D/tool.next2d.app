@@ -4,6 +4,10 @@ import type { LayerModeImpl } from "@/interface/LayerModeImpl";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
 import { execute as timelineLayerBuildElementUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerBuildElementUseCase";
 import { execute as externalTimelineLayerControllerCorrectionRelationshipService } from "@/external/timeline/application/ExternalTimelineLayerController/service/ExternalTimelineLayerControllerCorrectionRelationshipService";
+import {
+    $GUIDE_MODE,
+    $MASK_MODE
+} from "@/config/LayerModeConfig";
 
 /**
  * @description レイヤーの移動を変更後に戻す
@@ -49,8 +53,8 @@ export const execute = (
 
     switch (layer.mode) {
 
-        case 1: // マスクレイヤー
-        case 3: // ガイドレイヤー
+        case $MASK_MODE: // マスクレイヤー
+        case $GUIDE_MODE: // ガイドレイヤー
             if (after_index > before_index) {
 
                 let childCount = 0;

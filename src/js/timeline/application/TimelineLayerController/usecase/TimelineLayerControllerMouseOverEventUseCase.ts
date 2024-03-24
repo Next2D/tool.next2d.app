@@ -3,6 +3,12 @@ import { $getMoveLayerMode, $getTopIndex } from "../../TimelineUtil";
 import { timelineLayer } from "@/timeline/domain/model/TimelineLayer";
 import { execute as timelineLayerControllerActiveInsertIconElementService } from "../service/TimelineLayerControllerActiveInsertIconElementService";
 import { execute as timelineLayerActiveMoveTargetStyleService } from "@/timeline/application/TimelineLayer/service/TimelineLayerActiveMoveTargetStyleService";
+import {
+    $GUIDE_IN_MODE,
+    $GUIDE_MODE,
+    $MASK_IN_MODE,
+    $MASK_MODE
+} from "@/config/LayerModeConfig";
 
 /**
  * @description レイヤーコントローラーのマウスオーバー処理関数
@@ -52,10 +58,10 @@ export const execute = (event: PointerEvent): void =>
     // 入れ子にできるタイプの場合はインサートアイコンを表示
     switch (layer.mode) {
 
-        case 1: // マスクレイヤー
-        case 2: // マスクの子レイヤー
-        case 3: // ガイドレイヤー
-        case 4: // ガイドの子レイヤー
+        case $MASK_MODE: // マスクレイヤー
+        case $MASK_IN_MODE: // マスクの子レイヤー
+        case $GUIDE_MODE: // ガイドレイヤー
+        case $GUIDE_IN_MODE: // ガイドの子レイヤー
             timelineLayerControllerActiveInsertIconElementService(parent);
             break;
 

@@ -4,6 +4,10 @@ import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import { execute as timelineLayerBuildElementUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerBuildElementUseCase";
 import { execute as timelineLayerControllerMoveLayerHistoryUseCase } from "@/history/application/timeline/application/TimelineLayerController/MoveLayer/usecase/TimelineLayerControllerMoveLayerHistoryUseCase";
 import { execute as externalTimelineLayerControllerCorrectionRelationshipService } from "../service/ExternalTimelineLayerControllerCorrectionRelationshipService";
+import {
+    $GUIDE_MODE,
+    $MASK_MODE
+} from "@/config/LayerModeConfig";
 
 /**
  * @description 指定のレイヤーの後ろに選択中のレイヤーを移動
@@ -91,8 +95,8 @@ export const execute = (
 
         switch (layer.mode) {
 
-            case 1: // マスクレイヤーの場合
-            case 3: // ガイドレイヤーの場合
+            case $MASK_MODE: // マスクレイヤーの場合
+            case $GUIDE_MODE: // ガイドレイヤーの場合
                 adjustmentIndex += externalTimelineLayerControllerCorrectionRelationshipService(
                     movie_clip, layer, beforeIndex
                 );

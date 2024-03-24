@@ -3,6 +3,10 @@ import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import { execute as timelineToolLayerDeleteHistoryUseCase } from "@/history/application/timeline/application/TimelineTool/LayerDelete/usecase/TimelineToolLayerDeleteHistoryUseCase";
 import { execute as externalLayerUpdateReloadUseCase } from "@/external/core/application/ExternalLayer/usecase/ExternalLayerUpdateReloadUseCase";
+import {
+    $GUIDE_MODE,
+    $MASK_MODE
+} from "@/config/LayerModeConfig";
 
 /**
  * @description レイヤー削除ユースケース
@@ -45,6 +49,17 @@ export const execute = (
 
         // 削除時点のindex値を取得
         const index = movie_clip.layers.indexOf(layer);
+
+        switch (layer.mode) {
+
+            case $MASK_MODE: // マスクレイヤー
+            case $GUIDE_MODE: // ガイドレイヤー
+                break;
+
+            default:
+                break;
+
+        }
 
         // 内部情報から削除
         movie_clip.deleteLayer(layer);
