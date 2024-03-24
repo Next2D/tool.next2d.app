@@ -2,7 +2,6 @@ import type { LayerSaveObjectImpl } from "@/interface/LayerSaveObjectImpl";
 import type { InstanceImpl } from "@/interface/InstanceImpl";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import { execute as externalLayerUpdateReloadUseCase } from "@/external/core/application/ExternalLayer/usecase/ExternalLayerUpdateReloadUseCase";
-import { Layer } from "@/core/domain/model/Layer";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
 import { ExternalTimeline } from "@/external/timeline/domain/model/ExternalTimeline";
 
