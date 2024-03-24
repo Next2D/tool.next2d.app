@@ -29,7 +29,9 @@ export const execute = (event: PointerEvent): void =>
     $setMoveLayerMode(false);
 
     // イベントを削除
-    window.removeEventListener(EventType.MOUSE_MOVE, timelineLayerControllerWindowMouseMoveUseCase);
+    window.removeEventListener(EventType.MOUSE_MOVE,
+        timelineLayerControllerWindowMouseMoveUseCase
+    );
     window.removeEventListener(EventType.MOUSE_UP, execute);
 
     const workSpace = $getCurrentWorkSpace();
@@ -37,6 +39,17 @@ export const execute = (event: PointerEvent): void =>
 
     if (!movieClip.layers.length) {
         return ;
+    }
+
+    // 選択したレイヤーの表示を初期化
+    for (let idx = 0; idx < movieClip.selectedLayers.length; ++idx) {
+        const layer = movieClip.selectedLayers[idx];
+        if (!layer) {
+            continue;
+        }
+
+        // 選択したレイヤーの表示を初期化
+        timelineLayerElementResettingService(layer);
     }
 
     // 移動先のレイヤーのインデックス値が-1の場合は処理を終了
@@ -57,4 +70,7 @@ export const execute = (event: PointerEvent): void =>
 
     // 指定のindex値のうしろにレイヤーを移動
     externalTimeline.behindLayer(timelineLayer.distIndex);
+
+    // 初期化
+    timelineLayer.distIndex = -1;
 };

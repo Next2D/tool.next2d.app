@@ -56,6 +56,19 @@ export const execute = (event: PointerEvent): void =>
                 // 単体選択の外部APIを実行
                 externalTimeline
                     .selectedLayers([externalLayer.index]);
+
+            }
+
+            switch (layer.mode) {
+
+                case 2: // マスクの子レイヤー
+                case 4: // ガイドの子レイヤー
+                    timelineLayerControllerActiveExitIconElementService(element);
+                    break;
+
+                default:
+                    break;
+
             }
             break;
 
@@ -66,18 +79,6 @@ export const execute = (event: PointerEvent): void =>
 
     // レイヤーの移動モードを設定
     $setMoveLayerMode(true);
-
-    switch (layer.mode) {
-
-        case 2: // マスクの子レイヤー
-        case 4: // ガイドの子レイヤー
-            timelineLayerControllerActiveExitIconElementService(element);
-            break;
-
-        default:
-            break;
-
-    }
 
     // レイヤーの移動イベントを登録
     timelineLayerControllerRegisterWindowEventUseCase();

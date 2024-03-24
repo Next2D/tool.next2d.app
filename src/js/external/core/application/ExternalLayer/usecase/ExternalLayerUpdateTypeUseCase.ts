@@ -34,6 +34,8 @@ export const execute = (
 
     // TODO 履歴に追加
     console.log(beforeMode);
+    // 初期化
+    layer.clearRelation();
     layer.mode = afterMode;
 
     // アクティブなら表示を更新
