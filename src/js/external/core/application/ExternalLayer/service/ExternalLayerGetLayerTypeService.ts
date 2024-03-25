@@ -1,10 +1,15 @@
 import type { LayerModeImpl } from "@/interface/LayerModeImpl";
-import type { LayerModeStringImpl } from "@/interface/LayerModeSringImpl";
+import type { LayerTypeImpl } from "@/interface/LayerTypeImpl";
 import {
     $GUIDE_IN_MODE,
+    $GUIDE_IN_TYPE,
     $GUIDE_MODE,
+    $GUIDE_TYPE,
     $MASK_IN_MODE,
-    $MASK_MODE
+    $MASK_IN_TYPE,
+    $MASK_MODE,
+    $MASK_TYPE,
+    $NORMAL_TYPE
 } from "@/config/LayerModeConfig";
 
 /**
@@ -16,24 +21,24 @@ import {
  * @method
  * @public
  */
-export const execute = (mode: LayerModeImpl): LayerModeStringImpl =>
+export const execute = (mode: LayerModeImpl): LayerTypeImpl =>
 {
     switch (mode) {
 
         case $MASK_MODE:
-            return "mask";
+            return $MASK_TYPE;
 
         case $MASK_IN_MODE:
-            return "mask_in";
+            return $MASK_IN_TYPE;
 
         case $GUIDE_MODE:
-            return "guide";
+            return $GUIDE_TYPE;
 
         case $GUIDE_IN_MODE:
-            return "guide_in";
+            return $GUIDE_IN_TYPE;
 
         default:
-            return "normal";
+            return $NORMAL_TYPE;
 
     }
 };

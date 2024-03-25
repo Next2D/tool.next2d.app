@@ -9,6 +9,5 @@ describe("ExternalLayerGetLayerModeServiceTest", () =>
         expect(execute("mask_in")).toBe(2);
         expect(execute("guide")).toBe(3);
         expect(execute("guide_in")).toBe(4);
-        expect(execute("folder")).toBe(5);
     });
 });

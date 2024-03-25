@@ -5,8 +5,10 @@ import { execute as timelineToolLayerDeleteHistoryUseCase } from "@/history/appl
 import { execute as externalLayerUpdateReloadUseCase } from "@/external/core/application/ExternalLayer/usecase/ExternalLayerUpdateReloadUseCase";
 import {
     $GUIDE_MODE,
-    $MASK_MODE
+    $MASK_MODE,
+    $NORMAL_TYPE
 } from "@/config/LayerModeConfig";
+import { ExternalLayer } from "@/external/core/domain/model/ExternalLayer";
 
 /**
  * @description レイヤー削除ユースケース
@@ -54,6 +56,14 @@ export const execute = (
 
             case $MASK_MODE: // マスクレイヤー
             case $GUIDE_MODE: // ガイドレイヤー
+                for (let idx = index + 1; idx < movie_clip.layers.length; ++idx) {
+                    const childLayer = movie_clip.layers[idx];
+                    if (childLayer.parentId !== layer.id) {
+                        continue;
+                    }
+                    const externalLayer = new ExternalLayer(work_space, movie_clip, childLayer);
+                    externalLayer.layerType = $NORMAL_TYPE;
+                }
                 break;
 
             default:

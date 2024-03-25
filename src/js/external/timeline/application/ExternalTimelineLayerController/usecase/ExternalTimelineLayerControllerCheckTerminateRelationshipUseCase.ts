@@ -2,6 +2,7 @@ import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import { execute as externalTimelineLayerControllerBehindRelationUseCase } from "./ExternalTimelineLayerControllerBehindRelationUseCase";
 import { ExternalLayer } from "@/external/core/domain/model/ExternalLayer";
+import { $NORMAL_TYPE } from "@/config/LayerModeConfig";
 
 /**
  * @description レイヤーの親子関係性をチェックする
@@ -35,7 +36,7 @@ export const execute = (
         }
 
         const externalLayer = new ExternalLayer(work_space, movie_clip, layer);
-        externalLayer.layerType = "normal";
+        externalLayer.layerType = $NORMAL_TYPE;
 
         changeLayerType = true;
     }

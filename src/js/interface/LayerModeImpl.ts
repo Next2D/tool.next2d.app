@@ -3,5 +3,4 @@ export type LayerModeImpl =
     1 | // MASK
     2 | // MASK_IN
     3 | // GUIDE
-    4 | // GUIDE_IN
-    5;  // FOLDER
+    4; // GUIDE_IN

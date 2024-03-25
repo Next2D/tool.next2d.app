@@ -1,7 +1,7 @@
 import type { Layer } from "@/core/domain/model/Layer";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
-import type { LayerModeStringImpl } from "@/interface/LayerModeSringImpl";
+import type { LayerTypeImpl } from "@/interface/LayerTypeImpl";
 import { execute as externalLayerUpdateNameUseCase } from "@/external/core/application/ExternalLayer/usecase/ExternalLayerUpdateNameUseCase";
 import { execute as externalLayerUpdateLockUseCase } from "@/external/core/application/ExternalLayer/usecase/ExternalLayerUpdateLockUseCase";
 import { execute as externalLayerUpdateDisableUseCase } from "@/external/core/application/ExternalLayer/usecase/ExternalLayerUpdateDisableUseCase";
@@ -221,11 +221,11 @@ export class ExternalLayer
      * @method
      * @public
      */
-    get layerType (): LayerModeStringImpl
+    get layerType (): LayerTypeImpl
     {
         return externalLayerGetLayerTypeService(this._$layer.mode);
     }
-    set layerType (type: LayerModeStringImpl)
+    set layerType (type: LayerTypeImpl)
     {
         externalLayerUpdateTypeUseCase(
             this._$workSpace, this._$movieClip, this._$layer, type

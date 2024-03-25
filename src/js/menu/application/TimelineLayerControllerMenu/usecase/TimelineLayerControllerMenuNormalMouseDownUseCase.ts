@@ -41,6 +41,6 @@ export const execute = (event: PointerEvent): void =>
         layer
     );
 
-    // マスクレイヤーに変更
-    externalLayer.layerType = "normal";
+    // 通常レイヤーに変更
+    externalLayer.layerType = $NORMAL_TYPE;
 };

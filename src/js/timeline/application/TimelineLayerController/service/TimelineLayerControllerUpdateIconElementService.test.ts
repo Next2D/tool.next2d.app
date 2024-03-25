@@ -41,14 +41,9 @@ describe("TimelineLayerControllerUpdateIconElementServiceTest", () =>
         expect(iconElement.classList.contains("timeline-guide-icon")).toBe(false);
         expect(iconElement.classList.contains("timeline-guide-in-icon")).toBe(true);
         
-        layer.mode = 5;
-        execute(layer);
-        expect(iconElement.classList.contains("timeline-guide-in-icon")).toBe(false);
-        expect(iconElement.classList.contains("timeline-folder-icon")).toBe(true);
-        
         layer.mode = 0;
         execute(layer);
-        expect(iconElement.classList.contains("timeline-folder-icon")).toBe(false);
+        expect(iconElement.classList.contains("timeline-guide-in-icon")).toBe(false);
         expect(iconElement.classList.contains("timeline-layer-icon")).toBe(true);
     });
 });

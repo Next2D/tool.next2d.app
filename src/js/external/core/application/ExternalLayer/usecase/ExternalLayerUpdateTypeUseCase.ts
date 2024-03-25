@@ -1,7 +1,7 @@
 import type { Layer } from "@/core/domain/model/Layer";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
-import type { LayerModeStringImpl } from "@/interface/LayerModeSringImpl";
+import type { LayerTypeImpl } from "@/interface/LayerTypeImpl";
 import { execute as timelineLayerControllerUpdateIconElementService } from "@/timeline/application/TimelineLayerController/service/TimelineLayerControllerUpdateIconElementService";
 import { execute as externalLayerGetLayerModeService } from "../service/ExternalLayerGetLayerModeService";
 
@@ -21,7 +21,7 @@ export const execute = (
     work_space: WorkSpace,
     movie_clip: MovieClip,
     layer: Layer,
-    type: LayerModeStringImpl
+    type: LayerTypeImpl
 ): void => {
 
     const beforeMode = layer.mode;

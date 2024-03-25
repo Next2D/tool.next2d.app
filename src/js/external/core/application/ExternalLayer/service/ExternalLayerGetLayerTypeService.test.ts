@@ -9,6 +9,5 @@ describe("ExternalLayerGetLayerTypeServiceTest", () =>
         expect(execute(2)).toBe("mask_in");
         expect(execute(3)).toBe("guide");
         expect(execute(4)).toBe("guide_in");
-        expect(execute(5)).toBe("folder");
     });
 });
