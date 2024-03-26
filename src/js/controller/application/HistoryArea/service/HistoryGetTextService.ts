@@ -19,7 +19,8 @@ import {
     $LIBRARY_ADD_NEW_MOVIE_CLIP_COMMAND,
     $LIBRARY_REMOVE_INSTANCE_COMMAND,
     $TIMELINE_MOVE_LAYER_COMMAND,
-    $LAYER_UPDATE_LIGHT_COLOR_COMMAND
+    $LAYER_UPDATE_LIGHT_COLOR_COMMAND,
+    $LAYER_UPDATE_MODE_COMMAND
 } from "@/config/HistoryConfig";
 
 /**
@@ -96,6 +97,9 @@ export const execute = (command: number): string =>
 
         case $LAYER_UPDATE_LIGHT_COLOR_COMMAND:
             return "「%s1」のレイヤー「%s2」のハイライトカラーを変更";
+
+        case $LAYER_UPDATE_MODE_COMMAND:
+            return "「%s1」のレイヤー「%s2」を「%s3」に変更";
 
         default:
             break;

@@ -1,20 +1,18 @@
 import type { HistoryObjectImpl } from "@/interface/HistoryObjectImpl";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
-import type { Layer } from "@/core/domain/model/Layer";
-import type { LayerModeImpl } from "@/interface/LayerModeImpl";
-import { $TIMELINE_MOVE_LAYER_COMMAND } from "@/config/HistoryConfig";
+import { $LAYER_UPDATE_LIGHT_COLOR_COMMAND } from "@/config/HistoryConfig";
+import { Layer } from "@/core/domain/model/Layer";
 
 /**
- * @description レイヤー追加の履歴用オブジェクトを作成
- *              Create object for layer addition history
+ * @description レイヤーのモード更新の履歴用オブジェクトを作成
+ *              Create a history object for updating the layer mode
  *
  * @param  {number} work_space_id
  * @param  {MovieClip} movie_clip
  * @param  {Layer} layer
- * @param  {number} before_index
- * @param  {number} after_index
  * @param  {number} before_mode
  * @param  {number} before_parent_id
+ * @param  {array} indexes
  * @return {object}
  * @method
  * @public
@@ -23,27 +21,28 @@ export const execute = (
     work_space_id: number,
     movie_clip: MovieClip,
     layer: Layer,
-    before_index: number,
-    after_index: number,
-    before_mode: LayerModeImpl,
-    before_parent_id: number
+    before_mode: number,
+    before_parent_id: number,
+    indexes: number[],
+    type_name: string
 ): HistoryObjectImpl => {
 
     return {
-        "command": $TIMELINE_MOVE_LAYER_COMMAND,
+        "command": $LAYER_UPDATE_LIGHT_COLOR_COMMAND,
         "messages": [
             work_space_id,
             movie_clip.id,
-            before_index,
-            after_index,
+            movie_clip.layers.indexOf(layer),
             before_mode,
             layer.mode,
             before_parent_id,
-            layer.parentId
+            layer.parentId,
+            indexes
         ],
         "args": [
             movie_clip.name,
-            layer.name
+            layer.name,
+            type_name
         ]
     };
 };

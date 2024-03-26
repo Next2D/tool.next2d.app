@@ -1,6 +1,7 @@
 import { ExternalLayer } from "@/external/core/domain/model/ExternalLayer";
 import { $allHideMenu } from "../../MenuUtil";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
+import { $NORMAL_TYPE } from "@/config/LayerModeConfig";
 
 /**
  * @description 通常レイヤーに変更する

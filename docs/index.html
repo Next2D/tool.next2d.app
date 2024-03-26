@@ -2,54 +2,46 @@
 <html lang="ja">
   <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <title>Next2D | NoCode Tool</title>
-    <meta name="description" content="Nex2D NoCode Tool is a web browser-based authoring tool. Its intuitive interface and rich functionality make it easy for anyone to use. It allows you to combine various media formats, such as text, images, audio, and video, to create high-quality, engaging content.">
-    <meta content="Next2D,Next2D Player,NoCode Tool,Next2D Framework" name="keywords">
+    <title>Animation Tool | Next2D</title>
+    <meta name="description" content="It is an authoring tool that runs on a Web browser. With its intuitive interface and rich functionality, it is easy for anyone to use. It allows users to create high-quality, engaging content by combining a variety of media formats, including text, images, audio, and video.">
+    <meta content="NoCode,Animation Tool,Next2D" name="keywords">
 
     <link rel="icon" type="image/png" href="./assets/img/favicon.png" sizes="16x16 24x24 32x32 48x48 64x64" />
 
     <!-- Google / Search Engine Tags -->
-    <meta itemprop="name" content="Next2D | NoCode Tool">
-    <meta itemprop="description" content="Nex2D NoCode Tool is a web browser-based authoring tool. Its intuitive interface and rich functionality make it easy for anyone to use. It allows you to combine various media formats, such as text, images, audio, and video, to create high-quality, engaging content.">
+    <meta itemprop="name" content="Animation Tool | Next2D">
+    <meta itemprop="description" content="It is an authoring tool that runs on a Web browser. With its intuitive interface and rich functionality, it is easy for anyone to use. It allows users to create high-quality, engaging content by combining a variety of media formats, including text, images, audio, and video.">
     <meta itemprop="image" content="https://tool.next2d.app/assets/img/ogp.png?v1">
 
     <!-- Facebook Meta Tags -->
     <meta property="og:url" content="https://tool.next2d.app">
     <meta property="og:type" content="website">
-    <meta property="og:title" content="Next2D | NoCode Tool">
-    <meta property="og:description" content="Nex2D NoCode Tool is a web browser-based authoring tool. Its intuitive interface and rich functionality make it easy for anyone to use. It allows you to combine various media formats, such as text, images, audio, and video, to create high-quality, engaging content.">
+    <meta property="og:title" content="Animation Tool | Next2D">
+    <meta property="og:description" content="It is an authoring tool that runs on a Web browser. With its intuitive interface and rich functionality, it is easy for anyone to use. It allows users to create high-quality, engaging content by combining a variety of media formats, including text, images, audio, and video.">
     <meta property="og:image" content="https://tool.next2d.app/assets/img/ogp.png?v1">
 
     <!-- Twitter Meta Tags -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Next2D | NoCode Tool">
-    <meta name="twitter:description" content="Nex2D NoCode Tool is a web browser-based authoring tool. Its intuitive interface and rich functionality make it easy for anyone to use. It allows you to combine various media formats, such as text, images, audio, and video, to create high-quality, engaging content.">
+    <meta name="twitter:title" content="Animation Tool | Next2D">
+    <meta name="twitter:description" content="It is an authoring tool that runs on a Web browser. With its intuitive interface and rich functionality, it is easy for anyone to use. It allows users to create high-quality, engaging content by combining a variety of media formats, including text, images, audio, and video.">
     <meta name="twitter:image" content="https://tool.next2d.app/assets/img/ogp.png?v1">
 
-    <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-07FPJCL9YE"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag("js", new Date());
-        gtag("config", "G-07FPJCL9YE");
-    </script>
-    <script data-ad-client="ca-pub-5673019255498912" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-
-    <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-206816656-1">
-    </script>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-W5JQVDC2TF"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
-
-        gtag('config', 'UA-206816656-1');
+        gtag('config', 'G-W5JQVDC2TF');
     </script>
 
-    <script type="module" crossorigin src="/assets/js/nocode-tool.js"></script>
-    <link rel="stylesheet" href="/assets/css/style.css">
+    <script src="https://ajaxorg.github.io/ace-builds/src-min/ace.js" defer></script>
+    <script src="https://ajaxorg.github.io/ace-builds/src-min/ext-language_tools.js" defer></script>
+    <script src="https://ajaxorg.github.io/ace-builds/src-min/ext-searchbox.js" defer></script>
+    <script type="module" crossorigin src="/assets/js/animation-tool.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/css/style.css">
   </head>
   <body onContextmenu="return false;">
     <main id="main">
@@ -57,16 +49,16 @@
       <!-- tool -->
       <div id="tools">
 
-        <div id="tools-arrow" class="item" data-mode="tool" data-detail="{{選択ツール}}" data-shortcut-key="v" data-shortcut-text="V" data-area="screen"></div>
-        <div id="tools-free-transform" class="item" data-mode="tool" data-detail="{{自由変形ツール}}" data-shortcut-key="q" data-shortcut-text="Q" data-area="screen"></div>
+        <div id="tools-arrow" class="item" data-mode="tool" data-detail="{{選択ツール}}" data-shortcut-key="v" data-shortcut-text="V"></div>
+        <div id="tools-free-transform" class="item" data-mode="tool" data-detail="{{自由変形ツール}}" data-shortcut-key="q" data-shortcut-text="Q"></div>
         <div class="tools-border"></div>
     
-        <div id="tools-shape-transform" class="item" data-mode="tool" data-name="transform" data-detail="{{Shape変形ツール}}" data-shortcut-key="a" data-shortcut-text="A" data-area="screen"></div>
-        <div id="tools-pen" class="item" data-mode="tool" data-name="pen" data-detail="{{ペンツール}}" data-shortcut-key="p" data-shortcut-text="P" data-area="screen"></div>
-        <div id="tools-bucket" class="item" data-mode="tool" data-name="bucket" data-detail="{{バケツツール}}" data-shortcut-key="k" data-shortcut-text="K" data-area="screen"></div>
-        <div id="tools-rectangle" class="item" data-mode="tool" data-name="rectangle" data-detail="{{矩形ツール}}" data-shortcut-key="r" data-shortcut-text="R" data-area="screen"></div>
-        <div id="tools-circle" class="item" data-mode="tool" data-name="circle" data-detail="{{楕円ツール}}" data-shortcut-key="o" data-shortcut-text="O" data-area="screen"></div>
-        <div id="tools-round-rect" class="item" data-mode="tool" data-name="round-rect" data-detail="{{角丸矩形ツール}}" data-shortcut-key="rShift" data-shortcut-text="Shift + R" data-area="screen"></div>
+        <div id="tools-shape-transform" class="item" data-mode="tool" data-name="transform" data-detail="{{Shape変形ツール}}" data-shortcut-key="a" data-shortcut-text="A"></div>
+        <div id="tools-pen" class="item" data-mode="tool" data-name="pen" data-detail="{{ペンツール}}" data-shortcut-key="p" data-shortcut-text="P"></div>
+        <div id="tools-bucket" class="item" data-mode="tool" data-name="bucket" data-detail="{{バケツツール}}" data-shortcut-key="b" data-shortcut-text="B"></div>
+        <div id="tools-rectangle" class="item" data-mode="tool" data-name="rectangle" data-detail="{{矩形ツール}}" data-shortcut-key="r" data-shortcut-text="R"></div>
+        <div id="tools-circle" class="item" data-mode="tool" data-name="circle" data-detail="{{楕円ツール}}" data-shortcut-key="o" data-shortcut-text="O"></div>
+        <div id="tools-round-rect" class="item" data-mode="tool" data-name="round-rect" data-detail="{{角丸矩形ツール}}" data-shortcut-key="rShift" data-shortcut-text="Shift + R"></div>
     
         <div id="tools-fill-color">
             <input type="color" id="fill-color" value="#000000" data-detail="{{塗りのカラー}}" tabindex="-1">
@@ -79,22 +71,22 @@
         </div>
         <div class="tools-border"></div>
     
-        <div id="tools-text" class="item" data-mode="tool" data-name="text" data-detail="{{テキストツール}}" data-shortcut-key="t" data-shortcut-text="T" data-area="screen"></div>
+        <div id="tools-text" class="item" data-mode="tool" data-name="text" data-detail="{{テキストツール}}" data-shortcut-key="t" data-shortcut-text="T"></div>
         <div class="tools-border"></div>
     
-        <div id="tools-zoom-plus" class="item" data-mode="tool" data-detail="{{ズームツール}}" data-shortcut-key="z" data-shortcut-text="Z" data-area="screen"></div>
-        <div id="tools-zoom-minus" class="item" data-mode="tool" data-detail="{{ズームツール}}" data-shortcut-key="zShift" data-shortcut-text="Shift + Z" data-area="screen"></div>
+        <div id="tools-zoom-plus" class="item" data-mode="tool" data-detail="{{ズームツール}}" data-shortcut-key="z" data-shortcut-text="Z"></div>
+        <div id="tools-zoom-minus" class="item" data-mode="tool" data-detail="{{ズームツール}}" data-shortcut-key="zShift" data-shortcut-text="Shift + Z"></div>
         <input type="number" id="screen-scale" value="100" data-detail="{{画面の拡大・縮小}}" autocomplete="off" tabindex="-1">
         <div class="tools-border"></div>
     
-        <div id="tools-load" class="item" data-detail="{{プロジェクトデータの読込}}" data-shortcut-key="rCtrl" data-shortcut-text="Ctrl + R" data-area="screen"></div>
+        <div id="tools-load" class="item" data-detail="{{プロジェクトデータの読込}}" data-shortcut-key="rCtrl" data-shortcut-text="Ctrl + R"></div>
         <input type="file" id="tools-load-file-input" accept=".n2d" tabindex="-1">
-        <div id="tools-save" class="item" data-detail="{{プロジェクトデータを保存}}" data-shortcut-key="sShiftCtrl" data-shortcut-text="Ctrl + Shift + S" data-area="screen"></div>
-        <div id="tools-export" class="item" data-detail="{{書き出し}}" data-shortcut-key="EnterShiftCtrl" data-shortcut-text="Ctrl + Shift + Enter" data-area="screen"></div>
+        <div id="tools-save" class="item" data-detail="{{プロジェクトデータを保存}}" data-shortcut-key="sShiftCtrl" data-shortcut-text="Ctrl + Shift + S"></div>
+        <div id="tools-export" class="item" data-detail="{{書き出し}}" data-shortcut-key="EnterShiftCtrl" data-shortcut-text="Ctrl + Shift + Enter"></div>
         <div id="tools-save-folder"><a id="save-anchor" href=""></a></div>
         <div class="tools-border"></div>
     
-        <div id="tools-setting" class="item" data-detail="{{設定}}" data-shortcut-key="s" data-shortcut-text="S" data-area="screen"></div>
+        <div id="tools-setting" class="item" data-detail="{{設定}}" data-shortcut-key="u" data-shortcut-text="U"></div>
         <div class="tools-border"></div>
     
         <div id="plugin-tools"></div>
@@ -105,13 +97,13 @@
       <div id="view">
 
         <!-- tab -->
-        <div id="view-tab">
-          <i id="view-tab-add" data-detail="{{タブを追加}}"></i>
-          <i id="view-tab-list" data-detail="{{タブの一覧を表示・移動}}"></i>
-          <div id="view-tab-area"></div>
+        <div id="screen-tab">
+          <i id="screen-tab-add" data-detail="{{タブを追加}}" data-shortcut-key="nCtrl" data-shortcut-text="Ctrl + N"></i>
+          <i id="screen-tab-list" data-detail="{{タブの一覧を表示・移動}}"></i>
+          <div id="screen-tab-area"></div>
         </div>
-        <div id="tab-name-menu" class="none">
-            <div id="tab-name-menu-list"></div>
+        <div id="screen-tab-menu" class="none">
+            <div id="screen-tab-menu-name-list"></div>
         </div>
 
         <!-- screen -->
@@ -145,84 +137,86 @@
         <!-- timeline -->
         <div id="timeline">
 
-          <div id="timeline-adjustment"></div>
+          <div id="timeline-adjustment-y"></div>
       
-          <div class="timeline-tools">
-      
-              <div id="scene">
-      
-                  <i id="scene-list"></i>
-                  <div id="scene-name"></div>
-      
-                  <div id="scene-name-menu" class="none">
-                      <div id="scene-name-menu-list"></div>
-                  </div>
-      
-              </div>
-      
-              <div class="tools">
-      
-                  <i id="timeline-script-add" data-detail="{{スクリプトを追加}}" data-shortcut-key="s" data-shortcut-text="S" data-area="timeline"></i>
-                  <i id="timeline-key-add" data-detail="{{キーフレームを追加}}" data-shortcut-key="k" data-shortcut-text="K" data-area="timeline"></i>
-                  <i id="timeline-empty-add" data-detail="{{空のキーフレームを追加}}" data-shortcut-key="e" data-shortcut-text="E" data-area="timeline"></i>
-                  <i id="timeline-frame-add" data-detail="{{フレームを追加}}" data-shortcut-key="f" data-shortcut-text="F" data-area="timeline"></i>
-                  <i id="timeline-frame-delete" data-detail="{{フレームを削除}}" data-shortcut-key="fCtrl" data-shortcut-text="Ctrl + F" data-area="timeline"></i>
-                  <i id="timeline-onion-skin" data-detail="{{オニオンスキン}}" data-shortcut-key="oCtrl" data-shortcut-text="Ctrl + O" data-area="timeline"></i>
-                  <i id="timeline-preview" class="timeline-preview-disable" data-detail="{{プレビューのON/OFF}}" data-shortcut-key="p" data-shortcut-text="P" data-area="timeline"></i>
-                  <div class="timeline-border"></div>
-      
-                  <input type="text" id="current-frame" value="1" autocomplete="off" tabindex="-1">
-                  <i id="timeline-play" data-detail="{{再生}}" data-shortcut-key="Enter" data-shortcut-text="Enter" data-area="timeline"></i>
-                  <i id="timeline-stop" data-detail="{{停止}}" data-shortcut-key="Enter" data-shortcut-text="Enter" data-area="timeline"></i>
-                  <i id="timeline-repeat" data-detail="{{ループ設定}}" data-shortcut-key="pCtrl" data-shortcut-text="Ctrl + P" data-area="timeline"></i>
-                  <i id="timeline-no-repeat" data-detail="{{ループ設定}}" data-shortcut-key="pCtrl" data-shortcut-text="Ctrl + P" data-area="timeline"></i>
-                  <div class="timeline-border"></div>
-                  <input type="text" placeholder="Label" id="label-name" value="" data-detail="{{フレームラベル}}" data-shortcut-key="l" data-shortcut-text="L" data-area="timeline" autocomplete="off" tabindex="-1">
-                  <div class="timeline-border"></div>
-                  <div class="screen-zoom-area">
-                      <input type="text" id="timeline-scale" value="100" data-detail="{{タイムライン幅の拡大・縮小}}" data-shortcut-key="z" data-shortcut-text="Z" data-area="timeline" autocomplete="off" tabindex="-1">%
-                  </div>
-              </div>
-      
+          <div class="timeline-container">
+            <div id="timeline-container-main">
+                <div class="timeline-tools">
+        
+                    <div id="scene">
+    
+                        <i id="scene-list" data-detail="{{MoiveClip一覧}}"></i>
+                        <div id="scene-name"></div>
+            
+                        <div id="scene-name-menu" class="none">
+                            <div id="scene-name-menu-list"></div>
+                        </div>
+            
+                    </div>
+            
+                    <div class="tools">
+                        <i id="timeline-script-add" data-detail="{{スクリプトを追加}}" data-shortcut-key="s" data-shortcut-text="S"></i>
+                        <i id="timeline-key-add" data-detail="{{キーフレームを追加}}" data-shortcut-key="k" data-shortcut-text="K"></i>
+                        <i id="timeline-empty-add" data-detail="{{空のキーフレームを追加}}" data-shortcut-key="eCtrl" data-shortcut-text="Ctrl + E"></i>
+                        <i id="timeline-frame-add" data-detail="{{フレームを追加}}" data-shortcut-key="f" data-shortcut-text="F"></i>
+                        <i id="timeline-frame-delete" data-detail="{{フレームを削除}}" data-shortcut-key="fCtrl" data-shortcut-text="Ctrl + F"></i>
+                        <i id="timeline-onion-skin" data-detail="{{オニオンスキン}}" data-shortcut-key="oCtrl" data-shortcut-text="Ctrl + O"></i>
+                        <i id="timeline-preview" class="timeline-preview-disable" data-detail="{{プレビューのON/OFF}}" data-shortcut-key="pShift" data-shortcut-text="Shift + P"></i>
+                        <div class="timeline-border"></div>
+            
+                        <input type="number" id="current-frame" value="1" autocomplete="off" tabindex="-1">
+                        <i id="timeline-play" data-detail="{{再生}}" data-shortcut-key="Enter" data-shortcut-text="Enter"></i>
+                        <i style="display: none;" id="timeline-stop" data-detail="{{停止}}" data-shortcut-key="Enter" data-shortcut-text="Enter"></i>
+                        <i style="display: none;" id="timeline-repeat" data-detail="{{ループ設定}}" data-shortcut-key="lShiftCtrl" data-shortcut-text="Shift + Ctrl + L"></i>
+                        <i id="timeline-no-repeat" data-detail="{{ループ設定}}" data-shortcut-key="lShiftCtrl" data-shortcut-text="Shift + Ctrl + L"></i>
+                        <div class="timeline-border"></div>
+                        <input type="text" placeholder="Label" id="label-name" value="" data-detail="{{フレームラベル}}" data-shortcut-key="l" data-shortcut-text="L" autocomplete="off" tabindex="-1">
+                        <div class="timeline-border"></div>
+                        <div class="screen-zoom-area">
+                            <input type="text" id="timeline-scale" value="100" data-detail="{{タイムライン幅の拡大・縮小}}" data-shortcut-key="z" data-shortcut-text="Z" autocomplete="off" tabindex="-1">%
+                        </div>
+                    </div>
+            
+                </div>
+            
+                <div class="timeline-controller">
+            
+                    <div class="timeline-controller-tools">
+                        <i id="timeline-layer-add" data-detail="{{レイヤーを追加}}" data-shortcut-key=";Ctrl" data-shortcut-text="Ctrl + +"></i>
+                        <i id="timeline-layer-trash" data-detail="{{レイヤーを削除}}" data-shortcut-key="BackspaceCtrl" data-shortcut-text="Ctrl + Backspace"></i>
+                        <i id="timeline-layer-light-all" class="timeline-layer-light" data-detail="{{全てのレイヤーをハイライト}}" data-shortcut-key="hShift" data-shortcut-text="Shift + H"></i>
+                        <i id="timeline-layer-disable-all" class="timeline-layer-disable" data-detail="{{全てのレイヤーを非表示}}" data-shortcut-key="dShift" data-shortcut-text="Shift + D"></i>
+                        <i id="timeline-layer-lock-all" class="timeline-layer-lock" data-detail="{{全てのレイヤーをロック}}" data-shortcut-key="lShift" data-shortcut-text="Shift + L"></i>
+                    </div>
+            
+                    <div id="timeline-controller-base">
+                        <div id="timeline-marker"></div>
+                        <div id="timeline-header"></div>
+                    </div>
+            
+                </div>
+            
+                <div class="timeline-body">
+                    <div class="timeline-content-body">
+                        <div id="timeline-content"></div>
+                        <div id="timeline-y-bar-box">
+                            <div id="timeline-scroll-bar-y" style="display: none;"></div>
+                        </div>
+                        <div id="timeline-marker-border"></div>
+                        <div id="target-group" style="display: none;"></div>
+                    </div>
+                    <div class="timeline-footer">
+                        <div class="timeline-scroll-bar-x-space"></div>
+                        <div id="timeline-x-bar-box">
+                            <div id="timeline-scroll-bar-x"></div>
+                        </div>
+                    </div>
+                </div>
+            
+                <div id="timeline-preview-modal" style="display:none;"></div>
+            </div>
+            <div id="timeline-adjustment-x" style="display: none;"></div>
           </div>
-      
-          <div class="timeline-controller">
-      
-              <div class="timeline-controller-tools">
-                  <i id="timeline-layer-add" data-detail="{{レイヤーを追加}}" data-shortcut-key=";Ctrl" data-shortcut-text="Ctrl + +" data-area="timeline"></i>
-                  <i id="timeline-layer-trash" data-detail="{{レイヤーを削除}}" data-shortcut-key="BackspaceCtrl" data-shortcut-text="Ctrl + Backspace" data-area="timeline"></i>
-                  <i id="timeline-layer-light-all" class="timeline-layer-light" data-detail="{{全てのレイヤーをハイライト}}" data-shortcut-key="hShift" data-shortcut-text="Shift + H" data-area="timeline"></i>
-                  <i id="timeline-layer-disable-all" class="timeline-layer-disable" data-detail="{{全てのレイヤーを非表示}}" data-shortcut-key="dShift" data-shortcut-text="Shift + D" data-area="timeline"></i>
-                  <i id="timeline-layer-lock-all" class="timeline-layer-lock" data-detail="{{全てのレイヤーをロック}}" data-shortcut-key="lShift" data-shortcut-text="Shift + L" data-area="timeline"></i>
-              </div>
-      
-              <div id="timeline-controller-base">
-                  <div id="timeline-marker"></div>
-                  <div id="timeline-header"></div>
-              </div>
-      
-          </div>
-      
-          <div class="timeline-body">
-              <div class="timeline-content-body">
-                  <div id="timeline-content"></div>
-                  <div id="timeline-y-bar-box">
-                      <div id="timeline-scroll-bar-y"></div>
-                  </div>
-              </div>
-              <div class="timeline-footer">
-                  <div class="timeline-scroll-bar-x-space"></div>
-                  <div id="timeline-x-bar-box">
-                      <div id="timeline-scroll-bar-x"></div>
-                  </div>
-              </div>
-          </div>
-      
-          <div id="timeline-marker-border"></div>
-      
-          <div id="target-group" style="display: none;"></div>
-      
-          <div id="timeline-preview-modal" style="display:none;"></div>
         </div>
       </div>
 
@@ -232,21 +226,20 @@
 
         <!-- controller-tab -->
         <div id="controller-tab-area">
-          <div class="tab disable" data-tab-type="controller-area-property"><span class="language" data-text="{{プロパティ}}">Properties</span></div>
-          <div class="tab disable" data-tab-type="controller-area-library"><span class="language" data-text="{{ライブラリ}}">Library</span></div>
+          <div class="tab active" data-tab-type="controller-area-property"><span class="language" data-text="{{プロパティ}}">プロパティ</span></div>
+          <div class="tab disable" data-tab-type="controller-area-library"><span class="language" data-text="{{ライブラリ}}">ライブラリ</span></div>
+          <div class="tab disable" data-tab-type="controller-area-history"><span class="language" data-text="{{履歴}}">履歴</span></div>
           <div class="tab disable" data-tab-type="controller-area-js">JavaScript</div>
-          <div class="tab disable" data-tab-type="controller-area-plugin"><span class="language" data-text="{{プラグイン}}">Plugin</span></div>
+          <div class="tab disable" data-tab-type="controller-area-plugin"><span class="language" data-text="{{プラグイン}}">プラグイン</span></div>
         </div>
 
         <!-- controller-area -->
-        <div id="controller-area">
-
-          <div id="controller-area-property">
-
+        <div id="controller-area-property">
+            
             <!-- stage-setting -->
             <div id="stage-setting">
 
-              <div id="stage-setting-title">
+              <div class="container-title" data-setting-name="stage">
                   <i class="active"></i>
                   <span class="language" data-text="{{ステージ設定}}">ステージ設定</span>
               </div>
@@ -297,7 +290,7 @@
             <!-- ruler-setting -->
             <div id="ruler-setting">
         
-                <div id="ruler-setting-title">
+                <div class="container-title" data-setting-name="ruler">
                     <i class="active"></i>
                     <span class="language" data-text="{{定規}}">定規</span>
                 </div>
@@ -323,7 +316,7 @@
       
             <!-- object-setting -->
             <div id="object-setting">
-                <div id="object-setting-title">
+                <div class="container-title" data-setting-name="object">
                     <i class="active"></i>
                     <span class="language" data-text="{{オブジェクト}}">オブジェクト</span>
                 </div>
@@ -350,7 +343,7 @@
       
             <!-- sound-setting -->
             <div id="sound-setting">
-                <div id="sound-setting-title">
+                <div class="container-title" data-setting-name="sound">
                     <i class="active"></i>
                     <span class="language" data-text="{{サウンド}}">サウンド</span>
                 </div>
@@ -367,11 +360,11 @@
             </div>
 
             <!-- object-property-area -->
-            <div id="object-area" style="display: none">
+            <div id="object-area">
 
               <!-- ease-setting -->
               <div id="ease-setting">
-                <div id="ease-setting-title">
+                <div class="container-title" data-setting-name="ease">
                     <i class="active"></i>
                     <span class="language" data-text="{{イージング}}">イージング</span>
                 </div>
@@ -446,7 +439,7 @@
 
               <!-- video-setting -->
               <div id="video-setting">
-                <div id="video-setting-title">
+                <div class="container-title" data-setting-name="video">
                     <i class="active"></i>
                     <span class="language" data-text="{{ビデオ}}">ビデオ</span>
                 </div>
@@ -484,7 +477,7 @@
               <!-- text-setting -->
               <div id="text-setting">
 
-                <div id="text-setting-title">
+                <div class="container-title" data-setting-name="text">
                     <i class="active"></i>
                     <span class="language" data-text="{{テキスト}}">テキスト</span>
                 </div>
@@ -613,7 +606,7 @@
               <!-- transform-setting -->
               <div id="transform-setting">
 
-                <div id="transform-setting-title">
+                <div class="container-title" data-setting-name="transform">
                     <i class="active"></i>
                     <span class="language" data-text="{{変形}}">変形</span>
                 </div>
@@ -695,7 +688,7 @@
               <!-- color-setting -->
               <div id="color-setting">
 
-                <div id="color-setting-title">
+                <div class="container-title" data-setting-name="color">
                     <i class="active"></i>
                     <span class="language" data-text="{{カラー効果}}">カラー効果</span>
                 </div>
@@ -745,7 +738,7 @@
               <!-- align-setting -->
               <div id="align-setting">
 
-                <div id="align-setting-title">
+                <div class="container-title" data-setting-name="align">
                     <i class="active"></i>
                     <span class="language" data-text="{{整列}}">整列</span>
                 </div>
@@ -783,7 +776,7 @@
               <!-- reference-setting -->
               <div id="reference-setting">
 
-                <div id="reference-setting-title">
+                <div class="container-title" data-setting-name="reference">
                     <i class="active"></i>
                     <span class="language" data-text="{{基準点}}">基準点</span>
                 </div>
@@ -821,7 +814,9 @@
             
               <!-- nine-slice-setting -->
               <div id="nine-slice-setting">
-                <div id="nine-slice-setting-title"><i class="active"></i>9-slice</div>
+                <div class="container-title" data-setting-name="nine-slice">
+                    <i class="active"></i>9-slice
+                </div>
             
                 <div id="nine-slice-setting-view-area">
                     <div class="nine-slice-setting-container">
@@ -845,7 +840,7 @@
 
               <!-- fill-color-setting -->
               <div id="fill-color-setting">
-                <div id="fill-color-setting-title">
+                <div class="container-title" data-setting-name="fill-color">
                     <i class="active"></i>
                     <span class="language" data-text="{{Shapeの色設定}}">Shapeの色設定</span>
                 </div>
@@ -902,7 +897,7 @@
 
               <!-- loop-setting -->
               <div id="loop-setting">
-                <div id="loop-setting-title">
+                <div class="container-title" data-setting-name="loop">
                     <i class="active"></i>
                     <span class="language" data-text="{{カスタムループ}}">Custom Loop</span>
                 </div>
@@ -927,9 +922,9 @@
                     </div>
             
                     <div class="loop-setting-container">
-                        <button id="frame-picker-button" data-detail="{{フレームピッカー}}">Frame Picker</button>
-                        <button id="target-start-button" class="active">Start</button>
-                        <button id="target-end-button">End</button>
+                        <button tabindex="-1" id="frame-picker-button" data-detail="{{フレームピッカー}}">Frame Picker</button>
+                        <button tabindex="-1" id="target-start-button" class="active">Start</button>
+                        <button tabindex="-1" id="target-end-button">End</button>
                     </div>
             
                     <div class="loop-setting-container">
@@ -943,7 +938,7 @@
               <!-- blend-setting -->
               <div id="blend-setting">
 
-                <div id="blend-setting-title">
+                <div class="container-title" data-setting-name="blend">
                     <i class="active"></i>
                     <span class="language" data-text="{{ブレンドモード}}">ブレンドモード</span>
                 </div>
@@ -976,7 +971,7 @@
               <!-- filter-setting -->
               <div id="filter-setting">
 
-                <div id="filter-setting-title">
+                <div class="container-title" data-setting-name="filter">
                     <i class="active"></i>
                     <span class="language" data-text="{{フィルター}}">フィルター</span>
                 </div>
@@ -1007,8 +1002,6 @@
               </div>
 
             </div>
-
-          </div>
         </div>
 
         <!-- library-area -->
@@ -1017,7 +1010,8 @@
           <div id="library-preview-area"></div>
       
           <div class="library-search-area">
-              <i></i> <input type="text" id="library-search" value="" autocomplete="off" data-detail="{{ライブラリ内の検索}}" tabindex="-1">
+            <i></i>
+            <input type="text" id="library-search" value="" autocomplete="off" data-detail="{{ライブラリ内の検索}}" tabindex="-1">
           </div>
       
           <div id="library-list-title">
@@ -1041,6 +1035,11 @@
         <!-- plugin-area -->
         <div id="controller-area-plugin" style="display: none;">
           <div id="plugin-list-box"></div>
+        </div>
+
+        <!-- history-area -->
+        <div id="controller-area-history" style="display: none;">
+            <div id="history-list"></div>
         </div>
 
         <!-- ads -->
@@ -1108,55 +1107,56 @@
 
       <!-- confirm-modal -->
       <div id="confirm-modal" class="none">
-
-        <div class="confirm-preview-area">
-    
-            <div class="confirm-preview-container">
-                <div class="confirm-preview-text">
-                    <span class="language" data-text="{{既存のコンテンツ}}">既存のコンテンツ</span>
+        <div class="confirm-modal-body">
+            <div class="confirm-preview-area">
+        
+                <div class="confirm-preview-container">
+                    <div class="confirm-preview-text">
+                        <span class="language" data-text="{{既存のコンテンツ}}">既存のコンテンツ</span>
+                    </div>
+                    <div id="confirm-before-preview"></div>
                 </div>
-                <div id="confirm-before-preview"></div>
+        
+                <div class="confirm-preview-container">
+                    <div class="confirm-preview-text">
+                        <span class="language" data-text="{{追加ファイル}}">追加ファイル</span>
+                    </div>
+                    <div id="confirm-after-preview"></div>
+                </div>
+        
             </div>
     
-            <div class="confirm-preview-container">
-                <div class="confirm-preview-text">
-                    <span class="language" data-text="{{追加ファイル}}">追加ファイル</span>
+            <div class="confirm-setting">
+        
+                <div class="confirm-setting-container">
+                    <div class="confirm-setting-text">
+                        <span class="language" data-text="{{上書きするか、ファイル名を変更して追加するか、キャンセルを選択する事ができます}}">上書きするか、ファイル名を変更して追加するか、キャンセルを選択する事ができます</span>
+                    </div>
                 </div>
-                <div id="confirm-after-preview"></div>
+        
+                <div class="confirm-setting-container">
+                    <input type="text" id="confirm-file-name" value="" autocomplete="off" data-detail="{{ファイル名を指定}}" tabindex="-1">
+                </div>
+        
+                <div class="confirm-setting-container">
+                    <div id="confirm-overwriting" class="confirm-button">
+                        <span class="language" data-text="{{追加・上書き}}">追加・上書き</span>
+                    </div>
+                    <div id="confirm-cancel" class="confirm-button">
+                        <span class="language" data-text="{{キャンセル}}">キャンセル</span>
+                    </div>
+                </div>
+        
+                <div class="confirm-setting-container">
+                    <div id="confirm-all-overwriting" class="confirm-button">
+                        <span class="language" data-text="{{全て上書き}}">全て上書き</span>
+                    </div>
+                    <div id="confirm-all-cancel" class="confirm-button">
+                        <span class="language" data-text="{{全てキャンセル}}">全てキャンセル</span>
+                    </div>
+                </div>
+        
             </div>
-    
-        </div>
-    
-        <div class="confirm-setting">
-    
-            <div class="confirm-setting-container">
-                <div class="confirm-setting-text">
-                    <span class="language" data-text="{{上書きするか、ファイル名を変更して追加するか、スキップを選択する事ができます}}">上書きするか、ファイル名を変更して追加するか、スキップを選択する事ができます</span>
-                </div>
-            </div>
-    
-            <div class="confirm-setting-container">
-                <input type="text" id="confirm-file-name" value="" autocomplete="off" data-detail="{{ファイル名を指定}}" tabindex="-1">
-            </div>
-    
-            <div class="confirm-setting-container">
-                <div id="confirm-overwriting" class="confirm-button">
-                    <span class="language" data-text="{{追加・上書き}}">追加・上書き</span>
-                </div>
-                <div id="confirm-skip" class="confirm-button">
-                    <span class="language" data-text="{{スキップ}}">スキップ</span>
-                </div>
-            </div>
-    
-            <div class="confirm-setting-container">
-                <div id="confirm-all-overwriting" class="confirm-button">
-                    <span class="language" data-text="{{全て上書き}}">全て上書き</span>
-                </div>
-                <div id="confirm-all-skip" class="confirm-button">
-                    <span class="language" data-text="{{全てスキップ}}">全てスキップ</span>
-                </div>
-            </div>
-    
         </div>
       </div>
 
@@ -1166,28 +1166,28 @@
             <span class="screen-menu-title language" data-text="{{表示}}">表示</span>
             <div id="screen-order" class="screen-menu-bottom"><span class="language" data-text="{{重ね順}}">重ね順</span><i></i></div>
             <div id="screen-align" class="screen-menu-bottom"><span class="language" data-text="{{整列}}">整列</span><i></i></div>
-            <div id="screen-ruler" class="screen-menu-bottom"><span class="language" data-text="{{定規}}" data-shortcut-key="rShiftCtrl" data-shortcut-text="Ctrl + Shift + R" data-area="screen">定規</span></div>
-            <div id="screen-change-scene" class="screen-menu-bottom"><span class="language" data-text="{{MovieClipを編集}}" data-shortcut-key="e" data-shortcut-text="E" data-area="screen">MovieClipを編集</span></div>
-            <div id="screen-move-scene" class="screen-menu-bottom"><span class="language" data-text="{{親の階層へ移動}}" data-shortcut-key="rShift" data-shortcut-text="Shift + E" data-area="screen">親の階層へ移動</span></div>
-    <!--        <div id="screen-sorption" class="screen-menu-bottom"><i></i><span class="language" data-text="{{吸着}}" data-shortcut-key="uShift" data-shortcut-text="Shift + U" data-area="screen">吸着</span></div>-->
+            <div id="screen-ruler" class="screen-menu-bottom"><span class="language" data-text="{{定規}}" data-shortcut-key="rShiftCtrl" data-shortcut-text="Ctrl + Shift + R">定規</span></div>
+            <div id="screen-change-scene" class="screen-menu-bottom"><span class="language" data-text="{{MovieClipを編集}}" data-shortcut-key="e" data-shortcut-text="E">MovieClipを編集</span></div>
+            <div id="screen-move-scene" class="screen-menu-bottom"><span class="language" data-text="{{親の階層へ移動}}" data-shortcut-key="rShift" data-shortcut-text="Shift + E">親の階層へ移動</span></div>
+    <!--        <div id="screen-sorption" class="screen-menu-bottom"><i></i><span class="language" data-text="{{吸着}}" data-shortcut-key="uShift" data-shortcut-text="Shift + U">吸着</span></div>-->
             <p></p>
             <span class="screen-menu-title language" data-text="{{タイムライン}}">タイムライン</span>
-            <div id="screen-distribute-to-layers" class="screen-menu-bottom"><span class="language" data-text="{{レイヤーに配分}}" data-shortcut-key="dCtrl" data-shortcut-text="Ctrl + D" data-area="screen">レイヤーに配分</span></div>
-            <div id="screen-distribute-to-keyframes" class="screen-menu-bottom"><span class="language" data-text="{{キーフレームに配分}}" data-shortcut-key="kCtrl" data-shortcut-text="Ctrl + K" data-area="screen">キーフレームに配分</span></div>
-            <div id="screen-align-coordinates-prev-keyframe" class="screen-menu-bottom"><span class="language" data-text="{{前のキーフレームと座標を合わせる}}" data-shortcut-key="kShiftCtrl" data-shortcut-text="Ctrl + Shift + K" data-area="screen">前のキーフレームと座標を合わせる</span></div>
-            <div id="screen-align-matrix-prev-keyframe" class="screen-menu-bottom"><span class="language" data-text="{{前のキーフレームと変形を合わせる}}" data-shortcut-key="mShiftCtrl" data-shortcut-text="Ctrl + Shift + M" data-area="screen">前のキーフレームと変形を合わせる</span></div>
+            <div id="screen-distribute-to-layers" class="screen-menu-bottom"><span class="language" data-text="{{レイヤーに配分}}" data-shortcut-key="dCtrl" data-shortcut-text="Ctrl + D">レイヤーに配分</span></div>
+            <div id="screen-distribute-to-keyframes" class="screen-menu-bottom"><span class="language" data-text="{{キーフレームに配分}}" data-shortcut-key="kShiftCtrl" data-shortcut-text="Ctrl + Shift + K">キーフレームに配分</span></div>
+            <div id="screen-align-coordinates-prev-keyframe" class="screen-menu-bottom"><span class="language" data-text="{{前のキーフレームと座標を合わせる}}" data-shortcut-key="cShiftCtrl" data-shortcut-text="Ctrl + Shift + C">前のキーフレームと座標を合わせる</span></div>
+            <div id="screen-align-matrix-prev-keyframe" class="screen-menu-bottom"><span class="language" data-text="{{前のキーフレームと変形を合わせる}}" data-shortcut-key="tShiftCtrl" data-shortcut-text="Ctrl + Shift + T">前のキーフレームと変形を合わせる</span></div>
             <p></p>
             <span class="screen-menu-title language" data-text="{{シェイプ}}">シェイプ</span>
-            <div id="screen-integrating-paths" class="screen-menu-bottom"><i></i><span class="language" data-text="{{パスの結合}}" data-shortcut-key="iCtrl" data-shortcut-text="Ctrl + I" data-area="screen">パスの結合</span></div>
+            <div id="screen-integrating-paths" class="screen-menu-bottom"><i></i><span class="language" data-text="{{パスの結合}}" data-shortcut-key="iCtrl" data-shortcut-text="Ctrl + I">パスの結合</span></div>
             <p></p>
             <span class="screen-menu-title language" data-text="{{トゥイーン}}">Tween</span>
-            <div id="screen-add-tween-curve-pointer" class="screen-menu-bottom"><span class="language" data-text="{{カーブポインターの追加}}" data-shortcut-key="pCtrl" data-shortcut-text="Ctrl + P" data-area="screen">カーブポインターの追加</span></div>
-            <div id="screen-delete-tween-curve-pointer" class="screen-menu-bottom"><span class="language" data-text="{{カーブポインターの削除}}" data-shortcut-key="pShiftCtrl" data-shortcut-text="Ctrl + Shift + P" data-area="screen">カーブポインターの削除</span></div>
+            <div id="screen-add-tween-curve-pointer" class="screen-menu-bottom"><span class="language" data-text="{{カーブポインターの追加}}" data-shortcut-key="pCtrl" data-shortcut-text="Ctrl + P">カーブポインターの追加</span></div>
+            <div id="screen-delete-tween-curve-pointer" class="screen-menu-bottom"><span class="language" data-text="{{カーブポインターの削除}}" data-shortcut-key="pShiftCtrl" data-shortcut-text="Ctrl + Shift + P">カーブポインターの削除</span></div>
             <p></p>
             <span class="screen-menu-title language" data-text="{{変換}}">変換</span>
-            <div id="screen-change-movie-clip" class="screen-menu-bottom"><i></i><span class="language" data-text="{{MovieClipに変換}}" data-shortcut-key="mShift" data-shortcut-text="Shift + M" data-area="screen">MovieClipに変換</span></div>
+            <div id="screen-change-movie-clip" class="screen-menu-bottom"><i></i><span class="language" data-text="{{MovieClipに変換}}" data-shortcut-key="mShift" data-shortcut-text="Shift + M">MovieClipに変換</span></div>
             <p></p>
-            <div id="screen-preview" class="screen-menu-bottom"><i></i><span class="language" data-text="{{プレビュー}}" data-shortcut-key="EnterCtrl" data-shortcut-text="Ctrl + Enter" data-area="screen">Preview</span></div>
+            <div id="screen-preview" class="screen-menu-bottom"><i></i><span class="language" data-text="{{プレビュー}}" data-shortcut-key="EnterCtrl" data-shortcut-text="Ctrl + Enter">Preview</span></div>
             <p></p>
             <span class="screen-menu-title language" data-text="{{プラグインメニュー}}">Plugin Menu</span>
             <div id="screen-plugin-menu"></div>
@@ -1197,10 +1197,10 @@
       <!-- screen-order-menu -->
       <div id="screen-order-menu" class="none">
         <div class="screen-menu-list">
-            <div id="screen-front" class="screen-menu-bottom"><i></i><span class="language" data-text="{{最前面}}" data-shortcut-key="ArrowUpShiftCtrl" data-shortcut-text="Ctrl + Shift + ▲" data-area="screen">最前面</span></div>
-            <div id="screen-front-one" class="screen-menu-bottom"><i></i><span class="language" data-text="{{ひとつ前面へ}}" data-shortcut-key="ArrowUpCtrl" data-shortcut-text="Ctrl + ▲" data-area="screen">ひとつ前面へ</span></div>
-            <div id="screen-back-one" class="screen-menu-bottom"><i></i><span class="language" data-text="{{ひとつ背面へ}}" data-shortcut-key="ArrowDownCtrl" data-shortcut-text="Ctrl + ▼" data-area="screen">ひとつ背面へ</span></div>
-            <div id="screen-back" class="screen-menu-bottom"><i></i><span class="language" data-text="{{最背面}}" data-shortcut-key="ArrowDownShiftCtrl" data-shortcut-text="Ctrl + Shift + ▼" data-area="screen">最背面</span></div>
+            <div id="screen-front" class="screen-menu-bottom"><i></i><span class="language" data-text="{{最前面}}" data-shortcut-key="ArrowUpShiftCtrl" data-shortcut-text="Ctrl + Shift + ▲">最前面</span></div>
+            <div id="screen-front-one" class="screen-menu-bottom"><i></i><span class="language" data-text="{{ひとつ前面へ}}" data-shortcut-key="ArrowUpCtrl" data-shortcut-text="Ctrl + ▲">ひとつ前面へ</span></div>
+            <div id="screen-back-one" class="screen-menu-bottom"><i></i><span class="language" data-text="{{ひとつ背面へ}}" data-shortcut-key="ArrowDownCtrl" data-shortcut-text="Ctrl + ▼">ひとつ背面へ</span></div>
+            <div id="screen-back" class="screen-menu-bottom"><i></i><span class="language" data-text="{{最背面}}" data-shortcut-key="ArrowDownShiftCtrl" data-shortcut-text="Ctrl + Shift + ▼">最背面</span></div>
         </div>
       </div>
 
@@ -1208,20 +1208,20 @@
       <div id="screen-align-menu" class="none">
         <div class="screen-menu-list">
             <span class="screen-menu-title language" data-text="{{整列}}">整列</span>
-            <div id="screen-position-left" class="screen-menu-bottom"><i></i><span class="language" data-text="{{左揃え}}" data-shortcut-key="1" data-shortcut-text="1" data-area="screen">左揃え</span></div>
-            <div id="screen-position-center" class="screen-menu-bottom"><i></i><span class="language" data-text="{{中央揃え(水平方向)}}" data-shortcut-key="2" data-shortcut-text="2" data-area="screen">中央揃え(水平方向)</span></div>
-            <div id="screen-position-right" class="screen-menu-bottom"><i></i><span class="language" data-text="{{右揃え}}" data-shortcut-key="3" data-shortcut-text="3" data-area="screen">右揃え</span></div>
-            <div id="screen-position-top" class="screen-menu-bottom"><i></i><span class="language" data-text="{{上揃え}}" data-shortcut-key="4" data-shortcut-text="4" data-area="screen">上揃え</span></div>
-            <div id="screen-position-middle" class="screen-menu-bottom"><i></i><span class="language" data-text="{{中央揃え(垂直方向)}}" data-shortcut-key="5" data-shortcut-text="5" data-area="screen">中央揃え(垂直方向)</span></div>
-            <div id="screen-position-bottom" class="screen-menu-bottom"><i></i><span class="language" data-text="{{下揃え}}" data-shortcut-key="6" data-shortcut-text="6" data-area="screen">下揃え</span></div>
+            <div id="screen-position-left" class="screen-menu-bottom"><i></i><span class="language" data-text="{{左揃え}}" data-shortcut-key="1" data-shortcut-text="1">左揃え</span></div>
+            <div id="screen-position-center" class="screen-menu-bottom"><i></i><span class="language" data-text="{{中央揃え(水平方向)}}" data-shortcut-key="2" data-shortcut-text="2">中央揃え(水平方向)</span></div>
+            <div id="screen-position-right" class="screen-menu-bottom"><i></i><span class="language" data-text="{{右揃え}}" data-shortcut-key="3" data-shortcut-text="3">右揃え</span></div>
+            <div id="screen-position-top" class="screen-menu-bottom"><i></i><span class="language" data-text="{{上揃え}}" data-shortcut-key="4" data-shortcut-text="4">上揃え</span></div>
+            <div id="screen-position-middle" class="screen-menu-bottom"><i></i><span class="language" data-text="{{中央揃え(垂直方向)}}" data-shortcut-key="5" data-shortcut-text="5">中央揃え(垂直方向)</span></div>
+            <div id="screen-position-bottom" class="screen-menu-bottom"><i></i><span class="language" data-text="{{下揃え}}" data-shortcut-key="6" data-shortcut-text="6">下揃え</span></div>
             <p></p>
             <span class="screen-menu-title language" data-text="{{ステージ基準}}">ステージ基準</span>
-            <div id="stage-position-left" class="screen-menu-bottom"><i></i><span class="language" data-text="{{左揃え}}" data-shortcut-key="!Shift" data-shortcut-text="Shift + 1" data-area="screen">左揃え</span></div>
-            <div id="stage-position-center" class="screen-menu-bottom"><i></i><span class="language" data-text="{{中央揃え(水平方向)}}" data-shortcut-key='"Shift' data-shortcut-text="Shift + 2" data-area="screen">中央揃え(水平方向)</span></div>
-            <div id="stage-position-right" class="screen-menu-bottom"><i></i><span class="language" data-text="{{右揃え}}" data-shortcut-key="#Shift" data-shortcut-text="Shift + 3" data-area="screen">右揃え</span></div>
-            <div id="stage-position-top" class="screen-menu-bottom"><i></i><span class="language" data-text="{{上揃え}}" data-shortcut-key="$Shift" data-shortcut-text="Shift + 4" data-area="screen">上揃え</span></div>
-            <div id="stage-position-middle" class="screen-menu-bottom"><i></i><span class="language" data-text="{{中央揃え(垂直方向)}}" data-shortcut-key="%Shift" data-shortcut-text="Shift + 5" data-area="screen">中央揃え(垂直方向)</span></div>
-            <div id="stage-position-bottom" class="screen-menu-bottom"><i></i><span class="language" data-text="{{下揃え}}" data-shortcut-key="&Shift" data-shortcut-text="Shift + 6" data-area="screen">下揃え</span></div>
+            <div id="stage-position-left" class="screen-menu-bottom"><i></i><span class="language" data-text="{{左揃え}}" data-shortcut-key="!Shift" data-shortcut-text="Shift + 1">左揃え</span></div>
+            <div id="stage-position-center" class="screen-menu-bottom"><i></i><span class="language" data-text="{{中央揃え(水平方向)}}" data-shortcut-key='"Shift' data-shortcut-text="Shift + 2">中央揃え(水平方向)</span></div>
+            <div id="stage-position-right" class="screen-menu-bottom"><i></i><span class="language" data-text="{{右揃え}}" data-shortcut-key="#Shift" data-shortcut-text="Shift + 3">右揃え</span></div>
+            <div id="stage-position-top" class="screen-menu-bottom"><i></i><span class="language" data-text="{{上揃え}}" data-shortcut-key="$Shift" data-shortcut-text="Shift + 4">上揃え</span></div>
+            <div id="stage-position-middle" class="screen-menu-bottom"><i></i><span class="language" data-text="{{中央揃え(垂直方向)}}" data-shortcut-key="%Shift" data-shortcut-text="Shift + 5">中央揃え(垂直方向)</span></div>
+            <div id="stage-position-bottom" class="screen-menu-bottom"><i></i><span class="language" data-text="{{下揃え}}" data-shortcut-key="&Shift" data-shortcut-text="Shift + 6">下揃え</span></div>
         </div>
       </div>
 
@@ -1246,28 +1246,28 @@
       <!-- timeline-menu -->
       <div id="timeline-menu" class="none">
         <div class="timeline-menu-list">
-            <div id="context-menu-tween-add" class="timeline-menu-bottom"><span class="language" data-text="{{モーショントゥイーンの追加}}" data-shortcut-key="m" data-shortcut-text="M" data-area="timeline">モーショントゥイーンの追加</span></div>
-            <div id="context-menu-tween-delete" class="timeline-menu-bottom"><span class="language" data-text="{{モーショントゥイーンの削除}}" data-shortcut-key="mCtrl" data-shortcut-text="Ctrl + M" data-area="timeline">モーショントゥイーンの削除</span></div>
+            <div id="context-menu-tween-add" class="timeline-menu-bottom"><span class="language" data-text="{{モーショントゥイーンの追加}}" data-shortcut-key="m" data-shortcut-text="M">モーショントゥイーンの追加</span></div>
+            <div id="context-menu-tween-delete" class="timeline-menu-bottom"><span class="language" data-text="{{モーショントゥイーンの削除}}" data-shortcut-key="mCtrl" data-shortcut-text="Ctrl + M">モーショントゥイーンの削除</span></div>
             <p></p>
-            <div id="context-menu-script-add" class="timeline-menu-bottom"><i></i><span class="language" data-text="{{スクリプトを追加}}" data-shortcut-key="s" data-shortcut-text="S" data-area="timeline">スクリプトを追加</span></div>
+            <div id="context-menu-script-add" class="timeline-menu-bottom"><i></i><span class="language" data-text="{{スクリプトを追加}}" data-shortcut-key="s" data-shortcut-text="S">スクリプトを追加</span></div>
             <p></p>
-            <div id="context-menu-key-frame-add" class="timeline-menu-bottom"><i></i><span class="language" data-text="{{キーフレームを追加}}" data-shortcut-key="k" data-shortcut-text="K" data-area="timeline">キーフレームを追加</span></div>
-            <div id="context-menu-empty-key-frame-add" class="timeline-menu-bottom"><i></i><span class="language" data-text="{{空のキーフレームを追加}}" data-shortcut-key="e" data-shortcut-text="E" data-area="timeline">空のキーフレームを追加</span></div>
-            <div id="context-menu-key-frame-delete" class="timeline-menu-bottom"><i></i><span class="language" data-text="{{キーフレームを削除}}" data-shortcut-key="kCtrl" data-shortcut-text="Ctrl + K" data-area="timeline">キーフレームを削除</span></div>
-            <div id="context-menu-key-frame-change" class="timeline-menu-bottom"><span class="language" data-text="{{キーフレームに変換}}" data-shortcut-key="F6" data-shortcut-text="F6" data-area="timeline">キーフレームに変換</span></div>
+            <div id="context-menu-key-frame-add" class="timeline-menu-bottom"><i></i><span class="language" data-text="{{キーフレームを追加}}" data-shortcut-key="k" data-shortcut-text="K">キーフレームを追加</span></div>
+            <div id="context-menu-empty-key-frame-add" class="timeline-menu-bottom"><i></i><span class="language" data-text="{{空のキーフレームを追加}}" data-shortcut-key="e" data-shortcut-text="E">空のキーフレームを追加</span></div>
+            <div id="context-menu-key-frame-delete" class="timeline-menu-bottom"><i></i><span class="language" data-text="{{キーフレームを削除}}" data-shortcut-key="kCtrl" data-shortcut-text="Ctrl + K">キーフレームを削除</span></div>
+            <div id="context-menu-key-frame-change" class="timeline-menu-bottom"><span class="language" data-text="{{キーフレームに変換}}" data-shortcut-key="F6" data-shortcut-text="F6">キーフレームに変換</span></div>
             <p></p>
-            <div id="context-menu-frame-add" class="timeline-menu-bottom"><i></i><span class="language" data-text="{{フレームを追加}}" data-shortcut-key="f" data-shortcut-text="F" data-area="timeline">フレームを追加</span></div>
-            <div id="context-menu-frame-delete" class="timeline-menu-bottom"><i></i><span class="language" data-text="{{フレームを削除}}" data-shortcut-key="fCtrl" data-shortcut-text="Ctrl + F" data-area="timeline">フレームを削除</span></div>
-            <div id="context-menu-frame-copy" class="timeline-menu-bottom"><i></i><span class="language" data-text="{{フレームをコピー}}" data-shortcut-key="cCtrl" data-shortcut-text="Ctrl + C" data-area="timeline">フレームをコピー</span></div>
-            <div id="context-menu-frame-paste" class="timeline-menu-bottom"><i></i><span class="language" data-text="{{フレームをペースト}}" data-shortcut-key="vCtrl" data-shortcut-text="Ctrl + V" data-area="timeline">フレームをペースト</span></div>
-            <div id="context-menu-prev-key-frame" class="timeline-menu-bottom"><i></i><span class="language" data-text="{{前のキーフレームに移動}}" data-shortcut-key="ArrowLeftAlt" data-shortcut-text="Alt + ArrowLeft" data-area="timeline">前のキーフレームに移動</span></div>
-            <div id="context-menu-next-key-frame" class="timeline-menu-bottom"><i></i><span class="language" data-text="{{次のキーフレームに移動}}" data-shortcut-key="ArrowRightAlt" data-shortcut-text="Alt + ArrowRight" data-area="timeline">次のキーフレームに移動</span></div>
-            <div id="context-menu-first-frame" class="timeline-menu-bottom"><i></i><span class="language" data-text="{{最初のフレームに移動}}" data-shortcut-key="ArrowLeftShiftCtrl" data-shortcut-text="Ctrl + Shift + ArrowLeft" data-area="timeline">最初のフレームに移動</span></div>
-            <div id="context-menu-last-frame" class="timeline-menu-bottom"><i></i><span class="language" data-text="{{最後のフレームに移動}}" data-shortcut-key="ArrowRightShiftCtrl" data-shortcut-text="Ctrl + Shift + ArrowRight" data-area="timeline">最後のフレームに移動</span></div>
+            <div id="context-menu-frame-add" class="timeline-menu-bottom"><i></i><span class="language" data-text="{{フレームを追加}}" data-shortcut-key="f" data-shortcut-text="F">フレームを追加</span></div>
+            <div id="context-menu-frame-delete" class="timeline-menu-bottom"><i></i><span class="language" data-text="{{フレームを削除}}" data-shortcut-key="fCtrl" data-shortcut-text="Ctrl + F">フレームを削除</span></div>
+            <div id="context-menu-frame-copy" class="timeline-menu-bottom"><i></i><span class="language" data-text="{{フレームをコピー}}" data-shortcut-key="cCtrl" data-shortcut-text="Ctrl + C">フレームをコピー</span></div>
+            <div id="context-menu-frame-paste" class="timeline-menu-bottom"><i></i><span class="language" data-text="{{フレームをペースト}}" data-shortcut-key="vCtrl" data-shortcut-text="Ctrl + V">フレームをペースト</span></div>
+            <div id="context-menu-prev-key-frame" class="timeline-menu-bottom"><i></i><span class="language" data-text="{{前のキーフレームに移動}}" data-shortcut-key="ArrowLeftAlt" data-shortcut-text="Alt + ArrowLeft">前のキーフレームに移動</span></div>
+            <div id="context-menu-next-key-frame" class="timeline-menu-bottom"><i></i><span class="language" data-text="{{次のキーフレームに移動}}" data-shortcut-key="ArrowRightAlt" data-shortcut-text="Alt + ArrowRight">次のキーフレームに移動</span></div>
+            <div id="context-menu-first-frame" class="timeline-menu-bottom"><i></i><span class="language" data-text="{{最初のフレームに移動}}" data-shortcut-key="ArrowLeftShiftCtrl" data-shortcut-text="Ctrl + Shift + ArrowLeft">最初のフレームに移動</span></div>
+            <div id="context-menu-last-frame" class="timeline-menu-bottom"><i></i><span class="language" data-text="{{最後のフレームに移動}}" data-shortcut-key="ArrowRightShiftCtrl" data-shortcut-text="Ctrl + Shift + ArrowRight">最後のフレームに移動</span></div>
             <p></p>
             <div id="context-menu-layer-copy" class="timeline-menu-bottom"><span class="language" data-text="{{レイヤーをコピー}}">レイヤーをコピー</span></div>
             <div id="context-menu-layer-paste" class="timeline-menu-bottom"><span class="language" data-text="{{レイヤーをペースト}}">レイヤーをペースト</span></div>
-            <div id="context-menu-layer-clone" class="timeline-menu-bottom"><span class="language" data-text="{{レイヤーを複製}}" data-shortcut-key="lCtrl" data-shortcut-text="Ctrl + L" data-area="timeline">レイヤーを複製</span></div>
+            <div id="context-menu-layer-clone" class="timeline-menu-bottom"><span class="language" data-text="{{レイヤーを複製}}" data-shortcut-key="lCtrl" data-shortcut-text="Ctrl + L">レイヤーを複製</span></div>
             <p></p>
             <span class="timeline-menu-title language" data-text="{{プラグインメニュー}}">Plugin Menu</span>
             <div id="timeline-plugin-menu"></div>
@@ -1277,7 +1277,7 @@
       <!-- timeline-header-menu -->
       <div id="timeline-header-menu" class="none">
         <div class="timeline-header-menu-list">
-            <div id="context-menu-script-add-one"><i></i><span class="language" data-text="{{スクリプトを追加}}" data-shortcut-key="s" data-shortcut-text="S" data-area="timeline">スクリプトを追加</span></div>
+            <div id="context-menu-script-add-one"><i></i><span class="language" data-text="{{スクリプトを追加}}" data-shortcut-key="s" data-shortcut-text="S">スクリプトを追加</span></div>
             <p></p>
             <div id="context-menu-script-copy-all"><span class="language" data-text="{{全てのスクリプトをコピー}}">全てのスクリプトをコピー</span></div>
             <div id="context-menu-script-copy"><span class="language" data-text="{{スクリプトをコピー}}">スクリプトをコピー</span></div>
@@ -1296,9 +1296,9 @@
       <!-- timeline-layer-menu -->
       <div id="timeline-layer-menu" class="none">
         <div id="timeline-layer-menu-list">
-            <div id="timeline-layer-normal"><i></i><span class="language" data-text="{{通常レイヤー}}" data-shortcut-key="nShift" data-shortcut-text="Shift + N" data-area="timeline">通常レイヤー</span></div>
-            <div id="timeline-layer-mask"><i></i><span class="language" data-text="{{マスクレイヤー}}" data-shortcut-key="mShift" data-shortcut-text="Shift + M" data-area="timeline">マスクレイヤー</span></div>
-            <div id="timeline-layer-guide"><i></i><span class="language" data-text="{{ガイドレイヤー}}" data-shortcut-key="gShift" data-shortcut-text="Shift + G" data-area="timeline">ガイドレイヤー</span></div>
+            <div id="timeline-layer-normal"><i></i><span class="language" data-text="{{通常レイヤー}}">通常レイヤー</span></div>
+            <div id="timeline-layer-mask"><i></i><span class="language" data-text="{{マスクレイヤー}}">マスクレイヤー</span></div>
+            <div id="timeline-layer-guide"><i></i><span class="language" data-text="{{ガイドレイヤー}}">ガイドレイヤー</span></div>
             <p></p>
             <div>
                 <span class="language" data-text="{{レイヤーカラー}}">レイヤーカラー</span>
@@ -1327,22 +1327,22 @@
     
             <div id="library-menu-container-add" class="library-menu-bottom" data-container-type="container">
                 <i class="library-type-container"></i>
-                <span class="language" data-text="{{新規MovieClip}}" data-shortcut-key="mCtrl" data-shortcut-text="Ctrl + M" data-area="library">新規MovieClip</span>
+                <span class="language" data-text="{{新規MovieClip}}" data-shortcut-key="mShiftCtrl" data-shortcut-text="Ctrl + Shift + M">新規MovieClip</span>
             </div>
             <div id="library-menu-folder-add" class="library-menu-bottom" data-container-type="folder">
                 <i class="library-type-folder"></i>
-                <span class="language" data-text="{{新規フォルダー}}" data-shortcut-key="fCtrl" data-shortcut-text="Ctrl + F" data-area="library">新規フォルダー</span>
+                <span class="language" data-text="{{新規フォルダー}}" data-shortcut-key="fShiftCtrl" data-shortcut-text="Ctrl + Shift + F">新規フォルダー</span>
             </div>
             <p></p>
     
             <div id="library-menu-file" class="library-menu-bottom">
                 <i class="library-type-load"></i>
-                <span class="language" data-text="{{読み込み}}" data-shortcut-key="rCtrl" data-shortcut-text="Ctrl + R" data-area="library">読み込み</span>
+                <span class="language" data-text="{{読み込み}}" data-shortcut-key="rCtrl" data-shortcut-text="Ctrl + R">読み込み</span>
             </div>
             <input id="library-menu-file-input" type="file" accept=".jpg,.jpeg,.png,.gif,.swf,.svg,.mp3,.mp4" multiple tabindex="-1">
             <div id="library-menu-export" class="library-menu-bottom">
                 <i class="library-type-download"></i>
-                <span class="language" data-text="{{書き出し}}" data-shortcut-key="sShiftCtrl" data-shortcut-text="Ctrl + Shift + S" data-area="library">書き出し</span>
+                <span class="language" data-text="{{書き出し}}" data-shortcut-key="sShift" data-shortcut-text="Shift + S">書き出し</span>
             </div>
             <div id="library-open-photopea" class="library-menu-bottom">
                 <i class="library-open-photopea"></i>
@@ -1351,22 +1351,22 @@
             <p></p>
     
             <div id="library-menu-copy" class="library-menu-bottom">
-                <span class="language" data-text="{{コピー}}" data-shortcut-key="cCtrl" data-shortcut-text="Ctrl + C" data-area="library">コピー</span>
+                <span class="language" data-text="{{コピー}}" data-shortcut-key="cCtrl" data-shortcut-text="Ctrl + C">コピー</span>
             </div>
     
             <div id="library-menu-paste" class="library-menu-bottom">
-                <span class="language" data-text="{{ペースト}}" data-shortcut-key="vCtrl" data-shortcut-text="Ctrl + V" data-area="library">ペースト</span>
+                <span class="language" data-text="{{ペースト}}" data-shortcut-key="vCtrl" data-shortcut-text="Ctrl + V">ペースト</span>
             </div>
     
             <div id="library-menu-change-scene" class="library-menu-bottom">
-                <span class="language" data-text="{{MovieClipを編集}}" data-shortcut-key="e" data-shortcut-text="E" data-area="library">MovieClipを編集</span>
+                <span class="language" data-text="{{MovieClipを編集}}" data-shortcut-key="e" data-shortcut-text="E">MovieClipを編集</span>
             </div>
     
             <p></p>
     
             <div id="library-menu-delete" class="library-menu-bottom">
                 <i class="library-type-trash"></i>
-                <span class="language" data-text="{{削除}}" data-shortcut-key="Backspace" data-shortcut-text="Backspace" data-area="library">削除</span>
+                <span class="language" data-text="{{削除}}" data-shortcut-key="Backspace" data-shortcut-text="Backspace">削除</span>
             </div>
     
             <div id="library-menu-no-use-delete" class="library-menu-bottom">
@@ -1537,8 +1537,8 @@
             </div>
             <div class="user-setting-container-column">
                 <select id="language-setting" tabindex="-1">
-                    <option value="Japanese">日本語</option>
                     <option value="English">English</option>
+                    <option value="Japanese">日本語</option>
                     <option value="Korean">한국어</option>
                     <option value="Chinese">中文</option>
                     <option value="French">Français</option>
@@ -1584,7 +1584,19 @@
                 </div>
             </div>
             <p></p>
-    
+
+            <div class="user-setting-title">
+                <i></i>
+                <span class="language" data-text="{{画面共有}}">画面共有</span>
+            </div>
+
+            <div class="user-setting-container-column">
+                <div id="share-setting">
+                    <span class="language" data-text="{{画面共有の機能を起動}}">画面共有の機能を起動</span>
+                </div>
+            </div>
+            <p></p>
+
             <div class="user-setting-title">
                 <i></i>
                 <span class="language" data-text="{{サポート}}">サポート</span>
@@ -1628,9 +1640,497 @@
         </div>
     
         <div id="shortcut-setting-list">
-            <div id="shortcut-list-screen"></div>
-            <div id="shortcut-list-timeline"></div>
-            <div id="shortcut-list-library"></div>
+            <div id="shortcut-list-screen">
+                <div class="shortcut-item">
+                    <i class="tools-arrow"></i>
+                    <div class="description">
+                        <span class="language" data-text="{{選択ツール}}">選択ツール</span>
+                    </div>
+                    <div id="shortcut-v" class="command" data-default-key="v" data-default-text="V">V</div>
+                </div>
+                <div class="shortcut-item">
+                    <i class="tools-arrow-transform"></i>
+                    <div class="description">
+                        <span class="language" data-text="{{自由変形ツール}}">自由変形ツール</span>
+                    </div>
+                    <div id="shortcut-q" class="command" data-default-key="q" data-default-text="Q">Q</div>
+                </div>
+                <div class="shortcut-item">
+                    <i class="tools-transform"></i>
+                    <div class="description">
+                        <span class="language" data-text="{{Shape変形ツール}}">Shape変形ツール</span>
+                    </div>
+                    <div id="shortcut-a" class="command" data-default-key="a" data-default-text="A">A</div>
+                </div>
+                <div class="shortcut-item">
+                    <i class="tools-pen"></i>
+                    <div class="description">
+                        <span class="language" data-text="{{ペンツール}}">ペンツール</span>
+                    </div>
+                    <div id="shortcut-p" class="command" data-default-key="p" data-default-text="P">P</div>
+                </div>
+                <div class="shortcut-item">
+                    <i class="tools-bucket"></i>
+                    <div class="description">
+                        <span class="language" data-text="{{バケツツール}}">バケツツール</span>
+                    </div>
+                    <div id="shortcut-b" class="command" data-default-key="b" data-default-text="B">B</div>
+                </div>
+                <div class="shortcut-item">
+                    <i class="tools-rectangle"></i>
+                    <div class="description">
+                        <span class="language" data-text="{{矩形ツール}}">矩形ツール</span>
+                    </div>
+                    <div id="shortcut-r" class="command" data-default-key="r" data-default-text="R">R</div>
+                </div>
+                <div class="shortcut-item">
+                    <i class="tools-circle"></i>
+                    <div class="description">
+                        <span class="language" data-text="{{楕円ツール}}">楕円ツール</span>
+                    </div>
+                    <div id="shortcut-c" class="command" data-default-key="c" data-default-text="C">C</div>
+                </div>
+                <div class="shortcut-item">
+                    <i class="tools-round-rect"></i>
+                    <div class="description">
+                        <span class="language" data-text="{{角丸矩形ツール}}">角丸矩形ツール</span>
+                    </div>
+                    <div id="shortcut-rShift" class="command" data-default-key="rShift" data-default-text="Shift + R">Shift + R</div>
+                </div>
+                <div class="shortcut-item">
+                    <i class="tools-text"></i>
+                    <div class="description">
+                        <span class="language" data-text="{{テキストツール}}">テキストツール</span>
+                    </div>
+                    <div id="shortcut-t" class="command" data-default-key="t" data-default-text="T">T</div>
+                </div>
+                <div class="shortcut-item">
+                    <i class="tools-zoom"></i>
+                    <div class="description">
+                        <span class="language" data-text="{{ズームツール}}">ズームツール</span>
+                    </div>
+                    <div id="shortcut-z" class="command" data-default-key="z" data-default-text="Z">Z</div>
+                </div>
+                <div class="shortcut-item">
+                    <i class="tools-load"></i>
+                    <div class="description">
+                        <span class="language" data-text="{{プロジェクトデータの読込}}">プロジェクトデータの読込</span>
+                    </div>
+                    <div id="shortcut-rShiftCtrl" class="command" data-default-key="rShiftCtrl" data-default-text="Ctrl + Shift + R">Ctrl + Shift + R</div>
+                </div>
+                <div class="shortcut-item">
+                    <i class="tools-save"></i>
+                    <div class="description">
+                        <span class="language" data-text="{{プロジェクトデータを保存}}">プロジェクトデータを保存</span>
+                    </div>
+                    <div id="shortcut-sShiftCtrl" class="command" data-default-key="sShiftCtrl" data-default-text="Ctrl + Shift + S">Ctrl + Shift + S</div>
+                </div>
+                <div class="shortcut-item">
+                    <i class="tools-export"></i>
+                    <div class="description">
+                        <span class="language" data-text="{{書き出し}}">書き出し</span>
+                    </div>
+                    <div id="shortcut-EnterShiftCtrl" class="command" data-default-key="EnterShiftCtrl" data-default-text="Ctrl + Shift + Enter">Ctrl + Shift + Enter</div>
+                </div>
+                <div class="shortcut-item">
+                    <i class="tools-setting"></i>
+                    <div class="description">
+                        <span class="language" data-text="{{設定}}">設定</span>
+                    </div>
+                    <div id="shortcut-u" class="command" data-default-key="u" data-default-text="U">U</div>
+                </div>
+                <div class="shortcut-item">
+                    <i class="screen-front"></i>
+                    <div class="description">
+                        <span class="language" data-text="{{最前面}}">最前面</span>
+                    </div>
+                    <div id="shortcut-ArrowUpShiftCtrl" class="command" data-default-key="ArrowUpShiftCtrl" data-default-text="Ctrl + Shift + ArrowUp">Ctrl + Shift + ArrowUp</div>
+                </div>
+                <div class="shortcut-item">
+                    <i class="screen-front-one"></i>
+                    <div class="description">
+                        <span class="language" data-text="{{ひとつ前面へ}}">ひとつ前面へ</span>
+                    </div>
+                    <div id="shortcut-ArrowUpCtrl" class="command" data-default-key="ArrowUpCtrl" data-default-text="Ctrl + ArrowUp">Ctrl + ArrowUp</div>
+                </div>
+                <div class="shortcut-item">
+                    <i class="screen-back-one"></i>
+                    <div class="description">
+                        <span class="language" data-text="{{ひとつ背面へ}}">ひとつ背面へ</span>
+                    </div>
+                    <div id="shortcut-ArrowDownCtrl" class="command" data-default-key="ArrowDownCtrl" data-default-text="Ctrl + ArrowDown">Ctrl + ArrowDown</div>
+                </div>
+                <div class="shortcut-item">
+                    <i class="screen-back"></i>
+                    <div class="description">
+                        <span class="language" data-text="{{最背面}}">最背面</span>
+                    </div>
+                    <div id="shortcut-ArrowDownShiftCtrl" class="command" data-default-key="ArrowDownShiftCtrl" data-default-text="Ctrl + Shift + ArrowDown">Ctrl + Shift + ArrowDown</div>
+                </div>
+                <div class="shortcut-item">
+                    <i class="screen-position-left"></i>
+                    <div class="description">
+                        <span class="language" data-text="{{左揃え}}">左揃え</span>
+                    </div>
+                    <div id="shortcut-1" class="command" data-default-key="1" data-default-text="1">1</div>
+                </div>
+                <div class="shortcut-item">
+                    <i class="screen-position-center"></i>
+                    <div class="description">
+                        <span class="language" data-text="{{中央揃え(水平方向)}}">中央揃え(水平方向)</span>
+                    </div>
+                    <div id="shortcut-2" class="command" data-default-key="2" data-default-text="2">2</div>
+                </div>
+                <div class="shortcut-item">
+                    <i class="screen-position-right"></i>
+                    <div class="description">
+                        <span class="language" data-text="{{右揃え}}">右揃え</span>
+                    </div>
+                    <div id="shortcut-3" class="command" data-default-key="3" data-default-text="3">3</div>
+                </div>
+                <div class="shortcut-item">
+                    <i class="screen-position-top"></i>
+                    <div class="description">
+                        <span class="language" data-text="{{上揃え}}">上揃え</span>
+                    </div>
+                    <div id="shortcut-4" class="command" data-default-key="4" data-default-text="4">4</div>
+                </div>
+                <div class="shortcut-item">
+                    <i class="screen-position-middle"></i>
+                    <div class="description">
+                        <span class="language" data-text="{{中央揃え(垂直方向)}}">中央揃え(垂直方向)</span>
+                    </div>
+                    <div id="shortcut-5" class="command" data-default-key="5" data-default-text="5">5</div>
+                </div>
+                <div class="shortcut-item">
+                    <i class="screen-position-bottom"></i>
+                    <div class="description">
+                        <span class="language" data-text="{{下揃え}}">下揃え</span>
+                    </div>
+                    <div id="shortcut-6" class="command" data-default-key="6" data-default-text="6">6</div>
+                </div>
+                <div class="shortcut-item">
+                    <i class="stage-position-left"></i>
+                    <div class="description">
+                        <span class="language" data-text="{{ステージ左揃え}}">ステージ左揃え</span>
+                    </div>
+                    <div id="shortcut-!Shift" class="command" data-default-key="!Shift" data-default-text="Shift + 1">Shift + 1</div>
+                </div>
+                <div class="shortcut-item">
+                    <i class="stage-position-center"></i>
+                    <div class="description">
+                        <span class="language" data-text="{{ステージ中央揃え(水平方向)}}">ステージ中央揃え(水平方向)</span>
+                    </div>
+                    <div id="shortcut-\Shift" class="command" data-default-key="\Shift" data-default-text="Shift + 2">Shift + 2</div>
+                </div>
+                <div class="shortcut-item">
+                    <i class="stage-position-right"></i>
+                    <div class="description">
+                        <span class="language" data-text="{{ステージ右揃え}}">ステージ右揃え</span>
+                    </div>
+                    <div id="shortcut-#Shift" class="command" data-default-key="#Shift" data-default-text="Shift + 3">Shift + 3</div>
+                </div>
+                <div class="shortcut-item">
+                    <i class="stage-position-top"></i>
+                    <div class="description">
+                        <span class="language" data-text="{{ステージ上揃え}}">ステージ上揃え</span>
+                    </div>
+                    <div id="shortcut-$Shift" class="command" data-default-key="$Shift" data-default-text="Shift + 4">Shift + 4</div>
+                </div>
+                <div class="shortcut-item">
+                    <i class="stage-position-middle"></i>
+                    <div class="description">
+                        <span class="language" data-text="{{ステージ中央揃え(垂直方向)}}">ステージ中央揃え(垂直方向)</span>
+                    </div>
+                    <div id="shortcut-%Shift" class="command" data-default-key="%Shift" data-default-text="Shift + 5">Shift + 5</div>
+                </div>
+                <div class="shortcut-item">
+                    <i class="stage-position-bottom"></i>
+                    <div class="description">
+                        <span class="language" data-text="{{ステージ下揃え}}">ステージ下揃え</span>
+                    </div>
+                    <div id="shortcut-&Shift" class="command" data-default-key="&Shift" data-default-text="Shift + 6">Shift + 6</div>
+                </div>
+                <div class="shortcut-item">
+                    <i class="screen-distribute-to-layers"></i>
+                    <div class="description">
+                        <span class="language" data-text="{{レイヤーに配分}}">レイヤーに配分</span>
+                    </div>
+                    <div id="shortcut-dCtrl" class="command" data-default-key="dCtrl" data-default-text="Ctrl + D">Ctrl + D</div>
+                </div>
+                <div class="shortcut-item">
+                    <i class="screen-distribute-to-keyframes"></i>
+                    <div class="description">
+                        <span class="language" data-text="{{キーフレームに配分}}">キーフレームに配分</span>
+                    </div>
+                    <div id="shortcut-kShiftCtrl" class="command" data-default-key="kShiftCtrl" data-default-text="Ctrl + Shift + K">Ctrl + Shift + K</div>
+                </div>
+                <div class="shortcut-item">
+                    <i class="screen-integrating-paths"></i>
+                    <div class="description">
+                        <span class="language" data-text="{{パスの結合}}">パスの結合</span>
+                    </div>
+                    <div id="shortcut-iCtrl" class="command" data-default-key="iCtrl" data-default-text="Ctrl + I">Ctrl + I</div>
+                </div>
+                <div class="shortcut-item">
+                    <i class="screen-add-tween-curve-pointer"></i>
+                    <div class="description">
+                        <span class="language" data-text="{{カーブポインターの追加}}">カーブポインターの追加</span>
+                    </div>
+                    <div id="shortcut-pCtrl" class="command" data-default-key="pCtrl" data-default-text="Ctrl + P">Ctrl + P</div>
+                </div>
+                <div class="shortcut-item">
+                    <i class="screen-delete-tween-curve-pointer"></i>
+                    <div class="description">
+                        <span class="language" data-text="{{カーブポインターの削除}}">カーブポインターの削除</span>
+                    </div>
+                    <div id="shortcut-pShiftCtrl" class="command" data-default-key="pShiftCtrl" data-default-text="Ctrl + Shift + P">Ctrl + Shift + P</div>
+                </div>
+                <div class="shortcut-item">
+                    <i class="screen-change-movie-clip"></i>
+                    <div class="description">
+                        <span class="language" data-text="{{MovieClipに変換}}">MovieClipに変換</span>
+                    </div>
+                    <div id="shortcut-mShift" class="command" data-default-key="mShift" data-default-text="Shift + M">Shift + M</div>
+                </div>
+                <div class="shortcut-item">
+                    <i class="screen-ruler"></i>
+                    <div class="description">
+                        <span class="language" data-text="{{定規}}">定規</span>
+                    </div>
+                    <div id="shortcut-rShiftCtrl" class="command" data-default-key="rShiftCtrl" data-default-text="Ctrl + Shift + R">Ctrl + Shift + R</div>
+                </div>
+                <div class="shortcut-item">
+                    <i class="screen-change-scene"></i>
+                    <div class="description">
+                        <span class="language" data-text="{{MovieClipを編集}}">MovieClipを編集</span>
+                    </div>
+                    <div id="shortcut-e" class="command" data-default-key="e" data-default-text="E">E</div>
+                </div>
+                <div class="shortcut-item">
+                    <i class="screen-move-scene"></i>
+                    <div class="description">
+                        <span class="language" data-text="{{親の階層へ移動}}">親の階層へ移動</span>
+                    </div>
+                    <div id="shortcut-eShift" class="command" data-default-key="eShift" data-default-text="Shift + E">Shift + E</div>
+                </div>
+            </div>
+            
+            <div id="shortcut-list-timeline" class="shortcut-inactive">
+                <div class="shortcut-item">
+                    <i class="timeline-layer-add"></i>
+                    <div class="description">
+                        <span class="language" data-text="{{レイヤーを追加}}">レイヤーを追加</span>
+                    </div>
+                    <div id="shortcut-;Ctrl" class="command" data-default-key=";Ctrl" data-default-text="Ctrl + +">Ctrl + +</div>
+                </div>
+                <div class="shortcut-item">
+                    <i class="timeline-layer-trash"></i>
+                    <div class="description">
+                        <span class="language" data-text="{{レイヤーを削除}}">レイヤーを削除</span>
+                    </div>
+                    <div id="shortcut-BackspaceCtrl" class="command" data-default-key="BackspaceCtrl" data-default-text="Ctrl + Backspace">Ctrl + Backspace</div>
+                </div>
+                <div class="shortcut-item">
+                    <i class="timeline-layer-light-all"></i>
+                    <div class="description">
+                        <span class="language" data-text="{{全てのレイヤーをハイライト}}">全てのレイヤーをハイライト</span>
+                    </div>
+                    <div id="shortcut-hShift" class="command" data-default-key="hShift" data-default-text="Shift + H">Shift + H</div>
+                </div>
+                <div class="shortcut-item">
+                    <i class="timeline-layer-disable-all"></i>
+                    <div class="description">
+                        <span class="language" data-text="{{全てのレイヤーを非表示}}">全てのレイヤーを非表示</span>
+                    </div>
+                    <div id="shortcut-dShift" class="command" data-default-key="dShift" data-default-text="Shift + D">Shift + D</div>
+                </div>
+                <div class="shortcut-item">
+                    <i class="timeline-layer-lock-all"></i>
+                    <div class="description">
+                        <span class="language" data-text="{{全てのレイヤーをロック}}">全てのレイヤーをロック</span>
+                    </div>
+                    <div id="shortcut-lShift" class="command" data-default-key="lShift" data-default-text="Shift + L">Shift + L</div>
+                </div>
+                <div class="shortcut-item">
+                    <i class="context-menu-tween-add"></i>
+                    <div class="description">
+                        <span class="language" data-text="{{モーショントゥイーンの追加}}">モーショントゥイーンの追加</span>
+                    </div>
+                    <div id="shortcut-m" class="command" data-default-key="m" data-default-text="M">M</div>
+                </div>
+                <div class="shortcut-item">
+                    <i class="context-menu-tween-delete"></i>
+                    <div class="description">
+                        <span class="language" data-text="{{モーショントゥイーンの削除}}">モーショントゥイーンの削除</span>
+                    </div>
+                    <div id="shortcut-mCtrl" class="command" data-default-key="mCtrl" data-default-text="Ctrl + M">Ctrl + M</div>
+                </div>
+                <div class="shortcut-item">
+                    <i class="timeline-script-add"></i>
+                    <div class="description">
+                        <span class="language" data-text="{{スクリプトを追加}}">スクリプトを追加</span>
+                    </div>
+                    <div id="shortcut-s" class="command" data-default-key="s" data-default-text="S">S</div>
+                </div>
+                <div class="shortcut-item">
+                    <i class="timeline-key-add"></i>
+                    <div class="description">
+                        <span class="language" data-text="{{キーフレームを追加}}">キーフレームを追加</span>
+                    </div>
+                    <div id="shortcut-k" class="command" data-default-key="k" data-default-text="K">K</div>
+                </div>
+                <div class="shortcut-item">
+                    <i class="timeline-key-delete"></i>
+                    <div class="description">
+                        <span class="language" data-text="{{キーフレームを削除}}">キーフレームを削除</span>
+                    </div>
+                    <div id="shortcut-kCtrl" class="command" data-default-key="kCtrl" data-default-text="K">K</div>
+                </div>
+                <div class="shortcut-item">
+                    <i class="timeline-empty-add"></i>
+                    <div class="description">
+                        <span class="language" data-text="{{空のキーフレームを追加}}">空のキーフレームを追加</span>
+                    </div>
+                    <div id="shortcut-eCtrl" class="command" data-default-key="eCtrl" data-default-text="Ctrl + E">Ctrl + E</div>
+                </div>
+                <div class="shortcut-item">
+                    <i class="context-menu-key-frame-change"></i>
+                    <div class="description">
+                        <span class="language" data-text="{{キーフレームに変換}}">キーフレームに変換</span>
+                    </div>
+                    <div id="shortcut-F6" class="command" data-default-key="F6" data-default-text="F6">F6</div>
+                </div>
+                <div class="shortcut-item">
+                    <i class="timeline-frame-add"></i>
+                    <div class="description">
+                        <span class="language" data-text="{{フレームを追加}}">フレームを追加</span>
+                    </div>
+                    <div id="shortcut-f" class="command" data-default-key="f" data-default-text="F">F</div>
+                </div>
+                <div class="shortcut-item">
+                    <i class="timeline-frame-delete"></i>
+                    <div class="description">
+                        <span class="language" data-text="{{フレームを削除}}">フレームを削除</span>
+                    </div>
+                    <div id="shortcut-fCtrl" class="command" data-default-key="fCtrl" data-default-text="Ctrl + F">Ctrl + F</div>
+                </div>
+                <div class="shortcut-item">
+                    <i class="timeline-onion-skin"></i>
+                    <div class="description">
+                        <span class="language" data-text="{{オニオンスキン}}">オニオンスキン</span>
+                    </div>
+                    <div id="shortcut-oCtrl" class="command" data-default-key="oCtrl" data-default-text="Ctrl + O">Ctrl + O</div>
+                </div>
+                <div class="shortcut-item">
+                    <i class="timeline-preview"></i>
+                    <div class="description">
+                        <span class="language" data-text="{{プレビューのON/OFF}}">プレビューのON/OFF</span>
+                    </div>
+                    <div id="shortcut-pShift" class="command" data-default-key="pShift" data-default-text="Shift + P">Shift + P</div>
+                </div>
+                <div class="shortcut-item">
+                    <i class="timeline-repeat"></i>
+                    <div class="description">
+                        <span class="language" data-text="{{ループ設定}}">ループ設定</span>
+                    </div>
+                    <div id="shortcut-lShiftCtrl" class="command" data-default-key="lShiftCtrl" data-default-text="Ctrl + Shift + L">Ctrl + Shift + L</div>
+                </div>
+                <div class="shortcut-item">
+                    <i class="label-name"></i>
+                    <div class="description">
+                        <span class="language" data-text="{{フレームラベル}}">フレームラベル</span>
+                    </div>
+                    <div id="shortcut-l" class="command" data-default-key="l" data-default-text="L">L</div>
+                </div>
+                <div class="shortcut-item">
+                    <i class="timeline-scale"></i>
+                    <div class="description">
+                        <span class="language" data-text="{{タイムライン幅の拡大・縮小}}">タイムライン幅の拡大・縮小</span>
+                    </div>
+                    <div id="shortcut-zShift" class="command" data-default-key="zShift" data-default-text="Shift + Z">Shift + Z</div>
+                </div>
+                <div class="shortcut-item">
+                    <i class="context-menu-layer-clone"></i>
+                    <div class="description">
+                        <span class="language" data-text="{{レイヤーを複製}}">レイヤーを複製</span>
+                    </div>
+                    <div id="shortcut-lCtrl" class="command" data-default-key="lCtrl" data-default-text="Ctrl + L">Ctrl + L</div>
+                </div>
+                <div class="shortcut-item">
+                    <i class="context-menu-first-frame"></i>
+                    <div class="description">
+                        <span class="language" data-text="{{最初のフレームに移動}}">最初のフレームに移動</span>
+                    </div>
+                    <div id="shortcut-ArrowLeftShiftCtrl" class="command" data-default-key="ArrowLeftShiftCtrl" data-default-text="Shift + Ctrl + ArrowLeft">Shift + Ctrl + ArrowLeft</div>
+                </div>
+                <div class="shortcut-item">
+                    <i class="context-menu-last-frame"></i>
+                    <div class="description">
+                        <span class="language" data-text="{{最後のフレームに移動}}">最後のフレームに移動</span>
+                    </div>
+                    <div id="shortcut-ArrowRightShiftCtrl" class="command" data-default-key="ArrowRightShiftCtrl" data-default-text="Shift + Ctrl + ArrowRight">Shift + Ctrl + ArrowRight</div>
+                </div>
+                <div class="shortcut-item">
+                    <i class="context-menu-prev-key-frame"></i>
+                    <div class="description">
+                        <span class="language" data-text="{{前のキーフレームに移動}}">前のキーフレームに移動</span>
+                    </div>
+                    <div id="shortcut-ArrowLeftAlt" class="command" data-default-key="ArrowLeftAlt" data-default-text="Alt + ArrowLeft">Alt + ArrowLeft</div>
+                </div>
+                <div class="shortcut-item">
+                    <i class="context-menu-next-key-frame"></i>
+                    <div class="description">
+                        <span class="language" data-text="{{次のキーフレームに移動}}">次のキーフレームに移動</span>
+                    </div>
+                    <div id="shortcut-ArrowRightAlt" class="command" data-default-key="ArrowRightAlt" data-default-text="Alt + ArrowRight">Alt + ArrowRight</div>
+                </div>
+                <div class="shortcut-item">
+                    <i class="screen-align-coordinates-prev-keyframe"></i>
+                    <div class="description">
+                        <span class="language" data-text="{{前のキーフレームと座標を合わせる}}">前のキーフレームと座標を合わせる</span>
+                    </div>
+                    <div id="shortcut-cShiftCtrl" class="command" data-default-key="cShiftCtrl" data-default-text="Ctrl + Shift + C">Ctrl + Shift + C</div>
+                </div>
+                <div class="shortcut-item">
+                    <i class="screen-align-matrix-prev-keyframe"></i>
+                    <div class="description">
+                        <span class="language" data-text="{{前のキーフレームと変形を合わせる}}">前のキーフレームと変形を合わせる</span>
+                    </div>
+                    <div id="shortcut-tShiftCtrl" class="command" data-default-key="tShiftCtrl" data-default-text="Ctrl + Shift + T">Ctrl + Shift + T</div>
+                </div>
+            </div>
+
+            <div id="shortcut-list-library" class="shortcut-inactive">
+                <div class="shortcut-item">
+                    <i class="library-menu-container-add"></i>
+                    <div class="description">
+                        <span class="language" data-text="{{新規MovieClip}}">新規MovieClip</span>
+                    </div>
+                    <div id="shortcut-mShiftCtrl" class="command" data-default-key="mShiftCtrl" data-default-text="Ctrl + Shift + M">Ctrl + Shift + M</div>
+                </div>
+                <div class="shortcut-item">
+                    <i class="library-menu-folder-add"></i>
+                    <div class="description">
+                        <span class="language" data-text="{{新規フォルダー}}">新規フォルダー</span>
+                    </div>
+                    <div id="shortcut-fShiftCtrl" class="command" data-default-key="fShiftCtrl" data-default-text="Ctrl + Shift + F">Ctrl + Shift + F</div>
+                </div>
+                <div class="shortcut-item">
+                    <i class="library-menu-file"></i>
+                    <div class="description">
+                        <span class="language" data-text="{{読み込み}}">読み込み</span>
+                    </div>
+                    <div id="shortcut-rCtrl" class="command" data-default-key="rCtrl" data-default-text="Ctrl + R">Ctrl + R</div>
+                </div>
+                <div class="shortcut-item">
+                    <i class="library-menu-export"></i>
+                    <div class="description">
+                        <span class="language" data-text="{{書き出し}}">書き出し</span>
+                    </div>
+                    <div id="shortcut-sShift" class="command" data-default-key="sShift" data-default-text="Shift + S">Shift + S</div>
+                </div>
+            </div>
         </div>
     
         <div id="shortcut-setting-footer">
@@ -1649,18 +2149,72 @@
       <!-- detail-modal -->
       <div id="detail-modal" class="none"></div>
 
-      <!-- save-progress-modal -->
-      <div id="save-progress-modal" class="none">
-        <div id="progress-state"></div>
-        <progress id="save-progress" max="100" value="0"></progress>
+      <!-- billing-modal -->
+      <div id="billing-modal" class="none">
+        <div class="billing-bar">
+            <div class="billing-modal-title">
+                <span class="language" data-text="{{機能制限を解除}}">機能制限を解除</span>
+            </div>
+            <i id="billing-hide-icon"></i>
+        </div>
+
+        <div class="billing-supporter-container">
+            <span class="language" data-text="{{動画広告を視聴することで、7日間の機能制限が解除される特典が得られます。}}">
+                動画広告を視聴することで、7日間の機能制限が解除される特典が得られます。
+            </span>
+            <span class="language" data-text="{{Animation Toolはオープンソースで提供されており、無料で利用できます。}}">
+                Animation Toolはオープンソースで提供されており、無料で利用できます。
+            </span>
+            <span class="language" data-text="{{新しいバージョンの開発のため、動画広告を視聴していただき、ご支援いただけると幸いです。}}">
+                新しいバージョンの開発のため、動画広告を視聴していただき、ご支援いただけると幸いです。
+            </span>
+        </div>
+        
+        <div class="billing-container">
+            <div id="billing-qrcode-container">
+                <img id="billing-qrcode" decoding="auto">
+            </div>
+            <div class="billing-detail-container">
+                <ul>
+                    <li><span class="language" data-text="{{画面共有}}">画面共有</span></li>
+                    <li><span class="language" data-text="{{作業履歴}}">作業履歴</span></li>
+                    <li><span class="language" data-text="{{エリア位置の移動}}">エリア位置の移動</span></li>
+                    <li><span class="language" data-text="{{広告枠の非表示}}">広告枠の非表示</span></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="billing-bar">
+            <div class="billing-app-title">
+                <span class="language" data-text="{{サポーターアプリをインストール}}">サポーターアプリをインストール</span>
+            </div>
+        </div>
+
+        <div class="billing-app-container">
+            <div>
+                <img class="billing-ios-badge" src="./assets/img/apple-store-badge.svg" decoding="auto">
+                <img class="billing-store-qr" src="./assets/img/ios.png" decoding="auto">
+            </div>
+            <div>
+                <img class="billing-android-badge" src="./assets/img/google-play-badge.png" decoding="auto">
+                <img class="billing-store-qr" src="./assets/img/android.png" decoding="auto">
+            </div>
+        </div>
+      </div>
+
+      <!-- progress -->
+      <div id="progress-container" class="">
+        <div class="progress-modal">
+            <div id="progress-state">Initialize...</div>
+            <progress id="progress-bar" min="0" max="100" value="0"></progress>
+        </div>
       </div>
 
       <!-- player-preview -->
       <div id="player-preview" style="display:none;">
         <div id="preview-stop"></div>
         <div id="preview-display"></div>
-      </div>
-
+      </div>      
     </main>
   </body>
 </html>

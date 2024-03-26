@@ -58,5 +58,5 @@ export const execute = (event: PointerEvent): void =>
     externalLayer.setDisable(!layer.disable);
 
     // 表示Elementを更新
-    timelineLayerControllerUpdateDisableIconElementService(layer, layer.disable);
+    timelineLayerControllerUpdateDisableIconElementService(layer);
 };

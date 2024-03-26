@@ -1,6 +1,7 @@
 import { ExternalLayer } from "@/external/core/domain/model/ExternalLayer";
 import { $allHideMenu } from "../../MenuUtil";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
+import { $GUIDE_TYPE } from "@/config/LayerModeConfig";
 
 /**
  * @description ガイドレイヤーに変更する
@@ -42,5 +43,5 @@ export const execute = (event: PointerEvent): void =>
     );
 
     // マスクレイヤーに変更
-    externalLayer.layerType = "guide";
+    externalLayer.layerType = $GUIDE_TYPE;
 };

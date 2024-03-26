@@ -258,3 +258,12 @@ export const $TIMELINE_MOVE_LAYER_COMMAND: number = 25;
  * @constant
  */
 export const $LAYER_UPDATE_LIGHT_COLOR_COMMAND: number = 26;
+
+/**
+ * @description レイヤーモードの更新の識別コマンド名
+ *              Identification command name for updating the layer mode
+ *
+ * @type {number}
+ * @constant
+ */
+export const $LAYER_UPDATE_MODE_COMMAND: number = 27;

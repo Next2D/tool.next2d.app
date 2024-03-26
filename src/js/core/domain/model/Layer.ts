@@ -7,6 +7,7 @@ import { Character } from "./Character";
 import { EmptyCharacter } from "./EmptyCharacter";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { $getTopIndex } from "@/timeline/application/TimelineUtil";
+import { $NORMAL_MODE } from "@/config/LayerModeConfig";
 
 /**
  * @description タイムラインのレイヤー状態管理クラス
@@ -295,7 +296,7 @@ export class Layer
     clearRelation (): void
     {
         // ノーマルモードに更新
-        this._$mode = 0;
+        this._$mode = $NORMAL_MODE;
 
         // 親のIndexをnullに更新
         this._$parentId = -1;

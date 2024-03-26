@@ -6,23 +6,22 @@
   "scripts": {
     "start": "vite",
     "build": "tsc && vite build",
-    "preview": "vite preview",
     "test": "vitest",
     "lint": "eslint src/js/**/*.ts"
   },
   "devDependencies": {
     "@types/ace": "^0.0.52",
-    "@types/node": "^20.11.29",
+    "@types/node": "^20.11.30",
     "@types/qrcode": "^1.5.5",
-    "@typescript-eslint/eslint-plugin": "^7.3.1",
-    "@typescript-eslint/parser": "^7.3.1",
+    "@typescript-eslint/eslint-plugin": "^7.4.0",
+    "@typescript-eslint/parser": "^7.4.0",
     "@vitest/web-worker": "^1.4.0",
     "eslint": "^8.57.0",
     "eslint-plugin-unused-imports": "^3.1.0",
     "jsdom": "^24.0.0",
     "sass": "^1.72.0",
-    "typescript": "^5.4.2",
-    "vite": "^5.1.6",
+    "typescript": "^5.4.3",
+    "vite": "^5.2.6",
     "vitest": "^1.4.0"
   },
   "dependencies": {

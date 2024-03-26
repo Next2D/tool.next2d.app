@@ -1,26 +1,25 @@
-import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
+import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { Layer } from "@/core/domain/model/Layer";
-import type { LayerModeImpl } from "@/interface/LayerModeImpl";
-import { execute as historyRemoveElementService } from "@/controller/application/HistoryArea/service/HistoryRemoveElementService";
+import { $useSocket } from "@/share/ShareUtil";
+import { $LAYER_UPDATE_MODE_COMMAND } from "@/config/HistoryConfig";
 import { execute as historyAddElementUseCase } from "@/controller/application/HistoryArea/usecase/HistoryAddElementUseCase";
 import { execute as historyGetTextService } from "@/controller/application/HistoryArea/service/HistoryGetTextService";
-import { execute as timelineLayerControllerMoveLayerCreateHistoryObjectService } from "../service/TimelineLayerControllerMoveLayerCreateHistoryObjectService";
-import { $TIMELINE_MOVE_LAYER_COMMAND } from "@/config/HistoryConfig";
-import { $useSocket } from "@/share/ShareUtil";
+import { execute as historyRemoveElementService } from "@/controller/application/HistoryArea/service/HistoryRemoveElementService";
+import { execute as layerUpdateModeCreateHistoryObjectService } from "../service/LayerUpdateModeCreateHistoryObjectService";
+import { execute as externalLayerGetLayerTypeService } from "@/external/core/application/ExternalLayer/service/ExternalLayerGetLayerTypeService";
 import { execute as shareSendService } from "@/share/service/ShareSendService";
 
 /**
- * @description レイヤー移動の履歴を登録
- *              Register history of moving layers
+ * @description レイヤーモードを更新
+ *              Update layer mode
  *
  * @param  {WorkSpace} work_space
  * @param  {MovieClip} movie_clip
  * @param  {Layer} layer
- * @param  {number} before_index
- * @param  {number} after_index
  * @param  {number} before_mode
  * @param  {number} before_parent_id
+ * @param  {array} indexes
  * @param  {boolean} [receiver=false]
  * @return {void}
  * @method
@@ -30,10 +29,9 @@ export const execute = (
     work_space: WorkSpace,
     movie_clip: MovieClip,
     layer: Layer,
-    before_index: number,
-    after_index: number,
-    before_mode: LayerModeImpl,
+    before_mode: number,
     before_parent_id: number,
+    indexes: number[],
     receiver: boolean = false
 ): void => {
 
@@ -42,10 +40,10 @@ export const execute = (
     historyRemoveElementService(work_space);
 
     // fixed logic
-    const historyObject = timelineLayerControllerMoveLayerCreateHistoryObjectService(
+    const historyObject = layerUpdateModeCreateHistoryObjectService(
         work_space.id, movie_clip, layer,
-        before_index, after_index,
-        before_mode, before_parent_id
+        before_mode, before_parent_id, indexes,
+        externalLayerGetLayerTypeService(layer.mode)
     );
 
     // 作業履歴にElementを追加
@@ -54,7 +52,7 @@ export const execute = (
         historyAddElementUseCase(
             movie_clip.id,
             work_space.historyIndex,
-            historyGetTextService($TIMELINE_MOVE_LAYER_COMMAND),
+            historyGetTextService($LAYER_UPDATE_MODE_COMMAND),
             "",
             ...historyObject.args
         );

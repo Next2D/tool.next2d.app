@@ -1,6 +1,7 @@
 import type { ShareReceiveMessageImpl } from "@/interface/ShareReceiveMessageImpl";
 import type { InstanceImpl } from "@/interface/InstanceImpl";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
+import type { LayerModeImpl } from "@/interface/LayerModeImpl";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
 import { execute as timelineLayerControllerMoveLayerHistoryUseCase } from "@/history/application/timeline/application/TimelineLayerController/MoveLayer/usecase/TimelineLayerControllerMoveLayerHistoryUseCase";
 import { execute as timelineLayerBuildElementUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerBuildElementUseCase";
@@ -32,15 +33,27 @@ export const execute = (message: ShareReceiveMessageImpl): void =>
     const beforeIndex = message.data[2] as NonNullable<number>;
     const afterIndex  = message.data[3] as NonNullable<number>;
 
+    const layer = movieClip.layers.splice(beforeIndex, 1)[0];
+
+    // 変更前の情報を保持
+    const beforeMode = layer.mode;
+    const beforeParentId = layer.parentId;
+
+    layer.mode     = message.data[4] as NonNullable<LayerModeImpl>;
+    layer.parentId = message.data[6] as NonNullable<number>;
+
     // レイヤーを移動
-    movieClip.layers.splice(afterIndex, 0, movieClip.layers.splice(beforeIndex, 1)[0]);
+    movieClip.layers.splice(afterIndex, 0, layer);
 
     // 履歴に登録
     timelineLayerControllerMoveLayerHistoryUseCase(
         workSpace,
         movieClip,
+        layer,
         beforeIndex,
         afterIndex,
+        beforeMode,
+        beforeParentId,
         true
     );
 

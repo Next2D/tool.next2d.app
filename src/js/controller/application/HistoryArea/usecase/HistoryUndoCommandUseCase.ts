@@ -24,6 +24,7 @@ import { execute as libraryAreaAddNewMovieClipHistoryUndoUseCase } from "@/histo
 import { execute as libraryAreaRemoveInstanceHistoryUndoUseCase } from "@/history/application/controller/application/LibraryArea/Instance/usecase/LibraryAreaRemoveInstanceHistoryUndoUseCase";
 import { execute as timelineLayerControllerMoveLayerHistoryUndoUseCase } from "@/history/application/timeline/application/TimelineLayerController/MoveLayer/usecase/TimelineLayerControllerMoveLayerHistoryUndoUseCase";
 import { execute as layerUpdateLightColorHistoryUndoUseCase } from "@/history/application/core/application/Layer/usecase/LayerUpdateLightColorHistoryUndoUseCase";
+import { execute as layerUpdateModeHistoryUndoUseCase } from "@/history/application/core/application/Layer/usecase/LayerUpdateModeHistoryUndoUseCase";
 import { execute as instanceUpdateNameHistoryUndoUseCase } from "@/history/application/core/application/Instance/usecase/InstanceUpdateNameHistoryUndoUseCase";
 import { execute as instanceUpdateSymbolHistoryUndoUseCase } from "@/history/application/core/application/Instance/usecase/InstanceUpdateSymbolHistoryUndoUseCase";
 import {
@@ -47,7 +48,8 @@ import {
     $LIBRARY_ADD_NEW_MOVIE_CLIP_COMMAND,
     $LIBRARY_REMOVE_INSTANCE_COMMAND,
     $TIMELINE_MOVE_LAYER_COMMAND,
-    $LAYER_UPDATE_LIGHT_COLOR_COMMAND
+    $LAYER_UPDATE_LIGHT_COLOR_COMMAND,
+    $LAYER_UPDATE_MODE_COMMAND
 } from "@/config/HistoryConfig";
 
 /**
@@ -250,6 +252,18 @@ export const execute = async (
                 messages[1] as number, // MovieClip ID
                 messages[2] as number, // Layer Index
                 messages[3] as string // Before Color
+            );
+            break;
+
+        // レイヤーモードの変更
+        case $LAYER_UPDATE_MODE_COMMAND:
+            layerUpdateModeHistoryUndoUseCase(
+                messages[0] as number, // WorkSpace ID
+                messages[1] as number, // MovieClip ID
+                messages[2] as number, // Layer Index
+                messages[3] as LayerModeImpl, // Before Mode
+                messages[5] as number, // Before Parent ID
+                messages[7] as number[] // before child layer indexes
             );
             break;
 
