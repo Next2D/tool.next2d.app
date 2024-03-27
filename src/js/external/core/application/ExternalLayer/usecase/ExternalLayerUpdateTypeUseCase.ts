@@ -56,6 +56,10 @@ export const execute = (
 
                     // 通常レイヤーに変更
                     childLayer.clearRelation();
+
+                    if (work_space.active && movie_clip.active) {
+                        timelineLayerControllerUpdateIconElementService(childLayer);
+                    }
                 }
             }
             break;

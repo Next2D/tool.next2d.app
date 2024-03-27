@@ -53,6 +53,15 @@ export const execute = (layer: Layer): void =>
         return ;
     }
 
+    const exitIconElement = element.querySelector(".timeline-exit-icon") as HTMLElement;
+    if (!exitIconElement) {
+        return ;
+    }
+    const insertIconElement = element.querySelector(".timeline-insert-icon") as HTMLElement;
+    if (!insertIconElement) {
+        return ;
+    }
+
     switch (layer.mode) {
 
         case 2: // マスクレイヤー
@@ -72,6 +81,8 @@ export const execute = (layer: Layer): void =>
             if (textElement.classList.contains("view-in-text")) {
                 textElement.classList.remove("view-in-text");
             }
+            exitIconElement.setAttribute("style", "display: none;");
+            insertIconElement.setAttribute("style", "display: none;");
             break;
 
     }

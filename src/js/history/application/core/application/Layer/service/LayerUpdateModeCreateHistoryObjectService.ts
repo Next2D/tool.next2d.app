@@ -1,6 +1,6 @@
 import type { HistoryObjectImpl } from "@/interface/HistoryObjectImpl";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
-import { $LAYER_UPDATE_LIGHT_COLOR_COMMAND } from "@/config/HistoryConfig";
+import { $LAYER_UPDATE_MODE_COMMAND } from "@/config/HistoryConfig";
 import { Layer } from "@/core/domain/model/Layer";
 
 /**
@@ -28,7 +28,7 @@ export const execute = (
 ): HistoryObjectImpl => {
 
     return {
-        "command": $LAYER_UPDATE_LIGHT_COLOR_COMMAND,
+        "command": $LAYER_UPDATE_MODE_COMMAND,
         "messages": [
             work_space_id,
             movie_clip.id,

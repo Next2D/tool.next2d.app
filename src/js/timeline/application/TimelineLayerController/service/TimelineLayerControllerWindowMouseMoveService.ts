@@ -94,6 +94,5 @@ export const execute = (
         return ;
     }
 
-    // 自動移動モード終了
     $setMoveMode(false);
 };

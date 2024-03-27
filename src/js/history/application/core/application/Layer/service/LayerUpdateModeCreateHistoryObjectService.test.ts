@@ -1,5 +1,5 @@
 import { execute } from "./LayerUpdateModeCreateHistoryObjectService";
-import { $LAYER_UPDATE_LIGHT_COLOR_COMMAND } from "../../../../../../config/HistoryConfig";
+import { $LAYER_UPDATE_MODE_COMMAND } from "../../../../../../config/HistoryConfig";
 import { MovieClip } from "../../../../../../core/domain/model/MovieClip";
 
 describe("LayerUpdateModeCreateHistoryObjectServiceTest", () =>
@@ -15,7 +15,7 @@ describe("LayerUpdateModeCreateHistoryObjectServiceTest", () =>
         const layer = movieClip.layers[0];
 
         const object = execute(1, movieClip, layer, 3, 2, [4,5], "normal");
-        expect(object.command).toBe($LAYER_UPDATE_LIGHT_COLOR_COMMAND);
+        expect(object.command).toBe($LAYER_UPDATE_MODE_COMMAND);
 
         // 配列の順番が崩れてもいいようにテストケースを残す
         expect(object.messages.length).toBe(8);

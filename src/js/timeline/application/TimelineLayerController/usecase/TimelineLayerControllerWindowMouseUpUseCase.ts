@@ -1,7 +1,7 @@
 import { EventType } from "@/tool/domain/event/EventType";
 import { execute as timelineLayerControllerWindowMouseMoveUseCase } from "../service/TimelineLayerControllerWindowMouseMoveService";
 import { $setCursor } from "@/global/GlobalUtil";
-import { $setMoveLayerMode } from "../../TimelineUtil";
+import { $setMoveLayerMode, $setMoveMode } from "../../TimelineUtil";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { execute as timelineLayerElementResettingService } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerElementResettingUseCase";
 import { timelineLayer } from "@/timeline/domain/model/TimelineLayer";
@@ -27,6 +27,9 @@ export const execute = (event: PointerEvent): void =>
 
     // レイヤーの移動モードを解除
     $setMoveLayerMode(false);
+
+    // 自動移動モードを解除
+    $setMoveMode(false);
 
     // イベントを削除
     window.removeEventListener(EventType.MOUSE_MOVE,

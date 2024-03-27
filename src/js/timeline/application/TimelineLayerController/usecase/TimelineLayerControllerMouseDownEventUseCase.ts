@@ -58,18 +58,18 @@ export const execute = (event: PointerEvent): void =>
                     .selectedLayers([externalLayer.index]);
 
             }
+            break;
 
-            switch (layer.mode) {
+    }
 
-                case 2: // マスクの子レイヤー
-                case 4: // ガイドの子レイヤー
-                    timelineLayerControllerActiveExitIconElementService(element);
-                    break;
+    switch (layer.mode) {
 
-                default:
-                    break;
+        case 2: // マスクの子レイヤー
+        case 4: // ガイドの子レイヤー
+            timelineLayerControllerActiveExitIconElementService(element);
+            break;
 
-            }
+        default:
             break;
 
     }
