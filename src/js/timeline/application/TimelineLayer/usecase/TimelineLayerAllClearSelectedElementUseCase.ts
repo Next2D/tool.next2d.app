@@ -34,7 +34,7 @@ export const execute = (movie_clip: MovieClip): void =>
 
         // フレーム側のElementを更新
         timelineLayerFrameAllInactiveElementUseCase(
-            layerElement.lastElementChild as NonNullable<HTMLElement>, 
+            layerElement.lastElementChild as NonNullable<HTMLElement>,
             movie_clip
         );
     }
