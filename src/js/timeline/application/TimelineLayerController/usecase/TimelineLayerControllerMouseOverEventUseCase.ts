@@ -43,6 +43,9 @@ export const execute = (event: PointerEvent): void =>
     const workSpace = $getCurrentWorkSpace();
     const movieClip = workSpace.scene;
     const layer = movieClip.layers[layerIndex];
+    if (!layer) {
+        return ;
+    }
 
     // 選択中の場合は処理をしない
     if (movieClip.selectedLayers.indexOf(layer) > -1) {
@@ -50,7 +53,7 @@ export const execute = (event: PointerEvent): void =>
     }
 
     // 移動先のレイヤーを未選択に更新
-    timelineLayer.distIndex = parseInt(parent.dataset.layerIndex as string) + $getTopIndex();
+    timelineLayer.distIndex = layerIndex;
 
     // styleを追加
     timelineLayerActiveMoveTargetStyleService(parent);

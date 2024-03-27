@@ -7,6 +7,7 @@ import { ExternalTimeline } from "@/external/timeline/domain/model/ExternalTimel
 import { execute as timelineLayerControllerRegisterWindowEventUseCase } from "./TimelineLayerControllerRegisterWindowEventUseCase";
 import { execute as timelineLayerControllerActiveExitIconElementService } from "../service/TimelineLayerControllerActiveExitIconElementService";
 import { timelineLayer } from "@/timeline/domain/model/TimelineLayer";
+import { execute as timelineLayerFrameAllInactiveElementUseCase } from "@/timeline/application/TimelineLayerFrame/usecase/TimelineLayerFrameAllInactiveElementUseCase";
 
 /**
  * @description レイヤーのコントローラーエリアのマウスダウン処理関数
@@ -36,6 +37,24 @@ export const execute = (event: PointerEvent): void =>
 
     const workSpace = $getCurrentWorkSpace();
     const movieClip = workSpace.scene;
+
+    // 選択中のフレームの表示を初期化
+    for (let idx = 0; idx < movieClip.selectedLayers.length; ++idx) {
+
+        const selectedLayer = movieClip.selectedLayers[idx];
+        const layerElement = timelineLayer.elements[selectedLayer.getDisplayIndex()];
+        if (!layerElement) {
+            continue;
+        }
+
+        timelineLayerFrameAllInactiveElementUseCase(
+            layerElement.lastElementChild as NonNullable<HTMLElement>,
+            movieClip
+        );
+    }
+
+    // フレーム選択を初期化
+    movieClip.clearSelectedFrame();
 
     switch (true) {
 

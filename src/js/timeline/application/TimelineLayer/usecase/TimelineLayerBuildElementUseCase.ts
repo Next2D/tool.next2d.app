@@ -10,7 +10,6 @@ import { execute as timelineLayerAllElementDisplayNoneService } from "../service
 import { execute as timelineLayerActiveElementService } from "@/timeline/application/TimelineLayer/service/TimelineLayerActiveElementService";
 import { execute as timelineLayerInactiveElementService } from "@/timeline/application/TimelineLayer/service/TimelineLayerInactiveElementService";
 import { execute as timelineLayerAllClearSelectedElementUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerAllClearSelectedElementUseCase";
-import { execute as timelineLayerControllerActiveExitIconElementService } from "@/timeline/application/TimelineLayerController/service/TimelineLayerControllerActiveExitIconElementService";
 import {
     $getLeftFrame,
     $getTopIndex
