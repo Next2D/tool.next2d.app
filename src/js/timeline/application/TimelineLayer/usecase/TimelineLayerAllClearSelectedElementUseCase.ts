@@ -1,7 +1,5 @@
 import type { MovieClip } from "@/core/domain/model/MovieClip";
-import { $getLeftFrame } from "../../TimelineUtil";
 import { timelineLayer } from "@/timeline/domain/model/TimelineLayer";
-import { execute as timelineLayerFrameInactiveElementService } from "@/timeline/application/TimelineLayerFrame/service/TimelineLayerFrameInactiveElementService";
 import { execute as timelineLayerInactiveElementService } from "@/timeline/application/TimelineLayer/service/TimelineLayerInactiveElementService";
 import { execute as timelineLayerFrameAllInactiveElementUseCase } from "@/timeline/application/TimelineLayerFrame/usecase/TimelineLayerFrameAllInactiveElementUseCase";
 
@@ -35,9 +33,9 @@ export const execute = (movie_clip: MovieClip): void =>
         }
 
         // フレーム側のElementを更新
-        const frameElement = layerElement.lastElementChild as NonNullable<HTMLElement>;
         timelineLayerFrameAllInactiveElementUseCase(
-            frameElement, movie_clip
+            layerElement.lastElementChild as NonNullable<HTMLElement>, 
+            movie_clip
         );
     }
 };
