@@ -23,6 +23,7 @@ import { execute as instanceUpdateSymbolReceiveUseCase } from "@/share/receive/a
 import { execute as movieClipAddNewReceiveUseCase } from "@/share/receive/application/controller/application/LibraryArea/MovieClip/usecase/MovieClipAddNewReceiveUseCase";
 import { execute as instanceRemoveReceiveUseCase } from "@/share/receive/application/controller/application/LibraryArea/Instance/InstanceRemoveReceiveUseCase";
 import { execute as layerUpdateLightColorReceiveUseCase } from "@/share/receive/application/core/application/Layer/usecase/LayerUpdateLightColorReceiveUseCase";
+import { execute as layerUpdateModeReceiveUseCase } from "@/share/receive/application/core/application/Layer/usecase/LayerUpdateModeReceiveUseCase";
 import { execute as timelineLayerControllerLayerMoveReceiveUseCase } from "@/share/receive/application/timeline/application/TimelineLayerController/usecase/TimelineLayerControllerLayerMoveReceiveUseCase";
 import { execute as historyRedoUseCase } from "@/controller/application/HistoryArea/usecase/HistoryRedoUseCase";
 import { execute as historyUndoUseCase } from "@/controller/application/HistoryArea/usecase/HistoryUndoUseCase";
@@ -53,7 +54,8 @@ import {
     $LIBRARY_ADD_NEW_MOVIE_CLIP_COMMAND,
     $LIBRARY_REMOVE_INSTANCE_COMMAND,
     $TIMELINE_MOVE_LAYER_COMMAND,
-    $LAYER_UPDATE_LIGHT_COLOR_COMMAND
+    $LAYER_UPDATE_LIGHT_COLOR_COMMAND,
+    $LAYER_UPDATE_MODE_COMMAND
 } from "@/config/HistoryConfig";
 
 /**
@@ -210,6 +212,11 @@ export const execute = async (message: ShareReceiveMessageImpl): Promise<void> =
         // レイヤーのハイライト表示を更新
         case $LAYER_UPDATE_LIGHT_COLOR_COMMAND:
             layerUpdateLightColorReceiveUseCase(message);
+            break;
+
+        // レイヤーのモードを更新
+        case $LAYER_UPDATE_MODE_COMMAND:
+            layerUpdateModeReceiveUseCase(message);
             break;
 
         default:
