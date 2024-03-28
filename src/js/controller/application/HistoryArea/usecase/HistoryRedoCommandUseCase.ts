@@ -90,8 +90,9 @@ export const execute = async (
                 messages[0] as number, // workSpaceId
                 messages[1] as number, // MovieClipId
                 messages[2] as number, // Layer Index
-                messages[3] as string, // Layer Name
-                messages[4] as string  // Layer Color
+                messages[3] as number, // Layer ID
+                messages[4] as string, // Layer Name
+                messages[5] as string  // Layer Color
             );
             break;
 

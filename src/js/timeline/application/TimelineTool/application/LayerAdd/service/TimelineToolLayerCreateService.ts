@@ -2,6 +2,7 @@ import type { Layer } from "@/core/domain/model/Layer";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { InstanceImpl } from "@/interface/InstanceImpl";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
+import { $GUIDE_IN_MODE, $GUIDE_IN_TYPE, $MASK_IN_MODE } from "@/config/LayerModeConfig";
 
 /**
  * @description 引数の指定に準拠してレイヤーを作成、失敗時はnullを返却
@@ -12,6 +13,8 @@ import { $getWorkSpace } from "@/core/application/CoreUtil";
  * @param  {number} [index = -1]
  * @param  {string} [name = ""]
  * @param  {string} [color = ""]
+ * @param  {string} [color = ""]
+ * @param  {number} [layer_id = -1]
  * @return {Layer}
  * @method
  * @public
@@ -21,7 +24,8 @@ export const execute = (
     library_id: number,
     index: number,
     name: string = "",
-    color: string = ""
+    color: string = "",
+    layer_id: number = -1
 ): Layer | null => {
 
     // 指定がなければ起動中のWorkSpaceを利用する
@@ -31,13 +35,13 @@ export const execute = (
     }
 
     // 指定がなければ、アクティブなMovieClipを利用する
-    const scene: InstanceImpl<MovieClip> = workSpace.getLibrary(library_id);
-    if (!scene) {
+    const movieClip: InstanceImpl<MovieClip> = workSpace.getLibrary(library_id);
+    if (!movieClip) {
         return null;
     }
 
     // レイヤーを追加
-    const newLayer = scene.createLayer();
+    const newLayer = movieClip.createLayer(layer_id);
 
     // 引数で指定があれば内部情報を更新
     if (name) {
@@ -47,8 +51,23 @@ export const execute = (
         newLayer.color = color;
     }
 
+    // 選択中のレイヤーが子レイヤーなら、親レイヤーを引き継ぐ
+    const selectedLayer = movieClip.layers[index];
+    switch (selectedLayer.mode) {
+
+        case $MASK_IN_MODE:
+        case $GUIDE_IN_MODE:
+            newLayer.mode = selectedLayer.mode;
+            newLayer.parentId = selectedLayer.parentId;
+            break;
+
+        default:
+            break;
+
+    }
+
     // 内部情報にレイヤーを追加
-    scene.setLayer(newLayer, index);
+    movieClip.setLayer(newLayer, index);
 
     return newLayer;
 };

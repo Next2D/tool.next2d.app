@@ -401,14 +401,15 @@ export class MovieClip extends Instance
      * @description 新規レイヤーを作成
      *              新規レイヤーを作成
      *
+     * @param  {number} [id = -1]
      * @return {Layer}
      * @method
      * @public
      */
-    createLayer (): Layer
+    createLayer (id: number = -1): Layer
     {
         const layer = new Layer();
-        layer.id    = this._$layerId++;
+        layer.id    = id === -1 ? this._$layerId++ : id;
         layer.name  = `Layer_${this._$layers.length}`;
 
         return layer;

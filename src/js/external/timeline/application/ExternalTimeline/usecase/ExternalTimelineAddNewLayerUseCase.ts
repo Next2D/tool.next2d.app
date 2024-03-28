@@ -24,6 +24,7 @@ export const execute = (
     index: number = 0,
     name: string = "",
     color: string = "",
+    layer_id: number = -1,
     receiver: boolean = false
 ): ExternalLayer | null => {
 
@@ -34,7 +35,7 @@ export const execute = (
     const layer = externalMovieClipCreateLayerUseCase(
         work_space,
         movie_clip,
-        index, name, color
+        index, name, color, layer_id
     );
 
     if (!layer) {

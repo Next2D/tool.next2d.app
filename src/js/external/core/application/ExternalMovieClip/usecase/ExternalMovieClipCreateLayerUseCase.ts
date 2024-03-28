@@ -13,6 +13,7 @@ import { execute as externalLayerUpdateReloadUseCase } from "@/external/core/app
  * @param  {string}  [name = ""]
  * @param  {number}  [index = 0]
  * @param  {string}  [color = ""]
+ * @param  {number}  [layer_id = -1]
  * @return {Layer}
  * @method
  * @public
@@ -22,14 +23,15 @@ export const execute = (
     movie_clip: MovieClip,
     index: number,
     name: string = "",
-    color: string = ""
+    color: string = "",
+    layer_id: number = -1
 ): Layer | null => {
 
     // レイヤーを追加
     const newLayer: Layer | null = timelineToolLayerCreateService(
         work_space.id,
         movie_clip.id,
-        index, name, color
+        index, name, color, layer_id
     );
 
     if (!newLayer) {

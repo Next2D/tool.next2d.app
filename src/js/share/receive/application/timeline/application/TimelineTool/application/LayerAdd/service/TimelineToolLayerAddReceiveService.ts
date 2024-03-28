@@ -31,8 +31,9 @@ export const execute = (message: ShareReceiveMessageImpl): void =>
     const externalTimeline = new ExternalTimeline(workSpace, movieClip);
     externalTimeline.addNewLayer(
         message.data[2] as NonNullable<number>, // index
-        message.data[3] as NonNullable<string>, // name
-        message.data[4] as NonNullable<string>, // color
+        message.data[4] as NonNullable<string>, // name
+        message.data[5] as NonNullable<string>, // color
+        message.data[3] as NonNullable<number>, // Layer ID
         true
     );
 };

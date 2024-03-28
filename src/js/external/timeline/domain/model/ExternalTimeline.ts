@@ -101,6 +101,7 @@ export class ExternalTimeline
      * @param  {number} [index = 0]
      * @param  {string} [name = ""]
      * @param  {string} [color = ""]
+     * @param  {number} [layer_id = -1]
      * @param  {boolean} [receiver = false]
      * @return {ExternalLayer | null}
      * @method
@@ -110,6 +111,7 @@ export class ExternalTimeline
         index: number = 0,
         name: string = "",
         color: string = "",
+        layer_id: number = -1,
         receiver: boolean = false
     ): ExternalLayer | null {
 
@@ -120,7 +122,7 @@ export class ExternalTimeline
         const externalLayer = externalTimelineAddNewLayerUseCase(
             this._$workSpace,
             this._$movieClip,
-            index, name, color, receiver
+            index, name, color, layer_id, receiver
         );
 
         if (!externalLayer) {

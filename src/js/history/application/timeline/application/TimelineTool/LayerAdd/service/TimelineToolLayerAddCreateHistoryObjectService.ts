@@ -28,6 +28,7 @@ export const execute = (
             work_space_id,
             movie_clip.id,
             index,
+            layer.id,
             layer.name,
             layer.color
         ],

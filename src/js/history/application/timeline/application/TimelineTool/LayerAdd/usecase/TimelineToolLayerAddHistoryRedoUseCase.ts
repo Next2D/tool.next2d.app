@@ -10,6 +10,7 @@ import { execute as externalMovieClipCreateLayerUseCase } from "@/external/core/
  * @param  {number} work_space_id
  * @param  {number} library_id
  * @param  {number} index
+ * @param  {number} layer_id
  * @param  {string} name
  * @param  {string} color
  * @return {void}
@@ -20,6 +21,7 @@ export const execute = (
     work_space_id: number,
     library_id: number,
     index: number,
+    layer_id: number,
     name: string,
     color: string
 ): void => {
@@ -37,6 +39,6 @@ export const execute = (
     // レイヤーを追加
     externalMovieClipCreateLayerUseCase(
         workSpace, movieClip,
-        index, name, color
+        index, name, color, layer_id
     );
 };
