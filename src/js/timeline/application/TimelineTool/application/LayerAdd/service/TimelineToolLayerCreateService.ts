@@ -2,7 +2,10 @@ import type { Layer } from "@/core/domain/model/Layer";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { InstanceImpl } from "@/interface/InstanceImpl";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
-import { $GUIDE_IN_MODE, $GUIDE_IN_TYPE, $MASK_IN_MODE } from "@/config/LayerModeConfig";
+import {
+    $GUIDE_IN_MODE,
+    $MASK_IN_MODE
+} from "@/config/LayerModeConfig";
 
 /**
  * @description 引数の指定に準拠してレイヤーを作成、失敗時はnullを返却
