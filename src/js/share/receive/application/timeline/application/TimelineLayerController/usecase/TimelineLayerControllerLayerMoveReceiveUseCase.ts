@@ -35,12 +35,9 @@ export const execute = (message: ShareReceiveMessageImpl): void =>
 
     const layer = movieClip.layers.splice(beforeIndex, 1)[0];
 
-    // 変更前の情報を保持
-    const beforeMode = layer.mode;
-    const beforeParentId = layer.parentId;
-
-    layer.mode     = message.data[4] as NonNullable<LayerModeImpl>;
-    layer.parentId = message.data[6] as NonNullable<number>;
+    // データを更新
+    layer.mode     = message.data[5] as NonNullable<LayerModeImpl>;
+    layer.parentId = message.data[7] as NonNullable<number>;
 
     // レイヤーを移動
     movieClip.layers.splice(afterIndex, 0, layer);
@@ -52,13 +49,13 @@ export const execute = (message: ShareReceiveMessageImpl): void =>
         layer,
         beforeIndex,
         afterIndex,
-        beforeMode,
-        beforeParentId,
+        message.data[4] as NonNullable<LayerModeImpl>,
+        message.data[6] as NonNullable<number>,
         true
     );
 
+    // レイヤーの再描画
     if (workSpace.active && movieClip.active) {
-        // レイヤーの再描画
         timelineLayerBuildElementUseCase();
     }
 };
