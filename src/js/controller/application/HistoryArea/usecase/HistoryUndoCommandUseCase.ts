@@ -101,7 +101,8 @@ export const execute = async (
                 messages[0] as number, // workSpaceId
                 messages[1] as number, // MovieClipId
                 messages[2] as number, // Layer Index
-                messages[3] as LayerSaveObjectImpl // Layer Object
+                messages[3] as number[], // Child Layer Indexes
+                messages[4] as LayerSaveObjectImpl // Layer Object
             );
             break;
 

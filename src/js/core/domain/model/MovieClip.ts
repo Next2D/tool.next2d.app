@@ -359,9 +359,11 @@ export class MovieClip extends Instance
             // セーブデータからLayerを複製
             for (let idx: number = 0; idx < object.layers.length; ++idx) {
 
+                const saveObject = object.layers[idx];
+
                 // セーブデータの読み込み
-                const layer = this.createLayer();
-                layer.load(object.layers[idx]);
+                const layer = this.createLayer(saveObject.id);
+                layer.load(saveObject);
 
                 // LayerIDの最大値を更新
                 this._$layerId = Math.max(this._$layerId, layer.id);
@@ -372,8 +374,7 @@ export class MovieClip extends Instance
 
         } else {
             // Layerデータがなければ強制的に一個追加する
-            const layer = this.createLayer();
-            this.setLayer(layer, 0);
+            this.setLayer(this.createLayer(), 0);
         }
 
         if (object.scrollX) {

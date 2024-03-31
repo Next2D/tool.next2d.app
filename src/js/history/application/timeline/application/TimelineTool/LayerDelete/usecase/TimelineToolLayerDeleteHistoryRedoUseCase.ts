@@ -11,6 +11,7 @@ import { ExternalTimeline } from "@/external/timeline/domain/model/ExternalTimel
  * @param  {number} work_space_id
  * @param  {number} library_id
  * @param  {number} index
+ * @param  {array} indexes
  * @return {void}
  * @method
  * @public
@@ -18,7 +19,8 @@ import { ExternalTimeline } from "@/external/timeline/domain/model/ExternalTimel
 export const execute = (
     work_space_id: number,
     library_id: number,
-    index: number
+    index: number,
+    indexes: number[]
 ): void => {
 
     const workSpace = $getWorkSpace(work_space_id);
@@ -34,6 +36,16 @@ export const execute = (
     const layer = movieClip.layers[index];
     if (!layer) {
         return ;
+    }
+
+    for (let idx = 0; idx < indexes.length; ++idx) {
+        const childLayer = movieClip.layers[index];
+        if (!childLayer) {
+            return ;
+        }
+
+        // 通常レイヤーに更新
+        childLayer.clearRelation();
     }
 
     // 外部APIを起動

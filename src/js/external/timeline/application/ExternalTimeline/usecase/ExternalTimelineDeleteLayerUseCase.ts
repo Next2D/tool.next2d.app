@@ -5,10 +5,8 @@ import { execute as timelineToolLayerDeleteHistoryUseCase } from "@/history/appl
 import { execute as externalLayerUpdateReloadUseCase } from "@/external/core/application/ExternalLayer/usecase/ExternalLayerUpdateReloadUseCase";
 import {
     $GUIDE_MODE,
-    $MASK_MODE,
-    $NORMAL_TYPE
+    $MASK_MODE
 } from "@/config/LayerModeConfig";
-import { ExternalLayer } from "@/external/core/domain/model/ExternalLayer";
 
 /**
  * @description レイヤー削除ユースケース
@@ -28,6 +26,12 @@ export const execute = (
     indexes: number[],
     receiver: boolean = false
 ): void => {
+
+    // 昇順に並び替え
+    indexes = indexes.sort((a, b) =>
+    {
+        return a < b ? -1 : 1;
+    });
 
     // 削除対象のlayerオブジェクトを配列に格納
     const layers = [];
@@ -52,17 +56,23 @@ export const execute = (
         // 削除時点のindex値を取得
         const index = movie_clip.layers.indexOf(layer);
 
+        const indexes = [];
         switch (layer.mode) {
 
             case $MASK_MODE: // マスクレイヤー
             case $GUIDE_MODE: // ガイドレイヤー
                 for (let idx = index + 1; idx < movie_clip.layers.length; ++idx) {
+
                     const childLayer = movie_clip.layers[idx];
                     if (childLayer.parentId !== layer.id) {
-                        continue;
+                        break;
                     }
-                    const externalLayer = new ExternalLayer(work_space, movie_clip, childLayer);
-                    externalLayer.layerType = $NORMAL_TYPE;
+
+                    // 子レイヤーのindexを格納
+                    indexes.push(idx);
+
+                    // 初期化
+                    childLayer.clearRelation();
                 }
                 break;
 
@@ -78,7 +88,7 @@ export const execute = (
         timelineToolLayerDeleteHistoryUseCase(
             work_space,
             movie_clip,
-            layer, index, receiver
+            layer, index, indexes, receiver
         );
     }
 

@@ -17,6 +17,7 @@ import { execute as shareSendService } from "@/share/service/ShareSendService";
  * @param  {MovieClip} movie_clip
  * @param  {Layer} layer
  * @param  {number} index
+ * @param  {array} indexes
  * @param  {boolean} [receiver = false]
  * @return {void}
  * @method
@@ -27,6 +28,7 @@ export const execute = (
     movie_clip: MovieClip,
     layer: Layer,
     index: number,
+    indexes: number[],
     receiver: boolean = false
 ): void => {
 
@@ -36,7 +38,8 @@ export const execute = (
 
     // fixed logic
     const historyObject = timelineToolLayerDeleteCreateHistoryObjectService(
-        work_space.id, movie_clip, index, layer
+        work_space.id, movie_clip,
+        index, indexes, layer
     );
 
     // 作業履歴にElementを追加
@@ -59,7 +62,7 @@ export const execute = (
     if (!receiver && $useSocket()) {
 
         const shareObject = timelineToolLayerDeleteCreateHistoryObjectService(
-            work_space.id, movie_clip, index, layer
+            work_space.id, movie_clip, index, indexes, layer
         );
 
         // layerオブジェクトは不要なので削除

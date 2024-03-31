@@ -101,7 +101,8 @@ export const execute = async (
             timelineToolLayerDeleteHistoryRedoUseCase(
                 messages[0] as number, // workSpaceId
                 messages[1] as number, // MovieClipId
-                messages[2] as number  // Layer index
+                messages[2] as number,  // Layer index
+                messages[3] as number[] // Child Layer indexes
             );
             break;
 

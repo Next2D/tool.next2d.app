@@ -19,6 +19,7 @@ export const execute = (
     work_space_id: number,
     movie_clip: MovieClip,
     index: number,
+    indexes: number[],
     layer: Layer
 ): HistoryObjectImpl => {
 
@@ -28,6 +29,7 @@ export const execute = (
             work_space_id,
             movie_clip.id,
             index,
+            indexes,
             layer.toObject()
         ],
         "args": [
