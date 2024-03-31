@@ -150,6 +150,10 @@ export class ExternalTimeline
         receiver: boolean = false
     ): void {
 
+        if (!indexes.length) {
+            return ;
+        }
+
         // 削除前に非アクティブに更新
         this.deactivatedLayer(indexes);
 

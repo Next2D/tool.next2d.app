@@ -51,6 +51,11 @@ export const execute = (
     // 削除処理
     for (let idx = 0; idx < layers.length; ++idx) {
 
+        // レイヤーが1個しかなければ何もしない
+        if (2 > movie_clip.layers.length) {
+            break;
+        }
+
         const layer = layers[idx];
 
         // 削除時点のindex値を取得

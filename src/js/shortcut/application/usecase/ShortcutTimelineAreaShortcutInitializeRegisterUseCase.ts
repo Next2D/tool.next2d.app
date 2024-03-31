@@ -43,6 +43,10 @@ export const execute = (): void =>
         $generateShortcutKey("Backspace", { "ctrl": true }),
         timelineToolLayerDeleteUseCase
     );
+    $setShortcut(
+        $generateShortcutKey("Delete", { "ctrl": true }),
+        timelineToolLayerDeleteUseCase
+    );
 
     // スクリプトエディタの起動
     $setShortcut($generateShortcutKey("s"),
