@@ -71,7 +71,12 @@ export const execute = (
             layers.splice(beforeIndex, 1);
 
             // 最後の子レイヤーの後ろに挿入
-            layers.splice(layers.indexOf(targetLayer) + 1, 0, layer);
+            const targetIndex = layers.indexOf(targetLayer);
+            if (targetIndex > -1) {
+                layers.splice(targetIndex + 1, 0, layer);
+            } else {
+                layers.splice(beforeIndex, 0, layer);
+            }
 
             // 履歴を登録
             timelineLayerControllerMoveLayerHistoryUseCase(
