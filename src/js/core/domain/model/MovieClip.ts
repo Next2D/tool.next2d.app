@@ -196,6 +196,27 @@ export class MovieClip extends Instance
     }
 
     /**
+     * @description タイムラインで選択したLayerの配列を昇順に並び替えて返却
+     *              Returns an array of Layers selected on the timeline in ascending order
+     *
+     * @member {array}
+     * @readonly
+     * @public
+     */
+    getCloneAndSortSelectedLayers (): Layer[]
+    {
+        return this
+            ._$selectedLayers
+            // 複製
+            .slice()
+            // 昇順に並び替え
+            .sort((a: Layer, b: Layer): number =>
+            {
+                return this.layers.indexOf(a) - this.layers.indexOf(b);
+            });
+    }
+
+    /**
      * @description 選択中のLayerを初期化
      *              Initialize the currently selected Layer
      *

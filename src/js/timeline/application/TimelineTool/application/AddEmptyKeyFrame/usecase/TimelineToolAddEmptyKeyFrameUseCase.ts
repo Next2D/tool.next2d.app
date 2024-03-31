@@ -2,8 +2,8 @@ import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { ExternalTimeline } from "@/external/timeline/domain/model/ExternalTimeline";
 
 /**
- * @description 選択中のレイヤーにキーフレームを追加
- *              Add a keyframe to the selected layer
+ * @description 空のキーフレームを追加する
+ *              Add an empty key frame
  *
  * @return {void}
  * @method
@@ -19,5 +19,7 @@ export const execute = (): void =>
 
     // キーフレームを追加
     externalTimeline
-        .convertToKeyframes(movieClip.currentFrame);
+        .convertToEmptyKeyframes(
+            movieClip.currentFrame
+        );
 };

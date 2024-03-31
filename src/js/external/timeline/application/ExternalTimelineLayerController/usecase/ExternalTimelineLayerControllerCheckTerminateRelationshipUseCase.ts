@@ -44,11 +44,7 @@ export const execute = (
         let targetLayer = layers[exitIndex];
 
         // 複製して並び替えを実行
-        const selectedLayers = movie_clip.selectedLayers.slice();
-        selectedLayers.sort((a: Layer, b: Layer): number =>
-        {
-            return layers.indexOf(a) - layers.indexOf(b);
-        });
+        const selectedLayers = movie_clip.getCloneAndSortSelectedLayers();
 
         // 親レイヤーのIDを固定変数としてセット
         const parentId = distLayer.parentId;

@@ -12,6 +12,7 @@ import { execute as timelineLayerAllClearSelectedElementUseCase } from "@/timeli
 import { execute as externalTimelineLayerControllerBehindUseCase } from "@/external/timeline/application/ExternalTimelineLayerController/usecase/ExternalTimelineLayerControllerBehindUseCase";
 import { execute as externalTimelineAddNewLayerUseCase } from "@/external/timeline/application/ExternalTimeline/usecase/ExternalTimelineAddNewLayerUseCase";
 import { execute as externalTimelineDeleteLayerUseCase } from "@/external/timeline/application/ExternalTimeline/usecase/ExternalTimelineDeleteLayerUseCase";
+import { execute as externalTimelineLayerFrameConvertToEmptyKeyframesUseCase } from "@/external/timeline/application/ExternalTimelineLayerFrame/usecase/ExternalTimelineLayerFrameConvertToEmptyKeyframesUseCase";
 
 /**
  * @description タイムラインの外部APIクラス
@@ -48,25 +49,45 @@ export class ExternalTimeline
     }
 
     /**
-     * @description TODO
+     * @description 選択中のレイヤーにキーフレームを追加
+     *              Add a keyframe to the selected layer
      *
-     * @param {number} start_frame
-     * @param {number} end_frame
+     * @param  {number} start_frame
+     * @param  {number} end_frame
      * @return {void}
      * @method
      * @public
      */
     convertToKeyframes (start_frame: number, end_frame: number = 0): void
     {
-        console.log("TODO convertToKeyframes");
-
         // 選択中のレイヤーがなければ終了
         if (!this._$movieClip.selectedLayers.length) {
             return ;
         }
 
+        console.log("TODO convertToKeyframes");
         const frameObject = $convertFrameObject(start_frame, end_frame);
         console.log(frameObject);
+    }
+
+    /**
+     * @description 選択中のレイヤーに空のキーフレームを追加
+     *              Add an empty key frame to the selected layer
+     *
+     * @param  {number} start_frame
+     * @param  {number} end_frame
+     * @return {void}
+     * @method
+     * @public
+     */
+    convertToEmptyKeyframes (start_frame: number, end_frame: number = 0): void
+    {
+        externalTimelineLayerFrameConvertToEmptyKeyframesUseCase(
+            this._$workSpace,
+            this._$movieClip,
+            start_frame,
+            end_frame
+        );
     }
 
     /**
@@ -229,9 +250,17 @@ export class ExternalTimeline
             return ;
         }
 
+        const frame = this._$movieClip.selectedFrameObject.end;
         if (this._$workSpace.active && this._$movieClip.active) {
+            // ヘッダーのマーカーを移動
+            externalTimelineChageFrameUseCase(frame);
+
+            // 指定のフレームを選択状態に更新
             externalTimelineLayerFrameSelectedUseCase(this._$movieClip, frames);
         }
+
+        // 内部情報を更新
+        this._$movieClip.currentFrame = frame;
     }
 
     /**

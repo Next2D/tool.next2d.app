@@ -377,6 +377,15 @@ export const $TIMELINE_SCENE_NAME_LIST_ID: string = "scene-name-menu-list";
 export const $TIMELINE_KEY_ADD_ID: string = "timeline-key-add";
 
 /**
+ * @description タイムラインの空のキーフレーム追加のElementのID
+ *              ID of the Element for adding empty keyframes in the timeline
+ *
+ * @type {string}
+ * @constant
+ */
+export const $TIMELINE_EMPTY_KEY_ADD_ID: string = "timeline-empty-add";
+
+/**
  * @description タイムラインのフレーム選択のグループElementのID
  *              ID of the group Element of the timeline frame selection
  *

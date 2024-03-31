@@ -30,11 +30,7 @@ export const execute = (
     const layers = movie_clip.layers;
 
     // 選択配列を複製してindex順に並び替え
-    const selectedLayers = movie_clip.selectedLayers.slice();
-    selectedLayers.sort((a: Layer, b: Layer): number =>
-    {
-        return layers.indexOf(a) - layers.indexOf(b);
-    });
+    const selectedLayers = movie_clip.getCloneAndSortSelectedLayers();
 
     // レイヤーの移動を実行
     const parentMap = new Map<number, boolean>();

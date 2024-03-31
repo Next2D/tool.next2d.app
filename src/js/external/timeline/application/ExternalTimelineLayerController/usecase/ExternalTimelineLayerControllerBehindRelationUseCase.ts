@@ -36,7 +36,7 @@ export const execute = (
     const distLayer = layers[index];
 
     // 複製して親子関係がないかチェック
-    const selectedLayers = movie_clip.selectedLayers.slice();
+    const selectedLayers = movie_clip.getCloneAndSortSelectedLayers();
 
     // 移動するレイヤーの中に、親レイヤーが含まれていたら処理を終了
     for (let idx = 0; idx < selectedLayers.length; idx++) {
@@ -52,12 +52,6 @@ export const execute = (
 
         }
     }
-
-    // index順に並び替え
-    selectedLayers.sort((a: Layer, b: Layer): number =>
-    {
-        return layers.indexOf(a) - layers.indexOf(b);
-    });
 
     let mode: LayerModeImpl = 0;
     switch (distLayer.mode) {

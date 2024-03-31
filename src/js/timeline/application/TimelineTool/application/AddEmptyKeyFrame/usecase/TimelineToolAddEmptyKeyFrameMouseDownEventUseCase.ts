@@ -1,8 +1,8 @@
-import { execute as timelineToolAddKeyFrameUseCase } from "./TimelineToolAddKeyFrameUseCase";
+import { execute as timelineToolAddEmptyKeyFrameUseCase } from "./TimelineToolAddEmptyKeyFrameUseCase";
 
 /**
- * @description キーフレーム追加ボタンのイベント処理関数
- *              Event processing function for add keyframe button
+ * @description 空のキーフレーム追加ボタンのイベント処理関数
+ *              Event processing function for add empty keyframe button
  *
  * @param  {PointerEvent} event
  * @return {void}
@@ -20,5 +20,5 @@ export const execute = (event: PointerEvent): void =>
     event.preventDefault();
 
     // キーフレーム追加のユースケースを実行
-    timelineToolAddKeyFrameUseCase();
+    timelineToolAddEmptyKeyFrameUseCase();
 };
