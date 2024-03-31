@@ -13,6 +13,7 @@ class TimelineLayer
     private _$numberOfDisplays: number;
     private _$viewCount: number;
     private _$distIndex: number;
+    private _$exitMode: boolean;
     private readonly _$elements: HTMLElement[];
 
     /**
@@ -54,6 +55,13 @@ class TimelineLayer
          * @private
          */
         this._$distIndex = -1;
+
+        /**
+         * @type {number}
+         * @default false
+         * @private
+         */
+        this._$exitMode = false;
     }
 
     /**
@@ -158,6 +166,22 @@ class TimelineLayer
     set distIndex (index: number)
     {
         this._$distIndex = index;
+    }
+
+    /**
+     * @description 指定のマスクレイヤーの子レイヤーを解除するかの判定フラグ
+     *              Flag to determine whether to release the child layer of the specified mask layer
+     *
+     * @member {boolean}
+     * @public
+     */
+    get exitMode (): boolean
+    {
+        return this._$exitMode;
+    }
+    set exitMode (exit_mode: boolean)
+    {
+        this._$exitMode = exit_mode;
     }
 }
 

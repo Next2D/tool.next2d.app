@@ -34,6 +34,7 @@ export const execute = (event: PointerEvent): void =>
 
     // 選択を解除
     timelineLayer.distIndex = -1;
+    timelineLayer.exitMode  = false;
 
     // styleを初期化
     timelineLayerControllerActiveExitIconElementService(parentElement);

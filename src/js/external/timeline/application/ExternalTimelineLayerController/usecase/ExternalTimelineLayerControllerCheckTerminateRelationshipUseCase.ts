@@ -1,8 +1,10 @@
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
+import type { Layer } from "@/core/domain/model/Layer";
 import { execute as externalTimelineLayerControllerBehindRelationUseCase } from "./ExternalTimelineLayerControllerBehindRelationUseCase";
-import { ExternalLayer } from "@/external/core/domain/model/ExternalLayer";
-import { $NORMAL_TYPE } from "@/config/LayerModeConfig";
+import { execute as timelineLayerBuildElementUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerBuildElementUseCase";
+import { execute as timelineLayerControllerMoveLayerHistoryUseCase } from "@/history/application/timeline/application/TimelineLayerController/MoveLayer/usecase/TimelineLayerControllerMoveLayerHistoryUseCase";
+import { timelineLayer } from "@/timeline/domain/model/TimelineLayer";
 
 /**
  * @description レイヤーの親子関係性をチェックする
@@ -21,28 +23,77 @@ export const execute = (
     index: number
 ): void => {
 
-    // MovieClipのレイヤー配列を取得
-    const layers = movie_clip.layers;
+    if (timelineLayer.exitMode) {
 
-    // 移動先のレイヤーを取得
-    const distLayer = layers[index];
+        const layers = movie_clip.layers;
 
-    let changeLayerType = false;
-    for (let idx = 0; idx < movie_clip.selectedLayers.length; ++idx) {
+        // 移動先のレイヤーを取得
+        const distLayer = layers[index];
 
-        const layer = movie_clip.selectedLayers[idx];
-        if (layer.parentId !== distLayer.parentId) {
-            continue;
+        // マスクの最後の子レイヤーのインデックスを取得
+        let exitIndex = index;
+        for (let idx = index; idx < layers.length; ++idx) {
+            const layer = layers[idx];
+            if (layer.parentId !== distLayer.parentId) {
+                break;
+            }
+            exitIndex = idx;
         }
 
-        const externalLayer = new ExternalLayer(work_space, movie_clip, layer);
-        externalLayer.layerType = $NORMAL_TYPE;
+        // 最後の子レイヤーを取得
+        let targetLayer = layers[exitIndex];
 
-        changeLayerType = true;
-    }
+        // 複製して並び替えを実行
+        const selectedLayers = movie_clip.selectedLayers.slice();
+        selectedLayers.sort((a: Layer, b: Layer): number =>
+        {
+            return layers.indexOf(a) - layers.indexOf(b);
+        });
 
-    // 親子関係の解除がなければ通常の移動処理を行う
-    if (!changeLayerType) {
+        // 親レイヤーのIDを固定変数としてセット
+        const parentId = distLayer.parentId;
+        for (let idx = 0; idx < selectedLayers.length; ++idx) {
+
+            const layer = selectedLayers[idx];
+            if (layer.parentId !== parentId) {
+                continue;
+            }
+
+            // 変更前の情報を取得
+            const beforeIndex    = layers.indexOf(layer);
+            const beforeMode     = layer.mode;
+            const beforeParentId = layer.parentId;
+
+            // 子レイヤーを解除
+            layer.clearRelation();
+
+            // レイヤーを配列から一度削除
+            layers.splice(beforeIndex, 1);
+
+            // 最後の子レイヤーの後ろに挿入
+            layers.splice(layers.indexOf(targetLayer) + 1, 0, layer);
+
+            // 履歴を登録
+            timelineLayerControllerMoveLayerHistoryUseCase(
+                work_space,
+                movie_clip,
+                layer,
+                beforeIndex,
+                layers.indexOf(layer),
+                beforeMode,
+                beforeParentId
+            );
+
+            // 移動したレイヤーを挿入先のレイヤーに更新
+            targetLayer = layer;
+        }
+
+        if (work_space.active && movie_clip.active) {
+            timelineLayerBuildElementUseCase();
+        }
+
+    }  else {
+        // 親子関係の解除がなければ通常の移動処理を行う
         externalTimelineLayerControllerBehindRelationUseCase(
             work_space,
             movie_clip,

@@ -76,4 +76,5 @@ export const execute = (event: PointerEvent): void =>
 
     // 初期化
     timelineLayer.distIndex = -1;
+    timelineLayer.exitMode  = false;
 };

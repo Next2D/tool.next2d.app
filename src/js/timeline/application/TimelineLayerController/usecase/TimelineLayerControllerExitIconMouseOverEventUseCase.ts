@@ -27,8 +27,12 @@ export const execute = (event: PointerEvent): void =>
         return ;
     }
 
+    // 子レイヤー解除のアイコンを表示
     exitElement.style.opacity = "1";
+
+    // 選択情報を設定
     timelineLayer.distIndex = index + $getTopIndex();
+    timelineLayer.exitMode  = true;
 
     // styleを追加
     timelineLayerActiveMoveTargetStyleService(parentElement);
