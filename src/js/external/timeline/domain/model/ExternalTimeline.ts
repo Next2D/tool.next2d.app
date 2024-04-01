@@ -250,7 +250,10 @@ export class ExternalTimeline
             return ;
         }
 
-        const frame = this._$movieClip.selectedFrameObject.end;
+        const frame = frames.length === 1
+            ? frames[0]
+            : this._$movieClip.selectedFrameObject.end;
+
         if (this._$workSpace.active && this._$movieClip.active) {
             // ヘッダーのマーカーを移動
             externalTimelineChageFrameUseCase(frame);

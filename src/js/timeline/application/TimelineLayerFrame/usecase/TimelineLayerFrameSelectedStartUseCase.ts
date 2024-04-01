@@ -23,7 +23,8 @@ export const execute = (
     work_space: WorkSpace,
     movie_clip: MovieClip,
     layer: Layer,
-    frame: number
+    frame: number,
+    frames: number[]
 ): void => {
 
     // 外部APIを起動
@@ -36,7 +37,7 @@ export const execute = (
         .selectedLayers([externalLayer.index]);
 
     // 指定フレームを選択状態に更新
-    externalTimeline.selectedFrames([frame]);
+    externalTimeline.selectedFrames(frames);
 
     // 最初に選択したフレームとレイヤーをセット
     movie_clip.selectedFrameObject.start = frame;

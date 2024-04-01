@@ -61,8 +61,31 @@ export const execute = (
             classValues.push("frame-active");
         }
 
+        const emptyCharacter = layer.getActiveEmptyCharacter(frame);
+        if (emptyCharacter) {
+
+            switch (true) {
+
+                case emptyCharacter.startFrame === frame:
+                    classValues.push("empty-key-frame");
+                    if (emptyCharacter.endFrame - emptyCharacter.startFrame !== 1) {
+                        classValues.push("empty-key-frame-join");
+                    }
+                    break;
+
+                case emptyCharacter.endFrame === frame:
+                    classValues.push("empty-space-frame-end");
+                    break;
+
+                default:
+                    classValues.push("empty-space-frame");
+                    break;
+
+            }
+
+        }
+
         node.setAttribute("data-frame", `${frame}`);
-        node.setAttribute("data-frame-state", "empty");
         node.setAttribute("class", classValues.join(" "));
     }
 };

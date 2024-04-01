@@ -61,6 +61,7 @@ export const execute = (event: PointerEvent): void =>
 
     const workSpace = $getCurrentWorkSpace();
     const movieClip = workSpace.scene;
+    const frame = parseInt(element.dataset.frame as NonNullable<string>);
 
     if (!wait) {
 
@@ -73,7 +74,6 @@ export const execute = (event: PointerEvent): void =>
             wait = false;
         }, 300);
 
-        const frame = parseInt(element.dataset.frame as NonNullable<string>);
         if (movieClip.selectedLayers.indexOf(layer) > -1
             && frame >= movieClip.selectedStartFrame
             && movieClip.selectedEndFrame > frame
@@ -95,7 +95,8 @@ export const execute = (event: PointerEvent): void =>
                 workSpace,
                 movieClip,
                 layer,
-                frame
+                frame,
+                [frame]
             );
 
         }
@@ -108,5 +109,22 @@ export const execute = (event: PointerEvent): void =>
         clearTimeout(activeTimerId);
 
         // TODO 指定レイヤーのフレームレンジを全て選択状態に更新
+
+        const emptyCharacter = layer.getActiveEmptyCharacter(frame);
+        if (emptyCharacter) {
+
+            const length = emptyCharacter.endFrame - emptyCharacter.startFrame;
+            const frames = Array.from({ "length": length }, (_, idx) => idx + emptyCharacter.startFrame);
+            timelineLayerFrameSelectedStartUseCase(
+                workSpace,
+                movieClip,
+                layer,
+                frame,
+                frames
+            );
+
+            movieClip.selectedFrameObject.start = emptyCharacter.startFrame;
+            movieClip.selectedFrameObject.end   = emptyCharacter.endFrame - 1;
+        }
     }
 };

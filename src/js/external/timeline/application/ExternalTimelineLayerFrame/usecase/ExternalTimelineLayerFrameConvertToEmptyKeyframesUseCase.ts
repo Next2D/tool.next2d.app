@@ -1,5 +1,6 @@
-import { MovieClip } from "@/core/domain/model/MovieClip";
-import { WorkSpace } from "@/core/domain/model/WorkSpace";
+import type { MovieClip } from "@/core/domain/model/MovieClip";
+import type { WorkSpace } from "@/core/domain/model/WorkSpace";
+import { EmptyCharacter } from "@/core/domain/model/EmptyCharacter";
 import { $convertFrameObject } from "@/timeline/application/TimelineUtil";
 
 /**
@@ -36,6 +37,13 @@ export const execute = (
         const layer = selectedLayers[idx];
         if (!layer) {
             continue;
+        }
+
+        for (let frame = frameObject.start; frame < frameObject.end; ++frame) {
+            const emptyCharacter = new EmptyCharacter();
+            emptyCharacter.startFrame = frame;
+            emptyCharacter.endFrame   = frame + 10;
+            layer.addEmptyCharacter(emptyCharacter);
         }
 
         console.log(layer);
