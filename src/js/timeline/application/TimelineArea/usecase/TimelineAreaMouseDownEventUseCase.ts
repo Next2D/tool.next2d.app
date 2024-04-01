@@ -9,6 +9,7 @@ import { $setMouseState } from "../../TimelineUtil";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { $useKeyboard } from "@/shortcut/ShortcutUtil";
 import { execute as billingModelShowService } from "@/menu/application/BillingModal/service/BillingModelShowService";
+import { execute as timelineLayerFrameSelectedAllClearUseCase } from "@/timeline/application/TimelineLayerFrame/usecase/TimelineLayerFrameSelectedAllClearUseCase";
 import { $useSocket } from "@/share/ShareUtil";
 import {
     $setStandbyMoveState,
@@ -58,6 +59,7 @@ export const execute = (event: PointerEvent): void =>
     // マウスの状態管理をダウンに更新
     $setMouseState("down");
 
+    const workSpace = $getCurrentWorkSpace();
     if (!wait) {
 
         // 初回のタップであればダブルタップを待機モードに変更
@@ -84,6 +86,8 @@ export const execute = (event: PointerEvent): void =>
             timelineAreaActiveMoveUseCase();
         }, 600);
 
+        timelineLayerFrameSelectedAllClearUseCase(workSpace.scene);
+
     } else {
 
         // ダブルタップを終了
@@ -96,7 +100,6 @@ export const execute = (event: PointerEvent): void =>
         $setStandbyMoveState(false);
 
         // ツールエリアが固定位置にあれば終了
-        const workSpace = $getCurrentWorkSpace();
         if (workSpace.timelineAreaState.state === "fixed") {
             return ;
         }
