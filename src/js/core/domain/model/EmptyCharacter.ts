@@ -1,4 +1,4 @@
-import { EmptyCharacterSaveObjectImpl } from "@/interface/EmptyCharacterSaveObjectImpl";
+import type { EmptyCharacterSaveObjectImpl } from "@/interface/EmptyCharacterSaveObjectImpl";
 
 /**
  * @description 空のキーフレームの管理クラス

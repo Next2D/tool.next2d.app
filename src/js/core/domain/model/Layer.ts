@@ -2,7 +2,7 @@ import type { LayerSaveObjectImpl } from "@/interface/LayerSaveObjectImpl";
 import type { LayerModeImpl } from "@/interface/LayerModeImpl";
 import type { CharacterSaveObjectImpl } from "@/interface/CharacterSaveObjectImpl";
 import type { EmptyCharacterSaveObjectImpl } from "@/interface/EmptyCharacterSaveObjectImpl";
-import type { Character } from "./Character";
+import { Character } from "./Character";
 import { EmptyCharacter } from "./EmptyCharacter";
 import { execute as timelineLayerControllerGetHighlightColorService } from "@/timeline/application/TimelineLayerController/service/TimelineLayerControllerGetHighlightColorService";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
@@ -353,7 +353,11 @@ export class Layer
             return ;
         }
 
-        console.log("TODO", characters);
+        for (let idx = 0; idx < characters.length; ++idx) {
+            const character = new Character();
+            character.load(characters[idx]);
+            this.addEmptyCharacter(character);
+        }
     }
 
     /**
@@ -432,6 +436,44 @@ export class Layer
         }
 
         return null;
+    }
+
+    /**
+     * @description キーフレームを追加
+     *              Add an key frame
+     *
+     * @param  {Character} character
+     * @return {void}
+     * @method
+     * @public
+     */
+    addCharacter (character: Character): void
+    {
+        this._$characters.push(character);
+    }
+
+    /**
+     * @description 指定したフレームにキーフレームがあれば返却
+     *              Returns a keyframe at the specified frame
+     *
+     * @param  {number} frame
+     * @return {EmptyCharacter | null}
+     * @method
+     * @public
+     */
+    getActiveCharacters (frame: number): Character[]
+    {
+        const characters = [];
+        for (let idx = 0; idx < this._$characters.length; ++idx) {
+            const character = this._$characters[idx];
+            if (character.startFrame === frame
+                || frame > character.startFrame && frame < character.endFrame
+            ) {
+                characters.push(character);
+            }
+        }
+
+        return characters;
     }
 
     /**

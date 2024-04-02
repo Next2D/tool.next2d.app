@@ -2,6 +2,7 @@ import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import { EmptyCharacter } from "@/core/domain/model/EmptyCharacter";
 import { $convertFrameObject } from "@/timeline/application/TimelineUtil";
+import { execute as externalTimelineLayerFrameGetPrevBlankFrameObjectService } from "../service/ExternalTimelineLayerFrameGetPrevBlankFrameObjectService";
 
 /**
  * @description 選択中のレイヤーに空のキーフレームを追加
@@ -28,7 +29,6 @@ export const execute = (
     }
 
     const frameObject = $convertFrameObject(start_frame, end_frame);
-    console.log(frameObject);
 
     // 昇順に並び替えたレイヤー配列を取得
     const selectedLayers = movie_clip.getCloneAndSortSelectedLayers();
@@ -39,11 +39,29 @@ export const execute = (
             continue;
         }
 
+        // 1フレーム目より先のフレームにキーフレームを追加する場合
+        if (frameObject.start > 1) {
+            // 追加するフレームより前のフレームにキーフレームがあるか確認
+            const prevFrameObject = externalTimelineLayerFrameGetPrevBlankFrameObjectService(layer, frameObject.start);
+
+            // 空白のフレームがあれば空のキーフレームで埋める
+            if (prevFrameObject) {
+                const emptyCharacter = new EmptyCharacter();
+                emptyCharacter.startFrame = prevFrameObject.start;
+                emptyCharacter.endFrame   = frameObject.start;
+                layer.addEmptyCharacter(emptyCharacter);
+
+                // TODO 履歴に追加
+            }
+        }
+
         for (let frame = frameObject.start; frame < frameObject.end; ++frame) {
             const emptyCharacter = new EmptyCharacter();
             emptyCharacter.startFrame = frame;
-            emptyCharacter.endFrame   = frame + 10;
+            emptyCharacter.endFrame   = frame + 1;
             layer.addEmptyCharacter(emptyCharacter);
+
+            // TODO 履歴に追加
         }
 
         console.log(layer);
