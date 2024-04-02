@@ -68,12 +68,12 @@ export const execute = (
 
                 case emptyCharacter.startFrame === frame:
                     classValues.push("empty-key-frame");
-                    if (emptyCharacter.endFrame - emptyCharacter.startFrame !== 1) {
+                    if (emptyCharacter.endFrame - emptyCharacter.startFrame > 1) {
                         classValues.push("empty-key-frame-join");
                     }
                     break;
 
-                case emptyCharacter.endFrame === frame:
+                case emptyCharacter.endFrame - 1 === frame:
                     classValues.push("empty-space-frame-end");
                     break;
 

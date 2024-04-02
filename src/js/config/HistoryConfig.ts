@@ -267,3 +267,12 @@ export const $LAYER_UPDATE_LIGHT_COLOR_COMMAND: number = 26;
  * @constant
  */
 export const $LAYER_UPDATE_MODE_COMMAND: number = 27;
+
+/**
+ * @description 空のキーフレーム追加の識別コマンド名
+ *              Identification command name for adding an empty keyframe
+ *
+ * @type {number}
+ * @constant
+ */
+export const $TIMELINE_ADD_EMPTY_KEYFRAME_COMMAND: number = 28;

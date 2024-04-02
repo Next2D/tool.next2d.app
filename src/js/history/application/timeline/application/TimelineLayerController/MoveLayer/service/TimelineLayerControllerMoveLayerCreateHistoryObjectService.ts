@@ -5,8 +5,8 @@ import type { LayerModeImpl } from "@/interface/LayerModeImpl";
 import { $TIMELINE_MOVE_LAYER_COMMAND } from "@/config/HistoryConfig";
 
 /**
- * @description レイヤー追加の履歴用オブジェクトを作成
- *              Create object for layer addition history
+ * @description レイヤー移動の履歴用オブジェクトを作成
+ *              Create a history object for moving layers
  *
  * @param  {number} work_space_id
  * @param  {MovieClip} movie_clip
