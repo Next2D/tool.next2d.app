@@ -20,7 +20,8 @@ import {
     $LIBRARY_REMOVE_INSTANCE_COMMAND,
     $TIMELINE_MOVE_LAYER_COMMAND,
     $LAYER_UPDATE_LIGHT_COLOR_COMMAND,
-    $LAYER_UPDATE_MODE_COMMAND
+    $LAYER_UPDATE_MODE_COMMAND,
+    $TIMELINE_ADD_EMPTY_KEYFRAME_COMMAND
 } from "@/config/HistoryConfig";
 
 /**
@@ -100,6 +101,9 @@ export const execute = (command: number): string =>
 
         case $LAYER_UPDATE_MODE_COMMAND:
             return "「%s1」のレイヤー「%s2」を「%s3」に変更";
+
+        case $TIMELINE_ADD_EMPTY_KEYFRAME_COMMAND:
+            return "「%s1」のレイヤー「%s2」の「%s3」に空のキーフレームを追加";
 
         default:
             break;
