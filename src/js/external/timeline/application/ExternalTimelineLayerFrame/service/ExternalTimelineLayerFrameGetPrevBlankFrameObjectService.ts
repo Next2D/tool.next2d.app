@@ -16,6 +16,21 @@ export const execute = (layer: Layer, keyframe: number): FrameObjectImpl | null 
     let frame = keyframe - 1;
     while (frame) {
 
+        const characters = layer.getActiveCharacters(frame);
+        if (characters.length) {
+            const character = characters[0];
+
+            // キーフレームがあればnullを返す
+            if (character.endFrame === keyframe) {
+                return null;
+            }
+
+            return {
+                "start": character.endFrame,
+                "end": keyframe
+            };
+        }
+
         const emptyCharacter = layer.getActiveEmptyCharacter(frame);
         if (emptyCharacter) {
 

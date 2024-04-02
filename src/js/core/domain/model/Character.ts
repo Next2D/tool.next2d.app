@@ -31,7 +31,7 @@ export class Character
          */
         this._$endFrame = 0;
     }
-    
+
     /**
      * @description 開始フレーム番号
      *              start frame number
