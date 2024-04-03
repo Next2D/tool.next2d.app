@@ -25,6 +25,7 @@ import { execute as timelineLayerControllerMoveLayerHistoryRedoUseCase } from "@
 import { execute as layerUpdateLightColorHistoryRedoUseCase } from "@/history/application/core/application/Layer/usecase/LayerUpdateLightColorHistoryRedoUseCase";
 import { execute as layerUpdateModeHistoryRedoUseCase } from "@/history/application/core/application/Layer/usecase/LayerUpdateModeHistoryRedoUseCase";
 import { execute as timelineLayerFrameCreateEmptyKeyframeHistoryRedoUseCase } from "@/history/application/timeline/application/TimelineLayerFrame/AddEmptyKeyframe/usecase/TimelineLayerFrameCreateEmptyKeyframeHistoryRedoUseCase";
+import { execute as timelineLayerFrameUpdateEmptyKeyframeHistoryRedoUseCase } from "@/history/application/timeline/application/TimelineLayerFrame/UpdateEmptyKeyframe/usecase/TimelineLayerFrameUpdateEmptyKeyframeHistoryRedoUseCase";
 import { execute as instanceUpdateNameHistoryRedoUseCase } from "@/history/application/core/application/Instance/usecase/InstanceUpdateNameHistoryRedoUseCase";
 import { execute as instanceUpdateSymbolHistoryRedoUseCase } from "@/history/application/core/application/Instance/usecase/InstanceUpdateSymbolHistoryRedoUseCase";
 import {
@@ -50,7 +51,8 @@ import {
     $TIMELINE_MOVE_LAYER_COMMAND,
     $LAYER_UPDATE_LIGHT_COLOR_COMMAND,
     $LAYER_UPDATE_MODE_COMMAND,
-    $TIMELINE_ADD_EMPTY_KEYFRAME_COMMAND
+    $TIMELINE_ADD_EMPTY_KEYFRAME_COMMAND,
+    $TIMELINE_UPDATE_EMPTY_KEYFRAME_COMMAND
 } from "@/config/HistoryConfig";
 
 /**
@@ -281,6 +283,17 @@ export const execute = async (
                 messages[2] as number, // Layer Index
                 messages[3] as number, // Start Frame
                 messages[4] as number // End Frame
+            );
+            break;
+
+        // 空のキーフレーム変更
+        case $TIMELINE_UPDATE_EMPTY_KEYFRAME_COMMAND:
+            timelineLayerFrameUpdateEmptyKeyframeHistoryRedoUseCase(
+                messages[0] as number, // WorkSpace ID
+                messages[1] as number, // MovieClip ID
+                messages[2] as number, // Layer Index
+                messages[3] as number, // EmptyCharacter Index
+                messages[5] as number // after frame
             );
             break;
 
