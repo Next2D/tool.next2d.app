@@ -271,6 +271,28 @@ export class Layer
     }
 
     /**
+     * @description レイヤー内の最大フレーム数を返却
+     *              Returns the maximum number of frames in the layer
+     *
+     * @member {number}
+     * @readonly
+     * @public
+     */
+    get maxFrame (): number
+    {
+        let maxFrame = 0;
+        for (let idx = 0; idx < this._$characters.length; ++idx) {
+            maxFrame = Math.max(maxFrame, this._$characters[idx].endFrame);
+        }
+
+        for (let idx = 0; idx < this._$emptys.length; ++idx) {
+            maxFrame = Math.max(maxFrame, this._$emptys[idx].endFrame);
+        }
+
+        return maxFrame;
+    }
+
+    /**
      * @description 現在の表示index値を返却
      *              Return current display index value
      *

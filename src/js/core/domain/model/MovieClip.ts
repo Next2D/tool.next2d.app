@@ -305,17 +305,20 @@ export class MovieClip extends Instance
     }
 
     /**
-     * TODO
-     * @description MovieClipの最大フレーム番号を返却
-     *              Returns the maximum frame number of MovieClip
+     * @description MovieClipのレイヤーに設定されてるフレームの最大値を返却
+     *              Returns the maximum value of the frame set in the MovieClip Layer
      *
      * @member {number}
      * @readonly
      * @public
      */
-    get totalFrame (): number
+    get maxFrame (): number
     {
-        return 0;
+        let maxFrame = 0;
+        for (let idx = 0; idx < this._$layers.length; ++idx) {
+            maxFrame = Math.max(maxFrame, this._$layers[idx].maxFrame);
+        }
+        return maxFrame;
     }
 
     /**

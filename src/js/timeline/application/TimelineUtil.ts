@@ -83,7 +83,7 @@ export const $getRightFrame = (): number =>
 export const $getMaxFrame = (): number =>
 {
     const workSpace = $getCurrentWorkSpace();
-    return workSpace.scene.totalFrame + $FIXED_FRAME_COUNT;
+    return workSpace.scene.maxFrame + $FIXED_FRAME_COUNT;
 };
 
 /**

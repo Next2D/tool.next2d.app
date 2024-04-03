@@ -1,8 +1,7 @@
-import { EmptyCharacter } from "@/core/domain/model/EmptyCharacter";
 import type { Layer } from "@/core/domain/model/Layer";
-import { execute as externalTimelineLayerFrameCreateEmptyKeyframeUseCase } from "./ExternalTimelineLayerFrameCreateEmptyKeyframeUseCase";
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
+import { execute as externalTimelineLayerFrameCreateEmptyKeyframeUseCase } from "./ExternalTimelineLayerFrameCreateEmptyKeyframeUseCase";
 
 /**
  * @description 指定レイヤーの指定キーフレームより前の空きフレームの幅を調整

@@ -5,6 +5,7 @@ import { execute as externalTimelineLayerFramePrevAdjustmentUseCase } from "./Ex
 import { execute as timelineLayerFrameUpdateStyleService } from "@/timeline/application/TimelineLayerFrame/service/TimelineLayerFrameUpdateStyleService";
 import { execute as externalTimelineLayerFrameCreateEmptyKeyframeUseCase } from "./ExternalTimelineLayerFrameCreateEmptyKeyframeUseCase";
 import { timelineLayer } from "@/timeline/domain/model/TimelineLayer";
+import { execute as timelineScrollUpdateWidthService } from "@/timeline/application/TimelineScroll/service/TimelineScrollUpdateWidthService";
 
 /**
  * @description 選択中のレイヤーに空のキーフレームを追加
@@ -77,6 +78,9 @@ export const execute = (
                 layerElement.lastElementChild as NonNullable<HTMLElement>,
                 leftFrame
             );
+
+            // xスクロールの幅を更新
+            timelineScrollUpdateWidthService();
         }
     }
 };

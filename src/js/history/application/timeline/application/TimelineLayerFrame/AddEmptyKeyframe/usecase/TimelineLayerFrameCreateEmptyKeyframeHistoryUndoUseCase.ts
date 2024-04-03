@@ -4,6 +4,7 @@ import { $getWorkSpace } from "@/core/application/CoreUtil";
 import { execute as timelineLayerFrameUpdateStyleService } from "@/timeline/application/TimelineLayerFrame/service/TimelineLayerFrameUpdateStyleService";
 import { timelineLayer } from "@/timeline/domain/model/TimelineLayer";
 import { $getLeftFrame } from "@/timeline/application/TimelineUtil";
+import { execute as timelineScrollUpdateWidthService } from "@/timeline/application/TimelineScroll/service/TimelineScrollUpdateWidthService";
 
 /**
  * @description 空のキーフレーム追加処理を元に戻す
@@ -54,10 +55,14 @@ export const execute = (
             return ;
         }
 
+        // レイヤーのフレームスタイルを更新
         timelineLayerFrameUpdateStyleService(
             workSpace, movieClip,
             layerElement.lastElementChild as NonNullable<HTMLElement>,
             $getLeftFrame()
         );
+
+        // タイムラインの幅を更新
+        timelineScrollUpdateWidthService();
     }
 };
