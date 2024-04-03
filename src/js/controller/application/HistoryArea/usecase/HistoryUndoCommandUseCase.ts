@@ -25,6 +25,7 @@ import { execute as libraryAreaRemoveInstanceHistoryUndoUseCase } from "@/histor
 import { execute as timelineLayerControllerMoveLayerHistoryUndoUseCase } from "@/history/application/timeline/application/TimelineLayerController/MoveLayer/usecase/TimelineLayerControllerMoveLayerHistoryUndoUseCase";
 import { execute as layerUpdateLightColorHistoryUndoUseCase } from "@/history/application/core/application/Layer/usecase/LayerUpdateLightColorHistoryUndoUseCase";
 import { execute as layerUpdateModeHistoryUndoUseCase } from "@/history/application/core/application/Layer/usecase/LayerUpdateModeHistoryUndoUseCase";
+import { execute as timelineLayerFrameCreateEmptyKeyframeHistoryUndoUseCase } from "@/history/application/timeline/application/TimelineLayerFrame/AddEmptyKeyframe/usecase/TimelineLayerFrameCreateEmptyKeyframeHistoryUndoUseCase";
 import { execute as instanceUpdateNameHistoryUndoUseCase } from "@/history/application/core/application/Instance/usecase/InstanceUpdateNameHistoryUndoUseCase";
 import { execute as instanceUpdateSymbolHistoryUndoUseCase } from "@/history/application/core/application/Instance/usecase/InstanceUpdateSymbolHistoryUndoUseCase";
 import {
@@ -49,7 +50,8 @@ import {
     $LIBRARY_REMOVE_INSTANCE_COMMAND,
     $TIMELINE_MOVE_LAYER_COMMAND,
     $LAYER_UPDATE_LIGHT_COLOR_COMMAND,
-    $LAYER_UPDATE_MODE_COMMAND
+    $LAYER_UPDATE_MODE_COMMAND,
+    $TIMELINE_ADD_EMPTY_KEYFRAME_COMMAND
 } from "@/config/HistoryConfig";
 
 /**
@@ -265,6 +267,16 @@ export const execute = async (
                 messages[3] as LayerModeImpl, // Before Mode
                 messages[5] as number, // Before Parent ID
                 messages[7] as number[] // before child layer indexes
+            );
+            break;
+
+        // 空のキーフレーム追加
+        case $TIMELINE_ADD_EMPTY_KEYFRAME_COMMAND:
+            timelineLayerFrameCreateEmptyKeyframeHistoryUndoUseCase(
+                messages[0] as number, // WorkSpace ID
+                messages[1] as number, // MovieClip ID
+                messages[2] as number, // Layer Index
+                messages[3] as number // Start Frame
             );
             break;
 

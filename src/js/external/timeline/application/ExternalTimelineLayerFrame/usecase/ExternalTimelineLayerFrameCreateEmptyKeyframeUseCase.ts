@@ -2,7 +2,7 @@ import type { Layer } from "@/core/domain/model/Layer";
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import { EmptyCharacter } from "@/core/domain/model/EmptyCharacter";
-import { execute as timelineLayerFrameCreateEmptyKeyframeHistoryUseCase } from "@/history/application/timeline/application/TimelineLayerFrame/usecase/TimelineLayerFrameCreateEmptyKeyframeHistoryUseCase";
+import { execute as timelineLayerFrameCreateEmptyKeyframeHistoryUseCase } from "@/history/application/timeline/application/TimelineLayerFrame/AddEmptyKeyframe/usecase/TimelineLayerFrameCreateEmptyKeyframeHistoryUseCase";
 
 /**
  * @description 空のキーフレームを追加
@@ -13,6 +13,7 @@ import { execute as timelineLayerFrameCreateEmptyKeyframeHistoryUseCase } from "
  * @param  {Layer} layer
  * @param  {number} start_frame
  * @param  {number} end_frame
+ * @param  {boolean} [receiver=false]
  * @return {void}
  * @method
  * @public
@@ -22,7 +23,8 @@ export const execute = (
     movie_clip: MovieClip,
     layer: Layer,
     start_frame: number,
-    end_frame: number
+    end_frame: number,
+    receiver: boolean = false
 ): void => {
 
     const emptyCharacter = new EmptyCharacter();
@@ -36,6 +38,7 @@ export const execute = (
         movie_clip,
         layer,
         start_frame,
-        end_frame
+        end_frame,
+        receiver
     );
 };

@@ -1,6 +1,6 @@
 import { execute } from "./TimelineLayerFrameCreateEmptyKeyframeCreateHistoryObjectService";
-import { $TIMELINE_ADD_EMPTY_KEYFRAME_COMMAND } from "../../../../../../config/HistoryConfig";
-import { MovieClip } from "../../../../../../core/domain/model/MovieClip";
+import { $TIMELINE_ADD_EMPTY_KEYFRAME_COMMAND } from "../../../../../../../config/HistoryConfig";
+import { MovieClip } from "../../../../../../../core/domain/model/MovieClip";
 
 describe("TimelineLayerFrameCreateEmptyKeyframeCreateHistoryObjectServiceTest", () =>
 {

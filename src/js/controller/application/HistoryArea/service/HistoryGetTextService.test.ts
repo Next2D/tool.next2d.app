@@ -49,6 +49,6 @@ describe("HistoryGetTextServiceTest", () =>
         expect(execute($LIBRARY_REMOVE_INSTANCE_COMMAND)).toBe("ライブラリから「%s1」を削除");
         expect(execute($TIMELINE_MOVE_LAYER_COMMAND)).toBe("「%s1」のレイヤー「%s2」を移動");
         expect(execute($LAYER_UPDATE_LIGHT_COLOR_COMMAND)).toBe("「%s1」のレイヤー「%s2」のハイライトカラーを変更");
-        expect(execute($TIMELINE_ADD_EMPTY_KEYFRAME_COMMAND)).toBe("「%s1」のレイヤー「%s2」の「%s3」に空のキーフレームを追加");
+        expect(execute($TIMELINE_ADD_EMPTY_KEYFRAME_COMMAND)).toBe("「%s1」のレイヤー「%s2」の%s3フレームに空のキーフレームを追加");
     });
 });

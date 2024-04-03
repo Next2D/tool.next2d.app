@@ -103,7 +103,7 @@ export const execute = (command: number): string =>
             return "「%s1」のレイヤー「%s2」を「%s3」に変更";
 
         case $TIMELINE_ADD_EMPTY_KEYFRAME_COMMAND:
-            return "「%s1」のレイヤー「%s2」の「%s3」に空のキーフレームを追加";
+            return "「%s1」のレイヤー「%s2」の%s3フレームに空のキーフレームを追加";
 
         default:
             break;

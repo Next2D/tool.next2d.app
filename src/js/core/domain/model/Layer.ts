@@ -416,6 +416,20 @@ export class Layer
     }
 
     /**
+     * @description 空のキーフレームを削除
+     *              Remove an empty key frame
+     *
+     * @param  {EmptyCharacter} empty_character
+     * @return {void}
+     * @method
+     * @public
+     */
+    removeEmptyCharacter (empty_character: EmptyCharacter): void
+    {
+        this._$emptys.splice(this._$emptys.indexOf(empty_character));
+    }
+
+    /**
      * @description 指定したフレームに空のキーフレームがあれば返却
      *              Returns an empty keyframe at the specified frame
      *
