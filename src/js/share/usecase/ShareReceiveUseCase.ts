@@ -26,6 +26,7 @@ import { execute as layerUpdateLightColorReceiveUseCase } from "@/share/receive/
 import { execute as layerUpdateModeReceiveUseCase } from "@/share/receive/application/core/application/Layer/usecase/LayerUpdateModeReceiveUseCase";
 import { execute as timelineLayerControllerLayerMoveReceiveUseCase } from "@/share/receive/application/timeline/application/TimelineLayerController/usecase/TimelineLayerControllerLayerMoveReceiveUseCase";
 import { execute as timelineLayerFrameAddEmptyKeyframeReceiveUseCase } from "@/share/receive/application/timeline/application/TimelineLayerFrame/application/EmptyKeyframe/usecase/TimelineLayerFrameAddEmptyKeyframeReceiveUseCase";
+import { execute as timelineLayerFrameUpdateEmptyKeyframeReceiveUseCase } from "@/share/receive/application/timeline/application/TimelineLayerFrame/application/EmptyKeyframe/usecase/TimelineLayerFrameUpdateEmptyKeyframeReceiveUseCase";
 import { execute as historyRedoUseCase } from "@/controller/application/HistoryArea/usecase/HistoryRedoUseCase";
 import { execute as historyUndoUseCase } from "@/controller/application/HistoryArea/usecase/HistoryUndoUseCase";
 import {
@@ -57,7 +58,8 @@ import {
     $TIMELINE_MOVE_LAYER_COMMAND,
     $LAYER_UPDATE_LIGHT_COLOR_COMMAND,
     $LAYER_UPDATE_MODE_COMMAND,
-    $TIMELINE_ADD_EMPTY_KEYFRAME_COMMAND
+    $TIMELINE_ADD_EMPTY_KEYFRAME_COMMAND,
+    $TIMELINE_UPDATE_EMPTY_KEYFRAME_COMMAND
 } from "@/config/HistoryConfig";
 
 /**
@@ -224,6 +226,11 @@ export const execute = async (message: ShareReceiveMessageImpl): Promise<void> =
         // 空のキーフレームを追加
         case $TIMELINE_ADD_EMPTY_KEYFRAME_COMMAND:
             timelineLayerFrameAddEmptyKeyframeReceiveUseCase(message);
+            break;
+
+        // 空のキーフレームを更新
+        case $TIMELINE_UPDATE_EMPTY_KEYFRAME_COMMAND:
+            timelineLayerFrameUpdateEmptyKeyframeReceiveUseCase(message);
             break;
 
         default:
