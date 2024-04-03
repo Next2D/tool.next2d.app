@@ -2,6 +2,7 @@ import type { Layer } from "@/core/domain/model/Layer";
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import { execute as externalTimelineLayerFrameCreateEmptyKeyframeUseCase } from "./ExternalTimelineLayerFrameCreateEmptyKeyframeUseCase";
+import { execute as timelineLayerFrameUpdateEmptyKeyframeHistoryUseCase } from "@/history/application/timeline/application/TimelineLayerFrame/UpdateEmptyKeyframe/usecase/TimelineLayerFrameUpdateEmptyKeyframeHistoryUseCase";
 
 /**
  * @description 指定レイヤーの指定キーフレームより前の空きフレームの幅を調整
@@ -45,7 +46,15 @@ export const execute = (
 
         const emptyCharacter = layer.getActiveEmptyCharacter(frame);
         if (emptyCharacter) {
+            const beforeEndFrame = emptyCharacter.endFrame;
             emptyCharacter.endFrame = keyframe;
+            timelineLayerFrameUpdateEmptyKeyframeHistoryUseCase(
+                work_space,
+                movie_clip,
+                layer,
+                emptyCharacter,
+                beforeEndFrame
+            );
             return ;
         }
 

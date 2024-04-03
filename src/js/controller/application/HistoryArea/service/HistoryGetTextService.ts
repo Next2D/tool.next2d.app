@@ -21,7 +21,8 @@ import {
     $TIMELINE_MOVE_LAYER_COMMAND,
     $LAYER_UPDATE_LIGHT_COLOR_COMMAND,
     $LAYER_UPDATE_MODE_COMMAND,
-    $TIMELINE_ADD_EMPTY_KEYFRAME_COMMAND
+    $TIMELINE_ADD_EMPTY_KEYFRAME_COMMAND,
+    $TIMELINE_UPDATE_EMPTY_KEYFRAME_COMMAND
 } from "@/config/HistoryConfig";
 
 /**
@@ -104,6 +105,9 @@ export const execute = (command: number): string =>
 
         case $TIMELINE_ADD_EMPTY_KEYFRAME_COMMAND:
             return "「%s1」のレイヤー「%s2」の%s3フレームに空のキーフレームを追加";
+
+        case $TIMELINE_UPDATE_EMPTY_KEYFRAME_COMMAND:
+            return "「%s1」のレイヤー「%s2」の%s3フレームの空のキーフレームを変更";
 
         default:
             break;
