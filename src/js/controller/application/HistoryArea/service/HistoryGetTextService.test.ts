@@ -21,7 +21,9 @@ import {
     $LIBRARY_REMOVE_INSTANCE_COMMAND,
     $TIMELINE_MOVE_LAYER_COMMAND,
     $LAYER_UPDATE_LIGHT_COLOR_COMMAND,
-    $TIMELINE_ADD_EMPTY_KEYFRAME_COMMAND
+    $TIMELINE_ADD_EMPTY_KEYFRAME_COMMAND,
+    $TIMELINE_UPDATE_EMPTY_KEYFRAME_COMMAND,
+    $TIMELINE_SPLIT_EMPTY_KEYFRAME_COMMAND
 } from "../../../../config/HistoryConfig";
 
 describe("HistoryGetTextServiceTest", () =>
@@ -50,5 +52,7 @@ describe("HistoryGetTextServiceTest", () =>
         expect(execute($TIMELINE_MOVE_LAYER_COMMAND)).toBe("「%s1」のレイヤー「%s2」を移動");
         expect(execute($LAYER_UPDATE_LIGHT_COLOR_COMMAND)).toBe("「%s1」のレイヤー「%s2」のハイライトカラーを変更");
         expect(execute($TIMELINE_ADD_EMPTY_KEYFRAME_COMMAND)).toBe("「%s1」のレイヤー「%s2」の%s3フレームに空のキーフレームを追加");
+        expect(execute($TIMELINE_UPDATE_EMPTY_KEYFRAME_COMMAND)).toBe("「%s1」のレイヤー「%s2」の%s3フレームの空のキーフレームを変更");
+        expect(execute($TIMELINE_SPLIT_EMPTY_KEYFRAME_COMMAND)).toBe("「%s1」のレイヤー「%s2」の%s3フレームの空のキーフレームを分割");
     });
 });

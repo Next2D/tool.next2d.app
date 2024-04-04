@@ -285,3 +285,12 @@ export const $TIMELINE_ADD_EMPTY_KEYFRAME_COMMAND: number = 28;
  * @constant
  */
 export const $TIMELINE_UPDATE_EMPTY_KEYFRAME_COMMAND: number = 29;
+
+/**
+ * @description 空のキーフレームの分割の識別コマンド名
+ *              Identification command name for splitting an empty keyframe
+ *
+ * @type {number}
+ * @constant
+ */
+export const $TIMELINE_SPLIT_EMPTY_KEYFRAME_COMMAND: number = 30;

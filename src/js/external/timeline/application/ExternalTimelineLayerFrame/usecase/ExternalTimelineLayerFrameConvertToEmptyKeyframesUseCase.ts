@@ -3,9 +3,9 @@ import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import { $convertFrameObject, $getLeftFrame } from "@/timeline/application/TimelineUtil";
 import { execute as externalTimelineLayerFramePrevAdjustmentUseCase } from "./ExternalTimelineLayerFramePrevAdjustmentUseCase";
 import { execute as timelineLayerFrameUpdateStyleService } from "@/timeline/application/TimelineLayerFrame/service/TimelineLayerFrameUpdateStyleService";
-import { execute as externalTimelineLayerFrameCreateEmptyKeyframeUseCase } from "./ExternalTimelineLayerFrameCreateEmptyKeyframeUseCase";
 import { timelineLayer } from "@/timeline/domain/model/TimelineLayer";
 import { execute as timelineScrollUpdateWidthService } from "@/timeline/application/TimelineScroll/service/TimelineScrollUpdateWidthService";
+import { execute as externalTimelineLayerFrameSplitEmptyKeyframesUseCase } from "./ExternalTimelineLayerFrameSplitEmptyKeyframesUseCase";
 
 /**
  * @description 選択中のレイヤーに空のキーフレームを追加
@@ -53,14 +53,13 @@ export const execute = (
         }
 
         // 指定されたフレームに空のキーフレームを追加
-        for (let frame = frameObject.start; frame < frameObject.end; ++frame) {
+        for (let keyframe = frameObject.start; keyframe < frameObject.end; ++keyframe) {
 
-            externalTimelineLayerFrameCreateEmptyKeyframeUseCase(
+            externalTimelineLayerFrameSplitEmptyKeyframesUseCase(
                 work_space,
                 movie_clip,
                 layer,
-                frame,
-                frame + 1
+                keyframe
             );
 
         }
