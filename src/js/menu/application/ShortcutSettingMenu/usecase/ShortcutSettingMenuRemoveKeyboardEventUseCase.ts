@@ -11,5 +11,7 @@ import { execute as shortcutSettingMenuKeyboardEventUseCase } from "./ShortcutSe
  */
 export const execute = (): void =>
 {
-    window.removeEventListener(EventType.KEY_DOWN, shortcutSettingMenuKeyboardEventUseCase);
+    window.removeEventListener(EventType.KEY_DOWN,
+        shortcutSettingMenuKeyboardEventUseCase
+    );
 };

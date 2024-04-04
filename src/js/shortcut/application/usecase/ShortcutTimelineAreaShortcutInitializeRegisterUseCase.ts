@@ -3,6 +3,7 @@ import { execute as timelineLayerArrowDownUseCase } from "@/timeline/application
 import { execute as timelineLayerArrowUpUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerArrowUpUseCase";
 import { execute as timelineToolLayerDeleteUseCase } from "@/timeline/application/TimelineTool/application/LayerDelete/usecase/TimelineToolLayerDeleteUseCase";
 import { execute as scriptEditorModalCurrentBootUseCase } from "@/menu/application/ScriptEditorModal/usecase/ScriptEditorModalCurrentBootUseCase";
+import { execute as timelineToolAddEmptyKeyFrameUseCase } from "@/timeline/application/TimelineTool/application/AddEmptyKeyFrame/usecase/TimelineToolAddEmptyKeyFrameUseCase";
 import {
     $generateShortcutKey,
     $setShortcut
@@ -51,5 +52,10 @@ export const execute = (): void =>
     // スクリプトエディタの起動
     $setShortcut($generateShortcutKey("s"),
         scriptEditorModalCurrentBootUseCase
+    );
+
+    $setShortcut(
+        $generateShortcutKey("e", { "ctrl": true }),
+        timelineToolAddEmptyKeyFrameUseCase
     );
 };

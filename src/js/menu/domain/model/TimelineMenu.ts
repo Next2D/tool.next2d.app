@@ -1,5 +1,6 @@
 import { $TIMELINE_MENU_NAME } from "@/config/MenuConfig";
 import { BaseMenu } from "./BaseMenu";
+import { execute as timelineMenuInitializeRegisterEventUseCase } from "@/menu/application/TimelineMenu/usecase/TimelineMenuInitializeRegisterEventUseCase";
 
 /**
  * @description レイヤーのメニュークラス
@@ -18,6 +19,19 @@ export class TimelineMenu extends BaseMenu
     constructor ()
     {
         super($TIMELINE_MENU_NAME);
+    }
+
+    /**
+     * @description 初期起動関数
+     *              initial invoking function
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    initialize (): void
+    {
+        timelineMenuInitializeRegisterEventUseCase();
     }
 
     /**
