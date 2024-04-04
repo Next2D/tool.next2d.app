@@ -27,6 +27,7 @@ import { execute as layerUpdateModeReceiveUseCase } from "@/share/receive/applic
 import { execute as timelineLayerControllerLayerMoveReceiveUseCase } from "@/share/receive/application/timeline/application/TimelineLayerController/usecase/TimelineLayerControllerLayerMoveReceiveUseCase";
 import { execute as timelineLayerFrameAddEmptyKeyframeReceiveUseCase } from "@/share/receive/application/timeline/application/TimelineLayerFrame/application/EmptyKeyframe/usecase/TimelineLayerFrameAddEmptyKeyframeReceiveUseCase";
 import { execute as timelineLayerFrameUpdateEmptyKeyframeReceiveUseCase } from "@/share/receive/application/timeline/application/TimelineLayerFrame/application/EmptyKeyframe/usecase/TimelineLayerFrameUpdateEmptyKeyframeReceiveUseCase";
+import { execute as timelineLayerFrameSplitEmptyKeyframeReceiveUseCase } from "@/share/receive/application/timeline/application/TimelineLayerFrame/application/EmptyKeyframe/usecase/TimelineLayerFrameSplitEmptyKeyframeReceiveUseCase";
 import { execute as historyRedoUseCase } from "@/controller/application/HistoryArea/usecase/HistoryRedoUseCase";
 import { execute as historyUndoUseCase } from "@/controller/application/HistoryArea/usecase/HistoryUndoUseCase";
 import {
@@ -59,7 +60,8 @@ import {
     $LAYER_UPDATE_LIGHT_COLOR_COMMAND,
     $LAYER_UPDATE_MODE_COMMAND,
     $TIMELINE_ADD_EMPTY_KEYFRAME_COMMAND,
-    $TIMELINE_UPDATE_EMPTY_KEYFRAME_COMMAND
+    $TIMELINE_UPDATE_EMPTY_KEYFRAME_COMMAND,
+    $TIMELINE_SPLIT_EMPTY_KEYFRAME_COMMAND
 } from "@/config/HistoryConfig";
 
 /**
@@ -231,6 +233,11 @@ export const execute = async (message: ShareReceiveMessageImpl): Promise<void> =
         // 空のキーフレームを更新
         case $TIMELINE_UPDATE_EMPTY_KEYFRAME_COMMAND:
             timelineLayerFrameUpdateEmptyKeyframeReceiveUseCase(message);
+            break;
+
+        // 空のキーフレームを分割
+        case $TIMELINE_SPLIT_EMPTY_KEYFRAME_COMMAND:
+            timelineLayerFrameSplitEmptyKeyframeReceiveUseCase(message);
             break;
 
         default:
