@@ -34,7 +34,8 @@ export const execute = (
             movie_clip.id,
             movie_clip.layers.indexOf(layer),
             layer.emptyCharacters.indexOf(empty_character),
-            layer.emptyCharacters.indexOf(new_empty_character)
+            layer.emptyCharacters.indexOf(new_empty_character),
+            new_empty_character.startFrame
         ],
         "args": [
             movie_clip.name,

@@ -26,6 +26,7 @@ import { execute as layerUpdateLightColorHistoryRedoUseCase } from "@/history/ap
 import { execute as layerUpdateModeHistoryRedoUseCase } from "@/history/application/core/application/Layer/usecase/LayerUpdateModeHistoryRedoUseCase";
 import { execute as timelineLayerFrameCreateEmptyKeyframeHistoryRedoUseCase } from "@/history/application/timeline/application/TimelineLayerFrame/AddEmptyKeyframe/usecase/TimelineLayerFrameCreateEmptyKeyframeHistoryRedoUseCase";
 import { execute as timelineLayerFrameUpdateEmptyKeyframeHistoryRedoUseCase } from "@/history/application/timeline/application/TimelineLayerFrame/UpdateEmptyKeyframe/usecase/TimelineLayerFrameUpdateEmptyKeyframeHistoryRedoUseCase";
+import { execute as timelineLayerFrameSplitEmptyKeyframeHistoryRedoUseCase } from "@/history/application/timeline/application/TimelineLayerFrame/SplitEmptyKeyframe/usecase/TimelineLayerFrameSplitEmptyKeyframeHistoryRedoUseCase";
 import { execute as instanceUpdateNameHistoryRedoUseCase } from "@/history/application/core/application/Instance/usecase/InstanceUpdateNameHistoryRedoUseCase";
 import { execute as instanceUpdateSymbolHistoryRedoUseCase } from "@/history/application/core/application/Instance/usecase/InstanceUpdateSymbolHistoryRedoUseCase";
 import {
@@ -52,7 +53,8 @@ import {
     $LAYER_UPDATE_LIGHT_COLOR_COMMAND,
     $LAYER_UPDATE_MODE_COMMAND,
     $TIMELINE_ADD_EMPTY_KEYFRAME_COMMAND,
-    $TIMELINE_UPDATE_EMPTY_KEYFRAME_COMMAND
+    $TIMELINE_UPDATE_EMPTY_KEYFRAME_COMMAND,
+    $TIMELINE_SPLIT_EMPTY_KEYFRAME_COMMAND
 } from "@/config/HistoryConfig";
 
 /**
@@ -294,6 +296,19 @@ export const execute = async (
                 messages[2] as number, // Layer Index
                 messages[3] as number, // EmptyCharacter Index
                 messages[5] as number // after frame
+            );
+            break;
+
+        // 空のキーフレームの分割
+        case $TIMELINE_SPLIT_EMPTY_KEYFRAME_COMMAND:
+            timelineLayerFrameSplitEmptyKeyframeHistoryRedoUseCase(
+                messages[0] as number, // WorkSpace ID
+                messages[1] as number, // MovieClip ID
+                messages[2] as number, // Layer Index
+                messages[3] as number, // EmptyCharacter Index
+                messages[4] as number, // New EmptyCharacter Index
+                messages[5] as number // Keyframe
+
             );
             break;
 
