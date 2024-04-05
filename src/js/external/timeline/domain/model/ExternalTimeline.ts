@@ -1,18 +1,16 @@
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
-import type { Layer } from "@/core/domain/model/Layer";
-import { $clamp } from "@/global/GlobalUtil";
 import { ExternalLayer } from "@/external/core/domain/model/ExternalLayer";
 import { $convertFrameObject } from "@/timeline/application/TimelineUtil";
 import { execute as externalTimelineChageFrameUseCase } from "@/external/timeline/application/ExternalTimeline/usecase/ExternalTimelineChageFrameUseCase";
 import { execute as externalTimelineLayerDeactivateLayerUseCase } from "@/external/timeline/application/ExternalTimelineLayer/usecase/ExternalTimelineLayerDeactivateLayerUseCase";
 import { execute as externalTimelineLayerControllerSelectedLayersUseCase } from "@/external/timeline/application/ExternalTimelineLayerController/usecase/ExternalTimelineLayerControllerSelectedLayersUseCase";
-import { execute as externalTimelineLayerFrameSelectedUseCase } from "@/external/timeline/application/ExternalTimelineLayerFrame/usecase/ExternalTimelineLayerFrameSelectedUseCase";
-import { execute as timelineLayerAllClearSelectedElementUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerAllClearSelectedElementUseCase";
 import { execute as externalTimelineLayerControllerBehindUseCase } from "@/external/timeline/application/ExternalTimelineLayerController/usecase/ExternalTimelineLayerControllerBehindUseCase";
 import { execute as externalTimelineAddNewLayerUseCase } from "@/external/timeline/application/ExternalTimeline/usecase/ExternalTimelineAddNewLayerUseCase";
 import { execute as externalTimelineDeleteLayerUseCase } from "@/external/timeline/application/ExternalTimeline/usecase/ExternalTimelineDeleteLayerUseCase";
 import { execute as externalTimelineLayerFrameConvertToEmptyKeyframesUseCase } from "@/external/timeline/application/ExternalTimelineLayerFrame/usecase/ExternalTimelineLayerFrameConvertToEmptyKeyframesUseCase";
+import { execute as externalTimelineLayerFrameSelectedFramesUseCase } from "@/external/timeline/application/ExternalTimelineLayerFrame/usecase/ExternalTimelineLayerFrameSelectedFramesUseCase";
+import { execute as externalTimelineLayerDeactivatedAllLayerUseCase } from "@/external/timeline/application/ExternalTimelineLayer/usecase/ExternalTimelineLayerDeactivatedAllLayerUseCase";
 
 /**
  * @description タイムラインの外部APIクラス
@@ -101,15 +99,11 @@ export class ExternalTimeline
      */
     changeFrame (frame: number): void
     {
-        frame = $clamp(frame, 1, Number.MAX_VALUE);
-
-        if (this._$workSpace.active && this._$movieClip.active) {
-            // アクティブなら表示を非アクティブに更新
-            externalTimelineChageFrameUseCase(frame);
-        }
-
-        // 内部情報を更新
-        this._$movieClip.currentFrame = frame;
+        externalTimelineChageFrameUseCase(
+            this._$workSpace,
+            this._$movieClip,
+            frame
+        );
 
         // 選択中のLayerを解放
         this.deactivatedAllLayers();
@@ -235,8 +229,8 @@ export class ExternalTimeline
     }
 
     /**
-     * @description 指定したindex値のレイヤーをアクティブにする
-     *              Activate the layer with the specified index value
+     * @description 指定したフレーム番号のフレームをアクティブにする
+     *              Activate the frame with the specified frame number
      *
      * @param  {array} frames
      * @return {void}
@@ -245,25 +239,11 @@ export class ExternalTimeline
      */
     selectedFrames (frames: number[]): void
     {
-        // 選択中のレイヤーがなければ終了
-        if (!this._$movieClip.selectedLayers.length) {
-            return ;
-        }
-
-        const frame = frames.length === 1
-            ? frames[0]
-            : this._$movieClip.selectedFrameObject.end;
-
-        if (this._$workSpace.active && this._$movieClip.active) {
-            // ヘッダーのマーカーを移動
-            externalTimelineChageFrameUseCase(frame);
-
-            // 指定のフレームを選択状態に更新
-            externalTimelineLayerFrameSelectedUseCase(this._$movieClip, frames);
-        }
-
-        // 内部情報を更新
-        this._$movieClip.currentFrame = frame;
+        externalTimelineLayerFrameSelectedFramesUseCase(
+            this._$workSpace,
+            this._$movieClip,
+            frames
+        );
     }
 
     /**
@@ -276,13 +256,10 @@ export class ExternalTimeline
      */
     deactivatedAllLayers (): void
     {
-        // 表示中のMovieClipなら表示側を更新
-        if (this._$workSpace.active && this._$movieClip.active) {
-            timelineLayerAllClearSelectedElementUseCase(this._$movieClip);
-        }
-
-        // 内部データを初期化
-        this._$movieClip.clearSelectedLayer();
+        externalTimelineLayerDeactivatedAllLayerUseCase(
+            this._$workSpace,
+            this._$movieClip
+        );
     }
 
     /**
@@ -296,18 +273,10 @@ export class ExternalTimeline
      */
     deactivatedLayer (indexes: number[]): void
     {
-        for (let idx = 0; idx < indexes.length; ++idx) {
-
-            const layer: Layer | undefined = this._$movieClip.layers[indexes[idx]];
-            if (!layer) {
-                return ;
-            }
-
-            // 指定のレイヤーを非アクティブ化する
-            externalTimelineLayerDeactivateLayerUseCase(
-                this._$workSpace, this._$movieClip, layer
-            );
-        }
+        // 指定のレイヤーを非アクティブ化する
+        externalTimelineLayerDeactivateLayerUseCase(
+            this._$workSpace, this._$movieClip, indexes
+        );
     }
 
     /**
@@ -326,5 +295,19 @@ export class ExternalTimeline
             this._$movieClip,
             index
         );
+    }
+
+    /**
+     * @description 選択中のフレームに指定数のフレームを挿入
+     *              Insert the specified number of frames into the selected frames
+     *
+     * @param  {number} num_frames
+     * @return {void}
+     * @method
+     * @public
+     */
+    insertFrames (num_frames: number): void
+    {
+        // 選択中のレイヤーがなければ終了
     }
 }

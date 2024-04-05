@@ -15,20 +15,22 @@ import { execute as timelineLayerDeactivatedElementService } from "@/timeline/ap
 export const execute = (
     work_spcae: WorkSpace,
     movie_clip: MovieClip,
-    layer: Layer
+    indexes: number[]
 ): void => {
 
-    // 表示されているプロジェクトであれば表示を更新
-    if (work_spcae.active && movie_clip.active) {
+    for (let idx = 0; idx < indexes.length; ++idx) {
+
+        const layer: Layer | undefined = movie_clip.layers[indexes[idx]];
+        if (!layer) {
+            return ;
+        }
 
         const externalLayer = new ExternalLayer(work_spcae, movie_clip, layer);
-
-        // 選択中なら、対象のElementを非アクティブに更新
         if (externalLayer.isSelected()) {
             timelineLayerDeactivatedElementService(movie_clip, layer);
         }
-    }
 
-    // 内部情報から削除
-    movie_clip.deactivatedLayer(layer);
+        // 内部情報から削除
+        movie_clip.deactivatedLayer(layer);
+    }
 };

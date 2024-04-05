@@ -1,34 +1,48 @@
 import { MovieClip } from "@/core/domain/model/MovieClip";
 import { WorkSpace } from "@/core/domain/model/WorkSpace";
-import { $clamp } from "@/global/GlobalUtil";
 import { execute as timelineFrameUpdateFrameElementService } from "@/timeline/application/TimelineFrame/service/TimelineFrameUpdateFrameElementService";
 import { execute as timelineMarkerMovePositionService } from "@/timeline/application/TimelineMarker/service/TimelineMarkerMovePositionService";
+import { execute as timelineLayerAllSelectedElementUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerAllSelectedElementUseCase";
 
 /**
- * @description レイヤーのアクティブを初期化して指定のフレームを選択する
- *              Initialize the layer active and select the specified frame
+ * @description 指定のフレームを選択状態に更新
+ *              Update the specified frame to the selected state
  *
- * @param {WorkSpace} work_space
- * @param {MovieClip} movie_clip
- * @param {number} frame
+ * @param  {WorkSpace} work_space
+ * @param  {MovieClip} movie_clip
+ * @param  {array} frames
+ * @return {void}
  * @method
  * @public
  */
 export const execute = (
     work_space: WorkSpace,
     movie_clip: MovieClip,
-    frame: number
+    frames: number[]
 ): void => {
 
-    frame = $clamp(frame, 1, Number.MAX_VALUE);
+    // 選択中のレイヤーがなければ終了
+    if (!movie_clip.selectedLayers.length) {
+        return ;
+    }
 
-    // アクティブなら表示を非アクティブに更新
+    let frame = frames.length > 1
+        ? movie_clip.selectedFrameObject.end
+        : frames[0];
+
+    if (!frame) {
+        frame = frames[0];
+    }
+
     if (work_space.active && movie_clip.active) {
         // フレームの表示を更新
         timelineFrameUpdateFrameElementService(frame);
 
         // マーカーを移動
         timelineMarkerMovePositionService();
+
+        // 指定のフレームを選択状態に更新
+        timelineLayerAllSelectedElementUseCase(movie_clip, frames);
     }
 
     // 内部情報を更新
