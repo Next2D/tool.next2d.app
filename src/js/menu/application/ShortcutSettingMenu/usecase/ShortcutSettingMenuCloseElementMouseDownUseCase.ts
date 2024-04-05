@@ -2,6 +2,7 @@ import { execute as shortcutSettingMenuHideService } from "../service/ShortcutSe
 import { execute as userSettingMenuShowService } from "../../UserSettingMenu/service/UserSettingMenuShowService";
 import { execute as shortcutSettingMenuResetListStyleUseCase } from "./ShortcutSettingMenuResetListStyleUseCase";
 import { execute as shortcutSettingMenuRemoveKeyboardEventService } from "./ShortcutSettingMenuRemoveKeyboardEventUseCase";
+import { execute as languageTranslationService } from "@/language/application/service/LanguageTranslationService";
 
 /**
  * @description ショートカットメニューを非表示にして、ユーザー設定メニューを表示
@@ -24,4 +25,7 @@ export const execute = (): void =>
 
     // キーボードイベントを削除
     shortcutSettingMenuRemoveKeyboardEventService();
+
+    // 言語を変換
+    languageTranslationService(document);
 };
