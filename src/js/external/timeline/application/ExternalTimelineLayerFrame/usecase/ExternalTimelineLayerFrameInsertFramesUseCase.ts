@@ -5,6 +5,7 @@ import { timelineLayer } from "@/timeline/domain/model/TimelineLayer";
 import { $getLeftFrame } from "@/timeline/application/TimelineUtil";
 import { execute as timelineLayerFrameUpdateStyleService } from "@/timeline/application/TimelineLayerFrame/service/TimelineLayerFrameUpdateStyleService";
 import { execute as timelineScrollUpdateWidthService } from "@/timeline/application/TimelineScroll/service/TimelineScrollUpdateWidthService";
+import { execute as timelineLayerFrameInsertEmptyFramesHistoryUseCase } from "@/history/application/timeline/application/TimelineLayerFrame/InsertEmptyFrames/usecase/TimelineLayerFrameInsertEmptyFramesHistoryUseCase";
 
 /**
  * @description 現在のフレームで、選択中のレイヤーに指定数のフレームを挿入
@@ -53,6 +54,13 @@ export const execute = (
                 activeEmptyCharacter.endFrame += num_frame;
 
                 // 履歴に追加
+                timelineLayerFrameInsertEmptyFramesHistoryUseCase(
+                    work_space,
+                    movie_clip,
+                    layer,
+                    activeEmptyCharacter,
+                    num_frame
+                );
             }
         }
 
