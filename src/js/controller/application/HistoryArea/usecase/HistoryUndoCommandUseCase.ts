@@ -28,6 +28,7 @@ import { execute as layerUpdateModeHistoryUndoUseCase } from "@/history/applicat
 import { execute as timelineLayerFrameCreateEmptyKeyframeHistoryUndoUseCase } from "@/history/application/timeline/application/TimelineLayerFrame/AddEmptyKeyframe/usecase/TimelineLayerFrameCreateEmptyKeyframeHistoryUndoUseCase";
 import { execute as timelineLayerFrameUpdateEmptyKeyframeHistoryUndoUseCase } from "@/history/application/timeline/application/TimelineLayerFrame/UpdateEmptyKeyframe/usecase/TimelineLayerFrameUpdateEmptyKeyframeHistoryUndoUseCase";
 import { execute as timelineLayerFrameSplitEmptyKeyframeHistoryUndoUseCase } from "@/history/application/timeline/application/TimelineLayerFrame/SplitEmptyKeyframe/usecase/TimelineLayerFrameSplitEmptyKeyframeHistoryUndoUseCase";
+import { execute as timelineLayerFrameInsertEmptyFramesHistoryUndoUseCase } from "@/history/application/timeline/application/TimelineLayerFrame/InsertEmptyFrames/usecase/TimelineLayerFrameInsertEmptyFramesHistoryUndoUseCase";
 import { execute as instanceUpdateNameHistoryUndoUseCase } from "@/history/application/core/application/Instance/usecase/InstanceUpdateNameHistoryUndoUseCase";
 import { execute as instanceUpdateSymbolHistoryUndoUseCase } from "@/history/application/core/application/Instance/usecase/InstanceUpdateSymbolHistoryUndoUseCase";
 import {
@@ -55,7 +56,8 @@ import {
     $LAYER_UPDATE_MODE_COMMAND,
     $TIMELINE_ADD_EMPTY_KEYFRAME_COMMAND,
     $TIMELINE_UPDATE_EMPTY_KEYFRAME_COMMAND,
-    $TIMELINE_SPLIT_EMPTY_KEYFRAME_COMMAND
+    $TIMELINE_SPLIT_EMPTY_KEYFRAME_COMMAND,
+    $TIMELINE_INSERT_EMPTY_FRAME_COMMAND
 } from "@/config/HistoryConfig";
 
 /**
@@ -303,6 +305,17 @@ export const execute = async (
                 messages[2] as number, // Layer Index
                 messages[3] as number, // EmptyCharacter Index
                 messages[4] as number // NewEmptyCharacter Index
+            );
+            break;
+
+        // 空のキーフレームへフレームを挿入
+        case $TIMELINE_INSERT_EMPTY_FRAME_COMMAND:
+            timelineLayerFrameInsertEmptyFramesHistoryUndoUseCase(
+                messages[0] as number, // WorkSpace ID
+                messages[1] as number, // MovieClip ID
+                messages[2] as number, // Layer Index
+                messages[3] as number, // EmptyCharacter Index
+                messages[4] as number // NumFrame
             );
             break;
 
