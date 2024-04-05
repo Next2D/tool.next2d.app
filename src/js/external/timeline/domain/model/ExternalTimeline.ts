@@ -302,17 +302,17 @@ export class ExternalTimeline
      * @description 選択中のフレームに指定数のフレームを挿入
      *              Insert the specified number of frames into the selected frames
      *
-     * @param  {number} num_frames
+     * @param  {number} num_frame
      * @return {void}
      * @method
      * @public
      */
-    insertFrames (num_frames: number): void
+    insertFrames (num_frame: number): void
     {
         externalTimelineLayerFrameInsertFramesUseCase(
             this._$workSpace,
             this._$movieClip,
-            num_frames
+            num_frame
         );
     }
 }

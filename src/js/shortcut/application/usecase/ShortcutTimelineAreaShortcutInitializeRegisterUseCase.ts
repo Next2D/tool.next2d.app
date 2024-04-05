@@ -4,6 +4,7 @@ import { execute as timelineLayerArrowUpUseCase } from "@/timeline/application/T
 import { execute as timelineToolLayerDeleteUseCase } from "@/timeline/application/TimelineTool/application/LayerDelete/usecase/TimelineToolLayerDeleteUseCase";
 import { execute as scriptEditorModalCurrentBootUseCase } from "@/menu/application/ScriptEditorModal/usecase/ScriptEditorModalCurrentBootUseCase";
 import { execute as timelineToolAddEmptyKeyFrameUseCase } from "@/timeline/application/TimelineTool/application/AddEmptyKeyFrame/usecase/TimelineToolAddEmptyKeyFrameUseCase";
+import { execute as timelineToolInsertFramesUseCase } from "@/timeline/application/TimelineTool/application/InsertFrames/usecase/TimelineToolInsertFramesUseCase";
 import {
     $generateShortcutKey,
     $setShortcut
@@ -57,5 +58,10 @@ export const execute = (): void =>
     $setShortcut(
         $generateShortcutKey("e", { "ctrl": true }),
         timelineToolAddEmptyKeyFrameUseCase
+    );
+
+    $setShortcut(
+        $generateShortcutKey("f"),
+        timelineToolInsertFramesUseCase
     );
 };

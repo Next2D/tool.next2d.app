@@ -294,3 +294,12 @@ export const $TIMELINE_UPDATE_EMPTY_KEYFRAME_COMMAND: number = 29;
  * @constant
  */
 export const $TIMELINE_SPLIT_EMPTY_KEYFRAME_COMMAND: number = 30;
+
+/**
+ * @description 空のキーフレームへフレームへの追加の識別コマンド名
+ *              Identification command name for adding frames to an empty keyframe
+ *
+ * @type {number}
+ * @constant
+ */
+export const $TIMELINE_INSERT_EMPTY_FRAME_COMMAND: number = 31;

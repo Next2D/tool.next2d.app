@@ -51,6 +51,8 @@ export const execute = (
 
                 // フレーム幅を拡張
                 activeEmptyCharacter.endFrame += num_frame;
+
+                // 履歴に追加
             }
         }
 
