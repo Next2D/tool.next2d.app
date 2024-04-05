@@ -7,6 +7,7 @@ import { execute as timelineToolLockAllInitializeRegisterEventUseCase } from "..
 import { execute as timelineToolScriptEditorInitializeRegisterEventUseCase } from "../application/ScriptEditor/usecase/TimelineToolScriptEditorInitializeRegisterEventUseCase";
 import { execute as timelineToolAddKeyFrameInitializeRegisterEventUseCase } from "../application/AddKeyFrame/usecase/TimelineToolAddKeyFrameInitializeRegisterEventUseCase";
 import { execute as timelineToolAddEmptyKeyFrameInitializeRegisterEventUseCase } from "../application/AddEmptyKeyFrame/usecase/TimelineToolAddEmptyKeyFrameInitializeRegisterEventUseCase";
+import { execute as timelineToolInsertFramesInitializeRegisterEventUseCase } from "../application/InsertFrames/usecase/TimelineToolInsertFramesInitializeRegisterEventUseCase";
 
 /**
  * @description タイムラインの各種ツールにイベント登録を行う
@@ -44,4 +45,7 @@ export const execute = (): void =>
 
     // 空のキーフレーム追加のイベント登録
     timelineToolAddEmptyKeyFrameInitializeRegisterEventUseCase();
+
+    // フレーム追加のイベント登録
+    timelineToolInsertFramesInitializeRegisterEventUseCase();
 };

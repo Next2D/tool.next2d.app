@@ -65,6 +65,21 @@ export class Character
     }
 
     /**
+     * @description 指定フレーム移動させる
+     *              Move the specified frame
+     *
+     * @param  {number} move_frame
+     * @return {void}
+     * @method
+     * @public
+     */
+    move (move_frame: number): void
+    {
+        this._$startFrame += move_frame;
+        this._$endFrame   += move_frame;
+    }
+
+    /**
      * @description セーブオブジェクトからrestore
      *              restore from save object
      *

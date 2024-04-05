@@ -386,6 +386,15 @@ export const $TIMELINE_KEY_ADD_ID: string = "timeline-key-add";
 export const $TIMELINE_EMPTY_KEY_ADD_ID: string = "timeline-empty-add";
 
 /**
+ * @description タイムラインのフレーム追加のElementのID
+ *              ID of the Element for adding frames in the timeline
+ *
+ * @type {string}
+ * @constant
+ */
+export const $TIMELINE_INSERT_FRAME_ID: string = "timeline-frame-add";
+
+/**
  * @description タイムラインのフレーム選択のグループElementのID
  *              ID of the group Element of the timeline frame selection
  *

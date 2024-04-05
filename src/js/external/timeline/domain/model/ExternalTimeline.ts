@@ -11,6 +11,7 @@ import { execute as externalTimelineDeleteLayerUseCase } from "@/external/timeli
 import { execute as externalTimelineLayerFrameConvertToEmptyKeyframesUseCase } from "@/external/timeline/application/ExternalTimelineLayerFrame/usecase/ExternalTimelineLayerFrameConvertToEmptyKeyframesUseCase";
 import { execute as externalTimelineLayerFrameSelectedFramesUseCase } from "@/external/timeline/application/ExternalTimelineLayerFrame/usecase/ExternalTimelineLayerFrameSelectedFramesUseCase";
 import { execute as externalTimelineLayerDeactivatedAllLayerUseCase } from "@/external/timeline/application/ExternalTimelineLayer/usecase/ExternalTimelineLayerDeactivatedAllLayerUseCase";
+import { execute as externalTimelineLayerFrameInsertFramesUseCase } from "@/external/timeline/application/ExternalTimelineLayerFrame/usecase/ExternalTimelineLayerFrameInsertFramesUseCase";
 
 /**
  * @description タイムラインの外部APIクラス
@@ -308,6 +309,10 @@ export class ExternalTimeline
      */
     insertFrames (num_frames: number): void
     {
-        // 選択中のレイヤーがなければ終了
+        externalTimelineLayerFrameInsertFramesUseCase(
+            this._$workSpace,
+            this._$movieClip,
+            num_frames
+        );
     }
 }

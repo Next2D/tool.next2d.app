@@ -3,8 +3,8 @@ import { EventType } from "@/tool/domain/event/EventType";
 import { execute as timelineToolAddKeyFrameMouseDownEventUseCase } from "./TimelineToolAddKeyFrameMouseDownEventUseCase";
 
 /**
- * @description スクリプトエディタの起動ボタンのイベント登録
- *              Script Editor Launch Button Event Registration
+ * @description キーフレーム追加ボタンのイベント登録
+ *              Event registration of add keyframe button
  *
  * @return {void}
  * @method
