@@ -1,3 +1,5 @@
+import { ShareReceiveMessageImpl } from "@/interface/ShareReceiveMessageImpl";
+
 /**
  * @description WebSocketオブジェクト
  *              WebSocket Objects
@@ -116,4 +118,54 @@ export const $loadedInitializeData = (): void =>
 export const $isLoadedInitializeData = (): boolean =>
 {
     return $loadedData;
+};
+
+/**
+ * @description メッセージ配列
+ *              Message array
+ *
+ * @private
+ */
+const $messages: ShareReceiveMessageImpl[] = [];
+
+/**
+ * @description メッセージを配列に格納
+ *              Store messages in an array
+ *
+ * @param  {object} message
+ * @return {void}
+ * @method
+ * @public
+ */
+export const $pushMessage = (message: ShareReceiveMessageImpl): void =>
+{
+    $messages.push(message);
+};
+
+/**
+ * @description メッセージ配列を返却
+ *              Returns the message array
+ *
+ * @return {object}
+ * @method
+ * @public
+ */
+export const $getMessages = (): ShareReceiveMessageImpl[] =>
+{
+    return $messages;
+};
+
+/**
+ * @description メッセージ配列から最新の一件を返却
+ *              Returns the latest one from the message array
+ *
+ * @return {object}
+ * @method
+ * @public
+ */
+export const $getMessage = (): ShareReceiveMessageImpl | null =>
+{
+    return $messages.length
+        ? $messages.shift() as NonNullable<ShareReceiveMessageImpl>
+        : null;
 };

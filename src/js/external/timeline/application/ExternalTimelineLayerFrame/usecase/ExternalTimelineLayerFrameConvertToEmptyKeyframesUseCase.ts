@@ -24,8 +24,8 @@ export const execute = (
     movie_clip: MovieClip,
     start_frame: number,
     end_frame: number = 0
-): void =>
-{
+): void => {
+
     // レイヤーが何も選択されてなければ終了
     if (!movie_clip.selectedLayers.length) {
         return ;

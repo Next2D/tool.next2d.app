@@ -141,12 +141,10 @@ export class ExternalTimeline
             index, name, color, layer_id, receiver
         );
 
-        if (!externalLayer) {
-            return null;
-        }
-
         // 追加したレイヤーを選択状態に更新
-        this.selectedLayers([externalLayer.index]);
+        if (externalLayer) {
+            this.selectedLayers([externalLayer.index]);
+        }
 
         return externalLayer;
     }

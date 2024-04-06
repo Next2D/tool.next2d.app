@@ -17,7 +17,7 @@ import { execute as externalTimelineLayerFrameSplitEmptyKeyframeUseCase } from "
  * @method
  * @public
  */
-export const execute = (message: ShareReceiveMessageImpl): void =>
+export const execute = async (message: ShareReceiveMessageImpl): Promise<void> =>
 {
     const id = message.data[0] as NonNullable<number>;
 
@@ -45,7 +45,7 @@ export const execute = (message: ShareReceiveMessageImpl): void =>
     }
 
     // 空のキーフレームを分割
-    externalTimelineLayerFrameSplitEmptyKeyframeUseCase(
+    await externalTimelineLayerFrameSplitEmptyKeyframeUseCase(
         workSpace,
         movieClip,
         layer,

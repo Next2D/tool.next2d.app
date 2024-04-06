@@ -1,6 +1,11 @@
 import type { ShareReceiveMessageImpl } from "@/interface/ShareReceiveMessageImpl";
 import type { HistoryObjectImpl } from "@/interface/HistoryObjectImpl";
-import { $getSocket } from "../ShareUtil";
+import {
+    $getMessage,
+    $getMessages,
+    $getSocket,
+    $pushMessage
+} from "../ShareUtil";
 
 /**
  * @description 作業履歴を共有者に送信
@@ -26,5 +31,27 @@ export const execute = (history_object: HistoryObjectImpl): void =>
         "command": "receive"
     };
 
-    webSocket.send(JSON.stringify(sendObject));
+    // メッセージがプールされていれる場合は最後に追加して終了
+    if ($getMessages().length > 0) {
+        return $pushMessage(sendObject);
+    }
+
+    // 複数送信を待機して実行
+    $pushMessage(sendObject);
+    setTimeout(async (): Promise<void> =>
+    {
+        while (true) {
+
+            const sendObject = $getMessage();
+            if (!sendObject) {
+                break;
+            }
+
+            await new Promise((resolve): void =>
+            {
+                webSocket.send(JSON.stringify(sendObject));
+                setTimeout(resolve, 200);
+            });
+        }
+    }, 200);
 };
