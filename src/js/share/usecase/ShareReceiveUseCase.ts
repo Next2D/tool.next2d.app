@@ -28,6 +28,7 @@ import { execute as timelineLayerControllerLayerMoveReceiveUseCase } from "@/sha
 import { execute as timelineLayerFrameAddEmptyKeyframeReceiveUseCase } from "@/share/receive/application/timeline/application/TimelineLayerFrame/application/EmptyKeyframe/usecase/TimelineLayerFrameAddEmptyKeyframeReceiveUseCase";
 import { execute as timelineLayerFrameUpdateEmptyKeyframeReceiveUseCase } from "@/share/receive/application/timeline/application/TimelineLayerFrame/application/EmptyKeyframe/usecase/TimelineLayerFrameUpdateEmptyKeyframeReceiveUseCase";
 import { execute as timelineLayerFrameSplitEmptyKeyframeReceiveUseCase } from "@/share/receive/application/timeline/application/TimelineLayerFrame/application/EmptyKeyframe/usecase/TimelineLayerFrameSplitEmptyKeyframeReceiveUseCase";
+import { execute as timelineLayerFrameInsertEmptyFramesReceiveUseCase } from "@/share/receive/application/timeline/application/TimelineLayerFrame/application/EmptyKeyframe/usecase/TimelineLayerFrameInsertEmptyFramesReceiveUseCase";
 import { execute as historyRedoUseCase } from "@/controller/application/HistoryArea/usecase/HistoryRedoUseCase";
 import { execute as historyUndoUseCase } from "@/controller/application/HistoryArea/usecase/HistoryUndoUseCase";
 import {
@@ -61,7 +62,8 @@ import {
     $LAYER_UPDATE_MODE_COMMAND,
     $TIMELINE_ADD_EMPTY_KEYFRAME_COMMAND,
     $TIMELINE_UPDATE_EMPTY_KEYFRAME_COMMAND,
-    $TIMELINE_SPLIT_EMPTY_KEYFRAME_COMMAND
+    $TIMELINE_SPLIT_EMPTY_KEYFRAME_COMMAND,
+    $TIMELINE_INSERT_EMPTY_FRAME_COMMAND
 } from "@/config/HistoryConfig";
 
 /**
@@ -238,6 +240,11 @@ export const execute = async (message: ShareReceiveMessageImpl): Promise<void> =
         // 空のキーフレームを分割
         case $TIMELINE_SPLIT_EMPTY_KEYFRAME_COMMAND:
             timelineLayerFrameSplitEmptyKeyframeReceiveUseCase(message);
+            break;
+
+        // 空のキーフレームにフレームを挿入
+        case $TIMELINE_INSERT_EMPTY_FRAME_COMMAND:
+            timelineLayerFrameInsertEmptyFramesReceiveUseCase(message);
             break;
 
         default:
