@@ -3,11 +3,10 @@ import type { InstanceImpl } from "@/interface/InstanceImpl";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
 import { timelineLayer } from "@/timeline/domain/model/TimelineLayer";
+import { $getLeftFrame } from "@/timeline/application/TimelineUtil";
 import { execute as timelineLayerFrameUpdateStyleService } from "@/timeline/application/TimelineLayerFrame/service/TimelineLayerFrameUpdateStyleService";
 import { execute as timelineScrollUpdateWidthService } from "@/timeline/application/TimelineScroll/service/TimelineScrollUpdateWidthService";
-import { $getLeftFrame } from "@/timeline/application/TimelineUtil";
-import { execute as timelineLayerFrameSplitEmptyKeyframeHistoryUseCase } from "@/history/application/timeline/application/TimelineLayerFrame/SplitEmptyKeyframe/usecase/TimelineLayerFrameSplitEmptyKeyframeHistoryUseCase";
-import { EmptyCharacter } from "@/core/domain/model/EmptyCharacter";
+import { execute as externalTimelineLayerFrameSplitEmptyKeyframeUseCase } from "@/external/timeline/application/ExternalTimelineLayerFrame/usecase/ExternalTimelineLayerFrameSplitEmptyKeyframeUseCase";
 
 /**
  * @description 空のキーフレーム追加を実行
@@ -45,31 +44,17 @@ export const execute = (message: ShareReceiveMessageImpl): void =>
         return ;
     }
 
-    // 追加するキーフレーム
-    const keyframe = message.data[5] as NonNullable<number>;
-
-    // 追加の空のキーフレームを生成
-    const newEmptyCharacter = new EmptyCharacter();
-    newEmptyCharacter.startFrame = keyframe;
-    newEmptyCharacter.endFrame   = emptyCharacter.endFrame;
-
-    // 指定のindexに登録
-    const newEmptyCharacterIndex = message.data[4] as NonNullable<number>;
-    layer.emptyCharacters.splice(newEmptyCharacterIndex, 0, newEmptyCharacter);
-
-    // 終了フレームを更新
-    emptyCharacter.endFrame = keyframe;
-
-    // 履歴に登録
-    timelineLayerFrameSplitEmptyKeyframeHistoryUseCase(
+    // 空のキーフレームを分割
+    externalTimelineLayerFrameSplitEmptyKeyframeUseCase(
         workSpace,
         movieClip,
         layer,
         emptyCharacter,
-        newEmptyCharacter,
+        message.data[5] as NonNullable<number>,
         true
     );
 
+    // アクティブなら表示を更新
     if (workSpace.active && movieClip.active) {
         const layerElement = timelineLayer.elements[layer.getDisplayIndex()] as NonNullable<HTMLElement>;
         if (!layerElement) {

@@ -2,8 +2,7 @@ import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import type { Layer } from "@/core/domain/model/Layer";
 import { execute as externalTimelineLayerFrameCreateEmptyKeyframeUseCase } from "./ExternalTimelineLayerFrameCreateEmptyKeyframeUseCase";
-import { execute as timelineLayerFrameSplitEmptyKeyframeHistoryUseCase } from "@/history/application/timeline/application/TimelineLayerFrame/SplitEmptyKeyframe/usecase/TimelineLayerFrameSplitEmptyKeyframeHistoryUseCase";
-import { EmptyCharacter } from "@/core/domain/model/EmptyCharacter";
+import { execute as externalTimelineLayerFrameSplitEmptyKeyframeUseCase } from "./ExternalTimelineLayerFrameSplitEmptyKeyframeUseCase";
 
 /**
  * @description 指定したレイヤーの指定フレームに空のキーフレームを追加
@@ -34,33 +33,19 @@ export const execute = (
     const activeEmptyCharacter = layer.getActiveEmptyCharacter(keyframe);
     if (activeEmptyCharacter) {
 
-        // 既に空のキーフレームがある場合は何もしない
-        if (activeEmptyCharacter.startFrame === keyframe) {
-            return ;
-        }
-
-        // 既存の空のキーフレームを分割
-        const beforeEndframe = activeEmptyCharacter.endFrame;
-        activeEmptyCharacter.endFrame = keyframe;
-
-        // 空いた部分に新しい空のキーフレームを追加
-        const emptyCharacter = new EmptyCharacter();
-        emptyCharacter.startFrame = keyframe;
-        emptyCharacter.endFrame   = beforeEndframe;
-        layer.addEmptyCharacter(emptyCharacter);
-
-        // 履歴に追加
-        timelineLayerFrameSplitEmptyKeyframeHistoryUseCase(
+        // 空のキーフレームを分割
+        externalTimelineLayerFrameSplitEmptyKeyframeUseCase(
             work_space,
             movie_clip,
             layer,
             activeEmptyCharacter,
-            emptyCharacter
+            keyframe
         );
 
         return ;
     }
 
+    // 新規の空のキーフレームを追加
     externalTimelineLayerFrameCreateEmptyKeyframeUseCase(
         work_space,
         movie_clip,
