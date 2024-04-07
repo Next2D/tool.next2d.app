@@ -1,10 +1,11 @@
 import type { InstanceImpl } from "@/interface/InstanceImpl";
-import { MovieClip } from "@/core/domain/model/MovieClip";
+import type { MovieClip } from "@/core/domain/model/MovieClip";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { ExternalWorkSpace } from "@/external/core/domain/model/ExternalWorkSpace";
 import { ExternalMovieClip } from "@/external/core/domain/model/ExternalMovieClip";
 import { execute as sceneListMenuHideService } from "@/menu/application/SceneListMenu/service/SceneListMenuHideService";
 import { execute as timelineSceneListExcludeElememtService } from "../service/TimelineSceneListExcludeElememtService";
+import { $MOVIE_CLIP_TYPE } from "@/config/InstanceCOnfig";
 
 /**
  * @description タイムラインのシーン名のマウスダウンのイベント処理関数
@@ -36,7 +37,7 @@ export const execute = async (event: PointerEvent): Promise<void> =>
     const workSpace = $getCurrentWorkSpace();
     const libraryId = parseInt(element.dataset.libraryId as string);
     const movieClip: InstanceImpl<MovieClip> = workSpace.getLibrary(libraryId);
-    if (!movieClip || movieClip.type !== MovieClip.type) {
+    if (!movieClip || movieClip.type !== $MOVIE_CLIP_TYPE) {
         return ;
     }
 

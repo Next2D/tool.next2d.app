@@ -2,6 +2,7 @@ import { MovieClip } from "@/core/domain/model/MovieClip";
 import { execute as externalWorkSpaceRegisterInstanceService } from "@/external/core/application/ExternalWorkSpace/service/ExternalWorkSpaceRegisterInstanceService";
 import { execute as libraryAreaReloadUseCase } from "@/controller/application/LibraryArea/usecase/LibraryAreaReloadUseCase";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
+import { $MOVIE_CLIP_TYPE } from "@/config/InstanceCOnfig";
 
 /**
  * @description 新規MovieClip追加処理のRedo関数
@@ -30,7 +31,7 @@ export const execute = (
     const movieClip = new MovieClip({
         "id": library_id,
         "name": name,
-        "type": MovieClip.type,
+        "type": $MOVIE_CLIP_TYPE,
         "folderId": folder_id
     });
 

@@ -1,5 +1,3 @@
-import { $LIBRARY_LIST_BOX_ID } from "@/config/LibraryConfig";
-import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { execute as libraryAreaComponent } from "../component/LibraryAreaComponent";
 import { execute as libraryAreaSelectedMouseDownService } from "./LibraryAreaSelectedMouseDownUseCase";
 import { execute as libraryAreaArrowIconMouseDownEventService } from "../service/LibraryAreaArrowIconMouseDownEventService";
@@ -12,10 +10,14 @@ import { execute as libraryAreaInstanceSymbolMouseDownEventUseCase } from "./Lib
 import { execute as libraryAreaInstanceSymbolFocusOutEventUseCase } from "./LibraryAreaInstanceSymbolFocusOutEventUseCase";
 import { execute as libraryAreaCanDisplayInstanceService } from "../service/LibraryAreaCanDisplayInstanceService";
 import { execute as libraryAreaGetPaddingService } from "../service/LibraryAreaGetPaddingService";
+import { $LIBRARY_LIST_BOX_ID } from "@/config/LibraryConfig";
+import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { EventType } from "@/tool/domain/event/EventType";
 import { libraryArea } from "@/controller/domain/model/LibraryArea";
-import { Folder } from "@/core/domain/model/Folder";
-import { MovieClip } from "@/core/domain/model/MovieClip";
+import {
+    $FOLDER_TYPE,
+    $MOVIE_CLIP_TYPE
+} from "@/config/InstanceCOnfig";
 
 /**
  * @description ライブラリエリアのElementを生成してイベントを登録する
@@ -83,7 +85,7 @@ export const execute = async (): Promise<void> =>
         );
 
         // フォルダ時はアローアイコンにイベントを登録
-        if (instance.type === Folder.type) {
+        if (instance.type === $FOLDER_TYPE) {
             const icons = node.getElementsByTagName("i");
             if (icons.length) {
 
@@ -101,7 +103,7 @@ export const execute = async (): Promise<void> =>
         }
 
         // MovieClipの時はアイコンにイベントを登録
-        if (instance.type === MovieClip.type) {
+        if (instance.type === $MOVIE_CLIP_TYPE) {
             const icons = node.getElementsByTagName("i");
             if (icons.length) {
                 // MovieClipアイコンにイベントを登録
@@ -128,7 +130,7 @@ export const execute = async (): Promise<void> =>
         );
 
         // フォルダ以外はシンボル名の変更イベントを登録
-        if (instance.type !== Folder.type) {
+        if (instance.type !== $FOLDER_TYPE) {
             const symbolElement = spans[1] as NonNullable<HTMLElement>;
             symbolElement.addEventListener(EventType.MOUSE_DOWN,
                 libraryAreaInstanceSymbolMouseDownEventUseCase

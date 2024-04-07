@@ -9,6 +9,7 @@ import { execute as confirmModalInstaceResetService } from "@/menu/application/C
 import { execute as confirmModalinstanceShowUseCase } from "@/menu/application/ConfirmModal/usecase/ConfirmModalinstanceShowUseCase";
 import { execute as confirmModalInstanceDuplicateCheckService } from "@/menu/application/ConfirmModal/service/ConfirmModalInstanceDuplicateCheckService";
 import { Folder } from "@/core/domain/model/Folder";
+import { $FOLDER_TYPE } from "@/config/InstanceCOnfig";
 
 /**
  * @description ライブラリエリア内でのインスタンス移動処理
@@ -47,7 +48,7 @@ export const execute = (event: DragEvent): void =>
             return ;
         }
 
-        const folder: InstanceImpl<Folder> | null = instance.type === Folder.type
+        const folder: InstanceImpl<Folder> | null = instance.type === $FOLDER_TYPE
             ? instance
             : workSpace.getLibrary(instance.folderId);
 

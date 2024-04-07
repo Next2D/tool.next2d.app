@@ -4,6 +4,7 @@ import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { execute as libraryAreaUpdateSoundHistoryUseCase } from "@/history/application/controller/application/LibraryArea/Sound/usecase/LibraryAreaUpdateSoundHistoryUseCase";
 import { execute as libraryAreaReloadUseCase } from "@/controller/application/LibraryArea/usecase/LibraryAreaReloadUseCase";
 import { execute as libraryAreaSelectedClearUseCase } from "@/controller/application/LibraryArea/usecase/LibraryAreaSelectedClearUseCase";
+import { $SOUND_TYPE } from "@/config/InstanceCOnfig";
 
 /**
  * @description Soundクラスのデータを上書きする
@@ -45,7 +46,7 @@ export const execute = (file: File, path: string): Promise<void> =>
                 // 新規Soundを作成して、共通部分をinstanceから取得
                 const sound = new Sound({
                     "id": instance.id,
-                    "type": Sound.type,
+                    "type": $SOUND_TYPE,
                     "name": instance.name,
                     "folderId": instance.folderId,
                     "buffer": new Uint8Array(array_buffer)

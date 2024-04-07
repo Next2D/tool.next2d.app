@@ -1,10 +1,11 @@
 import type { InstanceImpl } from "@/interface/InstanceImpl";
-import { MovieClip } from "@/core/domain/model/MovieClip";
+import type { MovieClip } from "@/core/domain/model/MovieClip";
 import { libraryArea } from "@/controller/domain/model/LibraryArea";
 import { ExternalWorkSpace } from "@/external/core/domain/model/ExternalWorkSpace";
 import { ExternalMovieClip } from "@/external/core/domain/model/ExternalMovieClip";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { execute as timelineSceneListClearAddRootUseCase } from "@/timeline/application/TimelineSceneList/usecase/TimelineSceneListClearAddRootUseCase";
+import { $MOVIE_CLIP_TYPE } from "@/config/InstanceCOnfig";
 
 /**
  * @description 選択されたMovieClipを起動
@@ -25,7 +26,7 @@ export const execute = async (): Promise<void> =>
     const workSpcae = $getCurrentWorkSpace();
 
     const movieClip: InstanceImpl<MovieClip> = workSpcae.getLibrary(libraryId);
-    if (!movieClip || movieClip.type !== MovieClip.type) {
+    if (!movieClip || movieClip.type !== $MOVIE_CLIP_TYPE) {
         return ;
     }
 

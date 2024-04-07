@@ -10,7 +10,7 @@ import { execute as confirmModalFileResetService } from "@/menu/application/Conf
 import { execute as confirmModalFileShowUseCase } from "@/menu/application/ConfirmModal/usecase/ConfirmModalFileShowUseCase";
 import { execute as confirmModalFileDuplicateCheckService } from "@/menu/application/ConfirmModal/service/ConfirmModalFileDuplicateCheckService";
 import { $replace } from "@/language/application/LanguageUtil";
-import { Folder } from "@/core/domain/model/Folder";
+import { $FOLDER_TYPE } from "@/config/InstanceCOnfig";
 
 /**
  * @description 外部ファイル読み込み処理関数
@@ -53,7 +53,7 @@ export const execute = async (event: Event): Promise<void> =>
     let path = "";
     if (libraryArea.selectedIds.length === 1) {
         const instance = workSpace.getLibrary(libraryArea.selectedIds[0]);
-        if (instance && instance.type === Folder.type) {
+        if (instance && instance.type === $FOLDER_TYPE) {
             path = instance.getPath(workSpace);
         }
     }

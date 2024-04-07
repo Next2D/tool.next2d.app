@@ -5,6 +5,7 @@ import { $getWorkSpace } from "@/core/application/CoreUtil";
 import { Folder } from "@/core/domain/model/Folder";
 import { execute as externalLibraryAddInstanceUseCase } from "@/external/controller/application/ExternalLibrary/usecase/ExternalLibraryAddInstanceUseCase";
 import { execute as libraryAreaAddNewFolderHistoryUseCase } from "@/history/application/controller/application/LibraryArea/Folder/usecase/LibraryAreaAddNewFolderHistoryUseCase";
+import { $FOLDER_TYPE } from "@/config/InstanceCOnfig";
 
 /**
  * @description socketで受け取った情報の受け取り処理関数
@@ -34,7 +35,7 @@ export const execute = (message: ShareReceiveMessageImpl): void =>
         "id": message.data[2] as NonNullable<number>,
         "name": message.data[3] as NonNullable<string>,
         "folderId": message.data[4] as NonNullable<number>,
-        "type": Folder.type,
+        "type": $FOLDER_TYPE,
         "mode": "close"
     });
 

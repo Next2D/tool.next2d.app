@@ -7,11 +7,15 @@ import { ExternalShape } from "@/external/core/domain/model/ExternalShape";
 import { ExternalSound } from "@/external/core/domain/model/ExternalSound";
 import { ExternalVideo } from "@/external/core/domain/model/ExternalVideo";
 import { ExternalText } from "@/external/core/domain/model/ExternalText";
-import { Bitmap } from "@/core/domain/model/Bitmap";
-import { Sound } from "@/core/domain/model/Sound";
-import { Video } from "@/core/domain/model/Video";
-import { Folder } from "@/core/domain/model/Folder";
-import { MovieClip } from "@/core/domain/model/MovieClip";
+import {
+    $BITMAP_TYPE,
+    $FOLDER_TYPE,
+    $MOVIE_CLIP_TYPE,
+    $SHAPE_TYPE,
+    $SOUND_TYPE,
+    $TEXT_TYPE,
+    $VIDEO_TYPE
+} from "@/config/InstanceCOnfig";
 
 /**
  * @description 指定タイプのクラスを作成
@@ -31,25 +35,25 @@ export const execute = (
     // タイプ別のクラスを作成
     switch (instance.type) {
 
-        case MovieClip.type:
+        case $MOVIE_CLIP_TYPE:
             return new ExternalMovieClip(work_space, instance);
 
-        case "shape":
+        case $SHAPE_TYPE:
             return new ExternalShape(work_space, instance);
 
-        case Sound.type:
+        case $SOUND_TYPE:
             return new ExternalSound(work_space, instance);
 
-        case "text":
+        case $TEXT_TYPE:
             return new ExternalText(work_space, instance);
 
-        case Video.type:
+        case $VIDEO_TYPE:
             return new ExternalVideo(work_space, instance);
 
-        case Folder.type:
+        case $FOLDER_TYPE:
             return new ExternalFolder(work_space, instance);
 
-        case Bitmap.type:
+        case $BITMAP_TYPE:
             return new ExternalBitmap(work_space, instance);
 
         default:

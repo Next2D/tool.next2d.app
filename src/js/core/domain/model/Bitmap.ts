@@ -1,6 +1,5 @@
 import type { BitmapSaveObjectImpl } from "@/interface/BitmapSaveObjectImpl";
 import type { ObjectImpl } from "@/interface/ObjectImpl";
-import type { InstanceTypeImpl } from "@/interface/InstanceTypeImpl";
 import { Instance } from "./Instance";
 import { execute as bufferToBinaryService } from "@/core/service/BufferToBinaryService";
 import { execute as binaryToBufferService } from "@/core/service/BinaryToBufferService";
@@ -85,19 +84,6 @@ export class Bitmap extends Instance
                 this._$buffer = object.buffer;
             }
         }
-    }
-
-    /**
-     * @description インスタンスの種別を返す
-     *              Returns the type of instance
-     *
-     * @member {string}
-     * @readonly
-     * @static
-     */
-    static get type (): InstanceTypeImpl
-    {
-        return "bitmap";
     }
 
     /**

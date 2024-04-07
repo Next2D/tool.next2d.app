@@ -10,6 +10,13 @@ import { Folder } from "@/core/domain/model/Folder";
 import { MovieClip } from "@/core/domain/model/MovieClip";
 import { Video } from "@/core/domain/model/Video";
 import { Sound } from "@/core/domain/model/Sound";
+import {
+    $BITMAP_TYPE,
+    $FOLDER_TYPE,
+    $MOVIE_CLIP_TYPE,
+    $SOUND_TYPE,
+    $VIDEO_TYPE
+} from "@/config/InstanceCOnfig";
 
 /**
  * @description セーブオブジェクトから各種インスタンスオブジェクトを作成
@@ -23,23 +30,23 @@ export const execute = async (save_object: InstanceSaveObjectImpl): Promise<Inst
 
     switch (save_object.type) {
 
-        case MovieClip.type:
+        case $MOVIE_CLIP_TYPE:
             return new MovieClip(save_object as MovieClipSaveObjectImpl);
 
-        case Folder.type:
+        case $FOLDER_TYPE:
             return new Folder(save_object as FolderSaveObjectImpl);
 
-        case Bitmap.type:
+        case $BITMAP_TYPE:
             return new Bitmap(save_object as BitmapSaveObjectImpl);
 
-        case Video.type:
+        case $VIDEO_TYPE:
         {
             const video = new Video(save_object as VideoSaveObjectImpl);
             await video.wait();
             return video;
         }
 
-        case Sound.type:
+        case $SOUND_TYPE:
         {
             const sound = new Sound(save_object as SoundSaveObjectImpl);
             await sound.wait();

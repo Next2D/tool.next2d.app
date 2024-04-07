@@ -8,7 +8,7 @@ import { execute as libraryPreviewAreaUpdateDisplayUseCase } from "@/controller/
 import { execute as libraryPreviewAreaClearDisplayService } from "@/controller/application/LibraryPreviewArea/service/LibraryPreviewAreaClearDisplayService";
 import { execute as libraryAreaAltSelectedUseCase } from "@/controller/application/LibraryArea/usecase/LibraryAreaAltSelectedUseCase";
 import { execute as libraryAreaShiftSelectedUseCase } from "@/controller/application/LibraryArea/usecase/LibraryAreaShiftSelectedUseCase";
-import { Folder } from "@/core/domain/model/Folder";
+import { $FOLDER_TYPE } from "@/config/InstanceCOnfig";
 
 /**
  * @description 親Elementのマウスダウン処理関数、Elementを選択状態に更新
@@ -49,7 +49,7 @@ export const execute = (event: PointerEvent): void =>
     }
 
     // フォルダーのインスタンスでなければ、プレビューエリアを更新
-    if (instance.type !== Folder.type) {
+    if (instance.type !== $FOLDER_TYPE) {
         libraryPreviewAreaUpdateDisplayUseCase(instance);
     } else {
         libraryPreviewAreaClearDisplayService();

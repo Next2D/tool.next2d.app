@@ -5,7 +5,7 @@ import {
     $setTargetFrame,
     $setTargetMovieClip
 } from "@/menu/application/ScriptEditorModal/ScriptEditorModalUtil";
-import { MovieClip } from "@/core/domain/model/MovieClip";
+import { $MOVIE_CLIP_TYPE } from "@/config/InstanceCOnfig";
 
 /**
  * @description フレームのElementのマウスダウン処理関数
@@ -34,7 +34,7 @@ export const execute = (event: PointerEvent): void =>
     const movieClip = workSpace.getLibrary(libraryId);
 
     // MovieClipでなければ終了
-    if (!movieClip || movieClip.type !== MovieClip.type) {
+    if (!movieClip || movieClip.type !== $MOVIE_CLIP_TYPE) {
         return ;
     }
 

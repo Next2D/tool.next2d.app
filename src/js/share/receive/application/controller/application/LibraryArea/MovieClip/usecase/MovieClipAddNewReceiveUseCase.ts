@@ -1,9 +1,10 @@
 import type { ShareReceiveMessageImpl } from "@/interface/ShareReceiveMessageImpl";
 import type { InstanceImpl } from "@/interface/InstanceImpl";
-import { MovieClip } from "@/core/domain/model/MovieClip";
+import type { MovieClip } from "@/core/domain/model/MovieClip";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
 import { execute as externalLibraryAddInstanceUseCase } from "@/external/controller/application/ExternalLibrary/usecase/ExternalLibraryAddInstanceUseCase";
 import { execute as libraryAreaAddNewMovieClipHistoryUseCase } from "@/history/application/controller/application/LibraryArea/MovieClip/usecase/LibraryAreaAddNewMovieClipHistoryUseCase";
+import { $MOVIE_CLIP_TYPE } from "@/config/InstanceCOnfig";
 
 /**
  * @description socketで受け取った情報の受け取り処理関数
@@ -33,7 +34,7 @@ export const execute = (message: ShareReceiveMessageImpl): void =>
         "id": message.data[2] as NonNullable<number>,
         "name": message.data[3] as NonNullable<string>,
         "folderId": message.data[4] as NonNullable<number>,
-        "type": MovieClip.type
+        "type": $MOVIE_CLIP_TYPE
     });
 
     // 内部情報に追加

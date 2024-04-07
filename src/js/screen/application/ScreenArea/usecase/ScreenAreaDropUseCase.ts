@@ -1,10 +1,13 @@
+import type { Instance } from "@/core/domain/model/Instance";
+import type { InstanceImpl } from "@/interface/InstanceImpl";
 import { libraryArea } from "@/controller/domain/model/LibraryArea";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
-import type { Instance } from "@/core/domain/model/Instance";
-import { Sound } from "@/core/domain/model/Sound";
 import { ExternalLibrary } from "@/external/controller/domain/model/ExternalLibrary";
-import type { InstanceImpl } from "@/interface/InstanceImpl";
 import { $allHideMenu } from "@/menu/application/MenuUtil";
+import {
+    $FOLDER_TYPE,
+    $SOUND_TYPE
+} from "@/config/InstanceCOnfig";
 
 /**
  * @description スクリーンエリアのアイテムドロップイベント処理関数
@@ -26,8 +29,7 @@ export const execute = async (event: DragEvent): Promise<void> =>
 
     const workSpace = $getCurrentWorkSpace();
     const externalLibrary = new ExternalLibrary(workSpace);
-
-    for (let idx = 0; idx < libraryArea.selectedIds.length; idx++) {
+    for (let idx = 0; idx < libraryArea.selectedIds.length; ++idx) {
 
         const libraryId = libraryArea.selectedIds[idx];
         const instance: InstanceImpl<Instance> = workSpace.getLibrary(libraryId);
@@ -37,12 +39,17 @@ export const execute = async (event: DragEvent): Promise<void> =>
 
         switch (instance.type) {
 
-            case Sound.type:
+            case $SOUND_TYPE:
+                break;
+
+            case $FOLDER_TYPE:
+                break;
+
+            default:
+                await externalLibrary
+                    .addItemToMovieClip(0, 0, instance.getPath(workSpace));
                 break;
 
         }
-
-        await externalLibrary
-            .addItemToMovieClip(0, 0, instance.getPath(workSpace));
     }
 };

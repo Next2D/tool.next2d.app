@@ -16,8 +16,10 @@ import {
     $getMenu
 } from "../../MenuUtil";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
-import { Bitmap } from "@/core/domain/model/Bitmap";
-import { MovieClip } from "@/core/domain/model/MovieClip";
+import {
+    $BITMAP_TYPE,
+    $MOVIE_CLIP_TYPE
+} from "@/config/InstanceCOnfig";
 
 /**
  * @description ライブラリ一覧エリアのメニューを表示
@@ -86,7 +88,7 @@ export const execute = (event: MouseEvent): void =>
 
                 switch (instance.type) {
 
-                    case MovieClip.type:
+                    case $MOVIE_CLIP_TYPE:
                         // MovieClipの編集ボタンをアクティブに更新
                         libraryMenuEditMovieClipActiveService();
 
@@ -94,7 +96,7 @@ export const execute = (event: MouseEvent): void =>
                         libraryMenuPhotopeaInactiveService();
                         break;
 
-                    case Bitmap.type:
+                    case $BITMAP_TYPE:
                         // photopea起動をアクティブに更新
                         libraryMenuPhotopeaActiveService();
 

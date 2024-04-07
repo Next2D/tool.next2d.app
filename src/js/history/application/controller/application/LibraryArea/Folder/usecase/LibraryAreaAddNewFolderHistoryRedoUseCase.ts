@@ -2,6 +2,7 @@ import { Folder } from "@/core/domain/model/Folder";
 import { execute as externalWorkSpaceRegisterInstanceService } from "@/external/core/application/ExternalWorkSpace/service/ExternalWorkSpaceRegisterInstanceService";
 import { execute as libraryAreaReloadUseCase } from "@/controller/application/LibraryArea/usecase/LibraryAreaReloadUseCase";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
+import { $FOLDER_TYPE } from "@/config/InstanceCOnfig";
 
 /**
  * @description 新規フォルダ追加処理のRedo関数
@@ -29,7 +30,7 @@ export const execute = (
 
     const folder = new Folder({
         "id": library_id,
-        "type": Folder.type,
+        "type": $FOLDER_TYPE,
         "name": name,
         "mode": "close",
         "folderId": folder_id

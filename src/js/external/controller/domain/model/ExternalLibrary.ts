@@ -16,7 +16,7 @@ import { execute as externalLibraryCreateInstanceService } from "@/external/cont
 import { execute as workSpaceCreatePathMapService } from "@/core/application/WorkSpace/service/WorkSpaceCreatePathMapService";
 import { execute as libraryAreaMoveFolderHistoryUseCase } from "@/history/application/controller/application/LibraryArea/Folder/usecase/LibraryAreaMoveFolderHistoryUseCase";
 import { libraryArea } from "@/controller/domain/model/LibraryArea";
-import { Folder } from "@/core/domain/model/Folder";
+import { $FOLDER_TYPE } from "@/config/InstanceCOnfig";
 
 /**
  * @description ライブラリの外部APIクラス
@@ -212,7 +212,7 @@ export class ExternalLibrary
         }
 
         // 移動するアイテムがフォルダの場合は、親階層のフォルダと重複してないかチェックする
-        if (item.type === Folder.type
+        if (item.type === $FOLDER_TYPE
             && (folder as ExternalFolder).checkDuplicate(item.id)
         ) {
             return false;
@@ -315,7 +315,7 @@ export class ExternalLibrary
             const instance = this.getItem(folderPaths.join("/"));
 
             // フォルダがあればスキップ
-            if (instance && instance.type === Folder.type) {
+            if (instance && instance.type === $FOLDER_TYPE) {
                 folderId = instance.id;
                 continue;
             }

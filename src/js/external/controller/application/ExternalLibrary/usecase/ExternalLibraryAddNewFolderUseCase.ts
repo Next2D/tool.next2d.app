@@ -3,6 +3,7 @@ import type { MovieClip } from "@/core/domain/model/MovieClip";
 import { Folder } from "@/core/domain/model/Folder";
 import { execute as externalLibraryAddInstanceUseCase } from "@/external/controller/application/ExternalLibrary/usecase/ExternalLibraryAddInstanceUseCase";
 import { execute as libraryAreaAddNewFolderHistoryUseCase } from "@/history/application/controller/application/LibraryArea/Folder/usecase/LibraryAreaAddNewFolderHistoryUseCase";
+import { $FOLDER_TYPE } from "@/config/InstanceCOnfig";
 
 /**
  * @description 新規フォルダーの追加ユースケース
@@ -30,7 +31,7 @@ export const execute = (
         "id": work_space.nextLibraryId,
         "name": name,
         "folderId": folder_id,
-        "type": Folder.type,
+        "type": $FOLDER_TYPE,
         "mode": "close"
     });
 

@@ -3,7 +3,7 @@ import { $allHideMenu } from "@/menu/application/MenuUtil";
 import { ExternalWorkSpace } from "@/external/core/domain/model/ExternalWorkSpace";
 import { execute as timelineSceneListClearAddRootUseCase } from "@/timeline/application/TimelineSceneList/usecase/TimelineSceneListClearAddRootUseCase";
 import { execute as timelineSceneListClearAllService } from "@/timeline/application/TimelineSceneList/service/TimelineSceneListClearAllService";
-import { MovieClip } from "@/core/domain/model/MovieClip";
+import { $MOVIE_CLIP_TYPE } from "@/config/InstanceCOnfig";
 /**
  * @description ダブルタップ用の待機フラグ
  *              Standby flag for double-tap
@@ -74,7 +74,7 @@ export const execute = async (event: PointerEvent): Promise<void> =>
         }
 
         const instance = workSpace.getLibrary(libraryId);
-        if (!instance || instance.type !== MovieClip.type) {
+        if (!instance || instance.type !== $MOVIE_CLIP_TYPE) {
             return ;
         }
 

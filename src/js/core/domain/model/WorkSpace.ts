@@ -26,6 +26,7 @@ import {
     $TIMELINE_DEFAULT_FRAME_WIDTH_SIZE,
     $TIMELINE_DEFAULT_FRAME_HEIGHT_SIZE
 } from "@/config/TimelineConfig";
+import { $MOVIE_CLIP_TYPE } from "@/config/InstanceCOnfig";
 
 /**
  * @description プロジェクトのユニークID
@@ -111,7 +112,7 @@ export class WorkSpace
          */
         this._$root = new MovieClip({
             "id": 0,
-            "type": MovieClip.type,
+            "type": $MOVIE_CLIP_TYPE,
             "name": "main",
             "symbol": ""
         });

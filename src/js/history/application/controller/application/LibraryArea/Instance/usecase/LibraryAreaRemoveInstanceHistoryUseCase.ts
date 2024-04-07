@@ -8,9 +8,11 @@ import { execute as historyGetTextService } from "@/controller/application/Histo
 import { execute as historyRemoveElementService } from "@/controller/application/HistoryArea/service/HistoryRemoveElementService";
 import { execute as libraryArearRemoveInstanceCreateHistoryObjectService } from "../service/LibraryArearRemoveInstanceCreateHistoryObjectService";
 import { execute as shareSendService } from "@/share/service/ShareSendService";
-import { Bitmap } from "@/core/domain/model/Bitmap";
-import { Sound } from "@/core/domain/model/Sound";
-import { Video } from "@/core/domain/model/Video";
+import {
+    $BITMAP_TYPE,
+    $SOUND_TYPE,
+    $VIDEO_TYPE
+} from "@/config/InstanceCOnfig";
 
 /**
  * @description ライブラリのアイテム削除の履歴を登録
@@ -60,9 +62,9 @@ export const execute = (
         switch (instance.type) {
 
             // メディア系はS3を経由して共有する
-            case Bitmap.type:
-            case Video.type:
-            case Sound.type:
+            case $BITMAP_TYPE:
+            case $VIDEO_TYPE:
+            case $SOUND_TYPE:
                 {
                     // 転送用のオブジェクトを作成
                     const instanceObject = instance.toObject();

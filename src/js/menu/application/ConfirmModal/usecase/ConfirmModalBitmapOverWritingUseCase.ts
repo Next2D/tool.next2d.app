@@ -8,6 +8,7 @@ import {
     $getCanvas,
     $poolCanvas
 } from "@/global/GlobalUtil";
+import { $BITMAP_TYPE } from "@/config/InstanceCOnfig";
 
 /**
  * @description Bitmapクラスのデータを上書きする
@@ -76,7 +77,7 @@ export const execute = (file: File, path: string): Promise<void> =>
                 // 新規Bitmapを作成して、共通部分をinstanceから取得
                 const bitmap = new Bitmap({
                     "id": instance.id,
-                    "type": Bitmap.type,
+                    "type": $BITMAP_TYPE,
                     "name": instance.name,
                     "folderId": instance.folderId,
                     "width": width,
