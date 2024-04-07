@@ -400,24 +400,4 @@ export class ExternalLibrary
 
         await item.remove(reload);
     }
-
-    /**
-     * @description 選択中アイテムをアクティブなMovieClipの指定xy座標に追加
-     *              Add selected items to the specified xy coordinates of the active MovieClip
-     *
-     * @param  {number} x
-     * @param  {number} y
-     * @param  {string} path
-     * @return {Promise}
-     * @method
-     * @public
-     */
-    async addItemToMovieClip (
-        x: number,
-        y: number,
-        path: string
-    ): Promise<void> {
-        // TODO
-        console.log(x, y, path);
-    }
 }

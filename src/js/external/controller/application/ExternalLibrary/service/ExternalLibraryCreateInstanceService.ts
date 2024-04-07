@@ -16,6 +16,7 @@ import {
     $TEXT_TYPE,
     $VIDEO_TYPE
 } from "@/config/InstanceCOnfig";
+import type { ExternalItemImpl } from "@/interface/ExternalItemImpl";
 
 /**
  * @description 指定タイプのクラスを作成
@@ -30,7 +31,7 @@ import {
 export const execute = (
     work_space: WorkSpace,
     instance: InstanceImpl<any>
-): InstanceImpl<any> | null => {
+): ExternalItemImpl<any> | null => {
 
     // タイプ別のクラスを作成
     switch (instance.type) {

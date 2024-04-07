@@ -378,7 +378,7 @@ export class Layer
         for (let idx = 0; idx < characters.length; ++idx) {
             const character = new Character();
             character.load(characters[idx]);
-            this.addEmptyCharacter(character);
+            this.addCharacter(character);
         }
     }
 

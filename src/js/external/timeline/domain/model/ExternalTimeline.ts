@@ -12,6 +12,7 @@ import { execute as externalTimelineLayerFrameConvertToKeyframesUseCase } from "
 import { execute as externalTimelineLayerFrameSelectedFramesUseCase } from "@/external/timeline/application/ExternalTimelineLayerFrame/usecase/ExternalTimelineLayerFrameSelectedFramesUseCase";
 import { execute as externalTimelineLayerDeactivatedAllLayerUseCase } from "@/external/timeline/application/ExternalTimelineLayer/usecase/ExternalTimelineLayerDeactivatedAllLayerUseCase";
 import { execute as externalTimelineLayerFrameInsertFramesUseCase } from "@/external/timeline/application/ExternalTimelineLayerFrame/usecase/ExternalTimelineLayerFrameInsertFramesUseCase";
+import { execute as externalTimelineAddItemToMovieClipUseCase } from "@/external/timeline/application/ExternalTimeline/usecase/ExternalTimelineAddItemToMovieClipUseCase";
 
 /**
  * @description タイムラインの外部APIクラス
@@ -309,6 +310,29 @@ export class ExternalTimeline
             this._$workSpace,
             this._$movieClip,
             num_frame
+        );
+    }
+
+    /**
+     * @description 選択中アイテムをアクティブなMovieClipの指定xy座標に追加
+     *              Add selected items to the specified xy coordinates of the active MovieClip
+     *
+     * @param  {number} x
+     * @param  {number} y
+     * @param  {string} path
+     * @return {Promise}
+     * @method
+     * @public
+     */
+    async addItemToMovieClip (
+        x: number,
+        y: number,
+        path: string
+    ): Promise<void> {
+        await externalTimelineAddItemToMovieClipUseCase(
+            this._$workSpace,
+            this._$movieClip,
+            x, y, path
         );
     }
 }

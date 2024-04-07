@@ -61,28 +61,52 @@ export const execute = (
             classValues.push("frame-active");
         }
 
-        const emptyCharacter = layer.getActiveEmptyCharacter(frame);
-        if (emptyCharacter) {
-
+        const characters = layer.getActiveCharacters(frame);
+        if (characters.length) {
+            const character = characters[0];
             switch (true) {
 
-                case emptyCharacter.startFrame === frame:
-                    classValues.push("empty-key-frame");
-                    if (emptyCharacter.endFrame - emptyCharacter.startFrame > 1) {
-                        classValues.push("empty-key-frame-join");
+                case character.startFrame === frame:
+                    classValues.push("key-frame");
+                    if (character.endFrame - character.startFrame > 1) {
+                        classValues.push("key-frame-join");
                     }
                     break;
 
-                case emptyCharacter.endFrame - 1 === frame:
-                    classValues.push("empty-space-frame-end");
+                case character.endFrame - 1 === frame:
+                    classValues.push("key-space-frame-end");
                     break;
 
                 default:
-                    classValues.push("empty-space-frame");
+                    classValues.push("key-space-frame");
                     break;
 
             }
 
+        } else {
+            const emptyCharacter = layer.getActiveEmptyCharacter(frame);
+            if (emptyCharacter) {
+
+                switch (true) {
+
+                    case emptyCharacter.startFrame === frame:
+                        classValues.push("empty-key-frame");
+                        if (emptyCharacter.endFrame - emptyCharacter.startFrame > 1) {
+                            classValues.push("empty-key-frame-join");
+                        }
+                        break;
+
+                    case emptyCharacter.endFrame - 1 === frame:
+                        classValues.push("empty-space-frame-end");
+                        break;
+
+                    default:
+                        classValues.push("empty-space-frame");
+                        break;
+
+                }
+
+            }
         }
 
         node.setAttribute("data-frame", `${frame}`);

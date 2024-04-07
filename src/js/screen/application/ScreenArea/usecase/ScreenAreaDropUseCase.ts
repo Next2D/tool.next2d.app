@@ -2,8 +2,8 @@ import type { Instance } from "@/core/domain/model/Instance";
 import type { InstanceImpl } from "@/interface/InstanceImpl";
 import { libraryArea } from "@/controller/domain/model/LibraryArea";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
-import { ExternalLibrary } from "@/external/controller/domain/model/ExternalLibrary";
 import { $allHideMenu } from "@/menu/application/MenuUtil";
+import { ExternalTimeline } from "@/external/timeline/domain/model/ExternalTimeline";
 import {
     $FOLDER_TYPE,
     $SOUND_TYPE
@@ -28,7 +28,7 @@ export const execute = async (event: DragEvent): Promise<void> =>
     $allHideMenu();
 
     const workSpace = $getCurrentWorkSpace();
-    const externalLibrary = new ExternalLibrary(workSpace);
+    const externalTimeline = new ExternalTimeline(workSpace, workSpace.scene);
     for (let idx = 0; idx < libraryArea.selectedIds.length; ++idx) {
 
         const libraryId = libraryArea.selectedIds[idx];
@@ -46,7 +46,7 @@ export const execute = async (event: DragEvent): Promise<void> =>
                 break;
 
             default:
-                await externalLibrary
+                await externalTimeline
                     .addItemToMovieClip(0, 0, instance.getPath(workSpace));
                 break;
 
