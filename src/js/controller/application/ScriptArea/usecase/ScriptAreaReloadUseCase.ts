@@ -6,6 +6,7 @@ import { execute as scriptAreaParentElementRegisterEventUseCase } from "./Script
 import { execute as scriptAreaFrameComponent } from "../component/ScriptAreaFrameComponent";
 import { execute as scriptAreaFrameElementMouseDownEventUseCase } from "./ScriptAreaFrameElementMouseDownEventUseCase";
 import { EventType } from "@/tool/domain/event/EventType";
+import { MovieClip } from "@/core/domain/model/MovieClip";
 
 /**
  * @description スクリプト一覧表示を再読み込み
@@ -31,7 +32,7 @@ export const execute = async (): Promise<void> =>
     for (const instance of $getCurrentWorkSpace().libraries.values()) {
 
         // MovieClip以外はスキップ
-        if (instance.type !== "container") {
+        if (instance.type !== MovieClip.type) {
             continue;
         }
 

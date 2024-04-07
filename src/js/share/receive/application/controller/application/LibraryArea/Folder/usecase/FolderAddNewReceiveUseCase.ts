@@ -34,7 +34,7 @@ export const execute = (message: ShareReceiveMessageImpl): void =>
         "id": message.data[2] as NonNullable<number>,
         "name": message.data[3] as NonNullable<string>,
         "folderId": message.data[4] as NonNullable<number>,
-        "type": "folder",
+        "type": Folder.type,
         "mode": "close"
     });
 

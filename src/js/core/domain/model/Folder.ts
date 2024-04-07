@@ -2,6 +2,7 @@ import type { ObjectImpl } from "@/interface/ObjectImpl";
 import type { FolderSaveObjectImpl } from "@/interface/FolderSaveObjectImpl";
 import type { FolderTypeImpl } from "@/interface/FolderTypeImpl";
 import type { WorkSpace } from "./WorkSpace";
+import type { InstanceTypeImpl } from "@/interface/InstanceTypeImpl";
 import { Instance } from "./Instance";
 import { execute as externalFolderCheckDuplicateService } from "@/external/core/application/ExternalFolder/service/ExternalFolderCheckDuplicateService";
 
@@ -28,6 +29,18 @@ export class Folder extends Instance
          * @private
          */
         this._$mode = object.mode || "close";
+    }
+
+    /**
+     * @description インスタンスのタイプを返す
+     *              Returns the type of the instance
+     *
+     * @member {string}
+     * @static
+     */
+    static get type (): InstanceTypeImpl
+    {
+        return "folder";
     }
 
     /**

@@ -1,5 +1,6 @@
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
+import type { InstanceImpl } from "@/interface/InstanceImpl";
 import { $useSocket } from "@/share/ShareUtil";
 import { $LIBRARY_REMOVE_INSTANCE_COMMAND } from "@/config/HistoryConfig";
 import { execute as historyAddElementUseCase } from "@/controller/application/HistoryArea/usecase/HistoryAddElementUseCase";
@@ -7,7 +8,9 @@ import { execute as historyGetTextService } from "@/controller/application/Histo
 import { execute as historyRemoveElementService } from "@/controller/application/HistoryArea/service/HistoryRemoveElementService";
 import { execute as libraryArearRemoveInstanceCreateHistoryObjectService } from "../service/LibraryArearRemoveInstanceCreateHistoryObjectService";
 import { execute as shareSendService } from "@/share/service/ShareSendService";
-import { InstanceImpl } from "@/interface/InstanceImpl";
+import { Bitmap } from "@/core/domain/model/Bitmap";
+import { Sound } from "@/core/domain/model/Sound";
+import { Video } from "@/core/domain/model/Video";
 
 /**
  * @description ライブラリのアイテム削除の履歴を登録
@@ -57,9 +60,9 @@ export const execute = (
         switch (instance.type) {
 
             // メディア系はS3を経由して共有する
-            case "bitmap":
-            case "video":
-            case "sound":
+            case Bitmap.type:
+            case Video.type:
+            case Sound.type:
                 {
                     // 転送用のオブジェクトを作成
                     const instanceObject = instance.toObject();

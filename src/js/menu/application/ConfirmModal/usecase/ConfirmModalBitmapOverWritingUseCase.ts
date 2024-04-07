@@ -76,7 +76,7 @@ export const execute = (file: File, path: string): Promise<void> =>
                 // 新規Bitmapを作成して、共通部分をinstanceから取得
                 const bitmap = new Bitmap({
                     "id": instance.id,
-                    "type": "bitmap",
+                    "type": Bitmap.type,
                     "name": instance.name,
                     "folderId": instance.folderId,
                     "width": width,

@@ -16,6 +16,7 @@ import { execute as externalLibraryCreateInstanceService } from "@/external/cont
 import { execute as workSpaceCreatePathMapService } from "@/core/application/WorkSpace/service/WorkSpaceCreatePathMapService";
 import { execute as libraryAreaMoveFolderHistoryUseCase } from "@/history/application/controller/application/LibraryArea/Folder/usecase/LibraryAreaMoveFolderHistoryUseCase";
 import { libraryArea } from "@/controller/domain/model/LibraryArea";
+import { Folder } from "@/core/domain/model/Folder";
 
 /**
  * @description ライブラリの外部APIクラス
@@ -211,7 +212,7 @@ export class ExternalLibrary
         }
 
         // 移動するアイテムがフォルダの場合は、親階層のフォルダと重複してないかチェックする
-        if (item.type === "folder"
+        if (item.type === Folder.type
             && (folder as ExternalFolder).checkDuplicate(item.id)
         ) {
             return false;
@@ -314,7 +315,7 @@ export class ExternalLibrary
             const instance = this.getItem(folderPaths.join("/"));
 
             // フォルダがあればスキップ
-            if (instance && instance.type === "folder") {
+            if (instance && instance.type === Folder.type) {
                 folderId = instance.id;
                 continue;
             }
@@ -398,5 +399,25 @@ export class ExternalLibrary
         }
 
         await item.remove(reload);
+    }
+
+    /**
+     * @description 選択中アイテムをアクティブなMovieClipの指定xy座標に追加
+     *              Add selected items to the specified xy coordinates of the active MovieClip
+     *
+     * @param  {number} x
+     * @param  {number} y
+     * @param  {string} path
+     * @return {Promise}
+     * @method
+     * @public
+     */
+    async addItemToMovieClip (
+        x: number,
+        y: number,
+        path: string
+    ): Promise<void> {
+        // TODO
+        console.log(x, y, path);
     }
 }

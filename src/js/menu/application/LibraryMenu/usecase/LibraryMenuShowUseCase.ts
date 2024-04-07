@@ -1,5 +1,6 @@
 import type { LibraryMenu } from "@/menu/domain/model/LibraryMenu";
 import type { MenuImpl } from "@/interface/MenuImpl";
+import type { InstanceImpl } from "@/interface/InstanceImpl";
 import { $LIBRARY_MENU_NAME } from "@/config/MenuConfig";
 import { libraryArea } from "@/controller/domain/model/LibraryArea";
 import { execute as libraryMenuCopyInactiveService } from "@/menu/application/LibraryMenu/service/LibraryMenuCopyInactiveService";
@@ -15,7 +16,8 @@ import {
     $getMenu
 } from "../../MenuUtil";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
-import { InstanceImpl } from "@/interface/InstanceImpl";
+import { Bitmap } from "@/core/domain/model/Bitmap";
+import { MovieClip } from "@/core/domain/model/MovieClip";
 
 /**
  * @description ライブラリ一覧エリアのメニューを表示
@@ -84,7 +86,7 @@ export const execute = (event: MouseEvent): void =>
 
                 switch (instance.type) {
 
-                    case "container":
+                    case MovieClip.type:
                         // MovieClipの編集ボタンをアクティブに更新
                         libraryMenuEditMovieClipActiveService();
 
@@ -92,7 +94,7 @@ export const execute = (event: MouseEvent): void =>
                         libraryMenuPhotopeaInactiveService();
                         break;
 
-                    case "bitmap":
+                    case Bitmap.type:
                         // photopea起動をアクティブに更新
                         libraryMenuPhotopeaActiveService();
 

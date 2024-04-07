@@ -1,4 +1,3 @@
-import type { Folder } from "@/core/domain/model/Folder";
 import type { InstanceImpl } from "@/interface/InstanceImpl";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { libraryArea } from "@/controller/domain/model/LibraryArea";
@@ -9,6 +8,7 @@ import { execute as workSpaceCreatePathMapService } from "@/core/application/Wor
 import { execute as confirmModalInstaceResetService } from "@/menu/application/ConfirmModal/service/ConfirmModalInstaceResetService";
 import { execute as confirmModalinstanceShowUseCase } from "@/menu/application/ConfirmModal/usecase/ConfirmModalinstanceShowUseCase";
 import { execute as confirmModalInstanceDuplicateCheckService } from "@/menu/application/ConfirmModal/service/ConfirmModalInstanceDuplicateCheckService";
+import { Folder } from "@/core/domain/model/Folder";
 
 /**
  * @description ライブラリエリア内でのインスタンス移動処理
@@ -47,7 +47,7 @@ export const execute = (event: DragEvent): void =>
             return ;
         }
 
-        const folder: InstanceImpl<Folder> | null = instance.type === "folder"
+        const folder: InstanceImpl<Folder> | null = instance.type === Folder.type
             ? instance
             : workSpace.getLibrary(instance.folderId);
 

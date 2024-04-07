@@ -30,7 +30,7 @@ export const execute = (
     const movieClip = new MovieClip({
         "id": library_id,
         "name": name,
-        "type": "container",
+        "type": MovieClip.type,
         "folderId": folder_id
     });
 

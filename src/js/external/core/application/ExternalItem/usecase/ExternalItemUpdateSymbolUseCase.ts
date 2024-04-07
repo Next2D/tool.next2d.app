@@ -1,9 +1,9 @@
-import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import type { InstanceImpl } from "@/interface/InstanceImpl";
 import { execute as instanceUpdateSymbolHistoryUseCase } from "@/history/application/core/application/Instance/usecase/InstanceUpdateSymbolHistoryUseCase";
 import { execute as libraryAreaUpdateSymbolElementService } from "@/controller/application/LibraryArea/service/LibraryAreaUpdateSymbolElementService";
 import { execute as objectSettingUpdateSymbolService } from "@/controller/application/ObjectSetting/service/ObjectSettingUpdateSymbolService";
+import { MovieClip } from "@/core/domain/model/MovieClip";
 
 /**
  * @description インスタスのシンボル名の変更実行処理関数
@@ -46,7 +46,7 @@ export const execute = (
         // ライブラリの表示を再描画
         libraryAreaUpdateSymbolElementService(instance);
 
-        if (instance.type === "container" && instance.active) {
+        if (instance.type === MovieClip.type && instance.active) {
             objectSettingUpdateSymbolService(symbol);
         }
     }

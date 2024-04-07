@@ -1,5 +1,5 @@
 import type { InstanceImpl } from "@/interface/InstanceImpl";
-import type { MovieClip } from "@/core/domain/model/MovieClip";
+import { MovieClip } from "@/core/domain/model/MovieClip";
 import { libraryArea } from "@/controller/domain/model/LibraryArea";
 import { ExternalWorkSpace } from "@/external/core/domain/model/ExternalWorkSpace";
 import { ExternalMovieClip } from "@/external/core/domain/model/ExternalMovieClip";
@@ -25,7 +25,7 @@ export const execute = async (): Promise<void> =>
     const workSpcae = $getCurrentWorkSpace();
 
     const movieClip: InstanceImpl<MovieClip> = workSpcae.getLibrary(libraryId);
-    if (!movieClip || movieClip.type !== "container") {
+    if (!movieClip || movieClip.type !== MovieClip.type) {
         return ;
     }
 

@@ -7,6 +7,11 @@ import { ExternalShape } from "@/external/core/domain/model/ExternalShape";
 import { ExternalSound } from "@/external/core/domain/model/ExternalSound";
 import { ExternalVideo } from "@/external/core/domain/model/ExternalVideo";
 import { ExternalText } from "@/external/core/domain/model/ExternalText";
+import { Bitmap } from "@/core/domain/model/Bitmap";
+import { Sound } from "@/core/domain/model/Sound";
+import { Video } from "@/core/domain/model/Video";
+import { Folder } from "@/core/domain/model/Folder";
+import { MovieClip } from "@/core/domain/model/MovieClip";
 
 /**
  * @description 指定タイプのクラスを作成
@@ -26,25 +31,25 @@ export const execute = (
     // タイプ別のクラスを作成
     switch (instance.type) {
 
-        case "container":
+        case MovieClip.type:
             return new ExternalMovieClip(work_space, instance);
 
         case "shape":
             return new ExternalShape(work_space, instance);
 
-        case "sound":
+        case Sound.type:
             return new ExternalSound(work_space, instance);
 
         case "text":
             return new ExternalText(work_space, instance);
 
-        case "video":
+        case Video.type:
             return new ExternalVideo(work_space, instance);
 
-        case "folder":
+        case Folder.type:
             return new ExternalFolder(work_space, instance);
 
-        case "bitmap":
+        case Bitmap.type:
             return new ExternalBitmap(work_space, instance);
 
         default:

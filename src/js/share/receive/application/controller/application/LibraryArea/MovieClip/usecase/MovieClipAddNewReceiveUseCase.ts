@@ -33,7 +33,7 @@ export const execute = (message: ShareReceiveMessageImpl): void =>
         "id": message.data[2] as NonNullable<number>,
         "name": message.data[3] as NonNullable<string>,
         "folderId": message.data[4] as NonNullable<number>,
-        "type": "container"
+        "type": MovieClip.type
     });
 
     // 内部情報に追加

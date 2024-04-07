@@ -23,23 +23,23 @@ export const execute = async (save_object: InstanceSaveObjectImpl): Promise<Inst
 
     switch (save_object.type) {
 
-        case "container":
+        case MovieClip.type:
             return new MovieClip(save_object as MovieClipSaveObjectImpl);
 
-        case "folder":
+        case Folder.type:
             return new Folder(save_object as FolderSaveObjectImpl);
 
-        case "bitmap":
+        case Bitmap.type:
             return new Bitmap(save_object as BitmapSaveObjectImpl);
 
-        case "video":
+        case Video.type:
         {
             const video = new Video(save_object as VideoSaveObjectImpl);
             await video.wait();
             return video;
         }
 
-        case "sound":
+        case Sound.type:
         {
             const sound = new Sound(save_object as SoundSaveObjectImpl);
             await sound.wait();

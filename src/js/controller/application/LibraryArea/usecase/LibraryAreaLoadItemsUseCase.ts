@@ -10,6 +10,7 @@ import { libraryArea } from "@/controller/domain/model/LibraryArea";
 import { execute as confirmModalFileResetService } from "@/menu/application/ConfirmModal/service/ConfirmModalFileResetService";
 import { execute as confirmModalFileShowUseCase } from "@/menu/application/ConfirmModal/usecase/ConfirmModalFileShowUseCase";
 import { $replace } from "@/language/application/LanguageUtil";
+import { Folder } from "@/core/domain/model/Folder";
 
 /**
  * @description 外部アイテムの読み込み実行関数
@@ -36,7 +37,7 @@ export const execute = async (items: DataTransferItemList): Promise<void> =>
     let path = "";
     if (libraryArea.selectedIds.length === 1) {
         const instance = workSpace.getLibrary(libraryArea.selectedIds[0]);
-        if (instance && instance.type === "folder") {
+        if (instance && instance.type === Folder.type) {
             path = instance.getPath(workSpace);
         }
     }

@@ -14,6 +14,8 @@ import { execute as libraryAreaCanDisplayInstanceService } from "../service/Libr
 import { execute as libraryAreaGetPaddingService } from "../service/LibraryAreaGetPaddingService";
 import { EventType } from "@/tool/domain/event/EventType";
 import { libraryArea } from "@/controller/domain/model/LibraryArea";
+import { Folder } from "@/core/domain/model/Folder";
+import { MovieClip } from "@/core/domain/model/MovieClip";
 
 /**
  * @description ライブラリエリアのElementを生成してイベントを登録する
@@ -81,7 +83,7 @@ export const execute = async (): Promise<void> =>
         );
 
         // フォルダ時はアローアイコンにイベントを登録
-        if (instance.type === "folder") {
+        if (instance.type === Folder.type) {
             const icons = node.getElementsByTagName("i");
             if (icons.length) {
 
@@ -99,7 +101,7 @@ export const execute = async (): Promise<void> =>
         }
 
         // MovieClipの時はアイコンにイベントを登録
-        if (instance.type === "container") {
+        if (instance.type === MovieClip.type) {
             const icons = node.getElementsByTagName("i");
             if (icons.length) {
                 // MovieClipアイコンにイベントを登録
@@ -126,7 +128,7 @@ export const execute = async (): Promise<void> =>
         );
 
         // フォルダ以外はシンボル名の変更イベントを登録
-        if (instance.type !== "folder") {
+        if (instance.type !== Folder.type) {
             const symbolElement = spans[1] as NonNullable<HTMLElement>;
             symbolElement.addEventListener(EventType.MOUSE_DOWN,
                 libraryAreaInstanceSymbolMouseDownEventUseCase

@@ -1,4 +1,3 @@
-import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import type { InstanceImpl } from "@/interface/InstanceImpl";
 import { execute as instanceUpdateNameHistoryUseCase } from "@/history/application/core/application/Instance/usecase/InstanceUpdateNameHistoryUseCase";
@@ -7,6 +6,7 @@ import { execute as libraryAreaReloadUseCase } from "@/controller/application/Li
 import { execute as timelineToolUpdateSceneNameService } from "@/timeline/application/TimelineTool/application/SceneName/service/TimelineToolUpdateSceneNameService";
 import { execute as timelineToolUpdateSceneListNameService } from "@/timeline/application/TimelineTool/application/SceneName/service/TimelineToolUpdateSceneListNameService";
 import { execute as objectSettingUpdateNameService } from "@/controller/application/ObjectSetting/service/ObjectSettingUpdateNameService";
+import { MovieClip } from "@/core/domain/model/MovieClip";
 
 /**
  * @description インスタス名の変更実行処理関数
@@ -53,7 +53,7 @@ export const execute = (
         libraryAreaReloadUseCase();
 
         // MovieClipの場合はタイムラインの表示情報を更新
-        if (instance.type === "container") {
+        if (instance.type === MovieClip.type) {
             // スクリーン一覧にあれば名前を更新
             timelineToolUpdateSceneListNameService(instance.id, name);
 

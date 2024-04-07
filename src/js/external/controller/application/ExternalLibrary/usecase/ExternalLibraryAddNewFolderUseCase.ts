@@ -30,7 +30,7 @@ export const execute = (
         "id": work_space.nextLibraryId,
         "name": name,
         "folderId": folder_id,
-        "type": "folder",
+        "type": Folder.type,
         "mode": "close"
     });
 

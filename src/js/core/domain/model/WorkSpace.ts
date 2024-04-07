@@ -111,7 +111,7 @@ export class WorkSpace
          */
         this._$root = new MovieClip({
             "id": 0,
-            "type": "container",
+            "type": MovieClip.type,
             "name": "main",
             "symbol": ""
         });

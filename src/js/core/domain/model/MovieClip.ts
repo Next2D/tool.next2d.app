@@ -2,6 +2,7 @@ import type { SoundObjectImpl } from "@/interface/SoundObjectImpl";
 import type { MovieClipSaveObjectImpl } from "@/interface/MovieClipSaveObjectImpl";
 import type { ActionSaveObjectImpl } from "@/interface/ActionSaveObjectImpl";
 import type { FrameObjectImpl } from "@/interface/FrameObjectImpl";
+import type { InstanceTypeImpl } from "@/interface/InstanceTypeImpl";
 import { Instance } from "./Instance";
 import { Layer } from "./Layer";
 import { execute as movieClipRunUseCase } from "@/core/application/MovieClip/usecase/MovieClipRunUseCase";
@@ -122,6 +123,18 @@ export class MovieClip extends Instance
 
         // 指定objectからMovieCLipを復元
         this.load(object);
+    }
+
+    /**
+     * @description インスタンスのタイプを返す
+     *              Returns the type of the instance
+     *
+     * @member {string}
+     * @static
+     */
+    static get type (): InstanceTypeImpl
+    {
+        return "container";
     }
 
     /**

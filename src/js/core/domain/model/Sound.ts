@@ -1,5 +1,6 @@
 import type { ObjectImpl } from "@/interface/ObjectImpl";
 import type { SoundSaveObjectImpl } from "@/interface/SoundSaveObjectImpl";
+import type { InstanceTypeImpl } from "@/interface/InstanceTypeImpl";
 import { Instance } from "./Instance";
 import { execute as binaryToBufferService } from "@/core/service/BinaryToBufferService";
 import { execute as bufferToBinaryService } from "@/core/service/BufferToBinaryService";
@@ -92,6 +93,18 @@ export class Sound extends Instance
                 this._$audio.load();
             }
         }
+    }
+
+    /**
+     * @description インスタンスのタイプを返す
+     *              Returns the type of the instance
+     *
+     * @member {string}
+     * @static
+     */
+    static get type (): InstanceTypeImpl
+    {
+        return "sound";
     }
 
     /**

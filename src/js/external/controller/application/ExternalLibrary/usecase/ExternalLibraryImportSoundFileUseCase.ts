@@ -5,6 +5,7 @@ import { Sound } from "@/core/domain/model/Sound";
 import { ExternalLibrary } from "@/external/controller/domain/model/ExternalLibrary";
 import { execute as externalWorkSpaceRegisterInstanceService } from "@/external/core/application/ExternalWorkSpace/service/ExternalWorkSpaceRegisterInstanceService";
 import { execute as libraryAreaAddNewSoundHistoryUseCase } from "@/history/application/controller/application/LibraryArea/Sound/usecase/LibraryAreaAddNewSoundHistoryUseCase";
+import { Folder } from "@/core/domain/model/Folder";
 
 /**
  * @description 音声の読み込み実行処理関数
@@ -29,11 +30,11 @@ export const execute = (
     {
         const externalLibrary = new ExternalLibrary(work_space);
         const folder: ExternalInstanceImpl<ExternalFolder> | null = externalLibrary.getItem(path);
-        const folderId = folder && folder.type === "folder" ? folder.id : 0;
+        const folderId = folder && folder.type === Folder.type ? folder.id : 0;
 
         const sound = new Sound({
             "id": work_space.nextLibraryId,
-            "type": "sound",
+            "type": Sound.type,
             "name": name,
             "folderId": folderId
         });

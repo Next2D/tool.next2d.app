@@ -4,6 +4,7 @@ import { ExternalLibrary } from "@/external/controller/domain/model/ExternalLibr
 import { execute as libraryPreviewAreaUpdateDisplayUseCase } from "@/controller/application/LibraryPreviewArea/usecase/LibraryPreviewAreaUpdateDisplayUseCase";
 import { execute as libraryPreviewAreaClearDisplayService } from "@/controller/application/LibraryPreviewArea/service/LibraryPreviewAreaClearDisplayService";
 import { execute as libraryAreaSelectedClearUseCase } from "./LibraryAreaSelectedClearUseCase";
+import { Folder } from "@/core/domain/model/Folder";
 
 /**
  * @description ラリブラリのキーダウンイベントの処置関数
@@ -38,7 +39,7 @@ export const execute = (): void =>
             }
 
             // フォルダーのインスタンスでなければ、プレビューエリアを更新
-            if (instance.type !== "folder") {
+            if (instance.type !== Folder.type) {
                 libraryPreviewAreaUpdateDisplayUseCase(instance);
             } else {
                 libraryPreviewAreaClearDisplayService();
@@ -74,7 +75,7 @@ export const execute = (): void =>
         libraryAreaSelectedClearUseCase();
 
         // フォルダーのインスタンスでなければ、プレビューエリアを更新
-        if (instance.type !== "folder") {
+        if (instance.type !== Folder.type) {
             libraryPreviewAreaUpdateDisplayUseCase(instance);
         } else {
             libraryPreviewAreaClearDisplayService();

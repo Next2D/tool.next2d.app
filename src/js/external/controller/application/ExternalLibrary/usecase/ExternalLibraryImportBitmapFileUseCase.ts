@@ -9,6 +9,7 @@ import {
     $getCanvas,
     $poolCanvas
 } from "@/global/GlobalUtil";
+import { Folder } from "@/core/domain/model/Folder";
 
 /**
  * @description 画像の読み込み実行処理関数
@@ -34,11 +35,11 @@ export const execute = (
         const externalLibrary = new ExternalLibrary(work_space);
         const folder: ExternalInstanceImpl<ExternalFolder> | null = externalLibrary.getItem(path);
 
-        const folderId = folder && folder.type === "folder" ? folder.id : 0;
+        const folderId = folder && folder.type === Folder.type ? folder.id : 0;
 
         const bitmap = new Bitmap({
             "id": work_space.nextLibraryId,
-            "type": "bitmap",
+            "type": Bitmap.type,
             "name": name,
             "folderId": folderId,
             "imageType": file.type

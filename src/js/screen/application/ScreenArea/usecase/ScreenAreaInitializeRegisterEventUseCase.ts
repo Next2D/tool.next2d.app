@@ -1,6 +1,7 @@
 import { $SCREEN_ID } from "@/config/ScreenConfig";
 import { EventType } from "@/tool/domain/event/EventType";
 import { execute as screenAreaMouseDownEventUseCase } from "./ScreenAreaMouseDownEventUseCase";
+import { execute as screenAreaDropUseCase } from "./ScreenAreaDropUseCase";
 
 /**
  * @description スクリーン全体のマウスダウンイベントを登録
@@ -23,4 +24,11 @@ export const execute = (): void =>
     element.addEventListener(EventType.MOUSE_DOWN,
         screenAreaMouseDownEventUseCase
     );
+
+    element.addEventListener("dragover", (event: DragEvent): void =>
+    {
+        event.preventDefault();
+    });
+
+    element.addEventListener("drop", screenAreaDropUseCase);
 };

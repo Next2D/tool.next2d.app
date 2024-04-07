@@ -45,7 +45,7 @@ export const execute = (file: File, path: string): Promise<void> =>
                 // 新規Videoを作成して、共通部分をinstanceから取得
                 const video = new Video({
                     "id": instance.id,
-                    "type": "video",
+                    "type": Video.type,
                     "name": instance.name,
                     "folderId": instance.folderId,
                     "buffer": new Uint8Array(array_buffer)

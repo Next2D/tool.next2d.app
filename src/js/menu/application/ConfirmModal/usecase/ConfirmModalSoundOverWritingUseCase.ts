@@ -45,7 +45,7 @@ export const execute = (file: File, path: string): Promise<void> =>
                 // 新規Soundを作成して、共通部分をinstanceから取得
                 const sound = new Sound({
                     "id": instance.id,
-                    "type": "sound",
+                    "type": Sound.type,
                     "name": instance.name,
                     "folderId": instance.folderId,
                     "buffer": new Uint8Array(array_buffer)

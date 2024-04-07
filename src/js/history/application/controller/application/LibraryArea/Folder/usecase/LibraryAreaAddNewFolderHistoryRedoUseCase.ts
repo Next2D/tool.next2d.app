@@ -29,7 +29,7 @@ export const execute = (
 
     const folder = new Folder({
         "id": library_id,
-        "type": "folder",
+        "type": Folder.type,
         "name": name,
         "mode": "close",
         "folderId": folder_id

@@ -28,7 +28,7 @@ export const execute = (
     const movieClip = new MovieClip({
         "id": work_space.nextLibraryId,
         "name": name,
-        "type": "container",
+        "type": MovieClip.type,
         "folderId": folder_id
     });
 
