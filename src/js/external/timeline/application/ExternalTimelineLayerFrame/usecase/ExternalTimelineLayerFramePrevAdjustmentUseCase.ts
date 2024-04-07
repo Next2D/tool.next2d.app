@@ -33,7 +33,7 @@ export const execute = (
     }
 
     let frame = keyframe - 1;
-    while (frame) {
+    while (frame > 0) {
 
         const characters = layer.getActiveCharacters(frame);
         if (characters.length) {
@@ -46,6 +46,7 @@ export const execute = (
 
         const emptyCharacter = layer.getActiveEmptyCharacter(frame);
         if (emptyCharacter) {
+            console.log(keyframe);
             const beforeEndFrame = emptyCharacter.endFrame;
             emptyCharacter.endFrame = keyframe;
             timelineLayerFrameUpdateEmptyKeyframeHistoryUseCase(

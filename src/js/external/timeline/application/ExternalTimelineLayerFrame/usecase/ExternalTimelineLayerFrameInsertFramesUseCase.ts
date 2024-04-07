@@ -1,6 +1,12 @@
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import { execute as externalTimelineLayerFrameInsertEmptyFramesUseCase } from "./ExternalTimelineLayerFrameInsertEmptyFramesUseCase";
+import { execute as externalTimelineLayerFrameCreateEmptyKeyframeUseCase } from "./ExternalTimelineLayerFrameCreateEmptyKeyframeUseCase";
+import { timelineLayer } from "@/timeline/domain/model/TimelineLayer";
+import { $getLeftFrame } from "@/timeline/application/TimelineUtil";
+import { execute as timelineLayerFrameUpdateStyleService } from "@/timeline/application/TimelineLayerFrame/service/TimelineLayerFrameUpdateStyleService";
+import { execute as timelineScrollUpdateWidthService } from "@/timeline/application/TimelineScroll/service/TimelineScrollUpdateWidthService";
+import { execute as externalTimelineLayerFramePrevAdjustmentUseCase } from "./ExternalTimelineLayerFramePrevAdjustmentUseCase";
 
 /**
  * @description 現在のフレームで、選択中のレイヤーに指定数のフレームを挿入
@@ -49,6 +55,33 @@ export const execute = (
                 activeEmptyCharacter,
                 num_frame
             );
+            continue;
+        }
+
+        // 追加するフレームにキーフレームがない場合は、前方のキーフレームを調整
+        externalTimelineLayerFramePrevAdjustmentUseCase(
+            work_space,
+            movie_clip,
+            layer,
+            frame + 1
+        );
+
+        if (work_space.active && movie_clip.active) {
+
+            const layerElement = timelineLayer.elements[layer.getDisplayIndex()] as NonNullable<HTMLElement>;
+            if (!layerElement) {
+                return ;
+            }
+
+            // レイヤーのフレームスタイルを更新
+            timelineLayerFrameUpdateStyleService(
+                work_space, movie_clip,
+                layerElement.lastElementChild as NonNullable<HTMLElement>,
+                $getLeftFrame()
+            );
+
+            // タイムラインの幅を更新
+            timelineScrollUpdateWidthService();
         }
     }
 };
