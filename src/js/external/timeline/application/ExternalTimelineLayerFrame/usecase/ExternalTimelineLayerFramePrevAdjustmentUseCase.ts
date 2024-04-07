@@ -46,7 +46,6 @@ export const execute = (
 
         const emptyCharacter = layer.getActiveEmptyCharacter(frame);
         if (emptyCharacter) {
-            console.log(keyframe);
             const beforeEndFrame = emptyCharacter.endFrame;
             emptyCharacter.endFrame = keyframe;
             timelineLayerFrameUpdateEmptyKeyframeHistoryUseCase(

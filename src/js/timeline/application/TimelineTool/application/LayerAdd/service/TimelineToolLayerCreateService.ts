@@ -6,6 +6,7 @@ import {
     $GUIDE_IN_MODE,
     $MASK_IN_MODE
 } from "@/config/LayerModeConfig";
+import { EmptyCharacter } from "@/core/domain/model/EmptyCharacter";
 
 /**
  * @description 引数の指定に準拠してレイヤーを作成、失敗時はnullを返却
@@ -67,6 +68,15 @@ export const execute = (
         default:
             break;
 
+    }
+
+    // 選択してるレイヤーにキーフレームがあれば、最終フレームまでの空のキーフレームを追加
+    const maxFrame = selectedLayer.maxFrame;
+    if (maxFrame) {
+        const emptyCharacter = new EmptyCharacter();
+        emptyCharacter.startFrame = 1;
+        emptyCharacter.endFrame   = maxFrame;
+        newLayer.addEmptyCharacter(emptyCharacter);
     }
 
     // 内部情報にレイヤーを追加

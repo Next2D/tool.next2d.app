@@ -9,6 +9,7 @@ import { execute as externalTimelineLayerControllerBehindUseCase } from "@/exter
 import { execute as externalTimelineAddNewLayerUseCase } from "@/external/timeline/application/ExternalTimeline/usecase/ExternalTimelineAddNewLayerUseCase";
 import { execute as externalTimelineDeleteLayerUseCase } from "@/external/timeline/application/ExternalTimeline/usecase/ExternalTimelineDeleteLayerUseCase";
 import { execute as externalTimelineLayerFrameConvertToEmptyKeyframesUseCase } from "@/external/timeline/application/ExternalTimelineLayerFrame/usecase/ExternalTimelineLayerFrameConvertToEmptyKeyframesUseCase";
+import { execute as externalTimelineLayerFrameConvertToKeyframesUseCase } from "@/external/timeline/application/ExternalTimelineLayerFrame/usecase/ExternalTimelineLayerFrameConvertToKeyframesUseCase";
 import { execute as externalTimelineLayerFrameSelectedFramesUseCase } from "@/external/timeline/application/ExternalTimelineLayerFrame/usecase/ExternalTimelineLayerFrameSelectedFramesUseCase";
 import { execute as externalTimelineLayerDeactivatedAllLayerUseCase } from "@/external/timeline/application/ExternalTimelineLayer/usecase/ExternalTimelineLayerDeactivatedAllLayerUseCase";
 import { execute as externalTimelineLayerFrameInsertFramesUseCase } from "@/external/timeline/application/ExternalTimelineLayerFrame/usecase/ExternalTimelineLayerFrameInsertFramesUseCase";
@@ -59,14 +60,12 @@ export class ExternalTimeline
      */
     convertToKeyframes (start_frame: number, end_frame: number = 0): void
     {
-        // 選択中のレイヤーがなければ終了
-        if (!this._$movieClip.selectedLayers.length) {
-            return ;
-        }
-
-        console.log("TODO convertToKeyframes");
-        const frameObject = $convertFrameObject(start_frame, end_frame);
-        console.log(frameObject);
+        externalTimelineLayerFrameConvertToKeyframesUseCase(
+            this._$workSpace,
+            this._$movieClip,
+            start_frame,
+            end_frame
+        );
     }
 
     /**
