@@ -452,6 +452,20 @@ export class Layer
     }
 
     /**
+     * @description キーフレームを削除
+     *              Remove keyframe
+     *
+     * @param  {Character} character
+     * @return {void}
+     * @method
+     * @public
+     */
+    removeCharacter (character: Character): void
+    {
+        this._$characters.splice(this._$characters.indexOf(character));
+    }
+
+    /**
      * @description 指定したフレームに空のキーフレームがあれば返却
      *              Returns an empty keyframe at the specified frame
      *

@@ -4,6 +4,7 @@ import type { VideoSaveObjectImpl } from "@/interface/VideoSaveObjectImpl";
 import type { SoundSaveObjectImpl } from "@/interface/SoundSaveObjectImpl";
 import type { InstanceSaveObjectImpl } from "@/interface/InstanceSaveObjectImpl";
 import type { LayerModeImpl } from "@/interface/LayerModeImpl";
+import type { CharacterSaveObjectImpl } from "@/interface/CharacterSaveObjectImpl";
 import { execute as screenTabNameAddHistoryRedoUseCase } from "@/history/application/screen/application/ScreenTab/usecase/ScreenTabNameAddHistoryRedoUseCase";
 import { execute as timelineToolLayerAddHistoryRedoUseCase } from "@/history/application/timeline/application/TimelineTool/LayerAdd/usecase/TimelineToolLayerAddHistoryRedoUseCase";
 import { execute as timelineToolLayerDeleteHistoryRedoUseCase } from "@/history/application/timeline/application/TimelineTool/LayerDelete/usecase/TimelineToolLayerDeleteHistoryRedoUseCase";
@@ -28,6 +29,7 @@ import { execute as timelineLayerFrameCreateEmptyKeyframeHistoryRedoUseCase } fr
 import { execute as timelineLayerFrameUpdateEmptyKeyframeHistoryRedoUseCase } from "@/history/application/timeline/application/TimelineLayerFrame/UpdateEmptyKeyframe/usecase/TimelineLayerFrameUpdateEmptyKeyframeHistoryRedoUseCase";
 import { execute as timelineLayerFrameSplitEmptyKeyframeHistoryRedoUseCase } from "@/history/application/timeline/application/TimelineLayerFrame/SplitEmptyKeyframe/usecase/TimelineLayerFrameSplitEmptyKeyframeHistoryRedoUseCase";
 import { execute as timelineLayerFrameInsertEmptyFramesHistoryRedoUseCase } from "@/history/application/timeline/application/TimelineLayerFrame/InsertEmptyFrames/usecase/TimelineLayerFrameInsertEmptyFramesHistoryRedoUseCase";
+import { execute as timelineLayerFrameAddKeyframeHistoryRedoUseCase } from "@/history/application/timeline/application/TimelineLayerFrame/AddKeyframe/usecase/TimelineLayerFrameAddKeyframeHistoryRedoUseCase";
 import { execute as instanceUpdateNameHistoryRedoUseCase } from "@/history/application/core/application/Instance/usecase/InstanceUpdateNameHistoryRedoUseCase";
 import { execute as instanceUpdateSymbolHistoryRedoUseCase } from "@/history/application/core/application/Instance/usecase/InstanceUpdateSymbolHistoryRedoUseCase";
 import {
@@ -56,7 +58,8 @@ import {
     $TIMELINE_ADD_EMPTY_KEYFRAME_COMMAND,
     $TIMELINE_UPDATE_EMPTY_KEYFRAME_COMMAND,
     $TIMELINE_SPLIT_EMPTY_KEYFRAME_COMMAND,
-    $TIMELINE_INSERT_EMPTY_FRAME_COMMAND
+    $TIMELINE_INSERT_EMPTY_FRAME_COMMAND,
+    $TIMELINE_ADD_KEYFRAME_COMMAND
 } from "@/config/HistoryConfig";
 
 /**
@@ -322,6 +325,18 @@ export const execute = async (
                 messages[2] as number, // Layer Index
                 messages[3] as number, // EmptyCharacter Index
                 messages[4] as number // NumFrame
+            );
+            break;
+
+        // キーフレーム追加
+        case $TIMELINE_ADD_KEYFRAME_COMMAND:
+            timelineLayerFrameAddKeyframeHistoryRedoUseCase(
+                messages[0] as number, // work_space_id
+                messages[1] as number, // library_id
+                messages[2] as number, // layer_index
+                messages[3] as number, // character_index
+                messages[4] as CharacterSaveObjectImpl, // save_object
+                messages[5] as number // empty_character_index
             );
             break;
 
