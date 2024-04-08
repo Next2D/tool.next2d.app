@@ -20,7 +20,7 @@ describe("TimelineLayerFrameCreateEmptyKeyframeCreateHistoryObjectServiceTest", 
         character.startFrame = 1;
         character.endFrame   = 10;
 
-        const object = execute(1, movieClip, layer, character, -1);
+        const object = execute(1, movieClip, layer, character, -1, "bitmap");
         expect(object.command).toBe($TIMELINE_ADD_KEYFRAME_COMMAND);
 
         // 配列の順番が崩れてもいいようにテストケースを残す
@@ -33,9 +33,10 @@ describe("TimelineLayerFrameCreateEmptyKeyframeCreateHistoryObjectServiceTest", 
         expect(object.messages[5]).toBe(-1);
 
         // 表示様の配列のチェック
-        expect(object.args.length).toBe(3);
+        expect(object.args.length).toBe(4);
         expect(object.args[0]).toBe(movieClip.name);
         expect(object.args[1]).toBe(layer.name);
         expect(object.args[2]).toBe(character.startFrame);
+        expect(object.args[3]).toBe("bitmap");
     });
 });

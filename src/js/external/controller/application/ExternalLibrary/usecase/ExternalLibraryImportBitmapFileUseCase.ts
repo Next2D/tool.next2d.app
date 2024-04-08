@@ -12,7 +12,7 @@ import {
 import {
     $BITMAP_TYPE,
     $FOLDER_TYPE
-} from "@/config/InstanceCOnfig";
+} from "@/config/InstanceConfig";
 
 /**
  * @description 画像の読み込み実行処理関数

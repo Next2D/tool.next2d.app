@@ -15,7 +15,7 @@ import {
     $SOUND_TYPE,
     $TEXT_TYPE,
     $VIDEO_TYPE
-} from "@/config/InstanceCOnfig";
+} from "@/config/InstanceConfig";
 import type { ExternalItemImpl } from "@/interface/ExternalItemImpl";
 
 /**

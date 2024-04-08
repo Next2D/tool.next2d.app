@@ -9,7 +9,7 @@ import { execute as confirmModalInstaceResetService } from "@/menu/application/C
 import { execute as confirmModalinstanceShowUseCase } from "@/menu/application/ConfirmModal/usecase/ConfirmModalinstanceShowUseCase";
 import { execute as confirmModalInstanceDuplicateCheckService } from "@/menu/application/ConfirmModal/service/ConfirmModalInstanceDuplicateCheckService";
 import { Folder } from "@/core/domain/model/Folder";
-import { $FOLDER_TYPE } from "@/config/InstanceCOnfig";
+import { $FOLDER_TYPE } from "@/config/InstanceConfig";
 
 /**
  * @description ライブラリエリア内でのインスタンス移動処理

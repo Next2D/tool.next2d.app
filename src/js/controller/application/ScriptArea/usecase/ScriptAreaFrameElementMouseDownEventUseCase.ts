@@ -5,7 +5,7 @@ import {
     $setTargetFrame,
     $setTargetMovieClip
 } from "@/menu/application/ScriptEditorModal/ScriptEditorModalUtil";
-import { $MOVIE_CLIP_TYPE } from "@/config/InstanceCOnfig";
+import { $MOVIE_CLIP_TYPE } from "@/config/InstanceConfig";
 
 /**
  * @description フレームのElementのマウスダウン処理関数

@@ -4,7 +4,7 @@ import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { execute as libraryAreaUpdateVideoHistoryUseCase } from "@/history/application/controller/application/LibraryArea/Video/usecase/LibraryAreaUpdateVideoHistoryUseCase";
 import { execute as libraryAreaReloadUseCase } from "@/controller/application/LibraryArea/usecase/LibraryAreaReloadUseCase";
 import { execute as libraryAreaSelectedClearUseCase } from "@/controller/application/LibraryArea/usecase/LibraryAreaSelectedClearUseCase";
-import { $VIDEO_TYPE } from "@/config/InstanceCOnfig";
+import { $VIDEO_TYPE } from "@/config/InstanceConfig";
 
 /**
  * @description Videoクラスのデータを上書きする

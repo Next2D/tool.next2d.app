@@ -119,7 +119,7 @@ export const execute = (command: number): string =>
             return "「%s1」のレイヤー「%s2」の%s3フレーム目に%s4フレームを追加";
 
         case $TIMELINE_ADD_KEYFRAME_COMMAND:
-            return "「%s1」のレイヤー「%s2」の%s3フレームにキーフレームを追加";
+            return "「%s1」のレイヤー「%s2」の%s3フレームに「%s4」を追加";
 
         default:
             break;

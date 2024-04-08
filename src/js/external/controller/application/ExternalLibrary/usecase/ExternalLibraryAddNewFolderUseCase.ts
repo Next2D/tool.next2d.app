@@ -3,7 +3,7 @@ import type { MovieClip } from "@/core/domain/model/MovieClip";
 import { Folder } from "@/core/domain/model/Folder";
 import { execute as externalLibraryAddInstanceUseCase } from "@/external/controller/application/ExternalLibrary/usecase/ExternalLibraryAddInstanceUseCase";
 import { execute as libraryAreaAddNewFolderHistoryUseCase } from "@/history/application/controller/application/LibraryArea/Folder/usecase/LibraryAreaAddNewFolderHistoryUseCase";
-import { $FOLDER_TYPE } from "@/config/InstanceCOnfig";
+import { $FOLDER_TYPE } from "@/config/InstanceConfig";
 
 /**
  * @description 新規フォルダーの追加ユースケース

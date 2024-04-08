@@ -16,7 +16,7 @@ import {
     $MOVIE_CLIP_TYPE,
     $SOUND_TYPE,
     $VIDEO_TYPE
-} from "@/config/InstanceCOnfig";
+} from "@/config/InstanceConfig";
 
 /**
  * @description セーブオブジェクトから各種インスタンスオブジェクトを作成

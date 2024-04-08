@@ -4,7 +4,7 @@ import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { execute as libraryAreaUpdateSoundHistoryUseCase } from "@/history/application/controller/application/LibraryArea/Sound/usecase/LibraryAreaUpdateSoundHistoryUseCase";
 import { execute as libraryAreaReloadUseCase } from "@/controller/application/LibraryArea/usecase/LibraryAreaReloadUseCase";
 import { execute as libraryAreaSelectedClearUseCase } from "@/controller/application/LibraryArea/usecase/LibraryAreaSelectedClearUseCase";
-import { $SOUND_TYPE } from "@/config/InstanceCOnfig";
+import { $SOUND_TYPE } from "@/config/InstanceConfig";
 
 /**
  * @description Soundクラスのデータを上書きする

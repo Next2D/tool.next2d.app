@@ -5,7 +5,7 @@ import { ExternalWorkSpace } from "@/external/core/domain/model/ExternalWorkSpac
 import { ExternalMovieClip } from "@/external/core/domain/model/ExternalMovieClip";
 import { execute as sceneListMenuHideService } from "@/menu/application/SceneListMenu/service/SceneListMenuHideService";
 import { execute as timelineSceneListExcludeElememtService } from "../service/TimelineSceneListExcludeElememtService";
-import { $MOVIE_CLIP_TYPE } from "@/config/InstanceCOnfig";
+import { $MOVIE_CLIP_TYPE } from "@/config/InstanceConfig";
 
 /**
  * @description タイムラインのシーン名のマウスダウンのイベント処理関数

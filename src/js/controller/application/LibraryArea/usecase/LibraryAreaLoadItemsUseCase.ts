@@ -10,7 +10,7 @@ import { libraryArea } from "@/controller/domain/model/LibraryArea";
 import { execute as confirmModalFileResetService } from "@/menu/application/ConfirmModal/service/ConfirmModalFileResetService";
 import { execute as confirmModalFileShowUseCase } from "@/menu/application/ConfirmModal/usecase/ConfirmModalFileShowUseCase";
 import { $replace } from "@/language/application/LanguageUtil";
-import { $FOLDER_TYPE } from "@/config/InstanceCOnfig";
+import { $FOLDER_TYPE } from "@/config/InstanceConfig";
 
 /**
  * @description 外部アイテムの読み込み実行関数

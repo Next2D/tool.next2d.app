@@ -26,7 +26,7 @@ import {
     $TIMELINE_DEFAULT_FRAME_WIDTH_SIZE,
     $TIMELINE_DEFAULT_FRAME_HEIGHT_SIZE
 } from "@/config/TimelineConfig";
-import { $MOVIE_CLIP_TYPE } from "@/config/InstanceCOnfig";
+import { $MOVIE_CLIP_TYPE } from "@/config/InstanceConfig";
 
 /**
  * @description プロジェクトのユニークID

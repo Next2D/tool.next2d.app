@@ -57,6 +57,6 @@ describe("HistoryGetTextServiceTest", () =>
         expect(execute($TIMELINE_UPDATE_EMPTY_KEYFRAME_COMMAND)).toBe("「%s1」のレイヤー「%s2」の%s3フレームの空のキーフレームを変更");
         expect(execute($TIMELINE_SPLIT_EMPTY_KEYFRAME_COMMAND)).toBe("「%s1」のレイヤー「%s2」の%s3フレームの空のキーフレームを分割");
         expect(execute($TIMELINE_INSERT_EMPTY_FRAME_COMMAND)).toBe("「%s1」のレイヤー「%s2」の%s3フレーム目に%s4フレームを追加");
-        expect(execute($TIMELINE_ADD_KEYFRAME_COMMAND)).toBe("「%s1」のレイヤー「%s2」の%s3フレームにキーフレームを追加");
+        expect(execute($TIMELINE_ADD_KEYFRAME_COMMAND)).toBe("「%s1」のレイヤー「%s2」の%s3フレームに「%s4」を追加");
     });
 });

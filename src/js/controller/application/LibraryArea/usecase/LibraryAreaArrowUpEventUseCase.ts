@@ -4,7 +4,7 @@ import { ExternalLibrary } from "@/external/controller/domain/model/ExternalLibr
 import { execute as libraryPreviewAreaUpdateDisplayUseCase } from "@/controller/application/LibraryPreviewArea/usecase/LibraryPreviewAreaUpdateDisplayUseCase";
 import { execute as libraryPreviewAreaClearDisplayService } from "@/controller/application/LibraryPreviewArea/service/LibraryPreviewAreaClearDisplayService";
 import { execute as libraryAreaSelectedClearUseCase } from "./LibraryAreaSelectedClearUseCase";
-import { $FOLDER_TYPE } from "@/config/InstanceCOnfig";
+import { $FOLDER_TYPE } from "@/config/InstanceConfig";
 
 /**
  * @description ラリブラリのキーダウンイベントの処置関数

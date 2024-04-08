@@ -8,7 +8,7 @@ import { execute as libraryPreviewAreaUpdateDisplayUseCase } from "@/controller/
 import { execute as libraryPreviewAreaClearDisplayService } from "@/controller/application/LibraryPreviewArea/service/LibraryPreviewAreaClearDisplayService";
 import { execute as libraryAreaAltSelectedUseCase } from "@/controller/application/LibraryArea/usecase/LibraryAreaAltSelectedUseCase";
 import { execute as libraryAreaShiftSelectedUseCase } from "@/controller/application/LibraryArea/usecase/LibraryAreaShiftSelectedUseCase";
-import { $FOLDER_TYPE } from "@/config/InstanceCOnfig";
+import { $FOLDER_TYPE } from "@/config/InstanceConfig";
 
 /**
  * @description 親Elementのマウスダウン処理関数、Elementを選択状態に更新

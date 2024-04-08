@@ -8,7 +8,7 @@ import { execute as libraryAreaAddNewVideoHistoryUseCase } from "@/history/appli
 import {
     $FOLDER_TYPE,
     $VIDEO_TYPE
-} from "@/config/InstanceCOnfig";
+} from "@/config/InstanceConfig";
 
 /**
  * @description 映像の読み込み実行処理関数

@@ -7,7 +7,7 @@ import { ExternalTimeline } from "@/external/timeline/domain/model/ExternalTimel
 import {
     $FOLDER_TYPE,
     $SOUND_TYPE
-} from "@/config/InstanceCOnfig";
+} from "@/config/InstanceConfig";
 
 /**
  * @description スクリーンエリアのアイテムドロップイベント処理関数

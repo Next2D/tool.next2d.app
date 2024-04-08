@@ -14,6 +14,7 @@ import { $TIMELINE_ADD_KEYFRAME_COMMAND } from "@/config/HistoryConfig";
  * @param  {Layer} layer
  * @param  {Character} character
  * @param  {number} empty_character_index
+ * @param  {string} instance_name
  * @return {object}
  * @method
  * @public
@@ -23,7 +24,8 @@ export const execute = (
     movie_clip: MovieClip,
     layer: Layer,
     character: Character,
-    empty_character_index: number
+    empty_character_index: number,
+    instance_name: string
 ): HistoryObjectImpl => {
 
     return {
@@ -39,7 +41,8 @@ export const execute = (
         "args": [
             movie_clip.name,
             layer.name,
-            character.startFrame
+            character.startFrame,
+            instance_name
         ]
     };
 };

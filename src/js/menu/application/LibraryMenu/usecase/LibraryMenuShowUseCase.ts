@@ -19,7 +19,7 @@ import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import {
     $BITMAP_TYPE,
     $MOVIE_CLIP_TYPE
-} from "@/config/InstanceCOnfig";
+} from "@/config/InstanceConfig";
 
 /**
  * @description ライブラリ一覧エリアのメニューを表示

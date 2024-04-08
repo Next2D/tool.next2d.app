@@ -7,7 +7,7 @@ import { execute as libraryAreaReloadUseCase } from "@/controller/application/Li
 import { execute as timelineToolUpdateSceneNameService } from "@/timeline/application/TimelineTool/application/SceneName/service/TimelineToolUpdateSceneNameService";
 import { execute as timelineToolUpdateSceneListNameService } from "@/timeline/application/TimelineTool/application/SceneName/service/TimelineToolUpdateSceneListNameService";
 import { execute as objectSettingUpdateNameService } from "@/controller/application/ObjectSetting/service/ObjectSettingUpdateNameService";
-import { $MOVIE_CLIP_TYPE } from "@/config/InstanceCOnfig";
+import { $MOVIE_CLIP_TYPE } from "@/config/InstanceConfig";
 
 /**
  * @description インスタス名の変更実行処理関数

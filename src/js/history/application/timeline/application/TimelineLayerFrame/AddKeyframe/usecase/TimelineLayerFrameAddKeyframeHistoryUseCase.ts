@@ -37,10 +37,15 @@ export const execute = (
     // fixed logic
     historyRemoveElementService(work_space);
 
+    const instance = work_space.getLibrary(character.libraryId);
+    if (!instance) {
+        return ;
+    }
+
     // fixed logic
     const historyObject = timelineLayerFrameAddKeyframeCreateHistoryObjectService(
         work_space.id, movie_clip, layer,
-        character, empty_character_index
+        character, empty_character_index, instance.name
     );
 
     // 作業履歴にElementを追加

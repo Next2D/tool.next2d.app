@@ -6,7 +6,7 @@ import { execute as scriptAreaParentElementRegisterEventUseCase } from "./Script
 import { execute as scriptAreaFrameComponent } from "../component/ScriptAreaFrameComponent";
 import { execute as scriptAreaFrameElementMouseDownEventUseCase } from "./ScriptAreaFrameElementMouseDownEventUseCase";
 import { EventType } from "@/tool/domain/event/EventType";
-import { $MOVIE_CLIP_TYPE } from "@/config/InstanceCOnfig";
+import { $MOVIE_CLIP_TYPE } from "@/config/InstanceConfig";
 
 /**
  * @description スクリプト一覧表示を再読み込み

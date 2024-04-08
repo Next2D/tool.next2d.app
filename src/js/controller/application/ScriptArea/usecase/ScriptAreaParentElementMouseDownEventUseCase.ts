@@ -3,7 +3,7 @@ import { $allHideMenu } from "@/menu/application/MenuUtil";
 import { ExternalWorkSpace } from "@/external/core/domain/model/ExternalWorkSpace";
 import { execute as timelineSceneListClearAddRootUseCase } from "@/timeline/application/TimelineSceneList/usecase/TimelineSceneListClearAddRootUseCase";
 import { execute as timelineSceneListClearAllService } from "@/timeline/application/TimelineSceneList/service/TimelineSceneListClearAllService";
-import { $MOVIE_CLIP_TYPE } from "@/config/InstanceCOnfig";
+import { $MOVIE_CLIP_TYPE } from "@/config/InstanceConfig";
 /**
  * @description ダブルタップ用の待機フラグ
  *              Standby flag for double-tap

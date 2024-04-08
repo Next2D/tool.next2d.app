@@ -1,4 +1,4 @@
-import { $FOLDER_TYPE } from "@/config/InstanceCOnfig";
+import { $FOLDER_TYPE } from "@/config/InstanceConfig";
 import type { InstanceImpl } from "@/interface/InstanceImpl";
 
 /**

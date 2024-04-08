@@ -12,7 +12,7 @@ import {
     $BITMAP_TYPE,
     $SOUND_TYPE,
     $VIDEO_TYPE
-} from "@/config/InstanceCOnfig";
+} from "@/config/InstanceConfig";
 
 /**
  * @description ライブラリのアイテム削除の履歴を登録

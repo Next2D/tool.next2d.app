@@ -10,7 +10,7 @@ import { execute as confirmModalFileResetService } from "@/menu/application/Conf
 import { execute as confirmModalFileShowUseCase } from "@/menu/application/ConfirmModal/usecase/ConfirmModalFileShowUseCase";
 import { execute as confirmModalFileDuplicateCheckService } from "@/menu/application/ConfirmModal/service/ConfirmModalFileDuplicateCheckService";
 import { $replace } from "@/language/application/LanguageUtil";
-import { $FOLDER_TYPE } from "@/config/InstanceCOnfig";
+import { $FOLDER_TYPE } from "@/config/InstanceConfig";
 
 /**
  * @description 外部ファイル読み込み処理関数

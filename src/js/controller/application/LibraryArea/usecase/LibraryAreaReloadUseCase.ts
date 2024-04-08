@@ -17,7 +17,7 @@ import { libraryArea } from "@/controller/domain/model/LibraryArea";
 import {
     $FOLDER_TYPE,
     $MOVIE_CLIP_TYPE
-} from "@/config/InstanceCOnfig";
+} from "@/config/InstanceConfig";
 
 /**
  * @description ライブラリエリアのElementを生成してイベントを登録する

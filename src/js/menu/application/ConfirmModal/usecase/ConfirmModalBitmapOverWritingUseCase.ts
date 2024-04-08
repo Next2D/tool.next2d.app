@@ -8,7 +8,7 @@ import {
     $getCanvas,
     $poolCanvas
 } from "@/global/GlobalUtil";
-import { $BITMAP_TYPE } from "@/config/InstanceCOnfig";
+import { $BITMAP_TYPE } from "@/config/InstanceConfig";
 
 /**
  * @description Bitmapクラスのデータを上書きする

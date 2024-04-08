@@ -5,7 +5,7 @@ import { ExternalWorkSpace } from "@/external/core/domain/model/ExternalWorkSpac
 import { ExternalMovieClip } from "@/external/core/domain/model/ExternalMovieClip";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { execute as timelineSceneListClearAddRootUseCase } from "@/timeline/application/TimelineSceneList/usecase/TimelineSceneListClearAddRootUseCase";
-import { $MOVIE_CLIP_TYPE } from "@/config/InstanceCOnfig";
+import { $MOVIE_CLIP_TYPE } from "@/config/InstanceConfig";
 
 /**
  * @description 選択されたMovieClipを起動

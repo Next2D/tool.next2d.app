@@ -4,7 +4,7 @@ import type { MovieClip } from "@/core/domain/model/MovieClip";
 import { execute as instanceUpdateSymbolHistoryUseCase } from "@/history/application/core/application/Instance/usecase/InstanceUpdateSymbolHistoryUseCase";
 import { execute as libraryAreaUpdateSymbolElementService } from "@/controller/application/LibraryArea/service/LibraryAreaUpdateSymbolElementService";
 import { execute as objectSettingUpdateSymbolService } from "@/controller/application/ObjectSetting/service/ObjectSettingUpdateSymbolService";
-import { $MOVIE_CLIP_TYPE } from "@/config/InstanceCOnfig";
+import { $MOVIE_CLIP_TYPE } from "@/config/InstanceConfig";
 
 /**
  * @description インスタスのシンボル名の変更実行処理関数
