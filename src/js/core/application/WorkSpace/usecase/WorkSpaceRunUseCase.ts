@@ -24,65 +24,57 @@ import { execute as historyReloadUseCase } from "@/controller/application/Histor
  * @method
  * @public
  */
-export const execute = (work_space: WorkSpace): Promise<void> =>
+export const execute = async (work_space: WorkSpace): Promise<void> =>
 {
-    return new Promise ((reslove): void =>
-    {
-        // 進行状況画面を表示
-        const menu: MenuImpl<ProgressMenu> | null = $getMenu($PROGRESS_MENU_NAME);
-        if (!menu) {
-            return ;
-        }
+    // 進行状況画面を表示
+    const menu: MenuImpl<ProgressMenu> | null = $getMenu($PROGRESS_MENU_NAME);
+    if (!menu) {
+        return ;
+    }
 
-        // 進行状況画面を表示
-        menu.show();
-        menu.message = $replace("{{N2Dファイルの読み込み}}");
+    // 進行状況画面を表示
+    menu.show();
+    menu.message = $replace("{{N2Dファイルの読み込み}}");
 
-        // ライブラリで選択中のIDを初期化
-        libraryArea.clear();
+    // ライブラリで選択中のIDを初期化
+    libraryArea.clear();
 
-        // Stageを起動
-        work_space.stage.run();
+    // Stageを起動
+    work_space.stage.run();
 
-        // タブをアクティブ表示に変更
-        work_space.screenTab.active();
+    // タブをアクティブ表示に変更
+    work_space.screenTab.active();
 
-        // ツールエリアのElementのstyleを更新
-        workSpaceBootToolAreaUseCase(work_space.toolAreaState);
+    // ツールエリアのElementのstyleを更新
+    workSpaceBootToolAreaUseCase(work_space.toolAreaState);
 
-        // タイムラインエリアのElementのstyleを更新
-        workSpaceBootTimelineAreaUseCase(work_space.timelineAreaState);
+    // タイムラインエリアのElementのstyleを更新
+    workSpaceBootTimelineAreaUseCase(work_space.timelineAreaState);
 
-        // プロパティーエリアのElementのstyleを更新
-        workSpaceBootPropertyAreaUseCase(work_space.propertyAreaState);
+    // プロパティーエリアのElementのstyleを更新
+    workSpaceBootPropertyAreaUseCase(work_space.propertyAreaState);
 
-        // コントローラーエリアのElementのstyleを更新
-        workSpaceBootControllerAreaUseCase(work_space.controllerAreaState);
+    // コントローラーエリアのElementのstyleを更新
+    workSpaceBootControllerAreaUseCase(work_space.controllerAreaState);
 
-        // スクリプト一覧を再読み込み
-        scriptAreaReloadUseCase();
+    // スクリプト一覧を再読み込み
+    scriptAreaReloadUseCase();
 
-        // ライブラリの一覧の選択状態を初期化
-        libraryAreaSelectedClearUseCase();
+    // ライブラリの一覧の選択状態を初期化
+    libraryAreaSelectedClearUseCase();
 
-        // ライブラリの一覧を再描画
-        libraryAreaReloadUseCase();
+    // ライブラリの一覧を再描画
+    libraryAreaReloadUseCase();
 
-        // タイムラインのシーン名を初期化
-        timelineSceneListClearAllService();
+    // タイムラインのシーン名を初期化
+    timelineSceneListClearAllService();
 
-        // 作業履歴を読み込む
-        historyReloadUseCase();
+    // 作業履歴を読み込む
+    historyReloadUseCase();
 
-        // アクティブなMovieClipを起動
-        work_space
-            .scene
-            .run()
-            .then((): void =>
-            {
-                // 進行状況画面を非表示にして終了
-                menu.hide();
-                reslove();
-            });
-    });
+    // アクティブなMovieClipを起動
+    await work_space.scene.run();
+
+    // 進行状況画面を非表示にして終了
+    menu.hide();
 };

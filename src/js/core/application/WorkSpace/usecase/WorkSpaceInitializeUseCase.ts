@@ -9,14 +9,8 @@ import type { WorkSpace } from "@/core/domain/model/WorkSpace";
  * @method
  * @public
  */
-export const execute = (work_space: WorkSpace): Promise<void> =>
+export const execute = async (work_space: WorkSpace): Promise<void> =>
 {
-    return new Promise((resolve): void =>
-    {
-        // タブの初期起動
-        work_space.screenTab.initialize();
-
-        // 終了
-        resolve();
-    });
+    // タブの初期起動
+    work_space.screenTab.initialize();
 };

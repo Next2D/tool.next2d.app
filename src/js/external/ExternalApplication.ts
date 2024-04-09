@@ -71,6 +71,6 @@ export class ExternalApplication
      */
     async removeWorkSpace (work_space: WorkSpace): Promise<void>
     {
-        await $removeWorkSpace(work_space);
+        await $removeWorkSpace(work_space, work_space.active);
     }
 }

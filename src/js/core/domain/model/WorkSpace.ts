@@ -477,9 +477,9 @@ export class WorkSpace
      * @method
      * @public
      */
-    initialize (): Promise<void>
+    async initialize (): Promise<void>
     {
-        return workSpaceInitializeUseCase(this);
+        await workSpaceInitializeUseCase(this);
     }
 
     /**
@@ -655,13 +655,13 @@ export class WorkSpace
      * @method
      * @public
      */
-    stop (): Promise<void>
+    async stop (): Promise<void>
     {
         // 状態を終了状態に更新
         this._$active = false;
 
         // 終了処理を実行
-        return workSpaceStopUseCase(this);
+        await workSpaceStopUseCase(this);
     }
 
     /**
@@ -672,13 +672,13 @@ export class WorkSpace
      * @method
      * @public
      */
-    run (): Promise<void>
+    async run (): Promise<void>
     {
         // 状態を起動状態に更新
         this._$active = true;
 
         // 起動処理を実行
-        return workSpaceRunUseCase(this);
+        await workSpaceRunUseCase(this);
     }
 
     /**
@@ -689,10 +689,10 @@ export class WorkSpace
      * @method
      * @public
      */
-    remove (): Promise<void>
+    async remove (): Promise<void>
     {
         // 削除処理を実行
-        return workSpaceRemoveUseCase(this);
+        await workSpaceRemoveUseCase(this);
     }
 
     /**

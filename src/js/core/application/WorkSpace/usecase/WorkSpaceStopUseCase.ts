@@ -12,24 +12,18 @@ import { $replace } from "@/language/application/LanguageUtil";
  * @method
  * @public
  */
-export const execute = (work_space: WorkSpace): Promise<void> =>
+export const execute = async (work_space: WorkSpace): Promise<void> =>
 {
-    return new Promise((reslove): void =>
-    {
-        // 進行状況画面を表示
-        progressMenuShowService();
+    // 進行状況画面を表示
+    progressMenuShowService();
 
-        // 進行状況のテキストを更新
-        progressMenuUpdateMessageService($replace("{{停止}}"));
+    // 進行状況のテキストを更新
+    progressMenuUpdateMessageService($replace("{{停止}}"));
 
-        // タブを非アクティブに更新
-        work_space.screenTab.disable();
+    // タブを非アクティブに更新
+    work_space.screenTab.disable();
 
-        // 現在のシーンを停止
-        // fixed logic
-        work_space.scene.stop();
-
-        // 終了
-        reslove();
-    });
+    // 現在のシーンを停止
+    // fixed logic
+    work_space.scene.stop();
 };

@@ -53,15 +53,9 @@ class TimelineHeader
      * @method
      * @public
      */
-    initialize (): Promise<void>
+    async initialize (): Promise<void>
     {
-        return new Promise((resolve): void =>
-        {
-            timelineHeaderInitializeUseCase();
-
-            // 終了
-            resolve();
-        });
+        timelineHeaderInitializeUseCase();
     }
 
     /**

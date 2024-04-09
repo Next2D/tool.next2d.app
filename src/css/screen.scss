@@ -29,7 +29,13 @@
 
     .display-object
     {
+        display  : flex;
         position : absolute;
+
+        &:hover
+        {
+            cursor : move;
+        }
     }
 
     .transform

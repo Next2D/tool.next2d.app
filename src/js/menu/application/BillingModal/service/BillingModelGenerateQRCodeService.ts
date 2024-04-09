@@ -10,24 +10,15 @@ import QRCode from "qrcode";
  * @method
  * @public
  */
-export const execute = (room_id: string): Promise<void> =>
+export const execute = async (room_id: string): Promise<void> =>
 {
-    return new Promise((resolve): void =>
-    {
-        QRCode
-            .toDataURL(`${room_id}`, { "width": 320 })
-            .then((src: string): void =>
-            {
-                const element: HTMLImageElement | null = document
-                    .getElementById($LIBRARY_BILLING_QRCODE_IMG_ID) as HTMLImageElement;
+    const src = await QRCode.toDataURL(`${room_id}`, { "width": 320 });
 
-                if (!element) {
-                    return resolve();
-                }
+    const element: HTMLImageElement | null = document
+        .getElementById($LIBRARY_BILLING_QRCODE_IMG_ID) as HTMLImageElement;
+    if (!element) {
+        return ;
+    }
 
-                element.src = src;
-
-                resolve();
-            });
-    });
+    element.src = src;
 };

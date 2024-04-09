@@ -6,7 +6,7 @@
  * @default null
  * @private
  */
-let draggedElement: HTMLElement | null = null;
+let $draggedElement: HTMLElement | null = null;
 
 /**
  * @description 移動選択したタブのElementを一時保存、初期化はnullをセット
@@ -19,7 +19,7 @@ let draggedElement: HTMLElement | null = null;
  */
 export const $setDragElement = (element: HTMLElement | null): void =>
 {
-    draggedElement = element;
+    $draggedElement = element;
 };
 
 /**
@@ -32,53 +32,5 @@ export const $setDragElement = (element: HTMLElement | null): void =>
  */
 export const $getDragElement = (): HTMLElement | null =>
 {
-    return draggedElement;
-};
-
-/**
- * @type {boolean}
- * @private
- */
-let $doReloadScreen: boolean = false;
-
-/**
- * @description スクリーンの再描画を後で行うかをセット
- *              Sets whether the screen will be redrawn later
- *
- * @returns {void}
- * @method
- * @public
- */
-export const setReloadLater = (): void =>
-{
-    $doReloadScreen = true;
-};
-
-/**
- * @description スクリーンの再描画を後で行うかを判別
- *              Determines if the screen will be redrawn later
- *
- * @returns {void}
- * @method
- * @public
- */
-export const doReloadLater = (): boolean =>
-{
-    return $doReloadScreen;
-};
-
-/**
- * @description スクリーンの再描画を行う
- *              Redraw the screen.
- *
- * @returns {Promise}
- * @method
- * @public
- */
-export const $reloadScreen = (): Promise<void> =>
-{
-    return new Promise((resolve): void =>
-    {
-        resolve();
-    });
+    return $draggedElement;
 };

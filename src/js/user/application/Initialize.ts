@@ -8,16 +8,11 @@ import { execute as userDatabaseBeforeunloadUseCase } from "@/user/application/D
  * @method
  * @public
  */
-export const execute = (): Promise<void> =>
+export const execute = async (): Promise<void> =>
 {
-    return new Promise((resolve): void =>
-    {
-        // 画面を閉じる時に強制的にデータ保存を実行する
-        window.addEventListener("beforeunload",
-            userDatabaseBeforeunloadUseCase,
-            { "passive": false }
-        );
-
-        resolve();
-    });
+    // 画面を閉じる時に強制的にデータ保存を実行する
+    window.addEventListener("beforeunload",
+        userDatabaseBeforeunloadUseCase,
+        { "passive": false }
+    );
 };

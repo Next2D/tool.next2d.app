@@ -3,6 +3,7 @@ import type { Bitmap } from "@/core/domain/model/Bitmap";
 import type { Character } from "@/core/domain/model/Character";
 import type { InstanceImpl } from "@/interface/InstanceImpl";
 import { execute as bitmapRegisterEventUseCase } from "@/core/application/Bitmap/usecase/BitmapRegisterEventUseCase";
+import { $getScreenOffsetLeft, $getScreenOffsetTop } from "@/global/GlobalUtil";
 
 /**
  * @description Bitmapをcanvasに描画して返却する
@@ -37,8 +38,15 @@ export const execute = async (
     div.appendChild(canvas);
 
     let style = "";
-    style += `transform: matrix(${character.matrix[0]}, ${character.matrix[1]}, ${character.matrix[2]}, ${character.matrix[3]}, ${character.matrix[4]}, ${character.matrix[5]});`;
-    style += `opacity: ${character.alpha};`;
+    style += `transform: matrix(${character.matrix[0]}, ${character.matrix[1]}, ${character.matrix[2]}, ${character.matrix[3]}, 0, 0);`;
+    style += `left: ${$getScreenOffsetLeft() + character.x}px;`;
+    style += `top: ${$getScreenOffsetTop() + character.y}px;`;
+
+    // 透明度の設定がある時だけstyeに追加
+    if (1 > character.alpha) {
+        style += `opacity: ${character.alpha};`;
+    }
+
     div.setAttribute("style", style);
 
     // Elementに変数を設定

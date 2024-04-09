@@ -24,7 +24,7 @@ import { UserSettingTool } from "@/tool/domain/model/UserSettingTool";
  * @method
  * @public
  */
-export const execute = (): Promise<void[]> =>
+export const execute = async (): Promise<void> =>
 {
     const tools: ToolImpl<any>[] = [
         ArrowTool,
@@ -46,15 +46,12 @@ export const execute = (): Promise<void[]> =>
     ];
 
     // 各ツールを起動
-    const promises: Promise<void>[] = [];
     for (let idx: number = 0; idx < tools.length; ++idx) {
         const Tool: ToolImpl<any> = tools[idx];
         const tool = new Tool();
         if (!tool.initialize) {
             continue;
         }
-        tool.initialize();
+        await tool.initialize();
     }
-
-    return Promise.all(promises);
 };

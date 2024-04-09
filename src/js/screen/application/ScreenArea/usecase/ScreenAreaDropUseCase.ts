@@ -8,6 +8,11 @@ import {
     $FOLDER_TYPE,
     $SOUND_TYPE
 } from "@/config/InstanceConfig";
+import {
+    $getScreenOffsetLeft,
+    $getScreenOffsetTop,
+    $getZoom
+} from "@/global/GlobalUtil";
 
 /**
  * @description スクリーンエリアのアイテムドロップイベント処理関数
@@ -32,7 +37,7 @@ export const execute = async (event: DragEvent): Promise<void> =>
     for (let idx = 0; idx < libraryArea.selectedIds.length; ++idx) {
 
         const libraryId = libraryArea.selectedIds[idx];
-        const instance: InstanceImpl<Instance> = workSpace.getLibrary(libraryId);
+        const instance: InstanceImpl<any> = workSpace.getLibrary(libraryId);
         if (!instance) {
             continue;
         }
@@ -46,8 +51,12 @@ export const execute = async (event: DragEvent): Promise<void> =>
                 break;
 
             default:
-                await externalTimeline
-                    .addItemToMovieClip(0, 0, instance.getPath(workSpace));
+                {
+                    const x = (event.offsetX - $getScreenOffsetLeft() - instance.width  / 2) / $getZoom();
+                    const y = (event.offsetY - $getScreenOffsetTop()  - instance.height / 2) / $getZoom();
+                    await externalTimeline
+                        .addItemToMovieClip(x, y, instance.getPath(workSpace));
+                }
                 break;
 
         }

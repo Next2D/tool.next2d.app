@@ -1,5 +1,4 @@
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
-import { execute as progressMenuShowService } from "@/menu/application/ProgressMenu/service/ProgressMenuShowService";
 import { execute as progressMenuHideService } from "@/menu/application/ProgressMenu/service/ProgressMenuHideService";
 import { execute as progressMenuUpdateMessageService } from "@/menu/application/ProgressMenu/service/ProgressMenuUpdateMessageService";
 import { $removeWorkSpace } from "@/core/application/CoreUtil";
@@ -14,29 +13,24 @@ import { $replace } from "@/language/application/LanguageUtil";
  * @method
  * @public
  */
-export const execute = (work_space: WorkSpace): Promise<void> =>
+export const execute = async (work_space: WorkSpace): Promise<void> =>
 {
-    return new Promise((reslove): void =>
-    {
-        if (work_space.active) {
-            // アクティブなプロジェクトならプログレバーを表示
-            progressMenuShowService();
+    const active = work_space.active;
+    if (active) {
 
-            // 進行状況のテキストを更新
-            progressMenuUpdateMessageService($replace("{{プロジェクトを閉じる}}"));
-        }
+        // 停止処理を実行
+        await work_space.stop();
 
-        // タブを削除
-        work_space.screenTab.remove();
+        // 進行状況のテキストを更新
+        progressMenuUpdateMessageService($replace("{{プロジェクトを閉じる}}"));
+    }
 
-        // プロジェクトを終了
-        $removeWorkSpace(work_space)
-            .then((): void =>
-            {
-                // 進行状況画面を非表示にする
-                progressMenuHideService();
+    // タブを削除
+    work_space.screenTab.remove();
 
-                reslove();
-            });
-    });
+    // プロジェクトを終了
+    await $removeWorkSpace(work_space, active);
+
+    // 進行状況画面を非表示にする
+    progressMenuHideService();
 };

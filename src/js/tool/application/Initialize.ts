@@ -9,15 +9,8 @@ import { execute as toolAreaInitializeUseCase } from "./ToolArea/usecase/ToolAre
  * @method
  * @public
  */
-export const execute = (): Promise<void> =>
+export const execute = async (): Promise<void> =>
 {
     // 初期起動時のユースケース
-    return new Promise((resolve): void =>
-    {
-        toolAreaInitializeUseCase()
-            .then((): void =>
-            {
-                resolve();
-            });
-    });
+    await toolAreaInitializeUseCase();
 };

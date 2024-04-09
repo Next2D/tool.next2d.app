@@ -24,5 +24,5 @@ export const execute = async (work_space: WorkSpace): Promise<void> =>
     }
 
     // プロジェクトを終了
-    work_space.remove();
+    await work_space.remove();
 };

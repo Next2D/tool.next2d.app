@@ -9,16 +9,11 @@ import { execute as screenAreaInitializeRegisterEventUseCase } from "./ScreenAre
  * @method
  * @public
  */
-export const execute = (): Promise<void> =>
+export const execute = async (): Promise<void> =>
 {
-    return new Promise((resolve): void =>
-    {
-        // タブ追加の初期起動ユースケース
-        screenTabRegisterAddEventUseCase();
+    // タブ追加の初期起動ユースケース
+    screenTabRegisterAddEventUseCase();
 
-        // スクリーンエリアのマウスダウンイベントを登録
-        screenAreaInitializeRegisterEventUseCase();
-
-        return resolve();
-    });
+    // スクリーンエリアのマウスダウンイベントを登録
+    screenAreaInitializeRegisterEventUseCase();
 };

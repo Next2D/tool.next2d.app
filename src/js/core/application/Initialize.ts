@@ -8,14 +8,8 @@ import { $bootAudioContext } from "./CoreUtil";
  * @method
  * @public
  */
-export const execute = (): Promise<void> =>
+export const execute = async (): Promise<void> =>
 {
-    // 初期起動時のユースケース
-    return new Promise((resolve): void =>
-    {
-        // AudioContextの起動用クリックイベントを登録
-        window.addEventListener("click", $bootAudioContext);
-
-        return resolve();
-    });
+    // AudioContextの起動用クリックイベントを登録
+    window.addEventListener("click", $bootAudioContext);
 };

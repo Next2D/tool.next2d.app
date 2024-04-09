@@ -10,22 +10,17 @@ import { execute as shortcutRegisterEventUseCase } from "@/shortcut/application/
  * @method
  * @public
  */
-export const execute = (): Promise<void> =>
+export const execute = async (): Promise<void> =>
 {
-    return new Promise((resolve): void =>
-    {
-        // ツールエリアで利用可能なコマンドを登録
-        shortcutToolAreaInitializeRegisterUseCase();
+    // ツールエリアで利用可能なコマンドを登録
+    shortcutToolAreaInitializeRegisterUseCase();
 
-        // タイムラインのコマンドを登録
-        shortcutTimelineAreaShortcutInitializeRegisterUseCase();
+    // タイムラインのコマンドを登録
+    shortcutTimelineAreaShortcutInitializeRegisterUseCase();
 
-        // ライブラリエリアののコマンドを登録
-        shortcutLibraryAreaInitializeRegisterUseCase();
+    // ライブラリエリアののコマンドを登録
+    shortcutLibraryAreaInitializeRegisterUseCase();
 
-        // 実行イベントを登録
-        shortcutRegisterEventUseCase();
-
-        return resolve();
-    });
+    // 実行イベントを登録
+    shortcutRegisterEventUseCase();
 };

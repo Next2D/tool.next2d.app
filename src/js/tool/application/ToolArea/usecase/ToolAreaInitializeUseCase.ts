@@ -10,7 +10,7 @@ import { $TOOL_PREFIX } from "@/config/ToolConfig";
  * @method
  * @public
  */
-export const execute = (): Promise<void[]> =>
+export const execute = async (): Promise<void> =>
 {
     const element: HTMLElement | null = document.getElementById($TOOL_PREFIX);
     if (element) {
@@ -19,5 +19,5 @@ export const execute = (): Promise<void[]> =>
     }
 
     // 各種ツールクラスを起動
-    return toolAreaInitializeBootService();
+    await toolAreaInitializeBootService();
 };
