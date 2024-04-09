@@ -30,6 +30,7 @@ import { execute as timelineLayerFrameUpdateEmptyKeyframeHistoryRedoUseCase } fr
 import { execute as timelineLayerFrameSplitEmptyKeyframeHistoryRedoUseCase } from "@/history/application/timeline/application/TimelineLayerFrame/SplitEmptyKeyframe/usecase/TimelineLayerFrameSplitEmptyKeyframeHistoryRedoUseCase";
 import { execute as timelineLayerFrameInsertEmptyFramesHistoryRedoUseCase } from "@/history/application/timeline/application/TimelineLayerFrame/InsertEmptyFrames/usecase/TimelineLayerFrameInsertEmptyFramesHistoryRedoUseCase";
 import { execute as timelineLayerFrameAddKeyframeHistoryRedoUseCase } from "@/history/application/timeline/application/TimelineLayerFrame/AddKeyframe/usecase/TimelineLayerFrameAddKeyframeHistoryRedoUseCase";
+import { execute as timelineLayerFrameInsertKeyFramesHistoryRedoUseCase } from "@/history/application/timeline/application/TimelineLayerFrame/InsertKeyFrames/usecase/TimelineLayerFrameInsertKeyFramesHistoryRedoUseCase";
 import { execute as instanceUpdateNameHistoryRedoUseCase } from "@/history/application/core/application/Instance/usecase/InstanceUpdateNameHistoryRedoUseCase";
 import { execute as instanceUpdateSymbolHistoryRedoUseCase } from "@/history/application/core/application/Instance/usecase/InstanceUpdateSymbolHistoryRedoUseCase";
 import {
@@ -59,7 +60,8 @@ import {
     $TIMELINE_UPDATE_EMPTY_KEYFRAME_COMMAND,
     $TIMELINE_SPLIT_EMPTY_KEYFRAME_COMMAND,
     $TIMELINE_INSERT_EMPTY_FRAME_COMMAND,
-    $TIMELINE_ADD_KEYFRAME_COMMAND
+    $TIMELINE_ADD_KEYFRAME_COMMAND,
+    $TIMELINE_INSERT_KEY_FRAME_COMMAND
 } from "@/config/HistoryConfig";
 
 /**
@@ -332,11 +334,22 @@ export const execute = async (
         case $TIMELINE_ADD_KEYFRAME_COMMAND:
             timelineLayerFrameAddKeyframeHistoryRedoUseCase(
                 messages[0] as number, // work_space_id
+                messages[1] as number, // MovieClip ID
+                messages[2] as number, // Layer Index
+                messages[3] as number, // Character Index
+                messages[4] as CharacterSaveObjectImpl, // SaveObject
+                messages[5] as number // EmptyCharacter Index
+            );
+            break;
+
+        // キーフレームへフレームを挿入
+        case $TIMELINE_INSERT_KEY_FRAME_COMMAND:
+            timelineLayerFrameInsertKeyFramesHistoryRedoUseCase(
+                messages[0] as number, // work_space_id
                 messages[1] as number, // library_id
                 messages[2] as number, // layer_index
-                messages[3] as number, // character_index
-                messages[4] as CharacterSaveObjectImpl, // save_object
-                messages[5] as number // empty_character_index
+                messages[3] as number, // Start Frame
+                messages[4] as number // NumFrame
             );
             break;
 

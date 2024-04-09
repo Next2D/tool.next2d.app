@@ -312,3 +312,12 @@ export const $TIMELINE_INSERT_EMPTY_FRAME_COMMAND: number = 31;
  * @constant
  */
 export const $TIMELINE_ADD_KEYFRAME_COMMAND: number = 32;
+
+/**
+ * @description キーフレームへフレームへの追加の識別コマンド名
+ *              Identification command name for adding frames to a keyframe
+ *
+ * @type {number}
+ * @constant
+ */
+export const $TIMELINE_INSERT_KEY_FRAME_COMMAND: number = 33;

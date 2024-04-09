@@ -37,17 +37,23 @@ export const execute = (
 
         const characters = layer.getActiveCharacters(frame);
         if (characters.length) {
+            // キーフレームを調整
             for (let idx = 0; idx < characters.length; ++idx) {
                 const character = characters[idx];
                 character.endFrame = keyframe;
             }
+
+            // 履歴に登録
             return ;
         }
 
         const emptyCharacter = layer.getActiveEmptyCharacter(frame);
         if (emptyCharacter) {
+            // 空のキーフレームを調整
             const beforeEndFrame = emptyCharacter.endFrame;
             emptyCharacter.endFrame = keyframe;
+
+            // 履歴に登録
             timelineLayerFrameUpdateEmptyKeyframeHistoryUseCase(
                 work_space,
                 movie_clip,

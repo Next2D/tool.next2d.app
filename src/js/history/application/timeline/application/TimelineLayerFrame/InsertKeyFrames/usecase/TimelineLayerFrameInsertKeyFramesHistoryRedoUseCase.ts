@@ -14,7 +14,7 @@ import { execute as externalTimelineLayerFrameBehindKeyframeService } from "@/ex
  * @param  {number} work_space_id
  * @param  {number} library_id
  * @param  {number} layer_index
- * @param  {number} empty_character_index
+ * @param  {number} start_frame
  * @param  {number} num_frame
  * @return {void}
  * @method
@@ -24,7 +24,7 @@ export const execute = (
     work_space_id: number,
     library_id: number,
     layer_index: number,
-    empty_character_index: number,
+    start_frame: number,
     num_frame: number
 ): void => {
 
@@ -44,16 +44,20 @@ export const execute = (
         return ;
     }
 
-    const emptyCharacter = layer.emptyCharacters[empty_character_index];
-    if (!emptyCharacter) {
+    const characters = layer.getActiveCharacters(start_frame);
+    if (!characters.length) {
         return ;
     }
 
     // 後方にキーフレームを移動
     externalTimelineLayerFrameBehindKeyframeService(
-        layer, emptyCharacter.endFrame, num_frame
+        layer, characters[0].endFrame, num_frame
     );
-    emptyCharacter.endFrame += num_frame;
+
+    for (let idx = 0; idx < characters.length; ++idx) {
+        const character = characters[idx];
+        character.endFrame += num_frame;
+    }
 
     // アクティブならタイムラインを再描画
     if (workSpace.active && movieClip.active) {
