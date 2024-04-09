@@ -11,6 +11,7 @@ import { execute as propertyAreaDisplayItemControllerUseCase } from "@/controlle
 import { execute as objectSettingUpdateNameService } from "@/controller/application/ObjectSetting/service/ObjectSettingUpdateNameService";
 import { execute as objectSettingUpdateSymbolService } from "@/controller/application/ObjectSetting/service/ObjectSettingUpdateSymbolService";
 import { execute as timelineToolUpdateSceneNameService } from "@/timeline/application/TimelineTool/application/SceneName/service/TimelineToolUpdateSceneNameService";
+import { execute as screenAreaRedrawUseCase } from "@/screen/application/ScreenArea/usecase/ScreenAreaRedrawUseCase";
 
 /**
  * @description MovieClipの起動処理
@@ -58,4 +59,7 @@ export const execute = (movie_clip: MovieClip): void =>
 
     // プロパティーエリアの表示を更新
     propertyAreaDisplayItemControllerUseCase();
+
+    // スクリーンエリアを再描画
+    screenAreaRedrawUseCase(movie_clip);
 };

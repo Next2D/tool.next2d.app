@@ -1,5 +1,11 @@
 import type { CharacterSaveObjectImpl } from "@/interface/CharacterSaveObjectImpl";
-import { ExternalItemImpl } from "@/interface/ExternalItemImpl";
+import type { ExternalItemImpl } from "@/interface/ExternalItemImpl";
+import type { BlendModeImpl } from "@/interface/BlendModeImpl";
+import { execute as characterDrawUseCase } from "@/core/application/Character/usecase/CharacterDrawUseCase";
+import { execute as characterCalcGetScaleXService } from "@/core/application/Character/service/CharacterCalcGetScaleXService";
+import { execute as characterCalcSetScaleXService } from "@/core/application/Character/service/CharacterCalcSetScaleXService";
+import { execute as characterCalcGetScaleYService } from "@/core/application/Character/service/CharacterCalcGetScaleYService";
+import { execute as characterCalcSetRotationService } from "@/core/application/Character/service/CharacterCalcSetRotationService";
 
 /**
  * @description キーフレームの管理クラス
@@ -12,8 +18,14 @@ export class Character
     private _$startFrame: number;
     private _$endFrame: number;
     private _$libraryId: number;
+    private _$depth: number;
+    private _$scaleX: number | null;
+    private _$scaleY: number | null;
+    private _$rotation: number | null;
+    private _$blendMode: BlendModeImpl;
     private readonly _$matrix: number[];
     private readonly _$colorTransform: number[];
+    private readonly _$filters: any[];
 
     /**
      * @constructor
@@ -29,6 +41,13 @@ export class Character
         this._$libraryId = -1;
 
         /**
+         * @type {number}
+         * @default 0
+         * @private
+         */
+        this._$depth = 0;
+
+        /**
          * @type {array}
          * @private
          */
@@ -39,6 +58,40 @@ export class Character
          * @private
          */
         this._$colorTransform = [0, 0, 0, 0, 1, 1, 1, 1];
+
+        /**
+         * @type {string}
+         * @default "normal"
+         * @private
+         */
+        this._$blendMode = "normal";
+
+        /**
+         * @type {array}
+         * @private
+         */
+        this._$filters = [];
+
+        /**
+         * @type {number}
+         * @default null
+         * @private
+         */
+        this._$scaleX = null;
+
+        /**
+         * @type {number}
+         * @default null
+         * @private
+         */
+        this._$scaleY = null;
+
+        /**
+         * @type {number}
+         * @default null
+         * @private
+         */
+        this._$rotation = null;
 
         /**
          * @type {number}
@@ -69,6 +122,51 @@ export class Character
     set libraryId (library_id: number)
     {
         this._$libraryId = library_id;
+    }
+
+    /**
+     * @description ブレンドモード
+     *              Blend mode
+     *
+     * @member {string}
+     * @public
+     */
+    get blendMode (): BlendModeImpl
+    {
+        return this._$blendMode;
+    }
+    set blendMode (blend_mode: BlendModeImpl)
+    {
+        this._$blendMode = blend_mode;
+    }
+
+    /**
+     * @description 表示順の深さ(昇順)
+     *              Depth of display order (ascending)
+     *
+     * @member {number}
+     * @public
+     */
+    get depth (): number
+    {
+        return this._$depth;
+    }
+    set depth (depth: number)
+    {
+        this._$depth = depth;
+    }
+
+    /**
+     * @description フィルターの配列を返却
+     *              Return an array of filters
+     *
+     * @member {array}
+     * @readonly
+     * @public
+     */
+    get filters (): any[]
+    {
+        return this._$filters;
     }
 
     /**
@@ -130,6 +228,75 @@ export class Character
     }
 
     /**
+     * @description xスケールを返却
+     *              Return x scale
+     *
+     * @member {number}
+     * @public
+     */
+    get scaleX (): number
+    {
+        if (this._$scaleX === null) {
+            this._$scaleX = characterCalcGetScaleXService(this._$matrix);
+        }
+        return this._$scaleX;
+    }
+    set scaleX (scale_x: number)
+    {
+        this._$scaleX = characterCalcSetScaleXService(
+            scale_x,
+            this._$scaleX,
+            this._$matrix
+        );
+    }
+
+    /**
+     * @description yスケールを返却
+     *              Return y scale
+     *
+     * @member {number}
+     * @public
+     */
+    get scaleY (): number
+    {
+        if (this._$scaleY === null) {
+            this._$scaleY = characterCalcGetScaleYService(this._$matrix);
+        }
+        return this._$scaleY;
+    }
+    set scaleY (scale_y: number)
+    {
+        this._$scaleY = characterCalcSetScaleXService(
+            scale_y,
+            this._$scaleY,
+            this._$matrix
+        );
+    }
+
+    /**
+     * @description 回転角度を返却
+     *              Return rotation angle
+     *
+     * @member {number}
+     * @public
+     */
+    get rotation (): number
+    {
+        if (this._$rotation === null) {
+            this._$rotation = Math.atan2(this._$matrix[1], this._$matrix[0]) * (180 / Math.PI);
+        }
+        return this._$rotation;
+    }
+    set rotation (rotation: number)
+    {
+        this._$rotation = characterCalcSetRotationService(
+            rotation,
+            this._$rotation,
+            this._$matrix
+        );
+    }
+
+    /**
      * @description 開始フレーム番号
      *              start frame number
      *
@@ -187,8 +354,18 @@ export class Character
     load (save_object: CharacterSaveObjectImpl): void
     {
         this._$libraryId  = save_object.libraryId;
+        this._$depth      = save_object.depth;
+        this._$blendMode  = save_object.blendMode;
         this._$startFrame = save_object.startFrame;
         this._$endFrame   = save_object.endFrame;
+
+        // 配列を上書き
+        if (save_object.matrix) {
+            this._$matrix.splice(0, this._$matrix.length, ...save_object.matrix);
+        }
+        if (save_object.colorTransform) {
+            this._$colorTransform.splice(0, this._$colorTransform.length, ...save_object.colorTransform);
+        }
     }
 
     /**
@@ -206,6 +383,19 @@ export class Character
     }
 
     /**
+     * @description 描画処理
+     *              Drawing process
+     *
+     * @return {Promise}
+     * @method
+     * @public
+     */
+    async draw (): Promise<void>
+    {
+        await characterDrawUseCase(this);
+    }
+
+    /**
      * @description セーブオブジェクトに変換
      *              Convert to save object
      *
@@ -217,6 +407,10 @@ export class Character
     {
         return {
             "libraryId": this._$libraryId,
+            "depth": this._$depth,
+            "blendMode": this._$blendMode,
+            "matrix": this._$matrix,
+            "colorTransform": this._$colorTransform,
             "startFrame": this._$startFrame,
             "endFrame": this._$endFrame
         };

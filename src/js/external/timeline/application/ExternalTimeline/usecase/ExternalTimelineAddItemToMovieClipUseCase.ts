@@ -64,6 +64,7 @@ export const execute = async (
         const activeCharacter = activeCharacters[0];
         character.startFrame  = activeCharacter.startFrame;
         character.endFrame    = activeCharacter.endFrame;
+        character.depth       = activeCharacters.length;
     } else {
         // 空のキーフレームがある場合は情報を引き継いで、空のキーフレームを削除
         const activeEmptyCharacter = selectedLayer.getActiveEmptyCharacter(frame);
