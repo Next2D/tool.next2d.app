@@ -1,12 +1,13 @@
 import type { ShareInitializeSendObjectImpl } from "@/interface/ShareInitializeSendObjectImpl";
+import { $allHideMenu } from "@/menu/application/MenuUtil";
+import { WorkSpace } from "@/core/domain/model/WorkSpace";
+import { Character } from "@/core/domain/model/Character";
+import { $loadedInitializeData } from "../ShareUtil";
 import { execute as workSpaceRestoreSaveDataService } from "@/core/application/WorkSpace/service/WorkSpaceRestoreSaveDataService";
 import { execute as userDatabaseSaveShowModalUseCase } from "@/user/application/Database/usecase/UserDatabaseSaveShowModalUseCase";
 import { execute as progressMenuShowService } from "@/menu/application/ProgressMenu/service/ProgressMenuShowService";
 import { execute as shareGetS3FileRepository } from "@/share/domain/repository/ShareGetS3FileRepository";
 import { execute as shareGetS3EndPointRepository } from "@/share/domain/repository/ShareGetS3EndPointRepository";
-import { $allHideMenu } from "@/menu/application/MenuUtil";
-import { WorkSpace } from "@/core/domain/model/WorkSpace";
-import { $loadedInitializeData } from "../ShareUtil";
 import {
     $getAllWorkSpace,
     $getCurrentWorkSpace,
@@ -35,6 +36,7 @@ export const execute = async (message: ShareInitializeSendObjectImpl): Promise<v
 
     // オーナーのIDに合わせる
     WorkSpace.workSpaceId = message.workSpaceId;
+    Character.characterId = message.characterId;
 
     // 現在のプロジェクトデータを保存
     await userDatabaseSaveShowModalUseCase();

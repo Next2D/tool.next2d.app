@@ -6,6 +6,16 @@ import { execute as characterCalcGetScaleXService } from "@/core/application/Cha
 import { execute as characterCalcSetScaleXService } from "@/core/application/Character/service/CharacterCalcSetScaleXService";
 import { execute as characterCalcGetScaleYService } from "@/core/application/Character/service/CharacterCalcGetScaleYService";
 import { execute as characterCalcSetRotationService } from "@/core/application/Character/service/CharacterCalcSetRotationService";
+import { $clamp } from "@/global/GlobalUtil";
+
+/**
+ * @description DisplayObjectのユニークID
+ *              Unique ID of DisplayObject
+ *
+ * @type {number}
+ * @private
+ */
+let $characterId: number = 1;
 
 /**
  * @description キーフレームの管理クラス
@@ -15,6 +25,7 @@ import { execute as characterCalcSetRotationService } from "@/core/application/C
  */
 export class Character
 {
+    private _$id: number;
     private _$startFrame: number;
     private _$endFrame: number;
     private _$libraryId: number;
@@ -33,6 +44,12 @@ export class Character
      */
     constructor ()
     {
+        /**
+         * @type {number}
+         * @private
+         */
+        this._$id = $characterId++;
+
         /**
          * @type {number}
          * @default -1
@@ -57,7 +74,7 @@ export class Character
          * @type {array}
          * @private
          */
-        this._$colorTransform = [0, 0, 0, 0, 1, 1, 1, 1];
+        this._$colorTransform = [1, 1, 1, 1, 0, 0, 0, 0];
 
         /**
          * @type {string}
@@ -106,6 +123,73 @@ export class Character
          * @private
          */
         this._$endFrame = 0;
+    }
+
+    /**
+     * @description Characterの管理ID
+     *              Management ID of Character
+     *
+     * @member {number}
+     * @static
+     */
+    static get characterId (): number
+    {
+        return $characterId;
+    }
+    static set characterId (character_id: number)
+    {
+        $characterId = $clamp(character_id, 1, Number.MAX_VALUE);
+    }
+
+    /**
+     * @description 固有IDを返却
+     *              Return unique ID
+     *
+     * @member {number}
+     * @readonly
+     * @public
+     */
+    get id (): number
+    {
+        return this._$id;
+    }
+
+    /**
+     * @description キャッシュキーを返却
+     *              Return cache key
+     *
+     * @member {string}
+     * @public
+     */
+    get cacheKey (): string
+    {
+        let cacheKey = `${this._$libraryId}_${this._$id}`;
+
+        // colorTransformがデフォルト値以外の場合はキャッシュキーに追加
+        switch (true) {
+
+            case this._$colorTransform[0] !== 1:
+            case this._$colorTransform[1] !== 1:
+            case this._$colorTransform[2] !== 1:
+            case this._$colorTransform[4] !== 0:
+            case this._$colorTransform[5] !== 0:
+            case this._$colorTransform[6] !== 0:
+                {
+                    const r = Math.max(0, Math.min(255 * this._$colorTransform[0] + this._$colorTransform[4], 255));
+                    const g = Math.max(0, Math.min(255 * this._$colorTransform[1] + this._$colorTransform[5], 255));
+                    const b = Math.max(0, Math.min(255 * this._$colorTransform[2] + this._$colorTransform[6], 255));
+                    cacheKey += `_${r}_${g}_${b}`;
+                }
+                break;
+
+            default:
+                break;
+
+        }
+
+        // TODO filters
+
+        return cacheKey;
     }
 
     /**
@@ -193,6 +277,21 @@ export class Character
     get colorTransform (): number[]
     {
         return this._$colorTransform;
+    }
+
+    /**
+     * @description 透明度を返却
+     *              Return transparency
+     *
+     * @member {number}
+     * @readonly
+     * @public
+     */
+    get alpha (): number
+    {
+        return $clamp(
+            this._$colorTransform[3] + this._$colorTransform[7] / 255, 0, 1
+        );
     }
 
     /**
@@ -390,9 +489,9 @@ export class Character
      * @method
      * @public
      */
-    async draw (): Promise<void>
+    async draw (): Promise<HTMLDivElement | null>
     {
-        await characterDrawUseCase(this);
+        return await characterDrawUseCase(this);
     }
 
     /**

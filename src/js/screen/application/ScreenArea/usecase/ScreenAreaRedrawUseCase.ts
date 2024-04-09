@@ -1,3 +1,4 @@
+import { $SCREEN_STAGE_AREA_ID } from "@/config/ScreenConfig";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 
 /**
@@ -10,6 +11,13 @@ import type { MovieClip } from "@/core/domain/model/MovieClip";
  */
 export const execute = async (movie_clip: MovieClip): Promise<void> =>
 {
+    const element: HTMLElement | null = document
+        .getElementById($SCREEN_STAGE_AREA_ID);
+
+    if (!element) {
+        return ;
+    }
+
     const frame  = movie_clip.currentFrame;
     const layers = movie_clip.layers;
     for (let idx = layers.length - 1; idx > -1; --idx) {
@@ -25,7 +33,12 @@ export const execute = async (movie_clip: MovieClip): Promise<void> =>
 
         for (let idx = 0; idx < characters.length; ++idx) {
             const character = characters[idx];
-            await character.draw();
+            const div = await character.draw();
+            if (!div) {
+                continue;
+            }
+
+            element.appendChild(div);
         }
     }
 };

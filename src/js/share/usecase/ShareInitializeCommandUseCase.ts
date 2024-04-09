@@ -1,7 +1,8 @@
 import type { ShareInitializeSendObjectImpl } from "@/interface/ShareInitializeSendObjectImpl";
 import { $getSocket } from "../ShareUtil";
-import { execute as workSpaceCreateSaveDataService } from "@/core/application/WorkSpace/service/WorkSpaceCreateSaveDataService";
 import { WorkSpace } from "@/core/domain/model/WorkSpace";
+import { Character } from "@/core/domain/model/Character";
+import { execute as workSpaceCreateSaveDataService } from "@/core/application/WorkSpace/service/WorkSpaceCreateSaveDataService";
 import { execute as shareGetS3EndPointRepository } from "../domain/repository/ShareGetS3EndPointRepository";
 import { execute as sharePutS3FileRepository } from "../domain/repository/SharePutS3FileRepository";
 import { execute as bufferToBinaryService } from "@/core/service/BufferToBinaryService";
@@ -36,6 +37,7 @@ export const execute = async (connection_id: string): Promise<void> =>
 
     const initializeObject: ShareInitializeSendObjectImpl = {
         "workSpaceId": WorkSpace.workSpaceId,
+        "characterId": Character.characterId,
         "connectionId": connection_id,
         "fileId": fileId,
         "command": "load"

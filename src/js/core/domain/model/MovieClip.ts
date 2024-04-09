@@ -5,6 +5,7 @@ import type { FrameObjectImpl } from "@/interface/FrameObjectImpl";
 import { Instance } from "./Instance";
 import { Layer } from "./Layer";
 import { execute as movieClipRunUseCase } from "@/core/application/MovieClip/usecase/MovieClipRunUseCase";
+import { execute as movieClipStopUseCase } from "@/core/application/MovieClip/usecase/MovieClipStopUseCase";
 import { $clamp } from "@/global/GlobalUtil";
 
 /**
@@ -345,7 +346,7 @@ export class MovieClip extends Instance
     async run (): Promise<void>
     {
         // 起動処理を実行
-        movieClipRunUseCase(this);
+        await movieClipRunUseCase(this);
 
         // 状態をアクティブに更新
         this._$active = true;
@@ -361,6 +362,9 @@ export class MovieClip extends Instance
      */
     stop (): void
     {
+        // 終了処理を実行
+        movieClipStopUseCase();
+
         // 状態を非アクティブに更新
         this._$active = false;
     }

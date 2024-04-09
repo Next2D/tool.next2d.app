@@ -27,6 +27,11 @@
         pointer-events : none;
     }
 
+    .display-object
+    {
+        position : absolute;
+    }
+
     .transform
     {
         z-index          : 9900;

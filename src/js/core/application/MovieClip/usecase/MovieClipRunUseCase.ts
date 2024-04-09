@@ -22,7 +22,7 @@ import { execute as screenAreaRedrawUseCase } from "@/screen/application/ScreenA
  * @method
  * @public
  */
-export const execute = (movie_clip: MovieClip): void =>
+export const execute = async (movie_clip: MovieClip): Promise<vois> =>
 {
     // タイムラインのx移動するスクロール幅を更新
     timelineScrollUpdateWidthService();
@@ -61,5 +61,5 @@ export const execute = (movie_clip: MovieClip): void =>
     propertyAreaDisplayItemControllerUseCase();
 
     // スクリーンエリアを再描画
-    screenAreaRedrawUseCase(movie_clip);
+    await screenAreaRedrawUseCase(movie_clip);
 };

@@ -8,6 +8,7 @@ import { timelineLayer } from "@/timeline/domain/model/TimelineLayer";
 import { execute as timelineScrollUpdateWidthService } from "@/timeline/application/TimelineScroll/service/TimelineScrollUpdateWidthService";
 import { execute as timelineLayerFrameUpdateStyleService } from "@/timeline/application/TimelineLayerFrame/service/TimelineLayerFrameUpdateStyleService";
 import { execute as timelineLayerFrameAddKeyframeHistoryUseCase } from "@/history/application/timeline/application/TimelineLayerFrame/AddKeyframe/usecase/TimelineLayerFrameAddKeyframeHistoryUseCase";
+import { execute as screenAreaAppendCharacterService } from "@/screen/application/ScreenArea/usecase/ScreenAreaAppendCharacterService";
 
 /**
  * @description ライブラリのアイテムをMovieClipに追加
@@ -105,5 +106,6 @@ export const execute = async (
         timelineScrollUpdateWidthService();
 
         // スクリーンエリアにElementを追加
+        await screenAreaAppendCharacterService(character);
     }
 };
