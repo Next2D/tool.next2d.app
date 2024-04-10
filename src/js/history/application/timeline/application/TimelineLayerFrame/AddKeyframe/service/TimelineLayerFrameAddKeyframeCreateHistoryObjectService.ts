@@ -2,7 +2,6 @@ import type { HistoryObjectImpl } from "@/interface/HistoryObjectImpl";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { Layer } from "@/core/domain/model/Layer";
 import type { Character } from "@/core/domain/model/Character";
-
 import { $TIMELINE_ADD_KEYFRAME_COMMAND } from "@/config/HistoryConfig";
 
 /**

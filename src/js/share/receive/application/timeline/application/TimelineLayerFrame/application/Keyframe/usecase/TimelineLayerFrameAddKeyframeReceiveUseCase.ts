@@ -1,0 +1,77 @@
+import type { ShareReceiveMessageImpl } from "@/interface/ShareReceiveMessageImpl";
+import type { InstanceImpl } from "@/interface/InstanceImpl";
+import type { MovieClip } from "@/core/domain/model/MovieClip";
+import type { CharacterSaveObjectImpl } from "@/interface/CharacterSaveObjectImpl";
+import { $getWorkSpace } from "@/core/application/CoreUtil";
+import { timelineLayer } from "@/timeline/domain/model/TimelineLayer";
+import { execute as timelineLayerFrameUpdateStyleService } from "@/timeline/application/TimelineLayerFrame/service/TimelineLayerFrameUpdateStyleService";
+import { execute as timelineScrollUpdateWidthService } from "@/timeline/application/TimelineScroll/service/TimelineScrollUpdateWidthService";
+import { $getLeftFrame } from "@/timeline/application/TimelineUtil";
+import { Character } from "@/core/domain/model/Character";
+import { execute as timelineLayerFrameAddKeyframeHistoryUseCase } from "@/history/application/timeline/application/TimelineLayerFrame/AddKeyframe/usecase/TimelineLayerFrameAddKeyframeHistoryUseCase";
+
+/**
+ * @description 空のキーフレーム追加を実行
+ *              Perform empty keyframe addition
+ *
+ * @param  {object} message
+ * @return {void}
+ * @method
+ * @public
+ */
+export const execute = (message: ShareReceiveMessageImpl): void =>
+{
+    const id = message.data[0] as NonNullable<number>;
+
+    const workSpace = $getWorkSpace(id);
+    if (!workSpace) {
+        return ;
+    }
+
+    const libraryId = message.data[1] as NonNullable<number>;
+    const movieClip: InstanceImpl<MovieClip> = workSpace.getLibrary(libraryId);
+    if (!movieClip) {
+        return ;
+    }
+
+    const layer_index = message.data[2] as NonNullable<number>;
+    const layer = movieClip.getLayer(layer_index);
+    if (!layer) {
+        return ;
+    }
+
+    const character_index = message.data[3] as NonNullable<number>;
+    const character = new Character();
+    character.load(message.data[4] as NonNullable<CharacterSaveObjectImpl>);
+    layer.characters.splice(character_index, 0, character);
+
+    const empty_character_index = message.data[5] as NonNullable<number>;
+    if (empty_character_index > -1) {
+        layer.emptyCharacters.splice(empty_character_index, 1);
+    }
+
+    // 履歴に登録
+    timelineLayerFrameAddKeyframeHistoryUseCase(
+        workSpace, movieClip,
+        layer, character,
+        empty_character_index,
+        true
+    );
+
+    if (workSpace.active && movieClip.active) {
+        const layerElement = timelineLayer.elements[layer.getDisplayIndex()] as NonNullable<HTMLElement>;
+        if (!layerElement) {
+            return ;
+        }
+
+        // フレームのstyleを更新
+        timelineLayerFrameUpdateStyleService(
+            workSpace, movieClip,
+            layerElement.lastElementChild as NonNullable<HTMLElement>,
+            $getLeftFrame()
+        );
+
+        // xスクロールの幅を更新
+        timelineScrollUpdateWidthService();
+    }
+};

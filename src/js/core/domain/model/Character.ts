@@ -452,6 +452,7 @@ export class Character
      */
     load (save_object: CharacterSaveObjectImpl): void
     {
+        this._$id         = save_object.id;
         this._$libraryId  = save_object.libraryId;
         this._$depth      = save_object.depth;
         this._$blendMode  = save_object.blendMode;
@@ -505,6 +506,7 @@ export class Character
     toObject (): CharacterSaveObjectImpl
     {
         return {
+            "id": this._$id,
             "libraryId": this._$libraryId,
             "depth": this._$depth,
             "blendMode": this._$blendMode,

@@ -29,6 +29,8 @@ import { execute as timelineLayerFrameAddEmptyKeyframeReceiveUseCase } from "@/s
 import { execute as timelineLayerFrameUpdateEmptyKeyframeReceiveUseCase } from "@/share/receive/application/timeline/application/TimelineLayerFrame/application/EmptyKeyframe/usecase/TimelineLayerFrameUpdateEmptyKeyframeReceiveUseCase";
 import { execute as timelineLayerFrameSplitEmptyKeyframeReceiveUseCase } from "@/share/receive/application/timeline/application/TimelineLayerFrame/application/EmptyKeyframe/usecase/TimelineLayerFrameSplitEmptyKeyframeReceiveUseCase";
 import { execute as timelineLayerFrameInsertEmptyFramesReceiveUseCase } from "@/share/receive/application/timeline/application/TimelineLayerFrame/application/EmptyKeyframe/usecase/TimelineLayerFrameInsertEmptyFramesReceiveUseCase";
+import { execute as timelineLayerFrameAddKeyframeReceiveUseCase } from "@/share/receive/application/timeline/application/TimelineLayerFrame/application/Keyframe/usecase/TimelineLayerFrameAddKeyframeReceiveUseCase";
+import { execute as timelineLayerFrameInsertkeyframesReceiveUseCase } from "@/share/receive/application/timeline/application/TimelineLayerFrame/application/Keyframe/usecase/TimelineLayerFrameInsertkeyframesReceiveUseCase";
 import { execute as historyRedoUseCase } from "@/controller/application/HistoryArea/usecase/HistoryRedoUseCase";
 import { execute as historyUndoUseCase } from "@/controller/application/HistoryArea/usecase/HistoryUndoUseCase";
 import {
@@ -63,7 +65,9 @@ import {
     $TIMELINE_ADD_EMPTY_KEYFRAME_COMMAND,
     $TIMELINE_UPDATE_EMPTY_KEYFRAME_COMMAND,
     $TIMELINE_SPLIT_EMPTY_KEYFRAME_COMMAND,
-    $TIMELINE_INSERT_EMPTY_FRAME_COMMAND
+    $TIMELINE_INSERT_EMPTY_FRAME_COMMAND,
+    $TIMELINE_ADD_KEYFRAME_COMMAND,
+    $TIMELINE_INSERT_KEY_FRAME_COMMAND
 } from "@/config/HistoryConfig";
 
 /**
@@ -245,6 +249,16 @@ export const execute = async (message: ShareReceiveMessageImpl): Promise<void> =
         // 空のキーフレームにフレームを挿入
         case $TIMELINE_INSERT_EMPTY_FRAME_COMMAND:
             timelineLayerFrameInsertEmptyFramesReceiveUseCase(message);
+            break;
+
+        // キーフレームを追加
+        case $TIMELINE_ADD_KEYFRAME_COMMAND:
+            timelineLayerFrameAddKeyframeReceiveUseCase(message);
+            break;
+
+        // キーフレームにフレームを挿入
+        case $TIMELINE_INSERT_KEY_FRAME_COMMAND:
+            timelineLayerFrameInsertkeyframesReceiveUseCase(message);
             break;
 
         default:
