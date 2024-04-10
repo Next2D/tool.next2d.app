@@ -26,7 +26,8 @@ import {
     $TIMELINE_SPLIT_EMPTY_KEYFRAME_COMMAND,
     $TIMELINE_INSERT_EMPTY_FRAME_COMMAND,
     $TIMELINE_ADD_KEYFRAME_COMMAND,
-    $TIMELINE_INSERT_KEY_FRAME_COMMAND
+    $TIMELINE_INSERT_KEY_FRAME_COMMAND,
+    $TIMELINE_UPDATE_KEYFRAME_COMMAND
 } from "@/config/HistoryConfig";
 
 /**
@@ -122,6 +123,9 @@ export const execute = (command: number): string =>
 
         case $TIMELINE_ADD_KEYFRAME_COMMAND:
             return "「%s1」のレイヤー「%s2」の%s3フレームに「%s4」を追加";
+
+        case $TIMELINE_UPDATE_KEYFRAME_COMMAND:
+            return "「%s1」のレイヤー「%s2」の%s3フレームのキーフレームを変更";
 
         default:
             break;
