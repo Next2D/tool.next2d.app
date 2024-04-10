@@ -32,6 +32,7 @@ import { execute as timelineLayerFrameInsertEmptyFramesHistoryRedoUseCase } from
 import { execute as timelineLayerFrameAddKeyframeHistoryRedoUseCase } from "@/history/application/timeline/application/TimelineLayerFrame/AddKeyframe/usecase/TimelineLayerFrameAddKeyframeHistoryRedoUseCase";
 import { execute as timelineLayerFrameInsertKeyFramesHistoryRedoUseCase } from "@/history/application/timeline/application/TimelineLayerFrame/InsertKeyFrames/usecase/TimelineLayerFrameInsertKeyFramesHistoryRedoUseCase";
 import { execute as timelineLayerFrameUpdateKeyframeHistoryRedoUseCase } from "@/history/application/timeline/application/TimelineLayerFrame/UpdateKeyframe/usecase/TimelineLayerFrameUpdateKeyframeHistoryRedoUseCase";
+import { execute as timelineLayerFrameSplitKeyframeToEmptyHistoryRedoUseCase } from "@/history/application/timeline/application/TimelineLayerFrame/SplitKeyframeToEmpty/usecase/TimelineLayerFrameSplitKeyframeToEmptyHistoryRedoUseCase";
 import { execute as instanceUpdateNameHistoryRedoUseCase } from "@/history/application/core/application/Instance/usecase/InstanceUpdateNameHistoryRedoUseCase";
 import { execute as instanceUpdateSymbolHistoryRedoUseCase } from "@/history/application/core/application/Instance/usecase/InstanceUpdateSymbolHistoryRedoUseCase";
 import {
@@ -63,7 +64,8 @@ import {
     $TIMELINE_INSERT_EMPTY_FRAME_COMMAND,
     $TIMELINE_ADD_KEYFRAME_COMMAND,
     $TIMELINE_INSERT_KEY_FRAME_COMMAND,
-    $TIMELINE_UPDATE_KEYFRAME_COMMAND
+    $TIMELINE_UPDATE_KEYFRAME_COMMAND,
+    $TIMELINE_SPLIT_KEYFRAME_COMMAND
 } from "@/config/HistoryConfig";
 
 /**
@@ -363,6 +365,16 @@ export const execute = async (
                 messages[2] as number, // layer_index
                 messages[3] as number, // Keyframe
                 messages[5] as number // After Frame
+            );
+            break;
+
+        case $TIMELINE_SPLIT_KEYFRAME_COMMAND:
+            timelineLayerFrameSplitKeyframeToEmptyHistoryRedoUseCase(
+                messages[0] as number, // work_space_id
+                messages[1] as number, // library_id
+                messages[2] as number, // layer_index
+                messages[3] as number, // Empty Character Index
+                messages[4] as number // Keyframe
             );
             break;
 

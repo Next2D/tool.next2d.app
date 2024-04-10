@@ -51,8 +51,9 @@ export const execute = (
         work_space,
         movie_clip,
         layer,
-        character.startFrame,
         newEmptyCharacter,
+        keyframe,
+        character.startFrame,
         receiver
     );
 };

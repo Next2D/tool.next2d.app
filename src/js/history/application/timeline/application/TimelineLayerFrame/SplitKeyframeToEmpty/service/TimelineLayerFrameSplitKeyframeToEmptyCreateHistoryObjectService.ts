@@ -11,8 +11,9 @@ import type { EmptyCharacter } from "@/core/domain/model/EmptyCharacter";
  * @param  {number} work_space_id
  * @param  {MovieClip} movie_clip
  * @param  {Layer} layer
- * @param  {number} keyframe
  * @param  {EmptyCharacter} empty_character
+ * @param  {number} keyframe
+ * @param  {number} character_keyframe
  * @return {object}
  * @method
  * @public
@@ -21,8 +22,9 @@ export const execute = (
     work_space_id: number,
     movie_clip: MovieClip,
     layer: Layer,
+    empty_character: EmptyCharacter,
     keyframe: number,
-    empty_character: EmptyCharacter
+    character_keyframe: number
 ): HistoryObjectImpl => {
 
     return {
@@ -31,13 +33,14 @@ export const execute = (
             work_space_id,
             movie_clip.id,
             movie_clip.layers.indexOf(layer),
+            layer.emptyCharacters.indexOf(empty_character),
             keyframe,
-            layer.emptyCharacters.indexOf(empty_character)
+            character_keyframe
         ],
         "args": [
             movie_clip.name,
             layer.name,
-            keyframe
+            character_keyframe
         ]
     };
 };

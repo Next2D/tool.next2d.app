@@ -17,8 +17,9 @@ import type { EmptyCharacter } from "@/core/domain/model/EmptyCharacter";
  * @param  {WorkSpace} work_space
  * @param  {MovieClip} movie_clip
  * @param  {Layer} layer
- * @param  {number} keyframe
  * @param  {EmptyCharacter} empty_character
+ * @param  {number} keyframe
+ * @param  {number} character_keyframe
  * @param  {boolean} [receiver=false]
  * @return {void}
  * @method
@@ -28,8 +29,9 @@ export const execute = (
     work_space: WorkSpace,
     movie_clip: MovieClip,
     layer: Layer,
-    keyframe: number,
     empty_character: EmptyCharacter,
+    keyframe: number,
+    character_keyframe: number,
     receiver: boolean = false
 ): void => {
 
@@ -39,7 +41,8 @@ export const execute = (
 
     // fixed logic
     const historyObject = timelineLayerFrameSplitEmptyKeyframeCreateHistoryObjectService(
-        work_space.id, movie_clip, layer, keyframe, empty_character
+        work_space.id, movie_clip, layer,
+        empty_character, keyframe, character_keyframe
     );
 
     // 作業履歴にElementを追加
