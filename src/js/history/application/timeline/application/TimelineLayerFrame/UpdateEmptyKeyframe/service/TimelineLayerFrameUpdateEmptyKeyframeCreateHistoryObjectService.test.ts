@@ -33,9 +33,10 @@ describe("TimelineLayerFrameUpdateEmptyKeyframeCreateHistoryObjectServiceTest", 
         expect(object.messages[5]).toBe(emptyCharacter.endFrame);
 
         // 表示様の配列のチェック
-        expect(object.args.length).toBe(3);
+        expect(object.args.length).toBe(4);
         expect(object.args[0]).toBe(movieClip.name);
         expect(object.args[1]).toBe(layer.name);
         expect(object.args[2]).toBe(emptyCharacter.startFrame);
+        expect(object.args[3]).toBe(emptyCharacter.endFrame - 2);
     });
 });

@@ -5,7 +5,7 @@ import { execute as externalTimelineLayerFramePrevAdjustmentUseCase } from "./Ex
 import { execute as timelineLayerFrameUpdateStyleService } from "@/timeline/application/TimelineLayerFrame/service/TimelineLayerFrameUpdateStyleService";
 import { timelineLayer } from "@/timeline/domain/model/TimelineLayer";
 import { execute as timelineScrollUpdateWidthService } from "@/timeline/application/TimelineScroll/service/TimelineScrollUpdateWidthService";
-import { execute as externalTimelineLayerFrameSplitFramesUseCase } from "./ExternalTimelineLayerFrameSplitFramesUseCase";
+import { execute as externalTimelineLayerFrameSplitToEmptyUseCase } from "./ExternalTimelineLayerFrameSplitToEmptyUseCase";
 
 /**
  * @description 選択中のレイヤーに空のキーフレームを追加
@@ -55,7 +55,8 @@ export const execute = (
         // 指定されたフレームに空のキーフレームを追加
         for (let keyframe = frameObject.start; keyframe < frameObject.end; ++keyframe) {
 
-            externalTimelineLayerFrameSplitFramesUseCase(
+            // 空のキーフレームに分割
+            externalTimelineLayerFrameSplitToEmptyUseCase(
                 work_space,
                 movie_clip,
                 layer,

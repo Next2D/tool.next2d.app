@@ -3,6 +3,7 @@ import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import type { Layer } from "@/core/domain/model/Layer";
 import { execute as externalTimelineLayerFrameCreateEmptyKeyframeUseCase } from "./ExternalTimelineLayerFrameCreateEmptyKeyframeUseCase";
 import { execute as externalTimelineLayerFrameSplitEmptyKeyframeUseCase } from "./ExternalTimelineLayerFrameSplitEmptyKeyframeUseCase";
+import { execute as externalTimelineLayerFrameSplitKeyframeToEmptyUseCase } from "./ExternalTimelineLayerFrameSplitKeyframeToEmptyUseCase";
 
 /**
  * @description 指定したレイヤーの指定フレームに空のキーフレームを追加
@@ -26,7 +27,13 @@ export const execute = (
     // 指定のキーフレームにアクティブなキャラクターがあれば終了
     const activeCharacters = layer.getActiveCharacters(keyframe);
     if (activeCharacters.length) {
-        // TODO ここで何か処理をする
+        externalTimelineLayerFrameSplitKeyframeToEmptyUseCase(
+            work_space,
+            movie_clip,
+            layer,
+            activeCharacters,
+            keyframe
+        );
         return ;
     }
 

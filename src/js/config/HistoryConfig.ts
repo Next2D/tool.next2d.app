@@ -330,3 +330,12 @@ export const $TIMELINE_INSERT_KEY_FRAME_COMMAND: number = 33;
  * @constant
  */
 export const $TIMELINE_UPDATE_KEYFRAME_COMMAND: number = 34;
+
+/**
+ * @description 空のキーフレームの分割の識別コマンド名
+ *              Identification command name for splitting an empty keyframe
+ *
+ * @type {number}
+ * @constant
+ */
+export const $TIMELINE_SPLIT_KEYFRAME_COMMAND: number = 35;
