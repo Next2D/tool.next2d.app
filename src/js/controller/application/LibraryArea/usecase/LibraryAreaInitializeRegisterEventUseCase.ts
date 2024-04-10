@@ -4,6 +4,8 @@ import { execute as libraryAreaDropUseCase } from "./LibraryAreaDropUseCase";
 import { execute as libraryAreaDragoverService } from "../service/LibraryAreaDragoverService";
 import { execute as libraryAreaRegisterWindowKeyEventUseCase } from "./LibraryAreaRegisterWindowKeyEventUseCase";
 import { execute as libraryAreaRemoveWindowKeyEventUseCase } from "./LibraryAreaRemoveWindowKeyEventUseCase";
+import { execute as libraryAreaDragstartUseCase } from "./LibraryAreaDragstartUseCase";
+import { execute as libraryAreaDragendUseCase } from "./LibraryAreaDragendUseCase";
 import { EventType } from "@/tool/domain/event/EventType";
 
 /**
@@ -27,16 +29,11 @@ export const execute = (): void =>
         libraryAreaMouseDownEventUseCase
     );
 
+    // drop系のイベントの登録
     element.addEventListener("dragover", libraryAreaDragoverService);
     element.addEventListener("drop", libraryAreaDropUseCase);
-    element.addEventListener("dragstart", (): void =>
-    {
-        // TODO stage-areaのアイテムのイベントを無効化
-    });
-    element.addEventListener("dragend", (): void =>
-    {
-        // TODO stage-areaのアイテムのイベントを無効化を解除
-    });
+    element.addEventListener("dragstart", libraryAreaDragstartUseCase);
+    element.addEventListener("dragend", libraryAreaDragendUseCase);
 
     // キーイベントの登録
     element.addEventListener(EventType.MOUSE_OVER,

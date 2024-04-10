@@ -1,7 +1,6 @@
 import type { ShareInitializeSendObjectImpl } from "@/interface/ShareInitializeSendObjectImpl";
 import { $allHideMenu } from "@/menu/application/MenuUtil";
 import { WorkSpace } from "@/core/domain/model/WorkSpace";
-import { Character } from "@/core/domain/model/Character";
 import { $loadedInitializeData } from "../ShareUtil";
 import { execute as workSpaceRestoreSaveDataService } from "@/core/application/WorkSpace/service/WorkSpaceRestoreSaveDataService";
 import { execute as userDatabaseSaveShowModalUseCase } from "@/user/application/Database/usecase/UserDatabaseSaveShowModalUseCase";

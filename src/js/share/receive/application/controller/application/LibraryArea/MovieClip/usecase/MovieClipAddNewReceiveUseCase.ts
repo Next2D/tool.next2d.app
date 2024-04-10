@@ -1,6 +1,6 @@
 import type { ShareReceiveMessageImpl } from "@/interface/ShareReceiveMessageImpl";
 import type { InstanceImpl } from "@/interface/InstanceImpl";
-import type { MovieClip } from "@/core/domain/model/MovieClip";
+import { MovieClip } from "@/core/domain/model/MovieClip";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
 import { execute as externalLibraryAddInstanceUseCase } from "@/external/controller/application/ExternalLibrary/usecase/ExternalLibraryAddInstanceUseCase";
 import { execute as libraryAreaAddNewMovieClipHistoryUseCase } from "@/history/application/controller/application/LibraryArea/MovieClip/usecase/LibraryAreaAddNewMovieClipHistoryUseCase";

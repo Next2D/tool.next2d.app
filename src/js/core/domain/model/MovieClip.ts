@@ -126,6 +126,40 @@ export class MovieClip extends Instance
     }
 
     /**
+     * @description MovieClipの幅を返す
+     *              Returns the width of the MovieClip
+     *
+     * @member {number}
+     * @public
+     */
+    get width (): number
+    {
+        return 0;
+    }
+    set width (width: number)
+    {
+        // TODO
+        console.log(width);
+    }
+
+    /**
+     * @description MovieClipの高さを返す
+     *              Returns the height of the MovieClip
+     *
+     * @return {number}
+     * @public
+     */
+    get height (): number
+    {
+        return 0;
+    }
+    set height (height: number)
+    {
+        // TODO
+        console.log(height);
+    }
+
+    /**
      * @description フレームの選択状態を保存したオブジェクトを返却
      *              Returns an object with the frame selection state saved
      *

@@ -12,6 +12,7 @@ import { execute as libraryAreaMoveItemsUseCase } from "./LibraryAreaMoveItemsUs
  */
 export const execute = (event: DragEvent): void =>
 {
+    // 全てのイベントをキャンセル
     event.preventDefault();
     event.stopPropagation();
 

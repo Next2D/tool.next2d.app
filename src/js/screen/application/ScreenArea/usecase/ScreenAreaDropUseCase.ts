@@ -1,4 +1,3 @@
-import type { Instance } from "@/core/domain/model/Instance";
 import type { InstanceImpl } from "@/interface/InstanceImpl";
 import { libraryArea } from "@/controller/domain/model/LibraryArea";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";

@@ -27,7 +27,9 @@ export const execute = async (
     switch (instance.type) {
 
         case $BITMAP_TYPE:
-            return await characterCreateElementBitmapUseCase(workSpace.id, instance, layer, character);
+            return await characterCreateElementBitmapUseCase(
+                workSpace.id, instance, layer, character
+            );
 
         default:
             break;

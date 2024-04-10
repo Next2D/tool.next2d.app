@@ -176,7 +176,7 @@ export class Video extends Instance
     }
     set width (width: number)
     {
-        this._$width = width | 0;
+        this._$width = width;
     }
 
     /**
@@ -192,7 +192,7 @@ export class Video extends Instance
     }
     set height (height: number)
     {
-        this._$height = height | 0;
+        this._$height = height;
     }
 
     /**

@@ -22,48 +22,37 @@ import {
  * @method
  * @public
  */
-export const execute = (
+export const execute = async (
     work_space: WorkSpace,
     file: File,
     name: string,
     path: string = ""
 ): Promise<void> => {
 
-    return new Promise((resolve): void =>
-    {
-        const externalLibrary = new ExternalLibrary(work_space);
-        const folder: ExternalInstanceImpl<ExternalFolder> | null = externalLibrary.getItem(path);
-        const folderId = folder && folder.type === $FOLDER_TYPE ? folder.id : 0;
+    const externalLibrary = new ExternalLibrary(work_space);
+    const folder: ExternalInstanceImpl<ExternalFolder> | null = externalLibrary.getItem(path);
+    const folderId = folder && folder.type === $FOLDER_TYPE ? folder.id : 0;
 
-        const video = new Video({
-            "id": work_space.nextLibraryId,
-            "type": $VIDEO_TYPE,
-            "name": name,
-            "folderId": folderId
-        });
-
-        // 内部情報に登録
-        externalWorkSpaceRegisterInstanceService(work_space, video);
-
-        file
-            .arrayBuffer()
-            .then(async (array_buffer: ArrayBuffer): Promise<void> =>
-            {
-                video.buffer = new Uint8Array(array_buffer);
-
-                // 映像内部データの読み込み開始
-                await video.wait();
-
-                // 作業履歴に残す
-                // fixed logic
-                await libraryAreaAddNewVideoHistoryUseCase(
-                    work_space,
-                    work_space.scene,
-                    video
-                );
-
-                // 終了
-                resolve();
-            });
+    const video = new Video({
+        "id": work_space.nextLibraryId,
+        "type": $VIDEO_TYPE,
+        "name": name,
+        "folderId": folderId
     });
+
+    // 内部情報に登録
+    externalWorkSpaceRegisterInstanceService(work_space, video);
+
+    video.buffer = new Uint8Array(await file.arrayBuffer());
+
+    // 映像内部データの読み込み開始
+    await video.wait();
+
+    // 作業履歴に残す
+    // fixed logic
+    await libraryAreaAddNewVideoHistoryUseCase(
+        work_space,
+        work_space.scene,
+        video
+    );
 };

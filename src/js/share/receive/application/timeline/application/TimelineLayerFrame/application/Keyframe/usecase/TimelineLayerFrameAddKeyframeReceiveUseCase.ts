@@ -11,8 +11,8 @@ import { Character } from "@/core/domain/model/Character";
 import { execute as timelineLayerFrameAddKeyframeHistoryUseCase } from "@/history/application/timeline/application/TimelineLayerFrame/AddKeyframe/usecase/TimelineLayerFrameAddKeyframeHistoryUseCase";
 
 /**
- * @description 空のキーフレーム追加を実行
- *              Perform empty keyframe addition
+ * @description キーフレーム追加を実行
+ *              Execute adding a keyframe
  *
  * @param  {object} message
  * @return {void}

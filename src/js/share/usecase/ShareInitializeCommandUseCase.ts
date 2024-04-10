@@ -1,7 +1,6 @@
 import type { ShareInitializeSendObjectImpl } from "@/interface/ShareInitializeSendObjectImpl";
 import { $getSocket } from "../ShareUtil";
 import { WorkSpace } from "@/core/domain/model/WorkSpace";
-import { Character } from "@/core/domain/model/Character";
 import { execute as workSpaceCreateSaveDataService } from "@/core/application/WorkSpace/service/WorkSpaceCreateSaveDataService";
 import { execute as shareGetS3EndPointRepository } from "../domain/repository/ShareGetS3EndPointRepository";
 import { execute as sharePutS3FileRepository } from "../domain/repository/SharePutS3FileRepository";

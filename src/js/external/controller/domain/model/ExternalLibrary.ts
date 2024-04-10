@@ -360,7 +360,7 @@ export class ExternalLibrary
             return ;
         }
 
-        const name  = paths.pop() as NonNullable<string>;
+        const name = paths.pop() as NonNullable<string>;
 
         // フォルダー指定があれば先にフォルダーを生成
         let folderId = 0;

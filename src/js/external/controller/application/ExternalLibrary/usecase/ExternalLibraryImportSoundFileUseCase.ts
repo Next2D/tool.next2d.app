@@ -19,48 +19,37 @@ import { $FOLDER_TYPE, $SOUND_TYPE } from "@/config/InstanceConfig";
  * @method
  * @public
  */
-export const execute = (
+export const execute = async (
     work_space: WorkSpace,
     file: File,
     name: string,
     path: string = ""
 ): Promise<void> => {
 
-    return new Promise((resolve): void =>
-    {
-        const externalLibrary = new ExternalLibrary(work_space);
-        const folder: ExternalInstanceImpl<ExternalFolder> | null = externalLibrary.getItem(path);
-        const folderId = folder && folder.type === $FOLDER_TYPE ? folder.id : 0;
+    const externalLibrary = new ExternalLibrary(work_space);
+    const folder: ExternalInstanceImpl<ExternalFolder> | null = externalLibrary.getItem(path);
+    const folderId = folder && folder.type === $FOLDER_TYPE ? folder.id : 0;
 
-        const sound = new Sound({
-            "id": work_space.nextLibraryId,
-            "type": $SOUND_TYPE,
-            "name": name,
-            "folderId": folderId
-        });
-
-        // 内部情報に登録
-        externalWorkSpaceRegisterInstanceService(work_space, sound);
-
-        file
-            .arrayBuffer()
-            .then(async (array_buffer: ArrayBuffer): Promise<void> =>
-            {
-                sound.buffer = new Uint8Array(array_buffer);
-
-                // 映像内部データの読み込み開始
-                await sound.wait();
-
-                // 作業履歴に残す
-                // fixed logic
-                await libraryAreaAddNewSoundHistoryUseCase(
-                    work_space,
-                    work_space.scene,
-                    sound
-                );
-
-                // 終了
-                resolve();
-            });
+    const sound = new Sound({
+        "id": work_space.nextLibraryId,
+        "type": $SOUND_TYPE,
+        "name": name,
+        "folderId": folderId
     });
+
+    // 内部情報に登録
+    externalWorkSpaceRegisterInstanceService(work_space, sound);
+
+    sound.buffer = new Uint8Array(await file.arrayBuffer());
+
+    // 映像内部データの読み込み開始
+    await sound.wait();
+
+    // 作業履歴に残す
+    // fixed logic
+    await libraryAreaAddNewSoundHistoryUseCase(
+        work_space,
+        work_space.scene,
+        sound
+    );
 };

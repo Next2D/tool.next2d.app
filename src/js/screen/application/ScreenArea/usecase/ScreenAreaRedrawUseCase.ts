@@ -21,19 +21,29 @@ export const execute = async (movie_clip: MovieClip): Promise<void> =>
     const frame  = movie_clip.currentFrame;
     const layers = movie_clip.layers;
     for (let idx = layers.length - 1; idx > -1; --idx) {
+
         const layer = layers[idx];
+        if (!layer) {
+            continue;
+        }
 
         const activeCharacters = layer.getActiveCharacters(frame);
         if (!activeCharacters.length) {
             continue;
         }
 
+        // 昇順に並ぶかえ
         const characters = activeCharacters
-            .sort((a, b) => a.depth - b.depth);
+            .sort((a, b) => a.depth < b.depth ? -1 : 1);
 
         for (let idx = 0; idx < characters.length; ++idx) {
+
             const character = characters[idx];
-            const div = await character.createElement();
+            if (!character) {
+                continue;
+            }
+
+            const div = await character.createElement(layer);
             if (!div) {
                 continue;
             }

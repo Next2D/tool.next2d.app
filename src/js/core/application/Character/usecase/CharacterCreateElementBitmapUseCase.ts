@@ -46,7 +46,8 @@ export const execute = async (
     div.appendChild(canvas);
 
     let style = "";
-    style += `transform: matrix(${character.matrix[0]}, ${character.matrix[1]}, ${character.matrix[2]}, ${character.matrix[3]}, 0, 0);`;
+    const matrix = character.matrix;
+    style += `transform: matrix(${matrix[0]}, ${matrix[1]}, ${matrix[2]}, ${matrix[3]}, 0, 0);`;
     style += `left: ${$getScreenOffsetLeft() + character.x}px;`;
     style += `top: ${$getScreenOffsetTop() + character.y}px;`;
 

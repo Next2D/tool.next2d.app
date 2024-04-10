@@ -8,9 +8,8 @@ import { timelineLayer } from "@/timeline/domain/model/TimelineLayer";
 import { execute as timelineScrollUpdateWidthService } from "@/timeline/application/TimelineScroll/service/TimelineScrollUpdateWidthService";
 import { execute as timelineLayerFrameUpdateStyleService } from "@/timeline/application/TimelineLayerFrame/service/TimelineLayerFrameUpdateStyleService";
 import { execute as timelineLayerFrameAddKeyframeHistoryUseCase } from "@/history/application/timeline/application/TimelineLayerFrame/AddKeyframe/usecase/TimelineLayerFrameAddKeyframeHistoryUseCase";
-import { execute as screenAreaAppendCharacterService } from "@/screen/application/ScreenArea/usecase/ScreenAreaAppendCharacterService";
+import { execute as screenAreaAppendCharacterService } from "@/screen/application/ScreenArea/service/ScreenAreaAppendCharacterService";
 import { $FOLDER_TYPE, $SOUND_TYPE } from "@/config/InstanceConfig";
-import { b } from "vitest/dist/suite-a18diDsI.js";
 
 /**
  * @description ライブラリのアイテムをMovieClipに追加
@@ -64,10 +63,9 @@ export const execute = async (
 
     // 新規のDisplayObjectを作成
     const character = new Character();
-    layer.addCharacter(character);
-    character.loadExternalItem(item);
     character.x = x;
     character.y = y;
+    character.loadExternalItem(item);
 
     // 空のキーフレームがあれば記録に残す
     let emptyCharacterIndex = -1;
@@ -77,10 +75,9 @@ export const execute = async (
     const activeCharacters = layer.getActiveCharacters(frame);
     if (activeCharacters.length) {
         // 既にアクティブなキャラクターがある場合は、そのキーフレームに含める
-        const activeCharacter = activeCharacters[0];
-        character.startFrame  = activeCharacter.startFrame;
-        character.endFrame    = activeCharacter.endFrame;
-        character.depth       = activeCharacters.length;
+        character.startFrame = activeCharacters[0].startFrame;
+        character.endFrame   = activeCharacters[0].endFrame;
+        character.depth      = activeCharacters.length;
     } else {
         // 空のキーフレームがある場合は情報を引き継いで、空のキーフレームを削除
         const activeEmptyCharacter = layer.getActiveEmptyCharacter(frame);
@@ -96,6 +93,10 @@ export const execute = async (
             character.endFrame   = frame + 1;
         }
     }
+
+    // レイヤーに追加
+    // fixed logic
+    layer.addCharacter(character);
 
     // 履歴に登録
     timelineLayerFrameAddKeyframeHistoryUseCase(
