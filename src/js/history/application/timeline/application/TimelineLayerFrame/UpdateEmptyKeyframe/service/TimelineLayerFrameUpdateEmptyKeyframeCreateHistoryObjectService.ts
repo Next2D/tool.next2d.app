@@ -38,7 +38,8 @@ export const execute = (
         "args": [
             movie_clip.name,
             layer.name,
-            empty_character.startFrame
+            empty_character.startFrame,
+            empty_character.endFrame - before_end_frame
         ]
     };
 };

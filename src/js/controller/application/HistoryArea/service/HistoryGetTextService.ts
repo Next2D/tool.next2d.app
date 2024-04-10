@@ -112,7 +112,7 @@ export const execute = (command: number): string =>
             return "「%s1」のレイヤー「%s2」の%s3フレームに空のキーフレームを追加";
 
         case $TIMELINE_UPDATE_EMPTY_KEYFRAME_COMMAND:
-            return "「%s1」のレイヤー「%s2」の%s3フレームの空のキーフレームを変更";
+            return "「%s1」のレイヤー「%s2」の%s3フレームの空のキーフレームに%s4フレームを追加";
 
         case $TIMELINE_SPLIT_EMPTY_KEYFRAME_COMMAND:
             return "「%s1」のレイヤー「%s2」の%s3フレームの空のキーフレームを分割";
@@ -125,7 +125,7 @@ export const execute = (command: number): string =>
             return "「%s1」のレイヤー「%s2」の%s3フレームに「%s4」を追加";
 
         case $TIMELINE_UPDATE_KEYFRAME_COMMAND:
-            return "「%s1」のレイヤー「%s2」の%s3フレームのキーフレームを変更";
+            return "「%s1」のレイヤー「%s2」の%s3フレームのキーフレームに%s4フレームを追加";
 
         default:
             break;
