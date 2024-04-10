@@ -1,9 +1,16 @@
-import { $getCacheCanvas, $setCacheCanvas } from "@/cache/CacheUtil";
 import type { Bitmap } from "@/core/domain/model/Bitmap";
 import type { Character } from "@/core/domain/model/Character";
 import type { InstanceImpl } from "@/interface/InstanceImpl";
+import type { Layer } from "@/core/domain/model/Layer";
 import { execute as bitmapRegisterEventUseCase } from "@/core/application/Bitmap/usecase/BitmapRegisterEventUseCase";
-import { $getScreenOffsetLeft, $getScreenOffsetTop } from "@/global/GlobalUtil";
+import {
+    $getScreenOffsetLeft,
+    $getScreenOffsetTop
+} from "@/global/GlobalUtil";
+import {
+    $getCacheCanvas,
+    $setCacheCanvas
+} from "@/cache/CacheUtil";
 
 /**
  * @description Bitmapをcanvasに描画して返却する
@@ -19,6 +26,7 @@ import { $getScreenOffsetLeft, $getScreenOffsetTop } from "@/global/GlobalUtil";
 export const execute = async (
     work_space_id: number,
     instance: InstanceImpl<Bitmap>,
+    layer: Layer,
     character: Character
 ): Promise<HTMLDivElement> => {
 
@@ -26,7 +34,7 @@ export const execute = async (
 
     let canvas = $getCacheCanvas(work_space_id, instance.id, cacheKey);
     if (!canvas) {
-        // TODO filters
+        // TODO filters check
         canvas = await instance.getHTMLElement();
 
         // キャッシュに保存
@@ -51,6 +59,7 @@ export const execute = async (
 
     // Elementに変数を設定
     div.dataset.characterId = `${character.id}`;
+    div.dataset.layerId = `${layer.id}`;
 
     // イベントを登録
     bitmapRegisterEventUseCase(div);

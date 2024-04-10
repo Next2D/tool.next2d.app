@@ -36,7 +36,6 @@ export const execute = async (message: ShareInitializeSendObjectImpl): Promise<v
 
     // オーナーのIDに合わせる
     WorkSpace.workSpaceId = message.workSpaceId;
-    Character.characterId = message.characterId;
 
     // 現在のプロジェクトデータを保存
     await userDatabaseSaveShowModalUseCase();

@@ -9,6 +9,8 @@ import { execute as timelineScrollUpdateWidthService } from "@/timeline/applicat
 import { execute as timelineLayerFrameUpdateStyleService } from "@/timeline/application/TimelineLayerFrame/service/TimelineLayerFrameUpdateStyleService";
 import { execute as timelineLayerFrameAddKeyframeHistoryUseCase } from "@/history/application/timeline/application/TimelineLayerFrame/AddKeyframe/usecase/TimelineLayerFrameAddKeyframeHistoryUseCase";
 import { execute as screenAreaAppendCharacterService } from "@/screen/application/ScreenArea/usecase/ScreenAreaAppendCharacterService";
+import { $FOLDER_TYPE, $SOUND_TYPE } from "@/config/InstanceConfig";
+import { b } from "vitest/dist/suite-a18diDsI.js";
 
 /**
  * @description ライブラリのアイテムをMovieClipに追加
@@ -34,11 +36,11 @@ export const execute = async (
 ): Promise<void> => {
 
     // 追加するレイヤーをセット
-    const selectedLayer = movie_clip.selectedLayers.length
-        ? movie_clip.selectedLayers[0]
+    const layer = movie_clip.layers.length
+        ? movie_clip.layers[0]
         : movie_clip.layers[0];
 
-    if (!selectedLayer) {
+    if (!layer) {
         return ;
     }
 
@@ -48,9 +50,21 @@ export const execute = async (
         return ;
     }
 
+    // 音声とフォルダは追加できない
+    switch (item.type) {
+
+        case $SOUND_TYPE:
+        case $FOLDER_TYPE:
+            return ;
+
+        default:
+            break;
+
+    }
+
     // 新規のDisplayObjectを作成
     const character = new Character();
-    selectedLayer.addCharacter(character);
+    layer.addCharacter(character);
     character.loadExternalItem(item);
     character.x = x;
     character.y = y;
@@ -59,7 +73,8 @@ export const execute = async (
     let emptyCharacterIndex = -1;
 
     const frame = movie_clip.currentFrame;
-    const activeCharacters = selectedLayer.getActiveCharacters(frame);
+
+    const activeCharacters = layer.getActiveCharacters(frame);
     if (activeCharacters.length) {
         // 既にアクティブなキャラクターがある場合は、そのキーフレームに含める
         const activeCharacter = activeCharacters[0];
@@ -68,15 +83,16 @@ export const execute = async (
         character.depth       = activeCharacters.length;
     } else {
         // 空のキーフレームがある場合は情報を引き継いで、空のキーフレームを削除
-        const activeEmptyCharacter = selectedLayer.getActiveEmptyCharacter(frame);
+        const activeEmptyCharacter = layer.getActiveEmptyCharacter(frame);
         if (activeEmptyCharacter) {
             character.startFrame = activeEmptyCharacter.startFrame;
             character.endFrame   = activeEmptyCharacter.endFrame;
-            emptyCharacterIndex  = selectedLayer.emptyCharacters.indexOf(activeEmptyCharacter);
-            selectedLayer.removeEmptyCharacter(activeEmptyCharacter);
+            emptyCharacterIndex  = layer.emptyCharacters.indexOf(activeEmptyCharacter);
+            layer.removeEmptyCharacter(activeEmptyCharacter);
         } else {
-            // 新規のキーフレームを作成
-            character.startFrame = 1;
+            // 新規のキーフレームレイヤーの最大フレーム以降に登録
+            const maxFrame = layer.maxFrame;
+            character.startFrame = maxFrame ? maxFrame : 1;
             character.endFrame   = frame + 1;
         }
     }
@@ -84,13 +100,13 @@ export const execute = async (
     // 履歴に登録
     timelineLayerFrameAddKeyframeHistoryUseCase(
         work_space, movie_clip,
-        selectedLayer, character,
+        layer, character,
         emptyCharacterIndex, receiver
     );
 
     if (work_space.active && movie_clip.active) {
 
-        const layerElement = timelineLayer.elements[selectedLayer.getDisplayIndex()] as NonNullable<HTMLElement>;
+        const layerElement = timelineLayer.elements[layer.getDisplayIndex()] as NonNullable<HTMLElement>;
         if (!layerElement) {
             return ;
         }
@@ -106,6 +122,6 @@ export const execute = async (
         timelineScrollUpdateWidthService();
 
         // スクリーンエリアにElementを追加
-        await screenAreaAppendCharacterService(character);
+        await screenAreaAppendCharacterService(character, layer);
     }
 };

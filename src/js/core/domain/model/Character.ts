@@ -1,7 +1,8 @@
 import type { CharacterSaveObjectImpl } from "@/interface/CharacterSaveObjectImpl";
 import type { ExternalItemImpl } from "@/interface/ExternalItemImpl";
 import type { BlendModeImpl } from "@/interface/BlendModeImpl";
-import { execute as characterDrawUseCase } from "@/core/application/Character/usecase/CharacterDrawUseCase";
+import type { Layer } from "./Layer";
+import { execute as characterCreateElementUseCase } from "@/core/application/Character/usecase/CharacterCreateElementUseCase";
 import { execute as characterCalcGetScaleXService } from "@/core/application/Character/service/CharacterCalcGetScaleXService";
 import { execute as characterCalcSetScaleXService } from "@/core/application/Character/service/CharacterCalcSetScaleXService";
 import { execute as characterCalcGetScaleYService } from "@/core/application/Character/service/CharacterCalcGetScaleYService";
@@ -452,7 +453,6 @@ export class Character
      */
     load (save_object: CharacterSaveObjectImpl): void
     {
-        this._$id         = save_object.id;
         this._$libraryId  = save_object.libraryId;
         this._$depth      = save_object.depth;
         this._$blendMode  = save_object.blendMode;
@@ -486,13 +486,14 @@ export class Character
      * @description 描画処理
      *              Drawing process
      *
+     * @param  {Layer} layer
      * @return {Promise}
      * @method
      * @public
      */
-    async draw (): Promise<HTMLDivElement | null>
+    async createElement (layer: Layer): Promise<HTMLDivElement | null>
     {
-        return await characterDrawUseCase(this);
+        return await characterCreateElementUseCase(this, layer);
     }
 
     /**
@@ -506,7 +507,6 @@ export class Character
     toObject (): CharacterSaveObjectImpl
     {
         return {
-            "id": this._$id,
             "libraryId": this._$libraryId,
             "depth": this._$depth,
             "blendMode": this._$blendMode,

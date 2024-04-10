@@ -33,7 +33,7 @@ export const execute = async (movie_clip: MovieClip): Promise<void> =>
 
         for (let idx = 0; idx < characters.length; ++idx) {
             const character = characters[idx];
-            const div = await character.draw();
+            const div = await character.createElement();
             if (!div) {
                 continue;
             }

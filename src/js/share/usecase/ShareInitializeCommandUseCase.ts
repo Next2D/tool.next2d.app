@@ -37,7 +37,6 @@ export const execute = async (connection_id: string): Promise<void> =>
 
     const initializeObject: ShareInitializeSendObjectImpl = {
         "workSpaceId": WorkSpace.workSpaceId,
-        "characterId": Character.characterId,
         "connectionId": connection_id,
         "fileId": fileId,
         "command": "load"
