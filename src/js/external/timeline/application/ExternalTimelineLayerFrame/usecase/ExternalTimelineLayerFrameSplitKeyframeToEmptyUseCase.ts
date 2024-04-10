@@ -1,7 +1,7 @@
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import type { Layer } from "@/core/domain/model/Layer";
-import { execute as timelineLayerFrameSplitKeyframeHistoryUseCase } from "@/history/application/timeline/application/TimelineLayerFrame/SplitKeyframeToEmpty/usecase/TimelineLayerFrameSplitKeyframeToEmptyHistoryUseCase";
+import { execute as timelineLayerFrameSplitKeyframeToEmptyHistoryUseCase } from "@/history/application/timeline/application/TimelineLayerFrame/SplitKeyframeToEmpty/usecase/TimelineLayerFrameSplitKeyframeToEmptyHistoryUseCase";
 import { Character } from "@/core/domain/model/Character";
 import { EmptyCharacter } from "@/core/domain/model/EmptyCharacter";
 
@@ -47,12 +47,12 @@ export const execute = (
     }
 
     // 履歴に追加
-    // timelineLayerFrameSplitKeyframeHistoryUseCase(
-    //     work_space,
-    //     movie_clip,
-    //     layer,
-    //     character.startFrame,
-    //     newEmptyCharacter,
-    //     receiver
-    // );
+    timelineLayerFrameSplitKeyframeToEmptyHistoryUseCase(
+        work_space,
+        movie_clip,
+        layer,
+        character.startFrame,
+        newEmptyCharacter,
+        receiver
+    );
 };
