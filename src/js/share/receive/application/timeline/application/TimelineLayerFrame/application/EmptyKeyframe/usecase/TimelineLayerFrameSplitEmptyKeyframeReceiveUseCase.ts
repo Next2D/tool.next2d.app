@@ -9,8 +9,8 @@ import { execute as timelineScrollUpdateWidthService } from "@/timeline/applicat
 import { execute as externalTimelineLayerFrameSplitEmptyKeyframeUseCase } from "@/external/timeline/application/ExternalTimelineLayerFrame/usecase/ExternalTimelineLayerFrameSplitEmptyKeyframeUseCase";
 
 /**
- * @description 空のキーフレーム追加を実行
- *              Perform empty keyframe addition
+ * @description 空のキーフレーム分割を実行
+ *              Perform empty keyframe splitting
  *
  * @param  {object} message
  * @return {void}

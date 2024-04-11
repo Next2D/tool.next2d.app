@@ -1,8 +1,8 @@
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import type { Layer } from "@/core/domain/model/Layer";
-import { execute as externalTimelineLayerFrameSplitToEmptyUseCase } from "./ExternalTimelineLayerFrameSplitToEmptyUseCase";
 import { Character } from "@/core/domain/model/Character";
+import { execute as externalTimelineLayerFrameSplitToEmptyUseCase } from "./ExternalTimelineLayerFrameSplitToEmptyUseCase";
 
 /**
  * @description 指定したレイヤーの指定フレームにキーフレームを追加、キーフレームがない場合は空のキーフレームを追加

@@ -18,6 +18,18 @@ export const execute = (): void =>
     const externalTimeline = new ExternalTimeline(workSpace, movieClip);
 
     // キーフレームを追加
-    externalTimeline
-        .convertToKeyframes(movieClip.currentFrame);
+    if (movieClip.selectedStartFrame) {
+        // 選択中のフレームがある場合、そのフレームに追加
+        externalTimeline
+            .convertToKeyframes(
+                movieClip.selectedStartFrame,
+                movieClip.selectedEndFrame
+            );
+    } else {
+        // 選択中のフレームがない場合、マーカーのあるフレームに追加
+        externalTimeline
+            .convertToKeyframes(
+                movieClip.currentFrame
+            );
+    }
 };

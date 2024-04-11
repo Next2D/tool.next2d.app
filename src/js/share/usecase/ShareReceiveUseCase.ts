@@ -31,6 +31,7 @@ import { execute as timelineLayerFrameSplitEmptyKeyframeReceiveUseCase } from "@
 import { execute as timelineLayerFrameInsertEmptyFramesReceiveUseCase } from "@/share/receive/application/timeline/application/TimelineLayerFrame/application/EmptyKeyframe/usecase/TimelineLayerFrameInsertEmptyFramesReceiveUseCase";
 import { execute as timelineLayerFrameAddKeyframeReceiveUseCase } from "@/share/receive/application/timeline/application/TimelineLayerFrame/application/Keyframe/usecase/TimelineLayerFrameAddKeyframeReceiveUseCase";
 import { execute as timelineLayerFrameInsertkeyframesReceiveUseCase } from "@/share/receive/application/timeline/application/TimelineLayerFrame/application/Keyframe/usecase/TimelineLayerFrameInsertkeyframesReceiveUseCase";
+import { execute as timelineLayerFrameUpdateKeyframeReceiveUseCase } from "@/share/receive/application/timeline/application/TimelineLayerFrame/application/Keyframe/usecase/TimelineLayerFrameUpdateKeyframeReceiveUseCase";
 import { execute as historyRedoUseCase } from "@/controller/application/HistoryArea/usecase/HistoryRedoUseCase";
 import { execute as historyUndoUseCase } from "@/controller/application/HistoryArea/usecase/HistoryUndoUseCase";
 import {
@@ -67,7 +68,8 @@ import {
     $TIMELINE_SPLIT_EMPTY_KEYFRAME_COMMAND,
     $TIMELINE_INSERT_EMPTY_FRAME_COMMAND,
     $TIMELINE_ADD_KEYFRAME_COMMAND,
-    $TIMELINE_INSERT_KEY_FRAME_COMMAND
+    $TIMELINE_INSERT_KEY_FRAME_COMMAND,
+    $TIMELINE_UPDATE_KEYFRAME_COMMAND
 } from "@/config/HistoryConfig";
 
 /**
@@ -259,6 +261,11 @@ export const execute = async (message: ShareReceiveMessageImpl): Promise<void> =
         // キーフレームにフレームを挿入
         case $TIMELINE_INSERT_KEY_FRAME_COMMAND:
             timelineLayerFrameInsertkeyframesReceiveUseCase(message);
+            break;
+
+        // キーフレームを更新
+        case $TIMELINE_UPDATE_KEYFRAME_COMMAND:
+            timelineLayerFrameUpdateKeyframeReceiveUseCase(message);
             break;
 
         default:

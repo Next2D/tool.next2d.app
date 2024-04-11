@@ -6,11 +6,11 @@ import { timelineLayer } from "@/timeline/domain/model/TimelineLayer";
 import { execute as timelineLayerFrameUpdateStyleService } from "@/timeline/application/TimelineLayerFrame/service/TimelineLayerFrameUpdateStyleService";
 import { execute as timelineScrollUpdateWidthService } from "@/timeline/application/TimelineScroll/service/TimelineScrollUpdateWidthService";
 import { $getLeftFrame } from "@/timeline/application/TimelineUtil";
-import { execute as timelineLayerFrameUpdateEmptyKeyframeHistoryUseCase } from "@/history/application/timeline/application/TimelineLayerFrame/UpdateEmptyKeyframe/usecase/TimelineLayerFrameUpdateEmptyKeyframeHistoryUseCase";
+import { execute as timelineLayerFrameUpdateKeyframeHistoryUseCase } from "@/history/application/timeline/application/TimelineLayerFrame/UpdateKeyframe/usecase/TimelineLayerFrameUpdateKeyframeHistoryUseCase";
 
 /**
- * @description 空のキーフレーム更新を実行
- *              Perform empty keyframe update
+ * @description キーフレーム更新を実行
+ *              Perform keyframe update
  *
  * @param  {object} message
  * @return {void}
@@ -38,23 +38,27 @@ export const execute = (message: ShareReceiveMessageImpl): void =>
         return ;
     }
 
-    const emptyCharacterIndex = message.data[3] as NonNullable<number>;
-    const emptyCharacter = layer.emptyCharacters[emptyCharacterIndex];
-    if (!emptyCharacter) {
+    const keyframe = message.data[3] as NonNullable<number>;
+    const activeCharacters = layer.getActiveCharacters(keyframe);
+    if (!activeCharacters.length) {
         return ;
     }
 
     // 終了フレームを更新
-    const beforeEndFrame = emptyCharacter.endFrame;
-    emptyCharacter.endFrame = message.data[5] as NonNullable<number>;
+    const afterEndFrame = message.data[5] as NonNullable<number>;
+    for (let idx = 0; idx < activeCharacters.length; idx++) {
+        const character = activeCharacters[idx];
+        character.endFrame = afterEndFrame;
+    }
 
     // 履歴に登録
-    timelineLayerFrameUpdateEmptyKeyframeHistoryUseCase(
+    timelineLayerFrameUpdateKeyframeHistoryUseCase(
         workSpace,
         movieClip,
         layer,
-        emptyCharacter,
-        beforeEndFrame,
+        keyframe,
+        message.data[4] as NonNullable<number>,
+        afterEndFrame,
         true
     );
 
