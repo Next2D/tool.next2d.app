@@ -4,10 +4,7 @@ import type { Layer } from "@/core/domain/model/Layer";
 import type { Character } from "@/core/domain/model/Character";
 import { execute as externalTimelineLayerFrameBehindKeyframeService } from "../service/ExternalTimelineLayerFrameBehindKeyframeService";
 import { execute as timelineLayerFrameInsertKeyFramesHistoryUseCase } from "@/history/application/timeline/application/TimelineLayerFrame/InsertKeyFrames/usecase/TimelineLayerFrameInsertKeyFramesHistoryUseCase";
-import { timelineLayer } from "@/timeline/domain/model/TimelineLayer";
-import { $getLeftFrame } from "@/timeline/application/TimelineUtil";
-import { execute as timelineLayerFrameUpdateStyleService } from "@/timeline/application/TimelineLayerFrame/service/TimelineLayerFrameUpdateStyleService";
-import { execute as timelineScrollUpdateWidthService } from "@/timeline/application/TimelineScroll/service/TimelineScrollUpdateWidthService";
+import { execute as timelineLayerAddFrameUpdateLayerStyleUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerAddFrameUpdateLayerStyleUseCase";
 
 /**
  * @description キーフレームにフレームを挿入
@@ -53,20 +50,7 @@ export const execute = (
     );
 
     if (work_space.active && movie_clip.active) {
-
-        const layerElement = timelineLayer.elements[layer.getDisplayIndex()] as NonNullable<HTMLElement>;
-        if (!layerElement) {
-            return ;
-        }
-
-        // レイヤーのフレームスタイルを更新
-        timelineLayerFrameUpdateStyleService(
-            work_space, movie_clip,
-            layerElement.lastElementChild as NonNullable<HTMLElement>,
-            $getLeftFrame()
-        );
-
-        // タイムラインの幅を更新
-        timelineScrollUpdateWidthService();
+        // タイムラインのレイヤー表示を更新
+        timelineLayerAddFrameUpdateLayerStyleUseCase(work_space, movie_clip, layer);
     }
 };

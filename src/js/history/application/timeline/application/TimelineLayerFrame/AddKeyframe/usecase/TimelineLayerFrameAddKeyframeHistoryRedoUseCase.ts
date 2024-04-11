@@ -2,11 +2,9 @@ import type { InstanceImpl } from "@/interface/InstanceImpl";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { CharacterSaveObjectImpl } from "@/interface/CharacterSaveObjectImpl";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
-import { execute as timelineLayerFrameUpdateStyleService } from "@/timeline/application/TimelineLayerFrame/service/TimelineLayerFrameUpdateStyleService";
-import { timelineLayer } from "@/timeline/domain/model/TimelineLayer";
-import { $getLeftFrame } from "@/timeline/application/TimelineUtil";
-import { execute as timelineScrollUpdateWidthService } from "@/timeline/application/TimelineScroll/service/TimelineScrollUpdateWidthService";
 import { Character } from "@/core/domain/model/Character";
+import { execute as timelineLayerAddFrameUpdateLayerStyleUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerAddFrameUpdateLayerStyleUseCase";
+import { execute as screenAreaAppendCharacterService } from "@/screen/application/ScreenArea/service/ScreenAreaAppendCharacterService";
 
 /**
  * @description キーフレーム追加処理を元に戻す
@@ -22,14 +20,14 @@ import { Character } from "@/core/domain/model/Character";
  * @method
  * @public
  */
-export const execute = (
+export const execute = async (
     work_space_id: number,
     library_id: number,
     layer_index: number,
     character_index: number,
     save_object: CharacterSaveObjectImpl,
     empty_character_index: number
-): void => {
+): Promise<void> => {
 
     const workSpace = $getWorkSpace(work_space_id);
     if (!workSpace) {
@@ -59,21 +57,10 @@ export const execute = (
 
     // アクティブならタイムラインを再描画
     if (workSpace.active && movieClip.active) {
-        const layerElement = timelineLayer.elements[layer.getDisplayIndex()] as NonNullable<HTMLElement>;
-        if (!layerElement) {
-            return ;
-        }
-
-        // レイヤーのフレームスタイルを更新
-        timelineLayerFrameUpdateStyleService(
-            workSpace, movieClip,
-            layerElement.lastElementChild as NonNullable<HTMLElement>,
-            $getLeftFrame()
-        );
-
-        // タイムラインの幅を更新
-        timelineScrollUpdateWidthService();
+        // タイムラインにフレームを追加
+        timelineLayerAddFrameUpdateLayerStyleUseCase(workSpace, movieClip, layer);
 
         // スクリーンエリアにElementを追加
+        await screenAreaAppendCharacterService(character, layer);
     }
 };

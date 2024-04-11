@@ -1,11 +1,9 @@
 import { MovieClip } from "@/core/domain/model/MovieClip";
 import { WorkSpace } from "@/core/domain/model/WorkSpace";
-import { $convertFrameObject, $getLeftFrame } from "@/timeline/application/TimelineUtil";
-import { timelineLayer } from "@/timeline/domain/model/TimelineLayer";
-import { execute as timelineLayerFrameUpdateStyleService } from "@/timeline/application/TimelineLayerFrame/service/TimelineLayerFrameUpdateStyleService";
-import { execute as timelineScrollUpdateWidthService } from "@/timeline/application/TimelineScroll/service/TimelineScrollUpdateWidthService";
+import { $convertFrameObject } from "@/timeline/application/TimelineUtil";
 import { execute as externalTimelineLayerFramePrevAdjustmentUseCase } from "./ExternalTimelineLayerFramePrevAdjustmentUseCase";
 import { execute as externalTimelineLayerFrameSplitToKeyframeUseCase } from "./ExternalTimelineLayerFrameSplitToKeyframeUseCase";
+import { execute as timelineLayerAddFrameUpdateLayerStyleUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerAddFrameUpdateLayerStyleUseCase";
 
 /**
  * @description 選択中のレイヤーにキーフレームを追加、キーフレームがなければ空のキーフレームを追加
@@ -32,9 +30,6 @@ export const execute = (
     }
 
     const frameObject = $convertFrameObject(start_frame, end_frame);
-
-    // 移動分のフレームを取得
-    const leftFrame: number = $getLeftFrame();
 
     // 昇順に並び替えたレイヤー配列を取得
     const selectedLayers = movie_clip.getCloneAndSortSelectedLayers();
@@ -67,20 +62,8 @@ export const execute = (
 
         // レイヤーを再描画
         if (work_space.active && movie_clip.active) {
-            const layerElement = timelineLayer.elements[layer.getDisplayIndex()] as NonNullable<HTMLElement>;
-            if (!layerElement) {
-                continue;
-            }
-
-            // フレームのstyleを更新
-            timelineLayerFrameUpdateStyleService(
-                work_space, movie_clip,
-                layerElement.lastElementChild as NonNullable<HTMLElement>,
-                leftFrame
-            );
-
-            // xスクロールの幅を更新
-            timelineScrollUpdateWidthService();
+            // タイムラインのレイヤー表示を更新
+            timelineLayerAddFrameUpdateLayerStyleUseCase(work_space, movie_clip, layer);
         }
     }
 };

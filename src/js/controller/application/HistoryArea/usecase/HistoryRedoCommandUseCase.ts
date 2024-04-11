@@ -338,7 +338,7 @@ export const execute = async (
 
         // キーフレーム追加
         case $TIMELINE_ADD_KEYFRAME_COMMAND:
-            timelineLayerFrameAddKeyframeHistoryRedoUseCase(
+            await timelineLayerFrameAddKeyframeHistoryRedoUseCase(
                 messages[0] as number, // work_space_id
                 messages[1] as number, // MovieClip ID
                 messages[2] as number, // Layer Index

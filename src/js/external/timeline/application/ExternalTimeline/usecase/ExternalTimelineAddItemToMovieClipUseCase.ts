@@ -1,15 +1,15 @@
-import { Character } from "@/core/domain/model/Character";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
-import { ExternalLibrary } from "@/external/controller/domain/model/ExternalLibrary";
 import type { ExternalItemImpl } from "@/interface/ExternalItemImpl";
-import { $getLeftFrame } from "@/timeline/application/TimelineUtil";
-import { timelineLayer } from "@/timeline/domain/model/TimelineLayer";
-import { execute as timelineScrollUpdateWidthService } from "@/timeline/application/TimelineScroll/service/TimelineScrollUpdateWidthService";
-import { execute as timelineLayerFrameUpdateStyleService } from "@/timeline/application/TimelineLayerFrame/service/TimelineLayerFrameUpdateStyleService";
+import { ExternalLibrary } from "@/external/controller/domain/model/ExternalLibrary";
+import { Character } from "@/core/domain/model/Character";
 import { execute as timelineLayerFrameAddKeyframeHistoryUseCase } from "@/history/application/timeline/application/TimelineLayerFrame/AddKeyframe/usecase/TimelineLayerFrameAddKeyframeHistoryUseCase";
 import { execute as screenAreaAppendCharacterService } from "@/screen/application/ScreenArea/service/ScreenAreaAppendCharacterService";
-import { $FOLDER_TYPE, $SOUND_TYPE } from "@/config/InstanceConfig";
+import { execute as timelineLayerAddFrameUpdateLayerStyleUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerAddFrameUpdateLayerStyleUseCase";
+import {
+    $FOLDER_TYPE,
+    $SOUND_TYPE
+} from "@/config/InstanceConfig";
 
 /**
  * @description ライブラリのアイテムをMovieClipに追加
@@ -107,20 +107,8 @@ export const execute = async (
 
     if (work_space.active && movie_clip.active) {
 
-        const layerElement = timelineLayer.elements[layer.getDisplayIndex()] as NonNullable<HTMLElement>;
-        if (!layerElement) {
-            return ;
-        }
-
-        // フレームのstyleを更新
-        timelineLayerFrameUpdateStyleService(
-            work_space, movie_clip,
-            layerElement.lastElementChild as NonNullable<HTMLElement>,
-            $getLeftFrame()
-        );
-
-        // xスクロールの幅を更新
-        timelineScrollUpdateWidthService();
+        // タイムラインのレイヤー表示を更新
+        timelineLayerAddFrameUpdateLayerStyleUseCase(work_space, movie_clip, layer);
 
         // スクリーンエリアにElementを追加
         await screenAreaAppendCharacterService(character, layer);
