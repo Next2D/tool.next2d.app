@@ -50,7 +50,7 @@ export const execute = (
     }
 
     // 空のキーフレームに上書きした場合は、空のキーフレームを追加
-    if (empty_character_index === -1) {
+    if (empty_character_index > -1) {
         const emptyCharacter = new EmptyCharacter();
         emptyCharacter.startFrame = character.startFrame;
         emptyCharacter.endFrame   = character.endFrame;

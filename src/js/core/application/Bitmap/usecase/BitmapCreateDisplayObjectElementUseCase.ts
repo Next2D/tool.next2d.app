@@ -5,15 +5,9 @@ import type { Layer } from "@/core/domain/model/Layer";
 import { execute as bitmapRegisterEventUseCase } from "@/core/application/Bitmap/usecase/BitmapRegisterEventUseCase";
 import { execute as bitmapDisplayObjectComponent } from "../component/BitmapDisplayObjectComponent";
 import {
-    $getScreenOffsetLeft,
-    $getScreenOffsetTop
-} from "@/global/GlobalUtil";
-import {
     $getCacheCanvas,
     $setCacheCanvas
 } from "@/cache/CacheUtil";
-import { a } from "vitest/dist/suite-a18diDsI.js";
-import { aR } from "vitest/dist/reporters-P7C2ytIv.js";
 
 /**
  * @description Bitmapをcanvasに描画して返却する

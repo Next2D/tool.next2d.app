@@ -12,7 +12,7 @@ import { execute as timelineLayerAllClearSelectedElementUseCase } from "@/timeli
  */
 export const execute = (
     work_spcae: WorkSpace,
-    movie_clip: MovieClip,
+    movie_clip: MovieClip
 ): void => {
 
     // 表示中のMovieClipなら表示側を更新

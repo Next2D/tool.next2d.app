@@ -336,7 +336,7 @@ export const execute = async (
                 messages[1] as number, // MovieClip ID
                 messages[2] as number, // Layer Index
                 messages[3] as number, // Character Index
-                messages[4] as number // Empty Character Index
+                messages[5] as number // Empty Character Index
             );
             break;
 
