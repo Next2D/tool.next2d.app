@@ -56,10 +56,8 @@ export const execute = (
     }
 
     // アクティブならタイムラインを再描画
+    // fixed logic
     if (workSpace.active && movieClip.active) {
-        // タイムラインのレイヤー表示を更新
-        timelineLayerAddFrameUpdateLayerStyleUseCase(workSpace, movieClip, layer);
-
         // スクリーンに追加したElementを削除
         screenAreaRemoveDisplayObjectElementService(character);
     }
@@ -67,4 +65,11 @@ export const execute = (
     // 追加したDisplahyObjectを削除
     // fixed logic
     layer.removeCharacter(character);
+
+    // アクティブならタイムラインを再描画
+    // fixed logic
+    if (workSpace.active && movieClip.active) {
+        // タイムラインのレイヤー表示を更新
+        timelineLayerAddFrameUpdateLayerStyleUseCase(workSpace, movieClip, layer);
+    }
 };

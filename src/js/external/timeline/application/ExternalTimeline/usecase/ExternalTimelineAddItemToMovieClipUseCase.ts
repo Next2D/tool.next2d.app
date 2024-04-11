@@ -35,8 +35,8 @@ export const execute = async (
 ): Promise<void> => {
 
     // 追加するレイヤーをセット
-    const layer = movie_clip.layers.length
-        ? movie_clip.layers[0]
+    const layer = movie_clip.selectedLayers.length
+        ? movie_clip.selectedLayers[0]
         : movie_clip.layers[0];
 
     if (!layer) {
