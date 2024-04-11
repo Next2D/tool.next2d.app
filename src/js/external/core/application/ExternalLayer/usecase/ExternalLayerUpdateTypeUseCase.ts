@@ -38,9 +38,10 @@ export const execute = (
         return ;
     }
 
-    const indexes = [];
+    const indexes: number[] = [];
     switch (layer.mode) {
 
+        // 親レイヤーを変更する時は子レイヤーを初期化
         case $MASK_MODE:
         case $GUIDE_MODE:
             {

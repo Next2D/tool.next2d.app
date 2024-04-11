@@ -52,9 +52,14 @@ export const execute = (
     layer.mode = before_mode;
     layer.parentId = before_parent_id;
 
+    // 子レイヤーを元に戻す
     for (let idx = 0; idx < indexes.length; ++idx) {
 
         const childLayer = movieClip.layers[indexes[idx]];
+        if (!childLayer) {
+            continue;
+        }
+
         childLayer.parentId = layer.id;
 
         switch (before_mode) {

@@ -7,11 +7,11 @@ import { execute as timelineLayerGetClassNameService } from "@/timeline/applicat
  *              Update layer icon
  *
  * @param  {Layer} layer
- * @return {void}
+ * @return {Promise}
  * @method
  * @public
  */
-export const execute = (layer: Layer): void =>
+export const execute = async (layer: Layer): Promise<void> =>
 {
     const element: HTMLElement | undefined = timelineLayer.elements[layer.getDisplayIndex()];
     if (!element) {

@@ -3,7 +3,7 @@ import type { InstanceImpl } from "@/interface/InstanceImpl";
 import type { Instance } from "@/core/domain/model/Instance";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
 import { execute as libraryAreaReOrderingService } from "@/controller/application/LibraryArea/service/LibraryAreaReOrderingService";
-import { execute as libraryAreaReloadUseCase } from "@/controller/application/LibraryArea/usecase/LibraryAreaReloadUseCase";
+import { execute as instanceUpdateNameUseCase } from "@/core/application/Instance/usecase/InstanceUpdateNameUseCase";
 
 /**
  * @description プロジェクト名を変更前の状態に更新する
@@ -46,7 +46,7 @@ export const execute = (
 
     // 起動中ならタブと一覧の表示を更新
     if (workSpace.active) {
-        // ライブラリエリアを際描画
-        libraryAreaReloadUseCase();
+        // インスタンスの名前を更新したら表示を更新
+        instanceUpdateNameUseCase(instance);
     }
 };

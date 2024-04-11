@@ -2,8 +2,7 @@ import type { Layer } from "@/core/domain/model/Layer";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import { execute as layerUpdateLightColorHistoryUseCase } from "@/history/application/core/application/Layer/usecase/LayerUpdateLightColorHistoryUseCase";
-import { execute as timelineLayerControllerUpdateColorElementService } from "@/timeline/application/TimelineLayerController/service/TimelineLayerControllerUpdateColorElementService";
-import { execute as timelineLayerControllerUpdateLightIconElementService } from "@/timeline/application/TimelineLayerController/service/TimelineLayerControllerUpdateLightIconElementService";
+import { execute as timelineLayerControllerUpdateColorUseCase } from "@/timeline/application/TimelineLayerController/usecase/TimelineLayerControllerUpdateColorUseCase";
 
 /**
  * @description レイヤーのハイライト表示を更新
@@ -41,11 +40,6 @@ export const execute = (
     // アクティブな場合のみ処理を行う
     if (work_space.active && movie_clip.active) {
         // ハイライトカラーを更新
-        timelineLayerControllerUpdateColorElementService(layer);
-
-        // ハイライトの機能がonの時は表示も更新
-        if (layer.light) {
-            timelineLayerControllerUpdateLightIconElementService(layer);
-        }
+        timelineLayerControllerUpdateColorUseCase(layer);
     }
 };

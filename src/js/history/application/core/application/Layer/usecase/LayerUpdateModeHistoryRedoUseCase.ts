@@ -44,6 +44,7 @@ export const execute = (
     layer.mode = after_mode;
     layer.parentId = after_parent_id;
 
+    // 親レイヤーを変更する時は子レイヤーを初期化
     let idx = movieClip.layers.indexOf(layer) + 1;
     for (; idx < movieClip.layers.length; ++idx) {
 

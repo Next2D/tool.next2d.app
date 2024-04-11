@@ -10,7 +10,7 @@ import { timelineLayer } from "@/timeline/domain/model/TimelineLayer";
  * @method
  * @public
  */
-export const execute = (layer: Layer): void =>
+export const execute = async (layer: Layer): Promise<void> =>
 {
     // 表示領域にElementがなければ終了
     const layerElement: HTMLElement | undefined = timelineLayer.elements[layer.getDisplayIndex()];

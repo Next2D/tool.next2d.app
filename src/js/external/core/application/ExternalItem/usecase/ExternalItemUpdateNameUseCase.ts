@@ -3,11 +3,7 @@ import type { InstanceImpl } from "@/interface/InstanceImpl";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import { execute as instanceUpdateNameHistoryUseCase } from "@/history/application/core/application/Instance/usecase/InstanceUpdateNameHistoryUseCase";
 import { execute as libraryAreaReOrderingService } from "@/controller/application/LibraryArea/service/LibraryAreaReOrderingService";
-import { execute as libraryAreaReloadUseCase } from "@/controller/application/LibraryArea/usecase/LibraryAreaReloadUseCase";
-import { execute as timelineToolUpdateSceneNameService } from "@/timeline/application/TimelineTool/application/SceneName/service/TimelineToolUpdateSceneNameService";
-import { execute as timelineToolUpdateSceneListNameService } from "@/timeline/application/TimelineTool/application/SceneName/service/TimelineToolUpdateSceneListNameService";
-import { execute as objectSettingUpdateNameService } from "@/controller/application/ObjectSetting/service/ObjectSettingUpdateNameService";
-import { $MOVIE_CLIP_TYPE } from "@/config/InstanceConfig";
+import { execute as instanceUpdateNameUseCase } from "@/core/application/Instance/usecase/InstanceUpdateNameUseCase";
 
 /**
  * @description インスタス名の変更実行処理関数
@@ -34,40 +30,23 @@ export const execute = (
 
     // 名前を更新
     instance.name = name;
+
+    // 同一の名前が存在する場合は元に戻して終了
     if (work_space.pathMap.has(instance.getPath(work_space))) {
-        throw new Error("The same name exists.");
+        instance.name = beforeName;
+        return ;
     }
 
+    // 既存の名前を削除
     instance.name = beforeName;
     work_space.pathMap.delete(instance.getPath(work_space));
 
+    // 変更した名前を登録
     instance.name = name;
     work_space.pathMap.set(instance.getPath(work_space), instance.id);
 
     // 名前の並び替えを実行
     libraryAreaReOrderingService(work_space);
-
-    // 起動中のプロジェクトなら表示も更新
-    if (work_space.active) {
-
-        // ライブラリの表示を再描画
-        libraryAreaReloadUseCase();
-
-        // MovieClipの場合はタイムラインの表示情報を更新
-        if (instance.type === $MOVIE_CLIP_TYPE) {
-            // スクリーン一覧にあれば名前を更新
-            timelineToolUpdateSceneListNameService(instance.id, name);
-
-            // アクティブなら表示を更新
-            if (instance.active) {
-                // タイムラインの表示を更新
-                timelineToolUpdateSceneNameService(name);
-
-                // プロパティの表示を更新
-                objectSettingUpdateNameService(name);
-            }
-        }
-    }
 
     // 履歴に残す
     instanceUpdateNameHistoryUseCase(
@@ -77,4 +56,10 @@ export const execute = (
         beforeName,
         receiver
     );
+
+    // 起動中のプロジェクトなら表示も更新
+    if (work_space.active) {
+        // インスタンスの名前を更新したら表示を更新
+        instanceUpdateNameUseCase(instance);
+    }
 };

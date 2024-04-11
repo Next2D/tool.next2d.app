@@ -1,8 +1,7 @@
 import type { InstanceImpl } from "@/interface/InstanceImpl";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
-import { execute as timelineLayerControllerUpdateColorElementService } from "@/timeline/application/TimelineLayerController/service/TimelineLayerControllerUpdateColorElementService";
-import { execute as timelineLayerControllerUpdateLightIconElementService } from "@/timeline/application/TimelineLayerController/service/TimelineLayerControllerUpdateLightIconElementService";
+import { execute as timelineLayerControllerUpdateColorUseCase } from "@/timeline/application/TimelineLayerController/usecase/TimelineLayerControllerUpdateColorUseCase";
 
 /**
  * @description レイヤーのハイライトカラーを変更値に戻す
@@ -45,11 +44,6 @@ export const execute = (
     // アクティブな場合のみ処理を行う
     if (workSpace.active && movieClip.active) {
         // ハイライトカラーを更新
-        timelineLayerControllerUpdateColorElementService(layer);
-
-        // ハイライトの機能がonの時は表示も更新
-        if (layer.light) {
-            timelineLayerControllerUpdateLightIconElementService(layer);
-        }
+        timelineLayerControllerUpdateColorUseCase(layer);
     }
 };
