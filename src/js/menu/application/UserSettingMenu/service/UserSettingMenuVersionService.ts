@@ -18,5 +18,5 @@ export const execute = (): void =>
         return ;
     }
 
-    element.textContent = `β version: ${version}`;
+    element.textContent = `version: ${version}`;
 };

@@ -55,7 +55,11 @@ export const execute = (
 
     // 既存のキーフレームの終了フレームを更新
     for (let idx = 0; idx < activeCharacters.length; ++idx) {
-        activeCharacters[idx].endFrame = keyframe;
+        const activeCharacter = activeCharacters[idx];
+        if (!activeCharacter) {
+            continue;
+        }
+        activeCharacter.endFrame = keyframe;
     }
 
     // アクティブならタイムラインを再描画

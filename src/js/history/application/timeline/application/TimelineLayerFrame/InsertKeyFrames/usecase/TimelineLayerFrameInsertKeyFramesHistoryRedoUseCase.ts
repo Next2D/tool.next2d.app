@@ -51,6 +51,7 @@ export const execute = (
         layer, characters[0].endFrame, num_frame
     );
 
+    // キーフレームの終了フレームを更新
     for (let idx = 0; idx < characters.length; ++idx) {
         const character = characters[idx];
         character.endFrame += num_frame;

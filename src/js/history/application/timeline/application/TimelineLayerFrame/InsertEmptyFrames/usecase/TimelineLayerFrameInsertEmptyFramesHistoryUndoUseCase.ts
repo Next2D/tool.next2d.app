@@ -50,6 +50,8 @@ export const execute = (
     externalTimelineLayerFrameForwardKeyframeService(
         layer, emptyCharacter.endFrame, num_frame
     );
+
+    // 空のキーフレームの終了フレームを更新
     emptyCharacter.endFrame -= num_frame;
 
     // アクティブならタイムラインを再描画

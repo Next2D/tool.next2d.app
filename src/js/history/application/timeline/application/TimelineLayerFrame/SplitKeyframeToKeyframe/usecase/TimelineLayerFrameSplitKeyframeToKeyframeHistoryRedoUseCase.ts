@@ -48,6 +48,9 @@ export const execute = (
 
     for (let idx = 0; idx < activeCharacters.length; ++idx) {
         const activeCharacter = activeCharacters[idx];
+        if (!activeCharacter) {
+            continue;
+        }
 
         const newCharacter = new Character();
         layer.addCharacter(newCharacter);

@@ -53,7 +53,11 @@ export const execute = (
     // キーフレームの終了位置を更新
     const endFrame = splitCharacters[0].endFrame;
     for (let idx = 0; idx < activeCharacters.length; ++idx) {
-        activeCharacters[idx].endFrame = endFrame;
+        const activeCharacter = activeCharacters[idx];
+        if (!activeCharacter) {
+            continue;
+        }
+        activeCharacter.endFrame = endFrame;
     }
 
     // 追加したキーフレームを削除

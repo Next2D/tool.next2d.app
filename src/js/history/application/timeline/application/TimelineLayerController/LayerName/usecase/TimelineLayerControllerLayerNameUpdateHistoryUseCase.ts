@@ -26,7 +26,7 @@ export const execute = (
     work_space: WorkSpace,
     movie_clip: MovieClip,
     layer: Layer,
-    name: string,
+    before_name: string,
     receiver: boolean = false
 ): void => {
 
@@ -34,11 +34,9 @@ export const execute = (
     // fixed logic
     historyRemoveElementService(work_space);
 
-    const index = movie_clip.layers.indexOf(layer);
-
     // fixed logic
     const historyObject = timelineLayerControllerLayerNameUpdateCreateHistoryObjectService(
-        work_space.id, movie_clip, index, layer.name, name
+        work_space.id, movie_clip, layer, before_name
     );
 
     // 作業履歴にElementを追加

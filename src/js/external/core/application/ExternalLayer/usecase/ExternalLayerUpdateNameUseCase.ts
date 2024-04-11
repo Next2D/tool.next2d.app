@@ -25,13 +25,16 @@ export const execute = (
     receiver: boolean = false
 ): void => {
 
-    // 作業履歴を登録
-    timelineLayerControllerLayerNameUpdateHistoryUseCase(
-        work_space, movie_clip, layer, name, receiver
-    );
+    // 変更前のレイヤー名を取得
+    const beforeName = layer.name;
 
     // 内部データを更新
     layer.name = name;
+
+    // 作業履歴を登録
+    timelineLayerControllerLayerNameUpdateHistoryUseCase(
+        work_space, movie_clip, layer, beforeName, receiver
+    );
 
     // 表示中ならElementを更新
     if (work_space.active && movie_clip.active) {

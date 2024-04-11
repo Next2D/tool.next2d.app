@@ -42,7 +42,7 @@ export const execute = (
 
     const emptyCharacter = new EmptyCharacter();
     emptyCharacter.startFrame = start_frame;
-    emptyCharacter.endFrame = end_frame;
+    emptyCharacter.endFrame   = end_frame;
     layer.addEmptyCharacter(emptyCharacter);
 
     // アクティブならタイムラインを再描画
