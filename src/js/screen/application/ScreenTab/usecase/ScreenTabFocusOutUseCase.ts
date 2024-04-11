@@ -1,7 +1,9 @@
 import { execute as screenTabGetTextElementService } from "../service/ScreenTabGetTextElementService";
-import { execute as externalWorkSpaceUpdateNameUseCase } from "@/external/core/application/ExternalWorkSpace/usecase/ExternalWorkSpaceUpdateNameUseCase";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
+import { execute as screenTabGetElementService } from "../service/ScreenTabGetElementService";
+import { execute as screenTabInactiveStyleService } from "../service/ScreenTabInactiveStyleService";
+import { execute as externalWorkSpaceUpdateNameUseCase } from "@/external/core/application/ExternalWorkSpace/usecase/ExternalWorkSpaceUpdateNameUseCase";
 
 /**
  * @description 編集モード終了処理
@@ -37,6 +39,14 @@ export const execute = (event: Event): void =>
         textElement.textContent = "Untitled";
         return textElement.focus();
     }
+
+    const tabElement: HTMLElement | null = screenTabGetElementService(workSpace.id);
+    if (!tabElement) {
+        return ;
+    }
+
+    // styleを更新して入力モードを停止
+    screenTabInactiveStyleService(textElement, tabElement);
 
     // タブ名を変更
     externalWorkSpaceUpdateNameUseCase(workSpace, name);

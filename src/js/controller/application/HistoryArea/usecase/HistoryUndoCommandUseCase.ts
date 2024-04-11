@@ -98,7 +98,7 @@ export const execute = async (
 
         // タブ名を更新
         case $SCREEN_TAB_NAME_UPDATE_COMMAND:
-            screenTabNameAddHistoryUndoUseCase(
+            await screenTabNameAddHistoryUndoUseCase(
                 messages[0] as number, // workSpaceId
                 messages[2] as string  // beforeName
             );

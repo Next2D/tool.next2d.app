@@ -1,9 +1,9 @@
+import type { WorkSpace } from "@/core/domain/model/WorkSpace";
+import { execute as screenTabShowInputElementUseCase } from "./ScreenTabShowInputElementUseCase";
 import {
     $changeCurrentWorkSpace,
     $getWorkSpace
 } from "@/core/application/CoreUtil";
-import type { WorkSpace } from "@/core/domain/model/WorkSpace";
-import { execute as screenTabShowInputElementUseCase } from "./ScreenTabShowInputElementUseCase";
 
 /**
  * @description ダブルタップ用の待機フラグ

@@ -1,10 +1,10 @@
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
-import { ExternalTimeline } from "@/external/timeline/domain/model/ExternalTimeline";
-import { ExternalLibrary } from "@/external/controller/domain/model/ExternalLibrary";
-import { execute as externalWorkSpaceUpdateNameUseCase } from "@/external/core/application/ExternalWorkSpace/usecase/ExternalWorkSpaceUpdateNameUseCase";
 import type { ExternalMovieClip } from "./ExternalMovieClip";
 import type { InstanceImpl } from "@/interface/InstanceImpl";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
+import { ExternalTimeline } from "@/external/timeline/domain/model/ExternalTimeline";
+import { ExternalLibrary } from "@/external/controller/domain/model/ExternalLibrary";
+import { execute as externalWorkSpaceUpdateNameUseCase } from "@/external/core/application/ExternalWorkSpace/usecase/ExternalWorkSpaceUpdateNameUseCase";
 
 /**
  * @description WorkSpaceの外部APIクラス

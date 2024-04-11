@@ -7,11 +7,11 @@ import { execute as externalWorkSpaceUpdateNameUseCase } from "@/external/core/a
  *              Receiving and processing functions for information received in the socket
  *
  * @param  {object} message
- * @return {void}
+ * @return {Promise}
  * @method
  * @public
  */
-export const execute = (message: ShareReceiveMessageImpl): void =>
+export const execute = async (message: ShareReceiveMessageImpl): Promise<void> =>
 {
     const id = message.data[0] as NonNullable<number>;
 
@@ -20,10 +20,7 @@ export const execute = (message: ShareReceiveMessageImpl): void =>
         return ;
     }
 
-    const beforeName = message.data[2] as NonNullable<string>;
-    const afterName  = message.data[3] as NonNullable<string>;
-    workSpace.name   = beforeName;
-
     // 名前を更新
-    externalWorkSpaceUpdateNameUseCase(workSpace, afterName, true);
+    const afterName = message.data[3] as NonNullable<string>;
+    await externalWorkSpaceUpdateNameUseCase(workSpace, afterName, true);
 };

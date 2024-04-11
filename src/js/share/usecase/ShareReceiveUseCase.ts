@@ -105,7 +105,7 @@ export const execute = async (message: ShareReceiveMessageImpl): Promise<void> =
 
         // タブ名の変更
         case $SCREEN_TAB_NAME_UPDATE_COMMAND:
-            workSpaceUpdateNameReceiveUseCase(message);
+            await workSpaceUpdateNameReceiveUseCase(message);
             break;
 
         // 新規レイヤー追加

@@ -32,7 +32,8 @@ export const execute = async (event: DragEvent): Promise<void> =>
     $allHideMenu();
 
     const workSpace = $getCurrentWorkSpace();
-    const externalTimeline = new ExternalTimeline(workSpace, workSpace.scene);
+    const movieClip = workSpace.scene;
+    const externalTimeline = new ExternalTimeline(workSpace, movieClip);
     for (let idx = 0; idx < libraryArea.selectedIds.length; ++idx) {
 
         const libraryId = libraryArea.selectedIds[idx];

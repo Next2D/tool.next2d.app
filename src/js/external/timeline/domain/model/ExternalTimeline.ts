@@ -1,6 +1,6 @@
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
-import { ExternalLayer } from "@/external/core/domain/model/ExternalLayer";
+import type { ExternalLayer } from "@/external/core/domain/model/ExternalLayer";
 import { execute as externalTimelineChageFrameUseCase } from "@/external/timeline/application/ExternalTimeline/usecase/ExternalTimelineChageFrameUseCase";
 import { execute as externalTimelineLayerDeactivateLayerUseCase } from "@/external/timeline/application/ExternalTimelineLayer/usecase/ExternalTimelineLayerDeactivateLayerUseCase";
 import { execute as externalTimelineLayerControllerSelectedLayersUseCase } from "@/external/timeline/application/ExternalTimelineLayerController/usecase/ExternalTimelineLayerControllerSelectedLayersUseCase";
@@ -327,12 +327,13 @@ export class ExternalTimeline
     async addItemToMovieClip (
         x: number,
         y: number,
-        path: string
+        path: string,
+        indexes: number[] = []
     ): Promise<void> {
         await externalTimelineAddItemToMovieClipUseCase(
             this._$workSpace,
             this._$movieClip,
-            x, y, path
+            x, y, path, indexes
         );
     }
 }

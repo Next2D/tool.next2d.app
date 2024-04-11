@@ -31,16 +31,37 @@ export const execute = async (
     x: number,
     y: number,
     path: string,
+    indexes: number[] = [],
     receiver: boolean = false
 ): Promise<void> => {
 
-    // 追加するレイヤーをセット
-    const layer = movie_clip.selectedLayers.length
-        ? movie_clip.selectedLayers[0]
-        : movie_clip.layers[0];
+    const layers = [];
 
-    if (!layer) {
-        return ;
+    // 追加するレイヤーをセット
+    if (indexes.length) {
+
+        // 昇順に並び替え
+        indexes = indexes.sort((a: number, b: number): number =>
+        {
+            return a - b;
+        });
+
+        for (let idx = 0; idx < indexes.length; idx++) {
+            const layer = movie_clip.layers[indexes[idx]];
+            if (!layer) {
+                continue;
+            }
+
+            layers.push(layer);
+        }
+    }
+
+    if (!layers.length) {
+        if (movie_clip.selectedLayers.length) {
+            layers.push(...movie_clip.getCloneAndSortSelectedLayers());
+        } else {
+            layers.push(movie_clip.layers[0]);
+        }
     }
 
     const externalLibrary = new ExternalLibrary(work_space);
@@ -61,56 +82,64 @@ export const execute = async (
 
     }
 
-    // 新規のDisplayObjectを作成
-    const character = new Character();
-    character.x = x;
-    character.y = y;
-    character.loadExternalItem(item);
+    for (let idx = 0; idx < layers.length; idx++) {
 
-    // 空のキーフレームがあれば記録に残す
-    let emptyCharacterIndex = -1;
-
-    const frame = movie_clip.currentFrame;
-
-    const activeCharacters = layer.getActiveCharacters(frame);
-    if (activeCharacters.length) {
-        // 既にアクティブなキャラクターがある場合は、そのキーフレームに含める
-        character.startFrame = activeCharacters[0].startFrame;
-        character.endFrame   = activeCharacters[0].endFrame;
-        character.depth      = activeCharacters.length;
-    } else {
-        // 空のキーフレームがある場合は情報を引き継いで、空のキーフレームを削除
-        const activeEmptyCharacter = layer.getActiveEmptyCharacter(frame);
-        if (activeEmptyCharacter) {
-            character.startFrame = activeEmptyCharacter.startFrame;
-            character.endFrame   = activeEmptyCharacter.endFrame;
-            emptyCharacterIndex  = layer.emptyCharacters.indexOf(activeEmptyCharacter);
-            layer.removeEmptyCharacter(activeEmptyCharacter);
-        } else {
-            // 新規のキーフレームレイヤーの最大フレーム以降に登録
-            const maxFrame = layer.maxFrame;
-            character.startFrame = maxFrame ? maxFrame : 1;
-            character.endFrame   = frame + 1;
+        const layer = layers[idx];
+        if (!layer) {
+            continue;
         }
-    }
 
-    // レイヤーに追加
-    // fixed logic
-    layer.addCharacter(character);
+        // 新規のDisplayObjectを作成
+        const character = new Character();
+        character.x = x;
+        character.y = y;
+        character.loadExternalItem(item);
 
-    // 履歴に登録
-    timelineLayerFrameAddKeyframeHistoryUseCase(
-        work_space, movie_clip,
-        layer, character,
-        emptyCharacterIndex, receiver
-    );
+        // 空のキーフレームがあれば記録に残す
+        let emptyCharacterIndex = -1;
 
-    if (work_space.active && movie_clip.active) {
+        const frame = movie_clip.currentFrame;
 
-        // タイムラインのレイヤー表示を更新
-        timelineLayerAddFrameUpdateLayerStyleUseCase(work_space, movie_clip, layer);
+        const activeCharacters = layer.getActiveCharacters(frame);
+        if (activeCharacters.length) {
+            // 既にアクティブなキャラクターがある場合は、そのキーフレームに含める
+            character.startFrame = activeCharacters[0].startFrame;
+            character.endFrame   = activeCharacters[0].endFrame;
+            character.depth      = activeCharacters.length;
+        } else {
+            // 空のキーフレームがある場合は情報を引き継いで、空のキーフレームを削除
+            const activeEmptyCharacter = layer.getActiveEmptyCharacter(frame);
+            if (activeEmptyCharacter) {
+                character.startFrame = activeEmptyCharacter.startFrame;
+                character.endFrame   = activeEmptyCharacter.endFrame;
+                emptyCharacterIndex  = layer.emptyCharacters.indexOf(activeEmptyCharacter);
+                layer.removeEmptyCharacter(activeEmptyCharacter);
+            } else {
+                // 新規のキーフレームレイヤーの最大フレーム以降に登録
+                const maxFrame = layer.maxFrame;
+                character.startFrame = maxFrame ? maxFrame : 1;
+                character.endFrame   = frame + 1;
+            }
+        }
 
-        // スクリーンエリアにElementを追加
-        await screenAreaAppendCharacterService(character, layer);
+        // レイヤーに追加
+        // fixed logic
+        layer.addCharacter(character);
+
+        // 履歴に登録
+        timelineLayerFrameAddKeyframeHistoryUseCase(
+            work_space, movie_clip,
+            layer, character,
+            emptyCharacterIndex, receiver
+        );
+
+        if (work_space.active && movie_clip.active) {
+
+            // タイムラインのレイヤー表示を更新
+            timelineLayerAddFrameUpdateLayerStyleUseCase(work_space, movie_clip, layer);
+
+            // スクリーンエリアにElementを追加
+            await screenAreaAppendCharacterService(character, layer);
+        }
     }
 };
