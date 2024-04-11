@@ -5,7 +5,6 @@ import { execute as timelineLayerFrameUpdateStyleService } from "@/timeline/appl
 import { timelineLayer } from "@/timeline/domain/model/TimelineLayer";
 import { $getLeftFrame } from "@/timeline/application/TimelineUtil";
 import { execute as timelineScrollUpdateWidthService } from "@/timeline/application/TimelineScroll/service/TimelineScrollUpdateWidthService";
-import { EmptyCharacter } from "@/core/domain/model/EmptyCharacter";
 
 /**
  * @description キーフレームの分割処理を元に戻す
@@ -14,8 +13,8 @@ import { EmptyCharacter } from "@/core/domain/model/EmptyCharacter";
  * @param  {number} work_space_id
  * @param  {number} library_id
  * @param  {number} layer_index
- * @param  {number} empty_character_index
  * @param  {number} keyframe
+ * @param  {number} character_keyframe
  * @return {void}
  * @method
  * @public
@@ -24,8 +23,8 @@ export const execute = (
     work_space_id: number,
     library_id: number,
     layer_index: number,
-    empty_character_index: number,
-    keyframe: number
+    keyframe: number,
+    character_keyframe: number
 ): void => {
 
     const workSpace = $getWorkSpace(work_space_id);
@@ -49,16 +48,20 @@ export const execute = (
         return ;
     }
 
-    // 新規の空のキーフレームを追加
-    // fixed logic
-    const emptyCharacter = new EmptyCharacter();
-    emptyCharacter.startFrame = keyframe;
-    emptyCharacter.endFrame   = activeCharacters[0].endFrame;
-    layer.emptyCharacters.splice(empty_character_index, 0, emptyCharacter);
+    const splitCharacters = layer.getActiveCharacters(character_keyframe);
+    if (!splitCharacters.length) {
+        return ;
+    }
 
-    // 既存のキーフレームの終了フレームを更新
+    // キーフレームの終了位置を更新
+    const endFrame = splitCharacters[0].endFrame;
     for (let idx = 0; idx < activeCharacters.length; ++idx) {
-        activeCharacters[idx].endFrame = keyframe;
+        activeCharacters[idx].endFrame = endFrame;
+    }
+
+    // 追加したキーフレームを削除
+    for (let idx = 0; idx < splitCharacters.length; ++idx) {
+        layer.removeCharacter(splitCharacters[idx]);
     }
 
     // アクティブならタイムラインを再描画
