@@ -1,10 +1,15 @@
 import { MovieClip } from "@/core/domain/model/MovieClip";
 import { WorkSpace } from "@/core/domain/model/WorkSpace";
-import { $convertFrameObject } from "@/timeline/application/TimelineUtil";
+import { $convertFrameObject, $getLeftFrame } from "@/timeline/application/TimelineUtil";
+import { timelineLayer } from "@/timeline/domain/model/TimelineLayer";
+import { execute as timelineLayerFrameUpdateStyleService } from "@/timeline/application/TimelineLayerFrame/service/TimelineLayerFrameUpdateStyleService";
+import { execute as timelineScrollUpdateWidthService } from "@/timeline/application/TimelineScroll/service/TimelineScrollUpdateWidthService";
+import { execute as externalTimelineLayerFramePrevAdjustmentUseCase } from "./ExternalTimelineLayerFramePrevAdjustmentUseCase";
+import { execute as externalTimelineLayerFrameSplitToKeyframeUseCase } from "./ExternalTimelineLayerFrameSplitToKeyframeUseCase";
 
 /**
- * @description 選択中のレイヤーにキーフレームを追加
- *              Add a keyframe to the selected layer
+ * @description 選択中のレイヤーにキーフレームを追加、キーフレームがなければ空のキーフレームを追加
+ *              Add a keyframe to the selected layer, or add an empty keyframe if there is no keyframe
  *
  * @param  {WorkSpace} work_space
  * @param  {MovieClip} movie_clip
@@ -27,5 +32,55 @@ export const execute = (
     }
 
     const frameObject = $convertFrameObject(start_frame, end_frame);
-    console.log(work_space, frameObject);
+
+    // 移動分のフレームを取得
+    const leftFrame: number = $getLeftFrame();
+
+    // 昇順に並び替えたレイヤー配列を取得
+    const selectedLayers = movie_clip.getCloneAndSortSelectedLayers();
+    for (let idx = 0; idx < selectedLayers.length; ++idx) {
+
+        const layer = selectedLayers[idx];
+        if (!layer) {
+            continue;
+        }
+
+        // 1フレーム目より未来のフレームにキーフレームを追加する場合は登録されてるフレームを調整
+        if (frameObject.start > 1) {
+            externalTimelineLayerFramePrevAdjustmentUseCase(
+                work_space, movie_clip, layer, frameObject.start
+            );
+        }
+
+        // 指定されたフレームに空のキーフレームを追加
+        for (let keyframe = frameObject.start; keyframe < frameObject.end; ++keyframe) {
+
+            // キーフレームに分割
+            externalTimelineLayerFrameSplitToKeyframeUseCase(
+                work_space,
+                movie_clip,
+                layer,
+                keyframe
+            );
+
+        }
+
+        // レイヤーを再描画
+        if (work_space.active && movie_clip.active) {
+            const layerElement = timelineLayer.elements[layer.getDisplayIndex()] as NonNullable<HTMLElement>;
+            if (!layerElement) {
+                continue;
+            }
+
+            // フレームのstyleを更新
+            timelineLayerFrameUpdateStyleService(
+                work_space, movie_clip,
+                layerElement.lastElementChild as NonNullable<HTMLElement>,
+                leftFrame
+            );
+
+            // xスクロールの幅を更新
+            timelineScrollUpdateWidthService();
+        }
+    }
 };

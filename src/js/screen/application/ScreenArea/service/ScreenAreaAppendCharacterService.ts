@@ -21,10 +21,5 @@ export const execute = async (character: Character, layer: Layer): Promise<void>
         return ;
     }
 
-    const div = await character.createElement(layer);
-    if (!div) {
-        return ;
-    }
-
-    element.appendChild(div);
+    await character.createElement(element, layer);
 };

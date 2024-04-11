@@ -127,8 +127,8 @@ export class Character
     }
 
     /**
-     * @description Characterの管理ID
-     *              Management ID of Character
+     * @description Characterのキャッシュ用の管理ID
+     *              Management ID for Character cache
      *
      * @member {number}
      * @static
@@ -140,19 +140,6 @@ export class Character
     static set characterId (character_id: number)
     {
         $characterId = $clamp(character_id, 1, Number.MAX_VALUE);
-    }
-
-    /**
-     * @description 固有IDを返却
-     *              Return unique ID
-     *
-     * @member {number}
-     * @readonly
-     * @public
-     */
-    get id (): number
-    {
-        return this._$id;
     }
 
     /**
@@ -486,14 +473,15 @@ export class Character
      * @description 描画処理
      *              Drawing process
      *
+     * @param  {HTMLElement} element
      * @param  {Layer} layer
      * @return {Promise}
      * @method
      * @public
      */
-    async createElement (layer: Layer): Promise<HTMLDivElement | null>
+    async createElement (element: HTMLElement, layer: Layer): Promise<HTMLDivElement | null>
     {
-        return await characterCreateElementUseCase(this, layer);
+        return await characterCreateElementUseCase(this, element, layer);
     }
 
     /**

@@ -2,7 +2,7 @@ import type { Character } from "@/core/domain/model/Character";
 import type { Layer } from "@/core/domain/model/Layer";
 import { $getCurrentWorkSpace } from "../../CoreUtil";
 import { $BITMAP_TYPE } from "@/config/InstanceConfig";
-import { execute as characterCreateElementBitmapUseCase } from "./CharacterCreateElementBitmapUseCase";
+import { execute as bitmapCreateDisplayObjectElementUseCase } from "../../Bitmap/usecase/BitmapCreateDisplayObjectElementUseCase";
 
 /**
  * @description DisplayObjectを描画して、DivElementとして返却
@@ -15,6 +15,7 @@ import { execute as characterCreateElementBitmapUseCase } from "./CharacterCreat
  */
 export const execute = async (
     character: Character,
+    element: HTMLElement,
     layer: Layer
 ): Promise<HTMLDivElement | null> => {
 
@@ -27,8 +28,8 @@ export const execute = async (
     switch (instance.type) {
 
         case $BITMAP_TYPE:
-            return await characterCreateElementBitmapUseCase(
-                workSpace.id, instance, layer, character
+            return await bitmapCreateDisplayObjectElementUseCase(
+                workSpace.id, instance, element, layer, character
             );
 
         default:

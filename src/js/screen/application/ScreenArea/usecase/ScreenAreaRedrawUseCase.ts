@@ -1,5 +1,7 @@
 import { $SCREEN_STAGE_AREA_ID } from "@/config/ScreenConfig";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
+import { execute as screenAreaAppendCharacterService } from "../service/ScreenAreaAppendCharacterService";
+import { $MASK_MODE } from "@/config/LayerModeConfig";
 
 /**
  * @description スクリーンエリアを再描画
@@ -27,6 +29,16 @@ export const execute = async (movie_clip: MovieClip): Promise<void> =>
             continue;
         }
 
+        // 非表示の場合はスキップ
+        if (layer.disable) {
+            continue;
+        }
+
+        // マスクの親レイヤーでロックされている場合はスキップ
+        if (layer.mode === $MASK_MODE && layer.lock) {
+            continue;
+        }
+
         const activeCharacters = layer.getActiveCharacters(frame);
         if (!activeCharacters.length) {
             continue;
@@ -43,12 +55,7 @@ export const execute = async (movie_clip: MovieClip): Promise<void> =>
                 continue;
             }
 
-            const div = await character.createElement(layer);
-            if (!div) {
-                continue;
-            }
-
-            element.appendChild(div);
+            await screenAreaAppendCharacterService(character, layer);
         }
     }
 };

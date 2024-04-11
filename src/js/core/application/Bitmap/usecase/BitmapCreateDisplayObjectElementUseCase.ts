@@ -3,6 +3,7 @@ import type { Character } from "@/core/domain/model/Character";
 import type { InstanceImpl } from "@/interface/InstanceImpl";
 import type { Layer } from "@/core/domain/model/Layer";
 import { execute as bitmapRegisterEventUseCase } from "@/core/application/Bitmap/usecase/BitmapRegisterEventUseCase";
+import { execute as bitmapDisplayObjectComponent } from "../component/BitmapDisplayObjectComponent";
 import {
     $getScreenOffsetLeft,
     $getScreenOffsetTop
@@ -11,6 +12,8 @@ import {
     $getCacheCanvas,
     $setCacheCanvas
 } from "@/cache/CacheUtil";
+import { a } from "vitest/dist/suite-a18diDsI.js";
+import { aR } from "vitest/dist/reporters-P7C2ytIv.js";
 
 /**
  * @description Bitmapをcanvasに描画して返却する
@@ -26,9 +29,12 @@ import {
 export const execute = async (
     work_space_id: number,
     instance: InstanceImpl<Bitmap>,
+    element: HTMLElement,
     layer: Layer,
     character: Character
 ): Promise<HTMLDivElement> => {
+
+    console.log([element, layer]);
 
     const cacheKey = character.cacheKey;
 
@@ -41,26 +47,13 @@ export const execute = async (
         $setCacheCanvas(work_space_id, instance.id, cacheKey, canvas);
     }
 
-    const div = document.createElement("div");
-    div.classList.add("display-object");
+    // ステージに追加
+    element.insertAdjacentHTML("beforeend",
+        bitmapDisplayObjectComponent(character, layer.id)
+    );
+
+    const div = element.lastElementChild as HTMLDivElement;
     div.appendChild(canvas);
-
-    let style = "";
-    const matrix = character.matrix;
-    style += `transform: matrix(${matrix[0]}, ${matrix[1]}, ${matrix[2]}, ${matrix[3]}, 0, 0);`;
-    style += `left: ${$getScreenOffsetLeft() + character.x}px;`;
-    style += `top: ${$getScreenOffsetTop() + character.y}px;`;
-
-    // 透明度の設定がある時だけstyeに追加
-    if (1 > character.alpha) {
-        style += `opacity: ${character.alpha};`;
-    }
-
-    div.setAttribute("style", style);
-
-    // Elementに変数を設定
-    div.dataset.characterId = `${character.id}`;
-    div.dataset.layerId = `${layer.id}`;
 
     // イベントを登録
     bitmapRegisterEventUseCase(div);
