@@ -5,10 +5,9 @@ import { execute as historyRemoveElementService } from "@/controller/application
 import { execute as historyAddElementUseCase } from "@/controller/application/HistoryArea/usecase/HistoryAddElementUseCase";
 import { execute as historyGetTextService } from "@/controller/application/HistoryArea/service/HistoryGetTextService";
 import { execute as timelineLayerFrameSplitEmptyKeyframeCreateHistoryObjectService } from "../service/TimelineLayerFrameSplitKeyframeToEmptyCreateHistoryObjectService";
-import { $TIMELINE_SPLIT_KEYFRAME_COMMAND } from "@/config/HistoryConfig";
+import { $TIMELINE_SPLIT_KEYFRAME_TO_KEYFRAME_COMMAND } from "@/config/HistoryConfig";
 import { $useSocket } from "@/share/ShareUtil";
 import { execute as shareSendService } from "@/share/service/ShareSendService";
-import type { EmptyCharacter } from "@/core/domain/model/EmptyCharacter";
 
 /**
  * @description キーフレームを空のキーフレームに分割する履歴を登録
@@ -17,7 +16,6 @@ import type { EmptyCharacter } from "@/core/domain/model/EmptyCharacter";
  * @param  {WorkSpace} work_space
  * @param  {MovieClip} movie_clip
  * @param  {Layer} layer
- * @param  {EmptyCharacter} empty_character
  * @param  {number} keyframe
  * @param  {number} character_keyframe
  * @param  {boolean} [receiver=false]
@@ -29,7 +27,6 @@ export const execute = (
     work_space: WorkSpace,
     movie_clip: MovieClip,
     layer: Layer,
-    empty_character: EmptyCharacter,
     keyframe: number,
     character_keyframe: number,
     receiver: boolean = false
@@ -42,7 +39,7 @@ export const execute = (
     // fixed logic
     const historyObject = timelineLayerFrameSplitEmptyKeyframeCreateHistoryObjectService(
         work_space.id, movie_clip, layer,
-        empty_character, keyframe, character_keyframe
+        keyframe, character_keyframe
     );
 
     // 作業履歴にElementを追加
@@ -51,7 +48,7 @@ export const execute = (
         historyAddElementUseCase(
             movie_clip.id,
             work_space.historyIndex,
-            historyGetTextService($TIMELINE_SPLIT_KEYFRAME_COMMAND),
+            historyGetTextService($TIMELINE_SPLIT_KEYFRAME_TO_KEYFRAME_COMMAND),
             "",
             ...historyObject.args
         );

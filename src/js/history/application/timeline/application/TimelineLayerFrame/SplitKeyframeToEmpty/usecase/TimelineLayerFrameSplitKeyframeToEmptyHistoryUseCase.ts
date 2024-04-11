@@ -5,7 +5,7 @@ import { execute as historyRemoveElementService } from "@/controller/application
 import { execute as historyAddElementUseCase } from "@/controller/application/HistoryArea/usecase/HistoryAddElementUseCase";
 import { execute as historyGetTextService } from "@/controller/application/HistoryArea/service/HistoryGetTextService";
 import { execute as timelineLayerFrameSplitEmptyKeyframeCreateHistoryObjectService } from "../service/TimelineLayerFrameSplitKeyframeToEmptyCreateHistoryObjectService";
-import { $TIMELINE_SPLIT_KEYFRAME_COMMAND } from "@/config/HistoryConfig";
+import { $TIMELINE_SPLIT_KEYFRAME_TO_EMPTY_COMMAND } from "@/config/HistoryConfig";
 import { $useSocket } from "@/share/ShareUtil";
 import { execute as shareSendService } from "@/share/service/ShareSendService";
 import type { EmptyCharacter } from "@/core/domain/model/EmptyCharacter";
@@ -51,7 +51,7 @@ export const execute = (
         historyAddElementUseCase(
             movie_clip.id,
             work_space.historyIndex,
-            historyGetTextService($TIMELINE_SPLIT_KEYFRAME_COMMAND),
+            historyGetTextService($TIMELINE_SPLIT_KEYFRAME_TO_EMPTY_COMMAND),
             "",
             ...historyObject.args
         );

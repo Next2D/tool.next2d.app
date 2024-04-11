@@ -1,7 +1,6 @@
 import { execute } from "./TimelineLayerFrameSplitKeyframeToEmptyCreateHistoryObjectService";
-import { $TIMELINE_SPLIT_KEYFRAME_COMMAND } from "../../../../../../../config/HistoryConfig";
+import { $TIMELINE_SPLIT_KEYFRAME_TO_KEYFRAME_COMMAND } from "../../../../../../../config/HistoryConfig";
 import { MovieClip } from "../../../../../../../core/domain/model/MovieClip";
-import { EmptyCharacter } from "../../../../../../../core/domain/model/EmptyCharacter";
 
 describe("TimelineLayerFrameSplitKeyframeToEmptyCreateHistoryObjectServiceTest", () =>
 {
@@ -15,22 +14,16 @@ describe("TimelineLayerFrameSplitKeyframeToEmptyCreateHistoryObjectServiceTest",
 
         const layer = movieClip.layers[0];
 
-        const emptyCharacter = new EmptyCharacter();
-        emptyCharacter.startFrame = 1;
-        emptyCharacter.endFrame   = 4;
-        layer.addEmptyCharacter(emptyCharacter);
-
-        const object = execute(1, movieClip, layer, emptyCharacter, 2, 1);
-        expect(object.command).toBe($TIMELINE_SPLIT_KEYFRAME_COMMAND);
+        const object = execute(1, movieClip, layer, 2, 1);
+        expect(object.command).toBe($TIMELINE_SPLIT_KEYFRAME_TO_KEYFRAME_COMMAND);
 
         // 配列の順番が崩れてもいいようにテストケースを残す
-        expect(object.messages.length).toBe(6);
+        expect(object.messages.length).toBe(5);
         expect(object.messages[0]).toBe(1);
         expect(object.messages[1]).toBe(0);
         expect(object.messages[2]).toBe(0);
-        expect(object.messages[3]).toBe(0);
-        expect(object.messages[4]).toBe(2);
-        expect(object.messages[5]).toBe(1);
+        expect(object.messages[3]).toBe(2);
+        expect(object.messages[4]).toBe(1);
 
         // 表示様の配列のチェック
         expect(object.args.length).toBe(3);

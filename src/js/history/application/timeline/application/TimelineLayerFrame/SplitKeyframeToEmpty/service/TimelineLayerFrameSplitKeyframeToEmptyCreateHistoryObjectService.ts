@@ -1,7 +1,7 @@
 import type { HistoryObjectImpl } from "@/interface/HistoryObjectImpl";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { Layer } from "@/core/domain/model/Layer";
-import { $TIMELINE_SPLIT_KEYFRAME_COMMAND } from "@/config/HistoryConfig";
+import { $TIMELINE_SPLIT_KEYFRAME_TO_EMPTY_COMMAND } from "@/config/HistoryConfig";
 import type { EmptyCharacter } from "@/core/domain/model/EmptyCharacter";
 
 /**
@@ -28,7 +28,7 @@ export const execute = (
 ): HistoryObjectImpl => {
 
     return {
-        "command": $TIMELINE_SPLIT_KEYFRAME_COMMAND,
+        "command": $TIMELINE_SPLIT_KEYFRAME_TO_EMPTY_COMMAND,
         "messages": [
             work_space_id,
             movie_clip.id,

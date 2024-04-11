@@ -3,6 +3,7 @@ import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import type { Layer } from "@/core/domain/model/Layer";
 import { Character } from "@/core/domain/model/Character";
 import { execute as externalTimelineLayerFrameSplitToEmptyUseCase } from "./ExternalTimelineLayerFrameSplitToEmptyUseCase";
+import { execute as timelineLayerFrameSplitKeyframeToKeyframeHistoryUseCase } from "@/history/application/timeline/application/TimelineLayerFrame/SplitKeyframeToKeyframe/usecase/TimelineLayerFrameSplitKeyframeToKeyframeHistoryUseCase";
 
 /**
  * @description 指定したレイヤーの指定フレームにキーフレームを追加、キーフレームがない場合は空のキーフレームを追加
@@ -13,6 +14,7 @@ import { execute as externalTimelineLayerFrameSplitToEmptyUseCase } from "./Exte
  * @param  {MovieClip} movie_clip
  * @param  {Layer} layer
  * @param  {number} keyframe
+ * @param  {boolean} [receiver=false]
  * @return {void}
  * @method
  * @public
@@ -21,7 +23,8 @@ export const execute = (
     work_space: WorkSpace,
     movie_clip: MovieClip,
     layer: Layer,
-    keyframe: number
+    keyframe: number,
+    receiver: boolean = false
 ): void => {
 
     // 指定のキーフレームにアクティブなDisplayObjectが存在しない場合は空のキーフレームを追加
@@ -37,7 +40,8 @@ export const execute = (
     }
 
     // 既に空のキーフレームがある場合は何もしない
-    if (activeCharacters[0].startFrame === keyframe) {
+    const startFrame = activeCharacters[0].startFrame;
+    if (startFrame === keyframe) {
         return ;
     }
 
@@ -63,13 +67,12 @@ export const execute = (
     }
 
     // 履歴に追加
-    // timelineLayerFrameSplitKeyframeToEmptyHistoryUseCase(
-    //     work_space,
-    //     movie_clip,
-    //     layer,
-    //     newEmptyCharacter,
-    //     keyframe,
-    //     character.startFrame,
-    //     receiver
-    // );
+    timelineLayerFrameSplitKeyframeToKeyframeHistoryUseCase(
+        work_space,
+        movie_clip,
+        layer,
+        keyframe,
+        startFrame,
+        receiver
+    );
 };

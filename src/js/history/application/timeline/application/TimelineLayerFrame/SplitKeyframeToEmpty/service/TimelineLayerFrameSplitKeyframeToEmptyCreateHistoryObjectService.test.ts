@@ -1,5 +1,5 @@
 import { execute } from "./TimelineLayerFrameSplitKeyframeToEmptyCreateHistoryObjectService";
-import { $TIMELINE_SPLIT_KEYFRAME_COMMAND } from "../../../../../../../config/HistoryConfig";
+import { $TIMELINE_SPLIT_KEYFRAME_TO_EMPTY_COMMAND } from "../../../../../../../config/HistoryConfig";
 import { MovieClip } from "../../../../../../../core/domain/model/MovieClip";
 import { EmptyCharacter } from "../../../../../../../core/domain/model/EmptyCharacter";
 
@@ -21,7 +21,7 @@ describe("TimelineLayerFrameSplitKeyframeToEmptyCreateHistoryObjectServiceTest",
         layer.addEmptyCharacter(emptyCharacter);
 
         const object = execute(1, movieClip, layer, emptyCharacter, 2, 1);
-        expect(object.command).toBe($TIMELINE_SPLIT_KEYFRAME_COMMAND);
+        expect(object.command).toBe($TIMELINE_SPLIT_KEYFRAME_TO_EMPTY_COMMAND);
 
         // 配列の順番が崩れてもいいようにテストケースを残す
         expect(object.messages.length).toBe(6);

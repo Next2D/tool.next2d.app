@@ -43,13 +43,13 @@ export const execute = (
         return ;
     }
 
-    const activeCharacters = layer.getActiveCharacters(keyframe);
-    if (!activeCharacters.length) {
+    const splitCharacters = layer.getActiveCharacters(keyframe);
+    if (!splitCharacters.length) {
         return ;
     }
 
-    const splitCharacters = layer.getActiveCharacters(character_keyframe);
-    if (!splitCharacters.length) {
+    const activeCharacters = layer.getActiveCharacters(character_keyframe);
+    if (!activeCharacters.length) {
         return ;
     }
 
