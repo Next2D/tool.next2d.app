@@ -1,7 +1,7 @@
-import { execute as timelineToolInsertFramesUseCase } from "./TimelineToolInsertFramesUseCase";
+import { execute as timelineToolDeleteFramesUseCase } from "./TimelineToolDeleteFramesUseCase";
 
 /**
- * @description フレーム追加ボタンのイベント処理関数
+ * @description フレーム削除ボタンのイベント処理関数
  *              Event processing function for add keyframe button
  *
  * @param  {PointerEvent} event
@@ -19,6 +19,6 @@ export const execute = (event: PointerEvent): void =>
     event.stopPropagation();
     event.preventDefault();
 
-    // キーフレーム追加のユースケースを実行
-    timelineToolInsertFramesUseCase();
+    // フレーム削除のユースケースを実行
+    timelineToolDeleteFramesUseCase();
 };

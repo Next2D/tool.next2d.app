@@ -402,3 +402,12 @@ export const $TIMELINE_INSERT_FRAME_ID: string = "timeline-frame-add";
  * @constant
  */
 export const $TIMELINE_TARGET_GROUP_ID: string = "target-group";
+
+/**
+ * @description タイムラインのフレーム削除のElementのID
+ *              ID of the Element for deleting frames in the timeline
+ *
+ * @type {string}
+ * @constant
+ */
+export const $TIMELINE_DELETE_FRAME_ID: string = "timeline-frame-delete";

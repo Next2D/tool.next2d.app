@@ -5,6 +5,8 @@ import { execute as timelineToolLayerDeleteUseCase } from "@/timeline/applicatio
 import { execute as scriptEditorModalCurrentBootUseCase } from "@/menu/application/ScriptEditorModal/usecase/ScriptEditorModalCurrentBootUseCase";
 import { execute as timelineToolAddEmptyKeyFrameUseCase } from "@/timeline/application/TimelineTool/application/AddEmptyKeyFrame/usecase/TimelineToolAddEmptyKeyFrameUseCase";
 import { execute as timelineToolInsertFramesUseCase } from "@/timeline/application/TimelineTool/application/InsertFrames/usecase/TimelineToolInsertFramesUseCase";
+import { execute as timelineToolAddKeyFrameUseCase } from "@/timeline/application/TimelineTool/application/AddKeyFrame/usecase/TimelineToolAddKeyFrameUseCase";
+import { execute as timelineToolDeleteFramesUseCase } from "@/timeline/application/TimelineTool/application/DeleteFrame/usecase/TimelineToolDeleteFramesUseCase";
 import {
     $generateShortcutKey,
     $setShortcut
@@ -55,13 +57,27 @@ export const execute = (): void =>
         scriptEditorModalCurrentBootUseCase
     );
 
+    // 空のキーフレーム追加
     $setShortcut(
         $generateShortcutKey("e", { "ctrl": true }),
         timelineToolAddEmptyKeyFrameUseCase
     );
 
+    // フレーム追加
     $setShortcut(
         $generateShortcutKey("f"),
         timelineToolInsertFramesUseCase
+    );
+
+    // キーフレーム追加
+    $setShortcut(
+        $generateShortcutKey("k"),
+        timelineToolAddKeyFrameUseCase
+    );
+
+    // フレームを削除
+    $setShortcut(
+        $generateShortcutKey("f", { "ctrl": true }),
+        timelineToolDeleteFramesUseCase
     );
 };

@@ -29,7 +29,8 @@ import {
     $TIMELINE_INSERT_KEY_FRAME_COMMAND,
     $TIMELINE_UPDATE_KEYFRAME_COMMAND,
     $TIMELINE_SPLIT_KEYFRAME_TO_EMPTY_COMMAND,
-    $TIMELINE_SPLIT_KEYFRAME_TO_KEYFRAME_COMMAND
+    $TIMELINE_SPLIT_KEYFRAME_TO_KEYFRAME_COMMAND,
+    $TIMELINE_REMOVE_EMPTY_FRAMES_COMMAND
 } from "../../../../config/HistoryConfig";
 
 describe("HistoryGetTextServiceTest", () =>
@@ -66,5 +67,6 @@ describe("HistoryGetTextServiceTest", () =>
         expect(execute($TIMELINE_UPDATE_KEYFRAME_COMMAND)).toBe("「%s1」のレイヤー「%s2」の%s3フレームのキーフレームに%s4フレームを追加");
         expect(execute($TIMELINE_SPLIT_KEYFRAME_TO_EMPTY_COMMAND)).toBe("「%s1」のレイヤー「%s2」の%s3フレームのキーフレームを分割");
         expect(execute($TIMELINE_SPLIT_KEYFRAME_TO_KEYFRAME_COMMAND)).toBe("「%s1」のレイヤー「%s2」の%s3フレームのキーフレームを分割");
+        expect(execute($TIMELINE_REMOVE_EMPTY_FRAMES_COMMAND)).toBe("「%s1」のレイヤー「%s2」の%s3フレームの空のキーフレームから%s4フレーム削除");
     });
 });

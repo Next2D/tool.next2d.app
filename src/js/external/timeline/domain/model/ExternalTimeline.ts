@@ -13,6 +13,7 @@ import { execute as externalTimelineLayerFrameSelectedFramesUseCase } from "@/ex
 import { execute as externalTimelineLayerDeactivatedAllLayerUseCase } from "@/external/timeline/application/ExternalTimelineLayer/usecase/ExternalTimelineLayerDeactivatedAllLayerUseCase";
 import { execute as externalTimelineLayerFrameInsertFramesUseCase } from "@/external/timeline/application/ExternalTimelineLayerFrame/usecase/ExternalTimelineLayerFrameInsertFramesUseCase";
 import { execute as externalTimelineAddItemToMovieClipUseCase } from "@/external/timeline/application/ExternalTimeline/usecase/ExternalTimelineAddItemToMovieClipUseCase";
+import { execute as externalTimelineLayerFrameRemoveFrameUseCase } from "@/external/timeline/application/ExternalTimelineLayerFrame/usecase/ExternalTimelineLayerFrameRemoveFrameUseCase";
 
 /**
  * @description タイムラインの外部APIクラス
@@ -310,6 +311,26 @@ export class ExternalTimeline
             this._$workSpace,
             this._$movieClip,
             num_frame
+        );
+    }
+
+    /**
+     * @description 選択中の範囲のフレームを削除
+     *              Delete the frames in the selected range
+     *
+     * @param  {number} start_frame
+     * @param  {number} [end_frame = 0]
+     * @return {void}
+     * @method
+     * @public
+     */
+    removeFrames (start_frame: number, end_frame: number = 0): void
+    {
+        externalTimelineLayerFrameRemoveFrameUseCase(
+            this._$workSpace,
+            this._$movieClip,
+            start_frame,
+            end_frame
         );
     }
 

@@ -448,7 +448,7 @@ export class Layer
      */
     removeEmptyCharacter (empty_character: EmptyCharacter): void
     {
-        this._$emptys.splice(this._$emptys.indexOf(empty_character));
+        this._$emptys.splice(this._$emptys.indexOf(empty_character), 1);
     }
 
     /**
@@ -473,7 +473,7 @@ export class Layer
             activeCharacter.depth--;
         }
 
-        this._$characters.splice(this._$characters.indexOf(character));
+        this._$characters.splice(this._$characters.indexOf(character), 1);
     }
 
     /**

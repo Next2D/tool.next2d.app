@@ -34,6 +34,7 @@ import { execute as timelineLayerFrameInsertKeyFramesHistoryUndoUseCase } from "
 import { execute as timelineLayerFrameUpdateKeyframeHistoryUndoUseCase } from "@/history/application/timeline/application/TimelineLayerFrame/UpdateKeyframe/usecase/TimelineLayerFrameUpdateKeyframeHistoryUndoUseCase";
 import { execute as timelineLayerFrameSplitKeyframeToKeyframeHistoryUndoUseCase } from "@/history/application/timeline/application/TimelineLayerFrame/SplitKeyframeToKeyframe/usecase/TimelineLayerFrameSplitKeyframeToKeyframeHistoryUndoUseCase";
 import { execute as timelineLayerFrameSplitKeyframeToEmptyHistoryUndoUseCase } from "@/history/application/timeline/application/TimelineLayerFrame/SplitKeyframeToEmpty/usecase/TimelineLayerFrameSplitKeyframeToEmptyHistoryUndoUseCase";
+import { execute as timelineLayerFrameRemoveEmptyFramesHistoryUndoUseCase } from "@/history/application/timeline/application/TimelineLayerFrame/RemoveEmptyFrames/usecase/TimelineLayerFrameRemoveEmptyFramesHistoryUndoUseCase";
 import { execute as instanceUpdateNameHistoryUndoUseCase } from "@/history/application/core/application/Instance/usecase/InstanceUpdateNameHistoryUndoUseCase";
 import { execute as instanceUpdateSymbolHistoryUndoUseCase } from "@/history/application/core/application/Instance/usecase/InstanceUpdateSymbolHistoryUndoUseCase";
 import {
@@ -67,7 +68,8 @@ import {
     $TIMELINE_INSERT_KEY_FRAME_COMMAND,
     $TIMELINE_UPDATE_KEYFRAME_COMMAND,
     $TIMELINE_SPLIT_KEYFRAME_TO_EMPTY_COMMAND,
-    $TIMELINE_SPLIT_KEYFRAME_TO_KEYFRAME_COMMAND
+    $TIMELINE_SPLIT_KEYFRAME_TO_KEYFRAME_COMMAND,
+    $TIMELINE_REMOVE_EMPTY_FRAMES_COMMAND
 } from "@/config/HistoryConfig";
 
 /**
@@ -381,6 +383,18 @@ export const execute = async (
                 messages[2] as number, // Layer Index
                 messages[3] as number, // Keyframe
                 messages[4] as number // Character Keyframe
+            );
+            break;
+
+        // 空のキーフレームのフレームを削除
+        case $TIMELINE_REMOVE_EMPTY_FRAMES_COMMAND:
+            timelineLayerFrameRemoveEmptyFramesHistoryUndoUseCase(
+                messages[0] as number, // WorkSpace ID
+                messages[1] as number, // MovieClip ID
+                messages[2] as number, // Layer Index
+                messages[3] as number, // EmptyCharacter Index
+                messages[4] as number, // Before Frame
+                messages[5] as number // After Frame
             );
             break;
 

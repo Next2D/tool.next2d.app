@@ -30,7 +30,7 @@ export const execute = (
             break;
         }
 
-        // キーフレームを後方に移動
+        // キーフレームを前方に移動
         const activeCharacters = layer.getActiveCharacters(frame);
         if (activeCharacters.length) {
             frame = activeCharacters[0].endFrame;
@@ -41,7 +41,7 @@ export const execute = (
             continue;
         }
 
-        // 空のキーフレームを後方に移動
+        // 空のキーフレームを前方に移動
         const activeEmptyCharacter = layer.getActiveEmptyCharacter(frame);
         if (activeEmptyCharacter) {
             frame = activeEmptyCharacter.endFrame;

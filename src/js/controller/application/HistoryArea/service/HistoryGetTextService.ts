@@ -29,7 +29,8 @@ import {
     $TIMELINE_INSERT_KEY_FRAME_COMMAND,
     $TIMELINE_UPDATE_KEYFRAME_COMMAND,
     $TIMELINE_SPLIT_KEYFRAME_TO_EMPTY_COMMAND,
-    $TIMELINE_SPLIT_KEYFRAME_TO_KEYFRAME_COMMAND
+    $TIMELINE_SPLIT_KEYFRAME_TO_KEYFRAME_COMMAND,
+    $TIMELINE_REMOVE_EMPTY_FRAMES_COMMAND
 } from "@/config/HistoryConfig";
 
 /**
@@ -132,6 +133,9 @@ export const execute = (command: number): string =>
         case $TIMELINE_SPLIT_KEYFRAME_TO_EMPTY_COMMAND:
         case $TIMELINE_SPLIT_KEYFRAME_TO_KEYFRAME_COMMAND:
             return "「%s1」のレイヤー「%s2」の%s3フレームのキーフレームを分割";
+
+        case $TIMELINE_REMOVE_EMPTY_FRAMES_COMMAND:
+            return "「%s1」のレイヤー「%s2」の%s3フレームの空のキーフレームから%s4フレーム削除";
 
         default:
             break;
