@@ -3,6 +3,7 @@ import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import { execute as externalTimelineLayerFrameForwardKeyframeService } from "@/external/timeline/application/ExternalTimelineLayerFrame/service/ExternalTimelineLayerFrameForwardKeyframeService";
 import { execute as timelineLayerAddFrameUpdateLayerStyleUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerAddFrameUpdateLayerStyleUseCase";
 import { execute as timelineLayerFrameRemoveEmptyFramesHistoryUseCase } from "@/history/application/timeline/application/TimelineLayerFrame/RemoveEmptyFrames/usecase/TimelineLayerFrameRemoveEmptyFramesHistoryUseCase";
+import { execute as timelineLayerFrameRemoveKeyFramesHistoryUseCase } from "@/history/application/timeline/application/TimelineLayerFrame/RemoveKeyFrames/usecase/TimelineLayerFrameRemoveKeyFramesHistoryUseCase";
 
 /**
  * @description 指定レイヤーの指定範囲のフレームを削除
@@ -79,11 +80,25 @@ export const execute = (
                         layer.removeCharacter(activeCharacter);
                     }
                 } else {
+
+                    // 変更前の最終フレームをセット
+                    const beforeEndFrame = activeCharacters[0].endFrame;
+
                     // 終了位置を更新
                     for (let idx = 0; idx < activeCharacters.length; ++idx) {
                         const activeCharacter = activeCharacters[idx];
                         activeCharacter.endFrame -= numFrames;
                     }
+
+                    // 履歴を登録
+                    timelineLayerFrameRemoveKeyFramesHistoryUseCase(
+                        work_space,
+                        movie_clip,
+                        layer,
+                        activeCharacters[0].startFrame,
+                        beforeEndFrame,
+                        activeCharacters[0].endFrame
+                    );
                 }
 
                 // キーフレームを跨いでいる場合は次のキーフレームの開始フレームをセット
@@ -135,6 +150,7 @@ export const execute = (
 
                     } else {
 
+                        // 変更前の最終フレームをセット
                         const beforeEndFrame = activeEmptyCharacter.endFrame;
 
                         // 終了位置を更新

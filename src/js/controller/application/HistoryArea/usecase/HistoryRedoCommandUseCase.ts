@@ -35,6 +35,7 @@ import { execute as timelineLayerFrameUpdateKeyframeHistoryRedoUseCase } from "@
 import { execute as timelineLayerFrameSplitKeyframeToKeyframeHistoryRedoUseCase } from "@/history/application/timeline/application/TimelineLayerFrame/SplitKeyframeToKeyframe/usecase/TimelineLayerFrameSplitKeyframeToKeyframeHistoryRedoUseCase";
 import { execute as timelineLayerFrameSplitKeyframeToEmptyHistoryRedoUseCase } from "@/history/application/timeline/application/TimelineLayerFrame/SplitKeyframeToEmpty/usecase/TimelineLayerFrameSplitKeyframeToEmptyHistoryRedoUseCase";
 import { execute as timelineLayerFrameRemoveEmptyFramesHistoryRedoUseCase } from "@/history/application/timeline/application/TimelineLayerFrame/RemoveEmptyFrames/usecase/TimelineLayerFrameRemoveEmptyFramesHistoryRedoUseCase";
+import { execute as timelineLayerFrameRemoveKeyFramesHistoryRedoUseCase } from "@/history/application/timeline/application/TimelineLayerFrame/RemoveKeyFrames/usecase/TimelineLayerFrameRemoveKeyFramesHistoryRedoUseCase";
 import { execute as instanceUpdateNameHistoryRedoUseCase } from "@/history/application/core/application/Instance/usecase/InstanceUpdateNameHistoryRedoUseCase";
 import { execute as instanceUpdateSymbolHistoryRedoUseCase } from "@/history/application/core/application/Instance/usecase/InstanceUpdateSymbolHistoryRedoUseCase";
 import {
@@ -69,7 +70,8 @@ import {
     $TIMELINE_UPDATE_KEYFRAME_COMMAND,
     $TIMELINE_SPLIT_KEYFRAME_TO_EMPTY_COMMAND,
     $TIMELINE_SPLIT_KEYFRAME_TO_KEYFRAME_COMMAND,
-    $TIMELINE_REMOVE_EMPTY_FRAMES_COMMAND
+    $TIMELINE_REMOVE_EMPTY_FRAMES_COMMAND,
+    $TIMELINE_REMOVE_KEY_FRAMES_COMMAND
 } from "@/config/HistoryConfig";
 
 /**
@@ -394,14 +396,27 @@ export const execute = async (
             );
             break;
 
+        // 空のキーフレームのフレームを削除
         case $TIMELINE_REMOVE_EMPTY_FRAMES_COMMAND:
             timelineLayerFrameRemoveEmptyFramesHistoryRedoUseCase(
                 messages[0] as number, // WorkSpace ID
                 messages[1] as number, // MovieClip ID
                 messages[2] as number, // Layer Index
                 messages[3] as number, // EmptyCharacter Index
-                messages[4] as number, // Before Frame
-                messages[5] as number // After Frame
+                messages[4] as number, // Before EndFrame
+                messages[5] as number // After EndFrame
+            );
+            break;
+
+        // キーフレームのフレームを削除
+        case $TIMELINE_REMOVE_KEY_FRAMES_COMMAND:
+            timelineLayerFrameRemoveKeyFramesHistoryRedoUseCase(
+                messages[0] as number, // WorkSpace ID
+                messages[1] as number, // MovieClip ID
+                messages[2] as number, // Layer Index
+                messages[3] as number, // Keyframe
+                messages[4] as number, // Before EndFrame
+                messages[5] as number // After EndFrame
             );
             break;
 
