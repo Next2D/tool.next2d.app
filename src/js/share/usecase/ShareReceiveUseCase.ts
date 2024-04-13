@@ -36,6 +36,7 @@ import { execute as timelineLayerFrameSplitKeyframeToEmptyReceiveUseCase } from 
 import { execute as timelineLayerFrameSplitKeyframeToKeyframeReceiveUseCase } from "@/share/receive/application/timeline/application/TimelineLayerFrame/application/Keyframe/usecase/TimelineLayerFrameSplitKeyframeToKeyframeReceiveUseCase";
 import { execute as timelineLayerFrameRemoveEmptyFramesReceiveUseCase } from "@/share/receive/application/timeline/application/TimelineLayerFrame/application/EmptyKeyframe/usecase/TimelineLayerFrameRemoveEmptyFramesReceiveUseCase";
 import { execute as timelineLayerFrameRemoveKeyFramesReceiveUseCase } from "@/share/receive/application/timeline/application/TimelineLayerFrame/application/Keyframe/usecase/TimelineLayerFrameRemoveKeyFramesReceiveUseCase";
+import { execute as timelineLayerFrameEraseEmptyKeyframeReceiveUseCase } from "@/share/receive/application/timeline/application/TimelineLayerFrame/application/EmptyKeyframe/usecase/TimelineLayerFrameEraseEmptyKeyframeReceiveUseCase";
 import { execute as historyRedoUseCase } from "@/controller/application/HistoryArea/usecase/HistoryRedoUseCase";
 import { execute as historyUndoUseCase } from "@/controller/application/HistoryArea/usecase/HistoryUndoUseCase";
 import {
@@ -77,7 +78,8 @@ import {
     $TIMELINE_SPLIT_KEYFRAME_TO_EMPTY_COMMAND,
     $TIMELINE_SPLIT_KEYFRAME_TO_KEYFRAME_COMMAND,
     $TIMELINE_REMOVE_EMPTY_FRAMES_COMMAND,
-    $TIMELINE_REMOVE_KEY_FRAMES_COMMAND
+    $TIMELINE_REMOVE_KEY_FRAMES_COMMAND,
+    $TIMELINE_ERASE_EMPTY_KEY_FRAME_COMMAND
 } from "@/config/HistoryConfig";
 
 /**
@@ -294,6 +296,11 @@ export const execute = async (message: ShareReceiveMessageImpl): Promise<void> =
         // キーフレームのフレームを削除
         case $TIMELINE_REMOVE_KEY_FRAMES_COMMAND:
             timelineLayerFrameRemoveKeyFramesReceiveUseCase(message);
+            break;
+
+        // 空のキーフレームのフレーム全削除
+        case $TIMELINE_ERASE_EMPTY_KEY_FRAME_COMMAND:
+            timelineLayerFrameEraseEmptyKeyframeReceiveUseCase(message);
             break;
 
         default:

@@ -130,8 +130,7 @@ export const execute = (
                             work_space,
                             movie_clip,
                             layer,
-                            activeEmptyCharacter,
-                            numFrames
+                            activeEmptyCharacter
                         );
                     } else {
                         // 空のキーフレームのフレーム削除実行

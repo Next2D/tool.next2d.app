@@ -13,7 +13,7 @@ import { execute as timelineLayerFrameEraseEmptyKeyframeHistoryUseCase } from "@
  * @param  {MovieClip} movie_clip
  * @param  {Layer} layer
  * @param  {EmptyCharacter} emptyCharacter
- * @param  {number} num_frames
+ * @param  {boolean} [receiver=false]
  * @return {void}
  * @method
  * @public
@@ -23,14 +23,14 @@ export const execute = (
     movie_clip: MovieClip,
     layer: Layer,
     emptyCharacter: EmptyCharacter,
-    num_frames: number
+    receiver: boolean = false
 ): void => {
 
     // 後方のキーフレームを前方へ移動
     externalTimelineLayerFrameForwardKeyframeService(
         layer,
         emptyCharacter.endFrame,
-        num_frames
+        emptyCharacter.endFrame - emptyCharacter.startFrame
     );
 
     // 履歴の登録
@@ -39,7 +39,8 @@ export const execute = (
         work_space,
         movie_clip,
         layer,
-        emptyCharacter
+        emptyCharacter,
+        receiver
     );
 
     // 空のキーフレームを削除
