@@ -2,6 +2,7 @@ import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import { execute as timelineLayerAddFrameUpdateLayerStyleUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerAddFrameUpdateLayerStyleUseCase";
 import { execute as externalTimelineLayerFrameDeleteEmptyKeyframeUseCase } from "./ExternalTimelineLayerFrameDeleteEmptyKeyframeUseCase";
+import { execute as externalTimelineLayerFrameDeleteKeyframeUseCase } from "./ExternalTimelineLayerFrameDeleteKeyframeUseCase";
 
 /**
  * @description 指定レイヤーの指定範囲のキーフレームを削除
@@ -39,8 +40,8 @@ export const execute = (
             continue;
         }
 
-        let stopFrame = end_frame;
-        for (let frame = start_frame; frame < stopFrame; ++frame) {
+        for (let frame = start_frame; frame < end_frame; ++frame) {
+
             const activeCharacters = layer.getActiveCharacters(frame);
             if (activeCharacters.length) {
                 const character = activeCharacters[0];
@@ -48,33 +49,22 @@ export const execute = (
                     continue;
                 }
 
-                // 削除するフレーム数を算出
-                const numFrames = character.endFrame - character.startFrame;
-                const currentEndFrame = character.endFrame;
-
-                // TODO キーフレームを削除
+                // キーフレームを削除
+                externalTimelineLayerFrameDeleteKeyframeUseCase(
+                    work_space,
+                    movie_clip,
+                    layer,
+                    activeCharacters
+                );
 
                 // キーフレームを跨いでいる場合は次のキーフレームの開始フレームをセット
-                // キーフレームないであれば最終
-                if (end_frame >= currentEndFrame) {
-                    frame--;
-                    stopFrame -= numFrames;
-                    continue;
-                } else {
-                    break;
-                }
+                frame = character.endFrame - 1;
             } else {
                 const activeEmptyCharacter = layer.getActiveEmptyCharacter(frame);
                 if (activeEmptyCharacter) {
                     if (activeEmptyCharacter.startFrame !== frame) {
                         continue;
                     }
-
-                    // 変更前の最終フレームをセット
-                    const currentEndFrame = activeEmptyCharacter.endFrame;
-
-                    // 削除するフレーム数を算出
-                    const numFrames = activeEmptyCharacter.endFrame - activeEmptyCharacter.startFrame;
 
                     // 空のキーフレームを削除
                     externalTimelineLayerFrameDeleteEmptyKeyframeUseCase(
@@ -85,14 +75,7 @@ export const execute = (
                     );
 
                     // キーフレームを跨いでいる場合は次のキーフレームの開始フレームをセット
-                    // キーフレームないであれば最終
-                    if (end_frame >= currentEndFrame) {
-                        frame--;
-                        stopFrame -= numFrames;
-                        continue;
-                    } else {
-                        break;
-                    }
+                    frame = activeEmptyCharacter.endFrame - 1;
                 } else {
                     // ヒットがなければ終了
                     break;

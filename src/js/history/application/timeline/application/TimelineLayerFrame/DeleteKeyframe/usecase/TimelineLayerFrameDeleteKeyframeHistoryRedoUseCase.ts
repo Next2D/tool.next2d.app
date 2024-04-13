@@ -1,19 +1,18 @@
 import type { InstanceImpl } from "@/interface/InstanceImpl";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
-import { $getWorkSpace } from "@/core/application/CoreUtil";
 import type { CharacterSaveObjectImpl } from "@/interface/CharacterSaveObjectImpl";
+import { $getWorkSpace } from "@/core/application/CoreUtil";
 import { execute as timelineLayerAddFrameUpdateLayerStyleUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerAddFrameUpdateLayerStyleUseCase";
-import { execute as externalTimelineLayerFrameBehindKeyframeService } from "@/external/timeline/application/ExternalTimelineLayerFrame/service/ExternalTimelineLayerFrameBehindKeyframeService";
-import { Character } from "@/core/domain/model/Character";
-
+import { execute as externalTimelineLayerFrameExtendBehindKeyframeService } from "@/external/timeline/application/ExternalTimelineLayerFrame/service/ExternalTimelineLayerFrameExtendBehindKeyframeService";
+import { execute as externalTimelineLayerFrameExtendForwardKeyframeService } from "@/external/timeline/application/ExternalTimelineLayerFrame/service/ExternalTimelineLayerFrameExtendForwardKeyframeService";
 /**
- * @description キーフレームのフレーム全削除処理を元に戻す
- *              Undo the keyframe frame deletion process
+ * @description 空のキーフレームの削除処理を元に戻す
+ *              Undo the process of deleting empty keyframes
  *
  * @param  {number} work_space_id
  * @param  {number} library_id
  * @param  {number} layer_index
- * @param  {object} character_save_objects
+ * @param  {number} empty_character_index
  * @return {void}
  * @method
  * @public
@@ -45,25 +44,34 @@ export const execute = (
     const startFrame = character_save_objects[0].startFrame;
     const endFrame   = character_save_objects[0].endFrame;
 
-    // 追加する範囲のキーフレームを後方に移動
-    externalTimelineLayerFrameBehindKeyframeService(
-        layer,
-        startFrame,
-        endFrame - startFrame
-    );
+    const activeCharacters = layer.getActiveCharacters(startFrame);
+    if (!activeCharacters.length) {
+        return ;
+    }
 
-    // セーブオブジェクトからDisplayObjectを復元
-    for (let idx = 0; idx < character_save_objects.length; ++idx) {
-        const characterSaveObject = character_save_objects[idx];
-        if (!characterSaveObject) {
+    // キーフレームのフレーム数
+    const numFrames = endFrame - startFrame;
+
+    if (startFrame > 1) {
+        // 前方のフレームを後方に延長
+        externalTimelineLayerFrameExtendBehindKeyframeService(
+            layer, startFrame - 1, numFrames
+        );
+    } else {
+        // 後方のフレームを前方に延長
+        externalTimelineLayerFrameExtendForwardKeyframeService(
+            layer, endFrame, numFrames
+        );
+    }
+
+    for (let idx = 0; idx < activeCharacters.length; ++idx) {
+        const character = activeCharacters[idx];
+        if (!character) {
             continue;
         }
 
-        const character = new Character();
-        character.load(characterSaveObject);
-
-        // レイヤーに登録
-        layer.addCharacter(character);
+        // キャラクターを削除
+        layer.removeCharacter(character);
     }
 
     // アクティブならタイムラインを再描画
