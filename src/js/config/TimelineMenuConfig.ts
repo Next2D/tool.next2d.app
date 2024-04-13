@@ -50,5 +50,5 @@ export const $TIMELINE_MENU_ADD_FRAMES_ID: string = "context-menu-frame-add";
  * @type {string}
  * @constant
  */
-export const $TIMELINE_MENU_DELETE_FRAMES_ID: string = "context-menu-frame-delete";
+export const $TIMELINE_MENU_ERASE_FRAMES_ID: string = "context-menu-frame-delete";
 

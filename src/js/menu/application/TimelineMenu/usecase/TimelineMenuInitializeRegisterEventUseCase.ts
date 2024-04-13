@@ -3,13 +3,13 @@ import { execute as timelineMenuAddKeyframeMouseDownUseCase } from "./TimelineMe
 import { execute as timelineMenuAddEmptyKeyframeMouseDownUseCase } from "./TimelineMenuAddEmptyKeyframeMouseDownUseCase";
 import { execute as timelineMenuAddFramesMouseDownUseCase } from "./TimelineMenuAddFramesMouseDownUseCase";
 import { execute as timelineMenuAddScriptMouseDownUseCase } from "./TimelineMenuAddScriptMouseDownUseCase";
-import { execute as timelineMenuDeleteFramesMouseDownUseCase } from "./TimelineMenuDeleteFramesMouseDownUseCase";
+import { execute as timelineMenuEraseFramesMouseDownUseCase } from "./TimelineMenuEraseFramesMouseDownUseCase";
 import {
     $TIMELINE_MENU_ADD_EMPTY_KEYFRAME_ID,
     $TIMELINE_MENU_ADD_SCRIPT_ID,
     $TIMELINE_MENU_ADD_KEYFRAME_ID,
     $TIMELINE_MENU_ADD_FRAMES_ID,
-    $TIMELINE_MENU_DELETE_FRAMES_ID
+    $TIMELINE_MENU_ERASE_FRAMES_ID
 } from "@/config/TimelineMenuConfig";
 
 /**
@@ -54,11 +54,11 @@ export const execute = (): void =>
 
     // フレームの削除
     const deleteFramesElement: HTMLElement | null = document
-        .getElementById($TIMELINE_MENU_DELETE_FRAMES_ID);
+        .getElementById($TIMELINE_MENU_ERASE_FRAMES_ID);
 
     if (deleteFramesElement) {
         deleteFramesElement.addEventListener(EventType.MOUSE_DOWN,
-            timelineMenuDeleteFramesMouseDownUseCase
+            timelineMenuEraseFramesMouseDownUseCase
         );
     }
 

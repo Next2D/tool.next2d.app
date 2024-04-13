@@ -1,4 +1,4 @@
-import { execute as timelineToolDeleteFramesUseCase } from "./TimelineToolDeleteFramesUseCase";
+import { execute as timelineToolEraseFramesUseCase } from "./TimelineToolEraseFramesUseCase";
 
 /**
  * @description フレーム削除ボタンのイベント処理関数
@@ -20,5 +20,5 @@ export const execute = (event: PointerEvent): void =>
     event.preventDefault();
 
     // フレーム削除のユースケースを実行
-    timelineToolDeleteFramesUseCase();
+    timelineToolEraseFramesUseCase();
 };

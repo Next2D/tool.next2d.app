@@ -6,7 +6,7 @@ import { execute as scriptEditorModalCurrentBootUseCase } from "@/menu/applicati
 import { execute as timelineToolAddEmptyKeyFrameUseCase } from "@/timeline/application/TimelineTool/application/AddEmptyKeyFrame/usecase/TimelineToolAddEmptyKeyFrameUseCase";
 import { execute as timelineToolInsertFramesUseCase } from "@/timeline/application/TimelineTool/application/InsertFrames/usecase/TimelineToolInsertFramesUseCase";
 import { execute as timelineToolAddKeyFrameUseCase } from "@/timeline/application/TimelineTool/application/AddKeyFrame/usecase/TimelineToolAddKeyFrameUseCase";
-import { execute as timelineToolDeleteFramesUseCase } from "@/timeline/application/TimelineTool/application/DeleteFrame/usecase/TimelineToolDeleteFramesUseCase";
+import { execute as timelineToolDeleteFramesUseCase } from "@/timeline/application/TimelineTool/application/EraseFrames/usecase/TimelineToolEraseFramesUseCase";
 import {
     $generateShortcutKey,
     $setShortcut

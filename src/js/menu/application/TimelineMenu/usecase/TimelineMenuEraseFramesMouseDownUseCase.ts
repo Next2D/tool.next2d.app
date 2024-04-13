@@ -1,5 +1,5 @@
 import { $allHideMenu } from "../../MenuUtil";
-import { execute as timelineToolDeleteFramesUseCase } from "@/timeline/application/TimelineTool/application/DeleteFrame/usecase/TimelineToolDeleteFramesUseCase";
+import { execute as timelineToolEraseFramesUseCase } from "@/timeline/application/TimelineTool/application/EraseFrames/usecase/TimelineToolEraseFramesUseCase";
 
 /**
  * @description タイムラインメニューのキーフレーム削除ボタンのマウスダウンイベント
@@ -24,5 +24,5 @@ export const execute = (event: PointerEvent): void =>
     $allHideMenu();
 
     // キーフレームを追加する
-    timelineToolDeleteFramesUseCase();
+    timelineToolEraseFramesUseCase();
 };

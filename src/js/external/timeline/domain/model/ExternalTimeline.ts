@@ -324,7 +324,7 @@ export class ExternalTimeline
      * @method
      * @public
      */
-    removeFrames (start_frame: number, end_frame: number = 0): void
+    eraseFrames (start_frame: number, end_frame: number = 0): void
     {
         externalTimelineLayerFrameRemoveFrameUseCase(
             this._$workSpace,

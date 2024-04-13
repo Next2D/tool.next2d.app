@@ -24,7 +24,7 @@ export const execute = (): void =>
 
     // キーフレームを追加
     externalTimeline
-        .removeFrames(
+        .eraseFrames(
             movieClip.selectedStartFrame,
             movieClip.selectedEndFrame
         );
