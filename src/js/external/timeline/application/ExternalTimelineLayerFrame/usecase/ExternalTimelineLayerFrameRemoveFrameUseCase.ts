@@ -4,6 +4,7 @@ import { execute as externalTimelineLayerFrameForwardKeyframeService } from "@/e
 import { execute as timelineLayerAddFrameUpdateLayerStyleUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerAddFrameUpdateLayerStyleUseCase";
 import { execute as externalTimelineLayerFrameRemoveEmptyFramesUseCase } from "./ExternalTimelineLayerFrameRemoveEmptyFramesUseCase";
 import { execute as externalTimelineLayerFrameRemoveKeyFramesUseCase } from "./ExternalTimelineLayerFrameRemoveKeyFramesUseCase";
+import { execute as externalTimelineLayerFrameEraseEmptyKeyframeUseCase } from "./ExternalTimelineLayerFrameEraseEmptyKeyframeUseCase";
 
 /**
  * @description 指定レイヤーの指定範囲のフレームを削除
@@ -124,19 +125,14 @@ export const execute = (
 
                     /// 空のキーフレームの幅以上の場合はキーフレームを削除、それ以外は終了位置を更新
                     if (numFrames === activeEmptyCharacter.endFrame - activeEmptyCharacter.startFrame) {
-
-                        // 後方のキーフレームを前方へ移動
-                        externalTimelineLayerFrameForwardKeyframeService(
+                        // 空のキーフレームのフレームを全て削除
+                        externalTimelineLayerFrameEraseEmptyKeyframeUseCase(
+                            work_space,
+                            movie_clip,
                             layer,
-                            activeEmptyCharacter.endFrame,
+                            activeEmptyCharacter,
                             numFrames
                         );
-
-                        // 空のキーフレームを削除
-                        layer.removeEmptyCharacter(activeEmptyCharacter);
-
-                        // TODO 履歴の登録
-
                     } else {
                         // 空のキーフレームのフレーム削除実行
                         externalTimelineLayerFrameRemoveEmptyFramesUseCase(

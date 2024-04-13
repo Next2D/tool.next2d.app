@@ -366,3 +366,12 @@ export const $TIMELINE_REMOVE_EMPTY_FRAMES_COMMAND: number = 37;
  * @constant
  */
 export const $TIMELINE_REMOVE_KEY_FRAMES_COMMAND: number = 38;
+
+/**
+ * @description 空のキーフレームのフレーム全削除の識別コマンド名
+ *              Identification command name for deleting all frames from an empty keyframe
+ *
+ * @type {number}
+ * @constant
+ */
+export const $TIMELINE_ERASE_EMPTY_KEY_FRAME_COMMAND: number = 39;
