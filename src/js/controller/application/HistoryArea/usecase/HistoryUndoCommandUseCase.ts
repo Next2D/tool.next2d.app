@@ -6,6 +6,7 @@ import type { SoundSaveObjectImpl } from "@/interface/SoundSaveObjectImpl";
 import type { InstanceSaveObjectImpl } from "@/interface/InstanceSaveObjectImpl";
 import type { LayerModeImpl } from "@/interface/LayerModeImpl";
 import type { EmptyCharacterSaveObjectImpl } from "@/interface/EmptyCharacterSaveObjectImpl";
+import type { CharacterSaveObjectImpl } from "@/interface/CharacterSaveObjectImpl";
 import { execute as screenTabNameAddHistoryUndoUseCase } from "@/history/application/screen/application/ScreenTab/usecase/ScreenTabNameAddHistoryUndoUseCase";
 import { execute as timelineToolLayerAddHistoryUndoUseCase } from "@/history/application/timeline/application/TimelineTool/LayerAdd/usecase/TimelineToolLayerAddHistoryUndoUseCase";
 import { execute as timelineToolLayerDeleteHistoryUndoUseCase } from "@/history/application/timeline/application/TimelineTool/LayerDelete/usecase/TimelineToolLayerDeleteHistoryUndoUseCase";
@@ -38,6 +39,7 @@ import { execute as timelineLayerFrameSplitKeyframeToEmptyHistoryUndoUseCase } f
 import { execute as timelineLayerFrameRemoveEmptyFramesHistoryUndoUseCase } from "@/history/application/timeline/application/TimelineLayerFrame/RemoveEmptyFrames/usecase/TimelineLayerFrameRemoveEmptyFramesHistoryUndoUseCase";
 import { execute as timelineLayerFrameRemoveKeyFramesHistoryUndoUseCase } from "@/history/application/timeline/application/TimelineLayerFrame/RemoveKeyFrames/usecase/TimelineLayerFrameRemoveKeyFramesHistoryUndoUseCase";
 import { execute as timelineLayerFrameEraseEmptyKeyframeHistoryUndoUseCase } from "@/history/application/timeline/application/TimelineLayerFrame/EraseEmptyKeyframe/usecase/TimelineLayerFrameEraseEmptyKeyframeHistoryUndoUseCase";
+import { execute as timelineLayerFrameEraseKeyframeHistoryUndoUseCase } from "@/history/application/timeline/application/TimelineLayerFrame/EraseKeyframe/usecase/TimelineLayerFrameEraseKeyframeHistoryUndoUseCase";
 import { execute as instanceUpdateNameHistoryUndoUseCase } from "@/history/application/core/application/Instance/usecase/InstanceUpdateNameHistoryUndoUseCase";
 import { execute as instanceUpdateSymbolHistoryUndoUseCase } from "@/history/application/core/application/Instance/usecase/InstanceUpdateSymbolHistoryUndoUseCase";
 import {
@@ -74,7 +76,8 @@ import {
     $TIMELINE_SPLIT_KEYFRAME_TO_KEYFRAME_COMMAND,
     $TIMELINE_REMOVE_EMPTY_FRAMES_COMMAND,
     $TIMELINE_REMOVE_KEY_FRAMES_COMMAND,
-    $TIMELINE_ERASE_EMPTY_KEY_FRAME_COMMAND
+    $TIMELINE_ERASE_EMPTY_KEY_FRAME_COMMAND,
+    $TIMELINE_ERASE_KEY_FRAME_COMMAND
 } from "@/config/HistoryConfig";
 
 /**
@@ -423,6 +426,16 @@ export const execute = async (
                 messages[2] as number, // Layer Index
                 messages[3] as number, // EmptyCharacter Index
                 messages[4] as EmptyCharacterSaveObjectImpl // Save EmptyCharacter Object
+            );
+            break;
+
+        // キーフレームのフレーム全削除
+        case $TIMELINE_ERASE_KEY_FRAME_COMMAND:
+            timelineLayerFrameEraseKeyframeHistoryUndoUseCase(
+                messages[0] as number, // WorkSpace ID
+                messages[1] as number, // MovieClip ID
+                messages[2] as number, // Layer Index
+                messages[3] as CharacterSaveObjectImpl[] // Character Save Objects
             );
             break;
 

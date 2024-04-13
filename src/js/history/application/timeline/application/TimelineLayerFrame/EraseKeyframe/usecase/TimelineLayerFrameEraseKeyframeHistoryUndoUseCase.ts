@@ -1,20 +1,21 @@
 import type { InstanceImpl } from "@/interface/InstanceImpl";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
-import type { EmptyCharacterSaveObjectImpl } from "@/interface/EmptyCharacterSaveObjectImpl";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
+import type { CharacterSaveObjectImpl } from "@/interface/CharacterSaveObjectImpl";
 import { execute as timelineLayerAddFrameUpdateLayerStyleUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerAddFrameUpdateLayerStyleUseCase";
 import { execute as externalTimelineLayerFrameBehindKeyframeService } from "@/external/timeline/application/ExternalTimelineLayerFrame/service/ExternalTimelineLayerFrameBehindKeyframeService";
-import { EmptyCharacter } from "@/core/domain/model/EmptyCharacter";
+import { Character } from "@/core/domain/model/Character";
+
 
 /**
- * @description 空のキーフレームのフレーム全削除処理を元に戻す
- *              Undo the process of completely deleting the frame of the empty keyframe
+ * @description キーフレームのフレーム全削除処理を元に戻す
+ *              Undo the keyframe frame deletion process
  *
  * @param  {number} work_space_id
  * @param  {number} library_id
  * @param  {number} layer_index
- * @param  {number} empty_character_index
- * @param  {object} empty_character_save_object
+ * @param  {number} keyframe
+ * @param  {object} character_save_objects
  * @return {void}
  * @method
  * @public
@@ -23,8 +24,7 @@ export const execute = (
     work_space_id: number,
     library_id: number,
     layer_index: number,
-    empty_character_index: number,
-    empty_character_save_object: EmptyCharacterSaveObjectImpl
+    character_save_objects: CharacterSaveObjectImpl[]
 ): void => {
 
     const workSpace = $getWorkSpace(work_space_id);
@@ -43,19 +43,30 @@ export const execute = (
         return ;
     }
 
-    // 空のキーフレームを復元
-    const emptyCharacter = new EmptyCharacter();
-    emptyCharacter.load(empty_character_save_object);
+    // キーフレームをセット
+    const startFrame = character_save_objects[0].startFrame;
+    const endFrame   = character_save_objects[0].endFrame;
 
     // 追加する範囲のキーフレームを後方に移動
     externalTimelineLayerFrameBehindKeyframeService(
         layer,
-        emptyCharacter.endFrame,
-        emptyCharacter.endFrame - emptyCharacter.startFrame
+        startFrame,
+        endFrame - startFrame
     );
 
-    // 削除した空のキーフレームを元に戻す
-    layer.emptyCharacters.splice(empty_character_index, 0, emptyCharacter);
+    // セーブオブジェクトからDisplayObjectを復元
+    for (let idx = 0; idx < character_save_objects.length; ++idx) {
+        const characterSaveObject = character_save_objects[idx];
+        if (!characterSaveObject) {
+            continue;
+        }
+
+        const character = new Character();
+        character.load(characterSaveObject);
+
+        // レイヤーに登録
+        layer.addCharacter(character);
+    }
 
     // アクティブならタイムラインを再描画
     if (workSpace.active && movieClip.active) {

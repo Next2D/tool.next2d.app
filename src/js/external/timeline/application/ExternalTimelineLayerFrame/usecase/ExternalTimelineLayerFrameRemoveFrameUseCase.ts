@@ -1,10 +1,10 @@
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
-import { execute as externalTimelineLayerFrameForwardKeyframeService } from "@/external/timeline/application/ExternalTimelineLayerFrame/service/ExternalTimelineLayerFrameForwardKeyframeService";
 import { execute as timelineLayerAddFrameUpdateLayerStyleUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerAddFrameUpdateLayerStyleUseCase";
 import { execute as externalTimelineLayerFrameRemoveEmptyFramesUseCase } from "./ExternalTimelineLayerFrameRemoveEmptyFramesUseCase";
 import { execute as externalTimelineLayerFrameRemoveKeyFramesUseCase } from "./ExternalTimelineLayerFrameRemoveKeyFramesUseCase";
 import { execute as externalTimelineLayerFrameEraseEmptyKeyframeUseCase } from "./ExternalTimelineLayerFrameEraseEmptyKeyframeUseCase";
+import { execute as externalTimelineLayerFrameEraseKeyframeUseCase } from "./ExternalTimelineLayerFrameEraseKeyframeUseCase";
 
 /**
  * @description 指定レイヤーの指定範囲のフレームを削除
@@ -67,21 +67,13 @@ export const execute = (
 
                 // キーフレームの幅以上の場合はキーフレームを削除、それ以外は終了位置を更新
                 if (numFrames === character.endFrame - character.startFrame) {
-                    // 後方のキーフレームを前方へ移動
-                    externalTimelineLayerFrameForwardKeyframeService(
+                    // キーフレームのフレームを全て削除
+                    externalTimelineLayerFrameEraseKeyframeUseCase(
+                        work_space,
+                        movie_clip,
                         layer,
-                        character.endFrame,
-                        numFrames
+                        activeCharacters
                     );
-
-                    // キーフレームを削除
-                    for (let idx = 0; idx < activeCharacters.length; ++idx) {
-                        const activeCharacter = activeCharacters[idx];
-                        layer.removeCharacter(activeCharacter);
-                    }
-
-                    // TODO 履歴の登録
-
                 } else {
                     // キーフレームのフレーム削除実行
                     externalTimelineLayerFrameRemoveKeyFramesUseCase(
