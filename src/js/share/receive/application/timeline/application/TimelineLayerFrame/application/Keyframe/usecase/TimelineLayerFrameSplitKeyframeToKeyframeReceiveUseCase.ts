@@ -2,11 +2,11 @@ import type { ShareReceiveMessageImpl } from "@/interface/ShareReceiveMessageImp
 import type { InstanceImpl } from "@/interface/InstanceImpl";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
-import { execute as externalTimelineLayerFrameSplitKeyframeToEmptyUseCase } from "@/external/timeline/application/ExternalTimelineLayerFrame/usecase/ExternalTimelineLayerFrameSplitKeyframeToEmptyUseCase";
+import { execute as externalTimelineLayerFrameSplitToKeyframeUseCase } from "@/external/timeline/application/ExternalTimelineLayerFrame/usecase/ExternalTimelineLayerFrameSplitToKeyframeUseCase";
 import { execute as timelineLayerAddFrameUpdateLayerStyleUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerAddFrameUpdateLayerStyleUseCase";
 
 /**
- * @description キーフレーム分割して空のキーフレームを挿入
+ * @description キーフレーム分割してキーフレームを挿入
  *              Split keyframes and insert empty keyframes
  *
  * @param  {object} message
@@ -35,19 +35,12 @@ export const execute = async (message: ShareReceiveMessageImpl): Promise<void> =
         return ;
     }
 
-    const characterKeyframe = message.data[5] as NonNullable<number>;
-    const activeCharacters = layer.getActiveCharacters(characterKeyframe);
-    if (!activeCharacters.length) {
-        return ;
-    }
-
-    // キーフレームを分割して空のキーフレームを追加
-    externalTimelineLayerFrameSplitKeyframeToEmptyUseCase(
+    // キーフレームを分割してキーフレームを追加
+    externalTimelineLayerFrameSplitToKeyframeUseCase(
         workSpace,
         movieClip,
         layer,
-        activeCharacters,
-        message.data[4] as NonNullable<number>,
+        message.data[3] as NonNullable<number>,
         true
     );
 
