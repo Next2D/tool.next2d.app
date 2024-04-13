@@ -17,21 +17,21 @@ export const execute = (
     num_frame: number
 ): void => {
 
-    const prevCharacters = layer.getActiveCharacters(keyframe);
-    if (prevCharacters.length) {
+    const characters = layer.getActiveCharacters(keyframe);
+    if (characters.length) {
         // キーフレームの終了位置を補正
-        for (let idx = 0; idx < prevCharacters.length; idx++) {
-            const prevCharacter = prevCharacters[idx];
-            if (!prevCharacter) {
+        for (let idx = 0; idx < characters.length; idx++) {
+            const character = characters[idx];
+            if (!character) {
                 continue;
             }
-            prevCharacter.endFrame += num_frame;
+            character.endFrame += num_frame;
         }
     } else {
         // 空のキーフレームの終了位置を補正
-        const prevEmptyCharacter = layer.getActiveEmptyCharacter(keyframe);
-        if (prevEmptyCharacter) {
-            prevEmptyCharacter.endFrame += num_frame;
+        const emptyCharacter = layer.getActiveEmptyCharacter(keyframe);
+        if (emptyCharacter) {
+            emptyCharacter.endFrame += num_frame;
         }
     }
 };
