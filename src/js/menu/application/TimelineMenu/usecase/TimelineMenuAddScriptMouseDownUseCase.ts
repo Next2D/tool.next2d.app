@@ -23,6 +23,6 @@ export const execute = (event: PointerEvent): void =>
     // メニューを非表示にする
     $allHideMenu();
 
-    // 空のキーフレームを追加する
+    // スクリプトを追加
     scriptEditorModalCurrentBootUseCase();
 };

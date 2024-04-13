@@ -335,6 +335,22 @@ export class ExternalTimeline
     }
 
     /**
+     * @description 選択中の範囲のキーフレームを削除
+     *              Delete the keyframes in the selected range
+     *
+     * @param  {number} start_frame
+     * @param  {number} [end_frame = 0]
+     * @return {void}
+     * @method
+     * @public
+     */
+    deleteKeyframes (start_frame: number, end_frame: number = 0): void
+    {
+        // TODO
+        console.log("deleteKeyframes: ", start_frame, end_frame);
+    }
+
+    /**
      * @description 選択中アイテムをアクティブなMovieClipの指定xy座標に追加
      *              Add selected items to the specified xy coordinates of the active MovieClip
      *

@@ -6,7 +6,8 @@ import { execute as scriptEditorModalCurrentBootUseCase } from "@/menu/applicati
 import { execute as timelineToolAddEmptyKeyFrameUseCase } from "@/timeline/application/TimelineTool/application/AddEmptyKeyFrame/usecase/TimelineToolAddEmptyKeyFrameUseCase";
 import { execute as timelineToolInsertFramesUseCase } from "@/timeline/application/TimelineTool/application/InsertFrames/usecase/TimelineToolInsertFramesUseCase";
 import { execute as timelineToolAddKeyFrameUseCase } from "@/timeline/application/TimelineTool/application/AddKeyFrame/usecase/TimelineToolAddKeyFrameUseCase";
-import { execute as timelineToolDeleteFramesUseCase } from "@/timeline/application/TimelineTool/application/EraseFrames/usecase/TimelineToolEraseFramesUseCase";
+import { execute as timelineToolEraseFramesUseCase } from "@/timeline/application/TimelineTool/application/EraseFrames/usecase/TimelineToolEraseFramesUseCase";
+import { execute as timelineToolDeleteKeyframeUseCase } from "@/timeline/application/TimelineTool/application/DeleteKeyframe/usecase/TimelineToolDeleteKeyframeUseCase";
 import {
     $generateShortcutKey,
     $setShortcut
@@ -78,6 +79,12 @@ export const execute = (): void =>
     // フレームを削除
     $setShortcut(
         $generateShortcutKey("f", { "ctrl": true }),
-        timelineToolDeleteFramesUseCase
+        timelineToolEraseFramesUseCase
+    );
+
+    // キーフレームを削除
+    $setShortcut(
+        $generateShortcutKey("k", { "ctrl": true }),
+        timelineToolDeleteKeyframeUseCase
     );
 };

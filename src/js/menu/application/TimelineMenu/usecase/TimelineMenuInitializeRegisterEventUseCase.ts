@@ -4,12 +4,14 @@ import { execute as timelineMenuAddEmptyKeyframeMouseDownUseCase } from "./Timel
 import { execute as timelineMenuAddFramesMouseDownUseCase } from "./TimelineMenuAddFramesMouseDownUseCase";
 import { execute as timelineMenuAddScriptMouseDownUseCase } from "./TimelineMenuAddScriptMouseDownUseCase";
 import { execute as timelineMenuEraseFramesMouseDownUseCase } from "./TimelineMenuEraseFramesMouseDownUseCase";
+import { execute as timelineMenuDeleteKeyframeMouseDownUseCase } from "./TimelineMenuDeleteKeyframeMouseDownUseCase";
 import {
     $TIMELINE_MENU_ADD_EMPTY_KEYFRAME_ID,
     $TIMELINE_MENU_ADD_SCRIPT_ID,
     $TIMELINE_MENU_ADD_KEYFRAME_ID,
     $TIMELINE_MENU_ADD_FRAMES_ID,
-    $TIMELINE_MENU_ERASE_FRAMES_ID
+    $TIMELINE_MENU_ERASE_FRAMES_ID,
+    $TIMELINE_MENU_DELETE_KEYFRAME_ID
 } from "@/config/TimelineMenuConfig";
 
 /**
@@ -42,6 +44,16 @@ export const execute = (): void =>
         );
     }
 
+    // キーフレームの削除
+    const deleteKeyFrameElement: HTMLElement | null = document
+        .getElementById($TIMELINE_MENU_DELETE_KEYFRAME_ID);
+
+    if (deleteKeyFrameElement) {
+        deleteKeyFrameElement.addEventListener(EventType.MOUSE_DOWN,
+            timelineMenuDeleteKeyframeMouseDownUseCase
+        );
+    }
+
     // フレームの追加
     const addFramesElement: HTMLElement | null = document
         .getElementById($TIMELINE_MENU_ADD_FRAMES_ID);
@@ -53,11 +65,11 @@ export const execute = (): void =>
     }
 
     // フレームの削除
-    const deleteFramesElement: HTMLElement | null = document
+    const eraseFramesElement: HTMLElement | null = document
         .getElementById($TIMELINE_MENU_ERASE_FRAMES_ID);
 
-    if (deleteFramesElement) {
-        deleteFramesElement.addEventListener(EventType.MOUSE_DOWN,
+    if (eraseFramesElement) {
+        eraseFramesElement.addEventListener(EventType.MOUSE_DOWN,
             timelineMenuEraseFramesMouseDownUseCase
         );
     }

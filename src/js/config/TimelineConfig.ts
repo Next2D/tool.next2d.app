@@ -411,3 +411,12 @@ export const $TIMELINE_TARGET_GROUP_ID: string = "target-group";
  * @constant
  */
 export const $TIMELINE_ERASE_FRAME_ID: string = "timeline-frame-erase";
+
+/**
+ * @description タイムラインのキーフレーム削除のElementのID
+ *              ID of the Element for deleting keyframes in the timeline
+ *
+ * @type {string}
+ * @constant
+ */
+export const $TIMELINE_DELETE_KEYFRAME_ID: string = "timeline-key-delete";
