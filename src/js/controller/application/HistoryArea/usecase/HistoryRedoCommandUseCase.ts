@@ -38,6 +38,7 @@ import { execute as timelineLayerFrameRemoveEmptyFramesHistoryRedoUseCase } from
 import { execute as timelineLayerFrameRemoveKeyFramesHistoryRedoUseCase } from "@/history/application/timeline/application/TimelineLayerFrame/RemoveKeyFrames/usecase/TimelineLayerFrameRemoveKeyFramesHistoryRedoUseCase";
 import { execute as timelineLayerFrameEraseEmptyKeyframeHistoryRedoUseCase } from "@/history/application/timeline/application/TimelineLayerFrame/EraseEmptyKeyframe/usecase/TimelineLayerFrameEraseEmptyKeyframeHistoryRedoUseCase";
 import { execute as timelineLayerFrameEraseKeyframeHistoryRedoUseCase } from "@/history/application/timeline/application/TimelineLayerFrame/EraseKeyframe/usecase/TimelineLayerFrameEraseKeyframeHistoryRedoUseCase";
+import { execute as timelineLayerFrameDeleteEmptyKeyframeHistoryRedoUseCase } from "@/history/application/timeline/application/TimelineLayerFrame/DeleteEmptyKeyframe/usecase/TimelineLayerFrameDeleteEmptyKeyframeHistoryRedoUseCase";
 import { execute as instanceUpdateNameHistoryRedoUseCase } from "@/history/application/core/application/Instance/usecase/InstanceUpdateNameHistoryRedoUseCase";
 import { execute as instanceUpdateSymbolHistoryRedoUseCase } from "@/history/application/core/application/Instance/usecase/InstanceUpdateSymbolHistoryRedoUseCase";
 import {
@@ -75,7 +76,8 @@ import {
     $TIMELINE_REMOVE_EMPTY_FRAMES_COMMAND,
     $TIMELINE_REMOVE_KEY_FRAMES_COMMAND,
     $TIMELINE_ERASE_EMPTY_KEY_FRAME_COMMAND,
-    $TIMELINE_ERASE_KEY_FRAME_COMMAND
+    $TIMELINE_ERASE_KEY_FRAME_COMMAND,
+    $TIMELINE_DELETE_EMPTY_KEY_FRAME_COMMAND
 } from "@/config/HistoryConfig";
 
 /**
@@ -441,6 +443,16 @@ export const execute = async (
                 messages[1] as number, // MovieClip ID
                 messages[2] as number, // Layer Index
                 messages[3] as CharacterSaveObjectImpl[] // Character Save Object
+            );
+            break;
+
+        // 空のキーフレームの削除
+        case $TIMELINE_DELETE_EMPTY_KEY_FRAME_COMMAND:
+            timelineLayerFrameDeleteEmptyKeyframeHistoryRedoUseCase(
+                messages[0] as number, // WorkSpace ID
+                messages[1] as number, // MovieClip ID
+                messages[2] as number, // Layer Index
+                messages[3] as number  // EmptyCharacter Index
             );
             break;
 

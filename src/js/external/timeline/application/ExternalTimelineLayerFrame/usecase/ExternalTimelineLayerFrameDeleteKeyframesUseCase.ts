@@ -52,7 +52,7 @@ export const execute = (
                 const numFrames = character.endFrame - character.startFrame;
                 const currentEndFrame = character.endFrame;
 
-                // キーフレームを削除
+                // TODO キーフレームを削除
 
                 // キーフレームを跨いでいる場合は次のキーフレームの開始フレームをセット
                 // キーフレームないであれば最終

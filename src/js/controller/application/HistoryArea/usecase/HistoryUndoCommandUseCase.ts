@@ -40,6 +40,7 @@ import { execute as timelineLayerFrameRemoveEmptyFramesHistoryUndoUseCase } from
 import { execute as timelineLayerFrameRemoveKeyFramesHistoryUndoUseCase } from "@/history/application/timeline/application/TimelineLayerFrame/RemoveKeyFrames/usecase/TimelineLayerFrameRemoveKeyFramesHistoryUndoUseCase";
 import { execute as timelineLayerFrameEraseEmptyKeyframeHistoryUndoUseCase } from "@/history/application/timeline/application/TimelineLayerFrame/EraseEmptyKeyframe/usecase/TimelineLayerFrameEraseEmptyKeyframeHistoryUndoUseCase";
 import { execute as timelineLayerFrameEraseKeyframeHistoryUndoUseCase } from "@/history/application/timeline/application/TimelineLayerFrame/EraseKeyframe/usecase/TimelineLayerFrameEraseKeyframeHistoryUndoUseCase";
+import { execute as timelineLayerFrameDeleteEmptyKeyframeHistoryUndoUseCase } from "@/history/application/timeline/application/TimelineLayerFrame/DeleteEmptyKeyframe/usecase/TimelineLayerFrameDeleteEmptyKeyframeHistoryUndoUseCase";
 import { execute as instanceUpdateNameHistoryUndoUseCase } from "@/history/application/core/application/Instance/usecase/InstanceUpdateNameHistoryUndoUseCase";
 import { execute as instanceUpdateSymbolHistoryUndoUseCase } from "@/history/application/core/application/Instance/usecase/InstanceUpdateSymbolHistoryUndoUseCase";
 import {
@@ -77,7 +78,8 @@ import {
     $TIMELINE_REMOVE_EMPTY_FRAMES_COMMAND,
     $TIMELINE_REMOVE_KEY_FRAMES_COMMAND,
     $TIMELINE_ERASE_EMPTY_KEY_FRAME_COMMAND,
-    $TIMELINE_ERASE_KEY_FRAME_COMMAND
+    $TIMELINE_ERASE_KEY_FRAME_COMMAND,
+    $TIMELINE_DELETE_EMPTY_KEY_FRAME_COMMAND
 } from "@/config/HistoryConfig";
 
 /**
@@ -436,6 +438,17 @@ export const execute = async (
                 messages[1] as number, // MovieClip ID
                 messages[2] as number, // Layer Index
                 messages[3] as CharacterSaveObjectImpl[] // Character Save Objects
+            );
+            break;
+
+        // 空のキーフレームの削除
+        case $TIMELINE_DELETE_EMPTY_KEY_FRAME_COMMAND:
+            timelineLayerFrameDeleteEmptyKeyframeHistoryUndoUseCase(
+                messages[0] as number, // WorkSpace ID
+                messages[1] as number, // MovieClip ID
+                messages[2] as number, // Layer Index
+                messages[3] as number, // EmptyCharacter Index
+                messages[4] as EmptyCharacterSaveObjectImpl // Save EmptyCharacter Object
             );
             break;
 

@@ -33,7 +33,9 @@ import {
     $TIMELINE_REMOVE_EMPTY_FRAMES_COMMAND,
     $TIMELINE_REMOVE_KEY_FRAMES_COMMAND,
     $TIMELINE_ERASE_EMPTY_KEY_FRAME_COMMAND,
-    $TIMELINE_ERASE_KEY_FRAME_COMMAND
+    $TIMELINE_ERASE_KEY_FRAME_COMMAND,
+    $TIMELINE_DELETE_EMPTY_KEY_FRAME_COMMAND,
+    $TIMELINE_DELETE_KEY_FRAME_COMMAND
 } from "../../../../config/HistoryConfig";
 
 describe("HistoryGetTextServiceTest", () =>
@@ -74,5 +76,7 @@ describe("HistoryGetTextServiceTest", () =>
         expect(execute($TIMELINE_REMOVE_KEY_FRAMES_COMMAND)).toBe("「%s1」のレイヤー「%s2」の%s3フレームのキーフレームから%s4フレーム削除");
         expect(execute($TIMELINE_ERASE_EMPTY_KEY_FRAME_COMMAND)).toBe("「%s1」のレイヤー「%s2」の%s3フレームの空のキーフレームを全て削除");
         expect(execute($TIMELINE_ERASE_KEY_FRAME_COMMAND)).toBe("「%s1」のレイヤー「%s2」の%s3フレームのキーフレームを全て削除");
+        expect(execute($TIMELINE_DELETE_EMPTY_KEY_FRAME_COMMAND)).toBe("「%s1」のレイヤー「%s2」の%s3フレームの空のキーフレームを削除");
+        expect(execute($TIMELINE_DELETE_KEY_FRAME_COMMAND)).toBe("「%s1」のレイヤー「%s2」の%s3フレームのキーフレームを削除");
     });
 });

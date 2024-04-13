@@ -5,6 +5,7 @@ import type { Layer } from "@/core/domain/model/Layer";
 import { execute as timelineLayerAddFrameUpdateLayerStyleUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerAddFrameUpdateLayerStyleUseCase";
 import { execute as externalTimelineLayerFrameExtendBehindKeyframeService } from "../service/ExternalTimelineLayerFrameExtendBehindKeyframeService";
 import { execute as externalTimelineLayerFrameExtendForwardKeyframeService } from "../service/ExternalTimelineLayerFrameExtendForwardKeyframeService";
+import { execute as timelineLayerFrameDeleteEmptyKeyframeHistoryUseCase } from "@/history/application/timeline/application/TimelineLayerFrame/DeleteEmptyKeyframe/usecase/TimelineLayerFrameDeleteEmptyKeyframeHistoryUseCase";
 
 /**
  * @description 空のキーフレームの削除処理
@@ -12,7 +13,9 @@ import { execute as externalTimelineLayerFrameExtendForwardKeyframeService } fro
  *
  * @param  {WorkSpace} work_space
  * @param  {MovieClip} movie_clip
+ * @param  {Layer} layer
  * @param  {EmptyCharacter} empty_character
+ * @param  {boolean} [receiver=false]
  * @return {void}
  * @method
  * @public
@@ -21,26 +24,34 @@ export const execute = (
     work_space: WorkSpace,
     movie_clip: MovieClip,
     layer: Layer,
-    empty_character: EmptyCharacter
+    empty_character: EmptyCharacter,
+    receiver: boolean = false
 ): void => {
 
+    // 削除するキーフレーム数
     const numFrames = empty_character.endFrame - empty_character.startFrame;
 
     // 削除するキーフレーム数が0の場合は終了
     if (empty_character.startFrame > 1) {
-        const keyframe = empty_character.startFrame - 1;
+        // 前方のフレームを後方に延長
         externalTimelineLayerFrameExtendBehindKeyframeService(
-            layer, keyframe, numFrames
+            layer, empty_character.startFrame - 1, numFrames
         );
     } else {
-        // 後方のフレームを前方に移動
-        const keyframe = empty_character.endFrame;
+        // 後方のフレームを前方に延長
         externalTimelineLayerFrameExtendForwardKeyframeService(
-            layer, keyframe, numFrames
+            layer, empty_character.endFrame, numFrames
         );
     }
 
-    // TODO 履歴に登録
+    // 履歴に登録
+    timelineLayerFrameDeleteEmptyKeyframeHistoryUseCase(
+        work_space,
+        movie_clip,
+        layer,
+        empty_character,
+        receiver
+    );
 
     // 空のキーフレームを削除
     layer.removeEmptyCharacter(empty_character);
