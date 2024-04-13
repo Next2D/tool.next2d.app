@@ -1,18 +1,18 @@
-import type { EmptyCharacter } from "@/core/domain/model/EmptyCharacter";
+import type { Character } from "@/core/domain/model/Character";
 import type { Layer } from "@/core/domain/model/Layer";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import { execute as externalTimelineLayerFrameForwardKeyframeService } from "@/external/timeline/application/ExternalTimelineLayerFrame/service/ExternalTimelineLayerFrameForwardKeyframeService";
-import { execute as timelineLayerFrameRemoveEmptyFramesHistoryUseCase } from "@/history/application/timeline/application/TimelineLayerFrame/RemoveEmptyFrames/usecase/TimelineLayerFrameRemoveEmptyFramesHistoryUseCase";
+import { execute as timelineLayerFrameRemoveKeyFramesHistoryUseCase } from "@/history/application/timeline/application/TimelineLayerFrame/RemoveKeyFrames/usecase/TimelineLayerFrameRemoveKeyFramesHistoryUseCase";
 
 /**
- * @description 空のキーフレームのフレームを削除
- *              Delete the frame of the empty keyframe
+ * @description キーフレームのフレームを削除
+ *              Delete the frame of the keyframe
  *
  * @param  {WorkSpace} work_space
  * @param  {MovieClip} movie_clip
  * @param  {Layer} layer
- * @param  {EmptyCharacter} emptyCharacter
+ * @param  {Character[]} characters
  * @param  {number} num_frames
  * @param  {boolean} [receiver=false]
  * @return {void}
@@ -23,32 +23,36 @@ export const execute = (
     work_space: WorkSpace,
     movie_clip: MovieClip,
     layer: Layer,
-    emptyCharacter: EmptyCharacter,
+    characters: Character[],
     num_frames: number,
     receiver: boolean = false
 ): void => {
+
+    // 変更前の最終フレームをセット
+    const beforeEndFrame = characters[0].endFrame;
 
     // 後方のキーフレームを前方へ移動
     // fixed logic
     externalTimelineLayerFrameForwardKeyframeService(
         layer,
-        emptyCharacter.endFrame,
+        beforeEndFrame,
         num_frames
     );
 
-    // 変更前の最終フレームをセット
-    const beforeEndFrame = emptyCharacter.endFrame;
-
     // 終了位置を更新
-    emptyCharacter.endFrame -= num_frames;
+    for (let idx = 0; idx < characters.length; ++idx) {
+        const activeCharacter = characters[idx];
+        activeCharacter.endFrame -= num_frames;
+    }
 
     // 履歴を登録
-    timelineLayerFrameRemoveEmptyFramesHistoryUseCase(
+    timelineLayerFrameRemoveKeyFramesHistoryUseCase(
         work_space,
         movie_clip,
         layer,
-        emptyCharacter,
+        characters[0].startFrame, // keyframe
         beforeEndFrame,
+        characters[0].endFrame, // after end frame
         receiver
     );
 };

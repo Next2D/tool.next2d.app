@@ -2,8 +2,8 @@ import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import { execute as externalTimelineLayerFrameForwardKeyframeService } from "@/external/timeline/application/ExternalTimelineLayerFrame/service/ExternalTimelineLayerFrameForwardKeyframeService";
 import { execute as timelineLayerAddFrameUpdateLayerStyleUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerAddFrameUpdateLayerStyleUseCase";
-import { execute as timelineLayerFrameRemoveKeyFramesHistoryUseCase } from "@/history/application/timeline/application/TimelineLayerFrame/RemoveKeyFrames/usecase/TimelineLayerFrameRemoveKeyFramesHistoryUseCase";
 import { execute as externalTimelineLayerFrameRemoveEmptyFramesUseCase } from "./ExternalTimelineLayerFrameRemoveEmptyFramesUseCase";
+import { execute as externalTimelineLayerFrameRemoveKeyFramesUseCase } from "./ExternalTimelineLayerFrameRemoveKeyFramesUseCase";
 
 /**
  * @description 指定レイヤーの指定範囲のフレームを削除
@@ -64,40 +64,31 @@ export const execute = (
                 // 削除するフレーム数を算出
                 const numFrames = endFrame - startFrame;
 
-                // 後方のキーフレームを前方へ移動
-                // fixed logic
-                externalTimelineLayerFrameForwardKeyframeService(
-                    layer,
-                    character.endFrame,
-                    numFrames
-                );
-
                 // キーフレームの幅以上の場合はキーフレームを削除、それ以外は終了位置を更新
                 if (numFrames === character.endFrame - character.startFrame) {
+                    // 後方のキーフレームを前方へ移動
+                    externalTimelineLayerFrameForwardKeyframeService(
+                        layer,
+                        character.endFrame,
+                        numFrames
+                    );
+
                     // キーフレームを削除
                     for (let idx = 0; idx < activeCharacters.length; ++idx) {
                         const activeCharacter = activeCharacters[idx];
                         layer.removeCharacter(activeCharacter);
                     }
+
+                    // TODO 履歴の登録
+
                 } else {
-
-                    // 変更前の最終フレームをセット
-                    const beforeEndFrame = activeCharacters[0].endFrame;
-
-                    // 終了位置を更新
-                    for (let idx = 0; idx < activeCharacters.length; ++idx) {
-                        const activeCharacter = activeCharacters[idx];
-                        activeCharacter.endFrame -= numFrames;
-                    }
-
-                    // 履歴を登録
-                    timelineLayerFrameRemoveKeyFramesHistoryUseCase(
+                    // キーフレームのフレーム削除実行
+                    externalTimelineLayerFrameRemoveKeyFramesUseCase(
                         work_space,
                         movie_clip,
                         layer,
-                        activeCharacters[0].startFrame, // keyframe
-                        beforeEndFrame,
-                        activeCharacters[0].endFrame // after end frame
+                        activeCharacters,
+                        numFrames
                     );
                 }
 
@@ -106,11 +97,10 @@ export const execute = (
                 if (end_frame >= currentEndFrame) {
                     frame = start_frame - 1;
                     stopFrame -= numFrames;
+                    continue;
                 } else {
                     break;
                 }
-
-                continue;
 
             } else {
 
@@ -135,10 +125,17 @@ export const execute = (
                     /// 空のキーフレームの幅以上の場合はキーフレームを削除、それ以外は終了位置を更新
                     if (numFrames === activeEmptyCharacter.endFrame - activeEmptyCharacter.startFrame) {
 
-                        // 履歴を登録
+                        // 後方のキーフレームを前方へ移動
+                        externalTimelineLayerFrameForwardKeyframeService(
+                            layer,
+                            activeEmptyCharacter.endFrame,
+                            numFrames
+                        );
 
                         // 空のキーフレームを削除
                         layer.removeEmptyCharacter(activeEmptyCharacter);
+
+                        // TODO 履歴の登録
 
                     } else {
                         // 空のキーフレームのフレーム削除実行
@@ -156,11 +153,10 @@ export const execute = (
                     if (end_frame >= currentEndFrame) {
                         frame = start_frame - 1;
                         stopFrame -= numFrames;
+                        continue;
                     } else {
                         break;
                     }
-
-                    continue;
 
                 } else {
                     // ヒットがなければ終了
@@ -169,8 +165,8 @@ export const execute = (
             }
         }
 
+        // タイムラインのレイヤー表示を更新
         if (work_space.active && movie_clip.active) {
-            // タイムラインのレイヤー表示を更新
             timelineLayerAddFrameUpdateLayerStyleUseCase(work_space, movie_clip, layer);
         }
     }

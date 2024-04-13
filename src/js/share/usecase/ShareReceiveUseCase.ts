@@ -35,6 +35,7 @@ import { execute as timelineLayerFrameUpdateKeyframeReceiveUseCase } from "@/sha
 import { execute as timelineLayerFrameSplitKeyframeToEmptyReceiveUseCase } from "@/share/receive/application/timeline/application/TimelineLayerFrame/application/Keyframe/usecase/TimelineLayerFrameSplitKeyframeToEmptyReceiveUseCase";
 import { execute as timelineLayerFrameSplitKeyframeToKeyframeReceiveUseCase } from "@/share/receive/application/timeline/application/TimelineLayerFrame/application/Keyframe/usecase/TimelineLayerFrameSplitKeyframeToKeyframeReceiveUseCase";
 import { execute as timelineLayerFrameRemoveEmptyFramesReceiveUseCase } from "@/share/receive/application/timeline/application/TimelineLayerFrame/application/EmptyKeyframe/usecase/TimelineLayerFrameRemoveEmptyFramesReceiveUseCase";
+import { execute as timelineLayerFrameRemoveKeyFramesReceiveUseCase } from "@/share/receive/application/timeline/application/TimelineLayerFrame/application/Keyframe/usecase/TimelineLayerFrameRemoveKeyFramesReceiveUseCase";
 import { execute as historyRedoUseCase } from "@/controller/application/HistoryArea/usecase/HistoryRedoUseCase";
 import { execute as historyUndoUseCase } from "@/controller/application/HistoryArea/usecase/HistoryUndoUseCase";
 import {
@@ -292,6 +293,7 @@ export const execute = async (message: ShareReceiveMessageImpl): Promise<void> =
 
         // キーフレームのフレームを削除
         case $TIMELINE_REMOVE_KEY_FRAMES_COMMAND:
+            timelineLayerFrameRemoveKeyFramesReceiveUseCase(message);
             break;
 
         default:
