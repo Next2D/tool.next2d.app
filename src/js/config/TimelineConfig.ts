@@ -410,4 +410,4 @@ export const $TIMELINE_TARGET_GROUP_ID: string = "target-group";
  * @type {string}
  * @constant
  */
-export const $TIMELINE_DELETE_FRAME_ID: string = "timeline-frame-delete";
+export const $TIMELINE_ERASE_FRAME_ID: string = "timeline-frame-erase";

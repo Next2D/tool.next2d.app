@@ -1,4 +1,4 @@
-import { $TIMELINE_DELETE_FRAME_ID } from "@/config/TimelineConfig";
+import { $TIMELINE_ERASE_FRAME_ID } from "@/config/TimelineConfig";
 import { EventType } from "@/tool/domain/event/EventType";
 import { execute as timelineToolDeleteFramesMouseDownEventUseCase } from "./TimelineToolDeleteFramesMouseDownEventUseCase";
 
@@ -13,7 +13,7 @@ import { execute as timelineToolDeleteFramesMouseDownEventUseCase } from "./Time
 export const execute = (): void =>
 {
     const element: HTMLElement | null = document
-        .getElementById($TIMELINE_DELETE_FRAME_ID);
+        .getElementById($TIMELINE_ERASE_FRAME_ID);
 
     if (!element) {
         return ;

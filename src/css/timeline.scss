@@ -453,7 +453,7 @@
     }
 }
 
-#timeline-frame-delete
+#timeline-frame-erase
 {
     width               : 20px;
     height              : 20px;
@@ -468,6 +468,23 @@
         filter : brightness(250%);
         cursor : pointer;
     }
+}
+
+#timeline-key-delete
+{
+    width               : 20px;
+    height              : 20px;
+    background-image    : url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14"><path fill="darkgray" d="M12.8,1.2v11.7H1.2V1.2H12.8z M14,0H0v14h14V0z M10.5,5.9h-7v2.2h7V5.9z"/></svg>');
+    background-repeat   : no-repeat;
+    background-position : center center;
+    margin              : 6px;
+    flex-shrink         : 0;
+
+    &:hover
+    {
+        filter : brightness(250%);
+        cursor : pointer;
+    } 
 }
 
 #timeline-onion-skin

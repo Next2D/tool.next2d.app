@@ -535,7 +535,7 @@
     
     .timeline-empty-add
     {
-        background-image    : url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24"><path fill="darkgray" d="M16 0v2h-8v-2h8zm0 24v-2h-8v2h8zm2-22h4v4h2v-6h-6v2zm-18 14h2v-8h-2v8zm2-10v-4h4v-2h-6v6h2zm22 2h-2v8h2v-8zm-2 10v4h-4v2h6v-6h-2zm-16 4h-4v-4h-2v6h6v-2z"/></svg>');
+        background-image    : url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 14 14"><path fill="darkgray" d="M9.3,0v1.2H4.7V0H9.3z M9.3,14v-1.2H4.7V14H9.3z M10.5,1.2h2.3v2.3H14V0h-3.5V1.2z M0,9.3h1.2V4.7H0V9.3z M1.2,3.5V1.2h2.3V0H0v3.5H1.2z M14,4.7h-1.2v4.7H14V4.7z M12.8,10.5v2.3h-2.3V14H14v-3.5H12.8z M3.5,12.8H1.2v-2.3H0V14h3.5V12.8z M7.5,4.2h2.3v2.3H11V3H7.5V4.2z M4.2,6.5V4.2h2.3V3H3v3.5H4.2z M9.8,7.5v2.3H7.5V11H11V7.5H9.8z M6.5,9.8H4.2V7.5H3V11h3.5V9.8z"/></svg>');
         background-repeat   : no-repeat;
         background-position : center center;
     }
@@ -547,9 +547,16 @@
         background-position : center center;
     }
     
-    .timeline-frame-delete
+    .timeline-frame-erase
     {
         background-image    : url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill-rule="evenodd" clip-rule="evenodd" viewBox="0 0 24 24"><path fill="darkgray" d="M7 5h17v16h-17l-7-7.972 7-8.028zm7 6.586l-2.586-2.586-1.414 1.414 2.586 2.586-2.586 2.586 1.414 1.414 2.586-2.586 2.586 2.586 1.414-1.414-2.586-2.586 2.586-2.586-1.414-1.414-2.586 2.586z"/></svg>');
+        background-repeat   : no-repeat;
+        background-position : center center;
+    }
+
+    .timeline-key-delete
+    {
+        background-image    : url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 14 14"><path fill="darkgray" d="M12.8,1.2v11.7H1.2V1.2H12.8z M14,0H0v14h14V0z M10.5,5.9h-7v2.2h7V5.9z"/></svg>');
         background-repeat   : no-repeat;
         background-position : center center;
     }
