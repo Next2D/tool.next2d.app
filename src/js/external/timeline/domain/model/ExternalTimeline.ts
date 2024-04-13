@@ -14,6 +14,7 @@ import { execute as externalTimelineLayerDeactivatedAllLayerUseCase } from "@/ex
 import { execute as externalTimelineLayerFrameInsertFramesUseCase } from "@/external/timeline/application/ExternalTimelineLayerFrame/usecase/ExternalTimelineLayerFrameInsertFramesUseCase";
 import { execute as externalTimelineAddItemToMovieClipUseCase } from "@/external/timeline/application/ExternalTimeline/usecase/ExternalTimelineAddItemToMovieClipUseCase";
 import { execute as externalTimelineLayerFrameRemoveFrameUseCase } from "@/external/timeline/application/ExternalTimelineLayerFrame/usecase/ExternalTimelineLayerFrameRemoveFrameUseCase";
+import { execute as externalTimelineLayerFrameDeleteKeyframesUseCase } from "@/external/timeline/application/ExternalTimelineLayerFrame/usecase/ExternalTimelineLayerFrameDeleteKeyframesUseCase";
 
 /**
  * @description タイムラインの外部APIクラス
@@ -346,8 +347,12 @@ export class ExternalTimeline
      */
     deleteKeyframes (start_frame: number, end_frame: number = 0): void
     {
-        // TODO
-        console.log("deleteKeyframes: ", start_frame, end_frame);
+        externalTimelineLayerFrameDeleteKeyframesUseCase(
+            this._$workSpace,
+            this._$movieClip,
+            start_frame,
+            end_frame
+        );
     }
 
     /**
