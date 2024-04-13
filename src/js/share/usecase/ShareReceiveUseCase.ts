@@ -39,6 +39,7 @@ import { execute as timelineLayerFrameRemoveKeyFramesReceiveUseCase } from "@/sh
 import { execute as timelineLayerFrameEraseEmptyKeyframeReceiveUseCase } from "@/share/receive/application/timeline/application/TimelineLayerFrame/application/EmptyKeyframe/usecase/TimelineLayerFrameEraseEmptyKeyframeReceiveUseCase";
 import { execute as timelineLayerFrameEraseKeyframeReceiveUseCase } from "@/share/receive/application/timeline/application/TimelineLayerFrame/application/Keyframe/usecase/TimelineLayerFrameEraseKeyframeReceiveUseCase";
 import { execute as timelineLayerFrameDeleteEmptyFrameReceiveUseCase } from "@/share/receive/application/timeline/application/TimelineLayerFrame/application/EmptyKeyframe/usecase/TimelineLayerFrameDeleteEmptyFrameReceiveUseCase";
+import { execute as timelineLayerFrameDeleteKeyframeReceiveUseCase } from "@/share/receive/application/timeline/application/TimelineLayerFrame/application/Keyframe/usecase/TimelineLayerFrameDeleteKeyframeReceiveUseCase";
 import { execute as historyRedoUseCase } from "@/controller/application/HistoryArea/usecase/HistoryRedoUseCase";
 import { execute as historyUndoUseCase } from "@/controller/application/HistoryArea/usecase/HistoryUndoUseCase";
 import {
@@ -83,7 +84,8 @@ import {
     $TIMELINE_REMOVE_KEY_FRAMES_COMMAND,
     $TIMELINE_ERASE_EMPTY_KEY_FRAME_COMMAND,
     $TIMELINE_ERASE_KEY_FRAME_COMMAND,
-    $TIMELINE_DELETE_EMPTY_KEY_FRAME_COMMAND
+    $TIMELINE_DELETE_EMPTY_KEY_FRAME_COMMAND,
+    $TIMELINE_DELETE_KEY_FRAME_COMMAND
 } from "@/config/HistoryConfig";
 
 /**
@@ -315,6 +317,11 @@ export const execute = async (message: ShareReceiveMessageImpl): Promise<void> =
         // 空のキーフレームの削除
         case $TIMELINE_DELETE_EMPTY_KEY_FRAME_COMMAND:
             timelineLayerFrameDeleteEmptyFrameReceiveUseCase(message);
+            break;
+
+        // キーフレームの削除
+        case $TIMELINE_DELETE_KEY_FRAME_COMMAND:
+            timelineLayerFrameDeleteKeyframeReceiveUseCase(message);
             break;
 
         default:
