@@ -13,7 +13,7 @@ import { ExternalTimeline } from "@/external/timeline/domain/model/ExternalTimel
  * @method
  * @public
  */
-export const execute = (message: ShareReceiveMessageImpl): void =>
+export const execute = async (message: ShareReceiveMessageImpl): Promise<void> =>
 {
     const id = message.data[0] as NonNullable<number>;
 
@@ -29,7 +29,7 @@ export const execute = (message: ShareReceiveMessageImpl): void =>
     }
 
     const externalTimeline = new ExternalTimeline(workSpace, movieClip);
-    externalTimeline.deleteLayer(
+    await externalTimeline.deleteLayer(
         [message.data[2] as NonNullable<number>], // index
         true
     );

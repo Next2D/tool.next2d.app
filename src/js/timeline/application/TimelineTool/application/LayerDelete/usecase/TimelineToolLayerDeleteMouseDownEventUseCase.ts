@@ -5,11 +5,11 @@ import { execute as timelineToolLayerDeleteUseCase } from "./TimelineToolLayerDe
  *              Delete Layer button event handling function
  *
  * @param  {PointerEvent} event
- * @return {void}
+ * @return {Promise}
  * @method
  * @public
  */
-export const execute = (event: PointerEvent): void =>
+export const execute = async (event: PointerEvent): Promise<void> =>
 {
     if (event.button !== 0) {
         return;
@@ -20,5 +20,5 @@ export const execute = (event: PointerEvent): void =>
     event.preventDefault();
 
     // 指定レイヤーを削除
-    timelineToolLayerDeleteUseCase();
+    await timelineToolLayerDeleteUseCase();
 };

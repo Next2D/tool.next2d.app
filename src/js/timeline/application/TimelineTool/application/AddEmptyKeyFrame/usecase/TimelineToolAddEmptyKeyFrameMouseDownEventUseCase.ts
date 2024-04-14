@@ -5,11 +5,11 @@ import { execute as timelineToolAddEmptyKeyFrameUseCase } from "./TimelineToolAd
  *              Event processing function for add empty keyframe button
  *
  * @param  {PointerEvent} event
- * @return {void}
+ * @return {Promise}
  * @method
  * @public
  */
-export const execute = (event: PointerEvent): void =>
+export const execute = async (event: PointerEvent): Promise<void> =>
 {
     if (event.button !== 0) {
         return;
@@ -20,5 +20,5 @@ export const execute = (event: PointerEvent): void =>
     event.preventDefault();
 
     // キーフレーム追加のユースケースを実行
-    timelineToolAddEmptyKeyFrameUseCase();
+    await timelineToolAddEmptyKeyFrameUseCase();
 };

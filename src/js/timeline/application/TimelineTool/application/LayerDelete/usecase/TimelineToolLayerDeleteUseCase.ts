@@ -6,11 +6,11 @@ import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
  * @description タイムラインの指定レイヤーを削除する
  *              Deleting a specified layer of the timeline
  *
- * @return {void}
+ * @return {Promise}
  * @method
  * @public
  */
-export const execute = (): void =>
+export const execute = async (): Promise<void> =>
 {
     // アクティブなWorkSpaceを利用する
     const workSpace = $getCurrentWorkSpace();
@@ -49,5 +49,5 @@ export const execute = (): void =>
     const externalTimeline = new ExternalTimeline(workSpace, movieClip);
 
     // 削除を実行
-    externalTimeline.deleteLayer(indexes);
+    await externalTimeline.deleteLayer(indexes);
 };

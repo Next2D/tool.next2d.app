@@ -76,13 +76,13 @@ export class ExternalTimeline
      *
      * @param  {number} start_frame
      * @param  {number} end_frame
-     * @return {void}
+     * @return {Promise}
      * @method
      * @public
      */
-    convertToEmptyKeyframes (start_frame: number, end_frame: number = 0): void
+    async convertToEmptyKeyframes (start_frame: number, end_frame: number = 0): Promise<void>
     {
-        externalTimelineLayerFrameConvertToEmptyKeyframesUseCase(
+        await externalTimelineLayerFrameConvertToEmptyKeyframesUseCase(
             this._$workSpace,
             this._$movieClip,
             start_frame,
@@ -160,10 +160,10 @@ export class ExternalTimeline
      * @method
      * @public
      */
-    deleteLayer (
+    async deleteLayer (
         indexes: number[],
         receiver: boolean = false
-    ): void {
+    ): Promise<void> {
 
         if (!indexes.length) {
             return ;
@@ -172,7 +172,7 @@ export class ExternalTimeline
         // 削除前に非アクティブに更新
         this.deactivatedLayer(indexes);
 
-        externalTimelineDeleteLayerUseCase(
+        await externalTimelineDeleteLayerUseCase(
             this._$workSpace,
             this._$movieClip,
             indexes,

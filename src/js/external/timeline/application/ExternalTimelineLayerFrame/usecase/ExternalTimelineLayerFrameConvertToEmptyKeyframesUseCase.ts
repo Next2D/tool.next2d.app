@@ -4,6 +4,7 @@ import { $convertFrameObject } from "@/timeline/application/TimelineUtil";
 import { execute as externalTimelineLayerFramePrevAdjustmentUseCase } from "./ExternalTimelineLayerFramePrevAdjustmentUseCase";
 import { execute as externalTimelineLayerFrameSplitToEmptyUseCase } from "./ExternalTimelineLayerFrameSplitToEmptyUseCase";
 import { execute as timelineLayerAddFrameUpdateLayerStyleUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerAddFrameUpdateLayerStyleUseCase";
+import { execute as screenAreaRedrawUseCase } from "@/screen/application/ScreenArea/usecase/ScreenAreaRedrawUseCase";
 
 /**
  * @description 選択中のレイヤーに空のキーフレームを追加
@@ -13,16 +14,16 @@ import { execute as timelineLayerAddFrameUpdateLayerStyleUseCase } from "@/timel
  * @param  {MovieClip} movie_clip
  * @param  {number} start_frame
  * @param  {number} end_frame
- * @return {void}
+ * @return {Promise}
  * @method
  * @public
  */
-export const execute = (
+export const execute = async (
     work_space: WorkSpace,
     movie_clip: MovieClip,
     start_frame: number,
     end_frame: number = 0
-): void => {
+): Promise<void> => {
 
     // レイヤーが何も選択されてなければ終了
     if (!movie_clip.selectedLayers.length) {
@@ -30,6 +31,9 @@ export const execute = (
     }
 
     const frameObject = $convertFrameObject(start_frame, end_frame);
+
+    // 再描画判定
+    let reload = false;
 
     // 昇順に並び替えたレイヤー配列を取得
     const selectedLayers = movie_clip.getCloneAndSortSelectedLayers();
@@ -51,12 +55,16 @@ export const execute = (
         for (let keyframe = frameObject.start; keyframe < frameObject.end; ++keyframe) {
 
             // 空のキーフレームに分割
-            externalTimelineLayerFrameSplitToEmptyUseCase(
+            const result = externalTimelineLayerFrameSplitToEmptyUseCase(
                 work_space,
                 movie_clip,
                 layer,
                 keyframe
             );
+
+            if (result) {
+                reload = true;
+            }
 
         }
 
@@ -65,5 +73,10 @@ export const execute = (
             // タイムラインのレイヤー表示を更新
             timelineLayerAddFrameUpdateLayerStyleUseCase(work_space, movie_clip, layer);
         }
+    }
+
+    // スクリーンを再描画
+    if (reload && work_space.active && movie_clip.active) {
+        await screenAreaRedrawUseCase(movie_clip);
     }
 };

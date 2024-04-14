@@ -131,7 +131,7 @@ export const execute = async (message: ShareReceiveMessageImpl): Promise<void> =
 
         // 新規レイヤー削除
         case $TIMELINE_TOOL_LAYER_DELETE_COMMAND:
-            timelineToolLayerDeleteReceiveService(message);
+            await timelineToolLayerDeleteReceiveService(message);
             break;
 
         // レイヤー名の変更

@@ -13,7 +13,7 @@ import { execute as externalTimelineLayerFrameSplitKeyframeToEmptyUseCase } from
  * @param  {MovieClip} movie_clip
  * @param  {Layer} layer
  * @param  {number} keyframe
- * @return {void}
+ * @return {boolean}
  * @method
  * @public
  */
@@ -22,7 +22,7 @@ export const execute = (
     movie_clip: MovieClip,
     layer: Layer,
     keyframe: number
-): void => {
+): boolean => {
 
     // 指定のキーフレームにアクティブなキャラクターがあれば終了
     const activeCharacters = layer.getActiveCharacters(keyframe);
@@ -34,7 +34,7 @@ export const execute = (
             activeCharacters,
             keyframe
         );
-        return ;
+        return true;
     }
 
     const activeEmptyCharacter = layer.getActiveEmptyCharacter(keyframe);
@@ -49,7 +49,7 @@ export const execute = (
             keyframe
         );
 
-        return ;
+        return false;
     }
 
     // 新規の空のキーフレームを追加
@@ -60,4 +60,6 @@ export const execute = (
         keyframe,
         keyframe + 1
     );
+
+    return false;
 };

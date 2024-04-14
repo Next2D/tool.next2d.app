@@ -6,11 +6,11 @@ import { execute as timelineToolAddEmptyKeyFrameUseCase } from "@/timeline/appli
  *              Mouse down event of the empty keyframe add button in the timeline menu
  *
  * @param  {PointerEvent} event
- * @return {void}
+ * @return {Promise}
  * @method
  * @public
  */
-export const execute = (event: PointerEvent): void =>
+export const execute = async (event: PointerEvent): Promise<void> =>
 {
     if (event.button !== 0) {
         return ;
@@ -24,5 +24,5 @@ export const execute = (event: PointerEvent): void =>
     $allHideMenu();
 
     // 空のキーフレームを追加する
-    timelineToolAddEmptyKeyFrameUseCase();
+    await timelineToolAddEmptyKeyFrameUseCase();
 };
