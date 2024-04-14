@@ -378,7 +378,7 @@ export const execute = async (
 
         // キーフレームを分割して空のキーフレームを挿入
         case $TIMELINE_SPLIT_KEYFRAME_TO_EMPTY_COMMAND:
-            timelineLayerFrameSplitKeyframeToEmptyHistoryUndoUseCase(
+            await timelineLayerFrameSplitKeyframeToEmptyHistoryUndoUseCase(
                 messages[0] as number, // WorkSpace ID
                 messages[1] as number, // MovieClip ID
                 messages[2] as number, // Layer Index
