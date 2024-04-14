@@ -1,5 +1,5 @@
 import { EventType } from "@/tool/domain/event/EventType";
-import { execute as timelineToolCurrentFrameWindowMouseMoveEventService } from "../service/TimelineToolCurrentFrameWindowMouseMoveEventService";
+import { execute as timelineToolCurrentFrameWindowMouseMoveEventUseCase } from "./TimelineToolCurrentFrameWindowMouseMoveEventUseCase";
 import { $TIMELINE_CURRENT_FRAME_ID } from "@/config/TimelineConfig";
 import { $setCursor } from "@/global/GlobalUtil";
 
@@ -14,7 +14,7 @@ import { $setCursor } from "@/global/GlobalUtil";
 export const execute = (): void =>
 {
     window.removeEventListener(EventType.MOUSE_MOVE,
-        timelineToolCurrentFrameWindowMouseMoveEventService
+        timelineToolCurrentFrameWindowMouseMoveEventUseCase
     );
     window.removeEventListener(EventType.MOUSE_UP, execute);
 

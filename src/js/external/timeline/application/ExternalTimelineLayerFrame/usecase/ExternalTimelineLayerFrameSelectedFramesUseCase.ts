@@ -3,6 +3,7 @@ import { WorkSpace } from "@/core/domain/model/WorkSpace";
 import { execute as timelineFrameUpdateFrameElementService } from "@/timeline/application/TimelineFrame/service/TimelineFrameUpdateFrameElementService";
 import { execute as timelineMarkerMovePositionService } from "@/timeline/application/TimelineMarker/service/TimelineMarkerMovePositionService";
 import { execute as timelineLayerAllSelectedElementUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerAllSelectedElementUseCase";
+import { execute as screenAreaRedrawUseCase } from "@/screen/application/ScreenArea/usecase/ScreenAreaRedrawUseCase";
 
 /**
  * @description 指定のフレームを選択状態に更新
@@ -15,11 +16,11 @@ import { execute as timelineLayerAllSelectedElementUseCase } from "@/timeline/ap
  * @method
  * @public
  */
-export const execute = (
+export const execute = async (
     work_space: WorkSpace,
     movie_clip: MovieClip,
     frames: number[]
-): void => {
+): Promise<void> => {
 
     // 選択中のレイヤーがなければ終了
     if (!movie_clip.selectedLayers.length) {
@@ -43,6 +44,9 @@ export const execute = (
 
         // 指定のフレームを選択状態に更新
         timelineLayerAllSelectedElementUseCase(movie_clip, frames);
+
+        // スクリーンを再描画
+        await screenAreaRedrawUseCase(movie_clip);
     }
 
     // 内部情報を更新

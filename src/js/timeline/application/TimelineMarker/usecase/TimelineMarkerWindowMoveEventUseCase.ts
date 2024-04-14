@@ -4,6 +4,7 @@ import { execute as timelineFrameUpdateFrameElementService } from "@/timeline/ap
 import { timelineHeader } from "@/timeline/domain/model/TimelineHeader";
 import { $TIMELINE_LAYER_CONTROLLER_WIDTH } from "@/config/TimelineConfig";
 import { execute as timelineScrollUpdateScrollXUseCase } from "@/timeline/application/TimelineScroll/usecase/TimelineScrollUpdateScrollXUseCase";
+import { execute as screenAreaRedrawUseCase } from "@/screen/application/ScreenArea/usecase/ScreenAreaRedrawUseCase";
 import {
     $getMaxFrame,
     $getMoveMode,
@@ -43,7 +44,7 @@ export const execute = (event: PointerEvent, loop_mode: boolean = false): void =
 
     // 移動範囲が右側を超えた場合の処理
     if (event.pageX > maxPositionX) {
-        requestAnimationFrame((): void =>
+        requestAnimationFrame(async (): Promise<void> =>
         {
             if (loop_mode && !$getMoveMode()) {
                 return ;
@@ -53,6 +54,9 @@ export const execute = (event: PointerEvent, loop_mode: boolean = false): void =
             timelineFrameUpdateFrameElementService(
                 Math.min(scene.currentFrame + 1, $getMaxFrame())
             );
+
+            // スクリーンを再描画
+            await screenAreaRedrawUseCase(scene);
 
             // 右方向に移動
             if (!timelineScrollUpdateScrollXUseCase(frameWidth)) {
@@ -79,7 +83,7 @@ export const execute = (event: PointerEvent, loop_mode: boolean = false): void =
 
     // 移動範囲が左側を超えた場合の処理
     if (event.pageX < minPositionX) {
-        requestAnimationFrame((): void =>
+        requestAnimationFrame(async (): Promise<void> =>
         {
             if (loop_mode && !$getMoveMode()) {
                 return ;
@@ -89,6 +93,9 @@ export const execute = (event: PointerEvent, loop_mode: boolean = false): void =
             timelineFrameUpdateFrameElementService(
                 Math.max(scene.currentFrame - 1, 1)
             );
+
+            // スクリーンを再描画
+            await screenAreaRedrawUseCase(scene);
 
             // 左方向に移動
             if (!timelineScrollUpdateScrollXUseCase(-frameWidth)) {
@@ -117,7 +124,7 @@ export const execute = (event: PointerEvent, loop_mode: boolean = false): void =
     $setMoveMode(false);
 
     // マウスヒットしたフレームに移動
-    requestAnimationFrame((): void =>
+    requestAnimationFrame(async (): Promise<void> =>
     {
         const element: HTMLElement | null = event.target as HTMLElement;
         if (!element) {
@@ -140,5 +147,8 @@ export const execute = (event: PointerEvent, loop_mode: boolean = false): void =
 
         // マーカーを移動
         timelineMarkerMovePositionService();
+
+        // スクリーンを再描画
+        await screenAreaRedrawUseCase(scene);
     });
 };

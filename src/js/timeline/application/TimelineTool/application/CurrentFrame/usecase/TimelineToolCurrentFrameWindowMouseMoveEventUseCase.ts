@@ -5,6 +5,7 @@ import { $getLeftFrame, $getMaxFrame, $getRightFrame } from "@/timeline/applicat
 import { timelineHeader } from "@/timeline/domain/model/TimelineHeader";
 import { execute as timelineScrollUpdateScrollXUseCase } from "@/timeline/application/TimelineScroll/usecase/TimelineScrollUpdateScrollXUseCase";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
+import { execute as screenAreaRedrawUseCase } from "@/screen/application/ScreenArea/usecase/ScreenAreaRedrawUseCase";
 
 /**
  * @description タイムラインのフレームInputElement上のマウスムーブ処理関数
@@ -23,7 +24,7 @@ export const execute = (event: PointerEvent): void =>
 
     $setCursor("ew-resize");
 
-    requestAnimationFrame((): void =>
+    requestAnimationFrame(async (): Promise<void> =>
     {
         const scene = $getCurrentWorkSpace().scene;
         const frame = $clamp(
@@ -58,5 +59,8 @@ export const execute = (event: PointerEvent): void =>
                 break;
 
         }
+
+        // スクリーンを再描画
+        await screenAreaRedrawUseCase(scene);
     });
 };

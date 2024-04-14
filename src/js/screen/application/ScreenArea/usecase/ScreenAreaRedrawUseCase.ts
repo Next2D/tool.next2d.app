@@ -20,6 +20,11 @@ export const execute = async (movie_clip: MovieClip): Promise<void> =>
         return ;
     }
 
+    const elements = element.querySelectorAll(".display-object");
+    for (let idx = 0; idx < elements.length; idx++) {
+        elements[idx].remove();
+    }
+
     const frame  = movie_clip.currentFrame;
     const layers = movie_clip.layers;
     for (let idx = layers.length - 1; idx > -1; --idx) {

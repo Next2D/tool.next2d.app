@@ -28,8 +28,6 @@ export const execute = async (
     character: Character
 ): Promise<HTMLDivElement> => {
 
-    console.log([element, layer]);
-
     const cacheKey = character.cacheKey;
 
     let canvas = $getCacheCanvas(work_space_id, instance.id, cacheKey);

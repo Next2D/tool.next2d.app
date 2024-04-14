@@ -11,7 +11,7 @@ import { ExternalTimeline } from "@/external/timeline/domain/model/ExternalTimel
  * @method
  * @public
  */
-export const execute = (event: PointerEvent): void =>
+export const execute = async (event: PointerEvent): Promise<void> =>
 {
     if (event.button !== 0) {
         return ;
@@ -37,7 +37,7 @@ export const execute = (event: PointerEvent): void =>
     );
 
     // 選択したフレームに切り替える
-    externalTimeline.changeFrame(
+    await externalTimeline.changeFrame(
         parseInt(element.dataset.frame as string)
     );
 };

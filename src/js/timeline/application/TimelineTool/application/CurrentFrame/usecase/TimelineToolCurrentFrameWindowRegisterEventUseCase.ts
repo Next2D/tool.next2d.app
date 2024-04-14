@@ -1,5 +1,5 @@
 import { EventType } from "@/tool/domain/event/EventType";
-import { execute as timelineToolCurrentFrameWindowMouseMoveEventService } from "../service/TimelineToolCurrentFrameWindowMouseMoveEventService";
+import { execute as timelineToolCurrentFrameWindowMouseMoveEventUseCase } from "./TimelineToolCurrentFrameWindowMouseMoveEventUseCase";
 import { execute as timelineToolCurrentFrameWindowMouseUpEventUseCase } from "./TimelineToolCurrentFrameWindowMouseUpEventUseCase";
 
 /**
@@ -13,7 +13,7 @@ import { execute as timelineToolCurrentFrameWindowMouseUpEventUseCase } from "./
 export const execute = (): void =>
 {
     window.addEventListener(EventType.MOUSE_MOVE,
-        timelineToolCurrentFrameWindowMouseMoveEventService
+        timelineToolCurrentFrameWindowMouseMoveEventUseCase
     );
 
     window.addEventListener(EventType.MOUSE_UP,

@@ -99,9 +99,9 @@ export class ExternalTimeline
      * @method
      * @public
      */
-    changeFrame (frame: number): void
+    async changeFrame (frame: number): Promise<void>
     {
-        externalTimelineChageFrameUseCase(
+        await externalTimelineChageFrameUseCase(
             this._$workSpace,
             this._$movieClip,
             frame
@@ -237,9 +237,9 @@ export class ExternalTimeline
      * @method
      * @public
      */
-    selectedFrames (frames: number[]): void
+    async selectedFrames (frames: number[]): Promise<void>
     {
-        externalTimelineLayerFrameSelectedFramesUseCase(
+        await externalTimelineLayerFrameSelectedFramesUseCase(
             this._$workSpace,
             this._$movieClip,
             frames

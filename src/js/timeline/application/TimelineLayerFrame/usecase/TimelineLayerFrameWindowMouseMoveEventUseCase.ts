@@ -113,7 +113,7 @@ export const execute = (
 
     // 移動範囲が右側を超えた場合の処理
     if (event.pageX > maxPositionX) {
-        requestAnimationFrame((): void =>
+        requestAnimationFrame(async (): Promise<void> =>
         {
             if (loop_mode && !$getMoveMode()) {
                 return ;
@@ -142,7 +142,7 @@ export const execute = (
                 }
 
                 // 1フレーム追加
-                timelineLayerFrameSelectedService(
+                await timelineLayerFrameSelectedService(
                     workSpace, scene, indexes,
                     scene.selectedFrameObject.end + 1
                 );
@@ -156,7 +156,7 @@ export const execute = (
 
     // 移動範囲が左側を超えた場合の処理
     if (event.pageX < minPositionX) {
-        requestAnimationFrame((): void =>
+        requestAnimationFrame(async (): Promise<void> =>
         {
             if (loop_mode && !$getMoveMode()) {
                 return ;
@@ -185,7 +185,7 @@ export const execute = (
                 }
 
                 // 1フレーム減算
-                timelineLayerFrameSelectedService(
+                await timelineLayerFrameSelectedService(
                     workSpace, scene, indexes,
                     scene.selectedFrameObject.end - 1
                 );
@@ -200,7 +200,7 @@ export const execute = (
     // 自動移動モード終了
     $setMoveMode(false);
 
-    requestAnimationFrame((): void =>
+    requestAnimationFrame(async (): Promise<void> =>
     {
         const element = event.target as HTMLElement;
         if (!element) {
@@ -234,7 +234,7 @@ export const execute = (
         }
 
         // 指定フレームを選択
-        timelineLayerFrameSelectedService(
+        await timelineLayerFrameSelectedService(
             workSpace, scene, indexes,
             parseInt(frame)
         );

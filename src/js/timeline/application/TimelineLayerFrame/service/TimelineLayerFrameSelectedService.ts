@@ -6,16 +6,16 @@ import { ExternalTimeline } from "@/external/timeline/domain/model/ExternalTimel
  * @description レイヤーとフレームの複数選択の実行関数
  *              Function to execute multiple selection of layers and frames
  *
- * @return {void}
+ * @return {Promise}
  * @method
  * @public
  */
-export const execute = (
+export const execute = async (
     work_space: WorkSpace,
     movie_clip: MovieClip,
     indexes: number[],
     frame: number
-): void => {
+): Promise<void> => {
 
     // 外部APIを起動
     const externalTimeline = new ExternalTimeline(work_space, movie_clip);
@@ -30,5 +30,5 @@ export const execute = (
 
     // 指定した範囲のフレームをセット
     const frames = Array.from({ "length": endFrame - startFrame }, (_, idx) => idx + startFrame);
-    externalTimeline.selectedFrames(frames);
+    await externalTimeline.selectedFrames(frames);
 };

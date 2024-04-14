@@ -4,7 +4,7 @@ import { execute as timelineToolCurrentFrameMouseDownEventUseCase } from "./Time
 import { execute as timelineToolCurrentFrameMouseOverEventService } from "../service/TimelineToolCurrentFrameMouseOverEventService";
 import { execute as timelineToolCurrentFrameMouseOutEventService } from "../service/TimelineToolCurrentFrameMouseOutEventService";
 import { execute as timelineToolCurrentFrameFocusInEventService } from "../service/TimelineToolCurrentFrameFocusInEventService";
-import { execute as timelineToolCurrentFrameFocusOutEventService } from "../service/TimelineToolCurrentFrameFocusOutEventService";
+import { execute as timelineToolCurrentFrameFocusOutEventService } from "./TimelineToolCurrentFrameFocusOutEventUseCase";
 import { execute as timelineToolCurrentFrameKeyPressEventService } from "../service/TimelineToolCurrentFrameKeyPressEventService";
 
 /**

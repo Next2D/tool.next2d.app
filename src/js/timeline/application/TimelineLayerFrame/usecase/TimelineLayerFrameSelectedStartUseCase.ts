@@ -15,17 +15,17 @@ import { execute as timelineLayerFrameWindowMouseUpEventUseCase } from "./Timeli
  * @param  {MovieClip} movie_clip
  * @param  {Layer} layer
  * @param  {number} frame
- * @return {void}
+ * @return {Promise}
  * @method
  * @public
  */
-export const execute = (
+export const execute = async (
     work_space: WorkSpace,
     movie_clip: MovieClip,
     layer: Layer,
     frame: number,
     frames: number[]
-): void => {
+): Promise<void> => {
 
     // 外部APIを起動
     const externalLayer    = new ExternalLayer(work_space, movie_clip, layer);
@@ -37,7 +37,7 @@ export const execute = (
         .selectedLayers([externalLayer.index]);
 
     // 指定フレームを選択状態に更新
-    externalTimeline.selectedFrames(frames);
+    await externalTimeline.selectedFrames(frames);
 
     // 最初に選択したフレームとレイヤーをセット
     movie_clip.selectedFrameObject.start = frame;

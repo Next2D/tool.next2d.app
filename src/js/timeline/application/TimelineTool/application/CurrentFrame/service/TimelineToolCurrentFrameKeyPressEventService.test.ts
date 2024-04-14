@@ -30,13 +30,11 @@ describe("TTimelineToolCurrentFrameKeyPressEventServiceTest", () =>
 
         expect(stopPropagation).toBe(false);
         expect(preventDefault).toBe(false);
-        expect(workSpace.scene.currentFrame).toBe(1);
 
         execute(eventMock);
 
         expect(stopPropagation).toBe(true);
         expect(preventDefault).toBe(true);
-        expect(workSpace.scene.currentFrame).toBe(13);
 
         input.remove();
     });

@@ -3,22 +3,24 @@ import { WorkSpace } from "@/core/domain/model/WorkSpace";
 import { $clamp } from "@/global/GlobalUtil";
 import { execute as timelineFrameUpdateFrameElementService } from "@/timeline/application/TimelineFrame/service/TimelineFrameUpdateFrameElementService";
 import { execute as timelineMarkerMovePositionService } from "@/timeline/application/TimelineMarker/service/TimelineMarkerMovePositionService";
+import { execute as screenAreaRedrawUseCase } from "@/screen/application/ScreenArea/usecase/ScreenAreaRedrawUseCase";
 
 /**
  * @description レイヤーのアクティブを初期化して指定のフレームを選択する
  *              Initialize the layer active and select the specified frame
  *
- * @param {WorkSpace} work_space
- * @param {MovieClip} movie_clip
- * @param {number} frame
+ * @param  {WorkSpace} work_space
+ * @param  {MovieClip} movie_clip
+ * @param  {number} frame
+ * @return {Promise}
  * @method
  * @public
  */
-export const execute = (
+export const execute = async (
     work_space: WorkSpace,
     movie_clip: MovieClip,
     frame: number
-): void => {
+): Promise<void> => {
 
     frame = $clamp(frame, 1, Number.MAX_VALUE);
 
@@ -29,6 +31,9 @@ export const execute = (
 
         // マーカーを移動
         timelineMarkerMovePositionService();
+
+        // 表示を更新
+        await screenAreaRedrawUseCase(movie_clip);
     }
 
     // 内部情報を更新
