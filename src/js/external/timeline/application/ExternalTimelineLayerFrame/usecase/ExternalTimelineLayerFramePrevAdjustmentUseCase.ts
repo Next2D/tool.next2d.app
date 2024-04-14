@@ -11,7 +11,7 @@ import { execute as timelineLayerFrameUpdateKeyframeHistoryUseCase } from "@/his
  *
  * @param  {Layer} layer
  * @param  {number} keyframe
- * @return {void}
+ * @return {boolean}
  * @method
  * @public
  */
@@ -20,17 +20,17 @@ export const execute = (
     movie_clip: MovieClip,
     layer: Layer,
     keyframe: number
-): void => {
+): boolean => {
 
     // 指定のキーフレームにアクティブなキャラクターがあれば終了
     const activeCharacters = layer.getActiveCharacters(keyframe);
     if (activeCharacters.length) {
-        return ;
+        return false;
     }
 
     const activeEmptyCharacter = layer.getActiveEmptyCharacter(keyframe);
     if (activeEmptyCharacter) {
-        return ;
+        return false;
     }
 
     let frame = keyframe - 1;
@@ -56,7 +56,7 @@ export const execute = (
                 beforeEndFrame,
                 characters[0].endFrame
             );
-            return ;
+            return true;
         }
 
         const emptyCharacter = layer.getActiveEmptyCharacter(frame);
@@ -73,7 +73,7 @@ export const execute = (
                 emptyCharacter,
                 beforeEndFrame
             );
-            return ;
+            return false;
         }
 
         --frame;
@@ -87,4 +87,6 @@ export const execute = (
         1,
         keyframe
     );
+
+    return false;
 };

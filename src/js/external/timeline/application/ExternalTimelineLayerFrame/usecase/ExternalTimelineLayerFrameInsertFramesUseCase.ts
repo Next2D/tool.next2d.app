@@ -4,6 +4,7 @@ import { execute as externalTimelineLayerFrameInsertEmptyFramesUseCase } from ".
 import { execute as externalTimelineLayerFrameInsertKeyFramesUseCase } from "./ExternalTimelineLayerFrameInsertKeyFramesUseCase";
 import { execute as externalTimelineLayerFramePrevAdjustmentUseCase } from "./ExternalTimelineLayerFramePrevAdjustmentUseCase";
 import { execute as timelineLayerAddFrameUpdateLayerStyleUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerAddFrameUpdateLayerStyleUseCase";
+import { execute as screenAreaRedrawUseCase } from "@/screen/application/ScreenArea/usecase/ScreenAreaRedrawUseCase";
 
 /**
  * @description 現在のフレームで、選択中のレイヤーに指定数のフレームを挿入
@@ -12,21 +13,22 @@ import { execute as timelineLayerAddFrameUpdateLayerStyleUseCase } from "@/timel
  * @param  {WorkSpace} work_space
  * @param  {MovieClip} movie_clip
  * @param  {number} num_frame
- * @return {void}
+ * @return {Promise}
  * @method
  * @public
  */
-export const execute = (
+export const execute = async (
     work_space: WorkSpace,
     movie_clip: MovieClip,
     num_frame: number
-): void => {
+): Promise<void> => {
 
     // レイヤーが何も選択されてなければ終了
     if (!movie_clip.selectedLayers.length) {
         return ;
     }
 
+    let reload = false;
     const frame = movie_clip.currentFrame;
     const selectedLayers = movie_clip.getCloneAndSortSelectedLayers();
     for (let idx = 0; idx < selectedLayers.length; ++idx) {
@@ -63,7 +65,7 @@ export const execute = (
         }
 
         // 追加するフレームにキーフレームがない場合は、前方のキーフレームを調整
-        externalTimelineLayerFramePrevAdjustmentUseCase(
+        reload = externalTimelineLayerFramePrevAdjustmentUseCase(
             work_space,
             movie_clip,
             layer,
@@ -74,5 +76,10 @@ export const execute = (
             // タイムラインのレイヤー表示を更新
             timelineLayerAddFrameUpdateLayerStyleUseCase(work_space, movie_clip, layer);
         }
+    }
+
+    // スクリーンを再描画
+    if (reload && work_space.active && movie_clip.active) {
+        await screenAreaRedrawUseCase(movie_clip);
     }
 };

@@ -367,7 +367,7 @@ export const execute = async (
 
         // キーフレームの更新
         case $TIMELINE_UPDATE_KEYFRAME_COMMAND:
-            timelineLayerFrameUpdateKeyframeHistoryUndoUseCase(
+            await timelineLayerFrameUpdateKeyframeHistoryUndoUseCase(
                 messages[0] as number, // WorkSpace ID
                 messages[1] as number, // MovieClip ID
                 messages[2] as number, // Layer Index

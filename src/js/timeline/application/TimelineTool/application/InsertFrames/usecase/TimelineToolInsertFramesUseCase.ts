@@ -5,11 +5,11 @@ import { ExternalTimeline } from "@/external/timeline/domain/model/ExternalTimel
  * @description 選択中のレイヤーにフレームを追加
  *              Add frames to the selected layer
  *
- * @return {void}
+ * @return {Promise}
  * @method
  * @public
  */
-export const execute = (): void =>
+export const execute = async (): Promise<void> =>
 {
     const workSpace = $getCurrentWorkSpace();
     const movieClip = workSpace.scene;
@@ -18,6 +18,6 @@ export const execute = (): void =>
     const externalTimeline = new ExternalTimeline(workSpace, movieClip);
 
     // フレームを追加
-    externalTimeline
+    await externalTimeline
         .insertFrames(movieClip.selectedEndFrame - movieClip.selectedStartFrame);
 };

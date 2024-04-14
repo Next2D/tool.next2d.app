@@ -306,9 +306,9 @@ export class ExternalTimeline
      * @method
      * @public
      */
-    insertFrames (num_frame: number): void
+    async insertFrames (num_frame: number): Promise<void>
     {
-        externalTimelineLayerFrameInsertFramesUseCase(
+        await externalTimelineLayerFrameInsertFramesUseCase(
             this._$workSpace,
             this._$movieClip,
             num_frame

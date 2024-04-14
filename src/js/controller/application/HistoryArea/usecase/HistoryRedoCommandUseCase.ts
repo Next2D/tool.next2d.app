@@ -373,7 +373,7 @@ export const execute = async (
 
         // キーフレーム変更
         case $TIMELINE_UPDATE_KEYFRAME_COMMAND:
-            timelineLayerFrameUpdateKeyframeHistoryRedoUseCase(
+            await timelineLayerFrameUpdateKeyframeHistoryRedoUseCase(
                 messages[0] as number, // work_space_id
                 messages[1] as number, // library_id
                 messages[2] as number, // layer_index
