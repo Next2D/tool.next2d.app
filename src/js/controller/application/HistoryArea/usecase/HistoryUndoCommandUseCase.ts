@@ -412,7 +412,7 @@ export const execute = async (
 
         // キーフレームのフレームを削除
         case $TIMELINE_REMOVE_KEY_FRAMES_COMMAND:
-            timelineLayerFrameRemoveKeyFramesHistoryUndoUseCase(
+            await timelineLayerFrameRemoveKeyFramesHistoryUndoUseCase(
                 messages[0] as number, // WorkSpace ID
                 messages[1] as number, // MovieClip ID
                 messages[2] as number, // Layer Index
@@ -435,7 +435,7 @@ export const execute = async (
 
         // キーフレームのフレーム全削除
         case $TIMELINE_ERASE_KEY_FRAME_COMMAND:
-            timelineLayerFrameEraseKeyframeHistoryUndoUseCase(
+            await timelineLayerFrameEraseKeyframeHistoryUndoUseCase(
                 messages[0] as number, // WorkSpace ID
                 messages[1] as number, // MovieClip ID
                 messages[2] as number, // Layer Index
@@ -456,7 +456,7 @@ export const execute = async (
 
         // キーフレームの削除
         case $TIMELINE_DELETE_KEY_FRAME_COMMAND:
-            timelineLayerFrameDeleteKeyframeHistoryUndoUseCase(
+            await timelineLayerFrameDeleteKeyframeHistoryUndoUseCase(
                 messages[0] as number, // WorkSpace ID
                 messages[1] as number, // MovieClip ID
                 messages[2] as number, // Layer Index

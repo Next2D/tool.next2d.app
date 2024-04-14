@@ -5,6 +5,7 @@ import { execute as externalTimelineLayerFrameRemoveEmptyFramesUseCase } from ".
 import { execute as externalTimelineLayerFrameRemoveKeyFramesUseCase } from "./ExternalTimelineLayerFrameRemoveKeyFramesUseCase";
 import { execute as externalTimelineLayerFrameEraseEmptyKeyframeUseCase } from "./ExternalTimelineLayerFrameEraseEmptyKeyframeUseCase";
 import { execute as externalTimelineLayerFrameEraseKeyframeUseCase } from "./ExternalTimelineLayerFrameEraseKeyframeUseCase";
+import { execute as screenAreaRedrawUseCase } from "@/screen/application/ScreenArea/usecase/ScreenAreaRedrawUseCase";
 
 /**
  * @description 指定レイヤーの指定範囲のフレームを削除
@@ -14,16 +15,16 @@ import { execute as externalTimelineLayerFrameEraseKeyframeUseCase } from "./Ext
  * @param  {MovieClip} movie_clip
  * @param  {number} start_frame
  * @param  {number} [end_frame=0]
- * @return {void}
+ * @return {Promise}
  * @method
  * @public
  */
-export const execute = (
+export const execute = async (
     work_space: WorkSpace,
     movie_clip: MovieClip,
     start_frame: number,
     end_frame: number = 0
-): void => {
+): Promise<void> => {
 
     // 選択中のレイヤーがなければ終了
     if (!movie_clip.selectedLayers.length) {
@@ -35,6 +36,7 @@ export const execute = (
         end_frame = start_frame + 1;
     }
 
+    let reload = false;
     for (let idx = 0; idx < movie_clip.selectedLayers.length; idx++) {
 
         const layer = movie_clip.selectedLayers[idx];
@@ -47,6 +49,8 @@ export const execute = (
 
             const activeCharacters = layer.getActiveCharacters(frame);
             if (activeCharacters.length) {
+
+                reload = true;
 
                 // キーフレームがある場合はキーフレームを削除
                 const character = activeCharacters[0];
@@ -156,5 +160,10 @@ export const execute = (
         if (work_space.active && movie_clip.active) {
             timelineLayerAddFrameUpdateLayerStyleUseCase(work_space, movie_clip, layer);
         }
+    }
+
+    // スクリーンを再描画
+    if (reload && work_space.active && movie_clip.active) {
+        await screenAreaRedrawUseCase(movie_clip);
     }
 };

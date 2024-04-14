@@ -3,6 +3,7 @@ import type { MovieClip } from "@/core/domain/model/MovieClip";
 import { execute as timelineLayerAddFrameUpdateLayerStyleUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerAddFrameUpdateLayerStyleUseCase";
 import { execute as externalTimelineLayerFrameDeleteEmptyKeyframeUseCase } from "./ExternalTimelineLayerFrameDeleteEmptyKeyframeUseCase";
 import { execute as externalTimelineLayerFrameDeleteKeyframeUseCase } from "./ExternalTimelineLayerFrameDeleteKeyframeUseCase";
+import { execute as screenAreaRedrawUseCase } from "@/screen/application/ScreenArea/usecase/ScreenAreaRedrawUseCase";
 
 /**
  * @description 指定レイヤーの指定範囲のキーフレームを削除
@@ -12,16 +13,16 @@ import { execute as externalTimelineLayerFrameDeleteKeyframeUseCase } from "./Ex
  * @param  {MovieClip} movie_clip
  * @param  {number} start_frame
  * @param  {number} [end_frame=0]
- * @return {void}
+ * @return {Promise}
  * @method
  * @public
  */
-export const execute = (
+export const execute = async (
     work_space: WorkSpace,
     movie_clip: MovieClip,
     start_frame: number,
     end_frame: number = 0
-): void => {
+): Promise<void> => {
 
     // 選択中のレイヤーがなければ終了
     if (!movie_clip.selectedLayers.length) {
@@ -33,6 +34,7 @@ export const execute = (
         end_frame = start_frame + 1;
     }
 
+    let reload = false;
     for (let idx = 0; idx < movie_clip.selectedLayers.length; idx++) {
 
         const layer = movie_clip.selectedLayers[idx];
@@ -44,6 +46,9 @@ export const execute = (
 
             const activeCharacters = layer.getActiveCharacters(frame);
             if (activeCharacters.length) {
+
+                reload = true;
+
                 const character = activeCharacters[0];
                 if (character.startFrame !== frame) {
                     continue;
@@ -87,5 +92,10 @@ export const execute = (
         if (work_space.active && movie_clip.active) {
             timelineLayerAddFrameUpdateLayerStyleUseCase(work_space, movie_clip, layer);
         }
+    }
+
+    if (reload && work_space.active && movie_clip.active) {
+        // スクリーンを再描画
+        await screenAreaRedrawUseCase(movie_clip);
     }
 };

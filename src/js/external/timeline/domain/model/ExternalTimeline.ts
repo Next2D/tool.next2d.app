@@ -95,7 +95,7 @@ export class ExternalTimeline
      *              Activate the specified frame
      *
      * @param  {number} frame
-     * @return {void}
+     * @return {Promise}
      * @method
      * @public
      */
@@ -156,7 +156,7 @@ export class ExternalTimeline
      *
      * @param  {array} indexes
      * @param  {boolean} [receiver = false]
-     * @return {void}
+     * @return {Promise}
      * @method
      * @public
      */
@@ -233,7 +233,7 @@ export class ExternalTimeline
      *              Activate the frame with the specified frame number
      *
      * @param  {array} frames
-     * @return {void}
+     * @return {Promise}
      * @method
      * @public
      */
@@ -302,7 +302,7 @@ export class ExternalTimeline
      *              Insert the specified number of frames into the selected frames
      *
      * @param  {number} num_frame
-     * @return {void}
+     * @return {Promise}
      * @method
      * @public
      */
@@ -321,13 +321,13 @@ export class ExternalTimeline
      *
      * @param  {number} start_frame
      * @param  {number} [end_frame = 0]
-     * @return {void}
+     * @return {Promise}
      * @method
      * @public
      */
-    eraseFrames (start_frame: number, end_frame: number = 0): void
+    async eraseFrames (start_frame: number, end_frame: number = 0): Promise<void>
     {
-        externalTimelineLayerFrameRemoveFrameUseCase(
+        await externalTimelineLayerFrameRemoveFrameUseCase(
             this._$workSpace,
             this._$movieClip,
             start_frame,
@@ -341,13 +341,13 @@ export class ExternalTimeline
      *
      * @param  {number} start_frame
      * @param  {number} [end_frame = 0]
-     * @return {void}
+     * @return {Promise}
      * @method
      * @public
      */
-    deleteKeyframes (start_frame: number, end_frame: number = 0): void
+    async deleteKeyframes (start_frame: number, end_frame: number = 0): Promise<void>
     {
-        externalTimelineLayerFrameDeleteKeyframesUseCase(
+        await externalTimelineLayerFrameDeleteKeyframesUseCase(
             this._$workSpace,
             this._$movieClip,
             start_frame,

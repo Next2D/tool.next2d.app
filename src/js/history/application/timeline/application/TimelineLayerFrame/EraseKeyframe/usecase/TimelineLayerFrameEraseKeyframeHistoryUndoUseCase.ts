@@ -5,6 +5,7 @@ import type { CharacterSaveObjectImpl } from "@/interface/CharacterSaveObjectImp
 import { execute as timelineLayerAddFrameUpdateLayerStyleUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerAddFrameUpdateLayerStyleUseCase";
 import { execute as externalTimelineLayerFrameBehindKeyframeService } from "@/external/timeline/application/ExternalTimelineLayerFrame/service/ExternalTimelineLayerFrameBehindKeyframeService";
 import { Character } from "@/core/domain/model/Character";
+import { execute as screenAreaRedrawUseCase } from "@/screen/application/ScreenArea/usecase/ScreenAreaRedrawUseCase";
 
 /**
  * @description キーフレームのフレーム全削除処理を元に戻す
@@ -14,16 +15,16 @@ import { Character } from "@/core/domain/model/Character";
  * @param  {number} library_id
  * @param  {number} layer_index
  * @param  {object} character_save_objects
- * @return {void}
+ * @return {Promise}
  * @method
  * @public
  */
-export const execute = (
+export const execute = async (
     work_space_id: number,
     library_id: number,
     layer_index: number,
     character_save_objects: CharacterSaveObjectImpl[]
-): void => {
+): Promise<void> => {
 
     const workSpace = $getWorkSpace(work_space_id);
     if (!workSpace) {
@@ -70,5 +71,8 @@ export const execute = (
     if (workSpace.active && movieClip.active) {
         // タイムラインのレイヤー表示を更新
         timelineLayerAddFrameUpdateLayerStyleUseCase(workSpace, movieClip, layer);
+
+        // スクリーンエリアを再描画
+        await screenAreaRedrawUseCase(movieClip);
     }
 };
