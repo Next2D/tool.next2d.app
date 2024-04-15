@@ -40,8 +40,8 @@ export const execute = (message: ShareReceiveMessageImpl): void =>
         workSpace,
         movieClip,
         layer,
-        message.data[3] as NonNullable<number>,
-        message.data[4] as NonNullable<number>,
+        message.data[3] as NonNullable<number>, // startFrame
+        message.data[4] as NonNullable<number>, // endFrame
         true
     );
 

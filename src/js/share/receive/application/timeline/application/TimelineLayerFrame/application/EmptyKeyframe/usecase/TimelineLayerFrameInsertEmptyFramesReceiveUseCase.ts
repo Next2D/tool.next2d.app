@@ -34,8 +34,8 @@ export const execute = (message: ShareReceiveMessageImpl): void =>
         return ;
     }
 
-    const emptyCharacterIndex = message.data[3] as NonNullable<number>;
-    const emptyCharacter = layer.emptyCharacters[emptyCharacterIndex];
+    const keyframe = message.data[3] as NonNullable<number>;
+    const emptyCharacter = layer.getActiveEmptyCharacter(keyframe);
     if (!emptyCharacter) {
         return ;
     }

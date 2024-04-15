@@ -37,21 +37,24 @@ export const execute = (message: ShareReceiveMessageImpl): void =>
         return ;
     }
 
-    const character_index = message.data[3] as NonNullable<number>;
+    const character_save_object = message.data[3] as NonNullable<CharacterSaveObjectImpl>;
     const character = new Character();
-    character.load(message.data[4] as NonNullable<CharacterSaveObjectImpl>);
-    layer.characters.splice(character_index, 0, character);
+    character.load(character_save_object);
 
-    const empty_character_index = message.data[5] as NonNullable<number>;
-    if (empty_character_index > -1) {
-        layer.emptyCharacters.splice(empty_character_index, 1);
+    // 追加処理
+    // fixed logic
+    layer.addCharacter(character);
+
+    const emptyCharacter = layer.getActiveEmptyCharacter(character.startFrame);
+    if (emptyCharacter) {
+        layer.removeEmptyCharacter(emptyCharacter);
     }
 
     // 履歴に登録
     timelineLayerFrameAddKeyframeHistoryUseCase(
         workSpace, movieClip,
         layer, character,
-        empty_character_index,
+        message.data[4] as NonNullable<number>,
         true
     );
 

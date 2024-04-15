@@ -35,15 +35,15 @@ export const execute = (message: ShareReceiveMessageImpl): void =>
         return ;
     }
 
-    const emptyCharacterIndex = message.data[3] as NonNullable<number>;
-    const emptyCharacter = layer.emptyCharacters[emptyCharacterIndex];
+    const keyframe = message.data[3] as NonNullable<number>;
+    const emptyCharacter = layer.getActiveEmptyCharacter(keyframe);
     if (!emptyCharacter) {
         return ;
     }
 
     // 終了フレームを更新
-    const beforeEndFrame = emptyCharacter.endFrame;
-    emptyCharacter.endFrame = message.data[5] as NonNullable<number>;
+    const beforeEndFrame = message.data[4] as NonNullable<number>; // beforeEndFrame
+    emptyCharacter.endFrame = message.data[5] as NonNullable<number>; // afterEndFrame
 
     // 履歴に登録
     timelineLayerFrameUpdateEmptyKeyframeHistoryUseCase(

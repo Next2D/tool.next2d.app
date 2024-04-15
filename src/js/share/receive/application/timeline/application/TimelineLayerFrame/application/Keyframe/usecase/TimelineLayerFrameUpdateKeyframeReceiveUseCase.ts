@@ -54,7 +54,7 @@ export const execute = (message: ShareReceiveMessageImpl): void =>
         movieClip,
         layer,
         keyframe,
-        message.data[4] as NonNullable<number>,
+        message.data[4] as NonNullable<number>, // beforeEndFrame
         afterEndFrame,
         true
     );
