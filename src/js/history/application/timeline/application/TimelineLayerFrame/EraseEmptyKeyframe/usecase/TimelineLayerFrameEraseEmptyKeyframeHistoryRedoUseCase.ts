@@ -61,6 +61,6 @@ export const execute = async (
         timelineLayerAddFrameUpdateLayerStyleUseCase(workSpace, movieClip, layer);
 
         // スクリーンエリアを再描画
-        await screenAreaRedrawUseCase(movieClip)
+        await screenAreaRedrawUseCase(movieClip);
     }
 };
