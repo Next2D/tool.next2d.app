@@ -4,13 +4,14 @@ import type { MovieClip } from "@/core/domain/model/MovieClip";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
 import { execute as externalTimelineLayerFrameSplitKeyframeToEmptyUseCase } from "@/external/timeline/application/ExternalTimelineLayerFrame/usecase/ExternalTimelineLayerFrameSplitKeyframeToEmptyUseCase";
 import { execute as timelineLayerAddFrameUpdateLayerStyleUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerAddFrameUpdateLayerStyleUseCase";
+import { execute as screenAreaRedrawUseCase } from "@/screen/application/ScreenArea/usecase/ScreenAreaRedrawUseCase";
 
 /**
  * @description キーフレーム分割して空のキーフレームを挿入
  *              Split keyframes and insert empty keyframes
  *
  * @param  {object} message
- * @return {void}
+ * @return {Promise}
  * @method
  * @public
  */
@@ -55,5 +56,8 @@ export const execute = async (message: ShareReceiveMessageImpl): Promise<void> =
     if (workSpace.active && movieClip.active) {
         // タイムラインのレイヤー表示を更新
         timelineLayerAddFrameUpdateLayerStyleUseCase(workSpace, movieClip, layer);
+
+        // スクリーンエリアの再描画
+        await screenAreaRedrawUseCase(movieClip);
     }
 };

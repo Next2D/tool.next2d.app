@@ -4,17 +4,18 @@ import type { MovieClip } from "@/core/domain/model/MovieClip";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
 import { execute as timelineLayerFrameUpdateKeyframeHistoryUseCase } from "@/history/application/timeline/application/TimelineLayerFrame/UpdateKeyframe/usecase/TimelineLayerFrameUpdateKeyframeHistoryUseCase";
 import { execute as timelineLayerAddFrameUpdateLayerStyleUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerAddFrameUpdateLayerStyleUseCase";
+import { execute as screenAreaRedrawUseCase } from "@/screen/application/ScreenArea/usecase/ScreenAreaRedrawUseCase";
 
 /**
  * @description キーフレーム更新を実行
  *              Perform keyframe update
  *
  * @param  {object} message
- * @return {void}
+ * @return {Promise}
  * @method
  * @public
  */
-export const execute = (message: ShareReceiveMessageImpl): void =>
+export const execute = async (message: ShareReceiveMessageImpl): Promise<void> =>
 {
     const id = message.data[0] as NonNullable<number>;
 
@@ -62,5 +63,8 @@ export const execute = (message: ShareReceiveMessageImpl): void =>
     if (workSpace.active && movieClip.active) {
         // タイムラインのレイヤー表示を更新
         timelineLayerAddFrameUpdateLayerStyleUseCase(workSpace, movieClip, layer);
+
+        // スクリーンエリア再描画
+        await screenAreaRedrawUseCase(movieClip);
     }
 };

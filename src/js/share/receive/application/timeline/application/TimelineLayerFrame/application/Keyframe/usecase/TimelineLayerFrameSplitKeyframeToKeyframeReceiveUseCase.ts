@@ -14,7 +14,7 @@ import { execute as timelineLayerAddFrameUpdateLayerStyleUseCase } from "@/timel
  * @method
  * @public
  */
-export const execute = async (message: ShareReceiveMessageImpl): Promise<void> =>
+export const execute = (message: ShareReceiveMessageImpl): void =>
 {
     const id = message.data[0] as NonNullable<number>;
 

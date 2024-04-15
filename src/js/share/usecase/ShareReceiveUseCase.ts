@@ -271,22 +271,22 @@ export const execute = async (message: ShareReceiveMessageImpl): Promise<void> =
 
         // キーフレームを追加
         case $TIMELINE_ADD_KEYFRAME_COMMAND:
-            timelineLayerFrameAddKeyframeReceiveUseCase(message);
+            await timelineLayerFrameAddKeyframeReceiveUseCase(message);
             break;
 
         // キーフレームにフレームを挿入
         case $TIMELINE_INSERT_KEY_FRAME_COMMAND:
-            timelineLayerFrameInsertkeyframesReceiveUseCase(message);
+            await timelineLayerFrameInsertkeyframesReceiveUseCase(message);
             break;
 
         // キーフレームを更新
         case $TIMELINE_UPDATE_KEYFRAME_COMMAND:
-            timelineLayerFrameUpdateKeyframeReceiveUseCase(message);
+            await timelineLayerFrameUpdateKeyframeReceiveUseCase(message);
             break;
 
         // キーフレームを分割して空のキーフレームを挿入
         case $TIMELINE_SPLIT_KEYFRAME_TO_EMPTY_COMMAND:
-            timelineLayerFrameSplitKeyframeToEmptyReceiveUseCase(message);
+            await timelineLayerFrameSplitKeyframeToEmptyReceiveUseCase(message);
             break;
 
         // キーフレームを分割してキーフレームを挿入
@@ -301,7 +301,7 @@ export const execute = async (message: ShareReceiveMessageImpl): Promise<void> =
 
         // キーフレームのフレームを削除
         case $TIMELINE_REMOVE_KEY_FRAMES_COMMAND:
-            timelineLayerFrameRemoveKeyFramesReceiveUseCase(message);
+            await timelineLayerFrameRemoveKeyFramesReceiveUseCase(message);
             break;
 
         // 空のキーフレームのフレーム全削除
@@ -311,7 +311,7 @@ export const execute = async (message: ShareReceiveMessageImpl): Promise<void> =
 
         // キーフレームのフレーム全削除
         case $TIMELINE_ERASE_KEY_FRAME_COMMAND:
-            timelineLayerFrameEraseKeyframeReceiveUseCase(message);
+            await timelineLayerFrameEraseKeyframeReceiveUseCase(message);
             break;
 
         // 空のキーフレームの削除
@@ -321,7 +321,7 @@ export const execute = async (message: ShareReceiveMessageImpl): Promise<void> =
 
         // キーフレームの削除
         case $TIMELINE_DELETE_KEY_FRAME_COMMAND:
-            timelineLayerFrameDeleteKeyframeReceiveUseCase(message);
+            await timelineLayerFrameDeleteKeyframeReceiveUseCase(message);
             break;
 
         default:
