@@ -251,12 +251,12 @@ export const execute = async (message: ShareReceiveMessageImpl): Promise<void> =
 
         // 空のキーフレームを追加
         case $TIMELINE_ADD_EMPTY_KEYFRAME_COMMAND:
-            timelineLayerFrameAddEmptyKeyframeReceiveUseCase(message);
+            await timelineLayerFrameAddEmptyKeyframeReceiveUseCase(message);
             break;
 
         // 空のキーフレームを更新
         case $TIMELINE_UPDATE_EMPTY_KEYFRAME_COMMAND:
-            timelineLayerFrameUpdateEmptyKeyframeReceiveUseCase(message);
+            await timelineLayerFrameUpdateEmptyKeyframeReceiveUseCase(message);
             break;
 
         // 空のキーフレームを分割
@@ -266,7 +266,7 @@ export const execute = async (message: ShareReceiveMessageImpl): Promise<void> =
 
         // 空のキーフレームにフレームを挿入
         case $TIMELINE_INSERT_EMPTY_FRAME_COMMAND:
-            timelineLayerFrameInsertEmptyFramesReceiveUseCase(message);
+            await timelineLayerFrameInsertEmptyFramesReceiveUseCase(message);
             break;
 
         // キーフレームを追加
@@ -296,7 +296,7 @@ export const execute = async (message: ShareReceiveMessageImpl): Promise<void> =
 
         // 空のキーフレームのフレームを削除
         case $TIMELINE_REMOVE_EMPTY_FRAMES_COMMAND:
-            timelineLayerFrameRemoveEmptyFramesReceiveUseCase(message);
+            await timelineLayerFrameRemoveEmptyFramesReceiveUseCase(message);
             break;
 
         // キーフレームのフレームを削除
@@ -306,7 +306,7 @@ export const execute = async (message: ShareReceiveMessageImpl): Promise<void> =
 
         // 空のキーフレームのフレーム全削除
         case $TIMELINE_ERASE_EMPTY_KEY_FRAME_COMMAND:
-            timelineLayerFrameEraseEmptyKeyframeReceiveUseCase(message);
+            await timelineLayerFrameEraseEmptyKeyframeReceiveUseCase(message);
             break;
 
         // キーフレームのフレーム全削除
@@ -316,7 +316,7 @@ export const execute = async (message: ShareReceiveMessageImpl): Promise<void> =
 
         // 空のキーフレームの削除
         case $TIMELINE_DELETE_EMPTY_KEY_FRAME_COMMAND:
-            timelineLayerFrameDeleteEmptyFrameReceiveUseCase(message);
+            await timelineLayerFrameDeleteEmptyFrameReceiveUseCase(message);
             break;
 
         // キーフレームの削除

@@ -47,7 +47,7 @@ export const execute = async (message: ShareReceiveMessageImpl): Promise<void> =
         movieClip,
         layer,
         emptyCharacter,
-        message.data[5] as NonNullable<number>,
+        message.data[4] as NonNullable<number>,
         true
     );
 

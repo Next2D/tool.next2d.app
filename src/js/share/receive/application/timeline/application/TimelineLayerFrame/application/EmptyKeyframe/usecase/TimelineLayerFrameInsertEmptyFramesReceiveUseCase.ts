@@ -3,17 +3,18 @@ import type { InstanceImpl } from "@/interface/InstanceImpl";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
 import { execute as externalTimelineLayerFrameInsertEmptyFramesUseCase } from "@/external/timeline/application/ExternalTimelineLayerFrame/usecase/ExternalTimelineLayerFrameInsertEmptyFramesUseCase";
+import { execute as screenAreaRedrawUseCase } from "@/screen/application/ScreenArea/usecase/ScreenAreaRedrawUseCase";
 
 /**
  * @description 空のキーフレームにフレームを追加を実行
  *              Execute to add frames to an empty keyframe
  *
  * @param  {object} message
- * @return {void}
+ * @return {Promise}
  * @method
  * @public
  */
-export const execute = (message: ShareReceiveMessageImpl): void =>
+export const execute = async (message: ShareReceiveMessageImpl): Promise<void> =>
 {
     const id = message.data[0] as NonNullable<number>;
 
@@ -49,4 +50,9 @@ export const execute = (message: ShareReceiveMessageImpl): void =>
         message.data[4] as NonNullable<number>,
         true
     );
+
+    if (workSpace.active && movieClip.active) {
+        // スクリーンエリアを再描画
+        await screenAreaRedrawUseCase(movieClip);
+    }
 };

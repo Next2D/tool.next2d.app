@@ -304,7 +304,7 @@ export const execute = async (
 
         // 空のキーフレーム追加
         case $TIMELINE_ADD_EMPTY_KEYFRAME_COMMAND:
-            timelineLayerFrameCreateEmptyKeyframeHistoryRedoUseCase(
+            await timelineLayerFrameCreateEmptyKeyframeHistoryRedoUseCase(
                 messages[0] as number, // workSpaceId
                 messages[1] as number, // MovieClip ID
                 messages[2] as number, // Layer Index
@@ -315,7 +315,7 @@ export const execute = async (
 
         // 空のキーフレーム変更
         case $TIMELINE_UPDATE_EMPTY_KEYFRAME_COMMAND:
-            timelineLayerFrameUpdateEmptyKeyframeHistoryRedoUseCase(
+            await timelineLayerFrameUpdateEmptyKeyframeHistoryRedoUseCase(
                 messages[0] as number, // WorkSpace ID
                 messages[1] as number, // MovieClip ID
                 messages[2] as number, // Layer Index
@@ -338,7 +338,7 @@ export const execute = async (
 
         // 空のキーフレームへフレームを挿入
         case $TIMELINE_INSERT_EMPTY_FRAME_COMMAND:
-            timelineLayerFrameInsertEmptyFramesHistoryRedoUseCase(
+            await timelineLayerFrameInsertEmptyFramesHistoryRedoUseCase(
                 messages[0] as number, // WorkSpace ID
                 messages[1] as number, // MovieClip ID
                 messages[2] as number, // Layer Index
@@ -402,7 +402,7 @@ export const execute = async (
 
         // 空のキーフレームのフレームを削除
         case $TIMELINE_REMOVE_EMPTY_FRAMES_COMMAND:
-            timelineLayerFrameRemoveEmptyFramesHistoryRedoUseCase(
+            await timelineLayerFrameRemoveEmptyFramesHistoryRedoUseCase(
                 messages[0] as number, // WorkSpace ID
                 messages[1] as number, // MovieClip ID
                 messages[2] as number, // Layer Index
@@ -426,7 +426,7 @@ export const execute = async (
 
         // 空のキーフレームのフレーム全削除
         case $TIMELINE_ERASE_EMPTY_KEY_FRAME_COMMAND:
-            timelineLayerFrameEraseEmptyKeyframeHistoryRedoUseCase(
+            await timelineLayerFrameEraseEmptyKeyframeHistoryRedoUseCase(
                 messages[0] as number, // WorkSpace ID
                 messages[1] as number, // MovieClip ID
                 messages[2] as number, // Layer Index
@@ -446,7 +446,7 @@ export const execute = async (
 
         // 空のキーフレームの削除
         case $TIMELINE_DELETE_EMPTY_KEY_FRAME_COMMAND:
-            timelineLayerFrameDeleteEmptyKeyframeHistoryRedoUseCase(
+            await timelineLayerFrameDeleteEmptyKeyframeHistoryRedoUseCase(
                 messages[0] as number, // WorkSpace ID
                 messages[1] as number, // MovieClip ID
                 messages[2] as number, // Layer Index

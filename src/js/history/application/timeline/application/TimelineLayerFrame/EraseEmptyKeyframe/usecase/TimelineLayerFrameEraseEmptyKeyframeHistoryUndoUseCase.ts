@@ -5,6 +5,7 @@ import { $getWorkSpace } from "@/core/application/CoreUtil";
 import { execute as timelineLayerAddFrameUpdateLayerStyleUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerAddFrameUpdateLayerStyleUseCase";
 import { execute as externalTimelineLayerFrameBehindKeyframeService } from "@/external/timeline/application/ExternalTimelineLayerFrame/service/ExternalTimelineLayerFrameBehindKeyframeService";
 import { EmptyCharacter } from "@/core/domain/model/EmptyCharacter";
+import { execute as screenAreaRedrawUseCase } from "@/screen/application/ScreenArea/usecase/ScreenAreaRedrawUseCase";
 
 /**
  * @description 空のキーフレームのフレーム全削除処理を元に戻す
@@ -14,16 +15,16 @@ import { EmptyCharacter } from "@/core/domain/model/EmptyCharacter";
  * @param  {number} library_id
  * @param  {number} layer_index
  * @param  {object} empty_character_save_object
- * @return {void}
+ * @return {Promise}
  * @method
  * @public
  */
-export const execute = (
+export const execute = async (
     work_space_id: number,
     library_id: number,
     layer_index: number,
     empty_character_save_object: EmptyCharacterSaveObjectImpl
-): void => {
+): Promise<void> => {
 
     const workSpace = $getWorkSpace(work_space_id);
     if (!workSpace) {
@@ -59,5 +60,8 @@ export const execute = (
     if (workSpace.active && movieClip.active) {
         // タイムラインのレイヤー表示を更新
         timelineLayerAddFrameUpdateLayerStyleUseCase(workSpace, movieClip, layer);
+
+        // スクリーンエリアの再描画
+        await screenAreaRedrawUseCase(movieClip);
     }
 };
