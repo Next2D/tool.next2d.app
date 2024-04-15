@@ -452,6 +452,29 @@ export class Layer
     }
 
     /**
+     * @description キーフレームを追加
+     *              Add an key frame
+     *
+     * @param  {Character} character
+     * @return {void}
+     * @method
+     * @public
+     */
+    addCharacter (character: Character): void
+    {
+        const activeCharacters = this.getActiveCharacters(character.startFrame);
+        for (let idx = 0; idx < activeCharacters.length; ++idx) {
+            const activeCharacter = activeCharacters[idx];
+            if (character.depth > activeCharacter.depth) {
+                continue;
+            }
+            activeCharacter.depth++;
+        }
+
+        this._$characters.push(character);
+    }
+
+    /**
      * @description キーフレームを削除
      *              Remove keyframe
      *
@@ -500,20 +523,6 @@ export class Layer
     }
 
     /**
-     * @description キーフレームを追加
-     *              Add an key frame
-     *
-     * @param  {Character} character
-     * @return {void}
-     * @method
-     * @public
-     */
-    addCharacter (character: Character): void
-    {
-        this._$characters.push(character);
-    }
-
-    /**
      * @description 指定したフレームにキーフレームがあれば返却
      *              Returns a keyframe at the specified frame
      *
@@ -535,6 +544,43 @@ export class Layer
         }
 
         return characters;
+    }
+
+    /**
+     * @description 任意のDisplayObjectを返却
+     *              Returns any DisplayObject
+     *
+     * @param {number} keyframe
+     * @param {number} library_id
+     * @param {number} depth
+     * @return {Character | null}
+     * @method
+     * @public
+     */
+    getCharacter (
+        keyframe: number,
+        library_id: number,
+        depth: number
+    ): Character | null {
+
+        for (let idx = 0; idx < this._$characters.length; ++idx) {
+            const character = this._$characters[idx];
+            if (character.startFrame !== keyframe) {
+                continue;
+            }
+
+            if (character.libraryId !== library_id) {
+                continue;
+            }
+
+            if (character.depth !== depth) {
+                continue;
+            }
+
+            return character;
+        }
+
+        return null;
     }
 
     /**

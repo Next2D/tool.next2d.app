@@ -28,7 +28,7 @@ describe("TimelineLayerFrameUpdateEmptyKeyframeCreateHistoryObjectServiceTest", 
         expect(object.messages[0]).toBe(1);
         expect(object.messages[1]).toBe(0);
         expect(object.messages[2]).toBe(0);
-        expect(object.messages[3]).toBe(0);
+        expect(object.messages[3]).toBe(1);
         expect(object.messages[4]).toBe(2);
         expect(object.messages[5]).toBe(emptyCharacter.endFrame);
 

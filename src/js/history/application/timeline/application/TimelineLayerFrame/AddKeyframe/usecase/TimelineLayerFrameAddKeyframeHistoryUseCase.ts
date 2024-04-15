@@ -18,7 +18,7 @@ import { execute as shareSendService } from "@/share/service/ShareSendService";
  * @param  {MovieClip} movie_clip
  * @param  {Layer} layer
  * @param  {Character} character
- * @param  {number} empty_character_index
+ * @param  {number} [empty_character_index=-1]
  * @param  {boolean} [receiver=false]
  * @return {void}
  * @method
@@ -29,7 +29,7 @@ export const execute = (
     movie_clip: MovieClip,
     layer: Layer,
     character: Character,
-    empty_character_index: number,
+    empty_character_index: number = -1,
     receiver: boolean = false
 ): void => {
 

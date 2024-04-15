@@ -13,7 +13,6 @@ import { EmptyCharacter } from "@/core/domain/model/EmptyCharacter";
  * @param  {number} work_space_id
  * @param  {number} library_id
  * @param  {number} layer_index
- * @param  {number} empty_character_index
  * @param  {object} empty_character_save_object
  * @return {void}
  * @method
@@ -23,7 +22,6 @@ export const execute = (
     work_space_id: number,
     library_id: number,
     layer_index: number,
-    empty_character_index: number,
     empty_character_save_object: EmptyCharacterSaveObjectImpl
 ): void => {
 
@@ -50,12 +48,12 @@ export const execute = (
     // 追加する範囲のキーフレームを後方に移動
     externalTimelineLayerFrameBehindKeyframeService(
         layer,
-        emptyCharacter.endFrame,
+        emptyCharacter.startFrame,
         emptyCharacter.endFrame - emptyCharacter.startFrame
     );
 
     // 削除した空のキーフレームを元に戻す
-    layer.emptyCharacters.splice(empty_character_index, 0, emptyCharacter);
+    layer.addEmptyCharacter(emptyCharacter);
 
     // アクティブならタイムラインを再描画
     if (workSpace.active && movieClip.active) {

@@ -4,6 +4,7 @@ import { $getWorkSpace } from "@/core/application/CoreUtil";
 import { EmptyCharacter } from "@/core/domain/model/EmptyCharacter";
 import { execute as timelineLayerAddFrameUpdateLayerStyleUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerAddFrameUpdateLayerStyleUseCase";
 import { execute as screenAreaRemoveDisplayObjectElementService } from "@/screen/application/ScreenArea/service/ScreenAreaRemoveDisplayObjectElementService";
+import { CharacterSaveObjectImpl } from "@/interface/CharacterSaveObjectImpl";
 
 /**
  * @description キーフレーム追加処理を元に戻す
@@ -22,7 +23,7 @@ export const execute = (
     work_space_id: number,
     library_id: number,
     layer_ndex: number,
-    character_index: number,
+    character_save_object: CharacterSaveObjectImpl,
     empty_character_index: number
 ): void => {
 
@@ -42,7 +43,11 @@ export const execute = (
         return ;
     }
 
-    const character = layer.characters[character_index];
+    const character = layer.getCharacter(
+        character_save_object.startFrame,
+        character_save_object.libraryId,
+        character_save_object.depth
+    );
     if (!character) {
         return ;
     }
@@ -52,7 +57,7 @@ export const execute = (
         const emptyCharacter = new EmptyCharacter();
         emptyCharacter.startFrame = character.startFrame;
         emptyCharacter.endFrame   = character.endFrame;
-        layer.emptyCharacters.splice(empty_character_index, 0, emptyCharacter);
+        layer.addEmptyCharacter(emptyCharacter);
     }
 
     // アクティブならタイムラインを再描画

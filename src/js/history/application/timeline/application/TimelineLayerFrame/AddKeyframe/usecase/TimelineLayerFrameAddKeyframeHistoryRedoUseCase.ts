@@ -13,9 +13,7 @@ import { execute as screenAreaAppendCharacterService } from "@/screen/applicatio
  * @param  {number} work_space_id
  * @param  {number} library_id
  * @param  {number} layer_index
- * @param  {number} character_index
  * @param  {object} save_object
- * @param  {number} empty_character_index
  * @return {void}
  * @method
  * @public
@@ -24,9 +22,7 @@ export const execute = async (
     work_space_id: number,
     library_id: number,
     layer_index: number,
-    character_index: number,
-    save_object: CharacterSaveObjectImpl,
-    empty_character_index: number
+    save_object: CharacterSaveObjectImpl
 ): Promise<void> => {
 
     const workSpace = $getWorkSpace(work_space_id);
@@ -48,11 +44,12 @@ export const execute = async (
     // セーブデータからDisplayObjectを生成
     const character = new Character();
     character.load(save_object);
-    layer.characters.splice(character_index, 0, character);
+    layer.addCharacter(character);
 
     // 空のキーフレームがあれば削除
-    if (empty_character_index > -1) {
-        layer.emptyCharacters.splice(empty_character_index, 1);
+    const emptyCharacter = layer.getActiveEmptyCharacter(character.startFrame);
+    if (emptyCharacter) {
+        layer.removeEmptyCharacter(emptyCharacter);
     }
 
     // アクティブならタイムラインを再描画

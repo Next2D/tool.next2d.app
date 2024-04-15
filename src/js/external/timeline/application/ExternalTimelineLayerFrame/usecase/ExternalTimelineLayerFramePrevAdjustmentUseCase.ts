@@ -41,6 +41,11 @@ export const execute = (
 
             const beforeEndFrame = characters[0].endFrame;
 
+            // 終了位置がキーフレームと同じ場合は終了
+            if (beforeEndFrame === keyframe) {
+                return false;
+            }
+
             // キーフレームを調整
             for (let idx = 0; idx < characters.length; ++idx) {
                 const character = characters[idx];
@@ -63,6 +68,11 @@ export const execute = (
         if (emptyCharacter) {
             // 空のキーフレームを調整
             const beforeEndFrame = emptyCharacter.endFrame;
+            // 終了位置がキーフレームと同じ場合は終了
+            if (beforeEndFrame === keyframe) {
+                return false;
+            }
+
             emptyCharacter.endFrame = keyframe;
 
             // 履歴に登録

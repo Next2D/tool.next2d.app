@@ -31,7 +31,7 @@ export const execute = (
             work_space_id,
             movie_clip.id,
             movie_clip.layers.indexOf(layer),
-            layer.emptyCharacters.indexOf(empty_character),
+            empty_character.startFrame, // keyframe
             before_end_frame,
             empty_character.endFrame
         ],

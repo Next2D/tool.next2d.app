@@ -11,7 +11,7 @@ import { execute as externalTimelineLayerFrameExtendForwardKeyframeService } fro
  * @param  {number} work_space_id
  * @param  {number} library_id
  * @param  {number} layer_index
- * @param  {number} empty_character_index
+ * @param  {number} keyframe
  * @return {void}
  * @method
  * @public
@@ -20,7 +20,7 @@ export const execute = (
     work_space_id: number,
     library_id: number,
     layer_index: number,
-    empty_character_index: number
+    keyframe: number
 ): void => {
 
     const workSpace = $getWorkSpace(work_space_id);
@@ -39,7 +39,7 @@ export const execute = (
         return ;
     }
 
-    const emptyCharacter = layer.emptyCharacters[empty_character_index];
+    const emptyCharacter = layer.getActiveEmptyCharacter(keyframe);
     if (!emptyCharacter) {
         return ;
     }

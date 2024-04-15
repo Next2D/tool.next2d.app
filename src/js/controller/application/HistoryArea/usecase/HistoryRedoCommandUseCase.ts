@@ -319,7 +319,7 @@ export const execute = async (
                 messages[0] as number, // WorkSpace ID
                 messages[1] as number, // MovieClip ID
                 messages[2] as number, // Layer Index
-                messages[3] as number, // EmptyCharacter Index
+                messages[3] as number, // EmptyCharacter Keyframe
                 messages[5] as number // after frame
             );
             break;
@@ -330,9 +330,8 @@ export const execute = async (
                 messages[0] as number, // WorkSpace ID
                 messages[1] as number, // MovieClip ID
                 messages[2] as number, // Layer Index
-                messages[3] as number, // EmptyCharacter Index
-                messages[4] as number, // New EmptyCharacter Index
-                messages[5] as number // Keyframe
+                messages[3] as number, // EmptyCharacter Keyframe
+                messages[4] as number // New EmptyCharacter Keyframe
 
             );
             break;
@@ -343,7 +342,7 @@ export const execute = async (
                 messages[0] as number, // WorkSpace ID
                 messages[1] as number, // MovieClip ID
                 messages[2] as number, // Layer Index
-                messages[3] as number, // EmptyCharacter Index
+                messages[3] as number, // Keyframe
                 messages[4] as number // NumFrame
             );
             break;
@@ -354,9 +353,7 @@ export const execute = async (
                 messages[0] as number, // work_space_id
                 messages[1] as number, // MovieClip ID
                 messages[2] as number, // Layer Index
-                messages[3] as number, // Character Index
-                messages[4] as CharacterSaveObjectImpl, // SaveObject
-                messages[5] as number // EmptyCharacter Index
+                messages[3] as CharacterSaveObjectImpl // SaveObject
             );
             break;
 
@@ -388,7 +385,6 @@ export const execute = async (
                 messages[0] as number, // work_space_id
                 messages[1] as number, // library_id
                 messages[2] as number, // layer_index
-                messages[3] as number, // EmptyCharacter Index
                 messages[4] as number // Keyframe
             );
             break;
@@ -410,7 +406,7 @@ export const execute = async (
                 messages[0] as number, // WorkSpace ID
                 messages[1] as number, // MovieClip ID
                 messages[2] as number, // Layer Index
-                messages[3] as number, // EmptyCharacter Index
+                messages[3] as number, // EmptyCharacter Keyframe
                 messages[4] as number, // Before EndFrame
                 messages[5] as number // After EndFrame
             );
@@ -434,7 +430,7 @@ export const execute = async (
                 messages[0] as number, // WorkSpace ID
                 messages[1] as number, // MovieClip ID
                 messages[2] as number, // Layer Index
-                messages[3] as number  // EmptyCharacter Index
+                messages[3] as number  // EmptyCharacter Keyframe
             );
             break;
 
@@ -454,7 +450,7 @@ export const execute = async (
                 messages[0] as number, // WorkSpace ID
                 messages[1] as number, // MovieClip ID
                 messages[2] as number, // Layer Index
-                messages[3] as number  // EmptyCharacter Index
+                messages[3] as number  // EmptyCharacter Keyframe
             );
             break;
 

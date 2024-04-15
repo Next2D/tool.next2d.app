@@ -12,7 +12,6 @@ import { execute as screenAreaRedrawUseCase } from "@/screen/application/ScreenA
  * @param  {number} work_space_id
  * @param  {number} library_id
  * @param  {number} layer_index
- * @param  {number} empty_character_index
  * @param  {number} keyframe
  * @return {Promise}
  * @method
@@ -22,7 +21,6 @@ export const execute = async (
     work_space_id: number,
     library_id: number,
     layer_index: number,
-    empty_character_index: number,
     keyframe: number
 ): Promise<void> => {
 
@@ -52,7 +50,7 @@ export const execute = async (
     const emptyCharacter = new EmptyCharacter();
     emptyCharacter.startFrame = keyframe;
     emptyCharacter.endFrame   = activeCharacters[0].endFrame;
-    layer.emptyCharacters.splice(empty_character_index, 0, emptyCharacter);
+    layer.addEmptyCharacter(emptyCharacter);
 
     // 既存のキーフレームの終了フレームを更新
     for (let idx = 0; idx < activeCharacters.length; ++idx) {

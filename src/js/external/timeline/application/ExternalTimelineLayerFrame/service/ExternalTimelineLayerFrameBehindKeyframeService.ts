@@ -18,7 +18,7 @@ export const execute = (
 ): void => {
 
     let frame = layer.maxFrame - 1;
-    while (true) {
+    while (frame > 0) {
 
         // 追加したキーフレーム以下になったら終了
         if (keyframe > frame) {

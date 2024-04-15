@@ -11,8 +11,8 @@ import { execute as timelineLayerAddFrameUpdateLayerStyleUseCase } from "@/timel
  * @param  {number} work_space_id
  * @param  {number} library_id
  * @param  {number} layer_index
- * @param  {number} empty_character_index
- * @param  {number} new_empty_character_index
+ * @param  {number} keyframe
+ * @param  {number} new_keyframe
  * @return {void}
  * @method
  * @public
@@ -21,9 +21,8 @@ export const execute = (
     work_space_id: number,
     library_id: number,
     layer_index: number,
-    empty_character_index: number,
-    new_empty_character_index: number,
-    keyframe: number
+    keyframe: number,
+    new_keyframe: number
 ): void => {
 
     const workSpace = $getWorkSpace(work_space_id);
@@ -42,7 +41,7 @@ export const execute = (
         return ;
     }
 
-    const emptyCharacter = layer.emptyCharacters[empty_character_index];
+    const emptyCharacter = layer.getActiveEmptyCharacter(keyframe);
     if (!emptyCharacter) {
         return ;
     }
@@ -50,13 +49,13 @@ export const execute = (
     // 新規の空のキーフレームを追加
     // fixed logic
     const newEmptyCharacter = new EmptyCharacter();
-    newEmptyCharacter.startFrame = keyframe;
+    newEmptyCharacter.startFrame = new_keyframe;
     newEmptyCharacter.endFrame   = emptyCharacter.endFrame;
-    layer.emptyCharacters.splice(new_empty_character_index, 0, newEmptyCharacter);
+    layer.addEmptyCharacter(newEmptyCharacter);
 
     // 既存の空のキーフレームの終了フレームを更新
     // fixed logic
-    emptyCharacter.endFrame = keyframe;
+    emptyCharacter.endFrame = new_keyframe;
 
     // アクティブならタイムラインを再描画
     if (workSpace.active && movieClip.active) {

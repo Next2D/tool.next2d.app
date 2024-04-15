@@ -11,7 +11,8 @@ import { execute as screenAreaRedrawUseCase } from "@/screen/application/ScreenA
  * @param  {number} work_space_id
  * @param  {number} library_id
  * @param  {number} layer_index
- * @param  {number} empty_character_index
+ * @param  {number}     empty_character_keyframe: number,
+
  * @param  {number} character_keyframe
  * @return {Promise}
  * @method
@@ -21,7 +22,7 @@ export const execute = async (
     work_space_id: number,
     library_id: number,
     layer_index: number,
-    empty_character_index: number,
+    empty_character_keyframe: number,
     character_keyframe: number
 ): Promise<void> => {
 
@@ -41,7 +42,7 @@ export const execute = async (
         return ;
     }
 
-    const emptyCharacter = layer.emptyCharacters[empty_character_index];
+    const emptyCharacter = layer.getActiveEmptyCharacter(empty_character_keyframe);
     if (!emptyCharacter) {
         return ;
     }

@@ -33,7 +33,6 @@ export const execute = (
             work_space_id,
             movie_clip.id,
             movie_clip.layers.indexOf(layer),
-            layer.characters.indexOf(character),
             character.toObject(),
             empty_character_index
         ],
