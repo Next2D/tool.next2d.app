@@ -50,6 +50,12 @@ export const execute = (
         return ;
     }
 
+    // 追加したキーフレームを削除
+    // fixed logic
+    for (let idx = 0; idx < splitCharacters.length; ++idx) {
+        layer.removeCharacter(splitCharacters[idx]);
+    }
+
     // キーフレームの終了位置を更新
     const endFrame = splitCharacters[0].endFrame;
     for (let idx = 0; idx < activeCharacters.length; ++idx) {
@@ -58,11 +64,6 @@ export const execute = (
             continue;
         }
         activeCharacter.endFrame = endFrame;
-    }
-
-    // 追加したキーフレームを削除
-    for (let idx = 0; idx < splitCharacters.length; ++idx) {
-        layer.removeCharacter(splitCharacters[idx]);
     }
 
     // アクティブならタイムラインを再描画

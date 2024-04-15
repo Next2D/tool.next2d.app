@@ -485,18 +485,17 @@ export class Layer
      */
     removeCharacter (character: Character): void
     {
+        this._$characters.splice(this._$characters.indexOf(character), 1);
         const activeCharacters = this.getActiveCharacters(character.startFrame);
 
         // DisplayObjectの深度を調整
         for (let idx = 0; idx < activeCharacters.length; ++idx) {
             const activeCharacter = activeCharacters[idx];
-            if (activeCharacter.depth > character.depth) {
+            if (character.depth > activeCharacter.depth) {
                 continue;
             }
             activeCharacter.depth--;
         }
-
-        this._$characters.splice(this._$characters.indexOf(character), 1);
     }
 
     /**
