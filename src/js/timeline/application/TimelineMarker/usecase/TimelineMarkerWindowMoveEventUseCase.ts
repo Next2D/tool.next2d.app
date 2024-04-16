@@ -11,6 +11,7 @@ import {
     $setMoveMode
 } from "../../TimelineUtil";
 import { $TOOL_AERA_WIDTH } from "@/config/ToolConfig";
+import { $setCursor } from "@/global/GlobalUtil";
 
 /**
  * @description マーカーのムーブイベントの処理関数
@@ -55,6 +56,9 @@ export const execute = (event: PointerEvent, loop_mode: boolean = false): void =
                 Math.min(scene.currentFrame + 1, $getMaxFrame())
             );
 
+            // カーソルを変更
+            $setCursor("ew-resize");
+
             // スクリーンを再描画
             await screenAreaRedrawUseCase(scene);
 
@@ -93,6 +97,9 @@ export const execute = (event: PointerEvent, loop_mode: boolean = false): void =
             timelineFrameUpdateFrameElementService(
                 Math.max(scene.currentFrame - 1, 1)
             );
+
+            // カーソルを変更
+            $setCursor("ew-resize");
 
             // スクリーンを再描画
             await screenAreaRedrawUseCase(scene);
@@ -141,6 +148,9 @@ export const execute = (event: PointerEvent, loop_mode: boolean = false): void =
         if (!frame) {
             return ;
         }
+
+        // カーソルを変更
+        $setCursor("ew-resize");
 
         // フレームの表示を更新
         timelineFrameUpdateFrameElementService(parseInt(frame));

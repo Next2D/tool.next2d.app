@@ -3,6 +3,7 @@ import { execute as timelineMarkerWindowMoveEventUseCase } from "./TimelineMarke
 import { execute as timelineMarkerRemoveWindowEventUseCase } from "./TimelineMarkerRemoveWindowEventUseCase";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { ExternalTimeline } from "@/external/timeline/domain/model/ExternalTimeline";
+import { $setCursor } from "@/global/GlobalUtil";
 
 /**
  * @description マーカー移動用の関数をwindowに登録
@@ -17,6 +18,9 @@ export const execute = (event: PointerEvent): void =>
 {
     // 親のイベントを中止する
     event.stopPropagation();
+
+    // カーソルを変更
+    $setCursor("ew-resize");
 
     // 選択中のレイヤーを全て非アクティブ化
     const workSpace = $getCurrentWorkSpace();

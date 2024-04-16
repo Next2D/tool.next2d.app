@@ -24,6 +24,9 @@ export const execute = async (
 
     frame = $clamp(frame, 1, Number.MAX_VALUE);
 
+    // 内部情報を更新
+    movie_clip.currentFrame = frame;
+
     // アクティブなら表示を非アクティブに更新
     if (work_space.active && movie_clip.active) {
         // フレームの表示を更新
@@ -32,10 +35,7 @@ export const execute = async (
         // マーカーを移動
         timelineMarkerMovePositionService();
 
-        // 表示を更新
+        // スクリーンエリアを再描画
         await screenAreaRedrawUseCase(movie_clip);
     }
-
-    // 内部情報を更新
-    movie_clip.currentFrame = frame;
 };

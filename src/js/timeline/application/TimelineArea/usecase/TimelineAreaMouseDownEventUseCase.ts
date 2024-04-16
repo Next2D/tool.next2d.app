@@ -51,7 +51,6 @@ export const execute = (event: PointerEvent): void =>
 
     // 親のイベントを終了
     event.stopPropagation();
-    event.preventDefault();
 
     // 表示されてるメニューを全て非表示にする
     $allHideMenu();
@@ -83,12 +82,17 @@ export const execute = (event: PointerEvent): void =>
                 return ;
             }
 
+            event.preventDefault();
+
+            // タイムラインエリアの移動処理を実行
             timelineAreaActiveMoveUseCase();
         }, 600);
 
         timelineLayerFrameSelectedAllClearUseCase(workSpace.scene);
 
     } else {
+
+        event.preventDefault();
 
         // ダブルタップを終了
         wait = false;
