@@ -1,17 +1,17 @@
 import { $SOUND_TYPE } from "@/config/InstanceConfig";
 import { $PROPERTY_AREA_SOUND_SELECT_ID } from "@/config/PropertyConfig";
-import type { WorkSpace } from "@/core/domain/model/WorkSpace";
+import { execute as soundAreaSelectOptionComponent } from "../component/SoundAreaSelectOptionComponent";
+import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 
 /**
  * @description サウンドリストのSelect要素を再構築
  *              Rebuild the Select element of the sound list
  *
- * @param  {WorkSpace} work_space
  * @return {Promise}
  * @method
  * @public
  */
-export const execute = async (work_space: WorkSpace): Promise<void> =>
+export const execute = async (): Promise<void> =>
 {
     const element: HTMLElement | null = document
         .getElementById($PROPERTY_AREA_SOUND_SELECT_ID);
@@ -25,14 +25,15 @@ export const execute = async (work_space: WorkSpace): Promise<void> =>
         element.firstElementChild.remove();
     }
 
-    for (const instance of work_space.libraries.values()) {
-        if (!instance.type !== $SOUND_TYPE) {
+    const workSpace = $getCurrentWorkSpace();
+    for (const instance of workSpace.libraries.values()) {
+
+        if (instance.type !== $SOUND_TYPE) {
             continue;
         }
 
-        const option = document.createElement("option");
-        option.value = `${instance.id}`;
-        option.textContent = instance.getPath(work_space);
-        element.appendChild(option);
+        element.insertAdjacentHTML("beforeend",
+            soundAreaSelectOptionComponent(instance.id, instance.getPath(workSpace))
+        );
     }
 };

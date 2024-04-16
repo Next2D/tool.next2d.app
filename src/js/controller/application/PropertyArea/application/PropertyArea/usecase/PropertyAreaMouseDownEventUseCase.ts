@@ -48,7 +48,6 @@ export const execute = (event: PointerEvent): void =>
 
     // 親のイベントを終了
     event.stopPropagation();
-    event.preventDefault();
 
     // 表示されてるメニューを全て非表示にする
     $allHideMenu();
@@ -80,10 +79,17 @@ export const execute = (event: PointerEvent): void =>
                 return ;
             }
 
+            // イベントをキャンセル
+            event.preventDefault();
+
+            // 移動モードを開始
             propertyAreaActiveMoveUseCase();
         }, 600);
 
     } else {
+
+        // イベントをキャンセル
+        event.preventDefault();
 
         // ダブルタップを終了
         wait = false;

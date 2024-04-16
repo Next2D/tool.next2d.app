@@ -10,12 +10,12 @@ import { execute as propertyAreaAddSoundCreateHistoryObjectService } from "../se
 import { execute as shareSendService } from "@/share/service/ShareSendService";
 
 /**
- * @description ライブラリのアイテム削除の履歴を登録
- *              Register history of item deletion in the library
+ * @description タイムラインへのサウンド追加の履歴を登録
+ *              Register the history of adding sound to the timeline
  *
  * @param  {WorkSpace} work_space
  * @param  {MovieClip} movie_clip
- * @param  {Instance} instance
+ * @param  {object} sound
  * @param  {boolean} [receiver=false]
  * @return {void}
  * @method
@@ -28,6 +28,10 @@ export const execute = (
     receiver: boolean = false
 ): void => {
 
+    // ポジション位置から未来の履歴を全て削除
+    // fixed logic
+    historyRemoveElementService(work_space);
+
     const instance = work_space.getLibrary(sound.libraryId);
     if (!instance) {
         return ;
@@ -37,10 +41,6 @@ export const execute = (
     if (!sounds) {
         return ;
     }
-
-    // ポジション位置から未来の履歴を全て削除
-    // fixed logic
-    historyRemoveElementService(work_space);
 
     // fixed logic
     const historyObject = propertyAreaAddSoundCreateHistoryObjectService(
