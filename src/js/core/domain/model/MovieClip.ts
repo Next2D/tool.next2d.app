@@ -2,6 +2,7 @@ import type { SoundObjectImpl } from "@/interface/SoundObjectImpl";
 import type { MovieClipSaveObjectImpl } from "@/interface/MovieClipSaveObjectImpl";
 import type { ActionSaveObjectImpl } from "@/interface/ActionSaveObjectImpl";
 import type { FrameObjectImpl } from "@/interface/FrameObjectImpl";
+import type { SoundSaveListImpl } from "@/interface/SoundSaveListImpl";
 import { Instance } from "./Instance";
 import { Layer } from "./Layer";
 import { execute as movieClipRunUseCase } from "@/core/application/MovieClip/usecase/MovieClipRunUseCase";
@@ -458,6 +459,14 @@ export class MovieClip extends Instance
                 this._$actions.set(actionObject.frame, actionObject.action);
             }
         }
+
+        // サウンド情報を再登録
+        if (object.sounds) {
+            for (let idx = 0; idx < object.sounds.length; ++idx) {
+                const soundObject: SoundSaveListImpl = object.sounds[idx];
+                this._$sounds.set(soundObject.frame, soundObject.sounds);
+            }
+        }
     }
 
     /**
@@ -778,7 +787,7 @@ export class MovieClip extends Instance
             });
         }
 
-        const soundList = [];
+        const soundList: SoundSaveListImpl[] = [];
         for (const [frame, sounds] of this._$sounds) {
             soundList.push({
                 "frame": frame,
