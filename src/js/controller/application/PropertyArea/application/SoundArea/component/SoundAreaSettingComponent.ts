@@ -1,4 +1,3 @@
-import type { Sound } from "@/core/domain/model/Sound";
 import type { SoundObjectImpl } from "@/interface/SoundObjectImpl";
 
 /**
@@ -6,7 +5,7 @@ import type { SoundObjectImpl } from "@/interface/SoundObjectImpl";
  *              Returns the Element of individual settings in the sound area as a string
  *
  * @param  {number} id
- * @param  {Sound} sound
+ * @param  {string} sound_name
  * @param  {object} sound_object
  * @return {string}
  * @method
@@ -14,13 +13,13 @@ import type { SoundObjectImpl } from "@/interface/SoundObjectImpl";
  */
 export const execute = (
     id: number,
-    sound: Sound,
+    sound_name: string,
     sound_object: SoundObjectImpl
 ): string => {
     return `
 <div id="sound-id-${id}" class="sound-border">
     <div class="sound-title">
-      <span id="sound-name-${id}" data-sound-id="${id}">${sound.name}</span>
+      <span id="sound-name-${id}" data-sound-id="${id}">${sound_name}</span>
       <i class="trash" id="sound-trash-${id}" data-sound-id="${id}" data-detail="{{サウンドを削除}}"></i>
     </div>
 

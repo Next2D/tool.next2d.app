@@ -4,6 +4,7 @@ import { execute as timelineFrameUpdateFrameElementService } from "@/timeline/ap
 import { execute as timelineMarkerMovePositionService } from "@/timeline/application/TimelineMarker/service/TimelineMarkerMovePositionService";
 import { execute as timelineLayerAllSelectedElementUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerAllSelectedElementUseCase";
 import { execute as screenAreaRedrawUseCase } from "@/screen/application/ScreenArea/usecase/ScreenAreaRedrawUseCase";
+import { execute as propertyAreaSoundAreaRebuildSettingAreaUseCase } from "@/controller/application/PropertyArea/application/SoundArea/usecase/PropertyAreaSoundAreaRebuildSettingAreaUseCase";
 
 /**
  * @description 指定のフレームを選択状態に更新
@@ -44,6 +45,9 @@ export const execute = async (
 
         // 指定のフレームを選択状態に更新
         timelineLayerAllSelectedElementUseCase(movie_clip, frames);
+
+        // サウンドエリアを再描画
+        propertyAreaSoundAreaRebuildSettingAreaUseCase();
 
         // スクリーンを再描画
         await screenAreaRedrawUseCase(movie_clip);

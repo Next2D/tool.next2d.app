@@ -41,8 +41,9 @@ export const execute = (): void =>
             continue;
         }
 
+        // 設定エリアを追加
         propertyAreaSoundAreaAddSettingAreaService(
-            idx, sound, soundObject
+            idx, sound.name, soundObject
         );
     }
 };

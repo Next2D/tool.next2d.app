@@ -70,7 +70,15 @@ export const execute = (
         // サウンドElementを更新
         timelineHeaderUpdateSoundElementService(element, currentFrame);
 
+        const sounds = movie_clip.getSound(currentFrame);
+        if (!sounds) {
+            return ;
+        }
         // サウンドエリアに設定エリアを追加
-        propertyAreaSoundAreaAddSettingAreaService(sound);
+        propertyAreaSoundAreaAddSettingAreaService(
+            sounds.indexOf(sound),
+            externalSound.name,
+            sound
+        );
     }
 };

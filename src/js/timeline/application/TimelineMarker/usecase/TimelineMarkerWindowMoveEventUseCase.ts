@@ -5,6 +5,7 @@ import { timelineHeader } from "@/timeline/domain/model/TimelineHeader";
 import { $TIMELINE_LAYER_CONTROLLER_WIDTH } from "@/config/TimelineConfig";
 import { execute as timelineScrollUpdateScrollXUseCase } from "@/timeline/application/TimelineScroll/usecase/TimelineScrollUpdateScrollXUseCase";
 import { execute as screenAreaRedrawUseCase } from "@/screen/application/ScreenArea/usecase/ScreenAreaRedrawUseCase";
+import { execute as propertyAreaSoundAreaRebuildSettingAreaUseCase } from "@/controller/application/PropertyArea/application/SoundArea/usecase/PropertyAreaSoundAreaRebuildSettingAreaUseCase";
 import {
     $getMaxFrame,
     $getMoveMode,
@@ -59,6 +60,9 @@ export const execute = (event: PointerEvent, loop_mode: boolean = false): void =
             // カーソルを変更
             $setCursor("ew-resize");
 
+            // サウンドエリアを再描画
+            propertyAreaSoundAreaRebuildSettingAreaUseCase();
+
             // スクリーンを再描画
             await screenAreaRedrawUseCase(scene);
 
@@ -100,6 +104,9 @@ export const execute = (event: PointerEvent, loop_mode: boolean = false): void =
 
             // カーソルを変更
             $setCursor("ew-resize");
+
+            // サウンドエリアを再描画
+            propertyAreaSoundAreaRebuildSettingAreaUseCase();
 
             // スクリーンを再描画
             await screenAreaRedrawUseCase(scene);
@@ -157,6 +164,9 @@ export const execute = (event: PointerEvent, loop_mode: boolean = false): void =
 
         // マーカーを移動
         timelineMarkerMovePositionService();
+
+        // サウンドエリアを再描画
+        propertyAreaSoundAreaRebuildSettingAreaUseCase();
 
         // スクリーンを再描画
         await screenAreaRedrawUseCase(scene);
