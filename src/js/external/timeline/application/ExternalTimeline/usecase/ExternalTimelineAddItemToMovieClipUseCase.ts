@@ -6,6 +6,7 @@ import { Character } from "@/core/domain/model/Character";
 import { execute as timelineLayerFrameAddKeyframeHistoryUseCase } from "@/history/application/timeline/application/TimelineLayerFrame/AddKeyframe/usecase/TimelineLayerFrameAddKeyframeHistoryUseCase";
 import { execute as screenAreaAppendCharacterService } from "@/screen/application/ScreenArea/service/ScreenAreaAppendCharacterService";
 import { execute as timelineLayerAddFrameUpdateLayerStyleUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerAddFrameUpdateLayerStyleUseCase";
+import { execute as externalTimelineAddSoundUseCase } from "@/external/timeline/application/ExternalTimeline/usecase/ExternalTimelineAddSoundUseCase";
 import {
     $FOLDER_TYPE,
     $SOUND_TYPE
@@ -35,6 +36,32 @@ export const execute = async (
     receiver: boolean = false
 ): Promise<void> => {
 
+    const externalLibrary = new ExternalLibrary(work_space);
+    const item: ExternalItemImpl<any> | null = externalLibrary.getItem(path);
+    if (!item) {
+        return ;
+    }
+
+    // 音声とフォルダは追加できない
+    switch (item.type) {
+
+        case $SOUND_TYPE:
+            externalTimelineAddSoundUseCase(
+                work_space,
+                movie_clip,
+                path,
+                receiver
+            );
+            return ;
+
+        case $FOLDER_TYPE:
+            return ;
+
+        default:
+            break;
+
+    }
+
     const layers = [];
 
     // 追加するレイヤーをセット
@@ -62,24 +89,6 @@ export const execute = async (
         } else {
             layers.push(movie_clip.layers[0]);
         }
-    }
-
-    const externalLibrary = new ExternalLibrary(work_space);
-    const item: ExternalItemImpl<any> | null = externalLibrary.getItem(path);
-    if (!item) {
-        return ;
-    }
-
-    // 音声とフォルダは追加できない
-    switch (item.type) {
-
-        case $SOUND_TYPE:
-        case $FOLDER_TYPE:
-            return ;
-
-        default:
-            break;
-
     }
 
     for (let idx = 0; idx < layers.length; idx++) {

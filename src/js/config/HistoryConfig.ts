@@ -402,3 +402,12 @@ export const $TIMELINE_DELETE_EMPTY_KEY_FRAME_COMMAND: number = 41;
  * @constant
  */
 export const $TIMELINE_DELETE_KEY_FRAME_COMMAND: number = 42;
+
+/**
+ * @description MovieClipへのサウンド追加の識別コマンド名
+ *              Identification command name for adding sound to a MovieClip
+ *
+ * @type {number}
+ * @constant
+ */
+export const $PROPERTY_ADD_SOUND_TO_MOVIE_CLIP_COMMAND: number = 43;

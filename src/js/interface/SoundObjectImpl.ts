@@ -1,5 +1,7 @@
 export interface SoundObjectImpl
 {
-    charactorId: number;
+    libraaryId: number;
     volume: number;
+    autoPlay: boolean;
+    loopCount: number;
 }

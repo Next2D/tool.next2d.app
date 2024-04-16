@@ -45,6 +45,7 @@ export const execute = async (event: DragEvent): Promise<void> =>
         switch (instance.type) {
 
             case $SOUND_TYPE:
+                externalTimeline.addSound(instance.getPath(workSpace));
                 break;
 
             case $FOLDER_TYPE:

@@ -35,7 +35,8 @@ import {
     $TIMELINE_ERASE_EMPTY_KEY_FRAME_COMMAND,
     $TIMELINE_ERASE_KEY_FRAME_COMMAND,
     $TIMELINE_DELETE_EMPTY_KEY_FRAME_COMMAND,
-    $TIMELINE_DELETE_KEY_FRAME_COMMAND
+    $TIMELINE_DELETE_KEY_FRAME_COMMAND,
+    $PROPERTY_ADD_SOUND_TO_MOVIE_CLIP_COMMAND
 } from "@/config/HistoryConfig";
 
 /**
@@ -156,6 +157,9 @@ export const execute = (command: number): string =>
 
         case $TIMELINE_DELETE_KEY_FRAME_COMMAND:
             return "「%s1」のレイヤー「%s2」の%s3フレームのキーフレームを削除";
+
+        case $PROPERTY_ADD_SOUND_TO_MOVIE_CLIP_COMMAND:
+            return "「%s1」の%s2フレームにサウンド「%s3」を追加";
 
         default:
             break;

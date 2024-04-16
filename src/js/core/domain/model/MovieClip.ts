@@ -618,15 +618,15 @@ export class MovieClip extends Instance
      *              Returns an array of sound information for a given frame
      *
      * @param  {number} frame
-     * @return {Sound[]}
+     * @return {object[] | null}
      * @method
      * @public
      */
-    getSound (frame: number): SoundObjectImpl[]
+    getSound (frame: number): SoundObjectImpl[] | null
     {
         return this.hasSound(frame)
             ? this._$sounds.get(frame) as SoundObjectImpl[]
-            : [];
+            : null;
     }
 
     /**
@@ -634,14 +634,17 @@ export class MovieClip extends Instance
      *              Register sound information to the specified frame
      *
      * @param  {number} frame
-     * @param  {Sound[]} sounds
+     * @param  {object} sound
      * @return {void}
      * @method
      * @public
      */
-    setSound (frame: number, sounds: SoundObjectImpl[]): void
+    setSound (frame: number, sound: SoundObjectImpl): void
     {
-        this._$sounds.set(frame, sounds);
+        if (!this.hasSound(frame)) {
+            this._$sounds.set(frame, []);
+        }
+        this._$sounds.get(frame)?.push(sound);
     }
 
     /**
