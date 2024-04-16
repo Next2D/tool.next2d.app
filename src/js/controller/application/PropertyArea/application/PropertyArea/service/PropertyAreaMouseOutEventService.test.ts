@@ -1,4 +1,4 @@
-import { $getStandbyMoveState, $setStandbyMoveState } from "../PropertyAreaUtil";
+import { $getStandbyMoveState, $setStandbyMoveState } from "../../../PropertyAreaUtil";
 import { execute } from "./PropertyAreaMouseOutEventService";
 
 describe("TTimelineAreaMouseOutEventServiceTest", () =>

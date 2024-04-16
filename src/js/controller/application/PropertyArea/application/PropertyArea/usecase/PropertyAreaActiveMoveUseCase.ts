@@ -8,7 +8,7 @@ import {
     $getMouseState,
     $getStandbyMoveState,
     $setStandbyMoveState
-} from "../PropertyAreaUtil";
+} from "../../../PropertyAreaUtil";
 
 /**
  * @description プロパティエリアを移動可能な状態にする

@@ -3,7 +3,7 @@ import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import type { ExternalSound } from "@/external/core/domain/model/ExternalSound";
 import type { SoundObjectImpl } from "@/interface/SoundObjectImpl";
 import type { ExternalItemImpl } from "@/interface/ExternalItemImpl";
-import { execute as propertyAreaAddSoundHistoryUseCase } from "@/history/application/controller/application/PropertyArea/AddSound/usecase/PropertyAreaAddSoundHistoryUseCase";
+import { execute as propertyAreaAddSoundHistoryUseCase } from "@/history/application/controller/application/PropertyArea/application/SoundArea/AddSound/usecase/PropertyAreaAddSoundHistoryUseCase";
 import { timelineHeader } from "@/timeline/domain/model/TimelineHeader";
 import { $getLeftFrame } from "@/timeline/application/TimelineUtil";
 import { execute as timelineHeaderUpdateSoundElementService } from "@/timeline/application/TimelineHeader/service/TimelineHeaderUpdateSoundElementService";
@@ -37,7 +37,7 @@ export const execute = (
 
     // 新規サウンドオブジェクトを作成
     const sound: SoundObjectImpl = {
-        "libraaryId": externalSound.id,
+        "libraryId": externalSound.id,
         "volume": 100,
         "autoPlay": false,
         "loopCount": 0

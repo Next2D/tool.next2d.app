@@ -28,7 +28,7 @@ export const execute = (
     receiver: boolean = false
 ): void => {
 
-    const instance = work_space.getLibrary(sound.libraaryId);
+    const instance = work_space.getLibrary(sound.libraryId);
     if (!instance) {
         return ;
     }

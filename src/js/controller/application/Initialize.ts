@@ -1,5 +1,5 @@
 import { execute as controllerInitializeRegisterEventUseCase } from "@/controller/application/ControllerArea/usecase/ControllerInitializeRegisterEventUseCase";
-import { execute as propertyAreaInitializeRegisterEventUseCase } from "@/controller/application/PropertyArea/usecase/PropertyAreaInitializeRegisterEventUseCase";
+import { execute as propertyAreaInitializeRegisterEventUseCase } from "@/controller/application/PropertyArea/application/PropertyArea/usecase/PropertyAreaInitializeRegisterEventUseCase";
 import { execute as controllerAdjustmentInitializeRegisterEventUseCase } from "@/controller/application/ControllerAdjustment/usecase/ControllerAdjustmentInitializeRegisterEventUseCase";
 import { controllerTab } from "../domain/model/ControllerTab";
 import { stageSetting } from "../domain/model/StageSetting";

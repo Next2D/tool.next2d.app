@@ -2,8 +2,8 @@ import { EventType } from "@/tool/domain/event/EventType";
 import { $CONTROLLER_AREA_PROPERTY_ID } from "@/config/PropertyConfig";
 import { execute as propertyAreaTitleMouseDownEventService } from "../service/PropertyAreaTitleMouseDownEventService";
 import { execute as propertyAreaMouseOutEventService } from "../service/PropertyAreaMouseOutEventService";
-import { execute as propertyAreaMouseUpEventUseCase } from "../usecase/PropertyAreaMouseUpEventUseCase";
-import { execute as propertyAreaMouseDownEventUseCase } from "../usecase/PropertyAreaMouseDownEventUseCase";
+import { execute as propertyAreaMouseUpEventUseCase } from "./PropertyAreaMouseUpEventUseCase";
+import { execute as propertyAreaMouseDownEventUseCase } from "./PropertyAreaMouseDownEventUseCase";
 
 /**
  * @description プロパティーエリアの移動イベントを登録

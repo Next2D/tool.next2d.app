@@ -1,6 +1,6 @@
 import { execute } from "./PropertyAreaChageStyleToActiveService";
-import { $createWorkSpace } from "../../../../core/application/CoreUtil";
-import { $CONTROLLER_DEFAULT_WIDTH_SIZE } from "../../../../config/ControllerConfig";
+import { $createWorkSpace } from "../../../../../../core/application/CoreUtil";
+import { $CONTROLLER_DEFAULT_WIDTH_SIZE } from "../../../../../../config/ControllerConfig";
 
 describe("PropertyAreaChageStyleToActiveServiceTest", () =>
 {

@@ -1,4 +1,4 @@
-import { $setStandbyMoveState } from "../PropertyAreaUtil";
+import { $setStandbyMoveState } from "../../../PropertyAreaUtil";
 
 /**
  * @description プロパティエリアからマウスが外れた処理

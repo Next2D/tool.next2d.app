@@ -1,6 +1,6 @@
 import { EventType } from "@/tool/domain/event/EventType";
 import { execute as propertyAreaActiveWindowMoveService } from "../service/PropertyAreaActiveWindowMoveService";
-import { execute as propertyAreaActiveWindowMouseUpUseCase } from "../usecase/PropertyAreaActiveWindowMouseUpUseCase";
+import { execute as propertyAreaActiveWindowMouseUpUseCase } from "./PropertyAreaActiveWindowMouseUpUseCase";
 
 /**
  * @description プロパティエリアの移動関数をwindowに登録
