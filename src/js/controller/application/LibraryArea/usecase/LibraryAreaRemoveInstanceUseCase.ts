@@ -5,7 +5,7 @@ import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { ExternalLibrary } from "@/external/controller/domain/model/ExternalLibrary";
 import { execute as libraryAreaReloadUseCase } from "@/controller/application/LibraryArea/usecase/LibraryAreaReloadUseCase";
 import { execute as libraryAreaSelectedClearUseCase } from "@/controller/application/LibraryArea/usecase/LibraryAreaSelectedClearUseCase";
-import { execute as propertyAreaRebuildSoundSelectElementService } from "@/controller/application/PropertyArea/application/SoundArea/service/PropertyAreaRebuildSoundSelectElementService";
+import { execute as propertyAreaSoundAreaRebuildSelectElementService } from "@/controller/application/PropertyArea/application/SoundArea/service/PropertyAreaSoundAreaRebuildSelectElementService";
 import { $allHideMenu } from "@/menu/application/MenuUtil";
 
 /**
@@ -50,5 +50,5 @@ export const execute = async (): Promise<void> =>
     libraryAreaReloadUseCase();
 
     // サウンドエリアの選択要素を再構築
-    propertyAreaRebuildSoundSelectElementService();
+    propertyAreaSoundAreaRebuildSelectElementService();
 };

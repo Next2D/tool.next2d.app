@@ -14,7 +14,7 @@ import { execute as libraryAreaSelectedClearUseCase } from "@/controller/applica
 import { execute as timelineSceneListClearAllService } from "@/timeline/application/TimelineSceneList/service/TimelineSceneListClearAllService";
 import { libraryArea } from "@/controller/domain/model/LibraryArea";
 import { execute as historyReloadUseCase } from "@/controller/application/HistoryArea/usecase/HistoryReloadUseCase";
-import { execute as propertyAreaRebuildSoundSelectElementService } from "@/controller/application/PropertyArea/application/SoundArea/service/PropertyAreaRebuildSoundSelectElementService";
+import { execute as propertyAreaSoundAreaRebuildSelectElementService } from "@/controller/application/PropertyArea/application/SoundArea/service/PropertyAreaSoundAreaRebuildSelectElementService";
 
 /**
  * @description プロジェクトの起動処理
@@ -74,7 +74,7 @@ export const execute = async (work_space: WorkSpace): Promise<void> =>
     historyReloadUseCase();
 
     // サウンドリストのSelect要素を再構築
-    propertyAreaRebuildSoundSelectElementService();
+    propertyAreaSoundAreaRebuildSelectElementService();
 
     // アクティブなMovieClipを起動
     await work_space.scene.run();

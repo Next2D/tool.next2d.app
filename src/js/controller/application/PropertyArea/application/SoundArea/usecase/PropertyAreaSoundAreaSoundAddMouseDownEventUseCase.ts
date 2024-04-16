@@ -1,0 +1,41 @@
+import { $SOUND_AREA_SELECT_ID } from "@/config/PropertyConfig";
+import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
+import { ExternalTimeline } from "@/external/timeline/domain/model/ExternalTimeline";
+
+/**
+ * @description サウンドエリアのサウンド追加ボタンのマウスダウンイベント
+ *              Mouse down event of sound add button in sound area
+ *
+ * @param  {PointerEvent} event
+ * @return {void}
+ * @method
+ * @public
+ */
+export const execute = (event: PointerEvent): void =>
+{
+    if (event.button !== 0) {
+        return ;
+    }
+
+    // イベントの伝播を止める
+    event.stopPropagation();
+    event.preventDefault();
+
+    const element: HTMLSelectElement | null = document
+        .getElementById($SOUND_AREA_SELECT_ID) as HTMLSelectElement;
+
+    if (!element) {
+        return ;
+    }
+
+    const libraryId = parseInt(element.value as string);
+    const workSpace = $getCurrentWorkSpace();
+    const instance = workSpace.getLibrary(libraryId);
+    if (!instance) {
+        return ;
+    }
+
+    // 外部APIを起動
+    const externalTimeline = new ExternalTimeline(workSpace, workSpace.scene);
+    externalTimeline.addSound(instance.getPath(workSpace));
+};

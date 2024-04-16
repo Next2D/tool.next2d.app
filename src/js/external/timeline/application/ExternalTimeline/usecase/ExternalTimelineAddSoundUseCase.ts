@@ -9,6 +9,7 @@ import { $getLeftFrame } from "@/timeline/application/TimelineUtil";
 import { execute as timelineHeaderUpdateSoundElementService } from "@/timeline/application/TimelineHeader/service/TimelineHeaderUpdateSoundElementService";
 import { ExternalLibrary } from "@/external/controller/domain/model/ExternalLibrary";
 import { $SOUND_TYPE } from "@/config/InstanceConfig";
+import { execute as propertyAreaSoundAreaAddSettingAreaService } from "@/controller/application/PropertyArea/application/SoundArea/service/PropertyAreaSoundAreaAddSettingAreaService";
 
 /**
  * @description タイムラインにサウンドを追加
@@ -68,5 +69,8 @@ export const execute = (
 
         // サウンドElementを更新
         timelineHeaderUpdateSoundElementService(element, currentFrame);
+
+        // サウンドエリアに設定エリアを追加
+        propertyAreaSoundAreaAddSettingAreaService(sound);
     }
 };

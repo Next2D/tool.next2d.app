@@ -1,5 +1,5 @@
 import { $SOUND_TYPE } from "@/config/InstanceConfig";
-import { $PROPERTY_AREA_SOUND_SELECT_ID } from "@/config/PropertyConfig";
+import { $SOUND_AREA_SELECT_ID } from "@/config/PropertyConfig";
 import { execute as soundAreaSelectOptionComponent } from "../component/SoundAreaSelectOptionComponent";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 
@@ -14,7 +14,7 @@ import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 export const execute = async (): Promise<void> =>
 {
     const element: HTMLElement | null = document
-        .getElementById($PROPERTY_AREA_SOUND_SELECT_ID);
+        .getElementById($SOUND_AREA_SELECT_ID);
 
     if (!element) {
         return ;

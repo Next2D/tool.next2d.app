@@ -4,6 +4,7 @@ import { execute as propertyAreaTitleMouseDownEventService } from "../service/Pr
 import { execute as propertyAreaMouseOutEventService } from "../service/PropertyAreaMouseOutEventService";
 import { execute as propertyAreaMouseUpEventUseCase } from "./PropertyAreaMouseUpEventUseCase";
 import { execute as propertyAreaMouseDownEventUseCase } from "./PropertyAreaMouseDownEventUseCase";
+import { execute as propertyAreaSoundAreaInitializeRegisterEventUseCase } from "@/controller/application/PropertyArea/application/SoundArea/usecase/PropertyAreaSoundAreaInitializeRegisterEventUseCase";
 
 /**
  * @description プロパティーエリアの移動イベントを登録
@@ -15,9 +16,20 @@ import { execute as propertyAreaMouseDownEventUseCase } from "./PropertyAreaMous
  */
 export const execute = (): void =>
 {
+    // サウンドエリアのイベント登録
+    propertyAreaSoundAreaInitializeRegisterEventUseCase();
+
+    // プロパティーエリアのイベント登録
+    const element: HTMLElement | null = document
+        .getElementById($CONTROLLER_AREA_PROPERTY_ID);
+
+    if (!element) {
+        return ;
+    }
+
     // プロパティーのタイトルにマウスダウンイベントを登録
-    const elements: HTMLCollectionOf<Element> = document
-        .getElementsByClassName("container-title");
+    const elements = element
+        .querySelectorAll(".container-title");
 
     const length: number = elements.length;
     for (let idx: number = 0; idx < length; ++idx) {
@@ -32,14 +44,6 @@ export const execute = (): void =>
                 EventType.MOUSE_DOWN,
                 propertyAreaTitleMouseDownEventService
             );
-    }
-
-    // プロパティーエリアのイベント登録
-    const element: HTMLElement | null = document
-        .getElementById($CONTROLLER_AREA_PROPERTY_ID);
-
-    if (!element) {
-        return ;
     }
 
     // タップ、ダブルタップの処理
