@@ -54,6 +54,7 @@ export const execute = (
     propertyAreaAddSoundHistoryUseCase(
         work_space,
         movie_clip,
+        currentFrame,
         sound,
         receiver
     );

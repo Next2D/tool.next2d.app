@@ -15,7 +15,8 @@ import { execute as shareSendService } from "@/share/service/ShareSendService";
  *
  * @param  {WorkSpace} work_space
  * @param  {MovieClip} movie_clip
- * @param  {object} sound
+ * @param  {number} frame
+ * @param  {object} sound_object
  * @param  {boolean} [receiver=false]
  * @return {void}
  * @method
@@ -24,7 +25,8 @@ import { execute as shareSendService } from "@/share/service/ShareSendService";
 export const execute = (
     work_space: WorkSpace,
     movie_clip: MovieClip,
-    sound: SoundObjectImpl,
+    frame: number,
+    sound_object: SoundObjectImpl,
     receiver: boolean = false
 ): void => {
 
@@ -32,19 +34,20 @@ export const execute = (
     // fixed logic
     historyRemoveElementService(work_space);
 
-    const instance = work_space.getLibrary(sound.libraryId);
+    const instance = work_space.getLibrary(sound_object.libraryId);
     if (!instance) {
         return ;
     }
 
-    const sounds = movie_clip.getSound(movie_clip.currentFrame);
+    const sounds = movie_clip.getSound(frame);
     if (!sounds) {
         return ;
     }
 
     // fixed logic
     const historyObject = propertyAreaAddSoundCreateHistoryObjectService(
-        work_space.id, movie_clip, sounds.indexOf(sound), sound, instance.name
+        work_space.id, movie_clip, frame,
+        sounds.indexOf(sound_object), sound_object, instance.name
     );
 
     // 作業履歴にElementを追加

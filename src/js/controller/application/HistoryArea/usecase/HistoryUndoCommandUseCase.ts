@@ -469,7 +469,8 @@ export const execute = async (
             propertyAreaAddSoundHistoryUndoUseCase(
                 messages[0] as number, // WorkSpace ID
                 messages[1] as number, // MovieClip ID
-                messages[2] as number // Sound Index
+                messages[2] as number, // Frame
+                messages[3] as number // Sound Index
             );
             break;
 

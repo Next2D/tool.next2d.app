@@ -2,6 +2,9 @@ import type { InstanceImpl } from "@/interface/InstanceImpl";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
 import { execute as propertyAreaSoundAreaRebuildSettingAreaUseCase } from "@/controller/application/SoundArea/usecase/PropertyAreaSoundAreaRebuildSettingAreaUseCase";
+import { $getLeftFrame } from "@/timeline/application/TimelineUtil";
+import { timelineHeader } from "@/timeline/domain/model/TimelineHeader";
+import { execute as timelineHeaderUpdateSoundElementService } from "@/timeline/application/TimelineHeader/service/TimelineHeaderUpdateSoundElementService";
 
 /**
  * @description 追加したサウンドを元に戻す
@@ -9,16 +12,18 @@ import { execute as propertyAreaSoundAreaRebuildSettingAreaUseCase } from "@/con
  *
  * @param  {number} work_space_id
  * @param  {number} library_id
+ * @param  {number} frame
  * @param  {number} index
- * @return {Promise}
+ * @return {void}
  * @method
  * @public
  */
-export const execute = async (
+export const execute = (
     work_space_id: number,
     library_id: number,
+    frame: number,
     index: number
-): Promise<void> => {
+): void => {
 
     const workSpace = $getWorkSpace(work_space_id);
     if (!workSpace) {
@@ -30,7 +35,7 @@ export const execute = async (
         return ;
     }
 
-    const sounds = movieClip.getSound(index);
+    const sounds = movieClip.getSound(frame);
     if (!sounds) {
         return ;
     }
@@ -38,9 +43,26 @@ export const execute = async (
     // 音声一覧から削除
     sounds.splice(index, 1);
 
+    // 音声データがない時はリストも削除
+    if (!sounds.length) {
+        movieClip.deleteSound(frame);
+    }
+
     // 起動中のプロジェクトならライブラリを再描画
     if (workSpace.active && movieClip.active) {
         // サウンド設定エリアの再構築
         propertyAreaSoundAreaRebuildSettingAreaUseCase();
+
+        // サウンドElementを更新
+        if (!sounds.length) {
+            const layerIndex = frame - $getLeftFrame();
+            const element: HTMLElement | undefined = timelineHeader.elements[layerIndex] as HTMLElement;
+            if (!element) {
+                return ;
+            }
+
+            // タイムラインヘッダーのサウンドElementを更新
+            timelineHeaderUpdateSoundElementService(element, frame);
+        }
     }
 };
