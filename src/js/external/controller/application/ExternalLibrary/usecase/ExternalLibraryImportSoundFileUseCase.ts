@@ -5,7 +5,10 @@ import { Sound } from "@/core/domain/model/Sound";
 import { ExternalLibrary } from "@/external/controller/domain/model/ExternalLibrary";
 import { execute as externalWorkSpaceRegisterInstanceService } from "@/external/core/application/ExternalWorkSpace/service/ExternalWorkSpaceRegisterInstanceService";
 import { execute as libraryAreaAddNewSoundHistoryUseCase } from "@/history/application/controller/application/LibraryArea/Sound/usecase/LibraryAreaAddNewSoundHistoryUseCase";
-import { $FOLDER_TYPE, $SOUND_TYPE } from "@/config/InstanceConfig";
+import {
+    $FOLDER_TYPE,
+    $SOUND_TYPE
+} from "@/config/InstanceConfig";
 
 /**
  * @description 音声の読み込み実行処理関数

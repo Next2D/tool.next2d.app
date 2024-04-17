@@ -1,23 +1,14 @@
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import type { ExternalInstanceImpl } from "@/interface/ExternalInstanceImpl";
-import type { InstanceImpl } from "@/interface/InstanceImpl";
-import type { ExternalFolder } from "@/external/core/domain/model/ExternalFolder";
 import { execute as externalLibraryAddNewFolderUseCase } from "@/external/controller/application/ExternalLibrary/usecase/ExternalLibraryAddNewFolderUseCase";
 import { execute as externalLibraryAddNewMovieClipUseCase } from "@/external/controller/application/ExternalLibrary/usecase/ExternalLibraryAddNewMovieClipUseCase";
-import { execute as libraryAreaAllClearElementService } from "@/controller/application/LibraryArea/service/LibraryAreaAllClearElementService";
-import { execute as libraryAreaActiveElementService } from "@/controller/application/LibraryArea/service/LibraryAreaActiveElementService";
-import { execute as externalLibrarySelectedOneService } from "@/external/controller/application/ExternalLibrary/service/ExternalLibrarySelectedOneService";
-import { execute as externalLibraryImportBitmapFileUseCase } from "@/external/controller/application/ExternalLibrary/usecase/ExternalLibraryImportBitmapFileUseCase";
-import { execute as externalLibraryImportVideoFileUseCase } from "@/external/controller/application/ExternalLibrary/usecase/ExternalLibraryImportVideoFileUseCase";
-import { execute as externalLibraryImportSoundFileUseCase } from "@/external/controller/application/ExternalLibrary/usecase/ExternalLibraryImportSoundFileUseCase";
-import { execute as libraryAreaReOrderingService } from "@/controller/application/LibraryArea/service/LibraryAreaReOrderingService";
-import { execute as libraryAreaReloadUseCase } from "@/controller/application/LibraryArea/usecase/LibraryAreaReloadUseCase";
-import { execute as externalLibraryCreateInstanceService } from "@/external/controller/application/ExternalLibrary/service/ExternalLibraryCreateInstanceService";
-import { execute as workSpaceCreatePathMapService } from "@/core/application/WorkSpace/service/WorkSpaceCreatePathMapService";
-import { execute as libraryAreaMoveFolderHistoryUseCase } from "@/history/application/controller/application/LibraryArea/Folder/usecase/LibraryAreaMoveFolderHistoryUseCase";
-import { libraryArea } from "@/controller/domain/model/LibraryArea";
 import { $FOLDER_TYPE } from "@/config/InstanceConfig";
-import { execute as confirmModalInstanceDuplicateCheckService } from "@/menu/application/ConfirmModal/service/ConfirmModalInstanceDuplicateCheckService";
+import { execute as externalLibraryImportFileUseCase } from "@/external/controller/application/ExternalLibrary/usecase/ExternalLibraryImportFileUseCase";
+import { execute as externalLibraryGetItemUseCase } from "@/external/controller/application/ExternalLibrary/usecase/ExternalLibraryGetItemUseCase";
+import { execute as externalLibraryOutOfFolderUseCase } from "@/external/controller/application/ExternalLibrary/usecase/ExternalLibraryOutOfFolderUseCase";
+import { execute as externalLibraryMoveToFolderUseCase } from "@/external/controller/application/ExternalLibrary/usecase/ExternalLibraryMoveToFolderUseCase";
+import { execute as externalLibraryRemoveItemUseCase } from "@/external/controller/application/ExternalLibrary/usecase/ExternalLibraryRemoveItemUseCase";
+import { execute as externalLibrarySelectedItemUseCase } from "@/external/controller/application/ExternalLibrary/usecase/ExternalLibrarySelectedItemUseCase";
 
 /**
  * @description ライブラリの外部APIクラス
@@ -57,54 +48,9 @@ export class ExternalLibrary
         path: string = "",
         reload: boolean = true
     ): Promise<void> {
-
-        switch (file.type) {
-
-            // 画像
-            case "image/png":
-            case "image/jpeg":
-            case "image/gif":
-                await externalLibraryImportBitmapFileUseCase(
-                    this._$workSpace, file, name, path
-                );
-                break;
-
-            // ビデオ
-            case "video/mp4":
-                await externalLibraryImportVideoFileUseCase(
-                    this._$workSpace, file, name, path
-                );
-                break;
-
-            // 音声
-            case "audio/mpeg":
-                await externalLibraryImportSoundFileUseCase(
-                    this._$workSpace, file, name, path
-                );
-                break;
-
-            // SWF
-            case "application/x-shockwave-flash":
-                break;
-
-            // SVG
-            case "image/svg+xml":
-                break;
-
-            default:
-                return ;
-
-        }
-
-        if (reload) {
-            // 読み込んだファイルを昇順に並び替え
-            libraryAreaReOrderingService(this._$workSpace);
-
-            // 起動中のプロジェクトならライブラリエリアをさ描画
-            if (this._$workSpace.active) {
-                libraryAreaReloadUseCase();
-            }
-        }
+        externalLibraryImportFileUseCase(
+            this._$workSpace, file, name, path, reload
+        );
     }
 
     /**
@@ -117,18 +63,7 @@ export class ExternalLibrary
      */
     getItem (path: string): ExternalInstanceImpl<any> | null
     {
-        if (!this._$workSpace.pathMap.has(path)) {
-            return null;
-        }
-
-        const libraryId = this._$workSpace.pathMap.get(path) as NonNullable<number>;
-        const instance: InstanceImpl<any> | null = this._$workSpace.getLibrary(libraryId);
-        if (!instance) {
-            return null;
-        }
-
-        // タイプ別のクラスを作成
-        return externalLibraryCreateInstanceService(this._$workSpace, instance);
+        return externalLibraryGetItemUseCase(this._$workSpace, path);
     }
 
     /**
@@ -145,52 +80,11 @@ export class ExternalLibrary
         item_path: string,
         reload: boolean = true
     ): boolean {
-
-        const item = this.getItem(item_path);
-        if (!item || item.folderId === 0) {
-            return false;
-        }
-
-        // フォルダの外に移動した時のパスを取得する
-        const folderId = item.folderId;
-        item.folderId = 0;
-
-        // TODO 重複をチェック
-        if (confirmModalInstanceDuplicateCheckService(
+        return externalLibraryOutOfFolderUseCase(
             this._$workSpace,
-            item.id,
-            item.path
-        )) {
-            item.folderId = folderId;
-            return false;
-        }
-
-        // 履歴に残す
-        // fixed logic
-        libraryAreaMoveFolderHistoryUseCase(
-            this._$workSpace,
-            this._$workSpace.scene,
-            item,
-            0
+            item_path,
+            reload
         );
-
-        // フォルダの外(top)に移動
-        item.folderId = 0;
-
-        // 再読み込みがonなら再生成
-        if (reload) {
-            workSpaceCreatePathMapService(this._$workSpace);
-
-            // ソートを実行
-            libraryAreaReOrderingService(this._$workSpace);
-
-            // アクティブなプロジェクトなら再描画
-            if (this._$workSpace.active) {
-                libraryAreaReloadUseCase();
-            }
-        }
-
-        return true;
     }
 
     /**
@@ -209,54 +103,12 @@ export class ExternalLibrary
         item_path: string,
         reload: boolean = true
     ): boolean {
-
-        const folder = this.getItem(folder_path);
-        if (!folder) {
-            return false;
-        }
-
-        const item = this.getItem(item_path);
-        if (!item) {
-            return false;
-        }
-
-        if (item.folderId === folder.id) {
-            return false;
-        }
-
-        // 移動するアイテムがフォルダの場合は、親階層のフォルダと重複してないかチェックする
-        if (item.type === $FOLDER_TYPE
-            && (folder as ExternalFolder).checkDuplicate(item.id)
-        ) {
-            return false;
-        }
-
-        // 履歴に残す
-        // fixed logic
-        libraryAreaMoveFolderHistoryUseCase(
+        return externalLibraryMoveToFolderUseCase(
             this._$workSpace,
-            this._$workSpace.scene,
-            item,
-            folder.id
+            folder_path,
+            item_path,
+            reload
         );
-
-        // フォルダ内に格納
-        item.folderId = folder.id;
-
-        // 再読み込みがonなら再生成
-        if (reload) {
-            workSpaceCreatePathMapService(this._$workSpace);
-
-            // ソートを実行
-            libraryAreaReOrderingService(this._$workSpace);
-
-            // アクティブなプロジェクトなら再描画
-            if (this._$workSpace.active) {
-                libraryAreaReloadUseCase();
-            }
-        }
-
-        return true;
     }
 
     /**
@@ -270,28 +122,7 @@ export class ExternalLibrary
      */
     selectedItem (path_name: string): void
     {
-        const item = this.getItem(path_name);
-        if (!item) {
-            return ;
-        }
-
-        // 選択中ならスキップ
-        if (libraryArea.selectedIds.indexOf(item.id) > -1) {
-            return ;
-        }
-
-        // 起動中のプロジェクトなら選択中のElementを初期化
-        if (this._$workSpace.active) {
-            libraryAreaAllClearElementService();
-        }
-
-        // 内部情報を更新
-        externalLibrarySelectedOneService(item.id);
-
-        // 起動中のプロジェクトなら指定のアイテムのElementをアクティブに更新
-        if (this._$workSpace.active) {
-            libraryAreaActiveElementService(item.id);
-        }
+        externalLibrarySelectedItemUseCase(this._$workSpace, path_name);
     }
 
     /**
@@ -406,11 +237,8 @@ export class ExternalLibrary
      */
     async removeItem (path: string, reload: boolean = true): Promise<void>
     {
-        const item = this.getItem(path);
-        if (!item) {
-            return ;
-        }
-
-        await item.remove(reload);
+        await externalLibraryRemoveItemUseCase(
+            this._$workSpace, path, reload
+        );
     }
 }

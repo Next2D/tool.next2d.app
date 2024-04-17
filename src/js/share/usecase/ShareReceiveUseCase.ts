@@ -40,6 +40,7 @@ import { execute as timelineLayerFrameEraseEmptyKeyframeReceiveUseCase } from "@
 import { execute as timelineLayerFrameEraseKeyframeReceiveUseCase } from "@/share/receive/application/timeline/application/TimelineLayerFrame/application/Keyframe/usecase/TimelineLayerFrameEraseKeyframeReceiveUseCase";
 import { execute as timelineLayerFrameDeleteEmptyFrameReceiveUseCase } from "@/share/receive/application/timeline/application/TimelineLayerFrame/application/EmptyKeyframe/usecase/TimelineLayerFrameDeleteEmptyFrameReceiveUseCase";
 import { execute as timelineLayerFrameDeleteKeyframeReceiveUseCase } from "@/share/receive/application/timeline/application/TimelineLayerFrame/application/Keyframe/usecase/TimelineLayerFrameDeleteKeyframeReceiveUseCase";
+import { execute as soundAreaAddSoundReceiveUseCase } from "@/share/receive/application/controller/application/SoundArea/usecase/SoundAreaAddSoundReceiveUseCase";
 import { execute as historyRedoUseCase } from "@/controller/application/HistoryArea/usecase/HistoryRedoUseCase";
 import { execute as historyUndoUseCase } from "@/controller/application/HistoryArea/usecase/HistoryUndoUseCase";
 import {
@@ -85,7 +86,8 @@ import {
     $TIMELINE_ERASE_EMPTY_KEY_FRAME_COMMAND,
     $TIMELINE_ERASE_KEY_FRAME_COMMAND,
     $TIMELINE_DELETE_EMPTY_KEY_FRAME_COMMAND,
-    $TIMELINE_DELETE_KEY_FRAME_COMMAND
+    $TIMELINE_DELETE_KEY_FRAME_COMMAND,
+    $PROPERTY_ADD_SOUND_TO_MOVIE_CLIP_COMMAND
 } from "@/config/HistoryConfig";
 
 /**
@@ -322,6 +324,11 @@ export const execute = async (message: ShareReceiveMessageImpl): Promise<void> =
         // キーフレームの削除
         case $TIMELINE_DELETE_KEY_FRAME_COMMAND:
             await timelineLayerFrameDeleteKeyframeReceiveUseCase(message);
+            break;
+
+        // MovieClipへのサウンドを追加
+        case $PROPERTY_ADD_SOUND_TO_MOVIE_CLIP_COMMAND:
+            soundAreaAddSoundReceiveUseCase(message);
             break;
 
         default:

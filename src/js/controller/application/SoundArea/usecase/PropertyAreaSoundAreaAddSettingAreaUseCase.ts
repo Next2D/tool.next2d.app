@@ -4,7 +4,7 @@ import type { Sound } from "@/core/domain/model/Sound";
 import { $SOUND_AREA_SOUND_LIST_AREA_ID } from "@/config/PropertyConfig";
 import { execute as soundAreaSettingComponent } from "../component/SoundAreaSettingComponent";
 import { EventType } from "@/tool/domain/event/EventType";
-import { execute as propertyAreaSoundAreaTrashMouseUpUseCase } from "./PropertyAreaSoundAreaTrashMouseUpUseCase";
+import { execute as propertyAreaSoundAreaTrashMouseDownUseCase } from "./PropertyAreaSoundAreaTrashMouseDownUseCase";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { execute as propertyAreaSoundAreaAudioVolumeChangeEvnetService } from "../service/PropertyAreaSoundAreaAudioVolumeChangeEvnetService";
 
@@ -90,7 +90,7 @@ export const execute = (
     const trashIconElement: HTMLElement | null = soundSettingElement.querySelector(".trash");
     if (trashIconElement) {
         trashIconElement.addEventListener(EventType.MOUSE_DOWN,
-            propertyAreaSoundAreaTrashMouseUpUseCase
+            propertyAreaSoundAreaTrashMouseDownUseCase
         );
     }
 
