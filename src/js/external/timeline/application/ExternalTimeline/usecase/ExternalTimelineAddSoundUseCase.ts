@@ -9,7 +9,7 @@ import { $getLeftFrame } from "@/timeline/application/TimelineUtil";
 import { execute as timelineHeaderUpdateSoundElementService } from "@/timeline/application/TimelineHeader/service/TimelineHeaderUpdateSoundElementService";
 import { ExternalLibrary } from "@/external/controller/domain/model/ExternalLibrary";
 import { $SOUND_TYPE } from "@/config/InstanceConfig";
-import { execute as propertyAreaSoundAreaAddSettingAreaService } from "@/controller/application/PropertyArea/application/SoundArea/service/PropertyAreaSoundAreaAddSettingAreaService";
+import { execute as propertyAreaSoundAreaAddSettingAreaUseCase } from "@/controller/application/PropertyArea/application/SoundArea/usecase/PropertyAreaSoundAreaAddSettingAreaUseCase";
 
 /**
  * @description タイムラインにサウンドを追加
@@ -75,7 +75,7 @@ export const execute = (
             return ;
         }
         // サウンドエリアに設定エリアを追加
-        propertyAreaSoundAreaAddSettingAreaService(
+        propertyAreaSoundAreaAddSettingAreaUseCase(
             sounds.indexOf(sound),
             externalSound.name,
             sound

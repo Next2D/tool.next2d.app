@@ -15,7 +15,7 @@ export const execute = async (buffer: Uint8Array, width: number): Promise<void |
 {
     const audioContext = $getAudioContext();
     if (!audioContext) {
-        return Promise.resolve();
+        return ;
     }
 
     const audioBuffer = await audioContext.decodeAudioData(buffer.buffer);

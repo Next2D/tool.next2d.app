@@ -123,6 +123,48 @@ export class Sound extends Instance
     }
 
     /**
+     * @description 音声データを元にHTMLAudioElementを生成
+     *              Create HTMLAudioElement based on sound data
+     *
+     * @return {HTMLAudioElement | null}
+     * @method
+     * @public
+     */
+    createAudioElement (): HTMLAudioElement | null
+    {
+        if (!this._$buffer) {
+            return null;
+        }
+
+        const audio    = document.createElement("audio");
+        audio.preload  = "auto";
+        audio.autoplay = false;
+        audio.loop     = false;
+        audio.controls = true;
+
+        audio.src = URL.createObjectURL(new Blob(
+            [this._$buffer],
+            { "type": "audio/mp3" }
+        ));
+        audio.load();
+
+        return audio;
+    }
+
+    /**
+     * @description 音声データからHTMLCanvasElementを生成
+     *              Create HTMLCanvasElement from sound data
+     *
+     * @return {Promise}
+     * @method
+     * @public
+     */
+    async createCanvasElement (width: number, height: number): Promise<HTMLCanvasElement | null>
+    {
+        return await soundBufferToElementService(this._$buffer, width, height);
+    }
+
+    /**
      * @description HTMLAudioElementを返却
      *              Return HTMLAudioElement
      *
