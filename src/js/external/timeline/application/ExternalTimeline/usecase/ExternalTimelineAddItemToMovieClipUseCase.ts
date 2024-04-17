@@ -6,7 +6,7 @@ import { Character } from "@/core/domain/model/Character";
 import { execute as timelineLayerFrameAddKeyframeHistoryUseCase } from "@/history/application/timeline/application/TimelineLayerFrame/AddKeyframe/usecase/TimelineLayerFrameAddKeyframeHistoryUseCase";
 import { execute as screenAreaAppendCharacterService } from "@/screen/application/ScreenArea/service/ScreenAreaAppendCharacterService";
 import { execute as timelineLayerAddFrameUpdateLayerStyleUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerAddFrameUpdateLayerStyleUseCase";
-import { execute as externalTimelineAddSoundUseCase } from "@/external/timeline/application/ExternalTimeline/usecase/ExternalTimelineAddSoundUseCase";
+import { execute as externalSoundAreaAddSoundUseCase } from "@/external/controller/application/ExternalSoundArea/usecase/ExternalSoundAreaAddSoundUseCase";
 import {
     $FOLDER_TYPE,
     $SOUND_TYPE
@@ -46,7 +46,7 @@ export const execute = async (
     switch (item.type) {
 
         case $SOUND_TYPE:
-            externalTimelineAddSoundUseCase(
+            externalSoundAreaAddSoundUseCase(
                 work_space,
                 movie_clip,
                 path,

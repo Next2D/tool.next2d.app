@@ -5,6 +5,7 @@ import type { MovieClip } from "@/core/domain/model/MovieClip";
 import { ExternalTimeline } from "@/external/timeline/domain/model/ExternalTimeline";
 import { ExternalLibrary } from "@/external/controller/domain/model/ExternalLibrary";
 import { execute as externalWorkSpaceUpdateNameUseCase } from "@/external/core/application/ExternalWorkSpace/usecase/ExternalWorkSpaceUpdateNameUseCase";
+import { ExternalSoundArea } from "@/external/controller/domain/model/ExternalSoundArea";
 
 /**
  * @description WorkSpaceの外部APIクラス
@@ -130,5 +131,18 @@ export class ExternalWorkSpace
     getLibrary (): ExternalLibrary
     {
         return new ExternalLibrary(this._$workSpace);
+    }
+
+    /**
+     * @description サウンドエリアAPIオブジェクトを返却
+     *              Return sound area API object
+     *
+     * @return {ExternalSoundArea}
+     * @method
+     * @public
+     */
+    getSoundArea (): ExternalSoundArea
+    {
+        return new ExternalSoundArea(this._$workSpace, this._$workSpace.scene);
     }
 }

@@ -1,14 +1,13 @@
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import type { ExternalInstanceImpl } from "@/interface/ExternalInstanceImpl";
-import { execute as externalLibraryAddNewFolderUseCase } from "@/external/controller/application/ExternalLibrary/usecase/ExternalLibraryAddNewFolderUseCase";
 import { execute as externalLibraryAddNewMovieClipUseCase } from "@/external/controller/application/ExternalLibrary/usecase/ExternalLibraryAddNewMovieClipUseCase";
-import { $FOLDER_TYPE } from "@/config/InstanceConfig";
 import { execute as externalLibraryImportFileUseCase } from "@/external/controller/application/ExternalLibrary/usecase/ExternalLibraryImportFileUseCase";
 import { execute as externalLibraryGetItemUseCase } from "@/external/controller/application/ExternalLibrary/usecase/ExternalLibraryGetItemUseCase";
 import { execute as externalLibraryOutOfFolderUseCase } from "@/external/controller/application/ExternalLibrary/usecase/ExternalLibraryOutOfFolderUseCase";
 import { execute as externalLibraryMoveToFolderUseCase } from "@/external/controller/application/ExternalLibrary/usecase/ExternalLibraryMoveToFolderUseCase";
 import { execute as externalLibraryRemoveItemUseCase } from "@/external/controller/application/ExternalLibrary/usecase/ExternalLibraryRemoveItemUseCase";
 import { execute as externalLibrarySelectedItemUseCase } from "@/external/controller/application/ExternalLibrary/usecase/ExternalLibrarySelectedItemUseCase";
+import { execute as externalLibraryCreateNewFolderUseCase } from "@/external/controller/application/ExternalLibrary/usecase/ExternalLibraryCreateNewFolderUseCase";
 
 /**
  * @description ライブラリの外部APIクラス
@@ -137,44 +136,11 @@ export class ExternalLibrary
      */
     addNewFolder (path: string, reload: boolean = true): void
     {
-        if (!path) {
-            return ;
-        }
-
-        const paths = path.split("/");
-
-        // 銭湯が空文字なら排除
-        if (paths[0] === "") {
-            paths.shift();
-        }
-
-        const folderPaths: string[] = [];
-        let folderId = 0;
-        for (let idx = 0; idx < paths.length; ++idx) {
-
-            const folderName = paths[idx];
-
-            folderPaths.push(folderName);
-
-            const instance = this.getItem(folderPaths.join("/"));
-
-            // フォルダがあればスキップ
-            if (instance && instance.type === $FOLDER_TYPE) {
-                folderId = instance.id;
-                continue;
-            }
-
-            // 新規フォルダを作成
-            const folder = externalLibraryAddNewFolderUseCase(
-                this._$workSpace,
-                this._$workSpace.scene,
-                folderName, folderId, reload
-            );
-
-            // 次は自分が親になるので、IDを書き換え
-            // fixed logic
-            folderId = folder.id;
-        }
+        externalLibraryCreateNewFolderUseCase(
+            this._$workSpace,
+            path,
+            reload
+        );
     }
 
     /**

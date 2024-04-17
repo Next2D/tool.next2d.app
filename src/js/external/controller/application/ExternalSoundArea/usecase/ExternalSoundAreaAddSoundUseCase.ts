@@ -26,6 +26,7 @@ import { execute as propertyAreaSoundAreaAddSettingAreaUseCase } from "@/control
 export const execute = (
     work_space: WorkSpace,
     movie_clip: MovieClip,
+    frame: number,
     path: string,
     receiver: boolean = false
 ): void => {
@@ -44,17 +45,15 @@ export const execute = (
         "loopCount": 0
     };
 
-    const currentFrame = movie_clip.currentFrame;
-
     // MovieClipにサウンドオブジェクトを登録
-    movie_clip.setSound(currentFrame, sound);
+    movie_clip.setSound(frame, sound);
 
     // 履歴に登録
     // fixed logic
     propertyAreaAddSoundHistoryUseCase(
         work_space,
         movie_clip,
-        currentFrame,
+        frame,
         sound,
         receiver
     );
@@ -62,19 +61,20 @@ export const execute = (
     // アクティブなら表示を更新
     if (work_space.active && movie_clip.active) {
 
-        const index = currentFrame - $getLeftFrame();
+        const index = frame - $getLeftFrame();
         const element: HTMLElement | undefined = timelineHeader.elements[index] as HTMLElement;
         if (!element) {
             return ;
         }
 
         // サウンドElementを更新
-        timelineHeaderUpdateSoundElementService(element, currentFrame);
+        timelineHeaderUpdateSoundElementService(element, frame);
 
-        const sounds = movie_clip.getSound(currentFrame);
+        const sounds = movie_clip.getSound(frame);
         if (!sounds) {
             return ;
         }
+
         // サウンドエリアに設定エリアを追加
         propertyAreaSoundAreaAddSettingAreaUseCase(
             sounds.indexOf(sound),

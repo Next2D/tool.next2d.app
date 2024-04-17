@@ -12,6 +12,7 @@ import {
     $getScreenOffsetTop,
     $getZoom
 } from "@/global/GlobalUtil";
+import { ExternalSoundArea } from "@/external/controller/domain/model/ExternalSoundArea";
 
 /**
  * @description スクリーンエリアのアイテムドロップイベント処理関数
@@ -33,7 +34,6 @@ export const execute = async (event: DragEvent): Promise<void> =>
 
     const workSpace = $getCurrentWorkSpace();
     const movieClip = workSpace.scene;
-    const externalTimeline = new ExternalTimeline(workSpace, movieClip);
     for (let idx = 0; idx < libraryArea.selectedIds.length; ++idx) {
 
         const libraryId = libraryArea.selectedIds[idx];
@@ -45,7 +45,13 @@ export const execute = async (event: DragEvent): Promise<void> =>
         switch (instance.type) {
 
             case $SOUND_TYPE:
-                externalTimeline.addSound(instance.getPath(workSpace));
+                {
+                    const externalSoundArea = new ExternalSoundArea(workSpace, movieClip);
+                    externalSoundArea.addSound(
+                        movieClip.currentFrame,
+                        instance.getPath(workSpace)
+                    );
+                }
                 break;
 
             case $FOLDER_TYPE:
@@ -53,6 +59,7 @@ export const execute = async (event: DragEvent): Promise<void> =>
 
             default:
                 {
+                    const externalTimeline = new ExternalTimeline(workSpace, movieClip);
                     const x = (event.offsetX - $getScreenOffsetLeft() - instance.width  / 2) / $getZoom();
                     const y = (event.offsetY - $getScreenOffsetTop()  - instance.height / 2) / $getZoom();
                     await externalTimeline

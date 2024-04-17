@@ -1,5 +1,6 @@
 import { $SOUND_AREA_SELECT_ID } from "@/config/PropertyConfig";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
+import { ExternalSoundArea } from "@/external/controller/domain/model/ExternalSoundArea";
 import { ExternalTimeline } from "@/external/timeline/domain/model/ExternalTimeline";
 
 /**
@@ -36,6 +37,9 @@ export const execute = (event: PointerEvent): void =>
     }
 
     // 外部APIを起動
-    const externalTimeline = new ExternalTimeline(workSpace, workSpace.scene);
-    externalTimeline.addSound(instance.getPath(workSpace));
+    const externalSoundArea = new ExternalSoundArea(workSpace, workSpace.scene);
+    externalSoundArea.addSound(
+        workSpace.scene.currentFrame,
+        instance.getPath(workSpace)
+    );
 };

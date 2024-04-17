@@ -15,7 +15,6 @@ import { execute as externalTimelineLayerFrameInsertFramesUseCase } from "@/exte
 import { execute as externalTimelineAddItemToMovieClipUseCase } from "@/external/timeline/application/ExternalTimeline/usecase/ExternalTimelineAddItemToMovieClipUseCase";
 import { execute as externalTimelineLayerFrameRemoveFrameUseCase } from "@/external/timeline/application/ExternalTimelineLayerFrame/usecase/ExternalTimelineLayerFrameRemoveFrameUseCase";
 import { execute as externalTimelineLayerFrameDeleteKeyframesUseCase } from "@/external/timeline/application/ExternalTimelineLayerFrame/usecase/ExternalTimelineLayerFrameDeleteKeyframesUseCase";
-import { execute as externalTimelineAddSoundUseCase } from "@/external/timeline/application/ExternalTimeline/usecase/ExternalTimelineAddSoundUseCase";
 
 /**
  * @description タイムラインの外部APIクラス
@@ -39,13 +38,13 @@ export class ExternalTimeline
         movie_clip: MovieClip
     ) {
         /**
-         * @type {ExternalMovieClip}
+         * @type {WorkSpace}
          * @private
          */
         this._$workSpace = work_space;
 
         /**
-         * @type {ExternalWorkSpace}
+         * @type {MovieClip}
          * @private
          */
         this._$movieClip = movie_clip;
@@ -377,24 +376,6 @@ export class ExternalTimeline
             this._$workSpace,
             this._$movieClip,
             x, y, path, indexes
-        );
-    }
-
-    /**
-     * @description タイムラインの現在のフレームにサウンドを追加
-     *              Add sound to the current frame of the timeline
-     *
-     * @param  {string} path
-     * @return {void}
-     * @method
-     * @public
-     */
-    addSound (path: string): void
-    {
-        externalTimelineAddSoundUseCase(
-            this._$workSpace,
-            this._$movieClip,
-            path
         );
     }
 }
