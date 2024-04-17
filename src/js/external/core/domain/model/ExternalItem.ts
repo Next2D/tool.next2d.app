@@ -119,6 +119,19 @@ export class ExternalItem
     }
 
     /**
+     * @description ファイルパス
+     *              File path
+     *
+     * @member {string}
+     * @readonly
+     * @public
+     */
+    get path (): string
+    {
+        return this._$instance.getPath(this._$workSpace);
+    }
+
+    /**
      * @description アイテムをライブラリエリアから削除
      *              ID of parent folder
      *

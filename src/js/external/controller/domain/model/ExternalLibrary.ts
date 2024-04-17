@@ -17,6 +17,7 @@ import { execute as workSpaceCreatePathMapService } from "@/core/application/Wor
 import { execute as libraryAreaMoveFolderHistoryUseCase } from "@/history/application/controller/application/LibraryArea/Folder/usecase/LibraryAreaMoveFolderHistoryUseCase";
 import { libraryArea } from "@/controller/domain/model/LibraryArea";
 import { $FOLDER_TYPE } from "@/config/InstanceConfig";
+import { execute as confirmModalInstanceDuplicateCheckService } from "@/menu/application/ConfirmModal/service/ConfirmModalInstanceDuplicateCheckService";
 
 /**
  * @description ライブラリの外部APIクラス
@@ -150,7 +151,19 @@ export class ExternalLibrary
             return false;
         }
 
+        // フォルダの外に移動した時のパスを取得する
+        const folderId = item.folderId;
+        item.folderId = 0;
+
         // TODO 重複をチェック
+        if (confirmModalInstanceDuplicateCheckService(
+            this._$workSpace,
+            item.id,
+            item.path
+        )) {
+            item.folderId = folderId;
+            return false;
+        }
 
         // 履歴に残す
         // fixed logic

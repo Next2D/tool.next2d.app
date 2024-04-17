@@ -10,18 +10,19 @@ import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
  * @description 重複したInstanceを内部配列にpush
  *              Push duplicate Instance to internal array
  *
- * @param  {WorkSpace} work_space
- * @param  {Instance} instance
+ * @param  {WorkSpace} target_work_space
+ * @param  {number} instance_id
+ * @param  {string} path
  * @return {void}
  * @method
  * @public
  */
 export const execute = (
     target_work_space: WorkSpace,
-    instance: InstanceImpl<any>
+    instance_id: number,
+    path: string
 ): boolean => {
 
-    const path = instance.getPath(target_work_space);
     const workSpace = $getCurrentWorkSpace();
     if (!workSpace.pathMap.has(path)) {
         return false;
@@ -35,7 +36,7 @@ export const execute = (
     // 重複を配列に格納
     menu.instanceObjects.push({
         "targetWorkSpaceId": target_work_space.id,
-        "instanceId": instance.id,
+        "instanceId": instance_id,
         "path": path
     });
 
