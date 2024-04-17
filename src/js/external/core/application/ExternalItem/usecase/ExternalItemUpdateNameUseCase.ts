@@ -4,6 +4,9 @@ import type { MovieClip } from "@/core/domain/model/MovieClip";
 import { execute as instanceUpdateNameHistoryUseCase } from "@/history/application/core/application/Instance/usecase/InstanceUpdateNameHistoryUseCase";
 import { execute as libraryAreaReOrderingService } from "@/controller/application/LibraryArea/service/LibraryAreaReOrderingService";
 import { execute as instanceUpdateNameUseCase } from "@/core/application/Instance/usecase/InstanceUpdateNameUseCase";
+import { $SOUND_TYPE } from "@/config/InstanceConfig";
+import { execute as propertyAreaSoundAreaRebuildSettingAreaUseCase } from "@/controller/application/SoundArea/usecase/PropertyAreaSoundAreaRebuildSettingAreaUseCase";
+import { execute as propertyAreaSoundAreaRebuildSelectElementService } from "@/controller/application/SoundArea/service/PropertyAreaSoundAreaRebuildSelectElementService";
 
 /**
  * @description インスタス名の変更実行処理関数
@@ -61,5 +64,14 @@ export const execute = (
     if (work_space.active) {
         // インスタンスの名前を更新したら表示を更新
         instanceUpdateNameUseCase(instance);
+
+        // 名前変更したのがサウンドの場合はセレクトElementを再構成
+        if (instance.type === $SOUND_TYPE) {
+            // SelectElementの再構成
+            propertyAreaSoundAreaRebuildSelectElementService();
+
+            // サウンド設定の再構成
+            propertyAreaSoundAreaRebuildSettingAreaUseCase();
+        }
     }
 };

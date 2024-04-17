@@ -4,6 +4,9 @@ import type { Instance } from "@/core/domain/model/Instance";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
 import { execute as libraryAreaReOrderingService } from "@/controller/application/LibraryArea/service/LibraryAreaReOrderingService";
 import { execute as instanceUpdateNameUseCase } from "@/core/application/Instance/usecase/InstanceUpdateNameUseCase";
+import { execute as propertyAreaSoundAreaRebuildSettingAreaUseCase } from "@/controller/application/SoundArea/usecase/PropertyAreaSoundAreaRebuildSettingAreaUseCase";
+import { execute as propertyAreaSoundAreaRebuildSelectElementService } from "@/controller/application/SoundArea/service/PropertyAreaSoundAreaRebuildSelectElementService";
+import { $SOUND_TYPE } from "@/config/InstanceConfig";
 
 /**
  * @description プロジェクト名を変更後の状態に更新する
@@ -47,5 +50,14 @@ export const execute = (
     if (workSpace.active) {
         // インスタンスの名前を更新したら表示を更新
         instanceUpdateNameUseCase(instance);
+
+        // 名前変更したのがサウンドの場合はセレクトElementを再構成
+        if (instance.type === $SOUND_TYPE) {
+            // SelectElementの再構成
+            propertyAreaSoundAreaRebuildSelectElementService();
+
+            // サウンド設定の再構成
+            propertyAreaSoundAreaRebuildSettingAreaUseCase();
+        }
     }
 };
