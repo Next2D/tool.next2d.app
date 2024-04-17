@@ -1,4 +1,4 @@
-import { $setMouseState } from "../../../PropertyAreaUtil";
+import { $setMouseState } from "../PropertyAreaUtil";
 
 /**
  * @description プロパティエリアのマウスアップイベント

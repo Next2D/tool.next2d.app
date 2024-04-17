@@ -1,5 +1,5 @@
 import { execute } from "./PropertyAreaHideTabService";
-import { $CONTROLLER_TAB_AREA_ID } from "../../../../../../config/ControllerConfig";
+import { $CONTROLLER_TAB_AREA_ID } from "../../../../config/ControllerConfig";
 
 describe("PropertyAreaHideTabServiceTest", () =>
 {

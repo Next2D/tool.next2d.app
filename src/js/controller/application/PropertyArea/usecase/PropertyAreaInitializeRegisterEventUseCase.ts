@@ -4,7 +4,7 @@ import { execute as propertyAreaTitleMouseDownEventService } from "../service/Pr
 import { execute as propertyAreaMouseOutEventService } from "../service/PropertyAreaMouseOutEventService";
 import { execute as propertyAreaMouseUpEventUseCase } from "./PropertyAreaMouseUpEventUseCase";
 import { execute as propertyAreaMouseDownEventUseCase } from "./PropertyAreaMouseDownEventUseCase";
-import { execute as propertyAreaSoundAreaInitializeRegisterEventUseCase } from "@/controller/application/PropertyArea/application/SoundArea/usecase/PropertyAreaSoundAreaInitializeRegisterEventUseCase";
+import { execute as propertyAreaSoundAreaInitializeRegisterEventUseCase } from "@/controller/application/SoundArea/usecase/PropertyAreaSoundAreaInitializeRegisterEventUseCase";
 
 /**
  * @description プロパティーエリアの移動イベントを登録

@@ -18,7 +18,7 @@ export const execute = (
     work_space_id: number,
     movie_clip: MovieClip,
     sound_index: number,
-    sound: SoundObjectImpl,
+    sound_object: SoundObjectImpl,
     name: string
 ): HistoryObjectImpl => {
 
@@ -28,7 +28,7 @@ export const execute = (
             work_space_id,
             movie_clip.id,
             sound_index,
-            sound
+            sound_object
         ],
         "args": [
             movie_clip.name,

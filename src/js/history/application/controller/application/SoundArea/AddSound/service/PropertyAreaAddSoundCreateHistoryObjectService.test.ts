@@ -1,7 +1,7 @@
 import { execute } from "./PropertyAreaAddSoundCreateHistoryObjectService";
-import { $PROPERTY_ADD_SOUND_TO_MOVIE_CLIP_COMMAND } from "../../../../../../../../../config/HistoryConfig";
-import { MovieClip } from "../../../../../../../../../core/domain/model/MovieClip";
-import type { SoundObjectImpl } from "../../../../../../../../../interface/SoundObjectImpl";
+import { $PROPERTY_ADD_SOUND_TO_MOVIE_CLIP_COMMAND } from "../../../../../../../config/HistoryConfig";
+import { MovieClip } from "../../../../../../../core/domain/model/MovieClip";
+import type { SoundObjectImpl } from "../../../../../../../interface/SoundObjectImpl";
 
 describe("PropertyAreaAddSoundCreateHistoryObjectServiceTest", () =>
 {

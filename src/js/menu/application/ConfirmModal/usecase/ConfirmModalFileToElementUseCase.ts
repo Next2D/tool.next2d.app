@@ -64,6 +64,10 @@ export const execute = (file: File): Promise<HTMLImageElement | HTMLVideoElement
                                 new Uint8Array(array_buffer)
                             );
 
+                            if (!canvas) {
+                                return resolve();
+                            }
+
                             resolve(soundPreviewComponent(canvas, audio));
                         });
                 });

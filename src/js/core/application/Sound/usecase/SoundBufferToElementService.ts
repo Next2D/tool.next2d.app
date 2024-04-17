@@ -16,16 +16,16 @@ export const execute = async (
     buffer: Uint8Array | null,
     width: number = 351,
     height: number = 60
-): Promise<HTMLCanvasElement> => {
+): Promise<HTMLCanvasElement | null> => {
 
     const canvas = $getCanvas();
     if (!buffer) {
-        return canvas;
+        return null;
     }
 
     const channels = await soundWaveformGetChannelsUseCase(buffer.slice(), width);
     if (!channels) {
-        return canvas;
+        return null;
     }
 
     // size
@@ -38,7 +38,7 @@ export const execute = async (
         "willReadFrequently": true
     });
     if (!context) {
-        return canvas;
+        return null;
     }
 
     const ch1 = channels[0] as NonNullable<number[]>;

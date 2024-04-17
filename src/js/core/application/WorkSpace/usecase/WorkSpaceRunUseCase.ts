@@ -14,7 +14,7 @@ import { execute as libraryAreaSelectedClearUseCase } from "@/controller/applica
 import { execute as timelineSceneListClearAllService } from "@/timeline/application/TimelineSceneList/service/TimelineSceneListClearAllService";
 import { libraryArea } from "@/controller/domain/model/LibraryArea";
 import { execute as historyReloadUseCase } from "@/controller/application/HistoryArea/usecase/HistoryReloadUseCase";
-import { execute as propertyAreaSoundAreaRebuildSelectElementService } from "@/controller/application/PropertyArea/application/SoundArea/service/PropertyAreaSoundAreaRebuildSelectElementService";
+import { execute as propertyAreaSoundAreaRebuildSelectElementService } from "@/controller/application/SoundArea/service/PropertyAreaSoundAreaRebuildSelectElementService";
 
 /**
  * @description プロジェクトの起動処理

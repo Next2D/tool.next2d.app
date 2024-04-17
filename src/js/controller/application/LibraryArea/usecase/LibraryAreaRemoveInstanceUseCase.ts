@@ -5,7 +5,7 @@ import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { ExternalLibrary } from "@/external/controller/domain/model/ExternalLibrary";
 import { execute as libraryAreaReloadUseCase } from "@/controller/application/LibraryArea/usecase/LibraryAreaReloadUseCase";
 import { execute as libraryAreaSelectedClearUseCase } from "@/controller/application/LibraryArea/usecase/LibraryAreaSelectedClearUseCase";
-import { execute as propertyAreaSoundAreaRebuildSelectElementService } from "@/controller/application/PropertyArea/application/SoundArea/service/PropertyAreaSoundAreaRebuildSelectElementService";
+import { execute as propertyAreaSoundAreaRebuildSelectElementService } from "@/controller/application/SoundArea/service/PropertyAreaSoundAreaRebuildSelectElementService";
 import { $allHideMenu } from "@/menu/application/MenuUtil";
 
 /**

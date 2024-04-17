@@ -7,7 +7,7 @@ import { execute as propertyAreaShowTabService } from "../service/PropertyAreaSh
 import {
     $setStandbyMoveState,
     $setMouseState
-} from "../../../PropertyAreaUtil";
+} from "../PropertyAreaUtil";
 import { $CONTROLLER_AREA_PROPERTY_ID } from "@/config/PropertyConfig";
 import { execute as billingModelShowService } from "@/menu/application/BillingModal/service/BillingModelShowService";
 import { $useSocket } from "@/share/ShareUtil";

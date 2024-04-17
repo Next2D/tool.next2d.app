@@ -8,7 +8,7 @@ import { execute as workSpaceCreatePathMapService } from "@/core/application/Wor
 import { execute as confirmModalInstaceResetService } from "@/menu/application/ConfirmModal/service/ConfirmModalInstaceResetService";
 import { execute as confirmModalinstanceShowUseCase } from "@/menu/application/ConfirmModal/usecase/ConfirmModalinstanceShowUseCase";
 import { execute as confirmModalInstanceDuplicateCheckService } from "@/menu/application/ConfirmModal/service/ConfirmModalInstanceDuplicateCheckService";
-import { execute as propertyAreaSoundAreaRebuildSelectElementService } from "@/controller/application/PropertyArea/application/SoundArea/service/PropertyAreaSoundAreaRebuildSelectElementService";
+import { execute as propertyAreaSoundAreaRebuildSelectElementService } from "@/controller/application/SoundArea/service/PropertyAreaSoundAreaRebuildSelectElementService";
 import { Folder } from "@/core/domain/model/Folder";
 import { $FOLDER_TYPE } from "@/config/InstanceConfig";
 

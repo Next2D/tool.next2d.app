@@ -1,9 +1,9 @@
 import { $CONTROLLER_AREA_PROPERTY_ID } from "@/config/PropertyConfig";
 import { UserPropertyAreaStateObjectImpl } from "@/interface/UserPropertyAreaStateObjectImpl";
-import { execute as propertyAreaChageStyleToActiveService } from "@/controller/application/PropertyArea/application/PropertyArea/service/PropertyAreaChageStyleToActiveService";
-import { execute as propertyAreaShowTabService } from "@/controller/application/PropertyArea/application/PropertyArea/service/PropertyAreaShowTabService";
-import { execute as propertyAreaHideTabService } from "@/controller/application/PropertyArea/application/PropertyArea/service/PropertyAreaHideTabService";
-import { execute as propertyAreaChageStyleToInactiveService } from "@/controller/application/PropertyArea/application/PropertyArea/service/PropertyAreaChageStyleToInactiveService";
+import { execute as propertyAreaChageStyleToActiveService } from "@/controller/application/PropertyArea/service/PropertyAreaChageStyleToActiveService";
+import { execute as propertyAreaShowTabService } from "@/controller/application/PropertyArea/service/PropertyAreaShowTabService";
+import { execute as propertyAreaHideTabService } from "@/controller/application/PropertyArea/service/PropertyAreaHideTabService";
+import { execute as propertyAreaChageStyleToInactiveService } from "@/controller/application/PropertyArea/service/PropertyAreaChageStyleToInactiveService";
 
 /**
  * @description WorkSpaceに保存されてるobjectからプロパティエリアのstyleを更新

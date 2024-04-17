@@ -211,7 +211,7 @@ export const $removeAllWorkSpace = async (): Promise<void> =>
  * @default null
  * @private
  */
-let $audioContext: AudioContext | null = new AudioContext();
+let $audioContext: AudioContext | null = null;
 
 /**
  * @description AudioContextを起動

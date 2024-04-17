@@ -3,13 +3,13 @@ import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import type { ExternalSound } from "@/external/core/domain/model/ExternalSound";
 import type { SoundObjectImpl } from "@/interface/SoundObjectImpl";
 import type { ExternalItemImpl } from "@/interface/ExternalItemImpl";
-import { execute as propertyAreaAddSoundHistoryUseCase } from "@/history/application/controller/application/PropertyArea/application/SoundArea/AddSound/usecase/PropertyAreaAddSoundHistoryUseCase";
+import { execute as propertyAreaAddSoundHistoryUseCase } from "@/history/application/controller/application/SoundArea/AddSound/usecase/PropertyAreaAddSoundHistoryUseCase";
 import { timelineHeader } from "@/timeline/domain/model/TimelineHeader";
 import { $getLeftFrame } from "@/timeline/application/TimelineUtil";
 import { execute as timelineHeaderUpdateSoundElementService } from "@/timeline/application/TimelineHeader/service/TimelineHeaderUpdateSoundElementService";
 import { ExternalLibrary } from "@/external/controller/domain/model/ExternalLibrary";
 import { $SOUND_TYPE } from "@/config/InstanceConfig";
-import { execute as propertyAreaSoundAreaAddSettingAreaUseCase } from "@/controller/application/PropertyArea/application/SoundArea/usecase/PropertyAreaSoundAreaAddSettingAreaUseCase";
+import { execute as propertyAreaSoundAreaAddSettingAreaUseCase } from "@/controller/application/SoundArea/usecase/PropertyAreaSoundAreaAddSettingAreaUseCase";
 
 /**
  * @description タイムラインにサウンドを追加
