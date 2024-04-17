@@ -42,6 +42,7 @@ import { execute as timelineLayerFrameEraseEmptyKeyframeHistoryUndoUseCase } fro
 import { execute as timelineLayerFrameEraseKeyframeHistoryUndoUseCase } from "@/history/application/timeline/application/TimelineLayerFrame/EraseKeyframe/usecase/TimelineLayerFrameEraseKeyframeHistoryUndoUseCase";
 import { execute as timelineLayerFrameDeleteEmptyKeyframeHistoryUndoUseCase } from "@/history/application/timeline/application/TimelineLayerFrame/DeleteEmptyKeyframe/usecase/TimelineLayerFrameDeleteEmptyKeyframeHistoryUndoUseCase";
 import { execute as timelineLayerFrameDeleteKeyframeHistoryUndoUseCase } from "@/history/application/timeline/application/TimelineLayerFrame/DeleteKeyframe/usecase/TimelineLayerFrameDeleteKeyframeHistoryUndoUseCase";
+import { execute as propertyAreaAddSoundHistoryUndoUseCase } from "@/history/application/controller/application/SoundArea/AddSound/usecase/PropertyAreaAddSoundHistoryUndoUseCase";
 import { execute as instanceUpdateNameHistoryUndoUseCase } from "@/history/application/core/application/Instance/usecase/InstanceUpdateNameHistoryUndoUseCase";
 import { execute as instanceUpdateSymbolHistoryUndoUseCase } from "@/history/application/core/application/Instance/usecase/InstanceUpdateSymbolHistoryUndoUseCase";
 import {
@@ -81,7 +82,8 @@ import {
     $TIMELINE_ERASE_EMPTY_KEY_FRAME_COMMAND,
     $TIMELINE_ERASE_KEY_FRAME_COMMAND,
     $TIMELINE_DELETE_EMPTY_KEY_FRAME_COMMAND,
-    $TIMELINE_DELETE_KEY_FRAME_COMMAND
+    $TIMELINE_DELETE_KEY_FRAME_COMMAND,
+    $PROPERTY_ADD_SOUND_TO_MOVIE_CLIP_COMMAND
 } from "@/config/HistoryConfig";
 
 /**
@@ -459,6 +461,15 @@ export const execute = async (
                 messages[1] as number, // MovieClip ID
                 messages[2] as number, // Layer Index
                 messages[3] as CharacterSaveObjectImpl[] // Character Save Objects
+            );
+            break;
+
+        // MovieClipにサウンドを追加
+        case $PROPERTY_ADD_SOUND_TO_MOVIE_CLIP_COMMAND:
+            propertyAreaAddSoundHistoryUndoUseCase(
+                messages[0] as number, // WorkSpace ID
+                messages[1] as number, // MovieClip ID
+                messages[2] as number // Sound Index
             );
             break;
 
