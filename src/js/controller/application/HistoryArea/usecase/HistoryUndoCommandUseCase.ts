@@ -7,6 +7,7 @@ import type { InstanceSaveObjectImpl } from "@/interface/InstanceSaveObjectImpl"
 import type { LayerModeImpl } from "@/interface/LayerModeImpl";
 import type { EmptyCharacterSaveObjectImpl } from "@/interface/EmptyCharacterSaveObjectImpl";
 import type { CharacterSaveObjectImpl } from "@/interface/CharacterSaveObjectImpl";
+import type { SoundObjectImpl } from "@/interface/SoundObjectImpl";
 import { execute as screenTabNameAddHistoryUndoUseCase } from "@/history/application/screen/application/ScreenTab/usecase/ScreenTabNameAddHistoryUndoUseCase";
 import { execute as timelineToolLayerAddHistoryUndoUseCase } from "@/history/application/timeline/application/TimelineTool/LayerAdd/usecase/TimelineToolLayerAddHistoryUndoUseCase";
 import { execute as timelineToolLayerDeleteHistoryUndoUseCase } from "@/history/application/timeline/application/TimelineTool/LayerDelete/usecase/TimelineToolLayerDeleteHistoryUndoUseCase";
@@ -43,6 +44,7 @@ import { execute as timelineLayerFrameEraseKeyframeHistoryUndoUseCase } from "@/
 import { execute as timelineLayerFrameDeleteEmptyKeyframeHistoryUndoUseCase } from "@/history/application/timeline/application/TimelineLayerFrame/DeleteEmptyKeyframe/usecase/TimelineLayerFrameDeleteEmptyKeyframeHistoryUndoUseCase";
 import { execute as timelineLayerFrameDeleteKeyframeHistoryUndoUseCase } from "@/history/application/timeline/application/TimelineLayerFrame/DeleteKeyframe/usecase/TimelineLayerFrameDeleteKeyframeHistoryUndoUseCase";
 import { execute as propertyAreaAddSoundHistoryUndoUseCase } from "@/history/application/controller/application/SoundArea/AddSound/usecase/PropertyAreaAddSoundHistoryUndoUseCase";
+import { execute as propertyAreaRemoveSoundHistoryUndoUseCase } from "@/history/application/controller/application/SoundArea/RemoveSound/usecase/PropertyAreaRemoveSoundHistoryUndoUseCase";
 import { execute as instanceUpdateNameHistoryUndoUseCase } from "@/history/application/core/application/Instance/usecase/InstanceUpdateNameHistoryUndoUseCase";
 import { execute as instanceUpdateSymbolHistoryUndoUseCase } from "@/history/application/core/application/Instance/usecase/InstanceUpdateSymbolHistoryUndoUseCase";
 import {
@@ -83,7 +85,8 @@ import {
     $TIMELINE_ERASE_KEY_FRAME_COMMAND,
     $TIMELINE_DELETE_EMPTY_KEY_FRAME_COMMAND,
     $TIMELINE_DELETE_KEY_FRAME_COMMAND,
-    $PROPERTY_ADD_SOUND_TO_MOVIE_CLIP_COMMAND
+    $PROPERTY_ADD_SOUND_TO_MOVIE_CLIP_COMMAND,
+    $PROPERTY_REMOVE_SOUND_TO_MOVIE_CLIP_COMMAND
 } from "@/config/HistoryConfig";
 
 /**
@@ -471,6 +474,17 @@ export const execute = async (
                 messages[1] as number, // MovieClip ID
                 messages[2] as number, // Frame
                 messages[3] as number // Sound Index
+            );
+            break;
+
+        // MovieClipからサウンドを削除
+        case $PROPERTY_REMOVE_SOUND_TO_MOVIE_CLIP_COMMAND:
+            propertyAreaRemoveSoundHistoryUndoUseCase(
+                messages[0] as number, // WorkSpace ID
+                messages[1] as number, // MovieClip ID
+                messages[2] as number, // Frame
+                messages[3] as number, // Sound Index
+                messages[4] as SoundObjectImpl // Sound Object
             );
             break;
 

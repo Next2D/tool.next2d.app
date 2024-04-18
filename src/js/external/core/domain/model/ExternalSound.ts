@@ -9,20 +9,4 @@ import { ExternalItem } from "./ExternalItem";
  */
 export class ExternalSound extends ExternalItem
 {
-
-    /**
-     * @description 音量調整
-     *              Volume adjustment
-     *
-     * @type {number}
-     * @public
-     */
-    get volume(): number
-    {
-        return this._$instance._volume;
-    }
-    set volume (volume: number)
-    {
-        this._$instance._volume = volume;
-    }
 }

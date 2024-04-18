@@ -1,66 +1,59 @@
+import type { InstanceImpl } from "@/interface/InstanceImpl";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
-import type { WorkSpace } from "@/core/domain/model/WorkSpace";
+import { $getWorkSpace } from "@/core/application/CoreUtil";
 import { execute as propertyAreaSoundAreaRebuildSettingAreaUseCase } from "@/controller/application/SoundArea/usecase/PropertyAreaSoundAreaRebuildSettingAreaUseCase";
-import { execute as propertyAreaRemoveSoundHistoryUseCase } from "@/history/application/controller/application/SoundArea/RemoveSound/usecase/PropertyAreaRemoveSoundHistoryUseCase";
+import type { SoundObjectImpl } from "@/interface/SoundObjectImpl";
 import { $getLeftFrame } from "@/timeline/application/TimelineUtil";
 import { timelineHeader } from "@/timeline/domain/model/TimelineHeader";
 import { execute as timelineHeaderUpdateSoundElementService } from "@/timeline/application/TimelineHeader/service/TimelineHeaderUpdateSoundElementService";
 
 /**
- * @description 指定フレームのサウンドを削除
- *              Remove sound from the specified frame
+ * @description 追加したサウンドを元に戻す
+ *              Undo the added sound
  *
- * @param  {WorkSpace} work_space
- * @param  {MovieClip} movie_clip
+ * @param  {number} work_space_id
+ * @param  {number} library_id
  * @param  {number} frame
  * @param  {number} index
- * @param  {boolean} [receiver=false]
+ * @param  {object} sound_object
  * @return {void}
  * @method
  * @public
  */
 export const execute = (
-    work_space: WorkSpace,
-    movie_clip: MovieClip,
+    work_space_id: number,
+    library_id: number,
     frame: number,
-    index: number,
-    receiver: boolean = false
+    index: number
 ): void => {
 
-    const sounds = movie_clip.getSound(frame);
+    const workSpace = $getWorkSpace(work_space_id);
+    if (!workSpace) {
+        return ;
+    }
+
+    const movieClip: InstanceImpl<MovieClip> | null = workSpace.getLibrary(library_id);
+    if (!movieClip) {
+        return ;
+    }
+
+    const sounds = movieClip.getSound(frame);
     if (!sounds) {
         return ;
     }
 
-    const soundObject = sounds[index];
-    if (!soundObject) {
-        return ;
-    }
-
-    // 履歴を登録
-    // fixed logic
-    propertyAreaRemoveSoundHistoryUseCase(
-        work_space,
-        movie_clip,
-        frame,
-        index,
-        soundObject,
-        receiver
-    );
-
-    // サウンドを配列から削除
+    // 音声一覧に戻す
     sounds.splice(index, 1);
 
-    // サウンドの配列が空になったらマップからも削除
+    // 配列が空になったら削除
     if (!sounds.length) {
-        movie_clip.deleteSound(frame);
+        movieClip.deleteSound(frame);
     }
 
-    // サウンド設定エリアを再構築
-    if (work_space.active && movie_clip.active) {
-
+    // 起動中のプロジェクトならライブラリを再描画
+    if (workSpace.active && movieClip.active) {
         // サウンド設定エリアの再構築
-        if (movie_clip.currentFrame === frame) {
+        if (movieClip.currentFrame === frame) {
             propertyAreaSoundAreaRebuildSettingAreaUseCase();
         }
 

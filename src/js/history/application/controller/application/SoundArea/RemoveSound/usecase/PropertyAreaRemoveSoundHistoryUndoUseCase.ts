@@ -1,15 +1,15 @@
 import type { InstanceImpl } from "@/interface/InstanceImpl";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
-import { $getWorkSpace } from "@/core/application/CoreUtil";
-import { execute as propertyAreaSoundAreaRebuildSettingAreaUseCase } from "@/controller/application/SoundArea/usecase/PropertyAreaSoundAreaRebuildSettingAreaUseCase";
 import type { SoundObjectImpl } from "@/interface/SoundObjectImpl";
+import { $getWorkSpace } from "@/core/application/CoreUtil";
 import { $getLeftFrame } from "@/timeline/application/TimelineUtil";
 import { timelineHeader } from "@/timeline/domain/model/TimelineHeader";
+import { execute as propertyAreaSoundAreaRebuildSettingAreaUseCase } from "@/controller/application/SoundArea/usecase/PropertyAreaSoundAreaRebuildSettingAreaUseCase";
 import { execute as timelineHeaderUpdateSoundElementService } from "@/timeline/application/TimelineHeader/service/TimelineHeaderUpdateSoundElementService";
 
 /**
- * @description 追加したサウンドを元に戻す
- *              Undo the added sound
+ * @description 削除したサウンドを元に戻す
+ *              Undo the deleted sound
  *
  * @param  {number} work_space_id
  * @param  {number} library_id
@@ -48,12 +48,12 @@ export const execute = (
 
     // 起動中のプロジェクトならライブラリを再描画
     if (workSpace.active && movieClip.active) {
-
         // サウンド設定エリアの再構築
         if (movieClip.currentFrame === frame) {
             propertyAreaSoundAreaRebuildSettingAreaUseCase();
         }
 
+        // サウンドElementを更新
         if (!sounds) {
             const layerIndex = frame - $getLeftFrame();
             const element: HTMLElement | undefined = timelineHeader.elements[layerIndex] as HTMLElement;

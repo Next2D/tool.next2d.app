@@ -2,6 +2,7 @@ import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import { execute as externalSoundAreaAddSoundUseCase } from "@/external/controller/application/ExternalSoundArea/usecase/ExternalSoundAreaAddSoundUseCase";
 import { execute as externalSoundAreaRemoveSoundUseCase } from "@/external/controller/application/ExternalSoundArea/usecase/ExternalSoundAreaRemoveSoundUseCase";
+import { ExternalSoundObject } from "@/external/core/domain/model/ExternalSoundObject";
 
 /**
  * @description サウンドエリアの外部APIクラス
@@ -35,6 +36,35 @@ export class ExternalSoundArea
          * @private
          */
         this._$movieClip = movie_clip;
+    }
+
+    /**
+     * @description 現在のMovieClipの指定フレームのサウンドオブジェクトを取得
+     *              Get sound object of specified frame of current MovieClip
+     *
+     * @param  {number} frame
+     * @param  {number} index
+     * @return {ExternalSoundObject | null}
+     * @method
+     * @public
+     */
+    getSoundObject (frame: number, index: number): ExternalSoundObject | null
+    {
+        const sounds = this._$movieClip.getSound(frame);
+        if (!sounds) {
+            return null;
+        }
+
+        const soundObject = sounds[index];
+        if (!soundObject) {
+            return null;
+        }
+
+        return new ExternalSoundObject(
+            this._$workSpace,
+            this._$movieClip,
+            soundObject
+        );
     }
 
     /**

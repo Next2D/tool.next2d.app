@@ -50,8 +50,11 @@ export const execute = (
 
     // 起動中のプロジェクトならライブラリを再描画
     if (workSpace.active && movieClip.active) {
+
         // サウンド設定エリアの再構築
-        propertyAreaSoundAreaRebuildSettingAreaUseCase();
+        if (movieClip.currentFrame === frame) {
+            propertyAreaSoundAreaRebuildSettingAreaUseCase();
+        }
 
         // サウンドElementを更新
         if (!sounds.length) {

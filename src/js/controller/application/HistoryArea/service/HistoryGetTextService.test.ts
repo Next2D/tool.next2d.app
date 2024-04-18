@@ -35,7 +35,9 @@ import {
     $TIMELINE_ERASE_EMPTY_KEY_FRAME_COMMAND,
     $TIMELINE_ERASE_KEY_FRAME_COMMAND,
     $TIMELINE_DELETE_EMPTY_KEY_FRAME_COMMAND,
-    $TIMELINE_DELETE_KEY_FRAME_COMMAND
+    $TIMELINE_DELETE_KEY_FRAME_COMMAND,
+    $PROPERTY_ADD_SOUND_TO_MOVIE_CLIP_COMMAND,
+    $PROPERTY_REMOVE_SOUND_TO_MOVIE_CLIP_COMMAND
 } from "../../../../config/HistoryConfig";
 
 describe("HistoryGetTextServiceTest", () =>
@@ -78,5 +80,7 @@ describe("HistoryGetTextServiceTest", () =>
         expect(execute($TIMELINE_ERASE_KEY_FRAME_COMMAND)).toBe("「%s1」のレイヤー「%s2」の%s3フレームのキーフレームを全て削除");
         expect(execute($TIMELINE_DELETE_EMPTY_KEY_FRAME_COMMAND)).toBe("「%s1」のレイヤー「%s2」の%s3フレームの空のキーフレームを削除");
         expect(execute($TIMELINE_DELETE_KEY_FRAME_COMMAND)).toBe("「%s1」のレイヤー「%s2」の%s3フレームのキーフレームを削除");
+        expect(execute($PROPERTY_ADD_SOUND_TO_MOVIE_CLIP_COMMAND)).toBe("「%s1」の%s2フレームにサウンド「%s3」を追加");
+        expect(execute($PROPERTY_REMOVE_SOUND_TO_MOVIE_CLIP_COMMAND)).toBe("「%s1」の%s2フレームのサウンド「%s3」を削除");
     });
 });

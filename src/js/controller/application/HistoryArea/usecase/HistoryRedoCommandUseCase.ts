@@ -42,6 +42,7 @@ import { execute as timelineLayerFrameEraseKeyframeHistoryRedoUseCase } from "@/
 import { execute as timelineLayerFrameDeleteEmptyKeyframeHistoryRedoUseCase } from "@/history/application/timeline/application/TimelineLayerFrame/DeleteEmptyKeyframe/usecase/TimelineLayerFrameDeleteEmptyKeyframeHistoryRedoUseCase";
 import { execute as timelineLayerFrameDeleteKeyframeHistoryRedoUseCase } from "@/history/application/timeline/application/TimelineLayerFrame/DeleteKeyframe/usecase/TimelineLayerFrameDeleteKeyframeHistoryRedoUseCase";
 import { execute as propertyAreaAddSoundHistoryRedoUseCase } from "@/history/application/controller/application/SoundArea/AddSound/usecase/PropertyAreaAddSoundHistoryRedoUseCase";
+import { execute as propertyAreaRemoveSoundHistoryRedoUseCase } from "@/history/application/controller/application/SoundArea/RemoveSound/usecase/PropertyAreaRemoveSoundHistoryRedoUseCase";
 import { execute as instanceUpdateNameHistoryRedoUseCase } from "@/history/application/core/application/Instance/usecase/InstanceUpdateNameHistoryRedoUseCase";
 import { execute as instanceUpdateSymbolHistoryRedoUseCase } from "@/history/application/core/application/Instance/usecase/InstanceUpdateSymbolHistoryRedoUseCase";
 import {
@@ -82,7 +83,8 @@ import {
     $TIMELINE_ERASE_KEY_FRAME_COMMAND,
     $TIMELINE_DELETE_EMPTY_KEY_FRAME_COMMAND,
     $TIMELINE_DELETE_KEY_FRAME_COMMAND,
-    $PROPERTY_ADD_SOUND_TO_MOVIE_CLIP_COMMAND
+    $PROPERTY_ADD_SOUND_TO_MOVIE_CLIP_COMMAND,
+    $PROPERTY_REMOVE_SOUND_TO_MOVIE_CLIP_COMMAND
 } from "@/config/HistoryConfig";
 
 /**
@@ -475,6 +477,16 @@ export const execute = async (
                 messages[2] as number, // Frame
                 messages[3] as number, // Sound Index
                 messages[4] as SoundObjectImpl // Sound Object
+            );
+            break;
+
+        // MovieClipからサウンドを削除
+        case $PROPERTY_REMOVE_SOUND_TO_MOVIE_CLIP_COMMAND:
+            propertyAreaRemoveSoundHistoryRedoUseCase(
+                messages[0] as number, // WorkSpace ID
+                messages[1] as number, // MovieClip ID
+                messages[2] as number, // Frame
+                messages[3] as number // Sound Index
             );
             break;
 
