@@ -4,6 +4,7 @@ import { execute as externalWorkSpaceRegisterInstanceService } from "@/external/
 import { execute as libraryAreaReloadUseCase } from "@/controller/application/LibraryArea/usecase/LibraryAreaReloadUseCase";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
 import { execute as libraryAreaSelectedClearUseCase } from "@/controller/application/LibraryArea/usecase/LibraryAreaSelectedClearUseCase";
+import { execute as soundAreaRebuildSelectElementService } from "@/controller/application/SoundArea/service/SoundAreaRebuildSelectElementService";
 
 /**
  * @description 新規sound追加処理のRedo関数
@@ -39,5 +40,8 @@ export const execute = async (
 
         // ライブラリを再描画
         libraryAreaReloadUseCase();
+
+        // サウンド選択のSelectElementを再構築
+        soundAreaRebuildSelectElementService();
     }
 };

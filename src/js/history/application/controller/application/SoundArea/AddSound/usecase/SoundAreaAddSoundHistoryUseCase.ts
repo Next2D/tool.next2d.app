@@ -25,8 +25,8 @@ import { execute as shareSendService } from "@/share/service/ShareSendService";
 export const execute = (
     work_space: WorkSpace,
     movie_clip: MovieClip,
-    frame: number,
     sound_object: SoundObjectImpl,
+    frame: number,
     receiver: boolean = false
 ): void => {
 
@@ -46,8 +46,8 @@ export const execute = (
 
     // fixed logic
     const historyObject = soundAreaAddSoundCreateHistoryObjectService(
-        work_space.id, movie_clip, frame,
-        sounds.indexOf(sound_object), sound_object, instance.name
+        work_space.id, movie_clip, sound_object,
+        frame, sounds.indexOf(sound_object), instance.name
     );
 
     // 作業履歴にElementを追加

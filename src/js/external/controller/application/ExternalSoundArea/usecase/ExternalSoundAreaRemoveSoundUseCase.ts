@@ -42,9 +42,9 @@ export const execute = (
     soundAreaRemoveSoundHistoryUseCase(
         work_space,
         movie_clip,
+        soundObject,
         frame,
         index,
-        soundObject,
         receiver
     );
 

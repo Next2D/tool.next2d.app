@@ -35,7 +35,6 @@ export const execute = (message: ShareReceiveMessageImpl): void =>
 
     const soundObject = message.data[2] as NonNullable<SoundObjectImpl>;
     const frame = message.data[3] as NonNullable<number>;
-    const index = message.data[4] as NonNullable<number>;
 
     // サウンドを追加
     movieClip.setSound(frame, soundObject);
@@ -44,16 +43,18 @@ export const execute = (message: ShareReceiveMessageImpl): void =>
     soundAreaAddSoundHistoryUseCase(
         workSpace,
         movieClip,
-        frame,
         soundObject,
+        frame,
         true
     );
 
     // サウンド設定エリアの再構築
     if (workSpace.active && movieClip.active) {
+
         // サウンド設定の再構成
         soundAreaRebuildSettingAreaUseCase();
 
+        const index = message.data[4] as NonNullable<number>;
         if (!index) {
             const layerIndex = frame - $getLeftFrame();
             const element: HTMLElement | undefined = timelineHeader.elements[layerIndex] as HTMLElement;

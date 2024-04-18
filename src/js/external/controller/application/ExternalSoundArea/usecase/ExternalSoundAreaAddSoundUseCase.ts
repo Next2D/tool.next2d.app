@@ -38,7 +38,7 @@ export const execute = (
     }
 
     // 新規サウンドオブジェクトを作成
-    const sound: SoundObjectImpl = {
+    const soundObject: SoundObjectImpl = {
         "libraryId": externalSound.id,
         "volume": 100,
         "autoPlay": false,
@@ -46,15 +46,15 @@ export const execute = (
     };
 
     // MovieClipにサウンドオブジェクトを登録
-    movie_clip.setSound(frame, sound);
+    movie_clip.setSound(frame, soundObject);
 
     // 履歴に登録
     // fixed logic
     soundAreaAddSoundHistoryUseCase(
         work_space,
         movie_clip,
+        soundObject,
         frame,
-        sound,
         receiver
     );
 
@@ -77,9 +77,9 @@ export const execute = (
 
         // サウンドエリアに設定エリアを追加
         soundAreaAddSettingAreaUseCase(
-            sounds.indexOf(sound),
+            sounds.indexOf(soundObject),
             externalSound.name,
-            sound
+            soundObject
         );
     }
 };

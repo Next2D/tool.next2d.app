@@ -28,8 +28,8 @@ export const execute = (message: ShareReceiveMessageImpl): void =>
         return ;
     }
 
-    const frame = message.data[2] as NonNullable<number>;
-    const index = message.data[3] as NonNullable<number>;
+    const frame = message.data[3] as NonNullable<number>;
+    const index = message.data[4] as NonNullable<number>;
 
     // サウンドを削除
     externalSoundAreaRemoveSoundUseCase(

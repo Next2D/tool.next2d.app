@@ -83,6 +83,6 @@ describe("HistoryGetTextServiceTest", () =>
         expect(execute($TIMELINE_DELETE_KEY_FRAME_COMMAND)).toBe("「%s1」のレイヤー「%s2」の%s3フレームのキーフレームを削除");
         expect(execute($SOUND_AREA_ADD_SOUND_COMMAND)).toBe("「%s1」の%s2フレームにサウンド「%s3」を追加");
         expect(execute($SOUND_AREA_REMOVE_SOUND_COMMAND)).toBe("「%s1」の%s2フレームのサウンド「%s3」を削除");
-        expect(execute($SOUND_AREA_UPDATE_VOLUME_COMMAND)).toBe("「「%s1」の%s2フレームのサウンド「%s3」の音量を%s4から%s5に変更");
+        expect(execute($SOUND_AREA_UPDATE_VOLUME_COMMAND)).toBe("「%s1」の%s2フレームのサウンド「%s3」の音量を%s4から%s5に変更");
     });
 });
