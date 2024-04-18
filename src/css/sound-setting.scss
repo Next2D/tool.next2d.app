@@ -16,6 +16,15 @@
         display     : flex;
         align-items : center;
         margin      : 12px;
+
+        .volume,
+        .loop-count
+        {
+            &:hover
+            {
+                cursor : ew-resize;
+            }
+        }
     }
 
     .sound-setting-preview-container

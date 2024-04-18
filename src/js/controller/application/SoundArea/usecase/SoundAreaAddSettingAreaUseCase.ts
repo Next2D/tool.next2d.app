@@ -6,7 +6,7 @@ import { execute as soundAreaSettingComponent } from "../component/SoundAreaSett
 import { EventType } from "@/tool/domain/event/EventType";
 import { execute as soundAreaTrashMouseDownUseCase } from "./SoundAreaTrashMouseDownUseCase";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
-import { execute as soundAreaAudioVolumeChangeEvnetService } from "../service/SoundAreaAudioVolumeChangeEvnetService";
+import { execute as soundAreaRegisterVolumeWindowEventUseCase } from "./SoundAreaRegisterVolumeWindowEventUseCase";
 
 /**
  * @description サウンド設定のelementを追加
@@ -65,9 +65,6 @@ export const execute = (
             // audio Elementを生成
             const audioHtmlElement = sound.createAudioElement();
             if (audioHtmlElement) {
-                audioHtmlElement.addEventListener("volumechange",
-                    soundAreaAudioVolumeChangeEvnetService
-                );
                 audioHtmlElement.dataset.index = `${index}`;
                 audioHtmlElement.volume = sound_object.volume / 100;
                 audioContainer.appendChild(audioHtmlElement);
@@ -86,11 +83,19 @@ export const execute = (
         }
     }
 
-    // 削除アイコンにイベントを追加
+    // 削除アイコンにイベントを登録
     const trashIconElement: HTMLElement | null = soundSettingElement.querySelector(".trash");
     if (trashIconElement) {
         trashIconElement.addEventListener(EventType.MOUSE_DOWN,
             soundAreaTrashMouseDownUseCase
+        );
+    }
+
+    // 音量操作のイベントを登録
+    const volumeElement: HTMLElement | null = soundSettingElement.querySelector(".volume");
+    if (volumeElement) {
+        volumeElement.addEventListener(EventType.MOUSE_DOWN,
+            soundAreaRegisterVolumeWindowEventUseCase
         );
     }
 };
