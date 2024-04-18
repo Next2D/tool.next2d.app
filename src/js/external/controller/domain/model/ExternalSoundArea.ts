@@ -1,6 +1,7 @@
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import { execute as externalSoundAreaAddSoundUseCase } from "@/external/controller/application/ExternalSoundArea/usecase/ExternalSoundAreaAddSoundUseCase";
+import { execute as externalSoundAreaRemoveSoundUseCase } from "@/external/controller/application/ExternalSoundArea/usecase/ExternalSoundAreaRemoveSoundUseCase";
 
 /**
  * @description サウンドエリアの外部APIクラス
@@ -37,8 +38,8 @@ export class ExternalSoundArea
     }
 
     /**
-     * @description タイムラインの現在のフレームにサウンドを追加
-     *              Add sound to the current frame of the timeline
+     * @description 現在のMovieClipの指定フレームにサウンドを追加
+     *              Add sound to the specified frame of the current MovieClip
      *
      * @param  {number} frame
      * @param  {string} path
@@ -55,6 +56,25 @@ export class ExternalSoundArea
             this._$movieClip,
             frame,
             path
+        );
+    }
+
+    /**
+     * @description 現在のMovieClipの指定フレームのサウンドを削除
+     *              Remove sound of specified frame of current MovieClip
+     *
+     * @param  {number} frame
+     * @param  {number} index
+     * @return {void}
+     * @method
+     * @public
+     */
+    removeSound (frame: number, index: number): void
+    {
+        externalSoundAreaRemoveSoundUseCase(
+            this._$workSpace,
+            this._$movieClip,
+            frame, index
         );
     }
 }

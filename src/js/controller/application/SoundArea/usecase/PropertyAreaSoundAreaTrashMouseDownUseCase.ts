@@ -1,5 +1,6 @@
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { execute as propertyAreaSoundAreaRebuildSettingAreaUseCase } from "./PropertyAreaSoundAreaRebuildSettingAreaUseCase";
+import { ExternalSoundArea } from "@/external/controller/domain/model/ExternalSoundArea";
 
 /**
  * @description サウンド設定の削除アイコンのクリック処理
@@ -33,9 +34,9 @@ export const execute = (event: PointerEvent): void =>
     }
 
     // 指定のサウンドを削除
-    const index = parseInt(element.dataset.index as string);
-    sounds.splice(index, 1);
-
-    // サウンド設定エリアを再構築
-    propertyAreaSoundAreaRebuildSettingAreaUseCase();
+    const externalSoundArea = new ExternalSoundArea(workSpace, movieClip);
+    externalSoundArea.removeSound(
+        movieClip.currentFrame,
+        parseInt(element.dataset.index as string)
+    );
 };
