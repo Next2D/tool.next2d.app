@@ -1,9 +1,9 @@
-import { execute } from "./PropertyAreaRemoveSoundCreateHistoryObjectService";
-import { $PROPERTY_REMOVE_SOUND_TO_MOVIE_CLIP_COMMAND } from "../../../../../../../config/HistoryConfig";
+import { execute } from "./SoundAreaAddSoundCreateHistoryObjectService";
+import { $SOUND_AREA_ADD_SOUND_COMMAND } from "../../../../../../../config/HistoryConfig";
 import { MovieClip } from "../../../../../../../core/domain/model/MovieClip";
 import type { SoundObjectImpl } from "../../../../../../../interface/SoundObjectImpl";
 
-describe("PropertyAreaAddSoundCreateHistoryObjectServiceTest", () =>
+describe("SoundAreaAddSoundCreateHistoryObjectServiceTest", () =>
 {
     test("execute test", () =>
     {
@@ -13,23 +13,23 @@ describe("PropertyAreaAddSoundCreateHistoryObjectServiceTest", () =>
             "name": "MovieClip_01"
         });
 
-        const soundObject: SoundObjectImpl = {
+        const sound: SoundObjectImpl = {
             "libraryId": 2,
             "volume": 100,
             "autoPlay": false,
             "loopCount": 0
         };
 
-        const object = execute(1, movieClip, 10, 0, soundObject, "sound_01");
-        expect(object.command).toBe($PROPERTY_REMOVE_SOUND_TO_MOVIE_CLIP_COMMAND);
+        const object = execute(1, movieClip, sound, 10, 0, "sound_01");
+        expect(object.command).toBe($SOUND_AREA_ADD_SOUND_COMMAND);
 
         // 配列の順番が崩れてもいいようにテストケースを残す
         expect(object.messages.length).toBe(5);
         expect(object.messages[0]).toBe(1);
         expect(object.messages[1]).toBe(1);
-        expect(object.messages[2]).toBe(10);
-        expect(object.messages[3]).toBe(0);
-        expect(object.messages[4].libraryId).toBe(2);
+        expect(object.messages[2].libraryId).toBe(2);
+        expect(object.messages[3]).toBe(10);
+        expect(object.messages[4]).toBe(0);
 
         // 表示様の配列のチェック
         expect(object.args.length).toBe(3);

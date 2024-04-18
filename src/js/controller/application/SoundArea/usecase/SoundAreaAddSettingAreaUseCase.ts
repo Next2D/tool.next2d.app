@@ -4,9 +4,9 @@ import type { Sound } from "@/core/domain/model/Sound";
 import { $SOUND_AREA_SOUND_LIST_AREA_ID } from "@/config/PropertyConfig";
 import { execute as soundAreaSettingComponent } from "../component/SoundAreaSettingComponent";
 import { EventType } from "@/tool/domain/event/EventType";
-import { execute as propertyAreaSoundAreaTrashMouseDownUseCase } from "./PropertyAreaSoundAreaTrashMouseDownUseCase";
+import { execute as soundAreaTrashMouseDownUseCase } from "./SoundAreaTrashMouseDownUseCase";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
-import { execute as propertyAreaSoundAreaAudioVolumeChangeEvnetService } from "../service/PropertyAreaSoundAreaAudioVolumeChangeEvnetService";
+import { execute as soundAreaAudioVolumeChangeEvnetService } from "../service/SoundAreaAudioVolumeChangeEvnetService";
 
 /**
  * @description サウンド設定のelementを追加
@@ -66,7 +66,7 @@ export const execute = (
             const audioHtmlElement = sound.createAudioElement();
             if (audioHtmlElement) {
                 audioHtmlElement.addEventListener("volumechange",
-                    propertyAreaSoundAreaAudioVolumeChangeEvnetService
+                    soundAreaAudioVolumeChangeEvnetService
                 );
                 audioHtmlElement.dataset.index = `${index}`;
                 audioHtmlElement.volume = sound_object.volume / 100;
@@ -90,8 +90,7 @@ export const execute = (
     const trashIconElement: HTMLElement | null = soundSettingElement.querySelector(".trash");
     if (trashIconElement) {
         trashIconElement.addEventListener(EventType.MOUSE_DOWN,
-            propertyAreaSoundAreaTrashMouseDownUseCase
+            soundAreaTrashMouseDownUseCase
         );
     }
-
 };

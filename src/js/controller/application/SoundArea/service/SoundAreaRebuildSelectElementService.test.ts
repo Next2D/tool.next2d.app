@@ -1,10 +1,10 @@
-import { execute } from "./PropertyAreaSoundAreaRebuildSelectElementService";
+import { execute } from "./SoundAreaRebuildSelectElementService";
 import { $SOUND_AREA_SELECT_ID } from "../../../../config/PropertyConfig";
 import { Sound } from "../../../../core/domain/model/Sound";
 import { WorkSpace } from "../../../../core/domain/model/WorkSpace";
 import { $getCurrentWorkSpace, $createWorkSpace } from "../../../../core/application/CoreUtil";
 
-describe("PropertyAreaSoundAreaRebuildSelectElementServiceTest", () =>
+describe("SoundAreaRebuildSelectElementServiceTest", () =>
 {
     test("test case", () =>
     {

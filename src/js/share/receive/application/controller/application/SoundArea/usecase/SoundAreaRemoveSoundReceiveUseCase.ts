@@ -2,12 +2,6 @@ import type { ShareReceiveMessageImpl } from "@/interface/ShareReceiveMessageImp
 import type { InstanceImpl } from "@/interface/InstanceImpl";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
-import { execute as propertyAreaAddSoundHistoryUseCase } from "@/history/application/controller/application/SoundArea/AddSound/usecase/PropertyAreaAddSoundHistoryUseCase";
-import { SoundObjectImpl } from "@/interface/SoundObjectImpl";
-import { execute as propertyAreaSoundAreaRebuildSettingAreaUseCase } from "@/controller/application/SoundArea/usecase/PropertyAreaSoundAreaRebuildSettingAreaUseCase";
-import { $getLeftFrame } from "@/timeline/application/TimelineUtil";
-import { timelineHeader } from "@/timeline/domain/model/TimelineHeader";
-import { execute as timelineHeaderUpdateSoundElementService } from "@/timeline/application/TimelineHeader/service/TimelineHeaderUpdateSoundElementService";
 import { execute as externalSoundAreaRemoveSoundUseCase } from "@/external/controller/application/ExternalSoundArea/usecase/ExternalSoundAreaRemoveSoundUseCase";
 
 /**

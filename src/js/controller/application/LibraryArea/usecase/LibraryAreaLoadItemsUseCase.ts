@@ -9,7 +9,7 @@ import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { libraryArea } from "@/controller/domain/model/LibraryArea";
 import { execute as confirmModalFileResetService } from "@/menu/application/ConfirmModal/service/ConfirmModalFileResetService";
 import { execute as confirmModalFileShowUseCase } from "@/menu/application/ConfirmModal/usecase/ConfirmModalFileShowUseCase";
-import { execute as propertyAreaSoundAreaRebuildSelectElementService } from "@/controller/application/SoundArea/service/PropertyAreaSoundAreaRebuildSelectElementService";
+import { execute as soundAreaRebuildSelectElementService } from "@/controller/application/SoundArea/service/SoundAreaRebuildSelectElementService";
 import { $replace } from "@/language/application/LanguageUtil";
 import { $FOLDER_TYPE } from "@/config/InstanceConfig";
 
@@ -66,7 +66,7 @@ export const execute = async (items: DataTransferItemList): Promise<void> =>
     // ライブラリエリアを際描画
     libraryAreaReloadUseCase();
 
-    propertyAreaSoundAreaRebuildSelectElementService();
+    soundAreaRebuildSelectElementService();
 
     // プログレバーを非表示に更新
     progressMenuHideService();

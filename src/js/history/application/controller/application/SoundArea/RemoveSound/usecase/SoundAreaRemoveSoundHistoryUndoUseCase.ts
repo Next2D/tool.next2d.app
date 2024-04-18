@@ -4,7 +4,7 @@ import type { SoundObjectImpl } from "@/interface/SoundObjectImpl";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
 import { $getLeftFrame } from "@/timeline/application/TimelineUtil";
 import { timelineHeader } from "@/timeline/domain/model/TimelineHeader";
-import { execute as propertyAreaSoundAreaRebuildSettingAreaUseCase } from "@/controller/application/SoundArea/usecase/PropertyAreaSoundAreaRebuildSettingAreaUseCase";
+import { execute as soundAreaRebuildSettingAreaUseCase } from "@/controller/application/SoundArea/usecase/SoundAreaRebuildSettingAreaUseCase";
 import { execute as timelineHeaderUpdateSoundElementService } from "@/timeline/application/TimelineHeader/service/TimelineHeaderUpdateSoundElementService";
 
 /**
@@ -13,9 +13,9 @@ import { execute as timelineHeaderUpdateSoundElementService } from "@/timeline/a
  *
  * @param  {number} work_space_id
  * @param  {number} library_id
+ * @param  {object} sound_object
  * @param  {number} frame
  * @param  {number} index
- * @param  {object} sound_object
  * @return {void}
  * @method
  * @public
@@ -23,9 +23,9 @@ import { execute as timelineHeaderUpdateSoundElementService } from "@/timeline/a
 export const execute = (
     work_space_id: number,
     library_id: number,
+    sound_object: SoundObjectImpl,
     frame: number,
-    index: number,
-    sound_object: SoundObjectImpl
+    index: number
 ): void => {
 
     const workSpace = $getWorkSpace(work_space_id);
@@ -50,7 +50,7 @@ export const execute = (
     if (workSpace.active && movieClip.active) {
         // サウンド設定エリアの再構築
         if (movieClip.currentFrame === frame) {
-            propertyAreaSoundAreaRebuildSettingAreaUseCase();
+            soundAreaRebuildSettingAreaUseCase();
         }
 
         // サウンドElementを更新

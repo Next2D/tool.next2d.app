@@ -1,7 +1,7 @@
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
-import { execute as propertyAreaSoundAreaRebuildSettingAreaUseCase } from "@/controller/application/SoundArea/usecase/PropertyAreaSoundAreaRebuildSettingAreaUseCase";
-import { execute as propertyAreaRemoveSoundHistoryUseCase } from "@/history/application/controller/application/SoundArea/RemoveSound/usecase/PropertyAreaRemoveSoundHistoryUseCase";
+import { execute as soundAreaRebuildSettingAreaUseCase } from "@/controller/application/SoundArea/usecase/SoundAreaRebuildSettingAreaUseCase";
+import { execute as soundAreaRemoveSoundHistoryUseCase } from "@/history/application/controller/application/SoundArea/RemoveSound/usecase/SoundAreaRemoveSoundHistoryUseCase";
 import { $getLeftFrame } from "@/timeline/application/TimelineUtil";
 import { timelineHeader } from "@/timeline/domain/model/TimelineHeader";
 import { execute as timelineHeaderUpdateSoundElementService } from "@/timeline/application/TimelineHeader/service/TimelineHeaderUpdateSoundElementService";
@@ -39,7 +39,7 @@ export const execute = (
 
     // 履歴を登録
     // fixed logic
-    propertyAreaRemoveSoundHistoryUseCase(
+    soundAreaRemoveSoundHistoryUseCase(
         work_space,
         movie_clip,
         frame,
@@ -61,7 +61,7 @@ export const execute = (
 
         // サウンド設定エリアの再構築
         if (movie_clip.currentFrame === frame) {
-            propertyAreaSoundAreaRebuildSettingAreaUseCase();
+            soundAreaRebuildSettingAreaUseCase();
         }
 
         if (!sounds.length) {

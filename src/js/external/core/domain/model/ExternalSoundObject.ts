@@ -1,6 +1,7 @@
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import type { SoundObjectImpl } from "@/interface/SoundObjectImpl";
+import { execute as externalSoundUpdateVolumeUseCase } from "@/external/core/application/ExternalSoundObject/usecase/ExternalSoundUpdateVolumeUseCase";
 
 /**
  * @description 個別の音声設定の管理クラス
@@ -14,11 +15,15 @@ export class ExternalSoundObject
     private readonly _$workSpace: WorkSpace;
     private readonly _$movieClip: MovieClip;
     private readonly _$soundObject: SoundObjectImpl;
+    private readonly _$frame: number;
+    private readonly _$index: number;
 
     constructor (
         work_space: WorkSpace,
         movie_clip: MovieClip,
-        sound_object: SoundObjectImpl
+        sound_object: SoundObjectImpl,
+        frame: number,
+        index: number
     ) {
         /**
          * @type {WorkSpace}
@@ -37,11 +42,23 @@ export class ExternalSoundObject
          * @private
          */
         this._$soundObject = sound_object;
+
+        /**
+         * @type {number}
+         * @private
+         */
+        this._$frame = frame;
+
+        /**
+         * @type {number}
+         * @private
+         */
+        this._$index = index;
     }
 
     /**
-     * @description 音量調整
-     *              Volume adjustment
+     * @description 音量調整(0 - 100)
+     *              Volume adjustment (0 - 100)
      *
      * @type {number}
      * @public
@@ -52,6 +69,13 @@ export class ExternalSoundObject
     }
     set volume (volume: number)
     {
-        this._$soundObject.volume = volume;
+        externalSoundUpdateVolumeUseCase(
+            this._$workSpace,
+            this._$movieClip,
+            this._$soundObject,
+            this._$frame,
+            this._$index,
+            volume
+        );
     }
 }

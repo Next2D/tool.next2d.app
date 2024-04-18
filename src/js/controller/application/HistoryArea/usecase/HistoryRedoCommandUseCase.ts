@@ -41,8 +41,8 @@ import { execute as timelineLayerFrameEraseEmptyKeyframeHistoryRedoUseCase } fro
 import { execute as timelineLayerFrameEraseKeyframeHistoryRedoUseCase } from "@/history/application/timeline/application/TimelineLayerFrame/EraseKeyframe/usecase/TimelineLayerFrameEraseKeyframeHistoryRedoUseCase";
 import { execute as timelineLayerFrameDeleteEmptyKeyframeHistoryRedoUseCase } from "@/history/application/timeline/application/TimelineLayerFrame/DeleteEmptyKeyframe/usecase/TimelineLayerFrameDeleteEmptyKeyframeHistoryRedoUseCase";
 import { execute as timelineLayerFrameDeleteKeyframeHistoryRedoUseCase } from "@/history/application/timeline/application/TimelineLayerFrame/DeleteKeyframe/usecase/TimelineLayerFrameDeleteKeyframeHistoryRedoUseCase";
-import { execute as propertyAreaAddSoundHistoryRedoUseCase } from "@/history/application/controller/application/SoundArea/AddSound/usecase/PropertyAreaAddSoundHistoryRedoUseCase";
-import { execute as propertyAreaRemoveSoundHistoryRedoUseCase } from "@/history/application/controller/application/SoundArea/RemoveSound/usecase/PropertyAreaRemoveSoundHistoryRedoUseCase";
+import { execute as soundAreaAddSoundHistoryRedoUseCase } from "@/history/application/controller/application/SoundArea/AddSound/usecase/SoundAreaAddSoundHistoryRedoUseCase";
+import { execute as soundAreaRemoveSoundHistoryRedoUseCase } from "@/history/application/controller/application/SoundArea/RemoveSound/usecase/SoundAreaRemoveSoundHistoryRedoUseCase";
 import { execute as instanceUpdateNameHistoryRedoUseCase } from "@/history/application/core/application/Instance/usecase/InstanceUpdateNameHistoryRedoUseCase";
 import { execute as instanceUpdateSymbolHistoryRedoUseCase } from "@/history/application/core/application/Instance/usecase/InstanceUpdateSymbolHistoryRedoUseCase";
 import {
@@ -83,8 +83,8 @@ import {
     $TIMELINE_ERASE_KEY_FRAME_COMMAND,
     $TIMELINE_DELETE_EMPTY_KEY_FRAME_COMMAND,
     $TIMELINE_DELETE_KEY_FRAME_COMMAND,
-    $PROPERTY_ADD_SOUND_TO_MOVIE_CLIP_COMMAND,
-    $PROPERTY_REMOVE_SOUND_TO_MOVIE_CLIP_COMMAND
+    $SOUND_AREA_ADD_SOUND_COMMAND,
+    $SOUND_AREA_REMOVE_SOUND_COMMAND
 } from "@/config/HistoryConfig";
 
 /**
@@ -470,23 +470,23 @@ export const execute = async (
             break;
 
         // MovieClipにサウンドを追加
-        case $PROPERTY_ADD_SOUND_TO_MOVIE_CLIP_COMMAND:
-            propertyAreaAddSoundHistoryRedoUseCase(
+        case $SOUND_AREA_ADD_SOUND_COMMAND:
+            soundAreaAddSoundHistoryRedoUseCase(
                 messages[0] as number, // WorkSpace ID
                 messages[1] as number, // MovieClip ID
-                messages[2] as number, // Frame
-                messages[3] as number, // Sound Index
-                messages[4] as SoundObjectImpl // Sound Object
+                messages[2] as SoundObjectImpl, // Sound Object
+                messages[3] as number, // Frame
+                messages[4] as number // Sound Index
             );
             break;
 
         // MovieClipからサウンドを削除
-        case $PROPERTY_REMOVE_SOUND_TO_MOVIE_CLIP_COMMAND:
-            propertyAreaRemoveSoundHistoryRedoUseCase(
+        case $SOUND_AREA_REMOVE_SOUND_COMMAND:
+            soundAreaRemoveSoundHistoryRedoUseCase(
                 messages[0] as number, // WorkSpace ID
                 messages[1] as number, // MovieClip ID
-                messages[2] as number, // Frame
-                messages[3] as number // Sound Index
+                messages[3] as number, // Frame
+                messages[4] as number // Sound Index
             );
             break;
 

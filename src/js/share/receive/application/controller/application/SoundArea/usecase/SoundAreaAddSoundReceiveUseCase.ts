@@ -2,9 +2,9 @@ import type { ShareReceiveMessageImpl } from "@/interface/ShareReceiveMessageImp
 import type { InstanceImpl } from "@/interface/InstanceImpl";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
-import { execute as propertyAreaAddSoundHistoryUseCase } from "@/history/application/controller/application/SoundArea/AddSound/usecase/PropertyAreaAddSoundHistoryUseCase";
+import { execute as soundAreaAddSoundHistoryUseCase } from "@/history/application/controller/application/SoundArea/AddSound/usecase/SoundAreaAddSoundHistoryUseCase";
 import { SoundObjectImpl } from "@/interface/SoundObjectImpl";
-import { execute as propertyAreaSoundAreaRebuildSettingAreaUseCase } from "@/controller/application/SoundArea/usecase/PropertyAreaSoundAreaRebuildSettingAreaUseCase";
+import { execute as soundAreaRebuildSettingAreaUseCase } from "@/controller/application/SoundArea/usecase/SoundAreaRebuildSettingAreaUseCase";
 import { $getLeftFrame } from "@/timeline/application/TimelineUtil";
 import { timelineHeader } from "@/timeline/domain/model/TimelineHeader";
 import { execute as timelineHeaderUpdateSoundElementService } from "@/timeline/application/TimelineHeader/service/TimelineHeaderUpdateSoundElementService";
@@ -33,15 +33,15 @@ export const execute = (message: ShareReceiveMessageImpl): void =>
         return ;
     }
 
-    const frame = message.data[2] as NonNullable<number>;
-    const index = message.data[3] as NonNullable<number>;
-    const soundObject = message.data[4] as NonNullable<SoundObjectImpl>;
+    const soundObject = message.data[2] as NonNullable<SoundObjectImpl>;
+    const frame = message.data[3] as NonNullable<number>;
+    const index = message.data[4] as NonNullable<number>;
 
     // サウンドを追加
     movieClip.setSound(frame, soundObject);
 
     // 履歴に登録
-    propertyAreaAddSoundHistoryUseCase(
+    soundAreaAddSoundHistoryUseCase(
         workSpace,
         movieClip,
         frame,
@@ -52,7 +52,7 @@ export const execute = (message: ShareReceiveMessageImpl): void =>
     // サウンド設定エリアの再構築
     if (workSpace.active && movieClip.active) {
         // サウンド設定の再構成
-        propertyAreaSoundAreaRebuildSettingAreaUseCase();
+        soundAreaRebuildSettingAreaUseCase();
 
         if (!index) {
             const layerIndex = frame - $getLeftFrame();

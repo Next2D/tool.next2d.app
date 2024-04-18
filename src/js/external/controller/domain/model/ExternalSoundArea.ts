@@ -63,7 +63,9 @@ export class ExternalSoundArea
         return new ExternalSoundObject(
             this._$workSpace,
             this._$movieClip,
-            soundObject
+            soundObject,
+            frame,
+            index
         );
     }
 

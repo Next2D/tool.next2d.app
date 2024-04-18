@@ -4,7 +4,7 @@ import { execute as propertyAreaTitleMouseDownEventService } from "../service/Pr
 import { execute as propertyAreaMouseOutEventService } from "../service/PropertyAreaMouseOutEventService";
 import { execute as propertyAreaMouseUpEventUseCase } from "./PropertyAreaMouseUpEventUseCase";
 import { execute as propertyAreaMouseDownEventUseCase } from "./PropertyAreaMouseDownEventUseCase";
-import { execute as propertyAreaSoundAreaInitializeRegisterEventUseCase } from "@/controller/application/SoundArea/usecase/PropertyAreaSoundAreaInitializeRegisterEventUseCase";
+import { execute as soundAreaInitializeRegisterEventUseCase } from "@/controller/application/SoundArea/usecase/SoundAreaInitializeRegisterEventUseCase";
 
 /**
  * @description プロパティーエリアの移動イベントを登録
@@ -17,7 +17,7 @@ import { execute as propertyAreaSoundAreaInitializeRegisterEventUseCase } from "
 export const execute = (): void =>
 {
     // サウンドエリアのイベント登録
-    propertyAreaSoundAreaInitializeRegisterEventUseCase();
+    soundAreaInitializeRegisterEventUseCase();
 
     // プロパティーエリアのイベント登録
     const element: HTMLElement | null = document

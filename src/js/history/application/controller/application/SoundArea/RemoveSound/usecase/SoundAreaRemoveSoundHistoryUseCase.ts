@@ -1,22 +1,23 @@
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
-import type { SoundObjectImpl } from "@/interface/SoundObjectImpl";
 import { $useSocket } from "@/share/ShareUtil";
-import { $PROPERTY_ADD_SOUND_TO_MOVIE_CLIP_COMMAND } from "@/config/HistoryConfig";
+import { $SOUND_AREA_REMOVE_SOUND_COMMAND } from "@/config/HistoryConfig";
 import { execute as historyAddElementUseCase } from "@/controller/application/HistoryArea/usecase/HistoryAddElementUseCase";
 import { execute as historyGetTextService } from "@/controller/application/HistoryArea/service/HistoryGetTextService";
 import { execute as historyRemoveElementService } from "@/controller/application/HistoryArea/service/HistoryRemoveElementService";
-import { execute as propertyAreaAddSoundCreateHistoryObjectService } from "../service/PropertyAreaAddSoundCreateHistoryObjectService";
+import { execute as soundAreaRemoveSoundCreateHistoryObjectService } from "../service/SoundAreaRemoveSoundCreateHistoryObjectService";
 import { execute as shareSendService } from "@/share/service/ShareSendService";
+import { SoundObjectImpl } from "@/interface/SoundObjectImpl";
 
 /**
- * @description タイムラインへのサウンド追加の履歴を登録
- *              Register the history of adding sound to the timeline
+ * @description タイムラインへのサウンド削除の履歴を登録
+ *              Register sound deletion history to the timeline
  *
  * @param  {WorkSpace} work_space
  * @param  {MovieClip} movie_clip
- * @param  {number} frame
  * @param  {object} sound_object
+ * @param  {number} frame
+ * @param  {number} index
  * @param  {boolean} [receiver=false]
  * @return {void}
  * @method
@@ -25,8 +26,9 @@ import { execute as shareSendService } from "@/share/service/ShareSendService";
 export const execute = (
     work_space: WorkSpace,
     movie_clip: MovieClip,
-    frame: number,
     sound_object: SoundObjectImpl,
+    frame: number,
+    index: number,
     receiver: boolean = false
 ): void => {
 
@@ -45,9 +47,9 @@ export const execute = (
     }
 
     // fixed logic
-    const historyObject = propertyAreaAddSoundCreateHistoryObjectService(
-        work_space.id, movie_clip, frame,
-        sounds.indexOf(sound_object), sound_object, instance.name
+    const historyObject = soundAreaRemoveSoundCreateHistoryObjectService(
+        work_space.id, movie_clip, sound_object,
+        frame, index, instance.name
     );
 
     // 作業履歴にElementを追加
@@ -56,7 +58,7 @@ export const execute = (
         historyAddElementUseCase(
             movie_clip.id,
             work_space.historyIndex,
-            historyGetTextService($PROPERTY_ADD_SOUND_TO_MOVIE_CLIP_COMMAND),
+            historyGetTextService($SOUND_AREA_REMOVE_SOUND_COMMAND),
             "",
             ...historyObject.args
         );

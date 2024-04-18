@@ -4,8 +4,8 @@ import type { Instance } from "@/core/domain/model/Instance";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
 import { execute as libraryAreaReOrderingService } from "@/controller/application/LibraryArea/service/LibraryAreaReOrderingService";
 import { execute as instanceUpdateNameUseCase } from "@/core/application/Instance/usecase/InstanceUpdateNameUseCase";
-import { execute as propertyAreaSoundAreaRebuildSettingAreaUseCase } from "@/controller/application/SoundArea/usecase/PropertyAreaSoundAreaRebuildSettingAreaUseCase";
-import { execute as propertyAreaSoundAreaRebuildSelectElementService } from "@/controller/application/SoundArea/service/PropertyAreaSoundAreaRebuildSelectElementService";
+import { execute as soundAreaRebuildSettingAreaUseCase } from "@/controller/application/SoundArea/usecase/SoundAreaRebuildSettingAreaUseCase";
+import { execute as soundAreaRebuildSelectElementService } from "@/controller/application/SoundArea/service/SoundAreaRebuildSelectElementService";
 import { $SOUND_TYPE } from "@/config/InstanceConfig";
 
 /**
@@ -55,10 +55,10 @@ export const execute = (
         // 名前変更したのがサウンドの場合はセレクトElementを再構成
         if (instance.type === $SOUND_TYPE) {
             // SelectElementの再構成
-            propertyAreaSoundAreaRebuildSelectElementService();
+            soundAreaRebuildSelectElementService();
 
             // サウンド設定の再構成
-            propertyAreaSoundAreaRebuildSettingAreaUseCase();
+            soundAreaRebuildSettingAreaUseCase();
         }
     }
 };

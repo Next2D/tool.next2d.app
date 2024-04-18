@@ -1,4 +1,5 @@
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
+import { ExternalSoundObject } from "@/external/core/domain/model/ExternalSoundObject";
 
 /**
  * @description サウンド設定の音量変更イベント
@@ -20,20 +21,30 @@ export const execute = (event: Event): void =>
         return ;
     }
 
-    const index = parseInt(audio.dataset.index as string);
+    // 現在起動中のワークスペースとMovieClipを取得
     const workSpace = $getCurrentWorkSpace();
     const movieClip = workSpace.scene;
+    const currentFrame = movieClip.currentFrame;
 
-    const sounds = movieClip.getSound(movieClip.currentFrame);
+    // 指定フレームの音声配列を取得
+    const sounds = movieClip.getSound(currentFrame);
     if (!sounds) {
         return ;
     }
 
+    const index = parseInt(audio.dataset.index as string);
     const soundObject = sounds[index];
     if (!soundObject) {
         return ;
     }
 
-    soundObject.volume = Math.ceil(audio.volume * 100);
-    console.log(soundObject);
+    // 外部APIを起動
+    const externalSoundObject = new ExternalSoundObject(
+        workSpace,
+        movieClip,
+        soundObject,
+        currentFrame,
+        index
+    );
+    externalSoundObject.volume = Math.ceil(audio.volume * 100);
 };

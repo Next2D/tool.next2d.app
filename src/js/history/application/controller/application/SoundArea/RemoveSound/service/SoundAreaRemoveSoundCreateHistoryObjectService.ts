@@ -1,11 +1,11 @@
 import type { HistoryObjectImpl } from "@/interface/HistoryObjectImpl";
 import type { SoundObjectImpl } from "@/interface/SoundObjectImpl";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
-import { $PROPERTY_ADD_SOUND_TO_MOVIE_CLIP_COMMAND } from "@/config/HistoryConfig";
+import { $SOUND_AREA_REMOVE_SOUND_COMMAND } from "@/config/HistoryConfig";
 
 /**
- * @description MovieClipへのサウンド追加の履歴用オブジェクトを作成
- *              Create a history object for adding sound to MovieClip
+ * @description MovieClipへのサウンド削除の履歴用オブジェクトを作成
+ *              Create a history object for removing sound to MovieClip
  *
  * @param  {number} work_space_id
  * @param  {MovieClip} movie_clip
@@ -19,20 +19,20 @@ import { $PROPERTY_ADD_SOUND_TO_MOVIE_CLIP_COMMAND } from "@/config/HistoryConfi
 export const execute = (
     work_space_id: number,
     movie_clip: MovieClip,
+    sound_object: SoundObjectImpl,
     frame: number,
     sound_index: number,
-    sound_object: SoundObjectImpl,
     name: string
 ): HistoryObjectImpl => {
 
     return {
-        "command": $PROPERTY_ADD_SOUND_TO_MOVIE_CLIP_COMMAND,
+        "command": $SOUND_AREA_REMOVE_SOUND_COMMAND,
         "messages": [
             work_space_id,
             movie_clip.id,
+            sound_object,
             frame,
-            sound_index,
-            sound_object
+            sound_index
         ],
         "args": [
             movie_clip.name,

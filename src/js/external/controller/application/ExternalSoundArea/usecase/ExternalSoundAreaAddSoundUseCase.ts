@@ -3,13 +3,13 @@ import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import type { ExternalSound } from "@/external/core/domain/model/ExternalSound";
 import type { SoundObjectImpl } from "@/interface/SoundObjectImpl";
 import type { ExternalItemImpl } from "@/interface/ExternalItemImpl";
-import { execute as propertyAreaAddSoundHistoryUseCase } from "@/history/application/controller/application/SoundArea/AddSound/usecase/PropertyAreaAddSoundHistoryUseCase";
+import { execute as soundAreaAddSoundHistoryUseCase } from "@/history/application/controller/application/SoundArea/AddSound/usecase/SoundAreaAddSoundHistoryUseCase";
 import { timelineHeader } from "@/timeline/domain/model/TimelineHeader";
 import { $getLeftFrame } from "@/timeline/application/TimelineUtil";
 import { execute as timelineHeaderUpdateSoundElementService } from "@/timeline/application/TimelineHeader/service/TimelineHeaderUpdateSoundElementService";
 import { ExternalLibrary } from "@/external/controller/domain/model/ExternalLibrary";
 import { $SOUND_TYPE } from "@/config/InstanceConfig";
-import { execute as propertyAreaSoundAreaAddSettingAreaUseCase } from "@/controller/application/SoundArea/usecase/PropertyAreaSoundAreaAddSettingAreaUseCase";
+import { execute as soundAreaAddSettingAreaUseCase } from "@/controller/application/SoundArea/usecase/SoundAreaAddSettingAreaUseCase";
 
 /**
  * @description タイムラインにサウンドを追加
@@ -50,7 +50,7 @@ export const execute = (
 
     // 履歴に登録
     // fixed logic
-    propertyAreaAddSoundHistoryUseCase(
+    soundAreaAddSoundHistoryUseCase(
         work_space,
         movie_clip,
         frame,
@@ -76,7 +76,7 @@ export const execute = (
         }
 
         // サウンドエリアに設定エリアを追加
-        propertyAreaSoundAreaAddSettingAreaUseCase(
+        soundAreaAddSettingAreaUseCase(
             sounds.indexOf(sound),
             externalSound.name,
             sound

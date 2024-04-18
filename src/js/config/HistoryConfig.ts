@@ -410,7 +410,7 @@ export const $TIMELINE_DELETE_KEY_FRAME_COMMAND: number = 42;
  * @type {number}
  * @constant
  */
-export const $PROPERTY_ADD_SOUND_TO_MOVIE_CLIP_COMMAND: number = 43;
+export const $SOUND_AREA_ADD_SOUND_COMMAND: number = 43;
 
 /**
  * @description MovieClipへのサウンド削除の識別コマンド名
@@ -419,4 +419,13 @@ export const $PROPERTY_ADD_SOUND_TO_MOVIE_CLIP_COMMAND: number = 43;
  * @type {number}
  * @constant
  */
-export const $PROPERTY_REMOVE_SOUND_TO_MOVIE_CLIP_COMMAND: number = 44;
+export const $SOUND_AREA_REMOVE_SOUND_COMMAND: number = 44;
+
+/**
+ * @description 個別の音量調整の識別コマンド名
+ *              Identification command name for individual volume adjustment
+ *
+ * @type {number}
+ * @constant
+ */
+export const $SOUND_AREA_UPDATE_VOLUME_COMMAND: number = 45;

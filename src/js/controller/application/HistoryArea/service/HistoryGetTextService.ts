@@ -36,8 +36,9 @@ import {
     $TIMELINE_ERASE_KEY_FRAME_COMMAND,
     $TIMELINE_DELETE_EMPTY_KEY_FRAME_COMMAND,
     $TIMELINE_DELETE_KEY_FRAME_COMMAND,
-    $PROPERTY_ADD_SOUND_TO_MOVIE_CLIP_COMMAND,
-    $PROPERTY_REMOVE_SOUND_TO_MOVIE_CLIP_COMMAND
+    $SOUND_AREA_ADD_SOUND_COMMAND,
+    $SOUND_AREA_REMOVE_SOUND_COMMAND,
+    $SOUND_AREA_UPDATE_VOLUME_COMMAND
 } from "@/config/HistoryConfig";
 
 /**
@@ -159,11 +160,14 @@ export const execute = (command: number): string =>
         case $TIMELINE_DELETE_KEY_FRAME_COMMAND:
             return "「%s1」のレイヤー「%s2」の%s3フレームのキーフレームを削除";
 
-        case $PROPERTY_ADD_SOUND_TO_MOVIE_CLIP_COMMAND:
+        case $SOUND_AREA_ADD_SOUND_COMMAND:
             return "「%s1」の%s2フレームにサウンド「%s3」を追加";
 
-        case $PROPERTY_REMOVE_SOUND_TO_MOVIE_CLIP_COMMAND:
+        case $SOUND_AREA_REMOVE_SOUND_COMMAND:
             return "「%s1」の%s2フレームのサウンド「%s3」を削除";
+
+        case $SOUND_AREA_UPDATE_VOLUME_COMMAND:
+            return "「%s1」の%s2フレームのサウンド「%s3」の音量を%s4から%s5に変更";
 
         default:
             break;

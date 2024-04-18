@@ -6,7 +6,7 @@ import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { execute as timelineMarkerMovePositionService } from "@/timeline/application/TimelineMarker/service/TimelineMarkerMovePositionService";
 import { $updateKeyLock } from "@/shortcut/ShortcutUtil";
 import { execute as screenAreaRedrawUseCase } from "@/screen/application/ScreenArea/usecase/ScreenAreaRedrawUseCase";
-import { execute as propertyAreaSoundAreaRebuildSettingAreaUseCase } from "@/controller/application/SoundArea/usecase/PropertyAreaSoundAreaRebuildSettingAreaUseCase";
+import { execute as soundAreaRebuildSettingAreaUseCase } from "@/controller/application/SoundArea/usecase/SoundAreaRebuildSettingAreaUseCase";
 
 /**
  * @description フレームInput Elementのフォーカスアウト、イベント処理関数
@@ -60,7 +60,7 @@ export const execute = async (event: Event): Promise<void> =>
     timelineMarkerMovePositionService();
 
     // サウンドエリアを再描画
-    propertyAreaSoundAreaRebuildSettingAreaUseCase();
+    soundAreaRebuildSettingAreaUseCase();
 
     // スクリーンを再描画
     await screenAreaRedrawUseCase(movieClip);

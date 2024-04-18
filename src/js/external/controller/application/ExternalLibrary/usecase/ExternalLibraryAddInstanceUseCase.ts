@@ -4,7 +4,7 @@ import { execute as libraryAreaReOrderingService } from "@/controller/applicatio
 import { execute as libraryAreaReloadUseCase } from "@/controller/application/LibraryArea/usecase/LibraryAreaReloadUseCase";
 import { execute as externalWorkSpaceRegisterInstanceService } from "@/external/core/application/ExternalWorkSpace/service/ExternalWorkSpaceRegisterInstanceService";
 import { $SOUND_TYPE } from "@/config/InstanceConfig";
-import { execute as propertyAreaSoundAreaRebuildSelectElementService } from "@/controller/application/SoundArea/service/PropertyAreaSoundAreaRebuildSelectElementService";
+import { execute as soundAreaRebuildSelectElementService } from "@/controller/application/SoundArea/service/SoundAreaRebuildSelectElementService";
 
 /**
  * @description ライブラリへのインスタンス追加の処理関数
@@ -35,7 +35,7 @@ export const execute = (
 
         // サウンドの場合はサウンド選択のSelect Elementを更新
         if (instance.type === $SOUND_TYPE) {
-            propertyAreaSoundAreaRebuildSelectElementService();
+            soundAreaRebuildSelectElementService();
         }
     }
 };

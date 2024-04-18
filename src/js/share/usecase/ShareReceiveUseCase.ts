@@ -88,8 +88,8 @@ import {
     $TIMELINE_ERASE_KEY_FRAME_COMMAND,
     $TIMELINE_DELETE_EMPTY_KEY_FRAME_COMMAND,
     $TIMELINE_DELETE_KEY_FRAME_COMMAND,
-    $PROPERTY_ADD_SOUND_TO_MOVIE_CLIP_COMMAND,
-    $PROPERTY_REMOVE_SOUND_TO_MOVIE_CLIP_COMMAND
+    $SOUND_AREA_ADD_SOUND_COMMAND,
+    $SOUND_AREA_REMOVE_SOUND_COMMAND
 } from "@/config/HistoryConfig";
 
 /**
@@ -329,12 +329,12 @@ export const execute = async (message: ShareReceiveMessageImpl): Promise<void> =
             break;
 
         // MovieClipへのサウンドを追加
-        case $PROPERTY_ADD_SOUND_TO_MOVIE_CLIP_COMMAND:
+        case $SOUND_AREA_ADD_SOUND_COMMAND:
             soundAreaAddSoundReceiveUseCase(message);
             break;
 
         // MovieClipのサウンドを削除
-        case $PROPERTY_REMOVE_SOUND_TO_MOVIE_CLIP_COMMAND:
+        case $SOUND_AREA_REMOVE_SOUND_COMMAND:
             soundAreaRemoveSoundReceiveUseCase(message);
             break;
 

@@ -7,7 +7,7 @@ import { execute as libraryAreaReOrderingService } from "@/controller/applicatio
 import { execute as workSpaceCreatePathMapService } from "@/core/application/WorkSpace/service/WorkSpaceCreatePathMapService";
 import { execute as confirmModalInstaceResetService } from "@/menu/application/ConfirmModal/service/ConfirmModalInstaceResetService";
 import { execute as confirmModalinstanceShowUseCase } from "@/menu/application/ConfirmModal/usecase/ConfirmModalinstanceShowUseCase";
-import { execute as propertyAreaSoundAreaRebuildSelectElementService } from "@/controller/application/SoundArea/service/PropertyAreaSoundAreaRebuildSelectElementService";
+import { execute as soundAreaRebuildSelectElementService } from "@/controller/application/SoundArea/service/SoundAreaRebuildSelectElementService";
 import { Folder } from "@/core/domain/model/Folder";
 import { $FOLDER_TYPE } from "@/config/InstanceConfig";
 
@@ -132,7 +132,7 @@ export const execute = (event: DragEvent): void =>
         libraryAreaReloadUseCase();
 
         // サウンドリストを再描画
-        propertyAreaSoundAreaRebuildSelectElementService();
+        soundAreaRebuildSelectElementService();
     }
 
     // 重複があればモーダルを表示

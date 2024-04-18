@@ -12,7 +12,7 @@ import { execute as objectSettingUpdateNameService } from "@/controller/applicat
 import { execute as objectSettingUpdateSymbolService } from "@/controller/application/ObjectSetting/service/ObjectSettingUpdateSymbolService";
 import { execute as timelineToolUpdateSceneNameService } from "@/timeline/application/TimelineTool/application/SceneName/service/TimelineToolUpdateSceneNameService";
 import { execute as screenAreaRedrawUseCase } from "@/screen/application/ScreenArea/usecase/ScreenAreaRedrawUseCase";
-import { execute as propertyAreaSoundAreaRebuildSettingAreaUseCase } from "@/controller/application/SoundArea/usecase/PropertyAreaSoundAreaRebuildSettingAreaUseCase";
+import { execute as soundAreaRebuildSettingAreaUseCase } from "@/controller/application/SoundArea/usecase/SoundAreaRebuildSettingAreaUseCase";
 
 /**
  * @description MovieClipの起動処理
@@ -62,7 +62,7 @@ export const execute = async (movie_clip: MovieClip): Promise<void> =>
     propertyAreaDisplayItemControllerUseCase();
 
     // サウンドエリアの設定エリアを再構築
-    propertyAreaSoundAreaRebuildSettingAreaUseCase();
+    soundAreaRebuildSettingAreaUseCase();
 
     // スクリーンエリアを再描画
     await screenAreaRedrawUseCase(movie_clip);

@@ -1,6 +1,6 @@
 import { $SOUND_AREA_ADD_SOUND_ID } from "@/config/PropertyConfig";
 import { EventType } from "@/tool/domain/event/EventType";
-import { execute as propertyAreaSoundAreaSoundAddMouseDownEventUseCase } from "./PropertyAreaSoundAreaSoundAddMouseDownEventUseCase";
+import { execute as soundAreaSoundAddMouseDownEventUseCase } from "./SoundAreaSoundAddMouseDownEventUseCase";
 
 /**
  * @description サウンドエリア初期化イベント登録ユースケース
@@ -21,6 +21,6 @@ export const execute = (): void =>
 
     // マウスダウンイベントを登録
     element.addEventListener(EventType.MOUSE_DOWN,
-        propertyAreaSoundAreaSoundAddMouseDownEventUseCase
+        soundAreaSoundAddMouseDownEventUseCase
     );
 };

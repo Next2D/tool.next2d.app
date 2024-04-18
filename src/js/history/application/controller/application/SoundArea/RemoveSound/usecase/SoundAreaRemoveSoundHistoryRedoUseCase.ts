@@ -1,7 +1,7 @@
 import type { InstanceImpl } from "@/interface/InstanceImpl";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
-import { execute as propertyAreaSoundAreaRebuildSettingAreaUseCase } from "@/controller/application/SoundArea/usecase/PropertyAreaSoundAreaRebuildSettingAreaUseCase";
+import { execute as soundAreaRebuildSettingAreaUseCase } from "@/controller/application/SoundArea/usecase/SoundAreaRebuildSettingAreaUseCase";
 import { $getLeftFrame } from "@/timeline/application/TimelineUtil";
 import { timelineHeader } from "@/timeline/domain/model/TimelineHeader";
 import { execute as timelineHeaderUpdateSoundElementService } from "@/timeline/application/TimelineHeader/service/TimelineHeaderUpdateSoundElementService";
@@ -53,7 +53,7 @@ export const execute = (
     if (workSpace.active && movieClip.active) {
         // サウンド設定エリアの再構築
         if (movieClip.currentFrame === frame) {
-            propertyAreaSoundAreaRebuildSettingAreaUseCase();
+            soundAreaRebuildSettingAreaUseCase();
         }
 
         if (!sounds.length) {

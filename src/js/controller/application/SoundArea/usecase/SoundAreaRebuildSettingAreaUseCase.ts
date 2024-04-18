@@ -1,6 +1,6 @@
 import { $SOUND_AREA_SOUND_LIST_AREA_ID } from "@/config/PropertyConfig";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
-import { execute as propertyAreaSoundAreaAddSettingAreaUseCase } from "./PropertyAreaSoundAreaAddSettingAreaUseCase";
+import { execute as soundAreaAddSettingAreaUseCase } from "./SoundAreaAddSettingAreaUseCase";
 
 /**
  * @description 現在のフレームに設定されているサウンドの設定表示を再構成
@@ -42,7 +42,7 @@ export const execute = (): void =>
         }
 
         // 設定エリアを追加
-        propertyAreaSoundAreaAddSettingAreaUseCase(
+        soundAreaAddSettingAreaUseCase(
             idx, sound.name, soundObject
         );
     }

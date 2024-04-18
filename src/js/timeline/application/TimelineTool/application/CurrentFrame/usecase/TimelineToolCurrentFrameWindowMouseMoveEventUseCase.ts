@@ -6,7 +6,7 @@ import { timelineHeader } from "@/timeline/domain/model/TimelineHeader";
 import { execute as timelineScrollUpdateScrollXUseCase } from "@/timeline/application/TimelineScroll/usecase/TimelineScrollUpdateScrollXUseCase";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { execute as screenAreaRedrawUseCase } from "@/screen/application/ScreenArea/usecase/ScreenAreaRedrawUseCase";
-import { execute as propertyAreaSoundAreaRebuildSettingAreaUseCase } from "@/controller/application/SoundArea/usecase/PropertyAreaSoundAreaRebuildSettingAreaUseCase";
+import { execute as soundAreaRebuildSettingAreaUseCase } from "@/controller/application/SoundArea/usecase/SoundAreaRebuildSettingAreaUseCase";
 
 /**
  * @description タイムラインのフレームInputElement上のマウスムーブ処理関数
@@ -62,7 +62,7 @@ export const execute = (event: PointerEvent): void =>
         }
 
         // サウンドエリアを再描画
-        propertyAreaSoundAreaRebuildSettingAreaUseCase();
+        soundAreaRebuildSettingAreaUseCase();
 
         // スクリーンを再描画
         await screenAreaRedrawUseCase(scene);

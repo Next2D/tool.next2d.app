@@ -5,8 +5,8 @@ import { execute as instanceUpdateNameHistoryUseCase } from "@/history/applicati
 import { execute as libraryAreaReOrderingService } from "@/controller/application/LibraryArea/service/LibraryAreaReOrderingService";
 import { execute as instanceUpdateNameUseCase } from "@/core/application/Instance/usecase/InstanceUpdateNameUseCase";
 import { $SOUND_TYPE } from "@/config/InstanceConfig";
-import { execute as propertyAreaSoundAreaRebuildSettingAreaUseCase } from "@/controller/application/SoundArea/usecase/PropertyAreaSoundAreaRebuildSettingAreaUseCase";
-import { execute as propertyAreaSoundAreaRebuildSelectElementService } from "@/controller/application/SoundArea/service/PropertyAreaSoundAreaRebuildSelectElementService";
+import { execute as soundAreaRebuildSettingAreaUseCase } from "@/controller/application/SoundArea/usecase/SoundAreaRebuildSettingAreaUseCase";
+import { execute as soundAreaRebuildSelectElementService } from "@/controller/application/SoundArea/service/SoundAreaRebuildSelectElementService";
 
 /**
  * @description インスタス名の変更実行処理関数
@@ -68,10 +68,10 @@ export const execute = (
         // 名前変更したのがサウンドの場合はセレクトElementを再構成
         if (instance.type === $SOUND_TYPE) {
             // SelectElementの再構成
-            propertyAreaSoundAreaRebuildSelectElementService();
+            soundAreaRebuildSelectElementService();
 
             // サウンド設定の再構成
-            propertyAreaSoundAreaRebuildSettingAreaUseCase();
+            soundAreaRebuildSettingAreaUseCase();
         }
     }
 };
