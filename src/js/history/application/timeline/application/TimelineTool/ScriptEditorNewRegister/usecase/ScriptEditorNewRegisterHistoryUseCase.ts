@@ -7,7 +7,7 @@ import { execute as historyRemoveElementService } from "@/controller/application
 import { $useSocket } from "@/share/ShareUtil";
 import { execute as shareSendService } from "@/share/service/ShareSendService";
 import { execute as scriptEditorNewRegisterHistoryObjectService } from "../service/ScriptEditorNewRegisterHistoryObjectService";
-import { execute as userDatabaseAutoSaveReservationUseCase } from "@/user/application/Database/usecase/UserDatabaseAutoSaveReservationUseCase"
+import { execute as userDatabaseAutoSaveReservationUseCase } from "@/user/application/Database/usecase/UserDatabaseAutoSaveReservationUseCase";
 
 /**
  * @description スクリプトの新規登録を削除

@@ -8,7 +8,7 @@ import { execute as historyGetTextService } from "@/controller/application/Histo
 import { execute as historyRemoveElementService } from "@/controller/application/HistoryArea/service/HistoryRemoveElementService";
 import { execute as libraryAreaMoveFolderCreateHistoryObjectService } from "../service/LibraryAreaMoveFolderCreateHistoryObjectService";
 import { execute as shareSendService } from "@/share/service/ShareSendService";
-import { execute as userDatabaseAutoSaveReservationUseCase } from "@/user/application/Database/usecase/UserDatabaseAutoSaveReservationUseCase"
+import { execute as userDatabaseAutoSaveReservationUseCase } from "@/user/application/Database/usecase/UserDatabaseAutoSaveReservationUseCase";
 
 /**
  * @description フォルダー移動の履歴を登録

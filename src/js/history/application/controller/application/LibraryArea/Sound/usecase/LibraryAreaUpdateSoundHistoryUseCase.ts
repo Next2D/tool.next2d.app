@@ -12,7 +12,7 @@ import { execute as shareSendService } from "@/share/service/ShareSendService";
 import { execute as bufferToBinaryService } from "@/core/service/BufferToBinaryService";
 import { execute as shareGetS3EndPointRepository } from "@/share/domain/repository/ShareGetS3EndPointRepository";
 import { execute as sharePutS3FileRepository } from "@/share/domain/repository/SharePutS3FileRepository";
-import { execute as userDatabaseAutoSaveReservationUseCase } from "@/user/application/Database/usecase/UserDatabaseAutoSaveReservationUseCase"
+import { execute as userDatabaseAutoSaveReservationUseCase } from "@/user/application/Database/usecase/UserDatabaseAutoSaveReservationUseCase";
 
 // @ts-ignore
 import ZlibDeflateWorker from "@/worker/ZlibDeflateWorker?worker&inline";

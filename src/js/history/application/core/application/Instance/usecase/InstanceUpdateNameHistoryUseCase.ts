@@ -9,7 +9,7 @@ import { execute as historyGetTextService } from "@/controller/application/Histo
 import { execute as historyRemoveElementService } from "@/controller/application/HistoryArea/service/HistoryRemoveElementService";
 import { execute as instanceUpdateNameCreateHistoryObjectService } from "../service/InstanceUpdateNameCreateHistoryObjectService";
 import { execute as shareSendService } from "@/share/service/ShareSendService";
-import { execute as userDatabaseAutoSaveReservationUseCase } from "@/user/application/Database/usecase/UserDatabaseAutoSaveReservationUseCase"
+import { execute as userDatabaseAutoSaveReservationUseCase } from "@/user/application/Database/usecase/UserDatabaseAutoSaveReservationUseCase";
 
 /**
  * @description ライブラリのインスタンス名を更新

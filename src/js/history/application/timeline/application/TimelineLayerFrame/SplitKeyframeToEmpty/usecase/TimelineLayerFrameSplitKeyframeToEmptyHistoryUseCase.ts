@@ -9,7 +9,7 @@ import { $TIMELINE_SPLIT_KEYFRAME_TO_EMPTY_COMMAND } from "@/config/HistoryConfi
 import { $useSocket } from "@/share/ShareUtil";
 import { execute as shareSendService } from "@/share/service/ShareSendService";
 import type { EmptyCharacter } from "@/core/domain/model/EmptyCharacter";
-import { execute as userDatabaseAutoSaveReservationUseCase } from "@/user/application/Database/usecase/UserDatabaseAutoSaveReservationUseCase"
+import { execute as userDatabaseAutoSaveReservationUseCase } from "@/user/application/Database/usecase/UserDatabaseAutoSaveReservationUseCase";
 
 /**
  * @description キーフレームを空のキーフレームに分割する履歴を登録

@@ -8,7 +8,7 @@ import { execute as timelineLayerFrameInsertKeyFramesCreateHistoryObjectService 
 import { $TIMELINE_INSERT_KEY_FRAME_COMMAND } from "@/config/HistoryConfig";
 import { $useSocket } from "@/share/ShareUtil";
 import { execute as shareSendService } from "@/share/service/ShareSendService";
-import { execute as userDatabaseAutoSaveReservationUseCase } from "@/user/application/Database/usecase/UserDatabaseAutoSaveReservationUseCase"
+import { execute as userDatabaseAutoSaveReservationUseCase } from "@/user/application/Database/usecase/UserDatabaseAutoSaveReservationUseCase";
 
 /**
  * @description 空のキーフレームへのフレーム追加の履歴を登録

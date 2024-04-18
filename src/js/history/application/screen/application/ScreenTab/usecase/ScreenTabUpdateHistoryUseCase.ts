@@ -6,7 +6,7 @@ import { execute as historyAddElementUseCase } from "@/controller/application/Hi
 import { execute as historyGetTextService } from "@/controller/application/HistoryArea/service/HistoryGetTextService";
 import { execute as shareSendService } from "@/share/service/ShareSendService";
 import { execute as screenTabCreateHistoryObjectService } from "../service/ScreenTabCreateHistoryObjectService";
-import { execute as userDatabaseAutoSaveReservationUseCase } from "@/user/application/Database/usecase/UserDatabaseAutoSaveReservationUseCase"
+import { execute as userDatabaseAutoSaveReservationUseCase } from "@/user/application/Database/usecase/UserDatabaseAutoSaveReservationUseCase";
 
 /**
  * @description プロジェクト名の変更を作業履歴に登録

@@ -8,7 +8,7 @@ import { execute as timelineToolLayerAddCreateHistoryObjectService } from "../se
 import { WorkSpace } from "@/core/domain/model/WorkSpace";
 import { $useSocket } from "@/share/ShareUtil";
 import { execute as shareSendService } from "@/share/service/ShareSendService";
-import { execute as userDatabaseAutoSaveReservationUseCase } from "@/user/application/Database/usecase/UserDatabaseAutoSaveReservationUseCase"
+import { execute as userDatabaseAutoSaveReservationUseCase } from "@/user/application/Database/usecase/UserDatabaseAutoSaveReservationUseCase";
 
 /**
  * @description 新規レイヤー追加の履歴を登録

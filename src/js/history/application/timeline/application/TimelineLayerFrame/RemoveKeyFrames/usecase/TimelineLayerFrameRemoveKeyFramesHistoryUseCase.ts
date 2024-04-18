@@ -8,7 +8,7 @@ import { execute as timelineLayerFrameRemoveKeyFramesCreateHistoryObjectService 
 import { $TIMELINE_REMOVE_KEY_FRAMES_COMMAND } from "@/config/HistoryConfig";
 import { $useSocket } from "@/share/ShareUtil";
 import { execute as shareSendService } from "@/share/service/ShareSendService";
-import { execute as userDatabaseAutoSaveReservationUseCase } from "@/user/application/Database/usecase/UserDatabaseAutoSaveReservationUseCase"
+import { execute as userDatabaseAutoSaveReservationUseCase } from "@/user/application/Database/usecase/UserDatabaseAutoSaveReservationUseCase";
 
 /**
  * @description キーフレームのフレーム削除の履歴を登録

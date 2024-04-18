@@ -9,7 +9,7 @@ import { execute as timelineLayerControllerMoveLayerCreateHistoryObjectService }
 import { $TIMELINE_MOVE_LAYER_COMMAND } from "@/config/HistoryConfig";
 import { $useSocket } from "@/share/ShareUtil";
 import { execute as shareSendService } from "@/share/service/ShareSendService";
-import { execute as userDatabaseAutoSaveReservationUseCase } from "@/user/application/Database/usecase/UserDatabaseAutoSaveReservationUseCase"
+import { execute as userDatabaseAutoSaveReservationUseCase } from "@/user/application/Database/usecase/UserDatabaseAutoSaveReservationUseCase";
 
 /**
  * @description レイヤー移動の履歴を登録

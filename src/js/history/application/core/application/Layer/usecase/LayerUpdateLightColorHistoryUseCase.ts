@@ -8,7 +8,7 @@ import { execute as historyGetTextService } from "@/controller/application/Histo
 import { execute as historyRemoveElementService } from "@/controller/application/HistoryArea/service/HistoryRemoveElementService";
 import { execute as layerUpdateLightColorCreateHistoryObjectService } from "../service/LayerUpdateLightColorCreateHistoryObjectService";
 import { execute as shareSendService } from "@/share/service/ShareSendService";
-import { execute as userDatabaseAutoSaveReservationUseCase } from "@/user/application/Database/usecase/UserDatabaseAutoSaveReservationUseCase"
+import { execute as userDatabaseAutoSaveReservationUseCase } from "@/user/application/Database/usecase/UserDatabaseAutoSaveReservationUseCase";
 
 /**
  * @description レイヤーのハイライトカラー値を更新

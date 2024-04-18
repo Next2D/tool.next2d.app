@@ -9,7 +9,7 @@ import { execute as timelineLayerFrameUpdateEmptyKeyframeCreateHistoryObjectServ
 import { $TIMELINE_UPDATE_EMPTY_KEYFRAME_COMMAND } from "@/config/HistoryConfig";
 import { $useSocket } from "@/share/ShareUtil";
 import { execute as shareSendService } from "@/share/service/ShareSendService";
-import { execute as userDatabaseAutoSaveReservationUseCase } from "@/user/application/Database/usecase/UserDatabaseAutoSaveReservationUseCase"
+import { execute as userDatabaseAutoSaveReservationUseCase } from "@/user/application/Database/usecase/UserDatabaseAutoSaveReservationUseCase";
 
 /**
  * @description 空のキーフレームの更新履歴を登録

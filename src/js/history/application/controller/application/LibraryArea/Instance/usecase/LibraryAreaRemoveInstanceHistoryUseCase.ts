@@ -13,7 +13,7 @@ import {
     $SOUND_TYPE,
     $VIDEO_TYPE
 } from "@/config/InstanceConfig";
-import { execute as userDatabaseAutoSaveReservationUseCase } from "@/user/application/Database/usecase/UserDatabaseAutoSaveReservationUseCase"
+import { execute as userDatabaseAutoSaveReservationUseCase } from "@/user/application/Database/usecase/UserDatabaseAutoSaveReservationUseCase";
 
 /**
  * @description ライブラリのアイテム削除の履歴を登録
