@@ -1,5 +1,4 @@
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
-import { execute as propertyAreaSoundAreaRebuildSettingAreaUseCase } from "./PropertyAreaSoundAreaRebuildSettingAreaUseCase";
 import { ExternalSoundArea } from "@/external/controller/domain/model/ExternalSoundArea";
 
 /**

@@ -1,7 +1,6 @@
 import { $SOUND_AREA_SELECT_ID } from "@/config/PropertyConfig";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { ExternalSoundArea } from "@/external/controller/domain/model/ExternalSoundArea";
-import { ExternalTimeline } from "@/external/timeline/domain/model/ExternalTimeline";
 
 /**
  * @description サウンドエリアのサウンド追加ボタンのマウスダウンイベント
