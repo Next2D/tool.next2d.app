@@ -30,36 +30,3 @@ export const $setTargetIndex = (index: number): void =>
 {
     $targetIndex = index;
 };
-
-/**
- * @type {HTMLInputElement | null}
- * @private
- */
-let $targetElement: HTMLInputElement | null = null;
-
-/**
- * @description 操作する音声HTMLInputElementを返却
- *              Returns the sound HTMLInputElement to operate
- *
- * @return {HTMLInputElement | null}
- * @method
- * @public
- */
-export const $getTargetElement = (): HTMLInputElement | null =>
-{
-    return $targetElement;
-};
-
-/**
- * @description 操作する音声HTMLInputElement変数を更新
- *              Update the sound HTMLInputElement variable to operate
- *
- * @param  {HTMLInputElement | null} element
- * @return {void}
- * @method
- * @public
- */
-export const $setTargetElement = (element: HTMLInputElement | null): void =>
-{
-    $targetElement = element;
-};

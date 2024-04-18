@@ -6,6 +6,7 @@ import type { InstanceSaveObjectImpl } from "@/interface/InstanceSaveObjectImpl"
 import type { LayerModeImpl } from "@/interface/LayerModeImpl";
 import type { CharacterSaveObjectImpl } from "@/interface/CharacterSaveObjectImpl";
 import type { SoundObjectImpl } from "@/interface/SoundObjectImpl";
+import { execute as userDatabaseAutoSaveReservationUseCase } from "@/user/application/Database/usecase/UserDatabaseAutoSaveReservationUseCase"
 import { execute as screenTabNameAddHistoryRedoUseCase } from "@/history/application/screen/application/ScreenTab/usecase/ScreenTabNameAddHistoryRedoUseCase";
 import { execute as timelineToolLayerAddHistoryRedoUseCase } from "@/history/application/timeline/application/TimelineTool/LayerAdd/usecase/TimelineToolLayerAddHistoryRedoUseCase";
 import { execute as timelineToolLayerDeleteHistoryRedoUseCase } from "@/history/application/timeline/application/TimelineTool/LayerDelete/usecase/TimelineToolLayerDeleteHistoryRedoUseCase";
@@ -507,4 +508,7 @@ export const execute = async (
             break;
 
     }
+
+    // 自動保存を予約
+    userDatabaseAutoSaveReservationUseCase();
 };

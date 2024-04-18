@@ -8,6 +8,7 @@ import { execute as historyRemoveElementService } from "@/controller/application
 import { execute as timelineToolLayerDeleteCreateHistoryObjectService } from "../service/TimelineToolLayerDeleteCreateHistoryObjectService";
 import { $useSocket } from "@/share/ShareUtil";
 import { execute as shareSendService } from "@/share/service/ShareSendService";
+import { execute as userDatabaseAutoSaveReservationUseCase } from "@/user/application/Database/usecase/UserDatabaseAutoSaveReservationUseCase"
 
 /**
  * @description 指定のレイヤーの削除履歴と登録
@@ -69,4 +70,7 @@ export const execute = (
         shareObject.args.pop();
         shareSendService(shareObject);
     }
+
+    // 自動保存を予約
+    userDatabaseAutoSaveReservationUseCase();
 };

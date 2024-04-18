@@ -9,6 +9,7 @@ import { execute as historyGetTextService } from "@/controller/application/Histo
 import { execute as historyRemoveElementService } from "@/controller/application/HistoryArea/service/HistoryRemoveElementService";
 import { execute as instanceUpdateSymbolCreateHistoryObjectService } from "../service/InstanceUpdateSymbolCreateHistoryObjectService";
 import { execute as shareSendService } from "@/share/service/ShareSendService";
+import { execute as userDatabaseAutoSaveReservationUseCase } from "@/user/application/Database/usecase/UserDatabaseAutoSaveReservationUseCase"
 
 /**
  * @description ライブラリのインスタンス名を更新
@@ -60,4 +61,7 @@ export const execute = (
     if (!receiver && $useSocket()) {
         shareSendService(historyObject);
     }
+
+    // 自動保存を予約
+    userDatabaseAutoSaveReservationUseCase();
 };

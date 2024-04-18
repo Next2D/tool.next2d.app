@@ -1,11 +1,12 @@
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { $clamp } from "@/global/GlobalUtil";
-import { $getTargetElement } from "../SoundAreaUtil";
+import { $getTargetIndex } from "../SoundAreaUtil";
+import { $SOUND_AREA_SOUND_LIST_AREA_ID } from "@/config/PropertyConfig";
 
 /**
  * @description 音量操作を開始
  *              Start volume operation
- * 
+ *
  * @param {PointerEvent} event
  * @return {void}
  * @method
@@ -27,14 +28,33 @@ export const execute = (event: PointerEvent): void =>
             return ;
         }
 
-        const element = $getTargetElement();
+        const element: HTMLElement | null = document
+            .getElementById($SOUND_AREA_SOUND_LIST_AREA_ID);
+
         if (!element) {
             return ;
         }
 
-        const volume = parseInt(element.value);
+        const index = $getTargetIndex();
+        const node = element.children[index];
+        if (!node) {
+            return ;
+        }
 
-        // 表示を更新
-        element.value = `${$clamp(volume + event.movementX, 0, 100)}`;
+        const volumeElement = node.querySelector(".volume") as HTMLInputElement;
+        if (!volumeElement) {
+            return ;
+        }
+
+        const audio = node.querySelector("audio");
+        if (!audio) {
+            return ;
+        }
+
+        // 表示とaudioの音量を変更
+        const currentVolume = parseInt(volumeElement.value);
+        const volume = $clamp(currentVolume + event.movementX, 0, 100);
+        audio.volume = volume / 100;
+        volumeElement.value = `${volume}`;
     });
 };

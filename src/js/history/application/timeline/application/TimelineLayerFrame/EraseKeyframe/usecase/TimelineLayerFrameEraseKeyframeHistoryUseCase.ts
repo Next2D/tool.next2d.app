@@ -9,6 +9,7 @@ import { execute as timelineLayerFrameEraseKeyframeCreateHistoryObjectService } 
 import { $TIMELINE_ERASE_KEY_FRAME_COMMAND } from "@/config/HistoryConfig";
 import { $useSocket } from "@/share/ShareUtil";
 import { execute as shareSendService } from "@/share/service/ShareSendService";
+import { execute as userDatabaseAutoSaveReservationUseCase } from "@/user/application/Database/usecase/UserDatabaseAutoSaveReservationUseCase"
 
 /**
  * @description キーフレームのフレーム全削除の履歴を登録
@@ -60,4 +61,7 @@ export const execute = (
     if (!receiver && $useSocket()) {
         shareSendService(historyObject);
     }
+
+    // 自動保存を予約
+    userDatabaseAutoSaveReservationUseCase();
 };

@@ -8,6 +8,7 @@ import { execute as historyRemoveElementService } from "@/controller/application
 import { execute as soundAreaUpdateVolumeCreateHistoryObjectService } from "../service/SoundAreaUpdateVolumeCreateHistoryObjectService";
 import { execute as shareSendService } from "@/share/service/ShareSendService";
 import { SoundObjectImpl } from "@/interface/SoundObjectImpl";
+import { execute as userDatabaseAutoSaveReservationUseCase } from "@/user/application/Database/usecase/UserDatabaseAutoSaveReservationUseCase"
 
 /**
  * @description 個別の音声データの音量更新の履歴を登録
@@ -73,4 +74,7 @@ export const execute = (
     if (!receiver && $useSocket()) {
         shareSendService(historyObject);
     }
+
+    // 自動保存を予約
+    userDatabaseAutoSaveReservationUseCase();
 };

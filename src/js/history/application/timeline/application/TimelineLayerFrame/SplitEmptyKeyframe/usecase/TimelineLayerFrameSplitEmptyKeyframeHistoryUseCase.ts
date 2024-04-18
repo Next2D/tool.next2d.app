@@ -9,6 +9,7 @@ import { execute as timelineLayerFrameSplitEmptyKeyframeCreateHistoryObjectServi
 import { $TIMELINE_SPLIT_EMPTY_KEYFRAME_COMMAND } from "@/config/HistoryConfig";
 import { $useSocket } from "@/share/ShareUtil";
 import { execute as shareSendService } from "@/share/service/ShareSendService";
+import { execute as userDatabaseAutoSaveReservationUseCase } from "@/user/application/Database/usecase/UserDatabaseAutoSaveReservationUseCase"
 
 /**
  * @description 空のキーフレームの分割履歴を登録
@@ -63,4 +64,7 @@ export const execute = (
     if (!receiver && $useSocket()) {
         shareSendService(historyObject);
     }
+
+    // 自動保存を予約
+    userDatabaseAutoSaveReservationUseCase();
 };

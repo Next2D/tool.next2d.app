@@ -1,8 +1,9 @@
 import { EventType } from "@/tool/domain/event/EventType";
 import { execute as soundAreaVolumeWindowMouseMoveEventUseCase } from "./SoundAreaVolumeWindowMouseMoveEventUseCase";
-import { $getTargetElement, $getTargetIndex, $setTargetElement, $setTargetIndex } from "../SoundAreaUtil";
+import { $getTargetIndex, $setTargetIndex } from "../SoundAreaUtil";
 import { ExternalSoundObject } from "@/external/core/domain/model/ExternalSoundObject";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
+import { $SOUND_AREA_SOUND_LIST_AREA_ID } from "@/config/PropertyConfig";
 
 /**
  * @description 音量操作を終了
@@ -19,16 +20,30 @@ export const execute = (event: PointerEvent): void =>
     event.stopPropagation();
 
     // windowイベントを解除
-    window.removeEventListener(EventType.MOUSE_MOVE, soundAreaVolumeWindowMouseMoveEventUseCase);
+    window.removeEventListener(EventType.MOUSE_MOVE,
+        soundAreaVolumeWindowMouseMoveEventUseCase
+    );
     window.removeEventListener(EventType.MOUSE_UP, execute);
 
-    const element = $getTargetElement();
+    const element: HTMLElement | null = document
+        .getElementById($SOUND_AREA_SOUND_LIST_AREA_ID);
+
     if (!element) {
         return ;
     }
 
     const index = $getTargetIndex();
     if (index === -1) {
+        return ;
+    }
+
+    const node = element.children[index];
+    if (!node) {
+        return ;
+    }
+
+    const volumeElement = node.querySelector(".volume") as HTMLInputElement;
+    if (!volumeElement) {
         return ;
     }
 
@@ -48,7 +63,6 @@ export const execute = (event: PointerEvent): void =>
 
     // 操作対象の変数を初期化
     $setTargetIndex(-1);
-    $setTargetElement(null);
 
     // 内部データを更新
     const externalSoundObject = new ExternalSoundObject(
@@ -58,5 +72,5 @@ export const execute = (event: PointerEvent): void =>
         frame,
         index
     );
-    externalSoundObject.volume = parseInt(element.value);
+    externalSoundObject.volume = parseInt(volumeElement.value);
 };
