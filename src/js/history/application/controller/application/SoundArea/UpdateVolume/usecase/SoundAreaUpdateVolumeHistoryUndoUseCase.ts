@@ -2,6 +2,7 @@ import type { InstanceImpl } from "@/interface/InstanceImpl";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
 import { execute as soundAreaUpdateVolumeElementService } from "@/controller/application/SoundArea/service/SoundAreaUpdateVolumeElementService";
+import { $SOUND_AREA_SOUND_LIST_AREA_ID } from "@/config/PropertyConfig";
 
 /**
  * @description 個別の音声データの音量更新の履歴を登録を元に戻す
@@ -40,9 +41,23 @@ export const execute = (
         return ;
     }
 
+    const element: HTMLElement | null = document
+        .getElementById($SOUND_AREA_SOUND_LIST_AREA_ID);
+
+    if (!element) {
+        return ;
+    }
+
+    const node = element.children[index];
+    const audio = node.querySelector("audio");
+    if (!audio) {
+        return ;
+    }
+
     // 音量を変更前の状態に戻す
     const soundObject = sounds[index];
     soundObject.volume = before_volume;
+    audio.volume = before_volume / 100;
 
     // 音量の表示を更新
     if (workSpace.active && movieClip.active
