@@ -4,6 +4,7 @@ import { WorkSpace } from "@/core/domain/model/WorkSpace";
 import { $clamp } from "@/global/GlobalUtil";
 import { SoundObjectImpl } from "@/interface/SoundObjectImpl";
 import { execute as soundAreaUpdateVolumeHistoryUseCase } from "@/history/application/controller/application/SoundArea/UpdateVolume/usecase/SoundAreaUpdateVolumeHistoryUseCase";
+import { execute as soundAreaUpdateVolumeElementService } from "@/controller/application/SoundArea/service/SoundAreaUpdateVolumeElementService";
 
 /**
  * @description 個別の音声設定の音量変更
@@ -46,28 +47,10 @@ export const execute = (
         receiver
     );
 
+    // 音量の表示を更新
     if (work_space.active && movie_clip.active
         && movie_clip.currentFrame === frame
     ) {
-
-        const element: HTMLElement | null = document
-            .getElementById($SOUND_AREA_SOUND_LIST_AREA_ID);
-
-        if (!element) {
-            return ;
-        }
-
-        const node = element.children[index];
-        if (!node) {
-            return ;
-        }
-
-        const volumeElement = node.querySelector(".volume") as HTMLInputElement;
-        if (!volumeElement) {
-            return ;
-        }
-
-        // 音量の表示を変更
-        volumeElement.value = `${sound_object.volume}`;
+        soundAreaUpdateVolumeElementService(sound_object, index);
     }
 };

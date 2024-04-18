@@ -1,7 +1,7 @@
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import { $useSocket } from "@/share/ShareUtil";
-import { $SOUND_AREA_REMOVE_SOUND_COMMAND } from "@/config/HistoryConfig";
+import { $SOUND_AREA_UPDATE_VOLUME_COMMAND } from "@/config/HistoryConfig";
 import { execute as historyAddElementUseCase } from "@/controller/application/HistoryArea/usecase/HistoryAddElementUseCase";
 import { execute as historyGetTextService } from "@/controller/application/HistoryArea/service/HistoryGetTextService";
 import { execute as historyRemoveElementService } from "@/controller/application/HistoryArea/service/HistoryRemoveElementService";
@@ -10,8 +10,8 @@ import { execute as shareSendService } from "@/share/service/ShareSendService";
 import { SoundObjectImpl } from "@/interface/SoundObjectImpl";
 
 /**
- * @description タイムラインへのサウンド削除の履歴を登録
- *              Register sound deletion history to the timeline
+ * @description 個別の音声データの音量更新の履歴を登録
+ *              Register the history of updating the volume of individual sound data
  *
  * @param  {WorkSpace} work_space
  * @param  {MovieClip} movie_clip
@@ -60,7 +60,7 @@ export const execute = (
         historyAddElementUseCase(
             movie_clip.id,
             work_space.historyIndex,
-            historyGetTextService($SOUND_AREA_REMOVE_SOUND_COMMAND),
+            historyGetTextService($SOUND_AREA_UPDATE_VOLUME_COMMAND),
             "",
             ...historyObject.args
         );

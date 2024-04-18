@@ -31,7 +31,6 @@ export const execute = (
         "messages": [
             work_space_id,
             movie_clip.id,
-            sound_object,
             frame,
             sound_index,
             before_volume,

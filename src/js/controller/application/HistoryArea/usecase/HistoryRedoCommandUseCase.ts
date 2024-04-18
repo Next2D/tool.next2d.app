@@ -43,6 +43,7 @@ import { execute as timelineLayerFrameDeleteEmptyKeyframeHistoryRedoUseCase } fr
 import { execute as timelineLayerFrameDeleteKeyframeHistoryRedoUseCase } from "@/history/application/timeline/application/TimelineLayerFrame/DeleteKeyframe/usecase/TimelineLayerFrameDeleteKeyframeHistoryRedoUseCase";
 import { execute as soundAreaAddSoundHistoryRedoUseCase } from "@/history/application/controller/application/SoundArea/AddSound/usecase/SoundAreaAddSoundHistoryRedoUseCase";
 import { execute as soundAreaRemoveSoundHistoryRedoUseCase } from "@/history/application/controller/application/SoundArea/RemoveSound/usecase/SoundAreaRemoveSoundHistoryRedoUseCase";
+import { execute as soundAreaUpdateVolumeHistoryRedoUseCase } from "@/history/application/controller/application/SoundArea/UpdateVolume/usecase/SoundAreaUpdateVolumeHistoryRedoUseCase";
 import { execute as instanceUpdateNameHistoryRedoUseCase } from "@/history/application/core/application/Instance/usecase/InstanceUpdateNameHistoryRedoUseCase";
 import { execute as instanceUpdateSymbolHistoryRedoUseCase } from "@/history/application/core/application/Instance/usecase/InstanceUpdateSymbolHistoryRedoUseCase";
 import {
@@ -84,7 +85,8 @@ import {
     $TIMELINE_DELETE_EMPTY_KEY_FRAME_COMMAND,
     $TIMELINE_DELETE_KEY_FRAME_COMMAND,
     $SOUND_AREA_ADD_SOUND_COMMAND,
-    $SOUND_AREA_REMOVE_SOUND_COMMAND
+    $SOUND_AREA_REMOVE_SOUND_COMMAND,
+    $SOUND_AREA_UPDATE_VOLUME_COMMAND
 } from "@/config/HistoryConfig";
 
 /**
@@ -487,6 +489,17 @@ export const execute = async (
                 messages[1] as number, // MovieClip ID
                 messages[3] as number, // Frame
                 messages[4] as number // Sound Index
+            );
+            break;
+
+        // サウンドの音量を変更
+        case $SOUND_AREA_UPDATE_VOLUME_COMMAND:
+            soundAreaUpdateVolumeHistoryRedoUseCase(
+                messages[0] as number, // WorkSpace ID
+                messages[1] as number, // MovieClip ID
+                messages[2] as number, // Frame
+                messages[3] as number, // Sound Index
+                messages[5] as number // After Volume
             );
             break;
 
