@@ -39,7 +39,9 @@ export const execute = (
         "args": [
             movie_clip.name,
             frame,
-            name
+            name,
+            before_volume,
+            sound_object.volume
         ]
     };
 };
