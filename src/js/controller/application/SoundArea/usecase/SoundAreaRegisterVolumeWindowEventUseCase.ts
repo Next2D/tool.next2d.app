@@ -20,7 +20,6 @@ export const execute = (event: PointerEvent): void =>
 
     // イベントの伝播を止める
     event.stopPropagation();
-    event.preventDefault();
 
     const element = event.currentTarget as HTMLInputElement;
     if (!element) {

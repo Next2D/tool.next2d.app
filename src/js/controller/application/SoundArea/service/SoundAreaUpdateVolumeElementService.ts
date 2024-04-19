@@ -30,6 +30,12 @@ export const execute = (sound_object: SoundObjectImpl, index: number): void =>
         return ;
     }
 
+    const audio = node.querySelector("audio") as HTMLAudioElement;
+    if (!audio) {
+        return ;
+    }
+
     // 音量の表示を更新
     volumeElement.value = `${sound_object.volume}`;
+    audio.volume = sound_object.volume / 100;
 };

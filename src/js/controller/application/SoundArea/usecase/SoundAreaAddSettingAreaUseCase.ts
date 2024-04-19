@@ -7,6 +7,9 @@ import { EventType } from "@/tool/domain/event/EventType";
 import { execute as soundAreaTrashMouseDownUseCase } from "./SoundAreaTrashMouseDownUseCase";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { execute as soundAreaRegisterVolumeWindowEventUseCase } from "./SoundAreaRegisterVolumeWindowEventUseCase";
+import { execute as soundAreaVolumeFocusInEventUseCase } from "../service/SoundAreaVolumeFocusInEventUseCase";
+import { execute as soundAreaVolumeKeyPressEventService } from "../service/SoundAreaVolumeKeyPressEventService";
+import { execute as soundAreaVolumeFocusOutEventUseCase } from "./SoundAreaVolumeFocusOutEventUseCase";
 
 /**
  * @description サウンド設定のelementを追加
@@ -94,6 +97,15 @@ export const execute = (
     // 音量操作のイベントを登録
     const volumeElement: HTMLElement | null = soundSettingElement.querySelector(".volume");
     if (volumeElement) {
+        volumeElement.addEventListener("focusin",
+            soundAreaVolumeFocusInEventUseCase
+        );
+        volumeElement.addEventListener("focusout",
+            soundAreaVolumeFocusOutEventUseCase
+        );
+        volumeElement.addEventListener("keypress",
+            soundAreaVolumeKeyPressEventService
+        );
         volumeElement.addEventListener(EventType.MOUSE_DOWN,
             soundAreaRegisterVolumeWindowEventUseCase
         );

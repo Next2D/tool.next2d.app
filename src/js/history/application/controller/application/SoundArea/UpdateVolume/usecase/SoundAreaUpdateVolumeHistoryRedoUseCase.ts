@@ -48,24 +48,6 @@ export const execute = (
     if (workSpace.active && movieClip.active
         && movieClip.currentFrame === frame
     ) {
-        const element: HTMLElement | null = document
-            .getElementById($SOUND_AREA_SOUND_LIST_AREA_ID);
-
-        if (!element) {
-            return ;
-        }
-
-        const node = element.children[index];
-        if (!node) {
-            return ;
-        }
-
-        const audio = node.querySelector("audio");
-        if (!audio) {
-            return ;
-        }
-        audio.volume = after_volume / 100;
-
         soundAreaUpdateVolumeElementService(soundObject, index);
     }
 };

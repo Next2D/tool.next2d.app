@@ -4,6 +4,7 @@ import { $getTargetIndex, $setTargetIndex } from "../SoundAreaUtil";
 import { ExternalSoundObject } from "@/external/core/domain/model/ExternalSoundObject";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { $SOUND_AREA_SOUND_LIST_AREA_ID } from "@/config/PropertyConfig";
+import { $setCursor } from "@/global/GlobalUtil";
 
 /**
  * @description 音量操作を終了
@@ -16,6 +17,9 @@ import { $SOUND_AREA_SOUND_LIST_AREA_ID } from "@/config/PropertyConfig";
  */
 export const execute = (event: PointerEvent): void =>
 {
+    // カーソルを元に戻す
+    $setCursor("auto");
+
     // イベントの伝播を止める
     event.stopPropagation();
 
@@ -63,6 +67,9 @@ export const execute = (event: PointerEvent): void =>
 
     // 操作対象の変数を初期化
     $setTargetIndex(-1);
+
+    // input要素にフォーカスを当てる
+    volumeElement.focus();
 
     const volume = parseInt(volumeElement.value);
     if (volume === soundObject.volume) {
