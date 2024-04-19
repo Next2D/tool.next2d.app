@@ -42,6 +42,7 @@ import { execute as timelineLayerFrameDeleteEmptyFrameReceiveUseCase } from "@/s
 import { execute as timelineLayerFrameDeleteKeyframeReceiveUseCase } from "@/share/receive/application/timeline/application/TimelineLayerFrame/application/Keyframe/usecase/TimelineLayerFrameDeleteKeyframeReceiveUseCase";
 import { execute as soundAreaAddSoundReceiveUseCase } from "@/share/receive/application/controller/application/SoundArea/usecase/SoundAreaAddSoundReceiveUseCase";
 import { execute as soundAreaRemoveSoundReceiveUseCase } from "@/share/receive/application/controller/application/SoundArea/usecase/SoundAreaRemoveSoundReceiveUseCase";
+import { execute as soundAreaUpdateVolumeReceiveUseCase } from "@/share/receive/application/controller/application/SoundArea/usecase/SoundAreaUpdateVolumeReceiveUseCase";
 import { execute as historyRedoUseCase } from "@/controller/application/HistoryArea/usecase/HistoryRedoUseCase";
 import { execute as historyUndoUseCase } from "@/controller/application/HistoryArea/usecase/HistoryUndoUseCase";
 import {
@@ -89,7 +90,8 @@ import {
     $TIMELINE_DELETE_EMPTY_KEY_FRAME_COMMAND,
     $TIMELINE_DELETE_KEY_FRAME_COMMAND,
     $SOUND_AREA_ADD_SOUND_COMMAND,
-    $SOUND_AREA_REMOVE_SOUND_COMMAND
+    $SOUND_AREA_REMOVE_SOUND_COMMAND,
+    $SOUND_AREA_UPDATE_VOLUME_COMMAND
 } from "@/config/HistoryConfig";
 
 /**
@@ -336,6 +338,11 @@ export const execute = async (message: ShareReceiveMessageImpl): Promise<void> =
         // MovieClipのサウンドを削除
         case $SOUND_AREA_REMOVE_SOUND_COMMAND:
             soundAreaRemoveSoundReceiveUseCase(message);
+            break;
+
+        // 個別のサウンドの音量を更新
+        case $SOUND_AREA_UPDATE_VOLUME_COMMAND:
+            soundAreaUpdateVolumeReceiveUseCase(message);
             break;
 
         default:

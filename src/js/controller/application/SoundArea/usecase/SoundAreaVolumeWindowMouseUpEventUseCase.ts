@@ -64,6 +64,11 @@ export const execute = (event: PointerEvent): void =>
     // 操作対象の変数を初期化
     $setTargetIndex(-1);
 
+    const volume = parseInt(volumeElement.value);
+    if (volume === soundObject.volume) {
+        return ;
+    }
+
     // 内部データを更新
     const externalSoundObject = new ExternalSoundObject(
         workSpace,
@@ -72,5 +77,5 @@ export const execute = (event: PointerEvent): void =>
         frame,
         index
     );
-    externalSoundObject.volume = parseInt(volumeElement.value);
+    externalSoundObject.volume = volume;
 };

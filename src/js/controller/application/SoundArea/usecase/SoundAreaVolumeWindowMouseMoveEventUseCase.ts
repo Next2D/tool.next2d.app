@@ -1,5 +1,5 @@
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
-import { $clamp } from "@/global/GlobalUtil";
+import { $clamp, $setCursor } from "@/global/GlobalUtil";
 import { $getTargetIndex } from "../SoundAreaUtil";
 import { $SOUND_AREA_SOUND_LIST_AREA_ID } from "@/config/PropertyConfig";
 
@@ -20,6 +20,8 @@ export const execute = (event: PointerEvent): void =>
 
     requestAnimationFrame((): void =>
     {
+        $setCursor("ew-resize");
+
         const workSpace = $getCurrentWorkSpace();
         const movieClip = workSpace.scene;
 
