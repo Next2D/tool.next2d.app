@@ -41,28 +41,32 @@ export const execute = (
         return ;
     }
 
-    const element: HTMLElement | null = document
-        .getElementById($SOUND_AREA_SOUND_LIST_AREA_ID);
-
-    if (!element) {
-        return ;
-    }
-
-    const node = element.children[index];
-    const audio = node.querySelector("audio");
-    if (!audio) {
-        return ;
-    }
-
     // 音量を変更前の状態に戻す
     const soundObject = sounds[index];
     soundObject.volume = before_volume;
-    audio.volume = before_volume / 100;
 
     // 音量の表示を更新
     if (workSpace.active && movieClip.active
         && movieClip.currentFrame === frame
     ) {
+        const element: HTMLElement | null = document
+            .getElementById($SOUND_AREA_SOUND_LIST_AREA_ID);
+
+        if (!element) {
+            return ;
+        }
+
+        const node = element.children[index];
+        if (!node) {
+            return ;
+        }
+
+        const audio = node.querySelector("audio");
+        if (!audio) {
+            return ;
+        }
+        audio.volume = before_volume / 100;
+
         soundAreaUpdateVolumeElementService(soundObject, index);
     }
 };
