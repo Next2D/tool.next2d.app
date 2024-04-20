@@ -9,7 +9,7 @@
  */
 export const execute = (event: KeyboardEvent): void =>
 {
-    if(event.key !== "Enter") {
+    if (event.key !== "Enter") {
         return ;
     }
 

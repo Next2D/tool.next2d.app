@@ -13,6 +13,7 @@ import { execute as objectSettingUpdateSymbolService } from "@/controller/applic
 import { execute as timelineToolUpdateSceneNameService } from "@/timeline/application/TimelineTool/application/SceneName/service/TimelineToolUpdateSceneNameService";
 import { execute as screenAreaRedrawUseCase } from "@/screen/application/ScreenArea/usecase/ScreenAreaRedrawUseCase";
 import { execute as soundAreaRebuildSettingAreaUseCase } from "@/controller/application/SoundArea/usecase/SoundAreaRebuildSettingAreaUseCase";
+import { execute as timelineLabelNameUpdateService } from "@/timeline/application/TimelineLabelName/service/TimelineLabelNameUpdateService";
 
 /**
  * @description MovieClipの起動処理
@@ -48,6 +49,11 @@ export const execute = async (movie_clip: MovieClip): Promise<void> =>
 
     // タイムラインのシーン名を更新
     timelineToolUpdateSceneNameService(movie_clip.name);
+
+    // タイムラインのラベル名を更新
+    timelineLabelNameUpdateService(
+        movie_clip.getLabel(movie_clip.currentFrame)
+    );
 
     // MovieClipのLayerからタイムラインを生成
     timelineLayerBuildElementUseCase();

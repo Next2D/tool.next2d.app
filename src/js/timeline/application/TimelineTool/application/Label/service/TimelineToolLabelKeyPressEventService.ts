@@ -1,8 +1,8 @@
 /**
- * @description Enterキーでfocusを終了
- *              Exit focus with Enter key
+ * @description ラベルInputのキープレスイベント
+ *              Label Input Key Press Event
  *
- * @params {KeyboardEvent} event
+ * @param  {KeyboardEvent} event
  * @return {void}
  * @method
  * @public
@@ -13,15 +13,14 @@ export const execute = (event: KeyboardEvent): void =>
         return ;
     }
 
-    // 親のイベントを終了
+    // イベントの伝播を止める
     event.stopPropagation();
     event.preventDefault();
 
-    const element: HTMLElement | null = event.currentTarget as HTMLElement;
+    const element: HTMLElement | null = event.target as HTMLElement;
     if (!element) {
         return ;
     }
 
-    // 入力終了
     element.blur();
 };
