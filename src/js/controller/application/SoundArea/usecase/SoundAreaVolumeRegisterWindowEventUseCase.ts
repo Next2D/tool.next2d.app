@@ -2,6 +2,7 @@ import { EventType } from "@/tool/domain/event/EventType";
 import { execute as soundAreaVolumeWindowMouseMoveEventUseCase } from "./SoundAreaVolumeWindowMouseMoveEventUseCase";
 import { execute as soundAreaVolumeWindowMouseUpEventUseCase } from "./SoundAreaVolumeWindowMouseUpEventUseCase";
 import { $setTargetIndex } from "../SoundAreaUtil";
+import { $useKeyboard } from "@/shortcut/ShortcutUtil";
 
 /**
  * @description 音声操作のwindowイベントを登録
@@ -18,8 +19,15 @@ export const execute = (event: PointerEvent): void =>
         return ;
     }
 
-    // イベントの伝播を止める
+    // 親のイベントを止める
     event.stopPropagation();
+
+    if ($useKeyboard()) {
+        return ;
+    }
+
+    // イベントの伝播を止める
+    event.preventDefault();
 
     const element = event.currentTarget as HTMLInputElement;
     if (!element) {

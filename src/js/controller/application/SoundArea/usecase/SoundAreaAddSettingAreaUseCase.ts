@@ -6,10 +6,12 @@ import { execute as soundAreaSettingComponent } from "../component/SoundAreaSett
 import { EventType } from "@/tool/domain/event/EventType";
 import { execute as soundAreaTrashMouseDownUseCase } from "./SoundAreaTrashMouseDownUseCase";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
-import { execute as soundAreaRegisterVolumeWindowEventUseCase } from "./SoundAreaRegisterVolumeWindowEventUseCase";
+import { execute as soundAreaVolumeRegisterWindowEventUseCase } from "./SoundAreaVolumeRegisterWindowEventUseCase";
 import { execute as soundAreaVolumeFocusInEventUseCase } from "../service/SoundAreaVolumeFocusInEventUseCase";
 import { execute as soundAreaVolumeKeyPressEventService } from "../service/SoundAreaVolumeKeyPressEventService";
 import { execute as soundAreaVolumeFocusOutEventUseCase } from "./SoundAreaVolumeFocusOutEventUseCase";
+import { execute as soundAreaVolumeMouseOverEventService } from "../service/SoundAreaVolumeMouseOverEventService";
+import { execute as soundAreaVolumeMouseOutEventService } from "../service/SoundAreaVolumeMouseOutEventService";
 
 /**
  * @description サウンド設定のelementを追加
@@ -106,8 +108,14 @@ export const execute = (
         volumeElement.addEventListener("keypress",
             soundAreaVolumeKeyPressEventService
         );
+        volumeElement.addEventListener(EventType.MOUSE_OVER,
+            soundAreaVolumeMouseOverEventService
+        );
+        volumeElement.addEventListener(EventType.MOUSE_OUT,
+            soundAreaVolumeMouseOutEventService
+        );
         volumeElement.addEventListener(EventType.MOUSE_DOWN,
-            soundAreaRegisterVolumeWindowEventUseCase
+            soundAreaVolumeRegisterWindowEventUseCase
         );
     }
 };

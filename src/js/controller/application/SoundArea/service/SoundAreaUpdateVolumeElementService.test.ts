@@ -18,6 +18,9 @@ describe("SoundAreaUpdateVolumeElementServiceTest", () =>
         volumeElement.value = "100";
         node.appendChild(volumeElement);
 
+        const audioElement = document.createElement("audio");
+        node.appendChild(audioElement);
+
         const soundObject: SoundObjectImpl = {
             "libraryId": 2,
             "autoPlay": false,
@@ -26,8 +29,10 @@ describe("SoundAreaUpdateVolumeElementServiceTest", () =>
         };
 
         expect(volumeElement.value).toBe("100");
+        expect(audioElement.volume).toBe(1);
         execute(soundObject, 0);
         expect(volumeElement.value).toBe("50");
+        expect(audioElement.volume).toBe(0.5);
 
         div.remove();
     });
