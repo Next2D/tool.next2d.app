@@ -1,7 +1,7 @@
-import { execute } from "./SoundAreaVolumeFocusInEventUseCase";
+import { execute } from "./SoundAreaLoopCountFocusInEventService";
 import { $useKeyboard } from "../../../../shortcut/ShortcutUtil";
 
-describe("SoundAreaVolumeFocusInEventUseCaseTest", () =>
+describe("SoundAreaLoopCountFocusInEventServiceTest", () =>
 {
     test("test case", () =>
     {

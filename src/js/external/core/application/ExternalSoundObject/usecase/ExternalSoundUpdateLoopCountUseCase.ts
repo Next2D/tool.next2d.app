@@ -2,19 +2,19 @@ import { MovieClip } from "@/core/domain/model/MovieClip";
 import { WorkSpace } from "@/core/domain/model/WorkSpace";
 import { $clamp } from "@/global/GlobalUtil";
 import { SoundObjectImpl } from "@/interface/SoundObjectImpl";
-import { execute as soundAreaUpdateVolumeHistoryUseCase } from "@/history/application/controller/application/SoundArea/UpdateVolume/usecase/SoundAreaUpdateVolumeHistoryUseCase";
-import { execute as soundAreaUpdateVolumeElementService } from "@/controller/application/SoundArea/service/SoundAreaUpdateVolumeElementService";
+import { execute as soundAreaUpdateLoopCountHistoryUseCase } from "@/history/application/controller/application/SoundArea/UpdateLoopCount/usecase/SoundAreaUpdateLoopCountHistoryUseCase";
+import { execute as soundAreaUpdateLoopCountElementService } from "@/controller/application/SoundArea/service/SoundAreaUpdateLoopCountElementService";
 
 /**
- * @description 個別の音声設定の音量変更
- *              Volume change of individual sound settings
+ * @description 個別のループ回数設定
+ *              Individual loop count setting
  *
  * @param  {WorkSpace} work_space
  * @param  {MovieClip} movie_clip
  * @param  {object} sound_object
  * @param  {number} frame
  * @param  {number} index
- * @param  {number} volume
+ * @param  {number} loop_count
  * @param  {boolean} [receiver=false]
  * @return {void}
  * @method
@@ -26,29 +26,29 @@ export const execute = (
     sound_object: SoundObjectImpl,
     frame: number,
     index: number,
-    volume: number,
+    loop_count: number,
     receiver: boolean = false
 ): void => {
 
-    volume = $clamp(volume, 0, 100);
-
     // 変更がなければ終了
-    if (sound_object.volume === volume) {
+    const loopCount = $clamp(loop_count, 0, 65535);
+    if (sound_object.loopCount === loopCount) {
         return ;
     }
-    const beforeVolume = sound_object.volume;
+
+    const beforeLoopCount = sound_object.loopCount;
 
     // 音量を変更
-    sound_object.volume = volume;
+    sound_object.loopCount = loopCount;
 
     // 履歴を登録
-    soundAreaUpdateVolumeHistoryUseCase(
+    soundAreaUpdateLoopCountHistoryUseCase(
         work_space,
         movie_clip,
         sound_object,
         frame,
         index,
-        beforeVolume,
+        beforeLoopCount,
         receiver
     );
 
@@ -56,6 +56,6 @@ export const execute = (
     if (work_space.active && movie_clip.active
         && movie_clip.currentFrame === frame
     ) {
-        soundAreaUpdateVolumeElementService(sound_object, index);
+        soundAreaUpdateLoopCountElementService(sound_object, index);
     }
 };

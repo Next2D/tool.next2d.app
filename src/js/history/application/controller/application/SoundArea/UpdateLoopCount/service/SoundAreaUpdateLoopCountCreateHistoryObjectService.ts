@@ -1,11 +1,11 @@
 import type { HistoryObjectImpl } from "@/interface/HistoryObjectImpl";
 import type { SoundObjectImpl } from "@/interface/SoundObjectImpl";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
-import { $SOUND_AREA_UPDATE_VOLUME_COMMAND } from "@/config/HistoryConfig";
+import { $SOUND_AREA_UPDATE_LOOP_COUNT_COMMAND } from "@/config/HistoryConfig";
 
 /**
- * @description 個別の音量調整の履歴用オブジェクトを作成
- *              Create a history object for individual volume adjustment
+ * @description 個別のループ回数の履歴用オブジェクトを作成
+ *              Create a history object for individual loop count
  *
  * @param  {number} work_space_id
  * @param  {MovieClip} movie_clip
@@ -22,26 +22,26 @@ export const execute = (
     sound_object: SoundObjectImpl,
     frame: number,
     sound_index: number,
-    before_volume: number,
+    before_loop_count: number,
     name: string
 ): HistoryObjectImpl => {
 
     return {
-        "command": $SOUND_AREA_UPDATE_VOLUME_COMMAND,
+        "command": $SOUND_AREA_UPDATE_LOOP_COUNT_COMMAND,
         "messages": [
             work_space_id,
             movie_clip.id,
             frame,
             sound_index,
-            before_volume,
-            sound_object.volume
+            before_loop_count,
+            sound_object.loopCount
         ],
         "args": [
             movie_clip.name,
             frame,
             name,
-            before_volume,
-            sound_object.volume
+            before_loop_count,
+            sound_object.loopCount
         ]
     };
 };

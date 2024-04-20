@@ -1,17 +1,17 @@
 import type { InstanceImpl } from "@/interface/InstanceImpl";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
-import { execute as soundAreaUpdateVolumeElementService } from "@/controller/application/SoundArea/service/SoundAreaUpdateVolumeElementService";
+import { execute as soundAreaUpdateLoopCountElementService } from "@/controller/application/SoundArea/service/SoundAreaUpdateLoopCountElementService";
 
 /**
- * @description 個別の音声データの音量更新の履歴を登録を元に戻す
- *              Undo the history of updating the volume of individual sound data
+ * @description 個別のループ回数の更新の履歴を登録を元に戻す
+ *              Undo registration of individual loop count update history.
  *
  * @param  {number} work_space_id
  * @param  {number} library_id
  * @param  {number} frame
  * @param  {number} index
- * @param  {number} before_volume
+ * @param  {number} after_loop_count
  * @return {void}
  * @method
  * @public
@@ -21,7 +21,7 @@ export const execute = (
     library_id: number,
     frame: number,
     index: number,
-    before_volume: number
+    after_loop_count: number
 ): void => {
 
     const workSpace = $getWorkSpace(work_space_id);
@@ -34,20 +34,19 @@ export const execute = (
         return ;
     }
 
-    // 音声一覧に戻す
     const sounds = movieClip.getSound(frame);
     if (!sounds) {
         return ;
     }
 
-    // 音量を変更前の状態に戻す
+    // 音声一覧に戻す
     const soundObject = sounds[index];
-    soundObject.volume = before_volume;
+    soundObject.loopCount = after_loop_count;
 
     // 音量の表示を更新
     if (workSpace.active && movieClip.active
         && movieClip.currentFrame === frame
     ) {
-        soundAreaUpdateVolumeElementService(soundObject, index);
+        soundAreaUpdateLoopCountElementService(soundObject, index);
     }
 };

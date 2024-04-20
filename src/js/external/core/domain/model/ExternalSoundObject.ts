@@ -2,6 +2,7 @@ import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import type { SoundObjectImpl } from "@/interface/SoundObjectImpl";
 import { execute as externalSoundUpdateVolumeUseCase } from "@/external/core/application/ExternalSoundObject/usecase/ExternalSoundUpdateVolumeUseCase";
+import { execute as externalSoundUpdateLoopCountUseCase } from "@/external/core/application/ExternalSoundObject/usecase/ExternalSoundUpdateLoopCountUseCase";
 
 /**
  * @description 個別の音声設定の管理クラス
@@ -18,6 +19,15 @@ export class ExternalSoundObject
     private readonly _$frame: number;
     private readonly _$index: number;
 
+    /**
+     * @param {WorkSpace} work_space
+     * @param {MovieClip} movie_clip
+     * @param {object} sound_object
+     * @param {number} frame
+     * @param {number} index
+     * @constructor
+     * @public
+     */
     constructor (
         work_space: WorkSpace,
         movie_clip: MovieClip,
@@ -63,7 +73,7 @@ export class ExternalSoundObject
      * @type {number}
      * @public
      */
-    get volume(): number
+    get volume (): number
     {
         return this._$soundObject.volume;
     }
@@ -76,6 +86,29 @@ export class ExternalSoundObject
             this._$frame,
             this._$index,
             volume
+        );
+    }
+
+    /**
+     * @description ループ回数(0 - 65535)
+     *              Loop count (0 - 65535)
+     *
+     * @type {number}
+     * @public
+     */
+    get loopCount (): number
+    {
+        return this._$soundObject.volume;
+    }
+    set loopCount (loop_count: number)
+    {
+        externalSoundUpdateLoopCountUseCase(
+            this._$workSpace,
+            this._$movieClip,
+            this._$soundObject,
+            this._$frame,
+            this._$index,
+            loop_count
         );
     }
 }

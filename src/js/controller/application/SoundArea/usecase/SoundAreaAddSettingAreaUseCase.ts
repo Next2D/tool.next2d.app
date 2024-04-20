@@ -7,11 +7,17 @@ import { EventType } from "@/tool/domain/event/EventType";
 import { execute as soundAreaTrashMouseDownUseCase } from "./SoundAreaTrashMouseDownUseCase";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { execute as soundAreaVolumeRegisterWindowEventUseCase } from "./SoundAreaVolumeRegisterWindowEventUseCase";
-import { execute as soundAreaVolumeFocusInEventUseCase } from "../service/SoundAreaVolumeFocusInEventUseCase";
+import { execute as soundAreaLoopCountRegisterWindowEventUseCase } from "./SoundAreaLoopCountRegisterWindowEventUseCase";
+import { execute as soundAreaVolumeFocusInEventService } from "../service/SoundAreaVolumeFocusInEventService";
 import { execute as soundAreaVolumeKeyPressEventService } from "../service/SoundAreaVolumeKeyPressEventService";
+import { execute as soundAreaLoopCountKeyPressEventService } from "../service/SoundAreaLoopCountKeyPressEventService";
 import { execute as soundAreaVolumeFocusOutEventUseCase } from "./SoundAreaVolumeFocusOutEventUseCase";
+import { execute as soundAreaLoopCountFocusOutEventUseCase } from "./SoundAreaLoopCountFocusOutEventUseCase";
 import { execute as soundAreaVolumeMouseOverEventService } from "../service/SoundAreaVolumeMouseOverEventService";
+import { execute as soundAreaLoopCountMouseOverEventService } from "../service/SoundAreaLoopCountMouseOverEventService";
 import { execute as soundAreaVolumeMouseOutEventService } from "../service/SoundAreaVolumeMouseOutEventService";
+import { execute as soundAreaLoopCountMouseOutEventService } from "../service/SoundAreaLoopCountMouseOutEventService";
+import { execute as soundAreaLoopCountFocusInEventService } from "../service/SoundAreaLoopCountFocusInEventService";
 
 /**
  * @description サウンド設定のelementを追加
@@ -100,7 +106,7 @@ export const execute = (
     const volumeElement: HTMLElement | null = soundSettingElement.querySelector(".volume");
     if (volumeElement) {
         volumeElement.addEventListener("focusin",
-            soundAreaVolumeFocusInEventUseCase
+            soundAreaVolumeFocusInEventService
         );
         volumeElement.addEventListener("focusout",
             soundAreaVolumeFocusOutEventUseCase
@@ -116,6 +122,29 @@ export const execute = (
         );
         volumeElement.addEventListener(EventType.MOUSE_DOWN,
             soundAreaVolumeRegisterWindowEventUseCase
+        );
+    }
+
+    // ループ回数操作のイベントを登録
+    const loopElement: HTMLElement | null = soundSettingElement.querySelector(".loop-count");
+    if (loopElement) {
+        loopElement.addEventListener("focusin",
+            soundAreaLoopCountFocusInEventService
+        );
+        loopElement.addEventListener("focusout",
+            soundAreaLoopCountFocusOutEventUseCase
+        );
+        loopElement.addEventListener("keypress",
+            soundAreaLoopCountKeyPressEventService
+        );
+        loopElement.addEventListener(EventType.MOUSE_OVER,
+            soundAreaLoopCountMouseOverEventService
+        );
+        loopElement.addEventListener(EventType.MOUSE_OUT,
+            soundAreaLoopCountMouseOutEventService
+        );
+        loopElement.addEventListener(EventType.MOUSE_DOWN,
+            soundAreaLoopCountRegisterWindowEventUseCase
         );
     }
 };

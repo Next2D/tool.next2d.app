@@ -3,8 +3,8 @@ import { ExternalSoundObject } from "@/external/core/domain/model/ExternalSoundO
 import { $updateKeyLock } from "@/shortcut/ShortcutUtil";
 
 /**
- * @description 音量入力エリアのフォーカスイベント処理
- *              Focus event processing of volume input area
+ * @description ループ回数入力エリアのフォーカスイベント処理
+ *              Focus event processing of loop count input area
  *
  * @param  {FocusEvent} event
  * @return {void}
@@ -48,5 +48,5 @@ export const execute = (event: FocusEvent): void =>
         frame,
         index
     );
-    externalSoundObject.volume = parseInt(element.value);
+    externalSoundObject.loopCount = parseInt(element.value);
 };

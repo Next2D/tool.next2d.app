@@ -429,3 +429,12 @@ export const $SOUND_AREA_REMOVE_SOUND_COMMAND: number = 44;
  * @constant
  */
 export const $SOUND_AREA_UPDATE_VOLUME_COMMAND: number = 45;
+
+/**
+ * @description 個別のループ回数調整の識別コマンド名
+ *              Identification command name for individual loop count adjustment
+ *
+ * @type {number}
+ * @constant
+ */
+export const $SOUND_AREA_UPDATE_LOOP_COUNT_COMMAND: number = 46;

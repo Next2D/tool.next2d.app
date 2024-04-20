@@ -1,5 +1,5 @@
 import { EventType } from "@/tool/domain/event/EventType";
-import { execute as soundAreaVolumeWindowMouseMoveEventUseCase } from "./SoundAreaVolumeWindowMouseMoveEventUseCase";
+import { execute as soundAreaLoopCountWindowMouseMoveEventUseCase } from "./SoundAreaLoopCountWindowMouseMoveEventUseCase";
 import { $getTargetIndex, $setTargetIndex } from "../SoundAreaUtil";
 import { ExternalSoundObject } from "@/external/core/domain/model/ExternalSoundObject";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
@@ -7,8 +7,8 @@ import { $SOUND_AREA_SOUND_LIST_AREA_ID } from "@/config/PropertyConfig";
 import { $setCursor } from "@/global/GlobalUtil";
 
 /**
- * @description 音量操作を終了
- *              End volume operation
+ * @description ループ回数操作を終了
+ *              End loop count operation
  *
  * @param  {PointerEvent} event
  * @return {void}
@@ -25,7 +25,7 @@ export const execute = (event: PointerEvent): void =>
 
     // windowイベントを解除
     window.removeEventListener(EventType.MOUSE_MOVE,
-        soundAreaVolumeWindowMouseMoveEventUseCase
+        soundAreaLoopCountWindowMouseMoveEventUseCase
     );
     window.removeEventListener(EventType.MOUSE_UP, execute);
 
@@ -46,8 +46,8 @@ export const execute = (event: PointerEvent): void =>
         return ;
     }
 
-    const volumeElement = node.querySelector(".volume") as HTMLInputElement;
-    if (!volumeElement) {
+    const loopElement = node.querySelector(".loop-count") as HTMLInputElement;
+    if (!loopElement) {
         return ;
     }
 
@@ -69,7 +69,7 @@ export const execute = (event: PointerEvent): void =>
     $setTargetIndex(-1);
 
     // input要素にフォーカスを当てる
-    volumeElement.focus();
+    loopElement.focus();
 
     // 内部データを更新
     const externalSoundObject = new ExternalSoundObject(
@@ -79,5 +79,5 @@ export const execute = (event: PointerEvent): void =>
         frame,
         index
     );
-    externalSoundObject.volume = parseInt(volumeElement.value);
+    externalSoundObject.volume = parseInt(loopElement.value);
 };

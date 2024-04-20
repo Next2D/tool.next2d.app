@@ -38,7 +38,8 @@ import {
     $TIMELINE_DELETE_KEY_FRAME_COMMAND,
     $SOUND_AREA_ADD_SOUND_COMMAND,
     $SOUND_AREA_REMOVE_SOUND_COMMAND,
-    $SOUND_AREA_UPDATE_VOLUME_COMMAND
+    $SOUND_AREA_UPDATE_VOLUME_COMMAND,
+    $SOUND_AREA_UPDATE_LOOP_COUNT_COMMAND
 } from "@/config/HistoryConfig";
 
 /**
@@ -168,6 +169,9 @@ export const execute = (command: number): string =>
 
         case $SOUND_AREA_UPDATE_VOLUME_COMMAND:
             return "「%s1」の%s2フレームのサウンド「%s3」の音量を%s4から%s5に変更";
+
+        case $SOUND_AREA_UPDATE_LOOP_COUNT_COMMAND:
+            return "「%s1」の%s2フレームのサウンド「%s3」のループ回数を%s4から%s5に変更";
 
         default:
             break;
