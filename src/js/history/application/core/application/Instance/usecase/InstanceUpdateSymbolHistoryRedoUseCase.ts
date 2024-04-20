@@ -18,8 +18,8 @@ export const execute = (
     work_space_id: number,
     instance_id: number,
     after_name: string
-): void =>
-{
+): void => {
+
     const workSpace: WorkSpace | null = $getWorkSpace(work_space_id);
     if (!workSpace) {
         return ;

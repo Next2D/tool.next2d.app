@@ -231,7 +231,7 @@ export const execute = async (
 
         // 動画の追加
         case $LIBRARY_ADD_NEW_VIDEO_COMMAND:
-            libraryAreaAddNewVideoHistoryRedoUseCase(
+            await libraryAreaAddNewVideoHistoryRedoUseCase(
                 messages[0] as number, // workSpaceId
                 messages[2] as VideoSaveObjectImpl // Video Save Object
             );
@@ -247,7 +247,7 @@ export const execute = async (
 
         // 音声の追加
         case $LIBRARY_ADD_NEW_SOUND_COMMAND:
-            libraryAreaAddNewSoundHistoryRedoUseCase(
+            await libraryAreaAddNewSoundHistoryRedoUseCase(
                 messages[0] as number, // workSpaceId
                 messages[2] as SoundSaveObjectImpl // Sound Save Object
             );

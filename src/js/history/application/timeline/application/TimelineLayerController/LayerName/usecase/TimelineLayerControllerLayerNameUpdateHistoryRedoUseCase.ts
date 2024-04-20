@@ -10,7 +10,7 @@ import { execute as timelineLayerControllerUpdateNameElementService } from "@/ti
  * @param  {number} work_space_id
  * @param  {number} library_id
  * @param  {number} index
- * @param  {string} name
+ * @param  {string} after_name
  * @return {void}
  * @method
  * @public

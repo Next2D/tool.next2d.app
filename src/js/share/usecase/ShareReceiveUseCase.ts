@@ -43,6 +43,7 @@ import { execute as timelineLayerFrameDeleteKeyframeReceiveUseCase } from "@/sha
 import { execute as soundAreaAddSoundReceiveUseCase } from "@/share/receive/application/controller/application/SoundArea/usecase/SoundAreaAddSoundReceiveUseCase";
 import { execute as soundAreaRemoveSoundReceiveUseCase } from "@/share/receive/application/controller/application/SoundArea/usecase/SoundAreaRemoveSoundReceiveUseCase";
 import { execute as soundAreaUpdateVolumeReceiveUseCase } from "@/share/receive/application/controller/application/SoundArea/usecase/SoundAreaUpdateVolumeReceiveUseCase";
+import { execute as soundAreaUpdateLoopCountReceiveUseCase } from "@/share/receive/application/controller/application/SoundArea/usecase/SoundAreaUpdateLoopCountReceiveUseCase";
 import { execute as historyRedoUseCase } from "@/controller/application/HistoryArea/usecase/HistoryRedoUseCase";
 import { execute as historyUndoUseCase } from "@/controller/application/HistoryArea/usecase/HistoryUndoUseCase";
 import {
@@ -91,7 +92,8 @@ import {
     $TIMELINE_DELETE_KEY_FRAME_COMMAND,
     $SOUND_AREA_ADD_SOUND_COMMAND,
     $SOUND_AREA_REMOVE_SOUND_COMMAND,
-    $SOUND_AREA_UPDATE_VOLUME_COMMAND
+    $SOUND_AREA_UPDATE_VOLUME_COMMAND,
+    $SOUND_AREA_UPDATE_LOOP_COUNT_COMMAND
 } from "@/config/HistoryConfig";
 
 /**
@@ -343,6 +345,11 @@ export const execute = async (message: ShareReceiveMessageImpl): Promise<void> =
         // 個別のサウンドの音量を更新
         case $SOUND_AREA_UPDATE_VOLUME_COMMAND:
             soundAreaUpdateVolumeReceiveUseCase(message);
+            break;
+
+        // 個別のサウンドのループ回数を更新
+        case $SOUND_AREA_UPDATE_LOOP_COUNT_COMMAND:
+            soundAreaUpdateLoopCountReceiveUseCase(message);
             break;
 
         default:

@@ -79,5 +79,5 @@ export const execute = (event: PointerEvent): void =>
         frame,
         index
     );
-    externalSoundObject.volume = parseInt(loopElement.value);
+    externalSoundObject.loopCount = parseInt(loopElement.value);
 };

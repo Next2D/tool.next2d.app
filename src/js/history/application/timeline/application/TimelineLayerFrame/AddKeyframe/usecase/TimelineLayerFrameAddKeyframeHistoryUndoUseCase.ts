@@ -13,7 +13,7 @@ import { CharacterSaveObjectImpl } from "@/interface/CharacterSaveObjectImpl";
  * @param  {number} work_space_id
  * @param  {number} library_id
  * @param  {number} layer_ndex
- * @param  {number} character_index
+ * @param  {object} character_save_object
  * @param  {number} empty_character_index
  * @return {void}
  * @method

@@ -20,8 +20,8 @@ export const execute = (
     work_space_id: number,
     library_id: number,
     after_folder_id: number
-): void =>
-{
+): void => {
+
     const workSpace = $getWorkSpace(work_space_id);
     if (!workSpace) {
         return ;

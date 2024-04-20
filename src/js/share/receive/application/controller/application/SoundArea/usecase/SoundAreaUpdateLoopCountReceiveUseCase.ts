@@ -2,11 +2,11 @@ import type { ShareReceiveMessageImpl } from "@/interface/ShareReceiveMessageImp
 import type { InstanceImpl } from "@/interface/InstanceImpl";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
-import { execute as externalSoundUpdateVolumeUseCase } from "@/external/core/application/ExternalSoundObject/usecase/ExternalSoundUpdateVolumeUseCase";
+import { execute as externalSoundUpdateLoopCountUseCase } from "@/external/core/application/ExternalSoundObject/usecase/ExternalSoundUpdateLoopCountUseCase";
 
 /**
- * @description 個別の音量変更
- *              Individual volume change
+ * @description 個別のループ回数変更
+ *              Individual loop count change
  *
  * @param  {object} message
  * @return {void}
@@ -41,8 +41,8 @@ export const execute = (message: ShareReceiveMessageImpl): void =>
         return ;
     }
 
-    // 音声を更新
-    externalSoundUpdateVolumeUseCase(
+    // ループ回数を更新
+    externalSoundUpdateLoopCountUseCase(
         workSpace,
         movieClip,
         soundObject,

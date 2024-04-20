@@ -16,7 +16,7 @@ import { execute as timelineHeaderUpdateSoundElementService } from "@/timeline/a
  * @param  {object} sound_object
  * @param  {number} frame
  * @param  {number} index
- * @return {void}
+ * @return {Promise}
  * @method
  * @public
  */
