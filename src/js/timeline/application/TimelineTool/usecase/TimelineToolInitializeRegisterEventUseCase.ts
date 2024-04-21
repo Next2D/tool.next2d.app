@@ -10,7 +10,7 @@ import { execute as timelineToolAddEmptyKeyFrameInitializeRegisterEventUseCase }
 import { execute as timelineToolInsertFramesInitializeRegisterEventUseCase } from "../application/InsertFrames/usecase/TimelineToolInsertFramesInitializeRegisterEventUseCase";
 import { execute as timelineToolEraseFramesInitializeRegisterEventUseCase } from "../application/EraseFrames/usecase/TimelineToolEraseFramesInitializeRegisterEventUseCase";
 import { execute as timelineToolDeleteKeyframeInitializeRegisterEventUseCase } from "../application/DeleteKeyframe/usecase/TimelineToolDeleteKeyframeInitializeRegisterEventUseCase";
-import { execute as timelineToolLabelInitializeRegisterEventUseCase } from "../application/Label/usecase/TimelineToolLabelInitializeRegisterEventUseCase";
+import { execute as timelineToolLabelInputInitializeRegisterEventUseCase } from "../application/LabelInput/usecase/TimelineToolLabelInputInitializeRegisterEventUseCase";
 
 /**
  * @description タイムラインの各種ツールにイベント登録を行う
@@ -59,5 +59,5 @@ export const execute = (): void =>
     timelineToolDeleteKeyframeInitializeRegisterEventUseCase();
 
     // ラベル名操作のイベント登録
-    timelineToolLabelInitializeRegisterEventUseCase();
+    timelineToolLabelInputInitializeRegisterEventUseCase();
 };

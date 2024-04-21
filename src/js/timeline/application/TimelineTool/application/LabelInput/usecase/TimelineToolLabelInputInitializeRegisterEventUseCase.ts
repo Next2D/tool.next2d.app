@@ -1,7 +1,7 @@
 import { $TIMELINE_LABEL_NAME } from "@/config/TimelineConfig";
-import { execute as timelineToolLabelFocusInEventService } from "../service/TimelineToolLabelFocusInEventService";
-import { execute as timelineToolLabelFocusOutEventUseCase } from "./TimelineToolLabelFocusOutEventUseCase";
-import { execute as timelineToolLabelKeyPressEventService } from "../service/TimelineToolLabelKeyPressEventService";
+import { execute as timelineToolLabelInputFocusInEventService } from "../service/TimelineToolLabelInputFocusInEventService";
+import { execute as timelineToolLabelInputFocusOutEventUseCase } from "./TimelineToolLabelInputFocusOutEventUseCase";
+import { execute as timelineToolLabelInputKeyPressEventService } from "../service/TimelineToolLabelInputKeyPressEventService";
 
 /**
  * @description ラベル名操作のイベント登録
@@ -22,12 +22,12 @@ export const execute = (): void =>
 
     // イベントを登録
     element.addEventListener("focusin",
-        timelineToolLabelFocusInEventService
+        timelineToolLabelInputFocusInEventService
     );
     element.addEventListener("focusout",
-        timelineToolLabelFocusOutEventUseCase
+        timelineToolLabelInputFocusOutEventUseCase
     );
     element.addEventListener("keypress",
-        timelineToolLabelKeyPressEventService
+        timelineToolLabelInputKeyPressEventService
     );
 };

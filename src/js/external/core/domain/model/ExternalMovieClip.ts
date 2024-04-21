@@ -129,4 +129,33 @@ export class ExternalMovieClip extends ExternalItem
             this._$workSpace, this._$instance, frame, script
         );
     }
+
+    /**
+     * @description 指定フレームのラベル文字を返却
+*                   Returns the label character of the specified frame
+     *
+     * @param  {number} frame
+     * @return {string}
+     * @method
+     * @public
+     */
+    getLabel (frame: number): string
+    {
+        return this._$instance.getLabel(frame);
+    }
+
+    /**
+     * @description 指定フレームのラベル文字を更新、空の文字で削除
+     *              Update the label character of the specified frame, delete with empty character
+     *
+     * @param  {number} frame
+     * @param  {string} [label = ""]
+     * @return {void}
+     * @method
+     * @public
+     */
+    setLabel (frame: number, label: string = ""): void
+    {
+        this._$instance.setLabel(frame, label);
+    }
 }

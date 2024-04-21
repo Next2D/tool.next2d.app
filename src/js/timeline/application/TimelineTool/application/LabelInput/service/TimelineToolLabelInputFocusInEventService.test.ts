@@ -1,4 +1,4 @@
-import { execute } from "./TimelineToolLabelFocusInEventService";
+import { execute } from "./TimelineToolLabelInputFocusInEventService";
 import { $useKeyboard } from "../../../../../../shortcut/ShortcutUtil";
 
 describe("TimelineToolLabelFocusInEventServiceTest", () =>

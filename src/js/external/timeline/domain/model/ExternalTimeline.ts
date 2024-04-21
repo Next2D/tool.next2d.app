@@ -15,6 +15,7 @@ import { execute as externalTimelineLayerFrameInsertFramesUseCase } from "@/exte
 import { execute as externalTimelineAddItemToMovieClipUseCase } from "@/external/timeline/application/ExternalTimeline/usecase/ExternalTimelineAddItemToMovieClipUseCase";
 import { execute as externalTimelineLayerFrameRemoveFrameUseCase } from "@/external/timeline/application/ExternalTimelineLayerFrame/usecase/ExternalTimelineLayerFrameRemoveFrameUseCase";
 import { execute as externalTimelineLayerFrameDeleteKeyframesUseCase } from "@/external/timeline/application/ExternalTimelineLayerFrame/usecase/ExternalTimelineLayerFrameDeleteKeyframesUseCase";
+import { ExternalMovieClip } from "@/external/core/domain/model/ExternalMovieClip";
 
 /**
  * @description タイムラインの外部APIクラス
@@ -48,6 +49,30 @@ export class ExternalTimeline
          * @private
          */
         this._$movieClip = movie_clip;
+    }
+
+    /**
+     * @description アクティブなMovieClipの現在のフレームのラベル情報
+     *              Label information of the current frame of the active MovieClip
+     *
+     * @member {string}
+     * @public
+     */
+    get label (): string
+    {
+        const externalMovieClip = new ExternalMovieClip(
+            this._$workSpace,
+            this._$movieClip
+        );
+        return externalMovieClip.getLabel(this._$movieClip.currentFrame);
+    }
+    set label (label: string)
+    {
+        const externalMovieClip = new ExternalMovieClip(
+            this._$workSpace,
+            this._$movieClip
+        );
+        externalMovieClip.setLabel(this._$movieClip.currentFrame, label);
     }
 
     /**
