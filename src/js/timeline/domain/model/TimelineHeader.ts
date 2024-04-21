@@ -11,6 +11,7 @@ class TimelineHeader
 {
     private _$clientWidth: number;
     private readonly _$elements: HTMLElement[];
+    private _$stopFlag: boolean;
 
     /**
      * @constructor
@@ -30,6 +31,29 @@ class TimelineHeader
          * @private
          */
         this._$elements = [];
+
+        /**
+         * @type {boolean}
+         * @default true
+         * @private
+         */
+        this._$stopFlag = true;
+    }
+
+    /**
+     * @description タイムラインの再生停止フラグ
+     *              Playback stop flag of the timeline
+     *
+     * @member {boolean}
+     * @public
+     */
+    get stopFlag (): boolean
+    {
+        return this._$stopFlag;
+    }
+    set stopFlag (stop_flag: boolean)
+    {
+        this._$stopFlag = stop_flag;
     }
 
     /**

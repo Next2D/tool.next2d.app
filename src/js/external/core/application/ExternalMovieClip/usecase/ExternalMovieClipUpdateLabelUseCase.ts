@@ -1,12 +1,11 @@
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
-import { execute as timelineHeaderUpdateScriptElementService } from "@/timeline/application/TimelineHeader/service/TimelineHeaderUpdateScriptElementService";
+import { execute as timelineHeaderUpdateLabelElementService } from "@/timeline/application/TimelineHeader/service/TimelineHeaderUpdateLabelElementService";
 import { execute as scriptEditorNewRegisterHistoryUseCase } from "@/history/application/timeline/application/TimelineTool/ScriptEditorNewRegister/usecase/ScriptEditorNewRegisterHistoryUseCase";
 import { execute as scriptEditorUpdateHistoryUseCase } from "@/history/application/timeline/application/TimelineTool/ScriptEditorUpdate/usecase/ScriptEditorUpdateHistoryUseCase";
 import { execute as scriptEditorDeleteHistoryUseCase } from "@/history/application/timeline/application/TimelineTool/ScriptEditorDelete/usecase/ScriptEditorDeleteHistoryUseCase";
 import { $getLeftFrame, $getRightFrame } from "@/timeline/application/TimelineUtil";
 import { timelineHeader } from "@/timeline/domain/model/TimelineHeader";
-import { execute as scriptAreaReloadUseCase } from "@/controller/application/ScriptArea/usecase/ScriptAreaReloadUseCase";
 
 /**
  * @description 指定フレームのラベル情報を更新
@@ -29,45 +28,35 @@ export const execute = (
     receiver: boolean = false
 ): void => {
 
-    let doReload = false;
-
-    // scriptの値によって分岐
+    // labelの値によって分岐
     if (label) {
 
         // 作業履歴を残す
-        if (!movie_clip.hasAction(frame)) {
+        if (!movie_clip.hasLabel(frame)) {
 
             // 初回登録履歴を登録
             scriptEditorNewRegisterHistoryUseCase(
-                work_space, movie_clip, frame, script, receiver
+                work_space, movie_clip, frame, label, receiver
             );
-
-            if (work_space.active) {
-                doReload = true;
-            }
 
         } else {
 
-            const beforeScript = movie_clip.getAction(frame);
+            const beforeLabel = movie_clip.getLabel(frame);
 
             // 編集履歴を登録
-            if (beforeScript !== script) {
+            if (beforeLabel !== label) {
                 scriptEditorUpdateHistoryUseCase(
-                    work_space, movie_clip, frame, script, receiver
+                    work_space, movie_clip, frame, label, receiver
                 );
-
-                if (work_space.active) {
-                    doReload = true;
-                }
             }
         }
 
-        // スクリプトを上書き
-        movie_clip.setAction(frame, script);
+        // ラベルを上書き
+        movie_clip.setLabel(frame, label);
 
     } else {
 
-        if (movie_clip.hasAction(frame)) {
+        if (movie_clip.hasLabel(frame)) {
 
             // 削除履歴を登録
             scriptEditorDeleteHistoryUseCase(
@@ -76,17 +65,8 @@ export const execute = (
 
             // スクリプトを削除
             movie_clip.deleteAction(frame);
-
-            if (work_space.active) {
-                doReload = true;
-            }
         }
 
-    }
-
-    // JavaScriptタブを再描画
-    if (doReload) {
-        scriptAreaReloadUseCase();
     }
 
     // 表示領域にElementがあればclassを更新
@@ -99,7 +79,7 @@ export const execute = (
             return ;
         }
 
-        // スクリプトアイコンの更新
-        timelineHeaderUpdateScriptElementService(node, frame);
+        // ラベルアイコンの表示を更新
+        timelineHeaderUpdateLabelElementService(node, frame);
     }
 };
