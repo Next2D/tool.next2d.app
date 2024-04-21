@@ -1,6 +1,6 @@
-import { execute } from "./TimelineToolLabelKeyPressEventService";
+import { execute } from "./TimelineToolLabelInputKeyPressEventService";
 
-describe("TimelineToolLabelKeyPressEventServiceTest", () =>
+describe("TimelineToolLabelInputKeyPressEventServiceTest", () =>
 {
     test("execute test", () =>
     {
