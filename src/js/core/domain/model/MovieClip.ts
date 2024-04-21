@@ -452,6 +452,14 @@ export class MovieClip extends Instance
             this._$currentFrame = object.currentFrame;
         }
 
+        // ラベル情報を再登録
+        if (object.labels) {
+            for (let idx = 0; idx < object.labels.length; ++idx) {
+                const labelObject = object.labels[idx];
+                this._$labels.set(labelObject.frame, labelObject.name);
+            }
+        }
+
         // スクリプトマップに再登録
         if (object.actions) {
             for (let idx = 0; idx < object.actions.length; ++idx) {
