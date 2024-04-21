@@ -1,10 +1,6 @@
 import { MovieClip } from "@/core/domain/model/MovieClip";
 import { WorkSpace } from "@/core/domain/model/WorkSpace";
-import { execute as timelineFrameUpdateFrameElementService } from "@/timeline/application/TimelineFrame/service/TimelineFrameUpdateFrameElementService";
-import { execute as timelineMarkerMovePositionService } from "@/timeline/application/TimelineMarker/service/TimelineMarkerMovePositionService";
 import { execute as timelineLayerAllSelectedElementUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerAllSelectedElementUseCase";
-import { execute as screenAreaRedrawUseCase } from "@/screen/application/ScreenArea/usecase/ScreenAreaRedrawUseCase";
-import { execute as soundAreaRebuildSettingAreaUseCase } from "@/controller/application/SoundArea/usecase/SoundAreaRebuildSettingAreaUseCase";
 
 /**
  * @description 指定のフレームを選択状態に更新

@@ -1,19 +1,15 @@
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
-import { execute as timelineMarkerMovePositionService } from "../service/TimelineMarkerMovePositionService";
-import { execute as timelineFrameUpdateFrameElementService } from "@/timeline/application/TimelineFrame/service/TimelineFrameUpdateFrameElementService";
 import { timelineHeader } from "@/timeline/domain/model/TimelineHeader";
 import { $TIMELINE_LAYER_CONTROLLER_WIDTH } from "@/config/TimelineConfig";
 import { execute as timelineScrollUpdateScrollXUseCase } from "@/timeline/application/TimelineScroll/usecase/TimelineScrollUpdateScrollXUseCase";
-import { execute as screenAreaRedrawUseCase } from "@/screen/application/ScreenArea/usecase/ScreenAreaRedrawUseCase";
-import { execute as soundAreaRebuildSettingAreaUseCase } from "@/controller/application/SoundArea/usecase/SoundAreaRebuildSettingAreaUseCase";
+import { $TOOL_AERA_WIDTH } from "@/config/ToolConfig";
+import { $setCursor } from "@/global/GlobalUtil";
+import { ExternalTimeline } from "@/external/timeline/domain/model/ExternalTimeline";
 import {
     $getMaxFrame,
     $getMoveMode,
     $setMoveMode
 } from "../../TimelineUtil";
-import { $TOOL_AERA_WIDTH } from "@/config/ToolConfig";
-import { $setCursor } from "@/global/GlobalUtil";
-import { ExternalTimeline } from "@/external/timeline/domain/model/ExternalTimeline";
 
 /**
  * @description マーカーのムーブイベントの処理関数

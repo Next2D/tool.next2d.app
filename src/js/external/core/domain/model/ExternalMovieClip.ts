@@ -4,6 +4,7 @@ import { ExternalItem } from "./ExternalItem";
 import { ExternalLayer } from "./ExternalLayer";
 import { ExternalTimeline } from "@/external/timeline/domain/model/ExternalTimeline";
 import { execute as externalMovieClipUpdateScriptUseCase } from "@/external/core/application/ExternalMovieClip/usecase/ExternalMovieClipUpdateScriptUseCase";
+import { execute as externalMovieClipUpdateLabelUseCase } from "@/external/core/application/ExternalMovieClip/usecase/ExternalMovieClipUpdateLabelUseCase";
 
 /**
  * @description MovieClipの外部APIクラス
@@ -156,6 +157,6 @@ export class ExternalMovieClip extends ExternalItem
      */
     setLabel (frame: number, label: string = ""): void
     {
-        this._$instance.setLabel(frame, label);
+        externalMovieClipUpdateLabelUseCase(this._$workSpace, this._$instance, frame, label);
     }
 }

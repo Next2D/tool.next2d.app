@@ -9,13 +9,13 @@ import { timelineHeader } from "@/timeline/domain/model/TimelineHeader";
 import { execute as scriptAreaReloadUseCase } from "@/controller/application/ScriptArea/usecase/ScriptAreaReloadUseCase";
 
 /**
- * @description 指定フレームのスクリプト情報を更新
- *              Update script information for specified frame
+ * @description 指定フレームのラベル情報を更新
+ *              Update the label information for the specified frame
  *
  * @param  {WorkSpace} work_space
  * @param  {MovieClip} movie_clip
  * @param  {number} frame
- * @param  {string} [script = ""]
+ * @param  {string} label
  * @param  {boolean} [receiver = false]
  * @return {void}
  * @method
@@ -25,14 +25,14 @@ export const execute = (
     work_space: WorkSpace,
     movie_clip: MovieClip,
     frame: number,
-    script: string = "",
+    label: string,
     receiver: boolean = false
 ): void => {
 
     let doReload = false;
 
     // scriptの値によって分岐
-    if (script) {
+    if (label) {
 
         // 作業履歴を残す
         if (!movie_clip.hasAction(frame)) {
