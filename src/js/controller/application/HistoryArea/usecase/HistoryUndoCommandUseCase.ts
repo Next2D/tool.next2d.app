@@ -48,6 +48,7 @@ import { execute as soundAreaAddSoundHistoryUndoUseCase } from "@/history/applic
 import { execute as soundAreaRemoveSoundHistoryUndoUseCase } from "@/history/application/controller/application/SoundArea/RemoveSound/usecase/SoundAreaRemoveSoundHistoryUndoUseCase";
 import { execute as soundAreaUpdateVolumeHistoryUndoUseCase } from "@/history/application/controller/application/SoundArea/UpdateVolume/usecase/SoundAreaUpdateVolumeHistoryUndoUseCase";
 import { execute as soundAreaUpdateLoopCountHistoryUndoUseCase } from "@/history/application/controller/application/SoundArea/UpdateLoopCount/usecase/SoundAreaUpdateLoopCountHistoryUndoUseCase";
+import { execute as labelNewRegisterHistoryUndoUseCase } from "@/history/application/timeline/application/TimelineTool/LabelNewRegister/usecase/LabelNewRegisterHistoryUndoUseCase";
 import { execute as instanceUpdateNameHistoryUndoUseCase } from "@/history/application/core/application/Instance/usecase/InstanceUpdateNameHistoryUndoUseCase";
 import { execute as instanceUpdateSymbolHistoryUndoUseCase } from "@/history/application/core/application/Instance/usecase/InstanceUpdateSymbolHistoryUndoUseCase";
 import {
@@ -91,7 +92,8 @@ import {
     $SOUND_AREA_ADD_SOUND_COMMAND,
     $SOUND_AREA_REMOVE_SOUND_COMMAND,
     $SOUND_AREA_UPDATE_VOLUME_COMMAND,
-    $SOUND_AREA_UPDATE_LOOP_COUNT_COMMAND
+    $SOUND_AREA_UPDATE_LOOP_COUNT_COMMAND,
+    $LABEL_NEW_REGISTER_COMMAND
 } from "@/config/HistoryConfig";
 
 /**
@@ -512,6 +514,15 @@ export const execute = async (
                 messages[2] as number, // Frame
                 messages[3] as number, // Sound Index
                 messages[4] as number // Before Loop Count
+            );
+            break;
+
+        // ラベル新規登録
+        case $LABEL_NEW_REGISTER_COMMAND:
+            labelNewRegisterHistoryUndoUseCase(
+                messages[0] as number, // WorkSpace ID
+                messages[1] as number, // MovieClip ID
+                messages[2] as number // Frame
             );
             break;
 

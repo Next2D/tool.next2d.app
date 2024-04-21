@@ -1,7 +1,7 @@
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import { execute as timelineHeaderUpdateLabelElementService } from "@/timeline/application/TimelineHeader/service/TimelineHeaderUpdateLabelElementService";
-import { execute as scriptEditorNewRegisterHistoryUseCase } from "@/history/application/timeline/application/TimelineTool/ScriptEditorNewRegister/usecase/ScriptEditorNewRegisterHistoryUseCase";
+import { execute as labelNewRegisterHistoryUseCase } from "@/history/application/timeline/application/TimelineTool/LabelNewRegister/usecase/LabelNewRegisterHistoryUseCase";
 import { execute as scriptEditorUpdateHistoryUseCase } from "@/history/application/timeline/application/TimelineTool/ScriptEditorUpdate/usecase/ScriptEditorUpdateHistoryUseCase";
 import { execute as scriptEditorDeleteHistoryUseCase } from "@/history/application/timeline/application/TimelineTool/ScriptEditorDelete/usecase/ScriptEditorDeleteHistoryUseCase";
 import { $getLeftFrame, $getRightFrame } from "@/timeline/application/TimelineUtil";
@@ -35,7 +35,7 @@ export const execute = (
         if (!movie_clip.hasLabel(frame)) {
 
             // 初回登録履歴を登録
-            scriptEditorNewRegisterHistoryUseCase(
+            labelNewRegisterHistoryUseCase(
                 work_space, movie_clip, frame, label, receiver
             );
 

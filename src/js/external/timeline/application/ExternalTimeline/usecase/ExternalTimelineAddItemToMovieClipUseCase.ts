@@ -49,6 +49,7 @@ export const execute = async (
             externalSoundAreaAddSoundUseCase(
                 work_space,
                 movie_clip,
+                movie_clip.currentFrame,
                 path,
                 receiver
             );
@@ -94,7 +95,7 @@ export const execute = async (
     for (let idx = 0; idx < layers.length; idx++) {
 
         const layer = layers[idx];
-        if (!layer) {
+        if (!layer || layer.lock) {
             continue;
         }
 

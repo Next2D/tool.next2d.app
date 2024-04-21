@@ -46,6 +46,7 @@ import { execute as soundAreaAddSoundHistoryRedoUseCase } from "@/history/applic
 import { execute as soundAreaRemoveSoundHistoryRedoUseCase } from "@/history/application/controller/application/SoundArea/RemoveSound/usecase/SoundAreaRemoveSoundHistoryRedoUseCase";
 import { execute as soundAreaUpdateVolumeHistoryRedoUseCase } from "@/history/application/controller/application/SoundArea/UpdateVolume/usecase/SoundAreaUpdateVolumeHistoryRedoUseCase";
 import { execute as soundAreaUpdateLoopCountHistoryRedoUseCase } from "@/history/application/controller/application/SoundArea/UpdateLoopCount/usecase/SoundAreaUpdateLoopCountHistoryRedoUseCase";
+import { execute as labelNewRegisterHistoryRedoUseCase } from "@/history/application/timeline/application/TimelineTool/LabelNewRegister/usecase/LabelNewRegisterHistoryRedoUseCase";
 import { execute as instanceUpdateNameHistoryRedoUseCase } from "@/history/application/core/application/Instance/usecase/InstanceUpdateNameHistoryRedoUseCase";
 import { execute as instanceUpdateSymbolHistoryRedoUseCase } from "@/history/application/core/application/Instance/usecase/InstanceUpdateSymbolHistoryRedoUseCase";
 import {
@@ -89,7 +90,8 @@ import {
     $SOUND_AREA_ADD_SOUND_COMMAND,
     $SOUND_AREA_REMOVE_SOUND_COMMAND,
     $SOUND_AREA_UPDATE_VOLUME_COMMAND,
-    $SOUND_AREA_UPDATE_LOOP_COUNT_COMMAND
+    $SOUND_AREA_UPDATE_LOOP_COUNT_COMMAND,
+    $LABEL_NEW_REGISTER_COMMAND
 } from "@/config/HistoryConfig";
 
 /**
@@ -514,6 +516,16 @@ export const execute = async (
                 messages[2] as number, // Frame
                 messages[3] as number, // Sound Index
                 messages[5] as number // After Loop Count
+            );
+            break;
+
+        // ラベルの新規登録
+        case $LABEL_NEW_REGISTER_COMMAND:
+            labelNewRegisterHistoryRedoUseCase(
+                messages[0] as number, // workSpaceId
+                messages[1] as number, // MovieClipId
+                messages[2] as number, // frame
+                messages[3] as string  // label
             );
             break;
 

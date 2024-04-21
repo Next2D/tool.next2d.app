@@ -438,3 +438,12 @@ export const $SOUND_AREA_UPDATE_VOLUME_COMMAND: number = 45;
  * @constant
  */
 export const $SOUND_AREA_UPDATE_LOOP_COUNT_COMMAND: number = 46;
+
+/**
+ * @description ラベル追加履歴の識別コマンド名
+ *              Identification command name for label addition history
+ *
+ * @type {number}
+ * @constant
+ */
+export const $LABEL_NEW_REGISTER_COMMAND: number = 47;

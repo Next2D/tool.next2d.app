@@ -39,7 +39,8 @@ import {
     $SOUND_AREA_ADD_SOUND_COMMAND,
     $SOUND_AREA_REMOVE_SOUND_COMMAND,
     $SOUND_AREA_UPDATE_VOLUME_COMMAND,
-    $SOUND_AREA_UPDATE_LOOP_COUNT_COMMAND
+    $SOUND_AREA_UPDATE_LOOP_COUNT_COMMAND,
+    $LABEL_NEW_REGISTER_COMMAND
 } from "@/config/HistoryConfig";
 
 /**
@@ -172,6 +173,9 @@ export const execute = (command: number): string =>
 
         case $SOUND_AREA_UPDATE_LOOP_COUNT_COMMAND:
             return "「%s1」の%s2フレームのサウンド「%s3」のループ回数を%s4から%s5に変更";
+
+        case $LABEL_NEW_REGISTER_COMMAND:
+            return "「%s1」の%s2フレームにラベル「%s3」を追加";
 
         default:
             break;

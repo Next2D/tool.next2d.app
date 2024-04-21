@@ -5,6 +5,8 @@ import { execute as timelineFrameUpdateFrameElementService } from "@/timeline/ap
 import { execute as timelineMarkerMovePositionService } from "@/timeline/application/TimelineMarker/service/TimelineMarkerMovePositionService";
 import { execute as screenAreaRedrawUseCase } from "@/screen/application/ScreenArea/usecase/ScreenAreaRedrawUseCase";
 import { execute as soundAreaRebuildSettingAreaUseCase } from "@/controller/application/SoundArea/usecase/SoundAreaRebuildSettingAreaUseCase";
+import { execute as timelineLabelNameUpdateService } from "@/timeline/application/TimelineLabelName/service/TimelineLabelNameUpdateService";
+import { timelineHeader } from "@/timeline/domain/model/TimelineHeader";
 
 /**
  * @description レイヤーのアクティブを初期化して指定のフレームを選択する
@@ -36,8 +38,14 @@ export const execute = async (
         // マーカーを移動
         timelineMarkerMovePositionService();
 
-        // サウンドエリアの設定エリアを再構築
-        soundAreaRebuildSettingAreaUseCase();
+        // タイムラインを再生中でなければ更新
+        if (timelineHeader.stopFlag) {
+            // サウンドエリアの設定エリアを再構築
+            soundAreaRebuildSettingAreaUseCase();
+
+            // タイムラインのラベル表示を更新
+            timelineLabelNameUpdateService(movie_clip.getLabel(frame));
+        }
 
         // スクリーンエリアを再描画
         await screenAreaRedrawUseCase(movie_clip);
