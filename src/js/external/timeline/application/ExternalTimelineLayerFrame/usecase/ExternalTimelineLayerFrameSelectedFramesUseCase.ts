@@ -36,21 +36,9 @@ export const execute = async (
         frame = frames[0];
     }
 
+    // 指定のフレームを選択状態に更新
     if (work_space.active && movie_clip.active) {
-        // フレームの表示を更新
-        timelineFrameUpdateFrameElementService(frame);
-
-        // マーカーを移動
-        timelineMarkerMovePositionService();
-
-        // 指定のフレームを選択状態に更新
         timelineLayerAllSelectedElementUseCase(movie_clip, frames);
-
-        // サウンドエリアを再描画
-        soundAreaRebuildSettingAreaUseCase();
-
-        // スクリーンを再描画
-        await screenAreaRedrawUseCase(movie_clip);
     }
 
     // 内部情報を更新

@@ -13,6 +13,7 @@ import {
 } from "../../TimelineUtil";
 import { $TOOL_AERA_WIDTH } from "@/config/ToolConfig";
 import { $setCursor } from "@/global/GlobalUtil";
+import { ExternalTimeline } from "@/external/timeline/domain/model/ExternalTimeline";
 
 /**
  * @description マーカーのムーブイベントの処理関数
@@ -52,19 +53,17 @@ export const execute = (event: PointerEvent, loop_mode: boolean = false): void =
                 return ;
             }
 
-            // フレームをプラスに移動
-            timelineFrameUpdateFrameElementService(
-                Math.min(scene.currentFrame + 1, $getMaxFrame())
-            );
-
             // カーソルを変更
             $setCursor("ew-resize");
 
-            // サウンドエリアを再描画
-            soundAreaRebuildSettingAreaUseCase();
+            // 外部APIを起動
+            const externalTimeline = new ExternalTimeline(
+                workSpace, workSpace.scene
+            );
 
-            // スクリーンを再描画
-            await screenAreaRedrawUseCase(scene);
+            // 選択したフレームに切り替える
+            const frame = Math.min(scene.currentFrame + 1, $getMaxFrame());
+            await externalTimeline.changeFrame(frame);
 
             // 右方向に移動
             if (!timelineScrollUpdateScrollXUseCase(frameWidth)) {
@@ -97,19 +96,17 @@ export const execute = (event: PointerEvent, loop_mode: boolean = false): void =
                 return ;
             }
 
-            // フレームをマイナスに移動
-            timelineFrameUpdateFrameElementService(
-                Math.max(scene.currentFrame - 1, 1)
-            );
-
             // カーソルを変更
             $setCursor("ew-resize");
 
-            // サウンドエリアを再描画
-            soundAreaRebuildSettingAreaUseCase();
+            // 外部APIを起動
+            const externalTimeline = new ExternalTimeline(
+                workSpace, workSpace.scene
+            );
 
-            // スクリーンを再描画
-            await screenAreaRedrawUseCase(scene);
+            // 選択したフレームに切り替える
+            const frame = Math.max(scene.currentFrame - 1, 1);
+            await externalTimeline.changeFrame(frame);
 
             // 左方向に移動
             if (!timelineScrollUpdateScrollXUseCase(-frameWidth)) {
@@ -159,16 +156,12 @@ export const execute = (event: PointerEvent, loop_mode: boolean = false): void =
         // カーソルを変更
         $setCursor("ew-resize");
 
-        // フレームの表示を更新
-        timelineFrameUpdateFrameElementService(parseInt(frame));
+        // 外部APIを起動
+        const externalTimeline = new ExternalTimeline(
+            workSpace, workSpace.scene
+        );
 
-        // マーカーを移動
-        timelineMarkerMovePositionService();
-
-        // サウンドエリアを再描画
-        soundAreaRebuildSettingAreaUseCase();
-
-        // スクリーンを再描画
-        await screenAreaRedrawUseCase(scene);
+        // 選択したフレームに切り替える
+        await externalTimeline.changeFrame(parseInt(frame));
     });
 };

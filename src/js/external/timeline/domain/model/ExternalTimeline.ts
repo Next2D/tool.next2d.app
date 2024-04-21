@@ -239,10 +239,16 @@ export class ExternalTimeline
      */
     async selectedFrames (frames: number[]): Promise<void>
     {
-        await externalTimelineLayerFrameSelectedFramesUseCase(
+        externalTimelineLayerFrameSelectedFramesUseCase(
             this._$workSpace,
             this._$movieClip,
             frames
+        );
+
+        await externalTimelineChageFrameUseCase(
+            this._$workSpace,
+            this._$movieClip,
+            this._$movieClip.currentFrame
         );
     }
 
