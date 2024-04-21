@@ -87,6 +87,6 @@ describe("HistoryGetTextServiceTest", () =>
         expect(execute($SOUND_AREA_REMOVE_SOUND_COMMAND)).toBe("「%s1」の%s2フレームのサウンド「%s3」を削除");
         expect(execute($SOUND_AREA_UPDATE_VOLUME_COMMAND)).toBe("「%s1」の%s2フレームのサウンド「%s3」の音量を%s4から%s5に変更");
         expect(execute($SOUND_AREA_UPDATE_LOOP_COUNT_COMMAND)).toBe("「%s1」の%s2フレームのサウンド「%s3」のループ回数を%s4から%s5に変更");
-        expect(execute($LABEL_NEW_REGISTER_COMMAND)).toBe("「%s1」の%s2フレームにラベル「%s3」を追加");
+        expect(execute($LABEL_NEW_REGISTER_COMMAND)).toBe("「%s1」の%s2フレームにラベル「%s3」を登録");
     });
 });

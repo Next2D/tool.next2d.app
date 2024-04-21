@@ -175,7 +175,7 @@ export const execute = (command: number): string =>
             return "「%s1」の%s2フレームのサウンド「%s3」のループ回数を%s4から%s5に変更";
 
         case $LABEL_NEW_REGISTER_COMMAND:
-            return "「%s1」の%s2フレームにラベル「%s3」を追加";
+            return "「%s1」の%s2フレームにラベル「%s3」を登録";
 
         default:
             break;

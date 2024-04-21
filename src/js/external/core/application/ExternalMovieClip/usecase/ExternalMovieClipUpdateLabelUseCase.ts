@@ -6,6 +6,7 @@ import { execute as scriptEditorUpdateHistoryUseCase } from "@/history/applicati
 import { execute as scriptEditorDeleteHistoryUseCase } from "@/history/application/timeline/application/TimelineTool/ScriptEditorDelete/usecase/ScriptEditorDeleteHistoryUseCase";
 import { $getLeftFrame, $getRightFrame } from "@/timeline/application/TimelineUtil";
 import { timelineHeader } from "@/timeline/domain/model/TimelineHeader";
+import { execute as timelineLabelNameUpdateService } from "@/timeline/application/TimelineLabelName/service/TimelineLabelNameUpdateService";
 
 /**
  * @description 指定フレームのラベル情報を更新
@@ -70,16 +71,20 @@ export const execute = (
     }
 
     // 表示領域にElementがあればclassを更新
-    if (work_space.active && movie_clip.active
-        && $getLeftFrame() <= frame
-        && $getRightFrame() >= frame
-    ) {
-        const node = timelineHeader.elements[frame - $getLeftFrame()] as HTMLElement;
-        if (!node) {
-            return ;
+    if (work_space.active && movie_clip.active) {
+
+        if (movie_clip.currentFrame === frame) {
+            timelineLabelNameUpdateService(label);
         }
 
-        // ラベルアイコンの表示を更新
-        timelineHeaderUpdateLabelElementService(node, frame);
+        if ($getLeftFrame() <= frame && $getRightFrame() >= frame) {
+            const node = timelineHeader.elements[frame - $getLeftFrame()] as HTMLElement;
+            if (!node) {
+                return ;
+            }
+
+            // ラベルアイコンの表示を更新
+            timelineHeaderUpdateLabelElementService(node, frame);
+        }
     }
 };
