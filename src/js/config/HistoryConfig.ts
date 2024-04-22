@@ -456,3 +456,12 @@ export const $LABEL_NEW_REGISTER_COMMAND: number = 47;
  * @constant
  */
 export const $LABEL_UPDATE_COMMAND: number = 48;
+
+/**
+ * @description ラベル削除履歴の識別コマンド名
+ *              Identification command name for label deletion history
+ *
+ * @type {number}
+ * @constant
+ */
+export const $LABEL_DELETE_COMMAND: number = 49;

@@ -5,7 +5,7 @@ import { timelineHeader } from "@/timeline/domain/model/TimelineHeader";
 import { execute as timelineHeaderUpdateLabelElementService } from "@/timeline/application/TimelineHeader/service/TimelineHeaderUpdateLabelElementService";
 import { execute as labelNewRegisterHistoryUseCase } from "@/history/application/timeline/application/TimelineTool/LabelNewRegister/usecase/LabelNewRegisterHistoryUseCase";
 import { execute as labelUpdateHistoryUseCase } from "@/history/application/timeline/application/TimelineTool/LabelUpdate/usecase/LabelUpdateHistoryUseCase";
-import { execute as scriptEditorDeleteHistoryUseCase } from "@/history/application/timeline/application/TimelineTool/ScriptEditorDelete/usecase/ScriptEditorDeleteHistoryUseCase";
+import { execute as labelDeleteHistoryUseCase } from "@/history/application/timeline/application/TimelineTool/LabelDelete/usecase/LabelDeleteHistoryUseCase";
 import { execute as timelineLabelNameUpdateService } from "@/timeline/application/TimelineLabelName/service/TimelineLabelNameUpdateService";
 
 /**
@@ -60,12 +60,12 @@ export const execute = (
         if (movie_clip.hasLabel(frame)) {
 
             // 削除履歴を登録
-            scriptEditorDeleteHistoryUseCase(
+            labelDeleteHistoryUseCase(
                 work_space, movie_clip, frame, receiver
             );
 
             // スクリプトを削除
-            movie_clip.deleteAction(frame);
+            movie_clip.deleteLabel(frame);
         }
 
     }

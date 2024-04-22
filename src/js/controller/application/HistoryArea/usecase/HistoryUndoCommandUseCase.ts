@@ -50,6 +50,7 @@ import { execute as soundAreaUpdateVolumeHistoryUndoUseCase } from "@/history/ap
 import { execute as soundAreaUpdateLoopCountHistoryUndoUseCase } from "@/history/application/controller/application/SoundArea/UpdateLoopCount/usecase/SoundAreaUpdateLoopCountHistoryUndoUseCase";
 import { execute as labelNewRegisterHistoryUndoUseCase } from "@/history/application/timeline/application/TimelineTool/LabelNewRegister/usecase/LabelNewRegisterHistoryUndoUseCase";
 import { execute as labelUpdateHistoryUndoUseCase } from "@/history/application/timeline/application/TimelineTool/LabelUpdate/usecase/LabelUpdateHistoryUndoUseCase";
+import { execute as labelDeleteHistoryUndoUseCase } from "@/history/application/timeline/application/TimelineTool/LabelDelete/usecase/LabelDeleteHistoryUndoUseCase";
 import { execute as instanceUpdateNameHistoryUndoUseCase } from "@/history/application/core/application/Instance/usecase/InstanceUpdateNameHistoryUndoUseCase";
 import { execute as instanceUpdateSymbolHistoryUndoUseCase } from "@/history/application/core/application/Instance/usecase/InstanceUpdateSymbolHistoryUndoUseCase";
 import {
@@ -95,7 +96,8 @@ import {
     $SOUND_AREA_UPDATE_VOLUME_COMMAND,
     $SOUND_AREA_UPDATE_LOOP_COUNT_COMMAND,
     $LABEL_NEW_REGISTER_COMMAND,
-    $LABEL_UPDATE_COMMAND
+    $LABEL_UPDATE_COMMAND,
+    $LABEL_DELETE_COMMAND
 } from "@/config/HistoryConfig";
 
 /**
@@ -531,6 +533,16 @@ export const execute = async (
         // ラベルの変更
         case $LABEL_UPDATE_COMMAND:
             labelUpdateHistoryUndoUseCase(
+                messages[0] as number, // WorkSpace ID
+                messages[1] as number, // MovieClip ID
+                messages[2] as number, // Frame
+                messages[3] as string // Before Label
+            );
+            break;
+
+        // ラベルの削除
+        case $LABEL_DELETE_COMMAND:
+            labelDeleteHistoryUndoUseCase(
                 messages[0] as number, // WorkSpace ID
                 messages[1] as number, // MovieClip ID
                 messages[2] as number, // Frame

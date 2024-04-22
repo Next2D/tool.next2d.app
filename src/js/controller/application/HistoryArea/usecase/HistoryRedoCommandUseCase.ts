@@ -48,6 +48,7 @@ import { execute as soundAreaUpdateVolumeHistoryRedoUseCase } from "@/history/ap
 import { execute as soundAreaUpdateLoopCountHistoryRedoUseCase } from "@/history/application/controller/application/SoundArea/UpdateLoopCount/usecase/SoundAreaUpdateLoopCountHistoryRedoUseCase";
 import { execute as labelNewRegisterHistoryRedoUseCase } from "@/history/application/timeline/application/TimelineTool/LabelNewRegister/usecase/LabelNewRegisterHistoryRedoUseCase";
 import { execute as labelUpdateHistoryRedoUseCase } from "@/history/application/timeline/application/TimelineTool/LabelUpdate/usecase/LabelUpdateHistoryRedoUseCase";
+import { execute as labelDeleteHistoryRedoUseCase } from "@/history/application/timeline/application/TimelineTool/LabelDelete/usecase/LabelDeleteHistoryRedoUseCase";
 import { execute as instanceUpdateNameHistoryRedoUseCase } from "@/history/application/core/application/Instance/usecase/InstanceUpdateNameHistoryRedoUseCase";
 import { execute as instanceUpdateSymbolHistoryRedoUseCase } from "@/history/application/core/application/Instance/usecase/InstanceUpdateSymbolHistoryRedoUseCase";
 import {
@@ -93,7 +94,8 @@ import {
     $SOUND_AREA_UPDATE_VOLUME_COMMAND,
     $SOUND_AREA_UPDATE_LOOP_COUNT_COMMAND,
     $LABEL_NEW_REGISTER_COMMAND,
-    $LABEL_UPDATE_COMMAND
+    $LABEL_UPDATE_COMMAND,
+    $LABEL_DELETE_COMMAND
 } from "@/config/HistoryConfig";
 
 /**
@@ -538,6 +540,15 @@ export const execute = async (
                 messages[1] as number, // MovieClipId
                 messages[2] as number, // frame
                 messages[4] as string  // After label
+            );
+            break;
+
+        // ラベルの削除
+        case $LABEL_DELETE_COMMAND:
+            labelDeleteHistoryRedoUseCase(
+                messages[0] as number, // workSpaceId
+                messages[1] as number, // MovieClipId
+                messages[2] as number // frame
             );
             break;
 
