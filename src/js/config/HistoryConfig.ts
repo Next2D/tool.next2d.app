@@ -447,3 +447,12 @@ export const $SOUND_AREA_UPDATE_LOOP_COUNT_COMMAND: number = 46;
  * @constant
  */
 export const $LABEL_NEW_REGISTER_COMMAND: number = 47;
+
+/**
+ * @description ラベル変更履歴の識別コマンド名
+ *              Identification command name for label change history
+ *
+ * @type {number}
+ * @constant
+ */
+export const $LABEL_UPDATE_COMMAND: number = 48;

@@ -40,7 +40,8 @@ import {
     $SOUND_AREA_REMOVE_SOUND_COMMAND,
     $SOUND_AREA_UPDATE_VOLUME_COMMAND,
     $SOUND_AREA_UPDATE_LOOP_COUNT_COMMAND,
-    $LABEL_NEW_REGISTER_COMMAND
+    $LABEL_NEW_REGISTER_COMMAND,
+    $LABEL_UPDATE_COMMAND
 } from "@/config/HistoryConfig";
 
 /**
@@ -176,6 +177,9 @@ export const execute = (command: number): string =>
 
         case $LABEL_NEW_REGISTER_COMMAND:
             return "「%s1」の%s2フレームにラベル「%s3」を登録";
+
+        case $LABEL_UPDATE_COMMAND:
+            return "「%s1」の%s2フレームのラベル「%s3」を「%s4」に変更";
 
         default:
             break;
