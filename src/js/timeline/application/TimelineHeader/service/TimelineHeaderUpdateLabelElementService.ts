@@ -22,12 +22,12 @@ export const execute = (element: HTMLElement, frame: number): void =>
     if (scene.hasLabel(frame)) {
         if (!node.classList.contains("frame-border-box-marker")) {
             node.setAttribute("class", "frame-border-box-marker");
-            node.textContent = scene.getLabel(frame);
         }
+        node.textContent = scene.getLabel(frame);
     } else {
         if (!node.classList.contains("frame-border-box")) {
             node.setAttribute("class", "frame-border-box");
-            node.textContent = "";
         }
+        node.textContent = "";
     }
 };

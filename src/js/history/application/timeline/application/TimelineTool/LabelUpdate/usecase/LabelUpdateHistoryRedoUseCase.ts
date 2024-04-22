@@ -1,7 +1,13 @@
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { InstanceImpl } from "@/interface/InstanceImpl";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
+import { timelineHeader } from "@/timeline/domain/model/TimelineHeader";
+import { execute as timelineHeaderUpdateLabelElementService } from "@/timeline/application/TimelineHeader/service/TimelineHeaderUpdateLabelElementService";
 import { execute as timelineLabelNameUpdateService } from "@/timeline/application/TimelineLabelName/service/TimelineLabelNameUpdateService";
+import {
+    $getLeftFrame,
+    $getRightFrame
+} from "@/timeline/application/TimelineUtil";
 
 /**
  * @description 変更したラベルに戻す
@@ -32,12 +38,26 @@ export const execute = (
         return ;
     }
 
-    movieClip.setAction(frame, after_label);
+    // 内部情報を更新
+    movieClip.setLabel(frame, after_label);
 
     // ラベル名の表示を更新
     if (workSpace.active && movieClip.active
         && movieClip.currentFrame === frame
     ) {
-        timelineLabelNameUpdateService(after_label);
+        // ラベル名の表示を更新
+        if (movieClip.currentFrame === frame) {
+            timelineLabelNameUpdateService(after_label);
+        }
+
+        if ($getLeftFrame() <= frame && $getRightFrame() >= frame) {
+            const node = timelineHeader.elements[frame - $getLeftFrame()] as HTMLElement;
+            if (!node) {
+                return ;
+            }
+
+            // ヘッダーの表示を更新
+            timelineHeaderUpdateLabelElementService(node, frame);
+        }
     }
 };
