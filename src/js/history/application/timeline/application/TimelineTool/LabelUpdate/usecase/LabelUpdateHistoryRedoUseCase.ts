@@ -42,9 +42,8 @@ export const execute = (
     movieClip.setLabel(frame, after_label);
 
     // ラベル名の表示を更新
-    if (workSpace.active && movieClip.active
-        && movieClip.currentFrame === frame
-    ) {
+    if (workSpace.active && movieClip.active) {
+
         // ラベル名の表示を更新
         if (movieClip.currentFrame === frame) {
             timelineLabelNameUpdateService(after_label);
