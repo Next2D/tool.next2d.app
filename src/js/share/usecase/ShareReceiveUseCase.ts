@@ -45,6 +45,7 @@ import { execute as soundAreaRemoveSoundReceiveUseCase } from "@/share/receive/a
 import { execute as soundAreaUpdateVolumeReceiveUseCase } from "@/share/receive/application/controller/application/SoundArea/usecase/SoundAreaUpdateVolumeReceiveUseCase";
 import { execute as soundAreaUpdateLoopCountReceiveUseCase } from "@/share/receive/application/controller/application/SoundArea/usecase/SoundAreaUpdateLoopCountReceiveUseCase";
 import { execute as labelNewRegisterReceiveUseCase } from "@/share/receive/application/timeline/application/TimelineTool/application/LabelNewRegister/usecase/LabelNewRegisterReceiveUseCase";
+import { execute as labelUpdateReceiveUseCase } from "@/share/receive/application/timeline/application/TimelineTool/application/LabelUpdate/usecase/LabelUpdateReceiveUseCase";
 import { execute as historyRedoUseCase } from "@/controller/application/HistoryArea/usecase/HistoryRedoUseCase";
 import { execute as historyUndoUseCase } from "@/controller/application/HistoryArea/usecase/HistoryUndoUseCase";
 import {
@@ -95,7 +96,8 @@ import {
     $SOUND_AREA_REMOVE_SOUND_COMMAND,
     $SOUND_AREA_UPDATE_VOLUME_COMMAND,
     $SOUND_AREA_UPDATE_LOOP_COUNT_COMMAND,
-    $LABEL_NEW_REGISTER_COMMAND
+    $LABEL_NEW_REGISTER_COMMAND,
+    $LABEL_UPDATE_COMMAND
 } from "@/config/HistoryConfig";
 
 /**
@@ -357,6 +359,11 @@ export const execute = async (message: ShareReceiveMessageImpl): Promise<void> =
         // 新規ラベルを追加
         case $LABEL_NEW_REGISTER_COMMAND:
             labelNewRegisterReceiveUseCase(message);
+            break;
+
+        // ラベルを更新
+        case $LABEL_UPDATE_COMMAND:
+            labelUpdateReceiveUseCase(message);
             break;
 
         default:

@@ -32,7 +32,7 @@ export const execute = (message: ShareReceiveMessageImpl): void =>
         workSpace,
         movieClip,
         message.data[2] as NonNullable<number>, // frame
-        message.data[3] as NonNullable<string>, // new label text
+        message.data[4] as NonNullable<string>, // after label
         true
     );
 };
