@@ -15,7 +15,7 @@ import { execute as timelineLabelNameUpdateService } from "@/timeline/applicatio
  * @param  {WorkSpace} work_space
  * @param  {MovieClip} movie_clip
  * @param  {number} frame
- * @param  {string} label
+ * @param  {string} [label = ""]
  * @param  {boolean} [receiver = false]
  * @return {void}
  * @method
@@ -25,7 +25,7 @@ export const execute = (
     work_space: WorkSpace,
     movie_clip: MovieClip,
     frame: number,
-    label: string,
+    label: string = "",
     receiver: boolean = false
 ): void => {
 

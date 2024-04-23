@@ -75,19 +75,28 @@ export class ExternalSoundArea
      *
      * @param  {number} frame
      * @param  {string} path
+     * @param  {number} [volume=100]
+     * @param  {boolean} [auto_play=false]
+     * @param  {number} [loop_count=0]
      * @return {void}
      * @method
      * @public
      */
     addSound (
         frame: number,
-        path: string
+        path: string,
+        volume: number = 100,
+        auto_play: boolean = false,
+        loop_count: number = 0
     ): void {
         externalSoundAreaAddSoundUseCase(
             this._$workSpace,
             this._$movieClip,
             frame,
-            path
+            path,
+            volume,
+            auto_play,
+            loop_count
         );
     }
 

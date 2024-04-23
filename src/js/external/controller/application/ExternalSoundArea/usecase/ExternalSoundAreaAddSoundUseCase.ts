@@ -28,6 +28,9 @@ export const execute = (
     movie_clip: MovieClip,
     frame: number,
     path: string,
+    volume: number = 100,
+    auto_play: boolean = false,
+    loop_count: number = 0,
     receiver: boolean = false
 ): void => {
 
@@ -40,9 +43,9 @@ export const execute = (
     // 新規サウンドオブジェクトを作成
     const soundObject: SoundObjectImpl = {
         "libraryId": externalSound.id,
-        "volume": 100,
-        "autoPlay": false,
-        "loopCount": 0
+        "volume": volume,
+        "autoPlay": auto_play,
+        "loopCount": loop_count
     };
 
     // MovieClipにサウンドオブジェクトを登録
@@ -70,16 +73,19 @@ export const execute = (
         // サウンドElementを更新
         timelineHeaderUpdateSoundElementService(element, frame);
 
-        const sounds = movie_clip.getSound(frame);
-        if (!sounds) {
-            return ;
-        }
+        // フレームが一致する場合は設定エリアに追加
+        if (movie_clip.currentFrame === frame) {
+            const sounds = movie_clip.getSound(frame);
+            if (!sounds) {
+                return ;
+            }
 
-        // サウンドエリアに設定エリアを追加
-        soundAreaAddSettingAreaUseCase(
-            sounds.indexOf(soundObject),
-            externalSound.name,
-            soundObject
-        );
+            // サウンドエリアに設定エリアを追加
+            soundAreaAddSettingAreaUseCase(
+                sounds.indexOf(soundObject),
+                externalSound.name,
+                soundObject
+            );
+        }
     }
 };

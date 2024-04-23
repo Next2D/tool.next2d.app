@@ -16,5 +16,7 @@ describe("TimelineHeaderUpdateClientWidthServiceTest", () =>
         execute();
 
         expect(timelineHeader.clientWidth).toBe(0);
+
+        div.remove();
     });
 });

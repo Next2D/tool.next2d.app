@@ -50,8 +50,7 @@ export const execute = async (
                 work_space,
                 movie_clip,
                 movie_clip.currentFrame,
-                path,
-                receiver
+                path
             );
             return ;
 

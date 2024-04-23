@@ -433,3 +433,71 @@ export const $getMoveLayerMode = (): boolean =>
 {
     return $moveLayerMode;
 };
+
+/**
+ * @type {string}
+ * @default ""
+ * @private
+ */
+let $moveIconType: string = "";
+
+/**
+ * @description 移動するアイコンのタイプを返却
+ *              Returns the type of icon to move
+ *
+ * @return {string}
+ * @method
+ * @public
+ */
+export const $getMoveIconType = (): string =>
+{
+    return $moveIconType;
+};
+
+/**
+ * @description 移動するアイコンのタイプを設定
+ *              Set the type of icon to move
+ *
+ * @param  {string} type
+ * @return {void}
+ * @method
+ * @public
+ */
+export const $setMoveIconType = (type: string): void =>
+{
+    $moveIconType = type;
+};
+
+/**
+ * @type {number}
+ * @default 0
+ * @private
+ */
+let $moveIconFrame: number = 0;
+
+/**
+ * @description 移動するアイコンのFrameを返却
+ *              Returns the Frame of the icon to move
+ *
+ * @return {number}
+ * @method
+ * @public
+ */
+export const $getMoveIconFrame = (): number =>
+{
+    return $moveIconFrame;
+};
+
+/**
+ * @description 移動するアイコンのFrameをセット
+ *              Set the Frame of the icon to move
+ *
+ * @param  {number} frame
+ * @return {void}
+ * @method
+ * @public
+ */
+export const $setMoveIconFrame = (frame: number): void =>
+{
+    $moveIconFrame = frame;
+};

@@ -1,4 +1,9 @@
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
+import { $TIMELINE_MARKER_ID } from "@/config/TimelineConfig";
+import {
+    $setMoveIconFrame,
+    $setMoveIconType
+} from "../../TimelineUtil";
 
 /**
  * @description スクリプトアイコンのマウスダウンイベントの実行関数
@@ -28,8 +33,21 @@ export const execute = (event: PointerEvent): void =>
         return ;
     }
 
+    // マーカーのイベントを無効化
+    const markerElement = document.getElementById($TIMELINE_MARKER_ID);
+    if (markerElement) {
+        markerElement.style.pointerEvents = "none";
+    }
+
     // 親のイベントを終了
     event.stopPropagation();
 
+    // ドラッグ可能にする
     element.draggable = true;
+
+    // 移動するアイコンのタイプをセット
+    $setMoveIconType("script");
+
+    // 移動するFrameをセット
+    $setMoveIconFrame(frame);
 };
