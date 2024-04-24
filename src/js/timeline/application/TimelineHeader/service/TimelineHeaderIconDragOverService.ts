@@ -15,8 +15,7 @@ import {
 export const execute = (event: DragEvent): void =>
 {
     // 移動変数がない場合は処理しない
-    const moveIconType = $getMoveIconType();
-    if (!moveIconType || !$getMoveIconFrame()) {
+    if (!$getMoveIconType() || !$getMoveIconFrame()) {
         return ;
     }
 
