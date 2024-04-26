@@ -1,6 +1,7 @@
 import {
     $getMoveIconFrame,
-    $getMoveIconType
+    $getMoveIconType,
+    $setDestIconFrame
 } from "../../TimelineUtil";
 import {
     $TIMELINE_HEADER_LABEL_INDEX,
@@ -9,15 +10,15 @@ import {
 } from "@/config/TimelineConfig";
 
 /**
- * @description ドラッグオーバーイベントを実行する
- *              Execute drag over event
+ * @description マウスアウトイベントを実行する
+ *              Execute the mouse out event
  *
- * @param  {DragEvent} event
+ * @param  {PointerEvent} event
  * @return {void}
  * @method
  * @public
  */
-export const execute = (event: DragEvent): void =>
+export const execute = (event: PointerEvent): void =>
 {
     // 移動変数がない場合は処理しない
     const moveIconType = $getMoveIconType();
@@ -31,6 +32,13 @@ export const execute = (event: DragEvent): void =>
 
     // 対象のフレームに色をつける
     const element = event.currentTarget as HTMLElement;
+    if (!element) {
+        return ;
+    }
+
+    // 移動先を初期化
+    $setDestIconFrame(0);
+
     switch (moveIconType) {
 
         case "script":
@@ -39,7 +47,7 @@ export const execute = (event: DragEvent): void =>
                 if (!node) {
                     return ;
                 }
-                node.style.backgroundColor = "#3692f0";
+                node.style.backgroundColor = "";
             }
             break;
 
@@ -49,7 +57,7 @@ export const execute = (event: DragEvent): void =>
                 if (!node) {
                     return ;
                 }
-                node.style.backgroundColor = "#3692f0";
+                node.style.backgroundColor = "";
             }
             break;
 
@@ -59,7 +67,7 @@ export const execute = (event: DragEvent): void =>
                 if (!node) {
                     return ;
                 }
-                node.style.backgroundColor = "#3692f0";
+                node.style.backgroundColor = "";
             }
             break;
 

@@ -10,8 +10,8 @@ import { execute as timelineHeaderInitializeUseCase } from "../../application/Ti
 class TimelineHeader
 {
     private _$clientWidth: number;
-    private readonly _$elements: HTMLElement[];
     private _$stopFlag: boolean;
+    private readonly _$elements: HTMLElement[];
 
     /**
      * @constructor

@@ -1,4 +1,4 @@
-import { execute } from "./TimelineHeaderIconDragLeaveService";
+import { execute } from "./TimelineHeaderIconMouseOverService";
 import {
     $setMoveIconType,
     $setMoveIconFrame
@@ -9,7 +9,7 @@ import {
     $TIMELINE_HEADER_SOUND_INDEX
 } from "../../../../config/TimelineConfig";
 
-describe("TimelineHeaderIconDragLeaveServiceTest", () =>
+describe("TimelineHeaderIconMouseOverServiceTest", () =>
 {
     test("execute test script", (): void =>
     {
@@ -19,7 +19,7 @@ describe("TimelineHeaderIconDragLeaveServiceTest", () =>
         const parent = document.createElement("div");
         for (let idx = 0; idx < 5; ++idx) {
             const node = document.createElement("div");
-            node.style.backgroundColor = "#3692f0";
+            node.style.backgroundColor = "";
             parent.appendChild(node);
         }
 
@@ -33,15 +33,15 @@ describe("TimelineHeaderIconDragLeaveServiceTest", () =>
             "preventDefault": () => {}
         };
 
-        expect(labelElement.style.backgroundColor).toBe("rgb(54, 146, 240)");
-        expect(scriptElement.style.backgroundColor).toBe("rgb(54, 146, 240)");
-        expect(soundElement.style.backgroundColor).toBe("rgb(54, 146, 240)");
+        expect(labelElement.style.backgroundColor).toBe("");
+        expect(scriptElement.style.backgroundColor).toBe("");
+        expect(soundElement.style.backgroundColor).toBe("");
 
         execute(mockEvent);
 
-        expect(labelElement.style.backgroundColor).toBe("rgb(54, 146, 240)");
-        expect(scriptElement.style.backgroundColor).toBe("");
-        expect(soundElement.style.backgroundColor).toBe("rgb(54, 146, 240)");
+        expect(labelElement.style.backgroundColor).toBe("");
+        expect(scriptElement.style.backgroundColor).toBe("rgb(54, 146, 240)");
+        expect(soundElement.style.backgroundColor).toBe("");
     });
 
     test("execute test label", (): void =>
@@ -52,7 +52,7 @@ describe("TimelineHeaderIconDragLeaveServiceTest", () =>
         const parent = document.createElement("div");
         for (let idx = 0; idx < 5; ++idx) {
             const node = document.createElement("div");
-            node.style.backgroundColor = "#3692f0";
+            node.style.backgroundColor = "";
             parent.appendChild(node);
         }
 
@@ -66,15 +66,15 @@ describe("TimelineHeaderIconDragLeaveServiceTest", () =>
             "preventDefault": () => {}
         };
 
-        expect(labelElement.style.backgroundColor).toBe("rgb(54, 146, 240)");
-        expect(scriptElement.style.backgroundColor).toBe("rgb(54, 146, 240)");
-        expect(soundElement.style.backgroundColor).toBe("rgb(54, 146, 240)");
+        expect(labelElement.style.backgroundColor).toBe("");
+        expect(scriptElement.style.backgroundColor).toBe("");
+        expect(soundElement.style.backgroundColor).toBe("");
 
         execute(mockEvent);
 
-        expect(labelElement.style.backgroundColor).toBe("");
-        expect(scriptElement.style.backgroundColor).toBe("rgb(54, 146, 240)");
-        expect(soundElement.style.backgroundColor).toBe("rgb(54, 146, 240)");
+        expect(labelElement.style.backgroundColor).toBe("rgb(54, 146, 240)");
+        expect(scriptElement.style.backgroundColor).toBe("");
+        expect(soundElement.style.backgroundColor).toBe("");
     });
 
     test("execute test sound", (): void =>
@@ -85,7 +85,7 @@ describe("TimelineHeaderIconDragLeaveServiceTest", () =>
         const parent = document.createElement("div");
         for (let idx = 0; idx < 5; ++idx) {
             const node = document.createElement("div");
-            node.style.backgroundColor = "#3692f0";
+            node.style.backgroundColor = "";
             parent.appendChild(node);
         }
 
@@ -99,14 +99,14 @@ describe("TimelineHeaderIconDragLeaveServiceTest", () =>
             "preventDefault": () => {}
         };
 
-        expect(labelElement.style.backgroundColor).toBe("rgb(54, 146, 240)");
-        expect(scriptElement.style.backgroundColor).toBe("rgb(54, 146, 240)");
-        expect(soundElement.style.backgroundColor).toBe("rgb(54, 146, 240)");
+        expect(labelElement.style.backgroundColor).toBe("");
+        expect(scriptElement.style.backgroundColor).toBe("");
+        expect(soundElement.style.backgroundColor).toBe("");
 
         execute(mockEvent);
 
-        expect(labelElement.style.backgroundColor).toBe("rgb(54, 146, 240)");
-        expect(scriptElement.style.backgroundColor).toBe("rgb(54, 146, 240)");
-        expect(soundElement.style.backgroundColor).toBe("");
+        expect(labelElement.style.backgroundColor).toBe("");
+        expect(scriptElement.style.backgroundColor).toBe("");
+        expect(soundElement.style.backgroundColor).toBe("rgb(54, 146, 240)");
     });
 });

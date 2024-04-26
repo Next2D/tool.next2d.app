@@ -1,13 +1,10 @@
 import { EventType } from "@/tool/domain/event/EventType";
 import { execute as timelineHeaderMouseDownEventUseCase } from "./TimelineHeaderMouseDownEventUseCase";
-import { execute as timelineHeaderScriptIconMouseDownEventService } from "../service/TimelineHeaderScriptIconMouseDownEventService";
-import { execute as timelineHeaderLabelIconMouseDownEventService } from "../service/TimelineHeaderLabelIconMouseDownEventService";
-import { execute as timelineHeaderSoundIconMouseDownEventService } from "../service/TimelineHeaderSoundIconMouseDownEventService";
-import { execute as timelineHeaderIconDragEndEventService } from "../service/TimelineHeaderIconDragEndEventService";
-import { execute as timelineHeaderIconDragOverService } from "../service/TimelineHeaderIconDragOverService";
-import { execute as timelineHeaderIconDragEnterService } from "../service/TimelineHeaderIconDragEnterService";
-import { execute as timelineHeaderIconDragLeaveService } from "../service/TimelineHeaderIconDragLeaveService";
-import { execute as timelineHeaderIconDropUseCase } from "./TimelineHeaderIconDropUseCase";
+import { execute as timelineHeaderScriptIconMouseDownEventUseCase } from "./TimelineHeaderScriptIconMouseDownEventUseCase";
+import { execute as timelineHeaderSoundIconMouseDownEventUseCase } from "./TimelineHeaderSoundIconMouseDownEventUseCase";
+import { execute as timelineHeaderLabelIconMouseDownEventUseCase } from "./TimelineHeaderLabelIconMouseDownEventUseCase";
+import { execute as timelineHeaderIconMouseOverService } from "../service/TimelineHeaderIconMouseOverService";
+import { execute as timelineHeaderIconMouseOutService } from "../service/TimelineHeaderIconMouseOutService";
 import {
     $TIMELINE_HEADER_LABEL_INDEX,
     $TIMELINE_HEADER_SCRIPT_INDEX,
@@ -34,12 +31,7 @@ export const execute = (element: HTMLElement): void =>
     const scriptElement = element.children[$TIMELINE_HEADER_SCRIPT_INDEX] as HTMLElement;
     if (scriptElement) {
         scriptElement.addEventListener(EventType.MOUSE_DOWN,
-            timelineHeaderScriptIconMouseDownEventService
-        );
-
-        // ドラッグエンドイベント
-        scriptElement.addEventListener("dragend",
-            timelineHeaderIconDragEndEventService
+            timelineHeaderScriptIconMouseDownEventUseCase
         );
     }
 
@@ -47,12 +39,7 @@ export const execute = (element: HTMLElement): void =>
     const labelElement = element.children[$TIMELINE_HEADER_LABEL_INDEX] as HTMLElement;
     if (labelElement) {
         labelElement.addEventListener(EventType.MOUSE_DOWN,
-            timelineHeaderLabelIconMouseDownEventService
-        );
-
-        // ドラッグエンドイベント
-        labelElement.addEventListener("dragend",
-            timelineHeaderIconDragEndEventService
+            timelineHeaderLabelIconMouseDownEventUseCase
         );
     }
 
@@ -60,18 +47,11 @@ export const execute = (element: HTMLElement): void =>
     const soundElement = element.children[$TIMELINE_HEADER_SOUND_INDEX] as HTMLElement;
     if (soundElement) {
         soundElement.addEventListener(EventType.MOUSE_DOWN,
-            timelineHeaderSoundIconMouseDownEventService
-        );
-
-        // ドラッグエンドイベント
-        soundElement.addEventListener("dragend",
-            timelineHeaderIconDragEndEventService
+            timelineHeaderSoundIconMouseDownEventUseCase
         );
     }
 
-    // drop & drag イベント
-    element.addEventListener("dragenter", timelineHeaderIconDragEnterService);
-    element.addEventListener("dragover", timelineHeaderIconDragOverService);
-    element.addEventListener("dragleave", timelineHeaderIconDragLeaveService);
-    element.addEventListener("drop", timelineHeaderIconDropUseCase);
+    // 移動処理
+    element.addEventListener(EventType.MOUSE_OVER, timelineHeaderIconMouseOverService);
+    element.addEventListener(EventType.MOUSE_OUT, timelineHeaderIconMouseOutService);
 };

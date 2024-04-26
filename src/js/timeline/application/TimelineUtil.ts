@@ -501,3 +501,37 @@ export const $setMoveIconFrame = (frame: number): void =>
 {
     $moveIconFrame = frame;
 };
+
+/**
+ * @type {number}
+ * @default 0
+ * @private
+ */
+let $destIconFrame: number = 0;
+
+/**
+ * @description 移動先のFrameを返却
+ *              Returns the destination Frame
+ *
+ * @return {number}
+ * @method
+ * @public
+ */
+export const $getDestIconFrame = (): number =>
+{
+    return $destIconFrame;
+};
+
+/**
+ * @description 移動先のFrameをセット
+ *              Set the destination Frame
+ *
+ * @param  {number} frame
+ * @return {void}
+ * @method
+ * @public
+ */
+export const $setDestIconFrame = (frame: number): void =>
+{
+    $destIconFrame = frame;
+};

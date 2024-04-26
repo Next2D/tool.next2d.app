@@ -1,23 +1,24 @@
 import {
-    $getMoveIconFrame,
-    $getMoveIconType
-} from "../../TimelineUtil";
-import {
     $TIMELINE_HEADER_LABEL_INDEX,
     $TIMELINE_HEADER_SCRIPT_INDEX,
     $TIMELINE_HEADER_SOUND_INDEX
 } from "@/config/TimelineConfig";
+import {
+    $getMoveIconFrame,
+    $getMoveIconType,
+    $setDestIconFrame
+} from "../../TimelineUtil";
 
 /**
- * @description ドラッグオーバーイベントを実行する
- *              Execute drag over event
+ * @description マウスオーバーイベントを実行する
+ *              Execute mouse over event
  *
- * @param  {DragEvent} event
+ * @param  {PointerEvent} event
  * @return {void}
  * @method
  * @public
  */
-export const execute = (event: DragEvent): void =>
+export const execute = (event: PointerEvent): void =>
 {
     // 移動変数がない場合は処理しない
     const moveIconType = $getMoveIconType();
@@ -29,8 +30,14 @@ export const execute = (event: DragEvent): void =>
     event.stopPropagation();
     event.preventDefault();
 
-    // 対象のフレームに色をつける
     const element = event.currentTarget as HTMLElement;
+    if (!element) {
+        return ;
+    }
+
+    // 移動先のフレームをセット
+    $setDestIconFrame(parseInt(element.dataset.frame as string));
+
     switch (moveIconType) {
 
         case "script":
@@ -39,7 +46,7 @@ export const execute = (event: DragEvent): void =>
                 if (!node) {
                     return ;
                 }
-                node.style.backgroundColor = "";
+                node.style.backgroundColor = "#3692f0";
             }
             break;
 
@@ -49,7 +56,7 @@ export const execute = (event: DragEvent): void =>
                 if (!node) {
                     return ;
                 }
-                node.style.backgroundColor = "";
+                node.style.backgroundColor = "#3692f0";
             }
             break;
 
@@ -59,7 +66,7 @@ export const execute = (event: DragEvent): void =>
                 if (!node) {
                     return ;
                 }
-                node.style.backgroundColor = "";
+                node.style.backgroundColor = "#3692f0";
             }
             break;
 
