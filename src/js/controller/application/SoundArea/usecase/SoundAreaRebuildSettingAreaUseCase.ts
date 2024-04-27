@@ -1,6 +1,7 @@
 import { $SOUND_AREA_SOUND_LIST_AREA_ID } from "@/config/PropertyConfig";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { execute as soundAreaAddSettingAreaUseCase } from "./SoundAreaAddSettingAreaUseCase";
+import { timelineHeader } from "@/timeline/domain/model/TimelineHeader";
 
 /**
  * @description 現在のフレームに設定されているサウンドの設定表示を再構成
@@ -20,6 +21,11 @@ export const execute = (): void =>
     // 設定エリアを初期化
     while (element.firstElementChild) {
         element.firstElementChild.remove();
+    }
+
+    // 再生中は処理を行わない
+    if (!timelineHeader.stopFlag) {
+        return ;
     }
 
     const workSpace = $getCurrentWorkSpace();

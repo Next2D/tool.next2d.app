@@ -5,6 +5,7 @@ import {
     $TIMELINE_MARKER_ID
 } from "@/config/TimelineConfig";
 import {
+    $setDestIconFrame,
     $setMoveIconFrame,
     $setMoveIconType
 } from "../../TimelineUtil";
@@ -69,6 +70,9 @@ export const execute = (event: PointerEvent): void =>
 
     // 移動するFrameをセット
     $setMoveIconFrame(frame);
+
+    // 移動先をリセット
+    $setDestIconFrame(frame);
 
     // windwoイベント登録
     timelineHeaderIconRegisterWindowEventUseCase();

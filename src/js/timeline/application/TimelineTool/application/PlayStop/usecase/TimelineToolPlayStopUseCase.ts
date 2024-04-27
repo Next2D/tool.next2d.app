@@ -4,6 +4,8 @@ import { ExternalTimeline } from "@/external/timeline/domain/model/ExternalTimel
 import { $getRightFrame } from "@/timeline/application/TimelineUtil";
 import { timelineHeader } from "@/timeline/domain/model/TimelineHeader";
 import { execute as timelineScrollUpdateScrollXUseCase } from "@/timeline/application/TimelineScroll/usecase/TimelineScrollUpdateScrollXUseCase";
+import { execute as soundAreaRebuildSettingAreaUseCase } from "@/controller/application/SoundArea/usecase/SoundAreaRebuildSettingAreaUseCase";
+import { execute as timelineLabelNameUpdateService } from "@/timeline/application/TimelineLabelName/service/TimelineLabelNameUpdateService";
 
 /**
  * @type {number}
@@ -50,7 +52,21 @@ export const execute = async (): Promise<void> =>
     if (timelineHeader.stopFlag) {
         // 停止処理
         clearInterval(timerId);
+
+        // 停止したフレームのラベルを表示
+        timelineLabelNameUpdateService(
+            movieClip.getLabel(movieClip.currentFrame)
+        );
+
+        // サウンドエリアの設定エリアを再構築
+        soundAreaRebuildSettingAreaUseCase();
     } else {
+
+        // ラベルの表示を初期化
+        timelineLabelNameUpdateService("");
+
+        // サウンドエリアの設定エリアを再構築
+        soundAreaRebuildSettingAreaUseCase();
 
         // 外部APIを起動
         const externalTimeline = new ExternalTimeline(workSpace, movieClip);
@@ -67,8 +83,20 @@ export const execute = async (): Promise<void> =>
         {
             // 停止フラグが立っていたら処理を終了
             if (timelineHeader.stopFlag) {
+
+                // タイマーの停止処理
                 clearInterval(timerId);
+
+                // 再生表示に切り替え
                 element.setAttribute("class", "play");
+
+                // 停止したフレームのラベルを表示
+                timelineLabelNameUpdateService(
+                    movieClip.getLabel(movieClip.currentFrame)
+                );
+
+                // サウンドエリアの設定エリアを再構築
+                soundAreaRebuildSettingAreaUseCase();
                 return ;
             }
 
@@ -86,7 +114,7 @@ export const execute = async (): Promise<void> =>
                         // スクロール値を1フレーム目に戻す
                         timelineScrollUpdateScrollXUseCase(-movieClip.scrollX);
 
-                        // １フレーム目に移動
+                        // 1フレーム目に移動
                         await externalTimeline.changeFrame(1);
 
                         // タイマーをセットして終了
@@ -100,6 +128,14 @@ export const execute = async (): Promise<void> =>
 
                         // 再生表示に切り替え
                         element.setAttribute("class", "play");
+
+                        // 停止したフレームのラベルを表示
+                        timelineLabelNameUpdateService(
+                            movieClip.getLabel(movieClip.currentFrame)
+                        );
+
+                        // サウンドエリアの設定エリアを再構築
+                        soundAreaRebuildSettingAreaUseCase();
                     }
                 } else {
                     // マーカーが画面の右端に到達したらレイヤレイヤーを移動

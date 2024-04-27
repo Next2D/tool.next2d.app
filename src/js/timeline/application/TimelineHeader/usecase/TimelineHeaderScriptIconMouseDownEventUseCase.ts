@@ -72,7 +72,7 @@ export const execute = (event: PointerEvent): void =>
     $setMoveIconFrame(frame);
 
     // 移動先をリセット
-    $setDestIconFrame(0);
+    $setDestIconFrame(frame);
 
     // windwoイベント登録
     timelineHeaderIconRegisterWindowEventUseCase();
