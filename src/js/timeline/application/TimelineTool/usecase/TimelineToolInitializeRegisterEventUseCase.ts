@@ -11,6 +11,7 @@ import { execute as timelineToolInsertFramesInitializeRegisterEventUseCase } fro
 import { execute as timelineToolEraseFramesInitializeRegisterEventUseCase } from "../application/EraseFrames/usecase/TimelineToolEraseFramesInitializeRegisterEventUseCase";
 import { execute as timelineToolDeleteKeyframeInitializeRegisterEventUseCase } from "../application/DeleteKeyframe/usecase/TimelineToolDeleteKeyframeInitializeRegisterEventUseCase";
 import { execute as timelineToolLabelInputInitializeRegisterEventUseCase } from "../application/LabelInput/usecase/TimelineToolLabelInputInitializeRegisterEventUseCase";
+import { execute as timelineToolRepeatInitializeRegisterEventUseCase } from "../application/Repeat/usecase/TimelineToolRepeatInitializeRegisterEventUseCase";
 
 /**
  * @description タイムラインの各種ツールにイベント登録を行う
@@ -60,4 +61,7 @@ export const execute = (): void =>
 
     // ラベル名操作のイベント登録
     timelineToolLabelInputInitializeRegisterEventUseCase();
+
+    // ループ設定のイベント登録
+    timelineToolRepeatInitializeRegisterEventUseCase();
 };

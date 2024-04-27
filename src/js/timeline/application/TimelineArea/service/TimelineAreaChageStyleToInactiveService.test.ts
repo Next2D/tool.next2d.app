@@ -10,7 +10,7 @@ describe("TTimelineAreaChageStyleToInactiveServiceTest", () =>
         const mockElement = {
             "style": {
                 "width": "1000px",
-                "minWidth": "860px",
+                "minWidth": "890px",
                 "left": "10px",
                 "top": "20px",
                 "zIndex": "16777215",

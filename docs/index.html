@@ -166,10 +166,8 @@
                         <div class="timeline-border"></div>
             
                         <input type="number" id="current-frame" value="1" autocomplete="off" tabindex="-1">
-                        <i id="timeline-play" data-detail="{{再生}}" data-shortcut-key="Enter" data-shortcut-text="Enter"></i>
-                        <i style="display: none;" id="timeline-stop" data-detail="{{停止}}" data-shortcut-key="Enter" data-shortcut-text="Enter"></i>
-                        <i style="display: none;" id="timeline-repeat" data-detail="{{ループ設定}}" data-shortcut-key="lShiftCtrl" data-shortcut-text="Shift + Ctrl + L"></i>
-                        <i id="timeline-no-repeat" data-detail="{{ループ設定}}" data-shortcut-key="lShiftCtrl" data-shortcut-text="Shift + Ctrl + L"></i>
+                        <i id="timeline-play" class="play" data-detail="{{再生}}" data-shortcut-key="Enter" data-shortcut-text="Enter"></i>
+                        <i id="timeline-repeat" class="no-repeat" data-detail="{{ループ設定}}" data-shortcut-key="lShiftCtrl" data-shortcut-text="Shift + Ctrl + L"></i>
                         <div class="timeline-border"></div>
                         <input type="text" placeholder="Label" id="label-name" value="" data-detail="{{フレームラベル}}" data-shortcut-key="l" data-shortcut-text="L" autocomplete="off" tabindex="-1">
                         <div class="timeline-border"></div>
@@ -192,6 +190,7 @@
             
                     <div id="timeline-controller-base">
                         <div id="timeline-marker"></div>
+                        <div id="timeline-header-icon"></div>
                         <div id="timeline-header"></div>
                     </div>
             

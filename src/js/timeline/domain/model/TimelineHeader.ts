@@ -11,6 +11,7 @@ class TimelineHeader
 {
     private _$clientWidth: number;
     private _$stopFlag: boolean;
+    private _$loopFlag: boolean;
     private readonly _$elements: HTMLElement[];
 
     /**
@@ -38,6 +39,29 @@ class TimelineHeader
          * @private
          */
         this._$stopFlag = true;
+
+        /**
+         * @type {boolean}
+         * @default false
+         * @private
+         */
+        this._$loopFlag = false;
+    }
+
+    /**
+     * @description タイムラインのループフラグ
+     *              Loop flag of the timeline
+     *
+     * @member {boolean}
+     * @public
+     */
+    get loopFlag (): boolean
+    {
+        return this._$loopFlag;
+    }
+    set loopFlag (loop_flag: boolean)
+    {
+        this._$loopFlag = loop_flag;
     }
 
     /**

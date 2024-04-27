@@ -29,6 +29,34 @@
             display     : flex;
             align-items : center;
             height      : 40px;
+
+            .repeat
+            {
+                background-image    : url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"><path fill="darkgray" d="M2 12c0 .999.381 1.902.989 2.604l-1.098.732-.587.392c-.814-1.025-1.304-2.318-1.304-3.728 0-3.313 2.687-6 6-6h9v-3l6 4-6 4v-3h-9c-2.206 0-4 1.794-4 4zm20.696-3.728l-.587.392-1.098.732c.608.702.989 1.605.989 2.604 0 2.206-1.795 4-4 4h-9v-3l-6 4 6 4v-3h9c3.313 0 6-2.687 6-6 0-1.41-.489-2.703-1.304-3.728z"/></svg>');
+                background-repeat   : no-repeat;
+                background-position : center 4px;
+            }
+        
+            .no-repeat
+            {
+                background-image    : url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"><path fill="darkgray" d="M18.5 8h-2.5v2h2.5c1.93 0 3.5 1.57 3.5 3.5s-1.57 3.5-3.5 3.5h-13c-1.93 0-3.5-1.57-3.5-3.5s1.57-3.5 3.5-3.5h2.5v3l6-4-6-4v3h-2.5c-3.037 0-5.5 2.463-5.5 5.5s2.463 5.5 5.5 5.5h13c3.037 0 5.5-2.463 5.5-5.5s-2.463-5.5-5.5-5.5z"/></svg>');
+                background-repeat   : no-repeat;
+                background-position : center center;
+            }
+
+            .play
+            {
+                background-image    : url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"><path fill="darkgray" d="M2 24v-24l20 12-20 12z"/></svg>');
+                background-repeat   : no-repeat;
+                background-position : center center;
+            }
+
+            .stop
+            {
+                background-image    : url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"><path fill="darkgray" d="M2 2h20v20h-20z"/></svg>');
+                background-repeat   : no-repeat;
+                background-position : center center;
+            }
         }
     }
 
@@ -522,26 +550,6 @@
 {
     width               : 20px;
     height              : 20px;
-    background-image    : url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"><path fill="darkgray" d="M2 24v-24l20 12-20 12z"/></svg>');
-    background-repeat   : no-repeat;
-    background-position : center center;
-    margin              : 6px;
-    flex-shrink         : 0;
-
-    &:hover
-    {
-        filter : brightness(250%);
-        cursor : pointer;
-    }
-}
-
-#timeline-stop
-{
-    width               : 20px;
-    height              : 20px;
-    background-image    : url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"><path fill="darkgray" d="M2 2h20v20h-20z"/></svg>');
-    background-repeat   : no-repeat;
-    background-position : center center;
     margin              : 6px;
     flex-shrink         : 0;
 
@@ -554,30 +562,10 @@
 
 #timeline-repeat
 {
-    width               : 20px;
-    height              : 20px;
-    background-image    : url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"><path fill="darkgray" d="M2 12c0 .999.381 1.902.989 2.604l-1.098.732-.587.392c-.814-1.025-1.304-2.318-1.304-3.728 0-3.313 2.687-6 6-6h9v-3l6 4-6 4v-3h-9c-2.206 0-4 1.794-4 4zm20.696-3.728l-.587.392-1.098.732c.608.702.989 1.605.989 2.604 0 2.206-1.795 4-4 4h-9v-3l-6 4 6 4v-3h9c3.313 0 6-2.687 6-6 0-1.41-.489-2.703-1.304-3.728z"/></svg>');
-    background-repeat   : no-repeat;
-    background-position : center 4px;
-    margin              : 6px;
-    flex-shrink         : 0;
-
-    &:hover
-    {
-        filter : brightness(250%);
-        cursor : pointer;
-    }
-}
-
-#timeline-no-repeat
-{
-    width               : 20px;
-    height              : 20px;
-    background-image    : url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"><path fill="darkgray" d="M18.5 8h-2.5v2h2.5c1.93 0 3.5 1.57 3.5 3.5s-1.57 3.5-3.5 3.5h-13c-1.93 0-3.5-1.57-3.5-3.5s1.57-3.5 3.5-3.5h2.5v3l6-4-6-4v3h-2.5c-3.037 0-5.5 2.463-5.5 5.5s2.463 5.5 5.5 5.5h13c3.037 0 5.5-2.463 5.5-5.5s-2.463-5.5-5.5-5.5z"/></svg>');
-    background-repeat   : no-repeat;
-    background-position : center center;
-    margin              : 6px;
-    flex-shrink         : 0;
+    width       : 20px;
+    height      : 20px;
+    margin      : 6px;
+    flex-shrink : 0;
 
     &:hover
     {

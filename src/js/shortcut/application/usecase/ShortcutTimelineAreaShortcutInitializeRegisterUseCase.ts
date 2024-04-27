@@ -8,6 +8,7 @@ import { execute as timelineToolInsertFramesUseCase } from "@/timeline/applicati
 import { execute as timelineToolAddKeyFrameUseCase } from "@/timeline/application/TimelineTool/application/AddKeyFrame/usecase/TimelineToolAddKeyFrameUseCase";
 import { execute as timelineToolEraseFramesUseCase } from "@/timeline/application/TimelineTool/application/EraseFrames/usecase/TimelineToolEraseFramesUseCase";
 import { execute as timelineToolDeleteKeyframeUseCase } from "@/timeline/application/TimelineTool/application/DeleteKeyframe/usecase/TimelineToolDeleteKeyframeUseCase";
+import { execute as timelineToolRepeatUseCase } from "@/timeline/application/TimelineTool/application/Repeat/usecase/TimelineToolRepeatUseCase";
 import {
     $generateShortcutKey,
     $setShortcut
@@ -86,5 +87,11 @@ export const execute = (): void =>
     $setShortcut(
         $generateShortcutKey("k", { "ctrl": true }),
         timelineToolDeleteKeyframeUseCase
+    );
+
+    // ループ設定
+    $setShortcut(
+        $generateShortcutKey("l", { "ctrl": true, "shift": true}),
+        timelineToolRepeatUseCase
     );
 };

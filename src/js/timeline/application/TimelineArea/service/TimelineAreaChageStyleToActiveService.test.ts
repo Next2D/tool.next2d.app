@@ -42,7 +42,7 @@ describe("TimelineAreaChageStyleToActiveServiceTest", () =>
         execute(mockElement);
 
         expect(mockElement.style.width).toBe("var(--timeline-logic-width)");
-        expect(mockElement.style.minWidth).toBe("860px");
+        expect(mockElement.style.minWidth).toBe("890px");
         expect(mockElement.style.left).toBe("10px");
         expect(mockElement.style.top).toBe("20px");
         expect(mockElement.style.zIndex).toBe("65535");
