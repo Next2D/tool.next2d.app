@@ -12,6 +12,7 @@ import { execute as timelineToolEraseFramesInitializeRegisterEventUseCase } from
 import { execute as timelineToolDeleteKeyframeInitializeRegisterEventUseCase } from "../application/DeleteKeyframe/usecase/TimelineToolDeleteKeyframeInitializeRegisterEventUseCase";
 import { execute as timelineToolLabelInputInitializeRegisterEventUseCase } from "../application/LabelInput/usecase/TimelineToolLabelInputInitializeRegisterEventUseCase";
 import { execute as timelineToolRepeatInitializeRegisterEventUseCase } from "../application/Repeat/usecase/TimelineToolRepeatInitializeRegisterEventUseCase";
+import { execute as timelineToolPlayStopInitializeRegisterEventUseCase } from "../application/PlayStop/usecase/TimelineToolPlayStopInitializeRegisterEventUseCase";
 
 /**
  * @description タイムラインの各種ツールにイベント登録を行う
@@ -64,4 +65,7 @@ export const execute = (): void =>
 
     // ループ設定のイベント登録
     timelineToolRepeatInitializeRegisterEventUseCase();
+
+    // 再生・停止ボタンのイベント登録
+    timelineToolPlayStopInitializeRegisterEventUseCase();
 };

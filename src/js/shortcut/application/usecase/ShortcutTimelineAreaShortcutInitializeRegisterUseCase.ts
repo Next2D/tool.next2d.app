@@ -9,6 +9,7 @@ import { execute as timelineToolAddKeyFrameUseCase } from "@/timeline/applicatio
 import { execute as timelineToolEraseFramesUseCase } from "@/timeline/application/TimelineTool/application/EraseFrames/usecase/TimelineToolEraseFramesUseCase";
 import { execute as timelineToolDeleteKeyframeUseCase } from "@/timeline/application/TimelineTool/application/DeleteKeyframe/usecase/TimelineToolDeleteKeyframeUseCase";
 import { execute as timelineToolRepeatUseCase } from "@/timeline/application/TimelineTool/application/Repeat/usecase/TimelineToolRepeatUseCase";
+import { execute as timelineToolPlayStopUseCase } from "@/timeline/application/TimelineTool/application/PlayStop/usecase/TimelineToolPlayStopUseCase";
 import {
     $generateShortcutKey,
     $setShortcut
@@ -93,5 +94,11 @@ export const execute = (): void =>
     $setShortcut(
         $generateShortcutKey("l", { "ctrl": true, "shift": true }),
         timelineToolRepeatUseCase
+    );
+
+    // 再生・停止を実行
+    $setShortcut(
+        $generateShortcutKey("Enter"),
+        timelineToolPlayStopUseCase
     );
 };

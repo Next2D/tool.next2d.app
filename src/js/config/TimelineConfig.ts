@@ -251,6 +251,15 @@ export const $TIMELINE_LAYER_SCRIPT_ADD_ID: string = "timeline-script-add";
 export const $TIMELINE_REPEAT_ID: string = "timeline-repeat";
 
 /**
+ * @description タイムラインの再生・停止ボタンのElementのID
+ *              ID of the Element of the play/stop button on the timeline
+ *
+ * @type {string}
+ * @constant
+ */
+export const $TIMELINE_PLAY_STOP_ID: string = "timeline-play";
+
+/**
  * @description タイムラインの最小幅の数値
  *              Minimum width value for timeline
  *
