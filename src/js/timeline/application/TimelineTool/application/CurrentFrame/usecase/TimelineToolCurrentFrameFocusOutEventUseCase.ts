@@ -34,11 +34,16 @@ export const execute = async (event: Event): Promise<void> =>
         1, $getMaxFrame()
     );
 
-    // 入力終了
-    element.value = `${frame}`;
-
     const workSpace = $getCurrentWorkSpace();
     const movieClip = workSpace.scene;
+
+    // 値に変更がない場合は何もしない
+    if (movieClip.currentFrame === frame) {
+        return ;
+    }
+
+    // 入力終了
+    element.value = `${frame}`;
 
     const delta = $clamp(
         (frame - 1) * (workSpace.timelineAreaState.frameWidth + 1),

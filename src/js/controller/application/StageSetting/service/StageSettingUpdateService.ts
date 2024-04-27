@@ -3,7 +3,6 @@ import {
     $STAGE_BG_COLOR_ID,
     $STAGE_FPS_ID,
     $STAGE_HEIGHT_ID,
-    $STAGE_LOCK_ID,
     $STAGE_WIDTH_ID
 } from "@/config/StageSettingConfig";
 
@@ -44,17 +43,5 @@ export const execute = (stage: Stage): void =>
 
     if (stageBgColor) {
         stageBgColor.value = stage.bgColor;
-    }
-
-    const stageLock: HTMLElement | null = document
-        .getElementById($STAGE_LOCK_ID);
-
-    if (stageLock && stageLock.children.length) {
-        stageLock
-            .children[0]
-            .setAttribute("class", stage.lock
-                ? "active"
-                : "disable"
-            );
     }
 };

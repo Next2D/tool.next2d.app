@@ -21,7 +21,6 @@ export class Stage
     private _$height: number;
     private _$fps: number;
     private _$bgColor: string;
-    private _$lock: boolean;
 
     /**
      * @constructor
@@ -56,13 +55,6 @@ export class Stage
          * @private
          */
         this._$bgColor = $STAGE_DEFAULT_COLOR;
-
-        /**
-         * @type {boolean}
-         * @default false
-         * @private
-         */
-        this._$lock = false;
     }
 
     /**
@@ -134,23 +126,6 @@ export class Stage
     }
 
     /**
-     * @description 幅と高さのサイズ変更を同時に行う設定
-     *              Set to resize width and height at the same time
-     *
-     * @member {boolean}
-     * @default false
-     * @public
-     */
-    get lock (): boolean
-    {
-        return this._$lock;
-    }
-    set lock (lock: boolean)
-    {
-        this._$lock = !!lock;
-    }
-
-    /**
      * @description クラス内の変数をObjectにして返す
      *              Return variables in a class as Objects
      *
@@ -177,8 +152,7 @@ export class Stage
             "width": this.width,
             "height": this.height,
             "fps": this.fps,
-            "bgColor": this.bgColor,
-            "lock": this.lock
+            "bgColor": this.bgColor
         };
     }
 
@@ -197,6 +171,5 @@ export class Stage
         this._$height  = object.height;
         this._$fps     = object.fps;
         this._$bgColor = object.bgColor;
-        this._$lock    = object.lock;
     }
 }

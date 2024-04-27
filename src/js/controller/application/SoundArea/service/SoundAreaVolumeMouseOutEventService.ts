@@ -1,3 +1,5 @@
+import { $useKeyboard } from "@/shortcut/ShortcutUtil";
+
 /**
  * @description 音量Input Elementのマウスアウト処理関数
  *              Mouse out processing function of volume Input Element
@@ -9,6 +11,10 @@
  */
 export const execute = (event: PointerEvent): void =>
 {
+    if ($useKeyboard()) {
+        return ;
+    }
+
     event.stopPropagation();
     event.preventDefault();
 

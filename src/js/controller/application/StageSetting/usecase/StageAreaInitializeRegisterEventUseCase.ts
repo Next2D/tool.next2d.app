@@ -1,0 +1,63 @@
+import { EventType } from "@/tool/domain/event/EventType";
+import { execute as stageAreaLockMouseDownEventUseCase } from "./StageAreaLockMouseDownEventUseCase";
+import { execute as stageAreaWidthMouseDownEventUseCase } from "./StageAreaWidthMouseDownEventUseCase";
+import { execute as stageAreaWidthMouseOverEventService } from "../service/StageAreaWidthMouseOverEventService";
+import { execute as stageAreaWidthMouseOutEventService } from "../service/StageAreaWidthMouseOutEventService";
+import { execute as stageAreaWidthFocusInEventService } from "../service/StageAreaWidthFocusInEventService";
+import { execute as stageAreaWidthFocusOutEventUseCase } from "./StageAreaWidthFocusOutEventUseCase";
+import {
+    $STAGE_BG_COLOR_ID,
+    $STAGE_FPS_ID,
+    $STAGE_HEIGHT_ID,
+    $STAGE_LOCK_ID,
+    $STAGE_WIDTH_ID
+} from "@/config/StageSettingConfig";
+
+/**
+ * @description ステージエリア初期化イベント登録ユースケース
+ *              Stage area initialization event registration use case
+ *
+ * @return {void}
+ * @method
+ * @public
+ */
+export const execute = (): void =>
+{
+    // ステージのサイズロックのイベント登録
+    const lockElement: HTMLElement | null = document
+        .getElementById($STAGE_LOCK_ID);
+
+    if (lockElement) {
+        lockElement.addEventListener(EventType.MOUSE_DOWN,
+            stageAreaLockMouseDownEventUseCase
+        );
+    }
+
+    // ステージの幅設定のイベント登録
+    const widthElement: HTMLElement | null = document
+        .getElementById($STAGE_WIDTH_ID);
+
+    if (widthElement) {
+        widthElement.addEventListener(EventType.MOUSE_OVER,
+            stageAreaWidthMouseOverEventService
+        );
+        widthElement.addEventListener(EventType.MOUSE_OUT,
+            stageAreaWidthMouseOutEventService
+        );
+        widthElement.addEventListener("focusin",
+            stageAreaWidthFocusInEventService
+        );
+        widthElement.addEventListener("focusout",
+            stageAreaWidthFocusOutEventUseCase
+        );
+        widthElement.addEventListener(EventType.MOUSE_DOWN,
+            stageAreaWidthMouseDownEventUseCase
+        );
+    }
+
+    // ステージの高さ設定のイベント登録
+
+    // ステージの背景色設定のイベント登録
+
+    // ステージのフレームレートのイベント登録
+};

@@ -4,5 +4,4 @@ export interface StageObjectImpl
     height: number;
     fps: number;
     bgColor: string;
-    lock: boolean;
 }

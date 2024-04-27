@@ -1,8 +1,8 @@
 import { $useKeyboard } from "@/shortcut/ShortcutUtil";
 
 /**
- * @description ループ設定のInput Elementのマウスアウト処理関数
- *              Mouse out processing function of loop setting Input Element
+ * @description ステージエリアの幅のマウスアウトイベント
+ *              Mouse out event for the width of the stage area
  *
  * @param  {PointerEvent} event
  * @return {void}
@@ -11,14 +11,16 @@ import { $useKeyboard } from "@/shortcut/ShortcutUtil";
  */
 export const execute = (event: PointerEvent): void =>
 {
+    // 入力中は何もしない
     if ($useKeyboard()) {
         return ;
     }
 
+    // イベントの伝播を止める
     event.stopPropagation();
     event.preventDefault();
 
-    const element: HTMLElement | null = event.currentTarget as HTMLElement;
+    const element = event.target as HTMLElement;
     if (!element) {
         return ;
     }

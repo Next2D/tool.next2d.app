@@ -1,6 +1,9 @@
-import { $SOUND_AREA_ADD_SOUND_ID } from "@/config/PropertyConfig";
 import { EventType } from "@/tool/domain/event/EventType";
 import { execute as soundAreaSoundAddMouseDownEventUseCase } from "./SoundAreaSoundAddMouseDownEventUseCase";
+import {
+    $SOUND_AREA_ADD_SOUND_ID,
+    $SOUND_AREA_SELECT_ID
+} from "@/config/PropertyConfig";
 
 /**
  * @description サウンドエリア初期化イベント登録ユースケース
@@ -12,15 +15,25 @@ import { execute as soundAreaSoundAddMouseDownEventUseCase } from "./SoundAreaSo
  */
 export const execute = (): void =>
 {
-    const element: HTMLElement | null = document
+    const soundAddElement: HTMLElement | null = document
         .getElementById($SOUND_AREA_ADD_SOUND_ID);
 
-    if (!element) {
-        return ;
+    // マウスダウンイベントを登録
+    if (soundAddElement) {
+        soundAddElement.addEventListener(EventType.MOUSE_DOWN,
+            soundAreaSoundAddMouseDownEventUseCase
+        );
     }
 
-    // マウスダウンイベントを登録
-    element.addEventListener(EventType.MOUSE_DOWN,
-        soundAreaSoundAddMouseDownEventUseCase
-    );
+    const selectElement: HTMLElement | null = document
+        .getElementById($SOUND_AREA_SELECT_ID);
+
+    if (selectElement) {
+        selectElement.addEventListener(EventType.MOUSE_DOWN, (event: PointerEvent): void =>
+        {
+            // イベントの伝播を止める
+            event.stopPropagation();
+        });
+    }
+
 };
