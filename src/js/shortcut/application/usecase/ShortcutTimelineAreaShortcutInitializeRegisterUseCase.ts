@@ -91,7 +91,7 @@ export const execute = (): void =>
 
     // ループ設定
     $setShortcut(
-        $generateShortcutKey("l", { "ctrl": true, "shift": true}),
+        $generateShortcutKey("l", { "ctrl": true, "shift": true }),
         timelineToolRepeatUseCase
     );
 };
