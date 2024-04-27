@@ -2,6 +2,7 @@ import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import { execute as stageChageStyleService  } from "@/core/application/Stage/service/StageChageStyleService";
 import { execute as screenStageAreaUpdateSizeService } from "@/screen/application/ScreenStageArea/service/ScreenStageAreaUpdateSizeService";
 import { execute as stageSettingUpdateWidthHistoryUseCase } from "@/history/application/controller/application/StageSetting/UpdateWidth/usecase/StageSettingUpdateWidthHistoryUseCase";
+import { execute as stageSettingUpdateWidthService } from "@/controller/application/StageSetting/service/StageSettingUpdateWidthService";
 
 /**
  * @description ステージの幅を更新
@@ -49,5 +50,8 @@ export const execute = (
 
         // ステージ背後のレイヤーを更新
         screenStageAreaUpdateSizeService(stage);
+
+        // ステージの幅を更新
+        stageSettingUpdateWidthService(width);
     }
 };

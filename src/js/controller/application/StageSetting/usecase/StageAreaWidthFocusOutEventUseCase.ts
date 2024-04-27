@@ -1,8 +1,10 @@
+import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
+import { ExternalStage } from "@/external/core/domain/model/ExternalStage";
 import { $updateKeyLock } from "@/shortcut/ShortcutUtil";
 
 /**
- * @description ループ回数入力エリアのフォーカスイベント処理
- *              Focus event processing of loop count input area
+ * @description ステージエリアの幅を更新
+ *              Update the width of the stage area
  *
  * @param  {FocusEvent} event
  * @return {void}
@@ -17,4 +19,12 @@ export const execute = (event: FocusEvent): void =>
 
     // 入力モードを終了する
     $updateKeyLock(false);
+
+    const element = event.target as HTMLInputElement;
+    if (!element) {
+        return ;
+    }
+
+    const externalStage = new ExternalStage($getCurrentWorkSpace());
+    externalStage.width = parseInt(element.value);
 };

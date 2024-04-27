@@ -5,6 +5,7 @@ import { execute as stageAreaWidthMouseOverEventService } from "../service/Stage
 import { execute as stageAreaWidthMouseOutEventService } from "../service/StageAreaWidthMouseOutEventService";
 import { execute as stageAreaWidthFocusInEventService } from "../service/StageAreaWidthFocusInEventService";
 import { execute as stageAreaWidthFocusOutEventUseCase } from "./StageAreaWidthFocusOutEventUseCase";
+import { execute as stageAreaWidthKeyPressEventService } from "../service/StageAreaWidthKeyPressEventService";
 import {
     $STAGE_BG_COLOR_ID,
     $STAGE_FPS_ID,
@@ -44,14 +45,17 @@ export const execute = (): void =>
         widthElement.addEventListener(EventType.MOUSE_OUT,
             stageAreaWidthMouseOutEventService
         );
+        widthElement.addEventListener(EventType.MOUSE_DOWN,
+            stageAreaWidthMouseDownEventUseCase
+        );
         widthElement.addEventListener("focusin",
             stageAreaWidthFocusInEventService
         );
         widthElement.addEventListener("focusout",
             stageAreaWidthFocusOutEventUseCase
         );
-        widthElement.addEventListener(EventType.MOUSE_DOWN,
-            stageAreaWidthMouseDownEventUseCase
+        widthElement.addEventListener("keypress",
+            stageAreaWidthKeyPressEventService
         );
     }
 
