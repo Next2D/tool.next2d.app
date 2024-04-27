@@ -51,6 +51,7 @@ import { execute as soundAreaUpdateLoopCountHistoryUndoUseCase } from "@/history
 import { execute as labelNewRegisterHistoryUndoUseCase } from "@/history/application/timeline/application/TimelineTool/LabelNewRegister/usecase/LabelNewRegisterHistoryUndoUseCase";
 import { execute as labelUpdateHistoryUndoUseCase } from "@/history/application/timeline/application/TimelineTool/LabelUpdate/usecase/LabelUpdateHistoryUndoUseCase";
 import { execute as labelDeleteHistoryUndoUseCase } from "@/history/application/timeline/application/TimelineTool/LabelDelete/usecase/LabelDeleteHistoryUndoUseCase";
+import { execute as stageSettingUpdateWidthHistoryUndoUseCase } from "@/history/application/controller/application/StageSetting/UpdateWidth/usecase/StageSettingUpdateWidthHistoryUndoUseCase";
 import { execute as instanceUpdateNameHistoryUndoUseCase } from "@/history/application/core/application/Instance/usecase/InstanceUpdateNameHistoryUndoUseCase";
 import { execute as instanceUpdateSymbolHistoryUndoUseCase } from "@/history/application/core/application/Instance/usecase/InstanceUpdateSymbolHistoryUndoUseCase";
 import {
@@ -97,7 +98,8 @@ import {
     $SOUND_AREA_UPDATE_LOOP_COUNT_COMMAND,
     $LABEL_NEW_REGISTER_COMMAND,
     $LABEL_UPDATE_COMMAND,
-    $LABEL_DELETE_COMMAND
+    $LABEL_DELETE_COMMAND,
+    $STAGE_WIDTH_COMMAND
 } from "@/config/HistoryConfig";
 
 /**
@@ -547,6 +549,14 @@ export const execute = async (
                 messages[1] as number, // MovieClip ID
                 messages[2] as number, // Frame
                 messages[3] as string // Before Label
+            );
+            break;
+
+        // ステージの幅を更新
+        case $STAGE_WIDTH_COMMAND:
+            stageSettingUpdateWidthHistoryUndoUseCase(
+                messages[0] as number, // WorkSpace ID
+                messages[2] as number // Before Width
             );
             break;
 

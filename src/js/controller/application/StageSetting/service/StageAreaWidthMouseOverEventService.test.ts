@@ -16,7 +16,7 @@ describe("StageAreaWidthMouseOverEventServiceTest", () =>
             "preventDefault": () => {
                 preventDefault = true;
             },
-            "currentTarget": input
+            "target": input
         };
 
         expect(stopPropagation).toBe(false);

@@ -1,5 +1,11 @@
-import { execute as stageAreaWidthRegisterWindowEventUseCase } from "./StageAreaWidthRegisterWindowEventUseCase";
+import { stageSetting } from "@/controller/domain/model/StageSetting";
 import { $useKeyboard } from "@/shortcut/ShortcutUtil";
+import { $STAGE_HEIGHT_ID } from "@/config/StageSettingConfig";
+import { execute as stageAreaWidthRegisterWindowEventUseCase } from "./StageAreaWidthRegisterWindowEventUseCase";
+import {
+    $setBeforeHeight,
+    $setBeforeWidth
+} from "../StagsSettingUtil";
 
 /**
  * @description ステージエリアの幅のマウスダウンイベントユースケース
@@ -25,6 +31,27 @@ export const execute = (event: PointerEvent): void =>
 
     // イベントの伝播を止める
     event.preventDefault();
+
+    const element: HTMLInputElement | null = event.target as HTMLInputElement;
+    if (!element) {
+        return ;
+    }
+
+    // 変更前の幅をセット
+    $setBeforeWidth(parseInt(element.value));
+
+    // ロック時は高さもセット
+    if (stageSetting.lock) {
+        const element: HTMLInputElement | null = document
+            .getElementById($STAGE_HEIGHT_ID) as HTMLInputElement;
+
+        if (!element) {
+            return ;
+        }
+
+        // 変更前の高さをセット
+        $setBeforeHeight(parseInt(element.value));
+    }
 
     // windowのイベントを登録
     stageAreaWidthRegisterWindowEventUseCase();

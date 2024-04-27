@@ -49,6 +49,7 @@ import { execute as soundAreaUpdateLoopCountHistoryRedoUseCase } from "@/history
 import { execute as labelNewRegisterHistoryRedoUseCase } from "@/history/application/timeline/application/TimelineTool/LabelNewRegister/usecase/LabelNewRegisterHistoryRedoUseCase";
 import { execute as labelUpdateHistoryRedoUseCase } from "@/history/application/timeline/application/TimelineTool/LabelUpdate/usecase/LabelUpdateHistoryRedoUseCase";
 import { execute as labelDeleteHistoryRedoUseCase } from "@/history/application/timeline/application/TimelineTool/LabelDelete/usecase/LabelDeleteHistoryRedoUseCase";
+import { execute as stageSettingUpdateWidthHistoryRedoUseCase } from "@/history/application/controller/application/StageSetting/UpdateWidth/usecase/StageSettingUpdateWidthHistoryRedoUseCase";
 import { execute as instanceUpdateNameHistoryRedoUseCase } from "@/history/application/core/application/Instance/usecase/InstanceUpdateNameHistoryRedoUseCase";
 import { execute as instanceUpdateSymbolHistoryRedoUseCase } from "@/history/application/core/application/Instance/usecase/InstanceUpdateSymbolHistoryRedoUseCase";
 import {
@@ -95,7 +96,8 @@ import {
     $SOUND_AREA_UPDATE_LOOP_COUNT_COMMAND,
     $LABEL_NEW_REGISTER_COMMAND,
     $LABEL_UPDATE_COMMAND,
-    $LABEL_DELETE_COMMAND
+    $LABEL_DELETE_COMMAND,
+    $STAGE_WIDTH_COMMAND
 } from "@/config/HistoryConfig";
 
 /**
@@ -526,8 +528,8 @@ export const execute = async (
         // ラベルの新規登録
         case $LABEL_NEW_REGISTER_COMMAND:
             labelNewRegisterHistoryRedoUseCase(
-                messages[0] as number, // workSpaceId
-                messages[1] as number, // MovieClipId
+                messages[0] as number, // WorkSpace ID
+                messages[1] as number, // MovieClip ID
                 messages[2] as number, // frame
                 messages[3] as string  // label
             );
@@ -536,8 +538,8 @@ export const execute = async (
         // ラベルの変更
         case $LABEL_UPDATE_COMMAND:
             labelUpdateHistoryRedoUseCase(
-                messages[0] as number, // workSpaceId
-                messages[1] as number, // MovieClipId
+                messages[0] as number, // WorkSpace ID
+                messages[1] as number, // MovieClip ID
                 messages[2] as number, // frame
                 messages[4] as string  // After label
             );
@@ -546,9 +548,17 @@ export const execute = async (
         // ラベルの削除
         case $LABEL_DELETE_COMMAND:
             labelDeleteHistoryRedoUseCase(
-                messages[0] as number, // workSpaceId
-                messages[1] as number, // MovieClipId
+                messages[0] as number, // WorkSpace ID
+                messages[1] as number, // MovieClip ID
                 messages[2] as number // frame
+            );
+            break;
+
+        // ステージの幅を更新
+        case $STAGE_WIDTH_COMMAND:
+            stageSettingUpdateWidthHistoryRedoUseCase(
+                messages[0] as number, // WorkSpace ID
+                messages[3] as number  // After Width
             );
             break;
 

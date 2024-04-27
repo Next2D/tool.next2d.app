@@ -2,7 +2,7 @@ import type { Stage } from "@/core/domain/model/Stage";
 import { execute as stageChageStyleService } from "../service/StageChageStyleService";
 import { execute as screenScaleResetService } from "@/screen/application/ScreenScale/service/ScreenScaleResetService";
 import { execute as libraryPreviewAreaChangeColorService } from "@/controller/application/LibraryPreviewArea/service/LibraryPreviewAreaChangeColorService";
-import { execute as stageSettingUpdateService } from "@/controller/application/StageSetting/service/StageSettingUpdateService";
+import { execute as stageSettingUpdateUseCase } from "@/controller/application/StageSetting/usecase/StageSettingUpdateUseCase";
 import { execute as screenStageAreaUpdateSizeService } from "@/screen/application/ScreenStageArea/service/ScreenStageAreaUpdateSizeService";
 import { execute as screenStagePositionCenterService } from "@/screen/application/ScreenStage/service/ScreenStagePositionCenterService";
 import { execute as screenStageOffsetUpdateService } from "@/screen/application/ScreenStage/service/ScreenStageOffsetUpdateService";
@@ -27,7 +27,7 @@ export const execute = (stage: Stage): void =>
     libraryPreviewAreaChangeColorService(stage.bgColor);
 
     // ステージ設定の値を更新
-    stageSettingUpdateService(stage);
+    stageSettingUpdateUseCase(stage);
 
     // ステージ背後のレイヤーを更新
     screenStageAreaUpdateSizeService(stage);

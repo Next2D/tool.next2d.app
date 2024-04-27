@@ -6,6 +6,7 @@ import { ExternalTimeline } from "@/external/timeline/domain/model/ExternalTimel
 import { ExternalLibrary } from "@/external/controller/domain/model/ExternalLibrary";
 import { execute as externalWorkSpaceUpdateNameUseCase } from "@/external/core/application/ExternalWorkSpace/usecase/ExternalWorkSpaceUpdateNameUseCase";
 import { ExternalSoundArea } from "@/external/controller/domain/model/ExternalSoundArea";
+import { ExternalStage } from "./ExternalStage";
 
 /**
  * @description WorkSpaceの外部APIクラス
@@ -55,6 +56,19 @@ export class ExternalWorkSpace
     get active (): boolean
     {
         return this._$workSpace.active;
+    }
+
+    /**
+     * @description WorkSpaceのStageを返却
+     *              Returns the Stage of WorkSpace
+     *
+     * @member {ExternalStage}
+     * @readonly
+     * @public
+     */
+    get stage (): ExternalStage
+    {
+        return new ExternalStage(this._$workSpace);
     }
 
     /**
