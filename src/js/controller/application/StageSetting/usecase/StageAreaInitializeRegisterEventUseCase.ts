@@ -56,8 +56,26 @@ export const execute = (): void =>
     }
 
     // ステージの高さ設定のイベント登録
+    const heightElement: HTMLElement | null = document
+        .getElementById($STAGE_HEIGHT_ID);
+
+    if (heightElement) {
+        // TODO
+    }
 
     // ステージの背景色設定のイベント登録
+    const colorElement: HTMLElement | null = document
+        .getElementById($STAGE_BG_COLOR_ID);
+
+    if (colorElement) {
+        // TODO
+    }
 
     // ステージのフレームレートのイベント登録
+    const fpsElement: HTMLElement | null = document
+        .getElementById($STAGE_FPS_ID);
+
+    if (fpsElement) {
+        // TODO
+    }
 };
