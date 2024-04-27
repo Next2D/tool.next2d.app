@@ -7,15 +7,17 @@ import { execute as stageSettingUpdateWidthHistoryUseCase } from "@/history/appl
  * @description ステージの幅を更新
  *              Update the width of the stage
  *
- * @param {WorkSpace} work_space
- * @param {number} width
+ * @param  {WorkSpace} work_space
+ * @param  {number} width
+ * @param  {boolean} [receiver=false]
  * @return {void}
  * @method
  * @public
  */
 export const execute = (
     work_space: WorkSpace,
-    width: number
+    width: number,
+    receiver: boolean = false
 ): void => {
 
     const stage = work_space.stage;
@@ -36,7 +38,8 @@ export const execute = (
         work_space,
         work_space.scene,
         beforeWidth,
-        width
+        width,
+        receiver
     );
 
     // アクティブなら表示を更新
