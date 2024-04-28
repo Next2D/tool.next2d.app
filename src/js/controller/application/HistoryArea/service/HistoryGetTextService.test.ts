@@ -45,7 +45,8 @@ import {
     $LABEL_DELETE_COMMAND,
     $STAGE_WIDTH_COMMAND,
     $STAGE_HEIGHT_COMMAND,
-    $STAGE_FPS_COMMAND
+    $STAGE_FPS_COMMAND,
+    $STAGE_COLOR_COMMAND
 } from "../../../../config/HistoryConfig";
 
 describe("HistoryGetTextServiceTest", () =>
@@ -98,5 +99,6 @@ describe("HistoryGetTextServiceTest", () =>
         expect(execute($STAGE_WIDTH_COMMAND)).toBe("ステージの幅を%s1から%s2に変更");
         expect(execute($STAGE_HEIGHT_COMMAND)).toBe("ステージの高さを%s1から%s2に変更");
         expect(execute($STAGE_FPS_COMMAND)).toBe("ステージのFPSを%s1から%s2に変更");
+        expect(execute($STAGE_COLOR_COMMAND)).toBe("ステージの背景色を「%s1」から「%s2」に変更");
     });
 });

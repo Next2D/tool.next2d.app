@@ -199,7 +199,7 @@ export const execute = (command: number): string =>
             return "ステージのFPSを%s1から%s2に変更";
 
         case $STAGE_COLOR_COMMAND:
-            return "ステージの背景色を%s1から%s2に変更";
+            return "ステージの背景色を「%s1」から「%s2」に変更";
 
         default:
             break;

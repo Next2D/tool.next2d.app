@@ -50,6 +50,7 @@ import { execute as labelDeleteReceiveUseCase } from "@/share/receive/applicatio
 import { execute as stageSettingUpdateWidthReceiveUseCase } from "@/share/receive/application/controller/application/StageSetting/usecase/StageSettingUpdateWidthReceiveUseCase";
 import { execute as stageSettingUpdateHeightReceiveUseCase } from "@/share/receive/application/controller/application/StageSetting/usecase/StageSettingUpdateHeightReceiveUseCase";
 import { execute as stageSettingUpdateFpsReceiveUseCase } from "@/share/receive/application/controller/application/StageSetting/usecase/StageSettingUpdateFpsReceiveUseCase";
+import { execute as stageSettingUpdateColorReceiveUseCase } from "@/share/receive/application/controller/application/StageSetting/usecase/StageSettingUpdateColorReceiveUseCase";
 import { execute as historyRedoUseCase } from "@/controller/application/HistoryArea/usecase/HistoryRedoUseCase";
 import { execute as historyUndoUseCase } from "@/controller/application/HistoryArea/usecase/HistoryUndoUseCase";
 import {
@@ -105,7 +106,8 @@ import {
     $LABEL_DELETE_COMMAND,
     $STAGE_WIDTH_COMMAND,
     $STAGE_HEIGHT_COMMAND,
-    $STAGE_FPS_COMMAND
+    $STAGE_FPS_COMMAND,
+    $STAGE_COLOR_COMMAND
 } from "@/config/HistoryConfig";
 
 /**
@@ -392,6 +394,11 @@ export const execute = async (message: ShareReceiveMessageImpl): Promise<void> =
         // ステージのFPSを更新
         case $STAGE_FPS_COMMAND:
             stageSettingUpdateFpsReceiveUseCase(message);
+            break;
+
+        // ステージの背景色を更新
+        case $STAGE_COLOR_COMMAND:
+            stageSettingUpdateColorReceiveUseCase(message);
             break;
 
         default:
