@@ -2,11 +2,11 @@ import type { ShareReceiveMessageImpl } from "@/interface/ShareReceiveMessageImp
 import type { InstanceImpl } from "@/interface/InstanceImpl";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
-import { execute as externalStageUpdateHeightUseCase } from "@/external/core/application/ExternalStage/usecase/ExternalStageUpdateHeightUseCase";
+import { execute as externalStageUpdateFpsUseCase } from "@/external/core/application/ExternalStage/usecase/ExternalStageUpdateFpsUseCase";
 
 /**
- * @description ステージの高さを更新
- *              Update the height of the stage
+ * @description ステージのフレームレートを更新
+ *              Update the frame rate of the stage
  *
  * @param  {object} message
  * @return {void}
@@ -28,8 +28,8 @@ export const execute = (message: ShareReceiveMessageImpl): void =>
         return ;
     }
 
-    // ステージの高さを更新
-    externalStageUpdateHeightUseCase(
+    // ステージのフレームレートを更新
+    externalStageUpdateFpsUseCase(
         workSpace,
         message.data[3] as NonNullable<number>,
         true

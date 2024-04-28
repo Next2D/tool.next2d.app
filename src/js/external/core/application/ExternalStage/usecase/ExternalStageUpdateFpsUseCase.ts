@@ -1,6 +1,7 @@
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import { execute as timelineHeaderBuildElementUseCase  } from "@/timeline/application/TimelineHeader/usecase/TimelineHeaderBuildElementUseCase";
 import { execute as stageSettingUpdateFpsHistoryUseCase  } from "@/history/application/controller/application/StageSetting/UpdateFPS/usecase/StageSettingUpdateFpsHistoryUseCase";
+import { execute as stageSettingUpdateFpsService  } from "@/controller/application/StageSetting/service/StageSettingUpdateFpsService";
 
 /**
  * @description ステージのフレームレートを更新
@@ -43,6 +44,10 @@ export const execute = (
 
     // アクティブならタイムラインのヘッダーを再描画
     if (work_space.active) {
+        // Inputの値を更新
+        stageSettingUpdateFpsService(stage.fps);
+
+        // タイムラインのヘッダーを再描画
         timelineHeaderBuildElementUseCase();
     }
 };
