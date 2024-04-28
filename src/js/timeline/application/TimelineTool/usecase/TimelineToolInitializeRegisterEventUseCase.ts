@@ -13,6 +13,7 @@ import { execute as timelineToolDeleteKeyframeInitializeRegisterEventUseCase } f
 import { execute as timelineToolLabelInputInitializeRegisterEventUseCase } from "../application/LabelInput/usecase/TimelineToolLabelInputInitializeRegisterEventUseCase";
 import { execute as timelineToolRepeatInitializeRegisterEventUseCase } from "../application/Repeat/usecase/TimelineToolRepeatInitializeRegisterEventUseCase";
 import { execute as timelineToolPlayStopInitializeRegisterEventUseCase } from "../application/PlayStop/usecase/TimelineToolPlayStopInitializeRegisterEventUseCase";
+import { execute as scaleFrameInitializeRegisterEventUseCase } from "../application/ScaleFrame/usecase/ScaleFrameInitializeRegisterEventUseCase";
 
 /**
  * @description タイムラインの各種ツールにイベント登録を行う
@@ -68,4 +69,7 @@ export const execute = (): void =>
 
     // 再生・停止ボタンのイベント登録
     timelineToolPlayStopInitializeRegisterEventUseCase();
+
+    // スケールフレームのイベント登録
+    scaleFrameInitializeRegisterEventUseCase();
 };
