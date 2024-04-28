@@ -48,6 +48,7 @@ import { execute as labelNewRegisterReceiveUseCase } from "@/share/receive/appli
 import { execute as labelUpdateReceiveUseCase } from "@/share/receive/application/timeline/application/TimelineTool/application/LabelUpdate/usecase/LabelUpdateReceiveUseCase";
 import { execute as labelDeleteReceiveUseCase } from "@/share/receive/application/timeline/application/TimelineTool/application/LabelDelete/usecase/LabelDeleteReceiveUseCase";
 import { execute as stageSettingUpdateWidthReceiveUseCase } from "@/share/receive/application/controller/application/StageSetting/usecase/StageSettingUpdateWidthReceiveUseCase";
+import { execute as stageSettingUpdateHeightReceiveUseCase } from "@/share/receive/application/controller/application/StageSetting/usecase/StageSettingUpdateHeightReceiveUseCase";
 import { execute as historyRedoUseCase } from "@/controller/application/HistoryArea/usecase/HistoryRedoUseCase";
 import { execute as historyUndoUseCase } from "@/controller/application/HistoryArea/usecase/HistoryUndoUseCase";
 import {
@@ -101,7 +102,8 @@ import {
     $LABEL_NEW_REGISTER_COMMAND,
     $LABEL_UPDATE_COMMAND,
     $LABEL_DELETE_COMMAND,
-    $STAGE_WIDTH_COMMAND
+    $STAGE_WIDTH_COMMAND,
+    $STAGE_HEIGHT_COMMAND
 } from "@/config/HistoryConfig";
 
 /**
@@ -378,6 +380,11 @@ export const execute = async (message: ShareReceiveMessageImpl): Promise<void> =
         // ステージの幅を更新
         case $STAGE_WIDTH_COMMAND:
             stageSettingUpdateWidthReceiveUseCase(message);
+            break;
+
+        // ステージの高さを更新
+        case $STAGE_HEIGHT_COMMAND:
+            stageSettingUpdateHeightReceiveUseCase(message);
             break;
 
         default:
