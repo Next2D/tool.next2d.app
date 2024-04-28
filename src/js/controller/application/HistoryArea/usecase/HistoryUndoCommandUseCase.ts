@@ -53,6 +53,7 @@ import { execute as labelUpdateHistoryUndoUseCase } from "@/history/application/
 import { execute as labelDeleteHistoryUndoUseCase } from "@/history/application/timeline/application/TimelineTool/LabelDelete/usecase/LabelDeleteHistoryUndoUseCase";
 import { execute as stageSettingUpdateWidthHistoryUndoUseCase } from "@/history/application/controller/application/StageSetting/UpdateWidth/usecase/StageSettingUpdateWidthHistoryUndoUseCase";
 import { execute as stageSettingUpdateHeightHistoryUndoUseCase } from "@/history/application/controller/application/StageSetting/UpdateHeight/usecacse/StageSettingUpdateHeightHistoryUndoUseCase";
+import { execute as stageSettingUpdateFpsHistoryUndoUseCase } from "@/history/application/controller/application/StageSetting/UpdateFPS/usecase/StageSettingUpdateFpsHistoryUndoUseCase";
 import { execute as instanceUpdateNameHistoryUndoUseCase } from "@/history/application/core/application/Instance/usecase/InstanceUpdateNameHistoryUndoUseCase";
 import { execute as instanceUpdateSymbolHistoryUndoUseCase } from "@/history/application/core/application/Instance/usecase/InstanceUpdateSymbolHistoryUndoUseCase";
 import {
@@ -101,7 +102,8 @@ import {
     $LABEL_UPDATE_COMMAND,
     $LABEL_DELETE_COMMAND,
     $STAGE_WIDTH_COMMAND,
-    $STAGE_HEIGHT_COMMAND
+    $STAGE_HEIGHT_COMMAND,
+    $STAGE_FPS_COMMAND
 } from "@/config/HistoryConfig";
 
 /**
@@ -567,6 +569,14 @@ export const execute = async (
             stageSettingUpdateHeightHistoryUndoUseCase(
                 messages[0] as number, // WorkSpace ID
                 messages[2] as number // Before Height
+            );
+            break;
+
+        // ステージのFPSを更新
+        case $STAGE_FPS_COMMAND:
+            stageSettingUpdateFpsHistoryUndoUseCase(
+                messages[0] as number, // WorkSpace ID
+                messages[2] as number // Before FPS
             );
             break;
 

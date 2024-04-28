@@ -44,7 +44,8 @@ import {
     $LABEL_UPDATE_COMMAND,
     $LABEL_DELETE_COMMAND,
     $STAGE_WIDTH_COMMAND,
-    $STAGE_HEIGHT_COMMAND
+    $STAGE_HEIGHT_COMMAND,
+    $STAGE_FPS_COMMAND
 } from "@/config/HistoryConfig";
 
 /**
@@ -192,6 +193,9 @@ export const execute = (command: number): string =>
 
         case $STAGE_HEIGHT_COMMAND:
             return "ステージの高さを%s1から%s2に変更";
+
+        case $STAGE_FPS_COMMAND:
+            return "ステージのFPSを%s1から%s2に変更";
 
         default:
             break;

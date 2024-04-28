@@ -6,8 +6,10 @@ import { execute as stageSettingMouseOutEventService } from "../service/StageSet
 import { execute as stageSettingFocusInEventService } from "../service/StageSettingFocusInEventService";
 import { execute as stageSettingWidthFocusOutEventUseCase } from "./StageSettingWidthFocusOutEventUseCase";
 import { execute as stageSettingHeightFocusOutEventUseCase } from "./StageSettingHeightFocusOutEventUseCase";
+import { execute as stageSettingFpsFocusOutEventUseCase } from "./StageSettingFpsFocusOutEventUseCase";
 import { execute as stageSettingKeyPressEventService } from "../service/StageSettingKeyPressEventService";
 import { execute as stageSettingHeightMouseDownEventUseCase } from "./StageSettingHeightMouseDownEventUseCase";
+import { execute as stageSettingFpsMouseDownEventUseCase } from "./StageSettingFpsMouseDownEventUseCase";
 import {
     $STAGE_BG_COLOR_ID,
     $STAGE_FPS_ID,
@@ -99,6 +101,23 @@ export const execute = (): void =>
         .getElementById($STAGE_FPS_ID);
 
     if (fpsElement) {
-        // TODO
+        fpsElement.addEventListener(EventType.MOUSE_OVER,
+            stageSettingMouseOverEventService
+        );
+        fpsElement.addEventListener(EventType.MOUSE_OUT,
+            stageSettingMouseOutEventService
+        );
+        fpsElement.addEventListener(EventType.MOUSE_DOWN,
+            stageSettingFpsMouseDownEventUseCase
+        );
+        fpsElement.addEventListener("focusin",
+            stageSettingFocusInEventService
+        );
+        fpsElement.addEventListener("focusout",
+            stageSettingFpsFocusOutEventUseCase
+        );
+        fpsElement.addEventListener("keypress",
+            stageSettingKeyPressEventService
+        );
     }
 };

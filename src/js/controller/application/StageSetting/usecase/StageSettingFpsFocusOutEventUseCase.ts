@@ -1,10 +1,11 @@
+import { $STAGE_DEFAULT_FPS } from "@/config/StageSettingConfig";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { ExternalStage } from "@/external/core/domain/model/ExternalStage";
 import { $updateKeyLock } from "@/shortcut/ShortcutUtil";
 
 /**
- * @description ステージエリアの幅を更新
- *              Update the width of the stage area
+ * @description ステージエリアのフレームレートを更新
+ *              Update the frame rate of the stage area
  *
  * @param  {FocusEvent} event
  * @return {void}
@@ -26,18 +27,15 @@ export const execute = (event: FocusEvent): void =>
     }
 
     const workSpace = $getCurrentWorkSpace();
-    const width = parseInt(element.value);
-    if (isNaN(width) || 0 >= width) {
-        element.value = `${workSpace.stage.width}`;
+    const fps = parseInt(element.value);
+    if (isNaN(fps) || 0 >= fps) {
+        element.value = `${workSpace.stage.fps}`;
         return ;
     }
 
     const externalStage = new ExternalStage(workSpace);
-    externalStage.width = Math.max(1, Math.min(
-        width,
-        Number.MAX_VALUE
-    ));
+    externalStage.fps   = Math.max(1, Math.min(fps, $STAGE_DEFAULT_FPS));
 
     // 表示を更新
-    element.value = `${externalStage.width}`;
+    element.value = `${externalStage.fps}`;
 };

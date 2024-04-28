@@ -1,11 +1,11 @@
 import { $getWorkSpace } from "@/core/application/CoreUtil";
-import { execute as stageChageStyleService  } from "@/core/application/Stage/service/StageChageStyleService";
+import { execute as stageChageStyleService } from "@/core/application/Stage/service/StageChageStyleService";
 import { execute as screenStageAreaUpdateSizeService } from "@/screen/application/ScreenStageArea/service/ScreenStageAreaUpdateSizeService";
 import { execute as stageSettingUpdateHeightService } from "@/controller/application/StageSetting/service/StageSettingUpdateHeightService";
 
 /**
- * @description ステージの幅を更新後に戻す
- *              Revert the update of the stage width
+ * @description ステージの高さを更新後に戻す
+ *              Revert the stage height after updating
  *
  * @param  {number} work_space_id
  * @param  {number} after_height

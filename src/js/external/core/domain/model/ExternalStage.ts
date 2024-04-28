@@ -1,6 +1,7 @@
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import { execute as externalStageUpdateWidthUseCase } from "@/external/core/application/ExternalStage/usecase/ExternalStageUpdateWidthUseCase";
 import { execute as externalStageUpdateHeightUseCase } from "@/external/core/application/ExternalStage/usecase/ExternalStageUpdateHeightUseCase";
+import { execute as externalStageUpdateFpsUseCase } from "@/external/core/application/ExternalStage/usecase/ExternalStageUpdateFpsUseCase";
 
 /**
  * @description ステージの管理クラス
@@ -58,6 +59,25 @@ export class ExternalStage
         externalStageUpdateHeightUseCase(
             this._$workSpace,
             height
+        );
+    }
+
+    /**
+     * @description ステージのフレームレートの値
+     *              Value of the frame rate of the stage
+     *
+     * @member {number}
+     * @public
+     */
+    get fps (): number
+    {
+        return this._$workSpace.stage.fps;
+    }
+    set fps (fps: number)
+    {
+        externalStageUpdateFpsUseCase(
+            this._$workSpace,
+            fps
         );
     }
 }

@@ -63,3 +63,36 @@ export const $getBeforeHeight = (): number =>
 {
     return $beforeHeight;
 };
+
+/**
+ * @type {number}
+ * @private
+ */
+let $beforeFps: number = 0;
+
+/**
+ * @description ステージのフレームレートをセット
+ *              Set the height of the stage change magic
+ *
+ * @param  {number} fps
+ * @return {void}
+ * @method
+ * @public
+ */
+export const $setBeforeFps = (fps: number): void =>
+{
+    $beforeFps = fps;
+};
+
+/**
+ * @description ステージのフレームレートを返却
+ *              Returns the height of the stage change magic
+ *
+ * @return {number}
+ * @method
+ * @public
+ */
+export const $getBeforeFps = (): number =>
+{
+    return $beforeFps;
+};

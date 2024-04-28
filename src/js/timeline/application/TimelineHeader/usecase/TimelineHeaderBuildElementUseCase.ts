@@ -3,7 +3,6 @@ import { execute as timelineHeaderFrameComponent } from "../component/TimelineHe
 import { execute as timelineHeaderFrameRegisterEventUseCase } from "./TimelineHeaderFrameRegisterEventUseCase";
 import { $getLeftFrame } from "../../TimelineUtil";
 import { timelineHeader } from "@/timeline/domain/model/TimelineHeader";
-import { $STAGE_FPS_ID } from "@/config/StageSettingConfig";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { execute as timelineHeaderUpdateDisplayElementService } from "../service/TimelineHeaderUpdateDisplayElementService";
 import { execute as timelineHeaderUpdateLabelElementService } from "../service/TimelineHeaderUpdateLabelElementService";
@@ -93,14 +92,7 @@ export const execute = (): void =>
         }
     }
 
-    const fpsElement: HTMLInputElement | null = document
-        .getElementById($STAGE_FPS_ID) as HTMLInputElement;
-
-    if (!fpsElement) {
-        return ;
-    }
-
-    const fps: number   = parseInt(fpsElement.value);
+    const fps: number   = workSpace.stage.fps;
     const frame: number = $getLeftFrame();
 
     const length: number = timelineHeader.elements.length;

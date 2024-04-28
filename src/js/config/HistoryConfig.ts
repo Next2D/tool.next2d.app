@@ -483,3 +483,12 @@ export const $STAGE_WIDTH_COMMAND: number = 50;
  * @constant
  */
 export const $STAGE_HEIGHT_COMMAND: number = 51;
+
+/**
+ * @description ステージのフレームレート更新の識別コマンド名
+ *              Identification command name for stage frame rate update
+ *
+ * @type {number}
+ * @constant
+ */
+export const $STAGE_FPS_COMMAND: number = 52;

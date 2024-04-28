@@ -1,5 +1,5 @@
 import { $getWorkSpace } from "@/core/application/CoreUtil";
-import { execute as stageChageStyleService  } from "@/core/application/Stage/service/StageChageStyleService";
+import { execute as stageChageStyleService } from "@/core/application/Stage/service/StageChageStyleService";
 import { execute as screenStageAreaUpdateSizeService } from "@/screen/application/ScreenStageArea/service/ScreenStageAreaUpdateSizeService";
 import { execute as stageSettingUpdateWidthService } from "@/controller/application/StageSetting/service/StageSettingUpdateWidthService";
 
