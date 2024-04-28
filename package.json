@@ -13,22 +13,22 @@
     "@types/ace": "^0.0.52",
     "@types/node": "^20.12.7",
     "@types/qrcode": "^1.5.5",
-    "@typescript-eslint/eslint-plugin": "^7.7.0",
-    "@typescript-eslint/parser": "^7.7.0",
-    "@vitest/web-worker": "^1.5.0",
+    "@typescript-eslint/eslint-plugin": "^7.7.1",
+    "@typescript-eslint/parser": "^7.7.1",
+    "@vitest/web-worker": "^1.5.2",
     "eslint": "^8.57.0",
     "eslint-plugin-unused-imports": "^3.1.0",
     "jsdom": "^24.0.0",
     "sass": "^1.75.0",
     "typescript": "^5.4.5",
     "vite": "^5.2.10",
-    "vitest": "^1.5.0"
+    "vitest": "^1.5.2"
   },
   "dependencies": {
     "@next2d/player": "^1.18.11",
     "fflate": "^0.8.2",
     "jszip": "^3.10.1",
     "qrcode": "^1.5.3",
-    "terser": "^5.30.3"
+    "terser": "^5.30.4"
   }
 }
