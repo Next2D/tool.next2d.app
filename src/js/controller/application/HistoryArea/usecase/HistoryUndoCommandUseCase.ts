@@ -52,6 +52,7 @@ import { execute as labelNewRegisterHistoryUndoUseCase } from "@/history/applica
 import { execute as labelUpdateHistoryUndoUseCase } from "@/history/application/timeline/application/TimelineTool/LabelUpdate/usecase/LabelUpdateHistoryUndoUseCase";
 import { execute as labelDeleteHistoryUndoUseCase } from "@/history/application/timeline/application/TimelineTool/LabelDelete/usecase/LabelDeleteHistoryUndoUseCase";
 import { execute as stageSettingUpdateWidthHistoryUndoUseCase } from "@/history/application/controller/application/StageSetting/UpdateWidth/usecase/StageSettingUpdateWidthHistoryUndoUseCase";
+import { execute as stageSettingUpdateHeightHistoryUndoUseCase } from "@/history/application/controller/application/StageSetting/UpdateHeight/usecacse/StageSettingUpdateHeightHistoryUndoUseCase";
 import { execute as instanceUpdateNameHistoryUndoUseCase } from "@/history/application/core/application/Instance/usecase/InstanceUpdateNameHistoryUndoUseCase";
 import { execute as instanceUpdateSymbolHistoryUndoUseCase } from "@/history/application/core/application/Instance/usecase/InstanceUpdateSymbolHistoryUndoUseCase";
 import {
@@ -99,7 +100,8 @@ import {
     $LABEL_NEW_REGISTER_COMMAND,
     $LABEL_UPDATE_COMMAND,
     $LABEL_DELETE_COMMAND,
-    $STAGE_WIDTH_COMMAND
+    $STAGE_WIDTH_COMMAND,
+    $STAGE_HEIGHT_COMMAND
 } from "@/config/HistoryConfig";
 
 /**
@@ -557,6 +559,14 @@ export const execute = async (
             stageSettingUpdateWidthHistoryUndoUseCase(
                 messages[0] as number, // WorkSpace ID
                 messages[2] as number // Before Width
+            );
+            break;
+
+        // ステージの高さを更新
+        case $STAGE_HEIGHT_COMMAND:
+            stageSettingUpdateHeightHistoryUndoUseCase(
+                messages[0] as number, // WorkSpace ID
+                messages[2] as number // Before Height
             );
             break;
 

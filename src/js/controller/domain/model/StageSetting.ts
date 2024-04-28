@@ -1,4 +1,4 @@
-import { execute as stageAreaInitializeRegisterEventUseCase } from "@/controller/application/StageSetting/usecase/StageAreaInitializeRegisterEventUseCase";
+import { execute as stageSettingInitializeRegisterEventUseCase } from "@/controller/application/StageSetting/usecase/StageSettingInitializeRegisterEventUseCase";
 
 /**
  * @description ステージ設定の管理クラス
@@ -30,7 +30,7 @@ export class StageSetting
      */
     initialize (): void
     {
-        stageAreaInitializeRegisterEventUseCase();
+        stageSettingInitializeRegisterEventUseCase();
     }
 
     /**

@@ -1,6 +1,6 @@
-import { execute } from "./StageAreaWidthKeyPressEventService";
+import { execute } from "./StageSettingKeyPressEventService";
 
-describe("StageAreaWidthKeyPressEventServiceTest", () =>
+describe("StageSettingKeyPressEventServiceTest", () =>
 {
     test("execute test", () =>
     {

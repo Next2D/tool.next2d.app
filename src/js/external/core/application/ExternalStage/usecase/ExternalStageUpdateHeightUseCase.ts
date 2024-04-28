@@ -1,6 +1,7 @@
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import { execute as stageChageStyleService  } from "@/core/application/Stage/service/StageChageStyleService";
 import { execute as screenStageAreaUpdateSizeService } from "@/screen/application/ScreenStageArea/service/ScreenStageAreaUpdateSizeService";
+import { execute as stageSettingUpdateHeightHistoryUseCase } from "@/history/application/controller/application/StageSetting/UpdateHeight/usecacse/StageSettingUpdateHeightHistoryUseCase";
 
 /**
  * @description ステージの高さを更新
@@ -33,7 +34,13 @@ export const execute = (
     stage.height = height;
 
     // 履歴に登録
-    console.log(receiver);
+    stageSettingUpdateHeightHistoryUseCase(
+        work_space,
+        work_space.scene,
+        beforeHeight,
+        height,
+        receiver
+    );
 
     // アクティブなら表示を更新
     if (work_space.active) {

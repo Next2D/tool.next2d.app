@@ -1,32 +1,31 @@
-import { execute } from "./StageAreaWidthMouseOverEventService";
+import { execute } from "./StageSettingFocusInEventService";
+import { $useKeyboard } from "../../../../shortcut/ShortcutUtil";
 
-describe("StageAreaWidthMouseOverEventServiceTest", () =>
+describe("StageSettingFocusInEventServiceTest", () =>
 {
     test("execute test", () =>
     {
-        const input = document.createElement("input");
-
+        let preventDefault = false;
         let stopPropagation = false;
-        let preventDefault  = false;
         const eventMock = {
             "stopPropagation": () =>
             {
                 stopPropagation = true;
             },
-            "preventDefault": () => {
+            "preventDefault": () =>
+            {
                 preventDefault = true;
             },
-            "target": input
+            "key": "Enter",
+            "currentTarget": document.createElement("div")
         };
 
         expect(stopPropagation).toBe(false);
         expect(preventDefault).toBe(false);
-        expect(input.style.cursor).toBe("");
-
+        expect($useKeyboard()).toBe(false);
         execute(eventMock);
-
         expect(stopPropagation).toBe(true);
         expect(preventDefault).toBe(true);
-        expect(input.style.cursor).toBe("ew-resize");
+        expect($useKeyboard()).toBe(true);
     });
 });

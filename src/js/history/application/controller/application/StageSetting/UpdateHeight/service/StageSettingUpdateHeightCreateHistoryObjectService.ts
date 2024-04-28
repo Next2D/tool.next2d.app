@@ -1,6 +1,6 @@
 import type { HistoryObjectImpl } from "@/interface/HistoryObjectImpl";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
-import { $STAGE_WIDTH_COMMAND } from "@/config/HistoryConfig";
+import { $STAGE_HEIGHT_COMMAND } from "@/config/HistoryConfig";
 
 /**
  * @description ステージの幅の更新の履歴用オブジェクトを作成
@@ -8,8 +8,8 @@ import { $STAGE_WIDTH_COMMAND } from "@/config/HistoryConfig";
  *
  * @param  {number} work_space_id
  * @param  {MovieClip} movie_clip
- * @param  {number} before_width
- * @param  {number} after_width
+ * @param  {number} before_height
+ * @param  {number} after_height
  * @return {object}
  * @method
  * @public
@@ -17,21 +17,21 @@ import { $STAGE_WIDTH_COMMAND } from "@/config/HistoryConfig";
 export const execute = (
     work_space_id: number,
     movie_clip: MovieClip,
-    before_width: number,
-    after_width: number
+    before_height: number,
+    after_height: number
 ): HistoryObjectImpl => {
 
     return {
-        "command": $STAGE_WIDTH_COMMAND,
+        "command": $STAGE_HEIGHT_COMMAND,
         "messages": [
             work_space_id,
             movie_clip.id,
-            before_width,
-            after_width
+            before_height,
+            after_height
         ],
         "args": [
-            before_width,
-            after_width
+            before_height,
+            after_height
         ]
     };
 };

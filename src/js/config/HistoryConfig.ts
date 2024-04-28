@@ -467,10 +467,19 @@ export const $LABEL_UPDATE_COMMAND: number = 48;
 export const $LABEL_DELETE_COMMAND: number = 49;
 
 /**
- * @description ステージ幅更新の識別コマンド名
+ * @description ステージの幅更新の識別コマンド名
  *              Identification command name for stage width update
  *
  * @type {number}
  * @constant
  */
 export const $STAGE_WIDTH_COMMAND: number = 50;
+
+/**
+ * @description ステージの高さ更新の識別コマンド名
+ *              Identification command name for stage height update
+ *
+ * @type {number}
+ * @constant
+ */
+export const $STAGE_HEIGHT_COMMAND: number = 51;

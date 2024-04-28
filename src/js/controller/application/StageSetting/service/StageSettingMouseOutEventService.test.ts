@@ -1,6 +1,6 @@
-import { execute } from "./StageAreaWidthMouseOutEventService";
+import { execute } from "./StageSettingMouseOutEventService";
 
-describe("StageAreaWidthMouseOutEventServiceTest", () =>
+describe("StageSettingMouseOutEventServiceTest", () =>
 {
     test("execute test", () =>
     {

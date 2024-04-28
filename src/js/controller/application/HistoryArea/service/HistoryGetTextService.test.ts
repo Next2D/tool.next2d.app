@@ -43,7 +43,8 @@ import {
     $LABEL_NEW_REGISTER_COMMAND,
     $LABEL_UPDATE_COMMAND,
     $LABEL_DELETE_COMMAND,
-    $STAGE_WIDTH_COMMAND
+    $STAGE_WIDTH_COMMAND,
+    $STAGE_HEIGHT_COMMAND
 } from "../../../../config/HistoryConfig";
 
 describe("HistoryGetTextServiceTest", () =>
@@ -94,5 +95,6 @@ describe("HistoryGetTextServiceTest", () =>
         expect(execute($LABEL_UPDATE_COMMAND)).toBe("「%s1」の%s2フレームのラベル「%s3」を「%s4」に変更");
         expect(execute($LABEL_DELETE_COMMAND)).toBe("「%s1」の%s2フレームのラベルを削除");
         expect(execute($STAGE_WIDTH_COMMAND)).toBe("ステージの幅を%s1から%s2に変更");
+        expect(execute($STAGE_HEIGHT_COMMAND)).toBe("ステージの高さを%s1から%s2に変更");
     });
 });

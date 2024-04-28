@@ -3,7 +3,7 @@ import { $setCursor } from "@/global/GlobalUtil";
 import { ExternalStage } from "@/external/core/domain/model/ExternalStage";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { stageSetting } from "@/controller/domain/model/StageSetting";
-import { execute as stageAreaWidthWindowMouseMoveEventUseCase } from "./StageAreaWidthWindowMouseMoveEventUseCase";
+import { execute as stageSettingWidthWindowMouseMoveEventUseCase } from "./StageSettingWidthWindowMouseMoveEventUseCase";
 import {
     $STAGE_HEIGHT_ID,
     $STAGE_WIDTH_ID
@@ -16,8 +16,8 @@ import {
 } from "../StagsSettingUtil";
 
 /**
- * @description ステージエリア数値変更のマウスアップイベント
- *              Mouse up event for stage area numerical changes
+ * @description ステージ幅の数値変更のマウスアップイベント
+ *              Mouse up event for stage width numerical changes
  *
  * @param  {PointerEvent} event
  * @return {void}
@@ -35,7 +35,7 @@ export const execute = (event: PointerEvent): void =>
 
     // windowのイベントを削除
     window.removeEventListener(EventType.MOUSE_MOVE,
-        stageAreaWidthWindowMouseMoveEventUseCase
+        stageSettingWidthWindowMouseMoveEventUseCase
     );
     window.removeEventListener(EventType.MOUSE_UP, execute);
 

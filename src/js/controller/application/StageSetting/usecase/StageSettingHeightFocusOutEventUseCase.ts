@@ -3,8 +3,8 @@ import { ExternalStage } from "@/external/core/domain/model/ExternalStage";
 import { $updateKeyLock } from "@/shortcut/ShortcutUtil";
 
 /**
- * @description ステージエリアの幅を更新
- *              Update the width of the stage area
+ * @description ステージエリアの高さを更新
+ *              Update the height of the stage area
  *
  * @param  {FocusEvent} event
  * @return {void}
@@ -25,6 +25,13 @@ export const execute = (event: FocusEvent): void =>
         return ;
     }
 
-    const externalStage = new ExternalStage($getCurrentWorkSpace());
-    externalStage.width = parseInt(element.value);
+    const workSpace = $getCurrentWorkSpace();
+    const height = parseInt(element.value);
+    if (isNaN(height) || 0 > height) {
+        element.value = `${workSpace.stage.height}`;
+        return ;
+    }
+
+    const externalStage  = new ExternalStage(workSpace);
+    externalStage.height = height;
 };

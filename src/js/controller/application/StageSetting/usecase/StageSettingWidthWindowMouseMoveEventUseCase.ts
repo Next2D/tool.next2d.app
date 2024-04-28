@@ -6,8 +6,8 @@ import { execute as stageChageStyleService  } from "@/core/application/Stage/ser
 import { execute as screenStageAreaUpdateSizeService } from "@/screen/application/ScreenStageArea/service/ScreenStageAreaUpdateSizeService";
 
 /**
- * @description ステージエリアの値操作のマウスムーブイベント
- *              Mouse move event for value operation of stage area
+ * @description ステージ幅の値操作のマウスムーブイベント
+ *              Mouse move event for value operation of stage width
  *
  * @param  {PointerEvent} event
  * @return {void}

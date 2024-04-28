@@ -43,7 +43,8 @@ import {
     $LABEL_NEW_REGISTER_COMMAND,
     $LABEL_UPDATE_COMMAND,
     $LABEL_DELETE_COMMAND,
-    $STAGE_WIDTH_COMMAND
+    $STAGE_WIDTH_COMMAND,
+    $STAGE_HEIGHT_COMMAND
 } from "@/config/HistoryConfig";
 
 /**
@@ -188,6 +189,9 @@ export const execute = (command: number): string =>
 
         case $STAGE_WIDTH_COMMAND:
             return "ステージの幅を%s1から%s2に変更";
+
+        case $STAGE_HEIGHT_COMMAND:
+            return "ステージの高さを%s1から%s2に変更";
 
         default:
             break;
