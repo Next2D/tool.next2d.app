@@ -492,3 +492,12 @@ export const $STAGE_HEIGHT_COMMAND: number = 51;
  * @constant
  */
 export const $STAGE_FPS_COMMAND: number = 52;
+
+/**
+ * @description ステージの背景色更新の識別コマンド名
+ *              Identification command name for stage background color update
+ *
+ * @type {number}
+ * @constant
+ */
+export const $STAGE_COLOR_COMMAND: number = 53;

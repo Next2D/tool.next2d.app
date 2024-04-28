@@ -42,7 +42,7 @@ export const execute = (
         receiver
     );
 
-    // アクティブならタイムラインのヘッダーを再描画
+    // アクティブなら表示を更新
     if (work_space.active) {
         // Inputの値を更新
         stageSettingUpdateFpsService(stage.fps);

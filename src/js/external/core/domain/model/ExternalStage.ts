@@ -2,6 +2,7 @@ import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import { execute as externalStageUpdateWidthUseCase } from "@/external/core/application/ExternalStage/usecase/ExternalStageUpdateWidthUseCase";
 import { execute as externalStageUpdateHeightUseCase } from "@/external/core/application/ExternalStage/usecase/ExternalStageUpdateHeightUseCase";
 import { execute as externalStageUpdateFpsUseCase } from "@/external/core/application/ExternalStage/usecase/ExternalStageUpdateFpsUseCase";
+import { execute as externalStageUpdateColorUseCase } from "@/external/core/application/ExternalStage/usecase/ExternalStageUpdateColorUseCase";
 
 /**
  * @description ステージの管理クラス
@@ -78,6 +79,25 @@ export class ExternalStage
         externalStageUpdateFpsUseCase(
             this._$workSpace,
             fps
+        );
+    }
+
+    /**
+     * @description ステージの背景色の値
+     *              Value of the background color of the stage
+     *
+     * @member {string}
+     * @public
+     */
+    get bgColor (): string
+    {
+        return this._$workSpace.stage.bgColor;
+    }
+    set bgColor (color: string)
+    {
+        externalStageUpdateColorUseCase(
+            this._$workSpace,
+            color
         );
     }
 }

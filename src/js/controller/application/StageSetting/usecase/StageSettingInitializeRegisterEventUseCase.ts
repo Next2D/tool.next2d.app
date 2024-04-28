@@ -10,6 +10,7 @@ import { execute as stageSettingFpsFocusOutEventUseCase } from "./StageSettingFp
 import { execute as stageSettingKeyPressEventService } from "../service/StageSettingKeyPressEventService";
 import { execute as stageSettingHeightMouseDownEventUseCase } from "./StageSettingHeightMouseDownEventUseCase";
 import { execute as stageSettingFpsMouseDownEventUseCase } from "./StageSettingFpsMouseDownEventUseCase";
+import { execute as stageSettingColorChangeEventUseCase } from "./StageSettingColorChangeEventUseCase";
 import {
     $STAGE_BG_COLOR_ID,
     $STAGE_FPS_ID,
@@ -93,7 +94,9 @@ export const execute = (): void =>
         .getElementById($STAGE_BG_COLOR_ID);
 
     if (colorElement) {
-        // TODO
+        colorElement.addEventListener("change",
+            stageSettingColorChangeEventUseCase
+        );
     }
 
     // ステージのフレームレートのイベント登録

@@ -54,6 +54,7 @@ import { execute as labelDeleteHistoryUndoUseCase } from "@/history/application/
 import { execute as stageSettingUpdateWidthHistoryUndoUseCase } from "@/history/application/controller/application/StageSetting/UpdateWidth/usecase/StageSettingUpdateWidthHistoryUndoUseCase";
 import { execute as stageSettingUpdateHeightHistoryUndoUseCase } from "@/history/application/controller/application/StageSetting/UpdateHeight/usecacse/StageSettingUpdateHeightHistoryUndoUseCase";
 import { execute as stageSettingUpdateFpsHistoryUndoUseCase } from "@/history/application/controller/application/StageSetting/UpdateFPS/usecase/StageSettingUpdateFpsHistoryUndoUseCase";
+import { execute as stageSettingUpdateColorHistoryUndoUseCase } from "@/history/application/controller/application/StageSetting/UpdateColor/usecase/StageSettingUpdateColorHistoryUndoUseCase";
 import { execute as instanceUpdateNameHistoryUndoUseCase } from "@/history/application/core/application/Instance/usecase/InstanceUpdateNameHistoryUndoUseCase";
 import { execute as instanceUpdateSymbolHistoryUndoUseCase } from "@/history/application/core/application/Instance/usecase/InstanceUpdateSymbolHistoryUndoUseCase";
 import {
@@ -103,7 +104,8 @@ import {
     $LABEL_DELETE_COMMAND,
     $STAGE_WIDTH_COMMAND,
     $STAGE_HEIGHT_COMMAND,
-    $STAGE_FPS_COMMAND
+    $STAGE_FPS_COMMAND,
+    $STAGE_COLOR_COMMAND
 } from "@/config/HistoryConfig";
 
 /**
@@ -577,6 +579,14 @@ export const execute = async (
             stageSettingUpdateFpsHistoryUndoUseCase(
                 messages[0] as number, // WorkSpace ID
                 messages[2] as number // Before FPS
+            );
+            break;
+
+        // ステージの背景色を更新
+        case $STAGE_COLOR_COMMAND:
+            stageSettingUpdateColorHistoryUndoUseCase(
+                messages[0] as number, // WorkSpace ID
+                messages[2] as string // Before Color
             );
             break;
 

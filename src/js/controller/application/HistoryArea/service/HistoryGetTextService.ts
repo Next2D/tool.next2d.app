@@ -45,7 +45,8 @@ import {
     $LABEL_DELETE_COMMAND,
     $STAGE_WIDTH_COMMAND,
     $STAGE_HEIGHT_COMMAND,
-    $STAGE_FPS_COMMAND
+    $STAGE_FPS_COMMAND,
+    $STAGE_COLOR_COMMAND
 } from "@/config/HistoryConfig";
 
 /**
@@ -196,6 +197,9 @@ export const execute = (command: number): string =>
 
         case $STAGE_FPS_COMMAND:
             return "ステージのFPSを%s1から%s2に変更";
+
+        case $STAGE_COLOR_COMMAND:
+            return "ステージの背景色を%s1から%s2に変更";
 
         default:
             break;
