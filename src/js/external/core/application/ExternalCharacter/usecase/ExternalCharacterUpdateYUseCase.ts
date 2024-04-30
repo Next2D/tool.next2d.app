@@ -14,6 +14,7 @@ import { execute as screenAreaMoveTargetRectElementUseCase } from "@/screen/appl
  * @param  {Layer} layer
  * @param  {Character} character
  * @param  {number} y
+ * @param  {boolean} [receiver=false]
  * @return {void}
  * @method
  * @public
@@ -23,11 +24,18 @@ export const execute = (
     movie_clip: MovieClip,
     layer: Layer,
     character: Character,
-    y: number
+    y: number,
+    receiver: boolean = false
 ): void => {
 
     // 変更前のx座標を取得
     const beforeY = character.y;
+
+    // 変更がなければ何もしない
+    if (beforeY === y) {
+        return ;
+    }
+
     character.y = y;
 
     // 履歴を登録

@@ -501,3 +501,21 @@ export const $STAGE_FPS_COMMAND: number = 52;
  * @constant
  */
 export const $STAGE_COLOR_COMMAND: number = 53;
+
+/**
+ * @description DisplayObjectのx座標更新の識別コマンド名
+ *              Identification command name for updating the x-coordinate of the DisplayObject
+ *
+ * @type {number}
+ * @constant
+ */
+export const $CHARACTER_UPDATE_X: number = 54;
+
+/**
+ * @description DisplayObjectのy座標更新の識別コマンド名
+ *              Identification command name for updating the y-coordinate of the DisplayObject
+ *
+ * @type {number}
+ * @constant
+ */
+export const $CHARACTER_UPDATE_Y: number = 55;
