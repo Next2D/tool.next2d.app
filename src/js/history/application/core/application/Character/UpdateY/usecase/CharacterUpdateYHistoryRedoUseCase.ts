@@ -49,6 +49,9 @@ export const execute = (
 
     // データを更新
     character.y = after_y;
+    
+    // 選択状態を解除
+    movieClip.clearSelectedDepths();
 
     // アクティブなら表示を更新
     if (workSpace.active && movieClip.active) {

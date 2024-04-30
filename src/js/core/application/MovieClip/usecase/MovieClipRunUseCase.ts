@@ -14,6 +14,7 @@ import { execute as timelineToolUpdateSceneNameService } from "@/timeline/applic
 import { execute as screenAreaRedrawUseCase } from "@/screen/application/ScreenArea/usecase/ScreenAreaRedrawUseCase";
 import { execute as soundAreaRebuildSettingAreaUseCase } from "@/controller/application/SoundArea/usecase/SoundAreaRebuildSettingAreaUseCase";
 import { execute as timelineLabelNameUpdateService } from "@/timeline/application/TimelineLabelName/service/TimelineLabelNameUpdateService";
+import { execute as screenAreaMoveTargetRectElementUseCase } from "@/screen/application/ScreenArea/usecase/ScreenAreaMoveTargetRectElementUseCase";
 
 /**
  * @description MovieClipの起動処理
@@ -69,6 +70,9 @@ export const execute = async (movie_clip: MovieClip): Promise<void> =>
 
     // サウンドエリアの設定エリアを再構築
     soundAreaRebuildSettingAreaUseCase();
+
+    // 選択中のDisplayObjectがあれば選択範囲を表示
+    screenAreaMoveTargetRectElementUseCase(movie_clip);
 
     // スクリーンエリアを再描画
     await screenAreaRedrawUseCase(movie_clip);

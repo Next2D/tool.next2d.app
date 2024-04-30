@@ -11,8 +11,12 @@ import { BoundsImpl } from "@/interface/BoundsImpl";
  * @method
  * @public
  */
-export const execute = (movie_clip: MovieClip): BoundsImpl =>
+export const execute = (movie_clip: MovieClip): BoundsImpl | null =>
 {
+    if (!movie_clip.selectedDepths.size) {
+        return null;
+    }
+
     // 選択範囲のElementを表示
     const frame = movie_clip.currentFrame;
 
