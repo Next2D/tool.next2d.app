@@ -23,6 +23,6 @@ export const execute = (
     const depth = character.depth;
 
     return `
-<div class="display-object" data-depth="${depth}" data-layer-id="${layer_id}" style="transform: matrix(${matrix[0]}, ${matrix[1]}, ${matrix[2]}, ${matrix[3]}, 0, 0); top: ${y}px; left: ${x}px; opacity: ${alpha};"></div>
+<div class="display-object layer-id-${layer_id}" data-depth="${depth}" data-layer-id="${layer_id}" style="transform: matrix(${matrix[0]}, ${matrix[1]}, ${matrix[2]}, ${matrix[3]}, 0, 0); top: ${y}px; left: ${x}px; opacity: ${alpha};"></div>
     `;
 };

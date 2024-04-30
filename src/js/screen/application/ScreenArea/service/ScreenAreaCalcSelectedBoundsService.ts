@@ -18,9 +18,9 @@ export const execute = (movie_clip: MovieClip): BoundsImpl =>
 
     // 選択範囲のbounding boxを取得
     const boundingBoxs = [];
-    for (const [layer_index, depths] of movie_clip.selectedDepths) {
+    for (const [layerIndex, depths] of movie_clip.selectedDepths) {
 
-        const layer = movie_clip.getLayer(layer_index);
+        const layer = movie_clip.getLayer(layerIndex);
         if (!layer) {
             continue ;
         }

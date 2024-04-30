@@ -16,8 +16,6 @@ import { execute as arrowToolScreenMouseDownEventUseCase } from "./ArrowToolScre
  */
 export const execute = (tool: ToolImpl<ArrowTool>): void =>
 {
-    // TODO 各種イベントを登録
-
     // DisplayObject選択時のイベントを登録
     tool.addEventListener(EventType.DISPLAY_OBJRCY,
         arrowToolDisplayObjectMouseDownEventUseCase

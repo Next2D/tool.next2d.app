@@ -2,6 +2,8 @@ import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { ExternalLayer } from "@/external/core/domain/model/ExternalLayer";
 import { ExternalScreen } from "@/external/screen/domain/model/ExternalScreen";
 import { $allHideMenu } from "@/menu/application/MenuUtil";
+import { execute as arrowToolDisplayObjectRegisterWindowEventUseCase } from "./ArrowToolDisplayObjectRegisterWindowEventUseCase";
+import { $getMovePositon } from "../../ToolUtil";
 
 /**
  * @description スクリーンに設置したDisplayObject選択時のイベント処理関数
@@ -39,14 +41,60 @@ export const execute = (event: PointerEvent): void =>
         return ;
     }
 
-    // 外部APIを起動
-    const externalLayer  = new ExternalLayer(workSpace, movieClip, layer);
-    const externalScreen = new ExternalScreen(workSpace, movieClip);
+    // 移動量のオブジェクトを初期化
+    // fixed logic
+    const movePosition = $getMovePositon();
+    movePosition.x = 0;
+    movePosition.y = 0;
 
-    // 選択処理
-    externalScreen.selectDisplayObjects(
-        externalLayer.index,
-        [parseInt(element.dataset.depth as string)],
-        event.shiftKey
-    );
+    // 移動用のwindowイベントを登録
+    // fixed logic
+    arrowToolDisplayObjectRegisterWindowEventUseCase();
+
+    // レイヤーのインデックスを取得
+    const externalLayer = new ExternalLayer(workSpace, movieClip, layer);
+    const layerIndex = externalLayer.index;
+
+    const depth = parseInt(element.dataset.depth as string);
+
+    // 外部APIを起動
+    const externalScreen = new ExternalScreen(workSpace, movieClip);
+    if (!event.shiftKey) {
+
+        // 選択中のDisplayObjectがある場合は選択処置はスキップ
+        if (movieClip.selectedDepths.has(layerIndex)) {
+            const depths = movieClip.selectedDepths.get(layerIndex) as NonNullable<number[]>;
+            if (depths.indexOf(depth) > -1) {
+                return ;
+            }
+        }
+
+        // 選択処理を実行
+        externalScreen.selectDisplayObjects(
+            layerIndex,
+            [depth],
+            event.shiftKey
+        );
+
+    } else {
+
+        const depths = movieClip.selectedDepths.has(layerIndex)
+            ? movieClip.selectedDepths.get(layerIndex) as NonNullable<number[]>
+            : [];
+
+        // 複数選択の場合、重複は削除、新規は追加
+        const index = depths.indexOf(depth);
+        if (index > -1) {
+            depths.splice(index, 1);
+        } else {
+            depths.push(depth);
+        }
+
+        // 選択処理を実行
+        externalScreen.selectDisplayObjects(
+            layerIndex,
+            depths,
+            event.shiftKey
+        );
+    }
 };

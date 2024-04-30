@@ -1,5 +1,6 @@
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { ExternalScreen } from "@/external/screen/domain/model/ExternalScreen";
+import { ExternalTimeline } from "@/external/timeline/domain/model/ExternalTimeline";
 
 /**
  * @description スクリーン選択時のイベント処理関数
@@ -25,4 +26,8 @@ export const execute = (event: PointerEvent): void =>
     // 全てのDisplayObjectの選択を解除
     const externalScreen = new ExternalScreen(workSpace, workSpace.scene);
     externalScreen.claerSelectedDisplayObjects();
+
+    // レイヤー選択も解除
+    const externalTimeline = new ExternalTimeline(workSpace, workSpace.scene);
+    externalTimeline.deactivatedAllLayers();
 };

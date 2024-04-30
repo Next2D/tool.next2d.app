@@ -1,5 +1,6 @@
 import type { ToolImpl } from "@/interface/ToolImpl";
 import { EventType } from "../domain/event/EventType";
+import type { PositionImpl } from "@/interface/PositionImpl";
 
 /**
  * @description BaseToolを継承してる、現在選択中のToolオブジェクト
@@ -112,4 +113,23 @@ export const $getMouseState = (): "up" | "down" =>
 export const $setMouseState = (state: "up" | "down"): void =>
 {
     $mouseState = state;
+};
+
+/**
+ * @type {object}
+ * @private
+ */
+const $movePosition: PositionImpl = { "x": 0, "y": 0 };
+
+/**
+ * @description マウスの移動量の管理オブジェクトを返却
+ *              Returns the object that manages the amount of mouse movement
+ *
+ * @return {object}
+ * @method
+ * @public
+ */
+export const $getMovePositon = (): PositionImpl =>
+{
+    return $movePosition;
 };

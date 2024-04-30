@@ -1,5 +1,5 @@
 import { EventType } from "@/tool/domain/event/EventType";
-import { execute as bitmapMouseDownEventUseCase } from "./BitmapMouseDownEventUseCase";
+import { execute as bitmapMouseDownEventService } from "../service/BitmapMouseDownEventService";
 
 /**
  * @description スクリーンに配置するBitmapのイベントを登録する
@@ -14,6 +14,6 @@ export const execute = (element: HTMLElement): void =>
 {
     // マウスダウンイベントを登録
     element.addEventListener(EventType.MOUSE_DOWN,
-        bitmapMouseDownEventUseCase
+        bitmapMouseDownEventService
     );
 };
