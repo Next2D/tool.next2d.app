@@ -1,19 +1,19 @@
-import { $getWorkSpace } from "@/core/application/CoreUtil";
 import type { InstanceImpl } from "@/interface/InstanceImpl";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
+import { $getWorkSpace } from "@/core/application/CoreUtil";
 import { execute as screenAreaMoveDisplayObjectElementService } from "@/screen/application/ScreenArea/service/ScreenAreaMoveDisplayObjectElementService";
 import { execute as screenAreaMoveTargetRectElementUseCase } from "@/screen/application/ScreenArea/usecase/ScreenAreaMoveTargetRectElementUseCase";
 
 /**
- * @description DisplayObjectのy座標を変更後に戻す
+ * @description DisplayObjectのy座標を変更前に戻す
  *              Reset the y coordinate of the DisplayObject
  *
  * @param  {number} work_space_id
  * @param  {number} library_id
  * @param  {number} index
- * @param  {number} ketframe
+ * @param  {number} keyframe
  * @param  {number} depth
- * @param  {number} after_y
+ * @param  {number} before_y
  * @return {void}
  * @method
  * @public
@@ -22,9 +22,9 @@ export const execute = (
     work_space_id: number,
     library_id: number,
     index: number,
-    ketframe: number,
+    keyframe: number,
     depth: number,
-    after_y: number
+    before_y: number
 ): void => {
 
     const workSpace = $getWorkSpace(work_space_id);
@@ -42,13 +42,13 @@ export const execute = (
         return ;
     }
 
-    const character = layer.getCharacter(ketframe, depth);
+    const character = layer.getCharacter(keyframe, depth);
     if (!character) {
         return ;
     }
 
     // データを更新
-    character.y = after_y;
+    character.y = before_y;
 
     // アクティブなら表示を更新
     if (workSpace.active && movieClip.active) {

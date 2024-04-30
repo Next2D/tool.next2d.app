@@ -4,6 +4,7 @@ import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import { execute as screenAreaMoveDisplayObjectElementService } from "@/screen/application/ScreenArea/service/ScreenAreaMoveDisplayObjectElementService";
 import { execute as screenAreaMoveTargetRectElementUseCase } from "@/screen/application/ScreenArea/usecase/ScreenAreaMoveTargetRectElementUseCase";
+import { execute as characterUpdateYHistoryUseCase } from "@/history/application/core/application/Character/UpdateY/usecase/CharacterUpdateYHistoryUseCase";
 
 /**
  * @description DisplayObjectのx座標を更新
@@ -39,6 +40,14 @@ export const execute = (
     character.y = y;
 
     // 履歴を登録
+    characterUpdateYHistoryUseCase(
+        work_space,
+        movie_clip,
+        layer,
+        character,
+        beforeY,
+        receiver
+    );
 
     // アクティブなら表示を更新
     if (work_space.active && movie_clip.active) {

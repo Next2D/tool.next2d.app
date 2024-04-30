@@ -55,6 +55,8 @@ import { execute as stageSettingUpdateWidthHistoryUndoUseCase } from "@/history/
 import { execute as stageSettingUpdateHeightHistoryUndoUseCase } from "@/history/application/controller/application/StageSetting/UpdateHeight/usecacse/StageSettingUpdateHeightHistoryUndoUseCase";
 import { execute as stageSettingUpdateFpsHistoryUndoUseCase } from "@/history/application/controller/application/StageSetting/UpdateFPS/usecase/StageSettingUpdateFpsHistoryUndoUseCase";
 import { execute as stageSettingUpdateColorHistoryUndoUseCase } from "@/history/application/controller/application/StageSetting/UpdateColor/usecase/StageSettingUpdateColorHistoryUndoUseCase";
+import { execute as characterUpdateXHistoryUndoUseCase } from "@/history/application/core/application/Character/UpdateX/usecase/CharacterUpdateXHistoryUndoUseCase";
+import { execute as characterUpdateYHistoryUndoUseCase } from "@/history/application/core/application/Character/UpdateY/usecase/CharacterUpdateYHistoryUndoUseCase";
 import { execute as instanceUpdateNameHistoryUndoUseCase } from "@/history/application/core/application/Instance/usecase/InstanceUpdateNameHistoryUndoUseCase";
 import { execute as instanceUpdateSymbolHistoryUndoUseCase } from "@/history/application/core/application/Instance/usecase/InstanceUpdateSymbolHistoryUndoUseCase";
 import {
@@ -105,7 +107,9 @@ import {
     $STAGE_WIDTH_COMMAND,
     $STAGE_HEIGHT_COMMAND,
     $STAGE_FPS_COMMAND,
-    $STAGE_COLOR_COMMAND
+    $STAGE_COLOR_COMMAND,
+    $CHARACTER_UPDATE_X,
+    $CHARACTER_UPDATE_Y
 } from "@/config/HistoryConfig";
 
 /**
@@ -587,6 +591,30 @@ export const execute = async (
             stageSettingUpdateColorHistoryUndoUseCase(
                 messages[0] as number, // WorkSpace ID
                 messages[2] as string // Before Color
+            );
+            break;
+
+        // DisplayObjectのX座標を更新
+        case $CHARACTER_UPDATE_X:
+            characterUpdateXHistoryUndoUseCase(
+                messages[0] as number, // WorkSpace ID
+                messages[1] as number, // MovieClip ID
+                messages[2] as number, // Layer Index
+                messages[3] as number, // Keyframe
+                messages[4] as number, // Depth
+                messages[5] as number // Before X
+            );
+            break;
+
+        // DisplayObjectのY座標を更新
+        case $CHARACTER_UPDATE_Y:
+            characterUpdateYHistoryUndoUseCase(
+                messages[0] as number, // WorkSpace ID
+                messages[1] as number, // MovieClip ID
+                messages[2] as number, // Layer Index
+                messages[3] as number, // Keyframe
+                messages[4] as number, // Depth
+                messages[5] as number // Before Y
             );
             break;
 

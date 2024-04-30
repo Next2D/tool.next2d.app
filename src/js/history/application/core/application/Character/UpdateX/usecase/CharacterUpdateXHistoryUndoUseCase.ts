@@ -11,7 +11,7 @@ import { execute as screenAreaMoveTargetRectElementUseCase } from "@/screen/appl
  * @param  {number} work_space_id
  * @param  {number} library_id
  * @param  {number} index
- * @param  {number} ketframe
+ * @param  {number} keyframe
  * @param  {number} depth
  * @param  {number} before_x
  * @return {void}
@@ -22,7 +22,7 @@ export const execute = (
     work_space_id: number,
     library_id: number,
     index: number,
-    ketframe: number,
+    keyframe: number,
     depth: number,
     before_x: number
 ): void => {
@@ -42,7 +42,7 @@ export const execute = (
         return ;
     }
 
-    const character = layer.getCharacter(ketframe, depth);
+    const character = layer.getCharacter(keyframe, depth);
     if (!character) {
         return ;
     }
