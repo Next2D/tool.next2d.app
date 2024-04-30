@@ -12,11 +12,8 @@ import { execute as arrowToolInitializeUseCase } from "../../application/ArrowTo
  */
 export class ArrowTool extends BaseTool
 {
-    // private _$saved: boolean;
     // private _$xReverse: boolean;
     // private _$yReverse: boolean;
-    // private _$activeElement: string;
-    // private _$activeElements: Element[];
 
     /**
      * @constructor
@@ -25,20 +22,6 @@ export class ArrowTool extends BaseTool
     constructor ()
     {
         super($TOOL_ARROW_NAME);
-
-        // /**
-        //  * @type {string}
-        //  * @default ""
-        //  * @private
-        //  */
-        // this._$activeElement = "";
-
-        // /**
-        //  * @type {array}
-        //  * @default {array}
-        //  * @private
-        //  */
-        // this._$activeElements = [];
 
         // /**
         //  * @type {boolean}

@@ -8,6 +8,8 @@ import { execute as characterCalcSetScaleXService } from "@/core/application/Cha
 import { execute as characterCalcGetScaleYService } from "@/core/application/Character/service/CharacterCalcGetScaleYService";
 import { execute as characterCalcSetRotationService } from "@/core/application/Character/service/CharacterCalcSetRotationService";
 import { $clamp } from "@/global/GlobalUtil";
+import type { BoundsImpl } from "@/interface/BoundsImpl";
+import { execute as characterCalcGetBoundsService } from "@/core/application/Character/service/CharacterCalcGetBoundsService";
 
 /**
  * @description DisplayObjectのユニークID
@@ -482,6 +484,19 @@ export class Character
     async createElement (element: HTMLElement, layer: Layer): Promise<HTMLDivElement | null>
     {
         return await characterCreateElementUseCase(this, element, layer);
+    }
+
+    /**
+     * @description バウンディングボックスを取得
+     *              Get the bounding box
+     *
+     * @return {object}
+     * @method
+     * @public
+     */
+    getBounds (): BoundsImpl | null
+    {
+        return characterCalcGetBoundsService(this._$libraryId, this._$matrix);
     }
 
     /**

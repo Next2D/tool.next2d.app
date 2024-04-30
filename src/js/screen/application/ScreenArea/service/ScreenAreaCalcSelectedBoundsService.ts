@@ -1,0 +1,44 @@
+import type { MovieClip } from "@/core/domain/model/MovieClip";
+import { $calcBoundingBox } from "@/core/application/CoreUtil";
+import { BoundsImpl } from "@/interface/BoundsImpl";
+
+/**
+ * @description 選択範囲のbounding boxを計算
+ *              Calculate the bounding box of the selected range
+ *
+ * @param  {MovieClip} movie_clip
+ * @return {object}
+ * @method
+ * @public
+ */
+export const execute = (movie_clip: MovieClip): BoundsImpl =>
+{
+    // 選択範囲のElementを表示
+    const frame = movie_clip.currentFrame;
+
+    // 選択範囲のbounding boxを取得
+    const boundingBoxs = [];
+    for (const [layer_index, depths] of movie_clip.selectedDepths) {
+
+        const layer = movie_clip.getLayer(layer_index);
+        if (!layer) {
+            continue ;
+        }
+
+        for (let idx = 0; idx < depths.length; idx++) {
+            const character = layer.getCharacter(frame, depths[idx]);
+            if (!character) {
+                continue ;
+            }
+
+            const bounds = character.getBounds();
+            if (!bounds) {
+                continue ;
+            }
+
+            boundingBoxs.push(bounds);
+        }
+    }
+
+    return $calcBoundingBox(boundingBoxs);
+};

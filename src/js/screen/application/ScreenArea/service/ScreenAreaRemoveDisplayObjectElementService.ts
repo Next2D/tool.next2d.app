@@ -5,7 +5,7 @@ import { $SCREEN_STAGE_AREA_ID } from "@/config/ScreenConfig";
  * @description 指定したDisplayObjectのElementをStageAreaから削除
  *              Remove the Element of the specified DisplayObject from the StageArea
  *
- * @param {Character} character
+ * @param  {Character} character
  * @return {void}
  * @method
  * @public

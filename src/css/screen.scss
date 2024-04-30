@@ -116,10 +116,9 @@
 
 #target-rect
 {
-    border         : 1px solid #3a3a3a;
     position       : absolute;
     background     : transparent;
-    z-index        : 9000;
+    z-index        : 65535;
     pointer-events : none;
 }
 
@@ -128,6 +127,11 @@
     .arrow
     {
         border : 1px solid #acfeff;
+    }
+
+    .free_transform
+    {
+        border         : 1px solid #3a3a3a;
     }
 }
 

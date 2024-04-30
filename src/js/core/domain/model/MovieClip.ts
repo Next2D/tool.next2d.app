@@ -31,6 +31,7 @@ export class MovieClip extends Instance
     private readonly _$sounds: Map<number, SoundObjectImpl[]>;
     private readonly _$selectedLayers: Layer[];
     private readonly _$selectedFrameObject: FrameObjectImpl;
+    private readonly _$selectedDepths: Map<number, number[]>;
 
     /**
      * @params {object} object
@@ -122,8 +123,27 @@ export class MovieClip extends Instance
             "end": 0
         };
 
+        /**
+         * @type {Map}
+         * @private
+         */
+        this._$selectedDepths = new Map();
+
         // 指定objectからMovieCLipを復元
         this.load(object);
+    }
+
+    /**
+     * @description 選択中のDisplayObjectのマップデータを返却
+     *              Returns the map data of the selected DisplayObject
+     *
+     * @member {Map}
+     * @readonly
+     * @public
+     */
+    get selectedDepths (): Map<number, number[]>
+    {
+        return this._$selectedDepths;
     }
 
     /**
@@ -250,6 +270,19 @@ export class MovieClip extends Instance
             {
                 return this.layers.indexOf(a) - this.layers.indexOf(b);
             });
+    }
+
+    /**
+     * @description 選択中のDisplayObjectを初期化
+     *              Initialize the selected DisplayObject
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    clearSelectedDepths (): void
+    {
+        this._$selectedDepths.clear();
     }
 
     /**
@@ -569,6 +602,25 @@ export class MovieClip extends Instance
         return index in this._$layers
             ? this._$layers[index] as NonNullable<Layer>
             : null;
+    }
+
+    /**
+     * @description 指定IDのLayerを返却
+     *              Returns the Layer with the specified ID
+     *
+     * @param {number} id
+     * @return {Layer | null}
+     * @method
+     * @public
+     */
+    getLayerById (id: number): Layer | null
+    {
+        for (let idx = 0; idx < this._$layers.length; ++idx) {
+            if (this._$layers[idx].id === id) {
+                return this._$layers[idx];
+            }
+        }
+        return null;
     }
 
     /**

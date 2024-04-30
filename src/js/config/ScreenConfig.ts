@@ -26,6 +26,15 @@ export const $SCREEN_STAGE_AREA_ID: string = "stage-area";
 export const $SCREEN_ID: string = "screen";
 
 /**
+ * @description スクリーンエリアの選択範囲のElementのID
+ *              ID of the selected range in the screen area
+ *
+ * @type {string}
+ * @constant
+ */
+export const $SCREEN_TARGET_RECT_ID: string = "target-rect";
+
+/**
  * @description スクリーンエリアのタブのElementのID
  *              ID of the Element in the screen area tab
  *

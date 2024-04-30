@@ -45,7 +45,6 @@ export const execute = (
 
     const character = layer.getCharacter(
         character_save_object.startFrame,
-        character_save_object.libraryId,
         character_save_object.depth
     );
     if (!character) {

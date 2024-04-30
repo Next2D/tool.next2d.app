@@ -11,8 +11,6 @@ import { BaseTool } from "./BaseTool";
  */
 export class FreeTransformTool extends BaseTool
 {
-    private _$validity: boolean;
-
     /**
      * @constructor
      * @public
@@ -20,22 +18,5 @@ export class FreeTransformTool extends BaseTool
     constructor ()
     {
         super($TOOL_FREE_TRANSFORM_NAME);
-
-        /**
-         * @type {boolean}
-         * @default false
-         * @private
-         */
-        this._$validity = false;
-    }
-
-    /**
-     * @member {boolean}
-     * @readonly
-     * @public
-     */
-    get validity (): boolean
-    {
-        return this._$validity;
     }
 }

@@ -1,5 +1,7 @@
-import { MovieClip } from "@/core/domain/model/MovieClip";
-import { WorkSpace } from "@/core/domain/model/WorkSpace";
+import type { MovieClip } from "@/core/domain/model/MovieClip";
+import type { WorkSpace } from "@/core/domain/model/WorkSpace";
+import { execute as externalScreenClaerSelectedDisplayObjectUseCase } from "@/external/screen/application/ExternalScreen/usecase/ExternalScreenClaerSelectedDisplayObjectUseCase";
+import { execute as externalScreenSelectDisplayObjectUseCase } from "@/external/screen/application/ExternalScreen/usecase/ExternalScreenSelectDisplayObjectUseCase";
 
 /**
  * @description スクリーン操作の管理クラス
@@ -36,17 +38,49 @@ export class ExternalScreen
     }
 
     /**
+     * @description 選択されているDisplayObjectをクリア
+     *              Clear the selected DisplayObject
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    claerSelectedDisplayObjects (): void
+    {
+        externalScreenClaerSelectedDisplayObjectUseCase(
+            this._$workSpace,
+            this._$movieClip
+        );
+    }
+
+    /**
      * @description 指定したレイヤーのDisplayObjectを選択
      *              Select the display object of the specified layer
      *
      * @param  {number} layer_index
      * @param  {array} depths
+     * @param  {boolean} [multi_select=false]
      * @return {void}
      * @method
      * @public
      */
-    selectDisplayObjects (layer_index: number, depths: number[]): void
-    {
-        console.log(layer_index, depths);
+    selectDisplayObjects (
+        layer_index: number,
+        depths: number[],
+        multi_select: boolean = false
+    ): void {
+
+        // 単一選択なら選択を解除
+        if (!multi_select) {
+            this.claerSelectedDisplayObjects();
+        }
+
+        // 引数のDisplayObjectを選択状態に更新
+        externalScreenSelectDisplayObjectUseCase(
+            this._$workSpace,
+            this._$movieClip,
+            layer_index,
+            depths
+        );
     }
 }

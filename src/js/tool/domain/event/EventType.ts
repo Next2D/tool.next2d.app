@@ -149,4 +149,17 @@ export class EventType
     {
         return "display_objrcy";
     }
+
+    /**
+     * @description スクリーンエリアのイベント名
+     *              Event name of the screen area
+     *
+     * @return {string}
+     * @static
+     * @const
+     */
+    static get SCREEN (): "screen"
+    {
+        return "screen";
+    }
 }

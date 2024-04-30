@@ -34,3 +34,37 @@ export const $getDragElement = (): HTMLElement | null =>
 {
     return $draggedElement;
 };
+
+/**
+ * @type {string}
+ * @default "hide"
+ * @private
+ */
+let $targetRectState: string = "hide";
+
+/**
+ * @description 選択範囲のElementの表示状態を更新
+ *              Update the display state of the selected range Element
+ *
+ * @param {string} state
+ * @return {void}
+ * @method
+ * @public
+ */
+export const $setTargetRectState = (state: string): void =>
+{
+    $targetRectState = state;
+};
+
+/**
+ * @description 選択範囲のElementの表示状態を返却
+ *              Returns the display state of the selected range Element
+ *
+ * @return {string}
+ * @method
+ * @public
+ */
+export const $getTargetRectState = (): string =>
+{
+    return $targetRectState;
+};

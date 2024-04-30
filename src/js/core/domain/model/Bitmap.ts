@@ -4,6 +4,7 @@ import { Instance } from "./Instance";
 import { execute as bufferToBinaryService } from "@/core/service/BufferToBinaryService";
 import { execute as binaryToBufferService } from "@/core/service/BinaryToBufferService";
 import { execute as bitmapBufferToElementService } from "@/core/application/Bitmap/service/BitmapBufferToElementService";
+import { BoundsImpl } from "@/interface/BoundsImpl";
 
 /**
  * @description 画像管理クラス
@@ -192,6 +193,24 @@ export class Bitmap extends Instance
             this._$width,
             this._$height
         );
+    }
+
+    /**
+     * @description 画像のプレーンなバウンディングボックスを返す
+     *              Returns the plain bounding box of the image
+     *
+     * @return {object}
+     * @method
+     * @public
+     */
+    getRawBounds (): BoundsImpl
+    {
+        return {
+            "xMin": 0,
+            "yMin": 0,
+            "xMax": this._$width,
+            "yMax": this._$height
+        };
     }
 
     /**

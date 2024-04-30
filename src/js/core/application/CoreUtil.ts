@@ -1,4 +1,5 @@
 import { WorkSpace } from "@/core/domain/model/WorkSpace";
+import { BoundsImpl } from "@/interface/BoundsImpl";
 
 /**
  * @description 起動中のWorkSpace配列
@@ -239,4 +240,74 @@ export const $bootAudioContext = (): void =>
 export const $getAudioContext = (): AudioContext | null =>
 {
     return $audioContext;
+};
+
+/**
+ * @description 指定の座標を元にBoundsを生成
+ *              Generate Bounds based on the specified coordinates
+ *
+ * @param  {number} x_min
+ * @param  {number} y_min
+ * @param  {number} x_max
+ * @param  {number} y_max
+ * @param  {array} matrix
+ * @return {object}
+ * @method
+ * @public
+ */
+export const $getMatrixBounds = (
+    x_min: number,
+    y_min: number,
+    x_max: number,
+    y_max: number,
+    matrix: number[]
+): BoundsImpl => {
+
+    const x0 = x_max * matrix[0] + y_max * matrix[2] + matrix[4];
+    const x1 = x_max * matrix[0] + y_min * matrix[2] + matrix[4];
+    const x2 = x_min * matrix[0] + y_max * matrix[2] + matrix[4];
+    const x3 = x_min * matrix[0] + y_min * matrix[2] + matrix[4];
+    const y0 = x_max * matrix[1] + y_max * matrix[3] + matrix[5];
+    const y1 = x_max * matrix[1] + y_min * matrix[3] + matrix[5];
+    const y2 = x_min * matrix[1] + y_max * matrix[3] + matrix[5];
+    const y3 = x_min * matrix[1] + y_min * matrix[3] + matrix[5];
+
+    return {
+        "xMin": Math.min( Number.MAX_VALUE, x0, x1, x2, x3),
+        "xMax": Math.max(-Number.MAX_VALUE, x0, x1, x2, x3),
+        "yMin": Math.min( Number.MAX_VALUE, y0, y1, y2, y3),
+        "yMax": Math.max(-Number.MAX_VALUE, y0, y1, y2, y3)
+    };
+};
+
+/**
+ * @description 複数のBoundsからBoundingBoxを計算
+ *              Calculate the BoundingBox from multiple Bounds
+ *
+ * @param  {array} bounding_boxs
+ * @return {object}
+ * @method
+ * @public
+ */
+export const $calcBoundingBox = (bounding_boxs: BoundsImpl[]): BoundsImpl =>
+{
+    let xMin =  Number.MAX_VALUE;
+    let yMin =  Number.MAX_VALUE;
+    let xMax = -Number.MAX_VALUE;
+    let yMax = -Number.MAX_VALUE;
+
+    for (let idx = 0; idx < bounding_boxs.length; idx++) {
+        const bounds = bounding_boxs[idx];
+        xMin = Math.min(xMin, bounds.xMin);
+        yMin = Math.min(yMin, bounds.yMin);
+        xMax = Math.max(xMax, bounds.xMax);
+        yMax = Math.max(yMax, bounds.yMax);
+    }
+
+    return {
+        "xMin": xMin,
+        "yMin": yMin,
+        "xMax": xMax,
+        "yMax": yMax
+    };
 };

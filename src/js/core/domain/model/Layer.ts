@@ -550,7 +550,6 @@ export class Layer
      *              Returns any DisplayObject
      *
      * @param {number} keyframe
-     * @param {number} library_id
      * @param {number} depth
      * @return {Character | null}
      * @method
@@ -558,17 +557,13 @@ export class Layer
      */
     getCharacter (
         keyframe: number,
-        library_id: number,
         depth: number
     ): Character | null {
 
-        for (let idx = 0; idx < this._$characters.length; ++idx) {
-            const character = this._$characters[idx];
+        const characters = this.getActiveCharacters(keyframe);
+        for (let idx = 0; idx < characters.length; ++idx) {
+            const character = characters[idx];
             if (character.startFrame !== keyframe) {
-                continue;
-            }
-
-            if (character.libraryId !== library_id) {
                 continue;
             }
 

@@ -36,7 +36,7 @@ export const execute = async (): Promise<void> =>
 
     // タイムラインにキーフレームが存在しない場合は処理を行わない
     const maxFrame = movieClip.maxFrame;
-    if (!maxFrame) {
+    if (!maxFrame || 2 >= maxFrame) {
         return ;
     }
 
