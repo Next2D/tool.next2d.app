@@ -36,7 +36,7 @@ export const execute = async (
     }
 
     // レイヤーを抜き出し
-    const layer = movieClip.layers[index];
+    const layer = movieClip.getLayer(index);
     if (!layer) {
         return ;
     }

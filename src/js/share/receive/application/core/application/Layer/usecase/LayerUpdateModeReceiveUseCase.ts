@@ -31,7 +31,7 @@ export const execute = (message: ShareReceiveMessageImpl): void =>
     }
 
     const layerIndex = message.data[2] as NonNullable<number>;
-    const layer = movieClip.layers[layerIndex];
+    const layer = movieClip.getLayer(layerIndex);
     if (!layer) {
         return ;
     }

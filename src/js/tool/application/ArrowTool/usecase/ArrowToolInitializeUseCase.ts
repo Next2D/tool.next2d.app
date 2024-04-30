@@ -1,6 +1,8 @@
 import type { ToolImpl } from "@/interface/ToolImpl";
 import type { ArrowTool } from "@/tool/domain/model/ArrowTool";
 import { $setActiveTool } from "../../ToolUtil";
+import { EventType } from "@/tool/domain/event/EventType";
+import { execute as arrowToolDisplayObjectMouseDownEventUseCase } from "./ArrowToolDisplayObjectMouseDownEventUseCase";
 
 /**
  * @description アローツールの初期起動ユースケース
@@ -14,6 +16,11 @@ import { $setActiveTool } from "../../ToolUtil";
 export const execute = (tool: ToolImpl<ArrowTool>): void =>
 {
     // TODO 各種イベントを登録
+
+    // DisplayObject選択時のイベントを登録
+    tool.addEventListener(EventType.DISPLAY_OBJRCY,
+        arrowToolDisplayObjectMouseDownEventUseCase
+    );
 
     // 初期選択ツールとしてセット
     $setActiveTool(tool);

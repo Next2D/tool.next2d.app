@@ -60,7 +60,7 @@ export const execute = (event: PointerEvent): void =>
         return ;
     }
 
-    const layer = movieClip.layers[timelineLayer.distIndex];
+    const layer = movieClip.getLayer(timelineLayer.distIndex);
     if (!layer) {
         return ;
     }

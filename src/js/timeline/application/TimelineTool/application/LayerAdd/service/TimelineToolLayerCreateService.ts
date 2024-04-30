@@ -44,6 +44,12 @@ export const execute = (
         return null;
     }
 
+    // 選択中のレイヤーが子レイヤーなら、親レイヤーを引き継ぐ
+    const selectedLayer = movieClip.getLayer(index);
+    if (!selectedLayer) {
+        return null;
+    }
+
     // レイヤーを追加
     const newLayer = movieClip.createLayer(layer_id);
 
@@ -55,8 +61,6 @@ export const execute = (
         newLayer.color = color;
     }
 
-    // 選択中のレイヤーが子レイヤーなら、親レイヤーを引き継ぐ
-    const selectedLayer = movieClip.layers[index];
     switch (selectedLayer.mode) {
 
         case $MASK_IN_MODE:

@@ -7,6 +7,7 @@ import { ExternalLibrary } from "@/external/controller/domain/model/ExternalLibr
 import { execute as externalWorkSpaceUpdateNameUseCase } from "@/external/core/application/ExternalWorkSpace/usecase/ExternalWorkSpaceUpdateNameUseCase";
 import { ExternalSoundArea } from "@/external/controller/domain/model/ExternalSoundArea";
 import { ExternalStage } from "./ExternalStage";
+import { ExternalScreen } from "@/external/screen/domain/model/ExternalScreen";
 
 /**
  * @description WorkSpaceの外部APIクラス
@@ -95,7 +96,7 @@ export class ExternalWorkSpace
      * @method
      * @public
      */
-    getCurrentTimeline (): ExternalTimeline
+    getTimeline (): ExternalTimeline
     {
         return new ExternalTimeline(
             this._$workSpace,
@@ -158,5 +159,21 @@ export class ExternalWorkSpace
     getSoundArea (): ExternalSoundArea
     {
         return new ExternalSoundArea(this._$workSpace, this._$workSpace.scene);
+    }
+
+    /**
+     * @description 現在、起動中のMovieClipのタイムラインAPIオブジェクトを返却
+     *              Returns the timeline API object of the currently running MovieClip
+     *
+     * @return {ExternalScreen}
+     * @method
+     * @public
+     */
+    getScreen (): ExternalScreen
+    {
+        return new ExternalScreen(
+            this._$workSpace,
+            this._$workSpace.scene
+        );
     }
 }

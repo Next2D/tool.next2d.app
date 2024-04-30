@@ -47,8 +47,8 @@ export const execute = (
             {
                 const index = movie_clip.layers.indexOf(layer);
                 for (let idx = index + 1; idx < movie_clip.layers.length; ++idx) {
-                    const childLayer = movie_clip.layers[idx];
-                    if (childLayer.parentId !== layer.id) {
+                    const childLayer = movie_clip.getLayer(idx);
+                    if (!childLayer || childLayer.parentId !== layer.id) {
                         break;
                     }
 

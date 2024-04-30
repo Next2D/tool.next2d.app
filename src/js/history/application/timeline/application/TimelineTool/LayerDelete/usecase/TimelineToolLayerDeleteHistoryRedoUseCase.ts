@@ -33,13 +33,13 @@ export const execute = (
         return ;
     }
 
-    const layer = movieClip.layers[index];
+    const layer = movieClip.getLayer(index);
     if (!layer) {
         return ;
     }
 
     for (let idx = 0; idx < indexes.length; ++idx) {
-        const childLayer = movieClip.layers[index];
+        const childLayer = movieClip.getLayer(index);
         if (!childLayer) {
             return ;
         }

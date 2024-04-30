@@ -50,12 +50,12 @@ export class EventDispatcher
      *              Launch function for registered events
      *
      * @param  {string} type
-     * @param  {MouseEvent|Event} [event=null]
+     * @param  {PointerEvent|Event} [event=null]
      * @return {void}
      * @method
      * @public
      */
-    dispatchEvent (type: string, event: MouseEvent | Event | null = null): void
+    dispatchEvent (type: string, event: PointerEvent | Event | null = null): void
     {
         if (!this._$events.has(type)) {
             return ;

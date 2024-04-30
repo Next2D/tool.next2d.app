@@ -1,4 +1,3 @@
-import type { Layer } from "@/core/domain/model/Layer";
 import { $TIMELINE_CONTROLLER_LAYER_COLOR_ID } from "@/config/TimelineLayerControllerMenuConfig";
 import { $getLayerFromElement } from "@/timeline/application/TimelineUtil";
 
@@ -13,7 +12,7 @@ import { $getLayerFromElement } from "@/timeline/application/TimelineUtil";
 export const execute = (element: HTMLElement): void =>
 {
     // 選択されたLayerオブジェクトを取得
-    const layer: Layer | undefined = $getLayerFromElement(element);
+    const layer = $getLayerFromElement(element);
     if (!layer) {
         return ;
     }

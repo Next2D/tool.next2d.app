@@ -59,8 +59,8 @@ export const execute = (
 
                 let childCount = 0;
                 for (let idx = before_index; idx < movieClip.layers.length; ++idx) {
-                    const childLayer = movieClip.layers[idx];
-                    if (childLayer.parentId !== layer.id) {
+                    const childLayer = movieClip.getLayer(idx);
+                    if (!childLayer || childLayer.parentId !== layer.id) {
                         if (before_index + 1 > idx) {
                             break;
                         }

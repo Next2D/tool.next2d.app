@@ -38,7 +38,7 @@ export const execute = (
     }
 
     // レイヤーを抜き出し
-    const layer = movieClip.layers[layer_ndex];
+    const layer = movieClip.getLayer(layer_ndex);
     if (!layer) {
         return ;
     }

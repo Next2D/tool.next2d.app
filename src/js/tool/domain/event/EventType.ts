@@ -136,4 +136,17 @@ export class EventType
     {
         return "pointerleave";
     }
+
+    /**
+     * @description スクリーンエリアのDisplayObject選択時のイベント名
+     *              Event name when selecting a DisplayObject in the screen area
+     *
+     * @return {string}
+     * @static
+     * @const
+     */
+    static get DISPLAY_OBJRCY (): "display_objrcy"
+    {
+        return "display_objrcy";
+    }
 }

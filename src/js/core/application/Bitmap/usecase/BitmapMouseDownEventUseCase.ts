@@ -1,3 +1,6 @@
+import { $getActiveTool } from "@/tool/application/ToolUtil";
+import { EventType } from "@/tool/domain/event/EventType";
+
 /**
  * @description スクリーンに設置したBitmapのDisplayObjectのマウスダウンイベント処理関数
  *              Mouse down event processing function of DisplayObject of Bitmap placed on the screen
@@ -18,4 +21,10 @@ export const execute = (event: PointerEvent): void =>
     event.preventDefault();
 
     // 移動用のwindowイベントを登録
+    const tool = $getActiveTool();
+    if (!tool) {
+        return ;
+    }
+
+    tool.dispatchEvent(EventType.DISPLAY_OBJRCY, event);
 };

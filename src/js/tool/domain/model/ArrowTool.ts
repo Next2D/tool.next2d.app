@@ -27,13 +27,6 @@ export class ArrowTool extends BaseTool
         super($TOOL_ARROW_NAME);
 
         // /**
-        //  * @type {boolean}
-        //  * @default false
-        //  * @private
-        //  */
-        // this._$saved = false;
-
-        // /**
         //  * @type {string}
         //  * @default ""
         //  * @private

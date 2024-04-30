@@ -1,4 +1,3 @@
-import type { Layer } from "@/core/domain/model/Layer";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import { execute as timelineToolLayerDeleteHistoryUseCase } from "@/history/application/timeline/application/TimelineTool/LayerDelete/usecase/TimelineToolLayerDeleteHistoryUseCase";
@@ -40,7 +39,7 @@ export const execute = async (
 
         const index = indexes[idx];
 
-        const layer: Layer | undefined = movie_clip.layers[index];
+        const layer = movie_clip.getLayer(index);
         if (!layer) {
             return ;
         }
@@ -70,8 +69,8 @@ export const execute = async (
             case $GUIDE_MODE: // ガイドレイヤー
                 for (let idx = index + 1; idx < movie_clip.layers.length; ++idx) {
 
-                    const childLayer = movie_clip.layers[idx];
-                    if (childLayer.parentId !== layer.id) {
+                    const childLayer = movie_clip.getLayer(idx);
+                    if (!childLayer || childLayer.parentId !== layer.id) {
                         break;
                     }
 

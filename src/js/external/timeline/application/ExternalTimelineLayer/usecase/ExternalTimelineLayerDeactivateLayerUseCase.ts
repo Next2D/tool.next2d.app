@@ -1,4 +1,3 @@
-import type { Layer } from "@/core/domain/model/Layer";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import { ExternalLayer } from "@/external/core/domain/model/ExternalLayer";
@@ -20,7 +19,7 @@ export const execute = (
 
     for (let idx = 0; idx < indexes.length; ++idx) {
 
-        const layer: Layer | undefined = movie_clip.layers[indexes[idx]];
+        const layer = movie_clip.getLayer(indexes[idx]);
         if (!layer) {
             return ;
         }

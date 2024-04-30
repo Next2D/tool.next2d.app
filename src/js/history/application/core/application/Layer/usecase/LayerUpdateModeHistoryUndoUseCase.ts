@@ -43,7 +43,7 @@ export const execute = (
         return ;
     }
 
-    const layer = movieClip.layers[index];
+    const layer = movieClip.getLayer(index);
     if (!layer) {
         return ;
     }
@@ -55,7 +55,7 @@ export const execute = (
     // 子レイヤーを元に戻す
     for (let idx = 0; idx < indexes.length; ++idx) {
 
-        const childLayer = movieClip.layers[indexes[idx]];
+        const childLayer = movieClip.getLayer(indexes[idx]);
         if (!childLayer) {
             continue;
         }

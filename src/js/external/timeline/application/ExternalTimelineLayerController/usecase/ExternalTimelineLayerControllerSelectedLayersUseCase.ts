@@ -1,4 +1,3 @@
-import type { Layer } from "@/core/domain/model/Layer";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import { WorkSpace } from "@/core/domain/model/WorkSpace";
 import { execute as timelineLayerSelectedUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerSelectedUseCase";
@@ -24,7 +23,7 @@ export const execute = (
 
         const index = indexes[idx];
 
-        const layer: Layer | undefined = movie_clip.layers[index];
+        const layer = movie_clip.getLayer(index);
         if (!layer) {
             continue;
         }

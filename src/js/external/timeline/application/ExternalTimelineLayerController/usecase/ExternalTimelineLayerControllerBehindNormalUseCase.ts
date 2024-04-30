@@ -45,8 +45,8 @@ export const execute = (
                 let index = layers.indexOf(layer) - 1;
                 for (; index > -1; --index) {
 
-                    const parentLayer = movie_clip.layers[index];
-                    if (parentLayer.id !== layer.parentId) {
+                    const parentLayer = movie_clip.getLayer(index);
+                    if (!parentLayer || parentLayer.id !== layer.parentId) {
                         continue;
                     }
 

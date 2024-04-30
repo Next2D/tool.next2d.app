@@ -14,6 +14,6 @@ export const execute = async (): Promise<void> =>
     // タブ追加の初期起動ユースケース
     screenTabRegisterAddEventUseCase();
 
-    // スクリーンエリアのマウスダウンイベントを登録
+    // スクリーンエリアのイベントを登録
     screenAreaInitializeRegisterEventUseCase();
 };

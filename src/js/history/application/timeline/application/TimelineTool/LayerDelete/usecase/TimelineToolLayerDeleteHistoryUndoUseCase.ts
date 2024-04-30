@@ -67,7 +67,7 @@ export const execute = (
     // 子レイヤーの再登録
     for (let idx = 0; idx < indexes.length; ++idx) {
 
-        const childLayer = movieClip.layers[indexes[idx]];
+        const childLayer = movieClip.getLayer(indexes[idx]);
         if (!childLayer) {
             continue;
         }

@@ -35,7 +35,7 @@ export const execute = (
     }
 
     // レイヤーを抜き出し
-    const layer = movieClip.layers[layer_index];
+    const layer = movieClip.getLayer(layer_index);
     if (!layer) {
         return ;
     }

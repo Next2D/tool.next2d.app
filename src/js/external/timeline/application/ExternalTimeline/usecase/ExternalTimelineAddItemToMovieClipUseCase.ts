@@ -74,7 +74,7 @@ export const execute = async (
         });
 
         for (let idx = 0; idx < indexes.length; idx++) {
-            const layer = movie_clip.layers[indexes[idx]];
+            const layer = movie_clip.getLayer(indexes[idx]);
             if (!layer) {
                 continue;
             }
@@ -87,7 +87,7 @@ export const execute = async (
         if (movie_clip.selectedLayers.length) {
             layers.push(...movie_clip.getCloneAndSortSelectedLayers());
         } else {
-            layers.push(movie_clip.layers[0]);
+            layers.push(movie_clip.getLayer(0));
         }
     }
 

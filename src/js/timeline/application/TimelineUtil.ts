@@ -366,15 +366,15 @@ export const $setDisableState = (state: boolean): void =>
  *              Obtains a Layer object from the Index value of the Element selected on the timeline
  *
  * @param  {HTMLElement} element
- * @return {Layer | void}
+ * @return {Layer | null}
  * @method
  * @public
  */
-export const $getLayerFromElement = (element: HTMLElement): Layer | undefined =>
+export const $getLayerFromElement = (element: HTMLElement): Layer | null =>
 {
     return $getCurrentWorkSpace()
         .scene
-        .layers[$getTopIndex() + parseInt(element.dataset.layerIndex as string)];
+        .getLayer($getTopIndex() + parseInt(element.dataset.layerIndex as string));
 };
 
 /**

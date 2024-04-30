@@ -42,7 +42,7 @@ export const execute = (event: PointerEvent): void =>
     const layerIndex = parseInt(parent.dataset.layerIndex as string) + $getTopIndex();
     const workSpace = $getCurrentWorkSpace();
     const movieClip = workSpace.scene;
-    const layer = movieClip.layers[layerIndex];
+    const layer = movieClip.getLayer(layerIndex);
     if (!layer) {
         return ;
     }

@@ -43,7 +43,11 @@ export const execute = (page_x: number, page_y: number): void =>
         index = Math.min(index, movieClip.layers.indexOf(layer));
     }
 
-    const layer = movieClip.layers[index];
+    const layer = movieClip.getLayer(index);
+    if (!layer) {
+        return ;
+    }
+
     const layerElement: HTMLElement | undefined = timelineLayer.elements[layer.getDisplayIndex()];
     if (!layerElement) {
         return ;

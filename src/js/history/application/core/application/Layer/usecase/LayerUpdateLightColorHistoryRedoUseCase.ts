@@ -32,7 +32,7 @@ export const execute = (
         return ;
     }
 
-    const layer = movieClip.layers[index];
+    const layer = movieClip.getLayer(index);
     if (!layer) {
         return ;
     }
