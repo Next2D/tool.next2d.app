@@ -1,10 +1,11 @@
 import type { InstanceImpl } from "@/interface/InstanceImpl";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
+import type { CharacterSaveObjectImpl } from "@/interface/CharacterSaveObjectImpl";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
 import { EmptyCharacter } from "@/core/domain/model/EmptyCharacter";
 import { execute as timelineLayerAddFrameUpdateLayerStyleUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerAddFrameUpdateLayerStyleUseCase";
 import { execute as screenAreaRemoveDisplayObjectElementService } from "@/screen/application/ScreenArea/service/ScreenAreaRemoveDisplayObjectElementService";
-import { CharacterSaveObjectImpl } from "@/interface/CharacterSaveObjectImpl";
+import { execute as screenAreaMoveTargetRectElementUseCase } from "@/screen/application/ScreenArea/usecase/ScreenAreaMoveTargetRectElementUseCase";
 
 /**
  * @description キーフレーム追加処理を元に戻す
@@ -63,17 +64,23 @@ export const execute = (
     // fixed logic
     if (workSpace.active && movieClip.active) {
         // スクリーンに追加したElementを削除
-        screenAreaRemoveDisplayObjectElementService(character);
+        screenAreaRemoveDisplayObjectElementService(layer.id, character.depth);
     }
 
     // 追加したDisplahyObjectを削除
     // fixed logic
     layer.removeCharacter(character);
 
+    // 選択状態を解除
+    movieClip.clearSelectedDepths();
+
     // アクティブならタイムラインを再描画
     // fixed logic
     if (workSpace.active && movieClip.active) {
         // タイムラインのレイヤー表示を更新
         timelineLayerAddFrameUpdateLayerStyleUseCase(workSpace, movieClip, layer);
+
+        // 選択範囲のElementの表示を更新
+        screenAreaMoveTargetRectElementUseCase(movieClip);
     }
 };

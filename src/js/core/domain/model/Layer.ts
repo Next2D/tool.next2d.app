@@ -549,24 +549,20 @@ export class Layer
      * @description 任意のDisplayObjectを返却
      *              Returns any DisplayObject
      *
-     * @param {number} keyframe
-     * @param {number} depth
+     * @param  {number} frame
+     * @param  {number} depth
      * @return {Character | null}
      * @method
      * @public
      */
     getCharacter (
-        keyframe: number,
+        frame: number,
         depth: number
     ): Character | null {
 
-        const characters = this.getActiveCharacters(keyframe);
+        const characters = this.getActiveCharacters(frame);
         for (let idx = 0; idx < characters.length; ++idx) {
             const character = characters[idx];
-            if (character.startFrame !== keyframe) {
-                continue;
-            }
-
             if (character.depth !== depth) {
                 continue;
             }

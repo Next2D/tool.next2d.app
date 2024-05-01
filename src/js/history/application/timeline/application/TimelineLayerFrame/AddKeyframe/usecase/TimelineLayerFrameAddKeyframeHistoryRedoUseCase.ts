@@ -5,6 +5,7 @@ import { $getWorkSpace } from "@/core/application/CoreUtil";
 import { Character } from "@/core/domain/model/Character";
 import { execute as timelineLayerAddFrameUpdateLayerStyleUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerAddFrameUpdateLayerStyleUseCase";
 import { execute as screenAreaAppendCharacterService } from "@/screen/application/ScreenArea/service/ScreenAreaAppendCharacterService";
+import { execute as screenAreaMoveTargetRectElementUseCase } from "@/screen/application/ScreenArea/usecase/ScreenAreaMoveTargetRectElementUseCase";
 
 /**
  * @description キーフレーム追加処理を元に戻す
@@ -52,10 +53,16 @@ export const execute = async (
         layer.removeEmptyCharacter(emptyCharacter);
     }
 
+    // 選択状態を解除
+    movieClip.clearSelectedDepths();
+
     // アクティブならタイムラインを再描画
     if (workSpace.active && movieClip.active) {
         // タイムラインにフレームを追加
         timelineLayerAddFrameUpdateLayerStyleUseCase(workSpace, movieClip, layer);
+
+        // 選択範囲のElementの表示を更新
+        screenAreaMoveTargetRectElementUseCase(movieClip);
 
         // スクリーンエリアにElementを追加
         await screenAreaAppendCharacterService(character, layer);

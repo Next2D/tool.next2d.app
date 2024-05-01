@@ -8,6 +8,7 @@ import { execute as timelineLayerControllerRegisterWindowEventUseCase } from "./
 import { execute as timelineLayerControllerActiveExitIconElementService } from "../service/TimelineLayerControllerActiveExitIconElementService";
 import { timelineLayer } from "@/timeline/domain/model/TimelineLayer";
 import { execute as timelineLayerFrameSelectedAllClearUseCase } from "@/timeline/application/TimelineLayerFrame/usecase/TimelineLayerFrameSelectedAllClearUseCase";
+import { ExternalScreen } from "@/external/screen/domain/model/ExternalScreen";
 
 /**
  * @description レイヤーのコントローラーエリアのマウスダウン処理関数
@@ -40,6 +41,10 @@ export const execute = (event: PointerEvent): void =>
 
     // 選択中のフレームを全て非アクティブにする
     timelineLayerFrameSelectedAllClearUseCase(movieClip);
+
+    // 選択されているDisplayObjectをクリア
+    const externalScreen = new ExternalScreen(workSpace, movieClip);
+    externalScreen.claerSelectedDisplayObjects();
 
     switch (true) {
 

@@ -13,14 +13,14 @@ describe("ScreenAreaRemoveDisplayObjectElementServiceTest", () =>
         for (let idx = 0; idx < 10; ++idx) {
             const div = document.createElement("div");
             parent.appendChild(div);
-            div.classList.add("display-object");
+            div.classList.add(`layer-id-${idx}`);
         }
 
         const character = new Character();
-        character.depth = 2;
+        character.depth = 0;
 
         expect(parent.children.length).toBe(10);
-        execute(character);
+        execute(2, character.depth);
         expect(parent.children.length).toBe(9);
 
         parent.remove();

@@ -77,7 +77,6 @@ export const execute = (event: PointerEvent): void =>
         );
 
     } else {
-
         const depths = movieClip.selectedDepths.has(layerIndex)
             ? movieClip.selectedDepths.get(layerIndex) as NonNullable<number[]>
             : [];

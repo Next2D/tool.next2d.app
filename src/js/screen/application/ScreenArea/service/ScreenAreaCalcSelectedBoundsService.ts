@@ -44,5 +44,7 @@ export const execute = (movie_clip: MovieClip): BoundsImpl | null =>
         }
     }
 
-    return $calcBoundingBox(boundingBoxs);
+    return boundingBoxs.length
+        ? $calcBoundingBox(boundingBoxs)
+        : null;
 };

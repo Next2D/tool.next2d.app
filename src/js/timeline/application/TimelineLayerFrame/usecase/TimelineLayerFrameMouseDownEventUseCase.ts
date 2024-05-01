@@ -7,6 +7,7 @@ import {
     $getMouseState,
     $setMouseState
 } from "../../TimelineUtil";
+import { ExternalScreen } from "@/external/screen/domain/model/ExternalScreen";
 
 /**
  * @description ダブルタップ用の待機フラグ
@@ -62,6 +63,10 @@ export const execute = (event: PointerEvent): void =>
     const workSpace = $getCurrentWorkSpace();
     const movieClip = workSpace.scene;
     const frame = parseInt(element.dataset.frame as NonNullable<string>);
+
+    // 選択されているDisplayObjectをクリア
+    const externalScreen = new ExternalScreen(workSpace, movieClip);
+    externalScreen.claerSelectedDisplayObjects();
 
     if (!wait) {
 

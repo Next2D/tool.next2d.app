@@ -7,6 +7,7 @@ import { execute as screenAreaRedrawUseCase } from "@/screen/application/ScreenA
 import { execute as soundAreaRebuildSettingAreaUseCase } from "@/controller/application/SoundArea/usecase/SoundAreaRebuildSettingAreaUseCase";
 import { execute as timelineLabelNameUpdateService } from "@/timeline/application/TimelineLabelName/service/TimelineLabelNameUpdateService";
 import { timelineHeader } from "@/timeline/domain/model/TimelineHeader";
+import { ExternalScreen } from "@/external/screen/domain/model/ExternalScreen";
 
 /**
  * @description レイヤーのアクティブを初期化して指定のフレームを選択する
@@ -45,6 +46,9 @@ export const execute = async (
 
             // タイムラインのラベル表示を更新
             timelineLabelNameUpdateService(movie_clip.getLabel(frame));
+
+            const externalScreen = new ExternalScreen(work_space, movie_clip);
+            externalScreen.claerSelectedDisplayObjects();
         }
 
         // スクリーンエリアを再描画
