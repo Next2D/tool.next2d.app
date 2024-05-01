@@ -1,6 +1,6 @@
 import { EventType } from "@/tool/domain/event/EventType";
-import { execute as arrowToolDisplayObjectWindowMouseMoveEventUseCase } from "./ArrowToolDisplayObjectWindowMouseMoveEventUseCase";
-import { execute as arrowToolDisplayObjectWindowMouseUpEventUseCase } from "./ArrowToolDisplayObjectWindowMouseUpEventUseCase";
+import { execute as screenDisplayObjectWindowMouseMoveEventUseCase } from "./ScreenDisplayObjectWindowMouseMoveEventUseCase";
+import { execute as screenDisplayObjectWindowMouseUpEventUseCase } from "./ScreenDisplayObjectWindowMouseUpEventUseCase";
 
 /**
  * @description DisplayObjectの移動用のwindowイベントを登録
@@ -13,9 +13,9 @@ import { execute as arrowToolDisplayObjectWindowMouseUpEventUseCase } from "./Ar
 export const execute = (): void =>
 {
     window.addEventListener(EventType.MOUSE_MOVE,
-        arrowToolDisplayObjectWindowMouseMoveEventUseCase
+        screenDisplayObjectWindowMouseMoveEventUseCase
     );
     window.addEventListener(EventType.MOUSE_UP,
-        arrowToolDisplayObjectWindowMouseUpEventUseCase
+        screenDisplayObjectWindowMouseUpEventUseCase
     );
 };

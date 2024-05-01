@@ -1,5 +1,5 @@
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
-import { $getMovePositon } from "../../ToolUtil";
+import { $getMovePositon } from "../../../../tool/application/ToolUtil";
 import {
     $SCREEN_STAGE_AREA_ID,
     $SCREEN_TARGET_RECT_ID

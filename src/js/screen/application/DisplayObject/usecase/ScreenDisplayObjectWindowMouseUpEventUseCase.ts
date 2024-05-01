@@ -1,8 +1,8 @@
 import { EventType } from "@/tool/domain/event/EventType";
-import { execute as arrowToolDisplayObjectWindowMouseMoveEventUseCase } from "./ArrowToolDisplayObjectWindowMouseMoveEventUseCase";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { ExternalCharacter } from "@/external/core/domain/model/ExternalCharacter";
-import { $getMovePositon } from "../../ToolUtil";
+import { $getMovePositon } from "../../../../tool/application/ToolUtil";
+import { execute as screenDisplayObjectWindowMouseMoveEventUseCase } from "./ScreenDisplayObjectWindowMouseMoveEventUseCase";
 
 /**
  * @description DisplayObjectのwindowイベントを解除
@@ -21,7 +21,7 @@ export const execute = (event: PointerEvent): void =>
 
     // windowイベントを解除
     window.removeEventListener(EventType.MOUSE_MOVE,
-        arrowToolDisplayObjectWindowMouseMoveEventUseCase
+        screenDisplayObjectWindowMouseMoveEventUseCase
     );
     window.removeEventListener(EventType.MOUSE_UP, execute);
 

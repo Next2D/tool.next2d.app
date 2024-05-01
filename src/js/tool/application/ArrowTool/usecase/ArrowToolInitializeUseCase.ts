@@ -2,9 +2,9 @@ import type { ToolImpl } from "@/interface/ToolImpl";
 import type { ArrowTool } from "@/tool/domain/model/ArrowTool";
 import { $setActiveTool } from "../../ToolUtil";
 import { EventType } from "@/tool/domain/event/EventType";
-import { execute as arrowToolDisplayObjectMouseDownEventUseCase } from "./ArrowToolDisplayObjectMouseDownEventUseCase";
-import { execute as arrowToolScreenMouseDownEventUseCase } from "./ArrowToolScreenMouseDownEventUseCase";
-import { execute as arrowToolStageRectMouseDownEventUseCase } from "./ArrowToolStageRectMouseDownEventUseCase";
+import { execute as screenDisplayObjectMouseDownEventUseCase } from "@/screen/application/DisplayObject/usecase/ScreenDisplayObjectMouseDownEventUseCase";
+import { execute as screenAreaArrowToolMouseDownEventService } from "@/screen/application/ScreenArea/service/ScreenAreaArrowToolMouseDownEventService";
+import { execute as stageRectMouseDownEventUseCase } from "@/screen/application/StageRect/usecase/StageRectMouseDownEventUseCase";
 
 /**
  * @description アローツールの初期起動ユースケース
@@ -19,17 +19,17 @@ export const execute = (tool: ToolImpl<ArrowTool>): void =>
 {
     // DisplayObject選択時のイベントを登録
     tool.addEventListener(EventType.DISPLAY_OBJRCY,
-        arrowToolDisplayObjectMouseDownEventUseCase
+        screenDisplayObjectMouseDownEventUseCase
     );
 
     // Screen選択時のイベントを登録
     tool.addEventListener(EventType.SCREEN,
-        arrowToolScreenMouseDownEventUseCase
+        screenAreaArrowToolMouseDownEventService
     );
 
     // 範囲選択のイベントを登録
     tool.addEventListener(EventType.STAGE_RECT,
-        arrowToolStageRectMouseDownEventUseCase
+        stageRectMouseDownEventUseCase
     );
 
     // 初期選択ツールとしてセット

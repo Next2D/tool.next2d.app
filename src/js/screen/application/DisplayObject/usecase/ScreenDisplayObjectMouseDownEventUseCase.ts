@@ -2,8 +2,8 @@ import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { ExternalLayer } from "@/external/core/domain/model/ExternalLayer";
 import { ExternalScreen } from "@/external/screen/domain/model/ExternalScreen";
 import { $allHideMenu } from "@/menu/application/MenuUtil";
-import { execute as arrowToolDisplayObjectRegisterWindowEventUseCase } from "./ArrowToolDisplayObjectRegisterWindowEventUseCase";
-import { $getMovePositon } from "../../ToolUtil";
+import { execute as screenDisplayObjectRegisterWindowEventUseCase } from "./ScreenDisplayObjectRegisterWindowEventUseCase";
+import { $getMovePositon } from "../../../../tool/application/ToolUtil";
 
 /**
  * @description スクリーンに設置したDisplayObject選択時のイベント処理関数
@@ -49,7 +49,7 @@ export const execute = (event: PointerEvent): void =>
 
     // 移動用のwindowイベントを登録
     // fixed logic
-    arrowToolDisplayObjectRegisterWindowEventUseCase();
+    screenDisplayObjectRegisterWindowEventUseCase();
 
     // レイヤーのインデックスを取得
     const externalLayer = new ExternalLayer(workSpace, movieClip, layer);

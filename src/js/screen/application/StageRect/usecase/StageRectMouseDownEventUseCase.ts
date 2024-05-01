@@ -1,3 +1,6 @@
+import { execute as stageRectShowService } from "../service/StageRectShowService";
+import { execute as stageRectRegisterWindowEventUseCase } from "./StageRectRegisterWindowEventUseCase";
+
 /**
  * @description 範囲選択のマウスダウンイベントの実行関数
  *              Execution function of the mouse-down event of the range selection
@@ -18,6 +21,8 @@ export const execute = (event: PointerEvent): void =>
     event.preventDefault();
 
     // 範囲選択のElementを表示
+    stageRectShowService(event.pageX, event.pageY);
 
     // windowイベントを登録
+    stageRectRegisterWindowEventUseCase();
 };
