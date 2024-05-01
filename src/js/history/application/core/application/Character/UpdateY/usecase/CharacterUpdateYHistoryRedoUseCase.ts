@@ -49,7 +49,7 @@ export const execute = (
 
     // データを更新
     character.y = after_y;
-    
+
     // 選択状態を解除
     movieClip.clearSelectedDepths();
 

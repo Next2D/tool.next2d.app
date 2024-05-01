@@ -2,6 +2,9 @@ import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import { execute as externalScreenClaerSelectedDisplayObjectUseCase } from "@/external/screen/application/ExternalScreen/usecase/ExternalScreenClaerSelectedDisplayObjectUseCase";
 import { execute as externalScreenSelectDisplayObjectUseCase } from "@/external/screen/application/ExternalScreen/usecase/ExternalScreenSelectDisplayObjectUseCase";
+import { execute as externalTimelineLayerControllerSelectedLayersUseCase } from "@/external/timeline/application/ExternalTimelineLayerController/usecase/ExternalTimelineLayerControllerSelectedLayersUseCase";
+import { execute as externalScreenDeactivatedAllLayerUseCase } from "@/external/screen/application/ExternalScreen/usecase/ExternalScreenDeactivatedAllLayerUseCase";
+import { execute as externalTimelineLayerDeactivatedAllLayerUseCase } from "@/external/timeline/application/ExternalTimelineLayer/usecase/ExternalTimelineLayerDeactivatedAllLayerUseCase";
 
 /**
  * @description スクリーン操作の管理クラス
@@ -75,6 +78,12 @@ export class ExternalScreen
             this.claerSelectedDisplayObjects();
         }
 
+        // 選択中のDisplayObjectのレイヤーを全て非アクティブにする
+        externalTimelineLayerDeactivatedAllLayerUseCase(
+            this._$workSpace,
+            this._$movieClip
+        );
+
         // 引数のDisplayObjectを選択状態に更新
         externalScreenSelectDisplayObjectUseCase(
             this._$workSpace,
@@ -82,5 +91,46 @@ export class ExternalScreen
             layer_index,
             depths
         );
+
+        // 選択したDisplayObjectのレイヤーをアクティブにする
+        externalTimelineLayerControllerSelectedLayersUseCase(
+            this._$workSpace,
+            this._$movieClip,
+            Array.from(this._$movieClip.selectedDepths.keys())
+        );
+    }
+
+    /**
+     * @description 指定したレイヤーのDisplayObjectの選択を全て解除
+     *              Deselect all DisplayObjects on the specified layer
+     *
+     * @param  {number} layer_index
+     * @return {void}
+     * @method
+     * @public
+     */
+    deactivatedAllLayer (layer_index: number): void
+    {
+        // 選択中のDisplayObjectのレイヤーを全て非アクティブにする
+        externalTimelineLayerDeactivatedAllLayerUseCase(
+            this._$workSpace,
+            this._$movieClip
+        );
+
+        // 指定のレイヤーのDisplayObjectの選択を全て解除
+        externalScreenDeactivatedAllLayerUseCase(
+            this._$workSpace,
+            this._$movieClip,
+            layer_index
+        );
+
+        if (this._$movieClip.selectedDepths.size) {
+            // 選択中のDisplayObjectのレイヤーをアクティブにする
+            externalTimelineLayerControllerSelectedLayersUseCase(
+                this._$workSpace,
+                this._$movieClip,
+                Array.from(this._$movieClip.selectedDepths.keys())
+            );
+        }
     }
 }

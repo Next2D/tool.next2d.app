@@ -2,7 +2,6 @@ import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import { execute as controllerAreaShowSingleSettingUseCase } from "@/controller/application/ControllerArea/usecase/ControllerAreaShowSingleSettingUseCase";
 import { execute as screenAreaMoveTargetRectElementUseCase } from "@/screen/application/ScreenArea/usecase/ScreenAreaMoveTargetRectElementUseCase";
-import { ExternalTimeline } from "@/external/timeline/domain/model/ExternalTimeline";
 
 /**
  * @description DisplayObjectを選択状態に更新
@@ -36,12 +35,6 @@ export const execute = (
 
     // 選択範囲のdepthを追加
     movie_clip.selectedDepths.set(layer_index, depths);
-
-    // 選択したDisplayObjectのレイヤーをアクティブにする
-    const externalTimeline = new ExternalTimeline(work_space, movie_clip);
-    externalTimeline.selectedLayers(
-        Array.from(movie_clip.selectedDepths.keys())
-    );
 
     // 表示がアクティブなら表示を更新
     if (work_space.active && movie_clip.active) {

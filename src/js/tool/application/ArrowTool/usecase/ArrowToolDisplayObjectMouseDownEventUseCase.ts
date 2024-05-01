@@ -89,11 +89,17 @@ export const execute = (event: PointerEvent): void =>
             depths.push(depth);
         }
 
-        // 選択処理を実行
-        externalScreen.selectDisplayObjects(
-            layerIndex,
-            depths,
-            event.shiftKey
-        );
+        if (depths.length) {
+            // 選択処理を実行
+            externalScreen.selectDisplayObjects(
+                layerIndex,
+                depths,
+                event.shiftKey
+            );
+        } else {
+            // 選択解除処理を実行
+            externalScreen
+                .deactivatedAllLayer(layerIndex);
+        }
     }
 };
