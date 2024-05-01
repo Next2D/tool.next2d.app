@@ -1,8 +1,12 @@
 import type { Character } from "@/core/domain/model/Character";
 import type { Layer } from "@/core/domain/model/Layer";
 import { $getCurrentWorkSpace } from "../../CoreUtil";
-import { $BITMAP_TYPE } from "@/config/InstanceConfig";
 import { execute as bitmapCreateDisplayObjectElementUseCase } from "../../Bitmap/usecase/BitmapCreateDisplayObjectElementUseCase";
+import { execute as movieClipCreateDisplayObjectElementUseCase } from "../../MovieClip/usecase/MovieClipCreateDisplayObjectElementUseCase";
+import {
+    $BITMAP_TYPE,
+    $MOVIE_CLIP_TYPE
+} from "@/config/InstanceConfig";
 
 /**
  * @description DisplayObjectを描画して、DivElementとして返却
@@ -29,6 +33,11 @@ export const execute = async (
 
         case $BITMAP_TYPE:
             return await bitmapCreateDisplayObjectElementUseCase(
+                workSpace.id, instance, element, layer, character
+            );
+
+        case $MOVIE_CLIP_TYPE:
+            return await movieClipCreateDisplayObjectElementUseCase(
                 workSpace.id, instance, element, layer, character
             );
 
