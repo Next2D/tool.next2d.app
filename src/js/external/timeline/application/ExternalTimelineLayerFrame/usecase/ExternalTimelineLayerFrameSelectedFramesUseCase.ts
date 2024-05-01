@@ -36,8 +36,6 @@ export const execute = async (
     if (work_space.active && movie_clip.active) {
         // 選択範囲のレイヤーとフレームをアクティブ表示に更新
         timelineLayerAllSelectedElementUseCase(movie_clip, frames);
-
-        // 
     }
 
     // 内部情報を更新

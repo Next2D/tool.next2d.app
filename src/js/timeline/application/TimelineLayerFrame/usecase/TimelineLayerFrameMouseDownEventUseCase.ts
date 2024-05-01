@@ -64,10 +64,6 @@ export const execute = (event: PointerEvent): void =>
     const movieClip = workSpace.scene;
     const frame = parseInt(element.dataset.frame as NonNullable<string>);
 
-    // 選択されているDisplayObjectをクリア
-    const externalScreen = new ExternalScreen(workSpace, movieClip);
-    externalScreen.claerSelectedDisplayObjects();
-
     if (!wait) {
 
         // 初回のタップであればダブルタップを待機モードに変更

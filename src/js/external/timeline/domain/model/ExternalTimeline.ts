@@ -16,6 +16,7 @@ import { execute as externalTimelineAddItemToMovieClipUseCase } from "@/external
 import { execute as externalTimelineLayerFrameRemoveFrameUseCase } from "@/external/timeline/application/ExternalTimelineLayerFrame/usecase/ExternalTimelineLayerFrameRemoveFrameUseCase";
 import { execute as externalTimelineLayerFrameDeleteKeyframesUseCase } from "@/external/timeline/application/ExternalTimelineLayerFrame/usecase/ExternalTimelineLayerFrameDeleteKeyframesUseCase";
 import { execute as externalScreenSelectedFromSelectedLayersUseCase } from "@/external/screen/application/ExternalScreen/usecase/ExternalScreenSelectedFromSelectedLayersUseCase";
+import { execute as externalScreenClaerSelectedDisplayObjectUseCase } from "@/external/screen/application/ExternalScreen/usecase/ExternalScreenClaerSelectedDisplayObjectUseCase";
 import { ExternalMovieClip } from "@/external/core/domain/model/ExternalMovieClip";
 
 /**
@@ -294,7 +295,14 @@ export class ExternalTimeline
      */
     deactivatedAllLayers (): void
     {
+        // 選択中のレイヤーを非アクティブ化する
         externalTimelineLayerDeactivatedAllLayerUseCase(
+            this._$workSpace,
+            this._$movieClip
+        );
+
+        // 選択中のDisplayObjectをクリア
+        externalScreenClaerSelectedDisplayObjectUseCase(
             this._$workSpace,
             this._$movieClip
         );

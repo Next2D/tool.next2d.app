@@ -42,14 +42,10 @@ export const execute = (event: PointerEvent): void =>
     // 選択中のフレームを全て非アクティブにする
     timelineLayerFrameSelectedAllClearUseCase(movieClip);
 
-    // 選択されているDisplayObjectをクリア
-    const externalScreen = new ExternalScreen(workSpace, movieClip);
-    externalScreen.claerSelectedDisplayObjects();
-
     switch (true) {
 
         case event.altKey || event.metaKey:
-            timelineLayerAltSelectedUseCase(movieClip, layer);
+            timelineLayerAltSelectedUseCase(workSpace, movieClip, layer);
             break;
 
         case event.shiftKey:

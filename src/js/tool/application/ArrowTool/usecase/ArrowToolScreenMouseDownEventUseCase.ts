@@ -27,8 +27,4 @@ export const execute = (event: PointerEvent): void =>
     // レイヤー選択を解除
     const externalTimeline = new ExternalTimeline(workSpace, movieClip);
     externalTimeline.deactivatedAllLayers();
-
-    // 選択中のDisplayObjectをクリア
-    const externalScreen = new ExternalScreen(workSpace, movieClip);
-    externalScreen.claerSelectedDisplayObjects();
 };

@@ -9,12 +9,13 @@ import { $setMouseState } from "../../TimelineUtil";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { $useKeyboard } from "@/shortcut/ShortcutUtil";
 import { execute as billingModelShowService } from "@/menu/application/BillingModal/service/BillingModelShowService";
-import { execute as timelineLayerFrameSelectedAllClearUseCase } from "@/timeline/application/TimelineLayerFrame/usecase/TimelineLayerFrameSelectedAllClearUseCase";
+import { execute as timelineLayerAllClearSelectedElementUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerAllClearSelectedElementUseCase";
 import { $useSocket } from "@/share/ShareUtil";
 import {
     $setStandbyMoveState,
     $setTimelineOffsetTop
 } from "../TimelineAreaUtil";
+import { ExternalTimeline } from "@/external/timeline/domain/model/ExternalTimeline";
 
 /**
  * @description ダブルタップ用の待機フラグ
@@ -88,7 +89,14 @@ export const execute = (event: PointerEvent): void =>
             timelineAreaActiveMoveUseCase();
         }, 600);
 
-        timelineLayerFrameSelectedAllClearUseCase(workSpace.scene);
+        const moiveClip = workSpace.scene;
+        const externalTimeline = new ExternalTimeline(
+            workSpace,
+            moiveClip
+        );
+
+        externalTimeline.deactivatedAllLayers();
+        timelineLayerAllClearSelectedElementUseCase(moiveClip);
 
     } else {
 
