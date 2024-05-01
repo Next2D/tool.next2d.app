@@ -1,6 +1,6 @@
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
-import { execute as screenAreaHideTargetRectElementService } from "@/screen/application/ScreenArea/service/ScreenAreaHideTargetRectElementService";
+import { execute as targetRectHideElementService } from "@/screen/application/TargetRect/service/TargetRectHideElementService";
 
 /**
  * @description 選択されているDisplayObjectをクリア
@@ -23,6 +23,6 @@ export const execute = (
     // アクティブなら表示を更新
     if (work_space.active && movie_clip.active) {
         // 選択範囲のElementを非表示
-        screenAreaHideTargetRectElementService();
+        targetRectHideElementService();
     }
 };

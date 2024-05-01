@@ -4,7 +4,7 @@ import type { InstanceImpl } from "@/interface/InstanceImpl";
 import { execute as externalLayerUpdateReloadUseCase } from "@/external/core/application/ExternalLayer/usecase/ExternalLayerUpdateReloadUseCase";
 import { ExternalTimeline } from "@/external/timeline/domain/model/ExternalTimeline";
 import { execute as screenAreaRedrawUseCase } from "@/screen/application/ScreenArea/usecase/ScreenAreaRedrawUseCase";
-import { execute as screenAreaHideTargetRectElementService } from "@/screen/application/ScreenArea/service/ScreenAreaHideTargetRectElementService";
+import { execute as targetRectHideElementService } from "@/screen/application/TargetRect/service/TargetRectHideElementService";
 
 /**
  * @description レイヤー削除を再度実行する
@@ -64,7 +64,7 @@ export const execute = async (
         externalLayerUpdateReloadUseCase();
 
         // スクリーンの選択範囲elementを非表示
-        screenAreaHideTargetRectElementService();
+        targetRectHideElementService();
 
         const activeCharacters = layer.getActiveCharacters(movieClip.currentFrame);
         if (activeCharacters.length) {

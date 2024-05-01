@@ -45,18 +45,22 @@ export const execute = (event: PointerEvent): void =>
         // 初回のタップであればダブルタップを待機モードに変更
         wait = true;
 
+        const tool = $getActiveTool();
+        if (!tool) {
+            return ;
+        }
+
         // ダブルタップ有効期限をセット
         timerId = setTimeout((): void =>
         {
             wait = false;
-            const tool = $getActiveTool();
-            if (!tool) {
-                return ;
-            }
 
             // スクリーンイベントを実行
             tool.dispatchEvent(EventType.SCREEN, event);
         }, 300);
+
+        // 範囲選択のイベントを実行
+        tool.dispatchEvent(EventType.STAGE_RECT, event);
 
     } else {
 

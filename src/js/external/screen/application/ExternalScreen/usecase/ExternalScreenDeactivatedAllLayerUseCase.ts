@@ -1,7 +1,7 @@
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
-import { execute as screenAreaMoveTargetRectElementUseCase } from "@/screen/application/ScreenArea/usecase/ScreenAreaMoveTargetRectElementUseCase";
-import { execute as screenAreaHideTargetRectElementService } from "@/screen/application/ScreenArea/service/ScreenAreaHideTargetRectElementService";
+import { execute as targetRectMoveElementUseCase } from "@/screen/application/TargetRect/usecase/TargetRectMoveElementUseCase";
+import { execute as targetRectHideElementService } from "@/screen/application/TargetRect/service/TargetRectHideElementService";
 
 /**
  * @description 指定レイヤーのDisplayObjectの選択を解除
@@ -27,10 +27,10 @@ export const execute = (
     if (work_space.active && movie_clip.active) {
         if (movie_clip.selectedDepths.size) {
             // 表示範囲を更新
-            screenAreaMoveTargetRectElementUseCase(movie_clip);
+            targetRectMoveElementUseCase(movie_clip);
         } else {
             // 選択範囲のelementを非表示に更新
-            screenAreaHideTargetRectElementService();
+            targetRectHideElementService();
         }
     }
 };

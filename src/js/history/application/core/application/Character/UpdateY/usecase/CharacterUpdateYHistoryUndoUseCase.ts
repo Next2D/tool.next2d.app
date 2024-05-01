@@ -2,7 +2,7 @@ import type { InstanceImpl } from "@/interface/InstanceImpl";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
 import { execute as screenAreaMoveDisplayObjectElementService } from "@/screen/application/ScreenArea/service/ScreenAreaMoveDisplayObjectElementService";
-import { execute as screenAreaMoveTargetRectElementUseCase } from "@/screen/application/ScreenArea/usecase/ScreenAreaMoveTargetRectElementUseCase";
+import { execute as targetRectMoveElementUseCase } from "@/screen/application/TargetRect/usecase/TargetRectMoveElementUseCase";
 
 /**
  * @description DisplayObjectのy座標を変更前に戻す
@@ -59,6 +59,6 @@ export const execute = (
         screenAreaMoveDisplayObjectElementService(layer, character);
 
         // 選択範囲のElementを移動
-        screenAreaMoveTargetRectElementUseCase(movieClip);
+        targetRectMoveElementUseCase(movieClip);
     }
 };

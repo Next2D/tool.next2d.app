@@ -162,4 +162,17 @@ export class EventType
     {
         return "screen";
     }
+
+    /**
+     * @description スクリーンエリアの範囲選択のイベント名
+     *              Event name of the range selection in the screen area
+     *
+     * @return {string}
+     * @static
+     * @const
+     */
+    static get STAGE_RECT (): "stage_rect"
+    {
+        return "stage_rect";
+    }
 }

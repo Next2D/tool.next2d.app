@@ -1,7 +1,7 @@
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import { $getActiveTool } from "@/tool/application/ToolUtil";
-import { execute as screenAreaShowTargetRectElementService } from "@/screen/application/ScreenArea/service/ScreenAreaShowTargetRectElementService";
-import { execute as screenAreaHideTargetRectElementService } from "@/screen/application/ScreenArea/service/ScreenAreaHideTargetRectElementService";
+import { execute as targetRectShowElementService } from "@/screen/application/TargetRect/service/TargetRectShowElementService";
+import { execute as targetRectHideElementService } from "@/screen/application/TargetRect/service/TargetRectHideElementService";
 import { execute as screenAreaCalcSelectedBoundsService } from "@/screen/application/ScreenArea/service/ScreenAreaCalcSelectedBoundsService";
 import { $TOOL_ARROW_NAME } from "@/config/ToolConfig";
 
@@ -19,14 +19,14 @@ export const execute = (movie_clip: MovieClip): void =>
     const bounds = screenAreaCalcSelectedBoundsService(movie_clip);
     if (!bounds) {
         // 表示範囲のelementを非表示
-        screenAreaHideTargetRectElementService();
+        targetRectHideElementService();
         return ;
     }
 
     const tool = $getActiveTool();
 
     // 表示範囲の更新
-    screenAreaShowTargetRectElementService(
+    targetRectShowElementService(
         bounds.xMin,
         bounds.yMin,
         Math.ceil(Math.abs(bounds.xMax - bounds.xMin)),

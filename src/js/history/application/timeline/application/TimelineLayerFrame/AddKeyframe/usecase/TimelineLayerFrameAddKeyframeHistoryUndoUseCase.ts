@@ -5,7 +5,7 @@ import { $getWorkSpace } from "@/core/application/CoreUtil";
 import { EmptyCharacter } from "@/core/domain/model/EmptyCharacter";
 import { execute as timelineLayerAddFrameUpdateLayerStyleUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerAddFrameUpdateLayerStyleUseCase";
 import { execute as screenAreaRemoveDisplayObjectElementService } from "@/screen/application/ScreenArea/service/ScreenAreaRemoveDisplayObjectElementService";
-import { execute as screenAreaMoveTargetRectElementUseCase } from "@/screen/application/ScreenArea/usecase/ScreenAreaMoveTargetRectElementUseCase";
+import { execute as targetRectMoveElementUseCase } from "@/screen/application/TargetRect/usecase/TargetRectMoveElementUseCase";
 
 /**
  * @description キーフレーム追加処理を元に戻す
@@ -81,6 +81,6 @@ export const execute = (
         timelineLayerAddFrameUpdateLayerStyleUseCase(workSpace, movieClip, layer);
 
         // 選択範囲のElementの表示を更新
-        screenAreaMoveTargetRectElementUseCase(movieClip);
+        targetRectMoveElementUseCase(movieClip);
     }
 };

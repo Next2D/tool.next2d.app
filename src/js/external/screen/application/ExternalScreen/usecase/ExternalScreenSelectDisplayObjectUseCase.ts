@@ -1,7 +1,7 @@
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import { execute as controllerAreaShowSingleSettingUseCase } from "@/controller/application/ControllerArea/usecase/ControllerAreaShowSingleSettingUseCase";
-import { execute as screenAreaMoveTargetRectElementUseCase } from "@/screen/application/ScreenArea/usecase/ScreenAreaMoveTargetRectElementUseCase";
+import { execute as targetRectMoveElementUseCase } from "@/screen/application/TargetRect/usecase/TargetRectMoveElementUseCase";
 
 /**
  * @description DisplayObjectを選択状態に更新
@@ -40,7 +40,7 @@ export const execute = (
     if (work_space.active && movie_clip.active) {
 
         // 表示範囲を更新
-        screenAreaMoveTargetRectElementUseCase(movie_clip);
+        targetRectMoveElementUseCase(movie_clip);
 
         // コントローラー表示を更新
         if (depths.length === 1) {

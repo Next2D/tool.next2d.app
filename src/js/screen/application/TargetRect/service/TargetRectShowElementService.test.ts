@@ -1,23 +1,27 @@
-import { execute } from "./ScreenAreaHideTargetRectElementService";
+import { execute } from "./TargetRectShowElementService";
 import { $SCREEN_TARGET_RECT_ID } from "../../../../config/ScreenConfig";
 import { $getTargetRectState, $setTargetRectState } from "../../ScreenUtil";
 
-describe("ScreenAreaHideTargetRectElementServiceTest", () =>
+describe("TargetRectShowElementServiceTest", () =>
 {
     test("execute test", () =>
     {
         const div = document.createElement("div");
         div.id = $SCREEN_TARGET_RECT_ID;
-        div.style.display = "";
+        div.style.display = "none";
         document.body.appendChild(div);
 
-        $setTargetRectState("show");
+        $setTargetRectState("hide");
+
+        expect(div.style.display).toBe("none");
+        expect(div.classList.contains("arrow")).toBe(false);
+        expect($getTargetRectState()).toBe("hide");
+
+        execute(0, 0, 100, 100, "arrow");
 
         expect(div.style.display).toBe("");
+        expect(div.classList.contains("arrow")).toBe(true);
         expect($getTargetRectState()).toBe("show");
-        execute();
-        expect(div.style.display).toBe("none");
-        expect($getTargetRectState()).toBe("hide");
 
         div.remove();
     });

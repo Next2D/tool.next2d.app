@@ -7,7 +7,7 @@ import { ExternalTimeline } from "@/external/timeline/domain/model/ExternalTimel
 import { $GUIDE_IN_MODE, $GUIDE_MODE, $MASK_IN_MODE, $MASK_MODE } from "@/config/LayerModeConfig";
 import { LayerModeImpl } from "@/interface/LayerModeImpl";
 import { execute as screenAreaRedrawUseCase } from "@/screen/application/ScreenArea/usecase/ScreenAreaRedrawUseCase";
-import { execute as screenAreaHideTargetRectElementService } from "@/screen/application/ScreenArea/service/ScreenAreaHideTargetRectElementService";
+import { execute as targetRectHideElementService } from "@/screen/application/TargetRect/service/TargetRectHideElementService";
 
 /**
  * @description 削除したレイヤーを元の配置に元に戻す
@@ -84,7 +84,7 @@ export const execute = async (
         externalLayerUpdateReloadUseCase();
 
         // スクリーンの選択範囲elementを非表示
-        screenAreaHideTargetRectElementService();
+        targetRectHideElementService();
 
         const activeCharacters = layer.getActiveCharacters(movieClip.currentFrame);
         if (activeCharacters.length) {

@@ -5,7 +5,7 @@ import { $getWorkSpace } from "@/core/application/CoreUtil";
 import { Character } from "@/core/domain/model/Character";
 import { execute as timelineLayerAddFrameUpdateLayerStyleUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerAddFrameUpdateLayerStyleUseCase";
 import { execute as screenAreaAppendCharacterService } from "@/screen/application/ScreenArea/service/ScreenAreaAppendCharacterService";
-import { execute as screenAreaMoveTargetRectElementUseCase } from "@/screen/application/ScreenArea/usecase/ScreenAreaMoveTargetRectElementUseCase";
+import { execute as targetRectMoveElementUseCase } from "@/screen/application/TargetRect/usecase/TargetRectMoveElementUseCase";
 
 /**
  * @description キーフレーム追加処理を元に戻す
@@ -62,7 +62,7 @@ export const execute = async (
         timelineLayerAddFrameUpdateLayerStyleUseCase(workSpace, movieClip, layer);
 
         // 選択範囲のElementの表示を更新
-        screenAreaMoveTargetRectElementUseCase(movieClip);
+        targetRectMoveElementUseCase(movieClip);
 
         // スクリーンエリアにElementを追加
         await screenAreaAppendCharacterService(character, layer);
