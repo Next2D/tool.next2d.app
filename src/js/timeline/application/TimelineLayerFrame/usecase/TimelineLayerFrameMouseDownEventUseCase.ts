@@ -7,7 +7,6 @@ import {
     $getMouseState,
     $setMouseState
 } from "../../TimelineUtil";
-import { ExternalScreen } from "@/external/screen/domain/model/ExternalScreen";
 
 /**
  * @description ダブルタップ用の待機フラグ

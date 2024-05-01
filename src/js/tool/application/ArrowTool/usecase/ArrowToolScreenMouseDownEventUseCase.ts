@@ -1,5 +1,4 @@
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
-import { ExternalScreen } from "@/external/screen/domain/model/ExternalScreen";
 import { ExternalTimeline } from "@/external/timeline/domain/model/ExternalTimeline";
 
 /**
