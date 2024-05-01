@@ -3,6 +3,8 @@ import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { InstanceImpl } from "@/interface/InstanceImpl";
 import { execute as externalLayerUpdateReloadUseCase } from "@/external/core/application/ExternalLayer/usecase/ExternalLayerUpdateReloadUseCase";
 import { ExternalTimeline } from "@/external/timeline/domain/model/ExternalTimeline";
+import { execute as screenAreaRedrawUseCase } from "@/screen/application/ScreenArea/usecase/ScreenAreaRedrawUseCase";
+import { execute as screenAreaHideTargetRectElementService } from "@/screen/application/ScreenArea/service/ScreenAreaHideTargetRectElementService";
 
 /**
  * @description レイヤー削除を再度実行する
@@ -16,12 +18,12 @@ import { ExternalTimeline } from "@/external/timeline/domain/model/ExternalTimel
  * @method
  * @public
  */
-export const execute = (
+export const execute = async (
     work_space_id: number,
     library_id: number,
     index: number,
     indexes: number[]
-): void => {
+): Promise<void> => {
 
     const workSpace = $getWorkSpace(work_space_id);
     if (!workSpace) {
@@ -60,5 +62,13 @@ export const execute = (
     // レイヤー更新によるタイムラインの再描画
     if (workSpace.active && movieClip.active) {
         externalLayerUpdateReloadUseCase();
+
+        // スクリーンの選択範囲elementを非表示
+        screenAreaHideTargetRectElementService();
+
+        const activeCharacters = layer.getActiveCharacters(movieClip.currentFrame);
+        if (activeCharacters.length) {
+            await screenAreaRedrawUseCase(movieClip);
+        }
     }
 };

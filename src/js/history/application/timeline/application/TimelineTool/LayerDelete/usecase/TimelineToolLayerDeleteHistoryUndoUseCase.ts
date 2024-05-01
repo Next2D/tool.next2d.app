@@ -6,6 +6,8 @@ import { $getWorkSpace } from "@/core/application/CoreUtil";
 import { ExternalTimeline } from "@/external/timeline/domain/model/ExternalTimeline";
 import { $GUIDE_IN_MODE, $GUIDE_MODE, $MASK_IN_MODE, $MASK_MODE } from "@/config/LayerModeConfig";
 import { LayerModeImpl } from "@/interface/LayerModeImpl";
+import { execute as screenAreaRedrawUseCase } from "@/screen/application/ScreenArea/usecase/ScreenAreaRedrawUseCase";
+import { execute as screenAreaHideTargetRectElementService } from "@/screen/application/ScreenArea/service/ScreenAreaHideTargetRectElementService";
 
 /**
  * @description 削除したレイヤーを元の配置に元に戻す
@@ -20,13 +22,13 @@ import { LayerModeImpl } from "@/interface/LayerModeImpl";
  * @method
  * @public
  */
-export const execute = (
+export const execute = async (
     work_space_id: number,
     library_id: number,
     index: number,
     indexes: number[],
     layer_object: LayerSaveObjectImpl
-): void => {
+): Promise<void> => {
 
     const workSpace = $getWorkSpace(work_space_id);
     if (!workSpace) {
@@ -80,5 +82,13 @@ export const execute = (
     // レイヤー更新によるタイムラインの再描画
     if (workSpace.active && movieClip.active) {
         externalLayerUpdateReloadUseCase();
+
+        // スクリーンの選択範囲elementを非表示
+        screenAreaHideTargetRectElementService();
+
+        const activeCharacters = layer.getActiveCharacters(movieClip.currentFrame);
+        if (activeCharacters.length) {
+            await screenAreaRedrawUseCase(movieClip);
+        }
     }
 };

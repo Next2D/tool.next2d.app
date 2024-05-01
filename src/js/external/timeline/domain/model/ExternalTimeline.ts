@@ -272,12 +272,20 @@ export class ExternalTimeline
      */
     async selectedFrames (frames: number[]): Promise<void>
     {
+        // 指定のフレームを選択状態に更新
         externalTimelineLayerFrameSelectedFramesUseCase(
             this._$workSpace,
             this._$movieClip,
             frames
         );
 
+        // 選択したレイヤーのDisplayObjectを選択状態に更新
+        externalScreenSelectedFromSelectedLayersUseCase(
+            this._$workSpace,
+            this._$movieClip
+        );
+
+        // フレーム情報に合わせてタイムラインを更新
         await externalTimelineChageFrameUseCase(
             this._$workSpace,
             this._$movieClip,

@@ -157,7 +157,7 @@ export const execute = async (
 
         // レイヤーの削除
         case $TIMELINE_TOOL_LAYER_DELETE_COMMAND:
-            timelineToolLayerDeleteHistoryUndoUseCase(
+            await timelineToolLayerDeleteHistoryUndoUseCase(
                 messages[0] as number, // workSpaceId
                 messages[1] as number, // MovieClipId
                 messages[2] as number, // Layer Index
