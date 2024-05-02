@@ -1,4 +1,5 @@
 import { $SCREEN_STAGE_RECT_ID } from "@/config/ScreenConfig";
+import { $getPositon } from "../StageRectUtil";
 
 /**
  * @description 範囲選択をアクティブ表示
@@ -20,10 +21,14 @@ export const execute = (x: number, y: number): void =>
         return ;
     }
 
+    const position = $getPositon();
+    position.x = x;
+    position.y = y;
+
     // 表示を更新
     let style = "";
     style += `left: ${x}px;`;
-    style += `left: ${y}px;`;
+    style += `top: ${y}px;`;
     style += "width: 0px;";
     style += "height: 0px;";
     element.setAttribute("style", style);
