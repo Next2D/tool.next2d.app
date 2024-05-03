@@ -1,5 +1,5 @@
-import { $BITMAP_TYPE } from "@/config/InstanceConfig";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
+import { execute as propertyAreaDisplayItemControllerUseCase } from "@/controller/application/PropertyArea/usecase/PropertyAreaDisplayItemControllerUseCase";
 
 /**
  * @description スクリーンで選択したアイテム(単一)の設定を表示
@@ -18,10 +18,6 @@ export const execute = (library_id: number): void =>
         return ;
     }
 
-    switch (instance.type) {
-
-        case $BITMAP_TYPE:
-            break;
-
-    }
+    // プロパティーエリアの表示項目を変更
+    propertyAreaDisplayItemControllerUseCase(instance.type);
 };

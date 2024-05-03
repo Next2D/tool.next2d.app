@@ -1,5 +1,6 @@
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { ExternalTimeline } from "@/external/timeline/domain/model/ExternalTimeline";
+import { execute as propertyAreaDisplayItemControllerUseCase } from "@/controller/application/PropertyArea/usecase/PropertyAreaDisplayItemControllerUseCase";
 
 /**
  * @description スクリーン選択時のイベント処理関数
@@ -26,4 +27,7 @@ export const execute = (event: PointerEvent): void =>
     // レイヤー選択を解除
     const externalTimeline = new ExternalTimeline(workSpace, movieClip);
     externalTimeline.deactivatedAllLayers();
+
+    // プロパティエリアの表示を更新
+    propertyAreaDisplayItemControllerUseCase();
 };

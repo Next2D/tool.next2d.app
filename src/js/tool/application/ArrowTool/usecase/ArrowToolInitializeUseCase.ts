@@ -3,7 +3,7 @@ import type { ArrowTool } from "@/tool/domain/model/ArrowTool";
 import { $setActiveTool } from "../../ToolUtil";
 import { EventType } from "@/tool/domain/event/EventType";
 import { execute as screenDisplayObjectMouseDownEventUseCase } from "@/screen/application/DisplayObject/usecase/ScreenDisplayObjectMouseDownEventUseCase";
-import { execute as screenAreaArrowToolMouseDownEventService } from "@/screen/application/ScreenArea/service/ScreenAreaArrowToolMouseDownEventService";
+import { execute as screenAreaArrowToolMouseDownEventUseCase } from "@/screen/application/ScreenArea/usecase/ScreenAreaArrowToolMouseDownEventUseCase";
 import { execute as stageRectMouseDownEventUseCase } from "@/screen/application/StageRect/usecase/StageRectMouseDownEventUseCase";
 
 /**
@@ -24,7 +24,7 @@ export const execute = (tool: ToolImpl<ArrowTool>): void =>
 
     // Screen選択時のイベントを登録
     tool.addEventListener(EventType.SCREEN,
-        screenAreaArrowToolMouseDownEventService
+        screenAreaArrowToolMouseDownEventUseCase
     );
 
     // 範囲選択のイベントを登録
