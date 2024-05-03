@@ -3,7 +3,7 @@ import { execute as soundAreaLoopCountWindowMouseMoveEventUseCase } from "./Soun
 import { $getTargetIndex, $setTargetIndex } from "../SoundAreaUtil";
 import { ExternalSoundObject } from "@/external/core/domain/model/ExternalSoundObject";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
-import { $SOUND_AREA_SOUND_LIST_AREA_ID } from "@/config/PropertyConfig";
+import { $SOUND_AREA_SOUND_LIST_AREA_ID } from "@/config/SoundSettingConfig";
 import { $setCursor } from "@/global/GlobalUtil";
 
 /**

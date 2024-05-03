@@ -1,4 +1,4 @@
-import { $SOUND_AREA_SELECT_ID } from "@/config/PropertyConfig";
+import { $SOUND_AREA_SELECT_ID } from "@/config/SoundSettingConfig";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { ExternalSoundArea } from "@/external/controller/domain/model/ExternalSoundArea";
 

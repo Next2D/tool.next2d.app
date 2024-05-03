@@ -1,7 +1,7 @@
 import type { SoundObjectImpl } from "@/interface/SoundObjectImpl";
 import type { InstanceImpl } from "@/interface/InstanceImpl";
 import type { Sound } from "@/core/domain/model/Sound";
-import { $SOUND_AREA_SOUND_LIST_AREA_ID } from "@/config/PropertyConfig";
+import { $SOUND_AREA_SOUND_LIST_AREA_ID } from "@/config/SoundSettingConfig";
 import { execute as soundAreaSettingComponent } from "../component/SoundAreaSettingComponent";
 import { EventType } from "@/tool/domain/event/EventType";
 import { execute as soundAreaTrashMouseDownUseCase } from "./SoundAreaTrashMouseDownUseCase";

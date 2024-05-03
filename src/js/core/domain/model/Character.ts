@@ -40,6 +40,7 @@ export class Character
     private readonly _$matrix: number[];
     private readonly _$colorTransform: number[];
     private readonly _$filters: any[];
+    private _$name: string;
 
     /**
      * @constructor
@@ -126,6 +127,13 @@ export class Character
          * @private
          */
         this._$endFrame = 0;
+
+        /**
+         * @type {string}
+         * @default ""
+         * @private
+         */
+        this._$name = "";
     }
 
     /**
@@ -142,6 +150,22 @@ export class Character
     static set characterId (character_id: number)
     {
         $characterId = $clamp(character_id, 1, Number.MAX_VALUE);
+    }
+
+    /**
+     * @description MovieClip内で有効なアクセス名
+     *              Valid access name in MovieClip
+     *
+     * @member {string}
+     * @public
+     */
+    get name ()
+    {
+        return this._$name;
+    }
+    set name (name)
+    {
+        this._$name = `${name}`.replace(/ /g, "").trim();
     }
 
     /**
@@ -447,6 +471,7 @@ export class Character
         this._$blendMode  = save_object.blendMode;
         this._$startFrame = save_object.startFrame;
         this._$endFrame   = save_object.endFrame;
+        this._$name       = save_object.name;
 
         // 配列を上書き
         if (save_object.matrix) {
@@ -516,7 +541,8 @@ export class Character
             "matrix": this._$matrix,
             "colorTransform": this._$colorTransform,
             "startFrame": this._$startFrame,
-            "endFrame": this._$endFrame
+            "endFrame": this._$endFrame,
+            "name": this._$name
         };
     }
 }

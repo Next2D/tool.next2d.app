@@ -1,5 +1,5 @@
 import { execute } from "./SoundAreaUpdateLoopCountElementService";
-import { $SOUND_AREA_SOUND_LIST_AREA_ID } from "../../../../config/PropertyConfig";
+import { $SOUND_AREA_SOUND_LIST_AREA_ID } from "../../../../config/SoundSettingConfig";
 import { SoundObjectImpl } from "../../../../interface/SoundObjectImpl";
 
 describe("SoundAreaUpdateLoopCountElementServiceTest", () =>

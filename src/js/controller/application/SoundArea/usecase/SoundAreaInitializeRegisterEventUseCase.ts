@@ -3,7 +3,7 @@ import { execute as soundAreaSoundAddMouseDownEventUseCase } from "./SoundAreaSo
 import {
     $SOUND_AREA_ADD_SOUND_ID,
     $SOUND_AREA_SELECT_ID
-} from "@/config/PropertyConfig";
+} from "@/config/SoundSettingConfig";
 
 /**
  * @description サウンドエリア初期化イベント登録ユースケース

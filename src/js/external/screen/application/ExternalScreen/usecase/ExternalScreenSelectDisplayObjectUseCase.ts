@@ -1,7 +1,7 @@
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
-import { execute as controllerAreaShowSingleSettingUseCase } from "@/controller/application/ControllerArea/usecase/ControllerAreaShowSingleSettingUseCase";
 import { execute as targetRectMoveElementUseCase } from "@/screen/application/TargetRect/usecase/TargetRectMoveElementUseCase";
+import { execute as propertyAreaChangeDisplayUseCase } from "@/controller/application/PropertyArea/usecase/PropertyAreaChangeDisplayUseCase";
 
 /**
  * @description DisplayObjectを選択状態に更新
@@ -42,16 +42,7 @@ export const execute = (
         // 表示範囲を更新
         targetRectMoveElementUseCase(movie_clip);
 
-        // コントローラー表示を更新
-        if (depths.length === 1) {
-            const character = layer.getCharacter(movie_clip.currentFrame, depths[0]);
-            if (!character) {
-                return ;
-            }
-            // 単一選択時のコントローラー表示を更新
-            controllerAreaShowSingleSettingUseCase(character.libraryId);
-        } else {
-            // TODO
-        }
+        // プロパティエリアの表示を更新
+        propertyAreaChangeDisplayUseCase();
     }
 };

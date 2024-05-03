@@ -1,4 +1,4 @@
-import { $SOUND_AREA_SOUND_LIST_AREA_ID } from "@/config/PropertyConfig";
+import { $SOUND_AREA_SOUND_LIST_AREA_ID } from "@/config/SoundSettingConfig";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { execute as soundAreaAddSettingAreaUseCase } from "./SoundAreaAddSettingAreaUseCase";
 import { timelineHeader } from "@/timeline/domain/model/TimelineHeader";

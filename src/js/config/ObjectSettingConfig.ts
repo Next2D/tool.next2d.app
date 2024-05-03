@@ -15,3 +15,21 @@ export const $OBJECT_SETTING_NAME_ID: string = "object-name";
  * @public
  */
 export const $OBJECT_SETTING_SYMBOL_ID: string = "object-symbol";
+
+/**
+ * @description オブジェクト設定のシンボル項目のElement IDの名前
+ *              Name of the Element ID of the symbol item in the object settings
+ *
+ * @type {string}
+ * @public
+ */
+export const $OBJECT_SETTING_SYMBOL_AREA_ID: string = "object-symbol-area";
+
+/**
+ * @description オブジェクト設定のElementのID
+ *              ID of the Element in the object settings
+ *
+ * @type {string}
+ * @constant
+ */
+export const $OBJECT_SETTING_ID: string = "object-setting";

@@ -1,7 +1,7 @@
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { $clamp, $setCursor } from "@/global/GlobalUtil";
 import { $getTargetIndex } from "../SoundAreaUtil";
-import { $SOUND_AREA_SOUND_LIST_AREA_ID } from "@/config/PropertyConfig";
+import { $SOUND_AREA_SOUND_LIST_AREA_ID } from "@/config/SoundSettingConfig";
 
 /**
  * @description 音量操作を開始

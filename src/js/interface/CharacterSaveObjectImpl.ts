@@ -8,4 +8,5 @@ export interface CharacterSaveObjectImpl {
     colorTransform: number[];
     startFrame: number;
     endFrame: number;
+    name: string;
 }

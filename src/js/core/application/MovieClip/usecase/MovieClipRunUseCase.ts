@@ -7,7 +7,7 @@ import { execute as timelineScrollUpdateWidthService } from "@/timeline/applicat
 import { execute as timelineScrollUpdateXPositionService } from "@/timeline/application/TimelineScroll/service/TimelineScrollUpdateXPositionService";
 import { execute as timelineScrollUpdateHeightService } from "@/timeline/application/TimelineScroll/service/TimelineScrollUpdateHeightService";
 import { execute as timelineScrollUpdateYPositionService } from "@/timeline/application/TimelineScroll/service/TimelineScrollUpdateYPositionService";
-import { execute as propertyAreaDisplayItemControllerUseCase } from "@/controller/application/PropertyArea/usecase/PropertyAreaDisplayItemControllerUseCase";
+import { execute as propertyAreaShowDefaultSettingItemUseCase } from "@/controller/application/PropertyArea/usecase/PropertyAreaShowDefaultSettingItemUseCase";
 import { execute as objectSettingUpdateNameService } from "@/controller/application/ObjectSetting/service/ObjectSettingUpdateNameService";
 import { execute as objectSettingUpdateSymbolService } from "@/controller/application/ObjectSetting/service/ObjectSettingUpdateSymbolService";
 import { execute as timelineToolUpdateSceneNameService } from "@/timeline/application/TimelineTool/application/SceneName/service/TimelineToolUpdateSceneNameService";
@@ -66,7 +66,7 @@ export const execute = async (movie_clip: MovieClip): Promise<void> =>
     objectSettingUpdateSymbolService(movie_clip.symbol);
 
     // プロパティーエリアの表示を更新
-    propertyAreaDisplayItemControllerUseCase();
+    propertyAreaShowDefaultSettingItemUseCase();
 
     // サウンドエリアの設定エリアを再構築
     soundAreaRebuildSettingAreaUseCase();

@@ -1,5 +1,5 @@
 import { $SOUND_TYPE } from "@/config/InstanceConfig";
-import { $SOUND_AREA_SELECT_ID } from "@/config/PropertyConfig";
+import { $SOUND_AREA_SELECT_ID } from "@/config/SoundSettingConfig";
 import { execute as soundAreaSelectOptionComponent } from "../component/SoundAreaSelectOptionComponent";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 
