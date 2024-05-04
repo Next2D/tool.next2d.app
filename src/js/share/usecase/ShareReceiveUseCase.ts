@@ -51,6 +51,8 @@ import { execute as stageSettingUpdateWidthReceiveUseCase } from "@/share/receiv
 import { execute as stageSettingUpdateHeightReceiveUseCase } from "@/share/receive/application/controller/application/StageSetting/usecase/StageSettingUpdateHeightReceiveUseCase";
 import { execute as stageSettingUpdateFpsReceiveUseCase } from "@/share/receive/application/controller/application/StageSetting/usecase/StageSettingUpdateFpsReceiveUseCase";
 import { execute as stageSettingUpdateColorReceiveUseCase } from "@/share/receive/application/controller/application/StageSetting/usecase/StageSettingUpdateColorReceiveUseCase";
+import { execute as characterUpdateXReceiveUseCase } from "@/share/receive/application/core/application/Character/usecase/CharacterUpdateXReceiveUseCase";
+import { execute as characterUpdateYReceiveUseCase } from "@/share/receive/application/core/application/Character/usecase/CharacterUpdateYReceiveUseCase";
 import { execute as historyRedoUseCase } from "@/controller/application/HistoryArea/usecase/HistoryRedoUseCase";
 import { execute as historyUndoUseCase } from "@/controller/application/HistoryArea/usecase/HistoryUndoUseCase";
 import {
@@ -107,7 +109,9 @@ import {
     $STAGE_WIDTH_COMMAND,
     $STAGE_HEIGHT_COMMAND,
     $STAGE_FPS_COMMAND,
-    $STAGE_COLOR_COMMAND
+    $STAGE_COLOR_COMMAND,
+    $CHARACTER_UPDATE_X,
+    $CHARACTER_UPDATE_Y
 } from "@/config/HistoryConfig";
 
 /**
@@ -399,6 +403,16 @@ export const execute = async (message: ShareReceiveMessageImpl): Promise<void> =
         // ステージの背景色を更新
         case $STAGE_COLOR_COMMAND:
             stageSettingUpdateColorReceiveUseCase(message);
+            break;
+
+        // キャラクターのx座標を更新
+        case $CHARACTER_UPDATE_X:
+            characterUpdateXReceiveUseCase(message);
+            break;
+
+        // キャラクターのy座標を更新
+        case $CHARACTER_UPDATE_Y:
+            characterUpdateYReceiveUseCase(message);
             break;
 
         default:
