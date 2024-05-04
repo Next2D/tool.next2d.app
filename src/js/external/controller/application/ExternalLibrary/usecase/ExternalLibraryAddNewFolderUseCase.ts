@@ -35,6 +35,11 @@ export const execute = (
         "mode": "close"
     });
 
+    // 名前の重複時は改名
+    while (work_space.pathMap.has(folder.getPath(work_space))) {
+        folder.name += "_(2)";
+    }
+
     // 内部情報に追加
     // fixed logic
     externalLibraryAddInstanceUseCase(work_space, folder, reload);

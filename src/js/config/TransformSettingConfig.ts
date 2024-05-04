@@ -42,3 +42,30 @@ export const $TRANSFORM_OBJECT_WIDTH_ID: string = "object-width";
  * @constant
  */
 export const $TRANSFORM_OBJECT_HEIGHT_ID: string = "object-height";
+
+/**
+ * @description 変形エリアのxスケールのElementのID
+ *              ID of the x-scale Element in the deformation area
+ *
+ * @type {string}
+ * @constant
+ */
+export const $TRANSFORM_OBJECT_SCALE_X_ID: string = "transform-scale-x";
+
+/**
+ * @description 変形エリアのyスケールのElementのID
+ *              ID of the y-scale Element in the deformation area
+ *
+ * @type {string}
+ * @constant
+ */
+export const $TRANSFORM_OBJECT_SCALE_Y_ID: string = "transform-scale-y";
+
+/**
+ * @description 変形エリアの回転のElementのID
+ *              ID of Element of Rotation of Transformation Area
+ *
+ * @type {string}
+ * @constant
+ */
+export const $TRANSFORM_OBJECT_ROTATE_ID: string = "transform-rotate";

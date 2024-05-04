@@ -582,6 +582,10 @@ export class WorkSpace
      */
     addHistory (history_object: HistoryObjectImpl): void
     {
+        if (!history_object) {
+            throw new Error("");
+        }
+
         // ポジション以降の履歴を削除
         this._$histories.length = this._$historyIndex;
         this._$histories[this._$historyIndex++] = history_object;

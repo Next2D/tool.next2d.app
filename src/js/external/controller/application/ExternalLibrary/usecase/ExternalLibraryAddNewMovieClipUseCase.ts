@@ -33,6 +33,11 @@ export const execute = (
         "folderId": folder_id
     });
 
+    // 名前の重複時は改名
+    while (work_space.pathMap.has(movieClip.getPath(work_space))) {
+        movieClip.name += "_(2)";
+    }
+
     // 内部情報に追加
     // fixed logic
     externalLibraryAddInstanceUseCase(work_space, movieClip, reload);

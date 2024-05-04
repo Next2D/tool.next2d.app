@@ -30,6 +30,10 @@ export const execute = (): void =>
     const histories = workSpace.histories;
     for (let idx = 0; idx < histories.length; ++idx) {
         const historyObject = histories[idx];
+        if (!historyObject) {
+            continue ;
+        }
+
         const movieClipId = historyObject.messages[1] as NonNullable<number>;
         historyAddElementUseCase(
             movieClipId,
