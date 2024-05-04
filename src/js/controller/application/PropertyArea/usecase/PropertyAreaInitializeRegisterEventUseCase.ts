@@ -1,10 +1,7 @@
-import { EventType } from "@/tool/domain/event/EventType";
-import { $CONTROLLER_AREA_PROPERTY_ID } from "@/config/PropertyConfig";
-import { execute as propertyAreaTitleMouseDownEventService } from "../service/PropertyAreaTitleMouseDownEventService";
-import { execute as propertyAreaMouseOutEventService } from "../service/PropertyAreaMouseOutEventService";
-import { execute as propertyAreaMouseUpEventUseCase } from "./PropertyAreaMouseUpEventUseCase";
-import { execute as propertyAreaMouseDownEventUseCase } from "./PropertyAreaMouseDownEventUseCase";
 import { execute as soundAreaInitializeRegisterEventUseCase } from "@/controller/application/SoundArea/usecase/SoundAreaInitializeRegisterEventUseCase";
+import { execute as propertyAreaRegisterTitleEventUseCase } from "./PropertyAreaRegisterTitleEventUseCase";
+import { execute as propertyAreaRegisterMoveEventUseCase } from "./PropertyAreaRegisterMoveEventUseCase";
+import { execute as objectSettingRegisterEventUseCase } from "@/controller/application/ObjectSetting/usecase/ObjectSettingRegisterEventUseCase";
 
 /**
  * @description プロパティーエリアの移動イベントを登録
@@ -16,38 +13,15 @@ import { execute as soundAreaInitializeRegisterEventUseCase } from "@/controller
  */
 export const execute = (): void =>
 {
+    // プロパティーエリアのタイトルのマウスダウンイベントを登録
+    propertyAreaRegisterTitleEventUseCase();
+
+    // プロパティーエリアの移動イベントを登録
+    propertyAreaRegisterMoveEventUseCase();
+
     // サウンドエリアのイベント登録
     soundAreaInitializeRegisterEventUseCase();
 
-    // プロパティーエリアのイベント登録
-    const element: HTMLElement | null = document
-        .getElementById($CONTROLLER_AREA_PROPERTY_ID);
-
-    if (!element) {
-        return ;
-    }
-
-    // プロパティーのタイトルにマウスダウンイベントを登録
-    const elements = element
-        .querySelectorAll(".container-title");
-
-    const length: number = elements.length;
-    for (let idx: number = 0; idx < length; ++idx) {
-
-        const element: HTMLElement | undefined = elements[idx] as HTMLElement;
-        if (!element) {
-            continue;
-        }
-
-        element
-            .addEventListener(
-                EventType.MOUSE_DOWN,
-                propertyAreaTitleMouseDownEventService
-            );
-    }
-
-    // タップ、ダブルタップの処理
-    element.addEventListener(EventType.MOUSE_DOWN, propertyAreaMouseDownEventUseCase);
-    element.addEventListener(EventType.MOUSE_UP, propertyAreaMouseUpEventUseCase);
-    element.addEventListener(EventType.MOUSE_OUT, propertyAreaMouseOutEventService);
+    // オブジェクトエリアのイベント登録
+    objectSettingRegisterEventUseCase();
 };
