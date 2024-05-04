@@ -18,5 +18,5 @@ export const execute = (x: number): void =>
         return ;
     }
 
-    element.value = `${x}`;
+    element.value = `${parseFloat(x.toFixed(2))}`;
 };

@@ -18,5 +18,5 @@ export const execute = (width: number): void =>
         return ;
     }
 
-    element.value = `${width}`;
+    element.value = `${parseFloat(width.toFixed(2))}`;
 };

@@ -3,10 +3,7 @@ import { execute as propertyAreaShowBitmapSettingItemUseCase } from "./PropertyA
 import { execute as objectSettingUpdateNameService } from "@/controller/application/ObjectSetting/service/ObjectSettingUpdateNameService";
 import { execute as objectSettingUpdateSymbolService } from "@/controller/application/ObjectSetting/service/ObjectSettingUpdateSymbolService";
 import { execute as objectSettingHideSymbolService } from "@/controller/application/ObjectSetting/service/ObjectSettingHideSymbolService";
-import { execute as transformSettingUpdateXElementService } from "@/controller/application/TransformSetting/service/TransformSettingUpdateXElementService";
-import { execute as transformSettingUpdateYElementService } from "@/controller/application/TransformSetting/service/TransformSettingUpdateYElementService";
-import { execute as transformSettingUpdateWidthElementService } from "@/controller/application/TransformSetting/service/TransformSettingUpdateWidthElementService";
-import { execute as transformSettingUpdateHeightElementService } from "@/controller/application/TransformSetting/service/TransformSettingUpdateHeightElementService";
+import { execute as transformSettingUpdateElementUseCase } from "@/controller/application/TransformSetting/usecase/TransformSettingUpdateElementUseCase";
 
 /**
  * @description Bitmap選択時のプロパティエリアの設定項目を表示
@@ -30,10 +27,7 @@ export const execute = (character: Character): void =>
     objectSettingHideSymbolService();
 
     // 変形の値を更新
-    transformSettingUpdateXElementService(character.x);
-    transformSettingUpdateYElementService(character.y);
-    transformSettingUpdateWidthElementService(character.width);
-    transformSettingUpdateHeightElementService(character.height);
+    transformSettingUpdateElementUseCase(character);
 
     // カラーの値を更新
 

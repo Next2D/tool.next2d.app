@@ -18,5 +18,5 @@ export const execute = (height: number): void =>
         return ;
     }
 
-    element.value = `${height}`;
+    element.value = `${parseFloat(height.toFixed(2))}`;
 };

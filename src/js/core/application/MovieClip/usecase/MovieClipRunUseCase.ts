@@ -12,6 +12,7 @@ import { execute as timelineToolUpdateSceneNameService } from "@/timeline/applic
 import { execute as screenAreaRedrawUseCase } from "@/screen/application/ScreenArea/usecase/ScreenAreaRedrawUseCase";
 import { execute as timelineLabelNameUpdateService } from "@/timeline/application/TimelineLabelName/service/TimelineLabelNameUpdateService";
 import { execute as targetRectMoveElementUseCase } from "@/screen/application/TargetRect/usecase/TargetRectMoveElementUseCase";
+import { execute as propertyAreaChangeDisplayUseCase } from "@/controller/application/PropertyArea/usecase/PropertyAreaChangeDisplayUseCase";
 
 /**
  * @description MovieClipの起動処理
@@ -56,8 +57,12 @@ export const execute = async (movie_clip: MovieClip): Promise<void> =>
     // MovieClipのLayerからタイムラインを生成
     timelineLayerBuildElementUseCase();
 
-    // プロパティーエリアを初期表示に切り替える
-    propertyAreaShowDefaultSettingItemUseCase(movie_clip);
+    if (movie_clip.selectedDepths.size) {
+        propertyAreaChangeDisplayUseCase();
+    } else {
+        // プロパティーエリアを初期表示に切り替える
+        propertyAreaShowDefaultSettingItemUseCase(movie_clip);
+    }
 
     // 選択中のDisplayObjectがあれば選択範囲を表示
     targetRectMoveElementUseCase(movie_clip);

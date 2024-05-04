@@ -18,5 +18,5 @@ export const execute = (scale_y: number): void =>
         return ;
     }
 
-    element.value = `${scale_y}`;
+    element.value = `${parseFloat(scale_y.toFixed(2))}`;
 };
