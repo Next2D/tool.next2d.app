@@ -1,4 +1,5 @@
 import { $updateKeyLock } from "@/shortcut/ShortcutUtil";
+import { $getSelectedMode } from "../../PropertyArea/PropertyAreaUtil";
 
 /**
  * @description 名前のフォーカスアウトイベント処理
@@ -17,4 +18,18 @@ export const execute = (event: FocusEvent): void =>
 
     // 入力モードをOffにする
     $updateKeyLock(false);
+
+    console.log($getSelectedMode());
+    switch ($getSelectedMode()) {
+
+        case "single":
+            break;
+
+        case "multi":
+            break;
+
+        default:
+            break;
+
+    }
 };

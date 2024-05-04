@@ -8,8 +8,6 @@ import { execute as timelineScrollUpdateXPositionService } from "@/timeline/appl
 import { execute as timelineScrollUpdateHeightService } from "@/timeline/application/TimelineScroll/service/TimelineScrollUpdateHeightService";
 import { execute as timelineScrollUpdateYPositionService } from "@/timeline/application/TimelineScroll/service/TimelineScrollUpdateYPositionService";
 import { execute as propertyAreaShowDefaultSettingItemUseCase } from "@/controller/application/PropertyArea/usecase/PropertyAreaShowDefaultSettingItemUseCase";
-import { execute as objectSettingUpdateNameService } from "@/controller/application/ObjectSetting/service/ObjectSettingUpdateNameService";
-import { execute as objectSettingUpdateSymbolService } from "@/controller/application/ObjectSetting/service/ObjectSettingUpdateSymbolService";
 import { execute as timelineToolUpdateSceneNameService } from "@/timeline/application/TimelineTool/application/SceneName/service/TimelineToolUpdateSceneNameService";
 import { execute as screenAreaRedrawUseCase } from "@/screen/application/ScreenArea/usecase/ScreenAreaRedrawUseCase";
 import { execute as soundAreaRebuildSettingAreaUseCase } from "@/controller/application/SoundArea/usecase/SoundAreaRebuildSettingAreaUseCase";
@@ -59,14 +57,8 @@ export const execute = async (movie_clip: MovieClip): Promise<void> =>
     // MovieClipのLayerからタイムラインを生成
     timelineLayerBuildElementUseCase();
 
-    // 表示名を更新
-    objectSettingUpdateNameService(movie_clip.name);
-
-    // シンボル名を更新
-    objectSettingUpdateSymbolService(movie_clip.symbol);
-
-    // プロパティーエリアの表示を更新
-    propertyAreaShowDefaultSettingItemUseCase();
+    // プロパティーエリアを初期表示に切り替える
+    propertyAreaShowDefaultSettingItemUseCase(movie_clip);
 
     // サウンドエリアの設定エリアを再構築
     soundAreaRebuildSettingAreaUseCase();

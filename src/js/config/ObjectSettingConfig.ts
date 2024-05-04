@@ -26,8 +26,8 @@ export const $OBJECT_SETTING_SYMBOL_ID: string = "object-symbol";
 export const $OBJECT_SETTING_SYMBOL_AREA_ID: string = "object-symbol-area";
 
 /**
- * @description オブジェクト設定のElementのID
- *              ID of the Element in the object settings
+ * @description オブジェクトエリアのElementのID
+ *              ID of the object area element
  *
  * @type {string}
  * @constant

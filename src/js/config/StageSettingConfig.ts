@@ -35,8 +35,8 @@ export const $STAGE_DEFAULT_FPS: number = 60;
 export const $STAGE_DEFAULT_COLOR: string = "#ffffff";
 
 /**
- * @description ステージ設定のElementのID
- *              ID of Element for stage setting
+ * @description ステージエリアのElementのID
+ *              ID of the stage area element
  *
  * @type {string}
  * @constant

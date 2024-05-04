@@ -28,6 +28,6 @@ export const execute = (event: PointerEvent): void =>
     const externalTimeline = new ExternalTimeline(workSpace, movieClip);
     externalTimeline.deactivatedAllLayers();
 
-    // プロパティエリアの表示を更新
-    propertyAreaShowDefaultSettingItemUseCase();
+    // プロパティーエリアを初期表示に切り替える
+    propertyAreaShowDefaultSettingItemUseCase(movieClip);
 };

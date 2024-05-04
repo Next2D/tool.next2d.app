@@ -66,3 +66,38 @@ export const $setMouseState = (state: "up" | "down"): void =>
 {
     $mouseState = state;
 };
+
+/**
+ * @description DisplayObjectの選択モード
+ *              Selection mode of DisplayObject
+ *
+ * @private
+ */
+let $selectedMode: "single" | "multi" | "" = "";
+
+/**
+ * @description DisplayObjectの選択モードを取得
+ *              Get the selection mode of DisplayObject
+ *
+ * @return {string}
+ * @method
+ * @public
+ */
+export const $getSelectedMode = (): "single" | "multi" | "" =>
+{
+    return $selectedMode;
+};
+
+/**
+ * @description DisplayObjectの選択モードを更新
+ *              Update the selection mode of DisplayObject
+ *
+ * @param  {string} selected_mode
+ * @return {void}
+ * @method
+ * @public
+ */
+export const $setSelectedMode = (selected_mode: "single" | "multi" | ""): void =>
+{
+    $selectedMode = selected_mode;
+};

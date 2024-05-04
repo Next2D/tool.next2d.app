@@ -1,6 +1,8 @@
 import { $BITMAP_TYPE } from "@/config/InstanceConfig";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { execute as propertyAreaBitmapDisplayControllerUseCase } from "./PropertyAreaBitmapDisplayControllerUseCase";
+import { execute as propertyAreaShowMultiSettingUseCase } from "./PropertyAreaShowMultiSettingUseCase";
+import { $setSelectedMode } from "../PropertyAreaUtil";
 
 /**
  * @description プロパティエリアの表示を更新
@@ -47,6 +49,7 @@ export const execute = (): void =>
             return ;
         }
 
+        $setSelectedMode("single");
         switch (instance.type) {
 
             case $BITMAP_TYPE:
@@ -54,5 +57,8 @@ export const execute = (): void =>
                 break;
 
         }
+    } else {
+        // 複数選択時の表示に切り替える
+        propertyAreaShowMultiSettingUseCase();
     }
 };
