@@ -76,11 +76,16 @@ export const execute = (event: FocusEvent): void =>
                     // 元の名前に戻す
                     element.value = movieClip.name = before;
 
+                    let left = element.offsetLeft;
+                    let top  = element.offsetTop - element.clientHeight - 4;
+                    if (workSpace.propertyAreaState.state === "move") {
+                        left += workSpace.propertyAreaState.offsetLeft;
+                        top += workSpace.propertyAreaState.offsetTop;
+                    }
+
                     // エラーを表示
                     detailModalCustomFadeInUseCase(
-                        $ERROR_DUPLICATE_NAME_TEXT,
-                        element.offsetLeft,
-                        element.offsetTop - element.clientHeight - 4
+                        $ERROR_DUPLICATE_NAME_TEXT, left, top
                     );
 
                     return ;
