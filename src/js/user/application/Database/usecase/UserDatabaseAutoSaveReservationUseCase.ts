@@ -1,4 +1,4 @@
-import { $isSocketOwner } from "@/share/ShareUtil";
+import { $isSocketOwner, $useSocket } from "@/share/ShareUtil";
 import { execute as userDatabaseSaveIndexedDBUseCase } from "./UserDatabaseSaveIndexedDBUseCase";
 
 /**
@@ -22,7 +22,7 @@ export const execute = (): void =>
     clearTimeout(timerId);
 
     // 画面共有で、オーナーでない場合は保存はしない
-    if (!$isSocketOwner()) {
+    if ($useSocket() && !$isSocketOwner()) {
         return ;
     }
 
