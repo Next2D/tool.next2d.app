@@ -4,12 +4,13 @@ import { $SOUND_SETTING_ID } from "@/config/SoundSettingConfig";
 import { $STAGE_SETTING_ID } from "@/config/StageSettingConfig";
 import { $OBJECT_SETTING_ID } from "@/config/ObjectSettingConfig";
 import { $PROPERTY_OBJECT_AREA_ID } from "@/config/PropertyConfig";
+import { $INSTANCE_SETTING_ID } from "@/config/InstanceSettingConfig";
 import { execute as objectSettingShowSymbolService } from "@/controller/application/ObjectSetting/service/ObjectSettingShowSymbolService";
 import { execute as objectSettingUpdateNameService } from "@/controller/application/ObjectSetting/service/ObjectSettingUpdateNameService";
 import { execute as objectSettingUpdateSymbolService } from "@/controller/application/ObjectSetting/service/ObjectSettingUpdateSymbolService";
 import { execute as propertyAreaBlockShowService } from "../service/PropertyAreaBlockShowService";
 import { execute as propertyAreaBlockHideService } from "../service/PropertyAreaBlockHideService";
-import { $INSTANCE_SETTING_ID } from "@/config/InstanceSettingConfig";
+import { execute as soundAreaRebuildSettingAreaUseCase } from "@/controller/application/SoundArea/usecase/SoundAreaRebuildSettingAreaUseCase";
 
 /**
  * @description プロパティエリアの表示項目を変更
@@ -43,6 +44,9 @@ export const execute = async (movie_clip: MovieClip): Promise<void> =>
 
     // シンボル名を更新
     objectSettingUpdateSymbolService(movie_clip.symbol);
+
+    // サウンドエリアの設定エリアを再構築
+    soundAreaRebuildSettingAreaUseCase();
 
     // 選択モードをクリア
     $setSelectedMode("");

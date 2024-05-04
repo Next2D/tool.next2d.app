@@ -10,7 +10,6 @@ import { execute as timelineScrollUpdateYPositionService } from "@/timeline/appl
 import { execute as propertyAreaShowDefaultSettingItemUseCase } from "@/controller/application/PropertyArea/usecase/PropertyAreaShowDefaultSettingItemUseCase";
 import { execute as timelineToolUpdateSceneNameService } from "@/timeline/application/TimelineTool/application/SceneName/service/TimelineToolUpdateSceneNameService";
 import { execute as screenAreaRedrawUseCase } from "@/screen/application/ScreenArea/usecase/ScreenAreaRedrawUseCase";
-import { execute as soundAreaRebuildSettingAreaUseCase } from "@/controller/application/SoundArea/usecase/SoundAreaRebuildSettingAreaUseCase";
 import { execute as timelineLabelNameUpdateService } from "@/timeline/application/TimelineLabelName/service/TimelineLabelNameUpdateService";
 import { execute as targetRectMoveElementUseCase } from "@/screen/application/TargetRect/usecase/TargetRectMoveElementUseCase";
 
@@ -59,9 +58,6 @@ export const execute = async (movie_clip: MovieClip): Promise<void> =>
 
     // プロパティーエリアを初期表示に切り替える
     propertyAreaShowDefaultSettingItemUseCase(movie_clip);
-
-    // サウンドエリアの設定エリアを再構築
-    soundAreaRebuildSettingAreaUseCase();
 
     // 選択中のDisplayObjectがあれば選択範囲を表示
     targetRectMoveElementUseCase(movie_clip);

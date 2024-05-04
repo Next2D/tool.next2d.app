@@ -31,6 +31,11 @@ export const execute = (): void =>
     const workSpace = $getCurrentWorkSpace();
     const movieClip = workSpace.scene;
 
+    // スクリーンのDisplayObjectが選択されている時は処理を行わない
+    if (movieClip.selectedDepths.size) {
+        return ;
+    }
+
     const sounds = movieClip.getSound(movieClip.currentFrame);
     if (!sounds) {
         return;
