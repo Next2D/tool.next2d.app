@@ -1,5 +1,9 @@
 import { $updateKeyLock } from "@/shortcut/ShortcutUtil";
 import { $getSelectedMode } from "../../PropertyArea/PropertyAreaUtil";
+import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
+import { $ERROR_DUPLICATE_NAME_TEXT } from "@/config/ErrorTextConfig";
+import { ExternalItem } from "@/external/core/domain/model/ExternalItem";
+import { execute as detailModalCustomFadeInUseCase } from "@/menu/application/DetailModal/usecase/DetailModalCustomFadeInUseCase";
 
 /**
  * @description 名前のフォーカスアウトイベント処理
@@ -19,16 +23,77 @@ export const execute = (event: FocusEvent): void =>
     // 入力モードをOffにする
     $updateKeyLock(false);
 
-    console.log($getSelectedMode());
+    const element = event.target as HTMLInputElement;
+    if (!element) {
+        return ;
+    }
+
+    const workSpace = $getCurrentWorkSpace();
+    const movieClip = workSpace.scene;
     switch ($getSelectedMode()) {
 
-        case "single":
+        case "multi": // 何もしない
             break;
 
-        case "multi":
+        case "single": // DisplayObjectの名前を変更
+            {
+                const layer = movieClip.getLayer(movieClip.selectedDepths.keys().next().value);
+                if (!layer) {
+                    return ;
+                }
+
+                const activeCharacters = layer.getActiveCharacters(movieClip.currentFrame);
+                if (!activeCharacters.length) {
+                    return ;
+                }
+
+                const character = activeCharacters[movieClip.selectedDepths.values().next().value[0]];
+                if (!character) {
+                    return ;
+                }
+
+                character.name = element.value;
+            }
             break;
 
-        default:
+        default: // 起動中のMovieClipの名前を変更
+            {
+                let name = element.value;
+                if (!name) {
+                    element.value = name = movieClip.name;
+                }
+
+                // 変更がなければ終了
+                if (name === movieClip.name) {
+                    return ;
+                }
+
+                // 重複していればエラーを表示
+                const before = movieClip.name;
+                movieClip.name = name;
+                if (workSpace.pathMap.has(movieClip.getPath(workSpace))) {
+
+                    // 元の名前に戻す
+                    element.value = movieClip.name = before;
+
+                    // エラーを表示
+                    detailModalCustomFadeInUseCase(
+                        $ERROR_DUPLICATE_NAME_TEXT,
+                        element.offsetLeft,
+                        element.offsetTop - element.clientHeight - 4
+                    );
+
+                    return ;
+                }
+
+                // 変更前に戻す
+                // fixed logic
+                movieClip.name = before;
+
+                // 外部APIを起動
+                const externalItem = new ExternalItem(workSpace, movieClip);
+                externalItem.name = name;
+            }
             break;
 
     }

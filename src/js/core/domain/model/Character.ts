@@ -165,6 +165,7 @@ export class Character
     }
     set name (name)
     {
+        // TODO
         this._$name = `${name}`.replace(/ /g, "").trim();
     }
 

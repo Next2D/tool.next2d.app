@@ -11,6 +11,7 @@ import {
 import { $CONTROLLER_AREA_PROPERTY_ID } from "@/config/PropertyConfig";
 import { execute as billingModelShowService } from "@/menu/application/BillingModal/service/BillingModelShowService";
 import { $useSocket } from "@/share/ShareUtil";
+import { $useKeyboard } from "@/shortcut/ShortcutUtil";
 
 /**
  * @description ダブルタップ用の待機フラグ
@@ -43,6 +44,11 @@ export const execute = (event: PointerEvent): void =>
 {
     // 主ボタン以外はスキップ
     if (event.button !== 0) {
+        return ;
+    }
+
+    // 入力中はスキップ
+    if ($useKeyboard()) {
         return ;
     }
 

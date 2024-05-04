@@ -54,10 +54,10 @@ export const execute = (event: PointerEvent): void =>
         timerId = setTimeout((): void =>
         {
             wait = false;
-
-            // スクリーンイベントを実行
-            tool.dispatchEvent(EventType.SCREEN, event);
         }, 300);
+
+        // スクリーンイベントを実行
+        tool.dispatchEvent(EventType.SCREEN, event);
 
         // 範囲選択のイベントを実行
         tool.dispatchEvent(EventType.STAGE_RECT, event);
