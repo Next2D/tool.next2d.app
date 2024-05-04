@@ -1,9 +1,15 @@
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
-import { $getMovePositon } from "../../../../tool/application/ToolUtil";
+import { $getMovePositon } from "@/tool/application/ToolUtil";
+import { execute as transformSettingUpdateXElementService } from "@/controller/application/TransformSetting/service/TransformSettingUpdateXElementService";
+import { execute as transformSettingUpdateYElementService } from "@/controller/application/TransformSetting/service/TransformSettingUpdateYElementService";
 import {
     $SCREEN_STAGE_AREA_ID,
     $SCREEN_TARGET_RECT_ID
 } from "@/config/ScreenConfig";
+import {
+    $getScreenOffsetLeft,
+    $getScreenOffsetTop
+} from "@/global/GlobalUtil";
 
 /**
  * @description DisplayObjectの移動処理関数
@@ -28,6 +34,11 @@ export const execute = (event: PointerEvent): void =>
         if (!element) {
             return ;
         }
+
+        // マウスで移動した量を更新
+        const movePosition = $getMovePositon();
+        movePosition.x += event.movementX;
+        movePosition.y += event.movementY;
 
         const workSpace = $getCurrentWorkSpace();
         const movieClip = workSpace.scene;
@@ -61,12 +72,13 @@ export const execute = (event: PointerEvent): void =>
             return ;
         }
 
-        rectElement.style.left = `${rectElement.offsetLeft + event.movementX}px`;
-        rectElement.style.top  = `${rectElement.offsetTop  + event.movementY}px`;
+        const left = rectElement.offsetLeft + event.movementX;
+        const top  = rectElement.offsetTop  + event.movementY;
+        rectElement.style.left = `${left}px`;
+        rectElement.style.top  = `${top}px`;
 
-        // マウスで移動した量を更新
-        const movePosition = $getMovePositon();
-        movePosition.x += event.movementX;
-        movePosition.y += event.movementY;
+        // プロパティーの値を更新
+        transformSettingUpdateXElementService(left - $getScreenOffsetLeft());
+        transformSettingUpdateYElementService(top - $getScreenOffsetTop());
     });
 };

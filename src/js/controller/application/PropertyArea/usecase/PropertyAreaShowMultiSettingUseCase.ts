@@ -33,7 +33,6 @@ export const execute = async (): Promise<void> =>
 {
     // 非表示項目を更新
     propertyAreaBlockHideService([
-        $PROPERTY_OBJECT_AREA_ID,
         $INSTANCE_SETTING_ID,
         $SOUND_SETTING_ID,
         $STAGE_SETTING_ID,

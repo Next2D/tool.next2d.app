@@ -341,6 +341,46 @@ export class Character
     }
 
     /**
+     * @description 幅を返却
+     *              Return width
+     *
+     * @member {number}
+     * @public
+     */
+    get width (): number
+    {
+        const bounds = this.getBounds();
+        return bounds
+            ? parseFloat(Math.abs(bounds.xMax - bounds.xMin).toFixed(2))
+            : 0;
+    }
+    set width (width: number)
+    {
+        // TODO
+        console.log(width);
+    }
+
+    /**
+     * @description 高さを返却
+     *              Return height
+     *
+     * @member {number}
+     * @public
+     */
+    get height (): number
+    {
+        const bounds = this.getBounds();
+        return bounds
+            ? parseFloat(Math.abs(bounds.yMax - bounds.yMin).toFixed(2))
+            : 0;
+    }
+    set height (height: number)
+    {
+        // TODO
+        console.log(height);
+    }
+
+    /**
      * @description xスケールを返却
      *              Return x scale
      *

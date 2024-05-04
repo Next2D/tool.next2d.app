@@ -24,7 +24,6 @@ export const execute = async (movie_clip: MovieClip): Promise<void> =>
 {
     // 非表示項目を更新
     propertyAreaBlockHideService([
-        $PROPERTY_OBJECT_AREA_ID,
         $INSTANCE_SETTING_ID,
         $PROPERTY_OBJECT_AREA_ID
     ]);
@@ -32,8 +31,8 @@ export const execute = async (movie_clip: MovieClip): Promise<void> =>
     // 表示項目を更新
     propertyAreaBlockShowService([
         $STAGE_SETTING_ID,
-        $SOUND_SETTING_ID,
-        $OBJECT_SETTING_ID
+        $OBJECT_SETTING_ID,
+        $SOUND_SETTING_ID
     ]);
 
     // シンボルエリアを表示
