@@ -36,6 +36,8 @@ export const execute = (event: PointerEvent): void =>
     const width  = element.clientWidth;
     const height = element.clientHeight;
     if (!width || !height) {
+        // 範囲選択のElementを非表示
+        stageRectHideService();
         return ;
     }
 
@@ -44,8 +46,12 @@ export const execute = (event: PointerEvent): void =>
     const right   = left + width;
     const bottom  = top  + height;
 
+    // 範囲選択のElementを非表示
+    stageRectHideService();
+
     const stageAreaElement = document.getElementById($SCREEN_STAGE_AREA_ID);
     if (!stageAreaElement) {
+
         return ;
     }
 
@@ -90,7 +96,4 @@ export const execute = (event: PointerEvent): void =>
                 true
             );
     }
-
-    // 範囲選択のElementを非表示
-    stageRectHideService();
 };

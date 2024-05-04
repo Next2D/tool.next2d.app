@@ -20,9 +20,9 @@ export const execute = (event: PointerEvent): void =>
     event.stopPropagation();
     event.preventDefault();
 
-    // 範囲選択のElementを表示
-    stageRectShowService(event.pageX, event.pageY);
-
     // windowイベントを登録
     stageRectRegisterWindowEventUseCase();
+
+    // 範囲選択のElementを表示
+    stageRectShowService(event.pageX, event.pageY);
 };

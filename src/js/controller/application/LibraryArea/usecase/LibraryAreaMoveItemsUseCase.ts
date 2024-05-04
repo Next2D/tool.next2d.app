@@ -10,6 +10,7 @@ import { execute as confirmModalinstanceShowUseCase } from "@/menu/application/C
 import { execute as soundAreaRebuildSelectElementService } from "@/controller/application/SoundArea/service/SoundAreaRebuildSelectElementService";
 import { Folder } from "@/core/domain/model/Folder";
 import { $FOLDER_TYPE } from "@/config/InstanceConfig";
+import { execute as screenStageAreaAllDisplayObjectActiveService } from "@/screen/application/ScreenStageArea/service/ScreenStageAreaAllDisplayObjectActiveService";
 
 /**
  * @description ライブラリエリア内でのインスタンス移動処理
@@ -137,4 +138,7 @@ export const execute = (event: DragEvent): void =>
 
     // 重複があればモーダルを表示
     confirmModalinstanceShowUseCase();
+
+    // 全てのオブジェクトをアクティブにする
+    screenStageAreaAllDisplayObjectActiveService();
 };
