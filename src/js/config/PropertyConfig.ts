@@ -6,6 +6,3 @@
  * @public
  */
 export const $CONTROLLER_AREA_PROPERTY_ID: string = "controller-area-property";
-
-
-
