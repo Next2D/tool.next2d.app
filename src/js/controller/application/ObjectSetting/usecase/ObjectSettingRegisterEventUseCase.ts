@@ -1,4 +1,11 @@
-import { $OBJECT_SETTING_NAME_ID, $OBJECT_SETTING_SYMBOL_ID } from "@/config/ObjectSettingConfig";
+import { execute as objectSettingFocusInEventService } from "../service/ObjectSettingFocusInEventService";
+import { execute as objectSettingKeyPressEventService } from "../service/ObjectSettingKeyPressEventService";
+import { execute as objectSettingNameFocusOutEventUseCase } from "./ObjectSettingNameFocusOutEventUseCase";
+import { execute as objectSettingSymbolFocusOutEventUseCase } from "./ObjectSettingSymbolFocusOutEventUseCase";
+import {
+    $OBJECT_SETTING_NAME_ID,
+    $OBJECT_SETTING_SYMBOL_ID
+} from "@/config/ObjectSettingConfig";
 
 /**
  * @description オブジェクト設定のイベントを登録
@@ -15,9 +22,9 @@ export const execute = (): void =>
 
     // 名前のinputにイベントを登録
     if (nameElement) {
-        nameElement.addEventListener("focusin", () => {});
-        nameElement.addEventListener("focusout", () => {});
-        nameElement.addEventListener("keypress", () => {});
+        nameElement.addEventListener("focusin", objectSettingFocusInEventService);
+        nameElement.addEventListener("focusout", objectSettingNameFocusOutEventUseCase);
+        nameElement.addEventListener("keypress", objectSettingKeyPressEventService);
     }
 
     const symbolElement: HTMLInputElement | null = document
@@ -25,8 +32,8 @@ export const execute = (): void =>
 
     // シンボルのinputにイベントを登録
     if (symbolElement) {
-        symbolElement.addEventListener("focusin", () => {});
-        symbolElement.addEventListener("focusout", () => {});
-        symbolElement.addEventListener("keypress", () => {});
+        symbolElement.addEventListener("focusin", objectSettingFocusInEventService);
+        symbolElement.addEventListener("focusout", objectSettingSymbolFocusOutEventUseCase);
+        symbolElement.addEventListener("keypress", objectSettingKeyPressEventService);
     }
 };

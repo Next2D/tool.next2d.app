@@ -1,7 +1,6 @@
-import { execute } from "./StageSettingFocusInEventService";
-import { $useKeyboard } from "../../../../shortcut/ShortcutUtil";
+import { execute } from "./ObjectSettingKeyPressEventService";
 
-describe("StageSettingFocusInEventServiceTest", () =>
+describe("ObjectSettingKeyPressEventServiceTest", () =>
 {
     test("execute test", () =>
     {
@@ -16,15 +15,14 @@ describe("StageSettingFocusInEventServiceTest", () =>
             {
                 preventDefault = true;
             },
+            "key": "Enter",
             "currentTarget": document.createElement("div")
         };
 
         expect(stopPropagation).toBe(false);
         expect(preventDefault).toBe(false);
-        expect($useKeyboard()).toBe(false);
         execute(eventMock);
         expect(stopPropagation).toBe(true);
         expect(preventDefault).toBe(true);
-        expect($useKeyboard()).toBe(true);
     });
 });

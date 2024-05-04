@@ -1,7 +1,7 @@
-import { execute } from "./StageSettingFocusInEventService";
+import { execute } from "./ObjectSettingFocusInEventService";
 import { $useKeyboard } from "../../../../shortcut/ShortcutUtil";
 
-describe("StageSettingFocusInEventServiceTest", () =>
+describe("ObjectSettingFocusInEventServiceTest", () =>
 {
     test("execute test", () =>
     {
