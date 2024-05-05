@@ -1,4 +1,5 @@
 import { $updateKeyLock } from "@/shortcut/ShortcutUtil";
+import { $setBeforeValue } from "../TransformSettingUtil";
 
 /**
  * @description 変形エリアのフォーカスイベント処理
@@ -25,4 +26,7 @@ export const execute = (event: FocusEvent): void =>
     $updateKeyLock(true);
 
     element.style.cursor = "";
+
+    // 変更前の値を保持
+    $setBeforeValue(parseFloat(element.value));
 };

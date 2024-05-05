@@ -3,6 +3,7 @@ import { $getMovePositon } from "@/tool/application/ToolUtil";
 import { EventType } from "@/tool/domain/event/EventType";
 import { execute as transformSettingXWindowMouseMoveEventUseCase } from "./TransformSettingXWindowMouseMoveEventUseCase";
 import { execute as screenDisplayObjectUpdateSelectedValueService } from "@/screen/application/DisplayObject/service/ScreenDisplayObjectUpdateSelectedValueService";
+import { $TRANSFORM_OBJECT_X_ID } from "@/config/TransformSettingConfig";
 
 /**
  * @description 変形エリアのx座標の値操作のマウスアップイベント
@@ -28,12 +29,17 @@ export const execute = (event: PointerEvent): void =>
     );
     window.removeEventListener(EventType.MOUSE_UP, execute);
 
-    // 移動した座標に更新
-    const movePosition = $getMovePositon();
-    if (!movePosition.x && !movePosition.y) {
+    // x座標の最終位置をセット
+    screenDisplayObjectUpdateSelectedValueService();
+
+    // input要素へフォーカス
+    const element: HTMLInputElement | null = document
+        .getElementById($TRANSFORM_OBJECT_X_ID) as HTMLInputElement;
+
+    if (!element) {
         return ;
     }
 
-    // x座標の最終位置をセット
-    screenDisplayObjectUpdateSelectedValueService();
+    // input要素のフォーカス
+    element.focus();
 };

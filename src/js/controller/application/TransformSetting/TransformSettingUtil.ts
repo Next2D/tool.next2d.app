@@ -61,3 +61,35 @@ export const $setScaleLocked = (lock: boolean): void =>
 {
     $scaleLocked = lock;
 };
+
+/**
+ * @type {number}
+ * @private
+ */
+let $beforeValue: number = 0;
+
+/**
+ * @description 変形エリアの変更前のinput値を返却
+ *              Get the lock state of the transformation scale
+ *
+ * @return {number}
+ * @method
+ * @public
+ */
+export const $getBeforeValue = (): number =>
+{
+    return $beforeValue;
+};
+
+/**
+ * @description 変形エリアの変更前のinput値を更新
+ *              Update the lock state of the transformation scale
+ *
+ * @return {number}
+ * @method
+ * @public
+ */
+export const $setBeforeValue = (value: number): void =>
+{
+    $beforeValue = value;
+};

@@ -3,6 +3,7 @@ import type { InstanceImpl } from "@/interface/InstanceImpl";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import { execute as screenAreaMoveDisplayObjectElementService } from "@/screen/application/ScreenArea/service/ScreenAreaMoveDisplayObjectElementService";
 import { execute as targetRectMoveElementUseCase } from "@/screen/application/TargetRect/usecase/TargetRectMoveElementUseCase";
+import { execute as transformSettingUpdateXElementService } from "@/controller/application/TransformSetting/service/TransformSettingUpdateXElementService";
 
 /**
  * @description DisplayObjectのx座標を変更後に戻す
@@ -57,5 +58,8 @@ export const execute = (
 
         // 選択範囲のElementを移動
         targetRectMoveElementUseCase(movieClip);
+
+        // TransformSettingのx座標を更新
+        transformSettingUpdateXElementService(character.x);
     }
 };
