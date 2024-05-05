@@ -1,12 +1,11 @@
 import { $updateKeyLock } from "@/shortcut/ShortcutUtil";
-import { $getMovePositon } from "@/tool/application/ToolUtil";
+import { $getChangeSize } from "@/tool/application/ToolUtil";
 import { $getBeforeValue } from "../TransformSettingUtil";
-import { execute as screenDisplayObjectUpdateSelectedValueService } from "@/screen/application/DisplayObject/service/ScreenDisplayObjectUpdateSelectedValueService";
 import { $clamp } from "@/global/GlobalUtil";
 
 /**
- * @description y座標の入力完了処理
- *              y-coordinate input completion processing
+ * @description 幅の入力完了処理
+ *              Width input completion processing
  *
  * @param  {FocusEvent} event
  * @return {void}
@@ -31,9 +30,6 @@ export const execute = (event: FocusEvent): void =>
     element.value = `${value}`;
 
     // 移動した座標に更新
-    const movePosition = $getMovePositon();
-    movePosition.y = value - $getBeforeValue();
-
-    // 選択中のDisplayObjectを指定した値で更新
-    screenDisplayObjectUpdateSelectedValueService();
+    const changeSize = $getChangeSize();
+    changeSize.w = value - $getBeforeValue();
 };

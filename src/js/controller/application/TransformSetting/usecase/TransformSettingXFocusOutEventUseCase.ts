@@ -2,6 +2,7 @@ import { $updateKeyLock } from "@/shortcut/ShortcutUtil";
 import { $getMovePositon } from "@/tool/application/ToolUtil";
 import { $getBeforeValue } from "../TransformSettingUtil";
 import { execute as screenDisplayObjectUpdateSelectedValueService } from "@/screen/application/DisplayObject/service/ScreenDisplayObjectUpdateSelectedValueService";
+import { $clamp } from "@/global/GlobalUtil";
 
 /**
  * @description x座標の入力完了処理
@@ -26,7 +27,7 @@ export const execute = (event: FocusEvent): void =>
         return ;
     }
 
-    const value = parseFloat(parseFloat(element.value).toFixed(2));
+    const value = parseFloat($clamp(parseFloat(element.value), -Number.MAX_VALUE, Number.MAX_VALUE).toFixed(2));
     element.value = `${value}`;
 
     // 移動した座標に更新

@@ -1,6 +1,7 @@
 import type { ToolImpl } from "@/interface/ToolImpl";
 import { EventType } from "../domain/event/EventType";
 import type { PositionImpl } from "@/interface/PositionImpl";
+import { SizeImpl } from "@/interface/SizeImpl";
 
 /**
  * @description BaseToolを継承してる、現在選択中のToolオブジェクト
@@ -132,4 +133,23 @@ const $movePosition: PositionImpl = { "x": 0, "y": 0 };
 export const $getMovePositon = (): PositionImpl =>
 {
     return $movePosition;
+};
+
+/**
+ * @type {object}
+ * @private
+ */
+const $changeSize: SizeImpl = { "w": 0, "h": 0 };
+
+/**
+ * @description サイズ変更の管理オブジェクトを返却
+ *              Returns the object that manages the size change
+ *
+ * @return {object}
+ * @method
+ * @public
+ */
+export const $getChangeSize = (): SizeImpl =>
+{
+    return $changeSize;
 };

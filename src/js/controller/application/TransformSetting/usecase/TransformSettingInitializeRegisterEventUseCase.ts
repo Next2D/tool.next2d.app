@@ -2,11 +2,13 @@ import { EventType } from "@/tool/domain/event/EventType";
 import { execute as transformSettingInputMouseOverEventService } from "../service/TransformSettingInputMouseOverEventService";
 import { execute as transformSettingInputMouseOutEventService } from "../service/TransformSettingInputMouseOutEventService";
 import { execute as transformSettingInputFocusInEventService } from "../service/TransformSettingInputFocusInEventService";
+import { execute as transformSettingWidthFocusOutEventUseCase } from "./TransformSettingWidthFocusOutEventUseCase";
 import { execute as transformSettingInputKeyPressEventService } from "../service/TransformSettingInputKeyPressEventService";
 import { execute as transformSettingXMouseDownEventUseCase } from "./TransformSettingXMouseDownEventUseCase";
 import { execute as transformSettingYMouseDownEventUseCase } from "./TransformSettingYMouseDownEventUseCase";
 import { execute as transformSettingXFocusOutEventUseCase } from "./TransformSettingXFocusOutEventUseCase";
 import { execute as transformSettingYFocusOutEventUseCase } from "./TransformSettingYFocusOutEventUseCase";
+import { execute as transformSettingWidthMouseDownEventUseCase } from "./TransformSettingWidthMouseDownEventUseCase";
 import {
     $TRANSFORM_OBJECT_HEIGHT_ID,
     $TRANSFORM_OBJECT_ROTATE_ID,
@@ -99,8 +101,14 @@ export const execute = (): void =>
         widthElement.addEventListener(EventType.MOUSE_OUT,
             transformSettingInputMouseOutEventService
         );
+        widthElement.addEventListener(EventType.MOUSE_DOWN,
+            transformSettingWidthMouseDownEventUseCase
+        );
         widthElement.addEventListener("focusin",
             transformSettingInputFocusInEventService
+        );
+        widthElement.addEventListener("focusout",
+            transformSettingWidthFocusOutEventUseCase
         );
         widthElement.addEventListener("keypress",
             transformSettingInputKeyPressEventService
