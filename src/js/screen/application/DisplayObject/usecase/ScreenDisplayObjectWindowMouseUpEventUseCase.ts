@@ -3,6 +3,7 @@ import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { ExternalCharacter } from "@/external/core/domain/model/ExternalCharacter";
 import { $getMovePositon } from "../../../../tool/application/ToolUtil";
 import { execute as screenDisplayObjectWindowMouseMoveEventUseCase } from "./ScreenDisplayObjectWindowMouseMoveEventUseCase";
+import { execute as screenDisplayObjectUpdateSelectedValueService } from "../service/ScreenDisplayObjectUpdateSelectedValueService";
 
 /**
  * @description DisplayObjectのwindowイベントを解除
@@ -25,44 +26,6 @@ export const execute = (event: PointerEvent): void =>
     );
     window.removeEventListener(EventType.MOUSE_UP, execute);
 
-    // 移動量のオブジェクトを取得
-    const movePosition = $getMovePositon();
-    if (!movePosition.x && !movePosition.y) {
-        return ;
-    }
-
-    const workSpace = $getCurrentWorkSpace();
-    const movieClip = workSpace.scene;
-
-    // 現在のフレームをセット
-    const frame = movieClip.currentFrame;
-
-    // 選択中のDisplayObjectの座標を更新
-    for (const [layerIndex, depths] of movieClip.selectedDepths) {
-
-        const layer = movieClip.getLayer(layerIndex);
-        if (!layer) {
-            continue ;
-        }
-
-        // 選択中の深度からCharacterを取得
-        for (let idx = 0; idx < depths.length; ++idx) {
-
-            const character = layer.getCharacter(frame, depths[idx]);
-            if (!character) {
-                continue ;
-            }
-
-            // 外部APIを起動
-            const externalCharacter = new ExternalCharacter(
-                workSpace,
-                movieClip,
-                layer,
-                character
-            );
-
-            externalCharacter.x += movePosition.x;
-            externalCharacter.y += movePosition.y;
-        }
-    }
+    // 移動した座標に更新
+    screenDisplayObjectUpdateSelectedValueService();
 };

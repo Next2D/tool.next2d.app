@@ -3,6 +3,7 @@ import { execute as transformSettingInputMouseOverEventService } from "../servic
 import { execute as transformSettingInputMouseOutEventService } from "../service/TransformSettingInputMouseOutEventService";
 import { execute as transformSettingInputFocusInEventService } from "../service/TransformSettingInputFocusInEventService";
 import { execute as transformSettingInputKeyPressEventService } from "../service/TransformSettingInputKeyPressEventService";
+import { execute as transformSettingXMouseDownEventUseCase } from "./TransformSettingXMouseDownEventUseCase";
 import {
     $TRANSFORM_OBJECT_HEIGHT_ID,
     $TRANSFORM_OBJECT_ROTATE_ID,
@@ -46,6 +47,9 @@ export const execute = (): void =>
         );
         xElement.addEventListener(EventType.MOUSE_OUT,
             transformSettingInputMouseOutEventService
+        );
+        xElement.addEventListener(EventType.MOUSE_DOWN,
+            transformSettingXMouseDownEventUseCase
         );
         xElement.addEventListener("focusin",
             transformSettingInputFocusInEventService
