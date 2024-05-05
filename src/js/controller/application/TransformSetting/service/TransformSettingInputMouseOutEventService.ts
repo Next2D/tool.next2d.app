@@ -1,8 +1,8 @@
 import { $useKeyboard } from "@/shortcut/ShortcutUtil";
 
 /**
- * @description ステージエリアのマウスアウトイベント
- *              Mouse out event for the width of the stage area
+ * @description 変形エリアのマウスアウトイベント
+ *              Mouse out event in the transformation area
  *
  * @param  {PointerEvent} event
  * @return {void}

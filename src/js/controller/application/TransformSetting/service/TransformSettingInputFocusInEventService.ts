@@ -1,8 +1,8 @@
 import { $updateKeyLock } from "@/shortcut/ShortcutUtil";
 
 /**
- * @description ステージエリアのフォーカスイベント処理
- *              Focus event processing of the stage area
+ * @description 変形エリアのフォーカスイベント処理
+ *              Focus event processing of the transformation area
  *
  * @param  {FocusEvent} event
  * @return {void}

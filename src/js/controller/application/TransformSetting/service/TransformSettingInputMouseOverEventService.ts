@@ -1,8 +1,8 @@
 import { $useKeyboard } from "@/shortcut/ShortcutUtil";
 
 /**
- * @description ステージエリアのマウスアウトイベント
- *              Mouse out event for the width of the stage area
+ * @description 変形エリアのマウスオーバーイベント
+ *              Mouse over event in the transformation area
  *
  * @param  {PointerEvent} event
  * @return {void}
@@ -25,5 +25,5 @@ export const execute = (event: PointerEvent): void =>
         return ;
     }
 
-    element.style.cursor = "";
+    element.style.cursor = "ew-resize";
 };

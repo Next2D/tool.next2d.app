@@ -1,7 +1,7 @@
 import { $useKeyboard } from "@/shortcut/ShortcutUtil";
 
 /**
- * @description ステージエリアの幅のマウスオーバーイベント
+ * @description ステージエリアのマウスオーバーイベント
  *              Mouse over event for the width of the stage area
  *
  * @param  {PointerEvent} event
