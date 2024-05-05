@@ -1,12 +1,12 @@
 import { $setCursor } from "@/global/GlobalUtil";
 import { EventType } from "@/tool/domain/event/EventType";
-import { execute as transformSettingXWindowMouseMoveEventUseCase } from "./TransformSettingXWindowMouseMoveEventUseCase";
+import { execute as transformSettingYWindowMouseMoveEventUseCase } from "./TransformSettingYWindowMouseMoveEventUseCase";
 import { execute as screenDisplayObjectUpdateSelectedValueService } from "@/screen/application/DisplayObject/service/ScreenDisplayObjectUpdateSelectedValueService";
-import { $TRANSFORM_OBJECT_X_ID } from "@/config/TransformSettingConfig";
+import { $TRANSFORM_OBJECT_Y_ID } from "@/config/TransformSettingConfig";
 
 /**
- * @description 変形エリアのx座標の値操作のマウスアップイベント
- *              Mouse up event for value operation of x-coordinate of deformation area
+ * @description 変形エリアのy座標の値操作のマウスアップイベント
+ *              Mouse up event for value operation of y-coordinate of deformation area
  *
  * @param  {PointerEvent} event
  * @return {void}
@@ -24,7 +24,7 @@ export const execute = (event: PointerEvent): void =>
 
     // windowのイベントを削除
     window.removeEventListener(EventType.MOUSE_MOVE,
-        transformSettingXWindowMouseMoveEventUseCase
+        transformSettingYWindowMouseMoveEventUseCase
     );
     window.removeEventListener(EventType.MOUSE_UP, execute);
 
@@ -33,7 +33,7 @@ export const execute = (event: PointerEvent): void =>
 
     // input要素へフォーカス
     const element: HTMLInputElement | null = document
-        .getElementById($TRANSFORM_OBJECT_X_ID) as HTMLInputElement;
+        .getElementById($TRANSFORM_OBJECT_Y_ID) as HTMLInputElement;
 
     if (!element) {
         return ;

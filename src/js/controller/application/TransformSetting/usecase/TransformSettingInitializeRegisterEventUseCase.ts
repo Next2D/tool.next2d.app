@@ -4,7 +4,9 @@ import { execute as transformSettingInputMouseOutEventService } from "../service
 import { execute as transformSettingInputFocusInEventService } from "../service/TransformSettingInputFocusInEventService";
 import { execute as transformSettingInputKeyPressEventService } from "../service/TransformSettingInputKeyPressEventService";
 import { execute as transformSettingXMouseDownEventUseCase } from "./TransformSettingXMouseDownEventUseCase";
-import { execute as transformSettingInputFocusOutEventUseCase } from "./TransformSettingInputFocusOutEventUseCase";
+import { execute as transformSettingYMouseDownEventUseCase } from "./TransformSettingYMouseDownEventUseCase";
+import { execute as transformSettingXFocusOutEventUseCase } from "./TransformSettingXFocusOutEventUseCase";
+import { execute as transformSettingYFocusOutEventUseCase } from "./TransformSettingYFocusOutEventUseCase";
 import {
     $TRANSFORM_OBJECT_HEIGHT_ID,
     $TRANSFORM_OBJECT_ROTATE_ID,
@@ -56,7 +58,7 @@ export const execute = (): void =>
             transformSettingInputFocusInEventService
         );
         xElement.addEventListener("focusout",
-            transformSettingInputFocusOutEventUseCase
+            transformSettingXFocusOutEventUseCase
         );
         xElement.addEventListener("keypress",
             transformSettingInputKeyPressEventService
@@ -73,8 +75,14 @@ export const execute = (): void =>
         yElement.addEventListener(EventType.MOUSE_OUT,
             transformSettingInputMouseOutEventService
         );
+        yElement.addEventListener(EventType.MOUSE_DOWN,
+            transformSettingYMouseDownEventUseCase
+        );
         yElement.addEventListener("focusin",
             transformSettingInputFocusInEventService
+        );
+        yElement.addEventListener("focusout",
+            transformSettingYFocusOutEventUseCase
         );
         yElement.addEventListener("keypress",
             transformSettingInputKeyPressEventService
