@@ -1,7 +1,4 @@
 import { EventType } from "@/tool/domain/event/EventType";
-import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
-import { ExternalCharacter } from "@/external/core/domain/model/ExternalCharacter";
-import { $getMovePositon } from "../../../../tool/application/ToolUtil";
 import { execute as screenDisplayObjectWindowMouseMoveEventUseCase } from "./ScreenDisplayObjectWindowMouseMoveEventUseCase";
 import { execute as screenDisplayObjectUpdateSelectedValueService } from "../service/ScreenDisplayObjectUpdateSelectedValueService";
 
