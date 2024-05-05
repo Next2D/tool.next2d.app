@@ -5,6 +5,8 @@ import { execute as externalScreenSelectDisplayObjectUseCase } from "@/external/
 import { execute as externalTimelineLayerControllerSelectedLayersUseCase } from "@/external/timeline/application/ExternalTimelineLayerController/usecase/ExternalTimelineLayerControllerSelectedLayersUseCase";
 import { execute as externalScreenDeactivatedAllLayerUseCase } from "@/external/screen/application/ExternalScreen/usecase/ExternalScreenDeactivatedAllLayerUseCase";
 import { execute as externalTimelineLayerDeactivatedAllLayerUseCase } from "@/external/timeline/application/ExternalTimelineLayer/usecase/ExternalTimelineLayerDeactivatedAllLayerUseCase";
+import { execute as propertyAreaChangeDisplayUseCase } from "@/controller/application/PropertyArea/usecase/PropertyAreaChangeDisplayUseCase";
+import { execute as propertyAreaShowDefaultSettingItemUseCase } from "@/controller/application/PropertyArea/usecase/PropertyAreaShowDefaultSettingItemUseCase";
 
 /**
  * @description スクリーン操作の管理クラス
@@ -131,6 +133,12 @@ export class ExternalScreen
                 this._$movieClip,
                 Array.from(this._$movieClip.selectedDepths.keys())
             );
+
+            // プロパティエリアの表示を変更
+            propertyAreaChangeDisplayUseCase();
+        } else {
+            // 未選択なら初期表示に切り替える
+            propertyAreaShowDefaultSettingItemUseCase(this._$movieClip);
         }
     }
 }
