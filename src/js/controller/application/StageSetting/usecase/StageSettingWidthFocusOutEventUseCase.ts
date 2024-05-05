@@ -1,3 +1,5 @@
+import { $STAGE_HEIGHT_ID } from "@/config/StageSettingConfig";
+import { stageSetting } from "@/controller/domain/model/StageSetting";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { ExternalStage } from "@/external/core/domain/model/ExternalStage";
 import { $updateKeyLock } from "@/shortcut/ShortcutUtil";
@@ -32,12 +34,17 @@ export const execute = (event: FocusEvent): void =>
         return ;
     }
 
-    const externalStage = new ExternalStage(workSpace);
-    externalStage.width = Math.max(1, Math.min(
-        width,
-        Number.MAX_VALUE
-    ));
+    const afterWidth = Math.max(1, Math.min(width, Number.MAX_VALUE));
 
-    // 表示を更新
-    element.value = `${externalStage.width}`;
+    // 外部APIを起動
+    const externalStage = new ExternalStage(workSpace);
+
+    // ロック設定がされている場合は高さも更新
+    if (stageSetting.lock) {
+        const diff = afterWidth - externalStage.width;
+        externalStage.height += diff;
+    }
+
+    // 幅を更新
+    externalStage.width = afterWidth;
 };

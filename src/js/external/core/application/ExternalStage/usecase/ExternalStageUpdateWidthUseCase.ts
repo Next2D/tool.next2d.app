@@ -52,6 +52,6 @@ export const execute = (
         screenStageAreaUpdateSizeService(stage);
 
         // ステージの幅を更新
-        stageSettingUpdateWidthService(width);
+        stageSettingUpdateWidthService(stage.width);
     }
 };
