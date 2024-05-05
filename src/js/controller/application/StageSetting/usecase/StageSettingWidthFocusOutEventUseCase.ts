@@ -1,4 +1,3 @@
-import { $STAGE_HEIGHT_ID } from "@/config/StageSettingConfig";
 import { stageSetting } from "@/controller/domain/model/StageSetting";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { ExternalStage } from "@/external/core/domain/model/ExternalStage";
