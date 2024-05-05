@@ -69,3 +69,21 @@ export const $TRANSFORM_OBJECT_SCALE_Y_ID: string = "transform-scale-y";
  * @constant
  */
 export const $TRANSFORM_OBJECT_ROTATE_ID: string = "transform-rotate";
+
+/**
+ * @description 変形エリアの幅と高さのロックElementのID
+ *              ID of the lock element of width and height in the transform area
+ *
+ * @type {string}
+ * @constant
+ */
+export const $TRANSFORM_OBJECT_SIZE_LOCK_ID: string = "transform-size-lock";
+
+/**
+ * @description 変形エリアのスケールのロックElementのID
+ *              ID of the lock element of the scale in the transform area
+ *
+ * @type {string}
+ * @constant
+ */
+export const $TRANSFORM_OBJECT_SCALE_LOCK_ID: string = "transform-scale-lock";
