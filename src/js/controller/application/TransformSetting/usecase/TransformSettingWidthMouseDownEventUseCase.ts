@@ -1,8 +1,9 @@
 import { $useKeyboard } from "@/shortcut/ShortcutUtil";
 import { execute as transformSettingWidthRegisterWindowEventUseCase } from "./TransformSettingWidthRegisterWindowEventUseCase";
-import { $getChangeSize } from "@/tool/application/ToolUtil";
+import { $getActiveTool, $getChangeSize } from "@/tool/application/ToolUtil";
 import { execute as screenAreaCalcSelectedBoundsService } from "@/screen/application/ScreenArea/service/ScreenAreaCalcSelectedBoundsService";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
+import { $TOOL_ARROW_NAME } from "@/config/ToolConfig";
 
 /**
  * @description 変形エリアの幅変更のマウスダウンイベント
@@ -37,6 +38,14 @@ export const execute = (event: PointerEvent): void =>
     const bounds = screenAreaCalcSelectedBoundsService($getCurrentWorkSpace().scene);
     if (!bounds) {
         return ;
+    }
+
+    // 中心点うを設定
+    const tool = $getActiveTool();
+    if (tool.name === $TOOL_ARROW_NAME) {
+        // 矢印ツールの場合は選択幅の中心を中心点を設定
+    } else {
+        // 自由変形ツールなら設定の位置に中心点を設定
     }
 
     // マウスで移動した量を更新

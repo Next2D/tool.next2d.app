@@ -1,6 +1,6 @@
 import { $useKeyboard } from "@/shortcut/ShortcutUtil";
 import { execute as transformSettingXRegisterWindowEventUseCase } from "./TransformSettingXRegisterWindowEventUseCase";
-import { $getMovePositon } from "@/tool/application/ToolUtil";
+import { transformSetting } from "@/controller/domain/model/TransformSetting";
 
 /**
  * @description 変形エリアのx座標のマウスダウンイベント
@@ -33,9 +33,8 @@ export const execute = (event: PointerEvent): void =>
     }
 
     // マウスで移動した量を更新
-    const movePosition = $getMovePositon();
-    movePosition.x = 0;
-    movePosition.y = 0;
+    transformSetting.movePosition.x = 0;
+    transformSetting.movePosition.y = 0;
 
     // windowのイベントを登録
     transformSettingXRegisterWindowEventUseCase();

@@ -3,7 +3,7 @@ import { ExternalLayer } from "@/external/core/domain/model/ExternalLayer";
 import { ExternalScreen } from "@/external/screen/domain/model/ExternalScreen";
 import { $allHideMenu } from "@/menu/application/MenuUtil";
 import { execute as screenDisplayObjectRegisterWindowEventUseCase } from "./ScreenDisplayObjectRegisterWindowEventUseCase";
-import { $getMovePositon } from "../../../../tool/application/ToolUtil";
+import { transformSetting } from "@/controller/domain/model/TransformSetting";
 
 /**
  * @description スクリーンに設置したDisplayObject選択時のイベント処理関数
@@ -43,9 +43,8 @@ export const execute = (event: PointerEvent): void =>
 
     // 移動量のオブジェクトを初期化
     // fixed logic
-    const movePosition = $getMovePositon();
-    movePosition.x = 0;
-    movePosition.y = 0;
+    transformSetting.movePosition.x = 0;
+    transformSetting.movePosition.y = 0;
 
     // 移動用のwindowイベントを登録
     // fixed logic

@@ -1,6 +1,4 @@
 import { $updateKeyLock } from "@/shortcut/ShortcutUtil";
-import { $getChangeSize } from "@/tool/application/ToolUtil";
-import { $getBeforeValue } from "../TransformSettingUtil";
 import { $clamp } from "@/global/GlobalUtil";
 
 /**
@@ -28,8 +26,4 @@ export const execute = (event: FocusEvent): void =>
 
     const value = parseFloat($clamp(parseFloat(element.value), -Number.MAX_VALUE, Number.MAX_VALUE).toFixed(2));
     element.value = `${value}`;
-
-    // 移動した座標に更新
-    const changeSize = $getChangeSize();
-    changeSize.w = value - $getBeforeValue();
 };

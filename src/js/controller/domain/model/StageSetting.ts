@@ -7,7 +7,7 @@ import { execute as stageSettingInitializeRegisterEventUseCase } from "@/control
  * @class
  * @public
  */
-export class StageSetting
+class StageSetting
 {
     private _$lock: boolean;
 

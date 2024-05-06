@@ -7,7 +7,7 @@ import { execute as controllerTabInitializeRegisterEventUseCase } from "../../ap
  * @class
  * @public
  */
-export class ControllerTab
+class ControllerTab
 {
     /**
      * @description 初期起動関数

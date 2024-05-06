@@ -1,10 +1,10 @@
 import { EventType } from "@/tool/domain/event/EventType";
 import { execute as soundAreaLoopCountWindowMouseMoveEventUseCase } from "./SoundAreaLoopCountWindowMouseMoveEventUseCase";
-import { $getTargetIndex, $setTargetIndex } from "../SoundAreaUtil";
 import { ExternalSoundObject } from "@/external/core/domain/model/ExternalSoundObject";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { $SOUND_AREA_SOUND_LIST_AREA_ID } from "@/config/SoundSettingConfig";
 import { $setCursor } from "@/global/GlobalUtil";
+import { soundArea } from "@/controller/domain/model/SoundArea";
 
 /**
  * @description ループ回数操作を終了
@@ -36,7 +36,7 @@ export const execute = (event: PointerEvent): void =>
         return ;
     }
 
-    const index = $getTargetIndex();
+    const index = soundArea.targetIndex;
     if (index === -1) {
         return ;
     }
@@ -66,7 +66,7 @@ export const execute = (event: PointerEvent): void =>
     }
 
     // 操作対象の変数を初期化
-    $setTargetIndex(-1);
+    soundArea.targetIndex = -1;
 
     // input要素にフォーカスを当てる
     loopElement.focus();

@@ -1,6 +1,6 @@
+import { transformSetting } from "@/controller/domain/model/TransformSetting";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { ExternalCharacter } from "@/external/core/domain/model/ExternalCharacter";
-import { $getMovePositon } from "@/tool/application/ToolUtil";
 
 /**
  * @description 選択中のDisplayObjectの移動した値を更新
@@ -13,7 +13,7 @@ import { $getMovePositon } from "@/tool/application/ToolUtil";
 export const execute = (): void =>
 {
     // 移動量のオブジェクトを取得
-    const movePosition = $getMovePositon();
+    const movePosition = transformSetting.movePosition;
     if (!movePosition.x && !movePosition.y) {
         return ;
     }

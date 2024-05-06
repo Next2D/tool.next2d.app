@@ -1,7 +1,7 @@
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { $clamp, $setCursor } from "@/global/GlobalUtil";
-import { $getTargetIndex } from "../SoundAreaUtil";
 import { $SOUND_AREA_SOUND_LIST_AREA_ID } from "@/config/SoundSettingConfig";
+import { soundArea } from "@/controller/domain/model/SoundArea";
 
 /**
  * @description 音量操作を開始
@@ -37,7 +37,7 @@ export const execute = (event: PointerEvent): void =>
             return ;
         }
 
-        const index = $getTargetIndex();
+        const index = soundArea.targetIndex;
         const node = element.children[index];
         if (!node) {
             return ;

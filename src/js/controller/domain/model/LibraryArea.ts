@@ -7,7 +7,7 @@ import { execute as libraryAreaInitializeRegisterEventUseCase } from "@/controll
  * @class
  * @public
  */
-export class LibraryArea
+class LibraryArea
 {
     private readonly _$selectedIds: number[];
 

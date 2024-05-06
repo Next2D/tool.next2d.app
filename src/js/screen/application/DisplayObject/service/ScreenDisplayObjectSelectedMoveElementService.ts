@@ -1,9 +1,9 @@
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
-import { $getMovePositon } from "@/tool/application/ToolUtil";
 import {
     $SCREEN_STAGE_AREA_ID,
     $SCREEN_TARGET_RECT_ID
 } from "@/config/ScreenConfig";
+import { transformSetting } from "@/controller/domain/model/TransformSetting";
 
 /**
  * @description スクリーンで選択中のElementを移動する
@@ -36,9 +36,8 @@ export const execute = (
     }
 
     // マウスで移動した量を更新
-    const movePosition = $getMovePositon();
-    movePosition.x += movement_x;
-    movePosition.y += movement_y;
+    transformSetting.movePosition.x += movement_x;
+    transformSetting.movePosition.y += movement_y;
 
     // 選択中のElementを移動
     for (const [layerIndex, depths] of movieClip.selectedDepths) {

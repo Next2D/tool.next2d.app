@@ -4,6 +4,9 @@ import { execute as controllerAdjustmentInitializeRegisterEventUseCase } from "@
 import { controllerTab } from "../domain/model/ControllerTab";
 import { stageSetting } from "../domain/model/StageSetting";
 import { libraryArea } from "../domain/model/LibraryArea";
+import { transformSetting } from "../domain/model/TransformSetting";
+import { soundArea } from "../domain/model/SoundArea";
+import { objectSetting } from "../domain/model/ObjectSetting";
 
 /**
  * @description 起動対象のToolクラスの配列
@@ -14,7 +17,10 @@ import { libraryArea } from "../domain/model/LibraryArea";
 const settings: any[] = [
     stageSetting,
     controllerTab,
-    libraryArea
+    libraryArea,
+    transformSetting,
+    soundArea,
+    objectSetting
 ];
 
 /**

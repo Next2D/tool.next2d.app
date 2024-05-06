@@ -1,8 +1,8 @@
 import { EventType } from "@/tool/domain/event/EventType";
 import { execute as soundAreaVolumeWindowMouseMoveEventUseCase } from "./SoundAreaVolumeWindowMouseMoveEventUseCase";
 import { execute as soundAreaVolumeWindowMouseUpEventUseCase } from "./SoundAreaVolumeWindowMouseUpEventUseCase";
-import { $setTargetIndex } from "../SoundAreaUtil";
 import { $useKeyboard } from "@/shortcut/ShortcutUtil";
+import { soundArea } from "@/controller/domain/model/SoundArea";
 
 /**
  * @description 音声操作のwindowイベントを登録
@@ -35,8 +35,7 @@ export const execute = (event: PointerEvent): void =>
     }
 
     // 対象のインデックスを設定
-    const index = parseInt(element.dataset.index as string);
-    $setTargetIndex(index);
+    soundArea.targetIndex = parseInt(element.dataset.index as string);
 
     // windowイベントを登録
     window.addEventListener(EventType.MOUSE_MOVE, soundAreaVolumeWindowMouseMoveEventUseCase);

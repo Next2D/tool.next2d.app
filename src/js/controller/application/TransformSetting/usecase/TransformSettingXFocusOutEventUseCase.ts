@@ -1,8 +1,7 @@
 import { $updateKeyLock } from "@/shortcut/ShortcutUtil";
-import { $getMovePositon } from "@/tool/application/ToolUtil";
-import { $getBeforeValue } from "../TransformSettingUtil";
 import { execute as screenDisplayObjectUpdateSelectedValueService } from "@/screen/application/DisplayObject/service/ScreenDisplayObjectUpdateSelectedValueService";
 import { $clamp } from "@/global/GlobalUtil";
+import { transformSetting } from "@/controller/domain/model/TransformSetting";
 
 /**
  * @description x座標の入力完了処理
@@ -31,8 +30,7 @@ export const execute = (event: FocusEvent): void =>
     element.value = `${value}`;
 
     // 移動した座標に更新
-    const movePosition = $getMovePositon();
-    movePosition.x = value - $getBeforeValue();
+    transformSetting.movePosition.x = value - transformSetting.beforeValue;
 
     // 選択中のDisplayObjectを指定した値で更新
     screenDisplayObjectUpdateSelectedValueService();
