@@ -1,6 +1,6 @@
 import { $useKeyboard } from "@/shortcut/ShortcutUtil";
 import { execute as transformSettingWidthRegisterWindowEventUseCase } from "./TransformSettingWidthRegisterWindowEventUseCase";
-import { $getActiveTool, $getChangeSize } from "@/tool/application/ToolUtil";
+import { $getActiveTool } from "@/tool/application/ToolUtil";
 import { execute as screenAreaCalcSelectedBoundsService } from "@/screen/application/ScreenArea/service/ScreenAreaCalcSelectedBoundsService";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { $TOOL_ARROW_NAME } from "@/config/ToolConfig";
@@ -49,9 +49,9 @@ export const execute = (event: PointerEvent): void =>
     }
 
     // マウスで移動した量を更新
-    const changeSize = $getChangeSize();
-    changeSize.w = Math.abs(bounds.xMax - bounds.xMin);
-    changeSize.h = Math.abs(bounds.yMax - bounds.yMin);
+    // const changeSize = $getChangeSize();
+    // changeSize.w = Math.abs(bounds.xMax - bounds.xMin);
+    // changeSize.h = Math.abs(bounds.yMax - bounds.yMin);
 
     // windowのイベントを登録
     transformSettingWidthRegisterWindowEventUseCase();

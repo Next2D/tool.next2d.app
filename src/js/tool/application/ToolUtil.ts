@@ -1,7 +1,5 @@
 import type { ToolImpl } from "@/interface/ToolImpl";
 import { EventType } from "../domain/event/EventType";
-import type { PositionImpl } from "@/interface/PositionImpl";
-import { SizeImpl } from "@/interface/SizeImpl";
 
 /**
  * @description BaseToolを継承してる、現在選択中のToolオブジェクト
