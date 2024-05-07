@@ -9,6 +9,7 @@ class ReferenceSetting
 {
     private _$x: number;
     private _$y: number;
+    private _$state: "hide" | "show";
 
     /**
      * @constructor
@@ -27,6 +28,13 @@ class ReferenceSetting
          * @private
          */
         this._$y = 0;
+
+        /**
+         * @type {string}
+         * @default "hide"
+         * @private
+         */
+        this._$state = "hide";
     }
 
     /**
@@ -40,6 +48,22 @@ class ReferenceSetting
     initialize (): void
     {
         // TODO 初期化処理
+    }
+
+    /**
+     * @description 中心点の表示状態を返却
+     *              Return the display state of the center point
+     *
+     * @member {string}
+     * @public
+     */
+    get state (): "hide" | "show"
+    {
+        return this._$state;
+    }
+    set state (state: "hide" | "show")
+    {
+        this._$state = state;
     }
 
     /**

@@ -1,4 +1,5 @@
 import type { BlendModeImpl } from "./BlendModeImpl";
+import type { PositionImpl } from "./PositionImpl";
 
 export interface CharacterSaveObjectImpl {
     libraryId: number;
@@ -9,4 +10,5 @@ export interface CharacterSaveObjectImpl {
     startFrame: number;
     endFrame: number;
     name: string;
+    referencePosition: PositionImpl
 }

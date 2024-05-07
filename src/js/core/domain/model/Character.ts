@@ -10,6 +10,7 @@ import { execute as characterCalcSetRotationService } from "@/core/application/C
 import { $clamp } from "@/global/GlobalUtil";
 import type { BoundsImpl } from "@/interface/BoundsImpl";
 import { execute as characterCalcGetBoundsService } from "@/core/application/Character/service/CharacterCalcGetBoundsService";
+import { PositionImpl } from "@/interface/PositionImpl";
 
 /**
  * @description DisplayObjectのユニークID
@@ -29,6 +30,7 @@ let $characterId: number = 1;
 export class Character
 {
     private _$id: number;
+    private _$name: string;
     private _$startFrame: number;
     private _$endFrame: number;
     private _$libraryId: number;
@@ -40,7 +42,7 @@ export class Character
     private readonly _$matrix: number[];
     private readonly _$colorTransform: number[];
     private readonly _$filters: any[];
-    private _$name: string;
+    private readonly _$referencePosition: PositionImpl;
 
     /**
      * @constructor
@@ -134,6 +136,28 @@ export class Character
          * @private
          */
         this._$name = "";
+
+        /**
+         * @type {object}
+         * @private
+         */
+        this._$referencePosition = {
+            "x": 0,
+            "y": 0
+        };
+    }
+
+    /**
+     * @description Characterの中心点の位置（グローバル値）
+     *              Position of the center point of Character (global value)
+     *
+     * @member {PositionImpl}
+     * @readonly
+     * @public
+     */
+    get referencePosition (): PositionImpl
+    {
+        return this._$referencePosition;
     }
 
     /**
@@ -521,6 +545,12 @@ export class Character
         if (save_object.colorTransform) {
             this._$colorTransform.splice(0, this._$colorTransform.length, ...save_object.colorTransform);
         }
+
+        // 中心点を上書き
+        if (save_object.referencePosition) {
+            this._$referencePosition.x = save_object.referencePosition.x;
+            this._$referencePosition.y = save_object.referencePosition.y;
+        }
     }
 
     /**
@@ -583,7 +613,8 @@ export class Character
             "colorTransform": this._$colorTransform,
             "startFrame": this._$startFrame,
             "endFrame": this._$endFrame,
-            "name": this._$name
+            "name": this._$name,
+            "referencePosition": this._$referencePosition
         };
     }
 }

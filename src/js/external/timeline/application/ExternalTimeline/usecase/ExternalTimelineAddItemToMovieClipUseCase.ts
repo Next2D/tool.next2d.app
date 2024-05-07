@@ -100,8 +100,16 @@ export const execute = async (
 
         // 新規のDisplayObjectを作成
         const character = new Character();
+
+        // 配置位置を設定
         character.x = x;
         character.y = y;
+
+        // 中心点を中央に設定（初期値）
+        character.referencePosition.x = x + character.width  / 2;
+        character.referencePosition.y = y + character.height / 2;
+
+        // 外部アイテムを読み込む
         character.loadExternalItem(item);
 
         // 空のキーフレームがあれば記録に残す

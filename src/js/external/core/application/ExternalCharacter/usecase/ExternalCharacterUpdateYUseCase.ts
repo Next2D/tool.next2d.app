@@ -37,7 +37,11 @@ export const execute = (
         return ;
     }
 
+    // 内部データを更新
     character.y = y;
+
+    // 中心点も移動量に合わせて移動
+    character.referencePosition.y += y - beforeY;
 
     // 履歴を登録
     characterUpdateYHistoryUseCase(

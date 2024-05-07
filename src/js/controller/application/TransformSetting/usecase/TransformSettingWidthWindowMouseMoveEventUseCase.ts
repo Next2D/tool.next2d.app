@@ -1,5 +1,7 @@
 import { $TRANSFORM_OBJECT_WIDTH_ID } from "@/config/TransformSettingConfig";
+import { transformSetting } from "@/controller/domain/model/TransformSetting";
 import { $clamp, $setCursor } from "@/global/GlobalUtil";
+import { execute as screenDisplayObjectTransformElementService } from "@/screen/application/DisplayObject/service/ScreenDisplayObjectTransformElementService";
 
 /**
  * @description 変形エリアの幅の値操作のマウスムーブイベント
@@ -37,5 +39,8 @@ export const execute = (event: PointerEvent): void =>
         const value = parseFloat(parseFloat(element.value).toFixed(2));
         const width = $clamp(value + event.movementX, -Number.MAX_VALUE, Number.MAX_VALUE);
         element.value = `${width}`;
+
+        const xScale = parseFloat((width / transformSetting.w).toFixed(2));
+        screenDisplayObjectTransformElementService([xScale, 0, 0, 1, 0, 0]);
     });
 };

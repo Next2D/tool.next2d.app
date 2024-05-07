@@ -30,7 +30,7 @@ export const execute = (event: FocusEvent): void =>
     element.value = `${value}`;
 
     // 移動した座標に更新
-    transformSetting.movePosition.y = value - transformSetting.beforeValue;
+    transformSetting.y = value - transformSetting.beforeValue;
 
     // 選択中のDisplayObjectを指定した値で更新
     screenDisplayObjectUpdateSelectedValueService();

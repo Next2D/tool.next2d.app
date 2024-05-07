@@ -1,7 +1,8 @@
-import { $setCursor } from "@/global/GlobalUtil";
+import { $clamp, $setCursor } from "@/global/GlobalUtil";
 import { EventType } from "@/tool/domain/event/EventType";
 import { execute as transformSettingWidthWindowMouseMoveEventUseCase } from "./TransformSettingWidthWindowMouseMoveEventUseCase";
 import { $TRANSFORM_OBJECT_WIDTH_ID } from "@/config/TransformSettingConfig";
+import { transformSetting } from "@/controller/domain/model/TransformSetting";
 
 /**
  * @description 変形エリアの幅の値操作のマウスアップイベント
@@ -34,6 +35,13 @@ export const execute = (event: PointerEvent): void =>
     if (!element) {
         return ;
     }
+
+    const scale = $clamp(
+        parseFloat(parseFloat(element.value).toFixed(2)),
+        -Number.MAX_VALUE, Number.MAX_VALUE
+    ) / transformSetting.w;
+
+    
 
     // input要素のフォーカス
     element.focus();

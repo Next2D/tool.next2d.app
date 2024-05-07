@@ -10,6 +10,10 @@ import { execute as transformSettingInitializeRegisterEventUseCase } from "@/con
  */
 class TransformSetting
 {
+    private _$x: number;
+    private _$y: number;
+    private _$w: number;
+    private _$h: number;
     private _$sizeLocked: boolean;
     private _$scaleLocked: boolean;
     private _$beforeValue: number;
@@ -43,6 +47,34 @@ class TransformSetting
         this._$beforeValue = 0;
 
         /**
+         * @type {number}
+         * @default 0
+         * @private
+         */
+        this._$x = 0;
+
+        /**
+         * @type {number}
+         * @default 0
+         * @private
+         */
+        this._$y = 0;
+
+        /**
+         * @type {number}
+         * @default 0
+         * @private
+         */
+        this._$w = 0;
+
+        /**
+         * @type {number}
+         * @default 0
+         * @private
+         */
+        this._$h = 0;
+
+        /**
          * @type {object}
          * @private
          */
@@ -63,6 +95,70 @@ class TransformSetting
     initialize (): void
     {
         transformSettingInitializeRegisterEventUseCase();
+    }
+
+    /**
+     * @description 変形エリアのx座標を返却
+     *              Return the x coordinate of the transformation area
+     *
+     * @member {number}
+     * @public
+     */
+    get x (): number
+    {
+        return this._$x;
+    }
+    set x (x: number)
+    {
+        this._$x = x;
+    }
+
+    /**
+     * @description 変形エリアのy座標を返却
+     *              Return the y coordinate of the transformation area
+     *
+     * @member {number}
+     * @public
+     */
+    get y (): number
+    {
+        return this._$y;
+    }
+    set y (y: number)
+    {
+        this._$y = y;
+    }
+
+    /**
+     * @description 変形エリアの幅を返却
+     *              Return the width of the transformation area
+     *
+     * @member {number}
+     * @public
+     */
+    get w (): number
+    {
+        return this._$w;
+    }
+    set w (w: number)
+    {
+        this._$w = w;
+    }
+
+    /**
+     * @description 変形エリアの高さを返却
+     *              Return the height of the transformation area
+     *
+     * @member {number}
+     * @public
+     */
+    get h (): number
+    {
+        return this._$h;
+    }
+    set h (h: number)
+    {
+        this._$h = h;
     }
 
     /**

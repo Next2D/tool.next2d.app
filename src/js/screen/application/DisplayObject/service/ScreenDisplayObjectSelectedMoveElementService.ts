@@ -36,8 +36,8 @@ export const execute = (
     }
 
     // マウスで移動した量を更新
-    transformSetting.movePosition.x += movement_x;
-    transformSetting.movePosition.y += movement_y;
+    transformSetting.x += movement_x;
+    transformSetting.y += movement_y;
 
     // 選択中のElementを移動
     for (const [layerIndex, depths] of movieClip.selectedDepths) {

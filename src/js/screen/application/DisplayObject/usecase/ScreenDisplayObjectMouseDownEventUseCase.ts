@@ -43,8 +43,8 @@ export const execute = (event: PointerEvent): void =>
 
     // 移動量のオブジェクトを初期化
     // fixed logic
-    transformSetting.movePosition.x = 0;
-    transformSetting.movePosition.y = 0;
+    transformSetting.x = 0;
+    transformSetting.y = 0;
 
     // 移動用のwindowイベントを登録
     // fixed logic

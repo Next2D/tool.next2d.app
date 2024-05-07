@@ -194,6 +194,23 @@ export class MovieClip extends Instance
     }
 
     /**
+     * @description 選択しているDisplayObjectが単一か判定
+     *              Determine if the selected DisplayObject is single.
+     *
+     * @return {boolean}
+     * @method
+     * @public
+     */
+    isSingleSelectedOfDisplayObject (): boolean
+    {
+        if (!this._$selectedDepths.size || this._$selectedDepths.size > 1) {
+            return false;
+        }
+
+        return this._$selectedDepths.values().next().value.length === 1;
+    }
+
+    /**
      * @description 選択したフレームの最小値を返却
      *              Returns the minimum value for the selected frame
      *

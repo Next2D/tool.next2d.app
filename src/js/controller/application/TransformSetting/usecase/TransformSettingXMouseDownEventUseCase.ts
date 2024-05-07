@@ -33,8 +33,8 @@ export const execute = (event: PointerEvent): void =>
     }
 
     // マウスで移動した量を更新
-    transformSetting.movePosition.x = 0;
-    transformSetting.movePosition.y = 0;
+    transformSetting.x = 0;
+    transformSetting.y = 0;
 
     // windowのイベントを登録
     transformSettingXRegisterWindowEventUseCase();

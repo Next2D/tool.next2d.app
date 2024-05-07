@@ -21,16 +21,8 @@ export const execute = (): void =>
         return ;
     }
 
-    let single = false;
-    if (movieClip.selectedDepths.size === 1) {
-        const depths = movieClip.selectedDepths.values().next().value;
-        if (depths.length === 1) {
-            single = true;
-        }
-    }
-
     // 単体選択処理
-    if (single) {
+    if (movieClip.isSingleSelectedOfDisplayObject()) {
         const layer = movieClip.getLayer(movieClip.selectedDepths.keys().next().value);
         if (!layer) {
             return ;

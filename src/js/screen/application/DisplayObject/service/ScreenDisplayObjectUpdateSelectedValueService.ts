@@ -13,8 +13,7 @@ import { ExternalCharacter } from "@/external/core/domain/model/ExternalCharacte
 export const execute = (): void =>
 {
     // 移動量のオブジェクトを取得
-    const movePosition = transformSetting.movePosition;
-    if (!movePosition.x && !movePosition.y) {
+    if (!transformSetting.x && !transformSetting.y) {
         return ;
     }
 
@@ -49,17 +48,17 @@ export const execute = (): void =>
             );
 
             // xの移動があれば更新
-            if (movePosition.x) {
-                externalCharacter.x += movePosition.x;
+            if (transformSetting.x) {
+                externalCharacter.x += transformSetting.x;
             }
 
             // yの移動があれば更新
-            if (movePosition.y) {
-                externalCharacter.y += movePosition.y;
+            if (transformSetting.y) {
+                externalCharacter.y += transformSetting.y;
             }
         }
     }
 
     // 移動した値を初期化
-    movePosition.x = movePosition.y = 0;
+    transformSetting.x = transformSetting.y = 0;
 };

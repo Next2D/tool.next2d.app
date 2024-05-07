@@ -1,5 +1,5 @@
 import { $SCREEN_STAGE_RECT_ID } from "@/config/ScreenConfig";
-import { $getPositon } from "../StageRectUtil";
+import { stageRect } from "@/screen/domain/model/StageRect";
 
 /**
  * @description 範囲選択のマウスムーブイベントの実行関数
@@ -25,17 +25,15 @@ export const execute = (event: PointerEvent): void =>
             return ;
         }
 
-        const position = $getPositon();
-
-        if (position.x > event.pageX) {
+        if (stageRect.x > event.pageX) {
             element.style.left = `${event.pageX}px`;
         }
 
-        if (position.y > event.pageY) {
+        if (stageRect.y > event.pageY) {
             element.style.top = `${event.pageY}px`;
         }
 
-        element.style.width  = `${Math.abs(event.pageX - position.x)}px`;
-        element.style.height = `${Math.abs(event.pageY - position.y)}px`;
+        element.style.width  = `${Math.abs(event.pageX - stageRect.x)}px`;
+        element.style.height = `${Math.abs(event.pageY - stageRect.y)}px`;
     });
 };
