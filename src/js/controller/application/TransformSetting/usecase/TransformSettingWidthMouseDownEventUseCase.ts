@@ -54,7 +54,6 @@ export const execute = (event: PointerEvent): void =>
 
     // 変更前の値をセット
     transformSetting.w = width;
-    transformSetting.h = height;
 
     // 中心点を設定
     const tool = $getActiveTool();
@@ -64,6 +63,30 @@ export const execute = (event: PointerEvent): void =>
         referenceSetting.y = bounds.yMin + height / 2;
     } else {
         // 自由変形ツールなら設定の位置に中心点を設定
+        if (movieClip.isSingleSelectedOfDisplayObject()) {
+            const layer = movieClip.getLayer(
+                movieClip.selectedDepths.keys().next().value
+            );
+
+            if (!layer) {
+                return ;
+            }
+
+            const character = layer.getCharacter(
+                movieClip.currentFrame,
+                movieClip.selectedDepths.values().next().value[0]
+            );
+
+            if (!character) {
+                return ;
+            }
+
+            referenceSetting.x = character.referencePosition.x;
+            referenceSetting.y = character.referencePosition.y;
+        } else {
+            referenceSetting.x = bounds.xMin + width / 2;
+            referenceSetting.y = bounds.yMin + height / 2;
+        }
     }
 
     // windowのイベントを登録

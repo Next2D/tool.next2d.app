@@ -4,6 +4,7 @@ import { ExternalScreen } from "@/external/screen/domain/model/ExternalScreen";
 import { $allHideMenu } from "@/menu/application/MenuUtil";
 import { execute as screenDisplayObjectRegisterWindowEventUseCase } from "./ScreenDisplayObjectRegisterWindowEventUseCase";
 import { transformSetting } from "@/controller/domain/model/TransformSetting";
+import { execute as referenceSettingHideElementService } from "@/controller/application/ReferenceSetting/service/ReferenceSettingHideElementService";
 
 /**
  * @description スクリーンに設置したDisplayObject選択時のイベント処理関数
@@ -26,6 +27,9 @@ export const execute = (event: PointerEvent): void =>
 
     // メニューを全て非表示
     $allHideMenu();
+
+    // 中心点を非表示にする
+    referenceSettingHideElementService();
 
     const element = event.currentTarget as HTMLElement;
     if (!element) {

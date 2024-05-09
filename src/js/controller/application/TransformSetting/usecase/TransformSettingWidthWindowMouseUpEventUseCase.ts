@@ -36,13 +36,6 @@ export const execute = (event: PointerEvent): void =>
         return ;
     }
 
-    const scale = $clamp(
-        parseFloat(parseFloat(element.value).toFixed(2)),
-        -Number.MAX_VALUE, Number.MAX_VALUE
-    ) / transformSetting.w;
-
-    
-
     // input要素のフォーカス
     element.focus();
 };

@@ -1,5 +1,5 @@
 import { $SCREEN_STAGE_AREA_ID } from "@/config/ScreenConfig";
-import { $multiplicationMatrix } from "@/controller/application/TransformSetting/TransformSettingUtil";
+import { $createTransformStyle, $multiplicationMatrix } from "@/controller/application/TransformSetting/TransformSettingUtil";
 import { referenceSetting } from "@/controller/domain/model/ReferenceSetting";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 
@@ -93,12 +93,10 @@ export const execute = (matrix: number[]): void =>
             character.matrix[4] = multiMatrix[4] + referenceX;
             character.matrix[5] = multiMatrix[5] + referenceY;
 
-            const scale = parseFloat(Math.sqrt(
-                multiMatrix[0] * multiMatrix[0] + multiMatrix[1] * multiMatrix[1]
-            ).toFixed(2));
-            console.log(scale);
-
-            node.style.transform = `matrix(${character.matrix[0]},${character.matrix[1]},${character.matrix[2]},${character.matrix[3]},0,0)`;
+            const transform = $createTransformStyle(character, workSpace);
+            if (transform) {
+                node.style.transform = transform;
+            }
             node.style.left = `${character.x}px`;
             node.style.top  = `${character.y}px`;
         }

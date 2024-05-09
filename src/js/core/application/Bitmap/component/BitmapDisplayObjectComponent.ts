@@ -1,9 +1,11 @@
+import { $createTransformStyle } from "@/controller/application/TransformSetting/TransformSettingUtil";
 import { Character } from "@/core/domain/model/Character";
 import { $getScreenOffsetLeft, $getScreenOffsetTop } from "@/global/GlobalUtil";
+import { $getCurrentWorkSpace } from "../../CoreUtil";
 
 /**
- * @description 指定されたDisplayObjectのdivを生成して返却
- *              Generate and return the div of the specified DisplayObject
+ * @description 指定されたBitmap用のdivを生成して返却
+ *              Generate and return a div for the specified Bitmap
  *
  * @params {Character} character
  * @params {number} layer_id
@@ -16,13 +18,15 @@ export const execute = (
     layer_id: number
 ): string => {
 
-    const matrix = character.matrix;
     const x = $getScreenOffsetLeft() + character.x;
     const y = $getScreenOffsetTop()  + character.y;
     const alpha = character.alpha;
     const depth = character.depth;
 
+    // 変形スタイルを生成
+    const transform = $createTransformStyle(character, $getCurrentWorkSpace());
+
     return `
-<div class="display-object layer-id-${layer_id}" data-depth="${depth}" data-layer-id="${layer_id}" style="transform: matrix(${matrix[0]}, ${matrix[1]}, ${matrix[2]}, ${matrix[3]}, 0, 0); top: ${y}px; left: ${x}px; opacity: ${alpha};"></div>
+<div class="display-object layer-id-${layer_id}" data-depth="${depth}" data-layer-id="${layer_id}" style="left: ${x}px; top: ${y}px; opacity: ${alpha}; ${transform}"></div>
     `;
 };

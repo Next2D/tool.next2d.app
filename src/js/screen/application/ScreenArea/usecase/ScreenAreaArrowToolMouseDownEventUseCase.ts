@@ -1,6 +1,7 @@
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { ExternalTimeline } from "@/external/timeline/domain/model/ExternalTimeline";
 import { execute as propertyAreaShowDefaultSettingItemUseCase } from "@/controller/application/PropertyArea/usecase/PropertyAreaShowDefaultSettingItemUseCase";
+import { execute as referenceSettingHideElementService } from "@/controller/application/ReferenceSetting/service/ReferenceSettingHideElementService";
 
 /**
  * @description スクリーン選択時のイベント処理関数
@@ -30,4 +31,7 @@ export const execute = (event: PointerEvent): void =>
 
     // プロパティーエリアを初期表示に切り替える
     propertyAreaShowDefaultSettingItemUseCase(movieClip);
+
+    // 中心点を非表示にする
+    referenceSettingHideElementService();
 };

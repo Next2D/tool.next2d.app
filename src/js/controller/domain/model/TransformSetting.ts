@@ -18,6 +18,7 @@ class TransformSetting
     private _$scaleLocked: boolean;
     private _$beforeValue: number;
     private readonly _$movePosition: PositionImpl;
+    private readonly _$matrixs: Array<number[]>;
 
     /**
      * @constructor
@@ -82,6 +83,12 @@ class TransformSetting
             "x": 0,
             "y": 0
         };
+
+        /**
+         * @type {Array}
+         * @private
+         */
+        this._$matrixs = [];
     }
 
     /**
@@ -95,6 +102,18 @@ class TransformSetting
     initialize (): void
     {
         transformSettingInitializeRegisterEventUseCase();
+    }
+
+    /**
+     * @description 変形行列を行う前のmatrix配列
+     *              The matrix array before performing the transformation matrix
+     *
+     * @member {Array}
+     * @public
+     */
+    get matrixs (): Array<number[]>
+    {
+        return this._$matrixs;
     }
 
     /**
