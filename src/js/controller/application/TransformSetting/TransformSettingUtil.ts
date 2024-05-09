@@ -1,4 +1,3 @@
-import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import type { Character } from "@/core/domain/model/Character";
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 

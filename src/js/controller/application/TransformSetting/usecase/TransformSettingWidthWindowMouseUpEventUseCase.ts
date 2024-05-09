@@ -1,8 +1,7 @@
-import { $clamp, $setCursor } from "@/global/GlobalUtil";
+import { $setCursor } from "@/global/GlobalUtil";
 import { EventType } from "@/tool/domain/event/EventType";
 import { execute as transformSettingWidthWindowMouseMoveEventUseCase } from "./TransformSettingWidthWindowMouseMoveEventUseCase";
 import { $TRANSFORM_OBJECT_WIDTH_ID } from "@/config/TransformSettingConfig";
-import { transformSetting } from "@/controller/domain/model/TransformSetting";
 
 /**
  * @description 変形エリアの幅の値操作のマウスアップイベント
