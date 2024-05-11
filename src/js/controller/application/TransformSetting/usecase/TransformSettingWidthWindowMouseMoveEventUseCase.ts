@@ -40,9 +40,7 @@ export const execute = (event: PointerEvent): void =>
         const width = $clamp(value + event.movementX, -Number.MAX_VALUE, Number.MAX_VALUE);
         element.value = `${width}`;
 
-        screenDisplayObjectTransformElementService(
-            [width / transformSetting.w, 0, 0, 1, 0, 0]
-        );
+        screenDisplayObjectTransformElementService(width / transformSetting.w);
 
         transformSetting.w = width;
     });

@@ -7,12 +7,12 @@ import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
  * @description スクリーンで選択中のElementをmatrixに合わせて変形させる
  *              Transform the selected Element on the screen according to the matrix
  *
- * @param  {array} matrix
+ * @param  {number} scale_x
  * @return {void}
  * @method
  * @public
  */
-export const execute = (matrix: number[]): void =>
+export const execute = (scale_x: number): void =>
 {
 
     const workSpace = $getCurrentWorkSpace();
@@ -50,7 +50,7 @@ export const execute = (matrix: number[]): void =>
     const referenceY = referenceSetting.x * baseMatrix.b + referenceSetting.y * baseMatrix.d + baseMatrix.ty;
 
     const parentMatrix = $multiplicationMatrix(
-        matrix,
+        [scale_x, 0, 0, 1, 0, 0],
         [
             1, 0, 0, 1,
             -referenceX,

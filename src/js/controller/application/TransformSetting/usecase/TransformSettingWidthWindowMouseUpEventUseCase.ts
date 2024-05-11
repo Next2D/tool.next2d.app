@@ -2,6 +2,7 @@ import { $setCursor } from "@/global/GlobalUtil";
 import { EventType } from "@/tool/domain/event/EventType";
 import { execute as transformSettingWidthWindowMouseMoveEventUseCase } from "./TransformSettingWidthWindowMouseMoveEventUseCase";
 import { $TRANSFORM_OBJECT_WIDTH_ID } from "@/config/TransformSettingConfig";
+import { transformSetting } from "@/controller/domain/model/TransformSetting";
 
 /**
  * @description 変形エリアの幅の値操作のマウスアップイベント
@@ -26,6 +27,9 @@ export const execute = (event: PointerEvent): void =>
         transformSettingWidthWindowMouseMoveEventUseCase
     );
     window.removeEventListener(EventType.MOUSE_UP, execute);
+
+    // 変更前のmatrixを削除
+    transformSetting.matrixs.length = 0;
 
     // input要素へフォーカス
     const element: HTMLInputElement | null = document

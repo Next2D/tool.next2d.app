@@ -55,6 +55,25 @@ export const execute = (event: PointerEvent): void =>
     // 変更前の値をセット
     transformSetting.w = width;
 
+    // 変更前のmatrixを格納
+    const frame = movieClip.currentFrame;
+    for (const [layerIndex, depths] of movieClip.selectedDepths) {
+        const layer = movieClip.getLayer(layerIndex);
+        if (!layer) {
+            continue;
+        }
+
+        for (let idx = 0; idx < depths.length; idx++) {
+            const character = layer.getCharacter(frame, depths[idx]);
+            if (!character) {
+                continue;
+            }
+
+            // 複製を格納
+            transformSetting.matrixs.push(character.matrix.slice());
+        }
+    }
+
     // 中心点を設定
     const tool = $getActiveTool();
     if (tool.name === $TOOL_ARROW_NAME) {
