@@ -175,4 +175,17 @@ export class EventType
     {
         return "stage_rect";
     }
+
+    /**
+     * @description スクリーンエリアのカーソル変更のイベント名
+     *              Event name for changing the cursor in the screen area
+     *
+     * @return {string}
+     * @static
+     * @const
+     */
+    static get CHANGE_CURSOR (): "change_cursor"
+    {
+        return "change_cursor";
+    }
 }

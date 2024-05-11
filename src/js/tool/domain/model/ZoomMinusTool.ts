@@ -1,5 +1,6 @@
 import { $TOOL_ZOOM_MINUS_NAME } from "@/config/ToolConfig";
 import { BaseTool } from "./BaseTool";
+import { execute as zoomMinusToolInitializeUseCase } from "@/tool/application/ZoomMinusTool/usecase/ZoomMinusToolInitializeUseCase";
 
 /**
  * @description ズームの縮小ツールの管理クラス
@@ -18,5 +19,18 @@ export class ZoomMinusTool extends BaseTool
     constructor ()
     {
         super($TOOL_ZOOM_MINUS_NAME);
+    }
+
+    /**
+     * @description 初期起動関数
+     *              initial invoking function
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
+    initialize (): void
+    {
+        zoomMinusToolInitializeUseCase(this);
     }
 }

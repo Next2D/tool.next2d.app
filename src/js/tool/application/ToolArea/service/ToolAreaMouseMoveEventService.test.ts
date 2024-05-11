@@ -1,13 +1,13 @@
 import { $setActiveTool } from "../../ToolUtil";
 import { execute } from "./ToolAreaMouseMoveEventService";
 import { EventType } from "../../../domain/event/EventType";
-import { $createWorkSpace } from "../../../../core/application/CoreUtil";
+import { $createWorkSpace, $getCurrentWorkSpace } from "../../../../core/application/CoreUtil";
 
 describe("ToolAreaMouseMoveEventServiceTest", () =>
 {
     test("execute test", () =>
     {
-        $createWorkSpace();
+        const workSpace = $getCurrentWorkSpace() || $createWorkSpace();
 
         let status = "no";
 
