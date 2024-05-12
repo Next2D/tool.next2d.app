@@ -1,5 +1,5 @@
-import { execute as stageRectShowService } from "../service/StageRectShowService";
-import { execute as stageRectRegisterWindowEventUseCase } from "./StageRectRegisterWindowEventUseCase";
+import { execute as stageRectShowService } from "@/screen/application/StageRect/service/StageRectShowService";
+import { execute as arrowToolStageRectRegisterWindowEventUseCase } from "./ArrowToolStageRectRegisterWindowEventUseCase";
 
 /**
  * @description 範囲選択のマウスダウンイベントの実行関数
@@ -21,7 +21,7 @@ export const execute = (event: PointerEvent): void =>
     event.preventDefault();
 
     // windowイベントを登録
-    stageRectRegisterWindowEventUseCase();
+    arrowToolStageRectRegisterWindowEventUseCase();
 
     // 範囲選択のElementを表示
     stageRectShowService(event.pageX, event.pageY);

@@ -4,7 +4,7 @@ import { $setActiveTool } from "../../ToolUtil";
 import { EventType } from "@/tool/domain/event/EventType";
 import { execute as screenDisplayObjectMouseDownEventUseCase } from "@/screen/application/DisplayObject/usecase/ScreenDisplayObjectMouseDownEventUseCase";
 import { execute as screenAreaArrowToolMouseDownEventUseCase } from "@/screen/application/ScreenArea/usecase/ScreenAreaArrowToolMouseDownEventUseCase";
-import { execute as stageRectMouseDownEventUseCase } from "@/screen/application/StageRect/usecase/StageRectMouseDownEventUseCase";
+import { execute as arrowToolStageRectMouseDownEventUseCase } from "./ArrowToolStageRectMouseDownEventUseCase";
 
 /**
  * @description アローツールの初期起動ユースケース
@@ -29,7 +29,7 @@ export const execute = (tool: ToolImpl<ArrowTool>): void =>
 
     // 範囲選択のイベントを登録
     tool.addEventListener(EventType.STAGE_RECT,
-        stageRectMouseDownEventUseCase
+        arrowToolStageRectMouseDownEventUseCase
     );
 
     // 初期選択ツールとしてセット

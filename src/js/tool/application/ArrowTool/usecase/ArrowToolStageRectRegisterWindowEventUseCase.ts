@@ -1,6 +1,6 @@
 import { EventType } from "@/tool/domain/event/EventType";
-import { execute as stageRectWindowMouseMoveEventUseCase } from "./StageRectWindowMouseMoveEventUseCase";
-import { execute as stageRectWindowMouseUpEventUseCase } from "./StageRectWindowMouseUpEventUseCase";
+import { execute as arrowToolStageRectWindowMouseMoveEventUseCase } from "./ArrowToolStageRectWindowMouseMoveEventUseCase";
+import { execute as arrowToolStageRectWindowMouseUpEventUseCase } from "./ArrowToolStageRectWindowMouseUpEventUseCase";
 
 /**
  * @description 範囲選択のマウスダウンイベントの実行関数
@@ -14,9 +14,9 @@ export const execute = (): void =>
 {
     // windowイベントを登録
     window.addEventListener(EventType.MOUSE_MOVE,
-        stageRectWindowMouseMoveEventUseCase
+        arrowToolStageRectWindowMouseMoveEventUseCase
     );
     window.addEventListener(EventType.MOUSE_UP,
-        stageRectWindowMouseUpEventUseCase
+        arrowToolStageRectWindowMouseUpEventUseCase
     );
 };

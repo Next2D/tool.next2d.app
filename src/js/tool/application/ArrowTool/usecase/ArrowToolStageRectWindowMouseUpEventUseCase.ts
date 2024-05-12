@@ -1,6 +1,6 @@
 import { EventType } from "@/tool/domain/event/EventType";
-import { execute as stageRectWindowMouseMoveEventUseCase } from "./StageRectWindowMouseMoveEventUseCase";
-import { execute as stageRectHideService } from "../service/StageRectHideService";
+import { execute as arrowToolStageRectWindowMouseMoveEventUseCase } from "./ArrowToolStageRectWindowMouseMoveEventUseCase";
+import { execute as stageRectHideService } from "@/screen/application/StageRect/service/StageRectHideService";
 import { $SCREEN_STAGE_AREA_ID, $SCREEN_STAGE_RECT_ID } from "@/config/ScreenConfig";
 import { ExternalScreen } from "@/external/screen/domain/model/ExternalScreen";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
@@ -22,7 +22,7 @@ export const execute = (event: PointerEvent): void =>
     event.preventDefault();
 
     // windowイベントを解除
-    window.removeEventListener(EventType.MOUSE_MOVE, stageRectWindowMouseMoveEventUseCase);
+    window.removeEventListener(EventType.MOUSE_MOVE, arrowToolStageRectWindowMouseMoveEventUseCase);
     window.removeEventListener(EventType.MOUSE_UP, execute);
 
     // 範囲選択のElementを表示
