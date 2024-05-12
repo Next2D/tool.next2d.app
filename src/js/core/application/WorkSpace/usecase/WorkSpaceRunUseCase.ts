@@ -15,6 +15,9 @@ import { execute as timelineSceneListClearAllService } from "@/timeline/applicat
 import { libraryArea } from "@/controller/domain/model/LibraryArea";
 import { execute as historyReloadUseCase } from "@/controller/application/HistoryArea/usecase/HistoryReloadUseCase";
 import { execute as soundAreaRebuildSelectElementService } from "@/controller/application/SoundArea/service/SoundAreaRebuildSelectElementService";
+import { execute as zoomToolUpdateElementService } from "@/tool/application/ZoomTool/service/ZoomToolUpdateElementService";
+import { $getDefaultTool, $setActiveTool } from "@/tool/application/ToolUtil";
+import { $TOOL_ARROW_NAME } from "@/config/ToolConfig";
 
 /**
  * @description プロジェクトの起動処理
@@ -75,6 +78,15 @@ export const execute = async (work_space: WorkSpace): Promise<void> =>
 
     // サウンドリストのSelect要素を再構築
     soundAreaRebuildSelectElementService();
+
+    // スケールのインプットの値を更新
+    zoomToolUpdateElementService(work_space.scale * 100);
+
+    // 選択ツールを初期設定
+    const tool = $getDefaultTool($TOOL_ARROW_NAME);
+    if (tool) {
+        $setActiveTool(tool);
+    }
 
     // アクティブなMovieClipを起動
     await work_space.scene.run();

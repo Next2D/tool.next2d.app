@@ -1,5 +1,5 @@
-import { $setCursor } from "@/global/GlobalUtil";
 import { execute as screenStageAreaAllDisplayObjectActiveService } from "@/screen/application/ScreenStageArea/service/ScreenStageAreaAllDisplayObjectActiveService";
+import { $setCursor } from "@/global/GlobalUtil";
 
 /**
  * @description ズームプラスツールのマウスムーブイベントサービス

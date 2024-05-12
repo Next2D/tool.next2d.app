@@ -1,5 +1,6 @@
 import { $getActiveTool } from "@/tool/application/ToolUtil";
 import { EventType } from "@/tool/domain/event/EventType";
+import { screenArea } from "@/screen/domain/model/ScreenArea";
 
 /**
  * @description スクリーンエリアのマウスアウトイベントの実行関数
@@ -12,6 +13,9 @@ import { EventType } from "@/tool/domain/event/EventType";
  */
 export const execute = (event: PointerEvent): void =>
 {
+    // スクリーンエリアへのマウスアウトをセット
+    screenArea.active = false;
+
     const tool = $getActiveTool();
     if (!tool) {
         return ;

@@ -61,7 +61,7 @@ export const execute = (
         screenAreaMoveDisplayObjectElementService(layer, character);
 
         // 選択範囲のElementを移動
-        targetRectMoveElementUseCase(movieClip);
+        targetRectMoveElementUseCase();
 
         // TransformSettingのy座標を更新
         transformSettingUpdateYElementService(character.y);

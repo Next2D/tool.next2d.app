@@ -1,4 +1,8 @@
+import type { ToolImpl } from "@/interface/ToolImpl";
+import type { ZoomPlusTool } from "@/tool/domain/model/ZoomPlusTool";
 import { $setCursor } from "@/global/GlobalUtil";
+import { $getDefaultTool } from "../../ToolUtil";
+import { $TOOL_ZOOM_PLUS_NAME } from "@/config/ToolConfig";
 
 /**
  * @description カーソルを変更する
@@ -10,5 +14,10 @@ import { $setCursor } from "@/global/GlobalUtil";
  */
 export const execute = (): void =>
 {
-    $setCursor("zoom-in");
+    const tool: ToolImpl<ZoomPlusTool> = $getDefaultTool($TOOL_ZOOM_PLUS_NAME);
+    if (!tool) {
+        return ;
+    }
+
+    $setCursor(tool.cursor);
 };

@@ -2,6 +2,8 @@ import { execute as userDatabaseSaveShowModalUseCase } from "@/user/application/
 import { execute as historyUndoUseCase } from "@/controller/application/HistoryArea/usecase/HistoryUndoUseCase";
 import { execute as historyRedoUseCase } from "@/controller/application/HistoryArea/usecase/HistoryRedoUseCase";
 import { execute as userSettingMenuShowService } from "@/menu/application/UserSettingMenu/service/UserSettingMenuShowService";
+import { execute as arrowToolActiveService } from "@/tool/application/ArrowTool/service/ArrowToolActiveService";
+import { execute as zoomPlusToolActiveService } from "@/tool/application/ZoomPlusTool/service/ZoomPlusToolActiveService";
 import {
     $generateShortcutKey,
     $setShortcut
@@ -48,5 +50,17 @@ export const execute = (): void =>
     $setShortcut(
         $generateShortcutKey("u"),
         userSettingMenuShowService
+    );
+
+    // 矢印ツールをアクティブにする
+    $setShortcut(
+        $generateShortcutKey("v"),
+        arrowToolActiveService
+    );
+
+    // ズームツールをアクティブにする
+    $setShortcut(
+        $generateShortcutKey("z"),
+        zoomPlusToolActiveService
     );
 };

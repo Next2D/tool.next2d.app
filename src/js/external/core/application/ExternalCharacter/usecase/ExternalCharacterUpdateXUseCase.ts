@@ -59,6 +59,6 @@ export const execute = (
         screenAreaMoveDisplayObjectElementService(layer, character);
 
         // 選択範囲のElementを移動
-        targetRectMoveElementUseCase(movie_clip);
+        targetRectMoveElementUseCase();
     }
 };

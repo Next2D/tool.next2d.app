@@ -27,7 +27,7 @@ export const execute = (
     if (work_space.active && movie_clip.active) {
         if (movie_clip.selectedDepths.size) {
             // 表示範囲を更新
-            targetRectMoveElementUseCase(movie_clip);
+            targetRectMoveElementUseCase();
         } else {
             // 選択範囲のelementを非表示に更新
             targetRectHideElementService();

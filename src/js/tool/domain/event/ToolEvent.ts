@@ -2,6 +2,7 @@ import { EventDispatcher } from "./EventDispatcher";
 import { EventType } from "./EventType";
 import { $setCursor } from "@/global/GlobalUtil";
 import { $TOOL_PREFIX } from "@/config/ToolConfig";
+import { screenArea } from "@/screen/domain/model/ScreenArea";
 
 /**
  * @description ツールのイベント後の状態管理クラス
@@ -177,8 +178,12 @@ export class ToolEvent extends EventDispatcher
      */
     toolStart (): void
     {
-        // カーソルをリセット
-        $setCursor("auto");
+        if (screenArea.active) {
+            // @ts-ignore
+            $setCursor(this.cursor);
+        } else {
+            $setCursor("auto");
+        }
 
         // 対象のElementがあればアクティブ表示
         const element: HTMLElement | null = document
@@ -201,9 +206,6 @@ export class ToolEvent extends EventDispatcher
      */
     toolEnd (): void
     {
-        // カーソルをリセット
-        $setCursor("auto");
-
         // 対象のElementがあれば非アクティブ表示
         const element: HTMLElement | null = document
             .getElementById(`${$TOOL_PREFIX}-${this._$name}`);

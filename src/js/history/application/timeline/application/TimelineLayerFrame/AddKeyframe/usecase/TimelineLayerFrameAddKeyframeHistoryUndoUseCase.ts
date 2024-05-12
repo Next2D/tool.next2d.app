@@ -81,6 +81,6 @@ export const execute = (
         timelineLayerAddFrameUpdateLayerStyleUseCase(workSpace, movieClip, layer);
 
         // 選択範囲のElementの表示を更新
-        targetRectMoveElementUseCase(movieClip);
+        targetRectMoveElementUseCase();
     }
 };

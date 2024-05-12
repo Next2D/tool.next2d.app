@@ -65,7 +65,7 @@ export const execute = async (movie_clip: MovieClip): Promise<void> =>
     }
 
     // 選択中のDisplayObjectがあれば選択範囲を表示
-    targetRectMoveElementUseCase(movie_clip);
+    targetRectMoveElementUseCase();
 
     // スクリーンエリアを再描画
     await screenAreaRedrawUseCase(movie_clip);

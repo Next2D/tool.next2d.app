@@ -62,7 +62,7 @@ export const execute = async (
         timelineLayerAddFrameUpdateLayerStyleUseCase(workSpace, movieClip, layer);
 
         // 選択範囲のElementの表示を更新
-        targetRectMoveElementUseCase(movieClip);
+        targetRectMoveElementUseCase();
 
         // スクリーンエリアにElementを追加
         await screenAreaAppendCharacterService(character, layer);

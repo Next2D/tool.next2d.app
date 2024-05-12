@@ -39,7 +39,7 @@ export const execute = (
     // 表示がアクティブなら表示を更新
     if (work_space.active && movie_clip.active) {
         // 表示範囲を更新
-        targetRectMoveElementUseCase(movie_clip);
+        targetRectMoveElementUseCase();
 
         // プロパティエリアの表示を更新
         propertyAreaChangeDisplayUseCase();

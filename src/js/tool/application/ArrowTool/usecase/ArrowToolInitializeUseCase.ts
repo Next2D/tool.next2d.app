@@ -1,10 +1,10 @@
 import type { ToolImpl } from "@/interface/ToolImpl";
 import type { ArrowTool } from "@/tool/domain/model/ArrowTool";
-import { $setActiveTool } from "../../ToolUtil";
 import { EventType } from "@/tool/domain/event/EventType";
 import { execute as screenDisplayObjectMouseDownEventUseCase } from "@/screen/application/DisplayObject/usecase/ScreenDisplayObjectMouseDownEventUseCase";
 import { execute as screenAreaArrowToolMouseDownEventUseCase } from "@/screen/application/ScreenArea/usecase/ScreenAreaArrowToolMouseDownEventUseCase";
 import { execute as arrowToolStageRectMouseDownEventUseCase } from "./ArrowToolStageRectMouseDownEventUseCase";
+import { execute as arrowToolActiveService } from "../service/ArrowToolActiveService";
 
 /**
  * @description アローツールの初期起動ユースケース
@@ -33,5 +33,5 @@ export const execute = (tool: ToolImpl<ArrowTool>): void =>
     );
 
     // 初期選択ツールとしてセット
-    $setActiveTool(tool);
+    arrowToolActiveService();
 };

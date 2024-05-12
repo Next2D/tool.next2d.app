@@ -35,8 +35,10 @@ export const $multiplicationMatrix = (a: number[], b: number[]): number[] =>
 export const $createTransformStyle = (character: Character, work_space: WorkSpace): string =>
 {
     const matrix = [];
-    if (character.scaleX !== 1 || character.scaleY !== 1) {
-        matrix.push(`scale(${character.scaleX}, ${character.scaleY})`);
+    const scaleX = character.scaleX * work_space.scale;
+    const scaleY = character.scaleY * work_space.scale;
+    if (scaleX !== 1 || scaleY !== 1) {
+        matrix.push(`scale(${scaleX}, ${scaleY})`);
     }
     if (character.rotation) {
         matrix.push(`rotate(${character.rotation}deg)`);
@@ -57,7 +59,10 @@ export const $createTransformStyle = (character: Character, work_space: WorkSpac
 
     // 中心点を原点に変形
     const multiMatrix = $multiplicationMatrix(
-        [character.matrix[0], character.matrix[1], character.matrix[2], character.matrix[3], 0, 0],
+        $multiplicationMatrix(
+            [work_space.scale, 0, 0, work_space.scale, 0, 0],
+            [character.matrix[0], character.matrix[1], character.matrix[2], character.matrix[3], 0, 0]
+        ),
         [1, 0, 0, 1, -referenceX, -referenceY]
     );
 

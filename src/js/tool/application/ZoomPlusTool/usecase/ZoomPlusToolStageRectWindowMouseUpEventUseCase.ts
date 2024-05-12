@@ -5,17 +5,21 @@ import { $SCREEN_ID, $SCREEN_STAGE_RECT_ID } from "@/config/ScreenConfig";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { execute as zoomToolUpdateElementService } from "@/tool/application/ZoomTool/service/ZoomToolUpdateElementService";
 import { $clamp } from "@/global/GlobalUtil";
+import { execute as stageStyleUpdateSizeService } from "@/core/application/Stage/service/StageStyleUpdateSizeService";
+import { execute as screenStageAreaUpdateSizeService } from "@/screen/application/ScreenStageArea/service/ScreenStageAreaUpdateSizeService";
+import { execute as screenAreaRedrawUseCase } from "@/screen/application/ScreenArea/usecase/ScreenAreaRedrawUseCase";
+import { execute as targetRectMoveElementUseCase } from "@/screen/application/TargetRect/usecase/TargetRectMoveElementUseCase";
 
 /**
  * @description 拡大の範囲選択のマウスアップイベントの実行関数
  *              Execution function of the mouse-up event of the range selection of the zoom
  *
  * @param  {PointerEvent} event
- * @return {void}
+ * @return {Promise}
  * @method
  * @public
  */
-export const execute = (event: PointerEvent): void =>
+export const execute = async (event: PointerEvent): Promise<void> =>
 {
     // イベントの伝播を停止
     event.stopPropagation();
@@ -71,6 +75,16 @@ export const execute = (event: PointerEvent): void =>
     screen.scrollLeft -= screen.clientWidth  / 2 - dx;
     screen.scrollTop  -= screen.clientHeight / 2 - dy;
 
-    // 表示を更新
+    // スケールのインプット表示を更新
     zoomToolUpdateElementService(workSpace.scale * 100);
+
+    // スクリーンとステージの表示を更新
+    stageStyleUpdateSizeService(stage.width, stage.height);
+    screenStageAreaUpdateSizeService(stage);
+
+    // 選択範囲のElementの表示を更新
+    targetRectMoveElementUseCase();
+
+    // 再描画
+    await screenAreaRedrawUseCase(workSpace.scene);
 };

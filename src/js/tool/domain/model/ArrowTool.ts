@@ -23,6 +23,9 @@ export class ArrowTool extends BaseTool
     {
         super($TOOL_ARROW_NAME);
 
+        // カーソルをセット
+        this.setCursor("auto");
+
         // /**
         //  * @type {boolean}
         //  * @default false

@@ -1,3 +1,4 @@
+import { screenArea } from "@/screen/domain/model/ScreenArea";
 import { $getActiveTool } from "@/tool/application/ToolUtil";
 import { EventType } from "@/tool/domain/event/EventType";
 
@@ -12,6 +13,9 @@ import { EventType } from "@/tool/domain/event/EventType";
  */
 export const execute = (event: PointerEvent): void =>
 {
+    // スクリーンエリアへのマウスオーバーをセット
+    screenArea.active = true;
+
     const tool = $getActiveTool();
     if (!tool) {
         return ;
