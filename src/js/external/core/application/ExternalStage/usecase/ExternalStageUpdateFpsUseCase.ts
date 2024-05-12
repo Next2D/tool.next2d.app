@@ -1,7 +1,7 @@
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
-import { execute as timelineHeaderBuildElementUseCase  } from "@/timeline/application/TimelineHeader/usecase/TimelineHeaderBuildElementUseCase";
-import { execute as stageSettingUpdateFpsHistoryUseCase  } from "@/history/application/controller/application/StageSetting/UpdateFPS/usecase/StageSettingUpdateFpsHistoryUseCase";
-import { execute as stageSettingUpdateFpsService  } from "@/controller/application/StageSetting/service/StageSettingUpdateFpsService";
+import { execute as timelineHeaderBuildElementUseCase } from "@/timeline/application/TimelineHeader/usecase/TimelineHeaderBuildElementUseCase";
+import { execute as stageSettingUpdateFpsHistoryUseCase } from "@/history/application/controller/application/StageSetting/UpdateFPS/usecase/StageSettingUpdateFpsHistoryUseCase";
+import { execute as stageSettingUpdateFpsService } from "@/controller/application/StageSetting/service/StageSettingUpdateFpsService";
 
 /**
  * @description ステージのフレームレートを更新

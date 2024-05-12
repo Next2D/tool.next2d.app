@@ -50,6 +50,7 @@ export class WorkSpace
     private _$scene: MovieClip;
     private _$active: boolean;
     private _$historyIndex: number;
+    private _$scale: number;
     private readonly _$root: MovieClip;
     private readonly _$stage: Stage;
     private readonly _$libraries: Map<number, InstanceImpl<any>>;
@@ -204,6 +205,13 @@ export class WorkSpace
          * @private
          */
         this._$plugins = new Map();
+
+        /**
+         * @type {number}
+         * @default 1
+         * @private
+         */
+        this._$scale = 1;
     }
 
     /**
@@ -422,6 +430,23 @@ export class WorkSpace
     get propertyAreaState (): UserPropertyAreaStateObjectImpl
     {
         return this._$propertyAreaState;
+    }
+
+    /**
+     * @description プロジェクトのスケールを返す
+     *              Returns the scale of the project
+     *
+     * @return {number}
+     * @readonly
+     * @public
+     */
+    get scale (): number
+    {
+        return this._$scale;
+    }
+    set scale (scale: number)
+    {
+        this._$scale = scale;
     }
 
     /**

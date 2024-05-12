@@ -1,4 +1,5 @@
 import { $SCREEN_STAGE_AREA_ID } from "@/config/ScreenConfig";
+import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import type { Stage } from "@/core/domain/model/Stage";
 
 /**
@@ -18,6 +19,8 @@ export const execute = (stage: Stage): void =>
         return ;
     }
 
-    element.style.width  = `${stage.width  + window.screen.width}px`;
-    element.style.height = `${stage.height + window.screen.height}px`;
+    const workSpace = $getCurrentWorkSpace();
+
+    element.style.width  = `${stage.width  * workSpace.scale + window.screen.width}px`;
+    element.style.height = `${stage.height * workSpace.scale + window.screen.height}px`;
 };

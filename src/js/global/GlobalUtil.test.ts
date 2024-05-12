@@ -27,15 +27,6 @@ describe("GlobalUtilTest", () =>
         expect($clamp(20, 0, 10)).toBe(10);
     });
 
-    test("$getZoom and $setZoom test", () =>
-    {
-        expect($getZoom()).toBe(1);
-        $setZoom(2);
-        expect($getZoom()).toBe(2);
-        $setZoom(1);
-        expect($getZoom()).toBe(1);
-    });
-
     test("offsetLeft and offsetTop test", () =>
     {
         expect($getScreenOffsetLeft()).toBe(0);

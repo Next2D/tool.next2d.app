@@ -1,9 +1,12 @@
 import { execute } from "./ScreenStageAreaUpdateSizeService";
+import { $getCurrentWorkSpace, $createWorkSpace } from "../../../../core/application/CoreUtil";
 
 describe("ScreenStageAreaUpdateSizeServiceTest", () =>
 {
     test("execute test", () =>
     {
+        const workSpace = $getCurrentWorkSpace() || $createWorkSpace();
+
         const div = document.createElement("div");
         div.id = "stage-area";
         document.body.appendChild(div);

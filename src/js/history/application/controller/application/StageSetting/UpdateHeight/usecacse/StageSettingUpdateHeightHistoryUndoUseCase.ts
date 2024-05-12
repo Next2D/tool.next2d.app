@@ -1,5 +1,5 @@
 import { $getWorkSpace } from "@/core/application/CoreUtil";
-import { execute as stageChageStyleService  } from "@/core/application/Stage/service/StageChageStyleService";
+import { execute as stageStyleUpdateSizeService } from "@/core/application/Stage/service/StageStyleUpdateSizeService";
 import { execute as screenStageAreaUpdateSizeService } from "@/screen/application/ScreenStageArea/service/ScreenStageAreaUpdateSizeService";
 import { execute as stageSettingUpdateHeightService } from "@/controller/application/StageSetting/service/StageSettingUpdateHeightService";
 
@@ -30,7 +30,7 @@ export const execute = (
     // アクティブなら表示を更新
     if (workSpace.active) {
         // ステージのスタイルを変更
-        stageChageStyleService(stage);
+        stageStyleUpdateSizeService(0, stage.height);
 
         // ステージ背後のレイヤーを更新
         screenStageAreaUpdateSizeService(stage);

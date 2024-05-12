@@ -1,6 +1,6 @@
 import type { Stage } from "@/core/domain/model/Stage";
-import { execute as stageChageStyleService } from "../service/StageChageStyleService";
-import { execute as screenScaleResetService } from "@/screen/application/ScreenScale/service/ScreenScaleResetService";
+import { execute as stageStyleUpdateSizeService } from "../service/StageStyleUpdateSizeService";
+import { execute as stageStyleUpdateColorService } from "../service/StageStyleUpdateColorService";
 import { execute as libraryPreviewAreaChangeColorService } from "@/controller/application/LibraryPreviewArea/service/LibraryPreviewAreaChangeColorService";
 import { execute as stageSettingUpdateUseCase } from "@/controller/application/StageSetting/usecase/StageSettingUpdateUseCase";
 import { execute as screenStageAreaUpdateSizeService } from "@/screen/application/ScreenStageArea/service/ScreenStageAreaUpdateSizeService";
@@ -17,11 +17,11 @@ import { execute as screenStageOffsetUpdateService } from "@/screen/application/
  */
 export const execute = (stage: Stage): void =>
 {
-    // ステージの幅と高さと背景色を設定
-    stageChageStyleService(stage);
+    // ステージの幅と高さを設定
+    stageStyleUpdateSizeService(stage.width, stage.height);
 
-    // スクリーンのスケールを初期化
-    screenScaleResetService();
+    // ステージの背景色を設定
+    stageStyleUpdateColorService(stage.bgColor);
 
     // ライブラリのプレビューの背景色を更新
     libraryPreviewAreaChangeColorService(stage.bgColor);

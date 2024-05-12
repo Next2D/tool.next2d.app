@@ -1,5 +1,5 @@
 import { StageObjectImpl } from "@/interface/StageObjectImpl";
-import { execute as stageInitializeUseCase } from "@/core/application/Stage/usecase/StageInitializeUseCase";
+import { execute as stageRunUseCase } from "@/core/application/Stage/usecase/StageRunUseCase";
 import { $clamp } from "@/global/GlobalUtil";
 import {
     $STAGE_DEFAULT_FPS,
@@ -135,7 +135,7 @@ export class Stage
      */
     run (): void
     {
-        stageInitializeUseCase(this);
+        stageRunUseCase(this);
     }
 
     /**

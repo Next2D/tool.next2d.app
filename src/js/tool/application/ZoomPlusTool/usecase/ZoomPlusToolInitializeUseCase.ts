@@ -4,6 +4,7 @@ import type { ZoomPlusTool } from "@/tool/domain/model/ZoomPlusTool";
 import { execute as zoomPlusToolMouseOverEventUseCase } from "./ZoomPlusToolMouseOverEventUseCase";
 import { execute as zoomPlusToolMouseOutEventUseCase } from "./ZoomPlusToolMouseOutEventUseCase";
 import { execute as zoomPlusToolChangeCursorEventService } from "../service/ZoomPlusToolChangeCursorEventService";
+import { execute as zoomPlusToolStageRectMouseDownEventUseCase } from "./ZoomPlusToolStageRectMouseDownEventUseCase";
 
 /**
  * @description スームアップツールの初期起動ユースケース
@@ -16,15 +17,23 @@ import { execute as zoomPlusToolChangeCursorEventService } from "../service/Zoom
  */
 export const execute = (tool: ToolImpl<ZoomPlusTool>): void =>
 {
+    // スクリーンのマウスオーバーイベントを登録
     tool.addEventListener(EventType.MOUSE_OVER,
         zoomPlusToolMouseOverEventUseCase
     );
 
+    // スクリーンのマウスアウトイベントを登録
     tool.addEventListener(EventType.MOUSE_OUT,
         zoomPlusToolMouseOutEventUseCase
     );
 
+    // スクリーン移動中のカーソル変更のイベントを登録
     tool.addEventListener(EventType.CHANGE_CURSOR,
         zoomPlusToolChangeCursorEventService
+    );
+
+    // 範囲選択のイベントを登録
+    tool.addEventListener(EventType.STAGE_RECT,
+        zoomPlusToolStageRectMouseDownEventUseCase
     );
 };

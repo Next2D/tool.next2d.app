@@ -2,7 +2,7 @@ import { $STAGE_HEIGHT_ID, $STAGE_WIDTH_ID } from "@/config/StageSettingConfig";
 import { stageSetting } from "@/controller/domain/model/StageSetting";
 import { $setCursor } from "@/global/GlobalUtil";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
-import { execute as stageChageStyleService  } from "@/core/application/Stage/service/StageChageStyleService";
+import { execute as stageStyleUpdateSizeService } from "@/core/application/Stage/service/StageStyleUpdateSizeService";
 import { execute as screenStageAreaUpdateSizeService } from "@/screen/application/ScreenStageArea/service/ScreenStageAreaUpdateSizeService";
 
 /**
@@ -69,7 +69,7 @@ export const execute = (event: PointerEvent): void =>
         }
 
         // ステージのスタイルを変更
-        stageChageStyleService(stage);
+        stageStyleUpdateSizeService(stageSetting.lock ? stage.width : 0, stage.height);
 
         // ステージ背後のレイヤーを更新
         screenStageAreaUpdateSizeService(stage);

@@ -30,6 +30,7 @@ export const execute = (event: PointerEvent): void =>
         .getElementById($SCREEN_STAGE_RECT_ID);
 
     if (!element) {
+        stageRectHideService();
         return ;
     }
 
@@ -51,7 +52,6 @@ export const execute = (event: PointerEvent): void =>
 
     const stageAreaElement = document.getElementById($SCREEN_STAGE_AREA_ID);
     if (!stageAreaElement) {
-
         return ;
     }
 

@@ -44,43 +44,6 @@ export const $clamp = (value: number, min: number, max: number): number =>
 };
 
 /**
- * @description スクリーンの現在のスケール値
- *              Current scale value of screen
- *
- * @type {number}
- * @default 1
- * @private
- */
-let $currentZoom: number = 1;
-
-/**
- * @description スクリーンのスケール値をセット
- *              Set screen scale value
- *
- * @param  {number} scale
- * @return {void}
- * @method
- * @public
- */
-export const $setZoom = (scale: number): void =>
-{
-    $currentZoom = scale;
-};
-
-/**
- * @description スクリーンのスケール値を取得
- *              Get screen scale value
- *
- * @return {void}
- * @method
- * @public
- */
-export const $getZoom = (): number =>
-{
-    return $currentZoom;
-};
-
-/**
  * @description ステージElementのoffsetLeft値
  *              OffsetLeft value of StageElement
  *

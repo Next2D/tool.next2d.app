@@ -1,8 +1,8 @@
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
-import { execute as stageSettingUpdateColorHistoryUseCase  } from "@/history/application/controller/application/StageSetting/UpdateColor/usecase/StageSettingUpdateColorHistoryUseCase";
-import { execute as stageSettingUpdateColorService  } from "@/controller/application/StageSetting/service/StageSettingUpdateColorService";
-import { execute as stageChageStyleService  } from "@/core/application/Stage/service/StageChageStyleService";
-import { execute as libraryPreviewAreaChangeColorService  } from "@/controller/application/LibraryPreviewArea/service/LibraryPreviewAreaChangeColorService";
+import { execute as stageSettingUpdateColorHistoryUseCase } from "@/history/application/controller/application/StageSetting/UpdateColor/usecase/StageSettingUpdateColorHistoryUseCase";
+import { execute as stageSettingUpdateColorService } from "@/controller/application/StageSetting/service/StageSettingUpdateColorService";
+import { execute as stageStyleUpdateSizeService } from "@/core/application/Stage/service/StageStyleUpdateSizeService";
+import { execute as libraryPreviewAreaChangeColorService } from "@/controller/application/LibraryPreviewArea/service/LibraryPreviewAreaChangeColorService";
 
 /**
  * @description ステージの背景色を変更
@@ -52,6 +52,6 @@ export const execute = (
         libraryPreviewAreaChangeColorService(stage.bgColor);
 
         // ステージのスタイルを変更
-        stageChageStyleService(stage);
+        stageStyleUpdateSizeService(stage.width, 0);
     }
 };

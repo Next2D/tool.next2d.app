@@ -9,8 +9,7 @@ import {
 } from "@/config/InstanceConfig";
 import {
     $getScreenOffsetLeft,
-    $getScreenOffsetTop,
-    $getZoom
+    $getScreenOffsetTop
 } from "@/global/GlobalUtil";
 import { ExternalSoundArea } from "@/external/controller/domain/model/ExternalSoundArea";
 
@@ -60,8 +59,8 @@ export const execute = async (event: DragEvent): Promise<void> =>
             default:
                 {
                     const externalTimeline = new ExternalTimeline(workSpace, movieClip);
-                    const x = (event.offsetX - $getScreenOffsetLeft() - instance.width  / 2) / $getZoom();
-                    const y = (event.offsetY - $getScreenOffsetTop()  - instance.height / 2) / $getZoom();
+                    const x = (event.offsetX - $getScreenOffsetLeft() - instance.width  / 2) / workSpace.scale;
+                    const y = (event.offsetY - $getScreenOffsetTop()  - instance.height / 2) / workSpace.scale;
                     await externalTimeline
                         .addItemToMovieClip(x, y, instance.getPath(workSpace));
                 }
