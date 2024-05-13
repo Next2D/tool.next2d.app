@@ -1,8 +1,9 @@
-import { execute } from "./ZoomMinusToolChangeCursorEventService";
+import { execute } from "./ZoomMinusToolMouseOverEventService";
+import { $setCursor } from "../../.../../../../global/GlobalUtil";
 import { $registerDefaultTool } from "../../ToolUtil";
 import { $TOOL_ZOOM_MINUS_NAME } from "../../../../config/ToolConfig";
 
-describe("ZoomMinusToolChangeCursorEventServiceTest", () =>
+describe("ZoomMinusToolMouseOverEventServiceTest", () =>
 {
     test("execute test", () =>
     {
@@ -11,6 +12,8 @@ describe("ZoomMinusToolChangeCursorEventServiceTest", () =>
             "cursor": "zoom-out"
         };
         $registerDefaultTool(mock);
+
+        $setCursor("auto");
 
         const style = document
             .documentElement

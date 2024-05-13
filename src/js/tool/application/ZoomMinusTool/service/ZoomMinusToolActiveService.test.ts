@@ -26,5 +26,4 @@ describe("ZoomMinusToolActiveServiceTest", () =>
 
         expect($getActiveTool().name).toBe(mock2.name);
     });
-
 });
