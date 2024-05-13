@@ -45,7 +45,6 @@ export const execute = (event: PointerEvent): void =>
     }
 
     event.stopPropagation();
-    event.preventDefault();
 
     // 表示されてるメニューを全て非表示にする
     $allHideMenu();
@@ -76,10 +75,14 @@ export const execute = (event: PointerEvent): void =>
                 return ;
             }
 
+            event.preventDefault();
+
             toolAreaActiveMoveUseCase();
         }, 600);
 
     } else {
+
+        event.preventDefault();
 
         // ダブルタップを終了
         wait = false;

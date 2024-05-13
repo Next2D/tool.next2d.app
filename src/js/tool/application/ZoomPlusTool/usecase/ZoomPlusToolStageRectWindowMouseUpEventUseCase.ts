@@ -4,7 +4,7 @@ import { execute as stageRectHideService } from "@/screen/application/StageRect/
 import { $SCREEN_ID, $SCREEN_STAGE_RECT_ID } from "@/config/ScreenConfig";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { execute as zoomToolUpdateElementService } from "@/tool/application/ZoomTool/service/ZoomToolUpdateElementService";
-import { $clamp } from "@/global/GlobalUtil";
+import { $clamp, $getScreenOffsetLeft, $getScreenOffsetTop } from "@/global/GlobalUtil";
 import { execute as stageStyleUpdateSizeService } from "@/core/application/Stage/service/StageStyleUpdateSizeService";
 import { execute as screenStageAreaUpdateSizeService } from "@/screen/application/ScreenStageArea/service/ScreenStageAreaUpdateSizeService";
 import { execute as screenAreaRedrawUseCase } from "@/screen/application/ScreenArea/usecase/ScreenAreaRedrawUseCase";
@@ -57,23 +57,33 @@ export const execute = async (event: PointerEvent): Promise<void> =>
     const workSpace = $getCurrentWorkSpace();
     const stage = workSpace.stage;
 
+    const beforeScale = workSpace.scale;
+
     workSpace.scale = parseFloat($clamp(Math.max(
         stage.width / width,
         stage.height / height,
         workSpace.scale
     ), 0.25, 5).toFixed(2));
 
+    // 変化がない場合は処理を終了
+    if (workSpace.scale === beforeScale) {
+        return ;
+    }
+
     const screen = document.getElementById($SCREEN_ID);
     if (!screen) {
         return ;
     }
 
-    const dx = left - screen.offsetLeft + width  / 2;
-    const dy = top  - screen.offsetTop  + height / 2;
+    const centerX = screen.clientWidth  / 2;
+    const centerY = screen.clientHeight / 2;
+
+    const dx = (screen.scrollLeft + centerX - $getScreenOffsetLeft()) / beforeScale * workSpace.scale;
+    const dy = (screen.scrollTop  + centerY - $getScreenOffsetTop())  / beforeScale * workSpace.scale;
 
     // スクリーンの表示位置を補正
-    screen.scrollLeft -= screen.clientWidth  / 2 - dx;
-    screen.scrollTop  -= screen.clientHeight / 2 - dy;
+    screen.scrollLeft = $getScreenOffsetLeft() + dx - centerX;
+    screen.scrollTop  = $getScreenOffsetTop()  + dy - centerY;
 
     // スケールのインプット表示を更新
     zoomToolUpdateElementService(workSpace.scale * 100);

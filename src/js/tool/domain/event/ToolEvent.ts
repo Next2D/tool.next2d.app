@@ -206,6 +206,8 @@ export class ToolEvent extends EventDispatcher
      */
     toolEnd (): void
     {
+        $setCursor("auto");
+
         // 対象のElementがあれば非アクティブ表示
         const element: HTMLElement | null = document
             .getElementById(`${$TOOL_PREFIX}-${this._$name}`);
