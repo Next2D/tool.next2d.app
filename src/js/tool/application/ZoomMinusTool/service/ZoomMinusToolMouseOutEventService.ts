@@ -1,4 +1,3 @@
-import { execute as screenStageAreaAllDisplayObjectActiveService } from "@/screen/application/ScreenStageArea/service/ScreenStageAreaAllDisplayObjectActiveService";
 import { $setCursor } from "@/global/GlobalUtil";
 
 /**
@@ -15,9 +14,6 @@ export const execute = (event: PointerEvent): void =>
     // イベントの伝播を止める
     event.stopPropagation();
     event.preventDefault();
-
-    // 全てのDisplayObjectのイベント有効化する
-    screenStageAreaAllDisplayObjectActiveService();
 
     // カーソルを変更
     $setCursor("auto");

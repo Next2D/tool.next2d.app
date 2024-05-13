@@ -59,16 +59,18 @@ export const execute = async (event: PointerEvent): Promise<void> =>
 
     const beforeScale = workSpace.scale;
 
-    workSpace.scale = parseFloat($clamp(Math.max(
+    const scale = parseFloat($clamp(Math.max(
         stage.width / width,
         stage.height / height,
         workSpace.scale
     ), 0.25, 5).toFixed(2));
 
     // 変化がない場合は処理を終了
-    if (workSpace.scale === beforeScale) {
+    if (scale === beforeScale) {
         return ;
     }
+
+    workSpace.scale = scale;
 
     const screen = document.getElementById($SCREEN_ID);
     if (!screen) {

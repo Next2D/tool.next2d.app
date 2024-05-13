@@ -5,6 +5,7 @@ import { execute as screenDisplayObjectMouseDownEventUseCase } from "@/screen/ap
 import { execute as screenAreaArrowToolMouseDownEventUseCase } from "@/screen/application/ScreenArea/usecase/ScreenAreaArrowToolMouseDownEventUseCase";
 import { execute as arrowToolStageRectMouseDownEventUseCase } from "./ArrowToolStageRectMouseDownEventUseCase";
 import { execute as arrowToolActiveService } from "../service/ArrowToolActiveService";
+import { execute as arrowToolStartEventUseCase } from "./ArrowToolStartEventUseCase";
 
 /**
  * @description アローツールの初期起動ユースケース
@@ -17,6 +18,11 @@ import { execute as arrowToolActiveService } from "../service/ArrowToolActiveSer
  */
 export const execute = (tool: ToolImpl<ArrowTool>): void =>
 {
+    // 起動イベントを登録
+    tool.addEventListener(EventType.START,
+        arrowToolStartEventUseCase
+    );
+
     // DisplayObject選択時のイベントを登録
     tool.addEventListener(EventType.DISPLAY_OBJRCY,
         screenDisplayObjectMouseDownEventUseCase

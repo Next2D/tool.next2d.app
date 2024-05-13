@@ -19,6 +19,9 @@ export class ZoomMinusTool extends BaseTool
     constructor ()
     {
         super($TOOL_ZOOM_MINUS_NAME);
+
+        // カーソルをセット
+        this.setCursor("zoom-out");
     }
 
     /**

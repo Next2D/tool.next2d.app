@@ -4,6 +4,7 @@ import { execute as historyRedoUseCase } from "@/controller/application/HistoryA
 import { execute as userSettingMenuShowService } from "@/menu/application/UserSettingMenu/service/UserSettingMenuShowService";
 import { execute as arrowToolActiveService } from "@/tool/application/ArrowTool/service/ArrowToolActiveService";
 import { execute as zoomPlusToolActiveService } from "@/tool/application/ZoomPlusTool/service/ZoomPlusToolActiveService";
+import { execute as zoomMinusToolActiveService } from "@/tool/application/ZoomMinusTool/service/ZoomMinusToolActiveService";
 import {
     $generateShortcutKey,
     $setShortcut
@@ -38,7 +39,7 @@ export const execute = (): void =>
 
     // Redo
     $setShortcut(
-        $generateShortcutKey("z", { "ctrl": true, "shift": true  }), async (): Promise<void> =>
+        $generateShortcutKey("z", { "ctrl": true, "shift": true }), async (): Promise<void> =>
         {
             const workSpace = $getCurrentWorkSpace();
             const scene = workSpace.scene;
@@ -62,5 +63,11 @@ export const execute = (): void =>
     $setShortcut(
         $generateShortcutKey("z"),
         zoomPlusToolActiveService
+    );
+
+    // ズームアウトツールをアクティブにする
+    $setShortcut(
+        $generateShortcutKey("z", { "shift": true }),
+        zoomMinusToolActiveService
     );
 };
