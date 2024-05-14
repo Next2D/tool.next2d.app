@@ -7,6 +7,7 @@ import { execute as characterCalcGetScaleXService } from "@/core/application/Cha
 import { execute as characterCalcSetScaleXService } from "@/core/application/Character/service/CharacterCalcSetScaleXService";
 import { execute as characterCalcGetScaleYService } from "@/core/application/Character/service/CharacterCalcGetScaleYService";
 import { execute as characterCalcSetRotationService } from "@/core/application/Character/service/CharacterCalcSetRotationService";
+import { execute as characterCalcGetRotationService } from "@/core/application/Character/service/CharacterCalcGetRotationService";
 import { $clamp } from "@/global/GlobalUtil";
 import type { BoundsImpl } from "@/interface/BoundsImpl";
 import { execute as characterCalcGetBoundsService } from "@/core/application/Character/service/CharacterCalcGetBoundsService";
@@ -461,7 +462,7 @@ export class Character
     get rotation (): number
     {
         if (this._$rotation === null) {
-            this._$rotation = Math.atan2(this._$matrix[1], this._$matrix[0]) * (180 / Math.PI);
+            this._$rotation = characterCalcGetRotationService(this._$matrix);
         }
         return this._$rotation;
     }

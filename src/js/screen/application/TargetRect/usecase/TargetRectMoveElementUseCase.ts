@@ -3,7 +3,8 @@ import { execute as targetRectShowElementService } from "@/screen/application/Ta
 import { execute as targetRectHideElementService } from "@/screen/application/TargetRect/service/TargetRectHideElementService";
 import { execute as screenAreaCalcSelectedBoundsService } from "@/screen/application/ScreenArea/service/ScreenAreaCalcSelectedBoundsService";
 import { $TOOL_ARROW_NAME } from "@/config/ToolConfig";
-import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
+import { $getCurrentWorkSpace, $getMatrixBounds } from "@/core/application/CoreUtil";
+import { $getConcatenatedMatrix } from "@/controller/application/TransformSetting/TransformSettingUtil";
 
 /**
  * @description 選択範囲のElementを選択中のDisplayObjectの座標を基準に表示
@@ -18,12 +19,20 @@ export const execute = (): void =>
     const workSpace = $getCurrentWorkSpace();
     const movieClip = workSpace.scene;
 
-    const bounds = screenAreaCalcSelectedBoundsService(movieClip);
-    if (!bounds) {
+    const calcBounds = screenAreaCalcSelectedBoundsService(movieClip);
+    if (!calcBounds) {
         // 表示範囲のelementを非表示
         targetRectHideElementService();
         return ;
     }
+
+    const bounds = $getMatrixBounds(
+        calcBounds.xMin,
+        calcBounds.yMin,
+        calcBounds.xMax,
+        calcBounds.yMax,
+        $getConcatenatedMatrix(workSpace)
+    );
 
     const tool = $getActiveTool();
 
@@ -31,8 +40,8 @@ export const execute = (): void =>
     targetRectShowElementService(
         bounds.xMin,
         bounds.yMin,
-        Math.ceil(Math.abs(bounds.xMax - bounds.xMin) * workSpace.scale),
-        Math.ceil(Math.abs(bounds.yMax - bounds.yMin) * workSpace.scale),
+        Math.ceil(Math.abs(bounds.xMax - bounds.xMin)),
+        Math.ceil(Math.abs(bounds.yMax - bounds.yMin)),
         tool.name === $TOOL_ARROW_NAME ? "arrow" : "free_transform"
     );
 };

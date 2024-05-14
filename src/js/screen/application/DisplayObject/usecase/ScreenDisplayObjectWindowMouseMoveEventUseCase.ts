@@ -1,11 +1,7 @@
 import { execute as transformSettingUpdateXElementService } from "@/controller/application/TransformSetting/service/TransformSettingUpdateXElementService";
 import { execute as transformSettingUpdateYElementService } from "@/controller/application/TransformSetting/service/TransformSettingUpdateYElementService";
 import { execute as screenDisplayObjectSelectedMoveElementService } from "../service/ScreenDisplayObjectSelectedMoveElementService";
-import { $SCREEN_TARGET_RECT_ID } from "@/config/ScreenConfig";
-import {
-    $getScreenOffsetLeft,
-    $getScreenOffsetTop
-} from "@/global/GlobalUtil";
+import { transformSetting } from "@/controller/domain/model/TransformSetting";
 
 /**
  * @description DisplayObjectの移動処理関数
@@ -29,16 +25,12 @@ export const execute = (event: PointerEvent): void =>
             event.movementX, event.movementY
         );
 
-        // 選択範囲も移動
-        const rectElement: HTMLElement | null = document
-            .getElementById($SCREEN_TARGET_RECT_ID);
-
-        if (!rectElement) {
-            return ;
-        }
-
         // プロパティーの値を更新
-        transformSettingUpdateXElementService(rectElement.offsetLeft - $getScreenOffsetLeft());
-        transformSettingUpdateYElementService(rectElement.offsetTop  - $getScreenOffsetTop());
+        transformSettingUpdateXElementService(
+            transformSetting.tempPosition.x + transformSetting.x
+        );
+        transformSettingUpdateYElementService(
+            transformSetting.tempPosition.y + transformSetting.y
+        );
     });
 };

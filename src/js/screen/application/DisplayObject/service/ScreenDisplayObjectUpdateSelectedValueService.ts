@@ -61,4 +61,5 @@ export const execute = (): void =>
 
     // 移動した値を初期化
     transformSetting.x = transformSetting.y = 0;
+    transformSetting.tempPosition.x = transformSetting.tempPosition.y = 0;
 };

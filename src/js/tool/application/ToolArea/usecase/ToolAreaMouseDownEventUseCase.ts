@@ -77,7 +77,7 @@ export const execute = (event: PointerEvent): void =>
 
             event.preventDefault();
 
-            toolAreaActiveMoveUseCase();
+            toolAreaActiveMoveUseCase(event);
         }, 600);
 
     } else {

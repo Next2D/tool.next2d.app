@@ -5,6 +5,7 @@ import { $allHideMenu } from "@/menu/application/MenuUtil";
 import { execute as screenDisplayObjectRegisterWindowEventUseCase } from "./ScreenDisplayObjectRegisterWindowEventUseCase";
 import { transformSetting } from "@/controller/domain/model/TransformSetting";
 import { execute as referenceSettingHideElementService } from "@/controller/application/ReferenceSetting/service/ReferenceSettingHideElementService";
+import { execute as screenAreaCalcSelectedBoundsService } from "@/screen/application/ScreenArea/service/ScreenAreaCalcSelectedBoundsService";
 
 /**
  * @description スクリーンに設置したDisplayObject選択時のイベント処理関数
@@ -45,15 +46,6 @@ export const execute = (event: PointerEvent): void =>
         return ;
     }
 
-    // 移動量のオブジェクトを初期化
-    // fixed logic
-    transformSetting.x = 0;
-    transformSetting.y = 0;
-
-    // 移動用のwindowイベントを登録
-    // fixed logic
-    screenDisplayObjectRegisterWindowEventUseCase();
-
     // レイヤーのインデックスを取得
     const externalLayer = new ExternalLayer(workSpace, movieClip, layer);
     const layerIndex = externalLayer.index;
@@ -64,20 +56,24 @@ export const execute = (event: PointerEvent): void =>
     const externalScreen = new ExternalScreen(workSpace, movieClip);
     if (!event.shiftKey) {
 
+        let doSelect = true;
+
         // 選択中のDisplayObjectがある場合は選択処置はスキップ
         if (movieClip.selectedDepths.has(layerIndex)) {
             const depths = movieClip.selectedDepths.get(layerIndex) as NonNullable<number[]>;
             if (depths.indexOf(depth) > -1) {
-                return ;
+                doSelect = false;
             }
         }
 
         // 選択処理を実行
-        externalScreen.selectDisplayObjects(
-            layerIndex,
-            [depth],
-            event.shiftKey
-        );
+        if (doSelect) {
+            externalScreen.selectDisplayObjects(
+                layerIndex,
+                [depth],
+                event.shiftKey
+            );
+        }
 
     } else {
         const depths = movieClip.selectedDepths.has(layerIndex)
@@ -105,4 +101,21 @@ export const execute = (event: PointerEvent): void =>
                 .deactivatedAllLayer(layerIndex);
         }
     }
+
+    const bounds = screenAreaCalcSelectedBoundsService(movieClip);
+    if (!bounds) {
+        return ;
+    }
+
+    // 移動量のオブジェクトを初期化
+    transformSetting.x = 0;
+    transformSetting.y = 0;
+
+    // 移動前の座標を保存
+    transformSetting.tempPosition.x = bounds.xMin;
+    transformSetting.tempPosition.y = bounds.yMin;
+
+    // 移動用のwindowイベントを登録
+    // fixed logic
+    screenDisplayObjectRegisterWindowEventUseCase();
 };

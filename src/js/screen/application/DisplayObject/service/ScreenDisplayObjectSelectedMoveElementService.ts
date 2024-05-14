@@ -35,9 +35,11 @@ export const execute = (
         return ;
     }
 
+    const scale = workSpace.scale;
+
     // マウスで移動した量を更新
-    transformSetting.x += movement_x;
-    transformSetting.y += movement_y;
+    transformSetting.x += movement_x / scale;
+    transformSetting.y += movement_y / scale;
 
     // 選択中のElementを移動
     for (const [layerIndex, depths] of movieClip.selectedDepths) {

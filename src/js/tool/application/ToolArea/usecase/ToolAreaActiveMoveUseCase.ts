@@ -1,6 +1,6 @@
 import { $TOOL_PREFIX } from "@/config/ToolConfig";
 import { $setCursor } from "@/global/GlobalUtil";
-import { execute as toolAreaRegisterWindowMoveEventUseCase } from "./ToolAreaRegisterWindowMoveEventUseCase";
+import { execute as toolAreaRegisterPointerEventUseCase } from "./ToolAreaRegisterPointerEventUseCase";
 import { execute as toolAreaChageStyleToActiveService } from "../service/ToolAreaChageStyleToActiveService";
 import { $getMouseState } from "../../ToolUtil";
 import {
@@ -15,11 +15,12 @@ import { execute as timelineLayerWindowResizeUseCase } from "@/timeline/applicat
  * @description ツールエリアを移動可能な状態にする
  *              Make the tool area movable
  *
+ * @param  {PointerEvent} event
  * @return {void}
  * @method
  * @public
  */
-export const execute = (): void =>
+export const execute = (event: PointerEvent): void =>
 {
     // 待機状態が終了していれば処理は終了
     if (!$getStandbyMoveState()) {
@@ -65,8 +66,8 @@ export const execute = (): void =>
         // カーソルを移動用に変更
         $setCursor("move");
 
-        // windowにイベントを登録
-        toolAreaRegisterWindowMoveEventUseCase();
+        // 移動のイベントを登録
+        toolAreaRegisterPointerEventUseCase(event);
 
     } else {
 

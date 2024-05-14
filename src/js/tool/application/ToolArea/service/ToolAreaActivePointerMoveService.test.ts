@@ -1,8 +1,8 @@
 import { $TOOL_PREFIX } from "../../../../config/ToolConfig";
-import { execute } from "./ToolAreaActiveWindowMoveService";
+import { execute } from "./ToolAreaActivePointerMoveService";
 import { $createWorkSpace, $getCurrentWorkSpace } from "../../../../core/application/CoreUtil";
 
-describe("ToolAreaActiveWindowMoveServiceTest", () =>
+describe("ToolAreaActivePointerMoveServiceTest", () =>
 {
     test("execute test", (): Promise<void> =>
     {

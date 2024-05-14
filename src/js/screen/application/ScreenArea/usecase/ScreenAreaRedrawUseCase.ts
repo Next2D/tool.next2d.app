@@ -2,6 +2,9 @@ import { $SCREEN_STAGE_AREA_ID } from "@/config/ScreenConfig";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import { execute as screenAreaAppendCharacterService } from "../service/ScreenAreaAppendCharacterService";
 import { $MASK_MODE } from "@/config/LayerModeConfig";
+import { $getActiveTool } from "@/tool/application/ToolUtil";
+import { timelineHeader } from "@/timeline/domain/model/TimelineHeader";
+import { EventType } from "@/tool/domain/event/EventType";
 
 /**
  * @description スクリーンエリアを再描画
@@ -61,6 +64,14 @@ export const execute = async (movie_clip: MovieClip): Promise<void> =>
             }
 
             await screenAreaAppendCharacterService(character, layer);
+        }
+    }
+
+    // 再生中ではない場合はツールのイベントを発火
+    if (timelineHeader.stopFlag) {
+        const tool = $getActiveTool();
+        if (tool) {
+            tool.dispatchEvent(EventType.START);
         }
     }
 };

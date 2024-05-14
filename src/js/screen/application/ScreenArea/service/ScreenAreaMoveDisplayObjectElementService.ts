@@ -2,6 +2,7 @@ import type { Character } from "@/core/domain/model/Character";
 import type { Layer } from "@/core/domain/model/Layer";
 import { $SCREEN_STAGE_AREA_ID } from "@/config/ScreenConfig";
 import { $getScreenOffsetLeft, $getScreenOffsetTop } from "@/global/GlobalUtil";
+import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 
 /**
  * @description 指定レイヤーの指定DisplayObjectのElementの座標を内部データに合わせる
@@ -33,6 +34,7 @@ export const execute = (
         return ;
     }
 
-    displayElement.style.left = `${$getScreenOffsetLeft() + character.x}px`;
-    displayElement.style.top  = `${$getScreenOffsetTop()  + character.y}px`;
+    const workSpace = $getCurrentWorkSpace();
+    displayElement.style.left = `${$getScreenOffsetLeft() + character.x * workSpace.scale}px`;
+    displayElement.style.top  = `${$getScreenOffsetTop()  + character.y * workSpace.scale}px`;
 };

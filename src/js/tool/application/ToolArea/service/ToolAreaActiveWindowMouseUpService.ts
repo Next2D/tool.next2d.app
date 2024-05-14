@@ -1,6 +1,4 @@
 import { $setCursor } from "@/global/GlobalUtil";
-import { EventType } from "../../../domain/event/EventType";
-import { execute as toolAreaActiveWindowMoveService } from "../service/ToolAreaActiveWindowMoveService";
 import { $TOOL_PREFIX } from "@/config/ToolConfig";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 
@@ -17,10 +15,7 @@ export const execute = (event: PointerEvent): void =>
 {
     // 親のイベントを中止する
     event.stopPropagation();
-
-    // 登録されたイベントを削除
-    window.removeEventListener(EventType.MOUSE_MOVE, toolAreaActiveWindowMoveService);
-    window.removeEventListener(EventType.MOUSE_UP, execute);
+    event.preventDefault();
 
     $setCursor("auto");
 
@@ -30,6 +25,11 @@ export const execute = (event: PointerEvent): void =>
     if (!element) {
         return ;
     }
+
+    // 移動イベントを削除
+    element.onpointermove = null;
+    element.onpointerup   = null;
+    element.releasePointerCapture(event.pointerId);
 
     // ツールエリアを移動
     element.style.left = `${element.offsetLeft + event.movementX}px`;

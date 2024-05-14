@@ -17,7 +17,7 @@ class TransformSetting
     private _$sizeLocked: boolean;
     private _$scaleLocked: boolean;
     private _$beforeValue: number;
-    private readonly _$movePosition: PositionImpl;
+    private readonly _$tempPosition: PositionImpl;
     private readonly _$matrixs: Array<number[]>;
 
     /**
@@ -79,7 +79,7 @@ class TransformSetting
          * @type {object}
          * @private
          */
-        this._$movePosition = {
+        this._$tempPosition = {
             "x": 0,
             "y": 0
         };
@@ -181,15 +181,15 @@ class TransformSetting
     }
 
     /**
-     * @description 移動座標を返却
-     *              Return the move coordinates
+     * @description 移動する前のxy座標を返却
+     *              Return the xy coordinates before moving
      *
      * @member {object}
      * @public
      */
-    get movePosition (): PositionImpl
+    get tempPosition (): PositionImpl
     {
-        return this._$movePosition;
+        return this._$tempPosition;
     }
 
     /**

@@ -1,7 +1,9 @@
-import { $createTransformStyle } from "@/controller/application/TransformSetting/TransformSettingUtil";
+import { $createTransformStyle, $getConcatenatedMatrix } from "@/controller/application/TransformSetting/TransformSettingUtil";
 import { Character } from "@/core/domain/model/Character";
 import { $getScreenOffsetLeft, $getScreenOffsetTop } from "@/global/GlobalUtil";
 import { $getCurrentWorkSpace } from "../../CoreUtil";
+import { execute as characterCalcGetScaleXService } from "@/core/application/Character/service/CharacterCalcGetScaleXService";
+import { execute as characterCalcGetScaleYService } from "@/core/application/Character/service/CharacterCalcGetScaleYService";
 
 /**
  * @description 指定されたBitmap用のdivを生成して返却
@@ -18,13 +20,15 @@ export const execute = (
     layer_id: number
 ): string => {
 
-    const x = $getScreenOffsetLeft() + character.x;
-    const y = $getScreenOffsetTop()  + character.y;
+    // 変形スタイルを生成
+    const workSpace = $getCurrentWorkSpace();
+    const transform = $createTransformStyle(character, workSpace);
+
+    const matrix = $getConcatenatedMatrix(workSpace);
+    const x = $getScreenOffsetLeft() + character.x * characterCalcGetScaleXService(matrix);
+    const y = $getScreenOffsetTop() + character.y * characterCalcGetScaleYService(matrix);
     const alpha = character.alpha;
     const depth = character.depth;
-
-    // 変形スタイルを生成
-    const transform = $createTransformStyle(character, $getCurrentWorkSpace());
 
     return `
 <div class="display-object layer-id-${layer_id}" data-depth="${depth}" data-layer-id="${layer_id}" style="left: ${x}px; top: ${y}px; opacity: ${alpha}; ${transform}"></div>
