@@ -1,7 +1,6 @@
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import { execute as stageSettingUpdateColorHistoryUseCase } from "@/history/application/controller/application/StageSetting/UpdateColor/usecase/StageSettingUpdateColorHistoryUseCase";
 import { execute as stageSettingUpdateColorService } from "@/controller/application/StageSetting/service/StageSettingUpdateColorService";
-import { execute as stageStyleUpdateSizeService } from "@/core/application/Stage/service/StageStyleUpdateSizeService";
 import { execute as stageStyleUpdateColorService } from "@/core/application/Stage/service/StageStyleUpdateColorService";
 import { execute as libraryPreviewAreaChangeColorService } from "@/controller/application/LibraryPreviewArea/service/LibraryPreviewAreaChangeColorService";
 

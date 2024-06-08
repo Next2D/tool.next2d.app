@@ -2,7 +2,6 @@ import { $setCursor } from "@/global/GlobalUtil";
 import { EventType } from "@/tool/domain/event/EventType";
 import { execute as transformSettingYPointerMoveEventUseCase } from "./TransformSettingYPointerMoveEventUseCase";
 import { execute as screenDisplayObjectUpdateSelectedValueService } from "@/screen/application/DisplayObject/service/ScreenDisplayObjectUpdateSelectedValueService";
-import { $TRANSFORM_OBJECT_Y_ID } from "@/config/TransformSettingConfig";
 
 /**
  * @description 変形エリアのy座標の値操作のマウスアップイベント

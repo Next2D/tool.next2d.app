@@ -1,7 +1,6 @@
 import { $setCursor } from "@/global/GlobalUtil";
 import { EventType } from "@/tool/domain/event/EventType";
 import { execute as transformSettingWidthWindowMouseMoveEventUseCase } from "./TransformSettingWidthPointerMoveEventUseCase";
-import { $TRANSFORM_OBJECT_WIDTH_ID } from "@/config/TransformSettingConfig";
 import { transformSetting } from "@/controller/domain/model/TransformSetting";
 
 /**
