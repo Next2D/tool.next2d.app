@@ -5,7 +5,6 @@ import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { $getMoveMode, $getTopIndex, $setMoveMode } from "../../TimelineUtil";
 import { execute as timelineScrollUpdateScrollYUseCase } from "@/timeline/application/TimelineScroll/usecase/TimelineScrollUpdateScrollYUseCase";
 import { $allHideMenu } from "@/menu/application/MenuUtil";
-import { execute as timelineLayerInactiveMoveTargetStyleService } from "@/timeline/application/TimelineLayer/service/TimelineLayerInactiveMoveTargetStyleService";
 import { timelineLayer } from "@/timeline/domain/model/TimelineLayer";
 import { execute as timelineLayerControllerElementOverUseCase } from "./TimelineLayerControllerElementOverUseCase";
 import { execute as timelineLayerControllerElementOutUseCase } from "./TimelineLayerControllerElementOutUseCase";
