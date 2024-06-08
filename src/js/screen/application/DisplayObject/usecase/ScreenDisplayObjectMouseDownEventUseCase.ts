@@ -2,7 +2,7 @@ import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { ExternalLayer } from "@/external/core/domain/model/ExternalLayer";
 import { ExternalScreen } from "@/external/screen/domain/model/ExternalScreen";
 import { $allHideMenu } from "@/menu/application/MenuUtil";
-import { execute as screenDisplayObjectRegisterWindowEventUseCase } from "./ScreenDisplayObjectRegisterWindowEventUseCase";
+import { execute as screenDisplayObjectRegisterPointerEventUseCase } from "./ScreenDisplayObjectRegisterPointerEventUseCase";
 import { transformSetting } from "@/controller/domain/model/TransformSetting";
 import { execute as referenceSettingHideElementService } from "@/controller/application/ReferenceSetting/service/ReferenceSettingHideElementService";
 import { execute as screenAreaCalcSelectedBoundsService } from "@/screen/application/ScreenArea/service/ScreenAreaCalcSelectedBoundsService";
@@ -24,7 +24,6 @@ export const execute = (event: PointerEvent): void =>
 
     // 親のイベントをキャンセル
     event.stopPropagation();
-    event.preventDefault();
 
     // メニューを全て非表示
     $allHideMenu();
@@ -117,5 +116,5 @@ export const execute = (event: PointerEvent): void =>
 
     // 移動用のwindowイベントを登録
     // fixed logic
-    screenDisplayObjectRegisterWindowEventUseCase();
+    screenDisplayObjectRegisterPointerEventUseCase(event);
 };

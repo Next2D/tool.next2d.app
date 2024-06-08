@@ -4,7 +4,7 @@ import { execute as timelineLayerAltSelectedUseCase } from "@/timeline/applicati
 import { execute as timelineLayerShiftSelectedUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerShiftSelectedUseCase";
 import { ExternalLayer } from "@/external/core/domain/model/ExternalLayer";
 import { ExternalTimeline } from "@/external/timeline/domain/model/ExternalTimeline";
-import { execute as timelineLayerControllerRegisterWindowEventUseCase } from "./TimelineLayerControllerRegisterWindowEventUseCase";
+import { execute as timelineLayerControllerRegisterPointerEventUseCase } from "./TimelineLayerControllerRegisterPointerEventUseCase";
 import { execute as timelineLayerControllerActiveExitIconElementService } from "../service/TimelineLayerControllerActiveExitIconElementService";
 import { timelineLayer } from "@/timeline/domain/model/TimelineLayer";
 import { execute as timelineLayerFrameSelectedAllClearUseCase } from "@/timeline/application/TimelineLayerFrame/usecase/TimelineLayerFrameSelectedAllClearUseCase";
@@ -85,5 +85,5 @@ export const execute = (event: PointerEvent): void =>
     $setMoveLayerMode(true);
 
     // レイヤーの移動イベントを登録
-    timelineLayerControllerRegisterWindowEventUseCase();
+    timelineLayerControllerRegisterPointerEventUseCase(event);
 };

@@ -1,5 +1,5 @@
 import { $useKeyboard } from "@/shortcut/ShortcutUtil";
-import { execute as scaleFrameRegisterWindowEventUseCase } from "./ScaleFrameRegisterWindowEventUseCase";
+import { execute as scaleFrameRegisterWindowEventUseCase } from "./ScaleFrameRegisterPointerEventUseCase";
 
 /**
  * @description フレームのスケール設定のマウスダウンイベントユースケース
@@ -32,5 +32,5 @@ export const execute = (event: PointerEvent): void =>
     }
 
     // windowのイベントを登録
-    scaleFrameRegisterWindowEventUseCase();
+    scaleFrameRegisterWindowEventUseCase(event);
 };

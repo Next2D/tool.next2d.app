@@ -17,7 +17,6 @@ export const execute = (event: PointerEvent): void =>
 
     // 他のイベントを中止
     event.stopPropagation();
-    event.preventDefault();
 
     // スクリプトエディターを非表示にする
     scriptEditorModalHideService();

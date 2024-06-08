@@ -36,7 +36,7 @@ export const execute = (event: PointerEvent): void =>
     event.stopPropagation();
     event.preventDefault();
 
-    // windowイベントを削除
+    // イベントを削除
     window.removeEventListener(EventType.MOUSE_MOVE, timelineHeaderIconWindowMoveEventUseCase);
     window.removeEventListener(EventType.MOUSE_UP, execute);
 
@@ -50,7 +50,7 @@ export const execute = (event: PointerEvent): void =>
     $setMoveIconFrame(0);
     $setDestIconFrame(0);
 
-    // マーカーのイベントを無効化
+    // マーカーのイベントを無効化を解除
     const markerElement: HTMLElement | null = document
         .getElementById($TIMELINE_MARKER_ID);
 
@@ -59,6 +59,9 @@ export const execute = (event: PointerEvent): void =>
     }
 
     // イベントを有効か
+    markerElement.releasePointerCapture(event.pointerId);
+    markerElement.removeEventListener(EventType.MOUSE_MOVE, timelineHeaderIconWindowMoveEventUseCase);
+    markerElement.removeEventListener(EventType.MOUSE_UP, execute);
     markerElement.style.pointerEvents = "";
 
     // 移動アイコンを初期化

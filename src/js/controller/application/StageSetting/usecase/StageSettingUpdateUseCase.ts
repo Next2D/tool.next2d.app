@@ -24,6 +24,6 @@ export const execute = (stage: Stage): void =>
     // ステージFPSのInputの値を更新
     stageSettingUpdateFpsService(stage.fps);
 
-    // ステージ背景色のInputの値を更新
+    // スクリーンのステージのスタイルを変更
     stageSettingUpdateColorService(stage.bgColor);
 };

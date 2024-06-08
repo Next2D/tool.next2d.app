@@ -61,6 +61,9 @@ export const execute = (event: PointerEvent): void =>
     // マウスの状態管理をダウンに更新
     $setMouseState("down");
 
+    // 長押し判定を中止
+    clearTimeout(activeTimerId);
+
     if (!wait) {
 
         // 初回のタップであればダブルタップを待機モードに変更
@@ -85,23 +88,14 @@ export const execute = (event: PointerEvent): void =>
                 return ;
             }
 
-            // イベントをキャンセル
-            event.preventDefault();
-
             // 移動モードを開始
-            propertyAreaActiveMoveUseCase();
+            propertyAreaActiveMoveUseCase(event);
         }, 600);
 
     } else {
 
-        // イベントをキャンセル
-        event.preventDefault();
-
         // ダブルタップを終了
         wait = false;
-
-        // 長押し判定を中止
-        clearTimeout(activeTimerId);
 
         // 長押し待機モードをoffにする
         $setStandbyMoveState(false);

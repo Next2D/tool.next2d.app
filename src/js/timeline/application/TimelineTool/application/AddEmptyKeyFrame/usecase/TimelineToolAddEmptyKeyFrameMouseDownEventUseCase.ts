@@ -17,7 +17,6 @@ export const execute = async (event: PointerEvent): Promise<void> =>
 
     // 親のイベントを中止する
     event.stopPropagation();
-    event.preventDefault();
 
     // キーフレーム追加のユースケースを実行
     await timelineToolAddEmptyKeyFrameUseCase();

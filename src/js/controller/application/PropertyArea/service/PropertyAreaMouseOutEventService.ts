@@ -13,6 +13,7 @@ export const execute = (event: PointerEvent): void =>
 {
     // 親のイベントを中止
     event.stopPropagation();
+    event.preventDefault();
 
     // 長押し待機モードをoffにする
     $setStandbyMoveState(false);

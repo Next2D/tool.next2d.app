@@ -1,5 +1,5 @@
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
-import { execute as timelineHeaderIconRegisterWindowEventUseCase } from "./TimelineHeaderIconRegisterWindowEventUseCase";
+import { execute as timelineHeaderIconRegisteWindowEventUseCase } from "./TimelineHeaderIconRegisteWindowEventUseCase";
 import {
     $setDestIconFrame,
     $setMoveIconFrame,
@@ -74,6 +74,6 @@ export const execute = (event: PointerEvent): void =>
     // 移動先をリセット
     $setDestIconFrame(frame);
 
-    // windwoイベント登録
-    timelineHeaderIconRegisterWindowEventUseCase();
+    // 移動イベント登録
+    timelineHeaderIconRegisteWindowEventUseCase();
 };

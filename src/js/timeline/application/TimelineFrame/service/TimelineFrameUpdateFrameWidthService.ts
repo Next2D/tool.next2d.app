@@ -44,5 +44,5 @@ export const execute = (width: number): void =>
         .style
         .setProperty("--timeline-frame-width", `${width}px`);
 
-    input.value = `${Math.floor(width / $TIMELINE_DEFAULT_FRAME_WIDTH_SIZE * 100)}`;
+    input.value = `${Math.ceil(width / $TIMELINE_DEFAULT_FRAME_WIDTH_SIZE * 100)}`;
 };

@@ -2,7 +2,7 @@ import { $CONTROLLER_AREA_PROPERTY_ID } from "@/config/PropertyConfig";
 import { $setCursor } from "@/global/GlobalUtil";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { execute as propertyAreaChageStyleToActiveService } from "../service/PropertyAreaChageStyleToActiveService";
-import { execute as propertyAreaRegisterWindowMoveEventUseCase } from "./PropertyAreaRegisterWindowMoveEventUseCase";
+import { execute as propertyAreaRegisterPointerEventUseCase } from "./PropertyAreaRegisterPointerEventUseCase";
 import { execute as propertyAreaHideTabService } from "../service/PropertyAreaHideTabService";
 import {
     $getMouseState,
@@ -14,11 +14,12 @@ import {
  * @description プロパティエリアを移動可能な状態にする
  *              Make the property area movable
  *
+ * @param  {PointerEvent} event
  * @return {void}
  * @method
  * @public
  */
-export const execute = (): void =>
+export const execute = (event: PointerEvent): void =>
 {
     // 待機状態が終了していれば処理は終了
     if (!$getStandbyMoveState()) {
@@ -57,8 +58,8 @@ export const execute = (): void =>
         // カーソルを移動用に変更
         $setCursor("move");
 
-        // windowにイベントを登録
-        propertyAreaRegisterWindowMoveEventUseCase();
+        // 移動イベントを登録
+        propertyAreaRegisterPointerEventUseCase(event);
 
     } else {
 

@@ -29,13 +29,13 @@ export const execute = (
 
     // アクティブなら表示を更新
     if (workSpace.active) {
-        // ステージの景色を更新
+        // ライブラリの色を更新
         stageSettingUpdateColorService(stage.bgColor);
 
         // プレビューエリアの背景色を更新
         libraryPreviewAreaChangeColorService(stage.bgColor);
 
-        // ステージのスタイルを変更
+        // スクリーンのステージのスタイルを変更
         stageStyleUpdateColorService(stage.bgColor);
     }
 };

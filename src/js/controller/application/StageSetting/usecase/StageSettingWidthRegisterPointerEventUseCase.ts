@@ -1,0 +1,29 @@
+import { EventType } from "@/tool/domain/event/EventType";
+import { execute as stageSettingWidthPointerMoveEventUseCase } from "./StageSettingWidthPointerMoveEventUseCase";
+import { execute as stageSettingWidthPointerUpEventUseCase } from "./StageSettingWidthPointerUpEventUseCase";
+
+/**
+ * @description ステージの幅の数値変更のマウス操作イベントをwindowに登録
+ *              Register mouse operation events for stage width numerical changes in window
+ *
+ * @param  {PointerEvent} event
+ * @return {void}
+ * @method
+ * @public
+ */
+export const execute = (event: PointerEvent): void =>
+{
+    const element = event.target as HTMLInputElement;
+    if (!element) {
+        return ;
+    }
+
+    // 移動イベントを登録
+    element.setPointerCapture(event.pointerId);
+    element.addEventListener(EventType.MOUSE_MOVE,
+        stageSettingWidthPointerMoveEventUseCase
+    );
+    element.addEventListener(EventType.MOUSE_UP,
+        stageSettingWidthPointerUpEventUseCase
+    );
+};

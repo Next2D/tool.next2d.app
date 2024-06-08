@@ -1,6 +1,6 @@
 import { $TIMELINE_MARKER_ID } from "@/config/TimelineConfig";
 import { EventType } from "@/tool/domain/event/EventType";
-import { execute as timelineMarkerRegisterWindowEventUseCase } from "@/timeline/application/TimelineMarker/usecase/TimelineMarkerRegisterWindowEventUseCase";
+import { execute as timelineMarkerMouseDownEventUseCase } from "./TimelineMarkerMouseDownEventUseCase";
 
 /**
  * @description タイムラインのマーカーにイベント登録
@@ -21,6 +21,6 @@ export const execute = (): void =>
 
     // マウスダウンイベントを登録
     element.addEventListener(EventType.MOUSE_DOWN,
-        timelineMarkerRegisterWindowEventUseCase
+        timelineMarkerMouseDownEventUseCase
     );
 };

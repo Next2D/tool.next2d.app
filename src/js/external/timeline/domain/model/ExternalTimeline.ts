@@ -285,11 +285,20 @@ export class ExternalTimeline
             this._$movieClip
         );
 
+        // 選択されたフレームの中の最後のフレームをセット
+        let frame = frames.length > 1
+            ? this._$movieClip.selectedFrameObject.end
+            : frames[0];
+
+        if (!frame) {
+            frame = frames[0];
+        }
+
         // フレーム情報に合わせてタイムラインを更新
         await externalTimelineChageFrameUseCase(
             this._$workSpace,
             this._$movieClip,
-            this._$movieClip.currentFrame
+            frame
         );
     }
 

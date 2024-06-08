@@ -20,7 +20,6 @@ export const execute = (event: PointerEvent): void =>
 
     // 親のイベントをキャンセル
     event.stopPropagation();
-    event.preventDefault();
 
     const workSpace = $getCurrentWorkSpace();
     const movieClip = workSpace.scene;

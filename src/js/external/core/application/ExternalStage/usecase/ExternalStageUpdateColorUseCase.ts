@@ -2,6 +2,7 @@ import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import { execute as stageSettingUpdateColorHistoryUseCase } from "@/history/application/controller/application/StageSetting/UpdateColor/usecase/StageSettingUpdateColorHistoryUseCase";
 import { execute as stageSettingUpdateColorService } from "@/controller/application/StageSetting/service/StageSettingUpdateColorService";
 import { execute as stageStyleUpdateSizeService } from "@/core/application/Stage/service/StageStyleUpdateSizeService";
+import { execute as stageStyleUpdateColorService } from "@/core/application/Stage/service/StageStyleUpdateColorService";
 import { execute as libraryPreviewAreaChangeColorService } from "@/controller/application/LibraryPreviewArea/service/LibraryPreviewAreaChangeColorService";
 
 /**
@@ -45,13 +46,13 @@ export const execute = (
 
     // アクティブならタイムラインのヘッダーを再描画
     if (work_space.active) {
-        // ステージの景色を更新
+        // ライブラリの色を更新
         stageSettingUpdateColorService(stage.bgColor);
 
         // プレビューエリアの背景色を更新
         libraryPreviewAreaChangeColorService(stage.bgColor);
 
-        // ステージのスタイルを変更
-        stageStyleUpdateSizeService(stage.width, 0);
+        // スクリーンのステージのスタイルを変更
+        stageStyleUpdateColorService(stage.bgColor);
     }
 };

@@ -37,7 +37,4 @@ export const execute = async (
         // 選択範囲のレイヤーとフレームをアクティブ表示に更新
         timelineLayerAllSelectedElementUseCase(movie_clip, frames);
     }
-
-    // 内部情報を更新
-    movie_clip.currentFrame = frame;
 };

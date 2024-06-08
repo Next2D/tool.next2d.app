@@ -17,7 +17,6 @@ export const execute = (event: PointerEvent): void =>
 
     // 親のイベントを中止する
     event.stopPropagation();
-    event.preventDefault();
 
     // キーフレーム追加のユースケースを実行
     timelineToolAddKeyFrameUseCase();

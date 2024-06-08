@@ -1,6 +1,6 @@
 import { $useKeyboard } from "@/shortcut/ShortcutUtil";
 import { $setBeforeFps } from "../StagsSettingUtil";
-import { execute as stageSettingFpsRegisterWindowEventUseCase } from "./StageSettingFpsRegisterWindowEventUseCase";
+import { execute as stageSettingFpsRegisterPointerEventUseCase } from "./StageSettingFpsRegisterPointerEventUseCase";
 
 /**
  * @description ステージのフレームレート設定のマウスダウンイベントユースケース
@@ -35,6 +35,6 @@ export const execute = (event: PointerEvent): void =>
     // 変更前の幅をセット
     $setBeforeFps(parseInt(element.value));
 
-    // windowのイベントを登録
-    stageSettingFpsRegisterWindowEventUseCase();
+    // 移動のイベントを登録
+    stageSettingFpsRegisterPointerEventUseCase(event);
 };

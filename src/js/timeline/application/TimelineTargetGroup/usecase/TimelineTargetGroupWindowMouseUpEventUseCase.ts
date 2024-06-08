@@ -24,8 +24,8 @@ export const execute = (event: PointerEvent): void =>
     timelineTargetGroupInactiveElementService();
 
     // イベントを削除
-    window.removeEventListener(EventType.MOUSE_MOVE,
-        timelineTargetGroupWindowMouseMoveEventUseCase
-    );
-    window.removeEventListener(EventType.MOUSE_UP, execute);
+    // window.removeEventListener(EventType.MOUSE_MOVE,
+    //     timelineTargetGroupWindowMouseMoveEventUseCase
+    // );
+    // window.removeEventListener(EventType.MOUSE_UP, execute);
 };

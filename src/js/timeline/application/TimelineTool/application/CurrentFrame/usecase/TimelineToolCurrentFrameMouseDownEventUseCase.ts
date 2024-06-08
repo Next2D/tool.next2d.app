@@ -1,5 +1,5 @@
 import { $allHideMenu } from "@/menu/application/MenuUtil";
-import { execute as timelineToolCurrentFrameWindowRegisterEventUseCase } from "./TimelineToolCurrentFrameWindowRegisterEventUseCase";
+import { execute as timelineToolCurrentFramePointerRegisterEventUseCase } from "./TimelineToolCurrentFramePointerRegisterEventUseCase";
 import { $useKeyboard } from "@/shortcut/ShortcutUtil";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { ExternalTimeline } from "@/external/timeline/domain/model/ExternalTimeline";
@@ -22,7 +22,6 @@ export const execute = (event: PointerEvent): void =>
 
     // 親のイベントを終了
     event.stopPropagation();
-    event.preventDefault();
 
     // メニューを全て非表示にする
     $allHideMenu();
@@ -32,6 +31,6 @@ export const execute = (event: PointerEvent): void =>
     const externalTimeline = new ExternalTimeline(workSpace, workSpace.scene);
     externalTimeline.deactivatedAllLayers();
 
-    // windowイベントを登録
-    timelineToolCurrentFrameWindowRegisterEventUseCase();
+    // 移動イベントを登録
+    timelineToolCurrentFramePointerRegisterEventUseCase(event);
 };

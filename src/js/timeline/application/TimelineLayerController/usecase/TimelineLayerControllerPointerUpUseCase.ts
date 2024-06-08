@@ -1,0 +1,86 @@
+import { EventType } from "@/tool/domain/event/EventType";
+import { execute as timelineLayerControllerPointerMoveUseCase } from "./TimelineLayerControllerPointerMoveUseCase";
+import { $setCursor } from "@/global/GlobalUtil";
+import { $setMoveLayerMode, $setMoveMode } from "../../TimelineUtil";
+import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
+import { execute as timelineLayerElementResettingService } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerElementResettingUseCase";
+import { timelineLayer } from "@/timeline/domain/model/TimelineLayer";
+import { ExternalTimeline } from "@/external/timeline/domain/model/ExternalTimeline";
+
+/**
+ * @description レイヤーコントローラーウィンドウのマウスアップ処理関数
+ *              Mouse up processing function for the layer controller window
+ *
+ * @param  {PointerEvent} event
+ * @return {void}
+ * @method
+ * @public
+ */
+export const execute = (event: PointerEvent): void =>
+{
+    const element: HTMLElement | null = event.currentTarget as HTMLElement;
+    if (!element) {
+        return ;
+    }
+
+    // イベントの伝播を止める
+    event.stopPropagation();
+    event.preventDefault();
+
+    // カーソルを変更
+    $setCursor("auto");
+
+    // レイヤーの移動モードを解除
+    $setMoveLayerMode(false);
+
+    // 自動移動モードを解除
+    $setMoveMode(false);
+
+    // イベントを削除
+    element.releasePointerCapture(event.pointerId);
+    element.removeEventListener(EventType.MOUSE_MOVE,
+        timelineLayerControllerPointerMoveUseCase
+    );
+    element.removeEventListener(EventType.MOUSE_UP, execute);
+
+    const workSpace = $getCurrentWorkSpace();
+    const movieClip = workSpace.scene;
+
+    if (!movieClip.layers.length) {
+        return ;
+    }
+
+    // 選択したレイヤーの表示を初期化
+    for (let idx = 0; idx < movieClip.selectedLayers.length; ++idx) {
+        const layer = movieClip.selectedLayers[idx];
+        if (!layer) {
+            continue;
+        }
+
+        // 選択したレイヤーの表示を初期化
+        timelineLayerElementResettingService(layer);
+    }
+
+    // 移動先のレイヤーのインデックス値が-1の場合は処理を終了
+    if (timelineLayer.distIndex === -1) {
+        return ;
+    }
+
+    const layer = movieClip.getLayer(timelineLayer.distIndex);
+    if (!layer) {
+        return ;
+    }
+
+    // 選択したレイヤーの表示を初期化
+    timelineLayerElementResettingService(layer);
+
+    // 外部APIを起動
+    const externalTimeline = new ExternalTimeline(workSpace, movieClip);
+
+    // 指定のindex値のうしろにレイヤーを移動
+    externalTimeline.behindLayer(timelineLayer.distIndex);
+
+    // 初期化
+    timelineLayer.distIndex = -1;
+    timelineLayer.exitMode  = false;
+};

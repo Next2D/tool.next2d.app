@@ -1,6 +1,6 @@
 import { EventType } from "@/tool/domain/event/EventType";
 import { execute as scriptEditorModalHideIconMouseDownUseCase } from "./ScriptEditorModalHideIconMouseDownUseCase";
-import { execute as scriptEditorModalWindowRegisterEventUseCase } from "./ScriptEditorModalWindowRegisterEventUseCase";
+import { execute as scriptEditorModalMouseDownEventUseCase } from "./ScriptEditorModalMouseDownEventUseCase";
 import {
     $SCRIPT_EDITOR_MODAL_ID,
     $SCRIPT_EDITOR_HIDE_ICON_ID,
@@ -64,7 +64,7 @@ export const execute = (): void =>
 
     if (barElement) {
         barElement.addEventListener(EventType.MOUSE_DOWN,
-            scriptEditorModalWindowRegisterEventUseCase
+            scriptEditorModalMouseDownEventUseCase
         );
     }
 };

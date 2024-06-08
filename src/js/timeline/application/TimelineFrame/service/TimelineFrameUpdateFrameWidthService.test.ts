@@ -26,7 +26,7 @@ describe("TimelineFrameUpdateFrameWidthServiceTest", () =>
 
         execute(10);
 
-        expect(input.value).toBe("76");
+        expect(input.value).toBe("77");
         expect(timelineAreaState.frameWidth).toBe(10);
         expect(document.documentElement.style.getPropertyValue("--timeline-frame-width")).toBe("10px");
 

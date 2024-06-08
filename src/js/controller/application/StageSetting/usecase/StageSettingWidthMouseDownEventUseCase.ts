@@ -1,7 +1,7 @@
 import { stageSetting } from "@/controller/domain/model/StageSetting";
 import { $useKeyboard } from "@/shortcut/ShortcutUtil";
 import { $STAGE_HEIGHT_ID } from "@/config/StageSettingConfig";
-import { execute as stageSettingWidthRegisterWindowEventUseCase } from "./StageSettingWidthRegisterWindowEventUseCase";
+import { execute as stageSettingWidthRegisterWindowEventUseCase } from "./StageSettingWidthRegisterPointerEventUseCase";
 import {
     $setBeforeHeight,
     $setBeforeWidth
@@ -53,6 +53,6 @@ export const execute = (event: PointerEvent): void =>
         $setBeforeHeight(parseInt(element.value));
     }
 
-    // windowのイベントを登録
-    stageSettingWidthRegisterWindowEventUseCase();
+    // 移動のイベントを登録
+    stageSettingWidthRegisterWindowEventUseCase(event);
 };

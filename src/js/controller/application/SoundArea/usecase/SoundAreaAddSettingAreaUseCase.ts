@@ -6,8 +6,8 @@ import { execute as soundAreaSettingComponent } from "../component/SoundAreaSett
 import { EventType } from "@/tool/domain/event/EventType";
 import { execute as soundAreaTrashMouseDownUseCase } from "./SoundAreaTrashMouseDownUseCase";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
-import { execute as soundAreaVolumeRegisterWindowEventUseCase } from "./SoundAreaVolumeRegisterWindowEventUseCase";
-import { execute as soundAreaLoopCountRegisterWindowEventUseCase } from "./SoundAreaLoopCountRegisterWindowEventUseCase";
+import { execute as soundAreaVolumeRegisterPointerEventUseCase } from "./SoundAreaVolumeRegisterPointerEventUseCase";
+import { execute as soundAreaLoopCountRegisterPointerEventUseCase } from "./SoundAreaLoopCountRegisterPointerEventUseCase";
 import { execute as soundAreaVolumeFocusInEventService } from "../service/SoundAreaVolumeFocusInEventService";
 import { execute as soundAreaVolumeKeyPressEventService } from "../service/SoundAreaVolumeKeyPressEventService";
 import { execute as soundAreaLoopCountKeyPressEventService } from "../service/SoundAreaLoopCountKeyPressEventService";
@@ -121,7 +121,7 @@ export const execute = (
             soundAreaVolumeMouseOutEventService
         );
         volumeElement.addEventListener(EventType.MOUSE_DOWN,
-            soundAreaVolumeRegisterWindowEventUseCase
+            soundAreaVolumeRegisterPointerEventUseCase
         );
     }
 
@@ -144,7 +144,7 @@ export const execute = (
             soundAreaLoopCountMouseOutEventService
         );
         loopElement.addEventListener(EventType.MOUSE_DOWN,
-            soundAreaLoopCountRegisterWindowEventUseCase
+            soundAreaLoopCountRegisterPointerEventUseCase
         );
     }
 };

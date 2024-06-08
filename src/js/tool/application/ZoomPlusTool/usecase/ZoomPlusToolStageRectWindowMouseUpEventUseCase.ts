@@ -26,10 +26,10 @@ export const execute = async (event: PointerEvent): Promise<void> =>
     event.preventDefault();
 
     // windowイベントを解除
-    window.removeEventListener(EventType.MOUSE_MOVE,
-        zoomPlusToolStageRectWindowMouseMoveEventUseCase
-    );
-    window.removeEventListener(EventType.MOUSE_UP, execute);
+    // window.removeEventListener(EventType.MOUSE_MOVE,
+    //     zoomPlusToolStageRectWindowMouseMoveEventUseCase
+    // );
+    // window.removeEventListener(EventType.MOUSE_UP, execute);
 
     // 範囲選択のElementを表示
     const element: HTMLElement | null = document

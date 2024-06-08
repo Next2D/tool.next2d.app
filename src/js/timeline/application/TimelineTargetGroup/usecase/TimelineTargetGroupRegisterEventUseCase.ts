@@ -12,13 +12,13 @@ import { execute as timelineTargetGroupWindowMouseUpEventUseCase } from "./Timel
  */
 export const execute = (): void =>
 {
-    // グループウィンドウのマウスムーブイベント
-    window.addEventListener(EventType.MOUSE_MOVE,
-        timelineTargetGroupWindowMouseMoveEventUseCase
-    );
+    // // グループウィンドウのマウスムーブイベント
+    // window.addEventListener(EventType.MOUSE_MOVE,
+    //     timelineTargetGroupWindowMouseMoveEventUseCase
+    // );
 
-    // グループウィンドウのマウスアップイベント
-    window.addEventListener(EventType.MOUSE_UP,
-        timelineTargetGroupWindowMouseUpEventUseCase
-    );
+    // // グループウィンドウのマウスアップイベント
+    // window.addEventListener(EventType.MOUSE_UP,
+    //     timelineTargetGroupWindowMouseUpEventUseCase
+    // );
 };

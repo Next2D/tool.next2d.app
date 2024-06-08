@@ -9,7 +9,8 @@ describe("TTimelineAreaMouseOutEventServiceTest", () =>
         expect($getStandbyMoveState()).toBe(true);
 
         const mockEvent = {
-            "stopPropagation": () => { return null }
+            "stopPropagation": () => { return null },
+            "preventDefault": () => { return null }
         };
 
         execute(mockEvent);

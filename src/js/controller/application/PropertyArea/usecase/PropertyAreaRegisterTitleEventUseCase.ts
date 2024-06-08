@@ -27,12 +27,12 @@ export const execute = (): void =>
     const length: number = elements.length;
     for (let idx: number = 0; idx < length; ++idx) {
 
-        const element: HTMLElement | undefined = elements[idx] as HTMLElement;
-        if (!element) {
+        const node: HTMLElement | undefined = elements[idx] as HTMLElement;
+        if (!node) {
             continue;
         }
 
-        element
+        node
             .addEventListener(
                 EventType.MOUSE_DOWN,
                 propertyAreaTitleMouseDownEventService

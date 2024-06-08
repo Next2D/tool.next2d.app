@@ -1,5 +1,5 @@
 import { $useKeyboard } from "@/shortcut/ShortcutUtil";
-import { execute as transformSettingWidthRegisterWindowEventUseCase } from "./TransformSettingWidthRegisterWindowEventUseCase";
+import { execute as transformSettingWidthRegisterPointerEventUseCase } from "./TransformSettingWidthRegisterPointerEventUseCase";
 import { $getActiveTool } from "@/tool/application/ToolUtil";
 import { execute as screenAreaCalcSelectedBoundsService } from "@/screen/application/ScreenArea/service/ScreenAreaCalcSelectedBoundsService";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
@@ -109,5 +109,5 @@ export const execute = (event: PointerEvent): void =>
     }
 
     // windowのイベントを登録
-    transformSettingWidthRegisterWindowEventUseCase();
+    transformSettingWidthRegisterPointerEventUseCase(event);
 };

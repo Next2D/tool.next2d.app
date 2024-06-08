@@ -18,7 +18,6 @@ export const execute = (event: PointerEvent): void =>
 
     // イベントの伝播を停止
     event.stopPropagation();
-    event.preventDefault();
 
     // windowイベントを登録
     arrowToolStageRectRegisterWindowEventUseCase();

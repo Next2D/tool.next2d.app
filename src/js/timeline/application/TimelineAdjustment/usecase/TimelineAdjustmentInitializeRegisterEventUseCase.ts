@@ -1,7 +1,7 @@
 import { $TIMELINE_ADJUSTMENT_X_ID, $TIMELINE_ADJUSTMENT_Y_ID } from "@/config/TimelineConfig";
 import { EventType } from "@/tool/domain/event/EventType";
-import { execute as timelineAdjustmentXRegisterEventUseCase } from "./TimelineAdjustmentXRegisterEventUseCase";
-import { execute as timelineAdjustmentYRegisterEventUseCase } from "./TimelineAdjustmentYRegisterEventUseCase";
+import { execute as timelineAdjustmentXMouseDownEventUseCase } from "./TimelineAdjustmentXMouseDownEventUseCase";
+import { execute as timelineAdjustmentYMouseDownEventUseCase } from "./TimelineAdjustmentYMouseDownEventUseCase";
 
 /**
  * @description タイムラインの幅と高さの調整イベント登録
@@ -18,7 +18,7 @@ export const execute = (): void =>
 
     if (xAdjElement) {
         xAdjElement.addEventListener(EventType.MOUSE_DOWN,
-            timelineAdjustmentXRegisterEventUseCase
+            timelineAdjustmentXMouseDownEventUseCase
         );
     }
 
@@ -27,7 +27,7 @@ export const execute = (): void =>
 
     if (yAdjElement) {
         yAdjElement.addEventListener(EventType.MOUSE_DOWN,
-            timelineAdjustmentYRegisterEventUseCase
+            timelineAdjustmentYMouseDownEventUseCase
         );
     }
 };

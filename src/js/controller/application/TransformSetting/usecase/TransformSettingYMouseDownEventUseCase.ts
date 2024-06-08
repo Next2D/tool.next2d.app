@@ -1,5 +1,5 @@
 import { $useKeyboard } from "@/shortcut/ShortcutUtil";
-import { execute as transformSettingYRegisterWindowEventUseCase } from "./TransformSettingYRegisterWindowEventUseCase";
+import { execute as transformSettingYRegisterWindowEventUseCase } from "./TransformSettingYRegisterPointerEventUseCase";
 import { transformSetting } from "@/controller/domain/model/TransformSetting";
 
 /**
@@ -37,5 +37,5 @@ export const execute = (event: PointerEvent): void =>
     transformSetting.y = 0;
 
     // windowのイベントを登録
-    transformSettingYRegisterWindowEventUseCase();
+    transformSettingYRegisterWindowEventUseCase(event);
 };

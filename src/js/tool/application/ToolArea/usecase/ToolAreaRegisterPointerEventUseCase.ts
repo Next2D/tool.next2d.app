@@ -1,6 +1,7 @@
-import { execute as toolAreaActiveWindowMoveService } from "../service/ToolAreaActivePointerMoveService";
-import { execute as toolAreaActiveWindowMouseUpUseCase } from "../service/ToolAreaActiveWindowMouseUpService";
+import { execute as toolAreaPointerMoveService } from "../service/ToolAreaPointerMoveService";
+import { execute as toolAreaActivePointerUpUseCase } from "./ToolAreaActivePointerUpUseCase";
 import { $TOOL_PREFIX } from "@/config/ToolConfig";
+import { EventType } from "@/tool/domain/event/EventType";
 
 /**
  * @description ツールエリアの移動関数をwindowに登録
@@ -21,7 +22,7 @@ export const execute = (event: PointerEvent): void =>
     }
 
     // 移動イベントを登録
-    element.onpointermove = toolAreaActiveWindowMoveService;
-    element.onpointerup   = toolAreaActiveWindowMouseUpUseCase;
     element.setPointerCapture(event.pointerId);
+    element.addEventListener(EventType.MOUSE_MOVE, toolAreaPointerMoveService);
+    element.addEventListener(EventType.MOUSE_UP, toolAreaActivePointerUpUseCase);
 };

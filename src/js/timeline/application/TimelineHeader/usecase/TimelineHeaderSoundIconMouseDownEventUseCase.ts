@@ -1,5 +1,5 @@
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
-import { execute as timelineHeaderIconRegisterWindowEventUseCase } from "./TimelineHeaderIconRegisterWindowEventUseCase";
+import { execute as timelineHeaderIconRegisterWindowEventUseCase } from "./TimelineHeaderIconRegisteWindowEventUseCase";
 import {
     $TIMELINE_HEADER_ICON_ID,
     $TIMELINE_MARKER_ID

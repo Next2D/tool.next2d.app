@@ -11,11 +11,11 @@ import { $useKeyboard } from "@/shortcut/ShortcutUtil";
 import { execute as billingModelShowService } from "@/menu/application/BillingModal/service/BillingModelShowService";
 import { execute as timelineLayerAllClearSelectedElementUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerAllClearSelectedElementUseCase";
 import { $useSocket } from "@/share/ShareUtil";
+import { ExternalTimeline } from "@/external/timeline/domain/model/ExternalTimeline";
 import {
     $setStandbyMoveState,
     $setTimelineOffsetTop
 } from "../TimelineAreaUtil";
-import { ExternalTimeline } from "@/external/timeline/domain/model/ExternalTimeline";
 
 /**
  * @description ダブルタップ用の待機フラグ
@@ -59,6 +59,9 @@ export const execute = (event: PointerEvent): void =>
     // マウスの状態管理をダウンに更新
     $setMouseState("down");
 
+    // 長押し判定を中止
+    clearTimeout(activeTimerId);
+
     const workSpace = $getCurrentWorkSpace();
     if (!wait) {
 
@@ -83,10 +86,8 @@ export const execute = (event: PointerEvent): void =>
                 return ;
             }
 
-            event.preventDefault();
-
             // タイムラインエリアの移動処理を実行
-            timelineAreaActiveMoveUseCase();
+            timelineAreaActiveMoveUseCase(event);
         }, 600);
 
         const moiveClip = workSpace.scene;
@@ -100,13 +101,8 @@ export const execute = (event: PointerEvent): void =>
 
     } else {
 
-        event.preventDefault();
-
         // ダブルタップを終了
         wait = false;
-
-        // 長押し判定を中止
-        clearTimeout(activeTimerId);
 
         // 長押し待機モードをoffにする
         $setStandbyMoveState(false);

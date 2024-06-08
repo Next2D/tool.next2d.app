@@ -2,7 +2,7 @@ import { $TIMELINE_ID } from "@/config/TimelineConfig";
 import { $setCursor } from "@/global/GlobalUtil";
 import { $getMouseState } from "../../TimelineUtil";
 import { execute as timelineAreaChageStyleToActiveService } from "../service/TimelineAreaChageStyleToActiveService";
-import { execute as timelinelAreaRegisterWindowMoveEventUseCase } from "./TimelinelAreaRegisterWindowMoveEventUseCase";
+import { execute as timelinelAreaRegisterPointerEventUseCase } from "./TimelinelAreaRegisterPointerEventUseCase";
 import { execute as timelineHeaderWindowResizeUseCase } from "../../TimelineHeader/usecase/TimelineHeaderWindowResizeUseCase";
 import { execute as timelineLayerWindowResizeUseCase } from "../../TimelineLayer/usecase/TimelineLayerWindowResizeUseCase";
 import { execute as timelineHeaderUpdateClientWidthService } from "@/timeline/application/TimelineHeader/service/TimelineHeaderUpdateClientWidthService";
@@ -17,11 +17,12 @@ import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
  * @description タイムラインエリアを移動可能な状態にする
  *              Make the tool area movable
  *
+ * @param  {PointerEvent} event
  * @return {void}
  * @method
  * @public
  */
-export const execute = (): void =>
+export const execute = (event: PointerEvent): void =>
 {
     // 待機状態が終了していれば処理は終了
     if (!$getStandbyMoveState()) {
@@ -63,8 +64,8 @@ export const execute = (): void =>
         // カーソルを移動用に変更
         $setCursor("move");
 
-        // windowにイベントを登録
-        timelinelAreaRegisterWindowMoveEventUseCase();
+        // 移動イベントを登録
+        timelinelAreaRegisterPointerEventUseCase(event);
 
         // リサイズを実行
         // ヘッダーをリサイズ

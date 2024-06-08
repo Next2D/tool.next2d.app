@@ -17,7 +17,6 @@ export const execute = (event: PointerEvent): void =>
 
     // 親のイベントを中止する
     event.stopPropagation();
-    event.preventDefault();
 
     // ループフラグを反転させる
     timelineToolRepeatUseCase();
