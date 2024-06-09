@@ -9,8 +9,6 @@ import { execute as timelineLayerControllerDisableIconMouseDownEventUseCase } fr
 import { execute as timelineLayerControllerDisableIconMouseOverUseCase } from "./TimelineLayerControllerDisableIconMouseOverUseCase";
 import { execute as timelineLayerControllerLockIconMouseDownEventUseCase } from "./TimelineLayerControllerLockIconMouseDownEventUseCase";
 import { execute as timelineLayerControllerLockIconMouseOverUseCase } from "./TimelineLayerControllerLockIconMouseOverUseCase";
-import { execute as timelineLayerControllerExitIconMouseOverEventUseCase } from "./TimelineLayerControllerExitIconMouseOverEventUseCase";
-import { execute as timelineLayerControllerExitIconMouseOutEventUseCase } from "./TimelineLayerControllerExitIconMouseOutEventUseCase";
 import { EventType } from "@/tool/domain/event/EventType";
 
 /**
@@ -42,20 +40,6 @@ export const execute = (element: HTMLElement): void =>
         // マウスダウンイベント
         iconElement.addEventListener(EventType.MOUSE_DOWN,
             timelineLayerControllerLayerIconMouseDownEventUseCase
-        );
-    }
-
-    // exitレイヤーのアイコンにイベントを登録
-    const exitElement = element
-        .querySelector(".timeline-exit-icon") as HTMLElement;
-
-    if (exitElement) {
-        exitElement.addEventListener(EventType.MOUSE_OVER,
-            timelineLayerControllerExitIconMouseOverEventUseCase
-        );
-
-        exitElement.addEventListener(EventType.MOUSE_OUT,
-            timelineLayerControllerExitIconMouseOutEventUseCase
         );
     }
 

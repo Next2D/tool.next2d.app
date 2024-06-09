@@ -1,6 +1,6 @@
 import { timelineLayer } from "@/timeline/domain/model/TimelineLayer";
 import { execute as timelineLayerControllerInactiveInsertIconElementService } from "../service/TimelineLayerControllerInactiveInsertIconElementService";
-import { execute as timelineLayerControllerInactiveExitIconElementService } from "../service/TimelineLayerControllerInactiveExitIconElementService";
+import { execute as timelineLayerControllerActiveExitIconElementService } from "../service/TimelineLayerControllerActiveExitIconElementService";
 import { execute as timelineLayerInactiveMoveTargetStyleService } from "@/timeline/application/TimelineLayer/service/TimelineLayerInactiveMoveTargetStyleService";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import {
@@ -29,11 +29,6 @@ export const execute = (element: HTMLElement, layer_index: number): void =>
         return ;
     }
 
-    // 選択中の場合は処理をしない
-    if (movieClip.selectedLayers.indexOf(layer) > -1) {
-        return ;
-    }
-
     // styleを更新
     timelineLayerInactiveMoveTargetStyleService(element);
 
@@ -50,7 +45,11 @@ export const execute = (element: HTMLElement, layer_index: number): void =>
 
         case $MASK_IN_MODE: // マスクの子レイヤー
         case $GUIDE_IN_MODE: // ガイドの子レイヤー
-            timelineLayerControllerInactiveExitIconElementService(element);
+            if (timelineLayer.exitMode) {
+                timelineLayer.exitMode = false;
+                // styleだけ初期化
+                timelineLayerControllerActiveExitIconElementService(element);
+            }
             timelineLayerControllerInactiveInsertIconElementService(element);
             break;
 

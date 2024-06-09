@@ -71,7 +71,7 @@ export const execute = (event: PointerEvent): void =>
         return ;
     }
 
-    // 選択したレイヤーの表示を初期化
+    // 移動先になったレイヤーの表示を初期化
     timelineLayerElementResettingService(layer);
 
     // 外部APIを起動

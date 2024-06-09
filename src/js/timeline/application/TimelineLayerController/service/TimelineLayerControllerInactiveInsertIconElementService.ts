@@ -16,11 +16,4 @@ export const execute = (element: HTMLElement): void =>
     if (iconElement) {
         iconElement.setAttribute("style", "display: none;");
     }
-
-    const exitElement = element
-        .querySelector(".timeline-exit-icon") as HTMLElement;
-
-    if (exitElement) {
-        exitElement.setAttribute("style", "display: none;");
-    }
 };
