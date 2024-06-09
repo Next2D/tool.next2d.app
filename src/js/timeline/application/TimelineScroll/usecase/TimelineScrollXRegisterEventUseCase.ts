@@ -1,6 +1,6 @@
 import { $TIMELINE_SCROLL_BAR_X_ID } from "@/config/TimelineConfig";
 import { EventType } from "@/tool/domain/event/EventType";
-import { execute as timelineScrollXWindowRegisterEventUseCase } from "./TimelineScrollXWindowRegisterEventUseCase";
+import { execute as timelineScrollXMouseDownEventUseCase } from "./TimelineScrollXMouseDownEventUseCase";
 
 /**
  * @description タイムラインのx座標に移動するスクロールのイベント登録
@@ -21,6 +21,6 @@ export const execute = (): void =>
 
     // マウスダウンでwindowイベントを登録、マウスアップで解除
     element.addEventListener(EventType.MOUSE_DOWN,
-        timelineScrollXWindowRegisterEventUseCase
+        timelineScrollXMouseDownEventUseCase
     );
 };

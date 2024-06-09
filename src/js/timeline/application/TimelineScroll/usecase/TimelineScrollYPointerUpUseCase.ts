@@ -1,5 +1,5 @@
 import { EventType } from "@/tool/domain/event/EventType";
-import { execute as timelineScrollYWindowMoveUseCase } from "./TimelineScrollYWindowMoveUseCase";
+import { execute as timelineScrollYWindowMoveUseCase } from "./TimelineScrollYPointerMoveUseCase";
 
 /**
  * @description y座標移動イベントの終了関数
@@ -15,7 +15,13 @@ export const execute = (event: PointerEvent): void =>
     // 親のイベントを中止する
     event.stopPropagation();
 
+    const element: HTMLElement | null = event.target as HTMLElement;
+    if (!element) {
+        return ;
+    }
+
     // 登録されたイベントを削除
-    window.removeEventListener(EventType.MOUSE_MOVE, timelineScrollYWindowMoveUseCase);
-    window.removeEventListener(EventType.MOUSE_UP, execute);
+    element.releasePointerCapture(event.pointerId);
+    element.removeEventListener(EventType.MOUSE_MOVE, timelineScrollYWindowMoveUseCase);
+    element.removeEventListener(EventType.MOUSE_UP, execute);
 };
