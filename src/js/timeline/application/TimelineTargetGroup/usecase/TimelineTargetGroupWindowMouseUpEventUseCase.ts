@@ -14,6 +14,11 @@ import { $setMoveMode } from "../../TimelineUtil";
  */
 export const execute = (event: PointerEvent): void =>
 {
+    const element = event.target as HTMLElement;
+    if (!element) {
+        return ;
+    }
+
     // 親のイベントを中止
     event.stopPropagation();
 
@@ -24,6 +29,7 @@ export const execute = (event: PointerEvent): void =>
     timelineTargetGroupInactiveElementService();
 
     // イベントを削除
+    element.releasePointerCapture(event.pointerId);
     window.removeEventListener(EventType.MOUSE_MOVE,
         timelineTargetGroupWindowMouseMoveEventUseCase
     );

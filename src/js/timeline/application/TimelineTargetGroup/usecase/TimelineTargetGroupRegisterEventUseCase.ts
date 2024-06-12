@@ -10,15 +10,19 @@ import { execute as timelineTargetGroupWindowMouseUpEventUseCase } from "./Timel
  * @method
  * @public
  */
-export const execute = (): void =>
+export const execute = (event: PointerEvent): void =>
 {
-    // グループウィンドウのマウスムーブイベント
-    window.addEventListener(EventType.MOUSE_MOVE,
+    const element = event.target as HTMLElement;
+    if (!element) {
+        return ;
+    }
+
+    // グループウィンドウのイベント
+    element.setPointerCapture(event.pointerId);
+    element.addEventListener(EventType.MOUSE_MOVE,
         timelineTargetGroupWindowMouseMoveEventUseCase
     );
-
-    // グループウィンドウのマウスアップイベント
-    window.addEventListener(EventType.MOUSE_UP,
+    element.addEventListener(EventType.MOUSE_UP,
         timelineTargetGroupWindowMouseUpEventUseCase
     );
 };

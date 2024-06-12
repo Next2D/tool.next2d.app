@@ -85,7 +85,7 @@ export const execute = (event: PointerEvent): void =>
                 if ($getMouseState() === "up") {
                     return ;
                 }
-                timelineTargetGroupActiveGroupUseCase(event.pageX, event.pageY);
+                timelineTargetGroupActiveGroupUseCase(event);
             }, 500);
 
         } else {

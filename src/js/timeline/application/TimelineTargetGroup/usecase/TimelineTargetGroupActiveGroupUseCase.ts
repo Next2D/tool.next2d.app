@@ -14,11 +14,12 @@ import {
  * @description 選択したフレームのグループをアクティブにする
  *              Activate a group of selected frames
  *
+ * @param  {PointerEvent} event
  * @return {void}
  * @method
  * @public
  */
-export const execute = (page_x: number, page_y: number): void =>
+export const execute = (event: PointerEvent): void =>
 {
     const element: HTMLElement | null = document
         .getElementById($TIMELINE_TARGET_GROUP_ID);
@@ -67,11 +68,11 @@ export const execute = (page_x: number, page_y: number): void =>
 
     // 移動情報を初期化
     timelineGroup.clear();
-    timelineGroup.pageX = page_x;
-    timelineGroup.pageY = page_y;
+    timelineGroup.pageX = event.pageX;
+    timelineGroup.pageY = event.pageY;
 
     // windowイベントを登録する
-    timelineTargetGroupRegisterEventUseCase();
+    timelineTargetGroupRegisterEventUseCase(event);
 
     // x座標
     const offsetTop = selectedFrameElement.offsetTop
