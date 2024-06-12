@@ -4,8 +4,8 @@ import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import { ExternalLayer } from "@/external/core/domain/model/ExternalLayer";
 import { ExternalTimeline } from "@/external/timeline/domain/model/ExternalTimeline";
 import { EventType } from "@/tool/domain/event/EventType";
-import { execute as timelineLayerFrameWindowMouseMoveEventUseCase } from "./TimelineLayerFrameWindowMouseMoveEventUseCase";
-import { execute as timelineLayerFrameWindowMouseUpEventUseCase } from "./TimelineLayerFrameWindowMouseUpEventUseCase";
+import { execute as timelineLayerFramePointerMoveEventUseCase } from "./TimelineLayerFramePointerMoveEventUseCase";
+import { execute as timelineLayerFramePointerUpEventUseCase } from "./TimelineLayerFramePointerUpEventUseCase";
 
 /**
  * @description 複数フレームの選択の開始関数、windowにmoveイベントを登録する
@@ -24,7 +24,8 @@ export const execute = async (
     movie_clip: MovieClip,
     layer: Layer,
     frame: number,
-    frames: number[]
+    frames: number[],
+    event: PointerEvent
 ): Promise<void> => {
 
     // 外部APIを起動
@@ -44,11 +45,17 @@ export const execute = async (
     movie_clip.selectedFrameObject.end   = frame;
 
     // フレーム選択イベントを登録
-    window.addEventListener(EventType.MOUSE_MOVE,
-        timelineLayerFrameWindowMouseMoveEventUseCase
+    const element: HTMLElement | null = event.target as HTMLElement;
+    if (!element) {
+        return ;
+    }
+
+    // 移動イベントを登録
+    element.setPointerCapture(event.pointerId);
+    element.addEventListener(EventType.MOUSE_MOVE,
+        timelineLayerFramePointerMoveEventUseCase
     );
-    // 終了イベントを登録
-    window.addEventListener(EventType.MOUSE_UP,
-        timelineLayerFrameWindowMouseUpEventUseCase
+    element.addEventListener(EventType.MOUSE_UP,
+        timelineLayerFramePointerUpEventUseCase
     );
 };

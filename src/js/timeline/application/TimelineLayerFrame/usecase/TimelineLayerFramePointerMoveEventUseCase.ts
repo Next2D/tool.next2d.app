@@ -202,7 +202,7 @@ export const execute = (
 
     requestAnimationFrame(async (): Promise<void> =>
     {
-        const element = event.target as HTMLElement;
+        const element = document.elementFromPoint(event.clientX, event.clientY) as HTMLElement;
         if (!element) {
             return ;
         }

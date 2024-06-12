@@ -96,7 +96,8 @@ export const execute = (event: PointerEvent): void =>
                 movieClip,
                 layer,
                 frame,
-                [frame]
+                [frame],
+                event
             );
 
         }
@@ -120,7 +121,8 @@ export const execute = (event: PointerEvent): void =>
                 movieClip,
                 layer,
                 frame,
-                frames
+                frames,
+                event
             );
 
             movieClip.selectedFrameObject.start = emptyCharacter.startFrame;

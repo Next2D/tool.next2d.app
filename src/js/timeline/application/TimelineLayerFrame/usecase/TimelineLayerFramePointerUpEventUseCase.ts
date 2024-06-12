@@ -1,5 +1,5 @@
 import { EventType } from "@/tool/domain/event/EventType";
-import { execute as timelineLayerFrameWindowMouseMoveEventUseCase } from "./TimelineLayerFrameWindowMouseMoveEventUseCase";
+import { execute as timelineLayerFramePointerMoveEventUseCase } from "./TimelineLayerFramePointerMoveEventUseCase";
 import {
     $setMouseState,
     $setMoveMode
@@ -16,6 +16,11 @@ import {
  */
 export const execute = (event: PointerEvent): void =>
 {
+    const element: HTMLElement | null = event.target as HTMLElement;
+    if (!element) {
+        return ;
+    }
+
     // 親のイベントを中止
     event.stopPropagation();
 
@@ -26,8 +31,9 @@ export const execute = (event: PointerEvent): void =>
     $setMoveMode(false);
 
     // windowのムーブイベントを削除
-    window.removeEventListener(EventType.MOUSE_MOVE,
-        timelineLayerFrameWindowMouseMoveEventUseCase
+    element.releasePointerCapture(event.pointerId);
+    element.removeEventListener(EventType.MOUSE_MOVE,
+        timelineLayerFramePointerMoveEventUseCase
     );
-    window.removeEventListener(EventType.MOUSE_UP, execute);
+    element.removeEventListener(EventType.MOUSE_UP, execute);
 };
