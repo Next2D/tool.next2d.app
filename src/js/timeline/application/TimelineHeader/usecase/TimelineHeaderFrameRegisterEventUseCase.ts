@@ -3,8 +3,6 @@ import { execute as timelineHeaderMouseDownEventUseCase } from "./TimelineHeader
 import { execute as timelineHeaderScriptIconMouseDownEventUseCase } from "./TimelineHeaderScriptIconMouseDownEventUseCase";
 import { execute as timelineHeaderSoundIconMouseDownEventUseCase } from "./TimelineHeaderSoundIconMouseDownEventUseCase";
 import { execute as timelineHeaderLabelIconMouseDownEventUseCase } from "./TimelineHeaderLabelIconMouseDownEventUseCase";
-import { execute as timelineHeaderIconMouseOverService } from "../service/TimelineHeaderIconMouseOverService";
-import { execute as timelineHeaderIconMouseOutService } from "../service/TimelineHeaderIconMouseOutService";
 import {
     $TIMELINE_HEADER_LABEL_INDEX,
     $TIMELINE_HEADER_SCRIPT_INDEX,
@@ -50,8 +48,4 @@ export const execute = (element: HTMLElement): void =>
             timelineHeaderSoundIconMouseDownEventUseCase
         );
     }
-
-    // 移動処理
-    element.addEventListener(EventType.MOUSE_OVER, timelineHeaderIconMouseOverService);
-    element.addEventListener(EventType.MOUSE_OUT, timelineHeaderIconMouseOutService);
 };

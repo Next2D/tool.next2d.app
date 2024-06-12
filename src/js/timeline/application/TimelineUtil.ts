@@ -535,3 +535,71 @@ export const $setDestIconFrame = (frame: number): void =>
 {
     $destIconFrame = frame;
 };
+
+/**
+ * @type {number}
+ * @default 0
+ * @private
+ */
+let $iconClientY: number = 0;
+
+/**
+ * @description アイコンのクライアントY座標を返却
+ *              Returns the client Y coordinate of the icon
+ *
+ * @return {number}
+ * @method
+ * @public
+ */
+export const $getIconClientY = (): number =>
+{
+    return $iconClientY;
+};
+
+/**
+ * @description アイコンのクライアントY座標をセット
+ *              Set the client Y coordinate of the icon
+ *
+ * @param  {number} icon_client_y
+ * @return {void}
+ * @method
+ * @public
+ */
+export const $setIconClientY = (icon_client_y: number): void =>
+{
+    $iconClientY = icon_client_y;
+};
+
+/**
+ * @type {HTMLElement | null}
+ * @default null
+ * @private
+ */
+let $hitElement: HTMLElement | null = null;
+
+/**
+ * @description ヒットしたElementを返却
+ *              Returns the hit Element
+ *
+ * @return {HTMLElement | null}
+ * @method
+ * @public
+ */
+export const $getHitElement = (): HTMLElement | null =>
+{
+    return $hitElement;
+};
+
+/**
+ * @description ヒットしたElementをセット
+ *              Set the hit Element
+ *
+ * @param  {HTMLElement | null} element
+ * @return {void}
+ * @method
+ * @public
+ */
+export const $setHitElement = (element: HTMLElement | null): void =>
+{
+    $hitElement = element;
+};

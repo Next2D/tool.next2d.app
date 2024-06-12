@@ -1,76 +1,43 @@
 import {
-    $TIMELINE_HEADER_LABEL_INDEX,
-    $TIMELINE_HEADER_SCRIPT_INDEX,
-    $TIMELINE_HEADER_SOUND_INDEX
-} from "@/config/TimelineConfig";
-import {
     $getMoveIconFrame,
-    $getMoveIconType,
-    $setDestIconFrame
+    $setDestIconFrame,
+    $setHitElement
 } from "../../TimelineUtil";
 
 /**
  * @description マウスオーバーイベントを実行する
  *              Execute mouse over event
  *
- * @param  {PointerEvent} event
+ * @param  {HTMLElement} element
  * @return {void}
  * @method
  * @public
  */
-export const execute = (event: PointerEvent): void =>
+export const execute = (element: HTMLElement): void =>
 {
-    // 移動変数がない場合は処理しない
-    const moveIconType = $getMoveIconType();
-    if (!moveIconType || !$getMoveIconFrame()) {
-        return ;
-    }
-
-    // 全てのイベントをキャンセル
-    event.stopPropagation();
-    event.preventDefault();
-
-    const element = event.currentTarget as HTMLElement;
-    if (!element) {
-        return ;
-    }
-
     // 移動先のフレームをセット
-    $setDestIconFrame(parseInt(element.dataset.frame as string));
+    let frameData: string | undefined = element.dataset.frame;
+    if (!frameData) {
+        const parentElement = element.parentElement as HTMLElement;
+        if (parentElement) {
+            frameData = parentElement.dataset.frame;
+        }
 
-    switch (moveIconType) {
+        if (!frameData) {
+            return ;
+        }
+    }
 
-        case "script":
-            {
-                const node = element.children[$TIMELINE_HEADER_SCRIPT_INDEX] as HTMLElement;
-                if (!node) {
-                    return ;
-                }
-                node.style.backgroundColor = "#3692f0";
-            }
-            break;
+    const frame = parseInt(frameData);
+    $setDestIconFrame(frame);
 
-        case "label":
-            {
-                const node = element.children[$TIMELINE_HEADER_LABEL_INDEX] as HTMLElement;
-                if (!node) {
-                    return ;
-                }
-                node.style.backgroundColor = "#3692f0";
-            }
-            break;
+    // ヒットした要素の背景色を変更
+    if ($getMoveIconFrame() !== frame) {
 
-        case "sound":
-            {
-                const node = element.children[$TIMELINE_HEADER_SOUND_INDEX] as HTMLElement;
-                if (!node) {
-                    return ;
-                }
-                node.style.backgroundColor = "#3692f0";
-            }
-            break;
+        // styleを変更
+        element.style.backgroundColor = "#3692f0";
 
-        default:
-            break;
+        // ヒットした要素をセット
+        $setHitElement(element);
     }
 };

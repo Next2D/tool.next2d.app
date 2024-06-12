@@ -1,11 +1,11 @@
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
-import { execute as timelineHeaderIconRegisterWindowEventUseCase } from "./TimelineHeaderIconRegisteWindowEventUseCase";
+import { execute as timelineHeaderIconRegistePointerEventUseCase } from "./TimelineHeaderIconRegistePointerEventUseCase";
 import {
-    $TIMELINE_HEADER_ICON_ID,
     $TIMELINE_MARKER_ID
 } from "@/config/TimelineConfig";
 import {
     $setDestIconFrame,
+    $setIconClientY,
     $setMoveIconFrame,
     $setMoveIconType
 } from "../../TimelineUtil";
@@ -26,20 +26,21 @@ export const execute = (event: PointerEvent): void =>
         return ;
     }
 
-    const parentElement = element.parentElement;
-    if (!parentElement) {
-        return ;
-    }
+    // 選択したelementからframeを取得
+    let frameData: string | undefined = element.dataset.frame as string;
+    if (!frameData) {
+        const parentElement = element.parentElement as HTMLElement;
+        if (parentElement) {
+            frameData = parentElement.dataset.frame as string;
+        }
 
-    const iconElement: HTMLElement | null = document
-        .getElementById($TIMELINE_HEADER_ICON_ID);
-
-    if (!iconElement) {
-        return ;
+        if (!frameData) {
+            return ;
+        }
     }
 
     // ラベルがなければ終了
-    const frame = parseInt(parentElement.dataset.frame as string);
+    const frame = parseInt(frameData);
     const scene = $getCurrentWorkSpace().scene;
     if (!scene.hasLabel(frame)) {
         return ;
@@ -55,16 +56,6 @@ export const execute = (event: PointerEvent): void =>
     event.stopPropagation();
     event.preventDefault();
 
-    // 移動するElementをセット
-    let style = "display: block;";
-    style += "position: fixed;";
-    style += `left: ${event.pageX - element.clientWidth / 2}px;`;
-    style += `top: ${event.pageY - element.clientHeight / 2}px;`;
-
-    // setAttributeで完全に上書きする
-    iconElement.setAttribute("class", "frame-border-box-marker");
-    iconElement.setAttribute("style", style);
-
     // 移動するアイコンのタイプをセット
     $setMoveIconType("label");
 
@@ -74,6 +65,9 @@ export const execute = (event: PointerEvent): void =>
     // 移動先をリセット
     $setDestIconFrame(frame);
 
+    // y座標をセット
+    $setIconClientY(event.clientY);
+
     // windwoイベント登録
-    timelineHeaderIconRegisterWindowEventUseCase();
+    timelineHeaderIconRegistePointerEventUseCase(event);
 };

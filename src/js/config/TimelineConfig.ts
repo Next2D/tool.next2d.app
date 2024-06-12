@@ -438,13 +438,3 @@ export const $TIMELINE_ERASE_FRAME_ID: string = "timeline-frame-erase";
  * @constant
  */
 export const $TIMELINE_DELETE_KEYFRAME_ID: string = "timeline-key-delete";
-
-/**
- * @description タイムラインのヘッダーコンテンツのアイコン移動用のElementのID
- *              ID of the Element for moving icons in the timeline header content
- *
- * @type {string}
- * @constant
- */
-export const $TIMELINE_HEADER_ICON_ID: string = "timeline-header-icon";
-

@@ -1,11 +1,10 @@
 import { EventType } from "@/tool/domain/event/EventType";
-import { execute as timelineHeaderIconWindowMoveEventUseCase } from "./TimelineHeaderIconWindowMoveEventUseCase";
+import { execute as timelineHeaderIconPointerMoveEventUseCase } from "./TimelineHeaderIconPointerMoveEventUseCase";
 import { timelineHeader } from "@/timeline/domain/model/TimelineHeader";
 import { execute as timelineHeaderScriptIconMoveUseCase } from "./TimelineHeaderScriptIconMoveUseCase";
 import { execute as timelineHeaderLabelIconMoveUseCase } from "./TimelineHeaderLabelIconMoveUseCase";
 import { execute as timelineHeaderSoundIconMoveUseCase } from "./TimelineHeaderSoundIconMoveUseCase";
 import {
-    $TIMELINE_HEADER_ICON_ID,
     $TIMELINE_HEADER_LABEL_INDEX,
     $TIMELINE_HEADER_SCRIPT_INDEX,
     $TIMELINE_HEADER_SOUND_INDEX,
@@ -36,9 +35,15 @@ export const execute = (event: PointerEvent): void =>
     event.stopPropagation();
     event.preventDefault();
 
+    const element: HTMLElement | null = event.target as HTMLElement;
+    if (!element) {
+        return ;
+    }
+
     // イベントを削除
-    window.removeEventListener(EventType.MOUSE_MOVE, timelineHeaderIconWindowMoveEventUseCase);
-    window.removeEventListener(EventType.MOUSE_UP, execute);
+    element.releasePointerCapture(event.pointerId);
+    element.removeEventListener(EventType.MOUSE_MOVE, timelineHeaderIconPointerMoveEventUseCase);
+    element.removeEventListener(EventType.MOUSE_UP, execute);
 
     // 移動変数をセット
     const sourceFrame  = $getMoveIconFrame();
@@ -59,22 +64,7 @@ export const execute = (event: PointerEvent): void =>
     }
 
     // イベントを有効か
-    markerElement.releasePointerCapture(event.pointerId);
-    markerElement.removeEventListener(EventType.MOUSE_MOVE, timelineHeaderIconWindowMoveEventUseCase);
-    markerElement.removeEventListener(EventType.MOUSE_UP, execute);
     markerElement.style.pointerEvents = "";
-
-    // 移動アイコンを初期化
-    const iconElement: HTMLElement | null = document
-        .getElementById($TIMELINE_HEADER_ICON_ID);
-
-    if (!iconElement) {
-        return ;
-    }
-
-    // クラスを初期化
-    iconElement.setAttribute("class", "");
-    iconElement.setAttribute("style", "");
 
     switch (moveIconType) {
 

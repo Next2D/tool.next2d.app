@@ -147,13 +147,11 @@ export const execute = (event: PointerEvent, loop_mode: boolean = false): void =
 
         let frame: string | undefined = element.dataset.frame as string;
         if (!frame) {
-            const frameElement: HTMLElement | null = element.parentElement;
-            if (!frameElement) {
-                return ;
+            const parentElement = element.parentElement as HTMLElement;
+            if (parentElement) {
+                frame = parentElement.dataset.frame as string;
             }
 
-            // マウスで指定したElementのフレームをセット
-            frame = frameElement.dataset.frame as string;
             if (!frame) {
                 return ;
             }

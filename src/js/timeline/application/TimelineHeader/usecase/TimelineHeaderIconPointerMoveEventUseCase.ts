@@ -1,9 +1,12 @@
-import { $TIMELINE_HEADER_ICON_ID, $TIMELINE_LAYER_CONTROLLER_WIDTH } from "@/config/TimelineConfig";
+import { $TIMELINE_LAYER_CONTROLLER_WIDTH } from "@/config/TimelineConfig";
 import { $TOOL_AERA_WIDTH } from "@/config/ToolConfig";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { timelineHeader } from "@/timeline/domain/model/TimelineHeader";
-import { $getMoveMode, $setMoveMode } from "../../TimelineUtil";
+import { $getHitElement, $getIconClientY, $getMoveMode, $setMoveMode } from "../../TimelineUtil";
 import { execute as timelineScrollUpdateScrollXUseCase } from "@/timeline/application/TimelineScroll/usecase/TimelineScrollUpdateScrollXUseCase";
+import { $allHideMenu } from "@/menu/application/MenuUtil";
+import { execute as timelineHeaderIconMouseOverService } from "../service/TimelineHeaderIconMouseOverService";
+import { execute as timelineHeaderIconMouseOutService } from "../service/TimelineHeaderIconMouseOutService";
 
 /**
  * @description タイムラインヘッダーアイコンのウィンドウイベント登録
@@ -20,6 +23,9 @@ export const execute = (event: PointerEvent, loop_mode: boolean = false): void =
     // イベントの伝播を止める
     event.stopPropagation();
     event.preventDefault();
+
+    // 全てのメニューを非表示
+    $allHideMenu();
 
     const workSpace = $getCurrentWorkSpace();
     const timelineAreaState = workSpace.timelineAreaState;
@@ -105,16 +111,24 @@ export const execute = (event: PointerEvent, loop_mode: boolean = false): void =
         return ;
     }
 
-    const iconElement: HTMLElement | null = document
-        .getElementById($TIMELINE_HEADER_ICON_ID);
-
-    if (!iconElement) {
-        return ;
-    }
-
     requestAnimationFrame((): void =>
     {
-        iconElement.style.left = `${iconElement.offsetLeft + event.movementX}px`;
-        iconElement.style.top  = `${iconElement.offsetTop + event.movementY}px`;
+        const element = document.elementFromPoint(event.clientX, $getIconClientY()) as HTMLElement;
+        if (!element) {
+            return ;
+        }
+
+        const hitElement = $getHitElement();
+        if (hitElement === element) {
+            return ;
+        }
+
+        // 先に選択していたElementのstyleを初期化
+        if (hitElement) {
+            timelineHeaderIconMouseOutService(hitElement);
+        }
+
+        // マウスオーバーイベントを実行する
+        timelineHeaderIconMouseOverService(element);
     });
 };
