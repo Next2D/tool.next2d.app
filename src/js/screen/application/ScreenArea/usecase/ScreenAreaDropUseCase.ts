@@ -1,7 +1,6 @@
 import type { InstanceImpl } from "@/interface/InstanceImpl";
 import { libraryArea } from "@/controller/domain/model/LibraryArea";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
-import { $allHideMenu } from "@/menu/application/MenuUtil";
 import { ExternalTimeline } from "@/external/timeline/domain/model/ExternalTimeline";
 import {
     $FOLDER_TYPE,
@@ -17,20 +16,14 @@ import { ExternalSoundArea } from "@/external/controller/domain/model/ExternalSo
  * @description スクリーンエリアのアイテムドロップイベント処理関数
  *              Item drop event processing function for screen area
  *
- * @param  {DragEvent} event
+ * @param  {number} client_x
+ * @param  {number} client_y
  * @return {void}
  * @method
  * @public
  */
-export const execute = async (event: DragEvent): Promise<void> =>
+export const execute = async (client_x: number, client_y: number): Promise<void> =>
 {
-    // 親のイベントをキャンセル
-    event.preventDefault();
-    event.stopPropagation();
-
-    // メニューを非表示
-    $allHideMenu();
-
     const workSpace = $getCurrentWorkSpace();
     const movieClip = workSpace.scene;
     for (let idx = 0; idx < libraryArea.selectedIds.length; ++idx) {
@@ -59,8 +52,9 @@ export const execute = async (event: DragEvent): Promise<void> =>
             default:
                 {
                     const externalTimeline = new ExternalTimeline(workSpace, movieClip);
-                    const x = (event.offsetX - $getScreenOffsetLeft() - instance.width  / 2) / workSpace.scale;
-                    const y = (event.offsetY - $getScreenOffsetTop()  - instance.height / 2) / workSpace.scale;
+                    const x = (client_x - $getScreenOffsetLeft() - instance.width  / 2) / workSpace.scale;
+                    const y = (client_y - $getScreenOffsetTop()  - instance.height / 2) / workSpace.scale;
+                    
                     await externalTimeline
                         .addItemToMovieClip(x, y, instance.getPath(workSpace));
                 }

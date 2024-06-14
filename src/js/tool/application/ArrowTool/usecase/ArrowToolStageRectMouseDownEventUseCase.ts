@@ -1,5 +1,6 @@
 import { execute as stageRectShowService } from "@/screen/application/StageRect/service/StageRectShowService";
-import { execute as arrowToolStageRectRegisterWindowEventUseCase } from "./ArrowToolStageRectRegisterWindowEventUseCase";
+import { execute as arrowToolStageRectRegisterPointerEventUseCase } from "./ArrowToolStageRectRegisterPointerEventUseCase";
+import { $SCREEN_ID } from "@/config/ScreenConfig";
 
 /**
  * @description 範囲選択のマウスダウンイベントの実行関数
@@ -16,11 +17,19 @@ export const execute = (event: PointerEvent): void =>
         return ;
     }
 
+    const screenEelement: HTMLElement | null = document
+        .getElementById($SCREEN_ID);
+
+    if (!screenEelement) {
+        return ;
+    }
+    screenEelement.style.overflow = "hidden";
+
     // イベントの伝播を停止
     event.stopPropagation();
 
     // windowイベントを登録
-    arrowToolStageRectRegisterWindowEventUseCase();
+    arrowToolStageRectRegisterPointerEventUseCase(event);
 
     // 範囲選択のElementを表示
     stageRectShowService(event.pageX, event.pageY);

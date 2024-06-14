@@ -1,4 +1,5 @@
 import { $SCREEN_STAGE_RECT_ID } from "@/config/ScreenConfig";
+import { $allHideMenu } from "@/menu/application/MenuUtil";
 import { stageRect } from "@/screen/domain/model/StageRect";
 
 /**
@@ -24,6 +25,9 @@ export const execute = (event: PointerEvent): void =>
         if (!element) {
             return ;
         }
+
+        // メニューを非表示
+        $allHideMenu();
 
         if (stageRect.x > event.pageX) {
             element.style.left = `${event.pageX}px`;

@@ -1,7 +1,7 @@
 import { EventType } from "@/tool/domain/event/EventType";
-import { execute as arrowToolStageRectWindowMouseMoveEventUseCase } from "./ArrowToolStageRectWindowMouseMoveEventUseCase";
+import { execute as arrowToolStageRectWindowMouseMoveEventUseCase } from "./ArrowToolStageRectPointerMoveEventUseCase";
 import { execute as stageRectHideService } from "@/screen/application/StageRect/service/StageRectHideService";
-import { $SCREEN_STAGE_AREA_ID, $SCREEN_STAGE_RECT_ID } from "@/config/ScreenConfig";
+import { $SCREEN_ID, $SCREEN_STAGE_AREA_ID, $SCREEN_STAGE_RECT_ID } from "@/config/ScreenConfig";
 import { ExternalScreen } from "@/external/screen/domain/model/ExternalScreen";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { ExternalLayer } from "@/external/core/domain/model/ExternalLayer";
@@ -21,29 +21,44 @@ export const execute = (event: PointerEvent): void =>
     event.stopPropagation();
     event.preventDefault();
 
-    // windowイベントを解除
-    window.removeEventListener(EventType.MOUSE_MOVE, arrowToolStageRectWindowMouseMoveEventUseCase);
-    window.removeEventListener(EventType.MOUSE_UP, execute);
+    const element: HTMLElement | null = event.target as HTMLElement;
+    if (!element) {
+        return ;
+    }
+
+    // ポインターイベントを解除
+    element.releasePointerCapture(event.pointerId);
+    element.removeEventListener(EventType.MOUSE_MOVE, arrowToolStageRectWindowMouseMoveEventUseCase);
+    element.removeEventListener(EventType.MOUSE_UP, execute);
 
     // 範囲選択のElementを表示
-    const element: HTMLElement | null = document
+    const rectElement: HTMLElement | null = document
         .getElementById($SCREEN_STAGE_RECT_ID);
 
-    if (!element) {
+    if (!rectElement) {
         stageRectHideService();
         return ;
     }
 
-    const width  = element.clientWidth;
-    const height = element.clientHeight;
+    const screenEelement: HTMLElement | null = document
+        .getElementById($SCREEN_ID);
+
+    if (!screenEelement) {
+        stageRectHideService();
+        return ;
+    }
+    screenEelement.style.overflow = "";
+
+    const width  = rectElement.clientWidth;
+    const height = rectElement.clientHeight;
     if (!width || !height) {
         // 範囲選択のElementを非表示
         stageRectHideService();
         return ;
     }
 
-    const left    = element.offsetLeft;
-    const top     = element.offsetTop;
+    const left    = rectElement.offsetLeft;
+    const top     = rectElement.offsetTop;
     const right   = left + width;
     const bottom  = top  + height;
 

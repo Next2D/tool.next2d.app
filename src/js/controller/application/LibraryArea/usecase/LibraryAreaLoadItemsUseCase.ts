@@ -66,6 +66,7 @@ export const execute = async (items: DataTransferItemList): Promise<void> =>
     // ライブラリエリアを際描画
     libraryAreaReloadUseCase();
 
+    // サウンドエリアの選択要素を再構築
     soundAreaRebuildSelectElementService();
 
     // プログレバーを非表示に更新

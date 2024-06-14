@@ -9,6 +9,7 @@ import { execute as libraryPreviewAreaClearDisplayService } from "@/controller/a
 import { execute as libraryAreaAltSelectedUseCase } from "@/controller/application/LibraryArea/usecase/LibraryAreaAltSelectedUseCase";
 import { execute as libraryAreaShiftSelectedUseCase } from "@/controller/application/LibraryArea/usecase/LibraryAreaShiftSelectedUseCase";
 import { $FOLDER_TYPE } from "@/config/InstanceConfig";
+import { execute as libraryAreaRegisterPointerEventUseCase } from "./LibraryAreaRegisterPointerEventUseCase";
 
 /**
  * @description 親Elementのマウスダウン処理関数、Elementを選択状態に更新
@@ -54,6 +55,9 @@ export const execute = (event: PointerEvent): void =>
     } else {
         libraryPreviewAreaClearDisplayService();
     }
+
+    // スクリーンへの移動イベントを登録
+    libraryAreaRegisterPointerEventUseCase(event);
 
     // 外部APIを起動
     switch (true) {

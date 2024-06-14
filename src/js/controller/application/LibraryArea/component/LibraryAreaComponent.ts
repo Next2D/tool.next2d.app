@@ -13,7 +13,7 @@ import type { InstanceImpl } from "@/interface/InstanceImpl";
 export const execute = (instance: InstanceImpl<any>): string =>
 {
     return `
-<div draggable="true" class="library-list-box-child" id="library-child-id-${instance.id}" data-library-id="${instance.id}">
+<div class="library-list-box-child" id="library-child-id-${instance.id}" data-library-id="${instance.id}">
     <div class="library-list-box-spacer" data-library-id="${instance.id}"></div>
     <div class="library-list-box-name" data-library-id="${instance.id}">
         <i class="library-type-${instance.type === $FOLDER_TYPE ? `arrow ${instance.mode}` : "space"}" data-library-id="${instance.id}"></i>
