@@ -119,8 +119,7 @@
     border         : 1px solid darkgray;
     border-radius  : 3px;
     height         : calc(100vh - var(--ad) - var(--library-search-area-height) - var(--controller-tab-area-height) - var(--library-preview-area-height) - var(--library-list-title-height) - var(--controller-padding-width) - 2px);
-    overflow-x     : hidden;
-    overflow-y     : auto;
+    overflow       : hidden;
     display        : flex;
     flex-direction : column;
 

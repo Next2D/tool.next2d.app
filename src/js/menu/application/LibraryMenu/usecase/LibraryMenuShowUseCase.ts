@@ -20,6 +20,7 @@ import {
     $BITMAP_TYPE,
     $MOVIE_CLIP_TYPE
 } from "@/config/InstanceConfig";
+import { $useKeyboard } from "@/shortcut/ShortcutUtil";
 
 /**
  * @description ライブラリ一覧エリアのメニューを表示
@@ -31,6 +32,10 @@ import {
  */
 export const execute = (event: MouseEvent): void =>
 {
+    if ($useKeyboard()) {
+        return ;
+    }
+
     // 親のイベントを中止
     event.stopPropagation();
     event.preventDefault();

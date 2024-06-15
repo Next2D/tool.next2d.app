@@ -11,6 +11,7 @@ import {
     $allHideMenu,
     $getMenu
 } from "@/menu/application/MenuUtil";
+import { $useKeyboard } from "@/shortcut/ShortcutUtil";
 
 /**
  * @description レイヤーのコントローラーメニューを表示
@@ -23,6 +24,10 @@ import {
  */
 export const execute = (event: MouseEvent): void =>
 {
+    if ($useKeyboard()) {
+        return ;
+    }
+
     // 親のイベントを中止
     event.stopPropagation();
     event.preventDefault();

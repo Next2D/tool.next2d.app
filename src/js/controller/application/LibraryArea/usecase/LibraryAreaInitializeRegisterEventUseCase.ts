@@ -7,6 +7,7 @@ import { execute as libraryAreaRemoveWindowKeyEventUseCase } from "./LibraryArea
 import { execute as libraryAreaDragstartUseCase } from "./LibraryAreaDragstartUseCase";
 import { execute as libraryAreaDragendUseCase } from "./LibraryAreaDragendUseCase";
 import { EventType } from "@/tool/domain/event/EventType";
+import { execute as librayAreaWheelEventUseCase } from "./LibrayAreaWheelEventUseCase";
 
 /**
  * @description ライブラリエリアのイベントを登録
@@ -24,6 +25,11 @@ export const execute = (): void =>
     if (!element) {
         return ;
     }
+
+    element.addEventListener("wheel",
+        librayAreaWheelEventUseCase,
+        { "passive": false }
+    );
 
     element.addEventListener(EventType.MOUSE_DOWN,
         libraryAreaMouseDownEventUseCase

@@ -1,7 +1,7 @@
 #screen
 {
     height      : calc(100vh - (var(--timeline-height) + 21px));
-    overflow    : scroll;
+    overflow    : hidden;
     display     : grid;
     place-items : center;
     position    : relative;

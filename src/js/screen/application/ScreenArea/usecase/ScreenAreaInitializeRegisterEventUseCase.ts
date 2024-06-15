@@ -4,6 +4,7 @@ import { execute as screenAreaMouseDownEventUseCase } from "./ScreenAreaMouseDow
 import { execute as screenAreaMouseOverEventService } from "../service/ScreenAreaMouseOverEventService";
 import { execute as screenAreaMouseOutEventService } from "../service/ScreenAreaMouseOutEventService";
 import { execute as screenAreaMouseMoveEventService } from "../service/ScreenAreaMouseMoveEventService";
+import { execute as screenAreaWheelEventService } from "../service/ScreenAreaWheelEventService";
 
 /**
  * @description スクリーン全体のマウスダウンイベントを登録
@@ -21,6 +22,11 @@ export const execute = (): void =>
     if (!element) {
         return ;
     }
+
+    element.addEventListener("wheel",
+        screenAreaWheelEventService,
+        { "passive": false }
+    );
 
     // マウスイベントを登録
     element.addEventListener(EventType.MOUSE_DOWN,
