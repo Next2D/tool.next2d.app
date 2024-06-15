@@ -1,10 +1,13 @@
 import { EventType } from "@/tool/domain/event/EventType";
 import { execute as arrowToolStageRectWindowMouseMoveEventUseCase } from "./ArrowToolStageRectPointerMoveEventUseCase";
 import { execute as stageRectHideService } from "@/screen/application/StageRect/service/StageRectHideService";
-import { $SCREEN_ID, $SCREEN_STAGE_AREA_ID, $SCREEN_STAGE_RECT_ID } from "@/config/ScreenConfig";
 import { ExternalScreen } from "@/external/screen/domain/model/ExternalScreen";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { ExternalLayer } from "@/external/core/domain/model/ExternalLayer";
+import {
+    $SCREEN_STAGE_AREA_ID,
+    $SCREEN_STAGE_RECT_ID
+} from "@/config/ScreenConfig";
 
 /**
  * @description 範囲選択のマウスアップイベントの実行関数
@@ -39,15 +42,6 @@ export const execute = (event: PointerEvent): void =>
         stageRectHideService();
         return ;
     }
-
-    const screenEelement: HTMLElement | null = document
-        .getElementById($SCREEN_ID);
-
-    if (!screenEelement) {
-        stageRectHideService();
-        return ;
-    }
-    screenEelement.style.overflow = "";
 
     const width  = rectElement.clientWidth;
     const height = rectElement.clientHeight;

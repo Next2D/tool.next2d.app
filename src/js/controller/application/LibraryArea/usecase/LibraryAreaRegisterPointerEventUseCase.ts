@@ -35,7 +35,6 @@ export const execute = (event: PointerEvent): void =>
     if (!libraryListBox) {
         return ;
     }
-    libraryListBox.style.overflow = "hidden";
 
     // スクリーン以外のelementのイベントを無効化
     screenAreaLibraryItemDropStartService();

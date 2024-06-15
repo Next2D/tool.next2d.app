@@ -5,6 +5,7 @@ import {
     $allHideMenu,
     $getMenu
 } from "../../MenuUtil";
+import { $useKeyboard } from "@/shortcut/ShortcutUtil";
 
 /**
  * @description ヘッダーメニューを表示
@@ -17,6 +18,10 @@ import {
  */
 export const execute = (event: MouseEvent): void =>
 {
+    if ($useKeyboard()) {
+        return ;
+    }
+
     // 親のイベントを中止
     event.stopPropagation();
     event.preventDefault();

@@ -2,6 +2,7 @@ import { $SCREEN_MENU_NAME } from "@/config/MenuConfig";
 import type { MenuImpl } from "@/interface/MenuImpl";
 import type { ScreenMenu } from "@/menu/domain/model/ScreenMenu";
 import { $allHideMenu, $getMenu } from "@/menu/application/MenuUtil";
+import { $useKeyboard } from "@/shortcut/ShortcutUtil";
 
 /**
  * @description スクリーンエリアのメニューを表示
@@ -13,6 +14,10 @@ import { $allHideMenu, $getMenu } from "@/menu/application/MenuUtil";
  */
 export const execute = (event: MouseEvent): void =>
 {
+    if ($useKeyboard()) {
+        return ;
+    }
+
     // 親のイベントを中止
     event.stopPropagation();
     event.preventDefault();

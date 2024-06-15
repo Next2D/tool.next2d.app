@@ -2,7 +2,6 @@ import { EventType } from "@/tool/domain/event/EventType";
 import { execute as libraryAreaPointerMoveEventUseCase } from "./LibraryAreaPointerMoveEventUseCase";
 import { $SCREEN_ID } from "@/config/ScreenConfig";
 import { execute as screenAreaDropUseCase } from "@/screen/application/ScreenArea/usecase/ScreenAreaDropUseCase";
-import { $LIBRARY_LIST_BOX_ID } from "@/config/LibraryConfig";
 import { $setMoveState } from "../LibraryAreaUtil";
 import { execute as screenAreaLibraryItemDropEndService } from "@/screen/application/ScreenArea/service/ScreenAreaLibraryItemDropEndService";
 
@@ -23,12 +22,6 @@ export const execute = async (event: PointerEvent): Promise<void> =>
 
     // 移動フラグを解除
     $setMoveState(false);
-
-    const libraryListBox = document.getElementById($LIBRARY_LIST_BOX_ID);
-    if (!libraryListBox) {
-        return ;
-    }
-    libraryListBox.setAttribute("style", "");
 
     const element = event.target as HTMLElement;
     if (!element) {

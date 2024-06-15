@@ -2,6 +2,7 @@ import { execute as transformSettingUpdateXElementService } from "@/controller/a
 import { execute as transformSettingUpdateYElementService } from "@/controller/application/TransformSetting/service/TransformSettingUpdateYElementService";
 import { execute as screenDisplayObjectSelectedMoveElementService } from "../service/ScreenDisplayObjectSelectedMoveElementService";
 import { transformSetting } from "@/controller/domain/model/TransformSetting";
+import { $allHideMenu } from "@/menu/application/MenuUtil";
 
 /**
  * @description DisplayObjectの移動処理関数
@@ -20,6 +21,9 @@ export const execute = (event: PointerEvent): void =>
 
     requestAnimationFrame((): void =>
     {
+        // メニューを非表示
+        $allHideMenu();
+
         // 選択中のElementを移動
         screenDisplayObjectSelectedMoveElementService(
             event.movementX, event.movementY
