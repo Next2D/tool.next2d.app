@@ -29,10 +29,14 @@ export const execute = (event: PointerEvent): void =>
 
     // マウス移動イベントを登録
     element.setPointerCapture(event.pointerId);
-    element.addEventListener(EventType.MOUSE_MOVE,
-        controllerAdjustmentPointerMoveUseCase
+    element.addEventListener(
+        EventType.MOUSE_MOVE,
+        controllerAdjustmentPointerMoveUseCase,
+        { "passive": false }
     );
-    element.addEventListener(EventType.MOUSE_UP,
-        controllerAdjustmentPointerUpUseCase
+    element.addEventListener(
+        EventType.MOUSE_UP,
+        controllerAdjustmentPointerUpUseCase,
+        { "passive": false }
     );
 };

@@ -19,10 +19,14 @@ export const execute = (event: PointerEvent): void =>
 
     // イベントを登録
     element.setPointerCapture(event.pointerId);
-    element.addEventListener(EventType.MOUSE_MOVE,
-        scaleFramePointerMoveEventUseCase
+    element.addEventListener(
+        EventType.MOUSE_MOVE,
+        scaleFramePointerMoveEventUseCase,
+        { "passive": false }
     );
-    element.addEventListener(EventType.MOUSE_UP,
-        scaleFramePointerUpEventUseCase
+    element.addEventListener(
+        EventType.MOUSE_UP,
+        scaleFramePointerUpEventUseCase,
+        { "passive": false }
     );
 };

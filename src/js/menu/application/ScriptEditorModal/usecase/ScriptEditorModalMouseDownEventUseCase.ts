@@ -24,6 +24,14 @@ export const execute = (event: PointerEvent): void =>
 
     // windowイベントを登録
     element.setPointerCapture(event.pointerId);
-    element.addEventListener(EventType.MOUSE_MOVE, scriptEditorModalPointerMoveService);
-    element.addEventListener(EventType.MOUSE_UP, scriptEditorModalPointerUpUseCase);
+    element.addEventListener(
+        EventType.MOUSE_MOVE,
+        scriptEditorModalPointerMoveService,
+        { "passive": false }
+    );
+    element.addEventListener(
+        EventType.MOUSE_UP,
+        scriptEditorModalPointerUpUseCase,
+        { "passive": false }
+    );
 };

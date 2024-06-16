@@ -20,10 +20,14 @@ export const execute = (event: PointerEvent): void =>
 
     // イベントを登録
     element.setPointerCapture(event.pointerId);
-    element.addEventListener(EventType.MOUSE_MOVE,
-        timelineToolCurrentFramePointerMoveEventUseCase
+    element.addEventListener(
+        EventType.MOUSE_MOVE,
+        timelineToolCurrentFramePointerMoveEventUseCase,
+        { "passive": false }
     );
-    element.addEventListener(EventType.MOUSE_UP,
-        timelineToolCurrentFramePointerUpEventUseCase
+    element.addEventListener(
+        EventType.MOUSE_UP,
+        timelineToolCurrentFramePointerUpEventUseCase,
+        { "passive": false }
     );
 };

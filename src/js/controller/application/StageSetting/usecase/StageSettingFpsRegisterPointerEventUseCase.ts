@@ -20,10 +20,14 @@ export const execute = (event: PointerEvent): void =>
 
     // 移動イベントを登録
     element.setPointerCapture(event.pointerId);
-    element.addEventListener(EventType.MOUSE_MOVE,
-        stageSettingFpsPointerMoveEventUseCase
+    element.addEventListener(
+        EventType.MOUSE_MOVE,
+        stageSettingFpsPointerMoveEventUseCase,
+        { "passive": false }
     );
-    element.addEventListener(EventType.MOUSE_UP,
-        stageSettingFpsPointerUpEventUseCase
+    element.addEventListener(
+        EventType.MOUSE_UP,
+        stageSettingFpsPointerUpEventUseCase,
+        { "passive": false }
     );
 };

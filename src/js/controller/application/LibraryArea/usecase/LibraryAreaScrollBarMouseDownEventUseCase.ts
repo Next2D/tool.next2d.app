@@ -1,8 +1,10 @@
 import { EventType } from "@/tool/domain/event/EventType";
+import { execute as libraryAreaScrollBarPointerMoveEventUseCase } from "./LibraryAreaScrollBarPointerMoveEventUseCase";
+import { execute as libraryAreaScrollBarPointerUpEventUseCase } from "./LibraryAreaScrollBarPointerUpEventUseCase";
 
 /**
  * @description ライブラリエリアのスクロールバーのマウスダウンイベント
- *              Mouse down event of the scroll bar in the library area
+ *              Mouse down event of the library area scrollbar
  *
  * @param {PointerEvent} event
  * @return {void}
@@ -11,25 +13,24 @@ import { EventType } from "@/tool/domain/event/EventType";
  */
 export const execute = (event: PointerEvent): void =>
 {
-    // 親のイベントを止める
+    // イベントの伝播を止める
     event.stopPropagation();
 
-    // ポインターイベントを登録
-    const element: HTMLElement | null = event.target as HTMLElement;
+    const element = event.target as HTMLElement;
     if (!element) {
-        return ;
+        return;
     }
 
-    // ポインターイベントの登録
+    // スクロールバーの移動イベントを登録
     element.setPointerCapture(event.pointerId);
     element.addEventListener(
         EventType.MOUSE_MOVE,
-        () => {},
+        libraryAreaScrollBarPointerMoveEventUseCase,
         { "passive": false }
     );
     element.addEventListener(
         EventType.MOUSE_UP,
-        () => {},
+        libraryAreaScrollBarPointerUpEventUseCase,
         { "passive": false }
     );
 };

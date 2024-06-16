@@ -19,10 +19,14 @@ export const execute = (event: PointerEvent): void =>
 
     // マウスイベントを登録
     element.setPointerCapture(event.pointerId);
-    element.addEventListener(EventType.MOUSE_MOVE,
-        timelineLayerControllerPointerMoveUseCase
+    element.addEventListener(
+        EventType.MOUSE_MOVE,
+        timelineLayerControllerPointerMoveUseCase,
+        { "passive": false }
     );
-    element.addEventListener(EventType.MOUSE_UP,
-        timelineLayerControllerPointerUpUseCase
+    element.addEventListener(
+        EventType.MOUSE_UP,
+        timelineLayerControllerPointerUpUseCase,
+        { "passive": false }
     );
 };

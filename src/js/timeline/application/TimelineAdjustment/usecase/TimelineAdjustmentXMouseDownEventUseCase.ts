@@ -27,10 +27,14 @@ export const execute = (event: PointerEvent): void =>
 
     // マウス移動イベントを登録
     element.setPointerCapture(event.pointerId);
-    element.addEventListener(EventType.MOUSE_MOVE,
-        timelineAdjustmentXPointerMoveUseCase
+    element.addEventListener(
+        EventType.MOUSE_MOVE,
+        timelineAdjustmentXPointerMoveUseCase,
+        { "passive": false }
     );
-    element.addEventListener(EventType.MOUSE_UP,
-        timelineAdjustmentXPointerUpUseCase
+    element.addEventListener(
+        EventType.MOUSE_UP,
+        timelineAdjustmentXPointerUpUseCase,
+        { "passive": false }
     );
 };

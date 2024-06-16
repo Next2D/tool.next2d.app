@@ -23,6 +23,14 @@ export const execute = (event: PointerEvent): void =>
 
     // 画面イベントを登録
     element.setPointerCapture(event.pointerId);
-    element.addEventListener(EventType.MOUSE_MOVE, propertyAreaPointerMoveService);
-    element.addEventListener(EventType.MOUSE_UP, propertyAreaPointerUpUseCase);
+    element.addEventListener(
+        EventType.MOUSE_MOVE,
+        propertyAreaPointerMoveService,
+        { "passive": false }
+    );
+    element.addEventListener(
+        EventType.MOUSE_UP,
+        propertyAreaPointerUpUseCase,
+        { "passive": false }
+    );
 };

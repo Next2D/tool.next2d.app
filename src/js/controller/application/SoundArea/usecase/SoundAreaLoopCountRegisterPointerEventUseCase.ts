@@ -39,10 +39,14 @@ export const execute = (event: PointerEvent): void =>
 
     // windowイベントを登録
     element.setPointerCapture(event.pointerId);
-    element.addEventListener(EventType.MOUSE_MOVE,
-        soundAreaLoopCountPointerMoveEventUseCase
+    element.addEventListener(
+        EventType.MOUSE_MOVE,
+        soundAreaLoopCountPointerMoveEventUseCase,
+        { "passive": false }
     );
-    element.addEventListener(EventType.MOUSE_UP,
-        soundAreaLoopCountPointerUpEventUseCase
+    element.addEventListener(
+        EventType.MOUSE_UP,
+        soundAreaLoopCountPointerUpEventUseCase,
+        { "passive": false }
     );
 };

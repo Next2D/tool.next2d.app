@@ -13,10 +13,14 @@ import { execute as zoomPlusToolStageRectWindowMouseUpEventUseCase } from "./Zoo
 export const execute = (): void =>
 {
     // windowイベントを登録
-    window.addEventListener(EventType.MOUSE_MOVE,
-        zoomPlusToolStageRectWindowMouseMoveEventUseCase
+    window.addEventListener(
+        EventType.MOUSE_MOVE,
+        zoomPlusToolStageRectWindowMouseMoveEventUseCase,
+        { "passive": false }
     );
-    window.addEventListener(EventType.MOUSE_UP,
-        zoomPlusToolStageRectWindowMouseUpEventUseCase
+    window.addEventListener(
+        EventType.MOUSE_UP,
+        zoomPlusToolStageRectWindowMouseUpEventUseCase,
+        { "passive": false }
     );
 };

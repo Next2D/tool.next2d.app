@@ -7,6 +7,7 @@ import { execute as libraryAreaDragstartUseCase } from "./LibraryAreaDragstartUs
 import { execute as libraryAreaDragendUseCase } from "./LibraryAreaDragendUseCase";
 import { EventType } from "@/tool/domain/event/EventType";
 import { execute as librayAreaWheelEventUseCase } from "./LibrayAreaWheelEventUseCase";
+import { execute as libraryAreaScrollBarMouseDownEventUseCase } from "./LibraryAreaScrollBarMouseDownEventUseCase";
 import {
     $LIBRARY_LIST_BOX_ID,
     $LIBRARY_LIST_BOX_SCROLL_BAR_ID
@@ -28,7 +29,7 @@ export const execute = (): void =>
 
     if (scrollBarElement) {
         scrollBarElement.addEventListener(EventType.MOUSE_DOWN,
-            () => {  }
+            libraryAreaScrollBarMouseDownEventUseCase
         );
     }
 

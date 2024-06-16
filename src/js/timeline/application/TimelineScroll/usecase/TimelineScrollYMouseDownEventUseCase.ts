@@ -22,6 +22,14 @@ export const execute = (event: PointerEvent): void =>
     }
 
     element.setPointerCapture(event.pointerId);
-    element.addEventListener(EventType.MOUSE_MOVE, timelineScrollYPointerMoveUseCase);
-    element.addEventListener(EventType.MOUSE_UP, timelineScrollYPointerUpUseCase);
+    element.addEventListener(
+        EventType.MOUSE_MOVE,
+        timelineScrollYPointerMoveUseCase,
+        { "passive": false }
+    );
+    element.addEventListener(
+        EventType.MOUSE_UP,
+        timelineScrollYPointerUpUseCase,
+        { "passive": false }
+    );
 };

@@ -19,10 +19,14 @@ export const execute = (event: PointerEvent): void =>
 
     // グループウィンドウのイベント
     element.setPointerCapture(event.pointerId);
-    element.addEventListener(EventType.MOUSE_MOVE,
-        timelineTargetGroupWindowMouseMoveEventUseCase
+    element.addEventListener(
+        EventType.MOUSE_MOVE,
+        timelineTargetGroupWindowMouseMoveEventUseCase,
+        { "passive": false }
     );
-    element.addEventListener(EventType.MOUSE_UP,
-        timelineTargetGroupWindowMouseUpEventUseCase
+    element.addEventListener(
+        EventType.MOUSE_UP,
+        timelineTargetGroupWindowMouseUpEventUseCase,
+        { "passive": false }
     );
 };

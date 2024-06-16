@@ -20,10 +20,14 @@ export const execute = (event: PointerEvent): void =>
     }
 
     element.setPointerCapture(event.pointerId);
-    element.addEventListener(EventType.MOUSE_MOVE,
-        transformSettingWidthWindowMouseMoveEventUseCase
+    element.addEventListener(
+        EventType.MOUSE_MOVE,
+        transformSettingWidthWindowMouseMoveEventUseCase,
+        { "passive": false }
     );
-    element.addEventListener(EventType.MOUSE_UP,
-        transformSettingWidthWindowMouseUpEventUseCase
+    element.addEventListener(
+        EventType.MOUSE_UP,
+        transformSettingWidthWindowMouseUpEventUseCase,
+        { "passive": false }
     );
 };
