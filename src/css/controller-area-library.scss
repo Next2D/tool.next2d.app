@@ -121,6 +121,40 @@
     height         : calc(100vh - var(--ad) - var(--library-search-area-height) - var(--controller-tab-area-height) - var(--library-preview-area-height) - var(--library-list-title-height) - var(--controller-padding-width) - 2px);
     overflow       : hidden;
     display        : flex;
+}
+
+#library-list-box-scroll-area
+{
+    position         : relative;
+    width            : 10px;
+    height           : calc(100vh - var(--ad) - var(--library-search-area-height) - var(--controller-tab-area-height) - var(--library-preview-area-height) - var(--library-list-title-height) - var(--controller-padding-width) - 2px);
+    display          : flex;
+    justify-content  : center;
+    background-color : #282828;
+}
+
+#library-list-box-scroll-bar
+{
+    position         : absolute;
+    width            : 6px;
+    height           : var(--library-list-box-scroll-bar-height);
+    background-color : #363636;
+    color            : whitesmoke;
+    border-radius    : 8px;
+    border           : 1px solid #72777D;
+    box-shadow       : 0 0 1px rgba(245, 245, 245, 0.25);
+
+    &:hover
+    {
+        cursor: pointer;
+    }
+}
+
+#library-list-box-body
+{
+    width          : calc(var(--controller-width) - 10px - 2px);
+    overflow       : hidden;
+    display        : flex;
     flex-direction : column;
 
     .library-type-space

@@ -1,6 +1,6 @@
 import { $CONTROLLER_TAB_AREA_ID } from "@/config/ControllerConfig";
 import { EventType } from "@/tool/domain/event/EventType";
-import { execute as controllerTabMouseDownEventService } from "../service/ControllerTabMouseDownEventService";
+import { execute as controllerTabMouseDownEventService } from "./ControllerTabMouseDownEventUseCase";
 
 /**
  * @description タブのタップイベントを登録

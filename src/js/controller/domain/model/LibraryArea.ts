@@ -10,6 +10,7 @@ import { execute as libraryAreaInitializeRegisterEventUseCase } from "@/controll
 class LibraryArea
 {
     private readonly _$selectedIds: number[];
+    private _$scrollScale: number;
 
     /**
      * @constructor
@@ -22,6 +23,29 @@ class LibraryArea
          * @private
          */
         this._$selectedIds = [];
+
+        /**
+         * @type {number}
+         * @default 1
+         * @private
+         */
+        this._$scrollScale = 1;
+    }
+
+    /**
+     * @description スクロールスケールを返却
+     *              Returns the scroll scale
+     *
+     * @member {number}
+     * @public
+     */
+    get scrollScale (): number
+    {
+        return this._$scrollScale;
+    }
+    set scrollScale (scroll_scale: number)
+    {
+        this._$scrollScale = scroll_scale;
     }
 
     /**

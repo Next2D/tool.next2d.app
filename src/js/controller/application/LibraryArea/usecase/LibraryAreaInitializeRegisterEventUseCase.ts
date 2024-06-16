@@ -1,4 +1,3 @@
-import { $LIBRARY_LIST_BOX_ID } from "@/config/LibraryConfig";
 import { execute as libraryAreaMouseDownEventUseCase } from "./LibraryAreaMouseDownEventUseCase";
 import { execute as libraryAreaDropUseCase } from "./LibraryAreaDropUseCase";
 import { execute as libraryAreaDragoverService } from "../service/LibraryAreaDragoverService";
@@ -8,6 +7,10 @@ import { execute as libraryAreaDragstartUseCase } from "./LibraryAreaDragstartUs
 import { execute as libraryAreaDragendUseCase } from "./LibraryAreaDragendUseCase";
 import { EventType } from "@/tool/domain/event/EventType";
 import { execute as librayAreaWheelEventUseCase } from "./LibrayAreaWheelEventUseCase";
+import {
+    $LIBRARY_LIST_BOX_ID,
+    $LIBRARY_LIST_BOX_SCROLL_BAR_ID
+} from "@/config/LibraryConfig";
 
 /**
  * @description ライブラリエリアのイベントを登録
@@ -19,38 +22,47 @@ import { execute as librayAreaWheelEventUseCase } from "./LibrayAreaWheelEventUs
  */
 export const execute = (): void =>
 {
-    const element: HTMLElement | null = document
-        .getElementById($LIBRARY_LIST_BOX_ID);
+    // スクロールバーのイベント登録
+    const scrollBarElement: HTMLElement | null = document
+        .getElementById($LIBRARY_LIST_BOX_SCROLL_BAR_ID);
 
-    if (!element) {
-        return ;
+    if (scrollBarElement) {
+        scrollBarElement.addEventListener(EventType.MOUSE_DOWN,
+            () => {  }
+        );
     }
 
-    element.addEventListener("wheel",
-        librayAreaWheelEventUseCase,
-        { "passive": false }
-    );
+    // リストボックス本体のイベント登録
+    const listBoxElement: HTMLElement | null = document
+        .getElementById($LIBRARY_LIST_BOX_ID);
 
-    element.addEventListener(EventType.MOUSE_DOWN,
-        libraryAreaMouseDownEventUseCase
-    );
+    if (listBoxElement) {
+        listBoxElement.addEventListener("wheel",
+            librayAreaWheelEventUseCase,
+            { "passive": false }
+        );
 
-    // drop系のイベントの登録
-    element.addEventListener("dragover", libraryAreaDragoverService);
-    element.addEventListener("drop", libraryAreaDropUseCase);
-    element.addEventListener("dragstart", libraryAreaDragstartUseCase);
-    element.addEventListener("dragend", libraryAreaDragendUseCase);
+        listBoxElement.addEventListener(EventType.MOUSE_DOWN,
+            libraryAreaMouseDownEventUseCase
+        );
 
-    // キーイベントの登録
-    element.addEventListener(EventType.MOUSE_OVER,
-        libraryAreaRegisterWindowKeyEventUseCase
-    );
+        // drop系のイベントの登録
+        listBoxElement.addEventListener("dragover", libraryAreaDragoverService);
+        listBoxElement.addEventListener("drop", libraryAreaDropUseCase);
+        listBoxElement.addEventListener("dragstart", libraryAreaDragstartUseCase);
+        listBoxElement.addEventListener("dragend", libraryAreaDragendUseCase);
 
-    // キーイベントの削除
-    element.addEventListener(EventType.MOUSE_OUT,
-        libraryAreaRemoveWindowKeyEventUseCase
-    );
-    element.addEventListener(EventType.MOUSE_LEAVE,
-        libraryAreaRemoveWindowKeyEventUseCase
-    );
+        // キーイベントの登録
+        listBoxElement.addEventListener(EventType.MOUSE_OVER,
+            libraryAreaRegisterWindowKeyEventUseCase
+        );
+
+        // キーイベントの削除
+        listBoxElement.addEventListener(EventType.MOUSE_OUT,
+            libraryAreaRemoveWindowKeyEventUseCase
+        );
+        listBoxElement.addEventListener(EventType.MOUSE_LEAVE,
+            libraryAreaRemoveWindowKeyEventUseCase
+        );
+    }
 };

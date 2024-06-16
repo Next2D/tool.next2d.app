@@ -1,4 +1,5 @@
-import { $LIBRARY_LIST_BOX_ID } from "@/config/LibraryConfig";
+import { $LIBRARY_LIST_BOX_ID, $LIBRARY_LIST_BOX_SCROLL_BAR_ID } from "@/config/LibraryConfig";
+import { libraryArea } from "@/controller/domain/model/LibraryArea";
 
 /**
  * @description ライブラリエリアのホイールイベント
@@ -17,12 +18,21 @@ export const execute = (event: WheelEvent): void =>
 
     requestAnimationFrame((): void =>
     {
-        const element: HTMLElement | null = document
+        const listBoxElement: HTMLElement | null = document
             .getElementById($LIBRARY_LIST_BOX_ID);
-        if (!element) {
+
+        if (!listBoxElement) {
             return ;
         }
 
-        element.scrollTop += event.deltaY;
+        const scrollBarElement: HTMLElement | null = document
+            .getElementById($LIBRARY_LIST_BOX_SCROLL_BAR_ID);
+
+        if (!scrollBarElement) {
+            return ;
+        }
+
+        listBoxElement.scrollTop += event.deltaY;
+        scrollBarElement.style.top = `${listBoxElement.scrollTop * libraryArea.scrollScale}px`;
     });
 };

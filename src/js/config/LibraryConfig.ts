@@ -14,7 +14,25 @@ export const $LIBRARY_PREVIEW_AREA_ID: string = "library-preview-area";
  * @type {string}
  * @constant
  */
-export const $LIBRARY_LIST_BOX_ID: string = "library-list-box";
+export const $LIBRARY_LIST_BOX_ID: string = "library-list-box-body";
+
+/**
+ * @description ライブラリ一覧のスクロールElementのID
+ *              ID of the scroll Element in the library list
+ *
+ * @type {string}
+ * @constant
+ */
+export const $LIBRARY_LIST_BOX_SCROLL_BAR_ID: string = "library-list-box-scroll-bar";
+
+/**
+ * @description ライブラリ一覧のスクロールエリアElementのID
+ *              ID of the scroll Element in the library list
+ *
+ * @type {string}
+ * @constant
+ */
+export const $LIBRARY_LIST_BOX_SCROLL_AREA_ID: string = "library-list-box-scroll-area";
 
 /**
  * @description 新規MovieClip追加のElementのID
