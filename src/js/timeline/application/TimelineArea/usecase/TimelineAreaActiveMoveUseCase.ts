@@ -12,6 +12,7 @@ import {
     $setTimelineOffsetTop
 } from "../TimelineAreaUtil";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
+import { execute as screenScrollResizeService } from "@/screen/application/ScreenScroll/service/ScreenScrollResizeService";
 
 /**
  * @description タイムラインエリアを移動可能な状態にする
@@ -59,6 +60,9 @@ export const execute = (event: PointerEvent): void =>
 
             // タイムラインヘッダーの幅を更新
             timelineHeaderUpdateClientWidthService();
+
+            // スクリーンのスクロールを再計算
+            screenScrollResizeService();
         }
 
         // カーソルを移動用に変更

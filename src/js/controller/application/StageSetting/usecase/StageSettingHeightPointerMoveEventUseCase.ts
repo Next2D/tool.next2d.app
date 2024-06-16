@@ -4,6 +4,7 @@ import { $setCursor } from "@/global/GlobalUtil";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { execute as stageStyleUpdateSizeService } from "@/core/application/Stage/service/StageStyleUpdateSizeService";
 import { execute as screenStageAreaUpdateSizeService } from "@/screen/application/ScreenStageArea/service/ScreenStageAreaUpdateSizeService";
+import { execute as screenScrollResizeService } from "@/screen/application/ScreenScroll/service/ScreenScrollResizeService";
 
 /**
  * @description ステージ高さの値操作のマウスムーブイベント
@@ -75,5 +76,8 @@ export const execute = (event: PointerEvent): void =>
 
         // ステージ背後のレイヤーを更新
         screenStageAreaUpdateSizeService(stage);
+
+        // スクリーンのスクロールバーのサイズを更新
+        screenScrollResizeService();
     });
 };

@@ -29,7 +29,7 @@ export const execute = (stage: Stage): void =>
     // ステージ設定の値を更新
     stageSettingUpdateUseCase(stage);
 
-    // ステージ背後のレイヤーを更新
+    // ステージエリアのサイズを更新
     screenStageAreaUpdateSizeService(stage);
 
     // ステージを画面中央に配置

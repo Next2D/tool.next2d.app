@@ -9,6 +9,7 @@ import { execute as stageStyleUpdateSizeService } from "@/core/application/Stage
 import { execute as screenStageAreaUpdateSizeService } from "@/screen/application/ScreenStageArea/service/ScreenStageAreaUpdateSizeService";
 import { execute as screenAreaRedrawUseCase } from "@/screen/application/ScreenArea/usecase/ScreenAreaRedrawUseCase";
 import { execute as targetRectMoveElementUseCase } from "@/screen/application/TargetRect/usecase/TargetRectMoveElementUseCase";
+import { execute as screenScrollResizeService } from "@/screen/application/ScreenScroll/service/ScreenScrollResizeService";
 
 /**
  * @description 拡大の範囲選択のマウスアップイベントの実行関数
@@ -92,7 +93,12 @@ export const execute = async (event: PointerEvent): Promise<void> =>
 
     // スクリーンとステージの表示を更新
     stageStyleUpdateSizeService(stage.width, stage.height);
+
+    // ステージエリアのサイズを再計算
     screenStageAreaUpdateSizeService(stage);
+
+    // スクリーンのスクロールバーのサイズを更新
+    screenScrollResizeService();
 
     // 選択範囲のElementの表示を更新
     targetRectMoveElementUseCase();

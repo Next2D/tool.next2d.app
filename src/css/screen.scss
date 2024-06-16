@@ -1,6 +1,13 @@
+#screen-area
+{
+    display  : flex;
+    height   : calc(100vh - (var(--timeline-height) + 31px));
+}
+
 #screen
 {
-    height      : calc(100vh - (var(--timeline-height) + 21px));
+    width       : calc(100vw - (var(--controller-width) + var(--tool-width) + var(--view-border-width) * 2 + var(--controller-adjustment-width)) - 10px);
+    height      : calc(100vh - (var(--timeline-height) + 31px));
     overflow    : hidden;
     display     : grid;
     place-items : center;

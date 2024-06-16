@@ -16,6 +16,7 @@ import {
     $setStandbyMoveState,
     $setTimelineOffsetTop
 } from "../TimelineAreaUtil";
+import { execute as screenScrollResizeService } from "@/screen/application/ScreenScroll/service/ScreenScrollResizeService";
 
 /**
  * @description ダブルタップ用の待機フラグ
@@ -139,6 +140,9 @@ export const execute = (event: PointerEvent): void =>
         // タイムラインのOffsetTopを更新
         // fixed logic
         $setTimelineOffsetTop(element.offsetTop);
+
+        // スクリーンのスクロールを再計算
+        screenScrollResizeService();
     }
 
 };

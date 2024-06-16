@@ -10,6 +10,7 @@ import {
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { execute as timelineHeaderWindowResizeUseCase } from "@/timeline/application/TimelineHeader/usecase/TimelineHeaderWindowResizeUseCase";
 import { execute as timelineLayerWindowResizeUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerWindowResizeUseCase";
+import { execute as screenScrollResizeService } from "@/screen/application/ScreenScroll/service/ScreenScrollResizeService";
 
 /**
  * @description ツールエリアを移動可能な状態にする
@@ -61,6 +62,8 @@ export const execute = (event: PointerEvent): void =>
             // タイムラインのレイヤーエリアをリサイズ
             timelineLayerWindowResizeUseCase();
 
+            // スクリーンのスクロールを再計算
+            screenScrollResizeService();
         }
 
         // カーソルを移動用に変更

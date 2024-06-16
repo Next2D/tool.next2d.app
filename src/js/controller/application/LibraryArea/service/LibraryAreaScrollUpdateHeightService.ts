@@ -41,7 +41,7 @@ export const execute = (): void =>
     if (1 > libraryArea.scrollScale) {
 
         scrollBarElement.style.display = "";
-        scrollBarElement.style.top = `${Math.floor(listBoxElement.scrollTop * libraryArea.scrollScale) + 1}px`;
+        scrollBarElement.style.top = `${Math.floor(listBoxElement.scrollTop * libraryArea.scrollScale)}px`;
 
         // 2pxはborderの1pxの上下の分
         document

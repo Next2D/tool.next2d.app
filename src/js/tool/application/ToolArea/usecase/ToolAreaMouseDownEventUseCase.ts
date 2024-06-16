@@ -10,6 +10,7 @@ import { execute as timelineHeaderWindowResizeUseCase } from "@/timeline/applica
 import { execute as timelineLayerWindowResizeUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerWindowResizeUseCase";
 import { execute as billingModelShowService } from "@/menu/application/BillingModal/service/BillingModelShowService";
 import { $useSocket } from "@/share/ShareUtil";
+import { execute as screenScrollResizeService } from "@/screen/application/ScreenScroll/service/ScreenScrollResizeService";
 
 /**
  * @description ダブルタップ用の待機フラグ
@@ -117,6 +118,9 @@ export const execute = (event: PointerEvent): void =>
 
         // タイムラインのレイヤーエリアをリサイズ
         timelineLayerWindowResizeUseCase();
+
+        // スクリーンのスクロールを再計算
+        screenScrollResizeService();
     }
 
 };

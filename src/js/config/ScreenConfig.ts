@@ -69,3 +69,21 @@ export const $SCREEN_TAB_LIST_ID: string = "screen-tab-list";
  * @constant
  */
 export const $SCREEN_TAB_MENU_NAME_LIST_ID: string = "screen-tab-menu-name-list";
+
+/**
+ * @description スクリーンエリアのxスクロールElementのID
+ *              ID of the x-scroll Element in the screen area
+ *
+ * @type {string}
+ * @constant
+ */
+export const $SCREEN_SCROLL_BAR_X_ID: string = "screen-scroll-bar-x";
+
+/**
+ * @description スクリーンエリアのyスクロールElementのID
+ *              ID of the y-scroll Element in the screen area
+ *
+ * @type {string}
+ * @constant
+ */
+export const $SCREEN_SCROLL_BAR_Y_ID: string = "screen-scroll-bar-y";

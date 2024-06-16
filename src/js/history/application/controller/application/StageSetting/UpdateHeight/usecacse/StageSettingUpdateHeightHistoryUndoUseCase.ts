@@ -2,6 +2,7 @@ import { $getWorkSpace } from "@/core/application/CoreUtil";
 import { execute as stageStyleUpdateSizeService } from "@/core/application/Stage/service/StageStyleUpdateSizeService";
 import { execute as screenStageAreaUpdateSizeService } from "@/screen/application/ScreenStageArea/service/ScreenStageAreaUpdateSizeService";
 import { execute as stageSettingUpdateHeightService } from "@/controller/application/StageSetting/service/StageSettingUpdateHeightService";
+import { execute as screenScrollResizeService } from "@/screen/application/ScreenScroll/service/ScreenScrollResizeService";
 
 /**
  * @description ステージの高さの更新を元に戻す
@@ -37,5 +38,8 @@ export const execute = (
 
         // ステージの高さのInputの値を更新
         stageSettingUpdateHeightService(stage.height);
+
+        // スクリーンのスクロールバーのサイズを更新
+        screenScrollResizeService();
     }
 };

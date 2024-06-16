@@ -3,6 +3,7 @@ import { execute as stageStyleUpdateSizeService } from "@/core/application/Stage
 import { execute as screenStageAreaUpdateSizeService } from "@/screen/application/ScreenStageArea/service/ScreenStageAreaUpdateSizeService";
 import { execute as stageSettingUpdateWidthHistoryUseCase } from "@/history/application/controller/application/StageSetting/UpdateWidth/usecase/StageSettingUpdateWidthHistoryUseCase";
 import { execute as stageSettingUpdateWidthService } from "@/controller/application/StageSetting/service/StageSettingUpdateWidthService";
+import { execute as screenScrollResizeService } from "@/screen/application/ScreenScroll/service/ScreenScrollResizeService";
 
 /**
  * @description ステージの幅を更新
@@ -53,5 +54,8 @@ export const execute = (
 
         // ステージの幅を更新
         stageSettingUpdateWidthService(stage.width);
+
+        // スクリーンのスクロールバーのサイズを更新
+        screenScrollResizeService();
     }
 };

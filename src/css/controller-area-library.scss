@@ -94,22 +94,35 @@
 #library-list-title
 {
     display     : flex;
+    width       : calc(var(--controller-width) - 20px - 2px);
     align-items : center;
     color       : darkgray;
     font-size   : 10px;
     height      : var(--library-list-title-height);
 
-    p
+    .library-list-title-name
     {
-        margin-left : 10px;
+        p
+        {
+            margin : 0 0 0 10px;
+        };
     }
+
+    .library-list-title-symbol
+    {
+        p
+        {
+            margin : 0;
+        }
+    }
+
 }
 
 #library-list-title div
 {
     display     : flex;
     align-items : center;
-    width       : 50vw;
+    width       : calc((var(--controller-width) - 20px - 2px) / 2);
     font-weight : bold;
     flex-shrink : 1;
 }
@@ -152,7 +165,7 @@
 
 #library-list-box-body
 {
-    width          : calc(var(--controller-width) - 10px - 2px);
+    width          : calc(var(--controller-width) - 20px - 2px);
     overflow       : hidden;
     display        : flex;
     flex-direction : column;
@@ -289,7 +302,7 @@
     .library-list-box-child
     {
         display  : flex;
-        width    : calc(var(--controller-width) - 10px - 2px);
+        width    : calc(var(--controller-width) - 20px - 2px);
         height   : 35px;
 
         &:hover
@@ -334,7 +347,7 @@
             {
                 display     : flex;
                 align-items : center;
-                width       : calc((var(--controller-width) - 10px - 2px) / 2 - 48px);
+                width       : calc((var(--controller-width) - 20px - 2px) / 2 - 48px);
                 height      : 35px;
                 margin      : 0;
                 overflow    : hidden;
@@ -347,7 +360,7 @@
             {
                 display     : flex;
                 align-items : center;
-                width       : calc((var(--controller-width) - 10px - 2px) / 2);
+                width       : calc((var(--controller-width) - 20px - 2px) / 2);
                 height      : 35px;
                 margin      : 0;
                 overflow    : hidden;

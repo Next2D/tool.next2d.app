@@ -1,4 +1,5 @@
-import { $SCREEN_ID } from "@/config/ScreenConfig";
+import { $SCREEN_ID, $SCREEN_SCROLL_BAR_X_ID, $SCREEN_SCROLL_BAR_Y_ID } from "@/config/ScreenConfig";
+import { screenArea } from "@/screen/domain/model/ScreenArea";
 
 /**
  * @description タイマーID
@@ -54,11 +55,23 @@ export const execute = (event: WheelEvent): void =>
         switch (mode) {
 
             case "x":
-                element.scrollLeft += event.deltaX;
+                {
+                    element.scrollLeft += event.deltaX;
+                    const xElement = document.getElementById($SCREEN_SCROLL_BAR_X_ID);
+                    if (xElement) {
+                        xElement.style.left = `${Math.floor(element.scrollLeft * screenArea.xScale)}px`;
+                    }
+                }
                 break;
 
             case "y":
-                element.scrollTop += event.deltaY;
+                {
+                    element.scrollTop += event.deltaY;
+                    const yElement = document.getElementById($SCREEN_SCROLL_BAR_Y_ID);
+                    if (yElement) {
+                        yElement.style.top = `${Math.floor(element.scrollTop * screenArea.yScale)}px`;
+                    }
+                }
                 break;
 
             default:
