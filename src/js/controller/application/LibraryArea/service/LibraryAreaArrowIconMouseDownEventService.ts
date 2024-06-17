@@ -23,8 +23,8 @@ export const execute = (event: PointerEvent): void =>
         return ;
     }
 
-    // 親のイベントでアイテム選択処理を行うので、ここではstop関数を実行しない
-    // @see LibraryAreaSelectedMouseDownUseCase
+    // 親のイベントを中止
+    event.stopPropagation();
 
     const libraryId = parseInt(element.dataset.libraryId as string);
     const workSpace = $getCurrentWorkSpace();

@@ -16,18 +16,13 @@ import { execute as screenStageAreaAllDisplayObjectActiveService } from "@/scree
  * @description ライブラリエリア内でのインスタンス移動処理
  *              Instance movement processing within the library area
  *
- * @param  {DragEvent} event
+ * @param  {HTMLElement} element
  * @return {void}
  * @method
  * @public
  */
-export const execute = (event: DragEvent): void =>
+export const execute = (element: HTMLElement): void =>
 {
-    const element = event.target as HTMLElement;
-    if (!element) {
-        return ;
-    }
-
     // 重複チェックの配列を初期化
     confirmModalInstaceResetService();
 
@@ -98,7 +93,7 @@ export const execute = (event: DragEvent): void =>
     } else {
 
         // 何も指定がない時は一番上の階層に移動
-        for (let idx: number  = 0; idx < length; ++idx) {
+        for (let idx: number = 0; idx < length; ++idx) {
 
             const libraryId = libraryArea.selectedIds[idx];
 

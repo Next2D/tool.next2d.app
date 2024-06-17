@@ -4,6 +4,8 @@ import { $SCREEN_ID } from "@/config/ScreenConfig";
 import { execute as screenAreaDropUseCase } from "@/screen/application/ScreenArea/usecase/ScreenAreaDropUseCase";
 import { $setMoveState } from "../LibraryAreaUtil";
 import { execute as screenAreaLibraryItemDropEndService } from "@/screen/application/ScreenArea/service/ScreenAreaLibraryItemDropEndService";
+import { execute as libraryAreaMoveItemsUseCase } from "./LibraryAreaMoveItemsUseCase";
+import { $LIBRARY_LIST_BOX_ID } from "@/config/LibraryConfig";
 
 /**
  * @description スクリーンエリアの移動処理を実行
@@ -35,24 +37,52 @@ export const execute = async (event: PointerEvent): Promise<void> =>
     element.setAttribute("style", "");
 
     // スクリーンエリアへの移動処理
-    const targetElement = document.elementFromPoint(event.clientX, event.clientY) as HTMLElement;
-    if (!targetElement || targetElement.id !== $SCREEN_ID) {
+    const targetElement = document
+        .elementFromPoint(event.clientX, event.clientY) as HTMLElement;
+
+    if (!targetElement) {
         return ;
     }
 
-    const screenElement = document.getElementById($SCREEN_ID);
-    if (!screenElement) {
-        return ;
+    if (targetElement.id === $SCREEN_ID) {
+
+        const screenElement = document.getElementById($SCREEN_ID);
+        if (!screenElement) {
+            return ;
+        }
+
+        const rect = targetElement.getBoundingClientRect();
+
+        const x = screenElement.scrollLeft + event.clientX - rect.x;
+        const y = screenElement.scrollTop + event.clientY - rect.y;
+
+        // スクリーンエリアのアイテムドロップ終了処理
+        screenAreaLibraryItemDropEndService();
+
+        // スクリーンエリアに配置
+        await screenAreaDropUseCase(x, y);
+
+    } else {
+
+        let parent: HTMLElement | null = targetElement;
+        while (true) {
+
+            switch (true) {
+
+                case "libraryId" in parent.dataset:
+                case parent.id === $LIBRARY_LIST_BOX_ID:
+                    libraryAreaMoveItemsUseCase(parent);
+                    break;
+
+                default:
+                    break;
+
+            }
+
+            parent = parent.parentElement;
+            if (!parent) {
+                break;
+            }
+        }
     }
-
-    const rect = targetElement.getBoundingClientRect();
-
-    const x = screenElement.scrollLeft + event.clientX - rect.x;
-    const y = screenElement.scrollTop + event.clientY - rect.y;
-
-    // スクリーンエリアのアイテムドロップ終了処理
-    screenAreaLibraryItemDropEndService();
-
-    // スクリーンエリアに配置
-    await screenAreaDropUseCase(x, y);
 };

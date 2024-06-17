@@ -1,5 +1,4 @@
 import { execute as libraryAreaLoadItemsUseCase } from "./LibraryAreaLoadItemsUseCase";
-import { execute as libraryAreaMoveItemsUseCase } from "./LibraryAreaMoveItemsUseCase";
 
 /**
  * @description ライブラリへのファイルドロップ処理関数
@@ -21,11 +20,10 @@ export const execute = (event: DragEvent): void =>
     }
 
     const items: DataTransferItemList = event.dataTransfer.items;
-    if (items.length) {
-        // ドロップアイテムの読み込み
-        libraryAreaLoadItemsUseCase(items);
-    } else {
-        // ライブラリ内のアイテム移動
-        libraryAreaMoveItemsUseCase(event);
+    if (!items.length) {
+        return ;
     }
+
+    // ドロップアイテムの読み込み
+    libraryAreaLoadItemsUseCase(items);
 };
