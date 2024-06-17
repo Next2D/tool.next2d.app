@@ -4,7 +4,6 @@ import { execute as stageStyleUpdateColorService } from "../service/StageStyleUp
 import { execute as libraryPreviewAreaChangeColorService } from "@/controller/application/LibraryPreviewArea/service/LibraryPreviewAreaChangeColorService";
 import { execute as stageSettingUpdateUseCase } from "@/controller/application/StageSetting/usecase/StageSettingUpdateUseCase";
 import { execute as screenStageAreaUpdateSizeService } from "@/screen/application/ScreenStageArea/service/ScreenStageAreaUpdateSizeService";
-import { execute as screenStagePositionCenterService } from "@/screen/application/ScreenStage/service/ScreenStagePositionCenterService";
 import { execute as screenStageOffsetUpdateService } from "@/screen/application/ScreenStage/service/ScreenStageOffsetUpdateService";
 
 /**
@@ -31,9 +30,6 @@ export const execute = (stage: Stage): void =>
 
     // ステージエリアのサイズを更新
     screenStageAreaUpdateSizeService(stage);
-
-    // ステージを画面中央に配置
-    screenStagePositionCenterService(stage);
 
     // ステージElementのoffset値を更新
     screenStageOffsetUpdateService();

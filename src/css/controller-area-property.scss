@@ -1,9 +1,8 @@
 #controller-area-property
 {
-    height     : calc(100vh - var(--controller-tab-area-height) - var(--ad) - var(--controller-padding-width));
-    padding    : 5px;
-    overflow-x : hidden;
-    overflow-y : auto;
+    height   : calc(100vh - var(--controller-tab-area-height) - var(--ad) - var(--controller-padding-width));
+    padding  : 5px;
+    overflow : hidden;
 
     .controller-border
     {

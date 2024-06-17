@@ -19,6 +19,7 @@ import { execute as zoomToolUpdateElementService } from "@/tool/application/Zoom
 import { $getDefaultTool, $setActiveTool } from "@/tool/application/ToolUtil";
 import { $TOOL_ARROW_NAME } from "@/config/ToolConfig";
 import { execute as screenScrollResizeService } from "@/screen/application/ScreenScroll/service/ScreenScrollResizeService";
+import { execute as screenStagePositionCenterService } from "@/screen/application/ScreenStage/service/ScreenStagePositionCenterService";
 
 /**
  * @description プロジェクトの起動処理
@@ -82,6 +83,9 @@ export const execute = async (work_space: WorkSpace): Promise<void> =>
 
     // スケールのインプットの値を更新
     zoomToolUpdateElementService(work_space.scale * 100);
+
+    // ステージを中央に表示
+    screenStagePositionCenterService(work_space.stage);
 
     // スクリーンのスクロールバーのサイズを更新
     screenScrollResizeService();

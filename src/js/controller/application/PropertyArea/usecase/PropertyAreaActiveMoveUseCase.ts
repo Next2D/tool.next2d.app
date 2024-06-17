@@ -9,6 +9,7 @@ import {
     $getStandbyMoveState,
     $setStandbyMoveState
 } from "../PropertyAreaUtil";
+import { execute as libraryAreaScrollUpdateHeightService } from "@/controller/application/LibraryArea/service/LibraryAreaScrollUpdateHeightService";
 
 /**
  * @description プロパティエリアを移動可能な状態にする
@@ -53,6 +54,9 @@ export const execute = (event: PointerEvent): void =>
 
             // タブを非表示にする
             propertyAreaHideTabService();
+
+            // ライブラリエリアの高さを調整
+            libraryAreaScrollUpdateHeightService();
         }
 
         // カーソルを移動用に変更
