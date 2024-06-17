@@ -9,6 +9,7 @@ import {
     $TIMELINE_ID
 } from "@/config/TimelineConfig";
 import { $setTimelineOffsetTop } from "../../TimelineArea/TimelineAreaUtil";
+import { execute as screenScrollResizeService } from "@/screen/application/ScreenScroll/service/ScreenScrollResizeService";
 
 /**
  * @description タイムラインの高さを調整
@@ -67,6 +68,9 @@ export const execute = (event: PointerEvent): void =>
             if (element) {
                 $setTimelineOffsetTop(element.offsetTop);
             }
+
+            // スクリーンのスクロールサイズを再計算
+            screenScrollResizeService();
         }
 
         // 高さを更新

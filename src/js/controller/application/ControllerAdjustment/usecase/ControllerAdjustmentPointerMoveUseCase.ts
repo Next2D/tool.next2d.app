@@ -1,5 +1,6 @@
 import { $CONTROLLER_DEFAULT_WIDTH_SIZE } from "@/config/ControllerConfig";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
+import { execute as screenScrollResizeService } from "@/screen/application/ScreenScroll/service/ScreenScrollResizeService";
 
 /**
  * @description タイムラインの幅を調整
@@ -31,5 +32,8 @@ export const execute = (event: PointerEvent): void =>
 
         const workSpace = $getCurrentWorkSpace();
         workSpace.controllerAreaState.width = width;
+
+        // スクリーンのスクロールサイズを再計算
+        screenScrollResizeService();
     });
 };
