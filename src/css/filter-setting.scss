@@ -1,5 +1,9 @@
 #filter-setting
 {
+    width          : 100%;
+    display        : flex;
+    flex-direction : column;
+    
     .filter-setting-container
     {
         display     : flex;

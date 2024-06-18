@@ -1,9 +1,11 @@
 #controller-area-library
 {
-    padding  : 5px;
-    overflow : hidden;
-    height   : calc(100vh - var(--controller-tab-area-height) - var(--ad) - var(--controller-padding-width));
-
+    padding         : 5px;
+    overflow        : hidden;
+    height          : calc(100vh - var(--controller-tab-area-height) - var(--ad) - var(--controller-padding-width));
+    display         : flex;
+    flex-direction  : column;
+    
     .library-search-area
     {
         display     : flex;

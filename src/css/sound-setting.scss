@@ -1,13 +1,17 @@
 #sound-setting
 {
-    border-bottom : 1px solid #1c1c1c;
-    margin-bottom : 5px;
+    width          : 100%;
+    display        : flex;
+    flex-direction : column;
+    border-bottom  : 1px solid #1c1c1c;
+    margin-bottom  : 5px;
 
     .sound-select-area
     {
         display         : flex;
         justify-content : center;
-        width           : 320px;
+        align-items     : center;
+        width           : 330px;
         margin          : 10px;
     }
 
@@ -96,7 +100,7 @@
 
 #sound-select
 {
-    width            : 288px;
+    width            : 290px;
     height           : 30px;
     border           : 1px solid darkgray;
     border-radius    : 5px;

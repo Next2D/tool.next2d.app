@@ -6,7 +6,6 @@ describe("PropertyAreaChageStyleToInactiveServiceTest", () =>
     {
         const mockElement = {
             "style": {
-                "width": "360px",
                 "height": "96vh",
                 "left": "10px",
                 "top": "20px",
@@ -19,7 +18,6 @@ describe("PropertyAreaChageStyleToInactiveServiceTest", () =>
             "offsetTop": 20
         };
 
-        expect(mockElement.style.width).toBe("360px");
         expect(mockElement.style.height).toBe("96vh");
         expect(mockElement.style.left).toBe("10px");
         expect(mockElement.style.top).toBe("20px");
@@ -29,7 +27,6 @@ describe("PropertyAreaChageStyleToInactiveServiceTest", () =>
         expect(mockElement.style.position).toBe("fixed");
 
         execute(mockElement);
-        expect(mockElement.style.width).toBe("");
         expect(mockElement.style.height).toBe("");
         expect(mockElement.style.left).toBe("");
         expect(mockElement.style.top).toBe("");

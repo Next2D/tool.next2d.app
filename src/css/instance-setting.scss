@@ -1,7 +1,10 @@
 #instance-setting
 {
-    height        : 42px;
-    border-bottom : 1px solid #1c1c1c;
+    width          : 100%;
+    display        : flex;
+    flex-direction : column;
+    height         : 42px;
+    border-bottom  : 1px solid #1c1c1c;
 }
 
 #instance-type-name

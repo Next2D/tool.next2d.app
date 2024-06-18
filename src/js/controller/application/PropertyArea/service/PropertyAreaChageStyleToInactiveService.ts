@@ -10,7 +10,6 @@
 export const execute = (element: HTMLElement): void =>
 {
     // プロパティエリアのstyleを変更
-    element.style.width           = "";
     element.style.height          = "";
     element.style.left            = "";
     element.style.top             = "";

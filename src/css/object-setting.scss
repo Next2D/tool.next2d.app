@@ -1,7 +1,10 @@
 #object-setting
 {
-    border-bottom : 1px solid #1c1c1c;
-    margin-bottom : 5px;
+    width          : 100%;
+    display        : flex;
+    flex-direction : column;
+    border-bottom  : 1px solid #1c1c1c;
+    margin-bottom  : 5px;
 
     .object-setting-name-text
     {
@@ -34,7 +37,7 @@
 
 #object-name
 {
-    width            : 265px;
+    width            : 250px;
     height           : 30px;
     border           : 1px solid darkgray;
     border-radius    : 5px;
@@ -51,7 +54,7 @@
 
 #object-symbol
 {
-    width            : 265px;
+    width            : 250px;
     height           : 30px;
     border           : 1px solid darkgray;
     border-radius    : 5px;

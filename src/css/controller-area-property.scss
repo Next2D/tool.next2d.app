@@ -1,13 +1,49 @@
 #controller-area-property
 {
-    height   : calc(100vh - var(--controller-tab-area-height) - var(--ad) - var(--controller-padding-width));
-    padding  : 5px;
-    overflow : hidden;
+    display     : flex;
+    overflow    : hidden;
+    flex-shrink : 0;
+}
+
+#controller-area-property-body
+{
+    width           : calc(var(--controller-width) - 10px);
+    height          : calc(100vh - var(--controller-tab-area-height) - var(--ad) - var(--controller-padding-width));
+    padding         : 5px;
+    display         : flex;
+    flex-direction  : column;
 
     .controller-border
     {
         margin        : 5px 0 5px 0;
         width         : calc(var(--controller-width) - var(--controller-padding-width));
         border-bottom : 1px solid #1c1c1c;
+    } 
+}
+
+#property-scroll-area
+{
+    position         : relative;
+    width            : 10px;
+    height           : calc(100vh - var(--controller-tab-area-height) - var(--ad) - var(--controller-padding-width));
+    display          : flex;
+    justify-content  : center;
+    background-color : #282828;
+}
+
+#property-scroll-bar
+{
+    position         : absolute;
+    width            : 6px;
+    height           : var(--property-scroll-bar-height);
+    background-color : #363636;
+    color            : whitesmoke;
+    border-radius    : 8px;
+    border           : 1px solid #72777D;
+    box-shadow       : 0 0 1px rgba(245, 245, 245, 0.25);
+
+    &:hover
+    {
+        cursor: pointer;
     }
 }

@@ -19,6 +19,7 @@ export const execute = (event: PointerEvent): void =>
 
     if (!$getMoveState()) {
         $setMoveState(true);
+        element.style.pointerEvents = "none";
         element.style.position = "fixed";
     }
 

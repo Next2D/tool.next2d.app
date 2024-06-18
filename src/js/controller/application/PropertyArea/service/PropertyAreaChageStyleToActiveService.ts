@@ -1,4 +1,3 @@
-import { $CONTROLLER_DEFAULT_WIDTH_SIZE } from "@/config/ControllerConfig";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 
 /**
@@ -17,7 +16,6 @@ export const execute = (element: HTMLElement): void =>
 
     // タイムラインエリアのstyleを変更
     element.style.display         = "";
-    element.style.width           = `${$CONTROLLER_DEFAULT_WIDTH_SIZE}px`;
     element.style.height          = "96vh";
     element.style.left            = `${propertyAreaState.offsetLeft}px`;
     element.style.top             = `${propertyAreaState.offsetTop}px`;
