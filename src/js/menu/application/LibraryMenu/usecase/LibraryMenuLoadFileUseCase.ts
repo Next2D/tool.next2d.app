@@ -11,6 +11,8 @@ import { execute as confirmModalFileShowUseCase } from "@/menu/application/Confi
 import { execute as confirmModalFileDuplicateCheckService } from "@/menu/application/ConfirmModal/service/ConfirmModalFileDuplicateCheckService";
 import { $replace } from "@/language/application/LanguageUtil";
 import { $FOLDER_TYPE } from "@/config/InstanceConfig";
+import { execute as libraryAreaSelectedClearUseCase } from "@/controller/application/LibraryArea/usecase/LibraryAreaSelectedClearUseCase";
+import { execute as soundAreaRebuildSelectElementService } from "@/controller/application/SoundArea/service/SoundAreaRebuildSelectElementService";
 
 /**
  * @description 外部ファイル読み込み処理関数
@@ -80,8 +82,14 @@ export const execute = async (event: Event): Promise<void> =>
     // ファイル名で昇順に並び替え
     libraryAreaReOrderingService(workSpace);
 
+    // 選択状態を初期化
+    libraryAreaSelectedClearUseCase();
+
     // ライブラリエリアを際描画
     libraryAreaReloadUseCase();
+
+    // サウンドエリアの選択要素を再構築
+    soundAreaRebuildSelectElementService();
 
     // プログレバーを非表示に更新
     progressMenuHideService();
