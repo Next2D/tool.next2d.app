@@ -11,6 +11,7 @@ import { execute as objectSettingUpdateSymbolService } from "@/controller/applic
 import { execute as propertyAreaBlockShowService } from "../service/PropertyAreaBlockShowService";
 import { execute as propertyAreaBlockHideService } from "../service/PropertyAreaBlockHideService";
 import { execute as soundAreaRebuildSettingAreaUseCase } from "@/controller/application/SoundArea/usecase/SoundAreaRebuildSettingAreaUseCase";
+import { execute as propertyAreaScrollUpdateHeightService } from "@/controller/application/PropertyAreaScroll/service/PropertyAreaScrollUpdateHeightService";
 
 /**
  * @description プロパティエリアの表示項目を変更
@@ -50,4 +51,7 @@ export const execute = async (movie_clip: MovieClip): Promise<void> =>
 
     // 選択モードをクリア
     $setSelectedMode("");
+
+    // プロパティエリアの高さを更新
+    propertyAreaScrollUpdateHeightService();
 };

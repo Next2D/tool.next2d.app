@@ -6,7 +6,7 @@ import { execute as libraryAreaRemoveWindowKeyEventUseCase } from "./LibraryArea
 import { execute as libraryAreaDragstartUseCase } from "./LibraryAreaDragstartUseCase";
 import { execute as libraryAreaDragendUseCase } from "./LibraryAreaDragendUseCase";
 import { EventType } from "@/tool/domain/event/EventType";
-import { execute as librayAreaWheelEventUseCase } from "./LibrayAreaWheelEventUseCase";
+import { execute as librayAreaWheelEventService } from "../../LibraryAreaScroll/service/LibrayAreaWheelEventService";
 import { execute as libraryAreaScrollBarMouseDownEventUseCase } from "@/controller/application/LibraryAreaScroll/usecase/LibraryAreaScrollBarMouseDownEventUseCase";
 import {
     $LIBRARY_LIST_BOX_ID,
@@ -39,7 +39,7 @@ export const execute = (): void =>
 
     if (listBoxElement) {
         listBoxElement.addEventListener("wheel",
-            librayAreaWheelEventUseCase,
+            librayAreaWheelEventService,
             { "passive": false }
         );
 

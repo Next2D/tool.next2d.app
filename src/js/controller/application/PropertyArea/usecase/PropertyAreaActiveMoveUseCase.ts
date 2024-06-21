@@ -9,7 +9,7 @@ import {
     $getStandbyMoveState,
     $setStandbyMoveState
 } from "../PropertyAreaUtil";
-import { execute as libraryAreaScrollUpdateHeightService } from "@/controller/application/LibraryArea/service/LibraryAreaScrollUpdateHeightService";
+import { execute as libraryAreaScrollUpdateHeightService } from "@/controller/application/LibraryAreaScroll/service/LibraryAreaScrollUpdateHeightService";
 
 /**
  * @description プロパティエリアを移動可能な状態にする

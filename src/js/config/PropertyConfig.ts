@@ -33,3 +33,12 @@ export const $PROPERTY_OBJECT_AREA_ID: string = "object-area";
  * @public
  */
 export const $PROPERTY_SCROLL_BAR_ID: string = "property-scroll-bar";
+
+/**
+ * @description プロパティーエリアのスクロールエリアElement IDの名前
+ *              Name of Element ID in scroll area of property area
+ *
+ * @type {string}
+ * @public
+ */
+export const $PROPERTY_SCROLL_AREA_ID: string = "property-scroll-area";

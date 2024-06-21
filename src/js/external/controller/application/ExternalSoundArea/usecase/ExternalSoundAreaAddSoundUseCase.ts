@@ -10,6 +10,7 @@ import { execute as timelineHeaderUpdateSoundElementService } from "@/timeline/a
 import { ExternalLibrary } from "@/external/controller/domain/model/ExternalLibrary";
 import { $SOUND_TYPE } from "@/config/InstanceConfig";
 import { execute as soundAreaAddSettingAreaUseCase } from "@/controller/application/SoundArea/usecase/SoundAreaAddSettingAreaUseCase";
+import { execute as propertyAreaScrollUpdateHeightService } from "@/controller/application/PropertyAreaScroll/service/PropertyAreaScrollUpdateHeightService";
 
 /**
  * @description タイムラインにサウンドを追加
@@ -86,6 +87,9 @@ export const execute = (
                 externalSound.name,
                 soundObject
             );
+
+            // プロパティエリアの高さを更新
+            propertyAreaScrollUpdateHeightService();
         }
     }
 };

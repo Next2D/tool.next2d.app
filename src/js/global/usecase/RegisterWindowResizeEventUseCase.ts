@@ -1,6 +1,9 @@
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { execute as timelineLayerWindowResizeUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerWindowResizeUseCase";
 import { execute as timelineHeaderWindowResizeUseCase } from "@/timeline/application/TimelineHeader/usecase/TimelineHeaderWindowResizeUseCase";
+import { execute as screenScrollResizeService } from "@/screen/application/ScreenScroll/service/ScreenScrollResizeService";
+import { execute as libraryAreaScrollUpdateHeightService } from "@/controller/application/LibraryAreaScroll/service/LibraryAreaScrollUpdateHeightService";
+import { execute as propertyAreaScrollUpdateHeightService } from "@/controller/application/PropertyAreaScroll/service/PropertyAreaScrollUpdateHeightService";
 
 /**
  * @description リサイズイベントを登録
@@ -24,5 +27,10 @@ export const execute = (): void =>
         // タイムラインとタイムラインヘッダーをリサイズ
         requestAnimationFrame(timelineLayerWindowResizeUseCase);
         requestAnimationFrame(timelineHeaderWindowResizeUseCase);
+
+        // スクロースバーの高さを更新
+        requestAnimationFrame(screenScrollResizeService);
+        requestAnimationFrame(libraryAreaScrollUpdateHeightService);
+        requestAnimationFrame(propertyAreaScrollUpdateHeightService);
     });
 };

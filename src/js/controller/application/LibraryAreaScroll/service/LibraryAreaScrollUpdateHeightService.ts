@@ -9,11 +9,11 @@ import { libraryArea } from "@/controller/domain/model/LibraryArea";
  * @description ライブラリエリアのスクロールバーの高さを更新する
  *              Update the height of the scrollbar in the library area
  *
- * @return {void}
+ * @return {Promise}
  * @method
  * @public
  */
-export const execute = (): void =>
+export const execute = async (): Promise<void> =>
 {
     const scrollAreaElement: HTMLElement | null = document
         .getElementById($LIBRARY_LIST_BOX_SCROLL_AREA_ID);

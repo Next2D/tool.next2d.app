@@ -14,7 +14,7 @@ import { $LIBRARY_LIST_BOX_ID } from "@/config/LibraryConfig";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { EventType } from "@/tool/domain/event/EventType";
 import { libraryArea } from "@/controller/domain/model/LibraryArea";
-import { execute as libraryAreaScrollUpdateHeightService } from "../service/LibraryAreaScrollUpdateHeightService";
+import { execute as libraryAreaScrollUpdateHeightService } from "../../LibraryAreaScroll/service/LibraryAreaScrollUpdateHeightService";
 import {
     $FOLDER_TYPE,
     $MOVIE_CLIP_TYPE

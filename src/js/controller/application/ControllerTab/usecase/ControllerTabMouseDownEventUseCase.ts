@@ -1,6 +1,6 @@
 import { $CONTROLLER_TAB_AREA_ID } from "@/config/ControllerConfig";
 import { $allHideMenu } from "@/menu/application/MenuUtil";
-import { execute as libraryAreaScrollUpdateHeightService } from "@/controller/application/LibraryArea/service/LibraryAreaScrollUpdateHeightService";
+import { execute as libraryAreaScrollUpdateHeightService } from "@/controller/application/LibraryAreaScroll/service/LibraryAreaScrollUpdateHeightService";
 
 /**
  * @description タブのタップイベント処理関数
