@@ -7,7 +7,7 @@ import { execute as libraryAreaDragstartUseCase } from "./LibraryAreaDragstartUs
 import { execute as libraryAreaDragendUseCase } from "./LibraryAreaDragendUseCase";
 import { EventType } from "@/tool/domain/event/EventType";
 import { execute as librayAreaWheelEventUseCase } from "./LibrayAreaWheelEventUseCase";
-import { execute as libraryAreaScrollBarMouseDownEventUseCase } from "./LibraryAreaScrollBarMouseDownEventUseCase";
+import { execute as libraryAreaScrollBarMouseDownEventUseCase } from "@/controller/application/LibraryAreaScroll/usecase/LibraryAreaScrollBarMouseDownEventUseCase";
 import {
     $LIBRARY_LIST_BOX_ID,
     $LIBRARY_LIST_BOX_SCROLL_BAR_ID

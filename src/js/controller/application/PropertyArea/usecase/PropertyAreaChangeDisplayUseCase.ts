@@ -3,6 +3,7 @@ import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { execute as propertyAreaBitmapDisplayControllerUseCase } from "./PropertyAreaBitmapDisplayControllerUseCase";
 import { execute as propertyAreaShowMultiSettingUseCase } from "./PropertyAreaShowMultiSettingUseCase";
 import { $setSelectedMode } from "../PropertyAreaUtil";
+import { execute as propertyAreaScrollUpdateHeightService } from "@/controller/application/PropertyAreaScroll/service/PropertyAreaScrollUpdateHeightService";
 
 /**
  * @description プロパティエリアの表示を更新
@@ -53,4 +54,7 @@ export const execute = (): void =>
         // 複数選択時の表示に切り替える
         propertyAreaShowMultiSettingUseCase();
     }
+
+    // プロパティエリアのスクロールの高さを更新
+    propertyAreaScrollUpdateHeightService();
 };

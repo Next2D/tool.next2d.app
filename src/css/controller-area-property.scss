@@ -1,17 +1,18 @@
 #controller-area-property
 {
-    display     : flex;
-    overflow    : hidden;
-    flex-shrink : 0;
+    display  : flex;
+    overflow : hidden;
+    width    : var(--controller-width);
+    height   : calc(100vh - var(--controller-tab-area-height) - var(--ad));
 }
 
 #controller-area-property-body
 {
-    width           : calc(var(--controller-width) - 10px);
-    height          : calc(100vh - var(--controller-tab-area-height) - var(--ad) - var(--controller-padding-width));
-    padding         : 5px;
-    display         : flex;
-    flex-direction  : column;
+    display        : flex;
+    flex-direction : column;
+    overflow       : hidden;
+    width          : calc(var(--controller-width) - 20px);
+    padding        : 5px;
 
     .controller-border
     {
@@ -25,7 +26,7 @@
 {
     position         : relative;
     width            : 10px;
-    height           : calc(100vh - var(--controller-tab-area-height) - var(--ad) - var(--controller-padding-width));
+    height           : calc(100vh - var(--controller-tab-area-height) - var(--ad));
     display          : flex;
     justify-content  : center;
     background-color : #282828;

@@ -1,5 +1,6 @@
 import { execute as propertyAreaRegisterTitleEventUseCase } from "./PropertyAreaRegisterTitleEventUseCase";
 import { execute as propertyAreaRegisterMoveEventUseCase } from "./PropertyAreaRegisterMoveEventUseCase";
+import { execute as propertyAreaScrollInitializeRegisterEventUseCase } from "@/controller/application/PropertyAreaScroll/usecase/PropertyAreaScrollInitializeRegisterEventUseCase";
 
 /**
  * @description プロパティーエリアの移動イベントを登録
@@ -16,4 +17,7 @@ export const execute = (): void =>
 
     // プロパティーエリアの移動イベントを登録
     propertyAreaRegisterMoveEventUseCase();
+
+    // プロパティーエリアのスクロールイベントを登録
+    propertyAreaScrollInitializeRegisterEventUseCase();
 };

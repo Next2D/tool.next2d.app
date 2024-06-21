@@ -7,6 +7,7 @@ import { libraryArea } from "../domain/model/LibraryArea";
 import { transformSetting } from "../domain/model/TransformSetting";
 import { soundArea } from "../domain/model/SoundArea";
 import { objectSetting } from "../domain/model/ObjectSetting";
+import { propertyArea } from "../domain/model/PropertyArea";
 
 /**
  * @description 起動対象のToolクラスの配列
@@ -15,6 +16,7 @@ import { objectSetting } from "../domain/model/ObjectSetting";
  * @private
  */
 const settings: any[] = [
+    propertyArea,
     stageSetting,
     controllerTab,
     libraryArea,
@@ -38,9 +40,6 @@ export const execute = async (): Promise<void> =>
 
     //  コントローラー幅調整のイベント登録
     controllerAdjustmentInitializeRegisterEventUseCase();
-
-    // プロパティーの移動イベント登録
-    propertyAreaInitializeRegisterEventUseCase();
 
     // 設定クラスの初期起動関数を実行
     const promises: Promise<void>[] = [];
