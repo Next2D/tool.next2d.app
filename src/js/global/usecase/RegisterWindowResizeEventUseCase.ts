@@ -24,13 +24,18 @@ export const execute = (): void =>
             return ;
         }
 
-        // タイムラインとタイムラインヘッダーをリサイズ
-        requestAnimationFrame(timelineLayerWindowResizeUseCase);
-        requestAnimationFrame(timelineHeaderWindowResizeUseCase);
+        requestAnimationFrame((): void =>
+        {
+            // タイムラインをリサイズ
+            timelineLayerWindowResizeUseCase();
 
-        // スクロースバーの高さを更新
-        requestAnimationFrame(screenScrollResizeService);
-        requestAnimationFrame(libraryAreaScrollUpdateHeightService);
-        requestAnimationFrame(propertyAreaScrollUpdateHeightService);
+            // タイムラインヘッダーをリサイズ
+            timelineHeaderWindowResizeUseCase();
+
+            // スクロールバーの高さを更新
+            screenScrollResizeService();
+            libraryAreaScrollUpdateHeightService();
+            propertyAreaScrollUpdateHeightService();
+        });
     });
 };
