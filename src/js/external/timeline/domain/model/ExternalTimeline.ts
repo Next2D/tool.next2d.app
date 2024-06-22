@@ -391,6 +391,12 @@ export class ExternalTimeline
      */
     async eraseFrames (start_frame: number, end_frame: number = 0): Promise<void>
     {
+        // 選択中のDisplayObjectをクリア
+        externalScreenClaerSelectedDisplayObjectUseCase(
+            this._$workSpace,
+            this._$movieClip
+        );
+
         await externalTimelineLayerFrameRemoveFrameUseCase(
             this._$workSpace,
             this._$movieClip,
@@ -411,6 +417,12 @@ export class ExternalTimeline
      */
     async deleteKeyframes (start_frame: number, end_frame: number = 0): Promise<void>
     {
+        // 選択中のDisplayObjectをクリア
+        externalScreenClaerSelectedDisplayObjectUseCase(
+            this._$workSpace,
+            this._$movieClip
+        );
+
         await externalTimelineLayerFrameDeleteKeyframesUseCase(
             this._$workSpace,
             this._$movieClip,
