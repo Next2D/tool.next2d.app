@@ -10,13 +10,15 @@ import { ExternalLayer } from "@/external/core/domain/model/ExternalLayer";
  *
  * @param  {WorkSpace} work_space
  * @param  {MovieClip} movie_clip
+ * @param  {array} [frames=null]
  * @return {void}
  * @method
  * @public
  */
 export const execute = (
     work_space: WorkSpace,
-    movie_clip: MovieClip
+    movie_clip: MovieClip,
+    frames: number[] | null = null
 ): void => {
 
     // 一度選択状態を初期化
@@ -30,7 +32,23 @@ export const execute = (
         return ;
     }
 
-    const frame = movie_clip.currentFrame;
+    // 現在のフレームを取得
+    const currentFrame = movie_clip.currentFrame;
+
+    // 指定フレームをセット
+    let frame = movie_clip.currentFrame;
+    if (frames) {
+        frame = frames.length > 1
+            ? movie_clip.selectedFrameObject.end
+            : frames[0];
+
+        if (!frame) {
+            frame = frames[0];
+        }
+
+        movie_clip.currentFrame = frame;
+    }
+
     for (let idx = 0; idx < selectedLayers.length; ++idx) {
 
         const layer = selectedLayers[idx];
@@ -67,4 +85,7 @@ export const execute = (
             depths
         );
     }
+
+    // 後続処理のためにフレームを戻す
+    movie_clip.currentFrame = currentFrame;
 };

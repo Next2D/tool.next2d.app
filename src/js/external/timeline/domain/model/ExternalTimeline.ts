@@ -282,7 +282,8 @@ export class ExternalTimeline
         // 選択したレイヤーのDisplayObjectを選択状態に更新
         externalScreenSelectedFromSelectedLayersUseCase(
             this._$workSpace,
-            this._$movieClip
+            this._$movieClip,
+            frames
         );
 
         // 選択されたフレームの中の最後のフレームをセット
