@@ -1,5 +1,6 @@
 #controller-area-js
 {
+    display  : flex;
     overflow : hidden;
     padding  : 5px;
     height   : calc(100vh - var(--controller-tab-area-height) - var(--ad) - var(--controller-padding-width));
@@ -19,7 +20,7 @@
     overflow      : hidden;
     border        : 1px solid darkgray;
     border-radius : 3px;
-    height        : calc(100vh - 21px - var(--ad) - 12px);
+    height        : calc(100vh - var(--controller-tab-area-height) - var(--ad) - var(--controller-padding-width) - 4px);
 }
 
 #javascript-internal-list-box-body
@@ -27,13 +28,13 @@
     display        : flex;
     flex-direction : column;
     overflow       : hidden;
-    width          : calc(var(--controller-width) - 20px);
+    width          : calc(var(--controller-width) - 22px);
 
     .internal-parent
     {
         display     : flex;
         align-items : center;
-        margin      : 6px;
+        margin      : 12px 8px 8px 16px;
         
         i
         {
@@ -55,7 +56,7 @@
     {
         display     : flex;
         align-items : center;
-        margin      : 6px 6px 6px 30px;
+        margin      : 8px 8px 8px 30px;
 
         i
         {
@@ -78,7 +79,7 @@
 {
     position         : relative;
     width            : 10px;
-    height           : calc(100vh - var(--controller-tab-area-height) - var(--ad));
+    height           : calc(100vh - var(--controller-tab-area-height) - var(--ad) - var(--controller-padding-width) - 4px);
     display          : flex;
     justify-content  : center;
     background-color : #282828;

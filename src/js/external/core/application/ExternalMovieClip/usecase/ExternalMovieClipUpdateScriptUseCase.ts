@@ -7,6 +7,7 @@ import { execute as scriptEditorDeleteHistoryUseCase } from "@/history/applicati
 import { $getLeftFrame, $getRightFrame } from "@/timeline/application/TimelineUtil";
 import { timelineHeader } from "@/timeline/domain/model/TimelineHeader";
 import { execute as scriptAreaReloadUseCase } from "@/controller/application/ScriptArea/usecase/ScriptAreaReloadUseCase";
+import { execute as scriptAreaScrollUpdateHeightService } from "@/controller/application/ScriptAreaScroll/service/ScriptAreaScrollUpdateHeightService";
 
 /**
  * @description 指定フレームのスクリプト情報を更新
@@ -101,5 +102,8 @@ export const execute = (
 
         // スクリプトアイコンの更新
         timelineHeaderUpdateScriptElementService(node, frame);
+
+        // スクロールバーの高さを更新
+        scriptAreaScrollUpdateHeightService();
     }
 };

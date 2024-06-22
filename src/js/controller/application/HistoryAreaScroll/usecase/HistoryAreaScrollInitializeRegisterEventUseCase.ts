@@ -16,12 +16,12 @@ import {
  */
 export const execute = (): void =>
 {
-    const listElement: HTMLElement | null = document
+    const scrollBarElement: HTMLElement | null = document
         .getElementById($HISTORY_LIST_SCROLL_BAR_ID);
 
-    if (listElement) {
+    if (scrollBarElement) {
         // マウスダウンイベントを登録
-        listElement.addEventListener(EventType.MOUSE_DOWN,
+        scrollBarElement.addEventListener(EventType.MOUSE_DOWN,
             historyAreaScrollMouseDownUseCase
         );
     }

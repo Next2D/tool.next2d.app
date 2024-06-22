@@ -5,6 +5,7 @@ import { execute as screenScrollResizeService } from "@/screen/application/Scree
 import { execute as libraryAreaScrollUpdateHeightService } from "@/controller/application/LibraryAreaScroll/service/LibraryAreaScrollUpdateHeightService";
 import { execute as propertyAreaScrollUpdateHeightService } from "@/controller/application/PropertyAreaScroll/service/PropertyAreaScrollUpdateHeightService";
 import { execute as historyAreaScrollUpdateHeightService } from "@/controller/application/HistoryAreaScroll/service/HistoryAreaScrollUpdateHeightService";
+import { execute as scriptAreaScrollUpdateHeightService } from "@/controller/application/ScriptAreaScroll/service/ScriptAreaScrollUpdateHeightService";
 
 /**
  * @description リサイズイベントを登録
@@ -38,6 +39,7 @@ export const execute = (): void =>
             libraryAreaScrollUpdateHeightService();
             propertyAreaScrollUpdateHeightService();
             historyAreaScrollUpdateHeightService();
+            scriptAreaScrollUpdateHeightService();
         });
     });
 };

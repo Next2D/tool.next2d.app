@@ -1,8 +1,10 @@
 #controller-area-plugin
 {
-    padding  : 5px;
+    display  : flex;
     overflow : hidden;
+    padding  : 5px;
     height   : calc(100vh - var(--controller-tab-area-height) - var(--ad) - var(--controller-padding-width));
+
 }
 
 #plugin-list-box
@@ -11,7 +13,7 @@
     overflow      : hidden;
     border        : 1px solid darkgray;
     border-radius : 3px;
-    height        : calc(100vh - 21px - var(--ad) - 12px);
+    height        : calc(100vh - var(--controller-tab-area-height) - var(--ad) - var(--controller-padding-width) - 4px);
 }
 
 #plugin-list-box-body
@@ -19,7 +21,7 @@
     display        : flex;
     flex-direction : column;
     overflow       : hidden;
-    width          : calc(var(--controller-width) - 20px);
+    width          : calc(var(--controller-width) - 22px);
 
     .active
     {
@@ -56,7 +58,7 @@
 {
     position         : relative;
     width            : 10px;
-    height           : calc(100vh - var(--controller-tab-area-height) - var(--ad));
+    height           : calc(100vh - var(--controller-tab-area-height) - var(--ad) - var(--controller-padding-width) - 4px);
     display          : flex;
     justify-content  : center;
     background-color : #282828;
@@ -66,7 +68,7 @@
 {
     position         : absolute;
     width            : 6px;
-    height           : var(--plugin-scroll-bar-height);
+    height           : var(--history-scroll-bar-height);
     background-color : #363636;
     color            : whitesmoke;
     border-radius    : 8px;
