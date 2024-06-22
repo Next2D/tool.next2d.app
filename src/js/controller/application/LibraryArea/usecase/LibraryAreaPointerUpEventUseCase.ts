@@ -64,9 +64,6 @@ export const execute = async (event: PointerEvent): Promise<void> =>
         const x = screenElement.scrollLeft + event.clientX - rect.x;
         const y = screenElement.scrollTop + event.clientY - rect.y;
 
-        // スクリーンエリアのアイテムドロップ終了処理
-        screenAreaLibraryItemDropEndService();
-
         // スクリーンエリアに配置
         await screenAreaDropUseCase(x, y);
 
@@ -117,5 +114,9 @@ export const execute = async (event: PointerEvent): Promise<void> =>
         }
     }
 
+    // styleを初期化
     element.setAttribute("style", "");
+
+    // スクリーンエリアのDisplayObjectをアクティブに戻す
+    screenAreaLibraryItemDropEndService();
 };
