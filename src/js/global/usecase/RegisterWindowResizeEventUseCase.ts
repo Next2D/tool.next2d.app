@@ -6,6 +6,7 @@ import { execute as libraryAreaScrollUpdateHeightService } from "@/controller/ap
 import { execute as propertyAreaScrollUpdateHeightService } from "@/controller/application/PropertyAreaScroll/service/PropertyAreaScrollUpdateHeightService";
 import { execute as historyAreaScrollUpdateHeightService } from "@/controller/application/HistoryAreaScroll/service/HistoryAreaScrollUpdateHeightService";
 import { execute as scriptAreaScrollUpdateHeightService } from "@/controller/application/ScriptAreaScroll/service/ScriptAreaScrollUpdateHeightService";
+import { execute as pluginAreaScrollUpdateHeightService } from "@/controller/application/PluginAreaScroll/service/PluginAreaScrollUpdateHeightService";
 
 /**
  * @description リサイズイベントを登録
@@ -40,6 +41,7 @@ export const execute = (): void =>
             propertyAreaScrollUpdateHeightService();
             historyAreaScrollUpdateHeightService();
             scriptAreaScrollUpdateHeightService();
+            pluginAreaScrollUpdateHeightService();
         });
     });
 };
