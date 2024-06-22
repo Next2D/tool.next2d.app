@@ -1,6 +1,7 @@
 import { $CONTROLLER_TAB_AREA_ID } from "@/config/ControllerConfig";
 import { $allHideMenu } from "@/menu/application/MenuUtil";
 import { execute as libraryAreaScrollUpdateHeightService } from "@/controller/application/LibraryAreaScroll/service/LibraryAreaScrollUpdateHeightService";
+import { execute as propertyAreaScrollUpdateHeightService } from "@/controller/application/PropertyAreaScroll/service/PropertyAreaScrollUpdateHeightService";
 
 /**
  * @description タブのタップイベント処理関数
@@ -70,7 +71,20 @@ export const execute = (event: PointerEvent): void =>
     targetElement.style.display = "";
 
     // ライブラリエリアなら高さを調整
-    if (tabType === "controller-area-library") {
-        libraryAreaScrollUpdateHeightService();
+    switch (tabType) {
+
+        // ライブラリエリア選択時の高さ調整
+        case "controller-area-library":
+            libraryAreaScrollUpdateHeightService();
+            break;
+
+        // プロパティエリア選択時の高さ調整
+        case "controller-area-property":
+            propertyAreaScrollUpdateHeightService();
+            break;
+
+        default:
+            break;
+
     }
 };
