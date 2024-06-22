@@ -2,6 +2,7 @@ import { $CONTROLLER_TAB_AREA_ID } from "@/config/ControllerConfig";
 import { $allHideMenu } from "@/menu/application/MenuUtil";
 import { execute as libraryAreaScrollUpdateHeightService } from "@/controller/application/LibraryAreaScroll/service/LibraryAreaScrollUpdateHeightService";
 import { execute as propertyAreaScrollUpdateHeightService } from "@/controller/application/PropertyAreaScroll/service/PropertyAreaScrollUpdateHeightService";
+import { execute as historyAreaScrollUpdateHeightService } from "@/controller/application/HistoryAreaScroll/service/HistoryAreaScrollUpdateHeightService";
 
 /**
  * @description タブのタップイベント処理関数
@@ -81,6 +82,11 @@ export const execute = (event: PointerEvent): void =>
         // プロパティエリア選択時の高さ調整
         case "controller-area-property":
             propertyAreaScrollUpdateHeightService();
+            break;
+
+        // プロパティエリア選択時の高さ調整
+        case "controller-area-history":
+            historyAreaScrollUpdateHeightService();
             break;
 
         default:

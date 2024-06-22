@@ -8,13 +8,40 @@
 export const $HISTORY_LIMIT: number = 100;
 
 /**
- * @description コントローラーエリアのElement IDの名前
- *              Name of the Element ID in the controller area
+ * @description 履歴エリアのElement IDの名前
+ *              Name of Element ID in history area
  *
  * @type {string}
  * @public
  */
-export const $HISTORY_LIST_ID: string = "history-list";
+export const $HISTORY_LIST_PARENT_ID: string = "history-list";
+
+/**
+ * @description 履歴エリアのElement IDの名前
+ *              Name of Element ID in history area
+ *
+ * @type {string}
+ * @public
+ */
+export const $HISTORY_LIST_ID: string = "history-list-body";
+
+/**
+ * @description 履歴エリアのスクロールElement IDの名前
+ *              Name of Element ID in scroll of history area
+ *
+ * @type {string}
+ * @public
+ */
+export const $HISTORY_LIST_SCROLL_BAR_ID: string = "history-list-scroll-bar";
+
+/**
+ * @description 履歴エリアのスクロールエリアElement IDの名前
+ *              Name of Element ID in scroll area of history area
+ *
+ * @type {string}
+ * @public
+ */
+export const $HISTORY_LIST_SCROLL_AREA_ID: string = "history-list-scroll-area";
 
 /**
  * @description タイムラインへ新規レイヤーした際の履歴の識別コマンド名

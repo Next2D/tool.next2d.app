@@ -15,13 +15,19 @@
 
 #javascript-internal-list-box
 {
-    border         : 1px solid darkgray;
-    border-radius  : 3px;
-    height         : calc(100vh - var(--controller-tab-area-height) - var(--ad) - var(--controller-padding-width) - 2px);
-    overflow-x     : hidden;
-    overflow-y     : auto;
+    display       : flex;
+    overflow      : hidden;
+    border        : 1px solid darkgray;
+    border-radius : 3px;
+    height        : calc(100vh - 21px - var(--ad) - 12px);
+}
+
+#javascript-internal-list-box-body
+{
     display        : flex;
     flex-direction : column;
+    overflow       : hidden;
+    width          : calc(var(--controller-width) - 20px);
 
     .internal-parent
     {
@@ -65,5 +71,32 @@
         {
             cursor : pointer;
         }
+    }
+}
+
+#javascript-internal-list-scroll-area
+{
+    position         : relative;
+    width            : 10px;
+    height           : calc(100vh - var(--controller-tab-area-height) - var(--ad));
+    display          : flex;
+    justify-content  : center;
+    background-color : #282828;
+}
+
+#javascript-internal-list-scroll-bar
+{
+    position         : absolute;
+    width            : 6px;
+    height           : var(--javascript-scroll-bar-height);
+    background-color : #363636;
+    color            : whitesmoke;
+    border-radius    : 8px;
+    border           : 1px solid #72777D;
+    box-shadow       : 0 0 1px rgba(245, 245, 245, 0.25);
+
+    &:hover
+    {
+        cursor: pointer;
     }
 }

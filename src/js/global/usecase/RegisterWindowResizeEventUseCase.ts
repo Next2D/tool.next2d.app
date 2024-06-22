@@ -4,6 +4,7 @@ import { execute as timelineHeaderWindowResizeUseCase } from "@/timeline/applica
 import { execute as screenScrollResizeService } from "@/screen/application/ScreenScroll/service/ScreenScrollResizeService";
 import { execute as libraryAreaScrollUpdateHeightService } from "@/controller/application/LibraryAreaScroll/service/LibraryAreaScrollUpdateHeightService";
 import { execute as propertyAreaScrollUpdateHeightService } from "@/controller/application/PropertyAreaScroll/service/PropertyAreaScrollUpdateHeightService";
+import { execute as historyAreaScrollUpdateHeightService } from "@/controller/application/HistoryAreaScroll/service/HistoryAreaScrollUpdateHeightService";
 
 /**
  * @description リサイズイベントを登録
@@ -36,6 +37,7 @@ export const execute = (): void =>
             screenScrollResizeService();
             libraryAreaScrollUpdateHeightService();
             propertyAreaScrollUpdateHeightService();
+            historyAreaScrollUpdateHeightService();
         });
     });
 };

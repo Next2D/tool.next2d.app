@@ -7,6 +7,7 @@ import { transformSetting } from "../domain/model/TransformSetting";
 import { soundArea } from "../domain/model/SoundArea";
 import { objectSetting } from "../domain/model/ObjectSetting";
 import { propertyArea } from "../domain/model/PropertyArea";
+import { historyArea } from "../domain/model/HistoryArea";
 
 /**
  * @description 起動対象のToolクラスの配列
@@ -21,7 +22,8 @@ const settings: any[] = [
     libraryArea,
     transformSetting,
     soundArea,
-    objectSetting
+    objectSetting,
+    historyArea
 ];
 
 /**

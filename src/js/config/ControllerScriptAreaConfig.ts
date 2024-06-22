@@ -5,4 +5,4 @@
  * @type {string}
  * @constant
  */
-export const $CONTROLLER_JAVASCRIPT_INTERNAL_LIST_BOX_ID: string = "javascript-internal-list-box";
+export const $CONTROLLER_JAVASCRIPT_INTERNAL_LIST_BOX_ID: string = "javascript-internal-list-box-body";
