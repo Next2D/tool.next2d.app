@@ -6,11 +6,12 @@ import { ExternalCharacter } from "@/external/core/domain/model/ExternalCharacte
  * @description 選択中のDisplayObjectの移動した値を更新
  *              Update the moved value of the selected DisplayObject
  *
+ * @param  {boolean} [over_wirte=false]
  * @return {void}
  * @method
  * @public
  */
-export const execute = (): void =>
+export const execute = (over_wirte: boolean = false): void =>
 {
     // 移動量のオブジェクトを取得
     if (!transformSetting.x && !transformSetting.y) {
@@ -49,12 +50,20 @@ export const execute = (): void =>
 
             // xの移動があれば更新
             if (transformSetting.x) {
-                externalCharacter.x += transformSetting.x;
+                if (over_wirte) {
+                    externalCharacter.x = transformSetting.x;
+                } else {
+                    externalCharacter.x += transformSetting.x;
+                }
             }
 
             // yの移動があれば更新
             if (transformSetting.y) {
-                externalCharacter.y += transformSetting.y;
+                if (over_wirte) {
+                    externalCharacter.y = transformSetting.y;
+                } else {
+                    externalCharacter.y += transformSetting.y;
+                }
             }
         }
     }

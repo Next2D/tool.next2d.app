@@ -91,6 +91,8 @@ export const execute = async (
         }
     }
 
+    const dx = parseFloat(x.toFixed(2));
+    const dy = parseFloat(y.toFixed(2));
     for (let idx = 0; idx < layers.length; idx++) {
 
         const layer = layers[idx];
@@ -102,12 +104,12 @@ export const execute = async (
         const character = new Character();
 
         // 配置位置を設定
-        character.x = x;
-        character.y = y;
+        character.x = dx;
+        character.y = dy;
 
         // 中心点を中央に設定（初期値）
-        character.referencePosition.x = x + character.width  / 2;
-        character.referencePosition.y = y + character.height / 2;
+        character.referencePosition.x = dx + character.width  / 2;
+        character.referencePosition.y = dy + character.height / 2;
 
         // 外部アイテムを読み込む
         character.loadExternalItem(item);

@@ -33,16 +33,16 @@ export const execute = (
             movie_clip.layers.indexOf(layer),
             character.startFrame,
             character.depth,
-            before_y,
-            character.y
+            parseFloat(before_y.toFixed(2)),
+            parseFloat(character.y.toFixed(2))
         ],
         "args": [
             movie_clip.name,
             layer.name,
             character.startFrame,
             character.depth,
-            before_y,
-            character.y
+            parseFloat(before_y.toFixed(2)),
+            parseFloat(character.y.toFixed(4))
         ]
     };
 };
