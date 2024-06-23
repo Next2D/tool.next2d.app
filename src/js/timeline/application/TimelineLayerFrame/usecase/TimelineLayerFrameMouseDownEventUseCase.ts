@@ -31,11 +31,11 @@ let activeTimerId: NodeJS.Timeout;
  *              Execution function of mouse down in frame area
  *
  * @param  {PointerEvent} event
- * @return {void}
+ * @return {Promise}
  * @method
  * @public
  */
-export const execute = (event: PointerEvent): void =>
+export const execute = async (event: PointerEvent): Promise<void> =>
 {
     if (event.button !== 0) {
         return ;
@@ -91,7 +91,7 @@ export const execute = (event: PointerEvent): void =>
         } else {
 
             // フレーム選択
-            timelineLayerFrameSelectedStartUseCase(
+            await timelineLayerFrameSelectedStartUseCase(
                 workSpace,
                 movieClip,
                 layer,
@@ -109,14 +109,15 @@ export const execute = (event: PointerEvent): void =>
         // 長押し判定を中止
         clearTimeout(activeTimerId);
 
-        // TODO 指定レイヤーのフレームレンジを全て選択状態に更新
+        // todo
+        const activeCharacters = layer.getActiveCharacters(frame);
+        if (activeCharacters.length) {
 
-        const emptyCharacter = layer.getActiveEmptyCharacter(frame);
-        if (emptyCharacter) {
+            const activeCharacter = activeCharacters[0];
+            const length = activeCharacter.endFrame - activeCharacter.startFrame;
+            const frames = Array.from({ "length": length }, (_, idx) => idx + activeCharacter.startFrame);
 
-            const length = emptyCharacter.endFrame - emptyCharacter.startFrame;
-            const frames = Array.from({ "length": length }, (_, idx) => idx + emptyCharacter.startFrame);
-            timelineLayerFrameSelectedStartUseCase(
+            await timelineLayerFrameSelectedStartUseCase(
                 workSpace,
                 movieClip,
                 layer,
@@ -125,8 +126,30 @@ export const execute = (event: PointerEvent): void =>
                 event
             );
 
-            movieClip.selectedFrameObject.start = emptyCharacter.startFrame;
-            movieClip.selectedFrameObject.end   = emptyCharacter.endFrame - 1;
+            movieClip.selectedFrameObject.start = activeCharacter.startFrame;
+            movieClip.selectedFrameObject.end   = activeCharacter.endFrame - 1;
+
+        } else {
+
+            const emptyCharacter = layer.getActiveEmptyCharacter(frame);
+            if (emptyCharacter) {
+
+                const length = emptyCharacter.endFrame - emptyCharacter.startFrame;
+                const frames = Array.from({ "length": length }, (_, idx) => idx + emptyCharacter.startFrame);
+
+                await timelineLayerFrameSelectedStartUseCase(
+                    workSpace,
+                    movieClip,
+                    layer,
+                    frame,
+                    frames,
+                    event
+                );
+
+                movieClip.selectedFrameObject.start = emptyCharacter.startFrame;
+                movieClip.selectedFrameObject.end   = emptyCharacter.endFrame - 1;
+
+            }
         }
     }
 };

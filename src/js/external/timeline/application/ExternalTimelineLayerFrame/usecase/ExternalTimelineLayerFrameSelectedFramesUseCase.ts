@@ -24,14 +24,6 @@ export const execute = async (
         return ;
     }
 
-    let frame = frames.length > 1
-        ? movie_clip.selectedFrameObject.end
-        : frames[0];
-
-    if (!frame) {
-        frame = frames[0];
-    }
-
     // 指定のフレームを選択状態に更新
     if (work_space.active && movie_clip.active) {
         // 選択範囲のレイヤーとフレームをアクティブ表示に更新
