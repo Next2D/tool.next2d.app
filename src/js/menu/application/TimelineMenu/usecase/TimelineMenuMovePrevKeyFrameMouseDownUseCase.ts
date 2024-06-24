@@ -1,9 +1,9 @@
 import { $allHideMenu } from "../../MenuUtil";
-import { execute as timelineMenuMoveLastFrameService } from "../service/TimelineMenuMoveLastFrameService";
+import { execute as timelineMenuMovePrevKeyFrameService } from "../service/TimelineMenuMovePrevKeyFrameService";
 
 /**
- * @description タイムラインの最終フレームへ移動ボタンのマウスダウンイベント
- *              Mouse down event of the move to last frame button in the timeline
+ * @description タイムラインの前のキーフレームへの移動ボタンのマウスダウンイベント
+ *              Mouse down event of the move to the previous key frame button in the timeline
  *
  * @param  {PointerEvent} event
  * @return {Promise}
@@ -24,5 +24,5 @@ export const execute = async (event: PointerEvent): Promise<void> =>
     $allHideMenu();
 
     // 選択中のレイヤーの最終フレームへ移動する
-    await timelineMenuMoveLastFrameService();
+    await timelineMenuMovePrevKeyFrameService();
 };

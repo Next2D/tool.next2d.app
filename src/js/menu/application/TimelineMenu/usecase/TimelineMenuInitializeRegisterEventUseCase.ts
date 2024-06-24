@@ -7,6 +7,8 @@ import { execute as timelineMenuEraseFramesMouseDownUseCase } from "./TimelineMe
 import { execute as timelineMenuDeleteKeyframeMouseDownUseCase } from "./TimelineMenuDeleteKeyframeMouseDownUseCase";
 import { execute as timelineMenuMoveLastFrameMouseDownUseCase } from "./TimelineMenuMoveLastFrameMouseDownUseCase";
 import { execute as timelineMenuMoveFirstFrameMouseDownUseCase } from "./TimelineMenuMoveFirstFrameMouseDownUseCase";
+import { execute as timelineMenuMoveNextKeyFrameMouseDownUseCase } from "./TimelineMenuMoveNextKeyFrameMouseDownUseCase";
+import { execute as timelineMenuMovePrevKeyFrameMouseDownUseCase } from "./TimelineMenuMovePrevKeyFrameMouseDownUseCase";
 import {
     $TIMELINE_MENU_ADD_EMPTY_KEYFRAME_ID,
     $TIMELINE_MENU_ADD_SCRIPT_ID,
@@ -15,7 +17,9 @@ import {
     $TIMELINE_MENU_ERASE_FRAMES_ID,
     $TIMELINE_MENU_DELETE_KEYFRAME_ID,
     $TIMELINE_MENU_LAST_FRAME_ID,
-    $TIMELINE_MENU_FIRST_FRAME_ID
+    $TIMELINE_MENU_FIRST_FRAME_ID,
+    $TIMELINE_MENU_NEXT_KEY_FRAME_ID,
+    $TIMELINE_MENU_PREV_KEY_FRAME_ID
 } from "@/config/TimelineMenuConfig";
 
 /**
@@ -105,6 +109,26 @@ export const execute = (): void =>
     if (lastFrameElement) {
         lastFrameElement.addEventListener(EventType.MOUSE_DOWN,
             timelineMenuMoveLastFrameMouseDownUseCase
+        );
+    }
+
+    // 次のキーフレームへの移動ボタン
+    const nextKeyFrameElement: HTMLElement | null = document
+        .getElementById($TIMELINE_MENU_NEXT_KEY_FRAME_ID);
+
+    if (nextKeyFrameElement) {
+        nextKeyFrameElement.addEventListener(EventType.MOUSE_DOWN,
+            timelineMenuMoveNextKeyFrameMouseDownUseCase
+        );
+    }
+
+    // 前のキーフレームへの移動ボタン
+    const prevKeyFrameElement: HTMLElement | null = document
+        .getElementById($TIMELINE_MENU_PREV_KEY_FRAME_ID);
+
+    if (prevKeyFrameElement) {
+        prevKeyFrameElement.addEventListener(EventType.MOUSE_DOWN,
+            timelineMenuMovePrevKeyFrameMouseDownUseCase
         );
     }
 };

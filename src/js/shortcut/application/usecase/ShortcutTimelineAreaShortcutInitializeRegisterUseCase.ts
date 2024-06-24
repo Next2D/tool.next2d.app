@@ -12,6 +12,8 @@ import { execute as timelineToolRepeatUseCase } from "@/timeline/application/Tim
 import { execute as timelineToolPlayStopUseCase } from "@/timeline/application/TimelineTool/application/PlayStop/usecase/TimelineToolPlayStopUseCase";
 import { execute as timelineMenuMoveLastFrameService } from "@/menu/application/TimelineMenu/service/TimelineMenuMoveLastFrameService";
 import { execute as timelineMenuMoveFirstFrameService } from "@/menu/application/TimelineMenu/service/TimelineMenuMoveFirstFrameService";
+import { execute as timelineMenuMoveNextKeyFrameService } from "@/menu/application/TimelineMenu/service/TimelineMenuMoveNextKeyFrameService";
+import { execute as timelineMenuMovePrevKeyFrameService } from "@/menu/application/TimelineMenu/service/TimelineMenuMovePrevKeyFrameService";
 import {
     $generateShortcutKey,
     $setShortcut
@@ -114,5 +116,17 @@ export const execute = (): void =>
     $setShortcut(
         $generateShortcutKey("ArrowLeft", { "ctrl": true, "shift": true }),
         timelineMenuMoveFirstFrameService
+    );
+
+    // 指定レイヤーの次のキーフレームに移動
+    $setShortcut(
+        $generateShortcutKey("ArrowRight", { "alt": true }),
+        timelineMenuMoveNextKeyFrameService
+    );
+
+    // 指定レイヤーの前のキーフレームに移動
+    $setShortcut(
+        $generateShortcutKey("ArrowLeft", { "alt": true }),
+        timelineMenuMovePrevKeyFrameService
     );
 };

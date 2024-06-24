@@ -2,11 +2,11 @@ import { $allHideMenu } from "../../MenuUtil";
 import { execute as timelineMenuMoveFirstFrameService } from "../service/TimelineMenuMoveFirstFrameService";
 
 /**
- * @description タイムラインメニューの1フレームへ移動ボタンのマウスダウンイベント
- *              Mouse down event of the move to the first frame button in the timeline menu
+ * @description タイムラインの1フレームへ移動ボタンのマウスダウンイベント
+ *              Mouse down event of the move to 1 frame button in the timeline
  *
  * @param  {PointerEvent} event
- * @return {void}
+ * @return {Promise}
  * @method
  * @public
  */
