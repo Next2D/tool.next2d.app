@@ -1,6 +1,6 @@
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
-import type { ExternalLayer } from "@/external/core/domain/model/ExternalLayer";
+import { ExternalLayer } from "@/external/core/domain/model/ExternalLayer";
 import { execute as externalTimelineChageFrameUseCase } from "@/external/timeline/application/ExternalTimeline/usecase/ExternalTimelineChageFrameUseCase";
 import { execute as externalTimelineLayerDeactivateLayerUseCase } from "@/external/timeline/application/ExternalTimelineLayer/usecase/ExternalTimelineLayerDeactivateLayerUseCase";
 import { execute as externalTimelineLayerControllerSelectedLayersUseCase } from "@/external/timeline/application/ExternalTimelineLayerController/usecase/ExternalTimelineLayerControllerSelectedLayersUseCase";
@@ -17,6 +17,7 @@ import { execute as externalTimelineLayerFrameRemoveFrameUseCase } from "@/exter
 import { execute as externalTimelineLayerFrameDeleteKeyframesUseCase } from "@/external/timeline/application/ExternalTimelineLayerFrame/usecase/ExternalTimelineLayerFrameDeleteKeyframesUseCase";
 import { execute as externalScreenSelectedFromSelectedLayersUseCase } from "@/external/screen/application/ExternalScreen/usecase/ExternalScreenSelectedFromSelectedLayersUseCase";
 import { execute as externalScreenClaerSelectedDisplayObjectUseCase } from "@/external/screen/application/ExternalScreen/usecase/ExternalScreenClaerSelectedDisplayObjectUseCase";
+import { execute as externalTimelineLayerFrameShiftFrameUseCase } from "@/external/timeline/application/ExternalTimelineLayerFrame/usecase/ExternalTimelineLayerFrameShiftFrameUseCase";
 import { ExternalMovieClip } from "@/external/core/domain/model/ExternalMovieClip";
 
 /**
@@ -128,6 +129,10 @@ export class ExternalTimeline
      */
     async changeFrame (frame: number): Promise<void>
     {
+        if (!frame) {
+            return ;
+        }
+
         await externalTimelineChageFrameUseCase(
             this._$workSpace,
             this._$movieClip,
@@ -452,6 +457,55 @@ export class ExternalTimeline
             this._$workSpace,
             this._$movieClip,
             x, y, path, indexes
+        );
+    }
+
+    /**
+     * @description 指定したフレームを一番左側にセットしてヘッダーを表示
+     *              Set the specified frame to the far left and display the header
+     *
+     * @param  {number} frame
+     * @return {Promise}
+     * @method
+     * @public
+     */
+    async shiftFrame (frame: number): Promise<void>
+    {
+        if (!frame) {
+            return ;
+        }
+
+        const length = this._$movieClip.selectedLayers.length;
+        if (!length) {
+            return ;
+        }
+
+        const layer = this._$movieClip.selectedLayers[length - 1];
+        if (!layer) {
+            return ;
+        }
+
+        // 選択を初期化
+        this.deactivatedAllLayers();
+
+        const externalLayer = new ExternalLayer(
+            this._$workSpace,
+            this._$movieClip,
+            layer
+        );
+        this.selectedLayers([externalLayer.index]);
+
+        // フレームを選択
+        await this.selectedFrames([frame]);
+
+        this._$movieClip.selectedFrameObject.start = frame;
+        this._$movieClip.selectedFrameObject.end   = frame;
+
+        // フレームを完全に移動
+        await externalTimelineLayerFrameShiftFrameUseCase(
+            this._$workSpace,
+            this._$movieClip,
+            frame
         );
     }
 }

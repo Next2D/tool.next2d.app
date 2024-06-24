@@ -32,11 +32,11 @@ export const execute = (
         return ;
     }
 
-    // MovieClipのレイヤー配列を取得
-    const layers = movie_clip.layers;
-
     // 移動先のレイヤーを取得
-    const distLayer = layers[index];
+    const distLayer = movie_clip.getLayer(index);
+    if (!distLayer) {
+        return ;
+    }
 
     switch (distLayer.mode) {
 

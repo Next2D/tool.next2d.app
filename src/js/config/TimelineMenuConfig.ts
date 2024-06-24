@@ -52,3 +52,20 @@ export const $TIMELINE_MENU_ADD_FRAMES_ID: string = "context-menu-frame-add";
  */
 export const $TIMELINE_MENU_ERASE_FRAMES_ID: string = "context-menu-frame-delete";
 
+/**
+ * @description タイムラインメニューの最初のフレーム移動のElementのID
+ *              ID of the Element for moving to the first frame in the timeline menu
+ *
+ * @type {string}
+ * @constant
+ */
+export const $TIMELINE_MENU_FIRST_FRAME_ID: string = "context-menu-first-frame";
+
+/**
+ * @description タイムラインメニューの最後のフレーム移動のElementのID
+ *              ID of the Element for moving to the last frame in the timeline menu
+ *
+ * @type {string}
+ * @constant
+ */
+export const $TIMELINE_MENU_LAST_FRAME_ID: string = "context-menu-last-frame";

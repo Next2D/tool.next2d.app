@@ -10,6 +10,8 @@ import { execute as timelineToolEraseFramesUseCase } from "@/timeline/applicatio
 import { execute as timelineToolDeleteKeyframeUseCase } from "@/timeline/application/TimelineTool/application/DeleteKeyframe/usecase/TimelineToolDeleteKeyframeUseCase";
 import { execute as timelineToolRepeatUseCase } from "@/timeline/application/TimelineTool/application/Repeat/usecase/TimelineToolRepeatUseCase";
 import { execute as timelineToolPlayStopUseCase } from "@/timeline/application/TimelineTool/application/PlayStop/usecase/TimelineToolPlayStopUseCase";
+import { execute as timelineMenuMoveLastFrameService } from "@/menu/application/TimelineMenu/service/TimelineMenuMoveLastFrameService";
+import { execute as timelineMenuMoveFirstFrameService } from "@/menu/application/TimelineMenu/service/TimelineMenuMoveFirstFrameService";
 import {
     $generateShortcutKey,
     $setShortcut
@@ -100,5 +102,17 @@ export const execute = (): void =>
     $setShortcut(
         $generateShortcutKey("Enter"),
         timelineToolPlayStopUseCase
+    );
+
+    // 指定レイヤーの最後のフレームに移動
+    $setShortcut(
+        $generateShortcutKey("ArrowRight", { "ctrl": true, "shift": true }),
+        timelineMenuMoveLastFrameService
+    );
+
+    // 指定レイヤーの1フレームに移動
+    $setShortcut(
+        $generateShortcutKey("ArrowLeft", { "ctrl": true, "shift": true }),
+        timelineMenuMoveFirstFrameService
     );
 };

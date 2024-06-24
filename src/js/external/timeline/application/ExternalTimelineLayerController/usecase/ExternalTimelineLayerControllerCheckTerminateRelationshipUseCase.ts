@@ -27,7 +27,10 @@ export const execute = (
         const layers = movie_clip.layers;
 
         // 移動先のレイヤーを取得
-        const distLayer = layers[index];
+        const distLayer = movie_clip.getLayer(index);
+        if (!distLayer) {
+            return ;
+        }
 
         // マスクの最後の子レイヤーのインデックスを取得
         let exitIndex = index;

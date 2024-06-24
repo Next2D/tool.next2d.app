@@ -22,6 +22,7 @@ export const execute = (event: PointerEvent): void =>
 
     // 親のイベントを終了
     event.stopPropagation();
+    event.preventDefault();
 
     // メニューを全て非表示にする
     $allHideMenu();

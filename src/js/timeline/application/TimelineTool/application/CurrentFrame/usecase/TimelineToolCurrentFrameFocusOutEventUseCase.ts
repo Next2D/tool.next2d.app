@@ -7,6 +7,8 @@ import { execute as timelineMarkerMovePositionService } from "@/timeline/applica
 import { $updateKeyLock } from "@/shortcut/ShortcutUtil";
 import { execute as screenAreaRedrawUseCase } from "@/screen/application/ScreenArea/usecase/ScreenAreaRedrawUseCase";
 import { execute as soundAreaRebuildSettingAreaUseCase } from "@/controller/application/SoundArea/usecase/SoundAreaRebuildSettingAreaUseCase";
+import { execute as timelineLabelNameUpdateService } from "@/timeline/application/TimelineLabelName/service/TimelineLabelNameUpdateService";
+import { execute as externalTimelineLayerFrameShiftFrameUseCase } from "@/external/timeline/application/ExternalTimelineLayerFrame/usecase/ExternalTimelineLayerFrameShiftFrameUseCase";
 
 /**
  * @description フレームInput Elementのフォーカスアウト、イベント処理関数
@@ -45,28 +47,10 @@ export const execute = async (event: Event): Promise<void> =>
     // 入力終了
     element.value = `${frame}`;
 
-    const delta = $clamp(
-        (frame - 1) * (workSpace.timelineAreaState.frameWidth + 1),
-        0, $getScrollLimitX()
+    // 指定のフレームに完全に移動
+    await externalTimelineLayerFrameShiftFrameUseCase(
+        workSpace,
+        movieClip,
+        frame
     );
-
-    // リセット
-    if (delta) {
-        movieClip.scrollX = 0;
-        timelineScrollUpdateScrollXUseCase(delta);
-    } else {
-        timelineScrollUpdateScrollXUseCase(-movieClip.scrollX);
-    }
-
-    // フレームを更新
-    timelineFrameUpdateFrameElementService(frame);
-
-    // マーカーを移動
-    timelineMarkerMovePositionService();
-
-    // サウンドエリアを再描画
-    soundAreaRebuildSettingAreaUseCase();
-
-    // スクリーンを再描画
-    await screenAreaRedrawUseCase(movieClip);
 };

@@ -5,13 +5,17 @@ import { execute as timelineMenuAddFramesMouseDownUseCase } from "./TimelineMenu
 import { execute as timelineMenuAddScriptMouseDownUseCase } from "./TimelineMenuAddScriptMouseDownUseCase";
 import { execute as timelineMenuEraseFramesMouseDownUseCase } from "./TimelineMenuEraseFramesMouseDownUseCase";
 import { execute as timelineMenuDeleteKeyframeMouseDownUseCase } from "./TimelineMenuDeleteKeyframeMouseDownUseCase";
+import { execute as timelineMenuMoveLastFrameMouseDownUseCase } from "./TimelineMenuMoveLastFrameMouseDownUseCase";
+import { execute as timelineMenuMoveFirstFrameMouseDownUseCase } from "./TimelineMenuMoveFirstFrameMouseDownUseCase";
 import {
     $TIMELINE_MENU_ADD_EMPTY_KEYFRAME_ID,
     $TIMELINE_MENU_ADD_SCRIPT_ID,
     $TIMELINE_MENU_ADD_KEYFRAME_ID,
     $TIMELINE_MENU_ADD_FRAMES_ID,
     $TIMELINE_MENU_ERASE_FRAMES_ID,
-    $TIMELINE_MENU_DELETE_KEYFRAME_ID
+    $TIMELINE_MENU_DELETE_KEYFRAME_ID,
+    $TIMELINE_MENU_LAST_FRAME_ID,
+    $TIMELINE_MENU_FIRST_FRAME_ID
 } from "@/config/TimelineMenuConfig";
 
 /**
@@ -81,6 +85,26 @@ export const execute = (): void =>
     if (addScriptElement) {
         addScriptElement.addEventListener(EventType.MOUSE_DOWN,
             timelineMenuAddScriptMouseDownUseCase
+        );
+    }
+
+    // 最初のフレームへの移動ボタン
+    const firstFrameElement: HTMLElement | null = document
+        .getElementById($TIMELINE_MENU_FIRST_FRAME_ID);
+
+    if (firstFrameElement) {
+        firstFrameElement.addEventListener(EventType.MOUSE_DOWN,
+            timelineMenuMoveFirstFrameMouseDownUseCase
+        );
+    }
+
+    // 最後のフレームへの移動ボタン
+    const lastFrameElement: HTMLElement | null = document
+        .getElementById($TIMELINE_MENU_LAST_FRAME_ID);
+
+    if (lastFrameElement) {
+        lastFrameElement.addEventListener(EventType.MOUSE_DOWN,
+            timelineMenuMoveLastFrameMouseDownUseCase
         );
     }
 };

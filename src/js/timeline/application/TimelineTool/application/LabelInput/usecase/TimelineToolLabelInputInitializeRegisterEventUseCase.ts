@@ -2,6 +2,8 @@ import { $TIMELINE_LABEL_NAME } from "@/config/TimelineConfig";
 import { execute as timelineToolLabelInputFocusInEventService } from "../service/TimelineToolLabelInputFocusInEventService";
 import { execute as timelineToolLabelInputFocusOutEventUseCase } from "./TimelineToolLabelInputFocusOutEventUseCase";
 import { execute as timelineToolLabelInputKeyPressEventService } from "../service/TimelineToolLabelInputKeyPressEventService";
+import { execute as timelineToolLabelMouseDownEventService } from "../service/TimelineToolLabelMouseDownEventService";
+import { EventType } from "@/tool/domain/event/EventType";
 
 /**
  * @description ラベル名操作のイベント登録
@@ -21,6 +23,9 @@ export const execute = (): void =>
     }
 
     // イベントを登録
+    element.addEventListener(EventType.MOUSE_DOWN,
+        timelineToolLabelMouseDownEventService
+    );
     element.addEventListener("focusin",
         timelineToolLabelInputFocusInEventService
     );

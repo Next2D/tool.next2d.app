@@ -7,6 +7,7 @@ import { execute as timelineScrollUpdateScrollXUseCase } from "@/timeline/applic
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { execute as screenAreaRedrawUseCase } from "@/screen/application/ScreenArea/usecase/ScreenAreaRedrawUseCase";
 import { execute as soundAreaRebuildSettingAreaUseCase } from "@/controller/application/SoundArea/usecase/SoundAreaRebuildSettingAreaUseCase";
+import { execute as timelineLabelNameUpdateService } from "@/timeline/application/TimelineLabelName/service/TimelineLabelNameUpdateService";
 
 /**
  * @description タイムラインのフレームInputElement上のマウスムーブ処理関数
@@ -63,6 +64,9 @@ export const execute = (event: PointerEvent): void =>
 
         // サウンドエリアを再描画
         soundAreaRebuildSettingAreaUseCase();
+
+        // タイムラインのラベル表示を更新
+        timelineLabelNameUpdateService(scene.getLabel(frame));
 
         // スクリーンを再描画
         await screenAreaRedrawUseCase(scene);

@@ -28,11 +28,11 @@ export const execute = (
     index: number
 ): void => {
 
-    // MovieClipのレイヤー配列を取得
-    const layers = movie_clip.layers;
-
     // 移動先のレイヤーを取得
-    const distLayer = layers[index];
+    const distLayer = movie_clip.getLayer(index);
+    if (!distLayer) {
+        return ;
+    }
 
     // 複製して親子関係がないかチェック
     const selectedLayers = movie_clip.getCloneAndSortSelectedLayers();
@@ -73,6 +73,9 @@ export const execute = (
     const parentId = distLayer.parentId === -1
         ? distLayer.id
         : distLayer.parentId;
+
+    // MovieClipのレイヤー配列を取得
+    const layers = movie_clip.layers;
 
     // レイヤーの移動を実行
     for (let idx = 0; idx < selectedLayers.length; idx++) {
