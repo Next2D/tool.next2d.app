@@ -69,7 +69,7 @@ export const $getRightFrame = (): number =>
     const workSpace = $getCurrentWorkSpace();
     return $getLeftFrame() + Math.ceil(
         timelineHeader.clientWidth / (workSpace.timelineAreaState.frameWidth + 1)
-    );
+    ) - 1;
 };
 
 /**

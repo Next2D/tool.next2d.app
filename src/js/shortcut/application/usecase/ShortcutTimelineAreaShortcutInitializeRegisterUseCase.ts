@@ -14,6 +14,8 @@ import { execute as timelineMenuMoveLastFrameService } from "@/menu/application/
 import { execute as timelineMenuMoveFirstFrameService } from "@/menu/application/TimelineMenu/service/TimelineMenuMoveFirstFrameService";
 import { execute as timelineMenuMoveNextKeyFrameService } from "@/menu/application/TimelineMenu/service/TimelineMenuMoveNextKeyFrameService";
 import { execute as timelineMenuMovePrevKeyFrameService } from "@/menu/application/TimelineMenu/service/TimelineMenuMovePrevKeyFrameService";
+import { execute as timelineLayerFrameMoveRightFrameService } from "@/timeline/application/TimelineLayerFrame/service/TimelineLayerFrameMoveRightFrameService";
+import { execute as timelineLayerFrameMoveLeftFrameService } from "@/timeline/application/TimelineLayerFrame/service/TimelineLayerFrameMoveLeftFrameService";
 import {
     $generateShortcutKey,
     $setShortcut
@@ -128,5 +130,17 @@ export const execute = (): void =>
     $setShortcut(
         $generateShortcutKey("ArrowLeft", { "alt": true }),
         timelineMenuMovePrevKeyFrameService
+    );
+
+    // 1フレーム右へ移動
+    $setShortcut(
+        $generateShortcutKey("ArrowRight", { "ctrl": true }),
+        timelineLayerFrameMoveRightFrameService
+    );
+
+    // 1フレーム左へ移動
+    $setShortcut(
+        $generateShortcutKey("ArrowLeft", { "ctrl": true }),
+        timelineLayerFrameMoveLeftFrameService
     );
 };

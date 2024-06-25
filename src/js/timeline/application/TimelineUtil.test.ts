@@ -68,12 +68,12 @@ describe("TimelineUtilTest", () =>
         timelineHeader.clientWidth = 600;
         const workSpace = $getCurrentWorkSpace() || $createWorkSpace();
         expect($getLeftFrame()).toBe(1);
-        expect($getRightFrame()).toBe(44);
+        expect($getRightFrame()).toBe(43);
 
         workSpace.scene.scrollX = 1400;
         expect(workSpace.scene.scrollX).toBe(1400);
         expect($getLeftFrame()).toBe(101);
-        expect($getRightFrame()).toBe(144);
+        expect($getRightFrame()).toBe(143);
     });
 
     test("$getScrollLimitX test", () =>

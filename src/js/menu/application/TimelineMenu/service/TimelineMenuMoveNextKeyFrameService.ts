@@ -1,5 +1,7 @@
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
+import { ExternalLayer } from "@/external/core/domain/model/ExternalLayer";
 import { ExternalTimeline } from "@/external/timeline/domain/model/ExternalTimeline";
+import { $getRightFrame } from "@/timeline/application/TimelineUtil";
 
 /**
  * @description タイムラインの指定レイヤーの次のキーフレームへ移動
@@ -20,6 +22,10 @@ export const execute = async (): Promise<void> =>
     }
 
     const layer = movieClip.selectedLayers[length - 1];
+    if (!layer) {
+        return ;
+    }
+
     const maxFrame = layer.maxFrame - 1;
     const frame = movieClip.currentFrame;
     const activeCharacters = layer.getActiveCharacters(frame);
@@ -35,9 +41,21 @@ export const execute = async (): Promise<void> =>
         }
     }
 
+    // 最後に選択したレイヤーを選択
+    const externalLayer = new ExternalLayer(
+        workSpace, movieClip, layer
+    );
+
     const externalTimeline = new ExternalTimeline(
         workSpace, workSpace.scene
     );
-    await externalTimeline
-        .shiftFrame(nextFrame);
+
+    externalTimeline.selectedLayers([externalLayer.index]);
+
+    const rightFrame = $getRightFrame();
+    if (nextFrame >= rightFrame) {
+        await externalTimeline.shiftFrame(nextFrame);
+    } else {
+        await externalTimeline.selectedFrames([nextFrame]);
+    }
 };

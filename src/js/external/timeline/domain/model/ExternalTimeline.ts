@@ -306,6 +306,15 @@ export class ExternalTimeline
             this._$movieClip,
             frame
         );
+
+        // 選択中のフレームが1つの場合、選択中のフレーム幅を更新
+        if (frames.length === 1
+            && this._$workSpace.active
+            && this._$movieClip.active
+        ) {
+            this._$movieClip.selectedFrameObject.start = frame;
+            this._$movieClip.selectedFrameObject.end   = frame;
+        }
     }
 
     /**
@@ -475,31 +484,8 @@ export class ExternalTimeline
             return ;
         }
 
-        const length = this._$movieClip.selectedLayers.length;
-        if (!length) {
-            return ;
-        }
-
-        const layer = this._$movieClip.selectedLayers[length - 1];
-        if (!layer) {
-            return ;
-        }
-
-        // 選択を初期化
-        this.deactivatedAllLayers();
-
-        const externalLayer = new ExternalLayer(
-            this._$workSpace,
-            this._$movieClip,
-            layer
-        );
-        this.selectedLayers([externalLayer.index]);
-
         // フレームを選択
         await this.selectedFrames([frame]);
-
-        this._$movieClip.selectedFrameObject.start = frame;
-        this._$movieClip.selectedFrameObject.end   = frame;
 
         // フレームを完全に移動
         await externalTimelineLayerFrameShiftFrameUseCase(
