@@ -1,6 +1,4 @@
 import { execute as timelineToolLayerAddUseCase } from "@/timeline/application/TimelineTool/application/LayerAdd/usecase/TimelineToolLayerAddUseCase";
-import { execute as timelineLayerArrowDownUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerArrowDownUseCase";
-import { execute as timelineLayerArrowUpUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerArrowUpUseCase";
 import { execute as timelineToolLayerDeleteUseCase } from "@/timeline/application/TimelineTool/application/LayerDelete/usecase/TimelineToolLayerDeleteUseCase";
 import { execute as scriptEditorModalCurrentBootUseCase } from "@/menu/application/ScriptEditorModal/usecase/ScriptEditorModalCurrentBootUseCase";
 import { execute as timelineToolAddEmptyKeyFrameUseCase } from "@/timeline/application/TimelineTool/application/AddEmptyKeyFrame/usecase/TimelineToolAddEmptyKeyFrameUseCase";
@@ -16,6 +14,8 @@ import { execute as timelineMenuMoveNextKeyFrameService } from "@/menu/applicati
 import { execute as timelineMenuMovePrevKeyFrameService } from "@/menu/application/TimelineMenu/service/TimelineMenuMovePrevKeyFrameService";
 import { execute as timelineLayerFrameMoveRightFrameService } from "@/timeline/application/TimelineLayerFrame/service/TimelineLayerFrameMoveRightFrameService";
 import { execute as timelineLayerFrameMoveLeftFrameService } from "@/timeline/application/TimelineLayerFrame/service/TimelineLayerFrameMoveLeftFrameService";
+import { execute as timelineLayerMoveUpLayerUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerMoveUpLayerUseCase";
+import { execute as timelineLayerMoveDownLayerUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerMoveDownLayerUseCase";
 import {
     $generateShortcutKey,
     $setShortcut
@@ -41,14 +41,16 @@ export const execute = (): void =>
         timelineToolLayerAddUseCase
     );
 
-    // レイヤー移動
+    // レイヤーを1つ上へ移動
     $setShortcut(
         $generateShortcutKey("ArrowUp", { "ctrl": true }),
-        timelineLayerArrowUpUseCase
+        timelineLayerMoveUpLayerUseCase
     );
+
+    // レイヤーを1つ下へ移動
     $setShortcut(
         $generateShortcutKey("ArrowDown", { "ctrl": true }),
-        timelineLayerArrowDownUseCase
+        timelineLayerMoveDownLayerUseCase
     );
 
     // レイヤー削除
