@@ -3,6 +3,7 @@ import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import { execute as externalScreenClaerSelectedDisplayObjectUseCase } from "./ExternalScreenClaerSelectedDisplayObjectUseCase";
 import { execute as externalScreenSelectDisplayObjectUseCase } from "./ExternalScreenSelectDisplayObjectUseCase";
 import { ExternalLayer } from "@/external/core/domain/model/ExternalLayer";
+import { execute as propertyAreaShowDefaultSettingItemUseCase } from "@/controller/application/PropertyArea/usecase/PropertyAreaShowDefaultSettingItemUseCase";
 
 /**
  * @description 選択中のレイヤーからDisplayObjectを算出して選択状態に更新
@@ -59,6 +60,8 @@ export const execute = (
         // アクティブなキャラクターを取得
         const activeCharacters = layer.getActiveCharacters(frame);
         if (!activeCharacters.length) {
+            // DisplayObjectが存在しない場合はプロパティーエリアはデフォルト設定を表示
+            propertyAreaShowDefaultSettingItemUseCase(movie_clip);
             continue ;
         }
 
