@@ -3,6 +3,7 @@ import type { MovieClip } from "@/core/domain/model/MovieClip";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
 import { execute as timelineLayerAddFrameUpdateLayerStyleUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerAddFrameUpdateLayerStyleUseCase";
 import { execute as screenAreaRedrawUseCase } from "@/screen/application/ScreenArea/usecase/ScreenAreaRedrawUseCase";
+import { ExternalTimeline } from "@/external/timeline/domain/model/ExternalTimeline";
 
 /**
  * @description 空のキーフレーム変更処理を元に戻す
@@ -55,6 +56,10 @@ export const execute = async (
         // 終了フレームを変更
         character.endFrame = after_end_frame;
     }
+
+    // レイヤーとフレームの選択を解除
+    const externalTimeline = new ExternalTimeline(workSpace, movieClip);
+    externalTimeline.deactivatedAllLayers();
 
     // アクティブならタイムラインを再描画
     if (workSpace.active && movieClip.active) {

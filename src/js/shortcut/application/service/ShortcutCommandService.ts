@@ -75,7 +75,7 @@ export const execute = async (event: KeyboardEvent): Promise<void> =>
         event.preventDefault();
 
         // 登録されたコマンドを実行して終了
-        callback(event);
+        await callback(event);
 
         return ;
     }

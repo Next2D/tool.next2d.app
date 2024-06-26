@@ -1,6 +1,7 @@
 import { execute as shortcutToolAreaInitializeRegisterUseCase } from "@/shortcut/application/usecase/ShortcutToolAreaInitializeRegisterUseCase";
 import { execute as shortcutTimelineAreaShortcutInitializeRegisterUseCase } from "@/shortcut/application/usecase/ShortcutTimelineAreaShortcutInitializeRegisterUseCase";
 import { execute as shortcutLibraryAreaInitializeRegisterUseCase } from "@/shortcut/application/usecase/ShortcutLibraryAreaInitializeRegisterUseCase";
+import { execute as shortcutScreenAreaShortcutInitializeRegisterUseCase } from "@/shortcut/application/usecase/ShortcutScreenAreaShortcutInitializeRegisterUseCase";
 import { execute as shortcutRegisterEventUseCase } from "@/shortcut/application/usecase/ShortcutRegisterEventUseCase";
 /**
  * @description ショートカット機能の初期起動関数
@@ -20,6 +21,9 @@ export const execute = async (): Promise<void> =>
 
     // ライブラリエリアののコマンドを登録
     shortcutLibraryAreaInitializeRegisterUseCase();
+
+    // スクリーンエリアのコマンドを登録
+    shortcutScreenAreaShortcutInitializeRegisterUseCase();
 
     // 実行イベントを登録
     shortcutRegisterEventUseCase();
