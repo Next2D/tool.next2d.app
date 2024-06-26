@@ -12,6 +12,7 @@ import {
     $setMoveMode
 } from "../../TimelineUtil";
 import { $getTimelineOffsetTop } from "@/timeline/application/TimelineArea/TimelineAreaUtil";
+import { $allHideMenu } from "@/menu/application/MenuUtil";
 
 /**
  * @description フレームの複数選択の実行関数
@@ -31,6 +32,9 @@ export const execute = (
     // 他のイベントを中止する
     event.stopPropagation();
     event.preventDefault();
+
+    // メニューを非表示にする
+    $allHideMenu();
 
     const workSpace = $getCurrentWorkSpace();
     const scene = workSpace.scene;

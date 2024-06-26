@@ -50,6 +50,7 @@ export const execute = (
         movie_clip.currentFrame = frame;
     }
 
+    let selected = false;
     for (let idx = 0; idx < selectedLayers.length; ++idx) {
 
         const layer = selectedLayers[idx];
@@ -60,8 +61,6 @@ export const execute = (
         // アクティブなキャラクターを取得
         const activeCharacters = layer.getActiveCharacters(frame);
         if (!activeCharacters.length) {
-            // DisplayObjectが存在しない場合はプロパティーエリアはデフォルト設定を表示
-            propertyAreaShowDefaultSettingItemUseCase(movie_clip);
             continue ;
         }
 
@@ -87,6 +86,12 @@ export const execute = (
             externalLayer.index,
             depths
         );
+
+        selected = true;
+    }
+
+    if (!selected) {
+        propertyAreaShowDefaultSettingItemUseCase(movie_clip);
     }
 
     // 後続処理のためにフレームを戻す

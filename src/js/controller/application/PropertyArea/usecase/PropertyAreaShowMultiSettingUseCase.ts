@@ -42,16 +42,16 @@ export const execute = async (): Promise<void> =>
         $TEXT_SETTING_ID,
         $NINE_SLICE_SETTING_ID,
         $FILL_COLOR_SETTING_ID,
-        $LOOP_SETTING_ID
+        $LOOP_SETTING_ID,
+        $BLEND_SETTING_ID,
+        $FILTER_SETTING_ID,
+        $COLOR_SETTING_ID
     ]);
 
     const showArray = [
         $PROPERTY_OBJECT_AREA_ID,
         $TRANSFORM_SETTING_ID,
-        $COLOR_SETTING_ID,
-        $ALIGN_SETTING_ID,
-        $BLEND_SETTING_ID,
-        $FILTER_SETTING_ID
+        $ALIGN_SETTING_ID
     ];
 
     const tool = $getActiveTool();
