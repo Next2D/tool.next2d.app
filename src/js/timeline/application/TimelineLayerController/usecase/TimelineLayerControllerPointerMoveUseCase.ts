@@ -115,30 +115,36 @@ export const execute = (
             return ;
         }
 
-        const layerIndex = parseInt(element.dataset.layerIndex as string) + $getTopIndex();
+        const layerIndex = parseInt(element.dataset.layerIndex as string);
         const layerElement = timelineLayer.elements[layerIndex];
         if (!layerElement) {
             return ;
         }
 
+        const index = layerIndex + $getTopIndex();
+
         // レイヤーを未選択状態に更新
         if (timelineLayer.distIndex > -1
-            && timelineLayer.distIndex !== layerIndex
+            && timelineLayer.distIndex !== index
         ) {
-            const currentLayerElement = timelineLayer.elements[timelineLayer.distIndex];
+            const currentLayerElement = timelineLayer.elements[
+                timelineLayer.distIndex - $getTopIndex()
+            ];
             if (currentLayerElement) {
-                timelineLayerControllerElementOutUseCase(currentLayerElement, timelineLayer.distIndex);
+                timelineLayerControllerElementOutUseCase(
+                    currentLayerElement, timelineLayer.distIndex
+                );
             }
         }
 
         // Elementのヒット判定
         timelineLayerControllerElementOverUseCase(
-            layerElement, layerIndex
+            layerElement, index
         );
 
         // Exitアイコンのヒット判定
         timelineLayerControllerExitIconElementOverUseCase(
-            element, layerIndex
+            element, index
         );
     });
 

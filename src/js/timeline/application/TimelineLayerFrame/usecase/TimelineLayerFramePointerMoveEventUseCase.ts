@@ -220,17 +220,17 @@ export const execute = (
 
         const selectedLayerIndex = parseInt(layerIndex) + $getTopIndex();
 
-        // 選択したレイヤーと最初のレイヤーを比較
-        const minIndex = Math.min(selectedLayerIndex, firstIndex);
-        const maxIndex = Math.max(selectedLayerIndex, firstIndex);
-
-        // 選択範囲のレイヤーindex値の配列を作成
         const indexes = [firstIndex];
-        for (let index = minIndex; maxIndex >= index; ++index) {
-            if (firstIndex === index) {
-                continue;
+        if (firstIndex !== selectedLayerIndex) {
+            if (selectedLayerIndex > firstIndex) {
+                for (let index = firstIndex + 1; selectedLayerIndex >= index; ++index) {
+                    indexes.push(index);
+                }
+            } else {
+                for (let index = firstIndex - 1; index >= selectedLayerIndex; --index) {
+                    indexes.push(index);
+                }
             }
-            indexes.push(index);
         }
 
         // 指定フレームを選択
