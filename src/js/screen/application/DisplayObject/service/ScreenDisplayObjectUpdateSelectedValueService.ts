@@ -13,11 +13,6 @@ import { ExternalCharacter } from "@/external/core/domain/model/ExternalCharacte
  */
 export const execute = (over_wirte: boolean = false): void =>
 {
-    // 移動量のオブジェクトを取得
-    if (!transformSetting.x && !transformSetting.y) {
-        return ;
-    }
-
     const workSpace = $getCurrentWorkSpace();
     const movieClip = workSpace.scene;
 
@@ -50,20 +45,12 @@ export const execute = (over_wirte: boolean = false): void =>
 
             // xの移動があれば更新
             if (transformSetting.x) {
-                if (over_wirte) {
-                    externalCharacter.x = transformSetting.x;
-                } else {
-                    externalCharacter.x += transformSetting.x;
-                }
+                externalCharacter.x += transformSetting.x;
             }
 
             // yの移動があれば更新
             if (transformSetting.y) {
-                if (over_wirte) {
-                    externalCharacter.y = transformSetting.y;
-                } else {
-                    externalCharacter.y += transformSetting.y;
-                }
+                externalCharacter.y += transformSetting.y;
             }
         }
     }
