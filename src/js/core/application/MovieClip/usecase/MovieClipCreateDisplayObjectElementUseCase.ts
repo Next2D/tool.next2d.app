@@ -4,8 +4,7 @@ import type { Layer } from "@/core/domain/model/Layer";
 import { execute as movieClipRegisterEventUseCase } from "@/core/application/MovieClip/usecase/MovieClipRegisterEventUseCase";
 import { execute as movieClipDisplayObjectComponent } from "../component/MovieClipDisplayObjectComponent";
 import {
-    $getCacheCanvas,
-    $setCacheCanvas
+    $getCacheCanvas
 } from "@/cache/CacheUtil";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 

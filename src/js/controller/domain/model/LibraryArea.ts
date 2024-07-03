@@ -41,7 +41,7 @@ class LibraryArea
 
     /**
      * @description プレビュー表示中のライブラリIDを返却
-     *              
+     *              Returns the library ID in the preview display
      *
      * @member {number}
      * @public
