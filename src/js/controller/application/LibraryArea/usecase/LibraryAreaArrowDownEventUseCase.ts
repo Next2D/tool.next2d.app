@@ -14,7 +14,7 @@ import { $FOLDER_TYPE } from "@/config/InstanceConfig";
  * @method
  * @public
  */
-export const execute = (): void =>
+export const execute = async (): Promise<void> =>
 {
     const workSpace = $getCurrentWorkSpace();
 
@@ -40,7 +40,7 @@ export const execute = (): void =>
 
             // フォルダーのインスタンスでなければ、プレビューエリアを更新
             if (instance.type !== $FOLDER_TYPE) {
-                libraryPreviewAreaUpdateDisplayUseCase(instance);
+                await libraryPreviewAreaUpdateDisplayUseCase(instance);
             } else {
                 libraryPreviewAreaClearDisplayService();
             }
@@ -76,7 +76,7 @@ export const execute = (): void =>
 
         // フォルダーのインスタンスでなければ、プレビューエリアを更新
         if (instance.type !== $FOLDER_TYPE) {
-            libraryPreviewAreaUpdateDisplayUseCase(instance);
+            await libraryPreviewAreaUpdateDisplayUseCase(instance);
         } else {
             libraryPreviewAreaClearDisplayService();
         }

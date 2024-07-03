@@ -1,6 +1,7 @@
 import type { InstanceImpl } from "@/interface/InstanceImpl";
 import { $LIBRARY_PREVIEW_AREA_ID } from "@/config/LibraryConfig";
 import { execute as libraryPreviewAreaClearDisplayService } from "../service/LibraryPreviewAreaClearDisplayService";
+import { libraryArea } from "@/controller/domain/model/LibraryArea";
 
 /**
  * @description
@@ -10,7 +11,7 @@ import { execute as libraryPreviewAreaClearDisplayService } from "../service/Lib
  * @method
  * @public
  */
-export const execute = (instance: InstanceImpl<any>): void =>
+export const execute = async (instance: InstanceImpl<any>): Promise<void> =>
 {
     const previewElement: HTMLElement | null = document
         .getElementById($LIBRARY_PREVIEW_AREA_ID);
@@ -19,17 +20,20 @@ export const execute = (instance: InstanceImpl<any>): void =>
         return ;
     }
 
+    if (libraryArea.selectedId === instance.id) {
+        return ;
+    }
+
+    libraryArea.selectedId = instance.id;
+
+    // プレビューエリアを初期化
     libraryPreviewAreaClearDisplayService();
 
-    instance
-        .getHTMLElement()
-        .then((element: HTMLElement | null): void =>
-        {
-            if (!element) {
-                return ;
-            }
+    const element: HTMLElement | null = await instance.getHTMLElement();
+    if (!element) {
+        return ;
+    }
 
-            element.classList.add("preview-center");
-            previewElement.appendChild(element);
-        });
+    element.classList.add("preview-center");
+    previewElement.appendChild(element);
 };

@@ -11,6 +11,7 @@ import { execute as movieClipCreateCanvasElementUseCase } from "@/core/applicati
 import { $clamp } from "@/global/GlobalUtil";
 import { execute as movieClipCreateJsonUseCase } from "@/core/application/MovieClip/usecase/MovieClipCreateJsonUseCase";
 import { MovieClipPublishJsonImpl } from "@/interface/MovieClipPublishJsonImpl";
+import { BoundsImpl } from "@/interface/BoundsImpl";
 
 /**
  * @description MovieClipの状態管理クラス
@@ -252,9 +253,9 @@ export class MovieClip extends Instance
      * @method
      * @public
      */
-    async getHTMLElement(): Promise<HTMLCanvasElement>
+    async getHTMLElement (frame: number = 1): Promise<HTMLCanvasElement>
     {
-        return movieClipCreateCanvasElementUseCase(this);
+        return movieClipCreateCanvasElementUseCase(this, frame);
     }
 
     /**
@@ -889,6 +890,24 @@ export class MovieClip extends Instance
     deleteAction (frame: number): boolean
     {
         return this._$actions.delete(frame);
+    }
+
+    /**
+     * @description プレーンなバウンディングボックスを返す
+     *              Returns a plain bounding box
+     *
+     * @return {object}
+     * @method
+     * @public
+     */
+    getRawBounds (): BoundsImpl
+    {
+        return {
+            "xMin": 0,
+            "yMin": 0,
+            "xMax": this.width,
+            "yMax": this.height
+        };
     }
 
     /**

@@ -11,6 +11,7 @@ class LibraryArea
 {
     private readonly _$selectedIds: number[];
     private _$scrollScale: number;
+    private _$selectedId: number;
 
     /**
      * @constructor
@@ -18,6 +19,12 @@ class LibraryArea
      */
     constructor ()
     {
+        /**
+         * @type {number}
+         * @private
+         */
+        this._$selectedId = -1;
+
         /**
          * @type {array}
          * @private
@@ -30,6 +37,22 @@ class LibraryArea
          * @private
          */
         this._$scrollScale = 1;
+    }
+
+    /**
+     * @description プレビュー表示中のライブラリIDを返却
+     *              
+     *
+     * @member {number}
+     * @public
+     */
+    get selectedId (): number
+    {
+        return this._$selectedId;
+    }
+    set selectedId (selected_id: number)
+    {
+        this._$selectedId = selected_id;
     }
 
     /**
@@ -71,6 +94,7 @@ class LibraryArea
      */
     clear (): void
     {
+        this._$selectedId = -1;
         this._$selectedIds.length = 0;
     }
 

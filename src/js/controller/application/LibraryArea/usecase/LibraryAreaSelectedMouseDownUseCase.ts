@@ -20,7 +20,7 @@ import { execute as libraryAreaRegisterPointerEventUseCase } from "./LibraryArea
  * @method
  * @public
  */
-export const execute = (event: PointerEvent): void =>
+export const execute = async (event: PointerEvent): Promise<void> =>
 {
     if (event.button !== 0) {
         return ;
@@ -51,7 +51,7 @@ export const execute = (event: PointerEvent): void =>
 
     // フォルダーのインスタンスでなければ、プレビューエリアを更新
     if (instance.type !== $FOLDER_TYPE) {
-        libraryPreviewAreaUpdateDisplayUseCase(instance);
+        await libraryPreviewAreaUpdateDisplayUseCase(instance);
     } else {
         libraryPreviewAreaClearDisplayService();
     }
