@@ -1,10 +1,12 @@
 import type { BitmapSaveObjectImpl } from "@/interface/BitmapSaveObjectImpl";
 import type { ObjectImpl } from "@/interface/ObjectImpl";
+import type { BitmapPublishJsonImpl } from "@/interface/BitmapPublishJsonImpl";
+import type { BoundsImpl } from "@/interface/BoundsImpl";
 import { Instance } from "./Instance";
 import { execute as bufferToBinaryService } from "@/core/service/BufferToBinaryService";
 import { execute as binaryToBufferService } from "@/core/service/BinaryToBufferService";
 import { execute as bitmapBufferToElementService } from "@/core/application/Bitmap/service/BitmapBufferToElementService";
-import { BoundsImpl } from "@/interface/BoundsImpl";
+import { execute as bitmapCreateJsonService } from "@/core/application/Bitmap/service/BitmapCreateJsonService";
 
 /**
  * @description 画像管理クラス
@@ -193,6 +195,19 @@ export class Bitmap extends Instance
             this._$width,
             this._$height
         );
+    }
+
+    /**
+     * @description Bitmapの情報をNext2D Playerの再生用JSONオブジェクトに変換
+     *              Convert Bitmap information to a JSON object for playback in Next2D Player
+     *
+     * @return {object}
+     * @method
+     * @public
+     */
+    async toPublish (): Promise<BitmapPublishJsonImpl>
+    {
+        return bitmapCreateJsonService(this);
     }
 
     /**

@@ -271,6 +271,28 @@ export class Layer
     }
 
     /**
+     * @description レイヤー内の最小フレーム数を返却
+     *              Returns the minimum number of frames in the layer
+     *
+     * @member {number}
+     * @readonly
+     * @public
+     */
+    get minFrame (): number
+    {
+        let minFrame = 1;
+        for (let idx = 0; idx < this._$characters.length; ++idx) {
+            minFrame = Math.min(minFrame, this._$characters[idx].startFrame);
+        }
+
+        for (let idx = 0; idx < this._$emptys.length; ++idx) {
+            minFrame = Math.min(minFrame, this._$emptys[idx].startFrame);
+        }
+
+        return minFrame;
+    }
+
+    /**
      * @description レイヤー内の最大フレーム数を返却
      *              Returns the maximum number of frames in the layer
      *

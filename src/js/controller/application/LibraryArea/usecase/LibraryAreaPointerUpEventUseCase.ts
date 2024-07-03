@@ -33,9 +33,11 @@ export const execute = async (event: PointerEvent): Promise<void> =>
     element.releasePointerCapture(event.pointerId);
     element.removeEventListener(EventType.MOUSE_MOVE, libraryAreaPointerMoveEventUseCase);
     element.removeEventListener(EventType.MOUSE_UP, execute);
+    element.setAttribute("style", "");
 
     if (!$getMoveState()) {
-        element.setAttribute("style", "");
+        // スクリーンエリアのDisplayObjectをアクティブに戻す
+        screenAreaLibraryItemDropEndService();
         return ;
     }
 
@@ -47,7 +49,8 @@ export const execute = async (event: PointerEvent): Promise<void> =>
         .elementFromPoint(event.clientX, event.clientY) as HTMLElement;
 
     if (!targetElement) {
-        element.setAttribute("style", "");
+        // スクリーンエリアのDisplayObjectをアクティブに戻す
+        screenAreaLibraryItemDropEndService();
         return ;
     }
 
@@ -55,7 +58,8 @@ export const execute = async (event: PointerEvent): Promise<void> =>
 
         const screenElement = document.getElementById($SCREEN_ID);
         if (!screenElement) {
-            element.setAttribute("style", "");
+            // スクリーンエリアのDisplayObjectをアクティブに戻す
+            screenAreaLibraryItemDropEndService();
             return ;
         }
 
@@ -83,7 +87,6 @@ export const execute = async (event: PointerEvent): Promise<void> =>
                         const libraryId = parseInt(parent.dataset.libraryId as string);
                         const instance = $getCurrentWorkSpace().getLibrary(libraryId);
                         if (!instance || instance.type !== $FOLDER_TYPE) {
-                            element.setAttribute("style", "");
                             break;
                         }
 
@@ -113,9 +116,6 @@ export const execute = async (event: PointerEvent): Promise<void> =>
             }
         }
     }
-
-    // styleを初期化
-    element.setAttribute("style", "");
 
     // スクリーンエリアのDisplayObjectをアクティブに戻す
     screenAreaLibraryItemDropEndService();

@@ -6,12 +6,11 @@ import { ExternalCharacter } from "@/external/core/domain/model/ExternalCharacte
  * @description 選択中のDisplayObjectの移動した値を更新
  *              Update the moved value of the selected DisplayObject
  *
- * @param  {boolean} [over_wirte=false]
  * @return {void}
  * @method
  * @public
  */
-export const execute = (over_wirte: boolean = false): void =>
+export const execute = (): void =>
 {
     const workSpace = $getCurrentWorkSpace();
     const movieClip = workSpace.scene;

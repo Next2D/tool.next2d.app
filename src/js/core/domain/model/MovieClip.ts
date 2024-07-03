@@ -7,7 +7,10 @@ import { Instance } from "./Instance";
 import { Layer } from "./Layer";
 import { execute as movieClipRunUseCase } from "@/core/application/MovieClip/usecase/MovieClipRunUseCase";
 import { execute as movieClipStopUseCase } from "@/core/application/MovieClip/usecase/MovieClipStopUseCase";
+import { execute as movieClipCreateCanvasElementUseCase } from "@/core/application/MovieClip/usecase/MovieClipCreateCanvasElementUseCase";
 import { $clamp } from "@/global/GlobalUtil";
+import { execute as movieClipCreateJsonUseCase } from "@/core/application/MovieClip/usecase/MovieClipCreateJsonUseCase";
+import { MovieClipPublishJsonImpl } from "@/interface/MovieClipPublishJsonImpl";
 
 /**
  * @description MovieClipの状態管理クラス
@@ -155,7 +158,7 @@ export class MovieClip extends Instance
      */
     get width (): number
     {
-        return 0;
+        return 100;
     }
     set width (width: number)
     {
@@ -172,7 +175,7 @@ export class MovieClip extends Instance
      */
     get height (): number
     {
-        return 0;
+        return 100;
     }
     set height (height: number)
     {
@@ -249,10 +252,22 @@ export class MovieClip extends Instance
      * @method
      * @public
      */
-    async getHTMLElement(): Promise<null>
+    async getHTMLElement(): Promise<HTMLCanvasElement>
     {
-        // TODO
-        return null;
+        return movieClipCreateCanvasElementUseCase(this);
+    }
+
+    /**
+     * @description Next2D PlayerのMovieClipインスタンスを返却
+     *              Returns the MovieClip instance of Next2D Player
+     *
+     * @return {any}
+     * @method
+     * @public
+     */
+    async toPublish (): Promise<MovieClipPublishJsonImpl>
+    {
+        return await movieClipCreateJsonUseCase(this);
     }
 
     /**
@@ -388,6 +403,23 @@ export class MovieClip extends Instance
     set currentFrame (current_frame: number)
     {
         this._$currentFrame = current_frame;
+    }
+
+    /**
+     * @description MovieClipのレイヤーに設定されてるフレームの最小値を返却
+     *              Returns the minimum value of the frame set in the MovieClip Layer
+     *
+     * @member {number}
+     * @readonly
+     * @public
+     */
+    get minFrame (): number
+    {
+        let minFrame = 1;
+        for (let idx = 0; idx < this._$layers.length; ++idx) {
+            minFrame = Math.min(minFrame, this._$layers[idx].minFrame);
+        }
+        return minFrame;
     }
 
     /**
@@ -641,6 +673,19 @@ export class MovieClip extends Instance
     }
 
     /**
+     * @description ラベルのマップデータを返却
+     *              Returns label map data
+     *
+     * @return {Map}
+     * @readonly
+     * @public
+     */
+    get labels (): Map<number, string>
+    {
+        return this._$labels;
+    }
+
+    /**
      * @description 指定フレームのラベル名を返す
      *              Returns the label name of the specified frame.
      *
@@ -759,6 +804,19 @@ export class MovieClip extends Instance
     deleteSound (frame: number): boolean
     {
         return this._$sounds.delete(frame);
+    }
+
+    /**
+     * @description サウンドのマップデータを返却
+     *              Returns sound map data
+     *
+     * @return {Map}
+     * @readonly
+     * @public
+     */
+    get sounds (): Map<number, SoundObjectImpl[]>
+    {
+        return this._$sounds;
     }
 
     /**

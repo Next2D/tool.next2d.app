@@ -33,5 +33,5 @@ export const execute = (event: FocusEvent): void =>
     transformSetting.y = value - transformSetting.beforeValue;
 
     // 選択中のDisplayObjectを指定した値で更新
-    screenDisplayObjectUpdateSelectedValueService(true);
+    screenDisplayObjectUpdateSelectedValueService();
 };

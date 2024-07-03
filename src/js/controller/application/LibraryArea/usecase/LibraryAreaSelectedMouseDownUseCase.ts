@@ -8,7 +8,7 @@ import { execute as libraryPreviewAreaUpdateDisplayUseCase } from "@/controller/
 import { execute as libraryPreviewAreaClearDisplayService } from "@/controller/application/LibraryPreviewArea/service/LibraryPreviewAreaClearDisplayService";
 import { execute as libraryAreaAltSelectedUseCase } from "@/controller/application/LibraryArea/usecase/LibraryAreaAltSelectedUseCase";
 import { execute as libraryAreaShiftSelectedUseCase } from "@/controller/application/LibraryArea/usecase/LibraryAreaShiftSelectedUseCase";
-import { $FOLDER_TYPE } from "@/config/InstanceConfig";
+import { $FOLDER_TYPE, $MOVIE_CLIP_TYPE } from "@/config/InstanceConfig";
 import { execute as libraryAreaRegisterPointerEventUseCase } from "./LibraryAreaRegisterPointerEventUseCase";
 
 /**
@@ -57,7 +57,13 @@ export const execute = (event: PointerEvent): void =>
     }
 
     // スクリーンへの移動イベントを登録
-    libraryAreaRegisterPointerEventUseCase(event);
+    if (instance.type === $MOVIE_CLIP_TYPE) {
+        if (!instance.active) {
+            libraryAreaRegisterPointerEventUseCase(event);
+        }
+    } else {
+        libraryAreaRegisterPointerEventUseCase(event);
+    }
 
     // 外部APIを起動
     switch (true) {

@@ -11,10 +11,10 @@
   },
   "devDependencies": {
     "@types/ace": "^0.0.52",
-    "@types/node": "^20.14.7",
+    "@types/node": "^20.14.9",
     "@types/qrcode": "^1.5.5",
-    "@typescript-eslint/eslint-plugin": "^7.13.1",
-    "@typescript-eslint/parser": "^7.13.1",
+    "@typescript-eslint/eslint-plugin": "^7.14.1",
+    "@typescript-eslint/parser": "^7.14.1",
     "@vitest/web-worker": "^1.6.0",
     "eslint": "^8.57.0",
     "eslint-plugin-unused-imports": "^3.2.0",

@@ -16,7 +16,6 @@ export const execute = (): void =>
     if (!element) {
         return ;
     }
-    element.style.overflow = "";
 
     const children = element.children;
     const length = children.length;
