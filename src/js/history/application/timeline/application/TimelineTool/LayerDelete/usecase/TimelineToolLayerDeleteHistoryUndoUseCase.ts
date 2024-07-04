@@ -47,7 +47,7 @@ export const execute = async (
     externalTimeline.deactivatedAllLayers();
 
     // Layerオブジェクトの内部情報に再登録
-    const layer = movieClip.createLayer(layer_object.id);
+    const layer = movieClip.createLayer();
     layer.load(layer_object);
     movieClip.setLayer(layer, index);
 

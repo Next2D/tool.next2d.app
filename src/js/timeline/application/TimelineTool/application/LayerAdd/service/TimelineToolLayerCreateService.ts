@@ -51,9 +51,12 @@ export const execute = (
     }
 
     // レイヤーを追加
-    const newLayer = movieClip.createLayer(layer_id);
+    const newLayer = movieClip.createLayer();
 
     // 引数で指定があれば内部情報を更新
+    if (layer_id !== -1) {
+        newLayer.id = layer_id;
+    }
     if (name) {
         newLayer.name = name;
     }

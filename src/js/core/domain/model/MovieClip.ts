@@ -28,7 +28,6 @@ export class MovieClip extends Instance
     private _$scrollX: number;
     private _$scrollY: number;
     private _$active: boolean;
-    private _$layerId: number;
     private readonly _$labels: Map<number, string>;
     private readonly _$layers: Layer[];
     private readonly _$actions: Map<number, string>;
@@ -64,13 +63,6 @@ export class MovieClip extends Instance
          * @private
          */
         this._$layers = [];
-
-        /**
-         * @type {number}
-         * @default 1
-         * @private
-         */
-        this._$layerId = 1;
 
         /**
          * @type {Map}
@@ -508,11 +500,8 @@ export class MovieClip extends Instance
                 const saveObject = object.layers[idx];
 
                 // セーブデータの読み込み
-                const layer = this.createLayer(saveObject.id);
+                const layer = this.createLayer();
                 layer.load(saveObject);
-
-                // LayerIDの最大値を更新
-                this._$layerId = Math.max(this._$layerId, layer.id);
 
                 // 登録
                 this._$layers.push(layer);
@@ -564,16 +553,26 @@ export class MovieClip extends Instance
      * @description 新規レイヤーを作成
      *              新規レイヤーを作成
      *
-     * @param  {number} [id = -1]
      * @return {Layer}
      * @method
      * @public
      */
-    createLayer (id: number = -1): Layer
+    createLayer (): Layer
     {
         const layer = new Layer();
-        layer.id    = id === -1 ? this._$layerId++ : id;
-        layer.name  = `Layer_${this._$layers.length}`;
+
+        layer.name = `Layer_${this._$layers.length}`;
+
+        // IDを発番
+        let layerId = 0;
+        for (let idx = 0; idx < this._$layers.length; ++idx ) {
+            const layer = this._$layers[idx];
+            if (!layer) {
+                continue;
+            }
+            layerId = Math.max(layerId, layer.id);
+        }
+        layer.id = layerId + 1;
 
         return layer;
     }
