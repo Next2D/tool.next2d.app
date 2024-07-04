@@ -211,7 +211,7 @@ export class Bitmap extends Instance
     }
 
     /**
-     * @description 画像のプレーンなバウンディングボックスを返す
+     * @description プレーンなバウンディングボックスを返す
      *              Returns the plain bounding box of the image
      *
      * @return {object}
@@ -226,6 +226,19 @@ export class Bitmap extends Instance
             "xMax": this._$width,
             "yMax": this._$height
         };
+    }
+
+    /**
+     * @description 表示領域のバウンディングボックスを返す、BitmapはgetRawBoundsと同じ値を返す
+     *              Returns the bounding box of the display area, Bitmap returns the same value as getRawBounds
+     *
+     * @return {object}
+     * @method
+     * @public
+     */
+    getRect (): BoundsImpl
+    {
+        return this.getRawBounds();
     }
 
     /**

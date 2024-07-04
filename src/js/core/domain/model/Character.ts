@@ -11,6 +11,7 @@ import { execute as characterCalcGetRotationService } from "@/core/application/C
 import { $clamp } from "@/global/GlobalUtil";
 import type { BoundsImpl } from "@/interface/BoundsImpl";
 import { execute as characterCalcGetBoundsService } from "@/core/application/Character/service/CharacterCalcGetBoundsService";
+import { execute as characterCalcGetRectService } from "@/core/application/Character/service/CharacterCalcGetRectService";
 import { PositionImpl } from "@/interface/PositionImpl";
 
 /**
@@ -587,13 +588,28 @@ export class Character
      * @description バウンディングボックスを取得
      *              Get the bounding box
      *
+     * @param  {number} [frame=1]
      * @return {object}
      * @method
      * @public
      */
-    getBounds (): BoundsImpl | null
+    getBounds (frame: number = 1): BoundsImpl | null
     {
-        return characterCalcGetBoundsService(this._$libraryId, this._$matrix);
+        return characterCalcGetBoundsService(this._$libraryId, this._$matrix, frame);
+    }
+
+    /**
+     * @description 表示領域のバウンディングボックスを取得
+     *              Get the bounding box of the display area
+     *
+     * @param  {number} [frame=1]
+     * @return {object}
+     * @method
+     * @public
+     */
+    getRect (frame: number = 1): BoundsImpl | null
+    {
+        return characterCalcGetRectService(this._$libraryId, this._$matrix, frame);
     }
 
     /**

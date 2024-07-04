@@ -1,7 +1,7 @@
 import { $getActiveTool } from "@/tool/application/ToolUtil";
 import { execute as targetRectShowElementService } from "@/screen/application/TargetRect/service/TargetRectShowElementService";
 import { execute as targetRectHideElementService } from "@/screen/application/TargetRect/service/TargetRectHideElementService";
-import { execute as screenAreaCalcSelectedBoundsService } from "@/screen/application/ScreenArea/service/ScreenAreaCalcSelectedBoundsService";
+import { execute as screenAreaCalcSelectedRectService } from "@/screen/application/ScreenArea/service/ScreenAreaCalcSelectedRectService";
 import { $TOOL_ARROW_NAME } from "@/config/ToolConfig";
 import { $getCurrentWorkSpace, $getMatrixBounds } from "@/core/application/CoreUtil";
 import { $getConcatenatedMatrix } from "@/controller/application/TransformSetting/TransformSettingUtil";
@@ -19,7 +19,7 @@ export const execute = (): void =>
     const workSpace = $getCurrentWorkSpace();
     const movieClip = workSpace.scene;
 
-    const calcBounds = screenAreaCalcSelectedBoundsService(movieClip);
+    const calcBounds = screenAreaCalcSelectedRectService(movieClip);
     if (!calcBounds) {
         // 表示範囲のelementを非表示
         targetRectHideElementService();

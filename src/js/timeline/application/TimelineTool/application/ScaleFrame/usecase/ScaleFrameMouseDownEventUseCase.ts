@@ -23,9 +23,6 @@ export const execute = (event: PointerEvent): void =>
         return ;
     }
 
-    // イベントの伝播を止める
-    event.preventDefault();
-
     const element: HTMLInputElement | null = event.target as HTMLInputElement;
     if (!element) {
         return ;

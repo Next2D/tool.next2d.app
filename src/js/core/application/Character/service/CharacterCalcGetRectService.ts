@@ -2,8 +2,8 @@ import type { BoundsImpl } from "@/interface/BoundsImpl";
 import { $getCurrentWorkSpace, $getMatrixBounds } from "../../CoreUtil";
 
 /**
- * @description 指定IDのライブラリアイテムのバウンディングボックスをmatrixで加工して返却
- *              Returns the bounding box of the specified library item processed by the matrix
+ * @description 指定IDのライブラリアイテムの表示領域をmatrixで加工して返却
+ *              Returns the display area of the specified library item processed by the matrix
  *
  * @param  {number} library_id
  * @param  {array} matrix
@@ -25,7 +25,7 @@ export const execute = (
     }
 
     // ライブラリアイテムの加工してないバウンディングボックスの値を取得
-    const bounds = instance.getRawBounds(frame);
+    const bounds = instance.getRect(frame);
 
     // matrixを適用したバウンディングボックスの値を取得
     return $getMatrixBounds(

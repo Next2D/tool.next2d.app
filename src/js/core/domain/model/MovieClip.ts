@@ -12,6 +12,7 @@ import { $clamp } from "@/global/GlobalUtil";
 import { execute as movieClipCreateJsonUseCase } from "@/core/application/MovieClip/usecase/MovieClipCreateJsonUseCase";
 import { MovieClipPublishJsonImpl } from "@/interface/MovieClipPublishJsonImpl";
 import { BoundsImpl } from "@/interface/BoundsImpl";
+import { execute as movieClipCalcBoundService } from "@/core/application/MovieClip/service/MovieClipCalcBoundService";
 
 /**
  * @description MovieClipの状態管理クラス
@@ -151,7 +152,7 @@ export class MovieClip extends Instance
      */
     get width (): number
     {
-        return 100;
+        return 200;
     }
     set width (width: number)
     {
@@ -168,7 +169,7 @@ export class MovieClip extends Instance
      */
     get height (): number
     {
-        return 100;
+        return 200;
     }
     set height (height: number)
     {
@@ -895,18 +896,58 @@ export class MovieClip extends Instance
      * @description プレーンなバウンディングボックスを返す
      *              Returns a plain bounding box
      *
+     * @param  {number} [frame=1]
      * @return {object}
      * @method
      * @public
      */
-    getRawBounds (): BoundsImpl
+    getRawBounds (frame: number = 1): BoundsImpl
     {
-        return {
+        const calcBounds = movieClipCalcBoundService(this, frame);
+
+        const bounds = {
             "xMin": 0,
             "yMin": 0,
-            "xMax": this.width,
-            "yMax": this.height
+            "xMax": 0,
+            "yMax": 0
         };
+
+        if (calcBounds) {
+            bounds.xMin = calcBounds.xMin;
+            bounds.yMin = calcBounds.yMin;
+            bounds.xMax = calcBounds.xMax;
+            bounds.yMax = calcBounds.yMax;
+        }
+
+        return bounds;
+    }
+
+    /**
+     * @description 表示領域のバウンディングボックスを返す
+     *              Returns the bounding box of the display area
+     *
+     * @param  {number} [frame=1]
+     * @return {object}
+     * @method
+     * @public
+     */
+    getRect (frame: number = 1): BoundsImpl
+    {
+        const calcBounds = movieClipCalcBoundService(this, frame);
+
+        const bounds = {
+            "xMin": 0,
+            "yMin": 0,
+            "xMax": 0,
+            "yMax": 0
+        };
+
+        if (calcBounds) {
+            bounds.xMax = Math.ceil(Math.abs(calcBounds.xMax - calcBounds.xMin));
+            bounds.yMax = Math.ceil(Math.abs(calcBounds.yMax - calcBounds.yMin));
+        }
+
+        return bounds;
     }
 
     /**

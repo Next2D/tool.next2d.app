@@ -39,8 +39,8 @@ export const execute = (
     let style = "";
     style += `left: ${$getScreenOffsetLeft() + x}px;`;
     style += `top: ${$getScreenOffsetTop() + y}px;`;
-    style += `width: ${width}px;`;
-    style += `height: ${height}px;`;
+    style += `width: ${width - 2}px;`;
+    style += `height: ${height - 2}px;`;
 
     // display: noneをstyleで上書き
     element.setAttribute("style", style);

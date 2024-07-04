@@ -3,8 +3,8 @@ import { $calcBoundingBox } from "@/core/application/CoreUtil";
 import { BoundsImpl } from "@/interface/BoundsImpl";
 
 /**
- * @description 選択中のbounding boxを計算
- *              Calculate the selected bounding box
+ * @description 選択中のDisplayObjectの表示領域のbounding boxを計算
+ *              Calculate the bounding box of the display area of the selected DisplayObject
  *
  * @param  {MovieClip} movie_clip
  * @return {object}
@@ -35,7 +35,7 @@ export const execute = (movie_clip: MovieClip): BoundsImpl | null =>
                 continue ;
             }
 
-            const bounds = character.getBounds();
+            const bounds = character.getRect();
             if (!bounds) {
                 continue ;
             }

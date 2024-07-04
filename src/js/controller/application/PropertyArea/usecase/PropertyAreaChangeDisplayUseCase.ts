@@ -1,6 +1,7 @@
-import { $BITMAP_TYPE } from "@/config/InstanceConfig";
+import { $BITMAP_TYPE, $MOVIE_CLIP_TYPE } from "@/config/InstanceConfig";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { execute as propertyAreaBitmapDisplayControllerUseCase } from "./PropertyAreaBitmapDisplayControllerUseCase";
+import { execute as propertyAreaMovieClipDisplayControllerUseCase } from "./PropertyAreaMovieClipDisplayControllerUseCase";
 import { execute as propertyAreaShowMultiSettingUseCase } from "./PropertyAreaShowMultiSettingUseCase";
 import { $setSelectedMode } from "../PropertyAreaUtil";
 import { execute as propertyAreaScrollUpdateHeightService } from "@/controller/application/PropertyAreaScroll/service/PropertyAreaScrollUpdateHeightService";
@@ -47,6 +48,10 @@ export const execute = (): void =>
 
             case $BITMAP_TYPE:
                 propertyAreaBitmapDisplayControllerUseCase(character);
+                break;
+
+            case $MOVIE_CLIP_TYPE:
+                propertyAreaMovieClipDisplayControllerUseCase(character);
                 break;
 
         }
