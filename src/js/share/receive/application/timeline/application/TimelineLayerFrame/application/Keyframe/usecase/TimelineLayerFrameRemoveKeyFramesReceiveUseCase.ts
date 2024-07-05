@@ -56,7 +56,7 @@ export const execute = async (message: ShareReceiveMessageImpl): Promise<void> =
 
     if (workSpace.active && movieClip.active) {
         // タイムラインのレイヤー表示を更新
-        timelineLayerAddFrameUpdateLayerStyleUseCase(workSpace, movieClip, layer);
+        timelineLayerAddFrameUpdateLayerStyleUseCase(movieClip, layer);
 
         // スクリーンエリアの再描画
         await screenAreaRedrawUseCase(movieClip);

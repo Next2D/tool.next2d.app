@@ -100,7 +100,7 @@ export const execute = (): void =>
 
         // xスクロール位置に合わせてフレームElementのStyleを更新
         timelineLayerFrameUpdateStyleService(
-            workSpace, scene, frameControllerElement, leftFrame
+            scene, frameControllerElement, leftFrame
         );
 
         // Layerオブジェクトの状態に合わせて、表示Elementの情報を更新

@@ -218,27 +218,6 @@ export class ExternalTimeline
     }
 
     /**
-     * @description 指定のMovieClipを編集モードに切り替える
-     *              Switch the specified MovieClip to edit mode
-     *
-     * @param  {MovieClip} movie_clip
-     * @return {void}
-     * @method
-     * @public
-     */
-    editMovieClip (movie_clip: MovieClip): Promise<void>
-    {
-        if (this._$movieClip === movie_clip) {
-            return Promise.resolve();
-        }
-
-        this._$movieClip = movie_clip;
-        return this._$workSpace.active
-            ? movie_clip.run()
-            : Promise.resolve();
-    }
-
-    /**
      * @description 指定したindex値のレイヤーをアクティブにする
      *              Activate the layer with the specified index value
      *

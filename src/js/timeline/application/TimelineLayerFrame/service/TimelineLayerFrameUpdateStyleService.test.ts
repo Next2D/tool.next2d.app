@@ -1,6 +1,6 @@
 import { execute } from "./TimelineLayerFrameUpdateStyleService";
 import { $getCurrentWorkSpace, $createWorkSpace } from "../../../../core/application/CoreUtil";
-import type { MovieClip } from "../../../../core/domain/model/MovieClip";
+// import type { MovieClip } from "../../../../core/domain/model/MovieClip";
 import type { Layer } from "../../../../core/domain/model/Layer";
 
 describe("TimelineLayerFrameUpdateStyleServiceTest", () =>
@@ -8,7 +8,7 @@ describe("TimelineLayerFrameUpdateStyleServiceTest", () =>
     test("execute test", () =>
     {
         const workSpace = $getCurrentWorkSpace() || $createWorkSpace();
-        const scene: MovieClip = workSpace.scene;
+        const scene = workSpace.scene;
 
         scene.selectedFrameObject.start = 1;
         scene.selectedFrameObject.end   = 1;
@@ -31,7 +31,7 @@ describe("TimelineLayerFrameUpdateStyleServiceTest", () =>
         }
 
         // 初期値のテスト
-        execute(workSpace, scene, div, 1);
+        execute(scene, div, 1);
         for (let idx = 0; idx < 10; ++idx) {
 
             const frame = idx + 1;
@@ -54,7 +54,7 @@ describe("TimelineLayerFrameUpdateStyleServiceTest", () =>
         }
 
         // スクロール位置のテスト
-        execute(workSpace, scene, div, 6);
+        execute(scene, div, 6);
         for (let idx = 0; idx < 10; ++idx) {
 
             const frame = idx + 6;

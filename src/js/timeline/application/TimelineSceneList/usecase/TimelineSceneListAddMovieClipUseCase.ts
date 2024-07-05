@@ -39,4 +39,4 @@ export const execute = (movie_clip: MovieClip): void =>
     node.addEventListener(EventType.MOUSE_DOWN,
         timelineSceneListNodeMouseDownEventUseCase
     );
-}
+};

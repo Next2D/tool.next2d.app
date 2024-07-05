@@ -66,6 +66,6 @@ export const execute = (
 
     // タイムラインのレイヤー表示を更新
     if (work_space.active && movie_clip.active) {
-        timelineLayerAddFrameUpdateLayerStyleUseCase(work_space, movie_clip, layer);
+        timelineLayerAddFrameUpdateLayerStyleUseCase(movie_clip, layer);
     }
 };

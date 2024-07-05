@@ -2,7 +2,7 @@ import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import { execute as targetRectMoveElementUseCase } from "@/screen/application/TargetRect/usecase/TargetRectMoveElementUseCase";
 import { execute as propertyAreaChangeDisplayUseCase } from "@/controller/application/PropertyArea/usecase/PropertyAreaChangeDisplayUseCase";
-import { execute as screenDisplayObjectDeployStandardPointElementUseCase } from "@/screen/application/DisplayObject/usecase/ScreenDisplayObjectDeployStandardPointElementUseCase";
+import { execute as screenStandardPointDeployElementUseCase } from "@/screen/application/StandardPoint/usecase/ScreenStandardPointDeployElementUseCase";
 
 /**
  * @description DisplayObjectを選択状態に更新
@@ -46,6 +46,6 @@ export const execute = (
         propertyAreaChangeDisplayUseCase();
 
         // MovieClipなら基準点を配置
-        screenDisplayObjectDeployStandardPointElementUseCase();
+        screenStandardPointDeployElementUseCase();
     }
 };

@@ -1,13 +1,10 @@
-import { ExternalLayer } from "@/external/core/domain/model/ExternalLayer";
 import { $getLayerFromElement } from "../../TimelineUtil";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
-import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 
 /**
  * @description 指定のフレームElementのStyleを更新
  *              Update the Style of the specified Frame Element
  *
- * @param  {WorkSpace} work_spcae
  * @param  {MovieClip} movie_clip
  * @param  {HTMLElement} element
  * @param  {number} left_frame
@@ -16,7 +13,6 @@ import type { WorkSpace } from "@/core/domain/model/WorkSpace";
  * @public
  */
 export const execute = (
-    work_spcae: WorkSpace,
     movie_clip: MovieClip,
     element: HTMLElement,
     left_frame: number
@@ -28,8 +24,7 @@ export const execute = (
     }
 
     // 外部APIを起動
-    const externalLayer = new ExternalLayer(work_spcae, movie_clip, layer);
-
+    const isSelected = movie_clip.selectedLayers.indexOf(layer) > -1;
     const startFrame = movie_clip.selectedStartFrame;
     const endFrame   = movie_clip.selectedEndFrame;
 
@@ -53,7 +48,7 @@ export const execute = (
         }
 
         // アクティブフレームのクラスをセット
-        if (externalLayer.isSelected()
+        if (isSelected
             && startFrame > 0
             && frame >= startFrame
             && endFrame > frame

@@ -59,7 +59,7 @@ export const execute = async (
     // アクティブならタイムラインを再描画
     if (workSpace.active && movieClip.active) {
         // タイムラインにフレームを追加
-        timelineLayerAddFrameUpdateLayerStyleUseCase(workSpace, movieClip, layer);
+        timelineLayerAddFrameUpdateLayerStyleUseCase(movieClip, layer);
 
         // 選択範囲のElementの表示を更新
         targetRectMoveElementUseCase();

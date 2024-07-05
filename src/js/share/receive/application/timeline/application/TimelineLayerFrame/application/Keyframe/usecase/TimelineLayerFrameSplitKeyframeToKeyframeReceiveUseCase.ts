@@ -47,6 +47,6 @@ export const execute = (message: ShareReceiveMessageImpl): void =>
     // アクティブなら表示を更新
     if (workSpace.active && movieClip.active) {
         // タイムラインのレイヤー表示を更新
-        timelineLayerAddFrameUpdateLayerStyleUseCase(workSpace, movieClip, layer);
+        timelineLayerAddFrameUpdateLayerStyleUseCase(movieClip, layer);
     }
 };

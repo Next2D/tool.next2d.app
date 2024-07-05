@@ -79,7 +79,7 @@ export const execute = (
     // fixed logic
     if (workSpace.active && movieClip.active) {
         // タイムラインのレイヤー表示を更新
-        timelineLayerAddFrameUpdateLayerStyleUseCase(workSpace, movieClip, layer);
+        timelineLayerAddFrameUpdateLayerStyleUseCase(movieClip, layer);
 
         // 選択範囲のElementの表示を更新
         targetRectMoveElementUseCase();

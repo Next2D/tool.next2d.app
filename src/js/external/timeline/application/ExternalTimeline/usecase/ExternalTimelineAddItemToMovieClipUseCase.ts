@@ -155,7 +155,7 @@ export const execute = async (
         if (work_space.active && movie_clip.active) {
 
             // タイムラインのレイヤー表示を更新
-            timelineLayerAddFrameUpdateLayerStyleUseCase(work_space, movie_clip, layer);
+            timelineLayerAddFrameUpdateLayerStyleUseCase(movie_clip, layer);
 
             // スクリーンエリアにElementを追加
             await screenAreaAppendCharacterService(character, layer);

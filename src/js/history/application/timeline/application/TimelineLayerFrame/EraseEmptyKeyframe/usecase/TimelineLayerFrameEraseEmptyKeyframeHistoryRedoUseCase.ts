@@ -58,7 +58,7 @@ export const execute = async (
     // アクティブならタイムラインを再描画
     if (workSpace.active && movieClip.active) {
         // タイムラインのレイヤー表示を更新
-        timelineLayerAddFrameUpdateLayerStyleUseCase(workSpace, movieClip, layer);
+        timelineLayerAddFrameUpdateLayerStyleUseCase(movieClip, layer);
 
         // スクリーンエリアを再描画
         await screenAreaRedrawUseCase(movieClip);
