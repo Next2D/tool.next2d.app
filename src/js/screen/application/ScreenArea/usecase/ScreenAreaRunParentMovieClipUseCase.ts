@@ -2,9 +2,8 @@ import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { InstanceImpl } from "@/interface/InstanceImpl";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { timelineSceneList } from "@/timeline/domain/model/TimelineSceneList";
-import { ExternalWorkSpace } from "@/external/core/domain/model/ExternalWorkSpace";
-import { ExternalMovieClip } from "@/external/core/domain/model/ExternalMovieClip";
 import { $TIMELINE_SCENE_NAME_LIST_ID } from "@/config/TimelineConfig";
+import { execute as externalTimelineEditMovieClipUseService } from "@/external/timeline/application/ExternalTimeline/service/ExternalTimelineEditMovieClipUseService";
 
 /**
  * @description 一つ上の親のMovieClipに切り替える
@@ -44,8 +43,5 @@ export const execute = async (): Promise<void> =>
     }
 
     // 指定のMovieClipを起動
-    const externalWorkSpace = new ExternalWorkSpace(workSpace);
-    await externalWorkSpace.runMovieClip(new ExternalMovieClip(
-        workSpace, movieClip
-    ));
+    await externalTimelineEditMovieClipUseService(workSpace, movieClip);
 };

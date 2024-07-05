@@ -1,11 +1,10 @@
 import type { InstanceImpl } from "@/interface/InstanceImpl";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import { libraryArea } from "@/controller/domain/model/LibraryArea";
-import { ExternalWorkSpace } from "@/external/core/domain/model/ExternalWorkSpace";
-import { ExternalMovieClip } from "@/external/core/domain/model/ExternalMovieClip";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { execute as timelineSceneListClearAddRootUseCase } from "@/timeline/application/TimelineSceneList/usecase/TimelineSceneListClearAddRootUseCase";
 import { $MOVIE_CLIP_TYPE } from "@/config/InstanceConfig";
+import { execute as externalTimelineEditMovieClipUseService } from "@/external/timeline/application/ExternalTimeline/service/ExternalTimelineEditMovieClipUseService";
 
 /**
  * @description 選択されたMovieClipを起動
@@ -33,8 +32,6 @@ export const execute = async (): Promise<void> =>
     // タイムラインのシーン名を初期化してrootを追加
     timelineSceneListClearAddRootUseCase();
 
-    const externalWorkSpace = new ExternalWorkSpace(workSpcae);
-    await externalWorkSpace.runMovieClip(
-        new ExternalMovieClip(workSpcae, movieClip)
-    );
+    // 指定のMovieClipを編集モードに切り替える
+    await externalTimelineEditMovieClipUseService(workSpcae, movieClip);
 };

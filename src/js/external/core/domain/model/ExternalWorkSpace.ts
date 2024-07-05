@@ -105,37 +105,6 @@ export class ExternalWorkSpace
     }
 
     /**
-     * @description 指定されたMovieClipを起動
-     *              Launch the specified MovieClip
-     *
-     * @param {ExternalMovieClip} external_movie_clip
-     * @return {Promise}
-     * @method
-     * @public
-     */
-    async runMovieClip (external_movie_clip: ExternalMovieClip): Promise<void>
-    {
-        const movieClip: InstanceImpl<MovieClip> = this
-            ._$workSpace
-            .getLibrary(external_movie_clip.id);
-
-        const scene = this._$workSpace.scene;
-        if (!scene || scene === movieClip) {
-            return ;
-        }
-
-        // 起動中のMovieClipを停止して、指定のMovieClipに入れ替える
-        scene.stop();
-        this._$workSpace.scene = movieClip;
-
-        if (!this._$workSpace.active) {
-            return ;
-        }
-
-        await movieClip.run();
-    }
-
-    /**
      * @description ライブラリAPIオブジェクトを返却
      *              Return library API object
      *

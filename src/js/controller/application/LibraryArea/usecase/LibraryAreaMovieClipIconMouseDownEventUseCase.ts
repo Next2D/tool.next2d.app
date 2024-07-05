@@ -1,9 +1,8 @@
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { InstanceImpl } from "@/interface/InstanceImpl";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
-import { ExternalWorkSpace } from "@/external/core/domain/model/ExternalWorkSpace";
-import { ExternalMovieClip } from "@/external/core/domain/model/ExternalMovieClip";
 import { execute as timelineSceneListClearAddRootUseCase } from "@/timeline/application/TimelineSceneList/usecase/TimelineSceneListClearAddRootUseCase";
+import { execute as externalTimelineEditMovieClipUseService } from "@/external/timeline/application/ExternalTimeline/service/ExternalTimelineEditMovieClipUseService";
 
 /**
  * @description ダブルタップ用の待機フラグ
@@ -84,9 +83,7 @@ export const execute = async (event: PointerEvent): Promise<void> =>
         // タイムラインのシーン名を初期化してrootを追加
         timelineSceneListClearAddRootUseCase();
 
-        const externalWorkSpace = new ExternalWorkSpace(workSpace);
-        await externalWorkSpace.runMovieClip(new ExternalMovieClip(
-            workSpace, movieClip
-        ));
+        // 指定のMovieClipを起動
+        await externalTimelineEditMovieClipUseService(workSpace, movieClip);;
     }
 };

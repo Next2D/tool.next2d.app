@@ -1,5 +1,6 @@
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
+import type { InstanceImpl } from "@/interface/InstanceImpl";
 import { ExternalLayer } from "@/external/core/domain/model/ExternalLayer";
 import { execute as externalTimelineChageFrameUseCase } from "@/external/timeline/application/ExternalTimeline/usecase/ExternalTimelineChageFrameUseCase";
 import { execute as externalTimelineLayerDeactivateLayerUseCase } from "@/external/timeline/application/ExternalTimelineLayer/usecase/ExternalTimelineLayerDeactivateLayerUseCase";
@@ -18,6 +19,7 @@ import { execute as externalTimelineLayerFrameDeleteKeyframesUseCase } from "@/e
 import { execute as externalScreenSelectedFromSelectedLayersUseCase } from "@/external/screen/application/ExternalScreen/usecase/ExternalScreenSelectedFromSelectedLayersUseCase";
 import { execute as externalScreenClaerSelectedDisplayObjectUseCase } from "@/external/screen/application/ExternalScreen/usecase/ExternalScreenClaerSelectedDisplayObjectUseCase";
 import { execute as externalTimelineLayerFrameShiftFrameUseCase } from "@/external/timeline/application/ExternalTimelineLayerFrame/usecase/ExternalTimelineLayerFrameShiftFrameUseCase";
+import { execute as externalTimelineEditMovieClipUseService } from "@/external/timeline/application/ExternalTimeline/service/ExternalTimelineEditMovieClipUseService";
 import { ExternalMovieClip } from "@/external/core/domain/model/ExternalMovieClip";
 
 /**
@@ -215,6 +217,30 @@ export class ExternalTimeline
         this.selectedLayers([
             Math.min(...indexes, this._$movieClip.layers.length - 1)
         ]);
+    }
+
+    /**
+     * @description 指定のMovieClipを編集モードに切り替える
+     *              Switch the specified MovieClip to edit mode
+     *
+     * @param  {ExternalMovieClip} external_movie_clip
+     * @return {void}
+     * @method
+     * @public
+     */
+    async editMovieClip (external_movie_clip: ExternalMovieClip): Promise<void>
+    {
+        const movieClip: InstanceImpl<MovieClip> = this
+            ._$workSpace
+            .getLibrary(external_movie_clip.id);
+
+        const editMovieClip = await externalTimelineEditMovieClipUseService(
+            this._$workSpace, movieClip
+        );
+
+        if (editMovieClip) {
+            this._$movieClip = editMovieClip;
+        }
     }
 
     /**

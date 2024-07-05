@@ -1,9 +1,10 @@
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { $allHideMenu } from "@/menu/application/MenuUtil";
-import { ExternalWorkSpace } from "@/external/core/domain/model/ExternalWorkSpace";
 import { execute as timelineSceneListClearAddRootUseCase } from "@/timeline/application/TimelineSceneList/usecase/TimelineSceneListClearAddRootUseCase";
 import { execute as timelineSceneListClearAllService } from "@/timeline/application/TimelineSceneList/service/TimelineSceneListClearAllService";
 import { $MOVIE_CLIP_TYPE } from "@/config/InstanceConfig";
+import { execute as externalTimelineEditMovieClipUseService } from "@/external/timeline/application/ExternalTimeline/service/ExternalTimelineEditMovieClipUseService";
+
 /**
  * @description ダブルタップ用の待機フラグ
  *              Standby flag for double-tap
@@ -85,7 +86,7 @@ export const execute = async (event: PointerEvent): Promise<void> =>
             timelineSceneListClearAllService();
         }
 
-        const externalWorkSpace = new ExternalWorkSpace(workSpace);
-        await externalWorkSpace.runMovieClip(instance);
+        // 指定のMovieClipを起動
+        await externalTimelineEditMovieClipUseService(workSpace, instance);
     }
 };

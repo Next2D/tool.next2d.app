@@ -1,10 +1,9 @@
-import { ExternalWorkSpace } from "@/external/core/domain/model/ExternalWorkSpace";
 import { $getActiveTool } from "@/tool/application/ToolUtil";
 import { EventType } from "@/tool/domain/event/EventType";
 import { $getCurrentWorkSpace } from "../../CoreUtil";
-import { ExternalMovieClip } from "@/external/core/domain/model/ExternalMovieClip";
 import { $MOVIE_CLIP_TYPE } from "@/config/InstanceConfig";
 import { execute as timelineSceneListAddMovieClipUseCase } from "@/timeline/application/TimelineSceneList/usecase/TimelineSceneListAddMovieClipUseCase";
+import { execute as externalTimelineEditMovieClipUseService } from "@/external/timeline/application/ExternalTimeline/service/ExternalTimelineEditMovieClipUseService";
 
 /**
  * @description ダブルタップ用の待機フラグ
@@ -97,10 +96,7 @@ export const execute = async (event: PointerEvent): Promise<void> =>
         // タイムラインのシーン一覧に追加
         timelineSceneListAddMovieClipUseCase(scene);
 
-        // 指定のMovieClipに画面を切り替える
-        const externalWorkSpace = new ExternalWorkSpace(workSpace);
-        await externalWorkSpace.runMovieClip(new ExternalMovieClip(
-            workSpace, movieClip
-        ));
+        // 指定のMovieClipを起動
+        await externalTimelineEditMovieClipUseService(workSpace, movieClip);
     }
 };
