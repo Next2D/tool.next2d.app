@@ -73,19 +73,7 @@
         position            : absolute;
         z-index             : 9000;
         pointer-events      : none;
-        background-image    : url('data:image/svg+xml;charset=UTF-8,<svg clip-rule="evenodd" fill-rule="evenodd" stroke-linejoin="round" stroke-miterlimit="2" width="12" height="12" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="m11 11h-7.25c-.414 0-.75.336-.75.75s.336.75.75.75h7.25v7.25c0 .414.336.75.75.75s.75-.336.75-.75v-7.25h7.25c.414 0 .75-.336.75-.75s-.336-.75-.75-.75h-7.25v-7.25c0-.414-.336-.75-.75-.75s-.75.336-.75.75z" fill-rule="nonzero"/></svg>');
-        background-repeat   : no-repeat;
-        background-position : center center;
-    }
-
-    .standard-point
-    {
-        width               : 12px;
-        height              : 12px;
-        position            : absolute;
-        z-index             : 9000;
-        pointer-events      : none;
-        background-image    : url('data:image/svg+xml;charset=UTF-8,<svg clip-rule="evenodd" fill-rule="evenodd" stroke-linejoin="round" stroke-miterlimit="2" width="12" height="12" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="m11 11h-7.25c-.414 0-.75.336-.75.75s.336.75.75.75h7.25v7.25c0 .414.336.75.75.75s.75-.336.75-.75v-7.25h7.25c.414 0 .75-.336.75-.75s-.336-.75-.75-.75h-7.25v-7.25c0-.414-.336-.75-.75-.75s-.75.336-.75.75z" fill-rule="nonzero"/></svg>');
+        background-image    : url('data:image/svg+xml;charset=UTF-8,<svg width="12" height="12" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="11.5" y="2.5" width="1" height="19" fill="black"/><rect x="2.5" y="11.5" width="19" height="1" fill="black"/><rect x="11.5" y="2.5" width="0.9" height="19" fill="none" stroke="white" stroke-width="0.1"/><rect x="2.5" y="11.5" width="19" height="0.9" fill="none" stroke="white" stroke-width="0.1"/></svg>');
         background-repeat   : no-repeat;
         background-position : center center;
     }

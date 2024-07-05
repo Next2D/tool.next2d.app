@@ -35,13 +35,10 @@ export const execute = (message: ShareReceiveMessageImpl): void =>
     }
 
     const keyframe = message.data[3] as NonNullable<number>;
-    const activeCharacters = layer.getActiveCharacters(keyframe);
-    if (!activeCharacters.length) {
-        return ;
+    const depth    = message.data[4] as NonNullable<number>;
 
-    }
-    const depth = message.data[4] as NonNullable<number>;
-    const character = activeCharacters[depth];
+    // キャラクターを取得
+    const character = layer.getCharacter(keyframe, depth);
     if (!character) {
         return ;
     }

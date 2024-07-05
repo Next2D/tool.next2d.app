@@ -87,3 +87,12 @@ export const $SCREEN_SCROLL_BAR_X_ID: string = "screen-scroll-bar-x";
  * @constant
  */
 export const $SCREEN_SCROLL_BAR_Y_ID: string = "screen-scroll-bar-y";
+
+/**
+ * @description MovieCliip選択時のバウンディングボックスの基準点のElementのID
+ *              ID of the reference point of the bounding box when MovieClip is selected
+ *
+ * @type {string}
+ * @constant
+ */
+export const $SCREEN_STANDARD_POINT_ID: string = "standard-point";

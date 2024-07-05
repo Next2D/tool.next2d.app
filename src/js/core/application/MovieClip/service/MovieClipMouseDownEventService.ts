@@ -84,7 +84,7 @@ export const execute = async (event: PointerEvent): Promise<void> =>
         }
 
         const depth = parseInt(element.dataset.depth as string);
-        const character = layer.characters[depth];
+        const character = layer.getCharacter(scene.currentFrame, depth);
         if (!character) {
             return ;
         }

@@ -30,9 +30,8 @@ export const execute = (): void =>
             return ;
         }
 
-        const activeCharacters = layer.getActiveCharacters(movieClip.currentFrame);
         const depth = movieClip.selectedDepths.values().next().value[0];
-        const character = activeCharacters[depth];
+        const character = layer.getCharacter(movieClip.currentFrame, depth);
 
         if (!character) {
             return ;
