@@ -84,6 +84,6 @@ export const execute = async (event: PointerEvent): Promise<void> =>
         timelineSceneListClearAddRootUseCase();
 
         // 指定のMovieClipを起動
-        await externalTimelineEditMovieClipUseService(workSpace, movieClip);;
+        await externalTimelineEditMovieClipUseService(workSpace, movieClip);
     }
 };
