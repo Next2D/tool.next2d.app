@@ -1,17 +1,16 @@
 import type { MovieClip } from "@/core/domain/model/MovieClip";
-import { $calcBoundingBox } from "@/core/application/CoreUtil";
-import { BoundsImpl } from "@/interface/BoundsImpl";
+import { PositionImpl } from "@/interface/PositionImpl";
 
 /**
- * @description 選択中のDisplayObjectの表示領域のbounding boxを計算
- *              Calculate the bounding box of the display area of the selected DisplayObject
+ * @description 選択中のキャラクターのxyの座標位置を計算
+ *              Calculate the xy coordinate position of the selected character
  *
  * @param  {MovieClip} movie_clip
  * @return {object}
  * @method
  * @public
  */
-export const execute = (movie_clip: MovieClip): BoundsImpl | null =>
+export const execute = (movie_clip: MovieClip): PositionImpl | null =>
 {
     if (!movie_clip.selectedDepths.size) {
         return null;
@@ -21,7 +20,10 @@ export const execute = (movie_clip: MovieClip): BoundsImpl | null =>
     const frame = movie_clip.currentFrame;
 
     // 選択範囲のbounding boxを取得
-    const boundingBoxs = [];
+    const position = {
+        "x": Number.MAX_VALUE,
+        "y": Number.MAX_VALUE
+    };
     for (const [layerIndex, depths] of movie_clip.selectedDepths) {
 
         const layer = movie_clip.getLayer(layerIndex);
@@ -35,16 +37,10 @@ export const execute = (movie_clip: MovieClip): BoundsImpl | null =>
                 continue ;
             }
 
-            const bounds = character.getRect();
-            if (!bounds) {
-                continue ;
-            }
-
-            boundingBoxs.push(bounds);
+            position.x = Math.min(position.x, character.x);
+            position.y = Math.min(position.y, character.y);
         }
     }
 
-    return boundingBoxs.length
-        ? $calcBoundingBox(boundingBoxs)
-        : null;
+    return position;
 };

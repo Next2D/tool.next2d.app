@@ -52,8 +52,16 @@ export const execute = async (client_x: number, client_y: number): Promise<void>
             default:
                 {
                     const externalTimeline = new ExternalTimeline(workSpace, movieClip);
-                    const x = (client_x - $getScreenOffsetLeft() - instance.width  / 2) / workSpace.scale;
-                    const y = (client_y - $getScreenOffsetTop()  - instance.height / 2) / workSpace.scale;
+                    const bounds = instance.getRawBounds();
+                    if (!bounds) {
+                        continue;
+                    }
+
+                    const width  = Math.ceil(Math.abs(bounds.xMax - bounds.xMin));
+                    const height = Math.ceil(Math.abs(bounds.yMax - bounds.yMin));
+
+                    const x = (client_x - $getScreenOffsetLeft() - bounds.xMin - width / 2) / workSpace.scale;
+                    const y = (client_y - $getScreenOffsetTop() - bounds.yMin - height / 2) / workSpace.scale;
                     await externalTimeline
                         .addItemToMovieClip(x, y, instance.getPath(workSpace));
                 }

@@ -144,40 +144,6 @@ export class MovieClip extends Instance
     }
 
     /**
-     * @description MovieClipの幅を返す
-     *              Returns the width of the MovieClip
-     *
-     * @member {number}
-     * @public
-     */
-    get width (): number
-    {
-        return 200;
-    }
-    set width (width: number)
-    {
-        // TODO
-        console.log(width);
-    }
-
-    /**
-     * @description MovieClipの高さを返す
-     *              Returns the height of the MovieClip
-     *
-     * @return {number}
-     * @public
-     */
-    get height (): number
-    {
-        return 200;
-    }
-    set height (height: number)
-    {
-        // TODO
-        console.log(height);
-    }
-
-    /**
      * @description フレームの選択状態を保存したオブジェクトを返却
      *              Returns an object with the frame selection state saved
      *
@@ -917,34 +883,6 @@ export class MovieClip extends Instance
             bounds.yMin = calcBounds.yMin;
             bounds.xMax = calcBounds.xMax;
             bounds.yMax = calcBounds.yMax;
-        }
-
-        return bounds;
-    }
-
-    /**
-     * @description 表示領域のバウンディングボックスを返す
-     *              Returns the bounding box of the display area
-     *
-     * @param  {number} [frame=1]
-     * @return {object}
-     * @method
-     * @public
-     */
-    getRect (frame: number = 1): BoundsImpl
-    {
-        const calcBounds = movieClipCalcBoundService(this, frame);
-
-        const bounds = {
-            "xMin": 0,
-            "yMin": 0,
-            "xMax": 0,
-            "yMax": 0
-        };
-
-        if (calcBounds) {
-            bounds.xMax = Math.ceil(Math.abs(calcBounds.xMax - calcBounds.xMin));
-            bounds.yMax = Math.ceil(Math.abs(calcBounds.yMax - calcBounds.yMin));
         }
 
         return bounds;

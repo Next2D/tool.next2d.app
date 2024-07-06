@@ -5,7 +5,7 @@ import { $allHideMenu } from "@/menu/application/MenuUtil";
 import { execute as screenDisplayObjectRegisterPointerEventUseCase } from "./ScreenDisplayObjectRegisterPointerEventUseCase";
 import { transformSetting } from "@/controller/domain/model/TransformSetting";
 import { execute as referenceSettingHideElementService } from "@/controller/application/ReferenceSetting/service/ReferenceSettingHideElementService";
-import { execute as screenAreaCalcSelectedBoundsService } from "@/screen/application/ScreenArea/service/ScreenAreaCalcSelectedBoundsService";
+import { execute as screenAreaCalcSelectedCharacterPositionService } from "@/screen/application/ScreenArea/service/ScreenAreaCalcSelectedCharacterPositionService";
 
 /**
  * @description スクリーンに設置したDisplayObject選択時のイベント処理関数
@@ -101,8 +101,8 @@ export const execute = (event: PointerEvent): void =>
         }
     }
 
-    const bounds = screenAreaCalcSelectedBoundsService(movieClip);
-    if (!bounds) {
+    const position = screenAreaCalcSelectedCharacterPositionService(movieClip);
+    if (!position) {
         return ;
     }
 
@@ -111,8 +111,8 @@ export const execute = (event: PointerEvent): void =>
     transformSetting.y = 0;
 
     // 移動前の座標を保存
-    transformSetting.tempPosition.x = bounds.xMin;
-    transformSetting.tempPosition.y = bounds.yMin;
+    transformSetting.tempPosition.x = position.x;
+    transformSetting.tempPosition.y = position.y;
 
     // 移動用のwindowイベントを登録
     // fixed logic

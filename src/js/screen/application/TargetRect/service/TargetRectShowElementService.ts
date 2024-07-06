@@ -37,10 +37,10 @@ export const execute = (
     $setTargetRectState("show");
 
     let style = "";
-    style += `left: ${$getScreenOffsetLeft() + x}px;`;
-    style += `top: ${$getScreenOffsetTop() + y}px;`;
-    style += `width: ${width - 2}px;`;
-    style += `height: ${height - 2}px;`;
+    style += `left: ${$getScreenOffsetLeft() + x - 1}px;`;
+    style += `top: ${$getScreenOffsetTop() + y - 1}px;`;
+    style += `width: ${width - 1}px;`;
+    style += `height: ${height - 1}px;`;
 
     // display: noneをstyleで上書き
     element.setAttribute("style", style);

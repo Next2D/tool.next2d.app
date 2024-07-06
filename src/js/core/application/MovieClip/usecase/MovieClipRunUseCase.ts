@@ -13,7 +13,7 @@ import { execute as screenAreaRedrawUseCase } from "@/screen/application/ScreenA
 import { execute as timelineLabelNameUpdateService } from "@/timeline/application/TimelineLabelName/service/TimelineLabelNameUpdateService";
 import { execute as targetRectMoveElementUseCase } from "@/screen/application/TargetRect/usecase/TargetRectMoveElementUseCase";
 import { execute as propertyAreaChangeDisplayUseCase } from "@/controller/application/PropertyArea/usecase/PropertyAreaChangeDisplayUseCase";
-import { execute as screenStandardPointHideElementService } from "@/screen/application/StandardPoint/service/ScreenStandardPointHideElementService";
+import { execute as screenStandardPointDeployElementUseCase } from "@/screen/application/StandardPoint/usecase/ScreenStandardPointDeployElementUseCase";
 
 /**
  * @description MovieClipの起動処理
@@ -65,11 +65,11 @@ export const execute = async (movie_clip: MovieClip): Promise<void> =>
         propertyAreaShowDefaultSettingItemUseCase(movie_clip);
     }
 
+    // スクリーンの基準点のElementの表示を更新
+    screenStandardPointDeployElementUseCase();
+
     // 選択中のDisplayObjectがあれば選択範囲を表示
     targetRectMoveElementUseCase();
-
-    // スクリーンの基準点のElementを非表示
-    screenStandardPointHideElementService();
 
     // スクリーンエリアを再描画
     await screenAreaRedrawUseCase(movie_clip);

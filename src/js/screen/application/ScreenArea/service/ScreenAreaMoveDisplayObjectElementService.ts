@@ -35,6 +35,6 @@ export const execute = (
     }
 
     const workSpace = $getCurrentWorkSpace();
-    displayElement.style.left = `${$getScreenOffsetLeft() + character.x * workSpace.scale}px`;
-    displayElement.style.top  = `${$getScreenOffsetTop()  + character.y * workSpace.scale}px`;
+    displayElement.style.left = `${$getScreenOffsetLeft() + character.offsetX * workSpace.scale}px`;
+    displayElement.style.top  = `${$getScreenOffsetTop()  + character.offsetY * workSpace.scale}px`;
 };

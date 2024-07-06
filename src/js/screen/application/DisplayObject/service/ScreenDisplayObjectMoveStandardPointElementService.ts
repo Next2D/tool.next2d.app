@@ -31,7 +31,6 @@ export const execute = (
         return ;
     }
 
-    const scale = workSpace.scale;
-    element.style.left = `${element.offsetLeft + movement_x / scale}px`;
-    element.style.top  = `${element.offsetTop  + movement_y / scale}px`;
+    element.style.left = `${element.offsetLeft + movement_x}px`;
+    element.style.top  = `${element.offsetTop  + movement_y}px`;
 };

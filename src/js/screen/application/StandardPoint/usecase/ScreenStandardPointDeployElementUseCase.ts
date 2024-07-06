@@ -62,15 +62,9 @@ export const execute = (): void =>
         }
     }
 
-    const bounds = character.getBounds(frame);
-    if (!bounds) {
-        screenStandardPointHideElementService();
-        return ;
-    }
-
     // 基準点のElementを表示
     screenStandardPointShowElementService(
-        $getScreenOffsetLeft() + character.x - (bounds.xMin - character.x),
-        $getScreenOffsetTop() + character.y - (bounds.yMin - character.y)
+        $getScreenOffsetLeft() + character.x,
+        $getScreenOffsetTop() + character.y
     );
 };

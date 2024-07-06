@@ -1,9 +1,11 @@
 import { execute as transformSettingUpdateXElementService } from "@/controller/application/TransformSetting/service/TransformSettingUpdateXElementService";
 import { execute as transformSettingUpdateYElementService } from "@/controller/application/TransformSetting/service/TransformSettingUpdateYElementService";
 import { execute as screenDisplayObjectSelectedMoveElementService } from "../service/ScreenDisplayObjectSelectedMoveElementService";
-import { execute as screenDisplayObjectSelectedMoveStandardPointElementService } from "../service/ScreenDisplayObjectSelectedMoveStandardPointElementService";
+import { execute as screenDisplayObjectMoveStandardPointElementService } from "../service/ScreenDisplayObjectMoveStandardPointElementService";
 import { transformSetting } from "@/controller/domain/model/TransformSetting";
 import { $allHideMenu } from "@/menu/application/MenuUtil";
+import { execute as targetRectMoveElementService } from "@/screen/application/TargetRect/service/TargetRectMoveElementService";
+import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 
 /**
  * @description DisplayObjectの移動処理関数
@@ -25,15 +27,24 @@ export const execute = (event: PointerEvent): void =>
         // メニューを非表示
         $allHideMenu();
 
+        const workSpace = $getCurrentWorkSpace();
+        const scale = workSpace.scale;
+
+        // マウスで移動した量を更新
+        const x = event.movementX / scale;
+        const y = event.movementY / scale;
+
+        // マウスで移動した量を更新
+        transformSetting.x += x;
+        transformSetting.y += y;
+
         // 選択中のElementを移動
-        screenDisplayObjectSelectedMoveElementService(
-            event.movementX, event.movementY
-        );
+        screenDisplayObjectSelectedMoveElementService(x, y);
 
         // MovieClipの基準点のElementを移動
-        screenDisplayObjectSelectedMoveStandardPointElementService(
-            event.movementX, event.movementY
-        );
+        screenDisplayObjectMoveStandardPointElementService(x, y);
+        // 選択範囲のElementを移動
+        targetRectMoveElementService(x, y);
 
         // プロパティーの値を更新
         transformSettingUpdateXElementService(

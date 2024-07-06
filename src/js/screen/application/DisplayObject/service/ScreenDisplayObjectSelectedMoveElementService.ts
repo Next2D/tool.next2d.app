@@ -1,9 +1,5 @@
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
-import {
-    $SCREEN_STAGE_AREA_ID,
-    $SCREEN_TARGET_RECT_ID
-} from "@/config/ScreenConfig";
-import { transformSetting } from "@/controller/domain/model/TransformSetting";
+import { $SCREEN_STAGE_AREA_ID } from "@/config/ScreenConfig";
 
 /**
  * @description スクリーンで選択中のElementを移動する
@@ -35,12 +31,6 @@ export const execute = (
         return ;
     }
 
-    const scale = workSpace.scale;
-
-    // マウスで移動した量を更新
-    transformSetting.x += movement_x / scale;
-    transformSetting.y += movement_y / scale;
-
     // 選択中のElementを移動
     for (const [layerIndex, depths] of movieClip.selectedDepths) {
 
@@ -62,17 +52,4 @@ export const execute = (
             node.style.top  = `${node.offsetTop  + movement_y}px`;
         }
     }
-
-    // 選択範囲も移動
-    const rectElement: HTMLElement | null = document
-        .getElementById($SCREEN_TARGET_RECT_ID);
-
-    if (!rectElement) {
-        return ;
-    }
-
-    const left = rectElement.offsetLeft + movement_x;
-    const top  = rectElement.offsetTop  + movement_y;
-    rectElement.style.left = `${left}px`;
-    rectElement.style.top  = `${top}px`;
 };

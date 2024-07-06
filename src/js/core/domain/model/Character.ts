@@ -13,6 +13,7 @@ import type { BoundsImpl } from "@/interface/BoundsImpl";
 import { execute as characterCalcGetBoundsService } from "@/core/application/Character/service/CharacterCalcGetBoundsService";
 import { execute as characterCalcGetRectService } from "@/core/application/Character/service/CharacterCalcGetRectService";
 import { PositionImpl } from "@/interface/PositionImpl";
+import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 
 /**
  * @description DisplayObjectのユニークID
@@ -336,6 +337,44 @@ export class Character
     }
 
     /**
+     * @description elemnt表示位置のx座標を返却
+     *              Return x coordinate of elemnt display position
+     *
+     * @member {number}
+     * @readonly
+     * @public
+     */
+    get offsetX (): number
+    {
+        const workSpace = $getCurrentWorkSpace();
+        const movieClip = workSpace.scene;
+
+        const bounds = this.getRawBounds(movieClip.currentFrame);
+        return bounds
+            ? this._$matrix[4] + bounds.xMin
+            : this._$matrix[4];
+    }
+
+    /**
+     * @description elemnt表示位置のx座標を返却
+     *              Return x coordinate of elemnt display position
+     *
+     * @member {number}
+     * @readonly
+     * @public
+     */
+    get offsetY (): number
+    {
+        const workSpace = $getCurrentWorkSpace();
+        const movieClip = workSpace.scene;
+
+        const bounds = this.getRawBounds(movieClip.currentFrame);
+        return bounds
+            ? this._$matrix[5] + bounds.yMin
+            : this._$matrix[5];
+    }
+
+    /**
      * @description x座標を返却
      *              Return x coordinate
      *
@@ -596,6 +635,27 @@ export class Character
     getBounds (frame: number = 1): BoundsImpl | null
     {
         return characterCalcGetBoundsService(this._$libraryId, this._$matrix, frame);
+    }
+
+    /**
+     * @description matrixで加工しないバウンディングボックスを返却
+     *              Return the bounding box that is not processed by matrix
+     *
+     * @param  {number} [frame=1]
+     * @return {object}
+     * @method
+     * @public
+     */
+    getRawBounds (frame: number = 1): BoundsImpl | null
+    {
+        const workSpace = $getCurrentWorkSpace();
+        const instance  = workSpace.getLibrary(this._$libraryId);
+        if (!instance) {
+            return null;
+        }
+
+        // ライブラリアイテムの加工してないバウンディングボックスの値を取得
+        return instance.getRawBounds(frame);
     }
 
     /**

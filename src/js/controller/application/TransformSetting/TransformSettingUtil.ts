@@ -80,9 +80,14 @@ export const $createTransformStyle = (character: Character, work_space: WorkSpac
         return "";
     }
 
+    const bounds = instance.getRawBounds();
+    if (!bounds) {
+        return "";
+    }
+
     // 実寸の中心座標を取得
-    const referenceX = instance.width / 2;
-    const referenceY = instance.height / 2;
+    const referenceX = Math.abs(bounds.xMax - bounds.xMin) / 2;
+    const referenceY = Math.abs(bounds.yMax - bounds.yMin) / 2;
 
     // 中心点を原点に変形
     const multiMatrix = $multiplicationMatrix(
