@@ -1,17 +1,16 @@
 import { $TIMELINE_SCENE_NAME_LIST_ID } from "@/config/TimelineConfig";
-import type { MovieClip } from "@/core/domain/model/MovieClip";
 import { execute as timelineSceneListContentComponent } from "../component/TimelineSceneListContentComponent";
 import { timelineSceneList } from "@/timeline/domain/model/TimelineSceneList";
 import { EventType } from "@/tool/domain/event/EventType";
 import { execute as timelineSceneListNodeMouseDownEventUseCase } from "./TimelineSceneListNodeMouseDownEventUseCase";
-import { Character } from "@/core/domain/model/Character";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 
 /**
  * @description タイムラインのシーン名一覧に指定のMovieClipを追加する
  *              Add the specified MovieClip to the timeline scene name list
  *
- * @param  {Character} character
+ * @param  {number} library_id
+ * @param  {array} matrix
  * @return {void}
  * @method
  * @public

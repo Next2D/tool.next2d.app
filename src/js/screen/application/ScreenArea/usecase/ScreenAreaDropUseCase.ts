@@ -65,20 +65,27 @@ export const execute = async (client_x: number, client_y: number): Promise<void>
                     const centerY = Math.abs(bounds.yMax - bounds.yMin) / 2;
 
                     // 先祖のmatrixを加算
-                    const matrix = $getConcatenatedMatrix();
+                    const concatenatedMatrix = $getConcatenatedMatrix();
 
                     // MovieClipを考慮した表示座標を計算
-                    const offsetX = $getScreenOffsetLeft() + bounds.xMin + matrix[4] + centerX;
-                    const offsetY = $getScreenOffsetTop()  + bounds.yMin + matrix[5] + centerY;
+                    const offsetX = $getScreenOffsetLeft() + bounds.xMin + centerX;
+                    const offsetY = $getScreenOffsetTop()  + bounds.yMin + centerY;
 
-                    // 画面拡大値をセット
-                    const scale = workSpace.scale;
+                    // Global座標をLocal座標に変換
+                    const matrix = new next2d.geom.Matrix(
+                        concatenatedMatrix[0], concatenatedMatrix[1], concatenatedMatrix[2],
+                        concatenatedMatrix[3], concatenatedMatrix[4], concatenatedMatrix[5]
+                    );
+                    matrix.invert();
+
+                    const localX = client_x * matrix.a + client_y * matrix.c + matrix.tx;
+                    const localY = client_x * matrix.b + client_y * matrix.d + matrix.ty;
 
                     // ドロップした座標に対してoffset値と拡大値を適用
                     await externalTimeline
                         .addItemToMovieClip(
-                            (client_x - offsetX) / scale,
-                            (client_y - offsetY) / scale,
+                            localX - offsetX,
+                            localY - offsetY,
                             instance.getPath(workSpace)
                         );
                 }

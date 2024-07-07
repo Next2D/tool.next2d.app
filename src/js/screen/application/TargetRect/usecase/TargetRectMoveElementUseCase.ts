@@ -31,7 +31,7 @@ export const execute = (): void =>
         calcBounds.yMin,
         calcBounds.xMax,
         calcBounds.yMax,
-        $getConcatenatedMatrix(workSpace)
+        $getConcatenatedMatrix()
     );
 
     const tool = $getActiveTool();
