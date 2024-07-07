@@ -11,6 +11,7 @@ import {
     $getScreenOffsetTop
 } from "@/global/GlobalUtil";
 import { ExternalSoundArea } from "@/external/controller/domain/model/ExternalSoundArea";
+import { $getConcatenatedMatrix } from "@/controller/application/TransformSetting/TransformSettingUtil";
 
 /**
  * @description スクリーンエリアのアイテムドロップイベント処理関数
@@ -52,18 +53,34 @@ export const execute = async (client_x: number, client_y: number): Promise<void>
             default:
                 {
                     const externalTimeline = new ExternalTimeline(workSpace, movieClip);
+
+                    // 設置するアイテムの実際の表示範囲を取得
                     const bounds = instance.getRawBounds();
                     if (!bounds) {
                         continue;
                     }
 
-                    const width  = Math.ceil(Math.abs(bounds.xMax - bounds.xMin));
-                    const height = Math.ceil(Math.abs(bounds.yMax - bounds.yMin));
+                    // 設置するアイテムの中心座標を計算
+                    const centerX = Math.abs(bounds.xMax - bounds.xMin) / 2;
+                    const centerY = Math.abs(bounds.yMax - bounds.yMin) / 2;
 
-                    const x = (client_x - $getScreenOffsetLeft() - bounds.xMin - width / 2) / workSpace.scale;
-                    const y = (client_y - $getScreenOffsetTop() - bounds.yMin - height / 2) / workSpace.scale;
+                    // 先祖のmatrixを加算
+                    const matrix = $getConcatenatedMatrix();
+
+                    // MovieClipを考慮した表示座標を計算
+                    const offsetX = $getScreenOffsetLeft() + bounds.xMin + matrix[4] + centerX;
+                    const offsetY = $getScreenOffsetTop()  + bounds.yMin + matrix[5] + centerY;
+
+                    // 画面拡大値をセット
+                    const scale = workSpace.scale;
+
+                    // ドロップした座標に対してoffset値と拡大値を適用
                     await externalTimeline
-                        .addItemToMovieClip(x, y, instance.getPath(workSpace));
+                        .addItemToMovieClip(
+                            (client_x - offsetX) / scale,
+                            (client_y - offsetY) / scale,
+                            instance.getPath(workSpace)
+                        );
                 }
                 break;
 
