@@ -1,9 +1,9 @@
 import { $useKeyboard } from "@/shortcut/ShortcutUtil";
-import { execute as scaleFrameRegisterWindowEventUseCase } from "./ScaleFrameRegisterPointerEventUseCase";
+import { execute as zoomToolPointerEventUseCase } from "./ZoomToolPointerEventUseCase";
 
 /**
- * @description フレームのスケール設定のマウスダウンイベントユースケース
- *              Frame scale setting mouse down event use case
+ * @description ズームInputのマウスダウンイベント
+ *              Zoom Input Mouse Down Event
  *
  * @param  {PointerEvent} event
  * @return {void}
@@ -23,7 +23,7 @@ export const execute = (event: PointerEvent): void =>
         return ;
     }
 
-    // カーソルイベントを動かす為、イベントの伝達を止める
+    // イベントの伝播を止める
     event.preventDefault();
 
     const element: HTMLInputElement | null = event.target as HTMLInputElement;
@@ -32,5 +32,5 @@ export const execute = (event: PointerEvent): void =>
     }
 
     // windowのイベントを登録
-    scaleFrameRegisterWindowEventUseCase(event);
+    zoomToolPointerEventUseCase(event);
 };
