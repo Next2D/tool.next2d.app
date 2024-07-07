@@ -6,8 +6,21 @@ describe("TimelineSceneListExcludeElememtServiceTest", () =>
 {
     test("execute test", () =>
     {
-        timelineSceneList.scenes.push(0,10,5);
-        expect(timelineSceneList.scenes.length).toBe(3);
+        timelineSceneList.parents.push(
+            {
+                "libraryId": 0,
+                "matrix": [1,0,0,1,0,0]
+            },
+            {
+                "libraryId": 10,
+                "matrix": [1,0,0,1,0,0]
+            },
+            {
+                "libraryId": 5,
+                "matrix": [1,0,0,1,0,0]
+            },
+        );
+        expect(timelineSceneList.parents.length).toBe(3);
 
         const parent = document.createElement("div");
         parent.id = $TIMELINE_SCENE_NAME_LIST_ID;
@@ -19,7 +32,7 @@ describe("TimelineSceneListExcludeElememtServiceTest", () =>
         expect(parent.children.length).toBe(3);
 
         execute(10);
-        expect(timelineSceneList.scenes.length).toBe(1);
+        expect(timelineSceneList.parents.length).toBe(1);
         expect(parent.children.length).toBe(1);
 
         parent.remove();

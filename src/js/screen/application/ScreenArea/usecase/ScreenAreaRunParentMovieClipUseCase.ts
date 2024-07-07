@@ -16,7 +16,7 @@ import { execute as externalTimelineEditMovieClipUseService } from "@/external/t
 export const execute = async (): Promise<void> =>
 {
     // mainのMovieClipなら何もしない
-    if (!timelineSceneList.scenes.length) {
+    if (!timelineSceneList.parents.length) {
         return ;
     }
 
@@ -32,15 +32,19 @@ export const execute = async (): Promise<void> =>
         return ;
     }
 
-    // 対象のelementを削除
-    node.remove();
+    const parentObject = timelineSceneList.parents.pop();
+    if (!parentObject) {
+        return ;
+    }
 
-    const libraryId = timelineSceneList.scenes.pop() as NonNullable<number>;
     const workSpace = $getCurrentWorkSpace();
-    const movieClip: InstanceImpl<MovieClip> | null = workSpace.getLibrary(libraryId);
+    const movieClip: InstanceImpl<MovieClip> | null = workSpace.getLibrary(parentObject.libraryId);
     if (!movieClip) {
         return ;
     }
+
+    // 対象のelementを削除
+    node.remove();
 
     // 指定のMovieClipを起動
     await externalTimelineEditMovieClipUseService(workSpace, movieClip);

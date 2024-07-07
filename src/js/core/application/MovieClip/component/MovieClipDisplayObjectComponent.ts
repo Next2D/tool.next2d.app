@@ -1,9 +1,7 @@
 import { Character } from "@/core/domain/model/Character";
 import { $getScreenOffsetLeft, $getScreenOffsetTop } from "@/global/GlobalUtil";
 import { $getCurrentWorkSpace } from "../../CoreUtil";
-import { $createTransformStyle, $getConcatenatedMatrix } from "@/controller/application/TransformSetting/TransformSettingUtil";
-import { execute as characterCalcGetScaleXService } from "@/core/application/Character/service/CharacterCalcGetScaleXService";
-import { execute as characterCalcGetScaleYService } from "@/core/application/Character/service/CharacterCalcGetScaleYService";
+import { $createTransformStyle } from "@/controller/application/TransformSetting/TransformSettingUtil";
 
 /**
  * @description 指定されたDisplayObjectのdivを生成して返却
@@ -24,9 +22,8 @@ export const execute = (
     const workSpace = $getCurrentWorkSpace();
     const transform = $createTransformStyle(character, workSpace);
 
-    const matrix = $getConcatenatedMatrix(workSpace);
-    const x = $getScreenOffsetLeft() + character.offsetX * characterCalcGetScaleXService(matrix);
-    const y = $getScreenOffsetTop() + character.offsetY * characterCalcGetScaleYService(matrix);
+    const x = $getScreenOffsetLeft() + character.offsetX;
+    const y = $getScreenOffsetTop() + character.offsetY;
     const alpha = character.alpha;
     const depth = character.depth;
 

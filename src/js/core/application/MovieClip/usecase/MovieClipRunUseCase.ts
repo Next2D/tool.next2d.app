@@ -14,6 +14,7 @@ import { execute as timelineLabelNameUpdateService } from "@/timeline/applicatio
 import { execute as targetRectMoveElementUseCase } from "@/screen/application/TargetRect/usecase/TargetRectMoveElementUseCase";
 import { execute as propertyAreaChangeDisplayUseCase } from "@/controller/application/PropertyArea/usecase/PropertyAreaChangeDisplayUseCase";
 import { execute as screenStandardPointDeployElementUseCase } from "@/screen/application/StandardPoint/usecase/ScreenStandardPointDeployElementUseCase";
+import { execute as screenParentStandardPointDeployElementUseCase } from "@/screen/application/StandardPoint/usecase/ScreenParentStandardPointDeployElementUseCase";
 
 /**
  * @description MovieClipの起動処理
@@ -67,6 +68,9 @@ export const execute = async (movie_clip: MovieClip): Promise<void> =>
 
     // スクリーンの基準点のElementの表示を更新
     screenStandardPointDeployElementUseCase();
+
+    // 親のMovieClipの基準点のElementの表示を更新
+    screenParentStandardPointDeployElementUseCase();
 
     // 選択中のDisplayObjectがあれば選択範囲を表示
     targetRectMoveElementUseCase();

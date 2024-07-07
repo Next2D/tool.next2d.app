@@ -1,3 +1,5 @@
+import type { TimelineSceneListParentObjectImpl } from "@/interface/TimelineSceneListParentObjectImpl";
+
 /**
  * @description タイムラインのレイヤーの管理クラス
  *              Management class for timeline layers
@@ -7,7 +9,7 @@
  */
 class TimelineSceneList
 {
-    private readonly _$scenes: number[];
+    private readonly _$parents: TimelineSceneListParentObjectImpl[];
 
     /**
      * @constructor
@@ -19,7 +21,7 @@ class TimelineSceneList
          * @type {array}
          * @private
          */
-        this._$scenes = [];
+        this._$parents = [];
     }
 
     /**
@@ -30,26 +32,9 @@ class TimelineSceneList
      * @readonly
      * @public
      */
-    get scenes (): number[]
+    get parents (): TimelineSceneListParentObjectImpl[]
     {
-        return this._$scenes;
-    }
-
-    /**
-     * @description MovieClipのIDを配列に格納、重複がないようにチェックを行う
-     *              Store MovieClip IDs in array, check for duplicates
-     *
-     * @param  {number} id
-     * @return {void}
-     * @method
-     * @public
-     */
-    addSceneId (id: number): void
-    {
-        if (this._$scenes.indexOf(id) > -1) {
-            return ;
-        }
-        this._$scenes.push(id);
+        return this._$parents;
     }
 }
 

@@ -4,17 +4,19 @@ import { execute as timelineSceneListContentComponent } from "../component/Timel
 import { timelineSceneList } from "@/timeline/domain/model/TimelineSceneList";
 import { EventType } from "@/tool/domain/event/EventType";
 import { execute as timelineSceneListNodeMouseDownEventUseCase } from "./TimelineSceneListNodeMouseDownEventUseCase";
+import { Character } from "@/core/domain/model/Character";
+import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 
 /**
  * @description タイムラインのシーン名一覧に指定のMovieClipを追加する
  *              Add the specified MovieClip to the timeline scene name list
  *
- * @param  {MovieClip} movie_clip
+ * @param  {Character} character
  * @return {void}
  * @method
  * @public
  */
-export const execute = (movie_clip: MovieClip): void =>
+export const execute = (library_id: number, matrix: number[]): void =>
 {
     const element: HTMLElement | null = document
         .getElementById($TIMELINE_SCENE_NAME_LIST_ID);
@@ -23,19 +25,29 @@ export const execute = (movie_clip: MovieClip): void =>
         return ;
     }
 
+    const workSpace = $getCurrentWorkSpace();
+    const movieClip = workSpace.getLibrary(library_id);
+    if (!movieClip) {
+        return ;
+    }
+
     // movie_clipのelementを追加
     element.insertAdjacentHTML("beforeend",
-        timelineSceneListContentComponent(movie_clip)
+        timelineSceneListContentComponent(movieClip)
     );
 
     // movie_clipのIDを登録
-    timelineSceneList.scenes.push(movie_clip.id);
+    timelineSceneList.parents.push({
+        "libraryId": library_id,
+        "matrix": matrix
+    });
 
     const node = element.lastElementChild as HTMLElement;
     if (!node) {
         return ;
     }
 
+    // イベントを登録
     node.addEventListener(EventType.MOUSE_DOWN,
         timelineSceneListNodeMouseDownEventUseCase
     );

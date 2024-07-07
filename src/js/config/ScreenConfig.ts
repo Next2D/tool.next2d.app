@@ -96,3 +96,12 @@ export const $SCREEN_SCROLL_BAR_Y_ID: string = "screen-scroll-bar-y";
  * @constant
  */
 export const $SCREEN_STANDARD_POINT_ID: string = "standard-point";
+
+/**
+ * @description 親のMovieCliipの基準点のElementのID
+ *              ID of the reference point of the parent MovieClip
+ *
+ * @type {string}
+ * @constant
+ */
+export const $SCREEN_PARENT_STANDARD_POINT_ID: string = "parent-standard-point";

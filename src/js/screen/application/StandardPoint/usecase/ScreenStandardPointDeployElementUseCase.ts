@@ -5,6 +5,7 @@ import { $getScreenOffsetLeft, $getScreenOffsetTop } from "@/global/GlobalUtil";
 import { execute as screenStandardPointShowElementService } from "../service/ScreenStandardPointShowElementService";
 import { execute as screenStandardPointHideElementService } from "../service/ScreenStandardPointHideElementService";
 import { $setStandardPointState } from "../StandardPointUtil";
+import { $getConcatenatedMatrix } from "@/controller/application/TransformSetting/TransformSettingUtil";
 
 /**
  * @description MovieClipの標準点Elementを配置
@@ -66,9 +67,12 @@ export const execute = (): void =>
     // 後続で表示処理を行うので、基準点のElement状態を非表示に更新
     $setStandardPointState("hide");
 
+    // 先祖からのmatrixを加算
+    const matrix = $getConcatenatedMatrix();
+
     // 基準点のElementの表示処理
     screenStandardPointShowElementService(
-        $getScreenOffsetLeft() + character.x,
-        $getScreenOffsetTop() + character.y
+        $getScreenOffsetLeft() + character.x + matrix[4],
+        $getScreenOffsetTop() + character.y + matrix[5]
     );
 };

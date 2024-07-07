@@ -4,25 +4,7 @@ import { timelineSceneList } from "@/timeline/domain/model/TimelineSceneList";
 import { execute as characterCalcGetScaleXService } from "@/core/application/Character/service/CharacterCalcGetScaleXService";
 import { execute as characterCalcGetScaleYService } from "@/core/application/Character/service/CharacterCalcGetScaleYService";
 import { execute as characterCalcGetRotationService } from "@/core/application/Character/service/CharacterCalcGetRotationService";
-
-/**
- * @description 親のMovieClipとスクリーンの拡大率の行列を返却
- *              Returns the matrix of the parent MovieClip and the screen magnification
- *
- * @param  {WorkSpace} work_space
- * @return {array}
- * @method
- * @public
- */
-export const $getConcatenatedMatrix = (work_space: WorkSpace): number[] =>
-{
-    const matrix = [work_space.scale, 0, 0, work_space.scale, 0, 0];
-    for (let idx = 0; idx < timelineSceneList.scenes.length; idx++) {
-        const id = timelineSceneList.scenes[idx];
-        console.log(id);
-    }
-    return matrix;
-};
+import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 
 /**
  * @description 行列の掛け算
@@ -47,6 +29,27 @@ export const $multiplicationMatrix = (a: number[], b: number[]): number[] =>
 };
 
 /**
+ * @description 親のMovieClipとスクリーンの拡大率の行列を返却
+ *              Returns the matrix of the parent MovieClip and the screen magnification
+ *
+ * @return {array}
+ * @method
+ * @public
+ */
+export const $getConcatenatedMatrix = (): number[] =>
+{
+    const workSpace = $getCurrentWorkSpace();
+
+    let matrix = [workSpace.scale, 0, 0, workSpace.scale, 0, 0];
+    for (let idx = 0; idx < timelineSceneList.parents.length; idx++) {
+        const parentObject = timelineSceneList.parents[idx];
+        matrix = $multiplicationMatrix(matrix, parentObject.matrix);
+    }
+
+    return matrix;
+};
+
+/**
  * @description TransformStyleを生成
  *              Generate TransformStyle
  *
@@ -57,7 +60,8 @@ export const $multiplicationMatrix = (a: number[], b: number[]): number[] =>
  */
 export const $createTransformStyle = (character: Character, work_space: WorkSpace): string =>
 {
-    const matrix = $multiplicationMatrix($getConcatenatedMatrix(work_space), character.matrix);
+    const concatenatedMatrix = $getConcatenatedMatrix();
+    const matrix = $multiplicationMatrix(concatenatedMatrix, character.matrix);
 
     const transform = [];
     const scaleX = characterCalcGetScaleXService(matrix);
@@ -71,7 +75,10 @@ export const $createTransformStyle = (character: Character, work_space: WorkSpac
         transform.push(`rotate(${rotation}deg)`);
     }
 
-    if (!transform.length) {
+    if (!transform.length
+        && !concatenatedMatrix[4]
+        && !concatenatedMatrix[5]
+    ) {
         return "";
     }
 
@@ -96,8 +103,8 @@ export const $createTransformStyle = (character: Character, work_space: WorkSpac
     );
 
     // 変形分の座標を補正
-    multiMatrix[4] += referenceX;
-    multiMatrix[5] += referenceY;
+    multiMatrix[4] += referenceX - concatenatedMatrix[4];
+    multiMatrix[5] += referenceY - concatenatedMatrix[5];
     transform.unshift(`translate(${-multiMatrix[4]}px, ${-multiMatrix[5]}px)`);
 
     return `transform: ${transform.join(" ")}; `;

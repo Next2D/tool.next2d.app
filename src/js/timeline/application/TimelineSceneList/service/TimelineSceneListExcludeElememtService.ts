@@ -20,10 +20,12 @@ export const execute = (library_id: number): void =>
     }
 
     // 一覧を後ろからループして対象のIDまでを除外
-    while (timelineSceneList.scenes.length) {
+    while (timelineSceneList.parents.length) {
 
-        const parentId = timelineSceneList.scenes.pop() as NonNullable<number>;
-
+        const parentObject = timelineSceneList.parents.pop();
+        if (!parentObject) {
+            break;
+        }
         const element = parent.lastElementChild as HTMLElement;
         if (!element) {
             break;
@@ -33,7 +35,7 @@ export const execute = (library_id: number): void =>
         element.remove();
 
         // 指定のIDなら終了
-        if (parentId === library_id) {
+        if (parentObject.libraryId === library_id) {
             break;
         }
     }

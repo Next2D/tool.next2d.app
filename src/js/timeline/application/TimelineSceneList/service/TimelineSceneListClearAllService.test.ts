@@ -6,8 +6,11 @@ describe("TimelineSceneListClearAllServiceTest", () =>
 {
     test("execute test", () =>
     {
-        timelineSceneList.scenes.push(0);
-        expect(timelineSceneList.scenes.length).toBe(1);
+        timelineSceneList.parents.push({
+            "libraryId": 0,
+            "matrix": [1,0,0,1,0,0]
+        });
+        expect(timelineSceneList.parents.length).toBe(1);
 
         const parent = document.createElement("div");
         parent.id = $TIMELINE_SCENE_NAME_LIST_ID;
@@ -18,7 +21,7 @@ describe("TimelineSceneListClearAllServiceTest", () =>
         expect(parent.children.length).toBe(1);
 
         execute();
-        expect(timelineSceneList.scenes.length).toBe(0);
+        expect(timelineSceneList.parents.length).toBe(0);
         expect(parent.children.length).toBe(0);
 
         parent.remove();

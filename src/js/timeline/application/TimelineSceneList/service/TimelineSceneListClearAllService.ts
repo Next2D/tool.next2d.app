@@ -11,7 +11,7 @@ import { timelineSceneList } from "@/timeline/domain/model/TimelineSceneList";
  */
 export const execute = (): void =>
 {
-    if (!timelineSceneList.scenes.length) {
+    if (!timelineSceneList.parents.length) {
         return ;
     }
 
@@ -28,5 +28,5 @@ export const execute = (): void =>
     }
 
     // 内部情報も初期化
-    timelineSceneList.scenes.length = 0;
+    timelineSceneList.parents.length = 0;
 };

@@ -33,8 +33,11 @@ export const execute = (): void =>
         timelineSceneListContentComponent(workSpace.root)
     );
 
-    // rootのIDを登録
-    timelineSceneList.scenes.push(0);
+    // rootのIDとmatrixを登録
+    timelineSceneList.parents.push({
+        "libraryId": 0,
+        "matrix": [1, 0, 0, 1, 0, 0]
+    });
 
     const node = element.lastElementChild as HTMLElement;
     if (!node) {

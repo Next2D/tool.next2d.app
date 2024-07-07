@@ -1,9 +1,7 @@
-import { $createTransformStyle, $getConcatenatedMatrix } from "@/controller/application/TransformSetting/TransformSettingUtil";
+import { $createTransformStyle } from "@/controller/application/TransformSetting/TransformSettingUtil";
 import { Character } from "@/core/domain/model/Character";
 import { $getScreenOffsetLeft, $getScreenOffsetTop } from "@/global/GlobalUtil";
 import { $getCurrentWorkSpace } from "../../CoreUtil";
-import { execute as characterCalcGetScaleXService } from "@/core/application/Character/service/CharacterCalcGetScaleXService";
-import { execute as characterCalcGetScaleYService } from "@/core/application/Character/service/CharacterCalcGetScaleYService";
 
 /**
  * @description 指定されたBitmap用のdivを生成して返却
@@ -24,9 +22,8 @@ export const execute = (
     const workSpace = $getCurrentWorkSpace();
     const transform = $createTransformStyle(character, workSpace);
 
-    const matrix = $getConcatenatedMatrix(workSpace);
-    const x = $getScreenOffsetLeft() + character.x * characterCalcGetScaleXService(matrix);
-    const y = $getScreenOffsetTop() + character.y * characterCalcGetScaleYService(matrix);
+    const x = $getScreenOffsetLeft() + character.x;
+    const y = $getScreenOffsetTop() + character.y;
     const alpha = character.alpha;
     const depth = character.depth;
 
