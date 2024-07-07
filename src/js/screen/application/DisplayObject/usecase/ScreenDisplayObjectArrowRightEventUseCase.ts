@@ -1,9 +1,8 @@
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { transformSetting } from "@/controller/domain/model/TransformSetting";
-import { execute as screenDisplayObjectSelectedMoveElementService } from "../service/ScreenDisplayObjectSelectedMoveElementService";
 import { execute as screenDisplayObjectUpdateSelectedValueService } from "../service/ScreenDisplayObjectUpdateSelectedValueService";
 import { execute as transformSettingUpdateXElementService } from "@/controller/application/TransformSetting/service/TransformSettingUpdateXElementService";
-import { execute as screenAreaCalcSelectedBoundsService } from "@/screen/application/ScreenArea/service/ScreenAreaCalcSelectedBoundsService";
+import { execute as screenAreaCalcSelectedCharacterPositionService } from "@/screen/application/ScreenArea/service/ScreenAreaCalcSelectedCharacterPositionService";
 
 /**
  * @description DisplayObjectのキーボードイベント、右方向に移動
@@ -24,8 +23,8 @@ export const execute = (event: KeyboardEvent): void =>
     }
 
     // 選択範囲のbounding boxを計算
-    const calcBounds = screenAreaCalcSelectedBoundsService(movieClip);
-    if (!calcBounds) {
+    const position = screenAreaCalcSelectedCharacterPositionService(movieClip);
+    if (!position) {
         return ;
     }
 
@@ -37,16 +36,12 @@ export const execute = (event: KeyboardEvent): void =>
     const x = event.shiftKey ? 10 : 1;
 
     // モデルの情報を初期化
-    transformSetting.x = 0;
+    transformSetting.x = x;
     transformSetting.y = 0;
 
-    // 選択中のElementを右方向へ移動
-    screenDisplayObjectSelectedMoveElementService(x, 0);
-
     // プロパティーエリアの値を更新
-    transformSettingUpdateXElementService(calcBounds.xMin + x);
+    transformSettingUpdateXElementService(position.x + x);
 
     // 内部情報を更新
-    // fixed logic
     screenDisplayObjectUpdateSelectedValueService();
 };
