@@ -1,8 +1,8 @@
-import { execute } from "./ScreenStandardPointShowElementService";
+import { execute } from "./ScreenStandardPointMoveElementService";
 import { $SCREEN_STANDARD_POINT_ID } from "../../../../config/ScreenConfig";
 import { $setStandardPointState } from "../StandardPointUtil";
 
-describe("ScreenStandardPointShowElementServiceTest", () =>
+describe("ScreenStandardPointMoveElementServiceTest", () =>
 {
     test("execute test", () =>
     {
@@ -12,17 +12,17 @@ describe("ScreenStandardPointShowElementServiceTest", () =>
 
         div.style.left = "";
         div.style.top = "";
-        div.style.display = "none";
-        $setStandardPointState("hide");
 
         expect(div.style.left).toBe("");
         expect(div.style.top).toBe("");
-        expect(div.style.display).toBe("none");
-        execute(10 + 6, 20 + 6);
+        execute(10, 20);
+        expect(div.style.left).toBe("");
+        expect(div.style.top).toBe("");
 
+        $setStandardPointState("show");
+        execute(10, 20);
         expect(div.style.left).toBe("10px");
         expect(div.style.top).toBe("20px");
-        expect(div.style.display).toBe("");
 
         div.remove();
     });

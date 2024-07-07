@@ -2,6 +2,7 @@ import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { ExternalTimeline } from "@/external/timeline/domain/model/ExternalTimeline";
 import { execute as propertyAreaShowDefaultSettingItemUseCase } from "@/controller/application/PropertyArea/usecase/PropertyAreaShowDefaultSettingItemUseCase";
 import { execute as referenceSettingHideElementService } from "@/controller/application/ReferenceSetting/service/ReferenceSettingHideElementService";
+import { execute as screenStandardPointHideElementService } from "@/screen/application/StandardPoint/service/ScreenStandardPointHideElementService";
 
 /**
  * @description スクリーン選択時のイベント処理関数
@@ -33,4 +34,7 @@ export const execute = (event: PointerEvent): void =>
 
     // 中心点を非表示にする
     referenceSettingHideElementService();
+
+    // MovieClipの基準点を非表示にする
+    screenStandardPointHideElementService();
 };

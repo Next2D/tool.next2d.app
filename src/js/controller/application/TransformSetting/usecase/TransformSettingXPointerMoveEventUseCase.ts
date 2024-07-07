@@ -1,5 +1,8 @@
+import { transformSetting } from "@/controller/domain/model/TransformSetting";
 import { $clamp, $setCursor } from "@/global/GlobalUtil";
 import { execute as screenDisplayObjectSelectedMoveElementService } from "@/screen/application/DisplayObject/service/ScreenDisplayObjectSelectedMoveElementService";
+import { execute as targetRectMoveElementService } from "@/screen/application/TargetRect/service/TargetRectMoveElementService";
+import { execute as screenStandardPointMoveElementService } from "@/screen/application/StandardPoint/service/ScreenStandardPointMoveElementService";
 
 /**
  * @description 変形エリアのx座標の値操作のマウスムーブイベント
@@ -36,8 +39,21 @@ export const execute = (event: PointerEvent): void =>
         const x = $clamp(value + event.movementX, -Number.MAX_VALUE, Number.MAX_VALUE);
         element.value = `${x}`;
 
+        // マウスで移動した量を更新
+        transformSetting.x = x;
+
         // スクリーンで選択中のElementを移動
         screenDisplayObjectSelectedMoveElementService(
+            event.movementX, 0
+        );
+
+        // 選択範囲のElementを移動
+        targetRectMoveElementService(
+            event.movementX, 0
+        );
+
+        // MovieClipの基準点のElementを移動
+        screenStandardPointMoveElementService(
             event.movementX, 0
         );
     });

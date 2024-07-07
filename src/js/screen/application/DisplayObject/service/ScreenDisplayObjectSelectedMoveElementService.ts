@@ -48,8 +48,12 @@ export const execute = (
                 continue ;
             }
 
-            node.style.left = `${node.offsetLeft + movement_x}px`;
-            node.style.top  = `${node.offsetTop  + movement_y}px`;
+            if (movement_x) {
+                node.style.left = `${node.offsetLeft + movement_x}px`;
+            }
+            if (movement_y) {
+                node.style.top = `${node.offsetTop + movement_y}px`;
+            }
         }
     }
 };

@@ -4,6 +4,7 @@ import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { $getScreenOffsetLeft, $getScreenOffsetTop } from "@/global/GlobalUtil";
 import { execute as screenStandardPointShowElementService } from "../service/ScreenStandardPointShowElementService";
 import { execute as screenStandardPointHideElementService } from "../service/ScreenStandardPointHideElementService";
+import { $setStandardPointState } from "../StandardPointUtil";
 
 /**
  * @description MovieClipの標準点Elementを配置
@@ -62,7 +63,10 @@ export const execute = (): void =>
         }
     }
 
-    // 基準点のElementを表示
+    // 後続で表示処理を行うので、基準点のElement状態を非表示に更新
+    $setStandardPointState("hide");
+
+    // 基準点のElementの表示処理
     screenStandardPointShowElementService(
         $getScreenOffsetLeft() + character.x,
         $getScreenOffsetTop() + character.y

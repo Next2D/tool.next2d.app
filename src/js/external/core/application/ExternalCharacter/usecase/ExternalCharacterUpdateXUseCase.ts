@@ -5,6 +5,7 @@ import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import { execute as screenAreaMoveDisplayObjectElementService } from "@/screen/application/ScreenArea/service/ScreenAreaMoveDisplayObjectElementService";
 import { execute as targetRectMoveElementUseCase } from "@/screen/application/TargetRect/usecase/TargetRectMoveElementUseCase";
 import { execute as characterUpdateXHistoryUseCase } from "@/history/application/core/application/Character/UpdateX/usecase/CharacterUpdateXHistoryUseCase";
+import { execute as screenStandardPointMoveElementService } from "@/screen/application/StandardPoint/service/ScreenStandardPointMoveElementService";
 
 /**
  * @description DisplayObjectのx座標を更新
@@ -60,5 +61,10 @@ export const execute = (
 
         // 選択範囲のElementを移動
         targetRectMoveElementUseCase();
+
+        // MovieClipの基準点のElementを移動
+        screenStandardPointMoveElementService(
+            x - beforeX, 0
+        );
     }
 };

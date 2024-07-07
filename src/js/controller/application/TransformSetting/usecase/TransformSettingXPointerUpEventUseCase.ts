@@ -2,6 +2,7 @@ import { $setCursor } from "@/global/GlobalUtil";
 import { EventType } from "@/tool/domain/event/EventType";
 import { execute as transformSettingXPointerMoveEventUseCase } from "./TransformSettingXPointerMoveEventUseCase";
 import { execute as screenDisplayObjectUpdateSelectedValueService } from "@/screen/application/DisplayObject/service/ScreenDisplayObjectUpdateSelectedValueService";
+import { transformSetting } from "@/controller/domain/model/TransformSetting";
 
 /**
  * @description 変形エリアのx座標の値操作のマウスアップイベント
@@ -33,7 +34,10 @@ export const execute = (event: PointerEvent): void =>
     );
     element.removeEventListener(EventType.MOUSE_UP, execute);
 
-    // x座標の最終位置をセット
+    // x座標に変更があれば、最終位置をセット
+    if (transformSetting.x) {
+        transformSetting.x = transformSetting.x - transformSetting.tempPosition.x;
+    }
     screenDisplayObjectUpdateSelectedValueService();
 
     // input要素のフォーカス

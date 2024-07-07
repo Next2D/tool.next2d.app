@@ -31,6 +31,10 @@ export const execute = (
         return ;
     }
 
-    element.style.left = `${element.offsetLeft + movement_x}px`;
-    element.style.top  = `${element.offsetTop  + movement_y}px`;
+    if (movement_x) {
+        element.style.left = `${element.offsetLeft + movement_x}px`;
+    }
+    if (movement_y) {
+        element.style.top = `${element.offsetTop + movement_y}px`;
+    }
 };
