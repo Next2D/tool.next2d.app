@@ -1,5 +1,10 @@
 import { $SCREEN_ID, $SCREEN_SCROLL_BAR_X_ID, $SCREEN_SCROLL_BAR_Y_ID } from "@/config/ScreenConfig";
+import { $SCREEN_SCALE_ID } from "@/config/ToolConfig";
+import { $ZOOM_MAX_VALUE, $ZOOM_MIN_VALUE } from "@/config/ZoomConfig";
+import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
+import { $clamp } from "@/global/GlobalUtil";
 import { screenArea } from "@/screen/domain/model/ScreenArea";
+import { execute as zoomToolRealodWorkSpaceUseCase } from "@/tool/application/ZoomTool/usecase/ZoomToolRealodWorkSpaceUseCase";
 
 /**
  * @description タイマーID
@@ -34,7 +39,7 @@ export const execute = (event: WheelEvent): void =>
     event.stopPropagation();
     event.preventDefault();
 
-    requestAnimationFrame((): void =>
+    requestAnimationFrame(async (): Promise<void> =>
     {
         const element: HTMLElement | null = document
             .getElementById($SCREEN_ID);
@@ -45,6 +50,33 @@ export const execute = (event: WheelEvent): void =>
 
         // タイマーをクリア
         clearTimeout(timerId);
+
+        if (event.ctrlKey && !event.metaKey // windows
+            || !event.ctrlKey && event.metaKey // mac
+        ) {
+            if (!event.deltaY) {
+                return ;
+            }
+
+            const element = document
+                .getElementById($SCREEN_SCALE_ID) as HTMLInputElement;
+
+            if (!element) {
+                return ;
+            }
+
+            const scale = $clamp(parseFloat(element.value) - Math.ceil(event.deltaY), $ZOOM_MIN_VALUE, $ZOOM_MAX_VALUE);
+            element.value = `${scale}`;
+
+            const workSpace = $getCurrentWorkSpace();
+            if (workSpace.scale === scale) {
+                return ;
+            }
+
+            await zoomToolRealodWorkSpaceUseCase(scale / 100);
+
+            return ;
+        }
 
         // 移動モードを設定
         if (!mode) {

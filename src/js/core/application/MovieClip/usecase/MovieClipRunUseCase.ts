@@ -11,7 +11,7 @@ import { execute as propertyAreaShowDefaultSettingItemUseCase } from "@/controll
 import { execute as timelineToolUpdateSceneNameService } from "@/timeline/application/TimelineTool/application/SceneName/service/TimelineToolUpdateSceneNameService";
 import { execute as screenAreaRedrawUseCase } from "@/screen/application/ScreenArea/usecase/ScreenAreaRedrawUseCase";
 import { execute as timelineLabelNameUpdateService } from "@/timeline/application/TimelineLabelName/service/TimelineLabelNameUpdateService";
-import { execute as targetRectMoveElementUseCase } from "@/screen/application/TargetRect/usecase/TargetRectMoveElementUseCase";
+import { execute as targetRectUpdateElementUseCase } from "@/screen/application/TargetRect/usecase/TargetRectUpdateElementUseCase";
 import { execute as propertyAreaChangeDisplayUseCase } from "@/controller/application/PropertyArea/usecase/PropertyAreaChangeDisplayUseCase";
 import { execute as screenStandardPointDeployElementUseCase } from "@/screen/application/StandardPoint/usecase/ScreenStandardPointDeployElementUseCase";
 import { execute as screenParentStandardPointDeployElementUseCase } from "@/screen/application/StandardPoint/usecase/ScreenParentStandardPointDeployElementUseCase";
@@ -73,7 +73,7 @@ export const execute = async (movie_clip: MovieClip): Promise<void> =>
     screenParentStandardPointDeployElementUseCase();
 
     // 選択中のDisplayObjectがあれば選択範囲を表示
-    targetRectMoveElementUseCase();
+    targetRectUpdateElementUseCase();
 
     // スクリーンエリアを再描画
     await screenAreaRedrawUseCase(movie_clip);

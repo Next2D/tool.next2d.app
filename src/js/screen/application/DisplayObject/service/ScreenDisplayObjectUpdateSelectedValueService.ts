@@ -17,6 +17,10 @@ export const execute = (): void =>
 
     // 現在のフレームをセット
     const frame = movieClip.currentFrame;
+    const scale = workSpace.scale;
+
+    const x = transformSetting.x / scale;
+    const y = transformSetting.y / scale;
 
     // 選択中のDisplayObjectの座標を更新
     for (const [layerIndex, depths] of movieClip.selectedDepths) {
@@ -44,12 +48,12 @@ export const execute = (): void =>
 
             // xの移動があれば更新
             if (transformSetting.x) {
-                externalCharacter.x += transformSetting.x;
+                externalCharacter.x += x;
             }
 
             // yの移動があれば更新
             if (transformSetting.y) {
-                externalCharacter.y += transformSetting.y;
+                externalCharacter.y += y;
             }
         }
     }

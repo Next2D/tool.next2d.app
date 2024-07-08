@@ -42,5 +42,9 @@ export const execute = (movie_clip: MovieClip): PositionImpl | null =>
         }
     }
 
+    if (position.x === Number.MAX_VALUE || position.y === Number.MAX_VALUE) {
+        return null;
+    }
+
     return position;
 };

@@ -1,6 +1,7 @@
 import { EventType } from "@/tool/domain/event/EventType";
 import { execute as screenDisplayObjectWindowMouseMoveEventUseCase } from "./ScreenDisplayObjectPointerMoveEventUseCase";
 import { execute as screenDisplayObjectUpdateSelectedValueService } from "../service/ScreenDisplayObjectUpdateSelectedValueService";
+import { $setPointerId } from "../DisplayObjectUtil";
 
 /**
  * @description DisplayObjectのwindowイベントを解除
@@ -31,4 +32,7 @@ export const execute = (event: PointerEvent): void =>
 
     // 移動した座標に更新
     screenDisplayObjectUpdateSelectedValueService();
+
+    // 移動状態を解除
+    $setPointerId(-1);
 };

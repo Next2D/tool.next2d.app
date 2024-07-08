@@ -1,6 +1,6 @@
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
-import { execute as targetRectMoveElementUseCase } from "@/screen/application/TargetRect/usecase/TargetRectMoveElementUseCase";
+import { execute as targetRectUpdateElementUseCase } from "@/screen/application/TargetRect/usecase/TargetRectUpdateElementUseCase";
 import { execute as propertyAreaChangeDisplayUseCase } from "@/controller/application/PropertyArea/usecase/PropertyAreaChangeDisplayUseCase";
 import { execute as screenStandardPointDeployElementUseCase } from "@/screen/application/StandardPoint/usecase/ScreenStandardPointDeployElementUseCase";
 
@@ -40,7 +40,7 @@ export const execute = (
     // 表示がアクティブなら表示を更新
     if (work_space.active && movie_clip.active) {
         // 表示範囲を更新
-        targetRectMoveElementUseCase();
+        targetRectUpdateElementUseCase();
 
         // プロパティエリアの表示を更新
         propertyAreaChangeDisplayUseCase();

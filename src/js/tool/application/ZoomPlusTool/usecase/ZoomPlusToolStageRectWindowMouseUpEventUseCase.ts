@@ -8,7 +8,7 @@ import { $clamp, $getScreenOffsetLeft, $getScreenOffsetTop } from "@/global/Glob
 import { execute as stageStyleUpdateSizeService } from "@/core/application/Stage/service/StageStyleUpdateSizeService";
 import { execute as screenStageAreaUpdateSizeService } from "@/screen/application/ScreenStageArea/service/ScreenStageAreaUpdateSizeService";
 import { execute as screenAreaRedrawUseCase } from "@/screen/application/ScreenArea/usecase/ScreenAreaRedrawUseCase";
-import { execute as targetRectMoveElementUseCase } from "@/screen/application/TargetRect/usecase/TargetRectMoveElementUseCase";
+import { execute as targetRectUpdateElementUseCase } from "@/screen/application/TargetRect/usecase/TargetRectUpdateElementUseCase";
 import { execute as screenScrollResizeService } from "@/screen/application/ScreenScroll/service/ScreenScrollResizeService";
 
 /**
@@ -101,7 +101,7 @@ export const execute = async (event: PointerEvent): Promise<void> =>
     screenScrollResizeService();
 
     // 選択範囲のElementの表示を更新
-    targetRectMoveElementUseCase();
+    targetRectUpdateElementUseCase();
 
     // 再描画
     await screenAreaRedrawUseCase(workSpace.scene);

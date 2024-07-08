@@ -1,6 +1,6 @@
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
-import { execute as targetRectMoveElementUseCase } from "@/screen/application/TargetRect/usecase/TargetRectMoveElementUseCase";
+import { execute as targetRectUpdateElementUseCase } from "@/screen/application/TargetRect/usecase/TargetRectUpdateElementUseCase";
 import { execute as targetRectHideElementService } from "@/screen/application/TargetRect/service/TargetRectHideElementService";
 
 /**
@@ -27,7 +27,7 @@ export const execute = (
     if (work_space.active && movie_clip.active) {
         if (movie_clip.selectedDepths.size) {
             // 表示範囲を更新
-            targetRectMoveElementUseCase();
+            targetRectUpdateElementUseCase();
         } else {
             // 選択範囲のelementを非表示に更新
             targetRectHideElementService();

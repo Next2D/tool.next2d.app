@@ -6,6 +6,7 @@ import { execute as screenDisplayObjectRegisterPointerEventUseCase } from "./Scr
 import { transformSetting } from "@/controller/domain/model/TransformSetting";
 import { execute as referenceSettingHideElementService } from "@/controller/application/ReferenceSetting/service/ReferenceSettingHideElementService";
 import { execute as screenAreaCalcSelectedCharacterPositionService } from "@/screen/application/ScreenArea/service/ScreenAreaCalcSelectedCharacterPositionService";
+import { $setPointerId } from "../DisplayObjectUtil";
 
 /**
  * @description スクリーンに設置したDisplayObject選択時のイベント処理関数
@@ -113,6 +114,8 @@ export const execute = (event: PointerEvent): void =>
     // 移動前の座標を保存
     transformSetting.tempPosition.x = position.x;
     transformSetting.tempPosition.y = position.y;
+
+    $setPointerId(event.pointerId);
 
     // 移動用のwindowイベントを登録
     // fixed logic

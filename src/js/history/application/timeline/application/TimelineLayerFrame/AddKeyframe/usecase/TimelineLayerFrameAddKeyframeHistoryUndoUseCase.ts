@@ -5,7 +5,7 @@ import { $getWorkSpace } from "@/core/application/CoreUtil";
 import { EmptyCharacter } from "@/core/domain/model/EmptyCharacter";
 import { execute as timelineLayerAddFrameUpdateLayerStyleUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerAddFrameUpdateLayerStyleUseCase";
 import { execute as screenAreaRemoveDisplayObjectElementService } from "@/screen/application/ScreenArea/service/ScreenAreaRemoveDisplayObjectElementService";
-import { execute as targetRectMoveElementUseCase } from "@/screen/application/TargetRect/usecase/TargetRectMoveElementUseCase";
+import { execute as targetRectUpdateElementUseCase } from "@/screen/application/TargetRect/usecase/TargetRectUpdateElementUseCase";
 import { execute as propertyAreaShowDefaultSettingItemUseCase } from "@/controller/application/PropertyArea/usecase/PropertyAreaShowDefaultSettingItemUseCase";
 
 /**
@@ -82,7 +82,7 @@ export const execute = (
         timelineLayerAddFrameUpdateLayerStyleUseCase(movieClip, layer);
 
         // 選択範囲のElementの表示を更新
-        targetRectMoveElementUseCase();
+        targetRectUpdateElementUseCase();
 
         // プロパティーエリアのデフォルト設定項目を表示
         propertyAreaShowDefaultSettingItemUseCase(movieClip);

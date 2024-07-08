@@ -1,5 +1,6 @@
 import { $ZOOM_MAX_VALUE, $ZOOM_MIN_VALUE } from "@/config/ZoomConfig";
 import { $clamp, $setCursor } from "@/global/GlobalUtil";
+import { execute as zoomToolRealodWorkSpaceUseCase } from "./ZoomToolRealodWorkSpaceUseCase";
 
 /**
  * @description ズームinuputの値操作のマウスムーブイベント
@@ -24,7 +25,7 @@ export const execute = (event: PointerEvent): void =>
         return ;
     }
 
-    requestAnimationFrame((): void =>
+    requestAnimationFrame(async (): Promise<void> =>
     {
         const element = event.target as HTMLInputElement;
         if (!element) {
@@ -35,5 +36,7 @@ export const execute = (event: PointerEvent): void =>
         const value = parseInt(element.value);
         const scale = $clamp(value + event.movementX, $ZOOM_MIN_VALUE, $ZOOM_MAX_VALUE);
         element.value = `${scale}`;
+
+        await zoomToolRealodWorkSpaceUseCase(scale / 100);
     });
 };

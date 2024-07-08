@@ -36,7 +36,7 @@ export const execute = (event: KeyboardEvent): void =>
     const x = event.shiftKey ? 10 : 1;
 
     // モデルの情報を初期化
-    transformSetting.x = -x;
+    transformSetting.x = -x * workSpace.scale;
     transformSetting.y = 0;
 
     // プロパティーエリアの値を更新

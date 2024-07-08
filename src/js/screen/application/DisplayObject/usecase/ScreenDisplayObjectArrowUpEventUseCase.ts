@@ -37,7 +37,7 @@ export const execute = (event: KeyboardEvent): void =>
 
     // モデルの情報を初期化
     transformSetting.x = 0;
-    transformSetting.y = -y;
+    transformSetting.y = -y * workSpace.scale;
 
     // プロパティーエリアの値を更新
     transformSettingUpdateYElementService(position.y - y);
