@@ -5,6 +5,7 @@ import { execute as zoomMinusToolMouseOverEventUseCase } from "../service/ZoomMi
 import { execute as zoomMinusToolMouseOutEventUseCase } from "../service/ZoomMinusToolMouseOutEventService";
 import { execute as zoomMinusToolChangeCursorEventService } from "../service/ZoomMinusToolChangeCursorEventService";
 import { execute as zoomMinusToolStartEventUseCase } from "./ZoomMinusToolStartEventUseCase";
+import { execute as zoomMinusToolScreenEventUseCase } from "./ZoomMinusToolScreenEventUseCase";
 
 /**
  * @description スームアップツールの初期起動ユースケース
@@ -32,5 +33,9 @@ export const execute = (tool: ToolImpl<ZoomPlusTool>): void =>
 
     tool.addEventListener(EventType.CHANGE_CURSOR,
         zoomMinusToolChangeCursorEventService
+    );
+
+    tool.addEventListener(EventType.SCREEN,
+        zoomMinusToolScreenEventUseCase
     );
 };
