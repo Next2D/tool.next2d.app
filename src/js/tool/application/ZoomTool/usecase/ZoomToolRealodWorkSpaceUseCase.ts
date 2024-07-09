@@ -7,6 +7,8 @@ import { $SCREEN_ID } from "@/config/ScreenConfig";
 import { $getScreenOffsetLeft, $getScreenOffsetTop } from "@/global/GlobalUtil";
 import { execute as targetRectUpdateElementUseCase } from "@/screen/application/TargetRect/usecase/TargetRectUpdateElementUseCase";
 import { execute as screenScrollResizeService } from "@/screen/application/ScreenScroll/service/ScreenScrollResizeService";
+import { execute as screenStandardPointDeployElementUseCase } from "@/screen/application/StandardPoint/usecase/ScreenStandardPointDeployElementUseCase";
+import { execute as screenParentStandardPointDeployElementUseCase } from "@/screen/application/StandardPoint/usecase/ScreenParentStandardPointDeployElementUseCase";
 
 /**
  * @description ワークスペースをスケール値に合わせて再描画
@@ -55,6 +57,12 @@ export const execute = async (scale: number): Promise<void> =>
 
     // 選択範囲のElementを更新
     targetRectUpdateElementUseCase();
+
+    // MovieClipの標準点Elementを配置
+    screenStandardPointDeployElementUseCase();
+
+    // 親のMovieClipの標準点Elementを配置
+    screenParentStandardPointDeployElementUseCase();
 
     // スクリーンのスクロール位置を更新
     screenElement.scrollLeft = $getScreenOffsetLeft() + dx - centerX;

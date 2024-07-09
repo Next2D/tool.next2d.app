@@ -72,7 +72,7 @@ export const execute = (): void =>
 
     // 基準点のElementの表示処理
     screenStandardPointShowElementService(
-        $getScreenOffsetLeft() + character.x + matrix[4],
-        $getScreenOffsetTop() + character.y + matrix[5]
+        $getScreenOffsetLeft() + character.x * workSpace.scale + matrix[4],
+        $getScreenOffsetTop() + character.y * workSpace.scale + matrix[5]
     );
 };
