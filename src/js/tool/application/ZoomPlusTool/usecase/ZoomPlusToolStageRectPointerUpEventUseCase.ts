@@ -1,5 +1,5 @@
 import { EventType } from "@/tool/domain/event/EventType";
-import { execute as zoomPlusToolStageRectWindowMouseMoveEventUseCase } from "./ZoomPlusToolStageRectWindowMouseMoveEventUseCase";
+import { execute as zoomPlusToolStageRectPointerMoveEventUseCase } from "./ZoomPlusToolStageRectPointerMoveEventUseCase";
 import { execute as stageRectHideService } from "@/screen/application/StageRect/service/StageRectHideService";
 import { $SCREEN_ID, $SCREEN_STAGE_RECT_ID } from "@/config/ScreenConfig";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
@@ -26,31 +26,37 @@ export const execute = async (event: PointerEvent): Promise<void> =>
     event.stopPropagation();
     event.preventDefault();
 
-    // windowイベントを解除
-    window.removeEventListener(EventType.MOUSE_MOVE,
-        zoomPlusToolStageRectWindowMouseMoveEventUseCase
+    const element = event.target as HTMLElement;
+    if (!element) {
+        return ;
+    }
+
+    // イベントを解除
+    element.releasePointerCapture(event.pointerId);
+    element.removeEventListener(EventType.MOUSE_MOVE,
+        zoomPlusToolStageRectPointerMoveEventUseCase
     );
-    window.removeEventListener(EventType.MOUSE_UP, execute);
+    element.removeEventListener(EventType.MOUSE_UP, execute);
 
     // 範囲選択のElementを表示
-    const element: HTMLElement | null = document
+    const rectElement: HTMLElement | null = document
         .getElementById($SCREEN_STAGE_RECT_ID);
 
-    if (!element) {
+    if (!rectElement) {
         stageRectHideService();
         return ;
     }
 
-    const width  = element.clientWidth;
-    const height = element.clientHeight;
+    const width  = rectElement.clientWidth;
+    const height = rectElement.clientHeight;
     if (!width || !height) {
         stageRectHideService();
         return ;
     }
 
     // 現在の座標を取得
-    // const left = element.offsetLeft;
-    // const top  = element.offsetTop;
+    // const left = rectElement.offsetLeft;
+    // const top  = rectElement.offsetTop;
 
     // 範囲選択を非表示に
     stageRectHideService();

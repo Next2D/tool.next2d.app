@@ -1,5 +1,5 @@
 import { execute as stageRectShowService } from "@/screen/application/StageRect/service/StageRectShowService";
-import { execute as zoomPlusToolStageRectRegisterWindowEventUseCase } from "./ZoomPlusToolStageRectRegisterWindowEventUseCase";
+import { execute as zoomPlusToolStageRectRegisterPointerEventUseCase } from "./ZoomPlusToolStageRectRegisterPointerEventUseCase";
 
 /**
  * @description 拡大の範囲選択のマウスダウンイベントの実行関数
@@ -18,10 +18,9 @@ export const execute = (event: PointerEvent): void =>
 
     // イベントの伝播を停止
     event.stopPropagation();
-    event.preventDefault();
 
     // windowイベントを登録
-    zoomPlusToolStageRectRegisterWindowEventUseCase();
+    zoomPlusToolStageRectRegisterPointerEventUseCase(event);
 
     // 範囲選択のElementを表示
     stageRectShowService(event.pageX, event.pageY);

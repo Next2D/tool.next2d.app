@@ -9,6 +9,6 @@ import { execute as screenStageAreaAllDisplayObjectInactiveService } from "@/scr
  */
 export const execute = (): void =>
 {
-    // 配置された全てのDisplayObjectのイベント有効化
+    // 配置された全てのDisplayObjectのイベントを無効化
     screenStageAreaAllDisplayObjectInactiveService();
 };
