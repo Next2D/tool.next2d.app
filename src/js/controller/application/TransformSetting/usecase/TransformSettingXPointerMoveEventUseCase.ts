@@ -36,27 +36,29 @@ export const execute = (event: PointerEvent): void =>
         }
 
         // 表示を更新
+        const workSpace = $getCurrentWorkSpace();
         const value = parseFloat(parseFloat(element.value).toFixed(2));
-        const x = $clamp(value + event.movementX, -Number.MAX_VALUE, Number.MAX_VALUE);
+        const movementX = parseFloat(event.movementX.toFixed(2));
+        const dx = parseFloat((movementX / workSpace.scale).toFixed(2));
+        const x = $clamp(value + dx, -Number.MAX_VALUE, Number.MAX_VALUE);
         element.value = `${x}`;
 
         // マウスで移動した量を更新
-        const workSpace = $getCurrentWorkSpace();
-        transformSetting.x = x * workSpace.scale;
+        transformSetting.x += movementX;
 
         // スクリーンで選択中のElementを移動
         screenDisplayObjectSelectedMoveElementService(
-            event.movementX, 0
+            movementX, 0
         );
 
         // 選択範囲のElementを移動
         targetRectMoveElementService(
-            event.movementX, 0
+            movementX, 0
         );
 
         // MovieClipの基準点のElementを移動
         screenStandardPointMoveElementService(
-            event.movementX, 0
+            movementX, 0
         );
     });
 };

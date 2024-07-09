@@ -47,12 +47,12 @@ export const execute = (): void =>
             );
 
             // xの移動があれば更新
-            if (transformSetting.x) {
+            if (x) {
                 externalCharacter.x += x;
             }
 
             // yの移動があれば更新
-            if (transformSetting.y) {
+            if (y) {
                 externalCharacter.y += y;
             }
         }

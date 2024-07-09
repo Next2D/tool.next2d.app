@@ -12,7 +12,6 @@ import {
 } from "@/global/GlobalUtil";
 import { ExternalSoundArea } from "@/external/controller/domain/model/ExternalSoundArea";
 import { $getConcatenatedMatrix } from "@/controller/application/TransformSetting/TransformSettingUtil";
-import { X509Certificate } from "crypto";
 
 /**
  * @description スクリーンエリアのアイテムドロップイベント処理関数
