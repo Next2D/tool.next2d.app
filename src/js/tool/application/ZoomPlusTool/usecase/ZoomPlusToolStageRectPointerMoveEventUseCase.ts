@@ -25,15 +25,15 @@ export const execute = (event: PointerEvent): void =>
             return ;
         }
 
-        if (stageRect.x > event.pageX) {
-            element.style.left = `${event.pageX}px`;
+        if (stageRect.x > event.offsetX) {
+            element.style.left = `${event.offsetX}px`;
         }
 
-        if (stageRect.y > event.pageY) {
-            element.style.top = `${event.pageY}px`;
+        if (stageRect.y > event.offsetY) {
+            element.style.top = `${event.offsetY}px`;
         }
 
-        element.style.width  = `${Math.abs(event.pageX - stageRect.x)}px`;
-        element.style.height = `${Math.abs(event.pageY - stageRect.y)}px`;
+        element.style.width  = `${Math.abs(event.offsetX - stageRect.x)}px`;
+        element.style.height = `${Math.abs(event.offsetY - stageRect.y)}px`;
     });
 };

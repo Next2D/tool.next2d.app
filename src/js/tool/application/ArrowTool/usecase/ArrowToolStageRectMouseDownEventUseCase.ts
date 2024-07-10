@@ -19,9 +19,9 @@ export const execute = (event: PointerEvent): void =>
     // イベントの伝播を停止
     event.stopPropagation();
 
-    // windowイベントを登録
+    // イベントを登録
     arrowToolStageRectRegisterPointerEventUseCase(event);
 
     // 範囲選択のElementを表示
-    stageRectShowService(event.pageX, event.pageY);
+    stageRectShowService(event.offsetX, event.offsetY);
 };

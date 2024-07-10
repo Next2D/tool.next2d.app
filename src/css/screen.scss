@@ -211,24 +211,22 @@
 
 #stage-rect
 {
-    position       : fixed;
+    position       : absolute;
+    // position       : fixed;
     background     : rgba(128, 128, 128, 0.2);
     border         : 1px solid #29628e;
-    z-index        : 9900;
     pointer-events : none;
 }
 
 #draw-rect
 {
     position       : fixed;
-    z-index        : 9900;
     pointer-events : none;
 }
 
 #draw-text
 {
     position       : fixed;
-    z-index        : 9900;
     pointer-events : none;
 }
 
@@ -326,7 +324,6 @@
     align-items      : end;
     height           : 19px;
     background-color : #3c3c3c;
-    z-index          : 9990;
 
     .vertical-main
     {
@@ -378,7 +375,6 @@
     flex-direction   : column;
     width            : 19px;
     background-color : #3c3c3c;
-    z-index          : 9990;
 
     .vertical-main
     {

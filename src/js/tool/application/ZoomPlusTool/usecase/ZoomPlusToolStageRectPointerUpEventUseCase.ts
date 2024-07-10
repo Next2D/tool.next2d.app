@@ -10,6 +10,7 @@ import { execute as screenStageAreaUpdateSizeService } from "@/screen/applicatio
 import { execute as screenAreaRedrawUseCase } from "@/screen/application/ScreenArea/usecase/ScreenAreaRedrawUseCase";
 import { execute as targetRectUpdateElementUseCase } from "@/screen/application/TargetRect/usecase/TargetRectUpdateElementUseCase";
 import { execute as screenScrollResizeService } from "@/screen/application/ScreenScroll/service/ScreenScrollResizeService";
+import { execute as zoomToolRealodWorkSpaceUseCase } from "@/tool/application/ZoomTool/usecase/ZoomToolRealodWorkSpaceUseCase";
 
 /**
  * @description 拡大の範囲選択のマウスアップイベントの実行関数
@@ -64,8 +65,6 @@ export const execute = async (event: PointerEvent): Promise<void> =>
     const workSpace = $getCurrentWorkSpace();
     const stage = workSpace.stage;
 
-    const beforeScale = workSpace.scale;
-
     const scale = parseFloat($clamp(Math.max(
         stage.width / width,
         stage.height / height,
@@ -73,11 +72,9 @@ export const execute = async (event: PointerEvent): Promise<void> =>
     ), 0.25, 5).toFixed(2));
 
     // 変化がない場合は処理を終了
-    if (scale === beforeScale) {
+    if (scale === workSpace.scale) {
         return ;
     }
-
-    workSpace.scale = scale;
 
     const screen = document.getElementById($SCREEN_ID);
     if (!screen) {
@@ -87,28 +84,16 @@ export const execute = async (event: PointerEvent): Promise<void> =>
     const centerX = screen.clientWidth  / 2;
     const centerY = screen.clientHeight / 2;
 
-    const dx = (screen.scrollLeft + centerX - $getScreenOffsetLeft()) / beforeScale * workSpace.scale;
-    const dy = (screen.scrollTop  + centerY - $getScreenOffsetTop())  / beforeScale * workSpace.scale;
+    const dx = (screen.scrollLeft + centerX - $getScreenOffsetLeft()) / workSpace.scale * scale;
+    const dy = (screen.scrollTop  + centerY - $getScreenOffsetTop())  / workSpace.scale * scale;
 
     // スクリーンの表示位置を補正
     screen.scrollLeft = $getScreenOffsetLeft() + dx - centerX;
     screen.scrollTop  = $getScreenOffsetTop()  + dy - centerY;
 
     // スケールのインプット表示を更新
-    zoomToolUpdateElementService(workSpace.scale * 100);
-
-    // スクリーンとステージの表示を更新
-    stageStyleUpdateSizeService(stage.width, stage.height);
-
-    // ステージエリアのサイズを再計算
-    screenStageAreaUpdateSizeService(stage);
-
-    // スクリーンのスクロールバーのサイズを更新
-    screenScrollResizeService();
-
-    // 選択範囲のElementの表示を更新
-    targetRectUpdateElementUseCase();
+    zoomToolUpdateElementService(scale * 100);
 
     // 再描画
-    await screenAreaRedrawUseCase(workSpace.scene);
+    await zoomToolRealodWorkSpaceUseCase(scale);
 };

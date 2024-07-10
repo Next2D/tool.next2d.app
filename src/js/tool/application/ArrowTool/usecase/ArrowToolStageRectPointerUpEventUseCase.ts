@@ -1,5 +1,5 @@
 import { EventType } from "@/tool/domain/event/EventType";
-import { execute as arrowToolStageRectWindowMouseMoveEventUseCase } from "./ArrowToolStageRectPointerMoveEventUseCase";
+import { execute as arrowToolStageRectPointerMoveEventUseCase } from "./ArrowToolStageRectPointerMoveEventUseCase";
 import { execute as stageRectHideService } from "@/screen/application/StageRect/service/StageRectHideService";
 import { ExternalScreen } from "@/external/screen/domain/model/ExternalScreen";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
@@ -8,6 +8,7 @@ import {
     $SCREEN_STAGE_AREA_ID,
     $SCREEN_STAGE_RECT_ID
 } from "@/config/ScreenConfig";
+import { $getScreenOffsetLeft, $getScreenOffsetTop } from "@/global/GlobalUtil";
 
 /**
  * @description 範囲選択のマウスアップイベントの実行関数
@@ -31,7 +32,7 @@ export const execute = (event: PointerEvent): void =>
 
     // ポインターイベントを解除
     element.releasePointerCapture(event.pointerId);
-    element.removeEventListener(EventType.MOUSE_MOVE, arrowToolStageRectWindowMouseMoveEventUseCase);
+    element.removeEventListener(EventType.MOUSE_MOVE, arrowToolStageRectPointerMoveEventUseCase);
     element.removeEventListener(EventType.MOUSE_UP, execute);
 
     // 範囲選択のElementを表示
@@ -51,10 +52,11 @@ export const execute = (event: PointerEvent): void =>
         return ;
     }
 
-    const left    = rectElement.offsetLeft;
-    const top     = rectElement.offsetTop;
+    const left    = rectElement.offsetLeft - $getScreenOffsetLeft();
+    const top     = rectElement.offsetTop - $getScreenOffsetTop();
     const right   = left + width;
     const bottom  = top  + height;
+    console.log(left, top, width, height);
 
     // 範囲選択のElementを非表示
     stageRectHideService();
@@ -68,30 +70,44 @@ export const execute = (event: PointerEvent): void =>
     const movieClip = workSpace.scene;
     const externalScreen = new ExternalScreen(workSpace, movieClip);
 
-    const elements = stageAreaElement.querySelectorAll(".display-object");
-    for (let idx = 0; idx < elements.length; ++idx) {
+    const frame = movieClip.currentFrame;
+    for (let idx = 0; movieClip.layers.length > idx; ++idx) {
 
-        const node = elements[idx] as HTMLElement;
-        if (!node) {
+        const layer = movieClip.layers[idx];
+        if (!layer) {
             continue ;
         }
 
-        const rect = node.getBoundingClientRect();
-        switch (true) {
-
-            case rect.bottom < top:
-            case rect.top    > bottom:
-            case rect.right  < left:
-            case rect.left   > right:
-                continue;
-
-            default:
-                break;
-
+        const activeCharacters = layer.getActiveCharacters(frame);
+        if (!activeCharacters.length) {
+            continue ;
         }
 
-        const layer = movieClip.getLayerById(parseInt(node.dataset.layerId as string));
-        if (!layer) {
+        const depths = [];
+        for (let idx = 0; activeCharacters.length > idx; ++idx) {
+
+            const character = activeCharacters[idx];
+            if (!character) {
+                continue ;
+            }
+
+            switch (true) {
+
+                case character.y + character.height < top:
+                case character.y > bottom:
+                case character.x + character.width < left:
+                case character.x > right:
+                    continue;
+
+                default:
+                    break;
+
+            }
+
+            depths.push(character.depth);
+        }
+
+        if (!depths.length) {
             continue ;
         }
 
@@ -101,8 +117,9 @@ export const execute = (event: PointerEvent): void =>
         externalScreen
             .selectDisplayObjects(
                 externalLayer.index,
-                [parseInt(node.dataset.depth as string)],
+                depths,
                 true
             );
+
     }
 };
