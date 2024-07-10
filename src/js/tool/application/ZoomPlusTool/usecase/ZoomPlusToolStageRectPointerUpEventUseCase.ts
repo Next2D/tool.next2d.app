@@ -4,7 +4,7 @@ import { execute as stageRectHideService } from "@/screen/application/StageRect/
 import { $SCREEN_ID, $SCREEN_STAGE_RECT_ID } from "@/config/ScreenConfig";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { execute as zoomToolUpdateElementService } from "@/tool/application/ZoomTool/service/ZoomToolUpdateElementService";
-import { $clamp, $getScreenOffsetLeft, $getScreenOffsetTop } from "@/global/GlobalUtil";
+import { $clamp } from "@/global/GlobalUtil";
 import { execute as zoomToolRealodWorkSpaceUseCase } from "@/tool/application/ZoomTool/usecase/ZoomToolRealodWorkSpaceUseCase";
 
 /**
