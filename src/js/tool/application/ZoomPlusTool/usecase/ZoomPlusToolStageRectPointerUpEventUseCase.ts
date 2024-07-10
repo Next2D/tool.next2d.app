@@ -5,11 +5,6 @@ import { $SCREEN_ID, $SCREEN_STAGE_RECT_ID } from "@/config/ScreenConfig";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { execute as zoomToolUpdateElementService } from "@/tool/application/ZoomTool/service/ZoomToolUpdateElementService";
 import { $clamp, $getScreenOffsetLeft, $getScreenOffsetTop } from "@/global/GlobalUtil";
-import { execute as stageStyleUpdateSizeService } from "@/core/application/Stage/service/StageStyleUpdateSizeService";
-import { execute as screenStageAreaUpdateSizeService } from "@/screen/application/ScreenStageArea/service/ScreenStageAreaUpdateSizeService";
-import { execute as screenAreaRedrawUseCase } from "@/screen/application/ScreenArea/usecase/ScreenAreaRedrawUseCase";
-import { execute as targetRectUpdateElementUseCase } from "@/screen/application/TargetRect/usecase/TargetRectUpdateElementUseCase";
-import { execute as screenScrollResizeService } from "@/screen/application/ScreenScroll/service/ScreenScrollResizeService";
 import { execute as zoomToolRealodWorkSpaceUseCase } from "@/tool/application/ZoomTool/usecase/ZoomToolRealodWorkSpaceUseCase";
 
 /**
@@ -55,9 +50,9 @@ export const execute = async (event: PointerEvent): Promise<void> =>
         return ;
     }
 
-    // 現在の座標を取得
-    // const left = rectElement.offsetLeft;
-    // const top  = rectElement.offsetTop;
+    // 非表示になる前の位置を取得
+    const left = rectElement.offsetLeft;
+    const top = rectElement.offsetTop;
 
     // 範囲選択を非表示に
     stageRectHideService();
@@ -81,15 +76,9 @@ export const execute = async (event: PointerEvent): Promise<void> =>
         return ;
     }
 
-    const centerX = screen.clientWidth  / 2;
-    const centerY = screen.clientHeight / 2;
-
-    const dx = (screen.scrollLeft + centerX - $getScreenOffsetLeft()) / workSpace.scale * scale;
-    const dy = (screen.scrollTop  + centerY - $getScreenOffsetTop())  / workSpace.scale * scale;
-
     // スクリーンの表示位置を補正
-    screen.scrollLeft = $getScreenOffsetLeft() + dx - centerX;
-    screen.scrollTop  = $getScreenOffsetTop()  + dy - centerY;
+    screen.scrollLeft = left - (screen.clientWidth - width) / 2;
+    screen.scrollTop  = top - (screen.clientHeight - height) / 2;
 
     // スケールのインプット表示を更新
     zoomToolUpdateElementService(scale * 100);
