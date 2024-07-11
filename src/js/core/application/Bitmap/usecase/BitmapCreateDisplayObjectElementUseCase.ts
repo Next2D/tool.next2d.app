@@ -16,7 +16,7 @@ import {
  * @param  {number} work_space_id
  * @param  {Bitmap} instance
  * @param  {Character} character
- * @return {Promise<HTMLDivElement>}
+ * @return {Promise}
  * @method
  * @public
  */

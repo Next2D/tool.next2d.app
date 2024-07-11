@@ -17,6 +17,9 @@ export const execute = (movie_clip: MovieClip, frame: number = 1): Promise<HTMLC
 {
     return new Promise(async (resolve) =>
     {
+        // Plyerのキャッシュをリセット
+        next2d.player.cacheStore.reset();
+
         const canvas = $getCanvas();
 
         // 利用ライブラリIDのマッピングを初期化
