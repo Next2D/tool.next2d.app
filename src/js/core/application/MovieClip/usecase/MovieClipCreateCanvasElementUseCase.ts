@@ -1,5 +1,6 @@
 import { MovieClip } from "@/core/domain/model/MovieClip";
 import { $getCanvas } from "@/global/GlobalUtil";
+import { $clearUseLibraryIds } from "@/tool/application/PublishTool/PublishToolUtil";
 import { execute as publishToolCreateToObjectUseCase } from "@/tool/application/PublishTool/usecase/PublishToolCreateToObjectUseCase";
 
 /**
@@ -18,6 +19,10 @@ export const execute = (movie_clip: MovieClip, frame: number = 1): Promise<HTMLC
     {
         const canvas = $getCanvas();
 
+        // 利用ライブラリIDのマッピングを初期化
+        $clearUseLibraryIds();
+
+        // JSONオブジェクトを生成
         const object = await publishToolCreateToObjectUseCase(movie_clip);
 
         const loader = new next2d.display.Loader();
