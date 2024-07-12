@@ -10,12 +10,13 @@ import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
  *              Add the specified MovieClip to the timeline scene name list
  *
  * @param  {number} library_id
+ * @param  {number} depth
  * @param  {array} matrix
  * @return {void}
  * @method
  * @public
  */
-export const execute = (library_id: number, matrix: number[]): void =>
+export const execute = (library_id: number, depth: number, matrix: number[]): void =>
 {
     const element: HTMLElement | null = document
         .getElementById($TIMELINE_SCENE_NAME_LIST_ID);
@@ -38,6 +39,7 @@ export const execute = (library_id: number, matrix: number[]): void =>
     // movie_clipのIDを登録
     timelineSceneList.parents.push({
         "libraryId": library_id,
+        "depth": depth,
         "matrix": matrix
     });
 
