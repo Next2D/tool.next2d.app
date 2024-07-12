@@ -54,7 +54,7 @@ export const execute = (
     for (let idx = 0; idx < selectedLayers.length; ++idx) {
 
         const layer = selectedLayers[idx];
-        if (!layer) {
+        if (!layer || layer.lock) {
             continue;
         }
 

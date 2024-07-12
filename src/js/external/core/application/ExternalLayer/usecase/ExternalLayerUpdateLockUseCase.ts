@@ -6,7 +6,7 @@ import { execute as shareSendService } from "@/share/service/ShareSendService";
 import { execute as externalLayerUpdateLockHistoryObjectService } from "../service/ExternalLayerUpdateLockHistoryObjectService";
 import { ExternalLayer } from "@/external/core/domain/model/ExternalLayer";
 import { execute as timelineLayerControllerUpdateLockIconStyleService } from "@/timeline/application/TimelineLayerController/service/TimelineLayerControllerUpdateLockIconElementService";
-import { execute as screenDisplayObjectChangeElementEventService } from "@/screen/application/DisplayObject/service/ScreenDisplayObjectChangeElementEventService";
+import { execute as screenDisplayObjectChangeElementClassService } from "@/screen/application/DisplayObject/service/ScreenDisplayObjectChangeElementClassService";
 import { execute as targetRectUpdateElementUseCase } from "@/screen/application/TargetRect/usecase/TargetRectUpdateElementUseCase";
 import { execute as screenStandardPointDeployElementUseCase } from "@/screen/application/StandardPoint/usecase/ScreenStandardPointDeployElementUseCase";
 import { execute as propertyAreaChangeDisplayUseCase } from "@/controller/application/PropertyArea/usecase/PropertyAreaChangeDisplayUseCase";
@@ -36,16 +36,17 @@ export const execute = (
         work_space, movie_clip, layer
     );
 
+    const index = externalLayer.index;
     const historyObject = externalLayerUpdateLockHistoryObjectService(
-        work_space.id, movie_clip.id, externalLayer.index, value
+        work_space.id, movie_clip.id, index, value
     );
 
     // 値を更新
     layer.lock = value;
 
     // ロックしたLayerの選択があれば解除
-    if (value && movie_clip.selectedDepths.has(layer.id)) {
-        movie_clip.selectedDepths.delete(layer.id);
+    if (value && movie_clip.selectedDepths.has(index)) {
+        movie_clip.selectedDepths.delete(index);
     }
 
     // 表示中ならレイヤーの表示を更新
@@ -53,8 +54,8 @@ export const execute = (
         // Layerオブジェクトのロックアイコンの表示を更新
         timelineLayerControllerUpdateLockIconStyleService(layer);
 
-        // スクリーンに配置された、DisplayObjectのElementを更新
-        screenDisplayObjectChangeElementEventService(layer);
+        // スクリーンに配置された、DisplayObjectのElement classを更新
+        screenDisplayObjectChangeElementClassService(layer);
 
         // 選択範囲のElementの表示を更新
         targetRectUpdateElementUseCase();

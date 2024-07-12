@@ -24,7 +24,7 @@ export const execute = (
 ): void => {
 
     const layer = movie_clip.getLayer(layer_index);
-    if (!layer) {
+    if (!layer || layer.lock) {
         return;
     }
 
