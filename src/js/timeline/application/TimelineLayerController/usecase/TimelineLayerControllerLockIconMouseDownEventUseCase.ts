@@ -1,4 +1,3 @@
-import { execute as timelineLayerControllerUpdateLockIconStyleService } from "../service/TimelineLayerControllerUpdateLockIconElementService";
 import { $allHideMenu } from "@/menu/application/MenuUtil";
 import { $getLayerFromElement, $getLockState, $setLockState } from "../../TimelineUtil";
 import { EventType } from "@/tool/domain/event/EventType";
@@ -52,7 +51,4 @@ export const execute = (event: PointerEvent): void =>
 
     // Layerオブジェクトの値を更新
     externalLayer.setLock(!layer.lock);
-
-    // 反転して登録
-    timelineLayerControllerUpdateLockIconStyleService(layer);
 };

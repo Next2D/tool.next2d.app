@@ -56,7 +56,6 @@ export const execute = (event: PointerEvent): void =>
     const top     = rectElement.offsetTop - $getScreenOffsetTop();
     const right   = left + width;
     const bottom  = top  + height;
-    console.log(left, top, width, height);
 
     // 範囲選択のElementを非表示
     stageRectHideService();
@@ -74,7 +73,7 @@ export const execute = (event: PointerEvent): void =>
     for (let idx = 0; movieClip.layers.length > idx; ++idx) {
 
         const layer = movieClip.layers[idx];
-        if (!layer) {
+        if (!layer || layer.lock) {
             continue ;
         }
 

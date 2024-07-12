@@ -5,6 +5,7 @@ import { execute as propertyAreaMovieClipDisplayControllerUseCase } from "./Prop
 import { execute as propertyAreaShowMultiSettingUseCase } from "./PropertyAreaShowMultiSettingUseCase";
 import { $setSelectedMode } from "../PropertyAreaUtil";
 import { execute as propertyAreaScrollUpdateHeightService } from "@/controller/application/PropertyAreaScroll/service/PropertyAreaScrollUpdateHeightService";
+import { execute as propertyAreaShowDefaultSettingItemUseCase } from "./PropertyAreaShowDefaultSettingItemUseCase";
 
 /**
  * @description プロパティエリアの表示を更新
@@ -20,6 +21,7 @@ export const execute = (): void =>
     const movieClip = workSpace.scene;
 
     if (!movieClip.selectedDepths.size) {
+        propertyAreaShowDefaultSettingItemUseCase(movieClip);
         return ;
     }
 

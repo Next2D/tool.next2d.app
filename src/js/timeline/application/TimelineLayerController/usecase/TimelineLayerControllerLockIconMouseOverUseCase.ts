@@ -1,6 +1,5 @@
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { $getLayerFromElement, $getLockState } from "../../TimelineUtil";
-import { execute as timelineLayerControllerUpdateLockIconStyleService } from "../service/TimelineLayerControllerUpdateLockIconElementService";
 import { ExternalLayer } from "@/external/core/domain/model/ExternalLayer";
 
 /**
@@ -34,6 +33,4 @@ export const execute = (event: PointerEvent): void =>
     const externalLayer = new ExternalLayer(workSpace, workSpace.scene, layer);
 
     externalLayer.setLock(!layer.lock);
-
-    timelineLayerControllerUpdateLockIconStyleService(layer);
 };

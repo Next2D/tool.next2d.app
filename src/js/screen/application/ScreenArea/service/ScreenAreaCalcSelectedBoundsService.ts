@@ -25,7 +25,7 @@ export const execute = (movie_clip: MovieClip): BoundsImpl | null =>
     for (const [layerIndex, depths] of movie_clip.selectedDepths) {
 
         const layer = movie_clip.getLayer(layerIndex);
-        if (!layer) {
+        if (!layer || layer.lock) {
             continue ;
         }
 

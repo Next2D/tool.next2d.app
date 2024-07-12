@@ -45,6 +45,11 @@
         }
     }
 
+    .disabled
+    {
+        pointer-events: none;
+    }
+
     .transform
     {
         z-index          : 9900;

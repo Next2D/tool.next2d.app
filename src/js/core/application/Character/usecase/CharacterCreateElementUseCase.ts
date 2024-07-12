@@ -29,22 +29,31 @@ export const execute = async (
         return null;
     }
 
+    let div = null;
     switch (instance.type) {
 
         case $BITMAP_TYPE:
-            return await bitmapCreateDisplayObjectElementUseCase(
+            div = await bitmapCreateDisplayObjectElementUseCase(
                 workSpace.id, instance, element, layer, character
             );
+            break;
 
         case $MOVIE_CLIP_TYPE:
-            return await movieClipCreateDisplayObjectElementUseCase(
+            div = await movieClipCreateDisplayObjectElementUseCase(
                 workSpace.id, instance, element, layer, character
             );
+            break;
 
         default:
             break;
 
     }
 
-    return null;
+    if (layer.lock && div
+        && !div.classList.contains("disabled")
+    ) {
+        div.classList.add("disabled");
+    }
+
+    return div;
 };
