@@ -61,6 +61,9 @@ export const execute = async (event: PointerEvent): Promise<void> =>
         // 範囲選択のイベントを実行
         tool.dispatchEvent(EventType.STAGE_RECT, event);
 
+        // 矩形描画のイベントを実行
+        tool.dispatchEvent(EventType.DRAW_RECT, event);
+
     } else {
 
         // ダブルタップを終了

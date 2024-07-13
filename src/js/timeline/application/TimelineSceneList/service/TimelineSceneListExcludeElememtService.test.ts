@@ -8,16 +8,16 @@ describe("TimelineSceneListExcludeElememtServiceTest", () =>
     {
         timelineSceneList.parents.push(
             {
-                "libraryId": 0,
-                "matrix": [1,0,0,1,0,0]
+                "parentLibraryId": 0,
+                "selectCharacter": null
             },
             {
-                "libraryId": 10,
-                "matrix": [1,0,0,1,0,0]
+                "parentLibraryId": 10,
+                "selectCharacter": null
             },
             {
-                "libraryId": 5,
-                "matrix": [1,0,0,1,0,0]
+                "parentLibraryId": 5,
+                "selectCharacter": null
             },
         );
         expect(timelineSceneList.parents.length).toBe(3);

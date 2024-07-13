@@ -177,6 +177,19 @@ export class EventType
     }
 
     /**
+     * @description スクリーンエリアのシェイプ範囲選択のイベント名
+     *              Event name of the shape range selection in the screen area
+     *
+     * @return {string}
+     * @static
+     * @const
+     */
+    static get DRAW_RECT (): "draw_rect"
+    {
+        return "draw_rect";
+    }
+
+    /**
      * @description スクリーンエリアのカーソル変更のイベント名
      *              Event name for changing the cursor in the screen area
      *
