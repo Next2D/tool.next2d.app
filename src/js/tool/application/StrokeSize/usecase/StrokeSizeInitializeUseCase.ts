@@ -7,6 +7,7 @@ import { execute as strokeSizeKeyPressEventService } from "../service/StrokeSize
 import { execute as strokeSizeMouseOverEventService } from "../service/StrokeSizeMouseOverEventService";
 import { execute as strokeSizeMouseOutEventService } from "../service/StrokeSizeMouseOutEventService";
 import { execute as strokeSizeMouseDownEventUseCase } from "./StrokeSizeMouseDownEventUseCase";
+import { execute as strokeSizeFocusOutEventUseCase } from "./StrokeSizeFocusOutEventUseCase";
 
 /**
  * @description 塗りInputの初期起動ユースケース
@@ -39,7 +40,7 @@ export const execute = (): void =>
     );
 
     element.addEventListener("focusout",
-        () => {}
+        strokeSizeFocusOutEventUseCase
     );
 
     element.addEventListener(EventType.MOUSE_OVER,
