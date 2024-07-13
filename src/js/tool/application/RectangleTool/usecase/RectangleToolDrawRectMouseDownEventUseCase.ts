@@ -1,5 +1,5 @@
 import { execute as drawRectShowService } from "@/screen/application/DrawRect/service/DrawRectShowService";
-import { execute as circleToolDrawRectRegisterPointerEventUseCase } from "./CircleToolDrawRectRegisterPointerEventUseCase";
+import { execute as circleToolDrawRectRegisterPointerEventUseCase } from "./RectangleToolDrawRectRegisterPointerEventUseCase";
 
 /**
  * @description 描画の範囲選択のマウスダウンイベント
@@ -23,5 +23,5 @@ export const execute = (event: PointerEvent): void =>
     circleToolDrawRectRegisterPointerEventUseCase(event);
 
     // 範囲選択のElementを表示
-    drawRectShowService(event.offsetX, event.offsetY, "50%");
+    drawRectShowService(event.offsetX, event.offsetY);
 };

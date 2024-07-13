@@ -1,6 +1,8 @@
 import { $SCREEN_DRAW_RECT_ID } from "@/config/ScreenConfig";
 import { drawRect } from "@/screen/domain/model/DrawRect";
 import { fillColor } from "@/tool/domain/model/FillColor";
+import { strokeColor } from "@/tool/domain/model/StrokeColor";
+import { strokeSize } from "@/tool/domain/model/StrokeSize";
 
 /**
  * @description 範囲選択をアクティブ表示
@@ -8,12 +10,12 @@ import { fillColor } from "@/tool/domain/model/FillColor";
  *
  * @param  {number} x
  * @param  {number} y
- * @param  {string} radius
+ * @param  {string} [radius=""]
  * @return {void}
  * @method
  * @public
  */
-export const execute = (x: number, y: number, radius: string): void =>
+export const execute = (x: number, y: number, radius: string = ""): void =>
 {
     // 範囲選択のElementを表示
     const element: HTMLElement | null = document
@@ -36,6 +38,10 @@ export const execute = (x: number, y: number, radius: string): void =>
 
     if (radius) {
         style += `border-radius: ${radius};`;
+    }
+
+    if (strokeSize.value) {
+        style += `border: ${strokeSize.value}px solid ${strokeColor.value};`;
     }
 
     element.setAttribute("style", style);

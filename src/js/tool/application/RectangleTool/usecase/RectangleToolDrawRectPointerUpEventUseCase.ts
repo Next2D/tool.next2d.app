@@ -1,5 +1,5 @@
 import { EventType } from "@/tool/domain/event/EventType";
-import { execute as circleToolDrawRectPointerMoveEventUseCase } from "./CircleToolDrawRectPointerMoveEventUseCase";
+import { execute as rectangleToolDrawRectPointerMoveEventUseCase } from "./RectangleToolDrawRectPointerMoveEventUseCase";
 import { execute as drawRectHideService } from "@/screen/application/DrawRect/service/DrawRectHideService";
 import { $SCREEN_DRAW_RECT_ID } from "@/config/ScreenConfig";
 import { $getDefaultTool, $setActiveTool } from "../../ToolUtil";
@@ -30,7 +30,7 @@ export const execute = async (event: PointerEvent): Promise<void> =>
     // イベントを解除
     element.releasePointerCapture(event.pointerId);
     element.removeEventListener(EventType.MOUSE_MOVE,
-        circleToolDrawRectPointerMoveEventUseCase
+        rectangleToolDrawRectPointerMoveEventUseCase
     );
     element.removeEventListener(EventType.MOUSE_UP, execute);
 

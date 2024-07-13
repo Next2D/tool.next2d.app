@@ -1,8 +1,8 @@
 import { $setCursor } from "@/global/GlobalUtil";
 
 /**
- * @description シェイプの円ツールのマウスムーブイベントサービス
- *              Shape Circle Tool Mouse Move Event Service
+ * @description シェイプの矩形ツールのマウスムーブイベントサービス
+ *              Mouse-move event service of shape rectangle tool
  *
  * @param  {PointerEvent} event
  * @return {void}
