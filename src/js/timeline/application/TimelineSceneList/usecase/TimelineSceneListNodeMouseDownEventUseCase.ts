@@ -35,6 +35,7 @@ export const execute = async (event: PointerEvent): Promise<void> =>
     // 親のMovieClipを取得
     const workSpace = $getCurrentWorkSpace();
     const libraryId = parseInt(element.dataset.libraryId as string);
+
     const movieClip: InstanceImpl<MovieClip> = workSpace.getLibrary(libraryId);
     if (!movieClip || movieClip.type !== $MOVIE_CLIP_TYPE) {
         return ;

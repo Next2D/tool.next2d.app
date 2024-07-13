@@ -50,6 +50,11 @@
         pointer-events: none;
     }
 
+    .translucent
+    {
+        opacity: 0.6;
+    }
+
     .transform
     {
         z-index          : 9900;

@@ -14,8 +14,11 @@ import type { MovieClip } from "@/core/domain/model/MovieClip";
  *
  * @param  {number} work_space_id
  * @param  {MovieClip} instance
+ * @param  {HTMLElement} element
+ * @param  {Layer} layer
  * @param  {Character} character
- * @return {Promise<HTMLDivElement>}
+ * @param  {boolean} [event_register=true]
+ * @return {Promise}
  * @method
  * @public
  */
@@ -24,7 +27,8 @@ export const execute = async (
     instance: InstanceImpl<MovieClip>,
     element: HTMLElement,
     layer: Layer,
-    character: Character
+    character: Character,
+    event_register: boolean = true
 ): Promise<HTMLDivElement> => {
 
     const cacheKey = character.cacheKey;
@@ -47,7 +51,16 @@ export const execute = async (
     div.appendChild(canvas);
 
     // イベントを登録
-    movieClipRegisterEventUseCase(div);
+    if (event_register) {
+        movieClipRegisterEventUseCase(div);
+    } else {
+        if (!div.classList.contains("disabled")) {
+            div.classList.add("disabled");
+        }
+        if (!div.classList.contains("translucent")) {
+            div.classList.add("translucent");
+        }
+    }
 
     return div;
 };

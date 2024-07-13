@@ -27,7 +27,7 @@ let timerId: NodeJS.Timeout;
  * @method
  * @public
  */
-export const execute = (event: PointerEvent): void =>
+export const execute = async (event: PointerEvent): Promise<void> =>
 {
     if (event.button !== 0) {
         return ;
@@ -69,6 +69,6 @@ export const execute = (event: PointerEvent): void =>
         clearTimeout(timerId);
 
         // 親のMovieClipに移動
-        screenAreaRunParentMovieClipUseCase();
+        await screenAreaRunParentMovieClipUseCase();
     }
 };

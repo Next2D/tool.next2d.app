@@ -13,6 +13,9 @@ import {
  *              Draw the DisplayObject and return it as a DivElement
  *
  * @param  {Character} character
+ * @param  {HTMLElement} element
+ * @param  {Layer} layer
+ * @param  {boolean} [event_register=true]
  * @return {Promise}
  * @method
  * @public
@@ -20,7 +23,8 @@ import {
 export const execute = async (
     character: Character,
     element: HTMLElement,
-    layer: Layer
+    layer: Layer,
+    event_register: boolean = true
 ): Promise<HTMLDivElement | null> => {
 
     const workSpace = $getCurrentWorkSpace();
@@ -34,13 +38,15 @@ export const execute = async (
 
         case $BITMAP_TYPE:
             div = await bitmapCreateDisplayObjectElementUseCase(
-                workSpace.id, instance, element, layer, character
+                workSpace.id, instance, element,
+                layer, character, event_register
             );
             break;
 
         case $MOVIE_CLIP_TYPE:
             div = await movieClipCreateDisplayObjectElementUseCase(
-                workSpace.id, instance, element, layer, character
+                workSpace.id, instance, element,
+                layer, character, event_register
             );
             break;
 

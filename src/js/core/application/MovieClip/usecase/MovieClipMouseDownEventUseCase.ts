@@ -94,7 +94,7 @@ export const execute = async (event: PointerEvent): Promise<void> =>
         }
 
         // タイムラインのシーン一覧に追加
-        timelineSceneListAddMovieClipUseCase(scene.id, depth, character.matrix);
+        timelineSceneListAddMovieClipUseCase(scene.id, character);
 
         // 指定のMovieClipを起動
         await externalTimelineEditMovieClipUseService(workSpace, movieClip);

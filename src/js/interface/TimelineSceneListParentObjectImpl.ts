@@ -1,5 +1,6 @@
+import { Character } from "@/core/domain/model/Character";
+
 export interface TimelineSceneListParentObjectImpl {
-    libraryId: number;
-    depth: number;
-    matrix: number[];
+    parentLibraryId: number;
+    selectCharacter: Character | null;
 }

@@ -38,7 +38,7 @@ export const execute = async (): Promise<void> =>
     }
 
     const workSpace = $getCurrentWorkSpace();
-    const movieClip: InstanceImpl<MovieClip> | null = workSpace.getLibrary(parentObject.libraryId);
+    const movieClip: InstanceImpl<MovieClip> | null = workSpace.getLibrary(parentObject.parentLibraryId);
     if (!movieClip) {
         return ;
     }

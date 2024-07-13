@@ -4,20 +4,23 @@ import { timelineSceneList } from "@/timeline/domain/model/TimelineSceneList";
 import { EventType } from "@/tool/domain/event/EventType";
 import { execute as timelineSceneListNodeMouseDownEventUseCase } from "./TimelineSceneListNodeMouseDownEventUseCase";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
+import type { Character } from "@/core/domain/model/Character";
 
 /**
  * @description タイムラインのシーン名一覧に指定のMovieClipを追加する
  *              Add the specified MovieClip to the timeline scene name list
  *
- * @param  {number} library_id
- * @param  {number} depth
- * @param  {array} matrix
+ * @param  {number} parent_library_id
+ * @param  {Character} character
  * @return {void}
  * @method
  * @public
  */
-export const execute = (library_id: number, depth: number, matrix: number[]): void =>
-{
+export const execute = (
+    parent_library_id: number,
+    character: Character
+): void => {
+
     const element: HTMLElement | null = document
         .getElementById($TIMELINE_SCENE_NAME_LIST_ID);
 
@@ -26,7 +29,7 @@ export const execute = (library_id: number, depth: number, matrix: number[]): vo
     }
 
     const workSpace = $getCurrentWorkSpace();
-    const movieClip = workSpace.getLibrary(library_id);
+    const movieClip = workSpace.getLibrary(parent_library_id);
     if (!movieClip) {
         return ;
     }
@@ -38,9 +41,8 @@ export const execute = (library_id: number, depth: number, matrix: number[]): vo
 
     // movie_clipのIDを登録
     timelineSceneList.parents.push({
-        "libraryId": library_id,
-        "depth": depth,
-        "matrix": matrix
+        "parentLibraryId": parent_library_id,
+        "selectCharacter": character
     });
 
     const node = element.lastElementChild as HTMLElement;

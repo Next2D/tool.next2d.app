@@ -25,8 +25,8 @@ class TimelineSceneList
     }
 
     /**
-     * @description MovieClipのIDを格納した配列を返却
-     *              Returns an array containing the MovieClip's ID
+     * @description MovieClipのcharacterを格納した配列を返却
+     *              Returns an array containing the character of MovieClip
      *
      * @return {array}
      * @readonly

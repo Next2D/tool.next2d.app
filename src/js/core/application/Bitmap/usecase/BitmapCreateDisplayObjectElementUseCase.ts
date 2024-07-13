@@ -15,7 +15,10 @@ import {
  *
  * @param  {number} work_space_id
  * @param  {Bitmap} instance
+ * @param  {HTMLElement} element
+ * @param  {Layer} layer
  * @param  {Character} character
+ * @param  {boolean} [event_register=true]
  * @return {Promise}
  * @method
  * @public
@@ -25,7 +28,8 @@ export const execute = async (
     instance: InstanceImpl<Bitmap>,
     element: HTMLElement,
     layer: Layer,
-    character: Character
+    character: Character,
+    event_register: boolean = true
 ): Promise<HTMLDivElement> => {
 
     const cacheKey = character.cacheKey;
@@ -48,7 +52,16 @@ export const execute = async (
     div.appendChild(canvas);
 
     // イベントを登録
-    bitmapRegisterEventUseCase(div);
+    if (event_register) {
+        bitmapRegisterEventUseCase(div);
+    } else {
+        if (!div.classList.contains("disabled")) {
+            div.classList.add("disabled");
+        }
+        if (!div.classList.contains("translucent")) {
+            div.classList.add("translucent");
+        }
+    }
 
     return div;
 };

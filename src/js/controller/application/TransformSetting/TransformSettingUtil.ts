@@ -42,8 +42,18 @@ export const $getConcatenatedMatrix = (): number[] =>
 
     let matrix = [workSpace.scale, 0, 0, workSpace.scale, 0, 0];
     for (let idx = 0; idx < timelineSceneList.parents.length; idx++) {
+
         const parentObject = timelineSceneList.parents[idx];
-        matrix = $multiplicationMatrix(matrix, parentObject.matrix);
+        if (!parentObject) {
+            continue;
+        }
+
+        const character = parentObject.selectCharacter;
+        if (!character) {
+            continue;
+        }
+
+        matrix = $multiplicationMatrix(matrix, character.matrix);
     }
 
     return matrix;

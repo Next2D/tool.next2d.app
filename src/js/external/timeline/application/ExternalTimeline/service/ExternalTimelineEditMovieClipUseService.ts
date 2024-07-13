@@ -11,8 +11,11 @@ import type { WorkSpace } from "@/core/domain/model/WorkSpace";
  * @method
  * @public
  */
-export const execute = async (work_space: WorkSpace, movie_clip: MovieClip): Promise<MovieClip | void> =>
-{
+export const execute = async (
+    work_space: WorkSpace,
+    movie_clip: MovieClip
+): Promise<MovieClip | void> => {
+
     const scene = work_space.scene;
     if (!scene || scene.active && scene === movie_clip) {
         return ;

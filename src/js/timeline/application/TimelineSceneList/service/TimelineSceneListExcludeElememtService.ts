@@ -26,6 +26,7 @@ export const execute = (library_id: number): void =>
         if (!parentObject) {
             break;
         }
+
         const element = parent.lastElementChild as HTMLElement;
         if (!element) {
             break;
@@ -35,7 +36,7 @@ export const execute = (library_id: number): void =>
         element.remove();
 
         // 指定のIDなら終了
-        if (parentObject.libraryId === library_id) {
+        if (parentObject.parentLibraryId === library_id) {
             break;
         }
     }

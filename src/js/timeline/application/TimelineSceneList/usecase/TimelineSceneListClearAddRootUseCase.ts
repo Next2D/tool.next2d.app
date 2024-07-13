@@ -35,9 +35,8 @@ export const execute = (): void =>
 
     // rootのIDとmatrixを登録
     timelineSceneList.parents.push({
-        "libraryId": 0,
-        "depth": -1,
-        "matrix": [1, 0, 0, 1, 0, 0]
+        "parentLibraryId": 0,
+        "selectCharacter": null
     });
 
     const node = element.lastElementChild as HTMLElement;
