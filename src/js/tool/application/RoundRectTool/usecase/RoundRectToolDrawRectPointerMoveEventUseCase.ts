@@ -35,5 +35,8 @@ export const execute = (event: PointerEvent): void =>
 
         element.style.width  = `${Math.abs(event.offsetX - drawRect.x)}px`;
         element.style.height = `${Math.abs(event.offsetY - drawRect.y)}px`;
+
+        const min = Math.min(element.clientWidth, element.clientHeight);
+        element.style.borderRadius = `${min / 8}px`;
     });
 };
