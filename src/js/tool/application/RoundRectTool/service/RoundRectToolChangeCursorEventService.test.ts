@@ -1,13 +1,13 @@
-import { execute } from "./RectangleToolChangeCursorEventService";
+import { execute } from "./RoundRectToolChangeCursorEventService";
 import { $registerDefaultTool } from "../../ToolUtil";
-import { $TOOL_RECTANGLE_NAME } from "../../../../config/ToolConfig";
+import { $TOOL_ROUND_RECT_NAME } from "../../../../config/ToolConfig";
 
-describe("RectangleToolChangeCursorEventServiceTest", () =>
+describe("RoundRectToolChangeCursorEventServiceTest", () =>
 {
     test("execute test", () =>
     {
         const mock = {
-            "name": $TOOL_RECTANGLE_NAME,
+            "name": $TOOL_ROUND_RECT_NAME,
             "cursor": "crosshair"
         };
         $registerDefaultTool(mock);

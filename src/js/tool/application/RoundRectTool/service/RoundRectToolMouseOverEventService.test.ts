@@ -1,16 +1,19 @@
-import { execute } from "./RectangleToolChangeCursorEventService";
+import { execute } from "./RoundRectToolMouseOverEventService";
+import { $setCursor } from "../../../../global/GlobalUtil";
 import { $registerDefaultTool } from "../../ToolUtil";
-import { $TOOL_RECTANGLE_NAME } from "../../../../config/ToolConfig";
+import { $TOOL_ROUND_RECT_NAME } from "../../../../config/ToolConfig";
 
-describe("RectangleToolChangeCursorEventServiceTest", () =>
+describe("RoundRectToolMouseOverEventServiceTest", () =>
 {
     test("execute test", () =>
     {
         const mock = {
-            "name": $TOOL_RECTANGLE_NAME,
+            "name": $TOOL_ROUND_RECT_NAME,
             "cursor": "crosshair"
         };
         $registerDefaultTool(mock);
+
+        $setCursor("auto");
 
         const style = document
             .documentElement
@@ -21,9 +24,11 @@ describe("RectangleToolChangeCursorEventServiceTest", () =>
         // test case mock1
         expect(style.getPropertyValue("--tool-cursor")).toBe("auto");
 
-        execute();
+        execute({
+            "stopPropagation": () => {},
+            "preventDefault": () => {}
+        });
 
         expect(style.getPropertyValue("--tool-cursor")).toBe(mock.cursor);
     });
-
 });
