@@ -57,6 +57,7 @@ import { execute as characterUpdateXHistoryRedoUseCase } from "@/history/applica
 import { execute as characterUpdateYHistoryRedoUseCase } from "@/history/application/core/application/Character/UpdateY/usecase/CharacterUpdateYHistoryRedoUseCase";
 import { execute as instanceUpdateNameHistoryRedoUseCase } from "@/history/application/core/application/Instance/usecase/InstanceUpdateNameHistoryRedoUseCase";
 import { execute as instanceUpdateSymbolHistoryRedoUseCase } from "@/history/application/core/application/Instance/usecase/InstanceUpdateSymbolHistoryRedoUseCase";
+import { execute as libraryAreaAddNewShapeHistoryRedoUseCase } from "@/history/application/controller/application/LibraryArea/Shape/usecase/LibraryAreaAddNewShapeHistoryRedoUseCase";
 import {
     $SCREEN_TAB_NAME_UPDATE_COMMAND,
     $TIMELINE_TOOL_LAYER_ADD_COMMAND,
@@ -107,8 +108,10 @@ import {
     $STAGE_FPS_COMMAND,
     $STAGE_COLOR_COMMAND,
     $CHARACTER_UPDATE_X,
-    $CHARACTER_UPDATE_Y
+    $CHARACTER_UPDATE_Y,
+    $LIBRARY_ADD_NEW_SHAPE_COMMAND
 } from "@/config/HistoryConfig";
+import { ShapeSaveObjectImpl } from "@/interface/ShapeSaveObjectImpl";
 
 /**
  * @description Redoコマンドの実行関数
@@ -617,6 +620,14 @@ export const execute = async (
                 messages[3] as number, // Keyframe
                 messages[4] as number, // Depth
                 messages[6] as number // After Y
+            );
+            break;
+
+        // 新規Shape追加
+        case $LIBRARY_ADD_NEW_SHAPE_COMMAND:
+            libraryAreaAddNewShapeHistoryRedoUseCase(
+                messages[0] as number, // WorkSpace ID
+                messages[2] as ShapeSaveObjectImpl // Shape Save Object
             );
             break;
 

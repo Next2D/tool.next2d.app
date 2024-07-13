@@ -546,3 +546,12 @@ export const $CHARACTER_UPDATE_X: number = 54;
  * @constant
  */
 export const $CHARACTER_UPDATE_Y: number = 55;
+
+/**
+ * @description 新規Shape追加操作の識別コマンド名
+ *              Identification command name for new Shape add operation
+ *
+ * @type {number}
+ * @constant
+ */
+export const $LIBRARY_ADD_NEW_SHAPE_COMMAND: number = 56;

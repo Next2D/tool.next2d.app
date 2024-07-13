@@ -53,6 +53,7 @@ import { execute as stageSettingUpdateFpsReceiveUseCase } from "@/share/receive/
 import { execute as stageSettingUpdateColorReceiveUseCase } from "@/share/receive/application/controller/application/StageSetting/usecase/StageSettingUpdateColorReceiveUseCase";
 import { execute as characterUpdateXReceiveUseCase } from "@/share/receive/application/core/application/Character/usecase/CharacterUpdateXReceiveUseCase";
 import { execute as characterUpdateYReceiveUseCase } from "@/share/receive/application/core/application/Character/usecase/CharacterUpdateYReceiveUseCase";
+import { execute as shapeAddNewReceiveUseCase } from "@/share/receive/application/controller/application/LibraryArea/Shape/ShapeAddNewReceiveUseCase";
 import { execute as historyRedoUseCase } from "@/controller/application/HistoryArea/usecase/HistoryRedoUseCase";
 import { execute as historyUndoUseCase } from "@/controller/application/HistoryArea/usecase/HistoryUndoUseCase";
 import {
@@ -111,7 +112,8 @@ import {
     $STAGE_FPS_COMMAND,
     $STAGE_COLOR_COMMAND,
     $CHARACTER_UPDATE_X,
-    $CHARACTER_UPDATE_Y
+    $CHARACTER_UPDATE_Y,
+    $LIBRARY_ADD_NEW_SHAPE_COMMAND
 } from "@/config/HistoryConfig";
 
 /**
@@ -413,6 +415,11 @@ export const execute = async (message: ShareReceiveMessageImpl): Promise<void> =
         // キャラクターのy座標を更新
         case $CHARACTER_UPDATE_Y:
             characterUpdateYReceiveUseCase(message);
+            break;
+
+        // 新規Shapeを追加
+        case $LIBRARY_ADD_NEW_SHAPE_COMMAND:
+            shapeAddNewReceiveUseCase(message);
             break;
 
         default:

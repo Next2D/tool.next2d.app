@@ -59,6 +59,7 @@ import { execute as characterUpdateXHistoryUndoUseCase } from "@/history/applica
 import { execute as characterUpdateYHistoryUndoUseCase } from "@/history/application/core/application/Character/UpdateY/usecase/CharacterUpdateYHistoryUndoUseCase";
 import { execute as instanceUpdateNameHistoryUndoUseCase } from "@/history/application/core/application/Instance/usecase/InstanceUpdateNameHistoryUndoUseCase";
 import { execute as instanceUpdateSymbolHistoryUndoUseCase } from "@/history/application/core/application/Instance/usecase/InstanceUpdateSymbolHistoryUndoUseCase";
+import { execute as libraryAreaAddNewShapeHistoryUndoUseCase } from "@/history/application/controller/application/LibraryArea/Shape/usecase/LibraryAreaAddNewShapeHistoryUndoUseCase";
 import {
     $SCREEN_TAB_NAME_UPDATE_COMMAND,
     $TIMELINE_TOOL_LAYER_ADD_COMMAND,
@@ -109,8 +110,10 @@ import {
     $STAGE_FPS_COMMAND,
     $STAGE_COLOR_COMMAND,
     $CHARACTER_UPDATE_X,
-    $CHARACTER_UPDATE_Y
+    $CHARACTER_UPDATE_Y,
+    $LIBRARY_ADD_NEW_SHAPE_COMMAND
 } from "@/config/HistoryConfig";
+import { ShapeSaveObjectImpl } from "@/interface/ShapeSaveObjectImpl";
 
 /**
  * @description Undoコマンドの実行関数
@@ -615,6 +618,14 @@ export const execute = async (
                 messages[3] as number, // Keyframe
                 messages[4] as number, // Depth
                 messages[5] as number // Before Y
+            );
+            break;
+
+        // 新規Shape追加
+        case $LIBRARY_ADD_NEW_SHAPE_COMMAND:
+            libraryAreaAddNewShapeHistoryUndoUseCase(
+                messages[0] as number, // WorkSpace ID
+                messages[2] as ShapeSaveObjectImpl // Shape Save Object
             );
             break;
 

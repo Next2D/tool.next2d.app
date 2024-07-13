@@ -48,7 +48,8 @@ import {
     $STAGE_FPS_COMMAND,
     $STAGE_COLOR_COMMAND,
     $CHARACTER_UPDATE_X,
-    $CHARACTER_UPDATE_Y
+    $CHARACTER_UPDATE_Y,
+    $LIBRARY_ADD_NEW_SHAPE_COMMAND
 } from "../../../../config/HistoryConfig";
 
 describe("HistoryGetTextServiceTest", () =>
@@ -104,5 +105,6 @@ describe("HistoryGetTextServiceTest", () =>
         expect(execute($STAGE_COLOR_COMMAND)).toBe("ステージの背景色を「%s1」から「%s2」に変更");
         expect(execute($CHARACTER_UPDATE_X)).toBe("「%s1」のレイヤー「%s2」の%s3フレーム・深度%s4のx座標を%s5から%s6に変更");
         expect(execute($CHARACTER_UPDATE_Y)).toBe("「%s1」のレイヤー「%s2」の%s3フレーム・深度%s4のy座標を%s5から%s6に変更");
+        expect(execute($LIBRARY_ADD_NEW_SHAPE_COMMAND)).toBe("新規Shape「%s1」を追加");
     });
 });

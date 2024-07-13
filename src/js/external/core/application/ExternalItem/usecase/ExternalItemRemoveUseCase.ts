@@ -43,7 +43,7 @@ export const execute = async (
         // 選択状態を初期化
         libraryAreaSelectedClearUseCase();
 
-        // ライブラリエリアを際描画
+        // ライブラリエリアを再描画
         libraryAreaReloadUseCase();
     }
 };

@@ -6,6 +6,11 @@ import { $getDefaultTool, $setActiveTool } from "../../ToolUtil";
 import { $TOOL_ARROW_NAME } from "@/config/ToolConfig";
 import type { ToolImpl } from "@/interface/ToolImpl";
 import type { ArrowTool } from "@/tool/domain/model/ArrowTool";
+import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
+import { ExternalTimeline } from "@/external/timeline/domain/model/ExternalTimeline";
+import { $getScreenOffsetLeft, $getScreenOffsetTop } from "@/global/GlobalUtil";
+import { $getConcatenatedMatrix } from "@/controller/application/TransformSetting/TransformSettingUtil";
+import { ExternalLibrary } from "@/external/controller/domain/model/ExternalLibrary";
 
 /**
  * @description 描画の範囲選択のマウスアップイベント
@@ -58,8 +63,35 @@ export const execute = async (event: PointerEvent): Promise<void> =>
     // 非表示になる前の位置を取得
     const left = rectElement.offsetLeft;
     const top = rectElement.offsetTop;
-    console.log(left, top);
 
     // 範囲選択を非表示に
     drawRectHideService();
+
+    const workSpace = $getCurrentWorkSpace();
+    const movieClip = workSpace.scene;
+
+    // 新規Shapeをライブラリに追加
+    const shapeId = workSpace.nextLibraryId;
+    const externalLibrary = new ExternalLibrary(workSpace);
+    externalLibrary.addNewShape(`Shape_${shapeId}`);
+
+    // 親のMovieClipと拡大・縮小を考慮した補正座標を計算
+    const x = (left - $getScreenOffsetLeft()) * workSpace.scale;
+    const y = (top - $getScreenOffsetTop()) * workSpace.scale;
+
+    // 先祖のmatrixを加算
+    const concatenatedMatrix = $getConcatenatedMatrix();
+
+    // 配置座標したGlobal座標をLocal座標に変換
+    const matrix = new next2d.geom.Matrix(
+        concatenatedMatrix[0], concatenatedMatrix[1], concatenatedMatrix[2],
+        concatenatedMatrix[3], concatenatedMatrix[4], concatenatedMatrix[5]
+    );
+    matrix.invert();
+
+    const localX = x * matrix.a + y * matrix.c + matrix.tx;
+    const localY = x * matrix.b + y * matrix.d + matrix.ty;
+    console.log(localX, localY);
+
+    // const externalTimeline = new ExternalTimeline(workSpace, movieClip);
 };

@@ -1,6 +1,7 @@
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import type { ExternalInstanceImpl } from "@/interface/ExternalInstanceImpl";
 import { execute as externalLibraryAddNewMovieClipUseCase } from "@/external/controller/application/ExternalLibrary/usecase/ExternalLibraryAddNewMovieClipUseCase";
+import { execute as externalLibraryAddNewShapeUseCase } from "@/external/controller/application/ExternalLibrary/usecase/ExternalLibraryAddNewShapeUseCase";
 import { execute as externalLibraryImportFileUseCase } from "@/external/controller/application/ExternalLibrary/usecase/ExternalLibraryImportFileUseCase";
 import { execute as externalLibraryGetItemUseCase } from "@/external/controller/application/ExternalLibrary/usecase/ExternalLibraryGetItemUseCase";
 import { execute as externalLibraryOutOfFolderUseCase } from "@/external/controller/application/ExternalLibrary/usecase/ExternalLibraryOutOfFolderUseCase";
@@ -185,6 +186,54 @@ export class ExternalLibrary
 
         // 新規MovieClipを作成
         externalLibraryAddNewMovieClipUseCase(
+            this._$workSpace,
+            this._$workSpace.scene,
+            name, folderId, reload
+        );
+    }
+
+    /**
+     * @description 指定の階層に新規Shapeを追加、階層が存在しなければフォルダを生成
+     *              Add a new Shape to the specified hierarchy, or create a folder if the hierarchy does not exist
+     *
+     * @param  {string} path
+     * @param  {boolean} [reload = true]
+     * @return {void}
+     * @method
+     * @public
+     */
+    addNewShape (path: string, reload: boolean = true): void
+    {
+        if (!path) {
+            return ;
+        }
+
+        const paths = path.split("/");
+
+        // 銭湯が空文字なら排除
+        if (paths[0] === "") {
+            paths.shift();
+        }
+
+        if (!paths.length) {
+            return ;
+        }
+
+        const name = paths.pop() as NonNullable<string>;
+
+        // フォルダー指定があれば先にフォルダーを生成
+        let folderId = 0;
+        if (paths.length) {
+
+            this.addNewFolder(paths.join("/"), reload);
+
+            const item = this.getItem(paths.join("/"));
+
+            folderId = item.id;
+        }
+
+        // 新規Shapeを作成
+        externalLibraryAddNewShapeUseCase(
             this._$workSpace,
             this._$workSpace.scene,
             name, folderId, reload

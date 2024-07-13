@@ -48,7 +48,8 @@ import {
     $STAGE_FPS_COMMAND,
     $STAGE_COLOR_COMMAND,
     $CHARACTER_UPDATE_X,
-    $CHARACTER_UPDATE_Y
+    $CHARACTER_UPDATE_Y,
+    $LIBRARY_ADD_NEW_SHAPE_COMMAND
 } from "@/config/HistoryConfig";
 
 /**
@@ -208,6 +209,9 @@ export const execute = (command: number): string =>
 
         case $CHARACTER_UPDATE_Y:
             return "「%s1」のレイヤー「%s2」の%s3フレーム・深度%s4のy座標を%s5から%s6に変更";
+
+        case $LIBRARY_ADD_NEW_SHAPE_COMMAND:
+            return "新規Shape「%s1」を追加";
 
         default:
             break;

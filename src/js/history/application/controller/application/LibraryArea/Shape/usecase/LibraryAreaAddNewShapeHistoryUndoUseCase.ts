@@ -1,22 +1,23 @@
-import { $getWorkSpace } from "@/core/application/CoreUtil";
+import type { Shape } from "@/core/domain/model/Shape";
 import type { InstanceImpl } from "@/interface/InstanceImpl";
-import type { MovieClip } from "@/core/domain/model/MovieClip";
+import type { ShapeSaveObjectImpl } from "@/interface/ShapeSaveObjectImpl";
+import { $getWorkSpace } from "@/core/application/CoreUtil";
 import { execute as externalWorkSpaceRemoveInstanceService } from "@/external/core/application/ExternalWorkSpace/service/ExternalWorkSpaceRemoveInstanceService";
 import { execute as libraryAreaReloadUseCase } from "@/controller/application/LibraryArea/usecase/LibraryAreaReloadUseCase";
 
 /**
- * @description 新規MovieClip追加処理のUndo関数
- *              Undo function for new MovieClip addition process
+ * @description 新規Shape追加処理のUndo関数
+ *              Undo function for new Shape addition process
  *
  * @param  {number} work_space_id
- * @param  {number} library_id
+ * @param  {object} shape_object
  * @return {void}
  * @method
  * @public
  */
 export const execute = (
     work_space_id: number,
-    library_id: number
+    shape_object: ShapeSaveObjectImpl
 ): void => {
 
     const workSpace = $getWorkSpace(work_space_id);
@@ -24,13 +25,13 @@ export const execute = (
         return ;
     }
 
-    const movieClip: InstanceImpl<MovieClip> | null = workSpace.getLibrary(library_id);
-    if (!movieClip) {
+    const shape: InstanceImpl<Shape> | null = workSpace.getLibrary(shape_object.id);
+    if (!shape) {
         return ;
     }
 
     // 内部情報から削除
-    externalWorkSpaceRemoveInstanceService(workSpace, movieClip);
+    externalWorkSpaceRemoveInstanceService(workSpace, shape);
 
     // 起動中のプロジェクトならライブラリを再描画
     if (workSpace.active) {
