@@ -1,9 +1,9 @@
 import { $useKeyboard } from "@/shortcut/ShortcutUtil";
-import { execute as zoomToolRegisterPointerEventUseCase } from "./ZoomToolRegisterPointerEventUseCase";
+import { execute as strokeSizeRegisterPointerEventUseCase } from "./StrokeSizeRegisterPointerEventUseCase";
 
 /**
- * @description ズームInputのマウスダウンイベント
- *              Zoom Input Mouse Down Event
+ * @description 線の幅のInputのマウスダウンイベント
+ *              Mouse down event of line width input
  *
  * @param  {PointerEvent} event
  * @return {void}
@@ -32,5 +32,5 @@ export const execute = (event: PointerEvent): void =>
     }
 
     // windowのイベントを登録
-    zoomToolRegisterPointerEventUseCase(event);
+    strokeSizeRegisterPointerEventUseCase(event);
 };

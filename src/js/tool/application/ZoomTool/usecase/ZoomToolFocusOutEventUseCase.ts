@@ -4,8 +4,8 @@ import { $ZOOM_MAX_VALUE, $ZOOM_MIN_VALUE } from "@/config/ZoomConfig";
 import { execute as zoomToolRealodWorkSpaceUseCase } from "./ZoomToolRealodWorkSpaceUseCase";
 
 /**
- * @description y座標の入力完了処理
- *              y-coordinate input completion processing
+ * @description ズームinputのフォーカスアウト処理
+ *              Zoom input focus out processing
  *
  * @param  {FocusEvent} event
  * @return {Promise}

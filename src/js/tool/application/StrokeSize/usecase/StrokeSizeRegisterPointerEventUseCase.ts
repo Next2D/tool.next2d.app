@@ -1,10 +1,10 @@
 import { EventType } from "@/tool/domain/event/EventType";
-import { execute as zoomToolPointerMoveEventUseCase } from "./ZoomToolPointerMoveEventUseCase";
-import { execute as zoomToolPointerUpEventUseCase } from "./ZoomToolPointerUpEventUseCase";
+import { execute as strokeSizePointerMoveEventService } from "../service/StrokeSizePointerMoveEventService";
+import { execute as zoomToolPointerUpEventUseCase } from "./StrokeSizePointerUpEventUseCase";
 
 /**
- * @description ズームninputのマウス操作イベントを登録
- *              Register mouse operation events for zoom input
+ * @description 線の幅のinputのマウス操作イベントを登録
+ *              Register mouse operation events for line width input
  *
  * @param  {PointerEvent} event
  * @return {void}
@@ -22,7 +22,7 @@ export const execute = (event: PointerEvent): void =>
     element.setPointerCapture(event.pointerId);
     element.addEventListener(
         EventType.MOUSE_MOVE,
-        zoomToolPointerMoveEventUseCase,
+        strokeSizePointerMoveEventService,
         { "passive": false }
     );
     element.addEventListener(

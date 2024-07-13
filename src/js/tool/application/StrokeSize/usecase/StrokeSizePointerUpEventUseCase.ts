@@ -1,10 +1,12 @@
 import { $setCursor } from "@/global/GlobalUtil";
 import { EventType } from "@/tool/domain/event/EventType";
-import { execute as zoomToolPointerMoveEventUseCase } from "./ZoomToolPointerMoveEventUseCase";
+import { execute as strokeSizePointerMoveEventUseCase } from "../service/StrokeSizePointerMoveEventService";
+import { execute as userStrokeSizeUpdateService } from "@/user/application/Tool/service/UserStrokeSizeUpdateService";
+import { strokeSize } from "@/tool/domain/model/StrokeSize";
 
 /**
- * @description ズームinputの値のマウスアップイベント
- *              Mouse up event of the value of the zoom input
+ * @description 変形エリアのx座標の値操作のマウスアップイベント
+ *              Mouse up event for value operation of x-coordinate of deformation area
  *
  * @param  {PointerEvent} event
  * @return {void}
@@ -28,9 +30,13 @@ export const execute = (event: PointerEvent): void =>
     // windowのイベントを削除
     element.releasePointerCapture(event.pointerId);
     element.removeEventListener(EventType.MOUSE_MOVE,
-        zoomToolPointerMoveEventUseCase
+        strokeSizePointerMoveEventUseCase
     );
     element.removeEventListener(EventType.MOUSE_UP, execute);
+
+    // 線の太さを更新
+    strokeSize.value = parseInt(element.value);
+    userStrokeSizeUpdateService(strokeSize.value);
 
     // input要素のフォーカス
     element.focus();

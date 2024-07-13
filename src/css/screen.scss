@@ -222,7 +222,6 @@
 #stage-rect
 {
     position       : absolute;
-    // position       : fixed;
     background     : rgba(128, 128, 128, 0.2);
     border         : 1px solid #29628e;
     pointer-events : none;
@@ -230,13 +229,13 @@
 
 #draw-rect
 {
-    position       : fixed;
+    position       : absolute;
     pointer-events : none;
 }
 
 #draw-text
 {
-    position       : fixed;
+    position       : absolute;
     pointer-events : none;
 }
 

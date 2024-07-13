@@ -170,6 +170,33 @@ export const $TOOL_USER_SETTING_ID: string = `${$TOOL_PREFIX}-${$TOOL_USER_SETTI
 export const $SCREEN_SCALE_ID: string = "screen-scale";
 
 /**
+ * @description 塗りのInputのElementのID
+ *              ID of Element of Fill Input
+ *
+ * @type {string}
+ * @constant
+ */
+export const $TOOL_FILL_COLOR_ID: string = "fill-color";
+
+/**
+ * @description 線のInputのElementのID
+ *              ID of Element of Line Input
+ *
+ * @type {string}
+ * @constant
+ */
+export const $TOOL_STROKE_COLOR_ID: string = "stroke-color";
+
+/**
+ * @description 線の幅のInputのElementのID
+ *              ID of Element of Line Width Input
+ *
+ * @type {string}
+ * @constant
+ */
+export const $TOOL_STROKE_SIZE_ID: string = "stroke-size";
+
+/**
  * @description ツールエリアの幅
  *              Tool Area Width
  *
@@ -177,3 +204,21 @@ export const $SCREEN_SCALE_ID: string = "screen-scale";
  * @constant
  */
 export const $TOOL_AERA_WIDTH: number = 45;
+
+/**
+ * @description 線の幅の最小値
+ *              Minimum value of line width
+ *
+ * @type {number}
+ * @constant
+ */
+export const $TOOL_MIN_STROKE_SIZE: number = 0;
+
+/**
+ * @description 線の幅の最大値
+ *              Maximum value of line width
+ *
+ * @type {number}
+ * @constant
+ */
+export const $TOOL_MAX_STROKE_SIZE: number = 255;

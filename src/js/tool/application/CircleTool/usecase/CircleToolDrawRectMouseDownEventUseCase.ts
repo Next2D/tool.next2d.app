@@ -23,5 +23,5 @@ export const execute = (event: PointerEvent): void =>
     circleToolDrawRectRegisterPointerEventUseCase(event);
 
     // 範囲選択のElementを表示
-    drawRectShowService(event.offsetX, event.offsetY);
+    drawRectShowService(event.offsetX, event.offsetY, "50%");
 };

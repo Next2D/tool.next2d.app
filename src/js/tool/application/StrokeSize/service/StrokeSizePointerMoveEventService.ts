@@ -1,11 +1,17 @@
-import { $ZOOM_MAX_VALUE, $ZOOM_MIN_VALUE } from "@/config/ZoomConfig";
-import { $clamp, $setCursor } from "@/global/GlobalUtil";
-import { execute as zoomToolRealodWorkSpaceUseCase } from "./ZoomToolRealodWorkSpaceUseCase";
+import {
+    $clamp,
+    $setCursor
+} from "@/global/GlobalUtil";
+import {
+    $TOOL_MAX_STROKE_SIZE,
+    $TOOL_MIN_STROKE_SIZE
+} from "@/config/ToolConfig";
+import { strokeSize } from "@/tool/domain/model/StrokeSize";
 import { $allHideMenu } from "@/menu/application/MenuUtil";
 
 /**
- * @description ズームinuputの値操作のマウスムーブイベント
- *              Mouse move event for value operation of zoom input
+ * @description 線の幅のinuputの値操作のマウスムーブイベント
+ *              Mouse move event of value operation of line width input
  *
  * @param  {PointerEvent} event
  * @return {void}
@@ -38,9 +44,10 @@ export const execute = (event: PointerEvent): void =>
 
         // 表示を更新
         const value = parseInt(element.value);
-        const scale = $clamp(value + event.movementX, $ZOOM_MIN_VALUE, $ZOOM_MAX_VALUE);
-        element.value = `${scale}`;
+        const width = $clamp(value + event.movementX, $TOOL_MIN_STROKE_SIZE, $TOOL_MAX_STROKE_SIZE);
+        element.value = `${width}`;
 
-        await zoomToolRealodWorkSpaceUseCase(scale / 100);
+        // 内部の値を更新
+        strokeSize.value = width;
     });
 };

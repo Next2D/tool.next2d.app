@@ -44,6 +44,33 @@ export const $USER_LANGUAGE_SETTING_KEY: string = `${$PREFIX}@language-setting`;
 export const $USER_SHORTCUT_SETTING_KEY: string = `${$PREFIX}@shortcut`;
 
 /**
+ * @description 塗りのカラーの保存のキー
+ *              Key to save fill color
+ *
+ * @type {string}
+ * @constant
+ */
+export const $USER_FILL_COLOR_KEY: string = `${$PREFIX}@fill-color`;
+
+/**
+ * @description 線のカラーの保存のキー
+ *              Key to save line color
+ *
+ * @type {string}
+ * @constant
+ */
+export const $USER_STROKE_COLOR_KEY: string = `${$PREFIX}@stroke-color`;
+
+/**
+ * @description 線の幅の保存のキー
+ *              Key to save line width
+ *
+ * @type {string}
+ * @constant
+ */
+export const $USER_STROKE_WIDTH_KEY: string = `${$PREFIX}@stroke-width`;
+
+/**
  * @description ツールエリアの移動状態の保存キー
  *              Key to save tool area movement status
  *

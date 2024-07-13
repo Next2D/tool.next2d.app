@@ -2,6 +2,10 @@ import { EventType } from "@/tool/domain/event/EventType";
 import { execute as circleToolDrawRectPointerMoveEventUseCase } from "./CircleToolDrawRectPointerMoveEventUseCase";
 import { execute as drawRectHideService } from "@/screen/application/DrawRect/service/DrawRectHideService";
 import { $SCREEN_DRAW_RECT_ID } from "@/config/ScreenConfig";
+import { $getDefaultTool, $setActiveTool } from "../../ToolUtil";
+import { $TOOL_ARROW_NAME } from "@/config/ToolConfig";
+import type { ToolImpl } from "@/interface/ToolImpl";
+import type { ArrowTool } from "@/tool/domain/model/ArrowTool";
 
 /**
  * @description シェイプの円描画のマウスアップイベントの実行関数
@@ -30,6 +34,11 @@ export const execute = async (event: PointerEvent): Promise<void> =>
     );
     element.removeEventListener(EventType.MOUSE_UP, execute);
 
+    const tool: ToolImpl<ArrowTool> = $getDefaultTool($TOOL_ARROW_NAME);
+    if (tool) {
+        $setActiveTool(tool);
+    }
+
     // 範囲選択のElementを表示
     const rectElement: HTMLElement | null = document
         .getElementById($SCREEN_DRAW_RECT_ID);
@@ -52,33 +61,4 @@ export const execute = async (event: PointerEvent): Promise<void> =>
 
     // 範囲選択を非表示に
     drawRectHideService();
-
-    // const workSpace = $getCurrentWorkSpace();
-    // const stage = workSpace.stage;
-
-    // const scale = parseFloat($clamp(Math.max(
-    //     stage.width / width,
-    //     stage.height / height,
-    //     workSpace.scale
-    // ), 0.25, 5).toFixed(2));
-
-    // // 変化がない場合は処理を終了
-    // if (scale === workSpace.scale) {
-    //     return ;
-    // }
-
-    // const screen = document.getElementById($SCREEN_ID);
-    // if (!screen) {
-    //     return ;
-    // }
-
-    // // スクリーンの表示位置を補正
-    // screen.scrollLeft = left - (screen.clientWidth - width) / 2;
-    // screen.scrollTop  = top - (screen.clientHeight - height) / 2;
-
-    // // スケールのインプット表示を更新
-    // zoomToolUpdateElementService(scale * 100);
-
-    // // 再描画
-    // await zoomToolRealodWorkSpaceUseCase(scale);
 };
