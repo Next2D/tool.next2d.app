@@ -47,10 +47,8 @@ export const execute = (shape: Shape): Promise<HTMLCanvasElement> =>
         const bitmapData = new next2d.display.BitmapData(width * scale, height * scale);
         bitmapData.draw(displayShape, matrix, null, canvas, (canvas: HTMLCanvasElement): void =>
         {
-            if (scale > 1) {
-                canvas.style.width  = `${width}px`;
-                canvas.style.height = `${height}px`;
-            }
+            canvas.style.width  = `${width}px`;
+            canvas.style.height = `${height}px`;
             resolve(canvas);
         });
     });

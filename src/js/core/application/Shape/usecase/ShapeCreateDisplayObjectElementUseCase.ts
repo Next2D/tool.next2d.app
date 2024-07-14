@@ -2,7 +2,7 @@ import type { Character } from "@/core/domain/model/Character";
 import type { InstanceImpl } from "@/interface/InstanceImpl";
 import type { Layer } from "@/core/domain/model/Layer";
 import type { Shape } from "@/core/domain/model/Shape";
-import { execute as movieClipRegisterEventUseCase } from "@/core/application/MovieClip/usecase/MovieClipRegisterEventUseCase";
+import { execute as shapeRegisterEventUseCase } from "@/core/application/Shape/usecase/ShapeRegisterEventUseCase";
 import { execute as shapeDisplayObjectComponent } from "../component/ShapeDisplayObjectComponent";
 import { $getCacheCanvas } from "@/cache/CacheUtil";
 
@@ -50,7 +50,7 @@ export const execute = async (
 
     // イベントを登録
     if (event_register) {
-        movieClipRegisterEventUseCase(div);
+        shapeRegisterEventUseCase(div);
     } else {
         if (!div.classList.contains("disabled")) {
             div.classList.add("disabled");

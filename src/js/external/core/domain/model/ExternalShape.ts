@@ -50,11 +50,11 @@ export class ExternalShape extends ExternalItem
      * @description グラフィックスの更新を適用
      *              Apply graphics update
      *
-     * @return {void}
+     * @return {Promise}
      * @method
      * @public
      */
-    applyGraphics (): void
+    async applyGraphics (): Promise<void>
     {
         // 描画レコードを取得
         const recodes = this._$graphics._$getRecodes();

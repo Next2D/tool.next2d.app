@@ -45,10 +45,8 @@ export const execute = (movie_clip: MovieClip, frame: number = 1): Promise<HTMLC
         const bitmapData = new next2d.display.BitmapData(movieClip.width * scale, movieClip.height * scale);
         bitmapData.draw(movieClip, matrix, null, canvas, (canvas: HTMLCanvasElement): void =>
         {
-            if (scale > 1) {
-                canvas.style.width  = `${movieClip.width}px`;
-                canvas.style.height = `${movieClip.height}px`;
-            }
+            canvas.style.width  = `${movieClip.width}px`;
+            canvas.style.height = `${movieClip.height}px`;
             resolve(canvas);
         });
     });

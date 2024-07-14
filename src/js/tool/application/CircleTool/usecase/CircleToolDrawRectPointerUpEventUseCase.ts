@@ -91,7 +91,7 @@ export const execute = async (event: PointerEvent): Promise<void> =>
         .drawEllipse(0, 0, width, height);
 
     // 生成した描画レコードの更新を適用
-    shape.applyGraphics();
+    await shape.applyGraphics();
 
     // TODO
     if (strokeSize.value) {

@@ -1,6 +1,7 @@
-import { $BITMAP_TYPE, $MOVIE_CLIP_TYPE } from "@/config/InstanceConfig";
+import { $BITMAP_TYPE, $MOVIE_CLIP_TYPE, $SHAPE_TYPE } from "@/config/InstanceConfig";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { execute as propertyAreaBitmapDisplayControllerUseCase } from "./PropertyAreaBitmapDisplayControllerUseCase";
+import { execute as propertyAreaShapeDisplayControllerUseCase } from "./PropertyAreaShapeDisplayControllerUseCase";
 import { execute as propertyAreaMovieClipDisplayControllerUseCase } from "./PropertyAreaMovieClipDisplayControllerUseCase";
 import { execute as propertyAreaShowMultiSettingUseCase } from "./PropertyAreaShowMultiSettingUseCase";
 import { $setSelectedMode } from "../PropertyAreaUtil";
@@ -53,6 +54,10 @@ export const execute = (): void =>
 
             case $MOVIE_CLIP_TYPE:
                 propertyAreaMovieClipDisplayControllerUseCase(character);
+                break;
+
+            case $SHAPE_TYPE:
+                propertyAreaShapeDisplayControllerUseCase(character);
                 break;
 
         }
