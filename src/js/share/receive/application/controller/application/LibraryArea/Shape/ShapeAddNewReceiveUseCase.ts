@@ -6,6 +6,9 @@ import { $getWorkSpace } from "@/core/application/CoreUtil";
 import { execute as externalLibraryAddInstanceUseCase } from "@/external/controller/application/ExternalLibrary/usecase/ExternalLibraryAddInstanceUseCase";
 import { execute as libraryAreaAddNewShapeHistoryUseCase } from "@/history/application/controller/application/LibraryArea/Shape/usecase/LibraryAreaAddNewShapeHistoryUseCase";
 import { Shape } from "@/core/domain/model/Shape";
+import { execute as shareGetS3EndPointRepository } from "@/share/domain/repository/ShareGetS3EndPointRepository";
+import { execute as shareGetS3FileRepository } from "@/share/domain/repository/ShareGetS3FileRepository";
+import { execute as binaryToBufferService } from "@/core/service/BinaryToBufferService";
 
 /**
  * @description socketで受け取った情報の受け取り処理関数

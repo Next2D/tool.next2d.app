@@ -13,8 +13,9 @@ import { Instance } from "./Instance";
  */
 export class Shape extends Instance
 {
-    private _$recodes: any[];
-    private _$bounds: BoundsImpl;
+    private readonly _$recodes: any[];
+    private readonly _$bounds: BoundsImpl;
+    private _$inBitmap: boolean;
 
     /**
      * @param {object} object
@@ -27,11 +28,13 @@ export class Shape extends Instance
 
         /**
          * @type {array}
+         * @private
          */
         this._$recodes = [];
 
         /**
          * @type {object}
+         * @private
          */
         this._$bounds = {
             "xMin": 0,
@@ -40,8 +43,15 @@ export class Shape extends Instance
             "yMax": 0
         };
 
+        /**
+         * @default false
+         * @type {boolean}
+         * @private
+         */
+        this._$inBitmap = object.inBitmap ? object.inBitmap : false;
+
         if (object.recodes) {
-            this._$recodes.push(...object.recodes);
+            this.convertToObjectFromRecode(object.recodes);
         }
 
         if (object.bounds) {
@@ -50,6 +60,19 @@ export class Shape extends Instance
             this._$bounds.xMax = object.bounds.xMax;
             this._$bounds.yMax = object.bounds.yMax;
         }
+    }
+
+    /**
+     * @description 描画レコードの配列
+     *              Array of drawing records
+     *
+     * @member {array}
+     * @readonly
+     * @public
+     */
+    get recodes (): any[]
+    {
+        return this._$recodes;
     }
 
     /**
@@ -62,12 +85,62 @@ export class Shape extends Instance
      */
     getRawBounds (): BoundsImpl
     {
-        return {
-            "xMin": this._$bounds.xMin,
-            "yMin": this._$bounds.yMin,
-            "xMax": this._$bounds.xMax,
-            "yMax": this._$bounds.yMax
-        };
+        return this._$bounds;
+    }
+
+    /**
+     * @description Shapeの描画レコードを保存用のObjectに変換
+     *              Convert the drawing records of Shape to an Object for saving
+     *
+     * @return {array}
+     * @method
+     * @public
+     */
+    convertToRecodeFromObject (): any[]
+    {
+        if (!this._$inBitmap) {
+            return this._$recodes.slice();
+        }
+
+        const recodes = [];
+        for (let idx = 0; this._$recodes.length > idx; ++idx) {
+
+            const value = this._$recodes[idx];
+            recodes[idx] = value;
+
+            if (typeof value !== "object") {
+                continue;
+            }
+
+            if (value.namespace !== next2d.display.BitmapData.namespace) {
+                continue;
+            }
+
+            recodes[idx] = {
+                "buffer": Array.from(value.buffer),
+                "width": value.width,
+                "height": value.height
+            };
+        }
+
+        return recodes;
+    }
+
+    /**
+     * @description 保存用のObjectからShapeの描画レコードに変換
+     *              Convert the drawing records of Shape from an Object for saving
+     *
+     * @param {array} values
+     * @method
+     * @public
+     */
+    convertToObjectFromRecode (values: any[]): void
+    {
+        this._$recodes.length = 0;
+        this._$recodes.push(...values);
+        if (this._$inBitmap) {
+            // todo
+        }
     }
 
     /**
@@ -86,7 +159,8 @@ export class Shape extends Instance
             "type":     this.type,
             "symbol":   this.symbol,
             "folderId": this.folderId,
-            "recodes":  this._$recodes.slice(),
+            "inBitmap": this._$inBitmap,
+            "recodes":  this.convertToRecodeFromObject(),
             "bounds":   this.getRawBounds()
         };
     }

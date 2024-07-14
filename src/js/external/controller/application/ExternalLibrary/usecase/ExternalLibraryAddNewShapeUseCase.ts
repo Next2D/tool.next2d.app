@@ -18,13 +18,13 @@ import { Shape } from "@/core/domain/model/Shape";
  * @method
  * @public
  */
-export const execute = (
+export const execute = async (
     work_space: WorkSpace,
     movie_clip: MovieClip,
     name: string,
     folder_id: number = 0,
     reload: boolean = true
-): Shape => {
+): Promise<Shape> => {
 
     // フォルダのデータを生成
     const shape = new Shape({
@@ -45,7 +45,7 @@ export const execute = (
 
     // 作業履歴に残す
     // fixed logic
-    libraryAreaAddNewShapeHistoryUseCase(
+    await libraryAreaAddNewShapeHistoryUseCase(
         work_space,
         movie_clip,
         shape

@@ -9,6 +9,7 @@ import { $LIBRARY_ADD_NEW_SHAPE_COMMAND } from "@/config/HistoryConfig";
  * @param  {number} work_space_id
  * @param  {number} movie_clip_id
  * @param  {object} shape_object
+ * @param  {string} [file_id=""]
  * @return {object}
  * @method
  * @public
@@ -16,7 +17,8 @@ import { $LIBRARY_ADD_NEW_SHAPE_COMMAND } from "@/config/HistoryConfig";
 export const execute = (
     work_space_id: number,
     movie_clip_id: number,
-    shape_object: ShapeSaveObjectImpl
+    shape_object: ShapeSaveObjectImpl,
+    file_id: string = ""
 ): HistoryObjectImpl => {
 
     return {
@@ -24,7 +26,8 @@ export const execute = (
         "messages": [
             work_space_id,
             movie_clip_id,
-            shape_object
+            shape_object,
+            file_id
         ],
         "args": [
             shape_object.name

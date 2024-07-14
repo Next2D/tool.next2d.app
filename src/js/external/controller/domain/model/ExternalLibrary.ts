@@ -198,11 +198,11 @@ export class ExternalLibrary
      *
      * @param  {string} path
      * @param  {boolean} [reload = true]
-     * @return {void}
+     * @return {Promise}
      * @method
      * @public
      */
-    addNewShape (path: string, reload: boolean = true): void
+    async addNewShape (path: string, reload: boolean = true): Promise<void>
     {
         if (!path) {
             return ;
@@ -233,7 +233,7 @@ export class ExternalLibrary
         }
 
         // 新規Shapeを作成
-        externalLibraryAddNewShapeUseCase(
+        await externalLibraryAddNewShapeUseCase(
             this._$workSpace,
             this._$workSpace.scene,
             name, folderId, reload

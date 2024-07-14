@@ -11,6 +11,11 @@ import { ExternalTimeline } from "@/external/timeline/domain/model/ExternalTimel
 import { $getScreenOffsetLeft, $getScreenOffsetTop } from "@/global/GlobalUtil";
 import { $getConcatenatedMatrix } from "@/controller/application/TransformSetting/TransformSettingUtil";
 import { ExternalLibrary } from "@/external/controller/domain/model/ExternalLibrary";
+import type { ExternalInstanceImpl } from "@/interface/ExternalInstanceImpl";
+import type { ExternalShape } from "@/external/core/domain/model/ExternalShape";
+import { fillColor } from "@/tool/domain/model/FillColor";
+import { strokeColor } from "@/tool/domain/model/StrokeColor";
+import { strokeSize } from "@/tool/domain/model/StrokeSize";
 
 /**
  * @description 描画の範囲選択のマウスアップイベント
@@ -71,9 +76,28 @@ export const execute = async (event: PointerEvent): Promise<void> =>
     const movieClip = workSpace.scene;
 
     // 新規Shapeをライブラリに追加
-    const shapeId = workSpace.nextLibraryId;
+    const path = `Shape_${workSpace.nextLibraryId}`;
     const externalLibrary = new ExternalLibrary(workSpace);
-    externalLibrary.addNewShape(`Shape_${shapeId}`);
+    await externalLibrary.addNewShape(path);
+
+    const shape: ExternalInstanceImpl<ExternalShape> = externalLibrary.getItem(path);
+    if (!shape) {
+        return ;
+    }
+
+    // 円の描画レコードを作成
+    shape
+        .graphics
+        .beginFill(fillColor.value)
+        .drawEllipse(0, 0, width, height);
+
+    // 生成した描画レコードの更新を適用
+    shape.applyGraphics();
+
+    // TODO
+    if (strokeSize.value) {
+        // 線の描画レコードを作成
+    }
 
     // 親のMovieClipと拡大・縮小を考慮した補正座標を計算
     const x = (left - $getScreenOffsetLeft()) * workSpace.scale;
@@ -91,7 +115,9 @@ export const execute = async (event: PointerEvent): Promise<void> =>
 
     const localX = x * matrix.a + y * matrix.c + matrix.tx;
     const localY = x * matrix.b + y * matrix.d + matrix.ty;
-    console.log(localX, localY);
 
-    // const externalTimeline = new ExternalTimeline(workSpace, movieClip);
+    // タイムラインに追加
+    const externalTimeline = new ExternalTimeline(workSpace, movieClip);
+    await externalTimeline
+        .addItemToMovieClip(localX, localY, path);
 };
