@@ -19,7 +19,7 @@ export const execute = (movie_clip: MovieClip): PositionImpl | null =>
     // 選択範囲のElementを表示
     const frame = movie_clip.currentFrame;
 
-    // 選択範囲のbounding boxを取得
+    // 選択範囲の左上の位置を取得
     const position = {
         "x": Number.MAX_VALUE,
         "y": Number.MAX_VALUE

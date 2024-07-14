@@ -1,21 +1,19 @@
+import type { ExternalInstanceImpl } from "@/interface/ExternalInstanceImpl";
+import type { ExternalShape } from "@/external/core/domain/model/ExternalShape";
+import type { ToolImpl } from "@/interface/ToolImpl";
+import type { ArrowTool } from "@/tool/domain/model/ArrowTool";
 import { EventType } from "@/tool/domain/event/EventType";
 import { execute as circleToolDrawRectPointerMoveEventUseCase } from "./CircleToolDrawRectPointerMoveEventUseCase";
 import { execute as drawRectHideService } from "@/screen/application/DrawRect/service/DrawRectHideService";
 import { $SCREEN_DRAW_RECT_ID } from "@/config/ScreenConfig";
 import { $getDefaultTool, $setActiveTool } from "../../ToolUtil";
 import { $TOOL_ARROW_NAME } from "@/config/ToolConfig";
-import type { ToolImpl } from "@/interface/ToolImpl";
-import type { ArrowTool } from "@/tool/domain/model/ArrowTool";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
-import { ExternalTimeline } from "@/external/timeline/domain/model/ExternalTimeline";
 import { $getScreenOffsetLeft, $getScreenOffsetTop } from "@/global/GlobalUtil";
-import { $getConcatenatedMatrix } from "@/controller/application/TransformSetting/TransformSettingUtil";
 import { ExternalLibrary } from "@/external/controller/domain/model/ExternalLibrary";
-import type { ExternalInstanceImpl } from "@/interface/ExternalInstanceImpl";
-import type { ExternalShape } from "@/external/core/domain/model/ExternalShape";
 import { fillColor } from "@/tool/domain/model/FillColor";
-import { strokeColor } from "@/tool/domain/model/StrokeColor";
 import { strokeSize } from "@/tool/domain/model/StrokeSize";
+import { execute as timelineAreaAddItemToMovieClipService } from "@/timeline/application/TimelineArea/service/TimelineAreaAddItemToMovieClipService";
 
 /**
  * @description 描画の範囲選択のマウスアップイベント
@@ -66,6 +64,7 @@ export const execute = async (event: PointerEvent): Promise<void> =>
     }
 
     // 非表示になる前の位置を取得
+    // fixed logic
     const left = rectElement.offsetLeft;
     const top = rectElement.offsetTop;
 
@@ -73,13 +72,13 @@ export const execute = async (event: PointerEvent): Promise<void> =>
     drawRectHideService();
 
     const workSpace = $getCurrentWorkSpace();
-    const movieClip = workSpace.scene;
 
     // 新規Shapeをライブラリに追加
     const path = `Shape_${workSpace.nextLibraryId}`;
     const externalLibrary = new ExternalLibrary(workSpace);
     await externalLibrary.addNewShape(path);
 
+    // ライブラリからShapeを取得
     const shape: ExternalInstanceImpl<ExternalShape> = externalLibrary.getItem(path);
     if (!shape) {
         return ;
@@ -100,24 +99,9 @@ export const execute = async (event: PointerEvent): Promise<void> =>
     }
 
     // 親のMovieClipと拡大・縮小を考慮した補正座標を計算
-    const x = (left - $getScreenOffsetLeft()) * workSpace.scale;
-    const y = (top - $getScreenOffsetTop()) * workSpace.scale;
-
-    // 先祖のmatrixを加算
-    const concatenatedMatrix = $getConcatenatedMatrix();
-
-    // 配置座標したGlobal座標をLocal座標に変換
-    const matrix = new next2d.geom.Matrix(
-        concatenatedMatrix[0], concatenatedMatrix[1], concatenatedMatrix[2],
-        concatenatedMatrix[3], concatenatedMatrix[4], concatenatedMatrix[5]
+    await timelineAreaAddItemToMovieClipService(
+        (left - $getScreenOffsetLeft()) * workSpace.scale,
+        (top  - $getScreenOffsetTop())  * workSpace.scale,
+        path
     );
-    matrix.invert();
-
-    const localX = x * matrix.a + y * matrix.c + matrix.tx;
-    const localY = x * matrix.b + y * matrix.d + matrix.ty;
-
-    // タイムラインに追加
-    const externalTimeline = new ExternalTimeline(workSpace, movieClip);
-    await externalTimeline
-        .addItemToMovieClip(localX, localY, path);
 };

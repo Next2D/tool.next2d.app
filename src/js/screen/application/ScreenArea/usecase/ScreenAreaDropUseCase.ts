@@ -12,6 +12,7 @@ import {
 } from "@/global/GlobalUtil";
 import { ExternalSoundArea } from "@/external/controller/domain/model/ExternalSoundArea";
 import { $getConcatenatedMatrix } from "@/controller/application/TransformSetting/TransformSettingUtil";
+import { execute as timelineAreaAddItemToMovieClipService } from "@/timeline/application/TimelineArea/service/TimelineAreaAddItemToMovieClipService";
 
 /**
  * @description スクリーンエリアのアイテムドロップイベント処理関数
@@ -53,8 +54,6 @@ export const execute = async (client_x: number, client_y: number): Promise<void>
 
             default:
                 {
-                    const externalTimeline = new ExternalTimeline(workSpace, movieClip);
-
                     // 設置するアイテムの実際の表示範囲を取得
                     const bounds = instance.getRawBounds();
                     if (!bounds) {
@@ -69,26 +68,12 @@ export const execute = async (client_x: number, client_y: number): Promise<void>
                     const offsetX = $getScreenOffsetLeft() + (bounds.xMin + centerX) * workSpace.scale;
                     const offsetY = $getScreenOffsetTop()  + (bounds.yMin + centerY) * workSpace.scale;
 
-                    // 配置座標
-                    const x = client_x - offsetX;
-                    const y = client_y - offsetY;
-
-                    // 先祖のmatrixを加算
-                    const concatenatedMatrix = $getConcatenatedMatrix();
-
-                    // 配置座標したGlobal座標をLocal座標に変換
-                    const matrix = new next2d.geom.Matrix(
-                        concatenatedMatrix[0], concatenatedMatrix[1], concatenatedMatrix[2],
-                        concatenatedMatrix[3], concatenatedMatrix[4], concatenatedMatrix[5]
+                    // 指定座標にアイテムを配置
+                    await timelineAreaAddItemToMovieClipService(
+                        client_x - offsetX,
+                        client_y - offsetY,
+                        instance.getPath(workSpace)
                     );
-                    matrix.invert();
-
-                    const localX = x * matrix.a + y * matrix.c + matrix.tx;
-                    const localY = x * matrix.b + y * matrix.d + matrix.ty;
-
-                    // ドロップした座標に対してoffset値と拡大値を適用
-                    await externalTimeline
-                        .addItemToMovieClip(localX, localY, instance.getPath(workSpace));
                 }
                 break;
 
