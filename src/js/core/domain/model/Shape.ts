@@ -1,7 +1,10 @@
 import type { ObjectImpl } from "@/interface/ObjectImpl";
 import type { ShapeSaveObjectImpl } from "@/interface/ShapeSaveObjectImpl";
 import type { BoundsImpl } from "@/interface/BoundsImpl";
+import type { ShapePublishJsonImpl } from "@/interface/ShapePublishJsonImpl";
 import { Instance } from "./Instance";
+import { execute as shapeCreateCanvasElementService } from "@/core/application/Shape/service/ShapeCreateCanvasElementService";
+import { execute as shapeCreateJsonService } from "@/core/application/Shape/service/ShapeCreateJsonService";
 
 /**
  * @description ベクター管理クラス
@@ -73,6 +76,32 @@ export class Shape extends Instance
     get recodes (): any[]
     {
         return this._$recodes;
+    }
+
+    /**
+     * @description Shapeの情報をNext2D Playerの再生用JSONオブジェクトに変換
+     *              Convert Shape information to a JSON object for playback in Next2D Player
+     *
+     * @return {object}
+     * @method
+     * @public
+     */
+    toPublish (): ShapePublishJsonImpl
+    {
+        return shapeCreateJsonService(this);
+    }
+
+    /**
+     * @description HTMLCanvasElementを返却
+     *              Return HTMLCanvasElement
+     *
+     * @return {Promise}
+     * @method
+     * @public
+     */
+    async getHTMLElement (): Promise<HTMLCanvasElement>
+    {
+        return await shapeCreateCanvasElementService(this);
     }
 
     /**

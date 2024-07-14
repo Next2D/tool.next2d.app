@@ -1,11 +1,13 @@
 import type { Character } from "@/core/domain/model/Character";
 import type { Layer } from "@/core/domain/model/Layer";
 import { $getCurrentWorkSpace } from "../../CoreUtil";
-import { execute as bitmapCreateDisplayObjectElementUseCase } from "../../Bitmap/usecase/BitmapCreateDisplayObjectElementUseCase";
-import { execute as movieClipCreateDisplayObjectElementUseCase } from "../../MovieClip/usecase/MovieClipCreateDisplayObjectElementUseCase";
+import { execute as bitmapCreateDisplayObjectElementUseCase } from "@/core/application/Bitmap/usecase/BitmapCreateDisplayObjectElementUseCase";
+import { execute as movieClipCreateDisplayObjectElementUseCase } from "@/core/application/MovieClip/usecase/MovieClipCreateDisplayObjectElementUseCase";
+import { execute as shapeCreateDisplayObjectElementUseCase } from "@/core/application/Shape/usecase/ShapeCreateDisplayObjectElementUseCase";
 import {
     $BITMAP_TYPE,
-    $MOVIE_CLIP_TYPE
+    $MOVIE_CLIP_TYPE,
+    $SHAPE_TYPE
 } from "@/config/InstanceConfig";
 
 /**
@@ -45,6 +47,13 @@ export const execute = async (
 
         case $MOVIE_CLIP_TYPE:
             div = await movieClipCreateDisplayObjectElementUseCase(
+                workSpace.id, instance, element,
+                layer, character, event_register
+            );
+            break;
+
+        case $SHAPE_TYPE:
+            div = await shapeCreateDisplayObjectElementUseCase(
                 workSpace.id, instance, element,
                 layer, character, event_register
             );

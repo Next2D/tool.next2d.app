@@ -1,17 +1,17 @@
 import type { Character } from "@/core/domain/model/Character";
 import type { InstanceImpl } from "@/interface/InstanceImpl";
 import type { Layer } from "@/core/domain/model/Layer";
-import type { MovieClip } from "@/core/domain/model/MovieClip";
+import type { Shape } from "@/core/domain/model/Shape";
 import { execute as movieClipRegisterEventUseCase } from "@/core/application/MovieClip/usecase/MovieClipRegisterEventUseCase";
-import { execute as movieClipDisplayObjectComponent } from "../component/MovieClipDisplayObjectComponent";
+import { execute as shapeDisplayObjectComponent } from "../component/ShapeDisplayObjectComponent";
 import { $getCacheCanvas } from "@/cache/CacheUtil";
 
 /**
- * @description MovieClipをcanvasに描画して返却する
- *              Draw MovieClip to canvas and return
+ * @description Shapeをcanvasに描画して返却する
+ *              Draw Shape to canvas and return
  *
  * @param  {number} work_space_id
- * @param  {MovieClip} instance
+ * @param  {Shape} instance
  * @param  {HTMLElement} element
  * @param  {Layer} layer
  * @param  {Character} character
@@ -22,7 +22,7 @@ import { $getCacheCanvas } from "@/cache/CacheUtil";
  */
 export const execute = async (
     work_space_id: number,
-    instance: InstanceImpl<MovieClip>,
+    instance: InstanceImpl<Shape>,
     element: HTMLElement,
     layer: Layer,
     character: Character,
@@ -42,7 +42,7 @@ export const execute = async (
 
     // ステージに追加
     element.insertAdjacentHTML("beforeend",
-        movieClipDisplayObjectComponent(character, layer.id)
+        shapeDisplayObjectComponent(character, layer.id)
     );
 
     const div = element.lastElementChild as HTMLDivElement;

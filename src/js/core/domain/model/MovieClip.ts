@@ -204,6 +204,7 @@ export class MovieClip extends Instance
             this._$selectedFrameObject.end
         ) + 1;
     }
+
     /**
      * @description HTMLCanvasElementを返却
      *              Return HTMLCanvasElement
@@ -212,7 +213,7 @@ export class MovieClip extends Instance
      * @method
      * @public
      */
-    async getHTMLElement (frame: number = 1): Promise<HTMLCanvasElement>
+    getHTMLElement (frame: number = 1): Promise<HTMLCanvasElement>
     {
         return movieClipCreateCanvasElementUseCase(this, frame);
     }

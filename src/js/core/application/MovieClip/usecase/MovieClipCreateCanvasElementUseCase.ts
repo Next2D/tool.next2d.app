@@ -1,4 +1,4 @@
-import { MovieClip } from "@/core/domain/model/MovieClip";
+import type { MovieClip } from "@/core/domain/model/MovieClip";
 import { $getCanvas } from "@/global/GlobalUtil";
 import { $clearUseLibraryIds } from "@/tool/application/PublishTool/PublishToolUtil";
 import { execute as publishToolCreateToObjectUseCase } from "@/tool/application/PublishTool/usecase/PublishToolCreateToObjectUseCase";
@@ -39,10 +39,17 @@ export const execute = (movie_clip: MovieClip, frame: number = 1): Promise<HTMLC
         matrix.tx = -bounds.x;
         matrix.ty = -bounds.y;
 
-        const bitmapData = new next2d.display.BitmapData(movieClip.width, movieClip.height);
+        const scale = window.devicePixelRatio;
+        matrix.scale(scale, scale);
+
+        const bitmapData = new next2d.display.BitmapData(movieClip.width * scale, movieClip.height * scale);
         bitmapData.draw(movieClip, matrix, null, canvas, (canvas: HTMLCanvasElement): void =>
         {
-            return resolve(canvas);
+            if (scale > 1) {
+                canvas.style.width  = `${movieClip.width}px`;
+                canvas.style.height = `${movieClip.height}px`;
+            }
+            resolve(canvas);
         });
     });
 };

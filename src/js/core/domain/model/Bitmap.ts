@@ -5,7 +5,7 @@ import type { BoundsImpl } from "@/interface/BoundsImpl";
 import { Instance } from "./Instance";
 import { execute as bufferToBinaryService } from "@/core/service/BufferToBinaryService";
 import { execute as binaryToBufferService } from "@/core/service/BinaryToBufferService";
-import { execute as bitmapBufferToElementService } from "@/core/application/Bitmap/service/BitmapBufferToElementService";
+import { execute as bitmapBufferToCanvasElementService } from "@/core/application/Bitmap/service/BitmapBufferToCanvasElementService";
 import { execute as bitmapCreateJsonService } from "@/core/application/Bitmap/service/BitmapCreateJsonService";
 
 /**
@@ -190,7 +190,7 @@ export class Bitmap extends Instance
      */
     async getHTMLElement (): Promise<HTMLCanvasElement>
     {
-        return bitmapBufferToElementService(
+        return bitmapBufferToCanvasElementService(
             this._$buffer,
             this._$width,
             this._$height

@@ -34,6 +34,7 @@ export const execute = async (instance: InstanceImpl<any>): Promise<void> =>
         return ;
     }
 
+    element.setAttribute("style", "");
     element.classList.add("preview-center");
     previewElement.appendChild(element);
 };
