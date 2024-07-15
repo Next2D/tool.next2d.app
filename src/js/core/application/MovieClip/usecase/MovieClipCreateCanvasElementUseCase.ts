@@ -1,4 +1,4 @@
-import { $getConcatenatedMatrix, $multiplicationMatrix } from "@/controller/application/TransformSetting/TransformSettingUtil";
+import { $getConcatenatedMatrix } from "@/controller/application/TransformSetting/TransformSettingUtil";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import { $getCanvas } from "@/global/GlobalUtil";
 import { $clearUseLibraryIds } from "@/tool/application/PublishTool/PublishToolUtil";

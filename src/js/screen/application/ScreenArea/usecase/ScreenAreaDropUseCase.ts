@@ -1,7 +1,6 @@
 import type { InstanceImpl } from "@/interface/InstanceImpl";
 import { libraryArea } from "@/controller/domain/model/LibraryArea";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
-import { ExternalTimeline } from "@/external/timeline/domain/model/ExternalTimeline";
 import {
     $FOLDER_TYPE,
     $SOUND_TYPE
@@ -11,7 +10,6 @@ import {
     $getScreenOffsetTop
 } from "@/global/GlobalUtil";
 import { ExternalSoundArea } from "@/external/controller/domain/model/ExternalSoundArea";
-import { $getConcatenatedMatrix } from "@/controller/application/TransformSetting/TransformSettingUtil";
 import { execute as timelineAreaAddItemToMovieClipService } from "@/timeline/application/TimelineArea/service/TimelineAreaAddItemToMovieClipService";
 
 /**
