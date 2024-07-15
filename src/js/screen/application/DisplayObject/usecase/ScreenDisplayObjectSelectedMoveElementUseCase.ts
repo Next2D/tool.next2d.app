@@ -1,5 +1,8 @@
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { $SCREEN_STAGE_AREA_ID } from "@/config/ScreenConfig";
+import { execute as screenDisplayObjectUpdateMaskStyleService } from "@/screen/application/DisplayObject/service/ScreenDisplayObjectUpdateMaskStyleService";
+import { $getScreenOffsetLeft, $getScreenOffsetTop } from "@/global/GlobalUtil";
+import { transformSetting } from "@/controller/domain/model/TransformSetting";
 
 /**
  * @description スクリーンで選択中のElementを移動する
@@ -32,6 +35,7 @@ export const execute = (
     }
 
     // 選択中のElementを移動
+    const frame = movieClip.currentFrame;
     for (const [layerIndex, depths] of movieClip.selectedDepths) {
 
         const layer = movieClip.getLayer(layerIndex);
@@ -43,7 +47,9 @@ export const execute = (
         const elements = element.querySelectorAll(`.layer-id-${layer.id}`);
         for (let idx = 0; idx < depths.length; ++idx) {
 
-            const node = elements[depths[idx]] as HTMLElement;
+            const depth = depths[idx];
+
+            const node = elements[depth] as HTMLElement;
             if (!node) {
                 continue ;
             }
@@ -54,6 +60,23 @@ export const execute = (
             if (movement_y) {
                 node.style.top = `${node.offsetTop + movement_y}px`;
             }
+
+            // マスクの子レイヤーの場合はマスクのstyleを更新
+            if (layer.parentId === -1) {
+                continue ;
+            }
+
+            const character = layer.getCharacter(frame, depth);
+            if (!character) {
+                continue ;
+            }
+
+            // マスクのstyleを更新
+            screenDisplayObjectUpdateMaskStyleService(
+                node, layer,
+                character.x + transformSetting.x,
+                character.y + transformSetting.y
+            );
         }
     }
 };

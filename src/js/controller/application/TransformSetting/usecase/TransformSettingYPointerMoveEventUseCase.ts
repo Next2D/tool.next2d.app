@@ -1,6 +1,6 @@
 import { transformSetting } from "@/controller/domain/model/TransformSetting";
 import { $clamp, $setCursor } from "@/global/GlobalUtil";
-import { execute as screenDisplayObjectSelectedMoveElementService } from "@/screen/application/DisplayObject/service/ScreenDisplayObjectSelectedMoveElementService";
+import { execute as screenDisplayObjectSelectedMoveElementUseCase } from "@/screen/application/DisplayObject/usecase/ScreenDisplayObjectSelectedMoveElementUseCase";
 import { execute as targetRectMoveElementService } from "@/screen/application/TargetRect/service/TargetRectMoveElementService";
 import { execute as screenStandardPointMoveElementService } from "@/screen/application/StandardPoint/service/ScreenStandardPointMoveElementService";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
@@ -47,7 +47,7 @@ export const execute = (event: PointerEvent): void =>
         transformSetting.y += movementX;
 
         // スクリーンで選択中のElementを移動
-        screenDisplayObjectSelectedMoveElementService(
+        screenDisplayObjectSelectedMoveElementUseCase(
             0, movementX
         );
 

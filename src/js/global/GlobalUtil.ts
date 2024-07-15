@@ -150,11 +150,14 @@ export const $getCanvas = (): HTMLCanvasElement =>
  */
 export const $poolCanvas = (canvas: HTMLCanvasElement): void =>
 {
-    // canvas reset
+    // キャンバスの描画をリセット
     canvas.width = canvas.height = 1;
 
-    // pool
+    // キャッシュするcanvasの内部データを初期化
+    canvas.dataset.base64 = "";
     canvas.setAttribute("class", "");
     canvas.setAttribute("style", "");
+
+    // キャッシュ登録
     $canvasPool.push(canvas);
 };

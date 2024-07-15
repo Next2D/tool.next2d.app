@@ -1,6 +1,6 @@
 import { execute as transformSettingUpdateXElementService } from "@/controller/application/TransformSetting/service/TransformSettingUpdateXElementService";
 import { execute as transformSettingUpdateYElementService } from "@/controller/application/TransformSetting/service/TransformSettingUpdateYElementService";
-import { execute as screenDisplayObjectSelectedMoveElementService } from "../service/ScreenDisplayObjectSelectedMoveElementService";
+import { execute as screenDisplayObjectSelectedMoveElementUseCase } from "./ScreenDisplayObjectSelectedMoveElementUseCase";
 import { execute as screenStandardPointMoveElementService } from "@/screen/application/StandardPoint/service/ScreenStandardPointMoveElementService";
 import { transformSetting } from "@/controller/domain/model/TransformSetting";
 import { $allHideMenu } from "@/menu/application/MenuUtil";
@@ -44,7 +44,7 @@ export const execute = (event: PointerEvent): void =>
         transformSetting.y += y;
 
         // 選択中のElementを移動
-        screenDisplayObjectSelectedMoveElementService(x, y);
+        screenDisplayObjectSelectedMoveElementUseCase(x, y);
 
         // MovieClipの基準点のElementを移動
         screenStandardPointMoveElementService(x, y);
