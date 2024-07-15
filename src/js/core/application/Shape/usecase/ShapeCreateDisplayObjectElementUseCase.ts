@@ -4,7 +4,9 @@ import type { Layer } from "@/core/domain/model/Layer";
 import type { Shape } from "@/core/domain/model/Shape";
 import { execute as shapeRegisterEventUseCase } from "@/core/application/Shape/usecase/ShapeRegisterEventUseCase";
 import { execute as shapeDisplayObjectComponent } from "../component/ShapeDisplayObjectComponent";
-import { $getCacheCanvas } from "@/cache/CacheUtil";
+import { $getCacheCanvas, $setCacheCanvas } from "@/cache/CacheUtil";
+import { execute as screenAreaHierarchyAdjustmentService } from "@/screen/application/ScreenArea/service/ScreenAreaHierarchyAdjustmentService";
+import { execute as screenAreaReadOnlyElementService } from "@/screen/application/ScreenArea/service/ScreenAreaReadOnlyElementService";
 
 /**
  * @description Shapeをcanvasに描画して返却する
@@ -48,16 +50,14 @@ export const execute = async (
     const div = element.lastElementChild as HTMLDivElement;
     div.appendChild(canvas);
 
+    // 追加するDisplayObjectのレイヤーの階層を調整
+    screenAreaHierarchyAdjustmentService(element, div, layer);
+
     // イベントを登録
     if (event_register) {
         shapeRegisterEventUseCase(div);
     } else {
-        if (!div.classList.contains("disabled")) {
-            div.classList.add("disabled");
-        }
-        if (!div.classList.contains("translucent")) {
-            div.classList.add("translucent");
-        }
+        screenAreaReadOnlyElementService(div);
     }
 
     return div;

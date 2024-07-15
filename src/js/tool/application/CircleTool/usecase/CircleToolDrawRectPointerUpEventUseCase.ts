@@ -14,6 +14,7 @@ import { ExternalLibrary } from "@/external/controller/domain/model/ExternalLibr
 import { fillColor } from "@/tool/domain/model/FillColor";
 import { strokeSize } from "@/tool/domain/model/StrokeSize";
 import { execute as timelineAreaAddItemToMovieClipService } from "@/timeline/application/TimelineArea/service/TimelineAreaAddItemToMovieClipService";
+import { strokeColor } from "@/tool/domain/model/StrokeColor";
 
 /**
  * @description 描画の範囲選択のマウスアップイベント
@@ -84,24 +85,51 @@ export const execute = async (event: PointerEvent): Promise<void> =>
         return ;
     }
 
+    // 描画範囲の計算（線の幅は拡大縮小に影響されない）
+    const scale      = workSpace.scale;
+    const position   = strokeSize.value / 2;
+    const drawWidth  = width / scale + strokeSize.value;
+    const drawHeight = height / scale + strokeSize.value;
+
     // 円の描画レコードを作成
     shape
         .graphics
         .beginFill(fillColor.value)
-        .drawEllipse(0, 0, width, height);
+        .drawEllipse(position, position, drawWidth, drawHeight);
 
     // 生成した描画レコードの更新を適用
     await shape.applyGraphics();
 
-    // TODO
-    if (strokeSize.value) {
-        // 線の描画レコードを作成
-    }
+    // 配置先を計算
+    const x = left - $getScreenOffsetLeft();
+    const y = top - $getScreenOffsetTop();
 
     // 親のMovieClipと拡大・縮小を考慮した補正座標を計算
-    await timelineAreaAddItemToMovieClipService(
-        (left - $getScreenOffsetLeft()) * workSpace.scale,
-        (top  - $getScreenOffsetTop())  * workSpace.scale,
-        path
-    );
+    await timelineAreaAddItemToMovieClipService(x, y, path);
+
+    // 線の描画レコードを作成
+    if (strokeSize.value) {
+        // 新規Shapeをライブラリに追加
+        const path = `Shape_${workSpace.nextLibraryId}`;
+        const externalLibrary = new ExternalLibrary(workSpace);
+        await externalLibrary.addNewShape(path);
+
+        // ライブラリからShapeを取得
+        const shape: ExternalInstanceImpl<ExternalShape> = externalLibrary.getItem(path);
+        if (!shape) {
+            return ;
+        }
+
+        // 円の描画レコードを作成
+        shape
+            .graphics
+            .lineStyle(strokeSize.value, strokeColor.value)
+            .drawEllipse(position, position, drawWidth, drawHeight);
+
+        // 生成した描画レコードの更新を適用
+        await shape.applyGraphics();
+
+        // 親のMovieClipと拡大・縮小を考慮した補正座標を計算
+        await timelineAreaAddItemToMovieClipService(x, y, path);
+    }
 };

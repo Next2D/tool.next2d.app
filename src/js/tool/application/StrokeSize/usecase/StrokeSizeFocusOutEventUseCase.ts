@@ -5,6 +5,7 @@ import {
     $TOOL_MIN_STROKE_SIZE
 } from "@/config/ToolConfig";
 import { strokeSize } from "@/tool/domain/model/StrokeSize";
+import { execute as userStrokeSizeUpdateService } from "@/user/application/Tool/service/UserStrokeSizeUpdateService";
 
 /**
  * @description y座標の入力完了処理
@@ -34,5 +35,6 @@ export const execute = (event: FocusEvent): void =>
 
     // 内部情報を更新
     strokeSize.value = width;
+    userStrokeSizeUpdateService(strokeSize.value);
     element.value = `${width}`;
 };

@@ -1,4 +1,5 @@
 import { $SCREEN_DRAW_RECT_ID } from "@/config/ScreenConfig";
+import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { drawRect } from "@/screen/domain/model/DrawRect";
 import { fillColor } from "@/tool/domain/model/FillColor";
 import { strokeColor } from "@/tool/domain/model/StrokeColor";
@@ -41,7 +42,8 @@ export const execute = (x: number, y: number, radius: string = ""): void =>
     }
 
     if (strokeSize.value) {
-        style += `border: ${strokeSize.value}px solid ${strokeColor.value};`;
+        const workSpace = $getCurrentWorkSpace();
+        style += `border: ${strokeSize.value * workSpace.scale}px solid ${strokeColor.value};`;
     }
 
     element.setAttribute("style", style);

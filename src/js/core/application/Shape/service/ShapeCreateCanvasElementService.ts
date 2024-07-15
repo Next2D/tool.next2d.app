@@ -42,6 +42,9 @@ export const execute = (shape: Shape): Promise<HTMLCanvasElement> =>
 
         const scale = window.devicePixelRatio;
         const matrix = new next2d.geom.Matrix();
+        if (bounds.xMin || bounds.yMin) {
+            matrix.translate(-bounds.xMin,  -bounds.yMin);
+        }
         matrix.scale(scale, scale);
 
         const bitmapData = new next2d.display.BitmapData(width * scale, height * scale);
