@@ -10,6 +10,7 @@ import {
     $MASK_IN_MODE,
     $MASK_MODE
 } from "@/config/LayerModeConfig";
+import { execute as screenAreaUpdateMovedLayerService } from "@/screen/application/ScreenArea/service/ScreenAreaUpdateMovedLayerService";
 
 /**
  * @description マスク、ガイドレイヤーの親子関係を考慮してレイヤーを移動
@@ -138,6 +139,17 @@ export const execute = (
 
     // タイムラインを再描画
     if (work_space.active && movie_clip.active) {
+        // タイムラインのelementを再構築
         timelineLayerBuildElementUseCase();
+
+        // スクリーンの表示を更新
+        for (let idx = 0; idx < selectedLayers.length; idx++) {
+            const layer = selectedLayers[idx];
+            if (!layer) {
+                continue;
+            }
+
+            screenAreaUpdateMovedLayerService(layer);
+        }
     }
 };

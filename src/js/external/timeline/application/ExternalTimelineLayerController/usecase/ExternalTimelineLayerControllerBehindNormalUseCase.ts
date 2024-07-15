@@ -4,6 +4,7 @@ import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import { execute as timelineLayerBuildElementUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerBuildElementUseCase";
 import { execute as timelineLayerControllerMoveLayerHistoryUseCase } from "@/history/application/timeline/application/TimelineLayerController/MoveLayer/usecase/TimelineLayerControllerMoveLayerHistoryUseCase";
 import { execute as externalTimelineLayerControllerCorrectionRelationshipService } from "../service/ExternalTimelineLayerControllerCorrectionRelationshipService";
+import { execute as screenAreaUpdateMovedLayerService } from "@/screen/application/ScreenArea/service/ScreenAreaUpdateMovedLayerService";
 import {
     $GUIDE_MODE,
     $MASK_MODE
@@ -120,6 +121,17 @@ export const execute = (
 
     // タイムラインを再描画
     if (work_space.active && movie_clip.active) {
+        // タイムラインのelementを再構築
         timelineLayerBuildElementUseCase();
+
+        // スクリーンの表示を更新
+        for (let idx = 0; idx < selectedLayers.length; idx++) {
+            const layer = selectedLayers[idx];
+            if (!layer) {
+                continue;
+            }
+
+            screenAreaUpdateMovedLayerService(layer);
+        }
     }
 };

@@ -8,6 +8,7 @@ import {
     $GUIDE_MODE,
     $MASK_MODE
 } from "@/config/LayerModeConfig";
+import { execute as screenAreaUpdateMovedLayerService } from "@/screen/application/ScreenArea/service/ScreenAreaUpdateMovedLayerService";
 
 /**
  * @description レイヤーの移動を元に戻す
@@ -91,6 +92,10 @@ export const execute = (
 
     // アクティブならタイムラインを再描画
     if (workSpace.active && movieClip.active) {
+        // タイムラインのelementを再構築
         timelineLayerBuildElementUseCase();
+
+        // スクリーンの表示を更新
+        screenAreaUpdateMovedLayerService(layer);
     }
 };

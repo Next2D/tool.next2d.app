@@ -4,6 +4,7 @@ import { execute as externalTimelineLayerControllerBehindRelationUseCase } from 
 import { execute as timelineLayerBuildElementUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerBuildElementUseCase";
 import { execute as timelineLayerControllerMoveLayerHistoryUseCase } from "@/history/application/timeline/application/TimelineLayerController/MoveLayer/usecase/TimelineLayerControllerMoveLayerHistoryUseCase";
 import { timelineLayer } from "@/timeline/domain/model/TimelineLayer";
+import { execute as screenAreaUpdateMovedLayerService } from "@/screen/application/ScreenArea/service/ScreenAreaUpdateMovedLayerService";
 
 /**
  * @description レイヤーの親子関係性をチェックする
@@ -92,7 +93,18 @@ export const execute = (
         }
 
         if (work_space.active && movie_clip.active) {
+            // タイムラインのelementを再構築
             timelineLayerBuildElementUseCase();
+
+            // スクリーンの表示を更新
+            for (let idx = 0; idx < selectedLayers.length; idx++) {
+                const layer = selectedLayers[idx];
+                if (!layer) {
+                    continue;
+                }
+
+                screenAreaUpdateMovedLayerService(layer);
+            }
         }
 
     }  else {

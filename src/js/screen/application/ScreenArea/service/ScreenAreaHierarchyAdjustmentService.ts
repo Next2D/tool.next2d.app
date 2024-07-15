@@ -48,11 +48,18 @@ export const execute = (
             layer
         );
 
+        const frame = movieClip.currentFrame;
         let index = externalLayer.index - 1;
         while (index > -1) {
 
             const upperLayer = movieClip.getLayer(index--);
             if (!upperLayer) {
+                continue;
+            }
+
+            // 表示されてるキャラクターを取得、何も配置されていなければ終了
+            const activeCharacters = upperLayer.getActiveCharacters(frame);
+            if (!activeCharacters.length) {
                 continue;
             }
 
