@@ -1,3 +1,5 @@
+import { $getConcatenatedMatrix } from "@/controller/application/TransformSetting/TransformSettingUtil";
+import type { Character } from "@/core/domain/model/Character";
 import type { Shape } from "@/core/domain/model/Shape";
 import { $getCanvas } from "@/global/GlobalUtil";
 
@@ -10,16 +12,20 @@ import { $getCanvas } from "@/global/GlobalUtil";
  * @method
  * @public
  */
-export const execute = (shape: Shape): Promise<HTMLCanvasElement> =>
-{
+export const execute = (
+    shape: Shape,
+    character: Character | null = null
+): Promise<HTMLCanvasElement> => {
+
     return new Promise(async (resolve) =>
     {
         // Plyerのキャッシュをリセット
         next2d.player.cacheStore.reset();
 
-        const canvas = $getCanvas();
-
         const displayShape = new next2d.display.Shape();
+        if (character && character.filters.length) {
+            // todo filter
+        }
 
         const graphics = displayShape.graphics;
 
@@ -37,21 +43,35 @@ export const execute = (shape: Shape): Promise<HTMLCanvasElement> =>
         graphics._$xMax = bounds.xMax;
         graphics._$yMax = bounds.yMax;
 
-        const width  = Math.ceil(Math.abs(bounds.xMax - bounds.xMin));
-        const height = Math.ceil(Math.abs(bounds.yMax - bounds.yMin));
+        displayShape.x = -bounds.xMin - Math.abs(bounds.xMax - bounds.xMin) / 2;
+        displayShape.y = -bounds.yMin - Math.abs(bounds.yMax - bounds.yMin) / 2;
 
-        const scale = window.devicePixelRatio;
+        const sprite = new next2d.display.Sprite();
+        sprite.addChild(displayShape);
+
+        const container = new next2d.display.Sprite();
+        container.addChild(sprite);
+
+        const concatMatrix = $getConcatenatedMatrix();
+        sprite.transform.matrix = new next2d.geom.Matrix(
+            concatMatrix[0], concatMatrix[1],
+            concatMatrix[2], concatMatrix[3],
+            0, 0
+        );
+
         const matrix = new next2d.geom.Matrix();
-        if (bounds.xMin || bounds.yMin) {
-            matrix.translate(-bounds.xMin,  -bounds.yMin);
-        }
+        matrix.translate(
+            container.width / 2,
+            container.height / 2
+        );
+        const scale = window.devicePixelRatio;
         matrix.scale(scale, scale);
 
-        const bitmapData = new next2d.display.BitmapData(width * scale, height * scale);
-        bitmapData.draw(displayShape, matrix, null, canvas, (canvas: HTMLCanvasElement): void =>
+        const bitmapData = new next2d.display.BitmapData(container.width * scale, container.height * scale);
+        bitmapData.draw(container, matrix, null, $getCanvas(), (canvas: HTMLCanvasElement): void =>
         {
-            canvas.style.width  = `${width}px`;
-            canvas.style.height = `${height}px`;
+            canvas.style.width  = `${container.width}px`;
+            canvas.style.height = `${container.height}px`;
             resolve(canvas);
         });
     });

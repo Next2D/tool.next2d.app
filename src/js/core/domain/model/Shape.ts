@@ -2,6 +2,7 @@ import type { ObjectImpl } from "@/interface/ObjectImpl";
 import type { ShapeSaveObjectImpl } from "@/interface/ShapeSaveObjectImpl";
 import type { BoundsImpl } from "@/interface/BoundsImpl";
 import type { ShapePublishJsonImpl } from "@/interface/ShapePublishJsonImpl";
+import type { Character } from "./Character";
 import { Instance } from "./Instance";
 import { execute as shapeCreateCanvasElementService } from "@/core/application/Shape/service/ShapeCreateCanvasElementService";
 import { execute as shapeCreateJsonService } from "@/core/application/Shape/service/ShapeCreateJsonService";
@@ -95,13 +96,14 @@ export class Shape extends Instance
      * @description HTMLCanvasElementを返却
      *              Return HTMLCanvasElement
      *
+     * @param  {Character} character
      * @return {Promise}
      * @method
      * @public
      */
-    async getHTMLElement (): Promise<HTMLCanvasElement>
+    async getHTMLElement (character: Character | null = null): Promise<HTMLCanvasElement>
     {
-        return await shapeCreateCanvasElementService(this);
+        return await shapeCreateCanvasElementService(this, character);
     }
 
     /**

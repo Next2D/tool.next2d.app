@@ -1,0 +1,49 @@
+import { BlendModeImpl } from "@/interface/BlendModeImpl";
+
+/**
+ * @description Canvasにブレンドモードのstyleをセット
+ *              Set the style of the blend mode on the Canvas
+ *
+ * @param  {HTMLCanvasElement} canvas
+ * @param  {string} blend_mode
+ * @return {void}
+ * @method
+ * @public
+ */
+export const execute = (canvas: HTMLCanvasElement, blend_mode: BlendModeImpl): void =>
+{
+    switch (blend_mode) {
+
+        case "normal":
+            canvas.style.mixBlendMode = "";
+            break;
+
+        case "add":
+            canvas.style.mixBlendMode = "color-dodge";
+            break;
+
+        case "subtract":
+            canvas.style.filter = "invert(100%)";
+            canvas.style.mixBlendMode = "multiply";
+            break;
+
+        case "invert":
+            canvas.style.filter = "invert(100%)";
+            canvas.style.mixBlendMode = "difference";
+            break;
+
+        case "hardlight":
+            canvas.style.mixBlendMode = "hard-light";
+            break;
+
+        case "alpha":
+        case "erase":
+        case "layer":
+            break;
+
+        default:
+            canvas.style.mixBlendMode = blend_mode;
+            break;
+
+    }
+};

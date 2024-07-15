@@ -1,3 +1,4 @@
+import { $getConcatenatedMatrix, $multiplicationMatrix } from "@/controller/application/TransformSetting/TransformSettingUtil";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import { $getCanvas } from "@/global/GlobalUtil";
 import { $clearUseLibraryIds } from "@/tool/application/PublishTool/PublishToolUtil";
@@ -34,19 +35,40 @@ export const execute = (movie_clip: MovieClip, frame: number = 1): Promise<HTMLC
         const movieClip = loader.content;
         movieClip.gotoAndStop(frame);
 
+        // matrixの適用分の座標を補正
         const bounds = movieClip.getBounds(null);
-        const matrix = new next2d.geom.Matrix();
-        matrix.tx = -bounds.x;
-        matrix.ty = -bounds.y;
+        const x = bounds.width / 2;
+        const y = bounds.height / 2;
 
+        movieClip.x = -bounds.x - x;
+        movieClip.y = -bounds.y - y;
+
+        const sprite = new next2d.display.Sprite();
+        sprite.addChild(movieClip);
+
+        const concatMatrix = $getConcatenatedMatrix();
+        sprite.transform.matrix = new next2d.geom.Matrix(
+            concatMatrix[0], concatMatrix[1],
+            concatMatrix[2], concatMatrix[3],
+            0, 0
+        );
+
+        const container = new next2d.display.Sprite();
+        container.addChild(sprite);
+
+        const matrix = new next2d.geom.Matrix();
+        matrix.translate(
+            container.width / 2,
+            container.height / 2
+        );
         const scale = window.devicePixelRatio;
         matrix.scale(scale, scale);
 
-        const bitmapData = new next2d.display.BitmapData(movieClip.width * scale, movieClip.height * scale);
-        bitmapData.draw(movieClip, matrix, null, canvas, (canvas: HTMLCanvasElement): void =>
+        const bitmapData = new next2d.display.BitmapData(container.width * scale, container.height * scale);
+        bitmapData.draw(container, matrix, null, canvas, (canvas: HTMLCanvasElement): void =>
         {
-            canvas.style.width  = `${movieClip.width}px`;
-            canvas.style.height = `${movieClip.height}px`;
+            canvas.style.width  = `${container.width}px`;
+            canvas.style.height = `${container.height}px`;
             resolve(canvas);
         });
     });

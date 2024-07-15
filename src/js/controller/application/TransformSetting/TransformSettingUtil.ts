@@ -68,8 +68,45 @@ export const $getConcatenatedMatrix = (): number[] =>
  * @method
  * @public
  */
-export const $createTransformStyle = (character: Character, work_space: WorkSpace): string =>
+export const $createTransformStyle = (character: Character): string =>
 {
+    const concatenatedMatrix = $getConcatenatedMatrix();
+    const matrix = $multiplicationMatrix(concatenatedMatrix, character.matrix);
+
+    const transform = [];
+
+    const rotation = characterCalcGetRotationService(matrix);
+    if (rotation) {
+        transform.push(`rotate(${rotation}deg)`);
+    }
+    if (!transform.length
+        && !concatenatedMatrix[4]
+        && !concatenatedMatrix[5]
+    ) {
+        return "";
+    }
+
+    // 変形分の座標を補正
+    transform.unshift(`translate(${concatenatedMatrix[4]}px, ${concatenatedMatrix[5]}px)`);
+
+    return `transform: ${transform.join(" ")}; `;
+};
+
+/**
+ * @description TransformStyleを生成
+ *              Generate TransformStyle
+ *
+ * @param  {Character} character
+ * @param  {WorkSpace} work_space
+ * @return {string}
+ * @method
+ * @public
+ */
+export const $createTransformBitmapStyle = (
+    character: Character,
+    work_space: WorkSpace
+): string => {
+
     const concatenatedMatrix = $getConcatenatedMatrix();
     const matrix = $multiplicationMatrix(concatenatedMatrix, character.matrix);
 

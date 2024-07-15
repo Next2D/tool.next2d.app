@@ -4,9 +4,10 @@ import type { Layer } from "@/core/domain/model/Layer";
 import type { Shape } from "@/core/domain/model/Shape";
 import { execute as shapeRegisterEventUseCase } from "@/core/application/Shape/usecase/ShapeRegisterEventUseCase";
 import { execute as shapeDisplayObjectComponent } from "../component/ShapeDisplayObjectComponent";
-import { $getCacheCanvas, $setCacheCanvas } from "@/cache/CacheUtil";
+import { $getCacheCanvas } from "@/cache/CacheUtil";
 import { execute as screenAreaHierarchyAdjustmentService } from "@/screen/application/ScreenArea/service/ScreenAreaHierarchyAdjustmentService";
 import { execute as screenAreaReadOnlyElementService } from "@/screen/application/ScreenArea/service/ScreenAreaReadOnlyElementService";
+import { execute as instanceUpdateBlendModeService } from "@/core/application/Instance/service/InstanceUpdateBlendModeService";
 
 /**
  * @description Shapeをcanvasに描画して返却する
@@ -36,11 +37,14 @@ export const execute = async (
     let canvas = $getCacheCanvas(work_space_id, instance.id, cacheKey);
     if (!canvas) {
         // TODO filters check
-        canvas = await instance.getHTMLElement();
+        canvas = await instance.getHTMLElement(character);
 
         // キャッシュに保存
         // $setCacheCanvas(work_space_id, instance.id, cacheKey, canvas);
     }
+
+    // ブレンドモードを設定
+    instanceUpdateBlendModeService(canvas, character.blendMode);
 
     // ステージに追加
     element.insertAdjacentHTML("beforeend",

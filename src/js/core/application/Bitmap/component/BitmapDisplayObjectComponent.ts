@@ -1,4 +1,4 @@
-import { $createTransformStyle } from "@/controller/application/TransformSetting/TransformSettingUtil";
+import { $createTransformBitmapStyle } from "@/controller/application/TransformSetting/TransformSettingUtil";
 import { Character } from "@/core/domain/model/Character";
 import { $getScreenOffsetLeft, $getScreenOffsetTop } from "@/global/GlobalUtil";
 import { $getCurrentWorkSpace } from "../../CoreUtil";
@@ -20,7 +20,7 @@ export const execute = (
 
     // 変形スタイルを生成
     const workSpace = $getCurrentWorkSpace();
-    const transform = $createTransformStyle(character, workSpace);
+    const transform = $createTransformBitmapStyle(character, workSpace);
 
     const x = $getScreenOffsetLeft() + character.x * workSpace.scale;
     const y = $getScreenOffsetTop() + character.y * workSpace.scale;

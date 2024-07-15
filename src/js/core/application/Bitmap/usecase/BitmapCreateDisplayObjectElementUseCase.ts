@@ -8,6 +8,7 @@ import {
     $getCacheCanvas,
     $setCacheCanvas
 } from "@/cache/CacheUtil";
+import { execute as instanceUpdateBlendModeService } from "@/core/application/Instance/service/InstanceUpdateBlendModeService";
 
 /**
  * @description Bitmapをcanvasに描画して返却する
@@ -42,6 +43,9 @@ export const execute = async (
         // キャッシュに保存
         $setCacheCanvas(work_space_id, instance.id, cacheKey, canvas);
     }
+
+    // ブレンドモードを設定
+    instanceUpdateBlendModeService(canvas, character.blendMode);
 
     // ステージに追加
     element.insertAdjacentHTML("beforeend",
