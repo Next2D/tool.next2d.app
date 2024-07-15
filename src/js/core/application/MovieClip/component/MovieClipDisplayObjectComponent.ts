@@ -9,13 +9,15 @@ import { $createTransformStyle } from "@/controller/application/TransformSetting
  *
  * @params {Character} character
  * @params {number} layer_id
+ * @params {string} [mask_style=""]
  * @return {string}
  * @method
  * @public
  */
 export const execute = (
     character: Character,
-    layer_id: number
+    layer_id: number,
+    mask_style: string = ""
 ): string => {
 
     // 変形スタイルを生成
@@ -28,6 +30,6 @@ export const execute = (
     const depth = character.depth;
 
     return `
-<div class="display-object layer-id-${layer_id}" data-depth="${depth}" data-layer-id="${layer_id}" style="left: ${x}px; top: ${y}px; opacity: ${alpha}; ${transform}"></div>
+<div class="display-object layer-id-${layer_id}" data-depth="${depth}" data-layer-id="${layer_id}" style="left: ${x}px; top: ${y}px; opacity: ${alpha}; ${mask_style} ${transform}"></div>
     `;
 };

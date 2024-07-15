@@ -12,6 +12,7 @@ import { execute as instanceUpdateBlendModeService } from "@/core/application/In
 import { execute as screenAreaHierarchyAdjustmentService } from "@/screen/application/ScreenArea/service/ScreenAreaHierarchyAdjustmentService";
 import { $getDeactivated, $getReDrawState } from "@/screen/application/ScreenArea/ScreenAreaUtil";
 import { execute as screenAreaReadOnlyElementService } from "@/screen/application/ScreenArea/service/ScreenAreaReadOnlyElementService";
+import { execute as screenDisplayObjectGetMaskStyleService } from "@/screen/application/DisplayObject/service/ScreenDisplayObjectGetMaskStyleService";
 
 /**
  * @description Bitmapをcanvasに描画して返却する
@@ -48,9 +49,12 @@ export const execute = async (
     // ブレンドモードを設定
     instanceUpdateBlendModeService(canvas, character.blendMode);
 
+    // マスクのスタイルを取得
+    const maskStyle = await screenDisplayObjectGetMaskStyleService(character, layer);
+
     // ステージに追加
     element.insertAdjacentHTML("beforeend",
-        bitmapDisplayObjectComponent(character, layer.id)
+        bitmapDisplayObjectComponent(character, layer.id, maskStyle)
     );
 
     const div = element.lastElementChild as HTMLDivElement;
