@@ -614,17 +614,13 @@ export class Character
      *
      * @param  {HTMLElement} element
      * @param  {Layer} layer
-     * @param  {boolean} [event_register=true]
      * @return {Promise}
      * @method
      * @public
      */
-    async createElement (
-        element: HTMLElement,
-        layer: Layer,
-        event_register: boolean = true
-    ): Promise<HTMLDivElement | null> {
-        return await characterCreateElementUseCase(this, element, layer, event_register);
+    async createElement (element: HTMLElement, layer: Layer): Promise<HTMLDivElement | null>
+    {
+        return await characterCreateElementUseCase(this, element, layer);
     }
 
     /**

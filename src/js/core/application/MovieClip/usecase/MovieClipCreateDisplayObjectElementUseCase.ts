@@ -6,6 +6,9 @@ import { execute as movieClipRegisterEventUseCase } from "@/core/application/Mov
 import { execute as movieClipDisplayObjectComponent } from "../component/MovieClipDisplayObjectComponent";
 import { $getCacheCanvas } from "@/cache/CacheUtil";
 import { execute as instanceUpdateBlendModeService } from "@/core/application/Instance/service/InstanceUpdateBlendModeService";
+import { execute as screenAreaHierarchyAdjustmentService } from "@/screen/application/ScreenArea/service/ScreenAreaHierarchyAdjustmentService";
+import { $getDeactivated, $getReDrawState } from "@/screen/application/ScreenArea/ScreenAreaUtil";
+import { execute as screenAreaReadOnlyElementService } from "@/screen/application/ScreenArea/service/ScreenAreaReadOnlyElementService";
 
 /**
  * @description MovieClipをcanvasに描画して返却する
@@ -16,7 +19,6 @@ import { execute as instanceUpdateBlendModeService } from "@/core/application/In
  * @param  {HTMLElement} element
  * @param  {Layer} layer
  * @param  {Character} character
- * @param  {boolean} [event_register=true]
  * @return {Promise}
  * @method
  * @public
@@ -26,8 +28,7 @@ export const execute = async (
     instance: InstanceImpl<MovieClip>,
     element: HTMLElement,
     layer: Layer,
-    character: Character,
-    event_register: boolean = true
+    character: Character
 ): Promise<HTMLDivElement> => {
 
     const cacheKey = character.cacheKey;
@@ -52,16 +53,16 @@ export const execute = async (
     const div = element.lastElementChild as HTMLDivElement;
     div.appendChild(canvas);
 
+    // 追加するDisplayObjectのレイヤーの階層を調整
+    if (!$getReDrawState()) {
+        screenAreaHierarchyAdjustmentService(element, div, layer);
+    }
+
     // イベントを登録
-    if (event_register) {
+    if (!$getDeactivated()) {
         movieClipRegisterEventUseCase(div);
     } else {
-        if (!div.classList.contains("disabled")) {
-            div.classList.add("disabled");
-        }
-        if (!div.classList.contains("translucent")) {
-            div.classList.add("translucent");
-        }
+        screenAreaReadOnlyElementService(div);
     }
 
     return div;

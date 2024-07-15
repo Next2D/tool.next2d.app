@@ -8,15 +8,13 @@ import type { Layer } from "@/core/domain/model/Layer";
  *
  * @param  {Character} character
  * @param  {Layer} layer
- * @param  {boolean} [event_register=true]
  * @return {Promise}
  * @method
  * @public
  */
 export const execute = async (
     character: Character,
-    layer: Layer,
-    event_register: boolean = true
+    layer: Layer
 ): Promise<void> => {
 
     const element: HTMLElement | null = document
@@ -26,5 +24,5 @@ export const execute = async (
         return ;
     }
 
-    await character.createElement(element, layer, event_register);
+    await character.createElement(element, layer);
 };

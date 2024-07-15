@@ -93,7 +93,7 @@ export const execute = (scale_x: number): void =>
             character.matrix[4] = multiMatrix[4] + referenceX;
             character.matrix[5] = multiMatrix[5] + referenceY;
 
-            const transform = $createTransformStyle(character, workSpace);
+            const transform = $createTransformStyle(character);
             if (transform) {
                 node.style.transform = transform;
             }
