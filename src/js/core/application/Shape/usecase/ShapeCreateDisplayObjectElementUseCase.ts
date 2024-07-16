@@ -4,7 +4,7 @@ import type { Layer } from "@/core/domain/model/Layer";
 import type { Shape } from "@/core/domain/model/Shape";
 import { execute as shapeRegisterEventUseCase } from "@/core/application/Shape/usecase/ShapeRegisterEventUseCase";
 import { execute as shapeDisplayObjectComponent } from "../component/ShapeDisplayObjectComponent";
-import { $getCacheCanvas } from "@/cache/CacheUtil";
+import { $getCacheCanvas, $setCacheCanvas } from "@/cache/CacheUtil";
 import { execute as screenAreaHierarchyAdjustmentService } from "@/screen/application/ScreenArea/service/ScreenAreaHierarchyAdjustmentService";
 import { execute as screenAreaReadOnlyElementService } from "@/screen/application/ScreenArea/service/ScreenAreaReadOnlyElementService";
 import { execute as instanceUpdateBlendModeService } from "@/core/application/Instance/service/InstanceUpdateBlendModeService";
@@ -40,7 +40,7 @@ export const execute = async (
         canvas = await instance.getHTMLElement(character);
 
         // キャッシュに保存
-        // $setCacheCanvas(work_space_id, instance.id, cacheKey, canvas);
+        $setCacheCanvas(work_space_id, instance.id, cacheKey, canvas);
     }
 
     // ブレンドモードを設定

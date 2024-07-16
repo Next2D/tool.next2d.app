@@ -14,6 +14,7 @@ import { execute as characterCalcGetBoundsService } from "@/core/application/Cha
 import { execute as characterCalcGetRectService } from "@/core/application/Character/service/CharacterCalcGetRectService";
 import { PositionImpl } from "@/interface/PositionImpl";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
+import { $BITMAP_TYPE } from "@/config/InstanceConfig";
 
 /**
  * @description DisplayObjectのユニークID
@@ -227,6 +228,13 @@ export class Character
             default:
                 break;
 
+        }
+
+        const workSpace = $getCurrentWorkSpace();
+        const instance = workSpace.getLibrary(this._$libraryId);
+        if (instance && instance.type !== $BITMAP_TYPE) {
+            const scale = workSpace.scale;
+            cacheKey += `_${this.scaleX * scale}_${this.scaleY * scale}`;
         }
 
         // TODO filters

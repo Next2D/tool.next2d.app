@@ -66,7 +66,7 @@ export const execute = async (
         }
 
         // キャッシュに保存
-        // $setCacheCanvas(workSpace.id, instance.id, cacheKey, canvas);
+        $setCacheCanvas(workSpace.id, instance.id, cacheKey, canvas);
     }
 
     if (!canvas.dataset.base64) {

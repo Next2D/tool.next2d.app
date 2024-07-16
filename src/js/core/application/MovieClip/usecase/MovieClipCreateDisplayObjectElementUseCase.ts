@@ -4,7 +4,7 @@ import type { Layer } from "@/core/domain/model/Layer";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import { execute as movieClipRegisterEventUseCase } from "@/core/application/MovieClip/usecase/MovieClipRegisterEventUseCase";
 import { execute as movieClipDisplayObjectComponent } from "../component/MovieClipDisplayObjectComponent";
-import { $getCacheCanvas } from "@/cache/CacheUtil";
+import { $getCacheCanvas, $setCacheCanvas } from "@/cache/CacheUtil";
 import { execute as instanceUpdateBlendModeService } from "@/core/application/Instance/service/InstanceUpdateBlendModeService";
 import { execute as screenAreaHierarchyAdjustmentService } from "@/screen/application/ScreenArea/service/ScreenAreaHierarchyAdjustmentService";
 import { $getDeactivated, $getReDrawState } from "@/screen/application/ScreenArea/ScreenAreaUtil";
@@ -40,7 +40,7 @@ export const execute = async (
         canvas = await instance.getHTMLElement();
 
         // キャッシュに保存
-        // $setCacheCanvas(work_space_id, instance.id, cacheKey, canvas);
+        $setCacheCanvas(work_space_id, instance.id, cacheKey, canvas);
     }
 
     // ブレンドモードを設定
