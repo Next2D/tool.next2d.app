@@ -9,11 +9,11 @@ import { ExternalLayer } from "@/external/core/domain/model/ExternalLayer";
  *              Timeline-wide lock tool event registration
  *
  * @param  {PointerEvent} event
- * @return {void}
+ * @return {Promise}
  * @method
  * @public
  */
-export const execute = (event: PointerEvent): void =>
+export const execute = async (event: PointerEvent): Promise<void> =>
 {
     if (event.button !== 0) {
         return;
@@ -40,7 +40,7 @@ export const execute = (event: PointerEvent): void =>
 
         // 外部APIを起動
         const externalLayer = new ExternalLayer(workSpace, scene, layer);
-        externalLayer.setLock(mode);
+        await externalLayer.setLock(mode);
     }
 
     // モードを更新

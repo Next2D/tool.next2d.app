@@ -9,11 +9,11 @@ import { ExternalLayer } from "@/external/core/domain/model/ExternalLayer";
  *              Update layer locks
  *
  * @param  {object} message
- * @return {void}
+ * @return {Promise}
  * @method
  * @public
  */
-export const execute = (message: ShareReceiveMessageImpl): void =>
+export const execute = async (message: ShareReceiveMessageImpl): Promise<void> =>
 {
     const id = message.data[0] as NonNullable<number>;
 
@@ -36,7 +36,7 @@ export const execute = (message: ShareReceiveMessageImpl): void =>
 
     // 外部APIを起動
     const externalLayer = new ExternalLayer(workSpace, movieClip, layer);
-    externalLayer.setLock(
+    await externalLayer.setLock(
         message.data[3] as NonNullable<boolean>,
         true
     );

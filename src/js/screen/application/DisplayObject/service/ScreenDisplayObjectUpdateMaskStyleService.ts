@@ -1,4 +1,5 @@
 import { $getCacheCanvas, $setCacheCanvas } from "@/cache/CacheUtil";
+import { $getConcatenatedMatrix } from "@/controller/application/TransformSetting/TransformSettingUtil";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import type { Layer } from "@/core/domain/model/Layer";
 
@@ -23,14 +24,10 @@ export const execute = async (
 
     // styleを初期化
     const style = element.style;
-    style.mask = "";
-    style.webkitMask = "";
-    style.maskSize = "";
-    style.webkitMaskSize = "";
-    style.maskRepeat = "";
-    style.webkitMaskRepeat = "";
-    style.maskPosition = "";
-    style.webkitMaskPosition = "";
+    style.mask = style.webkitMask = "";
+    style.maskSize = style.webkitMaskSize = "";
+    style.maskRepeat = style.webkitMaskRepeat = "";
+    style.maskPosition = style.webkitMaskPosition = "";
 
     if (layer.parentId === -1) {
         return ;
@@ -69,7 +66,7 @@ export const execute = async (
         }
 
         // キャッシュに保存
-        $setCacheCanvas(workSpace.id, instance.id, cacheKey, canvas);
+        // $setCacheCanvas(workSpace.id, instance.id, cacheKey, canvas);
     }
 
     if (!canvas.dataset.base64) {
@@ -83,12 +80,18 @@ export const execute = async (
     const dx = maskCharacter.x - x;
     const dy = maskCharacter.y - y;
 
-    style.mask = `url(${base64}), none`;
-    style.webkitMask = `url(${base64}), none`;
-    style.maskSize = `${width}px ${height}px`;
-    style.webkitMaskSize = `${width}px ${height}px`;
-    style.maskRepeat = "no-repeat";
-    style.webkitMaskRepeat = "no-repeat";
-    style.maskPosition = `${dx}px ${dy}px`;
-    style.webkitMaskPosition = `${dx}px ${dy}px`;
+    const concatenatedMatrix = $getConcatenatedMatrix();
+    const matrix = new next2d.geom.Matrix(
+        concatenatedMatrix[0], concatenatedMatrix[1], concatenatedMatrix[2],
+        concatenatedMatrix[3], concatenatedMatrix[4], concatenatedMatrix[5]
+    );
+    matrix.invert();
+
+    const localX = dx * matrix.a + dy * matrix.c + matrix.tx;
+    const localY = dx * matrix.b + dy * matrix.d + matrix.ty;
+
+    style.mask = style.webkitMask = `url(${base64}), none`;
+    style.maskSize = style.webkitMaskSize = `${width}px ${height}px`;
+    style.maskRepeat = style.webkitMaskRepeat = "no-repeat";
+    style.maskPosition = style.webkitMaskPosition = `${localX}px ${localY}px`;
 };

@@ -10,6 +10,7 @@ import { execute as screenDisplayObjectChangeElementClassService } from "@/scree
 import { execute as targetRectUpdateElementUseCase } from "@/screen/application/TargetRect/usecase/TargetRectUpdateElementUseCase";
 import { execute as screenStandardPointDeployElementUseCase } from "@/screen/application/StandardPoint/usecase/ScreenStandardPointDeployElementUseCase";
 import { execute as propertyAreaChangeDisplayUseCase } from "@/controller/application/PropertyArea/usecase/PropertyAreaChangeDisplayUseCase";
+import { execute as screenDisplayObjectUpdateMaskAndMaskInElementUseCase } from "@/screen/application/DisplayObject/usecase/ScreenDisplayObjectUpdateMaskAndMaskInElementUseCase";
 
 /**
  * @description レイヤーのロック情報を更新
@@ -23,13 +24,13 @@ import { execute as propertyAreaChangeDisplayUseCase } from "@/controller/applic
  * @method
  * @public
  */
-export const execute = (
+export const execute = async (
     work_space: WorkSpace,
     movie_clip: MovieClip,
     layer: Layer,
     value: boolean,
     receiver: boolean = false
-): void => {
+): Promise<void> => {
 
     // 外部APIを起動
     const externalLayer = new ExternalLayer(
@@ -65,6 +66,9 @@ export const execute = (
 
         // プロパティエリアの表示を更新
         propertyAreaChangeDisplayUseCase();
+
+        // マスクレイヤーなら、子レイヤーの表示を更新
+        await screenDisplayObjectUpdateMaskAndMaskInElementUseCase(movie_clip, layer);
     }
 
     // 受け取り処理ではなく、画面共有していれば共有者に送信

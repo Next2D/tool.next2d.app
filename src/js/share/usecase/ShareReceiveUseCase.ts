@@ -169,7 +169,7 @@ export const execute = async (message: ShareReceiveMessageImpl): Promise<void> =
 
         // レイヤーのロックを更新
         case $LAYER_LOCK_UPDATE_COMMAND:
-            timelineLayerControllerLayerLockUpdateReceiveService(message);
+            await timelineLayerControllerLayerLockUpdateReceiveService(message);
             break;
 
         // レイヤー表示を更新

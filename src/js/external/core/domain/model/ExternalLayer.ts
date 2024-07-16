@@ -129,9 +129,9 @@ export class ExternalLayer
      * @method
      * @public
      */
-    setLock (lock: boolean, receiver: boolean = false): void
+    async setLock (lock: boolean, receiver: boolean = false): Promise<void>
     {
-        externalLayerUpdateLockUseCase(
+        await externalLayerUpdateLockUseCase(
             this._$workSpace, this._$movieClip, this._$layer, lock, receiver
         );
     }

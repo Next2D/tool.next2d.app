@@ -7,11 +7,11 @@ import { ExternalLayer } from "@/external/core/domain/model/ExternalLayer";
  *              Processing functions for successive locking functions
  *
  * @param  {PointerEvent} event
- * @return {void}
+ * @return {Promise}
  * @method
  * @public
  */
-export const execute = (event: PointerEvent): void =>
+export const execute = async (event: PointerEvent): Promise<void> =>
 {
     if (!$getLockState()) {
         return ;
@@ -32,5 +32,5 @@ export const execute = (event: PointerEvent): void =>
     const workSpace = $getCurrentWorkSpace();
     const externalLayer = new ExternalLayer(workSpace, workSpace.scene, layer);
 
-    externalLayer.setLock(!layer.lock);
+    await externalLayer.setLock(!layer.lock);
 };
