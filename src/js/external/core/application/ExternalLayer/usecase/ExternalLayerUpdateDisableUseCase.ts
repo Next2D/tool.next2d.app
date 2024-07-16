@@ -6,6 +6,10 @@ import { execute as shareSendService } from "@/share/service/ShareSendService";
 import { execute as externalLayerUpdateDisableHistoryObjectService } from "../service/ExternalLayerUpdateDisableHistoryObjectService";
 import { ExternalLayer } from "@/external/core/domain/model/ExternalLayer";
 import { execute as timelineLayerControllerUpdateDisableIconElementService } from "@/timeline/application/TimelineLayerController/service/TimelineLayerControllerUpdateDisableIconElementService";
+import { execute as screenDisplayObjectUpdateDisabledElementUseCase } from "@/screen/application/DisplayObject/usecase/ScreenDisplayObjectUpdateDisabledElementUseCase";
+import { execute as targetRectUpdateElementUseCase } from "@/screen/application/TargetRect/usecase/TargetRectUpdateElementUseCase";
+import { execute as screenStandardPointDeployElementUseCase } from "@/screen/application/StandardPoint/usecase/ScreenStandardPointDeployElementUseCase";
+import { execute as propertyAreaChangeDisplayUseCase } from "@/controller/application/PropertyArea/usecase/PropertyAreaChangeDisplayUseCase";
 
 /**
  * @description レイヤーの表示情報を更新
@@ -15,33 +19,52 @@ import { execute as timelineLayerControllerUpdateDisableIconElementService } fro
  * @param  {MovieClip} movie_clip
  * @param  {Layer} layer
  * @param  {boolean} value
- * @return {void}
+ * @return {Promise}
  * @method
  * @public
  */
-export const execute = (
+export const execute = async (
     work_space: WorkSpace,
     movie_clip: MovieClip,
     layer: Layer,
     value: boolean,
     receiver: boolean = false
-): void => {
+): Promise<void> => {
 
     // 外部APIを起動
     const externalLayer = new ExternalLayer(
         work_space, movie_clip, layer
     );
 
+    const index = externalLayer.index;
     const historyObject = externalLayerUpdateDisableHistoryObjectService(
-        work_space.id, movie_clip.id, externalLayer.index, value
+        work_space.id, movie_clip.id, index, value
     );
 
     // 内部情報を更新
     layer.disable = value;
 
+    // ロックしたLayerの選択があれば解除
+    if (value && movie_clip.selectedDepths.has(index)) {
+        movie_clip.selectedDepths.delete(index);
+    }
+
     // 表示中ならレイヤーの表示を更新
     if (work_space.active && movie_clip.active) {
+        // レイヤーの表示Elementを更新
         timelineLayerControllerUpdateDisableIconElementService(layer);
+
+        // 非表示にしたアイテムを表示・非表示に合わせて更新
+        screenDisplayObjectUpdateDisabledElementUseCase(movie_clip, layer);
+
+        // 選択範囲のElementの表示を更新
+        targetRectUpdateElementUseCase();
+
+        // MovieClipの基準点の表示を更新
+        screenStandardPointDeployElementUseCase();
+
+        // プロパティエリアの表示を更新
+        propertyAreaChangeDisplayUseCase();
     }
 
     // 受け取り処理ではなく、画面共有していれば共有者に送信

@@ -1,6 +1,5 @@
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { $setAllLightMode } from "@/timeline/application/TimelineUtil";
-import { execute as timelineLayerControllerUpdateLightIconElementService } from "@/timeline/application/TimelineLayerController/service/TimelineLayerControllerUpdateLightIconElementService";
 import { execute as timelineToolLightAllGetCurrentModeService } from "../service/TimelineToolLightAllGetCurrentModeService";
 import type { Layer } from "@/core/domain/model/Layer";
 import { ExternalLayer } from "@/external/core/domain/model/ExternalLayer";
@@ -42,9 +41,6 @@ export const execute = (event: PointerEvent): void =>
         // 外部APIを起動
         const externalLayer = new ExternalLayer(workSpace, scene, layer);
         externalLayer.setLight(mode);
-
-        // レイヤーのハイライト情報とElementを更新
-        timelineLayerControllerUpdateLightIconElementService(layer);
     }
 
     // モードを更新

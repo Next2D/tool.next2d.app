@@ -1,4 +1,3 @@
-import { execute as timelineLayerControllerUpdateDisableIconElementService } from "../service/TimelineLayerControllerUpdateDisableIconElementService";
 import { $allHideMenu } from "@/menu/application/MenuUtil";
 import { EventType } from "@/tool/domain/event/EventType";
 import { execute as timelineLayerControllerDisableIconWindowMouseUpService } from "../service/TimelineLayerControllerDisableIconWindowMouseUpService";
@@ -15,11 +14,11 @@ import { ExternalLayer } from "@/external/core/domain/model/ExternalLayer";
  *              Event processing for layer show/hide icons
  *
  * @param  {PointerEvent} event
- * @return {void}
+ * @return {Promise}
  * @method
  * @public
  */
-export const execute = (event: PointerEvent): void =>
+export const execute = async (event: PointerEvent): Promise<void> =>
 {
     if (event.button !== 0) {
         return ;
@@ -55,8 +54,5 @@ export const execute = (event: PointerEvent): void =>
     const externalLayer = new ExternalLayer(workSpace, workSpace.scene, layer);
 
     // Layerオブジェクトの値を更新
-    externalLayer.setDisable(!layer.disable);
-
-    // 表示Elementを更新
-    timelineLayerControllerUpdateDisableIconElementService(layer);
+    await externalLayer.setDisable(!layer.disable);
 };

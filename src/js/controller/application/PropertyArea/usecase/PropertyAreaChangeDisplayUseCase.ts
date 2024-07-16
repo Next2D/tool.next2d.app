@@ -29,7 +29,7 @@ export const execute = (): void =>
     // 単体選択処理
     if (movieClip.isSingleSelectedOfDisplayObject()) {
         const layer = movieClip.getLayer(movieClip.selectedDepths.keys().next().value);
-        if (!layer) {
+        if (!layer || layer.lock || layer.disable) {
             return ;
         }
 

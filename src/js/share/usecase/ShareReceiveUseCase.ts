@@ -174,7 +174,7 @@ export const execute = async (message: ShareReceiveMessageImpl): Promise<void> =
 
         // レイヤー表示を更新
         case $LAYER_DISABLE_UPDATE_COMMAND:
-            timelineLayerControllerLayerDisableUpdateReceiveService(message);
+            await timelineLayerControllerLayerDisableUpdateReceiveService(message);
             break;
 
         // レイヤーハイライトを更新

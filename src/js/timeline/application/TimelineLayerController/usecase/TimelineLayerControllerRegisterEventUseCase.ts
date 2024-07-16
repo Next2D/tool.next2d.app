@@ -1,14 +1,14 @@
 import { execute as timelineLayerControllerMenuShowUseCase } from "@/menu/application/TimelineLayerControllerMenu/usecase/TimelineLayerControllerMenuShowUseCase";
-import { execute as timelineLayerControllerLightIconMouseDownEventUseCase } from "./TimelineLayerControllerLightIconMouseDownEventUseCase";
+import { execute as timelineLayerControllerLightIconMouseDownEventService } from "../service/TimelineLayerControllerLightIconMouseDownEventService";
 import { execute as timelineLayerControllerNameTextMouseDownEventUseCase } from "./TimelineLayerControllerNameTextMouseDownEventUseCase";
 import { execute as timelineLayerControllerNameTextKeyPressEventService } from "../service/TimelineLayerControllerNameTextKeyPressEventService";
 import { execute as timelineLayerControllerLayerIconMouseDownEventUseCase } from "./TimelineLayerControllerLayerIconMouseDownEventUseCase";
 import { execute as timelineLayerControllerMouseDownEventUseCase } from "./TimelineLayerControllerMouseDownEventUseCase";
 import { execute as timelineLayerControllerNameTextFocusoutEventUseCase } from "./TimelineLayerControllerNameTextFocusoutEventUseCase";
 import { execute as timelineLayerControllerDisableIconMouseDownEventUseCase } from "./TimelineLayerControllerDisableIconMouseDownEventUseCase";
-import { execute as timelineLayerControllerDisableIconMouseOverUseCase } from "./TimelineLayerControllerDisableIconMouseOverUseCase";
+import { execute as timelineLayerControllerDisableIconMouseOverService } from "../service/TimelineLayerControllerDisableIconMouseOverService";
 import { execute as timelineLayerControllerLockIconMouseDownEventUseCase } from "./TimelineLayerControllerLockIconMouseDownEventUseCase";
-import { execute as timelineLayerControllerLockIconMouseOverUseCase } from "./TimelineLayerControllerLockIconMouseOverUseCase";
+import { execute as timelineLayerControllerLockIconMouseOverService } from "../service/TimelineLayerControllerLockIconMouseOverService";
 import { EventType } from "@/tool/domain/event/EventType";
 
 /**
@@ -71,7 +71,7 @@ export const execute = (element: HTMLElement): void =>
 
     if (lightElement) {
         lightElement.addEventListener(EventType.MOUSE_DOWN,
-            timelineLayerControllerLightIconMouseDownEventUseCase
+            timelineLayerControllerLightIconMouseDownEventService
         );
     }
 
@@ -88,7 +88,7 @@ export const execute = (element: HTMLElement): void =>
 
         // マウスオーバーのイベントを登録
         disableIconElement.addEventListener(EventType.MOUSE_OVER,
-            timelineLayerControllerDisableIconMouseOverUseCase
+            timelineLayerControllerDisableIconMouseOverService
         );
     }
 
@@ -104,7 +104,7 @@ export const execute = (element: HTMLElement): void =>
 
         // マウスオーバーのイベントを登録
         lockIconElement.addEventListener(EventType.MOUSE_OVER,
-            timelineLayerControllerLockIconMouseOverUseCase
+            timelineLayerControllerLockIconMouseOverService
         );
     }
 };

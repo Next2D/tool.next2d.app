@@ -2,7 +2,6 @@ import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { $setAllDisableMode } from "@/timeline/application/TimelineUtil";
 import type { Layer } from "@/core/domain/model/Layer";
 import { execute as timelineToolDisableAllGetCurrentModeService } from "../service/TimelineToolDisableAllGetCurrentModeService";
-import { execute as timelineLayerControllerUpdateDisableIconStyleService } from "@/timeline/application/TimelineLayerController/service/TimelineLayerControllerUpdateDisableIconElementService";
 import { ExternalLayer } from "@/external/core/domain/model/ExternalLayer";
 
 /**
@@ -10,11 +9,11 @@ import { ExternalLayer } from "@/external/core/domain/model/ExternalLayer";
  *              Event registration for the entire timeline display On/Off tool
  *
  * @param  {PointerEvent} event
- * @return {void}
+ * @return {Promise}
  * @method
  * @public
  */
-export const execute = (event: PointerEvent): void =>
+export const execute = async (event: PointerEvent): Promise<void> =>
 {
     if (event.button !== 0) {
         return;
@@ -41,10 +40,7 @@ export const execute = (event: PointerEvent): void =>
 
         // 外部APIを起動
         const externalLayer = new ExternalLayer(workSpace, scene, layer);
-        externalLayer.setDisable(mode);
-
-        // レイヤーの表示情報とElementを更新
-        timelineLayerControllerUpdateDisableIconStyleService(layer);
+        await externalLayer.setDisable(mode);
     }
 
     // モードを更新

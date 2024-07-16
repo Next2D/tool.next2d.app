@@ -160,9 +160,9 @@ export class ExternalLayer
      * @method
      * @public
      */
-    setDisable (disable: boolean, receiver: boolean = false): void
+    async setDisable (disable: boolean, receiver: boolean = false): Promise<void>
     {
-        externalLayerUpdateDisableUseCase(
+        await externalLayerUpdateDisableUseCase(
             this._$workSpace, this._$movieClip, this._$layer, disable, receiver
         );
     }

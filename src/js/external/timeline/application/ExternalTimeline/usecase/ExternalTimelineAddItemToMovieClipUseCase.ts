@@ -96,7 +96,8 @@ export const execute = async (
     for (let idx = 0; idx < layers.length; idx++) {
 
         const layer = layers[idx];
-        if (!layer || layer.lock) {
+        // レイヤーがロックか非表示モードならスキップ
+        if (!layer || layer.lock || layer.disable) {
             continue;
         }
 

@@ -31,33 +31,43 @@ export const execute = async (movie_clip: MovieClip, layer: Layer): Promise<void
     const elements = element
         .querySelectorAll(`.layer-id-${layer.id}`);
 
+    const length = elements.length;
     if (layer.lock) {
-        const length = elements.length;
         for (let idx = 0; idx < length; ++idx) {
             const node = elements[idx] as HTMLElement;
             if (!node) {
                 continue ;
             }
 
-            node.remove();
+            node.style.display = "none";
         }
     } else {
-        if (elements.length) {
-            return ;
-        }
+        // 非表示設定でなければ表示
+        if (!layer.disable) {
+            if (length) {
+                for (let idx = 0; idx < length; ++idx) {
+                    const node = elements[idx] as HTMLElement;
+                    if (!node) {
+                        continue ;
+                    }
 
-        const activeCharacters = layer.getActiveCharacters(movie_clip.currentFrame);
-        if (!activeCharacters.length) {
-            return ;
-        }
+                    node.style.display = "";
+                }
+            } else {
+                const activeCharacters = layer.getActiveCharacters(movie_clip.currentFrame);
+                if (!activeCharacters.length) {
+                    return ;
+                }
 
-        for (let idx = 0; activeCharacters.length > idx; ++idx) {
-            const character = activeCharacters[idx];
-            if (!character) {
-                continue;
+                for (let idx = 0; activeCharacters.length > idx; ++idx) {
+                    const character = activeCharacters[idx];
+                    if (!character) {
+                        continue;
+                    }
+
+                    await screenAreaAppendCharacterService(character, layer);
+                }
             }
-
-            await screenAreaAppendCharacterService(character, layer);
         }
     }
 
