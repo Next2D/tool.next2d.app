@@ -101,7 +101,7 @@ export const execute = async (
         screenAreaUpdateMovedLayerService(layer);
 
         // マスク表示を更新
-        if (parentId > -1) {
+        if (parentId > -1 || before_parent_id > -1) {
             await screenDisplayObjectUpdateLayerMaskInElementUseCase(movieClip, layer);
         }
     }

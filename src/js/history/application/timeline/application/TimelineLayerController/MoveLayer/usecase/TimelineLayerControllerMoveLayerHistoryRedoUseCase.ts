@@ -50,6 +50,7 @@ export const execute = async (
     }
 
     const layer = layers[0];
+    const parentId = layer.parentId;
     layer.mode     = after_mode;
     layer.parentId = after_parent_id;
 
@@ -98,7 +99,7 @@ export const execute = async (
         // スクリーンの表示を更新
         screenAreaUpdateMovedLayerService(layer);
 
-        if (after_parent_id) {
+        if (parentId > -1 || after_parent_id > -1) {
             await screenDisplayObjectUpdateLayerMaskInElementUseCase(movieClip, layer);
         }
     }
