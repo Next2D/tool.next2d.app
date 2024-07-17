@@ -54,9 +54,6 @@ export const execute = async (
         // レイヤーの表示Elementを更新
         timelineLayerControllerUpdateDisableIconElementService(layer);
 
-        // 非表示にしたアイテムを表示・非表示に合わせて更新
-        screenDisplayObjectUpdateDisabledElementUseCase(movie_clip, layer);
-
         // 選択範囲のElementの表示を更新
         targetRectUpdateElementUseCase();
 
@@ -65,6 +62,9 @@ export const execute = async (
 
         // プロパティエリアの表示を更新
         propertyAreaChangeDisplayUseCase();
+
+        // 非表示にしたアイテムを表示・非表示に合わせて更新
+        await screenDisplayObjectUpdateDisabledElementUseCase(movie_clip, layer);
     }
 
     // 受け取り処理ではなく、画面共有していれば共有者に送信

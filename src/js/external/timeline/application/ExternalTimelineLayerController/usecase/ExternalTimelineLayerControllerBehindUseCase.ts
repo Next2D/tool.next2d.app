@@ -21,11 +21,11 @@ import {
  * @method
  * @public
  */
-export const execute = (
+export const execute = async (
     work_space: WorkSpace,
     movie_clip: MovieClip,
     index: number
-): void => {
+): Promise<void> => {
 
     // 選択中のレイヤーがなければ終了
     if (!movie_clip.selectedLayers.length) {
@@ -42,7 +42,7 @@ export const execute = (
 
         case $MASK_MODE: // マスクレイヤー
         case $GUIDE_MODE: // ガイドレイヤー
-            externalTimelineLayerControllerBehindRelationUseCase(
+            await externalTimelineLayerControllerBehindRelationUseCase(
                 work_space,
                 movie_clip,
                 index
@@ -51,7 +51,7 @@ export const execute = (
 
         case $MASK_IN_MODE: // マスクの子レイヤー
         case $GUIDE_IN_MODE: // ガイドの子レイヤー
-            externalTimelineLayerControllerCheckTerminateRelationshipUseCase(
+            await externalTimelineLayerControllerCheckTerminateRelationshipUseCase(
                 work_space,
                 movie_clip,
                 index

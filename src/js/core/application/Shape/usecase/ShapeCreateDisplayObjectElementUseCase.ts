@@ -9,7 +9,7 @@ import { execute as screenAreaHierarchyAdjustmentService } from "@/screen/applic
 import { execute as screenAreaReadOnlyElementService } from "@/screen/application/ScreenArea/service/ScreenAreaReadOnlyElementService";
 import { execute as instanceUpdateBlendModeService } from "@/core/application/Instance/service/InstanceUpdateBlendModeService";
 import { $getDeactivated, $getReDrawState } from "@/screen/application/ScreenArea/ScreenAreaUtil";
-import { execute as screenDisplayObjectUpdateMaskStyleService } from "@/screen/application/DisplayObject/service/ScreenDisplayObjectUpdateMaskStyleService";
+import { execute as screenDisplayObjectUpdateMaskInCanvasStyleService } from "@/screen/application/DisplayObject/service/ScreenDisplayObjectUpdateMaskInCanvasStyleService";
 
 /**
  * @description Shapeをcanvasに描画して返却する
@@ -55,7 +55,7 @@ export const execute = async (
     div.appendChild(canvas);
 
     // マスクのスタイルを更新
-    await screenDisplayObjectUpdateMaskStyleService(div, layer, character.x, character.y);
+    await screenDisplayObjectUpdateMaskInCanvasStyleService(div, layer, character.x, character.y);
 
     // 追加するDisplayObjectのレイヤーの階層を調整
     if (!$getReDrawState()) {

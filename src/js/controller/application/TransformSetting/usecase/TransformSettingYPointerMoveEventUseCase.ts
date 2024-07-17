@@ -28,7 +28,7 @@ export const execute = (event: PointerEvent): void =>
         return ;
     }
 
-    requestAnimationFrame((): void =>
+    requestAnimationFrame(async (): Promise<void> =>
     {
         const element = event.target as HTMLInputElement;
         if (!element) {
@@ -47,7 +47,7 @@ export const execute = (event: PointerEvent): void =>
         transformSetting.y += movementX;
 
         // スクリーンで選択中のElementを移動
-        screenDisplayObjectSelectedMoveElementUseCase(
+        await screenDisplayObjectSelectedMoveElementUseCase(
             0, movementX
         );
 

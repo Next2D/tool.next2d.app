@@ -4,8 +4,8 @@ import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import type { Layer } from "@/core/domain/model/Layer";
 
 /**
- * @description マスクスタイルを取得
- *              Get mask style
+ * @description マスクインのスタイルを適用
+ *              Apply mask-in style
  *
  * @param  {HTMLElement} element
  * @param  {Layer} layer
@@ -21,13 +21,6 @@ export const execute = async (
     x: number,
     y: number
 ): Promise<void> => {
-
-    // styleを初期化
-    const style = element.style;
-    style.mask = style.webkitMask = "";
-    style.maskSize = style.webkitMaskSize = "";
-    style.maskRepeat = style.webkitMaskRepeat = "";
-    style.maskPosition = style.webkitMaskPosition = "";
 
     if (layer.parentId === -1) {
         return ;
@@ -90,6 +83,7 @@ export const execute = async (
     const localX = dx * matrix.a + dy * matrix.c + matrix.tx;
     const localY = dx * matrix.b + dy * matrix.d + matrix.ty;
 
+    const style = element.style;
     style.mask = style.webkitMask = `url(${base64}), none`;
     style.maskSize = style.webkitMaskSize = `${width}px ${height}px`;
     style.maskRepeat = style.webkitMaskRepeat = "no-repeat";

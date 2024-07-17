@@ -10,7 +10,8 @@ import { execute as screenDisplayObjectChangeElementClassService } from "@/scree
 import { execute as targetRectUpdateElementUseCase } from "@/screen/application/TargetRect/usecase/TargetRectUpdateElementUseCase";
 import { execute as screenStandardPointDeployElementUseCase } from "@/screen/application/StandardPoint/usecase/ScreenStandardPointDeployElementUseCase";
 import { execute as propertyAreaChangeDisplayUseCase } from "@/controller/application/PropertyArea/usecase/PropertyAreaChangeDisplayUseCase";
-import { execute as screenDisplayObjectUpdateMaskAndMaskInElementUseCase } from "@/screen/application/DisplayObject/usecase/ScreenDisplayObjectUpdateMaskAndMaskInElementUseCase";
+import { execute as screenDisplayObjectMaskLockUpdateElementService } from "@/screen/application/DisplayObject/service/ScreenDisplayObjectMaskLockUpdateElementService";
+import { execute as screenDisplayObjectUpdateLayerMaskElementUseCase } from "@/screen/application/DisplayObject/usecase/ScreenDisplayObjectUpdateLayerMaskElementUseCase";
 
 /**
  * @description レイヤーのロック情報を更新
@@ -20,7 +21,7 @@ import { execute as screenDisplayObjectUpdateMaskAndMaskInElementUseCase } from 
  * @param  {MovieClip} movie_clip
  * @param  {Layer} layer
  * @param  {boolean} value
- * @return {void}
+ * @return {Promise}
  * @method
  * @public
  */
@@ -68,7 +69,10 @@ export const execute = async (
         propertyAreaChangeDisplayUseCase();
 
         // マスクレイヤーなら、子レイヤーの表示を更新
-        await screenDisplayObjectUpdateMaskAndMaskInElementUseCase(movie_clip, layer);
+        screenDisplayObjectMaskLockUpdateElementService(layer);
+
+        // マスクインのレイヤーのDisplayObjectのElemnet表示を更新
+        screenDisplayObjectUpdateLayerMaskElementUseCase(layer);
     }
 
     // 受け取り処理ではなく、画面共有していれば共有者に送信

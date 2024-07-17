@@ -367,13 +367,13 @@ export class ExternalTimeline
      *              Move the selected layer behind the specified index value
      *
      * @param  {number} index
-     * @return {void}
+     * @return {Promise}
      * @method
      * @public
      */
-    behindLayer (index: number): void
+    async behindLayer (index: number): Promise<void>
     {
-        externalTimelineLayerControllerBehindUseCase(
+        await externalTimelineLayerControllerBehindUseCase(
             this._$workSpace,
             this._$movieClip,
             index

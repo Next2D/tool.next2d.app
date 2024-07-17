@@ -23,7 +23,7 @@ export const execute = (event: PointerEvent): void =>
     event.stopPropagation();
     event.preventDefault();
 
-    requestAnimationFrame((): void =>
+    requestAnimationFrame(async (): Promise<void> =>
     {
         if ($getPointerId() !== event.pointerId) {
             return ;
@@ -44,7 +44,7 @@ export const execute = (event: PointerEvent): void =>
         transformSetting.y += y;
 
         // 選択中のElementを移動
-        screenDisplayObjectSelectedMoveElementUseCase(x, y);
+        await screenDisplayObjectSelectedMoveElementUseCase(x, y);
 
         // MovieClipの基準点のElementを移動
         screenStandardPointMoveElementService(x, y);

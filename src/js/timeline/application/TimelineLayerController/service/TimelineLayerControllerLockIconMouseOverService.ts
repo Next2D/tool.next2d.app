@@ -31,6 +31,5 @@ export const execute = async (event: PointerEvent): Promise<void> =>
     // 外部APIを起動
     const workSpace = $getCurrentWorkSpace();
     const externalLayer = new ExternalLayer(workSpace, workSpace.scene, layer);
-
     await externalLayer.setLock(!layer.lock);
 };

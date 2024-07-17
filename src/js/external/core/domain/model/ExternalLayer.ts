@@ -125,7 +125,7 @@ export class ExternalLayer
      *
      * @param  {boolean} lock
      * @param  {boolean} [receiver = false]
-     * @return {void}
+     * @return {Promise}
      * @method
      * @public
      */

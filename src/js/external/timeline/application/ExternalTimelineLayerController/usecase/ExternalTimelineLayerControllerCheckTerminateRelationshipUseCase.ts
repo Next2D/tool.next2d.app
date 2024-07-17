@@ -5,6 +5,7 @@ import { execute as timelineLayerBuildElementUseCase } from "@/timeline/applicat
 import { execute as timelineLayerControllerMoveLayerHistoryUseCase } from "@/history/application/timeline/application/TimelineLayerController/MoveLayer/usecase/TimelineLayerControllerMoveLayerHistoryUseCase";
 import { timelineLayer } from "@/timeline/domain/model/TimelineLayer";
 import { execute as screenAreaUpdateMovedLayerService } from "@/screen/application/ScreenArea/service/ScreenAreaUpdateMovedLayerService";
+import { execute as screenDisplayObjectAllResetMaskStyleUseCase } from "@/screen/application/DisplayObject/usecase/ScreenDisplayObjectAllResetMaskStyleUseCase";
 
 /**
  * @description レイヤーの親子関係性をチェックする
@@ -13,15 +14,15 @@ import { execute as screenAreaUpdateMovedLayerService } from "@/screen/applicati
  * @param  {WorkSpace} work_space
  * @param  {MovieClip} movie_clip
  * @param  {number} index
- * @return {void}
+ * @return {Promise}
  * @method
  * @public
  */
-export const execute = (
+export const execute = async (
     work_space: WorkSpace,
     movie_clip: MovieClip,
     index: number
-): void => {
+): Promise<void> => {
 
     if (timelineLayer.exitMode) {
 
@@ -90,26 +91,25 @@ export const execute = (
 
             // 移動したレイヤーを挿入先のレイヤーに更新
             targetLayer = layer;
+
+            // スクリーンの表示を更新
+            if (work_space.active && movie_clip.active) {
+                // レイヤーの表示を更新
+                screenAreaUpdateMovedLayerService(layer);
+
+                // レイヤーに配置された全てのDisplayObjectのマスクスタイルをリセット
+                screenDisplayObjectAllResetMaskStyleUseCase(movie_clip, layer);
+            }
         }
 
         if (work_space.active && movie_clip.active) {
             // タイムラインのelementを再構築
             timelineLayerBuildElementUseCase();
-
-            // スクリーンの表示を更新
-            for (let idx = 0; idx < selectedLayers.length; idx++) {
-                const layer = selectedLayers[idx];
-                if (!layer) {
-                    continue;
-                }
-
-                screenAreaUpdateMovedLayerService(layer);
-            }
         }
 
     }  else {
         // 親子関係の解除がなければ通常の移動処理を行う
-        externalTimelineLayerControllerBehindRelationUseCase(
+        await externalTimelineLayerControllerBehindRelationUseCase(
             work_space,
             movie_clip,
             index

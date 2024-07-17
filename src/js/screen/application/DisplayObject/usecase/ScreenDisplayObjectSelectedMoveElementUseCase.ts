@@ -1,6 +1,6 @@
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { $SCREEN_STAGE_AREA_ID } from "@/config/ScreenConfig";
-import { execute as screenDisplayObjectUpdateMaskStyleService } from "@/screen/application/DisplayObject/service/ScreenDisplayObjectUpdateMaskStyleService";
+import { execute as screenDisplayObjectUpdateMaskInCanvasStyleService } from "@/screen/application/DisplayObject/service/ScreenDisplayObjectUpdateMaskInCanvasStyleService";
 import { transformSetting } from "@/controller/domain/model/TransformSetting";
 
 /**
@@ -9,14 +9,14 @@ import { transformSetting } from "@/controller/domain/model/TransformSetting";
  *
  * @param  {number} [movement_x=0]
  * @param  {number} [movement_y=0]
- * @return {void}
+ * @return {Promise}
  * @method
  * @public
  */
-export const execute = (
+export const execute = async (
     movement_x: number = 0,
     movement_y: number = 0
-): void => {
+): Promise<void> => {
 
     const workSpace = $getCurrentWorkSpace();
     const movieClip = workSpace.scene;
@@ -71,7 +71,7 @@ export const execute = (
             }
 
             // マスクのstyleを更新
-            screenDisplayObjectUpdateMaskStyleService(
+            await screenDisplayObjectUpdateMaskInCanvasStyleService(
                 node, layer,
                 character.x + transformSetting.x,
                 character.y + transformSetting.y

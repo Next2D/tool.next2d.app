@@ -11,6 +11,7 @@ import {
     $MASK_MODE
 } from "@/config/LayerModeConfig";
 import { execute as screenAreaUpdateMovedLayerService } from "@/screen/application/ScreenArea/service/ScreenAreaUpdateMovedLayerService";
+import { execute as screenDisplayObjectUpdateLayerMaskInElementUseCase } from "@/screen/application/DisplayObject/usecase/ScreenDisplayObjectUpdateLayerMaskInElementUseCase";
 
 /**
  * @description マスク、ガイドレイヤーの親子関係を考慮してレイヤーを移動
@@ -23,11 +24,11 @@ import { execute as screenAreaUpdateMovedLayerService } from "@/screen/applicati
  * @method
  * @public
  */
-export const execute = (
+export const execute = async (
     work_space: WorkSpace,
     movie_clip: MovieClip,
     index: number
-): void => {
+): Promise<void> => {
 
     // 移動先のレイヤーを取得
     const distLayer = movie_clip.getLayer(index);
@@ -78,6 +79,11 @@ export const execute = (
     // MovieClipのレイヤー配列を取得
     const layers = movie_clip.layers;
 
+    const parentLayer = movie_clip.getLayerById(parentId);
+    if (!parentLayer) {
+        return ;
+    }
+
     // レイヤーの移動を実行
     for (let idx = 0; idx < selectedLayers.length; idx++) {
 
@@ -111,6 +117,9 @@ export const execute = (
             layers.splice(afterIndex, 0, layer);
         }
 
+        // マスクレイヤーへの移動で、新規の子レイヤーの場合はstyleを更新
+        const maskReload = mode === 2 && layer.parentId !== parentId;
+
         // 変更前のレイヤー情報を取得
         const beforeMode     = layer.mode;
         const beforeParentId = layer.parentId;
@@ -131,9 +140,16 @@ export const execute = (
             beforeParentId
         );
 
-        // アクティブならアイコン表示を更新
         if (work_space.active && movie_clip.active) {
+            // アクティブならアイコン表示を更新
             timelineLayerControllerUpdateIconElementService(layer);
+
+            // スクリーンのElementの階層を更新
+            screenAreaUpdateMovedLayerService(layer);
+
+            if (maskReload) {
+                await screenDisplayObjectUpdateLayerMaskInElementUseCase(movie_clip, layer);
+            }
         }
     }
 
@@ -141,15 +157,5 @@ export const execute = (
     if (work_space.active && movie_clip.active) {
         // タイムラインのelementを再構築
         timelineLayerBuildElementUseCase();
-
-        // スクリーンの表示を更新
-        for (let idx = 0; idx < selectedLayers.length; idx++) {
-            const layer = selectedLayers[idx];
-            if (!layer) {
-                continue;
-            }
-
-            screenAreaUpdateMovedLayerService(layer);
-        }
     }
 };
