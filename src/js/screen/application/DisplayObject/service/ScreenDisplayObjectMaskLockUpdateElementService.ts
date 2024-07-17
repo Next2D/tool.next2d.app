@@ -3,6 +3,7 @@ import { $MASK_MODE } from "@/config/LayerModeConfig";
 import { $SCREEN_STAGE_AREA_ID } from "@/config/ScreenConfig";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { execute as screenAreaAppendCharacterService } from "@/screen/application/ScreenArea/service/ScreenAreaAppendCharacterService";
+
 /**
  * @description マスクの表示と子のレイヤーの表示を更新
  *              Update mask display and child layer display

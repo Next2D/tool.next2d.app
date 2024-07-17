@@ -15,7 +15,7 @@ import { execute as externalLayerGetLayerTypeService } from "@/external/core/app
  * @method
  * @public
  */
-export const execute = (message: ShareReceiveMessageImpl): void =>
+export const execute = async (message: ShareReceiveMessageImpl): Promise<void> =>
 {
     const id = message.data[0] as NonNullable<number>;
 
@@ -41,7 +41,7 @@ export const execute = (message: ShareReceiveMessageImpl): void =>
     );
 
     // レイヤーの状態を更新
-    externalLayerUpdateTypeUseCase(
+    await externalLayerUpdateTypeUseCase(
         workSpace,movieClip, layer, type, true
     );
 };

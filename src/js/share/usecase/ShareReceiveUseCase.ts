@@ -274,7 +274,7 @@ export const execute = async (message: ShareReceiveMessageImpl): Promise<void> =
 
         // レイヤーのモードを更新
         case $LAYER_UPDATE_MODE_COMMAND:
-            layerUpdateModeReceiveUseCase(message);
+            await layerUpdateModeReceiveUseCase(message);
             break;
 
         // 空のキーフレームを追加

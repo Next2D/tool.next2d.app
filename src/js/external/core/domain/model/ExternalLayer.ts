@@ -218,7 +218,8 @@ export class ExternalLayer
      * @description レイヤータイプを文字列で返却
      *              Returns the layer type as a string
      *
-     * @mwmbwe {string}
+     * @member {string}
+     * @readonly
      * @method
      * @public
      */
@@ -226,14 +227,24 @@ export class ExternalLayer
     {
         return externalLayerGetLayerTypeService(this._$layer.mode);
     }
-    set layerType (type: LayerTypeImpl)
+
+    /**
+     * @description レイヤータイプを更新
+     *              Update Layer Type
+     *
+     * @param  {string} type
+     * @return {Promise}
+     * @method
+     * @public
+     */
+    async updateLayerType (type: LayerTypeImpl): Promise<void>
     {
         switch (type) {
 
             case $NORMAL_TYPE:
             case $MASK_TYPE:
             case $GUIDE_TYPE:
-                externalLayerUpdateTypeUseCase(
+                await externalLayerUpdateTypeUseCase(
                     this._$workSpace, this._$movieClip, this._$layer, type
                 );
                 break;

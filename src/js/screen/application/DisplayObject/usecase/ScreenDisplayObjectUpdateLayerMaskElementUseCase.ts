@@ -8,8 +8,8 @@ import { $MASK_IN_MODE, $MASK_MODE } from "@/config/LayerModeConfig";
  * @description 親のレイヤーの配下にある子レイヤーDisplayObjectのElemnet表示を更新する
  *              Update the Elemnet display of the child layer DisplayObject under the parent layer
  *
- * @param {Layer} parent_layer
- * @returns {Promise}
+ * @param  {Layer} parent_layer
+ * @return {Promise}
  * @method
  * @public
  */

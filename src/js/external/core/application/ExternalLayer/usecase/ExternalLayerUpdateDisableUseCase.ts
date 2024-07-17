@@ -10,6 +10,7 @@ import { execute as screenDisplayObjectUpdateDisabledElementUseCase } from "@/sc
 import { execute as targetRectUpdateElementUseCase } from "@/screen/application/TargetRect/usecase/TargetRectUpdateElementUseCase";
 import { execute as screenStandardPointDeployElementUseCase } from "@/screen/application/StandardPoint/usecase/ScreenStandardPointDeployElementUseCase";
 import { execute as propertyAreaChangeDisplayUseCase } from "@/controller/application/PropertyArea/usecase/PropertyAreaChangeDisplayUseCase";
+import { execute as screenDisplayObjectUpdateLayerMaskInElementUseCase } from "@/screen/application/DisplayObject/usecase/ScreenDisplayObjectUpdateLayerMaskInElementUseCase";
 
 /**
  * @description レイヤーの表示情報を更新
@@ -65,6 +66,9 @@ export const execute = async (
 
         // 非表示にしたアイテムを表示・非表示に合わせて更新
         await screenDisplayObjectUpdateDisabledElementUseCase(movie_clip, layer);
+
+        // マスクの子レイヤーなら、表示を更新
+        await screenDisplayObjectUpdateLayerMaskInElementUseCase(movie_clip, layer);
     }
 
     // 受け取り処理ではなく、画面共有していれば共有者に送信

@@ -28,8 +28,13 @@ export const execute = async (movie_clip: MovieClip, layer: Layer): Promise<void
         return ;
     }
 
+    const elements = element
+        .querySelectorAll(`.layer-id-${layer.id}`);
+
+    const length = elements.length;
+
     // 表示で配置がなければ追加
-    if (!layer.disable) {
+    if (!layer.disable && !length) {
         const activeCharacters = layer.getActiveCharacters(movie_clip.currentFrame);
         if (!activeCharacters.length) {
             return ;
@@ -43,22 +48,19 @@ export const execute = async (movie_clip: MovieClip, layer: Layer): Promise<void
 
             await screenAreaAppendCharacterService(character, layer);
         }
-    }
 
-    const elements = element
-        .querySelectorAll(`.layer-id-${layer.id}`);
-
-    const length = elements.length;
-    if (!length) {
-        return ;
-    }
-
-    for (let idx = 0; idx < length; ++idx) {
-        const node = elements[idx] as HTMLElement;
-        if (!node) {
-            continue ;
+    } else {
+        if (!length) {
+            return ;
         }
 
-        node.style.display = layer.disable ? "none" : "";
+        for (let idx = 0; idx < length; ++idx) {
+            const node = elements[idx] as HTMLElement;
+            if (!node) {
+                continue ;
+            }
+
+            node.style.display = layer.disable ? "none" : "";
+        }
     }
 };

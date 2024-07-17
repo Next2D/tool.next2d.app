@@ -12,7 +12,7 @@ import { $MASK_TYPE } from "@/config/LayerModeConfig";
  * @method
  * @public
  */
-export const execute = (event: PointerEvent): void =>
+export const execute = async (event: PointerEvent): Promise<void> =>
 {
     if (event.button !== 0) {
         return ;
@@ -43,5 +43,5 @@ export const execute = (event: PointerEvent): void =>
     );
 
     // マスクレイヤーに変更
-    externalLayer.layerType = $MASK_TYPE;
+    await externalLayer.updateLayerType($MASK_TYPE);
 };
