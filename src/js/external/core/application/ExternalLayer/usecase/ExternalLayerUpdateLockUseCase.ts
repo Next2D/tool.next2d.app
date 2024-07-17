@@ -69,10 +69,10 @@ export const execute = async (
         propertyAreaChangeDisplayUseCase();
 
         // マスクレイヤーなら、子レイヤーの表示を更新
-        screenDisplayObjectMaskLockUpdateElementService(layer);
+        await screenDisplayObjectMaskLockUpdateElementService(layer);
 
         // マスクインのレイヤーのDisplayObjectのElemnet表示を更新
-        screenDisplayObjectUpdateLayerMaskElementUseCase(layer);
+        await screenDisplayObjectUpdateLayerMaskElementUseCase(layer);
     }
 
     // 受け取り処理ではなく、画面共有していれば共有者に送信

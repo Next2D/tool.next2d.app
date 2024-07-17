@@ -9,6 +9,7 @@ import {
     $MASK_MODE
 } from "@/config/LayerModeConfig";
 import { execute as screenAreaUpdateMovedLayerService } from "@/screen/application/ScreenArea/service/ScreenAreaUpdateMovedLayerService";
+import { execute as screenDisplayObjectUpdateLayerMaskInElementUseCase } from "@/screen/application/DisplayObject/usecase/ScreenDisplayObjectUpdateLayerMaskInElementUseCase";
 
 /**
  * @description レイヤーの移動を元に戻す
@@ -20,18 +21,18 @@ import { execute as screenAreaUpdateMovedLayerService } from "@/screen/applicati
  * @param  {number} after_index
  * @param  {number} before_mode
  * @param  {number} before_parent_id
- * @return {void}
+ * @return {Promise}
  * @method
  * @public
  */
-export const execute = (
+export const execute = async (
     work_space_id: number,
     library_id: number,
     before_index: number,
     after_index: number,
     before_mode: LayerModeImpl,
     before_parent_id: number
-): void => {
+): Promise<void> => {
 
     const workSpace = $getWorkSpace(work_space_id);
     if (!workSpace) {
@@ -50,6 +51,7 @@ export const execute = (
     }
 
     const layer = layers[0];
+    const parentId = layer.parentId;
     layer.mode     = before_mode;
     layer.parentId = before_parent_id;
 
@@ -97,5 +99,10 @@ export const execute = (
 
         // スクリーンの表示を更新
         screenAreaUpdateMovedLayerService(layer);
+
+        // マスク表示を更新
+        if (parentId > -1) {
+            await screenDisplayObjectUpdateLayerMaskInElementUseCase(movieClip, layer);
+        }
     }
 };

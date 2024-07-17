@@ -302,7 +302,7 @@ export const execute = async (
 
         // レイヤーの移動
         case $TIMELINE_MOVE_LAYER_COMMAND:
-            timelineLayerControllerMoveLayerHistoryRedoUseCase(
+            await timelineLayerControllerMoveLayerHistoryRedoUseCase(
                 messages[0] as number, // workSpaceId
                 messages[1] as number, // MovieClip ID
                 messages[2] as number, // Before Index

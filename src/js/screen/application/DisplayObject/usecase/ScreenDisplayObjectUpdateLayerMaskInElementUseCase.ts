@@ -28,7 +28,7 @@ export const execute = async (movie_clip: MovieClip, layer: Layer): Promise<void
     }
 
     // 親レイヤーが存在しない場合は、マスクのスタイルをリセット
-    if (!layer.parentId) {
+    if (layer.parentId === -1) {
         screenDisplayObjectAllResetMaskStyleUseCase(movie_clip, layer);
         return ;
     }

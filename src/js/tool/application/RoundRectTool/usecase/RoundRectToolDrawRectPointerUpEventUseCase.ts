@@ -67,7 +67,6 @@ export const execute = async (event: PointerEvent): Promise<void> =>
     // 非表示になる前の位置を取得
     const left = rectElement.offsetLeft;
     const top = rectElement.offsetTop;
-    console.log(left, top);
 
     // 範囲選択を非表示に
     drawRectHideService();
