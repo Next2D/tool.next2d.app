@@ -1,5 +1,3 @@
-import type { ExternalInstanceImpl } from "@/interface/ExternalInstanceImpl";
-import type { ExternalShape } from "@/external/core/domain/model/ExternalShape";
 import type { ToolImpl } from "@/interface/ToolImpl";
 import type { ArrowTool } from "@/tool/domain/model/ArrowTool";
 import { EventType } from "@/tool/domain/event/EventType";
@@ -77,10 +75,7 @@ export const execute = async (event: PointerEvent): Promise<void> =>
     // 新規Shapeをライブラリに追加
     const path = `Shape_${workSpace.nextLibraryId}`;
     const externalLibrary = new ExternalLibrary(workSpace);
-    await externalLibrary.addNewShape(path);
-
-    // ライブラリからShapeを取得
-    const shape: ExternalInstanceImpl<ExternalShape> = externalLibrary.getItem(path);
+    const shape = externalLibrary.addNewShape(path);
     if (!shape) {
         return ;
     }
@@ -112,10 +107,7 @@ export const execute = async (event: PointerEvent): Promise<void> =>
         // 新規Shapeをライブラリに追加
         const path = `Shape_${workSpace.nextLibraryId}`;
         const externalLibrary = new ExternalLibrary(workSpace);
-        await externalLibrary.addNewShape(path);
-
-        // ライブラリからShapeを取得
-        const shape: ExternalInstanceImpl<ExternalShape> = externalLibrary.getItem(path);
+        const shape = externalLibrary.addNewShape(path);
         if (!shape) {
             return ;
         }

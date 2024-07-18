@@ -49,7 +49,8 @@ import {
     $STAGE_COLOR_COMMAND,
     $CHARACTER_UPDATE_X,
     $CHARACTER_UPDATE_Y,
-    $LIBRARY_ADD_NEW_SHAPE_COMMAND
+    $LIBRARY_ADD_NEW_SHAPE_COMMAND,
+    $LIBRARY_UPDATE_SHAPE_GRAPHICS_COMMAND
 } from "@/config/HistoryConfig";
 
 /**
@@ -212,6 +213,9 @@ export const execute = (command: number): string =>
 
         case $LIBRARY_ADD_NEW_SHAPE_COMMAND:
             return "新規Shape「%s1」を追加";
+
+        case $LIBRARY_UPDATE_SHAPE_GRAPHICS_COMMAND:
+            return "「%s1」のグラフィックを変更";
 
         default:
             break;

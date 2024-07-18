@@ -19,9 +19,6 @@ export const execute = (
 
     return new Promise(async (resolve) =>
     {
-        // Plyerのキャッシュをリセット
-        next2d.player.cacheStore.reset();
-
         const displayShape = new next2d.display.Shape();
         if (character && character.filters.length) {
             // todo filter
@@ -43,8 +40,16 @@ export const execute = (
         graphics._$xMax = bounds.xMax;
         graphics._$yMax = bounds.yMax;
 
-        displayShape.x = -bounds.xMin - Math.abs(bounds.xMax - bounds.xMin) / 2;
-        displayShape.y = -bounds.yMin - Math.abs(bounds.yMax - bounds.yMin) / 2;
+        const width  = Math.abs(bounds.xMax - bounds.xMin);
+        const height = Math.abs(bounds.yMax - bounds.yMin);
+        const canvas = $getCanvas();
+        if (!width || !height) {
+            resolve(canvas);
+            return ;
+        }
+
+        displayShape.x = -bounds.xMin - width  / 2;
+        displayShape.y = -bounds.yMin - height / 2;
 
         const sprite = new next2d.display.Sprite();
         sprite.addChild(displayShape);
@@ -67,8 +72,11 @@ export const execute = (
         const scale = window.devicePixelRatio;
         matrix.scale(scale, scale);
 
+        // Plyerのキャッシュをリセット
+        next2d.player.cacheStore.reset();
+
         const bitmapData = new next2d.display.BitmapData(container.width * scale, container.height * scale);
-        bitmapData.draw(container, matrix, null, $getCanvas(), (canvas: HTMLCanvasElement): void =>
+        bitmapData.draw(container, matrix, null, canvas, (canvas: HTMLCanvasElement): void =>
         {
             canvas.style.width  = `${container.width}px`;
             canvas.style.height = `${container.height}px`;

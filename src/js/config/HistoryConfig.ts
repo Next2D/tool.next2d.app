@@ -555,3 +555,12 @@ export const $CHARACTER_UPDATE_Y: number = 55;
  * @constant
  */
 export const $LIBRARY_ADD_NEW_SHAPE_COMMAND: number = 56;
+
+/**
+ * @description Shape描画レコード更新の識別コマンド名
+ *              Identification command name for updating Shape drawing records
+ *
+ * @type {number}
+ * @constant
+ */
+export const $LIBRARY_UPDATE_SHAPE_GRAPHICS_COMMAND: number = 57;

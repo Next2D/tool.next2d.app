@@ -9,6 +9,7 @@ import { execute as externalLibraryMoveToFolderUseCase } from "@/external/contro
 import { execute as externalLibraryRemoveItemUseCase } from "@/external/controller/application/ExternalLibrary/usecase/ExternalLibraryRemoveItemUseCase";
 import { execute as externalLibrarySelectedItemUseCase } from "@/external/controller/application/ExternalLibrary/usecase/ExternalLibrarySelectedItemUseCase";
 import { execute as externalLibraryCreateNewFolderUseCase } from "@/external/controller/application/ExternalLibrary/usecase/ExternalLibraryCreateNewFolderUseCase";
+import { ExternalShape } from "@/external/core/domain/model/ExternalShape";
 
 /**
  * @description ライブラリの外部APIクラス
@@ -198,14 +199,17 @@ export class ExternalLibrary
      *
      * @param  {string} path
      * @param  {boolean} [reload = true]
-     * @return {Promise}
+     * @return {ExternalShape}
      * @method
      * @public
      */
-    async addNewShape (path: string, reload: boolean = true): Promise<void>
-    {
+    addNewShape (
+        path: string,
+        reload: boolean = true
+    ): ExternalShape | null {
+
         if (!path) {
-            return ;
+            return null;
         }
 
         const paths = path.split("/");
@@ -216,7 +220,7 @@ export class ExternalLibrary
         }
 
         if (!paths.length) {
-            return ;
+            return null;
         }
 
         const name = paths.pop() as NonNullable<string>;
@@ -233,11 +237,13 @@ export class ExternalLibrary
         }
 
         // 新規Shapeを作成
-        await externalLibraryAddNewShapeUseCase(
+        const shape = externalLibraryAddNewShapeUseCase(
             this._$workSpace,
             this._$workSpace.scene,
             name, folderId, reload
         );
+
+        return new ExternalShape(this._$workSpace, shape);
     }
 
     /**
