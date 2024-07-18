@@ -9,17 +9,19 @@ import { execute as screenDisplayObjectChangeElementUseCase } from "@/screen/app
  *              Redo function for new Shape addition process
  *
  * @param  {number} work_space_id
- * @param  {object} shape_object
- * @return {void}
+ * @param  {object} before_shape_object
+ * @param  {array} recodes
+ * @param  {object} bounds
+ * @return {Promise}
  * @method
  * @public
  */
-export const execute = (
+export const execute = async (
     work_space_id: number,
     before_shape_object: ShapeSaveObjectImpl,
     recodes: number[],
     bounds: BoundsImpl
-): void => {
+): Promise<void> => {
 
     const workSpace = $getWorkSpace(work_space_id);
     if (!workSpace) {
@@ -41,6 +43,6 @@ export const execute = (
     // 起動中のプロジェクトならライブラリエリアを再描画
     if (workSpace.active) {
         // 配置されてるDisplayObjectのElementを入れ替える
-        screenDisplayObjectChangeElementUseCase(shape.id);
+        await screenDisplayObjectChangeElementUseCase(shape.id);
     }
 };

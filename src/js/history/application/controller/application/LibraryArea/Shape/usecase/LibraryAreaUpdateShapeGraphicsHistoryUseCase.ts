@@ -1,6 +1,7 @@
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { Shape } from "@/core/domain/model/Shape";
+import type { BoundsImpl } from "@/interface/BoundsImpl";
 import { $useSocket } from "@/share/ShareUtil";
 import { $LIBRARY_UPDATE_SHAPE_GRAPHICS_COMMAND } from "@/config/HistoryConfig";
 import { execute as historyAddElementUseCase } from "@/controller/application/HistoryArea/usecase/HistoryAddElementUseCase";
@@ -15,7 +16,6 @@ import { execute as userDatabaseAutoSaveReservationUseCase } from "@/user/applic
 
 // @ts-ignore
 import ZlibDeflateWorker from "@/worker/ZlibDeflateWorker?worker&inline";
-import { BoundsImpl } from "@/interface/BoundsImpl";
 
 /**
  * @type {Worker}

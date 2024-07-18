@@ -633,7 +633,7 @@ export const execute = async (
 
         // Shapeのグラフィックスを更新
         case $LIBRARY_UPDATE_SHAPE_GRAPHICS_COMMAND:
-            libraryAreaUpdateShapeGraphicsHistoryUndoUseCase(
+            await libraryAreaUpdateShapeGraphicsHistoryUndoUseCase(
                 messages[0] as number, // WorkSpace ID
                 messages[2] as ShapeSaveObjectImpl // Shape Save Object
             );

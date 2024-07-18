@@ -1,8 +1,8 @@
 import type { ShapeSaveObjectImpl } from "@/interface/ShapeSaveObjectImpl";
-import { execute as externalWorkSpaceRegisterInstanceService } from "@/external/core/application/ExternalWorkSpace/service/ExternalWorkSpaceRegisterInstanceService";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
 import { Shape } from "@/core/domain/model/Shape";
 import { $SCREEN_STAGE_AREA_ID } from "@/config/ScreenConfig";
+import { execute as externalWorkSpaceRegisterInstanceService } from "@/external/core/application/ExternalWorkSpace/service/ExternalWorkSpaceRegisterInstanceService";
 import { execute as screenDisplayObjectChangeElementUseCase } from "@/screen/application/DisplayObject/usecase/ScreenDisplayObjectChangeElementUseCase";
 
 /**
@@ -39,6 +39,6 @@ export const execute = async (
 
     if (workSpace.active) {
         // 配置されてるDisplayObjectのElementを入れ替える
-        screenDisplayObjectChangeElementUseCase(shape.id);
+        await screenDisplayObjectChangeElementUseCase(shape.id);
     }
 };

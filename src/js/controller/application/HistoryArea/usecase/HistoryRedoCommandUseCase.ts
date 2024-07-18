@@ -6,6 +6,8 @@ import type { InstanceSaveObjectImpl } from "@/interface/InstanceSaveObjectImpl"
 import type { LayerModeImpl } from "@/interface/LayerModeImpl";
 import type { CharacterSaveObjectImpl } from "@/interface/CharacterSaveObjectImpl";
 import type { SoundObjectImpl } from "@/interface/SoundObjectImpl";
+import type { ShapeSaveObjectImpl } from "@/interface/ShapeSaveObjectImpl";
+import type { BoundsImpl } from "@/interface/BoundsImpl";
 import { execute as userDatabaseAutoSaveReservationUseCase } from "@/user/application/Database/usecase/UserDatabaseAutoSaveReservationUseCase";
 import { execute as screenTabNameAddHistoryRedoUseCase } from "@/history/application/screen/application/ScreenTab/usecase/ScreenTabNameAddHistoryRedoUseCase";
 import { execute as timelineToolLayerAddHistoryRedoUseCase } from "@/history/application/timeline/application/TimelineTool/LayerAdd/usecase/TimelineToolLayerAddHistoryRedoUseCase";
@@ -58,6 +60,7 @@ import { execute as characterUpdateYHistoryRedoUseCase } from "@/history/applica
 import { execute as instanceUpdateNameHistoryRedoUseCase } from "@/history/application/core/application/Instance/usecase/InstanceUpdateNameHistoryRedoUseCase";
 import { execute as instanceUpdateSymbolHistoryRedoUseCase } from "@/history/application/core/application/Instance/usecase/InstanceUpdateSymbolHistoryRedoUseCase";
 import { execute as libraryAreaAddNewShapeHistoryRedoUseCase } from "@/history/application/controller/application/LibraryArea/Shape/usecase/LibraryAreaAddNewShapeHistoryRedoUseCase";
+import { execute as libraryAreaUpdateShapeGraphicsHistoryRedoUseCase } from "@/history/application/controller/application/LibraryArea/Shape/usecase/LibraryAreaUpdateShapeGraphicsHistoryRedoUseCase";
 import {
     $SCREEN_TAB_NAME_UPDATE_COMMAND,
     $TIMELINE_TOOL_LAYER_ADD_COMMAND,
@@ -109,9 +112,9 @@ import {
     $STAGE_COLOR_COMMAND,
     $CHARACTER_UPDATE_X,
     $CHARACTER_UPDATE_Y,
-    $LIBRARY_ADD_NEW_SHAPE_COMMAND
+    $LIBRARY_ADD_NEW_SHAPE_COMMAND,
+    $LIBRARY_UPDATE_SHAPE_GRAPHICS_COMMAND
 } from "@/config/HistoryConfig";
-import { ShapeSaveObjectImpl } from "@/interface/ShapeSaveObjectImpl";
 
 /**
  * @description Redoコマンドの実行関数
@@ -628,6 +631,16 @@ export const execute = async (
             libraryAreaAddNewShapeHistoryRedoUseCase(
                 messages[0] as number, // WorkSpace ID
                 messages[2] as ShapeSaveObjectImpl // Shape Save Object
+            );
+            break;
+
+        // Shapeのグラフィックスを更新
+        case $LIBRARY_UPDATE_SHAPE_GRAPHICS_COMMAND:
+            await libraryAreaUpdateShapeGraphicsHistoryRedoUseCase(
+                messages[0] as number, // WorkSpace ID
+                messages[2] as ShapeSaveObjectImpl, // Shape Save Object
+                messages[3] as number[], // Shape Graphic Recodes
+                messages[4] as BoundsImpl // Shape Bounds
             );
             break;
 
