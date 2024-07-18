@@ -5,6 +5,7 @@ import { $getWorkSpace } from "@/core/application/CoreUtil";
 import { execute as timelineLayerControllerUpdateIconElementService } from "@/timeline/application/TimelineLayerController/service/TimelineLayerControllerUpdateIconElementService";
 import { execute as screenDisplayObjectMaskLockUpdateElementService } from "@/screen/application/DisplayObject/service/ScreenDisplayObjectMaskLockUpdateElementService";
 import { execute as screenDisplayObjectUpdateLayerMaskInElementUseCase } from "@/screen/application/DisplayObject/usecase/ScreenDisplayObjectUpdateLayerMaskInElementUseCase";
+import { execute as screenDisplayObjectUpdateDisabledElementUseCase } from "@/screen/application/DisplayObject/usecase/ScreenDisplayObjectUpdateDisabledElementUseCase";
 import {
     $GUIDE_IN_MODE,
     $GUIDE_MODE,
@@ -51,6 +52,7 @@ export const execute = async (
     }
 
     // 元の色に戻す
+    const mode = layer.mode;
     layer.mode = before_mode;
     layer.parentId = before_parent_id;
 
@@ -101,6 +103,11 @@ export const execute = async (
         if (layer.mode === $MASK_MODE && layer.lock) {
             // マスクレイヤーのDisplayObjectのElemnet表示を更新
             await screenDisplayObjectMaskLockUpdateElementService(layer);
+        }
+
+        // ロック中のマスクレイヤーからノーマルレイヤーに変換する際は描画を更新
+        if (mode === $MASK_MODE && layer.lock) {
+            await screenDisplayObjectUpdateDisabledElementUseCase(movieClip, layer);
         }
     }
 };

@@ -2,7 +2,7 @@ import { $SCREEN_STAGE_AREA_ID } from "@/config/ScreenConfig";
 import type { Layer } from "@/core/domain/model/Layer";
 
 /**
- * @description レイヤーロックに合わせてスクリーンに配置された、DisplayObjectのElementのEvent Stylrを更新
+ * @description レイヤーロックに合わせてスクリーンに配置された、DisplayObjectのElementのEvent Styleを更新
  *              Update the Event Style of the Element of the DisplayObject placed on the screen according to the layer lock
  *
  * @param  {Layer} layer
