@@ -68,52 +68,55 @@ export const execute = async (
     work_space.addHistory(historyObject);
 
     // 受け取り処理ではなく、画面共有していれば共有者に送信
-    if (!receiver && $useSocket()
-        && shapeObject.recodes && shapeObject.recodes.length
-    ) {
-        await new Promise<void>((reslove): void =>
-        {
-            const graphics = new next2d.display.Graphics();
-            graphics._$recode = shapeObject.recodes || [];
+    if (!receiver && $useSocket()) {
 
-            const buffer = graphics._$getRecodes();
-
-            // 圧縮が完了したらバイナリデータとして返却
-            worker.onmessage = async (event: MessageEvent): Promise<void> =>
+        // ShapeのレコードがあればS3経由で転送
+        if (shapeObject.recodes && shapeObject.recodes.length) {
+            await new Promise<void>((reslove): void =>
             {
-                const buffer = event.data as Uint8Array;
+                const graphics = new next2d.display.Graphics();
+                graphics._$recode = shapeObject.recodes || [];
 
-                // Uint8Arrayをバイナリに変換
-                const binary = bufferToBinaryService(buffer);
+                const buffer = graphics._$getRecodes();
 
-                // S3判定用のuuid
-                const fileId = window.crypto.randomUUID();
-                const url = await shareGetS3EndPointRepository(fileId, "put");
-                await sharePutS3FileRepository(url, binary);
+                // 圧縮が完了したらバイナリデータとして返却
+                worker.onmessage = async (event: MessageEvent): Promise<void> =>
+                {
+                    const buffer = event.data as Uint8Array;
 
-                // 転送用のオブジェクトを作成
-                const shapeObject = shape.toObject();
+                    // Uint8Arrayをバイナリに変換
+                    const binary = bufferToBinaryService(buffer);
 
-                // バイナリは転送しない
-                if (shapeObject.recodes) {
-                    shapeObject.recodes = [];
-                }
+                    // S3判定用のuuid
+                    const fileId = window.crypto.randomUUID();
+                    const url = await shareGetS3EndPointRepository(fileId, "put");
+                    await sharePutS3FileRepository(url, binary);
 
-                // 転送用の履歴オブジェクトを作成
-                const historyObject = libraryAreaAddNewShapeCreateHistoryObjectService(
-                    work_space.id, movie_clip.id, shapeObject, fileId
-                );
+                    // 転送用のオブジェクトを作成
+                    const shapeObject = shape.toObject();
 
-                shareSendService(historyObject);
+                    // バイナリは転送しない
+                    if (shapeObject.recodes) {
+                        shapeObject.recodes = [];
+                    }
 
-                reslove();
-            };
+                    // 転送用の履歴オブジェクトを作成
+                    const historyObject = libraryAreaAddNewShapeCreateHistoryObjectService(
+                        work_space.id, movie_clip.id, shapeObject, fileId
+                    );
 
-            // Uint8Arrayを複製して、サブスレッドで圧縮処理を行う
-            worker.postMessage(buffer, [buffer.buffer]);
-        });
-    } else {
-        shareSendService(historyObject);
+                    shareSendService(historyObject);
+
+                    reslove();
+                };
+
+                // Uint8Arrayを複製して、サブスレッドで圧縮処理を行う
+                worker.postMessage(buffer, [buffer.buffer]);
+            });
+        } else {
+            // レコードがなければそのまま送信
+            shareSendService(historyObject);
+        }
     }
 
     // 自動保存を予約

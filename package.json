@@ -11,24 +11,24 @@
   },
   "devDependencies": {
     "@types/ace": "^0.0.52",
-    "@types/node": "^20.14.10",
+    "@types/node": "^20.14.11",
     "@types/qrcode": "^1.5.5",
-    "@typescript-eslint/eslint-plugin": "^7.16.0",
-    "@typescript-eslint/parser": "^7.16.0",
-    "@vitest/web-worker": "^2.0.2",
+    "@typescript-eslint/eslint-plugin": "^7.16.1",
+    "@typescript-eslint/parser": "^7.16.1",
+    "@vitest/web-worker": "^2.0.3",
     "eslint": "^8.57.0",
     "eslint-plugin-unused-imports": "^3.2.0",
     "jsdom": "^24.1.0",
     "sass": "^1.77.8",
     "typescript": "^5.5.3",
-    "vite": "^5.3.3",
-    "vitest": "^2.0.2"
+    "vite": "^5.3.4",
+    "vitest": "^2.0.3"
   },
   "dependencies": {
     "@next2d/player": "^1.18.12",
     "fflate": "^0.8.2",
     "jszip": "^3.10.1",
     "qrcode": "^1.5.3",
-    "terser": "^5.31.2"
+    "terser": "^5.31.3"
   }
 }
