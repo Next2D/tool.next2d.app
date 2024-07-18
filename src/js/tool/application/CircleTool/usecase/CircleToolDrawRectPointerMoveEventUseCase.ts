@@ -33,7 +33,17 @@ export const execute = (event: PointerEvent): void =>
             element.style.top = `${event.offsetY}px`;
         }
 
-        element.style.width  = `${Math.abs(event.offsetX - drawRect.x)}px`;
-        element.style.height = `${Math.abs(event.offsetY - drawRect.y)}px`;
+        const width  = Math.abs(event.offsetX - drawRect.x);
+        const height = Math.abs(event.offsetY - drawRect.y);
+
+        // シフトキーが押されている時は正方形にする
+        if (event.shiftKey) {
+            const minSize = Math.min(width, height);
+            element.style.width  = `${minSize}px`;
+            element.style.height = `${minSize}px`;
+        } else {
+            element.style.width  = `${width}px`;
+            element.style.height = `${height}px`;
+        }
     });
 };

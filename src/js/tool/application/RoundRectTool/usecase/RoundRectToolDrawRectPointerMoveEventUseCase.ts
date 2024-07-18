@@ -36,8 +36,16 @@ export const execute = (event: PointerEvent): void =>
         const width  = Math.abs(event.offsetX - drawRect.x);
         const height = Math.abs(event.offsetY - drawRect.y);
 
-        element.style.width  = `${width}px`;
-        element.style.height = `${height}px`;
-        element.style.borderRadius = `${Math.min(width, height) / 4}px`;
+        // シフトキーが押されている時は正方形にする
+        if (event.shiftKey) {
+            const minSize = Math.min(width, height);
+            element.style.width  = `${minSize}px`;
+            element.style.height = `${minSize}px`;
+            element.style.borderRadius = `${minSize / 4}px`;
+        } else {
+            element.style.width  = `${width}px`;
+            element.style.height = `${height}px`;
+            element.style.borderRadius = `${Math.min(width, height) / 4}px`;
+        }
     });
 };

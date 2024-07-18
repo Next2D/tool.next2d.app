@@ -5,7 +5,7 @@ import { execute as timelineAreaActiveMoveUseCase } from "./TimelineAreaActiveMo
 import { execute as timelineAreaChageStyleToInactiveService } from "../service/TimelineAreaChageStyleToInactiveService";
 import { execute as timelineHeaderWindowResizeUseCase } from "@/timeline/application/TimelineHeader/usecase/TimelineHeaderWindowResizeUseCase";
 import { execute as timelineLayerWindowResizeUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerWindowResizeUseCase";
-import { $setMouseState } from "../../TimelineUtil";
+import { $getMouseState, $setMouseState } from "../../TimelineUtil";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { $useKeyboard } from "@/shortcut/ShortcutUtil";
 import { execute as billingModelShowService } from "@/menu/application/BillingModal/service/BillingModelShowService";
@@ -81,6 +81,10 @@ export const execute = (event: PointerEvent): void =>
         // ツールエリアの移動判定関数をタイマーにセット
         activeTimerId = setTimeout((): void =>
         {
+            if ($getMouseState() === "up") {
+                return ;
+            }
+
             // 全ての機能が利用可能でなければ中止
             if (!userAllFunctionStateService() && !$useSocket()) {
                 billingModelShowService();

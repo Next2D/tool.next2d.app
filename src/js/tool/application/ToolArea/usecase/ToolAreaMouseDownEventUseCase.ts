@@ -3,7 +3,7 @@ import { execute as toolAreaActiveMoveUseCase } from "../usecase/ToolAreaActiveM
 import { execute as toolAreaChageStyleToInactiveService } from "../service/ToolAreaChageStyleToInactiveService";
 import { execute as userAllFunctionStateService } from "@/user/application/Billing/service/UserAllFunctionStateService";
 import { $TOOL_PREFIX } from "@/config/ToolConfig";
-import { $setMouseState } from "../../ToolUtil";
+import { $getMouseState, $setMouseState } from "../../ToolUtil";
 import { $setStandbyMoveState } from "../ToolAreaUtil";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { execute as timelineHeaderWindowResizeUseCase } from "@/timeline/application/TimelineHeader/usecase/TimelineHeaderWindowResizeUseCase";
@@ -73,6 +73,10 @@ export const execute = (event: PointerEvent): void =>
         // ツールエリアの移動判定関数をタイマーにセット
         activeTimerId = setTimeout((): void =>
         {
+            if ($getMouseState() === "up") {
+                return ;
+            }
+
             // 全ての機能が利用可能でなければ中止
             if (!userAllFunctionStateService() && !$useSocket()) {
                 billingModelShowService();

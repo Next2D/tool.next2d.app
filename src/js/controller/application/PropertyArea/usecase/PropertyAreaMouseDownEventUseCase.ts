@@ -6,7 +6,8 @@ import { execute as propertyAreaChageStyleToInactiveService } from "../service/P
 import { execute as propertyAreaShowTabService } from "../service/PropertyAreaShowTabService";
 import {
     $setStandbyMoveState,
-    $setMouseState
+    $setMouseState,
+    $getMouseState
 } from "../PropertyAreaUtil";
 import { $CONTROLLER_AREA_PROPERTY_ID } from "@/config/PropertyConfig";
 import { execute as billingModelShowService } from "@/menu/application/BillingModal/service/BillingModelShowService";
@@ -81,6 +82,9 @@ export const execute = (event: PointerEvent): void =>
         // プロパティエリアの移動判定関数をタイマーにセット
         activeTimerId = setTimeout((): void =>
         {
+            if ($getMouseState() === "up") {
+                return ;
+            }
 
             // 全ての機能が利用可能でなければ中止
             if (!userAllFunctionStateService() && !$useSocket()) {
