@@ -1,7 +1,6 @@
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { Shape } from "@/core/domain/model/Shape";
-import type { ExternalShape } from "@/external/core/domain/model/ExternalShape";
 import { $useSocket } from "@/share/ShareUtil";
 import { $LIBRARY_UPDATE_SHAPE_GRAPHICS_COMMAND } from "@/config/HistoryConfig";
 import { execute as historyAddElementUseCase } from "@/controller/application/HistoryArea/usecase/HistoryAddElementUseCase";

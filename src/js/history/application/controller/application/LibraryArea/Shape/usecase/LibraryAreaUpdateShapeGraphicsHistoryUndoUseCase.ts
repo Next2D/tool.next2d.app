@@ -1,40 +1,44 @@
-import type { Shape } from "@/core/domain/model/Shape";
-import type { InstanceImpl } from "@/interface/InstanceImpl";
 import type { ShapeSaveObjectImpl } from "@/interface/ShapeSaveObjectImpl";
+import { execute as externalWorkSpaceRegisterInstanceService } from "@/external/core/application/ExternalWorkSpace/service/ExternalWorkSpaceRegisterInstanceService";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
-import { execute as externalWorkSpaceRemoveInstanceService } from "@/external/core/application/ExternalWorkSpace/service/ExternalWorkSpaceRemoveInstanceService";
-import { execute as libraryAreaReloadUseCase } from "@/controller/application/LibraryArea/usecase/LibraryAreaReloadUseCase";
+import { Shape } from "@/core/domain/model/Shape";
+import { $SCREEN_STAGE_AREA_ID } from "@/config/ScreenConfig";
+import { execute as screenDisplayObjectChangeElementUseCase } from "@/screen/application/DisplayObject/usecase/ScreenDisplayObjectChangeElementUseCase";
 
 /**
- * @description 新規Shape追加処理のUndo関数
- *              Undo function for new Shape addition process
+ * @description Shapeの描画レコード更新処理のUndo関数
+ *              Undo function of Shape drawing record update processing
  *
  * @param  {number} work_space_id
- * @param  {object} shape_object
+ * @param  {object} before_shape_object
  * @return {void}
  * @method
  * @public
  */
-export const execute = (
+export const execute = async (
     work_space_id: number,
-    shape_object: ShapeSaveObjectImpl
-): void => {
+    before_shape_object: ShapeSaveObjectImpl
+): Promise<void> => {
 
     const workSpace = $getWorkSpace(work_space_id);
     if (!workSpace) {
         return ;
     }
 
-    const shape: InstanceImpl<Shape> | null = workSpace.getLibrary(shape_object.id);
-    if (!shape) {
+    const element: HTMLElement | null = document
+        .getElementById($SCREEN_STAGE_AREA_ID);
+    if (!element) {
         return ;
     }
 
-    // 内部情報から削除
-    externalWorkSpaceRemoveInstanceService(workSpace, shape);
+    // 更新前のShapeを生成
+    const shape = new Shape(before_shape_object);
 
-    // 起動中のプロジェクトならライブラリを再描画
+    // 内部情報に登録
+    externalWorkSpaceRegisterInstanceService(workSpace, shape);
+
     if (workSpace.active) {
-        libraryAreaReloadUseCase();
+        // 配置されてるDisplayObjectのElementを入れ替える
+        screenDisplayObjectChangeElementUseCase(shape.id);
     }
 };

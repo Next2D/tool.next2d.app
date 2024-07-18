@@ -1,9 +1,9 @@
-import { MovieClip } from "@/core/domain/model/MovieClip";
+import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { Shape } from "@/core/domain/model/Shape";
-import { WorkSpace } from "@/core/domain/model/WorkSpace";
-import type { ExternalShape } from "@/external/core/domain/model/ExternalShape";
+import type { WorkSpace } from "@/core/domain/model/WorkSpace";
+import type { BoundsImpl } from "@/interface/BoundsImpl";
 import { execute as libraryAreaUpdateShapeGraphicsHistoryUseCase } from "@/history/application/controller/application/LibraryArea/Shape/usecase/LibraryAreaUpdateShapeGraphicsHistoryUseCase";
-import { BoundsImpl } from "@/interface/BoundsImpl";
+import { execute as externalShapeUpdateService } from "../service/ExternalShapeUpdateService";
 
 /**
  * @description グラフィックスの更新を適用
@@ -11,7 +11,8 @@ import { BoundsImpl } from "@/interface/BoundsImpl";
  *
  * @param  {WorkSpace} work_space
  * @param  {MovieClip} movie_clip
- * @param  {ExternalShape} external_shape
+ * @param  {Float32Array} recodes
+ * @param  {object} bounds
  * @param  {Shape} shape
  * @param  {boolean} [receiver=false]
  * @return {Promise}
@@ -25,8 +26,8 @@ export const execute = async (
     bounds: BoundsImpl,
     shape: Shape,
     receiver: boolean = false
-): Promise<void> =>
-{
+): Promise<void> => {
+
     // 履歴に登録
     await libraryAreaUpdateShapeGraphicsHistoryUseCase(
         work_space,
@@ -38,14 +39,9 @@ export const execute = async (
     );
 
     // 描画レコードを更新
-    // todo Float32ArrayをAnimation Toolの描画レコードに変換する
-    shape.recodes.length = 0;
-    shape.recodes.push(...Array.from(recodes));
-
-    // 描画反映のバウンディングボックスを更新
-    const rawBounds = shape.getRawBounds();
-    rawBounds.xMin = bounds.xMin;
-    rawBounds.yMin = bounds.yMin;
-    rawBounds.xMax = bounds.xMax;
-    rawBounds.yMax = bounds.yMax;
+    externalShapeUpdateService(
+        shape,
+        recodes,
+        bounds
+    );
 };

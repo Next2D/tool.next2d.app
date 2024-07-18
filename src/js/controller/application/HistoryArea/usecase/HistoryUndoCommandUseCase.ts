@@ -60,6 +60,7 @@ import { execute as characterUpdateYHistoryUndoUseCase } from "@/history/applica
 import { execute as instanceUpdateNameHistoryUndoUseCase } from "@/history/application/core/application/Instance/usecase/InstanceUpdateNameHistoryUndoUseCase";
 import { execute as instanceUpdateSymbolHistoryUndoUseCase } from "@/history/application/core/application/Instance/usecase/InstanceUpdateSymbolHistoryUndoUseCase";
 import { execute as libraryAreaAddNewShapeHistoryUndoUseCase } from "@/history/application/controller/application/LibraryArea/Shape/usecase/LibraryAreaAddNewShapeHistoryUndoUseCase";
+import { execute as libraryAreaUpdateShapeGraphicsHistoryUndoUseCase } from "@/history/application/controller/application/LibraryArea/Shape/usecase/LibraryAreaUpdateShapeGraphicsHistoryUndoUseCase";
 import {
     $SCREEN_TAB_NAME_UPDATE_COMMAND,
     $TIMELINE_TOOL_LAYER_ADD_COMMAND,
@@ -111,7 +112,8 @@ import {
     $STAGE_COLOR_COMMAND,
     $CHARACTER_UPDATE_X,
     $CHARACTER_UPDATE_Y,
-    $LIBRARY_ADD_NEW_SHAPE_COMMAND
+    $LIBRARY_ADD_NEW_SHAPE_COMMAND,
+    $LIBRARY_UPDATE_SHAPE_GRAPHICS_COMMAND
 } from "@/config/HistoryConfig";
 import { ShapeSaveObjectImpl } from "@/interface/ShapeSaveObjectImpl";
 
@@ -624,6 +626,14 @@ export const execute = async (
         // 新規Shape追加
         case $LIBRARY_ADD_NEW_SHAPE_COMMAND:
             libraryAreaAddNewShapeHistoryUndoUseCase(
+                messages[0] as number, // WorkSpace ID
+                messages[2] as ShapeSaveObjectImpl // Shape Save Object
+            );
+            break;
+
+        // Shapeのグラフィックスを更新
+        case $LIBRARY_UPDATE_SHAPE_GRAPHICS_COMMAND:
+            libraryAreaUpdateShapeGraphicsHistoryUndoUseCase(
                 messages[0] as number, // WorkSpace ID
                 messages[2] as ShapeSaveObjectImpl // Shape Save Object
             );
