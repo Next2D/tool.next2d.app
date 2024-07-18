@@ -2,7 +2,10 @@ import type { InstanceImpl } from "@/interface/InstanceImpl";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { LayerModeImpl } from "@/interface/LayerModeImpl";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
+import { $MASK_MODE } from "@/config/LayerModeConfig";
 import { execute as timelineLayerControllerUpdateIconElementService } from "@/timeline/application/TimelineLayerController/service/TimelineLayerControllerUpdateIconElementService";
+import { execute as screenDisplayObjectUpdateDisabledElementUseCase } from "@/screen/application/DisplayObject/usecase/ScreenDisplayObjectUpdateDisabledElementUseCase";
+import { execute as screenDisplayObjectAllResetMaskStyleUseCase } from "@/screen/application/DisplayObject/usecase/ScreenDisplayObjectAllResetMaskStyleUseCase";
 
 /**
  * @description レイヤーモードを変更後に戻す
@@ -13,17 +16,17 @@ import { execute as timelineLayerControllerUpdateIconElementService } from "@/ti
  * @param  {number} index
  * @param  {number} after_mode
  * @param  {number} after_parent_id
- * @return {void}
+ * @return {Promise}
  * @method
  * @public
  */
-export const execute = (
+export const execute = async (
     work_space_id: number,
     library_id: number,
     index: number,
     after_mode: LayerModeImpl,
     after_parent_id: number
-): void => {
+): Promise<void> => {
 
     const workSpace = $getWorkSpace(work_space_id);
     if (!workSpace) {
@@ -41,6 +44,7 @@ export const execute = (
     }
 
     // 元の色に戻す
+    const beforeMode = layer.mode;
     layer.mode = after_mode;
     layer.parentId = after_parent_id;
 
@@ -54,14 +58,26 @@ export const execute = (
         }
 
         childLayer.clearRelation();
+
         if (workSpace.active && movieClip.active) {
+            // 子レイヤーのアイコンの表示を更新
             timelineLayerControllerUpdateIconElementService(childLayer);
+
+            // マスクレイヤーからノーマルレイヤーに変換する際は子レイヤーのマスクスタイルをリセット
+            screenDisplayObjectAllResetMaskStyleUseCase(movieClip, childLayer);
         }
     }
 
     // 起動中ならライブラリエリアの表示を更新
     // アクティブな場合のみ処理を行う
     if (workSpace.active && movieClip.active) {
+        // アイコンの表示を更新
         timelineLayerControllerUpdateIconElementService(layer);
+
+        // ロック中のマスクレイヤーからノーマルレイヤーに変換する際は描画を更新
+        if (beforeMode === $MASK_MODE && layer.lock) {
+            // マスクレイヤーをノーマルレイヤーに更新
+            await screenDisplayObjectUpdateDisabledElementUseCase(movieClip, layer);
+        }
     }
 };

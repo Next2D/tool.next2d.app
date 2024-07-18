@@ -321,7 +321,7 @@ export const execute = async (
 
         // レイヤーモードの変更
         case $LAYER_UPDATE_MODE_COMMAND:
-            layerUpdateModeHistoryUndoUseCase(
+            await layerUpdateModeHistoryUndoUseCase(
                 messages[0] as number, // WorkSpace ID
                 messages[1] as number, // MovieClip ID
                 messages[2] as number, // Layer Index

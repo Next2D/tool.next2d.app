@@ -3,6 +3,8 @@ import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { LayerModeImpl } from "@/interface/LayerModeImpl";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
 import { execute as timelineLayerControllerUpdateIconElementService } from "@/timeline/application/TimelineLayerController/service/TimelineLayerControllerUpdateIconElementService";
+import { execute as screenDisplayObjectMaskLockUpdateElementService } from "@/screen/application/DisplayObject/service/ScreenDisplayObjectMaskLockUpdateElementService";
+import { execute as screenDisplayObjectUpdateLayerMaskInElementUseCase } from "@/screen/application/DisplayObject/usecase/ScreenDisplayObjectUpdateLayerMaskInElementUseCase";
 import {
     $GUIDE_IN_MODE,
     $GUIDE_MODE,
@@ -20,18 +22,18 @@ import {
  * @param  {number} before_mode
  * @param  {number} before_parent_id
  * @param  {array} indexes
- * @return {void}
+ * @return {Promise}
  * @method
  * @public
  */
-export const execute = (
+export const execute = async (
     work_space_id: number,
     library_id: number,
     index: number,
     before_mode: LayerModeImpl,
     before_parent_id: number,
     indexes: number[]
-): void => {
+): Promise<void> => {
 
     const workSpace = $getWorkSpace(work_space_id);
     if (!workSpace) {
@@ -77,14 +79,28 @@ export const execute = (
 
         }
 
+        // 子レイヤーのアイコンの表示を更新
         if (workSpace.active && movieClip.active) {
+            // 子レイヤーのアイコンを更新
             timelineLayerControllerUpdateIconElementService(childLayer);
+
+            // 親のレイヤーがマスクレイヤーなら、子レイヤーのマスクスタイルを更新
+            if (layer.mode === $MASK_MODE && layer.lock) {
+                await screenDisplayObjectUpdateLayerMaskInElementUseCase(movieClip, childLayer);
+            }
         }
     }
 
     // 起動中ならライブラリエリアの表示を更新
     // アクティブな場合のみ処理を行う
     if (workSpace.active && movieClip.active) {
+        // アイコンの表示を更新
         timelineLayerControllerUpdateIconElementService(layer);
+
+        // ノーマルレイヤーからロック中のマスクレイヤーに変換する際は描画を更新
+        if (layer.mode === $MASK_MODE && layer.lock) {
+            // マスクレイヤーのDisplayObjectのElemnet表示を更新
+            await screenDisplayObjectMaskLockUpdateElementService(layer);
+        }
     }
 };
