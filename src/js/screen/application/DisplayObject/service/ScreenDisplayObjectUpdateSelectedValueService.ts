@@ -1,3 +1,4 @@
+import { $MASK_IN_MODE } from "@/config/LayerModeConfig";
 import { transformSetting } from "@/controller/domain/model/TransformSetting";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { ExternalCharacter } from "@/external/core/domain/model/ExternalCharacter";

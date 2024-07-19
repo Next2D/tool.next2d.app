@@ -9,11 +9,11 @@ import { execute as externalCharacterUpdateYUseCase } from "@/external/core/appl
  *              Receiving and processing functions for information received in the socket
  *
  * @param  {object} message
- * @return {void}
+ * @return {Promise}
  * @method
  * @public
  */
-export const execute = (message: ShareReceiveMessageImpl): void =>
+export const execute = async (message: ShareReceiveMessageImpl): Promise<void> =>
 {
     const id = message.data[0] as NonNullable<number>;
 
@@ -44,7 +44,7 @@ export const execute = (message: ShareReceiveMessageImpl): void =>
     }
 
     // y座標を更新
-    externalCharacterUpdateYUseCase(
+    await externalCharacterUpdateYUseCase(
         workSpace,
         movieClip,
         layer,

@@ -266,7 +266,7 @@ export const execute = async (message: ShareReceiveMessageImpl): Promise<void> =
 
         // レイヤー移動
         case $TIMELINE_MOVE_LAYER_COMMAND:
-            timelineLayerControllerLayerMoveReceiveUseCase(message);
+            await timelineLayerControllerLayerMoveReceiveUseCase(message);
             break;
 
         // レイヤーのハイライト表示を更新
@@ -411,12 +411,12 @@ export const execute = async (message: ShareReceiveMessageImpl): Promise<void> =
 
         // キャラクターのx座標を更新
         case $CHARACTER_UPDATE_X_COMMAND:
-            characterUpdateXReceiveUseCase(message);
+            await characterUpdateXReceiveUseCase(message);
             break;
 
         // キャラクターのy座標を更新
         case $CHARACTER_UPDATE_Y_COMMAND:
-            characterUpdateYReceiveUseCase(message);
+            await characterUpdateYReceiveUseCase(message);
             break;
 
         // 新規Shapeを追加

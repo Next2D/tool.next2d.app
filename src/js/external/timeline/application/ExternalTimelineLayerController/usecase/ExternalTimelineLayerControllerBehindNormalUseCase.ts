@@ -117,21 +117,16 @@ export const execute = (
             beforeMode,
             beforeParentId
         );
+
+        // スクリーンの表示を更新
+        if (work_space.active && movie_clip.active) {
+            screenAreaUpdateMovedLayerService(layer);
+        }
     }
 
     // タイムラインを再描画
     if (work_space.active && movie_clip.active) {
         // タイムラインのelementを再構築
         timelineLayerBuildElementUseCase();
-
-        // スクリーンの表示を更新
-        for (let idx = 0; idx < selectedLayers.length; idx++) {
-            const layer = selectedLayers[idx];
-            if (!layer) {
-                continue;
-            }
-
-            screenAreaUpdateMovedLayerService(layer);
-        }
     }
 };

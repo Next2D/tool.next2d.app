@@ -13,7 +13,7 @@ import { execute as externalCharacterUpdateXUseCase } from "@/external/core/appl
  * @method
  * @public
  */
-export const execute = (message: ShareReceiveMessageImpl): void =>
+export const execute = async (message: ShareReceiveMessageImpl): Promise<void> =>
 {
     const id = message.data[0] as NonNullable<number>;
 
@@ -44,7 +44,7 @@ export const execute = (message: ShareReceiveMessageImpl): void =>
     }
 
     // x座標を更新
-    externalCharacterUpdateXUseCase(
+    await externalCharacterUpdateXUseCase(
         workSpace,
         movieClip,
         layer,

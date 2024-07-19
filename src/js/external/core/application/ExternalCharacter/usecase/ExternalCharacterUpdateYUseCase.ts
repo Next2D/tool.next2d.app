@@ -6,6 +6,9 @@ import { execute as screenAreaMoveDisplayObjectElementService } from "@/screen/a
 import { execute as targetRectUpdateElementUseCase } from "@/screen/application/TargetRect/usecase/TargetRectUpdateElementUseCase";
 import { execute as characterUpdateYHistoryUseCase } from "@/history/application/core/application/Character/UpdateY/usecase/CharacterUpdateYHistoryUseCase";
 import { execute as screenStandardPointDeployElementUseCase } from "@/screen/application/StandardPoint/usecase/ScreenStandardPointDeployElementUseCase";
+import { execute as screenDisplayObjectUpdateMaskInCanvasStyleService } from "@/screen/application/DisplayObject/service/ScreenDisplayObjectUpdateMaskInCanvasStyleService";
+import { $MASK_IN_MODE } from "@/config/LayerModeConfig";
+import { $SCREEN_STAGE_AREA_ID } from "@/config/ScreenConfig";
 
 /**
  * @description DisplayObjectのx座標を更新
@@ -17,18 +20,18 @@ import { execute as screenStandardPointDeployElementUseCase } from "@/screen/app
  * @param  {Character} character
  * @param  {number} y
  * @param  {boolean} [receiver=false]
- * @return {void}
+ * @return {Promise}
  * @method
  * @public
  */
-export const execute = (
+export const execute = async (
     work_space: WorkSpace,
     movie_clip: MovieClip,
     layer: Layer,
     character: Character,
     y: number,
     receiver: boolean = false
-): void => {
+): Promise<void> => {
 
     // 変更前のx座標を取得
     const beforeY = character.y;
@@ -65,5 +68,25 @@ export const execute = (
 
         // MovieClipの基準点のElementを再配置
         screenStandardPointDeployElementUseCase();
+
+        // マスクのstyleを更新
+        if (layer.mode === $MASK_IN_MODE) {
+            const element: HTMLElement | null = document
+                .getElementById($SCREEN_STAGE_AREA_ID);
+
+            if (!element) {
+                return ;
+            }
+
+            const elements = element.querySelectorAll(`.layer-id-${layer.id}`);
+            const node = elements[character.depth] as HTMLElement;
+            if (!node) {
+                return ;
+            }
+
+            await screenDisplayObjectUpdateMaskInCanvasStyleService(
+                node, layer, character.x, y
+            );
+        }
     }
 };
