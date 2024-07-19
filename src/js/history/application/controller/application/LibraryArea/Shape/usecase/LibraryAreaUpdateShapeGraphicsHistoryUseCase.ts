@@ -30,7 +30,7 @@ const worker: Worker = new ZlibDeflateWorker();
  * @param  {WorkSpace} work_space
  * @param  {MovieClip} movie_clip
  * @param  {Shape} shape
- * @param  {Float32Array} recodes
+ * @param  {Float32Array | arrray} recodes
  * @param  {object} bounds
  * @param  {boolean} [receiver=false]
  * @return {void}
@@ -41,7 +41,7 @@ export const execute = async (
     work_space: WorkSpace,
     movie_clip: MovieClip,
     shape: Shape,
-    recodes: Float32Array,
+    recodes: Float32Array | number[],
     bounds: BoundsImpl,
     receiver: boolean = false
 ): Promise<void> => {

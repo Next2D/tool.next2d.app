@@ -110,8 +110,8 @@ import {
     $STAGE_HEIGHT_COMMAND,
     $STAGE_FPS_COMMAND,
     $STAGE_COLOR_COMMAND,
-    $CHARACTER_UPDATE_X,
-    $CHARACTER_UPDATE_Y,
+    $CHARACTER_UPDATE_X_COMMAND,
+    $CHARACTER_UPDATE_Y_COMMAND,
     $LIBRARY_ADD_NEW_SHAPE_COMMAND,
     $LIBRARY_UPDATE_SHAPE_GRAPHICS_COMMAND
 } from "@/config/HistoryConfig";
@@ -603,7 +603,7 @@ export const execute = async (
             break;
 
         // キャラクターのX座標を更新
-        case $CHARACTER_UPDATE_X:
+        case $CHARACTER_UPDATE_X_COMMAND:
             characterUpdateXHistoryRedoUseCase(
                 messages[0] as number, // WorkSpace ID
                 messages[1] as number, // MovieClip ID
@@ -615,7 +615,7 @@ export const execute = async (
             break;
 
         // キャラクターのY座標を更新
-        case $CHARACTER_UPDATE_Y:
+        case $CHARACTER_UPDATE_Y_COMMAND:
             characterUpdateYHistoryRedoUseCase(
                 messages[0] as number, // WorkSpace ID
                 messages[1] as number, // MovieClip ID

@@ -47,8 +47,8 @@ import {
     $STAGE_HEIGHT_COMMAND,
     $STAGE_FPS_COMMAND,
     $STAGE_COLOR_COMMAND,
-    $CHARACTER_UPDATE_X,
-    $CHARACTER_UPDATE_Y,
+    $CHARACTER_UPDATE_X_COMMAND,
+    $CHARACTER_UPDATE_Y_COMMAND,
     $LIBRARY_ADD_NEW_SHAPE_COMMAND,
     $LIBRARY_UPDATE_SHAPE_GRAPHICS_COMMAND
 } from "@/config/HistoryConfig";
@@ -205,10 +205,10 @@ export const execute = (command: number): string =>
         case $STAGE_COLOR_COMMAND:
             return "ステージの背景色を「%s1」から「%s2」に変更";
 
-        case $CHARACTER_UPDATE_X:
+        case $CHARACTER_UPDATE_X_COMMAND:
             return "「%s1」のレイヤー「%s2」の%s3フレーム・深度%s4のx座標を%s5から%s6に変更";
 
-        case $CHARACTER_UPDATE_Y:
+        case $CHARACTER_UPDATE_Y_COMMAND:
             return "「%s1」のレイヤー「%s2」の%s3フレーム・深度%s4のy座標を%s5から%s6に変更";
 
         case $LIBRARY_ADD_NEW_SHAPE_COMMAND:

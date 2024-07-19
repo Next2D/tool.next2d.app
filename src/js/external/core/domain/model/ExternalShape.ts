@@ -65,9 +65,8 @@ export class ExternalShape extends ExternalItem
         };
 
         await externalShapeApplyGraphicsUseCase(
-            this._$workSpace, this._$workSpace.scene,
-            this.graphics._$getRecodes(), bounds,
-            this._$instance
+            this._$workSpace, this._$workSpace.scene, this._$instance,
+            this.graphics._$getRecodes(), bounds
         );
     }
 }

@@ -11,7 +11,7 @@ import { execute as externalShapeUpdateService } from "../service/ExternalShapeU
  *
  * @param  {WorkSpace} work_space
  * @param  {MovieClip} movie_clip
- * @param  {Float32Array} recodes
+ * @param  {Float32Array | arrray} recodes
  * @param  {object} bounds
  * @param  {Shape} shape
  * @param  {boolean} [receiver=false]
@@ -22,9 +22,9 @@ import { execute as externalShapeUpdateService } from "../service/ExternalShapeU
 export const execute = async (
     work_space: WorkSpace,
     movie_clip: MovieClip,
-    recodes: Float32Array,
-    bounds: BoundsImpl,
     shape: Shape,
+    recodes: Float32Array | number[],
+    bounds: BoundsImpl,
     receiver: boolean = false
 ): Promise<void> => {
 

@@ -2,7 +2,7 @@ import type { HistoryObjectImpl } from "@/interface/HistoryObjectImpl";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { Layer } from "@/core/domain/model/Layer";
 import type { Character } from "@/core/domain/model/Character";
-import { $CHARACTER_UPDATE_Y } from "@/config/HistoryConfig";
+import { $CHARACTER_UPDATE_Y_COMMAND } from "@/config/HistoryConfig";
 
 /**
  * @description DisplayObjectのx座標変更の履歴用オブジェクトを作成
@@ -26,7 +26,7 @@ export const execute = (
 ): HistoryObjectImpl => {
 
     return {
-        "command": $CHARACTER_UPDATE_Y,
+        "command": $CHARACTER_UPDATE_Y_COMMAND,
         "messages": [
             work_space_id,
             movie_clip.id,

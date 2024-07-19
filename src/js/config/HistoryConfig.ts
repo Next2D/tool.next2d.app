@@ -536,7 +536,7 @@ export const $STAGE_COLOR_COMMAND: number = 53;
  * @type {number}
  * @constant
  */
-export const $CHARACTER_UPDATE_X: number = 54;
+export const $CHARACTER_UPDATE_X_COMMAND: number = 54;
 
 /**
  * @description DisplayObjectのy座標更新の識別コマンド名
@@ -545,7 +545,7 @@ export const $CHARACTER_UPDATE_X: number = 54;
  * @type {number}
  * @constant
  */
-export const $CHARACTER_UPDATE_Y: number = 55;
+export const $CHARACTER_UPDATE_Y_COMMAND: number = 55;
 
 /**
  * @description 新規Shape追加操作の識別コマンド名

@@ -6,7 +6,7 @@ import { execute as historyRemoveElementService } from "@/controller/application
 import { execute as historyAddElementUseCase } from "@/controller/application/HistoryArea/usecase/HistoryAddElementUseCase";
 import { execute as historyGetTextService } from "@/controller/application/HistoryArea/service/HistoryGetTextService";
 import { execute as characterUpdateYCreateHistoryObjectService } from "../service/CharacterUpdateYCreateHistoryObjectService";
-import { $CHARACTER_UPDATE_Y } from "@/config/HistoryConfig";
+import { $CHARACTER_UPDATE_Y_COMMAND } from "@/config/HistoryConfig";
 import { $useSocket } from "@/share/ShareUtil";
 import { execute as shareSendService } from "@/share/service/ShareSendService";
 import { execute as userDatabaseAutoSaveReservationUseCase } from "@/user/application/Database/usecase/UserDatabaseAutoSaveReservationUseCase";
@@ -49,7 +49,7 @@ export const execute = (
         historyAddElementUseCase(
             movie_clip.id,
             work_space.historyIndex,
-            historyGetTextService($CHARACTER_UPDATE_Y),
+            historyGetTextService($CHARACTER_UPDATE_Y_COMMAND),
             "",
             ...historyObject.args
         );
