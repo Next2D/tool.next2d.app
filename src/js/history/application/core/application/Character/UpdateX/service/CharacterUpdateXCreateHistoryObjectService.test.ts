@@ -1,5 +1,5 @@
 import { execute } from "./CharacterUpdateXCreateHistoryObjectService";
-import { $CHARACTER_UPDATE_X } from "../../../../../../../config/HistoryConfig";
+import { $CHARACTER_UPDATE_X_COMMAND } from "../../../../../../../config/HistoryConfig";
 import { MovieClip } from "../../../../../../../core/domain/model/MovieClip";
 import { Character } from "../../../../../../../core/domain/model/Character";
 
@@ -19,7 +19,7 @@ describe("CharacterUpdateXCreateHistoryObjectServiceTest", () =>
         layer.name = "test_layer";
 
         const object = execute(1, movieClip, layer, character, 10);
-        expect(object.command).toBe($CHARACTER_UPDATE_X);
+        expect(object.command).toBe($CHARACTER_UPDATE_X_COMMAND);
 
         // 配列の順番が崩れてもいいようにテストケースを残す
         expect(object.messages.length).toBe(7);

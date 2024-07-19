@@ -47,8 +47,8 @@ import {
     $STAGE_HEIGHT_COMMAND,
     $STAGE_FPS_COMMAND,
     $STAGE_COLOR_COMMAND,
-    $CHARACTER_UPDATE_X,
-    $CHARACTER_UPDATE_Y,
+    $CHARACTER_UPDATE_X_COMMAND,
+    $CHARACTER_UPDATE_Y_COMMAND,
     $LIBRARY_ADD_NEW_SHAPE_COMMAND,
     $LIBRARY_UPDATE_SHAPE_GRAPHICS_COMMAND
 } from "../../../../config/HistoryConfig";
@@ -104,8 +104,8 @@ describe("HistoryGetTextServiceTest", () =>
         expect(execute($STAGE_HEIGHT_COMMAND)).toBe("ステージの高さを%s1から%s2に変更");
         expect(execute($STAGE_FPS_COMMAND)).toBe("ステージのFPSを%s1から%s2に変更");
         expect(execute($STAGE_COLOR_COMMAND)).toBe("ステージの背景色を「%s1」から「%s2」に変更");
-        expect(execute($CHARACTER_UPDATE_X)).toBe("「%s1」のレイヤー「%s2」の%s3フレーム・深度%s4のx座標を%s5から%s6に変更");
-        expect(execute($CHARACTER_UPDATE_Y)).toBe("「%s1」のレイヤー「%s2」の%s3フレーム・深度%s4のy座標を%s5から%s6に変更");
+        expect(execute($CHARACTER_UPDATE_X_COMMAND)).toBe("「%s1」のレイヤー「%s2」の%s3フレーム・深度%s4のx座標を%s5から%s6に変更");
+        expect(execute($CHARACTER_UPDATE_Y_COMMAND)).toBe("「%s1」のレイヤー「%s2」の%s3フレーム・深度%s4のy座標を%s5から%s6に変更");
         expect(execute($LIBRARY_ADD_NEW_SHAPE_COMMAND)).toBe("新規Shape「%s1」を追加");
         expect(execute($LIBRARY_UPDATE_SHAPE_GRAPHICS_COMMAND)).toBe("「%s1」のグラフィックを変更");
     });
