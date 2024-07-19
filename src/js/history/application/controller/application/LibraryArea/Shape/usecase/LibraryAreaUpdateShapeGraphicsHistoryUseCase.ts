@@ -80,7 +80,7 @@ export const execute = async (
     if (!receiver && $useSocket()) {
         await new Promise<void>((reslove): void =>
         {
-            const buffer = recodes.slice();
+            const buffer = new Float32Array(recodes);
 
             // 圧縮が完了したらバイナリデータとして返却
             worker.onmessage = async (event: MessageEvent): Promise<void> =>
@@ -106,7 +106,7 @@ export const execute = async (
                 // 転送用の履歴オブジェクトを作成
                 const historyObject = libraryAreaUpdateShapeGraphicsHistoryObjectService(
                     work_space.id, movie_clip.id, shapeObject,
-                    new Float32Array(), bounds, fileId
+                    [], bounds, fileId
                 );
 
                 shareSendService(historyObject);

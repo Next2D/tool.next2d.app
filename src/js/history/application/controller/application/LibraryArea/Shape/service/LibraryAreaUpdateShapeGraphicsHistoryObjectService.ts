@@ -20,7 +20,7 @@ export const execute = (
     work_space_id: number,
     movie_clip_id: number,
     shape_object: ShapeSaveObjectImpl,
-    recodes: Float32Array,
+    recodes: Float32Array | number[],
     bounds: BoundsImpl,
     file_id: string = ""
 ): HistoryObjectImpl => {

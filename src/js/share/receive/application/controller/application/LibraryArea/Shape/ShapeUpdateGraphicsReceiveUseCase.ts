@@ -5,6 +5,18 @@ import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { BoundsImpl } from "@/interface/BoundsImpl";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
 import { execute as externalShapeApplyGraphicsUseCase } from "@/external/core/application/ExternalShape/usecase/ExternalShapeApplyGraphicsUseCase";
+import { execute as shareGetS3EndPointRepository } from "@/share/domain/repository/ShareGetS3EndPointRepository";
+import { execute as shareGetS3FileRepository } from "@/share/domain/repository/ShareGetS3FileRepository";
+import { execute as binaryToBufferService } from "@/core/service/BinaryToBufferService";
+
+// @ts-ignore
+import ZlibInflateWorker from "@/worker/ZlibInflateWorker?worker&inline";
+
+/**
+ * @type {Worker}
+ * @private
+ */
+const worker: Worker = new ZlibInflateWorker();
 
 /**
  * @description socketで受け取った情報の受け取り処理関数
@@ -35,14 +47,30 @@ export const execute = async (message: ShareReceiveMessageImpl): Promise<void> =
     if (!shape) {
         return ;
     }
+    // バイナリをUint8Arrayに変換
+    const url = await shareGetS3EndPointRepository(message.data[5] as string, "get");
+    const binary = await shareGetS3FileRepository(url);
+    const buffer: Uint8Array = binaryToBufferService(binary);
 
-    // Shapeのグラフィックスを更新
-    await externalShapeApplyGraphicsUseCase(
-        workSpace,
-        movieClip,
-        shape,
-        message.data[3] as number[],
-        message.data[4] as BoundsImpl,
-        true
-    );
+    return new Promise((reslove): void =>
+    {
+        // 解凍が完了したらバイナリデータとして返却
+        worker.onmessage = async (event: MessageEvent): Promise<void> =>
+        {
+            // Shapeのグラフィックスを更新
+            await externalShapeApplyGraphicsUseCase(
+                workSpace,
+                movieClip,
+                shape,
+                new Float32Array(event.data), // 解凍したデータをFloat32Arrayに変換
+                message.data[4] as BoundsImpl,
+                true
+            );
+
+            reslove();
+        };
+
+        // サブスレッドで解答処理を行う
+        worker.postMessage(buffer, [buffer.buffer]);
+    });
 };
