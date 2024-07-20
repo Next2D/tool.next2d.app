@@ -2,6 +2,7 @@ import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { $SCREEN_STAGE_AREA_ID } from "@/config/ScreenConfig";
 import { execute as screenDisplayObjectUpdateMaskInCanvasStyleService } from "@/screen/application/DisplayObject/service/ScreenDisplayObjectUpdateMaskInCanvasStyleService";
 import { transformSetting } from "@/controller/domain/model/TransformSetting";
+import { $getMaskMatrix } from "@/controller/application/TransformSetting/TransformSettingUtil";
 
 /**
  * @description スクリーンで選択中のElementを移動する
@@ -35,6 +36,8 @@ export const execute = async (
 
     // 選択中のElementを移動
     const frame = movieClip.currentFrame;
+    const dx = transformSetting.x / workSpace.scale;
+    const dy = transformSetting.y / workSpace.scale;
     for (const [layerIndex, depths] of movieClip.selectedDepths) {
 
         const layer = movieClip.getLayer(layerIndex);
@@ -73,8 +76,9 @@ export const execute = async (
             // マスクのstyleを更新
             await screenDisplayObjectUpdateMaskInCanvasStyleService(
                 node, layer,
-                character.x + transformSetting.x,
-                character.y + transformSetting.y
+                character.x + dx,
+                character.y + dy,
+                $getMaskMatrix(character)
             );
         }
     }

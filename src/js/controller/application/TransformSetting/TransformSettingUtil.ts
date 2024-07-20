@@ -5,6 +5,7 @@ import { execute as characterCalcGetScaleXService } from "@/core/application/Cha
 import { execute as characterCalcGetScaleYService } from "@/core/application/Character/service/CharacterCalcGetScaleYService";
 import { execute as characterCalcGetRotationService } from "@/core/application/Character/service/CharacterCalcGetRotationService";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
+import { $BITMAP_TYPE, $MOVIE_CLIP_TYPE, $SHAPE_TYPE } from "@/config/InstanceConfig";
 
 /**
  * @description 行列の掛け算
@@ -155,4 +156,62 @@ export const $createTransformBitmapStyle = (
     transform.unshift(`translate(${-multiMatrix[4]}px, ${-multiMatrix[5]}px)`);
 
     return `transform: ${transform.join(" ")}; `;
+};
+
+/**
+ * @description Bitmapのマスク用の行列を返却
+ *              Returns the matrix for the mask of the Bitmap
+ *
+ * @param  {Character} character
+ * @return {array}
+ * @method
+ * @public
+ */
+export const $getBitmapMaskMatrix = (character: Character): number[] =>
+{
+
+    const matrix = [1, 0, 0, 1, 0, 0];
+    const concatenatedMatrix = $getConcatenatedMatrix();
+    const multiMatrix = $multiplicationMatrix(concatenatedMatrix, character.matrix);
+
+    matrix[0] = characterCalcGetScaleXService(multiMatrix);
+    matrix[3] = characterCalcGetScaleYService(multiMatrix);
+
+    // 変形分の座標を補正
+    matrix[4] = concatenatedMatrix[4];
+    matrix[5] = concatenatedMatrix[5];
+
+    return matrix;
+};
+
+export const $getMaskMatrix = (character: Character): number[] =>
+{
+    const matrix = [1, 0, 0, 1, 0, 0];
+    const workSpace = $getCurrentWorkSpace();
+    const instance = workSpace.getLibrary(character.libraryId);
+    if (!instance) {
+        return matrix;
+    }
+
+    switch (instance.type) {
+
+        case $BITMAP_TYPE:
+            return $getBitmapMaskMatrix(character);
+
+        case $MOVIE_CLIP_TYPE:
+        {
+            const bounds = instance.getRawBounds(instance.currentFrame);
+            return [1, 0, 0, 1, bounds.xMin * workSpace.scale, bounds.yMin * workSpace.scale];
+        }
+
+        case $SHAPE_TYPE:
+        {
+            const concatMatrix = $getConcatenatedMatrix();
+            return [1, 0, 0, 1, concatMatrix[4], concatMatrix[5]];
+        }
+
+        default:
+            return matrix;
+
+    }
 };

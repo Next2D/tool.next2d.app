@@ -4,6 +4,7 @@ import type { Layer } from "@/core/domain/model/Layer";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import { execute as screenDisplayObjectAllResetMaskStyleUseCase } from "@/screen/application/DisplayObject/usecase/ScreenDisplayObjectAllResetMaskStyleUseCase";
 import { execute as screenDisplayObjectUpdateMaskInCanvasStyleService } from "@/screen/application/DisplayObject/service/ScreenDisplayObjectUpdateMaskInCanvasStyleService";
+import { $getMaskMatrix } from "@/controller/application/TransformSetting/TransformSettingUtil";
 
 /**
  * @description レイヤーに配置された全てのDisplayObjectのマスクスタイルをレイヤーの状態に合わせて更新
@@ -66,7 +67,8 @@ export const execute = async (movie_clip: MovieClip, layer: Layer): Promise<void
                 element,
                 layer,
                 character.x,
-                character.y
+                character.y,
+                $getMaskMatrix(character)
             );
         }
 

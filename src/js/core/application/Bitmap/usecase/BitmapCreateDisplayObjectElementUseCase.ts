@@ -13,6 +13,8 @@ import { execute as screenAreaHierarchyAdjustmentService } from "@/screen/applic
 import { $getDeactivated, $getReDrawState } from "@/screen/application/ScreenArea/ScreenAreaUtil";
 import { execute as screenAreaReadOnlyElementService } from "@/screen/application/ScreenArea/service/ScreenAreaReadOnlyElementService";
 import { execute as screenDisplayObjectUpdateMaskInCanvasStyleService } from "@/screen/application/DisplayObject/service/ScreenDisplayObjectUpdateMaskInCanvasStyleService";
+import { $MASK_IN_MODE } from "@/config/LayerModeConfig";
+import { $getMaskMatrix } from "@/controller/application/TransformSetting/TransformSettingUtil";
 
 /**
  * @description Bitmapをcanvasに描画して返却する
@@ -58,7 +60,12 @@ export const execute = async (
     div.appendChild(canvas);
 
     // マスクのスタイルを更新
-    await screenDisplayObjectUpdateMaskInCanvasStyleService(div, layer, character.x, character.y);
+    if (layer.mode === $MASK_IN_MODE) {
+        await screenDisplayObjectUpdateMaskInCanvasStyleService(
+            div, layer, character.x, character.y,
+            $getMaskMatrix(character)
+        );
+    }
 
     // 追加するDisplayObjectのレイヤーの階層を調整
     if (!$getReDrawState()) {

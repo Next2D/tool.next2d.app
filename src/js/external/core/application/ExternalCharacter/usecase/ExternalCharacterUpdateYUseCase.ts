@@ -9,6 +9,7 @@ import { execute as screenStandardPointDeployElementUseCase } from "@/screen/app
 import { execute as screenDisplayObjectUpdateMaskInCanvasStyleService } from "@/screen/application/DisplayObject/service/ScreenDisplayObjectUpdateMaskInCanvasStyleService";
 import { $MASK_IN_MODE } from "@/config/LayerModeConfig";
 import { $SCREEN_STAGE_AREA_ID } from "@/config/ScreenConfig";
+import { $getMaskMatrix } from "@/controller/application/TransformSetting/TransformSettingUtil";
 
 /**
  * @description DisplayObjectのx座標を更新
@@ -85,7 +86,7 @@ export const execute = async (
             }
 
             await screenDisplayObjectUpdateMaskInCanvasStyleService(
-                node, layer, character.x, y
+                node, layer, character.x, y, $getMaskMatrix(character)
             );
         }
     }
