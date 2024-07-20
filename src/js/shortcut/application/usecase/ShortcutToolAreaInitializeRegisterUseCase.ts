@@ -8,6 +8,7 @@ import { execute as zoomMinusToolActiveService } from "@/tool/application/ZoomMi
 import { execute as circleToolActiveService } from "@/tool/application/CircleTool/service/CircleToolActiveService";
 import { execute as rectangleToolActiveService } from "@/tool/application/RectangleTool/service/RectangleToolActiveService";
 import { execute as roundRectToolActiveService } from "@/tool/application/RoundRectTool/service/RoundRectToolActiveService";
+import { execute as textToolActiveService } from "@/tool/application/TextTool/service/TextToolActiveService";
 import {
     $generateShortcutKey,
     $setShortcut
@@ -90,5 +91,11 @@ export const execute = (): void =>
     $setShortcut(
         $generateShortcutKey("r", { "shift": true }),
         roundRectToolActiveService
+    );
+
+    // テキストルーツをアクティブにする
+    $setShortcut(
+        $generateShortcutKey("t"),
+        textToolActiveService
     );
 };

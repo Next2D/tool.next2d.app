@@ -11,7 +11,7 @@ import { execute as roundRectToolChangeCursorEventService } from "../service/Rou
  * @description シェイプの角丸矩形ツールの初期起動ユースケース
  *              Initial startup use case of shape rounded rectangle tool
  *
- * @param  {ArrowTool} tool
+ * @param  {CircleTool} tool
  * @return {void}
  * @method
  * @public

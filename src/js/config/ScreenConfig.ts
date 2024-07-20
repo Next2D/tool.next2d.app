@@ -35,6 +35,16 @@ export const $SCREEN_STAGE_RECT_ID: string = "stage-rect";
 export const $SCREEN_DRAW_RECT_ID: string = "draw-rect";
 
 /**
+ * @description スクリーンのテキスト範囲選択のElementのID
+ *              ID of the screen text range selection Element
+ *
+ * @type {string}
+ * @constant
+ */
+export const $SCREEN_DRAW_TEXT_ID: string = "draw-text";
+
+
+/**
  * @description スクリーンエリアのElementのID
  *              ID of the Element in the screen area
  *

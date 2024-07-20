@@ -11,7 +11,7 @@ import { execute as circleToolChangeCursorEventService } from "../service/Circle
  * @description シェイプの円ツールの初期起動ユースケース
  *              Shape Circle Tool initial startup use case
  *
- * @param  {ArrowTool} tool
+ * @param  {CircleTool} tool
  * @return {void}
  * @method
  * @public

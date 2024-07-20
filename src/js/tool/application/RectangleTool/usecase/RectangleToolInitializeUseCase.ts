@@ -11,7 +11,7 @@ import { execute as rectangleToolChangeCursorEventService } from "../service/Rec
  * @description シェイプの矩形ツールの初期起動ユースケース
  *              Initial startup use case of shape rectangle tool
  *
- * @param  {ArrowTool} tool
+ * @param  {CircleTool} tool
  * @return {void}
  * @method
  * @public
