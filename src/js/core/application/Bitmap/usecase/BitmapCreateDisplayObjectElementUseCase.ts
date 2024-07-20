@@ -2,7 +2,7 @@ import type { Bitmap } from "@/core/domain/model/Bitmap";
 import type { Character } from "@/core/domain/model/Character";
 import type { InstanceImpl } from "@/interface/InstanceImpl";
 import type { Layer } from "@/core/domain/model/Layer";
-import { execute as bitmapRegisterEventUseCase } from "@/core/application/Bitmap/usecase/BitmapRegisterEventUseCase";
+import { execute as bitmapRegisterEventUseCase } from "./BitmapRegisterEventUseCase";
 import { execute as bitmapDisplayObjectComponent } from "../component/BitmapDisplayObjectComponent";
 import {
     $getCacheCanvas,

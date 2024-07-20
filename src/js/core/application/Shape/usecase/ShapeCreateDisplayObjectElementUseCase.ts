@@ -2,7 +2,7 @@ import type { Character } from "@/core/domain/model/Character";
 import type { InstanceImpl } from "@/interface/InstanceImpl";
 import type { Layer } from "@/core/domain/model/Layer";
 import type { Shape } from "@/core/domain/model/Shape";
-import { execute as shapeRegisterEventUseCase } from "@/core/application/Shape/usecase/ShapeRegisterEventUseCase";
+import { execute as shapeRegisterEventUseCase } from "./ShapeRegisterEventUseCase";
 import { execute as shapeDisplayObjectComponent } from "../component/ShapeDisplayObjectComponent";
 import { $getCacheCanvas, $setCacheCanvas } from "@/cache/CacheUtil";
 import { execute as screenAreaHierarchyAdjustmentService } from "@/screen/application/ScreenArea/service/ScreenAreaHierarchyAdjustmentService";

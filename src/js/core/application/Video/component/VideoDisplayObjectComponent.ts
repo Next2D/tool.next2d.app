@@ -4,8 +4,8 @@ import { $getScreenOffsetLeft, $getScreenOffsetTop } from "@/global/GlobalUtil";
 import { $getCurrentWorkSpace } from "../../CoreUtil";
 
 /**
- * @description 指定されたBitmap用のdivを生成して返却
- *              Generate and return a div for the specified Bitmap
+ * @description 指定されたVideo用のdivを生成して返却
+ *              Generate and return a div for the specified Video
  *
  * @params {Character} character
  * @params {number} layer_id

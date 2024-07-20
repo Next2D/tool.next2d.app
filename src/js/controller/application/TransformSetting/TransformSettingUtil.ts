@@ -5,7 +5,7 @@ import { execute as characterCalcGetScaleXService } from "@/core/application/Cha
 import { execute as characterCalcGetScaleYService } from "@/core/application/Character/service/CharacterCalcGetScaleYService";
 import { execute as characterCalcGetRotationService } from "@/core/application/Character/service/CharacterCalcGetRotationService";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
-import { $BITMAP_TYPE, $MOVIE_CLIP_TYPE, $SHAPE_TYPE } from "@/config/InstanceConfig";
+import { $BITMAP_TYPE, $MOVIE_CLIP_TYPE, $SHAPE_TYPE, $VIDEO_TYPE } from "@/config/InstanceConfig";
 
 /**
  * @description 行列の掛け算
@@ -103,7 +103,7 @@ export const $createTransformStyle = (character: Character): string =>
  * @method
  * @public
  */
-export const $createTransformBitmapStyle = (
+export const $createTransformElementStyle = (
     character: Character,
     work_space: WorkSpace
 ): string => {
@@ -167,7 +167,7 @@ export const $createTransformBitmapStyle = (
  * @method
  * @public
  */
-export const $getBitmapMaskMatrix = (character: Character): number[] =>
+export const $getElementMaskMatrix = (character: Character): number[] =>
 {
 
     const matrix = [1, 0, 0, 1, 0, 0];
@@ -184,6 +184,15 @@ export const $getBitmapMaskMatrix = (character: Character): number[] =>
     return matrix;
 };
 
+/**
+ * @description アイテムタイプに合わせたマスク用の行列を返却
+ *              Returns the matrix for the mask according to the item type
+ *
+ * @param {Character} character
+ * @return {array}
+ * @method
+ * @public
+ */
 export const $getMaskMatrix = (character: Character): number[] =>
 {
     const matrix = [1, 0, 0, 1, 0, 0];
@@ -196,7 +205,8 @@ export const $getMaskMatrix = (character: Character): number[] =>
     switch (instance.type) {
 
         case $BITMAP_TYPE:
-            return $getBitmapMaskMatrix(character);
+        case $VIDEO_TYPE:
+            return $getElementMaskMatrix(character);
 
         case $MOVIE_CLIP_TYPE:
         {

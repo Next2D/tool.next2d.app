@@ -1,8 +1,8 @@
 import { $getCanvas } from "@/global/GlobalUtil";
 
 /**
- * @description Bitmapで保有しているUint8ArrayからImageElementを生成
- *              Generate ImageElement from Uint8Array held in Bitmap
+ * @description Bitmapで保有しているUint8ArrayからCanvasを生成
+ *              Create Canvas from Uint8Array held by Bitmap
  *
  * @param  {Uint8Array | null} buffer
  * @param  {number} width

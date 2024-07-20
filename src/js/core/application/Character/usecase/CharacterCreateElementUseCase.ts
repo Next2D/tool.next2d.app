@@ -4,10 +4,12 @@ import { $getCurrentWorkSpace } from "../../CoreUtil";
 import { execute as bitmapCreateDisplayObjectElementUseCase } from "@/core/application/Bitmap/usecase/BitmapCreateDisplayObjectElementUseCase";
 import { execute as movieClipCreateDisplayObjectElementUseCase } from "@/core/application/MovieClip/usecase/MovieClipCreateDisplayObjectElementUseCase";
 import { execute as shapeCreateDisplayObjectElementUseCase } from "@/core/application/Shape/usecase/ShapeCreateDisplayObjectElementUseCase";
+import { execute as videoCreateDisplayObjectElementUseCase } from "@/core/application/Video/usecase/VideoCreateDisplayObjectElementUseCase";
 import {
     $BITMAP_TYPE,
     $MOVIE_CLIP_TYPE,
-    $SHAPE_TYPE
+    $SHAPE_TYPE,
+    $VIDEO_TYPE
 } from "@/config/InstanceConfig";
 
 /**
@@ -35,6 +37,12 @@ export const execute = async (
 
     let div = null;
     switch (instance.type) {
+
+        case $VIDEO_TYPE:
+            div = await videoCreateDisplayObjectElementUseCase(
+                workSpace, instance, element, layer, character
+            );
+            break;
 
         case $BITMAP_TYPE:
             div = await bitmapCreateDisplayObjectElementUseCase(

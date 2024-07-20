@@ -1,8 +1,10 @@
 import type { ObjectImpl } from "@/interface/ObjectImpl";
 import type { VideoSaveObjectImpl } from "@/interface/VideoSaveObjectImpl";
+import type { BoundsImpl } from "@/interface/BoundsImpl";
 import { Instance } from "./Instance";
 import { execute as binaryToBufferService } from "@/core/service/BinaryToBufferService";
 import { execute as bufferToBinaryService } from "@/core/service/BufferToBinaryService";
+import { execute as videoElementToCanvasElementService } from "@/core/application/Video/service/VideoElementToCanvasElementService";
 
 /**
  * @description 映像の状態管理クラス
@@ -78,12 +80,17 @@ export class Video extends Instance
         this._$video.autoplay    = false;
         this._$video.controls    = true;
 
-        this._$video.oncanplaythrough = (): void =>
+        this._$video.oncanplaythrough = async (): Promise<void> =>
         {
             // サイズをセット
             this._$width  = this._$video.videoWidth;
             this._$height = this._$video.videoHeight;
-            this._$loaded = true;
+            if (!this._$loaded) {
+                this._$loaded = true;
+                await this._$video.play();
+                this._$video.pause();
+                this._$video.currentTime = 0;
+            }
         };
 
         if (object.buffer) {
@@ -164,38 +171,6 @@ export class Video extends Instance
     }
 
     /**
-     * @description 動画の幅
-     *              Video width
-     *
-     * @member {number}
-     * @public
-     */
-    get width (): number
-    {
-        return this._$width;
-    }
-    set width (width: number)
-    {
-        this._$width = width;
-    }
-
-    /**
-     * @description 動画の高さ
-     *              Video height
-     *
-     * @member {number}
-     * @public
-     */
-    get height (): number
-    {
-        return this._$height;
-    }
-    set height (height: number)
-    {
-        this._$height = height;
-    }
-
-    /**
      * @description 映像のバイナリデータを返却
      *              Return binary data of video images
      *
@@ -222,16 +197,40 @@ export class Video extends Instance
     }
 
     /**
+     * @description プレーンなバウンディングボックスを返す
+     *              Returns the plain bounding box of the image
+     *
+     * @return {object}
+     * @method
+     * @public
+     */
+    getRawBounds (): BoundsImpl
+    {
+        return {
+            "xMin": 0,
+            "yMin": 0,
+            "xMax": this._$width,
+            "yMax": this._$height
+        };
+    }
+
+    /**
      * @description HTMLVideoElementを返却
      *              Return HTMLVideoElement
      *
+     * @param  {string} [mode="element"]
+     * @param  {number} [sec=0]
      * @return {Promise}
      * @method
      * @public
      */
-    async getHTMLElement (): Promise<HTMLAudioElement>
-    {
-        return this._$video;
+    async getHTMLElement (
+        mode: "element" | "canvas" = "element",
+        sec: number = 0
+    ): Promise<HTMLVideoElement | HTMLCanvasElement> {
+        return mode === "element"
+            ? this._$video
+            : videoElementToCanvasElementService(this._$video, sec);
     }
 
     /**

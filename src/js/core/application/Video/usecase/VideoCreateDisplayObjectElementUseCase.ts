@@ -1,24 +1,25 @@
 import type { Character } from "@/core/domain/model/Character";
 import type { InstanceImpl } from "@/interface/InstanceImpl";
 import type { Layer } from "@/core/domain/model/Layer";
-import type { MovieClip } from "@/core/domain/model/MovieClip";
-import { execute as movieClipRegisterEventUseCase } from "./MovieClipRegisterEventUseCase";
-import { execute as movieClipDisplayObjectComponent } from "../component/MovieClipDisplayObjectComponent";
+import type { Video } from "@/core/domain/model/Video";
+import type { WorkSpace } from "@/core/domain/model/WorkSpace";
+import { execute as videoRegisterEventUseCase } from "./VideoRegisterEventUseCase";
+import { execute as videoDisplayObjectComponent } from "../component/VideoDisplayObjectComponent";
 import { $getCacheCanvas, $setCacheCanvas } from "@/cache/CacheUtil";
-import { execute as instanceUpdateBlendModeService } from "@/core/application/Instance/service/InstanceUpdateBlendModeService";
 import { execute as screenAreaHierarchyAdjustmentService } from "@/screen/application/ScreenArea/service/ScreenAreaHierarchyAdjustmentService";
-import { $getDeactivated, $getReDrawState } from "@/screen/application/ScreenArea/ScreenAreaUtil";
 import { execute as screenAreaReadOnlyElementService } from "@/screen/application/ScreenArea/service/ScreenAreaReadOnlyElementService";
+import { execute as instanceUpdateBlendModeService } from "@/core/application/Instance/service/InstanceUpdateBlendModeService";
+import { $getDeactivated, $getReDrawState } from "@/screen/application/ScreenArea/ScreenAreaUtil";
 import { execute as screenDisplayObjectUpdateMaskInCanvasStyleService } from "@/screen/application/DisplayObject/service/ScreenDisplayObjectUpdateMaskInCanvasStyleService";
 import { $MASK_IN_MODE } from "@/config/LayerModeConfig";
 import { $getMaskMatrix } from "@/controller/application/TransformSetting/TransformSettingUtil";
 
 /**
- * @description MovieClipをcanvasに描画して返却する
- *              Draw MovieClip to canvas and return
+ * @description Shapeをcanvasに描画して返却する
+ *              Draw Shape to canvas and return
  *
- * @param  {number} work_space_id
- * @param  {MovieClip} instance
+ * @param  {WorkSpace} work_space
+ * @param  {Video} instance
  * @param  {HTMLElement} element
  * @param  {Layer} layer
  * @param  {Character} character
@@ -27,22 +28,27 @@ import { $getMaskMatrix } from "@/controller/application/TransformSetting/Transf
  * @public
  */
 export const execute = async (
-    work_space_id: number,
-    instance: InstanceImpl<MovieClip>,
+    work_space: WorkSpace,
+    instance: InstanceImpl<Video>,
     element: HTMLElement,
     layer: Layer,
     character: Character
 ): Promise<HTMLDivElement> => {
 
-    const cacheKey = character.cacheKey;
+    const movieClip = work_space.scene;
+    const sec = Math.min(
+        character.endFrame,
+        movieClip.currentFrame - 1
+    ) / work_space.stage.fps;
 
-    let canvas = $getCacheCanvas(work_space_id, instance.id, cacheKey);
+    const cacheKey = character.cacheKey + "_" + sec;
+    let canvas = $getCacheCanvas(work_space.id, instance.id, cacheKey);
     if (!canvas) {
         // TODO filters check
-        canvas = await instance.getHTMLElement();
+        canvas = await instance.getHTMLElement("canvas", sec) as HTMLCanvasElement;
 
         // キャッシュに保存
-        $setCacheCanvas(work_space_id, instance.id, cacheKey, canvas);
+        $setCacheCanvas(work_space.id, instance.id, cacheKey, canvas);
     }
 
     // ブレンドモードを設定
@@ -50,7 +56,7 @@ export const execute = async (
 
     // ステージに追加
     element.insertAdjacentHTML("beforeend",
-        movieClipDisplayObjectComponent(character, layer.id)
+        videoDisplayObjectComponent(character, layer.id)
     );
 
     const div = element.lastElementChild as HTMLDivElement;
@@ -71,7 +77,7 @@ export const execute = async (
 
     // イベントを登録
     if (!$getDeactivated()) {
-        movieClipRegisterEventUseCase(div);
+        videoRegisterEventUseCase(div);
     } else {
         screenAreaReadOnlyElementService(div);
     }
