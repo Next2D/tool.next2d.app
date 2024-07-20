@@ -6,6 +6,8 @@ import { execute as textToolDrawRectPointerMoveEventUseCase } from "./TextToolDr
 import { $SCREEN_DRAW_TEXT_ID } from "@/config/ScreenConfig";
 import { $getDefaultTool, $setActiveTool } from "../../ToolUtil";
 import { $TOOL_ARROW_NAME } from "@/config/ToolConfig";
+import { $getScrollLimitY } from "@/timeline/application/TimelineUtil";
+import { $getScreenOffsetLeft, $getScreenOffsetTop } from "@/global/GlobalUtil";
 
 /**
  * @description 描画の範囲選択のマウスアップイベント
@@ -63,5 +65,9 @@ export const execute = async (event: PointerEvent): Promise<void> =>
     // 範囲選択を非表示に
     textRectHideService();
 
-    console.log("left: ", left, "top: ", top);
+    // 配置先を計算
+    const x = left - $getScreenOffsetLeft();
+    const y = top - $getScreenOffsetTop();
+
+    console.log(x, $getScrollLimitY);
 };

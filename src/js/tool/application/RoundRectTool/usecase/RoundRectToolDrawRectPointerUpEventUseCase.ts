@@ -76,10 +76,7 @@ export const execute = async (event: PointerEvent): Promise<void> =>
     // 新規Shapeをライブラリに追加
     const path = `Shape_${workSpace.nextLibraryId}`;
     const externalLibrary = new ExternalLibrary(workSpace);
-    externalLibrary.addNewShape(path);
-
-    // ライブラリからShapeを取得
-    const shape: ExternalInstanceImpl<ExternalShape> = externalLibrary.getItem(path);
+    const shape = externalLibrary.addNewShape(path);
     if (!shape) {
         return ;
     }
