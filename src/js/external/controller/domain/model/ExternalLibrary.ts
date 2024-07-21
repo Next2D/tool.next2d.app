@@ -2,6 +2,7 @@ import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import type { ExternalInstanceImpl } from "@/interface/ExternalInstanceImpl";
 import { execute as externalLibraryAddNewMovieClipUseCase } from "@/external/controller/application/ExternalLibrary/usecase/ExternalLibraryAddNewMovieClipUseCase";
 import { execute as externalLibraryAddNewShapeUseCase } from "@/external/controller/application/ExternalLibrary/usecase/ExternalLibraryAddNewShapeUseCase";
+import { execute as externalLibraryAddNewTextUseCase } from "@/external/controller/application/ExternalLibrary/usecase/ExternalLibraryAddNewTextUseCase";
 import { execute as externalLibraryImportFileUseCase } from "@/external/controller/application/ExternalLibrary/usecase/ExternalLibraryImportFileUseCase";
 import { execute as externalLibraryGetItemUseCase } from "@/external/controller/application/ExternalLibrary/usecase/ExternalLibraryGetItemUseCase";
 import { execute as externalLibraryOutOfFolderUseCase } from "@/external/controller/application/ExternalLibrary/usecase/ExternalLibraryOutOfFolderUseCase";
@@ -10,6 +11,7 @@ import { execute as externalLibraryRemoveItemUseCase } from "@/external/controll
 import { execute as externalLibrarySelectedItemUseCase } from "@/external/controller/application/ExternalLibrary/usecase/ExternalLibrarySelectedItemUseCase";
 import { execute as externalLibraryCreateNewFolderUseCase } from "@/external/controller/application/ExternalLibrary/usecase/ExternalLibraryCreateNewFolderUseCase";
 import { ExternalShape } from "@/external/core/domain/model/ExternalShape";
+import { ExternalText } from "@/external/core/domain/model/ExternalText";
 
 /**
  * @description ライブラリの外部APIクラス
@@ -136,9 +138,9 @@ export class ExternalLibrary
      * @method
      * @public
      */
-    addNewFolder (path: string, reload: boolean = true): void
+    addNewFolder (path: string, reload: boolean = true): number
     {
-        externalLibraryCreateNewFolderUseCase(
+        return externalLibraryCreateNewFolderUseCase(
             this._$workSpace,
             path,
             reload
@@ -177,12 +179,7 @@ export class ExternalLibrary
         // フォルダー指定があれば先にフォルダーを生成
         let folderId = 0;
         if (paths.length) {
-
-            this.addNewFolder(paths.join("/"), reload);
-
-            const item = this.getItem(paths.join("/"));
-
-            folderId = item.id;
+            folderId = this.addNewFolder(paths.join("/"), reload);
         }
 
         // 新規MovieClipを作成
@@ -191,6 +188,58 @@ export class ExternalLibrary
             this._$workSpace.scene,
             name, folderId, reload
         );
+    }
+
+    /**
+     * @description 指定の階層に新規Textを追加、階層が存在しなければフォルダを生成
+     *              Add a new Text to the specified hierarchy, or create a folder if the hierarchy does not exist
+     *
+     * @param  {string} path
+     * @param  {number} width
+     * @param  {number} height
+     * @param  {boolean} [reload = true]
+     * @return {ExternalShape}
+     * @method
+     * @public
+     */
+    addNewText (
+        path: string,
+        width: number,
+        height: number,
+        reload: boolean = true
+    ): ExternalText | null {
+
+        if (!path) {
+            return null;
+        }
+
+        const paths = path.split("/");
+
+        // 銭湯が空文字なら排除
+        if (paths[0] === "") {
+            paths.shift();
+        }
+
+        if (!paths.length) {
+            return null;
+        }
+
+        const name = paths.pop() as NonNullable<string>;
+
+        // フォルダー指定があれば先にフォルダーを生成
+        let folderId = 0;
+        if (paths.length) {
+            folderId = this.addNewFolder(paths.join("/"), reload);
+        }
+
+        // 新規Shapeを作成
+        const text = externalLibraryAddNewTextUseCase(
+            this._$workSpace,
+            this._$workSpace.scene,
+            name, width, height, folderId, reload
+        );
+
+        return new ExternalText(this._$workSpace, text);
     }
 
     /**
@@ -228,12 +277,7 @@ export class ExternalLibrary
         // フォルダー指定があれば先にフォルダーを生成
         let folderId = 0;
         if (paths.length) {
-
-            this.addNewFolder(paths.join("/"), reload);
-
-            const item = this.getItem(paths.join("/"));
-
-            folderId = item.id;
+            folderId = this.addNewFolder(paths.join("/"), reload);
         }
 
         // 新規Shapeを作成

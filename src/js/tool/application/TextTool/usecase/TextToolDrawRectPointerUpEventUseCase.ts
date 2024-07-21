@@ -6,8 +6,10 @@ import { execute as textToolDrawRectPointerMoveEventUseCase } from "./TextToolDr
 import { $SCREEN_DRAW_TEXT_ID } from "@/config/ScreenConfig";
 import { $getDefaultTool, $setActiveTool } from "../../ToolUtil";
 import { $TOOL_ARROW_NAME } from "@/config/ToolConfig";
-import { $getScrollLimitY } from "@/timeline/application/TimelineUtil";
 import { $getScreenOffsetLeft, $getScreenOffsetTop } from "@/global/GlobalUtil";
+import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
+import { ExternalLibrary } from "@/external/controller/domain/model/ExternalLibrary";
+import { execute as timelineAreaAddItemToMovieClipService } from "@/timeline/application/TimelineArea/service/TimelineAreaAddItemToMovieClipService";
 
 /**
  * @description 描画の範囲選択のマウスアップイベント
@@ -60,14 +62,25 @@ export const execute = async (event: PointerEvent): Promise<void> =>
     // 非表示になる前の位置を取得
     // fixed logic
     const left = rectElement.offsetLeft;
-    const top = rectElement.offsetTop;
+    const top  = rectElement.offsetTop;
 
     // 範囲選択を非表示に
     textRectHideService();
 
-    // 配置先を計算
-    const x = left - $getScreenOffsetLeft();
-    const y = top - $getScreenOffsetTop();
+    const workSpace = $getCurrentWorkSpace();
 
-    console.log(x, y);
+    // 新規Textをライブラリに追加
+    const path = `Text_${workSpace.nextLibraryId}`;
+    const externalLibrary = new ExternalLibrary(workSpace);
+    const text = externalLibrary.addNewText(path, width, height);
+    if (!text) {
+        return ;
+    }
+
+    // 親のMovieClipと拡大・縮小を考慮した補正座標を計算
+    await timelineAreaAddItemToMovieClipService(
+        left - $getScreenOffsetLeft(), // x座標
+        top - $getScreenOffsetTop(), // y座標
+        path
+    );
 };

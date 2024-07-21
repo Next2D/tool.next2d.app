@@ -10,7 +10,7 @@ import { execute as externalLibraryGetItemUseCase } from "@/external/controller/
  * @param  {WorkSpace} work_space
  * @param  {string} path
  * @param  {boolean} [reload = true]
- * @return {void}
+ * @return {number}
  * @method
  * @public
  */
@@ -18,10 +18,10 @@ export const execute = (
     work_space: WorkSpace,
     path: string,
     reload: boolean = true
-): void => {
+): number => {
 
     if (!path) {
-        return ;
+        return 0;
     }
 
     const paths = path.split("/");
@@ -58,4 +58,6 @@ export const execute = (
         // fixed logic
         folderId = folder.id;
     }
+
+    return folderId;
 };

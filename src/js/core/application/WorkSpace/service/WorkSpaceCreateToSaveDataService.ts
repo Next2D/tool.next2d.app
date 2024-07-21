@@ -6,18 +6,21 @@ import type { MovieClipSaveObjectImpl } from "@/interface/MovieClipSaveObjectImp
 import type { FolderSaveObjectImpl } from "@/interface/FolderSaveObjectImpl";
 import type { InstanceImpl } from "@/interface/InstanceImpl";
 import type { ShapeSaveObjectImpl } from "@/interface/ShapeSaveObjectImpl";
+import type { TextSaveObjectImpl } from "@/interface/TextSaveObjectImpl";
 import { Bitmap } from "@/core/domain/model/Bitmap";
 import { Folder } from "@/core/domain/model/Folder";
 import { MovieClip } from "@/core/domain/model/MovieClip";
 import { Video } from "@/core/domain/model/Video";
 import { Sound } from "@/core/domain/model/Sound";
 import { Shape } from "@/core/domain/model/Shape";
+import { Text } from "@/core/domain/model/Text";
 import {
     $BITMAP_TYPE,
     $FOLDER_TYPE,
     $MOVIE_CLIP_TYPE,
     $SHAPE_TYPE,
     $SOUND_TYPE,
+    $TEXT_TYPE,
     $VIDEO_TYPE
 } from "@/config/InstanceConfig";
 
@@ -58,6 +61,9 @@ export const execute = async (save_object: InstanceSaveObjectImpl): Promise<Inst
 
         case $SHAPE_TYPE:
             return new Shape(save_object as ShapeSaveObjectImpl);
+
+        case $TEXT_TYPE:
+            return new Text(save_object as TextSaveObjectImpl);
 
         default:
             throw new Error("This is an undefined class.");

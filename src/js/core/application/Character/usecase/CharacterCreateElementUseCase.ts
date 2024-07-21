@@ -5,10 +5,12 @@ import { execute as bitmapCreateDisplayObjectElementUseCase } from "@/core/appli
 import { execute as movieClipCreateDisplayObjectElementUseCase } from "@/core/application/MovieClip/usecase/MovieClipCreateDisplayObjectElementUseCase";
 import { execute as shapeCreateDisplayObjectElementUseCase } from "@/core/application/Shape/usecase/ShapeCreateDisplayObjectElementUseCase";
 import { execute as videoCreateDisplayObjectElementUseCase } from "@/core/application/Video/usecase/VideoCreateDisplayObjectElementUseCase";
+import { execute as textCreateDisplayObjectElementUseCase } from "@/core/application/Text/usecase/TextCreateDisplayObjectElementUseCase";
 import {
     $BITMAP_TYPE,
     $MOVIE_CLIP_TYPE,
     $SHAPE_TYPE,
+    $TEXT_TYPE,
     $VIDEO_TYPE
 } from "@/config/InstanceConfig";
 
@@ -58,6 +60,12 @@ export const execute = async (
 
         case $SHAPE_TYPE:
             div = await shapeCreateDisplayObjectElementUseCase(
+                workSpace.id, instance, element, layer, character
+            );
+            break;
+
+        case $TEXT_TYPE:
+            div = await textCreateDisplayObjectElementUseCase(
                 workSpace.id, instance, element, layer, character
             );
             break;

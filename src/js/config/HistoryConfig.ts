@@ -564,3 +564,12 @@ export const $LIBRARY_ADD_NEW_SHAPE_COMMAND: number = 56;
  * @constant
  */
 export const $LIBRARY_UPDATE_SHAPE_GRAPHICS_COMMAND: number = 57;
+
+/**
+ * @description 新規Text追加操作の識別コマンド名
+ *              Identification command name for new Text add operation
+ *
+ * @type {number}
+ * @constant
+ */
+export const $LIBRARY_ADD_NEW_TEXT_COMMAND: number = 58;
