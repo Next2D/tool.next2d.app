@@ -69,5 +69,5 @@ export const execute = async (event: PointerEvent): Promise<void> =>
     const x = left - $getScreenOffsetLeft();
     const y = top - $getScreenOffsetTop();
 
-    console.log(x, $getScrollLimitY);
+    console.log(x, y);
 };

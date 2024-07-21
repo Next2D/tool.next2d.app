@@ -115,6 +115,18 @@ export class Video extends Instance
     }
 
     /**
+     * @description 映像の幅を返却
+     *              Returns the width of the image
+     *
+     * @member {number}
+     * @public
+     */
+    get duration (): number
+    {
+        return this._$video ? this._$video.duration : 0;
+    }
+
+    /**
      * @description データを読み込み、再生可能になったら完了
      *              When data is loaded and ready for playback, it is done.
      *

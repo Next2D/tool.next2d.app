@@ -36,10 +36,10 @@ export const execute = async (
 ): Promise<HTMLDivElement> => {
 
     const movieClip = work_space.scene;
-    const sec = Math.min(
+    const sec = Math.min(instance.duration, Math.min(
         character.endFrame,
         movieClip.currentFrame - 1
-    ) / work_space.stage.fps;
+    ) / work_space.stage.fps);
 
     const cacheKey = character.cacheKey + "_" + sec;
     let canvas = $getCacheCanvas(work_space.id, instance.id, cacheKey);
