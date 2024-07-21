@@ -170,7 +170,8 @@ export class MovieClip extends Instance
             return false;
         }
 
-        return this._$selectedDepths.values().next().value.length === 1;
+        const depths = this._$selectedDepths.values().next().value as number[];
+        return depths.length === 1;
     }
 
     /**

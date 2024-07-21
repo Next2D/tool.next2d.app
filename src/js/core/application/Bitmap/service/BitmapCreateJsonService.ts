@@ -1,5 +1,5 @@
 import type { Bitmap } from "@/core/domain/model/Bitmap";
-import { BitmapPublishJsonImpl } from "@/interface/BitmapPublishJsonImpl";
+import type { BitmapPublishJsonImpl } from "@/interface/BitmapPublishJsonImpl";
 
 /**
  * @description Next2D Playerの再生用JSONオブジェクトを生成する
@@ -13,7 +13,7 @@ import { BitmapPublishJsonImpl } from "@/interface/BitmapPublishJsonImpl";
 export const execute = (bitmap: Bitmap): BitmapPublishJsonImpl =>
 {
     const object: BitmapPublishJsonImpl = {
-        "extends":  next2d.display.Shape.namespace,
+        "extends": next2d.display.Shape.namespace,
         "buffer": bitmap.buffer ? Array.from(bitmap.buffer) : [],
         "bounds": {
             "xMin": 0,

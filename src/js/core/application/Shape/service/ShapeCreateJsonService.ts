@@ -15,7 +15,7 @@ export const execute = (shape: Shape): ShapePublishJsonImpl =>
     const bounds = shape.getRawBounds();
 
     const object: ShapePublishJsonImpl = {
-        "extends":  next2d.display.Shape.namespace,
+        "extends": next2d.display.Shape.namespace,
         "recodes": shape.recodes.slice(),
         "bounds": {
             "xMin": bounds.xMin,

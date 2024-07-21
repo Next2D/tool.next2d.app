@@ -1,10 +1,12 @@
 import type { ObjectImpl } from "@/interface/ObjectImpl";
 import type { VideoSaveObjectImpl } from "@/interface/VideoSaveObjectImpl";
 import type { BoundsImpl } from "@/interface/BoundsImpl";
+import type { VideoPublishJsonImpl } from "@/interface/VideoPublishJsonImpl";
 import { Instance } from "./Instance";
 import { execute as binaryToBufferService } from "@/core/service/BinaryToBufferService";
 import { execute as bufferToBinaryService } from "@/core/service/BufferToBinaryService";
 import { execute as videoElementToCanvasElementService } from "@/core/application/Video/service/VideoElementToCanvasElementService";
+import { execute as videoCreateJsonService } from "@/core/application/Video/service/VideoCreateJsonService";
 
 /**
  * @description 映像の状態管理クラス
@@ -22,6 +24,9 @@ export class Video extends Instance
     private _$binary: string;
     private _$loaded: boolean;
     private _$buffer: Uint8Array | null;
+    private _$volume: number;
+    private _$loop: boolean;
+    private _$autoPlay: boolean;
 
     /**
      * @param {object} object
@@ -45,6 +50,27 @@ export class Video extends Instance
          * @private
          */
         this._$height = 0;
+
+        /**
+         * @type {number}
+         * @default 1
+         * @private
+         */
+        this._$volume = 1;
+
+        /**
+         * @type {boolean}
+         * @default false
+         * @private
+         */
+        this._$loop = false;
+
+        /**
+         * @type {boolean}
+         * @default false
+         * @private
+         */
+        this._$autoPlay = false;
 
         /**
          * @type {string}
@@ -74,11 +100,25 @@ export class Video extends Instance
             this._$height = object.height;
         }
 
+        if (object.volume) {
+            this._$volume = object.volume;
+        }
+
+        if (object.autoPlay) {
+            this._$autoPlay = object.autoPlay;
+        }
+
+        if (object.loop) {
+            this._$loop = object.loop;
+        }
+
         this._$video = document.createElement("video");
         this._$video.crossOrigin = "anonymous";
         this._$video.muted       = true;
-        this._$video.autoplay    = false;
         this._$video.controls    = true;
+        this._$video.autoplay    = this._$autoPlay;
+        this._$video.loop        = this._$loop;
+        this._$video.volume      = this._$volume;
 
         this._$video.oncanplaythrough = async (): Promise<void> =>
         {
@@ -124,6 +164,73 @@ export class Video extends Instance
     get duration (): number
     {
         return this._$video ? this._$video.duration : 0;
+    }
+
+    /**
+     * @description 映像の音量
+     *              Volume of video
+     *
+     * @member {number}
+     * @default 1
+     * @public
+     */
+    get volume (): number
+    {
+        return this._$volume;
+    }
+    set volume (volume: number)
+    {
+        this._$volume = volume;
+        this._$video.volume = volume;
+    }
+
+    /**
+     * @description ループ再生するかどうか
+     *              Whether to play in a loop
+     *
+     * @member {boolean}
+     * @default false
+     * @public
+     */
+    get loop (): boolean
+    {
+        return this._$loop;
+    }
+    set loop (loop: boolean)
+    {
+        this._$loop = loop;
+        this._$video.loop = loop;
+    }
+
+    /**
+     * @description 自動再生するかどうか
+     *              Whether to play automatically
+     *
+     * @member {boolean}
+     * @default false
+     * @public
+     */
+    get autoPlay (): boolean
+    {
+        return this._$autoPlay;
+    }
+    set autoPlay (autoPlay: boolean)
+    {
+        this._$autoPlay = autoPlay;
+        this._$video.autoplay = autoPlay;
+    }
+
+    /**
+     * @description Videoの情報をNext2D Playerの再生用JSONオブジェクトに変換
+     *              Convert Video information to a JSON object for playback in Next2D Player
+     *
+     * @return {object}
+     * @method
+     * @public
+     */
+    async toPublish (): Promise<VideoPublishJsonImpl>
+    {
+        return videoCreateJsonService(this);
     }
 
     /**

@@ -26,7 +26,6 @@ export const execute = (
         return canvas;
     }
 
-    console.log(video.duration);
     video.currentTime = sec;
     context.drawImage(video, 0, 0, width, height);
 

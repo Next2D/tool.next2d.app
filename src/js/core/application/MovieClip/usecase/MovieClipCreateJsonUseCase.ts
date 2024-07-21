@@ -118,6 +118,10 @@ export const execute = async (movie_clip: MovieClip): Promise<MovieClipPublishJs
             const iterator = map.values();
 
             let character = iterator.next().value;
+            if (!character) {
+                continue;
+            }
+
             let endFrame  = character.endFrame;
             unionMap.set(character, endFrame);
 
@@ -127,6 +131,10 @@ export const execute = async (movie_clip: MovieClip): Promise<MovieClipPublishJs
 
                 if (!map.has(endFrame)) {
                     character = iterator.next().value;
+                    if (!character) {
+                        continue;
+                    }
+
                     if (ignoreMap.has(character)) {
                         continue;
                     }
@@ -142,6 +150,10 @@ export const execute = async (movie_clip: MovieClip): Promise<MovieClipPublishJs
                 }
 
                 endFrame = unionCharacter.endFrame;
+
+                if (!character) {
+                    continue;
+                }
 
                 // 結合して最終フレームを更新
                 unionMap.set(character, endFrame);
