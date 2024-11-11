@@ -1,5 +1,3 @@
-import { BoundsImpl } from "./BoundsImpl";
-
 export interface VideoPublishJsonImpl
 {
     symbol?: string;
@@ -8,5 +6,4 @@ export interface VideoPublishJsonImpl
     loop: boolean;
     autoPlay: boolean;
     buffer: number[];
-    bounds: BoundsImpl;
 }
