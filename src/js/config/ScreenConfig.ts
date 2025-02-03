@@ -43,7 +43,6 @@ export const $SCREEN_DRAW_RECT_ID: string = "draw-rect";
  */
 export const $SCREEN_DRAW_TEXT_ID: string = "draw-text";
 
-
 /**
  * @description スクリーンエリアのElementのID
  *              ID of the Element in the screen area

@@ -1,10 +1,9 @@
-import {
-    $generateShortcutKey
-} from "./ShortcutUtil";
+import { $generateShortcutKey} from "./ShortcutUtil";
+import { describe, expect, it } from "vitest";
 
 describe("ShortcutUtilTest", () =>
 {
-    test("$generateShortcutKey test", () =>
+    it("$generateShortcutKey test", () =>
     {
         expect($generateShortcutKey("a")).toBe("a");
         expect($generateShortcutKey("A")).toBe("a");

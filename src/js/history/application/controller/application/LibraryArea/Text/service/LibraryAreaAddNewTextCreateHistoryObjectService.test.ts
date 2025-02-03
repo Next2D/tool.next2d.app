@@ -1,6 +1,6 @@
 import { execute } from "./LibraryAreaAddNewTextCreateHistoryObjectService";
 import { Shape } from "../../../../../../../core/domain/model/Shape";
-import { $LIBRARY_ADD_NEW_SHAPE_COMMAND } from "../../../../../../../config/HistoryConfig";
+import { $LIBRARY_ADD_NEW_TEXT_COMMAND } from "../../../../../../../config/HistoryConfig";
 
 describe("LibraryAreaAddNewShapeCreateHistoryObjectServiceTest", () =>
 {
@@ -13,7 +13,7 @@ describe("LibraryAreaAddNewShapeCreateHistoryObjectServiceTest", () =>
         });
 
         const object = execute(1, 2, shape);
-        expect(object.command).toBe($LIBRARY_ADD_NEW_SHAPE_COMMAND);
+        expect(object.command).toBe($LIBRARY_ADD_NEW_TEXT_COMMAND);
 
         // 配列の順番が崩れてもいいようにテストケースを残す
         expect(object.messages.length).toBe(3);

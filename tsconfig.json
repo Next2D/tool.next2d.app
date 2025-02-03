@@ -35,8 +35,8 @@
     "@types/**/*.ts"
   ],
   "exclude": [
-    "node_modules/**",
-    "src/js/**/*.test.ts",
+    "node_modules",
+    "**/*.test.ts",
     "docs/**"
   ]
 }
