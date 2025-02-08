@@ -11,26 +11,27 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.2.0",
-    "@eslint/js": "^9.19.0",
+    "@eslint/js": "^9.20.0",
     "@types/ace": "^0.0.52",
-    "@types/node": "^22.13.0",
+    "@types/node": "^22.13.1",
     "@types/qrcode": "^1.5.5",
-    "@typescript-eslint/eslint-plugin": "^8.22.0",
-    "@typescript-eslint/parser": "^8.22.0",
-    "@vitest/web-worker": "^3.0.4",
-    "eslint": "^9.19.0",
+    "@typescript-eslint/eslint-plugin": "^8.23.0",
+    "@typescript-eslint/parser": "^8.23.0",
+    "@vitest/web-worker": "^3.0.5",
+    "eslint": "^9.20.0",
     "eslint-plugin-unused-imports": "^4.1.4",
+    "globals": "^15.14.0",
     "jsdom": "^26.0.0",
-    "sass": "^1.83.4",
+    "sass": "^1.84.0",
     "typescript": "^5.7.3",
-    "vite": "^6.0.11",
-    "vitest": "^3.0.4"
+    "vite": "^6.1.0",
+    "vitest": "^3.0.5"
   },
   "dependencies": {
     "@next2d/player": "^1.18.12",
     "fflate": "^0.8.2",
     "jszip": "^3.10.1",
     "qrcode": "^1.5.4",
-    "terser": "^5.37.0"
+    "terser": "^5.38.1"
   }
 }
