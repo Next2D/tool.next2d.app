@@ -30,10 +30,10 @@ export const execute = (event: PointerEvent): void =>
 
     // windowイベントを解除
     element.releasePointerCapture(event.pointerId);
-    element.removeEventListener(EventType.MOUSE_MOVE,
+    element.removeEventListener(EventType.POINTER_MOVE,
         soundAreaLoopCountPointerMoveEventUseCase
     );
-    element.removeEventListener(EventType.MOUSE_UP, execute);
+    element.removeEventListener(EventType.POINTER_UP, execute);
 
     const index = soundArea.targetIndex;
     if (index === -1) {

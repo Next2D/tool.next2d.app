@@ -31,7 +31,7 @@ export const execute = (): void =>
     menu.offsetLeft = element.offsetLeft + element.offsetWidth;
     menu.offsetTop  = element.offsetTop  + 25;
 
-    element.addEventListener(EventType.MOUSE_DOWN,
+    element.addEventListener(EventType.POINTER_DOWN,
         screenTabMenuMouseDownEventUseCase
     );
 };

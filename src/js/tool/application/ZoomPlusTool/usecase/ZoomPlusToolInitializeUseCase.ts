@@ -24,12 +24,12 @@ export const execute = (tool: ITool<ZoomPlusTool>): void =>
     );
 
     // スクリーンのマウスオーバーイベントを登録
-    tool.addEventListener(EventType.MOUSE_OVER,
+    tool.addEventListener(EventType.POINTER_OVER,
         zoomPlusToolMouseOverEventService
     );
 
     // スクリーンのマウスアウトイベントを登録
-    tool.addEventListener(EventType.MOUSE_OUT,
+    tool.addEventListener(EventType.POINTER_OUT,
         zoomPlusToolMouseOutEventService
     );
 

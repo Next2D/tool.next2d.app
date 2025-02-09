@@ -17,7 +17,7 @@ export const execute = (): void =>
         .getElementById($TIMELINE_ADJUSTMENT_X_ID);
 
     if (xAdjElement) {
-        xAdjElement.addEventListener(EventType.MOUSE_DOWN,
+        xAdjElement.addEventListener(EventType.POINTER_DOWN,
             timelineAdjustmentXMouseDownEventUseCase
         );
     }
@@ -26,7 +26,7 @@ export const execute = (): void =>
         .getElementById($TIMELINE_ADJUSTMENT_Y_ID);
 
     if (yAdjElement) {
-        yAdjElement.addEventListener(EventType.MOUSE_DOWN,
+        yAdjElement.addEventListener(EventType.POINTER_DOWN,
             timelineAdjustmentYMouseDownEventUseCase
         );
     }

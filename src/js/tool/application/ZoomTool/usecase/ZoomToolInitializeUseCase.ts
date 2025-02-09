@@ -24,13 +24,13 @@ export const execute = (): void =>
         return ;
     }
 
-    element.addEventListener(EventType.MOUSE_OVER,
+    element.addEventListener(EventType.POINTER_OVER,
         zoomToolMouseOverEventService
     );
-    element.addEventListener(EventType.MOUSE_OUT,
+    element.addEventListener(EventType.POINTER_OUT,
         zoomToolMouseOutEventService
     );
-    element.addEventListener(EventType.MOUSE_DOWN,
+    element.addEventListener(EventType.POINTER_DOWN,
         zoomToolMouseDownEventUseCase
     );
     element.addEventListener("focusin",

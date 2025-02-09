@@ -51,7 +51,7 @@ export const execute = (
     }
 
     // イベントを登録
-    node.addEventListener(EventType.MOUSE_DOWN,
+    node.addEventListener(EventType.POINTER_DOWN,
         timelineSceneListNodeMouseDownEventUseCase
     );
 };

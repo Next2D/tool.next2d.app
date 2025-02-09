@@ -27,6 +27,6 @@ export const execute = (): void =>
             continue;
         }
 
-        node.addEventListener(EventType.MOUSE_DOWN, controllerTabMouseDownEventService);
+        node.addEventListener(EventType.POINTER_DOWN, controllerTabMouseDownEventService);
     }
 };

@@ -19,7 +19,7 @@ export const execute = (): void =>
         return ;
     }
 
-    element.addEventListener(EventType.MOUSE_DOWN, (event: PointerEvent): void =>
+    element.addEventListener(EventType.POINTER_DOWN, (event: PointerEvent): void =>
     {
         // 全てのイベントを中止
         event.stopPropagation();
@@ -27,7 +27,7 @@ export const execute = (): void =>
         event.preventDefault();
     });
 
-    element.addEventListener(EventType.MOUSE_UP, (event: PointerEvent): void =>
+    element.addEventListener(EventType.POINTER_UP, (event: PointerEvent): void =>
     {
         // 親のイベントを中止
         event.stopPropagation();

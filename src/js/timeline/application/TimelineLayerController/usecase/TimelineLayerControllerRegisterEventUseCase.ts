@@ -28,7 +28,7 @@ export const execute = (element: HTMLElement): void =>
     );
 
     // マウスダウンイベント
-    element.addEventListener(EventType.MOUSE_DOWN,
+    element.addEventListener(EventType.POINTER_DOWN,
         timelineLayerControllerMouseDownEventUseCase
     );
 
@@ -38,7 +38,7 @@ export const execute = (element: HTMLElement): void =>
 
     if (iconElement) {
         // マウスダウンイベント
-        iconElement.addEventListener(EventType.MOUSE_DOWN,
+        iconElement.addEventListener(EventType.POINTER_DOWN,
             timelineLayerControllerLayerIconMouseDownEventUseCase
         );
     }
@@ -50,7 +50,7 @@ export const execute = (element: HTMLElement): void =>
     if (textElement) {
 
         // マウスダウンイベント
-        textElement.addEventListener(EventType.MOUSE_DOWN,
+        textElement.addEventListener(EventType.POINTER_DOWN,
             timelineLayerControllerNameTextMouseDownEventUseCase
         );
 
@@ -70,7 +70,7 @@ export const execute = (element: HTMLElement): void =>
         .querySelector(".timeline-layer-light-one") as HTMLElement;
 
     if (lightElement) {
-        lightElement.addEventListener(EventType.MOUSE_DOWN,
+        lightElement.addEventListener(EventType.POINTER_DOWN,
             timelineLayerControllerLightIconMouseDownEventService
         );
     }
@@ -82,12 +82,12 @@ export const execute = (element: HTMLElement): void =>
     if (disableIconElement) {
 
         // マウスダウンのイベントを登録
-        disableIconElement.addEventListener(EventType.MOUSE_DOWN,
+        disableIconElement.addEventListener(EventType.POINTER_DOWN,
             timelineLayerControllerDisableIconMouseDownEventUseCase
         );
 
         // マウスオーバーのイベントを登録
-        disableIconElement.addEventListener(EventType.MOUSE_OVER,
+        disableIconElement.addEventListener(EventType.POINTER_OVER,
             timelineLayerControllerDisableIconMouseOverService
         );
     }
@@ -98,12 +98,12 @@ export const execute = (element: HTMLElement): void =>
 
     if (lockIconElement) {
         // マウスダウンのイベントを登録
-        lockIconElement.addEventListener(EventType.MOUSE_DOWN,
+        lockIconElement.addEventListener(EventType.POINTER_DOWN,
             timelineLayerControllerLockIconMouseDownEventUseCase
         );
 
         // マウスオーバーのイベントを登録
-        lockIconElement.addEventListener(EventType.MOUSE_OVER,
+        lockIconElement.addEventListener(EventType.POINTER_OVER,
             timelineLayerControllerLockIconMouseOverService
         );
     }

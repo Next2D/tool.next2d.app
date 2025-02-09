@@ -33,7 +33,7 @@ export const execute = async (event: PointerEvent): Promise<void> =>
     // 連続表示機能を有効にする
     if (!$getDisableState()) {
         $setDisableState(true);
-        window.addEventListener(EventType.MOUSE_UP,
+        window.addEventListener(EventType.POINTER_UP,
             timelineLayerControllerDisableIconWindowMouseUpService
         );
     }

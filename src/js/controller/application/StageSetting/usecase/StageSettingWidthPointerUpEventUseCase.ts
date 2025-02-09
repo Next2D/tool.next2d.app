@@ -37,10 +37,10 @@ export const execute = (event: PointerEvent): void =>
 
     // windowのイベントを削除
     element.releasePointerCapture(event.pointerId);
-    element.removeEventListener(EventType.MOUSE_MOVE,
+    element.removeEventListener(EventType.POINTER_MOVE,
         stageSettingWidthPointerMoveEventUseCase
     );
-    element.removeEventListener(EventType.MOUSE_UP, execute);
+    element.removeEventListener(EventType.POINTER_UP, execute);
 
     const workSpace = $getCurrentWorkSpace();
     const stage = workSpace.stage;

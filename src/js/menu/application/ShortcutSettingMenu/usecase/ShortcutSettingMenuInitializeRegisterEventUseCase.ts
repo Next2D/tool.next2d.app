@@ -34,7 +34,7 @@ export const execute = (): void =>
         .getElementById($SHORTCUT_SETTING_SAVE_ID);
 
     if (shortcutSettingSave) {
-        shortcutSettingSave.addEventListener(EventType.MOUSE_DOWN, (event: PointerEvent): void =>
+        shortcutSettingSave.addEventListener(EventType.POINTER_DOWN, (event: PointerEvent): void =>
         {
             // 親のイベントを中止
             event.stopPropagation();
@@ -48,7 +48,7 @@ export const execute = (): void =>
         .getElementById($SHORTCUT_SETTING_RESET_ID);
 
     if (shortcutSettingReset) {
-        shortcutSettingReset.addEventListener(EventType.MOUSE_DOWN, (event: PointerEvent): void =>
+        shortcutSettingReset.addEventListener(EventType.POINTER_DOWN, (event: PointerEvent): void =>
         {
             // 親のイベントを中止
             event.stopPropagation();
@@ -62,7 +62,7 @@ export const execute = (): void =>
         .getElementById($SHORTCUT_SETTING_CLOSE_ID);
 
     if (shortcutSettingClose) {
-        shortcutSettingClose.addEventListener(EventType.MOUSE_DOWN, (event: PointerEvent): void =>
+        shortcutSettingClose.addEventListener(EventType.POINTER_DOWN, (event: PointerEvent): void =>
         {
             // 親のイベントを中止
             event.stopPropagation();
@@ -76,7 +76,7 @@ export const execute = (): void =>
         .getElementById($SHORTCUT_SETTING_SCREEN_ID);
 
     if (shortcutScreenList) {
-        shortcutScreenList.addEventListener(EventType.MOUSE_DOWN, (event: PointerEvent): void =>
+        shortcutScreenList.addEventListener(EventType.POINTER_DOWN, (event: PointerEvent): void =>
         {
             // 親のイベントを中止
             event.stopPropagation();
@@ -90,7 +90,7 @@ export const execute = (): void =>
         .getElementById($SHORTCUT_SETTING_TIMELINE_ID);
 
     if (shortcutTimelineList) {
-        shortcutTimelineList.addEventListener(EventType.MOUSE_DOWN, (event: PointerEvent): void =>
+        shortcutTimelineList.addEventListener(EventType.POINTER_DOWN, (event: PointerEvent): void =>
         {
             // 親のイベントを中止
             event.stopPropagation();
@@ -104,7 +104,7 @@ export const execute = (): void =>
         .getElementById($SHORTCUT_SETTING_LIBRARY_ID);
 
     if (shortcutLibraryList) {
-        shortcutLibraryList.addEventListener(EventType.MOUSE_DOWN, (event: PointerEvent): void =>
+        shortcutLibraryList.addEventListener(EventType.POINTER_DOWN, (event: PointerEvent): void =>
         {
             // 親のイベントを中止
             event.stopPropagation();
@@ -131,7 +131,7 @@ export const execute = (): void =>
         const length: number = elements.length;
         for (let idx = 0; idx < length; ++idx) {
             const element: HTMLElement = elements[idx] as HTMLElement;
-            element.addEventListener(EventType.MOUSE_DOWN,
+            element.addEventListener(EventType.POINTER_DOWN,
                 shortcutSettingMenuChangeListStyleUseCase
             );
         }

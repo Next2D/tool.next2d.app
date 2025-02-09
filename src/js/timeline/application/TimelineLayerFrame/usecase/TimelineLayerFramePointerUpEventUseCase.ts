@@ -32,8 +32,8 @@ export const execute = (event: PointerEvent): void =>
 
     // windowのムーブイベントを削除
     element.releasePointerCapture(event.pointerId);
-    element.removeEventListener(EventType.MOUSE_MOVE,
+    element.removeEventListener(EventType.POINTER_MOVE,
         timelineLayerFramePointerMoveEventUseCase
     );
-    element.removeEventListener(EventType.MOUSE_UP, execute);
+    element.removeEventListener(EventType.POINTER_UP, execute);
 };

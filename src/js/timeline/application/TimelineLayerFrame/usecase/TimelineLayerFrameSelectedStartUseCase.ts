@@ -53,12 +53,12 @@ export const execute = async (
     // 移動イベントを登録
     element.setPointerCapture(event.pointerId);
     element.addEventListener(
-        EventType.MOUSE_MOVE,
+        EventType.POINTER_MOVE,
         timelineLayerFramePointerMoveEventUseCase,
         { "passive": false }
     );
     element.addEventListener(
-        EventType.MOUSE_UP,
+        EventType.POINTER_UP,
         timelineLayerFramePointerUpEventUseCase,
         { "passive": false }
     );

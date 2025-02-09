@@ -23,6 +23,6 @@ export const execute = (event: PointerEvent): void =>
 
     // 登録したポインターイベントを解放
     element.releasePointerCapture(event.pointerId);
-    element.removeEventListener(EventType.MOUSE_MOVE, historyAreaScrollPointerMoveUseCase);
-    element.removeEventListener(EventType.MOUSE_UP, execute);
+    element.removeEventListener(EventType.POINTER_MOVE, historyAreaScrollPointerMoveUseCase);
+    element.removeEventListener(EventType.POINTER_UP, execute);
 };

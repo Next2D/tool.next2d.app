@@ -72,7 +72,7 @@ export const execute = async (): Promise<void> =>
                 continue;
             }
 
-            frameElement.addEventListener(EventType.MOUSE_DOWN,
+            frameElement.addEventListener(EventType.POINTER_DOWN,
                 scriptAreaFrameElementMouseDownEventUseCase
             );
         }

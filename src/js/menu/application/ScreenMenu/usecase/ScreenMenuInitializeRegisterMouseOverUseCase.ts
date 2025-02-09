@@ -38,7 +38,7 @@ export const execute = (): void =>
             continue;
         }
 
-        element.addEventListener(EventType.MOUSE_OVER, screenMenuHideSubMenuService);
+        element.addEventListener(EventType.POINTER_OVER, screenMenuHideSubMenuService);
     }
 
     // サブメニュー対象のElelmentIdの配列
@@ -57,6 +57,6 @@ export const execute = (): void =>
             continue;
         }
 
-        element.addEventListener(EventType.MOUSE_OVER, screenMenuShowSubMenuService);
+        element.addEventListener(EventType.POINTER_OVER, screenMenuShowSubMenuService);
     }
 };

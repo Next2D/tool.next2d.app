@@ -44,7 +44,7 @@ export const execute = (): void =>
         return ;
     }
 
-    node.addEventListener(EventType.MOUSE_DOWN,
+    node.addEventListener(EventType.POINTER_DOWN,
         timelineSceneListNodeMouseDownEventUseCase
     );
 };

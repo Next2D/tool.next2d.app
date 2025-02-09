@@ -15,7 +15,7 @@ export class EventType
      * @static
      * @const
      */
-    static get MOUSE_DOWN (): "pointerdown"
+    static get POINTER_DOWN (): "pointerdown"
     {
         return "pointerdown";
     }
@@ -28,7 +28,7 @@ export class EventType
      * @static
      * @const
      */
-    static get MOUSE_UP (): "pointerup"
+    static get POINTER_UP (): "pointerup"
     {
         return "pointerup";
     }
@@ -41,7 +41,7 @@ export class EventType
      * @static
      * @const
      */
-    static get MOUSE_MOVE (): "pointermove"
+    static get POINTER_MOVE (): "pointermove"
     {
         return "pointermove";
     }
@@ -93,7 +93,7 @@ export class EventType
      * @static
      * @const
      */
-    static get MOUSE_OVER (): "pointerover"
+    static get POINTER_OVER (): "pointerover"
     {
         return "pointerover";
     }
@@ -106,7 +106,7 @@ export class EventType
      * @static
      * @const
      */
-    static get MOUSE_OUT (): "pointerout"
+    static get POINTER_OUT (): "pointerout"
     {
         return "pointerout";
     }
@@ -132,7 +132,7 @@ export class EventType
      * @static
      * @const
      */
-    static get MOUSE_LEAVE (): "pointerleave"
+    static get POINTER_LEAVE (): "pointerleave"
     {
         return "pointerleave";
     }

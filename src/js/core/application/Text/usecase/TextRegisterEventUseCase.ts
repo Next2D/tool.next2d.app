@@ -13,7 +13,7 @@ import { execute as textMouseDownEventUseCase } from "./TextMouseDownEventUseCas
 export const execute = (element: HTMLElement): void =>
 {
     // マウスダウンイベントを登録
-    element.addEventListener(EventType.MOUSE_DOWN,
+    element.addEventListener(EventType.POINTER_DOWN,
         textMouseDownEventUseCase
     );
 };

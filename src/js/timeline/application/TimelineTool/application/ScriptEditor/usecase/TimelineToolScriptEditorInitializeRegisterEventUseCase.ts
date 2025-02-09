@@ -20,7 +20,7 @@ export const execute = (): void =>
     }
 
     // マウスダウンイベントを登録
-    element.addEventListener(EventType.MOUSE_DOWN,
+    element.addEventListener(EventType.POINTER_DOWN,
         timelineToolScriptEditorMouseDownEventUseCase
     );
 };

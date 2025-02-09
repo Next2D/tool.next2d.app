@@ -20,7 +20,7 @@ export const execute = (): void =>
 
     // マウスダウンイベントを登録
     if (soundAddElement) {
-        soundAddElement.addEventListener(EventType.MOUSE_DOWN,
+        soundAddElement.addEventListener(EventType.POINTER_DOWN,
             soundAreaSoundAddMouseDownEventUseCase
         );
     }
@@ -29,7 +29,7 @@ export const execute = (): void =>
         .getElementById($SOUND_AREA_SELECT_ID);
 
     if (selectElement) {
-        selectElement.addEventListener(EventType.MOUSE_DOWN, (event: PointerEvent): void =>
+        selectElement.addEventListener(EventType.POINTER_DOWN, (event: PointerEvent): void =>
         {
             // イベントの伝播を止める
             event.stopPropagation();

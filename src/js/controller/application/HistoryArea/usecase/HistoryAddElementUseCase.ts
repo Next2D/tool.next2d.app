@@ -48,7 +48,7 @@ export const execute = (
     languageTranslationService(lastElement);
 
     // マウスダウンイベントを登録
-    lastElement.addEventListener(EventType.MOUSE_DOWN,
+    lastElement.addEventListener(EventType.POINTER_DOWN,
         historyMouseDownEventUseCase
     );
 };

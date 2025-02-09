@@ -19,7 +19,7 @@ export const execute = (): void =>
         return ;
     }
 
-    element.addEventListener(EventType.MOUSE_DOWN,
+    element.addEventListener(EventType.POINTER_DOWN,
         userSettingMenuShareSettingMouseDownEventUseCase
     );
 };

@@ -28,10 +28,10 @@ export const execute = (event: PointerEvent): void =>
 
     // windowのイベントを削除
     element.releasePointerCapture(event.pointerId);
-    element.removeEventListener(EventType.MOUSE_MOVE,
+    element.removeEventListener(EventType.POINTER_MOVE,
         transformSettingWidthWindowMouseMoveEventUseCase
     );
-    element.removeEventListener(EventType.MOUSE_UP, execute);
+    element.removeEventListener(EventType.POINTER_UP, execute);
 
     // 変更前のmatrixを削除
     transformSetting.matrixs.length = 0;

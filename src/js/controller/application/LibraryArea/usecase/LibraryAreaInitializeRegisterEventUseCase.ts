@@ -28,7 +28,7 @@ export const execute = (): void =>
         .getElementById($LIBRARY_LIST_BOX_SCROLL_BAR_ID);
 
     if (scrollBarElement) {
-        scrollBarElement.addEventListener(EventType.MOUSE_DOWN,
+        scrollBarElement.addEventListener(EventType.POINTER_DOWN,
             libraryAreaScrollBarMouseDownEventUseCase
         );
     }
@@ -43,7 +43,7 @@ export const execute = (): void =>
             { "passive": false }
         );
 
-        listBoxElement.addEventListener(EventType.MOUSE_DOWN,
+        listBoxElement.addEventListener(EventType.POINTER_DOWN,
             libraryAreaMouseDownEventUseCase
         );
 
@@ -54,15 +54,15 @@ export const execute = (): void =>
         listBoxElement.addEventListener("dragend", libraryAreaDragendUseCase);
 
         // キーイベントの登録
-        listBoxElement.addEventListener(EventType.MOUSE_OVER,
+        listBoxElement.addEventListener(EventType.POINTER_OVER,
             libraryAreaRegisterWindowKeyEventUseCase
         );
 
         // キーイベントの削除
-        listBoxElement.addEventListener(EventType.MOUSE_OUT,
+        listBoxElement.addEventListener(EventType.POINTER_OUT,
             libraryAreaRemoveWindowKeyEventUseCase
         );
-        listBoxElement.addEventListener(EventType.MOUSE_LEAVE,
+        listBoxElement.addEventListener(EventType.POINTER_LEAVE,
             libraryAreaRemoveWindowKeyEventUseCase
         );
     }

@@ -20,7 +20,7 @@ export const execute = (): void =>
     }
 
     // マウスダウンでwindowイベントを登録、マウスアップで解除
-    element.addEventListener(EventType.MOUSE_DOWN,
+    element.addEventListener(EventType.POINTER_DOWN,
         timelineScrollYMouseDownEventUseCase
     );
 };

@@ -13,7 +13,7 @@ import { execute as videoMouseDownEventService } from "../service/VideoMouseDown
 export const execute = (element: HTMLElement): void =>
 {
     // マウスダウンイベントを登録
-    element.addEventListener(EventType.MOUSE_DOWN,
+    element.addEventListener(EventType.POINTER_DOWN,
         videoMouseDownEventService
     );
 };

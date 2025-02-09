@@ -18,7 +18,7 @@ describe("ToolEventTest", () =>
         expect(object["_$events"].size).toBe(4);
 
         // down event
-        object.dispatchEvent(EventType.MOUSE_DOWN, {
+        object.dispatchEvent(EventType.POINTER_DOWN, {
             "stopPropagation": () => { return null },
             "currentTarget": "element"
         });
@@ -26,7 +26,7 @@ describe("ToolEventTest", () =>
         expect(object.target).toBe("element");
 
         // up event
-        object.dispatchEvent(EventType.MOUSE_UP, {
+        object.dispatchEvent(EventType.POINTER_UP, {
             "stopPropagation": () => { return null },
             "currentTarget": "element"
         });

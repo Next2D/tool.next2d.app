@@ -37,7 +37,7 @@ export const execute = (
     timelineLayer.elements.push(layerElement);
 
     // レイヤー全体のマウスダウンイベント
-    layerElement.addEventListener(EventType.MOUSE_DOWN,
+    layerElement.addEventListener(EventType.POINTER_DOWN,
         timelineLayerMouseDownEventService
     );
 

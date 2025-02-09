@@ -26,13 +26,13 @@ export const execute = (): void =>
         return ;
     }
 
-    element.addEventListener(EventType.MOUSE_OVER,
+    element.addEventListener(EventType.POINTER_OVER,
         scaleFrameMouseOverEventService
     );
-    element.addEventListener(EventType.MOUSE_OUT,
+    element.addEventListener(EventType.POINTER_OUT,
         scaleFrameMouseOutEventService
     );
-    element.addEventListener(EventType.MOUSE_DOWN,
+    element.addEventListener(EventType.POINTER_DOWN,
         scaleFrameMouseDownEventUseCase
     );
     element.addEventListener("focusin",

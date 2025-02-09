@@ -21,7 +21,7 @@ export const execute = (): void =>
 
     // マウスダウンイベントを登録
     if (scrollBarElement) {
-        scrollBarElement.addEventListener(EventType.MOUSE_DOWN,
+        scrollBarElement.addEventListener(EventType.POINTER_DOWN,
             pluginAreaScrollMouseDownUseCase
         );
     }

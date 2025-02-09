@@ -28,12 +28,12 @@ export const execute = (event: PointerEvent): void =>
     // ポインターイベントを登録
     element.setPointerCapture(event.pointerId);
     element.addEventListener(
-        EventType.MOUSE_MOVE,
+        EventType.POINTER_MOVE,
         propertyAreaScrollPointerMoveUseCase,
         { "passive": false }
     );
     element.addEventListener(
-        EventType.MOUSE_UP,
+        EventType.POINTER_UP,
         propertyAreaScrollPointerUpUseCase,
         { "passive": false }
     );

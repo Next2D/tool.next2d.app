@@ -24,9 +24,9 @@ export const execute = (): void =>
     }
 
     // タップ、ダブルタップの処理
-    element.addEventListener(EventType.MOUSE_DOWN, propertyAreaMouseDownEventUseCase);
-    element.addEventListener(EventType.MOUSE_UP, propertyAreaMouseUpEventUseCase);
-    element.addEventListener(EventType.MOUSE_OUT, propertyAreaMouseOutEventService);
+    element.addEventListener(EventType.POINTER_DOWN, propertyAreaMouseDownEventUseCase);
+    element.addEventListener(EventType.POINTER_UP, propertyAreaMouseUpEventUseCase);
+    element.addEventListener(EventType.POINTER_OUT, propertyAreaMouseOutEventService);
 
     // ホイールイベントの処理
     element.addEventListener("wheel",

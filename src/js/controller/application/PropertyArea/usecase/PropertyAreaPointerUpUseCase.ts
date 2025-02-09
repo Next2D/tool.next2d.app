@@ -27,8 +27,8 @@ export const execute = (event: PointerEvent): void =>
 
     // 登録されたイベントを削除
     element.releasePointerCapture(event.pointerId);
-    element.removeEventListener(EventType.MOUSE_MOVE, propertyAreaPointerMoveService);
-    element.removeEventListener(EventType.MOUSE_UP, execute);
+    element.removeEventListener(EventType.POINTER_MOVE, propertyAreaPointerMoveService);
+    element.removeEventListener(EventType.POINTER_UP, execute);
 
     // 移動状態をセット
     const workSpace = $getCurrentWorkSpace();

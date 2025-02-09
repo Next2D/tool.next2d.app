@@ -23,7 +23,7 @@ export const execute = (event: PointerEvent): void =>
 
     // スクロールバーの移動イベントを削除
     element.releasePointerCapture(event.pointerId);
-    element.removeEventListener(EventType.MOUSE_MOVE,
+    element.removeEventListener(EventType.POINTER_MOVE,
         libraryAreaScrollBarPointerMoveEventUseCase
     );
     element.removeEventListener("pointerup", execute);

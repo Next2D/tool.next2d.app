@@ -26,7 +26,7 @@ export const execute = (event: PointerEvent): void =>
     }
 
     activeTool.dispatchEvent(
-        EventType.MOUSE_MOVE,
+        EventType.POINTER_MOVE,
         event
     );
 };

@@ -34,7 +34,7 @@ export const execute = (): void =>
 
         node
             .addEventListener(
-                EventType.MOUSE_DOWN,
+                EventType.POINTER_DOWN,
                 propertyAreaTitleMouseDownEventService
             );
     }

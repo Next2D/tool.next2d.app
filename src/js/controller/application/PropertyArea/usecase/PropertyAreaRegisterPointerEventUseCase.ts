@@ -24,12 +24,12 @@ export const execute = (event: PointerEvent): void =>
     // 画面イベントを登録
     element.setPointerCapture(event.pointerId);
     element.addEventListener(
-        EventType.MOUSE_MOVE,
+        EventType.POINTER_MOVE,
         propertyAreaPointerMoveService,
         { "passive": false }
     );
     element.addEventListener(
-        EventType.MOUSE_UP,
+        EventType.POINTER_UP,
         propertyAreaPointerUpUseCase,
         { "passive": false }
     );

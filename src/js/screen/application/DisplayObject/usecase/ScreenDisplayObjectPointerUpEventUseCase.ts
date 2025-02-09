@@ -25,10 +25,10 @@ export const execute = (event: PointerEvent): void =>
 
     // windowイベントを解除
     element.releasePointerCapture(event.pointerId);
-    element.removeEventListener(EventType.MOUSE_MOVE,
+    element.removeEventListener(EventType.POINTER_MOVE,
         screenDisplayObjectWindowMouseMoveEventUseCase
     );
-    element.removeEventListener(EventType.MOUSE_UP, execute);
+    element.removeEventListener(EventType.POINTER_UP, execute);
 
     // 移動した座標に更新
     screenDisplayObjectUpdateSelectedValueService();

@@ -38,10 +38,10 @@ export const execute = (event: PointerEvent): void =>
 
     // イベントを削除
     element.releasePointerCapture(event.pointerId);
-    element.removeEventListener(EventType.MOUSE_MOVE,
+    element.removeEventListener(EventType.POINTER_MOVE,
         timelineLayerControllerPointerMoveUseCase
     );
-    element.removeEventListener(EventType.MOUSE_UP, execute);
+    element.removeEventListener(EventType.POINTER_UP, execute);
 
     const workSpace = $getCurrentWorkSpace();
     const movieClip = workSpace.scene;

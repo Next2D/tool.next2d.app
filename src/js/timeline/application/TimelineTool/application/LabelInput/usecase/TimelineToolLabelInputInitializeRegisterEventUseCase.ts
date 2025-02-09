@@ -23,7 +23,7 @@ export const execute = (): void =>
     }
 
     // イベントを登録
-    element.addEventListener(EventType.MOUSE_DOWN,
+    element.addEventListener(EventType.POINTER_DOWN,
         timelineToolLabelMouseDownEventService
     );
     element.addEventListener("focusin",

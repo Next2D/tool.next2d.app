@@ -20,11 +20,11 @@ export const execute = (event: PointerEvent): void =>
 
     // windowイベントを登録
     element.setPointerCapture(event.pointerId);
-    element.addEventListener(EventType.MOUSE_MOVE,
+    element.addEventListener(EventType.POINTER_MOVE,
         arrowToolStageRectPointerMoveEventUseCase,
         { "passive": false }
     );
-    element.addEventListener(EventType.MOUSE_UP,
+    element.addEventListener(EventType.POINTER_UP,
         arrowToolStageRectPointerUpEventUseCase,
         { "passive": false }
     );

@@ -31,8 +31,8 @@ export const execute = async (event: PointerEvent): Promise<void> =>
 
     // 登録したイベントを削除
     element.releasePointerCapture(event.pointerId);
-    element.removeEventListener(EventType.MOUSE_MOVE, libraryAreaPointerMoveEventUseCase);
-    element.removeEventListener(EventType.MOUSE_UP, execute);
+    element.removeEventListener(EventType.POINTER_MOVE, libraryAreaPointerMoveEventUseCase);
+    element.removeEventListener(EventType.POINTER_UP, execute);
     element.setAttribute("style", "");
 
     if (!$getMoveState()) {

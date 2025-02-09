@@ -36,7 +36,7 @@ export const execute = (): void =>
 
     // サイズロックのイベントを登録する
     if (sizeLockElement) {
-        sizeLockElement.addEventListener(EventType.MOUSE_DOWN, (event: Event) =>
+        sizeLockElement.addEventListener(EventType.POINTER_DOWN, (event: Event) =>
         {
             event.stopPropagation();
             event.preventDefault();
@@ -47,13 +47,13 @@ export const execute = (): void =>
         .getElementById($TRANSFORM_OBJECT_X_ID);
 
     if (xElement) {
-        xElement.addEventListener(EventType.MOUSE_OVER,
+        xElement.addEventListener(EventType.POINTER_OVER,
             transformSettingInputMouseOverEventService
         );
-        xElement.addEventListener(EventType.MOUSE_OUT,
+        xElement.addEventListener(EventType.POINTER_OUT,
             transformSettingInputMouseOutEventService
         );
-        xElement.addEventListener(EventType.MOUSE_DOWN,
+        xElement.addEventListener(EventType.POINTER_DOWN,
             transformSettingXMouseDownEventUseCase
         );
         xElement.addEventListener("focusin",
@@ -71,13 +71,13 @@ export const execute = (): void =>
         .getElementById($TRANSFORM_OBJECT_Y_ID);
 
     if (yElement) {
-        yElement.addEventListener(EventType.MOUSE_OVER,
+        yElement.addEventListener(EventType.POINTER_OVER,
             transformSettingInputMouseOverEventService
         );
-        yElement.addEventListener(EventType.MOUSE_OUT,
+        yElement.addEventListener(EventType.POINTER_OUT,
             transformSettingInputMouseOutEventService
         );
-        yElement.addEventListener(EventType.MOUSE_DOWN,
+        yElement.addEventListener(EventType.POINTER_DOWN,
             transformSettingYMouseDownEventUseCase
         );
         yElement.addEventListener("focusin",
@@ -95,13 +95,13 @@ export const execute = (): void =>
         .getElementById($TRANSFORM_OBJECT_WIDTH_ID);
 
     if (widthElement) {
-        widthElement.addEventListener(EventType.MOUSE_OVER,
+        widthElement.addEventListener(EventType.POINTER_OVER,
             transformSettingInputMouseOverEventService
         );
-        widthElement.addEventListener(EventType.MOUSE_OUT,
+        widthElement.addEventListener(EventType.POINTER_OUT,
             transformSettingInputMouseOutEventService
         );
-        widthElement.addEventListener(EventType.MOUSE_DOWN,
+        widthElement.addEventListener(EventType.POINTER_DOWN,
             transformSettingWidthMouseDownEventUseCase
         );
         widthElement.addEventListener("focusin",
@@ -119,10 +119,10 @@ export const execute = (): void =>
         .getElementById($TRANSFORM_OBJECT_HEIGHT_ID);
 
     if (heightElement) {
-        heightElement.addEventListener(EventType.MOUSE_OVER,
+        heightElement.addEventListener(EventType.POINTER_OVER,
             transformSettingInputMouseOverEventService
         );
-        heightElement.addEventListener(EventType.MOUSE_OUT,
+        heightElement.addEventListener(EventType.POINTER_OUT,
             transformSettingInputMouseOutEventService
         );
         heightElement.addEventListener("focusin",
@@ -138,7 +138,7 @@ export const execute = (): void =>
 
     // スケールロックのイベントを登録する
     if (scaleLockElement) {
-        scaleLockElement.addEventListener(EventType.MOUSE_DOWN, (event: Event) =>
+        scaleLockElement.addEventListener(EventType.POINTER_DOWN, (event: Event) =>
         {
             event.stopPropagation();
             event.preventDefault();
@@ -149,10 +149,10 @@ export const execute = (): void =>
         .getElementById($TRANSFORM_OBJECT_SCALE_X_ID);
 
     if (scaleXElement) {
-        scaleXElement.addEventListener(EventType.MOUSE_OVER,
+        scaleXElement.addEventListener(EventType.POINTER_OVER,
             transformSettingInputMouseOverEventService
         );
-        scaleXElement.addEventListener(EventType.MOUSE_OUT,
+        scaleXElement.addEventListener(EventType.POINTER_OUT,
             transformSettingInputMouseOutEventService
         );
         scaleXElement.addEventListener("focusin",
@@ -167,10 +167,10 @@ export const execute = (): void =>
         .getElementById($TRANSFORM_OBJECT_SCALE_Y_ID);
 
     if (scaleYElement) {
-        scaleYElement.addEventListener(EventType.MOUSE_OVER,
+        scaleYElement.addEventListener(EventType.POINTER_OVER,
             transformSettingInputMouseOverEventService
         );
-        scaleYElement.addEventListener(EventType.MOUSE_OUT,
+        scaleYElement.addEventListener(EventType.POINTER_OUT,
             transformSettingInputMouseOutEventService
         );
         scaleYElement.addEventListener("focusin",
@@ -185,10 +185,10 @@ export const execute = (): void =>
         .getElementById($TRANSFORM_OBJECT_ROTATE_ID);
 
     if (rotateElement) {
-        rotateElement.addEventListener(EventType.MOUSE_OVER,
+        rotateElement.addEventListener(EventType.POINTER_OVER,
             transformSettingInputMouseOverEventService
         );
-        rotateElement.addEventListener(EventType.MOUSE_OUT,
+        rotateElement.addEventListener(EventType.POINTER_OUT,
             transformSettingInputMouseOutEventService
         );
         rotateElement.addEventListener("focusin",

@@ -11,7 +11,7 @@ import { execute as scriptAreaParentElementMouseDownEventUseCase } from "./Scrip
  */
 export const execute = (element: HTMLElement): void =>
 {
-    element.addEventListener(EventType.MOUSE_DOWN,
+    element.addEventListener(EventType.POINTER_DOWN,
         scriptAreaParentElementMouseDownEventUseCase
     );
 };

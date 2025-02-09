@@ -25,8 +25,8 @@ export const execute = (event: PointerEvent): void =>
 
     // windowイベントを削除
     element.releasePointerCapture(event.pointerId);
-    element.removeEventListener(EventType.MOUSE_MOVE, timelineMarkerPointerMoveEventUseCase);
-    element.removeEventListener(EventType.MOUSE_UP, execute);
+    element.removeEventListener(EventType.POINTER_MOVE, timelineMarkerPointerMoveEventUseCase);
+    element.removeEventListener(EventType.POINTER_UP, execute);
 
     // カーソルを変更
     $setCursor("auto");

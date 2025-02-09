@@ -22,6 +22,6 @@ export const execute = (event: PointerEvent): void =>
 
     // 移動イベントを削除
     element.releasePointerCapture(event.pointerId);
-    element.removeEventListener(EventType.MOUSE_MOVE, controllerAdjustmentMouseMoveUseCase);
-    element.removeEventListener(EventType.MOUSE_UP, execute);
+    element.removeEventListener(EventType.POINTER_MOVE, controllerAdjustmentMouseMoveUseCase);
+    element.removeEventListener(EventType.POINTER_UP, execute);
 };

@@ -23,6 +23,6 @@ export const execute = (event: PointerEvent): void =>
 
     // windowイベントを削除
     element.releasePointerCapture(event.pointerId);
-    element.removeEventListener(EventType.MOUSE_MOVE, scriptEditorModalPointerMoveService);
-    element.removeEventListener(EventType.MOUSE_UP, execute);
+    element.removeEventListener(EventType.POINTER_MOVE, scriptEditorModalPointerMoveService);
+    element.removeEventListener(EventType.POINTER_UP, execute);
 };

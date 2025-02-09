@@ -16,7 +16,7 @@ export const execute = (): void =>
         .getElementById($LIBRARY_BILLING_HIDE_ICON_ID);
 
     if (iconElement) {
-        iconElement.addEventListener(EventType.MOUSE_DOWN,
+        iconElement.addEventListener(EventType.POINTER_DOWN,
             billingModelHideIconMouseDownUseCase
         );
     }

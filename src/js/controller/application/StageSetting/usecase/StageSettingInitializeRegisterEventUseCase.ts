@@ -34,7 +34,7 @@ export const execute = (): void =>
         .getElementById($STAGE_LOCK_ID);
 
     if (lockElement) {
-        lockElement.addEventListener(EventType.MOUSE_DOWN,
+        lockElement.addEventListener(EventType.POINTER_DOWN,
             stageSettingLockMouseDownEventUseCase
         );
     }
@@ -44,13 +44,13 @@ export const execute = (): void =>
         .getElementById($STAGE_WIDTH_ID);
 
     if (widthElement) {
-        widthElement.addEventListener(EventType.MOUSE_OVER,
+        widthElement.addEventListener(EventType.POINTER_OVER,
             stageSettingMouseOverEventService
         );
-        widthElement.addEventListener(EventType.MOUSE_OUT,
+        widthElement.addEventListener(EventType.POINTER_OUT,
             stageSettingMouseOutEventService
         );
-        widthElement.addEventListener(EventType.MOUSE_DOWN,
+        widthElement.addEventListener(EventType.POINTER_DOWN,
             stageSettingWidthMouseDownEventUseCase
         );
         widthElement.addEventListener("focusin",
@@ -69,13 +69,13 @@ export const execute = (): void =>
         .getElementById($STAGE_HEIGHT_ID);
 
     if (heightElement) {
-        heightElement.addEventListener(EventType.MOUSE_OVER,
+        heightElement.addEventListener(EventType.POINTER_OVER,
             stageSettingMouseOverEventService
         );
-        heightElement.addEventListener(EventType.MOUSE_OUT,
+        heightElement.addEventListener(EventType.POINTER_OUT,
             stageSettingMouseOutEventService
         );
-        heightElement.addEventListener(EventType.MOUSE_DOWN,
+        heightElement.addEventListener(EventType.POINTER_DOWN,
             stageSettingHeightMouseDownEventUseCase
         );
         heightElement.addEventListener("focusin",
@@ -104,13 +104,13 @@ export const execute = (): void =>
         .getElementById($STAGE_FPS_ID);
 
     if (fpsElement) {
-        fpsElement.addEventListener(EventType.MOUSE_OVER,
+        fpsElement.addEventListener(EventType.POINTER_OVER,
             stageSettingMouseOverEventService
         );
-        fpsElement.addEventListener(EventType.MOUSE_OUT,
+        fpsElement.addEventListener(EventType.POINTER_OUT,
             stageSettingMouseOutEventService
         );
-        fpsElement.addEventListener(EventType.MOUSE_DOWN,
+        fpsElement.addEventListener(EventType.POINTER_DOWN,
             stageSettingFpsMouseDownEventUseCase
         );
         fpsElement.addEventListener("focusin",

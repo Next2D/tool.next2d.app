@@ -21,10 +21,10 @@ export const execute = (event: PointerEvent): void =>
     }
 
     element.releasePointerCapture(event.pointerId);
-    element.removeEventListener(EventType.MOUSE_MOVE,
+    element.removeEventListener(EventType.POINTER_MOVE,
         timelineToolCurrentFramePointerMoveEventUseCase
     );
-    element.removeEventListener(EventType.MOUSE_UP, execute);
+    element.removeEventListener(EventType.POINTER_UP, execute);
 
     element.focus();
 };

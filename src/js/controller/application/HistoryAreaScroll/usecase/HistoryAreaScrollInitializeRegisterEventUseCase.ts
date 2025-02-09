@@ -21,7 +21,7 @@ export const execute = (): void =>
 
     if (scrollBarElement) {
         // マウスダウンイベントを登録
-        scrollBarElement.addEventListener(EventType.MOUSE_DOWN,
+        scrollBarElement.addEventListener(EventType.POINTER_DOWN,
             historyAreaScrollMouseDownUseCase
         );
     }

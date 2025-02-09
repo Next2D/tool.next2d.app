@@ -28,12 +28,12 @@ export const execute = (event: PointerEvent): void =>
     // マウス移動イベントを登録
     element.setPointerCapture(event.pointerId);
     element.addEventListener(
-        EventType.MOUSE_MOVE,
+        EventType.POINTER_MOVE,
         timelineAdjustmentXPointerMoveUseCase,
         { "passive": false }
     );
     element.addEventListener(
-        EventType.MOUSE_UP,
+        EventType.POINTER_UP,
         timelineAdjustmentXPointerUpUseCase,
         { "passive": false }
     );

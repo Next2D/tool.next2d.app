@@ -43,7 +43,7 @@ export const execute = (): void =>
         .getElementById($LIBRARY_FOLDER_ADD_ID);
 
     if (addFolderElement) {
-        addFolderElement.addEventListener(EventType.MOUSE_DOWN,
+        addFolderElement.addEventListener(EventType.POINTER_DOWN,
             libraryMenuAddNewFolderMouseDownEventUseCase
         );
     }
@@ -53,7 +53,7 @@ export const execute = (): void =>
         .getElementById($LIBRARY_MOVIE_CLIP_ADD_ID);
 
     if (addMovieClipElement) {
-        addMovieClipElement.addEventListener(EventType.MOUSE_DOWN,
+        addMovieClipElement.addEventListener(EventType.POINTER_DOWN,
             libraryMenuAddNewMovieClipMouseDownEventUseCase
         );
     }
@@ -63,7 +63,7 @@ export const execute = (): void =>
         .getElementById($LIBRARY_FILE_ID);
 
     if (fileElement) {
-        fileElement.addEventListener(EventType.MOUSE_DOWN,
+        fileElement.addEventListener(EventType.POINTER_DOWN,
             libraryMenuFileMouseDownEventUseCase
         );
     }
@@ -83,7 +83,7 @@ export const execute = (): void =>
         .getElementById($LIBRARY_CHANGE_SCENE_ID);
 
     if (editMovieClipElement) {
-        editMovieClipElement.addEventListener(EventType.MOUSE_DOWN,
+        editMovieClipElement.addEventListener(EventType.POINTER_DOWN,
             libraryMenuEditMovieClipMouseDownEventUseCase
         );
     }
@@ -93,7 +93,7 @@ export const execute = (): void =>
         .getElementById($LIBRARY_DELETE_ID);
 
     if (deleteElement) {
-        deleteElement.addEventListener(EventType.MOUSE_DOWN,
+        deleteElement.addEventListener(EventType.POINTER_DOWN,
             libraryAreaRemoveInstanceUseCase
         );
     }
@@ -103,7 +103,7 @@ export const execute = (): void =>
         .getElementById($LIBRARY_PHOTOPEA_ID);
 
     if (photopeaElement) {
-        photopeaElement.addEventListener(EventType.MOUSE_DOWN,
+        photopeaElement.addEventListener(EventType.POINTER_DOWN,
             libraryMenuPhotopeaMouseDownService
         );
     }

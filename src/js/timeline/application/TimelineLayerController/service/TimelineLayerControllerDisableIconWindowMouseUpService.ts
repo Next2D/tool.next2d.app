@@ -15,5 +15,5 @@ export const execute = (): void =>
     $setDisableState(false);
 
     // イベント削除
-    window.removeEventListener(EventType.MOUSE_UP, execute);
+    window.removeEventListener(EventType.POINTER_UP, execute);
 };

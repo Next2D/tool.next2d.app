@@ -23,11 +23,11 @@ export const execute = (tool: ITool<ZoomPlusTool>): void =>
         zoomMinusToolStartEventUseCase
     );
 
-    tool.addEventListener(EventType.MOUSE_OVER,
+    tool.addEventListener(EventType.POINTER_OVER,
         zoomMinusToolMouseOverEventUseCase
     );
 
-    tool.addEventListener(EventType.MOUSE_OUT,
+    tool.addEventListener(EventType.POINTER_OUT,
         zoomMinusToolMouseOutEventUseCase
     );
 

@@ -24,7 +24,7 @@ export const execute = async (element: HTMLElement | Document): Promise<void> =>
             continue;
         }
 
-        element.addEventListener(EventType.MOUSE_OVER, detailModalFadeInUseCase);
-        element.addEventListener(EventType.MOUSE_OUT,  detailModalFadeOutUseCase);
+        element.addEventListener(EventType.POINTER_OVER, detailModalFadeInUseCase);
+        element.addEventListener(EventType.POINTER_OUT,  detailModalFadeOutUseCase);
     }
 };

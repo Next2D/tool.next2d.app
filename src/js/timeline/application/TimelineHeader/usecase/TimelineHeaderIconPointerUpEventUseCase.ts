@@ -42,8 +42,8 @@ export const execute = (event: PointerEvent): void =>
 
     // イベントを削除
     element.releasePointerCapture(event.pointerId);
-    element.removeEventListener(EventType.MOUSE_MOVE, timelineHeaderIconPointerMoveEventUseCase);
-    element.removeEventListener(EventType.MOUSE_UP, execute);
+    element.removeEventListener(EventType.POINTER_MOVE, timelineHeaderIconPointerMoveEventUseCase);
+    element.removeEventListener(EventType.POINTER_UP, execute);
 
     // 移動変数をセット
     const sourceFrame  = $getMoveIconFrame();

@@ -47,7 +47,7 @@ export const execute = (): void =>
 
     // 通常レイヤーのイベントを登録
     if (normalElement) {
-        normalElement.addEventListener(EventType.MOUSE_DOWN,
+        normalElement.addEventListener(EventType.POINTER_DOWN,
             timelineLayerControllerMenuNormalMouseDownUseCase
         );
     }
@@ -57,7 +57,7 @@ export const execute = (): void =>
 
     // マスクレイヤーのイベントを登録
     if (maskElement) {
-        maskElement.addEventListener(EventType.MOUSE_DOWN,
+        maskElement.addEventListener(EventType.POINTER_DOWN,
             timelineLayerControllerMenuMaskMouseDownUseCase
         );
     }
@@ -67,7 +67,7 @@ export const execute = (): void =>
 
     // ガイドレイヤーのイベントを登録
     if (guideElement) {
-        guideElement.addEventListener(EventType.MOUSE_DOWN,
+        guideElement.addEventListener(EventType.POINTER_DOWN,
             timelineLayerControllerMenuGuideMouseDownUseCase
         );
     }

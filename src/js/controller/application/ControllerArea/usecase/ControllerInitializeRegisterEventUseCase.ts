@@ -20,7 +20,7 @@ export const execute = (): void =>
     }
 
     element.addEventListener(
-        EventType.MOUSE_DOWN,
+        EventType.POINTER_DOWN,
         controllerMouseDownEventService
     );
 };

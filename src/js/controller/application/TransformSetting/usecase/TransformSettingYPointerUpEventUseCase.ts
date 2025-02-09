@@ -28,10 +28,10 @@ export const execute = (event: PointerEvent): void =>
 
     // windowのイベントを削除
     element.releasePointerCapture(event.pointerId);
-    element.removeEventListener(EventType.MOUSE_MOVE,
+    element.removeEventListener(EventType.POINTER_MOVE,
         transformSettingYPointerMoveEventUseCase
     );
-    element.removeEventListener(EventType.MOUSE_UP, execute);
+    element.removeEventListener(EventType.POINTER_UP, execute);
 
     // y座標に変更があれば、最終位置をセット
     screenDisplayObjectUpdateSelectedValueService();

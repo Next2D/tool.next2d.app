@@ -20,7 +20,7 @@ export const execute = (): void =>
     }
 
     // タップ、ダブルタップの処理
-    element.addEventListener(EventType.MOUSE_DOWN, timelineAreaMouseDownEventUseCase);
-    element.addEventListener(EventType.MOUSE_UP, timelineAreaMouseUpEventUseCase);
-    element.addEventListener(EventType.MOUSE_OUT, timelineAreaMouseOutEventService);
+    element.addEventListener(EventType.POINTER_DOWN, timelineAreaMouseDownEventUseCase);
+    element.addEventListener(EventType.POINTER_UP, timelineAreaMouseUpEventUseCase);
+    element.addEventListener(EventType.POINTER_OUT, timelineAreaMouseOutEventService);
 };

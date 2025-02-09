@@ -16,14 +16,14 @@ import { execute as toolAreaMouseOutEventService } from "../service/ToolAreaMous
 export const execute = (element: HTMLElement): void =>
 {
     // ツールエリア内でのマウス移動の処理
-    element.addEventListener(EventType.MOUSE_DOWN, toolAreaMouseDownEventUseCase);
+    element.addEventListener(EventType.POINTER_DOWN, toolAreaMouseDownEventUseCase);
 
     // ツールエリア内でのマウス移動の処理
-    element.addEventListener(EventType.MOUSE_MOVE, toolAreaMouseMoveEventService);
+    element.addEventListener(EventType.POINTER_MOVE, toolAreaMouseMoveEventService);
 
     // ツールエリア内でのマウスアップ処理
-    element.addEventListener(EventType.MOUSE_UP, toolAreaMouseUpEventUseCase);
+    element.addEventListener(EventType.POINTER_UP, toolAreaMouseUpEventUseCase);
 
     // ツールエリア内でのマウスアウト処理
-    element.addEventListener(EventType.MOUSE_OUT, toolAreaMouseOutEventService);
+    element.addEventListener(EventType.POINTER_OUT, toolAreaMouseOutEventService);
 };

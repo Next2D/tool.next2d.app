@@ -25,7 +25,7 @@ export const execute = (): void =>
         .getElementById($CONFIRM_MODAL_ALL_OVERWRITING_ID);
 
     if (allOverWritingElement) {
-        allOverWritingElement.addEventListener(EventType.MOUSE_DOWN,
+        allOverWritingElement.addEventListener(EventType.POINTER_DOWN,
             confirmModalAllOverWritingUseCase
         );
     }
@@ -34,7 +34,7 @@ export const execute = (): void =>
         .getElementById($CONFIRM_MODAL_ALL_CANCEL_ID);
 
     if (allCancelElement) {
-        allCancelElement.addEventListener(EventType.MOUSE_DOWN,
+        allCancelElement.addEventListener(EventType.POINTER_DOWN,
             confirmModalAllCancelUseCase
         );
     }
@@ -43,7 +43,7 @@ export const execute = (): void =>
         .getElementById($CONFIRM_MODAL_OVERWRITING_ID);
 
     if (overWritingElement) {
-        overWritingElement.addEventListener(EventType.MOUSE_DOWN,
+        overWritingElement.addEventListener(EventType.POINTER_DOWN,
             confirmModalOverWritingUseCase
         );
     }
@@ -52,7 +52,7 @@ export const execute = (): void =>
         .getElementById($CONFIRM_MODAL_CANCEL_ID);
 
     if (cancelElement) {
-        cancelElement.addEventListener(EventType.MOUSE_DOWN,
+        cancelElement.addEventListener(EventType.POINTER_DOWN,
             confirmModalCancelUseCase
         );
     }

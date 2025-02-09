@@ -18,10 +18,10 @@ export const execute = (event: PointerEvent): void =>
     }
 
     element.setPointerCapture(event.pointerId);
-    element.addEventListener(EventType.MOUSE_MOVE,
+    element.addEventListener(EventType.POINTER_MOVE,
         timelineHeaderIconPointerMoveEventUseCase
     );
-    element.addEventListener(EventType.MOUSE_UP,
+    element.addEventListener(EventType.POINTER_UP,
         timelineHeaderIconPointerUpEventUseCase
     );
 };

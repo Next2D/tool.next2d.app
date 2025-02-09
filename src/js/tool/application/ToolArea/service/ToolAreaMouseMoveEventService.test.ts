@@ -15,7 +15,7 @@ describe("ToolAreaMouseMoveEventServiceTest", () =>
         const mock = {
             "dispatchEvent": (type: string, event: any) =>
             {
-                if (EventType.MOUSE_MOVE !== type) {
+                if (EventType.POINTER_MOVE !== type) {
                     return ;
                 }
                 status = event.status;

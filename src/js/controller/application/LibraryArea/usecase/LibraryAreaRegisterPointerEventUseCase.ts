@@ -53,12 +53,12 @@ export const execute = (event: PointerEvent): void =>
 
     itemElement.setPointerCapture(event.pointerId);
     itemElement.addEventListener(
-        EventType.MOUSE_MOVE,
+        EventType.POINTER_MOVE,
         libraryAreaPointerMoveEventUseCase,
         { "passive": false }
     );
     itemElement.addEventListener(
-        EventType.MOUSE_UP,
+        EventType.POINTER_UP,
         libraryAreaPointerUpEventUseCase,
         { "passive": false }
     );

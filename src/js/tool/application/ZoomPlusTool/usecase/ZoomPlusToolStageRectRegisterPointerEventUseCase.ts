@@ -21,12 +21,12 @@ export const execute = (event: PointerEvent): void =>
     // イベントを登録
     element.setPointerCapture(event.pointerId);
     element.addEventListener(
-        EventType.MOUSE_MOVE,
+        EventType.POINTER_MOVE,
         zoomPlusToolStageRectPointerMoveEventUseCase,
         { "passive": false }
     );
     element.addEventListener(
-        EventType.MOUSE_UP,
+        EventType.POINTER_UP,
         zoomPlusToolStageRectPointerUpEventUseCase,
         { "passive": false }
     );

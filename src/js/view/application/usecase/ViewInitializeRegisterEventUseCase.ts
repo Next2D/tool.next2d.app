@@ -17,5 +17,5 @@ export const execute = (): void =>
         return ;
     }
 
-    element.addEventListener(EventType.MOUSE_DOWN, viewMouseDownEventService);
+    element.addEventListener(EventType.POINTER_DOWN, viewMouseDownEventService);
 };

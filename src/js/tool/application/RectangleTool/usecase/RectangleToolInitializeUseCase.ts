@@ -29,12 +29,12 @@ export const execute = (tool: ITool<RectangleTool>): void =>
     );
 
     // スクリーンのマウスオーバーイベントを登録
-    tool.addEventListener(EventType.MOUSE_OVER,
+    tool.addEventListener(EventType.POINTER_OVER,
         rectangleToolMouseOverEventService
     );
 
     // スクリーンのマウスアウトイベントを登録
-    tool.addEventListener(EventType.MOUSE_OUT,
+    tool.addEventListener(EventType.POINTER_OUT,
         rectangleToolMouseOutEventService
     );
 

@@ -63,7 +63,7 @@ export class ToolEvent extends EventDispatcher
     _$initialize (): void
     {
         // マウスダウン時にアクティブ化
-        this.addEventListener(EventType.MOUSE_DOWN, (event: PointerEvent): void =>
+        this.addEventListener(EventType.POINTER_DOWN, (event: PointerEvent): void =>
         {
             // 親のイベントを中止する
             event.stopPropagation();
@@ -73,7 +73,7 @@ export class ToolEvent extends EventDispatcher
         });
 
         // マウスアップ時に非アクティブ化
-        this.addEventListener(EventType.MOUSE_UP, (event: PointerEvent): void =>
+        this.addEventListener(EventType.POINTER_UP, (event: PointerEvent): void =>
         {
             // 親のイベントを中止する
             event.stopPropagation();

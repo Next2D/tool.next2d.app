@@ -32,7 +32,7 @@ export const execute = (
     const listElement: HTMLElement | null = screenTabGetListElementService(work_space.id);
 
     if (listElement) {
-        listElement.addEventListener(EventType.MOUSE_DOWN, (event: PointerEvent): void =>
+        listElement.addEventListener(EventType.POINTER_DOWN, (event: PointerEvent): void =>
         {
             // 全てのイベントを中止
             event.stopPropagation();
@@ -47,7 +47,7 @@ export const execute = (
         .getElementById(`tab-delete-id-${work_space.id}`);
 
     if (closeElement) {
-        closeElement.addEventListener(EventType.MOUSE_DOWN, (event: PointerEvent): void =>
+        closeElement.addEventListener(EventType.POINTER_DOWN, (event: PointerEvent): void =>
         {
             // 全てのイベントを中止
             event.stopPropagation();
@@ -55,7 +55,7 @@ export const execute = (
             event.preventDefault();
         });
 
-        closeElement.addEventListener(EventType.MOUSE_UP, async (event: PointerEvent): Promise<void> =>
+        closeElement.addEventListener(EventType.POINTER_UP, async (event: PointerEvent): Promise<void> =>
         {
             // 親のイベントを中止
             event.stopPropagation();
@@ -70,7 +70,7 @@ export const execute = (
     if (tabElement) {
 
         // クリック＆ダブルクリック イベント
-        tabElement.addEventListener(EventType.MOUSE_DOWN, screenTabMouseDownEventUseCase);
+        tabElement.addEventListener(EventType.POINTER_DOWN, screenTabMouseDownEventUseCase);
 
         // drop & drag イベント
         tabElement.addEventListener("dragstart", screenTabDragStartService);

@@ -97,7 +97,7 @@ export const execute = (
     // 削除アイコンにイベントを登録
     const trashIconElement: HTMLElement | null = soundSettingElement.querySelector(".trash");
     if (trashIconElement) {
-        trashIconElement.addEventListener(EventType.MOUSE_DOWN,
+        trashIconElement.addEventListener(EventType.POINTER_DOWN,
             soundAreaTrashMouseDownUseCase
         );
     }
@@ -114,13 +114,13 @@ export const execute = (
         volumeElement.addEventListener("keypress",
             soundAreaVolumeKeyPressEventService
         );
-        volumeElement.addEventListener(EventType.MOUSE_OVER,
+        volumeElement.addEventListener(EventType.POINTER_OVER,
             soundAreaVolumeMouseOverEventService
         );
-        volumeElement.addEventListener(EventType.MOUSE_OUT,
+        volumeElement.addEventListener(EventType.POINTER_OUT,
             soundAreaVolumeMouseOutEventService
         );
-        volumeElement.addEventListener(EventType.MOUSE_DOWN,
+        volumeElement.addEventListener(EventType.POINTER_DOWN,
             soundAreaVolumeRegisterPointerEventUseCase
         );
     }
@@ -137,13 +137,13 @@ export const execute = (
         loopElement.addEventListener("keypress",
             soundAreaLoopCountKeyPressEventService
         );
-        loopElement.addEventListener(EventType.MOUSE_OVER,
+        loopElement.addEventListener(EventType.POINTER_OVER,
             soundAreaLoopCountMouseOverEventService
         );
-        loopElement.addEventListener(EventType.MOUSE_OUT,
+        loopElement.addEventListener(EventType.POINTER_OUT,
             soundAreaLoopCountMouseOutEventService
         );
-        loopElement.addEventListener(EventType.MOUSE_DOWN,
+        loopElement.addEventListener(EventType.POINTER_DOWN,
             soundAreaLoopCountRegisterPointerEventUseCase
         );
     }

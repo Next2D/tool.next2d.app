@@ -29,10 +29,10 @@ export const execute = async (event: PointerEvent): Promise<void> =>
 
     // イベントを解除
     element.releasePointerCapture(event.pointerId);
-    element.removeEventListener(EventType.MOUSE_MOVE,
+    element.removeEventListener(EventType.POINTER_MOVE,
         zoomPlusToolStageRectPointerMoveEventUseCase
     );
-    element.removeEventListener(EventType.MOUSE_UP, execute);
+    element.removeEventListener(EventType.POINTER_UP, execute);
 
     // 範囲選択のElementを表示
     const rectElement: HTMLElement | null = document

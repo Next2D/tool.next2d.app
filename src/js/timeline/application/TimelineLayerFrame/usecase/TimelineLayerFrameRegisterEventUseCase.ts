@@ -17,7 +17,7 @@ export const execute = (element: HTMLElement): void =>
     element.addEventListener("contextmenu", timelineMenuShowService);
 
     // マウスダウンイベントを登録
-    element.addEventListener(EventType.MOUSE_DOWN,
+    element.addEventListener(EventType.POINTER_DOWN,
         timelineLayerFrameMouseDownEventUseCase
     );
 };

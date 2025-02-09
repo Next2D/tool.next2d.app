@@ -54,7 +54,7 @@ export const execute = (): void =>
         .getElementById($SCRIPT_EDITOR_HIDE_ICON_ID);
 
     if (hideIconElement) {
-        hideIconElement.addEventListener(EventType.MOUSE_DOWN,
+        hideIconElement.addEventListener(EventType.POINTER_DOWN,
             scriptEditorModalHideIconMouseDownUseCase
         );
     }
@@ -63,7 +63,7 @@ export const execute = (): void =>
         .getElementById($SCRIPT_EDITOR_BAR_ID);
 
     if (barElement) {
-        barElement.addEventListener(EventType.MOUSE_DOWN,
+        barElement.addEventListener(EventType.POINTER_DOWN,
             scriptEditorModalMouseDownEventUseCase
         );
     }

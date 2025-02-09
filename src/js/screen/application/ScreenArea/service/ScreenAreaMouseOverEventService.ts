@@ -22,5 +22,5 @@ export const execute = (event: PointerEvent): void =>
     }
 
     // 起動中のツールにマウスオーバーイベントを発行
-    tool.dispatchEvent(EventType.MOUSE_OVER, event);
+    tool.dispatchEvent(EventType.POINTER_OVER, event);
 };

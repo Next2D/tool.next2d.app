@@ -27,7 +27,7 @@ export const execute = (): void =>
         .getElementById($TIMELINE_HEADER_MENU_SCRIPT_ADD_ONE_ID);
 
     if (scriptElement) {
-        scriptElement.addEventListener(EventType.MOUSE_DOWN,
+        scriptElement.addEventListener(EventType.POINTER_DOWN,
             timelineHeaderScriptAddMouseDownEventUseCase
         );
     }

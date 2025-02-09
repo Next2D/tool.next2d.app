@@ -21,12 +21,12 @@ export const execute = (event: PointerEvent): void =>
     // 移動イベントを登録
     element.setPointerCapture(event.pointerId);
     element.addEventListener(
-        EventType.MOUSE_MOVE,
+        EventType.POINTER_MOVE,
         stageSettingWidthPointerMoveEventUseCase,
         { "passive": false }
     );
     element.addEventListener(
-        EventType.MOUSE_UP,
+        EventType.POINTER_UP,
         stageSettingWidthPointerUpEventUseCase,
         { "passive": false }
     );

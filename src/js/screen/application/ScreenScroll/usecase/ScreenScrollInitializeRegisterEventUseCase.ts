@@ -21,7 +21,7 @@ export const execute = async (): Promise<void> =>
         .getElementById($SCREEN_SCROLL_BAR_X_ID);
 
     if (xElement) {
-        xElement.addEventListener(EventType.MOUSE_DOWN,
+        xElement.addEventListener(EventType.POINTER_DOWN,
             screenScrollXBarMouseDownEventUseCase
         );
     }
@@ -31,7 +31,7 @@ export const execute = async (): Promise<void> =>
         .getElementById($SCREEN_SCROLL_BAR_Y_ID);
 
     if (yElement) {
-        yElement.addEventListener(EventType.MOUSE_DOWN,
+        yElement.addEventListener(EventType.POINTER_DOWN,
             screenScrollYBarMouseDownEventUseCase
         );
     }

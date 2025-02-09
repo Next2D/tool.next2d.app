@@ -21,14 +21,14 @@ import {
 export const execute = (element: HTMLElement): void =>
 {
     // マウスダウンイベント
-    element.addEventListener(EventType.MOUSE_DOWN,
+    element.addEventListener(EventType.POINTER_DOWN,
         timelineHeaderMouseDownEventUseCase
     );
 
     // スクリプトアイコン
     const scriptElement = element.children[$TIMELINE_HEADER_SCRIPT_INDEX] as HTMLElement;
     if (scriptElement) {
-        scriptElement.addEventListener(EventType.MOUSE_DOWN,
+        scriptElement.addEventListener(EventType.POINTER_DOWN,
             timelineHeaderScriptIconMouseDownEventUseCase
         );
     }
@@ -36,7 +36,7 @@ export const execute = (element: HTMLElement): void =>
     // ラベルアイコン
     const labelElement = element.children[$TIMELINE_HEADER_LABEL_INDEX] as HTMLElement;
     if (labelElement) {
-        labelElement.addEventListener(EventType.MOUSE_DOWN,
+        labelElement.addEventListener(EventType.POINTER_DOWN,
             timelineHeaderLabelIconMouseDownEventUseCase
         );
     }
@@ -44,7 +44,7 @@ export const execute = (element: HTMLElement): void =>
     // サウンドアイコン
     const soundElement = element.children[$TIMELINE_HEADER_SOUND_INDEX] as HTMLElement;
     if (soundElement) {
-        soundElement.addEventListener(EventType.MOUSE_DOWN,
+        soundElement.addEventListener(EventType.POINTER_DOWN,
             timelineHeaderSoundIconMouseDownEventUseCase
         );
     }

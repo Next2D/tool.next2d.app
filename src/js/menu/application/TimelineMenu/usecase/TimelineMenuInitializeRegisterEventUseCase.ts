@@ -37,7 +37,7 @@ export const execute = (): void =>
         .getElementById($TIMELINE_MENU_ADD_KEYFRAME_ID);
 
     if (addKeyFrameElement) {
-        addKeyFrameElement.addEventListener(EventType.MOUSE_DOWN,
+        addKeyFrameElement.addEventListener(EventType.POINTER_DOWN,
             timelineMenuAddKeyframeMouseDownUseCase
         );
     }
@@ -47,7 +47,7 @@ export const execute = (): void =>
         .getElementById($TIMELINE_MENU_ADD_EMPTY_KEYFRAME_ID);
 
     if (addEmptyKeyFrameElement) {
-        addEmptyKeyFrameElement.addEventListener(EventType.MOUSE_DOWN,
+        addEmptyKeyFrameElement.addEventListener(EventType.POINTER_DOWN,
             timelineMenuAddEmptyKeyframeMouseDownUseCase
         );
     }
@@ -57,7 +57,7 @@ export const execute = (): void =>
         .getElementById($TIMELINE_MENU_DELETE_KEYFRAME_ID);
 
     if (deleteKeyFrameElement) {
-        deleteKeyFrameElement.addEventListener(EventType.MOUSE_DOWN,
+        deleteKeyFrameElement.addEventListener(EventType.POINTER_DOWN,
             timelineMenuDeleteKeyframeMouseDownUseCase
         );
     }
@@ -67,7 +67,7 @@ export const execute = (): void =>
         .getElementById($TIMELINE_MENU_ADD_FRAMES_ID);
 
     if (addFramesElement) {
-        addFramesElement.addEventListener(EventType.MOUSE_DOWN,
+        addFramesElement.addEventListener(EventType.POINTER_DOWN,
             timelineMenuAddFramesMouseDownUseCase
         );
     }
@@ -77,7 +77,7 @@ export const execute = (): void =>
         .getElementById($TIMELINE_MENU_ERASE_FRAMES_ID);
 
     if (eraseFramesElement) {
-        eraseFramesElement.addEventListener(EventType.MOUSE_DOWN,
+        eraseFramesElement.addEventListener(EventType.POINTER_DOWN,
             timelineMenuEraseFramesMouseDownUseCase
         );
     }
@@ -87,7 +87,7 @@ export const execute = (): void =>
         .getElementById($TIMELINE_MENU_ADD_SCRIPT_ID);
 
     if (addScriptElement) {
-        addScriptElement.addEventListener(EventType.MOUSE_DOWN,
+        addScriptElement.addEventListener(EventType.POINTER_DOWN,
             timelineMenuAddScriptMouseDownUseCase
         );
     }
@@ -97,7 +97,7 @@ export const execute = (): void =>
         .getElementById($TIMELINE_MENU_FIRST_FRAME_ID);
 
     if (firstFrameElement) {
-        firstFrameElement.addEventListener(EventType.MOUSE_DOWN,
+        firstFrameElement.addEventListener(EventType.POINTER_DOWN,
             timelineMenuMoveFirstFrameMouseDownUseCase
         );
     }
@@ -107,7 +107,7 @@ export const execute = (): void =>
         .getElementById($TIMELINE_MENU_LAST_FRAME_ID);
 
     if (lastFrameElement) {
-        lastFrameElement.addEventListener(EventType.MOUSE_DOWN,
+        lastFrameElement.addEventListener(EventType.POINTER_DOWN,
             timelineMenuMoveLastFrameMouseDownUseCase
         );
     }
@@ -117,7 +117,7 @@ export const execute = (): void =>
         .getElementById($TIMELINE_MENU_NEXT_KEY_FRAME_ID);
 
     if (nextKeyFrameElement) {
-        nextKeyFrameElement.addEventListener(EventType.MOUSE_DOWN,
+        nextKeyFrameElement.addEventListener(EventType.POINTER_DOWN,
             timelineMenuMoveNextKeyFrameMouseDownUseCase
         );
     }
@@ -127,7 +127,7 @@ export const execute = (): void =>
         .getElementById($TIMELINE_MENU_PREV_KEY_FRAME_ID);
 
     if (prevKeyFrameElement) {
-        prevKeyFrameElement.addEventListener(EventType.MOUSE_DOWN,
+        prevKeyFrameElement.addEventListener(EventType.POINTER_DOWN,
             timelineMenuMovePrevKeyFrameMouseDownUseCase
         );
     }

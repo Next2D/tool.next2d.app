@@ -29,23 +29,23 @@ export const execute = (): void =>
     );
 
     // マウスイベントを登録
-    element.addEventListener(EventType.MOUSE_DOWN,
+    element.addEventListener(EventType.POINTER_DOWN,
         screenAreaMouseDownEventUseCase
     );
 
     // マウスオーバーイベントを登録
-    element.addEventListener(EventType.MOUSE_OVER,
+    element.addEventListener(EventType.POINTER_OVER,
         screenAreaMouseOverEventService
     );
 
     // マウスアウトイベントを登録
-    element.addEventListener(EventType.MOUSE_OUT,
+    element.addEventListener(EventType.POINTER_OUT,
         screenAreaMouseOutEventService
     );
 
     // マウスムーブイベントを登録
     element.addEventListener(
-        EventType.MOUSE_MOVE,
+        EventType.POINTER_MOVE,
         screenAreaMouseMoveEventService,
         { "passive": false }
     );

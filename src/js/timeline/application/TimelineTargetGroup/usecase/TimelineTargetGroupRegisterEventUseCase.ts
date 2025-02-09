@@ -20,12 +20,12 @@ export const execute = (event: PointerEvent): void =>
     // グループウィンドウのイベント
     element.setPointerCapture(event.pointerId);
     element.addEventListener(
-        EventType.MOUSE_MOVE,
+        EventType.POINTER_MOVE,
         timelineTargetGroupWindowMouseMoveEventUseCase,
         { "passive": false }
     );
     element.addEventListener(
-        EventType.MOUSE_UP,
+        EventType.POINTER_UP,
         timelineTargetGroupWindowMouseUpEventUseCase,
         { "passive": false }
     );

@@ -96,7 +96,7 @@ export class BaseTool extends ToolEvent
         // Toolオブジェクトをマップに登録
         $registerDefaultTool(this);
 
-        element.addEventListener(EventType.MOUSE_DOWN, (event: PointerEvent): void =>
+        element.addEventListener(EventType.POINTER_DOWN, (event: PointerEvent): void =>
         {
             this.changeActiveTool(event);
         });

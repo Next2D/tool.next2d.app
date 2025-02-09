@@ -29,10 +29,10 @@ export const execute = (event: PointerEvent): void =>
 
     // windowのイベントを削除
     element.releasePointerCapture(event.pointerId);
-    element.removeEventListener(EventType.MOUSE_MOVE,
+    element.removeEventListener(EventType.POINTER_MOVE,
         strokeSizePointerMoveEventUseCase
     );
-    element.removeEventListener(EventType.MOUSE_UP, execute);
+    element.removeEventListener(EventType.POINTER_UP, execute);
 
     // 線の太さを更新
     strokeSize.value = parseInt(element.value);

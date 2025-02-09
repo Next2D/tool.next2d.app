@@ -81,7 +81,7 @@ export const execute = async (): Promise<void> =>
         }
 
         // 親Elementに選択イベントを登録
-        node.addEventListener(EventType.MOUSE_DOWN,
+        node.addEventListener(EventType.POINTER_DOWN,
             libraryAreaSelectedMouseDownService
         );
 
@@ -91,13 +91,13 @@ export const execute = async (): Promise<void> =>
             if (icons.length) {
 
                 const arrowIcon = icons[0] as NonNullable<HTMLElement>;
-                arrowIcon.addEventListener(EventType.MOUSE_DOWN,
+                arrowIcon.addEventListener(EventType.POINTER_DOWN,
                     libraryAreaArrowIconMouseDownEventService
                 );
 
                 // フォルダアイコンにイベントを登録
                 const folderIcon = icons[1] as NonNullable<HTMLElement>;
-                folderIcon.addEventListener(EventType.MOUSE_DOWN,
+                folderIcon.addEventListener(EventType.POINTER_DOWN,
                     libraryAreaFolderIconMouseDownEventService
                 );
             }
@@ -109,7 +109,7 @@ export const execute = async (): Promise<void> =>
             if (icons.length) {
                 // MovieClipアイコンにイベントを登録
                 const movieClipIcon = icons[1] as NonNullable<HTMLElement>;
-                movieClipIcon.addEventListener(EventType.MOUSE_DOWN,
+                movieClipIcon.addEventListener(EventType.POINTER_DOWN,
                     libraryAreaMovieClipIconMouseDownEventUseCase
                 );
             }
@@ -118,7 +118,7 @@ export const execute = async (): Promise<void> =>
         const spans = node.getElementsByTagName("span");
 
         const nameElement = spans[0] as NonNullable<HTMLElement>;
-        nameElement.addEventListener(EventType.MOUSE_DOWN,
+        nameElement.addEventListener(EventType.POINTER_DOWN,
             libraryAreaInstanceNameMouseDownEventUseCase
         );
 
@@ -133,7 +133,7 @@ export const execute = async (): Promise<void> =>
         // フォルダ以外はシンボル名の変更イベントを登録
         if (instance.type !== $FOLDER_TYPE) {
             const symbolElement = spans[1] as NonNullable<HTMLElement>;
-            symbolElement.addEventListener(EventType.MOUSE_DOWN,
+            symbolElement.addEventListener(EventType.POINTER_DOWN,
                 libraryAreaInstanceSymbolMouseDownEventUseCase
             );
 

@@ -29,12 +29,12 @@ export const execute = (tool: ITool<RoundRectTool>): void =>
     );
 
     // スクリーンのマウスオーバーイベントを登録
-    tool.addEventListener(EventType.MOUSE_OVER,
+    tool.addEventListener(EventType.POINTER_OVER,
         roundRectToolMouseOverEventService
     );
 
     // スクリーンのマウスアウトイベントを登録
-    tool.addEventListener(EventType.MOUSE_OUT,
+    tool.addEventListener(EventType.POINTER_OUT,
         roundRectToolMouseOutEventService
     );
 

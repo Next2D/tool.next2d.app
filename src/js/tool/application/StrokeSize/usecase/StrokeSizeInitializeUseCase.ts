@@ -43,15 +43,15 @@ export const execute = (): void =>
         strokeSizeFocusOutEventUseCase
     );
 
-    element.addEventListener(EventType.MOUSE_OVER,
+    element.addEventListener(EventType.POINTER_OVER,
         strokeSizeMouseOverEventService
     );
 
-    element.addEventListener(EventType.MOUSE_OUT,
+    element.addEventListener(EventType.POINTER_OUT,
         strokeSizeMouseOutEventService
     );
 
-    element.addEventListener(EventType.MOUSE_DOWN,
+    element.addEventListener(EventType.POINTER_DOWN,
         strokeSizeMouseDownEventUseCase
     );
 };

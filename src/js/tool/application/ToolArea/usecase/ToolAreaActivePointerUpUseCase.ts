@@ -30,8 +30,8 @@ export const execute = (event: PointerEvent): void =>
 
     // 移動イベントを削除
     element.releasePointerCapture(event.pointerId);
-    element.removeEventListener(EventType.MOUSE_MOVE, toolAreaPointerMoveService);
-    element.removeEventListener(EventType.MOUSE_UP, execute);
+    element.removeEventListener(EventType.POINTER_MOVE, toolAreaPointerMoveService);
+    element.removeEventListener(EventType.POINTER_UP, execute);
 
     // 移動状態をセット
     const workSpace = $getCurrentWorkSpace();
