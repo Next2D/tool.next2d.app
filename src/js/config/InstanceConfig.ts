@@ -1,4 +1,4 @@
-import type { InstanceTypeImpl } from "@/interface/InstanceTypeImpl";
+import type { IInstanceType } from "@/interface/IInstanceType";
 
 /**
  * @description MovieClipクラスの識別文字列
@@ -7,7 +7,7 @@ import type { InstanceTypeImpl } from "@/interface/InstanceTypeImpl";
  * @type {string}
  * @const
  */
-export const $MOVIE_CLIP_TYPE: InstanceTypeImpl = "container";
+export const $MOVIE_CLIP_TYPE: IInstanceType = "container";
 
 /**
  * @description Bitmapクラスの識別文字列
@@ -16,7 +16,7 @@ export const $MOVIE_CLIP_TYPE: InstanceTypeImpl = "container";
  * @type {string}
  * @const
  */
-export const $BITMAP_TYPE: InstanceTypeImpl = "bitmap";
+export const $BITMAP_TYPE: IInstanceType = "bitmap";
 
 /**
  * @description Folderクラスの識別文字列
@@ -25,7 +25,7 @@ export const $BITMAP_TYPE: InstanceTypeImpl = "bitmap";
  * @type {string}
  * @const
  */
-export const $FOLDER_TYPE: InstanceTypeImpl = "folder";
+export const $FOLDER_TYPE: IInstanceType = "folder";
 
 /**
  * @description Soundクラスの識別文字列
@@ -34,7 +34,7 @@ export const $FOLDER_TYPE: InstanceTypeImpl = "folder";
  * @type {string}
  * @const
  */
-export const $SOUND_TYPE: InstanceTypeImpl = "sound";
+export const $SOUND_TYPE: IInstanceType = "sound";
 
 /**
  * @description Videoクラスの識別文字列
@@ -43,7 +43,7 @@ export const $SOUND_TYPE: InstanceTypeImpl = "sound";
  * @type {string}
  * @const
  */
-export const $VIDEO_TYPE: InstanceTypeImpl = "video";
+export const $VIDEO_TYPE: IInstanceType = "video";
 
 /**
  * @description Shapeクラスの識別文字列
@@ -52,7 +52,7 @@ export const $VIDEO_TYPE: InstanceTypeImpl = "video";
  * @type {string}
  * @const
  */
-export const $SHAPE_TYPE: InstanceTypeImpl = "shape";
+export const $SHAPE_TYPE: IInstanceType = "shape";
 
 /**
  * @description Textクラスの識別文字列
@@ -61,4 +61,4 @@ export const $SHAPE_TYPE: InstanceTypeImpl = "shape";
  * @type {string}
  * @const
  */
-export const $TEXT_TYPE: InstanceTypeImpl = "text";
+export const $TEXT_TYPE: IInstanceType = "text";

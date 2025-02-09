@@ -1,7 +1,7 @@
-import type { ObjectImpl } from "@/interface/ObjectImpl";
-import type { ShapeSaveObjectImpl } from "@/interface/ShapeSaveObjectImpl";
+import type { IObject } from "@/interface/IObject";
+import type { IShapeSaveObject } from "@/interface/IShapeSaveObject";
 import type { IBounds } from "@/interface/IBounds";
-import type { ShapePublishJsonImpl } from "@/interface/ShapePublishJsonImpl";
+import type { IShapePublishJson } from "@/interface/IShapePublishJson";
 import type { Character } from "./Character";
 import { Instance } from "./Instance";
 import { execute as shapeCreateCanvasElementService } from "@/core/application/Shape/service/ShapeCreateCanvasElementService";
@@ -26,7 +26,7 @@ export class Shape extends Instance
      * @constructor
      * @public
      */
-    constructor (object: ObjectImpl<ShapeSaveObjectImpl>)
+    constructor (object: IObject<IShapeSaveObject>)
     {
         super(object);
 
@@ -87,7 +87,7 @@ export class Shape extends Instance
      * @method
      * @public
      */
-    toPublish (): ShapePublishJsonImpl
+    toPublish (): IShapePublishJson
     {
         return shapeCreateJsonService(this);
     }
@@ -182,7 +182,7 @@ export class Shape extends Instance
      * @method
      * @public
      */
-    toObject (): ShapeSaveObjectImpl
+    toObject (): IShapeSaveObject
     {
         return {
             "id":       this.id,

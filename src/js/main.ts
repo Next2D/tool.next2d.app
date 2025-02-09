@@ -1,23 +1,27 @@
 import "../css/style.scss";
 
 import "@next2d/player";
-import { initialize, boot, run } from "@/Application";
+import {
+    initialize,
+    boot,
+    run
+} from "@/Application";
 
 /**
  * @description 起動実行関数
  *              invocation function
  *
- * @return {void}
+ * @return {Promise<void>}
  * @method
  * @private
  */
-const execute = (): void =>
+const execute = async (): Promise<void> =>
 {
     window.removeEventListener("DOMContentLoaded", execute);
 
-    initialize()
-        .then(boot)
-        .then(run);
+    await initialize();
+    await boot();
+    await run();
 };
 
 if (document.readyState === "loading") {

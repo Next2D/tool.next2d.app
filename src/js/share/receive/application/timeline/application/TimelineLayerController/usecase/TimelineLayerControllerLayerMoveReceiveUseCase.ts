@@ -1,7 +1,7 @@
-import type { ShareReceiveMessageImpl } from "@/interface/ShareReceiveMessageImpl";
-import type { InstanceImpl } from "@/interface/InstanceImpl";
+import type { IShareReceiveMessage } from "@/interface/IShareReceiveMessage";
+import type { IInstance } from "@/interface/IInstance";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
-import type { LayerModeImpl } from "@/interface/LayerModeImpl";
+import type { ILayerMode } from "@/interface/ILayerMode";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
 import { execute as timelineLayerControllerMoveLayerHistoryUseCase } from "@/history/application/timeline/application/TimelineLayerController/MoveLayer/usecase/TimelineLayerControllerMoveLayerHistoryUseCase";
 import { execute as timelineLayerBuildElementUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerBuildElementUseCase";
@@ -19,7 +19,7 @@ import { $MASK_IN_MODE } from "@/config/LayerModeConfig";
  * @method
  * @public
  */
-export const execute = async (message: ShareReceiveMessageImpl): Promise<void> =>
+export const execute = async (message: IShareReceiveMessage): Promise<void> =>
 {
     const id = message.data[0] as NonNullable<number>;
 
@@ -29,7 +29,7 @@ export const execute = async (message: ShareReceiveMessageImpl): Promise<void> =
     }
 
     const libraryId = message.data[1] as NonNullable<number>;
-    const movieClip: InstanceImpl<MovieClip> = workSpace.getLibrary(libraryId);
+    const movieClip: IInstance<MovieClip> = workSpace.getLibrary(libraryId);
     if (!movieClip) {
         return ;
     }
@@ -44,7 +44,7 @@ export const execute = async (message: ShareReceiveMessageImpl): Promise<void> =
     const beforeParentId = layer.parentId;
 
     // データを更新
-    layer.mode     = message.data[5] as NonNullable<LayerModeImpl>;
+    layer.mode     = message.data[5] as NonNullable<ILayerMode>;
     layer.parentId = message.data[7] as NonNullable<number>;
 
     // レイヤーを移動
@@ -57,7 +57,7 @@ export const execute = async (message: ShareReceiveMessageImpl): Promise<void> =
         layer,
         beforeIndex,
         afterIndex,
-        message.data[4] as NonNullable<LayerModeImpl>,
+        message.data[4] as NonNullable<ILayerMode>,
         message.data[6] as NonNullable<number>,
         true
     );

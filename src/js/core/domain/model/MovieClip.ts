@@ -1,8 +1,8 @@
-import type { SoundObjectImpl } from "@/interface/SoundObjectImpl";
-import type { MovieClipSaveObjectImpl } from "@/interface/MovieClipSaveObjectImpl";
+import type { ISoundObject } from "@/interface/ISoundObject";
+import type { IMovieClipSaveObject } from "@/interface/IMovieClipSaveObject";
 import type { IActionSaveObject } from "@/interface/IActionSaveObject";
 import type { IFrameObject } from "@/interface/IFrameObject";
-import type { SoundSaveListImpl } from "@/interface/SoundSaveListImpl";
+import type { ISoundSaveList } from "@/interface/ISoundSaveList";
 import { Instance } from "./Instance";
 import { Layer } from "./Layer";
 import { execute as movieClipRunUseCase } from "@/core/application/MovieClip/usecase/MovieClipRunUseCase";
@@ -10,7 +10,7 @@ import { execute as movieClipStopUseCase } from "@/core/application/MovieClip/us
 import { execute as movieClipCreateCanvasElementUseCase } from "@/core/application/MovieClip/usecase/MovieClipCreateCanvasElementUseCase";
 import { $clamp } from "@/global/GlobalUtil";
 import { execute as movieClipCreateJsonUseCase } from "@/core/application/MovieClip/usecase/MovieClipCreateJsonUseCase";
-import { MovieClipPublishJsonImpl } from "@/interface/MovieClipPublishJsonImpl";
+import { IMovieClipPublishJson } from "@/interface/IMovieClipPublishJson";
 import { IBounds } from "@/interface/IBounds";
 import { execute as movieClipCalcBoundService } from "@/core/application/MovieClip/service/MovieClipCalcBoundService";
 
@@ -32,7 +32,7 @@ export class MovieClip extends Instance
     private readonly _$labels: Map<number, string>;
     private readonly _$layers: Layer[];
     private readonly _$actions: Map<number, string>;
-    private readonly _$sounds: Map<number, SoundObjectImpl[]>;
+    private readonly _$sounds: Map<number, ISoundObject[]>;
     private readonly _$selectedLayers: Layer[];
     private readonly _$selectedFrameObject: IFrameObject;
     private readonly _$selectedDepths: Map<number, number[]>;
@@ -42,7 +42,7 @@ export class MovieClip extends Instance
      * @constructs
      * @public
      */
-    constructor (object: MovieClipSaveObjectImpl)
+    constructor (object: IMovieClipSaveObject)
     {
         super(object);
 
@@ -227,7 +227,7 @@ export class MovieClip extends Instance
      * @method
      * @public
      */
-    async toPublish (): Promise<MovieClipPublishJsonImpl>
+    async toPublish (): Promise<IMovieClipPublishJson>
     {
         return await movieClipCreateJsonUseCase(this);
     }
@@ -457,7 +457,7 @@ export class MovieClip extends Instance
      * @method
      * @public
      */
-    load (object: MovieClipSaveObjectImpl): void
+    load (object: IMovieClipSaveObject): void
     {
         if (object.layers && object.layers.length) {
 
@@ -512,7 +512,7 @@ export class MovieClip extends Instance
         // サウンド情報を再登録
         if (object.sounds) {
             for (let idx = 0; idx < object.sounds.length; ++idx) {
-                const soundObject: SoundSaveListImpl = object.sounds[idx];
+                const soundObject: ISoundSaveList = object.sounds[idx];
                 this._$sounds.set(soundObject.frame, soundObject.sounds);
             }
         }
@@ -722,10 +722,10 @@ export class MovieClip extends Instance
      * @method
      * @public
      */
-    getSound (frame: number): SoundObjectImpl[] | null
+    getSound (frame: number): ISoundObject[] | null
     {
         return this.hasSound(frame)
-            ? this._$sounds.get(frame) as SoundObjectImpl[]
+            ? this._$sounds.get(frame) as ISoundObject[]
             : null;
     }
 
@@ -739,7 +739,7 @@ export class MovieClip extends Instance
      * @method
      * @public
      */
-    setSound (frame: number, sound: SoundObjectImpl): void
+    setSound (frame: number, sound: ISoundObject): void
     {
         if (!this.hasSound(frame)) {
             this._$sounds.set(frame, []);
@@ -783,7 +783,7 @@ export class MovieClip extends Instance
      * @readonly
      * @public
      */
-    get sounds (): Map<number, SoundObjectImpl[]>
+    get sounds (): Map<number, ISoundObject[]>
     {
         return this._$sounds;
     }
@@ -898,7 +898,7 @@ export class MovieClip extends Instance
      * @method
      * @public
      */
-    toObject (): MovieClipSaveObjectImpl
+    toObject (): IMovieClipSaveObject
     {
         const layers = [];
         for (let idx: number = 0; idx < this._$layers.length; ++idx) {
@@ -921,7 +921,7 @@ export class MovieClip extends Instance
             });
         }
 
-        const soundList: SoundSaveListImpl[] = [];
+        const soundList: ISoundSaveList[] = [];
         for (const [frame, sounds] of this._$sounds) {
             soundList.push({
                 "frame": frame,

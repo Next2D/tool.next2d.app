@@ -1,4 +1,4 @@
-import type { ToolImpl } from "@/interface/ToolImpl";
+import type { ITool } from "@/interface/ITool";
 import { EventType } from "@/tool/domain/event/EventType";
 import type { RoundRectTool } from "@/tool/domain/model/RoundRectTool";
 import { execute as roundRectToolStartEventUseCase } from "./RoundRectToolStartEventUseCase";
@@ -16,7 +16,7 @@ import { execute as roundRectToolChangeCursorEventService } from "../service/Rou
  * @method
  * @public
  */
-export const execute = (tool: ToolImpl<RoundRectTool>): void =>
+export const execute = (tool: ITool<RoundRectTool>): void =>
 {
     // 起動イベントを登録
     tool.addEventListener(EventType.START,

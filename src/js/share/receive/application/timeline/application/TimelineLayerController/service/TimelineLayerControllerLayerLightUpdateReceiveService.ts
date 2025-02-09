@@ -1,6 +1,6 @@
 import type { MovieClip } from "@/core/domain/model/MovieClip";
-import type { InstanceImpl } from "@/interface/InstanceImpl";
-import type { ShareReceiveMessageImpl } from "@/interface/ShareReceiveMessageImpl";
+import type { IInstance } from "@/interface/IInstance";
+import type { IShareReceiveMessage } from "@/interface/IShareReceiveMessage";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
 import { ExternalLayer } from "@/external/core/domain/model/ExternalLayer";
 
@@ -13,7 +13,7 @@ import { ExternalLayer } from "@/external/core/domain/model/ExternalLayer";
  * @method
  * @public
  */
-export const execute = (message: ShareReceiveMessageImpl): void =>
+export const execute = (message: IShareReceiveMessage): void =>
 {
     const id = message.data[0] as NonNullable<number>;
 
@@ -23,7 +23,7 @@ export const execute = (message: ShareReceiveMessageImpl): void =>
     }
 
     const libraryId = message.data[1] as NonNullable<number>;
-    const movieClip: InstanceImpl<MovieClip> = workSpace.getLibrary(libraryId);
+    const movieClip: IInstance<MovieClip> = workSpace.getLibrary(libraryId);
     if (!movieClip) {
         return ;
     }

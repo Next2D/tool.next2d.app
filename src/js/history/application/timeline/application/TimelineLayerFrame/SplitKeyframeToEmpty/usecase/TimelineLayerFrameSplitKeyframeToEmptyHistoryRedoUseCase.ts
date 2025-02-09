@@ -1,4 +1,4 @@
-import type { InstanceImpl } from "@/interface/InstanceImpl";
+import type { IInstance } from "@/interface/IInstance";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
 import { EmptyCharacter } from "@/core/domain/model/EmptyCharacter";
@@ -29,7 +29,7 @@ export const execute = async (
         return ;
     }
 
-    const movieClip: InstanceImpl<MovieClip> | null = workSpace.getLibrary(library_id);
+    const movieClip: IInstance<MovieClip> | null = workSpace.getLibrary(library_id);
     if (!movieClip) {
         return ;
     }

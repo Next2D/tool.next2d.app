@@ -1,5 +1,5 @@
 import type { MovieClip } from "@/core/domain/model/MovieClip";
-import type { InstanceImpl } from "@/interface/InstanceImpl";
+import type { IInstance } from "@/interface/IInstance";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { execute as timelineSceneListClearAddRootUseCase } from "@/timeline/application/TimelineSceneList/usecase/TimelineSceneListClearAddRootUseCase";
 import { execute as externalTimelineEditMovieClipUseService } from "@/external/timeline/application/ExternalTimeline/service/ExternalTimelineEditMovieClipUseService";
@@ -78,7 +78,7 @@ export const execute = async (event: PointerEvent): Promise<void> =>
         event.preventDefault();
 
         const workSpace = $getCurrentWorkSpace();
-        const movieClip: InstanceImpl<MovieClip> = workSpace.getLibrary(libraryId);
+        const movieClip: IInstance<MovieClip> = workSpace.getLibrary(libraryId);
 
         // タイムラインのシーン名を初期化してrootを追加
         timelineSceneListClearAddRootUseCase();

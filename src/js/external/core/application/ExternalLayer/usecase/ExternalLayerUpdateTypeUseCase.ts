@@ -1,7 +1,7 @@
 import type { Layer } from "@/core/domain/model/Layer";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
-import type { LayerTypeImpl } from "@/interface/LayerTypeImpl";
+import type { ILayerType } from "@/interface/ILayerType";
 import { execute as timelineLayerControllerUpdateIconElementService } from "@/timeline/application/TimelineLayerController/service/TimelineLayerControllerUpdateIconElementService";
 import { execute as externalLayerGetLayerModeService } from "../service/ExternalLayerGetLayerModeService";
 import { execute as layerUpdateModeHistoryUseCase } from "@/history/application/core/application/Layer/usecase/LayerUpdateModeHistoryUseCase";
@@ -27,7 +27,7 @@ export const execute = async (
     work_space: WorkSpace,
     movie_clip: MovieClip,
     layer: Layer,
-    type: LayerTypeImpl,
+    type: ILayerType,
     receiver: boolean = false
 ): Promise<void> => {
 

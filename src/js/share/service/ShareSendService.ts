@@ -1,4 +1,4 @@
-import type { ShareReceiveMessageImpl } from "@/interface/ShareReceiveMessageImpl";
+import type { IShareReceiveMessage } from "@/interface/IShareReceiveMessage";
 import type { IHistoryObject } from "@/interface/IHistoryObject";
 import {
     $getMessage,
@@ -24,7 +24,7 @@ export const execute = (history_object: IHistoryObject): void =>
     }
 
     // 共有しているメンバー全員に送信
-    const sendObject: ShareReceiveMessageImpl = {
+    const sendObject: IShareReceiveMessage = {
         "roomId": location.hash.replace("#", ""),
         "historyCommand": history_object.command,
         "data": history_object.messages,

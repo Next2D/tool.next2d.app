@@ -1,5 +1,5 @@
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
-import type { InstanceImpl } from "@/interface/InstanceImpl";
+import type { IInstance } from "@/interface/IInstance";
 
 /**
  * @description WorkSpaceの内部情報への登録処理関数
@@ -10,7 +10,7 @@ import type { InstanceImpl } from "@/interface/InstanceImpl";
  * @method
  * @public
  */
-export const execute = (work_space: WorkSpace, instance: InstanceImpl<any>): void =>
+export const execute = (work_space: WorkSpace, instance: IInstance<any>): void =>
 {
     work_space.libraries.set(instance.id, instance);
     work_space.pathMap.set(instance.getPath(work_space), instance.id);

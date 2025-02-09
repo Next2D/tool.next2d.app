@@ -1,4 +1,4 @@
-import type { SoundObjectImpl } from "@/interface/SoundObjectImpl";
+import type { ISoundObject } from "@/interface/ISoundObject";
 
 /**
  * @description サウンドエリアの個別設定のElementをstringで返却
@@ -14,7 +14,7 @@ import type { SoundObjectImpl } from "@/interface/SoundObjectImpl";
 export const execute = (
     index: number,
     sound_name: string,
-    sound_object: SoundObjectImpl
+    sound_object: ISoundObject
 ): string => {
     return `
 <div data-index="${index}" class="sound-border">

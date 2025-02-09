@@ -1,4 +1,4 @@
-import { ShortcutViewObjectImpl } from "@/interface/ShortcutViewObjectImpl";
+import { IShortcutViewObject } from "@/interface/IShortcutViewObject";
 import { $getTempMapping, $getViewMapping } from "../ShortcutSettingMenuUtil";
 
 /**
@@ -11,7 +11,7 @@ import { $getTempMapping, $getViewMapping } from "../ShortcutSettingMenuUtil";
  */
 export const execute = (): void =>
 {
-    const tempMapping: Map<string, ShortcutViewObjectImpl> = $getTempMapping();
+    const tempMapping: Map<string, IShortcutViewObject> = $getTempMapping();
     if (tempMapping.size) {
         // 変更した設定のテキストを元に戻す
         for (const shortcutObject of tempMapping.values()) {
@@ -27,7 +27,7 @@ export const execute = (): void =>
         }
     }
 
-    const viewMapping: Map<string, ShortcutViewObjectImpl> = $getViewMapping();
+    const viewMapping: Map<string, IShortcutViewObject> = $getViewMapping();
     if (viewMapping.size) {
         // 保存データがあれば、テキストを元に戻す
         for (const shortcutObject of viewMapping.values()) {

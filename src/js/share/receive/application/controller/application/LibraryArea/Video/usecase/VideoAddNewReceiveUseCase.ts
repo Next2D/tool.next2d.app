@@ -1,8 +1,8 @@
-import type { ShareReceiveMessageImpl } from "@/interface/ShareReceiveMessageImpl";
+import type { IShareReceiveMessage } from "@/interface/IShareReceiveMessage";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
-import type { InstanceImpl } from "@/interface/InstanceImpl";
+import type { IInstance } from "@/interface/IInstance";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
-import type { VideoSaveObjectImpl } from "@/interface/VideoSaveObjectImpl";
+import type { IVideoSaveObject } from "@/interface/IVideoSaveObject";
 import { Video } from "@/core/domain/model/Video";
 import { execute as externalLibraryAddInstanceUseCase } from "@/external/controller/application/ExternalLibrary/usecase/ExternalLibraryAddInstanceUseCase";
 import { execute as libraryAreaAddNewVideoHistoryUseCase } from "@/history/application/controller/application/LibraryArea/Video/usecase/LibraryAreaAddNewVideoHistoryUseCase";
@@ -28,7 +28,7 @@ const worker: Worker = new ZlibInflateWorker();
  * @method
  * @public
  */
-export const execute = async (message: ShareReceiveMessageImpl): Promise<void> =>
+export const execute = async (message: IShareReceiveMessage): Promise<void> =>
 {
     const id = message.data[0] as NonNullable<number>;
 
@@ -38,13 +38,13 @@ export const execute = async (message: ShareReceiveMessageImpl): Promise<void> =
     }
 
     const libraryId = message.data[1] as NonNullable<number>;
-    const movieClip: InstanceImpl<MovieClip> = workSpace.getLibrary(libraryId);
+    const movieClip: IInstance<MovieClip> = workSpace.getLibrary(libraryId);
     if (!movieClip) {
         return ;
     }
 
     // 受け取ったVideoのbufferはZlibで圧縮されてるので解答が必要
-    const videoSaveObject = message.data[2] as NonNullable<VideoSaveObjectImpl>;
+    const videoSaveObject = message.data[2] as NonNullable<IVideoSaveObject>;
 
     // バイナリをUint8Arrayに変換
     const url = await shareGetS3EndPointRepository(message.data[3] as string, "get");

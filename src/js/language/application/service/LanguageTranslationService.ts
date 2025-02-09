@@ -1,5 +1,5 @@
 import { $LANGUAGE_ELEMENTS_CLASS_NAME, $LANGUAGE_SPLIT_TEXT } from "@/config/LanguageConfig";
-import type { ShortcutViewObjectImpl } from "@/interface/ShortcutViewObjectImpl";
+import type { IShortcutViewObject } from "@/interface/IShortcutViewObject";
 import { $getViewMapping } from "@/menu/application/ShortcutSettingMenu/ShortcutSettingMenuUtil";
 import { $getMapping, $sprintf } from "@/language/application/LanguageUtil";
 
@@ -18,7 +18,7 @@ export const execute = async (target_element: HTMLElement | Document): Promise<v
     const elements: HTMLCollectionOf<Element> = target_element
         .getElementsByClassName($LANGUAGE_ELEMENTS_CLASS_NAME);
 
-    const viewMapping: Map<string, ShortcutViewObjectImpl> = $getViewMapping();
+    const viewMapping: Map<string, IShortcutViewObject> = $getViewMapping();
 
     const mapping = $getMapping();
     const length: number = elements.length;
@@ -43,7 +43,7 @@ export const execute = async (target_element: HTMLElement | Document): Promise<v
 
             let shortcutText: string = element.dataset.shortcutText as NonNullable<string>;
             if (viewMapping.size && viewMapping.has(shortcutKey)) {
-                const shortcutObject: ShortcutViewObjectImpl | undefined = viewMapping.get(shortcutKey);
+                const shortcutObject: IShortcutViewObject | undefined = viewMapping.get(shortcutKey);
                 if (shortcutObject) {
                     shortcutText = shortcutObject.text;
                 }

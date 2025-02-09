@@ -1,5 +1,5 @@
 import { $TIMELINE_ID } from "@/config/TimelineConfig";
-import { UserTimelineAreaStateObjectImpl } from "@/interface/UserTimelineAreaStateObjectImpl";
+import { IUserTimelineAreaStateObject } from "@/interface/IUserTimelineAreaStateObject";
 import { execute as timelineAreaChageStyleToActiveService } from "@/timeline/application/TimelineArea/service/TimelineAreaChageStyleToActiveService";
 import { execute as timelineAreaChageStyleToInactiveService } from "@/timeline/application/TimelineArea/service/TimelineAreaChageStyleToInactiveService";
 import { execute as timelineHeaderUpdateClientWidthService } from "@/timeline/application/TimelineHeader/service/TimelineHeaderUpdateClientWidthService";
@@ -20,7 +20,7 @@ import { $setTimelineOffsetTop } from "@/timeline/application/TimelineArea/Timel
  * @method
  * @public
  */
-export const execute = (timeline_area_state: UserTimelineAreaStateObjectImpl): void =>
+export const execute = (timeline_area_state: IUserTimelineAreaStateObject): void =>
 {
     // ツールエリアを移動していればElementのstyleを更新
     const element: HTMLElement | null = document

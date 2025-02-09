@@ -1,6 +1,6 @@
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
-import type { InstanceImpl } from "@/interface/InstanceImpl";
+import type { IInstance } from "@/interface/IInstance";
 import { $useSocket } from "@/share/ShareUtil";
 import { $LIBRARY_REMOVE_INSTANCE_COMMAND } from "@/config/HistoryConfig";
 import { execute as historyAddElementUseCase } from "@/controller/application/HistoryArea/usecase/HistoryAddElementUseCase";
@@ -30,7 +30,7 @@ import { execute as userDatabaseAutoSaveReservationUseCase } from "@/user/applic
 export const execute = (
     work_space: WorkSpace,
     movie_clip: MovieClip,
-    instance: InstanceImpl<any>,
+    instance: IInstance<any>,
     receiver: boolean = false
 ): void => {
 

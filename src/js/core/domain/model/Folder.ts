@@ -1,4 +1,4 @@
-import type { ObjectImpl } from "@/interface/ObjectImpl";
+import type { IObject } from "@/interface/IObject";
 import type { IFolderSaveObject } from "@/interface/IFolderSaveObject";
 import type { IFolderType } from "@/interface/IFolderType";
 import type { WorkSpace } from "./WorkSpace";
@@ -19,7 +19,7 @@ export class Folder extends Instance
      * @constructor
      * @public
      */
-    constructor (object: ObjectImpl<IFolderSaveObject>)
+    constructor (object: IObject<IFolderSaveObject>)
     {
         super(object);
 

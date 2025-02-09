@@ -1,7 +1,7 @@
 import type { IHistoryObject } from "@/interface/IHistoryObject";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { Layer } from "@/core/domain/model/Layer";
-import type { LayerModeImpl } from "@/interface/LayerModeImpl";
+import type { ILayerMode } from "@/interface/ILayerMode";
 import { $TIMELINE_MOVE_LAYER_COMMAND } from "@/config/HistoryConfig";
 
 /**
@@ -25,7 +25,7 @@ export const execute = (
     layer: Layer,
     before_index: number,
     after_index: number,
-    before_mode: LayerModeImpl,
+    before_mode: ILayerMode,
     before_parent_id: number
 ): IHistoryObject => {
 

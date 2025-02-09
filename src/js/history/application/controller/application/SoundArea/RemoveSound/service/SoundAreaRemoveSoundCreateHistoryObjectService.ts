@@ -1,5 +1,5 @@
 import type { IHistoryObject } from "@/interface/IHistoryObject";
-import type { SoundObjectImpl } from "@/interface/SoundObjectImpl";
+import type { ISoundObject } from "@/interface/ISoundObject";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import { $SOUND_AREA_REMOVE_SOUND_COMMAND } from "@/config/HistoryConfig";
 
@@ -19,7 +19,7 @@ import { $SOUND_AREA_REMOVE_SOUND_COMMAND } from "@/config/HistoryConfig";
 export const execute = (
     work_space_id: number,
     movie_clip: MovieClip,
-    sound_object: SoundObjectImpl,
+    sound_object: ISoundObject,
     frame: number,
     sound_index: number,
     name: string

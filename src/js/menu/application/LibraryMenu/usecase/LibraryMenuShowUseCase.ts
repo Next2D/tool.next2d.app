@@ -1,6 +1,6 @@
 import type { LibraryMenu } from "@/menu/domain/model/LibraryMenu";
-import type { MenuImpl } from "@/interface/MenuImpl";
-import type { InstanceImpl } from "@/interface/InstanceImpl";
+import type { IMenu } from "@/interface/IMenu";
+import type { IInstance } from "@/interface/IInstance";
 import { $LIBRARY_MENU_NAME } from "@/config/MenuConfig";
 import { libraryArea } from "@/controller/domain/model/LibraryArea";
 import { execute as libraryMenuCopyInactiveService } from "@/menu/application/LibraryMenu/service/LibraryMenuCopyInactiveService";
@@ -43,7 +43,7 @@ export const execute = (event: MouseEvent): void =>
     $allHideMenu($LIBRARY_MENU_NAME);
 
     // 進行状況メニューを非表示に
-    const menu: MenuImpl<LibraryMenu> | null = $getMenu($LIBRARY_MENU_NAME);
+    const menu: IMenu<LibraryMenu> | null = $getMenu($LIBRARY_MENU_NAME);
     if (!menu) {
         return ;
     }
@@ -86,7 +86,7 @@ export const execute = (event: MouseEvent): void =>
             // 書き出しボタンをアクティブに更新
             libraryMenuExportActiveService();
 
-            const instance: InstanceImpl<any> = $getCurrentWorkSpace()
+            const instance: IInstance<any> = $getCurrentWorkSpace()
                 .getLibrary(libraryArea.selectedIds[0]);
 
             if (instance) {

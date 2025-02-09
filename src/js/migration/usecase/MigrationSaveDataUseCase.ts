@@ -1,4 +1,4 @@
-import type { WorkSpaceSaveObjectImpl } from "@/interface/WorkSpaceSaveObjectImpl";
+import type { IWorkSpaceSaveObject } from "@/interface/IWorkSpaceSaveObject";
 
 /**
  * @description ワークスペースデータのマイグレーション
@@ -10,8 +10,8 @@ import type { WorkSpaceSaveObjectImpl } from "@/interface/WorkSpaceSaveObjectImp
  * @public
  */
 export const execute = (
-    work_space_objects: WorkSpaceSaveObjectImpl[]
-): WorkSpaceSaveObjectImpl[] => {
+    work_space_objects: IWorkSpaceSaveObject[]
+): IWorkSpaceSaveObject[] => {
 
     // バージョン違いのデータを現在のバージョンの仕様に変換
     // for (let idx = 0; idx < work_space_objects.length; ++idx) {

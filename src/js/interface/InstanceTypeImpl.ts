@@ -1,1 +1,0 @@
-export type InstanceTypeImpl = "shape" | "bitmap" | "video" | "folder" | "sound" | "container" | "text";

@@ -1,5 +1,5 @@
 import { execute as userSettingObjectGetService } from "@/user/application/Setting/service/UserSettingObjectGetService";
-import type { UserSettingObjectImpl } from "@/interface/UserSettingObjectImpl";
+import type { IUserSettingIObject } from "@/interface/IUserSettingIObject";
 
 /**
  * @description モーダル表示の選択状態を保存情報に合わせて表示を切り替える
@@ -12,7 +12,7 @@ import type { UserSettingObjectImpl } from "@/interface/UserSettingObjectImpl";
  */
 export const execute = (element: HTMLSelectElement): void =>
 {
-    const userSettingObject: UserSettingObjectImpl = userSettingObjectGetService();
+    const userSettingObject: IUserSettingIObject = userSettingObjectGetService();
 
     const optionElement = element
         .children[userSettingObject.modal ? 0 : 1] as HTMLOptionElement;

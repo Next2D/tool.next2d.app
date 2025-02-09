@@ -1,6 +1,6 @@
-import type { ShareReceiveMessageImpl } from "@/interface/ShareReceiveMessageImpl";
+import type { IShareReceiveMessage } from "@/interface/IShareReceiveMessage";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
-import type { InstanceImpl } from "@/interface/InstanceImpl";
+import type { IInstance } from "@/interface/IInstance";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
 import { Bitmap } from "@/core/domain/model/Bitmap";
 import { execute as libraryAreaUpdateBitmapHistoryUseCase } from "@/history/application/controller/application/LibraryArea/Bitmap/usecase/LibraryAreaUpdateBitmapHistoryUseCase";
@@ -29,7 +29,7 @@ const worker: Worker = new ZlibInflateWorker();
  * @method
  * @public
  */
-export const execute = async (message: ShareReceiveMessageImpl): Promise<void> =>
+export const execute = async (message: IShareReceiveMessage): Promise<void> =>
 {
     const id = message.data[0] as NonNullable<number>;
 
@@ -39,7 +39,7 @@ export const execute = async (message: ShareReceiveMessageImpl): Promise<void> =
     }
 
     const libraryId = message.data[1] as NonNullable<number>;
-    const movieClip: InstanceImpl<MovieClip> = workSpace.getLibrary(libraryId);
+    const movieClip: IInstance<MovieClip> = workSpace.getLibrary(libraryId);
     if (!movieClip) {
         return ;
     }
@@ -48,7 +48,7 @@ export const execute = async (message: ShareReceiveMessageImpl): Promise<void> =
     const bitmapObject = message.data[3] as NonNullable<IBitmapSaveObject>;
 
     // 変更前のインスタンスからセーブオブジェクトを作成
-    const instance: InstanceImpl<any> = workSpace.getLibrary(bitmapObject.id);
+    const instance: IInstance<any> = workSpace.getLibrary(bitmapObject.id);
     const beforeSaveObject = instance.toObject();
 
     // バイナリをUint8Arrayに変換

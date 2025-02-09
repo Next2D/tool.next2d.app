@@ -1,5 +1,5 @@
 import { $FOLDER_TYPE } from "@/config/InstanceConfig";
-import type { InstanceImpl } from "@/interface/InstanceImpl";
+import type { IInstance } from "@/interface/IInstance";
 
 /**
  * @description ライブラリアイテムのElementをstringで返却
@@ -10,7 +10,7 @@ import type { InstanceImpl } from "@/interface/InstanceImpl";
  * @method
  * @public
  */
-export const execute = (instance: InstanceImpl<any>): string =>
+export const execute = (instance: IInstance<any>): string =>
 {
     return `
 <div class="library-list-box-child" id="library-child-id-${instance.id}" data-library-id="${instance.id}">

@@ -1,6 +1,6 @@
 import type { Layer } from "@/core/domain/model/Layer";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
-import type { InstanceImpl } from "@/interface/InstanceImpl";
+import type { IInstance } from "@/interface/IInstance";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
 import {
     $GUIDE_IN_MODE,
@@ -39,7 +39,7 @@ export const execute = (
     }
 
     // 指定がなければ、アクティブなMovieClipを利用する
-    const movieClip: InstanceImpl<MovieClip> = workSpace.getLibrary(library_id);
+    const movieClip: IInstance<MovieClip> = workSpace.getLibrary(library_id);
     if (!movieClip) {
         return null;
     }

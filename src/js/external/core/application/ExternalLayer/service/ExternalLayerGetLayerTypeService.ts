@@ -1,5 +1,5 @@
-import type { LayerModeImpl } from "@/interface/LayerModeImpl";
-import type { LayerTypeImpl } from "@/interface/LayerTypeImpl";
+import type { ILayerMode } from "@/interface/ILayerMode";
+import type { ILayerType } from "@/interface/ILayerType";
 import {
     $GUIDE_IN_MODE,
     $GUIDE_IN_TYPE,
@@ -21,7 +21,7 @@ import {
  * @method
  * @public
  */
-export const execute = (mode: LayerModeImpl): LayerTypeImpl =>
+export const execute = (mode: ILayerMode): ILayerType =>
 {
     switch (mode) {
 

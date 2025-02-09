@@ -1,7 +1,7 @@
 import { $TOOL_ZOOM_MINUS_NAME } from "@/config/ToolConfig";
 import { $getDefaultTool, $setActiveTool } from "../../ToolUtil";
 import type { ZoomPlusTool } from "@/tool/domain/model/ZoomPlusTool";
-import type { ToolImpl } from "@/interface/ToolImpl";
+import type { ITool } from "@/interface/ITool";
 
 /**
  * @description ズームアウトツールをアクティブにする
@@ -13,7 +13,7 @@ import type { ToolImpl } from "@/interface/ToolImpl";
  */
 export const execute = (): void =>
 {
-    const tool: ToolImpl<ZoomPlusTool> = $getDefaultTool($TOOL_ZOOM_MINUS_NAME);
+    const tool: ITool<ZoomPlusTool> = $getDefaultTool($TOOL_ZOOM_MINUS_NAME);
     if (!tool) {
         return ;
     }

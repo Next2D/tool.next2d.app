@@ -1,4 +1,4 @@
-import type { MenuImpl } from "@/interface/MenuImpl";
+import type { IMenu } from "@/interface/IMenu";
 import type { ShortcutSettingMenu } from "@/menu/domain/model/ShortcutSettingMenu";
 import { $getMenu } from "@/menu/application/MenuUtil";
 import {
@@ -18,7 +18,7 @@ import { $TOOL_PREFIX, $TOOL_USER_SETTING_ID } from "@/config/ToolConfig";
 export const execute = (): void =>
 {
     // ユーザーメニューオブジェクト
-    const menu: MenuImpl<ShortcutSettingMenu> = $getMenu($SHORTCUT_MENU_NAME);
+    const menu: IMenu<ShortcutSettingMenu> = $getMenu($SHORTCUT_MENU_NAME);
     if (!menu) {
         return ;
     }

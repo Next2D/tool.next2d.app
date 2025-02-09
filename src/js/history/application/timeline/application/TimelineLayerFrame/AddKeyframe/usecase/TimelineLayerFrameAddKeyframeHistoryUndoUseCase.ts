@@ -1,4 +1,4 @@
-import type { InstanceImpl } from "@/interface/InstanceImpl";
+import type { IInstance } from "@/interface/IInstance";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { ICharacterSaveObject } from "@/interface/ICharacterSaveObject";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
@@ -34,7 +34,7 @@ export const execute = (
         return ;
     }
 
-    const movieClip: InstanceImpl<MovieClip> | null = workSpace.getLibrary(library_id);
+    const movieClip: IInstance<MovieClip> | null = workSpace.getLibrary(library_id);
     if (!movieClip) {
         return ;
     }

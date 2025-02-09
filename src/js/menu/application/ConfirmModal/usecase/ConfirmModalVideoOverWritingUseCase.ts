@@ -1,4 +1,4 @@
-import type { InstanceImpl } from "@/interface/InstanceImpl";
+import type { IInstance } from "@/interface/IInstance";
 import { Video } from "@/core/domain/model/Video";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { execute as libraryAreaUpdateVideoHistoryUseCase } from "@/history/application/controller/application/LibraryArea/Video/usecase/LibraryAreaUpdateVideoHistoryUseCase";
@@ -29,7 +29,7 @@ export const execute = async (file: File, path: string): Promise<void> =>
     }
 
     const libraryId = workSpace.pathMap.get(pathName) as NonNullable<number>;
-    const instance: InstanceImpl<Video> = workSpace.getLibrary(libraryId);
+    const instance: IInstance<Video> = workSpace.getLibrary(libraryId);
     if (!instance) {
         return ;
     }

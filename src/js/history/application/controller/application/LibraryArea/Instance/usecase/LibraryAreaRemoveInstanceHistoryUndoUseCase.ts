@@ -1,4 +1,4 @@
-import type { InstanceSaveObjectImpl } from "@/interface/InstanceSaveObjectImpl";
+import type { IInstanceSaveObject } from "@/interface/IInstanceSaveObject";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
 import { execute as libraryAreaSelectedClearUseCase } from "@/controller/application/LibraryArea/usecase/LibraryAreaSelectedClearUseCase";
 import { execute as libraryAreaReOrderingService } from "@/controller/application/LibraryArea/service/LibraryAreaReOrderingService";
@@ -18,7 +18,7 @@ import { execute as libraryAreaReloadUseCase } from "@/controller/application/Li
  */
 export const execute = async (
     work_space_id: number,
-    instance_object: InstanceSaveObjectImpl
+    instance_object: IInstanceSaveObject
 ): Promise<void> => {
 
     const workSpace = $getWorkSpace(work_space_id);

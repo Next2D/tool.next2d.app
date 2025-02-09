@@ -1,4 +1,4 @@
-import type { MenuImpl } from "@/interface/MenuImpl";
+import type { IMenu } from "@/interface/IMenu";
 import { ProgressMenu } from "../domain/model/ProgressMenu";
 import { UserSettingMenu } from "../domain/model/UserSettingMenu";
 import { ShortcutSettingMenu } from "../domain/model/ShortcutSettingMenu";
@@ -22,7 +22,7 @@ import { SceneListMenu } from "../domain/model/SceneListMenu";
  *
  * @private
  */
-const menus: MenuImpl<any>[] = [
+const menus: IMenu<any>[] = [
     DetailModal,
     ProgressMenu,
     UserSettingMenu,
@@ -54,7 +54,7 @@ export const execute = async (): Promise<void> =>
     // 起動
     const promises: Promise<void>[] = [];
     for (let idx: number = 0; idx < menus.length; ++idx) {
-        const Menu: MenuImpl<any> = menus[idx];
+        const Menu: IMenu<any> = menus[idx];
         const menu = new Menu();
         if (!menu.initialize) {
             continue;

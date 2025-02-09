@@ -1,5 +1,5 @@
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
-import type { InstanceImpl } from "@/interface/InstanceImpl";
+import type { IInstance } from "@/interface/IInstance";
 
 /**
  * @description 指定のインスタンスがライブラリに表示されるかの判定
@@ -10,7 +10,7 @@ import type { InstanceImpl } from "@/interface/InstanceImpl";
  * @method
  * @public
  */
-export const execute = (instance: InstanceImpl<any>): boolean =>
+export const execute = (instance: IInstance<any>): boolean =>
 {
     const workSpace = $getCurrentWorkSpace();
 

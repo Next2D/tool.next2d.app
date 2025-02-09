@@ -1,5 +1,5 @@
 import type { Bitmap } from "@/core/domain/model/Bitmap";
-import type { InstanceImpl } from "@/interface/InstanceImpl";
+import type { IInstance } from "@/interface/IInstance";
 import type { IBitmapSaveObject } from "@/interface/IBitmapSaveObject";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
 import { execute as externalWorkSpaceRemoveInstanceService } from "@/external/core/application/ExternalWorkSpace/service/ExternalWorkSpaceRemoveInstanceService";
@@ -26,7 +26,7 @@ export const execute = (
         return ;
     }
 
-    const bitmap: InstanceImpl<Bitmap> | null = workSpace.getLibrary(bitmap_save_object.id);
+    const bitmap: IInstance<Bitmap> | null = workSpace.getLibrary(bitmap_save_object.id);
     if (!bitmap) {
         return ;
     }

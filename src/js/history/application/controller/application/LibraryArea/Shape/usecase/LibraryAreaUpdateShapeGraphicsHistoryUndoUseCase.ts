@@ -1,4 +1,4 @@
-import type { ShapeSaveObjectImpl } from "@/interface/ShapeSaveObjectImpl";
+import type { IShapeSaveObject } from "@/interface/IShapeSaveObject";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
 import { Shape } from "@/core/domain/model/Shape";
 import { $SCREEN_STAGE_AREA_ID } from "@/config/ScreenConfig";
@@ -17,7 +17,7 @@ import { execute as screenDisplayObjectChangeElementUseCase } from "@/screen/app
  */
 export const execute = async (
     work_space_id: number,
-    before_shape_object: ShapeSaveObjectImpl
+    before_shape_object: IShapeSaveObject
 ): Promise<void> => {
 
     const workSpace = $getWorkSpace(work_space_id);

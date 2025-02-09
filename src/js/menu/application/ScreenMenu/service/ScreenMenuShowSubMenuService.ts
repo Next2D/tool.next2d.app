@@ -1,6 +1,6 @@
 import { $SCREEN_MENU_NAME } from "@/config/MenuConfig";
 import { $getMenu } from "../../MenuUtil";
-import type { MenuImpl } from "@/interface/MenuImpl";
+import type { IMenu } from "@/interface/IMenu";
 
 /**
  * @description スクリーンエリアのサブメニューを全て非表示にする
@@ -33,7 +33,7 @@ export const execute = (event: PointerEvent): void =>
 
         const elementId = showElementIds[idx];
 
-        const menu: MenuImpl<any> | null = $getMenu(`${elementId}-menu`);
+        const menu: IMenu<any> | null = $getMenu(`${elementId}-menu`);
         if (!menu) {
             continue;
         }

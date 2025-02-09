@@ -1,5 +1,5 @@
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
-import type { InstanceImpl } from "@/interface/InstanceImpl";
+import type { IInstance } from "@/interface/IInstance";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import { execute as instanceUpdateNameHistoryUseCase } from "@/history/application/core/application/Instance/usecase/InstanceUpdateNameHistoryUseCase";
 import { execute as libraryAreaReOrderingService } from "@/controller/application/LibraryArea/service/LibraryAreaReOrderingService";
@@ -24,7 +24,7 @@ import { execute as soundAreaRebuildSelectElementService } from "@/controller/ap
 export const execute = (
     work_space: WorkSpace,
     movie_clip: MovieClip,
-    instance: InstanceImpl<any>,
+    instance: IInstance<any>,
     name: string,
     receiver: boolean = false
 ): void => {

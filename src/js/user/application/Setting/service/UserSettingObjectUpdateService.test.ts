@@ -1,12 +1,12 @@
 import { execute } from "./UserSettingObjectUpdateService";
 import { execute as userSettingObjectGetService } from "./UserSettingObjectGetService";
-import { UserSettingObjectImpl } from "../../../../interface/UserSettingObjectImpl";
+import { IUserSettingIObject } from "../../../../interface/IUserSettingIObject";
 
 describe("UserSettingObjectUpdateServiceTest", () =>
 {
     test("execute test", () =>
     {
-        const mock: UserSettingObjectImpl = {
+        const mock: IUserSettingIObject = {
             "layer": false,
             "modal": true,
             "type": "zlib"

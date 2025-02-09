@@ -1,4 +1,4 @@
-import type { TimelineSceneListParentObjectImpl } from "@/interface/TimelineSceneListParentObjectImpl";
+import type { ITimelineSceneListParentObject } from "@/interface/ITimelineSceneListParentObject";
 
 /**
  * @description タイムラインのレイヤーの管理クラス
@@ -9,7 +9,7 @@ import type { TimelineSceneListParentObjectImpl } from "@/interface/TimelineScen
  */
 class TimelineSceneList
 {
-    private readonly _$parents: TimelineSceneListParentObjectImpl[];
+    private readonly _$parents: ITimelineSceneListParentObject[];
 
     /**
      * @constructor
@@ -32,7 +32,7 @@ class TimelineSceneList
      * @readonly
      * @public
      */
-    get parents (): TimelineSceneListParentObjectImpl[]
+    get parents (): ITimelineSceneListParentObject[]
     {
         return this._$parents;
     }

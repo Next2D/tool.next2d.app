@@ -1,5 +1,5 @@
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
-import type { InstanceImpl } from "@/interface/InstanceImpl";
+import type { IInstance } from "@/interface/IInstance";
 
 /**
  * @description 指定のインスタンスのフォルダ階層を含むパス名を返却
@@ -13,7 +13,7 @@ import type { InstanceImpl } from "@/interface/InstanceImpl";
  */
 export const execute = (
     work_space: WorkSpace,
-    instance: InstanceImpl<any>
+    instance: IInstance<any>
 ): string => {
 
     let path = instance.name;
@@ -21,7 +21,7 @@ export const execute = (
     // フォルダ内にあれば先祖の階層を取得
     if (instance.folderId) {
 
-        let parent: InstanceImpl<any> = instance;
+        let parent: IInstance<any> = instance;
 
         while (parent.folderId) {
 

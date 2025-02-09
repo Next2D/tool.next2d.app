@@ -1,5 +1,5 @@
 import type { Character } from "@/core/domain/model/Character";
-import type { InstanceImpl } from "@/interface/InstanceImpl";
+import type { IInstance } from "@/interface/IInstance";
 import type { Layer } from "@/core/domain/model/Layer";
 import type { Video } from "@/core/domain/model/Video";
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
@@ -29,7 +29,7 @@ import { $getMaskMatrix } from "@/controller/application/TransformSetting/Transf
  */
 export const execute = async (
     work_space: WorkSpace,
-    instance: InstanceImpl<Video>,
+    instance: IInstance<Video>,
     element: HTMLElement,
     layer: Layer,
     character: Character

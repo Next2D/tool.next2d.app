@@ -1,6 +1,6 @@
 import { $allHideMenu } from "@/menu/application/MenuUtil";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
-import { InstanceImpl } from "@/interface/InstanceImpl";
+import { IInstance } from "@/interface/IInstance";
 import { ExternalLibrary } from "@/external/controller/domain/model/ExternalLibrary";
 import { $useKeyboard } from "@/shortcut/ShortcutUtil";
 import { libraryArea } from "@/controller/domain/model/LibraryArea";
@@ -44,7 +44,7 @@ export const execute = async (event: PointerEvent): Promise<void> =>
 
     const workSpace = $getCurrentWorkSpace();
     const libraryId = parseInt(element.dataset.libraryId as string);
-    const instance: InstanceImpl<any> | null = workSpace.getLibrary(libraryId);
+    const instance: IInstance<any> | null = workSpace.getLibrary(libraryId);
     if (!instance) {
         return ;
     }

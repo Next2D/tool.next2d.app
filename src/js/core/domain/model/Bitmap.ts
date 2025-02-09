@@ -1,5 +1,5 @@
 import type { IBitmapSaveObject } from "@/interface/IBitmapSaveObject";
-import type { ObjectImpl } from "@/interface/ObjectImpl";
+import type { IObject } from "@/interface/IObject";
 import type { IBitmapPublishJson } from "@/interface/IBitmapPublishJson";
 import type { IBounds } from "@/interface/IBounds";
 import { Instance } from "./Instance";
@@ -29,7 +29,7 @@ export class Bitmap extends Instance
      * @constructor
      * @public
      */
-    constructor (object: ObjectImpl<IBitmapSaveObject>)
+    constructor (object: IObject<IBitmapSaveObject>)
     {
         super(object);
 

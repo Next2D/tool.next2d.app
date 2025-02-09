@@ -1,5 +1,5 @@
 import { $TOOL_PREFIX } from "@/config/ToolConfig";
-import { UserToolAreaStateObjectImpl } from "@/interface/UserToolAreaStateObjectImpl";
+import { IUserToolAreaStateObject } from "@/interface/IUserToolAreaStateObject";
 import { execute as toolAreaChageStyleToActiveService } from "@/tool/application/ToolArea/service/ToolAreaChageStyleToActiveService";
 import { execute as toolAreaChageStyleToInactiveService } from "@/tool/application/ToolArea/service/ToolAreaChageStyleToInactiveService";
 
@@ -12,7 +12,7 @@ import { execute as toolAreaChageStyleToInactiveService } from "@/tool/applicati
  * @method
  * @public
  */
-export const execute = (tool_area_state: UserToolAreaStateObjectImpl): void =>
+export const execute = (tool_area_state: IUserToolAreaStateObject): void =>
 {
     // ツールエリアを移動していればElementのstyleを更新
     const element: HTMLElement | null = document

@@ -1,5 +1,5 @@
-import type { ShortcutOptionObjectImpl } from "@/interface/ShortcutOptionObjectImpl";
-import type { ShortcutViewObjectImpl } from "@/interface/ShortcutViewObjectImpl";
+import type { IShortcutOptionObject } from "@/interface/IShortcutOptionObject";
+import type { IShortcutViewObject } from "@/interface/IShortcutViewObject";
 import { $generateShortcutKey } from "@/shortcut/ShortcutUtil";
 import {
     $getSelectElement,
@@ -47,7 +47,7 @@ export const execute = (event: KeyboardEvent): boolean =>
 
     // TODO
     const texts: string[] = [];
-    const options: ShortcutOptionObjectImpl = {
+    const options: IShortcutOptionObject = {
         "shift": false,
         "alt": false,
         "ctrl": false
@@ -90,7 +90,7 @@ export const execute = (event: KeyboardEvent): boolean =>
 
     const customKey: string   = $generateShortcutKey(event.key, options);
     const commandText: string = texts.join(" + ");
-    const tempMapping: Map<string, ShortcutViewObjectImpl> = $getTempMapping();
+    const tempMapping: Map<string, IShortcutViewObject> = $getTempMapping();
     const defaultKey: string = commandElement.dataset.defaultKey as NonNullable<string>;
 
     // 一度削除して再登録

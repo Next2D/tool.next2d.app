@@ -1,4 +1,4 @@
-import type { ShortcutOptionObjectImpl } from "../interface/ShortcutOptionObjectImpl";
+import type { IShortcutOptionObject } from "../interface/IShortcutOptionObject";
 
 /**
  * @description グローバルショートカットのマップデータ
@@ -49,7 +49,7 @@ export const $getShortcut = (): Map<string, Function> =>
  */
 export const $generateShortcutKey = (
     key: string,
-    option: ShortcutOptionObjectImpl | null = null
+    option: IShortcutOptionObject | null = null
 ): string => {
 
     let value: string = key.length === 1 ? key.toLowerCase() : key;

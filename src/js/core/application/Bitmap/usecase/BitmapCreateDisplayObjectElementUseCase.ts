@@ -1,6 +1,6 @@
 import type { Bitmap } from "@/core/domain/model/Bitmap";
 import type { Character } from "@/core/domain/model/Character";
-import type { InstanceImpl } from "@/interface/InstanceImpl";
+import type { IInstance } from "@/interface/IInstance";
 import type { Layer } from "@/core/domain/model/Layer";
 import { execute as bitmapRegisterEventUseCase } from "./BitmapRegisterEventUseCase";
 import { execute as bitmapDisplayObjectComponent } from "../component/BitmapDisplayObjectComponent";
@@ -31,7 +31,7 @@ import { $getMaskMatrix } from "@/controller/application/TransformSetting/Transf
  */
 export const execute = async (
     work_space_id: number,
-    instance: InstanceImpl<Bitmap>,
+    instance: IInstance<Bitmap>,
     element: HTMLElement,
     layer: Layer,
     character: Character

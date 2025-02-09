@@ -1,7 +1,7 @@
-import type { ObjectImpl } from "@/interface/ObjectImpl";
-import type { VideoSaveObjectImpl } from "@/interface/VideoSaveObjectImpl";
+import type { IObject } from "@/interface/IObject";
+import type { IVideoSaveObject } from "@/interface/IVideoSaveObject";
 import type { IBounds } from "@/interface/IBounds";
-import type { VideoPublishJsonImpl } from "@/interface/VideoPublishJsonImpl";
+import type { IVideoPublishJson } from "@/interface/IVideoPublishJson";
 import { Instance } from "./Instance";
 import { execute as binaryToBufferService } from "@/core/service/BinaryToBufferService";
 import { execute as bufferToBinaryService } from "@/core/service/BufferToBinaryService";
@@ -33,7 +33,7 @@ export class Video extends Instance
      * @constructor
      * @public
      */
-    constructor (object: ObjectImpl<VideoSaveObjectImpl>)
+    constructor (object: IObject<IVideoSaveObject>)
     {
         super(object);
 
@@ -228,7 +228,7 @@ export class Video extends Instance
      * @method
      * @public
      */
-    async toPublish (): Promise<VideoPublishJsonImpl>
+    async toPublish (): Promise<IVideoPublishJson>
     {
         return videoCreateJsonService(this);
     }
@@ -360,7 +360,7 @@ export class Video extends Instance
      * @method
      * @public
      */
-    toObject (): VideoSaveObjectImpl
+    toObject (): IVideoSaveObject
     {
         return {
             "id":        this.id,

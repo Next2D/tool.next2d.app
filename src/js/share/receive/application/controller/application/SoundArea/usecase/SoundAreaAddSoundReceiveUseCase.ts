@@ -1,9 +1,9 @@
-import type { ShareReceiveMessageImpl } from "@/interface/ShareReceiveMessageImpl";
-import type { InstanceImpl } from "@/interface/InstanceImpl";
+import type { IShareReceiveMessage } from "@/interface/IShareReceiveMessage";
+import type { IInstance } from "@/interface/IInstance";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
 import { execute as soundAreaAddSoundHistoryUseCase } from "@/history/application/controller/application/SoundArea/AddSound/usecase/SoundAreaAddSoundHistoryUseCase";
-import { SoundObjectImpl } from "@/interface/SoundObjectImpl";
+import { ISoundObject } from "@/interface/ISoundObject";
 import { execute as soundAreaRebuildSettingAreaUseCase } from "@/controller/application/SoundArea/usecase/SoundAreaRebuildSettingAreaUseCase";
 import { $getLeftFrame } from "@/timeline/application/TimelineUtil";
 import { timelineHeader } from "@/timeline/domain/model/TimelineHeader";
@@ -18,7 +18,7 @@ import { execute as timelineHeaderUpdateSoundElementService } from "@/timeline/a
  * @method
  * @public
  */
-export const execute = (message: ShareReceiveMessageImpl): void =>
+export const execute = (message: IShareReceiveMessage): void =>
 {
     const id = message.data[0] as NonNullable<number>;
 
@@ -28,12 +28,12 @@ export const execute = (message: ShareReceiveMessageImpl): void =>
     }
 
     const libraryId = message.data[1] as NonNullable<number>;
-    const movieClip: InstanceImpl<MovieClip> = workSpace.getLibrary(libraryId);
+    const movieClip: IInstance<MovieClip> = workSpace.getLibrary(libraryId);
     if (!movieClip) {
         return ;
     }
 
-    const soundObject = message.data[2] as NonNullable<SoundObjectImpl>;
+    const soundObject = message.data[2] as NonNullable<ISoundObject>;
     const frame = message.data[3] as NonNullable<number>;
 
     // サウンドを追加

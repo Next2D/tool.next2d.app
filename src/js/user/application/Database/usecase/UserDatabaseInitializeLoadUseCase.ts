@@ -1,4 +1,4 @@
-import type { MenuImpl } from "@/interface/MenuImpl";
+import type { IMenu } from "@/interface/IMenu";
 import type { ProgressMenu } from "@/menu/domain/model/ProgressMenu";
 import { $PROGRESS_MENU_NAME } from "@/config/MenuConfig";
 import { $getMenu } from "@/menu/application/MenuUtil";
@@ -29,7 +29,7 @@ export const execute = (): Promise<void> =>
     return new Promise((resolve): void =>
     {
         // 進行状況を表示
-        const menu: MenuImpl<ProgressMenu> = $getMenu($PROGRESS_MENU_NAME);
+        const menu: IMenu<ProgressMenu> = $getMenu($PROGRESS_MENU_NAME);
         if (!menu) {
             return ;
         }

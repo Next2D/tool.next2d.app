@@ -1,6 +1,6 @@
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import { $replace } from "@/language/application/LanguageUtil";
-import { MenuImpl } from "@/interface/MenuImpl";
+import { IMenu } from "@/interface/IMenu";
 import { ProgressMenu } from "@/menu/domain/model/ProgressMenu";
 import { $getMenu } from "@/menu/application/MenuUtil";
 import { $PROGRESS_MENU_NAME } from "@/config/MenuConfig";
@@ -31,7 +31,7 @@ import { execute as screenStagePositionCenterService } from "@/screen/applicatio
 export const execute = async (work_space: WorkSpace): Promise<void> =>
 {
     // 進行状況画面を表示
-    const menu: MenuImpl<ProgressMenu> | null = $getMenu($PROGRESS_MENU_NAME);
+    const menu: IMenu<ProgressMenu> | null = $getMenu($PROGRESS_MENU_NAME);
     if (!menu) {
         return ;
     }

@@ -1,5 +1,5 @@
 import { $PROGRESS_MENU_NAME } from "@/config/MenuConfig";
-import type { MenuImpl } from "@/interface/MenuImpl";
+import type { IMenu } from "@/interface/IMenu";
 import type { ProgressMenu } from "@/menu/domain/model/ProgressMenu";
 import { $getMenu } from "@/menu/application/MenuUtil";
 
@@ -14,7 +14,7 @@ import { $getMenu } from "@/menu/application/MenuUtil";
 export const execute = (): void =>
 {
     // 進行状況メニューを非表示に
-    const menu: MenuImpl<ProgressMenu> | null = $getMenu($PROGRESS_MENU_NAME);
+    const menu: IMenu<ProgressMenu> | null = $getMenu($PROGRESS_MENU_NAME);
     if (!menu) {
         return ;
     }

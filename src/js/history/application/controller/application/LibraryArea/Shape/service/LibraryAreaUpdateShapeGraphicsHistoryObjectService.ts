@@ -1,5 +1,5 @@
 import type { IHistoryObject } from "@/interface/IHistoryObject";
-import type { ShapeSaveObjectImpl } from "@/interface/ShapeSaveObjectImpl";
+import type { IShapeSaveObject } from "@/interface/IShapeSaveObject";
 import { $LIBRARY_UPDATE_SHAPE_GRAPHICS_COMMAND } from "@/config/HistoryConfig";
 import { IBounds } from "@/interface/IBounds";
 
@@ -19,7 +19,7 @@ import { IBounds } from "@/interface/IBounds";
 export const execute = (
     work_space_id: number,
     movie_clip_id: number,
-    shape_object: ShapeSaveObjectImpl,
+    shape_object: IShapeSaveObject,
     recodes: Float32Array | number[],
     bounds: IBounds,
     file_id: string = ""

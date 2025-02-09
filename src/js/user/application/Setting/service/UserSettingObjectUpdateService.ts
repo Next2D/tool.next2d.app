@@ -1,5 +1,5 @@
 import { $USER_SETTING_KEY } from "@/config/Config";
-import type { UserSettingObjectImpl } from "@/interface/UserSettingObjectImpl";
+import type { IUserSettingIObject } from "@/interface/IUserSettingIObject";
 
 /**
  * @description ユーザー設定メニューで設定した値をLocalStorageに保存する
@@ -10,7 +10,7 @@ import type { UserSettingObjectImpl } from "@/interface/UserSettingObjectImpl";
  * @method
  * @public
  */
-export const execute = (object: UserSettingObjectImpl): void =>
+export const execute = (object: IUserSettingIObject): void =>
 {
     localStorage.setItem($USER_SETTING_KEY, JSON.stringify(object));
 };

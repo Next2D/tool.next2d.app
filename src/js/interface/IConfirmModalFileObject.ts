@@ -1,7 +1,7 @@
-import type { InstanceImpl } from "./InstanceImpl";
+import type { IInstance } from "./IInstance";
 
 export interface IConfirmModalFileObject {
     file: File;
-    instance: InstanceImpl<any>;
+    instance: IInstance<any>;
     path: string;
 }

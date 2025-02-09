@@ -1,7 +1,7 @@
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { $getUseLibraryIds } from "../PublishToolUtil";
-import type { PublishObjectImpl } from "@/interface/PublishObjectImpl";
+import type { IPublishObject } from "@/interface/IPublishObject";
 
 /**
  * @description 指定のMovieClipをRootにして、現在のWorkSpaceのライブラリアイテムを書き出す
@@ -12,7 +12,7 @@ import type { PublishObjectImpl } from "@/interface/PublishObjectImpl";
  * @method
  * @public
  */
-export const execute = async (movie_clip: MovieClip): Promise<PublishObjectImpl> =>
+export const execute = async (movie_clip: MovieClip): Promise<IPublishObject> =>
 {
     const workSpace = $getCurrentWorkSpace();
 

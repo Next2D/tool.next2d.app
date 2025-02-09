@@ -1,4 +1,4 @@
-import type { ShortcutViewObjectImpl } from "@/interface/ShortcutViewObjectImpl";
+import type { IShortcutViewObject } from "@/interface/IShortcutViewObject";
 
 /**
  * @description ショートカットリストで選択されたElement
@@ -79,7 +79,7 @@ export const $getCommandMapping = (): Map<string, string> =>
  * @type {Map}
  * @private
  */
-const $viewMapping: Map<string, ShortcutViewObjectImpl> = new Map();
+const $viewMapping: Map<string, IShortcutViewObject> = new Map();
 
 /**
  * @description 個別のショートカットコマンドの表示Objectのマッピングデータを初期化
@@ -102,7 +102,7 @@ export const $clearViewMapping = (): void =>
  * @method
  * @public
  */
-export const $getViewMapping = (): Map<string, ShortcutViewObjectImpl> =>
+export const $getViewMapping = (): Map<string, IShortcutViewObject> =>
 {
     return $viewMapping;
 };
@@ -114,7 +114,7 @@ export const $getViewMapping = (): Map<string, ShortcutViewObjectImpl> =>
  * @type {Map}
  * @private
  */
-const $tempMapping: Map<string, ShortcutViewObjectImpl> = new Map();
+const $tempMapping: Map<string, IShortcutViewObject> = new Map();
 
 /**
  * @description 個別のショートカットの設定の一時保存データを返却
@@ -124,7 +124,7 @@ const $tempMapping: Map<string, ShortcutViewObjectImpl> = new Map();
  * @method
  * @public
  */
-export const $getTempMapping = (): Map<string, ShortcutViewObjectImpl> =>
+export const $getTempMapping = (): Map<string, IShortcutViewObject> =>
 {
     return $tempMapping;
 };

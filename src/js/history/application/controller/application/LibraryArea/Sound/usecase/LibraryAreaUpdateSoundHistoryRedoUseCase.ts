@@ -1,4 +1,4 @@
-import type { SoundSaveObjectImpl } from "@/interface/SoundSaveObjectImpl";
+import type { ISoundSaveObject } from "@/interface/ISoundSaveObject";
 import { Sound } from "@/core/domain/model/Sound";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
 import { execute as libraryAreaSelectedClearUseCase } from "@/controller/application/LibraryArea/usecase/LibraryAreaSelectedClearUseCase";
@@ -16,7 +16,7 @@ import { execute as libraryAreaReloadUseCase } from "@/controller/application/Li
  */
 export const execute = (
     work_space_id: number,
-    after_sound_object: SoundSaveObjectImpl
+    after_sound_object: ISoundSaveObject
 ): void => {
 
     const workSpace = $getWorkSpace(work_space_id);

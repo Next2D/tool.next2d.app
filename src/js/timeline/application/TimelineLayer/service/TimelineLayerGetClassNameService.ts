@@ -1,5 +1,5 @@
 import { $GUIDE_IN_MODE, $GUIDE_MODE, $MASK_IN_MODE, $MASK_MODE } from "@/config/LayerModeConfig";
-import type { LayerModeImpl } from "@/interface/LayerModeImpl";
+import type { ILayerMode } from "@/interface/ILayerMode";
 
 /**
  * @description レイヤーのモードに応じたクラス名を返却
@@ -10,7 +10,7 @@ import type { LayerModeImpl } from "@/interface/LayerModeImpl";
  * @method
  * @public
  */
-export const execute = (mode: LayerModeImpl): string =>
+export const execute = (mode: ILayerMode): string =>
 {
     switch (mode) {
 

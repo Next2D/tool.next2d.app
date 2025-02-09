@@ -1,4 +1,4 @@
-import type { InstanceImpl } from "@/interface/InstanceImpl";
+import type { IInstance } from "@/interface/IInstance";
 import { execute as libraryAreaReloadUseCase } from "@/controller/application/LibraryArea/usecase/LibraryAreaReloadUseCase";
 import { execute as timelineToolUpdateSceneNameService } from "@/timeline/application/TimelineTool/application/SceneName/service/TimelineToolUpdateSceneNameService";
 import { execute as timelineToolUpdateSceneListNameService } from "@/timeline/application/TimelineTool/application/SceneName/service/TimelineToolUpdateSceneListNameService";
@@ -14,7 +14,7 @@ import { $MOVIE_CLIP_TYPE } from "@/config/InstanceConfig";
  * @method
  * @public
  */
-export const execute = (instance: InstanceImpl<any>): void =>
+export const execute = (instance: IInstance<any>): void =>
 {
     // ライブラリの表示を再描画
     libraryAreaReloadUseCase();

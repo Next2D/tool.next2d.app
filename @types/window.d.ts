@@ -12,6 +12,6 @@ declare global {
     // eslint-disable-next-line no-unused-vars
     interface Window {
         next2d: Next2D;
-        nl?: ExternalInterface;
+        nl: ExternalInterface;
     }
 }

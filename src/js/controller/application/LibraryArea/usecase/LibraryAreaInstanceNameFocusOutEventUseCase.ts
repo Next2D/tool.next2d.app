@@ -1,4 +1,4 @@
-import type { InstanceImpl } from "@/interface/InstanceImpl";
+import type { IInstance } from "@/interface/IInstance";
 import type { Instance } from "@/core/domain/model/Instance";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { execute as libraryAreaInacticeInstanceTextContentService } from "../service/LibraryAreaInacticeInstanceTextContentService";
@@ -27,7 +27,7 @@ export const execute = (event: FocusEvent): void =>
 
     const libraryId = parseInt(element.dataset.libraryId as string);
     const workSpace = $getCurrentWorkSpace();
-    const instance: InstanceImpl<Instance> | null = workSpace.getLibrary(libraryId);
+    const instance: IInstance<Instance> | null = workSpace.getLibrary(libraryId);
     if (!instance) {
         return ;
     }

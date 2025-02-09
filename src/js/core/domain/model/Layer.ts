@@ -1,5 +1,5 @@
-import type { LayerSaveObjectImpl } from "@/interface/LayerSaveObjectImpl";
-import type { LayerModeImpl } from "@/interface/LayerModeImpl";
+import type { ILayerSaveObject } from "@/interface/ILayerSaveObject";
+import type { ILayerMode } from "@/interface/ILayerMode";
 import type { ICharacterSaveObject } from "@/interface/ICharacterSaveObject";
 import type { EmptyICharacterSaveObject } from "@/interface/EmptyICharacterSaveObject";
 import { Character } from "./Character";
@@ -24,7 +24,7 @@ export class Layer
     private _$light: boolean;
     private _$disable: boolean;
     private _$lock: boolean;
-    private _$mode: LayerModeImpl;
+    private _$mode: ILayerMode;
     private _$parentId: number;
     private readonly _$characters: Character[];
     private readonly _$emptys: EmptyCharacter[];
@@ -34,7 +34,7 @@ export class Layer
      * @constructor
      * @public
      */
-    constructor (object: LayerSaveObjectImpl | null = null)
+    constructor (object: ILayerSaveObject | null = null)
     {
         /**
          * @type {number}
@@ -218,11 +218,11 @@ export class Layer
      * @member {number}
      * @public
      */
-    get mode (): LayerModeImpl
+    get mode (): ILayerMode
     {
         return this._$mode;
     }
-    set mode (mode: LayerModeImpl)
+    set mode (mode: ILayerMode)
     {
         this._$mode = mode;
     }
@@ -355,7 +355,7 @@ export class Layer
      * @method
      * @public
      */
-    load (object: LayerSaveObjectImpl): void
+    load (object: ILayerSaveObject): void
     {
         this._$id      = object.id;
         this._$name    = object.name;
@@ -603,7 +603,7 @@ export class Layer
      * @method
      * @public
      */
-    toObject (): LayerSaveObjectImpl
+    toObject (): ILayerSaveObject
     {
         const characters = [];
         for (let idx = 0; idx < this._$characters.length; ++idx) {

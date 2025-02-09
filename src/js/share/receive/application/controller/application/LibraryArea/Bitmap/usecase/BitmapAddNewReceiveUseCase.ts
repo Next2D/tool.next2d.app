@@ -1,6 +1,6 @@
-import type { ShareReceiveMessageImpl } from "@/interface/ShareReceiveMessageImpl";
+import type { IShareReceiveMessage } from "@/interface/IShareReceiveMessage";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
-import type { InstanceImpl } from "@/interface/InstanceImpl";
+import type { IInstance } from "@/interface/IInstance";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
 import { Bitmap } from "@/core/domain/model/Bitmap";
 import { execute as externalLibraryAddInstanceUseCase } from "@/external/controller/application/ExternalLibrary/usecase/ExternalLibraryAddInstanceUseCase";
@@ -28,7 +28,7 @@ const worker: Worker = new ZlibInflateWorker();
  * @method
  * @public
  */
-export const execute = async (message: ShareReceiveMessageImpl): Promise<void> =>
+export const execute = async (message: IShareReceiveMessage): Promise<void> =>
 {
     const id = message.data[0] as NonNullable<number>;
 
@@ -38,7 +38,7 @@ export const execute = async (message: ShareReceiveMessageImpl): Promise<void> =
     }
 
     const libraryId = message.data[1] as NonNullable<number>;
-    const movieClip: InstanceImpl<MovieClip> = workSpace.getLibrary(libraryId);
+    const movieClip: IInstance<MovieClip> = workSpace.getLibrary(libraryId);
     if (!movieClip) {
         return ;
     }

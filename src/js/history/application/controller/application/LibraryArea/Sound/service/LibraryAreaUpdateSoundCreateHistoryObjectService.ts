@@ -1,6 +1,6 @@
 import type { IHistoryObject } from "@/interface/IHistoryObject";
-import type { SoundSaveObjectImpl } from "@/interface/SoundSaveObjectImpl";
-import type { InstanceSaveObjectImpl } from "@/interface/InstanceSaveObjectImpl";
+import type { ISoundSaveObject } from "@/interface/ISoundSaveObject";
+import type { IInstanceSaveObject } from "@/interface/IInstanceSaveObject";
 import { $LIBRARY_OVERWRITE_SOUND_COMMAND } from "@/config/HistoryConfig";
 
 /**
@@ -19,8 +19,8 @@ import { $LIBRARY_OVERWRITE_SOUND_COMMAND } from "@/config/HistoryConfig";
 export const execute = (
     work_space_id: number,
     movie_clip_id: number,
-    before_save_object: InstanceSaveObjectImpl,
-    after_save_object: SoundSaveObjectImpl,
+    before_save_object: IInstanceSaveObject,
+    after_save_object: ISoundSaveObject,
     file_id: string = ""
 ): IHistoryObject => {
 

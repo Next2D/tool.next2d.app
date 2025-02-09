@@ -1,5 +1,5 @@
-import type { LayerModeImpl } from "@/interface/LayerModeImpl";
-import type { LayerTypeImpl } from "@/interface/LayerTypeImpl";
+import type { ILayerMode } from "@/interface/ILayerMode";
+import type { ILayerType } from "@/interface/ILayerType";
 
 /**
  * @description 通常レイヤーのモード値
@@ -8,7 +8,7 @@ import type { LayerTypeImpl } from "@/interface/LayerTypeImpl";
  * @type {number}
  * @constant
  */
-export const $NORMAL_MODE: LayerModeImpl = 0;
+export const $NORMAL_MODE: ILayerMode = 0;
 
 /**
  * @description マスクレイヤーのモード値
@@ -17,7 +17,7 @@ export const $NORMAL_MODE: LayerModeImpl = 0;
  * @type {number}
  * @constant
  */
-export const $MASK_MODE: LayerModeImpl = 1;
+export const $MASK_MODE: ILayerMode = 1;
 
 /**
  * @description マスクの子レイヤーのモード値
@@ -26,7 +26,7 @@ export const $MASK_MODE: LayerModeImpl = 1;
  * @type {number}
  * @constant
  */
-export const $MASK_IN_MODE: LayerModeImpl = 2;
+export const $MASK_IN_MODE: ILayerMode = 2;
 
 /**
  * @description ガイドレイヤーのモード値
@@ -35,7 +35,7 @@ export const $MASK_IN_MODE: LayerModeImpl = 2;
  * @type {number}
  * @constant
  */
-export const $GUIDE_MODE: LayerModeImpl = 3;
+export const $GUIDE_MODE: ILayerMode = 3;
 
 /**
  * @description ガイドの子レイヤーのモード値
@@ -44,7 +44,7 @@ export const $GUIDE_MODE: LayerModeImpl = 3;
  * @type {number}
  * @constant
  */
-export const $GUIDE_IN_MODE: LayerModeImpl = 4;
+export const $GUIDE_IN_MODE: ILayerMode = 4;
 
 /**
  * @description 通常レイヤーのタイプ値
@@ -53,7 +53,7 @@ export const $GUIDE_IN_MODE: LayerModeImpl = 4;
  * @type {number}
  * @constant
  */
-export const $NORMAL_TYPE: LayerTypeImpl = "normal";
+export const $NORMAL_TYPE: ILayerType = "normal";
 
 /**
  * @description マスクレイヤーのタイプ値
@@ -62,7 +62,7 @@ export const $NORMAL_TYPE: LayerTypeImpl = "normal";
  * @type {number}
  * @constant
  */
-export const $MASK_TYPE: LayerTypeImpl = "mask";
+export const $MASK_TYPE: ILayerType = "mask";
 
 /**
  * @description マスクの子レイヤーのタイプ値
@@ -71,7 +71,7 @@ export const $MASK_TYPE: LayerTypeImpl = "mask";
  * @type {number}
  * @constant
  */
-export const $MASK_IN_TYPE: LayerTypeImpl = "mask_in";
+export const $MASK_IN_TYPE: ILayerType = "mask_in";
 
 /**
  * @description ガイドレイヤーのタイプ値
@@ -80,7 +80,7 @@ export const $MASK_IN_TYPE: LayerTypeImpl = "mask_in";
  * @type {number}
  * @constant
  */
-export const $GUIDE_TYPE: LayerTypeImpl = "guide";
+export const $GUIDE_TYPE: ILayerType = "guide";
 
 /**
  * @description ガイドの子レイヤーのタイプ値
@@ -89,4 +89,4 @@ export const $GUIDE_TYPE: LayerTypeImpl = "guide";
  * @type {number}
  * @constant
  */
-export const $GUIDE_IN_TYPE: LayerTypeImpl = "guide_in";
+export const $GUIDE_IN_TYPE: ILayerType = "guide_in";

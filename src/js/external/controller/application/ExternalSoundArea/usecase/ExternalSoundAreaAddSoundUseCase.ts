@@ -1,7 +1,7 @@
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import type { ExternalSound } from "@/external/core/domain/model/ExternalSound";
-import type { SoundObjectImpl } from "@/interface/SoundObjectImpl";
+import type { ISoundObject } from "@/interface/ISoundObject";
 import type { IExternalItem } from "@/interface/IExternalItem";
 import { execute as soundAreaAddSoundHistoryUseCase } from "@/history/application/controller/application/SoundArea/AddSound/usecase/SoundAreaAddSoundHistoryUseCase";
 import { timelineHeader } from "@/timeline/domain/model/TimelineHeader";
@@ -42,7 +42,7 @@ export const execute = (
     }
 
     // 新規サウンドオブジェクトを作成
-    const soundObject: SoundObjectImpl = {
+    const soundObject: ISoundObject = {
         "libraryId": externalSound.id,
         "volume": volume,
         "autoPlay": auto_play,

@@ -1,4 +1,4 @@
-import { ToolImpl } from "@/interface/ToolImpl";
+import { ITool } from "@/interface/ITool";
 import { EventType } from "@/tool/domain/event/EventType";
 import type { ZoomPlusTool } from "@/tool/domain/model/ZoomPlusTool";
 import { execute as zoomMinusToolMouseOverEventUseCase } from "../service/ZoomMinusToolMouseOverEventService";
@@ -16,7 +16,7 @@ import { execute as zoomMinusToolScreenEventUseCase } from "./ZoomMinusToolScree
  * @method
  * @public
  */
-export const execute = (tool: ToolImpl<ZoomPlusTool>): void =>
+export const execute = (tool: ITool<ZoomPlusTool>): void =>
 {
     // ズームアウトツールの起動イベントを登録
     tool.addEventListener(EventType.START,

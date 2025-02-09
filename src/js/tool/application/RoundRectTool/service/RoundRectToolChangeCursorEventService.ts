@@ -1,4 +1,4 @@
-import type { ToolImpl } from "@/interface/ToolImpl";
+import type { ITool } from "@/interface/ITool";
 import type { RoundRectTool } from "@/tool/domain/model/RoundRectTool";
 import { $setCursor } from "@/global/GlobalUtil";
 import { $getDefaultTool } from "../../ToolUtil";
@@ -14,7 +14,7 @@ import { $TOOL_ROUND_RECT_NAME } from "@/config/ToolConfig";
  */
 export const execute = (): void =>
 {
-    const tool: ToolImpl<RoundRectTool> = $getDefaultTool($TOOL_ROUND_RECT_NAME);
+    const tool: ITool<RoundRectTool> = $getDefaultTool($TOOL_ROUND_RECT_NAME);
     if (!tool) {
         return ;
     }

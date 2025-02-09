@@ -1,5 +1,5 @@
-import type { ShareReceiveMessageImpl } from "@/interface/ShareReceiveMessageImpl";
-import type { InstanceImpl } from "@/interface/InstanceImpl";
+import type { IShareReceiveMessage } from "@/interface/IShareReceiveMessage";
+import type { IInstance } from "@/interface/IInstance";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
 import { execute as timelineLayerAddFrameUpdateLayerStyleUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerAddFrameUpdateLayerStyleUseCase";
@@ -15,7 +15,7 @@ import { execute as screenAreaRedrawUseCase } from "@/screen/application/ScreenA
  * @method
  * @public
  */
-export const execute = async (message: ShareReceiveMessageImpl): Promise<void> =>
+export const execute = async (message: IShareReceiveMessage): Promise<void> =>
 {
     const id = message.data[0] as NonNullable<number>;
 
@@ -25,7 +25,7 @@ export const execute = async (message: ShareReceiveMessageImpl): Promise<void> =
     }
 
     const libraryId = message.data[1] as NonNullable<number>;
-    const movieClip: InstanceImpl<MovieClip> = workSpace.getLibrary(libraryId);
+    const movieClip: IInstance<MovieClip> = workSpace.getLibrary(libraryId);
     if (!movieClip) {
         return ;
     }

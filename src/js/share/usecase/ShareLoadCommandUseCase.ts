@@ -1,4 +1,4 @@
-import type { ShareInitializeSendObjectImpl } from "@/interface/ShareInitializeSendObjectImpl";
+import type { IShareInitializeSendObject } from "@/interface/IShareInitializeSendObject";
 import { $allHideMenu } from "@/menu/application/MenuUtil";
 import { WorkSpace } from "@/core/domain/model/WorkSpace";
 import { $loadedInitializeData } from "../ShareUtil";
@@ -22,7 +22,7 @@ import {
  * @method
  * @public
  */
-export const execute = async (message: ShareInitializeSendObjectImpl): Promise<void> =>
+export const execute = async (message: IShareInitializeSendObject): Promise<void> =>
 {
     // 初回のロードを完了したかの判定を更新
     $loadedInitializeData();

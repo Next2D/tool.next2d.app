@@ -1,5 +1,5 @@
 import { $TIMELINE_MENU_NAME } from "@/config/MenuConfig";
-import type { MenuImpl } from "@/interface/MenuImpl";
+import type { IMenu } from "@/interface/IMenu";
 import type { TimelineLayerControllerMenu } from "@/menu/domain/model/TimelineLayerControllerMenu";
 import {
     $allHideMenu,
@@ -24,7 +24,7 @@ export const execute = (event: MouseEvent): void =>
     // 全てのメニューを非表示
     $allHideMenu($TIMELINE_MENU_NAME);
 
-    const menu: MenuImpl<TimelineLayerControllerMenu> | null = $getMenu($TIMELINE_MENU_NAME);
+    const menu: IMenu<TimelineLayerControllerMenu> | null = $getMenu($TIMELINE_MENU_NAME);
     if (!menu) {
         return ;
     }

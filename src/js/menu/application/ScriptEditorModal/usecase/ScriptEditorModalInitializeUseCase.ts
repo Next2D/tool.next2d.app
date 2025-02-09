@@ -1,4 +1,4 @@
-import type { ScriptEditorCompletionWordObjectImpl } from "@/interface/ScriptEditorCompletionWordObjectImpl";
+import type { IScriptEditorCompletionWordObject } from "@/interface/IScriptEditorCompletionWordObject";
 import { $getAceEditor } from "../ScriptEditorModalUtil";
 
 /**
@@ -25,7 +25,7 @@ export const execute = (): void =>
     editor.setShowPrintMargin(false);
     editor.setKeyboardHandler("ace/keybinding/vscode");
 
-    const words: ScriptEditorCompletionWordObjectImpl[] = [
+    const words: IScriptEditorCompletionWordObject[] = [
         { "word": "next2d", "meta": "keyword" }
     ];
 

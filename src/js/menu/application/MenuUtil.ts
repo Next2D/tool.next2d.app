@@ -1,6 +1,6 @@
-import type { MenuImpl } from "@/interface/MenuImpl";
+import type { IMenu } from "@/interface/IMenu";
 
-const $menus: Map<string, MenuImpl<any>> = new Map();
+const $menus: Map<string, IMenu<any>> = new Map();
 
 /**
  * @description メニューオブジェクトをマップに登録
@@ -11,7 +11,7 @@ const $menus: Map<string, MenuImpl<any>> = new Map();
  * @method
  * @public
  */
-export const $registerMenu = (menu: MenuImpl<any>): void =>
+export const $registerMenu = (menu: IMenu<any>): void =>
 {
     $menus.set(menu.name, menu);
 };
@@ -25,7 +25,7 @@ export const $registerMenu = (menu: MenuImpl<any>): void =>
  * @method
  * @public
  */
-export const $getMenu = (name: string): MenuImpl<any> | null =>
+export const $getMenu = (name: string): IMenu<any> | null =>
 {
     return $menus.has(name)
         ? $menus.get(name)
@@ -40,7 +40,7 @@ export const $getMenu = (name: string): MenuImpl<any> | null =>
  * @method
  * @public
  */
-export const $getMenuAll = (): Map<string, MenuImpl<any>> =>
+export const $getMenuAll = (): Map<string, IMenu<any>> =>
 {
     return $menus;
 };
@@ -56,7 +56,7 @@ export const $getMenuAll = (): Map<string, MenuImpl<any>> =>
  */
 export const $allHideMenu = (ignore: string = ""): void =>
 {
-    const menus: Map<string, MenuImpl<any>> = $getMenuAll();
+    const menus: Map<string, IMenu<any>> = $getMenuAll();
     for (const menu of menus.values()) {
         if (menu.name === ignore) {
             continue;

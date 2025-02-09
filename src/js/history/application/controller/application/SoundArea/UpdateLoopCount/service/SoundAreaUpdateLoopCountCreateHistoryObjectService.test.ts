@@ -1,7 +1,7 @@
 import { execute } from "./SoundAreaUpdateLoopCountCreateHistoryObjectService";
 import { $SOUND_AREA_UPDATE_LOOP_COUNT_COMMAND } from "../../../../../../../config/HistoryConfig";
 import { MovieClip } from "../../../../../../../core/domain/model/MovieClip";
-import type { SoundObjectImpl } from "../../../../../../../interface/SoundObjectImpl";
+import type { ISoundObject } from "../../../../../../../interface/ISoundObject";
 
 describe("SoundAreaUpdateLoopCountCreateHistoryObjectServiceTest", () =>
 {
@@ -13,7 +13,7 @@ describe("SoundAreaUpdateLoopCountCreateHistoryObjectServiceTest", () =>
             "name": "MovieClip_01"
         });
 
-        const soundObject: SoundObjectImpl = {
+        const soundObject: ISoundObject = {
             "libraryId": 2,
             "volume": 100,
             "autoPlay": false,

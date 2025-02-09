@@ -1,4 +1,4 @@
-import type { ShortcutViewObjectImpl } from "@/interface/ShortcutViewObjectImpl";
+import type { IShortcutViewObject } from "@/interface/IShortcutViewObject";
 import { execute as userShortcutObjectGetService } from "@/user/application/Shortcut/service/UserShortcutObjectGetService";
 import {
     $clearCommandMapping,
@@ -18,7 +18,7 @@ import {
  */
 export const execute = (): void =>
 {
-    const userShortcutObjects: ShortcutViewObjectImpl[] | null = userShortcutObjectGetService();
+    const userShortcutObjects: IShortcutViewObject[] | null = userShortcutObjectGetService();
     if (!userShortcutObjects) {
         return ;
     }
@@ -29,9 +29,9 @@ export const execute = (): void =>
     $clearTempMapping();
 
     const commandMapping: Map<string, string> = $getCommandMapping();
-    const viewMapping: Map<string, ShortcutViewObjectImpl> = $getViewMapping();
+    const viewMapping: Map<string, IShortcutViewObject> = $getViewMapping();
     for (let idx: number = 0; idx < userShortcutObjects.length; ++idx) {
-        const shortcutObject: ShortcutViewObjectImpl = userShortcutObjects[idx];
+        const shortcutObject: IShortcutViewObject = userShortcutObjects[idx];
 
         // 表示マッピングをセット
         viewMapping.set(shortcutObject.defaultKey, shortcutObject);

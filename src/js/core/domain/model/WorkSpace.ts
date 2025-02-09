@@ -1,10 +1,10 @@
-import type { InstanceImpl } from "@/interface/InstanceImpl";
-import type { UserToolAreaStateObjectImpl } from "@/interface/UserToolAreaStateObjectImpl";
-import type { UserTimelineAreaStateObjectImpl } from "@/interface/UserTimelineAreaStateObjectImpl";
-import type { UserPropertyAreaStateObjectImpl } from "@/interface/UserPropertyAreaStateObjectImpl";
-import type { WorkSpaceSaveObjectImpl } from "@/interface/WorkSpaceSaveObjectImpl";
-import type { UserControllerAreaStateObjectImpl } from "@/interface/UserControllerAreaStateObjectImpl";
-import type { InstanceSaveObjectImpl } from "@/interface/InstanceSaveObjectImpl";
+import type { IInstance } from "@/interface/IInstance";
+import type { IUserToolAreaStateObject } from "@/interface/IUserToolAreaStateObject";
+import type { IUserTimelineAreaStateObject } from "@/interface/IUserTimelineAreaStateObject";
+import type { IUserControllerAreaStateObject } from "@/interface/IUserControllerAreaStateObject";
+import type { IWorkSpaceSaveObject } from "@/interface/IWorkSpaceSaveObject";
+import type { IUserControllerAreaStateObject } from "@/interface/IUserControllerAreaStateObject";
+import type { IInstanceSaveObject } from "@/interface/IInstanceSaveObject";
 import type { IHistoryObject } from "@/interface/IHistoryObject";
 import { ScreenTab } from "@/screen/domain/model/ScreenTab";
 import { MovieClip } from "./MovieClip";
@@ -53,14 +53,14 @@ export class WorkSpace
     private _$scale: number;
     private readonly _$root: MovieClip;
     private readonly _$stage: Stage;
-    private readonly _$libraries: Map<number, InstanceImpl<any>>;
+    private readonly _$libraries: Map<number, IInstance<any>>;
     private readonly _$pathMap: Map<string, number>;
     private readonly _$symbolMap: Map<string, number>;
     private readonly _$screenTab: ScreenTab;
-    private readonly _$toolAreaState: UserToolAreaStateObjectImpl;
-    private readonly _$timelineAreaState: UserTimelineAreaStateObjectImpl;
-    private readonly _$propertyAreaState: UserPropertyAreaStateObjectImpl;
-    private readonly _$controllerAreaState: UserControllerAreaStateObjectImpl;
+    private readonly _$toolAreaState: IUserToolAreaStateObject;
+    private readonly _$timelineAreaState: IUserTimelineAreaStateObject;
+    private readonly _$propertyAreaState: IUserControllerAreaStateObject;
+    private readonly _$controllerAreaState: IUserControllerAreaStateObject;
     private readonly _$plugins: Map<any, any>;
     private readonly _$histories: IHistoryObject[];
 
@@ -336,7 +336,7 @@ export class WorkSpace
      * @readonly
      * @public
      */
-    get libraries ():  Map<number, InstanceImpl<any>>
+    get libraries ():  Map<number, IInstance<any>>
     {
         return this._$libraries;
     }
@@ -388,7 +388,7 @@ export class WorkSpace
      * @readonly
      * @public
      */
-    get toolAreaState (): UserToolAreaStateObjectImpl
+    get toolAreaState (): IUserToolAreaStateObject
     {
         return this._$toolAreaState;
     }
@@ -401,7 +401,7 @@ export class WorkSpace
      * @readonly
      * @public
      */
-    get timelineAreaState (): UserTimelineAreaStateObjectImpl
+    get timelineAreaState (): IUserTimelineAreaStateObject
     {
         return this._$timelineAreaState;
     }
@@ -414,7 +414,7 @@ export class WorkSpace
      * @readonly
      * @public
      */
-    get controllerAreaState (): UserControllerAreaStateObjectImpl
+    get controllerAreaState (): IUserControllerAreaStateObject
     {
         return this._$controllerAreaState;
     }
@@ -427,7 +427,7 @@ export class WorkSpace
      * @readonly
      * @public
      */
-    get propertyAreaState (): UserPropertyAreaStateObjectImpl
+    get propertyAreaState (): IUserControllerAreaStateObject
     {
         return this._$propertyAreaState;
     }
@@ -517,7 +517,7 @@ export class WorkSpace
      * @method
      * @public
      */
-    async load (object: WorkSpaceSaveObjectImpl, share: boolean = false): Promise<void>
+    async load (object: IWorkSpaceSaveObject, share: boolean = false): Promise<void>
     {
         this.name = object.name;
 
@@ -569,10 +569,10 @@ export class WorkSpace
      * @method
      * @public
      */
-    getLibrary (library_id: number): InstanceImpl<any> | null
+    getLibrary (library_id: number): IInstance<any> | null
     {
         return this._$libraries.has(library_id)
-            ? this._$libraries.get(library_id) as NonNullable<InstanceImpl<any>>
+            ? this._$libraries.get(library_id) as NonNullable<IInstance<any>>
             : null;
     }
 
@@ -585,7 +585,7 @@ export class WorkSpace
      * @method
      * @public
      */
-    async loadLibrary (libraries: InstanceSaveObjectImpl[]): Promise<void>
+    async loadLibrary (libraries: IInstanceSaveObject[]): Promise<void>
     {
         // セーブデータからライブラリを複製
         await workSpaceLoadLibraryService(this, libraries);
@@ -629,7 +629,7 @@ export class WorkSpace
      * @method
      * @public
      */
-    updateToolArea (object: UserToolAreaStateObjectImpl): void
+    updateToolArea (object: IUserToolAreaStateObject): void
     {
         Object.assign(this._$toolAreaState, object);
     }
@@ -643,7 +643,7 @@ export class WorkSpace
      * @method
      * @public
      */
-    updatePropertyArea (object: UserPropertyAreaStateObjectImpl): void
+    updatePropertyArea (object: IUserControllerAreaStateObject): void
     {
         Object.assign(this._$propertyAreaState, object);
     }
@@ -657,7 +657,7 @@ export class WorkSpace
      * @method
      * @public
      */
-    updateTimelineArea (object: UserTimelineAreaStateObjectImpl): void
+    updateTimelineArea (object: IUserTimelineAreaStateObject): void
     {
         Object.assign(this._$timelineAreaState, object);
     }
@@ -671,7 +671,7 @@ export class WorkSpace
      * @method
      * @public
      */
-    updateControllerArea (object: UserControllerAreaStateObjectImpl): void
+    updateControllerArea (object: IUserControllerAreaStateObject): void
     {
         Object.assign(this._$controllerAreaState, object);
     }
@@ -732,7 +732,7 @@ export class WorkSpace
      * @method
      * @public
      */
-    toObject (): WorkSpaceSaveObjectImpl
+    toObject (): IWorkSpaceSaveObject
     {
         const libraries = [];
         for (const instance of this._$libraries.values()) {

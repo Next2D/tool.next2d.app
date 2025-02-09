@@ -1,6 +1,6 @@
 import { EventType } from "@/tool/domain/event/EventType";
 import { $getActiveTool } from "../../ToolUtil";
-import type { ToolImpl } from "@/interface/ToolImpl";
+import type { ITool } from "@/interface/ITool";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 
 /**
@@ -20,7 +20,7 @@ export const execute = (event: PointerEvent): void =>
         event.stopPropagation();
     }
 
-    const activeTool: ToolImpl<any> | null = $getActiveTool();
+    const activeTool: ITool<any> | null = $getActiveTool();
     if (!activeTool) {
         return ;
     }

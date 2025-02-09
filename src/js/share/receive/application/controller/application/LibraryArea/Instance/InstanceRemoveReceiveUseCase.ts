@@ -1,5 +1,5 @@
-import type { ShareReceiveMessageImpl } from "@/interface/ShareReceiveMessageImpl";
-import type { InstanceImpl } from "@/interface/InstanceImpl";
+import type { IShareReceiveMessage } from "@/interface/IShareReceiveMessage";
+import type { IInstance } from "@/interface/IInstance";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
 import { IAllSaveObject } from "@/interface/IAllSaveObject";
@@ -14,7 +14,7 @@ import { execute as externalItemRemoveUseCase } from "@/external/core/applicatio
  * @method
  * @public
  */
-export const execute = (message: ShareReceiveMessageImpl): void =>
+export const execute = (message: IShareReceiveMessage): void =>
 {
     const id = message.data[0] as NonNullable<number>;
 
@@ -24,14 +24,14 @@ export const execute = (message: ShareReceiveMessageImpl): void =>
     }
 
     const libraryId = message.data[1] as NonNullable<number>;
-    const movieClip: InstanceImpl<MovieClip> = workSpace.getLibrary(libraryId);
+    const movieClip: IInstance<MovieClip> = workSpace.getLibrary(libraryId);
     if (!movieClip) {
         return ;
     }
 
     // 受け取ったSaveObjectのIDからインスタンスを取得する
     const saveObject = message.data[2] as NonNullable<IAllSaveObject>;
-    const instance: InstanceImpl<any> = workSpace.getLibrary(saveObject.id);
+    const instance: IInstance<any> = workSpace.getLibrary(saveObject.id);
 
     // 削除を実行する
     externalItemRemoveUseCase(workSpace, instance, true, true);

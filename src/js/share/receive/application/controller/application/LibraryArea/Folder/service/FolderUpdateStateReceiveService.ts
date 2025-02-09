@@ -1,5 +1,5 @@
-import type { ShareReceiveMessageImpl } from "@/interface/ShareReceiveMessageImpl";
-import type { InstanceImpl } from "@/interface/InstanceImpl";
+import type { IShareReceiveMessage } from "@/interface/IShareReceiveMessage";
+import type { IInstance } from "@/interface/IInstance";
 import type { Folder } from "@/core/domain/model/Folder";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
 import { ExternalFolder } from "@/external/core/domain/model/ExternalFolder";
@@ -13,7 +13,7 @@ import { ExternalFolder } from "@/external/core/domain/model/ExternalFolder";
  * @method
  * @public
  */
-export const execute = (message: ShareReceiveMessageImpl): void =>
+export const execute = (message: IShareReceiveMessage): void =>
 {
     const id = message.data[0] as NonNullable<number>;
 
@@ -23,7 +23,7 @@ export const execute = (message: ShareReceiveMessageImpl): void =>
     }
 
     const libraryId = message.data[1] as NonNullable<number>;
-    const folder: InstanceImpl<Folder> = workSpace.getLibrary(libraryId);
+    const folder: IInstance<Folder> = workSpace.getLibrary(libraryId);
     if (!folder) {
         return ;
     }

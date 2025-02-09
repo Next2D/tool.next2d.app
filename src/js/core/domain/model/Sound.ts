@@ -1,5 +1,5 @@
-import type { ObjectImpl } from "@/interface/ObjectImpl";
-import type { SoundSaveObjectImpl } from "@/interface/SoundSaveObjectImpl";
+import type { IObject } from "@/interface/IObject";
+import type { ISoundSaveObject } from "@/interface/ISoundSaveObject";
 import { Instance } from "./Instance";
 import { execute as binaryToBufferService } from "@/core/service/BinaryToBufferService";
 import { execute as bufferToBinaryService } from "@/core/service/BufferToBinaryService";
@@ -29,7 +29,7 @@ export class Sound extends Instance
      * @constructor
      * @public
      */
-    constructor (object: ObjectImpl<SoundSaveObjectImpl>)
+    constructor (object: IObject<ISoundSaveObject>)
     {
         super(object);
 
@@ -240,7 +240,7 @@ export class Sound extends Instance
      * @method
      * @public
      */
-    toObject (): SoundSaveObjectImpl
+    toObject (): ISoundSaveObject
     {
         return {
             "id":        this.id,

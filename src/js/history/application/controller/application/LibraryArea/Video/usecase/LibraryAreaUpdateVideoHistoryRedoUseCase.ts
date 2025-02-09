@@ -1,4 +1,4 @@
-import type { VideoSaveObjectImpl } from "@/interface/VideoSaveObjectImpl";
+import type { IVideoSaveObject } from "@/interface/IVideoSaveObject";
 import { Video } from "@/core/domain/model/Video";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
 import { execute as libraryAreaSelectedClearUseCase } from "@/controller/application/LibraryArea/usecase/LibraryAreaSelectedClearUseCase";
@@ -16,7 +16,7 @@ import { execute as libraryAreaReloadUseCase } from "@/controller/application/Li
  */
 export const execute = (
     work_space_id: number,
-    after_video_object: VideoSaveObjectImpl
+    after_video_object: IVideoSaveObject
 ): void => {
 
     const workSpace = $getWorkSpace(work_space_id);

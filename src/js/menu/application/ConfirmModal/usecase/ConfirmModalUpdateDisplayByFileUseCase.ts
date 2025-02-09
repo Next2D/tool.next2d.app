@@ -1,4 +1,4 @@
-import type { InstanceImpl } from "@/interface/InstanceImpl";
+import type { IInstance } from "@/interface/IInstance";
 import { execute as confirmModalFileToElementUseCase } from "./ConfirmModalFileToElementUseCase";
 import { $poolCanvas } from "@/global/GlobalUtil";
 import {
@@ -19,7 +19,7 @@ import {
  */
 export const execute = (
     file: File,
-    instance: InstanceImpl<any>
+    instance: IInstance<any>
 ): void => {
 
     const nameElement: HTMLInputElement | null = document

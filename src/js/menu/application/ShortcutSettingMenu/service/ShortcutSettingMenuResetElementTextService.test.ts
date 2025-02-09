@@ -1,4 +1,4 @@
-import { ShortcutViewObjectImpl } from "../../../../interface/ShortcutViewObjectImpl";
+import { IShortcutViewObject } from "../../../../interface/IShortcutViewObject";
 import { $getTempMapping, $getViewMapping } from "../ShortcutSettingMenuUtil";
 import { execute } from "./ShortcutSettingMenuResetElementTextService";
 
@@ -7,8 +7,8 @@ describe("ShortcutSettingMenuResetElementTextServiceTest", () =>
     test("execute test", () =>
     {
         // mock
-        const tempMapping: Map<string, ShortcutViewObjectImpl> = $getTempMapping();
-        const viewMapping: Map<string, ShortcutViewObjectImpl> = $getViewMapping();
+        const tempMapping: Map<string, IShortcutViewObject> = $getTempMapping();
+        const viewMapping: Map<string, IShortcutViewObject> = $getViewMapping();
 
         tempMapping.set("default_screen", {
             "customKey": "custom_screen",

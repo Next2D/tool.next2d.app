@@ -1,5 +1,5 @@
 import type { Instance } from "@/core/domain/model/Instance";
-import type { InstanceImpl } from "@/interface/InstanceImpl";
+import type { IInstance } from "@/interface/IInstance";
 import { libraryArea } from "@/controller/domain/model/LibraryArea";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { ExternalLibrary } from "@/external/controller/domain/model/ExternalLibrary";
@@ -33,7 +33,7 @@ export const execute = async (): Promise<void> =>
     for (let idx = 0; idx < libraryArea.selectedIds.length; ++idx) {
 
         const libraryId = libraryArea.selectedIds[idx];
-        const instance: InstanceImpl<Instance> | null = workSpace.getLibrary(libraryId);
+        const instance: IInstance<Instance> | null = workSpace.getLibrary(libraryId);
         if (!instance) {
             continue;
         }

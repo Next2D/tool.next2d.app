@@ -1,6 +1,6 @@
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
-import type { InstanceSaveObjectImpl } from "@/interface/InstanceSaveObjectImpl";
+import type { IInstanceSaveObject } from "@/interface/IInstanceSaveObject";
 import type { Bitmap } from "@/core/domain/model/Bitmap";
 import { $useSocket } from "@/share/ShareUtil";
 import { $LIBRARY_OVERWRITE_IMAGE_COMMAND } from "@/config/HistoryConfig";
@@ -39,7 +39,7 @@ const worker: Worker = new ZlibDeflateWorker();
 export const execute = async (
     work_space: WorkSpace,
     movie_clip: MovieClip,
-    before_save_object: InstanceSaveObjectImpl,
+    before_save_object: IInstanceSaveObject,
     bitmap: Bitmap,
     receiver: boolean = false
 ): Promise<void> => {

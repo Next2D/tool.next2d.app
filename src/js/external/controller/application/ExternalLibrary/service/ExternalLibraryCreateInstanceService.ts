@@ -1,5 +1,5 @@
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
-import type { InstanceImpl } from "@/interface/InstanceImpl";
+import type { IInstance } from "@/interface/IInstance";
 import { ExternalFolder } from "@/external/core/domain/model/ExternalFolder";
 import { ExternalBitmap } from "@/external/core/domain/model/ExternalBitmap";
 import { ExternalMovieClip } from "@/external/core/domain/model/ExternalMovieClip";
@@ -30,7 +30,7 @@ import type { IExternalItem } from "@/interface/IExternalItem";
  */
 export const execute = (
     work_space: WorkSpace,
-    instance: InstanceImpl<any>
+    instance: IInstance<any>
 ): IExternalItem<any> | null => {
 
     // タイプ別のクラスを作成

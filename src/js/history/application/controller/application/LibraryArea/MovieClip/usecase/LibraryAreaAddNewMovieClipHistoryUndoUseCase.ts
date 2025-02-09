@@ -1,5 +1,5 @@
 import { $getWorkSpace } from "@/core/application/CoreUtil";
-import type { InstanceImpl } from "@/interface/InstanceImpl";
+import type { IInstance } from "@/interface/IInstance";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import { execute as externalWorkSpaceRemoveInstanceService } from "@/external/core/application/ExternalWorkSpace/service/ExternalWorkSpaceRemoveInstanceService";
 import { execute as libraryAreaReloadUseCase } from "@/controller/application/LibraryArea/usecase/LibraryAreaReloadUseCase";
@@ -24,7 +24,7 @@ export const execute = (
         return ;
     }
 
-    const movieClip: InstanceImpl<MovieClip> | null = workSpace.getLibrary(library_id);
+    const movieClip: IInstance<MovieClip> | null = workSpace.getLibrary(library_id);
     if (!movieClip) {
         return ;
     }

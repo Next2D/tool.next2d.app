@@ -3,7 +3,7 @@ import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import { execute as timelineLayerBuildElementUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerBuildElementUseCase";
 import { execute as timelineLayerControllerMoveLayerHistoryUseCase } from "@/history/application/timeline/application/TimelineLayerController/MoveLayer/usecase/TimelineLayerControllerMoveLayerHistoryUseCase";
 import { execute as timelineLayerControllerUpdateIconElementService } from "@/timeline/application/TimelineLayerController/service/TimelineLayerControllerUpdateIconElementService";
-import { LayerModeImpl } from "@/interface/LayerModeImpl";
+import { ILayerMode } from "@/interface/ILayerMode";
 import {
     $GUIDE_IN_MODE,
     $GUIDE_MODE,
@@ -54,7 +54,7 @@ export const execute = async (
         }
     }
 
-    let mode: LayerModeImpl = 0;
+    let mode: ILayerMode = 0;
     switch (distLayer.mode) {
 
         case $MASK_MODE: // マスクレイヤー

@@ -1,5 +1,5 @@
-import type { InstanceTypeImpl } from "@/interface/InstanceTypeImpl";
-import type { ObjectImpl } from "@/interface/ObjectImpl";
+import type { IInstanceType } from "@/interface/IInstanceType";
+import type { IObject } from "@/interface/IObject";
 import { WorkSpace } from "./WorkSpace";
 import { execute as instanceGetPathNameService } from "@/core/application/Instance/service/InstanceGetPathNameService";
 
@@ -14,7 +14,7 @@ export class Instance
 {
     private readonly _$id: number;
     private _$name: string;
-    private _$type: InstanceTypeImpl;
+    private _$type: IInstanceType;
     private _$symbol: string;
     private _$folderId: number;
 
@@ -23,7 +23,7 @@ export class Instance
      * @constructor
      * @public
      */
-    constructor (object: ObjectImpl<any>)
+    constructor (object: IObject<any>)
     {
         /**
          * @type {number}
@@ -77,7 +77,7 @@ export class Instance
      * @readonly
      * @public
      */
-    get type (): InstanceTypeImpl
+    get type (): IInstanceType
     {
         return this._$type;
     }

@@ -1,5 +1,5 @@
 import { $SCREEN_TAB_MENU_NAME } from "@/config/MenuConfig";
-import type { MenuImpl } from "@/interface/MenuImpl";
+import type { IMenu } from "@/interface/IMenu";
 import type { ScreenTabMenu } from "@/menu/domain/model/ScreenTabMenu";
 import { $getMenu } from "@/menu/application/MenuUtil";
 import { execute as screenTabMenuShowService } from "../service/ScreenTabMenuShowService";
@@ -16,7 +16,7 @@ import { execute as screenTabMenuHideService } from "../service/ScreenTabMenuHid
  */
 export const execute = (event: PointerEvent): void =>
 {
-    const menu: MenuImpl<ScreenTabMenu> | null = $getMenu($SCREEN_TAB_MENU_NAME);
+    const menu: IMenu<ScreenTabMenu> | null = $getMenu($SCREEN_TAB_MENU_NAME);
     if (!menu) {
         return ;
     }

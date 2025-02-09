@@ -1,5 +1,5 @@
 import type { ConfirmModal } from "@/menu/domain/model/ConfirmModal";
-import type { MenuImpl } from "@/interface/MenuImpl";
+import type { IMenu } from "@/interface/IMenu";
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import { $CONFIRM_MODAL_NAME } from "@/config/MenuConfig";
 import { $getMenu } from "../../MenuUtil";
@@ -27,7 +27,7 @@ export const execute = (
         return false;
     }
 
-    const menu: MenuImpl<ConfirmModal> | null = $getMenu($CONFIRM_MODAL_NAME);
+    const menu: IMenu<ConfirmModal> | null = $getMenu($CONFIRM_MODAL_NAME);
     if (!menu) {
         return false;
     }

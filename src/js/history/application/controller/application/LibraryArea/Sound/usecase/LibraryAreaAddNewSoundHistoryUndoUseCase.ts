@@ -1,6 +1,6 @@
 import type { Sound } from "@/core/domain/model/Sound";
-import type { InstanceImpl } from "@/interface/InstanceImpl";
-import type { SoundSaveObjectImpl } from "@/interface/SoundSaveObjectImpl";
+import type { IInstance } from "@/interface/IInstance";
+import type { ISoundSaveObject } from "@/interface/ISoundSaveObject";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
 import { execute as externalWorkSpaceRemoveInstanceService } from "@/external/core/application/ExternalWorkSpace/service/ExternalWorkSpaceRemoveInstanceService";
 import { execute as libraryAreaReloadUseCase } from "@/controller/application/LibraryArea/usecase/LibraryAreaReloadUseCase";
@@ -19,7 +19,7 @@ import { execute as soundAreaRebuildSelectElementService } from "@/controller/ap
  */
 export const execute = (
     work_space_id: number,
-    sound_save_object: SoundSaveObjectImpl
+    sound_save_object: ISoundSaveObject
 ): void => {
 
     const workSpace = $getWorkSpace(work_space_id);
@@ -27,7 +27,7 @@ export const execute = (
         return ;
     }
 
-    const sound: InstanceImpl<Sound> | null = workSpace.getLibrary(sound_save_object.id);
+    const sound: IInstance<Sound> | null = workSpace.getLibrary(sound_save_object.id);
     if (!sound) {
         return ;
     }

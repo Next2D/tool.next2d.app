@@ -1,4 +1,4 @@
-import type { ToolImpl } from "@/interface/ToolImpl";
+import type { ITool } from "@/interface/ITool";
 import type { CircleTool } from "@/tool/domain/model/CircleTool";
 import { $setCursor } from "@/global/GlobalUtil";
 import { $getDefaultTool } from "../../ToolUtil";
@@ -19,7 +19,7 @@ export const execute = (event: PointerEvent): void =>
     event.stopPropagation();
     event.preventDefault();
 
-    const tool: ToolImpl<CircleTool> = $getDefaultTool($TOOL_CIRCLE_NAME);
+    const tool: ITool<CircleTool> = $getDefaultTool($TOOL_CIRCLE_NAME);
     if (!tool) {
         return ;
     }

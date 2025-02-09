@@ -1,6 +1,6 @@
 import type { Shape } from "@/core/domain/model/Shape";
-import type { InstanceImpl } from "@/interface/InstanceImpl";
-import type { ShapeSaveObjectImpl } from "@/interface/ShapeSaveObjectImpl";
+import type { IInstance } from "@/interface/IInstance";
+import type { IShapeSaveObject } from "@/interface/IShapeSaveObject";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
 import { execute as externalWorkSpaceRemoveInstanceService } from "@/external/core/application/ExternalWorkSpace/service/ExternalWorkSpaceRemoveInstanceService";
 import { execute as libraryAreaReloadUseCase } from "@/controller/application/LibraryArea/usecase/LibraryAreaReloadUseCase";
@@ -17,7 +17,7 @@ import { execute as libraryAreaReloadUseCase } from "@/controller/application/Li
  */
 export const execute = (
     work_space_id: number,
-    shape_object: ShapeSaveObjectImpl
+    shape_object: IShapeSaveObject
 ): void => {
 
     const workSpace = $getWorkSpace(work_space_id);
@@ -25,7 +25,7 @@ export const execute = (
         return ;
     }
 
-    const shape: InstanceImpl<Shape> | null = workSpace.getLibrary(shape_object.id);
+    const shape: IInstance<Shape> | null = workSpace.getLibrary(shape_object.id);
     if (!shape) {
         return ;
     }

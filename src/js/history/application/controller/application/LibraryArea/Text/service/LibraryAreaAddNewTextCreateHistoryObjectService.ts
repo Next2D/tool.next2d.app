@@ -1,5 +1,5 @@
 import type { IHistoryObject } from "@/interface/IHistoryObject";
-import type { TextSaveObjectImpl } from "@/interface/TextSaveObjectImpl";
+import type { ITextSaveObject } from "@/interface/ITextSaveObject";
 import { $LIBRARY_ADD_NEW_TEXT_COMMAND } from "@/config/HistoryConfig";
 
 /**
@@ -16,7 +16,7 @@ import { $LIBRARY_ADD_NEW_TEXT_COMMAND } from "@/config/HistoryConfig";
 export const execute = (
     work_space_id: number,
     movie_clip_id: number,
-    text_object: TextSaveObjectImpl
+    text_object: ITextSaveObject
 ): IHistoryObject => {
 
     return {

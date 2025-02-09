@@ -1,6 +1,6 @@
 import type { Folder } from "@/core/domain/model/Folder";
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
-import type { InstanceImpl } from "@/interface/InstanceImpl";
+import type { IInstance } from "@/interface/IInstance";
 
 /**
  * @description ライブラリエリアの移動する先のフォルダーが自分の親フォルダーかチェック
@@ -15,14 +15,14 @@ import type { InstanceImpl } from "@/interface/InstanceImpl";
  */
 export const execute = (
     work_space: WorkSpace,
-    instance: InstanceImpl<Folder>,
+    instance: IInstance<Folder>,
     parent_folder_id: number
 ): boolean => {
 
     let folderId = instance.folderId;
     while (folderId) {
 
-        const instance: InstanceImpl<Folder> | null = work_space.getLibrary(folderId);
+        const instance: IInstance<Folder> | null = work_space.getLibrary(folderId);
         if (!instance) {
             return true;
         }

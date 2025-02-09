@@ -1,6 +1,6 @@
 import type { IHistoryObject } from "@/interface/IHistoryObject";
-import type { VideoSaveObjectImpl } from "@/interface/VideoSaveObjectImpl";
-import type { InstanceSaveObjectImpl } from "@/interface/InstanceSaveObjectImpl";
+import type { IVideoSaveObject } from "@/interface/IVideoSaveObject";
+import type { IInstanceSaveObject } from "@/interface/IInstanceSaveObject";
 import { $LIBRARY_OVERWRITE_VIDEO_COMMAND } from "@/config/HistoryConfig";
 
 /**
@@ -19,8 +19,8 @@ import { $LIBRARY_OVERWRITE_VIDEO_COMMAND } from "@/config/HistoryConfig";
 export const execute = (
     work_space_id: number,
     movie_clip_id: number,
-    before_save_object: InstanceSaveObjectImpl,
-    after_save_object: VideoSaveObjectImpl,
+    before_save_object: IInstanceSaveObject,
+    after_save_object: IVideoSaveObject,
     file_id: string = ""
 ): IHistoryObject => {
 

@@ -1,4 +1,4 @@
-import type { ToolImpl } from "@/interface/ToolImpl";
+import type { ITool } from "@/interface/ITool";
 import { EventType } from "@/tool/domain/event/EventType";
 import type { CircleTool } from "@/tool/domain/model/CircleTool";
 import { execute as circleToolStartEventUseCase } from "./CircleToolStartEventUseCase";
@@ -16,7 +16,7 @@ import { execute as circleToolChangeCursorEventService } from "../service/Circle
  * @method
  * @public
  */
-export const execute = (tool: ToolImpl<CircleTool>): void =>
+export const execute = (tool: ITool<CircleTool>): void =>
 {
     // 起動イベントを登録
     tool.addEventListener(EventType.START,

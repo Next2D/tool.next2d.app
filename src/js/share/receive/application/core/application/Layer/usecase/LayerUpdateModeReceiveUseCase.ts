@@ -1,7 +1,7 @@
-import type { ShareReceiveMessageImpl } from "@/interface/ShareReceiveMessageImpl";
+import type { IShareReceiveMessage } from "@/interface/IShareReceiveMessage";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
-import type { InstanceImpl } from "@/interface/InstanceImpl";
-import type { LayerModeImpl } from "@/interface/LayerModeImpl";
+import type { IInstance } from "@/interface/IInstance";
+import type { ILayerMode } from "@/interface/ILayerMode";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
 import { execute as externalLayerUpdateTypeUseCase } from "@/external/core/application/ExternalLayer/usecase/ExternalLayerUpdateTypeUseCase";
 import { execute as externalLayerGetLayerTypeService } from "@/external/core/application/ExternalLayer/service/ExternalLayerGetLayerTypeService";
@@ -15,7 +15,7 @@ import { execute as externalLayerGetLayerTypeService } from "@/external/core/app
  * @method
  * @public
  */
-export const execute = async (message: ShareReceiveMessageImpl): Promise<void> =>
+export const execute = async (message: IShareReceiveMessage): Promise<void> =>
 {
     const id = message.data[0] as NonNullable<number>;
 
@@ -25,7 +25,7 @@ export const execute = async (message: ShareReceiveMessageImpl): Promise<void> =
     }
 
     const movieClipId = message.data[1] as NonNullable<number>;
-    const movieClip: InstanceImpl<MovieClip> = workSpace.getLibrary(movieClipId);
+    const movieClip: IInstance<MovieClip> = workSpace.getLibrary(movieClipId);
     if (!movieClip) {
         return ;
     }
@@ -37,7 +37,7 @@ export const execute = async (message: ShareReceiveMessageImpl): Promise<void> =
     }
 
     const type = externalLayerGetLayerTypeService(
-        message.data[4] as NonNullable<LayerModeImpl>
+        message.data[4] as NonNullable<ILayerMode>
     );
 
     // レイヤーの状態を更新

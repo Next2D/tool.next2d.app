@@ -1,4 +1,4 @@
-import type { ToolImpl } from "@/interface/ToolImpl";
+import type { ITool } from "@/interface/ITool";
 import type { ArrowTool } from "@/tool/domain/model/ArrowTool";
 import { EventType } from "@/tool/domain/event/EventType";
 import { execute as textRectHideService } from "@/screen/application/TextRect/service/TextRectHideService";
@@ -38,7 +38,7 @@ export const execute = async (event: PointerEvent): Promise<void> =>
     );
     element.removeEventListener(EventType.MOUSE_UP, execute);
 
-    const tool: ToolImpl<ArrowTool> = $getDefaultTool($TOOL_ARROW_NAME);
+    const tool: ITool<ArrowTool> = $getDefaultTool($TOOL_ARROW_NAME);
     if (tool) {
         $setActiveTool(tool);
     }

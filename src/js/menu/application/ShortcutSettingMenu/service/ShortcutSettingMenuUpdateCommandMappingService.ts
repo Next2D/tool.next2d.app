@@ -1,4 +1,4 @@
-import { ShortcutViewObjectImpl } from "@/interface/ShortcutViewObjectImpl";
+import { IShortcutViewObject } from "@/interface/IShortcutViewObject";
 import {
     $clearCommandMapping,
     $getCommandMapping,
@@ -19,7 +19,7 @@ export const execute = (): void =>
     $clearCommandMapping();
 
     const commandMapping: Map<string, string> = $getCommandMapping();
-    const viewMapping: Map<string, ShortcutViewObjectImpl> = $getViewMapping();
+    const viewMapping: Map<string, IShortcutViewObject> = $getViewMapping();
     for (const shortcutObject of viewMapping.values()) {
         commandMapping.set(
             shortcutObject.customKey,

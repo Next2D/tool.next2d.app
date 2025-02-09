@@ -1,13 +1,13 @@
 import type { IHistoryObject } from "@/interface/IHistoryObject";
-import type { LayerSaveObjectImpl } from "@/interface/LayerSaveObjectImpl";
+import type { ILayerSaveObject } from "@/interface/ILayerSaveObject";
 import type { IBitmapSaveObject } from "@/interface/IBitmapSaveObject";
-import type { VideoSaveObjectImpl } from "@/interface/VideoSaveObjectImpl";
-import type { SoundSaveObjectImpl } from "@/interface/SoundSaveObjectImpl";
-import type { InstanceSaveObjectImpl } from "@/interface/InstanceSaveObjectImpl";
-import type { LayerModeImpl } from "@/interface/LayerModeImpl";
+import type { IVideoSaveObject } from "@/interface/IVideoSaveObject";
+import type { ISoundSaveObject } from "@/interface/ISoundSaveObject";
+import type { IInstanceSaveObject } from "@/interface/IInstanceSaveObject";
+import type { ILayerMode } from "@/interface/ILayerMode";
 import type { EmptyICharacterSaveObject } from "@/interface/EmptyICharacterSaveObject";
 import type { ICharacterSaveObject } from "@/interface/ICharacterSaveObject";
-import type { SoundObjectImpl } from "@/interface/SoundObjectImpl";
+import type { ISoundObject } from "@/interface/ISoundObject";
 import { execute as userDatabaseAutoSaveReservationUseCase } from "@/user/application/Database/usecase/UserDatabaseAutoSaveReservationUseCase";
 import { execute as screenTabNameAddHistoryUndoUseCase } from "@/history/application/screen/application/ScreenTab/usecase/ScreenTabNameAddHistoryUndoUseCase";
 import { execute as timelineToolLayerAddHistoryUndoUseCase } from "@/history/application/timeline/application/TimelineTool/LayerAdd/usecase/TimelineToolLayerAddHistoryUndoUseCase";
@@ -115,7 +115,7 @@ import {
     $LIBRARY_ADD_NEW_SHAPE_COMMAND,
     $LIBRARY_UPDATE_SHAPE_GRAPHICS_COMMAND
 } from "@/config/HistoryConfig";
-import { ShapeSaveObjectImpl } from "@/interface/ShapeSaveObjectImpl";
+import { IShapeSaveObject } from "@/interface/IShapeSaveObject";
 
 /**
  * @description Undoコマンドの実行関数
@@ -167,7 +167,7 @@ export const execute = async (
                 messages[1] as number, // MovieClipId
                 messages[2] as number, // Layer Index
                 messages[3] as number[], // Child Layer Indexes
-                messages[4] as LayerSaveObjectImpl // Layer Object
+                messages[4] as ILayerSaveObject // Layer Object
             );
             break;
 
@@ -247,7 +247,7 @@ export const execute = async (
         case $LIBRARY_OVERWRITE_IMAGE_COMMAND:
             await libraryAreaUpdateBitmapHistoryUndoUseCase(
                 messages[0] as number, // workSpaceId
-                messages[2] as InstanceSaveObjectImpl // Save Object
+                messages[2] as IInstanceSaveObject // Save Object
             );
             break;
 
@@ -255,7 +255,7 @@ export const execute = async (
         case $LIBRARY_ADD_NEW_VIDEO_COMMAND:
             libraryAreaAddNewVideoHistoryUndoUseCase(
                 messages[0] as number, // workSpaceId
-                messages[2] as VideoSaveObjectImpl // Video Save Object
+                messages[2] as IVideoSaveObject // Video Save Object
             );
             break;
 
@@ -263,7 +263,7 @@ export const execute = async (
         case $LIBRARY_OVERWRITE_VIDEO_COMMAND:
             await libraryAreaUpdateVideoHistoryUndoUseCase(
                 messages[0] as number, // workSpaceId
-                messages[2] as VideoSaveObjectImpl // Video Save Object
+                messages[2] as IVideoSaveObject // Video Save Object
             );
             break;
 
@@ -271,7 +271,7 @@ export const execute = async (
         case $LIBRARY_ADD_NEW_SOUND_COMMAND:
             libraryAreaAddNewSoundHistoryUndoUseCase(
                 messages[0] as number, // workSpaceId
-                messages[2] as SoundSaveObjectImpl // Sound Save Object
+                messages[2] as ISoundSaveObject // Sound Save Object
             );
             break;
 
@@ -279,7 +279,7 @@ export const execute = async (
         case $LIBRARY_OVERWRITE_SOUND_COMMAND:
             await libraryAreaUpdateSoundHistoryUndoUseCase(
                 messages[0] as number, // workSpaceId
-                messages[2] as SoundSaveObjectImpl // Sound Save Object
+                messages[2] as ISoundSaveObject // Sound Save Object
             );
             break;
 
@@ -295,7 +295,7 @@ export const execute = async (
         case $LIBRARY_REMOVE_INSTANCE_COMMAND:
             await libraryAreaRemoveInstanceHistoryUndoUseCase(
                 messages[0] as number, // workSpaceId
-                messages[2] as InstanceSaveObjectImpl // save object
+                messages[2] as IInstanceSaveObject // save object
             );
             break;
 
@@ -306,7 +306,7 @@ export const execute = async (
                 messages[1] as number, // MovieClip ID
                 messages[2] as number, // Before Index
                 messages[3] as number, // After Index
-                messages[4] as LayerModeImpl, // Layer Mode
+                messages[4] as ILayerMode, // Layer Mode
                 messages[6] as number // Layer Parent Index
             );
             break;
@@ -327,7 +327,7 @@ export const execute = async (
                 messages[0] as number, // WorkSpace ID
                 messages[1] as number, // MovieClip ID
                 messages[2] as number, // Layer Index
-                messages[3] as LayerModeImpl, // Before Mode
+                messages[3] as ILayerMode, // Before Mode
                 messages[5] as number, // Before Parent ID
                 messages[7] as number[] // before child layer indexes
             );
@@ -510,7 +510,7 @@ export const execute = async (
             soundAreaRemoveSoundHistoryUndoUseCase(
                 messages[0] as number, // WorkSpace ID
                 messages[1] as number, // MovieClip ID
-                messages[2] as SoundObjectImpl, // Sound Object
+                messages[2] as ISoundObject, // Sound Object
                 messages[3] as number, // Frame
                 messages[4] as number // Sound Index
             );
@@ -627,7 +627,7 @@ export const execute = async (
         case $LIBRARY_ADD_NEW_SHAPE_COMMAND:
             libraryAreaAddNewShapeHistoryUndoUseCase(
                 messages[0] as number, // WorkSpace ID
-                messages[2] as ShapeSaveObjectImpl // Shape Save Object
+                messages[2] as IShapeSaveObject // Shape Save Object
             );
             break;
 
@@ -635,7 +635,7 @@ export const execute = async (
         case $LIBRARY_UPDATE_SHAPE_GRAPHICS_COMMAND:
             await libraryAreaUpdateShapeGraphicsHistoryUndoUseCase(
                 messages[0] as number, // WorkSpace ID
-                messages[2] as ShapeSaveObjectImpl // Shape Save Object
+                messages[2] as IShapeSaveObject // Shape Save Object
             );
             break;
 

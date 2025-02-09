@@ -1,6 +1,6 @@
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import type { ProgressMenu } from "@/menu/domain/model/ProgressMenu";
-import type { MenuImpl } from "@/interface/MenuImpl";
+import type { IMenu } from "@/interface/IMenu";
 import { execute as initializeGlobal } from "@/global/application/Initialize";
 import { execute as initializeTool } from "@/tool/application/Initialize";
 import { execute as initializeMenu } from "@/menu/application/Initialize";
@@ -68,7 +68,7 @@ const external = (): void =>
     if ("nl" in window) {
         return ;
     }
-    window.nl = new ExternalApplication();
+    (window as any).nl = new ExternalApplication();
 };
 
 /**
@@ -92,7 +92,7 @@ export const initialize = async (): Promise<void> =>
     await Promise.all(promises);
 
     // 進行メニューを表示
-    const menu: MenuImpl<ProgressMenu> | null = $getMenu($PROGRESS_MENU_NAME);
+    const menu: IMenu<ProgressMenu> | null = $getMenu($PROGRESS_MENU_NAME);
     if (!menu) {
         return ;
     }
@@ -111,14 +111,14 @@ export const initialize = async (): Promise<void> =>
 export const boot = async (): Promise<void> =>
 {
     if ($useSocket()) {
-        const menu: MenuImpl<ProgressMenu> | null = $getMenu($PROGRESS_MENU_NAME);
+        const menu: IMenu<ProgressMenu> | null = $getMenu($PROGRESS_MENU_NAME);
         if (menu) {
             menu.message = "Socket connection...";
         }
         return ;
     }
 
-    const menu: MenuImpl<ProgressMenu> | null = $getMenu($PROGRESS_MENU_NAME);
+    const menu: IMenu<ProgressMenu> | null = $getMenu($PROGRESS_MENU_NAME);
     if (menu) {
         menu.message = "Booting the system.";
     }

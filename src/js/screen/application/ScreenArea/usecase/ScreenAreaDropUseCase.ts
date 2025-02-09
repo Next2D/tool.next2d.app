@@ -1,4 +1,4 @@
-import type { InstanceImpl } from "@/interface/InstanceImpl";
+import type { IInstance } from "@/interface/IInstance";
 import { libraryArea } from "@/controller/domain/model/LibraryArea";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import {
@@ -29,7 +29,7 @@ export const execute = async (client_x: number, client_y: number): Promise<void>
     for (let idx = 0; idx < libraryArea.selectedIds.length; ++idx) {
 
         const libraryId = libraryArea.selectedIds[idx];
-        const instance: InstanceImpl<any> = workSpace.getLibrary(libraryId);
+        const instance: IInstance<any> = workSpace.getLibrary(libraryId);
         if (!instance) {
             continue;
         }

@@ -1,4 +1,4 @@
-import { InstanceImpl } from "@/interface/InstanceImpl";
+import { IInstance } from "@/interface/IInstance";
 
 /**
  * @description タイムラインのシーン名一覧のElementをstringで返却
@@ -9,7 +9,7 @@ import { InstanceImpl } from "@/interface/InstanceImpl";
  * @method
  * @public
  */
-export const execute = (instance: InstanceImpl<any>): string =>
+export const execute = (instance: IInstance<any>): string =>
 {
     return `
 <div id="scene-library-id-${instance.id}" data-library-id="${instance.id}">${instance.name}</div>

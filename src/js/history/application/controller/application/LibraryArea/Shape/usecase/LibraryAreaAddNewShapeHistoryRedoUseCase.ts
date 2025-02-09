@@ -1,4 +1,4 @@
-import type { ShapeSaveObjectImpl } from "@/interface/ShapeSaveObjectImpl";
+import type { IShapeSaveObject } from "@/interface/IShapeSaveObject";
 import { execute as externalWorkSpaceRegisterInstanceService } from "@/external/core/application/ExternalWorkSpace/service/ExternalWorkSpaceRegisterInstanceService";
 import { execute as libraryAreaReloadUseCase } from "@/controller/application/LibraryArea/usecase/LibraryAreaReloadUseCase";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
@@ -16,7 +16,7 @@ import { Shape } from "@/core/domain/model/Shape";
  */
 export const execute = (
     work_space_id: number,
-    shape_object: ShapeSaveObjectImpl
+    shape_object: IShapeSaveObject
 ): void => {
 
     const workSpace = $getWorkSpace(work_space_id);

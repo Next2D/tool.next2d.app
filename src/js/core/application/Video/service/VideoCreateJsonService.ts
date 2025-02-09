@@ -1,5 +1,5 @@
 import type { Video } from "@/core/domain/model/Video";
-import type { VideoPublishJsonImpl } from "@/interface/VideoPublishJsonImpl";
+import type { IVideoPublishJson } from "@/interface/IVideoPublishJson";
 import { Video as DisplayVideo } from "@next2d/media";
 
 /**
@@ -11,9 +11,9 @@ import { Video as DisplayVideo } from "@next2d/media";
  * @method
  * @public
  */
-export const execute = (video: Video): VideoPublishJsonImpl =>
+export const execute = (video: Video): IVideoPublishJson =>
 {
-    const object: VideoPublishJsonImpl = {
+    const object: IVideoPublishJson = {
         "extends": DisplayVideo.namespace,
         "buffer": video.buffer ? Array.from(video.buffer) : [],
         "volume": video.volume,

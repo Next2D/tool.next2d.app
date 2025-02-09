@@ -1,12 +1,12 @@
-import type { InstanceSaveObjectImpl } from "@/interface/InstanceSaveObjectImpl";
+import type { IInstanceSaveObject } from "@/interface/IInstanceSaveObject";
 import type { IBitmapSaveObject } from "@/interface/IBitmapSaveObject";
-import type { SoundSaveObjectImpl } from "@/interface/SoundSaveObjectImpl";
-import type { VideoSaveObjectImpl } from "@/interface/VideoSaveObjectImpl";
-import type { MovieClipSaveObjectImpl } from "@/interface/MovieClipSaveObjectImpl";
+import type { ISoundSaveObject } from "@/interface/ISoundSaveObject";
+import type { IVideoSaveObject } from "@/interface/IVideoSaveObject";
+import type { IMovieClipSaveObject } from "@/interface/IMovieClipSaveObject";
 import type { IFolderSaveObject } from "@/interface/IFolderSaveObject";
-import type { InstanceImpl } from "@/interface/InstanceImpl";
-import type { ShapeSaveObjectImpl } from "@/interface/ShapeSaveObjectImpl";
-import type { TextSaveObjectImpl } from "@/interface/TextSaveObjectImpl";
+import type { IInstance } from "@/interface/IInstance";
+import type { IShapeSaveObject } from "@/interface/IShapeSaveObject";
+import type { ITextSaveObject } from "@/interface/ITextSaveObject";
 import { Bitmap } from "@/core/domain/model/Bitmap";
 import { Folder } from "@/core/domain/model/Folder";
 import { MovieClip } from "@/core/domain/model/MovieClip";
@@ -32,12 +32,12 @@ import {
  * @method
  * @public
  */
-export const execute = async (save_object: InstanceSaveObjectImpl): Promise<InstanceImpl<any>> => {
+export const execute = async (save_object: IInstanceSaveObject): Promise<IInstance<any>> => {
 
     switch (save_object.type) {
 
         case $MOVIE_CLIP_TYPE:
-            return new MovieClip(save_object as MovieClipSaveObjectImpl);
+            return new MovieClip(save_object as IMovieClipSaveObject);
 
         case $FOLDER_TYPE:
             return new Folder(save_object as IFolderSaveObject);
@@ -47,23 +47,23 @@ export const execute = async (save_object: InstanceSaveObjectImpl): Promise<Inst
 
         case $VIDEO_TYPE:
         {
-            const video = new Video(save_object as VideoSaveObjectImpl);
+            const video = new Video(save_object as IVideoSaveObject);
             await video.wait();
             return video;
         }
 
         case $SOUND_TYPE:
         {
-            const sound = new Sound(save_object as SoundSaveObjectImpl);
+            const sound = new Sound(save_object as ISoundSaveObject);
             await sound.wait();
             return sound;
         }
 
         case $SHAPE_TYPE:
-            return new Shape(save_object as ShapeSaveObjectImpl);
+            return new Shape(save_object as IShapeSaveObject);
 
         case $TEXT_TYPE:
-            return new Text(save_object as TextSaveObjectImpl);
+            return new Text(save_object as ITextSaveObject);
 
         default:
             throw new Error("This is an undefined class.");

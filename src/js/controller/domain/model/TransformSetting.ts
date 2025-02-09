@@ -1,4 +1,4 @@
-import type { PositionImpl } from "@/interface/PositionImpl";
+import type { IPosition } from "@/interface/IPosition";
 import { execute as transformSettingInitializeRegisterEventUseCase } from "@/controller/application/TransformSetting/usecase/TransformSettingInitializeRegisterEventUseCase";
 
 /**
@@ -17,7 +17,7 @@ class TransformSetting
     private _$sizeLocked: boolean;
     private _$scaleLocked: boolean;
     private _$beforeValue: number;
-    private readonly _$tempPosition: PositionImpl;
+    private readonly _$tempPosition: IPosition;
     private readonly _$matrixs: Array<number[]>;
 
     /**
@@ -187,7 +187,7 @@ class TransformSetting
      * @member {object}
      * @public
      */
-    get tempPosition (): PositionImpl
+    get tempPosition (): IPosition
     {
         return this._$tempPosition;
     }

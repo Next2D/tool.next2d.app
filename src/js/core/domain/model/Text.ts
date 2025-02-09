@@ -1,5 +1,5 @@
-import type { ObjectImpl } from "@/interface/ObjectImpl";
-import type { TextSaveObjectImpl } from "@/interface/TextSaveObjectImpl";
+import type { IObject } from "@/interface/IObject";
+import type { ITextSaveObject } from "@/interface/ITextSaveObject";
 import type { IBounds } from "@/interface/IBounds";
 import type { Character } from "./Character";
 import { Instance } from "./Instance";
@@ -24,7 +24,7 @@ export class Text extends Instance
      * @constructor
      * @public
      */
-    constructor (object: ObjectImpl<TextSaveObjectImpl>)
+    constructor (object: IObject<ITextSaveObject>)
     {
         super(object);
 
@@ -135,7 +135,7 @@ export class Text extends Instance
      * @method
      * @public
      */
-    toObject (): TextSaveObjectImpl
+    toObject (): ITextSaveObject
     {
         return {
             "id":       this.id,

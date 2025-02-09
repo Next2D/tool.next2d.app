@@ -1,6 +1,6 @@
-import type { MenuImpl } from "@/interface/MenuImpl";
-import type { ShortcutViewObjectImpl } from "@/interface/ShortcutViewObjectImpl";
-import type { UserSettingObjectImpl } from "@/interface/UserSettingObjectImpl";
+import type { IMenu } from "@/interface/IMenu";
+import type { IShortcutViewObject } from "@/interface/IShortcutViewObject";
+import type { IUserSettingIObject } from "@/interface/IUserSettingIObject";
 import type { DetailModal } from "@/menu/domain/model/DetailModal";
 import { $DETAIL_MODAL_NAME } from "@/config/MenuConfig";
 import { $replace } from "@/language/application/LanguageUtil";
@@ -20,7 +20,7 @@ import { $getViewMapping } from "@/menu/application/ShortcutSettingMenu/Shortcut
  */
 export const execute = (event: PointerEvent): void =>
 {
-    const userSetting: UserSettingObjectImpl = userSettingObjectGetService();
+    const userSetting: IUserSettingIObject = userSettingObjectGetService();
     if (!userSetting.modal) {
         return ;
     }
@@ -46,10 +46,10 @@ export const execute = (event: PointerEvent): void =>
 
         let shortcutText: string | undefined = target.dataset.shortcutText;
 
-        const viewMapping: Map<string, ShortcutViewObjectImpl> = $getViewMapping();
+        const viewMapping: Map<string, IShortcutViewObject> = $getViewMapping();
 
         if (viewMapping.size && viewMapping.has(shortcutKey)) {
-            const shortcutObject: ShortcutViewObjectImpl | undefined = viewMapping.get(shortcutKey) as ShortcutViewObjectImpl;
+            const shortcutObject: IShortcutViewObject | undefined = viewMapping.get(shortcutKey) as IShortcutViewObject;
             if (shortcutObject) {
                 shortcutText = shortcutObject.text;
             }
@@ -62,7 +62,7 @@ export const execute = (event: PointerEvent): void =>
         element.textContent = value;
     }
 
-    const menu: MenuImpl<DetailModal> | null = $getMenu($DETAIL_MODAL_NAME);
+    const menu: IMenu<DetailModal> | null = $getMenu($DETAIL_MODAL_NAME);
     if (!menu) {
         return ;
     }

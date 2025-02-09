@@ -1,5 +1,5 @@
 import { $SHORTCUT_SETTING_LIST_CLASS_NAME } from "@/config/ShortcutConfig";
-import type { ShortcutObjectImpl } from "@/interface/ShortcutObjectImpl";
+import type { IShortcutObject } from "@/interface/IShortcutObject";
 
 /**
  * @description ショートカットリストのElementをstringで返却
@@ -11,7 +11,7 @@ import type { ShortcutObjectImpl } from "@/interface/ShortcutObjectImpl";
  * @method
  * @public
  */
-export const execute = (shortcut_object: ShortcutObjectImpl, text: string): string =>
+export const execute = (shortcut_object: IShortcutObject, text: string): string =>
 {
     return `
 <div class="${$SHORTCUT_SETTING_LIST_CLASS_NAME}">

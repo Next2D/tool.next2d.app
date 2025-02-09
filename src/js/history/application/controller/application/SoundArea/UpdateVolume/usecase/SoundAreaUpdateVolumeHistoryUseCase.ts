@@ -7,7 +7,7 @@ import { execute as historyGetTextService } from "@/controller/application/Histo
 import { execute as historyRemoveElementService } from "@/controller/application/HistoryArea/service/HistoryRemoveElementService";
 import { execute as soundAreaUpdateVolumeCreateHistoryObjectService } from "../service/SoundAreaUpdateVolumeCreateHistoryObjectService";
 import { execute as shareSendService } from "@/share/service/ShareSendService";
-import { SoundObjectImpl } from "@/interface/SoundObjectImpl";
+import { ISoundObject } from "@/interface/ISoundObject";
 import { execute as userDatabaseAutoSaveReservationUseCase } from "@/user/application/Database/usecase/UserDatabaseAutoSaveReservationUseCase";
 
 /**
@@ -28,7 +28,7 @@ import { execute as userDatabaseAutoSaveReservationUseCase } from "@/user/applic
 export const execute = (
     work_space: WorkSpace,
     movie_clip: MovieClip,
-    sound_object: SoundObjectImpl,
+    sound_object: ISoundObject,
     frame: number,
     index: number,
     before_volume: number,

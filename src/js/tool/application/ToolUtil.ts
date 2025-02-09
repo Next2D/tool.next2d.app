@@ -1,4 +1,4 @@
-import type { ToolImpl } from "@/interface/ToolImpl";
+import type { ITool } from "@/interface/ITool";
 import { EventType } from "../domain/event/EventType";
 
 /**
@@ -7,7 +7,7 @@ import { EventType } from "../domain/event/EventType";
  *
  * @private
  */
-let $activeTool: ToolImpl<any> | null = null;
+let $activeTool: ITool<any> | null = null;
 
 /**
  * @description 現在、選択中のToolオブジェクトを返却
@@ -17,7 +17,7 @@ let $activeTool: ToolImpl<any> | null = null;
  * @method
  * @public
  */
-export const $getActiveTool = (): ToolImpl<any> | null =>
+export const $getActiveTool = (): ITool<any> | null =>
 {
     return $activeTool;
 };
@@ -31,7 +31,7 @@ export const $getActiveTool = (): ToolImpl<any> | null =>
  * @method
  * @public
  */
-export const $setActiveTool = (tool: ToolImpl<any>): void =>
+export const $setActiveTool = (tool: ITool<any>): void =>
 {
     if ($activeTool) {
         $activeTool.dispatchEvent(EventType.END);
@@ -47,7 +47,7 @@ export const $setActiveTool = (tool: ToolImpl<any>): void =>
  *
  * @private
  */
-const $defaultTools: Map<string, ToolImpl<any>> = new Map();
+const $defaultTools: Map<string, ITool<any>> = new Map();
 
 /**
  * @description デフォルトのToolオブジェクトをマップに登録
@@ -58,7 +58,7 @@ const $defaultTools: Map<string, ToolImpl<any>> = new Map();
  * @method
  * @public
  */
-export const $registerDefaultTool = (tool: ToolImpl<any>): void =>
+export const $registerDefaultTool = (tool: ITool<any>): void =>
 {
     $defaultTools.set(tool.name, tool);
 };
@@ -72,7 +72,7 @@ export const $registerDefaultTool = (tool: ToolImpl<any>): void =>
  * @method
  * @public
  */
-export const $getDefaultTool = (name: string): ToolImpl<any> | null =>
+export const $getDefaultTool = (name: string): ITool<any> | null =>
 {
     return $defaultTools.has(name)
         ? $defaultTools.get(name)

@@ -1,4 +1,4 @@
-import type { ToolImpl } from "@/interface/ToolImpl";
+import type { ITool } from "@/interface/ITool";
 import type { ArrowTool } from "@/tool/domain/model/ArrowTool";
 import { EventType } from "@/tool/domain/event/EventType";
 import { execute as screenDisplayObjectMouseDownEventUseCase } from "@/screen/application/DisplayObject/usecase/ScreenDisplayObjectMouseDownEventUseCase";
@@ -16,7 +16,7 @@ import { execute as arrowToolStartEventUseCase } from "./ArrowToolStartEventUseC
  * @method
  * @public
  */
-export const execute = (tool: ToolImpl<ArrowTool>): void =>
+export const execute = (tool: ITool<ArrowTool>): void =>
 {
     // 起動イベントを登録
     tool.addEventListener(EventType.START,

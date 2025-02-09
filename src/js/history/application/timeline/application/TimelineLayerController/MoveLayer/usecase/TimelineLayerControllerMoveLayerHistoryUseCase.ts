@@ -1,7 +1,7 @@
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import type { Layer } from "@/core/domain/model/Layer";
-import type { LayerModeImpl } from "@/interface/LayerModeImpl";
+import type { ILayerMode } from "@/interface/ILayerMode";
 import { execute as historyRemoveElementService } from "@/controller/application/HistoryArea/service/HistoryRemoveElementService";
 import { execute as historyAddElementUseCase } from "@/controller/application/HistoryArea/usecase/HistoryAddElementUseCase";
 import { execute as historyGetTextService } from "@/controller/application/HistoryArea/service/HistoryGetTextService";
@@ -33,7 +33,7 @@ export const execute = (
     layer: Layer,
     before_index: number,
     after_index: number,
-    before_mode: LayerModeImpl,
+    before_mode: ILayerMode,
     before_parent_id: number,
     receiver: boolean = false
 ): void => {

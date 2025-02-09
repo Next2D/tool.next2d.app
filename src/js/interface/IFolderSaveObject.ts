@@ -1,7 +1,7 @@
 import type { IFolderType } from "./IFolderType";
-import type { InstanceObjectImpl } from "./InstanceObjectImpl";
+import type { IInstanceObject } from "./IInstanceObject";
 
-export interface IFolderSaveObject extends InstanceObjectImpl
+export interface IFolderSaveObject extends IInstanceObject
 {
     mode: IFolderType;
 }

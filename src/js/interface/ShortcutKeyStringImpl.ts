@@ -1,1 +1,0 @@
-export type ShortcutKeyStringImpl = "screen" | "timeline" | "library" | "global";

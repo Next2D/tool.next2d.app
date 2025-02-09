@@ -1,7 +1,7 @@
-import type { ShareReceiveMessageImpl } from "@/interface/ShareReceiveMessageImpl";
+import type { IShareReceiveMessage } from "@/interface/IShareReceiveMessage";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
-import type { InstanceImpl } from "@/interface/InstanceImpl";
-import type { VideoSaveObjectImpl } from "@/interface/VideoSaveObjectImpl";
+import type { IInstance } from "@/interface/IInstance";
+import type { IVideoSaveObject } from "@/interface/IVideoSaveObject";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
 import { Video } from "@/core/domain/model/Video";
 import { execute as libraryAreaUpdateVideoHistoryUseCase } from "@/history/application/controller/application/LibraryArea/Video/usecase/LibraryAreaUpdateVideoHistoryUseCase";
@@ -29,7 +29,7 @@ const worker: Worker = new ZlibInflateWorker();
  * @method
  * @public
  */
-export const execute = async (message: ShareReceiveMessageImpl): Promise<void> =>
+export const execute = async (message: IShareReceiveMessage): Promise<void> =>
 {
     const id = message.data[0] as NonNullable<number>;
 
@@ -39,16 +39,16 @@ export const execute = async (message: ShareReceiveMessageImpl): Promise<void> =
     }
 
     const libraryId = message.data[1] as NonNullable<number>;
-    const movieClip: InstanceImpl<MovieClip> = workSpace.getLibrary(libraryId);
+    const movieClip: IInstance<MovieClip> = workSpace.getLibrary(libraryId);
     if (!movieClip) {
         return ;
     }
 
     // バイナリをUint8Arrayに変換
-    const videoSaveObject = message.data[3] as NonNullable<VideoSaveObjectImpl>;
+    const videoSaveObject = message.data[3] as NonNullable<IVideoSaveObject>;
 
     // 変更前のVideoからセーブオブジェクトを作成
-    const instance: InstanceImpl<Video> = workSpace.getLibrary(videoSaveObject.id);
+    const instance: IInstance<Video> = workSpace.getLibrary(videoSaveObject.id);
     const beforeSaveObject = instance.toObject();
 
     // バイナリをUint8Arrayに変換

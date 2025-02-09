@@ -1,5 +1,5 @@
 import { $SOUND_AREA_SOUND_LIST_AREA_ID } from "@/config/SoundSettingConfig";
-import { SoundObjectImpl } from "@/interface/SoundObjectImpl";
+import { ISoundObject } from "@/interface/ISoundObject";
 
 /**
  * @description 音量の表示を変更
@@ -11,7 +11,7 @@ import { SoundObjectImpl } from "@/interface/SoundObjectImpl";
  * @method
  * @public
  */
-export const execute = (sound_object: SoundObjectImpl, index: number): void =>
+export const execute = (sound_object: ISoundObject, index: number): void =>
 {
     const element: HTMLElement | null = document
         .getElementById($SOUND_AREA_SOUND_LIST_AREA_ID);

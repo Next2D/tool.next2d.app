@@ -3,14 +3,14 @@ import {
     $getTempMapping,
     $getViewMapping
 } from "../ShortcutSettingMenuUtil";
-import { ShortcutViewObjectImpl } from "../../../../interface/ShortcutViewObjectImpl";
+import { IShortcutViewObject } from "../../../../interface/IShortcutViewObject";
 
 describe("ShortcutSettingMenuUpdateViewMappingServiceTest", () =>
 {
     test("execute test", () =>
     {
-        const tempMapping: Map<string, ShortcutViewObjectImpl> = $getTempMapping();
-        const viewMapping: Map<string, ShortcutViewObjectImpl> = $getViewMapping();
+        const tempMapping: Map<string, IShortcutViewObject> = $getTempMapping();
+        const viewMapping: Map<string, IShortcutViewObject> = $getViewMapping();
 
         expect(tempMapping.size).toBe(0);
 

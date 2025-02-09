@@ -12,7 +12,7 @@ import { $clamp } from "@/global/GlobalUtil";
 import type { IBounds } from "@/interface/IBounds";
 import { execute as characterCalcGetBoundsService } from "@/core/application/Character/service/CharacterCalcGetBoundsService";
 import { execute as characterCalcGetRectService } from "@/core/application/Character/service/CharacterCalcGetRectService";
-import { PositionImpl } from "@/interface/PositionImpl";
+import { IPosition } from "@/interface/IPosition";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { $BITMAP_TYPE, $VIDEO_TYPE } from "@/config/InstanceConfig";
 
@@ -46,7 +46,7 @@ export class Character
     private readonly _$matrix: number[];
     private readonly _$colorTransform: number[];
     private readonly _$filters: any[];
-    private readonly _$referencePosition: PositionImpl;
+    private readonly _$referencePosition: IPosition;
 
     /**
      * @constructor
@@ -155,11 +155,11 @@ export class Character
      * @description Characterの中心点の位置（グローバル値）
      *              Position of the center point of Character (global value)
      *
-     * @member {PositionImpl}
+     * @member {IPosition}
      * @readonly
      * @public
      */
-    get referencePosition (): PositionImpl
+    get referencePosition (): IPosition
     {
         return this._$referencePosition;
     }

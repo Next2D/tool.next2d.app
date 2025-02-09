@@ -1,4 +1,4 @@
-import type { InstanceImpl } from "@/interface/InstanceImpl";
+import type { IInstance } from "@/interface/IInstance";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { libraryArea } from "@/controller/domain/model/LibraryArea";
 import { ExternalLibrary } from "@/external/controller/domain/model/ExternalLibrary";
@@ -44,7 +44,7 @@ export const execute = (element: HTMLElement): void =>
             return ;
         }
 
-        const folder: InstanceImpl<Folder> | null = instance.type === $FOLDER_TYPE
+        const folder: IInstance<Folder> | null = instance.type === $FOLDER_TYPE
             ? instance
             : workSpace.getLibrary(instance.folderId);
 

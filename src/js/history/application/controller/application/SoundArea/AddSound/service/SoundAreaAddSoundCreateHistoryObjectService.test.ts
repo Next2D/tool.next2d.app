@@ -1,7 +1,7 @@
 import { execute } from "./SoundAreaAddSoundCreateHistoryObjectService";
 import { $SOUND_AREA_ADD_SOUND_COMMAND } from "../../../../../../../config/HistoryConfig";
 import { MovieClip } from "../../../../../../../core/domain/model/MovieClip";
-import type { SoundObjectImpl } from "../../../../../../../interface/SoundObjectImpl";
+import type { ISoundObject } from "../../../../../../../interface/ISoundObject";
 
 describe("SoundAreaAddSoundCreateHistoryObjectServiceTest", () =>
 {
@@ -13,7 +13,7 @@ describe("SoundAreaAddSoundCreateHistoryObjectServiceTest", () =>
             "name": "MovieClip_01"
         });
 
-        const sound: SoundObjectImpl = {
+        const sound: ISoundObject = {
             "libraryId": 2,
             "volume": 100,
             "autoPlay": false,

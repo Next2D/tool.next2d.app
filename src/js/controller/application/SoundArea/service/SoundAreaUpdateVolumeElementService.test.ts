@@ -1,6 +1,6 @@
 import { execute } from "./SoundAreaUpdateVolumeElementService";
 import { $SOUND_AREA_SOUND_LIST_AREA_ID } from "../../../../config/SoundSettingConfig";
-import { SoundObjectImpl } from "../../../../interface/SoundObjectImpl";
+import { ISoundObject } from "../../../../interface/ISoundObject";
 
 describe("SoundAreaUpdateVolumeElementServiceTest", () =>
 {
@@ -21,7 +21,7 @@ describe("SoundAreaUpdateVolumeElementServiceTest", () =>
         const audioElement = document.createElement("audio");
         node.appendChild(audioElement);
 
-        const soundObject: SoundObjectImpl = {
+        const soundObject: ISoundObject = {
             "libraryId": 2,
             "autoPlay": false,
             "loopCount": 0,

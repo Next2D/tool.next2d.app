@@ -1,7 +1,7 @@
 import { MovieClip } from "@/core/domain/model/MovieClip";
 import { WorkSpace } from "@/core/domain/model/WorkSpace";
 import { $clamp } from "@/global/GlobalUtil";
-import { SoundObjectImpl } from "@/interface/SoundObjectImpl";
+import { ISoundObject } from "@/interface/ISoundObject";
 import { execute as soundAreaUpdateVolumeHistoryUseCase } from "@/history/application/controller/application/SoundArea/UpdateVolume/usecase/SoundAreaUpdateVolumeHistoryUseCase";
 import { execute as soundAreaUpdateVolumeElementService } from "@/controller/application/SoundArea/service/SoundAreaUpdateVolumeElementService";
 
@@ -23,7 +23,7 @@ import { execute as soundAreaUpdateVolumeElementService } from "@/controller/app
 export const execute = (
     work_space: WorkSpace,
     movie_clip: MovieClip,
-    sound_object: SoundObjectImpl,
+    sound_object: ISoundObject,
     frame: number,
     index: number,
     volume: number,

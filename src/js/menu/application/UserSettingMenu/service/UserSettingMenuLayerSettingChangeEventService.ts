@@ -1,4 +1,4 @@
-import type { UserSettingObjectImpl } from "@/interface/UserSettingObjectImpl";
+import type { IUserSettingIObject } from "@/interface/IUserSettingIObject";
 import { execute as userSettingObjectGetService } from "@/user/application/Setting/service/UserSettingObjectGetService";
 import { execute as userSettingObjectUpdateService } from "@/user/application/Setting/service/UserSettingObjectUpdateService";
 
@@ -17,7 +17,7 @@ export const execute = (event: Event): void =>
     event.stopPropagation();
 
     if (event.target) {
-        const userSettingObject: UserSettingObjectImpl = userSettingObjectGetService();
+        const userSettingObject: IUserSettingIObject = userSettingObjectGetService();
 
         const element = event.target as HTMLSelectElement;
         userSettingObject.layer = element.value === "1";

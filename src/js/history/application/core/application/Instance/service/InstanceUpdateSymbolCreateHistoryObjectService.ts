@@ -1,6 +1,6 @@
 import type { IHistoryObject } from "@/interface/IHistoryObject";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
-import type { InstanceImpl } from "@/interface/InstanceImpl";
+import type { IInstance } from "@/interface/IInstance";
 import { $LIBRARY_UPDATE_INSTANCE_SYMBOL_COMMAND } from "@/config/HistoryConfig";
 
 /**
@@ -18,7 +18,7 @@ import { $LIBRARY_UPDATE_INSTANCE_SYMBOL_COMMAND } from "@/config/HistoryConfig"
 export const execute = (
     work_space_id: number,
     movie_clip: MovieClip,
-    instance: InstanceImpl<any>,
+    instance: IInstance<any>,
     before_name: string
 ): IHistoryObject => {
 

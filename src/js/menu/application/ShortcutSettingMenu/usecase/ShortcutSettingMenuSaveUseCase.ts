@@ -1,7 +1,7 @@
 import { execute as userShortcutObjectUpdateService } from "@/user/application/Shortcut/service/UserShortcutObjectUpdateService";
 import { execute as shortcutSettingMenuUpdateCommandMappingService } from "../service/ShortcutSettingMenuUpdateCommandMappingService";
 import { execute as shortcutSettingMenuUpdateViewMappingService } from "../service/ShortcutSettingMenuUpdateViewMappingService";
-import type { ShortcutViewObjectImpl } from "@/interface/ShortcutViewObjectImpl";
+import type { IShortcutViewObject } from "@/interface/IShortcutViewObject";
 import { $getViewMapping } from "../ShortcutSettingMenuUtil";
 
 /**
@@ -21,8 +21,8 @@ export const execute = (): void =>
     shortcutSettingMenuUpdateCommandMappingService();
 
     // LocalStorage用の配列を生成
-    const viewMapping: Map<string, ShortcutViewObjectImpl> = $getViewMapping();
-    const object: ShortcutViewObjectImpl[] = [];
+    const viewMapping: Map<string, IShortcutViewObject> = $getViewMapping();
+    const object: IShortcutViewObject[] = [];
     for (const shortcutObject of viewMapping.values()) {
         object.push(shortcutObject);
     }

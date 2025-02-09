@@ -1,4 +1,4 @@
-import type { ToolImpl } from "@/interface/ToolImpl";
+import type { ITool } from "@/interface/ITool";
 import { EventType } from "@/tool/domain/event/EventType";
 import type { TextTool } from "@/tool/domain/model/TextTool";
 import { execute as textToolStartEventUseCase } from "./TextToolStartEventUseCase";
@@ -16,7 +16,7 @@ import { execute as textToolChangeCursorEventService } from "../service/TextTool
  * @method
  * @public
  */
-export const execute = (tool: ToolImpl<TextTool>): void =>
+export const execute = (tool: ITool<TextTool>): void =>
 {
     // 起動イベントを登録
     tool.addEventListener(EventType.START,

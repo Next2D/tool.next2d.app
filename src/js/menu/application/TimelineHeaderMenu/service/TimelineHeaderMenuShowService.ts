@@ -1,6 +1,6 @@
 import { $TIMELINE_HEADER_MENU_NAME } from "@/config/MenuConfig";
 import type { TimelineHeaderMenu } from "@/menu/domain/model/TimelineHeaderMenu";
-import type { MenuImpl } from "@/interface/MenuImpl";
+import type { IMenu } from "@/interface/IMenu";
 import {
     $allHideMenu,
     $getMenu
@@ -30,7 +30,7 @@ export const execute = (event: MouseEvent): void =>
     $allHideMenu($TIMELINE_HEADER_MENU_NAME);
 
     // 進行状況メニューを非表示に
-    const menu: MenuImpl<TimelineHeaderMenu> | null = $getMenu($TIMELINE_HEADER_MENU_NAME);
+    const menu: IMenu<TimelineHeaderMenu> | null = $getMenu($TIMELINE_HEADER_MENU_NAME);
     if (!menu) {
         return ;
     }

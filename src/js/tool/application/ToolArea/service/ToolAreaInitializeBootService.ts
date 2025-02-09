@@ -1,4 +1,4 @@
-import { ToolImpl } from "@/interface/ToolImpl";
+import { ITool } from "@/interface/ITool";
 import { ArrowTool } from "@/tool/domain/model/ArrowTool";
 import { FreeTransformTool } from "@/tool/domain/model/FreeTransformTool";
 import { BucketTool } from "@/tool/domain/model/BucketTool";
@@ -26,7 +26,7 @@ import { UserSettingTool } from "@/tool/domain/model/UserSettingTool";
  */
 export const execute = async (): Promise<void> =>
 {
-    const tools: ToolImpl<any>[] = [
+    const tools: ITool<any>[] = [
         ArrowTool,
         FreeTransformTool,
         BucketTool,
@@ -47,7 +47,7 @@ export const execute = async (): Promise<void> =>
 
     // 各ツールを起動
     for (let idx: number = 0; idx < tools.length; ++idx) {
-        const Tool: ToolImpl<any> = tools[idx];
+        const Tool: ITool<any> = tools[idx];
         const tool = new Tool();
         if (!tool.initialize) {
             continue;

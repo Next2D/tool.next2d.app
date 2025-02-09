@@ -1,4 +1,4 @@
-import type { MenuImpl } from "@/interface/MenuImpl";
+import type { IMenu } from "@/interface/IMenu";
 import type { SceneListMenu } from "@/menu/domain/model/SceneListMenu";
 import { $SCENE_LIST_MENU_NAME } from "@/config/MenuConfig";
 import {
@@ -23,7 +23,7 @@ import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 export const execute = (): void =>
 {
     // シーン一覧メニュー
-    const menu: MenuImpl<SceneListMenu> | null = $getMenu($SCENE_LIST_MENU_NAME);
+    const menu: IMenu<SceneListMenu> | null = $getMenu($SCENE_LIST_MENU_NAME);
     if (!menu) {
         return ;
     }

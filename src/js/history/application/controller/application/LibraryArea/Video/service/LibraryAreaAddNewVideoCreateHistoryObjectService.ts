@@ -1,5 +1,5 @@
 import type { IHistoryObject } from "@/interface/IHistoryObject";
-import type { VideoSaveObjectImpl } from "@/interface/VideoSaveObjectImpl";
+import type { IVideoSaveObject } from "@/interface/IVideoSaveObject";
 import { $LIBRARY_ADD_NEW_VIDEO_COMMAND } from "@/config/HistoryConfig";
 
 /**
@@ -17,7 +17,7 @@ import { $LIBRARY_ADD_NEW_VIDEO_COMMAND } from "@/config/HistoryConfig";
 export const execute = (
     work_space_id: number,
     movie_clip_id: number,
-    video_object: VideoSaveObjectImpl,
+    video_object: IVideoSaveObject,
     fileId: string
 ): IHistoryObject => {
 

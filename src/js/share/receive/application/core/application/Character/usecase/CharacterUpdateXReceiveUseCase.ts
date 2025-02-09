@@ -1,6 +1,6 @@
-import type { ShareReceiveMessageImpl } from "@/interface/ShareReceiveMessageImpl";
+import type { IShareReceiveMessage } from "@/interface/IShareReceiveMessage";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
-import type { InstanceImpl } from "@/interface/InstanceImpl";
+import type { IInstance } from "@/interface/IInstance";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
 import { execute as externalCharacterUpdateXUseCase } from "@/external/core/application/ExternalCharacter/usecase/ExternalCharacterUpdateXUseCase";
 
@@ -13,7 +13,7 @@ import { execute as externalCharacterUpdateXUseCase } from "@/external/core/appl
  * @method
  * @public
  */
-export const execute = async (message: ShareReceiveMessageImpl): Promise<void> =>
+export const execute = async (message: IShareReceiveMessage): Promise<void> =>
 {
     const id = message.data[0] as NonNullable<number>;
 
@@ -23,7 +23,7 @@ export const execute = async (message: ShareReceiveMessageImpl): Promise<void> =
     }
 
     const movieClipId = message.data[1] as NonNullable<number>;
-    const movieClip: InstanceImpl<MovieClip> = workSpace.getLibrary(movieClipId);
+    const movieClip: IInstance<MovieClip> = workSpace.getLibrary(movieClipId);
     if (!movieClip) {
         return ;
     }

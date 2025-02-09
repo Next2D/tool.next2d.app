@@ -1,7 +1,7 @@
 import { execute } from "./SoundAreaUpdateVolumeCreateHistoryObjectService";
 import { $SOUND_AREA_UPDATE_VOLUME_COMMAND } from "../../../../../../../config/HistoryConfig";
 import { MovieClip } from "../../../../../../../core/domain/model/MovieClip";
-import type { SoundObjectImpl } from "../../../../../../../interface/SoundObjectImpl";
+import type { ISoundObject } from "../../../../../../../interface/ISoundObject";
 
 describe("SoundAreaUpdateVolumeCreateHistoryObjectServiceTest", () =>
 {
@@ -13,7 +13,7 @@ describe("SoundAreaUpdateVolumeCreateHistoryObjectServiceTest", () =>
             "name": "MovieClip_01"
         });
 
-        const soundObject: SoundObjectImpl = {
+        const soundObject: ISoundObject = {
             "libraryId": 2,
             "volume": 100,
             "autoPlay": false,

@@ -1,5 +1,5 @@
 import { Character } from "@/core/domain/model/Character";
-import { PlaceObjectImpl } from "@/interface/PlaceObjectImpl";
+import { IPlaceObject } from "@/interface/IPlaceObject";
 
 /**
  * @description 指定のキャラクタークラスからPlaceObjectを生成する
@@ -10,9 +10,9 @@ import { PlaceObjectImpl } from "@/interface/PlaceObjectImpl";
  * @method
  * @public
  */
-export const execute = (character: Character): PlaceObjectImpl =>
+export const execute = (character: Character): IPlaceObject =>
 {
-    const placeObject: PlaceObjectImpl = {};
+    const placeObject: IPlaceObject = {};
 
     // matrixが設定されている場合は追加
     const matrix = character.matrix;

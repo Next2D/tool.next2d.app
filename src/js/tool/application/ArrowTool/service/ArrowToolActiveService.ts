@@ -1,7 +1,7 @@
 import { $TOOL_ARROW_NAME } from "@/config/ToolConfig";
 import { $getDefaultTool, $setActiveTool } from "../../ToolUtil";
 import type { ArrowTool } from "@/tool/domain/model/ArrowTool";
-import type { ToolImpl } from "@/interface/ToolImpl";
+import type { ITool } from "@/interface/ITool";
 
 /**
  * @description 矢印ツールをアクティブにする
@@ -13,7 +13,7 @@ import type { ToolImpl } from "@/interface/ToolImpl";
  */
 export const execute = (): void =>
 {
-    const tool: ToolImpl<ArrowTool> = $getDefaultTool($TOOL_ARROW_NAME);
+    const tool: ITool<ArrowTool> = $getDefaultTool($TOOL_ARROW_NAME);
     if (!tool) {
         return ;
     }

@@ -1,6 +1,6 @@
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
-import type { SoundObjectImpl } from "@/interface/SoundObjectImpl";
+import type { ISoundObject } from "@/interface/ISoundObject";
 import { execute as externalSoundUpdateVolumeUseCase } from "@/external/core/application/ExternalSoundObject/usecase/ExternalSoundUpdateVolumeUseCase";
 import { execute as externalSoundUpdateLoopCountUseCase } from "@/external/core/application/ExternalSoundObject/usecase/ExternalSoundUpdateLoopCountUseCase";
 
@@ -15,7 +15,7 @@ export class ExternalSoundObject
 {
     private readonly _$workSpace: WorkSpace;
     private readonly _$movieClip: MovieClip;
-    private readonly _$soundObject: SoundObjectImpl;
+    private readonly _$soundObject: ISoundObject;
     private readonly _$frame: number;
     private readonly _$index: number;
 
@@ -31,7 +31,7 @@ export class ExternalSoundObject
     constructor (
         work_space: WorkSpace,
         movie_clip: MovieClip,
-        sound_object: SoundObjectImpl,
+        sound_object: ISoundObject,
         frame: number,
         index: number
     ) {

@@ -1,5 +1,5 @@
 import type { MovieClip } from "@/core/domain/model/MovieClip";
-import { PositionImpl } from "@/interface/PositionImpl";
+import { IPosition } from "@/interface/IPosition";
 
 /**
  * @description 選択中のキャラクターのxyの座標位置を計算
@@ -10,7 +10,7 @@ import { PositionImpl } from "@/interface/PositionImpl";
  * @method
  * @public
  */
-export const execute = (movie_clip: MovieClip): PositionImpl | null =>
+export const execute = (movie_clip: MovieClip): IPosition | null =>
 {
     if (!movie_clip.selectedDepths.size) {
         return null;

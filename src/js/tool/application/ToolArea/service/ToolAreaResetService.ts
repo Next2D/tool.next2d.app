@@ -1,5 +1,5 @@
 import type { ArrowTool } from "@/tool/domain/model/ArrowTool";
-import type { ToolImpl } from "@/interface/ToolImpl";
+import type { ITool } from "@/interface/ITool";
 import { EventType } from "@/tool/domain/event/EventType";
 import {
     $getActiveTool,
@@ -18,12 +18,12 @@ import { $TOOL_ARROW_NAME } from "@/config/ToolConfig";
  */
 export const execute = (): void =>
 {
-    const activeTool: ToolImpl<any> = $getActiveTool();
+    const activeTool: ITool<any> = $getActiveTool();
     if (activeTool) {
         activeTool.dispatchEvent(EventType.END);
     }
 
-    const arrowTool: ToolImpl<ArrowTool> = $getDefaultTool($TOOL_ARROW_NAME);
+    const arrowTool: ITool<ArrowTool> = $getDefaultTool($TOOL_ARROW_NAME);
     arrowTool.dispatchEvent(EventType.START);
 
     $setActiveTool(arrowTool);

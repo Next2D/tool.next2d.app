@@ -1,4 +1,4 @@
-import type { ShareInitializeSendObjectImpl } from "@/interface/ShareInitializeSendObjectImpl";
+import type { IShareInitializeSendObject } from "@/interface/IShareInitializeSendObject";
 import { $getSocket } from "../ShareUtil";
 import { WorkSpace } from "@/core/domain/model/WorkSpace";
 import { execute as workSpaceCreateSaveDataService } from "@/core/application/WorkSpace/service/WorkSpaceCreateSaveDataService";
@@ -34,7 +34,7 @@ export const execute = async (connection_id: string): Promise<void> =>
     const binary = bufferToBinaryService(buffer);
     await sharePutS3FileRepository(url, binary);
 
-    const initializeObject: ShareInitializeSendObjectImpl = {
+    const initializeObject: IShareInitializeSendObject = {
         "workSpaceId": WorkSpace.workSpaceId,
         "connectionId": connection_id,
         "fileId": fileId,

@@ -1,4 +1,4 @@
-import type { MenuImpl } from "@/interface/MenuImpl";
+import type { IMenu } from "@/interface/IMenu";
 import type { ConfirmModal } from "@/menu/domain/model/ConfirmModal";
 import { $getMenu } from "@/menu/application/MenuUtil";
 import { $CONFIRM_MODAL_NAME } from "@/config/MenuConfig";
@@ -14,7 +14,7 @@ import { execute as confirmModalFileOverWritingUseCase } from "./ConfirmModalFil
  */
 export const execute = async (): Promise<void> =>
 {
-    const menu: MenuImpl<ConfirmModal> = $getMenu($CONFIRM_MODAL_NAME);
+    const menu: IMenu<ConfirmModal> = $getMenu($CONFIRM_MODAL_NAME);
     if (!menu) {
         return ;
     }

@@ -1,5 +1,5 @@
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
-import type { InstanceImpl } from "@/interface/InstanceImpl";
+import type { IInstance } from "@/interface/IInstance";
 import { Graphics } from "@next2d/display";
 import { ExternalItem } from "./ExternalItem";
 import { execute as externalShapeApplyGraphicsUseCase } from "@/external/core/application/ExternalShape/usecase/ExternalShapeApplyGraphicsUseCase";
@@ -21,7 +21,7 @@ export class ExternalShape extends ExternalItem
      * @constructor
      * @public
      */
-    constructor (work_space: WorkSpace, instance: InstanceImpl<any>)
+    constructor (work_space: WorkSpace, instance: IInstance<any>)
     {
         super(work_space, instance);
 

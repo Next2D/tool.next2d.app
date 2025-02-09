@@ -4,7 +4,7 @@ import { execute as drawRectHideService } from "@/screen/application/DrawRect/se
 import { $SCREEN_DRAW_RECT_ID } from "@/config/ScreenConfig";
 import { $getDefaultTool, $setActiveTool } from "../../ToolUtil";
 import { $TOOL_ARROW_NAME } from "@/config/ToolConfig";
-import type { ToolImpl } from "@/interface/ToolImpl";
+import type { ITool } from "@/interface/ITool";
 import type { ArrowTool } from "@/tool/domain/model/ArrowTool";
 import { IExternalInstance } from "@/interface/IExternalInstance";
 import { ExternalShape } from "@/external/core/domain/model/ExternalShape";
@@ -43,7 +43,7 @@ export const execute = async (event: PointerEvent): Promise<void> =>
     );
     element.removeEventListener(EventType.MOUSE_UP, execute);
 
-    const tool: ToolImpl<ArrowTool> = $getDefaultTool($TOOL_ARROW_NAME);
+    const tool: ITool<ArrowTool> = $getDefaultTool($TOOL_ARROW_NAME);
     if (tool) {
         $setActiveTool(tool);
     }

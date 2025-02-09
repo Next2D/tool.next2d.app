@@ -1,4 +1,4 @@
-import type { InstanceImpl } from "@/interface/InstanceImpl";
+import type { IInstance } from "@/interface/IInstance";
 import { Sound } from "@/core/domain/model/Sound";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { execute as libraryAreaUpdateSoundHistoryUseCase } from "@/history/application/controller/application/LibraryArea/Sound/usecase/LibraryAreaUpdateSoundHistoryUseCase";
@@ -29,7 +29,7 @@ export const execute = async (file: File, path: string): Promise<void> =>
     }
 
     const libraryId = workSpace.pathMap.get(pathName) as NonNullable<number>;
-    const instance: InstanceImpl<Sound> = workSpace.getLibrary(libraryId);
+    const instance: IInstance<Sound> = workSpace.getLibrary(libraryId);
     if (!instance) {
         return ;
     }

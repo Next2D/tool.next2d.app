@@ -3,7 +3,7 @@ import { execute as languageLoadRepository } from "../../domain/repository/Langu
 import { $setMapping } from "../LanguageUtil";
 import { $PROGRESS_MENU_NAME } from "@/config/MenuConfig";
 import type { ProgressMenu } from "@/menu/domain/model/ProgressMenu";
-import type { MenuImpl } from "@/interface/MenuImpl";
+import type { IMenu } from "@/interface/IMenu";
 
 /**
  * @description 指定した言語JSONを読み込んで、マッピング情報を更新
@@ -21,7 +21,7 @@ export const execute = async (language: string): Promise<void> =>
         .catch((): void =>
         {
             // エラー表示
-            const menu: MenuImpl<ProgressMenu> | null = $getMenu($PROGRESS_MENU_NAME);
+            const menu: IMenu<ProgressMenu> | null = $getMenu($PROGRESS_MENU_NAME);
             if (!menu) {
                 return ;
             }

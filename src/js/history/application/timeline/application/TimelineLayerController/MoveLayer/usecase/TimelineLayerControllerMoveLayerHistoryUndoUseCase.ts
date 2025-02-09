@@ -1,6 +1,6 @@
-import type { InstanceImpl } from "@/interface/InstanceImpl";
+import type { IInstance } from "@/interface/IInstance";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
-import type { LayerModeImpl } from "@/interface/LayerModeImpl";
+import type { ILayerMode } from "@/interface/ILayerMode";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
 import { execute as timelineLayerBuildElementUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerBuildElementUseCase";
 import { execute as externalTimelineLayerControllerCorrectionRelationshipService } from "@/external/timeline/application/ExternalTimelineLayerController/service/ExternalTimelineLayerControllerCorrectionRelationshipService";
@@ -30,7 +30,7 @@ export const execute = async (
     library_id: number,
     before_index: number,
     after_index: number,
-    before_mode: LayerModeImpl,
+    before_mode: ILayerMode,
     before_parent_id: number
 ): Promise<void> => {
 
@@ -39,7 +39,7 @@ export const execute = async (
         return ;
     }
 
-    const movieClip: InstanceImpl<MovieClip> | null = workSpace.getLibrary(library_id);
+    const movieClip: IInstance<MovieClip> | null = workSpace.getLibrary(library_id);
     if (!movieClip) {
         return ;
     }

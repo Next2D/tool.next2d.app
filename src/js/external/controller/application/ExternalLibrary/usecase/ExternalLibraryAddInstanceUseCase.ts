@@ -1,5 +1,5 @@
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
-import type { InstanceImpl } from "@/interface/InstanceImpl";
+import type { IInstance } from "@/interface/IInstance";
 import { execute as libraryAreaReOrderingService } from "@/controller/application/LibraryArea/service/LibraryAreaReOrderingService";
 import { execute as libraryAreaReloadUseCase } from "@/controller/application/LibraryArea/usecase/LibraryAreaReloadUseCase";
 import { execute as externalWorkSpaceRegisterInstanceService } from "@/external/core/application/ExternalWorkSpace/service/ExternalWorkSpaceRegisterInstanceService";
@@ -19,7 +19,7 @@ import { execute as soundAreaRebuildSelectElementService } from "@/controller/ap
  */
 export const execute = (
     work_space: WorkSpace,
-    instance: InstanceImpl<any>,
+    instance: IInstance<any>,
     reload: boolean = true
 ): void => {
 

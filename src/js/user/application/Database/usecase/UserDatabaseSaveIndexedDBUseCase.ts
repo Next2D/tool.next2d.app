@@ -1,5 +1,5 @@
 import { $PROGRESS_MENU_NAME } from "@/config/MenuConfig";
-import { MenuImpl } from "@/interface/MenuImpl";
+import { IMenu } from "@/interface/IMenu";
 import { $getMenu } from "@/menu/application/MenuUtil";
 import { ProgressMenu } from "@/menu/domain/model/ProgressMenu";
 import { execute as userDatabaseGetOpenDBRequestService } from "../service/UserDatabaseGetOpenDBRequestService";
@@ -55,7 +55,7 @@ export const execute = async (): Promise<void> =>
             db.close();
 
             // 進行状況を表示を終了
-            const menu: MenuImpl<ProgressMenu> = $getMenu($PROGRESS_MENU_NAME);
+            const menu: IMenu<ProgressMenu> = $getMenu($PROGRESS_MENU_NAME);
             if (!menu) {
                 return ;
             }

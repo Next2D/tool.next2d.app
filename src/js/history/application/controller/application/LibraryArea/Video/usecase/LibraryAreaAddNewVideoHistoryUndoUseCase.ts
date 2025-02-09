@@ -1,6 +1,6 @@
 import type { Video } from "@/core/domain/model/Video";
-import type { InstanceImpl } from "@/interface/InstanceImpl";
-import type { VideoSaveObjectImpl } from "@/interface/VideoSaveObjectImpl";
+import type { IInstance } from "@/interface/IInstance";
+import type { IVideoSaveObject } from "@/interface/IVideoSaveObject";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
 import { execute as externalWorkSpaceRemoveInstanceService } from "@/external/core/application/ExternalWorkSpace/service/ExternalWorkSpaceRemoveInstanceService";
 import { execute as libraryAreaReloadUseCase } from "@/controller/application/LibraryArea/usecase/LibraryAreaReloadUseCase";
@@ -18,7 +18,7 @@ import { execute as libraryAreaSelectedClearUseCase } from "@/controller/applica
  */
 export const execute = (
     work_space_id: number,
-    video_save_object: VideoSaveObjectImpl
+    video_save_object: IVideoSaveObject
 ): void => {
 
     const workSpace = $getWorkSpace(work_space_id);
@@ -26,7 +26,7 @@ export const execute = (
         return ;
     }
 
-    const video: InstanceImpl<Video> | null = workSpace.getLibrary(video_save_object.id);
+    const video: IInstance<Video> | null = workSpace.getLibrary(video_save_object.id);
     if (!video) {
         return ;
     }

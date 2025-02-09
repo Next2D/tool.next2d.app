@@ -1,4 +1,4 @@
-import type { ShortcutViewObjectImpl } from "@/interface/ShortcutViewObjectImpl";
+import type { IShortcutViewObject } from "@/interface/IShortcutViewObject";
 import { $getViewMapping } from "../ShortcutSettingMenuUtil";
 
 /**
@@ -11,7 +11,7 @@ import { $getViewMapping } from "../ShortcutSettingMenuUtil";
  */
 export const execute = (): void =>
 {
-    const viewMapping: Map<string, ShortcutViewObjectImpl> = $getViewMapping();
+    const viewMapping: Map<string, IShortcutViewObject> = $getViewMapping();
     if (!viewMapping.size) {
         return ;
     }

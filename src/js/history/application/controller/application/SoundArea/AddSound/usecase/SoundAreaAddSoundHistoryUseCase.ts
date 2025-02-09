@@ -1,6 +1,6 @@
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
-import type { SoundObjectImpl } from "@/interface/SoundObjectImpl";
+import type { ISoundObject } from "@/interface/ISoundObject";
 import { $useSocket } from "@/share/ShareUtil";
 import { $SOUND_AREA_ADD_SOUND_COMMAND } from "@/config/HistoryConfig";
 import { execute as historyAddElementUseCase } from "@/controller/application/HistoryArea/usecase/HistoryAddElementUseCase";
@@ -26,7 +26,7 @@ import { execute as userDatabaseAutoSaveReservationUseCase } from "@/user/applic
 export const execute = (
     work_space: WorkSpace,
     movie_clip: MovieClip,
-    sound_object: SoundObjectImpl,
+    sound_object: ISoundObject,
     frame: number,
     receiver: boolean = false
 ): void => {

@@ -1,6 +1,6 @@
 import { $SCREEN_TAB_MENU_NAME } from "@/config/MenuConfig";
 import { $SCREEN_TAB_LIST_ID } from "@/config/ScreenConfig";
-import type { MenuImpl } from "@/interface/MenuImpl";
+import type { IMenu } from "@/interface/IMenu";
 import { EventType } from "@/tool/domain/event/EventType";
 import type { ScreenTabMenu } from "@/menu/domain/model/ScreenTabMenu";
 import { $getMenu } from "@/menu/application/MenuUtil";
@@ -23,7 +23,7 @@ export const execute = (): void =>
         return ;
     }
 
-    const menu: MenuImpl<ScreenTabMenu> | null = $getMenu($SCREEN_TAB_MENU_NAME);
+    const menu: IMenu<ScreenTabMenu> | null = $getMenu($SCREEN_TAB_MENU_NAME);
     if (!menu) {
         return ;
     }

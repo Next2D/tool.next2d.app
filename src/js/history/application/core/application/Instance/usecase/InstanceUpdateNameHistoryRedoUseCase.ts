@@ -1,5 +1,5 @@
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
-import type { InstanceImpl } from "@/interface/InstanceImpl";
+import type { IInstance } from "@/interface/IInstance";
 import type { Instance } from "@/core/domain/model/Instance";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
 import { execute as libraryAreaReOrderingService } from "@/controller/application/LibraryArea/service/LibraryAreaReOrderingService";
@@ -29,7 +29,7 @@ export const execute = (
         return ;
     }
 
-    const instance: InstanceImpl<Instance> | null = workSpace.getLibrary(instance_id);
+    const instance: IInstance<Instance> | null = workSpace.getLibrary(instance_id);
     if (!instance) {
         return ;
     }

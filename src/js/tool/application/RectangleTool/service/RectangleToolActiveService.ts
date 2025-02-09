@@ -1,7 +1,7 @@
 import { $TOOL_RECTANGLE_NAME } from "@/config/ToolConfig";
 import { $getDefaultTool, $setActiveTool } from "../../ToolUtil";
 import type { RectangleTool } from "@/tool/domain/model/RectangleTool";
-import type { ToolImpl } from "@/interface/ToolImpl";
+import type { ITool } from "@/interface/ITool";
 
 /**
  * @description 矩形ツールをアクティブにする
@@ -13,7 +13,7 @@ import type { ToolImpl } from "@/interface/ToolImpl";
  */
 export const execute = (): void =>
 {
-    const tool: ToolImpl<RectangleTool> = $getDefaultTool($TOOL_RECTANGLE_NAME);
+    const tool: ITool<RectangleTool> = $getDefaultTool($TOOL_RECTANGLE_NAME);
     if (!tool) {
         return ;
     }

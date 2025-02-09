@@ -1,5 +1,5 @@
 import type { IBlendMode } from "./IBlendMode";
-import type { PositionImpl } from "./PositionImpl";
+import type { IPosition } from "./IPosition";
 
 export interface ICharacterSaveObject {
     libraryId: number;
@@ -10,5 +10,5 @@ export interface ICharacterSaveObject {
     startFrame: number;
     endFrame: number;
     name: string;
-    referencePosition: PositionImpl
+    referencePosition: IPosition
 }

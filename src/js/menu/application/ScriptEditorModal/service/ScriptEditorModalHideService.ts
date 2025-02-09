@@ -1,4 +1,4 @@
-import type { MenuImpl } from "@/interface/MenuImpl";
+import type { IMenu } from "@/interface/IMenu";
 import type { ScriptEditorModal } from "@/menu/domain/model/ScriptEditorModal";
 import {
     $allHideMenu,
@@ -16,7 +16,7 @@ import { $SCRIPT_EDITOR_MODAL_NAME } from "@/config/MenuConfig";
  */
 export const execute = (): void =>
 {
-    const menu: MenuImpl<ScriptEditorModal> | null = $getMenu($SCRIPT_EDITOR_MODAL_NAME);
+    const menu: IMenu<ScriptEditorModal> | null = $getMenu($SCRIPT_EDITOR_MODAL_NAME);
     if (!menu) {
         return ;
     }

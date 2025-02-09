@@ -1,5 +1,5 @@
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
-import { InstanceImpl } from "@/interface/InstanceImpl";
+import { IInstance } from "@/interface/IInstance";
 
 /**
  * @description ライブラリのアイテムを名前順に並び替える。フォルダ内はフォルダ内で名前順に並び替える
@@ -49,7 +49,7 @@ export const execute = (work_space: WorkSpace): void =>
 
     // 初期化
     work_space.libraries.clear();
-    const register = (instances: InstanceImpl<any>[]): void =>
+    const register = (instances: IInstance<any>[]): void =>
     {
         for (let idx = 0; idx < instances.length; ++idx) {
 

@@ -1,0 +1,1 @@
+export type IShortcutKeyString = "screen" | "timeline" | "library" | "global";

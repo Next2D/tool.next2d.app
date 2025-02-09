@@ -1,4 +1,4 @@
-import type { InstanceImpl } from "@/interface/InstanceImpl";
+import type { IInstance } from "@/interface/IInstance";
 import { Bitmap } from "@/core/domain/model/Bitmap";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { execute as libraryAreaUpdateBitmapHistoryUseCase } from "@/history/application/controller/application/LibraryArea/Bitmap/usecase/LibraryAreaUpdateBitmapHistoryUseCase";
@@ -33,7 +33,7 @@ export const execute = async (file: File, path: string): Promise<void> =>
     }
 
     const libraryId = workSpace.pathMap.get(pathName) as NonNullable<number>;
-    const instance: InstanceImpl<any> = workSpace.getLibrary(libraryId);
+    const instance: IInstance<any> = workSpace.getLibrary(libraryId);
     if (!instance) {
         return ;
     }

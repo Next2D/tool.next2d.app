@@ -1,5 +1,5 @@
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
-import type { InstanceImpl } from "@/interface/InstanceImpl";
+import type { IInstance } from "@/interface/IInstance";
 import { execute as libraryAreaReloadUseCase } from "@/controller/application/LibraryArea/usecase/LibraryAreaReloadUseCase";
 import { execute as libraryAreaSelectedClearUseCase } from "@/controller/application/LibraryArea/usecase/LibraryAreaSelectedClearUseCase";
 import { execute as externalWorkSpaceRemoveInstanceService } from "@/external/core/application/ExternalWorkSpace/service/ExternalWorkSpaceRemoveInstanceService";
@@ -18,7 +18,7 @@ import { execute as libraryAreaRemoveInstanceHistoryUseCase } from "@/history/ap
  */
 export const execute = async (
     work_space: WorkSpace,
-    instance: InstanceImpl<any>,
+    instance: IInstance<any>,
     reload: boolean = true,
     receiver: boolean = false
 ): Promise<void> => {

@@ -1,5 +1,5 @@
 import { $DETAIL_MODAL_NAME } from "@/config/MenuConfig";
-import type { MenuImpl } from "@/interface/MenuImpl";
+import type { IMenu } from "@/interface/IMenu";
 import type { DetailModal } from "@/menu/domain/model/DetailModal";
 import { $getMenu } from "@/menu/application/MenuUtil";
 
@@ -14,7 +14,7 @@ import { $getMenu } from "@/menu/application/MenuUtil";
 export const execute = (): void =>
 {
     // 進行状況メニューを非表示に
-    const menu: MenuImpl<DetailModal> | null = $getMenu($DETAIL_MODAL_NAME);
+    const menu: IMenu<DetailModal> | null = $getMenu($DETAIL_MODAL_NAME);
     if (!menu) {
         return ;
     }

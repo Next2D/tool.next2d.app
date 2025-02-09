@@ -1,4 +1,4 @@
-import { ShareReceiveMessageImpl } from "@/interface/ShareReceiveMessageImpl";
+import { IShareReceiveMessage } from "@/interface/IShareReceiveMessage";
 
 /**
  * @description WebSocketオブジェクト
@@ -126,7 +126,7 @@ export const $isLoadedInitializeData = (): boolean =>
  *
  * @private
  */
-const $messages: ShareReceiveMessageImpl[] = [];
+const $messages: IShareReceiveMessage[] = [];
 
 /**
  * @description メッセージを配列に格納
@@ -137,7 +137,7 @@ const $messages: ShareReceiveMessageImpl[] = [];
  * @method
  * @public
  */
-export const $pushMessage = (message: ShareReceiveMessageImpl): void =>
+export const $pushMessage = (message: IShareReceiveMessage): void =>
 {
     $messages.push(message);
 };
@@ -150,7 +150,7 @@ export const $pushMessage = (message: ShareReceiveMessageImpl): void =>
  * @method
  * @public
  */
-export const $getMessages = (): ShareReceiveMessageImpl[] =>
+export const $getMessages = (): IShareReceiveMessage[] =>
 {
     return $messages;
 };
@@ -163,9 +163,9 @@ export const $getMessages = (): ShareReceiveMessageImpl[] =>
  * @method
  * @public
  */
-export const $getMessage = (): ShareReceiveMessageImpl | null =>
+export const $getMessage = (): IShareReceiveMessage | null =>
 {
     return $messages.length
-        ? $messages.shift() as NonNullable<ShareReceiveMessageImpl>
+        ? $messages.shift() as NonNullable<IShareReceiveMessage>
         : null;
 };

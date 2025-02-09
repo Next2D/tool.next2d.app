@@ -1,6 +1,6 @@
-import type { ShareReceiveMessageImpl } from "@/interface/ShareReceiveMessageImpl";
+import type { IShareReceiveMessage } from "@/interface/IShareReceiveMessage";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
-import type { InstanceImpl } from "@/interface/InstanceImpl";
+import type { IInstance } from "@/interface/IInstance";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
 import { execute as externalLayerUpdateLightColorUseCase } from "@/external/core/application/ExternalLayer/usecase/ExternalLayerUpdateLightColorUseCase";
 
@@ -13,7 +13,7 @@ import { execute as externalLayerUpdateLightColorUseCase } from "@/external/core
  * @method
  * @public
  */
-export const execute = (message: ShareReceiveMessageImpl): void =>
+export const execute = (message: IShareReceiveMessage): void =>
 {
     const id = message.data[0] as NonNullable<number>;
 
@@ -23,7 +23,7 @@ export const execute = (message: ShareReceiveMessageImpl): void =>
     }
 
     const movieClipId = message.data[1] as NonNullable<number>;
-    const movieClip: InstanceImpl<MovieClip> = workSpace.getLibrary(movieClipId);
+    const movieClip: IInstance<MovieClip> = workSpace.getLibrary(movieClipId);
     if (!movieClip) {
         return ;
     }

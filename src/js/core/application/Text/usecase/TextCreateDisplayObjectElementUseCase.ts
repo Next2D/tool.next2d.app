@@ -1,5 +1,5 @@
 import type { Character } from "@/core/domain/model/Character";
-import type { InstanceImpl } from "@/interface/InstanceImpl";
+import type { IInstance } from "@/interface/IInstance";
 import type { Layer } from "@/core/domain/model/Layer";
 import type { Text } from "@/core/domain/model/Text";
 import { execute as textRegisterEventUseCase } from "./TextRegisterEventUseCase";
@@ -28,7 +28,7 @@ import { $getMaskMatrix } from "@/controller/application/TransformSetting/Transf
  */
 export const execute = async (
     work_space_id: number,
-    instance: InstanceImpl<Text>,
+    instance: IInstance<Text>,
     element: HTMLElement,
     layer: Layer,
     character: Character

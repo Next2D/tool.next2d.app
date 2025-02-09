@@ -1,4 +1,4 @@
-import { ShortcutViewObjectImpl } from "../../../../interface/ShortcutViewObjectImpl";
+import { IShortcutViewObject } from "../../../../interface/IShortcutViewObject";
 import { $clearCommandMapping, $clearViewMapping, $getCommandMapping, $getViewMapping } from "../ShortcutSettingMenuUtil";
 import { execute } from "./ShortcutSettingMenuUpdateCommandMappingService";
 
@@ -7,7 +7,7 @@ describe("ShortcutSettingMenuUpdateCommandMappingServiceTest", () =>
     test("execute test", () =>
     {
         // mock
-        const viewMapping: Map<string, ShortcutViewObjectImpl> = $getViewMapping();
+        const viewMapping: Map<string, IShortcutViewObject> = $getViewMapping();
 
         viewMapping.set("default_global", {
             "customKey": "custom_global",

@@ -1,4 +1,4 @@
-import type { ToolImpl } from "@/interface/ToolImpl";
+import type { ITool } from "@/interface/ITool";
 import type { ZoomPlusTool } from "@/tool/domain/model/ZoomPlusTool";
 import { $setCursor } from "@/global/GlobalUtil";
 import { $getDefaultTool } from "../../ToolUtil";
@@ -14,7 +14,7 @@ import { $TOOL_ZOOM_PLUS_NAME } from "@/config/ToolConfig";
  */
 export const execute = (): void =>
 {
-    const tool: ToolImpl<ZoomPlusTool> = $getDefaultTool($TOOL_ZOOM_PLUS_NAME);
+    const tool: ITool<ZoomPlusTool> = $getDefaultTool($TOOL_ZOOM_PLUS_NAME);
     if (!tool) {
         return ;
     }

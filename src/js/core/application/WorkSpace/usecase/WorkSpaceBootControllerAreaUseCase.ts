@@ -1,4 +1,4 @@
-import { UserControllerAreaStateObjectImpl } from "@/interface/UserControllerAreaStateObjectImpl";
+import { IUserControllerAreaStateObject } from "@/interface/IUserControllerAreaStateObject";
 
 /**
  * @description WorkSpaceに保存されてるobjectからコントローラーエリアのstyleを更新
@@ -9,7 +9,7 @@ import { UserControllerAreaStateObjectImpl } from "@/interface/UserControllerAre
  * @method
  * @public
  */
-export const execute = (controller_area_state: UserControllerAreaStateObjectImpl): void =>
+export const execute = (controller_area_state: IUserControllerAreaStateObject): void =>
 {
     // コントローラーの幅をセット
     document

@@ -1,5 +1,5 @@
 import type { Shape } from "@/core/domain/model/Shape";
-import type { ShapePublishJsonImpl } from "@/interface/ShapePublishJsonImpl";
+import type { IShapePublishJson } from "@/interface/IShapePublishJson";
 import { Shape as DisplayShape } from "@next2d/display";
 
 /**
@@ -11,11 +11,11 @@ import { Shape as DisplayShape } from "@next2d/display";
  * @method
  * @public
  */
-export const execute = (shape: Shape): ShapePublishJsonImpl =>
+export const execute = (shape: Shape): IShapePublishJson =>
 {
     const bounds = shape.getRawBounds();
 
-    const object: ShapePublishJsonImpl = {
+    const object: IShapePublishJson = {
         "extends": DisplayShape.namespace,
         "recodes": shape.recodes.slice(),
         "bounds": {

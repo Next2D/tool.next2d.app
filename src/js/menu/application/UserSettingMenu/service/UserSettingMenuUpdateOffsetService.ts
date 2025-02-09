@@ -1,4 +1,4 @@
-import type { MenuImpl } from "@/interface/MenuImpl";
+import type { IMenu } from "@/interface/IMenu";
 import type { UserSettingMenu } from "@/menu/domain/model/UserSettingMenu";
 import { $USER_MENU_NAME } from "@/config/MenuConfig";
 import { $getMenu } from "@/menu/application/MenuUtil";
@@ -19,7 +19,7 @@ import {
 export const execute = (): void =>
 {
     // ユーザーメニューオブジェクト
-    const menu: MenuImpl<UserSettingMenu> = $getMenu($USER_MENU_NAME);
+    const menu: IMenu<UserSettingMenu> = $getMenu($USER_MENU_NAME);
     if (!menu) {
         return ;
     }

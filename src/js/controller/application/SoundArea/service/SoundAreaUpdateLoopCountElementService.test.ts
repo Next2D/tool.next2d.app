@@ -1,6 +1,6 @@
 import { execute } from "./SoundAreaUpdateLoopCountElementService";
 import { $SOUND_AREA_SOUND_LIST_AREA_ID } from "../../../../config/SoundSettingConfig";
-import { SoundObjectImpl } from "../../../../interface/SoundObjectImpl";
+import { ISoundObject } from "../../../../interface/ISoundObject";
 
 describe("SoundAreaUpdateLoopCountElementServiceTest", () =>
 {
@@ -18,7 +18,7 @@ describe("SoundAreaUpdateLoopCountElementServiceTest", () =>
         volumeElement.value = "0";
         node.appendChild(volumeElement);
 
-        const soundObject: SoundObjectImpl = {
+        const soundObject: ISoundObject = {
             "libraryId": 2,
             "autoPlay": false,
             "loopCount": 10,

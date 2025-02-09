@@ -1,5 +1,5 @@
 import { WorkSpace } from "@/core/domain/model/WorkSpace";
-import type { WorkSpaceSaveObjectImpl } from "@/interface/WorkSpaceSaveObjectImpl";
+import type { IWorkSpaceSaveObject } from "@/interface/IWorkSpaceSaveObject";
 import { $registerWorkSpace } from "../../CoreUtil";
 import { execute as binaryToBufferService } from "@/core/service/BinaryToBufferService";
 import { execute as bufferToBinaryService } from "@/core/service/BufferToBinaryService";
@@ -36,7 +36,7 @@ export const execute = (binary: string, share: boolean = false): Promise<void> =
                 event.data as NonNullable<Uint8Array>
             );
 
-            const workSpaceObjects: WorkSpaceSaveObjectImpl[] = migrationSaveDataUseCase(
+            const workSpaceObjects: IWorkSpaceSaveObject[] = migrationSaveDataUseCase(
                 JSON.parse(decodeURIComponent(value))
             );
 

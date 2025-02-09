@@ -1,4 +1,4 @@
-import type { ToolImpl } from "@/interface/ToolImpl";
+import type { ITool } from "@/interface/ITool";
 import { EventType } from "@/tool/domain/event/EventType";
 import type { RectangleTool } from "@/tool/domain/model/RectangleTool";
 import { execute as rectangleToolStartEventUseCase } from "./RectangleToolStartEventUseCase";
@@ -16,7 +16,7 @@ import { execute as rectangleToolChangeCursorEventService } from "../service/Rec
  * @method
  * @public
  */
-export const execute = (tool: ToolImpl<RectangleTool>): void =>
+export const execute = (tool: ITool<RectangleTool>): void =>
 {
     // 起動イベントを登録
     tool.addEventListener(EventType.START,

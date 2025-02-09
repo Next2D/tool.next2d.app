@@ -1,6 +1,6 @@
-import type { InstanceImpl } from "@/interface/InstanceImpl";
+import type { IInstance } from "@/interface/IInstance";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
-import type { SoundObjectImpl } from "@/interface/SoundObjectImpl";
+import type { ISoundObject } from "@/interface/ISoundObject";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
 import { $getLeftFrame } from "@/timeline/application/TimelineUtil";
 import { timelineHeader } from "@/timeline/domain/model/TimelineHeader";
@@ -23,7 +23,7 @@ import { execute as timelineHeaderUpdateSoundElementService } from "@/timeline/a
 export const execute = (
     work_space_id: number,
     library_id: number,
-    sound_object: SoundObjectImpl,
+    sound_object: ISoundObject,
     frame: number,
     index: number
 ): void => {
@@ -33,7 +33,7 @@ export const execute = (
         return ;
     }
 
-    const movieClip: InstanceImpl<MovieClip> | null = workSpace.getLibrary(library_id);
+    const movieClip: IInstance<MovieClip> | null = workSpace.getLibrary(library_id);
     if (!movieClip) {
         return ;
     }

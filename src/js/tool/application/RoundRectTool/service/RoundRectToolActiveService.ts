@@ -1,7 +1,7 @@
 import { $TOOL_ROUND_RECT_NAME } from "@/config/ToolConfig";
 import { $getDefaultTool, $setActiveTool } from "../../ToolUtil";
 import type { RoundRectTool } from "@/tool/domain/model/RoundRectTool";
-import type { ToolImpl } from "@/interface/ToolImpl";
+import type { ITool } from "@/interface/ITool";
 
 /**
  * @description 角丸矩形ツールをアクティブにする
@@ -13,7 +13,7 @@ import type { ToolImpl } from "@/interface/ToolImpl";
  */
 export const execute = (): void =>
 {
-    const tool: ToolImpl<RoundRectTool> = $getDefaultTool($TOOL_ROUND_RECT_NAME);
+    const tool: ITool<RoundRectTool> = $getDefaultTool($TOOL_ROUND_RECT_NAME);
     if (!tool) {
         return ;
     }

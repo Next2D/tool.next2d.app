@@ -1,7 +1,7 @@
-import type { ShareReceiveMessageImpl } from "@/interface/ShareReceiveMessageImpl";
+import type { IShareReceiveMessage } from "@/interface/IShareReceiveMessage";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
-import type { InstanceImpl } from "@/interface/InstanceImpl";
-import type { SoundSaveObjectImpl } from "@/interface/SoundSaveObjectImpl";
+import type { IInstance } from "@/interface/IInstance";
+import type { ISoundSaveObject } from "@/interface/ISoundSaveObject";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
 import { Sound } from "@/core/domain/model/Sound";
 import { execute as externalLibraryAddInstanceUseCase } from "@/external/controller/application/ExternalLibrary/usecase/ExternalLibraryAddInstanceUseCase";
@@ -28,7 +28,7 @@ const worker: Worker = new ZlibInflateWorker();
  * @method
  * @public
  */
-export const execute = async (message: ShareReceiveMessageImpl): Promise<void> =>
+export const execute = async (message: IShareReceiveMessage): Promise<void> =>
 {
     const id = message.data[0] as NonNullable<number>;
 
@@ -38,13 +38,13 @@ export const execute = async (message: ShareReceiveMessageImpl): Promise<void> =
     }
 
     const libraryId = message.data[1] as NonNullable<number>;
-    const movieClip: InstanceImpl<MovieClip> = workSpace.getLibrary(libraryId);
+    const movieClip: IInstance<MovieClip> = workSpace.getLibrary(libraryId);
     if (!movieClip) {
         return ;
     }
 
     // 受け取ったSoundのbufferはZlibで圧縮されてるので解答が必要
-    const soundSaveObject = message.data[2] as NonNullable<SoundSaveObjectImpl>;
+    const soundSaveObject = message.data[2] as NonNullable<ISoundSaveObject>;
 
     // バイナリをUint8Arrayに変換
     const url = await shareGetS3EndPointRepository(message.data[3] as string, "get");

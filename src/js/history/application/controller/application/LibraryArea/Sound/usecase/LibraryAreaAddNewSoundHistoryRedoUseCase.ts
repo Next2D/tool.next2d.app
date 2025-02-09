@@ -1,4 +1,4 @@
-import type { VideoSaveObjectImpl } from "@/interface/VideoSaveObjectImpl";
+import type { IVideoSaveObject } from "@/interface/IVideoSaveObject";
 import { Sound } from "@/core/domain/model/Sound";
 import { execute as externalWorkSpaceRegisterInstanceService } from "@/external/core/application/ExternalWorkSpace/service/ExternalWorkSpaceRegisterInstanceService";
 import { execute as libraryAreaReloadUseCase } from "@/controller/application/LibraryArea/usecase/LibraryAreaReloadUseCase";
@@ -18,7 +18,7 @@ import { execute as soundAreaRebuildSelectElementService } from "@/controller/ap
  */
 export const execute = async (
     work_space_id: number,
-    sound_save_object: VideoSaveObjectImpl
+    sound_save_object: IVideoSaveObject
 ): Promise<void> => {
 
     const workSpace = $getWorkSpace(work_space_id);

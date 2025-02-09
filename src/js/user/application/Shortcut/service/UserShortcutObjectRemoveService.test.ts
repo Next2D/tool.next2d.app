@@ -1,4 +1,4 @@
-import { ShortcutViewObjectImpl } from "../../../../interface/ShortcutViewObjectImpl";
+import { IShortcutViewObject } from "../../../../interface/IShortcutViewObject";
 import { execute as userShortcutObjectGetService } from "./UserShortcutObjectGetService";
 import { execute as userShortcutObjectUpdateService } from "./UserShortcutObjectUpdateService";
 import { execute } from "./UserShortcutObjectRemoveService";
@@ -7,7 +7,7 @@ describe("UserShortcutObjectGetServiceTest", () =>
 {
     test("execute test", () =>
     {
-        let object: ShortcutViewObjectImpl[] | null = userShortcutObjectGetService();
+        let object: IShortcutViewObject[] | null = userShortcutObjectGetService();
         expect(object).toBe(null);
 
         userShortcutObjectUpdateService([

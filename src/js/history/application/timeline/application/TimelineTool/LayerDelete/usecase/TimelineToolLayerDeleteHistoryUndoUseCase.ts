@@ -1,11 +1,11 @@
-import type { LayerSaveObjectImpl } from "@/interface/LayerSaveObjectImpl";
-import type { InstanceImpl } from "@/interface/InstanceImpl";
+import type { ILayerSaveObject } from "@/interface/ILayerSaveObject";
+import type { IInstance } from "@/interface/IInstance";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import { execute as externalLayerUpdateReloadUseCase } from "@/external/core/application/ExternalLayer/usecase/ExternalLayerUpdateReloadUseCase";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
 import { ExternalTimeline } from "@/external/timeline/domain/model/ExternalTimeline";
 import { $GUIDE_IN_MODE, $GUIDE_MODE, $MASK_IN_MODE, $MASK_MODE } from "@/config/LayerModeConfig";
-import { LayerModeImpl } from "@/interface/LayerModeImpl";
+import { ILayerMode } from "@/interface/ILayerMode";
 import { execute as screenAreaRedrawUseCase } from "@/screen/application/ScreenArea/usecase/ScreenAreaRedrawUseCase";
 import { execute as targetRectHideElementService } from "@/screen/application/TargetRect/service/TargetRectHideElementService";
 
@@ -27,7 +27,7 @@ export const execute = async (
     library_id: number,
     index: number,
     indexes: number[],
-    layer_object: LayerSaveObjectImpl
+    layer_object: ILayerSaveObject
 ): Promise<void> => {
 
     const workSpace = $getWorkSpace(work_space_id);
@@ -35,7 +35,7 @@ export const execute = async (
         return ;
     }
 
-    const movieClip: InstanceImpl<MovieClip> | null = workSpace.getLibrary(library_id);
+    const movieClip: IInstance<MovieClip> | null = workSpace.getLibrary(library_id);
     if (!movieClip) {
         return ;
     }
@@ -51,7 +51,7 @@ export const execute = async (
     layer.load(layer_object);
     movieClip.setLayer(layer, index);
 
-    let mode: LayerModeImpl = 0;
+    let mode: ILayerMode = 0;
     switch (layer.mode) {
 
         case $MASK_MODE:

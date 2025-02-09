@@ -1,6 +1,6 @@
 import type { IHistoryObject } from "@/interface/IHistoryObject";
 import type { IBitmapSaveObject } from "@/interface/IBitmapSaveObject";
-import type { InstanceSaveObjectImpl } from "@/interface/InstanceSaveObjectImpl";
+import type { IInstanceSaveObject } from "@/interface/IInstanceSaveObject";
 import { $LIBRARY_OVERWRITE_IMAGE_COMMAND } from "@/config/HistoryConfig";
 
 /**
@@ -19,7 +19,7 @@ import { $LIBRARY_OVERWRITE_IMAGE_COMMAND } from "@/config/HistoryConfig";
 export const execute = (
     work_space_id: number,
     movie_clip_id: number,
-    before_save_object: InstanceSaveObjectImpl,
+    before_save_object: IInstanceSaveObject,
     after_save_object: IBitmapSaveObject,
     file_id: string = ""
 ): IHistoryObject => {

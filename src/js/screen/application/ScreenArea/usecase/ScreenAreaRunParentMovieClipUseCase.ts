@@ -1,5 +1,5 @@
 import type { MovieClip } from "@/core/domain/model/MovieClip";
-import type { InstanceImpl } from "@/interface/InstanceImpl";
+import type { IInstance } from "@/interface/IInstance";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { timelineSceneList } from "@/timeline/domain/model/TimelineSceneList";
 import { $TIMELINE_SCENE_NAME_LIST_ID } from "@/config/TimelineConfig";
@@ -38,7 +38,7 @@ export const execute = async (): Promise<void> =>
     }
 
     const workSpace = $getCurrentWorkSpace();
-    const movieClip: InstanceImpl<MovieClip> | null = workSpace.getLibrary(parentObject.parentLibraryId);
+    const movieClip: IInstance<MovieClip> | null = workSpace.getLibrary(parentObject.parentLibraryId);
     if (!movieClip) {
         return ;
     }

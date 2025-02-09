@@ -1,6 +1,6 @@
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
-import type { InstanceSaveObjectImpl } from "@/interface/InstanceSaveObjectImpl";
-import type { MovieClipSaveObjectImpl } from "@/interface/MovieClipSaveObjectImpl";
+import type { IInstanceSaveObject } from "@/interface/IInstanceSaveObject";
+import type { IMovieClipSaveObject } from "@/interface/IMovieClipSaveObject";
 import { execute as workSpaceCreateToSaveDataService } from "./WorkSpaceCreateToSaveDataService";
 
 /**
@@ -15,7 +15,7 @@ import { execute as workSpaceCreateToSaveDataService } from "./WorkSpaceCreateTo
  */
 export const execute = async (
     work_space: WorkSpace,
-    libraries: InstanceSaveObjectImpl[]
+    libraries: IInstanceSaveObject[]
 ): Promise<void> => {
 
     // 復元処理
@@ -25,7 +25,7 @@ export const execute = async (
 
         // rootの読み込み
         if (libraryObject.id === 0) {
-            work_space.root.load(libraryObject as MovieClipSaveObjectImpl);
+            work_space.root.load(libraryObject as IMovieClipSaveObject);
             continue;
         }
 

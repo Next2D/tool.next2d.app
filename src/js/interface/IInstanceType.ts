@@ -1,0 +1,1 @@
+export type IInstanceType = "shape" | "bitmap" | "video" | "folder" | "sound" | "container" | "text";

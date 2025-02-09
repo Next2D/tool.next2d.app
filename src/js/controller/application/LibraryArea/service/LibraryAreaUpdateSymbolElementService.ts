@@ -1,5 +1,5 @@
 import type { Instance } from "@/core/domain/model/Instance";
-import type { InstanceImpl } from "@/interface/InstanceImpl";
+import type { IInstance } from "@/interface/IInstance";
 
 /**
  * @description シンボルのElementのテキスト情報を更新
@@ -10,7 +10,7 @@ import type { InstanceImpl } from "@/interface/InstanceImpl";
  * @method
  * @public
  */
-export const execute = (instance: InstanceImpl<Instance>): void =>
+export const execute = (instance: IInstance<Instance>): void =>
 {
     const element: HTMLElement | null = document
         .getElementById(`library-child-id-${instance.id}`);

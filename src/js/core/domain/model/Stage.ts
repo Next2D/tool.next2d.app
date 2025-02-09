@@ -1,4 +1,4 @@
-import { StageObjectImpl } from "@/interface/StageObjectImpl";
+import { IStageObject } from "@/interface/IStageObject";
 import { execute as stageRunUseCase } from "@/core/application/Stage/usecase/StageRunUseCase";
 import { $clamp } from "@/global/GlobalUtil";
 import {
@@ -146,7 +146,7 @@ export class Stage
      * @method
      * @public
      */
-    toObject (): StageObjectImpl
+    toObject (): IStageObject
     {
         return {
             "width": this.width,
@@ -165,7 +165,7 @@ export class Stage
      * @method
      * @public
      */
-    load (object: StageObjectImpl): void
+    load (object: IStageObject): void
     {
         this._$width   = object.width;
         this._$height  = object.height;

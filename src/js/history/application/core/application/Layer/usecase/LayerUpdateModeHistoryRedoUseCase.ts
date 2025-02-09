@@ -1,6 +1,6 @@
-import type { InstanceImpl } from "@/interface/InstanceImpl";
+import type { IInstance } from "@/interface/IInstance";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
-import type { LayerModeImpl } from "@/interface/LayerModeImpl";
+import type { ILayerMode } from "@/interface/ILayerMode";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
 import { $MASK_MODE } from "@/config/LayerModeConfig";
 import { execute as timelineLayerControllerUpdateIconElementService } from "@/timeline/application/TimelineLayerController/service/TimelineLayerControllerUpdateIconElementService";
@@ -25,7 +25,7 @@ export const execute = async (
     work_space_id: number,
     library_id: number,
     index: number,
-    after_mode: LayerModeImpl,
+    after_mode: ILayerMode,
     after_parent_id: number
 ): Promise<void> => {
 
@@ -34,7 +34,7 @@ export const execute = async (
         return ;
     }
 
-    const movieClip: InstanceImpl<MovieClip> | null = workSpace.getLibrary(library_id);
+    const movieClip: IInstance<MovieClip> | null = workSpace.getLibrary(library_id);
     if (!movieClip) {
         return ;
     }

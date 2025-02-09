@@ -1,7 +1,7 @@
 import { $TOOL_CIRCLE_NAME } from "@/config/ToolConfig";
 import { $getDefaultTool, $setActiveTool } from "../../ToolUtil";
 import type { CircleTool } from "@/tool/domain/model/CircleTool";
-import type { ToolImpl } from "@/interface/ToolImpl";
+import type { ITool } from "@/interface/ITool";
 
 /**
  * @description 円ツールをアクティブにする
@@ -13,7 +13,7 @@ import type { ToolImpl } from "@/interface/ToolImpl";
  */
 export const execute = (): void =>
 {
-    const tool: ToolImpl<CircleTool> = $getDefaultTool($TOOL_CIRCLE_NAME);
+    const tool: ITool<CircleTool> = $getDefaultTool($TOOL_CIRCLE_NAME);
     if (!tool) {
         return ;
     }

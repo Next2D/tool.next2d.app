@@ -1,5 +1,5 @@
-import type { SoundObjectImpl } from "@/interface/SoundObjectImpl";
-import type { InstanceImpl } from "@/interface/InstanceImpl";
+import type { ISoundObject } from "@/interface/ISoundObject";
+import type { IInstance } from "@/interface/IInstance";
 import type { Sound } from "@/core/domain/model/Sound";
 import { $SOUND_AREA_SOUND_LIST_AREA_ID } from "@/config/SoundSettingConfig";
 import { execute as soundAreaSettingComponent } from "../component/SoundAreaSettingComponent";
@@ -33,7 +33,7 @@ import { execute as soundAreaLoopCountFocusInEventService } from "../service/Sou
 export const execute = (
     index: number,
     sound_name: string,
-    sound_object: SoundObjectImpl
+    sound_object: ISoundObject
 ): void => {
 
     const element: HTMLElement | null = document
@@ -70,7 +70,7 @@ export const execute = (
         canvasContainer.classList.add("sound-setting-preview-container");
 
         const workSpace = $getCurrentWorkSpace();
-        const sound: InstanceImpl<Sound> = workSpace.getLibrary(sound_object.libraryId);
+        const sound: IInstance<Sound> = workSpace.getLibrary(sound_object.libraryId);
         if (sound) {
 
             // audio Elementを生成

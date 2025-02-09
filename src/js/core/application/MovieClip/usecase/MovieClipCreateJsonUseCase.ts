@@ -1,13 +1,13 @@
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { Character } from "@/core/domain/model/Character";
-import type { SoundPublishObjectImpl } from "@/interface/SoundPublishObjectImpl";
-import type { MovieClipPublishJsonImpl } from "@/interface/MovieClipPublishJsonImpl";
+import type { ISoundPublishObject } from "@/interface/ISoundPublishObject";
+import type { IMovieClipPublishJson } from "@/interface/IMovieClipPublishJson";
 import type { IActionSaveObject } from "@/interface/IActionSaveObject";
 import type { Layer } from "@/core/domain/model/Layer";
 import type { ICharacterPublishObject } from "@/interface/ICharacterPublishObject";
 import type { IControllerPublishObject } from "@/interface/IControllerPublishObject";
-import type { PlaceObjectImpl } from "@/interface/PlaceObjectImpl";
-import type { PlaceObjectMapImpl } from "@/interface/PlaceObjectMapImpl";
+import type { IPlaceObject } from "@/interface/IPlaceObject";
+import type { IPlaceObjectMap } from "@/interface/IPlaceObjectMap";
 import { minify } from "terser";
 import {
     $GUIDE_MODE,
@@ -27,12 +27,12 @@ import { $getUseLibraryIds } from "@/tool/application/PublishTool/PublishToolUti
  * @method
  * @public
  */
-export const execute = async (movie_clip: MovieClip): Promise<MovieClipPublishJsonImpl> =>
+export const execute = async (movie_clip: MovieClip): Promise<IMovieClipPublishJson> =>
 {
     const dictionary: ICharacterPublishObject[] = [];
     const controller: IControllerPublishObject = [];
-    const placeMap: PlaceObjectMapImpl = [];
-    const placeObjects: PlaceObjectImpl[] = [];
+    const placeMap: IPlaceObjectMap = [];
+    const placeObjects: IPlaceObject[] = [];
 
     // 外部連携データ
     const userSettingObject = userSettingObjectGetService();
@@ -325,7 +325,7 @@ export const execute = async (movie_clip: MovieClip): Promise<MovieClipPublishJs
         }
     }
 
-    const object: MovieClipPublishJsonImpl = {
+    const object: IMovieClipPublishJson = {
         "extends": next2d.display.MovieClip.namespace,
         "totalFrame": movie_clip.maxFrame,
         "dictionary": dictionary,
@@ -358,7 +358,7 @@ export const execute = async (movie_clip: MovieClip): Promise<MovieClipPublishJs
         const sounds = [];
         for (const [frame, values] of movie_clip.sounds) {
 
-            const object: SoundPublishObjectImpl = {
+            const object: ISoundPublishObject = {
                 "frame": frame,
                 "sound": []
             };

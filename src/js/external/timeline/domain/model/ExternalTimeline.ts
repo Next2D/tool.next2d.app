@@ -1,6 +1,6 @@
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
-import type { InstanceImpl } from "@/interface/InstanceImpl";
+import type { IInstance } from "@/interface/IInstance";
 import { ExternalLayer } from "@/external/core/domain/model/ExternalLayer";
 import { execute as externalTimelineChageFrameUseCase } from "@/external/timeline/application/ExternalTimeline/usecase/ExternalTimelineChageFrameUseCase";
 import { execute as externalTimelineLayerDeactivateLayerUseCase } from "@/external/timeline/application/ExternalTimelineLayer/usecase/ExternalTimelineLayerDeactivateLayerUseCase";
@@ -230,7 +230,7 @@ export class ExternalTimeline
      */
     async editMovieClip (external_movie_clip: ExternalMovieClip): Promise<void>
     {
-        const movieClip: InstanceImpl<MovieClip> = this
+        const movieClip: IInstance<MovieClip> = this
             ._$workSpace
             .getLibrary(external_movie_clip.id);
 

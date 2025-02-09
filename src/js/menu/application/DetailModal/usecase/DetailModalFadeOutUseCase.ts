@@ -1,5 +1,5 @@
 import { $DETAIL_MODAL_NAME } from "@/config/MenuConfig";
-import type { UserSettingObjectImpl } from "@/interface/UserSettingObjectImpl";
+import type { IUserSettingIObject } from "@/interface/IUserSettingIObject";
 import { execute as userSettingObjectGetService } from "@/user/application/Setting/service/UserSettingObjectGetService";
 
 /**
@@ -12,7 +12,7 @@ import { execute as userSettingObjectGetService } from "@/user/application/Setti
  */
 export const execute = (): void =>
 {
-    const userSetting: UserSettingObjectImpl = userSettingObjectGetService();
+    const userSetting: IUserSettingIObject = userSettingObjectGetService();
     if (!userSetting.modal) {
         return ;
     }
