@@ -19,6 +19,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
       - run: npm install
+      - run: npm install @next2d/player
       - run: npm run test
 
   windows-browser-test:
@@ -27,4 +28,5 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
       - run: npm install
+      - run: npm install @next2d/player
       - run: npm run test
