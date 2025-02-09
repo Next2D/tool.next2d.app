@@ -18,7 +18,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
-      - run: git clone -b develop https://github.com/Next2D/player.git
+      - uses: actions/checkout@v4
+        with:
+          repository: Next2D/player
+          ref: develop
       - run: npm install
       - run: npm run test
 
@@ -27,6 +30,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
-      - run: git clone -b develop https://github.com/Next2D/player.git
+      - uses: actions/checkout@v4
+        with:
+          repository: Next2D/player
+          ref: develop
       - run: npm install
       - run: npm run test
