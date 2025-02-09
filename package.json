@@ -1,11 +1,17 @@
 {
   "name": "@next2d/animation-tool",
+  "description": "It is an authoring tool that runs on a Web browser. With its intuitive interface and rich functionality, it is easy for anyone to use. It allows users to create high-quality, engaging content by combining a variety of media formats, including text, images, audio, and video.",
   "private": true,
   "version": "1.0.0",
+  "homepage": "https://tool.next2d.app",
+  "bugs": "https://github.com/Next2D/tool.next2d.app/issues/new",
+  "author": "Toshiyuki Ienaga <ienaga@next2d.app> (https://github.com/ienaga/)",
+  "license": "MIT",
+  "main": "src/js/main.ts",
   "type": "module",
   "scripts": {
     "start": "vite --host",
-    "build": "tsc && vite build",
+    "build": "vite build",
     "test": "vitest",
     "lint": "eslint src/js/**/*.ts"
   },

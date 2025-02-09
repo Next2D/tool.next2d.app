@@ -36,7 +36,7 @@
   ],
   "exclude": [
     "node_modules",
-    "**/*.test.ts",
+    "src/js/**/*.test.ts",
     "docs/**"
   ]
 }
