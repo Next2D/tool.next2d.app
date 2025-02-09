@@ -1,5 +1,5 @@
-import type { HistoryObjectImpl } from "@/interface/HistoryObjectImpl";
-import type { AllSaveObjectImpl } from "@/interface/AllSaveObjectImpl";
+import type { IHistoryObject } from "@/interface/IHistoryObject";
+import type { IAllSaveObject } from "@/interface/IAllSaveObject";
 import { $LIBRARY_REMOVE_INSTANCE_COMMAND } from "@/config/HistoryConfig";
 
 /**
@@ -16,8 +16,8 @@ import { $LIBRARY_REMOVE_INSTANCE_COMMAND } from "@/config/HistoryConfig";
 export const execute = (
     work_space_id: number,
     movie_clip_id: number,
-    instance_object: AllSaveObjectImpl
-): HistoryObjectImpl => {
+    instance_object: IAllSaveObject
+): IHistoryObject => {
 
     return {
         "command": $LIBRARY_REMOVE_INSTANCE_COMMAND,

@@ -1,5 +1,5 @@
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
-import type { ExternalInstanceImpl } from "@/interface/ExternalInstanceImpl";
+import type { IExternalInstance } from "@/interface/IExternalInstance";
 import { execute as externalLibraryAddNewMovieClipUseCase } from "@/external/controller/application/ExternalLibrary/usecase/ExternalLibraryAddNewMovieClipUseCase";
 import { execute as externalLibraryAddNewShapeUseCase } from "@/external/controller/application/ExternalLibrary/usecase/ExternalLibraryAddNewShapeUseCase";
 import { execute as externalLibraryAddNewTextUseCase } from "@/external/controller/application/ExternalLibrary/usecase/ExternalLibraryAddNewTextUseCase";
@@ -64,7 +64,7 @@ export class ExternalLibrary
      * @method
      * @public
      */
-    getItem (path: string): ExternalInstanceImpl<any> | null
+    getItem (path: string): IExternalInstance<any> | null
     {
         return externalLibraryGetItemUseCase(this._$workSpace, path);
     }

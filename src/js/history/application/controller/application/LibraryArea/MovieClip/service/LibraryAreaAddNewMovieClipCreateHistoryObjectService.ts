@@ -1,4 +1,4 @@
-import type { HistoryObjectImpl } from "@/interface/HistoryObjectImpl";
+import type { IHistoryObject } from "@/interface/IHistoryObject";
 import { $LIBRARY_ADD_NEW_MOVIE_CLIP_COMMAND } from "@/config/HistoryConfig";
 
 /**
@@ -20,7 +20,7 @@ export const execute = (
     instance_id: number,
     name: string,
     folder_id: number
-): HistoryObjectImpl => {
+): IHistoryObject => {
 
     return {
         "command": $LIBRARY_ADD_NEW_MOVIE_CLIP_COMMAND,

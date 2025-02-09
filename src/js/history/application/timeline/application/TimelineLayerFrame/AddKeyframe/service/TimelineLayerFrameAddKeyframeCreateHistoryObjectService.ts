@@ -1,4 +1,4 @@
-import type { HistoryObjectImpl } from "@/interface/HistoryObjectImpl";
+import type { IHistoryObject } from "@/interface/IHistoryObject";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { Layer } from "@/core/domain/model/Layer";
 import type { Character } from "@/core/domain/model/Character";
@@ -25,7 +25,7 @@ export const execute = (
     character: Character,
     empty_character_index: number,
     instance_name: string
-): HistoryObjectImpl => {
+): IHistoryObject => {
 
     return {
         "command": $TIMELINE_ADD_KEYFRAME_COMMAND,

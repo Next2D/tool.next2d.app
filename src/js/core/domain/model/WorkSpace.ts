@@ -5,7 +5,7 @@ import type { UserPropertyAreaStateObjectImpl } from "@/interface/UserPropertyAr
 import type { WorkSpaceSaveObjectImpl } from "@/interface/WorkSpaceSaveObjectImpl";
 import type { UserControllerAreaStateObjectImpl } from "@/interface/UserControllerAreaStateObjectImpl";
 import type { InstanceSaveObjectImpl } from "@/interface/InstanceSaveObjectImpl";
-import type { HistoryObjectImpl } from "@/interface/HistoryObjectImpl";
+import type { IHistoryObject } from "@/interface/IHistoryObject";
 import { ScreenTab } from "@/screen/domain/model/ScreenTab";
 import { MovieClip } from "./MovieClip";
 import { Stage } from "./Stage";
@@ -62,7 +62,7 @@ export class WorkSpace
     private readonly _$propertyAreaState: UserPropertyAreaStateObjectImpl;
     private readonly _$controllerAreaState: UserControllerAreaStateObjectImpl;
     private readonly _$plugins: Map<any, any>;
-    private readonly _$histories: HistoryObjectImpl[];
+    private readonly _$histories: IHistoryObject[];
 
     /**
      * @constructor
@@ -290,7 +290,7 @@ export class WorkSpace
      * @readonly
      * @public
      */
-    get histories (): HistoryObjectImpl[]
+    get histories (): IHistoryObject[]
     {
         return this._$histories;
     }
@@ -605,7 +605,7 @@ export class WorkSpace
      * @method
      * @public
      */
-    addHistory (history_object: HistoryObjectImpl): void
+    addHistory (history_object: IHistoryObject): void
     {
         if (!history_object) {
             throw new Error("");

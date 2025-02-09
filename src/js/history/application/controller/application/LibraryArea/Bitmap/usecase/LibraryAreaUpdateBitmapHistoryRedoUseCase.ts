@@ -1,4 +1,4 @@
-import type { BitmapSaveObjectImpl } from "@/interface/BitmapSaveObjectImpl";
+import type { IBitmapSaveObject } from "@/interface/IBitmapSaveObject";
 import { Bitmap } from "@/core/domain/model/Bitmap";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
 import { execute as libraryAreaSelectedClearUseCase } from "@/controller/application/LibraryArea/usecase/LibraryAreaSelectedClearUseCase";
@@ -16,7 +16,7 @@ import { execute as libraryAreaReloadUseCase } from "@/controller/application/Li
  */
 export const execute = (
     work_space_id: number,
-    after_bitmap_object: BitmapSaveObjectImpl
+    after_bitmap_object: IBitmapSaveObject
 ): void => {
 
     const workSpace = $getWorkSpace(work_space_id);

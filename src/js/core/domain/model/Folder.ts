@@ -1,6 +1,6 @@
 import type { ObjectImpl } from "@/interface/ObjectImpl";
-import type { FolderSaveObjectImpl } from "@/interface/FolderSaveObjectImpl";
-import type { FolderTypeImpl } from "@/interface/FolderTypeImpl";
+import type { IFolderSaveObject } from "@/interface/IFolderSaveObject";
+import type { IFolderType } from "@/interface/IFolderType";
 import type { WorkSpace } from "./WorkSpace";
 import { Instance } from "./Instance";
 import { execute as externalFolderCheckDuplicateService } from "@/external/core/application/ExternalFolder/service/ExternalFolderCheckDuplicateService";
@@ -12,14 +12,14 @@ import { execute as externalFolderCheckDuplicateService } from "@/external/core/
  */
 export class Folder extends Instance
 {
-    private _$mode: FolderTypeImpl;
+    private _$mode: IFolderType;
 
     /**
      * @param {object} object
      * @constructor
      * @public
      */
-    constructor (object: ObjectImpl<FolderSaveObjectImpl>)
+    constructor (object: ObjectImpl<IFolderSaveObject>)
     {
         super(object);
 
@@ -38,11 +38,11 @@ export class Folder extends Instance
      * @member {string}
      * @public
      */
-    get mode (): FolderTypeImpl
+    get mode (): IFolderType
     {
         return this._$mode;
     }
-    set mode (mode: FolderTypeImpl)
+    set mode (mode: IFolderType)
     {
         this._$mode = mode;
     }
@@ -70,7 +70,7 @@ export class Folder extends Instance
      * @method
      * @public
      */
-    toObject (): FolderSaveObjectImpl
+    toObject (): IFolderSaveObject
     {
         return {
             "id":       this.id,

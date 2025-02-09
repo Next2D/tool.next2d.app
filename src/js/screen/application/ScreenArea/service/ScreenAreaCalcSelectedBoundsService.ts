@@ -1,6 +1,6 @@
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import { $calcBoundingBox } from "@/core/application/CoreUtil";
-import { BoundsImpl } from "@/interface/BoundsImpl";
+import { IBounds } from "@/interface/IBounds";
 
 /**
  * @description 選択中のbounding boxを計算
@@ -11,7 +11,7 @@ import { BoundsImpl } from "@/interface/BoundsImpl";
  * @method
  * @public
  */
-export const execute = (movie_clip: MovieClip): BoundsImpl | null =>
+export const execute = (movie_clip: MovieClip): IBounds | null =>
 {
     if (!movie_clip.selectedDepths.size) {
         return null;

@@ -2,7 +2,7 @@ import type { ShareReceiveMessageImpl } from "@/interface/ShareReceiveMessageImp
 import type { InstanceImpl } from "@/interface/InstanceImpl";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
-import { AllSaveObjectImpl } from "@/interface/AllSaveObjectImpl";
+import { IAllSaveObject } from "@/interface/IAllSaveObject";
 import { execute as externalItemRemoveUseCase } from "@/external/core/application/ExternalItem/usecase/ExternalItemRemoveUseCase";
 
 /**
@@ -30,7 +30,7 @@ export const execute = (message: ShareReceiveMessageImpl): void =>
     }
 
     // 受け取ったSaveObjectのIDからインスタンスを取得する
-    const saveObject = message.data[2] as NonNullable<AllSaveObjectImpl>;
+    const saveObject = message.data[2] as NonNullable<IAllSaveObject>;
     const instance: InstanceImpl<any> = workSpace.getLibrary(saveObject.id);
 
     // 削除を実行する

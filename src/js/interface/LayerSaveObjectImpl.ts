@@ -1,6 +1,6 @@
 import type { LayerModeImpl } from "./LayerModeImpl";
-import type { CharacterSaveObjectImpl } from "./CharacterSaveObjectImpl";
-import type { EmptyCharacterSaveObjectImpl } from "./EmptyCharacterSaveObjectImpl";
+import type { ICharacterSaveObject } from "./ICharacterSaveObject";
+import type { EmptyICharacterSaveObject } from "./EmptyICharacterSaveObject";
 
 export interface LayerSaveObjectImpl {
     id: number;
@@ -10,8 +10,8 @@ export interface LayerSaveObjectImpl {
     disable: boolean;
     light: boolean;
     mode: LayerModeImpl;
-    characters: CharacterSaveObjectImpl[];
-    emptyCharacters: EmptyCharacterSaveObjectImpl[];
+    characters: ICharacterSaveObject[];
+    emptyCharacters: EmptyICharacterSaveObject[];
     parentId?: null | number;
     maskId?: null | number;
     guideId?: null | number;

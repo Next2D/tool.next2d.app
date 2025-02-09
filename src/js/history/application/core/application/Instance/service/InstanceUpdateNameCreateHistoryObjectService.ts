@@ -1,4 +1,4 @@
-import type { HistoryObjectImpl } from "@/interface/HistoryObjectImpl";
+import type { IHistoryObject } from "@/interface/IHistoryObject";
 import { $LIBRARY_UPDATE_INSTANCE_NAME_COMMAND } from "@/config/HistoryConfig";
 
 /**
@@ -20,7 +20,7 @@ export const execute = (
     instance_id: number,
     before_name: string,
     after_name: string
-): HistoryObjectImpl => {
+): IHistoryObject => {
 
     return {
         "command": $LIBRARY_UPDATE_INSTANCE_NAME_COMMAND,

@@ -4,7 +4,7 @@ import type { UserTimelineAreaStateObjectImpl } from "./UserTimelineAreaStateObj
 import type { UserToolAreaStateObjectImpl } from "./UserToolAreaStateObjectImpl";
 import type { UserPropertyAreaStateObjectImpl } from "./UserPropertyAreaStateObjectImpl";
 import type { UserControllerAreaStateObjectImpl } from "./UserControllerAreaStateObjectImpl";
-import type { HistoryObjectImpl } from "./HistoryObjectImpl";
+import type { IHistoryObject } from "./IHistoryObject";
 
 export interface WorkSpaceSaveObjectImpl
 {
@@ -15,7 +15,7 @@ export interface WorkSpaceSaveObjectImpl
     libraries: InstanceSaveObjectImpl[];
     plugins: string[];
     historyIndex: number;
-    histories: HistoryObjectImpl[];
+    histories: IHistoryObject[];
     tool?: UserToolAreaStateObjectImpl;
     timeline?: UserTimelineAreaStateObjectImpl;
     property?: UserPropertyAreaStateObjectImpl

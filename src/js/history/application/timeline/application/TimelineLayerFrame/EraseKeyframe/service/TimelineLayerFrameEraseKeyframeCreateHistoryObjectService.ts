@@ -1,4 +1,4 @@
-import type { HistoryObjectImpl } from "@/interface/HistoryObjectImpl";
+import type { IHistoryObject } from "@/interface/IHistoryObject";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { Layer } from "@/core/domain/model/Layer";
 import type { Character } from "@/core/domain/model/Character";
@@ -21,7 +21,7 @@ export const execute = (
     movie_clip: MovieClip,
     layer: Layer,
     characters: Character[]
-): HistoryObjectImpl => {
+): IHistoryObject => {
 
     const characterSaveObjects = [];
     for (let idx = 0; idx < characters.length; ++idx) {

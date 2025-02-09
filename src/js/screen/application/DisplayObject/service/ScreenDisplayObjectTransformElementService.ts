@@ -2,6 +2,7 @@ import { $SCREEN_STAGE_AREA_ID } from "@/config/ScreenConfig";
 import { $createTransformStyle, $multiplicationMatrix } from "@/controller/application/TransformSetting/TransformSettingUtil";
 import { referenceSetting } from "@/controller/domain/model/ReferenceSetting";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
+import { Matrix } from "@next2d/geom";
 
 /**
  * @description スクリーンで選択中のElementをmatrixに合わせて変形させる
@@ -34,8 +35,6 @@ export const execute = (scale_x: number): void =>
     const concatenatedMatrix = [1, 0, 0, 1, 0, 0];
     const offsetX = 0;
     const offsetY = 0;
-
-    const { Matrix } = next2d.geom;
 
     const baseMatrix = new Matrix(
         concatenatedMatrix[0], concatenatedMatrix[1],

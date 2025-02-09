@@ -1,7 +1,7 @@
 import type { LayerSaveObjectImpl } from "@/interface/LayerSaveObjectImpl";
 import type { LayerModeImpl } from "@/interface/LayerModeImpl";
-import type { CharacterSaveObjectImpl } from "@/interface/CharacterSaveObjectImpl";
-import type { EmptyCharacterSaveObjectImpl } from "@/interface/EmptyCharacterSaveObjectImpl";
+import type { ICharacterSaveObject } from "@/interface/ICharacterSaveObject";
+import type { EmptyICharacterSaveObject } from "@/interface/EmptyICharacterSaveObject";
 import { Character } from "./Character";
 import { EmptyCharacter } from "./EmptyCharacter";
 import { execute as timelineLayerControllerGetHighlightColorService } from "@/timeline/application/TimelineLayerController/service/TimelineLayerControllerGetHighlightColorService";
@@ -391,7 +391,7 @@ export class Layer
      * @method
      * @public
      */
-    loadCharacter (characters: CharacterSaveObjectImpl[]): void
+    loadCharacter (characters: ICharacterSaveObject[]): void
     {
         if (!characters || !characters.length) {
             return ;
@@ -413,7 +413,7 @@ export class Layer
      * @method
      * @public
      */
-    loadEmptyCharacter (empty_characters: EmptyCharacterSaveObjectImpl[]): void
+    loadEmptyCharacter (empty_characters: EmptyICharacterSaveObject[]): void
     {
         if (!empty_characters || !empty_characters.length) {
             return ;

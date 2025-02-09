@@ -1,4 +1,4 @@
-import type { HistoryObjectImpl } from "@/interface/HistoryObjectImpl";
+import type { IHistoryObject } from "@/interface/IHistoryObject";
 import type { Layer } from "@/core/domain/model/Layer";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import { $TIMELINE_TOOL_LAYER_ADD_COMMAND } from "@/config/HistoryConfig";
@@ -20,7 +20,7 @@ export const execute = (
     movie_clip: MovieClip,
     layer: Layer,
     index: number
-): HistoryObjectImpl => {
+): IHistoryObject => {
 
     return {
         "command": $TIMELINE_TOOL_LAYER_ADD_COMMAND,

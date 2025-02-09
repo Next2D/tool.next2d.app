@@ -1,11 +1,11 @@
-import type { FolderSaveObjectImpl } from "./FolderSaveObjectImpl";
+import type { IFolderSaveObject } from "./IFolderSaveObject";
 import type { MovieClipSaveObjectImpl } from "./MovieClipSaveObjectImpl";
-import type { BitmapSaveObjectImpl } from "./BitmapSaveObjectImpl";
+import type { IBitmapSaveObject } from "./IBitmapSaveObject";
 import type { VideoSaveObjectImpl } from "./VideoSaveObjectImpl";
 import type { SoundSaveObjectImpl } from "./SoundSaveObjectImpl";
 
 export type InstanceSaveObjectImpl = MovieClipSaveObjectImpl
-    | FolderSaveObjectImpl
-    | BitmapSaveObjectImpl
+    | IFolderSaveObject
+    | IBitmapSaveObject
     | VideoSaveObjectImpl
     | SoundSaveObjectImpl;

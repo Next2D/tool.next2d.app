@@ -2,10 +2,10 @@ import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { Character } from "@/core/domain/model/Character";
 import type { SoundPublishObjectImpl } from "@/interface/SoundPublishObjectImpl";
 import type { MovieClipPublishJsonImpl } from "@/interface/MovieClipPublishJsonImpl";
-import type { ActionSaveObjectImpl } from "@/interface/ActionSaveObjectImpl";
+import type { IActionSaveObject } from "@/interface/IActionSaveObject";
 import type { Layer } from "@/core/domain/model/Layer";
-import type { CharacterPublishObjectImpl } from "@/interface/CharacterPublishObjectImpl";
-import type { ControllerPublishObjectImpl } from "@/interface/ControllerPublishObjectImpl";
+import type { ICharacterPublishObject } from "@/interface/ICharacterPublishObject";
+import type { IControllerPublishObject } from "@/interface/IControllerPublishObject";
 import type { PlaceObjectImpl } from "@/interface/PlaceObjectImpl";
 import type { PlaceObjectMapImpl } from "@/interface/PlaceObjectMapImpl";
 import { minify } from "terser";
@@ -29,8 +29,8 @@ import { $getUseLibraryIds } from "@/tool/application/PublishTool/PublishToolUti
  */
 export const execute = async (movie_clip: MovieClip): Promise<MovieClipPublishJsonImpl> =>
 {
-    const dictionary: CharacterPublishObjectImpl[] = [];
-    const controller: ControllerPublishObjectImpl = [];
+    const dictionary: ICharacterPublishObject[] = [];
+    const controller: IControllerPublishObject = [];
     const placeMap: PlaceObjectMapImpl = [];
     const placeObjects: PlaceObjectImpl[] = [];
 
@@ -273,7 +273,7 @@ export const execute = async (movie_clip: MovieClip): Promise<MovieClipPublishJs
                     case character.startFrame === frame:
                         {
                             // 必須パラメーターを設定
-                            const dictionaryObject: CharacterPublishObjectImpl = {
+                            const dictionaryObject: ICharacterPublishObject = {
                                 "characterId": useLibraryIds.get(character.libraryId) as NonNullable<number>,
                                 "startFrame": character.startFrame,
                                 "endFrame": unionMap.has(character)
@@ -341,7 +341,7 @@ export const execute = async (movie_clip: MovieClip): Promise<MovieClipPublishJs
 
     // アクションが設定されている場合は追加
     if (movie_clip.actions.size) {
-        const actions: ActionSaveObjectImpl[] = [];
+        const actions: IActionSaveObject[] = [];
         for (const [frame, code] of movie_clip.actions) {
             const result = await minify(code);
             actions.push({

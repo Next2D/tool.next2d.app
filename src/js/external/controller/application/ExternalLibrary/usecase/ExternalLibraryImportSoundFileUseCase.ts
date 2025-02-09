@@ -1,6 +1,6 @@
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import type { ExternalFolder } from "@/external/core/domain/model/ExternalFolder";
-import type { ExternalInstanceImpl } from "@/interface/ExternalInstanceImpl";
+import type { IExternalInstance } from "@/interface/IExternalInstance";
 import { Sound } from "@/core/domain/model/Sound";
 import { ExternalLibrary } from "@/external/controller/domain/model/ExternalLibrary";
 import { execute as externalWorkSpaceRegisterInstanceService } from "@/external/core/application/ExternalWorkSpace/service/ExternalWorkSpaceRegisterInstanceService";
@@ -30,7 +30,7 @@ export const execute = async (
 ): Promise<void> => {
 
     const externalLibrary = new ExternalLibrary(work_space);
-    const folder: ExternalInstanceImpl<ExternalFolder> | null = externalLibrary.getItem(path);
+    const folder: IExternalInstance<ExternalFolder> | null = externalLibrary.getItem(path);
     const folderId = folder && folder.type === $FOLDER_TYPE ? folder.id : 0;
 
     const sound = new Sound({

@@ -1,6 +1,6 @@
 import type { InstanceImpl } from "@/interface/InstanceImpl";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
-import type { CharacterSaveObjectImpl } from "@/interface/CharacterSaveObjectImpl";
+import type { ICharacterSaveObject } from "@/interface/ICharacterSaveObject";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
 import { EmptyCharacter } from "@/core/domain/model/EmptyCharacter";
 import { execute as timelineLayerAddFrameUpdateLayerStyleUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerAddFrameUpdateLayerStyleUseCase";
@@ -25,7 +25,7 @@ export const execute = (
     work_space_id: number,
     library_id: number,
     layer_ndex: number,
-    character_save_object: CharacterSaveObjectImpl,
+    character_save_object: ICharacterSaveObject,
     empty_character_index: number
 ): void => {
 

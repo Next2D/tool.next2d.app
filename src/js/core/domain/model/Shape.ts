@@ -1,6 +1,6 @@
 import type { ObjectImpl } from "@/interface/ObjectImpl";
 import type { ShapeSaveObjectImpl } from "@/interface/ShapeSaveObjectImpl";
-import type { BoundsImpl } from "@/interface/BoundsImpl";
+import type { IBounds } from "@/interface/IBounds";
 import type { ShapePublishJsonImpl } from "@/interface/ShapePublishJsonImpl";
 import type { Character } from "./Character";
 import { Instance } from "./Instance";
@@ -18,7 +18,7 @@ import { execute as shapeCreateJsonService } from "@/core/application/Shape/serv
 export class Shape extends Instance
 {
     private readonly _$recodes: any[];
-    private readonly _$bounds: BoundsImpl;
+    private readonly _$bounds: IBounds;
     private _$inBitmap: boolean;
 
     /**
@@ -114,7 +114,7 @@ export class Shape extends Instance
      * @method
      * @public
      */
-    getRawBounds (): BoundsImpl
+    getRawBounds (): IBounds
     {
         return this._$bounds;
     }

@@ -1,4 +1,4 @@
-import type { HistoryObjectImpl } from "@/interface/HistoryObjectImpl";
+import type { IHistoryObject } from "@/interface/IHistoryObject";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import { $LAYER_UPDATE_MODE_COMMAND } from "@/config/HistoryConfig";
 import { Layer } from "@/core/domain/model/Layer";
@@ -25,7 +25,7 @@ export const execute = (
     before_parent_id: number,
     indexes: number[],
     type_name: string
-): HistoryObjectImpl => {
+): IHistoryObject => {
 
     return {
         "command": $LAYER_UPDATE_MODE_COMMAND,

@@ -1,6 +1,6 @@
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
-import type { ExternalItemImpl } from "@/interface/ExternalItemImpl";
+import type { IExternalItem } from "@/interface/IExternalItem";
 import { ExternalLibrary } from "@/external/controller/domain/model/ExternalLibrary";
 import { Character } from "@/core/domain/model/Character";
 import { execute as timelineLayerFrameAddKeyframeHistoryUseCase } from "@/history/application/timeline/application/TimelineLayerFrame/AddKeyframe/usecase/TimelineLayerFrameAddKeyframeHistoryUseCase";
@@ -37,7 +37,7 @@ export const execute = async (
 ): Promise<void> => {
 
     const externalLibrary = new ExternalLibrary(work_space);
-    const item: ExternalItemImpl<any> | null = externalLibrary.getItem(path);
+    const item: IExternalItem<any> | null = externalLibrary.getItem(path);
     if (!item) {
         return ;
     }

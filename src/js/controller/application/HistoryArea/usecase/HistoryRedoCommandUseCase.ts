@@ -1,13 +1,13 @@
-import type { HistoryObjectImpl } from "@/interface/HistoryObjectImpl";
-import type { BitmapSaveObjectImpl } from "@/interface/BitmapSaveObjectImpl";
+import type { IHistoryObject } from "@/interface/IHistoryObject";
+import type { IBitmapSaveObject } from "@/interface/IBitmapSaveObject";
 import type { VideoSaveObjectImpl } from "@/interface/VideoSaveObjectImpl";
 import type { SoundSaveObjectImpl } from "@/interface/SoundSaveObjectImpl";
 import type { InstanceSaveObjectImpl } from "@/interface/InstanceSaveObjectImpl";
 import type { LayerModeImpl } from "@/interface/LayerModeImpl";
-import type { CharacterSaveObjectImpl } from "@/interface/CharacterSaveObjectImpl";
+import type { ICharacterSaveObject } from "@/interface/ICharacterSaveObject";
 import type { SoundObjectImpl } from "@/interface/SoundObjectImpl";
 import type { ShapeSaveObjectImpl } from "@/interface/ShapeSaveObjectImpl";
-import type { BoundsImpl } from "@/interface/BoundsImpl";
+import type { IBounds } from "@/interface/IBounds";
 import { execute as userDatabaseAutoSaveReservationUseCase } from "@/user/application/Database/usecase/UserDatabaseAutoSaveReservationUseCase";
 import { execute as screenTabNameAddHistoryRedoUseCase } from "@/history/application/screen/application/ScreenTab/usecase/ScreenTabNameAddHistoryRedoUseCase";
 import { execute as timelineToolLayerAddHistoryRedoUseCase } from "@/history/application/timeline/application/TimelineTool/LayerAdd/usecase/TimelineToolLayerAddHistoryRedoUseCase";
@@ -125,7 +125,7 @@ import {
  * @public
  */
 export const execute = async (
-    history_object: HistoryObjectImpl
+    history_object: IHistoryObject
 ): Promise<void> => {
 
     const messages = history_object.messages;
@@ -232,7 +232,7 @@ export const execute = async (
         case $LIBRARY_ADD_NEW_BITMAP_COMMAND:
             libraryAreaAddNewBitmapHistoryRedoUseCase(
                 messages[0] as number, // workSpaceId
-                messages[2] as BitmapSaveObjectImpl // Bitmap Save Object
+                messages[2] as IBitmapSaveObject // Bitmap Save Object
             );
             break;
 
@@ -249,7 +249,7 @@ export const execute = async (
         case $LIBRARY_OVERWRITE_IMAGE_COMMAND:
             libraryAreaUpdateBitmapHistoryRedoUseCase(
                 messages[0] as number, // workSpaceId
-                messages[3] as BitmapSaveObjectImpl // Bitmap Save Object
+                messages[3] as IBitmapSaveObject // Bitmap Save Object
             );
             break;
 
@@ -387,7 +387,7 @@ export const execute = async (
                 messages[0] as number, // work_space_id
                 messages[1] as number, // MovieClip ID
                 messages[2] as number, // Layer Index
-                messages[3] as CharacterSaveObjectImpl // SaveObject
+                messages[3] as ICharacterSaveObject // SaveObject
             );
             break;
 
@@ -474,7 +474,7 @@ export const execute = async (
                 messages[0] as number, // WorkSpace ID
                 messages[1] as number, // MovieClip ID
                 messages[2] as number, // Layer Index
-                messages[3] as CharacterSaveObjectImpl[] // Character Save Object
+                messages[3] as ICharacterSaveObject[] // Character Save Object
             );
             break;
 
@@ -494,7 +494,7 @@ export const execute = async (
                 messages[0] as number, // WorkSpace ID
                 messages[1] as number, // MovieClip ID
                 messages[2] as number, // Layer Index
-                messages[3] as CharacterSaveObjectImpl[] // Character Save Object
+                messages[3] as ICharacterSaveObject[] // Character Save Object
             );
             break;
 
@@ -640,7 +640,7 @@ export const execute = async (
                 messages[0] as number, // WorkSpace ID
                 messages[2] as ShapeSaveObjectImpl, // Shape Save Object
                 messages[3] as number[], // Shape Graphic Recodes
-                messages[4] as BoundsImpl // Shape Bounds
+                messages[4] as IBounds // Shape Bounds
             );
             break;
 

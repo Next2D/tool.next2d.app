@@ -9,7 +9,7 @@ import type { ArrowTool } from "@/tool/domain/model/ArrowTool";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { ExternalLibrary } from "@/external/controller/domain/model/ExternalLibrary";
 import type { ExternalShape } from "@/external/core/domain/model/ExternalShape";
-import type { ExternalInstanceImpl } from "@/interface/ExternalInstanceImpl";
+import type { IExternalInstance } from "@/interface/IExternalInstance";
 import { fillColor } from "@/tool/domain/model/FillColor";
 import { strokeSize } from "@/tool/domain/model/StrokeSize";
 import { $getScreenOffsetLeft, $getScreenOffsetTop } from "@/global/GlobalUtil";
@@ -111,7 +111,7 @@ export const execute = async (event: PointerEvent): Promise<void> =>
         externalLibrary.addNewShape(path);
 
         // ライブラリからShapeを取得
-        const shape: ExternalInstanceImpl<ExternalShape> = externalLibrary.getItem(path);
+        const shape: IExternalInstance<ExternalShape> = externalLibrary.getItem(path);
         if (!shape) {
             return ;
         }

@@ -2,6 +2,9 @@ import type { Character } from "@/core/domain/model/Character";
 import type { Text } from "@/core/domain/model/Text";
 import { $getConcatenatedMatrix } from "@/controller/application/TransformSetting/TransformSettingUtil";
 import { $getCanvas } from "@/global/GlobalUtil";
+import { TextField } from "@next2d/text";
+import { Sprite } from "@next2d/display";
+import { Matrix } from "@next2d/geom";
 
 /**
  * @description TextからCanvasを生成
@@ -12,60 +15,53 @@ import { $getCanvas } from "@/global/GlobalUtil";
  * @method
  * @public
  */
-export const execute = (
+export const execute = async (
     text: Text,
     character: Character | null = null
 ): Promise<HTMLCanvasElement> => {
 
-    return new Promise(async (resolve) =>
-    {
-        const canvas = $getCanvas();
-        if (text.text === "") {
-            const bounds = text.getRawBounds();
-            canvas.style.width  = `${bounds.xMax - 2}px`;
-            canvas.style.height = `${bounds.yMax - 2}px`;
-            return resolve(canvas);
-        }
-
-        const displayText = new next2d.display.TextField();
-        if (character && character.filters.length) {
-            // todo filter
-        }
-
+    const canvas = $getCanvas();
+    if (text.text === "") {
         const bounds = text.getRawBounds();
-        displayText.x = bounds.xMax / 2;
-        displayText.y = bounds.yMax / 2;
+        canvas.style.width  = `${bounds.xMax - 2}px`;
+        canvas.style.height = `${bounds.yMax - 2}px`;
+        return canvas;
+    }
 
-        const sprite = new next2d.display.Sprite();
-        sprite.addChild(displayText);
+    const textField = new TextField();
+    if (character && character.filters.length) {
+        // todo filter
+    }
 
-        const container = new next2d.display.Sprite();
-        container.addChild(sprite);
+    const bounds = text.getRawBounds();
+    textField.x = bounds.xMax / 2;
+    textField.y = bounds.yMax / 2;
 
-        const concatMatrix = $getConcatenatedMatrix();
-        sprite.transform.matrix = new next2d.geom.Matrix(
-            concatMatrix[0], concatMatrix[1],
-            concatMatrix[2], concatMatrix[3],
-            0, 0
-        );
+    const container = new Sprite();
+    container.addChild(textField);
 
-        const matrix = new next2d.geom.Matrix();
-        matrix.translate(
-            container.width / 2,
-            container.height / 2
-        );
-        const scale = window.devicePixelRatio;
-        matrix.scale(scale, scale);
+    const concatMatrix = $getConcatenatedMatrix();
+    container.matrix = new Matrix(
+        concatMatrix[0], concatMatrix[1],
+        concatMatrix[2], concatMatrix[3],
+        0, 0
+    );
 
-        // Plyerのキャッシュをリセット
-        next2d.player.cacheStore.reset();
+    const matrix = new Matrix();
+    matrix.translate(
+        container.width / 2,
+        container.height / 2
+    );
+    const scale = window.devicePixelRatio;
+    matrix.scale(scale, scale);
 
-        const bitmapData = new next2d.display.BitmapData(container.width * scale, container.height * scale);
-        bitmapData.draw(container, matrix, null, canvas, (canvas: HTMLCanvasElement): void =>
-        {
-            canvas.style.width  = `${container.width - 2}px`;
-            canvas.style.height = `${container.height - 2}px`;
-            resolve(canvas);
-        });
+    const transferredCanvas = await next2d.captureToCanvas(container, {
+        "matrix": matrix,
+        "canvas": canvas
     });
+
+    transferredCanvas.style.width  = `${container.width - 2}px`;
+    transferredCanvas.style.height = `${container.height - 2}px`;
+
+    return transferredCanvas;
 };

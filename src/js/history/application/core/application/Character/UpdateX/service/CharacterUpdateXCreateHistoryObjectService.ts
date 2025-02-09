@@ -1,4 +1,4 @@
-import type { HistoryObjectImpl } from "@/interface/HistoryObjectImpl";
+import type { IHistoryObject } from "@/interface/IHistoryObject";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { Layer } from "@/core/domain/model/Layer";
 import type { Character } from "@/core/domain/model/Character";
@@ -23,7 +23,7 @@ export const execute = (
     layer: Layer,
     character: Character,
     before_x: number
-): HistoryObjectImpl => {
+): IHistoryObject => {
 
     return {
         "command": $CHARACTER_UPDATE_X_COMMAND,

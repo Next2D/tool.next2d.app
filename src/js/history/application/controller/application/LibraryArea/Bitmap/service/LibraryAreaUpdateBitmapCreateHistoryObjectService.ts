@@ -1,5 +1,5 @@
-import type { HistoryObjectImpl } from "@/interface/HistoryObjectImpl";
-import type { BitmapSaveObjectImpl } from "@/interface/BitmapSaveObjectImpl";
+import type { IHistoryObject } from "@/interface/IHistoryObject";
+import type { IBitmapSaveObject } from "@/interface/IBitmapSaveObject";
 import type { InstanceSaveObjectImpl } from "@/interface/InstanceSaveObjectImpl";
 import { $LIBRARY_OVERWRITE_IMAGE_COMMAND } from "@/config/HistoryConfig";
 
@@ -20,9 +20,9 @@ export const execute = (
     work_space_id: number,
     movie_clip_id: number,
     before_save_object: InstanceSaveObjectImpl,
-    after_save_object: BitmapSaveObjectImpl,
+    after_save_object: IBitmapSaveObject,
     file_id: string = ""
-): HistoryObjectImpl => {
+): IHistoryObject => {
 
     return {
         "command": $LIBRARY_OVERWRITE_IMAGE_COMMAND,

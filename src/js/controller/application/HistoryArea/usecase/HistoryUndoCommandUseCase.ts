@@ -1,12 +1,12 @@
-import type { HistoryObjectImpl } from "@/interface/HistoryObjectImpl";
+import type { IHistoryObject } from "@/interface/IHistoryObject";
 import type { LayerSaveObjectImpl } from "@/interface/LayerSaveObjectImpl";
-import type { BitmapSaveObjectImpl } from "@/interface/BitmapSaveObjectImpl";
+import type { IBitmapSaveObject } from "@/interface/IBitmapSaveObject";
 import type { VideoSaveObjectImpl } from "@/interface/VideoSaveObjectImpl";
 import type { SoundSaveObjectImpl } from "@/interface/SoundSaveObjectImpl";
 import type { InstanceSaveObjectImpl } from "@/interface/InstanceSaveObjectImpl";
 import type { LayerModeImpl } from "@/interface/LayerModeImpl";
-import type { EmptyCharacterSaveObjectImpl } from "@/interface/EmptyCharacterSaveObjectImpl";
-import type { CharacterSaveObjectImpl } from "@/interface/CharacterSaveObjectImpl";
+import type { EmptyICharacterSaveObject } from "@/interface/EmptyICharacterSaveObject";
+import type { ICharacterSaveObject } from "@/interface/ICharacterSaveObject";
 import type { SoundObjectImpl } from "@/interface/SoundObjectImpl";
 import { execute as userDatabaseAutoSaveReservationUseCase } from "@/user/application/Database/usecase/UserDatabaseAutoSaveReservationUseCase";
 import { execute as screenTabNameAddHistoryUndoUseCase } from "@/history/application/screen/application/ScreenTab/usecase/ScreenTabNameAddHistoryUndoUseCase";
@@ -127,7 +127,7 @@ import { ShapeSaveObjectImpl } from "@/interface/ShapeSaveObjectImpl";
  * @public
  */
 export const execute = async (
-    history_object: HistoryObjectImpl
+    history_object: IHistoryObject
 ): Promise<void> => {
 
     const messages = history_object.messages;
@@ -230,7 +230,7 @@ export const execute = async (
         case $LIBRARY_ADD_NEW_BITMAP_COMMAND:
             libraryAreaAddNewBitmapHistoryUndoUseCase(
                 messages[0] as number, // workSpaceId
-                messages[2] as BitmapSaveObjectImpl // Bitmap Save Object
+                messages[2] as IBitmapSaveObject // Bitmap Save Object
             );
             break;
 
@@ -382,7 +382,7 @@ export const execute = async (
                 messages[0] as number, // WorkSpace ID
                 messages[1] as number, // MovieClip ID
                 messages[2] as number, // Layer Index
-                messages[3] as CharacterSaveObjectImpl, // Character Save Object
+                messages[3] as ICharacterSaveObject, // Character Save Object
                 messages[4] as number // EmptyCharacter Index
             );
             break;
@@ -461,7 +461,7 @@ export const execute = async (
                 messages[0] as number, // WorkSpace ID
                 messages[1] as number, // MovieClip ID
                 messages[2] as number, // Layer Index
-                messages[4] as EmptyCharacterSaveObjectImpl // Save EmptyCharacter Object
+                messages[4] as EmptyICharacterSaveObject // Save EmptyCharacter Object
             );
             break;
 
@@ -471,7 +471,7 @@ export const execute = async (
                 messages[0] as number, // WorkSpace ID
                 messages[1] as number, // MovieClip ID
                 messages[2] as number, // Layer Index
-                messages[3] as CharacterSaveObjectImpl[] // Character Save Objects
+                messages[3] as ICharacterSaveObject[] // Character Save Objects
             );
             break;
 
@@ -481,7 +481,7 @@ export const execute = async (
                 messages[0] as number, // WorkSpace ID
                 messages[1] as number, // MovieClip ID
                 messages[2] as number, // Layer Index
-                messages[4] as EmptyCharacterSaveObjectImpl // Save EmptyCharacter Object
+                messages[4] as EmptyICharacterSaveObject // Save EmptyCharacter Object
             );
             break;
 
@@ -491,7 +491,7 @@ export const execute = async (
                 messages[0] as number, // WorkSpace ID
                 messages[1] as number, // MovieClip ID
                 messages[2] as number, // Layer Index
-                messages[3] as CharacterSaveObjectImpl[] // Character Save Objects
+                messages[3] as ICharacterSaveObject[] // Character Save Objects
             );
             break;
 

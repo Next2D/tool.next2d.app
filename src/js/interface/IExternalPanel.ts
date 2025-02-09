@@ -1,4 +1,4 @@
-export interface ExternalPanelImpl
+export interface IExternalPanel
 {
     element: HTMLElement;
     width: number;

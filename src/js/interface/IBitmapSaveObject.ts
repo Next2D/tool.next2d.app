@@ -1,6 +1,6 @@
 import type { InstanceObjectImpl } from "./InstanceObjectImpl";
 
-export interface BitmapSaveObjectImpl extends InstanceObjectImpl
+export interface IBitmapSaveObject extends InstanceObjectImpl
 {
     imageType: string;
     width?: number;

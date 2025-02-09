@@ -1,4 +1,4 @@
-import type { HistoryObjectImpl } from "@/interface/HistoryObjectImpl";
+import type { IHistoryObject } from "@/interface/IHistoryObject";
 import { $SCREEN_TAB_NAME_UPDATE_COMMAND } from "@/config/HistoryConfig";
 
 /**
@@ -18,7 +18,7 @@ export const execute = (
     movie_clip_id: number,
     before_name: string,
     after_name: string
-): HistoryObjectImpl => {
+): IHistoryObject => {
 
     return {
         "command": $SCREEN_TAB_NAME_UPDATE_COMMAND,

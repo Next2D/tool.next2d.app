@@ -1,6 +1,6 @@
 import type { Bitmap } from "@/core/domain/model/Bitmap";
 import type { InstanceImpl } from "@/interface/InstanceImpl";
-import type { BitmapSaveObjectImpl } from "@/interface/BitmapSaveObjectImpl";
+import type { IBitmapSaveObject } from "@/interface/IBitmapSaveObject";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
 import { execute as externalWorkSpaceRemoveInstanceService } from "@/external/core/application/ExternalWorkSpace/service/ExternalWorkSpaceRemoveInstanceService";
 import { execute as libraryAreaReloadUseCase } from "@/controller/application/LibraryArea/usecase/LibraryAreaReloadUseCase";
@@ -18,7 +18,7 @@ import { execute as libraryAreaSelectedClearUseCase } from "@/controller/applica
  */
 export const execute = (
     work_space_id: number,
-    bitmap_save_object: BitmapSaveObjectImpl
+    bitmap_save_object: IBitmapSaveObject
 ): void => {
 
     const workSpace = $getWorkSpace(work_space_id);

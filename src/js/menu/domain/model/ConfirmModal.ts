@@ -1,7 +1,7 @@
 import { BaseMenu } from "./BaseMenu";
 import { $CONFIRM_MODAL_NAME } from "@/config/MenuConfig";
-import type { ConfirmModalFileObjectImpl } from "@/interface/ConfirmModalFileObjectImpl";
-import type { ConfirmModalInstanceObjectImpl } from "@/interface/ConfirmModalInstanceObjectImpl";
+import type { IConfirmModalFileObject } from "@/interface/IConfirmModalFileObject";
+import type { IConfirmModalInstanceObject } from "@/interface/IConfirmModalInstanceObject";
 import { execute as confirmModalInitializeRegisterEventUseCase } from "@/menu/application/ConfirmModal/usecase/ConfirmModalInitializeRegisterEventUseCase";
 import { execute as confirmModalUpdateDisplayByFileUseCase } from "@/menu/application/ConfirmModal/usecase/ConfirmModalUpdateDisplayByFileUseCase";
 import { execute as confirmModalFileResetService } from "@/menu/application/ConfirmModal/service/ConfirmModalFileResetService";
@@ -17,10 +17,10 @@ import { execute as confirmModalInstaceResetService } from "@/menu/application/C
  */
 export class ConfirmModal extends BaseMenu
 {
-    private _$instanceObject: ConfirmModalInstanceObjectImpl | null;
-    private _$fileObject: ConfirmModalFileObjectImpl | null;
-    private readonly _$fileObjects: ConfirmModalFileObjectImpl[];
-    private readonly _$instanceObjects: ConfirmModalInstanceObjectImpl[];
+    private _$instanceObject: IConfirmModalInstanceObject | null;
+    private _$fileObject: IConfirmModalFileObject | null;
+    private readonly _$fileObjects: IConfirmModalFileObject[];
+    private readonly _$instanceObjects: IConfirmModalInstanceObject[];
 
     /**
      * @constructor
@@ -75,7 +75,7 @@ export class ConfirmModal extends BaseMenu
      * @readonly
      * @public
      */
-    get fileObjects (): ConfirmModalFileObjectImpl[]
+    get fileObjects (): IConfirmModalFileObject[]
     {
         return this._$fileObjects;
     }
@@ -87,11 +87,11 @@ export class ConfirmModal extends BaseMenu
      * @member {object | null}
      * @public
      */
-    get fileObject (): ConfirmModalFileObjectImpl | null
+    get fileObject (): IConfirmModalFileObject | null
     {
         return this._$fileObject;
     }
-    set fileObject (file_object: ConfirmModalFileObjectImpl | null)
+    set fileObject (file_object: IConfirmModalFileObject | null)
     {
         this._$fileObject = file_object;
     }
@@ -116,7 +116,7 @@ export class ConfirmModal extends BaseMenu
             return this.hide();
         }
 
-        this._$fileObject = this._$fileObjects.pop() as NonNullable<ConfirmModalFileObjectImpl>;
+        this._$fileObject = this._$fileObjects.pop() as NonNullable<IConfirmModalFileObject>;
 
         // 表示を更新
         confirmModalUpdateDisplayByFileUseCase(
@@ -134,7 +134,7 @@ export class ConfirmModal extends BaseMenu
      * @readonly
      * @public
      */
-    get instanceObjects (): ConfirmModalInstanceObjectImpl[]
+    get instanceObjects (): IConfirmModalInstanceObject[]
     {
         return this._$instanceObjects;
     }
@@ -146,11 +146,11 @@ export class ConfirmModal extends BaseMenu
      * @member {object | null}
      * @public
      */
-    get instanceObject (): ConfirmModalInstanceObjectImpl| null
+    get instanceObject (): IConfirmModalInstanceObject| null
     {
         return this._$instanceObject;
     }
-    set instanceObject (instance_object: ConfirmModalInstanceObjectImpl | null)
+    set instanceObject (instance_object: IConfirmModalInstanceObject | null)
     {
         this._$instanceObject = instance_object;
     }
@@ -175,7 +175,7 @@ export class ConfirmModal extends BaseMenu
             return this.hide();
         }
 
-        this._$instanceObject = this._$instanceObjects.pop() as NonNullable<ConfirmModalInstanceObjectImpl>;
+        this._$instanceObject = this._$instanceObjects.pop() as NonNullable<IConfirmModalInstanceObject>;
 
         // // 表示を更新
         // confirmModalUpdateDisplayUseCase(

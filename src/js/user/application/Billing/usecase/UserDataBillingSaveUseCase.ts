@@ -1,4 +1,4 @@
-import type { BillingExpireObjectImpl } from "@/interface/BillingExpireObjectImpl";
+import type { IBillingExpireObject } from "@/interface/IBillingExpireObject";
 import { execute as userDatabaseGetOpenDBRequestService } from "@/user/application/Database/service/UserDatabaseGetOpenDBRequestService";
 import {
     $USER_DATABASE_BILLING_STORE_KEY,
@@ -44,7 +44,7 @@ export const execute = (): Promise<void> =>
             const month = ("0" + String(date.getMonth() + 1)).slice(-2);
             const day   = ("0" + String(date.getDate())).slice(-2);
 
-            const expireObject: BillingExpireObjectImpl = {
+            const expireObject: IBillingExpireObject = {
                 "expire": `${year}-${month}-${day}`
             };
 

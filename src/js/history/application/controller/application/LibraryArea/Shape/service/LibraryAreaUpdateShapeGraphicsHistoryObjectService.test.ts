@@ -1,6 +1,6 @@
 import { execute } from "./LibraryAreaUpdateShapeGraphicsHistoryObjectService";
 import { Shape } from "../../../../../../../core/domain/model/Shape";
-import type { BoundsImpl } from "../../../../../../../interface/BoundsImpl";
+import type { IBounds } from "../../../../../../../interface/IBounds";
 import { $LIBRARY_UPDATE_SHAPE_GRAPHICS_COMMAND } from "../../../../../../../config/HistoryConfig";
 
 describe("LibraryAreaUpdateShapeGraphicsHistoryObjectServiceTest", () =>
@@ -15,7 +15,7 @@ describe("LibraryAreaUpdateShapeGraphicsHistoryObjectServiceTest", () =>
 
         const recodes = [1,2,3];
 
-        const bounds: BoundsImpl = {
+        const bounds: IBounds = {
             "xMin": 0,
             "yMin": 0,
             "xMax": 100,

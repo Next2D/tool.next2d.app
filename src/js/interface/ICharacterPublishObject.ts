@@ -1,4 +1,4 @@
-export interface CharacterPublishObjectImpl {
+export interface ICharacterPublishObject {
     name?: string;
     characterId: number;
     startFrame: number;

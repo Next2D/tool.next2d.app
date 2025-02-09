@@ -1,4 +1,4 @@
-import type { HistoryObjectImpl } from "@/interface/HistoryObjectImpl";
+import type { IHistoryObject } from "@/interface/IHistoryObject";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import { $STAGE_WIDTH_COMMAND } from "@/config/HistoryConfig";
 
@@ -19,7 +19,7 @@ export const execute = (
     movie_clip: MovieClip,
     before_width: number,
     after_width: number
-): HistoryObjectImpl => {
+): IHistoryObject => {
 
     return {
         "command": $STAGE_WIDTH_COMMAND,

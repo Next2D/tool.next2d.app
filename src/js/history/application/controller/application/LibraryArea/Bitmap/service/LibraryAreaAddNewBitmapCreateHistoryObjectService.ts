@@ -1,5 +1,5 @@
-import type { HistoryObjectImpl } from "@/interface/HistoryObjectImpl";
-import type { BitmapSaveObjectImpl } from "@/interface/BitmapSaveObjectImpl";
+import type { IHistoryObject } from "@/interface/IHistoryObject";
+import type { IBitmapSaveObject } from "@/interface/IBitmapSaveObject";
 import { $LIBRARY_ADD_NEW_BITMAP_COMMAND } from "@/config/HistoryConfig";
 
 /**
@@ -17,9 +17,9 @@ import { $LIBRARY_ADD_NEW_BITMAP_COMMAND } from "@/config/HistoryConfig";
 export const execute = (
     work_space_id: number,
     movie_clip_id: number,
-    bitmap_object: BitmapSaveObjectImpl,
+    bitmap_object: IBitmapSaveObject,
     file_id: string = ""
-): HistoryObjectImpl => {
+): IHistoryObject => {
 
     return {
         "command": $LIBRARY_ADD_NEW_BITMAP_COMMAND,

@@ -11,7 +11,7 @@ import {
     $USER_DATABASE_NAME,
     $USER_DATABASE_STORE_KEY
 } from "@/config/Config";
-import { BillingExpireObjectImpl } from "@/interface/BillingExpireObjectImpl";
+import { IBillingExpireObject } from "@/interface/IBillingExpireObject";
 import { $setExpireDate } from "../../Billing/BillingUtil";
 import { execute as adAreaHideService } from "@/controller/application/AdArea/service/AdAreaHideService";
 import { execute as userAllFunctionStateService } from "@/user/application/Billing/service/UserAllFunctionStateService";
@@ -64,7 +64,7 @@ export const execute = (): Promise<void> =>
                 // 機能制限の解除データがあればセット
                 const json: string | undefined = (event.target as IDBRequest).result;
                 if (json) {
-                    const saveObject: BillingExpireObjectImpl = JSON.parse(json);
+                    const saveObject: IBillingExpireObject = JSON.parse(json);
                     $setExpireDate(saveObject.expire);
 
                     // 機能を解放

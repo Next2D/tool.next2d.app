@@ -1,4 +1,4 @@
-import type { HistoryObjectImpl } from "@/interface/HistoryObjectImpl";
+import type { IHistoryObject } from "@/interface/IHistoryObject";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { Layer } from "@/core/domain/model/Layer";
 import { $TIMELINE_SPLIT_KEYFRAME_TO_KEYFRAME_COMMAND } from "@/config/HistoryConfig";
@@ -23,7 +23,7 @@ export const execute = (
     layer: Layer,
     keyframe: number,
     character_keyframe: number
-): HistoryObjectImpl => {
+): IHistoryObject => {
 
     return {
         "command": $TIMELINE_SPLIT_KEYFRAME_TO_KEYFRAME_COMMAND,

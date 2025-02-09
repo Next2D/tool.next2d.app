@@ -1,7 +1,7 @@
-import type { BoundsImpl } from "./BoundsImpl";
+import type { IBounds } from "./IBounds";
 import type { InstanceObjectImpl } from "./InstanceObjectImpl";
 
 export interface TextSaveObjectImpl extends InstanceObjectImpl
 {
-    bounds?: BoundsImpl;
+    bounds?: IBounds;
 }

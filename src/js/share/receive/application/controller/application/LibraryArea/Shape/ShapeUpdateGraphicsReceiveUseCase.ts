@@ -2,7 +2,7 @@ import type { ShareReceiveMessageImpl } from "@/interface/ShareReceiveMessageImp
 import type { InstanceImpl } from "@/interface/InstanceImpl";
 import type { ShapeSaveObjectImpl } from "@/interface/ShapeSaveObjectImpl";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
-import type { BoundsImpl } from "@/interface/BoundsImpl";
+import type { IBounds } from "@/interface/IBounds";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
 import { execute as externalShapeApplyGraphicsUseCase } from "@/external/core/application/ExternalShape/usecase/ExternalShapeApplyGraphicsUseCase";
 import { execute as shareGetS3EndPointRepository } from "@/share/domain/repository/ShareGetS3EndPointRepository";
@@ -63,7 +63,7 @@ export const execute = async (message: ShareReceiveMessageImpl): Promise<void> =
                 movieClip,
                 shape,
                 new Float32Array(event.data), // 解凍したデータをFloat32Arrayに変換
-                message.data[4] as BoundsImpl,
+                message.data[4] as IBounds,
                 true
             );
 

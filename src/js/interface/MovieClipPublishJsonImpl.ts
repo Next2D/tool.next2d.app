@@ -1,6 +1,6 @@
-import type { ActionSaveObjectImpl } from "./ActionSaveObjectImpl";
-import type { CharacterPublishObjectImpl } from "./CharacterPublishObjectImpl";
-import type { ControllerPublishObjectImpl } from "./ControllerPublishObjectImpl";
+import type { IActionSaveObject } from "./IActionSaveObject";
+import type { ICharacterPublishObject } from "./ICharacterPublishObject";
+import type { IControllerPublishObject } from "./IControllerPublishObject";
 import type { LabelSaveObjectImpl } from "./LabelSaveObjectImpl";
 import type { PlaceObjectImpl } from "./PlaceObjectImpl";
 import type { PlaceObjectMapImpl } from "./PlaceObjectMapImpl";
@@ -11,11 +11,11 @@ export interface MovieClipPublishJsonImpl
     symbol?: string;
     extends: string;
     totalFrame: number;
-    dictionary: CharacterPublishObjectImpl[];
-    controller: ControllerPublishObjectImpl;
+    dictionary: ICharacterPublishObject[];
+    controller: IControllerPublishObject;
     placeObjects: PlaceObjectImpl[];
     placeMap: PlaceObjectMapImpl;
-    actions?: ActionSaveObjectImpl[];
+    actions?: IActionSaveObject[];
     sounds?: SoundPublishObjectImpl[];
     labels?: LabelSaveObjectImpl[];
 }

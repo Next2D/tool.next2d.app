@@ -2,7 +2,7 @@ import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import type { ExternalSound } from "@/external/core/domain/model/ExternalSound";
 import type { SoundObjectImpl } from "@/interface/SoundObjectImpl";
-import type { ExternalItemImpl } from "@/interface/ExternalItemImpl";
+import type { IExternalItem } from "@/interface/IExternalItem";
 import { execute as soundAreaAddSoundHistoryUseCase } from "@/history/application/controller/application/SoundArea/AddSound/usecase/SoundAreaAddSoundHistoryUseCase";
 import { timelineHeader } from "@/timeline/domain/model/TimelineHeader";
 import { $getLeftFrame } from "@/timeline/application/TimelineUtil";
@@ -36,7 +36,7 @@ export const execute = (
 ): void => {
 
     const externalLibrary = new ExternalLibrary(work_space);
-    const externalSound: ExternalItemImpl<ExternalSound> | null = externalLibrary.getItem(path);
+    const externalSound: IExternalItem<ExternalSound> | null = externalLibrary.getItem(path);
     if (!externalSound || externalSound.type !== $SOUND_TYPE) {
         return ;
     }

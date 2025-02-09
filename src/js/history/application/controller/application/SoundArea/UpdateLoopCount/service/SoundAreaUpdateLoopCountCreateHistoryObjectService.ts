@@ -1,4 +1,4 @@
-import type { HistoryObjectImpl } from "@/interface/HistoryObjectImpl";
+import type { IHistoryObject } from "@/interface/IHistoryObject";
 import type { SoundObjectImpl } from "@/interface/SoundObjectImpl";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import { $SOUND_AREA_UPDATE_LOOP_COUNT_COMMAND } from "@/config/HistoryConfig";
@@ -24,7 +24,7 @@ export const execute = (
     sound_index: number,
     before_loop_count: number,
     name: string
-): HistoryObjectImpl => {
+): IHistoryObject => {
 
     return {
         "command": $SOUND_AREA_UPDATE_LOOP_COUNT_COMMAND,

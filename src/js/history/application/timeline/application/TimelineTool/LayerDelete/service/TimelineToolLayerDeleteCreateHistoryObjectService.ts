@@ -1,4 +1,4 @@
-import type { HistoryObjectImpl } from "@/interface/HistoryObjectImpl";
+import type { IHistoryObject } from "@/interface/IHistoryObject";
 import type { Layer } from "@/core/domain/model/Layer";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import { $TIMELINE_TOOL_LAYER_DELETE_COMMAND } from "@/config/HistoryConfig";
@@ -21,7 +21,7 @@ export const execute = (
     index: number,
     indexes: number[],
     layer: Layer
-): HistoryObjectImpl => {
+): IHistoryObject => {
 
     return {
         "command": $TIMELINE_TOOL_LAYER_DELETE_COMMAND,

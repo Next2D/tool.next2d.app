@@ -1,5 +1,5 @@
 import { MovieClip } from "@/core/domain/model/MovieClip";
-import { BoundsImpl } from "@/interface/BoundsImpl";
+import { IBounds } from "@/interface/IBounds";
 import { $calcBoundingBox } from "../../CoreUtil";
 
 /**
@@ -12,7 +12,7 @@ import { $calcBoundingBox } from "../../CoreUtil";
  * @method
  * @public
  */
-export const execute = (movie_clip: MovieClip, frame: number = 1): BoundsImpl | null =>
+export const execute = (movie_clip: MovieClip, frame: number = 1): IBounds | null =>
 {
     const boundingBoxs = [];
     for (let idx = 0; idx < movie_clip.layers.length; idx++) {

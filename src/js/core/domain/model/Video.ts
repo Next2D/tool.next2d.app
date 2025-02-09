@@ -1,6 +1,6 @@
 import type { ObjectImpl } from "@/interface/ObjectImpl";
 import type { VideoSaveObjectImpl } from "@/interface/VideoSaveObjectImpl";
-import type { BoundsImpl } from "@/interface/BoundsImpl";
+import type { IBounds } from "@/interface/IBounds";
 import type { VideoPublishJsonImpl } from "@/interface/VideoPublishJsonImpl";
 import { Instance } from "./Instance";
 import { execute as binaryToBufferService } from "@/core/service/BinaryToBufferService";
@@ -323,7 +323,7 @@ export class Video extends Instance
      * @method
      * @public
      */
-    getRawBounds (): BoundsImpl
+    getRawBounds (): IBounds
     {
         return {
             "xMin": 0,

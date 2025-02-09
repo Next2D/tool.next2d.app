@@ -1,4 +1,4 @@
-export interface ActionSaveObjectImpl
+export interface IActionSaveObject
 {
     "frame": number;
     "action": string;

@@ -1,4 +1,4 @@
-export interface FrameObjectImpl {
+export interface IFrameObject {
     start: number;
     end: number;
 }

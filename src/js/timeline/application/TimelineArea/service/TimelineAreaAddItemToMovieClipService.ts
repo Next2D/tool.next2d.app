@@ -1,6 +1,7 @@
 import { $getConcatenatedMatrix } from "@/controller/application/TransformSetting/TransformSettingUtil";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { ExternalTimeline } from "@/external/timeline/domain/model/ExternalTimeline";
+import { Matrix } from "@next2d/geom";
 
 /**
  * @description タイムラインの洗濯中のレイヤーの指定座標にアイテムを配置
@@ -22,7 +23,7 @@ export const execute = async (x: number, y: number, path: string): Promise<void>
     const concatenatedMatrix = $getConcatenatedMatrix();
 
     // 配置座標したGlobal座標をLocal座標に変換
-    const matrix = new next2d.geom.Matrix(
+    const matrix = new Matrix(
         concatenatedMatrix[0], concatenatedMatrix[1], concatenatedMatrix[2],
         concatenatedMatrix[3], concatenatedMatrix[4], concatenatedMatrix[5]
     );

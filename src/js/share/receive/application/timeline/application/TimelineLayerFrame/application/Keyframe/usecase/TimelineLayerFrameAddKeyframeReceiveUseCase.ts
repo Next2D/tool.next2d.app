@@ -1,7 +1,7 @@
 import type { ShareReceiveMessageImpl } from "@/interface/ShareReceiveMessageImpl";
 import type { InstanceImpl } from "@/interface/InstanceImpl";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
-import type { CharacterSaveObjectImpl } from "@/interface/CharacterSaveObjectImpl";
+import type { ICharacterSaveObject } from "@/interface/ICharacterSaveObject";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
 import { Character } from "@/core/domain/model/Character";
 import { execute as timelineLayerFrameAddKeyframeHistoryUseCase } from "@/history/application/timeline/application/TimelineLayerFrame/AddKeyframe/usecase/TimelineLayerFrameAddKeyframeHistoryUseCase";
@@ -38,7 +38,7 @@ export const execute = async (message: ShareReceiveMessageImpl): Promise<void> =
         return ;
     }
 
-    const character_save_object = message.data[3] as NonNullable<CharacterSaveObjectImpl>;
+    const character_save_object = message.data[3] as NonNullable<ICharacterSaveObject>;
     const character = new Character();
     character.load(character_save_object);
 

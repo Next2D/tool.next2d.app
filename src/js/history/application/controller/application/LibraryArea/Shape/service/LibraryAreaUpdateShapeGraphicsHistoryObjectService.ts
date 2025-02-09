@@ -1,7 +1,7 @@
-import type { HistoryObjectImpl } from "@/interface/HistoryObjectImpl";
+import type { IHistoryObject } from "@/interface/IHistoryObject";
 import type { ShapeSaveObjectImpl } from "@/interface/ShapeSaveObjectImpl";
 import { $LIBRARY_UPDATE_SHAPE_GRAPHICS_COMMAND } from "@/config/HistoryConfig";
-import { BoundsImpl } from "@/interface/BoundsImpl";
+import { IBounds } from "@/interface/IBounds";
 
 /**
  * @description Shapeの描画レコード更新の履歴用オブジェクトを作成
@@ -21,9 +21,9 @@ export const execute = (
     movie_clip_id: number,
     shape_object: ShapeSaveObjectImpl,
     recodes: Float32Array | number[],
-    bounds: BoundsImpl,
+    bounds: IBounds,
     file_id: string = ""
-): HistoryObjectImpl => {
+): IHistoryObject => {
 
     return {
         "command": $LIBRARY_UPDATE_SHAPE_GRAPHICS_COMMAND,

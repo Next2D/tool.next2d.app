@@ -1,10 +1,10 @@
-import type { BlendModeImpl } from "./BlendModeImpl";
+import type { IBlendMode } from "./IBlendMode";
 import type { PositionImpl } from "./PositionImpl";
 
-export interface CharacterSaveObjectImpl {
+export interface ICharacterSaveObject {
     libraryId: number;
     depth: number;
-    blendMode: BlendModeImpl;
+    blendMode: IBlendMode;
     matrix: number[];
     colorTransform: number[];
     startFrame: number;

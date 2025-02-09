@@ -1,7 +1,7 @@
-import type { BitmapSaveObjectImpl } from "@/interface/BitmapSaveObjectImpl";
+import type { IBitmapSaveObject } from "@/interface/IBitmapSaveObject";
 import type { ObjectImpl } from "@/interface/ObjectImpl";
-import type { BitmapPublishJsonImpl } from "@/interface/BitmapPublishJsonImpl";
-import type { BoundsImpl } from "@/interface/BoundsImpl";
+import type { IBitmapPublishJson } from "@/interface/IBitmapPublishJson";
+import type { IBounds } from "@/interface/IBounds";
 import { Instance } from "./Instance";
 import { execute as bufferToBinaryService } from "@/core/service/BufferToBinaryService";
 import { execute as binaryToBufferService } from "@/core/service/BinaryToBufferService";
@@ -29,7 +29,7 @@ export class Bitmap extends Instance
      * @constructor
      * @public
      */
-    constructor (object: ObjectImpl<BitmapSaveObjectImpl>)
+    constructor (object: ObjectImpl<IBitmapSaveObject>)
     {
         super(object);
 
@@ -205,7 +205,7 @@ export class Bitmap extends Instance
      * @method
      * @public
      */
-    async toPublish (): Promise<BitmapPublishJsonImpl>
+    async toPublish (): Promise<IBitmapPublishJson>
     {
         return bitmapCreateJsonService(this);
     }
@@ -218,7 +218,7 @@ export class Bitmap extends Instance
      * @method
      * @public
      */
-    getRawBounds (): BoundsImpl
+    getRawBounds (): IBounds
     {
         return {
             "xMin": 0,
@@ -236,7 +236,7 @@ export class Bitmap extends Instance
      * @method
      * @public
      */
-    toObject (): BitmapSaveObjectImpl
+    toObject (): IBitmapSaveObject
     {
         return {
             "id":        this.id,

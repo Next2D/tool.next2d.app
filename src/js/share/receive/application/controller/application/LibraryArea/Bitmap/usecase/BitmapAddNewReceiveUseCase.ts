@@ -5,7 +5,7 @@ import { $getWorkSpace } from "@/core/application/CoreUtil";
 import { Bitmap } from "@/core/domain/model/Bitmap";
 import { execute as externalLibraryAddInstanceUseCase } from "@/external/controller/application/ExternalLibrary/usecase/ExternalLibraryAddInstanceUseCase";
 import { execute as libraryAreaAddNewBitmapHistoryUseCase } from "@/history/application/controller/application/LibraryArea/Bitmap/usecase/LibraryAreaAddNewBitmapHistoryUseCase";
-import { BitmapSaveObjectImpl } from "@/interface/BitmapSaveObjectImpl";
+import { IBitmapSaveObject } from "@/interface/IBitmapSaveObject";
 import { execute as shareGetS3EndPointRepository } from "@/share/domain/repository/ShareGetS3EndPointRepository";
 import { execute as shareGetS3FileRepository } from "@/share/domain/repository/ShareGetS3FileRepository";
 import { execute as binaryToBufferService } from "@/core/service/BinaryToBufferService";
@@ -44,7 +44,7 @@ export const execute = async (message: ShareReceiveMessageImpl): Promise<void> =
     }
 
     // 受け取ったBitmapのbufferはZlibで圧縮されてるので解答が必要
-    const bitmapSaveObject = message.data[2] as NonNullable<BitmapSaveObjectImpl>;
+    const bitmapSaveObject = message.data[2] as NonNullable<IBitmapSaveObject>;
 
     // バイナリをUint8Arrayに変換
     const url = await shareGetS3EndPointRepository(message.data[3] as string, "get");

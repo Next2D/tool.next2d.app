@@ -4,7 +4,7 @@ import type { InstanceImpl } from "@/interface/InstanceImpl";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
 import { Bitmap } from "@/core/domain/model/Bitmap";
 import { execute as libraryAreaUpdateBitmapHistoryUseCase } from "@/history/application/controller/application/LibraryArea/Bitmap/usecase/LibraryAreaUpdateBitmapHistoryUseCase";
-import { BitmapSaveObjectImpl } from "@/interface/BitmapSaveObjectImpl";
+import { IBitmapSaveObject } from "@/interface/IBitmapSaveObject";
 import { execute as shareGetS3EndPointRepository } from "@/share/domain/repository/ShareGetS3EndPointRepository";
 import { execute as shareGetS3FileRepository } from "@/share/domain/repository/ShareGetS3FileRepository";
 import { execute as binaryToBufferService } from "@/core/service/BinaryToBufferService";
@@ -45,7 +45,7 @@ export const execute = async (message: ShareReceiveMessageImpl): Promise<void> =
     }
 
     // バイナリをUint8Arrayに変換
-    const bitmapObject = message.data[3] as NonNullable<BitmapSaveObjectImpl>;
+    const bitmapObject = message.data[3] as NonNullable<IBitmapSaveObject>;
 
     // 変更前のインスタンスからセーブオブジェクトを作成
     const instance: InstanceImpl<any> = workSpace.getLibrary(bitmapObject.id);

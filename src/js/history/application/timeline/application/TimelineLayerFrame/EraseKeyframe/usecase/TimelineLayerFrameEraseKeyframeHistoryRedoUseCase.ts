@@ -1,6 +1,6 @@
 import type { InstanceImpl } from "@/interface/InstanceImpl";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
-import type { CharacterSaveObjectImpl } from "@/interface/CharacterSaveObjectImpl";
+import type { ICharacterSaveObject } from "@/interface/ICharacterSaveObject";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
 import { execute as timelineLayerAddFrameUpdateLayerStyleUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerAddFrameUpdateLayerStyleUseCase";
 import { execute as externalTimelineLayerFrameForwardKeyframeService } from "@/external/timeline/application/ExternalTimelineLayerFrame/service/ExternalTimelineLayerFrameForwardKeyframeService";
@@ -22,7 +22,7 @@ export const execute = async (
     work_space_id: number,
     library_id: number,
     layer_index: number,
-    character_save_objects: CharacterSaveObjectImpl[]
+    character_save_objects: ICharacterSaveObject[]
 ): Promise<void> => {
 
     const workSpace = $getWorkSpace(work_space_id);

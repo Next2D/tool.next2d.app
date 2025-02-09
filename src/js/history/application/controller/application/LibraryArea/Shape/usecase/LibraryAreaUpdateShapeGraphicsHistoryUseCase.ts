@@ -1,7 +1,7 @@
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { Shape } from "@/core/domain/model/Shape";
-import type { BoundsImpl } from "@/interface/BoundsImpl";
+import type { IBounds } from "@/interface/IBounds";
 import { $useSocket } from "@/share/ShareUtil";
 import { $LIBRARY_UPDATE_SHAPE_GRAPHICS_COMMAND } from "@/config/HistoryConfig";
 import { execute as historyAddElementUseCase } from "@/controller/application/HistoryArea/usecase/HistoryAddElementUseCase";
@@ -42,7 +42,7 @@ export const execute = async (
     movie_clip: MovieClip,
     shape: Shape,
     recodes: Float32Array | number[],
-    bounds: BoundsImpl,
+    bounds: IBounds,
     receiver: boolean = false
 ): Promise<void> => {
 

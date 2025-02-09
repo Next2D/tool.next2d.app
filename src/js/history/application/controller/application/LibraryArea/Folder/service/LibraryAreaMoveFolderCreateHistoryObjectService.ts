@@ -1,4 +1,4 @@
-import type { HistoryObjectImpl } from "@/interface/HistoryObjectImpl";
+import type { IHistoryObject } from "@/interface/IHistoryObject";
 import { $LIBRARY_MOVE_FOLDER_COMMAND } from "@/config/HistoryConfig";
 
 /**
@@ -22,7 +22,7 @@ export const execute = (
     before_folder_id: number,
     after_folder_id: number,
     name: string
-): HistoryObjectImpl => {
+): IHistoryObject => {
 
     return {
         "command": $LIBRARY_MOVE_FOLDER_COMMAND,

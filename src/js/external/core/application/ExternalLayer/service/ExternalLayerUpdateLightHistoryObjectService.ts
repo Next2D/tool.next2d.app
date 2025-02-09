@@ -1,5 +1,5 @@
 import { $LAYER_LIGHT_UPDATE_COMMAND } from "@/config/HistoryConfig";
-import { HistoryObjectImpl } from "@/interface/HistoryObjectImpl";
+import { IHistoryObject } from "@/interface/IHistoryObject";
 
 /**
  * @description レイヤーのハイライトの画面共有オブジェクトを作成
@@ -18,7 +18,7 @@ export const execute = (
     movie_clip_id: number,
     index: number,
     value: boolean
-): HistoryObjectImpl => {
+): IHistoryObject => {
 
     return {
         "command": $LAYER_LIGHT_UPDATE_COMMAND,

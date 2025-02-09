@@ -1,4 +1,4 @@
-import type { HistoryObjectImpl } from "@/interface/HistoryObjectImpl";
+import type { IHistoryObject } from "@/interface/IHistoryObject";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { Layer } from "@/core/domain/model/Layer";
 import type { EmptyCharacter } from "@/core/domain/model/EmptyCharacter";
@@ -21,7 +21,7 @@ export const execute = (
     movie_clip: MovieClip,
     layer: Layer,
     empty_character: EmptyCharacter
-): HistoryObjectImpl => {
+): IHistoryObject => {
 
     return {
         "command": $TIMELINE_DELETE_EMPTY_KEY_FRAME_COMMAND,

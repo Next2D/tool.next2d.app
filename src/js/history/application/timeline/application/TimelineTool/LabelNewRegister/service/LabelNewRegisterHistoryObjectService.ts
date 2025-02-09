@@ -1,4 +1,4 @@
-import type { HistoryObjectImpl } from "@/interface/HistoryObjectImpl";
+import type { IHistoryObject } from "@/interface/IHistoryObject";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import { $LABEL_NEW_REGISTER_COMMAND } from "@/config/HistoryConfig";
 
@@ -19,7 +19,7 @@ export const execute = (
     movie_clip: MovieClip,
     frame: number,
     label: string
-): HistoryObjectImpl => {
+): IHistoryObject => {
 
     return {
         "command": $LABEL_NEW_REGISTER_COMMAND,

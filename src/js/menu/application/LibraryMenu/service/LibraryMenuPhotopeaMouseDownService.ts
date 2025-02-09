@@ -13,7 +13,7 @@ import { $poolCanvas } from "@/global/GlobalUtil";
  * @method
  * @public
  */
-export const execute = (event: PointerEvent): void =>
+export const execute = async (event: PointerEvent): Promise<void> =>
 {
     if (event.button !== 0) {
         return ;
@@ -37,17 +37,12 @@ export const execute = (event: PointerEvent): void =>
         return ;
     }
 
-    instance
-        .getHTMLElement()
-        .then((canvas): void =>
-        {
-            const base64 = canvas.toDataURL(instance.imageType);
+    const canvas = await instance.getHTMLElement();
+    const base64 = canvas.toDataURL(instance.imageType);
+    $poolCanvas(canvas);
 
-            $poolCanvas(canvas);
-
-            const a  = document.createElement("a");
-            a.href   = `https://www.photopea.com#${encodeURI(JSON.stringify({ "files": [base64] }))}`;
-            a.target = "_blank";
-            a.click();
-        });
+    const a  = document.createElement("a");
+    a.href   = `https://www.photopea.com#${encodeURI(JSON.stringify({ "files": [base64] }))}`;
+    a.target = "_blank";
+    a.click();
 };

@@ -1,86 +1,75 @@
-import { $getConcatenatedMatrix } from "@/controller/application/TransformSetting/TransformSettingUtil";
 import type { Character } from "@/core/domain/model/Character";
 import type { Shape } from "@/core/domain/model/Shape";
+import { $getConcatenatedMatrix } from "@/controller/application/TransformSetting/TransformSettingUtil";
 import { $getCanvas } from "@/global/GlobalUtil";
+import { Matrix } from "@next2d/geom";
+import {
+    Shape as DisplayShape,
+    Sprite
+} from "@next2d/display";
 
 /**
  * @description ShapeからCanvasを生成
  *              Create a Canvas from Shape
  *
  * @param  {Shape} shape
- * @return {Promise}
+ * @param  {Character} character
+ * @return {Promise<HTMLCanvasElement>}
  * @method
  * @public
  */
-export const execute = (
+export const execute = async (
     shape: Shape,
     character: Character | null = null
 ): Promise<HTMLCanvasElement> => {
 
-    return new Promise(async (resolve) =>
-    {
-        const displayShape = new next2d.display.Shape();
-        if (character && character.filters.length) {
-            // todo filter
-        }
+    const displayShape = new DisplayShape();
+    if (character && character.filters.length) {
+        // todo filter
+    }
 
-        const graphics = displayShape.graphics;
+    const graphics = displayShape.graphics;
 
-        // 描画レコードをコピー
-        graphics._$recode = shape.recodes.slice();
+    // 描画レコードをコピー
+    graphics.buffer = new Float32Array(shape.recodes.slice());
 
-        // 描画開始用のフラグを更新
-        graphics._$canDraw  = true;
-        graphics._$maxAlpha = 1;
+    // 描画範囲のバウンディングボックスを複製
+    const bounds  = shape.getRawBounds();
+    graphics.xMin = bounds.xMin;
+    graphics.yMin = bounds.yMin;
+    graphics.xMax = bounds.xMax;
+    graphics.yMax = bounds.yMax;
 
-        // 描画範囲のバウンディングボックスを複製
-        const bounds = shape.getRawBounds();
-        graphics._$xMin = bounds.xMin;
-        graphics._$yMin = bounds.yMin;
-        graphics._$xMax = bounds.xMax;
-        graphics._$yMax = bounds.yMax;
+    const width  = Math.abs(bounds.xMax - bounds.xMin);
+    const height = Math.abs(bounds.yMax - bounds.yMin);
+    const canvas = $getCanvas();
+    if (!width || !height) {
+        return canvas;
+    }
 
-        const width  = Math.abs(bounds.xMax - bounds.xMin);
-        const height = Math.abs(bounds.yMax - bounds.yMin);
-        const canvas = $getCanvas();
-        if (!width || !height) {
-            resolve(canvas);
-            return ;
-        }
+    displayShape.x = -bounds.xMin - width  / 2;
+    displayShape.y = -bounds.yMin - height / 2;
 
-        displayShape.x = -bounds.xMin - width  / 2;
-        displayShape.y = -bounds.yMin - height / 2;
+    const container = new Sprite();
+    container.addChild(displayShape);
 
-        const sprite = new next2d.display.Sprite();
-        sprite.addChild(displayShape);
+    const concatMatrix = $getConcatenatedMatrix();
+    container.matrix = new Matrix(
+        concatMatrix[0], concatMatrix[1],
+        concatMatrix[2], concatMatrix[3],
+        0, 0
+    );
 
-        const container = new next2d.display.Sprite();
-        container.addChild(sprite);
+    const matrix = new Matrix();
+    const scale = window.devicePixelRatio;
+    matrix.scale(scale, scale);
 
-        const concatMatrix = $getConcatenatedMatrix();
-        sprite.transform.matrix = new next2d.geom.Matrix(
-            concatMatrix[0], concatMatrix[1],
-            concatMatrix[2], concatMatrix[3],
-            0, 0
-        );
-
-        const matrix = new next2d.geom.Matrix();
-        matrix.translate(
-            container.width / 2,
-            container.height / 2
-        );
-        const scale = window.devicePixelRatio;
-        matrix.scale(scale, scale);
-
-        // Plyerのキャッシュをリセット
-        next2d.player.cacheStore.reset();
-
-        const bitmapData = new next2d.display.BitmapData(container.width * scale, container.height * scale);
-        bitmapData.draw(container, matrix, null, canvas, (canvas: HTMLCanvasElement): void =>
-        {
-            canvas.style.width  = `${container.width}px`;
-            canvas.style.height = `${container.height}px`;
-            resolve(canvas);
-        });
+    const transferredCanvas = await next2d.captureToCanvas(container, {
+        "matrix": matrix,
+        "canvas": canvas
     });
+    transferredCanvas.style.width  = `${container.width}px`;
+    transferredCanvas.style.height = `${container.height}px`;
+
+    return transferredCanvas;
 };

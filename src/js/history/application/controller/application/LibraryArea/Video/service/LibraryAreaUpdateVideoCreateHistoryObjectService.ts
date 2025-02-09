@@ -1,4 +1,4 @@
-import type { HistoryObjectImpl } from "@/interface/HistoryObjectImpl";
+import type { IHistoryObject } from "@/interface/IHistoryObject";
 import type { VideoSaveObjectImpl } from "@/interface/VideoSaveObjectImpl";
 import type { InstanceSaveObjectImpl } from "@/interface/InstanceSaveObjectImpl";
 import { $LIBRARY_OVERWRITE_VIDEO_COMMAND } from "@/config/HistoryConfig";
@@ -22,7 +22,7 @@ export const execute = (
     before_save_object: InstanceSaveObjectImpl,
     after_save_object: VideoSaveObjectImpl,
     file_id: string = ""
-): HistoryObjectImpl => {
+): IHistoryObject => {
 
     return {
         "command": $LIBRARY_OVERWRITE_VIDEO_COMMAND,

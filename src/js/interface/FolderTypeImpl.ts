@@ -1,1 +1,0 @@
-export type FolderTypeImpl = "open" | "close";

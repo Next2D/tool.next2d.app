@@ -1,6 +1,6 @@
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import type { InstanceImpl } from "@/interface/InstanceImpl";
-import type { Graphics } from "@next2d/display";
+import { Graphics } from "@next2d/display";
 import { ExternalItem } from "./ExternalItem";
 import { execute as externalShapeApplyGraphicsUseCase } from "@/external/core/application/ExternalShape/usecase/ExternalShapeApplyGraphicsUseCase";
 
@@ -31,7 +31,7 @@ export class ExternalShape extends ExternalItem
          *
          * @type {Graphics}
          */
-        this._$graphics = new next2d.display.Graphics();
+        this._$graphics = new Graphics();
     }
 
     /**
@@ -58,15 +58,15 @@ export class ExternalShape extends ExternalItem
     async applyGraphics (): Promise<void>
     {
         const bounds = {
-            "xMin": this.graphics._$xMin,
-            "yMin": this.graphics._$yMin,
-            "xMax": this.graphics._$xMax,
-            "yMax": this.graphics._$yMax
+            "xMin": this.graphics.xMin,
+            "yMin": this.graphics.yMin,
+            "xMax": this.graphics.xMax,
+            "yMax": this.graphics.yMax
         };
 
         await externalShapeApplyGraphicsUseCase(
             this._$workSpace, this._$workSpace.scene, this._$instance,
-            this.graphics._$getRecodes(), bounds
+            this.graphics.buffer, bounds
         );
     }
 }

@@ -1,7 +1,8 @@
-import { $getConcatenatedMatrix } from "@/controller/application/TransformSetting/TransformSettingUtil";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
+import { $getConcatenatedMatrix } from "@/controller/application/TransformSetting/TransformSettingUtil";
 import { $getCanvas } from "@/global/GlobalUtil";
 import { $clearUseLibraryIds } from "@/tool/application/PublishTool/PublishToolUtil";
+import { Loader } from "@next2d/display";
 import { execute as publishToolCreateToObjectUseCase } from "@/tool/application/PublishTool/usecase/PublishToolCreateToObjectUseCase";
 
 /**
@@ -14,8 +15,11 @@ import { execute as publishToolCreateToObjectUseCase } from "@/tool/application/
  * @method
  * @public
  */
-export const execute = (movie_clip: MovieClip, frame: number = 1): Promise<HTMLCanvasElement> =>
-{
+export const execute = async (
+    movie_clip: MovieClip,
+    frame: number = 1
+): Promise<HTMLCanvasElement> => {
+
     return new Promise(async (resolve) =>
     {
         // Plyerのキャッシュをリセット
@@ -29,7 +33,7 @@ export const execute = (movie_clip: MovieClip, frame: number = 1): Promise<HTMLC
         // JSONオブジェクトを生成
         const object = await publishToolCreateToObjectUseCase(movie_clip);
 
-        const loader = new next2d.display.Loader();
+        const loader = new Loader();
         loader.loadJSON(object);
 
         const movieClip = loader.content;
@@ -65,7 +69,7 @@ export const execute = (movie_clip: MovieClip, frame: number = 1): Promise<HTMLC
         matrix.scale(scale, scale);
 
         const bitmapData = new next2d.display.BitmapData(container.width * scale, container.height * scale);
-        bitmapData.draw(container, matrix, null, canvas, (canvas: HTMLCanvasElement): void =>
+        bitmapData.ca(container, matrix, null, canvas, (canvas: HTMLCanvasElement): void =>
         {
             canvas.style.width  = `${container.width}px`;
             canvas.style.height = `${container.height}px`;

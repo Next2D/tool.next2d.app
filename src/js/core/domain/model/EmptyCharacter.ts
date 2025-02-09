@@ -1,4 +1,4 @@
-import type { EmptyCharacterSaveObjectImpl } from "@/interface/EmptyCharacterSaveObjectImpl";
+import type { EmptyICharacterSaveObject } from "@/interface/EmptyICharacterSaveObject";
 
 /**
  * @description 空のキーフレームの管理クラス
@@ -40,7 +40,7 @@ export class EmptyCharacter
      * @method
      * @public
      */
-    load (save_object: EmptyCharacterSaveObjectImpl): void
+    load (save_object: EmptyICharacterSaveObject): void
     {
         this._$startFrame = save_object.startFrame;
         this._$endFrame   = save_object.endFrame;
@@ -101,7 +101,7 @@ export class EmptyCharacter
      * @method
      * @public
      */
-    toObject (): EmptyCharacterSaveObjectImpl
+    toObject (): EmptyICharacterSaveObject
     {
         return {
             "startFrame": this.startFrame,

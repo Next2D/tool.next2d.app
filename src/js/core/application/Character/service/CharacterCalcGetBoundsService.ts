@@ -1,4 +1,4 @@
-import type { BoundsImpl } from "@/interface/BoundsImpl";
+import type { IBounds } from "@/interface/IBounds";
 import { $getCurrentWorkSpace, $getMatrixBounds } from "../../CoreUtil";
 
 /**
@@ -16,7 +16,7 @@ export const execute = (
     library_id: number,
     matrix: number[],
     frame: number = 1
-): BoundsImpl | null => {
+): IBounds | null => {
 
     const workSpace = $getCurrentWorkSpace();
     const instance  = workSpace.getLibrary(library_id);

@@ -1,4 +1,4 @@
-import type { HistoryObjectImpl } from "@/interface/HistoryObjectImpl";
+import type { IHistoryObject } from "@/interface/IHistoryObject";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import { $LABEL_UPDATE_COMMAND } from "@/config/HistoryConfig";
 
@@ -21,7 +21,7 @@ export const execute = (
     frame: number,
     before_label: string,
     after_label: string
-): HistoryObjectImpl => {
+): IHistoryObject => {
 
     return {
         "command": $LABEL_UPDATE_COMMAND,

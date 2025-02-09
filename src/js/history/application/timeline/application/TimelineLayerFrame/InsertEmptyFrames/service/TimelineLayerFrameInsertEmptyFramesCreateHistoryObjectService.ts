@@ -1,4 +1,4 @@
-import type { HistoryObjectImpl } from "@/interface/HistoryObjectImpl";
+import type { IHistoryObject } from "@/interface/IHistoryObject";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { Layer } from "@/core/domain/model/Layer";
 import type { EmptyCharacter } from "@/core/domain/model/EmptyCharacter";
@@ -23,7 +23,7 @@ export const execute = (
     layer: Layer,
     empty_character: EmptyCharacter,
     num_frame: number
-): HistoryObjectImpl => {
+): IHistoryObject => {
 
     return {
         "command": $TIMELINE_INSERT_EMPTY_FRAME_COMMAND,

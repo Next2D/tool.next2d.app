@@ -1,4 +1,4 @@
-import type { HistoryObjectImpl } from "@/interface/HistoryObjectImpl";
+import type { IHistoryObject } from "@/interface/IHistoryObject";
 import type { ShapeSaveObjectImpl } from "@/interface/ShapeSaveObjectImpl";
 import { $LIBRARY_ADD_NEW_SHAPE_COMMAND } from "@/config/HistoryConfig";
 
@@ -17,7 +17,7 @@ export const execute = (
     work_space_id: number,
     movie_clip_id: number,
     shape_object: ShapeSaveObjectImpl
-): HistoryObjectImpl => {
+): IHistoryObject => {
 
     return {
         "command": $LIBRARY_ADD_NEW_SHAPE_COMMAND,

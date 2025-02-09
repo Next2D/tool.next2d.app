@@ -1,9 +1,9 @@
 import type { InstanceSaveObjectImpl } from "@/interface/InstanceSaveObjectImpl";
-import type { BitmapSaveObjectImpl } from "@/interface/BitmapSaveObjectImpl";
+import type { IBitmapSaveObject } from "@/interface/IBitmapSaveObject";
 import type { SoundSaveObjectImpl } from "@/interface/SoundSaveObjectImpl";
 import type { VideoSaveObjectImpl } from "@/interface/VideoSaveObjectImpl";
 import type { MovieClipSaveObjectImpl } from "@/interface/MovieClipSaveObjectImpl";
-import type { FolderSaveObjectImpl } from "@/interface/FolderSaveObjectImpl";
+import type { IFolderSaveObject } from "@/interface/IFolderSaveObject";
 import type { InstanceImpl } from "@/interface/InstanceImpl";
 import type { ShapeSaveObjectImpl } from "@/interface/ShapeSaveObjectImpl";
 import type { TextSaveObjectImpl } from "@/interface/TextSaveObjectImpl";
@@ -40,10 +40,10 @@ export const execute = async (save_object: InstanceSaveObjectImpl): Promise<Inst
             return new MovieClip(save_object as MovieClipSaveObjectImpl);
 
         case $FOLDER_TYPE:
-            return new Folder(save_object as FolderSaveObjectImpl);
+            return new Folder(save_object as IFolderSaveObject);
 
         case $BITMAP_TYPE:
-            return new Bitmap(save_object as BitmapSaveObjectImpl);
+            return new Bitmap(save_object as IBitmapSaveObject);
 
         case $VIDEO_TYPE:
         {

@@ -1,5 +1,5 @@
 import type { ShapeSaveObjectImpl } from "@/interface/ShapeSaveObjectImpl";
-import type { BoundsImpl } from "@/interface/BoundsImpl";
+import type { IBounds } from "@/interface/IBounds";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
 import { execute as externalShapeUpdateService } from "@/external/core/application/ExternalShape/service/ExternalShapeUpdateService";
 import { execute as screenDisplayObjectChangeElementUseCase } from "@/screen/application/DisplayObject/usecase/ScreenDisplayObjectChangeElementUseCase";
@@ -20,7 +20,7 @@ export const execute = async (
     work_space_id: number,
     before_shape_object: ShapeSaveObjectImpl,
     recodes: number[],
-    bounds: BoundsImpl
+    bounds: IBounds
 ): Promise<void> => {
 
     const workSpace = $getWorkSpace(work_space_id);

@@ -1,6 +1,6 @@
 import type { ObjectImpl } from "@/interface/ObjectImpl";
 import type { TextSaveObjectImpl } from "@/interface/TextSaveObjectImpl";
-import type { BoundsImpl } from "@/interface/BoundsImpl";
+import type { IBounds } from "@/interface/IBounds";
 import type { Character } from "./Character";
 import { Instance } from "./Instance";
 import { execute as textCreateCanvasElementService } from "@/core/application/Text/service/TextCreateCanvasElementService";
@@ -15,7 +15,7 @@ import { execute as textCreateCanvasElementService } from "@/core/application/Te
  */
 export class Text extends Instance
 {
-    private readonly _$bounds: BoundsImpl;
+    private readonly _$bounds: IBounds;
     private _$text: string;
     private _$updated: boolean;
 
@@ -122,7 +122,7 @@ export class Text extends Instance
      * @method
      * @public
      */
-    getRawBounds (): BoundsImpl
+    getRawBounds (): IBounds
     {
         return this._$bounds;
     }

@@ -1,6 +1,6 @@
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import { execute as externalLibraryCreateInstanceService } from "@/external/controller/application/ExternalLibrary/service/ExternalLibraryCreateInstanceService";
-import type { ExternalInstanceImpl } from "@/interface/ExternalInstanceImpl";
+import type { IExternalInstance } from "@/interface/IExternalInstance";
 import type { InstanceImpl } from "@/interface/InstanceImpl";
 
 /**
@@ -9,14 +9,14 @@ import type { InstanceImpl } from "@/interface/InstanceImpl";
  *
  * @param {WorkSpace} work_space
  * @param {string} path
- * @return {ExternalInstanceImpl<any> | null}
+ * @return {IExternalInstance<any> | null}
  * @method
  * @public
  */
 export const execute = (
     work_space: WorkSpace,
     path: string
-): ExternalInstanceImpl<any> | null => {
+): IExternalInstance<any> | null => {
 
     if (!work_space.pathMap.has(path)) {
         return null;

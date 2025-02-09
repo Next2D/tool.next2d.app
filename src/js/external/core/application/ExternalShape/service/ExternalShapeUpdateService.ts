@@ -1,5 +1,5 @@
 import type { Shape } from "@/core/domain/model/Shape";
-import type { BoundsImpl } from "@/interface/BoundsImpl";
+import type { IBounds } from "@/interface/IBounds";
 
 /**
  * @description Shapeのグラフィックスレコード更新とバウンディングボックス更新
@@ -15,7 +15,7 @@ import type { BoundsImpl } from "@/interface/BoundsImpl";
 export const execute = (
     shape: Shape,
     recodes: Float32Array | number[],
-    bounds: BoundsImpl
+    bounds: IBounds
 ): void => {
     // 描画レコードを更新
     // todo Float32ArrayをAnimation Toolの描画レコードに変換する

@@ -6,7 +6,7 @@ import { $getDefaultTool, $setActiveTool } from "../../ToolUtil";
 import { $TOOL_ARROW_NAME } from "@/config/ToolConfig";
 import type { ToolImpl } from "@/interface/ToolImpl";
 import type { ArrowTool } from "@/tool/domain/model/ArrowTool";
-import { ExternalInstanceImpl } from "@/interface/ExternalInstanceImpl";
+import { IExternalInstance } from "@/interface/IExternalInstance";
 import { ExternalShape } from "@/external/core/domain/model/ExternalShape";
 import { ExternalLibrary } from "@/external/controller/domain/model/ExternalLibrary";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
@@ -115,7 +115,7 @@ export const execute = async (event: PointerEvent): Promise<void> =>
         externalLibrary.addNewShape(path);
 
         // ライブラリからShapeを取得
-        const shape: ExternalInstanceImpl<ExternalShape> = externalLibrary.getItem(path);
+        const shape: IExternalInstance<ExternalShape> = externalLibrary.getItem(path);
         if (!shape) {
             return ;
         }

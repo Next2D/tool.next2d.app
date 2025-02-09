@@ -3,7 +3,7 @@ import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { timelineHeader } from "../domain/model/TimelineHeader";
 import { timelineLayer } from "../domain/model/TimelineLayer";
 import type { Layer } from "@/core/domain/model/Layer";
-import { FrameObjectImpl } from "@/interface/FrameObjectImpl";
+import { IFrameObject } from "@/interface/IFrameObject";
 import { $clamp } from "@/global/GlobalUtil";
 
 /**
@@ -390,7 +390,7 @@ export const $getLayerFromElement = (element: HTMLElement): Layer | null =>
 export const $convertFrameObject = (
     start_frame: number,
     end_frame: number = 0
-): FrameObjectImpl => {
+): IFrameObject => {
     return {
         "start": start_frame,
         "end": $clamp(end_frame, start_frame + 1, Number.MAX_VALUE)

@@ -1,7 +1,7 @@
 import type { SoundObjectImpl } from "@/interface/SoundObjectImpl";
 import type { MovieClipSaveObjectImpl } from "@/interface/MovieClipSaveObjectImpl";
-import type { ActionSaveObjectImpl } from "@/interface/ActionSaveObjectImpl";
-import type { FrameObjectImpl } from "@/interface/FrameObjectImpl";
+import type { IActionSaveObject } from "@/interface/IActionSaveObject";
+import type { IFrameObject } from "@/interface/IFrameObject";
 import type { SoundSaveListImpl } from "@/interface/SoundSaveListImpl";
 import { Instance } from "./Instance";
 import { Layer } from "./Layer";
@@ -11,7 +11,7 @@ import { execute as movieClipCreateCanvasElementUseCase } from "@/core/applicati
 import { $clamp } from "@/global/GlobalUtil";
 import { execute as movieClipCreateJsonUseCase } from "@/core/application/MovieClip/usecase/MovieClipCreateJsonUseCase";
 import { MovieClipPublishJsonImpl } from "@/interface/MovieClipPublishJsonImpl";
-import { BoundsImpl } from "@/interface/BoundsImpl";
+import { IBounds } from "@/interface/IBounds";
 import { execute as movieClipCalcBoundService } from "@/core/application/MovieClip/service/MovieClipCalcBoundService";
 
 /**
@@ -34,7 +34,7 @@ export class MovieClip extends Instance
     private readonly _$actions: Map<number, string>;
     private readonly _$sounds: Map<number, SoundObjectImpl[]>;
     private readonly _$selectedLayers: Layer[];
-    private readonly _$selectedFrameObject: FrameObjectImpl;
+    private readonly _$selectedFrameObject: IFrameObject;
     private readonly _$selectedDepths: Map<number, number[]>;
 
     /**
@@ -151,7 +151,7 @@ export class MovieClip extends Instance
      * @readonly
      * @public
      */
-    get selectedFrameObject (): FrameObjectImpl
+    get selectedFrameObject (): IFrameObject
     {
         return this._$selectedFrameObject;
     }
@@ -214,9 +214,9 @@ export class MovieClip extends Instance
      * @method
      * @public
      */
-    getHTMLElement (frame: number = 1): Promise<HTMLCanvasElement>
+    async getHTMLElement (frame: number = 1): Promise<HTMLCanvasElement>
     {
-        return movieClipCreateCanvasElementUseCase(this, frame);
+        return await movieClipCreateCanvasElementUseCase(this, frame);
     }
 
     /**
@@ -504,7 +504,7 @@ export class MovieClip extends Instance
         // スクリプトマップに再登録
         if (object.actions) {
             for (let idx = 0; idx < object.actions.length; ++idx) {
-                const actionObject: ActionSaveObjectImpl = object.actions[idx];
+                const actionObject: IActionSaveObject = object.actions[idx];
                 this._$actions.set(actionObject.frame, actionObject.action);
             }
         }
@@ -869,7 +869,7 @@ export class MovieClip extends Instance
      * @method
      * @public
      */
-    getRawBounds (frame: number = 1): BoundsImpl
+    getRawBounds (frame: number = 1): IBounds
     {
         const calcBounds = movieClipCalcBoundService(this, frame);
 
@@ -913,7 +913,7 @@ export class MovieClip extends Instance
             });
         }
 
-        const actions: ActionSaveObjectImpl[] = [];
+        const actions: IActionSaveObject[] = [];
         for (const [frame, action] of this._$actions) {
             actions.push({
                 "frame": frame,

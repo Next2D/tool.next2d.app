@@ -1,4 +1,4 @@
-import type { HistoryObjectImpl } from "@/interface/HistoryObjectImpl";
+import type { IHistoryObject } from "@/interface/IHistoryObject";
 import type { SoundObjectImpl } from "@/interface/SoundObjectImpl";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import { $SOUND_AREA_REMOVE_SOUND_COMMAND } from "@/config/HistoryConfig";
@@ -23,7 +23,7 @@ export const execute = (
     frame: number,
     sound_index: number,
     name: string
-): HistoryObjectImpl => {
+): IHistoryObject => {
 
     return {
         "command": $SOUND_AREA_REMOVE_SOUND_COMMAND,

@@ -1,5 +1,6 @@
 import type { Shape } from "@/core/domain/model/Shape";
 import type { ShapePublishJsonImpl } from "@/interface/ShapePublishJsonImpl";
+import { Shape as DisplayShape } from "@next2d/display";
 
 /**
  * @description Next2D Playerの再生用JSONオブジェクトを生成する
@@ -15,7 +16,7 @@ export const execute = (shape: Shape): ShapePublishJsonImpl =>
     const bounds = shape.getRawBounds();
 
     const object: ShapePublishJsonImpl = {
-        "extends": next2d.display.Shape.namespace,
+        "extends": DisplayShape.namespace,
         "recodes": shape.recodes.slice(),
         "bounds": {
             "xMin": bounds.xMin,

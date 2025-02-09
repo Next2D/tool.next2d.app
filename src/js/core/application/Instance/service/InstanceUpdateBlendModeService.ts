@@ -1,4 +1,4 @@
-import { BlendModeImpl } from "@/interface/BlendModeImpl";
+import { IBlendMode } from "@/interface/IBlendMode";
 
 /**
  * @description Canvasにブレンドモードのstyleをセット
@@ -10,7 +10,7 @@ import { BlendModeImpl } from "@/interface/BlendModeImpl";
  * @method
  * @public
  */
-export const execute = (canvas: HTMLCanvasElement, blend_mode: BlendModeImpl): void =>
+export const execute = (canvas: HTMLCanvasElement, blend_mode: IBlendMode): void =>
 {
     switch (blend_mode) {
 

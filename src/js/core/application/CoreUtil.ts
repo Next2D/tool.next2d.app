@@ -1,5 +1,5 @@
 import { WorkSpace } from "@/core/domain/model/WorkSpace";
-import { BoundsImpl } from "@/interface/BoundsImpl";
+import { IBounds } from "@/interface/IBounds";
 
 /**
  * @description 起動中のWorkSpace配列
@@ -261,7 +261,7 @@ export const $getMatrixBounds = (
     x_max: number,
     y_max: number,
     matrix: number[]
-): BoundsImpl => {
+): IBounds => {
 
     const x0 = x_max * matrix[0] + y_max * matrix[2] + matrix[4];
     const x1 = x_max * matrix[0] + y_min * matrix[2] + matrix[4];
@@ -289,7 +289,7 @@ export const $getMatrixBounds = (
  * @method
  * @public
  */
-export const $calcBoundingBox = (bounding_boxs: BoundsImpl[]): BoundsImpl =>
+export const $calcBoundingBox = (bounding_boxs: IBounds[]): IBounds =>
 {
     let xMin =  Number.MAX_VALUE;
     let yMin =  Number.MAX_VALUE;

@@ -1,5 +1,5 @@
 import type { ShareReceiveMessageImpl } from "@/interface/ShareReceiveMessageImpl";
-import type { HistoryObjectImpl } from "@/interface/HistoryObjectImpl";
+import type { IHistoryObject } from "@/interface/IHistoryObject";
 import {
     $getMessage,
     $getMessages,
@@ -16,7 +16,7 @@ import {
  * @method
  * @public
  */
-export const execute = (history_object: HistoryObjectImpl): void =>
+export const execute = (history_object: IHistoryObject): void =>
 {
     const webSocket = $getSocket();
     if (!webSocket) {

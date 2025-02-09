@@ -1,6 +1,6 @@
-import type { CharacterSaveObjectImpl } from "@/interface/CharacterSaveObjectImpl";
-import type { ExternalItemImpl } from "@/interface/ExternalItemImpl";
-import type { BlendModeImpl } from "@/interface/BlendModeImpl";
+import type { ICharacterSaveObject } from "@/interface/ICharacterSaveObject";
+import type { IExternalItem } from "@/interface/IExternalItem";
+import type { IBlendMode } from "@/interface/IBlendMode";
 import type { Layer } from "./Layer";
 import { execute as characterCreateElementUseCase } from "@/core/application/Character/usecase/CharacterCreateElementUseCase";
 import { execute as characterCalcGetScaleXService } from "@/core/application/Character/service/CharacterCalcGetScaleXService";
@@ -9,7 +9,7 @@ import { execute as characterCalcGetScaleYService } from "@/core/application/Cha
 import { execute as characterCalcSetRotationService } from "@/core/application/Character/service/CharacterCalcSetRotationService";
 import { execute as characterCalcGetRotationService } from "@/core/application/Character/service/CharacterCalcGetRotationService";
 import { $clamp } from "@/global/GlobalUtil";
-import type { BoundsImpl } from "@/interface/BoundsImpl";
+import type { IBounds } from "@/interface/IBounds";
 import { execute as characterCalcGetBoundsService } from "@/core/application/Character/service/CharacterCalcGetBoundsService";
 import { execute as characterCalcGetRectService } from "@/core/application/Character/service/CharacterCalcGetRectService";
 import { PositionImpl } from "@/interface/PositionImpl";
@@ -42,7 +42,7 @@ export class Character
     private _$scaleX: number | null;
     private _$scaleY: number | null;
     private _$rotation: number | null;
-    private _$blendMode: BlendModeImpl;
+    private _$blendMode: IBlendMode;
     private readonly _$matrix: number[];
     private readonly _$colorTransform: number[];
     private readonly _$filters: any[];
@@ -280,11 +280,11 @@ export class Character
      * @member {string}
      * @public
      */
-    get blendMode (): BlendModeImpl
+    get blendMode (): IBlendMode
     {
         return this._$blendMode;
     }
-    set blendMode (blend_mode: BlendModeImpl)
+    set blendMode (blend_mode: IBlendMode)
     {
         this._$blendMode = blend_mode;
     }
@@ -593,7 +593,7 @@ export class Character
      * @method
      * @public
      */
-    load (save_object: CharacterSaveObjectImpl): void
+    load (save_object: ICharacterSaveObject): void
     {
         this._$libraryId  = save_object.libraryId;
         this._$depth      = save_object.depth;
@@ -626,7 +626,7 @@ export class Character
      * @method
      * @public
      */
-    loadExternalItem (item: ExternalItemImpl<any>): void
+    loadExternalItem (item: IExternalItem<any>): void
     {
         this._$libraryId = item.id;
     }
@@ -655,7 +655,7 @@ export class Character
      * @method
      * @public
      */
-    getBounds (frame: number = 1): BoundsImpl | null
+    getBounds (frame: number = 1): IBounds | null
     {
         return characterCalcGetBoundsService(this._$libraryId, this._$matrix, frame);
     }
@@ -669,7 +669,7 @@ export class Character
      * @method
      * @public
      */
-    getRawBounds (frame: number = 1): BoundsImpl | null
+    getRawBounds (frame: number = 1): IBounds | null
     {
         const workSpace = $getCurrentWorkSpace();
         const instance  = workSpace.getLibrary(this._$libraryId);
@@ -690,7 +690,7 @@ export class Character
      * @method
      * @public
      */
-    getRect (frame: number = 1): BoundsImpl | null
+    getRect (frame: number = 1): IBounds | null
     {
         return characterCalcGetRectService(this._$libraryId, this._$matrix, frame);
     }
@@ -703,7 +703,7 @@ export class Character
      * @method
      * @public
      */
-    toObject (): CharacterSaveObjectImpl
+    toObject (): ICharacterSaveObject
     {
         return {
             "libraryId": this._$libraryId,

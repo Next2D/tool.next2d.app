@@ -1,6 +1,6 @@
-import type { BitmapSaveObjectImpl } from "./BitmapSaveObjectImpl";
+import type { IBitmapSaveObject } from "./IBitmapSaveObject";
 import type { MovieClipSaveObjectImpl } from "./MovieClipSaveObjectImpl";
 import type { SoundSaveObjectImpl } from "./SoundSaveObjectImpl";
 import type { VideoSaveObjectImpl } from "./VideoSaveObjectImpl";
 
-export type AllSaveObjectImpl = BitmapSaveObjectImpl | VideoSaveObjectImpl | SoundSaveObjectImpl | MovieClipSaveObjectImpl;
+export type IAllSaveObject = IBitmapSaveObject | VideoSaveObjectImpl | SoundSaveObjectImpl | MovieClipSaveObjectImpl;

@@ -1,4 +1,4 @@
-import type { HistoryObjectImpl } from "@/interface/HistoryObjectImpl";
+import type { IHistoryObject } from "@/interface/IHistoryObject";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { InstanceImpl } from "@/interface/InstanceImpl";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
@@ -44,7 +44,7 @@ export const execute = async (
         return ;
     }
 
-    const historyObject: HistoryObjectImpl | undefined = workSpace.histories[--workSpace.historyIndex];
+    const historyObject: IHistoryObject | undefined = workSpace.histories[--workSpace.historyIndex];
     if (!historyObject) {
         return ;
     }

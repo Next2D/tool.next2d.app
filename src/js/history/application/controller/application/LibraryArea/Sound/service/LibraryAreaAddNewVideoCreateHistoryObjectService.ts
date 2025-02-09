@@ -1,4 +1,4 @@
-import type { HistoryObjectImpl } from "@/interface/HistoryObjectImpl";
+import type { IHistoryObject } from "@/interface/IHistoryObject";
 import type { SoundSaveObjectImpl } from "@/interface/SoundSaveObjectImpl";
 import { $LIBRARY_ADD_NEW_SOUND_COMMAND } from "@/config/HistoryConfig";
 
@@ -19,7 +19,7 @@ export const execute = (
     movie_clip_id: number,
     sound_object: SoundSaveObjectImpl,
     fileId: string
-): HistoryObjectImpl => {
+): IHistoryObject => {
 
     return {
         "command": $LIBRARY_ADD_NEW_SOUND_COMMAND,
