@@ -1,3 +1,5 @@
+import { $AD_ID } from "@/config/ADConfig";
+
 /**
  * @description 広告エリアを非表示にする
  *              Hide the ad area
@@ -9,7 +11,7 @@
 export const execute = (): void =>
 {
     const element: HTMLElement | null = document
-        .getElementById("advertisement");
+        .getElementById($AD_ID);
 
     if (element) {
         element.style.display = "none";
