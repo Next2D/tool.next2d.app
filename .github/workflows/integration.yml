@@ -18,8 +18,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
+      - run: git clone -b develop git@github.com:Next2D/player.git
       - run: npm install
-      - run: npm install @next2d/player
       - run: npm run test
 
   windows-browser-test:
@@ -27,6 +27,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
+      - run: git clone -b develop git@github.com:Next2D/player.git
       - run: npm install
-      - run: npm install @next2d/player
       - run: npm run test
