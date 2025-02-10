@@ -2,10 +2,11 @@ import { execute } from "./HistoryRemoveElementService";
 import { $HISTORY_LIST_ID } from "../../../../config/HistoryConfig";;
 import { $createWorkSpace, $getCurrentWorkSpace } from "../../../../core/application/CoreUtil";
 import { WorkSpace } from "../../../../core/domain/model/WorkSpace";
+import { describe, expect, it } from "vitest";
 
 describe("HistoryRemoveElementServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         const workSpace: WorkSpace = $getCurrentWorkSpace() || $createWorkSpace();
         workSpace.histories.length = 0;

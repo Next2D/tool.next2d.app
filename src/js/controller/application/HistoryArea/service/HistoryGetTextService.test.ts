@@ -1,4 +1,5 @@
 import { execute } from "./HistoryGetTextService";
+import { describe, expect, it } from "vitest";
 import {
     $TIMELINE_TOOL_LAYER_ADD_COMMAND,
     $TIMELINE_TOOL_LAYER_DELETE_COMMAND,
@@ -55,7 +56,7 @@ import {
 
 describe("HistoryGetTextServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         expect(execute($TIMELINE_TOOL_LAYER_ADD_COMMAND)).toBe("「%s1」にレイヤー「%s2」を追加");
         expect(execute($TIMELINE_TOOL_LAYER_DELETE_COMMAND)).toBe("「%s1」のレイヤー「%s2」を削除");

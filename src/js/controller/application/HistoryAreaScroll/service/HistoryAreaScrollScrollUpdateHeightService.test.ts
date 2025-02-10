@@ -4,10 +4,11 @@ import {
     $HISTORY_LIST_SCROLL_AREA_ID,
     $HISTORY_LIST_SCROLL_BAR_ID
 } from "../../../../config/HistoryConfig";
+import { describe, expect, it } from "vitest";
 
 describe("HistoryAreaScrollUpdateHeightServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         const scrollAreaElement = document.createElement("div");
         document.body.appendChild(scrollAreaElement);
