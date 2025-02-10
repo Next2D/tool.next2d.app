@@ -21,12 +21,14 @@ export const execute = (): void =>
 
     const children: HTMLCollection = element.children;
     const length: number = children.length;
-    for (let idx: number = 0; idx < length; ++idx) {
+    for (let idx = 0; idx < length; ++idx) {
         const node: HTMLElement | undefined = children[idx] as HTMLElement;
         if (!node) {
             continue;
         }
 
-        node.addEventListener(EventType.POINTER_DOWN, controllerTabMouseDownEventService);
+        node.addEventListener(EventType.POINTER_DOWN,
+            controllerTabMouseDownEventService
+        );
     }
 };

@@ -1,9 +1,10 @@
 import { execute } from "./ControllerMouseDownEventService";
 import { $registerMenu } from "../../../../menu/application/MenuUtil";
+import { describe, expect, it } from "vitest";
 
 describe("ControllerMouseDownEventServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         let menuState = "show";
         $registerMenu({
@@ -24,7 +25,7 @@ describe("ControllerMouseDownEventServiceTest", () =>
                 eventState = "on";
             },
             "button": 0
-        };
+        } as PointerEvent;
         execute(eventMock);
 
         expect(eventState).toBe("on");

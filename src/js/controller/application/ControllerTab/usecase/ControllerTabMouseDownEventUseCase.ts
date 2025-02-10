@@ -19,6 +19,12 @@ export const execute = (event: PointerEvent): void =>
     // 親のイベントを中止
     event.stopPropagation();
 
+    // アクティブなら何もしない
+    const tabElement = event.currentTarget as HTMLElement;
+    if (!tabElement || tabElement.classList.contains("active")) {
+        return ;
+    }
+
     // 表示されてるメニューをメニューを全て非表示にする
     $allHideMenu();
 
@@ -31,7 +37,7 @@ export const execute = (event: PointerEvent): void =>
 
     const children: HTMLCollection = element.children;
     const length: number = children.length;
-    for (let idx: number = 0; idx < length; ++idx) {
+    for (let idx = 0; idx < length; ++idx) {
 
         const node: HTMLElement | undefined = children[idx] as HTMLElement;
         if (!node || !node.classList.contains("active")) {
@@ -56,7 +62,6 @@ export const execute = (event: PointerEvent): void =>
     }
 
     // アクティブに更新
-    const tabElement = event.currentTarget as HTMLElement;
     tabElement.classList.remove("disable");
     tabElement.classList.add("active");
 
@@ -72,7 +77,6 @@ export const execute = (event: PointerEvent): void =>
     // 表示
     targetElement.style.display = "";
 
-    // ライブラリエリアなら高さを調整
     switch (tabType) {
 
         // ライブラリエリア選択時の高さ調整
