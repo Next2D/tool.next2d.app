@@ -11,6 +11,7 @@ import { execute as timelineLayerWindowResizeUseCase } from "@/timeline/applicat
 import { execute as billingModelShowService } from "@/menu/application/BillingModal/service/BillingModelShowService";
 import { $useSocket } from "@/share/ShareUtil";
 import { execute as screenScrollResizeService } from "@/screen/application/ScreenScroll/service/ScreenScrollResizeService";
+import { execute as userDatabaseAutoSaveReservationUseCase } from "@/user/application/Database/usecase/UserDatabaseAutoSaveReservationUseCase";
 
 /**
  * @description ダブルタップ用の待機フラグ
@@ -100,19 +101,19 @@ export const execute = (event: PointerEvent): void =>
             return ;
         }
 
-        // 固定状態で保存
-        workSpace.updateToolArea({
-            "state": "fixed",
-            "offsetLeft": 0,
-            "offsetTop": 0
-        });
-
         const element: HTMLElement | null = document
             .getElementById($TOOL_PREFIX);
 
         if (!element) {
             return ;
         }
+
+        // 固定状態で保存
+        workSpace.updateToolArea({
+            "state": "fixed",
+            "offsetLeft": 0,
+            "offsetTop": 0
+        });
 
         // ツールエリアのstyleを固定位置に移動
         toolAreaChageStyleToInactiveService(element);
@@ -125,6 +126,9 @@ export const execute = (event: PointerEvent): void =>
 
         // スクリーンのスクロールを再計算
         screenScrollResizeService();
+
+        // 自動保存予約
+        userDatabaseAutoSaveReservationUseCase();
     }
 
 };

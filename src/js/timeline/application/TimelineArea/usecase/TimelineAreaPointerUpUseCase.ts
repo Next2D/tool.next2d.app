@@ -4,6 +4,7 @@ import { $setCursor } from "@/global/GlobalUtil";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { $setTimelineOffsetTop } from "../TimelineAreaUtil";
 import { execute as timelineAreaPointerMoveService } from "../service/TimelineAreaPointerMoveService";
+import { execute as userDatabaseAutoSaveReservationUseCase } from "@/user/application/Database/usecase/UserDatabaseAutoSaveReservationUseCase";
 
 /**
  * @description 選択中のツールの移動イベント関数
@@ -47,4 +48,7 @@ export const execute = (event: PointerEvent): void =>
 
     // タイムラインのOffsetTopを更新
     $setTimelineOffsetTop(element.offsetTop);
+
+    // 自動保存予約
+    userDatabaseAutoSaveReservationUseCase();
 };

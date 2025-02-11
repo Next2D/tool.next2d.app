@@ -1,5 +1,6 @@
 import { EventType } from "@/tool/domain/event/EventType";
 import { execute as controllerAdjustmentMouseMoveUseCase } from "./ControllerAdjustmentPointerMoveUseCase";
+import { execute as userDatabaseAutoSaveReservationUseCase } from "@/user/application/Database/usecase/UserDatabaseAutoSaveReservationUseCase";
 
 /**
  * @description タイムラインの幅の調整イベントをwindowから削除
@@ -24,4 +25,7 @@ export const execute = (event: PointerEvent): void =>
     element.releasePointerCapture(event.pointerId);
     element.removeEventListener(EventType.POINTER_MOVE, controllerAdjustmentMouseMoveUseCase);
     element.removeEventListener(EventType.POINTER_UP, execute);
+
+    // 自動保存予約
+    userDatabaseAutoSaveReservationUseCase();
 };

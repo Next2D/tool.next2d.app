@@ -23,25 +23,22 @@ const worker: Worker = new ZlibInflateWorker();
  * @method
  * @public
  */
-export const execute = (binary: string, share: boolean = false): Promise<void> =>
+export const execute = async (binary: string, share: boolean = false): Promise<void> =>
 {
-    return new Promise((resolve): void =>
+    await new Promise<void>((resolve): void =>
     {
-        // バイナリデータを数値に戻す
-        const buffer: Uint8Array = binaryToBufferService(binary);
-
         worker.onmessage = async (event: MessageEvent): Promise<void> =>
         {
             const value = bufferToBinaryService(
                 event.data as NonNullable<Uint8Array>
             );
 
-            const workSpaceObjects: IWorkSpaceSaveObject[] = migrationSaveDataUseCase(
+            const workSpaceObjects = migrationSaveDataUseCase(
                 JSON.parse(decodeURIComponent(value))
             );
 
             // データを復元
-            for (let idx: number = 0; idx < workSpaceObjects.length; ++idx) {
+            for (let idx = 0; idx < workSpaceObjects.length; ++idx) {
 
                 const workSpace = new WorkSpace();
                 await workSpace.load(workSpaceObjects[idx], share);
@@ -53,6 +50,7 @@ export const execute = (binary: string, share: boolean = false): Promise<void> =
         };
 
         // データを解凍
+        const buffer = binaryToBufferService(binary);
         worker.postMessage(buffer, [buffer.buffer]);
     });
 };

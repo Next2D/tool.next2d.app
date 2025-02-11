@@ -13,6 +13,7 @@ import { $CONTROLLER_AREA_PROPERTY_ID } from "@/config/PropertyConfig";
 import { execute as billingModelShowService } from "@/menu/application/BillingModal/service/BillingModelShowService";
 import { $useSocket } from "@/share/ShareUtil";
 import { $useKeyboard } from "@/shortcut/ShortcutUtil";
+import { execute as userDatabaseAutoSaveReservationUseCase } from "@/user/application/Database/usecase/UserDatabaseAutoSaveReservationUseCase";
 
 /**
  * @description ダブルタップ用の待機フラグ
@@ -110,13 +111,6 @@ export const execute = (event: PointerEvent): void =>
             return ;
         }
 
-        // 固定位置に戻す
-        workSpace.updatePropertyArea({
-            "state": "fixed",
-            "offsetLeft": 0,
-            "offsetTop": 0
-        });
-
         // プロパティエリアのstyleを固定位置に移動
         const element: HTMLElement | null = document
             .getElementById($CONTROLLER_AREA_PROPERTY_ID);
@@ -125,10 +119,20 @@ export const execute = (event: PointerEvent): void =>
             return ;
         }
 
+        // 固定位置に戻す
+        workSpace.updatePropertyArea({
+            "state": "fixed",
+            "offsetLeft": 0,
+            "offsetTop": 0
+        });
+
         // styleを元に戻す
         propertyAreaChageStyleToInactiveService(element);
 
         // プロパティタブを表示する
         propertyAreaShowTabService();
+
+        // 自動保存予約
+        userDatabaseAutoSaveReservationUseCase();
     }
 };

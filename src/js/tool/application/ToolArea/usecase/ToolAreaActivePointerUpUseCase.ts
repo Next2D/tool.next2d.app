@@ -3,6 +3,7 @@ import { $TOOL_PREFIX } from "@/config/ToolConfig";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { EventType } from "@/tool/domain/event/EventType";
 import { execute as toolAreaPointerMoveService } from "../service/ToolAreaPointerMoveService";
+import { execute as userDatabaseAutoSaveReservationUseCase } from "@/user/application/Database/usecase/UserDatabaseAutoSaveReservationUseCase";
 
 /**
  * @description 選択中のツールの移動イベント関数
@@ -40,4 +41,7 @@ export const execute = (event: PointerEvent): void =>
         "offsetLeft": element.offsetLeft,
         "offsetTop": element.offsetTop
     });
+
+    // 自動保存予約
+    userDatabaseAutoSaveReservationUseCase();
 };

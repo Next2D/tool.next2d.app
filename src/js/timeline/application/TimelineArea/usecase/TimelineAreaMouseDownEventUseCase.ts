@@ -17,6 +17,7 @@ import {
     $setTimelineOffsetTop
 } from "../TimelineAreaUtil";
 import { execute as screenScrollResizeService } from "@/screen/application/ScreenScroll/service/ScreenScrollResizeService";
+import { execute as userDatabaseAutoSaveReservationUseCase } from "@/user/application/Database/usecase/UserDatabaseAutoSaveReservationUseCase";
 
 /**
  * @description ダブルタップ用の待機フラグ
@@ -117,12 +118,6 @@ export const execute = (event: PointerEvent): void =>
             return ;
         }
 
-        // 高さ以外を固定状態で保存
-        workSpace.timelineAreaState.state      = "fixed";
-        workSpace.timelineAreaState.offsetLeft = 0;
-        workSpace.timelineAreaState.offsetTop  = 0;
-        workSpace.timelineAreaState.width      = 0;
-
         // ツールエリアのstyleを固定位置に移動
         const element: HTMLElement | null = document
             .getElementById($TIMELINE_ID);
@@ -130,6 +125,12 @@ export const execute = (event: PointerEvent): void =>
         if (!element) {
             return ;
         }
+
+        // 高さ以外を固定状態で保存
+        workSpace.timelineAreaState.state      = "fixed";
+        workSpace.timelineAreaState.offsetLeft = 0;
+        workSpace.timelineAreaState.offsetTop  = 0;
+        workSpace.timelineAreaState.width      = 0;
 
         // styleを更新
         timelineAreaChageStyleToInactiveService(element);
@@ -147,6 +148,9 @@ export const execute = (event: PointerEvent): void =>
 
         // スクリーンのスクロールを再計算
         screenScrollResizeService();
+
+        // 自動保存予約
+        userDatabaseAutoSaveReservationUseCase();
     }
 
 };

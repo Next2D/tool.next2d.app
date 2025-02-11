@@ -10,11 +10,13 @@ import { WorkSpace } from "@/core/domain/model/WorkSpace";
  */
 export const execute = (work_spacs: WorkSpace): void =>
 {
+    const pathMap = work_spacs.pathMap;
+
     // 初期化
-    work_spacs.pathMap.clear();
+    pathMap.clear();
 
     // マップを生成
     for (const instance of work_spacs.libraries.values()) {
-        work_spacs.pathMap.set(instance.getPath(work_spacs), instance.id);
+        pathMap.set(instance.getPath(work_spacs), instance.id);
     }
 };

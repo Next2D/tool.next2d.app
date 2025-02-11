@@ -8,8 +8,8 @@ import { execute as userDatabaseInitializeLoadUseCase } from "./Database/usecase
  * @method
  * @public
  */
-export const execute = (): Promise<void> =>
+export const execute = async (): Promise<void> =>
 {
     // 初期起動時のユースケース
-    return userDatabaseInitializeLoadUseCase();
+    return await userDatabaseInitializeLoadUseCase();
 };

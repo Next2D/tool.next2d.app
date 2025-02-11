@@ -10,7 +10,7 @@ import { execute as shareConnectUseCase } from "./ShareConnectUseCase";
  */
 export const execute = (): void =>
 {
-    const roomId: string = location.hash;
+    const roomId = location.hash;
     if (!roomId) {
         return ;
     }

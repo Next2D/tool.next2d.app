@@ -13,7 +13,7 @@ import {
  */
 export const execute = (): IDBOpenDBRequest =>
 {
-    const request: IDBOpenDBRequest = indexedDB.open(`${$PREFIX}@${$USER_DATABASE_NAME}`);
+    const request = indexedDB.open(`${$PREFIX}@${$USER_DATABASE_NAME}`);
 
     // Animation Toolに始めてアクセスした場合はStoreを作成
     request.addEventListener("upgradeneeded", (event: Event): void =>
@@ -22,7 +22,7 @@ export const execute = (): IDBOpenDBRequest =>
             return ;
         }
 
-        const db: IDBDatabase = (event.target as IDBOpenDBRequest).result;
+        const db = (event.target as IDBOpenDBRequest).result;
         if (!db.objectStoreNames.contains(`${$USER_DATABASE_NAME}`)) {
             db.createObjectStore(`${$USER_DATABASE_NAME}`);
         }

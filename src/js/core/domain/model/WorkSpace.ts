@@ -581,7 +581,7 @@ export class WorkSpace
      *              Duplicate library objects from save data
      *
      * @param  {array} libraries
-     * @return {Promise}
+     * @return {Promise<void>}
      * @method
      * @public
      */

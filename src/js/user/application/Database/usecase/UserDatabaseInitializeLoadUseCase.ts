@@ -19,13 +19,13 @@ import {
  * @description IndexedDbからデータ読み込みを行う
  *              Read data from IndexedDb
  *
- * @return {Promise}
+ * @return {Promise<void>}
  * @method
  * @public
  */
-export const execute = (): Promise<void> =>
+export const execute = async (): Promise<void> =>
 {
-    return new Promise((resolve): void =>
+    await new Promise<void>((resolve): void =>
     {
         // 進行状況を表示
         const menu = $getMenu<ProgressMenu>($PROGRESS_MENU_NAME);
@@ -36,24 +36,23 @@ export const execute = (): Promise<void> =>
         // 進行状況のテキストを更新
         menu.message = $replace("{{データベースを起動}}");
 
-        const request: IDBOpenDBRequest = userDatabaseGetOpenDBRequestService();
-
         // 起動成功処理
+        const request = userDatabaseGetOpenDBRequestService();
         request.onsuccess = (event: Event): void =>
         {
             if (!event.target) {
                 return ;
             }
 
-            const db: IDBDatabase = (event.target as IDBOpenDBRequest).result;
+            const db = (event.target as IDBOpenDBRequest).result;
 
             const transaction: IDBTransaction = db.transaction(
                 `${$USER_DATABASE_NAME}`, "readonly"
             );
 
-            const store: IDBObjectStore = transaction.objectStore(`${$USER_DATABASE_NAME}`);
+            const store = transaction.objectStore(`${$USER_DATABASE_NAME}`);
 
-            const billingDBRequest: IDBRequest<any> = store.get(`${$USER_DATABASE_BILLING_STORE_KEY}`);
+            const billingDBRequest = store.get(`${$USER_DATABASE_BILLING_STORE_KEY}`);
             billingDBRequest.onsuccess = (event: Event): void =>
             {
                 if (!event.target) {
@@ -63,7 +62,7 @@ export const execute = (): Promise<void> =>
                 // 機能制限の解除データがあればセット
                 const json: string | undefined = (event.target as IDBRequest).result;
                 if (json) {
-                    const saveObject: IBillingExpireObject = JSON.parse(json);
+                    const saveObject = JSON.parse(json) as IBillingExpireObject;
                     $setExpireDate(saveObject.expire);
 
                     // 機能を解放
@@ -72,7 +71,7 @@ export const execute = (): Promise<void> =>
                     }
                 }
 
-                const dataDBRequest: IDBRequest<any> = store.get(`${$USER_DATABASE_STORE_KEY}`);
+                const dataDBRequest = store.get(`${$USER_DATABASE_STORE_KEY}`);
                 dataDBRequest.onsuccess = async (event: Event): Promise<void> =>
                 {
                     if (!event.target) {

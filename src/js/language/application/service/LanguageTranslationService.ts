@@ -27,7 +27,7 @@ export const execute = (target_element: HTMLElement | Document): void =>
     const length: number = elements.length;
     for (let idx = 0; idx < length; ++idx) {
 
-        const element: HTMLElement = elements[idx] as NonNullable<HTMLElement>;
+        const element = elements[idx] as NonNullable<HTMLElement>;
 
         const text: string | undefined = element.dataset.text;
         if (!text || !mapping.has(text)) {
@@ -44,7 +44,7 @@ export const execute = (target_element: HTMLElement | Document): void =>
         const shortcutKey: string | undefined = element.dataset.shortcutKey;
         if (shortcutKey) {
 
-            let shortcutText: string = element.dataset.shortcutText as NonNullable<string>;
+            let shortcutText = element.dataset.shortcutText as NonNullable<string>;
             if (viewMapping.size && viewMapping.has(shortcutKey)) {
                 const shortcutObject: IShortcutViewObject | undefined = viewMapping.get(shortcutKey);
                 if (shortcutObject) {

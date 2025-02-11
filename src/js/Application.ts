@@ -6,7 +6,6 @@ import { execute as initializeScreen } from "@/screen/application/Initialize";
 import { execute as initializeTimeline } from "@/timeline/application/Initialize";
 import { execute as initializeLanguage } from "@/language/application/Initialize";
 import { execute as initializeCore } from "@/core/application/Initialize";
-import { execute as initializeUser } from "@/user/application/Initialize";
 import { execute as initializeShortcut } from "@/shortcut/application/Initialize";
 import { execute as initializeController } from "@/controller/application/Initialize";
 import { execute as initializeView } from "@/view/application/Initialize";
@@ -27,13 +26,14 @@ import {
 /**
  * @description 初期起動関数
  *              initial invoking function
+ *
+ * @type {Function[]}
  * @private
  */
 const initializes: Function[] = [
     initializeGlobal,
     initializeShortcut,
     initializeMenu,
-    initializeUser,
     initializeCore,
     initializeScreen,
     initializeTool,
@@ -47,6 +47,8 @@ const initializes: Function[] = [
 /**
  * @description システム起動関数
  *              system invocation function
+ *
+ * @type {Function[]}
  * @private
  */
 const boots: Function[] = [
@@ -122,7 +124,7 @@ export const boot = async (): Promise<void> =>
 
     // システム起動関数を実行
     for (let idx = 0; idx < boots.length; ++idx) {
-        const boot: Function = boots[idx];
+        const boot = boots[idx];
         if (!boot) {
             continue ;
         }
@@ -146,7 +148,7 @@ export const run = async (): Promise<void> =>
 
     // 起動したWorkSpaceの初期関数を実行
     const workSpaces = $getAllWorkSpace();
-    for (let idx: number = 0; idx < workSpaces.length; ++idx) {
+    for (let idx = 0; idx < workSpaces.length; ++idx) {
         const workSpace = workSpaces[idx];
         if (!workSpace) {
             continue ;

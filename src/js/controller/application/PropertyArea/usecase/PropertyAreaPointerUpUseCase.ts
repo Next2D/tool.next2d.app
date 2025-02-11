@@ -2,6 +2,7 @@ import { EventType } from "@/tool/domain/event/EventType";
 import { execute as propertyAreaPointerMoveService } from "../service/PropertyAreaPointerMoveService";
 import { $setCursor } from "@/global/GlobalUtil";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
+import { execute as userDatabaseAutoSaveReservationUseCase } from "@/user/application/Database/usecase/UserDatabaseAutoSaveReservationUseCase";
 
 /**
  * @description プロパティエリアの移動終了関数
@@ -37,4 +38,7 @@ export const execute = (event: PointerEvent): void =>
         "offsetLeft": element.offsetLeft,
         "offsetTop": element.offsetTop
     });
+
+    // 自動保存予約
+    userDatabaseAutoSaveReservationUseCase();
 };

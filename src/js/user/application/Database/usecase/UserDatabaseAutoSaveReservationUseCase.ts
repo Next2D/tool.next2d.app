@@ -26,9 +26,9 @@ export const execute = (): void =>
         return ;
     }
 
-    // 5秒後に保存処理を実行
+    // 1秒後に保存処理を実行
     timerId = window.setTimeout(async (): Promise<void> =>
     {
         await userDatabaseSaveIndexedDBUseCase();
-    }, 5000);
+    }, 1000);
 };
