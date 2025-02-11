@@ -1,5 +1,4 @@
 import type { ISoundObject } from "@/interface/ISoundObject";
-import type { IInstance } from "@/interface/IInstance";
 import type { Sound } from "@/core/domain/model/Sound";
 import { $SOUND_AREA_SOUND_LIST_AREA_ID } from "@/config/SoundSettingConfig";
 import { execute as soundAreaSettingComponent } from "../component/SoundAreaSettingComponent";
@@ -70,7 +69,7 @@ export const execute = (
         canvasContainer.classList.add("sound-setting-preview-container");
 
         const workSpace = $getCurrentWorkSpace();
-        const sound: IInstance<Sound> = workSpace.getLibrary(sound_object.libraryId);
+        const sound = workSpace.getLibrary(sound_object.libraryId) as Sound;
         if (sound) {
 
             // audio Elementを生成

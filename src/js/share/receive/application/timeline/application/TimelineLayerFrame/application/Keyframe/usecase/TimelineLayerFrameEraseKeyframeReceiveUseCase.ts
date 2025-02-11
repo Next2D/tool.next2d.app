@@ -1,11 +1,10 @@
 import type { IShareReceiveMessage } from "@/interface/IShareReceiveMessage";
-import type { IInstance } from "@/interface/IInstance";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
+import type { ICharacterSaveObject } from "@/interface/ICharacterSaveObject";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
 import { execute as timelineLayerAddFrameUpdateLayerStyleUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerAddFrameUpdateLayerStyleUseCase";
 import { execute as externalTimelineLayerFrameEraseKeyframeUseCase } from "@/external/timeline/application/ExternalTimelineLayerFrame/usecase/ExternalTimelineLayerFrameEraseKeyframeUseCase";
 import { execute as screenAreaRedrawUseCase } from "@/screen/application/ScreenArea/usecase/ScreenAreaRedrawUseCase";
-import type { ICharacterSaveObject } from "@/interface/ICharacterSaveObject";
 
 /**
  * @description キーフレームのフレーム全削除を実行
@@ -26,7 +25,7 @@ export const execute = async (message: IShareReceiveMessage): Promise<void> =>
     }
 
     const libraryId = message.data[1] as NonNullable<number>;
-    const movieClip: IInstance<MovieClip> = workSpace.getLibrary(libraryId);
+    const movieClip = workSpace.getLibrary(libraryId) as MovieClip;
     if (!movieClip) {
         return ;
     }

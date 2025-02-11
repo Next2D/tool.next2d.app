@@ -1,5 +1,4 @@
 import type { Shape } from "@/core/domain/model/Shape";
-import type { IInstance } from "@/interface/IInstance";
 import type { IShapeSaveObject } from "@/interface/IShapeSaveObject";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
 import { execute as externalWorkSpaceRemoveInstanceService } from "@/external/core/application/ExternalWorkSpace/service/ExternalWorkSpaceRemoveInstanceService";
@@ -25,7 +24,7 @@ export const execute = (
         return ;
     }
 
-    const shape: IInstance<Shape> | null = workSpace.getLibrary(shape_object.id);
+    const shape = workSpace.getLibrary(shape_object.id) as Shape;
     if (!shape) {
         return ;
     }

@@ -1,5 +1,4 @@
 import type { IShareReceiveMessage } from "@/interface/IShareReceiveMessage";
-import type { IInstance } from "@/interface/IInstance";
 import type { Folder } from "@/core/domain/model/Folder";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
 import { ExternalFolder } from "@/external/core/domain/model/ExternalFolder";
@@ -23,7 +22,7 @@ export const execute = (message: IShareReceiveMessage): void =>
     }
 
     const libraryId = message.data[1] as NonNullable<number>;
-    const folder: IInstance<Folder> = workSpace.getLibrary(libraryId);
+    const folder = workSpace.getLibrary(libraryId) as Folder;
     if (!folder) {
         return ;
     }

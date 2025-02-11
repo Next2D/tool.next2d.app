@@ -145,6 +145,32 @@ export class Instance
     }
 
     /**
+     * @description インスタンスのHTML要素を返却(親クラスなので、nullを返却)
+     *              Returns the HTML element of the instance (since it is a parent class, it returns null)
+     *
+     * @returns {HTMLElement | null}
+     * @method
+     * @public
+     */
+    async getHTMLElement (): Promise<HTMLElement | null>
+    {
+        return null;
+    }
+
+    /**
+     * @description インスタンスのプロパティを返却(親クラスなので、空のオブジェクトを返却)
+     *              Returns the properties of the instance (since it is a parent class, it returns an empty object)
+     *
+     * @returns {IObject<any>}
+     * @method
+     * @public
+     */
+    toObject (): IObject<any>
+    {
+        return {};
+    }
+
+    /**
      * @description ライブラリからの削除時の処理関数
      *              Processing functions for deletion from the library
      *

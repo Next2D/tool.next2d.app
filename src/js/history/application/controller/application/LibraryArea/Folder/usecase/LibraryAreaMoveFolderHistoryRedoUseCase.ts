@@ -1,5 +1,4 @@
 import type { Folder } from "@/core/domain/model/Folder";
-import type { IInstance } from "@/interface/IInstance";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
 import { execute as workSpaceCreatePathMapService } from "@/core/application/WorkSpace/service/WorkSpaceCreatePathMapService";
 import { execute as libraryAreaReloadUseCase } from "@/controller/application/LibraryArea/usecase/LibraryAreaReloadUseCase";
@@ -27,7 +26,7 @@ export const execute = (
         return ;
     }
 
-    const folder: IInstance<Folder> | null = workSpace.getLibrary(library_id);
+    const folder = workSpace.getLibrary(library_id) as Folder;
     if (!folder) {
         return ;
     }

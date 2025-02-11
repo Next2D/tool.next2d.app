@@ -1,14 +1,13 @@
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
-import { execute as externalLibraryCreateInstanceService } from "@/external/controller/application/ExternalLibrary/service/ExternalLibraryCreateInstanceService";
 import type { IExternalInstance } from "@/interface/IExternalInstance";
-import type { IInstance } from "@/interface/IInstance";
+import { execute as externalLibraryCreateInstanceService } from "@/external/controller/application/ExternalLibrary/service/ExternalLibraryCreateInstanceService";
 
 /**
  * @description 指定のライブラリアイテムを返却
  *              Returns the specified library item
  *
- * @param {WorkSpace} work_space
- * @param {string} path
+ * @param  {WorkSpace} work_space
+ * @param  {string} path
  * @return {IExternalInstance<any> | null}
  * @method
  * @public
@@ -23,7 +22,7 @@ export const execute = (
     }
 
     const libraryId = work_space.pathMap.get(path) as NonNullable<number>;
-    const instance: IInstance<any> | null = work_space.getLibrary(libraryId);
+    const instance = work_space.getLibrary(libraryId);
     if (!instance) {
         return null;
     }

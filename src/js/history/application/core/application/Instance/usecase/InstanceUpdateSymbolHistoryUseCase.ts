@@ -1,6 +1,5 @@
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
-import type { IInstance } from "@/interface/IInstance";
 import type { Instance } from "@/core/domain/model/Instance";
 import { $useSocket } from "@/share/ShareUtil";
 import { $LIBRARY_UPDATE_INSTANCE_SYMBOL_COMMAND } from "@/config/HistoryConfig";
@@ -17,17 +16,17 @@ import { execute as userDatabaseAutoSaveReservationUseCase } from "@/user/applic
  *
  * @param  {WorkSpace} work_space
  * @param  {MovieClip} movie_clip
- * @param  {Instance} instance
+ * @param  {I} instance
  * @param  {string} before_name
  * @param  {boolean} [receiver=false]
  * @return {void}
  * @method
  * @public
  */
-export const execute = (
+export const execute = <I extends Instance> (
     work_space: WorkSpace,
     movie_clip: MovieClip,
-    instance: IInstance<Instance>,
+    instance: I,
     before_name: string,
     receiver: boolean = false
 ): void => {

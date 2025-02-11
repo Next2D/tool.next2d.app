@@ -1,10 +1,9 @@
-import type { IInstance } from "@/interface/IInstance";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
-import { $getWorkSpace } from "@/core/application/CoreUtil";
-import { execute as soundAreaRebuildSettingAreaUseCase } from "@/controller/application/SoundArea/usecase/SoundAreaRebuildSettingAreaUseCase";
 import type { ISoundObject } from "@/interface/ISoundObject";
+import { $getWorkSpace } from "@/core/application/CoreUtil";
 import { $getLeftFrame } from "@/timeline/application/TimelineUtil";
 import { timelineHeader } from "@/timeline/domain/model/TimelineHeader";
+import { execute as soundAreaRebuildSettingAreaUseCase } from "@/controller/application/SoundArea/usecase/SoundAreaRebuildSettingAreaUseCase";
 import { execute as timelineHeaderUpdateSoundElementService } from "@/timeline/application/TimelineHeader/service/TimelineHeaderUpdateSoundElementService";
 
 /**
@@ -33,7 +32,7 @@ export const execute = (
         return ;
     }
 
-    const movieClip: IInstance<MovieClip> | null = workSpace.getLibrary(library_id);
+    const movieClip = workSpace.getLibrary(library_id) as MovieClip;
     if (!movieClip) {
         return ;
     }

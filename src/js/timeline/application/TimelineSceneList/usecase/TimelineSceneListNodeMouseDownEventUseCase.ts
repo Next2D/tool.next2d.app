@@ -1,9 +1,8 @@
-import type { IInstance } from "@/interface/IInstance";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
+import { $MOVIE_CLIP_TYPE } from "@/config/InstanceConfig";
 import { execute as sceneListMenuHideService } from "@/menu/application/SceneListMenu/service/SceneListMenuHideService";
 import { execute as timelineSceneListExcludeElememtService } from "../service/TimelineSceneListExcludeElememtService";
-import { $MOVIE_CLIP_TYPE } from "@/config/InstanceConfig";
 import { execute as externalTimelineEditMovieClipUseService } from "@/external/timeline/application/ExternalTimeline/service/ExternalTimelineEditMovieClipUseService";
 
 /**
@@ -36,7 +35,7 @@ export const execute = async (event: PointerEvent): Promise<void> =>
     const workSpace = $getCurrentWorkSpace();
     const libraryId = parseInt(element.dataset.libraryId as string);
 
-    const movieClip: IInstance<MovieClip> = workSpace.getLibrary(libraryId);
+    const movieClip = workSpace.getLibrary(libraryId) as MovieClip;
     if (!movieClip || movieClip.type !== $MOVIE_CLIP_TYPE) {
         return ;
     }

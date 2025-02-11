@@ -1,7 +1,7 @@
-import type { IInstance } from "./IInstance";
+import type { Instance } from "@/core/domain/model/Instance";
 
-export interface IConfirmModalFileObject {
+export interface IConfirmModalFileObject <I extends Instance> {
     file: File;
-    instance: IInstance<any>;
+    instance: I;
     path: string;
-}
+};

@@ -1,7 +1,7 @@
 import type { ILayerSaveObject } from "@/interface/ILayerSaveObject";
 import type { ILayerMode } from "@/interface/ILayerMode";
 import type { ICharacterSaveObject } from "@/interface/ICharacterSaveObject";
-import type { EmptyICharacterSaveObject } from "@/interface/EmptyICharacterSaveObject";
+import type { IEmptyCharacterSaveObject } from "@/interface/IEmptyCharacterSaveObject";
 import { Character } from "./Character";
 import { EmptyCharacter } from "./EmptyCharacter";
 import { execute as timelineLayerControllerGetHighlightColorService } from "@/timeline/application/TimelineLayerController/service/TimelineLayerControllerGetHighlightColorService";
@@ -413,7 +413,7 @@ export class Layer
      * @method
      * @public
      */
-    loadEmptyCharacter (empty_characters: EmptyICharacterSaveObject[]): void
+    loadEmptyCharacter (empty_characters: IEmptyCharacterSaveObject[]): void
     {
         if (!empty_characters || !empty_characters.length) {
             return ;

@@ -1,5 +1,4 @@
 import type { Folder } from "@/core/domain/model/Folder";
-import type { IInstance } from "@/interface/IInstance";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { ExternalFolder } from "@/external/core/domain/model/ExternalFolder";
 
@@ -28,7 +27,10 @@ export const execute = (event: PointerEvent): void =>
 
     const libraryId = parseInt(element.dataset.libraryId as string);
     const workSpace = $getCurrentWorkSpace();
-    const folder: IInstance<Folder> = workSpace.getLibrary(libraryId);
+    const folder = workSpace.getLibrary(libraryId) as Folder;
+    if (!folder) {
+        return ;
+    }
 
     const externalFolder = new ExternalFolder(workSpace, folder);
     if (folder.mode === "close") {

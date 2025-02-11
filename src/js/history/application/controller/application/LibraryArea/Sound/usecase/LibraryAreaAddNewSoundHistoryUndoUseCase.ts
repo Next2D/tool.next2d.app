@@ -1,5 +1,4 @@
 import type { Sound } from "@/core/domain/model/Sound";
-import type { IInstance } from "@/interface/IInstance";
 import type { ISoundSaveObject } from "@/interface/ISoundSaveObject";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
 import { execute as externalWorkSpaceRemoveInstanceService } from "@/external/core/application/ExternalWorkSpace/service/ExternalWorkSpaceRemoveInstanceService";
@@ -27,7 +26,7 @@ export const execute = (
         return ;
     }
 
-    const sound: IInstance<Sound> | null = workSpace.getLibrary(sound_save_object.id);
+    const sound = workSpace.getLibrary(sound_save_object.id) as Sound;
     if (!sound) {
         return ;
     }

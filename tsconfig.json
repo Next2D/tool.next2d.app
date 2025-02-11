@@ -23,6 +23,7 @@
     "paths": {
       "@/*": ["*"]
     },
+    "outDir": "./dist",
 
     "types": [
       "vitest/globals",
@@ -33,7 +34,7 @@
   "include": [
     "src/js/**/*.ts",
     "@types/**/*.ts"
-, "src/js/controller/application/HistoryArea/component"  ],
+  ],
   "exclude": [
     "node_modules",
     "src/js/**/*.test.ts",

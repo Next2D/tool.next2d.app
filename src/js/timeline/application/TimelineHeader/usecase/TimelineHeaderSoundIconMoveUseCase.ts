@@ -1,8 +1,7 @@
+import type { Sound } from "@/core/domain/model/Sound";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
-import { Sound } from "@/core/domain/model/Sound";
 import { execute as externalSoundAreaAddSoundUseCase } from "@/external/controller/application/ExternalSoundArea/usecase/ExternalSoundAreaAddSoundUseCase";
 import { execute as externalSoundAreaRemoveSoundUseCase } from "@/external/controller/application/ExternalSoundArea/usecase/ExternalSoundAreaRemoveSoundUseCase";
-import { IInstance } from "@/interface/IInstance";
 
 /**
  * @description タイムラインヘッダーサウンドアイコンの移動の実行関数
@@ -72,7 +71,7 @@ export const execute = (
 
         const soundObject = cloneSoundObjects[idx];
 
-        const sound: IInstance<Sound> = workSpace.getLibrary(soundObject.libraryId);
+        const sound = workSpace.getLibrary(soundObject.libraryId) as Sound;
         if (!sound) {
             continue;
         }

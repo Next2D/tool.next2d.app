@@ -1,6 +1,5 @@
-import type { IInstance } from "@/interface/IInstance";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
-import type { EmptyICharacterSaveObject } from "@/interface/EmptyICharacterSaveObject";
+import type { IEmptyCharacterSaveObject } from "@/interface/IEmptyCharacterSaveObject";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
 import { execute as timelineLayerAddFrameUpdateLayerStyleUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerAddFrameUpdateLayerStyleUseCase";
 import { execute as externalTimelineLayerFrameExtendBehindKeyframeService } from "@/external/timeline/application/ExternalTimelineLayerFrame/service/ExternalTimelineLayerFrameExtendBehindKeyframeService";
@@ -24,7 +23,7 @@ export const execute = async (
     work_space_id: number,
     library_id: number,
     layer_index: number,
-    empty_character_save_object: EmptyICharacterSaveObject
+    empty_character_save_object: IEmptyCharacterSaveObject
 ): Promise<void> => {
 
     const workSpace = $getWorkSpace(work_space_id);
@@ -32,7 +31,7 @@ export const execute = async (
         return ;
     }
 
-    const movieClip: IInstance<MovieClip> | null = workSpace.getLibrary(library_id);
+    const movieClip = workSpace.getLibrary(library_id) as MovieClip;
     if (!movieClip) {
         return ;
     }

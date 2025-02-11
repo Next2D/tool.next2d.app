@@ -1,6 +1,6 @@
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
-import type { IInstance } from "@/interface/IInstance";
+import type { Instance } from "@/core/domain/model/Instance";
 import { $useSocket } from "@/share/ShareUtil";
 import { $LIBRARY_REMOVE_INSTANCE_COMMAND } from "@/config/HistoryConfig";
 import { execute as historyAddElementUseCase } from "@/controller/application/HistoryArea/usecase/HistoryAddElementUseCase";
@@ -8,12 +8,12 @@ import { execute as historyGetTextService } from "@/controller/application/Histo
 import { execute as historyRemoveElementService } from "@/controller/application/HistoryArea/service/HistoryRemoveElementService";
 import { execute as libraryArearRemoveInstanceCreateHistoryObjectService } from "../service/LibraryArearRemoveInstanceCreateHistoryObjectService";
 import { execute as shareSendService } from "@/share/service/ShareSendService";
+import { execute as userDatabaseAutoSaveReservationUseCase } from "@/user/application/Database/usecase/UserDatabaseAutoSaveReservationUseCase";
 import {
     $BITMAP_TYPE,
     $SOUND_TYPE,
     $VIDEO_TYPE
 } from "@/config/InstanceConfig";
-import { execute as userDatabaseAutoSaveReservationUseCase } from "@/user/application/Database/usecase/UserDatabaseAutoSaveReservationUseCase";
 
 /**
  * @description ライブラリのアイテム削除の履歴を登録
@@ -21,16 +21,16 @@ import { execute as userDatabaseAutoSaveReservationUseCase } from "@/user/applic
  *
  * @param  {WorkSpace} work_space
  * @param  {MovieClip} movie_clip
- * @param  {Instance} instance
+ * @param  {I} instance
  * @param  {boolean} [receiver=false]
  * @return {void}
  * @method
  * @public
  */
-export const execute = (
+export const execute = <I extends Instance> (
     work_space: WorkSpace,
     movie_clip: MovieClip,
-    instance: IInstance<any>,
+    instance: I,
     receiver: boolean = false
 ): void => {
 

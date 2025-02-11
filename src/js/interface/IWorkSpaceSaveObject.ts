@@ -1,4 +1,4 @@
-import type{ IInstanceSaveObject } from "./IInstanceSaveObject";
+import type { IInstanceSaveObject } from "./IInstanceSaveObject";
 import type { IStageObject } from "./IStageObject";
 import type { IUserTimelineAreaStateObject } from "./IUserTimelineAreaStateObject";
 import type { IUserToolAreaStateObject } from "./IUserToolAreaStateObject";

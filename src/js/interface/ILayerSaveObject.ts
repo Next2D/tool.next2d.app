@@ -1,6 +1,6 @@
 import type { ILayerMode } from "./ILayerMode";
 import type { ICharacterSaveObject } from "./ICharacterSaveObject";
-import type { EmptyICharacterSaveObject } from "./EmptyICharacterSaveObject";
+import type { IEmptyCharacterSaveObject } from "./IEmptyCharacterSaveObject";
 
 export interface ILayerSaveObject {
     id: number;
@@ -11,7 +11,7 @@ export interface ILayerSaveObject {
     light: boolean;
     mode: ILayerMode;
     characters: ICharacterSaveObject[];
-    emptyCharacters: EmptyICharacterSaveObject[];
+    emptyCharacters: IEmptyCharacterSaveObject[];
     parentId?: null | number;
     maskId?: null | number;
     guideId?: null | number;

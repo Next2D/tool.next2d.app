@@ -1,10 +1,10 @@
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
-import type { IInstance } from "@/interface/IInstance";
+import type { Instance } from "@/core/domain/model/Instance";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
+import { $SOUND_TYPE } from "@/config/InstanceConfig";
 import { execute as instanceUpdateNameHistoryUseCase } from "@/history/application/core/application/Instance/usecase/InstanceUpdateNameHistoryUseCase";
 import { execute as libraryAreaReOrderingService } from "@/controller/application/LibraryArea/service/LibraryAreaReOrderingService";
 import { execute as instanceUpdateNameUseCase } from "@/core/application/Instance/usecase/InstanceUpdateNameUseCase";
-import { $SOUND_TYPE } from "@/config/InstanceConfig";
 import { execute as soundAreaRebuildSettingAreaUseCase } from "@/controller/application/SoundArea/usecase/SoundAreaRebuildSettingAreaUseCase";
 import { execute as soundAreaRebuildSelectElementService } from "@/controller/application/SoundArea/service/SoundAreaRebuildSelectElementService";
 
@@ -14,17 +14,17 @@ import { execute as soundAreaRebuildSelectElementService } from "@/controller/ap
  *
  * @param  {WorkSpace} work_space
  * @param  {MovieClip} movie_clip
- * @param  {Instance} instance
+ * @param  {I} instance
  * @param  {string} name
  * @param  {boolean} [receiver = false]
  * @return {void}
  * @method
  * @public
  */
-export const execute = (
+export const execute = <I extends Instance> (
     work_space: WorkSpace,
     movie_clip: MovieClip,
-    instance: IInstance<any>,
+    instance: I,
     name: string,
     receiver: boolean = false
 ): void => {

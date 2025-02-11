@@ -1,5 +1,4 @@
 import type { MovieClip } from "@/core/domain/model/MovieClip";
-import type { IInstance } from "@/interface/IInstance";
 import type { IShareReceiveMessage } from "@/interface/IShareReceiveMessage";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
 import { execute as externalMovieClipUpdateScriptUseCase } from "@/external/core/application/ExternalMovieClip/usecase/ExternalMovieClipUpdateScriptUseCase";
@@ -23,7 +22,7 @@ export const execute = (message: IShareReceiveMessage): void =>
     }
 
     const libraryId = message.data[1] as NonNullable<number>;
-    const movieClip: IInstance<MovieClip> = workSpace.getLibrary(libraryId);
+    const movieClip = workSpace.getLibrary(libraryId) as MovieClip;
     if (!movieClip) {
         return ;
     }

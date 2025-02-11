@@ -1,6 +1,5 @@
 import { $getWorkSpace } from "@/core/application/CoreUtil";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
-import type { IInstance } from "@/interface/IInstance";
 import { execute as externalLayerUpdateReloadUseCase } from "@/external/core/application/ExternalLayer/usecase/ExternalLayerUpdateReloadUseCase";
 import { ExternalTimeline } from "@/external/timeline/domain/model/ExternalTimeline";
 import { execute as screenAreaRedrawUseCase } from "@/screen/application/ScreenArea/usecase/ScreenAreaRedrawUseCase";
@@ -30,7 +29,7 @@ export const execute = async (
         return ;
     }
 
-    const movieClip: IInstance<MovieClip> | null = workSpace.getLibrary(library_id);
+    const movieClip = workSpace.getLibrary(library_id) as MovieClip;
     if (!movieClip) {
         return ;
     }

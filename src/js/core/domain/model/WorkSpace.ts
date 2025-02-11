@@ -1,4 +1,4 @@
-import type { IInstance } from "@/interface/IInstance";
+import type { Instance } from "./Instance";
 import type { IUserToolAreaStateObject } from "@/interface/IUserToolAreaStateObject";
 import type { IUserTimelineAreaStateObject } from "@/interface/IUserTimelineAreaStateObject";
 import type { IUserControllerAreaStateObject } from "@/interface/IUserControllerAreaStateObject";
@@ -21,12 +21,12 @@ import { $VERSION } from "@/config/Config";
 import { $CONTROLLER_DEFAULT_WIDTH_SIZE } from "@/config/ControllerConfig";
 import { $clamp } from "@/global/GlobalUtil";
 import { $HISTORY_LIMIT } from "@/config/HistoryConfig";
+import { $MOVIE_CLIP_TYPE } from "@/config/InstanceConfig";
 import {
     $TIMELINE_DEFAULT_HEIGHT_SIZE,
     $TIMELINE_DEFAULT_FRAME_WIDTH_SIZE,
     $TIMELINE_DEFAULT_FRAME_HEIGHT_SIZE
 } from "@/config/TimelineConfig";
-import { $MOVIE_CLIP_TYPE } from "@/config/InstanceConfig";
 
 /**
  * @description プロジェクトのユニークID
@@ -43,7 +43,7 @@ let $workSpaceId: number = 1;
  * @class
  * @public
  */
-export class WorkSpace
+export class WorkSpace<I extends Instance = Instance>
 {
     private _$id: number;
     private _$name: string;
@@ -53,7 +53,7 @@ export class WorkSpace
     private _$scale: number;
     private readonly _$root: MovieClip;
     private readonly _$stage: Stage;
-    private readonly _$libraries: Map<number, IInstance<any>>;
+    private readonly _$libraries: Map<number, I>;
     private readonly _$pathMap: Map<string, number>;
     private readonly _$symbolMap: Map<string, number>;
     private readonly _$screenTab: ScreenTab;
@@ -309,7 +309,7 @@ export class WorkSpace
     }
     set historyIndex (index: number)
     {
-        this._$historyIndex = index;
+        this._$historyIndex = index | 0;
     }
 
     /**
@@ -336,7 +336,7 @@ export class WorkSpace
      * @readonly
      * @public
      */
-    get libraries ():  Map<number, IInstance<any>>
+    get libraries ():  Map<number, I>
     {
         return this._$libraries;
     }
@@ -490,7 +490,7 @@ export class WorkSpace
             return 0;
         });
 
-        const lastLibraryId: number = this._$libraries.get(keys.pop() || 0).id;
+        const lastLibraryId: number = (this._$libraries.get(keys.pop() || 0) as I).id;
         return lastLibraryId + 1;
     }
 
@@ -552,7 +552,7 @@ export class WorkSpace
         }
 
         if (object.historyIndex) {
-            this._$historyIndex = object.historyIndex;
+            this._$historyIndex = object.historyIndex | 0;
         }
 
         if (object.histories) {
@@ -565,14 +565,14 @@ export class WorkSpace
      *              Obtain items registered in the library with a specified ID
      *
      * @param  {number} library_id
-     * @return {void}
+     * @return {I | null}
      * @method
      * @public
      */
-    getLibrary (library_id: number): IInstance<any> | null
+    getLibrary (library_id: number): I | null
     {
         return this._$libraries.has(library_id)
-            ? this._$libraries.get(library_id) as NonNullable<IInstance<any>>
+            ? this._$libraries.get(library_id) as I
             : null;
     }
 

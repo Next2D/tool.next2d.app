@@ -1,4 +1,4 @@
-import { IInstanceType } from "./IInstanceType";
+import type { IInstanceType } from "./IInstanceType";
 
 export interface IInstanceObject
 {

@@ -1,8 +1,7 @@
+import type { Bitmap } from "@/core/domain/model/Bitmap";
 import { libraryArea } from "@/controller/domain/model/LibraryArea";
 import { $allHideMenu } from "../../MenuUtil";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
-import type { IInstance } from "@/interface/IInstance";
-import type { Bitmap } from "@/core/domain/model/Bitmap";
 import { $poolCanvas } from "@/global/GlobalUtil";
 
 /**
@@ -32,7 +31,7 @@ export const execute = async (event: PointerEvent): Promise<void> =>
     const libraryId = libraryArea.selectedIds[0];
     const workSpace = $getCurrentWorkSpace();
 
-    const instance: IInstance<Bitmap> | null = workSpace.getLibrary(libraryId);
+    const instance = workSpace.getLibrary(libraryId) as Bitmap;
     if (!instance) {
         return ;
     }

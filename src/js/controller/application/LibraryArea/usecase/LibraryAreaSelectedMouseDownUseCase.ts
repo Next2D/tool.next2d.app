@@ -1,6 +1,7 @@
+import type { Instance } from "@/core/domain/model/Instance";
+import type { MovieClip } from "@/core/domain/model/MovieClip";
 import { $allHideMenu } from "@/menu/application/MenuUtil";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
-import { IInstance } from "@/interface/IInstance";
 import { ExternalLibrary } from "@/external/controller/domain/model/ExternalLibrary";
 import { $useKeyboard } from "@/shortcut/ShortcutUtil";
 import { libraryArea } from "@/controller/domain/model/LibraryArea";
@@ -8,8 +9,11 @@ import { execute as libraryPreviewAreaUpdateDisplayUseCase } from "@/controller/
 import { execute as libraryPreviewAreaClearDisplayService } from "@/controller/application/LibraryPreviewArea/service/LibraryPreviewAreaClearDisplayService";
 import { execute as libraryAreaAltSelectedUseCase } from "@/controller/application/LibraryArea/usecase/LibraryAreaAltSelectedUseCase";
 import { execute as libraryAreaShiftSelectedUseCase } from "@/controller/application/LibraryArea/usecase/LibraryAreaShiftSelectedUseCase";
-import { $FOLDER_TYPE, $MOVIE_CLIP_TYPE } from "@/config/InstanceConfig";
 import { execute as libraryAreaRegisterPointerEventUseCase } from "./LibraryAreaRegisterPointerEventUseCase";
+import {
+    $FOLDER_TYPE,
+    $MOVIE_CLIP_TYPE
+} from "@/config/InstanceConfig";
 
 /**
  * @description 親Elementのマウスダウン処理関数、Elementを選択状態に更新
@@ -44,7 +48,7 @@ export const execute = async (event: PointerEvent): Promise<void> =>
 
     const workSpace = $getCurrentWorkSpace();
     const libraryId = parseInt(element.dataset.libraryId as string);
-    const instance: IInstance<any> | null = workSpace.getLibrary(libraryId);
+    const instance = workSpace.getLibrary(libraryId);
     if (!instance) {
         return ;
     }
@@ -58,7 +62,7 @@ export const execute = async (event: PointerEvent): Promise<void> =>
 
     // スクリーンへの移動イベントを登録
     if (instance.type === $MOVIE_CLIP_TYPE) {
-        if (!instance.active) {
+        if (!(instance as unknown as MovieClip).active) {
             libraryAreaRegisterPointerEventUseCase(event);
         }
     } else {

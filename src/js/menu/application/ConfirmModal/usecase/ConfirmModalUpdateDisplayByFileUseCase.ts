@@ -1,4 +1,4 @@
-import type { IInstance } from "@/interface/IInstance";
+import type { Instance } from "@/core/domain/model/Instance";
 import { execute as confirmModalFileToElementUseCase } from "./ConfirmModalFileToElementUseCase";
 import { $poolCanvas } from "@/global/GlobalUtil";
 import {
@@ -17,9 +17,9 @@ import {
  * @method
  * @public
  */
-export const execute = (
+export const execute = <I extends Instance> (
     file: File,
-    instance: IInstance<any>
+    instance: I
 ): void => {
 
     const nameElement: HTMLInputElement | null = document

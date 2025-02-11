@@ -4,9 +4,9 @@ import type { ISoundSaveObject } from "@/interface/ISoundSaveObject";
 import type { IVideoSaveObject } from "@/interface/IVideoSaveObject";
 import type { IMovieClipSaveObject } from "@/interface/IMovieClipSaveObject";
 import type { IFolderSaveObject } from "@/interface/IFolderSaveObject";
-import type { IInstance } from "@/interface/IInstance";
 import type { IShapeSaveObject } from "@/interface/IShapeSaveObject";
 import type { ITextSaveObject } from "@/interface/ITextSaveObject";
+import type { Instance } from "@/core/domain/model/Instance";
 import { Bitmap } from "@/core/domain/model/Bitmap";
 import { Folder } from "@/core/domain/model/Folder";
 import { MovieClip } from "@/core/domain/model/MovieClip";
@@ -28,42 +28,44 @@ import {
  * @description セーブオブジェクトから各種インスタンスオブジェクトを作成
  *              Create various instance objects from saved objects
  *
+ * @param  {IInstanceSaveObject} save_object
  * @return {Instance}
  * @method
  * @public
  */
-export const execute = async (save_object: IInstanceSaveObject): Promise<IInstance<any>> => {
+export const execute = async <I extends Instance> (save_object: IInstanceSaveObject): Promise<I> =>
+{
 
     switch (save_object.type) {
 
         case $MOVIE_CLIP_TYPE:
-            return new MovieClip(save_object as IMovieClipSaveObject);
+            return new MovieClip(save_object as IMovieClipSaveObject) as unknown as I;
 
         case $FOLDER_TYPE:
-            return new Folder(save_object as IFolderSaveObject);
+            return new Folder(save_object as IFolderSaveObject) as unknown as I;
 
         case $BITMAP_TYPE:
-            return new Bitmap(save_object as IBitmapSaveObject);
+            return new Bitmap(save_object as IBitmapSaveObject) as unknown as I;
 
         case $VIDEO_TYPE:
         {
             const video = new Video(save_object as IVideoSaveObject);
             await video.wait();
-            return video;
+            return video as unknown as I;
         }
 
         case $SOUND_TYPE:
         {
             const sound = new Sound(save_object as ISoundSaveObject);
             await sound.wait();
-            return sound;
+            return sound as unknown as I;
         }
 
         case $SHAPE_TYPE:
-            return new Shape(save_object as IShapeSaveObject);
+            return new Shape(save_object as IShapeSaveObject) as unknown as I;
 
         case $TEXT_TYPE:
-            return new Text(save_object as ITextSaveObject);
+            return new Text(save_object as ITextSaveObject) as unknown as I;
 
         default:
             throw new Error("This is an undefined class.");

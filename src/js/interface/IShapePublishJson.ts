@@ -1,5 +1,5 @@
-import { IBounds } from "./IBounds";
-import { IGrid } from "./IGrid";
+import type { IBounds } from "./IBounds";
+import type { IGrid } from "./IGrid";
 
 export interface IShapePublishJson
 {

@@ -1,4 +1,4 @@
-import { IStageObject } from "./IStageObject";
+import type { IStageObject } from "./IStageObject";
 
 export interface IWorkSpaceObject
 {

@@ -1,6 +1,5 @@
 import type { IShareReceiveMessage } from "@/interface/IShareReceiveMessage";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
-import type { IInstance } from "@/interface/IInstance";
 import type { ISoundSaveObject } from "@/interface/ISoundSaveObject";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
 import { Sound } from "@/core/domain/model/Sound";
@@ -39,7 +38,7 @@ export const execute = async (message: IShareReceiveMessage): Promise<void> =>
     }
 
     const libraryId = message.data[1] as NonNullable<number>;
-    const movieClip: IInstance<MovieClip> = workSpace.getLibrary(libraryId);
+    const movieClip = workSpace.getLibrary(libraryId) as MovieClip;
     if (!movieClip) {
         return ;
     }
@@ -48,7 +47,11 @@ export const execute = async (message: IShareReceiveMessage): Promise<void> =>
     const soundObject = message.data[3] as NonNullable<ISoundSaveObject>;
 
     // 変更前のSoundからセーブオブジェクトを作成
-    const sound: IInstance<Sound> = workSpace.getLibrary(soundObject.id);
+    const sound = workSpace.getLibrary(soundObject.id) as Sound;
+    if (!sound) {
+        return ;
+    }
+
     const beforeSoundObject = sound.toObject();
 
     // バイナリをUint8Arrayに変換

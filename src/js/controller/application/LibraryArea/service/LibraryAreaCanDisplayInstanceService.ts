@@ -1,33 +1,34 @@
+import type { Folder } from "@/core/domain/model/Folder";
+import type { Instance } from "@/core/domain/model/Instance";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
-import type { IInstance } from "@/interface/IInstance";
 
 /**
  * @description 指定のインスタンスがライブラリに表示されるかの判定
  *              Determines whether a given instance appears in the library
  *
- * @param  {Instance} instance
+ * @param  {I} instance
  * @return {boolean}
  * @method
  * @public
  */
-export const execute = (instance: IInstance<any>): boolean =>
+export const execute = <I extends Instance> (instance: I): boolean =>
 {
     const workSpace = $getCurrentWorkSpace();
 
     let folderId = instance.folderId;
     while (folderId) {
 
-        const parentInstance = workSpace.getLibrary(folderId);
-        if (!parentInstance) {
+        const folder = workSpace.getLibrary(folderId) as Folder;
+        if (!folder) {
             break;
         }
 
         // フォルダの開閉状態をチェック
-        if (parentInstance.mode === "close") {
+        if (folder.mode === "close") {
             return false;
         }
 
-        folderId = parentInstance.folderId;
+        folderId = folder.folderId;
     }
 
     return true;

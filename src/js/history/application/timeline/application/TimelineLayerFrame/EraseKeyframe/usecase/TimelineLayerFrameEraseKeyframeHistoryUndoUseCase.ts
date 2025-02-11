@@ -1,10 +1,9 @@
-import type { IInstance } from "@/interface/IInstance";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
-import { $getWorkSpace } from "@/core/application/CoreUtil";
 import type { ICharacterSaveObject } from "@/interface/ICharacterSaveObject";
+import { $getWorkSpace } from "@/core/application/CoreUtil";
+import { Character } from "@/core/domain/model/Character";
 import { execute as timelineLayerAddFrameUpdateLayerStyleUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerAddFrameUpdateLayerStyleUseCase";
 import { execute as externalTimelineLayerFrameBehindKeyframeService } from "@/external/timeline/application/ExternalTimelineLayerFrame/service/ExternalTimelineLayerFrameBehindKeyframeService";
-import { Character } from "@/core/domain/model/Character";
 import { execute as screenAreaRedrawUseCase } from "@/screen/application/ScreenArea/usecase/ScreenAreaRedrawUseCase";
 
 /**
@@ -31,7 +30,7 @@ export const execute = async (
         return ;
     }
 
-    const movieClip: IInstance<MovieClip> | null = workSpace.getLibrary(library_id);
+    const movieClip = workSpace.getLibrary(library_id) as MovieClip;
     if (!movieClip) {
         return ;
     }

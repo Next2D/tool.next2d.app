@@ -1,5 +1,4 @@
 import type { LibraryMenu } from "@/menu/domain/model/LibraryMenu";
-import type { IInstance } from "@/interface/IInstance";
 import { $LIBRARY_MENU_NAME } from "@/config/MenuConfig";
 import { libraryArea } from "@/controller/domain/model/LibraryArea";
 import { execute as libraryMenuCopyInactiveService } from "@/menu/application/LibraryMenu/service/LibraryMenuCopyInactiveService";
@@ -85,7 +84,7 @@ export const execute = (event: MouseEvent): void =>
             // 書き出しボタンをアクティブに更新
             libraryMenuExportActiveService();
 
-            const instance: IInstance<any> = $getCurrentWorkSpace()
+            const instance = $getCurrentWorkSpace()
                 .getLibrary(libraryArea.selectedIds[0]);
 
             if (instance) {

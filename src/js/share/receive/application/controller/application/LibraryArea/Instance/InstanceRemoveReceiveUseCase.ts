@@ -1,5 +1,4 @@
 import type { IShareReceiveMessage } from "@/interface/IShareReceiveMessage";
-import type { IInstance } from "@/interface/IInstance";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
 import { IAllSaveObject } from "@/interface/IAllSaveObject";
@@ -24,14 +23,17 @@ export const execute = (message: IShareReceiveMessage): void =>
     }
 
     const libraryId = message.data[1] as NonNullable<number>;
-    const movieClip: IInstance<MovieClip> = workSpace.getLibrary(libraryId);
+    const movieClip = workSpace.getLibrary(libraryId) as MovieClip;
     if (!movieClip) {
         return ;
     }
 
     // 受け取ったSaveObjectのIDからインスタンスを取得する
     const saveObject = message.data[2] as NonNullable<IAllSaveObject>;
-    const instance: IInstance<any> = workSpace.getLibrary(saveObject.id);
+    const instance = workSpace.getLibrary(saveObject.id);
+    if (!instance) {
+        return ;
+    }
 
     // 削除を実行する
     externalItemRemoveUseCase(workSpace, instance, true, true);

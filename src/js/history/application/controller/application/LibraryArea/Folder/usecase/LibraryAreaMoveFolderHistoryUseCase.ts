@@ -1,6 +1,6 @@
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
-import type { IInstance } from "@/interface/IInstance";
+import type { Instance } from "@/core/domain/model/Instance";
 import { $useSocket } from "@/share/ShareUtil";
 import { $LIBRARY_MOVE_FOLDER_COMMAND } from "@/config/HistoryConfig";
 import { execute as historyAddElementUseCase } from "@/controller/application/HistoryArea/usecase/HistoryAddElementUseCase";
@@ -16,17 +16,17 @@ import { execute as userDatabaseAutoSaveReservationUseCase } from "@/user/applic
  *
  * @param  {WorkSpace} work_space
  * @param  {MovieClip} movie_clip
- * @param  {Instance} instance
+ * @param  {I} instance
  * @param  {number} folder_id
  * @param  {boolean} [receiver=false]
  * @return {void}
  * @method
  * @public
  */
-export const execute = (
+export const execute = <I extends Instance> (
     work_space: WorkSpace,
     movie_clip: MovieClip,
-    instance: IInstance<any>,
+    instance: I,
     folder_id: number,
     receiver: boolean = false
 ): void => {
@@ -37,7 +37,8 @@ export const execute = (
 
     // fixed logic
     const historyObject = libraryAreaMoveFolderCreateHistoryObjectService(
-        work_space.id, movie_clip.id, instance.id, instance.folderId, folder_id, instance.name
+        work_space.id, movie_clip.id, instance.id,
+        instance.folderId, folder_id, instance.name
     );
 
     // 作業履歴にElementを追加

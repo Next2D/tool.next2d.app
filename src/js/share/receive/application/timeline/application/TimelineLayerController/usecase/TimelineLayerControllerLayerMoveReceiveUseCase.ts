@@ -1,5 +1,4 @@
 import type { IShareReceiveMessage } from "@/interface/IShareReceiveMessage";
-import type { IInstance } from "@/interface/IInstance";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { ILayerMode } from "@/interface/ILayerMode";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
@@ -29,7 +28,7 @@ export const execute = async (message: IShareReceiveMessage): Promise<void> =>
     }
 
     const libraryId = message.data[1] as NonNullable<number>;
-    const movieClip: IInstance<MovieClip> = workSpace.getLibrary(libraryId);
+    const movieClip = workSpace.getLibrary(libraryId) as MovieClip;
     if (!movieClip) {
         return ;
     }

@@ -1,6 +1,5 @@
 import type { IShareReceiveMessage } from "@/interface/IShareReceiveMessage";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
-import type { IInstance } from "@/interface/IInstance";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
 import { Folder } from "@/core/domain/model/Folder";
 import { execute as libraryAreaMoveFolderHistoryUseCase } from "@/history/application/controller/application/LibraryArea/Folder/usecase/LibraryAreaMoveFolderHistoryUseCase";
@@ -27,14 +26,14 @@ export const execute = (message: IShareReceiveMessage): void =>
     }
 
     const libraryId = message.data[1] as NonNullable<number>;
-    const movieClip: IInstance<MovieClip> = workSpace.getLibrary(libraryId);
+    const movieClip = workSpace.getLibrary(libraryId) as MovieClip;
     if (!movieClip) {
         return ;
     }
 
-    const folder: IInstance<Folder> = workSpace.getLibrary(
+    const folder = workSpace.getLibrary(
         message.data[2] as NonNullable<number>
-    );
+    ) as Folder;
 
     if (!folder) {
         return ;

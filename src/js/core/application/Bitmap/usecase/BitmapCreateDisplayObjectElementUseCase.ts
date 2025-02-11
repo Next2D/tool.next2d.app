@@ -1,13 +1,8 @@
 import type { Bitmap } from "@/core/domain/model/Bitmap";
 import type { Character } from "@/core/domain/model/Character";
-import type { IInstance } from "@/interface/IInstance";
 import type { Layer } from "@/core/domain/model/Layer";
 import { execute as bitmapRegisterEventUseCase } from "./BitmapRegisterEventUseCase";
 import { execute as bitmapDisplayObjectComponent } from "../component/BitmapDisplayObjectComponent";
-import {
-    $getCacheCanvas,
-    $setCacheCanvas
-} from "@/cache/CacheUtil";
 import { execute as instanceUpdateBlendModeService } from "@/core/application/Instance/service/InstanceUpdateBlendModeService";
 import { execute as screenAreaHierarchyAdjustmentService } from "@/screen/application/ScreenArea/service/ScreenAreaHierarchyAdjustmentService";
 import { $getDeactivated, $getReDrawState } from "@/screen/application/ScreenArea/ScreenAreaUtil";
@@ -15,6 +10,10 @@ import { execute as screenAreaReadOnlyElementService } from "@/screen/applicatio
 import { execute as screenDisplayObjectUpdateMaskInCanvasStyleService } from "@/screen/application/DisplayObject/service/ScreenDisplayObjectUpdateMaskInCanvasStyleService";
 import { $MASK_IN_MODE } from "@/config/LayerModeConfig";
 import { $getMaskMatrix } from "@/controller/application/TransformSetting/TransformSettingUtil";
+import {
+    $getCacheCanvas,
+    $setCacheCanvas
+} from "@/cache/CacheUtil";
 
 /**
  * @description Bitmapをcanvasに描画して返却する
@@ -31,7 +30,7 @@ import { $getMaskMatrix } from "@/controller/application/TransformSetting/Transf
  */
 export const execute = async (
     work_space_id: number,
-    instance: IInstance<Bitmap>,
+    instance: Bitmap,
     element: HTMLElement,
     layer: Layer,
     character: Character

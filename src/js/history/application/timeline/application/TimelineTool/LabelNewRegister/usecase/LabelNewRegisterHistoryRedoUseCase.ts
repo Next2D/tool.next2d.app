@@ -1,4 +1,3 @@
-import type { IInstance } from "@/interface/IInstance";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
 import { execute as timelineHeaderUpdateLabelElementService } from "@/timeline/application/TimelineHeader/service/TimelineHeaderUpdateLabelElementService";
@@ -33,7 +32,7 @@ export const execute = (
         return ;
     }
 
-    const movieClip: IInstance<MovieClip> | null = workSpace.getLibrary(library_id);
+    const movieClip = workSpace.getLibrary(library_id) as MovieClip;
     if (!movieClip) {
         return ;
     }

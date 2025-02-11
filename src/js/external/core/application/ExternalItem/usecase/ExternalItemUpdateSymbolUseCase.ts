@@ -1,6 +1,6 @@
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
-import type { IInstance } from "@/interface/IInstance";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
+import type { Instance } from "@/core/domain/model/Instance";
 import { execute as instanceUpdateSymbolHistoryUseCase } from "@/history/application/core/application/Instance/usecase/InstanceUpdateSymbolHistoryUseCase";
 import { execute as libraryAreaUpdateSymbolElementService } from "@/controller/application/LibraryArea/service/LibraryAreaUpdateSymbolElementService";
 import { execute as objectSettingUpdateSymbolService } from "@/controller/application/ObjectSetting/service/ObjectSettingUpdateSymbolService";
@@ -12,17 +12,17 @@ import { $MOVIE_CLIP_TYPE } from "@/config/InstanceConfig";
  *
  * @param  {WorkSpace} work_space
  * @param  {MovieClip} movie_clip
- * @param  {Instance} instance
+ * @param  {I} instance
  * @param  {string} symbol
  * @param  {boolean} [receiver = false]
  * @return {void}
  * @method
  * @public
  */
-export const execute = (
+export const execute = <I extends Instance> (
     work_space: WorkSpace,
     movie_clip: MovieClip,
-    instance: IInstance<any>,
+    instance: I,
     symbol: string,
     receiver: boolean = false
 ): void => {
@@ -47,7 +47,9 @@ export const execute = (
         // ライブラリの表示を再描画
         libraryAreaUpdateSymbolElementService(instance);
 
-        if (instance.type === $MOVIE_CLIP_TYPE && instance.active) {
+        if (instance.type === $MOVIE_CLIP_TYPE
+            && (instance as unknown as MovieClip).active
+        ) {
             objectSettingUpdateSymbolService(symbol);
         }
     }

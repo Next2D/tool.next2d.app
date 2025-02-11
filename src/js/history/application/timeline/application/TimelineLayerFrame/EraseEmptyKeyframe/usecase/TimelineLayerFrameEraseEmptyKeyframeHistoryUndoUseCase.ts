@@ -1,11 +1,10 @@
-import type { IInstance } from "@/interface/IInstance";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
-import type { EmptyICharacterSaveObject } from "@/interface/EmptyICharacterSaveObject";
-import { $getWorkSpace } from "@/core/application/CoreUtil";
+import type { IEmptyCharacterSaveObject } from "@/interface/IEmptyCharacterSaveObject";
 import { execute as timelineLayerAddFrameUpdateLayerStyleUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerAddFrameUpdateLayerStyleUseCase";
 import { execute as externalTimelineLayerFrameBehindKeyframeService } from "@/external/timeline/application/ExternalTimelineLayerFrame/service/ExternalTimelineLayerFrameBehindKeyframeService";
-import { EmptyCharacter } from "@/core/domain/model/EmptyCharacter";
 import { execute as screenAreaRedrawUseCase } from "@/screen/application/ScreenArea/usecase/ScreenAreaRedrawUseCase";
+import { EmptyCharacter } from "@/core/domain/model/EmptyCharacter";
+import { $getWorkSpace } from "@/core/application/CoreUtil";
 
 /**
  * @description 空のキーフレームのフレーム全削除処理を元に戻す
@@ -23,7 +22,7 @@ export const execute = async (
     work_space_id: number,
     library_id: number,
     layer_index: number,
-    empty_character_save_object: EmptyICharacterSaveObject
+    empty_character_save_object: IEmptyCharacterSaveObject
 ): Promise<void> => {
 
     const workSpace = $getWorkSpace(work_space_id);
@@ -31,7 +30,7 @@ export const execute = async (
         return ;
     }
 
-    const movieClip: IInstance<MovieClip> | null = workSpace.getLibrary(library_id);
+    const movieClip = workSpace.getLibrary(library_id) as MovieClip;
     if (!movieClip) {
         return ;
     }

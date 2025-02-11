@@ -1,6 +1,3 @@
-import type { WorkSpace } from "@/core/domain/model/WorkSpace";
-import type { IInstance } from "@/interface/IInstance";
-import type { Instance } from "@/core/domain/model/Instance";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
 import { execute as libraryAreaUpdateSymbolElementService } from "@/controller/application/LibraryArea/service/LibraryAreaUpdateSymbolElementService";
 
@@ -21,12 +18,12 @@ export const execute = (
     before_name: string
 ): void => {
 
-    const workSpace: WorkSpace | null = $getWorkSpace(work_space_id);
+    const workSpace = $getWorkSpace(work_space_id);
     if (!workSpace) {
         return ;
     }
 
-    const instance: IInstance<Instance> | null = workSpace.getLibrary(instance_id);
+    const instance = workSpace.getLibrary(instance_id);
     if (!instance) {
         return ;
     }

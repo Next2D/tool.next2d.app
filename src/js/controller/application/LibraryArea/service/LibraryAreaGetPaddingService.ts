@@ -1,5 +1,6 @@
+import type { Folder } from "@/core/domain/model/Folder";
+import type { Instance } from "@/core/domain/model/Instance";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
-import type { IInstance } from "@/interface/IInstance";
 
 /**
  * @description 指定インスタンスがフォルダ内にあるかチェックしてネスト分のpadding値を返却
@@ -10,7 +11,7 @@ import type { IInstance } from "@/interface/IInstance";
  * @method
  * @public
  */
-export const execute = (instance: IInstance<any>): number =>
+export const execute = <I extends Instance> (instance: I): number =>
 {
     const workSpace = $getCurrentWorkSpace();
 
@@ -18,12 +19,12 @@ export const execute = (instance: IInstance<any>): number =>
     let folderId = instance.folderId;
     while (folderId) {
 
-        const parentInstance = workSpace.getLibrary(folderId);
-        if (!parentInstance) {
+        const folder = workSpace.getLibrary(folderId) as Folder;
+        if (!folder) {
             break;
         }
 
-        folderId = parentInstance.folderId;
+        folderId = folder.folderId;
 
         padding += 20;
     }

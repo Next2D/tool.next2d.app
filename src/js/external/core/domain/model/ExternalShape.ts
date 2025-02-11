@@ -1,5 +1,5 @@
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
-import type { IInstance } from "@/interface/IInstance";
+import type { Shape } from "@/core/domain/model/Shape";
 import { Graphics } from "@next2d/display";
 import { ExternalItem } from "./ExternalItem";
 import { execute as externalShapeApplyGraphicsUseCase } from "@/external/core/application/ExternalShape/usecase/ExternalShapeApplyGraphicsUseCase";
@@ -21,7 +21,7 @@ export class ExternalShape extends ExternalItem
      * @constructor
      * @public
      */
-    constructor (work_space: WorkSpace, instance: IInstance<any>)
+    constructor (work_space: WorkSpace, instance: Shape)
     {
         super(work_space, instance);
 
@@ -65,7 +65,7 @@ export class ExternalShape extends ExternalItem
         };
 
         await externalShapeApplyGraphicsUseCase(
-            this._$workSpace, this._$workSpace.scene, this._$instance,
+            this._$workSpace, this._$workSpace.scene, this._$instance as Shape,
             this.graphics.buffer, bounds
         );
     }

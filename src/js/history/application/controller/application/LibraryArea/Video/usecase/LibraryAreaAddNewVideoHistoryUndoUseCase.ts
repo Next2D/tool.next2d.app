@@ -1,5 +1,4 @@
 import type { Video } from "@/core/domain/model/Video";
-import type { IInstance } from "@/interface/IInstance";
 import type { IVideoSaveObject } from "@/interface/IVideoSaveObject";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
 import { execute as externalWorkSpaceRemoveInstanceService } from "@/external/core/application/ExternalWorkSpace/service/ExternalWorkSpaceRemoveInstanceService";
@@ -26,7 +25,7 @@ export const execute = (
         return ;
     }
 
-    const video: IInstance<Video> | null = workSpace.getLibrary(video_save_object.id);
+    const video = workSpace.getLibrary(video_save_object.id) as Video;
     if (!video) {
         return ;
     }

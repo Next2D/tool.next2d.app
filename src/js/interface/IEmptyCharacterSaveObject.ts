@@ -1,4 +1,4 @@
-export interface EmptyICharacterSaveObject {
+export interface IEmptyCharacterSaveObject {
     startFrame: number;
     endFrame: number;
 }

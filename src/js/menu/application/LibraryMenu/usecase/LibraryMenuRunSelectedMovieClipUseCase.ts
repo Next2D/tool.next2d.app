@@ -1,4 +1,3 @@
-import type { IInstance } from "@/interface/IInstance";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import { libraryArea } from "@/controller/domain/model/LibraryArea";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
@@ -24,7 +23,7 @@ export const execute = async (): Promise<void> =>
     const libraryId = libraryArea.selectedIds[0];
     const workSpcae = $getCurrentWorkSpace();
 
-    const movieClip: IInstance<MovieClip> = workSpcae.getLibrary(libraryId);
+    const movieClip = workSpcae.getLibrary(libraryId) as MovieClip;
     if (!movieClip || movieClip.type !== $MOVIE_CLIP_TYPE) {
         return ;
     }

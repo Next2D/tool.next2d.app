@@ -1,4 +1,3 @@
-import type { IInstance } from "@/interface/IInstance";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { libraryArea } from "@/controller/domain/model/LibraryArea";
 import { ExternalLibrary } from "@/external/controller/domain/model/ExternalLibrary";
@@ -44,11 +43,11 @@ export const execute = (element: HTMLElement): void =>
             return ;
         }
 
-        const folder: IInstance<Folder> | null = instance.type === $FOLDER_TYPE
+        const folder = instance.type === $FOLDER_TYPE
             ? instance
-            : workSpace.getLibrary(instance.folderId);
+            : workSpace.getLibrary(instance.folderId) as Folder;
 
-        for (let idx: number = 0; idx < length; ++idx) {
+        for (let idx = 0; idx < length; ++idx) {
 
             const libraryId = libraryArea.selectedIds[idx];
 
@@ -93,7 +92,7 @@ export const execute = (element: HTMLElement): void =>
     } else {
 
         // 何も指定がない時は一番上の階層に移動
-        for (let idx: number = 0; idx < length; ++idx) {
+        for (let idx = 0; idx < length; ++idx) {
 
             const libraryId = libraryArea.selectedIds[idx];
 

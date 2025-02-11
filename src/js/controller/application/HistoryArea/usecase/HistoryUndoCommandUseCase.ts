@@ -5,7 +5,7 @@ import type { IVideoSaveObject } from "@/interface/IVideoSaveObject";
 import type { ISoundSaveObject } from "@/interface/ISoundSaveObject";
 import type { IInstanceSaveObject } from "@/interface/IInstanceSaveObject";
 import type { ILayerMode } from "@/interface/ILayerMode";
-import type { EmptyICharacterSaveObject } from "@/interface/EmptyICharacterSaveObject";
+import type { IEmptyCharacterSaveObject } from "@/interface/IEmptyCharacterSaveObject";
 import type { ICharacterSaveObject } from "@/interface/ICharacterSaveObject";
 import type { ISoundObject } from "@/interface/ISoundObject";
 import { execute as userDatabaseAutoSaveReservationUseCase } from "@/user/application/Database/usecase/UserDatabaseAutoSaveReservationUseCase";
@@ -461,7 +461,7 @@ export const execute = async (
                 messages[0] as number, // WorkSpace ID
                 messages[1] as number, // MovieClip ID
                 messages[2] as number, // Layer Index
-                messages[4] as EmptyICharacterSaveObject // Save EmptyCharacter Object
+                messages[4] as IEmptyCharacterSaveObject // Save EmptyCharacter Object
             );
             break;
 
@@ -481,7 +481,7 @@ export const execute = async (
                 messages[0] as number, // WorkSpace ID
                 messages[1] as number, // MovieClip ID
                 messages[2] as number, // Layer Index
-                messages[4] as EmptyICharacterSaveObject // Save EmptyCharacter Object
+                messages[4] as IEmptyCharacterSaveObject // Save EmptyCharacter Object
             );
             break;
 

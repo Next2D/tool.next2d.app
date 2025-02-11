@@ -1,6 +1,5 @@
 import type { IShareReceiveMessage } from "@/interface/IShareReceiveMessage";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
-import type { IInstance } from "@/interface/IInstance";
 import type { IVideoSaveObject } from "@/interface/IVideoSaveObject";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
 import { Video } from "@/core/domain/model/Video";
@@ -39,7 +38,7 @@ export const execute = async (message: IShareReceiveMessage): Promise<void> =>
     }
 
     const libraryId = message.data[1] as NonNullable<number>;
-    const movieClip: IInstance<MovieClip> = workSpace.getLibrary(libraryId);
+    const movieClip = workSpace.getLibrary(libraryId) as MovieClip;
     if (!movieClip) {
         return ;
     }
@@ -48,7 +47,7 @@ export const execute = async (message: IShareReceiveMessage): Promise<void> =>
     const videoSaveObject = message.data[3] as NonNullable<IVideoSaveObject>;
 
     // 変更前のVideoからセーブオブジェクトを作成
-    const instance: IInstance<Video> = workSpace.getLibrary(videoSaveObject.id);
+    const instance = workSpace.getLibrary(videoSaveObject.id) as Video;
     const beforeSaveObject = instance.toObject();
 
     // バイナリをUint8Arrayに変換

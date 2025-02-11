@@ -1,5 +1,4 @@
 import type { Character } from "@/core/domain/model/Character";
-import type { IInstance } from "@/interface/IInstance";
 import type { Layer } from "@/core/domain/model/Layer";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import { execute as movieClipRegisterEventUseCase } from "./MovieClipRegisterEventUseCase";
@@ -28,7 +27,7 @@ import { $getMaskMatrix } from "@/controller/application/TransformSetting/Transf
  */
 export const execute = async (
     work_space_id: number,
-    instance: IInstance<MovieClip>,
+    instance: MovieClip,
     element: HTMLElement,
     layer: Layer,
     character: Character

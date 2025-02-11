@@ -1,6 +1,5 @@
 import type { IShareReceiveMessage } from "@/interface/IShareReceiveMessage";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
-import type { IInstance } from "@/interface/IInstance";
 import type { ILayerMode } from "@/interface/ILayerMode";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
 import { execute as externalLayerUpdateTypeUseCase } from "@/external/core/application/ExternalLayer/usecase/ExternalLayerUpdateTypeUseCase";
@@ -25,7 +24,7 @@ export const execute = async (message: IShareReceiveMessage): Promise<void> =>
     }
 
     const movieClipId = message.data[1] as NonNullable<number>;
-    const movieClip: IInstance<MovieClip> = workSpace.getLibrary(movieClipId);
+    const movieClip = workSpace.getLibrary(movieClipId) as MovieClip;
     if (!movieClip) {
         return ;
     }

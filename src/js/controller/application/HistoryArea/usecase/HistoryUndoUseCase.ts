@@ -1,6 +1,5 @@
 import type { IHistoryObject } from "@/interface/IHistoryObject";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
-import type { IInstance } from "@/interface/IInstance";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
 import { $useSocket } from "@/share/ShareUtil";
 import { execute as shareSendService } from "@/share/service/ShareSendService";
@@ -39,7 +38,7 @@ export const execute = async (
         return ;
     }
 
-    const movieClip: IInstance<MovieClip> = workSpace.getLibrary(library_id);
+    const movieClip = workSpace.getLibrary(library_id) as MovieClip;
     if (!movieClip) {
         return ;
     }

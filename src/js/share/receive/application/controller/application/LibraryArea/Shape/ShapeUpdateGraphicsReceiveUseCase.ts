@@ -1,8 +1,8 @@
 import type { IShareReceiveMessage } from "@/interface/IShareReceiveMessage";
-import type { IInstance } from "@/interface/IInstance";
 import type { IShapeSaveObject } from "@/interface/IShapeSaveObject";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { IBounds } from "@/interface/IBounds";
+import type { Shape } from "@/core/domain/model/Shape";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
 import { execute as externalShapeApplyGraphicsUseCase } from "@/external/core/application/ExternalShape/usecase/ExternalShapeApplyGraphicsUseCase";
 import { execute as shareGetS3EndPointRepository } from "@/share/domain/repository/ShareGetS3EndPointRepository";
@@ -37,13 +37,13 @@ export const execute = async (message: IShareReceiveMessage): Promise<void> =>
     }
 
     const libraryId = message.data[1] as NonNullable<number>;
-    const movieClip: IInstance<MovieClip> = workSpace.getLibrary(libraryId);
+    const movieClip = workSpace.getLibrary(libraryId) as MovieClip;
     if (!movieClip) {
         return ;
     }
 
     const beforeShapeObject = message.data[2] as IShapeSaveObject;
-    const shape = workSpace.getLibrary(beforeShapeObject.id);
+    const shape = workSpace.getLibrary(beforeShapeObject.id) as Shape;
     if (!shape) {
         return ;
     }

@@ -1,6 +1,6 @@
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
-import type { IInstance } from "@/interface/IInstance";
 import type { IInstanceType } from "@/interface/IInstanceType";
+import type { Instance } from "@/core/domain/model/Instance";
 import { execute as externalItemUpdateNameUseCase } from "@/external/core/application/ExternalItem/usecase/ExternalItemUpdateNameUseCase";
 import { execute as externalItemUpdateSymbolUseCase } from "@/external/core/application/ExternalItem/usecase/ExternalItemUpdateSymbolUseCase";
 import { execute as externalItemRemoveUseCase } from "@/external/core/application/ExternalItem/usecase/ExternalItemRemoveUseCase";
@@ -8,9 +8,9 @@ import { execute as externalItemRemoveUseCase } from "@/external/core/applicatio
 /**
  * @class
  */
-export class ExternalItem
+export class ExternalItem<I extends Instance = Instance>
 {
-    protected readonly _$instance: IInstance<any>;
+    protected readonly _$instance: I;
     protected readonly _$workSpace: WorkSpace;
 
     /**
@@ -19,7 +19,7 @@ export class ExternalItem
      * @constructor
      * @public
      */
-    constructor (work_space: WorkSpace, instance: IInstance<any>)
+    constructor (work_space: WorkSpace, instance: I)
     {
         /**
          * @type {WorkSpace}

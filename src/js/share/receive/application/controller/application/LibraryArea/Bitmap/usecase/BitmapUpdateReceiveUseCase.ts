@@ -1,6 +1,5 @@
 import type { IShareReceiveMessage } from "@/interface/IShareReceiveMessage";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
-import type { IInstance } from "@/interface/IInstance";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
 import { Bitmap } from "@/core/domain/model/Bitmap";
 import { execute as libraryAreaUpdateBitmapHistoryUseCase } from "@/history/application/controller/application/LibraryArea/Bitmap/usecase/LibraryAreaUpdateBitmapHistoryUseCase";
@@ -39,7 +38,7 @@ export const execute = async (message: IShareReceiveMessage): Promise<void> =>
     }
 
     const libraryId = message.data[1] as NonNullable<number>;
-    const movieClip: IInstance<MovieClip> = workSpace.getLibrary(libraryId);
+    const movieClip = workSpace.getLibrary(libraryId) as MovieClip;
     if (!movieClip) {
         return ;
     }
@@ -48,7 +47,11 @@ export const execute = async (message: IShareReceiveMessage): Promise<void> =>
     const bitmapObject = message.data[3] as NonNullable<IBitmapSaveObject>;
 
     // 変更前のインスタンスからセーブオブジェクトを作成
-    const instance: IInstance<any> = workSpace.getLibrary(bitmapObject.id);
+    const instance = workSpace.getLibrary(bitmapObject.id);
+    if (!instance) {
+        return ;
+    }
+
     const beforeSaveObject = instance.toObject();
 
     // バイナリをUint8Arrayに変換

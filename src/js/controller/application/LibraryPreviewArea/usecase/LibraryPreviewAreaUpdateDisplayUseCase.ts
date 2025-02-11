@@ -1,4 +1,4 @@
-import type { IInstance } from "@/interface/IInstance";
+import type { Instance } from "@/core/domain/model/Instance";
 import { $LIBRARY_PREVIEW_AREA_ID } from "@/config/LibraryConfig";
 import { execute as libraryPreviewAreaClearDisplayService } from "../service/LibraryPreviewAreaClearDisplayService";
 import { libraryArea } from "@/controller/domain/model/LibraryArea";
@@ -11,7 +11,7 @@ import { libraryArea } from "@/controller/domain/model/LibraryArea";
  * @method
  * @public
  */
-export const execute = async (instance: IInstance<any>): Promise<void> =>
+export const execute = async <I extends Instance> (instance: I): Promise<void> =>
 {
     const previewElement: HTMLElement | null = document
         .getElementById($LIBRARY_PREVIEW_AREA_ID);

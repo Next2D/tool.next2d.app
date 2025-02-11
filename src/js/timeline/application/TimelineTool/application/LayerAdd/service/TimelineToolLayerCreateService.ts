@@ -1,12 +1,11 @@
 import type { Layer } from "@/core/domain/model/Layer";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
-import type { IInstance } from "@/interface/IInstance";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
+import { EmptyCharacter } from "@/core/domain/model/EmptyCharacter";
 import {
     $GUIDE_IN_MODE,
     $MASK_IN_MODE
 } from "@/config/LayerModeConfig";
-import { EmptyCharacter } from "@/core/domain/model/EmptyCharacter";
 
 /**
  * @description 引数の指定に準拠してレイヤーを作成、失敗時はnullを返却
@@ -39,7 +38,7 @@ export const execute = (
     }
 
     // 指定がなければ、アクティブなMovieClipを利用する
-    const movieClip: IInstance<MovieClip> = workSpace.getLibrary(library_id);
+    const movieClip = workSpace.getLibrary(library_id) as MovieClip;
     if (!movieClip) {
         return null;
     }

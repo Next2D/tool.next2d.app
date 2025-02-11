@@ -1,7 +1,7 @@
 import type { IHistoryObject } from "@/interface/IHistoryObject";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
-import type { IInstance } from "@/interface/IInstance";
 import { $LIBRARY_UPDATE_INSTANCE_SYMBOL_COMMAND } from "@/config/HistoryConfig";
+import { Instance } from "@/core/domain/model/Instance";
 
 /**
  * @description インスタンスのシンボル名更新の履歴用オブジェクトを作成
@@ -9,16 +9,16 @@ import { $LIBRARY_UPDATE_INSTANCE_SYMBOL_COMMAND } from "@/config/HistoryConfig"
  *
  * @param  {number} work_space_id
  * @param  {MovieClip} movie_clip
- * @param  {Instance} instance
+ * @param  {I} instance
  * @param  {string} before_name
  * @return {object}
  * @method
  * @public
  */
-export const execute = (
+export const execute = <I extends Instance> (
     work_space_id: number,
     movie_clip: MovieClip,
-    instance: IInstance<any>,
+    instance: I,
     before_name: string
 ): IHistoryObject => {
 

@@ -1,4 +1,4 @@
-import { IBounds } from "./IBounds";
+import type { IBounds } from "./IBounds";
 
 export interface IBitmapPublishJson
 {
