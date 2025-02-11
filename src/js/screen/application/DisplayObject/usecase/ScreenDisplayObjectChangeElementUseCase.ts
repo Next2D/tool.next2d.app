@@ -1,3 +1,4 @@
+import type { Shape } from "@/core/domain/model/Shape";
 import { $SCREEN_STAGE_AREA_ID } from "@/config/ScreenConfig";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { $poolCanvas } from "@/global/GlobalUtil";
@@ -76,7 +77,7 @@ export const execute = async (library_id: number): Promise<void> =>
                 case $SHAPE_TYPE:
                     await shapeCreateDisplayObjectElementUseCase(
                         workSpace.id,
-                        instance,
+                        instance as Shape,
                         element,
                         layer,
                         character

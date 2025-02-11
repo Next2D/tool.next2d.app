@@ -2,19 +2,23 @@ import type { ICharacterSaveObject } from "@/interface/ICharacterSaveObject";
 import type { IExternalItem } from "@/interface/IExternalItem";
 import type { IBlendMode } from "@/interface/IBlendMode";
 import type { Layer } from "./Layer";
+import type { IBounds } from "@/interface/IBounds";
+import type { IPosition } from "@/interface/IPosition";
+import type { MovieClip } from "@/core/domain/model/MovieClip";
+import { $clamp } from "@/global/GlobalUtil";
+import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { execute as characterCreateElementUseCase } from "@/core/application/Character/usecase/CharacterCreateElementUseCase";
 import { execute as characterCalcGetScaleXService } from "@/core/application/Character/service/CharacterCalcGetScaleXService";
 import { execute as characterCalcSetScaleXService } from "@/core/application/Character/service/CharacterCalcSetScaleXService";
 import { execute as characterCalcGetScaleYService } from "@/core/application/Character/service/CharacterCalcGetScaleYService";
 import { execute as characterCalcSetRotationService } from "@/core/application/Character/service/CharacterCalcSetRotationService";
 import { execute as characterCalcGetRotationService } from "@/core/application/Character/service/CharacterCalcGetRotationService";
-import { $clamp } from "@/global/GlobalUtil";
-import type { IBounds } from "@/interface/IBounds";
 import { execute as characterCalcGetBoundsService } from "@/core/application/Character/service/CharacterCalcGetBoundsService";
-import { execute as characterCalcGetRectService } from "@/core/application/Character/service/CharacterCalcGetRectService";
-import { IPosition } from "@/interface/IPosition";
-import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
-import { $BITMAP_TYPE, $VIDEO_TYPE } from "@/config/InstanceConfig";
+import {
+    $BITMAP_TYPE,
+    $MOVIE_CLIP_TYPE,
+    $VIDEO_TYPE
+} from "@/config/InstanceConfig";
 
 /**
  * @description DisplayObjectのユニークID
@@ -389,7 +393,7 @@ export class Character
     get offsetY (): number
     {
         const workSpace = $getCurrentWorkSpace();
-        const movieClip = workSpace.scene;
+        const movieClip = workSpace.scene as MovieClip;
 
         const bounds = this.getRawBounds(movieClip.currentFrame);
         return bounds
@@ -664,7 +668,7 @@ export class Character
      * @description matrixで加工しないバウンディングボックスを返却
      *              Return the bounding box that is not processed by matrix
      *
-     * @param  {number} [frame=1]
+     * @pmaram {number} [frame=1]
      * @return {object}
      * @method
      * @public
@@ -678,21 +682,9 @@ export class Character
         }
 
         // ライブラリアイテムの加工してないバウンディングボックスの値を取得
-        return instance.getRawBounds();
-    }
-
-    /**
-     * @description 表示領域のバウンディングボックスを取得
-     *              Get the bounding box of the display area
-     *
-     * @param  {number} [frame=1]
-     * @return {object}
-     * @method
-     * @public
-     */
-    getRect (frame: number = 1): IBounds | null
-    {
-        return characterCalcGetRectService(this._$libraryId, this._$matrix, frame);
+        return instance.type === $MOVIE_CLIP_TYPE
+            ? (instance as MovieClip).getRawBounds(frame)
+            : instance.getRawBounds();
     }
 
     /**

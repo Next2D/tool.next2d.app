@@ -55,7 +55,7 @@ export const execute = async (
 
     let canvas = $getCacheCanvas(workSpace.id, maskInstance.id, cacheKey);
     if (!canvas) {
-        canvas = await maskInstance.getHTMLElement();
+        canvas = await maskInstance.getHTMLElement() as HTMLCanvasElement;
         if (!canvas) {
             return ;
         }

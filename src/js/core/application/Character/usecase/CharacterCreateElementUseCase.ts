@@ -1,5 +1,10 @@
 import type { Character } from "@/core/domain/model/Character";
 import type { Layer } from "@/core/domain/model/Layer";
+import type { Video } from "@/core/domain/model/Video";
+import type { Bitmap } from "@/core/domain/model/Bitmap";
+import type { MovieClip } from "@/core/domain/model/MovieClip";
+import type { Shape } from "@/core/domain/model/Shape";
+import type { Text } from "@/core/domain/model/Text";
 import { $getCurrentWorkSpace } from "../../CoreUtil";
 import { execute as bitmapCreateDisplayObjectElementUseCase } from "@/core/application/Bitmap/usecase/BitmapCreateDisplayObjectElementUseCase";
 import { execute as movieClipCreateDisplayObjectElementUseCase } from "@/core/application/MovieClip/usecase/MovieClipCreateDisplayObjectElementUseCase";
@@ -42,31 +47,31 @@ export const execute = async (
 
         case $VIDEO_TYPE:
             div = await videoCreateDisplayObjectElementUseCase(
-                workSpace, instance, element, layer, character
+                workSpace, instance as Video, element, layer, character
             );
             break;
 
         case $BITMAP_TYPE:
             div = await bitmapCreateDisplayObjectElementUseCase(
-                workSpace.id, instance, element, layer, character
+                workSpace.id, instance as Bitmap, element, layer, character
             );
             break;
 
         case $MOVIE_CLIP_TYPE:
             div = await movieClipCreateDisplayObjectElementUseCase(
-                workSpace.id, instance, element, layer, character
+                workSpace.id, instance as MovieClip, element, layer, character
             );
             break;
 
         case $SHAPE_TYPE:
             div = await shapeCreateDisplayObjectElementUseCase(
-                workSpace.id, instance, element, layer, character
+                workSpace.id, instance as Shape, element, layer, character
             );
             break;
 
         case $TEXT_TYPE:
             div = await textCreateDisplayObjectElementUseCase(
-                workSpace.id, instance, element, layer, character
+                workSpace.id, instance as Text, element, layer, character
             );
             break;
 

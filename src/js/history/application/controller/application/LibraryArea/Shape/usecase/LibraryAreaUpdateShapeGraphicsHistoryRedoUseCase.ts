@@ -1,5 +1,6 @@
 import type { IShapeSaveObject } from "@/interface/IShapeSaveObject";
 import type { IBounds } from "@/interface/IBounds";
+import type { Shape } from "@/core/domain/model/Shape";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
 import { execute as externalShapeUpdateService } from "@/external/core/application/ExternalShape/service/ExternalShapeUpdateService";
 import { execute as screenDisplayObjectChangeElementUseCase } from "@/screen/application/DisplayObject/usecase/ScreenDisplayObjectChangeElementUseCase";
@@ -28,7 +29,7 @@ export const execute = async (
         return ;
     }
 
-    const shape = workSpace.getLibrary(before_shape_object.id);
+    const shape = workSpace.getLibrary(before_shape_object.id) as Shape;
     if (!shape) {
         return ;
     }

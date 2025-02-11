@@ -1,3 +1,4 @@
+import type { Folder } from "@/core/domain/model/Folder";
 import { ExternalItem } from "./ExternalItem";
 import { execute as libraryAreaUpdateFolderStateService } from "@/controller/application/LibraryArea/service/LibraryAreaUpdateFolderStateService";
 import { $useSocket } from "@/share/ShareUtil";
@@ -25,12 +26,12 @@ export class ExternalFolder extends ExternalItem
      */
     open (receiver: boolean = false): void
     {
-        this._$instance.mode = "open";
+        (this._$instance as Folder).mode = "open";
 
         // 起動中のプロジェクトなら表示を更新
         if (this._$workSpace.active) {
             // フォルダの表示を更新
-            libraryAreaUpdateFolderStateService(this._$instance);
+            libraryAreaUpdateFolderStateService(this._$instance as Folder);
 
             // ライブラリを再描画
             libraryAreaReloadUseCase();
@@ -58,12 +59,12 @@ export class ExternalFolder extends ExternalItem
      */
     close (receiver: boolean = false): void
     {
-        this._$instance.mode = "close";
+        (this._$instance as Folder).mode = "close";
 
         // 起動中のプロジェクトなら表示を更新
         if (this._$workSpace.active) {
             // フォルダの表示を更新
-            libraryAreaUpdateFolderStateService(this._$instance);
+            libraryAreaUpdateFolderStateService(this._$instance as Folder);
 
             // ライブラリを再描画
             libraryAreaReloadUseCase();
@@ -93,7 +94,7 @@ export class ExternalFolder extends ExternalItem
     {
         return externalFolderCheckDuplicateService(
             this._$workSpace,
-            this._$instance,
+            this._$instance as Folder,
             parent_folder_id
         );
     }

@@ -185,6 +185,19 @@ export class Instance
     }
 
     /**
+     * @description インスタンスのプロパティを返却(親クラスなので、空のオブジェクトを返却)
+     *              Returns the properties of the instance (since it is a parent class, it returns an empty object)
+     *
+     * @returns {IObject<any>}
+     * @method
+     * @public
+     */
+    toPublish (): IObject<any>
+    {
+        return {};
+    }
+
+    /**
      * @description ライブラリからの削除時の処理関数
      *              Processing functions for deletion from the library
      *

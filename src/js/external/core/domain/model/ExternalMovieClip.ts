@@ -43,7 +43,7 @@ export class ExternalMovieClip extends ExternalItem
      */
     get active (): boolean
     {
-        return this._$instance.active;
+        return (this._$instance as MovieClip).active;
     }
 
     /**
@@ -69,11 +69,11 @@ export class ExternalMovieClip extends ExternalItem
      */
     get currentFrame (): number
     {
-        return this._$instance.currentFrame;
+        return (this._$instance as MovieClip).currentFrame;
     }
     set currentFrame (frame: number)
     {
-        this._$instance.currentFrame = frame;
+        (this._$instance as MovieClip).currentFrame = frame;
     }
 
     /**
@@ -86,13 +86,13 @@ export class ExternalMovieClip extends ExternalItem
      */
     get layers (): ExternalLayer[]
     {
-        const layers = this._$instance.layers;
+        const layers = (this._$instance as MovieClip).layers;
 
         const externalLayers = [];
         for (let idx = 0; idx < layers.length; ++idx) {
             externalLayers.push(new ExternalLayer(
                 this._$workSpace,
-                this._$instance,
+                this._$instance as MovieClip,
                 layers[idx]
             ));
         }
@@ -111,7 +111,7 @@ export class ExternalMovieClip extends ExternalItem
      */
     getAction (frame: number): string
     {
-        return this._$instance.getAction(frame);
+        return (this._$instance as MovieClip).getAction(frame);
     }
 
     /**
@@ -127,7 +127,7 @@ export class ExternalMovieClip extends ExternalItem
     setAction (frame: number, script: string = ""): void
     {
         externalMovieClipUpdateScriptUseCase(
-            this._$workSpace, this._$instance, frame, script
+            this._$workSpace, this._$instance as MovieClip, frame, script
         );
     }
 
@@ -142,7 +142,7 @@ export class ExternalMovieClip extends ExternalItem
      */
     getLabel (frame: number): string
     {
-        return this._$instance.getLabel(frame);
+        return (this._$instance as MovieClip).getLabel(frame);
     }
 
     /**
@@ -157,6 +157,8 @@ export class ExternalMovieClip extends ExternalItem
      */
     setLabel (frame: number, label: string = ""): void
     {
-        externalMovieClipUpdateLabelUseCase(this._$workSpace, this._$instance, frame, label);
+        externalMovieClipUpdateLabelUseCase(
+            this._$workSpace, this._$instance as MovieClip, frame, label
+        );
     }
 }

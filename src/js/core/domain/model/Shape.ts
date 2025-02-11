@@ -143,7 +143,7 @@ export class Shape extends Instance
                 continue;
             }
 
-            if (value.namespace !== next2d.display.BitmapData.namespace) {
+            if (!("buffer" in value)) {
                 continue;
             }
 

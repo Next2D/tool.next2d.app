@@ -1,7 +1,7 @@
 import type { MovieClip } from "@/core/domain/model/MovieClip";
+import type { IPublishObject } from "@/interface/IPublishObject";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { $getUseLibraryIds } from "../PublishToolUtil";
-import type { IPublishObject } from "@/interface/IPublishObject";
 
 /**
  * @description 指定のMovieClipをRootにして、現在のWorkSpaceのライブラリアイテムを書き出す

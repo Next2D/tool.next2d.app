@@ -32,21 +32,23 @@ export const execute = (): void =>
         return ;
     }
 
-    const layer = movieClip.getLayer(movieClip.selectedDepths.keys().next().value);
+    const layer = movieClip.getLayer(
+        movieClip.selectedDepths.keys().next().value as number
+    );
     if (!layer) {
         screenStandardPointHideElementService();
         return ;
     }
 
-    const depth = movieClip.selectedDepths.values().next().value[0];
-    const character = layer.getCharacter(movieClip.currentFrame, depth);
+    const values = movieClip.selectedDepths.values().next().value as number[];
+    const character = layer.getCharacter(movieClip.currentFrame, values[0]);
     if (!character) {
         screenStandardPointHideElementService();
         return ;
     }
 
     // MovieClipでなければ終了
-    const instance: MovieClip = workSpace.getLibrary(character.libraryId);
+    const instance = workSpace.getLibrary(character.libraryId) as MovieClip;
     if (!instance || instance.type !== $MOVIE_CLIP_TYPE) {
         screenStandardPointHideElementService();
         return ;

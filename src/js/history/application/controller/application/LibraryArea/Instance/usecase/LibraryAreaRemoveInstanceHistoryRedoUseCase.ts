@@ -26,6 +26,9 @@ export const execute = (
 
     // 上書き前のセーブデータからBitmapを復元
     const instance = workSpace.getLibrary(instance_object.id);
+    if (!instance) {
+        return ;
+    }
 
     // 内部情報から削除
     externalWorkSpaceRemoveInstanceService(
