@@ -5,11 +5,11 @@ import { execute as billingModelGenerateQRCodeService } from "../service/Billing
  * @description モーダル起動の処理関数
  *              Processing function for modal startup
  *
- * @return {void}
+ * @return {Promise<void>}
  * @method
  * @public
  */
-export const execute = (): Promise<void> =>
+export const execute = async (): Promise<void> =>
 {
     const roomId = crypto.randomUUID();
 

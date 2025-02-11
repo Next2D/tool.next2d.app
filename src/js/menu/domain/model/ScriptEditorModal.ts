@@ -28,11 +28,11 @@ export class ScriptEditorModal extends BaseMenu
      * @description 初期起動関数
      *              initial invoking function
      *
-     * @return {void}
+     * @return {Promise<void>}
      * @method
      * @public
      */
-    initialize (): void
+    async initialize (): Promise<void>
     {
         // エディタのイベント登録
         scriptEditorModalInitializeRegisterEventUseCase();

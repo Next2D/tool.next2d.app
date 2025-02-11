@@ -1,6 +1,6 @@
-import type { IMenu } from "@/interface/IMenu";
 import type { SceneListMenu } from "@/menu/domain/model/SceneListMenu";
 import { $SCENE_LIST_MENU_NAME } from "@/config/MenuConfig";
+import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import {
     $allHideMenu,
     $getMenu
@@ -10,7 +10,6 @@ import {
     $TIMELINE_SCENE_LIST_BUTTON_ID,
     $TIMELINE_SCENE_NAME_LIST_ID
 } from "@/config/TimelineConfig";
-import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 
 /**
  * @description シーン一覧メニューの画面を表示する
@@ -23,7 +22,7 @@ import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 export const execute = (): void =>
 {
     // シーン一覧メニュー
-    const menu: IMenu<SceneListMenu> | null = $getMenu($SCENE_LIST_MENU_NAME);
+    const menu = $getMenu<SceneListMenu>($SCENE_LIST_MENU_NAME);
     if (!menu) {
         return ;
     }

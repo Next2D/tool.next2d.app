@@ -1,7 +1,6 @@
+import type { UserSettingMenu } from "@/menu/domain/model/UserSettingMenu";
 import { $USER_MENU_NAME } from "@/config/MenuConfig";
 import { $getMenu } from "@/menu/application/MenuUtil";
-import type { IMenu } from "@/interface/IMenu";
-import type { UserSettingMenu } from "@/menu/domain/model/UserSettingMenu";
 
 /**
  * @description ユーザー設定メニューを非表示にする
@@ -13,7 +12,7 @@ import type { UserSettingMenu } from "@/menu/domain/model/UserSettingMenu";
  */
 export const execute = (): void =>
 {
-    const menu: IMenu<UserSettingMenu> | null = $getMenu($USER_MENU_NAME);
+    const menu = $getMenu<UserSettingMenu>($USER_MENU_NAME);
     if (!menu) {
         return ;
     }

@@ -1,4 +1,4 @@
-import type { IMenu } from "@/interface/IMenu";
+import type { BaseMenu } from "../domain/model/BaseMenu";
 import { ProgressMenu } from "../domain/model/ProgressMenu";
 import { UserSettingMenu } from "../domain/model/UserSettingMenu";
 import { ShortcutSettingMenu } from "../domain/model/ShortcutSettingMenu";
@@ -22,7 +22,7 @@ import { SceneListMenu } from "../domain/model/SceneListMenu";
  *
  * @private
  */
-const menus: IMenu<any>[] = [
+const menus: Array<new () => BaseMenu> = [
     DetailModal,
     ProgressMenu,
     UserSettingMenu,
@@ -51,19 +51,14 @@ const menus: IMenu<any>[] = [
  */
 export const execute = async (): Promise<void> =>
 {
-    // 起動
-    const promises: Promise<void>[] = [];
-    for (let idx: number = 0; idx < menus.length; ++idx) {
-        const Menu: IMenu<any> = menus[idx];
-        const menu = new Menu();
-        if (!menu.initialize) {
+    // メニューを起動
+    for (let idx = 0; idx < menus.length; ++idx) {
+        const MenuConstructor = menus[idx];
+        if (!MenuConstructor) {
             continue;
         }
-        promises.push(menu.initialize());
+
+        const menu = new MenuConstructor();
+        await menu.initialize();
     }
-
-    // ショートカットを登録
-    // TODO
-
-    await Promise.all(promises);
 };

@@ -1,9 +1,5 @@
 import { execute } from "./HistoryAreaScrollMouseDownUseCase";
 import { EventType } from "../../../../tool/domain/event/EventType";
-import {
-    $HISTORY_LIST_PARENT_ID,
-    $HISTORY_LIST_SCROLL_BAR_ID
-} from "../../../../config/HistoryConfig";
 import { describe, expect, it, vi } from "vitest";
 
 describe("HistoryAreaScrollMouseDownUseCase Test", () =>

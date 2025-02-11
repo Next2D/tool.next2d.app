@@ -16,6 +16,10 @@ import { execute as scriptAreaScrollUpdateHeightService } from "@/controller/app
  */
 export const execute = (event: PointerEvent): void =>
 {
+    if (event.button !== 0) {
+        return ;
+    }
+
     // 親のイベントを中止
     event.stopPropagation();
 

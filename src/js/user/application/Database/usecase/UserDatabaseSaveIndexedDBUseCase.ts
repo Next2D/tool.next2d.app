@@ -1,7 +1,6 @@
+import type { ProgressMenu } from "@/menu/domain/model/ProgressMenu";
 import { $PROGRESS_MENU_NAME } from "@/config/MenuConfig";
-import { IMenu } from "@/interface/IMenu";
 import { $getMenu } from "@/menu/application/MenuUtil";
-import { ProgressMenu } from "@/menu/domain/model/ProgressMenu";
 import { execute as userDatabaseGetOpenDBRequestService } from "../service/UserDatabaseGetOpenDBRequestService";
 import { execute as workSpaceCreateSaveDataService } from "@/core/application/WorkSpace/service/WorkSpaceCreateSaveDataService";
 import { execute as bufferToBinaryService } from "@/core/service/BufferToBinaryService";
@@ -55,7 +54,7 @@ export const execute = async (): Promise<void> =>
             db.close();
 
             // 進行状況を表示を終了
-            const menu: IMenu<ProgressMenu> = $getMenu($PROGRESS_MENU_NAME);
+            const menu = $getMenu<ProgressMenu>($PROGRESS_MENU_NAME);
             if (!menu) {
                 return ;
             }

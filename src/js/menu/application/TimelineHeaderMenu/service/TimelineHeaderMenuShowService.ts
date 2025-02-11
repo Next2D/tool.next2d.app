@@ -1,11 +1,10 @@
-import { $TIMELINE_HEADER_MENU_NAME } from "@/config/MenuConfig";
 import type { TimelineHeaderMenu } from "@/menu/domain/model/TimelineHeaderMenu";
-import type { IMenu } from "@/interface/IMenu";
+import { $useKeyboard } from "@/shortcut/ShortcutUtil";
+import { $TIMELINE_HEADER_MENU_NAME } from "@/config/MenuConfig";
 import {
     $allHideMenu,
     $getMenu
 } from "../../MenuUtil";
-import { $useKeyboard } from "@/shortcut/ShortcutUtil";
 
 /**
  * @description ヘッダーメニューを表示
@@ -30,7 +29,7 @@ export const execute = (event: MouseEvent): void =>
     $allHideMenu($TIMELINE_HEADER_MENU_NAME);
 
     // 進行状況メニューを非表示に
-    const menu: IMenu<TimelineHeaderMenu> | null = $getMenu($TIMELINE_HEADER_MENU_NAME);
+    const menu = $getMenu<TimelineHeaderMenu>($TIMELINE_HEADER_MENU_NAME);
     if (!menu) {
         return ;
     }

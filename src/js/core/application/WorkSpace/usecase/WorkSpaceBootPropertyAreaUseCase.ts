@@ -1,5 +1,5 @@
 import { $CONTROLLER_AREA_PROPERTY_ID } from "@/config/PropertyConfig";
-import { IUserControllerAreaStateObject } from "@/interface/IUserControllerAreaStateObject";
+import { IUserPropertyAreaStateObject } from "@/interface/IUserPropertyAreaStateObject";
 import { execute as propertyAreaChageStyleToActiveService } from "@/controller/application/PropertyArea/service/PropertyAreaChageStyleToActiveService";
 import { execute as propertyAreaShowTabService } from "@/controller/application/PropertyArea/service/PropertyAreaShowTabService";
 import { execute as propertyAreaHideTabService } from "@/controller/application/PropertyArea/service/PropertyAreaHideTabService";
@@ -14,7 +14,7 @@ import { execute as propertyAreaChageStyleToInactiveService } from "@/controller
  * @method
  * @public
  */
-export const execute = (property_area_state: IUserControllerAreaStateObject): void =>
+export const execute = (property_area_state: IUserPropertyAreaStateObject): void =>
 {
     const element: HTMLElement | null = document
         .getElementById($CONTROLLER_AREA_PROPERTY_ID);

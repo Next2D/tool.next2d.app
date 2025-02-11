@@ -1,10 +1,9 @@
-import type { IMenu } from "@/interface/IMenu";
 import type { ScriptEditorModal } from "@/menu/domain/model/ScriptEditorModal";
+import { $SCRIPT_EDITOR_MODAL_NAME } from "@/config/MenuConfig";
 import {
     $allHideMenu,
     $getMenu
 } from "@/menu/application/MenuUtil";
-import { $SCRIPT_EDITOR_MODAL_NAME } from "@/config/MenuConfig";
 
 /**
  * @description ショートカットメニューを表示
@@ -16,7 +15,7 @@ import { $SCRIPT_EDITOR_MODAL_NAME } from "@/config/MenuConfig";
  */
 export const execute = (): void =>
 {
-    const menu: IMenu<ScriptEditorModal> | null = $getMenu($SCRIPT_EDITOR_MODAL_NAME);
+    const menu = $getMenu<ScriptEditorModal>($SCRIPT_EDITOR_MODAL_NAME);
     if (!menu) {
         return ;
     }

@@ -35,5 +35,6 @@ export const execute = (event: PointerEvent): void =>
 
         // スクリーンのスクロールサイズを再計算
         screenScrollResizeService();
+
     });
 };

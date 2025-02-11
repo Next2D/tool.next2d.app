@@ -1,5 +1,4 @@
 import type { LibraryMenu } from "@/menu/domain/model/LibraryMenu";
-import type { IMenu } from "@/interface/IMenu";
 import type { IInstance } from "@/interface/IInstance";
 import { $LIBRARY_MENU_NAME } from "@/config/MenuConfig";
 import { libraryArea } from "@/controller/domain/model/LibraryArea";
@@ -43,7 +42,7 @@ export const execute = (event: MouseEvent): void =>
     $allHideMenu($LIBRARY_MENU_NAME);
 
     // 進行状況メニューを非表示に
-    const menu: IMenu<LibraryMenu> | null = $getMenu($LIBRARY_MENU_NAME);
+    const menu = $getMenu<LibraryMenu>($LIBRARY_MENU_NAME);
     if (!menu) {
         return ;
     }

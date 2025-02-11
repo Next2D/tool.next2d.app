@@ -1,6 +1,4 @@
-import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import type { ProgressMenu } from "@/menu/domain/model/ProgressMenu";
-import type { IMenu } from "@/interface/IMenu";
 import { execute as initializeGlobal } from "@/global/application/Initialize";
 import { execute as initializeTool } from "@/tool/application/Initialize";
 import { execute as initializeMenu } from "@/menu/application/Initialize";
@@ -19,12 +17,12 @@ import { execute as languageTranslationService } from "@/language/application/se
 import { execute as registerWindowResizeEventUseCase } from "@/global/usecase/RegisterWindowResizeEventUseCase";
 import { $PROGRESS_MENU_NAME } from "@/config/MenuConfig";
 import { $getMenu } from "@/menu/application/MenuUtil";
+import { ExternalApplication } from "./external/ExternalApplication";
+import { $useSocket } from "./share/ShareUtil";
 import {
     $getAllWorkSpace,
     $getCurrentWorkSpace
 } from "@/core/application/CoreUtil";
-import { ExternalApplication } from "./external/ExternalApplication";
-import { $useSocket } from "./share/ShareUtil";
 
 /**
  * @description 初期起動関数
@@ -82,17 +80,16 @@ const external = (): void =>
 export const initialize = async (): Promise<void> =>
 {
     // 初期起動関数を実行
-    const promises: Promise<void>[] = [];
-    for (let idx: number = 0; idx < initializes.length; ++idx) {
-        const initialize: Function = initializes[idx];
-        promises.push(initialize());
+    for (let idx = 0; idx < initializes.length; ++idx) {
+        const initialize = initializes[idx];
+        if (!initialize) {
+            continue ;
+        }
+        await initialize();
     }
 
-    // 初期起動関数が全て完了するまで待機
-    await Promise.all(promises);
-
     // 進行メニューを表示
-    const menu: IMenu<ProgressMenu> | null = $getMenu($PROGRESS_MENU_NAME);
+    const menu = $getMenu<ProgressMenu>($PROGRESS_MENU_NAME);
     if (!menu) {
         return ;
     }
@@ -111,27 +108,26 @@ export const initialize = async (): Promise<void> =>
 export const boot = async (): Promise<void> =>
 {
     if ($useSocket()) {
-        const menu: IMenu<ProgressMenu> | null = $getMenu($PROGRESS_MENU_NAME);
+        const menu = $getMenu<ProgressMenu>($PROGRESS_MENU_NAME);
         if (menu) {
             menu.message = "Socket connection...";
         }
         return ;
     }
 
-    const menu: IMenu<ProgressMenu> | null = $getMenu($PROGRESS_MENU_NAME);
+    const menu = $getMenu<ProgressMenu>($PROGRESS_MENU_NAME);
     if (menu) {
         menu.message = "Booting the system.";
     }
 
     // システム起動関数を実行
-    const promises: Promise<void>[] = [];
-    for (let idx: number = 0; idx < boots.length; ++idx) {
+    for (let idx = 0; idx < boots.length; ++idx) {
         const boot: Function = boots[idx];
-        promises.push(boot());
+        if (!boot) {
+            continue ;
+        }
+        await boot();
     }
-
-    // システム起動関数が全て完了するまで待機
-    await Promise.all(promises);
 };
 
 /**
@@ -148,17 +144,15 @@ export const run = async (): Promise<void> =>
         return ;
     }
 
-    const promises: Promise<void>[] = [];
-
     // 起動したWorkSpaceの初期関数を実行
-    const workSpaces: WorkSpace[] = $getAllWorkSpace();
+    const workSpaces = $getAllWorkSpace();
     for (let idx: number = 0; idx < workSpaces.length; ++idx) {
-        const workSpace: WorkSpace = workSpaces[idx];
-        promises.push(workSpace.initialize());
+        const workSpace = workSpaces[idx];
+        if (!workSpace) {
+            continue ;
+        }
+        await workSpace.initialize();
     }
-
-    // 初期起動関数が終了するまで待機
-    await Promise.all(promises);
 
     // リサイズイベントを登録
     registerWindowResizeEventUseCase();
@@ -170,7 +164,7 @@ export const run = async (): Promise<void> =>
     await detailModalRegisterFadeEventService(document);
 
     // 言語を適用
-    await languageTranslationService(document);
+    languageTranslationService(document);
 
     // 外部APIクラスを起動
     external();

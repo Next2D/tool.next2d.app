@@ -1,6 +1,5 @@
-import { $SCREEN_MENU_NAME } from "@/config/MenuConfig";
-import type { IMenu } from "@/interface/IMenu";
 import type { ScreenMenu } from "@/menu/domain/model/ScreenMenu";
+import { $SCREEN_MENU_NAME } from "@/config/MenuConfig";
 import { $allHideMenu, $getMenu } from "@/menu/application/MenuUtil";
 import { $useKeyboard } from "@/shortcut/ShortcutUtil";
 
@@ -25,7 +24,7 @@ export const execute = (event: MouseEvent): void =>
     $allHideMenu($SCREEN_MENU_NAME);
 
     // 進行状況メニューを非表示に
-    const menu: IMenu<ScreenMenu> | null = $getMenu($SCREEN_MENU_NAME);
+    const menu = $getMenu<ScreenMenu>($SCREEN_MENU_NAME);
     if (!menu) {
         return ;
     }

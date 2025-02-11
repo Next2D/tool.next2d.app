@@ -1,17 +1,21 @@
-import type { IMenu } from "@/interface/IMenu";
+import type { BaseMenu } from "@/menu/domain/model/BaseMenu";
 
-const $menus: Map<string, IMenu<any>> = new Map();
+/**
+ * @type {Map<string, BaseMenu>}
+ * @private
+ */
+const $menus: Map<string, BaseMenu> = new Map();
 
 /**
  * @description メニューオブジェクトをマップに登録
  *              Register menu object to map
  *
- * @param  {object} menu
+ * @param  {C} menu
  * @return {void}
  * @method
  * @public
  */
-export const $registerMenu = (menu: IMenu<any>): void =>
+export const $registerMenu = <C extends BaseMenu> (menu: C): void =>
 {
     $menus.set(menu.name, menu);
 };
@@ -21,28 +25,15 @@ export const $registerMenu = (menu: IMenu<any>): void =>
  *              Obtain a menu object by name
  *
  * @param  {string} name
- * @return {object}
+ * @return {C | null}
  * @method
  * @public
  */
-export const $getMenu = (name: string): IMenu<any> | null =>
+export const $getMenu = <C extends BaseMenu> (name: string): C | null =>
 {
     return $menus.has(name)
-        ? $menus.get(name)
+        ? $menus.get(name) as C
         : null;
-};
-
-/**
- * @description 全てのメニューオブジェクトを取得
- *              Get all menu objects
- *
- * @return {object}
- * @method
- * @public
- */
-export const $getMenuAll = (): Map<string, IMenu<any>> =>
-{
-    return $menus;
 };
 
 /**
@@ -56,8 +47,7 @@ export const $getMenuAll = (): Map<string, IMenu<any>> =>
  */
 export const $allHideMenu = (ignore: string = ""): void =>
 {
-    const menus: Map<string, IMenu<any>> = $getMenuAll();
-    for (const menu of menus.values()) {
+    for (const menu of $menus.values()) {
         if (menu.name === ignore) {
             continue;
         }

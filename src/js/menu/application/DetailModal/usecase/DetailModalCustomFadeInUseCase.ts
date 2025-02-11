@@ -1,8 +1,7 @@
+import type { DetailModal } from "@/menu/domain/model/DetailModal";
 import { $DETAIL_MODAL_NAME } from "@/config/MenuConfig";
 import { $replace } from "@/language/application/LanguageUtil";
 import { $getMenu } from "../../MenuUtil";
-import { DetailModal } from "@/menu/domain/model/DetailModal";
-import { IMenu } from "@/interface/IMenu";
 import { execute as detailModalHideService } from "../service/DetailModalHideService";
 
 /**
@@ -29,7 +28,7 @@ export const execute = (
         return ;
     }
 
-    const menu: IMenu<DetailModal> | null = $getMenu($DETAIL_MODAL_NAME);
+    const menu = $getMenu<DetailModal>($DETAIL_MODAL_NAME);
     if (!menu) {
         return ;
     }

@@ -1,6 +1,7 @@
+import type { ScreenOrderMenu } from "@/menu/domain/model/ScreenOrderMenu";
+import type { ScreenAlignMenu } from "@/menu/domain/model/ScreenAlignMenu";
 import { $SCREEN_MENU_NAME } from "@/config/MenuConfig";
 import { $getMenu } from "../../MenuUtil";
-import type { IMenu } from "@/interface/IMenu";
 
 /**
  * @description スクリーンエリアのサブメニューを全て非表示にする
@@ -33,7 +34,7 @@ export const execute = (event: PointerEvent): void =>
 
         const elementId = showElementIds[idx];
 
-        const menu: IMenu<any> | null = $getMenu(`${elementId}-menu`);
+        const menu = $getMenu<ScreenOrderMenu | ScreenAlignMenu>(`${elementId}-menu`);
         if (!menu) {
             continue;
         }

@@ -121,6 +121,17 @@ export class BaseMenu
     }
 
     /**
+     * @returns {Promise<void>}
+     * @method
+     * @public
+     */
+    async initialize (): Promise<void>
+    {
+        // eslint-disable-next-line no-useless-return
+        return ;
+    }
+
+    /**
      * @description メニューを表示
      *              Show menu
      *

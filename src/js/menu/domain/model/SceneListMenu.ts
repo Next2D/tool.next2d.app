@@ -21,19 +21,6 @@ export class SceneListMenu extends BaseMenu
     }
 
     /**
-     * @description 初期起動関数
-     *              initial invoking function
-     *
-     * @return {void}
-     * @method
-     * @public
-     */
-    initialize (): void
-    {
-        //
-    }
-
-    /**
      * @description メニュー位置を補正
      *              Correct menu position
      *

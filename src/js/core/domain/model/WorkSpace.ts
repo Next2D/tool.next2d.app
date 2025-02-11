@@ -3,7 +3,7 @@ import type { IUserToolAreaStateObject } from "@/interface/IUserToolAreaStateObj
 import type { IUserTimelineAreaStateObject } from "@/interface/IUserTimelineAreaStateObject";
 import type { IUserControllerAreaStateObject } from "@/interface/IUserControllerAreaStateObject";
 import type { IWorkSpaceSaveObject } from "@/interface/IWorkSpaceSaveObject";
-import type { IUserControllerAreaStateObject } from "@/interface/IUserControllerAreaStateObject";
+import type { IUserPropertyAreaStateObject } from "@/interface/IUserPropertyAreaStateObject";
 import type { IInstanceSaveObject } from "@/interface/IInstanceSaveObject";
 import type { IHistoryObject } from "@/interface/IHistoryObject";
 import { ScreenTab } from "@/screen/domain/model/ScreenTab";
@@ -59,7 +59,7 @@ export class WorkSpace
     private readonly _$screenTab: ScreenTab;
     private readonly _$toolAreaState: IUserToolAreaStateObject;
     private readonly _$timelineAreaState: IUserTimelineAreaStateObject;
-    private readonly _$propertyAreaState: IUserControllerAreaStateObject;
+    private readonly _$propertyAreaState: IUserPropertyAreaStateObject;
     private readonly _$controllerAreaState: IUserControllerAreaStateObject;
     private readonly _$plugins: Map<any, any>;
     private readonly _$histories: IHistoryObject[];
@@ -427,7 +427,7 @@ export class WorkSpace
      * @readonly
      * @public
      */
-    get propertyAreaState (): IUserControllerAreaStateObject
+    get propertyAreaState (): IUserPropertyAreaStateObject
     {
         return this._$propertyAreaState;
     }
@@ -643,7 +643,7 @@ export class WorkSpace
      * @method
      * @public
      */
-    updatePropertyArea (object: IUserControllerAreaStateObject): void
+    updatePropertyArea (object: IUserPropertyAreaStateObject): void
     {
         Object.assign(this._$propertyAreaState, object);
     }

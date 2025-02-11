@@ -1,4 +1,3 @@
-import type { IMenu } from "@/interface/IMenu";
 import type { TimelineLayerControllerMenu } from "@/menu/domain/model/TimelineLayerControllerMenu";
 import { $getLayerFromElement } from "@/timeline/application/TimelineUtil";
 import { $TIMELINE_LAYER_MENU_NAME } from "@/config/MenuConfig";
@@ -7,11 +6,11 @@ import { execute as timelineLayerControllerMenuUpdateIconStyleService } from "..
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { ExternalTimeline } from "@/external/timeline/domain/model/ExternalTimeline";
 import { ExternalLayer } from "@/external/core/domain/model/ExternalLayer";
+import { $useKeyboard } from "@/shortcut/ShortcutUtil";
 import {
     $allHideMenu,
     $getMenu
 } from "@/menu/application/MenuUtil";
-import { $useKeyboard } from "@/shortcut/ShortcutUtil";
 
 /**
  * @description レイヤーのコントローラーメニューを表示
@@ -35,7 +34,7 @@ export const execute = (event: MouseEvent): void =>
     // 全てのメニューを非表示
     $allHideMenu($TIMELINE_LAYER_MENU_NAME);
 
-    const menu: IMenu<TimelineLayerControllerMenu> | null = $getMenu($TIMELINE_LAYER_MENU_NAME);
+    const menu = $getMenu<TimelineLayerControllerMenu>($TIMELINE_LAYER_MENU_NAME);
     if (!menu) {
         return ;
     }

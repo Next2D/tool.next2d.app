@@ -1,6 +1,5 @@
-import { $BILLING_MODAL_NAME } from "@/config/MenuConfig";
-import type { IMenu } from "@/interface/IMenu";
 import type { BillingModal } from "@/menu/domain/model/BillingModal";
+import { $BILLING_MODAL_NAME } from "@/config/MenuConfig";
 import { $getMenu } from "../../MenuUtil";
 
 /**
@@ -14,7 +13,7 @@ import { $getMenu } from "../../MenuUtil";
 export const execute = (): void =>
 {
     // メニューを非表示にする
-    const menu: IMenu<BillingModal> | null = $getMenu($BILLING_MODAL_NAME);
+    const menu = $getMenu<BillingModal>($BILLING_MODAL_NAME);
     if (!menu) {
         return ;
     }

@@ -13,6 +13,7 @@ describe("ControllerAdjustmentMouseDownEventUseCase Test", () =>
         let pointerId = 0;
         let stopPropagation = false;
         const MockEvent = {
+            "button": 0,
             "pointerId": 100,
             "stopPropagation": () =>
             {

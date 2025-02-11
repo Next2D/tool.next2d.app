@@ -10,7 +10,6 @@ import { execute as billingModelSocketMessageUseCase } from "./BillingModelSocke
  *              Launch WebSocket to accept rewards
  *
  * @param  {string} room_id
- * @param  {string} user_id
  * @return {void}
  * @method
  * @public

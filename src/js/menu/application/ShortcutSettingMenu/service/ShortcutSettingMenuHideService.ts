@@ -1,4 +1,3 @@
-import type { IMenu } from "@/interface/IMenu";
 import type { ShortcutSettingMenu } from "@/menu/domain/model/ShortcutSettingMenu";
 import { $getMenu } from "@/menu/application/MenuUtil";
 import { $SHORTCUT_MENU_NAME } from "@/config/MenuConfig";
@@ -13,7 +12,7 @@ import { $SHORTCUT_MENU_NAME } from "@/config/MenuConfig";
  */
 export const execute = (): void =>
 {
-    const menu: IMenu<ShortcutSettingMenu> | null = $getMenu($SHORTCUT_MENU_NAME);
+    const menu = $getMenu<ShortcutSettingMenu>($SHORTCUT_MENU_NAME);
     if (!menu) {
         return ;
     }

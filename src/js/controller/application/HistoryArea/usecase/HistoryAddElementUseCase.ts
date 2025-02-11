@@ -11,7 +11,7 @@ import { execute as languageTranslationService } from "@/language/application/se
  * @param  {number} movie_clip_id
  * @param  {number} index
  * @param  {string} text
- * @param  {string} class_name
+ * @param  {string} [class_name=""]
  * @return {void}
  * @method
  * @public
@@ -47,8 +47,11 @@ export const execute = (
     // 言語設定
     languageTranslationService(lastElement);
 
+    let pointerDownQueue = Promise.resolve();
+
     // マウスダウンイベントを登録
-    lastElement.addEventListener(EventType.POINTER_DOWN,
-        historyMouseDownEventUseCase
-    );
+    lastElement.addEventListener(EventType.POINTER_DOWN, async (event: PointerEvent) =>
+    {
+        pointerDownQueue = pointerDownQueue.then(() => historyMouseDownEventUseCase(event));
+    });
 };

@@ -44,7 +44,7 @@ export class UserSettingMenu extends BaseMenu
      * @method
      * @public
      */
-    initialize (): void
+    async initialize (): Promise<void>
     {
         userSettingMenuInitializeUseCase();
     }

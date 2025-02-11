@@ -40,11 +40,11 @@ export class TimelineHeaderMenu extends BaseMenu
      * @description 初期起動関数
      *              initial invoking function
      *
-     * @return {void}
+     * @return {Promise<void>}
      * @method
      * @public
      */
-    initialize (): void
+    async initialize (): Promise<void>
     {
         timelineHeaderMenuInitializeRegisterEventUseCase();
     }

@@ -1,8 +1,7 @@
+import type { ScreenTabMenu } from "@/menu/domain/model/ScreenTabMenu";
 import { $SCREEN_TAB_MENU_NAME } from "@/config/MenuConfig";
 import { $SCREEN_TAB_LIST_ID } from "@/config/ScreenConfig";
-import type { IMenu } from "@/interface/IMenu";
 import { EventType } from "@/tool/domain/event/EventType";
-import type { ScreenTabMenu } from "@/menu/domain/model/ScreenTabMenu";
 import { $getMenu } from "@/menu/application/MenuUtil";
 import { execute as screenTabMenuMouseDownEventUseCase } from "./ScreenTabMenuMouseDownEventUseCase";
 
@@ -23,7 +22,7 @@ export const execute = (): void =>
         return ;
     }
 
-    const menu: IMenu<ScreenTabMenu> | null = $getMenu($SCREEN_TAB_MENU_NAME);
+    const menu = $getMenu<ScreenTabMenu>($SCREEN_TAB_MENU_NAME);
     if (!menu) {
         return ;
     }

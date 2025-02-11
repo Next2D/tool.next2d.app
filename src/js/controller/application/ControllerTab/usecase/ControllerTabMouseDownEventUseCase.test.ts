@@ -26,6 +26,7 @@ describe("ControllerTabMouseDownEventUseCase Test", () =>
             {
                 stopPropagation = true;
             }),
+            "button": 0,
             "currentTarget": node,
         } as unknown as PointerEvent;
 

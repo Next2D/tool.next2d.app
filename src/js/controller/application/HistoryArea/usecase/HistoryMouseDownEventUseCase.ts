@@ -29,9 +29,9 @@ export const execute = async (event: PointerEvent): Promise<void> =>
     // 全てのメニューを非表示にする
     $allHideMenu();
 
-    // 画面共有中なら解放
+    // 画面共有中か、広告を見たユーザーでなければ、モーダルを表示して終了
     if (!userAllFunctionStateService() && !$useSocket()) {
-        billingModelShowService();
+        await billingModelShowService();
         return ;
     }
 

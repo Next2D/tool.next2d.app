@@ -27,11 +27,11 @@ export class BillingModal extends BaseMenu
      * @description 初期起動関数
      *              initial invoking function
      *
-     * @return {void}
+     * @return {Promise<void>}
      * @method
      * @public
      */
-    initialize (): void
+    async initialize (): Promise<void>
     {
         // モーダルのイベント登録
         billingModelInitializeRegisterEventUseCase();
@@ -41,22 +41,19 @@ export class BillingModal extends BaseMenu
      * @description 機能制限解除案内のモーダル開始関数
      *              Modal start function for function restriction release guidance
      *
-     * @returns {void}
+     * @returns {Promise<void>}
      * @method
      * @public
      */
-    show (): void
+    async show (): Promise<void>
     {
         if (this._$state === "show") {
             return ;
         }
 
         // ユースケースを実行
-        billingModelShowUseCase()
-            .then((): void =>
-            {
-                super.show();
-            });
+        await billingModelShowUseCase();
+        super.show();
     }
 
     /**

@@ -1,8 +1,7 @@
+import type { ProgressMenu } from "@/menu/domain/model/ProgressMenu";
 import { $PROGRESS_MENU_NAME } from "@/config/MenuConfig";
-import { IMenu } from "@/interface/IMenu";
 import { $replace } from "@/language/application/LanguageUtil";
 import { $getMenu } from "@/menu/application/MenuUtil";
-import { ProgressMenu } from "@/menu/domain/model/ProgressMenu";
 import { execute as userDatabaseSaveIndexedDBUseCase } from "./UserDatabaseSaveIndexedDBUseCase";
 
 /**
@@ -16,7 +15,7 @@ import { execute as userDatabaseSaveIndexedDBUseCase } from "./UserDatabaseSaveI
 export const execute = async (): Promise<void> =>
 {
     // 進行状況を表示
-    const menu: IMenu<ProgressMenu> = $getMenu($PROGRESS_MENU_NAME);
+    const menu = $getMenu<ProgressMenu>($PROGRESS_MENU_NAME);
     if (!menu) {
         return ;
     }

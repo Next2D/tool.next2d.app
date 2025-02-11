@@ -1,11 +1,13 @@
-import type { IMenu } from "@/interface/IMenu";
 import type { ShortcutSettingMenu } from "@/menu/domain/model/ShortcutSettingMenu";
 import { $getMenu } from "@/menu/application/MenuUtil";
 import {
     $SHORTCUT_MENU_NAME,
     $USER_MENU_NAME
 } from "@/config/MenuConfig";
-import { $TOOL_PREFIX, $TOOL_USER_SETTING_ID } from "@/config/ToolConfig";
+import {
+    $TOOL_PREFIX,
+    $TOOL_USER_SETTING_ID
+} from "@/config/ToolConfig";
 
 /**
  * @description ショートカットメニューの表示位置のoffsetを更新
@@ -18,7 +20,7 @@ import { $TOOL_PREFIX, $TOOL_USER_SETTING_ID } from "@/config/ToolConfig";
 export const execute = (): void =>
 {
     // ユーザーメニューオブジェクト
-    const menu: IMenu<ShortcutSettingMenu> = $getMenu($SHORTCUT_MENU_NAME);
+    const menu = $getMenu<ShortcutSettingMenu>($SHORTCUT_MENU_NAME);
     if (!menu) {
         return ;
     }

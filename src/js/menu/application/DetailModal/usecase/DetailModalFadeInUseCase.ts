@@ -1,4 +1,3 @@
-import type { IMenu } from "@/interface/IMenu";
 import type { IShortcutViewObject } from "@/interface/IShortcutViewObject";
 import type { IUserSettingIObject } from "@/interface/IUserSettingIObject";
 import type { DetailModal } from "@/menu/domain/model/DetailModal";
@@ -62,7 +61,7 @@ export const execute = (event: PointerEvent): void =>
         element.textContent = value;
     }
 
-    const menu: IMenu<DetailModal> | null = $getMenu($DETAIL_MODAL_NAME);
+    const menu = $getMenu<DetailModal>($DETAIL_MODAL_NAME);
     if (!menu) {
         return ;
     }

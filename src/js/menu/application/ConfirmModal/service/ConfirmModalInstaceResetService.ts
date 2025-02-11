@@ -1,5 +1,4 @@
 import type { ConfirmModal } from "@/menu/domain/model/ConfirmModal";
-import type { IMenu } from "@/interface/IMenu";
 import { $CONFIRM_MODAL_NAME } from "@/config/MenuConfig";
 import { $getMenu } from "../../MenuUtil";
 
@@ -13,7 +12,7 @@ import { $getMenu } from "../../MenuUtil";
  */
 export const execute = (): void =>
 {
-    const menu: IMenu<ConfirmModal> | null = $getMenu($CONFIRM_MODAL_NAME);
+    const menu = $getMenu<ConfirmModal>($CONFIRM_MODAL_NAME);
     if (!menu) {
         return ;
     }

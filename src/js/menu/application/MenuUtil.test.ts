@@ -1,31 +1,10 @@
 import {
     $registerMenu,
-    $getMenu,
-    $getMenuAll,
     $allHideMenu
 } from "./MenuUtil";
 
 describe("MenuUtilTest", () =>
 {
-    test("$registerMenu and $getMenu and $getMenuAll test", () =>
-    {
-        const mock1 = {
-            "name": "mock1"
-        };
-
-        const mock2 = {
-            "name": "mock2"
-        };
-
-        $registerMenu(mock1);
-        $registerMenu(mock2);
-        expect($getMenu("mock1")).toBe(mock1);
-        expect($getMenu("mock2")).toBe(mock2);
-
-        const menus = $getMenuAll();
-        expect(menus.size).toBe(2);
-    });
-
     test("$allHide test", () =>
     {
         let mock1State = "show";

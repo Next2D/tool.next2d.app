@@ -1,5 +1,4 @@
-import { IMenu } from "@/interface/IMenu";
-import { SceneListMenu } from "@/menu/domain/model/SceneListMenu";
+import type { SceneListMenu } from "@/menu/domain/model/SceneListMenu";
 import { $getMenu } from "../../MenuUtil";
 import { $SCENE_LIST_MENU_NAME } from "@/config/MenuConfig";
 
@@ -14,7 +13,7 @@ import { $SCENE_LIST_MENU_NAME } from "@/config/MenuConfig";
 export const execute = (): void =>
 {
     // シーン一覧メニュー
-    const menu: IMenu<SceneListMenu> | null = $getMenu($SCENE_LIST_MENU_NAME);
+    const menu = $getMenu<SceneListMenu>($SCENE_LIST_MENU_NAME);
     if (!menu) {
         return ;
     }

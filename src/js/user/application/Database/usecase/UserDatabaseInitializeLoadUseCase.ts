@@ -1,4 +1,3 @@
-import type { IMenu } from "@/interface/IMenu";
 import type { ProgressMenu } from "@/menu/domain/model/ProgressMenu";
 import { $PROGRESS_MENU_NAME } from "@/config/MenuConfig";
 import { $getMenu } from "@/menu/application/MenuUtil";
@@ -6,15 +5,15 @@ import { $createWorkSpace } from "@/core/application/CoreUtil";
 import { $replace } from "@/language/application/LanguageUtil";
 import { execute as userDatabaseGetOpenDBRequestService } from "../service/UserDatabaseGetOpenDBRequestService";
 import { execute as workSpaceRestoreSaveDataService } from "@/core/application/WorkSpace/service/WorkSpaceRestoreSaveDataService";
+import { IBillingExpireObject } from "@/interface/IBillingExpireObject";
+import { $setExpireDate } from "../../Billing/BillingUtil";
+import { execute as adAreaHideService } from "@/controller/application/AdArea/service/AdAreaHideService";
+import { execute as userAllFunctionStateService } from "@/user/application/Billing/service/UserAllFunctionStateService";
 import {
     $USER_DATABASE_BILLING_STORE_KEY,
     $USER_DATABASE_NAME,
     $USER_DATABASE_STORE_KEY
 } from "@/config/Config";
-import { IBillingExpireObject } from "@/interface/IBillingExpireObject";
-import { $setExpireDate } from "../../Billing/BillingUtil";
-import { execute as adAreaHideService } from "@/controller/application/AdArea/service/AdAreaHideService";
-import { execute as userAllFunctionStateService } from "@/user/application/Billing/service/UserAllFunctionStateService";
 
 /**
  * @description IndexedDbからデータ読み込みを行う
@@ -29,7 +28,7 @@ export const execute = (): Promise<void> =>
     return new Promise((resolve): void =>
     {
         // 進行状況を表示
-        const menu: IMenu<ProgressMenu> = $getMenu($PROGRESS_MENU_NAME);
+        const menu = $getMenu<ProgressMenu>($PROGRESS_MENU_NAME);
         if (!menu) {
             return ;
         }

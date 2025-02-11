@@ -14,11 +14,9 @@ import { $CONTROLLER_ADJUSTMENT_ID } from "@/config/ControllerConfig";
  */
 export const execute = (event: PointerEvent): void =>
 {
-    // 親のイベントを中止
-    event.stopPropagation();
-
-    // 全てのメニューを非表示にする
-    $allHideMenu();
+    if (event.button !== 0) {
+        return ;
+    }
 
     const element: HTMLElement | null = document
         .getElementById($CONTROLLER_ADJUSTMENT_ID);
@@ -26,6 +24,12 @@ export const execute = (event: PointerEvent): void =>
     if (!element) {
         return ;
     }
+
+    // 親のイベントを中止
+    event.stopPropagation();
+
+    // 全てのメニューを非表示にする
+    $allHideMenu();
 
     // マウス移動イベントを登録
     element.setPointerCapture(event.pointerId);

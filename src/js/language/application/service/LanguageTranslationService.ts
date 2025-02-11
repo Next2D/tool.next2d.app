@@ -1,18 +1,21 @@
-import { $LANGUAGE_ELEMENTS_CLASS_NAME, $LANGUAGE_SPLIT_TEXT } from "@/config/LanguageConfig";
 import type { IShortcutViewObject } from "@/interface/IShortcutViewObject";
+import { $LANGUAGE_ELEMENTS_CLASS_NAME, $LANGUAGE_SPLIT_TEXT } from "@/config/LanguageConfig";
 import { $getViewMapping } from "@/menu/application/ShortcutSettingMenu/ShortcutSettingMenuUtil";
-import { $getMapping, $sprintf } from "@/language/application/LanguageUtil";
+import {
+    $getMapping,
+    $sprintf
+} from "@/language/application/LanguageUtil";
 
 /**
  * @description 変換対象のクラス名が設定されてるElementの言語を変換
  *              Convert the language of the Element for which the class name to be converted is set.
  *
  * @param  {HTMLElement} target_element
- * @return {Promise}
+ * @return {void}
  * @method
  * @public
  */
-export const execute = async (target_element: HTMLElement | Document): Promise<void> =>
+export const execute = (target_element: HTMLElement | Document): void =>
 {
     // 指定されたクラスを全て取得
     const elements: HTMLCollectionOf<Element> = target_element
@@ -22,7 +25,7 @@ export const execute = async (target_element: HTMLElement | Document): Promise<v
 
     const mapping = $getMapping();
     const length: number = elements.length;
-    for (let idx: number = 0; idx < length; ++idx) {
+    for (let idx = 0; idx < length; ++idx) {
 
         const element: HTMLElement = elements[idx] as NonNullable<HTMLElement>;
 
