@@ -1,11 +1,12 @@
+import type { MovieClip } from "@/core/domain/model/MovieClip";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { execute as scriptEditorModalShowService } from "@/menu/application/ScriptEditorModal/service/ScriptEditorModalShowService";
 import { $allHideMenu } from "@/menu/application/MenuUtil";
+import { $MOVIE_CLIP_TYPE } from "@/config/InstanceConfig";
 import {
     $setTargetFrame,
     $setTargetMovieClip
 } from "@/menu/application/ScriptEditorModal/ScriptEditorModalUtil";
-import { $MOVIE_CLIP_TYPE } from "@/config/InstanceConfig";
 
 /**
  * @description フレームのElementのマウスダウン処理関数
@@ -31,7 +32,7 @@ export const execute = (event: PointerEvent): void =>
 
     const workSpace = $getCurrentWorkSpace();
     const libraryId = parseInt(element.dataset.libraryId as string);
-    const movieClip = workSpace.getLibrary(libraryId);
+    const movieClip = workSpace.getLibrary(libraryId) as MovieClip;
 
     // MovieClipでなければ終了
     if (!movieClip || movieClip.type !== $MOVIE_CLIP_TYPE) {

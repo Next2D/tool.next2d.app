@@ -37,7 +37,9 @@ export const execute = (event: FocusEvent): void =>
 
         case "single": // DisplayObjectの名前を変更
             {
-                const layer = movieClip.getLayer(movieClip.selectedDepths.keys().next().value);
+                const layer = movieClip.getLayer(
+                    movieClip.selectedDepths.keys().next().value as number
+                );
                 if (!layer) {
                     return ;
                 }
@@ -47,7 +49,8 @@ export const execute = (event: FocusEvent): void =>
                     return ;
                 }
 
-                const character = activeCharacters[movieClip.selectedDepths.values().next().value[0]];
+                const values = movieClip.selectedDepths.values().next().value as number[];
+                const character = activeCharacters[values[0] as number];
                 if (!character) {
                     return ;
                 }

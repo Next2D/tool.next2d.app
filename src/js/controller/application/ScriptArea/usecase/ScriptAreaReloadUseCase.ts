@@ -1,5 +1,4 @@
-import { $CONTROLLER_JAVASCRIPT_INTERNAL_LIST_BOX_ID } from "@/config/ControllerScriptAreaConfig";
-import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
+import type { MovieClip } from "@/core/domain/model/MovieClip";
 import { execute as scriptAreaRemoveElementService } from "../service/ScriptAreaRemoveElementService";
 import { execute as scriptAreaParentComponent } from "../component/ScriptAreaParentComponent";
 import { execute as scriptAreaParentElementRegisterEventUseCase } from "./ScriptAreaParentElementRegisterEventUseCase";
@@ -7,6 +6,8 @@ import { execute as scriptAreaFrameComponent } from "../component/ScriptAreaFram
 import { execute as scriptAreaFrameElementMouseDownEventUseCase } from "./ScriptAreaFrameElementMouseDownEventUseCase";
 import { EventType } from "@/tool/domain/event/EventType";
 import { $MOVIE_CLIP_TYPE } from "@/config/InstanceConfig";
+import { $CONTROLLER_JAVASCRIPT_INTERNAL_LIST_BOX_ID } from "@/config/ControllerScriptAreaConfig";
+import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 
 /**
  * @description スクリプト一覧表示を再読み込み
@@ -36,7 +37,8 @@ export const execute = async (): Promise<void> =>
             continue;
         }
 
-        if (!instance.actions.size) {
+        const actions = (instance as MovieClip).actions;
+        if (!actions.size) {
             continue;
         }
 
@@ -54,7 +56,7 @@ export const execute = async (): Promise<void> =>
         scriptAreaParentElementRegisterEventUseCase(parentElement);
 
         // フレームの順番は順不同なので、昇順に並び替える
-        const frames = Array.from(instance.actions.keys()) as number[];
+        const frames = Array.from(actions.keys()) as number[];
         frames.sort((a: number, b: number): number =>
         {
             return a - b;

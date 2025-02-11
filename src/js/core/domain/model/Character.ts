@@ -678,7 +678,7 @@ export class Character
         }
 
         // ライブラリアイテムの加工してないバウンディングボックスの値を取得
-        return instance.getRawBounds(frame);
+        return instance.getRawBounds();
     }
 
     /**

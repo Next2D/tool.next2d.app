@@ -1,3 +1,4 @@
+import type { MovieClip } from "@/core/domain/model/MovieClip";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { $allHideMenu } from "@/menu/application/MenuUtil";
 import { execute as timelineSceneListClearAddRootUseCase } from "@/timeline/application/TimelineSceneList/usecase/TimelineSceneListClearAddRootUseCase";
@@ -87,6 +88,6 @@ export const execute = async (event: PointerEvent): Promise<void> =>
         }
 
         // 指定のMovieClipを起動
-        await externalTimelineEditMovieClipUseService(workSpace, instance);
+        await externalTimelineEditMovieClipUseService(workSpace, instance as MovieClip);
     }
 };

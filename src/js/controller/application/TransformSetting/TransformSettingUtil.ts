@@ -1,5 +1,6 @@
 import type { Character } from "@/core/domain/model/Character";
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
+import type { MovieClip } from "@/core/domain/model/MovieClip";
 import { timelineSceneList } from "@/timeline/domain/model/TimelineSceneList";
 import { execute as characterCalcGetScaleXService } from "@/core/application/Character/service/CharacterCalcGetScaleXService";
 import { execute as characterCalcGetScaleYService } from "@/core/application/Character/service/CharacterCalcGetScaleYService";
@@ -210,7 +211,12 @@ export const $getMaskMatrix = (character: Character): number[] =>
 
         case $MOVIE_CLIP_TYPE:
         {
-            const bounds = instance.getRawBounds(instance.currentFrame);
+            const bounds = (instance as MovieClip)
+                .getRawBounds((instance as MovieClip).currentFrame);
+            if (!bounds) {
+                return matrix;
+            }
+
             return [1, 0, 0, 1, bounds.xMin * workSpace.scale, bounds.yMin * workSpace.scale];
         }
 

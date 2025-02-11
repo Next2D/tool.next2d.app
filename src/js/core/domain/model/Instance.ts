@@ -2,6 +2,7 @@ import type { IInstanceType } from "@/interface/IInstanceType";
 import type { IObject } from "@/interface/IObject";
 import { WorkSpace } from "./WorkSpace";
 import { execute as instanceGetPathNameService } from "@/core/application/Instance/service/InstanceGetPathNameService";
+import { IBounds } from "@/interface/IBounds";
 
 /**
  * @description ライブラリのアイテムの親クラス
@@ -168,6 +169,19 @@ export class Instance
     toObject (): IObject<any>
     {
         return {};
+    }
+
+    /**
+     * @description インスタンスのバウンディングボックスを返却(親クラスなので、nullを返却)
+     *              Returns the bounding box of the instance (since it is a parent class, it returns null)
+     *
+     * @returns {IBounds | null}
+     * @method
+     * @public
+     */
+    getRawBounds (): IBounds | null
+    {
+        return null;
     }
 
     /**

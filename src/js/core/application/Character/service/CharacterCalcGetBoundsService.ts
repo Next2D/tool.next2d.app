@@ -1,4 +1,5 @@
 import type { IBounds } from "@/interface/IBounds";
+import type { MovieClip } from "@/core/domain/model/MovieClip";
 import { $getCurrentWorkSpace, $getMatrixBounds } from "../../CoreUtil";
 
 /**
@@ -19,7 +20,7 @@ export const execute = (
 ): IBounds | null => {
 
     const workSpace = $getCurrentWorkSpace();
-    const instance  = workSpace.getLibrary(library_id);
+    const instance  = workSpace.getLibrary(library_id) as MovieClip;
     if (!instance) {
         return null;
     }

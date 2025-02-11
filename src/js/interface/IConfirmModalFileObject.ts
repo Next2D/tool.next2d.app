@@ -4,4 +4,4 @@ export interface IConfirmModalFileObject <I extends Instance> {
     file: File;
     instance: I;
     path: string;
-};
+}

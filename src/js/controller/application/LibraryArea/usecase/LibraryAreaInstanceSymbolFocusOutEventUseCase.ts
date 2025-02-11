@@ -1,4 +1,3 @@
-import type { Instance } from "@/core/domain/model/Instance";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { execute as libraryAreaInacticeInstanceTextContentService } from "../service/LibraryAreaInacticeInstanceTextContentService";
 import { ExternalItem } from "@/external/core/domain/model/ExternalItem";

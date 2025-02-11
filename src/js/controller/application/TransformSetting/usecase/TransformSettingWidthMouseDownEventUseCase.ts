@@ -84,16 +84,17 @@ export const execute = (event: PointerEvent): void =>
         // 自由変形ツールなら設定の位置に中心点を設定
         if (movieClip.isSingleSelectedOfDisplayObject()) {
             const layer = movieClip.getLayer(
-                movieClip.selectedDepths.keys().next().value
+                movieClip.selectedDepths.keys().next().value as number
             );
 
             if (!layer) {
                 return ;
             }
 
+            const values = movieClip.selectedDepths.values().next().value as number[];
             const character = layer.getCharacter(
                 movieClip.currentFrame,
-                movieClip.selectedDepths.values().next().value[0]
+                values[0]
             );
 
             if (!character) {

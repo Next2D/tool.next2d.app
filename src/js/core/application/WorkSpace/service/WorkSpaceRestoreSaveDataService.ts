@@ -1,5 +1,4 @@
 import { WorkSpace } from "@/core/domain/model/WorkSpace";
-import type { IWorkSpaceSaveObject } from "@/interface/IWorkSpaceSaveObject";
 import { $registerWorkSpace } from "../../CoreUtil";
 import { execute as binaryToBufferService } from "@/core/service/BinaryToBufferService";
 import { execute as bufferToBinaryService } from "@/core/service/BufferToBinaryService";
