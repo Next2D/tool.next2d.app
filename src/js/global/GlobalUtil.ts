@@ -161,3 +161,31 @@ export const $poolCanvas = (canvas: HTMLCanvasElement): void =>
     // キャッシュ登録
     $canvasPool.push(canvas);
 };
+
+/**
+ * @description ランダムなUUIDを生成
+ *              Generate a random UUID
+ *
+ * @return {string}
+ * @method
+ * @public
+ */
+export const $generateUUID = (): string =>
+{
+    return "randomUUID" in crypto ? crypto.randomUUID() : "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, (character) =>
+    {
+        // 0〜15のランダムな整数値を生成
+        const randomValue = Math.random() * 16 | 0;
+
+        let generatedCharacter;
+        if (character === "x") {
+            // 'x'にはランダムな値をそのまま使用
+            generatedCharacter = randomValue;
+        } else {
+            // 'y'は、UUIDの仕様に準拠した形に調整
+            generatedCharacter = randomValue & 0x3 | 0x8;
+        }
+
+        return generatedCharacter.toString(16); // 16進数に変換して返す
+    });
+}

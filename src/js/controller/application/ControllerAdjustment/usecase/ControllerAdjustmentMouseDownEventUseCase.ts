@@ -43,4 +43,9 @@ export const execute = (event: PointerEvent): void =>
         controllerAdjustmentPointerUpUseCase,
         { "passive": false }
     );
+    element.addEventListener(
+        EventType.POINTER_LEAVE,
+        controllerAdjustmentPointerUpUseCase,
+        { "passive": false }
+    );
 };

@@ -45,7 +45,7 @@ export const $getSocket = (): WebSocket | null =>
  */
 export const $setSocket = (web_socket: WebSocket | null): void =>
 {
-    if ($webSocket) {
+    if ($webSocket && $webSocket.readyState === 1) {
         $webSocket.close();
     }
     $webSocket = web_socket;

@@ -21,10 +21,10 @@
     "@types/ace": "^0.0.52",
     "@types/node": "^22.13.1",
     "@types/qrcode": "^1.5.5",
-    "@typescript-eslint/eslint-plugin": "^8.23.0",
-    "@typescript-eslint/parser": "^8.23.0",
+    "@typescript-eslint/eslint-plugin": "^8.24.0",
+    "@typescript-eslint/parser": "^8.24.0",
     "@vitest/web-worker": "^3.0.5",
-    "eslint": "^9.20.0",
+    "eslint": "^9.20.1",
     "eslint-plugin-unused-imports": "^4.1.4",
     "globals": "^15.14.0",
     "jsdom": "^26.0.0",
@@ -38,7 +38,7 @@
     "fflate": "^0.8.2",
     "jszip": "^3.10.1",
     "qrcode": "^1.5.4",
-    "terser": "^5.38.1"
+    "terser": "^5.38.2"
   },
   "peerDependencies": {
     "@next2d/cache": "file:../player/packages/cache",

@@ -5,6 +5,7 @@ import { execute as workSpaceCreateSaveDataService } from "@/core/application/Wo
 import { execute as shareGetS3EndPointRepository } from "../domain/repository/ShareGetS3EndPointRepository";
 import { execute as sharePutS3FileRepository } from "../domain/repository/SharePutS3FileRepository";
 import { execute as bufferToBinaryService } from "@/core/service/BufferToBinaryService";
+import { $generateUUID } from "@/global/GlobalUtil";
 
 /**
  * @description オーナーのプロジェクトデーターを共有者に送信
@@ -28,7 +29,7 @@ export const execute = async (connection_id: string): Promise<void> =>
     }
 
     // S3にファイルをアップロード
-    const fileId = window.crypto.randomUUID();
+    const fileId = $generateUUID();
     const url = await shareGetS3EndPointRepository(fileId, "put");
 
     const binary = bufferToBinaryService(buffer);

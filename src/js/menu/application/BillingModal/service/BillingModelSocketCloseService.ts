@@ -16,7 +16,9 @@ export const execute = (): void =>
     }
 
     // socketを閉じる
-    socket.close();
+    if (socket.readyState === 1) {
+        socket.close();
+    }
 
     // WebSocketのオブジェクトを初期化
     $setSocket(null);

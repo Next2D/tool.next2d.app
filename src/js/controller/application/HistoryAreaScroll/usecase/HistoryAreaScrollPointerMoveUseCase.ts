@@ -12,6 +12,11 @@ import { historyArea } from "@/controller/domain/model/HistoryArea";
  */
 export const execute = (event: PointerEvent): void =>
 {
+    const element: HTMLElement | null = event.target as HTMLElement;
+    if (!element) {
+        return ;
+    }
+
     // イベントの伝播を止める
     event.stopPropagation();
     event.preventDefault();
@@ -26,11 +31,6 @@ export const execute = (event: PointerEvent): void =>
             .getElementById($HISTORY_LIST_ID);
 
         if (!historyAreaElement) {
-            return ;
-        }
-
-        const element: HTMLElement | null = event.target as HTMLElement;
-        if (!element) {
             return ;
         }
 

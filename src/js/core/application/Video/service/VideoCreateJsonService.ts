@@ -17,6 +17,7 @@ export const execute = (video: Video): IVideoPublishJson =>
         "extends": DisplayVideo.namespace,
         "buffer": video.buffer ? Array.from(video.buffer) : [],
         "volume": video.volume,
+        "bounds": video.getRawBounds(),
         "loop": video.loop,
         "autoPlay": video.autoPlay
     };

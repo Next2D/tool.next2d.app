@@ -2,6 +2,7 @@ import { $setSocketOwner, $useSocket } from "../ShareUtil";
 import { execute as shareConnectUseCase } from "./ShareConnectUseCase";
 import { execute as userAllFunctionStateService } from "@/user/application/Billing/service/UserAllFunctionStateService";
 import { execute as billingModelShowService } from "@/menu/application/BillingModal/service/BillingModelShowService";
+import { $generateUUID } from "@/global/GlobalUtil";
 
 /**
  * @description WebSocketの機能を起動
@@ -25,7 +26,7 @@ export const execute = (): void =>
     }
 
     // ユニークなIDを発番
-    const roomId = crypto.randomUUID();
+    const roomId = $generateUUID();
 
     // URLを更新
     history.pushState("", "",

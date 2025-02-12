@@ -50,11 +50,17 @@ export const execute = async (event: PointerEvent): Promise<void> =>
     const index: number = parseInt(element.dataset.index as string);
     if (workSpace.historyIndex > index) {
         while (workSpace.historyIndex !== index) {
-            await historyUndoUseCase(workSpace.id, movieClip.id);
+            const result = await historyUndoUseCase(workSpace.id, movieClip.id);
+            if (!result) {
+                break;
+            }
         }
     } else {
         while (index >= workSpace.historyIndex) {
-            await historyRedoUseCase(workSpace.id, movieClip.id);
+            const result = await historyRedoUseCase(workSpace.id, movieClip.id);
+            if (!result) {
+                break;
+            }
         }
     }
 };

@@ -1,8 +1,10 @@
 import type { MovieClip } from "@/core/domain/model/MovieClip";
+import type { MovieClip as DisplayMovieClip } from "@next2d/display";
 import { $getConcatenatedMatrix } from "@/controller/application/TransformSetting/TransformSettingUtil";
 import { $getCanvas } from "@/global/GlobalUtil";
 import { $clearUseLibraryIds } from "@/tool/application/PublishTool/PublishToolUtil";
-import { Loader } from "@next2d/display";
+import { Loader, Sprite } from "@next2d/display";
+import { Matrix } from "@next2d/geom";
 import { execute as publishToolCreateToObjectUseCase } from "@/tool/application/PublishTool/usecase/PublishToolCreateToObjectUseCase";
 
 /**
@@ -20,60 +22,43 @@ export const execute = async (
     frame: number = 1
 ): Promise<HTMLCanvasElement> => {
 
-    return new Promise(async (resolve) =>
-    {
-        // Plyerのキャッシュをリセット
-        next2d.player.cacheStore.reset();
+    // 利用ライブラリIDのマッピングを初期化
+    $clearUseLibraryIds();
 
-        const canvas = $getCanvas();
+    // JSONオブジェクトを生成
+    const object = await publishToolCreateToObjectUseCase(movie_clip);
+    console.log(object);
 
-        // 利用ライブラリIDのマッピングを初期化
-        $clearUseLibraryIds();
+    const loader = new Loader();
+    loader.loadJSON(object as any);
 
-        // JSONオブジェクトを生成
-        const object = await publishToolCreateToObjectUseCase(movie_clip);
+    const movieClip = loader.content as DisplayMovieClip;
+    movieClip.gotoAndStop(frame);
 
-        const loader = new Loader();
-        loader.loadJSON(object);
+    // matrixの適用分の座標を補正
+    const bounds = movieClip.getBounds(null);
+    const x = bounds.width / 2;
+    const y = bounds.height / 2;
 
-        const movieClip = loader.content;
-        movieClip.gotoAndStop(frame);
+    movieClip.x = -bounds.x - x;
+    movieClip.y = -bounds.y - y;
 
-        // matrixの適用分の座標を補正
-        const bounds = movieClip.getBounds(null);
-        const x = bounds.width / 2;
-        const y = bounds.height / 2;
+    const container = new Sprite();
+    container.addChild(movieClip);
 
-        movieClip.x = -bounds.x - x;
-        movieClip.y = -bounds.y - y;
+    const concatMatrix = $getConcatenatedMatrix();
+    container.matrix = new Matrix(
+        concatMatrix[0], concatMatrix[1],
+        concatMatrix[2], concatMatrix[3],
+        0, 0
+    );
 
-        const sprite = new next2d.display.Sprite();
-        sprite.addChild(movieClip);
+    const scale = window.devicePixelRatio;
 
-        const concatMatrix = $getConcatenatedMatrix();
-        sprite.transform.matrix = new next2d.geom.Matrix(
-            concatMatrix[0], concatMatrix[1],
-            concatMatrix[2], concatMatrix[3],
-            0, 0
-        );
-
-        const container = new next2d.display.Sprite();
-        container.addChild(sprite);
-
-        const matrix = new next2d.geom.Matrix();
-        matrix.translate(
-            container.width / 2,
-            container.height / 2
-        );
-        const scale = window.devicePixelRatio;
-        matrix.scale(scale, scale);
-
-        const bitmapData = new next2d.display.BitmapData(container.width * scale, container.height * scale);
-        bitmapData.ca(container, matrix, null, canvas, (canvas: HTMLCanvasElement): void =>
-        {
-            canvas.style.width  = `${container.width}px`;
-            canvas.style.height = `${container.height}px`;
-            resolve(canvas);
-        });
+    const canvas = await next2d.captureToCanvas(container, {
+        "matrix": new Matrix(scale, 0, 0, scale),
+        "canvas": $getCanvas()
     });
+
+    return canvas;
 };

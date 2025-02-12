@@ -12,6 +12,7 @@ import { execute as shareGetS3EndPointRepository } from "@/share/domain/reposito
 import { execute as sharePutS3FileRepository } from "@/share/domain/repository/SharePutS3FileRepository";
 import { execute as bufferToBinaryService } from "@/core/service/BufferToBinaryService";
 import { execute as userDatabaseAutoSaveReservationUseCase } from "@/user/application/Database/usecase/UserDatabaseAutoSaveReservationUseCase";
+import { $generateUUID } from "@/global/GlobalUtil";
 
 // @ts-ignore
 import ZlibDeflateWorker from "@/worker/ZlibDeflateWorker?worker&inline";
@@ -85,7 +86,7 @@ export const execute = async (
                 const binary = bufferToBinaryService(buffer);
 
                 // S3判定用のuuid
-                const fileId = window.crypto.randomUUID();
+                const fileId = $generateUUID();
                 const url = await shareGetS3EndPointRepository(fileId, "put");
                 await sharePutS3FileRepository(url, binary);
 

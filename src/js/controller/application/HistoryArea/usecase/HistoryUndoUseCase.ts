@@ -24,33 +24,33 @@ export const execute = async (
     work_space_id: number,
     library_id: number,
     receiver: boolean = false
-): Promise<void> => {
+): Promise<boolean> => {
 
     const element: HTMLElement | null = document
         .getElementById($HISTORY_LIST_ID);
 
     if (!element) {
-        return ;
+        return false;
     }
 
     const workSpace = $getWorkSpace(work_space_id);
     if (!workSpace || !workSpace.historyIndex) {
-        return ;
+        return false;
     }
 
     const movieClip = workSpace.getLibrary(library_id) as MovieClip;
     if (!movieClip) {
-        return ;
+        return false;
     }
 
     const historyObject: IHistoryObject | undefined = workSpace.histories[--workSpace.historyIndex];
     if (!historyObject) {
-        return ;
+        return false;
     }
 
     const node: HTMLElement | undefined = element.children[workSpace.historyIndex] as HTMLElement;
     if (!node) {
-        return ;
+        return false;
     }
 
     // 履歴表示を非アクティブにする
@@ -67,4 +67,6 @@ export const execute = async (
             "args": []
         });
     }
+
+    return true;
 };

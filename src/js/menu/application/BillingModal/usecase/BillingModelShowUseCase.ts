@@ -1,5 +1,6 @@
 import { execute as billingModelSocketConnectUseCase } from "./BillingModelSocketConnectUseCase";
 import { execute as billingModelGenerateQRCodeService } from "../service/BillingModelGenerateQRCodeService";
+import { $generateUUID } from "@/global/GlobalUtil";
 
 /**
  * @description モーダル起動の処理関数
@@ -11,7 +12,7 @@ import { execute as billingModelGenerateQRCodeService } from "../service/Billing
  */
 export const execute = async (): Promise<void> =>
 {
-    const roomId = crypto.randomUUID();
+    const roomId = $generateUUID();
 
     // WebSocketを起動
     billingModelSocketConnectUseCase(roomId);

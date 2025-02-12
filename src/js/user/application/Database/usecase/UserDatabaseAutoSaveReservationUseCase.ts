@@ -27,8 +27,5 @@ export const execute = (): void =>
     }
 
     // 1秒後に保存処理を実行
-    timerId = window.setTimeout(async (): Promise<void> =>
-    {
-        await userDatabaseSaveIndexedDBUseCase();
-    }, 1000);
+    timerId = window.setTimeout(userDatabaseSaveIndexedDBUseCase, 1000);
 };

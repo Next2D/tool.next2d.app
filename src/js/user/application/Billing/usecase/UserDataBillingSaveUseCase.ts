@@ -11,11 +11,11 @@ import { $BILLING_REWARD_PERIOD } from "@/config/BillingConfig";
  * @description リワード広告報酬の受け取り処理関数
  *              Rewarded ad reward receipt processing function
  *
- * @return {Promise}
+ * @return {Promise<void>}
  * @method
  * @public
  */
-export const execute = (): Promise<void> =>
+export const execute = async (): Promise<void> =>
 {
     return new Promise((reslove): void =>
     {
@@ -35,8 +35,15 @@ export const execute = (): Promise<void> =>
 
             const store: IDBObjectStore = transaction.objectStore(`${$USER_DATABASE_NAME}`);
 
-            // 現在の有効期限のデータにプラスしてIndexedDBを更新する
-            const date = new Date($getExpireDate());
+            const now = new Date();
+            const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+
+            // 有効期限が過去の場合は今日の日付にする
+            let date = new Date($getExpireDate());
+            if (date.getTime() < today.getTime()) {
+                date = today;
+            }
+
             date.setDate(date.getDate() + $BILLING_REWARD_PERIOD);
 
             // フォーマットをyyyy-mm-ddに変換
@@ -48,6 +55,7 @@ export const execute = (): Promise<void> =>
                 "expire": `${year}-${month}-${day}`
             };
 
+            // 有効期限を更新
             $setExpireDate(expireObject.expire);
 
             // IndesdDBに保存

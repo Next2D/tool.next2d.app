@@ -16,7 +16,7 @@ import {
  * @param  {number} work_space_id
  * @param  {number} library_id
  * @param  {boolean} [receiver=false]
- * @return {Promise}
+ * @return {Promise<boolean>}
  * @method
  * @public
  */
@@ -24,28 +24,28 @@ export const execute = async (
     work_space_id: number,
     library_id: number,
     receiver: boolean = false
-): Promise<void> => {
+): Promise<boolean> => {
 
     const element: HTMLElement | null = document
         .getElementById($HISTORY_LIST_ID);
 
     if (!element) {
-        return ;
+        return false;
     }
 
     const workSpace = $getWorkSpace(work_space_id);
     if (!workSpace || workSpace.historyIndex >= workSpace.histories.length) {
-        return ;
+        return false;
     }
 
     const movieClip = workSpace.getLibrary(library_id) as MovieClip;
     if (!movieClip) {
-        return ;
+        return false;
     }
 
     const node: HTMLElement | undefined = element.children[workSpace.historyIndex] as HTMLElement;
     if (!node) {
-        return ;
+        return false;
     }
 
     // 履歴表示をアクティブに更新
@@ -53,7 +53,7 @@ export const execute = async (
 
     const historyObject: IHistoryObject | undefined = workSpace.histories[workSpace.historyIndex++];
     if (!historyObject) {
-        return ;
+        return false;
     }
 
     await historyRedoCommandUseCase(historyObject);
@@ -66,4 +66,6 @@ export const execute = async (
             "args": []
         });
     }
+
+    return true;
 };

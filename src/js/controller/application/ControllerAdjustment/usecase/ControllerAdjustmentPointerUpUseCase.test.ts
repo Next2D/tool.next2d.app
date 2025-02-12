@@ -8,6 +8,7 @@ describe("ControllerAdjustmentPointerUpUseCase Test", () =>
     {
         const div = document.createElement("div");
         div.id = $CONTROLLER_ADJUSTMENT_ID;
+        document.body.appendChild(div);
 
         let pointerId = 0;
         let stopPropagation = false;
@@ -30,8 +31,9 @@ describe("ControllerAdjustmentPointerUpUseCase Test", () =>
             pointerId = pointer_id;
         });
 
-        let pointerMove = false;
-        let pointerUp   = false;
+        let pointerMove  = false;
+        let pointerUp    = false;
+        let pointerLeave = false;
         div.removeEventListener = vi.fn((type: string) =>
         {
             switch (type) {
@@ -41,6 +43,9 @@ describe("ControllerAdjustmentPointerUpUseCase Test", () =>
                 case "pointerup":
                     pointerUp = true;
                     break;
+                case "pointerleave":
+                    pointerLeave = true;
+                    break;
                 default:
                     throw new Error("Invalid type");
             }
@@ -48,6 +53,7 @@ describe("ControllerAdjustmentPointerUpUseCase Test", () =>
 
         expect(pointerMove).toBe(false);
         expect(pointerUp).toBe(false);
+        expect(pointerLeave).toBe(false);
         expect(pointerId).toBe(0);
         expect(preventDefault).toBe(false);
         expect(stopPropagation).toBe(false);
@@ -56,8 +62,11 @@ describe("ControllerAdjustmentPointerUpUseCase Test", () =>
 
         expect(pointerMove).toBe(true);
         expect(pointerUp).toBe(true);
+        expect(pointerLeave).toBe(true);
         expect(pointerId).toBe(100);
         expect(preventDefault).toBe(true);
         expect(stopPropagation).toBe(true);
+
+        document.body.removeChild(div);
     });
 });
