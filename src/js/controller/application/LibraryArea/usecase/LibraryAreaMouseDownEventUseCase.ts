@@ -1,5 +1,6 @@
 import { $allHideMenu } from "@/menu/application/MenuUtil";
 import { execute as libraryAreaSelectedClearUseCase } from "./LibraryAreaSelectedClearUseCase";
+import { $activeTouchPointers } from "@/global/GlobalUtil";
 
 /**
  * @description ライブラリエリアの親のイベント関数
@@ -12,7 +13,9 @@ import { execute as libraryAreaSelectedClearUseCase } from "./LibraryAreaSelecte
  */
 export const execute = (event: PointerEvent): void =>
 {
-    if (event.button !== 0) {
+    if (event.button !== 0
+        || $activeTouchPointers.size > 1
+    ) {
         return ;
     }
 

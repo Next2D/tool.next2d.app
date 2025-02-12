@@ -9,8 +9,8 @@ import { execute as scriptAreaScrollUpdateHeightService } from "@/controller/app
 import { execute as pluginAreaScrollUpdateHeightService } from "@/controller/application/PluginAreaScroll/service/PluginAreaScrollUpdateHeightService";
 
 /**
- * @description リサイズイベントを登録
- *              Register resize event
+ * @description リサイズイベントを実行
+ *              Execute resize event
  *
  * @return {void}
  * @method
@@ -18,30 +18,26 @@ import { execute as pluginAreaScrollUpdateHeightService } from "@/controller/app
  */
 export const execute = (): void =>
 {
-    // ブラウザの表示サイズに変更イベント処理
-    window.addEventListener("resize", (): void =>
+    // 移動していれば処理終了
+    const workSpace = $getCurrentWorkSpace();
+    if (workSpace.timelineAreaState.state === "move") {
+        return ;
+    }
+
+    requestAnimationFrame((): void =>
     {
-        // 移動していれば処理終了
-        const workSpace = $getCurrentWorkSpace();
-        if (workSpace.timelineAreaState.state === "move") {
-            return ;
-        }
+        // タイムラインをリサイズ
+        timelineLayerWindowResizeUseCase();
 
-        requestAnimationFrame((): void =>
-        {
-            // タイムラインをリサイズ
-            timelineLayerWindowResizeUseCase();
+        // タイムラインヘッダーをリサイズ
+        timelineHeaderWindowResizeUseCase();
 
-            // タイムラインヘッダーをリサイズ
-            timelineHeaderWindowResizeUseCase();
-
-            // スクロールバーの高さを更新
-            screenScrollResizeService();
-            libraryAreaScrollUpdateHeightService();
-            propertyAreaScrollUpdateHeightService();
-            historyAreaScrollUpdateHeightService();
-            scriptAreaScrollUpdateHeightService();
-            pluginAreaScrollUpdateHeightService();
-        });
+        // スクロールバーの高さを更新
+        screenScrollResizeService();
+        libraryAreaScrollUpdateHeightService();
+        propertyAreaScrollUpdateHeightService();
+        historyAreaScrollUpdateHeightService();
+        scriptAreaScrollUpdateHeightService();
+        pluginAreaScrollUpdateHeightService();
     });
 };

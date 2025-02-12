@@ -13,7 +13,7 @@ import { execute as initializeShare } from "@/share/Initialize";
 import { execute as bootUser } from "@/user/application/UserBoot";
 import { execute as detailModalRegisterFadeEventService } from "@/menu/application/DetailModal/service/DetailModalRegisterFadeEventService";
 import { execute as languageTranslationService } from "@/language/application/service/LanguageTranslationService";
-import { execute as registerWindowResizeEventUseCase } from "@/global/usecase/RegisterWindowResizeEventUseCase";
+import { execute as registerWindowResizeEventUseCase } from "@/global/application/usecase/GlobalWindowResizeEventUseCase";
 import { $PROGRESS_MENU_NAME } from "@/config/MenuConfig";
 import { $getMenu } from "@/menu/application/MenuUtil";
 import { ExternalApplication } from "./external/ExternalApplication";

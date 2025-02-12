@@ -7,6 +7,8 @@ import { execute as libraryMenuLoadFileUseCase } from "./LibraryMenuLoadFileUseC
 import { execute as libraryMenuEditMovieClipMouseDownEventUseCase } from "./LibraryMenuEditMovieClipMouseDownEventUseCase";
 import { execute as libraryAreaRemoveInstanceUseCase } from "@/controller/application/LibraryArea/usecase/LibraryAreaRemoveInstanceUseCase";
 import { execute as libraryMenuPhotopeaMouseDownService } from "../service/LibraryMenuPhotopeaMouseDownService";
+import { execute as libraryTouchPointerDownUseCase } from "./LibraryTouchPointerDownUseCase";
+import { execute as libraryTouchPointerUpService } from "../service/LibraryTouchPointerUpService";
 import {
     $LIBRARY_LIST_BOX_ID,
     $LIBRARY_FOLDER_ADD_ID,
@@ -32,9 +34,28 @@ export const execute = (): void =>
     const element: HTMLElement | null = document
         .getElementById($LIBRARY_LIST_BOX_ID);
 
+    // メニュー表示のイベントを登録
     if (element) {
+        // マウスの右クリックイベント
         element.addEventListener("contextmenu",
             libraryMenuShowUseCase
+        );
+
+        // タッチデバイスのタッチイベント
+        element.addEventListener(
+            EventType.POINTER_DOWN,
+            libraryTouchPointerDownUseCase,
+            { "passive": false }
+        );
+        element.addEventListener(
+            EventType.POINTER_UP,
+            libraryTouchPointerUpService,
+            { "passive": false }
+        );
+        element.addEventListener(
+            EventType.POINTER_CANCEL,
+            libraryTouchPointerUpService,
+            { "passive": false }
         );
     }
 

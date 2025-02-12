@@ -56,6 +56,7 @@ export const execute = (event: PointerEvent): void =>
 
     // 親のイベントを終了
     event.stopPropagation();
+    event.preventDefault();
 
     // 表示されてるメニューを全て非表示にする
     $allHideMenu();

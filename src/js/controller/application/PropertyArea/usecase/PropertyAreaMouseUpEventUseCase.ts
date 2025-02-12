@@ -8,8 +8,11 @@ import { $setMouseState } from "../PropertyAreaUtil";
  * @method
  * @public
  */
-export const execute = (): void =>
+export const execute = (event: PointerEvent): void =>
 {
+    event.stopPropagation();
+    event.preventDefault();
+
     // マウスの状態管理をアップに更新
     $setMouseState("up");
 };

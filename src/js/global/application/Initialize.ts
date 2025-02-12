@@ -1,3 +1,5 @@
+import { execute as globalRegisterEventUseCase } from "./usecase/GlobalRegisterEventUseCase";
+
 /**
  * @description グローバル機能の初期起動関数
  *              Initial startup function for global functions
@@ -8,5 +10,5 @@
  */
 export const execute = async (): Promise<void> =>
 {
-    // TODO
+    globalRegisterEventUseCase();
 };

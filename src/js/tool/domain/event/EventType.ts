@@ -138,6 +138,19 @@ export class EventType
     }
 
     /**
+     * @description ポインタのキャンセルのイベント名
+     *              Event name for pointer cancellation
+     *
+     * @return {string}
+     * @static
+     * @const
+     */
+    static get POINTER_CANCEL (): "pointercancel"
+    {
+        return "pointercancel";
+    }
+
+    /**
      * @description スクリーンエリアのDisplayObject選択時のイベント名
      *              Event name when selecting a DisplayObject in the screen area
      *

@@ -188,4 +188,13 @@ export const $generateUUID = (): string =>
 
         return generatedCharacter.toString(16); // 16進数に変換して返す
     });
-}
+};
+
+/**
+ * @description タッチポインタのIDを保持するSet
+ *             Set to hold touch pointer IDs
+ *
+ * @type {Set<number>}
+ * @public
+ */
+export const $activeTouchPointers: Set<number> = new Set<number>();
