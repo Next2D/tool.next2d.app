@@ -1,5 +1,6 @@
 import { $allHideMenu } from "../../MenuUtil";
 import { execute as libraryMenuRunSelectedMovieClipUseCase } from "./LibraryMenuRunSelectedMovieClipUseCase";
+import { $activeTouchPointers } from "@/global/GlobalUtil";
 
 /**
  * @description ライブラリメニューのMovieClip編集ボタンの実行関数
@@ -12,7 +13,9 @@ import { execute as libraryMenuRunSelectedMovieClipUseCase } from "./LibraryMenu
  */
 export const execute = async (event: PointerEvent): Promise<void> =>
 {
-    if (event.button !== 0) {
+    if (event.button !== 0
+        || $activeTouchPointers.size > 1
+    ) {
         return ;
     }
 

@@ -1,5 +1,6 @@
 import { $allHideMenu } from "../../MenuUtil";
 import { execute as libraryMenuAddNewFolderService } from "../service/LibraryMenuAddNewFolderService";
+import { $activeTouchPointers } from "@/global/GlobalUtil";
 
 /**
  * @description ライブラリメニューのフォルダー追加ボタンの実行関数
@@ -12,7 +13,9 @@ import { execute as libraryMenuAddNewFolderService } from "../service/LibraryMen
  */
 export const execute = (event: PointerEvent): void =>
 {
-    if (event.button !== 0) {
+    if (event.button !== 0
+        || $activeTouchPointers.size > 1
+    ) {
         return ;
     }
 

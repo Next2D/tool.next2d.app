@@ -1,15 +1,15 @@
-import { execute } from "./HistoryAreaScrollMouseDownUseCase";
+import { execute } from "./HistoryAreaScrollPointerUpUseCase";
 import { EventType } from "../../../../tool/domain/event/EventType";
 import { describe, expect, it, vi } from "vitest";
 
-describe("HistoryAreaScrollMouseDownUseCase Test", () =>
+describe("HistoryAreaScrollPointerUpUseCase Test", () =>
 {
     it("execute test", () =>
     {
         const div = document.createElement("div");
 
         let pointerId = 0;
-        div.setPointerCapture = vi.fn((pointer_id) =>
+        div.releasePointerCapture = vi.fn((pointer_id) =>
         {
             pointerId = pointer_id
         });
@@ -17,7 +17,7 @@ describe("HistoryAreaScrollMouseDownUseCase Test", () =>
         let pointerMove = false;
         let pointerUp = false;
         let pointerLeave = false;
-        div.addEventListener = vi.fn((type) =>
+        div.removeEventListener = vi.fn((type) =>
         {
             switch (type) {
 
@@ -40,6 +40,7 @@ describe("HistoryAreaScrollMouseDownUseCase Test", () =>
         });
 
         let stopPropagation = false;
+        let preventDefault = false;
         const mockEvent = {
             "target": div,
             "pointerId": 100,
@@ -47,10 +48,15 @@ describe("HistoryAreaScrollMouseDownUseCase Test", () =>
             {
                 stopPropagation = true;
             }),
+            "preventDefault": vi.fn(() =>
+            {
+                preventDefault = true;
+            }),
         } as unknown as PointerEvent;
 
         expect(pointerId).toBe(0);
         expect(stopPropagation).toBe(false);
+        expect(preventDefault).toBe(false);
         expect(pointerMove).toBe(false);
         expect(pointerUp).toBe(false);
         expect(pointerLeave).toBe(false);
@@ -59,6 +65,7 @@ describe("HistoryAreaScrollMouseDownUseCase Test", () =>
 
         expect(pointerId).toBe(100);
         expect(stopPropagation).toBe(true);
+        expect(preventDefault).toBe(true);
         expect(pointerMove).toBe(true);
         expect(pointerUp).toBe(true);
         expect(pointerLeave).toBe(true);

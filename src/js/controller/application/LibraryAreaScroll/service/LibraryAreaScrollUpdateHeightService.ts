@@ -1,15 +1,15 @@
+import { libraryArea } from "@/controller/domain/model/LibraryArea";
 import {
     $LIBRARY_LIST_BOX_ID,
     $LIBRARY_LIST_BOX_SCROLL_AREA_ID,
     $LIBRARY_LIST_BOX_SCROLL_BAR_ID
 } from "@/config/LibraryConfig";
-import { libraryArea } from "@/controller/domain/model/LibraryArea";
 
 /**
  * @description ライブラリエリアのスクロールバーの高さを更新する
  *              Update the height of the scrollbar in the library area
  *
- * @return {Promise}
+ * @return {Promise<void>}
  * @method
  * @public
  */

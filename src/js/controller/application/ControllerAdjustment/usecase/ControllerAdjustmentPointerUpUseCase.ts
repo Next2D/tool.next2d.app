@@ -17,9 +17,7 @@ export const execute = (event: PointerEvent): void =>
     event.stopPropagation();
     event.preventDefault();
 
-    const element: HTMLElement | null = document
-        .getElementById($CONTROLLER_ADJUSTMENT_ID);
-
+    const element = event.target as HTMLElement;
     if (!element) {
         return ;
     }

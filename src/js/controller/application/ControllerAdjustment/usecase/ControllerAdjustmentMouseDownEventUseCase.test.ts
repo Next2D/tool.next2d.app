@@ -7,14 +7,12 @@ describe("ControllerAdjustmentMouseDownEventUseCase Test", () =>
     it("test case", () =>
     {
         const div = document.createElement("div");
-        div.id = $CONTROLLER_ADJUSTMENT_ID;
-        document.body.appendChild(div);
-
+        
         let pointerId = 0;
         let stopPropagation = false;
         const MockEvent = {
             "button": 0,
-            "currentTarget": div,
+            "target": div,
             "pointerId": 100,
             "stopPropagation": () =>
             {
@@ -60,8 +58,5 @@ describe("ControllerAdjustmentMouseDownEventUseCase Test", () =>
         expect(pointerLeave).toBe(true);
         expect(pointerId).toBe(100);
         expect(stopPropagation).toBe(true);
-
-
-        document.body.removeChild(div);
     });
 });

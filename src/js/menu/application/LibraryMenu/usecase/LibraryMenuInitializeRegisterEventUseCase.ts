@@ -38,7 +38,8 @@ export const execute = (): void =>
     if (element) {
         // マウスの右クリックイベント
         element.addEventListener("contextmenu",
-            libraryMenuShowUseCase
+            libraryMenuShowUseCase,
+            { "passive": false }
         );
 
         // タッチデバイスのタッチイベント
@@ -65,7 +66,8 @@ export const execute = (): void =>
 
     if (addFolderElement) {
         addFolderElement.addEventListener(EventType.POINTER_DOWN,
-            libraryMenuAddNewFolderMouseDownEventUseCase
+            libraryMenuAddNewFolderMouseDownEventUseCase,
+            { "passive": false }
         );
     }
 
@@ -75,7 +77,8 @@ export const execute = (): void =>
 
     if (addMovieClipElement) {
         addMovieClipElement.addEventListener(EventType.POINTER_DOWN,
-            libraryMenuAddNewMovieClipMouseDownEventUseCase
+            libraryMenuAddNewMovieClipMouseDownEventUseCase,
+            { "passive": false }
         );
     }
 
@@ -85,7 +88,8 @@ export const execute = (): void =>
 
     if (fileElement) {
         fileElement.addEventListener(EventType.POINTER_DOWN,
-            libraryMenuFileMouseDownEventUseCase
+            libraryMenuFileMouseDownEventUseCase,
+            { "passive": false }
         );
     }
 
@@ -95,7 +99,8 @@ export const execute = (): void =>
 
     if (fileInputElement) {
         fileInputElement.addEventListener("change",
-            libraryMenuLoadFileUseCase
+            libraryMenuLoadFileUseCase,
+            { "passive": false }
         );
     }
 
@@ -105,7 +110,8 @@ export const execute = (): void =>
 
     if (editMovieClipElement) {
         editMovieClipElement.addEventListener(EventType.POINTER_DOWN,
-            libraryMenuEditMovieClipMouseDownEventUseCase
+            libraryMenuEditMovieClipMouseDownEventUseCase,
+            { "passive": false }
         );
     }
 

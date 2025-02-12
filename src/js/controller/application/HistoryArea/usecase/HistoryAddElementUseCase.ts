@@ -3,6 +3,7 @@ import { execute as historyListComponent } from "@/controller/application/Histor
 import { EventType } from "@/tool/domain/event/EventType";
 import { execute as historyMouseDownEventUseCase } from "./HistoryMouseDownEventUseCase";
 import { execute as languageTranslationService } from "@/language/application/service/LanguageTranslationService";
+import { $activeTouchPointers } from "@/global/GlobalUtil";
 
 /**
  * @description 作業履歴のリストにElementを追加
@@ -52,6 +53,7 @@ export const execute = (
     // マウスダウンイベントを登録
     lastElement.addEventListener(EventType.POINTER_DOWN, async (event: PointerEvent) =>
     {
-        pointerDownQueue = pointerDownQueue.then(() => historyMouseDownEventUseCase(event));
+        pointerDownQueue = pointerDownQueue
+            .then(() => historyMouseDownEventUseCase(event));
     });
 };

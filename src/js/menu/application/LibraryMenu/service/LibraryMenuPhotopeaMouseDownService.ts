@@ -3,6 +3,7 @@ import { libraryArea } from "@/controller/domain/model/LibraryArea";
 import { $allHideMenu } from "../../MenuUtil";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { $poolCanvas } from "@/global/GlobalUtil";
+import { $activeTouchPointers } from "@/global/GlobalUtil";
 
 /**
  * @description Photopea連動処理
@@ -14,11 +15,10 @@ import { $poolCanvas } from "@/global/GlobalUtil";
  */
 export const execute = async (event: PointerEvent): Promise<void> =>
 {
-    if (event.button !== 0) {
-        return ;
-    }
-
-    if (!libraryArea.selectedIds.length) {
+    if (event.button !== 0
+        || $activeTouchPointers.size > 1
+        || !libraryArea.selectedIds.length
+    ) {
         return ;
     }
 

@@ -56,7 +56,7 @@ export const execute = (element: HTMLElement): void =>
     xAdjElement.style.display = "";
 
     // 表示分をcssに適用
-    style.setProperty("--timeline-adjustment-width", "8px");
+    style.setProperty("--timeline-adjustment-width", "10px");
 
     const baseElement: HTMLElement | null = document
         .getElementById($TIMELINE_CONTROLLER_BASE_ID);

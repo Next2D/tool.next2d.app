@@ -7,15 +7,13 @@ describe("ControllerAdjustmentPointerUpUseCase Test", () =>
     it("test case", () =>
     {
         const div = document.createElement("div");
-        div.id = $CONTROLLER_ADJUSTMENT_ID;
-        document.body.appendChild(div);
 
         let pointerId = 0;
         let stopPropagation = false;
         let preventDefault = false;
         const MockEvent = {
             "pointerId": 100,
-            "currentTarget": div as unknown as EventTarget,
+            "target": div as unknown as EventTarget,
             "stopPropagation": () =>
             {
                 stopPropagation = true;
@@ -66,7 +64,5 @@ describe("ControllerAdjustmentPointerUpUseCase Test", () =>
         expect(pointerId).toBe(100);
         expect(preventDefault).toBe(true);
         expect(stopPropagation).toBe(true);
-
-        document.body.removeChild(div);
     });
 });

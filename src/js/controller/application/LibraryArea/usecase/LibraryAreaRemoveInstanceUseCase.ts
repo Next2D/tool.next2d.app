@@ -5,20 +5,28 @@ import { execute as libraryAreaReloadUseCase } from "@/controller/application/Li
 import { execute as libraryAreaSelectedClearUseCase } from "@/controller/application/LibraryArea/usecase/LibraryAreaSelectedClearUseCase";
 import { execute as soundAreaRebuildSelectElementService } from "@/controller/application/SoundArea/service/SoundAreaRebuildSelectElementService";
 import { $allHideMenu } from "@/menu/application/MenuUtil";
+import { $activeTouchPointers } from "@/global/GlobalUtil";
 
 /**
  * @description 選択中のアイテムを全て削除
  *              Delete all selected items
  *
+ * @param  {PointerEvent} event
  * @return {Promise}
  * @method
  * @public
  */
-export const execute = async (): Promise<void> =>
+export const execute = async (event: PointerEvent): Promise<void> =>
 {
-    if (!libraryArea.selectedIds.length) {
+    if (event.button !== 0
+        || $activeTouchPointers.size > 1
+        || !libraryArea.selectedIds.length
+    ) {
         return ;
     }
+
+    // 親のイベントを中止
+    event.stopPropagation();
 
     // 全てのメニューを非表示
     $allHideMenu();

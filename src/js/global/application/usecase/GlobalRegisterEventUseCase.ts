@@ -12,7 +12,10 @@ import { execute as globalTouchEndService } from "../service/GlobalTouchEndServi
 export const execute = (): void =>
 {
     // タブレットでのダブルタップでのズーム処理を制御
-    document.addEventListener("touchend", globalTouchEndService, { "passive": false });
+    document.addEventListener("touchend",
+        globalTouchEndService,
+        { "passive": false }
+    );
 
     // リサイズイベントを登録
     window.addEventListener("resize", globalWindowResizeEventUseCase);

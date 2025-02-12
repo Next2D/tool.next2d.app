@@ -37,4 +37,9 @@ export const execute = (event: PointerEvent): void =>
         historyAreaScrollPointerUpUseCase,
         { "passive": false }
     );
+    element.addEventListener(
+        EventType.POINTER_LEAVE,
+        historyAreaScrollPointerUpUseCase,
+        { "passive": false }
+    );
 };

@@ -16,10 +16,9 @@ let $lastTouchTime: number = 0;
 export const execute = (event: TouchEvent): void =>
 {
     const now = performance.now();
-    if (now - $lastTouchTime <= 500) {
+    if (now - $lastTouchTime < 700) {
         event.preventDefault();
     }
-
     // タップされた時間を記録
     $lastTouchTime = now;
 };

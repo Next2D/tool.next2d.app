@@ -1,5 +1,6 @@
 import { $allHideMenu } from "../../MenuUtil";
 import { execute as libraryMenuAddNewMovieClipService } from "../service/LibraryMenuAddNewMovieClipService";
+import { $activeTouchPointers } from "@/global/GlobalUtil";
 
 /**
  * @description ライブラリメニューのMovieClip追加ボタンの実行関数
@@ -12,7 +13,9 @@ import { execute as libraryMenuAddNewMovieClipService } from "../service/Library
  */
 export const execute = (event: PointerEvent): void =>
 {
-    if (event.button !== 0) {
+    if (event.button !== 0
+        || $activeTouchPointers.size > 1
+    ) {
         return ;
     }
 

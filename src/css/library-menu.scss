@@ -124,8 +124,9 @@
 
 #library-menu-file-input
 {
-    visibility : hidden;
-    display    : none;
+    opacity    : 0;
+    position   : absolute;
+    z-index    : -1;
 }
 
 #controller-area-library

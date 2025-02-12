@@ -1,4 +1,5 @@
 import { execute as libraryMenuOpenFileLoadingModalService } from "../service/LibraryMenuOpenFileLoadingModalService";
+import { $activeTouchPointers } from "@/global/GlobalUtil";
 
 /**
  * @description 外部ファイル読込ボタンのイベント実行関数
@@ -11,6 +12,12 @@ import { execute as libraryMenuOpenFileLoadingModalService } from "../service/Li
  */
 export const execute = (event: PointerEvent): void =>
 {
+    if (event.button !== 0
+        || $activeTouchPointers.size > 1
+    ) {
+        return ;
+    }
+
     event.stopPropagation();
     event.preventDefault();
 

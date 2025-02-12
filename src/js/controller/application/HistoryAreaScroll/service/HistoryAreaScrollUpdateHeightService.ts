@@ -1,9 +1,9 @@
+import { historyArea } from "@/controller/domain/model/HistoryArea";
 import {
     $HISTORY_LIST_ID,
     $HISTORY_LIST_SCROLL_AREA_ID,
     $HISTORY_LIST_SCROLL_BAR_ID
 } from "@/config/HistoryConfig";
-import { historyArea } from "@/controller/domain/model/HistoryArea";
 
 /**
  * @description 履歴エリアのスクロールバーの高さを更新する
