@@ -24,5 +24,6 @@ export const execute = <I extends Instance> (instance: I): string =>
     <div class="library-list-box-symbol" data-library-id="${instance.id}">
         <p><span class="view-symbol-text" data-library-id="${instance.id}">${instance.symbol}</span></p>
     </div>
-</div>`;
+</div>
+`;
 };

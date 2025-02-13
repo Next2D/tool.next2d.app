@@ -9,10 +9,16 @@ import { execute as libraryPreviewAreaClearDisplayService } from "@/controller/a
 import { execute as libraryAreaAltSelectedUseCase } from "@/controller/application/LibraryArea/usecase/LibraryAreaAltSelectedUseCase";
 import { execute as libraryAreaShiftSelectedUseCase } from "@/controller/application/LibraryArea/usecase/LibraryAreaShiftSelectedUseCase";
 import { execute as libraryAreaRegisterPointerEventUseCase } from "./LibraryAreaRegisterPointerEventUseCase";
+import { $activeTouchPointers } from "@/global/GlobalUtil";
+import { execute as libraryMenuShowUseCase } from "@/menu/application/LibraryMenu/usecase/LibraryMenuShowUseCase";
 import {
     $FOLDER_TYPE,
     $MOVIE_CLIP_TYPE
 } from "@/config/InstanceConfig";
+import {
+    $getEditingElement,
+    $setEditingElement
+} from "../LibraryAreaUtil";
 
 /**
  * @description 親Elementのマウスダウン処理関数、Elementを選択状態に更新
@@ -29,25 +35,40 @@ export const execute = async (event: PointerEvent): Promise<void> =>
         return ;
     }
 
-    // 親のイベントを中止
-    event.stopPropagation();
-
     // メニューを全て非表示に更新
     $allHideMenu();
-
-    // 編集中なら終了
-    if ($useKeyboard()) {
-        return ;
-    }
 
     const element = event.currentTarget as HTMLElement;
     if (!element) {
         return ;
     }
 
-    const workSpace = $getCurrentWorkSpace();
+    // 編集中なら終了
     const libraryId = parseInt(element.dataset.libraryId as string);
-    const instance = workSpace.getLibrary(libraryId);
+    if ($useKeyboard()) {
+        const editingElement = $getEditingElement();
+        if (editingElement && editingElement.dataset.libraryId !== element.dataset.libraryId) {
+            editingElement.blur();
+            $setEditingElement(null);
+        }
+        return ;
+    }
+
+    // 親のイベントを中止
+    event.stopPropagation();
+
+    if (event.pointerType === "touch") {
+        $activeTouchPointers.add(event.pointerId);
+    }
+
+    // タッチポイントが2つ以上ならライブラリメニューを表示
+    if ($activeTouchPointers.size > 1) {
+        libraryMenuShowUseCase(event);
+        return ;
+    }
+
+    const workSpace = $getCurrentWorkSpace();
+    const instance  = workSpace.getLibrary(libraryId);
     if (!instance) {
         return ;
     }

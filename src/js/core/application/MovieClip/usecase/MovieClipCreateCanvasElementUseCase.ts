@@ -27,7 +27,6 @@ export const execute = async (
 
     // JSONオブジェクトを生成
     const object = await publishToolCreateToObjectUseCase(movie_clip);
-    console.log(object);
 
     const loader = new Loader();
     loader.loadJSON(object as any);
@@ -59,6 +58,9 @@ export const execute = async (
         "matrix": new Matrix(scale, 0, 0, scale),
         "canvas": $getCanvas()
     });
+
+    canvas.style.width  = `${container.width}px`;
+    canvas.style.height = `${container.height}px`;
 
     return canvas;
 };

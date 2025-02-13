@@ -75,6 +75,7 @@ export const execute = (element: HTMLElement): void =>
                     continue;
                 }
             } else {
+                // 移動先がフォルダでない時は、フォルダから移動
                 const result = externalLibrary.outOfFolder(
                     selectedInstance.getPath(workSpace),
                     false

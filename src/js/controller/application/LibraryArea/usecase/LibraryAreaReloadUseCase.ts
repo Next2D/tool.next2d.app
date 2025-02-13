@@ -10,6 +10,7 @@ import { execute as libraryAreaInstanceSymbolMouseDownEventUseCase } from "./Lib
 import { execute as libraryAreaInstanceSymbolFocusOutEventUseCase } from "./LibraryAreaInstanceSymbolFocusOutEventUseCase";
 import { execute as libraryAreaCanDisplayInstanceService } from "../service/LibraryAreaCanDisplayInstanceService";
 import { execute as libraryAreaGetPaddingService } from "../service/LibraryAreaGetPaddingService";
+import { execute as libraryAreaSelectedEndTouchEndService } from "../service/LibraryAreaSelectedEndTouchEndService";
 import { $LIBRARY_LIST_BOX_ID } from "@/config/LibraryConfig";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { EventType } from "@/tool/domain/event/EventType";
@@ -82,7 +83,18 @@ export const execute = async (): Promise<void> =>
 
         // 親Elementに選択イベントを登録
         node.addEventListener(EventType.POINTER_DOWN,
-            libraryAreaSelectedMouseDownService
+            libraryAreaSelectedMouseDownService,
+            { "passive": false }
+        );
+
+        // タップ終了イベントを登録
+        node.addEventListener(EventType.POINTER_UP,
+            libraryAreaSelectedEndTouchEndService,
+            { "passive": false }
+        );
+        node.addEventListener(EventType.POINTER_CANCEL,
+            libraryAreaSelectedEndTouchEndService,
+            { "passive": false }
         );
 
         // フォルダ時はアローアイコンにイベントを登録

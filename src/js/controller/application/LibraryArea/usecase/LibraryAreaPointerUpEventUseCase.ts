@@ -33,6 +33,7 @@ export const execute = async (event: PointerEvent): Promise<void> =>
     element.releasePointerCapture(event.pointerId);
     element.removeEventListener(EventType.POINTER_MOVE, libraryAreaPointerMoveEventUseCase);
     element.removeEventListener(EventType.POINTER_UP, execute);
+    element.removeEventListener(EventType.POINTER_LEAVE, execute);
     element.setAttribute("style", "");
 
     if (!$getMoveState()) {
@@ -56,6 +57,7 @@ export const execute = async (event: PointerEvent): Promise<void> =>
 
     if (targetElement.id === $SCREEN_ID) {
 
+        // スクリーンエリアならDisplayObjectを配置
         const screenElement = document.getElementById($SCREEN_ID);
         if (!screenElement) {
             // スクリーンエリアのDisplayObjectをアクティブに戻す
@@ -86,7 +88,7 @@ export const execute = async (event: PointerEvent): Promise<void> =>
                         // 移動先がフォルダではない時はスキップ
                         const libraryId = parseInt(parent.dataset.libraryId as string);
                         const instance = $getCurrentWorkSpace().getLibrary(libraryId);
-                        if (!instance || instance.type !== $FOLDER_TYPE) {
+                        if (!instance) {
                             break;
                         }
 

@@ -32,7 +32,7 @@ export const execute = (): void =>
         // タイムラインヘッダーをリサイズ
         timelineHeaderWindowResizeUseCase();
 
-        // スクロールバーの高さを更新
+        // 各エリアのスクロールバーの高さを更新
         screenScrollResizeService();
         libraryAreaScrollUpdateHeightService();
         propertyAreaScrollUpdateHeightService();

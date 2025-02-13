@@ -4,6 +4,7 @@ import { execute as libraryAreaPointerUpEventUseCase } from "./LibraryAreaPointe
 import { $LIBRARY_LIST_BOX_ID } from "@/config/LibraryConfig";
 import { $setMoveOffsetX, $setMoveOffsetY } from "../LibraryAreaUtil";
 import { $useKeyboard } from "@/shortcut/ShortcutUtil";
+import { $activeTouchPointers } from "@/global/GlobalUtil";
 import { execute as screenAreaLibraryItemDropStartService } from "@/screen/application/ScreenArea/service/ScreenAreaLibraryItemDropStartService";
 
 /**
@@ -17,7 +18,10 @@ import { execute as screenAreaLibraryItemDropStartService } from "@/screen/appli
  */
 export const execute = (event: PointerEvent): void =>
 {
-    if (event.button !== 0 || $useKeyboard()) {
+    if (event.button !== 0
+        || $useKeyboard()
+        || $activeTouchPointers.size > 1
+    ) {
         return ;
     }
 
@@ -59,6 +63,11 @@ export const execute = (event: PointerEvent): void =>
     );
     itemElement.addEventListener(
         EventType.POINTER_UP,
+        libraryAreaPointerUpEventUseCase,
+        { "passive": false }
+    );
+    itemElement.addEventListener(
+        EventType.POINTER_LEAVE,
         libraryAreaPointerUpEventUseCase,
         { "passive": false }
     );

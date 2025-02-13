@@ -48,10 +48,21 @@ export const execute = (): void =>
         );
 
         // drop系のイベントの登録
-        listBoxElement.addEventListener("dragover", libraryAreaDragoverService);
-        listBoxElement.addEventListener("drop", libraryAreaDropUseCase);
-        listBoxElement.addEventListener("dragstart", libraryAreaDragstartUseCase);
-        listBoxElement.addEventListener("dragend", libraryAreaDragendUseCase);
+        listBoxElement.addEventListener("dragover",
+            libraryAreaDragoverService,
+            { "passive": false }
+        );
+        listBoxElement.addEventListener("drop",
+            libraryAreaDropUseCase,
+            { "passive": false }
+        );
+        listBoxElement.addEventListener("dragstart",
+            libraryAreaDragstartUseCase
+        );
+        listBoxElement.addEventListener("dragend",
+            libraryAreaDragendUseCase,
+            { "passive": false }
+        );
 
         // キーイベントの登録
         listBoxElement.addEventListener(EventType.POINTER_OVER,

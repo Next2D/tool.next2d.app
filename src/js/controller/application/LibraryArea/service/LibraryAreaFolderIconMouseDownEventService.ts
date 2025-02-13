@@ -41,6 +41,10 @@ export const execute = (event: PointerEvent): void =>
         return ;
     }
 
+    // 親のイベントを終了
+    event.stopPropagation();
+    event.preventDefault();
+
     if (!wait) {
 
         // 初回のタップであればダブルタップを待機モードに変更
@@ -71,13 +75,9 @@ export const execute = (event: PointerEvent): void =>
         // 選択中のIDをリセット
         selectedLibraryId = -1;
 
-        // 親のイベントを終了
-        event.stopPropagation();
-        event.preventDefault();
-
         const workSpace = $getCurrentWorkSpace();
         const folder = workSpace.getLibrary(libraryId) as Folder;
-        if (!folder) {
+        if (!folder || folder.type !== "folder") {
             return ;
         }
 

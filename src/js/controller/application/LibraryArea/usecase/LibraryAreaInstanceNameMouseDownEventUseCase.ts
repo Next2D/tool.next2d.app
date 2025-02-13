@@ -72,9 +72,6 @@ export const execute = (event: PointerEvent): void =>
         wait = false;
         selectedLibraryId = -1;
 
-        // 親のイベントでアイテム選択処理を行うので、ここではstop関数を実行しない
-        // @see LibraryAreaSelectedMouseDownUseCase
-
         // 親のイベントを終了
         event.stopPropagation();
         event.preventDefault();

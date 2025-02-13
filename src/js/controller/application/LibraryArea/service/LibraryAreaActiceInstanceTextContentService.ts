@@ -1,4 +1,5 @@
 import { $updateKeyLock } from "@/shortcut/ShortcutUtil";
+import { $setEditingElement } from "../LibraryAreaUtil";
 
 /**
  * @description インスタスの名前もしくはシンボルを編集モードにセット
@@ -15,6 +16,9 @@ export const execute = (element: HTMLElement): void =>
     element.contentEditable    = "true";
     element.style.borderBottom = "1px solid #f5f5f5";
     element.focus(); // fixed logic
+
+    // 編集中のElementをセット
+    $setEditingElement(element);
 
     // 編集モードをOnにする
     $updateKeyLock(true);

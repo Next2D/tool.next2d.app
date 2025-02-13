@@ -3,7 +3,7 @@ import { execute as historyListComponent } from "@/controller/application/Histor
 import { EventType } from "@/tool/domain/event/EventType";
 import { execute as historyMouseDownEventUseCase } from "./HistoryMouseDownEventUseCase";
 import { execute as languageTranslationService } from "@/language/application/service/LanguageTranslationService";
-import { $activeTouchPointers } from "@/global/GlobalUtil";
+import { execute as historyAreaScrollUpdateHeightService } from "@/controller/application/HistoryAreaScroll/service/HistoryAreaScrollUpdateHeightService";
 
 /**
  * @description 作業履歴のリストにElementを追加
@@ -56,4 +56,7 @@ export const execute = (
         pointerDownQueue = pointerDownQueue
             .then(() => historyMouseDownEventUseCase(event));
     });
+
+    // 履歴の高さを更新
+    historyAreaScrollUpdateHeightService();
 };
