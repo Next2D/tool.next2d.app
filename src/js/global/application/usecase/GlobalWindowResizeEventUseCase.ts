@@ -20,6 +20,10 @@ export const execute = (): void =>
 {
     // 移動していれば処理終了
     const workSpace = $getCurrentWorkSpace();
+    if (!workSpace) {
+        return ;
+    }
+
     if (workSpace.timelineAreaState.state === "move") {
         return ;
     }
