@@ -43,9 +43,15 @@ export const execute = (element: HTMLElement): void =>
             return ;
         }
 
-        const folder = instance.type === $FOLDER_TYPE
+        let folder = instance.type === $FOLDER_TYPE
             ? instance
-            : workSpace.getLibrary(instance.folderId) as Folder;
+            : null;
+
+        // 移動先のアイテムがフォルダ内にあればフォルダを取得
+        // fixed logic
+        if (!folder && instance.folderId) {
+            folder = workSpace.getLibrary(instance.folderId) as Folder;
+        }
 
         for (let idx = 0; idx < length; ++idx) {
 
@@ -75,6 +81,7 @@ export const execute = (element: HTMLElement): void =>
                     continue;
                 }
             } else {
+
                 // 移動先がフォルダでない時は、フォルダから移動
                 const result = externalLibrary.outOfFolder(
                     selectedInstance.getPath(workSpace),

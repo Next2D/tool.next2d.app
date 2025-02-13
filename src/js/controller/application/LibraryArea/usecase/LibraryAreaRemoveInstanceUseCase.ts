@@ -16,9 +16,9 @@ import { $activeTouchPointers } from "@/global/GlobalUtil";
  * @method
  * @public
  */
-export const execute = async (event: PointerEvent): Promise<void> =>
+export const execute = async (event: PointerEvent | KeyboardEvent): Promise<void> =>
 {
-    if (event.button !== 0
+    if ("button" in event && event.button !== 0
         || $activeTouchPointers.size > 1
         || !libraryArea.selectedIds.length
     ) {

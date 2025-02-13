@@ -7,7 +7,6 @@ import { execute as screenAreaLibraryItemDropEndService } from "@/screen/applica
 import { execute as libraryAreaMoveItemsUseCase } from "./LibraryAreaMoveItemsUseCase";
 import { $LIBRARY_LIST_BOX_ID } from "@/config/LibraryConfig";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
-import { $FOLDER_TYPE } from "@/config/InstanceConfig";
 
 /**
  * @description スクリーンエリアの移動処理を実行

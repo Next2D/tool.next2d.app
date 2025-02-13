@@ -20,13 +20,12 @@ export const execute = async (event: KeyboardEvent): Promise<void> =>
     // 全てのイベントを中止
     event.stopPropagation();
     event.preventDefault();
-    event.stopImmediatePropagation();
 
     switch (event.key) {
 
         case "Backspace":
         case "Delete":
-            await libraryAreaRemoveInstanceUseCase();
+            await libraryAreaRemoveInstanceUseCase(event);
             break;
 
         case "ArrowDown":

@@ -56,7 +56,8 @@ export const execute = async (
 
     const canvas = await next2d.captureToCanvas(container, {
         "matrix": new Matrix(scale, 0, 0, scale),
-        "canvas": $getCanvas()
+        "canvas": $getCanvas(),
+        "videoSync": true
     });
 
     canvas.style.width  = `${container.width}px`;
