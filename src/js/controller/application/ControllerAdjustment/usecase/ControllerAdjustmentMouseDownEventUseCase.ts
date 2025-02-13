@@ -2,7 +2,6 @@ import { EventType } from "@/tool/domain/event/EventType";
 import { execute as controllerAdjustmentPointerMoveUseCase } from "./ControllerAdjustmentPointerMoveUseCase";
 import { execute as controllerAdjustmentPointerUpUseCase } from "./ControllerAdjustmentPointerUpUseCase";
 import { $allHideMenu } from "@/menu/application/MenuUtil";
-import { $CONTROLLER_ADJUSTMENT_ID } from "@/config/ControllerConfig";
 
 /**
  * @description コントローラーの幅調整のイベント開始処理

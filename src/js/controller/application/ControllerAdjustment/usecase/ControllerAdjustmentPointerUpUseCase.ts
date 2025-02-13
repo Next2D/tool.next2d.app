@@ -1,7 +1,6 @@
 import { EventType } from "@/tool/domain/event/EventType";
 import { execute as controllerAdjustmentMouseMoveUseCase } from "./ControllerAdjustmentPointerMoveUseCase";
 import { execute as userDatabaseAutoSaveReservationUseCase } from "@/user/application/Database/usecase/UserDatabaseAutoSaveReservationUseCase";
-import { $CONTROLLER_ADJUSTMENT_ID } from "@/config/ControllerConfig";
 
 /**
  * @description タイムラインの幅の調整イベントをwindowから削除
