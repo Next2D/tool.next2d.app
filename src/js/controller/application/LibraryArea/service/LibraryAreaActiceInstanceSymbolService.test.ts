@@ -1,8 +1,9 @@
 import { execute } from "./LibraryAreaActiceInstanceSymbolService";
+import { describe, expect, it } from "vitest";
 
 describe("LibraryAreaActiceInstanceSymbolServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         const div = document.createElement("div");
         div.contentEditable = "false";

@@ -3,10 +3,11 @@ import type { WorkSpace } from "../../../../core/domain/model/WorkSpace";
 import { Folder } from "../../../../core/domain/model/Folder";
 import { Bitmap } from "../../../../core/domain/model/Bitmap";
 import { $getCurrentWorkSpace, $createWorkSpace } from "../../../../core/application/CoreUtil";
+import { describe, expect, it } from "vitest";
 
 describe("LibraryAreaGetPaddingServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         const workSpace: WorkSpace = $getCurrentWorkSpace() || $createWorkSpace();
 

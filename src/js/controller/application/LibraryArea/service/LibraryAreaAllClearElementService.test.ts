@@ -1,9 +1,10 @@
 import { execute } from "./LibraryAreaAllClearElementService";
 import { libraryArea } from "../../../domain/model/LibraryArea";
+import { describe, expect, it } from "vitest";
 
 describe("LibraryAreaAllClearElementServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         const div = document.createElement("div");
         document.body.appendChild(div);

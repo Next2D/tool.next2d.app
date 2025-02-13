@@ -1,9 +1,10 @@
 import { execute } from "./LibraryAreaUpdateSymbolElementService";
 import { Instance } from "../../../../core/domain/model/Instance";
+import { describe, expect, it } from "vitest";
 
 describe("LibraryAreaUpdateSymbolElementServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         const instance = new Instance({
             "id": 1,

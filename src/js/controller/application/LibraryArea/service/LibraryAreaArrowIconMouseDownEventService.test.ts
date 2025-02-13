@@ -2,10 +2,11 @@ import { execute } from "./LibraryAreaArrowIconMouseDownEventService";
 import type { WorkSpace } from "../../../../core/domain/model/WorkSpace";
 import { Folder } from "../../../../core/domain/model/Folder";
 import { $getCurrentWorkSpace, $createWorkSpace } from "../../../../core/application/CoreUtil";
+import { describe, expect, it, vi } from "vitest";
 
 describe("LibraryAreaArrowIconMouseDownEventServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         const workSpace: WorkSpace = $getCurrentWorkSpace() || $createWorkSpace();
 
@@ -21,14 +22,29 @@ describe("LibraryAreaArrowIconMouseDownEventServiceTest", () =>
         const div = document.createElement("div");
         div.dataset.libraryId = "1";
 
+        let stopPropagation = false;
+        let preventDefault = false;
         const mockEvent = {
             "button": 0,
             "currentTarget": div,
-            "stopPropagation": () => {}
-        };
+            "stopPropagation": vi.fn(() =>
+            {
+                stopPropagation = true;
+            }),
+            "preventDefault": vi.fn(() =>
+            {
+                preventDefault = true;
+            })
+        } as unknown as PointerEvent;
 
+        expect(stopPropagation).toBe(false);
+        expect(preventDefault).toBe(false);
         expect(folder.mode).toBe("open");
+
         execute(mockEvent);
+
+        expect(stopPropagation).toBe(true);
+        expect(preventDefault).toBe(true);
         expect(folder.mode).toBe("close");
     });
 });

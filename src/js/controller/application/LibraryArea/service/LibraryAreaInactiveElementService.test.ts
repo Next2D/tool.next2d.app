@@ -1,8 +1,9 @@
 import { execute } from "./LibraryAreaInactiveElementService";
+import { describe, expect, it } from "vitest";
 
 describe("LibraryAreaInactiveElementServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         const div = document.createElement("div");
         document.body.appendChild(div);

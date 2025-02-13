@@ -3,10 +3,11 @@ import type { WorkSpace } from "../../../../core/domain/model/WorkSpace";
 import { Folder } from "../../../../core/domain/model/Folder";
 import { MovieClip } from "../../../../core/domain/model/MovieClip";
 import { $getCurrentWorkSpace, $createWorkSpace } from "../../../../core/application/CoreUtil";
+import { describe, expect, it } from "vitest";
 
 describe("LibraryAreaReOrderingServiceTest", () =>
 {
-    test("execute test case1", () =>
+    it("execute test case1", () =>
     {
         const workSpace: WorkSpace = $getCurrentWorkSpace() || $createWorkSpace();
 
@@ -57,7 +58,7 @@ describe("LibraryAreaReOrderingServiceTest", () =>
         expect(pathMapKeys.next().value).toBe(workSpace.root.getPath(workSpace));
     });
 
-    test("execute test case2", () =>
+    it("execute test case2", () =>
     {
         const workSpace: WorkSpace = $getCurrentWorkSpace() || $createWorkSpace();
 

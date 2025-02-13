@@ -1,6 +1,7 @@
 import type { Folder } from "@/core/domain/model/Folder";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { ExternalFolder } from "@/external/core/domain/model/ExternalFolder";
+import { $useKeyboard } from "@/shortcut/ShortcutUtil";
 
 /**
  * @description フォルダーのアローアイコンを操作
@@ -13,7 +14,7 @@ import { ExternalFolder } from "@/external/core/domain/model/ExternalFolder";
  */
 export const execute = (event: PointerEvent): void =>
 {
-    if (event.button !== 0) {
+    if (event.button !== 0 || $useKeyboard()) {
         return ;
     }
 
@@ -24,6 +25,7 @@ export const execute = (event: PointerEvent): void =>
 
     // 親のイベントを中止
     event.stopPropagation();
+    event.preventDefault();
 
     const libraryId = parseInt(element.dataset.libraryId as string);
     const workSpace = $getCurrentWorkSpace();

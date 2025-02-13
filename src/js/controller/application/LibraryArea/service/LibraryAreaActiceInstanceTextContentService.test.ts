@@ -1,8 +1,9 @@
 import { execute } from "./LibraryAreaActiceInstanceTextContentService";
+import { describe, expect, it } from "vitest";
 
 describe("LibraryAreaActiceInstanceTextContentServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         const div = document.createElement("div");
         div.contentEditable = "false";

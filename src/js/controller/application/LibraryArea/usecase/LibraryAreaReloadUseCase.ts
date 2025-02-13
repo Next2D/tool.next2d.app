@@ -1,7 +1,6 @@
 import { execute as libraryAreaComponent } from "../component/LibraryAreaComponent";
 import { execute as libraryAreaSelectedMouseDownService } from "./LibraryAreaSelectedMouseDownUseCase";
 import { execute as libraryAreaArrowIconMouseDownEventService } from "../service/LibraryAreaArrowIconMouseDownEventService";
-import { execute as libraryAreaFolderIconMouseDownEventService } from "../service/LibraryAreaFolderIconMouseDownEventService";
 import { execute as libraryAreaMovieClipIconMouseDownEventUseCase } from "./LibraryAreaMovieClipIconMouseDownEventUseCase";
 import { execute as libraryAreaInstanceNameMouseDownEventUseCase } from "./LibraryAreaInstanceNameMouseDownEventUseCase";
 import { execute as libraryAreaInstanceTextContentKeyPressEventService } from "../service/LibraryAreaInstanceTextContentKeyPressEventService";
@@ -104,13 +103,15 @@ export const execute = async (): Promise<void> =>
 
                 const arrowIcon = icons[0] as NonNullable<HTMLElement>;
                 arrowIcon.addEventListener(EventType.POINTER_DOWN,
-                    libraryAreaArrowIconMouseDownEventService
+                    libraryAreaArrowIconMouseDownEventService,
+                    { "passive": false }
                 );
 
                 // フォルダアイコンにイベントを登録
                 const folderIcon = icons[1] as NonNullable<HTMLElement>;
                 folderIcon.addEventListener(EventType.POINTER_DOWN,
-                    libraryAreaFolderIconMouseDownEventService
+                    libraryAreaArrowIconMouseDownEventService,
+                    { "passive": false }
                 );
             }
         }

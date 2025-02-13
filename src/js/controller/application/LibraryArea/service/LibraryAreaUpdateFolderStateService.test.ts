@@ -1,9 +1,10 @@
 import { execute } from "./LibraryAreaUpdateFolderStateService";
 import { Folder } from "../../../../core/domain/model/Folder";
+import { describe, expect, it } from "vitest";
 
 describe("LibraryAreaUpdateFolderStateServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         const folder = new Folder({
             "id": 1,

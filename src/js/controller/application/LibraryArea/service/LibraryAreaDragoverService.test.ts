@@ -1,8 +1,9 @@
 import { execute } from "./LibraryAreaDragoverService";
+import { describe, expect, it } from "vitest";
 
 describe("LibraryAreaDragoverServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         let stopPropagation = false;
         let preventDefault = false;
@@ -13,7 +14,7 @@ describe("LibraryAreaDragoverServiceTest", () =>
             "preventDefault": () => {
                 preventDefault = true;
             }
-        };
+        } as unknown as DragEvent;
 
         expect(stopPropagation).toBe(false);
         expect(preventDefault).toBe(false);
