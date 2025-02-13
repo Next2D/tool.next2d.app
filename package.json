@@ -26,7 +26,7 @@
     "@vitest/web-worker": "^3.0.5",
     "eslint": "^9.20.1",
     "eslint-plugin-unused-imports": "^4.1.4",
-    "globals": "^15.14.0",
+    "globals": "^15.15.0",
     "jsdom": "^26.0.0",
     "sass": "^1.84.0",
     "typescript": "^5.7.3",

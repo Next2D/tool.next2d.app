@@ -32,7 +32,7 @@ export const execute = (event: PointerEvent): void =>
             return ;
         }
 
-        screenElement.scrollLeft += event.movementX;
+        screenElement.scrollLeft += event.movementX / screenArea.xScale;
         element.style.left = `${Math.floor(screenElement.scrollLeft * screenArea.xScale)}px`;
     });
 };

@@ -35,7 +35,7 @@ export const execute = (event: PointerEvent): void =>
             return ;
         }
 
-        listBoxElement.scrollTop += event.movementY * 2;
+        listBoxElement.scrollTop += event.movementY / libraryArea.scrollScale;
         element.style.top = `${listBoxElement.scrollTop * libraryArea.scrollScale}px`;
     });
 };

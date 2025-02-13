@@ -34,7 +34,7 @@ export const execute = (event: PointerEvent): void =>
             return ;
         }
 
-        propertyAreaElement.scrollTop += event.movementY;
+        propertyAreaElement.scrollTop += event.movementY / propertyArea.scrollScale;
         element.style.top = `${propertyAreaElement.scrollTop * propertyArea.scrollScale}px`;
     });
 };

@@ -32,7 +32,7 @@ export const execute = (event: PointerEvent): void =>
             return ;
         }
 
-        screenElement.scrollTop += event.movementY;
+        screenElement.scrollTop += event.movementY / screenArea.yScale;
         element.style.top = `${Math.floor(screenElement.scrollTop * screenArea.yScale)}px`;
     });
 };
