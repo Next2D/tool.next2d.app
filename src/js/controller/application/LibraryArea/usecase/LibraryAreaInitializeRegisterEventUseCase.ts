@@ -3,11 +3,9 @@ import { execute as libraryAreaDropUseCase } from "./LibraryAreaDropUseCase";
 import { execute as libraryAreaDragoverService } from "../service/LibraryAreaDragoverService";
 import { execute as libraryAreaRegisterWindowKeyEventUseCase } from "./LibraryAreaRegisterWindowKeyEventUseCase";
 import { execute as libraryAreaRemoveWindowKeyEventUseCase } from "./LibraryAreaRemoveWindowKeyEventUseCase";
-import { execute as libraryAreaDragstartUseCase } from "./LibraryAreaDragstartUseCase";
-import { execute as libraryAreaDragendUseCase } from "./LibraryAreaDragendUseCase";
-import { EventType } from "@/tool/domain/event/EventType";
 import { execute as librayAreaWheelEventService } from "../../LibraryAreaScroll/service/LibrayAreaWheelEventService";
 import { execute as libraryAreaScrollBarMouseDownEventUseCase } from "@/controller/application/LibraryAreaScroll/usecase/LibraryAreaScrollBarMouseDownEventUseCase";
+import { EventType } from "@/tool/domain/event/EventType";
 import {
     $LIBRARY_LIST_BOX_ID,
     $LIBRARY_LIST_BOX_SCROLL_BAR_ID
@@ -54,13 +52,6 @@ export const execute = (): void =>
         );
         listBoxElement.addEventListener("drop",
             libraryAreaDropUseCase,
-            { "passive": false }
-        );
-        listBoxElement.addEventListener("dragstart",
-            libraryAreaDragstartUseCase
-        );
-        listBoxElement.addEventListener("dragend",
-            libraryAreaDragendUseCase,
             { "passive": false }
         );
 

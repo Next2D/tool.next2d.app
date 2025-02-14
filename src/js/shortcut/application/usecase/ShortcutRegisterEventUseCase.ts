@@ -1,4 +1,11 @@
 import { execute as shortcutCommandService } from "../service/ShortcutCommandService";
+
+/**
+ * @type {Promise}
+ * @private
+ */
+let $pointerDownQueue: Promise<void> = Promise.resolve();
+
 /**
  * @description キーボードイベントを登録
  *              Register keyboard events
@@ -9,5 +16,9 @@ import { execute as shortcutCommandService } from "../service/ShortcutCommandSer
  */
 export const execute = (): void =>
 {
-    window.addEventListener("keydown", shortcutCommandService);
+    window.addEventListener("keydown", async (event: KeyboardEvent) =>
+    {
+        $pointerDownQueue = $pointerDownQueue
+            .then(() => shortcutCommandService(event));
+    });
 };

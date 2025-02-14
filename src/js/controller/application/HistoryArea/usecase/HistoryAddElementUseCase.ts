@@ -6,6 +6,12 @@ import { execute as languageTranslationService } from "@/language/application/se
 import { execute as historyAreaScrollUpdateHeightService } from "@/controller/application/HistoryAreaScroll/service/HistoryAreaScrollUpdateHeightService";
 
 /**
+ * @type {Promise}
+ * @private
+ */
+let $pointerDownQueue: Promise<void> = Promise.resolve();
+
+/**
  * @description 作業履歴のリストにElementを追加
  *              Add Element to the list of work history
  *
@@ -48,12 +54,10 @@ export const execute = (
     // 言語設定
     languageTranslationService(lastElement);
 
-    let pointerDownQueue = Promise.resolve();
-
     // マウスダウンイベントを登録
     lastElement.addEventListener(EventType.POINTER_DOWN, async (event: PointerEvent) =>
     {
-        pointerDownQueue = pointerDownQueue
+        $pointerDownQueue = $pointerDownQueue
             .then(() => historyMouseDownEventUseCase(event));
     });
 

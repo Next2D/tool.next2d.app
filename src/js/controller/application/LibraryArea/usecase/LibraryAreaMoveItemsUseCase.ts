@@ -1,5 +1,7 @@
+import type { Folder } from "@/core/domain/model/Folder";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { libraryArea } from "@/controller/domain/model/LibraryArea";
+import { $FOLDER_TYPE } from "@/config/InstanceConfig";
 import { ExternalLibrary } from "@/external/controller/domain/model/ExternalLibrary";
 import { execute as libraryAreaReloadUseCase } from "@/controller/application/LibraryArea/usecase/LibraryAreaReloadUseCase";
 import { execute as libraryAreaReOrderingService } from "@/controller/application/LibraryArea/service/LibraryAreaReOrderingService";
@@ -7,8 +9,6 @@ import { execute as workSpaceCreatePathMapService } from "@/core/application/Wor
 import { execute as confirmModalInstaceResetService } from "@/menu/application/ConfirmModal/service/ConfirmModalInstaceResetService";
 import { execute as confirmModalinstanceShowUseCase } from "@/menu/application/ConfirmModal/usecase/ConfirmModalinstanceShowUseCase";
 import { execute as soundAreaRebuildSelectElementService } from "@/controller/application/SoundArea/service/SoundAreaRebuildSelectElementService";
-import { Folder } from "@/core/domain/model/Folder";
-import { $FOLDER_TYPE } from "@/config/InstanceConfig";
 import { execute as screenStageAreaAllDisplayObjectActiveService } from "@/screen/application/ScreenStageArea/service/ScreenStageAreaAllDisplayObjectActiveService";
 
 /**

@@ -5,11 +5,11 @@ import { execute as libraryAreaLoadItemsUseCase } from "./LibraryAreaLoadItemsUs
  *              Functions for handling file drops to the library
  *
  * @param  {DragEvent} event
- * @return {void}
+ * @return {Promise<void>}
  * @method
  * @public
  */
-export const execute = (event: DragEvent): void =>
+export const execute = async (event: DragEvent): Promise<void> =>
 {
     // 全てのイベントをキャンセル
     event.preventDefault();
@@ -25,5 +25,5 @@ export const execute = (event: DragEvent): void =>
     }
 
     // ドロップアイテムの読み込み
-    libraryAreaLoadItemsUseCase(items);
+    await libraryAreaLoadItemsUseCase(items);
 };

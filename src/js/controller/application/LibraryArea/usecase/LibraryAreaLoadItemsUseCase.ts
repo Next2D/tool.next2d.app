@@ -43,7 +43,6 @@ export const execute = async (items: DataTransferItemList): Promise<void> =>
         }
     }
 
-    const promises = [];
     for (let idx = 0; idx < items.length; ++idx) {
 
         const entry: FileSystemEntry | null = items[idx].webkitGetAsEntry();
@@ -52,10 +51,8 @@ export const execute = async (items: DataTransferItemList): Promise<void> =>
         }
 
         // ファイルクラスをスキャン
-        promises.push(libraryAreaScanFileUseCase(entry, path));
+        await libraryAreaScanFileUseCase(entry, path);
     }
-
-    await Promise.all(promises);
 
     // ファイル名で昇順に並び替え
     libraryAreaReOrderingService(workSpace);
@@ -63,11 +60,11 @@ export const execute = async (items: DataTransferItemList): Promise<void> =>
     // 選択状態を初期化
     libraryAreaSelectedClearUseCase();
 
-    // ライブラリエリアを際描画
-    libraryAreaReloadUseCase();
+    // ライブラリエリアを再描画
+    await libraryAreaReloadUseCase();
 
     // サウンドエリアの選択要素を再構築
-    soundAreaRebuildSelectElementService();
+    await soundAreaRebuildSelectElementService();
 
     // プログレバーを非表示に更新
     progressMenuHideService();

@@ -7,7 +7,7 @@ import { execute as libraryAreaArrowUpEventUseCase } from "./LibraryAreaArrowUpE
  * @description ライブラリエリアのキーイベント処理
  *              Key event processing in the library area
  *
- * @return {Promise}
+ * @return {Promise<void>}
  * @method
  * @public
  */
@@ -29,11 +29,11 @@ export const execute = async (event: KeyboardEvent): Promise<void> =>
             break;
 
         case "ArrowDown":
-            libraryAreaArrowDownEventUseCase();
+            await libraryAreaArrowDownEventUseCase();
             break;
 
         case "ArrowUp":
-            libraryAreaArrowUpEventUseCase();
+            await libraryAreaArrowUpEventUseCase();
             break;
 
         default:
