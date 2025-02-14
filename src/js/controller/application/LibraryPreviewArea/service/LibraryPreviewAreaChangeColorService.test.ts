@@ -1,9 +1,10 @@
 import { execute } from "./LibraryPreviewAreaChangeColorService";
 import { $LIBRARY_PREVIEW_AREA_ID } from "../../../../config/LibraryConfig";
+import { describe, expect, it } from "vitest";
 
 describe("LibraryPreviewAreaChangeColorServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         const div = document.createElement("div");
         div.id = $LIBRARY_PREVIEW_AREA_ID;

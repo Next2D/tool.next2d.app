@@ -60,12 +60,10 @@ export const execute = async (
         0, 0
     );
 
-    const matrix = new Matrix();
     const scale = window.devicePixelRatio;
-    matrix.scale(scale, scale);
 
     const transferredCanvas = await next2d.captureToCanvas(container, {
-        "matrix": matrix,
+        "matrix": new Matrix(scale, 0, 0, scale),
         "canvas": canvas
     });
     transferredCanvas.style.width  = `${container.width}px`;
