@@ -11,15 +11,15 @@ import { execute as libraryPreviewAreaChangeColorService } from "@/controller/ap
  * @param  {WorkSpace} work_space
  * @param  {string} color
  * @param  {boolean} [receiver=false]
- * @return {void}
+ * @return {Promise<void>}
  * @method
  * @public
  */
-export const execute = (
+export const execute = async (
     work_space: WorkSpace,
     color: string,
     receiver: boolean = false
-): void => {
+): Promise<void> => {
 
     const stage = work_space.stage;
 
@@ -35,7 +35,7 @@ export const execute = (
     stage.bgColor = color;
 
     // 履歴に登録
-    stageSettingUpdateColorHistoryUseCase(
+    await stageSettingUpdateColorHistoryUseCase(
         work_space,
         work_space.scene,
         beforeColor,

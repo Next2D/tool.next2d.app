@@ -1,17 +1,11 @@
 import { $isSocketOwner, $useSocket } from "@/share/ShareUtil";
 import { execute as userDatabaseSaveIndexedDBUseCase } from "./UserDatabaseSaveIndexedDBUseCase";
-import { execute as userDatabaseBeforeUnLoadEventService } from "../service/UserDatabaseBeforeUnLoadEventService";
-import {
-    $isSaving,
-    $startSaving
-} from "../DatabaseUtil";
 
 /**
  * @type {number}
- * @default -1
  * @private
  */
-let timerId: number = -1;
+let timerId: NodeJS.Timeout;
 
 /**
  * @description 現在のプロジェクトを自動保存予約
@@ -23,13 +17,12 @@ let timerId: number = -1;
  */
 export const execute = async (): Promise<void> =>
 {
-    // 予約の取り消し
-    clearTimeout(timerId);
-
     // 画面共有で、オーナーでない場合は保存はしない
     if ($useSocket() && !$isSocketOwner()) {
         return ;
     }
 
-    await userDatabaseSaveIndexedDBUseCase();
+    // 予約の取り消し
+    clearTimeout(timerId);
+    timerId = setTimeout(userDatabaseSaveIndexedDBUseCase, 3000);
 };

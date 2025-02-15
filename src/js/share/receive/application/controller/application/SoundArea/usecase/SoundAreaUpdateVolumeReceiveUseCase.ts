@@ -7,12 +7,12 @@ import { execute as externalSoundUpdateVolumeUseCase } from "@/external/core/app
  * @description 個別の音量変更
  *              Individual volume change
  *
- * @param  {object} message
- * @return {void}
+ * @param  {IShareReceiveMessage} message
+ * @return {Promise<void>}
  * @method
  * @public
  */
-export const execute = (message: IShareReceiveMessage): void =>
+export const execute = async (message: IShareReceiveMessage): Promise<void> =>
 {
     const id = message.data[0] as NonNullable<number>;
 
@@ -41,7 +41,7 @@ export const execute = (message: IShareReceiveMessage): void =>
     }
 
     // 音声を更新
-    externalSoundUpdateVolumeUseCase(
+    await externalSoundUpdateVolumeUseCase(
         workSpace,
         movieClip,
         soundObject,

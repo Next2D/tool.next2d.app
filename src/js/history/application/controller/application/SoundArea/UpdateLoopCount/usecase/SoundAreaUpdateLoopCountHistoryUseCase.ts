@@ -1,5 +1,6 @@
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
+import type { ISoundObject } from "@/interface/ISoundObject";
 import { $useSocket } from "@/share/ShareUtil";
 import { $SOUND_AREA_UPDATE_LOOP_COUNT_COMMAND } from "@/config/HistoryConfig";
 import { execute as historyAddElementUseCase } from "@/controller/application/HistoryArea/usecase/HistoryAddElementUseCase";
@@ -7,7 +8,6 @@ import { execute as historyGetTextService } from "@/controller/application/Histo
 import { execute as historyRemoveElementService } from "@/controller/application/HistoryArea/service/HistoryRemoveElementService";
 import { execute as soundAreaUpdateLoopCountCreateHistoryObjectService } from "../service/SoundAreaUpdateLoopCountCreateHistoryObjectService";
 import { execute as shareSendService } from "@/share/service/ShareSendService";
-import { ISoundObject } from "@/interface/ISoundObject";
 import { execute as userDatabaseAutoSaveReservationUseCase } from "@/user/application/Database/usecase/UserDatabaseAutoSaveReservationUseCase";
 
 /**
@@ -21,11 +21,11 @@ import { execute as userDatabaseAutoSaveReservationUseCase } from "@/user/applic
  * @param  {number} index
  * @param  {number} before_loop_count
  * @param  {boolean} [receiver=false]
- * @return {void}
+ * @return {Promise<void>}
  * @method
  * @public
  */
-export const execute = (
+export const execute = async (
     work_space: WorkSpace,
     movie_clip: MovieClip,
     sound_object: ISoundObject,
@@ -33,7 +33,7 @@ export const execute = (
     index: number,
     before_loop_count: number,
     receiver: boolean = false
-): void => {
+): Promise<void> => {
 
     // ポジション位置から未来の履歴を全て削除
     // fixed logic
@@ -76,5 +76,5 @@ export const execute = (
     }
 
     // 自動保存を予約
-    userDatabaseAutoSaveReservationUseCase();
+    await userDatabaseAutoSaveReservationUseCase();
 };

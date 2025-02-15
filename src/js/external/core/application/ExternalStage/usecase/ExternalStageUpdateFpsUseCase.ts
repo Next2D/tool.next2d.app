@@ -10,15 +10,15 @@ import { execute as stageSettingUpdateFpsService } from "@/controller/applicatio
  * @param  {WorkSpace} work_space
  * @param  {number} fps
  * @param  {boolean} [receiver=false]
- * @return {void}
+ * @return {Promise<void>}
  * @method
  * @public
  */
-export const execute = (
+export const execute = async (
     work_space: WorkSpace,
     fps: number,
     receiver: boolean = false
-): void => {
+): Promise<void> => {
 
     const stage = work_space.stage;
 
@@ -34,7 +34,7 @@ export const execute = (
     stage.fps = fps;
 
     // 履歴に登録
-    stageSettingUpdateFpsHistoryUseCase(
+    await stageSettingUpdateFpsHistoryUseCase(
         work_space,
         work_space.scene,
         beforeFps,

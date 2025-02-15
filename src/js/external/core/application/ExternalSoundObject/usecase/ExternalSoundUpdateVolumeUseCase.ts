@@ -20,7 +20,7 @@ import { execute as soundAreaUpdateVolumeElementService } from "@/controller/app
  * @method
  * @public
  */
-export const execute = (
+export const execute = async (
     work_space: WorkSpace,
     movie_clip: MovieClip,
     sound_object: ISoundObject,
@@ -28,7 +28,7 @@ export const execute = (
     index: number,
     volume: number,
     receiver: boolean = false
-): void => {
+): Promise<void> => {
 
     volume = $clamp(volume, 0, 100);
 
@@ -42,7 +42,7 @@ export const execute = (
     sound_object.volume = volume;
 
     // 履歴を登録
-    soundAreaUpdateVolumeHistoryUseCase(
+    await soundAreaUpdateVolumeHistoryUseCase(
         work_space,
         movie_clip,
         sound_object,

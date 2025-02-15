@@ -16,11 +16,11 @@ import { execute as soundAreaUpdateLoopCountElementService } from "@/controller/
  * @param  {number} index
  * @param  {number} loop_count
  * @param  {boolean} [receiver=false]
- * @return {void}
+ * @return {Promise<void>}
  * @method
  * @public
  */
-export const execute = (
+export const execute = async (
     work_space: WorkSpace,
     movie_clip: MovieClip,
     sound_object: ISoundObject,
@@ -28,7 +28,7 @@ export const execute = (
     index: number,
     loop_count: number,
     receiver: boolean = false
-): void => {
+): Promise<void> => {
 
     // 変更がなければ終了
     const loopCount = $clamp(loop_count, 0, 65535);
@@ -42,7 +42,7 @@ export const execute = (
     sound_object.loopCount = loopCount;
 
     // 履歴を登録
-    soundAreaUpdateLoopCountHistoryUseCase(
+    await soundAreaUpdateLoopCountHistoryUseCase(
         work_space,
         movie_clip,
         sound_object,

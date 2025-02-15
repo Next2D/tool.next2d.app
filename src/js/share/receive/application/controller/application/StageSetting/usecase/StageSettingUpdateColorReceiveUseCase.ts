@@ -7,12 +7,12 @@ import { execute as externalStageUpdateColorUseCase } from "@/external/core/appl
  * @description ステージの背景色を更新
  *              Update the background color of the stage
  *
- * @param  {object} message
- * @return {void}
+ * @param  {IShareReceiveMessage} message
+ * @return {Promise<void>}
  * @method
  * @public
  */
-export const execute = (message: IShareReceiveMessage): void =>
+export const execute = async (message: IShareReceiveMessage): Promise<void> =>
 {
     const id = message.data[0] as NonNullable<number>;
 
@@ -28,7 +28,7 @@ export const execute = (message: IShareReceiveMessage): void =>
     }
 
     // ステージの背景色を更新
-    externalStageUpdateColorUseCase(
+    await externalStageUpdateColorUseCase(
         workSpace,
         message.data[3] as NonNullable<string>,
         true

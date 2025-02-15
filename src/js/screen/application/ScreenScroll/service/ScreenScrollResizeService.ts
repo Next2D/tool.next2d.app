@@ -5,7 +5,7 @@ import { screenArea } from "@/screen/domain/model/ScreenArea";
  * @description スクリーンエリアのスクロールバーのサイズを更新
  *              Update the size of the screen area scroll bar
  *
- * @return {Promise}
+ * @return {Promise<void>}
  * @method
  * @public
  */

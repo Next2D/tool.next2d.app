@@ -7,12 +7,12 @@ import { execute as externalSoundUpdateLoopCountUseCase } from "@/external/core/
  * @description 個別のループ回数変更
  *              Individual loop count change
  *
- * @param  {object} message
- * @return {void}
+ * @param  {IShareReceiveMessage} message
+ * @return {Promise<void>}
  * @method
  * @public
  */
-export const execute = (message: IShareReceiveMessage): void =>
+export const execute = async (message: IShareReceiveMessage): Promise<void> =>
 {
     const id = message.data[0] as NonNullable<number>;
 
@@ -41,7 +41,7 @@ export const execute = (message: IShareReceiveMessage): void =>
     }
 
     // ループ回数を更新
-    externalSoundUpdateLoopCountUseCase(
+    await externalSoundUpdateLoopCountUseCase(
         workSpace,
         movieClip,
         soundObject,

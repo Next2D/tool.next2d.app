@@ -38,6 +38,7 @@ export class ExternalStage
     }
     set width (width: number)
     {
+        // todo await
         externalStageUpdateWidthUseCase(
             this._$workSpace,
             width
@@ -57,6 +58,7 @@ export class ExternalStage
     }
     set height (height: number)
     {
+        // todo await
         externalStageUpdateHeightUseCase(
             this._$workSpace,
             height
@@ -76,6 +78,7 @@ export class ExternalStage
     }
     set fps (fps: number)
     {
+        // todo await
         externalStageUpdateFpsUseCase(
             this._$workSpace,
             fps
@@ -95,6 +98,7 @@ export class ExternalStage
     }
     set bgColor (color: string)
     {
+        // todo await
         externalStageUpdateColorUseCase(
             this._$workSpace,
             color

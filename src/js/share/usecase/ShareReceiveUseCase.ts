@@ -366,12 +366,12 @@ export const execute = async (message: IShareReceiveMessage): Promise<void> =>
 
         // 個別のサウンドの音量を更新
         case $SOUND_AREA_UPDATE_VOLUME_COMMAND:
-            soundAreaUpdateVolumeReceiveUseCase(message);
+            await soundAreaUpdateVolumeReceiveUseCase(message);
             break;
 
         // 個別のサウンドのループ回数を更新
         case $SOUND_AREA_UPDATE_LOOP_COUNT_COMMAND:
-            soundAreaUpdateLoopCountReceiveUseCase(message);
+            await soundAreaUpdateLoopCountReceiveUseCase(message);
             break;
 
         // 新規ラベルを追加
@@ -391,22 +391,22 @@ export const execute = async (message: IShareReceiveMessage): Promise<void> =>
 
         // ステージの幅を更新
         case $STAGE_WIDTH_COMMAND:
-            stageSettingUpdateWidthReceiveUseCase(message);
+            await stageSettingUpdateWidthReceiveUseCase(message);
             break;
 
         // ステージの高さを更新
         case $STAGE_HEIGHT_COMMAND:
-            stageSettingUpdateHeightReceiveUseCase(message);
+            await stageSettingUpdateHeightReceiveUseCase(message);
             break;
 
         // ステージのFPSを更新
         case $STAGE_FPS_COMMAND:
-            stageSettingUpdateFpsReceiveUseCase(message);
+            await stageSettingUpdateFpsReceiveUseCase(message);
             break;
 
         // ステージの背景色を更新
         case $STAGE_COLOR_COMMAND:
-            stageSettingUpdateColorReceiveUseCase(message);
+            await stageSettingUpdateColorReceiveUseCase(message);
             break;
 
         // キャラクターのx座標を更新

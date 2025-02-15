@@ -7,12 +7,12 @@ import { execute as externalStageUpdateHeightUseCase } from "@/external/core/app
  * @description ステージの高さを更新
  *              Update the height of the stage
  *
- * @param  {object} message
- * @return {void}
+ * @param  {IShareReceiveMessage} message
+ * @return {Promise<void>}
  * @method
  * @public
  */
-export const execute = (message: IShareReceiveMessage): void =>
+export const execute = async (message: IShareReceiveMessage): Promise<void> =>
 {
     const id = message.data[0] as NonNullable<number>;
 
@@ -28,7 +28,7 @@ export const execute = (message: IShareReceiveMessage): void =>
     }
 
     // ステージの高さを更新
-    externalStageUpdateHeightUseCase(
+    await externalStageUpdateHeightUseCase(
         workSpace,
         message.data[3] as NonNullable<number>,
         true

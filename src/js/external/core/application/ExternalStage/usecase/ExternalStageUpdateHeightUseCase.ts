@@ -12,15 +12,15 @@ import { execute as screenScrollResizeService } from "@/screen/application/Scree
  * @param  {WorkSpace} work_space
  * @param  {number} height
  * @param  {boolean} [receiver=false]
- * @return {void}
+ * @return {Promise<void>}
  * @method
  * @public
  */
-export const execute = (
+export const execute = async (
     work_space: WorkSpace,
     height: number,
     receiver: boolean = false
-): void => {
+): Promise<void> => {
 
     const stage = work_space.stage;
 
@@ -36,7 +36,7 @@ export const execute = (
     stage.height = height;
 
     // 履歴に登録
-    stageSettingUpdateHeightHistoryUseCase(
+    await stageSettingUpdateHeightHistoryUseCase(
         work_space,
         work_space.scene,
         beforeHeight,
@@ -56,6 +56,6 @@ export const execute = (
         stageSettingUpdateHeightService(stage.height);
 
         // スクリーンのスクロールバーのサイズを更新
-        screenScrollResizeService();
+        await screenScrollResizeService();
     }
 };

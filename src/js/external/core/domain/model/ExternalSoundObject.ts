@@ -79,6 +79,7 @@ export class ExternalSoundObject
     }
     set volume (volume: number)
     {
+        // todo await
         externalSoundUpdateVolumeUseCase(
             this._$workSpace,
             this._$movieClip,
@@ -102,6 +103,7 @@ export class ExternalSoundObject
     }
     set loopCount (loop_count: number)
     {
+        // todo await
         externalSoundUpdateLoopCountUseCase(
             this._$workSpace,
             this._$movieClip,
