@@ -1,6 +1,7 @@
 import type { IShareInitializeSendObject } from "@/interface/IShareInitializeSendObject";
 import { $allHideMenu } from "@/menu/application/MenuUtil";
 import { WorkSpace } from "@/core/domain/model/WorkSpace";
+import { $setEditingElement } from "@/global/GlobalUtil";
 import { $loadedInitializeData } from "../ShareUtil";
 import { execute as workSpaceRestoreSaveDataService } from "@/core/application/WorkSpace/service/WorkSpaceRestoreSaveDataService";
 import { execute as userDatabaseSaveShowModalUseCase } from "@/user/application/Database/usecase/UserDatabaseSaveShowModalUseCase";
@@ -29,6 +30,9 @@ export const execute = async (message: IShareInitializeSendObject): Promise<void
 
     // 全てのメニューを終了
     $allHideMenu();
+
+    // 編集中のElementを初期化
+    $setEditingElement(null);
 
     // 進行メニューを表示
     progressMenuShowService();

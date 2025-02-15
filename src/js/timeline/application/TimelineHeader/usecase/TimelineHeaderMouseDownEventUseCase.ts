@@ -1,6 +1,7 @@
 import { $allHideMenu } from "@/menu/application/MenuUtil";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { ExternalTimeline } from "@/external/timeline/domain/model/ExternalTimeline";
+import { $setEditingElement } from "@/global/GlobalUtil";
 
 /**
  * @description タイムラインヘッダーのマウスダウンイベント処理関数
@@ -22,6 +23,9 @@ export const execute = async (event: PointerEvent): Promise<void> =>
 
     // メニューを全て非表示に更新
     $allHideMenu();
+
+    // 編集中のElementを初期化
+    $setEditingElement(null);
 
     const element: HTMLElement | null = event.currentTarget as HTMLElement;
     if (!element) {

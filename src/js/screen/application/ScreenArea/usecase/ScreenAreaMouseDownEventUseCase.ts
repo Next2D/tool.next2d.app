@@ -2,6 +2,7 @@ import { $getActiveTool } from "@/tool/application/ToolUtil";
 import { execute as screenAreaRunParentMovieClipUseCase } from "./ScreenAreaRunParentMovieClipUseCase";
 import { EventType } from "@/tool/domain/event/EventType";
 import { $allHideMenu } from "@/menu/application/MenuUtil";
+import { $setEditingElement } from "@/global/GlobalUtil";
 
 /**
  * @description ダブルタップ用の待機フラグ
@@ -38,6 +39,9 @@ export const execute = async (event: PointerEvent): Promise<void> =>
 
     // メニューを全て非表示
     $allHideMenu();
+
+    // 編集中のElementを初期化
+    $setEditingElement(null);
 
     if (!wait) {
 

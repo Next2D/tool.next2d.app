@@ -8,6 +8,7 @@ import {
 } from "../../TimelineUtil";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { ExternalLayer } from "@/external/core/domain/model/ExternalLayer";
+import { $setEditingElement } from "@/global/GlobalUtil";
 
 /**
  * @description レイヤーの表示・非表示アイコンのイベント処理
@@ -29,6 +30,9 @@ export const execute = async (event: PointerEvent): Promise<void> =>
 
     // メニュー表示があれば全て非表示にする
     $allHideMenu();
+
+    // 編集中のElementを初期化
+    $setEditingElement(null);
 
     // 連続表示機能を有効にする
     if (!$getDisableState()) {

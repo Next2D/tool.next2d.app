@@ -1,4 +1,5 @@
 import { $allHideMenu } from "../../MenuUtil";
+import { $setEditingElement } from "@/global/GlobalUtil";
 import { execute as timelineToolAddEmptyKeyFrameUseCase } from "@/timeline/application/TimelineTool/application/AddEmptyKeyFrame/usecase/TimelineToolAddEmptyKeyFrameUseCase";
 
 /**
@@ -22,6 +23,9 @@ export const execute = async (event: PointerEvent): Promise<void> =>
 
     // メニューを非表示にする
     $allHideMenu();
+
+    // 編集中のElementを初期化
+    $setEditingElement(null);
 
     // 空のキーフレームを追加する
     await timelineToolAddEmptyKeyFrameUseCase();

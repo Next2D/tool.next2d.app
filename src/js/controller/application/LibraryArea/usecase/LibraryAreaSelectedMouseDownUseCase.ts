@@ -18,7 +18,7 @@ import {
 import {
     $getEditingElement,
     $setEditingElement
-} from "../LibraryAreaUtil";
+} from "@/global/GlobalUtil";
 
 /**
  * @description 親Elementのマウスダウン処理関数、Elementを選択状態に更新

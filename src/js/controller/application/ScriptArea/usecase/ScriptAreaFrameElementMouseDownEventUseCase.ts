@@ -3,6 +3,7 @@ import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { execute as scriptEditorModalShowService } from "@/menu/application/ScriptEditorModal/service/ScriptEditorModalShowService";
 import { $allHideMenu } from "@/menu/application/MenuUtil";
 import { $MOVIE_CLIP_TYPE } from "@/config/InstanceConfig";
+import { $setEditingElement } from "@/global/GlobalUtil";
 import {
     $setTargetFrame,
     $setTargetMovieClip
@@ -28,6 +29,10 @@ export const execute = (event: PointerEvent): void =>
         return ;
     }
 
+    // 編集中のElementを初期化
+    $setEditingElement(null);
+
+    // 全てのメニューを非表示にする
     $allHideMenu();
 
     const workSpace = $getCurrentWorkSpace();

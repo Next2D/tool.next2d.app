@@ -1,7 +1,7 @@
-import { execute } from "./PropertyAreaTitleMouseDownEventService";
-import { describe, expect, it } from "vitest";
+import { execute } from "./PropertyAreaTitleMouseDownEventUseCase";
+import { describe, expect, it, vi } from "vitest";
 
-describe("PropertyAreaTitleMouseDownEventServiceTest", () =>
+describe("PropertyAreaTitleMouseDownEventUseCase Test", () =>
 {
     it("execute test", () =>
     {
@@ -18,28 +18,34 @@ describe("PropertyAreaTitleMouseDownEventServiceTest", () =>
         viewAreaElement.id = "stage-setting-view-area";
         viewAreaElement.style.display = "";
 
-        let state = "on";
+        let stopPropagation = false;
+        let preventDefault = false;
         const eventMock = {
-            "stopPropagation": () =>
+            "stopPropagation": vi.fn(() =>
             {
-                state = "off";
-            },
+                stopPropagation = true;
+            }),
+            "preventDefault": vi.fn(() =>
+            {
+                preventDefault = true;
+            }),
             "currentTarget": parentElement
-        };
+        } as unknown as PointerEvent;
 
-        expect(state).toBe("on");
+        expect(stopPropagation).toBe(false);
+        expect(preventDefault).toBe(false);
         expect(viewAreaElement.style.display).toBe("");
         expect(iconElement.classList.contains("active")).toBe(true);
 
         // 非表示
         execute(eventMock);
-        expect(state).toBe("off");
+        expect(stopPropagation).toBe(true);
+        expect(preventDefault).toBe(true);
         expect(viewAreaElement.style.display).toBe("none");
         expect(iconElement.classList.contains("active")).toBe(false);
 
         // 表示
         execute(eventMock);
-        expect(state).toBe("off");
         expect(viewAreaElement.style.display).toBe("");
         expect(iconElement.classList.contains("disable")).toBe(false);
 

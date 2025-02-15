@@ -2,6 +2,7 @@ import { $ZOOM_MAX_VALUE, $ZOOM_MIN_VALUE } from "@/config/ZoomConfig";
 import { $clamp, $setCursor } from "@/global/GlobalUtil";
 import { execute as zoomToolRealodWorkSpaceUseCase } from "./ZoomToolRealodWorkSpaceUseCase";
 import { $allHideMenu } from "@/menu/application/MenuUtil";
+import { $setEditingElement } from "@/global/GlobalUtil";
 
 /**
  * @description ズームinuputの値操作のマウスムーブイベント
@@ -20,6 +21,9 @@ export const execute = (event: PointerEvent): void =>
 
     // メニューを非表示
     $allHideMenu();
+
+    // 編集中のElementを初期化
+    $setEditingElement(null);
 
     // カーソルを変更
     $setCursor("ew-resize");

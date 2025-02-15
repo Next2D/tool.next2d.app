@@ -1,5 +1,6 @@
 import type { TimelineLayerControllerMenu } from "@/menu/domain/model/TimelineLayerControllerMenu";
 import { $TIMELINE_MENU_NAME } from "@/config/MenuConfig";
+import { $setEditingElement } from "@/global/GlobalUtil";
 import {
     $allHideMenu,
     $getMenu
@@ -22,6 +23,9 @@ export const execute = (event: MouseEvent): void =>
 
     // 全てのメニューを非表示
     $allHideMenu($TIMELINE_MENU_NAME);
+
+    // 編集中のElementを初期化
+    $setEditingElement(null);
 
     const menu = $getMenu<TimelineLayerControllerMenu>($TIMELINE_MENU_NAME);
     if (!menu) {

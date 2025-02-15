@@ -7,6 +7,7 @@ import { transformSetting } from "@/controller/domain/model/TransformSetting";
 import { execute as referenceSettingHideElementService } from "@/controller/application/ReferenceSetting/service/ReferenceSettingHideElementService";
 import { execute as screenAreaCalcSelectedCharacterPositionService } from "@/screen/application/ScreenArea/service/ScreenAreaCalcSelectedCharacterPositionService";
 import { $setPointerId } from "../DisplayObjectUtil";
+import { $setEditingElement } from "@/global/GlobalUtil";
 
 /**
  * @description スクリーンに設置したDisplayObject選択時のイベント処理関数
@@ -28,6 +29,9 @@ export const execute = (event: PointerEvent): void =>
 
     // メニューを全て非表示
     $allHideMenu();
+
+    // 編集中のElementを初期化
+    $setEditingElement(null);
 
     // 中心点を非表示にする
     referenceSettingHideElementService();

@@ -4,6 +4,7 @@ import { $allHideMenu } from "../../MenuUtil";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { $poolCanvas } from "@/global/GlobalUtil";
 import { $activeTouchPointers } from "@/global/GlobalUtil";
+import { $setEditingElement } from "@/global/GlobalUtil";
 
 /**
  * @description Photopea連動処理
@@ -27,6 +28,9 @@ export const execute = async (event: PointerEvent): Promise<void> =>
 
     // メニューを全て閉じる
     $allHideMenu();
+
+    // 編集中のElementを初期化
+    $setEditingElement(null);
 
     const libraryId = libraryArea.selectedIds[0];
     const workSpace = $getCurrentWorkSpace();

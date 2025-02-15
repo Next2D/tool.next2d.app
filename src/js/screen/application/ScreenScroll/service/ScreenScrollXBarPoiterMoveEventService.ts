@@ -1,6 +1,7 @@
 import { $SCREEN_ID } from "@/config/ScreenConfig";
 import { $allHideMenu } from "@/menu/application/MenuUtil";
 import { screenArea } from "@/screen/domain/model/ScreenArea";
+import { $setEditingElement } from "@/global/GlobalUtil";
 
 /**
  * @description スクリーンエリアのxスクロールバーのマウス移動イベント
@@ -19,6 +20,9 @@ export const execute = (event: PointerEvent): void =>
 
     // メニューを非表示
     $allHideMenu();
+
+    // 編集中のElementを初期化
+    $setEditingElement(null);
 
     requestAnimationFrame(() =>
     {

@@ -1,6 +1,7 @@
 import { $SCREEN_STAGE_RECT_ID } from "@/config/ScreenConfig";
 import { $allHideMenu } from "@/menu/application/MenuUtil";
 import { stageRect } from "@/screen/domain/model/StageRect";
+import { $setEditingElement } from "@/global/GlobalUtil";
 
 /**
  * @description 範囲選択のマウスムーブイベントの実行関数
@@ -28,6 +29,9 @@ export const execute = (event: PointerEvent): void =>
 
         // メニューを非表示
         $allHideMenu();
+
+        // 編集中のElementを初期化
+        $setEditingElement(null);
 
         if (stageRect.x > event.offsetX) {
             element.style.left = `${event.offsetX}px`;

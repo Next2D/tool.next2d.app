@@ -1,5 +1,11 @@
 import { $allHideMenu } from "@/menu/application/MenuUtil";
-import { $getMoveOffsetX, $getMoveOffsetY, $getMoveState, $setMoveState } from "../LibraryAreaUtil";
+import { $setEditingElement } from "@/global/GlobalUtil";
+import {
+    $getMoveOffsetX,
+    $getMoveOffsetY,
+    $getMoveState,
+    $setMoveState
+} from "../LibraryAreaUtil";
 
 /**
  * @description スクリーンへの移動イベント関数
@@ -29,6 +35,9 @@ export const execute = (event: PointerEvent): void =>
 
     // メニューを全て非表示に更新
     $allHideMenu();
+
+    // 編集中のElementを初期化
+    $setEditingElement(null);
 
     requestAnimationFrame(() =>
     {

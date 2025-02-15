@@ -2,6 +2,7 @@ import { $allHideMenu } from "@/menu/application/MenuUtil";
 import { $getLayerFromElement } from "../../TimelineUtil";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { ExternalLayer } from "@/external/core/domain/model/ExternalLayer";
+import { $setEditingElement } from "@/global/GlobalUtil";
 
 /**
  * @description レイヤーのハイライトアイコンのイベント処理
@@ -23,6 +24,9 @@ export const execute = (event: PointerEvent): void =>
 
     // メニュー表示があれば全て非表示にする
     $allHideMenu();
+
+    // 編集中のElementを初期化
+    $setEditingElement(null);
 
     const element: HTMLElement | null = event.target as HTMLElement;
     if (!element) {

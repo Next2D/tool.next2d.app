@@ -5,6 +5,7 @@ import {
     $allHideMenu,
     $getMenu
 } from "@/menu/application/MenuUtil";
+import { $setEditingElement } from "@/global/GlobalUtil";
 import {
     $TIMELINE_ID,
     $TIMELINE_SCENE_LIST_BUTTON_ID,
@@ -44,6 +45,9 @@ export const execute = (): void =>
 
     // シーン名一覧メニュー以外を非表示
     $allHideMenu($SCENE_LIST_MENU_NAME);
+
+    // 編集中のElementを初期化
+    $setEditingElement(null);
 
     const workSpace = $getCurrentWorkSpace();
     const timelineAreaState = workSpace.timelineAreaState;

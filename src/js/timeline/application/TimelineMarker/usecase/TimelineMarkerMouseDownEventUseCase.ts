@@ -5,6 +5,7 @@ import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { ExternalTimeline } from "@/external/timeline/domain/model/ExternalTimeline";
 import { $setCursor } from "@/global/GlobalUtil";
 import { $allHideMenu } from "@/menu/application/MenuUtil";
+import { $setEditingElement } from "@/global/GlobalUtil";
 
 /**
  * @description マーカー移動用の関数をwindowに登録
@@ -30,6 +31,9 @@ export const execute = (event: PointerEvent): void =>
 
     // メニューを全て非表示にする
     $allHideMenu();
+
+    // 編集中のElementを初期化
+    $setEditingElement(null);
 
     // 選択中のレイヤーを全て非アクティブ化
     const workSpace = $getCurrentWorkSpace();

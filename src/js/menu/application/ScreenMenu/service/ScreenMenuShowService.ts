@@ -2,6 +2,7 @@ import type { ScreenMenu } from "@/menu/domain/model/ScreenMenu";
 import { $SCREEN_MENU_NAME } from "@/config/MenuConfig";
 import { $allHideMenu, $getMenu } from "@/menu/application/MenuUtil";
 import { $useKeyboard } from "@/shortcut/ShortcutUtil";
+import { $setEditingElement } from "@/global/GlobalUtil";
 
 /**
  * @description スクリーンエリアのメニューを表示
@@ -21,6 +22,10 @@ export const execute = (event: MouseEvent): void =>
     event.stopPropagation();
     event.preventDefault();
 
+    // 編集中のElementを初期化
+    $setEditingElement(null);
+
+    // スクリーンメニュー以外、全て非表示にする
     $allHideMenu($SCREEN_MENU_NAME);
 
     // 進行状況メニューを非表示に

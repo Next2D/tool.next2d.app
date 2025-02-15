@@ -1,5 +1,6 @@
 import type { ScriptEditorModal } from "@/menu/domain/model/ScriptEditorModal";
 import { $SCRIPT_EDITOR_MODAL_NAME } from "@/config/MenuConfig";
+import { $setEditingElement } from "@/global/GlobalUtil";
 import {
     $allHideMenu,
     $getMenu
@@ -20,6 +21,10 @@ export const execute = (): void =>
         return ;
     }
 
+    // 編集中のElementを初期化
+    $setEditingElement(null);
+
+    // メニューを非表示にする
     $allHideMenu($SCRIPT_EDITOR_MODAL_NAME);
 
     menu.hide();

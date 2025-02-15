@@ -1,6 +1,7 @@
 import { $allHideMenu } from "@/menu/application/MenuUtil";
 import { execute as timelineLayerControllerNameTextActiveStyleService } from "../service/TimelineLayerControllerNameTextActiveStyleService";
 import { $useKeyboard } from "@/shortcut/ShortcutUtil";
+import { $setEditingElement } from "@/global/GlobalUtil";
 
 /**
  * @description ダブルタップ用の待機フラグ
@@ -52,6 +53,9 @@ export const execute = (event: PointerEvent): void =>
 
     // メニュー表示があれば全て非表示にする
     $allHideMenu();
+
+    // 編集中のElementを初期化
+    $setEditingElement(null);
 
     const currentLayerIndex = parseInt(element.dataset.layerIndex as NonNullable<string>);
     if (!wait || currentLayerIndex !== layerIndex) {

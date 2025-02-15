@@ -2,6 +2,7 @@ import { EventType } from "@/tool/domain/event/EventType";
 import { execute as timelineAdjustmentXPointerMoveUseCase } from "./TimelineAdjustmentXPointerMoveUseCase";
 import { execute as timelineAdjustmentXPointerUpUseCase } from "./TimelineAdjustmentXPointerUpUseCase";
 import { $allHideMenu } from "@/menu/application/MenuUtil";
+import { $setEditingElement } from "@/global/GlobalUtil";
 
 /**
  * @description タイムラインの幅調整のイベント開始処理
@@ -19,6 +20,9 @@ export const execute = (event: PointerEvent): void =>
 
     // 全てのメニューを非表示にする
     $allHideMenu();
+
+    // 編集中のElementを初期化
+    $setEditingElement(null);
 
     const element = event.target as HTMLElement;
     if (!element) {

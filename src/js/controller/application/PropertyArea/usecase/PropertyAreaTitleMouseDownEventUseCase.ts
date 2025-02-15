@@ -1,3 +1,5 @@
+import { execute as propertyAreaScrollUpdateHeightService } from "@/controller/application/PropertyAreaScroll/service/PropertyAreaScrollUpdateHeightService";
+
 /**
  * @description プロパティエリアのタイトルタップの実行関数
  *              Execution function of the title tap in the property area
@@ -11,6 +13,7 @@ export const execute = (event: PointerEvent): void =>
 {
     // 親のイベントを中止
     event.stopPropagation();
+    event.preventDefault();
 
     const element: HTMLElement | null = event.currentTarget as HTMLElement;
     if (!element) {
@@ -41,4 +44,7 @@ export const execute = (event: PointerEvent): void =>
         iconElement.classList.add("active");
         viewAreaElement.style.display = "";
     }
+
+    // プロパティエリアのスクロールバーの高さを更新
+    propertyAreaScrollUpdateHeightService();
 };

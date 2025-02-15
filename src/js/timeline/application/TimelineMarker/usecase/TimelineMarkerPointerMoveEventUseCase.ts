@@ -11,6 +11,7 @@ import {
     $setMoveMode
 } from "../../TimelineUtil";
 import { $allHideMenu } from "@/menu/application/MenuUtil";
+import { $setEditingElement } from "@/global/GlobalUtil";
 
 /**
  * @description マーカーのムーブイベントの処理関数
@@ -30,6 +31,9 @@ export const execute = (event: PointerEvent, loop_mode: boolean = false): void =
 
     // メニューを全て非表示にする
     $allHideMenu();
+
+    // 編集中のElementを初期化
+    $setEditingElement(null);
 
     const workSpace = $getCurrentWorkSpace();
     const scene = workSpace.scene;

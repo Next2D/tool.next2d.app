@@ -12,6 +12,7 @@ import { execute as billingModelShowService } from "@/menu/application/BillingMo
 import { $useSocket } from "@/share/ShareUtil";
 import { execute as screenScrollResizeService } from "@/screen/application/ScreenScroll/service/ScreenScrollResizeService";
 import { execute as userDatabaseAutoSaveReservationUseCase } from "@/user/application/Database/usecase/UserDatabaseAutoSaveReservationUseCase";
+import { $setEditingElement } from "@/global/GlobalUtil";
 
 /**
  * @description ダブルタップ用の待機フラグ
@@ -51,6 +52,9 @@ export const execute = async (event: PointerEvent): Promise<void> =>
 
     // 表示されてるメニューを全て非表示にする
     $allHideMenu();
+
+    // 編集中のElementを初期化
+    $setEditingElement(null);
 
     // マウスの状態管理をダウンに更新
     $setMouseState("down");

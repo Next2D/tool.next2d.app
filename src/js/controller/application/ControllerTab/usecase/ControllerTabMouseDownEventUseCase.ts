@@ -4,6 +4,7 @@ import { execute as libraryAreaScrollUpdateHeightService } from "@/controller/ap
 import { execute as propertyAreaScrollUpdateHeightService } from "@/controller/application/PropertyAreaScroll/service/PropertyAreaScrollUpdateHeightService";
 import { execute as historyAreaScrollUpdateHeightService } from "@/controller/application/HistoryAreaScroll/service/HistoryAreaScrollUpdateHeightService";
 import { execute as scriptAreaScrollUpdateHeightService } from "@/controller/application/ScriptAreaScroll/service/ScriptAreaScrollUpdateHeightService";
+import { $setEditingElement } from "@/global/GlobalUtil";
 
 /**
  * @description タブのタップイベント処理関数
@@ -31,6 +32,9 @@ export const execute = (event: PointerEvent): void =>
 
     // 表示されてるメニューをメニューを全て非表示にする
     $allHideMenu();
+
+    // 編集中のElementを初期化
+    $setEditingElement(null);
 
     const element: HTMLElement | null = document
         .getElementById($CONTROLLER_TAB_AREA_ID);

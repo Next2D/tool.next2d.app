@@ -2,6 +2,7 @@ import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { execute as timelineLayerFrameSelectedStartUseCase } from "./TimelineLayerFrameSelectedStartUseCase";
 import { execute as timelineTargetGroupActiveGroupUseCase } from "@/timeline/application/TimelineTargetGroup/usecase/TimelineTargetGroupActiveGroupUseCase";
 import { $allHideMenu } from "@/menu/application/MenuUtil";
+import { $setEditingElement } from "@/global/GlobalUtil";
 import {
     $getLayerFromElement,
     $getMouseState,
@@ -58,6 +59,9 @@ export const execute = async (event: PointerEvent): Promise<void> =>
 
     // メニューを非表示にする
     $allHideMenu();
+
+    // 編集中のElementを初期化
+    $setEditingElement(null);
 
     const workSpace = $getCurrentWorkSpace();
     const movieClip = workSpace.scene;

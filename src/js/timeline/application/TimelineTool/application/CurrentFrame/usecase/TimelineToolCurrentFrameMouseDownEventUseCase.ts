@@ -3,6 +3,7 @@ import { execute as timelineToolCurrentFramePointerRegisterEventUseCase } from "
 import { $useKeyboard } from "@/shortcut/ShortcutUtil";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { ExternalTimeline } from "@/external/timeline/domain/model/ExternalTimeline";
+import { $setEditingElement } from "@/global/GlobalUtil";
 
 /**
  * @description タイムラインの現在フレームのInput Elementのマウスダウン処理関数
@@ -26,6 +27,9 @@ export const execute = (event: PointerEvent): void =>
 
     // メニューを全て非表示にする
     $allHideMenu();
+
+    // 編集中のElementを初期化
+    $setEditingElement(null);
 
     // レイヤー・フレームElementのアクティブ状態をリセット
     const workSpace = $getCurrentWorkSpace();

@@ -8,6 +8,7 @@ import {
 } from "@/config/ToolConfig";
 import { strokeSize } from "@/tool/domain/model/StrokeSize";
 import { $allHideMenu } from "@/menu/application/MenuUtil";
+import { $setEditingElement } from "@/global/GlobalUtil";
 
 /**
  * @description 線の幅のinuputの値操作のマウスムーブイベント
@@ -26,6 +27,9 @@ export const execute = (event: PointerEvent): void =>
 
     // メニューを非表示
     $allHideMenu();
+
+    // 編集中のElementを初期化
+    $setEditingElement(null);
 
     // カーソルを変更
     $setCursor("ew-resize");

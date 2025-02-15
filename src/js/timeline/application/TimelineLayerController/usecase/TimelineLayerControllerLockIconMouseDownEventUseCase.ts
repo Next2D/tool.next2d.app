@@ -4,6 +4,7 @@ import { EventType } from "@/tool/domain/event/EventType";
 import { execute as timelineLayerControllerLockIconWindowMouseUpService } from "../service/TimelineLayerControllerLockIconWindowMouseUpService";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { ExternalLayer } from "@/external/core/domain/model/ExternalLayer";
+import { $setEditingElement } from "@/global/GlobalUtil";
 
 /**
  * @description レイヤーのロックアイコンのイベント処理
@@ -25,6 +26,9 @@ export const execute = async (event: PointerEvent): Promise<void> =>
 
     // メニュー表示があれば全て非表示にする
     $allHideMenu();
+
+    // 編集中のElementを初期化
+    $setEditingElement(null);
 
     // 連続表示機能を有効にする
     if (!$getLockState()) {

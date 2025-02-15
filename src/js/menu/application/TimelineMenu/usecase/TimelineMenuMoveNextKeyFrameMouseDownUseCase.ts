@@ -1,5 +1,6 @@
 import { $allHideMenu } from "../../MenuUtil";
 import { execute as timelineMenuMoveNextKeyFrameService } from "../service/TimelineMenuMoveNextKeyFrameService";
+import { $setEditingElement } from "@/global/GlobalUtil";
 
 /**
  * @description タイムラインの次のキーフレームへの移動ボタンのマウスダウンイベント
@@ -22,6 +23,9 @@ export const execute = async (event: PointerEvent): Promise<void> =>
 
     // メニューを非表示にする
     $allHideMenu();
+
+    // 編集中のElementを初期化
+    $setEditingElement(null);
 
     // 選択中のレイヤーの最終フレームへ移動する
     await timelineMenuMoveNextKeyFrameService();

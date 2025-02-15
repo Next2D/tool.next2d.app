@@ -1,5 +1,6 @@
 import { $allHideMenu } from "../../MenuUtil";
 import { execute as timelineToolEraseFramesUseCase } from "@/timeline/application/TimelineTool/application/EraseFrames/usecase/TimelineToolEraseFramesUseCase";
+import { $setEditingElement } from "@/global/GlobalUtil";
 
 /**
  * @description タイムラインメニューのフレーム削除ボタンのマウスダウンイベント
@@ -22,6 +23,9 @@ export const execute = (event: PointerEvent): void =>
 
     // メニューを非表示にする
     $allHideMenu();
+
+    // 編集中のElementを初期化
+    $setEditingElement(null);
 
     // フレームを削除する
     timelineToolEraseFramesUseCase();

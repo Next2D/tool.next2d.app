@@ -1,6 +1,7 @@
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { $allHideMenu } from "@/menu/application/MenuUtil";
+import { $setEditingElement } from "@/global/GlobalUtil";
 import { execute as timelineSceneListClearAddRootUseCase } from "@/timeline/application/TimelineSceneList/usecase/TimelineSceneListClearAddRootUseCase";
 import { execute as timelineSceneListClearAllService } from "@/timeline/application/TimelineSceneList/service/TimelineSceneListClearAllService";
 import { $MOVIE_CLIP_TYPE } from "@/config/InstanceConfig";
@@ -41,6 +42,9 @@ export const execute = async (event: PointerEvent): Promise<void> =>
 
     // メニューを全て非表示にする
     $allHideMenu();
+
+    // 編集中のElementを初期化
+    $setEditingElement(null);
 
     if (!wait) {
 

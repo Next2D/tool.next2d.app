@@ -1,6 +1,7 @@
 import { $TIMELINE_LAYER_MENU_NAME } from "@/config/MenuConfig";
 import { execute as timelineLayerControllerMenuShowUseCase } from "@/menu/application/TimelineLayerControllerMenu/usecase/TimelineLayerControllerMenuShowUseCase";
 import { $allHideMenu } from "@/menu/application/MenuUtil";
+import { $setEditingElement } from "@/global/GlobalUtil";
 
 /**
  * @description ダブルタップ用の待機フラグ
@@ -29,6 +30,9 @@ export const execute = (event: PointerEvent): void =>
 
     // メニュー表示があれば全て非表示にする
     $allHideMenu($TIMELINE_LAYER_MENU_NAME);
+
+    // 編集中のElementを初期化
+    $setEditingElement(null);
 
     if (!wait) {
 

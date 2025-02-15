@@ -1,4 +1,5 @@
 import { $allHideMenu } from "@/menu/application/MenuUtil";
+import { $setEditingElement } from "@/global/GlobalUtil";
 
 /**
  * @description コントローラーエリアでマウスダウンした際の関数
@@ -19,4 +20,7 @@ export const execute = (event: PointerEvent): void =>
 
     // 全てのメニューを非表示にする
     $allHideMenu();
+
+    // 編集中のElementを初期化
+    $setEditingElement(null);
 };

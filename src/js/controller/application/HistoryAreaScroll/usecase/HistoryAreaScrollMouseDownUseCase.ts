@@ -2,6 +2,7 @@ import { $allHideMenu } from "@/menu/application/MenuUtil";
 import { EventType } from "@/tool/domain/event/EventType";
 import { execute as historyAreaScrollPointerMoveUseCase } from "./HistoryAreaScrollPointerMoveUseCase";
 import { execute as historyAreaScrollPointerUpUseCase } from "./HistoryAreaScrollPointerUpUseCase";
+import { $setEditingElement } from "@/global/GlobalUtil";
 
 /**
  * @description 履歴エリアのスクロールバーのマウスダウンイベント
@@ -24,6 +25,9 @@ export const execute = (event: PointerEvent): void =>
 
     // メニューを非表示にする
     $allHideMenu();
+
+    // 編集中のElementを初期化
+    $setEditingElement(null);
 
     // ポインターイベントを登録
     element.setPointerCapture(event.pointerId);

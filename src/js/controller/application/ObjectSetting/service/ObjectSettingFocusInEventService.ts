@@ -1,4 +1,5 @@
 import { $updateKeyLock } from "@/shortcut/ShortcutUtil";
+import { $setEditingElement } from "@/global/GlobalUtil";
 
 /**
  * @description ステージの幅設定のフォーカスイベント処理
@@ -23,6 +24,9 @@ export const execute = (event: FocusEvent): void =>
 
     // 入力モードをOnにする
     $updateKeyLock(true);
+
+    // 編集中の要素を設定
+    $setEditingElement(element);
 
     element.style.cursor = "";
 };

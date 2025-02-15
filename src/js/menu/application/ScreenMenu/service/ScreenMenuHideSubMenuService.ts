@@ -1,5 +1,6 @@
 import { $SCREEN_MENU_NAME } from "@/config/MenuConfig";
 import { $allHideMenu } from "../../MenuUtil";
+import { $setEditingElement } from "@/global/GlobalUtil";
 
 /**
  * @description スクリーンエリアのサブメニューを全て非表示にする
@@ -16,4 +17,7 @@ export const execute = (event: PointerEvent): void =>
 
     // スクリーンメニュー以外、全て非表示にする
     $allHideMenu($SCREEN_MENU_NAME);
+
+    // 編集中のElementを初期化
+    $setEditingElement(null);
 };

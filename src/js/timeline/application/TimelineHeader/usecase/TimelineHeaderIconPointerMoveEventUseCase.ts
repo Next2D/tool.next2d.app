@@ -7,6 +7,7 @@ import { execute as timelineScrollUpdateScrollXUseCase } from "@/timeline/applic
 import { $allHideMenu } from "@/menu/application/MenuUtil";
 import { execute as timelineHeaderIconMouseOverService } from "../service/TimelineHeaderIconMouseOverService";
 import { execute as timelineHeaderIconMouseOutService } from "../service/TimelineHeaderIconMouseOutService";
+import { $setEditingElement } from "@/global/GlobalUtil";
 
 /**
  * @description タイムラインヘッダーアイコンのウィンドウイベント登録
@@ -26,6 +27,9 @@ export const execute = (event: PointerEvent, loop_mode: boolean = false): void =
 
     // 全てのメニューを非表示
     $allHideMenu();
+
+    // 編集中のElementを初期化
+    $setEditingElement(null);
 
     const workSpace = $getCurrentWorkSpace();
     const timelineAreaState = workSpace.timelineAreaState;

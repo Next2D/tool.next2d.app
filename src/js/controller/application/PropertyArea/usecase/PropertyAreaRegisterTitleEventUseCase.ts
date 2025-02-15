@@ -1,6 +1,6 @@
 import { EventType } from "@/tool/domain/event/EventType";
 import { $CONTROLLER_AREA_PROPERTY_ID } from "@/config/PropertyConfig";
-import { execute as propertyAreaTitleMouseDownEventService } from "../service/PropertyAreaTitleMouseDownEventService";
+import { execute as propertyAreaTitleMouseDownEventUseCase } from "./PropertyAreaTitleMouseDownEventUseCase";
 
 /**
  * @description プロパティーエリアのタイトルのマウスダウンイベントを登録
@@ -35,7 +35,7 @@ export const execute = (): void =>
         node
             .addEventListener(
                 EventType.POINTER_DOWN,
-                propertyAreaTitleMouseDownEventService
+                propertyAreaTitleMouseDownEventUseCase
             );
     }
 };

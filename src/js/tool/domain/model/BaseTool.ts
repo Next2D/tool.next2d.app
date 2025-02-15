@@ -2,6 +2,7 @@ import { ToolEvent } from "../event/ToolEvent";
 import { EventType } from "../event/EventType";
 import { $TOOL_PREFIX } from "@/config/ToolConfig";
 import { $allHideMenu } from "@/menu/application/MenuUtil";
+import { $setEditingElement } from "@/global/GlobalUtil";
 import {
     $registerDefaultTool,
     $setActiveTool
@@ -184,6 +185,9 @@ export class BaseTool extends ToolEvent
 
         // メニューを全て非表示にする
         $allHideMenu();
+
+        // 編集中のElementを初期化
+        $setEditingElement(null);
 
         // 待機モード終了
         $setStandbyMoveState(false);

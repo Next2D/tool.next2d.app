@@ -2,6 +2,7 @@ import { ExternalLayer } from "@/external/core/domain/model/ExternalLayer";
 import { $allHideMenu } from "../../MenuUtil";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { $MASK_TYPE } from "@/config/LayerModeConfig";
+import { $setEditingElement } from "@/global/GlobalUtil";
 
 /**
  * @description マスクレイヤーに変更する
@@ -20,6 +21,9 @@ export const execute = async (event: PointerEvent): Promise<void> =>
 
     // イベントの伝播を止める
     event.stopPropagation();
+
+    // 編集中のElementを初期化
+    $setEditingElement(null);
 
     // メニューを非表示にする
     $allHideMenu();

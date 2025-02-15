@@ -99,37 +99,3 @@ export const $getMoveState = (): boolean =>
 {
     return $moveState;
 };
-
-/**
- * @type {HTMLElement | null}
- * @default null
- * @private
- */
-let $editingElement: HTMLElement | null = null;
-
-/**
- * @description 編集中のElementをセット
- *              Set the editing Element
- *
- * @param  {HTMLElement | null} element
- * @return {void}
- * @method
- * @public
- */
-export const $setEditingElement = (element: HTMLElement | null): void =>
-{
-    $editingElement = element;
-};
-
-/**
- * @description 編集中のElementを取得
- *              Get the editing Element
- *
- * @return {HTMLElement | null}
- * @method
- * @public
- */
-export const $getEditingElement = (): HTMLElement | null =>
-{
-    return $editingElement;
-};

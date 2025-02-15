@@ -1,5 +1,6 @@
 import { $allHideMenu } from "../../MenuUtil";
 import { execute as shareConnectBootUseCase } from "@/share/usecase/ShareConnectBootUseCase";
+import { $setEditingElement } from "@/global/GlobalUtil";
 
 /**
  * @description 画面共有機能を起動
@@ -18,6 +19,9 @@ export const execute = (event: PointerEvent): void =>
 
     // 全てのメニューを非表示にする
     $allHideMenu();
+
+    // 編集中のElementを初期化
+    $setEditingElement(null);
 
     // 画面共有機能を起動
     shareConnectBootUseCase();

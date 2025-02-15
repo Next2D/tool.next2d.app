@@ -9,6 +9,7 @@ import { timelineLayer } from "@/timeline/domain/model/TimelineLayer";
 import { execute as timelineLayerControllerElementOverUseCase } from "./TimelineLayerControllerElementOverUseCase";
 import { execute as timelineLayerControllerElementOutUseCase } from "./TimelineLayerControllerElementOutUseCase";
 import { execute as timelineLayerControllerExitIconElementOverUseCase } from "./TimelineLayerControllerExitIconElementOverUseCase";
+import { $setEditingElement } from "@/global/GlobalUtil";
 
 /**
  * @description レイヤーコントローラーウィンドウのマウスムーブ処理関数
@@ -103,6 +104,9 @@ export const execute = (
 
     // 全てのメニューを非表示にする
     $allHideMenu();
+
+    // 編集中のElementを初期化
+    $setEditingElement(null);
 
     requestAnimationFrame((): void =>
     {

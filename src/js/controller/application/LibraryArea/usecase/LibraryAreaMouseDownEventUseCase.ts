@@ -1,4 +1,5 @@
 import { $allHideMenu } from "@/menu/application/MenuUtil";
+import { $setEditingElement } from "@/global/GlobalUtil";
 import { execute as libraryAreaSelectedClearUseCase } from "./LibraryAreaSelectedClearUseCase";
 import { $activeTouchPointers } from "@/global/GlobalUtil";
 
@@ -24,6 +25,9 @@ export const execute = (event: PointerEvent): void =>
 
     // 全てのメニューを非表示に更新
     $allHideMenu();
+
+    // 編集中のElementを初期化
+    $setEditingElement(null);
 
     // 選択を初期化
     libraryAreaSelectedClearUseCase();

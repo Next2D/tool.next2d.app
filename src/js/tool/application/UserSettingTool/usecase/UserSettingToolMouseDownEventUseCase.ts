@@ -2,6 +2,7 @@ import { $USER_MENU_NAME } from "@/config/MenuConfig";
 import { $allHideMenu } from "@/menu/application/MenuUtil";
 import { execute as userSettingMenuShowService } from "@/menu/application/UserSettingMenu/service/UserSettingMenuShowService";
 import { execute as userSettingMenuUpdateOffsetService } from "@/menu/application/UserSettingMenu/service/UserSettingMenuUpdateOffsetService";
+import { $setEditingElement } from "@/global/GlobalUtil";
 
 /**
  * @description ユーザー設定ツールの選択時のユースケース
@@ -18,6 +19,9 @@ export const execute = (event: PointerEvent): void =>
 
     // ユーザー設定以外の全てのメニューを非表示にする
     $allHideMenu($USER_MENU_NAME);
+
+    // 編集中のElementを初期化
+    $setEditingElement(null);
 
     // 表示位置を調整
     userSettingMenuUpdateOffsetService();

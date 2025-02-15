@@ -7,6 +7,7 @@ import { execute as billingModelShowService } from "@/menu/application/BillingMo
 import { execute as historyRedoUseCase } from "./HistoryRedoUseCase";
 import { execute as historyUndoUseCase } from "./HistoryUndoUseCase";
 import { execute as userDatabaseAutoSaveReservationUseCase } from "@/user/application/Database/usecase/UserDatabaseAutoSaveReservationUseCase";
+import { $setEditingElement } from "@/global/GlobalUtil";
 
 /**
  * @description 指定のIndexまで作業履歴を更新する
@@ -28,6 +29,9 @@ export const execute = async (event: PointerEvent): Promise<void> =>
 
     // 全てのメニューを非表示にする
     $allHideMenu();
+
+    // 編集中のElementを初期化
+    $setEditingElement(null);
 
     // 画面共有中か、広告を見たユーザーでなければ、モーダルを表示して終了
     if (!userAllFunctionStateService() && !$useSocket()) {

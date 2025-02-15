@@ -59,7 +59,6 @@ export const execute = async (event: PointerEvent): Promise<void> =>
 
     // 親のイベントを終了
     event.stopPropagation();
-    event.preventDefault();
 
     // 表示されてるメニューを全て非表示にする
     $allHideMenu();
@@ -98,10 +97,13 @@ export const execute = async (event: PointerEvent): Promise<void> =>
             }
 
             // 移動モードを開始
+            event.preventDefault();
             propertyAreaActiveMoveUseCase(event);
         }, 600);
 
     } else {
+
+        event.preventDefault();
 
         // ダブルタップを終了
         wait = false;

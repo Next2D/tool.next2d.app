@@ -1,5 +1,6 @@
 import { $allHideMenu } from "../../MenuUtil";
 import { execute as scriptEditorModalCurrentBootUseCase } from "@/menu/application/ScriptEditorModal/usecase/ScriptEditorModalCurrentBootUseCase";
+import { $setEditingElement } from "@/global/GlobalUtil";
 
 /**
  * @description タイムラインメニューのスクリプト追加ボタンのマウスダウンイベント
@@ -22,6 +23,9 @@ export const execute = (event: PointerEvent): void =>
 
     // メニューを非表示にする
     $allHideMenu();
+
+    // 編集中のElementを初期化
+    $setEditingElement(null);
 
     // スクリプトを追加
     scriptEditorModalCurrentBootUseCase();

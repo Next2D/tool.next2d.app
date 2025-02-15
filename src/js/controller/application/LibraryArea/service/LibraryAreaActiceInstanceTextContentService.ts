@@ -1,5 +1,5 @@
 import { $updateKeyLock } from "@/shortcut/ShortcutUtil";
-import { $setEditingElement } from "../LibraryAreaUtil";
+import { $setEditingElement } from "@/global/GlobalUtil";
 
 /**
  * @description インスタスの名前もしくはシンボルを編集モードにセット

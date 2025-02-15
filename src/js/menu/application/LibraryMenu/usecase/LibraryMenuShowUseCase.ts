@@ -13,6 +13,7 @@ import {
     $allHideMenu,
     $getMenu
 } from "../../MenuUtil";
+import { $setEditingElement } from "@/global/GlobalUtil";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import {
     $BITMAP_TYPE,
@@ -39,6 +40,9 @@ export const execute = (event: MouseEvent): void =>
     event.preventDefault();
 
     $allHideMenu($LIBRARY_MENU_NAME);
+
+    // 編集中のElementを初期化
+    $setEditingElement(null);
 
     // 進行状況メニューを非表示に
     const menu = $getMenu<LibraryMenu>($LIBRARY_MENU_NAME);

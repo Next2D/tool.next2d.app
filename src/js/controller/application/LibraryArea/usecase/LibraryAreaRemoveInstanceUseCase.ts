@@ -6,6 +6,7 @@ import { execute as libraryAreaSelectedClearUseCase } from "@/controller/applica
 import { execute as soundAreaRebuildSelectElementService } from "@/controller/application/SoundArea/service/SoundAreaRebuildSelectElementService";
 import { $allHideMenu } from "@/menu/application/MenuUtil";
 import { $activeTouchPointers } from "@/global/GlobalUtil";
+import { $setEditingElement } from "@/global/GlobalUtil";
 
 /**
  * @description 選択中のアイテムを全て削除
@@ -30,6 +31,9 @@ export const execute = async (event: PointerEvent | KeyboardEvent): Promise<void
 
     // 全てのメニューを非表示
     $allHideMenu();
+
+    // 編集中のElementを初期化
+    $setEditingElement(null);
 
     // 外部APIを起動
     const workSpace = $getCurrentWorkSpace();

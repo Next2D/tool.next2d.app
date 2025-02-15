@@ -2,6 +2,7 @@ import { EventType } from "@/tool/domain/event/EventType";
 import { execute as controllerAdjustmentPointerMoveUseCase } from "./ControllerAdjustmentPointerMoveUseCase";
 import { execute as controllerAdjustmentPointerUpUseCase } from "./ControllerAdjustmentPointerUpUseCase";
 import { $allHideMenu } from "@/menu/application/MenuUtil";
+import { $setEditingElement } from "@/global/GlobalUtil";
 
 /**
  * @description コントローラーの幅調整のイベント開始処理
@@ -27,6 +28,9 @@ export const execute = (event: PointerEvent): void =>
 
     // 全てのメニューを非表示にする
     $allHideMenu();
+
+    // 編集中のElementを初期化
+    $setEditingElement(null);
 
     // マウス移動イベントを登録
     element.setPointerCapture(event.pointerId);

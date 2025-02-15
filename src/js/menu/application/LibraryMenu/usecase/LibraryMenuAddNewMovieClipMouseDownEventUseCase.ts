@@ -1,6 +1,7 @@
 import { $allHideMenu } from "../../MenuUtil";
 import { execute as libraryMenuAddNewMovieClipService } from "../service/LibraryMenuAddNewMovieClipService";
 import { $activeTouchPointers } from "@/global/GlobalUtil";
+import { $setEditingElement } from "@/global/GlobalUtil";
 
 /**
  * @description ライブラリメニューのMovieClip追加ボタンの実行関数
@@ -21,6 +22,9 @@ export const execute = async (event: PointerEvent): Promise<void> =>
 
     // メニューを非表示に更新
     $allHideMenu();
+
+    // 編集中のElementを初期化
+    $setEditingElement(null);
 
     // 他のイベントを中止
     event.stopPropagation();

@@ -2,6 +2,7 @@ import { ExternalLayer } from "@/external/core/domain/model/ExternalLayer";
 import { $allHideMenu } from "../../MenuUtil";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { $NORMAL_TYPE } from "@/config/LayerModeConfig";
+import { $setEditingElement } from "@/global/GlobalUtil";
 
 /**
  * @description 通常レイヤーに変更する
@@ -23,6 +24,9 @@ export const execute = async (event: PointerEvent): Promise<void> =>
 
     // メニューを非表示にする
     $allHideMenu();
+
+    // 編集中のElementを初期化
+    $setEditingElement(null);
 
     const workSpace = $getCurrentWorkSpace();
     const movieClip = workSpace.scene;

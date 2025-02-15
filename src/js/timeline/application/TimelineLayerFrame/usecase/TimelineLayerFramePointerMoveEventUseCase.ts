@@ -13,6 +13,7 @@ import {
 } from "../../TimelineUtil";
 import { $getTimelineOffsetTop } from "@/timeline/application/TimelineArea/TimelineAreaUtil";
 import { $allHideMenu } from "@/menu/application/MenuUtil";
+import { $setEditingElement } from "@/global/GlobalUtil";
 
 /**
  * @description フレームの複数選択の実行関数
@@ -35,6 +36,9 @@ export const execute = (
 
     // メニューを非表示にする
     $allHideMenu();
+
+    // 編集中のElementを初期化
+    $setEditingElement(null);
 
     const workSpace = $getCurrentWorkSpace();
     const scene = workSpace.scene;

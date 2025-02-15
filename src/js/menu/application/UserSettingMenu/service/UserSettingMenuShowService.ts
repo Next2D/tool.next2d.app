@@ -1,5 +1,6 @@
 import type { UserSettingMenu } from "@/menu/domain/model/UserSettingMenu";
 import { $USER_MENU_NAME } from "@/config/MenuConfig";
+import { $setEditingElement } from "@/global/GlobalUtil";
 import {
     $allHideMenu,
     $getMenu
@@ -20,7 +21,11 @@ export const execute = (): void =>
         return ;
     }
 
+    // メニューを非表示にする
     $allHideMenu($USER_MENU_NAME);
+
+    // 編集中のElementを初期化
+    $setEditingElement(null);
 
     menu.show();
 };

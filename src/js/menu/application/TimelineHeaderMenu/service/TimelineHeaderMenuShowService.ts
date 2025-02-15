@@ -1,6 +1,7 @@
 import type { TimelineHeaderMenu } from "@/menu/domain/model/TimelineHeaderMenu";
 import { $useKeyboard } from "@/shortcut/ShortcutUtil";
 import { $TIMELINE_HEADER_MENU_NAME } from "@/config/MenuConfig";
+import { $setEditingElement } from "@/global/GlobalUtil";
 import {
     $allHideMenu,
     $getMenu
@@ -24,6 +25,9 @@ export const execute = (event: MouseEvent): void =>
     // 親のイベントを中止
     event.stopPropagation();
     event.preventDefault();
+
+    // 編集中のElementを初期化
+    $setEditingElement(null);
 
     // 全てのメニューを非表示
     $allHideMenu($TIMELINE_HEADER_MENU_NAME);
