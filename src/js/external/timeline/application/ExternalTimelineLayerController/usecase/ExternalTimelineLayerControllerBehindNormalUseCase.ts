@@ -17,15 +17,15 @@ import {
  * @param  {WorkSpace} work_space
  * @param  {MovieClip} movie_clip
  * @param  {Layer} dist_layer
- * @return {void}
+ * @return {Promise<void>}
  * @method
  * @public
  */
-export const execute = (
+export const execute = async (
     work_space: WorkSpace,
     movie_clip: MovieClip,
     dist_layer: Layer
-): void => {
+): Promise<void> => {
 
     // MovieClipのレイヤー配列を取得
     const layers = movie_clip.layers;
@@ -108,7 +108,7 @@ export const execute = (
 
         // 履歴に登録
         // fixed logic
-        timelineLayerControllerMoveLayerHistoryUseCase(
+        await timelineLayerControllerMoveLayerHistoryUseCase(
             work_space,
             movie_clip,
             layer,

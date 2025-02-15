@@ -73,6 +73,7 @@ export class ExternalLayer
             return ;
         }
 
+        // todo await
         // レイヤー名を更新
         externalLayerUpdateNameUseCase(
             this._$workSpace, this._$movieClip, this._$layer, name
@@ -203,13 +204,13 @@ export class ExternalLayer
      *              Update Layer Highlight Color
      *
      * @param  {string} color
-     * @return {void}
+     * @return {Promise<void>}
      * @method
      * @public
      */
-    updateLightColor (color: string): void
+    async updateLightColor (color: string): Promise<void>
     {
-        externalLayerUpdateLightColorUseCase(
+        await externalLayerUpdateLightColorUseCase(
             this._$workSpace, this._$movieClip, this._$layer, color
         );
     }

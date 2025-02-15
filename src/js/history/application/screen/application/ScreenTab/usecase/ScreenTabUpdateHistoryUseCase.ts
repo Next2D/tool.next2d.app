@@ -15,15 +15,15 @@ import { execute as userDatabaseAutoSaveReservationUseCase } from "@/user/applic
  * @param  {WorkSpace} work_space
  * @param  {string} name
  * @param  {boolean} [receiver=false]
- * @return {void}
+ * @return {Promise<void>}
  * @method
  * @public
  */
-export const execute = (
+export const execute = async (
     work_space: WorkSpace,
     name: string,
     receiver: boolean = false
-): void => {
+): Promise<void> => {
 
     // 指定のプロジェクトで起動中のMovieClipをセット
     const scene = work_space.scene;
@@ -60,5 +60,5 @@ export const execute = (
     }
 
     // 自動保存を予約
-    userDatabaseAutoSaveReservationUseCase();
+    await userDatabaseAutoSaveReservationUseCase();
 };

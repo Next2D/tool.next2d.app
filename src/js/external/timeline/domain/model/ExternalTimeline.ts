@@ -85,13 +85,13 @@ export class ExternalTimeline
      *
      * @param  {number} start_frame
      * @param  {number} end_frame
-     * @return {void}
+     * @return {Promise<void>}
      * @method
      * @public
      */
-    convertToKeyframes (start_frame: number, end_frame: number = 0): void
+    async convertToKeyframes (start_frame: number, end_frame: number = 0): Promise<void>
     {
-        externalTimelineLayerFrameConvertToKeyframesUseCase(
+        await externalTimelineLayerFrameConvertToKeyframesUseCase(
             this._$workSpace,
             this._$movieClip,
             start_frame,

@@ -17,7 +17,7 @@ import {
  * @param  {WorkSpace} work_space
  * @param  {MovieClip} movie_clip
  * @param  {number} index
- * @return {void}
+ * @return {Promise<void>}
  * @method
  * @public
  */
@@ -59,7 +59,7 @@ export const execute = async (
             break;
 
         default:
-            externalTimelineLayerControllerBehindNormalUseCase(
+            await externalTimelineLayerControllerBehindNormalUseCase(
                 work_space,
                 movie_clip,
                 distLayer

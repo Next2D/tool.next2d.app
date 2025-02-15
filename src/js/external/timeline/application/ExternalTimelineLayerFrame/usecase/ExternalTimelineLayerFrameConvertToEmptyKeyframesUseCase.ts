@@ -46,7 +46,7 @@ export const execute = async (
 
         // 1フレーム目より未来のフレームにキーフレームを追加する場合は登録されてるフレームを調整
         if (frameObject.start > 1) {
-            externalTimelineLayerFramePrevAdjustmentUseCase(
+            await externalTimelineLayerFramePrevAdjustmentUseCase(
                 work_space, movie_clip, layer, frameObject.start
             );
         }
@@ -55,7 +55,7 @@ export const execute = async (
         for (let keyframe = frameObject.start; keyframe < frameObject.end; ++keyframe) {
 
             // 空のキーフレームに分割
-            const result = externalTimelineLayerFrameSplitToEmptyUseCase(
+            const result = await externalTimelineLayerFrameSplitToEmptyUseCase(
                 work_space,
                 movie_clip,
                 layer,

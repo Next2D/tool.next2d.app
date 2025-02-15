@@ -13,17 +13,17 @@ import { execute as timelineLayerControllerUpdateNameElementService } from "@/ti
  * @param  {Layer} layer
  * @param  {string} name
  * @param  {boolean} [receiver = false]
- * @return {void}
+ * @return {Promise<void>}
  * @method
  * @public
  */
-export const execute = (
+export const execute = async (
     work_space: WorkSpace,
     movie_clip: MovieClip,
     layer: Layer,
     name: string,
     receiver: boolean = false
-): void => {
+): Promise<void> => {
 
     // 変更前のレイヤー名を取得
     const beforeName = layer.name;
@@ -32,7 +32,7 @@ export const execute = (
     layer.name = name;
 
     // 作業履歴を登録
-    timelineLayerControllerLayerNameUpdateHistoryUseCase(
+    await timelineLayerControllerLayerNameUpdateHistoryUseCase(
         work_space, movie_clip, layer, beforeName, receiver
     );
 

@@ -17,17 +17,17 @@ import { execute as soundAreaRebuildSelectElementService } from "@/controller/ap
  * @param  {I} instance
  * @param  {string} name
  * @param  {boolean} [receiver = false]
- * @return {void}
+ * @return {Promise<void>}
  * @method
  * @public
  */
-export const execute = <I extends Instance> (
+export const execute = async <I extends Instance> (
     work_space: WorkSpace,
     movie_clip: MovieClip,
     instance: I,
     name: string,
     receiver: boolean = false
-): void => {
+): Promise<void> => {
 
     const beforeName = instance.name;
 
@@ -52,7 +52,7 @@ export const execute = <I extends Instance> (
     libraryAreaReOrderingService(work_space);
 
     // 履歴に残す
-    instanceUpdateNameHistoryUseCase(
+    await instanceUpdateNameHistoryUseCase(
         work_space,
         movie_clip,
         instance,
@@ -68,7 +68,7 @@ export const execute = <I extends Instance> (
         // 名前変更したのがサウンドの場合はセレクトElementを再構成
         if (instance.type === $SOUND_TYPE) {
             // SelectElementの再構成
-            soundAreaRebuildSelectElementService();
+            await soundAreaRebuildSelectElementService();
 
             // サウンド設定の再構成
             soundAreaRebuildSettingAreaUseCase();

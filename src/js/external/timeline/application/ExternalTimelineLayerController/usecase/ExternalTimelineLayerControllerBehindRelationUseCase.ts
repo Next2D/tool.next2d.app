@@ -130,7 +130,7 @@ export const execute = async (
 
         // 履歴に登録
         // fixed logic
-        timelineLayerControllerMoveLayerHistoryUseCase(
+        await timelineLayerControllerMoveLayerHistoryUseCase(
             work_space,
             movie_clip,
             layer,
@@ -142,7 +142,7 @@ export const execute = async (
 
         if (work_space.active && movie_clip.active) {
             // アクティブならアイコン表示を更新
-            timelineLayerControllerUpdateIconElementService(layer);
+            await timelineLayerControllerUpdateIconElementService(layer);
 
             // スクリーンのElementの階層を更新
             screenAreaUpdateMovedLayerService(layer);

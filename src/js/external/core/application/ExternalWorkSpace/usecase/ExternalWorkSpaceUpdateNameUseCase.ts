@@ -34,7 +34,7 @@ export const execute = async (
     await screenTabUpdateElementUseCase(work_space.id, name);
 
     // 作業履歴を残す
-    screenTabUpdateHistoryUseCase(work_space, name, receiver);
+    await screenTabUpdateHistoryUseCase(work_space, name, receiver);
 
     // 名前を更新
     work_space.name = name || "Untitled";

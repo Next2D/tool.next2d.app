@@ -13,8 +13,8 @@ import { $MASK_IN_MODE } from "@/config/LayerModeConfig";
  * @description レイヤー移動を実行
  *              Perform layer movement
  *
- * @param  {object} message
- * @return {void}
+ * @param  {IShareReceiveMessage} message
+ * @return {Promise<void>}
  * @method
  * @public
  */
@@ -50,7 +50,7 @@ export const execute = async (message: IShareReceiveMessage): Promise<void> =>
     movieClip.layers.splice(afterIndex, 0, layer);
 
     // 履歴に登録
-    timelineLayerControllerMoveLayerHistoryUseCase(
+    await timelineLayerControllerMoveLayerHistoryUseCase(
         workSpace,
         movieClip,
         layer,

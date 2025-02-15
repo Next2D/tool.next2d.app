@@ -14,17 +14,17 @@ import { execute as timelineLayerFrameEraseEmptyKeyframeHistoryUseCase } from "@
  * @param  {Layer} layer
  * @param  {EmptyCharacter} emptyCharacter
  * @param  {boolean} [receiver=false]
- * @return {void}
+ * @return {Promise<void>}
  * @method
  * @public
  */
-export const execute = (
+export const execute = async (
     work_space: WorkSpace,
     movie_clip: MovieClip,
     layer: Layer,
     emptyCharacter: EmptyCharacter,
     receiver: boolean = false
-): void => {
+): Promise<void> => {
 
     // 後方のキーフレームを前方へ移動
     externalTimelineLayerFrameForwardKeyframeService(
@@ -35,7 +35,7 @@ export const execute = (
 
     // 履歴の登録
     // fixed logic
-    timelineLayerFrameEraseEmptyKeyframeHistoryUseCase(
+    await timelineLayerFrameEraseEmptyKeyframeHistoryUseCase(
         work_space,
         movie_clip,
         layer,

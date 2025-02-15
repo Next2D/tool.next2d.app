@@ -122,7 +122,7 @@ export const execute = async (
                     /// 空のキーフレームの幅以上の場合はキーフレームを削除、それ以外は終了位置を更新
                     if (numFrames === activeEmptyCharacter.endFrame - activeEmptyCharacter.startFrame) {
                         // 空のキーフレームのフレームを全て削除
-                        externalTimelineLayerFrameEraseEmptyKeyframeUseCase(
+                        await externalTimelineLayerFrameEraseEmptyKeyframeUseCase(
                             work_space,
                             movie_clip,
                             layer,

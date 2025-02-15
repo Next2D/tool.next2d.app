@@ -13,16 +13,16 @@ import { execute as externalTimelineLayerFrameSplitKeyframeToEmptyUseCase } from
  * @param  {MovieClip} movie_clip
  * @param  {Layer} layer
  * @param  {number} keyframe
- * @return {boolean}
+ * @return {Promise<boolean>}
  * @method
  * @public
  */
-export const execute = (
+export const execute = async (
     work_space: WorkSpace,
     movie_clip: MovieClip,
     layer: Layer,
     keyframe: number
-): boolean => {
+): Promise<boolean> => {
 
     // 指定のキーフレームにアクティブなキャラクターがあれば終了
     const activeCharacters = layer.getActiveCharacters(keyframe);
@@ -53,7 +53,7 @@ export const execute = (
     }
 
     // 新規の空のキーフレームを追加
-    externalTimelineLayerFrameCreateEmptyKeyframeUseCase(
+    await externalTimelineLayerFrameCreateEmptyKeyframeUseCase(
         work_space,
         movie_clip,
         layer,

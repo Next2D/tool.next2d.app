@@ -147,7 +147,7 @@ export const execute = async (
         layer.addCharacter(character);
 
         // 履歴に登録
-        timelineLayerFrameAddKeyframeHistoryUseCase(
+        await timelineLayerFrameAddKeyframeHistoryUseCase(
             work_space, movie_clip,
             layer, character,
             emptyCharacterIndex, receiver

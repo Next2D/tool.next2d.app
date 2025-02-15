@@ -13,17 +13,17 @@ import { execute as timelineLayerControllerUpdateColorUseCase } from "@/timeline
  * @param  {Layer} layer
  * @param  {string} color
  * @param  {boolean} [receiver=false]
- * @return {void}
+ * @return {Promise<void>}
  * @method
  * @public
  */
-export const execute = (
+export const execute = async (
     work_space: WorkSpace,
     movie_clip: MovieClip,
     layer: Layer,
     color: string,
     receiver: boolean = false
-): void => {
+): Promise<void> => {
 
     // 変更前のカラーを取得
     const beforeColor = layer.color;
@@ -33,7 +33,7 @@ export const execute = (
 
     // 履歴に追加
     // fixed logic
-    layerUpdateLightColorHistoryUseCase(
+    await layerUpdateLightColorHistoryUseCase(
         work_space, movie_clip, layer, beforeColor, receiver
     );
 

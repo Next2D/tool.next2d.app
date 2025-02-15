@@ -15,17 +15,17 @@ import { $MOVIE_CLIP_TYPE } from "@/config/InstanceConfig";
  * @param  {I} instance
  * @param  {string} symbol
  * @param  {boolean} [receiver = false]
- * @return {void}
+ * @return {Promise<void>}
  * @method
  * @public
  */
-export const execute = <I extends Instance> (
+export const execute = async <I extends Instance> (
     work_space: WorkSpace,
     movie_clip: MovieClip,
     instance: I,
     symbol: string,
     receiver: boolean = false
-): void => {
+): Promise<void> => {
 
     const beforeName = instance.symbol;
 
@@ -50,12 +50,12 @@ export const execute = <I extends Instance> (
         if (instance.type === $MOVIE_CLIP_TYPE
             && (instance as unknown as MovieClip).active
         ) {
-            objectSettingUpdateSymbolService(symbol);
+            await objectSettingUpdateSymbolService(symbol);
         }
     }
 
     // 履歴に残す
-    instanceUpdateSymbolHistoryUseCase(
+    await instanceUpdateSymbolHistoryUseCase(
         work_space,
         movie_clip,
         instance,

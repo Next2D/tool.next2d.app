@@ -166,7 +166,7 @@ export const execute = async (message: IShareReceiveMessage): Promise<void> =>
 
         // レイヤー名の変更
         case $LAYER_NAME_UPDATE_COMMAND:
-            timelineLayerControllerLayerNameUpdateReceiveUseCase(message);
+            await timelineLayerControllerLayerNameUpdateReceiveUseCase(message);
             break;
 
         // レイヤーのロックを更新
@@ -201,7 +201,7 @@ export const execute = async (message: IShareReceiveMessage): Promise<void> =>
 
         // 新規フォルダー追加
         case $LIBRARY_ADD_NEW_FOLDER_COMMAND:
-            folderAddNewReceiveUseCase(message);
+            await folderAddNewReceiveUseCase(message);
             break;
 
         // フォルダの開閉更新
@@ -211,12 +211,12 @@ export const execute = async (message: IShareReceiveMessage): Promise<void> =>
 
         // インスタンス名の更新
         case $LIBRARY_UPDATE_INSTANCE_NAME_COMMAND:
-            instanceUpdateNameReceiveUseCase(message);
+            await instanceUpdateNameReceiveUseCase(message);
             break;
 
         // シンボル名の更新
         case $LIBRARY_UPDATE_INSTANCE_SYMBOL_COMMAND:
-            instanceUpdateSymbolReceiveUseCase(message);
+            await instanceUpdateSymbolReceiveUseCase(message);
             break;
 
         // 新規bitmap追加
@@ -261,7 +261,7 @@ export const execute = async (message: IShareReceiveMessage): Promise<void> =>
 
         // ライブラリからインスタンスを削除
         case $LIBRARY_REMOVE_INSTANCE_COMMAND:
-            instanceRemoveReceiveUseCase(message);
+            await instanceRemoveReceiveUseCase(message);
             break;
 
         // レイヤー移動
@@ -271,7 +271,7 @@ export const execute = async (message: IShareReceiveMessage): Promise<void> =>
 
         // レイヤーのハイライト表示を更新
         case $LAYER_UPDATE_LIGHT_COLOR_COMMAND:
-            layerUpdateLightColorReceiveUseCase(message);
+            await layerUpdateLightColorReceiveUseCase(message);
             break;
 
         // レイヤーのモードを更新
@@ -291,7 +291,7 @@ export const execute = async (message: IShareReceiveMessage): Promise<void> =>
 
         // 空のキーフレームを分割
         case $TIMELINE_SPLIT_EMPTY_KEYFRAME_COMMAND:
-            timelineLayerFrameSplitEmptyKeyframeReceiveUseCase(message);
+            await timelineLayerFrameSplitEmptyKeyframeReceiveUseCase(message);
             break;
 
         // 空のキーフレームにフレームを挿入
@@ -321,7 +321,7 @@ export const execute = async (message: IShareReceiveMessage): Promise<void> =>
 
         // キーフレームを分割してキーフレームを挿入
         case $TIMELINE_SPLIT_KEYFRAME_TO_KEYFRAME_COMMAND:
-            timelineLayerFrameSplitKeyframeToKeyframeReceiveUseCase(message);
+            await timelineLayerFrameSplitKeyframeToKeyframeReceiveUseCase(message);
             break;
 
         // 空のキーフレームのフレームを削除

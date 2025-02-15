@@ -10,12 +10,12 @@ import { $FOLDER_TYPE } from "@/config/InstanceConfig";
  * @description socketで受け取った情報の受け取り処理関数
  *              Receiving and processing functions for information received in the socket
  *
- * @param  {object} message
- * @return {void}
+ * @param  {IShareReceiveMessage} message
+ * @return {Promise<void>}
  * @method
  * @public
  */
-export const execute = (message: IShareReceiveMessage): void =>
+export const execute = async (message: IShareReceiveMessage): Promise<void> =>
 {
     const id = message.data[0] as NonNullable<number>;
 
@@ -44,7 +44,7 @@ export const execute = (message: IShareReceiveMessage): void =>
 
     // 作業履歴に残す
     // fixed logic
-    libraryAreaAddNewFolderHistoryUseCase(
+    await libraryAreaAddNewFolderHistoryUseCase(
         workSpace,
         movieClip,
         folder,

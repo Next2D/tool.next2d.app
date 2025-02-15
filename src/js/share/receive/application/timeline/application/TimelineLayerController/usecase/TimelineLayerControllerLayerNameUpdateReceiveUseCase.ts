@@ -12,7 +12,7 @@ import { execute as externalLayerUpdateNameUseCase } from "@/external/core/appli
  * @method
  * @public
  */
-export const execute = (message: IShareReceiveMessage): void =>
+export const execute = async (message: IShareReceiveMessage): Promise<void> =>
 {
     const id = message.data[0] as NonNullable<number>;
 
@@ -35,7 +35,7 @@ export const execute = (message: IShareReceiveMessage): void =>
 
     // レイヤー名を更新
     const name = message.data[4] as NonNullable<string>;
-    externalLayerUpdateNameUseCase(
+    await externalLayerUpdateNameUseCase(
         workSpace, movieClip, layer, name, true
     );
 };

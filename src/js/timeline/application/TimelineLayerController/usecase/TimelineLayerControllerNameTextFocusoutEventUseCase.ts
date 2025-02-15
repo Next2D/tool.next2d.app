@@ -8,11 +8,11 @@ import { execute as externalLayerUpdateNameUseCase } from "@/external/core/appli
  *              End of Text Editing Use Cases
  *
  * @param  {FocusEvent} event
- * @return {void}
+ * @return {Promise<void>}
  * @method
  * @public
  */
-export const execute = (event: FocusEvent): void =>
+export const execute = async (event: FocusEvent): Promise<void> =>
 {
     // 名前のElementを非アクティブに更新
     timelineLayerControllerNameTextInactiveStyleService(event);
@@ -39,7 +39,7 @@ export const execute = (event: FocusEvent): void =>
 
     // Layerオブジェクトの名前を更新、Elementの更新はしない
     const workSpace = $getCurrentWorkSpace();
-    externalLayerUpdateNameUseCase(
+    await externalLayerUpdateNameUseCase(
         workSpace, workSpace.scene, layer, name
     );
 };

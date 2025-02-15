@@ -79,7 +79,7 @@ export const execute = async (
             }
 
             // 履歴を登録
-            timelineLayerControllerMoveLayerHistoryUseCase(
+            await timelineLayerControllerMoveLayerHistoryUseCase(
                 work_space,
                 movie_clip,
                 layer,

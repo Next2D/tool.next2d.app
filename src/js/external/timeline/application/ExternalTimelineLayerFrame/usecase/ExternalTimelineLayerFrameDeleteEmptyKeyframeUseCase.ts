@@ -16,17 +16,17 @@ import { execute as timelineLayerFrameDeleteEmptyKeyframeHistoryUseCase } from "
  * @param  {Layer} layer
  * @param  {EmptyCharacter} empty_character
  * @param  {boolean} [receiver=false]
- * @return {void}
+ * @return {Promise<void>}
  * @method
  * @public
  */
-export const execute = (
+export const execute = async (
     work_space: WorkSpace,
     movie_clip: MovieClip,
     layer: Layer,
     empty_character: EmptyCharacter,
     receiver: boolean = false
-): void => {
+): Promise<void> => {
 
     // 削除するキーフレーム数
     const numFrames = empty_character.endFrame - empty_character.startFrame;
@@ -45,7 +45,7 @@ export const execute = (
     }
 
     // 履歴に登録
-    timelineLayerFrameDeleteEmptyKeyframeHistoryUseCase(
+    await timelineLayerFrameDeleteEmptyKeyframeHistoryUseCase(
         work_space,
         movie_clip,
         layer,

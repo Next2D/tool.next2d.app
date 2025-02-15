@@ -8,12 +8,12 @@ import { execute as timelineLayerAddFrameUpdateLayerStyleUseCase } from "@/timel
  * @description キーフレーム分割してキーフレームを挿入
  *              Split keyframes and insert empty keyframes
  *
- * @param  {object} message
- * @return {void}
+ * @param  {IShareReceiveMessage} message
+ * @return {Promise<void>}
  * @method
  * @public
  */
-export const execute = (message: IShareReceiveMessage): void =>
+export const execute = async (message: IShareReceiveMessage): Promise<void> =>
 {
     const id = message.data[0] as NonNullable<number>;
 
@@ -35,7 +35,7 @@ export const execute = (message: IShareReceiveMessage): void =>
     }
 
     // キーフレームを分割してキーフレームを追加
-    externalTimelineLayerFrameSplitToKeyframeUseCase(
+    await externalTimelineLayerFrameSplitToKeyframeUseCase(
         workSpace,
         movieClip,
         layer,

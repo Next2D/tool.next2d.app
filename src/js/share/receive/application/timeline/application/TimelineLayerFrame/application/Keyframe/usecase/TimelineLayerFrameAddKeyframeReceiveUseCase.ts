@@ -51,7 +51,7 @@ export const execute = async (message: IShareReceiveMessage): Promise<void> =>
     }
 
     // 履歴に登録
-    timelineLayerFrameAddKeyframeHistoryUseCase(
+    await timelineLayerFrameAddKeyframeHistoryUseCase(
         workSpace, movieClip,
         layer, character,
         message.data[4] as NonNullable<number>,

@@ -65,7 +65,7 @@ export const execute = async (
         }
 
         // 追加するフレームにキーフレームがない場合は、前方のキーフレームを調整
-        reload = externalTimelineLayerFramePrevAdjustmentUseCase(
+        reload = await externalTimelineLayerFramePrevAdjustmentUseCase(
             work_space,
             movie_clip,
             layer,

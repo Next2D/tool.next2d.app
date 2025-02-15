@@ -9,8 +9,8 @@ import { execute as screenAreaRedrawUseCase } from "@/screen/application/ScreenA
  * @description 空のキーフレーム追加を実行
  *              Perform empty keyframe addition
  *
- * @param  {object} message
- * @return {Promise}
+ * @param  {IShareReceiveMessage} message
+ * @return {Promise<void>}
  * @method
  * @public
  */
@@ -36,7 +36,7 @@ export const execute = async (message: IShareReceiveMessage): Promise<void> =>
     }
 
     // 空のキーフレームを追加
-    externalTimelineLayerFrameCreateEmptyKeyframeUseCase(
+    await externalTimelineLayerFrameCreateEmptyKeyframeUseCase(
         workSpace,
         movieClip,
         layer,

@@ -15,22 +15,22 @@ import { execute as timelineLayerFrameSplitKeyframeToKeyframeHistoryUseCase } fr
  * @param  {Layer} layer
  * @param  {number} keyframe
  * @param  {boolean} [receiver=false]
- * @return {void}
+ * @return {Promise<void>}
  * @method
  * @public
  */
-export const execute = (
+export const execute = async (
     work_space: WorkSpace,
     movie_clip: MovieClip,
     layer: Layer,
     keyframe: number,
     receiver: boolean = false
-): void => {
+): Promise<void> => {
 
     // 指定のキーフレームにアクティブなDisplayObjectが存在しない場合は空のキーフレームを追加
     const activeCharacters = layer.getActiveCharacters(keyframe);
     if (!activeCharacters.length) {
-        externalTimelineLayerFrameSplitToEmptyUseCase(
+        await externalTimelineLayerFrameSplitToEmptyUseCase(
             work_space,
             movie_clip,
             layer,

@@ -63,7 +63,7 @@ export const execute = async (
 
                     if (work_space.active && movie_clip.active) {
                         // 子レイヤーのアイコンの表示を更新
-                        timelineLayerControllerUpdateIconElementService(childLayer);
+                        await timelineLayerControllerUpdateIconElementService(childLayer);
 
                         // マスクインの子レイヤーのスタイルをリセット
                         if (layer.mode === $MASK_MODE) {
@@ -85,7 +85,7 @@ export const execute = async (
 
     // 履歴に追加
     // fixed logic
-    layerUpdateModeHistoryUseCase(
+    await layerUpdateModeHistoryUseCase(
         work_space,
         movie_clip,
         layer,
@@ -98,7 +98,7 @@ export const execute = async (
     // アクティブなら表示を更新
     if (work_space.active && movie_clip.active) {
         // アイコンの表示を更新
-        timelineLayerControllerUpdateIconElementService(layer);
+        await timelineLayerControllerUpdateIconElementService(layer);
 
         // ロック中のマスクレイヤーからノーマルレイヤーに変換する際は描画を更新
         if (beforeMode === $MASK_MODE && layer.lock && !layer.disable) {

@@ -55,7 +55,7 @@ export const execute = async (
                 }
 
                 // キーフレームを削除
-                externalTimelineLayerFrameDeleteKeyframeUseCase(
+                await externalTimelineLayerFrameDeleteKeyframeUseCase(
                     work_space,
                     movie_clip,
                     layer,
@@ -72,7 +72,7 @@ export const execute = async (
                     }
 
                     // 空のキーフレームを削除
-                    externalTimelineLayerFrameDeleteEmptyKeyframeUseCase(
+                    await externalTimelineLayerFrameDeleteEmptyKeyframeUseCase(
                         work_space,
                         movie_clip,
                         layer,

@@ -14,18 +14,18 @@ import { execute as timelineLayerFrameCreateEmptyKeyframeHistoryUseCase } from "
  * @param  {number} start_frame
  * @param  {number} end_frame
  * @param  {boolean} [receiver=false]
- * @return {void}
+ * @return {Promise<void>}
  * @method
  * @public
  */
-export const execute = (
+export const execute = async (
     work_space: WorkSpace,
     movie_clip: MovieClip,
     layer: Layer,
     start_frame: number,
     end_frame: number,
     receiver: boolean = false
-): void => {
+): Promise<void> => {
 
     const emptyCharacter = new EmptyCharacter();
     emptyCharacter.startFrame = start_frame;
@@ -33,7 +33,7 @@ export const execute = (
     layer.addEmptyCharacter(emptyCharacter);
 
     // 履歴に追加
-    timelineLayerFrameCreateEmptyKeyframeHistoryUseCase(
+    await timelineLayerFrameCreateEmptyKeyframeHistoryUseCase(
         work_space,
         movie_clip,
         layer,

@@ -73,6 +73,7 @@ export class ExternalItem<I extends Instance = Instance>
     }
     set name (name: string)
     {
+        // todo await
         externalItemUpdateNameUseCase(
             this._$workSpace,
             this._$workSpace.scene,
@@ -94,6 +95,7 @@ export class ExternalItem<I extends Instance = Instance>
     }
     set symbol (symbol: string)
     {
+        // todo await
         externalItemUpdateSymbolUseCase(
             this._$workSpace,
             this._$workSpace.scene,

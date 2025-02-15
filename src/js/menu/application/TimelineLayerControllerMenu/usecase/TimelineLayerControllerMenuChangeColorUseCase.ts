@@ -5,11 +5,12 @@ import { ExternalLayer } from "@/external/core/domain/model/ExternalLayer";
  * @description タイムラインコントローラーメニューのハイライトカラー変更の処理関数
  *              Processing function for changing the highlight color in the timeline controller menu
  *
- * @return {void}
+ * @param  {Event} event
+ * @return {Promise<void>}
  * @method
  * @public
  */
-export const execute = (event: Event): void =>
+export const execute = async (event: Event): Promise<void> =>
 {
     // 親のイベントを中止
     event.stopPropagation();
@@ -32,5 +33,5 @@ export const execute = (event: Event): void =>
 
     // 外部APIを起動
     const externalLayer = new ExternalLayer(workSpace, movieClip, layer);
-    externalLayer.updateLightColor(element.value);
+    await externalLayer.updateLightColor(element.value);
 };

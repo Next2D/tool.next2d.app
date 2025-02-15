@@ -49,7 +49,7 @@ export const execute = async (
     character.referencePosition.y += y - beforeY;
 
     // 履歴を登録
-    characterUpdateYHistoryUseCase(
+    await characterUpdateYHistoryUseCase(
         work_space,
         movie_clip,
         layer,
