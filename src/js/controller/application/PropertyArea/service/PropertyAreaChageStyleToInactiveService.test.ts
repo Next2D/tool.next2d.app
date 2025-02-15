@@ -1,8 +1,9 @@
 import { execute } from "./PropertyAreaChageStyleToInactiveService";
+import { describe, expect, it } from "vitest";
 
 describe("PropertyAreaChageStyleToInactiveServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         const mockElement = {
             "style": {
@@ -16,7 +17,7 @@ describe("PropertyAreaChageStyleToInactiveServiceTest", () =>
             },
             "offsetLeft": 10,
             "offsetTop": 20
-        };
+        } as unknown as HTMLElement;
 
         expect(mockElement.style.height).toBe("96vh");
         expect(mockElement.style.left).toBe("10px");

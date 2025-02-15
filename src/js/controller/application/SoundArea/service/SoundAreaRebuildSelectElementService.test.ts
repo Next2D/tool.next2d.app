@@ -3,10 +3,11 @@ import { $SOUND_AREA_SELECT_ID } from "../../../../config/SoundSettingConfig";
 import { Sound } from "../../../../core/domain/model/Sound";
 import { WorkSpace } from "../../../../core/domain/model/WorkSpace";
 import { $getCurrentWorkSpace, $createWorkSpace } from "../../../../core/application/CoreUtil";
+import { describe, expect, it } from "vitest";
 
 describe("SoundAreaRebuildSelectElementServiceTest", () =>
 {
-    test("test case", () =>
+    it("test case", () =>
     {
         const select = document.createElement("select");
         select.id = $SOUND_AREA_SELECT_ID;

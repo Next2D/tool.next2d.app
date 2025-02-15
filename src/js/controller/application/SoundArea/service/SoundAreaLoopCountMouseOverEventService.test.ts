@@ -1,8 +1,9 @@
 import { execute } from "./SoundAreaLoopCountMouseOverEventService";
+import { describe, expect, it } from "vitest";
 
 describe("SoundAreaLoopCountMouseOverEventServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         const input = document.createElement("input");
 
@@ -17,7 +18,7 @@ describe("SoundAreaLoopCountMouseOverEventServiceTest", () =>
                 preventDefault = true;
             },
             "currentTarget": input
-        };
+        } as unknown as PointerEvent;
 
         expect(stopPropagation).toBe(false);
         expect(preventDefault).toBe(false);

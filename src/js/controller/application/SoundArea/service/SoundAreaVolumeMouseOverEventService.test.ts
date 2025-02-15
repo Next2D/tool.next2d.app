@@ -1,8 +1,9 @@
 import { execute } from "./SoundAreaVolumeMouseOverEventService";
+import { describe, expect, it } from "vitest";
 
 describe("SoundAreaVolumeMouseOverEventServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         const input = document.createElement("input");
 
@@ -17,7 +18,7 @@ describe("SoundAreaVolumeMouseOverEventServiceTest", () =>
                 preventDefault = true;
             },
             "currentTarget": input
-        };
+        } as unknown as PointerEvent;
 
         expect(stopPropagation).toBe(false);
         expect(preventDefault).toBe(false);

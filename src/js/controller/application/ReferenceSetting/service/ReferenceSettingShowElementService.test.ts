@@ -1,10 +1,11 @@
 import { execute } from "./ReferenceSettingShowElementService";
 import { $REFERENCE_POINT_ID } from "../../../../config/ReferenceSettingConfig";
 import { referenceSetting } from "../../../../controller/domain/model/ReferenceSetting";
+import { describe, expect, it } from "vitest";
 
 describe("ReferenceSettingShowElementServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         const div = document.createElement("div");
         div.id = $REFERENCE_POINT_ID;

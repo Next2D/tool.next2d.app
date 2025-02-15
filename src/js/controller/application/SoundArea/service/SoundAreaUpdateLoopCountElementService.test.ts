@@ -1,10 +1,11 @@
 import { execute } from "./SoundAreaUpdateLoopCountElementService";
 import { $SOUND_AREA_SOUND_LIST_AREA_ID } from "../../../../config/SoundSettingConfig";
 import { ISoundObject } from "../../../../interface/ISoundObject";
+import { describe, expect, it } from "vitest";
 
 describe("SoundAreaUpdateLoopCountElementServiceTest", () =>
 {
-    test("test case", () =>
+    it("test case", () =>
     {
         const div = document.createElement("div");
         document.body.appendChild(div);

@@ -1,9 +1,10 @@
 import { execute } from "./ObjectSettingUpdateNameService";
 import { $OBJECT_SETTING_NAME_ID } from "../../../../config/ObjectSettingConfig";
+import { describe, expect, it } from "vitest";
 
 describe("ObjectSettingUpdateNameServiceTest", () =>
 {
-    test("execute test", async () =>
+    it("execute test", async () =>
     {
         const input = document.createElement("input");
         input.id = $OBJECT_SETTING_NAME_ID;

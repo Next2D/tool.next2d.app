@@ -1,9 +1,10 @@
 import { execute } from "./PropertyAreaChageStyleToActiveService";
 import { $createWorkSpace } from "../../../../core/application/CoreUtil";
+import { describe, expect, it } from "vitest";
 
 describe("PropertyAreaChageStyleToActiveServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         const workSpace = $createWorkSpace();
 
@@ -18,7 +19,7 @@ describe("PropertyAreaChageStyleToActiveServiceTest", () =>
                 "boxShadow": "",
                 "position": ""
             }
-        };
+        } as unknown as HTMLElement;
 
         workSpace.propertyAreaState.state = "move";
         workSpace.propertyAreaState.offsetLeft = 10;

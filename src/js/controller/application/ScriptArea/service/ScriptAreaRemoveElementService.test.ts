@@ -1,9 +1,10 @@
 import { execute } from "./ScriptAreaRemoveElementService";
 import { $CONTROLLER_JAVASCRIPT_INTERNAL_LIST_BOX_ID } from "../../../../config/ControllerScriptAreaConfig";
+import { describe, expect, it } from "vitest";
 
 describe("ScriptAreaRemoveElementServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         const div = document.createElement("div");
         div.id = $CONTROLLER_JAVASCRIPT_INTERNAL_LIST_BOX_ID;

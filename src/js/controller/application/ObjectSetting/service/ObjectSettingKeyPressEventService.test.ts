@@ -1,8 +1,9 @@
 import { execute } from "./ObjectSettingKeyPressEventService";
+import { describe, expect, it } from "vitest";
 
 describe("ObjectSettingKeyPressEventServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         let preventDefault = false;
         let stopPropagation = false;

@@ -4,10 +4,11 @@ import {
     $getMouseState,
     $setMouseState
 } from "./PropertyAreaUtil";
+import { describe, expect, it } from "vitest";
 
 describe("PropertyAreaUtilTest", () =>
 {
-    test("$getStandbyMoveState and $setStandbyMoveState test", () =>
+    it("$getStandbyMoveState and $setStandbyMoveState test", () =>
     {
         expect($getStandbyMoveState()).toBe(false);
         $setStandbyMoveState(true);
@@ -16,7 +17,7 @@ describe("PropertyAreaUtilTest", () =>
         expect($getStandbyMoveState()).toBe(false);
     });
 
-    test("$getMouseState and $setMouseState test", () =>
+    it("$getMouseState and $setMouseState test", () =>
     {
         expect($getMouseState()).toBe("up");
         $setMouseState("down");

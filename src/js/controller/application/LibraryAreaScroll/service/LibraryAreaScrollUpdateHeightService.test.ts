@@ -4,10 +4,11 @@ import {
     $LIBRARY_LIST_BOX_SCROLL_AREA_ID,
     $LIBRARY_LIST_BOX_SCROLL_BAR_ID
 } from "../../../../config/LibraryConfig";
+import { describe, expect, it } from "vitest";
 
 describe("LibraryAreaScrollUpdateHeightServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         const scrollAreaElement = document.createElement("div");
         document.body.appendChild(scrollAreaElement);

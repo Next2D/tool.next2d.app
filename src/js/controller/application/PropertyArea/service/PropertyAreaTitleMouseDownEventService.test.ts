@@ -1,8 +1,9 @@
 import { execute } from "./PropertyAreaTitleMouseDownEventService";
+import { describe, expect, it } from "vitest";
 
 describe("PropertyAreaTitleMouseDownEventServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         const parentElement = document.createElement("div");
         document.body.appendChild(parentElement);

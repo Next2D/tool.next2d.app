@@ -4,10 +4,11 @@ import {
     $PLUGIN_LIST_SCROLL_AREA_ID,
     $PLUGIN_LIST_SCROLL_BAR_ID
 } from "../../../../config/PluginAreaConfig";
+import { describe, expect, it } from "vitest";
 
 describe("PluginAreaScrollUpdateHeightServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         const scrollAreaElement = document.createElement("div");
         document.body.appendChild(scrollAreaElement);

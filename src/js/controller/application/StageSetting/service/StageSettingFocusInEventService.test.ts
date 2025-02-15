@@ -1,9 +1,10 @@
 import { execute } from "./StageSettingFocusInEventService";
 import { $useKeyboard } from "../../../../shortcut/ShortcutUtil";
+import { describe, expect, it } from "vitest";
 
 describe("StageSettingFocusInEventServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         let preventDefault = false;
         let stopPropagation = false;
@@ -17,7 +18,7 @@ describe("StageSettingFocusInEventServiceTest", () =>
                 preventDefault = true;
             },
             "currentTarget": document.createElement("div")
-        };
+        } as unknown as FocusEvent;
 
         expect(stopPropagation).toBe(false);
         expect(preventDefault).toBe(false);

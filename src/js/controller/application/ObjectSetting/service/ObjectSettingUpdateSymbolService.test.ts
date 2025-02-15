@@ -1,9 +1,10 @@
 import { execute } from "./ObjectSettingUpdateSymbolService";
 import { $OBJECT_SETTING_SYMBOL_ID } from "../../../../config/ObjectSettingConfig";
+import { describe, expect, it } from "vitest";
 
 describe("ObjectSettingUpdateSymbolServiceTest", () =>
 {
-    test("execute test", async () =>
+    it("execute test", async () =>
     {
         const input = document.createElement("input");
         input.id = $OBJECT_SETTING_SYMBOL_ID;

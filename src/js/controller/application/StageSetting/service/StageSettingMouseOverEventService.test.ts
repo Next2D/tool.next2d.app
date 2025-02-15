@@ -1,8 +1,9 @@
 import { execute } from "./StageSettingMouseOverEventService";
+import { describe, expect, it } from "vitest";
 
 describe("StageSettingMouseOverEventServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         const input = document.createElement("input");
 
@@ -17,7 +18,7 @@ describe("StageSettingMouseOverEventServiceTest", () =>
                 preventDefault = true;
             },
             "target": input
-        };
+        } as unknown as PointerEvent;
 
         expect(stopPropagation).toBe(false);
         expect(preventDefault).toBe(false);

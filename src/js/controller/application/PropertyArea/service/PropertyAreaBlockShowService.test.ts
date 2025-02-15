@@ -1,8 +1,9 @@
 import { execute } from "./PropertyAreaBlockShowService";
+import { describe, expect, it } from "vitest";
 
 describe("PropertyAreaBlockShowServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         const div = document.createElement("div");
         div.style.display = "none";

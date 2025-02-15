@@ -1,9 +1,10 @@
 import { execute } from "./PropertyAreaShowTabService";
 import { $CONTROLLER_TAB_AREA_ID } from "../../../../config/ControllerConfig";
+import { describe, expect, it } from "vitest";
 
 describe("PropertyAreaShowTabServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         const parent = document.createElement("div");
         document.body.appendChild(parent);

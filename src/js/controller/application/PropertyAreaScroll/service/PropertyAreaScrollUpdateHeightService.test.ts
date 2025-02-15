@@ -4,10 +4,11 @@ import {
     $PROPERTY_SCROLL_AREA_ID,
     $PROPERTY_SCROLL_BAR_ID
 } from "../../../../config/PropertyConfig";
+import { describe, expect, it } from "vitest";
 
 describe("PropertyAreaScrollUpdateHeightServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         const scrollAreaElement = document.createElement("div");
         document.body.appendChild(scrollAreaElement);

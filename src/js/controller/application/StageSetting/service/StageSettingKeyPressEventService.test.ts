@@ -1,8 +1,9 @@
 import { execute } from "./StageSettingKeyPressEventService";
+import { describe, expect, it } from "vitest";
 
 describe("StageSettingKeyPressEventServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         let preventDefault = false;
         let stopPropagation = false;
@@ -17,7 +18,7 @@ describe("StageSettingKeyPressEventServiceTest", () =>
             },
             "key": "Enter",
             "currentTarget": document.createElement("div")
-        };
+        } as unknown as KeyboardEvent;
 
         expect(stopPropagation).toBe(false);
         expect(preventDefault).toBe(false);
