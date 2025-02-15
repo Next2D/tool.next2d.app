@@ -161,5 +161,5 @@ export const execute = async (): Promise<void> =>
     }
 
     // ライブラリエリアの高さを更新
-    libraryAreaScrollUpdateHeightService();
+    await libraryAreaScrollUpdateHeightService();
 };

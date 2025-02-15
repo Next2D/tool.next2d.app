@@ -68,7 +68,7 @@ export const execute = async (
         // 読み込んだファイルを昇順に並び替え
         libraryAreaReOrderingService(work_space);
 
-        // 起動中のプロジェクトならライブラリエリアをさ描画
+        // 起動中のプロジェクトならライブラリエリアを再描画
         if (work_space.active) {
             libraryAreaReloadUseCase();
         }

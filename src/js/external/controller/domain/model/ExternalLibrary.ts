@@ -51,7 +51,7 @@ export class ExternalLibrary
         path: string = "",
         reload: boolean = true
     ): Promise<void> {
-        externalLibraryImportFileUseCase(
+        await externalLibraryImportFileUseCase(
             this._$workSpace, file, name, path, reload
         );
     }

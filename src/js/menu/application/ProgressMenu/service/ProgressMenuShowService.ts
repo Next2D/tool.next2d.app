@@ -1,6 +1,9 @@
 import type { ProgressMenu } from "@/menu/domain/model/ProgressMenu";
 import { $PROGRESS_MENU_NAME } from "@/config/MenuConfig";
-import { $allHideMenu, $getMenu } from "@/menu/application/MenuUtil";
+import {
+    $allHideMenu,
+    $getMenu
+} from "@/menu/application/MenuUtil";
 
 /**
  * @description タスク進行管理の画面を表示する

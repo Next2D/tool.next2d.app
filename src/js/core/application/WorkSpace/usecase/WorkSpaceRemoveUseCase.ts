@@ -1,6 +1,7 @@
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import { execute as progressMenuHideService } from "@/menu/application/ProgressMenu/service/ProgressMenuHideService";
 import { execute as progressMenuUpdateMessageService } from "@/menu/application/ProgressMenu/service/ProgressMenuUpdateMessageService";
+import { execute as userDatabaseAutoSaveReservationUseCase } from "@/user/application/Database/usecase/UserDatabaseAutoSaveReservationUseCase";
 import { $removeWorkSpace } from "@/core/application/CoreUtil";
 import { $replace } from "@/language/application/LanguageUtil";
 
@@ -30,6 +31,9 @@ export const execute = async (work_space: WorkSpace): Promise<void> =>
 
     // プロジェクトを終了
     await $removeWorkSpace(work_space, active);
+
+    // 自動保存を予約
+    await userDatabaseAutoSaveReservationUseCase();
 
     // 進行状況画面を非表示にする
     progressMenuHideService();

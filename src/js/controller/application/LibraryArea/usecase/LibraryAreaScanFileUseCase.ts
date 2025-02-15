@@ -10,7 +10,7 @@ import { execute as confirmModalFileDuplicateCheckService } from "@/menu/applica
  *
  * @param  {FileSystemEntry} entry
  * @param  {string} [path = ""]
- * @return {Promise}
+ * @return {Promise<void>}
  * @method
  * @public
  */

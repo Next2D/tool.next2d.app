@@ -5,13 +5,13 @@ import { execute as libraryAreaScanFileUseCase } from "./LibraryAreaScanFileUseC
 import { execute as libraryAreaReOrderingService } from "../service/LibraryAreaReOrderingService";
 import { execute as libraryAreaReloadUseCase } from "./LibraryAreaReloadUseCase";
 import { execute as libraryAreaSelectedClearUseCase } from "./LibraryAreaSelectedClearUseCase";
-import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
-import { libraryArea } from "@/controller/domain/model/LibraryArea";
 import { execute as confirmModalFileResetService } from "@/menu/application/ConfirmModal/service/ConfirmModalFileResetService";
 import { execute as confirmModalFileShowUseCase } from "@/menu/application/ConfirmModal/usecase/ConfirmModalFileShowUseCase";
 import { execute as soundAreaRebuildSelectElementService } from "@/controller/application/SoundArea/service/SoundAreaRebuildSelectElementService";
 import { $replace } from "@/language/application/LanguageUtil";
 import { $FOLDER_TYPE } from "@/config/InstanceConfig";
+import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
+import { libraryArea } from "@/controller/domain/model/LibraryArea";
 
 /**
  * @description 外部アイテムの読み込み実行関数
@@ -43,6 +43,8 @@ export const execute = async (items: DataTransferItemList): Promise<void> =>
         }
     }
 
+    // ファイルはawaitすると取得できないので、最後にPromise.allでまとめて処理
+    const promises = [];
     for (let idx = 0; idx < items.length; ++idx) {
 
         const entry: FileSystemEntry | null = items[idx].webkitGetAsEntry();
@@ -51,14 +53,16 @@ export const execute = async (items: DataTransferItemList): Promise<void> =>
         }
 
         // ファイルクラスをスキャン
-        await libraryAreaScanFileUseCase(entry, path);
+        promises.push(libraryAreaScanFileUseCase(entry, path));
     }
 
-    // ファイル名で昇順に並び替え
-    libraryAreaReOrderingService(workSpace);
+    await Promise.all(promises);
 
     // 選択状態を初期化
     libraryAreaSelectedClearUseCase();
+
+    // ファイル名で昇順に並び替え
+    libraryAreaReOrderingService(workSpace);
 
     // ライブラリエリアを再描画
     await libraryAreaReloadUseCase();
