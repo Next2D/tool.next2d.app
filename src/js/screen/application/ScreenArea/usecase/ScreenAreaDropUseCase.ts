@@ -38,7 +38,7 @@ export const execute = async (client_x: number, client_y: number): Promise<void>
             case $SOUND_TYPE:
                 {
                     const externalSoundArea = new ExternalSoundArea(workSpace, movieClip);
-                    externalSoundArea.addSound(
+                    await externalSoundArea.addSound(
                         movieClip.currentFrame,
                         instance.getPath(workSpace)
                     );

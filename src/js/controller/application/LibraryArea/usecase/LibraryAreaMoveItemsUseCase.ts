@@ -16,11 +16,11 @@ import { execute as screenStageAreaAllDisplayObjectActiveService } from "@/scree
  *              Instance movement processing within the library area
  *
  * @param  {HTMLElement} element
- * @return {void}
+ * @return {Promise<void>}
  * @method
  * @public
  */
-export const execute = (element: HTMLElement): void =>
+export const execute = async (element: HTMLElement): Promise<void> =>
 {
     // 重複チェックの配列を初期化
     confirmModalInstaceResetService();
@@ -70,7 +70,7 @@ export const execute = (element: HTMLElement): void =>
             // 移動する先がフォルダで、選択中のインスタンスがフォルダの時は
             // 親フォルダの配下にないかをチェック
             if (folder) {
-                const result = externalLibrary.moveToFolder(
+                const result = await externalLibrary.moveToFolder(
                     folder.getPath(workSpace),
                     selectedInstance.getPath(workSpace),
                     false
@@ -83,7 +83,7 @@ export const execute = (element: HTMLElement): void =>
             } else {
 
                 // 移動先がフォルダでない時は、フォルダから移動
-                const result = externalLibrary.outOfFolder(
+                const result = await externalLibrary.outOfFolder(
                     selectedInstance.getPath(workSpace),
                     false
                 );
@@ -109,7 +109,7 @@ export const execute = (element: HTMLElement): void =>
                 continue;
             }
 
-            const result = externalLibrary.outOfFolder(
+            const result = await externalLibrary.outOfFolder(
                 selectedInstance.getPath(workSpace),
                 false
             );
@@ -132,10 +132,10 @@ export const execute = (element: HTMLElement): void =>
         libraryAreaReOrderingService(workSpace);
 
         // 再描画
-        libraryAreaReloadUseCase();
+        await libraryAreaReloadUseCase();
 
         // サウンドリストを再描画
-        soundAreaRebuildSelectElementService();
+        await soundAreaRebuildSelectElementService();
     }
 
     // 重複があればモーダルを表示

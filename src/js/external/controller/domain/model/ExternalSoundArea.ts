@@ -78,18 +78,18 @@ export class ExternalSoundArea
      * @param  {number} [volume=100]
      * @param  {boolean} [auto_play=false]
      * @param  {number} [loop_count=0]
-     * @return {void}
+     * @return {Promise<void>}
      * @method
      * @public
      */
-    addSound (
+    async addSound (
         frame: number,
         path: string,
         volume: number = 100,
         auto_play: boolean = false,
         loop_count: number = 0
-    ): void {
-        externalSoundAreaAddSoundUseCase(
+    ): Promise<void> {
+        await externalSoundAreaAddSoundUseCase(
             this._$workSpace,
             this._$movieClip,
             frame,
@@ -106,13 +106,13 @@ export class ExternalSoundArea
      *
      * @param  {number} frame
      * @param  {number} index
-     * @return {void}
+     * @return {Promise<void>}
      * @method
      * @public
      */
-    removeSound (frame: number, index: number): void
+    async removeSound (frame: number, index: number): Promise<void>
     {
-        externalSoundAreaRemoveSoundUseCase(
+        await externalSoundAreaRemoveSoundUseCase(
             this._$workSpace,
             this._$movieClip,
             frame, index

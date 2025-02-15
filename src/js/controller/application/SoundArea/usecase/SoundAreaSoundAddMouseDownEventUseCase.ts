@@ -7,11 +7,11 @@ import { ExternalSoundArea } from "@/external/controller/domain/model/ExternalSo
  *              Mouse down event of sound add button in sound area
  *
  * @param  {PointerEvent} event
- * @return {void}
+ * @return {Promise<void>}
  * @method
  * @public
  */
-export const execute = (event: PointerEvent): void =>
+export const execute = async (event: PointerEvent): Promise<void> =>
 {
     if (event.button !== 0) {
         return ;
@@ -37,7 +37,7 @@ export const execute = (event: PointerEvent): void =>
 
     // 外部APIを起動
     const externalSoundArea = new ExternalSoundArea(workSpace, workSpace.scene);
-    externalSoundArea.addSound(
+    await externalSoundArea.addSound(
         workSpace.scene.currentFrame,
         instance.getPath(workSpace)
     );

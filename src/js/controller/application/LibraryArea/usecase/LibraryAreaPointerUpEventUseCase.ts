@@ -91,13 +91,13 @@ export const execute = async (event: PointerEvent): Promise<void> =>
                             break;
                         }
 
-                        libraryAreaMoveItemsUseCase(parent);
+                        await libraryAreaMoveItemsUseCase(parent);
                     }
                     break;
 
                 case parent.id === $LIBRARY_LIST_BOX_ID:
                     // ライブラリトップに移動
-                    libraryAreaMoveItemsUseCase(parent);
+                    await libraryAreaMoveItemsUseCase(parent);
 
                     done = true;
                     break;

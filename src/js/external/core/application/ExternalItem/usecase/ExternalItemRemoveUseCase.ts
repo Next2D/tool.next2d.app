@@ -28,7 +28,7 @@ export const execute = async <I extends Instance> (
     // fixed logic
 
     // 履歴に残す
-    libraryAreaRemoveInstanceHistoryUseCase(
+    await libraryAreaRemoveInstanceHistoryUseCase(
         work_space,
         work_space.scene,
         instance,
@@ -45,6 +45,6 @@ export const execute = async <I extends Instance> (
         libraryAreaSelectedClearUseCase();
 
         // ライブラリエリアを再描画
-        libraryAreaReloadUseCase();
+        await libraryAreaReloadUseCase();
     }
 };

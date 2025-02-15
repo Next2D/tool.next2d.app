@@ -19,13 +19,13 @@ import { execute as timelineHeaderUpdateSoundElementService } from "@/timeline/a
  * @method
  * @public
  */
-export const execute = (
+export const execute = async (
     work_space: WorkSpace,
     movie_clip: MovieClip,
     frame: number,
     index: number,
     receiver: boolean = false
-): void => {
+): Promise<void> => {
 
     const sounds = movie_clip.getSound(frame);
     if (!sounds) {
@@ -39,7 +39,7 @@ export const execute = (
 
     // 履歴を登録
     // fixed logic
-    soundAreaRemoveSoundHistoryUseCase(
+    await soundAreaRemoveSoundHistoryUseCase(
         work_space,
         movie_clip,
         soundObject,

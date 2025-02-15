@@ -46,7 +46,7 @@ export const execute = async (
     switch (item.type) {
 
         case $SOUND_TYPE:
-            externalSoundAreaAddSoundUseCase(
+            await externalSoundAreaAddSoundUseCase(
                 work_space,
                 movie_clip,
                 movie_clip.currentFrame,

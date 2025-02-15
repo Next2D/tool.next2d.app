@@ -226,7 +226,7 @@ export const execute = async (message: IShareReceiveMessage): Promise<void> =>
 
         // フォルダ移動
         case $LIBRARY_MOVE_FOLDER_COMMAND:
-            folderMoveReceiveUseCase(message);
+            await folderMoveReceiveUseCase(message);
             break;
 
         // 画像の上書き
@@ -356,12 +356,12 @@ export const execute = async (message: IShareReceiveMessage): Promise<void> =>
 
         // MovieClipへのサウンドを追加
         case $SOUND_AREA_ADD_SOUND_COMMAND:
-            soundAreaAddSoundReceiveUseCase(message);
+            await soundAreaAddSoundReceiveUseCase(message);
             break;
 
         // MovieClipのサウンドを削除
         case $SOUND_AREA_REMOVE_SOUND_COMMAND:
-            soundAreaRemoveSoundReceiveUseCase(message);
+            await soundAreaRemoveSoundReceiveUseCase(message);
             break;
 
         // 個別のサウンドの音量を更新
@@ -421,7 +421,7 @@ export const execute = async (message: IShareReceiveMessage): Promise<void> =>
 
         // 新規Shapeを追加
         case $LIBRARY_ADD_NEW_SHAPE_COMMAND:
-            shapeAddNewReceiveUseCase(message);
+            await shapeAddNewReceiveUseCase(message);
             break;
 
         // Shapeのグラフィックスを更新

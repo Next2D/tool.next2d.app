@@ -16,11 +16,11 @@ import { Text } from "@/core/domain/model/Text";
  * @param  {number} height
  * @param  {number} [folder_id = 0]
  * @param  {boolean} [reload = true]
- * @return {Shape}
+ * @return {Promise<Text>}
  * @method
  * @public
  */
-export const execute = (
+export const execute = async (
     work_space: WorkSpace,
     movie_clip: MovieClip,
     name: string,
@@ -28,7 +28,7 @@ export const execute = (
     height: number,
     folder_id: number = 0,
     reload: boolean = true
-): Text => {
+): Promise<Text> => {
 
     // フォルダのデータを生成
     const text = new Text({
@@ -55,7 +55,7 @@ export const execute = (
 
     // 作業履歴に残す
     // fixed logic
-    libraryAreaAddNewTextHistoryUseCase(
+    await libraryAreaAddNewTextHistoryUseCase(
         work_space,
         movie_clip,
         text

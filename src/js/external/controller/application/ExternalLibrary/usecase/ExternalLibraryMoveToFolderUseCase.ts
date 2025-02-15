@@ -19,12 +19,12 @@ import { execute as externalLibraryGetItemUseCase } from "./ExternalLibraryGetIt
  * @method
  * @public
  */
-export const execute = (
+export const execute = async (
     work_space: WorkSpace,
     folder_path: string,
     item_path: string,
     reload: boolean = true
-): boolean => {
+): Promise<boolean> => {
 
     const folder = externalLibraryGetItemUseCase(work_space, folder_path);
     if (!folder) {
@@ -49,7 +49,7 @@ export const execute = (
 
     // 履歴に残す
     // fixed logic
-    libraryAreaMoveFolderHistoryUseCase(
+    await libraryAreaMoveFolderHistoryUseCase(
         work_space,
         work_space.scene,
         item,
@@ -68,7 +68,7 @@ export const execute = (
 
         // アクティブなプロジェクトなら再描画
         if (work_space.active) {
-            libraryAreaReloadUseCase();
+            await libraryAreaReloadUseCase();
         }
     }
 

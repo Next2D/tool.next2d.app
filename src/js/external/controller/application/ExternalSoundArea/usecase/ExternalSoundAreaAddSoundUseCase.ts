@@ -20,11 +20,11 @@ import { execute as propertyAreaScrollUpdateHeightService } from "@/controller/a
  * @param  {MovieClip} movie_clip
  * @param  {string} path
  * @param  {boolean} [receiver=false]
- * @return {void}
+ * @return {Promise<void>}
  * @method
  * @public
  */
-export const execute = (
+export const execute = async (
     work_space: WorkSpace,
     movie_clip: MovieClip,
     frame: number,
@@ -33,7 +33,7 @@ export const execute = (
     auto_play: boolean = false,
     loop_count: number = 0,
     receiver: boolean = false
-): void => {
+): Promise<void> => {
 
     const externalLibrary = new ExternalLibrary(work_space);
     const externalSound: IExternalItem<ExternalSound> | null = externalLibrary.getItem(path);
@@ -54,7 +54,7 @@ export const execute = (
 
     // 履歴に登録
     // fixed logic
-    soundAreaAddSoundHistoryUseCase(
+    await soundAreaAddSoundHistoryUseCase(
         work_space,
         movie_clip,
         soundObject,
@@ -89,7 +89,7 @@ export const execute = (
             );
 
             // プロパティエリアの高さを更新
-            propertyAreaScrollUpdateHeightService();
+            await propertyAreaScrollUpdateHeightService();
         }
     }
 };

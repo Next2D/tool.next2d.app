@@ -5,12 +5,12 @@ import { ExternalSoundArea } from "@/external/controller/domain/model/ExternalSo
  * @description サウンド設定の削除アイコンのクリック処理
  *              Click processing of the delete icon of the sound setting
  *
- * @param {PointerEvent} event
- * @return {void}
+ * @param  {PointerEvent} event
+ * @return {Promise<void>}
  * @method
  * @public
  */
-export const execute = (event: PointerEvent): void =>
+export const execute = async (event: PointerEvent): Promise<void> =>
 {
     if (event.button !== 0) {
         return ;
@@ -34,7 +34,7 @@ export const execute = (event: PointerEvent): void =>
 
     // 指定のサウンドを削除
     const externalSoundArea = new ExternalSoundArea(workSpace, movieClip);
-    externalSoundArea.removeSound(
+    await externalSoundArea.removeSound(
         movieClip.currentFrame,
         parseInt(element.dataset.index as string)
     );

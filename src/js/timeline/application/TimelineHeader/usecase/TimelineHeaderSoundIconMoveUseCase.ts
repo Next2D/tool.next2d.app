@@ -10,15 +10,15 @@ import { execute as externalSoundAreaRemoveSoundUseCase } from "@/external/contr
  * @param  {number} source_frame
  * @param  {number} dest_frame
  * @param  {boolean} use_alt_key
- * @return {void}
+ * @return {Promise<void>}
  * @method
  * @public
  */
-export const execute = (
+export const execute = async (
     source_frame: number,
     dest_frame: number,
     use_alt_key: boolean
-): void => {
+): Promise<void> => {
 
     const workSpace = $getCurrentWorkSpace();
     const movieClip = workSpace.scene;
@@ -34,7 +34,7 @@ export const execute = (
     // 移動先のフレームが存在しない場合はアイコンを削除して終了
     if (!dest_frame) {
         for (let idx = 0; cloneSoundObjects.length > idx; ++idx) {
-            externalSoundAreaRemoveSoundUseCase(
+            await externalSoundAreaRemoveSoundUseCase(
                 workSpace,
                 movieClip,
                 source_frame,
@@ -47,7 +47,7 @@ export const execute = (
     // Altを押下してない時は移動元のサウンドを削除
     if (!use_alt_key) {
         for (let idx = 0; cloneSoundObjects.length > idx; ++idx) {
-            externalSoundAreaRemoveSoundUseCase(
+            await externalSoundAreaRemoveSoundUseCase(
                 workSpace,
                 movieClip,
                 source_frame,
@@ -58,7 +58,7 @@ export const execute = (
 
     // 移動先のサウンドがあれば削除
     if (movieClip.hasSound(dest_frame)) {
-        externalSoundAreaRemoveSoundUseCase(
+        await externalSoundAreaRemoveSoundUseCase(
             workSpace,
             movieClip,
             dest_frame,
@@ -77,7 +77,7 @@ export const execute = (
         }
 
         // サウンドエリアにサウンドを追加
-        externalSoundAreaAddSoundUseCase(
+        await externalSoundAreaAddSoundUseCase(
             workSpace,
             movieClip,
             dest_frame,

@@ -17,11 +17,11 @@ import { execute as libraryAreaReOrderingService } from "@/controller/applicatio
  * @method
  * @public
  */
-export const execute = (
+export const execute = async (
     work_space: WorkSpace,
     item_path: string,
     reload: boolean = true
-): boolean => {
+): Promise<boolean> => {
 
     const item = externalLibraryGetItemUseCase(work_space, item_path);
     if (!item || item.folderId === 0) {
@@ -44,7 +44,7 @@ export const execute = (
 
     // 履歴に残す
     // fixed logic
-    libraryAreaMoveFolderHistoryUseCase(
+    await libraryAreaMoveFolderHistoryUseCase(
         work_space,
         work_space.scene,
         item,
@@ -63,7 +63,7 @@ export const execute = (
 
         // アクティブなプロジェクトなら再描画
         if (work_space.active) {
-            libraryAreaReloadUseCase();
+            await libraryAreaReloadUseCase();
         }
     }
 

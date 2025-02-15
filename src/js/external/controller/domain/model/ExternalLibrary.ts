@@ -79,11 +79,11 @@ export class ExternalLibrary
      * @method
      * @public
      */
-    outOfFolder (
+    async outOfFolder (
         item_path: string,
         reload: boolean = true
-    ): boolean {
-        return externalLibraryOutOfFolderUseCase(
+    ): Promise<boolean> {
+        return await externalLibraryOutOfFolderUseCase(
             this._$workSpace,
             item_path,
             reload
@@ -101,12 +101,12 @@ export class ExternalLibrary
      * @method
      * @public
      */
-    moveToFolder (
+    async moveToFolder (
         folder_path: string,
         item_path: string,
         reload: boolean = true
-    ): boolean {
-        return externalLibraryMoveToFolderUseCase(
+    ): Promise<boolean> {
+        return await externalLibraryMoveToFolderUseCase(
             this._$workSpace,
             folder_path,
             item_path,
@@ -233,7 +233,7 @@ export class ExternalLibrary
         }
 
         // 新規Shapeを作成
-        const text = externalLibraryAddNewTextUseCase(
+        const text = await externalLibraryAddNewTextUseCase(
             this._$workSpace,
             this._$workSpace.scene,
             name, width, height, folderId, reload
@@ -281,7 +281,7 @@ export class ExternalLibrary
         }
 
         // 新規Shapeを作成
-        const shape = externalLibraryAddNewShapeUseCase(
+        const shape = await externalLibraryAddNewShapeUseCase(
             this._$workSpace,
             this._$workSpace.scene,
             name, folderId, reload

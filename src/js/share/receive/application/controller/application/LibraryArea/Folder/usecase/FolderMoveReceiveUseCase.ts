@@ -12,11 +12,11 @@ import { execute as libraryAreaReloadUseCase } from "@/controller/application/Li
  *              Receiving and processing functions for information received in the socket
  *
  * @param  {object} message
- * @return {void}
+ * @return {Promise<void>}
  * @method
  * @public
  */
-export const execute = (message: IShareReceiveMessage): void =>
+export const execute = async (message: IShareReceiveMessage): Promise<void> =>
 {
     const id = message.data[0] as NonNullable<number>;
 
@@ -43,7 +43,7 @@ export const execute = (message: IShareReceiveMessage): void =>
 
     // 履歴に残す
     // fixed logic
-    libraryAreaMoveFolderHistoryUseCase(
+    await libraryAreaMoveFolderHistoryUseCase(
         workSpace,
         movieClip,
         folder,
@@ -61,6 +61,6 @@ export const execute = (message: IShareReceiveMessage): void =>
 
     // 実行中のプロジェクトなら再描画
     if (workSpace.active) {
-        libraryAreaReloadUseCase();
+        await libraryAreaReloadUseCase();
     }
 };

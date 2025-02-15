@@ -50,10 +50,10 @@ export const execute = async (message: IShareReceiveMessage): Promise<void> =>
     const binary = await shareGetS3FileRepository(url);
     const buffer: Uint8Array = binaryToBufferService(binary);
 
-    return new Promise((reslove): void =>
+    await new Promise<void>((reslove): void =>
     {
         // 解答が完了したらバイナリデータとして返却
-        worker.onmessage = (event: MessageEvent): void =>
+        worker.onmessage = async (event: MessageEvent): Promise<void> =>
         {
             soundSaveObject.buffer = event.data as Uint8Array;
 
@@ -66,7 +66,7 @@ export const execute = async (message: IShareReceiveMessage): Promise<void> =>
 
             // 作業履歴に残す
             // fixed logic
-            libraryAreaAddNewSoundHistoryUseCase(
+            await libraryAreaAddNewSoundHistoryUseCase(
                 workSpace,
                 movieClip,
                 sound,

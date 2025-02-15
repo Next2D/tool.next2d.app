@@ -27,12 +27,12 @@ import {
  * @method
  * @public
  */
-export const execute = <I extends Instance> (
+export const execute = async <I extends Instance> (
     work_space: WorkSpace,
     movie_clip: MovieClip,
     instance: I,
     receiver: boolean = false
-): void => {
+): Promise<void> => {
 
     // ポジション位置から未来の履歴を全て削除
     // fixed logic
@@ -90,6 +90,6 @@ export const execute = <I extends Instance> (
         }
     }
 
-    // 自動保存を予約
-    userDatabaseAutoSaveReservationUseCase();
+    // 自動保存
+    await userDatabaseAutoSaveReservationUseCase();
 };

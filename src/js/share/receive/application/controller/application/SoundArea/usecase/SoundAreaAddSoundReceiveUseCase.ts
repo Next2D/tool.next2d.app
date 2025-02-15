@@ -1,23 +1,23 @@
 import type { IShareReceiveMessage } from "@/interface/IShareReceiveMessage";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
-import { $getWorkSpace } from "@/core/application/CoreUtil";
+import type { ISoundObject } from "@/interface/ISoundObject";
 import { execute as soundAreaAddSoundHistoryUseCase } from "@/history/application/controller/application/SoundArea/AddSound/usecase/SoundAreaAddSoundHistoryUseCase";
-import { ISoundObject } from "@/interface/ISoundObject";
 import { execute as soundAreaRebuildSettingAreaUseCase } from "@/controller/application/SoundArea/usecase/SoundAreaRebuildSettingAreaUseCase";
+import { execute as timelineHeaderUpdateSoundElementService } from "@/timeline/application/TimelineHeader/service/TimelineHeaderUpdateSoundElementService";
+import { $getWorkSpace } from "@/core/application/CoreUtil";
 import { $getLeftFrame } from "@/timeline/application/TimelineUtil";
 import { timelineHeader } from "@/timeline/domain/model/TimelineHeader";
-import { execute as timelineHeaderUpdateSoundElementService } from "@/timeline/application/TimelineHeader/service/TimelineHeaderUpdateSoundElementService";
 
 /**
  * @description MovieClipへのサウンドを追加
  *              Add sound to MovieClip
  *
- * @param  {object} message
- * @return {void}
+ * @param  {IShareReceiveMessage} message
+ * @return {Promise<void>}
  * @method
  * @public
  */
-export const execute = (message: IShareReceiveMessage): void =>
+export const execute = async (message: IShareReceiveMessage): Promise<void> =>
 {
     const id = message.data[0] as NonNullable<number>;
 
@@ -39,7 +39,7 @@ export const execute = (message: IShareReceiveMessage): void =>
     movieClip.setSound(frame, soundObject);
 
     // 履歴に登録
-    soundAreaAddSoundHistoryUseCase(
+    await soundAreaAddSoundHistoryUseCase(
         workSpace,
         movieClip,
         soundObject,

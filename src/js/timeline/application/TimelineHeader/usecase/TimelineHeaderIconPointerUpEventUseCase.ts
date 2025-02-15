@@ -25,11 +25,11 @@ import {
  *              Execution function of the window up event of the timeline header icon
  *
  * @param  {PointerEvent} event
- * @return {void}
+ * @return {Promise<void>}
  * @method
  * @public
  */
-export const execute = (event: PointerEvent): void =>
+export const execute = async (event: PointerEvent): Promise<void> =>
 {
     // イベントの伝播を止める
     event.stopPropagation();
@@ -118,7 +118,7 @@ export const execute = (event: PointerEvent): void =>
                 }
 
                 if (sourceFrame !== destFrame) {
-                    timelineHeaderSoundIconMoveUseCase(
+                    await timelineHeaderSoundIconMoveUseCase(
                         sourceFrame, destFrame, event.altKey
                     );
                 }
