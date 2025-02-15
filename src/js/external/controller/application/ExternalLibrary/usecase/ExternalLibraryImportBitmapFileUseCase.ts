@@ -46,9 +46,6 @@ export const execute = async (
         "imageType": file.type
     });
 
-    // 内部情報に登録
-    externalWorkSpaceRegisterInstanceService(work_space, bitmap);
-
     const image = new Image();
     image.src = URL.createObjectURL(file);
 
