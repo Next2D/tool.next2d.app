@@ -26,5 +26,6 @@ export const execute = (event: PointerEvent): void =>
     element.removeEventListener(EventType.POINTER_MOVE,
         libraryAreaScrollBarPointerMoveEventUseCase
     );
-    element.removeEventListener("pointerup", execute);
+    element.removeEventListener(EventType.POINTER_UP, execute);
+    element.removeEventListener(EventType.POINTER_LEAVE, execute);
 };

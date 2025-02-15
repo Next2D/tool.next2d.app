@@ -29,7 +29,7 @@ export const execute = async <I extends Instance> (instance: I): Promise<void> =
     // プレビューエリアを初期化
     libraryPreviewAreaClearDisplayService();
 
-    const element: HTMLElement | null = await instance.getHTMLElement();
+    const element = await instance.getHTMLElement();
     if (!element) {
         return ;
     }

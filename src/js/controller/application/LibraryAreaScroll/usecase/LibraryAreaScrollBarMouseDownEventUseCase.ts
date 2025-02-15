@@ -33,4 +33,9 @@ export const execute = (event: PointerEvent): void =>
         libraryAreaScrollBarPointerUpEventUseCase,
         { "passive": false }
     );
+    element.addEventListener(
+        EventType.POINTER_LEAVE,
+        libraryAreaScrollBarPointerUpEventUseCase,
+        { "passive": false }
+    );
 };
