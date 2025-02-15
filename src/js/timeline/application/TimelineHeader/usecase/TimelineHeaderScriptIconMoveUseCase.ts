@@ -8,22 +8,22 @@ import { execute as externalMovieClipUpdateScriptUseCase } from "@/external/core
  * @param  {number} source_frame
  * @param  {number} dest_frame
  * @param  {boolean} use_alt_key
- * @return {void}
+ * @return {Promise<void>}
  * @method
  * @public
  */
-export const execute = (
+export const execute = async (
     source_frame: number,
     dest_frame: number,
     use_alt_key: boolean
-): void => {
+): Promise<void> => {
 
     const workSpace = $getCurrentWorkSpace();
     const movieClip = workSpace.scene;
 
     // 移動先のフレームが存在しない場合はアイコンを削除して終了
     if (!dest_frame) {
-        externalMovieClipUpdateScriptUseCase(
+        await externalMovieClipUpdateScriptUseCase(
             workSpace,
             movieClip,
             source_frame
@@ -35,7 +35,7 @@ export const execute = (
 
     // Altを押下してない時は移動元のスクリプトを削除
     if (!use_alt_key) {
-        externalMovieClipUpdateScriptUseCase(
+        await externalMovieClipUpdateScriptUseCase(
             workSpace,
             movieClip,
             source_frame
@@ -44,7 +44,7 @@ export const execute = (
 
     // 移動先のスクリプトがあれば削除
     if (movieClip.hasAction(dest_frame)) {
-        externalMovieClipUpdateScriptUseCase(
+        await externalMovieClipUpdateScriptUseCase(
             workSpace,
             movieClip,
             dest_frame
@@ -52,7 +52,7 @@ export const execute = (
     }
 
     // 移動元のスクリプトを挿入
-    externalMovieClipUpdateScriptUseCase(
+    await externalMovieClipUpdateScriptUseCase(
         workSpace,
         movieClip,
         dest_frame,

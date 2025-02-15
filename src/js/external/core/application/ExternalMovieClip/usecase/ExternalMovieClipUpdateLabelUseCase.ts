@@ -21,13 +21,13 @@ import { execute as timelineLabelNameUpdateService } from "@/timeline/applicatio
  * @method
  * @public
  */
-export const execute = (
+export const execute = async (
     work_space: WorkSpace,
     movie_clip: MovieClip,
     frame: number,
     label: string = "",
     receiver: boolean = false
-): void => {
+): Promise<void> => {
 
     // labelの値によって分岐
     if (label) {
@@ -36,7 +36,7 @@ export const execute = (
         if (!movie_clip.hasLabel(frame)) {
 
             // 初回登録履歴を登録
-            labelNewRegisterHistoryUseCase(
+            await labelNewRegisterHistoryUseCase(
                 work_space, movie_clip, frame, label, receiver
             );
 
@@ -46,7 +46,7 @@ export const execute = (
 
             // 編集履歴を登録
             if (beforeLabel !== label) {
-                labelUpdateHistoryUseCase(
+                await labelUpdateHistoryUseCase(
                     work_space, movie_clip, frame, label, receiver
                 );
             }
@@ -60,7 +60,7 @@ export const execute = (
         if (movie_clip.hasLabel(frame)) {
 
             // 削除履歴を登録
-            labelDeleteHistoryUseCase(
+            await labelDeleteHistoryUseCase(
                 work_space, movie_clip, frame, receiver
             );
 

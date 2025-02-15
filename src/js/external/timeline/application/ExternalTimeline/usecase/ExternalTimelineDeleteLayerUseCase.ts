@@ -97,7 +97,7 @@ export const execute = async (
         movie_clip.deleteLayer(layer);
 
         // 作業履歴に登録
-        timelineToolLayerDeleteHistoryUseCase(
+        await timelineToolLayerDeleteHistoryUseCase(
             work_space,
             movie_clip,
             layer, index, indexes, receiver

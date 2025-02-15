@@ -80,7 +80,7 @@ export const execute = async (event: PointerEvent): Promise<void> =>
                 }
 
                 if (sourceFrame !== destFrame) {
-                    timelineHeaderScriptIconMoveUseCase(
+                    await timelineHeaderScriptIconMoveUseCase(
                         sourceFrame, destFrame, event.altKey
                     );
                 }
@@ -99,7 +99,7 @@ export const execute = async (event: PointerEvent): Promise<void> =>
                 }
 
                 if (sourceFrame !== destFrame) {
-                    timelineHeaderLabelIconMoveUseCase(
+                    await timelineHeaderLabelIconMoveUseCase(
                         sourceFrame, destFrame, event.altKey
                     );
                 }

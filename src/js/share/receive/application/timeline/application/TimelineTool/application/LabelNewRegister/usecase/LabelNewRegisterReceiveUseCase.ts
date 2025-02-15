@@ -12,7 +12,7 @@ import { execute as externalMovieClipUpdateLabelUseCase } from "@/external/core/
  * @method
  * @public
  */
-export const execute = (message: IShareReceiveMessage): void =>
+export const execute = async (message: IShareReceiveMessage): Promise<void> =>
 {
     const id = message.data[0] as NonNullable<number>;
 
@@ -27,7 +27,7 @@ export const execute = (message: IShareReceiveMessage): void =>
         return ;
     }
 
-    externalMovieClipUpdateLabelUseCase(
+    await externalMovieClipUpdateLabelUseCase(
         workSpace,
         movieClip,
         message.data[2] as NonNullable<number>, // frame

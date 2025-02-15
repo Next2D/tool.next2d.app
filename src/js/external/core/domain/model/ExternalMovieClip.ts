@@ -120,13 +120,13 @@ export class ExternalMovieClip extends ExternalItem
      *
      * @param  {number} frame
      * @param  {string} [script = ""]
-     * @return {void}
+     * @return {Promise<void>}
      * @method
      * @public
      */
-    setAction (frame: number, script: string = ""): void
+    async setAction (frame: number, script: string = ""): Promise<void>
     {
-        externalMovieClipUpdateScriptUseCase(
+        await externalMovieClipUpdateScriptUseCase(
             this._$workSpace, this._$instance as MovieClip, frame, script
         );
     }
@@ -151,13 +151,13 @@ export class ExternalMovieClip extends ExternalItem
      *
      * @param  {number} frame
      * @param  {string} [label = ""]
-     * @return {void}
+     * @return {Promise<void>}
      * @method
      * @public
      */
-    setLabel (frame: number, label: string = ""): void
+    async setLabel (frame: number, label: string = ""): Promise<void>
     {
-        externalMovieClipUpdateLabelUseCase(
+        await externalMovieClipUpdateLabelUseCase(
             this._$workSpace, this._$instance as MovieClip, frame, label
         );
     }

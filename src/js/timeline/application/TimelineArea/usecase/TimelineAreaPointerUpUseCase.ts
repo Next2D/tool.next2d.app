@@ -11,11 +11,11 @@ import { execute as userDatabaseAutoSaveReservationUseCase } from "@/user/applic
  *              Move event function for the currently selected tool
  *
  * @param  {PointerEvent} event
- * @return {void}
+ * @return {Promise<void>}
  * @method
  * @public
  */
-export const execute = (event: PointerEvent): void =>
+export const execute = async (event: PointerEvent): Promise<void> =>
 {
     // 親のイベントを中止する
     event.stopPropagation();
@@ -50,5 +50,5 @@ export const execute = (event: PointerEvent): void =>
     $setTimelineOffsetTop(element.offsetTop);
 
     // 自動保存予約
-    userDatabaseAutoSaveReservationUseCase();
+    await userDatabaseAutoSaveReservationUseCase();
 };

@@ -53,7 +53,7 @@ export const execute = async (
             }
 
             // 履歴に登録
-            timelineLayerFrameUpdateKeyframeHistoryUseCase(
+            await timelineLayerFrameUpdateKeyframeHistoryUseCase(
                 work_space,
                 movie_clip,
                 layer,
@@ -76,7 +76,7 @@ export const execute = async (
             emptyCharacter.endFrame = keyframe;
 
             // 履歴に登録
-            timelineLayerFrameUpdateEmptyKeyframeHistoryUseCase(
+            await timelineLayerFrameUpdateEmptyKeyframeHistoryUseCase(
                 work_space,
                 movie_clip,
                 layer,

@@ -9,8 +9,8 @@ import { execute as screenAreaRedrawUseCase } from "@/screen/application/ScreenA
  * @description キーフレーム更新を実行
  *              Perform keyframe update
  *
- * @param  {object} message
- * @return {Promise}
+ * @param  {IShareReceiveMessage} message
+ * @return {Promise<void>}
  * @method
  * @public
  */
@@ -49,7 +49,7 @@ export const execute = async (message: IShareReceiveMessage): Promise<void> =>
     }
 
     // 履歴に登録
-    timelineLayerFrameUpdateKeyframeHistoryUseCase(
+    await timelineLayerFrameUpdateKeyframeHistoryUseCase(
         workSpace,
         movieClip,
         layer,

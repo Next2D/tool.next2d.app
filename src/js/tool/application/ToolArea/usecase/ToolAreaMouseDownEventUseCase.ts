@@ -35,11 +35,12 @@ let activeTimerId: NodeJS.Timeout;
  * @description ツールエリアでマウスダウンした際の関数
  *              Function on mouse down in the tool area
  *
- * @return {void}
+ * @param  {PointerEvent} event
+ * @return {Promise<void>}
  * @method
  * @public
  */
-export const execute = (event: PointerEvent): void =>
+export const execute = async (event: PointerEvent): Promise<void> =>
 {
     // 主ボタン以外はスキップ
     if (event.button !== 0) {
@@ -125,10 +126,10 @@ export const execute = (event: PointerEvent): void =>
         timelineLayerWindowResizeUseCase();
 
         // スクリーンのスクロールを再計算
-        screenScrollResizeService();
+        await screenScrollResizeService();
 
         // 自動保存予約
-        userDatabaseAutoSaveReservationUseCase();
+        await userDatabaseAutoSaveReservationUseCase();
     }
 
 };

@@ -14,11 +14,11 @@ import { ExternalLayer } from "@/external/core/domain/model/ExternalLayer";
  * @param  {string} [name = ""]
  * @param  {string} [color = ""]
  * @param  {boolean} [receiver = false]
- * @return {ExternalLayer | null}
+ * @return {Promise<ExternalLayer | null>}
  * @method
  * @public
  */
-export const execute = (
+export const execute = async (
     work_space: WorkSpace,
     movie_clip: MovieClip,
     index: number = 0,
@@ -26,7 +26,7 @@ export const execute = (
     color: string = "",
     layer_id: number = -1,
     receiver: boolean = false
-): ExternalLayer | null => {
+): Promise<ExternalLayer | null> => {
 
     // フレーム選択を初期化
     movie_clip.clearSelectedFrame();
@@ -43,7 +43,7 @@ export const execute = (
     }
 
     // 履歴を登録
-    timelineToolLayerAddHistoryUseCase(
+    await timelineToolLayerAddHistoryUseCase(
         work_space, movie_clip, layer, receiver
     );
 

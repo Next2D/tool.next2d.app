@@ -46,7 +46,7 @@ export const execute = async (message: IShareReceiveMessage): Promise<void> =>
     emptyCharacter.endFrame = message.data[5] as NonNullable<number>; // afterEndFrame
 
     // 履歴に登録
-    timelineLayerFrameUpdateEmptyKeyframeHistoryUseCase(
+    await timelineLayerFrameUpdateEmptyKeyframeHistoryUseCase(
         workSpace,
         movieClip,
         layer,

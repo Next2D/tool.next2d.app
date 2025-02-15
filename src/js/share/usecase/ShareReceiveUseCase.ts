@@ -186,17 +186,17 @@ export const execute = async (message: IShareReceiveMessage): Promise<void> =>
 
         // 新規スクリプトを追加
         case $TIMIELINE_TOOL_SCRIPT_NEW_REGISTER_COMMAND:
-            scriptEditorNewRegisterReceiveUseCase(message);
+            await scriptEditorNewRegisterReceiveUseCase(message);
             break;
 
         // スクリプトを更新
         case $TIMIELINE_TOOL_SCRIPT_UPDATE_COMMAND:
-            scriptEditorUpdateReceiveUseCase(message);
+            await scriptEditorUpdateReceiveUseCase(message);
             break;
 
         // スクリプトを削除
         case $TIMIELINE_TOOL_SCRIPT_DELETE_COMMAND:
-            scriptEditorDeleteReceiveUseCase(message);
+            await scriptEditorDeleteReceiveUseCase(message);
             break;
 
         // 新規フォルダー追加
@@ -376,17 +376,17 @@ export const execute = async (message: IShareReceiveMessage): Promise<void> =>
 
         // 新規ラベルを追加
         case $LABEL_NEW_REGISTER_COMMAND:
-            labelNewRegisterReceiveUseCase(message);
+            await labelNewRegisterReceiveUseCase(message);
             break;
 
         // ラベルを更新
         case $LABEL_UPDATE_COMMAND:
-            labelUpdateReceiveUseCase(message);
+            await labelUpdateReceiveUseCase(message);
             break;
 
         // ラベルを削除
         case $LABEL_DELETE_COMMAND:
-            labelDeleteReceiveUseCase(message);
+            await labelDeleteReceiveUseCase(message);
             break;
 
         // ステージの幅を更新

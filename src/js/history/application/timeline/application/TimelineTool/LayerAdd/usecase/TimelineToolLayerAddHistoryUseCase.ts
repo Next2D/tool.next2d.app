@@ -18,16 +18,16 @@ import { execute as userDatabaseAutoSaveReservationUseCase } from "@/user/applic
  * @param  {MovieClip} movie_clip
  * @param  {Layer} layer
  * @param  {boolean} [receiver=false]
- * @return {void}
+ * @return {Promise<void>}
  * @method
  * @public
  */
-export const execute = (
+export const execute = async (
     work_space: WorkSpace,
     movie_clip: MovieClip,
     layer: Layer,
     receiver: boolean = false
-): void => {
+): Promise<void> => {
 
     // ポジション位置から未来の履歴を全て削除
     // fixed logic
@@ -62,5 +62,5 @@ export const execute = (
     }
 
     // 自動保存を予約
-    userDatabaseAutoSaveReservationUseCase();
+    await userDatabaseAutoSaveReservationUseCase();
 };

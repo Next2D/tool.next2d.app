@@ -8,22 +8,22 @@ import { execute as externalMovieClipUpdateLabelUseCase } from "@/external/core/
  * @param  {number} source_frame
  * @param  {number} dest_frame
  * @param  {boolean} use_alt_key
- * @return {void}
+ * @return {Promise<void>}
  * @method
  * @public
  */
-export const execute = (
+export const execute = async (
     source_frame: number,
     dest_frame: number,
     use_alt_key: boolean
-): void => {
+): Promise<void> => {
 
     const workSpace = $getCurrentWorkSpace();
     const movieClip = workSpace.scene;
 
     // 移動先のフレームが存在しない場合はアイコンを削除して終了
     if (!dest_frame) {
-        externalMovieClipUpdateLabelUseCase(
+        await externalMovieClipUpdateLabelUseCase(
             workSpace,
             movieClip,
             source_frame
@@ -35,7 +35,7 @@ export const execute = (
 
     // Altを押下してない時は移動元のラベルを削除
     if (!use_alt_key) {
-        externalMovieClipUpdateLabelUseCase(
+        await externalMovieClipUpdateLabelUseCase(
             workSpace,
             movieClip,
             source_frame
@@ -44,7 +44,7 @@ export const execute = (
 
     // 移動先のラベルがあれば削除
     if (movieClip.hasLabel(dest_frame)) {
-        externalMovieClipUpdateLabelUseCase(
+        await externalMovieClipUpdateLabelUseCase(
             workSpace,
             movieClip,
             dest_frame
@@ -52,7 +52,7 @@ export const execute = (
     }
 
     // 移動元のラベルを挿入
-    externalMovieClipUpdateLabelUseCase(
+    await externalMovieClipUpdateLabelUseCase(
         workSpace,
         movieClip,
         dest_frame,

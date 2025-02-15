@@ -4,10 +4,13 @@ import { execute as timelineHeaderUpdateScriptElementService } from "@/timeline/
 import { execute as scriptEditorNewRegisterHistoryUseCase } from "@/history/application/timeline/application/TimelineTool/ScriptEditorNewRegister/usecase/ScriptEditorNewRegisterHistoryUseCase";
 import { execute as scriptEditorUpdateHistoryUseCase } from "@/history/application/timeline/application/TimelineTool/ScriptEditorUpdate/usecase/ScriptEditorUpdateHistoryUseCase";
 import { execute as scriptEditorDeleteHistoryUseCase } from "@/history/application/timeline/application/TimelineTool/ScriptEditorDelete/usecase/ScriptEditorDeleteHistoryUseCase";
-import { $getLeftFrame, $getRightFrame } from "@/timeline/application/TimelineUtil";
-import { timelineHeader } from "@/timeline/domain/model/TimelineHeader";
 import { execute as scriptAreaReloadUseCase } from "@/controller/application/ScriptArea/usecase/ScriptAreaReloadUseCase";
 import { execute as scriptAreaScrollUpdateHeightService } from "@/controller/application/ScriptAreaScroll/service/ScriptAreaScrollUpdateHeightService";
+import { timelineHeader } from "@/timeline/domain/model/TimelineHeader";
+import {
+    $getLeftFrame,
+    $getRightFrame
+} from "@/timeline/application/TimelineUtil";
 
 /**
  * @description 指定フレームのスクリプト情報を更新
@@ -18,17 +21,17 @@ import { execute as scriptAreaScrollUpdateHeightService } from "@/controller/app
  * @param  {number} frame
  * @param  {string} [script = ""]
  * @param  {boolean} [receiver = false]
- * @return {void}
+ * @return {Promise<void>}
  * @method
  * @public
  */
-export const execute = (
+export const execute = async (
     work_space: WorkSpace,
     movie_clip: MovieClip,
     frame: number,
     script: string = "",
     receiver: boolean = false
-): void => {
+): Promise<void> => {
 
     let doReload = false;
 
@@ -39,7 +42,7 @@ export const execute = (
         if (!movie_clip.hasAction(frame)) {
 
             // 初回登録履歴を登録
-            scriptEditorNewRegisterHistoryUseCase(
+            await scriptEditorNewRegisterHistoryUseCase(
                 work_space, movie_clip, frame, script, receiver
             );
 
@@ -53,7 +56,7 @@ export const execute = (
 
             // 編集履歴を登録
             if (beforeScript !== script) {
-                scriptEditorUpdateHistoryUseCase(
+                await scriptEditorUpdateHistoryUseCase(
                     work_space, movie_clip, frame, script, receiver
                 );
 
@@ -71,7 +74,7 @@ export const execute = (
         if (movie_clip.hasAction(frame)) {
 
             // 削除履歴を登録
-            scriptEditorDeleteHistoryUseCase(
+            await scriptEditorDeleteHistoryUseCase(
                 work_space, movie_clip, frame, receiver
             );
 

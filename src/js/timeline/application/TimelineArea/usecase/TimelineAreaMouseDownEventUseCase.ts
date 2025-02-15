@@ -41,11 +41,12 @@ let activeTimerId: NodeJS.Timeout;
  * @description タイムラインエリアのマウスダウン処理
  *              Mouse down process for timeline area
  *
- * @returns {void}
+ * @param  {PointerEvent} event
+ * @return {Promise<void>}
  * @method
  * @public
  */
-export const execute = (event: PointerEvent): void =>
+export const execute = async (event: PointerEvent): Promise<void> =>
 {
     // 主ボタン以外はスキップ
     if (event.button !== 0 || $useKeyboard()) {
@@ -147,10 +148,10 @@ export const execute = (event: PointerEvent): void =>
         $setTimelineOffsetTop(element.offsetTop);
 
         // スクリーンのスクロールを再計算
-        screenScrollResizeService();
+        await screenScrollResizeService();
 
         // 自動保存予約
-        userDatabaseAutoSaveReservationUseCase();
+        await userDatabaseAutoSaveReservationUseCase();
     }
 
 };

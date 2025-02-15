@@ -76,6 +76,8 @@ export class ExternalTimeline
             this._$workSpace,
             this._$movieClip
         );
+
+        // todo await
         externalMovieClip.setLabel(this._$movieClip.currentFrame, label);
     }
 
@@ -153,23 +155,23 @@ export class ExternalTimeline
      * @param  {string} [color = ""]
      * @param  {number} [layer_id = -1]
      * @param  {boolean} [receiver = false]
-     * @return {ExternalLayer | null}
+     * @return {Promise<ExternalLayer | null>}
      * @method
      * @public
      */
-    addNewLayer (
+    async addNewLayer (
         index: number = 0,
         name: string = "",
         color: string = "",
         layer_id: number = -1,
         receiver: boolean = false
-    ): ExternalLayer | null {
+    ): Promise<ExternalLayer | null> {
 
         // レイヤーの選択状態を初期化
         // fixed logic
         this.deactivatedAllLayers();
 
-        const externalLayer = externalTimelineAddNewLayerUseCase(
+        const externalLayer = await externalTimelineAddNewLayerUseCase(
             this._$workSpace,
             this._$movieClip,
             index, name, color, layer_id, receiver
