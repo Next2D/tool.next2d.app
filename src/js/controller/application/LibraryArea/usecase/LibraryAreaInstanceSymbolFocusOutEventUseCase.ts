@@ -9,11 +9,11 @@ import { $ERROR_DUPLICATE_SYMBOL_TEXT } from "@/config/ErrorTextConfig";
  *              Double-tap processing function for the symbol area of an instance
  *
  * @param  {FocusEvent} event
- * @return {void}
+ * @return {Promise<void>}
  * @method
  * @public
  */
-export const execute = (event: FocusEvent): void =>
+export const execute = async (event: FocusEvent): Promise<void> =>
 {
     // 編集モードをoffにする
     libraryAreaInacticeInstanceTextContentService(event);
@@ -54,5 +54,5 @@ export const execute = (event: FocusEvent): void =>
 
     // 外部APIを起動
     const externalItem = new ExternalItem(workSpace, instance);
-    externalItem.symbol = symbol;
+    await externalItem.setSymbol(symbol);
 };

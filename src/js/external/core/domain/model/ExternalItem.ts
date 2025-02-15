@@ -61,20 +61,30 @@ export class ExternalItem<I extends Instance = Instance>
     }
 
     /**
-     * @description ライブラリ一覧に表示されるインスタンス名
-     *              Instance name as it appears in the library list
+     * @description ライブラリ一覧に表示されるインスタンス名を返却
+     *              Returns the instance name displayed in the library list
      *
-     * @member {string}
+     * @return {string}
+     * @method
      * @public
      */
-    get name (): string
+    getName (): string
     {
         return this._$instance.name;
     }
-    set name (name: string)
+
+    /**
+     * @description ライブラリ一覧に表示されるインスタンス名を設定
+     *              Set the instance name displayed in the library list
+     *
+     * @param {string} name
+     * @return {Promise<void>}
+     * @method
+     * @public
+     */
+    async setName (name: string): Promise<void>
     {
-        // todo await
-        externalItemUpdateNameUseCase(
+        await externalItemUpdateNameUseCase(
             this._$workSpace,
             this._$workSpace.scene,
             this._$instance,
@@ -83,20 +93,31 @@ export class ExternalItem<I extends Instance = Instance>
     }
 
     /**
-     * @description ライブラリ一覧で設定したシンボル名
-     *              Symbol name set in the library list
+     * @description ライブラリ一覧で設定したシンボル名を返却
+     *              Returns the symbol name set in the library list
      *
-     * @member {string}
+     * @return {string}
+     * @method
      * @public
      */
-    get symbol (): string
+    getSymbol (): string
     {
         return this._$instance.symbol;
     }
-    set symbol (symbol: string)
+
+    /**
+     * @description ライブラリ一覧で設定したシンボル名を設定
+     *              Set the symbol name set in the library list
+     *
+     * @param  {string} symbol
+     * @return {Promise<void>}
+     * @method
+     * @public
+     */
+    async setSymbol (symbol: string): Promise<void>
     {
         // todo await
-        externalItemUpdateSymbolUseCase(
+        await externalItemUpdateSymbolUseCase(
             this._$workSpace,
             this._$workSpace.scene,
             this._$instance,

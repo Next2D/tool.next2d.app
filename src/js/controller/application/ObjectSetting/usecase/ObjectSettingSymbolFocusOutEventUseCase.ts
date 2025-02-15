@@ -10,11 +10,11 @@ import { $ERROR_DUPLICATE_SYMBOL_TEXT } from "@/config/ErrorTextConfig";
  *              Focus out event processing of symbol
  *
  * @param  {FocusEvent} event
- * @return {void}
+ * @return {Promise<void>}
  * @method
  * @public
  */
-export const execute = (event: FocusEvent): void =>
+export const execute = async (event: FocusEvent): Promise<void> =>
 {
     // イベントの伝播を止める
     event.stopPropagation();
@@ -51,7 +51,7 @@ export const execute = (event: FocusEvent): void =>
         let top  = element.offsetTop - element.clientHeight - 4;
         if (workSpace.propertyAreaState.state === "move") {
             left += workSpace.propertyAreaState.offsetLeft;
-            top += workSpace.propertyAreaState.offsetTop;
+            top  += workSpace.propertyAreaState.offsetTop;
         }
 
         // エラーを表示
@@ -64,5 +64,5 @@ export const execute = (event: FocusEvent): void =>
 
     // 外部APIを起動
     const externalItem = new ExternalItem(workSpace, movieClip);
-    externalItem.symbol = symbol;
+    await externalItem.setSymbol(symbol);
 };

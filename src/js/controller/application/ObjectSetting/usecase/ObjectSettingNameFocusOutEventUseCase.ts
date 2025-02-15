@@ -10,11 +10,11 @@ import { execute as detailModalCustomFadeInUseCase } from "@/menu/application/De
  *              Focus out event processing of name
  *
  * @param  {FocusEvent} event
- * @return {void}
+ * @return {Promise<void>}
  * @method
  * @public
  */
-export const execute = (event: FocusEvent): void =>
+export const execute = async (event: FocusEvent): Promise<void> =>
 {
     // イベントの伝播を止める
     event.stopPropagation();
@@ -100,7 +100,7 @@ export const execute = (event: FocusEvent): void =>
 
                 // 外部APIを起動
                 const externalItem = new ExternalItem(workSpace, movieClip);
-                externalItem.name = name;
+                await externalItem.setName(name);
             }
             break;
 

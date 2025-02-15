@@ -9,11 +9,11 @@ import { $ERROR_DUPLICATE_NAME_TEXT } from "@/config/ErrorTextConfig";
  *              Double-tap processing function for instance name area
  *
  * @param  {FocusEvent} event
- * @return {void}
+ * @return {Promise<void>}
  * @method
  * @public
  */
-export const execute = (event: FocusEvent): void =>
+export const execute = async (event: FocusEvent): Promise<void> =>
 {
     // 編集モードをoffにする
     libraryAreaInacticeInstanceTextContentService(event);
@@ -65,5 +65,5 @@ export const execute = (event: FocusEvent): void =>
 
     // 外部APIを起動
     const externalItem = new ExternalItem(workSpace, instance);
-    externalItem.name = name;
+    await externalItem.setName(name);
 };

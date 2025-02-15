@@ -37,4 +37,9 @@ export const execute = (event: PointerEvent): void =>
         propertyAreaScrollPointerUpUseCase,
         { "passive": false }
     );
+    element.addEventListener(
+        EventType.POINTER_LEAVE,
+        propertyAreaScrollPointerUpUseCase,
+        { "passive": false }
+    );
 };
