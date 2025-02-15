@@ -18,5 +18,5 @@ export const execute = async (): Promise<void> =>
         return ;
     }
 
-    menu.show();
+    await menu.show();
 };

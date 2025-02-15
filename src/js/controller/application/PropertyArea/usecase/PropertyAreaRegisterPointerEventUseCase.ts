@@ -33,4 +33,9 @@ export const execute = (event: PointerEvent): void =>
         propertyAreaPointerUpUseCase,
         { "passive": false }
     );
+    element.addEventListener(
+        EventType.POINTER_LEAVE,
+        propertyAreaPointerUpUseCase,
+        { "passive": false }
+    );
 };

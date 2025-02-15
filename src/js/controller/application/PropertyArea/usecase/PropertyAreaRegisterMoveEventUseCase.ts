@@ -24,13 +24,17 @@ export const execute = (): void =>
     }
 
     // タップ、ダブルタップの処理
-    element.addEventListener(
-        EventType.POINTER_DOWN,
+    element.addEventListener(EventType.POINTER_DOWN,
         propertyAreaMouseDownEventUseCase,
         { "passive": false }
     );
     element.addEventListener(
         EventType.POINTER_UP,
+        propertyAreaMouseUpEventUseCase,
+        { "passive": false }
+    );
+    element.addEventListener(
+        EventType.POINTER_LEAVE,
         propertyAreaMouseUpEventUseCase,
         { "passive": false }
     );

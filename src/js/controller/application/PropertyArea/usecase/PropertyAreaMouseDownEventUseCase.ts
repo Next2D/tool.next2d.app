@@ -1,19 +1,20 @@
-import { $allHideMenu } from "@/menu/application/MenuUtil";
-import { execute as userAllFunctionStateService } from "@/user/application/Billing/service/UserAllFunctionStateService";
-import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { execute as propertyAreaActiveMoveUseCase } from "./PropertyAreaActiveMoveUseCase";
 import { execute as propertyAreaChageStyleToInactiveService } from "../service/PropertyAreaChageStyleToInactiveService";
 import { execute as propertyAreaShowTabService } from "../service/PropertyAreaShowTabService";
+import { execute as userAllFunctionStateService } from "@/user/application/Billing/service/UserAllFunctionStateService";
+import { execute as billingModelShowService } from "@/menu/application/BillingModal/service/BillingModelShowService";
+import { execute as userDatabaseAutoSaveReservationUseCase } from "@/user/application/Database/usecase/UserDatabaseAutoSaveReservationUseCase";
+import { $allHideMenu } from "@/menu/application/MenuUtil";
+import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
+import { $useSocket } from "@/share/ShareUtil";
+import { $useKeyboard } from "@/shortcut/ShortcutUtil";
+import { $CONTROLLER_AREA_PROPERTY_ID } from "@/config/PropertyConfig";
+import { $activeTouchPointers } from "@/global/GlobalUtil";
 import {
     $setStandbyMoveState,
     $setMouseState,
     $getMouseState
 } from "../PropertyAreaUtil";
-import { $CONTROLLER_AREA_PROPERTY_ID } from "@/config/PropertyConfig";
-import { execute as billingModelShowService } from "@/menu/application/BillingModal/service/BillingModelShowService";
-import { $useSocket } from "@/share/ShareUtil";
-import { $useKeyboard } from "@/shortcut/ShortcutUtil";
-import { execute as userDatabaseAutoSaveReservationUseCase } from "@/user/application/Database/usecase/UserDatabaseAutoSaveReservationUseCase";
 
 /**
  * @description ダブルタップ用の待機フラグ
@@ -38,14 +39,16 @@ let activeTimerId: NodeJS.Timeout;
  *              Mouse down process for timeline area
  *
  * @param   {PointerEvent} event
- * @returns {void}
+ * @returns {Promise<void>}
  * @method
  * @public
  */
-export const execute = (event: PointerEvent): void =>
+export const execute = async (event: PointerEvent): Promise<void> =>
 {
     // 主ボタン以外はスキップ
-    if (event.button !== 0) {
+    if (event.button !== 0
+        || $activeTouchPointers.size > 1
+    ) {
         return ;
     }
 
@@ -82,7 +85,7 @@ export const execute = (event: PointerEvent): void =>
         $setStandbyMoveState(true);
 
         // プロパティエリアの移動判定関数をタイマーにセット
-        activeTimerId = setTimeout((): void =>
+        activeTimerId = setTimeout(async (): Promise<void> =>
         {
             if ($getMouseState() === "up") {
                 return ;
@@ -90,7 +93,7 @@ export const execute = (event: PointerEvent): void =>
 
             // 全ての機能が利用可能でなければ中止
             if (!userAllFunctionStateService() && !$useSocket()) {
-                billingModelShowService();
+                await billingModelShowService();
                 return ;
             }
 
@@ -134,6 +137,6 @@ export const execute = (event: PointerEvent): void =>
         propertyAreaShowTabService();
 
         // 自動保存予約
-        userDatabaseAutoSaveReservationUseCase();
+        await userDatabaseAutoSaveReservationUseCase();
     }
 };

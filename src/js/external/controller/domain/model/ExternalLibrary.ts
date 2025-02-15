@@ -138,9 +138,9 @@ export class ExternalLibrary
      * @method
      * @public
      */
-    addNewFolder (path: string, reload: boolean = true): number
+    async addNewFolder (path: string, reload: boolean = true): Promise<number>
     {
-        return externalLibraryCreateNewFolderUseCase(
+        return await externalLibraryCreateNewFolderUseCase(
             this._$workSpace,
             path,
             reload
@@ -157,7 +157,7 @@ export class ExternalLibrary
      * @method
      * @public
      */
-    addNewMovieClip (path: string, reload: boolean = true): void
+    async addNewMovieClip (path: string, reload: boolean = true): Promise<void>
     {
         if (!path) {
             return ;
@@ -179,11 +179,11 @@ export class ExternalLibrary
         // フォルダー指定があれば先にフォルダーを生成
         let folderId = 0;
         if (paths.length) {
-            folderId = this.addNewFolder(paths.join("/"), reload);
+            folderId = await this.addNewFolder(paths.join("/"), reload);
         }
 
         // 新規MovieClipを作成
-        externalLibraryAddNewMovieClipUseCase(
+        await externalLibraryAddNewMovieClipUseCase(
             this._$workSpace,
             this._$workSpace.scene,
             name, folderId, reload
@@ -198,16 +198,16 @@ export class ExternalLibrary
      * @param  {number} width
      * @param  {number} height
      * @param  {boolean} [reload = true]
-     * @return {ExternalShape}
+     * @return {Promise<ExternalText | null>}
      * @method
      * @public
      */
-    addNewText (
+    async addNewText (
         path: string,
         width: number,
         height: number,
         reload: boolean = true
-    ): ExternalText | null {
+    ): Promise<ExternalText | null> {
 
         if (!path) {
             return null;
@@ -229,7 +229,7 @@ export class ExternalLibrary
         // フォルダー指定があれば先にフォルダーを生成
         let folderId = 0;
         if (paths.length) {
-            folderId = this.addNewFolder(paths.join("/"), reload);
+            folderId = await this.addNewFolder(paths.join("/"), reload);
         }
 
         // 新規Shapeを作成
@@ -252,10 +252,10 @@ export class ExternalLibrary
      * @method
      * @public
      */
-    addNewShape (
+    async addNewShape (
         path: string,
         reload: boolean = true
-    ): ExternalShape | null {
+    ): Promise<ExternalShape | null> {
 
         if (!path) {
             return null;
@@ -277,7 +277,7 @@ export class ExternalLibrary
         // フォルダー指定があれば先にフォルダーを生成
         let folderId = 0;
         if (paths.length) {
-            folderId = this.addNewFolder(paths.join("/"), reload);
+            folderId = await this.addNewFolder(paths.join("/"), reload);
         }
 
         // 新規Shapeを作成

@@ -6,6 +6,7 @@ import { execute as userAllFunctionStateService } from "@/user/application/Billi
 import { execute as billingModelShowService } from "@/menu/application/BillingModal/service/BillingModelShowService";
 import { execute as historyRedoUseCase } from "./HistoryRedoUseCase";
 import { execute as historyUndoUseCase } from "./HistoryUndoUseCase";
+import { execute as userDatabaseAutoSaveReservationUseCase } from "@/user/application/Database/usecase/UserDatabaseAutoSaveReservationUseCase";
 
 /**
  * @description 指定のIndexまで作業履歴を更新する
@@ -50,17 +51,18 @@ export const execute = async (event: PointerEvent): Promise<void> =>
     const index: number = parseInt(element.dataset.index as string);
     if (workSpace.historyIndex > index) {
         while (workSpace.historyIndex !== index) {
-            const result = await historyUndoUseCase(workSpace.id, movieClip.id);
-            if (!result) {
+            if (!await historyUndoUseCase(workSpace.id, movieClip.id)) {
                 break;
             }
         }
     } else {
         while (index >= workSpace.historyIndex) {
-            const result = await historyRedoUseCase(workSpace.id, movieClip.id);
-            if (!result) {
+            if (!await historyRedoUseCase(workSpace.id, movieClip.id)) {
                 break;
             }
         }
     }
+
+    // データ保存
+    await userDatabaseAutoSaveReservationUseCase();
 };

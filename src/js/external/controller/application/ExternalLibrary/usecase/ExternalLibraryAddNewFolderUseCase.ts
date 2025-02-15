@@ -18,13 +18,13 @@ import { $FOLDER_TYPE } from "@/config/InstanceConfig";
  * @method
  * @public
  */
-export const execute = (
+export const execute = async (
     work_space: WorkSpace,
     movie_clip: MovieClip,
     name: string,
     folder_id: number = 0,
     reload: boolean = true
-): Folder => {
+): Promise<Folder> => {
 
     // フォルダのデータを生成
     const folder = new Folder({
@@ -46,7 +46,7 @@ export const execute = (
 
     // 作業履歴に残す
     // fixed logic
-    libraryAreaAddNewFolderHistoryUseCase(
+    await libraryAreaAddNewFolderHistoryUseCase(
         work_space,
         movie_clip,
         folder

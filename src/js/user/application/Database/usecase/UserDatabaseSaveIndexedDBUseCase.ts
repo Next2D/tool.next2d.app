@@ -21,12 +21,14 @@ export const execute = async (): Promise<void> =>
 {
     // バイナリを生成
     const buffer = await workSpaceCreateSaveDataService();
-
     if (!buffer) {
         return ;
     }
 
     const request: IDBOpenDBRequest = userDatabaseGetOpenDBRequestService();
+    if (!request) {
+        return ;
+    }
 
     // 起動成功処理
     request.onsuccess = (event: Event): void =>

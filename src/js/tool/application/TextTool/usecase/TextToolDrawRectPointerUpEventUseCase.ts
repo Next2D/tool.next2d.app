@@ -72,7 +72,7 @@ export const execute = async (event: PointerEvent): Promise<void> =>
     // 新規Textをライブラリに追加
     const path = `Text_${workSpace.nextLibraryId}`;
     const externalLibrary = new ExternalLibrary(workSpace);
-    const text = externalLibrary.addNewText(path, width, height);
+    const text = await externalLibrary.addNewText(path, width, height);
     if (!text) {
         return ;
     }

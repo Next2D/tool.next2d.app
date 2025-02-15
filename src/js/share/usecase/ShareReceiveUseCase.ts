@@ -256,7 +256,7 @@ export const execute = async (message: IShareReceiveMessage): Promise<void> =>
 
         // ライブラリに新規MovieClipを追加
         case $LIBRARY_ADD_NEW_MOVIE_CLIP_COMMAND:
-            movieClipAddNewReceiveUseCase(message);
+            await movieClipAddNewReceiveUseCase(message);
             break;
 
         // ライブラリからインスタンスを削除

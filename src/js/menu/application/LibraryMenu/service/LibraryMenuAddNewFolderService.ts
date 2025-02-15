@@ -5,15 +5,16 @@ import { ExternalLibrary } from "@/external/controller/domain/model/ExternalLibr
  * @description 新規フォルダー追加処理
  *              New folder addition process
  *
- * @return {void}
+ * @return {Promise<void>}
  * @method
  * @public
  */
-export const execute = (): void =>
+export const execute = async (): Promise<void> =>
 {
     const workSpace = $getCurrentWorkSpace();
 
     // 外部APIを起動
     const externalLibrary = new ExternalLibrary(workSpace);
-    externalLibrary.addNewFolder(`Folder_${workSpace.nextLibraryId}`);
+    await externalLibrary
+        .addNewFolder(`Folder_${workSpace.nextLibraryId}`);
 };

@@ -6,11 +6,11 @@ import { execute as userDatabaseAutoSaveReservationUseCase } from "@/user/applic
  * @description タイムラインの幅の調整イベントをwindowから削除
  *              Remove timeline width adjustment event from window
  *
- * @return {void}
+ * @return {Promise<void>}
  * @method
  * @public
  */
-export const execute = (event: PointerEvent): void =>
+export const execute = async (event: PointerEvent): Promise<void> =>
 {
     // 親のイベントを中止
     event.stopPropagation();
@@ -28,5 +28,5 @@ export const execute = (event: PointerEvent): void =>
     element.removeEventListener(EventType.POINTER_LEAVE, execute);
 
     // 自動保存予約
-    userDatabaseAutoSaveReservationUseCase();
+    await userDatabaseAutoSaveReservationUseCase();
 };

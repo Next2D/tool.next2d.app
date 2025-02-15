@@ -5,15 +5,16 @@ import { ExternalLibrary } from "@/external/controller/domain/model/ExternalLibr
  * @description 新規MovieClip追加処理
  *              New MovieClip addition process
  *
- * @return {void}
+ * @return {Promise<void>}
  * @method
  * @public
  */
-export const execute = (): void =>
+export const execute = async (): Promise<void> =>
 {
     const workSpace = $getCurrentWorkSpace();
 
     // 外部APIを起動
     const externalLibrary = new ExternalLibrary(workSpace);
-    externalLibrary.addNewMovieClip(`MovieClip_${workSpace.nextLibraryId}`);
+    await externalLibrary
+        .addNewMovieClip(`MovieClip_${workSpace.nextLibraryId}`);
 };

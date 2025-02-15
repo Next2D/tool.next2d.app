@@ -21,3 +21,15 @@ class MockOffscreenCanvas {
 if (typeof globalThis.OffscreenCanvas === "undefined") {
     (globalThis as any).OffscreenCanvas = MockOffscreenCanvas;
 }
+
+if (typeof globalThis.indexedDB === "undefined") {
+    (globalThis as any).indexedDB = {
+        "open": () => {
+            return {
+                "addEventListener": () => {
+                    // 何もしない
+                }
+            };
+        }
+    };
+}

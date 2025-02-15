@@ -14,11 +14,11 @@ import { execute as externalLibraryGetItemUseCase } from "@/external/controller/
  * @method
  * @public
  */
-export const execute = (
+export const execute = async (
     work_space: WorkSpace,
     path: string,
     reload: boolean = true
-): number => {
+): Promise<number> => {
 
     if (!path) {
         return 0;
@@ -48,7 +48,7 @@ export const execute = (
         }
 
         // 新規フォルダを作成
-        const folder = externalLibraryAddNewFolderUseCase(
+        const folder = await externalLibraryAddNewFolderUseCase(
             work_space,
             work_space.scene,
             folderName, folderId, reload

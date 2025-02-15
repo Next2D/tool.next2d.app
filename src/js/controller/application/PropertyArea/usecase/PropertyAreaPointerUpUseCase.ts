@@ -9,11 +9,11 @@ import { execute as userDatabaseAutoSaveReservationUseCase } from "@/user/applic
  *              Property area move end function
  *
  * @param  {PointerEvent} event
- * @return {void}
+ * @return {Promise<void>}
  * @method
  * @public
  */
-export const execute = (event: PointerEvent): void =>
+export const execute = async (event: PointerEvent): Promise<void> =>
 {
     // 親のイベントを中止する
     event.stopPropagation();
@@ -30,6 +30,7 @@ export const execute = (event: PointerEvent): void =>
     element.releasePointerCapture(event.pointerId);
     element.removeEventListener(EventType.POINTER_MOVE, propertyAreaPointerMoveService);
     element.removeEventListener(EventType.POINTER_UP, execute);
+    element.removeEventListener(EventType.POINTER_LEAVE, execute);
 
     // 移動状態をセット
     const workSpace = $getCurrentWorkSpace();
@@ -39,6 +40,6 @@ export const execute = (event: PointerEvent): void =>
         "offsetTop": element.offsetTop
     });
 
-    // 自動保存予約
-    userDatabaseAutoSaveReservationUseCase();
+    // 自動保存
+    await userDatabaseAutoSaveReservationUseCase();
 };

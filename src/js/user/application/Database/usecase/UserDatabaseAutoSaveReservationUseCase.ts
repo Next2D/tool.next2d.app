@@ -1,5 +1,10 @@
 import { $isSocketOwner, $useSocket } from "@/share/ShareUtil";
 import { execute as userDatabaseSaveIndexedDBUseCase } from "./UserDatabaseSaveIndexedDBUseCase";
+import { execute as userDatabaseBeforeUnLoadEventService } from "../service/UserDatabaseBeforeUnLoadEventService";
+import {
+    $isSaving,
+    $startSaving
+} from "../DatabaseUtil";
 
 /**
  * @type {number}
@@ -12,11 +17,11 @@ let timerId: number = -1;
  * @description 現在のプロジェクトを自動保存予約
  *              Reserve automatic saving of the current project
  *
- * @return {void}
+ * @return {Promise<void>}
  * @method
  * @public
  */
-export const execute = (): void =>
+export const execute = async (): Promise<void> =>
 {
     // 予約の取り消し
     clearTimeout(timerId);
@@ -26,6 +31,5 @@ export const execute = (): void =>
         return ;
     }
 
-    // 1秒後に保存処理を実行
-    timerId = window.setTimeout(userDatabaseSaveIndexedDBUseCase, 1000);
+    await userDatabaseSaveIndexedDBUseCase();
 };

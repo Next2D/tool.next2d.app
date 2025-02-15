@@ -113,5 +113,5 @@ export const execute = async (
     }
 
     // 自動保存を予約
-    userDatabaseAutoSaveReservationUseCase();
+    await userDatabaseAutoSaveReservationUseCase();
 };

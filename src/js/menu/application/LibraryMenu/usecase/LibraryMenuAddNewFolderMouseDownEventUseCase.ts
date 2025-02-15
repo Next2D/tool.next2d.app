@@ -7,11 +7,11 @@ import { $activeTouchPointers } from "@/global/GlobalUtil";
  *              Execution function of the Add Folder button in the Library menu
  *
  * @param  {PointerEvent} event
- * @return {void}
+ * @return {Promise<void>}
  * @method
  * @public
  */
-export const execute = (event: PointerEvent): void =>
+export const execute = async (event: PointerEvent): Promise<void> =>
 {
     if (event.button !== 0
         || $activeTouchPointers.size > 1
@@ -27,5 +27,5 @@ export const execute = (event: PointerEvent): void =>
     event.preventDefault();
 
     // 新規フォルダー追加実行
-    libraryMenuAddNewFolderService();
+    await libraryMenuAddNewFolderService();
 };

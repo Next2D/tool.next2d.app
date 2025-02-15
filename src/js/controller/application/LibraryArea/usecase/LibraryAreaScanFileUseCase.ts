@@ -14,12 +14,12 @@ import { execute as confirmModalFileDuplicateCheckService } from "@/menu/applica
  * @method
  * @public
  */
-export const execute = (
+export const execute = async (
     entry: any,
     path: string = ""
 ): Promise<void> => {
 
-    return new Promise((resolve): void =>
+    await new Promise<void>(async (resolve): Promise<void> =>
     {
         // 外部APIを起動
         const workSpace = $getCurrentWorkSpace();
@@ -38,7 +38,7 @@ export const execute = (
             const folderPath = paths.join("/");
 
             // フォルダを作成
-            externalLibrary.addNewFolder(folderPath, false);
+            await externalLibrary.addNewFolder(folderPath, false);
 
             (entry as FileSystemDirectoryEntry)
                 .createReader()

@@ -1,6 +1,4 @@
 import { execute as userDatabaseSaveShowModalUseCase } from "@/user/application/Database/usecase/UserDatabaseSaveShowModalUseCase";
-import { execute as historyUndoUseCase } from "@/controller/application/HistoryArea/usecase/HistoryUndoUseCase";
-import { execute as historyRedoUseCase } from "@/controller/application/HistoryArea/usecase/HistoryRedoUseCase";
 import { execute as userSettingMenuShowService } from "@/menu/application/UserSettingMenu/service/UserSettingMenuShowService";
 import { execute as arrowToolActiveService } from "@/tool/application/ArrowTool/service/ArrowToolActiveService";
 import { execute as zoomPlusToolActiveService } from "@/tool/application/ZoomPlusTool/service/ZoomPlusToolActiveService";
@@ -9,11 +7,12 @@ import { execute as circleToolActiveService } from "@/tool/application/CircleToo
 import { execute as rectangleToolActiveService } from "@/tool/application/RectangleTool/service/RectangleToolActiveService";
 import { execute as roundRectToolActiveService } from "@/tool/application/RoundRectTool/service/RoundRectToolActiveService";
 import { execute as textToolActiveService } from "@/tool/application/TextTool/service/TextToolActiveService";
+import { execute as shortcutUndoUseCase } from "./ShortcutUndoUseCase";
+import { execute as shortcutRedoUseCase } from "./ShortcutRedoUseCase";
 import {
     $generateShortcutKey,
     $setShortcut
 } from "@/shortcut/ShortcutUtil";
-import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 
 /**
  * @description 画面全体で利用可能なコマンドを登録
@@ -33,22 +32,14 @@ export const execute = (): void =>
 
     // Undo
     $setShortcut(
-        $generateShortcutKey("z", { "ctrl": true }), async (): Promise<void> =>
-        {
-            const workSpace = $getCurrentWorkSpace();
-            const scene = workSpace.scene;
-            await historyUndoUseCase(workSpace.id, scene.id);
-        }
+        $generateShortcutKey("z", { "ctrl": true }),
+        shortcutUndoUseCase
     );
 
     // Redo
     $setShortcut(
-        $generateShortcutKey("z", { "ctrl": true, "shift": true }), async (): Promise<void> =>
-        {
-            const workSpace = $getCurrentWorkSpace();
-            const scene = workSpace.scene;
-            await historyRedoUseCase(workSpace.id, scene.id);
-        }
+        $generateShortcutKey("z", { "ctrl": true, "shift": true }),
+        shortcutRedoUseCase
     );
 
     // ユーザー設定

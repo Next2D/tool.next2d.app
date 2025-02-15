@@ -17,13 +17,13 @@ import { $MOVIE_CLIP_TYPE } from "@/config/InstanceConfig";
  * @method
  * @public
  */
-export const execute = (
+export const execute = async (
     work_space: WorkSpace,
     movie_clip: MovieClip,
     name: string,
     folder_id: number = 0,
     reload: boolean = true
-): MovieClip => {
+): Promise<MovieClip> => {
 
     // フォルダのデータを生成
     const movieClip = new MovieClip({
@@ -44,7 +44,7 @@ export const execute = (
 
     // 作業履歴に残す
     // fixed logic
-    libraryAreaAddNewMovieClipHistoryUseCase(
+    await libraryAreaAddNewMovieClipHistoryUseCase(
         work_space,
         movie_clip,
         movieClip

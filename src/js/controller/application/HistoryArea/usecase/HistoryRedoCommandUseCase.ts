@@ -8,7 +8,6 @@ import type { ICharacterSaveObject } from "@/interface/ICharacterSaveObject";
 import type { ISoundObject } from "@/interface/ISoundObject";
 import type { IShapeSaveObject } from "@/interface/IShapeSaveObject";
 import type { IBounds } from "@/interface/IBounds";
-import { execute as userDatabaseAutoSaveReservationUseCase } from "@/user/application/Database/usecase/UserDatabaseAutoSaveReservationUseCase";
 import { execute as screenTabNameAddHistoryRedoUseCase } from "@/history/application/screen/application/ScreenTab/usecase/ScreenTabNameAddHistoryRedoUseCase";
 import { execute as timelineToolLayerAddHistoryRedoUseCase } from "@/history/application/timeline/application/TimelineTool/LayerAdd/usecase/TimelineToolLayerAddHistoryRedoUseCase";
 import { execute as timelineToolLayerDeleteHistoryRedoUseCase } from "@/history/application/timeline/application/TimelineTool/LayerDelete/usecase/TimelineToolLayerDeleteHistoryRedoUseCase";
@@ -648,7 +647,4 @@ export const execute = async (
             break;
 
     }
-
-    // 自動保存を予約
-    userDatabaseAutoSaveReservationUseCase();
 };
