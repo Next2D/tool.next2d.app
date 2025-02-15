@@ -19,7 +19,7 @@
     "@eslint/eslintrc": "^3.2.0",
     "@eslint/js": "^9.20.0",
     "@types/ace": "^0.0.52",
-    "@types/node": "^22.13.1",
+    "@types/node": "^22.13.4",
     "@types/qrcode": "^1.5.5",
     "@typescript-eslint/eslint-plugin": "^8.24.0",
     "@typescript-eslint/parser": "^8.24.0",
@@ -28,7 +28,7 @@
     "eslint-plugin-unused-imports": "^4.1.4",
     "globals": "^15.15.0",
     "jsdom": "^26.0.0",
-    "sass": "^1.84.0",
+    "sass": "^1.85.0",
     "typescript": "^5.7.3",
     "vite": "^6.1.0",
     "vitest": "^3.0.5",
@@ -38,7 +38,7 @@
     "fflate": "^0.8.2",
     "jszip": "^3.10.1",
     "qrcode": "^1.5.4",
-    "terser": "^5.38.2"
+    "terser": "^5.39.0"
   },
   "peerDependencies": {
     "@next2d/cache": "file:../player/packages/cache",
