@@ -18,8 +18,14 @@ class MockOffscreenCanvas {
     }
 }
 
+class MockAudioContext {}
+
 if (typeof globalThis.OffscreenCanvas === "undefined") {
     (globalThis as any).OffscreenCanvas = MockOffscreenCanvas;
+}
+
+if (typeof globalThis.AudioContext === "undefined") {
+    (globalThis as any).AudioContext = MockAudioContext;
 }
 
 if (typeof globalThis.indexedDB === "undefined") {

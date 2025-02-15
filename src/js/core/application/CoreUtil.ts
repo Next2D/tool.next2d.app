@@ -209,10 +209,9 @@ export const $removeAllWorkSpace = async (): Promise<void> =>
  *              AudioContext body
  *
  * @type {AudioContext}
- * @default null
  * @private
  */
-let $audioContext: AudioContext | null = null;
+let $audioContext: AudioContext = new AudioContext();
 
 /**
  * @description AudioContextを起動
@@ -225,7 +224,7 @@ let $audioContext: AudioContext | null = null;
 export const $bootAudioContext = (): void =>
 {
     // 初回だけのイベントなので起動したらイベントを削除
-    window.removeEventListener("click", $bootAudioContext);
+    window.removeEventListener("pointerup", $bootAudioContext);
     $audioContext = new AudioContext();
 };
 

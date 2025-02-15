@@ -11,5 +11,5 @@ import { $bootAudioContext } from "./CoreUtil";
 export const execute = async (): Promise<void> =>
 {
     // AudioContextの起動用クリックイベントを登録
-    window.addEventListener("click", $bootAudioContext);
+    window.addEventListener("pointerup", $bootAudioContext);
 };
