@@ -1,3 +1,5 @@
+import type { Sprite } from "@next2d/display";
+
 /**
  * @description 現在のカーソルタイプ
  *              Current cursor type
@@ -198,3 +200,36 @@ export const $generateUUID = (): string =>
  * @public
  */
 export const $activeTouchPointers: Set<number> = new Set<number>();
+
+/**
+ * @type {Sprite}
+ * @private
+ */
+let $root: Sprite;
+
+/**
+ * @description Next2D Playerのルートスプライトを設定
+ *              Set the root sprite of Next2D Player
+ *
+ * @param root {Sprite}
+ * @return {void}
+ * @method
+ * @public
+ */
+export const $setRoot = (root: Sprite): void =>
+{
+    $root = root;
+};
+
+/**
+ * @description Next2D Playerのルートスプライトを返却
+ *              Return the root sprite of Next2D Player
+ *
+ * @return {Sprite}
+ * @method
+ * @public
+ */
+export const $getRoot = (): Sprite =>
+{
+    return $root;
+};
