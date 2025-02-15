@@ -41,7 +41,7 @@ export const execute = async (
         const activeCharacters = layer.getActiveCharacters(frame);
         if (activeCharacters.length) {
             // キーフレームにフレームを挿入
-            externalTimelineLayerFrameInsertKeyFramesUseCase(
+            await externalTimelineLayerFrameInsertKeyFramesUseCase(
                 work_space,
                 movie_clip,
                 layer,
@@ -54,7 +54,7 @@ export const execute = async (
         const activeEmptyCharacter = layer.getActiveEmptyCharacter(frame);
         if (activeEmptyCharacter) {
             // 空のキーフレームにフレームを挿入
-            externalTimelineLayerFrameInsertEmptyFramesUseCase(
+            await externalTimelineLayerFrameInsertEmptyFramesUseCase(
                 work_space,
                 movie_clip,
                 layer,

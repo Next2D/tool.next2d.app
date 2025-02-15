@@ -44,7 +44,7 @@ export const execute = async (message: IShareReceiveMessage): Promise<void> =>
     // 空のキーフレームのフレームを削除
     const beforeEndFrame = message.data[4] as NonNullable<number>;
     const afterEndFrame  = message.data[5] as NonNullable<number>;
-    externalTimelineLayerFrameRemoveEmptyFramesUseCase(
+    await externalTimelineLayerFrameRemoveEmptyFramesUseCase(
         workSpace,
         movieClip,
         layer,

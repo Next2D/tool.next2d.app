@@ -15,18 +15,18 @@ import { execute as timelineLayerFrameRemoveEmptyFramesHistoryUseCase } from "@/
  * @param  {EmptyCharacter} emptyCharacter
  * @param  {number} num_frames
  * @param  {boolean} [receiver=false]
- * @return {void}
+ * @return {Promise<void>}
  * @method
  * @public
  */
-export const execute = (
+export const execute = async (
     work_space: WorkSpace,
     movie_clip: MovieClip,
     layer: Layer,
     emptyCharacter: EmptyCharacter,
     num_frames: number,
     receiver: boolean = false
-): void => {
+): Promise<void> => {
 
     // 後方のキーフレームを前方へ移動
     // fixed logic
@@ -43,7 +43,7 @@ export const execute = (
     emptyCharacter.endFrame -= num_frames;
 
     // 履歴を登録
-    timelineLayerFrameRemoveEmptyFramesHistoryUseCase(
+    await timelineLayerFrameRemoveEmptyFramesHistoryUseCase(
         work_space,
         movie_clip,
         layer,

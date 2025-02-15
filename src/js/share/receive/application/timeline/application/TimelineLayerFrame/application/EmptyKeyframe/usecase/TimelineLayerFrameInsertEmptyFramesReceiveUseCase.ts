@@ -41,7 +41,7 @@ export const execute = async (message: IShareReceiveMessage): Promise<void> =>
     }
 
     // 空のキーフレームにフレームを挿入
-    externalTimelineLayerFrameInsertEmptyFramesUseCase(
+    await externalTimelineLayerFrameInsertEmptyFramesUseCase(
         workSpace,
         movieClip,
         layer,

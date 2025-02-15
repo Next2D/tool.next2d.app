@@ -8,8 +8,8 @@ import { execute as screenAreaRedrawUseCase } from "@/screen/application/ScreenA
  * @description キーフレームにフレームを追加を実行
  *              Execute to add frames to a keyframe
  *
- * @param  {object} message
- * @return {void}
+ * @param  {IShareReceiveMessage} message
+ * @return {Promise<void>}
  * @method
  * @public
  */
@@ -42,7 +42,7 @@ export const execute = async (message: IShareReceiveMessage): Promise<void> =>
     }
 
     // キーフレームにフレームを挿入
-    externalTimelineLayerFrameInsertKeyFramesUseCase(
+    await externalTimelineLayerFrameInsertKeyFramesUseCase(
         workSpace,
         movieClip,
         layer,

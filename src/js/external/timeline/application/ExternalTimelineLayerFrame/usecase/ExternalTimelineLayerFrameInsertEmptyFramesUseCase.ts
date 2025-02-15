@@ -13,18 +13,18 @@ import { execute as timelineLayerAddFrameUpdateLayerStyleUseCase } from "@/timel
  * @param  {WorkSpace} work_space
  * @param  {MovieClip} movie_clip
  * @param  {number} num_frame
- * @return {void}
+ * @return {Promise<void>}
  * @method
  * @public
  */
-export const execute = (
+export const execute = async (
     work_space: WorkSpace,
     movie_clip: MovieClip,
     layer: Layer,
     emptyCharacter: EmptyCharacter,
     num_frame: number,
     receiver: boolean = false
-): void => {
+): Promise<void> => {
 
     // 追加するフレーム数分、後ろにずらす
     externalTimelineLayerFrameBehindKeyframeService(
@@ -37,7 +37,7 @@ export const execute = (
     emptyCharacter.endFrame += num_frame;
 
     // 履歴に追加
-    timelineLayerFrameInsertEmptyFramesHistoryUseCase(
+    await timelineLayerFrameInsertEmptyFramesHistoryUseCase(
         work_space,
         movie_clip,
         layer,

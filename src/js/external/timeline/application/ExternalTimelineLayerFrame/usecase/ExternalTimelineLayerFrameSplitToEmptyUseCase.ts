@@ -27,7 +27,7 @@ export const execute = async (
     // 指定のキーフレームにアクティブなキャラクターがあれば終了
     const activeCharacters = layer.getActiveCharacters(keyframe);
     if (activeCharacters.length) {
-        externalTimelineLayerFrameSplitKeyframeToEmptyUseCase(
+        await externalTimelineLayerFrameSplitKeyframeToEmptyUseCase(
             work_space,
             movie_clip,
             layer,
@@ -41,7 +41,7 @@ export const execute = async (
     if (activeEmptyCharacter) {
 
         // 空のキーフレームを分割
-        externalTimelineLayerFrameSplitEmptyKeyframeUseCase(
+        await externalTimelineLayerFrameSplitEmptyKeyframeUseCase(
             work_space,
             movie_clip,
             layer,

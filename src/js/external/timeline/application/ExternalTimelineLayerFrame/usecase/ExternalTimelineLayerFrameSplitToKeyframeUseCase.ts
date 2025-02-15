@@ -67,7 +67,7 @@ export const execute = async (
     }
 
     // 履歴に追加
-    timelineLayerFrameSplitKeyframeToKeyframeHistoryUseCase(
+    await timelineLayerFrameSplitKeyframeToKeyframeHistoryUseCase(
         work_space,
         movie_clip,
         layer,

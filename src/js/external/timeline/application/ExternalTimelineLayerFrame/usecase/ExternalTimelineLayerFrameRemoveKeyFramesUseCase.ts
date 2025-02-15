@@ -15,18 +15,18 @@ import { execute as timelineLayerFrameRemoveKeyFramesHistoryUseCase } from "@/hi
  * @param  {Character[]} characters
  * @param  {number} num_frames
  * @param  {boolean} [receiver=false]
- * @return {void}
+ * @return {Promise<void>}
  * @method
  * @public
  */
-export const execute = (
+export const execute = async (
     work_space: WorkSpace,
     movie_clip: MovieClip,
     layer: Layer,
     characters: Character[],
     num_frames: number,
     receiver: boolean = false
-): void => {
+): Promise<void> => {
 
     // 変更前の最終フレームをセット
     const beforeEndFrame = characters[0].endFrame;
@@ -46,7 +46,7 @@ export const execute = (
     }
 
     // 履歴を登録
-    timelineLayerFrameRemoveKeyFramesHistoryUseCase(
+    await timelineLayerFrameRemoveKeyFramesHistoryUseCase(
         work_space,
         movie_clip,
         layer,

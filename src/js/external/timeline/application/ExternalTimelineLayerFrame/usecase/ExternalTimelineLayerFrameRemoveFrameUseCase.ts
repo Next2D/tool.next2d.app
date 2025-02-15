@@ -15,7 +15,7 @@ import { execute as screenAreaRedrawUseCase } from "@/screen/application/ScreenA
  * @param  {MovieClip} movie_clip
  * @param  {number} start_frame
  * @param  {number} [end_frame=0]
- * @return {Promise}
+ * @return {Promise<void>}
  * @method
  * @public
  */
@@ -72,7 +72,7 @@ export const execute = async (
                 // キーフレームの幅以上の場合はキーフレームを削除、それ以外は終了位置を更新
                 if (numFrames === character.endFrame - character.startFrame) {
                     // キーフレームのフレームを全て削除
-                    externalTimelineLayerFrameEraseKeyframeUseCase(
+                    await externalTimelineLayerFrameEraseKeyframeUseCase(
                         work_space,
                         movie_clip,
                         layer,
@@ -80,7 +80,7 @@ export const execute = async (
                     );
                 } else {
                     // キーフレームのフレーム削除実行
-                    externalTimelineLayerFrameRemoveKeyFramesUseCase(
+                    await externalTimelineLayerFrameRemoveKeyFramesUseCase(
                         work_space,
                         movie_clip,
                         layer,
@@ -130,7 +130,7 @@ export const execute = async (
                         );
                     } else {
                         // 空のキーフレームのフレーム削除実行
-                        externalTimelineLayerFrameRemoveEmptyFramesUseCase(
+                        await externalTimelineLayerFrameRemoveEmptyFramesUseCase(
                             work_space,
                             movie_clip,
                             layer,

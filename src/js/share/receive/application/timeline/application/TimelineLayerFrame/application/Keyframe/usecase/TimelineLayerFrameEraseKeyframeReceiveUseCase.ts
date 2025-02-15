@@ -48,7 +48,7 @@ export const execute = async (message: IShareReceiveMessage): Promise<void> =>
     }
 
     // キーフレームのフレームを全て削除
-    externalTimelineLayerFrameEraseKeyframeUseCase(
+    await externalTimelineLayerFrameEraseKeyframeUseCase(
         workSpace,
         movieClip,
         layer,

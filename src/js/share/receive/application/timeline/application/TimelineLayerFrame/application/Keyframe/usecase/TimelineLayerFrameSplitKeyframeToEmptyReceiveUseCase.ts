@@ -42,7 +42,7 @@ export const execute = async (message: IShareReceiveMessage): Promise<void> =>
     }
 
     // キーフレームを分割して空のキーフレームを追加
-    externalTimelineLayerFrameSplitKeyframeToEmptyUseCase(
+    await externalTimelineLayerFrameSplitKeyframeToEmptyUseCase(
         workSpace,
         movieClip,
         layer,

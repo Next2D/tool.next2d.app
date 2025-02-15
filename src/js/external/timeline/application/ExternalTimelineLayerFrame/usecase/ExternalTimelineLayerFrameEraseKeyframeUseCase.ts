@@ -14,17 +14,17 @@ import { execute as timelineLayerFrameEraseKeyframeHistoryUseCase } from "@/hist
  * @param  {Layer} layer
  * @param  {Character[]} characters
  * @param  {boolean} [receiver=false]
- * @return {void}
+ * @return {Promise<void>}
  * @method
  * @public
  */
-export const execute = (
+export const execute = async (
     work_space: WorkSpace,
     movie_clip: MovieClip,
     layer: Layer,
     characters: Character[],
     receiver: boolean = false
-): void => {
+): Promise<void> => {
 
     const character = characters[0];
 
@@ -37,7 +37,7 @@ export const execute = (
 
     // 履歴の登録
     // fixed logic
-    timelineLayerFrameEraseKeyframeHistoryUseCase(
+    await timelineLayerFrameEraseKeyframeHistoryUseCase(
         work_space,
         movie_clip,
         layer,

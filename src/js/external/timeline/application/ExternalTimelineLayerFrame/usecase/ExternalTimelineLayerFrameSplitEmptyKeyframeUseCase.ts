@@ -14,18 +14,18 @@ import { EmptyCharacter } from "@/core/domain/model/EmptyCharacter";
  * @param  {EmptyCharacter} empty_character
  * @param  {number} keyframe
  * @param  {boolean} [receiver=false]
- * @return {void}
+ * @return {Promise<void>}
  * @method
  * @public
  */
-export const execute = (
+export const execute = async (
     work_space: WorkSpace,
     movie_clip: MovieClip,
     layer: Layer,
     empty_character: EmptyCharacter,
     keyframe: number,
     receiver: boolean = false
-): void => {
+): Promise<void> => {
 
     // 既に空のキーフレームがある場合は何もしない
     if (empty_character.startFrame === keyframe) {
@@ -42,7 +42,7 @@ export const execute = (
     empty_character.endFrame = keyframe;
 
     // 履歴に追加
-    timelineLayerFrameSplitEmptyKeyframeHistoryUseCase(
+    await timelineLayerFrameSplitEmptyKeyframeHistoryUseCase(
         work_space,
         movie_clip,
         layer,
