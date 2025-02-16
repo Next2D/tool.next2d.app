@@ -573,3 +573,12 @@ export const $LIBRARY_UPDATE_SHAPE_GRAPHICS_COMMAND: number = 57;
  * @constant
  */
 export const $LIBRARY_ADD_NEW_TEXT_COMMAND: number = 58;
+
+/**
+ * @description DisplayObjectの名前更新の識別コマンド名
+ *              Identification command name for updating the name of the DisplayObject
+ *
+ * @type {number}
+ * @constant
+ */
+export const $CHARACTER_UPDATE_NAME_COMMAND: number = 59;

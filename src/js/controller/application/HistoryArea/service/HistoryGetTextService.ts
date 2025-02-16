@@ -51,7 +51,8 @@ import {
     $CHARACTER_UPDATE_Y_COMMAND,
     $LIBRARY_ADD_NEW_SHAPE_COMMAND,
     $LIBRARY_UPDATE_SHAPE_GRAPHICS_COMMAND,
-    $LIBRARY_ADD_NEW_TEXT_COMMAND
+    $LIBRARY_ADD_NEW_TEXT_COMMAND,
+    $CHARACTER_UPDATE_NAME_COMMAND
 } from "@/config/HistoryConfig";
 
 /**
@@ -220,6 +221,9 @@ export const execute = (command: number): string =>
 
         case $LIBRARY_ADD_NEW_TEXT_COMMAND:
             return "新規Text「%s1」を追加";
+
+        case $CHARACTER_UPDATE_NAME_COMMAND:
+            return "「%s1」のレイヤー「%s2」の%s3フレーム・深度%s4の名前を%s5に変更";
 
         default:
             break;

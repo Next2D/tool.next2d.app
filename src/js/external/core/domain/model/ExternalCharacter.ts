@@ -4,6 +4,7 @@ import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import { execute as externalCharacterUpdateXUseCase } from "@/external/core/application/ExternalCharacter/usecase/ExternalCharacterUpdateXUseCase";
 import { execute as externalCharacterUpdateYUseCase } from "@/external/core/application/ExternalCharacter/usecase/ExternalCharacterUpdateYUseCase";
+import { execute as externalCharacterUpdateNameUseCase } from "@/external/core/application/ExternalCharacter/usecase/ExternalCharacterUpdateNameUseCase";
 
 /**
  * @description DisplayObjectの管理クラス
@@ -121,6 +122,40 @@ export class ExternalCharacter
             this._$layer,
             this._$character,
             y
+        );
+    }
+
+    /**
+     * @description DisplayObjectの名前を返却
+     *              Returns the name of DisplayObject
+     *
+     * @return {string}
+     * @default ""
+     * @method
+     * @public
+     */
+    getName (): string
+    {
+        return this._$character.name;
+    }
+
+    /**
+     * @description DisplayObjectの名前を設定
+     *              Set the name of DisplayObject
+     *
+     * @param  {string} [name=""]
+     * @return {Promise<void>}
+     * @method
+     * @public
+     */
+    async setName (name: string = ""): Promise<void>
+    {
+        await externalCharacterUpdateNameUseCase(
+            this._$workSpace,
+            this._$movieClip,
+            this._$layer,
+            this._$character,
+            name
         );
     }
 }

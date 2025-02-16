@@ -60,6 +60,7 @@ import { execute as instanceUpdateNameHistoryRedoUseCase } from "@/history/appli
 import { execute as instanceUpdateSymbolHistoryRedoUseCase } from "@/history/application/core/application/Instance/usecase/InstanceUpdateSymbolHistoryRedoUseCase";
 import { execute as libraryAreaAddNewShapeHistoryRedoUseCase } from "@/history/application/controller/application/LibraryArea/Shape/usecase/LibraryAreaAddNewShapeHistoryRedoUseCase";
 import { execute as libraryAreaUpdateShapeGraphicsHistoryRedoUseCase } from "@/history/application/controller/application/LibraryArea/Shape/usecase/LibraryAreaUpdateShapeGraphicsHistoryRedoUseCase";
+import { execute as characterUpdateNameHistoryRedoUseCase } from "@/history/application/core/application/Character/UpdateName/usecase/CharacterUpdateNameHistoryRedoUseCase";
 import {
     $SCREEN_TAB_NAME_UPDATE_COMMAND,
     $TIMELINE_TOOL_LAYER_ADD_COMMAND,
@@ -112,7 +113,8 @@ import {
     $CHARACTER_UPDATE_X_COMMAND,
     $CHARACTER_UPDATE_Y_COMMAND,
     $LIBRARY_ADD_NEW_SHAPE_COMMAND,
-    $LIBRARY_UPDATE_SHAPE_GRAPHICS_COMMAND
+    $LIBRARY_UPDATE_SHAPE_GRAPHICS_COMMAND,
+    $CHARACTER_UPDATE_NAME_COMMAND
 } from "@/config/HistoryConfig";
 
 /**
@@ -640,6 +642,18 @@ export const execute = async (
                 messages[2] as IShapeSaveObject, // Shape Save Object
                 messages[3] as number[], // Shape Graphic Recodes
                 messages[4] as IBounds // Shape Bounds
+            );
+            break;
+
+        // キャラクター名を変更
+        case $CHARACTER_UPDATE_NAME_COMMAND:
+            characterUpdateNameHistoryRedoUseCase(
+                messages[0] as number, // WorkSpace ID
+                messages[1] as number, // MovieClip ID
+                messages[2] as number, // Layer Index
+                messages[3] as number, // Keyframe
+                messages[4] as number, // Depth
+                messages[6] as string  // After Name
             );
             break;
 

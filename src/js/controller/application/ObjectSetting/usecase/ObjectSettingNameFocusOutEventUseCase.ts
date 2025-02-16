@@ -3,6 +3,7 @@ import { $getSelectedMode } from "../../PropertyArea/PropertyAreaUtil";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { $ERROR_DUPLICATE_NAME_TEXT } from "@/config/ErrorTextConfig";
 import { ExternalItem } from "@/external/core/domain/model/ExternalItem";
+import { ExternalCharacter } from "@/external/core/domain/model/ExternalCharacter";
 import { execute as detailModalCustomFadeInUseCase } from "@/menu/application/DetailModal/usecase/DetailModalCustomFadeInUseCase";
 
 /**
@@ -55,7 +56,10 @@ export const execute = async (event: FocusEvent): Promise<void> =>
                     return ;
                 }
 
-                character.name = element.value;
+                const externalCharacter = new ExternalCharacter(
+                    workSpace, movieClip, layer, character
+                );
+                await externalCharacter.setName(element.value);
             }
             break;
 

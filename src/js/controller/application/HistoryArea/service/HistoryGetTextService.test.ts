@@ -51,7 +51,8 @@ import {
     $CHARACTER_UPDATE_X_COMMAND,
     $CHARACTER_UPDATE_Y_COMMAND,
     $LIBRARY_ADD_NEW_SHAPE_COMMAND,
-    $LIBRARY_UPDATE_SHAPE_GRAPHICS_COMMAND
+    $LIBRARY_UPDATE_SHAPE_GRAPHICS_COMMAND,
+    $CHARACTER_UPDATE_NAME_COMMAND
 } from "../../../../config/HistoryConfig";
 
 describe("HistoryGetTextServiceTest", () =>
@@ -109,5 +110,6 @@ describe("HistoryGetTextServiceTest", () =>
         expect(execute($CHARACTER_UPDATE_Y_COMMAND)).toBe("「%s1」のレイヤー「%s2」の%s3フレーム・深度%s4のy座標を%s5から%s6に変更");
         expect(execute($LIBRARY_ADD_NEW_SHAPE_COMMAND)).toBe("新規Shape「%s1」を追加");
         expect(execute($LIBRARY_UPDATE_SHAPE_GRAPHICS_COMMAND)).toBe("「%s1」のグラフィックを変更");
+        expect(execute($CHARACTER_UPDATE_NAME_COMMAND)).toBe("「%s1」のレイヤー「%s2」の%s3フレーム・深度%s4の名前を%s5に変更");
     });
 });

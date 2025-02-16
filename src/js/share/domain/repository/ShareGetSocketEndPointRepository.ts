@@ -15,7 +15,7 @@ const SOCKET_URL = import.meta.env.VITE_SOCKET_URL;
 export const execute = async (room_id: string): Promise<any> =>
 {
     const response = await fetch(
-        `${WSS_PRE_SIGNER_URL}?url=${SOCKET_URL}&roomId=${room_id}`
+        `${WSS_PRE_SIGNER_URL}?url=${encodeURIComponent(SOCKET_URL)}&roomId=${room_id}`
     );
     return await response.json();
 };
