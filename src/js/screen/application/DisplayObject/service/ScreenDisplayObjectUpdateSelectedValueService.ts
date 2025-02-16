@@ -6,11 +6,11 @@ import { ExternalCharacter } from "@/external/core/domain/model/ExternalCharacte
  * @description 選択中のDisplayObjectの移動した値を更新
  *              Update the moved value of the selected DisplayObject
  *
- * @return {void}
+ * @return {Promise<void>}
  * @method
  * @public
  */
-export const execute = (): void =>
+export const execute = async (): Promise<void> =>
 {
     const workSpace = $getCurrentWorkSpace();
     const movieClip = workSpace.scene;
@@ -48,12 +48,12 @@ export const execute = (): void =>
 
             // xの移動があれば更新
             if (x) {
-                externalCharacter.x += x;
+                await externalCharacter.setX(externalCharacter.getX() + x);
             }
 
             // yの移動があれば更新
             if (y) {
-                externalCharacter.y += y;
+                await externalCharacter.setY(externalCharacter.getY() + y);
             }
         }
     }

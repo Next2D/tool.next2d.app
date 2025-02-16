@@ -8,11 +8,11 @@ import { $setPointerId } from "../DisplayObjectUtil";
  *              Remove window events for DisplayObjects
  *
  * @param  {PointerEvent} event
- * @return {void}
+ * @return {Promise<void>}
  * @method
  * @public
  */
-export const execute = (event: PointerEvent): void =>
+export const execute = async (event: PointerEvent): Promise<void> =>
 {
     // 親のイベントをキャンセル
     event.stopPropagation();
@@ -31,7 +31,7 @@ export const execute = (event: PointerEvent): void =>
     element.removeEventListener(EventType.POINTER_UP, execute);
 
     // 移動した座標に更新
-    screenDisplayObjectUpdateSelectedValueService();
+    await screenDisplayObjectUpdateSelectedValueService();
 
     // 移動状態を解除
     $setPointerId(-1);

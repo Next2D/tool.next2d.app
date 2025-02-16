@@ -59,19 +59,30 @@ export class ExternalCharacter
     }
 
     /**
-     * @description DisplayObjectのx座標
-     *              x-coordinate of DisplayObject
+     * @description DisplayObjectのx座標を返却
+     *              Returns the x-coordinate of DisplayObject
      *
-     * @member {number}
+     * @return {number}
+     * @method
      * @public
      */
-    get x (): number
+    getX (): number
     {
         return this._$character.x;
     }
-    set x (x: number)
+
+    /**
+     * @description DisplayObjectのx座標を設定
+     *              Set the x-coordinate of DisplayObject
+     *
+     * @param  {number} x
+     * @return {Promise<void>}
+     * @method
+     * @public
+     */
+    async setX (x: number): Promise<void>
     {
-        externalCharacterUpdateXUseCase(
+        await externalCharacterUpdateXUseCase(
             this._$workSpace,
             this._$movieClip,
             this._$layer,
@@ -81,19 +92,30 @@ export class ExternalCharacter
     }
 
     /**
-     * @description DisplayObjectのy座標
-     *              y-coordinate of DisplayObject
+     * @description DisplayObjectのy座標を返却
+     *              Returns the y-coordinate of DisplayObject
      *
-     * @member {number}
+     * @return {number}
+     * @method
      * @public
      */
-    get y (): number
+    getY (): number
     {
         return this._$character.y;
     }
-    set y (y: number)
+
+    /**
+     * @description DisplayObjectのy座標を設定
+     *              Set the y-coordinate of DisplayObject
+     *
+     * @param  {number} y
+     * @return {Promise<void>}
+     * @method
+     * @public
+     */
+    async setY (y: number): Promise<void>
     {
-        externalCharacterUpdateYUseCase(
+        await externalCharacterUpdateYUseCase(
             this._$workSpace,
             this._$movieClip,
             this._$layer,

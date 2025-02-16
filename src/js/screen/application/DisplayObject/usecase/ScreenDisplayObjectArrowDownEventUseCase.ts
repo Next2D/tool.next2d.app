@@ -9,11 +9,11 @@ import { execute as transformSettingUpdateYElementService } from "@/controller/a
  *              DisplayObject keyboard event, moving down
  *
  * @param  {KeyboardEvent} event
- * @return {void}
+ * @return {Promise<void>}
  * @method
  * @public
  */
-export const execute = (event: KeyboardEvent): void =>
+export const execute = async (event: KeyboardEvent): Promise<void> =>
 {
     const workSpace = $getCurrentWorkSpace();
     const movieClip = workSpace.scene;
@@ -43,5 +43,5 @@ export const execute = (event: KeyboardEvent): void =>
     transformSettingUpdateYElementService(position.y + y);
 
     // 内部情報を更新
-    screenDisplayObjectUpdateSelectedValueService();
+    await screenDisplayObjectUpdateSelectedValueService();
 };

@@ -9,11 +9,11 @@ import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
  *              x-coordinate input completion processing
  *
  * @param  {FocusEvent} event
- * @return {void}
+ * @return {Promise<void>}
  * @method
  * @public
  */
-export const execute = (event: FocusEvent): void =>
+export const execute = async (event: FocusEvent): Promise<void> =>
 {
     // イベントの伝播を止める
     event.stopPropagation();
@@ -36,5 +36,5 @@ export const execute = (event: FocusEvent): void =>
     transformSetting.x = (value - transformSetting.beforeValue) * workSpace.scale;
 
     // 選択中のDisplayObjectを指定した値で更新
-    screenDisplayObjectUpdateSelectedValueService();
+    await screenDisplayObjectUpdateSelectedValueService();
 };
