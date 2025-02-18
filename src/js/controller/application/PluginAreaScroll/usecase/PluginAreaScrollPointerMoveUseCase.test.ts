@@ -1,13 +1,13 @@
-import { execute } from "./LibraryAreaScrollBarPointerMoveEventUseCase";
-import { $LIBRARY_LIST_BOX_ID } from "../../../../config/LibraryConfig";
+import { execute } from "./PluginAreaScrollPointerMoveUseCase";
+import { $PLUGIN_LIST_BOX_BODY_ID } from "../../../../config/PluginAreaConfig";
 import { describe, expect, it } from "vitest";
 
-describe("LibraryAreaScrollBarPointerMoveEventUseCase Test", () =>
+describe("PluginAreaScrollPointerMoveUseCase Test", () =>
 {
     it("test case", async () =>
     {
         const div = document.createElement("div");
-        div.id = $LIBRARY_LIST_BOX_ID;
+        div.id = $PLUGIN_LIST_BOX_BODY_ID;
         document.body.appendChild(div);
 
         let stopPropagation = false;

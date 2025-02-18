@@ -45,14 +45,11 @@ export const execute = async (): Promise<void> =>
     controllerAdjustmentInitializeRegisterEventUseCase();
 
     // 設定クラスの初期起動関数を実行
-    const promises: Promise<void>[] = [];
     for (let idx: number = 0; idx < settings.length; ++idx) {
         const setting = settings[idx];
         if (!setting.initialize) {
             continue;
         }
-        promises.push(setting.initialize());
+        await setting.initialize();
     }
-
-    await Promise.all(promises);
 };

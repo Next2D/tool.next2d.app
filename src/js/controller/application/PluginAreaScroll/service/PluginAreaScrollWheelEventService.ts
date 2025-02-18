@@ -1,8 +1,8 @@
+import { pluginArea } from "@/controller/domain/model/PluginArea";
 import {
     $PLUGIN_LIST_BOX_BODY_ID,
     $PLUGIN_LIST_SCROLL_BAR_ID
 } from "@/config/PluginAreaConfig";
-import { pluginArea } from "@/controller/domain/model/PluginArea";
 
 /**
  * @description プラグインエリアのホイールイベント

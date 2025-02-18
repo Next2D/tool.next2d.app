@@ -9,7 +9,7 @@ describe("ObjectSettingRegisterEventUseCase Test", () =>
 {
     it("execute test", async () =>
     {
-        const nameElement = document.createElement("div");
+        const nameElement = document.createElement("input");
         nameElement.id = $OBJECT_SETTING_NAME_ID;
         document.body.appendChild(nameElement);
 
@@ -34,8 +34,8 @@ describe("ObjectSettingRegisterEventUseCase Test", () =>
             }
         });
 
-        const symbolElement = document.createElement("div");
-        nameElement.id = $OBJECT_SETTING_SYMBOL_ID;
+        const symbolElement = document.createElement("input");
+        symbolElement.id = $OBJECT_SETTING_SYMBOL_ID;
         document.body.appendChild(symbolElement);
 
         symbolElement.addEventListener = vi.fn((type) =>

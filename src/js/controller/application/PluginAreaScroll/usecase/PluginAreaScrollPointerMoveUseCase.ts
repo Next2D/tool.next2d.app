@@ -22,15 +22,15 @@ export const execute = (event: PointerEvent): void =>
 
     requestAnimationFrame((): void =>
     {
+        const element: HTMLElement | null = event.target as HTMLElement;
+        if (!element) {
+            return ;
+        }
+
         const listElement: HTMLElement | null = document
             .getElementById($PLUGIN_LIST_BOX_BODY_ID);
 
         if (!listElement) {
-            return ;
-        }
-
-        const element: HTMLElement | null = event.target as HTMLElement;
-        if (!element) {
             return ;
         }
 
