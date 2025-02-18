@@ -25,7 +25,7 @@ export const execute = (): void =>
         .querySelectorAll(".container-title");
 
     const length: number = elements.length;
-    for (let idx: number = 0; idx < length; ++idx) {
+    for (let idx = 0; idx < length; ++idx) {
 
         const node: HTMLElement | undefined = elements[idx] as HTMLElement;
         if (!node) {

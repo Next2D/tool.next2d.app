@@ -4,6 +4,7 @@ import { execute as propertyAreaShowTabService } from "../service/PropertyAreaSh
 import { execute as userAllFunctionStateService } from "@/user/application/Billing/service/UserAllFunctionStateService";
 import { execute as billingModelShowService } from "@/menu/application/BillingModal/service/BillingModelShowService";
 import { execute as userDatabaseAutoSaveReservationUseCase } from "@/user/application/Database/usecase/UserDatabaseAutoSaveReservationUseCase";
+import { execute as propertyAreaScrollUpdateHeightService } from "@/controller/application/PropertyAreaScroll/service/PropertyAreaScrollUpdateHeightService";
 import { $allHideMenu } from "@/menu/application/MenuUtil";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { $useSocket } from "@/share/ShareUtil";
@@ -137,6 +138,9 @@ export const execute = async (event: PointerEvent): Promise<void> =>
 
         // プロパティタブを表示する
         propertyAreaShowTabService();
+
+        // プロパティエリアの高さを調整
+        propertyAreaScrollUpdateHeightService();
 
         // 自動保存予約
         await userDatabaseAutoSaveReservationUseCase();

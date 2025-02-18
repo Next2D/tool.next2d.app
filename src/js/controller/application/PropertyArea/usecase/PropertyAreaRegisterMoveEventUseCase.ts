@@ -3,7 +3,6 @@ import { $CONTROLLER_AREA_PROPERTY_ID } from "@/config/PropertyConfig";
 import { execute as propertyAreaMouseOutEventService } from "../service/PropertyAreaMouseOutEventService";
 import { execute as propertyAreaMouseUpEventUseCase } from "./PropertyAreaMouseUpEventUseCase";
 import { execute as propertyAreaMouseDownEventUseCase } from "./PropertyAreaMouseDownEventUseCase";
-import { execute as propertyAreaScrollWheelEventService } from "@/controller/application/PropertyAreaScroll/service/PropertyAreaScrollWheelEventService";
 
 /**
  * @description プロパティーエリアの移動イベントを登録
@@ -41,12 +40,6 @@ export const execute = (): void =>
     element.addEventListener(
         EventType.POINTER_OUT,
         propertyAreaMouseOutEventService,
-        { "passive": false }
-    );
-
-    // ホイールイベントの処理
-    element.addEventListener("wheel",
-        propertyAreaScrollWheelEventService,
         { "passive": false }
     );
 };

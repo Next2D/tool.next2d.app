@@ -1,17 +1,17 @@
-import { execute } from "./PropertyAreaScrollInitializeRegisterEventUseCase";
+import { execute } from "./ScriptAreaScrollInitializeRegisterEventUseCase";
 import { EventType } from "../../../../tool/domain/event/EventType";
 import {
-    $PROPERTY_SCROLL_BAR_ID,
-    $CONTROLLER_AREA_PROPERTY_ID
-} from "../../../../config/PropertyConfig";
+    $CONTROLLER_JAVASCRIPT_INTERNAL_LIST_BOX_ID,
+    $CONTROLLER_JAVASCRIPT_INTERNAL_LIST_SCROLL_BAR_ID
+} from "../../../../config/ControllerScriptAreaConfig";
 import { describe, expect, it, vi } from "vitest";
 
-describe("PropertyAreaScrollInitializeRegisterEventUseCase Test", () =>
+describe("ScriptAreaScrollInitializeRegisterEventUseCase Test", () =>
 {
     it("execute test", async () =>
     {
         const scrollBarElement = document.createElement("div");
-        scrollBarElement.id = $PROPERTY_SCROLL_BAR_ID;
+        scrollBarElement.id = $CONTROLLER_JAVASCRIPT_INTERNAL_LIST_SCROLL_BAR_ID;
         document.body.appendChild(scrollBarElement);
 
         scrollBarElement.addEventListener = vi.fn((type) =>
@@ -28,7 +28,7 @@ describe("PropertyAreaScrollInitializeRegisterEventUseCase Test", () =>
         });
 
         const listElement = document.createElement("div");
-        listElement.id = $CONTROLLER_AREA_PROPERTY_ID;
+        listElement.id = $CONTROLLER_JAVASCRIPT_INTERNAL_LIST_BOX_ID;
         document.body.appendChild(listElement);
 
         listElement.addEventListener = vi.fn((type) =>

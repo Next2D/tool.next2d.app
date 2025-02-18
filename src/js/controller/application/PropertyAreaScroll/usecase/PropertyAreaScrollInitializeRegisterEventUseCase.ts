@@ -1,6 +1,10 @@
-import { $PROPERTY_SCROLL_BAR_ID } from "@/config/PropertyConfig";
 import { EventType } from "@/tool/domain/event/EventType";
 import { execute as propertyAreaScrollMouseDownUseCase } from "./PropertyAreaScrollMouseDownUseCase";
+import { execute as propertyAreaScrollWheelEventService } from "../service/PropertyAreaScrollWheelEventService";
+import {
+    $PROPERTY_SCROLL_BAR_ID,
+    $CONTROLLER_AREA_PROPERTY_ID
+} from "@/config/PropertyConfig";
 
 /**
  * @description プロパティーエリアのスクロールイベントを登録
@@ -12,15 +16,23 @@ import { execute as propertyAreaScrollMouseDownUseCase } from "./PropertyAreaScr
  */
 export const execute = (): void =>
 {
-    const element: HTMLElement | null = document
+    const scrollBarElement: HTMLElement | null = document
         .getElementById($PROPERTY_SCROLL_BAR_ID);
 
-    if (!element) {
-        return ;
+    // マウスダウンイベントを登録
+    if (scrollBarElement) {
+        scrollBarElement.addEventListener(EventType.POINTER_DOWN,
+            propertyAreaScrollMouseDownUseCase
+        );
     }
 
-    // マウスダウンイベントを登録
-    element.addEventListener(EventType.POINTER_DOWN,
-        propertyAreaScrollMouseDownUseCase
-    );
+    const listElement: HTMLElement | null = document
+        .getElementById($CONTROLLER_AREA_PROPERTY_ID);
+
+    if (listElement) {
+        listElement.addEventListener("wheel",
+            propertyAreaScrollWheelEventService,
+            { "passive": false }
+        );
+    }
 };

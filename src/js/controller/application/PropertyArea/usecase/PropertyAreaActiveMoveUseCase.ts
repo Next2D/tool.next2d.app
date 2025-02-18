@@ -4,12 +4,12 @@ import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { execute as propertyAreaChageStyleToActiveService } from "../service/PropertyAreaChageStyleToActiveService";
 import { execute as propertyAreaRegisterPointerEventUseCase } from "./PropertyAreaRegisterPointerEventUseCase";
 import { execute as propertyAreaHideTabService } from "../service/PropertyAreaHideTabService";
+import { execute as propertyAreaScrollUpdateHeightService } from "@/controller/application/PropertyAreaScroll/service/PropertyAreaScrollUpdateHeightService";
 import {
     $getMouseState,
     $getStandbyMoveState,
     $setStandbyMoveState
 } from "../PropertyAreaUtil";
-import { execute as libraryAreaScrollUpdateHeightService } from "@/controller/application/LibraryAreaScroll/service/LibraryAreaScrollUpdateHeightService";
 
 /**
  * @description プロパティエリアを移動可能な状態にする
@@ -56,7 +56,7 @@ export const execute = (event: PointerEvent): void =>
             propertyAreaHideTabService();
 
             // ライブラリエリアの高さを調整
-            libraryAreaScrollUpdateHeightService();
+            propertyAreaScrollUpdateHeightService();
         }
 
         // カーソルを移動用に変更

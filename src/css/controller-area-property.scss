@@ -26,7 +26,6 @@
 {
     position         : relative;
     width            : 10px;
-    height           : calc(100vh - var(--controller-tab-area-height) - var(--ad));
     display          : flex;
     justify-content  : center;
     background-color : #282828;

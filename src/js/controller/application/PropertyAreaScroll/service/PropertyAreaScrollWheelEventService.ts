@@ -1,8 +1,8 @@
+import { propertyArea } from "@/controller/domain/model/PropertyArea";
 import {
     $CONTROLLER_AREA_PROPERTY_BODY_ID,
     $PROPERTY_SCROLL_BAR_ID
 } from "@/config/PropertyConfig";
-import { propertyArea } from "@/controller/domain/model/PropertyArea";
 
 /**
  * @description プロパティエリアのホイールイベント
