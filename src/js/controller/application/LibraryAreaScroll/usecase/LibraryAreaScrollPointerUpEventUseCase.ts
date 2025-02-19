@@ -1,5 +1,5 @@
 import { EventType } from "@/tool/domain/event/EventType";
-import { execute as libraryAreaScrollBarPointerMoveEventUseCase } from "./LibraryAreaScrollBarPointerMoveEventUseCase";
+import { execute as libraryAreaScrollBarPointerMoveEventUseCase } from "./LibraryAreaScrollPointerMoveEventUseCase";
 
 /**
  * @description ライブラリエリアのスクロールバーのマウスアップイベント

@@ -1,8 +1,8 @@
-import { execute } from "./LibraryAreaScrollBarMouseDownEventUseCase";
+import { execute } from "./LibraryAreaScrollMouseDownEventUseCase";
 import { EventType } from "../../../../tool/domain/event/EventType";
 import { describe, expect, it, vi } from "vitest";
 
-describe("LibraryAreaScrollBarMouseDownEventUseCase Test", () =>
+describe("LibraryAreaScrollMouseDownEventUseCase Test", () =>
 {
     it("execute test", () =>
     {

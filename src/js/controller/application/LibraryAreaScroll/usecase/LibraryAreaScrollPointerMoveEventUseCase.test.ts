@@ -1,8 +1,8 @@
-import { execute } from "./LibraryAreaScrollBarPointerMoveEventUseCase";
+import { execute } from "./LibraryAreaScrollPointerMoveEventUseCase";
 import { $LIBRARY_LIST_BOX_ID } from "../../../../config/LibraryConfig";
 import { describe, expect, it } from "vitest";
 
-describe("LibraryAreaScrollBarPointerMoveEventUseCase Test", () =>
+describe("LibraryAreaScrollPointerMoveEventUseCase Test", () =>
 {
     it("test case", async () =>
     {

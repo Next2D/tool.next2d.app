@@ -1,6 +1,6 @@
 import { EventType } from "@/tool/domain/event/EventType";
-import { execute as libraryAreaScrollBarPointerMoveEventUseCase } from "./LibraryAreaScrollBarPointerMoveEventUseCase";
-import { execute as libraryAreaScrollBarPointerUpEventUseCase } from "./LibraryAreaScrollBarPointerUpEventUseCase";
+import { execute as libraryAreaScrollPointerMoveEventUseCase } from "./LibraryAreaScrollPointerMoveEventUseCase";
+import { execute as libraryAreaScrollPointerUpEventUseCase } from "./LibraryAreaScrollPointerUpEventUseCase";
 
 /**
  * @description ライブラリエリアのスクロールバーのマウスダウンイベント
@@ -25,17 +25,17 @@ export const execute = (event: PointerEvent): void =>
     element.setPointerCapture(event.pointerId);
     element.addEventListener(
         EventType.POINTER_MOVE,
-        libraryAreaScrollBarPointerMoveEventUseCase,
+        libraryAreaScrollPointerMoveEventUseCase,
         { "passive": false }
     );
     element.addEventListener(
         EventType.POINTER_UP,
-        libraryAreaScrollBarPointerUpEventUseCase,
+        libraryAreaScrollPointerUpEventUseCase,
         { "passive": false }
     );
     element.addEventListener(
         EventType.POINTER_LEAVE,
-        libraryAreaScrollBarPointerUpEventUseCase,
+        libraryAreaScrollPointerUpEventUseCase,
         { "passive": false }
     );
 };

@@ -3,8 +3,9 @@ import { execute as libraryAreaDropUseCase } from "./LibraryAreaDropUseCase";
 import { execute as libraryAreaDragoverService } from "../service/LibraryAreaDragoverService";
 import { execute as libraryAreaRegisterWindowKeyEventUseCase } from "./LibraryAreaRegisterWindowKeyEventUseCase";
 import { execute as libraryAreaRemoveWindowKeyEventUseCase } from "./LibraryAreaRemoveWindowKeyEventUseCase";
-import { execute as librayAreaWheelEventService } from "../../LibraryAreaScroll/service/LibrayAreaWheelEventService";
-import { execute as libraryAreaScrollBarMouseDownEventUseCase } from "@/controller/application/LibraryAreaScroll/usecase/LibraryAreaScrollBarMouseDownEventUseCase";
+import { execute as librayAreaWheelEventService } from "../../LibraryAreaScroll/service/LibraryAreaScrollWheelEventService";
+import { execute as libraryAreaScrollBarMouseDownEventUseCase } from "@/controller/application/LibraryAreaScroll/usecase/LibraryAreaScrollMouseDownEventUseCase";
+import { execute as libraryAreaScrollInitializeRegisterEventUseCase } from "@/controller/application/LibraryAreaScroll/usecase/LibraryAreaScrollInitializeRegisterEventUseCase";
 import { EventType } from "@/tool/domain/event/EventType";
 import {
     $LIBRARY_LIST_BOX_ID,
@@ -22,24 +23,13 @@ import {
 export const execute = (): void =>
 {
     // スクロールバーのイベント登録
-    const scrollBarElement: HTMLElement | null = document
-        .getElementById($LIBRARY_LIST_BOX_SCROLL_BAR_ID);
-
-    if (scrollBarElement) {
-        scrollBarElement.addEventListener(EventType.POINTER_DOWN,
-            libraryAreaScrollBarMouseDownEventUseCase
-        );
-    }
+    libraryAreaScrollInitializeRegisterEventUseCase();
 
     // リストボックス本体のイベント登録
     const listBoxElement: HTMLElement | null = document
         .getElementById($LIBRARY_LIST_BOX_ID);
 
     if (listBoxElement) {
-        listBoxElement.addEventListener("wheel",
-            librayAreaWheelEventService,
-            { "passive": false }
-        );
 
         listBoxElement.addEventListener(EventType.POINTER_DOWN,
             libraryAreaMouseDownEventUseCase

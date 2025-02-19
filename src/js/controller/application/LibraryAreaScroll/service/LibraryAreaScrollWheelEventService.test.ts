@@ -1,11 +1,11 @@
-import { execute } from "./LibrayAreaWheelEventService";
+import { execute } from "./LibraryAreaScrollWheelEventService";
 import {
     $LIBRARY_LIST_BOX_ID,
     $LIBRARY_LIST_BOX_SCROLL_BAR_ID
 } from "../../../../config/LibraryConfig";
 import { describe, expect, it, vi } from "vitest";
 
-describe("LibrayAreaWheelEventService Test", () =>
+describe("LibraryAreaScrollWheelEventService Test", () =>
 {
     it("execute test", async () =>
     {
