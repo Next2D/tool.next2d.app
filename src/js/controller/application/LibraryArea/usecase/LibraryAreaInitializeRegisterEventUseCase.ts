@@ -3,14 +3,9 @@ import { execute as libraryAreaDropUseCase } from "./LibraryAreaDropUseCase";
 import { execute as libraryAreaDragoverService } from "../service/LibraryAreaDragoverService";
 import { execute as libraryAreaRegisterWindowKeyEventUseCase } from "./LibraryAreaRegisterWindowKeyEventUseCase";
 import { execute as libraryAreaRemoveWindowKeyEventUseCase } from "./LibraryAreaRemoveWindowKeyEventUseCase";
-import { execute as librayAreaWheelEventService } from "../../LibraryAreaScroll/service/LibraryAreaScrollWheelEventService";
-import { execute as libraryAreaScrollBarMouseDownEventUseCase } from "@/controller/application/LibraryAreaScroll/usecase/LibraryAreaScrollMouseDownEventUseCase";
 import { execute as libraryAreaScrollInitializeRegisterEventUseCase } from "@/controller/application/LibraryAreaScroll/usecase/LibraryAreaScrollInitializeRegisterEventUseCase";
 import { EventType } from "@/tool/domain/event/EventType";
-import {
-    $LIBRARY_LIST_BOX_ID,
-    $LIBRARY_LIST_BOX_SCROLL_BAR_ID
-} from "@/config/LibraryConfig";
+import { $LIBRARY_LIST_BOX_ID } from "@/config/LibraryConfig";
 
 /**
  * @description ライブラリエリアのイベントを登録
