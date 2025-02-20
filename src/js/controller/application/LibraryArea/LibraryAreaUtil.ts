@@ -99,3 +99,71 @@ export const $getMoveState = (): boolean =>
 {
     return $moveState;
 };
+
+/**
+ * @type {number}
+ * @default -1
+ * @private
+ */
+let $nameSelectedLibraryId: number = -1;
+
+/**
+ * @description 選択中のライブラリエリアの名前入力中IDを設定
+ *              Set the ID of the name being entered in the selected library area
+ *
+ * @param  {number} library_id
+ * @return {void}
+ * @method
+ * @public
+ */
+export const $setNameSelectedLibraryId = (library_id: number): void =>
+{
+    $nameSelectedLibraryId = library_id;
+};
+
+/**
+ * @description 選択中のライブラリエリアの名前入力中IDを取得
+ *              Get the ID of the name being entered in the selected library area
+ *
+ * @returns {number}
+ * @method
+ * @public
+ */
+export const $getNameSelectedLibraryId = (): number =>
+{
+    return $nameSelectedLibraryId;
+};
+
+/**
+ * @type {number}
+ * @default -1
+ * @private
+ */
+let $symbolSelectedLibraryId: number = -1;
+
+/**
+ * @description 選択中のライブラリエリアのシンボル入力中IDを設定
+ *              Set the ID of the symbol being entered in the selected library area
+ *
+ * @param  {number} library_id
+ * @return
+ * @method
+ * @public
+ */
+export const $setSymbolSelectedLibraryId = (library_id: number): void =>
+{
+    $symbolSelectedLibraryId = library_id;
+};
+
+/**
+ * @description 選択中のライブラリエリアのシンボル入力中IDを取得
+ *              Get the ID of the symbol being entered in the selected library area
+ *
+ * @returns {number}
+ * @method
+ * @public
+ */
+export const $getSymbolSelectedLibraryId = (): number =>
+{
+    return $symbolSelectedLibraryId;
+};

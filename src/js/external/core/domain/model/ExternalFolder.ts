@@ -20,11 +20,11 @@ export class ExternalFolder extends ExternalItem
      *              Open a folder and view the list
      *
      * @param  {boolean} [receiver = false]
-     * @return {void}
+     * @return {Promise<void>}
      * @method
      * @public
      */
-    open (receiver: boolean = false): void
+    async open (receiver: boolean = false): Promise<void>
     {
         (this._$instance as Folder).mode = "open";
 
@@ -34,7 +34,7 @@ export class ExternalFolder extends ExternalItem
             libraryAreaUpdateFolderStateService(this._$instance as Folder);
 
             // ライブラリを再描画
-            libraryAreaReloadUseCase();
+            await libraryAreaReloadUseCase();
         }
 
         // 画面共有
@@ -53,11 +53,11 @@ export class ExternalFolder extends ExternalItem
      *              Close the folder and hide the list
      *
      * @param  {boolean} [receiver = false]
-     * @return {void}
+     * @return {Promise<void>}
      * @method
      * @public
      */
-    close (receiver: boolean = false): void
+    async close (receiver: boolean = false): Promise<void>
     {
         (this._$instance as Folder).mode = "close";
 
@@ -67,7 +67,7 @@ export class ExternalFolder extends ExternalItem
             libraryAreaUpdateFolderStateService(this._$instance as Folder);
 
             // ライブラリを再描画
-            libraryAreaReloadUseCase();
+            await libraryAreaReloadUseCase();
         }
 
         // 画面共有

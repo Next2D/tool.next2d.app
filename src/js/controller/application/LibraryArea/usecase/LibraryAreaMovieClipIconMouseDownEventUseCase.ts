@@ -2,6 +2,11 @@ import type { MovieClip } from "@/core/domain/model/MovieClip";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { execute as timelineSceneListClearAddRootUseCase } from "@/timeline/application/TimelineSceneList/usecase/TimelineSceneListClearAddRootUseCase";
 import { execute as externalTimelineEditMovieClipUseService } from "@/external/timeline/application/ExternalTimeline/service/ExternalTimelineEditMovieClipUseService";
+import { $useKeyboard } from "@/shortcut/ShortcutUtil";
+import {
+    $getEditingElement,
+    $setEditingElement
+} from "@/global/GlobalUtil";
 
 /**
  * @description ダブルタップ用の待機フラグ
@@ -42,13 +47,26 @@ export const execute = async (event: PointerEvent): Promise<void> =>
         return ;
     }
 
-    if (!wait) {
+    if ($useKeyboard()) {
+        const editingElement = $getEditingElement();
+        if (editingElement) {
+            editingElement.blur();
+            $setEditingElement(null);
+        }
+    }
+
+    // 親のイベントを終了
+    event.stopPropagation();
+    event.preventDefault();
+
+    const libraryId = parseInt(element.dataset.libraryId as string);
+    if (!wait || selectedLibraryId !== libraryId) {
 
         // 初回のタップであればダブルタップを待機モードに変更
         wait = true;
 
         // ライブラリIDをセット
-        selectedLibraryId = parseInt(element.dataset.libraryId as string);
+        selectedLibraryId = libraryId;
 
         // ダブルタップ有効期限をセット
         setTimeout((): void =>
@@ -61,15 +79,6 @@ export const execute = async (event: PointerEvent): Promise<void> =>
 
         // ダブルタップを終了
         wait = false;
-
-        // 親のイベントでアイテム選択処理を行うので、ここではstop関数を実行しない
-        // @see LibraryAreaSelectedMouseDownUseCase
-        const libraryId = parseInt(element.dataset.libraryId as string);
-        if (selectedLibraryId !== libraryId) {
-            return ;
-        }
-
-        // 選択中のIDをリセット
         selectedLibraryId = -1;
 
         const workSpace = $getCurrentWorkSpace();
@@ -77,10 +86,6 @@ export const execute = async (event: PointerEvent): Promise<void> =>
         if (!movieClip) {
             return ;
         }
-
-        // 親のイベントを終了
-        event.stopPropagation();
-        event.preventDefault();
 
         // タイムラインのシーン名を初期化してrootを追加
         timelineSceneListClearAddRootUseCase();

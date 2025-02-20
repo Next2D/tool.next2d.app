@@ -47,11 +47,10 @@ export const execute = async (event: PointerEvent): Promise<void> =>
     const libraryId = parseInt(element.dataset.libraryId as string);
     if ($useKeyboard()) {
         const editingElement = $getEditingElement();
-        if (editingElement && editingElement.dataset.libraryId !== element.dataset.libraryId) {
+        if (editingElement) {
             editingElement.blur();
             $setEditingElement(null);
         }
-        return ;
     }
 
     // 親のイベントを中止

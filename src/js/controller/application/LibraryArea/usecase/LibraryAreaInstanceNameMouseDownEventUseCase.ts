@@ -1,5 +1,14 @@
-import { $useKeyboard } from "@/shortcut/ShortcutUtil";
 import { execute as libraryAreaActiceInstanceTextContentService } from "../service/LibraryAreaActiceInstanceTextContentService";
+import { $useKeyboard } from "@/shortcut/ShortcutUtil";
+import {
+    $getEditingElement,
+    $setEditingElement
+} from "@/global/GlobalUtil";
+import {
+    $getNameSelectedLibraryId,
+    $setNameSelectedLibraryId,
+    $setSymbolSelectedLibraryId
+} from "../LibraryAreaUtil";
 
 /**
  * @description ダブルタップ用の待機フラグ
@@ -9,15 +18,6 @@ import { execute as libraryAreaActiceInstanceTextContentService } from "../servi
  * @private
  */
 let wait: boolean = false;
-
-/**
- * @description 選択中のライブラリID
- *              Library ID currently selected
- *
- * @type {number}
- * @private
- */
-let selectedLibraryId: number = -1;
 
 /**
  * @description インスタンスの名前エリアのダブルタップ処理関数
@@ -33,7 +33,6 @@ export const execute = (event: PointerEvent): void =>
     switch (true) {
 
         case event.button !== 0:
-        case $useKeyboard():
         case event.altKey:
         case event.metaKey:
         case event.shiftKey:
@@ -50,27 +49,44 @@ export const execute = (event: PointerEvent): void =>
         return ;
     }
 
+    const selectedLibraryId = $getNameSelectedLibraryId();
+
     const libraryId = parseInt(element.dataset.libraryId as string);
-    if (!wait || selectedLibraryId !== libraryId) {
+    if ($useKeyboard()) {
+        const editingElement = $getEditingElement();
+        if (editingElement && selectedLibraryId !== libraryId) {
+            editingElement.blur();
+            $setEditingElement(null);
+            $setNameSelectedLibraryId(-1);
+            $setSymbolSelectedLibraryId(-1);
+        } else {
+            event.stopPropagation();
+            return ;
+        }
+    }
+
+    if (!wait) {
 
         // 初回のタップであればダブルタップを待機モードに変更
         wait = true;
 
         // ライブラリIDをセット
-        selectedLibraryId = libraryId;
+        $setNameSelectedLibraryId(libraryId);
 
         // ダブルタップ有効期限をセット
         setTimeout((): void =>
         {
             wait = false;
-            selectedLibraryId = -1;
         }, 300);
 
     } else {
 
         // 変数を初期化
         wait = false;
-        selectedLibraryId = -1;
+
+        if (selectedLibraryId !== libraryId) {
+            return ;
+        }
 
         // 親のイベントを終了
         event.stopPropagation();

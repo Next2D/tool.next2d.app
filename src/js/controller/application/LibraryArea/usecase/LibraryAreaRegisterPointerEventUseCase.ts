@@ -1,11 +1,14 @@
 import { EventType } from "@/tool/domain/event/EventType";
 import { execute as libraryAreaPointerMoveEventUseCase } from "./LibraryAreaPointerMoveEventUseCase";
 import { execute as libraryAreaPointerUpEventUseCase } from "./LibraryAreaPointerUpEventUseCase";
+import { execute as screenAreaLibraryItemDropStartService } from "@/screen/application/ScreenArea/service/ScreenAreaLibraryItemDropStartService";
 import { $LIBRARY_LIST_BOX_ID } from "@/config/LibraryConfig";
-import { $setMoveOffsetX, $setMoveOffsetY } from "../LibraryAreaUtil";
 import { $useKeyboard } from "@/shortcut/ShortcutUtil";
 import { $activeTouchPointers } from "@/global/GlobalUtil";
-import { execute as screenAreaLibraryItemDropStartService } from "@/screen/application/ScreenArea/service/ScreenAreaLibraryItemDropStartService";
+import {
+    $setMoveOffsetX,
+    $setMoveOffsetY
+} from "../LibraryAreaUtil";
 
 /**
  * @description スクリーンエリアの移動イベントを登録
