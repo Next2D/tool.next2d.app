@@ -41,7 +41,7 @@ export const execute = (): void =>
 
     // 他のタブを非アクティブにして非表示に更新
     const length: number = element.children.length;
-    for (let idx: number = 1; idx < length; ++idx) {
+    for (let idx = 1; idx < length; ++idx) {
 
         const node: HTMLElement | undefined = element.children[idx] as HTMLElement;
         if (!node) {

@@ -5,6 +5,11 @@ import { execute as libraryPreviewAreaUpdateDisplayUseCase } from "@/controller/
 import { execute as libraryPreviewAreaClearDisplayService } from "@/controller/application/LibraryPreviewArea/service/LibraryPreviewAreaClearDisplayService";
 import { execute as libraryAreaSelectedClearUseCase } from "./LibraryAreaSelectedClearUseCase";
 import { $FOLDER_TYPE } from "@/config/InstanceConfig";
+import {
+    $LIBRARY_LIST_BOX_SCROLL_AREA_ID,
+    $LIBRARY_LIST_BOX_ID,
+    $LIBRARY_LIST_BOX_SCROLL_BAR_ID
+} from "@/config/LibraryConfig";
 
 /**
  * @description ラリブラリのキーダウンイベントの処置関数
@@ -82,5 +87,33 @@ export const execute = async (): Promise<void> =>
         }
 
         externalLibrary.selectedItem(instance.getPath(workSpace));
+
+        // スクロール位置を調整
+        const scrollAreaElement: HTMLElement | null = document
+            .getElementById($LIBRARY_LIST_BOX_SCROLL_AREA_ID);
+
+        if (!scrollAreaElement) {
+            return ;
+        }
+
+        const listBoxElement: HTMLElement | null = document
+            .getElementById($LIBRARY_LIST_BOX_ID);
+
+        if (!listBoxElement) {
+            return ;
+        }
+
+        const offsetY = nextElement.offsetTop - listBoxElement.offsetTop + nextElement.clientHeight;
+        if (offsetY > scrollAreaElement.clientHeight + listBoxElement.scrollTop) {
+            const scrollBarElement: HTMLElement | null = document
+                .getElementById($LIBRARY_LIST_BOX_SCROLL_BAR_ID);
+
+            if (!scrollBarElement) {
+                return ;
+            }
+
+            listBoxElement.scrollTop += nextElement.clientHeight;
+            scrollBarElement.style.top = `${listBoxElement.scrollTop * libraryArea.scrollScale}px`;
+        }
     }
 };
