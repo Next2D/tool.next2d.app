@@ -3,10 +3,7 @@ import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { execute as timelineSceneListClearAddRootUseCase } from "@/timeline/application/TimelineSceneList/usecase/TimelineSceneListClearAddRootUseCase";
 import { execute as externalTimelineEditMovieClipUseService } from "@/external/timeline/application/ExternalTimeline/service/ExternalTimelineEditMovieClipUseService";
 import { $useKeyboard } from "@/shortcut/ShortcutUtil";
-import {
-    $getEditingElement,
-    $setEditingElement
-} from "@/global/GlobalUtil";
+import { $setEditingElement } from "@/global/GlobalUtil";
 
 /**
  * @description ダブルタップ用の待機フラグ

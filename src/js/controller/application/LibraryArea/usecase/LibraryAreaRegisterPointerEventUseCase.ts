@@ -14,22 +14,18 @@ import {
  * @description スクリーンエリアの移動イベントを登録
  *              Register move events for screen area
  *
- * @param {PointerEvent} event
- * @returns
+ * @param  {PointerEvent} event
+ * @param  {HTMLElement} item_element
+ * @return {void}
  * @method
  * @public
  */
-export const execute = (event: PointerEvent): void =>
+export const execute = (event: PointerEvent, item_element: HTMLElement): void =>
 {
     if (event.button !== 0
         || $useKeyboard()
         || $activeTouchPointers.size > 1
     ) {
-        return ;
-    }
-
-    const itemElement = event.currentTarget as HTMLElement;
-    if (!itemElement) {
         return ;
     }
 
@@ -48,28 +44,28 @@ export const execute = (event: PointerEvent): void =>
 
     const offsetX = event.offsetX
         + (element.offsetLeft - libraryListBox.offsetLeft)
-        - (itemElement.offsetLeft - libraryListBox.offsetLeft);
+        - (item_element.offsetLeft - libraryListBox.offsetLeft);
 
     const offsetY = event.offsetY
         + (element.offsetTop - libraryListBox.offsetTop)
-        - (itemElement.offsetTop - libraryListBox.offsetTop);
+        - (item_element.offsetTop - libraryListBox.offsetTop);
 
     // 初期値をセット
     $setMoveOffsetX(offsetX);
     $setMoveOffsetY(offsetY);
 
-    itemElement.setPointerCapture(event.pointerId);
-    itemElement.addEventListener(
+    item_element.setPointerCapture(event.pointerId);
+    item_element.addEventListener(
         EventType.POINTER_MOVE,
         libraryAreaPointerMoveEventUseCase,
         { "passive": false }
     );
-    itemElement.addEventListener(
+    item_element.addEventListener(
         EventType.POINTER_UP,
         libraryAreaPointerUpEventUseCase,
         { "passive": false }
     );
-    itemElement.addEventListener(
+    item_element.addEventListener(
         EventType.POINTER_LEAVE,
         libraryAreaPointerUpEventUseCase,
         { "passive": false }
