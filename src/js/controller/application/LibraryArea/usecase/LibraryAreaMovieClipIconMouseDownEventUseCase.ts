@@ -48,11 +48,7 @@ export const execute = async (event: PointerEvent): Promise<void> =>
     }
 
     if ($useKeyboard()) {
-        const editingElement = $getEditingElement();
-        if (editingElement) {
-            editingElement.blur();
-            $setEditingElement(null);
-        }
+        $setEditingElement(null);
     }
 
     // 親のイベントを終了

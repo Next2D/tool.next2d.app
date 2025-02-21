@@ -1,13 +1,15 @@
-import { $allHideMenu } from "@/menu/application/MenuUtil";
-import { $setEditingElement } from "@/global/GlobalUtil";
 import { execute as libraryAreaSelectedClearUseCase } from "./LibraryAreaSelectedClearUseCase";
-import { $activeTouchPointers } from "@/global/GlobalUtil";
+import { $allHideMenu } from "@/menu/application/MenuUtil";
+import {
+    $activeTouchPointers,
+    $setEditingElement
+} from "@/global/GlobalUtil";
 
 /**
  * @description ライブラリエリアの親のイベント関数
  *              Event functions of the parent of the library area
  *
- * @param {PointerEvent} event
+ * @param  {PointerEvent} event
  * @return {void}
  * @method
  * @public

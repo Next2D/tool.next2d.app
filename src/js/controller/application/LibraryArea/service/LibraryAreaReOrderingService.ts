@@ -20,7 +20,7 @@ export const execute = (work_space: WorkSpace): void =>
     const instanceIds = [];
 
     const folderMap = new Map();
-    for (let idx: number = 0; idx < names.length; ++idx) {
+    for (let idx = 0; idx < names.length; ++idx) {
 
         const name = names[idx];
         if (!work_space.pathMap.has(name)) {

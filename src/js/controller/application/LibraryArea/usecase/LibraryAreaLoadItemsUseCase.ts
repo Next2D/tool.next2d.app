@@ -44,6 +44,7 @@ export const execute = async (items: DataTransferItemList): Promise<void> =>
     }
 
     // ファイルはawaitすると取得できないので、最後にPromise.allでまとめて処理
+    // fixed logic
     const promises = [];
     for (let idx = 0; idx < items.length; ++idx) {
 
@@ -56,6 +57,7 @@ export const execute = async (items: DataTransferItemList): Promise<void> =>
         promises.push(libraryAreaScanFileUseCase(entry, path));
     }
 
+    // fixed logic
     await Promise.all(promises);
 
     // 選択状態を初期化
