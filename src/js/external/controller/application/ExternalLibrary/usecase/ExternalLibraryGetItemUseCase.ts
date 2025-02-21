@@ -1,5 +1,5 @@
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
-import type { IExternalInstance } from "@/interface/IExternalInstance";
+import type { ExternalItem } from "@/external/core/domain/model/ExternalItem";
 import { execute as externalLibraryCreateInstanceService } from "@/external/controller/application/ExternalLibrary/service/ExternalLibraryCreateInstanceService";
 
 /**
@@ -12,10 +12,10 @@ import { execute as externalLibraryCreateInstanceService } from "@/external/cont
  * @method
  * @public
  */
-export const execute = (
+export const execute = <E extends ExternalItem> (
     work_space: WorkSpace,
     path: string
-): IExternalInstance<any> | null => {
+): E | null => {
 
     if (!work_space.pathMap.has(path)) {
         return null;

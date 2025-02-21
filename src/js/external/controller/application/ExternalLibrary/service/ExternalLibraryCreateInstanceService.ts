@@ -1,5 +1,4 @@
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
-import type { IExternalItem } from "@/interface/IExternalItem";
 import type { Instance } from "@/core/domain/model/Instance";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { Shape } from "@/core/domain/model/Shape";
@@ -8,6 +7,7 @@ import type { Text } from "@/core/domain/model/Text";
 import type { Video } from "@/core/domain/model/Video";
 import type { Folder } from "@/core/domain/model/Folder";
 import type { Bitmap } from "@/core/domain/model/Bitmap";
+import type { ExternalItem } from "@/external/core/domain/model/ExternalItem";
 import { ExternalFolder } from "@/external/core/domain/model/ExternalFolder";
 import { ExternalBitmap } from "@/external/core/domain/model/ExternalBitmap";
 import { ExternalMovieClip } from "@/external/core/domain/model/ExternalMovieClip";
@@ -35,34 +35,34 @@ import {
  * @method
  * @public
  */
-export const execute = <I extends Instance> (
+export const execute = <I extends Instance, E extends ExternalItem> (
     work_space: WorkSpace,
     instance: I
-): IExternalItem<any> | null => {
+): E | null => {
 
     // タイプ別のクラスを作成
     switch (instance.type) {
 
         case $MOVIE_CLIP_TYPE:
-            return new ExternalMovieClip(work_space, instance as unknown as MovieClip);
+            return new ExternalMovieClip(work_space, instance as unknown as MovieClip) as unknown as E;
 
         case $SHAPE_TYPE:
-            return new ExternalShape(work_space, instance as unknown as Shape);
+            return new ExternalShape(work_space, instance as unknown as Shape) as unknown as E;
 
         case $SOUND_TYPE:
-            return new ExternalSound(work_space, instance as unknown as Sound);
+            return new ExternalSound(work_space, instance as unknown as Sound) as unknown as E;
 
         case $TEXT_TYPE:
-            return new ExternalText(work_space, instance as unknown as Text);
+            return new ExternalText(work_space, instance as unknown as Text) as unknown as E;
 
         case $VIDEO_TYPE:
-            return new ExternalVideo(work_space, instance as unknown as Video);
+            return new ExternalVideo(work_space, instance as unknown as Video) as unknown as E;
 
         case $FOLDER_TYPE:
-            return new ExternalFolder(work_space, instance as unknown as Folder);
+            return new ExternalFolder(work_space, instance as unknown as Folder) as unknown as E;
 
         case $BITMAP_TYPE:
-            return new ExternalBitmap(work_space, instance as unknown as Bitmap);
+            return new ExternalBitmap(work_space, instance as unknown as Bitmap) as unknown as E;
 
         default:
             return null;

@@ -47,12 +47,17 @@ export const execute = async (
         return false;
     }
 
+    const instance = work_space.getLibrary(item.id);
+    if (!instance) {
+        return false;
+    }
+
     // 履歴に残す
     // fixed logic
     await libraryAreaMoveFolderHistoryUseCase(
         work_space,
         work_space.scene,
-        item,
+        instance,
         folder.id
     );
 
