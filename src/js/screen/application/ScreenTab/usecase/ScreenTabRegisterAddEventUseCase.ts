@@ -1,5 +1,5 @@
 import { EventType } from "@/tool/domain/event/EventType";
-import { execute as screenTabAddEventService } from "../service/ScreenTabAddEventService";
+import { execute as screenTabAddEventUseCase } from "./ScreenTabAddEventUseCase";
 
 /**
  * @description タブ追加のイベント登録のユースケース
@@ -27,12 +27,5 @@ export const execute = (): void =>
         event.preventDefault();
     });
 
-    element.addEventListener(EventType.POINTER_UP, (event: PointerEvent): void =>
-    {
-        // 親のイベントを中止
-        event.stopPropagation();
-
-        // プロジェクトを追加
-        screenTabAddEventService();
-    });
+    element.addEventListener(EventType.POINTER_UP, screenTabAddEventUseCase);
 };

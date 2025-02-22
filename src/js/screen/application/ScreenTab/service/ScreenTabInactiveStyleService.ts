@@ -17,5 +17,6 @@ export const execute = (
 {
     text_element.contentEditable   = "false";
     tab_element.style.borderBottom = "";
+    tab_element.draggable          = true;
     $updateKeyLock(false);
 };

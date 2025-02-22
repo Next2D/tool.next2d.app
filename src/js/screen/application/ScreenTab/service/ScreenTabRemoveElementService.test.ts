@@ -1,10 +1,11 @@
 import { execute } from "./ScreenTabRemoveElementService";
 import { execute as screenTabGetElementService } from "./ScreenTabGetElementService";
 import { execute as screenTabGetListElementService } from "./ScreenTabGetListElementService";
+import { describe, expect, it } from "vitest";
 
 describe("ScreenTabRemoveElementServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         const tabDiv = document.createElement("div");
         tabDiv.id = "tab-id-1";

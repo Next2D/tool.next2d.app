@@ -1,6 +1,6 @@
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import { EventType } from "@/tool/domain/event/EventType";
-import { execute as screenTabRemoveUseCase } from "./ScreenTabRemoveUseCase";
+import { execute as screenTabRemoveWorkSpaceService } from "../service/ScreenTabRemoveWorkSpaceService";
 import { execute as screenTabGetListElementService } from "../service/ScreenTabGetListElementService";
 import { execute as screenTabGetElementService } from "../service/ScreenTabGetElementService";
 import { execute as screenTabMouseDownEventUseCase } from "./ScreenTabMouseDownEventUseCase";
@@ -32,13 +32,13 @@ export const execute = (
     const listElement: HTMLElement | null = screenTabGetListElementService(work_space.id);
 
     if (listElement) {
-        listElement.addEventListener(EventType.POINTER_DOWN, (event: PointerEvent): void =>
+        listElement.addEventListener(EventType.POINTER_DOWN, async (event: PointerEvent): Promise<void> =>
         {
             // 全てのイベントを中止
             event.stopPropagation();
 
             // 指定のWorkSpaceに切り替える
-            screenTabChangeWorkSpaceServce(work_space);
+            await screenTabChangeWorkSpaceServce(work_space);
         });
     }
 
@@ -61,12 +61,12 @@ export const execute = (
             event.stopPropagation();
 
             // 終了処理
-            await screenTabRemoveUseCase(work_space);
+            await screenTabRemoveWorkSpaceService(work_space);
         });
     }
 
     // クリック＆ダブルクリック
-    const tabElement: HTMLElement | null = screenTabGetElementService(work_space.id);
+    const tabElement = screenTabGetElementService(work_space.id);
     if (tabElement) {
 
         // クリック＆ダブルクリック イベント
@@ -80,7 +80,7 @@ export const execute = (
     }
 
     // 表示Elementのイベント
-    const textElement: HTMLElement | null = screenTabGetTextElementService(work_space.id);
+    const textElement = screenTabGetTextElementService(work_space.id);
     if (textElement) {
         textElement.addEventListener("focusin", screenTabFocusInUseCase);
         textElement.addEventListener("focusout", screenTabFocusOutUseCase);

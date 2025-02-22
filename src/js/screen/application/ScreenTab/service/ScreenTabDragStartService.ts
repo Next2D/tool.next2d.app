@@ -6,6 +6,7 @@ import { $setEditingElement } from "@/global/GlobalUtil";
  * @description dragstartのイベント処理関数
  *              Event processing function of dragstart
  *
+ * @param  {DragEvent} event
  * @return {void}
  * @method
  * @public

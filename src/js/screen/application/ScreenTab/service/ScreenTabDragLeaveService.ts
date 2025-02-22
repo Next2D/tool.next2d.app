@@ -4,20 +4,22 @@ import { $getDragElement } from "@/screen/application/ScreenUtil";
  * @description dragleaveのイベント処理関数
  *              Event handling functions for dragleave
  *
+ * @param  {DragEvent} event
  * @return {void}
  * @method
  * @public
  */
 export const execute = (event: DragEvent): void =>
 {
-    // 既定の動作を停止
+    // イベントをキャンセル
+    event.stopPropagation();
     event.preventDefault();
 
-    if (!event.currentTarget) {
+    const element = event.currentTarget as HTMLElement;
+    if (!element) {
         return ;
     }
 
-    const element: HTMLElement = event.currentTarget as HTMLElement;
     if ($getDragElement() === element) {
         return ;
     }

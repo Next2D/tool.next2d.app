@@ -43,7 +43,7 @@ export const execute = (work_space: WorkSpace): void =>
             screenTabNameListComponent(work_space.id, work_space.name)
         );
 
-    const tabElement: HTMLElement | null = screenTabGetElementService(work_space.id);
+    const tabElement = screenTabGetElementService(work_space.id);
     if (!tabElement) {
         return ;
     }

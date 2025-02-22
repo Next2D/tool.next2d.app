@@ -1,8 +1,9 @@
 import { execute } from "./ScreenTabDisableElementService";
+import { describe, expect, it } from "vitest";
 
 describe("ScreenTabDisableElementServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         const div = document.createElement("div");
         div.classList.add("active");

@@ -1,8 +1,9 @@
 import { execute } from "./ScreenTabGetListElementService";
+import { describe, expect, it } from "vitest";
 
 describe("ScreenTabGetListElementServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         const div = document.createElement("div");
         div.id = "tab-menu-id-1";

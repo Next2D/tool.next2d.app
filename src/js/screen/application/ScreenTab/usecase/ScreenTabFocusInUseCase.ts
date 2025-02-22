@@ -11,14 +11,14 @@ import { execute as screenTabGetElementService } from "../service/ScreenTabGetEl
  */
 export const execute = (event: Event): void =>
 {
-    if (!event.target) {
+    const element = event.currentTarget as HTMLElement;
+    if (!element) {
         return ;
     }
 
-    const element: HTMLElement = event.currentTarget as HTMLElement;
-    const id: number = parseInt(element.dataset.tabId as string);
-
-    const tabElement: HTMLElement | null = screenTabGetElementService(id);
+    const tabElement = screenTabGetElementService(
+        parseInt(element.dataset.tabId as string)
+    );
     if (!tabElement) {
         return ;
     }

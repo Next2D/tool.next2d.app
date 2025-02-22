@@ -16,12 +16,12 @@ import { $updateKeyLock } from "@/shortcut/ShortcutUtil";
  */
 export const execute = (id: number): void =>
 {
-    const textElement: HTMLElement | null = screenTabGetTextElementService(id);
+    const textElement = screenTabGetTextElementService(id);
     if (!textElement) {
         return ;
     }
 
-    const tabElement: HTMLElement | null = screenTabGetElementService(id);
+    const tabElement = screenTabGetElementService(id);
     if (!tabElement) {
         return ;
     }

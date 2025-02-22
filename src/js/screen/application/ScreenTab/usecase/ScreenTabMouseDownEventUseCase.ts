@@ -1,11 +1,10 @@
-import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import { execute as screenTabShowInputElementUseCase } from "./ScreenTabShowInputElementUseCase";
+import { $useKeyboard } from "@/shortcut/ShortcutUtil";
+import { $activeTouchPointers } from "@/global/GlobalUtil";
 import {
     $changeCurrentWorkSpace,
     $getWorkSpace
 } from "@/core/application/CoreUtil";
-import { $useKeyboard } from "@/shortcut/ShortcutUtil";
-import { $activeTouchPointers } from "@/global/GlobalUtil";
 
 /**
  * @description ダブルタップ用の待機フラグ
@@ -32,12 +31,15 @@ export const execute = async (event: PointerEvent): Promise<void> =>
         return ;
     }
 
-    const element = event.target as HTMLElement;
-    if (!element) {
+    // 他のイベントを中止
+    event.stopPropagation();
+
+    if ($useKeyboard()) {
         return ;
     }
 
-    if ($useKeyboard()) {
+    const element = event.target as HTMLElement;
+    if (!element) {
         return ;
     }
 
@@ -46,26 +48,29 @@ export const execute = async (event: PointerEvent): Promise<void> =>
         return ;
     }
 
-    // 他のイベントを中止
-    event.stopPropagation();
-    event.preventDefault();
+    if (!workSpace.active) {
+        await $changeCurrentWorkSpace(workSpace);
+        return ;
+    }
 
     if (!wait) {
 
         // ダブルクリックを待機
         wait = true;
 
-        if (!workSpace.active) {
-            await $changeCurrentWorkSpace(workSpace);
-        } else {
-            // ダブルタップ有効期限をセット
-            setTimeout((): void =>
-            {
-                wait = false;
-            }, 300);
-        }
+        // ダブルタップ有効期限をセット
+        setTimeout((): void =>
+        {
+            wait = false;
+        }, 300);
 
     } else {
+
+        wait = false;
+
+        // 他のイベントを中止
+        event.preventDefault();
+
         // ダブルクリック処理
         screenTabShowInputElementUseCase(workSpace.id);
     }

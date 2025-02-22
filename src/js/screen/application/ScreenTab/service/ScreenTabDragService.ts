@@ -15,14 +15,12 @@ import {
 export const execute = (event: DragEvent): void =>
 {
     // イベントを中止
-    event.stopPropagation();
     event.preventDefault();
 
-    if (!event.currentTarget) {
+    const element = event.currentTarget as HTMLElement;
+    if (!element) {
         return ;
     }
-
-    const element: HTMLElement = event.currentTarget as HTMLElement;
 
     element
         .classList

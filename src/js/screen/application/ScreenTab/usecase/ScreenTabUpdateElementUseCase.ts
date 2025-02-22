@@ -13,12 +13,12 @@ import { execute as screenTabGetListElementService } from "@/screen/application/
  */
 export const execute = async (work_space_id: number, name: string): Promise<void> =>
 {
-    const textElement: HTMLElement | null = screenTabGetTextElementService(work_space_id);
+    const textElement = screenTabGetTextElementService(work_space_id);
     if (!textElement) {
         return ;
     }
 
-    const listElement: HTMLElement | null = screenTabGetListElementService(work_space_id);
+    const listElement = screenTabGetListElementService(work_space_id);
     if (!listElement) {
         return ;
     }

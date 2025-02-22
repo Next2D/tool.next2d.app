@@ -1,5 +1,5 @@
-import { $changeCurrentWorkSpace } from "@/core/application/CoreUtil";
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
+import { $changeCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { execute as screenTabMenuHideService } from "@/menu/application/ScreenTabMenu/service/ScreenTabMenuHideService";
 
 /**
@@ -7,17 +7,17 @@ import { execute as screenTabMenuHideService } from "@/menu/application/ScreenTa
  *              Switch to the specified WorkSpace
  *
  * @params {WorkSpace} work_space
- * @return {void}
+ * @return {Promise<void>}
  * @method
  * @public
  */
-export const execute = (work_space: WorkSpace): void =>
+export const execute = async (work_space: WorkSpace): Promise<void> =>
 {
     if (work_space.active) {
         // アクティブなWorkSpaceならプロジェクト一覧のメニューを閉じる
         screenTabMenuHideService();
     } else {
         // 指定のWorkSpaceに切り替える
-        $changeCurrentWorkSpace(work_space);
+        await $changeCurrentWorkSpace(work_space);
     }
 };

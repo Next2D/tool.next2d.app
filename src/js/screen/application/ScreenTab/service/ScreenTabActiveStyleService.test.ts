@@ -1,8 +1,9 @@
 import { execute } from "./ScreenTabActiveStyleService";
+import { describe, expect, it } from "vitest";
 
 describe("ScreenTabActiveStyleServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         const textElement = document.createElement("div");
         textElement.contentEditable = "false";

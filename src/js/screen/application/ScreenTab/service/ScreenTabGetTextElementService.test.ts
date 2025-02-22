@@ -1,8 +1,9 @@
 import { execute } from "./ScreenTabGetTextElementService";
+import { describe, expect, it } from "vitest";
 
 describe("ScreenTabGetTextElementServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         const div = document.createElement("div");
         div.id = "tab-text-id-1";
