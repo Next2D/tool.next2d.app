@@ -11,7 +11,7 @@ import {
 
 describe("LibraryAreaRegisterPointerEventUseCase Test", () =>
 {
-    it("execute test case1", async () =>
+    it("execute test case1", () =>
     {
         const listElement = document.createElement("div");
         listElement.id = $LIBRARY_LIST_BOX_ID;

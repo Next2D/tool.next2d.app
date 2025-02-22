@@ -57,8 +57,8 @@ export const execute = async (event: PointerEvent | KeyboardEvent): Promise<void
     libraryAreaSelectedClearUseCase();
 
     // ライブラリエリアを際描画
-    libraryAreaReloadUseCase();
+    await libraryAreaReloadUseCase();
 
     // サウンドエリアの選択要素を再構築
-    soundAreaRebuildSelectElementService();
+    await soundAreaRebuildSelectElementService();
 };

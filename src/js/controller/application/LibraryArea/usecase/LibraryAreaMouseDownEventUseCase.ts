@@ -22,8 +22,6 @@ export const execute = (event: PointerEvent): void =>
         return ;
     }
 
-    console.log("parent");
-
     // 親のイベントを中止
     event.stopPropagation();
 
