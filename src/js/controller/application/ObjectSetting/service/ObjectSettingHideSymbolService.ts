@@ -8,7 +8,7 @@ import { $OBJECT_SETTING_SYMBOL_AREA_ID } from "@/config/ObjectSettingConfig";
  * @method
  * @public
  */
-export const execute = async (): Promise<void> =>
+export const execute = (): void =>
 {
     const element: HTMLInputElement | null = document
         .getElementById($OBJECT_SETTING_SYMBOL_AREA_ID) as HTMLInputElement;

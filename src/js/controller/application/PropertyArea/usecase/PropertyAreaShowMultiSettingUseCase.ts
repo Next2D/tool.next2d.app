@@ -25,11 +25,11 @@ import { $TOOL_FREE_TRANSFORM_NAME } from "@/config/ToolConfig";
  * @description プロパティエリアの表示項目を変更
  *              Change display items in property area
  *
- * @return {Promise}
+ * @return {void}
  * @method
  * @public
  */
-export const execute = async (): Promise<void> =>
+export const execute = (): void =>
 {
     // 非表示項目を更新
     propertyAreaBlockHideService([

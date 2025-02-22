@@ -5,11 +5,11 @@ import { $OBJECT_SETTING_SYMBOL_ID } from "@/config/ObjectSettingConfig";
  *              Update information on symbols in object settings
  *
  * @param  {string} name
- * @return {Promise}
+ * @return {void}
  * @method
  * @public
  */
-export const execute = async (name: string): Promise<void> =>
+export const execute = (name: string): void =>
 {
     const element: HTMLInputElement | null = document
         .getElementById($OBJECT_SETTING_SYMBOL_ID) as HTMLInputElement;

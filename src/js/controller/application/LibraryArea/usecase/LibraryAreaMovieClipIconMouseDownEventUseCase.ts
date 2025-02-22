@@ -3,7 +3,10 @@ import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { execute as timelineSceneListClearAddRootUseCase } from "@/timeline/application/TimelineSceneList/usecase/TimelineSceneListClearAddRootUseCase";
 import { execute as externalTimelineEditMovieClipUseService } from "@/external/timeline/application/ExternalTimeline/service/ExternalTimelineEditMovieClipUseService";
 import { $useKeyboard } from "@/shortcut/ShortcutUtil";
-import { $setEditingElement } from "@/global/GlobalUtil";
+import {
+    $activeTouchPointers,
+    $setEditingElement
+} from "@/global/GlobalUtil";
 
 /**
  * @description ダブルタップ用の待機フラグ
@@ -34,7 +37,9 @@ let selectedLibraryId: number = -1;
  */
 export const execute = async (event: PointerEvent): Promise<void> =>
 {
-    if (event.button !== 0) {
+    if (event.button !== 0
+        || $activeTouchPointers.size > 1
+    ) {
         return ;
     }
 
@@ -53,7 +58,7 @@ export const execute = async (event: PointerEvent): Promise<void> =>
     event.preventDefault();
 
     const libraryId = parseInt(element.dataset.libraryId as string);
-    if (!wait || selectedLibraryId !== libraryId) {
+    if (!wait) {
 
         // 初回のタップであればダブルタップを待機モードに変更
         wait = true;
@@ -64,7 +69,6 @@ export const execute = async (event: PointerEvent): Promise<void> =>
         // ダブルタップ有効期限をセット
         setTimeout((): void =>
         {
-            selectedLibraryId = -1;
             wait = false;
         }, 300);
 
@@ -72,7 +76,10 @@ export const execute = async (event: PointerEvent): Promise<void> =>
 
         // ダブルタップを終了
         wait = false;
-        selectedLibraryId = -1;
+
+        if (selectedLibraryId !== libraryId) {
+            return ;
+        }
 
         const workSpace = $getCurrentWorkSpace();
         const movieClip = workSpace.getLibrary(libraryId) as MovieClip;

@@ -18,11 +18,11 @@ import { execute as propertyAreaScrollUpdateHeightService } from "@/controller/a
  *              Change display items in property area
  *
  * @param  {MovieClip} movie_clip
- * @return {Promise}
+ * @return {void}
  * @method
  * @public
  */
-export const execute = async (movie_clip: MovieClip): Promise<void> =>
+export const execute = (movie_clip: MovieClip): void =>
 {
     // 非表示項目を更新
     propertyAreaBlockHideService([

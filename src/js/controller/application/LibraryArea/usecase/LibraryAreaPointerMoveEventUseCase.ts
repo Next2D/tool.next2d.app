@@ -23,6 +23,10 @@ export const execute = (event: PointerEvent): void =>
         return ;
     }
 
+    if (!event.clientX && !event.clientY) {
+        return ;
+    }
+
     if (!$getMoveState()) {
         $setMoveState(true);
         element.style.pointerEvents = "none";

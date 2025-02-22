@@ -9,11 +9,11 @@ import { propertyArea } from "@/controller/domain/model/PropertyArea";
  * @description プロパティエリアのスクロールバーの高さを更新する
  *              Update the height of the scrollbar in the property area
  *
- * @return {Promise}
+ * @return {void}
  * @method
  * @public
  */
-export const execute = async (): Promise<void> =>
+export const execute = (): void =>
 {
     const scrollAreaElement: HTMLElement | null = document
         .getElementById($PROPERTY_SCROLL_AREA_ID);
