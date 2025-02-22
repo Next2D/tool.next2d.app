@@ -13,6 +13,10 @@ export const execute = (event: PointerEvent): void =>
     event.stopPropagation();
     event.preventDefault();
 
+    if (!event.movementX && !event.movementY) {
+        return ;
+    }
+
     // 遅延実行
     requestAnimationFrame((): void =>
     {
