@@ -1,9 +1,11 @@
+import type { MovieClip } from "@/core/domain/model/MovieClip";
+import { execute as timelineSceneListAddMovieClipUseCase } from "@/timeline/application/TimelineSceneList/usecase/TimelineSceneListAddMovieClipUseCase";
+import { execute as externalTimelineEditMovieClipUseService } from "@/external/timeline/application/ExternalTimeline/service/ExternalTimelineEditMovieClipUseService";
 import { $getActiveTool } from "@/tool/application/ToolUtil";
 import { EventType } from "@/tool/domain/event/EventType";
 import { $getCurrentWorkSpace } from "../../CoreUtil";
 import { $MOVIE_CLIP_TYPE } from "@/config/InstanceConfig";
-import { execute as timelineSceneListAddMovieClipUseCase } from "@/timeline/application/TimelineSceneList/usecase/TimelineSceneListAddMovieClipUseCase";
-import { execute as externalTimelineEditMovieClipUseService } from "@/external/timeline/application/ExternalTimeline/service/ExternalTimelineEditMovieClipUseService";
+import { $activeTouchPointers } from "@/global/GlobalUtil";
 
 /**
  * @description ダブルタップ用の待機フラグ
@@ -15,13 +17,22 @@ import { execute as externalTimelineEditMovieClipUseService } from "@/external/t
 let wait: boolean = false;
 
 /**
- * @description ダブルタップ用の待機フラグのタイマー起動ID
- *              Timer activation ID for standby flag for double-tap
+ * @description 選択中のレイヤーID
+ *              Layer ID currently selected
  *
- * @type {boolean}
+ * @type {number}
  * @private
  */
-let timerId: NodeJS.Timeout;
+let selectedLayerId: number = -1;
+
+/**
+ * @description 選択中のDepth
+ *              Depth currently selected
+ *
+ * @type {number}
+ * @private
+ */
+let selectedDepth: number = -1;
 
 /**
  * @description スクリーンに設置したMovieClipのDisplayObjectのマウスダウンイベント処理関数
@@ -34,12 +45,20 @@ let timerId: NodeJS.Timeout;
  */
 export const execute = async (event: PointerEvent): Promise<void> =>
 {
-    if (event.button !== 0) {
+    if (event.button !== 0
+        || $activeTouchPointers.size > 1
+    ) {
+        return ;
+    }
+
+    const element = event.target as HTMLElement;
+    if (!element) {
         return ;
     }
 
     // 親のイベントをキャンセル
     event.stopPropagation();
+    event.preventDefault();
 
     // 移動用のwindowイベントを登録
     const tool = $getActiveTool();
@@ -47,15 +66,17 @@ export const execute = async (event: PointerEvent): Promise<void> =>
         return ;
     }
 
-    // タイマー予約をクリア
-    clearTimeout(timerId);
-
+    const layerId = parseInt(element.dataset.layerId as string);
+    const depth   = parseInt(element.dataset.depth as string);
     if (!wait) {
         // 初回のタップであればダブルタップを待機モードに変更
         wait = true;
 
+        selectedLayerId = layerId;
+        selectedDepth = depth;
+
         // ダブルタップ有効期限をセット
-        timerId = setTimeout((): void =>
+        setTimeout((): void =>
         {
             wait = false;
         }, 300);
@@ -68,27 +89,23 @@ export const execute = async (event: PointerEvent): Promise<void> =>
         // ダブルタップを終了
         wait = false;
 
-        const element = event.target as HTMLElement;
-        if (!element) {
+        if (selectedLayerId !== layerId || selectedDepth !== depth) {
             return ;
         }
 
         const workSpace = $getCurrentWorkSpace();
         const scene = workSpace.scene;
-
-        const layerId = parseInt(element.dataset.layerId as string);
         const layer = scene.getLayerById(layerId);
         if (!layer) {
             return ;
         }
 
-        const depth = parseInt(element.dataset.depth as string);
         const character = layer.getCharacter(scene.currentFrame, depth);
         if (!character) {
             return ;
         }
 
-        const movieClip = workSpace.getLibrary(character.libraryId);
+        const movieClip = workSpace.getLibrary(character.libraryId) as MovieClip;
         if (!movieClip || movieClip.type !== $MOVIE_CLIP_TYPE) {
             return ;
         }

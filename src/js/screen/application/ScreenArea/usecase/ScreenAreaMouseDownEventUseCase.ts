@@ -2,7 +2,7 @@ import { $getActiveTool } from "@/tool/application/ToolUtil";
 import { execute as screenAreaRunParentMovieClipUseCase } from "./ScreenAreaRunParentMovieClipUseCase";
 import { EventType } from "@/tool/domain/event/EventType";
 import { $allHideMenu } from "@/menu/application/MenuUtil";
-import { $setEditingElement } from "@/global/GlobalUtil";
+import { $activeTouchPointers, $setEditingElement } from "@/global/GlobalUtil";
 
 /**
  * @description ダブルタップ用の待機フラグ
@@ -12,12 +12,6 @@ import { $setEditingElement } from "@/global/GlobalUtil";
  * @private
  */
 let wait: boolean = false;
-
-/**
- * @type {NodeJS.Timeout}
- * @private
- */
-let timerId: NodeJS.Timeout;
 
 /**
  * @description スクリーンエリアのマウスダウンイベントの実行関数
@@ -30,12 +24,15 @@ let timerId: NodeJS.Timeout;
  */
 export const execute = async (event: PointerEvent): Promise<void> =>
 {
-    if (event.button !== 0) {
+    if (event.button !== 0
+        || $activeTouchPointers.size > 1
+    ) {
         return ;
     }
 
     // 親のイベントを終了
     event.stopPropagation();
+    event.preventDefault();
 
     // メニューを全て非表示
     $allHideMenu();
@@ -54,7 +51,7 @@ export const execute = async (event: PointerEvent): Promise<void> =>
         }
 
         // ダブルタップ有効期限をセット
-        timerId = setTimeout((): void =>
+        setTimeout((): void =>
         {
             wait = false;
         }, 300);
@@ -72,8 +69,6 @@ export const execute = async (event: PointerEvent): Promise<void> =>
 
         // ダブルタップを終了
         wait = false;
-
-        clearTimeout(timerId);
 
         // 親のMovieClipに移動
         await screenAreaRunParentMovieClipUseCase();

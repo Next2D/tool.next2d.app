@@ -1,11 +1,12 @@
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { $allHideMenu } from "@/menu/application/MenuUtil";
-import { $setEditingElement } from "@/global/GlobalUtil";
+import { $activeTouchPointers, $setEditingElement } from "@/global/GlobalUtil";
 import { execute as timelineSceneListClearAddRootUseCase } from "@/timeline/application/TimelineSceneList/usecase/TimelineSceneListClearAddRootUseCase";
 import { execute as timelineSceneListClearAllService } from "@/timeline/application/TimelineSceneList/service/TimelineSceneListClearAllService";
 import { $MOVIE_CLIP_TYPE } from "@/config/InstanceConfig";
 import { execute as externalTimelineEditMovieClipUseService } from "@/external/timeline/application/ExternalTimeline/service/ExternalTimelineEditMovieClipUseService";
+import { $useKeyboard } from "@/shortcut/ShortcutUtil";
 
 /**
  * @description ダブルタップ用の待機フラグ
@@ -17,13 +18,13 @@ import { execute as externalTimelineEditMovieClipUseService } from "@/external/t
 let wait: boolean = false;
 
 /**
- * @description ダブルタップ用の待機フラグのタイマー起動ID
- *              Timer activation ID for standby flag for double-tap
+ * @description 選択中のライブラリID
+ *              Library ID currently selected
  *
- * @type {boolean}
+ * @type {number}
  * @private
  */
-let activeTimerId: NodeJS.Timeout;
+let selectedLibraryId: number = -1;
 
 /**
  * @description 親Elementのマウスダウン処理関数
@@ -36,6 +37,22 @@ let activeTimerId: NodeJS.Timeout;
  */
 export const execute = async (event: PointerEvent): Promise<void> =>
 {
+    if (event.button !== 0
+        || $activeTouchPointers.size > 1
+    ) {
+        return ;
+    }
+
+    // ダブルタップ処理を実行
+    const element = event.currentTarget as HTMLElement;
+    if (!element) {
+        return ;
+    }
+
+    if ($useKeyboard()) {
+        return ;
+    }
+
     // 親のイベントを終了
     event.stopPropagation();
     event.preventDefault();
@@ -46,13 +63,16 @@ export const execute = async (event: PointerEvent): Promise<void> =>
     // 編集中のElementを初期化
     $setEditingElement(null);
 
+    const libraryId = parseInt(element.dataset.libraryId as string);
     if (!wait) {
 
         // 初回のタップであればダブルタップを待機モードに変更
         wait = true;
 
+        selectedLibraryId = libraryId;
+
         // ダブルタップ有効期限をセット
-        activeTimerId = setTimeout((): void =>
+        setTimeout((): void =>
         {
             wait = false;
         }, 300);
@@ -62,16 +82,10 @@ export const execute = async (event: PointerEvent): Promise<void> =>
         // ダブルタップを終了
         wait = false;
 
-        // 長押し判定を中止
-        clearTimeout(activeTimerId);
-
-        // ダブルタップ処理を実行
-        const element = event.currentTarget as HTMLElement;
-        if (!element) {
+        if (selectedLibraryId !== libraryId) {
             return ;
         }
 
-        const libraryId = parseInt(element.dataset.libraryId as string);
         const workSpace = $getCurrentWorkSpace();
 
         // 現在、起動中のMovieClipであればスキップ

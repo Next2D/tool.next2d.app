@@ -1,3 +1,4 @@
+import { $setEditingElement } from "@/global/GlobalUtil";
 import { $updateKeyLock } from "@/shortcut/ShortcutUtil";
 
 /**
@@ -22,4 +23,7 @@ export const execute = (
 
     // 編集モードをOnにする
     $updateKeyLock(true);
+
+    // 編集中のElementをセット
+    $setEditingElement(text_element);
 };

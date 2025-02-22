@@ -2,7 +2,7 @@ import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { execute as timelineLayerFrameSelectedStartUseCase } from "./TimelineLayerFrameSelectedStartUseCase";
 import { execute as timelineTargetGroupActiveGroupUseCase } from "@/timeline/application/TimelineTargetGroup/usecase/TimelineTargetGroupActiveGroupUseCase";
 import { $allHideMenu } from "@/menu/application/MenuUtil";
-import { $setEditingElement } from "@/global/GlobalUtil";
+import { $activeTouchPointers, $setEditingElement } from "@/global/GlobalUtil";
 import {
     $getLayerFromElement,
     $getMouseState,
@@ -38,7 +38,9 @@ let activeTimerId: NodeJS.Timeout;
  */
 export const execute = async (event: PointerEvent): Promise<void> =>
 {
-    if (event.button !== 0) {
+    if (event.button !== 0
+        || $activeTouchPointers.size > 1
+    ) {
         return ;
     }
 

@@ -1,6 +1,7 @@
 import { execute as libraryAreaActiceInstanceTextContentService } from "../service/LibraryAreaActiceInstanceTextContentService";
 import { $useKeyboard } from "@/shortcut/ShortcutUtil";
 import {
+    $activeTouchPointers,
     $getEditingElement,
     $setEditingElement
 } from "@/global/GlobalUtil";
@@ -33,6 +34,7 @@ export const execute = (event: PointerEvent): void =>
     switch (true) {
 
         case event.button !== 0:
+        case $activeTouchPointers.size > 1:
         case event.altKey:
         case event.metaKey:
         case event.shiftKey:

@@ -12,7 +12,7 @@ import { execute as billingModelShowService } from "@/menu/application/BillingMo
 import { execute as timelineLayerAllClearSelectedElementUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerAllClearSelectedElementUseCase";
 import { $useSocket } from "@/share/ShareUtil";
 import { ExternalTimeline } from "@/external/timeline/domain/model/ExternalTimeline";
-import { $setEditingElement } from "@/global/GlobalUtil";
+import { $activeTouchPointers, $setEditingElement } from "@/global/GlobalUtil";
 import {
     $setStandbyMoveState,
     $setTimelineOffsetTop
@@ -50,7 +50,10 @@ let activeTimerId: NodeJS.Timeout;
 export const execute = async (event: PointerEvent): Promise<void> =>
 {
     // 主ボタン以外はスキップ
-    if (event.button !== 0 || $useKeyboard()) {
+    if (event.button !== 0
+        || $useKeyboard()
+        || $activeTouchPointers.size > 1
+    ) {
         return ;
     }
 
@@ -85,7 +88,7 @@ export const execute = async (event: PointerEvent): Promise<void> =>
         $setStandbyMoveState(true);
 
         // ツールエリアの移動判定関数をタイマーにセット
-        activeTimerId = setTimeout((): void =>
+        activeTimerId = setTimeout(async (): Promise<void> =>
         {
             if ($getMouseState() === "up") {
                 return ;
@@ -93,12 +96,12 @@ export const execute = async (event: PointerEvent): Promise<void> =>
 
             // 全ての機能が利用可能でなければ中止
             if (!userAllFunctionStateService() && !$useSocket()) {
-                billingModelShowService();
+                await billingModelShowService();
                 return ;
             }
 
             // タイムラインエリアの移動処理を実行
-            timelineAreaActiveMoveUseCase(event);
+            await timelineAreaActiveMoveUseCase(event);
         }, 600);
 
         const moiveClip = workSpace.scene;

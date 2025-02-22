@@ -1,7 +1,7 @@
 import { $allHideMenu } from "@/menu/application/MenuUtil";
 import { execute as timelineLayerControllerNameTextActiveStyleService } from "../service/TimelineLayerControllerNameTextActiveStyleService";
 import { $useKeyboard } from "@/shortcut/ShortcutUtil";
-import { $setEditingElement } from "@/global/GlobalUtil";
+import { $activeTouchPointers, $setEditingElement } from "@/global/GlobalUtil";
 
 /**
  * @description ダブルタップ用の待機フラグ
@@ -35,6 +35,7 @@ export const execute = (event: PointerEvent): void =>
     switch (true) {
 
         case event.button !== 0:
+        case $activeTouchPointers.size > 1:
         case $useKeyboard():
         case event.altKey:
         case event.metaKey:
@@ -58,7 +59,7 @@ export const execute = (event: PointerEvent): void =>
     $setEditingElement(null);
 
     const currentLayerIndex = parseInt(element.dataset.layerIndex as NonNullable<string>);
-    if (!wait || currentLayerIndex !== layerIndex) {
+    if (!wait) {
 
         // ダブルクリックを待機
         wait = true;
@@ -71,14 +72,16 @@ export const execute = (event: PointerEvent): void =>
         {
             // 時間になったら設定を初期化
             wait = false;
-            layerIndex = -1;
         }, 300);
 
     } else {
 
         // 設定を初期化
         wait = false;
-        layerIndex = -1;
+
+        if (currentLayerIndex !== layerIndex) {
+            return ;
+        }
 
         // 他のイベントを中止
         event.preventDefault();

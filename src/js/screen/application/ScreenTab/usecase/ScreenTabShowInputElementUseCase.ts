@@ -3,6 +3,7 @@ import { execute as screenTabGetElementService } from "../service/ScreenTabGetEl
 import { execute as screenTabActiveStyleService } from "../service/ScreenTabActiveStyleService";
 import { $allHideMenu } from "@/menu/application/MenuUtil";
 import { $setEditingElement } from "@/global/GlobalUtil";
+import { $updateKeyLock } from "@/shortcut/ShortcutUtil";
 
 /**
  * @description 指定IDのElementを編集モードに変更する
@@ -30,6 +31,9 @@ export const execute = (id: number): void =>
 
     // 編集中のElementを初期化
     $setEditingElement(null);
+
+    // キーボードの利用フラグを更新
+    $updateKeyLock(true);
 
     // 編集モードにstyleを更新
     screenTabActiveStyleService(textElement, tabElement);

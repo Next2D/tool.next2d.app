@@ -4,6 +4,8 @@ import {
     $changeCurrentWorkSpace,
     $getWorkSpace
 } from "@/core/application/CoreUtil";
+import { $useKeyboard } from "@/shortcut/ShortcutUtil";
+import { $activeTouchPointers } from "@/global/GlobalUtil";
 
 /**
  * @description ダブルタップ用の待機フラグ
@@ -18,45 +20,52 @@ let wait: boolean = false;
  * @description スクリーンタブでマウスダウンした際の関数
  *              Function when mouse down on screen tabs
  *
- * @return {void}
+ * @return {Promise<void>}
  * @method
  * @public
  */
-export const execute = (event: PointerEvent): void =>
+export const execute = async (event: PointerEvent): Promise<void> =>
 {
-    // 親のイベントを中止
-    event.stopPropagation();
+    if (event.button !== 0
+        || $activeTouchPointers.size > 1
+    ) {
+        return ;
+    }
 
-    const element: HTMLElement | null = event.target as HTMLElement;
+    const element = event.target as HTMLElement;
     if (!element) {
         return ;
     }
 
-    const workSpace : WorkSpace | null = $getWorkSpace(parseInt(element.dataset.tabId as string));
+    if ($useKeyboard()) {
+        return ;
+    }
+
+    const workSpace = $getWorkSpace(parseInt(element.dataset.tabId as string));
     if (!workSpace) {
         return ;
     }
+
+    // 他のイベントを中止
+    event.stopPropagation();
+    event.preventDefault();
 
     if (!wait) {
 
         // ダブルクリックを待機
         wait = true;
 
-        // ダブルタップ有効期限をセット
-        setTimeout((): void =>
-        {
-            wait = false;
-        }, 300);
-
         if (!workSpace.active) {
-            $changeCurrentWorkSpace(workSpace);
+            await $changeCurrentWorkSpace(workSpace);
+        } else {
+            // ダブルタップ有効期限をセット
+            setTimeout((): void =>
+            {
+                wait = false;
+            }, 300);
         }
 
     } else {
-
-        // 他のイベントを中止
-        event.preventDefault();
-
         // ダブルクリック処理
         screenTabShowInputElementUseCase(workSpace.id);
     }

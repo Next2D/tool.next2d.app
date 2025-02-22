@@ -19,11 +19,11 @@ import { execute as screenScrollResizeService } from "@/screen/application/Scree
  *              Make the tool area movable
  *
  * @param  {PointerEvent} event
- * @return {void}
+ * @return {Promise<void>}
  * @method
  * @public
  */
-export const execute = (event: PointerEvent): void =>
+export const execute = async (event: PointerEvent): Promise<void> =>
 {
     // 待機状態が終了していれば処理は終了
     if (!$getStandbyMoveState()) {
@@ -62,7 +62,7 @@ export const execute = (event: PointerEvent): void =>
             timelineHeaderUpdateClientWidthService();
 
             // スクリーンのスクロールを再計算
-            screenScrollResizeService();
+            await screenScrollResizeService();
         }
 
         // カーソルを移動用に変更

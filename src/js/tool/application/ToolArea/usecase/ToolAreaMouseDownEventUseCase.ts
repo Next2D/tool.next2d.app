@@ -12,7 +12,7 @@ import { execute as billingModelShowService } from "@/menu/application/BillingMo
 import { $useSocket } from "@/share/ShareUtil";
 import { execute as screenScrollResizeService } from "@/screen/application/ScreenScroll/service/ScreenScrollResizeService";
 import { execute as userDatabaseAutoSaveReservationUseCase } from "@/user/application/Database/usecase/UserDatabaseAutoSaveReservationUseCase";
-import { $setEditingElement } from "@/global/GlobalUtil";
+import { $activeTouchPointers, $setEditingElement } from "@/global/GlobalUtil";
 
 /**
  * @description ダブルタップ用の待機フラグ
@@ -44,7 +44,9 @@ let activeTimerId: NodeJS.Timeout;
 export const execute = async (event: PointerEvent): Promise<void> =>
 {
     // 主ボタン以外はスキップ
-    if (event.button !== 0) {
+    if (event.button !== 0
+        || $activeTouchPointers.size > 1
+    ) {
         return ;
     }
 

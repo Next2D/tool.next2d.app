@@ -1,7 +1,7 @@
 import { $TIMELINE_LAYER_MENU_NAME } from "@/config/MenuConfig";
 import { execute as timelineLayerControllerMenuShowUseCase } from "@/menu/application/TimelineLayerControllerMenu/usecase/TimelineLayerControllerMenuShowUseCase";
 import { $allHideMenu } from "@/menu/application/MenuUtil";
-import { $setEditingElement } from "@/global/GlobalUtil";
+import { $activeTouchPointers, $setEditingElement } from "@/global/GlobalUtil";
 
 /**
  * @description ダブルタップ用の待機フラグ
@@ -23,8 +23,9 @@ let wait: boolean = false;
  */
 export const execute = (event: PointerEvent): void =>
 {
-    if (event.button !== 0) {
-        wait = false;
+    if (event.button !== 0
+        || $activeTouchPointers.size > 1
+    ) {
         return ;
     }
 

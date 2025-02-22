@@ -7,6 +7,7 @@ import {
     $activeTouchPointers,
     $setEditingElement
 } from "@/global/GlobalUtil";
+import { $allHideMenu } from "@/menu/application/MenuUtil";
 
 /**
  * @description ダブルタップ用の待機フラグ
@@ -56,6 +57,9 @@ export const execute = async (event: PointerEvent): Promise<void> =>
     // 親のイベントを終了
     event.stopPropagation();
     event.preventDefault();
+
+    // メニューを非表示
+    $allHideMenu();
 
     const libraryId = parseInt(element.dataset.libraryId as string);
     if (!wait) {
