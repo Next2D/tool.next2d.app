@@ -20,7 +20,7 @@ export const execute = (event: FocusEvent): void =>
     event.preventDefault();
 
     // フォーカスを移動用に変更
-    const element: HTMLElement | null = event.currentTarget as HTMLElement;
+    const element = event.currentTarget as HTMLElement;
     if (!element) {
         return ;
     }

@@ -19,7 +19,7 @@ export const execute = (event: FocusEvent): void =>
     $updateKeyLock(true);
 
     // フォーカスを初期化
-    const element: HTMLInputElement | null = event.target as HTMLInputElement;
+    const element = event.target as HTMLInputElement;
     if (!element) {
         return ;
     }

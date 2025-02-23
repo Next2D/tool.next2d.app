@@ -18,7 +18,7 @@ export const execute = (event: PointerEvent): void =>
     event.stopPropagation();
     event.preventDefault();
 
-    const element: HTMLElement | null = event.currentTarget as HTMLElement;
+    const element = event.currentTarget as HTMLElement;
     if (!element) {
         return ;
     }

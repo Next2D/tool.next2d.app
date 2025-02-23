@@ -49,4 +49,9 @@ export const execute = (event: PointerEvent): void =>
         soundAreaVolumePointerUpEventUseCase,
         { "passive": false }
     );
+    element.addEventListener(
+        EventType.POINTER_LEAVE,
+        soundAreaVolumePointerUpEventUseCase,
+        { "passive": false }
+    );
 };

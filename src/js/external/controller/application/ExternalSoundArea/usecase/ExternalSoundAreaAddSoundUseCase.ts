@@ -84,12 +84,12 @@ export const execute = async (
             // サウンドエリアに設定エリアを追加
             soundAreaAddSettingAreaUseCase(
                 sounds.indexOf(soundObject),
-                externalSound.name,
+                externalSound.getName(),
                 soundObject
             );
 
             // プロパティエリアの高さを更新
-            await propertyAreaScrollUpdateHeightService();
+            propertyAreaScrollUpdateHeightService();
         }
     }
 };

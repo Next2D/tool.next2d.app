@@ -71,6 +71,54 @@ export class ExternalSoundObject
      *              Volume adjustment (0 - 100)
      *
      * @type {number}
+     * @method
+     * @public
+     */
+    getVolume (): number
+    {
+        return this._$soundObject.volume;
+    }
+    async setVolume (volume: number): Promise<void>
+    {
+        await externalSoundUpdateVolumeUseCase(
+            this._$workSpace,
+            this._$movieClip,
+            this._$soundObject,
+            this._$frame,
+            this._$index,
+            volume
+        );
+    }
+
+    /**
+     * @description ループ回数(0 - 65535)
+     *              Loop count (0 - 65535)
+     *
+     * @type {number}
+     * @method
+     * @public
+     */
+    getLoopCount (): number
+    {
+        return this._$soundObject.volume;
+    }
+    async setLoopCount (loop_count: number): Promise<void>
+    {
+        await externalSoundUpdateLoopCountUseCase(
+            this._$workSpace,
+            this._$movieClip,
+            this._$soundObject,
+            this._$frame,
+            this._$index,
+            loop_count
+        );
+    }
+
+    /**
+     * @description 音量調整(0 - 100)
+     *              Volume adjustment (0 - 100)
+     *
+     * @type {number}
      * @public
      */
     get volume (): number

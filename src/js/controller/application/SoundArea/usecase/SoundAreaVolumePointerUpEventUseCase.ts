@@ -10,11 +10,11 @@ import { soundArea } from "@/controller/domain/model/SoundArea";
  *              End volume operation
  *
  * @param  {PointerEvent} event
- * @return {void}
+ * @return {Promise<void>}
  * @method
  * @public
  */
-export const execute = (event: PointerEvent): void =>
+export const execute = async (event: PointerEvent): Promise<void> =>
 {
     // カーソルを元に戻す
     $setCursor("auto");
@@ -34,6 +34,7 @@ export const execute = (event: PointerEvent): void =>
         soundAreaVolumePointerMoveEventUseCase
     );
     element.removeEventListener(EventType.POINTER_UP, execute);
+    element.removeEventListener(EventType.POINTER_LEAVE, execute);
 
     const index = soundArea.targetIndex;
     if (index === -1) {
@@ -68,5 +69,5 @@ export const execute = (event: PointerEvent): void =>
         frame,
         index
     );
-    externalSoundObject.volume = parseInt(element.value);
+    await externalSoundObject.setVolume(parseInt(element.value));
 };

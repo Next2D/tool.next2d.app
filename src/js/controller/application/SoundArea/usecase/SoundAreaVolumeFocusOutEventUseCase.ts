@@ -7,11 +7,11 @@ import { $updateKeyLock } from "@/shortcut/ShortcutUtil";
  *              Focus event processing of volume input area
  *
  * @param  {FocusEvent} event
- * @return {void}
+ * @return {Promise<void>}
  * @method
  * @public
  */
-export const execute = (event: FocusEvent): void =>
+export const execute = async (event: FocusEvent): Promise<void> =>
 {
     // イベントの伝播を止める
     event.stopPropagation();
@@ -48,5 +48,5 @@ export const execute = (event: FocusEvent): void =>
         frame,
         index
     );
-    externalSoundObject.volume = parseInt(element.value);
+    await externalSoundObject.setVolume(parseInt(element.value));
 };

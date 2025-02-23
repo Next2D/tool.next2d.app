@@ -1,5 +1,6 @@
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { ExternalSoundArea } from "@/external/controller/domain/model/ExternalSoundArea";
+import { $activeTouchPointers } from "@/global/GlobalUtil";
 
 /**
  * @description サウンド設定の削除アイコンのクリック処理
@@ -12,7 +13,9 @@ import { ExternalSoundArea } from "@/external/controller/domain/model/ExternalSo
  */
 export const execute = async (event: PointerEvent): Promise<void> =>
 {
-    if (event.button !== 0) {
+    if (event.button !== 0
+        || $activeTouchPointers.size > 1
+    ) {
         return ;
     }
 
