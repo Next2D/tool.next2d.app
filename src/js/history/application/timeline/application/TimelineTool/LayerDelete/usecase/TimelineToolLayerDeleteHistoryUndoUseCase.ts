@@ -43,7 +43,7 @@ export const execute = async (
     const externalTimeline = new ExternalTimeline(workSpace, movieClip);
 
     // 表示されているElementを初期化、内部データに変更なし
-    externalTimeline.deactivatedAllLayers();
+    await externalTimeline.deactivatedAllLayers();
 
     // Layerオブジェクトの内部情報に再登録
     const layer = movieClip.createLayer();

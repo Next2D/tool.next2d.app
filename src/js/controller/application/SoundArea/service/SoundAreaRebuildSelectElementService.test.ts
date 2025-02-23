@@ -13,8 +13,11 @@ describe("SoundAreaRebuildSelectElementServiceTest", () =>
         select.id = $SOUND_AREA_SELECT_ID;
         document.body.appendChild(select);
 
+        select.appendChild(document.createElement("option"));
+        select.appendChild(document.createElement("option"));
+        select.appendChild(document.createElement("option"));
         const sound = new Sound({
-            "id": 0,
+            "id": 1,
             "type": "sound",
             "name": "Sound_01"
         });
@@ -22,10 +25,11 @@ describe("SoundAreaRebuildSelectElementServiceTest", () =>
         const workSpace: WorkSpace = $getCurrentWorkSpace() || $createWorkSpace();
         workSpace.libraries.set(1, sound);
 
-        expect(select.children.length).toBe(0);
+        expect(select.children.length).toBe(3);
         execute();
         expect(select.children.length).toBe(1);
 
         select.remove();
+        workSpace.libraries.delete(1);
     });
 });

@@ -211,7 +211,7 @@ export const execute = async (
 
         // インスタンス名を変更
         case $LIBRARY_UPDATE_INSTANCE_NAME_COMMAND:
-            instanceUpdateNameHistoryUndoUseCase(
+            await instanceUpdateNameHistoryUndoUseCase(
                 messages[0] as number, // workSpaceId
                 messages[2] as number, // InstanceId
                 messages[3] as string  // before name
@@ -379,7 +379,7 @@ export const execute = async (
 
         // キーフレーム追加
         case $TIMELINE_ADD_KEYFRAME_COMMAND:
-            timelineLayerFrameAddKeyframeHistoryUndoUseCase(
+            await timelineLayerFrameAddKeyframeHistoryUndoUseCase(
                 messages[0] as number, // WorkSpace ID
                 messages[1] as number, // MovieClip ID
                 messages[2] as number, // Layer Index
@@ -498,7 +498,7 @@ export const execute = async (
 
         // MovieClipにサウンドを追加
         case $SOUND_AREA_ADD_SOUND_COMMAND:
-            soundAreaAddSoundHistoryUndoUseCase(
+            await soundAreaAddSoundHistoryUndoUseCase(
                 messages[0] as number, // WorkSpace ID
                 messages[1] as number, // MovieClip ID
                 messages[3] as number, // Frame
@@ -508,7 +508,7 @@ export const execute = async (
 
         // MovieClipからサウンドを削除
         case $SOUND_AREA_REMOVE_SOUND_COMMAND:
-            soundAreaRemoveSoundHistoryUndoUseCase(
+            await soundAreaRemoveSoundHistoryUndoUseCase(
                 messages[0] as number, // WorkSpace ID
                 messages[1] as number, // MovieClip ID
                 messages[2] as ISoundObject, // Sound Object

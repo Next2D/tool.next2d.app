@@ -15,11 +15,11 @@ import { $getScreenOffsetLeft, $getScreenOffsetTop } from "@/global/GlobalUtil";
  *              Execution function of the mouse-up event of the range selection
  *
  * @param  {PointerEvent} event
- * @return {void}
+ * @return {Promise<void>}
  * @method
  * @public
  */
-export const execute = (event: PointerEvent): void =>
+export const execute = async (event: PointerEvent): Promise<void> =>
 {
     // イベントの伝播を停止
     event.stopPropagation();
@@ -113,7 +113,7 @@ export const execute = (event: PointerEvent): void =>
         const externalLayer = new ExternalLayer(workSpace, movieClip, layer);
 
         // 範囲選択の対象のDisplayObjectを選択
-        externalScreen
+        await externalScreen
             .selectDisplayObjects(
                 externalLayer.index,
                 depths,

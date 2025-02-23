@@ -66,7 +66,7 @@ export const execute = async (
         screenStandardPointDeployElementUseCase();
 
         // プロパティエリアの表示を更新
-        propertyAreaChangeDisplayUseCase();
+        await propertyAreaChangeDisplayUseCase();
 
         // マスクレイヤーなら、子レイヤーの表示を更新
         await screenDisplayObjectMaskLockUpdateElementService(layer);

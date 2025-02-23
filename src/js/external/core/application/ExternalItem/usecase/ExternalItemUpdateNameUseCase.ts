@@ -71,7 +71,7 @@ export const execute = async <I extends Instance> (
             await soundAreaRebuildSelectElementService();
 
             // サウンド設定の再構成
-            soundAreaRebuildSettingAreaUseCase();
+            await soundAreaRebuildSettingAreaUseCase();
         }
     }
 };

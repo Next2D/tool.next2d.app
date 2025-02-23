@@ -12,16 +12,16 @@ import { $SOUND_TYPE } from "@/config/InstanceConfig";
  *
  * @param  {number} work_space_id
  * @param  {string} after_name
- * @return {void}
+ * @return {Promise<void>}
  * @method
  * @public
  */
-export const execute = (
+export const execute = async (
     work_space_id: number,
     instance_id: number,
     after_name: string
-): void =>
-{
+): Promise<void> => {
+
     const workSpace: WorkSpace | null = $getWorkSpace(work_space_id);
     if (!workSpace) {
         return ;
@@ -52,10 +52,10 @@ export const execute = (
         // 名前変更したのがサウンドの場合はセレクトElementを再構成
         if (instance.type === $SOUND_TYPE) {
             // SelectElementの再構成
-            soundAreaRebuildSelectElementService();
+            await soundAreaRebuildSelectElementService();
 
             // サウンド設定の再構成
-            soundAreaRebuildSettingAreaUseCase();
+            await soundAreaRebuildSettingAreaUseCase();
         }
     }
 };

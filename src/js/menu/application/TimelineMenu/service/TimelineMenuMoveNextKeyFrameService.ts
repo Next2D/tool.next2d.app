@@ -50,7 +50,7 @@ export const execute = async (): Promise<void> =>
         workSpace, workSpace.scene
     );
 
-    externalTimeline.selectedLayers([externalLayer.index]);
+    await externalTimeline.selectedLayers([externalLayer.index]);
 
     const rightFrame = $getRightFrame();
     if (nextFrame >= rightFrame) {

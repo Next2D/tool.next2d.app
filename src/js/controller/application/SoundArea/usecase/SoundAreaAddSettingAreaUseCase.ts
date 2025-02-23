@@ -25,15 +25,15 @@ import { execute as soundAreaLoopCountFocusInEventService } from "../service/Sou
  * @param  {number} index
  * @param  {string} sound_name
  * @param  {object} sound_object
- * @return {void}
+ * @return {Promise<void>}
  * @method
  * @public
  */
-export const execute = (
+export const execute = async (
     index: number,
     sound_name: string,
     sound_object: ISoundObject
-): void => {
+): Promise<void> => {
 
     const element: HTMLElement | null = document
         .getElementById($SOUND_AREA_SOUND_LIST_AREA_ID);
@@ -81,15 +81,10 @@ export const execute = (
             }
 
             // 波形用のcanvas Elementを生成
-            sound
-                .createCanvasElement(280, 60)
-                .then((canvas_html_element): void =>
-                {
-                    if (!canvas_html_element) {
-                        return ;
-                    }
-                    canvasContainer.appendChild(canvas_html_element);
-                });
+            const canvas = await sound.createCanvasElement(280, 60);
+            if (canvas) {
+                canvasContainer.appendChild(canvas);
+            }
         }
     }
 

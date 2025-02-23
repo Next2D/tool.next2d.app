@@ -59,14 +59,14 @@ export const execute = async (): Promise<void> =>
         );
 
         // サウンドエリアの設定エリアを再構築
-        soundAreaRebuildSettingAreaUseCase();
+        await soundAreaRebuildSettingAreaUseCase();
     } else {
 
         // ラベルの表示を初期化
         timelineLabelNameUpdateService("");
 
         // サウンドエリアの設定エリアを再構築
-        soundAreaRebuildSettingAreaUseCase();
+        await soundAreaRebuildSettingAreaUseCase();
 
         // 外部APIを起動
         const externalTimeline = new ExternalTimeline(workSpace, movieClip);
@@ -96,7 +96,7 @@ export const execute = async (): Promise<void> =>
                 );
 
                 // サウンドエリアの設定エリアを再構築
-                soundAreaRebuildSettingAreaUseCase();
+                await soundAreaRebuildSettingAreaUseCase();
                 return ;
             }
 
@@ -135,7 +135,7 @@ export const execute = async (): Promise<void> =>
                         );
 
                         // サウンドエリアの設定エリアを再構築
-                        soundAreaRebuildSettingAreaUseCase();
+                        await soundAreaRebuildSettingAreaUseCase();
                     }
                 } else {
                     // マーカーが画面の右端に到達したらレイヤレイヤーを移動

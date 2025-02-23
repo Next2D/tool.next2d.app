@@ -12,18 +12,18 @@ import { execute as propertyAreaShowDefaultSettingItemUseCase } from "@/controll
  * @param  {WorkSpace} work_space
  * @param  {MovieClip} movie_clip
  * @param  {array} [frames=null]
- * @return {void}
+ * @return {Promise<void>}
  * @method
  * @public
  */
-export const execute = (
+export const execute = async (
     work_space: WorkSpace,
     movie_clip: MovieClip,
     frames: number[] | null = null
-): void => {
+): Promise<void> => {
 
     // 一度選択状態を初期化
-    externalScreenClaerSelectedDisplayObjectUseCase(
+    await externalScreenClaerSelectedDisplayObjectUseCase(
         work_space,
         movie_clip
     );
@@ -91,7 +91,7 @@ export const execute = (
     }
 
     if (!selected) {
-        propertyAreaShowDefaultSettingItemUseCase(movie_clip);
+        await propertyAreaShowDefaultSettingItemUseCase(movie_clip);
     }
 
     // 後続処理のためにフレームを戻す

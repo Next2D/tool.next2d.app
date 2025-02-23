@@ -213,7 +213,7 @@ export const execute = async (
 
         // インスタンス名を変更
         case $LIBRARY_UPDATE_INSTANCE_NAME_COMMAND:
-            instanceUpdateNameHistoryRedoUseCase(
+            await instanceUpdateNameHistoryRedoUseCase(
                 messages[0] as number, // workSpaceId
                 messages[2] as number, // InstanceId
                 messages[4] as string  // after name
@@ -501,7 +501,7 @@ export const execute = async (
 
         // MovieClipにサウンドを追加
         case $SOUND_AREA_ADD_SOUND_COMMAND:
-            soundAreaAddSoundHistoryRedoUseCase(
+            await soundAreaAddSoundHistoryRedoUseCase(
                 messages[0] as number, // WorkSpace ID
                 messages[1] as number, // MovieClip ID
                 messages[2] as ISoundObject, // Sound Object
@@ -512,7 +512,7 @@ export const execute = async (
 
         // MovieClipからサウンドを削除
         case $SOUND_AREA_REMOVE_SOUND_COMMAND:
-            soundAreaRemoveSoundHistoryRedoUseCase(
+            await soundAreaRemoveSoundHistoryRedoUseCase(
                 messages[0] as number, // WorkSpace ID
                 messages[1] as number, // MovieClip ID
                 messages[3] as number, // Frame

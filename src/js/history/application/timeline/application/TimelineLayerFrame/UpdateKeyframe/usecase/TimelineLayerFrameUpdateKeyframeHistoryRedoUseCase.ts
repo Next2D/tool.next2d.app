@@ -58,7 +58,7 @@ export const execute = async (
 
     // レイヤーとフレームの選択を解除
     const externalTimeline = new ExternalTimeline(workSpace, movieClip);
-    externalTimeline.deactivatedAllLayers();
+    await externalTimeline.deactivatedAllLayers();
 
     // アクティブならタイムラインを再描画
     if (workSpace.active && movieClip.active) {

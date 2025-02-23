@@ -47,7 +47,7 @@ export const execute = async (event: KeyboardEvent): Promise<void> =>
         movieClip
     );
 
-    externalTimeline
+    await externalTimeline
         .selectedLayers([externalLayer.index]);
 
     const rightFrame = $getRightFrame();

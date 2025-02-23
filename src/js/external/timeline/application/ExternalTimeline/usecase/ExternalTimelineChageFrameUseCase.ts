@@ -46,7 +46,7 @@ export const execute = async (
         // タイムラインを再生中でなければ更新
         if (timelineHeader.stopFlag) {
             // サウンドエリアの設定エリアを再構築
-            soundAreaRebuildSettingAreaUseCase();
+            await soundAreaRebuildSettingAreaUseCase();
 
             // タイムラインのラベル表示を更新
             timelineLabelNameUpdateService(movie_clip.getLabel(frame));

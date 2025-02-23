@@ -50,9 +50,9 @@ export class ExternalScreen
      * @method
      * @public
      */
-    claerSelectedDisplayObjects (): void
+    async claerSelectedDisplayObjects (): Promise<void>
     {
-        externalScreenClaerSelectedDisplayObjectUseCase(
+        await externalScreenClaerSelectedDisplayObjectUseCase(
             this._$workSpace,
             this._$movieClip
         );
@@ -65,19 +65,19 @@ export class ExternalScreen
      * @param  {number} layer_index
      * @param  {array} depths
      * @param  {boolean} [multi_select=false]
-     * @return {void}
+     * @return {Promise<void>}
      * @method
      * @public
      */
-    selectDisplayObjects (
+    async selectDisplayObjects (
         layer_index: number,
         depths: number[],
         multi_select: boolean = false
-    ): void {
+    ): Promise<void> {
 
         // 単一選択なら選択を解除
         if (!multi_select) {
-            this.claerSelectedDisplayObjects();
+            await this.claerSelectedDisplayObjects();
         }
 
         // 選択中のDisplayObjectのレイヤーを全て非アクティブにする
@@ -107,11 +107,11 @@ export class ExternalScreen
      *              Deselect all DisplayObjects on the specified layer
      *
      * @param  {number} layer_index
-     * @return {void}
+     * @return {Promise<void>}
      * @method
      * @public
      */
-    deactivatedAllLayer (layer_index: number): void
+    async deactivatedAllLayer (layer_index: number): Promise<void>
     {
         // 選択中のDisplayObjectのレイヤーを全て非アクティブにする
         externalTimelineLayerDeactivatedAllLayerUseCase(
@@ -135,10 +135,10 @@ export class ExternalScreen
             );
 
             // プロパティエリアの表示を変更
-            propertyAreaChangeDisplayUseCase();
+            await propertyAreaChangeDisplayUseCase();
         } else {
             // 未選択なら初期表示に切り替える
-            propertyAreaShowDefaultSettingItemUseCase(this._$movieClip);
+            await propertyAreaShowDefaultSettingItemUseCase(this._$movieClip);
         }
     }
 }

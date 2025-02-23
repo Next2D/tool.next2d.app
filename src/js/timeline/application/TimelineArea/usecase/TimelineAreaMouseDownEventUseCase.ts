@@ -110,7 +110,7 @@ export const execute = async (event: PointerEvent): Promise<void> =>
             moiveClip
         );
 
-        externalTimeline.deactivatedAllLayers();
+        await externalTimeline.deactivatedAllLayers();
         timelineLayerAllClearSelectedElementUseCase(moiveClip);
 
     } else {

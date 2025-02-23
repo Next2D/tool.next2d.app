@@ -61,7 +61,7 @@ export const execute = async (
 
         // サウンド設定エリアの再構築
         if (movie_clip.currentFrame === frame) {
-            soundAreaRebuildSettingAreaUseCase();
+            await soundAreaRebuildSettingAreaUseCase();
         }
 
         if (!sounds.length) {

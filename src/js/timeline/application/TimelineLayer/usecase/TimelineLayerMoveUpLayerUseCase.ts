@@ -56,7 +56,7 @@ export const execute = async (event: KeyboardEvent): Promise<void> =>
     );
 
     // レイヤーを選択
-    externalTimeline.selectedLayers([index]);
+    await externalTimeline.selectedLayers([index]);
 
     // フレームを選択
     await externalTimeline.selectedFrames([movieClip.currentFrame]);

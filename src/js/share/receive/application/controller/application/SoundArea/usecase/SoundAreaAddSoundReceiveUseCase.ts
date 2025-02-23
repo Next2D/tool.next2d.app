@@ -51,7 +51,7 @@ export const execute = async (message: IShareReceiveMessage): Promise<void> =>
     if (workSpace.active && movieClip.active) {
 
         // サウンド設定の再構成
-        soundAreaRebuildSettingAreaUseCase();
+        await soundAreaRebuildSettingAreaUseCase();
 
         const index = message.data[4] as NonNullable<number>;
         if (!index) {

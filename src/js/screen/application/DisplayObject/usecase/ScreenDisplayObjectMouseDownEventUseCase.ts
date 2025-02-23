@@ -14,11 +14,11 @@ import { $setEditingElement } from "@/global/GlobalUtil";
  *              Event processing function when DisplayObject is selected on the screen
  *
  * @param  {PointerEvent} event
- * @return {void}
+ * @return {Promise<void>}
  * @method
  * @public
  */
-export const execute = (event: PointerEvent): void =>
+export const execute = async (event: PointerEvent): Promise<void> =>
 {
     if (event.button !== 0) {
         return ;
@@ -72,7 +72,7 @@ export const execute = (event: PointerEvent): void =>
 
         // 選択処理を実行
         if (doSelect) {
-            externalScreen.selectDisplayObjects(
+            await externalScreen.selectDisplayObjects(
                 layerIndex,
                 [depth],
                 event.shiftKey
@@ -94,14 +94,14 @@ export const execute = (event: PointerEvent): void =>
 
         if (depths.length) {
             // 選択処理を実行
-            externalScreen.selectDisplayObjects(
+            await externalScreen.selectDisplayObjects(
                 layerIndex,
                 depths,
                 event.shiftKey
             );
         } else {
             // 選択解除処理を実行
-            externalScreen
+            await externalScreen
                 .deactivatedAllLayer(layerIndex);
         }
     }

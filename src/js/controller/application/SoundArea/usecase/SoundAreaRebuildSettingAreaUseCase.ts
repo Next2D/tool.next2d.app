@@ -7,11 +7,11 @@ import { timelineHeader } from "@/timeline/domain/model/TimelineHeader";
  * @description 現在のフレームに設定されているサウンドの設定表示を再構成
  *              Reconstruct the sound settings displayed on the current frame
  *
- * @return {void}
+ * @return {Promise<void>}
  * @method
  * @public
  */
-export const execute = (): void =>
+export const execute = async (): Promise<void> =>
 {
     const element = document.getElementById($SOUND_AREA_SOUND_LIST_AREA_ID);
     if (!element) {
@@ -53,7 +53,7 @@ export const execute = (): void =>
         }
 
         // 設定エリアを追加
-        soundAreaAddSettingAreaUseCase(
+        await soundAreaAddSettingAreaUseCase(
             idx, sound.name, soundObject
         );
     }

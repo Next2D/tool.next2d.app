@@ -143,7 +143,7 @@ export class ExternalTimeline
         );
 
         // 選択中のLayerを解放
-        this.deactivatedAllLayers();
+        await this.deactivatedAllLayers();
     }
 
     /**
@@ -169,7 +169,7 @@ export class ExternalTimeline
 
         // レイヤーの選択状態を初期化
         // fixed logic
-        this.deactivatedAllLayers();
+        await this.deactivatedAllLayers();
 
         const externalLayer = await externalTimelineAddNewLayerUseCase(
             this._$workSpace,
@@ -179,7 +179,7 @@ export class ExternalTimeline
 
         // 追加したレイヤーを選択状態に更新
         if (externalLayer) {
-            this.selectedLayers([externalLayer.index]);
+            await this.selectedLayers([externalLayer.index]);
         }
 
         return externalLayer;
@@ -215,7 +215,7 @@ export class ExternalTimeline
         );
 
         // 削除後に選択状態を更新
-        this.selectedLayers([
+        await this.selectedLayers([
             Math.min(...indexes, this._$movieClip.layers.length - 1)
         ]);
     }
@@ -249,14 +249,14 @@ export class ExternalTimeline
      *              Activate the layer with the specified index value
      *
      * @param  {array} indexes
-     * @return {void}
+     * @return {Promise<void>}
      * @method
      * @public
      */
-    selectedLayers (indexes: number[]): void
+    async selectedLayers (indexes: number[]): Promise<void>
     {
         // 全ての選択を解除
-        this.deactivatedAllLayers();
+        await this.deactivatedAllLayers();
 
         // 指定のIndexを選択状態に更新
         externalTimelineLayerControllerSelectedLayersUseCase(
@@ -266,7 +266,7 @@ export class ExternalTimeline
         );
 
         // 選択したレイヤーのDisplayObjectを選択状態に更新
-        externalScreenSelectedFromSelectedLayersUseCase(
+        await externalScreenSelectedFromSelectedLayersUseCase(
             this._$workSpace,
             this._$movieClip
         );
@@ -331,7 +331,7 @@ export class ExternalTimeline
      * @method
      * @public
      */
-    deactivatedAllLayers (): void
+    async deactivatedAllLayers (): Promise<void>
     {
         // 選択中のレイヤーを非アクティブ化する
         externalTimelineLayerDeactivatedAllLayerUseCase(
@@ -340,7 +340,7 @@ export class ExternalTimeline
         );
 
         // 選択中のDisplayObjectをクリア
-        externalScreenClaerSelectedDisplayObjectUseCase(
+        await externalScreenClaerSelectedDisplayObjectUseCase(
             this._$workSpace,
             this._$movieClip
         );

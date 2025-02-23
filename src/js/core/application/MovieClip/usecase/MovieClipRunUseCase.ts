@@ -60,10 +60,10 @@ export const execute = async (movie_clip: MovieClip): Promise<void> =>
     timelineLayerBuildElementUseCase();
 
     if (movie_clip.selectedDepths.size) {
-        propertyAreaChangeDisplayUseCase();
+        await propertyAreaChangeDisplayUseCase();
     } else {
         // プロパティーエリアを初期表示に切り替える
-        propertyAreaShowDefaultSettingItemUseCase(movie_clip);
+        await propertyAreaShowDefaultSettingItemUseCase(movie_clip);
     }
 
     // スクリーンの基準点のElementの表示を更新

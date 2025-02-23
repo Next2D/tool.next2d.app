@@ -34,7 +34,7 @@ export const execute = async (
 
     // 指定レイヤーを選択状態に更新
     // fixed logic
-    externalTimeline
+    await externalTimeline
         .selectedLayers([externalLayer.index]);
 
     // 指定フレームを選択状態に更新

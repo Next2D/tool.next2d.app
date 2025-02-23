@@ -18,11 +18,11 @@ import { execute as propertyAreaScrollUpdateHeightService } from "@/controller/a
  *              Change display items in property area
  *
  * @param  {MovieClip} movie_clip
- * @return {void}
+ * @return {Promise<void>}
  * @method
  * @public
  */
-export const execute = (movie_clip: MovieClip): void =>
+export const execute = async (movie_clip: MovieClip): Promise<void> =>
 {
     // 非表示項目を更新
     propertyAreaBlockHideService([
@@ -47,7 +47,7 @@ export const execute = (movie_clip: MovieClip): void =>
     objectSettingUpdateSymbolService(movie_clip.symbol);
 
     // サウンドエリアの設定エリアを再構築
-    soundAreaRebuildSettingAreaUseCase();
+    await soundAreaRebuildSettingAreaUseCase();
 
     // 選択モードをクリア
     $setSelectedMode("");

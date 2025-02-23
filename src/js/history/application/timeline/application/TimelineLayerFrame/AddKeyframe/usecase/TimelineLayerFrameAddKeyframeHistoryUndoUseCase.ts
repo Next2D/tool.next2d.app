@@ -16,17 +16,17 @@ import { execute as propertyAreaShowDefaultSettingItemUseCase } from "@/controll
  * @param  {number} layer_ndex
  * @param  {object} character_save_object
  * @param  {number} empty_character_index
- * @return {void}
+ * @return {Promise<void>}
  * @method
  * @public
  */
-export const execute = (
+export const execute = async (
     work_space_id: number,
     library_id: number,
     layer_ndex: number,
     character_save_object: ICharacterSaveObject,
     empty_character_index: number
-): void => {
+): Promise<void> => {
 
     const workSpace = $getWorkSpace(work_space_id);
     if (!workSpace) {
@@ -84,6 +84,6 @@ export const execute = (
         targetRectUpdateElementUseCase();
 
         // プロパティーエリアのデフォルト設定項目を表示
-        propertyAreaShowDefaultSettingItemUseCase(movieClip);
+        await propertyAreaShowDefaultSettingItemUseCase(movieClip);
     }
 };

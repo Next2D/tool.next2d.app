@@ -35,7 +35,7 @@ export const execute = async (): Promise<void> =>
     );
 
     // 最後に選択したレイヤーを選択
-    externalTimeline.selectedLayers([externalLayer.index]);
+    await externalTimeline.selectedLayers([externalLayer.index]);
 
     const leftFrame = $getLeftFrame();
     if (leftFrame === 1) {

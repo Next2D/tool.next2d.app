@@ -82,7 +82,7 @@ export const execute = async (
             }
 
             // サウンドエリアに設定エリアを追加
-            soundAreaAddSettingAreaUseCase(
+            await soundAreaAddSettingAreaUseCase(
                 sounds.indexOf(soundObject),
                 externalSound.getName(),
                 soundObject

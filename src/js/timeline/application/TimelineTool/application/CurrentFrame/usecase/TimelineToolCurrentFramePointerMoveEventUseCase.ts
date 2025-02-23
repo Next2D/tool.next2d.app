@@ -63,7 +63,7 @@ export const execute = (event: PointerEvent): void =>
         }
 
         // サウンドエリアを再描画
-        soundAreaRebuildSettingAreaUseCase();
+        await soundAreaRebuildSettingAreaUseCase();
 
         // タイムラインのラベル表示を更新
         timelineLabelNameUpdateService(scene.getLabel(frame));

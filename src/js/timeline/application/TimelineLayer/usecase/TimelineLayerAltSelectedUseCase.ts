@@ -12,15 +12,15 @@ import { ExternalTimeline } from "@/external/timeline/domain/model/ExternalTimel
  * @param  {WorkSpace} work_space
  * @param  {MovieClip} movie_clip
  * @param  {Layer} layer
- * @return {void}
+ * @return {Promise<void>}
  * @method
  * @public
  */
-export const execute = (
+export const execute = async (
     work_space: WorkSpace,
     movie_clip: MovieClip,
     layer: Layer
-): void => {
+): Promise<void> => {
 
     // 表示Elementがなければ終了
     const layerElement: HTMLElement | undefined = timelineLayer.elements[layer.getDisplayIndex()];
@@ -58,6 +58,6 @@ export const execute = (
     const externalTimeline = new ExternalTimeline(work_space, movie_clip);
 
     // 単体選択の外部APIを実行
-    externalTimeline
+    await externalTimeline
         .selectedLayers(indexes);
 };

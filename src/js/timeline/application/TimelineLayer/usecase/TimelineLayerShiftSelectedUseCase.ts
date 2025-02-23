@@ -9,14 +9,14 @@ import { ExternalTimeline } from "@/external/timeline/domain/model/ExternalTimel
  *
  * @param  {MovieClip} movie_clip
  * @param  {Layer} layer
- * @return {void}
+ * @return {Promise<void>}
  * @method
  * @public
  */
-export const execute = (
+export const execute = async (
     movie_clip: MovieClip,
     layer: Layer
-): void => {
+): Promise<void> => {
 
     // 選択したレイヤーがなければ今回選択したレイヤーを最初に選択したレイヤーに設定
     const firstSelectedLayer: Layer = movie_clip.selectedLayers.length
@@ -40,5 +40,5 @@ export const execute = (
 
     // 外部APIを起動
     const externalTimeline = new ExternalTimeline($getCurrentWorkSpace(), movie_clip);
-    externalTimeline.selectedLayers(indexes);
+    await externalTimeline.selectedLayers(indexes);
 };

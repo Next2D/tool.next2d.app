@@ -62,7 +62,7 @@ export const execute = async (
         screenStandardPointDeployElementUseCase();
 
         // プロパティエリアの表示を更新
-        propertyAreaChangeDisplayUseCase();
+        await propertyAreaChangeDisplayUseCase();
 
         // 非表示にしたアイテムを表示・非表示に合わせて更新
         await screenDisplayObjectUpdateDisabledElementUseCase(movie_clip, layer);

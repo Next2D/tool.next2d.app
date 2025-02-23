@@ -48,7 +48,7 @@ export const execute = async (
         timelineMarkerMovePositionService();
 
         // サウンドエリアを再描画
-        soundAreaRebuildSettingAreaUseCase();
+        await soundAreaRebuildSettingAreaUseCase();
 
         // タイムラインのラベル表示を更新
         timelineLabelNameUpdateService(movie_clip.getLabel(frame));

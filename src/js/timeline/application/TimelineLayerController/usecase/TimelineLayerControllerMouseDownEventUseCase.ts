@@ -14,11 +14,11 @@ import { execute as timelineLayerFrameSelectedAllClearUseCase } from "@/timeline
  *              Mouse down processing function for the controller area of a layer
  *
  * @param  {PointerEvent} event
- * @return {void}
+ * @return {Promise<void>}
  * @method
  * @public
  */
-export const execute = (event: PointerEvent): void =>
+export const execute = async (event: PointerEvent): Promise<void> =>
 {
     if (event.button !== 0) {
         return ;
@@ -44,11 +44,11 @@ export const execute = (event: PointerEvent): void =>
     switch (true) {
 
         case event.altKey || event.metaKey:
-            timelineLayerAltSelectedUseCase(workSpace, movieClip, layer);
+            await timelineLayerAltSelectedUseCase(workSpace, movieClip, layer);
             break;
 
         case event.shiftKey:
-            timelineLayerShiftSelectedUseCase(movieClip, layer);
+            await timelineLayerShiftSelectedUseCase(movieClip, layer);
             break;
 
         default:
@@ -58,7 +58,7 @@ export const execute = (event: PointerEvent): void =>
                 const externalTimeline = new ExternalTimeline(workSpace, movieClip);
 
                 // 単体選択の外部APIを実行
-                externalTimeline
+                await externalTimeline
                     .selectedLayers([externalLayer.index]);
 
             }

@@ -17,11 +17,11 @@ import {
  *              Display the Layer Controller menu
  *
  * @param  {MouseEvent} event
- * @return {void}
+ * @return {Promise<void>}
  * @method
  * @public
  */
-export const execute = (event: MouseEvent): void =>
+export const execute = async (event: MouseEvent): Promise<void> =>
 {
     if ($useKeyboard()) {
         return ;
@@ -64,7 +64,7 @@ export const execute = (event: MouseEvent): void =>
     const externalLayer = new ExternalLayer(workSpace, scene, layer);
 
     // 指定のレイヤーを選択状態に更新
-    externalTimeline.selectedLayers([externalLayer.index]);
+    await externalTimeline.selectedLayers([externalLayer.index]);
 
     // レイヤーのモードに合わせてモード設定をアクティブ表示
     timelineLayerControllerMenuUpdateIconStyleService(layer);

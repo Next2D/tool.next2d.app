@@ -12,11 +12,11 @@ import { $setEditingElement } from "@/global/GlobalUtil";
  *              Register functions for marker movement in window
  *
  * @param  {PointerEvent} event
- * @return {void}
+ * @return {Promise<void>}
  * @method
  * @public
  */
-export const execute = (event: PointerEvent): void =>
+export const execute = async (event: PointerEvent): Promise<void> =>
 {
     // 親のイベントを中止する
     event.stopPropagation();
@@ -38,7 +38,7 @@ export const execute = (event: PointerEvent): void =>
     // 選択中のレイヤーを全て非アクティブ化
     const workSpace = $getCurrentWorkSpace();
     const externalTimeline = new ExternalTimeline(workSpace, workSpace.scene);
-    externalTimeline.deactivatedAllLayers();
+    await externalTimeline.deactivatedAllLayers();
 
     // windowにイベントを登録
     element.setPointerCapture(event.pointerId);
@@ -49,6 +49,11 @@ export const execute = (event: PointerEvent): void =>
     );
     element.addEventListener(
         EventType.POINTER_UP,
+        timelineMarkerPointerUpEventUseCase,
+        { "passive": false }
+    );
+    element.addEventListener(
+        EventType.POINTER_LEAVE,
         timelineMarkerPointerUpEventUseCase,
         { "passive": false }
     );

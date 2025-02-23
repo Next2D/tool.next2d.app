@@ -18,17 +18,17 @@ import {
  * @description プロパティエリアの表示を更新
  *              Update the display of the property area
  *
- * @return {void}
+ * @return {Promise<void>}
  * @method
  * @public
  */
-export const execute = (): void =>
+export const execute = async (): Promise<void> =>
 {
     const workSpace = $getCurrentWorkSpace();
     const movieClip = workSpace.scene;
 
     if (!movieClip.selectedDepths.size) {
-        propertyAreaShowDefaultSettingItemUseCase(movieClip);
+        await propertyAreaShowDefaultSettingItemUseCase(movieClip);
         return ;
     }
 

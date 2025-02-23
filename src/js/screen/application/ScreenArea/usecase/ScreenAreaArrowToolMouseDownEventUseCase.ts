@@ -3,6 +3,7 @@ import { ExternalTimeline } from "@/external/timeline/domain/model/ExternalTimel
 import { execute as propertyAreaShowDefaultSettingItemUseCase } from "@/controller/application/PropertyArea/usecase/PropertyAreaShowDefaultSettingItemUseCase";
 import { execute as referenceSettingHideElementService } from "@/controller/application/ReferenceSetting/service/ReferenceSettingHideElementService";
 import { execute as screenStandardPointHideElementService } from "@/screen/application/StandardPoint/service/ScreenStandardPointHideElementService";
+import { $activeTouchPointers } from "@/global/GlobalUtil";
 
 /**
  * @description スクリーン選択時のイベント処理関数
@@ -13,24 +14,27 @@ import { execute as screenStandardPointHideElementService } from "@/screen/appli
  * @method
  * @public
  */
-export const execute = (event: PointerEvent): void =>
+export const execute = async (event: PointerEvent): Promise<void> =>
 {
-    if (event.button !== 0) {
+    if (event.button !== 0
+        || $activeTouchPointers.size > 1
+    ) {
         return ;
     }
 
     // 親のイベントをキャンセル
     event.stopPropagation();
+    event.preventDefault();
 
     const workSpace = $getCurrentWorkSpace();
     const movieClip = workSpace.scene;
 
     // レイヤー選択を解除
     const externalTimeline = new ExternalTimeline(workSpace, movieClip);
-    externalTimeline.deactivatedAllLayers();
+    await externalTimeline.deactivatedAllLayers();
 
     // プロパティーエリアを初期表示に切り替える
-    propertyAreaShowDefaultSettingItemUseCase(movieClip);
+    await propertyAreaShowDefaultSettingItemUseCase(movieClip);
 
     // 中心点を非表示にする
     referenceSettingHideElementService();

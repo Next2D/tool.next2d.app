@@ -15,17 +15,17 @@ import { execute as timelineHeaderUpdateSoundElementService } from "@/timeline/a
  * @param  {object} sound_object
  * @param  {number} frame
  * @param  {number} index
- * @return {Promise}
+ * @return {Promise<void>}
  * @method
  * @public
  */
-export const execute = (
+export const execute = async (
     work_space_id: number,
     library_id: number,
     sound_object: ISoundObject,
     frame: number,
     index: number
-): void => {
+): Promise<void> => {
 
     const workSpace = $getWorkSpace(work_space_id);
     if (!workSpace) {
@@ -50,7 +50,7 @@ export const execute = (
 
         // サウンド設定エリアの再構築
         if (movieClip.currentFrame === frame) {
-            soundAreaRebuildSettingAreaUseCase();
+            await soundAreaRebuildSettingAreaUseCase();
         }
 
         if (!sounds) {

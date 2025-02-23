@@ -3,21 +3,27 @@ import { execute as timelineToolCurrentFramePointerRegisterEventUseCase } from "
 import { $useKeyboard } from "@/shortcut/ShortcutUtil";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { ExternalTimeline } from "@/external/timeline/domain/model/ExternalTimeline";
-import { $setEditingElement } from "@/global/GlobalUtil";
+import {
+    $activeTouchPointers,
+    $setEditingElement
+} from "@/global/GlobalUtil";
 
 /**
  * @description タイムラインの現在フレームのInput Elementのマウスダウン処理関数
  *              Mouse-down processing function for the Input Element at the current frame of the timeline
  *
  * @param  {PointerEvent} event
- * @return {void}
+ * @return {Promise<void>}
  * @method
  * @public
  */
-export const execute = (event: PointerEvent): void =>
+export const execute = async (event: PointerEvent): Promise<void> =>
 {
     // 主ボタン以外はスキップ
-    if (event.button !== 0 || $useKeyboard()) {
+    if (event.button !== 0
+        || $useKeyboard()
+        || $activeTouchPointers.size > 1
+    ) {
         return ;
     }
 
@@ -34,7 +40,7 @@ export const execute = (event: PointerEvent): void =>
     // レイヤー・フレームElementのアクティブ状態をリセット
     const workSpace = $getCurrentWorkSpace();
     const externalTimeline = new ExternalTimeline(workSpace, workSpace.scene);
-    externalTimeline.deactivatedAllLayers();
+    await externalTimeline.deactivatedAllLayers();
 
     // 移動イベントを登録
     timelineToolCurrentFramePointerRegisterEventUseCase(event);

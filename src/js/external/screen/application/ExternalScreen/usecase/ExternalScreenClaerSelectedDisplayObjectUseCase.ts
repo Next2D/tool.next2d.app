@@ -14,10 +14,10 @@ import { execute as screenStandardPointDeployElementUseCase } from "@/screen/app
  * @method
  * @public
  */
-export const execute = (
+export const execute = async (
     work_space: WorkSpace,
     movie_clip: MovieClip
-): void => {
+): Promise<void> => {
 
     // 選択範囲のDisplayObjectを解放
     movie_clip.clearSelectedDepths();
@@ -31,6 +31,6 @@ export const execute = (
         screenStandardPointDeployElementUseCase();
 
         // プロパティエリアの表示を更新
-        propertyAreaChangeDisplayUseCase();
+        await propertyAreaChangeDisplayUseCase();
     }
 };

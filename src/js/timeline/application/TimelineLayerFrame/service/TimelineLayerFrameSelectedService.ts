@@ -19,7 +19,7 @@ export const execute = async (
 
     // 外部APIを起動
     const externalTimeline = new ExternalTimeline(work_space, movie_clip);
-    externalTimeline.selectedLayers(indexes);
+    await externalTimeline.selectedLayers(indexes);
 
     // 最後に選択したフレームを設定
     movie_clip.selectedFrameObject.end = frame;
