@@ -86,7 +86,7 @@ export const execute = async (
     }
 
     // 削除アイコンにイベントを登録
-    const trashIconElement: HTMLElement | null = soundSettingElement.querySelector(".trash");
+    const trashIconElement = soundSettingElement.querySelector<HTMLInputElement>(".trash");
     if (trashIconElement) {
         trashIconElement.addEventListener(EventType.POINTER_DOWN,
             soundAreaTrashMouseDownUseCase
@@ -94,7 +94,7 @@ export const execute = async (
     }
 
     // 音量操作のイベントを登録
-    const volumeElement: HTMLElement | null = soundSettingElement.querySelector(".volume");
+    const volumeElement = soundSettingElement.querySelector<HTMLInputElement>(".volume");
     if (volumeElement) {
         volumeElement.addEventListener("focusin",
             soundAreaVolumeFocusInEventService
@@ -117,7 +117,7 @@ export const execute = async (
     }
 
     // ループ回数操作のイベントを登録
-    const loopElement: HTMLElement | null = soundSettingElement.querySelector(".loop-count");
+    const loopElement = soundSettingElement.querySelector<HTMLInputElement>(".loop-count");
     if (loopElement) {
         loopElement.addEventListener("focusin",
             soundAreaLoopCountFocusInEventService

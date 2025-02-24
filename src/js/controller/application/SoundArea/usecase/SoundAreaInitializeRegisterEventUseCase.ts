@@ -35,5 +35,4 @@ export const execute = (): void =>
             event.stopPropagation();
         });
     }
-
 };
