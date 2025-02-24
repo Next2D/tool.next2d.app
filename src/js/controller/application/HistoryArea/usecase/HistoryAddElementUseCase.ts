@@ -55,7 +55,7 @@ export const execute = (
     languageTranslationService(lastElement);
 
     // マウスダウンイベントを登録
-    lastElement.addEventListener(EventType.POINTER_DOWN, async (event: PointerEvent) =>
+    lastElement.addEventListener(EventType.POINTER_DOWN, async (event: PointerEvent): Promise<void> =>
     {
         $pointerDownQueue = $pointerDownQueue
             .then(() => historyMouseDownEventUseCase(event));
