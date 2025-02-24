@@ -13,7 +13,7 @@ import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
  */
 export const execute = (element: HTMLElement, frame: number): void =>
 {
-    const node: HTMLElement | undefined = element.children[$TIMELINE_HEADER_SOUND_INDEX] as HTMLElement;
+    const node = element.children[$TIMELINE_HEADER_SOUND_INDEX] as HTMLElement;
     if (!node) {
         return ;
     }

@@ -42,6 +42,12 @@ export const execute = async (
         return ;
     }
 
+    const workSpace = $getCurrentWorkSpace();
+    const sound = workSpace.getLibrary(sound_object.libraryId) as Sound;
+
+    // 波形用のcanvas Elementを生成
+    const canvas = sound ? await sound.createCanvasElement(280, 60) : null;
+
     element.insertAdjacentHTML("beforeend",
         soundAreaSettingComponent(index, sound_name, sound_object)
     );
@@ -59,19 +65,8 @@ export const execute = async (
         // audio Element
         const audioContainer = document.createElement("div");
         containerElement.appendChild(audioContainer);
-
-        // canvas Element
-        const canvasContainer = document.createElement("div");
-        containerElement.appendChild(canvasContainer);
-
-        // classを追加
         audioContainer.classList.add("sound-setting-preview-container");
-        canvasContainer.classList.add("sound-setting-preview-container");
-
-        const workSpace = $getCurrentWorkSpace();
-        const sound = workSpace.getLibrary(sound_object.libraryId) as Sound;
         if (sound) {
-
             // audio Elementを生成
             const audioHtmlElement = sound.createAudioElement();
             if (audioHtmlElement) {
@@ -79,12 +74,14 @@ export const execute = async (
                 audioHtmlElement.volume = sound_object.volume / 100;
                 audioContainer.appendChild(audioHtmlElement);
             }
+        }
 
-            // 波形用のcanvas Elementを生成
-            const canvas = await sound.createCanvasElement(280, 60);
-            if (canvas) {
-                canvasContainer.appendChild(canvas);
-            }
+        // canvas Element
+        const canvasContainer = document.createElement("div");
+        containerElement.appendChild(canvasContainer);
+        canvasContainer.classList.add("sound-setting-preview-container");
+        if (canvas) {
+            canvasContainer.appendChild(canvas);
         }
     }
 
