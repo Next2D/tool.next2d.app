@@ -5,7 +5,6 @@ import {
     $SOUND_AREA_SELECT_ID
 } from "../../../../config/SoundSettingConfig";
 import { describe, expect, it, vi } from "vitest";
-import { C } from "vitest/dist/chunks/reporters.DTtkbAtP.js";
 
 describe("SoundAreaInitializeRegisterEventUseCase Test", () =>
 {

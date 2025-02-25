@@ -1380,9 +1380,11 @@
     
             <div id="library-menu-file" class="library-menu-bottom">
                 <i class="library-type-load"></i>
-                <span class="language" data-text="{{読み込み}}" data-shortcut-key="rCtrl" data-shortcut-text="Ctrl + R">読み込み</span>
+                <label for="library-menu-file-input">
+                    <input id="library-menu-file-input" type="file" accept=".jpg,.jpeg,.png,.gif,.swf,.svg,.mp3,.mp4" multiple tabindex="-1">
+                    <span class="language" data-text="{{読み込み}}" data-shortcut-key="rCtrl" data-shortcut-text="Ctrl + R">読み込み</span>
+                </label>
             </div>
-            <input id="library-menu-file-input" type="file" accept=".jpg,.jpeg,.png,.gif,.swf,.svg,.mp3,.mp4" multiple tabindex="-1">
             <div id="library-menu-export" class="library-menu-bottom">
                 <i class="library-type-download"></i>
                 <span class="language" data-text="{{書き出し}}" data-shortcut-key="sShift" data-shortcut-text="Shift + S">書き出し</span>
@@ -1663,7 +1665,7 @@
             <p></p>
     
             <div class="user-setting-container-column">
-                <div id="current-version">version: 0.300.0</div>
+                <div id="current-version">version: 1.0.0</div>
             </div>
     
         </div>
