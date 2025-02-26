@@ -3,6 +3,7 @@ import { execute as soundAreaLoopCountPointerMoveEventUseCase } from "./SoundAre
 import { execute as soundAreaLoopCountPointerUpEventUseCase } from "./SoundAreaLoopCountPointerUpEventUseCase";
 import { $useKeyboard } from "@/shortcut/ShortcutUtil";
 import { soundArea } from "@/controller/domain/model/SoundArea";
+import { $activeTouchPointers } from "@/global/GlobalUtil";
 
 /**
  * @description ループ回数操作のwindowイベントを登録
@@ -15,18 +16,19 @@ import { soundArea } from "@/controller/domain/model/SoundArea";
  */
 export const execute = (event: PointerEvent): void =>
 {
-    if (event.button !== 0) {
+    if (event.button !== 0
+        || $activeTouchPointers.size > 1
+    ) {
         return ;
     }
 
-    // 親のイベントを止める
-    event.stopPropagation();
-
+    console.log("$useKeyboard(): ", $useKeyboard());
     if ($useKeyboard()) {
         return ;
     }
 
     // イベントの伝播を止める
+    event.stopPropagation();
     event.preventDefault();
 
     const element = event.currentTarget as HTMLInputElement;
@@ -46,6 +48,11 @@ export const execute = (event: PointerEvent): void =>
     );
     element.addEventListener(
         EventType.POINTER_UP,
+        soundAreaLoopCountPointerUpEventUseCase,
+        { "passive": false }
+    );
+    element.addEventListener(
+        EventType.POINTER_LEAVE,
         soundAreaLoopCountPointerUpEventUseCase,
         { "passive": false }
     );

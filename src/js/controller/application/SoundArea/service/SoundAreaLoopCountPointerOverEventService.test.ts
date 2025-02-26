@@ -1,7 +1,7 @@
-import { execute } from "./SoundAreaVolumeMouseOverEventService";
-import { describe, expect, it, vi } from "vitest";
+import { execute } from "./SoundAreaLoopCountPointerOverEventService";
+import { describe, expect, it } from "vitest";
 
-describe("SoundAreaVolumeMouseOverEventServiceTest", () =>
+describe("SoundAreaLoopCountPointerOverEventService Test", () =>
 {
     it("execute test", () =>
     {
@@ -10,14 +10,13 @@ describe("SoundAreaVolumeMouseOverEventServiceTest", () =>
         let stopPropagation = false;
         let preventDefault  = false;
         const eventMock = {
-            "stopPropagation": vi.fn(() =>
+            "stopPropagation": () =>
             {
                 stopPropagation = true;
-            }),
-            "preventDefault": vi.fn(() =>
-            {
+            },
+            "preventDefault": () => {
                 preventDefault = true;
-            }),
+            },
             "currentTarget": input
         } as unknown as PointerEvent;
 

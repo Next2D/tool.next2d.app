@@ -1,5 +1,7 @@
-import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
-import { $clamp, $setCursor } from "@/global/GlobalUtil";
+import {
+    $clamp,
+    $setCursor
+} from "@/global/GlobalUtil";
 
 /**
  * @description ループ回数操作を開始
@@ -18,20 +20,13 @@ export const execute = (event: PointerEvent): void =>
 
     $setCursor("ew-resize");
 
+    // マウスの移動量がない場合は処理を終了
     if (!event.movementX) {
         return ;
     }
 
     requestAnimationFrame((): void =>
     {
-        const workSpace = $getCurrentWorkSpace();
-        const movieClip = workSpace.scene;
-
-        const sounds = movieClip.getSound(movieClip.currentFrame);
-        if (!sounds) {
-            return ;
-        }
-
         const element = event.target as HTMLInputElement;
         if (!element) {
             return ;

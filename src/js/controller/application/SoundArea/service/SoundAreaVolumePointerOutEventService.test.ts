@@ -1,7 +1,7 @@
-import { execute } from "./SoundAreaVolumeMouseOutEventService";
+import { execute } from "./SoundAreaVolumePointerOutEventService";
 import { describe, expect, it } from "vitest";
 
-describe("SoundAreaVolumeMouseOutEventServiceTest", () =>
+describe("SoundAreaVolumePointerOutEventService Test", () =>
 {
     it("execute test", () =>
     {

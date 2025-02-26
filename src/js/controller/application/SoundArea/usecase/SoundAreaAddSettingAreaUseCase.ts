@@ -3,19 +3,19 @@ import type { Sound } from "@/core/domain/model/Sound";
 import { $SOUND_AREA_SOUND_LIST_AREA_ID } from "@/config/SoundSettingConfig";
 import { execute as soundAreaSettingComponent } from "../component/SoundAreaSettingComponent";
 import { EventType } from "@/tool/domain/event/EventType";
-import { execute as soundAreaTrashMouseDownUseCase } from "./SoundAreaTrashMouseDownUseCase";
+import { execute as soundAreaTrashPointerDownUseCase } from "./SoundAreaTrashPointerDownUseCase";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { execute as soundAreaVolumeRegisterPointerEventUseCase } from "./SoundAreaVolumeRegisterPointerEventUseCase";
-import { execute as soundAreaLoopCountRegisterPointerEventUseCase } from "./SoundAreaLoopCountRegisterPointerEventUseCase";
+import { execute as soundAreaLoopCountPointerDownEventUseCase } from "./SoundAreaLoopCountPointerDownEventUseCase";
 import { execute as soundAreaVolumeFocusInEventService } from "../service/SoundAreaVolumeFocusInEventService";
 import { execute as soundAreaVolumeKeyPressEventService } from "../service/SoundAreaVolumeKeyPressEventService";
 import { execute as soundAreaLoopCountKeyPressEventService } from "../service/SoundAreaLoopCountKeyPressEventService";
 import { execute as soundAreaVolumeFocusOutEventUseCase } from "./SoundAreaVolumeFocusOutEventUseCase";
 import { execute as soundAreaLoopCountFocusOutEventUseCase } from "./SoundAreaLoopCountFocusOutEventUseCase";
-import { execute as soundAreaVolumeMouseOverEventService } from "../service/SoundAreaVolumeMouseOverEventService";
-import { execute as soundAreaLoopCountMouseOverEventService } from "../service/SoundAreaLoopCountMouseOverEventService";
-import { execute as soundAreaVolumeMouseOutEventService } from "../service/SoundAreaVolumeMouseOutEventService";
-import { execute as soundAreaLoopCountMouseOutEventService } from "../service/SoundAreaLoopCountMouseOutEventService";
+import { execute as soundAreaVolumePointerOverEventService } from "../service/SoundAreaVolumePointerOverEventService";
+import { execute as soundAreaLoopCountPointerOverEventService } from "../service/SoundAreaLoopCountPointerOverEventService";
+import { execute as soundAreaVolumePointerOutEventService } from "../service/SoundAreaVolumePointerOutEventService";
+import { execute as soundAreaLoopCountPointerOutEventService } from "../service/SoundAreaLoopCountPointerOutEventService";
 import { execute as soundAreaLoopCountFocusInEventService } from "../service/SoundAreaLoopCountFocusInEventService";
 
 /**
@@ -89,7 +89,7 @@ export const execute = async (
     const trashIconElement = soundSettingElement.querySelector<HTMLInputElement>(".trash");
     if (trashIconElement) {
         trashIconElement.addEventListener(EventType.POINTER_DOWN,
-            soundAreaTrashMouseDownUseCase
+            soundAreaTrashPointerDownUseCase
         );
     }
 
@@ -106,10 +106,10 @@ export const execute = async (
             soundAreaVolumeKeyPressEventService
         );
         volumeElement.addEventListener(EventType.POINTER_OVER,
-            soundAreaVolumeMouseOverEventService
+            soundAreaVolumePointerOverEventService
         );
         volumeElement.addEventListener(EventType.POINTER_OUT,
-            soundAreaVolumeMouseOutEventService
+            soundAreaVolumePointerOutEventService
         );
         volumeElement.addEventListener(EventType.POINTER_DOWN,
             soundAreaVolumeRegisterPointerEventUseCase
@@ -129,13 +129,13 @@ export const execute = async (
             soundAreaLoopCountKeyPressEventService
         );
         loopElement.addEventListener(EventType.POINTER_OVER,
-            soundAreaLoopCountMouseOverEventService
+            soundAreaLoopCountPointerOverEventService
         );
         loopElement.addEventListener(EventType.POINTER_OUT,
-            soundAreaLoopCountMouseOutEventService
+            soundAreaLoopCountPointerOutEventService
         );
         loopElement.addEventListener(EventType.POINTER_DOWN,
-            soundAreaLoopCountRegisterPointerEventUseCase
+            soundAreaLoopCountPointerDownEventUseCase
         );
     }
 };
