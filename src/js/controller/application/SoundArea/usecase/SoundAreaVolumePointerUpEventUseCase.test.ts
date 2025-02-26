@@ -1,4 +1,4 @@
-import { execute } from "./SoundAreaLoopCountPointerUpEventUseCase";
+import { execute } from "./SoundAreaVolumePointerUpEventUseCase";
 import { describe, expect, it, vi } from "vitest";
 import { $setCursor } from "../../../../global/GlobalUtil";
 import { EventType } from "../../../../tool/domain/event/EventType";
@@ -6,7 +6,7 @@ import { soundArea } from "../../../../controller/domain/model/SoundArea";
 import { $createWorkSpace, $getCurrentWorkSpace } from "../../../../core/application/CoreUtil";
 import type { WorkSpace } from "../../../../core/domain/model/WorkSpace";
 
-describe("SoundAreaLoopCountPointerUpEventUseCase Test", () =>
+describe("SoundAreaVolumePointerUpEventUseCase Test", () =>
 {
     it("execute test", async () =>
     {
@@ -15,9 +15,9 @@ describe("SoundAreaLoopCountPointerUpEventUseCase Test", () =>
 
         const soundObject = {
             libraryId: 2,
-            volume: 1,
+            volume: 100,
             autoPlay: false,
-            loopCount: 100
+            loopCount: 0
         };
     
         movieClip.setSound(movieClip.currentFrame, soundObject);
@@ -77,7 +77,7 @@ describe("SoundAreaLoopCountPointerUpEventUseCase Test", () =>
         expect(pointerId).toBe(0);
         expect(focus).toBe(false);
         expect(soundArea.targetIndex).toBe(0);
-        expect(soundObject.loopCount).toBe(100);
+        expect(soundObject.volume).toBe(100);
 
         await execute(mockEvent);
 
@@ -90,6 +90,6 @@ describe("SoundAreaLoopCountPointerUpEventUseCase Test", () =>
         expect(focus).toBe(true);
         expect(style.getPropertyValue("--tool-cursor")).toBe("auto");
         expect(soundArea.targetIndex).toBe(-1);
-        expect(soundObject.loopCount).toBe(1);
+        expect(soundObject.volume).toBe(1);
     });
 });

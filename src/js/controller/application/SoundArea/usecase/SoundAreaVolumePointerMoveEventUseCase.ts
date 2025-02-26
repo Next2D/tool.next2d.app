@@ -1,7 +1,9 @@
 import { $SOUND_AREA_SOUND_LIST_AREA_ID } from "@/config/SoundSettingConfig";
 import { soundArea } from "@/controller/domain/model/SoundArea";
-import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
-import { $clamp, $setCursor } from "@/global/GlobalUtil";
+import {
+    $clamp,
+    $setCursor
+} from "@/global/GlobalUtil";
 
 /**
  * @description 音量操作を開始
@@ -26,22 +28,13 @@ export const execute = (event: PointerEvent): void =>
 
     requestAnimationFrame((): void =>
     {
-        const workSpace = $getCurrentWorkSpace();
-        const movieClip = workSpace.scene;
-
-        const sounds = movieClip.getSound(movieClip.currentFrame);
-        if (!sounds) {
-            return ;
-        }
-
         const element = event.target as HTMLInputElement;
         if (!element) {
             return ;
         }
 
         // 表示とaudioの音量を変更
-        const currentVolume = parseInt(element.value);
-        const volume = $clamp(currentVolume + event.movementX, 0, 100);
+        const volume = $clamp(parseInt(element.value) + event.movementX, 0, 100);
         element.value = `${volume}`;
 
         const parent: HTMLElement | null = document

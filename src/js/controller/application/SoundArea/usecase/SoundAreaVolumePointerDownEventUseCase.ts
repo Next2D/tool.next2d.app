@@ -3,6 +3,7 @@ import { execute as soundAreaVolumePointerMoveEventUseCase } from "./SoundAreaVo
 import { execute as soundAreaVolumePointerUpEventUseCase } from "./SoundAreaVolumePointerUpEventUseCase";
 import { $useKeyboard } from "@/shortcut/ShortcutUtil";
 import { soundArea } from "@/controller/domain/model/SoundArea";
+import { $activeTouchPointers } from "@/global/GlobalUtil";
 
 /**
  * @description 音声操作のwindowイベントを登録
@@ -15,18 +16,18 @@ import { soundArea } from "@/controller/domain/model/SoundArea";
  */
 export const execute = (event: PointerEvent): void =>
 {
-    if (event.button !== 0) {
+    if (event.button !== 0
+        || $activeTouchPointers.size > 1
+    ) {
         return ;
     }
-
-    // 親のイベントを止める
-    event.stopPropagation();
 
     if ($useKeyboard()) {
         return ;
     }
 
     // イベントの伝播を止める
+    event.stopPropagation();
     event.preventDefault();
 
     const element = event.currentTarget as HTMLInputElement;
