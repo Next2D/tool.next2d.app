@@ -5,7 +5,7 @@ import { execute as soundAreaSettingComponent } from "../component/SoundAreaSett
 import { EventType } from "@/tool/domain/event/EventType";
 import { execute as soundAreaTrashPointerDownUseCase } from "./SoundAreaTrashPointerDownUseCase";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
-import { execute as soundAreaVolumeRegisterPointerEventUseCase } from "./SoundAreaVolumeRegisterPointerEventUseCase";
+import { execute as soundAreaVolumePointerDownEventUseCase } from "./SoundAreaVolumePointerDownEventUseCase";
 import { execute as soundAreaLoopCountPointerDownEventUseCase } from "./SoundAreaLoopCountPointerDownEventUseCase";
 import { execute as soundAreaVolumeFocusInEventService } from "../service/SoundAreaVolumeFocusInEventService";
 import { execute as soundAreaVolumeKeyPressEventService } from "../service/SoundAreaVolumeKeyPressEventService";
@@ -112,7 +112,7 @@ export const execute = async (
             soundAreaVolumePointerOutEventService
         );
         volumeElement.addEventListener(EventType.POINTER_DOWN,
-            soundAreaVolumeRegisterPointerEventUseCase
+            soundAreaVolumePointerDownEventUseCase
         );
     }
 

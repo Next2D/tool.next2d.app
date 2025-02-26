@@ -22,7 +22,6 @@ export const execute = (event: PointerEvent): void =>
         return ;
     }
 
-    console.log("$useKeyboard(): ", $useKeyboard());
     if ($useKeyboard()) {
         return ;
     }

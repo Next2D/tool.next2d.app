@@ -1,5 +1,5 @@
 import { EventType } from "@/tool/domain/event/EventType";
-import { execute as soundAreaSoundAddMouseDownEventUseCase } from "./SoundAreaSoundAddMouseDownEventUseCase";
+import { execute as soundAreaSoundAddPointerDownEventUseCase } from "./SoundAreaSoundAddPointerDownEventUseCase";
 import {
     $SOUND_AREA_ADD_SOUND_ID,
     $SOUND_AREA_SELECT_ID
@@ -21,7 +21,7 @@ export const execute = (): void =>
     // マウスダウンイベントを登録
     if (soundAddElement) {
         soundAddElement.addEventListener(EventType.POINTER_DOWN,
-            soundAreaSoundAddMouseDownEventUseCase
+            soundAreaSoundAddPointerDownEventUseCase
         );
     }
 
