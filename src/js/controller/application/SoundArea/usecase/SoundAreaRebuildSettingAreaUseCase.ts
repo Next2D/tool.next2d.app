@@ -18,14 +18,14 @@ export const execute = async (): Promise<void> =>
         return ;
     }
 
-    // 設定エリアを初期化
-    while (element.firstElementChild) {
-        element.firstElementChild.remove();
-    }
-
     // 再生中は処理を行わない
     if (!timelineHeader.stopFlag) {
         return ;
+    }
+
+    // 設定エリアを初期化
+    while (element.firstElementChild) {
+        element.firstElementChild.remove();
     }
 
     const workSpace = $getCurrentWorkSpace();

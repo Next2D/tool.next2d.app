@@ -45,9 +45,6 @@ export const execute = async (
     const workSpace = $getCurrentWorkSpace();
     const sound = workSpace.getLibrary(sound_object.libraryId) as Sound;
 
-    // 波形用のcanvas Elementを生成
-    const canvas = sound ? await sound.createCanvasElement(280, 60) : null;
-
     element.insertAdjacentHTML("beforeend",
         soundAreaSettingComponent(index, sound_name, sound_object)
     );
@@ -80,8 +77,17 @@ export const execute = async (
         const canvasContainer = document.createElement("div");
         containerElement.appendChild(canvasContainer);
         canvasContainer.classList.add("sound-setting-preview-container");
-        if (canvas) {
-            canvasContainer.appendChild(canvas);
+
+        // 波形用のcanvas Elementを生成
+        if (sound) {
+            // 描画に時間がかかるので非同期で処理が完了したら描画
+            sound
+                .createCanvasElement(280, 60)
+                .then((canvas: HTMLCanvasElement | null) => {
+                    if (canvas) {
+                        canvasContainer.appendChild(canvas);
+                    }
+                });
         }
     }
 

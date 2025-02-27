@@ -2,9 +2,10 @@ import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import { execute as soundAreaRebuildSettingAreaUseCase } from "@/controller/application/SoundArea/usecase/SoundAreaRebuildSettingAreaUseCase";
 import { execute as soundAreaRemoveSoundHistoryUseCase } from "@/history/application/controller/application/SoundArea/RemoveSound/usecase/SoundAreaRemoveSoundHistoryUseCase";
+import { execute as timelineHeaderUpdateSoundElementService } from "@/timeline/application/TimelineHeader/service/TimelineHeaderUpdateSoundElementService";
+import { execute as propertyAreaScrollUpdateHeightService } from "@/controller/application/PropertyAreaScroll/service/PropertyAreaScrollUpdateHeightService";
 import { $getLeftFrame } from "@/timeline/application/TimelineUtil";
 import { timelineHeader } from "@/timeline/domain/model/TimelineHeader";
-import { execute as timelineHeaderUpdateSoundElementService } from "@/timeline/application/TimelineHeader/service/TimelineHeaderUpdateSoundElementService";
 
 /**
  * @description 指定フレームのサウンドを削除
@@ -62,11 +63,14 @@ export const execute = async (
         // サウンド設定エリアの再構築
         if (movie_clip.currentFrame === frame) {
             await soundAreaRebuildSettingAreaUseCase();
+
+            // プロパティエリアの高さを更新
+            propertyAreaScrollUpdateHeightService();
         }
 
         if (!sounds.length) {
             const layerIndex = frame - $getLeftFrame();
-            const element: HTMLElement | undefined = timelineHeader.elements[layerIndex] as HTMLElement;
+            const element = timelineHeader.elements[layerIndex] as HTMLElement;
             if (!element) {
                 return ;
             }
