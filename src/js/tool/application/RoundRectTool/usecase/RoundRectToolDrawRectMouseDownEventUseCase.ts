@@ -1,5 +1,7 @@
 import { execute as drawRectShowService } from "@/screen/application/DrawRect/service/DrawRectShowService";
 import { execute as roundRectToolDrawRectRegisterPointerEventUseCase } from "./RoundRectToolDrawRectRegisterPointerEventUseCase";
+import { $activeTouchPointers } from "@/global/GlobalUtil";
+import { timelineHeader } from "@/timeline/domain/model/TimelineHeader";
 
 /**
  * @description 描画の範囲選択のマウスダウンイベント
@@ -12,7 +14,10 @@ import { execute as roundRectToolDrawRectRegisterPointerEventUseCase } from "./R
  */
 export const execute = (event: PointerEvent): void =>
 {
-    if (event.button !== 0) {
+    if (event.button !== 0
+        || $activeTouchPointers.size > 1
+        || !timelineHeader.stopFlag
+    ) {
         return ;
     }
 

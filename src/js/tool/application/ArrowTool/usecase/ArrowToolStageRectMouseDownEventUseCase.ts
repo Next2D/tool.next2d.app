@@ -1,5 +1,7 @@
 import { execute as stageRectShowService } from "@/screen/application/StageRect/service/StageRectShowService";
 import { execute as arrowToolStageRectRegisterPointerEventUseCase } from "./ArrowToolStageRectRegisterPointerEventUseCase";
+import { timelineHeader } from "@/timeline/domain/model/TimelineHeader";
+import { $activeTouchPointers } from "@/global/GlobalUtil";
 
 /**
  * @description 範囲選択のマウスダウンイベントの実行関数
@@ -12,7 +14,10 @@ import { execute as arrowToolStageRectRegisterPointerEventUseCase } from "./Arro
  */
 export const execute = (event: PointerEvent): void =>
 {
-    if (event.button !== 0) {
+    if (event.button !== 0
+        || $activeTouchPointers.size > 1
+        || !timelineHeader.stopFlag
+    ) {
         return ;
     }
 
