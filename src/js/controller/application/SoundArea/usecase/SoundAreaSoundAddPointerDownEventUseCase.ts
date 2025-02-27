@@ -2,6 +2,7 @@ import { $SOUND_AREA_SELECT_ID } from "@/config/SoundSettingConfig";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { ExternalSoundArea } from "@/external/controller/domain/model/ExternalSoundArea";
 import { $activeTouchPointers } from "@/global/GlobalUtil";
+import { timelineHeader } from "@/timeline/domain/model/TimelineHeader";
 
 /**
  * @description サウンドエリアのサウンド追加ボタンのマウスダウンイベント
@@ -16,6 +17,7 @@ export const execute = async (event: PointerEvent): Promise<void> =>
 {
     if (event.button !== 0
         || $activeTouchPointers.size > 1
+        || !timelineHeader.stopFlag
     ) {
         return ;
     }

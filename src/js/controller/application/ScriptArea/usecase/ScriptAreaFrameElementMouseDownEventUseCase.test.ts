@@ -22,6 +22,8 @@ describe("ScriptAreaFrameElementMouseDownEventUseCase Test", () =>
         let stopPropagation = false;
         let preventDefault = false;
         const mockEvent = {
+            "button": 0,
+            "currentTarget": div,
             "stopPropagation": vi.fn(() =>
             {
                 stopPropagation = true;
@@ -29,8 +31,7 @@ describe("ScriptAreaFrameElementMouseDownEventUseCase Test", () =>
             "preventDefault": vi.fn(() =>
             {
                 preventDefault = true;
-            }),
-            "currentTarget": div
+            })
         } as unknown as PointerEvent;
 
         $setTargetFrame(1);

@@ -3,11 +3,12 @@ import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { execute as timelineSceneListClearAddRootUseCase } from "@/timeline/application/TimelineSceneList/usecase/TimelineSceneListClearAddRootUseCase";
 import { execute as externalTimelineEditMovieClipUseService } from "@/external/timeline/application/ExternalTimeline/service/ExternalTimelineEditMovieClipUseService";
 import { $useKeyboard } from "@/shortcut/ShortcutUtil";
+import { $allHideMenu } from "@/menu/application/MenuUtil";
+import { timelineHeader } from "@/timeline/domain/model/TimelineHeader";
 import {
     $activeTouchPointers,
     $setEditingElement
 } from "@/global/GlobalUtil";
-import { $allHideMenu } from "@/menu/application/MenuUtil";
 
 /**
  * @description ダブルタップ用の待機フラグ
@@ -40,6 +41,7 @@ export const execute = async (event: PointerEvent): Promise<void> =>
 {
     if (event.button !== 0
         || $activeTouchPointers.size > 1
+        || !timelineHeader.stopFlag
     ) {
         return ;
     }

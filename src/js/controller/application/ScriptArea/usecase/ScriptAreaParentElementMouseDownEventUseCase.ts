@@ -7,6 +7,7 @@ import { execute as timelineSceneListClearAllService } from "@/timeline/applicat
 import { $MOVIE_CLIP_TYPE } from "@/config/InstanceConfig";
 import { execute as externalTimelineEditMovieClipUseService } from "@/external/timeline/application/ExternalTimeline/service/ExternalTimelineEditMovieClipUseService";
 import { $useKeyboard } from "@/shortcut/ShortcutUtil";
+import { timelineHeader } from "@/timeline/domain/model/TimelineHeader";
 
 /**
  * @description ダブルタップ用の待機フラグ
@@ -39,6 +40,7 @@ export const execute = async (event: PointerEvent): Promise<void> =>
 {
     if (event.button !== 0
         || $activeTouchPointers.size > 1
+        || !timelineHeader.stopFlag
     ) {
         return ;
     }

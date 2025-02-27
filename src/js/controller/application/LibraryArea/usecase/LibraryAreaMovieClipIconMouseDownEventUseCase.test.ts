@@ -4,6 +4,7 @@ import { $createWorkSpace, $getCurrentWorkSpace } from "../../../../core/applica
 import { execute } from "./LibraryAreaMovieClipIconMouseDownEventUseCase";
 import { describe, expect, it, vi } from "vitest";
 import { $MOVIE_CLIP_TYPE } from "../../../../config/InstanceConfig";
+import { timelineHeader } from "../../../../timeline/domain/model/TimelineHeader";
 
 describe("LibraryAreaMovieClipIconMouseDownEventUseCase Test", () =>
 {
@@ -43,5 +44,26 @@ describe("LibraryAreaMovieClipIconMouseDownEventUseCase Test", () =>
 
         workSpace.libraries.delete(movieClip.id);
         workSpace.stop();
+    });
+
+    it("execute test case2", async () =>
+    {
+        let preventDefault = false;
+        let stopPropagation = false;
+        const mockEvent = {
+            "preventDefault": vi.fn(() => { preventDefault = true; }),
+            "stopPropagation": vi.fn(() => { stopPropagation = true; }),
+            "button": 0,
+        } as unknown as PointerEvent;
+
+        timelineHeader.stopFlag = false;
+        expect(preventDefault).toBe(false);
+        expect(stopPropagation).toBe(false);
+
+        await execute(mockEvent);
+
+        timelineHeader.stopFlag = true;
+        expect(preventDefault).toBe(false);
+        expect(stopPropagation).toBe(false);
     });
 });

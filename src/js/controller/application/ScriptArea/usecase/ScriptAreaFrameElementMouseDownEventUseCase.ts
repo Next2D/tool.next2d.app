@@ -3,7 +3,7 @@ import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { execute as scriptEditorModalShowService } from "@/menu/application/ScriptEditorModal/service/ScriptEditorModalShowService";
 import { $allHideMenu } from "@/menu/application/MenuUtil";
 import { $MOVIE_CLIP_TYPE } from "@/config/InstanceConfig";
-import { $setEditingElement } from "@/global/GlobalUtil";
+import { $activeTouchPointers, $setEditingElement } from "@/global/GlobalUtil";
 import {
     $setTargetFrame,
     $setTargetMovieClip
@@ -20,6 +20,12 @@ import {
  */
 export const execute = (event: PointerEvent): void =>
 {
+    if (event.button !== 0
+        || $activeTouchPointers.size > 1
+    ) {
+        return ;
+    }
+
     // 親のイベントを終了
     event.stopPropagation();
     event.preventDefault();

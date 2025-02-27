@@ -7,7 +7,11 @@ import { execute as billingModelShowService } from "@/menu/application/BillingMo
 import { execute as historyRedoUseCase } from "./HistoryRedoUseCase";
 import { execute as historyUndoUseCase } from "./HistoryUndoUseCase";
 import { execute as userDatabaseAutoSaveReservationUseCase } from "@/user/application/Database/usecase/UserDatabaseAutoSaveReservationUseCase";
-import { $setEditingElement } from "@/global/GlobalUtil";
+import { timelineHeader } from "@/timeline/domain/model/TimelineHeader";
+import {
+    $activeTouchPointers,
+    $setEditingElement
+} from "@/global/GlobalUtil";
 
 /**
  * @description 指定のIndexまで作業履歴を更新する
@@ -20,7 +24,10 @@ import { $setEditingElement } from "@/global/GlobalUtil";
  */
 export const execute = async (event: PointerEvent): Promise<void> =>
 {
-    if (event.button !== 0) {
+    if (event.button !== 0
+        || $activeTouchPointers.size > 1
+        || !timelineHeader.stopFlag // 再生中は処理しない
+    ) {
         return ;
     }
 

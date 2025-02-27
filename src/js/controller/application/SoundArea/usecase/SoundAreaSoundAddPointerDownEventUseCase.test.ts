@@ -5,10 +5,11 @@ import { Sound } from "../../../../core/domain/model/Sound";
 import { $SOUND_AREA_SELECT_ID } from "../../../../config/SoundSettingConfig";
 import { $createWorkSpace, $getCurrentWorkSpace } from "../../../../core/application/CoreUtil";
 import { describe, expect, it, vi } from "vitest";
+import { timelineHeader } from "../../../../timeline/domain/model/TimelineHeader";
 
 describe("SoundAreaSoundAddPointerDownEventUseCase Test", () =>
 {
-    it("execute test", async () =>
+    it("execute test case1", async () =>
     {
         const workSpace: WorkSpace = $getCurrentWorkSpace() || $createWorkSpace();
         
@@ -58,5 +59,26 @@ describe("SoundAreaSoundAddPointerDownEventUseCase Test", () =>
         workSpace.libraries.delete(sound.id);
         workSpace.pathMap.delete(sound.getPath(workSpace));
         select.remove();
+    });
+
+    it("execute test case2", async () =>
+    {
+        let stopPropagation = false;
+        let preventDefault = false;
+        const mockEvent = {
+            "stopPropagation": vi.fn(() => { stopPropagation = true; }),
+            "preventDefault": vi.fn(() => { preventDefault = true; }),
+            "button": 0
+        } as unknown as PointerEvent;
+    
+        timelineHeader.stopFlag = false;
+        expect(stopPropagation).toBe(false);
+        expect(preventDefault).toBe(false);
+
+        await execute(mockEvent);
+
+        timelineHeader.stopFlag = true;
+        expect(stopPropagation).toBe(false);
+        expect(preventDefault).toBe(false);
     });
 });

@@ -1,5 +1,6 @@
 import { $updateKeyLock } from "@/shortcut/ShortcutUtil";
 import { $setEditingElement } from "@/global/GlobalUtil";
+import { timelineHeader } from "@/timeline/domain/model/TimelineHeader";
 
 /**
  * @description ステージの幅設定のフォーカスイベント処理
@@ -20,6 +21,10 @@ export const execute = (event: FocusEvent): void =>
     const element: HTMLInputElement | null = event.currentTarget as HTMLInputElement;
     if (!element) {
         return ;
+    }
+
+    if (!timelineHeader.stopFlag) {
+        return element.blur();
     }
 
     // 入力モードをOnにする
