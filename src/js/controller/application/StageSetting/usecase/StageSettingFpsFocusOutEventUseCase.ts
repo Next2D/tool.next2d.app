@@ -8,11 +8,11 @@ import { $updateKeyLock } from "@/shortcut/ShortcutUtil";
  *              Update the frame rate of the stage area
  *
  * @param  {FocusEvent} event
- * @return {void}
+ * @return {Promise<void>}
  * @method
  * @public
  */
-export const execute = (event: FocusEvent): void =>
+export const execute = async (event: FocusEvent): Promise<void> =>
 {
     // イベントの伝播を止める
     event.stopPropagation();
@@ -33,8 +33,9 @@ export const execute = (event: FocusEvent): void =>
         return ;
     }
 
+    // フレームレートを更新
     const externalStage = new ExternalStage(workSpace);
-    externalStage.fps   = Math.max(1, Math.min(fps, $STAGE_DEFAULT_FPS));
+    await externalStage.setFps(Math.max(1, Math.min(fps, $STAGE_DEFAULT_FPS)));
 
     // 表示を更新
     element.value = `${externalStage.fps}`;

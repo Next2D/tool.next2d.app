@@ -6,11 +6,11 @@ import { ExternalStage } from "@/external/core/domain/model/ExternalStage";
  *              Change the background color of the stage
  *
  * @param  {Event} event
- * @return {void}
+ * @return {Promise<void>}
  * @method
  * @public
  */
-export const execute = (event: Event): void =>
+export const execute = async (event: Event): Promise<void> =>
 {
     // 親のイベントを止める
     event.stopPropagation();
@@ -25,5 +25,5 @@ export const execute = (event: Event): void =>
     const externalStage = new ExternalStage($getCurrentWorkSpace());
 
     // 背景色を変更
-    externalStage.bgColor = element.value;
+    await externalStage.setBgColor(element.value);
 };

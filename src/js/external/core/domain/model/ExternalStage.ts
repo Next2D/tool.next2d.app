@@ -30,6 +30,85 @@ export class ExternalStage
      *              Value of the width of the stage
      *
      * @member {number}
+     * @method
+     * @public
+     */
+    getWidth (): number
+    {
+        return this._$workSpace.stage.width;
+    }
+    async setWidth (width: number): Promise<void>
+    {
+        await externalStageUpdateWidthUseCase(
+            this._$workSpace,
+            width
+        );
+    }
+
+    /**
+     * @description ステージの高さの値
+     *              Value of the height of the stage
+     *
+     * @member {number}
+     * @public
+     * @method
+     */
+    getHeight (): number
+    {
+        return this._$workSpace.stage.height;
+    }
+    async setHeight (height: number): Promise<void>
+    {
+        await externalStageUpdateHeightUseCase(
+            this._$workSpace,
+            height
+        );
+    }
+
+    /**
+     * @description ステージのフレームレートの値
+     *              Value of the frame rate of the stage
+     *
+     * @member {number}
+     * @public
+     * @method
+     */
+    getFps (): number
+    {
+        return this._$workSpace.stage.fps;
+    }
+    async setFps (fps: number): Promise<void>
+    {
+        await externalStageUpdateFpsUseCase(
+            this._$workSpace,
+            fps
+        );
+    }
+
+    /**
+     * @description ステージの背景色の値
+     *              Value of the background color of the stage
+     *
+     * @member {string}
+     * @public
+     * @method
+     */
+    getBgColor (): string
+    {
+        return this._$workSpace.stage.bgColor;
+    }
+    async setBgColor (color: string): Promise<void> {
+        await externalStageUpdateColorUseCase(
+            this._$workSpace,
+            color
+        );
+    }
+
+    /**
+     * @description ステージの幅の値
+     *              Value of the width of the stage
+     *
+     * @member {number}
      * @public
      */
     get width (): number

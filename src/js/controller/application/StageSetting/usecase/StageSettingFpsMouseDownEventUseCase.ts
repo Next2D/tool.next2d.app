@@ -1,6 +1,8 @@
 import { $useKeyboard } from "@/shortcut/ShortcutUtil";
 import { $setBeforeFps } from "../StagsSettingUtil";
 import { execute as stageSettingFpsRegisterPointerEventUseCase } from "./StageSettingFpsRegisterPointerEventUseCase";
+import { $activeTouchPointers } from "@/global/GlobalUtil";
+import { timelineHeader } from "@/timeline/domain/model/TimelineHeader";
 
 /**
  * @description ステージのフレームレート設定のマウスダウンイベントユースケース
@@ -13,21 +15,22 @@ import { execute as stageSettingFpsRegisterPointerEventUseCase } from "./StageSe
  */
 export const execute = (event: PointerEvent): void =>
 {
-    if (event.button !== 0) {
+    if (event.button !== 0
+        || $activeTouchPointers.size > 1
+        || !timelineHeader.stopFlag
+    ) {
         return ;
     }
-
-    // 親のイベントを止める
-    event.stopPropagation();
 
     if ($useKeyboard()) {
         return ;
     }
 
     // イベントの伝播を止める
+    event.stopPropagation();
     event.preventDefault();
 
-    const element: HTMLInputElement | null = event.target as HTMLInputElement;
+    const element = event.target as HTMLInputElement;
     if (!element) {
         return ;
     }

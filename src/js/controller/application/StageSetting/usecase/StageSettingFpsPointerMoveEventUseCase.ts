@@ -38,9 +38,11 @@ export const execute = (event: PointerEvent): void =>
             $STAGE_DEFAULT_FPS
         ));
 
-        if (value !== currentValue) {
-            element.value = `${value}`;
-            $getCurrentWorkSpace().stage.fps = value;
+        if (value === currentValue) {
+            return ;
         }
+
+        element.value = `${value}`;
+        $getCurrentWorkSpace().stage.fps = value;
     });
 };
