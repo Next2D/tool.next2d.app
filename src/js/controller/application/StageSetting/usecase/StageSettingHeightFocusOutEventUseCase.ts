@@ -8,11 +8,11 @@ import { $updateKeyLock } from "@/shortcut/ShortcutUtil";
  *              Update the height of the stage area
  *
  * @param  {FocusEvent} event
- * @return {void}
+ * @return {Promise<void>}
  * @method
  * @public
  */
-export const execute = (event: FocusEvent): void =>
+export const execute = async (event: FocusEvent): Promise<void> =>
 {
     // イベントの伝播を止める
     event.stopPropagation();
@@ -41,9 +41,9 @@ export const execute = (event: FocusEvent): void =>
     // ロック設定がされている場合は高さも更新
     if (stageSetting.lock) {
         const diff = afterHeight - externalStage.height;
-        externalStage.width += diff;
+        await externalStage.setWidth(externalStage.getWidth() + diff);
     }
 
     // 幅を更新
-    externalStage.height = afterHeight;
+    await externalStage.setHeight(afterHeight);
 };
