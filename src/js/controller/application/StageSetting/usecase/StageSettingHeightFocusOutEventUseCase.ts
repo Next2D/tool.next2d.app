@@ -40,7 +40,7 @@ export const execute = async (event: FocusEvent): Promise<void> =>
 
     // ロック設定がされている場合は高さも更新
     if (stageSetting.lock) {
-        const diff = afterHeight - externalStage.height;
+        const diff = afterHeight - externalStage.getHeight();
         await externalStage.setWidth(externalStage.getWidth() + diff);
     }
 

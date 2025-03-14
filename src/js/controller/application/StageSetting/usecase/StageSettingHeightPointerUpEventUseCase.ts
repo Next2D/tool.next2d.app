@@ -17,11 +17,11 @@ import {
  *              Mouse up event for stage height numerical changes
  *
  * @param  {PointerEvent} event
- * @return {void}
+ * @return {Promise<void>}
  * @method
  * @public
  */
-export const execute = (event: PointerEvent): void =>
+export const execute = async (event: PointerEvent): Promise<void> =>
 {
     // イベントの伝播を止める
     event.stopPropagation();
@@ -41,6 +41,7 @@ export const execute = (event: PointerEvent): void =>
         stageSettingHeightPointerMoveEventUseCase
     );
     element.removeEventListener(EventType.POINTER_UP, execute);
+    element.removeEventListener(EventType.POINTER_LEAVE, execute);
 
     const workSpace = $getCurrentWorkSpace();
     const stage = workSpace.stage;
@@ -53,7 +54,7 @@ export const execute = (event: PointerEvent): void =>
 
     // 外部APIを起動して幅を更新
     const externalStage  = new ExternalStage(workSpace);
-    externalStage.height = parseInt(element.value);
+    await externalStage.setHeight(parseInt(element.value));
 
     if (stageSetting.lock) {
 
@@ -70,7 +71,7 @@ export const execute = (event: PointerEvent): void =>
             return ;
         }
 
-        externalStage.width = parseInt(element.value);
+        await externalStage.setWidth(parseInt(element.value));
     }
 
     // input要素のフォーカス

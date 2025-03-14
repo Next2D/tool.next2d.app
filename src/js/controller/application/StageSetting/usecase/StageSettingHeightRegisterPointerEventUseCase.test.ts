@@ -1,8 +1,8 @@
-import { execute } from "./StageSettingFpsRegisterPointerEventUseCase";
+import { execute } from "./StageSettingHeightRegisterPointerEventUseCase";
 import { describe, expect, it, vi } from "vitest";
 import { EventType } from "../../../../tool/domain/event/EventType";
 
-describe("StageSettingFpsRegisterPointerEventUseCase Test", () =>
+describe("StageSettingHeightRegisterPointerEventUseCase Test", () =>
 {
     it("execute test", () =>
     {
