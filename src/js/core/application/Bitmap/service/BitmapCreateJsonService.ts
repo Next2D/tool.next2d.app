@@ -7,7 +7,7 @@ import { Shape } from "@next2d/display";
  *              Create a JSON object for playback in Next2D Player
  *
  * @param  {Bitmap} bitmap
- * @return {object}
+ * @return {IBitmapPublishJson}
  * @method
  * @public
  */
