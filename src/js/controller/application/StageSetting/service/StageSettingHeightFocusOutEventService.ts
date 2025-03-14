@@ -2,6 +2,7 @@ import { stageSetting } from "@/controller/domain/model/StageSetting";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { ExternalStage } from "@/external/core/domain/model/ExternalStage";
 import { $updateKeyLock } from "@/shortcut/ShortcutUtil";
+import { timelineHeader } from "@/timeline/domain/model/TimelineHeader";
 
 /**
  * @description ステージエリアの高さを更新
@@ -28,7 +29,7 @@ export const execute = async (event: FocusEvent): Promise<void> =>
 
     const workSpace = $getCurrentWorkSpace();
     const height = parseInt(element.value);
-    if (isNaN(height) || 0 >= height) {
+    if (!timelineHeader.stopFlag || isNaN(height) || 0 >= height) {
         element.value = `${workSpace.stage.height}`;
         return ;
     }

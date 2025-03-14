@@ -4,8 +4,8 @@ import { execute as stageSettingWidthPointerDownEventUseCase } from "./StageSett
 import { execute as stageSettingMouseOverEventService } from "../service/StageSettingPointerOverEventService";
 import { execute as stageSettingMouseOutEventService } from "../service/StageSettingPointerOutEventService";
 import { execute as stageSettingFocusInEventService } from "../service/StageSettingFocusInEventService";
-import { execute as stageSettingWidthFocusOutEventUseCase } from "./StageSettingWidthFocusOutEventUseCase";
-import { execute as stageSettingHeightFocusOutEventUseCase } from "./StageSettingHeightFocusOutEventUseCase";
+import { execute as stageSettingWidthFocusOutEventService } from "../service/StageSettingWidthFocusOutEventService";
+import { execute as stageSettingHeightFocusOutEventService } from "../service/StageSettingHeightFocusOutEventService";
 import { execute as stageSettingFpsFocusOutEventUseCase } from "./StageSettingFpsFocusOutEventUseCase";
 import { execute as stageSettingKeyPressEventService } from "../service/StageSettingKeyPressEventService";
 import { execute as stageSettingHeightPointerDownEventUseCase } from "./StageSettingHeightPointerDownEventUseCase";
@@ -57,7 +57,7 @@ export const execute = (): void =>
             stageSettingFocusInEventService
         );
         widthElement.addEventListener("focusout",
-            stageSettingWidthFocusOutEventUseCase
+            stageSettingWidthFocusOutEventService
         );
         widthElement.addEventListener("keypress",
             stageSettingKeyPressEventService
@@ -82,7 +82,7 @@ export const execute = (): void =>
             stageSettingFocusInEventService
         );
         heightElement.addEventListener("focusout",
-            stageSettingHeightFocusOutEventUseCase
+            stageSettingHeightFocusOutEventService
         );
         heightElement.addEventListener("keypress",
             stageSettingKeyPressEventService

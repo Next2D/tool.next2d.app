@@ -1,9 +1,9 @@
-import { execute } from "./StageSettingHeightFocusOutEventUseCase";
+import { execute } from "./StageSettingHeightFocusOutEventService";
 import { describe, expect, it, vi } from "vitest";
 import { $createWorkSpace, $getCurrentWorkSpace } from "../../../../core/application/CoreUtil";
 import type { WorkSpace } from "../../../../core/domain/model/WorkSpace";
 
-describe("StageSettingHeightFocusOutEventUseCase Test", () =>
+describe("StageSettingHeightFocusOutEventService Test", () =>
 {
     it("execute test", async () =>
     {

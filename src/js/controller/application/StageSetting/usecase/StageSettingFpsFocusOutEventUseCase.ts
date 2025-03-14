@@ -2,6 +2,7 @@ import { $STAGE_DEFAULT_FPS } from "@/config/StageSettingConfig";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { ExternalStage } from "@/external/core/domain/model/ExternalStage";
 import { $updateKeyLock } from "@/shortcut/ShortcutUtil";
+import { timelineHeader } from "@/timeline/domain/model/TimelineHeader";
 
 /**
  * @description ステージエリアのフレームレートを更新
@@ -28,7 +29,7 @@ export const execute = async (event: FocusEvent): Promise<void> =>
 
     const workSpace = $getCurrentWorkSpace();
     const fps = parseInt(element.value);
-    if (isNaN(fps) || 0 >= fps) {
+    if (!timelineHeader.stopFlag ||  isNaN(fps) || 0 >= fps) {
         element.value = `${workSpace.stage.fps}`;
         return ;
     }
