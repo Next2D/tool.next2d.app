@@ -1,6 +1,9 @@
 import type { IBounds } from "@/interface/IBounds";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
-import { $getCurrentWorkSpace, $getMatrixBounds } from "../../CoreUtil";
+import {
+    $getCurrentWorkSpace,
+    $getMatrixBounds
+} from "../../CoreUtil";
 
 /**
  * @description 指定IDのライブラリアイテムのバウンディングボックスをmatrixで加工して返却
