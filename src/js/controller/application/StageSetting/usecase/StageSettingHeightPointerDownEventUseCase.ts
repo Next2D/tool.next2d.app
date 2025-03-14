@@ -6,6 +6,7 @@ import {
     $setBeforeHeight,
     $setBeforeWidth
 } from "../StagsSettingUtil";
+import { $activeTouchPointers } from "@/global/GlobalUtil";
 
 /**
  * @description ステージエリアの高さのマウスダウンイベントユースケース
@@ -18,7 +19,9 @@ import {
  */
 export const execute = (event: PointerEvent): void =>
 {
-    if (event.button !== 0) {
+    if (event.button !== 0
+        || $activeTouchPointers.size > 1
+    ) {
         return ;
     }
 
@@ -38,7 +41,8 @@ export const execute = (event: PointerEvent): void =>
     }
 
     // 変更前の幅をセット
-    $setBeforeHeight(parseInt(element.value));
+    const height = parseInt(element.value);
+    $setBeforeHeight(height);
 
     // ロック時は高さもセット
     if (stageSetting.lock) {
@@ -50,7 +54,7 @@ export const execute = (event: PointerEvent): void =>
         }
 
         // 変更前の高さをセット
-        $setBeforeWidth(parseInt(element.value));
+        $setBeforeWidth(height);
     }
 
     // windowのイベントを登録

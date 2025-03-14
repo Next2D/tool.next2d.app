@@ -1,8 +1,8 @@
-import { execute } from "./StageSettingFpsMouseDownEventUseCase";
+import { execute } from "./StageSettingFpsPointerDownEventUseCase";
 import { describe, expect, it, vi } from "vitest";
 import { $setBeforeFps, $getBeforeFps } from "../StagsSettingUtil";
 
-describe("StageSettingFpsMouseDownEventUseCase Test", () =>
+describe("StageSettingFpsPointerDownEventUseCase Test", () =>
 {
     it("execute test", async () =>
     {

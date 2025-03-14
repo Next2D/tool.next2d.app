@@ -8,8 +8,8 @@ import { execute as stageSettingWidthFocusOutEventUseCase } from "./StageSetting
 import { execute as stageSettingHeightFocusOutEventUseCase } from "./StageSettingHeightFocusOutEventUseCase";
 import { execute as stageSettingFpsFocusOutEventUseCase } from "./StageSettingFpsFocusOutEventUseCase";
 import { execute as stageSettingKeyPressEventService } from "../service/StageSettingKeyPressEventService";
-import { execute as stageSettingHeightMouseDownEventUseCase } from "./StageSettingHeightMouseDownEventUseCase";
-import { execute as stageSettingFpsMouseDownEventUseCase } from "./StageSettingFpsMouseDownEventUseCase";
+import { execute as stageSettingHeightPointerDownEventUseCase } from "./StageSettingHeightPointerDownEventUseCase";
+import { execute as stageSettingFpsPointerDownEventUseCase } from "./StageSettingFpsPointerDownEventUseCase";
 import { execute as stageSettingColorChangeEventUseCase } from "./StageSettingColorChangeEventUseCase";
 import {
     $STAGE_BG_COLOR_ID,
@@ -76,7 +76,7 @@ export const execute = (): void =>
             stageSettingMouseOutEventService
         );
         heightElement.addEventListener(EventType.POINTER_DOWN,
-            stageSettingHeightMouseDownEventUseCase
+            stageSettingHeightPointerDownEventUseCase
         );
         heightElement.addEventListener("focusin",
             stageSettingFocusInEventService
@@ -111,7 +111,7 @@ export const execute = (): void =>
             stageSettingMouseOutEventService
         );
         fpsElement.addEventListener(EventType.POINTER_DOWN,
-            stageSettingFpsMouseDownEventUseCase
+            stageSettingFpsPointerDownEventUseCase
         );
         fpsElement.addEventListener("focusin",
             stageSettingFocusInEventService
