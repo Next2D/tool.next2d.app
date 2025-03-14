@@ -24,5 +24,7 @@ describe("CharacterCalcGetBoundsService Test", () =>
         expect(bounds.yMin).toBe(20);
         expect(bounds.xMax).toBe(250);
         expect(bounds.yMax).toBe(224);
+
+        workSpace.libraries.delete(1);
     });
 });
