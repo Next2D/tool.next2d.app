@@ -1,3 +1,5 @@
+import { $activeTouchPointers } from "@/global/GlobalUtil";
+import { timelineHeader } from "@/timeline/domain/model/TimelineHeader";
 import { $getActiveTool } from "@/tool/application/ToolUtil";
 import { EventType } from "@/tool/domain/event/EventType";
 
@@ -12,7 +14,10 @@ import { EventType } from "@/tool/domain/event/EventType";
  */
 export const execute = (event: PointerEvent): void =>
 {
-    if (event.button !== 0) {
+    if (event.button !== 0
+        || $activeTouchPointers.size > 1
+        || !timelineHeader.stopFlag
+    ) {
         return ;
     }
 
