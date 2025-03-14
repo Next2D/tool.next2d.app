@@ -1,12 +1,11 @@
-import { execute } from "./StageSettingMouseOutEventService";
+import { execute } from "./StageSettingPointerOverEventService";
 import { describe, expect, it } from "vitest";
 
-describe("StageSettingMouseOutEventServiceTest", () =>
+describe("StageSettingPointerOverEventService Test", () =>
 {
     it("execute test", () =>
     {
         const input = document.createElement("input");
-        input.style.cursor = "ew-resize";
 
         let stopPropagation = false;
         let preventDefault  = false;
@@ -23,12 +22,12 @@ describe("StageSettingMouseOutEventServiceTest", () =>
 
         expect(stopPropagation).toBe(false);
         expect(preventDefault).toBe(false);
-        expect(input.style.cursor).toBe("ew-resize");
+        expect(input.style.cursor).toBe("");
 
         execute(eventMock);
 
         expect(stopPropagation).toBe(true);
         expect(preventDefault).toBe(true);
-        expect(input.style.cursor).toBe("");
+        expect(input.style.cursor).toBe("ew-resize");
     });
 });

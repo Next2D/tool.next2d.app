@@ -1,8 +1,8 @@
 import { EventType } from "@/tool/domain/event/EventType";
-import { execute as stageSettingLockMouseDownEventUseCase } from "./StageSettingLockMouseDownEventUseCase";
-import { execute as stageSettingWidthMouseDownEventUseCase } from "./StageSettingWidthMouseDownEventUseCase";
-import { execute as stageSettingMouseOverEventService } from "../service/StageSettingMouseOverEventService";
-import { execute as stageSettingMouseOutEventService } from "../service/StageSettingMouseOutEventService";
+import { execute as stageSettingLockPointerDownEventUseCase } from "./StageSettingLockPointerDownEventUseCase";
+import { execute as stageSettingWidthPointerDownEventUseCase } from "./StageSettingWidthPointerDownEventUseCase";
+import { execute as stageSettingMouseOverEventService } from "../service/StageSettingPointerOverEventService";
+import { execute as stageSettingMouseOutEventService } from "../service/StageSettingPointerOutEventService";
 import { execute as stageSettingFocusInEventService } from "../service/StageSettingFocusInEventService";
 import { execute as stageSettingWidthFocusOutEventUseCase } from "./StageSettingWidthFocusOutEventUseCase";
 import { execute as stageSettingHeightFocusOutEventUseCase } from "./StageSettingHeightFocusOutEventUseCase";
@@ -35,7 +35,7 @@ export const execute = (): void =>
 
     if (lockElement) {
         lockElement.addEventListener(EventType.POINTER_DOWN,
-            stageSettingLockMouseDownEventUseCase
+            stageSettingLockPointerDownEventUseCase
         );
     }
 
@@ -51,7 +51,7 @@ export const execute = (): void =>
             stageSettingMouseOutEventService
         );
         widthElement.addEventListener(EventType.POINTER_DOWN,
-            stageSettingWidthMouseDownEventUseCase
+            stageSettingWidthPointerDownEventUseCase
         );
         widthElement.addEventListener("focusin",
             stageSettingFocusInEventService

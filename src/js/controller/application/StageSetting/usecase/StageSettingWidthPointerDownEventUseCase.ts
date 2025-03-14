@@ -1,11 +1,13 @@
 import { stageSetting } from "@/controller/domain/model/StageSetting";
 import { $useKeyboard } from "@/shortcut/ShortcutUtil";
 import { $STAGE_HEIGHT_ID } from "@/config/StageSettingConfig";
-import { execute as stageSettingWidthRegisterWindowEventUseCase } from "./StageSettingWidthRegisterPointerEventUseCase";
+import { execute as stageSettingWidthRegisterPointerEventUseCase } from "./StageSettingWidthRegisterPointerEventUseCase";
 import {
     $setBeforeHeight,
     $setBeforeWidth
 } from "../StagsSettingUtil";
+import { $activeTouchPointers } from "@/global/GlobalUtil";
+import { timelineHeader } from "@/timeline/domain/model/TimelineHeader";
 
 /**
  * @description ステージエリアの幅のマウスダウンイベントユースケース
@@ -18,18 +20,19 @@ import {
  */
 export const execute = (event: PointerEvent): void =>
 {
-    if (event.button !== 0) {
+    if (event.button !== 0
+        || $activeTouchPointers.size > 1
+        || !timelineHeader.stopFlag
+    ) {
         return ;
     }
-
-    // 親のイベントを止める
-    event.stopPropagation();
 
     if ($useKeyboard()) {
         return ;
     }
 
     // イベントの伝播を止める
+    event.stopPropagation();
     event.preventDefault();
 
     const element: HTMLInputElement | null = event.target as HTMLInputElement;
@@ -54,5 +57,5 @@ export const execute = (event: PointerEvent): void =>
     }
 
     // 移動のイベントを登録
-    stageSettingWidthRegisterWindowEventUseCase(event);
+    stageSettingWidthRegisterPointerEventUseCase(event);
 };

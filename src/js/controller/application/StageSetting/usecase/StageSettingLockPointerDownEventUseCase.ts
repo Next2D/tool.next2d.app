@@ -1,4 +1,5 @@
 import { stageSetting } from "@/controller/domain/model/StageSetting";
+import { $activeTouchPointers } from "@/global/GlobalUtil";
 
 /**
  * @description ステージエリアのロックボタンのマウスダウンイベントユースケース
@@ -11,7 +12,9 @@ import { stageSetting } from "@/controller/domain/model/StageSetting";
  */
 export const execute = (event: PointerEvent): void =>
 {
-    if (event.button !== 0) {
+    if (event.button !== 0
+        || $activeTouchPointers.size > 1
+    ) {
         return ;
     }
 

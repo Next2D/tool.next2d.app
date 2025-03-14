@@ -41,8 +41,7 @@ export const execute = (event: PointerEvent): void =>
     }
 
     // 変更前の幅をセット
-    const height = parseInt(element.value);
-    $setBeforeHeight(height);
+    $setBeforeHeight(parseInt(element.value));
 
     // ロック時は高さもセット
     if (stageSetting.lock) {
