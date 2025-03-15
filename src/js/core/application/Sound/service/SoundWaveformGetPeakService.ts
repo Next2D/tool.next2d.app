@@ -2,7 +2,7 @@
  * @description 個別の波形の幅を返す
  *              Returns the width of individual waveforms
  *
- * @param  {number} buffer
+ * @param  {Float32Array} buffer
  * @param  {number} start_index
  * @param  {number} end_index
  * @return {number}
@@ -11,11 +11,11 @@
  */
 export const execute = (buffer: Float32Array, start_index: number, end_index: number): number =>
 {
-    const sliced: Float32Array = buffer.slice(start_index, end_index);
+    const sliced = buffer.slice(start_index, end_index);
 
-    let peak: number = -100;
-    for (let idx: number = 0; idx < sliced.length; idx++) {
-        const sample: number = sliced[idx];
+    let peak = -100;
+    for (let idx = 0; idx < sliced.length; idx++) {
+        const sample = sliced[idx];
         if (sample > peak) {
             peak = sample;
         }

@@ -18,7 +18,7 @@ export const execute = async (buffer: Uint8Array, width: number): Promise<void |
         return ;
     }
 
-    const audioBuffer = await audioContext.decodeAudioData(buffer.buffer);
+    const audioBuffer = await audioContext.decodeAudioData(buffer.buffer as ArrayBuffer);
 
     const ch1 = audioBuffer.getChannelData(0);
     const peaks1 = soundWaveformGetPeaksUseCase(
