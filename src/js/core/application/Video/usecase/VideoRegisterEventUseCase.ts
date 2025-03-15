@@ -1,5 +1,5 @@
 import { EventType } from "@/tool/domain/event/EventType";
-import { execute as videoMouseDownEventService } from "../service/VideoMouseDownEventService";
+import { execute as videoPointerDownEventService } from "../service/VideoPointerDownEventService";
 
 /**
  * @description スクリーンに配置するVideoのイベントを登録する
@@ -14,6 +14,7 @@ export const execute = (element: HTMLElement): void =>
 {
     // マウスダウンイベントを登録
     element.addEventListener(EventType.POINTER_DOWN,
-        videoMouseDownEventService
+        videoPointerDownEventService,
+        { "passive": false }
     );
 };

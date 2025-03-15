@@ -4,14 +4,20 @@ import type { Video } from "@/core/domain/model/Video";
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import { execute as videoRegisterEventUseCase } from "./VideoRegisterEventUseCase";
 import { execute as videoDisplayObjectComponent } from "../component/VideoDisplayObjectComponent";
-import { $getCacheCanvas, $setCacheCanvas } from "@/cache/CacheUtil";
 import { execute as screenAreaHierarchyAdjustmentService } from "@/screen/application/ScreenArea/service/ScreenAreaHierarchyAdjustmentService";
 import { execute as screenAreaReadOnlyElementService } from "@/screen/application/ScreenArea/service/ScreenAreaReadOnlyElementService";
 import { execute as instanceUpdateBlendModeService } from "@/core/application/Instance/service/InstanceUpdateBlendModeService";
-import { $getDeactivated, $getReDrawState } from "@/screen/application/ScreenArea/ScreenAreaUtil";
 import { execute as screenDisplayObjectUpdateMaskInCanvasStyleService } from "@/screen/application/DisplayObject/service/ScreenDisplayObjectUpdateMaskInCanvasStyleService";
 import { $MASK_IN_MODE } from "@/config/LayerModeConfig";
 import { $getMaskMatrix } from "@/controller/application/TransformSetting/TransformSettingUtil";
+import {
+    $getCacheCanvas,
+    $setCacheCanvas
+} from "@/cache/CacheUtil";
+import {
+    $getDeactivated,
+    $getReDrawState
+} from "@/screen/application/ScreenArea/ScreenAreaUtil";
 
 /**
  * @description Shapeをcanvasに描画して返却する
