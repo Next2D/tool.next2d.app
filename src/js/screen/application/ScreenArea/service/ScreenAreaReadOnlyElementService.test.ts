@@ -1,8 +1,9 @@
 import { execute } from "./ScreenAreaReadOnlyElementService";
+import { describe, expect, it } from "vitest";
 
 describe("ScreenAreaReadOnlyElementServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         const div = document.createElement("div");
 

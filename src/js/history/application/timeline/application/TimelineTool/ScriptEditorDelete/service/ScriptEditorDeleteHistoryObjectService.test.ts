@@ -1,10 +1,11 @@
 import { execute } from "./ScriptEditorDeleteHistoryObjectService";
 import { $TIMIELINE_TOOL_SCRIPT_DELETE_COMMAND } from "../../../../../../../config/HistoryConfig";
 import { MovieClip } from "../../../../../../../core/domain/model/MovieClip";
+import { describe, expect, it } from "vitest";
 
 describe("ScriptEditorDeleteHistoryObjectServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         const movieClip = new MovieClip({
             "id": 0,

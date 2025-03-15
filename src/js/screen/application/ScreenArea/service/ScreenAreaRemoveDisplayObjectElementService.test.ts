@@ -1,10 +1,11 @@
 import { execute } from "./ScreenAreaRemoveDisplayObjectElementService";
 import { $SCREEN_STAGE_AREA_ID } from "../../../../config/ScreenConfig";
 import { Character } from "../../../../core/domain/model/Character";
+import { describe, expect, it } from "vitest";
 
 describe("ScreenAreaRemoveDisplayObjectElementServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         const parent = document.createElement("div");
         parent.id = $SCREEN_STAGE_AREA_ID;

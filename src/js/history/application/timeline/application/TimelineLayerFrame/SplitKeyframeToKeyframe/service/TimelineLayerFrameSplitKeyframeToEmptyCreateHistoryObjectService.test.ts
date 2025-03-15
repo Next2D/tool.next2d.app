@@ -1,10 +1,11 @@
 import { execute } from "./TimelineLayerFrameSplitKeyframeToEmptyCreateHistoryObjectService";
 import { $TIMELINE_SPLIT_KEYFRAME_TO_KEYFRAME_COMMAND } from "../../../../../../../config/HistoryConfig";
 import { MovieClip } from "../../../../../../../core/domain/model/MovieClip";
+import { describe, expect, it } from "vitest";
 
 describe("TimelineLayerFrameSplitKeyframeToEmptyCreateHistoryObjectServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         const movieClip = new MovieClip({
             "id": 0,

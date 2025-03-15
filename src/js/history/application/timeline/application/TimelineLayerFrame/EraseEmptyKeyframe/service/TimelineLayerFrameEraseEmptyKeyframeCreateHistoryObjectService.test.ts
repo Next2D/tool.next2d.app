@@ -2,10 +2,11 @@ import { execute } from "./TimelineLayerFrameEraseEmptyKeyframeCreateHistoryObje
 import { $TIMELINE_ERASE_EMPTY_KEY_FRAME_COMMAND } from "../../../../../../../config/HistoryConfig";
 import { MovieClip } from "../../../../../../../core/domain/model/MovieClip";
 import { EmptyCharacter } from "../../../../../../../core/domain/model/EmptyCharacter";
+import { describe, expect, it } from "vitest";
 
 describe("TimelineLayerFrameRemoveEmptyFramesCreateHistoryObjectServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         const movieClip = new MovieClip({
             "id": 0,

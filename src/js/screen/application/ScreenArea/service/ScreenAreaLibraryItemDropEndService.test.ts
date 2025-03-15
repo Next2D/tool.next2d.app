@@ -1,9 +1,10 @@
 import { execute } from "./ScreenAreaLibraryItemDropEndService";
 import { $SCREEN_ID } from "../../../../config/ScreenConfig";
+import { describe, expect, it } from "vitest";
 
 describe("ScreenAreaLibraryItemDropEndServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         const parent = document.createElement("div");
         parent.id = $SCREEN_ID;
