@@ -681,10 +681,23 @@ export class Character
             return null;
         }
 
-        // ライブラリアイテムの加工してないバウンディングボックスの値を取得
-        return instance.type === $MOVIE_CLIP_TYPE
-            ? (instance as MovieClip).getRawBounds(frame)
-            : instance.getRawBounds();
+        if (instance.type !== $MOVIE_CLIP_TYPE) {
+            return instance.getRawBounds();
+        }
+
+        // MovieClipの場合は子孫のフレーム位置に合わせる
+        const totalFrame = (instance as MovieClip).maxFrame - 1;
+        const maxFrame = frame - this.startFrame + 1;
+
+        let currentFrame = 0;
+        for (let idx = 0; idx < maxFrame; ++idx) {
+            ++currentFrame;
+            if (totalFrame < currentFrame) {
+                currentFrame = 1;
+            }
+        }
+
+        return (instance as MovieClip).getRawBounds(currentFrame);
     }
 
     /**
