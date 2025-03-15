@@ -8,15 +8,15 @@ import type { ICharacterPublishObject } from "@/interface/ICharacterPublishObjec
 import type { IControllerPublishObject } from "@/interface/IControllerPublishObject";
 import type { IPlaceObject } from "@/interface/IPlaceObject";
 import type { IPlaceObjectMap } from "@/interface/IPlaceObjectMap";
+import { execute as userSettingObjectGetService } from "@/user/application/Setting/service/UserSettingObjectGetService";
+import { execute as movieClipCreatePublishPlaceObjectService } from "../service/MovieClipCreatePublishPlaceObjectService";
+import { $getUseLibraryIds } from "@/tool/application/PublishTool/PublishToolUtil";
 import { minify } from "terser";
 import {
     $GUIDE_MODE,
     $MASK_IN_MODE,
     $MASK_MODE
 } from "@/config/LayerModeConfig";
-import { execute as userSettingObjectGetService } from "@/user/application/Setting/service/UserSettingObjectGetService";
-import { execute as movieClipCreatePublishPlaceObjectService } from "../service/MovieClipCreatePublishPlaceObjectService";
-import { $getUseLibraryIds } from "@/tool/application/PublishTool/PublishToolUtil";
 
 /**
  * @description Next2D PlayerのMovieClipのインスタンスを生成する

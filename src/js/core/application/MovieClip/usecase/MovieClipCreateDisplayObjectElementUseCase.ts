@@ -3,14 +3,20 @@ import type { Layer } from "@/core/domain/model/Layer";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import { execute as movieClipRegisterEventUseCase } from "./MovieClipRegisterEventUseCase";
 import { execute as movieClipDisplayObjectComponent } from "../component/MovieClipDisplayObjectComponent";
-import { $getCacheCanvas, $setCacheCanvas } from "@/cache/CacheUtil";
 import { execute as instanceUpdateBlendModeService } from "@/core/application/Instance/service/InstanceUpdateBlendModeService";
 import { execute as screenAreaHierarchyAdjustmentService } from "@/screen/application/ScreenArea/service/ScreenAreaHierarchyAdjustmentService";
-import { $getDeactivated, $getReDrawState } from "@/screen/application/ScreenArea/ScreenAreaUtil";
 import { execute as screenAreaReadOnlyElementService } from "@/screen/application/ScreenArea/service/ScreenAreaReadOnlyElementService";
 import { execute as screenDisplayObjectUpdateMaskInCanvasStyleService } from "@/screen/application/DisplayObject/service/ScreenDisplayObjectUpdateMaskInCanvasStyleService";
 import { $MASK_IN_MODE } from "@/config/LayerModeConfig";
 import { $getMaskMatrix } from "@/controller/application/TransformSetting/TransformSettingUtil";
+import {
+    $getCacheCanvas,
+    $setCacheCanvas
+} from "@/cache/CacheUtil";
+import {
+    $getDeactivated,
+    $getReDrawState
+} from "@/screen/application/ScreenArea/ScreenAreaUtil";
 
 /**
  * @description MovieClipをcanvasに描画して返却する
