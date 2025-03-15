@@ -3,6 +3,7 @@ import { EventType } from "@/tool/domain/event/EventType";
 import { $getCurrentWorkSpace } from "../../CoreUtil";
 import { $TEXT_TYPE } from "@/config/InstanceConfig";
 import { $activeTouchPointers } from "@/global/GlobalUtil";
+import { timelineHeader } from "@/timeline/domain/model/TimelineHeader";
 
 /**
  * @description ダブルタップ用の待機フラグ
@@ -44,6 +45,7 @@ export const execute = async (event: PointerEvent): Promise<void> =>
 {
     if (event.button !== 0
         || $activeTouchPointers.size > 1
+        || !timelineHeader.stopFlag
     ) {
         return ;
     }

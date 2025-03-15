@@ -1,5 +1,5 @@
 import { EventType } from "@/tool/domain/event/EventType";
-import { execute as textMouseDownEventUseCase } from "./TextMouseDownEventUseCase";
+import { execute as textPointerDownEventUseCase } from "./TextPointerDownEventUseCase";
 
 /**
  * @description スクリーンに配置するTextのイベントを登録する
@@ -14,6 +14,7 @@ export const execute = (element: HTMLElement): void =>
 {
     // マウスダウンイベントを登録
     element.addEventListener(EventType.POINTER_DOWN,
-        textMouseDownEventUseCase
+        textPointerDownEventUseCase,
+        { "passive": false }
     );
 };
