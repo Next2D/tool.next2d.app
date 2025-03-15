@@ -1,9 +1,10 @@
 import { execute } from "./ExternalLibrarySelectedOneService";
 import { libraryArea } from "../../../../../controller/domain/model/LibraryArea";
+import { describe, expect, it } from "vitest";
 
 describe("ExternalLibrarySelectedOneServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         libraryArea.selectedIds.length = 0;
         libraryArea.selectedIds.push(10);

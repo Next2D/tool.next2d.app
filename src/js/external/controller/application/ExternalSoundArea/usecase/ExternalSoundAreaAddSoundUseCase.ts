@@ -3,13 +3,13 @@ import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import type { ExternalSound } from "@/external/core/domain/model/ExternalSound";
 import type { ISoundObject } from "@/interface/ISoundObject";
 import { execute as soundAreaAddSoundHistoryUseCase } from "@/history/application/controller/application/SoundArea/AddSound/usecase/SoundAreaAddSoundHistoryUseCase";
-import { timelineHeader } from "@/timeline/domain/model/TimelineHeader";
-import { $getLeftFrame } from "@/timeline/application/TimelineUtil";
 import { execute as timelineHeaderUpdateSoundElementService } from "@/timeline/application/TimelineHeader/service/TimelineHeaderUpdateSoundElementService";
-import { ExternalLibrary } from "@/external/controller/domain/model/ExternalLibrary";
-import { $SOUND_TYPE } from "@/config/InstanceConfig";
 import { execute as soundAreaAddSettingAreaUseCase } from "@/controller/application/SoundArea/usecase/SoundAreaAddSettingAreaUseCase";
 import { execute as propertyAreaScrollUpdateHeightService } from "@/controller/application/PropertyAreaScroll/service/PropertyAreaScrollUpdateHeightService";
+import { ExternalLibrary } from "@/external/controller/domain/model/ExternalLibrary";
+import { $SOUND_TYPE } from "@/config/InstanceConfig";
+import { timelineHeader } from "@/timeline/domain/model/TimelineHeader";
+import { $getLeftFrame } from "@/timeline/application/TimelineUtil";
 
 /**
  * @description タイムラインにサウンドを追加

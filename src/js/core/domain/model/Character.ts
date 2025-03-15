@@ -6,14 +6,13 @@ import type { IBounds } from "@/interface/IBounds";
 import type { IPosition } from "@/interface/IPosition";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import { $clamp } from "@/global/GlobalUtil";
-import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
+import { $getCurrentWorkSpace, $getMatrixBounds } from "@/core/application/CoreUtil";
 import { execute as characterCreateElementUseCase } from "@/core/application/Character/usecase/CharacterCreateElementUseCase";
 import { execute as characterCalcGetScaleXService } from "@/core/application/Character/service/CharacterCalcGetScaleXService";
 import { execute as characterCalcSetScaleXService } from "@/core/application/Character/service/CharacterCalcSetScaleXService";
 import { execute as characterCalcGetScaleYService } from "@/core/application/Character/service/CharacterCalcGetScaleYService";
 import { execute as characterCalcSetRotationService } from "@/core/application/Character/service/CharacterCalcSetRotationService";
 import { execute as characterCalcGetRotationService } from "@/core/application/Character/service/CharacterCalcGetRotationService";
-import { execute as characterCalcGetBoundsService } from "@/core/application/Character/service/CharacterCalcGetBoundsService";
 import {
     $BITMAP_TYPE,
     $MOVIE_CLIP_TYPE,
@@ -376,10 +375,8 @@ export class Character
         const workSpace = $getCurrentWorkSpace();
         const movieClip = workSpace.scene;
 
-        const bounds = this.getRawBounds(movieClip.currentFrame);
-        return bounds
-            ? this._$matrix[4] + bounds.xMin
-            : this._$matrix[4];
+        const bounds = this.getBounds(movieClip.currentFrame);
+        return bounds ? bounds.xMin : 0;
     }
 
     /**
@@ -395,10 +392,8 @@ export class Character
         const workSpace = $getCurrentWorkSpace();
         const movieClip = workSpace.scene as MovieClip;
 
-        const bounds = this.getRawBounds(movieClip.currentFrame);
-        return bounds
-            ? this._$matrix[5] + bounds.yMin
-            : this._$matrix[5];
+        const bounds = this.getBounds(movieClip.currentFrame);
+        return bounds ? bounds.yMin : 0;
     }
 
     /**
@@ -661,7 +656,14 @@ export class Character
      */
     getBounds (frame: number = 1): IBounds | null
     {
-        return characterCalcGetBoundsService(this._$libraryId, this._$matrix, frame);
+        const bounds = this.getRawBounds(frame);
+        return bounds ? $getMatrixBounds(
+            bounds.xMin,
+            bounds.yMin,
+            bounds.xMax,
+            bounds.yMax,
+            this._$matrix
+        ) : null;
     }
 
     /**

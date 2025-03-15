@@ -1,5 +1,5 @@
 import type { MovieClip } from "@/core/domain/model/MovieClip";
-import { $calcBoundingBox } from "@/core/application/CoreUtil";
+import { $calcBoundingBox, $getMatrixBounds } from "@/core/application/CoreUtil";
 import type { IBounds } from "@/interface/IBounds";
 
 /**
@@ -35,7 +35,7 @@ export const execute = (movie_clip: MovieClip): IBounds | null =>
                 continue ;
             }
 
-            const bounds = character.getBounds();
+            const bounds = character.getBounds(frame);
             if (!bounds) {
                 continue ;
             }

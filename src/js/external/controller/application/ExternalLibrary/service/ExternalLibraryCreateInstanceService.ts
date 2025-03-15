@@ -30,8 +30,8 @@ import {
  *              Create a class of the specified type
  *
  * @param  {WorkSpace} work_space
- * @param  {Instance} instance
- * @return {Instance}
+ * @param  {I} instance
+ * @return {E | null}
  * @method
  * @public
  */
