@@ -1,8 +1,6 @@
 import {
     $setCursor,
     $clamp,
-    $setZoom,
-    $getZoom,
     $getScreenOffsetLeft,
     $getScreenOffsetTop,
     $setScreenOffsetLeft,
