@@ -1,5 +1,5 @@
 import { EventType } from "@/tool/domain/event/EventType";
-import { execute as shapeMouseDownEventService } from "../service/ShapeMouseDownEventService";
+import { execute as shapePointerDownEventService } from "../service/ShapePointerDownEventService";
 
 /**
  * @description スクリーンに配置するShapeのイベントを登録する
@@ -14,6 +14,6 @@ export const execute = (element: HTMLElement): void =>
 {
     // マウスダウンイベントを登録
     element.addEventListener(EventType.POINTER_DOWN,
-        shapeMouseDownEventService
+        shapePointerDownEventService
     );
 };

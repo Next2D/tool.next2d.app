@@ -23,7 +23,7 @@ export const execute = (
     const transform = $createTransformStyle(character);
 
     const x = $getScreenOffsetLeft() + character.offsetX * workSpace.scale;
-    const y = $getScreenOffsetTop() + character.offsetY * workSpace.scale;
+    const y = $getScreenOffsetTop()  + character.offsetY * workSpace.scale;
     const alpha = character.alpha;
     const depth = character.depth;
 
