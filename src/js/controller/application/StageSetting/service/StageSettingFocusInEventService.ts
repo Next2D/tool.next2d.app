@@ -1,3 +1,4 @@
+import { $setEditingElement } from "@/global/GlobalUtil";
 import { $updateKeyLock } from "@/shortcut/ShortcutUtil";
 
 /**
@@ -23,6 +24,9 @@ export const execute = (event: FocusEvent): void =>
 
     // 入力モードをOnにする
     $updateKeyLock(true);
+
+    // 編集中の要素を設定
+    $setEditingElement(element);
 
     element.style.cursor = "";
 };
