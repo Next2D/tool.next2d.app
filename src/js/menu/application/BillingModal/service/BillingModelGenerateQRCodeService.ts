@@ -12,13 +12,12 @@ import QRCode from "qrcode";
  */
 export const execute = async (room_id: string): Promise<void> =>
 {
-    const src = await QRCode.toDataURL(`${room_id}`, { "width": 320 });
-
     const element: HTMLImageElement | null = document
         .getElementById($LIBRARY_BILLING_QRCODE_IMG_ID) as HTMLImageElement;
+
     if (!element) {
         return ;
     }
 
-    element.src = src;
+    element.src = await QRCode.toDataURL(`${room_id}`, { "width": 320 });
 };

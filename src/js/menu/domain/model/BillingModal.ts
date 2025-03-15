@@ -47,7 +47,7 @@ export class BillingModal extends BaseMenu
      */
     async show (): Promise<void>
     {
-        if (this._$state === "show") {
+        if (this.state === "show") {
             return ;
         }
 
@@ -66,7 +66,7 @@ export class BillingModal extends BaseMenu
      */
     hide (): void
     {
-        if (this._$state === "hide") {
+        if (this.state === "hide") {
             return ;
         }
 

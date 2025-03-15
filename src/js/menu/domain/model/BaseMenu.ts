@@ -9,11 +9,46 @@ import { $registerMenu } from "../../application/MenuUtil";
  */
 export class BaseMenu
 {
-    protected _$state: "show" | "hide";
     private _$element: HTMLElement | null;
-    private _$name: string;
-    private _$offsetLeft: number;
-    private _$offsetTop: number;
+
+    /**
+     * @description 表示状態を返す
+     *              Return display status
+     *
+     * @return {string}
+     * @public
+     */
+    public state: "show" | "hide";
+
+    /**
+     * @description メニュー名を返す
+     *              Returns the menu name
+     *
+     * @return {string}
+     * @readonly
+     * @public
+     */
+    public readonly name: string;
+
+    /**
+     * @description 各メニューのoffsetLeftの値
+     *              Value of offsetLeft for each menu
+     *
+     * @member {number}
+     * @return {number}
+     * @public
+     */
+    public offsetLeft: number;
+
+    /**
+     * @description 各メニューのoffsetTopの値
+     *              Value of offsetTop for each menu
+     *
+     * @member {number}
+     * @return {number}
+     * @public
+     */
+    public offsetTop: number;
 
     /**
      * @param {string} name
@@ -22,32 +57,10 @@ export class BaseMenu
      */
     constructor (name: string)
     {
-        /**
-         * @type {string}
-         * @private
-         */
-        this._$name = `${name}`;
-
-        /**
-         * @type {string}
-         * @default "hide"
-         * @private
-         */
-        this._$state = "hide";
-
-        /**
-         * @type {number}
-         * @default 0
-         * @private
-         */
-        this._$offsetLeft = 0;
-
-        /**
-         * @type {number}
-         * @default 0
-         * @private
-         */
-        this._$offsetTop = 0;
+        this.name       = `${name}`;
+        this.state      = "hide";
+        this.offsetLeft = 0;
+        this.offsetTop  = 0;
 
         /**
          * @type {HTMLElement}
@@ -58,66 +71,6 @@ export class BaseMenu
 
         // メニュー用のマップに登録
         $registerMenu(this);
-    }
-
-    /**
-     * @description 表示状態を返す
-     *              Return display status
-     *
-     * @return {string}
-     * @readonly
-     * @public
-     */
-    get state (): "show" | "hide"
-    {
-        return this._$state;
-    }
-
-    /**
-     * @description メニュー名を返す
-     *              Returns the menu name
-     *
-     * @return {string}
-     * @readonly
-     * @public
-     */
-    get name (): string
-    {
-        return this._$name;
-    }
-
-    /**
-     * @description 各メニューのoffsetLeftの値
-     *              Value of offsetLeft for each menu
-     *
-     * @member {number}
-     * @return {number}
-     * @public
-     */
-    get offsetLeft (): number
-    {
-        return this._$offsetLeft;
-    }
-    set offsetLeft (offset_left: number)
-    {
-        this._$offsetLeft = offset_left;
-    }
-
-    /**
-     * @description 各メニューのoffsetTopの値
-     *              Value of offsetTop for each menu
-     *
-     * @member {number}
-     * @return {number}
-     * @public
-     */
-    get offsetTop (): number
-    {
-        return this._$offsetTop;
-    }
-    set offsetTop (offset_top: number)
-    {
-        this._$offsetTop = offset_top;
     }
 
     /**
@@ -146,10 +99,10 @@ export class BaseMenu
         }
         this.move(this._$element);
 
-        if (this._$state === "show") {
+        if (this.state === "show") {
             return ;
         }
-        this._$state = "show";
+        this.state = "show";
 
         this._$element.setAttribute("class", "fadeIn");
     }
@@ -164,10 +117,10 @@ export class BaseMenu
      */
     hide (): void
     {
-        if (this._$state === "hide") {
+        if (this.state === "hide") {
             return ;
         }
-        this._$state = "hide";
+        this.state = "hide";
 
         if (!this._$element) {
             return ;
