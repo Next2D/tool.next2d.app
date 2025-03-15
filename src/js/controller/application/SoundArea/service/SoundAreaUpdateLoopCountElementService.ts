@@ -1,5 +1,5 @@
 import { $SOUND_AREA_SOUND_LIST_AREA_ID } from "@/config/SoundSettingConfig";
-import { ISoundObject } from "@/interface/ISoundObject";
+import type { ISoundObject } from "@/interface/ISoundObject";
 
 /**
  * @description ループ回数の表示を変更

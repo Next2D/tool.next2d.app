@@ -1,5 +1,5 @@
 import { $LAYER_DISABLE_UPDATE_COMMAND } from "@/config/HistoryConfig";
-import { IHistoryObject } from "@/interface/IHistoryObject";
+import type { IHistoryObject } from "@/interface/IHistoryObject";
 
 /**
  * @description レイヤー表示の画面共有オブジェクトを作成

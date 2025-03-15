@@ -1,4 +1,4 @@
-import { ITool } from "@/interface/ITool";
+import type { ITool } from "@/interface/ITool";
 import { EventType } from "@/tool/domain/event/EventType";
 import type { ZoomPlusTool } from "@/tool/domain/model/ZoomPlusTool";
 import { execute as zoomMinusToolMouseOverEventUseCase } from "../service/ZoomMinusToolMouseOverEventService";

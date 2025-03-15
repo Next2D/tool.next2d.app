@@ -1,4 +1,4 @@
-import { ITool } from "@/interface/ITool";
+import type { ITool } from "@/interface/ITool";
 import { ArrowTool } from "@/tool/domain/model/ArrowTool";
 import { FreeTransformTool } from "@/tool/domain/model/FreeTransformTool";
 import { BucketTool } from "@/tool/domain/model/BucketTool";

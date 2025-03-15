@@ -1,5 +1,5 @@
 import { $TOOL_PREFIX } from "@/config/ToolConfig";
-import { IUserToolAreaStateObject } from "@/interface/IUserToolAreaStateObject";
+import type { IUserToolAreaStateObject } from "@/interface/IUserToolAreaStateObject";
 import { execute as toolAreaChageStyleToActiveService } from "@/tool/application/ToolArea/service/ToolAreaChageStyleToActiveService";
 import { execute as toolAreaChageStyleToInactiveService } from "@/tool/application/ToolArea/service/ToolAreaChageStyleToInactiveService";
 

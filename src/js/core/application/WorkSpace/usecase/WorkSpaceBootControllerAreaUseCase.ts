@@ -1,4 +1,4 @@
-import { IUserControllerAreaStateObject } from "@/interface/IUserControllerAreaStateObject";
+import type { IUserControllerAreaStateObject } from "@/interface/IUserControllerAreaStateObject";
 
 /**
  * @description WorkSpaceに保存されてるobjectからコントローラーエリアのstyleを更新

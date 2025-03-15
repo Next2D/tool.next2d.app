@@ -8,6 +8,7 @@ import type { ILayerMode } from "@/interface/ILayerMode";
 import type { IEmptyCharacterSaveObject } from "@/interface/IEmptyCharacterSaveObject";
 import type { ICharacterSaveObject } from "@/interface/ICharacterSaveObject";
 import type { ISoundObject } from "@/interface/ISoundObject";
+import type { IShapeSaveObject } from "@/interface/IShapeSaveObject";
 import { execute as screenTabNameAddHistoryUndoUseCase } from "@/history/application/screen/application/ScreenTab/usecase/ScreenTabNameAddHistoryUndoUseCase";
 import { execute as timelineToolLayerAddHistoryUndoUseCase } from "@/history/application/timeline/application/TimelineTool/LayerAdd/usecase/TimelineToolLayerAddHistoryUndoUseCase";
 import { execute as timelineToolLayerDeleteHistoryUndoUseCase } from "@/history/application/timeline/application/TimelineTool/LayerDelete/usecase/TimelineToolLayerDeleteHistoryUndoUseCase";
@@ -116,7 +117,6 @@ import {
     $LIBRARY_UPDATE_SHAPE_GRAPHICS_COMMAND,
     $CHARACTER_UPDATE_NAME_COMMAND
 } from "@/config/HistoryConfig";
-import { IShapeSaveObject } from "@/interface/IShapeSaveObject";
 
 /**
  * @description Undoコマンドの実行関数

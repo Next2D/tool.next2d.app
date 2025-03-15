@@ -3,6 +3,8 @@ import type { IMovieClipSaveObject } from "@/interface/IMovieClipSaveObject";
 import type { IActionSaveObject } from "@/interface/IActionSaveObject";
 import type { IFrameObject } from "@/interface/IFrameObject";
 import type { ISoundSaveList } from "@/interface/ISoundSaveList";
+import type { IMovieClipPublishJson } from "@/interface/IMovieClipPublishJson";
+import type { IBounds } from "@/interface/IBounds";
 import { Instance } from "./Instance";
 import { Layer } from "./Layer";
 import { execute as movieClipRunUseCase } from "@/core/application/MovieClip/usecase/MovieClipRunUseCase";
@@ -10,8 +12,6 @@ import { execute as movieClipStopUseCase } from "@/core/application/MovieClip/us
 import { execute as movieClipCreateCanvasElementUseCase } from "@/core/application/MovieClip/usecase/MovieClipCreateCanvasElementUseCase";
 import { $clamp } from "@/global/GlobalUtil";
 import { execute as movieClipCreateJsonUseCase } from "@/core/application/MovieClip/usecase/MovieClipCreateJsonUseCase";
-import { IMovieClipPublishJson } from "@/interface/IMovieClipPublishJson";
-import { IBounds } from "@/interface/IBounds";
 import { execute as movieClipCalcBoundService } from "@/core/application/MovieClip/service/MovieClipCalcBoundService";
 
 /**

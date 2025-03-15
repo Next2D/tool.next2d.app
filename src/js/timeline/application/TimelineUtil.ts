@@ -3,7 +3,7 @@ import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { timelineHeader } from "../domain/model/TimelineHeader";
 import { timelineLayer } from "../domain/model/TimelineLayer";
 import type { Layer } from "@/core/domain/model/Layer";
-import { IFrameObject } from "@/interface/IFrameObject";
+import type { IFrameObject } from "@/interface/IFrameObject";
 import { $clamp } from "@/global/GlobalUtil";
 
 /**

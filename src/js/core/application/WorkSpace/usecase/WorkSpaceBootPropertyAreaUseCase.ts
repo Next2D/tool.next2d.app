@@ -1,5 +1,5 @@
 import { $CONTROLLER_AREA_PROPERTY_ID } from "@/config/PropertyConfig";
-import { IUserPropertyAreaStateObject } from "@/interface/IUserPropertyAreaStateObject";
+import type { IUserPropertyAreaStateObject } from "@/interface/IUserPropertyAreaStateObject";
 import { execute as propertyAreaChageStyleToActiveService } from "@/controller/application/PropertyArea/service/PropertyAreaChageStyleToActiveService";
 import { execute as propertyAreaShowTabService } from "@/controller/application/PropertyArea/service/PropertyAreaShowTabService";
 import { execute as propertyAreaHideTabService } from "@/controller/application/PropertyArea/service/PropertyAreaHideTabService";

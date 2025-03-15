@@ -1,6 +1,6 @@
 import type { IHistoryObject } from "@/interface/IHistoryObject";
+import type { IFolderType } from "@/interface/IFolderType";
 import { $LIBRARY_FOLDER_STATE_COMMAND } from "@/config/HistoryConfig";
-import { IFolderType } from "@/interface/IFolderType";
 
 /**
  * @description フォルダ開閉の画面共有用のオブジェクトを作成

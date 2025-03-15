@@ -1,4 +1,4 @@
-import { IBlendMode } from "@/interface/IBlendMode";
+import type { IBlendMode } from "@/interface/IBlendMode";
 
 /**
  * @description Canvasにブレンドモードのstyleをセット

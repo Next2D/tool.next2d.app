@@ -1,12 +1,14 @@
+import type { WorkSpace } from "../../../../core/domain/model/WorkSpace";
+import type { IInstanceSaveObject } from "../../../../interface/IInstanceSaveObject";
 import { execute } from "./WorkSpaceLoadLibraryService";
-import { $getCurrentWorkSpace, $createWorkSpace } from "../../../../core/application/CoreUtil";
 import { MovieClip } from "../../../../core/domain/model/MovieClip";
 import { Folder } from "../../../../core/domain/model/Folder";
-import { WorkSpace } from "../../../../core/domain/model/WorkSpace";
+import { $getCurrentWorkSpace, $createWorkSpace } from "../../../../core/application/CoreUtil";
+import { describe, expect, it } from "vitest";
 
 describe("WorkSpaceLoadLibraryServiceTest", () =>
 {
-    test("execute test", async () =>
+    it("execute test", async () =>
     {
         const workSpace: WorkSpace = $getCurrentWorkSpace() || $createWorkSpace();
 
@@ -24,7 +26,7 @@ describe("WorkSpaceLoadLibraryServiceTest", () =>
             "folderId": 1
         });
 
-        const libraries = [];
+        const libraries: IInstanceSaveObject[] = [];
         libraries.push(folder.toObject());
         libraries.push(movieClip.toObject());
 
@@ -33,10 +35,10 @@ describe("WorkSpaceLoadLibraryServiceTest", () =>
 
         expect(workSpace.libraries.size).toBe(3);
 
-        const instance1 = workSpace.getLibrary(1);
+        const instance1 = workSpace.getLibrary(1) as Folder;
         expect(instance1.name).toBe("Folder_1");
 
-        const instance2 = workSpace.getLibrary(2);
+        const instance2 = workSpace.getLibrary(2) as MovieClip;
         expect(instance2.name).toBe("MovieClip_2");
     });
 });

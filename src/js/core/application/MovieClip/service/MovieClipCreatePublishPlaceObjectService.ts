@@ -1,5 +1,5 @@
-import { Character } from "@/core/domain/model/Character";
-import { IPlaceObject } from "@/interface/IPlaceObject";
+import type { Character } from "@/core/domain/model/Character";
+import type { IPlaceObject } from "@/interface/IPlaceObject";
 
 /**
  * @description 指定のキャラクタークラスからPlaceObjectを生成する

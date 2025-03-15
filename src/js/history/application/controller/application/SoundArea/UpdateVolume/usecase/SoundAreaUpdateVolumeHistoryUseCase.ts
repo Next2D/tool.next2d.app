@@ -1,5 +1,6 @@
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
+import type { ISoundObject } from "@/interface/ISoundObject";
 import { $useSocket } from "@/share/ShareUtil";
 import { $SOUND_AREA_UPDATE_VOLUME_COMMAND } from "@/config/HistoryConfig";
 import { execute as historyAddElementUseCase } from "@/controller/application/HistoryArea/usecase/HistoryAddElementUseCase";
@@ -7,7 +8,6 @@ import { execute as historyGetTextService } from "@/controller/application/Histo
 import { execute as historyRemoveElementService } from "@/controller/application/HistoryArea/service/HistoryRemoveElementService";
 import { execute as soundAreaUpdateVolumeCreateHistoryObjectService } from "../service/SoundAreaUpdateVolumeCreateHistoryObjectService";
 import { execute as shareSendService } from "@/share/service/ShareSendService";
-import { ISoundObject } from "@/interface/ISoundObject";
 import { execute as userDatabaseAutoSaveReservationUseCase } from "@/user/application/Database/usecase/UserDatabaseAutoSaveReservationUseCase";
 
 /**

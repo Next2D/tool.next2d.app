@@ -1,4 +1,4 @@
-import { IShareReceiveMessage } from "@/interface/IShareReceiveMessage";
+import type { IShareReceiveMessage } from "@/interface/IShareReceiveMessage";
 
 /**
  * @description WebSocketオブジェクト

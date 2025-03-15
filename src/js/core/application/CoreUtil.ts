@@ -1,5 +1,5 @@
 import { WorkSpace } from "@/core/domain/model/WorkSpace";
-import { IBounds } from "@/interface/IBounds";
+import type { IBounds } from "@/interface/IBounds";
 
 /**
  * @description 起動中のWorkSpace配列

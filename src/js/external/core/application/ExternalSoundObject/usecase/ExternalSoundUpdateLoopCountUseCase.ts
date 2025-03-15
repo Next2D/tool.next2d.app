@@ -1,9 +1,9 @@
-import { MovieClip } from "@/core/domain/model/MovieClip";
-import { WorkSpace } from "@/core/domain/model/WorkSpace";
-import { $clamp } from "@/global/GlobalUtil";
-import { ISoundObject } from "@/interface/ISoundObject";
+import type { MovieClip } from "@/core/domain/model/MovieClip";
+import type { WorkSpace } from "@/core/domain/model/WorkSpace";
+import type { ISoundObject } from "@/interface/ISoundObject";
 import { execute as soundAreaUpdateLoopCountHistoryUseCase } from "@/history/application/controller/application/SoundArea/UpdateLoopCount/usecase/SoundAreaUpdateLoopCountHistoryUseCase";
 import { execute as soundAreaUpdateLoopCountElementService } from "@/controller/application/SoundArea/service/SoundAreaUpdateLoopCountElementService";
+import { $clamp } from "@/global/GlobalUtil";
 
 /**
  * @description 個別のループ回数設定

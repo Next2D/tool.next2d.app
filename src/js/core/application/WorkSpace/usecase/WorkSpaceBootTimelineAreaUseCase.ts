@@ -1,5 +1,5 @@
 import { $TIMELINE_ID } from "@/config/TimelineConfig";
-import { IUserTimelineAreaStateObject } from "@/interface/IUserTimelineAreaStateObject";
+import type { IUserTimelineAreaStateObject } from "@/interface/IUserTimelineAreaStateObject";
 import { execute as timelineAreaChageStyleToActiveService } from "@/timeline/application/TimelineArea/service/TimelineAreaChageStyleToActiveService";
 import { execute as timelineAreaChageStyleToInactiveService } from "@/timeline/application/TimelineArea/service/TimelineAreaChageStyleToInactiveService";
 import { execute as timelineHeaderUpdateClientWidthService } from "@/timeline/application/TimelineHeader/service/TimelineHeaderUpdateClientWidthService";

@@ -1,9 +1,9 @@
-import { MovieClip } from "@/core/domain/model/MovieClip";
-import { WorkSpace } from "@/core/domain/model/WorkSpace";
-import { $clamp } from "@/global/GlobalUtil";
-import { ISoundObject } from "@/interface/ISoundObject";
+import type { MovieClip } from "@/core/domain/model/MovieClip";
+import type { WorkSpace } from "@/core/domain/model/WorkSpace";
+import type { ISoundObject } from "@/interface/ISoundObject";
 import { execute as soundAreaUpdateVolumeHistoryUseCase } from "@/history/application/controller/application/SoundArea/UpdateVolume/usecase/SoundAreaUpdateVolumeHistoryUseCase";
 import { execute as soundAreaUpdateVolumeElementService } from "@/controller/application/SoundArea/service/SoundAreaUpdateVolumeElementService";
+import { $clamp } from "@/global/GlobalUtil";
 
 /**
  * @description 個別の音声設定の音量変更

@@ -1,8 +1,8 @@
 import type { IInstanceType } from "@/interface/IInstanceType";
 import type { IObject } from "@/interface/IObject";
-import { WorkSpace } from "./WorkSpace";
+import type { IBounds } from "@/interface/IBounds";
+import type { WorkSpace } from "./WorkSpace";
 import { execute as instanceGetPathNameService } from "@/core/application/Instance/service/InstanceGetPathNameService";
-import { IBounds } from "@/interface/IBounds";
 
 /**
  * @description ライブラリのアイテムの親クラス

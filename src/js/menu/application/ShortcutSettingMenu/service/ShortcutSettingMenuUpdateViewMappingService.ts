@@ -1,4 +1,4 @@
-import { IShortcutViewObject } from "@/interface/IShortcutViewObject";
+import type { IShortcutViewObject } from "@/interface/IShortcutViewObject";
 import {
     $clearTempMapping,
     $getTempMapping,

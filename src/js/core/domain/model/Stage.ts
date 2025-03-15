@@ -1,4 +1,4 @@
-import { IStageObject } from "@/interface/IStageObject";
+import type { IStageObject } from "@/interface/IStageObject";
 import { execute as stageRunUseCase } from "@/core/application/Stage/usecase/StageRunUseCase";
 import { $clamp } from "@/global/GlobalUtil";
 import {

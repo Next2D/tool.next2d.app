@@ -1,5 +1,5 @@
-import { MovieClip } from "@/core/domain/model/MovieClip";
-import { IBounds } from "@/interface/IBounds";
+import type { MovieClip } from "@/core/domain/model/MovieClip";
+import type { IBounds } from "@/interface/IBounds";
 import { $calcBoundingBox } from "../../CoreUtil";
 
 /**

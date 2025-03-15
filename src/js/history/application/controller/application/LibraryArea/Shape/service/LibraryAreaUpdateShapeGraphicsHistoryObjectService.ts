@@ -1,7 +1,7 @@
 import type { IHistoryObject } from "@/interface/IHistoryObject";
 import type { IShapeSaveObject } from "@/interface/IShapeSaveObject";
+import type { IBounds } from "@/interface/IBounds";
 import { $LIBRARY_UPDATE_SHAPE_GRAPHICS_COMMAND } from "@/config/HistoryConfig";
-import { IBounds } from "@/interface/IBounds";
 
 /**
  * @description Shapeの描画レコード更新の履歴用オブジェクトを作成

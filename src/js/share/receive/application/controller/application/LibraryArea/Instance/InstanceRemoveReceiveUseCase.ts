@@ -1,7 +1,7 @@
 import type { IShareReceiveMessage } from "@/interface/IShareReceiveMessage";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
-import { IAllSaveObject } from "@/interface/IAllSaveObject";
+import type { IAllSaveObject } from "@/interface/IAllSaveObject";
 import { execute as externalItemRemoveUseCase } from "@/external/core/application/ExternalItem/usecase/ExternalItemRemoveUseCase";
 
 /**

@@ -1,5 +1,5 @@
 import type { MovieClip } from "@/core/domain/model/MovieClip";
-import { IPosition } from "@/interface/IPosition";
+import type { IPosition } from "@/interface/IPosition";
 
 /**
  * @description 選択中のキャラクターのxyの座標位置を計算
