@@ -14,6 +14,7 @@ export const execute = (element: HTMLElement): void =>
 {
     // マウスダウンイベントを登録
     element.addEventListener(EventType.POINTER_DOWN,
-        shapePointerDownEventService
+        shapePointerDownEventService,
+        { "passive": false }
     );
 };
