@@ -8,8 +8,23 @@ import type { IEmptyCharacterSaveObject } from "@/interface/IEmptyCharacterSaveO
  */
 export class EmptyCharacter
 {
-    private _$startFrame: number;
-    private _$endFrame: number;
+    /**
+     * @description 開始フレーム番号
+     *              start frame number
+     *
+     * @member {number}
+     * @public
+     */
+    public startFrame: number;
+
+    /**
+     * @description 終了フレーム番号
+     *              end frame number
+     *
+     * @member {number}
+     * @public
+     */
+    public endFrame: number;
 
     /**
      * @constructor
@@ -17,19 +32,8 @@ export class EmptyCharacter
      */
     constructor ()
     {
-        /**
-         * @type {number}
-         * @default 0
-         * @private
-         */
-        this._$startFrame = 0;
-
-        /**
-         * @type {number}
-         * @default 0
-         * @private
-         */
-        this._$endFrame = 0;
+        this.startFrame = 0;
+        this.endFrame   = 0;
     }
 
     /**
@@ -42,40 +46,8 @@ export class EmptyCharacter
      */
     load (save_object: IEmptyCharacterSaveObject): void
     {
-        this._$startFrame = save_object.startFrame;
-        this._$endFrame   = save_object.endFrame;
-    }
-
-    /**
-     * @description 開始フレーム番号
-     *              start frame number
-     *
-     * @member {number}
-     * @public
-     */
-    get startFrame ()
-    {
-        return this._$startFrame;
-    }
-    set startFrame (start_frame)
-    {
-        this._$startFrame = start_frame | 0;
-    }
-
-    /**
-     * @description 終了フレーム番号
-     *              end frame number
-     *
-     * @member {number}
-     * @public
-     */
-    get endFrame ()
-    {
-        return this._$endFrame;
-    }
-    set endFrame (end_frame)
-    {
-        this._$endFrame = end_frame | 0;
+        this.startFrame = save_object.startFrame;
+        this.endFrame   = save_object.endFrame;
     }
 
     /**
@@ -89,8 +61,8 @@ export class EmptyCharacter
      */
     move (move_frame: number): void
     {
-        this._$startFrame += move_frame;
-        this._$endFrame   += move_frame;
+        this.startFrame += move_frame;
+        this.endFrame   += move_frame;
     }
 
     /**

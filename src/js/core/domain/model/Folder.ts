@@ -12,7 +12,15 @@ import { execute as externalFolderCheckDuplicateService } from "@/external/core/
  */
 export class Folder extends Instance
 {
-    private _$mode: IFolderType;
+    /**
+     * @description フォルダの開閉状態の値を返す
+     *              Returns the value of the folder's open/closed status
+     *
+     * @default "close"
+     * @member {string}
+     * @public
+     */
+    public mode: IFolderType;
 
     /**
      * @param {object} object
@@ -22,29 +30,7 @@ export class Folder extends Instance
     constructor (object: IObject<IFolderSaveObject>)
     {
         super(object);
-
-        /**
-         * @type {string}
-         * @private
-         */
-        this._$mode = object.mode || "close";
-    }
-
-    /**
-     * @description フォルダの開閉状態の値を返す
-     *              Returns the value of the folder's open/closed status
-     *
-     * @default "close"
-     * @member {string}
-     * @public
-     */
-    get mode (): IFolderType
-    {
-        return this._$mode;
-    }
-    set mode (mode: IFolderType)
-    {
-        this._$mode = mode;
+        this.mode = object.mode || "close";
     }
 
     /**
@@ -78,7 +64,7 @@ export class Folder extends Instance
             "type":     this.type,
             "symbol":   this.symbol,
             "folderId": this.folderId,
-            "mode":     this._$mode
+            "mode":     this.mode
         };
     }
 }

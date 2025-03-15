@@ -18,99 +18,6 @@ import { $NORMAL_MODE } from "@/config/LayerModeConfig";
  */
 export class Layer
 {
-    private _$id: number;
-    private _$name: string;
-    private _$color: string;
-    private _$light: boolean;
-    private _$disable: boolean;
-    private _$lock: boolean;
-    private _$mode: ILayerMode;
-    private _$parentId: number;
-    private readonly _$characters: Character[];
-    private readonly _$emptys: EmptyCharacter[];
-
-    /**
-     * @param {object} [object = null]
-     * @constructor
-     * @public
-     */
-    constructor (object: ILayerSaveObject | null = null)
-    {
-        /**
-         * @type {number}
-         * @default -1
-         * @private
-         */
-        this._$id = -1;
-
-        /**
-         * @type {string}
-         * @default ""
-         * @private
-         */
-        this._$name = "";
-
-        /**
-         * @type {string}
-         * @default ""
-         * @private
-         */
-        this._$color = "";
-
-        /**
-         * @type {boolean}
-         * @default false
-         * @private
-         */
-        this._$light = false;
-
-        /**
-         * @type {boolean}
-         * @default false
-         * @private
-         */
-        this._$disable = false;
-
-        /**
-         * @type {boolean}
-         * @default false
-         * @private
-         */
-        this._$lock = false;
-
-        /**
-         * @type {number}
-         * @default 0
-         * @private
-         */
-        this._$mode = 0;
-
-        /**
-         * @type {number}
-         * @default null
-         * @private
-         */
-        this._$parentId = -1;
-
-        /**
-         * @type {array}
-         * @private
-         */
-        this._$characters = [];
-
-        /**
-         * @type {array}
-         * @private
-         */
-        this._$emptys = [];
-
-        if (object) {
-            this.load(object);
-        } else {
-            this._$color = timelineLayerControllerGetHighlightColorService();
-        }
-    }
-
     /**
      * @description Layerの識別ID
      *              Layer identification ID
@@ -118,14 +25,7 @@ export class Layer
      * @member {number}
      * @public
      */
-    get id (): number
-    {
-        return this._$id;
-    }
-    set id (id: number)
-    {
-        this._$id = id;
-    }
+    public id: number;
 
     /**
      * @description Layerの表示名
@@ -134,14 +34,16 @@ export class Layer
      * @member {string}
      * @public
      */
-    get name (): string
-    {
-        return this._$name;
-    }
-    set name (name: string)
-    {
-        this._$name = name;
-    }
+    public name: string;
+
+    /**
+     * @description ハイライトカラーの値
+     *              Highlight Color Value
+     *
+     * @member {string}
+     * @public
+     */
+    public color: string;
 
     /**
      * @description ハイライトのon/off設定
@@ -151,14 +53,7 @@ export class Layer
      * @member  {boolean}
      * @public
      */
-    get light (): boolean
-    {
-        return this._$light;
-    }
-    set light (light: boolean)
-    {
-        this._$light = light;
-    }
+    public light: boolean;
 
     /**
      * @description 表示/非表示の設定
@@ -168,14 +63,7 @@ export class Layer
      * @member {boolean}
      * @public
      */
-    get disable (): boolean
-    {
-        return this._$disable;
-    }
-    set disable (disable: boolean)
-    {
-        this._$disable = disable;
-    }
+    public disable: boolean;
 
     /**
      * @description レイヤーロックのon/off設定
@@ -185,30 +73,7 @@ export class Layer
      * @member {boolean}
      * @public
      */
-    get lock (): boolean
-    {
-        return this._$lock;
-    }
-    set lock (lock: boolean)
-    {
-        this._$lock = lock;
-    }
-
-    /**
-     * @description ハイライトカラーの値
-     *              Highlight Color Value
-     *
-     * @member {string}
-     * @public
-     */
-    get color (): string
-    {
-        return this._$color;
-    }
-    set color (color: string)
-    {
-        this._$color = `${color}`;
-    }
+    public lock: boolean;
 
     /**
      * @description レイヤーのモードの値
@@ -218,14 +83,7 @@ export class Layer
      * @member {number}
      * @public
      */
-    get mode (): ILayerMode
-    {
-        return this._$mode;
-    }
-    set mode (mode: ILayerMode)
-    {
-        this._$mode = mode;
-    }
+    public mode: ILayerMode;
 
     /**
      * @description 入れ子になってる親のレイヤーIndex値
@@ -235,14 +93,7 @@ export class Layer
      * @member {number}
      * @public
      */
-    get parentId (): number
-    {
-        return this._$parentId;
-    }
-    set parentId (parent_id: number)
-    {
-        this._$parentId = parent_id;
-    }
+    public parentId: number;
 
     /**
      * @description レイヤー内のDisplayObject配列
@@ -252,10 +103,7 @@ export class Layer
      * @readonly
      * @public
      */
-    get characters (): Character[]
-    {
-        return this._$characters;
-    }
+    public readonly characters: Character[];
 
     /**
      * @description レイヤー内の空のキーフレーム配列
@@ -265,9 +113,31 @@ export class Layer
      * @readonly
      * @public
      */
-    get emptyCharacters (): EmptyCharacter[]
+    public readonly emptyCharacters: EmptyCharacter[];
+
+    /**
+     * @param {object} [object = null]
+     * @constructor
+     * @public
+     */
+    constructor (object: ILayerSaveObject | null = null)
     {
-        return this._$emptys;
+        this.id              = -1;
+        this.name            = "";
+        this.color           = "";
+        this.light           = false;
+        this.disable         = false;
+        this.lock            = false;
+        this.mode            = 0;
+        this.parentId        = -1;
+        this.characters      = [];
+        this.emptyCharacters = [];
+
+        if (object) {
+            this.load(object);
+        } else {
+            this.color = timelineLayerControllerGetHighlightColorService();
+        }
     }
 
     /**
@@ -281,12 +151,12 @@ export class Layer
     get minFrame (): number
     {
         let minFrame = 1;
-        for (let idx = 0; idx < this._$characters.length; ++idx) {
-            minFrame = Math.min(minFrame, this._$characters[idx].startFrame);
+        for (let idx = 0; idx < this.characters.length; ++idx) {
+            minFrame = Math.min(minFrame, this.characters[idx].startFrame);
         }
 
-        for (let idx = 0; idx < this._$emptys.length; ++idx) {
-            minFrame = Math.min(minFrame, this._$emptys[idx].startFrame);
+        for (let idx = 0; idx < this.emptyCharacters.length; ++idx) {
+            minFrame = Math.min(minFrame, this.emptyCharacters[idx].startFrame);
         }
 
         return minFrame;
@@ -303,12 +173,12 @@ export class Layer
     get maxFrame (): number
     {
         let maxFrame = 0;
-        for (let idx = 0; idx < this._$characters.length; ++idx) {
-            maxFrame = Math.max(maxFrame, this._$characters[idx].endFrame);
+        for (let idx = 0; idx < this.characters.length; ++idx) {
+            maxFrame = Math.max(maxFrame, this.characters[idx].endFrame);
         }
 
-        for (let idx = 0; idx < this._$emptys.length; ++idx) {
-            maxFrame = Math.max(maxFrame, this._$emptys[idx].endFrame);
+        for (let idx = 0; idx < this.emptyCharacters.length; ++idx) {
+            maxFrame = Math.max(maxFrame, this.emptyCharacters[idx].endFrame);
         }
 
         return maxFrame;
@@ -340,10 +210,10 @@ export class Layer
     clearRelation (): void
     {
         // ノーマルモードに更新
-        this._$mode = $NORMAL_MODE;
+        this.mode = $NORMAL_MODE;
 
         // 親のIndexをnullに更新
-        this._$parentId = -1;
+        this.parentId = -1;
     }
 
     /**
@@ -357,24 +227,24 @@ export class Layer
      */
     load (object: ILayerSaveObject): void
     {
-        this._$id      = object.id;
-        this._$name    = object.name;
-        this._$color   = object.color;
-        this._$lock    = object.lock;
-        this._$disable = object.disable;
-        this._$light   = object.light;
-        this._$mode    = object.mode;
+        this.id      = object.id;
+        this.name    = object.name;
+        this.color   = object.color;
+        this.lock    = object.lock;
+        this.disable = object.disable;
+        this.light   = object.light;
+        this.mode    = object.mode;
 
         if (object.parentId) {
-            this._$parentId = object.parentId as number;
+            this.parentId = object.parentId as number;
         }
 
         if ("maskId" in object && object.maskId !== null) {
-            this._$parentId = object.maskId as number;
+            this.parentId = object.maskId as number;
         }
 
         if ("guideId" in object && object.guideId !== null) {
-            this._$parentId = object.guideId as number;
+            this.parentId = object.guideId as number;
         }
 
         // 各、キャラクターの読み込み
@@ -456,7 +326,7 @@ export class Layer
      */
     addEmptyCharacter (empty_character: EmptyCharacter): void
     {
-        this._$emptys.push(empty_character);
+        this.emptyCharacters.push(empty_character);
     }
 
     /**
@@ -470,7 +340,7 @@ export class Layer
      */
     removeEmptyCharacter (empty_character: EmptyCharacter): void
     {
-        this._$emptys.splice(this._$emptys.indexOf(empty_character), 1);
+        this.emptyCharacters.splice(this.emptyCharacters.indexOf(empty_character), 1);
     }
 
     /**
@@ -493,7 +363,7 @@ export class Layer
             activeCharacter.depth++;
         }
 
-        this._$characters.push(character);
+        this.characters.push(character);
     }
 
     /**
@@ -507,7 +377,7 @@ export class Layer
      */
     removeCharacter (character: Character): void
     {
-        this._$characters.splice(this._$characters.indexOf(character), 1);
+        this.characters.splice(this.characters.indexOf(character), 1);
         const activeCharacters = this.getActiveCharacters(character.startFrame);
 
         // DisplayObjectの深度を調整
@@ -531,8 +401,8 @@ export class Layer
      */
     getActiveEmptyCharacter (frame: number): EmptyCharacter | null
     {
-        for (let idx = 0; idx < this._$emptys.length; ++idx) {
-            const emptyCharacter = this._$emptys[idx];
+        for (let idx = 0; idx < this.emptyCharacters.length; ++idx) {
+            const emptyCharacter = this.emptyCharacters[idx];
             if (emptyCharacter.startFrame === frame
                 || frame > emptyCharacter.startFrame && frame < emptyCharacter.endFrame
             ) {
@@ -555,8 +425,8 @@ export class Layer
     getActiveCharacters (frame: number): Character[]
     {
         const characters = [];
-        for (let idx = 0; idx < this._$characters.length; ++idx) {
-            const character = this._$characters[idx];
+        for (let idx = 0; idx < this.characters.length; ++idx) {
+            const character = this.characters[idx];
             if (character.startFrame === frame
                 || frame > character.startFrame && frame < character.endFrame
             ) {
@@ -606,26 +476,26 @@ export class Layer
     toObject (): ILayerSaveObject
     {
         const characters = [];
-        for (let idx = 0; idx < this._$characters.length; ++idx) {
-            const character = this._$characters[idx];
+        for (let idx = 0; idx < this.characters.length; ++idx) {
+            const character = this.characters[idx];
             characters.push(character.toObject());
         }
 
         const emptyCharacters = [];
-        for (let idx = 0; idx < this._$emptys.length; ++idx) {
-            const emptyCharacter = this._$emptys[idx];
+        for (let idx = 0; idx < this.emptyCharacters.length; ++idx) {
+            const emptyCharacter = this.emptyCharacters[idx];
             emptyCharacters.push(emptyCharacter.toObject());
         }
 
         return {
-            "id": this._$id,
-            "name": this._$name,
-            "color": this._$color,
-            "lock": this._$lock,
-            "disable": this._$disable,
-            "light": this._$light,
-            "mode": this._$mode,
-            "parentId": this._$parentId,
+            "id": this.id,
+            "name": this.name,
+            "color": this.color,
+            "lock": this.lock,
+            "disable": this.disable,
+            "light": this.light,
+            "mode": this.mode,
+            "parentId": this.parentId,
             "characters": characters,
             "emptyCharacters": emptyCharacters
         };

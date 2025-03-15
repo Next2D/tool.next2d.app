@@ -8,7 +8,6 @@ export interface IMovieClipSaveObject extends IInstanceObject
 {
     folderId?: number;
     currentFrame?: number;
-    leftFrame?: number;
     layers?: ILayerSaveObject[];
     labels?: ILabelSaveObject[];
     sounds?: IMovieClipSoundSaveObject[];

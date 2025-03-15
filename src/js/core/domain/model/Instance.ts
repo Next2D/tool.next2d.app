@@ -13,50 +13,6 @@ import { execute as instanceGetPathNameService } from "@/core/application/Instan
  */
 export class Instance
 {
-    private readonly _$id: number;
-    private _$name: string;
-    private _$type: IInstanceType;
-    private _$symbol: string;
-    private _$folderId: number;
-
-    /**
-     * @param {object} object
-     * @constructor
-     * @public
-     */
-    constructor (object: IObject<any>)
-    {
-        /**
-         * @type {number}
-         * @private
-         */
-        this._$id = object.id;
-
-        /**
-         * @type {string}
-         * @private
-         */
-        this._$type = object.type;
-
-        /**
-         * @type {string}
-         * @private
-         */
-        this._$name = object.name || "";
-
-        /**
-         * @type {string}
-         * @private
-         */
-        this._$symbol = object.symbol || "";
-
-        /**
-         * @type {number}
-         * @private
-         */
-        this._$folderId = object.folderId || 0;
-    }
-
     /**
      * @description インスタンスのユニークIDを返却
      *              Return the unique ID of the instance
@@ -65,10 +21,7 @@ export class Instance
      * @readonly
      * @public
      */
-    get id (): number
-    {
-        return this._$id;
-    }
+    public readonly id: number;
 
     /**
      * @description インスタンスタイプ
@@ -78,9 +31,47 @@ export class Instance
      * @readonly
      * @public
      */
-    get type (): IInstanceType
+    public readonly type: IInstanceType;
+
+    /**
+     * @description ライブラリ一覧に表示されるインスタンス名
+     *              Instance name as it appears in the library list
+     *
+     * @member {string}
+     * @public
+     */
+    public name: string;
+
+    /**
+     * @description ライブラリ一覧で設定したシンボル名
+     *              Symbol name set in the library list
+     *
+     * @member {string}
+     * @public
+     */
+    public symbol: string;
+
+    /**
+     * @description 親フォルダのID
+     *              ID of parent folder
+     *
+     * @member {number}
+     * @public
+     */
+    public folderId: number;
+
+    /**
+     * @param {object} object
+     * @constructor
+     * @public
+     */
+    constructor (object: IObject<any>)
     {
-        return this._$type;
+        this.id       = object.id;
+        this.type     = object.type;
+        this.name     = object.name || "";
+        this.symbol   = object.symbol || "";
+        this.folderId = object.folderId || 0;
     }
 
     /**
@@ -95,54 +86,6 @@ export class Instance
     getPath (work_space: WorkSpace): string
     {
         return instanceGetPathNameService(work_space, this);
-    }
-
-    /**
-     * @description ライブラリ一覧に表示されるインスタンス名
-     *              Instance name as it appears in the library list
-     *
-     * @member {string}
-     * @public
-     */
-    get name (): string
-    {
-        return this._$name;
-    }
-    set name (name: string)
-    {
-        this._$name = name;
-    }
-
-    /**
-     * @description ライブラリ一覧で設定したシンボル名
-     *              Symbol name set in the library list
-     *
-     * @member {string}
-     * @public
-     */
-    get symbol (): string
-    {
-        return this._$symbol;
-    }
-    set symbol (symbol: string)
-    {
-        this._$symbol = symbol;
-    }
-
-    /**
-     * @description 親フォルダのID
-     *              ID of parent folder
-     *
-     * @member {number}
-     * @public
-     */
-    get folderId (): number
-    {
-        return this._$folderId;
-    }
-    set folderId (folder_id: number)
-    {
-        this._$folderId = folder_id;
     }
 
     /**

@@ -5,14 +5,14 @@ import type { IFrameObject } from "@/interface/IFrameObject";
 import type { ISoundSaveList } from "@/interface/ISoundSaveList";
 import type { IMovieClipPublishJson } from "@/interface/IMovieClipPublishJson";
 import type { IBounds } from "@/interface/IBounds";
-import { Instance } from "./Instance";
-import { Layer } from "./Layer";
 import { execute as movieClipRunUseCase } from "@/core/application/MovieClip/usecase/MovieClipRunUseCase";
 import { execute as movieClipStopUseCase } from "@/core/application/MovieClip/usecase/MovieClipStopUseCase";
 import { execute as movieClipCreateCanvasElementUseCase } from "@/core/application/MovieClip/usecase/MovieClipCreateCanvasElementUseCase";
-import { $clamp } from "@/global/GlobalUtil";
 import { execute as movieClipCreateJsonUseCase } from "@/core/application/MovieClip/usecase/MovieClipCreateJsonUseCase";
 import { execute as movieClipCalcBoundService } from "@/core/application/MovieClip/service/MovieClipCalcBoundService";
+import { Instance } from "./Instance";
+import { Layer } from "./Layer";
+import { $clamp } from "@/global/GlobalUtil";
 
 /**
  * @description MovieClipの状態管理クラス
@@ -24,18 +24,111 @@ import { execute as movieClipCalcBoundService } from "@/core/application/MovieCl
  */
 export class MovieClip extends Instance
 {
-    private _$currentFrame: number;
-    private _$leftFrame: number;
-    private _$scrollX: number;
-    private _$scrollY: number;
-    private _$active: boolean;
-    private readonly _$labels: Map<number, string>;
-    private readonly _$layers: Layer[];
-    private readonly _$actions: Map<number, string>;
-    private readonly _$sounds: Map<number, ISoundObject[]>;
-    private readonly _$selectedLayers: Layer[];
-    private readonly _$selectedFrameObject: IFrameObject;
-    private readonly _$selectedDepths: Map<number, number[]>;
+    /**
+     * @description タイムラインマーカーが指定してるフレーム番号
+     *              The frame number specified by the timeline marker.
+     *
+     * @member {array}
+     * @public
+     */
+    public currentFrame: number;
+
+    /**
+     * @description タイムラインのスクロールのx座標
+     *              x-coordinate of timeline scrolling
+     *
+     * @member {number}
+     * @public
+     */
+    public scrollX: number;
+
+    /**
+     * @description タイムラインのスクロールのy座標
+     *              y-coordinate of timeline scrolling
+     *
+     * @member {number}
+     * @public
+     */
+    public scrollY: number;
+
+    /**
+     * @description MovieClipの起動状態を返却
+     *              Return MovieClip startup status
+     *
+     * @member {boolean}
+     * @public
+     */
+    public active: boolean;
+
+    /**
+     * @description ラベルのマップデータを返却
+     *              Returns label map data
+     *
+     * @return {Map}
+     * @readonly
+     * @public
+     */
+    public readonly labels: Map<number, string>;
+
+    /**
+     * @description MovieClipのLayerの配列を返却する
+     *              Returns an array of MovieClip Layers
+     *
+     * @member {Map}
+     * @readonly
+     * @public
+     */
+    public readonly layers: Layer[];
+
+    /**
+     * @description スクリプトのマップデータを返却
+     *              Return script map data
+     *
+     * @return {Map}
+     * @readonly
+     * @public
+     */
+    public readonly actions: Map<number, string>;
+
+    /**
+     * @description サウンドのマップデータを返却
+     *              Returns sound map data
+     *
+     * @return {Map}
+     * @readonly
+     * @public
+     */
+    public readonly sounds: Map<number, ISoundObject[]>;
+
+    /**
+     * @description タイムラインで選択したLayerの配列を返却
+     *              Returns an array of Layers selected on the timeline
+     *
+     * @member {array}
+     * @readonly
+     * @public
+     */
+    public readonly selectedLayers: Layer[];
+
+    /**
+     * @description フレームの選択状態を保存したオブジェクトを返却
+     *              Returns an object with the frame selection state saved
+     *
+     * @return {object}
+     * @readonly
+     * @public
+     */
+    public readonly selectedFrameObject: IFrameObject;
+
+    /**
+     * @description 選択中のDisplayObjectのマップデータを返却
+     *              Returns the map data of the selected DisplayObject
+     *
+     * @member {Map}
+     * @readonly
+     * @public
+     */
+    public readonly selectedDepths: Map<number, number[]>;
 
     /**
      * @params {object} object
@@ -46,114 +139,25 @@ export class MovieClip extends Instance
     {
         super(object);
 
-        /**
-         * @type {boolean}
-         * @default false
-         * @private
-         */
-        this._$active = false;
+        this.labels  = new Map();
+        this.actions = new Map();
+        this.sounds  = new Map();
 
-        /**
-         * @type {Map}
-         * @private
-         */
-        this._$labels = new Map();
+        this.currentFrame = 1;
+        this.active  = false;
+        this.layers  = [];
+        this.scrollX = 0;
+        this.scrollY = 0;
 
-        /**
-         * @type {array}
-         * @private
-         */
-        this._$layers = [];
-
-        /**
-         * @type {Map}
-         * @private
-         */
-        this._$actions = new Map();
-
-        /**
-         * @type {Map}
-         * @private
-         */
-        this._$sounds = new Map();
-
-        /**
-         * @type {number}
-         * @default 1
-         * @private
-         */
-        this._$currentFrame = 1;
-
-        /**
-         * @type {number}
-         * @default 1
-         * @private
-         */
-        this._$leftFrame = 1;
-
-        /**
-         * @type {number}
-         * @default 0
-         * @private
-         */
-        this._$scrollX = 0;
-
-        /**
-         * @type {number}
-         * @default 0
-         * @private
-         */
-        this._$scrollY = 0;
-
-        /**
-         * @type {array}
-         * @private
-         */
-        this._$selectedLayers = [];
-
-        /**
-         * @type {object}
-         * @private
-         */
-        this._$selectedFrameObject = {
+        this.selectedLayers = [];
+        this.selectedDepths = new Map();
+        this.selectedFrameObject = {
             "start": 0,
             "end": 0
         };
 
-        /**
-         * @type {Map}
-         * @private
-         */
-        this._$selectedDepths = new Map();
-
         // 指定objectからMovieCLipを復元
         this.load(object);
-    }
-
-    /**
-     * @description 選択中のDisplayObjectのマップデータを返却
-     *              Returns the map data of the selected DisplayObject
-     *
-     * @member {Map}
-     * @readonly
-     * @public
-     */
-    get selectedDepths (): Map<number, number[]>
-    {
-        return this._$selectedDepths;
-    }
-
-    /**
-     * @description フレームの選択状態を保存したオブジェクトを返却
-     *              Returns an object with the frame selection state saved
-     *
-     * @return {object}
-     * @readonly
-     * @public
-     */
-    get selectedFrameObject (): IFrameObject
-    {
-        return this._$selectedFrameObject;
     }
 
     /**
@@ -166,11 +170,11 @@ export class MovieClip extends Instance
      */
     isSingleSelectedOfDisplayObject (): boolean
     {
-        if (!this._$selectedDepths.size || this._$selectedDepths.size > 1) {
+        if (!this.selectedDepths.size || this.selectedDepths.size > 1) {
             return false;
         }
 
-        const depths = this._$selectedDepths.values().next().value as number[];
+        const depths = this.selectedDepths.values().next().value as number[];
         return depths.length === 1;
     }
 
@@ -185,8 +189,8 @@ export class MovieClip extends Instance
     get selectedStartFrame (): number
     {
         return Math.min(
-            this._$selectedFrameObject.start,
-            this._$selectedFrameObject.end
+            this.selectedFrameObject.start,
+            this.selectedFrameObject.end
         );
     }
 
@@ -201,8 +205,8 @@ export class MovieClip extends Instance
     get selectedEndFrame (): number
     {
         return Math.max(
-            this._$selectedFrameObject.start,
-            this._$selectedFrameObject.end
+            this.selectedFrameObject.start,
+            this.selectedFrameObject.end
         ) + 1;
     }
 
@@ -233,19 +237,6 @@ export class MovieClip extends Instance
     }
 
     /**
-     * @description タイムラインで選択したLayerの配列を返却
-     *              Returns an array of Layers selected on the timeline
-     *
-     * @member {array}
-     * @readonly
-     * @public
-     */
-    get selectedLayers (): Layer[]
-    {
-        return this._$selectedLayers;
-    }
-
-    /**
      * @description タイムラインで選択したLayerの配列を昇順に並び替えて返却
      *              Returns an array of Layers selected on the timeline in ascending order
      *
@@ -256,7 +247,7 @@ export class MovieClip extends Instance
     getCloneAndSortSelectedLayers (): Layer[]
     {
         return this
-            ._$selectedLayers
+            .selectedLayers
             // 複製
             .slice()
             // 昇順に並び替え
@@ -276,7 +267,7 @@ export class MovieClip extends Instance
      */
     clearSelectedDepths (): void
     {
-        this._$selectedDepths.clear();
+        this.selectedDepths.clear();
     }
 
     /**
@@ -289,7 +280,7 @@ export class MovieClip extends Instance
      */
     clearSelectedLayer (): void
     {
-        this._$selectedLayers.length = 0;
+        this.selectedLayers.length = 0;
     }
 
     /**
@@ -302,69 +293,8 @@ export class MovieClip extends Instance
      */
     clearSelectedFrame (): void
     {
-        this._$selectedFrameObject.start = 0;
-        this._$selectedFrameObject.end   = 0;
-    }
-
-    /**
-     * @description タイムラインのスクロールのx座標
-     *              x-coordinate of timeline scrolling
-     *
-     * @member {number}
-     * @public
-     */
-    get scrollX (): number
-    {
-        return this._$scrollX;
-    }
-    set scrollX (scroll_x: number)
-    {
-        this._$scrollX = scroll_x;
-    }
-
-    /**
-     * @description タイムラインのスクロールのy座標
-     *              y-coordinate of timeline scrolling
-     *
-     * @member {number}
-     * @public
-     */
-    get scrollY (): number
-    {
-        return this._$scrollY;
-    }
-    set scrollY (scroll_y: number)
-    {
-        this._$scrollY = scroll_y;
-    }
-
-    /**
-     * @description MovieClipのLayerの配列を返却する
-     *              Returns an array of MovieClip Layers
-     *
-     * @member {Map}
-     * @readonly
-     * @public
-     */
-    get layers (): Layer[]
-    {
-        return this._$layers;
-    }
-
-    /**
-     * @description タイムラインマーカーが指定してるフレーム番号
-     *              The frame number specified by the timeline marker.
-     *
-     * @member {array}
-     * @public
-     */
-    get currentFrame (): number
-    {
-        return this._$currentFrame;
-    }
-    set currentFrame (current_frame: number)
-    {
-        this._$currentFrame = current_frame;
+        this.selectedFrameObject.start = 0;
+        this.selectedFrameObject.end   = 0;
     }
 
     /**
@@ -378,8 +308,8 @@ export class MovieClip extends Instance
     get minFrame (): number
     {
         let minFrame = 1;
-        for (let idx = 0; idx < this._$layers.length; ++idx) {
-            minFrame = Math.min(minFrame, this._$layers[idx].minFrame);
+        for (let idx = 0; idx < this.layers.length; ++idx) {
+            minFrame = Math.min(minFrame, this.layers[idx].minFrame);
         }
         return minFrame;
     }
@@ -395,23 +325,10 @@ export class MovieClip extends Instance
     get maxFrame (): number
     {
         let maxFrame = 0;
-        for (let idx = 0; idx < this._$layers.length; ++idx) {
-            maxFrame = Math.max(maxFrame, this._$layers[idx].maxFrame);
+        for (let idx = 0; idx < this.layers.length; ++idx) {
+            maxFrame = Math.max(maxFrame, this.layers[idx].maxFrame);
         }
         return maxFrame;
-    }
-
-    /**
-     * @description MovieClipの起動状態を返却
-     *              Return MovieClip startup status
-     *
-     * @member {boolean}
-     * @readonly
-     * @public
-     */
-    get active (): boolean
-    {
-        return this._$active;
     }
 
     /**
@@ -428,7 +345,7 @@ export class MovieClip extends Instance
         await movieClipRunUseCase(this);
 
         // 状態をアクティブに更新
-        this._$active = true;
+        this.active = true;
     }
 
     /**
@@ -445,14 +362,14 @@ export class MovieClip extends Instance
         movieClipStopUseCase();
 
         // 状態を非アクティブに更新
-        this._$active = false;
+        this.active = false;
     }
 
     /**
      * @description 保存データからMovieClipを復元
      *              Recover MovieClip from saved data
      *
-     * @param   {object} object
+     * @param   {IMovieClipSaveObject} object
      * @returns {void}
      * @method
      * @public
@@ -462,7 +379,7 @@ export class MovieClip extends Instance
         if (object.layers && object.layers.length) {
 
             // reset
-            this._$layers.length = 0;
+            this.layers.length = 0;
             // セーブデータからLayerを複製
             for (let idx: number = 0; idx < object.layers.length; ++idx) {
 
@@ -473,7 +390,7 @@ export class MovieClip extends Instance
                 layer.load(saveObject);
 
                 // 登録
-                this._$layers.push(layer);
+                this.layers.push(layer);
             }
 
         } else {
@@ -482,22 +399,22 @@ export class MovieClip extends Instance
         }
 
         if (object.scrollX) {
-            this._$scrollX = object.scrollX;
+            this.scrollX = object.scrollX;
         }
 
         if (object.scrollY) {
-            this._$scrollY = object.scrollY;
+            this.scrollY = object.scrollY;
         }
 
         if (object.currentFrame) {
-            this._$currentFrame = object.currentFrame;
+            this.currentFrame = object.currentFrame;
         }
 
         // ラベル情報を再登録
         if (object.labels) {
             for (let idx = 0; idx < object.labels.length; ++idx) {
                 const labelObject = object.labels[idx];
-                this._$labels.set(labelObject.frame, labelObject.name);
+                this.labels.set(labelObject.frame, labelObject.name);
             }
         }
 
@@ -505,7 +422,7 @@ export class MovieClip extends Instance
         if (object.actions) {
             for (let idx = 0; idx < object.actions.length; ++idx) {
                 const actionObject: IActionSaveObject = object.actions[idx];
-                this._$actions.set(actionObject.frame, actionObject.action);
+                this.actions.set(actionObject.frame, actionObject.action);
             }
         }
 
@@ -513,7 +430,7 @@ export class MovieClip extends Instance
         if (object.sounds) {
             for (let idx = 0; idx < object.sounds.length; ++idx) {
                 const soundObject: ISoundSaveList = object.sounds[idx];
-                this._$sounds.set(soundObject.frame, soundObject.sounds);
+                this.sounds.set(soundObject.frame, soundObject.sounds);
             }
         }
     }
@@ -530,12 +447,12 @@ export class MovieClip extends Instance
     {
         const layer = new Layer();
 
-        layer.name = `Layer_${this._$layers.length}`;
+        layer.name = `Layer_${this.layers.length}`;
 
         // IDを発番
         let layerId = 0;
-        for (let idx = 0; idx < this._$layers.length; ++idx ) {
-            const layer = this._$layers[idx];
+        for (let idx = 0; idx < this.layers.length; ++idx ) {
+            const layer = this.layers[idx];
             if (!layer) {
                 continue;
             }
@@ -558,13 +475,13 @@ export class MovieClip extends Instance
      */
     setLayer (layer: Layer, index: number): void
     {
-        const targetIndex = $clamp(index, 0, this._$layers.length);
+        const targetIndex = $clamp(index, 0, this.layers.length);
 
-        if (targetIndex >= this._$layers.length) {
-            this._$layers.push(layer);
+        if (targetIndex >= this.layers.length) {
+            this.layers.push(layer);
         } else {
             // 指定のindexの前に挿入
-            this._$layers.splice(targetIndex, 0, layer);
+            this.layers.splice(targetIndex, 0, layer);
         }
     }
 
@@ -583,9 +500,9 @@ export class MovieClip extends Instance
         this.deactivatedLayer(layer);
 
         // 内部情報から削除
-        const index = this._$layers.indexOf(layer);
+        const index = this.layers.indexOf(layer);
         if (index > -1) {
-            this._$layers.splice(index, 1);
+            this.layers.splice(index, 1);
         }
     }
 
@@ -600,9 +517,9 @@ export class MovieClip extends Instance
      */
     deactivatedLayer (layer: Layer): void
     {
-        const index = this._$selectedLayers.indexOf(layer);
+        const index = this.selectedLayers.indexOf(layer);
         if (index > -1) {
-            this._$selectedLayers.splice(index, 1);
+            this.selectedLayers.splice(index, 1);
         }
     }
 
@@ -617,8 +534,8 @@ export class MovieClip extends Instance
      */
     getLayer (index: number): Layer | null
     {
-        return index in this._$layers
-            ? this._$layers[index] as NonNullable<Layer>
+        return index in this.layers
+            ? this.layers[index] as NonNullable<Layer>
             : null;
     }
 
@@ -633,25 +550,12 @@ export class MovieClip extends Instance
      */
     getLayerById (id: number): Layer | null
     {
-        for (let idx = 0; idx < this._$layers.length; ++idx) {
-            if (this._$layers[idx].id === id) {
-                return this._$layers[idx];
+        for (let idx = 0; idx < this.layers.length; ++idx) {
+            if (this.layers[idx].id === id) {
+                return this.layers[idx];
             }
         }
         return null;
-    }
-
-    /**
-     * @description ラベルのマップデータを返却
-     *              Returns label map data
-     *
-     * @return {Map}
-     * @readonly
-     * @public
-     */
-    get labels (): Map<number, string>
-    {
-        return this._$labels;
     }
 
     /**
@@ -666,7 +570,7 @@ export class MovieClip extends Instance
     getLabel (frame: number): string
     {
         return this.hasLabel(frame)
-            ? this._$labels.get(frame) as string
+            ? this.labels.get(frame) as string
             : "";
     }
 
@@ -682,7 +586,7 @@ export class MovieClip extends Instance
      */
     setLabel (frame: number, name: string): void
     {
-        this._$labels.set(frame, name);
+        this.labels.set(frame, name);
     }
 
     /**
@@ -696,7 +600,7 @@ export class MovieClip extends Instance
      */
     hasLabel (frame: number): boolean
     {
-        return this._$labels.has(frame);
+        return this.labels.has(frame);
     }
 
     /**
@@ -710,7 +614,7 @@ export class MovieClip extends Instance
      */
     deleteLabel (frame: number): boolean
     {
-        return this._$labels.delete(frame);
+        return this.labels.delete(frame);
     }
 
     /**
@@ -725,7 +629,7 @@ export class MovieClip extends Instance
     getSound (frame: number): ISoundObject[] | null
     {
         return this.hasSound(frame)
-            ? this._$sounds.get(frame) as ISoundObject[]
+            ? this.sounds.get(frame) as ISoundObject[]
             : null;
     }
 
@@ -742,9 +646,9 @@ export class MovieClip extends Instance
     setSound (frame: number, sound: ISoundObject): void
     {
         if (!this.hasSound(frame)) {
-            this._$sounds.set(frame, []);
+            this.sounds.set(frame, []);
         }
-        this._$sounds.get(frame)?.push(sound);
+        this.sounds.get(frame)?.push(sound);
     }
 
     /**
@@ -758,7 +662,7 @@ export class MovieClip extends Instance
      */
     hasSound (frame: number): boolean
     {
-        return this._$sounds.has(frame);
+        return this.sounds.has(frame);
     }
 
     /**
@@ -772,33 +676,7 @@ export class MovieClip extends Instance
      */
     deleteSound (frame: number): boolean
     {
-        return this._$sounds.delete(frame);
-    }
-
-    /**
-     * @description サウンドのマップデータを返却
-     *              Returns sound map data
-     *
-     * @return {Map}
-     * @readonly
-     * @public
-     */
-    get sounds (): Map<number, ISoundObject[]>
-    {
-        return this._$sounds;
-    }
-
-    /**
-     * @description スクリプトのマップデータを返却
-     *              Return script map data
-     *
-     * @return {Map}
-     * @readonly
-     * @public
-     */
-    get actions (): Map<number, string>
-    {
-        return this._$actions;
+        return this.sounds.delete(frame);
     }
 
     /**
@@ -813,7 +691,7 @@ export class MovieClip extends Instance
     getAction (frame: number): string
     {
         return this.hasAction(frame)
-            ? this._$actions.get(frame) as string
+            ? this.actions.get(frame) as string
             : "";
     }
 
@@ -829,7 +707,7 @@ export class MovieClip extends Instance
      */
     setAction (frame: number, script: string): void
     {
-        this._$actions.set(frame, script);
+        this.actions.set(frame, script);
     }
 
     /**
@@ -843,7 +721,7 @@ export class MovieClip extends Instance
      */
     hasAction (frame: number): boolean
     {
-        return this._$actions.has(frame);
+        return this.actions.has(frame);
     }
 
     /**
@@ -857,7 +735,7 @@ export class MovieClip extends Instance
      */
     deleteAction (frame: number): boolean
     {
-        return this._$actions.delete(frame);
+        return this.actions.delete(frame);
     }
 
     /**
@@ -901,12 +779,12 @@ export class MovieClip extends Instance
     toObject (): IMovieClipSaveObject
     {
         const layers = [];
-        for (let idx: number = 0; idx < this._$layers.length; ++idx) {
-            layers.push(this._$layers[idx].toObject());
+        for (let idx: number = 0; idx < this.layers.length; ++idx) {
+            layers.push(this.layers[idx].toObject());
         }
 
         const labels = [];
-        for (const [frame, value] of this._$labels) {
+        for (const [frame, value] of this.labels) {
             labels.push({
                 "frame": frame,
                 "name": value
@@ -914,7 +792,7 @@ export class MovieClip extends Instance
         }
 
         const actions: IActionSaveObject[] = [];
-        for (const [frame, action] of this._$actions) {
+        for (const [frame, action] of this.actions) {
             actions.push({
                 "frame": frame,
                 "action": action
@@ -922,7 +800,7 @@ export class MovieClip extends Instance
         }
 
         const soundList: ISoundSaveList[] = [];
-        for (const [frame, sounds] of this._$sounds) {
+        for (const [frame, sounds] of this.sounds) {
             soundList.push({
                 "frame": frame,
                 "sounds": sounds
@@ -935,14 +813,13 @@ export class MovieClip extends Instance
             "type":         this.type,
             "symbol":       this.symbol,
             "folderId":     this.folderId,
-            "currentFrame": this._$currentFrame,
-            "leftFrame":    this._$leftFrame,
+            "currentFrame": this.currentFrame,
             "layers":       layers,
             "labels":       labels,
             "sounds":       soundList,
             "actions":      actions,
-            "scrollX":      this._$scrollX,
-            "scrollY":      this._$scrollY
+            "scrollX":      this.scrollX,
+            "scrollY":      this.scrollY
         };
     }
 }
