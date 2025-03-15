@@ -1,10 +1,11 @@
 import { $LANGUAGE_ELEMENTS_CLASS_NAME } from "../../../config/LanguageConfig";
 import { $setMapping } from "../LanguageUtil";
 import { execute } from "./LanguageTranslationService";
+import { describe, expect, it } from "vitest";
 
 describe("LanguageTranslationServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         const parent = document.createElement("div");
         document.body.appendChild(parent);

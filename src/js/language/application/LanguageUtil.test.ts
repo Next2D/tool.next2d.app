@@ -4,10 +4,11 @@ import {
     $replace,
     $sprintf
 } from "./LanguageUtil";
+import { describe, expect, it } from "vitest";
 
 describe("LanguageTest", () =>
 {
-    test("$getMapping and $setMapping and $replace test", () =>
+    it("$getMapping and $setMapping and $replace test", () =>
     {
         expect($getMapping().size).toBe(0);
 
@@ -19,7 +20,7 @@ describe("LanguageTest", () =>
         expect($replace("{{テスト}}")).toBe("てすと");
     });
 
-    test("$sprintf test", () =>
+    it("$sprintf test", () =>
     {
         const value = "%s1を%s2に変更";
         expect(value).toBe("%s1を%s2に変更");
