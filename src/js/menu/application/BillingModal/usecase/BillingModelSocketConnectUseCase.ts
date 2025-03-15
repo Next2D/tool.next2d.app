@@ -1,9 +1,9 @@
+import { execute as billingModelSocketMessageUseCase } from "./BillingModelSocketMessageUseCase";
 import { $setSocket } from "@/share/ShareUtil";
 import {
     $API_KEY,
     $REWORD_URL
 } from "@/config/BillingConfig";
-import { execute as billingModelSocketMessageUseCase } from "./BillingModelSocketMessageUseCase";
 
 /**
  * @description リワード受け入れようのWebSocketを起動
