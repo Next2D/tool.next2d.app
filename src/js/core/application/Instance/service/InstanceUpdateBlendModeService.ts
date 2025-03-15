@@ -15,10 +15,12 @@ export const execute = (canvas: HTMLCanvasElement, blend_mode: IBlendMode): void
     switch (blend_mode) {
 
         case "normal":
+            canvas.style.filter = "";
             canvas.style.mixBlendMode = "";
             break;
 
         case "add":
+            canvas.style.filter = "";
             canvas.style.mixBlendMode = "color-dodge";
             break;
 
@@ -33,15 +35,19 @@ export const execute = (canvas: HTMLCanvasElement, blend_mode: IBlendMode): void
             break;
 
         case "hardlight":
+            canvas.style.filter = "";
             canvas.style.mixBlendMode = "hard-light";
             break;
 
         case "alpha":
         case "erase":
         case "layer":
+            canvas.style.filter = "";
+            canvas.style.mixBlendMode = "";
             break;
 
         default:
+            canvas.style.filter = "";
             canvas.style.mixBlendMode = blend_mode;
             break;
 

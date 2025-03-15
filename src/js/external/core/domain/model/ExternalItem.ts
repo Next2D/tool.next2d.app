@@ -116,7 +116,6 @@ export class ExternalItem<I extends Instance = Instance>
      */
     async setSymbol (symbol: string): Promise<void>
     {
-        // todo await
         await externalItemUpdateSymbolUseCase(
             this._$workSpace,
             this._$workSpace.scene,

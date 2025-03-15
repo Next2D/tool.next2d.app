@@ -27,7 +27,5 @@ export const execute = (
     const alpha = character.alpha;
     const depth = character.depth;
 
-    return `
-<div class="display-object layer-id-${layer_id}" data-depth="${depth}" data-layer-id="${layer_id}" style="left: ${x}px; top: ${y}px; opacity: ${alpha}; ${transform}"></div>
-    `;
+    return `<div class="display-object layer-id-${layer_id}" data-depth="${depth}" data-layer-id="${layer_id}" style="left: ${x}px; top: ${y}px; opacity: ${alpha}; ${transform}"></div>`;
 };
