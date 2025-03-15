@@ -1,6 +1,6 @@
 import { $LIBRARY_BILLING_HIDE_ICON_ID } from "@/config/BillingConfig";
 import { EventType } from "@/tool/domain/event/EventType";
-import { execute as billingModelHideIconMouseDownUseCase } from "./BillingModelHideIconMouseDownUseCase";
+import { execute as billingModelHideIconPointerDownUseCase } from "./BillingModelHideIconPointerDownUseCase";
 
 /**
  * @description 機能制限解除モーダルの初期起動ユースケース
@@ -12,12 +12,15 @@ import { execute as billingModelHideIconMouseDownUseCase } from "./BillingModelH
  */
 export const execute = (): void =>
 {
-    const iconElement: HTMLElement | null = document
+    const element: HTMLElement | null = document
         .getElementById($LIBRARY_BILLING_HIDE_ICON_ID);
 
-    if (iconElement) {
-        iconElement.addEventListener(EventType.POINTER_DOWN,
-            billingModelHideIconMouseDownUseCase
-        );
+    if (!element) {
+        return ;
     }
+
+    element.addEventListener(EventType.POINTER_DOWN,
+        billingModelHideIconPointerDownUseCase,
+        { "passive": false }
+    );
 };
