@@ -9,7 +9,15 @@ import { execute as stageSettingInitializeRegisterEventUseCase } from "@/control
  */
 class StageSetting
 {
-    private _$lock: boolean;
+    /**
+     * @description ステージの高さ幅のロック設定を返却
+     *              Return lock setting for stage height and width
+     *
+     * @member {boolean}
+     * @default false
+     * @public
+     */
+    public lock: boolean;
 
     /**
      * @constructor
@@ -17,7 +25,7 @@ class StageSetting
      */
     constructor ()
     {
-        this._$lock = false;
+        this.lock = false;
     }
 
     /**
@@ -31,22 +39,6 @@ class StageSetting
     initialize (): void
     {
         stageSettingInitializeRegisterEventUseCase();
-    }
-
-    /**
-     * @description ステージの高さ幅のロック設定を返却
-     *              Return lock setting for stage height and width
-     *
-     * @member {boolean}
-     * @public
-     */
-    get lock (): boolean
-    {
-        return this._$lock;
-    }
-    set lock (lock: boolean)
-    {
-        this._$lock = lock;
     }
 }
 

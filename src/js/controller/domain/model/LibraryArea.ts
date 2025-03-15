@@ -9,68 +9,6 @@ import { execute as libraryAreaInitializeRegisterEventUseCase } from "@/controll
  */
 class LibraryArea
 {
-    private readonly _$selectedIds: number[];
-    private _$scrollScale: number;
-    private _$selectedId: number;
-
-    /**
-     * @constructor
-     * @public
-     */
-    constructor ()
-    {
-        /**
-         * @type {number}
-         * @private
-         */
-        this._$selectedId = -1;
-
-        /**
-         * @type {array}
-         * @private
-         */
-        this._$selectedIds = [];
-
-        /**
-         * @type {number}
-         * @default 1
-         * @private
-         */
-        this._$scrollScale = 1;
-    }
-
-    /**
-     * @description プレビュー表示中のライブラリIDを返却
-     *              Returns the library ID in the preview display
-     *
-     * @member {number}
-     * @public
-     */
-    get selectedId (): number
-    {
-        return this._$selectedId;
-    }
-    set selectedId (selected_id: number)
-    {
-        this._$selectedId = selected_id;
-    }
-
-    /**
-     * @description スクロールスケールを返却
-     *              Returns the scroll scale
-     *
-     * @member {number}
-     * @public
-     */
-    get scrollScale (): number
-    {
-        return this._$scrollScale;
-    }
-    set scrollScale (scroll_scale: number)
-    {
-        this._$scrollScale = scroll_scale;
-    }
-
     /**
      * @description 選択中のインスタンスID一覧を返却
      *              Returns a list of instance IDs currently selected
@@ -79,9 +17,37 @@ class LibraryArea
      * @readonly
      * @public
      */
-    get selectedIds (): number[]
+    public readonly selectedIds: number[];
+
+    /**
+     * @description スクロールスケールを返却
+     *              Returns the scroll scale
+     *
+     * @member {number}
+     * @default 1
+     * @public
+     */
+    public scrollScale: number;
+
+    /**
+     * @description プレビュー表示中のライブラリIDを返却
+     *              Returns the library ID in the preview display
+     *
+     * @member {number}
+     * @default -1
+     * @public
+     */
+    public selectedId: number;
+
+    /**
+     * @constructor
+     * @public
+     */
+    constructor ()
     {
-        return this._$selectedIds;
+        this.selectedId  = -1;
+        this.selectedIds = [];
+        this.scrollScale = 1;
     }
 
     /**
@@ -94,8 +60,8 @@ class LibraryArea
      */
     clear (): void
     {
-        this._$selectedId = -1;
-        this._$selectedIds.length = 0;
+        this.selectedId = -1;
+        this.selectedIds.length = 0;
     }
 
     /**

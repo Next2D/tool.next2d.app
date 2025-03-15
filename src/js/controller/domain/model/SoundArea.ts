@@ -9,7 +9,15 @@ import { execute as soundAreaInitializeRegisterEventUseCase } from "@/controller
  */
 class SoundArea
 {
-    private _$targetIndex: number;
+    /**
+     * @description 操作する音声エリアのインデックスを返却
+     *              Returns the index of the sound area to operate
+     *
+     * @member {number}
+     * @default -1
+     * @public
+     */
+    public targetIndex: number;
 
     /**
      * @constructor
@@ -17,12 +25,7 @@ class SoundArea
      */
     constructor ()
     {
-        /**
-         * @type {number}
-         * @default -1
-         * @private
-         */
-        this._$targetIndex = -1;
+        this.targetIndex = -1;
     }
 
     /**
@@ -36,22 +39,6 @@ class SoundArea
     initialize (): void
     {
         soundAreaInitializeRegisterEventUseCase();
-    }
-
-    /**
-     * @description 操作する音声エリアのインデックスを返却
-     *              Returns the index of the sound area to operate
-     *
-     * @member {number}
-     * @method
-     */
-    get targetIndex (): number
-    {
-        return this._$targetIndex;
-    }
-    set targetIndex (index: number)
-    {
-        this._$targetIndex = index;
     }
 }
 

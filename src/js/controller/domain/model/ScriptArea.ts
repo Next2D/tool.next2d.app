@@ -9,7 +9,15 @@ import { execute as scriptAreaScrollInitializeRegisterEventUseCase } from "@/con
  */
 class ScriptArea
 {
-    private _$scrollScale: number;
+    /**
+     * @description スクロールスケールを返却
+     *              Returns the scroll scale
+     *
+     * @member {number}
+     * @default 1
+     * @public
+     */
+    public scrollScale: number;
 
     /**
      * @constructor
@@ -17,28 +25,7 @@ class ScriptArea
      */
     constructor ()
     {
-        /**
-         * @type {number}
-         * @default 1
-         * @private
-         */
-        this._$scrollScale = 1;
-    }
-
-    /**
-     * @description スクロールスケールを返却
-     *              Returns the scroll scale
-     *
-     * @member {number}
-     * @public
-     */
-    get scrollScale (): number
-    {
-        return this._$scrollScale;
-    }
-    set scrollScale (scroll_scale: number)
-    {
-        this._$scrollScale = scroll_scale;
+        this.scrollScale = 1;
     }
 
     /**

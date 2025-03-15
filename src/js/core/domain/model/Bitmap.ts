@@ -18,11 +18,35 @@ import { execute as bitmapCreateJsonService } from "@/core/application/Bitmap/se
  */
 export class Bitmap extends Instance
 {
-    private _$imageType: string;
     private _$binary: string;
-    private _$width: number;
-    private _$height: number;
     private _$buffer: Uint8Array | null;
+
+    /**
+     * @description 画像種別を返す(image/png, image/jpeg, image/gif, etc...)
+     *              return image type (image/png, image/jpeg, image/gif, etc...)
+     *
+     * @member {string}
+     * @public
+     */
+    public imageType: string;
+
+    /**
+     * @description 画像の幅を返す
+     *              Return image width
+     *
+     * @member {number}
+     * @public
+     */
+    public width: number;
+
+    /**
+     * @description 画像の高さを返す
+     *              Returns the height of the image
+     *
+     * @return {number}
+     * @public
+     */
+    public height: number;
 
     /**
      * @param {object} object
@@ -47,36 +71,19 @@ export class Bitmap extends Instance
          */
         this._$binary = "";
 
-        /**
-         * @type {string}
-         * @default ""
-         * @private
-         */
-        this._$imageType = "";
-
-        /**
-         * @type {number}
-         * @default 0
-         * @private
-         */
-        this._$width = 0;
-
-        /**
-         * @type {number}
-         * @default 0
-         * @private
-         */
-        this._$height = 0;
+        this.imageType = "";
+        this.width     = 0;
+        this.height    = 0;
 
         // オブジェクトから復元
         if (object.imageType) {
-            this._$imageType = object.imageType;
+            this.imageType = object.imageType;
         }
         if (object.width) {
-            this._$width = object.width;
+            this.width = object.width;
         }
         if (object.height) {
-            this._$height = object.height;
+            this.height = object.height;
         }
         if (object.buffer) {
             if (typeof object.buffer === "string") {
@@ -87,54 +94,6 @@ export class Bitmap extends Instance
                 this._$buffer = object.buffer;
             }
         }
-    }
-
-    /**
-     * @description 画像種別を返す(image/png, image/jpeg, image/gif, etc...)
-     *              return image type (image/png, image/jpeg, image/gif, etc...)
-     *
-     * @member {string}
-     * @public
-     */
-    get imageType (): string
-    {
-        return this._$imageType;
-    }
-    set imageType (image_type: string)
-    {
-        this._$imageType = image_type;
-    }
-
-    /**
-     * @description 画像の幅を返す
-     *              Return image width
-     *
-     * @member {number}
-     * @public
-     */
-    get width (): number
-    {
-        return this._$width;
-    }
-    set width (width: number)
-    {
-        this._$width = width;
-    }
-
-    /**
-     * @description 画像の高さを返す
-     *              Returns the height of the image
-     *
-     * @return {number}
-     * @public
-     */
-    get height (): number
-    {
-        return this._$height;
-    }
-    set height (height: number)
-    {
-        this._$height = height;
     }
 
     /**
@@ -169,7 +128,7 @@ export class Bitmap extends Instance
 
             if (!this._$buffer) {
                 this._$buffer = new Uint8Array(
-                    this._$width * this._$height * 4
+                    this.width * this.height * 4
                 );
             }
 
@@ -192,8 +151,8 @@ export class Bitmap extends Instance
     {
         return bitmapBufferToCanvasElementService(
             this._$buffer,
-            this._$width,
-            this._$height
+            this.width,
+            this.height
         );
     }
 
@@ -223,8 +182,8 @@ export class Bitmap extends Instance
         return {
             "xMin": 0,
             "yMin": 0,
-            "xMax": this._$width,
-            "yMax": this._$height
+            "xMax": this.width,
+            "yMax": this.height
         };
     }
 
@@ -244,9 +203,9 @@ export class Bitmap extends Instance
             "type":      this.type,
             "symbol":    this.symbol,
             "folderId":  this.folderId,
-            "width":     this._$width,
-            "height":    this._$height,
-            "imageType": this._$imageType,
+            "width":     this.width,
+            "height":    this.height,
+            "imageType": this.imageType,
             "buffer":    this.binary
         };
     }
