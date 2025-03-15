@@ -1,10 +1,11 @@
 import { execute } from "./LibraryAreaAddNewBitmapCreateHistoryObjectService";
 import { Bitmap } from "../../../../../../../core/domain/model/Bitmap";
 import { $LIBRARY_ADD_NEW_BITMAP_COMMAND } from "../../../../../../../config/HistoryConfig";
+import { describe, expect, it } from "vitest";
 
 describe("LibraryAreaAddNewBitmapCreateHistoryObjectServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         const bitmap = new Bitmap({
             "id": 10,

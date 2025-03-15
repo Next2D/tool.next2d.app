@@ -1,10 +1,11 @@
 import { execute } from "./LibraryAreaUpdateVideoCreateHistoryObjectService";
 import { Video } from "../../../../../../../core/domain/model/Video";
 import { $LIBRARY_OVERWRITE_VIDEO_COMMAND } from "../../../../../../../config/HistoryConfig";
+import { describe, expect, it } from "vitest";
 
 describe("LibraryAreaUpdateVideoCreateHistoryObjectServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         const video = new Video({
             "id": 10,

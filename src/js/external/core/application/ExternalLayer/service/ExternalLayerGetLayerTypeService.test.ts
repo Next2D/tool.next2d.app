@@ -1,8 +1,9 @@
 import { execute } from "./ExternalLayerGetLayerTypeService";
+import { describe, expect, it } from "vitest";
 
 describe("ExternalLayerGetLayerTypeServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         expect(execute(0)).toBe("normal");
         expect(execute(1)).toBe("mask");

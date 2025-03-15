@@ -1,10 +1,11 @@
 import { execute } from "./ExternalTimelineLayerControllerCorrectionRelationshipService";
 import { Layer } from "../../../../../core/domain/model/Layer";
 import { MovieClip } from "../../../../../core/domain/model/MovieClip";
+import { describe, expect, it } from "vitest";
 
 describe("ExternalTimelineLayerControllerCorrectionRelationshipServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         const movieClip = new MovieClip({
             "id": 0,

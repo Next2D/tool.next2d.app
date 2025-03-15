@@ -1,9 +1,10 @@
 import { execute } from "./LibraryAreaAddNewMovieClipCreateHistoryObjectService";
 import { $LIBRARY_ADD_NEW_MOVIE_CLIP_COMMAND } from "../../../../../../../config/HistoryConfig";
+import { describe, expect, it } from "vitest";
 
 describe("LibraryAreaAddNewMovieClipCreateHistoryObjectServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         const object = execute(1, 2, 0, "MovieClip", 10);
         expect(object.command).toBe($LIBRARY_ADD_NEW_MOVIE_CLIP_COMMAND);

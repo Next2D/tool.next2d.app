@@ -8,10 +8,11 @@ import {
     $setScreenOffsetLeft,
     $setScreenOffsetTop
 } from "./GlobalUtil";
+import { describe, expect, it } from "vitest";
 
 describe("GlobalUtilTest", () =>
 {
-    test("$setCursor test", () =>
+    it("$setCursor test", () =>
     {
         $setCursor("sample");
         expect(document.documentElement.style.getPropertyValue("--tool-cursor")).toBe("sample");
@@ -20,14 +21,14 @@ describe("GlobalUtilTest", () =>
         expect(document.documentElement.style.getPropertyValue("--tool-cursor")).toBe("auto");
     });
 
-    test("$clamp test", () =>
+    it("$clamp test", () =>
     {
         expect($clamp(3, 0, 10)).toBe(3);
         expect($clamp(-1, 0, 10)).toBe(0);
         expect($clamp(20, 0, 10)).toBe(10);
     });
 
-    test("offsetLeft and offsetTop test", () =>
+    it("offsetLeft and offsetTop test", () =>
     {
         expect($getScreenOffsetLeft()).toBe(0);
         expect($getScreenOffsetTop()).toBe(0);

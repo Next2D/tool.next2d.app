@@ -1,10 +1,11 @@
 import { execute } from "./LibraryAreaAddNewVideoCreateHistoryObjectService";
 import { Sound } from "../../../../../../../core/domain/model/Sound";
 import { $LIBRARY_ADD_NEW_SOUND_COMMAND } from "../../../../../../../config/HistoryConfig";
+import { describe, expect, it } from "vitest";
 
 describe("LibraryAreaAddNewVideoCreateHistoryObjectServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         const sound = new Sound({
             "id": 10,

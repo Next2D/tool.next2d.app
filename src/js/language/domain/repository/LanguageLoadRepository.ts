@@ -9,11 +9,8 @@ import { $LANGUAGE_URL } from "@/config/LanguageConfig";
  * @method
  * @public
  */
-export const execute = (language: string): Promise<any> =>
+export const execute = async (language: string): Promise<any> =>
 {
-    return fetch(`${$LANGUAGE_URL}/${language.toLocaleLowerCase()}.json`)
-        .then((response: Response): Promise<any> =>
-        {
-            return response.json();
-        });
+    const response = await fetch(`${$LANGUAGE_URL}/${language.toLocaleLowerCase()}.json`);
+    return await response.json();
 };

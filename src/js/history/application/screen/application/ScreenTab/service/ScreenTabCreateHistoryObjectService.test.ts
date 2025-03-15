@@ -1,9 +1,10 @@
 import { execute } from "./ScreenTabCreateHistoryObjectService";
 import { $SCREEN_TAB_NAME_UPDATE_COMMAND } from "../../../../../../config/HistoryConfig";
+import { describe, expect, it } from "vitest";
 
 describe("ScreenTabCreateHistoryObjectServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         const object = execute(1, 0, "before_name", "after_name");
         expect(object.command).toBe($SCREEN_TAB_NAME_UPDATE_COMMAND);

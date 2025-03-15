@@ -2,10 +2,11 @@ import { execute } from "./SoundAreaUpdateVolumeCreateHistoryObjectService";
 import { $SOUND_AREA_UPDATE_VOLUME_COMMAND } from "../../../../../../../config/HistoryConfig";
 import { MovieClip } from "../../../../../../../core/domain/model/MovieClip";
 import type { ISoundObject } from "../../../../../../../interface/ISoundObject";
+import { describe, expect, it } from "vitest";
 
 describe("SoundAreaUpdateVolumeCreateHistoryObjectServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         const movieClip = new MovieClip({
             "id": 1,

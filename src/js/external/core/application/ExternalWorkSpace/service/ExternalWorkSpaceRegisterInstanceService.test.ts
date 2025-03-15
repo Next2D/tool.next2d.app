@@ -1,10 +1,11 @@
 import { execute } from "./ExternalWorkSpaceRegisterInstanceService";
 import { $getCurrentWorkSpace, $createWorkSpace } from "../../../../../core/application/CoreUtil";
 import { Folder } from "../../../../../core/domain/model/Folder";
+import { describe, expect, it } from "vitest";
 
 describe("ExternalWorkSpaceRegisterInstanceServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         const workSpace = $getCurrentWorkSpace() || $createWorkSpace();
 

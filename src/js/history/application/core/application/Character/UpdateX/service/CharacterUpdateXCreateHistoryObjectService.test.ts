@@ -2,10 +2,11 @@ import { execute } from "./CharacterUpdateXCreateHistoryObjectService";
 import { $CHARACTER_UPDATE_X_COMMAND } from "../../../../../../../config/HistoryConfig";
 import { MovieClip } from "../../../../../../../core/domain/model/MovieClip";
 import { Character } from "../../../../../../../core/domain/model/Character";
+import { describe, expect, it } from "vitest";
 
 describe("CharacterUpdateXCreateHistoryObjectServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         const movieClip = new MovieClip({
             "id": 0,

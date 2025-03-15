@@ -1,8 +1,9 @@
 import { execute } from "./BufferToBinaryService";
+import { describe, expect, it } from "vitest";
 
 describe("BufferToBinaryServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         const buffer = new Uint8Array([97, 98, 99]);
         const binary = execute(buffer);

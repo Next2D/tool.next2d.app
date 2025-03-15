@@ -1,10 +1,11 @@
 import { execute } from "./LibraryAreaUpdateSoundCreateHistoryObjectService";
 import { Sound } from "../../../../../../../core/domain/model/Sound";
 import { $LIBRARY_OVERWRITE_SOUND_COMMAND } from "../../../../../../../config/HistoryConfig";
+import { describe, expect, it } from "vitest";
 
 describe("LibraryAreaUpdateSoundCreateHistoryObjectServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         const sound = new Sound({
             "id": 10,

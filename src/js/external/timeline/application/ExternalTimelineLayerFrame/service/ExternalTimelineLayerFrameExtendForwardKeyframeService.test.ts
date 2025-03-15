@@ -2,10 +2,11 @@ import { execute } from "./ExternalTimelineLayerFrameExtendForwardKeyframeServic
 import { Layer } from "../../../../../core/domain/model/Layer";
 import { Character } from "../../../../../core/domain/model/Character";
 import { EmptyCharacter } from "../../../../../core/domain/model/EmptyCharacter";
+import { describe, expect, it } from "vitest";
 
 describe("ExternalTimelineLayerFrameExtendForwardKeyframeServiceTest", () =>
 {
-    test("execute test case1", () =>
+    it("execute test case1", () =>
     {
         const layer = new Layer();
 
@@ -21,7 +22,7 @@ describe("ExternalTimelineLayerFrameExtendForwardKeyframeServiceTest", () =>
         expect(emptyCharacter.endFrame).toBe(10);
     });
 
-    test("execute test case2", () =>
+    it("execute test case2", () =>
     {
         const layer = new Layer();
 

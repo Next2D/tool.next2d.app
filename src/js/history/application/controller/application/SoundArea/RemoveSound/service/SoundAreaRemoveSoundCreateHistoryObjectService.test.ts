@@ -2,10 +2,11 @@ import { execute } from "./SoundAreaRemoveSoundCreateHistoryObjectService";
 import { $SOUND_AREA_REMOVE_SOUND_COMMAND } from "../../../../../../../config/HistoryConfig";
 import { MovieClip } from "../../../../../../../core/domain/model/MovieClip";
 import type { ISoundObject } from "../../../../../../../interface/ISoundObject";
+import { describe, expect, it } from "vitest";
 
 describe("SoundAreaRemoveSoundCreateHistoryObjectServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         const movieClip = new MovieClip({
             "id": 1,

@@ -1,9 +1,10 @@
 import { execute } from "./ExternalLayerUpdateLockHistoryObjectService";
 import { $LAYER_LOCK_UPDATE_COMMAND } from "../../../../../config/HistoryConfig";
+import { describe, expect, it } from "vitest";
 
 describe("ExternalLayerUpdateLockHistoryObjectServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         const object = execute(1, 0, 0, true);
         expect(object.command).toBe($LAYER_LOCK_UPDATE_COMMAND);

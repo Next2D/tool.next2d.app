@@ -1,9 +1,10 @@
 import { execute } from "./LibraryAreaMoveFolderCreateHistoryObjectService";
 import { $LIBRARY_MOVE_FOLDER_COMMAND } from "../../../../../../../config/HistoryConfig";
+import { describe, expect, it } from "vitest";
 
 describe("LibraryAreaMoveFolderCreateHistoryObjectServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         const object = execute(1, 2, 0, 4, 0, "test");
         expect(object.command).toBe($LIBRARY_MOVE_FOLDER_COMMAND);

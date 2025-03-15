@@ -3,10 +3,11 @@ import { $getCurrentWorkSpace, $createWorkSpace } from "../../../../../core/appl
 import { MovieClip } from "../../../../../core/domain/model/MovieClip";
 import { Folder } from "../../../../../core/domain/model/Folder";
 import { WorkSpace } from "../../../../../core/domain/model/WorkSpace";
+import { describe, expect, it } from "vitest";
 
 describe("ExternalFolderCheckDuplicateServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         const workSpace: WorkSpace = $getCurrentWorkSpace() || $createWorkSpace();
 

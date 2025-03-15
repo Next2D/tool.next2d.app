@@ -2,10 +2,11 @@ import { execute } from "./LibraryAreaUpdateShapeGraphicsHistoryObjectService";
 import { Shape } from "../../../../../../../core/domain/model/Shape";
 import type { IBounds } from "../../../../../../../interface/IBounds";
 import { $LIBRARY_UPDATE_SHAPE_GRAPHICS_COMMAND } from "../../../../../../../config/HistoryConfig";
+import { describe, expect, it } from "vitest";
 
 describe("LibraryAreaUpdateShapeGraphicsHistoryObjectServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         const shape = new Shape({
             "id": 10,

@@ -1,10 +1,11 @@
 import { execute } from "./LibraryAreaAddNewTextCreateHistoryObjectService";
 import { Shape } from "../../../../../../../core/domain/model/Shape";
 import { $LIBRARY_ADD_NEW_TEXT_COMMAND } from "../../../../../../../config/HistoryConfig";
+import { describe, expect, it } from "vitest";
 
 describe("LibraryAreaAddNewShapeCreateHistoryObjectServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         const shape = new Shape({
             "id": 10,

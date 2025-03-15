@@ -1,10 +1,11 @@
 import { execute } from "./StageSettingUpdateColorCreateHistoryObjectService";
 import { $STAGE_COLOR_COMMAND } from "../../../../../../../config/HistoryConfig";
 import { MovieClip } from "../../../../../../../core/domain/model/MovieClip";
+import { describe, expect, it } from "vitest";
 
 describe("StageSettingUpdateFpsCreateHistoryObjectServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         const movieClip = new MovieClip({
             "id": 1,

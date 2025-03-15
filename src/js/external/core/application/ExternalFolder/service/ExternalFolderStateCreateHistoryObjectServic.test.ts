@@ -1,9 +1,10 @@
 import { execute } from "./ExternalFolderStateCreateHistoryObjectServic";
 import { $LIBRARY_FOLDER_STATE_COMMAND } from "../../../../../config/HistoryConfig";
+import { describe, expect, it } from "vitest";
 
 describe("ExternalFolderStateCreateHistoryObjectServicTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         const object = execute(1, 2, "open");
         expect(object.command).toBe($LIBRARY_FOLDER_STATE_COMMAND);

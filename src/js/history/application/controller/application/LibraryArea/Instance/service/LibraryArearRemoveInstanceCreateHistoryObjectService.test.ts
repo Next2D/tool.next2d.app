@@ -1,10 +1,11 @@
 import { execute } from "./LibraryArearRemoveInstanceCreateHistoryObjectService";
 import { $LIBRARY_REMOVE_INSTANCE_COMMAND } from "../../../../../../../config/HistoryConfig";
 import { MovieClip } from "../../../../../../../core/domain/model/MovieClip";
+import { describe, expect, it } from "vitest";
 
 describe("LibraryArearRemoveInstanceCreateHistoryObjectServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         const movieClip = new MovieClip({
             "id": 1,

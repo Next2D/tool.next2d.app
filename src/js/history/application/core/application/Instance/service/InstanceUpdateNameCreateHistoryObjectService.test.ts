@@ -1,9 +1,10 @@
 import { execute } from "./InstanceUpdateNameCreateHistoryObjectService";
 import { $LIBRARY_UPDATE_INSTANCE_NAME_COMMAND } from "../../../../../../config/HistoryConfig";
+import { describe, expect, it } from "vitest";
 
 describe("InstanceUpdateNameCreateHistoryObjectServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         const object = execute(1, 0, 1, "before name", "after name");
         expect(object.command).toBe($LIBRARY_UPDATE_INSTANCE_NAME_COMMAND);

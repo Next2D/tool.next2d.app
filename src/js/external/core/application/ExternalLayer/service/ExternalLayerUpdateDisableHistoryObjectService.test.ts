@@ -1,9 +1,10 @@
 import { execute } from "./ExternalLayerUpdateDisableHistoryObjectService";
 import { $LAYER_DISABLE_UPDATE_COMMAND } from "../../../../../config/HistoryConfig";
+import { describe, expect, it } from "vitest";
 
 describe("ExternalLayerUpdateDisableHistoryObjectServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         const object = execute(1, 0, 0, true);
         expect(object.command).toBe($LAYER_DISABLE_UPDATE_COMMAND);

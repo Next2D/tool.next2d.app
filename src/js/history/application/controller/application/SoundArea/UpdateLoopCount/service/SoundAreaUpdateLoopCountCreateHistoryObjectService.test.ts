@@ -2,10 +2,11 @@ import { execute } from "./SoundAreaUpdateLoopCountCreateHistoryObjectService";
 import { $SOUND_AREA_UPDATE_LOOP_COUNT_COMMAND } from "../../../../../../../config/HistoryConfig";
 import { MovieClip } from "../../../../../../../core/domain/model/MovieClip";
 import type { ISoundObject } from "../../../../../../../interface/ISoundObject";
+import { describe, expect, it } from "vitest";
 
 describe("SoundAreaUpdateLoopCountCreateHistoryObjectServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         const movieClip = new MovieClip({
             "id": 1,

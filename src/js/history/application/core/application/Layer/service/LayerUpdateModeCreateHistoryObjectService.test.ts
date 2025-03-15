@@ -1,10 +1,11 @@
 import { execute } from "./LayerUpdateModeCreateHistoryObjectService";
 import { $LAYER_UPDATE_MODE_COMMAND } from "../../../../../../config/HistoryConfig";
 import { MovieClip } from "../../../../../../core/domain/model/MovieClip";
+import { describe, expect, it } from "vitest";
 
 describe("LayerUpdateModeCreateHistoryObjectServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         const movieClip = new MovieClip({
             "id": 0,

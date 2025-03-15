@@ -1,10 +1,11 @@
 import { execute } from "./ExternalTimelineLayerFrameBehindKeyframeService";
 import { Layer } from "../../../../../core/domain/model/Layer";
 import { EmptyCharacter } from "../../../../../core/domain/model/EmptyCharacter";
+import { describe, expect, it } from "vitest";
 
 describe("ExternalTimelineLayerFrameBehindKeyframeServiceTest", () =>
 {
-    test("execute test case1", () =>
+    it("execute test case1", () =>
     {
         const layer = new Layer();
 
@@ -46,7 +47,7 @@ describe("ExternalTimelineLayerFrameBehindKeyframeServiceTest", () =>
         expect(layer.emptyCharacters[3].endFrame).toBe(frames[3].endFrame + numFrame);
     });
 
-    test("execute test case2", () =>
+    it("execute test case2", () =>
     {
         const layer = new Layer();
 
@@ -60,7 +61,7 @@ describe("ExternalTimelineLayerFrameBehindKeyframeServiceTest", () =>
         expect(emptyCharacter.endFrame).toBe(3);
     });
 
-    test("execute test case2", () =>
+    it("execute test case2", () =>
     {
         const layer = new Layer();
 

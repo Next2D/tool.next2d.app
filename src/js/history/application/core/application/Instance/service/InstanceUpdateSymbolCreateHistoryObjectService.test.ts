@@ -2,10 +2,11 @@ import { execute } from "./InstanceUpdateSymbolCreateHistoryObjectService";
 import { $LIBRARY_UPDATE_INSTANCE_SYMBOL_COMMAND } from "../../../../../../config/HistoryConfig";
 import { MovieClip } from "../../../../../../core/domain/model/MovieClip";
 import { Bitmap } from "../../../../../../core/domain/model/Bitmap";
+import { describe, expect, it } from "vitest";
 
 describe("InstanceUpdateSymbolCreateHistoryObjectServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         const movieClip = new MovieClip({
             "id": 0,

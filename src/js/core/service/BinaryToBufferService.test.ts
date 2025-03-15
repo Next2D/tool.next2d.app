@@ -1,8 +1,9 @@
 import { execute } from "./BinaryToBufferService";
+import { describe, expect, it } from "vitest";
 
 describe("BinaryToBufferServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         const binary = "abc";
         const buffer = execute(binary);
