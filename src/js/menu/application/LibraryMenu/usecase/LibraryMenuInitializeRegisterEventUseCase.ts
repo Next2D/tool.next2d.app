@@ -6,7 +6,7 @@ import { execute as libraryMenuFileMouseDownEventUseCase } from "./LibraryMenuFi
 import { execute as libraryMenuLoadFileUseCase } from "./LibraryMenuLoadFileUseCase";
 import { execute as libraryMenuEditMovieClipMouseDownEventUseCase } from "./LibraryMenuEditMovieClipMouseDownEventUseCase";
 import { execute as libraryAreaRemoveInstanceUseCase } from "@/controller/application/LibraryArea/usecase/LibraryAreaRemoveInstanceUseCase";
-import { execute as libraryMenuPhotopeaMouseDownService } from "../service/LibraryMenuPhotopeaMouseDownService";
+import { execute as libraryMenuPhotopeaPointerDownService } from "../service/LibraryMenuPhotopeaPointerDownService";
 import { execute as libraryTouchPointerDownUseCase } from "./LibraryTouchPointerDownUseCase";
 import { execute as libraryTouchPointerUpService } from "../service/LibraryTouchPointerUpService";
 import {
@@ -121,7 +121,8 @@ export const execute = (): void =>
 
     if (deleteElement) {
         deleteElement.addEventListener(EventType.POINTER_DOWN,
-            libraryAreaRemoveInstanceUseCase
+            libraryAreaRemoveInstanceUseCase,
+            { "passive": false }
         );
     }
 
@@ -131,7 +132,8 @@ export const execute = (): void =>
 
     if (photopeaElement) {
         photopeaElement.addEventListener(EventType.POINTER_DOWN,
-            libraryMenuPhotopeaMouseDownService
+            libraryMenuPhotopeaPointerDownService,
+            { "passive": false }
         );
     }
 };
