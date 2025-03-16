@@ -56,11 +56,206 @@ describe("LibraryMenuInitializeRegisterEventUseCase Test", () =>
 
         execute();
 
-
         expect(contextmenu).toBe(true);
         expect(pointerDown).toBe(true);
         expect(pointerUp).toBe(true);
         expect(pointerCancel).toBe(true);
+
+        element.remove();
+    });
+
+    it("execute test case2", () =>
+    {
+        const element = document.createElement("div");
+        document.body.appendChild(element);
+        element.id = $LIBRARY_FOLDER_ADD_ID;
+
+        let pointerDown = false;
+        element.addEventListener = vi.fn((type) =>
+        {
+            switch (type) {
+
+                case EventType.POINTER_DOWN:
+                    pointerDown = true;
+                    return;
+
+                default:
+                    throw new Error("Invalid event type");
+
+            }
+        });
+    
+        expect(pointerDown).toBe(false);
+        execute();
+        expect(pointerDown).toBe(true);
+
+        element.remove();
+    });
+
+    it("execute test case3", () =>
+    {
+        const element = document.createElement("div");
+        document.body.appendChild(element);
+        element.id = $LIBRARY_MOVIE_CLIP_ADD_ID;
+
+        let pointerDown = false;
+        element.addEventListener = vi.fn((type) =>
+        {
+            switch (type) {
+
+                case EventType.POINTER_DOWN:
+                    pointerDown = true;
+                    return;
+
+                default:
+                    throw new Error("Invalid event type");
+
+            }
+        });
+    
+        expect(pointerDown).toBe(false);
+        execute();
+        expect(pointerDown).toBe(true);
+
+        element.remove();
+    });
+
+    it("execute test case4", () =>
+    {
+        const element = document.createElement("div");
+        document.body.appendChild(element);
+        element.id = $LIBRARY_FILE_ID;
+
+        let pointerDown = false;
+        element.addEventListener = vi.fn((type) =>
+        {
+            switch (type) {
+
+                case EventType.POINTER_DOWN:
+                    pointerDown = true;
+                    return;
+
+                default:
+                    throw new Error("Invalid event type");
+
+            }
+        });
+    
+        expect(pointerDown).toBe(false);
+        execute();
+        expect(pointerDown).toBe(true);
+
+        element.remove();
+    });
+
+    it("execute test case5", () =>
+    {
+        const element = document.createElement("div");
+        document.body.appendChild(element);
+        element.id = $LIBRARY_FILE_INPUT_ID;
+
+        let changed = false;
+        element.addEventListener = vi.fn((type) =>
+        {
+            switch (type) {
+
+                case "change":
+                    changed = true;
+                    return;
+
+                default:
+                    throw new Error("Invalid event type");
+
+            }
+        });
+    
+        expect(changed).toBe(false);
+        execute();
+        expect(changed).toBe(true);
+
+        element.remove();
+    });
+
+    it("execute test case6", () =>
+    {
+        const element = document.createElement("div");
+        document.body.appendChild(element);
+        element.id = $LIBRARY_CHANGE_SCENE_ID;
+
+        let pointerDown = false;
+        element.addEventListener = vi.fn((type) =>
+        {
+            switch (type) {
+
+                case EventType.POINTER_DOWN:
+                    pointerDown = true;
+                    return;
+
+                default:
+                    throw new Error("Invalid event type");
+
+            }
+        });
+    
+        expect(pointerDown).toBe(false);
+        execute();
+        expect(pointerDown).toBe(true);
+
+        element.remove();
+    });
+
+    it("execute test case7", () =>
+    {
+        const element = document.createElement("div");
+        document.body.appendChild(element);
+        element.id = $LIBRARY_DELETE_ID;
+
+        let pointerDown = false;
+        element.addEventListener = vi.fn((type) =>
+        {
+            switch (type) {
+
+                case EventType.POINTER_DOWN:
+                    pointerDown = true;
+                    return;
+
+                default:
+                    throw new Error("Invalid event type");
+
+            }
+        });
+    
+        expect(pointerDown).toBe(false);
+        execute();
+        expect(pointerDown).toBe(true);
+
+        element.remove();
+    });
+
+    it("execute test case8", () =>
+    {
+        const element = document.createElement("div");
+        document.body.appendChild(element);
+        element.id = $LIBRARY_PHOTOPEA_ID;
+
+        let pointerDown = false;
+        element.addEventListener = vi.fn((type) =>
+        {
+            switch (type) {
+
+                case EventType.POINTER_DOWN:
+                    pointerDown = true;
+                    return;
+
+                default:
+                    throw new Error("Invalid event type");
+
+            }
+        });
+    
+        expect(pointerDown).toBe(false);
+        execute();
+        expect(pointerDown).toBe(true);
 
         element.remove();
     });
