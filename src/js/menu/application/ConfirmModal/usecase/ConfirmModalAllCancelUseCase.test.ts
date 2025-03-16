@@ -1,15 +1,15 @@
-import { $DETAIL_MODAL_NAME } from "../../../../config/MenuConfig";
+import { $CONFIRM_MODAL_NAME } from "../../../../config/MenuConfig";
 import { $registerMenu } from "../../MenuUtil";
-import { execute } from "./DetailModalHideService";
+import { execute } from "./ConfirmModalAllCancelUseCase";
 import { describe, expect, it, vi } from "vitest";
 
-describe("DetailModalHideServiceTest", () =>
+describe("ConfirmModalAllCancelUseCase Test", () =>
 {
     it("execute test", () =>
     {
         let state = "show";
         const mockMenu = {
-            "name": $DETAIL_MODAL_NAME,
+            "name": $CONFIRM_MODAL_NAME,
             "hide": vi.fn(() => state = "hide")
         };
         $registerMenu(mockMenu);

@@ -12,5 +12,5 @@ import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 export const execute = async (work_space: WorkSpace): Promise<void> =>
 {
     // タブの初期起動
-    work_space.screenTab.initialize();
+    await work_space.screenTab.initialize();
 };

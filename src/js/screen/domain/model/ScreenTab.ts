@@ -34,9 +34,9 @@ export class ScreenTab
      * @method
      * @public
      */
-    initialize (): void
+    async initialize (): Promise<void>
     {
-        screenTabInitializeUseCase(this._$workSpace);
+        await screenTabInitializeUseCase(this._$workSpace);
     }
 
     /**

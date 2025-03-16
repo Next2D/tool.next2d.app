@@ -11,7 +11,7 @@ import { execute as initializeController } from "@/controller/application/Initia
 import { execute as initializeView } from "@/view/application/Initialize";
 import { execute as initializeShare } from "@/share/Initialize";
 import { execute as bootUser } from "@/user/application/UserBoot";
-import { execute as detailModalRegisterFadeEventService } from "@/menu/application/DetailModal/service/DetailModalRegisterFadeEventService";
+import { execute as detailModalRegisterFadeEventUseCase } from "@/menu/application/DetailModal/usecase/DetailModalRegisterFadeEventUseCase";
 import { execute as languageTranslationService } from "@/language/application/service/LanguageTranslationService";
 import { execute as registerWindowResizeEventUseCase } from "@/global/application/usecase/GlobalWindowResizeEventUseCase";
 import { $PROGRESS_MENU_NAME } from "@/config/MenuConfig";
@@ -163,7 +163,7 @@ export const run = async (): Promise<void> =>
     await $getCurrentWorkSpace().run();
 
     // 初期のDOMを対象に説明モーダルのイベントをセット
-    await detailModalRegisterFadeEventService(document);
+    await detailModalRegisterFadeEventUseCase(document);
 
     // 言語を適用
     languageTranslationService(document);

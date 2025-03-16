@@ -3,7 +3,7 @@ import { WorkSpace } from "@/core/domain/model/WorkSpace";
 import { execute as screenTabComponent } from "../component/ScreenTabComponent";
 import { execute as screenTabNameListComponent } from "../component/ScreenTabNameListComponent";
 import { execute as screenTabGetElementService } from "../service/ScreenTabGetElementService";
-import { execute as detailModalRegisterFadeEventService } from "@/menu/application/DetailModal/service/DetailModalRegisterFadeEventService";
+import { execute as detailModalRegisterFadeEventUseCase } from "@/menu/application/DetailModal/usecase/DetailModalRegisterFadeEventUseCase";
 import { execute as screenTabInitializeRegisterEventUseCase } from "../usecase/ScreenTabInitializeRegisterEventUseCase";
 
 /**
@@ -15,7 +15,7 @@ import { execute as screenTabInitializeRegisterEventUseCase } from "../usecase/S
  * @method
  * @public
  */
-export const execute = (work_space: WorkSpace): void =>
+export const execute = async (work_space: WorkSpace): Promise<void> =>
 {
     // タブのElementを追加
     const element: HTMLElement | null = document
@@ -49,7 +49,7 @@ export const execute = (work_space: WorkSpace): void =>
     }
 
     // タブElementの説明文をモーダルで表示できるようイベントを登録する
-    detailModalRegisterFadeEventService(tabElement);
+    await detailModalRegisterFadeEventUseCase(tabElement);
 
     // 動作イベントの登録
     screenTabInitializeRegisterEventUseCase(work_space);

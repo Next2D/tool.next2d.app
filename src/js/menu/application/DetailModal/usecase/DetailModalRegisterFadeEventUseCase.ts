@@ -1,6 +1,6 @@
 import { EventType } from "@/tool/domain/event/EventType";
-import { execute as detailModalFadeInUseCase } from "../usecase/DetailModalFadeInUseCase";
-import { execute as detailModalFadeOutUseCase } from "../usecase/DetailModalFadeOutUseCase";
+import { execute as detailModalFadeInUseCase } from "./DetailModalFadeInUseCase";
+import { execute as detailModalFadeOutUseCase } from "./DetailModalFadeOutUseCase";
 
 /**
  * @description 指定Elementのタグ内にあるdataset.detailがあればイベントを登録
