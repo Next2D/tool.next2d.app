@@ -21,10 +21,6 @@ import { $getScreenOffsetLeft, $getScreenOffsetTop } from "@/global/GlobalUtil";
  */
 export const execute = async (event: PointerEvent): Promise<void> =>
 {
-    // イベントの伝播を停止
-    event.stopPropagation();
-    event.preventDefault();
-
     const element: HTMLElement | null = event.target as HTMLElement;
     if (!element) {
         return ;
@@ -34,6 +30,7 @@ export const execute = async (event: PointerEvent): Promise<void> =>
     element.releasePointerCapture(event.pointerId);
     element.removeEventListener(EventType.POINTER_MOVE, arrowToolStageRectPointerMoveEventUseCase);
     element.removeEventListener(EventType.POINTER_UP, execute);
+    element.removeEventListener(EventType.POINTER_LEAVE, execute);
 
     // 範囲選択のElementを表示
     const rectElement: HTMLElement | null = document

@@ -26,8 +26,8 @@ import { strokeColor } from "@/tool/domain/model/StrokeColor";
 export const execute = async (event: PointerEvent): Promise<void> =>
 {
     // イベントの伝播を停止
-    event.stopPropagation();
-    event.preventDefault();
+    // event.stopPropagation();
+    // event.preventDefault();
 
     const element = event.target as HTMLElement;
     if (!element) {
@@ -40,6 +40,7 @@ export const execute = async (event: PointerEvent): Promise<void> =>
         circleToolDrawRectPointerMoveEventUseCase
     );
     element.removeEventListener(EventType.POINTER_UP, execute);
+    element.removeEventListener(EventType.POINTER_LEAVE, execute);
 
     const tool: ITool<ArrowTool> = $getDefaultTool($TOOL_ARROW_NAME);
     if (tool) {

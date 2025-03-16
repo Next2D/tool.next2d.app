@@ -28,4 +28,8 @@ export const execute = (event: PointerEvent): void =>
         arrowToolStageRectPointerUpEventUseCase,
         { "passive": false }
     );
+    element.addEventListener(EventType.POINTER_LEAVE,
+        arrowToolStageRectPointerUpEventUseCase,
+        { "passive": false }
+    );
 };

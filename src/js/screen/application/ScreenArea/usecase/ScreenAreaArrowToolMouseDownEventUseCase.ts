@@ -4,6 +4,7 @@ import { execute as propertyAreaShowDefaultSettingItemUseCase } from "@/controll
 import { execute as referenceSettingHideElementService } from "@/controller/application/ReferenceSetting/service/ReferenceSettingHideElementService";
 import { execute as screenStandardPointHideElementService } from "@/screen/application/StandardPoint/service/ScreenStandardPointHideElementService";
 import { $activeTouchPointers } from "@/global/GlobalUtil";
+import { timelineHeader } from "@/timeline/domain/model/TimelineHeader";
 
 /**
  * @description スクリーン選択時のイベント処理関数
@@ -18,6 +19,7 @@ export const execute = async (event: PointerEvent): Promise<void> =>
 {
     if (event.button !== 0
         || $activeTouchPointers.size > 1
+        || !timelineHeader.stopFlag
     ) {
         return ;
     }

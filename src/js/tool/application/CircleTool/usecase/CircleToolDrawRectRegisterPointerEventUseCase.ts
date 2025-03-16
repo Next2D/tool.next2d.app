@@ -30,4 +30,9 @@ export const execute = (event: PointerEvent): void =>
         circleToolDrawRectPointerUpEventUseCase,
         { "passive": false }
     );
+    element.addEventListener(
+        EventType.POINTER_LEAVE,
+        circleToolDrawRectPointerUpEventUseCase,
+        { "passive": false }
+    );
 };
