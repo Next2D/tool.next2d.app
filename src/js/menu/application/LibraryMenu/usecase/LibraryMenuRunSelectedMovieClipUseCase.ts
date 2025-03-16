@@ -1,9 +1,9 @@
 import type { MovieClip } from "@/core/domain/model/MovieClip";
+import { execute as timelineSceneListClearAddRootUseCase } from "@/timeline/application/TimelineSceneList/usecase/TimelineSceneListClearAddRootUseCase";
+import { execute as externalTimelineEditMovieClipUseService } from "@/external/timeline/application/ExternalTimeline/service/ExternalTimelineEditMovieClipUseService";
+import { $MOVIE_CLIP_TYPE } from "@/config/InstanceConfig";
 import { libraryArea } from "@/controller/domain/model/LibraryArea";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
-import { execute as timelineSceneListClearAddRootUseCase } from "@/timeline/application/TimelineSceneList/usecase/TimelineSceneListClearAddRootUseCase";
-import { $MOVIE_CLIP_TYPE } from "@/config/InstanceConfig";
-import { execute as externalTimelineEditMovieClipUseService } from "@/external/timeline/application/ExternalTimeline/service/ExternalTimelineEditMovieClipUseService";
 
 /**
  * @description 選択されたMovieClipを起動

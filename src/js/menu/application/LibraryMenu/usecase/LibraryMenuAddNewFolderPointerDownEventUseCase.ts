@@ -1,14 +1,15 @@
+import { timelineHeader } from "@/timeline/domain/model/TimelineHeader";
 import { $allHideMenu } from "../../MenuUtil";
-import { execute as libraryMenuRunSelectedMovieClipUseCase } from "./LibraryMenuRunSelectedMovieClipUseCase";
+import { execute as libraryMenuAddNewFolderService } from "../service/LibraryMenuAddNewFolderService";
 import { $activeTouchPointers } from "@/global/GlobalUtil";
 import { $setEditingElement } from "@/global/GlobalUtil";
 
 /**
- * @description ライブラリメニューのMovieClip編集ボタンの実行関数
- *              Execution function for the Edit MovieClip button in the Library menu
+ * @description ライブラリメニューのフォルダー追加ボタンの実行関数
+ *              Execution function of the Add Folder button in the Library menu
  *
  * @param  {PointerEvent} event
- * @return {Promise}
+ * @return {Promise<void>}
  * @method
  * @public
  */
@@ -16,6 +17,7 @@ export const execute = async (event: PointerEvent): Promise<void> =>
 {
     if (event.button !== 0
         || $activeTouchPointers.size > 1
+        || !timelineHeader.stopFlag
     ) {
         return ;
     }
@@ -30,6 +32,6 @@ export const execute = async (event: PointerEvent): Promise<void> =>
     event.stopPropagation();
     event.preventDefault();
 
-    // 選択されたMovieClipを起動
-    await libraryMenuRunSelectedMovieClipUseCase();
+    // 新規フォルダー追加実行
+    await libraryMenuAddNewFolderService();
 };

@@ -1,11 +1,12 @@
+import { timelineHeader } from "@/timeline/domain/model/TimelineHeader";
 import { $allHideMenu } from "../../MenuUtil";
-import { execute as libraryMenuAddNewFolderService } from "../service/LibraryMenuAddNewFolderService";
+import { execute as libraryMenuAddNewMovieClipService } from "../service/LibraryMenuAddNewMovieClipService";
 import { $activeTouchPointers } from "@/global/GlobalUtil";
 import { $setEditingElement } from "@/global/GlobalUtil";
 
 /**
- * @description ライブラリメニューのフォルダー追加ボタンの実行関数
- *              Execution function of the Add Folder button in the Library menu
+ * @description ライブラリメニューのMovieClip追加ボタンの実行関数
+ *              Execution function of the Add MovieClip button in the Library menu
  *
  * @param  {PointerEvent} event
  * @return {Promise<void>}
@@ -16,6 +17,7 @@ export const execute = async (event: PointerEvent): Promise<void> =>
 {
     if (event.button !== 0
         || $activeTouchPointers.size > 1
+        || !timelineHeader.stopFlag
     ) {
         return ;
     }
@@ -31,5 +33,5 @@ export const execute = async (event: PointerEvent): Promise<void> =>
     event.preventDefault();
 
     // 新規フォルダー追加実行
-    await libraryMenuAddNewFolderService();
+    await libraryMenuAddNewMovieClipService();
 };

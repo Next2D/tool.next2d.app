@@ -1,6 +1,4 @@
 import type { LibraryMenu } from "@/menu/domain/model/LibraryMenu";
-import { $LIBRARY_MENU_NAME } from "@/config/MenuConfig";
-import { libraryArea } from "@/controller/domain/model/LibraryArea";
 import { execute as libraryMenuCopyInactiveService } from "@/menu/application/LibraryMenu/service/LibraryMenuCopyInactiveService";
 import { execute as libraryMenuCopyActiveService } from "@/menu/application/LibraryMenu/service/LibraryMenuCopyActiveService";
 import { execute as libraryMenuExportActiveService } from "@/menu/application/LibraryMenu/service/LibraryMenuExportActiveService";
@@ -9,17 +7,21 @@ import { execute as libraryMenuEditMovieClipActiveService } from "@/menu/applica
 import { execute as libraryMenuEditMovieClipInactiveService } from "@/menu/application/LibraryMenu/service/LibraryMenuEditMovieClipInactiveService";
 import { execute as libraryMenuPhotopeaActiveService } from "@/menu/application/LibraryMenu/service/LibraryMenuPhotopeaActiveService";
 import { execute as libraryMenuPhotopeaInactiveService } from "@/menu/application/LibraryMenu/service/LibraryMenuPhotopeaInactiveService";
-import {
-    $allHideMenu,
-    $getMenu
-} from "../../MenuUtil";
+import { execute as timelineToolPlayStopUseCase } from "@/timeline/application/TimelineTool/application/PlayStop/usecase/TimelineToolPlayStopUseCase";
 import { $setEditingElement } from "@/global/GlobalUtil";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
+import { $useKeyboard } from "@/shortcut/ShortcutUtil";
+import { $LIBRARY_MENU_NAME } from "@/config/MenuConfig";
+import { libraryArea } from "@/controller/domain/model/LibraryArea";
+import { timelineHeader } from "@/timeline/domain/model/TimelineHeader";
 import {
     $BITMAP_TYPE,
     $MOVIE_CLIP_TYPE
 } from "@/config/InstanceConfig";
-import { $useKeyboard } from "@/shortcut/ShortcutUtil";
+import {
+    $allHideMenu,
+    $getMenu
+} from "../../MenuUtil";
 
 /**
  * @description ライブラリ一覧エリアのメニューを表示
@@ -43,6 +45,11 @@ export const execute = (event: MouseEvent): void =>
 
     // 編集中のElementを初期化
     $setEditingElement(null);
+
+    // 再生中なら停止
+    if (!timelineHeader.stopFlag) {
+        timelineToolPlayStopUseCase();
+    }
 
     // 進行状況メニューを非表示に
     const menu = $getMenu<LibraryMenu>($LIBRARY_MENU_NAME);

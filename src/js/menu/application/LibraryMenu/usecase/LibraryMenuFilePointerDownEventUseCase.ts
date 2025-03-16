@@ -1,3 +1,4 @@
+import { timelineHeader } from "@/timeline/domain/model/TimelineHeader";
 import { execute as libraryMenuOpenFileLoadingModalService } from "../service/LibraryMenuOpenFileLoadingModalService";
 import { $activeTouchPointers } from "@/global/GlobalUtil";
 
@@ -14,6 +15,7 @@ export const execute = (event: PointerEvent): void =>
 {
     if (event.button !== 0
         || $activeTouchPointers.size > 1
+        || !timelineHeader.stopFlag
     ) {
         return ;
     }
