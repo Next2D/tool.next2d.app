@@ -1,5 +1,4 @@
 import type { IShortcutViewObject } from "@/interface/IShortcutViewObject";
-import type { IUserSettingIObject } from "@/interface/IUserSettingIObject";
 import type { DetailModal } from "@/menu/domain/model/DetailModal";
 import { $DETAIL_MODAL_NAME } from "@/config/MenuConfig";
 import { $replace } from "@/language/application/LanguageUtil";
@@ -19,7 +18,7 @@ import { $getViewMapping } from "@/menu/application/ShortcutSettingMenu/Shortcut
  */
 export const execute = (event: PointerEvent): void =>
 {
-    const userSetting: IUserSettingIObject = userSettingObjectGetService();
+    const userSetting = userSettingObjectGetService();
     if (!userSetting.modal) {
         return ;
     }

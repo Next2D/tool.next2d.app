@@ -16,7 +16,7 @@ export const execute = async (element: HTMLElement | Document): Promise<void> =>
     const elements = element
         .querySelectorAll("[data-detail]");
 
-    const length: number = elements.length;
+    const length = elements.length;
     for (let idx = 0; idx < length; ++idx) {
 
         const element = elements[idx] as HTMLElement;
