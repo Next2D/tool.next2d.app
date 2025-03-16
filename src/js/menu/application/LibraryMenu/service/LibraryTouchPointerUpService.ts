@@ -2,7 +2,7 @@ import { $activeTouchPointers } from "@/global/GlobalUtil";
 
 /**
  * @description ライブラリエリアのタッチポインターアップイベント
- *             Library area touch pointer up event
+ *              Library area touch pointer up event
  *
  * @param  {PointerEvent} event
  * @return {void}
