@@ -10,12 +10,15 @@ describe("ConfirmModalAllCancelUseCase Test", () =>
         let state = "show";
         const mockMenu = {
             "name": $CONFIRM_MODAL_NAME,
-            "hide": vi.fn(() => state = "hide")
+            "hide": vi.fn(() => state = "hide"),
+            "fileObject": null,
+            "fileObjects": []
         };
         $registerMenu(mockMenu);
 
         expect(state).toBe("show");
         execute();
+
         expect(state).toBe("hide");
     });
 });
