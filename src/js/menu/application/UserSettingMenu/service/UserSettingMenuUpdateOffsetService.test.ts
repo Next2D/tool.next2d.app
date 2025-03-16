@@ -2,10 +2,11 @@ import { $USER_MENU_NAME } from "../../../../config/MenuConfig";
 import { $TOOL_USER_SETTING_ID } from "../../../../config/ToolConfig";
 import { $registerMenu } from "../../MenuUtil";
 import { execute } from "./UserSettingMenuUpdateOffsetService";
+import { describe, expect, it } from "vitest";
 
 describe("UserSettingMenuUpdateOffsetServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         const menuMock = {
             "name": $USER_MENU_NAME,

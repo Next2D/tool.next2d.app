@@ -1,10 +1,11 @@
 import { execute } from "./SceneListMenuHideService";
 import { $registerMenu } from "../../MenuUtil";
 import { $SCENE_LIST_MENU_NAME } from "../../../../config/MenuConfig";
+import { describe, expect, it } from "vitest";
 
 describe("SceneListMenuHideServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         let state = "show";
         const menuMock = {

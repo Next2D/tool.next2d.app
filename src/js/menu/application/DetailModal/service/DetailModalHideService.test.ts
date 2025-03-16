@@ -1,10 +1,11 @@
 import { $DETAIL_MODAL_NAME } from "../../../../config/MenuConfig";
 import { $registerMenu } from "../../MenuUtil";
 import { execute } from "./DetailModalHideService";
+import { describe, expect, it } from "vitest";
 
 describe("DetailModalHideServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         let state = "show";
         const mockMenu = {

@@ -1,9 +1,10 @@
 import { $getSelectElement } from "../ShortcutSettingMenuUtil";
 import { execute } from "./ShortcutSettingMenuChangeListStyleService";
+import { describe, expect, it } from "vitest";
 
 describe("ShortcutSettingMenuChangeListStyleServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         const div1 = document.createElement("div");
         expect(div1.classList.contains("shortcut-active")).toBe(false);

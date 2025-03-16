@@ -5,10 +5,11 @@ import {
 } from "../../../../config/TimelineLayerControllerMenuConfig";
 import { execute } from "./TimelineLayerControllerMenuUpdateIconStyleService";
 import { Layer } from "../../../../core/domain/model/Layer";
+import { describe, expect, it } from "vitest";
 
 describe("TimelineLayerControllerMenuUpdateIconStyleServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         const normalElement = document.createElement("div");
         document.body.appendChild(normalElement);

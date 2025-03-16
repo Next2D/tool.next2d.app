@@ -1,3 +1,4 @@
+import { describe, expect, it } from "vitest";
 import {
     $registerMenu,
     $allHideMenu
@@ -5,7 +6,7 @@ import {
 
 describe("MenuUtilTest", () =>
 {
-    test("$allHide test", () =>
+    it("$allHide test", () =>
     {
         let mock1State = "show";
         const mock1 = {

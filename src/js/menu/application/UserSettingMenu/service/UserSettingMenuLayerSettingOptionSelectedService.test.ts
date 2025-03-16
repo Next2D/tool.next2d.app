@@ -1,9 +1,10 @@
 import { execute } from "./UserSettingMenuLayerSettingOptionSelectedService";
 import { execute as userSettingObjectUpdateService } from "../../../../user/application/Setting/service/UserSettingObjectUpdateService";
+import { describe, expect, it } from "vitest";
 
 describe("UserSettingMenuLayerSettingOptionSelectedServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         const select = document.createElement("select");
         const option1 = document.createElement("option");

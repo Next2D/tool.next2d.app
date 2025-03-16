@@ -1,9 +1,10 @@
 import { $CONTROLLER_LIBRARY_PHOTOPEA_ID } from "../../../../config/ControllerConfig";
 import { execute } from "./LibraryMenuPhotopeaInactiveService";
+import { describe, expect, it } from "vitest";
 
 describe("LibraryMenuPhotopeaInactiveServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         const div = document.createElement("div");
         document.body.appendChild(div);

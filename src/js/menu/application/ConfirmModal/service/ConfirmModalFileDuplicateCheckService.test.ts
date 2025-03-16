@@ -1,23 +1,25 @@
 import { $CONFIRM_MODAL_NAME } from "../../../../config/MenuConfig";
 import { $registerMenu } from "../../MenuUtil";
+import { ConfirmModal } from "../../../domain/model/ConfirmModal";
 import { $getCurrentWorkSpace, $createWorkSpace } from "../../../../core/application/CoreUtil";
 import { Bitmap } from "../../../../core/domain/model/Bitmap";
 import { Folder } from "../../../../core/domain/model/Folder";
 import { execute } from "./ConfirmModalFileDuplicateCheckService";
+import { describe, expect, it } from "vitest";
 
 describe("ConfirmModalFileDuplicateCheckServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         const mockMenu = {
             "name": $CONFIRM_MODAL_NAME,
             "fileObjects": []
-        };
+        } as unknown as ConfirmModal;
         $registerMenu(mockMenu);
 
         const mockFile = {
             "name": "test.png"
-        };
+        } as unknown as File;
 
         const bitmap = new Bitmap({
             "id": 1,
@@ -37,17 +39,17 @@ describe("ConfirmModalFileDuplicateCheckServiceTest", () =>
         expect(mockMenu.fileObjects[0].path).toBe("");
     });
 
-    test("execute test", () =>
+    it("execute test", () =>
     {
         const mockMenu = {
             "name": $CONFIRM_MODAL_NAME,
             "fileObjects": []
-        };
+        } as unknown as ConfirmModal;
         $registerMenu(mockMenu);
 
         const mockFile = {
             "name": "logo.png"
-        };
+        } as unknown as File;
 
         const folder = new Folder({
             "id": 1,

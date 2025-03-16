@@ -1,10 +1,11 @@
 import { $SCRIPT_EDITOR_MODAL_NAME } from "../../../../config/MenuConfig";
 import { $registerMenu } from "../../MenuUtil";
 import { execute } from "./ScriptEditorModalShowService";
+import { describe, expect, it } from "vitest";
 
 describe("ScriptEditorModalShowServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         let state = "hide";
         const mockMenu = {

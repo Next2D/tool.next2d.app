@@ -2,10 +2,11 @@ import { $TIMELINE_CONTROLLER_LAYER_SCALE_ID } from "../../../../config/Timeline
 import { $TIMELINE_DEFAULT_FRAME_HEIGHT_SIZE } from "../../../../config/TimelineConfig";
 import { execute } from "./TimelineLayerControllerMenuScaleSelectService";
 import { $getCurrentWorkSpace, $createWorkSpace } from "../../../../core/application/CoreUtil";
+import { describe, expect, it } from "vitest";
 
 describe("TimelineLayerControllerMenuScaleSelectServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         const workSpace = $getCurrentWorkSpace() || $createWorkSpace();
 

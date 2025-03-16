@@ -1,10 +1,11 @@
 import { IShortcutViewObject } from "../../../../interface/IShortcutViewObject";
 import { $clearCommandMapping, $clearViewMapping, $getCommandMapping, $getViewMapping } from "../ShortcutSettingMenuUtil";
 import { execute } from "./ShortcutSettingMenuUpdateCommandMappingService";
+import { describe, expect, it } from "vitest";
 
 describe("ShortcutSettingMenuUpdateCommandMappingServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         // mock
         const viewMapping: Map<string, IShortcutViewObject> = $getViewMapping();

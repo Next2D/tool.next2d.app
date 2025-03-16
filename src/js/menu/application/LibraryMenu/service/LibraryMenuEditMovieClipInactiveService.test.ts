@@ -1,9 +1,10 @@
 import { $CONTROLLER_LIBRARY_CHANGE_SCENE_ID } from "../../../../config/ControllerConfig";
 import { execute } from "./LibraryMenuEditMovieClipInactiveService";
+import { describe, expect, it } from "vitest";
 
 describe("LibraryMenuEditMovieClipInactiveServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         const div = document.createElement("div");
         document.body.appendChild(div);

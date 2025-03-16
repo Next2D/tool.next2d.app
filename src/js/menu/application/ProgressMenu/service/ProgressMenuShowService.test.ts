@@ -1,10 +1,11 @@
 import { $PROGRESS_MENU_NAME } from "../../../../config/MenuConfig";
 import { $registerMenu } from "../../MenuUtil";
 import { execute } from "./ProgressMenuShowService";
+import { describe, expect, it } from "vitest";
 
 describe("ProgressMenuShowServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         let state = "hide";
         const mockMenu = {

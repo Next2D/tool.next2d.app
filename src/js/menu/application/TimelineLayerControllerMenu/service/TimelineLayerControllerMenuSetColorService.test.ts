@@ -3,10 +3,11 @@ import { execute } from "./TimelineLayerControllerMenuSetColorService";
 import { $getCurrentWorkSpace, $createWorkSpace } from "../../../../core/application/CoreUtil";
 import type { MovieClip } from "../../../../core/domain/model/MovieClip";
 import type { Layer } from "../../../../core/domain/model/Layer";
+import { describe, expect, it } from "vitest";
 
 describe("TimelineLayerControllerMenuSetColorServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         const workSpace = $getCurrentWorkSpace() || $createWorkSpace();
         const scene: MovieClip = workSpace.scene;

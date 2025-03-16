@@ -1,9 +1,10 @@
 import { $CONTROLLER_LIBRARY_MENU_COPY_ID } from "../../../../config/ControllerConfig";
 import { execute } from "./LibraryMenuCopyActiveService";
+import { describe, expect, it } from "vitest";
 
 describe("LibraryMenuCopyActiveServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         const div = document.createElement("div");
         document.body.appendChild(div);

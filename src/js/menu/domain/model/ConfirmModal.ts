@@ -17,10 +17,41 @@ import { execute as confirmModalInstaceResetService } from "@/menu/application/C
  */
 export class ConfirmModal extends BaseMenu
 {
-    private _$instanceObject: IConfirmModalInstanceObject | null;
-    private _$fileObject: IConfirmModalFileObject | null;
-    private readonly _$fileObjects: IConfirmModalFileObject[];
-    private readonly _$instanceObjects: IConfirmModalInstanceObject[];
+    /**
+     * @description 現在利用中のInstanceオブジェクト
+     *              Instance object currently in use
+     *
+     * @member {object | null}
+     * @public
+     */
+    public instanceObject: IConfirmModalInstanceObject | null;
+
+    /**
+     * @description 現在利用中のFileオブジェクト
+     *              File object currently in use
+     *
+     * @member {object | null}
+     * @public
+     */
+    public fileObject: IConfirmModalFileObject | null;
+
+    /**
+     * @description Fileの読み込み時の重複配列
+     *              Duplicate array when reading File
+     *
+     * @readonly
+     * @public
+     */
+    public readonly fileObjects: IConfirmModalFileObject[];
+
+    /**
+     * @description Instanceの読み込み時の重複配列
+     *              Duplicate array when reading Instance
+     *
+     * @readonly
+     * @public
+     */
+    public readonly instanceObjects: IConfirmModalInstanceObject[];
 
     /**
      * @constructor
@@ -30,29 +61,11 @@ export class ConfirmModal extends BaseMenu
     {
         super($CONFIRM_MODAL_NAME);
 
-        /**
-         * @type {array}
-         * @private
-         */
-        this._$fileObjects = [];
+        this.fileObject  = null;
+        this.fileObjects = [];
 
-        /**
-         * @type {object}
-         * @private
-         */
-        this._$fileObject = null;
-
-        /**
-         * @type {array}
-         * @private
-         */
-        this._$instanceObjects = [];
-
-        /**
-         * @type {object}
-         * @private
-         */
-        this._$instanceObject = null;
+        this.instanceObject  = null;
+        this.instanceObjects = [];
     }
 
     /**
@@ -69,34 +82,6 @@ export class ConfirmModal extends BaseMenu
     }
 
     /**
-     * @description Fileの読み込み時の重複配列
-     *              Duplicate array when reading File
-     *
-     * @readonly
-     * @public
-     */
-    get fileObjects (): IConfirmModalFileObject[]
-    {
-        return this._$fileObjects;
-    }
-
-    /**
-     * @description 現在利用中のFileオブジェクト
-     *              File object currently in use
-     *
-     * @member {object | null}
-     * @public
-     */
-    get fileObject (): IConfirmModalFileObject | null
-    {
-        return this._$fileObject;
-    }
-    set fileObject (file_object: IConfirmModalFileObject | null)
-    {
-        this._$fileObject = file_object;
-    }
-
-    /**
      * @description Fileの配列から作業変数にセット
      *              Set to a working variable from an array of File
      *
@@ -107,7 +92,7 @@ export class ConfirmModal extends BaseMenu
     setupFileObject (): void
     {
         // 配列が空なら終了
-        if (!this._$fileObjects.length) {
+        if (!this.fileObjects.length) {
 
             // 初期化して終了
             confirmModalFileResetService();
@@ -116,43 +101,15 @@ export class ConfirmModal extends BaseMenu
             return this.hide();
         }
 
-        this._$fileObject = this._$fileObjects.pop() as NonNullable<IConfirmModalFileObject>;
+        this.fileObject = this.fileObjects.pop() as NonNullable<IConfirmModalFileObject>;
 
         // 表示を更新
         confirmModalUpdateDisplayByFileUseCase(
-            this._$fileObject.file,
-            this._$fileObject.instance
+            this.fileObject.file,
+            this.fileObject.instance
         );
 
         this.show();
-    }
-
-    /**
-     * @description Instanceの読み込み時の重複配列
-     *              Duplicate array when reading Instance
-     *
-     * @readonly
-     * @public
-     */
-    get instanceObjects (): IConfirmModalInstanceObject[]
-    {
-        return this._$instanceObjects;
-    }
-
-    /**
-     * @description 現在利用中のInstanceオブジェクト
-     *              Instance object currently in use
-     *
-     * @member {object | null}
-     * @public
-     */
-    get instanceObject (): IConfirmModalInstanceObject| null
-    {
-        return this._$instanceObject;
-    }
-    set instanceObject (instance_object: IConfirmModalInstanceObject | null)
-    {
-        this._$instanceObject = instance_object;
     }
 
     /**
@@ -166,7 +123,7 @@ export class ConfirmModal extends BaseMenu
     setupInstanceObject (): void
     {
         // 配列が空なら終了
-        if (!this._$instanceObjects.length) {
+        if (!this.instanceObjects.length) {
 
             // 初期化して終了
             confirmModalInstaceResetService();
@@ -175,12 +132,12 @@ export class ConfirmModal extends BaseMenu
             return this.hide();
         }
 
-        this._$instanceObject = this._$instanceObjects.pop() as NonNullable<IConfirmModalInstanceObject>;
+        this.instanceObject = this.instanceObjects.pop() as NonNullable<IConfirmModalInstanceObject>;
 
         // // 表示を更新
         // confirmModalUpdateDisplayUseCase(
-        //     this._$fileObject.file,
-        //     this._$fileObject.instance
+        //     this.fileObject.file,
+        //     this.fileObject.instance
         // );
 
         this.show();

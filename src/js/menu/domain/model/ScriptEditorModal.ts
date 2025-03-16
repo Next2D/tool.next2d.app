@@ -72,7 +72,7 @@ export class ScriptEditorModal extends BaseMenu
      */
     hide (): void
     {
-        if (this._$state === "hide") {
+        if (this.state === "hide") {
             return ;
         }
 

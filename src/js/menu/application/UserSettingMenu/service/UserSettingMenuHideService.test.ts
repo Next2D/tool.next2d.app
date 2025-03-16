@@ -1,10 +1,11 @@
 import { $USER_MENU_NAME } from "../../../../config/MenuConfig";
 import { $registerMenu } from "../../MenuUtil";
 import { execute } from "./UserSettingMenuHideService";
+import { describe, expect, it } from "vitest";
 
 describe("UserSettingMenuHideServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         let state = "show";
         const menuMock = {

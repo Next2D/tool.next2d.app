@@ -1,9 +1,10 @@
 import { $registerMenu } from "../../MenuUtil";
 import { execute } from "./ShortcutSettingMenuShowService";
+import { describe, expect, it } from "vitest";
 
 describe("ShortcutSettingMenuShowServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         let state = "hide";
         const menuMock = {

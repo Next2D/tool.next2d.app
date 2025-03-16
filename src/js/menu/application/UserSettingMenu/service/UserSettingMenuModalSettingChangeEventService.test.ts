@@ -1,9 +1,10 @@
 import { execute } from "./UserSettingMenuModalSettingChangeEventService";
 import { execute as userSettingObjectGetService } from "../../../../user/application/Setting/service/UserSettingObjectGetService";
+import { describe, expect, it } from "vitest";
 
 describe("UserSettingMenuModalSettingChangeEventServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         const object1 = userSettingObjectGetService();
         expect(object1.modal).toBe(true);

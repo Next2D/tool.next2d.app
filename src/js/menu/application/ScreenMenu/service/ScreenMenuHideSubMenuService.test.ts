@@ -1,10 +1,11 @@
 import { execute } from "./ScreenMenuHideSubMenuService";
 import { $registerMenu } from "../../MenuUtil";
 import { $SCREEN_MENU_NAME } from "../../../../config/MenuConfig";
+import { describe, expect, it } from "vitest";
 
 describe("ScreenMenuHideSubMenuServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         let eventState = "on";
         const mockEvent = {
@@ -12,7 +13,7 @@ describe("ScreenMenuHideSubMenuServiceTest", () =>
             {
                 eventState = "off";
             }
-        };
+        } as unknown as PointerEvent;
 
         let screenState = "show";
         const screenMenuMock = {

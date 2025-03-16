@@ -1,9 +1,10 @@
 import { execute } from "./UserSettingMenuLanguageSettingOptionSelectedService";
 import { execute as userLanguageSettingObjectUpdateService } from "../../../../user/application/Language/service/UserLanguageSettingObjectUpdateService";
+import { describe, expect, it } from "vitest";
 
 describe("UserSettingMenuLanguageSettingOptionSelectedServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         const select = document.createElement("select");
         const option1 = document.createElement("option");

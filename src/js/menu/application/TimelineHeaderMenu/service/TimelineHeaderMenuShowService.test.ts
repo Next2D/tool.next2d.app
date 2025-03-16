@@ -1,10 +1,11 @@
 import { $TIMELINE_HEADER_MENU_NAME } from "../../../../config/MenuConfig";
 import { $registerMenu } from "../../MenuUtil";
 import { execute } from "./TimelineHeaderMenuShowService";
+import { describe, expect, it } from "vitest";
 
 describe("TimelineHeaderMenuShowServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         const div = document.createElement("div");
         div.id = $TIMELINE_HEADER_MENU_NAME;

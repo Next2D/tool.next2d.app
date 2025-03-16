@@ -1,10 +1,11 @@
 import { execute } from "./ScreenMenuShowService";
 import { $registerMenu } from "../../MenuUtil";
 import { $SCREEN_MENU_NAME } from "../../../../config/MenuConfig";
+import { describe, expect, it } from "vitest";
 
 describe("ScreenMenuShowServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         let prevent = true;
         let state = "on";

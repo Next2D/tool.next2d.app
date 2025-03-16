@@ -1,10 +1,11 @@
 import { IShortcutViewObject } from "../../../../interface/IShortcutViewObject";
 import { $getTempMapping, $getViewMapping } from "../ShortcutSettingMenuUtil";
 import { execute } from "./ShortcutSettingMenuResetElementTextService";
+import { describe, expect, it } from "vitest";
 
 describe("ShortcutSettingMenuResetElementTextServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         // mock
         const tempMapping: Map<string, IShortcutViewObject> = $getTempMapping();

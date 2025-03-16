@@ -1,9 +1,10 @@
 import { $PROGRESS_STATE_ID } from "../../../../config/ProgressMenuConfig";
 import { execute } from "./ProgressMenuUpdateMessageService";
+import { describe, expect, it } from "vitest";
 
 describe("ProgressMenuUpdateMessageServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         const div = document.createElement("div");
         div.id = $PROGRESS_STATE_ID;

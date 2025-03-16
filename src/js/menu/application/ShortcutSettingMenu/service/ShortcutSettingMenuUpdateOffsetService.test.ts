@@ -4,10 +4,11 @@ import {
     $SHORTCUT_MENU_NAME,
     $USER_MENU_NAME
 } from "../../../../config/MenuConfig";
+import { describe, expect, it } from "vitest";
 
 describe("UShortcutSettingMenuUpdateOffsetServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         const menuMock = {
             "name": $SHORTCUT_MENU_NAME,

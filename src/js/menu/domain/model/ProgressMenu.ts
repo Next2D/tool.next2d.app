@@ -14,8 +14,16 @@ import { $replace } from "@/language/application/LanguageUtil";
  */
 export class ProgressMenu extends BaseMenu
 {
-    private _$active: boolean;
     private _$currentState: number;
+
+    /**
+     * @description タスク進行中であればtrueを返す
+     *              Returns true if a task is in progress
+     *
+     * @returns {boolean}
+     * @public
+     */
+    public active: boolean;
 
     /**
      * @constructor
@@ -25,34 +33,14 @@ export class ProgressMenu extends BaseMenu
     {
         super($PROGRESS_MENU_NAME);
 
-        // 表示状態にする
-        this._$state = "show";
-
-        /**
-         * @type {boolean}
-         * @default false
-         * @public
-         */
-        this._$active = false;
+        this.state  = "show";
+        this.active = false;
 
         /**
          * @type {number}
-         * @public
+         * @private
          */
         this._$currentState = 0;
-    }
-
-    /**
-     * @description タスク進行中であればtrueを返す
-     *              Returns true if a task is in progress
-     *
-     * @returns {boolean}
-     * @readonly
-     * @public
-     */
-    get active (): boolean
-    {
-        return this._$active;
     }
 
     /**
@@ -117,14 +105,14 @@ export class ProgressMenu extends BaseMenu
      */
     show (): void
     {
-        if (this._$state === "show") {
+        if (this.state === "show") {
             return ;
         }
 
         super.show();
 
         // 実行判定フラグを更新
-        this._$active = true;
+        this.active = true;
 
         // プログレスバーのアニメーション
         this.update();
@@ -140,7 +128,7 @@ export class ProgressMenu extends BaseMenu
      */
     hide (): void
     {
-        if (this._$state === "hide") {
+        if (this.state === "hide") {
             return ;
         }
 
@@ -155,7 +143,7 @@ export class ProgressMenu extends BaseMenu
             // reset
             setTimeout((): void =>
             {
-                this._$active     = false;
+                this.active       = false;
                 this.currentState = 0;
             }, 300);
 

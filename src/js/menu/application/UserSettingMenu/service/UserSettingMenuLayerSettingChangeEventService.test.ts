@@ -1,9 +1,10 @@
 import { execute } from "./UserSettingMenuLayerSettingChangeEventService";
 import { execute as userSettingObjectGetService } from "../../../../user/application/Setting/service/UserSettingObjectGetService";
+import { describe, expect, it } from "vitest";
 
 describe("UserSettingMenuLayerSettingChangeEventServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         const object1 = userSettingObjectGetService();
         expect(object1.layer).toBe(false);

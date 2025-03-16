@@ -1,9 +1,10 @@
 import { execute } from "./UserSettingMenuPublishTypeChangeEventService";
 import { execute as userSettingObjectGetService } from "../../../../user/application/Setting/service/UserSettingObjectGetService";
+import { describe, expect, it } from "vitest";
 
 describe("UserSettingMenuPublishTypeChangeEventServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         const object1 = userSettingObjectGetService();
         expect(object1.type).toBe("zlib");

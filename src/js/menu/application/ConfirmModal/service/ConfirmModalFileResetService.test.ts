@@ -1,10 +1,11 @@
 import { $CONFIRM_MODAL_NAME } from "../../../../config/MenuConfig";
 import { $registerMenu } from "../../MenuUtil";
 import { execute } from "./ConfirmModalFileResetService";
+import { describe, expect, it } from "vitest";
 
 describe("ConfirmModalFileResetServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         const mockMenu = {
             "name": $CONFIRM_MODAL_NAME,

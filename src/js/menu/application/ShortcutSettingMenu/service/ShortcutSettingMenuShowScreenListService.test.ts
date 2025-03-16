@@ -7,10 +7,11 @@ import {
     $SHORTCUT_SETTING_TIMELINE_ID,
     $SHORTCUT_SETTING_LIBRARY_ID
 } from "../../../../config/ShortcutConfig";
+import { describe, expect, it } from "vitest";
 
 describe("ShortcutSettingMenuShowScreenListServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         const screenList = document.createElement("div");
         screenList.id = $SHORTCUT_SCREEN_LIST_ID;

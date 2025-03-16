@@ -1,10 +1,11 @@
 import { $SCREEN_MENU_NAME } from "../../../../config/MenuConfig";
 import { $registerMenu } from "../../MenuUtil";
 import { execute } from "./ScreenMenuShowSubMenuService";
+import { describe, expect, it } from "vitest";
 
 describe("ScreenMenuShowSubMenuServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         const orderElement = document.createElement("div");
         document.body.appendChild(orderElement);

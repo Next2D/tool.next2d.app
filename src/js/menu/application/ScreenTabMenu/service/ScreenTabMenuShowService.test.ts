@@ -1,10 +1,11 @@
 import { $SCREEN_TAB_MENU_NAME } from "../../../../config/MenuConfig";
 import { $registerMenu } from "../../MenuUtil";
 import { execute } from "./ScreenTabMenuShowService";
+import { describe, expect, it } from "vitest";
 
 describe("ScreenTabMenuShowServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         let state = "hide";
         const mockMenu = {
