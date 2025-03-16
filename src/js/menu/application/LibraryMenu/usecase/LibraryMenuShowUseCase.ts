@@ -64,12 +64,12 @@ export const execute = (event: MouseEvent): void =>
         return ;
     }
 
-    const clientWidth: number  = element.clientWidth;
-    const clientHeight: number = element.clientHeight;
+    const clientWidth  = element.clientWidth;
+    const clientHeight = element.clientHeight;
 
     // 上部にはみ出さない
-    const height: number = clientHeight / 2;
-    let top: number = event.pageY - height;
+    const height = clientHeight / 2;
+    let top = event.pageY - height;
     if (0 > top) {
         top = 15;
     }
