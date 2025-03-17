@@ -118,14 +118,14 @@ export class BaseMenu
      */
     hide (): void
     {
+        if (!this._$element) {
+            return ;
+        }
+
         if (this.state === "hide") {
             return ;
         }
         this.state = "hide";
-
-        if (!this._$element) {
-            return ;
-        }
 
         this._$element.setAttribute("class", "fadeOut");
     }

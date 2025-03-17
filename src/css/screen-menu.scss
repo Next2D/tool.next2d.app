@@ -49,6 +49,16 @@
             background-color : #1c1c1c;
             cursor           : pointer;
         }
+
+        i
+        {
+            pointer-events: none;
+        }
+
+        span
+        {
+            pointer-events: none;
+        }
     }
 }
 
