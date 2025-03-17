@@ -22,6 +22,7 @@ export const execute = (event: PointerEvent): void =>
 
     // 親のイベントを中止
     event.stopPropagation();
+    event.preventDefault();
 
     if (menu.state === "hide") {
         screenTabMenuShowService();

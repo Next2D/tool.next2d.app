@@ -3,7 +3,7 @@ import { $SCREEN_TAB_MENU_NAME } from "@/config/MenuConfig";
 import { $SCREEN_TAB_LIST_ID } from "@/config/ScreenConfig";
 import { EventType } from "@/tool/domain/event/EventType";
 import { $getMenu } from "@/menu/application/MenuUtil";
-import { execute as screenTabMenuMouseDownEventUseCase } from "./ScreenTabMenuMouseDownEventUseCase";
+import { execute as screenTabMenuPointerDownEventUseCase } from "./ScreenTabMenuPointerDownEventUseCase";
 
 /**
  * @description 初期起動のユースケース
@@ -31,6 +31,6 @@ export const execute = (): void =>
     menu.offsetTop  = element.offsetTop  + 25;
 
     element.addEventListener(EventType.POINTER_DOWN,
-        screenTabMenuMouseDownEventUseCase
+        screenTabMenuPointerDownEventUseCase
     );
 };

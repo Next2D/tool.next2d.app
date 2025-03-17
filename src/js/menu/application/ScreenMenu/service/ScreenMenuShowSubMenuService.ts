@@ -15,6 +15,7 @@ export const execute = (event: PointerEvent): void =>
 {
     // 親のイベントを中止
     event.stopPropagation();
+    event.preventDefault();
 
     const parent: HTMLElement | null = document
         .getElementById($SCREEN_MENU_NAME);
@@ -30,7 +31,7 @@ export const execute = (event: PointerEvent): void =>
         "screen-align"
     ];
 
-    for (let idx: number = 0; idx < showElementIds.length; ++idx) {
+    for (let idx = 0; idx < showElementIds.length; ++idx) {
 
         const elementId = showElementIds[idx];
 

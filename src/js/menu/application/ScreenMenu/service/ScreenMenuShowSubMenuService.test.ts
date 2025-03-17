@@ -1,7 +1,7 @@
 import { $SCREEN_MENU_NAME } from "../../../../config/MenuConfig";
 import { $registerMenu } from "../../MenuUtil";
 import { execute } from "./ScreenMenuShowSubMenuService";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 
 describe("ScreenMenuShowSubMenuServiceTest", () =>
 {
@@ -45,16 +45,15 @@ describe("ScreenMenuShowSubMenuServiceTest", () =>
         };
         $registerMenu(alignMenuMock);
 
-        let state = "on";
+        let stopPropagation = false;
+        let preventDefault = false;
         const eventMock = {
-            "stopPropagation": () =>
-            {
-                state = "off";
-            },
+            "stopPropagation": vi.fn(() => stopPropagation = true),
+            "preventDefault": vi.fn(() => preventDefault = true),
             "target": null,
             "offsetLeft": 100,
             "offsetTop": 200
-        };
+        } as unknown as PointerEvent;
 
         const parent = document.createElement("div");
         document.body.appendChild(parent);
@@ -66,7 +65,8 @@ describe("ScreenMenuShowSubMenuServiceTest", () =>
         expect(alignMenuMock.offsetTop).toBe(0);
         expect(alignState).toBe("hide");
         expect(orderState).toBe("hide");
-        expect(state).toBe("on");
+        expect(stopPropagation).toBe(false);
+        expect(preventDefault).toBe(false);
 
         // 表示順を表示
         eventMock.target = alignElement;
@@ -77,7 +77,8 @@ describe("ScreenMenuShowSubMenuServiceTest", () =>
         expect(alignMenuMock.offsetTop).toBe(20);
         expect(alignState).toBe("show");
         expect(orderState).toBe("hide");
-        expect(state).toBe("off");
+        expect(stopPropagation).toBe(true);
+        expect(preventDefault).toBe(true);
 
         // 整列を表示
         eventMock.target = orderElement;
@@ -88,7 +89,6 @@ describe("ScreenMenuShowSubMenuServiceTest", () =>
         expect(alignMenuMock.offsetTop).toBe(20);
         expect(alignState).toBe("hide");
         expect(orderState).toBe("show");
-        expect(state).toBe("off");
 
         parent.remove();
         alignElement.remove();

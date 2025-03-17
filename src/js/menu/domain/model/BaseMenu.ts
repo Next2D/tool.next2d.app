@@ -97,12 +97,13 @@ export class BaseMenu
         if (!this._$element) {
             return ;
         }
-        this.move(this._$element);
 
         if (this.state === "show") {
             return ;
         }
         this.state = "show";
+
+        this.move(this._$element);
 
         this._$element.setAttribute("class", "fadeIn");
     }
