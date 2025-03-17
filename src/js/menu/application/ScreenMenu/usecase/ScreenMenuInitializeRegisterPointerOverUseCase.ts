@@ -13,7 +13,7 @@ import { execute as screenMenuShowSubMenuService } from "../service/ScreenMenuSh
 export const execute = (): void =>
 {
     // サブメニュー対象外のElelmentIdの配列
-    const hideElementIds: string[] = [
+    const hideElementIds = [
         "screen-distribute-to-layers",
         "screen-distribute-to-keyframes",
         "screen-align-coordinates-prev-keyframe",
@@ -29,7 +29,7 @@ export const execute = (): void =>
     ];
 
     // 対象外のElelmentの場合は、サブメニューを非表示にする
-    for (let idx: number = 0; idx < hideElementIds.length; ++idx) {
+    for (let idx = 0; idx < hideElementIds.length; ++idx) {
 
         const element: HTMLElement | null = document
             .getElementById(hideElementIds[idx]);
@@ -48,7 +48,7 @@ export const execute = (): void =>
     ];
 
     // 対象のElelmentの場合は、サブメニューを表示にする
-    for (let idx: number = 0; idx < showElementIds.length; ++idx) {
+    for (let idx = 0; idx < showElementIds.length; ++idx) {
 
         const element: HTMLElement | null = document
             .getElementById(showElementIds[idx]);
