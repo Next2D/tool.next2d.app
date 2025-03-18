@@ -48,14 +48,15 @@ if (typeof globalThis.ace === "undefined") {
     (globalThis as any).ace = {
         "edit": (id: string) =>
         {
+            let value = "test";
             return {
                 "getValue": () =>
                 {
-                    return "test";
+                    return value;
                 },
-                "setValue": (value: string) =>
+                "setValue": (v: string) =>
                 {
-                    // 何もしない
+                    value = v;
                 },
                 "focus": () => {}
             };

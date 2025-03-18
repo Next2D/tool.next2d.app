@@ -1,6 +1,8 @@
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { $setTargetFrame, $setTargetMovieClip } from "../ScriptEditorModalUtil";
 import { execute as scriptEditorModalShowService } from "../service/ScriptEditorModalShowService";
+import { timelineHeader } from "@/timeline/domain/model/TimelineHeader";
+import { execute as timelineToolPlayStopUseCase } from "@/timeline/application/TimelineTool/application/PlayStop/usecase/TimelineToolPlayStopUseCase";
 
 /**
  * @description 現在のMovieClipとフレームを指定してスクリプトエディタを起動
@@ -12,6 +14,10 @@ import { execute as scriptEditorModalShowService } from "../service/ScriptEditor
  */
 export const execute = (): void =>
 {
+    if (!timelineHeader.stopFlag) {
+        timelineToolPlayStopUseCase();
+    }
+
     const scene = $getCurrentWorkSpace().scene;
     $setTargetMovieClip(scene);
     $setTargetFrame(scene.currentFrame);

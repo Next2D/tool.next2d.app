@@ -1,12 +1,12 @@
 import { EventType } from "@/tool/domain/event/EventType";
-import { execute as scriptEditorModalHideIconMouseDownUseCase } from "./ScriptEditorModalHideIconMouseDownUseCase";
-import { execute as scriptEditorModalMouseDownEventUseCase } from "./ScriptEditorModalMouseDownEventUseCase";
+import { execute as scriptEditorModalHideIconPointerDownUseCase } from "./ScriptEditorModalHideIconPointerDownUseCase";
+import { execute as scriptEditorModalPointerDownEventUseCase } from "./ScriptEditorModalPointerDownEventUseCase";
+import { $getAceEditor } from "../ScriptEditorModalUtil";
 import {
     $SCRIPT_EDITOR_MODAL_ID,
     $SCRIPT_EDITOR_HIDE_ICON_ID,
     $SCRIPT_EDITOR_BAR_ID
 } from "@/config/ScriptEditorModalConfig";
-import { $getAceEditor } from "../ScriptEditorModalUtil";
 
 /**
  * @description スクリプトエディタの初期起動ユースケース
@@ -55,7 +55,7 @@ export const execute = (): void =>
 
     if (hideIconElement) {
         hideIconElement.addEventListener(EventType.POINTER_DOWN,
-            scriptEditorModalHideIconMouseDownUseCase
+            scriptEditorModalHideIconPointerDownUseCase
         );
     }
 
@@ -64,7 +64,7 @@ export const execute = (): void =>
 
     if (barElement) {
         barElement.addEventListener(EventType.POINTER_DOWN,
-            scriptEditorModalMouseDownEventUseCase
+            scriptEditorModalPointerDownEventUseCase
         );
     }
 };

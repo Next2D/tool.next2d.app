@@ -13,14 +13,14 @@ import { execute as scriptEditorModalPointerUpUseCase } from "./ScriptEditorModa
  */
 export const execute = (event: PointerEvent): void =>
 {
-    // 他のイベントを中止
-    event.stopPropagation();
-    event.preventDefault();
-
     const element = event.target as HTMLElement;
     if (!element) {
         return ;
     }
+
+    // 他のイベントを中止
+    event.stopPropagation();
+    event.preventDefault();
 
     // windowイベントを登録
     element.setPointerCapture(event.pointerId);
@@ -31,6 +31,11 @@ export const execute = (event: PointerEvent): void =>
     );
     element.addEventListener(
         EventType.POINTER_UP,
+        scriptEditorModalPointerUpUseCase,
+        { "passive": false }
+    );
+    element.addEventListener(
+        EventType.POINTER_LEAVE,
         scriptEditorModalPointerUpUseCase,
         { "passive": false }
     );

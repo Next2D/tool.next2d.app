@@ -1,6 +1,6 @@
 import { $TOOL_USER_SETTING_ID } from "@/config/ToolConfig";
 import { EventType } from "@/tool/domain/event/EventType";
-import { execute as userSettingToolMouseDownEventUseCase } from "./UserSettingToolMouseDownEventUseCase";
+import { execute as userSettingToolPointerDownEventUseCase } from "./UserSettingToolPointerDownEventUseCase";
 
 /**
  * @description ユーザー設定ツールの初期起動時のユースケース
@@ -15,10 +15,11 @@ export const execute = (): void =>
     const element: HTMLElement | null = document
         .getElementById($TOOL_USER_SETTING_ID);
 
-    if (element) {
-        element.addEventListener(EventType.POINTER_DOWN, (event: PointerEvent): void =>
-        {
-            userSettingToolMouseDownEventUseCase(event);
-        });
+    if (!element) {
+        return ;
     }
+
+    element.addEventListener(EventType.POINTER_DOWN,
+        userSettingToolPointerDownEventUseCase
+    );
 };

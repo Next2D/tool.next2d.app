@@ -12,17 +12,18 @@ import { execute as scriptEditorModalPointerMoveService } from "../service/Scrip
  */
 export const execute = (event: PointerEvent): void =>
 {
-    // 他のイベントを中止
-    event.stopPropagation();
-    event.preventDefault();
-
     const element = event.target as HTMLElement;
     if (!element) {
         return ;
     }
 
+    // 他のイベントを中止
+    event.stopPropagation();
+    event.preventDefault();
+
     // windowイベントを削除
     element.releasePointerCapture(event.pointerId);
     element.removeEventListener(EventType.POINTER_MOVE, scriptEditorModalPointerMoveService);
     element.removeEventListener(EventType.POINTER_UP, execute);
+    element.removeEventListener(EventType.POINTER_LEAVE, execute);
 };

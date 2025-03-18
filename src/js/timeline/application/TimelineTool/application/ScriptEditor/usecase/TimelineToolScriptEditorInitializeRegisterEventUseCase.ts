@@ -1,6 +1,6 @@
 import { $TIMELINE_LAYER_SCRIPT_ADD_ID } from "@/config/TimelineConfig";
 import { EventType } from "@/tool/domain/event/EventType";
-import { execute as timelineToolScriptEditorMouseDownEventUseCase } from "./TimelineToolScriptEditorMouseDownEventUseCase";
+import { execute as timelineToolScriptEditorPointerDownEventUseCase } from "./TimelineToolScriptEditorPointerDownEventUseCase";
 
 /**
  * @description スクリプトエディタの起動ボタンのイベント登録
@@ -21,6 +21,7 @@ export const execute = (): void =>
 
     // マウスダウンイベントを登録
     element.addEventListener(EventType.POINTER_DOWN,
-        timelineToolScriptEditorMouseDownEventUseCase
+        timelineToolScriptEditorPointerDownEventUseCase,
+        { "passive": false }
     );
 };

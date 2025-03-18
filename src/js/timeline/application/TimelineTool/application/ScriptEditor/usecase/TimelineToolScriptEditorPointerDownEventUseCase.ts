@@ -1,4 +1,6 @@
+import { $activeTouchPointers } from "@/global/GlobalUtil";
 import { execute as scriptEditorModalCurrentBootUseCase } from "@/menu/application/ScriptEditorModal/usecase/ScriptEditorModalCurrentBootUseCase";
+import { timelineHeader } from "@/timeline/domain/model/TimelineHeader";
 
 /**
  * @description スクリプトエディタ起動ボタンのイベント処理関数
@@ -11,12 +13,16 @@ import { execute as scriptEditorModalCurrentBootUseCase } from "@/menu/applicati
  */
 export const execute = (event: PointerEvent): void =>
 {
-    if (event.button !== 0) {
+    if (event.button !== 0
+        || $activeTouchPointers.size > 1
+        || !timelineHeader.stopFlag
+    ) {
         return;
     }
 
     // 親のイベントを中止する
     event.stopPropagation();
+    event.preventDefault();
 
     // スクリプトエディタを表示
     scriptEditorModalCurrentBootUseCase();
