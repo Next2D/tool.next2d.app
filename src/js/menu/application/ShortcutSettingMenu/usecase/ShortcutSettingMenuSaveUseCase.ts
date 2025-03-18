@@ -25,12 +25,12 @@ export const execute = (event: PointerEvent): void =>
     shortcutSettingMenuUpdateCommandMappingService();
 
     // LocalStorage用の配列を生成
-    const viewMapping: Map<string, IShortcutViewObject> = $getViewMapping();
-    const object: IShortcutViewObject[] = [];
+    const viewMapping = $getViewMapping();
+    const values = [];
     for (const shortcutObject of viewMapping.values()) {
-        object.push(shortcutObject);
+        values.push(shortcutObject);
     }
 
     // LocalStorageのデータを上書き
-    userShortcutObjectUpdateService(object);
+    userShortcutObjectUpdateService(values);
 };

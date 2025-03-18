@@ -30,7 +30,7 @@ export const execute = (event: KeyboardEvent): boolean =>
 
     }
 
-    const element: HTMLElement | null = $getSelectElement();
+    const element = $getSelectElement();
     if (!element) {
         return true;
     }
@@ -45,7 +45,6 @@ export const execute = (event: KeyboardEvent): boolean =>
     event.stopImmediatePropagation();
     event.preventDefault();
 
-    // TODO
     const texts: string[] = [];
     const options: IShortcutOptionObject = {
         "shift": false,
@@ -88,10 +87,10 @@ export const execute = (event: KeyboardEvent): boolean =>
 
     }
 
-    const customKey: string   = $generateShortcutKey(event.key, options);
-    const commandText: string = texts.join(" + ");
-    const tempMapping: Map<string, IShortcutViewObject> = $getTempMapping();
-    const defaultKey: string = commandElement.dataset.defaultKey as NonNullable<string>;
+    const customKey   = $generateShortcutKey(event.key, options);
+    const commandText = texts.join(" + ");
+    const tempMapping = $getTempMapping();
+    const defaultKey  = commandElement.dataset.defaultKey as NonNullable<string>;
 
     // 一度削除して再登録
     tempMapping.delete(defaultKey);

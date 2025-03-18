@@ -13,7 +13,7 @@ export const execute = (event: PointerEvent): void =>
 {
     event.stopPropagation();
     event.preventDefault();
-    
+
     // 選択状態を初期化
     shortcutSettingMenuResetListStyleUseCase();
 

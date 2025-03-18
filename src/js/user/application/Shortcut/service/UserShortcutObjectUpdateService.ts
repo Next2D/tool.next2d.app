@@ -5,12 +5,12 @@ import type { IShortcutViewObject } from "@/interface/IShortcutViewObject";
  * @description 個別に設定したショートカット情報をLocalStorageに保存
  *              Store individually configured shortcut information in LocalStorage
  *
- * @param  {object} object
+ * @param  {IShortcutViewObject[]} values
  * @return {void}
  * @method
  * @public
  */
-export const execute = (object: IShortcutViewObject[]): void =>
+export const execute = (values: IShortcutViewObject[]): void =>
 {
-    localStorage.setItem($USER_SHORTCUT_SETTING_KEY, JSON.stringify(object));
+    localStorage.setItem($USER_SHORTCUT_SETTING_KEY, JSON.stringify(values));
 };

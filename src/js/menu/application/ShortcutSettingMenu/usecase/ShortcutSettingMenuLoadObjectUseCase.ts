@@ -18,7 +18,7 @@ import {
  */
 export const execute = (): void =>
 {
-    const userShortcutObjects: IShortcutViewObject[] | null = userShortcutObjectGetService();
+    const userShortcutObjects = userShortcutObjectGetService();
     if (!userShortcutObjects) {
         return ;
     }
@@ -28,10 +28,14 @@ export const execute = (): void =>
     $clearViewMapping();
     $clearTempMapping();
 
-    const commandMapping: Map<string, string> = $getCommandMapping();
-    const viewMapping: Map<string, IShortcutViewObject> = $getViewMapping();
-    for (let idx: number = 0; idx < userShortcutObjects.length; ++idx) {
-        const shortcutObject: IShortcutViewObject = userShortcutObjects[idx];
+    const commandMapping = $getCommandMapping();
+    const viewMapping = $getViewMapping();
+    for (let idx = 0; idx < userShortcutObjects.length; ++idx) {
+
+        const shortcutObject = userShortcutObjects[idx];
+        if (!shortcutObject) {
+            continue;
+        }
 
         // 表示マッピングをセット
         viewMapping.set(shortcutObject.defaultKey, shortcutObject);
