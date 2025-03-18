@@ -1,7 +1,7 @@
 import { $SCRIPT_EDITOR_MODAL_NAME } from "../../../../config/MenuConfig";
 import { $registerMenu } from "../../MenuUtil";
 import { execute } from "./ScriptEditorModalShowService";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 
 describe("ScriptEditorModalShowServiceTest", () =>
 {
@@ -10,10 +10,7 @@ describe("ScriptEditorModalShowServiceTest", () =>
         let state = "hide";
         const mockMenu = {
             "name": $SCRIPT_EDITOR_MODAL_NAME,
-            "show": () =>
-            {
-                state = "show";
-            }
+            "show": vi.fn(() => state = "show")
         };
         $registerMenu(mockMenu);
 
