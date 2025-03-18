@@ -8,12 +8,16 @@ import { $getViewMapping } from "../ShortcutSettingMenuUtil";
  * @description tempに保存した個別のショートカット設定をLocalStorageに保存
  *              Save individual shortcut settings saved in temp to LocalStorage
  *
+ * @params {PointerEvent} event
  * @return {void}
  * @method
  * @public
  */
-export const execute = (): void =>
+export const execute = (event: PointerEvent): void =>
 {
+    event.stopPropagation();
+    event.preventDefault();
+
     // tempマッピングのデータをviewマッピングに上書き
     shortcutSettingMenuUpdateViewMappingService();
 

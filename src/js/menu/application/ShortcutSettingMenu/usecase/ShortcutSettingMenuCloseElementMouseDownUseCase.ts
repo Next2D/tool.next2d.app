@@ -8,12 +8,16 @@ import { execute as languageTranslationService } from "@/language/application/se
  * @description ショートカットメニューを非表示にして、ユーザー設定メニューを表示
  *              Show shortcut menu
  *
+ * @params {PointerEvent} event
  * @return {void}
  * @method
  * @public
  */
-export const execute = (): void =>
+export const execute = (event: PointerEvent): void =>
 {
+    event.stopPropagation();
+    event.preventDefault();
+
     // ショートカットメニューを非表示にする
     shortcutSettingMenuHideService();
 

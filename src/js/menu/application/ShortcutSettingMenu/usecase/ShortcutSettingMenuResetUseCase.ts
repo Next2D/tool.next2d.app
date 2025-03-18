@@ -10,12 +10,16 @@ import {
  * @description ショートカットリストを初期設定に戻す
  *              Restore the shortcut list to its default settings
  *
+ * @params {PointerEvent} event
  * @return {void}
  * @method
  * @public
  */
-export const execute = (): void =>
+export const execute = (event: PointerEvent): void =>
 {
+    event.stopPropagation();
+    event.preventDefault();
+
     // LocalStorageのデータを削除
     userShortcutObjectRemoveService();
 

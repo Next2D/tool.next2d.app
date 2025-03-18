@@ -34,13 +34,9 @@ export const execute = (): void =>
         .getElementById($SHORTCUT_SETTING_SAVE_ID);
 
     if (shortcutSettingSave) {
-        shortcutSettingSave.addEventListener(EventType.POINTER_DOWN, (event: PointerEvent): void =>
-        {
-            // 親のイベントを中止
-            event.stopPropagation();
-
-            shortcutSettingMenuSaveUseCase();
-        });
+        shortcutSettingSave.addEventListener(EventType.POINTER_DOWN,
+            shortcutSettingMenuSaveUseCase
+        );
     }
 
     // リセットボタン処理
@@ -48,13 +44,9 @@ export const execute = (): void =>
         .getElementById($SHORTCUT_SETTING_RESET_ID);
 
     if (shortcutSettingReset) {
-        shortcutSettingReset.addEventListener(EventType.POINTER_DOWN, (event: PointerEvent): void =>
-        {
-            // 親のイベントを中止
-            event.stopPropagation();
-
-            shortcutSettingMenuResetUseCase();
-        });
+        shortcutSettingReset.addEventListener(EventType.POINTER_DOWN,
+            shortcutSettingMenuResetUseCase
+        );
     }
 
     // 閉じるボタン処理
@@ -62,13 +54,9 @@ export const execute = (): void =>
         .getElementById($SHORTCUT_SETTING_CLOSE_ID);
 
     if (shortcutSettingClose) {
-        shortcutSettingClose.addEventListener(EventType.POINTER_DOWN, (event: PointerEvent): void =>
-        {
-            // 親のイベントを中止
-            event.stopPropagation();
-
-            shortcutSettingMenuCloseElementMouseDownUseCase();
-        });
+        shortcutSettingClose.addEventListener(EventType.POINTER_DOWN,
+            shortcutSettingMenuCloseElementMouseDownUseCase
+        );
     }
 
     // スクリーンタブのボタン
@@ -76,13 +64,9 @@ export const execute = (): void =>
         .getElementById($SHORTCUT_SETTING_SCREEN_ID);
 
     if (shortcutScreenList) {
-        shortcutScreenList.addEventListener(EventType.POINTER_DOWN, (event: PointerEvent): void =>
-        {
-            // 親のイベントを中止
-            event.stopPropagation();
-
-            shortcutSettingMenuShowScreenListUseCase();
-        });
+        shortcutScreenList.addEventListener(EventType.POINTER_DOWN,
+            shortcutSettingMenuShowScreenListUseCase
+        );
     }
 
     // タイムラインタブのボタン
@@ -90,13 +74,9 @@ export const execute = (): void =>
         .getElementById($SHORTCUT_SETTING_TIMELINE_ID);
 
     if (shortcutTimelineList) {
-        shortcutTimelineList.addEventListener(EventType.POINTER_DOWN, (event: PointerEvent): void =>
-        {
-            // 親のイベントを中止
-            event.stopPropagation();
-
-            shortcutSettingMenuShowTimelineListUseCase();
-        });
+        shortcutTimelineList.addEventListener(EventType.POINTER_DOWN,
+            shortcutSettingMenuShowTimelineListUseCase
+        );
     }
 
     // ライブラリタブのボタン
@@ -104,13 +84,9 @@ export const execute = (): void =>
         .getElementById($SHORTCUT_SETTING_LIBRARY_ID);
 
     if (shortcutLibraryList) {
-        shortcutLibraryList.addEventListener(EventType.POINTER_DOWN, (event: PointerEvent): void =>
-        {
-            // 親のイベントを中止
-            event.stopPropagation();
-
-            shortcutSettingMenuShowLibraryListUseCase();
-        });
+        shortcutLibraryList.addEventListener(EventType.POINTER_DOWN,
+            shortcutSettingMenuShowLibraryListUseCase
+        );
     }
 
     const parentElements: string[] = [
@@ -119,7 +95,8 @@ export const execute = (): void =>
         $SHORTCUT_LIBRARY_LIST_ID
     ];
 
-    for (let idx: number = 0; idx < parentElements.length; ++idx) {
+    for (let idx = 0; idx < parentElements.length; ++idx) {
+
         const parent: HTMLElement | null = document.getElementById(parentElements[idx]);
         if (!parent) {
             continue;
@@ -130,7 +107,10 @@ export const execute = (): void =>
 
         const length: number = elements.length;
         for (let idx = 0; idx < length; ++idx) {
-            const element: HTMLElement = elements[idx] as HTMLElement;
+            const element = elements[idx] as HTMLElement;
+            if (!element) {
+                continue;
+            }
             element.addEventListener(EventType.POINTER_DOWN,
                 shortcutSettingMenuChangeListStyleUseCase
             );
