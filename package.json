@@ -23,15 +23,15 @@
     "@types/qrcode": "^1.5.5",
     "@typescript-eslint/eslint-plugin": "^8.26.1",
     "@typescript-eslint/parser": "^8.26.1",
-    "@vitest/web-worker": "^3.0.8",
+    "@vitest/web-worker": "^3.0.9",
     "eslint": "^9.22.0",
     "eslint-plugin-unused-imports": "^4.1.4",
     "globals": "^16.0.0",
     "jsdom": "^26.0.0",
-    "sass": "^1.85.1",
+    "sass": "^1.86.0",
     "typescript": "^5.8.2",
     "vite": "^6.2.2",
-    "vitest": "^3.0.8",
+    "vitest": "^3.0.9",
     "vitest-webgl-canvas-mock": "^1.1.0"
   },
   "dependencies": {
