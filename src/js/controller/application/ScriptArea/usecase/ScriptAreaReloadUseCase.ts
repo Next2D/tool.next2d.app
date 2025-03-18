@@ -3,7 +3,7 @@ import { execute as scriptAreaRemoveElementService } from "../service/ScriptArea
 import { execute as scriptAreaParentComponent } from "../component/ScriptAreaParentComponent";
 import { execute as scriptAreaParentElementRegisterEventUseCase } from "./ScriptAreaParentElementRegisterEventUseCase";
 import { execute as scriptAreaFrameComponent } from "../component/ScriptAreaFrameComponent";
-import { execute as scriptAreaFrameElementMouseDownEventUseCase } from "./ScriptAreaFrameElementMouseDownEventUseCase";
+import { execute as scriptAreaFrameElementPointerDownEventUseCase } from "./ScriptAreaFrameElementPointerDownEventUseCase";
 import { EventType } from "@/tool/domain/event/EventType";
 import { $MOVIE_CLIP_TYPE } from "@/config/InstanceConfig";
 import { $CONTROLLER_JAVASCRIPT_INTERNAL_LIST_BOX_ID } from "@/config/ControllerScriptAreaConfig";
@@ -75,7 +75,7 @@ export const execute = async (): Promise<void> =>
             }
 
             frameElement.addEventListener(EventType.POINTER_DOWN,
-                scriptAreaFrameElementMouseDownEventUseCase
+                scriptAreaFrameElementPointerDownEventUseCase
             );
         }
     }

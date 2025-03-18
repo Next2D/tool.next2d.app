@@ -5,9 +5,8 @@ import { $activeTouchPointers, $setEditingElement } from "@/global/GlobalUtil";
 import { execute as timelineSceneListClearAddRootUseCase } from "@/timeline/application/TimelineSceneList/usecase/TimelineSceneListClearAddRootUseCase";
 import { execute as timelineSceneListClearAllService } from "@/timeline/application/TimelineSceneList/service/TimelineSceneListClearAllService";
 import { $MOVIE_CLIP_TYPE } from "@/config/InstanceConfig";
-import { execute as externalTimelineEditMovieClipUseService } from "@/external/timeline/application/ExternalTimeline/service/ExternalTimelineEditMovieClipUseService";
+import { execute as externalTimelineEditMovieClipUseCase } from "@/external/timeline/application/ExternalTimeline/service/ExternalTimelineEditMovieClipUseCase";
 import { $useKeyboard } from "@/shortcut/ShortcutUtil";
-import { timelineHeader } from "@/timeline/domain/model/TimelineHeader";
 
 /**
  * @description ダブルタップ用の待機フラグ
@@ -40,7 +39,6 @@ export const execute = async (event: PointerEvent): Promise<void> =>
 {
     if (event.button !== 0
         || $activeTouchPointers.size > 1
-        || !timelineHeader.stopFlag
     ) {
         return ;
     }
@@ -108,6 +106,6 @@ export const execute = async (event: PointerEvent): Promise<void> =>
         }
 
         // 指定のMovieClipを起動
-        await externalTimelineEditMovieClipUseService(workSpace, instance as MovieClip);
+        await externalTimelineEditMovieClipUseCase(workSpace, instance as MovieClip);
     }
 };

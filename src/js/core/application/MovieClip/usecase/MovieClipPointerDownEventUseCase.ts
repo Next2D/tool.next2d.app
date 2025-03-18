@@ -1,6 +1,6 @@
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import { execute as timelineSceneListAddMovieClipUseCase } from "@/timeline/application/TimelineSceneList/usecase/TimelineSceneListAddMovieClipUseCase";
-import { execute as externalTimelineEditMovieClipUseService } from "@/external/timeline/application/ExternalTimeline/service/ExternalTimelineEditMovieClipUseService";
+import { execute as externalTimelineEditMovieClipUseCase } from "@/external/timeline/application/ExternalTimeline/service/ExternalTimelineEditMovieClipUseCase";
 import { $getActiveTool } from "@/tool/application/ToolUtil";
 import { EventType } from "@/tool/domain/event/EventType";
 import { $getCurrentWorkSpace } from "../../CoreUtil";
@@ -116,6 +116,6 @@ export const execute = async (event: PointerEvent): Promise<void> =>
         timelineSceneListAddMovieClipUseCase(scene.id, character);
 
         // 指定のMovieClipを起動
-        await externalTimelineEditMovieClipUseService(workSpace, movieClip);
+        await externalTimelineEditMovieClipUseCase(workSpace, movieClip);
     }
 };

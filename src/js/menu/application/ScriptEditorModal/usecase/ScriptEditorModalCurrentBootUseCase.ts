@@ -1,8 +1,8 @@
+import { execute as scriptEditorModalShowService } from "../service/ScriptEditorModalShowService";
+import { execute as timelineToolPlayStopUseCase } from "@/timeline/application/TimelineTool/application/PlayStop/usecase/TimelineToolPlayStopUseCase";
+import { timelineHeader } from "@/timeline/domain/model/TimelineHeader";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { $setTargetFrame, $setTargetMovieClip } from "../ScriptEditorModalUtil";
-import { execute as scriptEditorModalShowService } from "../service/ScriptEditorModalShowService";
-import { timelineHeader } from "@/timeline/domain/model/TimelineHeader";
-import { execute as timelineToolPlayStopUseCase } from "@/timeline/application/TimelineTool/application/PlayStop/usecase/TimelineToolPlayStopUseCase";
 
 /**
  * @description 現在のMovieClipとフレームを指定してスクリプトエディタを起動

@@ -1,6 +1,6 @@
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import { execute as timelineSceneListClearAddRootUseCase } from "@/timeline/application/TimelineSceneList/usecase/TimelineSceneListClearAddRootUseCase";
-import { execute as externalTimelineEditMovieClipUseService } from "@/external/timeline/application/ExternalTimeline/service/ExternalTimelineEditMovieClipUseService";
+import { execute as externalTimelineEditMovieClipUseCase } from "@/external/timeline/application/ExternalTimeline/service/ExternalTimelineEditMovieClipUseCase";
 import { $MOVIE_CLIP_TYPE } from "@/config/InstanceConfig";
 import { libraryArea } from "@/controller/domain/model/LibraryArea";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
@@ -32,5 +32,5 @@ export const execute = async (): Promise<void> =>
     timelineSceneListClearAddRootUseCase();
 
     // 指定のMovieClipを編集モードに切り替える
-    await externalTimelineEditMovieClipUseService(workSpcae, movieClip);
+    await externalTimelineEditMovieClipUseCase(workSpcae, movieClip);
 };

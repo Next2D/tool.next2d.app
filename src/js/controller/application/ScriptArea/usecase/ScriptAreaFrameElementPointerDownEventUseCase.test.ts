@@ -1,4 +1,4 @@
-import { execute } from "./ScriptAreaFrameElementMouseDownEventUseCase";
+import { execute } from "./ScriptAreaFrameElementPointerDownEventUseCase";
 import type { WorkSpace } from "../../../../core/domain/model/WorkSpace";
 import { $getCurrentWorkSpace, $createWorkSpace } from "../../../../core/application/CoreUtil";
 import { describe, expect, it, vi } from "vitest";
@@ -9,7 +9,7 @@ import {
     $getTargetMovieClip
 } from "../../../../menu/application/ScriptEditorModal/ScriptEditorModalUtil";
 
-describe("ScriptAreaFrameElementMouseDownEventUseCase Test", () =>
+describe("ScriptAreaFrameElementPointerDownEventUseCase Test", () =>
 {
     it("execute test", () =>
     {

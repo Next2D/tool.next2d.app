@@ -18,7 +18,7 @@ import { execute as externalTimelineLayerFrameDeleteKeyframesUseCase } from "@/e
 import { execute as externalScreenSelectedFromSelectedLayersUseCase } from "@/external/screen/application/ExternalScreen/usecase/ExternalScreenSelectedFromSelectedLayersUseCase";
 import { execute as externalScreenClaerSelectedDisplayObjectUseCase } from "@/external/screen/application/ExternalScreen/usecase/ExternalScreenClaerSelectedDisplayObjectUseCase";
 import { execute as externalTimelineLayerFrameShiftFrameUseCase } from "@/external/timeline/application/ExternalTimelineLayerFrame/usecase/ExternalTimelineLayerFrameShiftFrameUseCase";
-import { execute as externalTimelineEditMovieClipUseService } from "@/external/timeline/application/ExternalTimeline/service/ExternalTimelineEditMovieClipUseService";
+import { execute as externalTimelineEditMovieClipUseCase } from "@/external/timeline/application/ExternalTimeline/service/ExternalTimelineEditMovieClipUseCase";
 import { ExternalMovieClip } from "@/external/core/domain/model/ExternalMovieClip";
 
 /**
@@ -235,7 +235,7 @@ export class ExternalTimeline
             ._$workSpace
             .getLibrary(external_movie_clip.id) as MovieClip;
 
-        const editMovieClip = await externalTimelineEditMovieClipUseService(
+        const editMovieClip = await externalTimelineEditMovieClipUseCase(
             this._$workSpace, movieClip
         );
 

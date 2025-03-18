@@ -2,7 +2,7 @@ import type { MovieClip } from "@/core/domain/model/MovieClip";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { timelineSceneList } from "@/timeline/domain/model/TimelineSceneList";
 import { $TIMELINE_SCENE_NAME_LIST_ID } from "@/config/TimelineConfig";
-import { execute as externalTimelineEditMovieClipUseService } from "@/external/timeline/application/ExternalTimeline/service/ExternalTimelineEditMovieClipUseService";
+import { execute as externalTimelineEditMovieClipUseCase } from "@/external/timeline/application/ExternalTimeline/service/ExternalTimelineEditMovieClipUseCase";
 
 /**
  * @description 一つ上の親のMovieClipに切り替える
@@ -46,5 +46,5 @@ export const execute = async (): Promise<void> =>
     node.remove();
 
     // 指定のMovieClipを起動
-    await externalTimelineEditMovieClipUseService(workSpace, movieClip);
+    await externalTimelineEditMovieClipUseCase(workSpace, movieClip);
 };

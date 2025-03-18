@@ -1,7 +1,7 @@
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { execute as timelineSceneListClearAddRootUseCase } from "@/timeline/application/TimelineSceneList/usecase/TimelineSceneListClearAddRootUseCase";
-import { execute as externalTimelineEditMovieClipUseService } from "@/external/timeline/application/ExternalTimeline/service/ExternalTimelineEditMovieClipUseService";
+import { execute as externalTimelineEditMovieClipUseCase } from "@/external/timeline/application/ExternalTimeline/service/ExternalTimelineEditMovieClipUseCase";
 import { $useKeyboard } from "@/shortcut/ShortcutUtil";
 import { $allHideMenu } from "@/menu/application/MenuUtil";
 import { timelineHeader } from "@/timeline/domain/model/TimelineHeader";
@@ -97,6 +97,6 @@ export const execute = async (event: PointerEvent): Promise<void> =>
         timelineSceneListClearAddRootUseCase();
 
         // 指定のMovieClipを起動
-        await externalTimelineEditMovieClipUseService(workSpace, movieClip);
+        await externalTimelineEditMovieClipUseCase(workSpace, movieClip);
     }
 };

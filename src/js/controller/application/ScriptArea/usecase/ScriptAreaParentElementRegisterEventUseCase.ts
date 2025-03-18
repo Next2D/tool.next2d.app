@@ -1,5 +1,5 @@
 import { EventType } from "@/tool/domain/event/EventType";
-import { execute as scriptAreaParentElementMouseDownEventUseCase } from "./ScriptAreaParentElementMouseDownEventUseCase";
+import { execute as scriptAreaParentElementPointerDownEventUseCase } from "./ScriptAreaParentElementPointerDownEventUseCase";
 /**
  * @description 親Elementにイベントを登録
  *              Register an event in the parent Element
@@ -12,6 +12,6 @@ import { execute as scriptAreaParentElementMouseDownEventUseCase } from "./Scrip
 export const execute = (element: HTMLElement): void =>
 {
     element.addEventListener(EventType.POINTER_DOWN,
-        scriptAreaParentElementMouseDownEventUseCase
+        scriptAreaParentElementPointerDownEventUseCase
     );
 };

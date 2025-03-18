@@ -1,9 +1,12 @@
 import type { MovieClip } from "@/core/domain/model/MovieClip";
-import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { execute as scriptEditorModalShowService } from "@/menu/application/ScriptEditorModal/service/ScriptEditorModalShowService";
 import { $allHideMenu } from "@/menu/application/MenuUtil";
 import { $MOVIE_CLIP_TYPE } from "@/config/InstanceConfig";
-import { $activeTouchPointers, $setEditingElement } from "@/global/GlobalUtil";
+import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
+import {
+    $activeTouchPointers,
+    $setEditingElement
+} from "@/global/GlobalUtil";
 import {
     $setTargetFrame,
     $setTargetMovieClip

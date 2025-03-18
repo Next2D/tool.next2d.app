@@ -3,7 +3,7 @@ import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { $MOVIE_CLIP_TYPE } from "@/config/InstanceConfig";
 import { execute as sceneListMenuHideService } from "@/menu/application/SceneListMenu/service/SceneListMenuHideService";
 import { execute as timelineSceneListExcludeElememtService } from "../service/TimelineSceneListExcludeElememtService";
-import { execute as externalTimelineEditMovieClipUseService } from "@/external/timeline/application/ExternalTimeline/service/ExternalTimelineEditMovieClipUseService";
+import { execute as externalTimelineEditMovieClipUseCase } from "@/external/timeline/application/ExternalTimeline/service/ExternalTimelineEditMovieClipUseCase";
 
 /**
  * @description タイムラインのシーン名のマウスダウンのイベント処理関数
@@ -44,5 +44,5 @@ export const execute = async (event: PointerEvent): Promise<void> =>
     timelineSceneListExcludeElememtService(libraryId);
 
     // 指定のMovieClipを起動
-    await externalTimelineEditMovieClipUseService(workSpace, movieClip);
+    await externalTimelineEditMovieClipUseCase(workSpace, movieClip);
 };

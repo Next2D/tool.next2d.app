@@ -1,5 +1,7 @@
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
+import { timelineHeader } from "@/timeline/domain/model/TimelineHeader";
+import { execute as timelineToolPlayStopUseCase } from "@/timeline/application/TimelineTool/application/PlayStop/usecase/TimelineToolPlayStopUseCase";
 
 /**
  * @description 指定のMovieClipを編集モードに切り替える
@@ -19,6 +21,10 @@ export const execute = async (
     const scene = work_space.scene;
     if (!scene || scene.active && scene === movie_clip) {
         return ;
+    }
+
+    if (!timelineHeader.stopFlag) {
+        timelineToolPlayStopUseCase();
     }
 
     // 起動中のMovieClipを停止して、指定のMovieClipに入れ替える
