@@ -1,3 +1,4 @@
+import { $activeTouchPointers } from "@/global/GlobalUtil";
 import { execute as scriptEditorModalHideService } from "../service/ScriptEditorModalHideService";
 
 /**
@@ -5,19 +6,22 @@ import { execute as scriptEditorModalHideService } from "../service/ScriptEditor
  *              Script Editor Close Button Execution Processing Function
  *
  * @param  {PointerEvent} event
- * @return {void}
+ * @return {Promise<void>}
  * @method
  * @public
  */
-export const execute = (event: PointerEvent): void =>
+export const execute = async (event: PointerEvent): Promise<void> =>
 {
-    if (event.button !== 0) {
+    if (event.button !== 0
+        || $activeTouchPointers.size > 1
+    ) {
         return ;
     }
 
     // 他のイベントを中止
     event.stopPropagation();
+    event.preventDefault();
 
     // スクリプトエディターを非表示にする
-    scriptEditorModalHideService();
+    await scriptEditorModalHideService();
 };

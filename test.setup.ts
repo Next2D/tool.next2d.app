@@ -43,3 +43,22 @@ if (typeof globalThis.indexedDB === "undefined") {
         }
     };
 }
+
+if (typeof globalThis.ace === "undefined") {
+    (globalThis as any).ace = {
+        "edit": (id: string) =>
+        {
+            return {
+                "getValue": () =>
+                {
+                    return "test";
+                },
+                "setValue": (value: string) =>
+                {
+                    // 何もしない
+                },
+                "focus": () => {}
+            };
+        }
+    };
+}

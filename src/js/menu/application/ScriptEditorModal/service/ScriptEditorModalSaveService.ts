@@ -11,11 +11,11 @@ import {
  * @description スクリプトエディタを閉じる時に情報を保存する
  *              Save information when closing the script editor
  *
- * @return {void}
+ * @return {Promise<void>}
  * @method
  * @public
  */
-export const execute = (): void =>
+export const execute = async (): Promise<void> =>
 {
     const movieClip = $getTargetMovieClip();
     if (!movieClip) {
@@ -26,13 +26,13 @@ export const execute = (): void =>
     const script = editor.getValue().trim();
     const frame  = $getTargetFrame();
 
-    // 外部APIを起動
-    const externalMovieClip = new ExternalMovieClip($getCurrentWorkSpace(), movieClip);
-    externalMovieClip.setAction(frame, script);
-
     // エディタの値を初期化
     editor.setValue("");
 
     // 入力モードをoffにする
     $updateKeyLock(false);
+
+    // 外部APIを起動
+    const externalMovieClip = new ExternalMovieClip($getCurrentWorkSpace(), movieClip);
+    await externalMovieClip.setAction(frame, script);
 };

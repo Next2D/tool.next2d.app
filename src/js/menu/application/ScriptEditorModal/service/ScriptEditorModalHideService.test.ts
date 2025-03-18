@@ -5,7 +5,7 @@ import { describe, expect, it } from "vitest";
 
 describe("ScriptEditorModalHideServiceTest", () =>
 {
-    it("execute test", () =>
+    it("execute test", async () =>
     {
         let state = "show";
         const mockMenu = {
@@ -18,7 +18,7 @@ describe("ScriptEditorModalHideServiceTest", () =>
         $registerMenu(mockMenu);
 
         expect(state).toBe("show");
-        execute();
+        await execute();
         expect(state).toBe("hide");
     });
 });

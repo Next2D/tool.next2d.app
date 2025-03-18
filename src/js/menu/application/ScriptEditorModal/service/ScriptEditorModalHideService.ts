@@ -10,11 +10,11 @@ import {
  * @description ショートカットメニューを非表示
  *              Hide shortcut menu
  *
- * @return {void}
+ * @return {Promise<void>}
  * @method
  * @public
  */
-export const execute = (): void =>
+export const execute = async (): Promise<void> =>
 {
     const menu = $getMenu<ScriptEditorModal>($SCRIPT_EDITOR_MODAL_NAME);
     if (!menu) {
@@ -27,5 +27,5 @@ export const execute = (): void =>
     // メニューを非表示にする
     $allHideMenu($SCRIPT_EDITOR_MODAL_NAME);
 
-    menu.hide();
+    await menu.hide();
 };

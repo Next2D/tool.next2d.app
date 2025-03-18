@@ -66,11 +66,11 @@ export class ScriptEditorModal extends BaseMenu
      * @description 非表示処理関数
      *              hide operation function
      *
-     * @returns {void}
+     * @returns {Promise<void>}
      * @method
      * @public
      */
-    hide (): void
+    async hide (): Promise<void>
     {
         if (this.state === "hide") {
             return ;
@@ -80,6 +80,6 @@ export class ScriptEditorModal extends BaseMenu
         super.hide();
 
         // 保存処理
-        scriptEditorModalSaveService();
+        await scriptEditorModalSaveService();
     }
 }
