@@ -3,6 +3,8 @@ import { $SCREEN_MENU_NAME } from "@/config/MenuConfig";
 import { $allHideMenu, $getMenu } from "@/menu/application/MenuUtil";
 import { $useKeyboard } from "@/shortcut/ShortcutUtil";
 import { $setEditingElement } from "@/global/GlobalUtil";
+import { timelineHeader } from "@/timeline/domain/model/TimelineHeader";
+import { execute as timelineToolPlayStopUseCase } from "@/timeline/application/TimelineTool/application/PlayStop/usecase/TimelineToolPlayStopUseCase";
 
 /**
  * @description スクリーンエリアのメニューを表示
@@ -21,6 +23,10 @@ export const execute = (event: MouseEvent): void =>
     // 親のイベントを中止
     event.stopPropagation();
     event.preventDefault();
+
+    if (!timelineHeader.stopFlag) {
+        timelineToolPlayStopUseCase();
+    }
 
     // 編集中のElementを初期化
     $setEditingElement(null);

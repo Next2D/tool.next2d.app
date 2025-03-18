@@ -5,6 +5,8 @@ import {
     $getTargetMovieClip
 } from "../ScriptEditorModalUtil";
 import { $updateKeyLock } from "@/shortcut/ShortcutUtil";
+import { timelineHeader } from "@/timeline/domain/model/TimelineHeader";
+import { execute as timelineToolPlayStopUseCase } from "@/timeline/application/TimelineTool/application/PlayStop/usecase/TimelineToolPlayStopUseCase";
 
 /**
  * @description スクリプトエディタの起動関数
@@ -16,6 +18,10 @@ import { $updateKeyLock } from "@/shortcut/ShortcutUtil";
  */
 export const execute = (): void =>
 {
+    if (!timelineHeader.stopFlag) {
+        timelineToolPlayStopUseCase();
+    }
+
     const movieClip = $getTargetMovieClip();
     if (!movieClip) {
         return ;
