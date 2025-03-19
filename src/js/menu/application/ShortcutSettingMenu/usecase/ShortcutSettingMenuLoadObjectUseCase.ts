@@ -1,4 +1,3 @@
-import type { IShortcutViewObject } from "@/interface/IShortcutViewObject";
 import { execute as userShortcutObjectGetService } from "@/user/application/Shortcut/service/UserShortcutObjectGetService";
 import {
     $clearCommandMapping,

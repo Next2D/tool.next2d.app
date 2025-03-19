@@ -1,5 +1,4 @@
 import type { IShortcutOptionObject } from "@/interface/IShortcutOptionObject";
-import type { IShortcutViewObject } from "@/interface/IShortcutViewObject";
 import { $generateShortcutKey } from "@/shortcut/ShortcutUtil";
 import {
     $getSelectElement,
