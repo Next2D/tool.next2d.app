@@ -1,5 +1,6 @@
 import { execute as shortcutSettingMenuResetListStyleUseCase } from "./ShortcutSettingMenuResetListStyleUseCase";
 import { execute as shortcutSettingMenuShowTimelineListService } from "../service/ShortcutSettingMenuShowTimelineListService";
+import { $activeTouchPointers } from "@/global/GlobalUtil";
 
 /**
  * @description ショートカットリストのタイムライン表示時の処理
@@ -11,6 +12,12 @@ import { execute as shortcutSettingMenuShowTimelineListService } from "../servic
  */
 export const execute = (event: PointerEvent): void =>
 {
+    if (event.button !== 0
+        || $activeTouchPointers.size > 1
+    ) {
+        return ;
+    }
+
     event.stopPropagation();
     event.preventDefault();
 

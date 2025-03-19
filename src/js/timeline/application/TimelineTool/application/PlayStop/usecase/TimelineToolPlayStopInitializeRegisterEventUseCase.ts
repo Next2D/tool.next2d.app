@@ -1,6 +1,6 @@
 import { $TIMELINE_PLAY_STOP_ID } from "@/config/TimelineConfig";
 import { EventType } from "@/tool/domain/event/EventType";
-import { execute as timelineToolPlayStopMouseDownEventUseCase } from "./TimelineToolPlayStopMouseDownEventUseCase";
+import { execute as timelineToolPlayStopPointerDownEventUseCase } from "./TimelineToolPlayStopPointerDownEventUseCase";
 
 /**
  * @description 再生・停止ボタンのイベント登録
@@ -20,6 +20,6 @@ export const execute = (): void =>
     }
 
     element.addEventListener(EventType.POINTER_DOWN,
-        timelineToolPlayStopMouseDownEventUseCase
+        timelineToolPlayStopPointerDownEventUseCase
     );
 };
