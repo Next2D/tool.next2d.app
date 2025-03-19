@@ -1,3 +1,4 @@
+import { $allHideMenu } from "@/menu/application/MenuUtil";
 import {
     $getCommandMapping,
     $getViewMapping,
@@ -74,6 +75,9 @@ export const execute = async (event: KeyboardEvent): Promise<void> =>
         event.stopPropagation();
         event.preventDefault();
 
+        // メニューを全て非表示にする
+        $allHideMenu();
+
         // 登録されたコマンドを実行して終了
         await callback(event);
 
@@ -94,6 +98,9 @@ export const execute = async (event: KeyboardEvent): Promise<void> =>
     if (!callback) {
         return ;
     }
+
+    // メニューを全て非表示にする
+    $allHideMenu();
 
     // 全てのイベントを中止
     event.stopImmediatePropagation();
