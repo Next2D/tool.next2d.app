@@ -2,10 +2,11 @@ import { IShortcutViewObject } from "../../../../interface/IShortcutViewObject";
 import { execute as userShortcutObjectGetService } from "./UserShortcutObjectGetService";
 import { execute as userShortcutObjectUpdateService } from "./UserShortcutObjectUpdateService";
 import { execute } from "./UserShortcutObjectRemoveService";
+import { describe, expect, it } from "vitest";
 
 describe("UserShortcutObjectGetServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         let object: IShortcutViewObject[] | null = userShortcutObjectGetService();
         expect(object).toBe(null);

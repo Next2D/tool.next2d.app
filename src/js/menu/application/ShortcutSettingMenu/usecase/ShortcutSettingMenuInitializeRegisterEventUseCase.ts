@@ -2,7 +2,7 @@ import { EventType } from "@/tool/domain/event/EventType";
 import { execute as shortcutSettingMenuShowScreenListUseCase } from "../usecase/ShortcutSettingMenuShowScreenListUseCase";
 import { execute as shortcutSettingMenuShowTimelineListUseCase } from "../usecase/ShortcutSettingMenuShowTimelineListUseCase";
 import { execute as shortcutSettingMenuShowLibraryListUseCase } from "../usecase/ShortcutSettingMenuShowLibraryListUseCase";
-import { execute as shortcutSettingMenuCloseElementMouseDownUseCase } from "./ShortcutSettingMenuCloseElementMouseDownUseCase";
+import { execute as shortcutSettingMenuCloseElementPointerDownUseCase } from "./ShortcutSettingMenuCloseElementPointerDownUseCase";
 import { execute as shortcutSettingMenuSaveUseCase } from "./ShortcutSettingMenuSaveUseCase";
 import { execute as shortcutSettingMenuResetUseCase } from "./ShortcutSettingMenuResetUseCase";
 import { execute as shortcutSettingMenuChangeListStyleUseCase } from "./ShortcutSettingMenuChangeListStyleUseCase";
@@ -55,7 +55,7 @@ export const execute = (): void =>
 
     if (shortcutSettingClose) {
         shortcutSettingClose.addEventListener(EventType.POINTER_DOWN,
-            shortcutSettingMenuCloseElementMouseDownUseCase
+            shortcutSettingMenuCloseElementPointerDownUseCase
         );
     }
 

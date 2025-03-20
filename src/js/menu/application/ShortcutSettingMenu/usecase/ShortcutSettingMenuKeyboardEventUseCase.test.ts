@@ -1,10 +1,6 @@
 import { execute } from "./ShortcutSettingMenuKeyboardEventUseCase";
-import { EventType } from "../../../../tool/domain/event/EventType";
 import { describe, expect, it, vi } from "vitest";
-import {
-    $setSelectElement,
-    $getTempMapping
-} from "../ShortcutSettingMenuUtil";
+import { $setSelectElement } from "../ShortcutSettingMenuUtil";
 
 describe("ShortcutSettingMenuKeyboardEventUseCase Test", () =>
 {
