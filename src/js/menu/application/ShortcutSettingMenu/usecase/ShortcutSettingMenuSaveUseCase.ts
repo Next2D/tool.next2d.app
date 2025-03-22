@@ -1,7 +1,6 @@
 import { execute as userShortcutObjectUpdateService } from "@/user/application/Shortcut/service/UserShortcutObjectUpdateService";
 import { execute as shortcutSettingMenuUpdateCommandMappingService } from "../service/ShortcutSettingMenuUpdateCommandMappingService";
 import { execute as shortcutSettingMenuUpdateViewMappingService } from "../service/ShortcutSettingMenuUpdateViewMappingService";
-import type { IShortcutViewObject } from "@/interface/IShortcutViewObject";
 import { $getViewMapping } from "../ShortcutSettingMenuUtil";
 import { $activeTouchPointers } from "@/global/GlobalUtil";
 
