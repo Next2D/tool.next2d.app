@@ -1,5 +1,5 @@
-import { execute as shortcutSettingMenuResetListStyleUseCase } from "./ShortcutSettingMenuResetListStyleUseCase";
 import { execute as shortcutSettingMenuShowScreenListService } from "../service/ShortcutSettingMenuShowScreenListService";
+import { execute as shortcutSettingMenuChangeListStyleService } from "../service/ShortcutSettingMenuChangeListStyleService";
 
 /**
  * @description ショートカットリストのスクリーン表示処理
@@ -15,7 +15,7 @@ export const execute = (event: PointerEvent): void =>
     event.preventDefault();
 
     // 選択状態を初期化
-    shortcutSettingMenuResetListStyleUseCase();
+    shortcutSettingMenuChangeListStyleService(null);
 
     // スクリーンリストを表示
     shortcutSettingMenuShowScreenListService();

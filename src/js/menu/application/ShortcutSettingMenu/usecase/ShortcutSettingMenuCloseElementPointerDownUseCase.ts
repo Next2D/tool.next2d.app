@@ -1,6 +1,6 @@
 import { execute as shortcutSettingMenuHideService } from "../service/ShortcutSettingMenuHideService";
 import { execute as userSettingMenuShowService } from "../../UserSettingMenu/service/UserSettingMenuShowService";
-import { execute as shortcutSettingMenuResetListStyleUseCase } from "./ShortcutSettingMenuResetListStyleUseCase";
+import { execute as shortcutSettingMenuChangeListStyleService } from "../service/ShortcutSettingMenuChangeListStyleService";
 import { execute as shortcutSettingMenuRemoveKeyboardEventService } from "./ShortcutSettingMenuRemoveKeyboardEventUseCase";
 import { execute as languageTranslationService } from "@/language/application/service/LanguageTranslationService";
 
@@ -25,7 +25,7 @@ export const execute = (event: PointerEvent): void =>
     userSettingMenuShowService();
 
     // 選択状態を初期化
-    shortcutSettingMenuResetListStyleUseCase();
+    shortcutSettingMenuChangeListStyleService(null);
 
     // キーボードイベントを削除
     shortcutSettingMenuRemoveKeyboardEventService();

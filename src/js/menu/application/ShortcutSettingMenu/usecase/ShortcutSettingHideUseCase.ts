@@ -1,5 +1,5 @@
-import { execute as shortcutSettingMenuResetListStyleUseCase } from "../usecase/ShortcutSettingMenuResetListStyleUseCase";
 import { execute as shortcutSettingMenuRemoveKeyboardEventUseCase } from "./ShortcutSettingMenuRemoveKeyboardEventUseCase";
+import { execute as shortcutSettingMenuChangeListStyleService } from "../service/ShortcutSettingMenuChangeListStyleService";
 import {
     $clearTempMapping,
     $updateShortcutSetting
@@ -19,7 +19,7 @@ export const execute = (): void =>
     $updateShortcutSetting(false);
 
     // 選択したElementを初期化
-    shortcutSettingMenuResetListStyleUseCase();
+    shortcutSettingMenuChangeListStyleService(null);
 
     // キーボードイベントを削除
     shortcutSettingMenuRemoveKeyboardEventUseCase();

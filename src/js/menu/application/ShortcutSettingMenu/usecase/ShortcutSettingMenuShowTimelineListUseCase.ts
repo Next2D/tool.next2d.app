@@ -1,6 +1,6 @@
-import { execute as shortcutSettingMenuResetListStyleUseCase } from "./ShortcutSettingMenuResetListStyleUseCase";
 import { execute as shortcutSettingMenuShowTimelineListService } from "../service/ShortcutSettingMenuShowTimelineListService";
 import { $activeTouchPointers } from "@/global/GlobalUtil";
+import { execute as shortcutSettingMenuChangeListStyleService } from "../service/ShortcutSettingMenuChangeListStyleService";
 
 /**
  * @description ショートカットリストのタイムライン表示時の処理
@@ -22,7 +22,7 @@ export const execute = (event: PointerEvent): void =>
     event.preventDefault();
 
     // 選択状態を初期化
-    shortcutSettingMenuResetListStyleUseCase();
+    shortcutSettingMenuChangeListStyleService(null);
 
     // タイムラインリストを表示
     shortcutSettingMenuShowTimelineListService();

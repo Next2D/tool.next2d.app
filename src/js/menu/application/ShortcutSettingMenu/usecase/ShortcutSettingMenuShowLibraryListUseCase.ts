@@ -1,5 +1,5 @@
-import { execute as shortcutSettingMenuResetListStyleUseCase } from "./ShortcutSettingMenuResetListStyleUseCase";
 import { execute as shortcutSettingMenuShowLibraryListService } from "../service/ShortcutSettingMenuShowLibraryListService";
+import { execute as shortcutSettingMenuChangeListStyleService } from "../service/ShortcutSettingMenuChangeListStyleService";
 
 /**
  * @description ショートカットリストのライブラリ表示処理
@@ -15,7 +15,7 @@ export const execute = (event: PointerEvent): void =>
     event.preventDefault();
 
     // 選択状態を初期化
-    shortcutSettingMenuResetListStyleUseCase();
+    shortcutSettingMenuChangeListStyleService(null);
 
     // ライブラリリストを表示
     shortcutSettingMenuShowLibraryListService();
