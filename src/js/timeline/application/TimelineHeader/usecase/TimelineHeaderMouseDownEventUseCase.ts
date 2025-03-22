@@ -1,7 +1,7 @@
 import { $allHideMenu } from "@/menu/application/MenuUtil";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { ExternalTimeline } from "@/external/timeline/domain/model/ExternalTimeline";
-import { $setEditingElement } from "@/global/GlobalUtil";
+import { $activeTouchPointers, $setEditingElement } from "@/global/GlobalUtil";
 
 /**
  * @description タイムラインヘッダーのマウスダウンイベント処理関数
@@ -14,12 +14,15 @@ import { $setEditingElement } from "@/global/GlobalUtil";
  */
 export const execute = async (event: PointerEvent): Promise<void> =>
 {
-    if (event.button !== 0) {
+    if (event.button !== 0
+        || $activeTouchPointers.size > 1
+    ) {
         return ;
     }
 
     // イベント停止
-    event.stopPropagation();
+    // event.stopPropagation();
+    // event.preventDefault();
 
     // メニューを全て非表示に更新
     $allHideMenu();

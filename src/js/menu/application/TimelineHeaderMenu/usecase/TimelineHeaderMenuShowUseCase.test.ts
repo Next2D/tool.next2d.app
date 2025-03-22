@@ -32,7 +32,7 @@ describe("TimelineHeaderMenuShowUseCase Test", () =>
             {
                 preventDefault = true;
             }
-        };
+        } as unknown as PointerEvent;
 
         expect(stop).toBe(false);
         expect(preventDefault).toBe(false);

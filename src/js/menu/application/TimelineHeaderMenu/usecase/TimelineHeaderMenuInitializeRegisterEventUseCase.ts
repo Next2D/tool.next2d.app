@@ -21,28 +21,26 @@ export const execute = (): void =>
     const element: HTMLElement | null = document
         .getElementById($TIMELINE_CONTROLLER_BASE_ID);
 
-    if (!element) {
-        return ;
+    if (element) {
+        element.addEventListener("contextmenu", timelineHeaderMenuShowUseCase);
+
+        // タッチデバイスのタッチイベント
+        element.addEventListener(
+            EventType.POINTER_DOWN,
+            timelineHeaderMenuTouchPointerDownUseCase,
+            { "passive": false }
+        );
+        element.addEventListener(
+            EventType.POINTER_UP,
+            timelineHeaderMenuTouchPointerUpService,
+            { "passive": false }
+        );
+        element.addEventListener(
+            EventType.POINTER_CANCEL,
+            timelineHeaderMenuTouchPointerUpService,
+            { "passive": false }
+        );
     }
-
-    element.addEventListener("contextmenu", timelineHeaderMenuShowUseCase);
-
-    // タッチデバイスのタッチイベント
-    element.addEventListener(
-        EventType.POINTER_DOWN,
-        timelineHeaderMenuTouchPointerDownUseCase,
-        { "passive": false }
-    );
-    element.addEventListener(
-        EventType.POINTER_UP,
-        timelineHeaderMenuTouchPointerUpService,
-        { "passive": false }
-    );
-    element.addEventListener(
-        EventType.POINTER_CANCEL,
-        timelineHeaderMenuTouchPointerUpService,
-        { "passive": false }
-    );
 
     // スクリプト追加ボタンにイベントを登録
     const scriptElement: HTMLElement | null = document
