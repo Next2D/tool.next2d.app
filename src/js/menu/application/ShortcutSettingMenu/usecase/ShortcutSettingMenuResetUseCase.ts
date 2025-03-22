@@ -5,6 +5,7 @@ import {
     $clearViewMapping,
     $clearCommandMapping
 } from "../ShortcutSettingMenuUtil";
+import { $activeTouchPointers } from "@/global/GlobalUtil";
 
 /**
  * @description ショートカットリストを初期設定に戻す
@@ -17,6 +18,12 @@ import {
  */
 export const execute = (event: PointerEvent): void =>
 {
+    if (event.button !== 0
+        || $activeTouchPointers.size > 1
+    ) {
+        return ;
+    }
+
     event.stopPropagation();
     event.preventDefault();
 

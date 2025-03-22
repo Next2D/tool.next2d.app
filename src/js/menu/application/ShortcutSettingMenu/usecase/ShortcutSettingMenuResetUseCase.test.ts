@@ -1,10 +1,13 @@
-import { execute } from "./ShortcutSettingMenuCloseElementPointerDownUseCase";
+import { execute } from "./ShortcutSettingMenuResetUseCase";
 import { describe, expect, it, vi } from "vitest";
+import { $USER_SHORTCUT_SETTING_KEY } from "../../../../config/Config";
 
-describe("ShortcutSettingMenuCloseElementPointerDownUseCase Test", () =>
+describe("ShortcutSettingMenuResetUseCase Test", () =>
 {
     it("execute test", () =>
     {
+        localStorage.setItem($USER_SHORTCUT_SETTING_KEY, "test");
+
         let stopPropagation = false;
         let preventDefault = false;
         const mockEvent = {
@@ -15,10 +18,12 @@ describe("ShortcutSettingMenuCloseElementPointerDownUseCase Test", () =>
 
         expect(stopPropagation).toBe(false);
         expect(preventDefault).toBe(false);
+        expect(localStorage.getItem($USER_SHORTCUT_SETTING_KEY)).toBe("test");
 
         execute(mockEvent);
-
+        
         expect(stopPropagation).toBe(true);
         expect(preventDefault).toBe(true);
+        expect(localStorage.getItem($USER_SHORTCUT_SETTING_KEY)).toBe(null);
     });
 });

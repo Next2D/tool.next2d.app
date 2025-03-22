@@ -3,6 +3,7 @@ import { execute as shortcutSettingMenuUpdateCommandMappingService } from "../se
 import { execute as shortcutSettingMenuUpdateViewMappingService } from "../service/ShortcutSettingMenuUpdateViewMappingService";
 import type { IShortcutViewObject } from "@/interface/IShortcutViewObject";
 import { $getViewMapping } from "../ShortcutSettingMenuUtil";
+import { $activeTouchPointers } from "@/global/GlobalUtil";
 
 /**
  * @description tempに保存した個別のショートカット設定をLocalStorageに保存
@@ -15,6 +16,12 @@ import { $getViewMapping } from "../ShortcutSettingMenuUtil";
  */
 export const execute = (event: PointerEvent): void =>
 {
+    if (event.button !== 0
+        || $activeTouchPointers.size > 1
+    ) {
+        return ;
+    }
+
     event.stopPropagation();
     event.preventDefault();
 

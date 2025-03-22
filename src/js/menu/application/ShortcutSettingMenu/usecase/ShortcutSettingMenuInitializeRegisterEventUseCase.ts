@@ -35,7 +35,8 @@ export const execute = (): void =>
 
     if (shortcutSettingSave) {
         shortcutSettingSave.addEventListener(EventType.POINTER_DOWN,
-            shortcutSettingMenuSaveUseCase
+            shortcutSettingMenuSaveUseCase,
+            { "passive": false }
         );
     }
 
@@ -45,7 +46,8 @@ export const execute = (): void =>
 
     if (shortcutSettingReset) {
         shortcutSettingReset.addEventListener(EventType.POINTER_DOWN,
-            shortcutSettingMenuResetUseCase
+            shortcutSettingMenuResetUseCase,
+            { "passive": false }
         );
     }
 
@@ -55,7 +57,8 @@ export const execute = (): void =>
 
     if (shortcutSettingClose) {
         shortcutSettingClose.addEventListener(EventType.POINTER_DOWN,
-            shortcutSettingMenuCloseElementPointerDownUseCase
+            shortcutSettingMenuCloseElementPointerDownUseCase,
+            { "passive": false }
         );
     }
 
@@ -65,7 +68,8 @@ export const execute = (): void =>
 
     if (shortcutScreenList) {
         shortcutScreenList.addEventListener(EventType.POINTER_DOWN,
-            shortcutSettingMenuShowScreenListUseCase
+            shortcutSettingMenuShowScreenListUseCase,
+            { "passive": false }
         );
     }
 
@@ -75,7 +79,8 @@ export const execute = (): void =>
 
     if (shortcutTimelineList) {
         shortcutTimelineList.addEventListener(EventType.POINTER_DOWN,
-            shortcutSettingMenuShowTimelineListUseCase
+            shortcutSettingMenuShowTimelineListUseCase,
+            { "passive": false }
         );
     }
 
@@ -85,7 +90,8 @@ export const execute = (): void =>
 
     if (shortcutLibraryList) {
         shortcutLibraryList.addEventListener(EventType.POINTER_DOWN,
-            shortcutSettingMenuShowLibraryListUseCase
+            shortcutSettingMenuShowLibraryListUseCase,
+            { "passive": false }
         );
     }
 
@@ -107,12 +113,15 @@ export const execute = (): void =>
 
         const length: number = elements.length;
         for (let idx = 0; idx < length; ++idx) {
+
             const element = elements[idx] as HTMLElement;
             if (!element) {
                 continue;
             }
+
             element.addEventListener(EventType.POINTER_DOWN,
-                shortcutSettingMenuChangeListStyleUseCase
+                shortcutSettingMenuChangeListStyleUseCase,
+                { "passive": false }
             );
         }
     }

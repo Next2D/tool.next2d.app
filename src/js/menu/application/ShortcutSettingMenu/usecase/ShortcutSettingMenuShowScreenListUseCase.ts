@@ -1,5 +1,6 @@
 import { execute as shortcutSettingMenuShowScreenListService } from "../service/ShortcutSettingMenuShowScreenListService";
 import { execute as shortcutSettingMenuChangeListStyleService } from "../service/ShortcutSettingMenuChangeListStyleService";
+import { $activeTouchPointers } from "@/global/GlobalUtil";
 
 /**
  * @description ショートカットリストのスクリーン表示処理
@@ -11,6 +12,12 @@ import { execute as shortcutSettingMenuChangeListStyleService } from "../service
  */
 export const execute = (event: PointerEvent): void =>
 {
+    if (event.button !== 0
+        || $activeTouchPointers.size > 1
+    ) {
+        return ;
+    }
+
     event.stopPropagation();
     event.preventDefault();
 

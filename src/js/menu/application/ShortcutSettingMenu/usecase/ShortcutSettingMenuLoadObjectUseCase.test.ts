@@ -1,10 +1,7 @@
 import { execute } from "./ShortcutSettingMenuLoadObjectUseCase";
 import { $USER_SHORTCUT_SETTING_KEY } from "../../../../config/Config";
-import { describe, expect, it, vi } from "vitest";
+import { describe, expect, it } from "vitest";
 import {
-    $clearCommandMapping,
-    $clearTempMapping,
-    $clearViewMapping,
     $getCommandMapping,
     $getViewMapping
 } from "../ShortcutSettingMenuUtil";

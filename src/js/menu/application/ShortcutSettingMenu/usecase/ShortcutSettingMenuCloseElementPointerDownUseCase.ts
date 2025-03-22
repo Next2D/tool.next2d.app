@@ -3,6 +3,7 @@ import { execute as userSettingMenuShowService } from "../../UserSettingMenu/ser
 import { execute as shortcutSettingMenuChangeListStyleService } from "../service/ShortcutSettingMenuChangeListStyleService";
 import { execute as shortcutSettingMenuRemoveKeyboardEventService } from "./ShortcutSettingMenuRemoveKeyboardEventUseCase";
 import { execute as languageTranslationService } from "@/language/application/service/LanguageTranslationService";
+import { $activeTouchPointers } from "@/global/GlobalUtil";
 
 /**
  * @description ショートカットメニューを非表示にして、ユーザー設定メニューを表示
@@ -15,6 +16,12 @@ import { execute as languageTranslationService } from "@/language/application/se
  */
 export const execute = (event: PointerEvent): void =>
 {
+    if (event.button !== 0
+        || $activeTouchPointers.size > 1
+    ) {
+        return ;
+    }
+
     event.stopPropagation();
     event.preventDefault();
 

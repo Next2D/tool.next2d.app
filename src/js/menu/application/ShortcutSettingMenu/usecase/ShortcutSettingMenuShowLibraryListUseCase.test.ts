@@ -1,7 +1,7 @@
-import { execute } from "./ShortcutSettingMenuCloseElementPointerDownUseCase";
+import { execute } from "./ShortcutSettingMenuShowLibraryListUseCase";
 import { describe, expect, it, vi } from "vitest";
 
-describe("ShortcutSettingMenuCloseElementPointerDownUseCase Test", () =>
+describe("ShortcutSettingMenuShowLibraryListUseCase Test", () =>
 {
     it("execute test", () =>
     {
@@ -17,7 +17,7 @@ describe("ShortcutSettingMenuCloseElementPointerDownUseCase Test", () =>
         expect(preventDefault).toBe(false);
 
         execute(mockEvent);
-
+        
         expect(stopPropagation).toBe(true);
         expect(preventDefault).toBe(true);
     });
