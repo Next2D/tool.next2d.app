@@ -2,6 +2,8 @@ import type { TimelineHeaderMenu } from "@/menu/domain/model/TimelineHeaderMenu"
 import { $useKeyboard } from "@/shortcut/ShortcutUtil";
 import { $TIMELINE_HEADER_MENU_NAME } from "@/config/MenuConfig";
 import { $setEditingElement } from "@/global/GlobalUtil";
+import { timelineHeader } from "@/timeline/domain/model/TimelineHeader";
+import { execute as timelineToolPlayStopUseCase } from "@/timeline/application/TimelineTool/application/PlayStop/usecase/TimelineToolPlayStopUseCase";
 import {
     $allHideMenu,
     $getMenu
@@ -25,6 +27,10 @@ export const execute = (event: MouseEvent): void =>
     // 親のイベントを中止
     event.stopPropagation();
     event.preventDefault();
+
+    if (!timelineHeader.stopFlag) {
+        timelineToolPlayStopUseCase();
+    }
 
     // 編集中のElementを初期化
     $setEditingElement(null);

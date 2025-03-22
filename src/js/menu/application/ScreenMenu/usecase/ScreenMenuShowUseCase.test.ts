@@ -1,9 +1,9 @@
-import { execute } from "./ScreenMenuShowService";
+import { execute } from "./ScreenMenuShowUseCase";
 import { $registerMenu } from "../../MenuUtil";
 import { $SCREEN_MENU_NAME } from "../../../../config/MenuConfig";
 import { describe, expect, it } from "vitest";
 
-describe("ScreenMenuShowServiceTest", () =>
+describe("ScreenMenuShowUseCase Test", () =>
 {
     it("execute test", () =>
     {

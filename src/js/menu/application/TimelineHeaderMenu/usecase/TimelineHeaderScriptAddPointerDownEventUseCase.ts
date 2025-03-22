@@ -1,3 +1,4 @@
+import { $activeTouchPointers } from "@/global/GlobalUtil";
 import { execute as scriptEditorModalCurrentBootUseCase } from "@/menu/application/ScriptEditorModal/usecase/ScriptEditorModalCurrentBootUseCase";
 
 /**
@@ -11,7 +12,9 @@ import { execute as scriptEditorModalCurrentBootUseCase } from "@/menu/applicati
  */
 export const execute = (event: PointerEvent): void =>
 {
-    if (event.button !== 0) {
+    if (event.button !== 0
+        || $activeTouchPointers.size > 1
+    ) {
         return ;
     }
 

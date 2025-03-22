@@ -1,5 +1,5 @@
 import { $SCREEN_ID } from "@/config/ScreenConfig";
-import { execute as screenMenuShowService } from "../service/ScreenMenuShowService";
+import { execute as screenMenuShowUseCase } from "./ScreenMenuShowUseCase";
 import { execute as screenMenuInitializeRegisterPointerOverUseCase } from "./ScreenMenuInitializeRegisterPointerOverUseCase";
 import { execute as screenMenuTouchPointerDownUseCase } from "./ScreenMenuTouchPointerDownUseCase";
 import { execute as screenMenuTouchPointerUpService } from "../service/ScreenMenuTouchPointerUpService";
@@ -22,7 +22,7 @@ export const execute = (): void =>
         return ;
     }
 
-    element.addEventListener("contextmenu", screenMenuShowService);
+    element.addEventListener("contextmenu", screenMenuShowUseCase);
 
     // タッチデバイスのタッチイベント
     element.addEventListener(

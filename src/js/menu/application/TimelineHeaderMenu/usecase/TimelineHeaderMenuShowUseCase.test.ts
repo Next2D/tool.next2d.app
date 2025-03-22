@@ -1,9 +1,9 @@
 import { $TIMELINE_HEADER_MENU_NAME } from "../../../../config/MenuConfig";
 import { $registerMenu } from "../../MenuUtil";
-import { execute } from "./TimelineHeaderMenuShowService";
+import { execute } from "./TimelineHeaderMenuShowUseCase";
 import { describe, expect, it } from "vitest";
 
-describe("TimelineHeaderMenuShowServiceTest", () =>
+describe("TimelineHeaderMenuShowUseCase Test", () =>
 {
     it("execute test", () =>
     {

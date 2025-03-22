@@ -1,7 +1,12 @@
-import { $TIMELINE_CONTROLLER_BASE_ID, $TIMELINE_HEADER_MENU_SCRIPT_ADD_ONE_ID } from "@/config/TimelineConfig";
-import { execute as timelineHeaderMenuShowService } from "../service/TimelineHeaderMenuShowService";
 import { EventType } from "@/tool/domain/event/EventType";
-import { execute as timelineHeaderScriptAddMouseDownEventUseCase } from "./TimelineHeaderScriptAddMouseDownEventUseCase";
+import { execute as timelineHeaderMenuShowUseCase } from "./TimelineHeaderMenuShowUseCase";
+import { execute as timelineHeaderScriptAddPointerDownEventUseCase } from "./TimelineHeaderScriptAddPointerDownEventUseCase";
+import { execute as timelineHeaderMenuTouchPointerDownUseCase } from "./TimelineHeaderMenuTouchPointerDownUseCase";
+import { execute as timelineHeaderMenuTouchPointerUpService } from "../service/TimelineHeaderMenuTouchPointerUpService";
+import {
+    $TIMELINE_CONTROLLER_BASE_ID,
+    $TIMELINE_HEADER_MENU_SCRIPT_ADD_ONE_ID
+} from "@/config/TimelineConfig";
 
 /**
  * @description タイムラインヘッダーのイベント登録関数
@@ -20,7 +25,24 @@ export const execute = (): void =>
         return ;
     }
 
-    element.addEventListener("contextmenu", timelineHeaderMenuShowService);
+    element.addEventListener("contextmenu", timelineHeaderMenuShowUseCase);
+
+    // タッチデバイスのタッチイベント
+    element.addEventListener(
+        EventType.POINTER_DOWN,
+        timelineHeaderMenuTouchPointerDownUseCase,
+        { "passive": false }
+    );
+    element.addEventListener(
+        EventType.POINTER_UP,
+        timelineHeaderMenuTouchPointerUpService,
+        { "passive": false }
+    );
+    element.addEventListener(
+        EventType.POINTER_CANCEL,
+        timelineHeaderMenuTouchPointerUpService,
+        { "passive": false }
+    );
 
     // スクリプト追加ボタンにイベントを登録
     const scriptElement: HTMLElement | null = document
@@ -28,7 +50,8 @@ export const execute = (): void =>
 
     if (scriptElement) {
         scriptElement.addEventListener(EventType.POINTER_DOWN,
-            timelineHeaderScriptAddMouseDownEventUseCase
+            timelineHeaderScriptAddPointerDownEventUseCase,
+            { "passive": false }
         );
     }
 };
