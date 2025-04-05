@@ -1,16 +1,17 @@
 import { $getStandbyMoveState, $setStandbyMoveState } from "../TimelineAreaUtil";
-import { execute } from "./TimelineAreaMouseOutEventService";
+import { execute } from "./TimelineAreaPointerOutEventService";
+import { describe, expect, it } from "vitest";
 
-describe("TTimelineAreaMouseOutEventServiceTest", () =>
+describe("TimelineAreaPointerOutEventService Test", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         $setStandbyMoveState(true);
         expect($getStandbyMoveState()).toBe(true);
 
         const mockEvent = {
             "stopPropagation": () => { return null }
-        };
+        } as unknown as PointerEvent;
 
         execute(mockEvent);
         expect($getStandbyMoveState()).toBe(false);

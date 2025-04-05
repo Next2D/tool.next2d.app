@@ -1,8 +1,8 @@
-import { execute } from "./TimelineHeaderMenuTouchPointerUpService";
+import { execute } from "./TimelineHeaderTouchPointerUpService";
 import { describe, expect, it, vi } from "vitest";
 import { $activeTouchPointers } from "../../../../global/GlobalUtil";
 
-describe("TimelineHeaderMenuTouchPointerUpService Test", () =>
+describe("TimelineHeaderTouchPointerUpService Test", () =>
 {
     it("execute test", () =>
     {

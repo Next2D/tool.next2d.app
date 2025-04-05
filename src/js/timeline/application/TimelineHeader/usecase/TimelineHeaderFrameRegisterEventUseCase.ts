@@ -1,8 +1,10 @@
 import { EventType } from "@/tool/domain/event/EventType";
-import { execute as timelineHeaderMouseDownEventUseCase } from "./TimelineHeaderMouseDownEventUseCase";
+import { execute as timelineHeaderPointerDownEventUseCase } from "./TimelineHeaderPointerDownEventUseCase";
 import { execute as timelineHeaderScriptIconMouseDownEventUseCase } from "./TimelineHeaderScriptIconMouseDownEventUseCase";
 import { execute as timelineHeaderSoundIconMouseDownEventUseCase } from "./TimelineHeaderSoundIconMouseDownEventUseCase";
 import { execute as timelineHeaderLabelIconMouseDownEventUseCase } from "./TimelineHeaderLabelIconMouseDownEventUseCase";
+import { execute as timelineHeaderTouchPointerUpService } from "../service/TimelineHeaderTouchPointerUpService";
+import { execute as timelineHeaderTouchPointerDownUseCase } from "./TimelineHeaderTouchPointerDownUseCase";
 import {
     $TIMELINE_HEADER_LABEL_INDEX,
     $TIMELINE_HEADER_SCRIPT_INDEX,
@@ -20,9 +22,26 @@ import {
  */
 export const execute = (element: HTMLElement): void =>
 {
+    // タッチデバイスのタッチイベント
+    element.addEventListener(
+        EventType.POINTER_DOWN,
+        timelineHeaderTouchPointerDownUseCase,
+        { "passive": false }
+    );
+    element.addEventListener(
+        EventType.POINTER_UP,
+        timelineHeaderTouchPointerUpService,
+        { "passive": false }
+    );
+    element.addEventListener(
+        EventType.POINTER_CANCEL,
+        timelineHeaderTouchPointerUpService,
+        { "passive": false }
+    );
+
     // マウスダウンイベント
     element.addEventListener(EventType.POINTER_DOWN,
-        timelineHeaderMouseDownEventUseCase
+        timelineHeaderPointerDownEventUseCase
     );
 
     // スクリプトアイコン

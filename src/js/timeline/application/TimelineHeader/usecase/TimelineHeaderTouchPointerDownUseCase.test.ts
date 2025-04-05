@@ -1,8 +1,8 @@
-import { execute } from "./TimelineHeaderMenuTouchPointerDownUseCase";
+import { execute } from "./TimelineHeaderTouchPointerDownUseCase";
 import { describe, expect, it, vi } from "vitest";
 import { $activeTouchPointers } from "../../../../global/GlobalUtil";
 
-describe("TimelineHeaderMenuTouchPointerDownUseCase Test", () =>
+describe("TimelineHeaderTouchPointerDownUseCase Test", () =>
 {
     it("execute test", () =>
     {

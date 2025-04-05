@@ -21,8 +21,8 @@ export const execute = async (event: PointerEvent): Promise<void> =>
     }
 
     // イベント停止
-    // event.stopPropagation();
-    // event.preventDefault();
+    event.stopPropagation();
+    event.preventDefault();
 
     // メニューを全て非表示に更新
     $allHideMenu();

@@ -1,7 +1,7 @@
 import { EventType } from "@/tool/domain/event/EventType";
-import { execute as timelineAreaMouseDownEventUseCase } from "./TimelineAreaMouseDownEventUseCase";
-import { execute as timelineAreaMouseUpEventUseCase } from "./TimelineAreaMouseUpEventUseCase";
-import { execute as timelineAreaMouseOutEventService } from "../service/TimelineAreaMouseOutEventService";
+import { execute as timelineAreaPointerDownEventUseCase } from "./TimelineAreaPointerDownEventUseCase";
+import { execute as timelineAreaPointerUpEventUseCase } from "./TimelineAreaPointerUpEventUseCase";
+import { execute as timelineAreaPointerOutEventService } from "../service/TimelineAreaPointerOutEventService";
 import { $TIMELINE_ID } from "@/config/TimelineConfig";
 
 /**
@@ -20,7 +20,7 @@ export const execute = (): void =>
     }
 
     // タップ、ダブルタップの処理
-    element.addEventListener(EventType.POINTER_DOWN, timelineAreaMouseDownEventUseCase);
-    element.addEventListener(EventType.POINTER_UP, timelineAreaMouseUpEventUseCase);
-    element.addEventListener(EventType.POINTER_OUT, timelineAreaMouseOutEventService);
+    element.addEventListener(EventType.POINTER_DOWN, timelineAreaPointerDownEventUseCase);
+    element.addEventListener(EventType.POINTER_UP, timelineAreaPointerUpEventUseCase);
+    element.addEventListener(EventType.POINTER_OUT, timelineAreaPointerOutEventService);
 };
