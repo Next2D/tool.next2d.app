@@ -15,9 +15,6 @@ describe("TimelineHeaderMenuInitializeRegisterEventUseCase Test", () =>
         document.body.appendChild(div);
 
         let contextmenu = false;
-        let pointerdown = false;
-        let pointerup = false;
-        let pointercancel = false;
         div.addEventListener = vi.fn((type) =>
         {
             switch (type) {
@@ -26,34 +23,14 @@ describe("TimelineHeaderMenuInitializeRegisterEventUseCase Test", () =>
                     contextmenu = true;
                     return ;
 
-                case EventType.POINTER_DOWN:
-                    pointerdown = true;
-                    return ;
-
-                case EventType.POINTER_UP:
-                    pointerup = true;
-                    return ;
-
-                case EventType.POINTER_CANCEL:
-                    pointercancel = true;
-                    return ;
-
                 default:
                     throw new Error("Invalid event type");
             }
         });
 
         expect(contextmenu).toBe(false);
-        expect(pointerdown).toBe(false);
-        expect(pointerup).toBe(false);
-        expect(pointercancel).toBe(false);
-
         execute();
-        
         expect(contextmenu).toBe(true);
-        expect(pointerdown).toBe(true);
-        expect(pointerup).toBe(true);
-        expect(pointercancel).toBe(true);
 
         div.remove();
     });

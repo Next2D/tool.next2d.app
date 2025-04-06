@@ -1,9 +1,9 @@
 import { EventType } from "@/tool/domain/event/EventType";
 import { execute as timelineLayerControllerMenuChangeColorUseCase } from "./TimelineLayerControllerMenuChangeColorUseCase";
 import { execute as timelineLayerControllerMenuChangeScaleUseCase } from "./TimelineLayerControllerMenuChangeScaleUseCase";
-import { execute as timelineLayerControllerMenuMaskMouseDownUseCase } from "./TimelineLayerControllerMenuMaskMouseDownUseCase";
-import { execute as timelineLayerControllerMenuNormalMouseDownUseCase } from "./TimelineLayerControllerMenuNormalMouseDownUseCase";
-import { execute as timelineLayerControllerMenuGuideMouseDownUseCase } from "./TimelineLayerControllerMenuGuideMouseDownUseCase";
+import { execute as timelineLayerControllerMenuMaskPointerDownUseCase } from "./TimelineLayerControllerMenuMaskPointerDownUseCase";
+import { execute as timelineLayerControllerMenuNormalPointerDownUseCase } from "./TimelineLayerControllerMenuNormalPointerDownUseCase";
+import { execute as timelineLayerControllerMenuGuidePointerDownUseCase } from "./TimelineLayerControllerMenuGuidePointerDownUseCase";
 import {
     $TIMELINE_CONTROLLER_LAYER_COLOR_ID,
     $TIMELINE_CONTROLLER_LAYER_GUIDE_ID,
@@ -48,7 +48,7 @@ export const execute = (): void =>
     // 通常レイヤーのイベントを登録
     if (normalElement) {
         normalElement.addEventListener(EventType.POINTER_DOWN,
-            timelineLayerControllerMenuNormalMouseDownUseCase
+            timelineLayerControllerMenuNormalPointerDownUseCase
         );
     }
 
@@ -58,7 +58,7 @@ export const execute = (): void =>
     // マスクレイヤーのイベントを登録
     if (maskElement) {
         maskElement.addEventListener(EventType.POINTER_DOWN,
-            timelineLayerControllerMenuMaskMouseDownUseCase
+            timelineLayerControllerMenuMaskPointerDownUseCase
         );
     }
 
@@ -68,7 +68,7 @@ export const execute = (): void =>
     // ガイドレイヤーのイベントを登録
     if (guideElement) {
         guideElement.addEventListener(EventType.POINTER_DOWN,
-            timelineLayerControllerMenuGuideMouseDownUseCase
+            timelineLayerControllerMenuGuidePointerDownUseCase
         );
     }
 };

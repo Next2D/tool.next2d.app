@@ -12,9 +12,6 @@ import { ExternalLayer } from "@/external/core/domain/model/ExternalLayer";
  */
 export const execute = async (event: Event): Promise<void> =>
 {
-    // 親のイベントを中止
-    event.stopPropagation();
-
     const element = event.target as HTMLInputElement;
     if (!element) {
         return ;

@@ -46,7 +46,7 @@ export const execute = async (event: MouseEvent): Promise<void> =>
         return ;
     }
 
-    const targetElement: HTMLElement | null = event.currentTarget as HTMLElement;
+    const targetElement = event.currentTarget as HTMLElement;
     if (!targetElement) {
         return ;
     }

@@ -16,15 +16,13 @@ import { timelineLayer } from "@/timeline/domain/model/TimelineLayer";
  */
 export const execute = (event: Event): void =>
 {
-    // 親のイベントを中止
-    event.stopPropagation();
-
-    const element: HTMLSelectElement | null = event.target as HTMLSelectElement;
+    const element = event.target as HTMLSelectElement;
     if (!element) {
         return ;
     }
 
-    const timelineAreaState = $getCurrentWorkSpace().timelineAreaState;
+    const workSpace = $getCurrentWorkSpace();
+    const timelineAreaState = workSpace.timelineAreaState;
     const beforeCount = Math.floor(timelineLayer.clientHeight / timelineAreaState.frameHeight);
 
     // タイムラインの高さを更新
@@ -37,7 +35,8 @@ export const execute = (event: Event): void =>
 
     // 表示数に変化があればタイムラインを再描画
     const afterCount = Math.floor(timelineLayer.clientHeight / timelineAreaState.frameHeight);
-    if (beforeCount !== afterCount) {
-        timelineLayerBuildElementUseCase();
+    if (beforeCount === afterCount) {
+        return ;
     }
+    timelineLayerBuildElementUseCase();
 };
