@@ -35,7 +35,7 @@ export const execute = async (event: PointerEvent): Promise<void> =>
     event.stopPropagation();
     event.preventDefault();
 
-    const element: HTMLElement | null = event.target as HTMLElement;
+    const element = event.target as HTMLElement;
     if (!element) {
         return ;
     }

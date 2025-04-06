@@ -46,15 +46,15 @@ export const execute = (event: PointerEvent): void =>
         return ;
     }
 
+    // 親のイベントを終了
+    event.stopPropagation();
+    event.preventDefault();
+
     // マーカーのイベントを無効化
     const markerElement = document.getElementById($TIMELINE_MARKER_ID);
     if (markerElement) {
         markerElement.style.pointerEvents = "none";
     }
-
-    // 親のイベントを終了
-    event.stopPropagation();
-    event.preventDefault();
 
     // 移動するアイコンのタイプをセット
     $setMoveIconType("label");
