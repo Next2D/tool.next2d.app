@@ -6,13 +6,14 @@ import { execute as timelineHeaderIconPointerUpEventUseCase } from "./TimelineHe
  * @description タイムラインヘッダーアイコンのウィンドウイベント登録
  *              Window event registration of timeline header icon
  *
+ * @params  {PointerEvent} event
  * @returns {void}
  * @method
  * @public
  */
 export const execute = (event: PointerEvent): void =>
 {
-    const element: HTMLElement | null = event.target as HTMLElement;
+    const element = event.target as HTMLElement;
     if (!element) {
         return ;
     }

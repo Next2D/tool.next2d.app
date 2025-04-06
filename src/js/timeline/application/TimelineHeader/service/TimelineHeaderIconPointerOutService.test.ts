@@ -19,5 +19,4 @@ describe("TimelineHeaderIconPointerOutService Test", () =>
         execute(div);
         expect(div.style.backgroundColor).toBe("");
     });
-
 });

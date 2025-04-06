@@ -39,24 +39,26 @@ export const execute = (element: HTMLElement): void =>
         { "passive": false }
     );
 
-    // マウスダウンイベント
+    // ポインターダウンイベント
+    // fixed logic (イベントの順番を変えないこと)
     element.addEventListener(EventType.POINTER_DOWN,
-        timelineHeaderPointerDownEventUseCase
+        timelineHeaderPointerDownEventUseCase,
+        { "passive": false }
     );
-
-    // スクリプトアイコン
-    const scriptElement = element.children[$TIMELINE_HEADER_SCRIPT_INDEX] as HTMLElement;
-    if (scriptElement) {
-        scriptElement.addEventListener(EventType.POINTER_DOWN,
-            timelineHeaderScriptIconPointerDownEventUseCase
-        );
-    }
 
     // ラベルアイコン
     const labelElement = element.children[$TIMELINE_HEADER_LABEL_INDEX] as HTMLElement;
     if (labelElement) {
         labelElement.addEventListener(EventType.POINTER_DOWN,
             timelineHeaderLabelIconPointerDownEventUseCase
+        );
+    }
+
+    // スクリプトアイコン
+    const scriptElement = element.children[$TIMELINE_HEADER_SCRIPT_INDEX] as HTMLElement;
+    if (scriptElement) {
+        scriptElement.addEventListener(EventType.POINTER_DOWN,
+            timelineHeaderScriptIconPointerDownEventUseCase
         );
     }
 
